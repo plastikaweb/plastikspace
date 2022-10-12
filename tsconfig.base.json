@@ -13,6 +13,11 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {}
   },

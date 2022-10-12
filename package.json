@@ -7,7 +7,26 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "prepare": "husky install",
+    "affected:apps": "nx affected:apps",
+    "affected:libs": "nx affected:libs",
+    "affected:build": "nx affected:build",
+    "affected:e2e": "nx affected:e2e",
+    "affected:e2e:watch": "nx affected:e2e --watch",
+    "affected:test": "nx affected:test --parallel --max-parallel=3 --run-in-band",
+    "affected:lint": "nx affected:lint --parallel --max-parallel=3 --verbose --cache",
+    "affected:dep-graph": "nx affected:dep-graph",
+    "format:write": "nx format:write",
+    "format:check": "nx format:check",
+    "update": "nx migrate latest",
+    "workspace-generator": "nx workspace-generator",
+    "dep-graph": "nx dep-graph",
+    "help": "nx help",
+    "clean": "rimraf node_modules",
+    "clean:all": "rimraf node_modules dist dll && yarn cache clean --force",
+    "clean:dist": "rimraf dist",
+    "install:local": "yarn clean:all && yarn install --frozen-lockfile"
   },
   "private": true,
   "dependencies": {
@@ -32,6 +51,8 @@
     "@angular/cli": "~14.2.0",
     "@angular/compiler-cli": "~14.2.0",
     "@angular/language-service": "~14.2.0",
+    "@commitlint/cli": "^17.1.2",
+    "@commitlint/config-conventional": "^17.1.0",
     "@nrwl/cli": "14.8.4",
     "@nrwl/cypress": "14.8.4",
     "@nrwl/eslint-plugin-nx": "14.8.4",
@@ -42,17 +63,29 @@
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "@typescript-eslint/parser": "^5.36.1",
+    "commitizen": "^4.2.5",
     "cypress": "^10.7.0",
+    "cz-customizable": "^7.0.0",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
+    "husky": "^8.0.0",
     "jest": "28.1.1",
     "jest-environment-jsdom": "28.1.1",
     "jest-preset-angular": "~12.2.2",
     "nx": "14.8.4",
     "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
     "ts-jest": "28.0.5",
     "ts-node": "10.9.1",
     "typescript": "~4.8.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": ".cz-config.cjs"
+    }
   }
 }
