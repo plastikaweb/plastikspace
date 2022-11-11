@@ -30,7 +30,7 @@ module.exports = {
     },
     { value: 'revert', name: 'revert: Revert to a commit' },
   ],
-  scopes: ['universe-lib'],
+  scopes: ['nasa-images'],
   allowCustomScopes: true,
   allowTicketNumber: true,
   isTicketNumberRequired: false,

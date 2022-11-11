@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'universe-lib',
+  displayName: 'nasa-images',
   preset: '../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -9,7 +9,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/apps/universe-lib',
+  coverageDirectory: '../../coverage/apps/nasa-images',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

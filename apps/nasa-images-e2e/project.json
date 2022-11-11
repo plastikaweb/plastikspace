@@ -1,19 +1,19 @@
 {
-  "name": "universe-lib-e2e",
+  "name": "nasa-images-e2e",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/universe-lib-e2e/src",
+  "sourceRoot": "apps/nasa-images-e2e/src",
   "projectType": "application",
   "targets": {
     "e2e": {
       "executor": "@nrwl/cypress:cypress",
       "options": {
-        "cypressConfig": "apps/universe-lib-e2e/cypress.config.ts",
-        "devServerTarget": "universe-lib:serve:development",
+        "cypressConfig": "apps/nasa-images-e2e/cypress.config.ts",
+        "devServerTarget": "nasa-images:serve:development",
         "testingType": "e2e"
       },
       "configurations": {
         "production": {
-          "devServerTarget": "universe-lib:serve:production"
+          "devServerTarget": "nasa-images:serve:production"
         }
       }
     },
@@ -21,10 +21,10 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/universe-lib-e2e/**/*.{js,ts}"]
+        "lintFilePatterns": ["apps/nasa-images-e2e/**/*.{js,ts}"]
       }
     }
   },
   "tags": [],
-  "implicitDependencies": ["universe-lib"]
+  "implicitDependencies": ["nasa-images"]
 }

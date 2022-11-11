@@ -1,25 +1,22 @@
 {
-  "name": "universe-lib",
+  "name": "nasa-images",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/universe-lib/src",
+  "sourceRoot": "apps/nasa-images/src",
   "prefix": "plastikspace",
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/universe-lib",
-        "index": "apps/universe-lib/src/index.html",
-        "main": "apps/universe-lib/src/main.ts",
-        "polyfills": "apps/universe-lib/src/polyfills.ts",
-        "tsConfig": "apps/universe-lib/tsconfig.app.json",
+        "outputPath": "dist/apps/nasa-images",
+        "index": "apps/nasa-images/src/index.html",
+        "main": "apps/nasa-images/src/main.ts",
+        "polyfills": "apps/nasa-images/src/polyfills.ts",
+        "tsConfig": "apps/nasa-images/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": [
-          "apps/universe-lib/src/favicon.ico",
-          "apps/universe-lib/src/assets"
-        ],
-        "styles": ["apps/universe-lib/src/styles.scss"],
+        "assets": ["apps/nasa-images/src/favicon.ico", "apps/nasa-images/src/assets"],
+        "styles": ["apps/nasa-images/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
@@ -38,8 +35,8 @@
           ],
           "fileReplacements": [
             {
-              "replace": "apps/universe-lib/src/environments/environment.ts",
-              "with": "apps/universe-lib/src/environments/environment.prod.ts"
+              "replace": "apps/nasa-images/src/environments/environment.ts",
+              "with": "apps/nasa-images/src/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all"
@@ -59,10 +56,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "universe-lib:build:production"
+          "browserTarget": "nasa-images:build:production"
         },
         "development": {
-          "browserTarget": "universe-lib:build:development"
+          "browserTarget": "nasa-images:build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -70,23 +67,20 @@
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "browserTarget": "universe-lib:build"
+        "browserTarget": "nasa-images:build"
       }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "options": {
-        "lintFilePatterns": [
-          "apps/universe-lib/**/*.ts",
-          "apps/universe-lib/**/*.html"
-        ]
+        "lintFilePatterns": ["apps/nasa-images/**/*.ts", "apps/nasa-images/**/*.html"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/universe-lib"],
+      "outputs": ["coverage/apps/nasa-images"],
       "options": {
-        "jestConfig": "apps/universe-lib/jest.config.ts",
+        "jestConfig": "apps/nasa-images/jest.config.ts",
         "passWithNoTests": true
       }
     }
