@@ -1,1 +1,18 @@
-<plastikspace-nx-welcome></plastikspace-nx-welcome>
+<div class="flex flex-col h-screen">
+  <mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button>
+    <span>My App</span>
+    <span style="flex: 1 1 auto"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav mode="side" position="end" [(opened)]="opened"> Sidenav content </mat-sidenav>
+
+    <mat-sidenav-content> Content </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
