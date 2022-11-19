@@ -1,10 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* You can add global styles to this file, and also import other style files */
 
-html,
-body {
-  height: 100%;
+:root {
+  /* Colors */
+  --primary-light: #a5b4fc;
+  --primary: #6366f1;
+  --primary-dark: #4338ca;
+  --secondary-light: #e9d5ff;
+  --secondary: #a855f7;
+  --secondary-dark: #7e22ce;
+
+  /* Spacing */
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 3rem;
+
+  /* Font Size */
+  --font-size-sub: 0.7rem;
+  --font-size-sm: 0.85rem;
+  --font-size-base: 1rem;
+  --font-size-md: 1.4rem;
+  --font-size-lg: 1.8rem;
+  --font-size-xl: 2.2rem;
+  --font-size-xxl: 2.6rem;
 }
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+
+@layer base {
+  html {
+    font-size: 14px;
+  }
+
+  @screen sm {
+    html {
+      font-size: 13px;
+    }
+  }
+
+  body {
+    @apply text-gray-90 font-light font-poppins;
+  }
+
+  h1 {
+    @apply text-xl;
+  }
+
+  h2 {
+    @apply text-lg;
+  }
+
+  h3 {
+    @apply text-md;
+  }
 }

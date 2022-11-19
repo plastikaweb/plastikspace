@@ -1,0 +1,8 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "tailwind-preset",
+  "projectType": "library",
+  "sourceRoot": "libs/tailwind-preset/src",
+  "targets": {},
+  "tags": []
+}

@@ -16,7 +16,7 @@
         "tsConfig": "apps/nasa-images/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": ["apps/nasa-images/src/favicon.ico", "apps/nasa-images/src/assets"],
-        "styles": ["./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css", "apps/nasa-images/src/styles.scss"],
+        "styles": ["apps/nasa-images/src/styles.scss"],
         "scripts": []
       },
       "configurations": {
