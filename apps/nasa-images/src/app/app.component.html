@@ -1,13 +1,16 @@
-<mat-toolbar class="bg-primary-light">
-  <button mat-icon-button aria-label="Example icon-button with share icon">
-    <mat-icon>share</mat-icon>
-  </button>
-  <span class="text-md">My App</span>
-  <span class="flex-auto"></span>
-  <button mat-icon-button aria-label="Example icon-button with menu icon" (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-</mat-toolbar>
+<plastikspace-header>
+  <div start>
+    <a class="flex items-center content-center justify-between" href="">
+      <svg-icon src="assets/img/nasa.svg" svgClass="bg-white text-black w-[100px]"></svg-icon>
+      <span class="text-md">NASA Images by Plastikaweb</span>
+    </a>
+  </div>
+  <div end>
+    <button mat-icon-button aria-label="sidenav toggle button" button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+</plastikspace-header>
 
 <mat-sidenav-container>
   <mat-sidenav #sidenav mode="side" position="end" [(opened)]="opened"> Sidenav content </mat-sidenav>

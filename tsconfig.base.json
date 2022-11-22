@@ -19,7 +19,9 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@plastikspace/shared/header": ["libs/shared/header/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

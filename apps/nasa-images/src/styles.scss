@@ -1,17 +1,30 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+$nasa-images-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: mat.define-palette(mat.$indigo-palette),
+      accent: mat.define-palette(mat.$pink-palette),
+    ),
+  )
+);
+
+@include mat.all-component-themes($nasa-images-theme);
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* You can add global styles to this file, and also import other style files */
-
 :root {
   /* Colors */
-  --primary-light: #a5b4fc;
-  --primary: #6366f1;
-  --primary-dark: #4338ca;
-  --secondary-light: #e9d5ff;
-  --secondary: #a855f7;
-  --secondary-dark: #7e22ce;
+  --primary-light: #105bd8;
+  --primary: #19418c;
+  --primary-dark: #061f4a;
+  --secondary-light: #e59892;
+  --secondary: #dd361c;
+  --secondary-dark: #c62d1f;
 
   /* Spacing */
   --spacing-sm: 1rem;
