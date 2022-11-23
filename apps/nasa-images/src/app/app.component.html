@@ -17,7 +17,7 @@
     <mat-sidenav #sidenav mode="side" position="end" [(opened)]="opened"> Sidenav content </mat-sidenav>
 
     <mat-sidenav-content>
-      <main class="p-md h-[calc(100vh-116px)]">
+      <main class="p-md h-[calc(100vh-129px)]">
         <div class="bg-secondary-light">
           Angular is an application design framework and development platform for creating efficient and sophisticated single-page apps.
         </div>
@@ -29,7 +29,7 @@
     <div content class="flex items-center justify-center gap-sm">
       <svg-icon svgClass="fill-white w-xl h-xl" src="/assets/svg/plastikaweb.svg"></svg-icon>
       <span
-        >© 2008-{{ currentYear | date: 'yyyy' }}
+        >© 2008-{{ currentDate | date : 'yyyy' }}
         <a class="underline underline-offset-2" href="https://www.plastikaweb.com" target="_blank">Plastikaweb</a> | Carlos Matheu |
         FrontEnd Freelancer.</span
       >
