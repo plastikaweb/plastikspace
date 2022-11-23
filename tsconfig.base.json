@@ -21,7 +21,7 @@
     "baseUrl": ".",
     "paths": {
       "@plastikspace/shared-footer": ["libs/shared/ui-footer/src/index.ts"],
-      "@plastikspace/shared/header": ["libs/shared/header/src/index.ts"]
+      "@plastikspace/shared-header": ["libs/shared/ui-header/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
-import { HeaderComponent } from './header.component';
+import { UiHeaderComponent } from './ui-header.component';
 
 @NgModule({
   imports: [CommonModule, MatToolbarModule],
-  declarations: [HeaderComponent],
-  exports: [HeaderComponent],
+  declarations: [UiHeaderComponent],
+  exports: [UiHeaderComponent],
 })
-export class SharedHeaderModule {}
+export class SharedUiHeaderModule {}
