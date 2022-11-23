@@ -8,7 +8,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { SharedUiFooterModule } from '@plastikspace/shared-footer';
-import { SharedHeaderModule } from '@plastikspace/shared/header';
+import { SharedUiHeaderModule } from '@plastikspace/shared-header';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AppComponent } from './app.component';
@@ -25,7 +25,7 @@ import { AppComponent } from './app.component';
     MatIconModule,
     MatButtonModule,
     AngularSvgIconModule.forRoot(),
-    SharedHeaderModule,
+    SharedUiHeaderModule,
     SharedUiFooterModule,
   ],
   bootstrap: [AppComponent],
