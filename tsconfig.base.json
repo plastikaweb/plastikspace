@@ -20,6 +20,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
+      "@plastikspace/shared-footer": ["libs/shared/ui-footer/src/index.ts"],
       "@plastikspace/shared/header": ["libs/shared/header/src/index.ts"]
     }
   },

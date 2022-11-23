@@ -1,25 +1,38 @@
-<plastikspace-header>
-  <div start>
-    <a class="flex items-center content-center justify-between" href="">
-      <svg-icon src="assets/img/nasa.svg" svgClass="bg-white text-black w-[100px]"></svg-icon>
-      <span class="text-md">NASA Images by Plastikaweb</span>
-    </a>
-  </div>
-  <div end>
-    <button mat-icon-button aria-label="sidenav toggle button" button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-  </div>
-</plastikspace-header>
+<div class="flex flex-col h-screen">
+  <plastikspace-header>
+    <div start>
+      <a class="flex items-center content-center justify-between" href="">
+        <svg-icon src="assets/img/nasa.svg" svgClass="bg-white text-black w-[100px]"></svg-icon>
+        <span class="text-md">NASA Images by Plastikaweb</span>
+      </a>
+    </div>
+    <div end>
+      <button mat-icon-button aria-label="sidenav toggle button" button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+    </div>
+  </plastikspace-header>
 
-<mat-sidenav-container>
-  <mat-sidenav #sidenav mode="side" position="end" [(opened)]="opened"> Sidenav content </mat-sidenav>
+  <mat-sidenav-container>
+    <mat-sidenav #sidenav mode="side" position="end" [(opened)]="opened"> Sidenav content </mat-sidenav>
 
-  <mat-sidenav-content>
-    <main class="p-md">
-      <div class="bg-secondary-light">
-        Angular is an application design framework and development platform for creating efficient and sophisticated single-page apps.
-      </div>
-    </main>
-  </mat-sidenav-content>
-</mat-sidenav-container>
+    <mat-sidenav-content>
+      <main class="p-md h-[calc(100vh-116px)]">
+        <div class="bg-secondary-light">
+          Angular is an application design framework and development platform for creating efficient and sophisticated single-page apps.
+        </div>
+      </main>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <plastikspace-ui-footer>
+    <div content class="flex items-center justify-center gap-sm">
+      <svg-icon svgClass="fill-white w-xl h-xl" src="assets/img/plastikaweb.svg"></svg-icon>
+      <span
+        >© 2008-{{ currentYear | date: 'yyyy' }}
+        <a class="underline underline-offset-2" href="https://www.plastikaweb.com" target="_blank">Plastikaweb</a> | Carlos Matheu |
+        FrontEnd Freelancer.</span
+      >
+    </div>
+  </plastikspace-ui-footer>
+</div>
