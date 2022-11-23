@@ -15,7 +15,15 @@
         "polyfills": "apps/nasa-images/src/polyfills.ts",
         "tsConfig": "apps/nasa-images/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/nasa-images/src/favicon.ico", "apps/nasa-images/src/assets"],
+        "assets": [
+          "apps/nasa-images/src/favicon.ico",
+          "apps/nasa-images/src/assets",
+          {
+            "glob": "**/*",
+            "input": "libs/shared/assets/src",
+            "output": "/assets/"
+          }
+        ],
         "styles": ["apps/nasa-images/src/styles.scss"],
         "scripts": []
       },
