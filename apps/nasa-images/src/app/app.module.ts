@@ -7,6 +7,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
+import { SharedUiFooterModule } from '@plastikspace/shared-footer';
 import { SharedHeaderModule } from '@plastikspace/shared/header';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -25,6 +26,7 @@ import { AppComponent } from './app.component';
     MatButtonModule,
     AngularSvgIconModule.forRoot(),
     SharedHeaderModule,
+    SharedUiFooterModule,
   ],
   bootstrap: [AppComponent],
 })

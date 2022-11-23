@@ -12,7 +12,7 @@ A shared header with material toolbar.
 
 - Import the `SharedHeaderModule` in your feature module.
 
-- Insert the component in your template using content projection for toolbar elements to right or left.
+- Insert the component in your template using content projection for toolbar elements to start or end.
 
 ```html
 <!-- component template -->
