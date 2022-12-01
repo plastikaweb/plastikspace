@@ -27,6 +27,13 @@
       "rules": {}
     },
     {
+      "files": ["*.ts"],
+      "extends": ["plugin:ngrx/recommended"],
+      "rules": {
+        "ngrx/select-style": 2
+      }
+    },
+    {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nrwl/nx/javascript"],
       "rules": {}
