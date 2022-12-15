@@ -1,105 +1,89 @@
-
-
 # Plastikspace
+
+<div align="center">
+  <img width="15%" height="15%" src="./documentation/img/plastikaweb.png">
+  <p>A personal multi-repository to do tests and experiments with Nx and Angular. </p>
+</div>
+
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
+[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
 
 This project was generated using [Nx](https://nx.dev).
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Install repo locally
 
-🔎 **Smart, Fast and Extensible Build System**
+- clone repo: `git clone git@github.com:plastikaweb/plastikspace.git`.
+- execute `yarn install:local`.
+- **to serve it locally in development run `yarn <apn-name>:serve`**.
 
-## Quick Start & Documentation
+## Commands & generators
 
-[Nx Documentation](https://nx.dev/getting-started/intro)
+Some of the more usual generators and scripts:
 
-[Mental model is a good starting point for those who like to understand things theoretically first.](https://nx.dev/concepts/mental-model)
+- Run `ng g @nrwl/angular:app my-app` to generate an application.
+- Run `ng g @nrwl/angular:lib my-lib` to generate a library.
+- Run `ng serve my-app` for a dev server. Navigate to localhost:xxxx. The app will automatically reload if you change any of the source files.
+- Run `ng g component my-component --project=my-app` to generate a new component.
+- Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- Run `yarn test` to execute the unit tests via [Jest](https://jestjs.io).
+- Run `yarn affected:test` to execute the unit tests affected by a change.
+- Run `yarn dep-graph` to see a diagram of the dependencies of your projects.
 
-[Interactive Tutorial](https://nx.dev/getting-started/angular-tutorial)
+To see a full list of available scripts see **package.json file > scripts**.
 
-## Adding capabilities to your workspace
+> It is strongly recommended to use [Nx Console for VSCode](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console) in order to run Nx generators.
+> ![Nx Console for VSCode](documentation/img/nx-console-screenshot.png)
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+## Style configuration and conventions
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+- [Git commit conventions](documentation/commit-conventions.md)
 
-Below are our core plugins:
+## Available applications
 
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
+- [nasa-images](apps/nasa-images/README.md)
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+## Available libraries
 
-## Generate an application
+This is a list of all the global shared libraries. It is very likely that other libraries exist but are related to a single project, so they are listed in the concrete project domain.
 
-Run `ng g @nrwl/angular:app my-app` to generate an application.
+### @ngrx related
 
-> You can use any of the plugins above to generate applications as well.
+- [router-state](libs/router-state/README.md)
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+### Core Apps Configuration
 
-## Generate a library
+- [environments](libs/environments/README.md)
+- [tailwind-preset](libs/tailwind-preset/README.md)
 
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
+### Shared
 
-> You can also use any of the plugins above to generate libraries as well.
+#### UI
 
-Libraries are shareable across libraries and applications. They can be imported from `@plastikspace/mylib`.
+- [ui-header](libs/shared/ui-header/README.md)
+- [ui-footer](libs/shared/ui-footer/README.md)
 
-## Development server
+#### Assets
 
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+- [assets](libs/shared/assets/README.md)
 
-## Code scaffolding
+#### Utils
 
-Run `ng g component my-component --project=my-app` to generate a new component.
+- [objects](libs/shared/utils/objects/README.md)
 
-## Build
+## Contact
 
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Carlos Matheu Armengol
 
-## Running unit tests
+Email: info@plastikaweb.org  
+LinkedIn: [plastikaweb](https://www.linkedin.com/in/plastikaweb)  
+Web: [plastikaweb.com](https://www.plastikaweb.com)  
+Stackblitz: [@plastikaweb](https://stackblitz.com/@plastikaweb)  
+Gitlab: [@gitlab](https://gitlab.com/plastikaweb)
 
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+## Useful links
 
-Run `nx affected:test` to execute the unit tests affected by a change.
-
-## Running end-to-end tests
-
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
-
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
-
-## Understand your workspace
-
-Run `nx graph` to see a diagram of the dependencies of your projects.
-
-## Further help
-
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
-
-
-
-
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+- [Nx Angular Documentation](https://nx.dev/angular)
