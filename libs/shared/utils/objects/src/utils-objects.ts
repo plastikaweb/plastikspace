@@ -1,59 +1,75 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
- * checks if an array or object are empty.
- * @param  {any} obj
- * @returns boolean
+ * Check if an array or object are empty.
+ *
+ * @param {any} obj Object parameter passed.
+ * @returns {boolean}.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isEmpty(obj: any) {
+export function isEmpty(obj: any): boolean {
   return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
 }
 
 /**
- * checks if passed parameter is a string.
- * @param  {string|T} str
- * @returns boolean
+ * Check if passed parameter is a string.
+ *
+ * @param {any} obj Object parameter passed.
+ * @returns {boolean}.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isString<T = any>(str: string | T): str is string {
-  return typeof str === 'string';
+export function isString(obj: any): obj is string {
+  return typeof obj === 'string';
 }
+
 /**
- * checks if passed parameter is null or undefined.
- * @param  {unknown} value
- * @returns boolean
+ * Check if passed parameter is null or undefined.
+ *
+ * @param  {unknown} value The passed parameter.
+ * @returns {boolean}.
  */
 export function isNil(value: unknown): boolean {
   return value === undefined || value === null;
 }
 
 /**
- * checks if passed parameter is an object.
- * @param  {any} obj
- * @returns boolean
+ * Check if passed parameter is an object.
+ *
+ * @param  {any} obj Object parameter passed.
+ * @returns {boolean}.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isObject(obj: any) {
+export function isObject(obj: any): boolean {
   return obj instanceof Object && obj.constructor === Object;
 }
 
 /**
- * given an url returns an object with name/value pairs of all the query params available.
- * @param  {string} url
- * @param  {Record<string, unknown>} defaultParams?
- * @returns Record<string, unknown>
+ * Given an url returns an object with name/value pairs of all the query params available.
+ *
+ * @param  {string} url The string URL.
+ * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
+ * @returns {Record<string, unknown>}.
  */
 export function getQueryParams(url: string, defaultParams?: Record<string, unknown>): Record<string, unknown>;
+
 /**
  * Given a name/value pairs object it returns an object with name/value pairs of all the query params available.
- * @param  {Record<string, unknown>} urlParams
- * @param  {Record<string, unknown>} defaultParams?
- * @returns Record<string, unknown>
+ *
+ * @param  {Record<string, unknown>} urlParams A list of query parameters.
+ * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
+ * @returns {Record<string, unknown>}.
  */
 export function getQueryParams(urlParams: Record<string, unknown>, defaultParams?: Record<string, unknown>): Record<string, unknown>;
+
+/**
+ * Given an URL or a name/value pairs object it returns an object with name/value pairs of all the query params available.
+ *
+ * @param {any} params A list of query params.
+ * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
+ * @returns {Record<string, unknown>}.
+ */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getQueryParams(params: any, defaultParams = {}) {
+export function getQueryParams(params: any, defaultParams = {}): Record<string, unknown> {
   if (isString(params)) {
     return { ...defaultParams, ...formatURLQueryParams(params) };
   } else if (isObject(params)) {
@@ -63,11 +79,12 @@ export function getQueryParams(params: any, defaultParams = {}) {
 }
 
 /**
- * returns an object from a url with query params.
- * @param  {string} url
- * @returns object
+ * Returns an object from a url with query params.
+ *
+ * @param  {string} url The URL with query params.
+ * @returns {Record<string, unknown>}.
  */
-export function formatURLQueryParams(url: string) {
+export function formatURLQueryParams(url: string): Record<string, unknown> {
   const urlParams = url.split('?')[1].split('&');
   return urlParams.reduce((prev, current) => {
     const pair = current.split('=');
@@ -79,11 +96,14 @@ export function formatURLQueryParams(url: string) {
 }
 
 /**
- * returns an object without properties with null value.
- * @param  {Record<string, string | number | boolean | null>} collection
- * @returns object
+ * Returns an object without properties with null value.
+ *
+ * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
+ * @returns {Record<string, string | number | boolean>}.
  */
-export function removeNullProperties(collection: Record<string, string | number | boolean | null>) {
+export function removeNullProperties(
+  collection: Record<string, string | number | boolean | null>,
+): Record<string, string | number | boolean> {
   return Object.entries(collection).reduce(
     (currentCollection: Record<string, string | number | boolean | null>, [property, value]) =>
       value === null ? currentCollection : ((currentCollection[property] = value), currentCollection),
@@ -92,11 +112,14 @@ export function removeNullProperties(collection: Record<string, string | number 
 }
 
 /**
- * returns an object with properties with empty string value replaced by null.
- * @param  {Record<string, string | number | boolean | null>} collection
- * @returns object
+ * Returns an object with properties with empty string value replaced by null.
+ *
+ * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
+ * @returns {Record<string, string | number | boolean | null>}.
  */
-export function setEmptyStringPropertiesToNull(collection: Record<string, string | number | boolean | null>) {
+export function setEmptyStringPropertiesToNull(
+  collection: Record<string, string | number | boolean | null>,
+): Record<string, string | number | boolean | null> {
   return Object.entries(collection).reduce((currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
     currentCollection[property] = isString(value) && !value.length ? null : value;
     return currentCollection;
@@ -104,12 +127,13 @@ export function setEmptyStringPropertiesToNull(collection: Record<string, string
 }
 
 /**
- * returns a boolean after comparing the object entries.
- * @param {object} prev
- * @param {object} curr
- * @returns boolean
+ * Returns a boolean after comparing the object entries.
+ *
+ * @param {object} prev First object.
+ * @param {object} curr Current object.
+ * @returns {boolean}.
  */
-export function areObjectEntriesEqual(prev: object, curr: object) {
+export function areObjectEntriesEqual(prev: object, curr: object): boolean {
   if (!prev && !curr) {
     return true;
   }
@@ -122,28 +146,35 @@ export function areObjectEntriesEqual(prev: object, curr: object) {
 }
 
 /**
- * returns an object with replaced values for "false" and "true" as boolean values.
- * @param  {Record<string, string | number | boolean | null>} collection
- * @returns object
+ * Returns an object with replaced values for "false" and "true" as boolean values.
+ *
+ * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
+ * @returns {Record<string, string | number | boolean>}.
  */
-export function transformStringToBooleanProperties(collection: Record<string, string | number | boolean | null>) {
+export function transformStringToBooleanProperties(
+  collection: Record<string, string | number | boolean | null>,
+): Record<string, string | number | boolean> {
   return Object.entries(collection).reduce((currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
     currentCollection[property] = isString(value) && (value === 'false' || value === 'true') ? coerceBooleanProperty(value) : value;
     return currentCollection;
   }, {}) as Record<string, string | number | boolean>;
 }
+
 /**
- * returns a boolean value depending if all elements in the passed array are false or not.
- * @param {boolean[]} arr
- * @returns boolean
+ * Returns a boolean value depending if all elements in the passed array are false or not.
+ *
+ * @param {boolean[]} arr An array of boolean values passed as parameter.
+ * @returns {boolean}.
  */
 export function allAreFalsy(arr: boolean[]): boolean {
   return arr.every(element => element === false);
 }
+
 /**
- * returns a string value when the input was able to be converted in string, otherwise null.
- * @param {unknown} value
- * @returns string | null
+ * Returns a string value when the input was able to be converted in string, otherwise null.
+ *
+ * @param {unknown} value The passed valued as parameter.
+ * @returns {string}.
  */
 export function transformToString(value: unknown): string {
   if (isString(value)) {
