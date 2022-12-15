@@ -1,7 +1,7 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx", "deprecation"],
+  "plugins": ["@nrwl/nx", "deprecation", "jsdoc"],
   "parserOptions": {
     "project": ["./tsconfig.base.json"]
   },
@@ -55,6 +55,18 @@
       "files": ["*.ts", "*.tsx"],
       "rules": {
         "deprecation/deprecation": "warn"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:jsdoc/recommended"],
+      "rules": {
+        "jsdoc/match-description": [
+          "error",
+          {
+            "matchDescription": "/^[A-Z].+[.]/g"
+          }
+        ]
       }
     }
   ]

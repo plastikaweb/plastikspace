@@ -15,10 +15,11 @@ export class NavigationFilterService {
 
   /**
    * Checks if the selected view matches the route on ROUTER_NAVIGATION.
-   * @param {T} view
-   * @returns {UnaryFunction<Observable<Action>, Observable<[RouterNavigationAction<SerializedRouterStateSnapshot>, unknown]>>}
+   *
+   * @param {string} view The current view/route name.
+   * @returns {UnaryFunction<Observable<Action>, Observable<[RouterNavigationAction<SerializedRouterStateSnapshot>, unknown]>>}.
    */
-  checkRouterNavigation<T>(
+  checkRouterNavigation<T = 'string'>(
     view: T,
   ): UnaryFunction<Observable<Action>, Observable<[RouterNavigationAction<SerializedRouterStateSnapshot>, unknown]>> {
     return pipe(
