@@ -9,6 +9,7 @@
       - [3. Enter the ticket number](#3-enter-the-ticket-number)
       - [4. Description](#4-description)
       - [5. Longer description (optional)](#5-longer-description-optional)
+      - [6. Issues closed (optional)](#6-issues-closed-optional)
       - [6. Final confirmation](#6-final-confirmation)
       - [7. Checking format with commitlint](#7-checking-format-with-commitlint)
   - [Links](#links)
@@ -17,19 +18,22 @@
 
 We use [commitizen](https://commitizen.github.io/cz-cli/) to apply some simple formatting rules for our commit messages.
 
-The main types of commitizen available are those corresponding to the [cz-conventional-changelog](https://github.com/commitizen/cz-conventional-changelog) adapter.
+The main types of commitizen available are those corresponding to the [cz-customizable](https://github.com/leoforfree/cz-customizable) plugin.
 
 ```bash
-feat(VoD): {issue-code} add Notifications button
+feat(shared-button): #54 add Notifications button
 
-Allow users to toggle particular notifications by app section. Sets user
-properties to identify whether to send notifications and reminders to particular user.
+Allow users to toggle particular notifications by app section.
+
+Sets user properties to identify whether to send notifications and reminders to particular user.
+
+ISSUES CLOSED: #54
 ```
 
 ## Commit execution
 
 ```bash
-git cz
+cz
 // Not recommended:
 // add --no-verify flag to skip any hook before the commit resolution
 ```
@@ -60,15 +64,11 @@ It describes the project, library, utility, package, etc. to which your change b
 We can choose one of the predetermined scopes for the specific group if they exist, leave it blank or enter a new one on the fly.
 
 > The predetermined scopes corresponds to current present projects, libraries or utilities inside the monorepo.
-> Each time a new project, library or utility are create, they are added automatically to the `cz-config.cjs` file, under scopes list
->
-> ```javascript
->  scopes: [{ name: 'project-one' }, { name: 'ui-shared-form' }],
-> ```
+> Each time a new project, library or utility are create, they are added automatically to the `cz-config.cjs` file, under scopes list.
 
 #### 3. Enter the ticket number
 
-Add the unique ID from your managing tool, like Jira, ClickUp, Trello, Asana or others.
+Add the unique ID from your managing tool, in our case we are using [Github issues](https://github.com/features/issues).
 
 #### 4. Description
 
@@ -76,7 +76,7 @@ Add the unique ID from your managing tool, like Jira, ClickUp, Trello, Asana or 
 - Written in imperative (`Imperative mood` in English).
 - Do not capitalize on the first character.
 - Do not put a final point.
-- Maximum 72 characters.
+- Maximum 100 characters.
 - Do not repeat information already inferred in the steps of the group and scope.
 
 #### 5. Longer description (optional)
@@ -86,6 +86,10 @@ Add the unique ID from your managing tool, like Jira, ClickUp, Trello, Asana or 
 - We can write in multi-line.
 - Adjust each line to 72 characters.
 - Explain _what_ and _why_ instead of how.
+
+#### 6. Issues closed (optional)
+
+- Add the issue Id prefixed with '#' (like #54) if the next PR will close an open issue.
 
 #### 6. Final confirmation
 
