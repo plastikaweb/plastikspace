@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
-import { ENVIRONMENT, Environment } from '@plastikspace/environments';
+import { ENVIRONMENT, Environment } from '@plastik/environments';
 
 @Injectable({
   providedIn: 'root',

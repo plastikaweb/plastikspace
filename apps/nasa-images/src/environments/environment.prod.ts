@@ -1,4 +1,4 @@
-import { Environment } from '@plastikspace/environments';
+import { Environment } from '@plastik/environments';
 
 export const environment: Environment = {
   name: 'NASA Images',

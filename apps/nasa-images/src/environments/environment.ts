@@ -1,4 +1,4 @@
-import { Environment } from '@plastikspace/environments';
+import { Environment } from '@plastik/environments';
 
 // This file can be replaced during build by using the `fileReplacements` array.
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.

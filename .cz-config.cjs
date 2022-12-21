@@ -1,5 +1,5 @@
 const base = require('./tsconfig.base.json');
-const scopes = Object.keys(base.compilerOptions.paths).map(path => path.split('@plastikspace/')[1]);
+const scopes = Object.keys(base.compilerOptions.paths).map(path => path.split('@plastik/')[1]);
 
 module.exports = {
   types: [
