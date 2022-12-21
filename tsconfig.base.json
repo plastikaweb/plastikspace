@@ -20,11 +20,11 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@plastikspace/environments": ["libs/environments/src/index.ts"],
-      "@plastikspace/router-state": ["libs/router-state/src/index.ts"],
-      "@plastikspace/shared-footer": ["libs/shared/ui-footer/src/index.ts"],
-      "@plastikspace/shared-header": ["libs/shared/ui-header/src/index.ts"],
-      "@plastikspace/shared-utils/objects": ["libs/shared/utils/objects/src/index.ts"]
+      "@plastik/environments": ["libs/environments/src/index.ts"],
+      "@plastik/router-state": ["libs/router-state/src/index.ts"],
+      "@plastik/shared-footer": ["libs/shared/ui-footer/src/index.ts"],
+      "@plastik/shared-header": ["libs/shared/ui-header/src/index.ts"],
+      "@plastik/shared-utils/objects": ["libs/shared/utils/objects/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

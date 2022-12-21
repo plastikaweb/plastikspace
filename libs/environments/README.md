@@ -18,7 +18,7 @@ export interface Environment {
 
 ```typescript
 // apps/my-app/src/environments/environment.ts
-import { Environment } from '@plastikspace/environments';
+import { Environment } from '@plastik/environments';
 
 export const environment: Environment = {
   production: false,
@@ -31,7 +31,7 @@ export const environment: Environment = {
 
 ```typescript
 // apps/my-app/src/app/app.module.ts
-import { ENVIRONMENT } from '@plastikspace/environments';
+import { ENVIRONMENT } from '@plastik/environments';
 import { environment } from '../environments/environment';
 
 @NgModule({

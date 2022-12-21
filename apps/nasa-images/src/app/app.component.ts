@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { SharedUiFooterModule } from '@plastikspace/shared-footer';
-import { SharedUiHeaderModule } from '@plastikspace/shared-header';
+import { SharedUiFooterModule } from '@plastik/shared-footer';
+import { SharedUiHeaderModule } from '@plastik/shared-header';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({

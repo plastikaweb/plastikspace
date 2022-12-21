@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot } from '@angular/router';
-import { ENVIRONMENT, environmentMock } from '@plastikspace/environments';
+import { ENVIRONMENT, environmentMock } from '@plastik/environments';
 
 import { PrefixTitleService } from './prefix-title.service';
 
