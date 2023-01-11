@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/require-jsdoc */
 import { ROUTER_NAVIGATION, ROUTER_REQUEST } from '@ngrx/router-store';
 
 import { RouterStateUrl } from '../+state/reducer/router-state.reducer';
