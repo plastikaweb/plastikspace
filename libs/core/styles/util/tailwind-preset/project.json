@@ -1,0 +1,8 @@
+{
+  "name": "core-styles-util-tailwind-preset",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/styles/util/tailwind-preset/src",
+  "targets": {},
+  "tags": ["scope:core", "type:util"]
+}
