@@ -64,7 +64,9 @@ It describes the project, library, utility, package, etc. to which your change b
 We can choose one of the predetermined scopes for the specific group if they exist, leave it blank or enter a new one on the fly.
 
 > The predetermined scopes corresponds to current present projects, libraries or utilities inside the monorepo.
-> Each time a new project, library or utility are create, they are added automatically to the `cz-config.cjs` file, under scopes list.
+> Each time a library is created, it is added automatically to the `cz-config.cjs` file, under scopes list.
+>
+> **For each new app added, it must be added manually in the scopes list of the `cz-config.cjs`.**
 
 #### 3. Enter the ticket number
 

@@ -42,10 +42,10 @@ module.exports = {
     footer: 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n',
     confirmCommit: 'Are you sure you want to proceed with the commit above?',
   },
-  scopes,
+  scopes: ['nasa-images', ...scopes],
   allowCustomScopes: true,
   scopeOverrides: {
-    fix: [{ name: 'e2e' }, { name: 'unit' }],
+    test: [{ name: 'e2e' }, { name: 'unit' }],
   },
   allowTicketNumber: true,
   isTicketNumberRequired: false,
