@@ -40,7 +40,11 @@ To see a full list of available scripts see **package.json file > scripts**.
 
 ## Style configuration and conventions
 
-- [Git commit conventions](documentation/commit-conventions.md)
+See [Git commit conventions](documentation/commit-conventions.md)
+
+## NX architecture
+
+See [NX architecture](documentation/nx-architecture.md)
 
 ## Available applications
 
@@ -50,29 +54,26 @@ To see a full list of available scripts see **package.json file > scripts**.
 
 This is a list of all the global shared libraries. It is very likely that other libraries exist but are related to a single project, so they are listed in the concrete project domain.
 
-### @ngrx related
+### Core
 
-- [router-state](libs/router-state/README.md)
-
-### Core Apps Configuration
-
-- [environments](libs/environments/README.md)
-- [tailwind-preset](libs/tailwind-preset/README.md)
-
-### Shared
+- [core-util-environments](libs/core/util/environments/README.md)
+- [core-styles-util-tailwind-preset](libs/core/styles/util/tailwind-preset/README.md)
+- [core-router-data-access](libs/core/router/data-access//README.md)
 
 #### UI
 
-- [ui-header](libs/shared/ui-header/README.md)
-- [ui-footer](libs/shared/ui-footer/README.md)
+- [core-ui-header](libs/core/ui/header-default/README.md)
+- [core-ui-footer](libs/core/ui/footer-default/README.md)
 
 #### Assets
 
-- [assets](libs/shared/assets/README.md)
+- [core-util-assets](libs/core/util/assets/README.md)
+
+### Shared
 
 #### Utils
 
-- [objects](libs/shared/utils/objects/README.md)
+- [shared-utils-objects](libs/shared/util/objects/README.md)
 
 ## Contact
 

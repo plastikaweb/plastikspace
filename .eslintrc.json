@@ -15,9 +15,34 @@
             "enforceBuildableLibDependency": true,
             "allow": [],
             "depConstraints": [
+              { "sourceTag": "type:app", "onlyDependOnLibsWithTags": ["type:feature", "scope:core"] },
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "type:feature",
+                "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:data-access"]
+              },
+              {
+                "sourceTag": "type:ui",
+                "onlyDependOnLibsWithTags": ["type:util"]
+              },
+              {
+                "sourceTag": "type:util",
+                "onlyDependOnLibsWithTags": ["type:util"]
+              },
+              {
+                "sourceTag": "type:data-access",
+                "onlyDependOnLibsWithTags": ["type:util"]
+              },
+              {
+                "sourceTag": "scope:core",
+                "onlyDependOnLibsWithTags": ["type:util"]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "scope:nasa-images",
+                "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core"]
               }
             ]
           }

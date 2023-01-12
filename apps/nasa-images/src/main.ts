@@ -7,7 +7,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { CustomRouterSerializer, routerReducers, RouterStateEffects } from '@plastik/router-state';
+import { CustomRouterSerializer, routerReducers, RouterStateEffects } from '@plastik/core/router-state';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AppComponent } from './app/app.component';

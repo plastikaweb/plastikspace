@@ -25,6 +25,6 @@
       }
     }
   },
-  "tags": [],
+  "tags": ["scope:nasa-images"],
   "implicitDependencies": ["nasa-images"]
 }

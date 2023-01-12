@@ -3,24 +3,24 @@ import { Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { SharedUiFooterModule } from '@plastik/shared-footer';
-import { SharedUiHeaderModule } from '@plastik/shared-header';
+import { CoreUiFooterDefaultComponent } from '@plastik/core/footer-default';
+import { CoreUiHeaderDefaultComponent } from '@plastik/core/header-default';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
   standalone: true,
-  selector: 'plastikspace-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: 'plastik-root',
   imports: [
     CommonModule,
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
     AngularSvgIconModule,
-    SharedUiHeaderModule,
-    SharedUiFooterModule,
+    CoreUiFooterDefaultComponent,
+    CoreUiHeaderDefaultComponent,
   ],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
   opened!: boolean;

@@ -1,5 +1,5 @@
 <div class="flex flex-col h-screen">
-  <plastikspace-ui-header>
+  <plastik-header-default>
     <div start>
       <a class="flex items-center content-center justify-between" href="">
         <svg-icon src="assets/img/nasa.svg" svgClass="bg-white text-black w-[100px]"></svg-icon>
@@ -11,7 +11,7 @@
         <mat-icon>menu</mat-icon>
       </button>
     </div>
-  </plastikspace-ui-header>
+  </plastik-header-default>
 
   <mat-sidenav-container>
     <mat-sidenav #sidenav mode="side" position="end" [(opened)]="opened"> Sidenav content </mat-sidenav>
@@ -25,7 +25,7 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
 
-  <plastikspace-ui-footer>
+  <plastik-footer-default>
     <div content class="flex items-center justify-center gap-sm">
       <svg-icon svgClass="fill-white w-xl h-xl" src="/assets/svg/plastikaweb.svg"></svg-icon>
       <span
@@ -34,5 +34,5 @@
         FrontEnd Freelancer.</span
       >
     </div>
-  </plastikspace-ui-footer>
+  </plastik-footer-default>
 </div>
