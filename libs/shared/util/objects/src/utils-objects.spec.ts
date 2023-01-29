@@ -1,6 +1,7 @@
 import {
   allAreFalsy,
   areObjectEntriesEqual,
+  collectionToArray,
   getQueryParams,
   isEmpty,
   isNil,
@@ -185,5 +186,31 @@ describe('Object Utils', () => {
       const result = transformToString(() => {});
       expect(result).toBe('');
     });
+  });
+
+  it('collectionToArray method', () => {
+    const collection = {
+      1: {
+        id: 1,
+      },
+      2: {
+        id: 2,
+      },
+      3: {
+        id: 3,
+      },
+    };
+    const result = collectionToArray(collection);
+    expect(result).toEqual([
+      {
+        id: 1,
+      },
+      {
+        id: 2,
+      },
+      {
+        id: 3,
+      },
+    ]);
   });
 });

@@ -20,11 +20,16 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
+      "@plastik/core/cms-layout": ["libs/core/cms-layout/feature/src/index.ts"],
+      "@plastik/core/cms-layout/data-access": ["libs/core/cms-layout/data-access/src/index.ts"],
+      "@plastik/core/cms-layout/footer": ["libs/core/cms-layout/ui/footer/src/index.ts"],
+      "@plastik/core/cms-layout/header": ["libs/core/cms-layout/ui/header/src/index.ts"],
+      "@plastik/core/cms-layout/sidenav": ["libs/core/cms-layout/ui/sidenav/src/index.ts"],
+      "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
-      "@plastik/core/footer-default": ["libs/core/ui/footer-default/src/index.ts"],
-      "@plastik/core/header-default": ["libs/core/ui/header-default/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
-      "@plastik/shared/util/objects": ["libs/shared/util/objects/src/index.ts"]
+      "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
+      "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

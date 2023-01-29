@@ -34,7 +34,7 @@
               },
               {
                 "sourceTag": "scope:core",
-                "onlyDependOnLibsWithTags": ["type:util"]
+                "onlyDependOnLibsWithTags": ["type:util", "scope:core"]
               },
               {
                 "sourceTag": "scope:shared",

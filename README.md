@@ -57,22 +57,21 @@ This is a list of all the global shared libraries. It is very likely that other 
 ### Core
 
 - [core-util-environments](libs/core/util/environments/README.md)
+- [core-util-assets](libs/core/util/assets/README.md)
 - [core-styles-util-tailwind-preset](libs/core/styles/util/tailwind-preset/README.md)
 - [core-router-data-access](libs/core/router/data-access//README.md)
+- [core-entities](libs/core/entities/README.md)
 
-#### UI
+#### CMS-layout
 
-- [core-ui-header](libs/core/ui/header-default/README.md)
-- [core-ui-footer](libs/core/ui/footer-default/README.md)
-
-#### Assets
-
-- [core-util-assets](libs/core/util/assets/README.md)
+- [core-cms-layout-feature](libs/core/cms-layout/feature/README.md)
+- [core-cms-layout-data-access](libs/core/cms-layout/data-access/README.md)
 
 ### Shared
 
 #### Utils
 
+- [shared-utils-entities](libs/shared/util/entities/README.md)
 - [shared-utils-objects](libs/shared/util/objects/README.md)
 
 ## Contact
