@@ -42,30 +42,32 @@ $nasa-images-theme: mat.define-light-theme(
   --font-size-xxl: 2.6rem;
 }
 
-@layer base {
+html {
+  font-size: 14px;
+}
+
+@screen sm {
   html {
-    font-size: 14px;
+    font-size: 13px;
   }
+}
 
-  @screen sm {
-    html {
-      font-size: 13px;
-    }
-  }
+body {
+  @apply text-gray-30 font-light font-poppins;
+}
 
-  body {
-    @apply text-gray-90 font-light font-poppins;
-  }
+h1 {
+  @apply text-xl;
+}
 
-  h1 {
-    @apply text-xl;
-  }
+h2 {
+  @apply text-lg;
+}
 
-  h2 {
-    @apply text-lg;
-  }
+h3 {
+  @apply text-md;
+}
 
-  h3 {
-    @apply text-md;
-  }
+h4 {
+  @apply text-sm;
 }

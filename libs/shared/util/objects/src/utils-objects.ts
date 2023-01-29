@@ -191,3 +191,13 @@ export function transformToString(value: unknown): string {
 
   return result;
 }
+
+/**
+ * Returns an array based on passed collection.
+ *
+ * @param {Record} collection The passed collection as parameter.
+ * @returns {Array}.
+ */
+export function collectionToArray<T>(collection: Record<string, T>): T[] {
+  return Object.keys(collection).map((key: string) => collection[key]);
+}

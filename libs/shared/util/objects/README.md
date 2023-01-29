@@ -26,6 +26,7 @@ A shared library to transform data that involves object manipulation and/or gene
 - `areObjectEntriesEqual`: returns a boolean after comparing the object entries.
 - `transformStringToBooleanProperties`: returns an object with replaced values for "false" and "true" as boolean values.
 - `allAreFalsy`: returns a boolean value depending if all elements in the passed array are false or not.
+- `collectionToArray`: returns an array based on passed collection.
 
 ## Running unit tests
 

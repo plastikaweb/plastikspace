@@ -1,0 +1,17 @@
+{
+  "name": "shared-util-entities",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/util/entities/src",
+  "prefix": "plastik",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/shared/util/entities/**/*.ts", "libs/shared/util/entities/**/*.html"]
+      }
+    }
+  },
+  "tags": ["scope:shared", "type:util"]
+}

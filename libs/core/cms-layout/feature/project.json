@@ -1,0 +1,25 @@
+{
+  "name": "core-cms-layout-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/cms-layout/feature/src",
+  "prefix": "plastik",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/core/cms-layout/feature/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/core/cms-layout/feature/**/*.ts", "libs/core/cms-layout/feature/**/*.html"]
+      }
+    }
+  },
+  "tags": ["scope:core", "type:feature"]
+}

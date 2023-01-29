@@ -1,0 +1,58 @@
+<div class="flex flex-col h-[calc(100vh-129px)]">
+  <plastik-core-cms-layout-ui-header>
+    <div start class="flex items-center gap-sm">
+      <ng-container *ngIf="sidenavPosition === 'start'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+      <a class="flex items-center content-center justify-between" href="">
+        <svg-icon *ngIf="headerConfig.mainIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+        <span class="text-md">{{ headerConfig.mainTitle }}</span>
+      </a>
+    </div>
+    <div end *ngIf="sidenavPosition === 'end'">
+      <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+    </div>
+  </plastik-core-cms-layout-ui-header>
+
+  <plastik-core-cms-layout-ui-sidenav
+    [position]="sidenavPosition"
+    [mode]="(isMobile$ | ngrxPush) ? 'over' : 'side'"
+    [fixedInViewport]="(isMobile$ | ngrxPush) || false"
+    [sidenavOpened]="(sidenavOpened$ | ngrxPush) || false"
+    (toggleSidenav)="onToggleSidenav()"
+  >
+    <mat-list menu-items>
+      <mat-list-item
+        class="text-gray-40"
+        routerLinkActive="bg-secondary-light"
+        *ngFor="let item of sidenavConfig"
+        [routerLink]="item?.route"
+      >
+        <div class="flex content-center justify-start gap-sm">
+          <mat-icon> {{ item.icon }} </mat-icon>
+          <span>{{ item.title }}</span>
+        </div>
+      </mat-list-item>
+    </mat-list>
+  </plastik-core-cms-layout-ui-sidenav>
+
+  <plastik-core-cms-layout-ui-footer>
+    <div content class="flex items-center justify-center gap-sm">
+      <svg-icon svgClass="fill-white w-xl h-xl" src="/assets/svg/plastikaweb.svg"></svg-icon>
+      <div class="flex flex-row gap-[4px]">
+        <div>
+          © 2006-{{ currentDate | date : 'yyyy' }}
+          <a class="underline underline-offset-2" href="https://www.plastikaweb.com" target="_blank">Plastikaweb</a>
+        </div>
+        <span class="hidden sm:block">| Carlos Matheu | FrontEnd Freelancer.</span>
+      </div>
+    </div>
+  </plastik-core-cms-layout-ui-footer>
+</div>
+
+<ng-template #toggleSidenavButton>
+  <button mat-icon-button aria-label="sidenav toggle button" button (click)="onToggleSidenav()">
+    <mat-icon class="mat-18" *ngIf="!(sidenavOpened$ | ngrxPush); else closeButton">menu</mat-icon>
+    <ng-template #closeButton>
+      <mat-icon class="mat-18">close</mat-icon>
+    </ng-template>
+  </button>
+</ng-template>

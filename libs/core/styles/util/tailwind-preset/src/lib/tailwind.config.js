@@ -1,4 +1,5 @@
 module.exports = {
+  content: ['./apps/**/*.{html,ts}', './libs/**/*.{html,ts}'],
   theme: {
     colors: {
       primary: {
