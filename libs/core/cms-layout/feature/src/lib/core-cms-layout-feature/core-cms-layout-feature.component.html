@@ -4,7 +4,8 @@
       <ng-container *ngIf="sidenavPosition === 'start'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
       <a class="flex items-center content-center justify-between" href="">
         <svg-icon *ngIf="headerConfig.mainIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
-        <span class="text-md">{{ headerConfig.mainTitle }}</span>
+        <span class="block md:hidden text-md">{{ headerConfig.title }}</span>
+        <span class="hidden md:block text-md">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
       </a>
     </div>
     <div end *ngIf="sidenavPosition === 'end'">

@@ -1,8 +1,12 @@
-/* eslint-disable jsdoc/require-jsdoc */
 import { ROUTER_NAVIGATION, ROUTER_REQUEST } from '@ngrx/router-store';
 
 import { RouterStateUrl } from '../+state/reducer/router-state.reducer';
 
+interface Payload {
+  event: { url: string };
+}
+
+/* eslint-disable jsdoc/require-jsdoc */
 export const routerMockState: {
   navigationId: number;
   state: RouterStateUrl;
@@ -19,7 +23,7 @@ export const routerMockState: {
   },
 };
 
-export function getMockedRouterNavigation(url: string) {
+export function getMockedRouterNavigation(url: string): { type: typeof ROUTER_NAVIGATION; payload: Payload } {
   return {
     type: ROUTER_NAVIGATION,
     payload: {
@@ -30,7 +34,7 @@ export function getMockedRouterNavigation(url: string) {
   };
 }
 
-export function getMockedRouterRequest(url: string) {
+export function getMockedRouterRequest(url: string): { type: typeof ROUTER_REQUEST; payload: Payload } {
   return {
     type: ROUTER_REQUEST,
     payload: {

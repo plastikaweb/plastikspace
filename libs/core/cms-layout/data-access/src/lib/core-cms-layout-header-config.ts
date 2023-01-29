@@ -3,7 +3,8 @@ import { SvgIconConfig } from '@plastik/shared/entities';
 
 export interface CoreCmsLayoutHeaderConfig {
   showToggleMenuButton: boolean;
-  mainTitle: string;
+  title: string;
+  extendedTitle?: string;
   mainIcon?: SvgIconConfig;
 }
 

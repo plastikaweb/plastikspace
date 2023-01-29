@@ -9,7 +9,8 @@ export enum NasaImagesViews {
 export const headerConfig: CoreCmsLayoutHeaderConfig = {
   showToggleMenuButton: true,
   mainIcon: { iconPath: 'assets/img/nasa.svg', svgClass: 'bg-white text-black w-[80px]' },
-  mainTitle: 'NASA Images by Plastikaweb',
+  title: 'NASA Images',
+  extendedTitle: 'NASA Images Search',
 };
 
 export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
