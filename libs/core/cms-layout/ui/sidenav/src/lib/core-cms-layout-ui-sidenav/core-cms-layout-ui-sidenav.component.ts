@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { MatListModule } from '@angular/material/list';
 import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
+import { LayoutPosition } from '@plastik/shared/entities';
 
 @Component({
   selector: 'plastik-core-cms-layout-ui-sidenav',
@@ -11,7 +12,7 @@ import { RouterOutlet } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutUiSidenavComponent {
-  @Input() position: 'start' | 'end' = 'start';
+  @Input() position: LayoutPosition = 'start';
   @Input() mode: MatDrawerMode = 'over';
   @Input() fixedInViewport = false;
   @Input() sidenavOpened = true;

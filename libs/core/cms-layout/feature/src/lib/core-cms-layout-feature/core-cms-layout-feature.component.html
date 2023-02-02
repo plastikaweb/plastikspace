@@ -7,9 +7,11 @@
         <span class="block md:hidden text-md">{{ headerConfig.title }}</span>
         <span class="hidden md:block text-md">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
       </a>
+      <ng-container *ngIf="headerConfig?.socialLinks?.position === 'start'" [ngTemplateOutlet]="socialLinks"></ng-container>
     </div>
-    <div end *ngIf="sidenavPosition === 'end'">
-      <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+    <div end class="flex items-center gap-sm" *ngIf="headerConfig.socialLinks?.position === 'end' || sidenavPosition === 'end'">
+      <ng-container *ngIf="headerConfig?.socialLinks?.position === 'end'" [ngTemplateOutlet]="socialLinks"></ng-container>
+      <ng-container *ngIf="sidenavPosition === 'end'" [ngTemplateOutlet="toggleSidenavButton"></ng-container>
     </div>
   </plastik-core-cms-layout-ui-header>
 
@@ -56,4 +58,13 @@
       <mat-icon class="mat-18">close</mat-icon>
     </ng-template>
   </button>
+</ng-template>
+
+<ng-template #socialLinks>
+  <plastik-shared-button
+    *ngFor="let buttonConfig of headerConfig.socialLinks?.config"
+    [config]="buttonConfig"
+    (sendAction)="onButtonClickAction($event)"
+  >
+  </plastik-shared-button>
 </ng-template>

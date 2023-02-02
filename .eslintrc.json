@@ -15,14 +15,14 @@
             "enforceBuildableLibDependency": true,
             "allow": [],
             "depConstraints": [
-              { "sourceTag": "type:app", "onlyDependOnLibsWithTags": ["type:feature", "scope:core"] },
+              { "sourceTag": "type:app", "onlyDependOnLibsWithTags": ["scope:core"] },
               {
                 "sourceTag": "type:feature",
-                "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:data-access"]
+                "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:data-access", "type:entity"]
               },
               {
                 "sourceTag": "type:ui",
-                "onlyDependOnLibsWithTags": ["type:util"]
+                "onlyDependOnLibsWithTags": ["type:util", "type:entity"]
               },
               {
                 "sourceTag": "type:util",
@@ -30,11 +30,11 @@
               },
               {
                 "sourceTag": "type:data-access",
-                "onlyDependOnLibsWithTags": ["type:util"]
+                "onlyDependOnLibsWithTags": ["type:util", "type:entity"]
               },
               {
                 "sourceTag": "scope:core",
-                "onlyDependOnLibsWithTags": ["type:util", "scope:core"]
+                "onlyDependOnLibsWithTags": ["type:util", "scope:core", "type:entity"]
               },
               {
                 "sourceTag": "scope:shared",
