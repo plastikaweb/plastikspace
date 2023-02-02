@@ -28,8 +28,10 @@
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
+      "@plastik/shared/button": ["libs/shared/button/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
-      "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"]
+      "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
+      "@plastik/shared/return-as-observable": ["libs/shared/util/return-as-observable-pipe/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { Store } from '@ngrx/store';
+import { createAction, Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '../core-cms-layout-header-config';
@@ -49,6 +49,12 @@ describe('LayoutFacade', () => {
       const action = setIsMobile({ isMobile });
       facade.setIsMobile(isMobile);
       expect(store.dispatch).toHaveBeenCalledWith(action);
+    });
+
+    it('should dispatch a dispatchAction action', () => {
+      const anyAction = createAction('[Action] do');
+      facade.dispatchAction(anyAction);
+      expect(store.dispatch).toHaveBeenCalledWith(anyAction());
     });
   });
 });

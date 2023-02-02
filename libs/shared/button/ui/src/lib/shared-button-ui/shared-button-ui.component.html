@@ -1,0 +1,26 @@
+<button
+  *ngIf="config.type === 'button'"
+  [ngClass]="config.classes || {}"
+  [disabled]="config.disabled"
+  mat-button
+  class="button--rounded"
+  [attr.aria-label]="config.ariaLabel"
+  (click)="onClick()"
+>
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</button>
+
+<a [attr.aria-label]="config.ariaLabel" *ngIf="config.type === 'link'" [href]="config.link" target="_blank">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</a>
+
+<ng-template #content>
+  <ng-container *ngFor="let element of config.elements">
+    <ng-container *ngIf="!isIconGuard(element)">
+      <span>{{ element | returnAsObservable | ngrxPush }}</span>
+    </ng-container>
+    <ng-container *ngIf="isIconGuard(element)">
+      <svg-icon [src]="element?.iconPath || ''" [svgClass]="element?.svgClass || ''"></svg-icon>
+    </ng-container>
+  </ng-container>
+</ng-template>

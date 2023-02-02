@@ -1,5 +1,5 @@
 import { Inject, inject, Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { ViewConfig } from '@plastik/core/entities';
 
 import { CORE_CMS_LAYOUT_HEADER_CONFIG, CoreCmsLayoutHeaderConfig } from '../core-cms-layout-header-config';
@@ -21,11 +21,15 @@ export class LayoutFacade {
     @Inject(CORE_CMS_LAYOUT_SIDENAV_CONFIG) private readonly sidenav: ViewConfig<unknown>[],
   ) {}
 
-  toggleSidenav(opened: boolean | undefined) {
+  toggleSidenav(opened: boolean | undefined): void {
     this.store.dispatch(toggleSidenav({ opened }));
   }
 
-  setIsMobile(isMobile: boolean) {
+  setIsMobile(isMobile: boolean): void {
     this.store.dispatch(setIsMobile({ isMobile }));
+  }
+
+  dispatchAction(action: () => Action): void {
+    this.store.dispatch(action());
   }
 }

@@ -61,6 +61,10 @@ export class FeatureComponent {
   onSetIsMobile(isMobile: boolean): void {
     this.facade.setIsMobile(isMobile);
   }
+
+  onDispatchAction(action: () => Action): void {
+    this.facade.dispatchAction(action);
+  }
 }
 ```
 

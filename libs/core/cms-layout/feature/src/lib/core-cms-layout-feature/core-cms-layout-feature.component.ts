@@ -6,10 +6,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink } from '@angular/router';
 import { PushModule } from '@ngrx/component';
+import { Action } from '@ngrx/store';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
+import { SharedButtonUiComponent } from '@plastik/shared/button';
+import { LayoutPosition } from '@plastik/shared/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { map, Subject, takeUntil } from 'rxjs';
 
@@ -31,12 +34,13 @@ import { map, Subject, takeUntil } from 'rxjs';
     CoreCmsLayoutUiFooterComponent,
     CoreCmsLayoutUiHeaderComponent,
     CoreCmsLayoutUiSidenavComponent,
+    SharedButtonUiComponent,
   ],
   templateUrl: './core-cms-layout-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
-  @Input() sidenavPosition: 'start' | 'end' = 'start';
+  @Input() sidenavPosition: LayoutPosition = 'start';
   currentDate = new Date();
   sidenavOpened$ = this.facade.sidenavOpened$;
   isMobile$ = this.facade.isMobile$;
@@ -74,5 +78,9 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
 
   onSetIsMobile(isMobile: boolean): void {
     this.facade.setIsMobile(isMobile);
+  }
+
+  onButtonClickAction(action: () => Action): void {
+    this.facade.dispatchAction(action);
   }
 }
