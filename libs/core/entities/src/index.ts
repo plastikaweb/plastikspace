@@ -1,1 +1,1 @@
-export * from './lib/view-config';
+export * from './view-config';

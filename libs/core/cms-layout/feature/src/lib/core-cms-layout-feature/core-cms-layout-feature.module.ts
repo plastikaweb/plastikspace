@@ -1,9 +1,9 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import {
-  CoreCmsLayoutDataAccessModule,
-  CoreCmsLayoutHeaderConfig,
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CORE_CMS_LAYOUT_SIDENAV_CONFIG,
+  CoreCmsLayoutDataAccessModule,
+  CoreCmsLayoutHeaderConfig,
 } from '@plastik/core/cms-layout/data-access';
 import { getVisibleNavigationList, ViewsConfigRecord } from '@plastik/core/entities';
 

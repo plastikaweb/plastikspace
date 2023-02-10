@@ -6,7 +6,7 @@ import { Environment } from '@plastik/core/environments';
 export const environment: Environment = {
   name: 'Nasa Images',
   production: false,
-  apiUrl: '',
+  apiUrl: 'https://images-api.nasa.gov',
 };
 
 /*

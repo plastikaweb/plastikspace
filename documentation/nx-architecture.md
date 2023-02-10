@@ -12,6 +12,7 @@
       - [data-access](#data-access)
       - [ui](#ui)
       - [util](#util)
+      - [entity](#entity)
     - [Linting Rules and built-in constraints Based Upon Tags](#linting-rules-and-built-in-constraints-based-upon-tags)
     - [Module Names](#module-names)
   - [Useful links](#useful-links)
@@ -67,11 +68,26 @@ This offers a clear indication that this feature belongs to a scope of seatmap w
 
 ```bash
 shared/                  <---- grouping folder
-  data-access/           <---- library
+  data-access/             <---- library
 
-  seatmap/               <---- grouping folder
-    data-access/         <---- library
-    feature-seatmap/     <---- library
+  seatmap/               <---- sub-grouping folder
+    data-access/           <---- library
+    feature-seatmap/       <---- library
+
+core/                    <---- grouping folder
+  router/                  <---- sub-grouping folder
+    data-access/             <---- library
+
+  util/                    <---- sub-grouping folder
+    api/                     <---- library
+
+  cms-layout/              <---- sub-grouping folder
+    data-access/           <---- library
+    feature/               <---- library
+    ui/                  <---- sub-sub-grouping folder
+      footer/              <---- library
+      sidenav/             <---- library
+      header/              <---- library
 ```
 
 ![folder structure.](img/nx-structure.png)
@@ -87,6 +103,7 @@ The tag for the seatmap feature library as in the previous example would now be 
 - data-access: services and utilities for interacting with a back-end or state manager system.
 - ui: Provides use case-agnostic and thus reusable components (dumb components).
 - util: Provides helper functions, services or utilities used by many libraries and apps.
+- entity: Provides types definitions and custom methods related to provide formatted typed data.
 
 > Please note the separation between smart and dumb components. Smart components within feature libraries are use case-specific. An example is a component that enables a product search.  
 > On the contrary, dumb components do not know the current use case. They receive data via inputs, display it in a specific way, and issue events.
@@ -129,6 +146,10 @@ A UI library is a collection of related presentational components. There are gen
 
 A utility contains common utilities/services used by many libraries. Often there is no ngModule and the library is simply a collection of utilities or pure functions.
 
+#### entity
+
+These libraries should handle scope related types definitions. Utilities strongly related with these entities could also live hear near the types definitions.
+
 > Naming: util (if nested), or util-* (e.g., util-arrays)
 
 ### Linting Rules and built-in constraints Based Upon Tags
@@ -160,6 +181,10 @@ The following invariants should hold true:
     {
       "sourceTag": "type:ui",
       "onlyDependOnLibsWithTags": ["type:util"]
+    },
+    {
+      "sourceTag": "type:entity",
+      "onlyDependOnLibsWithTags": ["type:entity"]
     },
     {
       "sourceTag": "type:util",

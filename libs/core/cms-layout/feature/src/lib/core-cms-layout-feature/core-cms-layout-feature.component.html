@@ -23,12 +23,7 @@
     (toggleSidenav)="onToggleSidenav()"
   >
     <mat-list menu-items>
-      <mat-list-item
-        class="text-gray-40"
-        routerLinkActive="bg-secondary-light"
-        *ngFor="let item of sidenavConfig"
-        [routerLink]="item?.route"
-      >
+      <mat-list-item class="rounded-lg" routerLinkActive="bg-gray-10" *ngFor="let item of sidenavConfig" [routerLink]="item?.route">
         <div class="flex content-center justify-start gap-sm">
           <mat-icon> {{ item.icon }} </mat-icon>
           <span>{{ item.title }}</span>

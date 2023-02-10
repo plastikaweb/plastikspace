@@ -58,6 +58,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 - [core-util-environments](libs/core/util/environments/README.md)
 - [core-util-assets](libs/core/util/assets/README.md)
+- [core-util-api](libs/core/util/api/README.md)
 - [core-styles-util-tailwind-preset](libs/core/styles/util/tailwind-preset/README.md)
 - [core-router-data-access](libs/core/router/data-access//README.md)
 - [core-entities](libs/core/entities/README.md)

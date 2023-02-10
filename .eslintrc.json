@@ -15,7 +15,6 @@
             "enforceBuildableLibDependency": true,
             "allow": [],
             "depConstraints": [
-              { "sourceTag": "type:app", "onlyDependOnLibsWithTags": ["scope:core"] },
               {
                 "sourceTag": "type:feature",
                 "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:data-access", "type:entity"]
@@ -27,6 +26,10 @@
               {
                 "sourceTag": "type:util",
                 "onlyDependOnLibsWithTags": ["type:util"]
+              },
+              {
+                "sourceTag": "type:entity",
+                "onlyDependOnLibsWithTags": ["type:entity", "type:util"]
               },
               {
                 "sourceTag": "type:data-access",
@@ -85,6 +88,7 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:jsdoc/recommended"],
+
       "rules": {
         "jsdoc/match-description": [
           "error",

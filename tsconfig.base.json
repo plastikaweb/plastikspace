@@ -20,6 +20,7 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
+      "@plastik/core/api": ["libs/core/util/api/src/index.ts"],
       "@plastik/core/cms-layout": ["libs/core/cms-layout/feature/src/index.ts"],
       "@plastik/core/cms-layout/data-access": ["libs/core/cms-layout/data-access/src/index.ts"],
       "@plastik/core/cms-layout/footer": ["libs/core/cms-layout/ui/footer/src/index.ts"],
@@ -28,6 +29,9 @@
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
+      "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
+      "@plastik/nasa-images/entities": ["libs/nasa-images/entities/src/index.ts"],
+      "@plastik/nasa-images/search": ["libs/nasa-images/feature/search/src/index.ts"],
       "@plastik/shared/button": ["libs/shared/button/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],

@@ -20,9 +20,9 @@ describe('CoreCmsLayoutFeatureComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
+        CoreCmsLayoutFeatureComponent,
         HttpClientTestingModule,
         NoopAnimationsModule,
-        CoreCmsLayoutFeatureComponent,
         StoreModule.forRoot({}),
         EffectsModule.forRoot([]),
         AngularSvgIconModule.forRoot(),
