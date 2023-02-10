@@ -1,0 +1,17 @@
+{
+  "name": "core-ng-entry-html-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/ng-entry-html/util/src",
+  "prefix": "plastik",
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/core/ng-entry-html/util/**/*.ts", "libs/core/ng-entry-html/util/**/*.html"]
+      }
+    }
+  },
+  "tags": ["scope:core", "type:util"]
+}
