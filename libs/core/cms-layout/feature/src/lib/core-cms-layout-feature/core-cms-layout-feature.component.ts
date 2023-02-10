@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@a
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { PushModule } from '@ngrx/component';
 import { Action } from '@ngrx/store';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
@@ -24,6 +24,7 @@ import { map, Subject, takeUntil } from 'rxjs';
     NgIf,
     RouterLink,
     NgTemplateOutlet,
+    RouterLinkActive,
     DatePipe,
     PushModule,
     MatSidenavModule,

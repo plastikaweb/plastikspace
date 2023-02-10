@@ -1,2 +1,2 @@
-export * from './lib/layout-position';
-export * from './lib/svg-icon-config';
+export * from './layout-position';
+export * from './svg-icon-config';

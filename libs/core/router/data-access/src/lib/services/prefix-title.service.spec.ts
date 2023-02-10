@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot } from '@angular/router';
-import { ENVIRONMENT, environmentMock } from '@plastik/core/environments';
+import { provideEnvironmentMock } from '@plastik/core/environments';
 
 import { PrefixTitleService } from './prefix-title.service';
 
@@ -13,7 +13,7 @@ describe('PrefixTitleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        { provide: ENVIRONMENT, useValue: environmentMock },
+        provideEnvironmentMock(),
         {
           provide: RouterStateSnapshot,
           useValue: {
@@ -33,8 +33,7 @@ describe('PrefixTitleService', () => {
 
   it('should return a route title based on environment name and route snapshot title', () => {
     jest.spyOn(service, 'buildTitle').mockImplementation(() => 'section');
-
     service.updateTitle(routerStateSnapshot);
-    expect(titleService.getTitle()).toBe(`${environmentMock.name} - section`);
+    expect(titleService.getTitle()).toBe(`my-app - section`);
   });
 });
