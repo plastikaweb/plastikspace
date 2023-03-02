@@ -28,13 +28,13 @@
       "@plastik/core/cms-layout/sidenav": ["libs/core/cms-layout/ui/sidenav/src/index.ts"],
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
-      "@plastik/core/ng-entry-html": ["libs/core/ng-entry-html/util/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
       "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
       "@plastik/nasa-images/entities": ["libs/nasa-images/entities/src/index.ts"],
       "@plastik/nasa-images/search": ["libs/nasa-images/feature/search/src/index.ts"],
       "@plastik/shared/button": ["libs/shared/button/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
+      "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
       "@plastik/shared/return-as-observable": ["libs/shared/util/return-as-observable-pipe/src/index.ts"]
     }
