@@ -81,6 +81,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [shared-util-entities](libs/shared/util/entities/README.md)
 - [shared-util-objects](libs/shared/util/objects/README.md)
 - [shared-util-return-as-observable-pipe](libs/shared/util/return-as-observable-pipe/README.md)
+- [shared-utils-formatters](libs/shared/util/formatters/README.md)
 
 ## Contact
 

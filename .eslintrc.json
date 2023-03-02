@@ -21,11 +21,11 @@
               },
               {
                 "sourceTag": "type:ui",
-                "onlyDependOnLibsWithTags": ["type:util", "type:entity"]
+                "onlyDependOnLibsWithTags": ["type:util", "type:entity", "type:ui"]
               },
               {
                 "sourceTag": "type:util",
-                "onlyDependOnLibsWithTags": ["type:util"]
+                "onlyDependOnLibsWithTags": ["type:util", "type:entity"]
               },
               {
                 "sourceTag": "type:entity",
@@ -33,7 +33,7 @@
               },
               {
                 "sourceTag": "type:data-access",
-                "onlyDependOnLibsWithTags": ["type:util", "type:entity"]
+                "onlyDependOnLibsWithTags": ["type:util", "type:entity", "type:data-access"]
               },
               {
                 "sourceTag": "scope:core",
@@ -45,7 +45,7 @@
               },
               {
                 "sourceTag": "scope:nasa-images",
-                "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core"]
+                "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core", "scope:shared", "type:util"]
               }
             ]
           }
