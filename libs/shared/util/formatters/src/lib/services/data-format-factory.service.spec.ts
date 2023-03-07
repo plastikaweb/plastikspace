@@ -8,7 +8,6 @@ import { objectMocked, TypeMocked } from './formatting.mock';
 import { SharedUtilsFormattersService } from './shared-util-formatters.service';
 
 describe('DataFormatFactoryService', () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let service: DataFormatFactoryService<TypeMocked>;
 
   beforeEach(() => {
@@ -35,7 +34,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with no custom formatting and sanitization', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'noFormatting.child.value',
       formatting: {
         type: FormattingTypes.TEXT,
@@ -47,7 +46,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with text formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'text.child.value',
       formatting: { type: FormattingTypes.TEXT },
     });
@@ -57,7 +56,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with link formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'link',
       formatting: { type: FormattingTypes.LINK },
     });
@@ -67,7 +66,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with date formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'time',
       formatting: { type: FormattingTypes.DATE },
     });
@@ -77,7 +76,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with datetime formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'time',
       formatting: { type: FormattingTypes.DATE_TIME },
     });
@@ -87,7 +86,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with percentage formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'percentage',
       formatting: { type: FormattingTypes.PERCENTAGE },
     });
@@ -97,7 +96,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with booleanWithControl formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'truthy',
       formatting: { type: FormattingTypes.BOOLEAN_WITH_CONTROL },
     });
@@ -108,7 +107,7 @@ describe('DataFormatFactoryService', () => {
     it('should return a value with default currency formatting', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
-        title: 'title',
+        title: 'Title',
         propertyPath: 'price',
         formatting: { type: FormattingTypes.CURRENCY },
       });
@@ -118,7 +117,7 @@ describe('DataFormatFactoryService', () => {
     it('should return a value with custom digits info currency formatting', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
-        title: 'title',
+        title: 'Title',
         propertyPath: 'price',
         formatting: { type: FormattingTypes.CURRENCY, extras: { numberDigitsInfo: '1.2-2' } },
       });
@@ -129,7 +128,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with number formatting', () => {
     let result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'price',
       formatting: { type: FormattingTypes.NUMBER },
     });
@@ -137,7 +136,7 @@ describe('DataFormatFactoryService', () => {
 
     result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'price',
       formatting: { type: FormattingTypes.NUMBER, extras: { numberDigitsInfo: '1.0-0' } },
     });
@@ -147,7 +146,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with percentage formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'percentage',
       formatting: { type: FormattingTypes.PERCENTAGE },
     });
@@ -158,7 +157,7 @@ describe('DataFormatFactoryService', () => {
     it('should return a value with image formatting and static extras.title', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
-        title: 'title',
+        title: 'Title',
         propertyPath: 'image',
         formatting: {
           type: FormattingTypes.IMAGE,
@@ -174,7 +173,7 @@ describe('DataFormatFactoryService', () => {
     it('should return a value with image formatting and dynamic extras.title', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
-        title: 'title',
+        title: 'Title',
         propertyPath: 'image',
         formatting: {
           type: FormattingTypes.IMAGE,
@@ -191,7 +190,7 @@ describe('DataFormatFactoryService', () => {
   it('should return a value with titleCase formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
-      title: 'title',
+      title: 'Title',
       propertyPath: 'text.child.value',
       formatting: {
         type: FormattingTypes.TITLE_CASE,
@@ -204,7 +203,7 @@ describe('DataFormatFactoryService', () => {
     it('should return a value with no formatting if no execute method is present', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
-        title: 'title',
+        title: 'Title',
         propertyPath: 'custom',
         formatting: {
           type: FormattingTypes.CUSTOM,
@@ -216,7 +215,7 @@ describe('DataFormatFactoryService', () => {
     it('should return a value with formatting if execute method is present', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
-        title: 'title',
+        title: 'Title',
         propertyPath: 'title',
         formatting: {
           type: FormattingTypes.CUSTOM,

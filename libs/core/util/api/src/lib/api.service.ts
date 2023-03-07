@@ -61,7 +61,7 @@ export abstract class ApiService<T, P extends object> {
     return httpClientParams;
   }
 
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    return throwError(() => error.error);
+  private handleError({ error }: HttpErrorResponse): Observable<never> {
+    return throwError(() => error);
   }
 }

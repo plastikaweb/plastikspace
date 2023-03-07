@@ -27,17 +27,17 @@ type FormattingTypesDefault = Extract<
 >;
 
 /**
- * The formatting object type in `DataFormatService` must extend from this.
+ * @description The formatting object type in `DataFormatService` must extend from this.
  */
 export type FormattingInput<T> = Record<keyof T, unknown>;
 
 /**
- * Allowed types of input related with Date format.
+ * @description Allowed types of input related with Date format.
  */
 export type FormattingDateInput = Date | number | string;
 
 /**
- * The types allowed for returned values from a formatting utility method.
+ * @description The types allowed for returned values from a formatting utility method.
  */
 export type FormattingOutput = Date | number | boolean | string | SafeHtml;
 
@@ -57,7 +57,7 @@ type FormattingNumericExtras = Partial<{
 }>;
 
 /**
- * Formatting extras blueprint based on FormattingTypes.
+ * @description Formatting extras blueprint based on FormattingTypes.
  */
 export type FormattingExtras<OBJ, TYPE> = TYPE extends FormattingTypes.IMAGE
   ? Partial<FormattingImageExtras<OBJ>>
@@ -66,7 +66,7 @@ export type FormattingExtras<OBJ, TYPE> = TYPE extends FormattingTypes.IMAGE
   : object;
 
 /**
- * Formatting property blueprint.
+ * @description Formatting property blueprint.
  */
 export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = FormattingTypes.TEXT> {
   type: TYPE;
@@ -76,7 +76,7 @@ export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = Form
 
 type PropertyFormattingBase<OBJ extends Record<keyof OBJ, unknown>> = {
   key: string & keyof OBJ;
-  title: string;
+  title: Capitalize<string>;
   propertyPath: string | ((item: OBJ) => string);
 };
 
@@ -89,7 +89,7 @@ type PropertyFormattingImage<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormat
 type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormattingTypeDef<OBJ, FormattingTypesNumeric>;
 
 /**
- * The blueprint for any formatting item constraint by its FormattingTypes value.
+ * @description The blueprint for any formatting item constraint by its FormattingTypes value.
  */
 export type PropertyFormatting<OBJ, TYPE = FormattingTypes.TEXT> = TYPE extends FormattingTypesNumeric
   ? PropertyFormattingNumeric<OBJ>

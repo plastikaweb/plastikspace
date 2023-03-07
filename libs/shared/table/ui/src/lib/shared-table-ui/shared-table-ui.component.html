@@ -1,0 +1,16 @@
+<div class="block mt-4 overflow-auto border-t border-solid border-gray-10">
+  <mat-table *ngIf="!!data.length" class="table w-full table-fixed" [dataSource]="dataSource">
+    <ng-container *ngFor="let column of columnProperties" [matColumnDef]="column.key" [sticky]="column.sticky">
+      <mat-header-cell *matHeaderCellDef [ngClass]="column.cssClasses || ''">
+        {{ column.title }}
+      </mat-header-cell>
+
+      <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses || ''">
+        <div class="table__cell--default" [innerHTML]="row | safeFormatted : column : i + 1"></div>
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>
