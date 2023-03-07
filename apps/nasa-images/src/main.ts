@@ -14,8 +14,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routing';
-import { headerConfig, NasaImagesViews, viewConfig } from './app/cms-layout-config';
+import { headerConfig, viewConfig } from './app/cms-layout-config';
 import { environment } from './environments/environment';
+import { NasaImagesViews } from '@plastik/nasa-images/entities';
 
 if (environment.production) {
   enableProdMode();

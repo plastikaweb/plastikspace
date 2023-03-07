@@ -71,7 +71,7 @@ Changes to your imports on your app root module (app.module).
 ```typescript
 import {
     CustomRouterSerializer, routerReducers, RouterStateEffects
-} from '@tvav/router-state';
+} from '@plastik/core/router-state';
 
 StoreModule.forRoot(
       { reducers,...routerReducers },

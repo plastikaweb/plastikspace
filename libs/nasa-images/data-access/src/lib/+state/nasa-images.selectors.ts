@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { NASA_IMAGES_FEATURE_KEY, NasaImagesState, nasaMediaAdapter } from './nasa-images.reducer';
+import { NasaImagesState, nasaMediaAdapter, NASA_IMAGES_FEATURE_KEY } from './nasa-images.reducer';
 
 export const selectNasaImagesState = createFeatureSelector<NasaImagesState>(NASA_IMAGES_FEATURE_KEY);
 
@@ -14,8 +14,10 @@ export const selectAllNasaImages = createSelector(selectNasaImagesState, (state:
 
 export const selectNasaImagesEntities = createSelector(selectNasaImagesState, (state: NasaImagesState) => selectEntities(state));
 
-export const selectSelectedId = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.selectedId);
+export const selectNasaImagesSelectedId = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.selectedId);
 
-export const selectEntity = createSelector(selectNasaImagesEntities, selectSelectedId, (entities, selectedId) =>
+export const selectNasaImagesEntity = createSelector(selectNasaImagesEntities, selectNasaImagesSelectedId, (entities, selectedId) =>
   selectedId ? entities[selectedId] : undefined,
 );
+
+export const selectNasaImagesCount = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.count);

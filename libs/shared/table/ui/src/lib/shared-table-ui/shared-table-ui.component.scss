@@ -1,0 +1,6 @@
+:host ::ng-deep {
+  .mat-cell,
+  .mat-mdc-cell {
+    @apply items-stretch p-md h-auto;
+  }
+}

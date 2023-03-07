@@ -2,13 +2,6 @@ import { Action } from '@ngrx/store';
 import { SvgIconConfig } from '@plastik/shared/entities';
 import { Observable } from 'rxjs';
 
-interface ButtonConfigType {
-  type: 'button';
-}
-interface ButtonLinkConfigType {
-  type: 'link';
-}
-
 interface ButtonBaseConfig {
   elements: ButtonElement[];
   ariaLabel: string;
@@ -18,8 +11,12 @@ interface ButtonBaseConfig {
   doAction?(): Action;
 }
 
-type ButtonConfigWithAction = Omit<ButtonBaseConfig, 'link'> & ButtonConfigType;
-type ButtonConfigAsLink = Omit<ButtonBaseConfig, 'doAction'> & ButtonLinkConfigType;
+type ButtonConfigWithAction = Omit<ButtonBaseConfig, 'link'> & {
+  type: 'button';
+};
+type ButtonConfigAsLink = Omit<ButtonBaseConfig, 'doAction'> & {
+  type: 'link';
+};
 
 /**
  * @description Configuration for shared button.

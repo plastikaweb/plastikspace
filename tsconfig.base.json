@@ -36,7 +36,9 @@
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
-      "@plastik/shared/return-as-observable": ["libs/shared/util/return-as-observable-pipe/src/index.ts"]
+      "@plastik/shared/return-as-observable": ["libs/shared/util/return-as-observable-pipe/src/index.ts"],
+      "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
+      "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

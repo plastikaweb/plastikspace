@@ -14,7 +14,7 @@ A shared library to format data.
 - Import the `SharedUtilsFormattersModule` into the library or main module that needs formatting.
 
 ```typescript
-import { SharedUtilsFormattersModule } from '@tvav/shared/utils/formatters';
+import { SharedUtilFormattersModule } from '@plastik/shared/formatters';
 
 @NgModule({
   imports: [

@@ -33,15 +33,15 @@ describe('NasaImages Selectors', () => {
       expect(selId).toBe('PRODUCT-BBB');
     });
 
-    it('selectSelectedId() should return the selected Entity Id', () => {
-      const result = NasaImagesSelectors.selectSelectedId(state);
+    it('selectNasaImagesCount() should return the selected total images count', () => {
+      const result = NasaImagesSelectors.selectNasaImagesCount(state);
 
-      expect(result).toBe('PRODUCT-BBB');
+      expect(result).toBe(3);
     });
 
     describe('selectEntity()', () => {
       it('should return the selected Entity', () => {
-        const result = NasaImagesSelectors.selectEntity(state) as NasaImage;
+        const result = NasaImagesSelectors.selectNasaImagesEntity(state) as NasaImage;
         const selId = getNasaImagesId(result);
 
         expect(selId).toBe('PRODUCT-BBB');
@@ -51,13 +51,13 @@ describe('NasaImages Selectors', () => {
         const customState = { ...state };
         customState[NASA_IMAGES_FEATURE_KEY].selectedId = undefined;
 
-        const result = NasaImagesSelectors.selectEntity(customState) as NasaImage;
+        const result = NasaImagesSelectors.selectNasaImagesEntity(customState) as NasaImage;
 
         expect(result).toBeUndefined();
       });
     });
 
-    it('selectNasaImagesLoaded() should return the current "loading" status', () => {
+    it('selectNasaImagesLoading() should return the current "loading" status', () => {
       const result = NasaImagesSelectors.selectNasaImagesLoading(state);
 
       expect(result).toBeFalsy();
