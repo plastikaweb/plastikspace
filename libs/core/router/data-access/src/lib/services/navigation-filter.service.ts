@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { concatLatestFrom, ofType } from '@ngrx/effects';
-import { ROUTER_NAVIGATION, RouterNavigationAction, SerializedRouterStateSnapshot } from '@ngrx/router-store';
+import { RouterNavigationAction, ROUTER_NAVIGATION, SerializedRouterStateSnapshot } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
 import { Observable, pipe, UnaryFunction } from 'rxjs';
 import { filter } from 'rxjs/operators';

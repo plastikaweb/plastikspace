@@ -22,37 +22,34 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
    * @returns { PropertyFormatting } The valid types to be returned after formatting a value.
    */
   getFormattedValue(item: T, { propertyPath, formatting }: PropertyFormatting<T, FormattingTypes>, index?: number): SafeHtml {
-    if (propertyPath) {
-      const getValueToShow = typeof propertyPath === 'string' ? propertyPath : propertyPath(item);
-      const value = this.getValueFromRow(getValueToShow, item);
-      const { type, extras = {} } = formatting;
+    const getValueToShow = typeof propertyPath === 'string' ? propertyPath : propertyPath(item);
+    const value = this.getValueFromRow(getValueToShow, item);
+    const { type, extras = {} } = formatting;
 
-      switch (type) {
-        case FormattingTypes.DATE:
-          return this.formatter.dateFormatter(String(value), extras);
-        case FormattingTypes.DATE_TIME:
-          return this.formatter.dateTimeFormatter(String(value), extras);
-        case FormattingTypes.PERCENTAGE:
-          return this.formatter.percentageFormatter(Number(value), extras);
-        case FormattingTypes.CURRENCY:
-          return this.formatter.currencyFormatter(Number(value), extras);
-        case FormattingTypes.NUMBER:
-          return this.formatter.numberFormatter(Number(value), extras);
-        case FormattingTypes.BOOLEAN_WITH_CONTROL:
-          return !!value;
-        case FormattingTypes.TITLE_CASE:
-          return this.formatter.titleCaseFormatter(String(value));
-        case FormattingTypes.IMAGE:
-          return this.formatter.imageFormatter(String(value), extras, item);
-        case FormattingTypes.CUSTOM:
-        case FormattingTypes.LINK:
-          return this.formatter.customFormatter(String(value), formatting as PropertyFormattingConf<T>, item, index);
-        case FormattingTypes.TEXT:
-        default:
-          return this.formatter.defaultFormatter(String(value));
-      }
+    switch (type) {
+      case FormattingTypes.DATE:
+        return this.formatter.dateFormatter(String(value), extras);
+      case FormattingTypes.DATE_TIME:
+        return this.formatter.dateTimeFormatter(String(value), extras);
+      case FormattingTypes.PERCENTAGE:
+        return this.formatter.percentageFormatter(Number(value), extras);
+      case FormattingTypes.CURRENCY:
+        return this.formatter.currencyFormatter(Number(value), extras);
+      case FormattingTypes.NUMBER:
+        return this.formatter.numberFormatter(Number(value), extras);
+      case FormattingTypes.BOOLEAN_WITH_CONTROL:
+        return !!value;
+      case FormattingTypes.TITLE_CASE:
+        return this.formatter.titleCaseFormatter(String(value));
+      case FormattingTypes.IMAGE:
+        return this.formatter.imageFormatter(String(value), extras, item);
+      case FormattingTypes.CUSTOM:
+      case FormattingTypes.LINK:
+        return this.formatter.customFormatter(String(value), formatting as PropertyFormattingConf<T>, item, index);
+      case FormattingTypes.TEXT:
+      default:
+        return this.formatter.defaultFormatter(String(value));
     }
-    return '';
   }
 
   private getValueFromRow(property: string, item: T): FormattingOutput {

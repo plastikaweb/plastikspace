@@ -1,17 +1,19 @@
-export type NasaImagesType = 'image' | 'audio';
-
+export enum NasaImagesViews {
+  SEARCH = 'search',
+  EXPLANATION = 'explanation',
+}
 /**
  * @description A single NASA media item descriptor.
  */
-export interface NasaImage {
+export interface NasaImage extends Record<string, string | string[] | Date | NasaImageLink[] | undefined> {
   id: string;
   title: string;
   description: string;
-  keywords?: string[];
   dateCreated: Date;
   creator: string;
-  links: NasaImageLink[];
-  location?: string;
+  thumbnail: string;
+  center?: string;
+  keywords?: string[];
 }
 
 /**
@@ -55,7 +57,7 @@ export interface NasaImagesSearchApiResponse {
         date_created: string;
         description: string;
         keywords: string[];
-        location: string;
+        center: string;
         secondary_creator: string;
       }[];
       links: NasaImageLink[];
@@ -70,4 +72,11 @@ export interface NasaImagesSearchApiResponse {
 export interface NasaImagesSearch {
   items: NasaImage[];
   count: number;
+}
+
+/**
+ * @description Blueprint response when API returns an error.
+ */
+export interface NasaImagesSearchApiError {
+  reason: string;
 }

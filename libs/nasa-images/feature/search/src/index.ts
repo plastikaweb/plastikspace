@@ -1,3 +1,3 @@
 export * from './lib/nasa-images-feature-search/nasa-images-feature-search.component';
 
-export * from './lib/lib.routes';
+export * from './lib/nasa-images-feature-search.routes';

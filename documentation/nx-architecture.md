@@ -168,11 +168,11 @@ The following invariants should hold true:
 ```bash
 # current root .eslintrc.json fragment
 
-{ 
+{
   "depConstraints": [
-    { 
-      "sourceTag": "type:app", 
-      "onlyDependOnLibsWithTags": ["type:feature", "scope:core"] 
+    {
+      "sourceTag": "type:app",
+      "onlyDependOnLibsWithTags": ["type:feature", "scope:core"]
     },
     {
       "sourceTag": "type:feature",
@@ -220,6 +220,7 @@ This is the way that the CLI creates the modules and we are recommending that we
 
 ## Useful links
 
+- [NX docs: more concepts: library types](https://nx.dev/more-concepts/library-types)
 - [Enforce Project Boundaries: tags](https://nx.dev/core-features/enforce-project-boundaries#tags)
 - [Creating libraries: enforcing constraints](https://nx.dev/more-concepts/creating-libraries#3.-enforcing-constraints)
 - [Taming code organization with module boundaries in NX](https://missing-manual.com/taming-code-organization-with-nx/)

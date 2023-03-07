@@ -136,7 +136,7 @@ export class SharedUtilsFormattersService {
    * @returns { SafeHtml } The formatted value passed through the execute formatting function.
    */
   customFormatter<T>(value: string, { execute }: PropertyFormattingConf<T>, element: T, index?: number): SafeHtml {
-    return execute ? execute(value, element, index) : value;
+    return execute ? execute(value, element, index) : value ? value : '';
   }
 
   /**

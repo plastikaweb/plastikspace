@@ -76,6 +76,11 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [shared-button-entities](libs/shared/button/entities/README.md)
 - [shared-button-ui](libs/shared/button/ui/README.md)
 
+#### Table
+
+- [shared-table-entities](libs/shared/table/entities/README.md)
+- [shared-table-ui](libs/shared/table/ui/README.md)
+
 #### Utils
 
 - [shared-util-entities](libs/shared/util/entities/README.md)
