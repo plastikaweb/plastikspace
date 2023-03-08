@@ -3,14 +3,14 @@ import { SafeHtml } from '@angular/platform-browser';
 import { isNil } from '@plastik/shared/objects';
 
 import { FormattingInput, FormattingOutput, FormattingTypes, PropertyFormatting, PropertyFormattingConf } from '../formatting';
-import { SharedUtilsFormattersService } from './shared-util-formatters.service';
+import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
 @Injectable()
 /**
  * @description A service to format a value from an object applying a formatting configuration.
  */
 export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
-  formatter = inject(SharedUtilsFormattersService);
+  formatter = inject(SharedUtilFormattersService);
 
   /**
    * @description Factory to get the correct formatted value from item property with a custom formatting option.

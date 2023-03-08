@@ -11,9 +11,9 @@ import {
   setEmptyStringPropertiesToNull,
   transformStringToBooleanProperties,
   transformToString,
-} from './utils-objects';
+} from './util-objects';
 
-describe('Object Utils', () => {
+describe('Object Util', () => {
   describe('isEmpty method', () => {
     it('should return true if object is empty', () => {
       expect(isEmpty({})).toBeTruthy();

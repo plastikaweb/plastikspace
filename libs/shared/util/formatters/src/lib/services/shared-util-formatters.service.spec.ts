@@ -1,17 +1,17 @@
 import { DatePipe, PercentPipe, TitleCasePipe } from '@angular/common';
 import { TestBed } from '@angular/core/testing';
 
-import { SharedUtilsFormattersService } from './shared-util-formatters.service';
+import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
-describe('SharedFormattersUtilsService', () => {
-  let service: SharedUtilsFormattersService;
+describe('SharedFormattersshared-util-objectsService', () => {
+  let service: SharedUtilFormattersService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [],
-      providers: [SharedUtilsFormattersService, TitleCasePipe, DatePipe, PercentPipe],
+      providers: [SharedUtilFormattersService, TitleCasePipe, DatePipe, PercentPipe],
     });
-    service = TestBed.inject(SharedUtilsFormattersService);
+    service = TestBed.inject(SharedUtilFormattersService);
   });
 
   it('should be created', () => {

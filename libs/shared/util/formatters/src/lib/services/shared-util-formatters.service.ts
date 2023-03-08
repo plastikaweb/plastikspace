@@ -8,7 +8,7 @@ import { FormattingDateInput, FormattingExtras, FormattingTypes, PropertyFormatt
 /**
  * @description A service to serve formatting methods.
  */
-export class SharedUtilsFormattersService {
+export class SharedUtilFormattersService {
   private readonly titleCasePipe = inject(TitleCasePipe);
   private readonly sanitizer = inject(DomSanitizer);
   private readonly locale = inject(LOCALE_ID);

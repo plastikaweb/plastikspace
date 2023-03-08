@@ -5,7 +5,7 @@ import { TestBed } from '@angular/core/testing';
 import { FormattingTypes } from '../formatting';
 import { DataFormatFactoryService } from './data-format-factory.service';
 import { objectMocked, TypeMocked } from './formatting.mock';
-import { SharedUtilsFormattersService } from './shared-util-formatters.service';
+import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
 describe('DataFormatFactoryService', () => {
   let service: DataFormatFactoryService<TypeMocked>;
@@ -14,7 +14,7 @@ describe('DataFormatFactoryService', () => {
     TestBed.configureTestingModule({
       providers: [
         DataFormatFactoryService,
-        SharedUtilsFormattersService,
+        SharedUtilFormattersService,
         TitleCasePipe,
         DatePipe,
         PercentPipe,

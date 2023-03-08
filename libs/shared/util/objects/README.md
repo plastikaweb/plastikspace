@@ -1,6 +1,6 @@
-# shared-utils-objects
+# shared-util-objects
 
-- [shared-utils-objects](#shared-utils-objects)
+- [shared-util-objects](#shared-util-objects)
   - [Description](#description)
   - [How to use](#how-to-use)
   - [Available utilities](#available-utilities)
@@ -30,4 +30,4 @@ A shared library to transform data that involves object manipulation and/or gene
 
 ## Running unit tests
 
-Run `nx test utils-objects` to execute the unit tests.
+Run `nx test shared-util-objects-objects` to execute the unit tests.
