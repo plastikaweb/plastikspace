@@ -160,7 +160,7 @@ The following invariants should hold true:
 - an app-specific library cannot depend on a lib from another app (e.g., "safe/" can only depend on libs from "safe/" or shared libs).
 - a shared library cannot depend on an app-specific lib (e.g., "common-ui/" cannot depend on "safe/").
 - a ui library cannot depend on a feature library or a data-access library.
-- a utils library cannot depend on a feature library, data-access library, or component library.
+- a util library cannot depend on a feature library, data-access library, or component library.
 - a data-access library cannot depend on a feature library or a component library.
 - a project cannot have circular dependencies.
 - a project that lazy loads another project cannot import it directly.
