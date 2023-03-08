@@ -1,6 +1,6 @@
-# shared-utils-formatters
+# shared-util-formatters
 
-- [shared-utils-formatters](#shared-utils-formatters)
+- [shared-util-formatters](#shared-util-formatters)
   - [Description](#description)
   - [How to use](#how-to-use)
   - [Running unit tests](#running-unit-tests)
@@ -11,14 +11,14 @@ A shared library to format data.
 
 ## How to use
 
-- Import the `SharedUtilsFormattersModule` into the library or main module that needs formatting.
+- Import the `SharedUtilFormattersModule` into the library or main module that needs formatting.
 
 ```typescript
 import { SharedUtilFormattersModule } from '@plastik/shared/formatters';
 
 @NgModule({
   imports: [
-    SharedUtilsFormattersModule,
+    SharedUtilFormattersModule,
     // other imports...
   ],
 })
@@ -55,4 +55,4 @@ const descriptionFormatting: PropertyFormatting<Item, FormattingTypes.TEXT> = {
 
 ## Running unit tests
 
-Run `nx test shared-utils-formatters` to execute the unit tests.
+Run `nx test shared-util-formatters` to execute the unit tests.
