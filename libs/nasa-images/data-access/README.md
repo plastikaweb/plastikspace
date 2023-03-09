@@ -36,13 +36,13 @@ export interface NasaImagesState extends EntityState<NasaImage> {
 
 Import the store segment and the corresponding Effects array it in the feature module as usual.
 
-### Store actions
+### Actions
 
 - loadNasaImages
 - loadNasaImagesSuccess
 - loadNasaImagesFailure
 
-### Store selectors
+### Selectors
 
 - selectNasaImagesLoading
 - selectNasaImagesError
@@ -50,6 +50,10 @@ Import the store segment and the corresponding Effects array it in the feature m
 - selectNasaImagesEntities
 - selectSelectedId
 - selectEntity
+
+### Facade
+
+To use selectors and dispatch actions, DI the `NasaImagesFacade` service.
 
 ## Running unit tests
 
