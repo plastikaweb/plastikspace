@@ -16,12 +16,16 @@
             "allow": [],
             "depConstraints": [
               {
+                "sourceTag": "*",
+                "onlyDependOnLibsWithTags": ["*"]
+              },
+              {
                 "sourceTag": "type:feature",
-                "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:data-access", "type:entity"]
+                "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:data-access", "type:entity", "type:feature"]
               },
               {
                 "sourceTag": "type:ui",
-                "onlyDependOnLibsWithTags": ["type:util", "type:entity", "type:ui"]
+                "onlyDependOnLibsWithTags": ["type:entity", "type:ui", "type:util"]
               },
               {
                 "sourceTag": "type:util",
@@ -37,7 +41,7 @@
               },
               {
                 "sourceTag": "scope:core",
-                "onlyDependOnLibsWithTags": ["type:util", "scope:core", "type:entity"]
+                "onlyDependOnLibsWithTags": ["scope:core", "type:entity", "type:util"]
               },
               {
                 "sourceTag": "scope:shared",
@@ -45,7 +49,7 @@
               },
               {
                 "sourceTag": "scope:nasa-images",
-                "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core", "scope:shared", "type:util"]
+                "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core", "scope:shared"]
               }
             ]
           }

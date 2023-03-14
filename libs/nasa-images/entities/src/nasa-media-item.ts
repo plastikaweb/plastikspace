@@ -1,3 +1,6 @@
+/**
+ * @description A collection for available pages for Nasa Images App.
+ */
 export enum NasaImagesViews {
   SEARCH = 'search',
   EXPLANATION = 'explanation',
@@ -10,10 +13,11 @@ export interface NasaImage extends Record<string, string | string[] | Date | Nas
   title: string;
   description: string;
   dateCreated: Date;
-  creator: string;
   thumbnail: string;
+  creator?: string;
   center?: string;
   keywords?: string[];
+  location?: string;
 }
 
 /**
@@ -43,6 +47,11 @@ export interface NasaImagesSearchApiParams {
    * The end year for results. Format: YYYY.
    */
   yearEnd?: number;
+  /**
+   * The media type of the response.
+   * We set it always to 'image' as the app is using only images, no audio data.
+   */
+  media_type?: 'audio' | 'image';
 }
 
 /**
@@ -59,6 +68,7 @@ export interface NasaImagesSearchApiResponse {
         keywords: string[];
         center: string;
         secondary_creator: string;
+        location: string;
       }[];
       links: NasaImageLink[];
     }[];

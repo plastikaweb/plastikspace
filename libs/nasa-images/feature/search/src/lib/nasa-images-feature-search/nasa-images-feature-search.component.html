@@ -1,4 +1,13 @@
-<h1>Images</h1>
+<h1>Search Images</h1>
+<div class="flex flex-row items-end content-center justify-between mx-0 my-md filters-box">
+  <plastik-shared-form-feature
+    [submitAvailable]="false"
+    [fields]="(formStructure$ | ngrxPush) || []"
+    [model]="{}"
+    (changeEvent)="onChange($event)"
+  >
+  </plastik-shared-form-feature>
+</div>
 <plastik-shared-table
   *ngIf="{ data: images$ | ngrxPush, tableStructure } as obs"
   [data]="obs?.data || []"

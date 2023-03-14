@@ -20,7 +20,7 @@ We use [commitizen](https://commitizen.github.io/cz-cli/) to apply some simple f
 
 The main types of commitizen available are those corresponding to the [cz-customizable](https://github.com/leoforfree/cz-customizable) plugin.
 
-```bash
+```typescript
 feat(shared-button): #54 add Notifications button
 
 Allow users to toggle particular notifications by app section.
@@ -32,10 +32,9 @@ ISSUES CLOSED: #54
 
 ## Commit execution
 
-```bash
+```typescript
 cz
-// Not recommended:
-// add --no-verify flag to skip any hook before the commit resolution
+// Not recommended: add --no-verify flag to skip any hook before the commit resolution
 ```
 
 ### Commitizen steps
@@ -108,7 +107,7 @@ Commitizen will show us a summary of the commit message and ask for confirmation
 - [Commitizen](https://commitizen.github.io/cz-cli/)
 - [How to write a Git Commit Message](https://chris.beams.io/posts/git-commit/)
 - [A Note About Git Commit Messages](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html)
-- [The Perks of commiting with conventions](https://slides.com/marionebl/the-perks-of-committing-with-conventions#/)
+- [The Perks of committing with conventions](https://slides.com/marionebl/the-perks-of-committing-with-conventions#/)
 - [Commitlint](https://github.com/conventional-changelog/commitlint)
 - [cz-customizable](https://github.com/leonardoanalista/cz-customizable)
 - [Contributing to Angular: Commit Message Format](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#commit)

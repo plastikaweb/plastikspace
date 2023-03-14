@@ -1,5 +1,6 @@
 module.exports = {
   content: ['./apps/**/*.{html,ts}', './libs/**/*.{html,ts}'],
+  important: true,
   theme: {
     colors: {
       primary: {
@@ -29,6 +30,7 @@ module.exports = {
       transparent: 'transparent',
     },
     spacing: {
+      sub: 'var(--spacing-sub)',
       sm: 'var(--spacing-sm)',
       md: 'var(--spacing-md)',
       lg: 'var(--spacing-lg)',

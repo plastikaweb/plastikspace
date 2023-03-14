@@ -18,17 +18,15 @@ export class NavigationService {
     });
   }
   /**
-   * Navigate to a concrete URL with params and extras if needed.
-   *
+   * @description Navigate to a concrete URL with params and extras if needed.
    * @param { NavigationProps } navigationProps The navigation configuration properties.
    */
   navigate({ path, query, extras }: NavigationProps): void {
-    this.router.navigate(path, { queryParams: query, ...extras });
+    this.router.navigate(path, { queryParams: query || {}, ...extras });
   }
 
   /**
-   * Go back to previous URL.
-   *
+   * @description Go back to previous URL.
    * @param {string} backBaseUrl The default back URL. Use it when we have no navigation history.
    * @param {RegExp} regex An instruction to accomplish when we want to redirect to an specific previous URL that must satisfy the regex pattern.
    */
