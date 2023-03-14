@@ -1,0 +1,8 @@
+.mat-mdc-form-field .mdc-notched-outline__notch {
+  @apply border-r-0 border-r-transparent;
+}
+
+.mat-mdc-form-field-icon-suffix,
+.mat-mdc-form-field-icon-prefix {
+  @apply px-sub;
+}

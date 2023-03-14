@@ -22,7 +22,7 @@ export class NasaImagesEffects {
       this.navigationFilter.checkRouterNavigation<NasaImagesViews>(NasaImagesViews.SEARCH),
       concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectNasaImagesLoading)]),
       filter(([, , loading]) => !loading),
-      map(([, queryParams]) => loadNasaImages({ params: queryParams as NasaImagesSearchApiParams })),
+      map(([, queryParams]) => loadNasaImages({ params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } } })),
     );
   });
 
@@ -32,7 +32,7 @@ export class NasaImagesEffects {
       exhaustMap(({ params }) =>
         this.apiService.getList(params).pipe(
           map(({ items, count }) => NasaImagesActions.loadNasaImagesSuccess({ items, count })),
-          catchError(({ reason: error }: NasaImagesSearchApiError) => of(NasaImagesActions.loadNasaImagesFailure({ error }))),
+          catchError((error: NasaImagesSearchApiError) => of(NasaImagesActions.loadNasaImagesFailure({ error: error?.reason || 'error' }))),
         ),
       ),
     );

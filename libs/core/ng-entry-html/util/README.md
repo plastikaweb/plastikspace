@@ -39,7 +39,7 @@ export class AppComponent {}
 
 You need to have a favicon.svg file in your app assets directory, in order to appear while preloading it. This favicon is the same that will be used as a html head favicon.
 
-```bash
+```typescript
 // The path to your favicon svg file
-assets/img/favicon.svg
+assets / img / favicon.svg;
 ```

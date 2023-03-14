@@ -66,7 +66,7 @@ It helps with minimizing the amount of time a developer spends navigating the fo
 Scopes like "shared" and "seatmap" are example for grouping folders, and "feature" is a library that is nested two levels deep.
 This offers a clear indication that this feature belongs to a scope of seatmap which is a sub-scope of shared items. The tag used in this library would be scope:shared, as this is the top-level scope.
 
-```bash
+```json
 shared/                  <---- grouping folder
   data-access/             <---- library
 
@@ -165,7 +165,7 @@ The following invariants should hold true:
 - a project cannot have circular dependencies.
 - a project that lazy loads another project cannot import it directly.
 
-```bash
+```json
 # current root .eslintrc.json fragment
 
 {
