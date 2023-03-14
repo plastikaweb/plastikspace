@@ -1,9 +1,11 @@
 import { Type } from '@angular/core';
-import { Resolve } from '@angular/router';
 import { collectionToArray } from '@plastik/shared/objects';
 
+/**
+ * @description A shape for a concrete UI view.
+ */
 export interface ViewConfig<T> {
-  title: T | string | Type<Resolve<string>>;
+  title: T | string | Type<string>;
   icon?: string;
   svgClass?: {
     menu?: string;
@@ -14,11 +16,13 @@ export interface ViewConfig<T> {
   includedInNavigation?: boolean;
 }
 
+/**
+ * @description A Record shape for UI views.
+ */
 export type ViewsConfigRecord<T> = Record<string, ViewConfig<T>>;
 
 /**
- * Returns an array with just the includedInNavigation ViewConfig elements.
- *
+ * @description Returns an array with just the includedInNavigation ViewConfig elements.
  * @param {ViewsConfigRecord} viewsConfig The app views configuration.
  * @returns {ViewConfig[]}.
  */

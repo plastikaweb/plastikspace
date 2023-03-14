@@ -6,10 +6,10 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { getMockedRouterNavigation, selectRouteDataName, selectRouteQueryParams } from '@plastik/core/router-state';
+import { NasaImagesViews } from '@plastik/nasa-images/entities';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
-import { NasaImagesViews } from '@plastik/nasa-images/entities';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
 import * as NasaImagesActions from './nasa-images.actions';
@@ -68,14 +68,14 @@ describe('NasaImagesEffects', () => {
 
   describe('navigation$', () => {
     const action = getMockedRouterNavigation('/search?q=pluto');
-    it('should dispatch loadDsps with queryParams if /search route is found', () => {
+    it('should dispatch loadNasaImages with queryParams if /search route is found', () => {
       actions = hot('-a', { a: action });
-      const expected = cold('-b', { b: NasaImagesActions.loadNasaImages({ params: { q: 'pluto' } }) });
+      const expected = cold('-b', { b: NasaImagesActions.loadNasaImages({ params: { q: 'pluto', media_type: 'image' } }) });
 
       expect(effects.navigation$).toBeObservable(expected);
     });
 
-    it('should not dispatch loadDsps with queryParams if no /search route is found', () => {
+    it('should not dispatch loadNasaImages with queryParams if no /search route is found', () => {
       store.overrideSelector(selectRouteDataName, NasaImagesViews.EXPLANATION);
 
       actions = hot('-a', { a: action });

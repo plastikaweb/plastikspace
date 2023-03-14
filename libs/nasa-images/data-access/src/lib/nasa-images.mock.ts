@@ -19,6 +19,7 @@ export const createDummyNasaImagesSearch = (count: number = 3) => {
       keywords: [],
       center: '',
       thumbnail: 'thumbnail.jpg',
+      location: '',
     });
   }
 
@@ -42,6 +43,7 @@ export const createDummyNasaImagesSearchApiResponse = (count: number = 3): NasaI
           secondary_creator: 'Creator',
           keywords: [],
           center: '',
+          location: '',
         },
       ],
       links: [{ href: 'thumbnail.jpg' }],

@@ -17,16 +17,18 @@ export class NasaImagesApiService extends ApiService<NasaImagesSearch, NasaImage
     },
   }: NasaImagesSearchApiResponse): NasaImagesSearch {
     const mappedItems = items.map(({ data, links }) => {
-      const { nasa_id, title, date_created, description, keywords, center, secondary_creator } = data[0];
+      const { nasa_id: id, title, date_created, description, keywords, center, location, secondary_creator: creator } = data[0];
+
       return {
-        id: nasa_id,
+        id,
         title,
         description,
         keywords,
         dateCreated: new Date(date_created),
-        creator: secondary_creator,
         thumbnail: links[0].href,
         center,
+        location,
+        creator,
       };
     });
 

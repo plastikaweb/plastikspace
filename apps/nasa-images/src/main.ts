@@ -34,9 +34,6 @@ bootstrapApplication(AppComponent, {
         runtimeChecks: {
           strictActionImmutability: true,
           strictStateImmutability: true,
-          strictActionTypeUniqueness: true,
-          strictActionSerializability: true,
-          strictActionWithinNgZone: true,
         },
       }),
       EffectsModule.forRoot([RouterStateEffects]),

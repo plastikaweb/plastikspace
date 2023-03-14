@@ -81,6 +81,10 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [shared-table-entities](libs/shared/table/entities/README.md)
 - [shared-table-ui](libs/shared/table/ui/README.md)
 
+#### Form
+
+- [shared-form-feature](libs/shared/form/feature/README.md)
+
 #### Util
 
 - [shared-util-entities](libs/shared/util/entities/README.md)
