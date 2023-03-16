@@ -12,9 +12,9 @@ export type TableColumnFormatting<OBJ, TYPE> = PropertyFormatting<OBJ, TYPE> & {
    */
   sorting?: boolean;
   /**
-   * Sets styling by CSS classes passed as a single string for the current column.
+   * Sets styling for the cell and the child container.
    */
-  cssClasses?: string;
+  cssClasses?: [cell?: string, content?: string];
   /**
    * Sets the sticky position value for a given column.
    */
