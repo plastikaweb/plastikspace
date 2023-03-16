@@ -12,6 +12,7 @@
     - [Router title and Navigation](#router-title-and-navigation)
       - [Router title with app name prefix](#router-title-with-app-name-prefix)
       - [Custom router title](#custom-router-title)
+    - [Automatic scroll on route navigation](#automatic-scroll-on-route-navigation)
     - [Selectors](#selectors)
   - [Running unit tests](#running-unit-tests)
   - [Useful links](#useful-links)
@@ -170,7 +171,12 @@ export class EntityEffects {
 }
 ```
 
-You can see a working example here: [AvWorksEffects](../../libs/vod-panel/data-request/av-work/src/lib/+state/av-work.effects.ts)
+### Automatic scroll on route navigation
+
+In the Effects file, we have an `@Effect` called `scrollToTop$` that makes an `scrollTo(0, 0)` on an existing HTML element with the id of `mainContent`.
+It can be used to scroll a container with a table and pagination, so on each table results filtering, it will scroll to top of the table.
+
+> If no `mainContent` is present, no scrolling will be applied.
 
 ### Selectors
 

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { tap } from 'rxjs/operators';
 
 import { NavigationService } from '../../services/navigation.service';
@@ -38,9 +39,25 @@ export class RouterStateEffects {
     { dispatch: false },
   );
 
+  scrollToTop$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(ROUTER_NAVIGATION),
+        tap(() => {
+          this.zone.runOutsideAngular(() => {
+            const mainElement = document.getElementById('mainContent')?.parentElement;
+            mainElement?.scrollTo(0, 0);
+          });
+        }),
+      );
+    },
+    { dispatch: false },
+  );
+
   constructor(
     private readonly actions$: Actions,
     private readonly location: Location,
     private readonly navigationService: NavigationService,
+    private readonly zone: NgZone,
   ) {}
 }

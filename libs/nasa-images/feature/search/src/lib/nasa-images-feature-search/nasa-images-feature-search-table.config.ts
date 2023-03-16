@@ -1,6 +1,10 @@
+import { inject } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { NasaImage } from '@plastik/nasa-images/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
-import { defaultTableConfig, TableColumnFormatting, TableControlStructure } from '@plastik/shared/table/entities';
+import { DEFAULT_TABLE_CONFIG, TableColumnFormatting, TableControlStructure } from '@plastik/shared/table/entities';
+import { map, Observable } from 'rxjs';
 
 const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
   key: 'index',
@@ -98,10 +102,29 @@ const columnProperties: TableColumnFormatting<NasaImage, FormattingTypes>[] = [
 ];
 
 export class NasaImagesFeatureSearchTableConfig {
-  static getTableStructure(): TableControlStructure<NasaImage> {
-    return {
-      ...defaultTableConfig,
-      columnProperties,
-    };
+  static getTableStructure(): Observable<TableControlStructure<NasaImage>> {
+    const store = inject(Store);
+    const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
+
+    return store.select(selectRouteQueryParams).pipe(
+      map(({ page }) => {
+        return {
+          ...defaultTableConfig,
+          columnProperties,
+          pageSizeOptions: [100],
+          pagination: {
+            ...defaultTableConfig.pagination,
+            pageSize: 100,
+            pageIndex: --page || 0,
+          },
+          paginationVisibility: {
+            hidePageSize: true,
+            hideRangeLabel: true,
+            hideRangeButtons: false,
+            hidePaginationFirstLastButtons: false,
+          },
+        };
+      }),
+    );
   }
 }
