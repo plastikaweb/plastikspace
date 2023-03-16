@@ -1,7 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
-import { go } from '@plastik/core/router-state';
+import { go, selectRouteQueryParams } from '@plastik/core/router-state';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/entities';
+import { PageEventConfig } from '@plastik/shared/table/entities';
+import { take } from 'rxjs';
 
 import * as NasaImagesSelectors from './nasa-images.selectors';
 
@@ -23,5 +25,14 @@ export class NasaImagesFacade {
         },
       }),
     );
+  }
+
+  changePagination({ pageIndex }: PageEventConfig) {
+    this.store
+      .select(selectRouteQueryParams)
+      .pipe(take(1))
+      .subscribe(queryParams => {
+        this.store.dispatch(go({ path: [], extras: { queryParams: { ...queryParams, page: ++pageIndex }, queryParamsHandling: 'merge' } }));
+      });
   }
 }

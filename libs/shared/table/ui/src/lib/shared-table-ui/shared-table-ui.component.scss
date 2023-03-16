@@ -1,6 +1,21 @@
 :host ::ng-deep {
-  .mat-cell,
-  .mat-mdc-cell {
-    @apply items-stretch p-md h-auto;
+  .mat-row {
+    @apply items-stretch;
+  }
+
+  .table__cell--link a {
+    @apply cursor-pointer;
+  }
+
+  .paginator--hide {
+    .mat-paginator-range-label {
+      @apply hidden;
+    }
+  }
+
+  .paginator--hide-range-buttons {
+    .mat-paginator-range-actions {
+      display: none !important;
+    }
   }
 }
