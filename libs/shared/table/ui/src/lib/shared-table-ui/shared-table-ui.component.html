@@ -14,3 +14,20 @@
     <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
 </div>
+
+<mat-paginator
+  #matPaginator
+  [hidePageSize]="paginationVisibility?.hidePageSize"
+  [length]="resultsLength"
+  [ngClass]="{
+    'paginator--hide': paginationVisibility?.hideRangeLabel,
+    'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons
+  }"
+  [pageIndex]="matPaginator?.pageIndex"
+  [pageSize]="matPaginator?.pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
+  aria-label="Select page"
+  (page)="onChangePagination($event)"
+>
+</mat-paginator>

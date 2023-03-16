@@ -1,17 +1,24 @@
 <h1>Search Images</h1>
-<div class="flex flex-row items-end content-center justify-between mx-0 my-md filters-box">
-  <plastik-shared-form-feature
-    [submitAvailable]="false"
-    [fields]="(formStructure$ | ngrxPush) || []"
-    [model]="{}"
-    (changeEvent)="onChange($event)"
-  >
-  </plastik-shared-form-feature>
-</div>
+
+<!-- filtering -->
+<plastik-shared-form-feature
+  class="flex flex-row items-end content-center justify-between mx-0 my-md filters-box"
+  [submitAvailable]="false"
+  [fields]="(formStructure$ | ngrxPush) || []"
+  [model]="{}"
+  (changeEvent)="onChange($event)"
+>
+</plastik-shared-form-feature>
+
+<!-- table -->
 <plastik-shared-table
-  *ngIf="{ data: images$ | ngrxPush, tableStructure } as obs"
+  *ngIf="{ data: images$ | ngrxPush, tableStructure: tableStructure$ | ngrxPush } as obs"
   [data]="obs?.data || []"
-  [columnProperties]="obs.tableStructure.columnProperties || []"
+  [columnProperties]="obs.tableStructure?.columnProperties || []"
   [resultsLength]="(count$ | ngrxPush) || 0"
+  [pageSizeOptions]="obs.tableStructure?.pageSizeOptions || []"
+  [pagination]="obs.tableStructure?.pagination"
+  [paginationVisibility]="obs.tableStructure?.paginationVisibility"
+  (changePagination)="onChangePagination($event)"
 >
 </plastik-shared-table>

@@ -29,7 +29,7 @@ export interface TableControlStructure<OBJ = unknown> {
    * Array with each column configuration properties.
    */
   columnProperties: TableColumnFormatting<OBJ, FormattingTypes>[];
-  pagination?: TablePagination;
+  pagination?: PageEventConfig;
   pageSizeOptions?: number[];
   paginationVisibility?: Partial<TablePaginationVisibility>;
 }
@@ -47,7 +47,7 @@ export type TableSorting = Pick<MatSort, 'active' | 'direction'>;
  * {pageIndex} is the current page index number with base 0.
  * {pageSize} is the number of items per page.
  */
-export type TablePagination = Pick<PageEvent, 'previousPageIndex' | 'pageIndex' | 'pageSize'>;
+export type PageEventConfig = Pick<PageEvent, 'previousPageIndex' | 'pageIndex' | 'pageSize'>;
 
 /**
  * @description Configuration for Table Pagination.

@@ -7,6 +7,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { NasaImagesFacade } from '@plastik/nasa-images/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/entities';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
 import { NasaImagesFeatureSearchComponent } from './nasa-images-feature-search.component';
 
@@ -27,7 +28,7 @@ describe('NasaImagesFeatureSearchComponent', () => {
       providers: [provideEnvironmentMock(), provideMockStore()],
     })
       .overrideProvider(NasaImagesFacade, {
-        useValue: { search: jest.fn() },
+        useValue: { search: jest.fn(), changePagination: jest.fn() },
       })
       .compileComponents();
 
@@ -60,5 +61,11 @@ describe('NasaImagesFeatureSearchComponent', () => {
       component.onChange(params);
       expect(facade.search).toHaveBeenCalledWith(params);
     });
+  });
+
+  it('onChangePagination should call search changePagination method', () => {
+    const tablePagination: PageEventConfig = { pageIndex: 1, pageSize: 100 };
+    component.onChangePagination(tablePagination);
+    expect(facade.changePagination).toHaveBeenCalledWith(tablePagination);
   });
 });

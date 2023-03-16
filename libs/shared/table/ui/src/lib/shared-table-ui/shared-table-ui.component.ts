@@ -1,14 +1,24 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewChild } from '@angular/core';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { PushModule } from '@ngrx/component';
 import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
-import { TableColumnFormatting } from '@plastik/shared/table/entities';
+import { PageEventConfig, TableColumnFormatting, TablePaginationVisibility } from '@plastik/shared/table/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
@@ -47,7 +57,40 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
    */
   @Input() resultsLength?: number;
 
+  /**
+   * Pagination configuration.
+   */
+  @Input() pagination?: PageEventConfig;
+
+  /**
+   * Remove pagination component to the table. Present by default.
+   */
+  @Input() noPagination = false;
+
+  /**
+   * Sets the pagination elements visibility configuration.
+   */
+  @Input() paginationVisibility?: Partial<TablePaginationVisibility> = {
+    hidePageSize: false,
+    hidePaginationFirstLastButtons: false,
+    hideRangeButtons: false,
+    hideRangeLabel: false,
+  };
+
+  /**
+   * Page sizes available.
+   * array with the number of items per page.
+   */
+  @Input() pageSizeOptions!: number[];
+
+  /**
+   * An Output emitter to send table pagination changes.
+   */
+  @Output()
+  changePagination: EventEmitter<PageEventConfig> = new EventEmitter();
+
   @ViewChild(MatTable) matTable!: MatTable<T>;
+  @ViewChild(MatPaginator) matPaginator!: MatPaginator;
 
   dataSource = new MatTableDataSource();
   displayedColumns: (string | number | symbol)[] = [];
@@ -55,15 +98,33 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.displayedColumns = this?.columnProperties?.map(property => property.key) || [];
+
+    if (this.matPaginator && this.pagination) {
+      this.matPaginator.pageIndex = this.pagination?.pageIndex || 0;
+      this.matPaginator.pageSize = this.pagination?.pageSize || 10;
+    }
   }
 
-  ngOnChanges({ data, columnProperties }: SimpleChanges) {
+  ngOnChanges({ data, resultsLength, pagination, columnProperties }: SimpleChanges) {
     if (columnProperties) {
       this.displayedColumns = this?.columnProperties?.map(property => property.key) || [];
+    }
+
+    if (this.matPaginator && resultsLength?.currentValue < (this.pagination?.pageSize || 10)) {
+      this.matPaginator.pageIndex = 0;
+    }
+    if (this.matPaginator && pagination?.currentValue) {
+      const { pageIndex, pageSize } = pagination.currentValue as PageEventConfig;
+      this.matPaginator.pageIndex = pageIndex || 0;
+      this.matPaginator.pageSize = pageSize || 10;
     }
 
     if (data) {
       this.dataSource.data = this.data;
     }
+  }
+
+  onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
+    this.changePagination.emit({ previousPageIndex, pageIndex, pageSize });
   }
 }

@@ -22,30 +22,31 @@ describe('RouterState Effects', () => {
     metadata = getEffectsMetadata(effects);
   });
 
-  describe('navigate$', () => {
-    it('should register navigate$ that dispatches no action', () => {
-      expect(metadata.navigate$).toEqual({
-        dispatch: false,
-        useEffectsErrorHandler: true,
-      });
+  it('should register navigate$ that dispatches no action', () => {
+    expect(metadata.navigate$).toEqual({
+      dispatch: false,
+      useEffectsErrorHandler: true,
     });
   });
 
-  describe('navigateBack$', () => {
-    it('should register navigateBack$ that dispatches no action', () => {
-      expect(metadata.navigateBack$).toEqual({
-        dispatch: false,
-        useEffectsErrorHandler: true,
-      });
+  it('should register navigateBack$ that dispatches no action', () => {
+    expect(metadata.navigateBack$).toEqual({
+      dispatch: false,
+      useEffectsErrorHandler: true,
     });
   });
 
-  describe('navigateForward$', () => {
-    it('should register navigateForward$ that dispatches no action', () => {
-      expect(metadata.navigateForward$).toEqual({
-        dispatch: false,
-        useEffectsErrorHandler: true,
-      });
+  it('should register navigateForward$ that dispatches no action', () => {
+    expect(metadata.navigateForward$).toEqual({
+      dispatch: false,
+      useEffectsErrorHandler: true,
+    });
+  });
+
+  test('should register scrollToTop$ that dispatches no action', () => {
+    expect(metadata.scrollToTop$).toEqual({
+      dispatch: false,
+      useEffectsErrorHandler: true,
     });
   });
 });
