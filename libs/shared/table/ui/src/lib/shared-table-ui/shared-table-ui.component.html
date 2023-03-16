@@ -5,8 +5,12 @@
         {{ column.title }}
       </mat-header-cell>
 
-      <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses || ''">
-        <div class="table__cell--default" [innerHTML]="row | safeFormatted : column : i + 1"></div>
+      <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
+        <div
+          class="table-cell table__cell--default"
+          [ngClass]="column.cssClasses?.[1] || ''"
+          [innerHTML]="row | safeFormatted : column : i + 1"
+        ></div>
       </mat-cell>
     </ng-container>
 
