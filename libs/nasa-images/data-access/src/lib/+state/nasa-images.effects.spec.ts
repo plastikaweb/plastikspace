@@ -7,6 +7,7 @@ import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { getMockedRouterNavigation, selectRouteDataName, selectRouteQueryParams } from '@plastik/core/router-state';
 import { NasaImagesViews } from '@plastik/nasa-images/entities';
+import { selectActivityActive, setActivity } from '@plastik/shared/activity/data-access';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
@@ -14,7 +15,6 @@ import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
 import * as NasaImagesActions from './nasa-images.actions';
 import { NasaImagesEffects } from './nasa-images.effects';
-import { selectNasaImagesLoading } from './nasa-images.selectors';
 
 describe('NasaImagesEffects', () => {
   const { items, count } = createDummyNasaImagesSearch();
@@ -37,10 +37,10 @@ describe('NasaImagesEffects', () => {
             { selector: selectRouteDataName, value: NasaImagesViews.SEARCH },
             {
               selector: selectRouteQueryParams,
-              value: { q: 'pluto' },
+              value: { q: 'pluto', media_type: 'image' },
             },
             {
-              selector: selectNasaImagesLoading,
+              selector: selectActivityActive,
               value: false,
             },
           ],
@@ -93,7 +93,7 @@ describe('NasaImagesEffects', () => {
   });
 
   describe('load$', () => {
-    const action = NasaImagesActions.loadNasaImages({ params: { q: 'pluto' } });
+    const action = NasaImagesActions.loadNasaImages({ params: { q: 'pluto', media_type: 'image' } });
     it('should work on success', () => {
       jest.spyOn(service, 'getList').mockImplementation(() => of({ items, count }));
       actions = hot('-a-|', { a: action });
@@ -112,6 +112,40 @@ describe('NasaImagesEffects', () => {
 
     it('should be registered', () => {
       expect(metadata.load$).toEqual({
+        dispatch: true,
+        useEffectsErrorHandler: true,
+      });
+    });
+  });
+
+  describe('activeOn$', () => {
+    const action = NasaImagesActions.loadNasaImages({ params: { q: 'pluto' } });
+    it('should work', () => {
+      actions = hot('-a-|', { a: action });
+      const expected = hot('-a-|', { a: setActivity({ active: true }) });
+
+      expect(effects.activeOn$).toBeObservable(expected);
+    });
+
+    it('should be registered', () => {
+      expect(metadata.activeOn$).toEqual({
+        dispatch: true,
+        useEffectsErrorHandler: true,
+      });
+    });
+  });
+
+  describe('activeOff$', () => {
+    const action = NasaImagesActions.loadNasaImagesSuccess({ items, count });
+    it('should work', () => {
+      actions = hot('-a-|', { a: action });
+      const expected = hot('-a-|', { a: setActivity({ active: false }) });
+
+      expect(effects.activeOff$).toBeObservable(expected);
+    });
+
+    it('should be registered', () => {
+      expect(metadata.activeOff$).toEqual({
         dispatch: true,
         useEffectsErrorHandler: true,
       });

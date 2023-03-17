@@ -27,6 +27,7 @@ $nasa-images-theme: mat.define-light-theme(
   --secondary-dark: #c62d1f;
 
   /* Spacing */
+  --spacing-tiny: 0.25rem;
   --spacing-sub: 0.5rem;
   --spacing-sm: 1rem;
   --spacing-md: 1.5rem;
@@ -71,4 +72,10 @@ h3 {
 
 h4 {
   @apply text-sm;
+}
+
+.mat-mdc-progress-bar {
+  @apply bg-secondary-light;
+  --mdc-linear-progress-track-height: var(--spacing-tiny);
+  --mdc-linear-progress-active-indicator-color: var(--secondary-dark);
 }

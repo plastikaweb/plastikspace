@@ -12,7 +12,6 @@ describe('NasaImages Reducer', () => {
 
       const result: NasaImagesState = nasaMediaReducer(initialNasaImagesState, action);
 
-      expect(result.loading).toBeTruthy();
       expect(result.error).toBeNull();
     });
 
@@ -21,7 +20,6 @@ describe('NasaImages Reducer', () => {
 
       const result: NasaImagesState = nasaMediaReducer(initialNasaImagesState, action);
 
-      expect(result.loading).toBeFalsy();
       expect(result.ids.length).toBe(3);
     });
 
@@ -30,7 +28,6 @@ describe('NasaImages Reducer', () => {
 
       const result: NasaImagesState = nasaMediaReducer(initialNasaImagesState, action);
 
-      expect(result.loading).toBeFalsy();
       expect(result.error).toEqual('ERROR');
     });
   });

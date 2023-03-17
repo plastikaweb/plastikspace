@@ -57,12 +57,6 @@ describe('NasaImages Selectors', () => {
       });
     });
 
-    it('selectNasaImagesLoading() should return the current "loading" status', () => {
-      const result = NasaImagesSelectors.selectNasaImagesLoading(state);
-
-      expect(result).toBeFalsy();
-    });
-
     it('selectNasaImagesError() should return the current "error" state', () => {
       const result = NasaImagesSelectors.selectNasaImagesError(state);
 
