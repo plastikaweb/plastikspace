@@ -30,6 +30,7 @@ module.exports = {
       transparent: 'transparent',
     },
     spacing: {
+      tiny: 'var(--spacing-tiny)',
       sub: 'var(--spacing-sub)',
       sm: 'var(--spacing-sm)',
       md: 'var(--spacing-md)',

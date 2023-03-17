@@ -11,7 +11,6 @@ import * as NasaImagesSelectors from './nasa-images.selectors';
 export class NasaImagesFacade {
   private readonly store = inject(Store);
 
-  loading$ = this.store.pipe(select(NasaImagesSelectors.selectNasaImagesLoading));
   images$ = this.store.pipe(select(NasaImagesSelectors.selectAllNasaImages));
   count$ = this.store.pipe(select(NasaImagesSelectors.selectNasaImagesCount));
 
