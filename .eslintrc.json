@@ -41,7 +41,7 @@
               },
               {
                 "sourceTag": "scope:core",
-                "onlyDependOnLibsWithTags": ["scope:core", "type:entity", "type:util"]
+                "onlyDependOnLibsWithTags": ["scope:core", "type:entity", "type:util", "scope:shared"]
               },
               {
                 "sourceTag": "scope:shared",
