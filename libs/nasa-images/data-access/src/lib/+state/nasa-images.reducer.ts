@@ -8,7 +8,6 @@ export const NASA_IMAGES_FEATURE_KEY = 'images';
 
 export interface NasaImagesState extends EntityState<NasaImage> {
   selectedId?: string;
-  loading: boolean;
   count: number;
   error?: string | null;
 }
@@ -20,18 +19,14 @@ export interface NasaImagesPartialState {
 export const nasaMediaAdapter: EntityAdapter<NasaImage> = createEntityAdapter<NasaImage>();
 
 export const initialNasaImagesState: NasaImagesState = nasaMediaAdapter.getInitialState({
-  loading: false,
   count: 0,
 });
 
 const reducer = createReducer(
   initialNasaImagesState,
-  on(loadNasaImages, (state): NasaImagesState => ({ ...state, loading: true, error: null })),
-  on(
-    loadNasaImagesSuccess,
-    (state, { items, count }): NasaImagesState => nasaMediaAdapter.setAll(items, { ...state, count, loading: false }),
-  ),
-  on(loadNasaImagesFailure, (state, { error }): NasaImagesState => ({ ...state, error, loading: false })),
+  on(loadNasaImages, (state): NasaImagesState => ({ ...state, error: null })),
+  on(loadNasaImagesSuccess, (state, { items, count }): NasaImagesState => nasaMediaAdapter.setAll(items, { ...state, count })),
+  on(loadNasaImagesFailure, (state, { error }): NasaImagesState => ({ ...state, error })),
 );
 
 // eslint-disable-next-line jsdoc/require-jsdoc

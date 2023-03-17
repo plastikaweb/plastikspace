@@ -5,10 +5,10 @@ import { NavigationFilterService, selectRouteQueryParams } from '@plastik/core/r
 import { catchError, exhaustMap, filter, map, of } from 'rxjs';
 
 import { NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews } from '@plastik/nasa-images/entities';
+import { selectActivityActive, setActivity } from '@plastik/shared/activity/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import * as NasaImagesActions from './nasa-images.actions';
 import { loadNasaImages } from './nasa-images.actions';
-import { selectNasaImagesLoading } from './nasa-images.selectors';
 
 @Injectable()
 export class NasaImagesEffects {
@@ -20,9 +20,16 @@ export class NasaImagesEffects {
   navigation$ = createEffect(() => {
     return this.actions$.pipe(
       this.navigationFilter.checkRouterNavigation<NasaImagesViews>(NasaImagesViews.SEARCH),
-      concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectNasaImagesLoading)]),
-      filter(([, , loading]) => !loading),
+      concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectActivityActive)]),
+      filter(([, , activity]) => !activity),
       map(([, queryParams]) => loadNasaImages({ params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } } })),
+    );
+  });
+
+  activeOn$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(NasaImagesActions.loadNasaImages),
+      map(() => setActivity({ active: true })),
     );
   });
 
@@ -35,6 +42,13 @@ export class NasaImagesEffects {
           catchError((error: NasaImagesSearchApiError) => of(NasaImagesActions.loadNasaImagesFailure({ error: error?.reason || 'error' }))),
         ),
       ),
+    );
+  });
+
+  activeOff$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(NasaImagesActions.loadNasaImagesSuccess, NasaImagesActions.loadNasaImagesFailure),
+      map(() => setActivity({ active: false })),
     );
   });
 }

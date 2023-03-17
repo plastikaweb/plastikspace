@@ -88,6 +88,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 #### Activity
 
 - [shared-activity-ui](libs/shared/activity/ui/README.md)
+- [shared-activity-data-access](libs/shared/activity/data-access/README.md)
 
 #### Util
 

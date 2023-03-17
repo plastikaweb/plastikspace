@@ -6,8 +6,6 @@ export const selectNasaImagesState = createFeatureSelector<NasaImagesState>(NASA
 
 const { selectAll, selectEntities } = nasaMediaAdapter.getSelectors();
 
-export const selectNasaImagesLoading = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.loading);
-
 export const selectNasaImagesError = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.error);
 
 export const selectAllNasaImages = createSelector(selectNasaImagesState, (state: NasaImagesState) => selectAll(state));

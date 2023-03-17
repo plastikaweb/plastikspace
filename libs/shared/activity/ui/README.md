@@ -50,11 +50,12 @@ export class ParentComponent {}
 
 ## How to style
 
-If you want to overwrite the default color styling for the progress bar background and indicator using tailwind vars, you can add to your app styles:
+If you want to overwrite the default color styling and height for the progress bar background and indicator `using tailwind vars`, you can add to your app styles:
 
 ```css
 .mat-mdc-progress-bar {
   @apply bg-secondary-light;
+  --mdc-linear-progress-track-height: var(--spacing-tiny);
   --mdc-linear-progress-active-indicator-color: var(--secondary-dark);
 }
 ```
