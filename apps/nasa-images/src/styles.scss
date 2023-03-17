@@ -72,3 +72,8 @@ h3 {
 h4 {
   @apply text-sm;
 }
+
+.mat-mdc-progress-bar {
+  @apply bg-secondary-light;
+  --mdc-linear-progress-active-indicator-color: var(--secondary-dark);
+}

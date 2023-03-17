@@ -32,6 +32,7 @@
       "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
       "@plastik/nasa-images/entities": ["libs/nasa-images/entities/src/index.ts"],
       "@plastik/nasa-images/search": ["libs/nasa-images/feature/search/src/index.ts"],
+      "@plastik/shared/activity/ui": ["libs/shared/activity/ui/src/index.ts"],
       "@plastik/shared/button": ["libs/shared/button/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
