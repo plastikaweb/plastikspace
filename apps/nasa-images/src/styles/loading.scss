@@ -1,0 +1,22 @@
+body {
+  @apply bg-primary;
+}
+
+.spinner-container {
+  @apply flex flex-col justify-center items-center absolute top-0 left-0 right-0 bottom-0 z-50 gap-md pointer-events-none;
+
+  .logo {
+    @apply my-0 mx-auto w-[100px] saturate-100 contrast-100 brightness-95;
+  }
+}
+
+.lds-ripple {
+  @apply relative inline-block w-[80px] h-[80px];
+  div {
+    @apply absolute border-white border-4 opacity-100 rounded-full animate-radar;
+
+    &:nth-child(2) {
+      animation-delay: -0.5s;
+    }
+  }
+}

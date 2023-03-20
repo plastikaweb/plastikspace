@@ -11,7 +11,7 @@ import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
-import { SharedActivityUiLinearComponent } from '@plastik/shared/activity/ui';
+import { SharedActivityUiLinearComponent, SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SharedButtonUiComponent } from '@plastik/shared/button';
 import { LayoutPosition } from '@plastik/shared/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -38,6 +38,7 @@ import { map, Subject, takeUntil } from 'rxjs';
     CoreCmsLayoutUiSidenavComponent,
     SharedButtonUiComponent,
     SharedActivityUiLinearComponent,
+    SharedActivityUiOverlayComponent,
   ],
   templateUrl: './core-cms-layout-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
