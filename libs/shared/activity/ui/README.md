@@ -2,29 +2,36 @@
 
 - [shared-activity-ui](#shared-activity-ui)
   - [Description](#description)
-  - [HTML element](#html-element)
-  - [Inputs](#inputs)
-  - [Examples](#examples)
-  - [How to style](#how-to-style)
+  - [Linear](#linear)
+    - [HTML element](#html-element)
+    - [Inputs](#inputs)
+    - [Examples](#examples)
+    - [How to style](#how-to-style)
+  - [Overlay](#overlay)
+    - [HTML element](#html-element-1)
+    - [Content projection](#content-projection)
+    - [Examples](#examples-1)
   - [Running unit tests](#running-unit-tests)
   - [Useful links](#useful-links)
 
 ## Description
 
-Shared linear activity indicator to indicate some activity.
+Shared activity indicators to indicate some activity.
 
-## HTML element
+## Linear
+
+### HTML element
 
 `<plastik-shared-activity-ui-linear>`
 
-## Inputs
+### Inputs
 
 | Name     | Type              | Description                                                                                     | Default         |
 | -------- | ----------------- | ----------------------------------------------------------------------------------------------- | --------------- |
 | `active` | `boolean`         | Adds active class to indicator, that should be styled to show some kind of activity.            | false           |
 | `mode`   | `ProgressBarMode` | Sets the type of material progress bar ('determinate' \| indeterminate' \| 'buffer' \| 'query') | 'indeterminate' |
 
-## Examples
+### Examples
 
 Use the shared component into a parent component.
 
@@ -48,7 +55,7 @@ export class ParentComponent {}
 <plastik-shared-activity-ui-linear [active]="active$ | async"></plastik-shared-activity-ui-linear>
 ```
 
-## How to style
+### How to style
 
 If you want to overwrite the default color styling and height for the progress bar background and indicator `using tailwind vars`, you can add to your app styles:
 
@@ -60,6 +67,42 @@ If you want to overwrite the default color styling and height for the progress b
 }
 ```
 
+## Overlay
+
+### HTML element
+
+`<plastik-shared-activity-ui-overlay>`
+
+### Content projection
+
+| Selector | Description                                                               |
+| -------- | ------------------------------------------------------------------------- |
+| ``       | Add any html inside the element, like text or any loading style animation |
+
+### Examples
+
+Use the shared component into a parent component.
+
+- Import it into your app or feature module.
+
+```typescript
+import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
+
+@Component({
+  selector: 'parent',
+  standalone: true,
+  imports: [SharedActivityUiOverlayComponent],
+  templateUrl: './parent.component.html',
+})
+export class ParentComponent {}
+```
+
+- Add the shared component into your component template.
+
+```html
+<plastik-shared-activity-ui-overlay *ngIf*="active$ | async"> Loading... </plastik-shared-activity-ui-overlay>
+```
+
 ## Running unit tests
 
 Run `nx test shared-activity-ui` to execute the unit tests.
@@ -67,3 +110,4 @@ Run `nx test shared-activity-ui` to execute the unit tests.
 ## Useful links
 
 - [Material Progress Bar](https://material.angular.io/components/progress-bar/overview)
+- [The Four Ways To Create Loading Spinners In An Angular App](https://christianlydemann.com/four-ways-to-create-loading-spinners-in-an-angular-app/)

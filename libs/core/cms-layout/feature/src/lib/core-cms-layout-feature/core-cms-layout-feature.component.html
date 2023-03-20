@@ -1,4 +1,4 @@
-<div class="flex flex-col h-[calc(100vh-129px)]">
+<div class="flex flex-col h-max">
   <plastik-core-cms-layout-ui-header>
     <div start class="flex items-center gap-sm">
       <ng-container *ngIf="sidenavPosition === 'start'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
@@ -16,6 +16,16 @@
   </plastik-core-cms-layout-ui-header>
 
   <plastik-shared-activity-ui-linear [active]="(activity$ | ngrxPush) || false"></plastik-shared-activity-ui-linear>
+
+  <plastik-shared-activity-ui-overlay class="z-10" *ngIf="(activity$ | ngrxPush) || false">
+    <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
+    <div class="spinner-container">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </plastik-shared-activity-ui-overlay>
 
   <plastik-core-cms-layout-ui-sidenav
     [position]="sidenavPosition"
