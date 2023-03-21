@@ -20,7 +20,7 @@ export class PrefixTitleService extends TitleStrategy {
    *
    * @param {RouterStateSnapshot} snapshot The state of the router at a moment in time.
    */
-  override updateTitle(snapshot: RouterStateSnapshot): void {
+  updateTitle(snapshot: RouterStateSnapshot): void {
     const title = this.buildTitle(snapshot);
     this.title.setTitle(!title ? `${this.environment.name}` : `${this.environment.name} - ${title}`);
   }
