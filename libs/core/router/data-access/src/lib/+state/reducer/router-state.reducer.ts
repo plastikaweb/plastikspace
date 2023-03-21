@@ -12,7 +12,6 @@ export interface RouterStateUrl {
   params: Params;
   queryParams: Params;
   data: Record<string, unknown>;
-  title: string;
 }
 
 /**
@@ -53,7 +52,6 @@ export class CustomRouterSerializer implements RouterStateSerializer<RouterState
       params,
       queryParams,
       data,
-      title: data['title'] || '',
     };
   }
 }
