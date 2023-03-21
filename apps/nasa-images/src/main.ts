@@ -2,14 +2,14 @@ import { provideHttpClient } from '@angular/common/http';
 import { enableProdMode, importProvidersFrom, isDevMode } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter } from '@angular/router';
+import { provideRouter, TitleStrategy } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
 import { provideStore, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CoreCmsLayoutFeatureModule } from '@plastik/core/cms-layout';
 import { ENVIRONMENT } from '@plastik/core/environments';
-import { CustomRouterSerializer, routerReducers, RouterStateEffects } from '@plastik/core/router-state';
+import { CustomRouterSerializer, PrefixTitleService, routerReducers, RouterStateEffects } from '@plastik/core/router-state';
 import { NasaImagesViews } from '@plastik/nasa-images/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -42,11 +42,15 @@ bootstrapApplication(AppComponent, {
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,
-      navigationActionTiming: NavigationActionTiming.PostActivation,
+      navigationActionTiming: NavigationActionTiming.PreActivation,
     }),
     {
       provide: ENVIRONMENT,
       useValue: environment,
+    },
+    {
+      provide: TitleStrategy,
+      useClass: PrefixTitleService,
     },
   ],
   // eslint-disable-next-line no-console
