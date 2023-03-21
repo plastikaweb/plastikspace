@@ -9,9 +9,8 @@
   - [Router State Object](#router-state-object)
   - [How to use](#how-to-use)
     - [RouterState Actions](#routerstate-actions)
-    - [Router title and Navigation](#router-title-and-navigation)
-      - [Router title with app name prefix](#router-title-with-app-name-prefix)
-      - [Custom router title](#custom-router-title)
+    - [Route title](#route-title)
+      - [Route title with app name prefix](#route-title-with-app-name-prefix)
     - [Automatic scroll on route navigation](#automatic-scroll-on-route-navigation)
     - [Selectors](#selectors)
   - [Running unit tests](#running-unit-tests)
@@ -49,15 +48,12 @@ We can’t replay or jump across state snapshots using the redux dev tools as ro
 
 ## Router State Object
 
-![router-store](router-store.png)
-
 ```typescript
 interface RouterStateUrl {
-  url: any;
+  url: string;
   params: Params;
   queryParams: Params;
   data: Record<string, unknown>;
-  title: string;
 }
 ```
 
@@ -70,18 +66,36 @@ Changes to your imports on your app root module (app.module).
 - Import `RouterStateEffects` to EffectsModule.forRoot.
 
 ```typescript
-import {
-    CustomRouterSerializer, routerReducers, RouterStateEffects
-} from '@plastik/core/router-state';
+// app main.ts
 
-StoreModule.forRoot(
-      { reducers,...routerReducers },
-      // ... other configuration parameters
+import { TitleStrategy } from '@angular/router';
+import { EffectsModule } from '@ngrx/effects';
+import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { CustomRouterSerializer, PrefixTitleService, routerReducers, RouterStateEffects } from '@plastik/core/router-state';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    importProvidersFrom(
+      StoreModule.forRoot(routerReducers, {
+        runtimeChecks: {
+          strictActionImmutability: true,
+          strictStateImmutability: true,
+        },
+      }),
+      EffectsModule.forRoot([RouterStateEffects]),
+      isDevMode() ? StoreDevtoolsModule.instrument({ name: environment.name, maxAge: 25 }) : [],
     ),
-    StoreRouterConnectingModule.forRoot({
+    provideRouterStore({
       serializer: CustomRouterSerializer,
+      navigationActionTiming: NavigationActionTiming.PreActivation,
     }),
-    EffectsModule.forRoot([RouterStateEffects]),
+    {
+      provide: TitleStrategy,
+      useClass: PrefixTitleService,
+    },
+  ],
+});
 ```
 
 Every time a route change is dispatched, the local state will be updated.
@@ -107,19 +121,37 @@ this.store.dispatch(forward();
 >
 > Example: `<a [routerLink]="['new']">Add new user</a>`
 
-### Router title and Navigation
+### Route title
 
 For a specific title on any route, set a title property.
 
+> You can use a service resolver to set it dynamically.
+
 ```typescript
-{
-  path: 'some-route',
-  loadChildren: () => import('./containers/some/some.module').then(m => m.SomeModule),
-  title: 'Some Title',
-},
+// app.routes.ts
+
+@Injectable({ providedIn: 'root' })
+export class CustomTitleResolver {
+  resolve() {
+    return of('Custom About Me');
+  }
+}
+
+const routes: Routes = [
+  {
+    path: 'home',
+    component: HomeComponent,
+    title: 'Home',
+  },
+  {
+    path: 'custom',
+    component: CustomComponent,
+    title: CustomTitleResolver,
+  },
+];
 ```
 
-#### Router title with app name prefix
+#### Route title with app name prefix
 
 If you want to prefix your routes with the specific app name:
 
@@ -140,35 +172,6 @@ NgModule({
   ],
 });
 export class AppModule {}
-```
-
-#### Custom router title
-
-For more complex title cooking, use @ngrx Effects like this:
-
-```typescript
-Injectable();
-export class EntityEffects {
-  updateTitle$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(loadEntitySuccess),
-        concatLatestFrom(() => [this.store.select(selectEntitySelected)]),
-        filter(([, data]) => !!data && !isEmpty(data) && !isNil(data)),
-        tap(([, data]) => {
-          // this is the default title, with the defined route title and any TitleStrategy service applied.
-          const mainTitle = this.titleService.getTitle();
-          // the specific string to add to the main title. It could be a name, an ID that references that unique entity.
-          const dataTitle = ' - ' + data?.title || 'no title';
-          return this.titleService.setTitle(`${mainTitle}${avWorkTitle}`);
-        }),
-      );
-    },
-    { dispatch: false },
-  );
-
-  constructor(private readonly store: Store, private readonly titleService: Title) {}
-}
 ```
 
 ### Automatic scroll on route navigation
@@ -196,3 +199,5 @@ Run `nx test router-state` to execute the unit tests.
 
 - [@ngrx/router-store](https://ngrx.io/guide/router-store)
 - [NgRx Router Store | Reduce & Select Route Params](https://medium.com/simars/ngrx-router-store-reduce-select-route-params-6baff607dd9)
+- [Angular TitleStrategy](https://angular.io/api/router/TitleStrategy)
+- [Handling Page Titles in Angular by Netanel Basal](https://netbasal.com/handling-page-titles-in-angular-40b53823af4a)

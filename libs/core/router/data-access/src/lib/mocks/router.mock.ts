@@ -14,7 +14,6 @@ export const routerMockState: {
   navigationId: 1,
   state: {
     params: { key: '1' },
-    title: 'The title',
     queryParams: {
       key: 'value',
     },
