@@ -1,8 +1,9 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { PushModule } from '@ngrx/component';
 import { NasaImagesFacade } from '@plastik/nasa-images/search/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
+import { NasaImagesSearchUiNoResultsComponent } from '@plastik/nasa-images/search/ui/no-results';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
@@ -13,7 +14,7 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
 @Component({
   selector: 'plastik-nasa-images-search',
   standalone: true,
-  imports: [NgIf, PushModule, SharedTableUiComponent, SharedFormFeatureModule, AsyncPipe],
+  imports: [NgIf, PushModule, SharedTableUiComponent, SharedFormFeatureModule, NasaImagesSearchUiNoResultsComponent],
   templateUrl: './nasa-images-search-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,37 +1,43 @@
 <div class="block mt-4 overflow-auto border-t border-solid border-gray-10">
-  <mat-table *ngIf="!!data.length" class="table w-full table-fixed" [dataSource]="dataSource">
-    <ng-container *ngFor="let column of columnProperties" [matColumnDef]="column.key" [sticky]="column.sticky">
-      <mat-header-cell *matHeaderCellDef [ngClass]="column.cssClasses || ''">
-        {{ column.title }}
-      </mat-header-cell>
+  <div *ngIf="!!data.length; else noResults">
+    <mat-table class="table w-full table-fixed" [dataSource]="dataSource">
+      <ng-container *ngFor="let column of columnProperties" [matColumnDef]="column.key" [sticky]="column.sticky">
+        <mat-header-cell *matHeaderCellDef [ngClass]="column.cssClasses || ''">
+          {{ column.title }}
+        </mat-header-cell>
 
-      <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
-        <div
-          class="table-cell table__cell--default"
-          [ngClass]="column.cssClasses?.[1] || ''"
-          [innerHTML]="row | safeFormatted : column : i + 1"
-        ></div>
-      </mat-cell>
-    </ng-container>
+        <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
+          <div
+            class="table-cell table__cell--default"
+            [ngClass]="column.cssClasses?.[1] || ''"
+            [innerHTML]="row | safeFormatted : column : i + 1"
+          ></div>
+        </mat-cell>
+      </ng-container>
 
-    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      #matPaginator
+      [hidePageSize]="paginationVisibility?.hidePageSize"
+      [length]="resultsLength"
+      [ngClass]="{
+        'paginator--hide': paginationVisibility?.hideRangeLabel,
+        'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons
+      }"
+      [pageIndex]="matPaginator?.pageIndex"
+      [pageSize]="matPaginator?.pageSize"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
+      aria-label="Select page"
+      (page)="onChangePagination($event)"
+    >
+    </mat-paginator>
+  </div>
+
+  <ng-template #noResults>
+    <ng-content select="[noResults]"></ng-content>
+  </ng-template>
 </div>
-
-<mat-paginator
-  #matPaginator
-  [hidePageSize]="paginationVisibility?.hidePageSize"
-  [length]="resultsLength"
-  [ngClass]="{
-    'paginator--hide': paginationVisibility?.hideRangeLabel,
-    'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons
-  }"
-  [pageIndex]="matPaginator?.pageIndex"
-  [pageSize]="matPaginator?.pageSize"
-  [pageSizeOptions]="pageSizeOptions"
-  [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
-  aria-label="Select page"
-  (page)="onChangePagination($event)"
->
-</mat-paginator>

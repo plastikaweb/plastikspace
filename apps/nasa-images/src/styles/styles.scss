@@ -35,6 +35,7 @@ $nasa-images-theme: mat.define-light-theme(
   --spacing-md: 1.5rem;
   --spacing-lg: 2rem;
   --spacing-xl: 3rem;
+  --spacing-xxl: 6rem;
 
   /* Font Size */
   --font-size-sub: 0.7rem;
@@ -68,19 +69,19 @@ body {
 }
 
 h1 {
-  @apply text-xl;
+  @apply text-xxl;
 }
 
 h2 {
-  @apply text-lg;
+  @apply text-xl;
 }
 
 h3 {
-  @apply text-md;
+  @apply text-lg;
 }
 
 h4 {
-  @apply text-sm;
+  @apply text-md;
 }
 
 .mat-mdc-progress-bar {
