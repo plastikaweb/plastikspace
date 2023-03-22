@@ -1,6 +1,6 @@
 import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/data-access';
 import { ViewsConfigRecord } from '@plastik/core/entities';
-import { NasaImagesViews } from '@plastik/nasa-images/entities';
+import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
 
 export const headerConfig: CoreCmsLayoutHeaderConfig = {
   showToggleMenuButton: true,
