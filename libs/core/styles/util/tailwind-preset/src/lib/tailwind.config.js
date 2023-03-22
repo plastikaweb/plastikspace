@@ -37,6 +37,7 @@ module.exports = {
       md: 'var(--spacing-md)',
       lg: 'var(--spacing-lg)',
       xl: 'var(--spacing-xl)',
+      xxl: 'var(--spacing-xxl)',
     },
     fontSize: {
       sub: 'var(--font-size-sub)',
