@@ -10,7 +10,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CoreCmsLayoutFeatureModule } from '@plastik/core/cms-layout';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import { CustomRouterSerializer, PrefixTitleService, routerReducers, RouterStateEffects } from '@plastik/core/router-state';
-import { NasaImagesViews } from '@plastik/nasa-images/entities';
+import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { AppComponent } from './app/app.component';

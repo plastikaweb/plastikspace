@@ -8,9 +8,9 @@ See the [NASA Image Library Analysis Wiki](https://github.com/plastikaweb/plasti
 
 This is a list of all the related only to nasa-images app.
 
-- [nasa-images-entities](../../libs/nasa-images/entities/README.md)
-- [nasa-images-data-access](../../libs/nasa-images//data-access/README.md)
-- [nasa-images-feature-search](../../libs/nasa-images/feature/search/README.md)
+- [nasa-images-search-entities](../../libs/nasa-images/search/entities/README.md)
+- [nasa-images-search-data-access](../../libs/nasa-images/search/data-access/README.md)
+- [nasa-images-search-feature](../../libs/nasa-images/search/feature/README.md)
 
 ## Running unit tests
 
