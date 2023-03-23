@@ -13,6 +13,7 @@ export class NasaImagesFacade {
 
   images$ = this.store.pipe(select(NasaImagesSelectors.selectAllNasaImages));
   count$ = this.store.pipe(select(NasaImagesSelectors.selectNasaImagesCount));
+  isActiveSearch$ = this.store.pipe(select(NasaImagesSelectors.selectNasaImagesIsActiveSearch));
 
   search(params: NasaImagesSearchApiParams): void {
     this.store.dispatch(

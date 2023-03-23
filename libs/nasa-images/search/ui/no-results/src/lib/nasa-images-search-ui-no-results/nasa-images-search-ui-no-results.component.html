@@ -1,7 +1,11 @@
-<div class="my-xl mx-auto text-center w-5/6">
-  <h3 class="items-center flex flex-col">
-    <mat-icon aria-hidden="true" class="text-[15rem] text-secondary-dark h-[15rem] w-[15rem]"> search_off </mat-icon>
-    <span>No results found</span>
+<div class="w-5/6 mx-auto text-center my-xl">
+  <h3 class="flex flex-col items-center">
+    <mat-icon aria-hidden="true" class="text-[15rem] text-secondary-dark h-[15rem] w-[15rem]">
+      <ng-content select="[icon]"></ng-content>
+    </mat-icon>
+    <ng-content select="[title]"></ng-content>
   </h3>
-  <p class="mt-sm">We can't find any item marching your search</p>
+  <div class="mt-md">
+    <ng-content select="[message]"></ng-content>
+  </div>
 </div>

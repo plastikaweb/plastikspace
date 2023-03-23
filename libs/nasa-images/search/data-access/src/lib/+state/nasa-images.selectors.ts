@@ -19,3 +19,5 @@ export const selectNasaImagesEntity = createSelector(selectNasaImagesEntities, s
 );
 
 export const selectNasaImagesCount = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.count);
+
+export const selectNasaImagesIsActiveSearch = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.isActiveSearch);

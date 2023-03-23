@@ -23,6 +23,7 @@ export class NasaImagesSearchFeatureComponent {
 
   images$ = this.facade.images$;
   count$ = this.facade.count$;
+  isActiveSearch$ = this.facade.isActiveSearch$;
   tableStructure$ = NasaImagesSearchFeatureTableConfig.getTableStructure();
   formStructure$ = getNasaImagesSearchFeatureFormConfig();
 
