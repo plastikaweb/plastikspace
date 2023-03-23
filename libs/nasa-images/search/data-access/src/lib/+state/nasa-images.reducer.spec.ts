@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
-import { loadNasaImages, loadNasaImagesFailure, loadNasaImagesSuccess } from './nasa-images.actions';
+import { cleanupNasaImages, loadNasaImages, loadNasaImagesFailure, loadNasaImagesSuccess } from './nasa-images.actions';
 import { initialNasaImagesState, NasaImagesState, nasaMediaReducer } from './nasa-images.reducer';
 
 describe('NasaImages Reducer', () => {
@@ -13,6 +13,7 @@ describe('NasaImages Reducer', () => {
       const result: NasaImagesState = nasaMediaReducer(initialNasaImagesState, action);
 
       expect(result.error).toBeNull();
+      expect(result.isActiveSearch).toBeFalsy();
     });
 
     it('loadNasaImagesSuccess should return a valid state', () => {
@@ -21,6 +22,7 @@ describe('NasaImages Reducer', () => {
       const result: NasaImagesState = nasaMediaReducer(initialNasaImagesState, action);
 
       expect(result.ids.length).toBe(3);
+      expect(result.isActiveSearch).toBeTruthy();
     });
 
     it('loadNasaImagesFailure should return a valid state', () => {
@@ -29,6 +31,18 @@ describe('NasaImages Reducer', () => {
       const result: NasaImagesState = nasaMediaReducer(initialNasaImagesState, action);
 
       expect(result.error).toEqual('ERROR');
+      expect(result.isActiveSearch).toBeFalsy();
+    });
+
+    it('cleanupNasaImages should return a valid state', () => {
+      const action = cleanupNasaImages();
+
+      const result: NasaImagesState = nasaMediaReducer(initialNasaImagesState, action);
+
+      expect(result.error).toBeNull();
+      expect(result.ids.length).toBe(0);
+      expect(result.count).toBe(0);
+      expect(result.isActiveSearch).toBeFalsy();
     });
   });
 
