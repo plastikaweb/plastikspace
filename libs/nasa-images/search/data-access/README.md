@@ -1,5 +1,18 @@
 # nasa-images-search-data-access
 
+- [nasa-images-search-data-access](#nasa-images-search-data-access)
+  - [Description](#description)
+  - [Services](#services)
+    - [NasaImagesApiService](#nasaimagesapiservice)
+  - [State](#state)
+    - [Actions](#actions)
+    - [Selectors](#selectors)
+    - [Facade](#facade)
+  - [Running unit tests](#running-unit-tests)
+  - [Useful links](#useful-links)
+
+## Description
+
 This library gives some state management and services to deal with NASA Images API and internal app state.
 
 ## Services
@@ -41,6 +54,7 @@ Import the store segment and the corresponding Effects array it in the feature m
 - loadNasaImages
 - loadNasaImagesSuccess
 - loadNasaImagesFailure
+- cleanupNasaImages
 
 ### Selectors
 
@@ -50,6 +64,8 @@ Import the store segment and the corresponding Effects array it in the feature m
 - selectNasaImagesEntities
 - selectSelectedId
 - selectEntity
+- selectNasaImagesCount
+- selectNasaImagesIsActiveSearch
 
 ### Facade
 

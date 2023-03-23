@@ -67,10 +67,20 @@ describe('NasaImagesEffects', () => {
   });
 
   describe('navigation$', () => {
-    const action = getMockedRouterNavigation('/search?q=pluto');
-    it('should dispatch loadNasaImages with queryParams if /search route is found', () => {
+    let action = getMockedRouterNavigation('/search?q=pluto');
+    it('should dispatch loadNasaImages with queryParams if /search route is found and "q" search value is not empty', () => {
       actions = hot('-a', { a: action });
       const expected = cold('-b', { b: NasaImagesActions.loadNasaImages({ params: { q: 'pluto', media_type: 'image' } }) });
+
+      expect(effects.navigation$).toBeObservable(expected);
+    });
+
+    it('should dispatch cleanupNasaImages if /search route is found and "q" search value is empty', () => {
+      store.overrideSelector(selectRouteQueryParams, { q: '', media_type: 'image' });
+
+      action = getMockedRouterNavigation('/search?q=');
+      actions = hot('-a', { a: action });
+      const expected = cold('-b', { b: NasaImagesActions.cleanupNasaImages() });
 
       expect(effects.navigation$).toBeObservable(expected);
     });

@@ -22,7 +22,12 @@ export class NasaImagesEffects {
       this.navigationFilter.checkRouterNavigation<NasaImagesViews>(NasaImagesViews.SEARCH),
       concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectActivityActive)]),
       filter(([, , activity]) => !activity),
-      map(([, queryParams]) => loadNasaImages({ params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } } })),
+      map(([, queryParams]) => {
+        if (!queryParams['q']) {
+          return NasaImagesActions.cleanupNasaImages();
+        }
+        return loadNasaImages({ params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } } });
+      }),
     );
   });
 

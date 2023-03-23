@@ -21,5 +21,17 @@
   [paginationVisibility]="obs.tableStructure?.paginationVisibility"
   (changePagination)="onChangePagination($event)"
 >
-  <plastik-nasa-images-search-ui-no-results noResults></plastik-nasa-images-search-ui-no-results>
+  <plastik-nasa-images-search-ui-no-results noResults *ngIf="isActiveSearch$ | ngrxPush; else noValidSearch">
+    <span icon> search_off </span>
+    <span title>No results found</span>
+    <span message>We can't find any item matching your search.</span>
+  </plastik-nasa-images-search-ui-no-results>
+
+  <ng-template #noValidSearch>
+    <plastik-nasa-images-search-ui-no-results noResults>
+      <span icon> search_on </span>
+      <span title>NASA images search</span>
+      <span message>Use the filter to find related NASA pictures.<br />You must provide a valid matching string.</span>
+    </plastik-nasa-images-search-ui-no-results>
+  </ng-template>
 </plastik-shared-table>

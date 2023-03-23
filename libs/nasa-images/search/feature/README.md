@@ -2,7 +2,7 @@
 
 ## Description
 
-The search feature library using the `NasaImagesFeatureSearchComponent`.
+The search feature library using the `NasaImagesSearchFeatureComponent`.
 
 ## Running unit tests
 
