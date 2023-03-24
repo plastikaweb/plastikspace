@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-yarn format:write --uncommited && yarn affected:lint
+yarn branch:lint && yarn format:write --uncommited && yarn affected:lint
