@@ -10,7 +10,7 @@ const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
   key: 'index',
   title: '',
   propertyPath: '',
-  cssClasses: ['max-w-[5rem] bg-gray-5 hidden md:flex'],
+  cssClasses: ['max-w-[5rem] hidden md:flex'],
   formatting: {
     type: FormattingTypes.CUSTOM,
     execute: (_, __, index = 0, extraConfig) => {
