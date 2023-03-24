@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { NasaImage } from '@plastik/nasa-images/search/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
-import { DEFAULT_TABLE_CONFIG, TableColumnFormatting, TableControlStructure } from '@plastik/shared/table/entities';
+import { DEFAULT_TABLE_CONFIG, PageEventConfig, TableColumnFormatting, TableControlStructure } from '@plastik/shared/table/entities';
 import { map, Observable } from 'rxjs';
 
 const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
@@ -13,7 +13,10 @@ const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
   cssClasses: ['max-w-[5rem] bg-gray-5 hidden md:flex'],
   formatting: {
     type: FormattingTypes.CUSTOM,
-    execute: (_, __, index) => String(index),
+    execute: (_, __, index = 0, extraConfig) => {
+      const { pageIndex, pageSize } = extraConfig as PageEventConfig;
+      return String(index + pageIndex * pageSize);
+    },
   },
 };
 
