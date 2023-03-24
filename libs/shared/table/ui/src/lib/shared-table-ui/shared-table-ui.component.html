@@ -27,8 +27,8 @@
         'paginator--hide': paginationVisibility?.hideRangeLabel,
         'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons
       }"
-      [pageIndex]="matPaginator?.pageIndex"
-      [pageSize]="matPaginator?.pageSize"
+      [pageIndex]="pagination?.pageIndex"
+      [pageSize]="pagination?.pageSize"
       [pageSizeOptions]="pageSizeOptions"
       [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
       aria-label="Select page"
