@@ -19,9 +19,15 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
    * @param { string | Function } param.propertyPath The property of the object which value is going to be formatted.
    * @param { PropertyFormattingConf } param.formatting The formatting configuration for a concrete property object.
    * @param {number } index Index to custom formatters (f.e. a table indexing)
+   * @param {unknown } extraConfig Extra configuration object to format values specially when using custom formatters.
    * @returns { PropertyFormatting } The valid types to be returned after formatting a value.
    */
-  getFormattedValue(item: T, { propertyPath, formatting }: PropertyFormatting<T, FormattingTypes>, index?: number): SafeHtml {
+  getFormattedValue(
+    item: T,
+    { propertyPath, formatting }: PropertyFormatting<T, FormattingTypes>,
+    index?: number,
+    extraConfig?: unknown,
+  ): SafeHtml {
     const getValueToShow = typeof propertyPath === 'string' ? propertyPath : propertyPath(item);
     const value = this.getValueFromRow(getValueToShow, item);
     const { type, extras = {} } = formatting;
@@ -45,7 +51,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
         return this.formatter.imageFormatter(String(value), extras, item);
       case FormattingTypes.CUSTOM:
       case FormattingTypes.LINK:
-        return this.formatter.customFormatter(String(value), formatting as PropertyFormattingConf<T>, item, index);
+        return this.formatter.customFormatter(String(value), formatting as PropertyFormattingConf<T>, item, index, extraConfig);
       case FormattingTypes.TEXT:
       default:
         return this.formatter.defaultFormatter(String(value));

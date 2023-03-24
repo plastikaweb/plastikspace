@@ -10,7 +10,7 @@
           <div
             class="table-cell table__cell--default"
             [ngClass]="column.cssClasses?.[1] || ''"
-            [innerHTML]="row | safeFormatted : column : i + 1"
+            [innerHTML]="row | safeFormatted : column : i + 1 : pagination"
           ></div>
         </mat-cell>
       </ng-container>
