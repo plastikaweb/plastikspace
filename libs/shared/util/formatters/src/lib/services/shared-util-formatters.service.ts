@@ -133,10 +133,17 @@ export class SharedUtilFormattersService {
    * @param { Function } param.execute  The function to execute to format the value.
    * @param { unknown } element The whole item object where the formatting property belongs.
    * @param { number } index The index of the object i a list (f.e. a table).
+   * @param { unknown } extraConfig Extra configuration object to format values when defining `execute` method blueprint.
+   * @example
+   * Returns a value for a row index number in a table.
+   * execute: (_, __, index = 0, extraConfig) => {
+      const { pageIndex, pageSize } = extraConfig as PageEventConfig;
+      return String(index + pageIndex * pageSize);
+    },
    * @returns { SafeHtml } The formatted value passed through the execute formatting function.
    */
-  customFormatter<T>(value: string, { execute }: PropertyFormattingConf<T>, element: T, index?: number): SafeHtml {
-    return execute ? execute(value, element, index) : value ? value : '';
+  customFormatter<T>(value: string, { execute }: PropertyFormattingConf<T>, element: T, index?: number, extraConfig?: unknown): SafeHtml {
+    return execute ? execute(value, element, index, extraConfig) : value ? value : '';
   }
 
   /**

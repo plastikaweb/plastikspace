@@ -4,10 +4,11 @@ import { FormattingInput, PropertyFormatting } from './formatting';
 import { DataFormatFactoryService } from './services';
 
 /**
- * @description Format the value of the table cell from the configuration given.
+ * @description Format a value based on the given configuration.
  * @param { unknown } row The the single object where resides the property that needs to be formatted.
  * @param { PropertyFormatting } column The configuration for the object property.
- * @param { number } index The index number in the list.
+ * @param { number } index The index number in a list of values.
+ * @param { unknown } extraConfig A custom configuration object to add extra formatting options.
  */
 @Pipe({
   name: 'safeFormatted',
@@ -15,7 +16,7 @@ import { DataFormatFactoryService } from './services';
 export class SafeFormattedPipe<T extends FormattingInput<keyof T>> implements PipeTransform {
   constructor(private readonly dataFormatService: DataFormatFactoryService<T>) {}
 
-  transform(row: T, column: PropertyFormatting<T, unknown>, index?: number) {
-    return this.dataFormatService.getFormattedValue(row, column, index);
+  transform(row: T, column: PropertyFormatting<T, unknown>, index?: number, extraConfig?: unknown) {
+    return this.dataFormatService.getFormattedValue(row, column, index, extraConfig);
   }
 }

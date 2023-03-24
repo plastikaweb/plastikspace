@@ -70,7 +70,7 @@ export type FormattingExtras<OBJ, TYPE> = TYPE extends FormattingTypes.IMAGE
  */
 export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = FormattingTypes.TEXT> {
   type: TYPE;
-  execute?: (value: unknown, element?: OBJ, index?: number) => FormattingOutput;
+  execute?: (value: unknown, element?: OBJ, index?: number, extras?: unknown) => FormattingOutput;
   extras?: FormattingExtras<OBJ, TYPE>;
 }
 
