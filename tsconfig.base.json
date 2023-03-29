@@ -29,6 +29,8 @@
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
+      "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
+      "@plastik/nasa-images/faqs": ["libs/nasa-images/faqs/feature/src/index.ts"],
       "@plastik/nasa-images/search": ["libs/nasa-images/search/feature/src/index.ts"],
       "@plastik/nasa-images/search/data-access": ["libs/nasa-images/search/data-access/src/index.ts"],
       "@plastik/nasa-images/search/entities": ["libs/nasa-images/search/entities/src/index.ts"],

@@ -1,0 +1,19 @@
+<h2 class="flex items-center gap-sm" *ngIf="routeInfo$ | ngrxPush as info">
+  <mat-icon> {{ info.icon }} </mat-icon> <span>{{ info.title }}</span>
+</h2>
+
+<section>
+  <div class="mx-xl my-md">
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let faq of faqs$ | ngrxPush">
+        <mat-expansion-panel-header class="h-xxl">
+          <mat-panel-title
+            ><h3 class="text-md text-primary">{{ faq.question }}</h3></mat-panel-title
+          >
+          <mat-panel-description></mat-panel-description>
+        </mat-expansion-panel-header>
+        <div [innerHTML]="faq.answer"></div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</section>

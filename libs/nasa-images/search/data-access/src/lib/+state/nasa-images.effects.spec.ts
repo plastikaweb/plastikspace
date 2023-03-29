@@ -86,7 +86,7 @@ describe('NasaImagesEffects', () => {
     });
 
     it('should not dispatch loadNasaImages with queryParams if no /search route is found', () => {
-      store.overrideSelector(selectRouteDataName, NasaImagesViews.EXPLANATION);
+      store.overrideSelector(selectRouteDataName, NasaImagesViews.FAQS);
 
       actions = hot('-a', { a: action });
       const expected = cold('', { b: [] });

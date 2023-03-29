@@ -5,7 +5,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
-import { NasaImagesFacade } from '@plastik/nasa-images/search/data-access';
+import { NasaImagesSearchFacade } from '@plastik/nasa-images/search/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
@@ -14,7 +14,7 @@ import { NasaImagesSearchFeatureComponent } from './nasa-images-search-feature.c
 describe('NasaImagesSearchFeatureComponent', () => {
   let component: NasaImagesSearchFeatureComponent;
   let fixture: ComponentFixture<NasaImagesSearchFeatureComponent>;
-  let facade: NasaImagesFacade;
+  let facade: NasaImagesSearchFacade;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -27,14 +27,14 @@ describe('NasaImagesSearchFeatureComponent', () => {
       ],
       providers: [provideEnvironmentMock(), provideMockStore()],
     })
-      .overrideProvider(NasaImagesFacade, {
+      .overrideProvider(NasaImagesSearchFacade, {
         useValue: { search: jest.fn(), changePagination: jest.fn() },
       })
       .compileComponents();
 
     fixture = TestBed.createComponent(NasaImagesSearchFeatureComponent);
     component = fixture.componentInstance;
-    facade = TestBed.inject(NasaImagesFacade);
+    facade = TestBed.inject(NasaImagesSearchFacade);
 
     fixture.detectChanges();
   });

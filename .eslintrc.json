@@ -20,6 +20,18 @@
                 "onlyDependOnLibsWithTags": ["*"]
               },
               {
+                "sourceTag": "scope:core",
+                "onlyDependOnLibsWithTags": ["scope:core", "type:entity", "type:util", "scope:shared"]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "scope:nasa-images",
+                "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core", "scope:shared"]
+              },
+              {
                 "sourceTag": "type:feature",
                 "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:data-access", "type:entity", "type:feature"]
               },
@@ -38,18 +50,6 @@
               {
                 "sourceTag": "type:data-access",
                 "onlyDependOnLibsWithTags": ["type:util", "type:entity", "type:data-access"]
-              },
-              {
-                "sourceTag": "scope:core",
-                "onlyDependOnLibsWithTags": ["scope:core", "type:entity", "type:util", "scope:shared"]
-              },
-              {
-                "sourceTag": "scope:shared",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
-              },
-              {
-                "sourceTag": "scope:nasa-images",
-                "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core", "scope:shared"]
               }
             ]
           }
