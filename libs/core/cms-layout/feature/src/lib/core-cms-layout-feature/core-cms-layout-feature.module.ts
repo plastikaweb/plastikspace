@@ -3,7 +3,7 @@ import {
   CoreCmsLayoutDataAccessModule,
   CoreCmsLayoutHeaderConfig,
   CORE_CMS_LAYOUT_HEADER_CONFIG,
-  CORE_CMS_LAYOUT_SIDENAV_CONFIG,
+  VIEW_CONFIG,
 } from '@plastik/core/cms-layout/data-access';
 import { getVisibleNavigationList, ViewsConfigRecord } from '@plastik/core/entities';
 
@@ -19,7 +19,7 @@ export class CoreCmsLayoutFeatureModule {
       ngModule: CoreCmsLayoutFeatureModule,
       providers: [
         { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig },
-        { provide: CORE_CMS_LAYOUT_SIDENAV_CONFIG, useValue: getVisibleNavigationList<T>(sidenavConfig) },
+        { provide: VIEW_CONFIG, useValue: getVisibleNavigationList<T>(sidenavConfig) },
       ],
     };
   }

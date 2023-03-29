@@ -1,0 +1,38 @@
+[
+  {
+    "question": "What is the main purpose of the Nasa Images search page?",
+    "answer": "Its main purpose is to allow users to search for images using the <a href=\"https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf\" target=\"_blank\">images.nasa.gov API Documentation</a>.<br>The page includes search filters for the user to refine their search results."
+  },
+  {
+    "question": "Where can I find the code for the website?",
+    "answer": "The code for the website can be found on the GitHub repository at <a href=\"https://github.com/plastikaweb/plastikspace\" target=\"_blank\">plastikspace</a>. This is a monorepo and includes the code for the <span class=\"highlight\">NASA Images</span> application as well as shared code to create other apps.<div class=\"py-sm\">Other related links:</div><ul><li><a href=\"https://github.com/users/plastikaweb/projects/2\" target=\"_blank\">Plastikaweb NASA gallery Github Project</a></li><li><a href=\"https://github.com/plastikaweb/plastikspace/wiki/nasa-image-library-project\" target=\"_blank\">NASA Image Library Analysis Wiki</a></li></ul></div>"
+  },
+  {
+    "question": "Why have I created this repository?",
+    "answer": "<ul><li>To have a place to test and experiment with the latest versions of the main technologies used, including <span class=\"highlight\">Angular, Nx, Angular Material, TailwindCSS, and @ngrx</span>.<br>This allows me to stay up-to-date with the latest trends and techniques in front-end development and to explore new ideas and approaches.</li><li>To have a place to play with architecture and do experiments.<br>By building this web app, I can explore different architectural patterns and techniques, and learn how they can be applied to real-world projects. This allows me to continually improve my skills and stay at the forefront of the industry.</li><li>To show future partners and clients my skills in <span class=\"highlight\">Angular, Nx, Material, Tailwind, and @ngrx</span>.<br>By making this web app available publicly, I can demonstrate my expertise in these technologies and showcase my ability to build high-quality, responsive, and scalable web applications.</li></ul>"
+  },
+  {
+    "question": "What technologies are being used to build the website?",
+    "answer": "The website is built using <span class=\"highlight\">Angular, Nx, and @ngrx</span> as the main technologies. The application consumes the <a href=\"https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf\" target=\"_blank\">NASA images REST API</a> and uses <span class=\"highlight\">Material Design + TailwindCSS</span> for the UI."
+  },
+  {
+    "question": "What is the architecture used for the website?",
+    "answer": "The website is built using the <span class=\"highlight\">Nx monorepo</span> approach, which allows for a modular and scalable code structure. See <a href=\"https://github.com/plastikaweb/plastikspace/blob/develop/documentation/nx-architecture.md\" target=\"_blank\">NX architecture</a> for detailed info.<br>The code also follows the principles of reactive programming and is built using <span class=\"highlight\">@ngrx</span> for state management."
+  },
+  {
+    "question": "What CSS style is used for the website?",
+    "answer": "The website uses a combination of <span class=\"highlight\">TailwindCSS</span> overwriting and styling <span class=\"highlight\">Angular Material</span> components. <span class=\"highlight\">TailwindCSS</span> is used to provide a consistent and responsive design across the site, while <span class=\"highlight\">Angular Material</span> components are styled to match the overall design language of the site."
+  },
+  {
+    "question": "Why are @ngrx and @ngrx-router used in the website?",
+    "answer": "<span class=\"highlight\">@ngrx</span> is a state management library for <span class=\"highlight\">Angular</span> applications that provides a way to manage application state in a reactive and scalable manner. <span class=\"highlight\">@ngrx-router</span> is a package that integrates the Angular router with @ngrx, allowing for stateful navigation and handling of route-related data."
+  },
+  {
+    "question": "What is not this site about?",
+    "answer": "As an Angular front-end developer, this web app is <span class=\"highlight\">not a UI or design-focused project</span>. While I have experience working with UI designers and have undergone training in style, UI design, and color theory, my primary focus is on building functional and responsive web applications that meet client requirements and are pixel-perfect in terms of layout and styling. While I strive to make the web app visually appealing and easy to use, my primary goal is to ensure that it meets functional and technical requirements while also providing a seamless user experience."
+  },
+  {
+    "question": "How can I contact you?",
+    "answer": "My name is Carlos Matheu, and you can reach out to me through the <a href=\"https://www.plastikaweb.com\" target=\"_blank\">Plastikaweb site</a>. Here you\"ll find more info about my skills, contact and my CV.<br>Alternatively, you can send me an email directly at [info@plastikaweb.com]. I\"m always open to new opportunities and collaborations, so don\"t hesitate to get in touch!"
+  }
+]

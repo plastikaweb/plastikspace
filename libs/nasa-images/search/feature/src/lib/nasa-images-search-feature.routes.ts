@@ -1,7 +1,12 @@
 import { Routes } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
-import { NasaImagesEffects, NasaImagesFacade, nasaMediaReducer, NASA_IMAGES_FEATURE_KEY } from '@plastik/nasa-images/search/data-access';
+import {
+  NASA_IMAGES_FEATURE_KEY,
+  NasaImagesEffects,
+  NasaImagesSearchFacade,
+  nasaMediaReducer,
+} from '@plastik/nasa-images/search/data-access';
 import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
 
 import { NasaImagesSearchSearchRouterTitleService } from './nasa-images-search-feature-route-title.service';
@@ -13,7 +18,7 @@ export const nasaImagesSearchFeatureRoutes: Routes = [
     data: { name: NasaImagesViews.SEARCH },
     title: NasaImagesSearchSearchRouterTitleService,
     component: NasaImagesSearchFeatureComponent,
-    providers: [provideState(NASA_IMAGES_FEATURE_KEY, nasaMediaReducer), provideEffects(NasaImagesEffects), NasaImagesFacade],
+    providers: [provideState(NASA_IMAGES_FEATURE_KEY, nasaMediaReducer), provideEffects(NasaImagesEffects), NasaImagesSearchFacade],
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
   },
 ];

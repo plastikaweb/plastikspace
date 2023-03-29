@@ -5,7 +5,8 @@ import { collectionToArray } from '@plastik/shared/objects';
  * @description A shape for a concrete UI view.
  */
 export interface ViewConfig<T> {
-  title: T | string | Type<string>;
+  name: T | string | Type<string>;
+  title: string;
   icon?: string;
   svgClass?: {
     menu?: string;

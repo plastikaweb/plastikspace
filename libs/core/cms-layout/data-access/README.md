@@ -6,7 +6,7 @@
     - [How to use](#how-to-use)
   - [Token services](#token-services)
     - [CORE_CMS_LAYOUT_HEADER_CONFIG](#core_cms_layout_header_config)
-    - [CORE_CMS_LAYOUT_SIDENAV_CONFIG](#core_cms_layout_sidenav_config)
+    - [VIEW_CONFIG](#view_config)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -86,12 +86,12 @@ export interface CoreCmsLayoutHeaderConfig {
 export const CORE_CMS_LAYOUT_HEADER_CONFIG = new InjectionToken<CoreCmsLayoutHeaderConfig>('CORE_CMS_LAYOUT_HEADER_CONFIG');
 ```
 
-### CORE_CMS_LAYOUT_SIDENAV_CONFIG
+### VIEW_CONFIG
 
-Use this to inject sidenav configuration on bootstrapping app.
+Use this to inject sidenav menu configuration on bootstrapping app.
 
 ```typescript
-export const CORE_CMS_LAYOUT_SIDENAV_CONFIG = new InjectionToken<ViewConfig<unknown>[]>('CORE_CMS_LAYOUT_SIDENAV_CONFIG');
+export const VIEW_CONFIG = new InjectionToken<ViewConfig<unknown>[]>('VIEW_CONFIG');
 ```
 
 ## Running unit tests
