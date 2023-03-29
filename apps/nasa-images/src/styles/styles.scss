@@ -101,8 +101,14 @@ $nasa-images-theme: mat.define-light-theme(
   }
 }
 
+// mat progress bar
 .mat-mdc-progress-bar {
   @apply bg-secondary-light;
   --mdc-linear-progress-track-height: var(--spacing-tiny);
   --mdc-linear-progress-active-indicator-color: var(--secondary-dark);
+}
+
+// mat sidenav
+.mat-sidenav .mat-mdc-list-item:not(.mat-mdc-list-item-interactive) {
+  @apply cursor-pointer;
 }
