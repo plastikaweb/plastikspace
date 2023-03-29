@@ -2,20 +2,21 @@ import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
+import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { go, selectRouteQueryParams } from '@plastik/core/router-state';
 
-import { NasaImagesFacade } from './nasa-images.facade';
+import { NasaImagesSearchFacade } from './nasa-images-search.facade';
 
-describe('NasaImagesFacade', () => {
-  let facade: NasaImagesFacade;
+describe('NasaImagesSearchFacade', () => {
+  let facade: NasaImagesSearchFacade;
   let store: Store;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
       providers: [
-        NasaImagesFacade,
+        NasaImagesSearchFacade,
         provideMockStore({
           selectors: [
             {
@@ -28,10 +29,11 @@ describe('NasaImagesFacade', () => {
           ],
         }),
         provideEnvironmentMock(),
+        { provide: VIEW_CONFIG, useValue: null },
       ],
     });
 
-    facade = TestBed.inject(NasaImagesFacade);
+    facade = TestBed.inject(NasaImagesSearchFacade);
     store = TestBed.inject(Store);
 
     jest.spyOn(store, 'dispatch');

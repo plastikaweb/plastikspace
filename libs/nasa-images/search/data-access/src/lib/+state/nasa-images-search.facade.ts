@@ -1,6 +1,7 @@
-import { inject, Injectable } from '@angular/core';
-import { select, Store } from '@ngrx/store';
+import { Injectable } from '@angular/core';
+import { select } from '@ngrx/store';
 import { go, selectRouteQueryParams } from '@plastik/core/router-state';
+import { NasaImagesFacade } from '@plastik/nasa-images/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 import { take } from 'rxjs';
@@ -8,9 +9,7 @@ import { take } from 'rxjs';
 import * as NasaImagesSelectors from './nasa-images.selectors';
 
 @Injectable()
-export class NasaImagesFacade {
-  private readonly store = inject(Store);
-
+export class NasaImagesSearchFacade extends NasaImagesFacade {
   images$ = this.store.pipe(select(NasaImagesSelectors.selectAllNasaImages));
   count$ = this.store.pipe(select(NasaImagesSelectors.selectNasaImagesCount));
   isActiveSearch$ = this.store.pipe(select(NasaImagesSelectors.selectNasaImagesIsActiveSearch));

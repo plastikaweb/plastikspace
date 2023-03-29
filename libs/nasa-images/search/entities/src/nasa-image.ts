@@ -3,7 +3,7 @@
  */
 export enum NasaImagesViews {
   SEARCH = 'search',
-  EXPLANATION = 'explanation',
+  FAQS = 'faqs',
 }
 /**
  * @description A single NASA media item descriptor.

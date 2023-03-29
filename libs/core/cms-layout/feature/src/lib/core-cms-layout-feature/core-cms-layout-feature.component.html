@@ -2,11 +2,13 @@
   <plastik-core-cms-layout-ui-header>
     <div start class="flex items-center gap-sm">
       <ng-container *ngIf="sidenavPosition === 'start'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
-      <a class="flex items-center content-center justify-between" href="">
-        <svg-icon *ngIf="headerConfig.mainIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
-        <span class="block md:hidden text-md">{{ headerConfig.title }}</span>
-        <span class="hidden md:block text-md">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
-      </a>
+      <h1>
+        <a class="flex items-center content-center justify-between text-white hover:no-underline" href="">
+          <svg-icon *ngIf="headerConfig.mainIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+          <span class="block md:hidden text-md">{{ headerConfig.title }}</span>
+          <span class="hidden md:block text-md">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
+        </a>
+      </h1>
       <ng-container *ngIf="headerConfig?.socialLinks?.position === 'start'" [ngTemplateOutlet]="socialLinks"></ng-container>
     </div>
     <div end class="flex items-center gap-sm" *ngIf="headerConfig.socialLinks?.position === 'end' || sidenavPosition === 'end'">
@@ -50,7 +52,7 @@
       <div class="flex flex-row gap-[4px]">
         <div>
           © 2006-{{ currentDate | date : 'yyyy' }}
-          <a class="underline underline-offset-2" href="https://www.plastikaweb.com" target="_blank">Plastikaweb</a>
+          <a class="text-white underline underline-offset-2" href="https://www.plastikaweb.com" target="_blank">Plastikaweb</a>
         </div>
         <span class="hidden sm:block">| Carlos Matheu | FrontEnd Freelancer.</span>
       </div>

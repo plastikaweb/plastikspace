@@ -3,7 +3,7 @@ import { createAction, Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '../core-cms-layout-header-config';
-import { CORE_CMS_LAYOUT_SIDENAV_CONFIG } from '../core-cms-layout-sidenav-config';
+import { VIEW_CONFIG } from '../core-cms-view-config';
 import { setIsMobile, toggleSidenav } from './layout.actions';
 import { LayoutFacade } from './layout.facade';
 
@@ -22,7 +22,7 @@ describe('LayoutFacade', () => {
             useValue: null,
           },
           {
-            provide: CORE_CMS_LAYOUT_SIDENAV_CONFIG,
+            provide: VIEW_CONFIG,
             useValue: null,
           },
         ],

@@ -22,15 +22,17 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
 
 export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
   [NasaImagesViews.SEARCH]: {
-    title: NasaImagesViews.SEARCH,
+    name: NasaImagesViews.SEARCH,
+    title: 'Search images',
     icon: 'image_search',
     route: [`/${NasaImagesViews.SEARCH}`],
     includedInNavigation: true,
   },
-  [NasaImagesViews.EXPLANATION]: {
-    title: NasaImagesViews.EXPLANATION,
+  [NasaImagesViews.FAQS]: {
+    name: NasaImagesViews.FAQS,
+    title: 'FAQs',
     icon: 'speaker_notes',
-    route: [`/${NasaImagesViews.EXPLANATION}`],
+    route: [`/${NasaImagesViews.FAQS}`],
     includedInNavigation: true,
   },
 };

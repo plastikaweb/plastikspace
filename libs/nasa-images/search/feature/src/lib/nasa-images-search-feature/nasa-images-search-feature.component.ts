@@ -1,7 +1,8 @@
 import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { PushModule } from '@ngrx/component';
-import { NasaImagesFacade } from '@plastik/nasa-images/search/data-access';
+import { NasaImagesSearchFacade } from '@plastik/nasa-images/search/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
 import { NasaImagesSearchUiNoResultsComponent } from '@plastik/nasa-images/search/ui/no-results';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
@@ -14,18 +15,19 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
 @Component({
   selector: 'plastik-nasa-images-search',
   standalone: true,
-  imports: [NgIf, PushModule, SharedTableUiComponent, SharedFormFeatureModule, NasaImagesSearchUiNoResultsComponent],
+  imports: [NgIf, PushModule, SharedTableUiComponent, SharedFormFeatureModule, NasaImagesSearchUiNoResultsComponent, MatIconModule],
   templateUrl: './nasa-images-search-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NasaImagesSearchFeatureComponent {
-  private readonly facade = inject(NasaImagesFacade);
+  private readonly facade = inject(NasaImagesSearchFacade);
 
   images$ = this.facade.images$;
   count$ = this.facade.count$;
   isActiveSearch$ = this.facade.isActiveSearch$;
   tableStructure$ = NasaImagesSearchFeatureTableConfig.getTableStructure();
   formStructure$ = getNasaImagesSearchFeatureFormConfig();
+  routeInfo$ = this.facade.routeInfo$;
 
   onChange(model: Partial<NasaImagesSearchApiParams>): void {
     const length = (Object.values(model)?.[0] as string)?.length;
