@@ -22,8 +22,15 @@ export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldCo
                 default: 400,
               },
             },
+            hooks: {
+              onChanges: (field: FormlyFieldConfig) => {
+                const classes = field.defaultValue ? 'text-primary-dark' : 'text-primary-dark invisible';
+                const addonRight = { ...field.props?.['addonRight'], classes };
+                field.props = { ...field.props, addonRight };
+              },
+            },
             props: {
-              type: 'text',
+              type: 'search',
               label: 'Search by term',
               placeholder: 'Search by term',
               required: false,
