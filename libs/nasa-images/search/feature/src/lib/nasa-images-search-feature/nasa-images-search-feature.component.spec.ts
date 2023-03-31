@@ -35,8 +35,6 @@ describe('NasaImagesSearchFeatureComponent', () => {
     fixture = TestBed.createComponent(NasaImagesSearchFeatureComponent);
     component = fixture.componentInstance;
     facade = TestBed.inject(NasaImagesSearchFacade);
-
-    fixture.detectChanges();
   });
 
   it('should create', () => {
