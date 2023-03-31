@@ -17,7 +17,7 @@ This project was generated using [Nx](https://nx.dev).
 ## Install repo locally
 
 - clone repo: `git clone git@github.com:plastikaweb/plastikspace.git`.
-- execute `yarn install:local`.
+- run `yarn install:local`.
 - **to serve it locally in development run `yarn <apn-name>:serve`**.
 
 ## Commands & generators

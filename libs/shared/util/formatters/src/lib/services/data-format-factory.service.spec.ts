@@ -20,7 +20,7 @@ describe('DataFormatFactoryService', () => {
         PercentPipe,
         {
           provide: LOCALE_ID,
-          useValue: 'en-EN',
+          useValue: 'en-US',
         },
       ],
     });
@@ -68,7 +68,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'time',
-      formatting: { type: FormattingTypes.DATE },
+      formatting: { type: FormattingTypes.DATE, extras: { locale: 'en-US' } },
     });
     expect(result).toBe('9/1/21');
   });
@@ -78,9 +78,9 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'time',
-      formatting: { type: FormattingTypes.DATE_TIME },
+      formatting: { type: FormattingTypes.DATE_TIME, extras: { locale: 'en-US', timezone: 'GMT' } },
     });
-    expect(result).toBe('9/1/21, 04:10:06');
+    expect(result).toBe('9/1/21, 02:10:06');
   });
 
   it('should return a value with percentage formatting', () => {

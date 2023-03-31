@@ -1,4 +1,5 @@
 const nxPreset = require('@nrwl/jest/preset').default;
+process.env.TZ = 'GMT';
 
 module.exports = {
   ...nxPreset,
