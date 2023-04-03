@@ -30,4 +30,4 @@ A shared library to transform data that involves object manipulation and/or gene
 
 ## Running unit tests
 
-Run `nx test shared-util-objects-objects` to execute the unit tests.
+Run `nx test shared-util-objects` to execute the unit tests.

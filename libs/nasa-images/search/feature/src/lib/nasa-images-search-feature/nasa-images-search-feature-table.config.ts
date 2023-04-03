@@ -4,7 +4,7 @@ import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { NasaImage } from '@plastik/nasa-images/search/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import { DEFAULT_TABLE_CONFIG, PageEventConfig, TableColumnFormatting, TableControlStructure } from '@plastik/shared/table/entities';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
   key: 'index',
@@ -114,7 +114,7 @@ export class NasaImagesSearchFeatureTableConfig {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return store.select(selectRouteQueryParams).pipe(
-      map(({ page }) => {
+      map(({ page = 0 }) => {
         return {
           ...defaultTableConfig,
           columnProperties,
@@ -122,7 +122,7 @@ export class NasaImagesSearchFeatureTableConfig {
           pagination: {
             ...defaultTableConfig.pagination,
             pageSize: 100,
-            pageIndex: --page || 0,
+            pageIndex: --page,
           },
           paginationVisibility: {
             hidePageSize: true,
