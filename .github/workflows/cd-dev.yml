@@ -2,7 +2,7 @@ name: Deploy Develop to GitHub Pages
 
 on:
   workflow_run:
-    workflows: [nx-cloud]
+    workflows: [CI]
     branches: ['develop']
     types:
       - completed
