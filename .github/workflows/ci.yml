@@ -8,7 +8,7 @@ on:
 
 jobs:
   develop:
-    name: Nx Cloud - Main Job
+    name: nx-cloud
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
     with:
       number-of-agents: 8
