@@ -8,6 +8,14 @@ on:
 
 jobs:
   develop:
+    name: Markdownlint
+    uses: DavidAnson/markdownlint-cli2-action@v9
+    with:
+      command: config
+      globs: |
+        .markdownlint.json
+        **/*.md
+
     name: Nx Cloud - Main Job
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.11.3
     with:
@@ -18,6 +26,7 @@ jobs:
         yarn nx-cloud record -- yarn nx workspace-lint
         yarn nx-cloud record -- yarn nx format:check
       parallel-commands-on-agents: |
+        yarn markdownlint
         yarn nx affected --target=lint --parallel=3
         yarn nx affected --target=test --parallel=3 --ci --code-coverage
         yarn nx affected --target=build --parallel=3
