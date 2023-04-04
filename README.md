@@ -5,13 +5,15 @@
   <p>A personal multi-repository to do tests and experiments with Nx and Angular. </p>
 </div>
 
+[![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml)
+
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
-[![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml)
 
 This project was generated using [Nx](https://nx.dev).
 
