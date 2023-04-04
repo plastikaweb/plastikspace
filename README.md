@@ -11,6 +11,7 @@
 ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
+[![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml)
 
 This project was generated using [Nx](https://nx.dev).
 

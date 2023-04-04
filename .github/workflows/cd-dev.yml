@@ -25,5 +25,5 @@ jobs:
           publish_dir: ./dist/apps/nasa-images
           publish_branch: nasa-images-staging-page
           cname: nasa-images-staging.plastikaweb.com
-          commit_message: 'Deploy staging nasa-images to GitHub Pages ${{github.run_id}}'
+          commit_message: 'Deploy staging nasa-images to GitHub Pages ${GITHUB_SHA}'
           enable_jekyll: false
