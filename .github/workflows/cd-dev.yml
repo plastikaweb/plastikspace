@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Build app
-        run: yarn nx build nasa-images --prod
+        run: yarn nasa-images:build:github
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/develop' }}
@@ -25,5 +25,5 @@ jobs:
           publish_dir: ./dist/apps/nasa-images
           publish_branch: nasa-images-staging-page
           cname: nasa-images-staging.plastikaweb.com
-          commit_message: 'Deploy staging nasa-images to GitHub Pages'
+          commit_message: 'Deploy staging nasa-images to GitHub Pages ${{github.run_id}}'
           enable_jekyll: false
