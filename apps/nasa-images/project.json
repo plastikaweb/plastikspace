@@ -10,7 +10,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/nasa-images",
-        "index": "apps/nasa-images/src/index.html",
+        "index": "libs/core/ng-entry-html/util/src/index.html",
         "main": "apps/nasa-images/src/main.ts",
         "polyfills": "apps/nasa-images/src/polyfills.ts",
         "tsConfig": "apps/nasa-images/tsconfig.app.json",

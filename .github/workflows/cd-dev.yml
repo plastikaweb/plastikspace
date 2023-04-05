@@ -17,6 +17,8 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build app
         run: yarn nasa-images:build:github
+      - name: Create 404
+        run: cp dist/apps/nasa-images/index.html dist/apps/nasa-images/404.html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/develop' }}
