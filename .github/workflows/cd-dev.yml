@@ -11,6 +11,14 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: List Files
+        run: |
+          echo $GITHUB_SHA
+          echo $GITHUB_REPOSITORY
+          echo $GITHUB_WORKSPACE
+          echo "TOKEN => ${{ github.token }}"
+          echo "Workflow run => ${{ github.event.workflow_run}}"
+          echo "Workflow run conclusion => ${{ github.event.workflow_run.conclusion}}"
       - name: Checkout code
         uses: actions/checkout@v3
       - name: Deploy to GitHub Pages
