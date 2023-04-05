@@ -1,4 +1,4 @@
-name: Deploy Develop to GitHub Pages
+name: Deploy Staging
 
 on:
   workflow_run:
@@ -13,15 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Build app
-        run: yarn nasa-images:build:github
-      - name: Create 404
-        run: cp dist/apps/nasa-images/index.html dist/apps/nasa-images/404.html
       - name: Deploy to GitHub Pages
         uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
-        if: ${{ github.ref == 'refs/heads/develop' }}
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           build_configuration: staging
