@@ -20,7 +20,7 @@ jobs:
       - name: Create 404
         run: cp dist/apps/nasa-images/index.html dist/apps/nasa-images/404.html
       - name: Deploy to GitHub Pages
-        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v3
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
         if: ${{ github.ref == 'refs/heads/develop' }}
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
