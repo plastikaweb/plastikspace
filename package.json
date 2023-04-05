@@ -44,7 +44,7 @@
     "nasa-images:build": "nx run nasa-images:build --parallel",
     "nasa-images:test": "nx run nasa-images:test",
     "nasa-images:e2e": "nx run nasa-images-e2e:e2e",
-    "nasa-images:build:github": "nx run nasa-images:build --buildOptimizer --optimization=true",
+    "nasa-images:build:github": "nx run nasa-images:build --deploy-url=https://nasa-images-staging.plastikaweb.com --buildOptimizer --optimization=true",
     "branch:lint": "branch-name-lint branchNameLint.json"
   },
   "private": true,
