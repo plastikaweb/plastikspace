@@ -44,7 +44,7 @@
     "nasa-images:build": "nx run nasa-images:build --parallel",
     "nasa-images:test": "nx run nasa-images:test",
     "nasa-images:e2e": "nx run nasa-images-e2e:e2e",
-    "nasa-images:build:github": "nx run nasa-images:build --configuration production",
+    "nasa-images:build:github": "nx run nasa-images:build --configuration production --base-href=/nasa-images/",
     "branch:lint": "branch-name-lint branchNameLint.json"
   },
   "private": true,
