@@ -1,4 +1,4 @@
-name: Deploy Develop to GitHub Pages
+name: Deploy Staging
 
 on:
   workflow_run:
@@ -13,19 +13,11 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Build app
-        run: yarn nasa-images:build:github
-      - name: Create 404
-        run: cp dist/apps/nasa-images/index.html dist/apps/nasa-images/404.html
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/develop' }}
+        uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/apps/nasa-images
-          publish_branch: nasa-images-staging-page
-          cname: nasa-images-staging.plastikaweb.com
-          commit_message: 'Deploy staging nasa-images to GitHub Pages ${{github.event.repository.created_at}}'
-          enable_jekyll: false
+          github_access_token: ${{ secrets.GITHUB_TOKEN }}
+          build_configuration: staging
+          base_href: ''
+          deploy_branch: nasa-images-staging-page
+          angular_dist_build_folder: dist/apps/nasa-images
