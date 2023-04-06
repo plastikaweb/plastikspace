@@ -2,7 +2,7 @@
 
 ## Description
 
-A collection of entity and model types to be used where needed across all apps and libs.
+A collection of core entity and model types to be used where needed across all apps and libs.
 
 ## Running unit tests
 
