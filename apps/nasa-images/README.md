@@ -34,7 +34,7 @@ It has 2 main views:
 
 ## Deploys
 
-A `staging` deployment can be found at [Nasa Images staging](https://nasa-images-staging.plastikaweb.com).
+A `staging` deployment can be found at [Nasa Images staging](https://www.nasa-images-staging.plastikaweb.com).
 
 ## Available libraries
 
