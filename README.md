@@ -49,6 +49,10 @@ See [Git commit conventions](documentation/commit-conventions.md)
 
 See [NX architecture](documentation/nx-architecture.md)
 
+## Git Flow and CI/CD
+
+See [Git Flow and CI/CD](documentation/git-flow.md)
+
 ## Available applications
 
 - [nasa-images](apps/nasa-images/README.md)
