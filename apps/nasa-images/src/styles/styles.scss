@@ -112,3 +112,8 @@ $nasa-images-theme: mat.define-light-theme(
 .mat-sidenav .mat-mdc-list-item:not(.mat-mdc-list-item-interactive) {
   @apply cursor-pointer;
 }
+
+// mat paginator
+.mat-mdc-paginator .mat-mdc-paginator-range-label {
+  @apply mx-sub text-sm;
+}
