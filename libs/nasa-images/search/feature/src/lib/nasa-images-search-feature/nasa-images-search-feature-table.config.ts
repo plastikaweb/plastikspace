@@ -10,7 +10,7 @@ const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
   key: 'index',
   title: '',
   propertyPath: '',
-  cssClasses: ['max-w-[5rem] hidden md:flex'],
+  cssClasses: ['min-w-[4rem] hidden md:flex'],
   formatting: {
     type: FormattingTypes.CUSTOM,
     execute: (_, __, index = 0, extraConfig) => {
@@ -18,24 +18,24 @@ const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
       return String(index + pageIndex * pageSize);
     },
   },
+  sticky: true,
 };
 
 const id: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
   key: 'id',
   title: 'ID',
   propertyPath: 'id',
-  cssClasses: ['min-w-[9rem] lg:min-w-[12rem]'],
+  cssClasses: ['min-w-[12rem] hidden md:flex lg:min-w-[14rem]', 'text-sm text-black bg-secondary-light rounded-md p-tiny sepia'],
   formatting: {
     type: FormattingTypes.TEXT,
   },
-  sticky: true,
 };
 
 const title: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
   key: 'title',
   title: 'Title',
   propertyPath: 'title',
-  cssClasses: ['min-w-[7rem] lg:max-w-[25rem]'],
+  cssClasses: ['min-w-[14rem] lg:max-w-[25rem]'],
   formatting: {
     type: FormattingTypes.TEXT,
   },
@@ -45,7 +45,7 @@ const description: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
   key: 'description',
   title: 'Description',
   propertyPath: 'description',
-  cssClasses: ['min-w-[9rem] 2xl:min-w-[24rem]', 'content-center truncate ...'],
+  cssClasses: ['min-w-[9rem] 2xl:min-w-[24rem] hidden md:flex', 'content-center truncate ...'],
   formatting: {
     type: FormattingTypes.TEXT,
   },
@@ -55,7 +55,7 @@ const dateCreated: TableColumnFormatting<NasaImage, FormattingTypes.DATE> = {
   key: 'dateCreated',
   title: 'Created',
   propertyPath: 'dateCreated',
-  cssClasses: ['max-w-[6rem]'],
+  cssClasses: ['min-w-[6rem]'],
   formatting: {
     type: FormattingTypes.DATE,
     extras: { numberDigitsInfo: 'longDate' },
@@ -66,7 +66,7 @@ const thumbnail: TableColumnFormatting<NasaImage, FormattingTypes.IMAGE> = {
   key: 'thumbnail',
   title: 'Image',
   propertyPath: 'thumbnail',
-  cssClasses: ['max-w-[120px] min-w-[100px]'],
+  cssClasses: ['max-w-[200px] min-w-[120px]'],
   formatting: {
     type: FormattingTypes.IMAGE,
     extras: {
@@ -81,7 +81,7 @@ const creator: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
   key: 'creator',
   title: 'Creator',
   propertyPath: 'creator',
-  cssClasses: ['max-w-[16rem]', 'xl:whitespace-normal content-center truncate ...'],
+  cssClasses: ['max-w-[16rem] hidden md:flex', 'xl:whitespace-normal content-center truncate ...'],
   formatting: {
     type: FormattingTypes.TEXT,
   },
@@ -91,7 +91,7 @@ const center: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
   key: 'center',
   title: 'Center',
   propertyPath: 'center',
-  cssClasses: ['max-w-[5rem] lg:max-w-[6rem]'],
+  cssClasses: ['max-w-[5rem] hidden md:flex lg:max-w-[6rem]'],
   formatting: {
     type: FormattingTypes.TEXT,
   },

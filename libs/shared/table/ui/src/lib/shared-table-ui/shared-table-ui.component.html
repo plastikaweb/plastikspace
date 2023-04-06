@@ -1,8 +1,8 @@
-<div class="block mt-4 overflow-auto border-t border-solid border-gray-10">
+<div class="block mt-0 overflow-auto border-t border-solid md:mt-4 border-gray-10">
   <div *ngIf="!!data.length; else noResults">
     <mat-table class="table w-full table-fixed" [dataSource]="dataSource">
       <ng-container *ngFor="let column of columnProperties" [matColumnDef]="column.key" [sticky]="column.sticky">
-        <mat-header-cell *matHeaderCellDef [ngClass]="column.cssClasses || ''">
+        <mat-header-cell *matHeaderCellDef [ngClass]="column.cssClasses?.[0] || ''">
           {{ column.title }}
         </mat-header-cell>
 
