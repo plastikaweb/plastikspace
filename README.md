@@ -41,17 +41,12 @@ To see a full list of available scripts see **package.json file > scripts**.
 > It is strongly recommended to use [Nx Console for VSCode](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console) in order to run Nx generators.
 > ![Nx Console for VSCode](documentation/img/nx-console-screenshot.png)
 
-## Style configuration and conventions
+## Workflow configuration and conventions
 
-See [Git commit conventions](documentation/commit-conventions.md)
-
-## NX architecture
-
-See [NX architecture](documentation/nx-architecture.md)
-
-## Git Flow and CI/CD
-
-See [Git Flow and CI/CD](documentation/git-flow.md)
+- [NX architecture](documentation/nx-architecture.md)
+- [Code style](documentation/code-style.md)
+- [Git commit conventions](documentation/commit-conventions.md)
+- [Git Flow and CI/CD](documentation/git-flow.md)
 
 ## Available applications
 
