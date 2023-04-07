@@ -1,3 +1,11 @@
-:host ::ng-deep .highlight {
-  @apply font-semibold;
+:host ::ng-deep {
+  .highlight {
+    @apply font-semibold;
+  }
+  .mat-content {
+    @apply block lg:flex;
+    h3 {
+      @apply text-base md:text-md;
+    }
+  }
 }
