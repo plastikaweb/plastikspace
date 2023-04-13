@@ -11,6 +11,8 @@ import { selectActivityActive, setActivity } from '@plastik/shared/activity/data
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
+import { showNotification } from '@plastik/core/notification/data-access';
+import { NotificationType } from '@plastik/core/notification/entities';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
 import * as NasaImagesActions from './nasa-images.actions';
@@ -156,6 +158,31 @@ describe('NasaImagesEffects', () => {
 
     it('should be registered', () => {
       expect(metadata.activeOff$).toEqual({
+        dispatch: true,
+        useEffectsErrorHandler: true,
+      });
+    });
+  });
+
+  describe('showNotification$', () => {
+    it('should return showNotification action on loadNasaImagesFailure', () => {
+      const action = NasaImagesActions.loadNasaImagesFailure({ error: ERROR_MSG });
+      const outcome = showNotification({
+        configuration: {
+          type: NotificationType.Error,
+          icon: 'cancel',
+          action: 'close',
+          message: ERROR_MSG,
+        },
+      });
+      actions = hot('-a', { a: action });
+      const expected = cold('-b', { b: outcome });
+
+      expect(effects.showNotification$).toBeObservable(expected);
+    });
+
+    it('should register showNotification$ that dispatches an action', () => {
+      expect(metadata.showNotification$).toEqual({
         dispatch: true,
         useEffectsErrorHandler: true,
       });

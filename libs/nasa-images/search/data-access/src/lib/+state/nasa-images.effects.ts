@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { NavigationFilterService, selectRouteQueryParams } from '@plastik/core/router-state';
 import { catchError, exhaustMap, filter, map, of } from 'rxjs';
 
+import { NotificationConfigService, showNotification } from '@plastik/core/notification/data-access';
+import { NotificationType } from '@plastik/core/notification/entities';
 import { NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews } from '@plastik/nasa-images/search/entities';
 import { selectActivityActive, setActivity } from '@plastik/shared/activity/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
@@ -15,6 +17,7 @@ export class NasaImagesEffects {
   private readonly actions$ = inject(Actions);
   private readonly apiService = inject(NasaImagesApiService);
   private readonly navigationFilter = inject(NavigationFilterService);
+  private readonly notificationService = inject(NotificationConfigService);
   private readonly store = inject(Store);
 
   navigation$ = createEffect(() => {
@@ -44,7 +47,7 @@ export class NasaImagesEffects {
       exhaustMap(({ params }) =>
         this.apiService.getList(params).pipe(
           map(({ items, count }) => NasaImagesActions.loadNasaImagesSuccess({ items, count })),
-          catchError((error: NasaImagesSearchApiError) => of(NasaImagesActions.loadNasaImagesFailure({ error: error?.reason || 'error' }))),
+          catchError((error: NasaImagesSearchApiError) => of(NasaImagesActions.loadNasaImagesFailure({ error: error?.reason }))),
         ),
       ),
     );
@@ -54,6 +57,16 @@ export class NasaImagesEffects {
     return this.actions$.pipe(
       ofType(NasaImagesActions.loadNasaImagesSuccess, NasaImagesActions.loadNasaImagesFailure),
       map(() => setActivity({ active: false })),
+    );
+  });
+
+  showNotification$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(NasaImagesActions.loadNasaImagesFailure),
+      map(({ error }) => {
+        const message = error || 'The request has failed. Please try it again.';
+        return showNotification({ configuration: this.notificationService.getInstance({ type: NotificationType.Error, message }) });
+      }),
     );
   });
 }

@@ -28,6 +28,8 @@
       "@plastik/core/cms-layout/sidenav": ["libs/core/cms-layout/ui/sidenav/src/index.ts"],
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
+      "@plastik/core/notification/data-access": ["libs/core/notification/data-access/src/index.ts"],
+      "@plastik/core/notification/entities": ["libs/core/notification/entities/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
       "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
       "@plastik/nasa-images/faqs": ["libs/nasa-images/faqs/feature/src/index.ts"],
