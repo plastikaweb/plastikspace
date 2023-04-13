@@ -71,6 +71,11 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [core-cms-layout-feature](libs/core/cms-layout/feature/README.md)
 - [core-cms-layout-data-access](libs/core/cms-layout/data-access/README.md)
 
+#### Notification
+
+- [core-notification-entities](libs/core/notification/entities/README.md)
+- [core-notification-data-access](libs/core/notification/data-access/README.md)
+
 ### Shared
 
 #### Button
