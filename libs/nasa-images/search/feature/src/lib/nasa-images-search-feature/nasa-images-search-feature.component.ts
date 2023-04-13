@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+import { JsonPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { PushModule } from '@ngrx/component';
@@ -15,7 +15,15 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
 @Component({
   selector: 'plastik-nasa-images-search',
   standalone: true,
-  imports: [NgIf, PushModule, SharedTableUiComponent, SharedFormFeatureModule, NasaImagesSearchUiNoResultsComponent, MatIconModule],
+  imports: [
+    NgIf,
+    JsonPipe,
+    PushModule,
+    SharedTableUiComponent,
+    SharedFormFeatureModule,
+    NasaImagesSearchUiNoResultsComponent,
+    MatIconModule,
+  ],
   templateUrl: './nasa-images-search-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -27,6 +35,7 @@ export class NasaImagesSearchFeatureComponent {
   isActiveSearch$ = this.facade.isActiveSearch$;
   tableStructure$ = NasaImagesSearchFeatureTableConfig.getTableStructure();
   formStructure$ = getNasaImagesSearchFeatureFormConfig();
+  formModel$ = this.facade.routeQueryParams$;
   routeInfo$ = this.facade.routeInfo$;
 
   onChange(model: Partial<NasaImagesSearchApiParams>): void {
