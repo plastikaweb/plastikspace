@@ -45,7 +45,7 @@ const description: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
   key: 'description',
   title: 'Description',
   propertyPath: 'description',
-  cssClasses: ['min-w-[9rem] 2xl:min-w-[24rem] hidden md:flex', 'content-center truncate ...'],
+  cssClasses: ['min-w-[9rem] 2xl:min-w-[24rem] hidden md:flex', 'content-center line-clamp-4'],
   formatting: {
     type: FormattingTypes.TEXT,
   },
@@ -81,7 +81,7 @@ const creator: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
   key: 'creator',
   title: 'Creator',
   propertyPath: 'creator',
-  cssClasses: ['max-w-[16rem] hidden md:flex', 'xl:whitespace-normal content-center truncate ...'],
+  cssClasses: ['max-w-[16rem] hidden md:flex', 'xl:whitespace-normal content-center line-clamp-4'],
   formatting: {
     type: FormattingTypes.TEXT,
   },
