@@ -5,17 +5,19 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { EffectsModule } from '@ngrx/effects';
-import { createAction, StoreModule } from '@ngrx/store';
+import { StoreModule, createAction } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+import { NotificationFacade } from '@plastik/core/notification/data-access';
 import { CoreCmsLayoutFeatureComponent } from './core-cms-layout-feature.component';
 
 describe('CoreCmsLayoutFeatureComponent', () => {
   let component: CoreCmsLayoutFeatureComponent;
   let fixture: ComponentFixture<CoreCmsLayoutFeatureComponent>;
-  let facade: LayoutFacade;
+  let layoutFacade: LayoutFacade;
+  let notificationFacade: NotificationFacade;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -41,31 +43,43 @@ describe('CoreCmsLayoutFeatureComponent', () => {
             dispatchAction: jest.fn(),
           },
         },
+        {
+          provide: NotificationFacade,
+          useValue: {
+            dismiss: jest.fn(),
+          },
+        },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CoreCmsLayoutFeatureComponent);
     component = fixture.componentInstance;
-    facade = TestBed.inject(LayoutFacade);
+    layoutFacade = TestBed.inject(LayoutFacade);
+    notificationFacade = TestBed.inject(NotificationFacade);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should call toggleSidenav facade method on onToggleSidenav event', () => {
+  it('should call toggleSidenav layoutFacade method on onToggleSidenav event', () => {
     component.onToggleSidenav(true);
-    expect(facade.toggleSidenav).toHaveBeenCalledWith(true);
+    expect(layoutFacade.toggleSidenav).toHaveBeenCalledWith(true);
   });
 
-  it('should call setIsMobile facade method on onSetIsMobile event', () => {
+  it('should call setIsMobile layoutFacade method on onSetIsMobile event', () => {
     component.onSetIsMobile(true);
-    expect(facade.setIsMobile).toHaveBeenCalledWith(true);
+    expect(layoutFacade.setIsMobile).toHaveBeenCalledWith(true);
   });
 
-  it('should call dispatchAction facade method on onSetIsMobile event', () => {
+  it('should call dispatchAction layoutFacade method on onSetIsMobile event', () => {
     const doAction = createAction('[Action] do');
     component.onButtonClickAction(doAction);
-    expect(facade.dispatchAction).toHaveBeenCalledWith(doAction);
+    expect(layoutFacade.dispatchAction).toHaveBeenCalledWith(doAction);
+  });
+
+  it('should call dismiss notificationFacade method on onNotificationDismiss event', () => {
+    component.onNotificationDismiss();
+    expect(notificationFacade.dismiss).toHaveBeenCalled();
   });
 });

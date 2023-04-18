@@ -30,6 +30,21 @@ export interface Notification {
    * Sets the duration of the visibility of the notification in the UI.
    */
   duration?: number;
+
+  /**
+   * Any css classes to add to the HTML container that contains the notification.
+   */
+  containerClass?: string;
+
+  /**
+   * Screen y basis position of the notification.
+   */
+  verticalPosition?: 'top' | 'bottom';
+
+  /**
+   * Screen x basis position of the notification.
+   */
+  horizontalPosition?: 'start' | 'center' | 'end';
 }
 
 export type NotificationTypesConfig = Record<NotificationType, Partial<Notification>>;

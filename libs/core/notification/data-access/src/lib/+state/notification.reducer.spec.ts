@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { NotificationType } from '@plastik/core/notification/entities';
-import { hideNotification, showNotification } from './notification.actions';
+import { dismissNotification, showNotification } from './notification.actions';
 import { State, initialState, notificationReducer } from './notification.reducer';
 
 describe('Notification Reducer', () => {
@@ -16,8 +16,8 @@ describe('Notification Reducer', () => {
       expect(result.preserveOnRouteRequest).toBeTruthy();
     });
 
-    it('hideNotification should return a message configuration with the value of null', () => {
-      const action = hideNotification();
+    it('dismissNotification should return a message configuration with the value of null', () => {
+      const action = dismissNotification();
 
       const result: State = notificationReducer(initialState, action);
 

@@ -1,7 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NotificationType } from '@plastik/core/notification/entities';
-import { NOTIFICATION_TYPES_CONFIG, defaultNotification } from './notification-config';
+import { NOTIFICATION_TYPES_CONFIG, NotificationType, defaultNotification } from '@plastik/core/notification/entities';
 import { NotificationConfigService } from './notification-config.service';
 
 describe('NotificationConfigService', () => {

@@ -13,7 +13,6 @@ import { CustomRouterSerializer, PrefixTitleService, RouterStateEffects, routerR
 import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { CoreNotificationDataAccessModule } from '@plastik/core/notification/data-access';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routing';
 import { headerConfig, viewConfig } from './app/cms-layout-config';
@@ -40,7 +39,6 @@ bootstrapApplication(AppComponent, {
       EffectsModule.forRoot([RouterStateEffects]),
       isDevMode() ? StoreDevtoolsModule.instrument({ name: environment.name, maxAge: 25 }) : [],
       CoreCmsLayoutFeatureModule.withConfig<NasaImagesViews>(headerConfig, viewConfig),
-      CoreNotificationDataAccessModule,
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,

@@ -29,6 +29,13 @@ $nasa-images-theme: mat.define-light-theme(
     --secondary: #dd361c;
     --secondary-dark: #c62d1f;
 
+    --green: #168628;
+
+    --error: var(--secondary-dark);
+    --info: var(--primary-light);
+    --warning: var(--secondary-light);
+    --success: var(--green);
+
     /* Spacing */
     --spacing-tiny: 0.25rem;
     --spacing-sub: 0.5rem;
@@ -116,4 +123,22 @@ $nasa-images-theme: mat.define-light-theme(
 // mat paginator
 .mat-mdc-paginator .mat-mdc-paginator-range-label {
   @apply mx-sub text-sm;
+}
+
+// mat snackbar
+.mat-mdc-snack-bar-container {
+  &.message-box {
+    &-error {
+      --mdc-snackbar-container-color: var(--error);
+    }
+    &-warning {
+      --mdc-snackbar-container-color: var(--warning);
+    }
+    &-info {
+      --mdc-snackbar-container-color: var(--info);
+    }
+    &-success {
+      --mdc-snackbar-container-color: var(--success);
+    }
+  }
 }
