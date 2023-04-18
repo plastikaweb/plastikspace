@@ -1,3 +1,5 @@
+<div *ngIf="notificationConfig$ | ngrxPush as config" [plastikSnackbar]="config" (sendDismiss)="onNotificationDismiss()"></div>
+
 <div class="flex flex-col h-max">
   <plastik-core-cms-layout-ui-header>
     <div start class="flex items-center gap-sm">

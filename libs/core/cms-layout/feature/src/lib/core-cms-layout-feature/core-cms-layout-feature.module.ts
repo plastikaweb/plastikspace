@@ -1,14 +1,20 @@
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import {
+  CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
   CoreCmsLayoutHeaderConfig,
-  CORE_CMS_LAYOUT_HEADER_CONFIG,
   VIEW_CONFIG,
 } from '@plastik/core/cms-layout/data-access';
-import { getVisibleNavigationList, ViewsConfigRecord } from '@plastik/core/entities';
+import { ViewsConfigRecord, getVisibleNavigationList } from '@plastik/core/entities';
+import { CoreNotificationDataAccessModule } from '@plastik/core/notification/data-access';
+import { CoreNotificationUiMatSnackbarModule } from '@plastik/core/notification/ui/mat-snackbar';
 
 @NgModule({
-  imports: [CoreCmsLayoutDataAccessModule],
+  imports: [
+    CoreCmsLayoutDataAccessModule,
+    CoreNotificationDataAccessModule,
+    CoreNotificationUiMatSnackbarModule.forRoot({ horizontalPosition: 'right', verticalPosition: 'top' }),
+  ],
 })
 export class CoreCmsLayoutFeatureModule {
   static withConfig<T>(

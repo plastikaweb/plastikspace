@@ -47,7 +47,7 @@ this.store.dispatch(
 
 // removes notification configuration after notification box dismisses.
 
-this.store.dispatch(hideNotification());
+this.store.dispatch(dismissNotification());
 ```
 
 ### Use it with @ngrx Effects

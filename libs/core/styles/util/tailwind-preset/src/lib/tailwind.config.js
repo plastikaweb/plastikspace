@@ -28,6 +28,10 @@ module.exports = {
       white: '#ffffff',
       black: '#000000',
       transparent: 'transparent',
+      error: 'var(--error)',
+      info: 'var(--info)',
+      warning: 'var(--warning)',
+      success: 'var(--success)',
     },
     spacing: {
       0: 0,
@@ -38,6 +42,14 @@ module.exports = {
       lg: 'var(--spacing-lg)',
       xl: 'var(--spacing-xl)',
       xxl: 'var(--spacing-xxl)',
+    },
+    flexBasis: {
+      0: '0',
+      1: '1rem',
+      2: '2rem',
+      3: '3rem',
+      4: '4rem',
+      5: '5rem',
     },
     fontSize: {
       sub: 'var(--font-size-sub)',

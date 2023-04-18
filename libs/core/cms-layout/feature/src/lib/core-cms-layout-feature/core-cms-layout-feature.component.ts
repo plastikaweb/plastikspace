@@ -11,12 +11,13 @@ import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
+import { NotificationFacade } from '@plastik/core/notification/data-access';
+import { CoreNotificationUiMatSnackbarDirective } from '@plastik/core/notification/ui/mat-snackbar';
 import { SharedActivityUiLinearComponent, SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SharedButtonUiComponent } from '@plastik/shared/button';
 import { LayoutPosition } from '@plastik/shared/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { map, Subject, takeUntil } from 'rxjs';
-
+import { Subject, map, takeUntil } from 'rxjs';
 @Component({
   selector: 'plastik-core-cms-layout-feature',
   standalone: true,
@@ -39,22 +40,29 @@ import { map, Subject, takeUntil } from 'rxjs';
     SharedButtonUiComponent,
     SharedActivityUiLinearComponent,
     SharedActivityUiOverlayComponent,
+    CoreNotificationUiMatSnackbarDirective,
   ],
   templateUrl: './core-cms-layout-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
   @Input() sidenavPosition: LayoutPosition = 'start';
+
   currentDate = new Date();
-  sidenavOpened$ = this.facade.sidenavOpened$;
-  isMobile$ = this.facade.isMobile$;
-  activity$ = this.facade.activity$;
-  headerConfig = this.facade.headerConfig;
-  sidenavConfig = this.facade.sidenavConfig;
+  sidenavOpened$ = this.layoutFacade.sidenavOpened$;
+  isMobile$ = this.layoutFacade.isMobile$;
+  activity$ = this.layoutFacade.activity$;
+  headerConfig = this.layoutFacade.headerConfig;
+  sidenavConfig = this.layoutFacade.sidenavConfig;
+  notificationConfig$ = this.notificationFacade.config$;
 
   private readonly destroyed$ = new Subject<void>();
 
-  constructor(private readonly facade: LayoutFacade, private readonly breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private readonly layoutFacade: LayoutFacade,
+    private readonly notificationFacade: NotificationFacade,
+    private readonly breakpointObserver: BreakpointObserver,
+  ) {}
 
   ngOnInit(): void {
     // TODO: Isolate breakpoint observer into its own service https://github.com/plastikaweb/plastikspace/issues/68
@@ -69,7 +77,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
         this.onSetIsMobile(matches);
       });
 
-    this.sidenavOpened$ = this.facade.sidenavOpened$;
+    this.sidenavOpened$ = this.layoutFacade.sidenavOpened$;
   }
 
   ngOnDestroy(): void {
@@ -78,14 +86,18 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
   }
 
   onToggleSidenav(opened?: boolean): void {
-    this.facade.toggleSidenav(opened);
+    this.layoutFacade.toggleSidenav(opened);
   }
 
   onSetIsMobile(isMobile: boolean): void {
-    this.facade.setIsMobile(isMobile);
+    this.layoutFacade.setIsMobile(isMobile);
   }
 
   onButtonClickAction(action: () => Action): void {
-    this.facade.dispatchAction(action);
+    this.layoutFacade.dispatchAction(action);
+  }
+
+  onNotificationDismiss(): void {
+    this.notificationFacade.dismiss();
   }
 }

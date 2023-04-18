@@ -8,7 +8,7 @@ import { getMockedRouterRequest } from '@plastik/core/router-state';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 
-import { hideNotification } from './notification.actions';
+import { dismissNotification } from './notification.actions';
 import { NotificationEffects } from './notification.effects';
 import { selectNotificationPreserveOnRouteRequest } from './notification.selectors';
 
@@ -35,18 +35,18 @@ describe('NotificationEffects Effects', () => {
     store = TestBed.inject(MockStore);
   });
 
-  describe('hideNotification$', () => {
-    it('should return an hideNotification action', () => {
+  describe('dismissNotification$', () => {
+    it('should return an dismissNotification action', () => {
       actions$ = hot('-a', {
         a: getMockedRouterRequest('/test'),
       });
-      const outcome = hideNotification();
+      const outcome = dismissNotification();
       const expected = cold('-b', { b: outcome });
 
-      expect(effects.hideNotification$).toBeObservable(expected);
+      expect(effects.dismissNotification$).toBeObservable(expected);
     });
 
-    it('should not return an hideNotification action', () => {
+    it('should not return an dismissNotification action', () => {
       store.overrideSelector(selectNotificationPreserveOnRouteRequest, true);
 
       actions$ = hot('-a', {
@@ -54,11 +54,11 @@ describe('NotificationEffects Effects', () => {
       });
       const expected = cold('', { b: [] });
 
-      expect(effects.hideNotification$).toBeObservable(expected);
+      expect(effects.dismissNotification$).toBeObservable(expected);
     });
 
-    it('should register hideNotification$ that dispatches an action', () => {
-      expect(metadata.hideNotification$).toEqual({
+    it('should register dismissNotification$ that dispatches an action', () => {
+      expect(metadata.dismissNotification$).toEqual({
         dispatch: true,
         useEffectsErrorHandler: true,
       });
