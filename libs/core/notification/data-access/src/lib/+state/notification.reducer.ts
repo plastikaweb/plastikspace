@@ -1,7 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 
 import { Notification } from '@plastik/core/notification/entities';
-import { hideNotification, showNotification } from './notification.actions';
+import { dismissNotification, showNotification } from './notification.actions';
 
 export const NOTIFICATION_FEATURE_KEY = 'notification';
 
@@ -25,7 +25,7 @@ const reducer = createReducer(
     showNotification,
     (state, { configuration, preserve }): State => ({ ...state, configuration, preserveOnRouteRequest: preserve || false }),
   ),
-  on(hideNotification, (state): State => ({ ...state, configuration: null, preserveOnRouteRequest: false })),
+  on(dismissNotification, (state): State => ({ ...state, configuration: null, preserveOnRouteRequest: false })),
 );
 
 // eslint-disable-next-line jsdoc/require-jsdoc

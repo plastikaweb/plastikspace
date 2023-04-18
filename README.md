@@ -75,6 +75,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 - [core-notification-entities](libs/core/notification/entities/README.md)
 - [core-notification-data-access](libs/core/notification/data-access/README.md)
+- [core-notification-ui-mat-snackbar](libs/core/notification/ui/mat-snackbar/README.md)
 
 ### Shared
 

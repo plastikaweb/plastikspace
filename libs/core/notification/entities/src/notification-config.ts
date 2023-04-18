@@ -1,11 +1,12 @@
 import { InjectionToken } from '@angular/core';
-import { NotificationType, NotificationTypesConfig } from '@plastik/core/notification/entities';
+import { NotificationType, NotificationTypesConfig } from './notification';
 
 export const defaultNotification: NotificationTypesConfig = {
   [NotificationType.Error]: {
     type: NotificationType.Error,
     icon: 'cancel',
     action: 'close',
+    duration: undefined,
   },
   [NotificationType.Warning]: {
     type: NotificationType.Warning,
@@ -24,6 +25,7 @@ export const defaultNotification: NotificationTypesConfig = {
   },
 };
 
+/** Injection token with notification configuration dictionary depending on its type. */
 export const NOTIFICATION_TYPES_CONFIG = new InjectionToken<NotificationTypesConfig>('notification', {
   providedIn: 'root',
   factory: () => defaultNotification,

@@ -1,7 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 
-import { Notification, NotificationType, NotificationTypesConfig } from '@plastik/core/notification/entities';
-import { NOTIFICATION_TYPES_CONFIG } from './notification-config';
+import { NOTIFICATION_TYPES_CONFIG, Notification, NotificationType, NotificationTypesConfig } from '@plastik/core/notification/entities';
 
 @Injectable({
   providedIn: 'root',
@@ -17,9 +16,8 @@ export class NotificationConfigService {
    * @returns { Notification } A notification object.
    */
   getInstance({ type = NotificationType.Error, message = '', ...extras }: Partial<Notification> = {}): Notification {
-    const notificationTypeConfig = this.notificationTypesConfig[type];
     return {
-      ...notificationTypeConfig,
+      ...this.notificationTypesConfig[type],
       ...extras,
       type,
       message,

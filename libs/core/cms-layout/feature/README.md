@@ -26,6 +26,12 @@ It has three child components:
 - a footer: [core-cms-layout-ui-footer](../../cms-layout/ui/footer/README.md).
 - a sidenav with main content: [core-cms-layout-ui-sidenav](../../cms-layout/ui/sidenav/README.md).
 
+And a notification snackbar:
+
+```html
+<div *ngIf="notificationConfig$ | ngrxPush as config" [plastikSnackbar]="config" (sendDismiss)="onNotificationDismiss()"></div>
+```
+
 ### Data Access
 
 It uses a store segment for layout related state:
