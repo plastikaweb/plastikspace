@@ -13,6 +13,7 @@ import { CustomRouterSerializer, PrefixTitleService, RouterStateEffects, routerR
 import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+import { A11yModule } from '@angular/cdk/a11y';
 import { AppComponent } from './app/app.component';
 import { routes } from './app/app.routing';
 import { headerConfig, viewConfig } from './app/cms-layout-config';
@@ -29,6 +30,7 @@ bootstrapApplication(AppComponent, {
     provideRouter(routes),
     provideStore(),
     importProvidersFrom(
+      A11yModule,
       AngularSvgIconModule.forRoot(),
       StoreModule.forRoot(routerReducers, {
         runtimeChecks: {

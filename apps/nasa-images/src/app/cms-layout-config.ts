@@ -11,8 +11,9 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
     position: 'end',
     config: [
       {
+        id: 1,
         type: 'link',
-        elements: [{ iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' }],
+        elements: [{ type: 'icon', content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' } }],
         ariaLabel: 'plastikspace -> apps -> nasa-images readme',
         link: 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
       },
@@ -22,6 +23,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
 
 export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
   [NasaImagesViews.SEARCH]: {
+    id: 1,
     name: NasaImagesViews.SEARCH,
     title: 'Search images',
     icon: 'image_search',
@@ -29,6 +31,7 @@ export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
     includedInNavigation: true,
   },
   [NasaImagesViews.FAQS]: {
+    id: 2,
     name: NasaImagesViews.FAQS,
     title: 'FAQs',
     icon: 'speaker_notes',

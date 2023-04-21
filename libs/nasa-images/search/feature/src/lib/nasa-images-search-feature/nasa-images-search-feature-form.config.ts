@@ -40,6 +40,7 @@ export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldCo
               },
               addonRight: {
                 icon: 'cancel',
+                aria: 'Reset search',
                 onClick: (_: unknown, { resetModel }: FormlyFormOptions): void => {
                   if (resetModel) {
                     resetModel({ q: '' });

@@ -9,7 +9,15 @@ It accepts an array of content of type `ButtonElement` and outputs an event on c
 > ButtonElement accepts string, SvgIconConfig and observables of both.
 
 ```typescript
-type ButtonElement = string | SvgIconConfig | Observable<string | SvgIconConfig>;
+type ButtonElement =
+  | {
+      type: 'text';
+      content: string | Observable<string>;
+    }
+  | {
+      type: 'icon';
+      content: SvgIconConfig | Observable<SvgIconConfig>;
+    };
 ```
 
 ## Dependencies
@@ -40,11 +48,15 @@ type ButtonElement = string | SvgIconConfig | Observable<string | SvgIconConfig>
 
 export class CustomComponent {
   buttonConfig = {
+    id: 12,
     elements: [
-      'hello',
+      { type: 'text', content: 'hello' },
       {
-        icon: 'assets/svg/text.svg',
-        svgClass: 'fill-white w-[14px]',
+        type: 'icon',
+        content: {
+          icon: 'assets/svg/text.svg',
+          svgClass: 'fill-white w-[14px]',
+        },
       },
     ],
     ariaLabel: 'hello',
