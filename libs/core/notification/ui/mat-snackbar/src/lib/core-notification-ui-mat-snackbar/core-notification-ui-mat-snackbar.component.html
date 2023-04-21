@@ -1,9 +1,9 @@
 <div class="flex flex-row items-center justify-between text-white gap-sm">
   <div class="flex flex-row items-center justify-start gap-sm">
-    <mat-icon class="basis-5 md:basis-2" *ngIf="data.icon as icon">{{ icon }}</mat-icon>
-    <p>{{ data.message }}</p>
+    <mat-icon aria-hidden="true" class="basis-5 md:basis-2" *ngIf="data.icon as icon">{{ icon }}</mat-icon>
+    <p [innerHTML]="data.message"></p>
   </div>
-  <button *ngIf="data.action as action" mat-button (click)="dismiss()">
+  <button *ngIf="data.action as action" mat-button [attr.aria-label]="data.ariaLabel" (click)="dismiss()">
     {{ action }}
   </button>
 </div>

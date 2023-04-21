@@ -19,7 +19,7 @@
 
   .paginator--hide-range-buttons {
     .mat-paginator-range-actions {
-      display: none !important;
+      @apply hidden;
     }
   }
 }

@@ -3,6 +3,7 @@ import { SvgIconConfig } from '@plastik/shared/entities';
 import { Observable } from 'rxjs';
 
 interface ButtonBaseConfig {
+  id: number;
   elements: ButtonElement[];
   ariaLabel: string;
   classes?: string;
@@ -26,7 +27,15 @@ export type ButtonConfig = ButtonConfigWithAction | ButtonConfigAsLink;
 /**
  * @description The type of inner elements a Button configuration will accept.
  */
-export type ButtonElement = string | SvgIconConfig | Observable<string | SvgIconConfig>;
+export type ButtonElement =
+  | {
+      type: 'text';
+      content: string | Observable<string>;
+    }
+  | {
+      type: 'icon';
+      content: SvgIconConfig | Observable<SvgIconConfig>;
+    };
 
 /**
  * Checks if button config is of type ButtonConfigAsLink.

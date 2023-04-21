@@ -84,6 +84,11 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
   @Input() pageSizeOptions!: number[];
 
   /**
+   * Main title of the table.
+   */
+  @Input() caption!: string;
+
+  /**
    * An Output emitter to send table pagination changes.
    */
   @Output()
@@ -126,5 +131,9 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
 
   onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
     this.changePagination.emit({ previousPageIndex, pageIndex, pageSize });
+  }
+
+  trackColumnProperties(index: number): number {
+    return index;
   }
 }

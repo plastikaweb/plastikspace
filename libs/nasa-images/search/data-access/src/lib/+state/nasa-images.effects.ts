@@ -2,8 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { NavigationFilterService, selectRouteQueryParams } from '@plastik/core/router-state';
-import { catchError, exhaustMap, filter, map, of } from 'rxjs';
+import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
 
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { NotificationConfigService, showNotification } from '@plastik/core/notification/data-access';
 import { NotificationType } from '@plastik/core/notification/entities';
 import { NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews } from '@plastik/nasa-images/search/entities';
@@ -19,6 +20,7 @@ export class NasaImagesEffects {
   private readonly navigationFilter = inject(NavigationFilterService);
   private readonly notificationService = inject(NotificationConfigService);
   private readonly store = inject(Store);
+  private readonly liveAnnouncer = inject(LiveAnnouncer);
 
   navigation$ = createEffect(() => {
     return this.actions$.pipe(
@@ -44,6 +46,7 @@ export class NasaImagesEffects {
   load$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(NasaImagesActions.loadNasaImages),
+      tap(({ params }) => this.liveAnnouncer.announce(`searching for ${params.q}`, 'assertive', 5000)),
       exhaustMap(({ params }) =>
         this.apiService.getList(params).pipe(
           map(({ items, count }) => NasaImagesActions.loadNasaImagesSuccess({ items, count })),
@@ -52,6 +55,16 @@ export class NasaImagesEffects {
       ),
     );
   });
+
+  loadSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(NasaImagesActions.loadNasaImagesSuccess),
+        tap(() => this.liveAnnouncer.announce('Search completed successfully', 'assertive', 5000)),
+      );
+    },
+    { dispatch: false },
+  );
 
   activeOff$ = createEffect(() => {
     return this.actions$.pipe(
@@ -65,7 +78,13 @@ export class NasaImagesEffects {
       ofType(NasaImagesActions.loadNasaImagesFailure),
       map(({ error }) => {
         const message = error || 'The request has failed. Please try it again.';
-        return showNotification({ configuration: this.notificationService.getInstance({ type: NotificationType.Error, message }) });
+        this.liveAnnouncer.announce(message, 'assertive', 5000);
+        return showNotification({
+          configuration: this.notificationService.getInstance({
+            type: NotificationType.Error,
+            message: `<span class="sr-only">Error: </span>${message}`,
+          }),
+        });
       }),
     );
   });

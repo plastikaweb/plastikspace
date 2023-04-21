@@ -1,7 +1,7 @@
 [
   {
     "question": "What is the main purpose of the Nasa Images search page?",
-    "answer": "Its main purpose is to allow users to search for images using the <a href=\"https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf\" target=\"_blank\">images.nasa.gov API Documentation</a>.<br>The page includes search filters for the user to refine their search results."
+    "answer": "Its main purpose is to allow users to search for images using the <a href=\"https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf\" title=\"NASA images API docs (pdf)\" target=\"_blank\">images.nasa.gov API Documentation <span class=\"sr-only\">(opens in new window)</span></a>.<br>The page includes search filters for the user to refine their search results."
   },
   {
     "question": "Where can I find the code for the website?",
@@ -13,7 +13,7 @@
   },
   {
     "question": "What technologies are being used to build the website?",
-    "answer": "The website is built using <span class=\"highlight\">Angular, Nx, and @ngrx</span> as the main technologies. The application consumes the <a href=\"https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf\" target=\"_blank\">NASA images REST API</a> and uses <span class=\"highlight\">Material Design + TailwindCSS</span> for the UI."
+    "answer": "The website is built using <span class=\"highlight\">Angular, Nx, and @ngrx</span> as the main technologies. The application consumes the <a href=\"https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf\" title=\"NASA images API docs (pdf)\" target=\"_blank\">NASA images REST API <span class=\"sr-only\">(opens in new window)</span></a> and uses <span class=\"highlight\">Material Design + TailwindCSS</span> for the UI."
   },
   {
     "question": "What is the architecture used for the website?",

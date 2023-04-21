@@ -3,8 +3,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { MatButtonModule } from '@angular/material/button';
 import { PushModule } from '@ngrx/component';
 import { Action } from '@ngrx/store';
-import { ButtonConfig, ButtonElement, buttonHasALinkGuard } from '@plastik/shared/button';
-import { SvgIconConfig } from '@plastik/shared/entities';
+import { ButtonConfig, buttonHasALinkGuard } from '@plastik/shared/button';
 import { ReturnAsObservablePipe } from '@plastik/shared/return-as-observable';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -34,7 +33,7 @@ export class SharedButtonUiComponent {
     }
   }
 
-  isIconGuard(element: ButtonElement): element is SvgIconConfig {
-    return !!(element as SvgIconConfig).iconPath;
+  trackButtonsContent(index: number): number {
+    return index;
   }
 }

@@ -38,19 +38,21 @@
     [sidenavOpened]="(sidenavOpened$ | ngrxPush) || false"
     (toggleSidenav)="onToggleSidenav()"
   >
-    <mat-list menu-items>
-      <mat-list-item
-        class="rounded-lg my-tiny h-xll hover:bg-gray-5 active:bg-gray-5 focus:before:bg-gray-5"
-        routerLinkActive="bg-gray-5"
-        *ngFor="let item of sidenavConfig"
+    <mat-nav-list menu-items>
+      <a
+        mat-list-item
+        class="my-tiny h-xll hover:bg-bg-gray-5"
+        *ngFor="let item of sidenavConfig; trackBy: trackSidenavItems"
         [routerLink]="item?.route"
+        routerLinkActive="bg-gray-5"
+        ariaCurrentWhenActive="page"
       >
         <div class="flex content-center justify-start gap-sm">
           <mat-icon> {{ item.icon }} </mat-icon>
           <span>{{ item.title }}</span>
         </div>
-      </mat-list-item>
-    </mat-list>
+      </a>
+    </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>
 
   <plastik-core-cms-layout-ui-footer>
@@ -59,7 +61,13 @@
       <div class="flex flex-row gap-[4px]">
         <div>
           © 2006-{{ currentDate | date : 'yyyy' }}
-          <a class="text-white underline underline-offset-2" href="https://www.plastikaweb.com" target="_blank">Plastikaweb</a>
+          <a
+            aria-label="visit www.plastikaweb.com page"
+            class="text-white underline underline-offset-2"
+            href="https://www.plastikaweb.com"
+            target="_blank"
+            >Plastikaweb</a
+          >
         </div>
         <span class="hidden sm:block">| Carlos Matheu | FrontEnd Freelancer.</span>
       </div>
@@ -68,7 +76,7 @@
 </div>
 
 <ng-template #toggleSidenavButton>
-  <button mat-icon-button aria-label="sidenav toggle button" button (click)="onToggleSidenav()">
+  <button mat-icon-button aria-label="sidenav toggle button" class="flex justify-center align-middle" (click)="onToggleSidenav()">
     <mat-icon class="mat-18" *ngIf="!(sidenavOpened$ | ngrxPush); else closeButton">menu</mat-icon>
     <ng-template #closeButton>
       <mat-icon class="mat-18">close</mat-icon>
@@ -78,7 +86,7 @@
 
 <ng-template #socialLinks>
   <plastik-shared-button
-    *ngFor="let buttonConfig of headerConfig.socialLinks?.config"
+    *ngFor="let buttonConfig of headerConfig.socialLinks?.config; trackBy: trackSocialLinks"
     [config]="buttonConfig"
     (sendAction)="onButtonClickAction($event)"
   >

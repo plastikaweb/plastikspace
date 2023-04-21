@@ -17,6 +17,7 @@
   <plastik-shared-table
     *ngIf="{ data: images$ | ngrxPush, tableStructure: tableStructure$ | ngrxPush } as obs"
     [data]="obs?.data || []"
+    [caption]="obs?.tableStructure?.caption || ''"
     [columnProperties]="obs.tableStructure?.columnProperties || []"
     [resultsLength]="(count$ | ngrxPush) || 0"
     [pageSizeOptions]="obs.tableStructure?.pageSizeOptions || []"

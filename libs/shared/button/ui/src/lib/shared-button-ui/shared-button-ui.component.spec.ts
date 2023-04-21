@@ -30,9 +30,4 @@ describe('SharedButtonUiComponent', () => {
     component.onClick();
     expect(result).toEqual(result);
   });
-
-  it('should return a boolean indicating if the button configuration element is of type SvgIconConfig', () => {
-    expect(component.isIconGuard(buttonMock.elements[0])).toBeFalsy();
-    expect(component.isIconGuard(buttonMock.elements[1])).toBeTruthy();
-  });
 });

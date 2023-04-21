@@ -17,4 +17,8 @@ import { NasaImagesFaqsService } from '../nasa-images-faqs.service';
 export class NasaImagesFaqsFeatureComponent {
   routeInfo$ = inject(NasaImagesFacade).routeInfo$;
   faqs$ = inject(NasaImagesFaqsService).getList();
+
+  trackFaqs(index: number): number {
+    return index;
+  }
 }

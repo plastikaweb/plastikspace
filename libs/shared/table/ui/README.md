@@ -33,6 +33,7 @@ It uses internally [Material Table](https://material.angular.io/components/table
 | `noPagination`         | `boolean`                                     | Remove pagination component to the table.                              | false                                      |
 | `paginationVisibility` | `Partial<TablePaginationVisibility>`          | Pagination visibility configuration.                                   | All properties are set to false by default |
 | `pageSizeOptions`      | `number[]`                                    | The pagination page sizes available in the UI.                         |                                            |
+| `caption`              | `string`                                      | Main title of the table.                                               |                                            |
 
 ## Outputs
 
@@ -130,6 +131,7 @@ export class DataFeatureSearchTableConfig {
     return {
       ...defaultTableConfig,
       columnProperties,
+      caption: 'Feature table',
     };
   }
 }
@@ -147,6 +149,7 @@ onChangeTablePagination(tablePagination: TablePagination) {
 <plastik-shared-table
   [data]="data"
   [columnProperties]="tableStructure.columnProperties"
+  [caption]="tableStructure.caption"
   [resultsLength]="resultsLength"
   [paginationVisibility]="{
         hidePageSize: false,

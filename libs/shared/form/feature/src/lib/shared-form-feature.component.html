@@ -1,15 +1,14 @@
-<form role="form" novalidate [formGroup]="form" (ngSubmit)="onSubmit($event)">
+<form novalidate [formGroup]="form" (ngSubmit)="onSubmit($event)">
   <!-- form -->
-  <fieldset>
-    <formly-form
-      (modelChange)="onModelChange($event)"
-      class="form-container"
-      [form]="form"
-      [options]="options"
-      [fields]="fields"
-      [model]="model"
-    ></formly-form>
-  </fieldset>
+
+  <formly-form
+    (modelChange)="onModelChange($event)"
+    class="form-container"
+    [form]="form"
+    [options]="options"
+    [fields]="fields"
+    [model]="model"
+  ></formly-form>
 
   <!-- buttons -->
   <div class="mt-6 max-height-flex">

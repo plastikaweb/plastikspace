@@ -27,6 +27,11 @@ export interface Notification {
    */
   action?: string;
   /**
+   * Sets a ARIA label for the dismiss box action.
+   * Is it provided only if action is defined.
+   */
+  ariaLabel?: string;
+  /**
    * Sets the duration of the visibility of the notification in the UI.
    */
   duration?: number;

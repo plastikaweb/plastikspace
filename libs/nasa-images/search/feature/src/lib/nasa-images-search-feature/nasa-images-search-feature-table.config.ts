@@ -8,7 +8,7 @@ import { Observable, map } from 'rxjs';
 
 const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
   key: 'index',
-  title: '',
+  title: '#',
   propertyPath: '',
   cssClasses: ['min-w-[4rem] hidden md:flex'],
   formatting: {
@@ -35,7 +35,7 @@ const title: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
   key: 'title',
   title: 'Title',
   propertyPath: 'title',
-  cssClasses: ['min-w-[14rem] lg:max-w-[25rem]'],
+  cssClasses: ['min-w-[10rem] lg:max-w-[25rem]', 'content-center line-clamp-5'],
   formatting: {
     type: FormattingTypes.TEXT,
   },
@@ -130,6 +130,7 @@ export class NasaImagesSearchFeatureTableConfig {
             hideRangeButtons: false,
             hidePaginationFirstLastButtons: false,
           },
+          caption: 'Nasa Images Table Results',
         };
       }),
     );

@@ -23,6 +23,7 @@ jobs:
       parallel-commands: |
         yarn nx-cloud record -- yarn nx format:check
         yarn nx-cloud record -- yarn markdownlint
+        yarn nx-cloud record --  & yarn nasa-images:a11y
       parallel-commands-on-agents: |
         yarn nx affected --target=lint --parallel=3
         yarn nx affected --target=test --parallel=3 --ci --code-coverage
