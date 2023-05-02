@@ -3,11 +3,12 @@ import { createAction } from '@ngrx/store';
 import { ButtonConfig } from './button';
 
 export const buttonMock: ButtonConfig = {
+  id: 1,
   type: 'button',
   elements: [
-    'GO',
     {
-      iconPath: 'assets/svg/go.svg',
+      type: 'icon',
+      content: { iconPath: 'assets/svg/go.svg' },
     },
   ],
   ariaLabel: 'click here to go!',
@@ -15,11 +16,16 @@ export const buttonMock: ButtonConfig = {
 };
 
 export const buttonAsLinkMock: ButtonConfig = {
+  id: 1,
   type: 'link',
   elements: [
-    'GO',
     {
-      iconPath: 'assets/svg/go.svg',
+      type: 'text',
+      content: 'GO',
+    },
+    {
+      type: 'icon',
+      content: { iconPath: 'assets/svg/go.svg' },
     },
   ],
   ariaLabel: 'click here to go!',

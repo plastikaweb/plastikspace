@@ -44,6 +44,7 @@
     "nasa-images:build": "nx run nasa-images:build --parallel",
     "nasa-images:test": "nx run nasa-images:test",
     "nasa-images:e2e": "nx run nasa-images-e2e:e2e",
+    "nasa-images:a11y": "pa11y-ci --config ./apps/nasa-images/.pa11yci.json",
     "nasa-images:build:github": "nx run nasa-images:build:prod",
     "branch:lint": "branch-name-lint branchNameLint.json"
   },
@@ -80,6 +81,7 @@
     "@angular-devkit/schematics": "15.2.1",
     "@angular-eslint/eslint-plugin": "15.2.1",
     "@angular-eslint/eslint-plugin-template": "15.2.1",
+    "@angular-eslint/schematics": "^15.2.1",
     "@angular-eslint/template-parser": "15.2.1",
     "@angular/cli": "~15.2.0",
     "@angular/compiler-cli": "15.2.1",
@@ -122,6 +124,7 @@
     "markdownlint": "^0.28.0",
     "markdownlint-cli": "^0.33.0",
     "nx": "15.8.5",
+    "pa11y-ci": "^3.0.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.2",
     "rimraf": "^4.3.1",

@@ -1,6 +1,5 @@
 <mat-sidenav-container (backdropClick)="onToggleSidenav(false)">
   <mat-sidenav
-    role="navigation"
     class="p-md"
     [mode]="mode"
     [fixedInViewport]="fixedInViewport"
@@ -8,22 +7,14 @@
     [opened]="sidenavOpened"
     (keydown.escape)="onToggleSidenav(false)"
   >
-    <div class="py-sm">
-      <ng-content select="[header]"></ng-content>
-    </div>
+    <ng-content select="[header]"></ng-content>
     <mat-divider></mat-divider>
     <ng-content select="[menu-items]"></ng-content>
     <mat-divider></mat-divider>
-    <div class="py-sm">
-      <ng-content select="[footer]"></ng-content>
-    </div>
+    <ng-content select="[footer]"></ng-content>
   </mat-sidenav>
 
-  <mat-sidenav-content class="scroll-smooth" role="main">
-    <main id="mainContent" class="bg-white p-md h-[calc(100vh-129px)]">
-      <div>
-        <router-outlet></router-outlet>
-      </div>
-    </main>
+  <mat-sidenav-content role="main" tabindex="-1" class="scroll-smooth" id="mainContent" class="bg-white p-md h-[calc(100vh-129px)]">
+    <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

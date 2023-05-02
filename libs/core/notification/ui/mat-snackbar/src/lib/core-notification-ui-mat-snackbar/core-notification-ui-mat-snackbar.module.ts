@@ -13,7 +13,7 @@ export class CoreNotificationUiMatSnackbarModule {
         {
           provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
           useValue: {
-            ...{ duration: 2000, horizontalPosition: 'center', verticalPosition: 'bottom', politeness: 'polite' },
+            ...{ duration: 2000, horizontalPosition: 'center', verticalPosition: 'bottom', politeness: 'assertive' },
             ...config,
           },
         },

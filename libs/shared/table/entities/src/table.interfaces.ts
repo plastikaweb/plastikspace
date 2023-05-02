@@ -32,6 +32,10 @@ export interface TableControlStructure<OBJ = unknown> {
   pagination?: PageEventConfig;
   pageSizeOptions?: number[];
   paginationVisibility?: Partial<TablePaginationVisibility>;
+  /**
+   * Main title of the table. Used for accessibility purposes.
+   */
+  caption?: string;
 }
 
 /**

@@ -1,8 +1,8 @@
 <button
   *ngIf="config.type === 'button'"
+  mat-button
   [ngClass]="config.classes || {}"
   [disabled]="config.disabled"
-  mat-button
   class="button--rounded"
   [attr.aria-label]="config.ariaLabel"
   (click)="onClick()"
@@ -10,17 +10,21 @@
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </button>
 
-<a [attr.aria-label]="config.ariaLabel" *ngIf="config.type === 'link'" [href]="config.link" target="_blank">
-  <ng-container *ngTemplateOutlet="content"></ng-container>
+<a *ngIf="config.type === 'link'" class="block" [attr.aria-label]="config.ariaLabel" [href]="config.link" target="_blank">
+  <ng-container *ngTemplateOutlet="content">button content</ng-container>
 </a>
 
 <ng-template #content>
-  <ng-container *ngFor="let element of config.elements">
-    <ng-container *ngIf="!isIconGuard(element)">
-      <span>{{ element | returnAsObservable | ngrxPush }}</span>
+  <ng-container *ngFor="let element of config.elements; index as i; trackBy: trackButtonsContent">
+    <ng-container *ngIf="element.type === 'text'">
+      <span>{{ element.content | returnAsObservable | ngrxPush }}</span>
     </ng-container>
-    <ng-container *ngIf="isIconGuard(element)">
-      <svg-icon [src]="element?.iconPath || ''" [svgClass]="element?.svgClass || ''"></svg-icon>
+
+    <ng-container *ngIf="element.type === 'icon'">
+      <svg-icon
+        [src]="(element.content | returnAsObservable | ngrxPush)?.iconPath || ''"
+        [svgClass]="(element.content | returnAsObservable | ngrxPush)?.svgClass || ''"
+      ></svg-icon>
     </ng-container>
   </ng-container>
 </ng-template>

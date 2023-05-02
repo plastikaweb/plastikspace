@@ -1,5 +1,8 @@
 <ng-template #matPrefix>
-  <div
+  <button
+    [attr.aria-label]="props['addonLeft']['aria'] || ''"
+    [attr.tabindex]="!props['addonLeft']['onClick'] ? '-1' : '0'"
+    [attr.aria-hidden]="!props['addonLeft']['onClick']"
     *ngIf="props['addonLeft']"
     class="flex flex-row"
     [ngClass]="props['addonLeft'].classes"
@@ -8,13 +11,16 @@
   >
     <mat-icon *ngIf="props['addonLeft'].icon">{{ props['addonLeft'].icon }}</mat-icon>
     <span *ngIf="props['addonLeft'].text">{{ props['addonLeft'].text }}</span>
-  </div>
+  </button>
 </ng-template>
 
 <ng-container #fieldComponent></ng-container>
 
 <ng-template #matSuffix>
-  <div
+  <button
+    [attr.aria-label]="props['addonRight']['aria'] || ''"
+    [attr.tabindex]="!props['addonRight']['onClick'] ? '-1' : '0'"
+    [attr.aria-hidden]="!props['addonRight']['onClick']"
     *ngIf="props['addonRight']"
     class="flex flex-row"
     [ngClass]="props['addonRight'].classes"
@@ -23,5 +29,5 @@
   >
     <mat-icon *ngIf="props['addonRight'].icon">{{ props['addonRight'].icon }}</mat-icon>
     <span *ngIf="props['addonRight'].text">{{ props['addonRight'].text }}</span>
-  </div>
+  </button>
 </ng-template>

@@ -57,7 +57,7 @@ $nasa-images-theme: mat.define-light-theme(
 
   html {
     font-size: 14px;
-    @apply box-border overflow-hidden;
+    @apply box-border;
   }
 
   *,
@@ -73,7 +73,7 @@ $nasa-images-theme: mat.define-light-theme(
   }
 
   body {
-    @apply text-gray-30 font-light font-poppins;
+    @apply text-gray-10 font-light font-poppins;
   }
 
   h1 {

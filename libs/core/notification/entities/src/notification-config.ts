@@ -6,6 +6,7 @@ export const defaultNotification: NotificationTypesConfig = {
     type: NotificationType.Error,
     icon: 'cancel',
     action: 'close',
+    ariaLabel: 'Close error notification',
     duration: undefined,
   },
   [NotificationType.Warning]: {

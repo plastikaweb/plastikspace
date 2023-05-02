@@ -147,6 +147,15 @@ describe('NasaImagesEffects', () => {
     });
   });
 
+  describe('loadSuccess$', () => {
+    it('should be registered', () => {
+      expect(metadata.loadSuccess$).toEqual({
+        dispatch: false,
+        useEffectsErrorHandler: true,
+      });
+    });
+  });
+
   describe('activeOff$', () => {
     const action = NasaImagesActions.loadNasaImagesSuccess({ items, count });
     it('should work', () => {
@@ -172,7 +181,8 @@ describe('NasaImagesEffects', () => {
           type: NotificationType.Error,
           icon: 'cancel',
           action: 'close',
-          message: ERROR_MSG,
+          ariaLabel: 'Close error notification',
+          message: `<span class="sr-only">Error: </span>${ERROR_MSG}`,
         },
       });
       actions = hot('-a', { a: action });
