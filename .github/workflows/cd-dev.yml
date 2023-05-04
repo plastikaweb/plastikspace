@@ -19,6 +19,6 @@ jobs:
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
           build_configuration: staging
-          base_href: https://www.nasa-images-staging.plastikaweb.com
+          base_href: ''
           deploy_branch: nasa-images-staging-page
           angular_dist_build_folder: dist/apps/nasa-images
