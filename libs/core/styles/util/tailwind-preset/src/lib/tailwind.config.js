@@ -73,6 +73,7 @@ module.exports = {
       black: '900',
     },
   },
+
   plugins: [
     require('tailwindcss/plugin')(({ addBase }) => {
       addBase({
