@@ -45,6 +45,7 @@ To see a full list of available scripts see **package.json file > scripts**.
 
 - [NX architecture](documentation/nx-architecture.md)
 - [Code style](documentation/code-style.md)
+- [Accessibility](documentation/accessibility.md)
 - [Git commit conventions](documentation/commit-conventions.md)
 - [Git Flow and CI/CD](documentation/git-flow.md)
 
