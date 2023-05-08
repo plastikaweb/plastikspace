@@ -45,7 +45,7 @@ export class RouterStateEffects {
         ofType(ROUTER_NAVIGATION),
         tap(() => {
           this.zone.runOutsideAngular(() => {
-            const mainElement = document.getElementById('mainContent')?.parentElement;
+            const mainElement = document.getElementById('mainContent');
             mainElement?.scrollTo(0, 0);
           });
         }),

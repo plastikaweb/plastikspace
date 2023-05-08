@@ -12,6 +12,7 @@
     - [Text](#text)
     - [Tabulation](#tabulation)
     - [ARIA](#aria)
+    - [Reduced motion](#reduced-motion)
     - [Angular Material / CDK](#angular-material--cdk)
   - [Testing tools](#testing-tools)
     - [Lighthouse](#lighthouse)
@@ -45,6 +46,13 @@ A todo list of accessibility actions and related information can be found [here]
 - Add hidden description inside the tag that uses a bg image.
 - Use `role="img"` and a title to describe `<svg>` images.
 
+```html
+<svg role="img" aria-labelledby="twitter-title">
+    <title id="twitter-title">Follow on Twitter</title>
+    <path ....>
+</svg>
+```
+
 ### Interactive
 
 - Use buttons for interactive elements.
@@ -75,6 +83,14 @@ A todo list of accessibility actions and related information can be found [here]
 ### ARIA
 
 - Use `aria-label`, `aria-labelledby` when needed to add meaning to links, svg images, tables and buttons.
+
+### Reduced motion
+
+- Apply `Tailwind Reduced Motion Variants` for elements with animations or transitions to disable them for users with reduced motion.
+
+```css
+<mat-loading-bar class="animate-radar motion-reduce:animate-none"></mat-loading-bar>
+```
 
 ### Angular Material / CDK
 
