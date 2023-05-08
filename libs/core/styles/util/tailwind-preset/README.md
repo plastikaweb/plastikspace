@@ -3,7 +3,7 @@
 - [core-styles-util-tailwind-preset](#core-styles-util-tailwind-preset)
   - [Description](#description)
   - [How to use](#how-to-use)
-  - [Related links](#related-links)
+  - [Useful links](#useful-links)
 
 ## Description
 
@@ -28,6 +28,6 @@ module.exports = {
 
 ```
 
-## Related links
+## Useful links
 
 - [Set up Tailwind CSS with Angular in an Nx workspace](https://leosvel.dev/blog/set-up-tailwind-css-with-angular-in-an-nx-workspace)

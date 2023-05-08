@@ -53,6 +53,7 @@ These are the manually added rules to the `.eslintrc.json` base file:
 - [eslint-plugin-jsdoc](https://github.com/gajus/eslint-plugin-jsdoc):
   - adds the recommended linting rules for `JSDoc`.
   - adds a regex match for description text in order to begin it in Uppercase and always end with a ".".
+- [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslint#readme): enables ESLint to lint Angular projects. Added accessibility related rules. For more information visit [accessibility.md](accessibility).
 
 ## Links
 
