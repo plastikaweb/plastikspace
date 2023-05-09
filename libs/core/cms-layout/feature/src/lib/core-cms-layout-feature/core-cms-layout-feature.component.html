@@ -46,6 +46,7 @@
         routerLinkActive="bg-gray-5"
         ariaCurrentWhenActive="page"
         [routerLink]="item?.route"
+        [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
       >
         <div class="flex content-center justify-start gap-sm">
           <mat-icon> {{ item.icon }} </mat-icon>

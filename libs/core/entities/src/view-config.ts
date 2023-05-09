@@ -16,6 +16,7 @@ export interface ViewConfig<T> {
   children?: Array<ViewConfig<T>>;
   route: string[];
   includedInNavigation?: boolean;
+  routerLinkActiveOptionsExact?: boolean;
 }
 
 /**

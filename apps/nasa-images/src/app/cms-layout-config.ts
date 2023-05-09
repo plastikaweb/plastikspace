@@ -29,6 +29,7 @@ export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
     icon: 'image_search',
     route: [`/${NasaImagesViews.SEARCH}`],
     includedInNavigation: true,
+    routerLinkActiveOptionsExact: false,
   },
   [NasaImagesViews.FAQS]: {
     id: 2,
@@ -37,5 +38,6 @@ export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
     icon: 'speaker_notes',
     route: [`/${NasaImagesViews.FAQS}`],
     includedInNavigation: true,
+    routerLinkActiveOptionsExact: false,
   },
 };
