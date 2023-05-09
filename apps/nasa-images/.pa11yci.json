@@ -2,17 +2,14 @@
   "defaults": {
     "timeout": 5000,
     "viewport": {
-      "width": 800,
-      "height": 600
+      "width": 1024,
+      "height": 768
     }
   },
   "urls": [
     {
-      "url": "http://localhost:4200/faqs",
-      "screenCapture": "./pa11y/nasa-images/faqs.png"
-    },
-    {
       "url": "http://localhost:4200/search",
+      "timeout": 10000,
       "screenCapture": "./pa11y/nasa-images/search.png"
     },
     {
@@ -22,6 +19,10 @@
     {
       "url": "http://localhost:4200/search?q=nasa&page=101",
       "screenCapture": "./pa11y/nasa-images/search-with-warning.png"
+    },
+    {
+      "url": "http://localhost:4200/faqs",
+      "screenCapture": "./pa11y/nasa-images/faqs.png"
     }
   ]
 }
