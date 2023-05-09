@@ -1,10 +1,10 @@
 <ng-template #matPrefix>
   <button
-    [attr.aria-label]="props['addonLeft']['aria'] || ''"
-    [attr.tabindex]="!props['addonLeft']['onClick'] ? '-1' : '0'"
-    [attr.aria-hidden]="!props['addonLeft']['onClick']"
     *ngIf="props['addonLeft']"
     class="flex flex-row"
+    [attr.tabindex]="!props['addonLeft']['onClick'] ? '-1' : '0'"
+    [attr.aria-hidden]="!props['addonLeft']['onClick']"
+    [attr.aria-label]="props['addonLeft']['aria'] || ''"
     [ngClass]="props['addonLeft'].classes"
     [ngStyle]="{ cursor: props['addonLeft'].onClick ? 'pointer' : 'inherit' }"
     (click)="addonLeftClick()"
@@ -18,11 +18,11 @@
 
 <ng-template #matSuffix>
   <button
+    *ngIf="props['addonRight']"
+    class="flex flex-row"
     [attr.aria-label]="props['addonRight']['aria'] || ''"
     [attr.tabindex]="!props['addonRight']['onClick'] ? '-1' : '0'"
     [attr.aria-hidden]="!props['addonRight']['onClick']"
-    *ngIf="props['addonRight']"
-    class="flex flex-row"
     [ngClass]="props['addonRight'].classes"
     [ngStyle]="{ cursor: props['addonRight'].onClick ? 'pointer' : 'inherit' }"
     (click)="addonRightClick()"

@@ -79,13 +79,13 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["apps/nasa-images/**/*.ts", "apps/nasa-images/**/*.html"]
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/nasa-images"],
       "options": {
         "jestConfig": "apps/nasa-images/jest.config.ts",

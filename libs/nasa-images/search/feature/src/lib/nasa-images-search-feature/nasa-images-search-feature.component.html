@@ -1,4 +1,4 @@
-<h2 class="flex items-center gap-sm" *ngIf="routeInfo$ | ngrxPush as info">
+<h2 *ngIf="routeInfo$ | ngrxPush as info" class="flex items-center gap-sm">
   <mat-icon> {{ info.icon }} </mat-icon> <span>{{ info.title }}</span>
 </h2>
 
@@ -25,7 +25,7 @@
     [paginationVisibility]="obs.tableStructure?.paginationVisibility"
     (changePagination)="onChangePagination($event)"
   >
-    <plastik-nasa-images-search-ui-no-results noResults *ngIf="isActiveSearch$ | ngrxPush; else noValidSearch">
+    <plastik-nasa-images-search-ui-no-results *ngIf="isActiveSearch$ | ngrxPush; else noValidSearch" noResults>
       <span icon> search_off </span>
       <span title>No results found</span>
       <span message>We can't find any item matching your search.</span>

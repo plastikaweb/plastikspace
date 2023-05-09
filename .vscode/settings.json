@@ -18,5 +18,12 @@
     "**/.js.map": {
       "when": "$(basename)"
     }
-  }
+  },
+  "projectManager.git.ignoredFolders": ["out", "typings", "test", ".haxelib"],
+  "projectManager.hg.ignoredFolders": ["out", "typings", "test", ".haxelib"],
+  "projectManager.svn.ignoredFolders": ["out", "typings", "test"],
+  "projectManager.any.ignoredFolders": ["out", "typings", "test"],
+  "projectManager.vscode.ignoredFolders": ["out", "typings", "test"],
+  "svg.previewAll.exclude": "",
+  "markdown.extension.completion.respectVscodeSearchExclude": false
 }

@@ -6,7 +6,7 @@
   "prefix": "plastik",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["libs/core/ng-entry-html/util/**/*.ts", "libs/core/ng-entry-html/util/**/*.html"]

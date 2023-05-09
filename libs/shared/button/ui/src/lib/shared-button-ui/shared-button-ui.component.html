@@ -1,16 +1,16 @@
 <button
   *ngIf="config.type === 'button'"
   mat-button
+  class="button--rounded"
   [ngClass]="config.classes || {}"
   [disabled]="config.disabled"
-  class="button--rounded"
   [attr.aria-label]="config.ariaLabel"
   (click)="onClick()"
 >
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </button>
 
-<a *ngIf="config.type === 'link'" class="block" [attr.aria-label]="config.ariaLabel" [href]="config.link" target="_blank">
+<a *ngIf="config.type === 'link'" class="block" target="_blank" [attr.aria-label]="config.ariaLabel" [href]="config.link">
   <ng-container *ngTemplateOutlet="content">button content</ng-container>
 </a>
 

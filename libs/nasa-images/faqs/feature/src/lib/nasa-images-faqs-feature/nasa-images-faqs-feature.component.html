@@ -1,4 +1,4 @@
-<h2 class="flex items-center gap-sm" *ngIf="routeInfo$ | ngrxPush as info">
+<h2 *ngIf="routeInfo$ | ngrxPush as info" class="flex items-center gap-sm">
   <mat-icon> {{ info.icon }} </mat-icon> <span>{{ info.title }}</span>
 </h2>
 
