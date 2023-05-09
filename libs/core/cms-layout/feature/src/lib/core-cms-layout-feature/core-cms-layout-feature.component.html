@@ -5,6 +5,7 @@
     <div start class="flex items-center gap-sm">
       <ng-container *ngIf="sidenavPosition === 'start'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
       <h1>
+        <span class="sr-only">{{ headerConfig.title }}</span>
         <a class="flex items-center content-center justify-between text-white hover:no-underline" href="">
           <svg-icon *ngIf="headerConfig.mainIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
           <span class="block md:hidden text-md">{{ headerConfig.title }}</span>
@@ -42,15 +43,14 @@
       <a
         *ngFor="let item of sidenavConfig; trackBy: trackSidenavItems"
         mat-list-item
-        class="my-tiny h-xll hover:bg-bg-gray-5"
+        class="my-tiny h-xll hover:bg-gray-5 focus:bg-gray-10"
         routerLinkActive="bg-gray-5"
         ariaCurrentWhenActive="page"
         [routerLink]="item?.route"
         [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
       >
         <div class="flex content-center justify-start gap-sm">
-          <mat-icon> {{ item.icon }} </mat-icon>
-          <span>{{ item.title }}</span>
+          <p>{{ item.title }}</p>
         </div>
       </a>
     </mat-nav-list>

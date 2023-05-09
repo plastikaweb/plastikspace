@@ -30,8 +30,9 @@ A simple way to run or debug tests.
 integrates ESLint JavaScript into VS Code.
 - **markdownlint** ([davidanson.vscode-markdownlint](https://marketplace.visualstudio.com/items?itemName=DavidAnson.vscode-markdownlint)):
 markdown linting and style checking for Visual Studio Code.
+- **axe Accessibility Linter** ([deque-systems.vscode-axe-linter](https://marketplace.visualstudio.com/items?itemName=deque-systems.vscode-axe-linter))
 
-> These extensions will appear in your extension VSCODE manager, under "recommended".
+> These extensions will appear in your extension VSCODE manager, under "recommended". For a real view of recommended extensions, please take a look at it.
 
 ### Minimal configuration settings
 

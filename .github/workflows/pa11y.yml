@@ -1,0 +1,36 @@
+name: a11y nasa-images
+
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+
+jobs:
+  pa11y:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Install
+        run: yarn
+      - name: Run pa11y-ci
+        run: yarn nasa-images:a11y
+      - name: Read pa11y_output file.
+        id: pa11y_output
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./apps/nasa-images/.pa11y-report.json
+      - name: Comment on pull request.
+        if: github.event_name == 'pull_request'
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: '<details><summary>Pa11y testing results</summary>
+            ${{ steps.pa11y_output.outputs.content }}
+            </details>'
+      - name: Check for pa11y failures.
+        if: contains(steps.pa11y_output.outputs.content, 'errno 2')
+        run: |
+          echo "::error::The site is failing accessibility tests. Please review the report for details."
+          exit 1

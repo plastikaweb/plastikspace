@@ -21,7 +21,7 @@ A guide to show the right implementation of issues and `git branching model`, an
 
 ![git flow](img/git-flow.png)
 
-- **Develop (develop branch)**.  
+- **Develop (develop branch)**.
   - It exists at all times.
   - Features are developed from it.
   - It must be synchronized with production every time a new release is created.
@@ -87,9 +87,14 @@ The assigned developer creates a new PR based on the pushed branch and:
 
 ### Pull request Github actions
 
-On any PR creation, a `CI` action is fired to pass different steps for markdownlint, code lint, unit testing and build in the feature branch.
+On any PR creation:
 
-> You can see the `CI` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml).
+- **CI**:  this action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
+  > You can see the `CI` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml).
+
+- **`a11y {app-name}`**: this action is fired to execute accessibility test using `pa11y-cy` runner.
+  > You can see the `a11y nasa-images` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/pa11y.yml).  
+  > You can see a local app a11y configuration [here](./accessibility.md#pa11y-ci-accessibility-test-runner)
 
 ## Merge
 
@@ -97,11 +102,16 @@ Once the PR is approved, it can be merged into `develop branch` by its author.  
 
 ### Merge Github actions
 
-- **CI**: On any merge to `develop branch`, a `CI` action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
+On any merge to `develop branch`:
 
+- **CI**:  this action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
   > You can see the `CI` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml).
 
-- **Deploy**: Once all `CI` is passed successfully, a `Deploy Staging` workflow is fired, to build and deploy to github pages the app(s).
+- **`a11y {app-name}`**: this action is fired to execute accessibility test using `pa11y-cy` runner.
+  > You can see the `a11y for nasa-images app` action status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/pa11y.yml).  
+  > You can see a local app a11y configuration [here](./accessibility.md#pa11y-ci-accessibility-test-runner)
+
+- **Deploy**: Once all `CI` and `a11y` related actions are passed successfully, a `Deploy Staging` workflow is fired, to build and deploy to github pages the app(s).
 
   > You can see the `Deploy Staging` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml).
 
@@ -121,3 +131,4 @@ Please, take a look inside each app README for further information:
 - [GitHub flow as a simpler alternative](https://gitlab.com/help/workflow/gitlab_flow.md)
 - [Professional Guides: Workflow Strategies](https://www.youtube.com/watch?v=aJnFGMclhU8&list=PL7xAwalD2Tvz09hEyAY572DM-8yhkSZuf&index=14&t=0s)
 - [Better Git branching strategy — Multi-apps, monorepos and multiple teams in focus — SimGit Flow](https://levelup.gitconnected.com/better-git-branching-strategy-multi-apps-monorepos-and-multiple-teams-in-focus-cd17b56962f2)
+- [pa11y](https://github.com/pa11y/pa11y-ci)

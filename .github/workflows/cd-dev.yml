@@ -2,7 +2,7 @@ name: Deploy Staging
 
 on:
   workflow_run:
-    workflows: [CI]
+    workflows: [CI, pa11y nasa-images]
     types: [completed]
     branches:
       - 'develop'
@@ -11,7 +11,7 @@ env:
   NPM_CONFIG_LEGACY_PEER_DEPS: true
 
 jobs:
-  deploy:
+  on-success:
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success'
     steps:
@@ -25,3 +25,8 @@ jobs:
           base_href: ''
           deploy_branch: nasa-images-staging-page
           angular_dist_build_folder: dist/apps/nasa-images
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
