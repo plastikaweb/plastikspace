@@ -7,6 +7,9 @@ on:
     branches:
       - 'develop'
 
+env:
+  NPM_CONFIG_LEGACY_PEER_DEPS: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
