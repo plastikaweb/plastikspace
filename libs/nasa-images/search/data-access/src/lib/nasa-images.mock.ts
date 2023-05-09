@@ -6,7 +6,7 @@ export const createNasaImagesEntity = (id: string, title = '') =>
     title: title || `title-${id}`,
   } as NasaImage);
 
-export const createDummyNasaImagesSearch = (count: number = 3) => {
+export const createDummyNasaImagesSearch = (count = 3) => {
   const items: NasaImage[] = [];
 
   for (let index = 0; index < count; index++) {
@@ -29,7 +29,7 @@ export const createDummyNasaImagesSearch = (count: number = 3) => {
   } as NasaImagesSearch;
 };
 
-export const createDummyNasaImagesSearchApiResponse = (count: number = 3): NasaImagesSearchApiResponse => {
+export const createDummyNasaImagesSearchApiResponse = (count = 3): NasaImagesSearchApiResponse => {
   const items: NasaImagesSearchApiResponse['collection']['items'] = [];
 
   for (let index = 0; index < count; index++) {

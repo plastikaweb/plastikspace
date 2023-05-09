@@ -14,6 +14,7 @@
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
+![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 
 This project was generated using [Nx](https://nx.dev).
 
@@ -27,8 +28,8 @@ This project was generated using [Nx](https://nx.dev).
 
 Some of the more usual generators and scripts:
 
-- Run `ng g @nrwl/angular:app my-app` to generate an application.
-- Run `ng g @nrwl/angular:lib my-lib` to generate a library.
+- Run `ng g @nx/angular:app my-app` to generate an application.
+- Run `ng g @nx/angular:lib my-lib` to generate a library.
 - Run `ng serve my-app` for a dev server. Navigate to localhost:xxxx. The app will automatically reload if you change any of the source files.
 - Run `ng g component my-component --project=my-app` to generate a new component.
 - Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
@@ -110,11 +111,12 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 Carlos Matheu Armengol
 
-Email: info@plastikaweb.org  
-LinkedIn: [plastikaweb](https://www.linkedin.com/in/plastikaweb)  
-Web: [plastikaweb.com](https://www.plastikaweb.com)  
-Stackblitz: [@plastikaweb](https://stackblitz.com/@plastikaweb)  
-Gitlab: [@gitlab](https://gitlab.com/plastikaweb)
+![Freelancer](https://img.shields.io/badge/Freelancer-29B2FE?style=for-the-badge&logo=Freelancer&logoColor=white)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/plastikaweb)
+[![Stackblitz](https://img.shields.io/badge/Stackblitz-fff?style=for-the-badge&logo=Stackblitz&logoColor=1389FD)](https://stackblitz.com/@plastikaweb)
+[![GitLab](https://img.shields.io/badge/gitlab-%23181717.svg?style=for-the-badge&logo=gitlab&logoColor=white)](https://gitlab.com/plastikaweb)
+
+> [info@plastikaweb.org](mailto:<info@plastikaweb.com>) > [www.plastikaweb.com](https://www.plastikaweb.com)
 
 ## Useful links
 

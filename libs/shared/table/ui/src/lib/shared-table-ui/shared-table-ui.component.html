@@ -25,6 +25,7 @@
 
     <mat-paginator
       #matPaginator
+      aria-label="Select page"
       [hidePageSize]="paginationVisibility?.hidePageSize"
       [length]="resultsLength"
       [ngClass]="{
@@ -35,7 +36,6 @@
       [pageSize]="pagination?.pageSize"
       [pageSizeOptions]="pageSizeOptions"
       [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
-      aria-label="Select page"
       (page)="onChangePagination($event)"
     >
     </mat-paginator>

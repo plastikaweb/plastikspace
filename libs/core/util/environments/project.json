@@ -6,7 +6,7 @@
   "prefix": "plastik",
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": ["libs/core/util/environments/**/*.ts", "libs/core/util/environments/**/*.html"]
       }

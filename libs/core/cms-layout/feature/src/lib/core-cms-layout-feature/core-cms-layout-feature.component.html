@@ -13,7 +13,7 @@
       </h1>
       <ng-container *ngIf="headerConfig?.socialLinks?.position === 'start'" [ngTemplateOutlet]="socialLinks"></ng-container>
     </div>
-    <div end class="flex items-center gap-sm" *ngIf="headerConfig.socialLinks?.position === 'end' || sidenavPosition === 'end'">
+    <div *ngIf="headerConfig.socialLinks?.position === 'end' || sidenavPosition === 'end'" end class="flex items-center gap-sm">
       <ng-container *ngIf="headerConfig?.socialLinks?.position === 'end'" [ngTemplateOutlet]="socialLinks"></ng-container>
       <ng-container *ngIf="sidenavPosition === 'end'" [ngTemplateOutlet="toggleSidenavButton"></ng-container>
     </div>
@@ -21,7 +21,7 @@
 
   <plastik-shared-activity-ui-linear [active]="(activity$ | ngrxPush) || false"></plastik-shared-activity-ui-linear>
 
-  <plastik-shared-activity-ui-overlay class="z-10" *ngIf="(activity$ | ngrxPush) || false">
+  <plastik-shared-activity-ui-overlay *ngIf="(activity$ | ngrxPush) || false" class="z-10">
     <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
     <div class="spinner-container">
       <div class="lds-ripple">
@@ -40,12 +40,12 @@
   >
     <mat-nav-list menu-items>
       <a
+        *ngFor="let item of sidenavConfig; trackBy: trackSidenavItems"
         mat-list-item
         class="my-tiny h-xll hover:bg-bg-gray-5"
-        *ngFor="let item of sidenavConfig; trackBy: trackSidenavItems"
-        [routerLink]="item?.route"
         routerLinkActive="bg-gray-5"
         ariaCurrentWhenActive="page"
+        [routerLink]="item?.route"
       >
         <div class="flex content-center justify-start gap-sm">
           <mat-icon> {{ item.icon }} </mat-icon>
@@ -77,7 +77,7 @@
 
 <ng-template #toggleSidenavButton>
   <button mat-icon-button aria-label="sidenav toggle button" class="flex justify-center align-middle" (click)="onToggleSidenav()">
-    <mat-icon class="mat-18" *ngIf="!(sidenavOpened$ | ngrxPush); else closeButton">menu</mat-icon>
+    <mat-icon *ngIf="!(sidenavOpened$ | ngrxPush); else closeButton" class="mat-18">menu</mat-icon>
     <ng-template #closeButton>
       <mat-icon class="mat-18">close</mat-icon>
     </ng-template>

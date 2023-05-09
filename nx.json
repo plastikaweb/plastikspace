@@ -6,7 +6,7 @@
   },
   "tasksRunnerOptions": {
     "default": {
-      "runner": "@nrwl/nx-cloud",
+      "runner": "nx-cloud",
       "options": {
         "cacheableOperations": ["build", "lint", "test", "e2e"],
         "cacheDirectory": "./tmp/my-cache",
@@ -45,7 +45,20 @@
     "packageManager": "yarn"
   },
   "generators": {
-    "@nrwl/angular": {
+    "@nx/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "cypress"
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "scss"
+    },
+    "@nx/angular": {
       "application": {
         "linter": "eslint"
       },
@@ -55,19 +68,6 @@
       "storybook-configuration": {
         "linter": "eslint"
       }
-    },
-    "@nrwl/angular:application": {
-      "style": "scss",
-      "linter": "eslint",
-      "unitTestRunner": "jest",
-      "e2eTestRunner": "cypress"
-    },
-    "@nrwl/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
-    "@nrwl/angular:component": {
-      "style": "scss"
     }
   },
   "defaultProject": "nasa-images"
