@@ -17,6 +17,7 @@
   - [Testing tools](#testing-tools)
     - [Lighthouse](#lighthouse)
     - [Angular ESLint](#angular-eslint)
+    - [Pa11y CI Accessibility Test Runner](#pa11y-ci-accessibility-test-runner)
   - [Useful links](#useful-links)
 
 ## Analysis
@@ -122,6 +123,7 @@ See [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslin
 
 ```json
 // .eslintrc.json
+// to see the current configuration please take a look at the root eslint file.
 {
       "files": ["*.html"],
       "extends": ["plugin:@angular-eslint/template/recommended"],
@@ -162,6 +164,34 @@ See [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslin
 
 ```
 
+### Pa11y CI Accessibility Test Runner
+
+We use [pa11cy-ci](https://github.com/pa11y/pa11y-ci) accessibility test runner to run CI.
+
+It runs against the different app pages, so each app should have a configuration file named `.pa11yci.json`:
+
+```json
+{
+  "defaults": {
+    "timeout": 5000
+  },
+  "urls": [
+    "http://localhost:4200/page1",
+    "http://localhost:4200/page2",
+  ]
+}
+```
+
+In `package.json` you must add a script to run the test runner:
+
+```json
+"my-app:serve": "nx run my-app:serve:development",
+"my-app:check-a11y": "wait-on http://localhost:4200/ && pa11y-ci --config ./apps/my-app/.pa11yci.json",
+"my-app:a11y": "npm-run-all -p -r my-app:serve my-app:check-a11y",
+```
+
+This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`.
+
 ## Useful links
 
 - [lighthouse for chrome](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk/related?hl=es)
@@ -172,3 +202,4 @@ See [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslin
 - [Angular ESLint Rules for Accessibility Series' Articles](https://dev.to/sandikbarr/series/20450)
 - [Learnings from Accessibility Workshop from Enterprise NG 2020](https://dev.to/alfredoperez/learnings-from-accessibility-workshop-from-enterprise-ng-2020-2k57)
 - [Angular, Accessibility, and You](https://dev.to/mattnmoore/angular-accessibility-and-you-12g9)
+- [Pa11y CI](https://github.com/pa11y/pa11y-ci)
