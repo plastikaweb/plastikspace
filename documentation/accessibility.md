@@ -185,9 +185,10 @@ It runs against the different app pages, so each app should have a configuration
 In `package.json` you must add a script to run the test runner:
 
 ```json
-"my-app:serve": "nx run my-app:serve:development",
-"my-app:check-a11y": "wait-on http://localhost:4200/ && pa11y-ci --config ./apps/my-app/.pa11yci.json",
-"my-app:a11y": "npm-run-all -p -r my-app:serve my-app:check-a11y",
+"my-app:http-server": "angular-http-server --path dist/apps/my-app --port 8080 --silent",
+"premy-app:a11y": "nx run my-app:build",
+"my-app:a11y": "npm-run-all --parallel --race my-app:http-server my-app:a11y:run",
+"my-app:a11y:run": "pa11y-ci --config ./apps/my-app/.pa11yci.json",
 ```
 
 This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`.
@@ -203,3 +204,4 @@ This script (`my-app:a11y`) can be used with `husky hooks` and `github actions C
 - [Learnings from Accessibility Workshop from Enterprise NG 2020](https://dev.to/alfredoperez/learnings-from-accessibility-workshop-from-enterprise-ng-2020-2k57)
 - [Angular, Accessibility, and You](https://dev.to/mattnmoore/angular-accessibility-and-you-12g9)
 - [Pa11y CI](https://github.com/pa11y/pa11y-ci)
+- [Test for accessibility and help millions of people by Tim Deschryver](https://timdeschryver.dev/blog/test-for-accessibility-and-help-millions-of-people#pa11y)

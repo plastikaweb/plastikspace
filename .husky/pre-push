@@ -1,4 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn branch:lint && yarn affected:test && yarn nasa-images:a11y
+yarn branch:lint && yarn affected:test

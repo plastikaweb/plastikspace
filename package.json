@@ -9,6 +9,7 @@
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js",
     "start": "nx serve",
+    "stop": "kill -9 $(lsof -t -i:4200)",
     "build": "nx run-many --target=build --all --parallel",
     "test": "nx test",
     "test:watch": "nx test --watch",
@@ -42,13 +43,15 @@
     "clean:dist": "rimraf dist",
     "install:local": "yarn husky-install && yarn clean:all && yarn install --frozen-lockfile",
     "markdownlint": "markdownlint *.md",
-    "nasa-images:serve": "nx run nasa-images:serve:development",
+    "nasa-images:serve": "nx run nasa-images:serve",
     "nasa-images:lint": "nx run nasa-images:lint",
     "nasa-images:build": "nx run nasa-images:build --parallel",
     "nasa-images:test": "nx run nasa-images:test",
     "nasa-images:e2e": "nx run nasa-images-e2e:e2e",
-    "nasa-images:check-a11y": "wait-on http://localhost:4200/ && pa11y-ci --config ./apps/nasa-images/.pa11yci.json",
-    "nasa-images:a11y": "npm-run-all -p -r nasa-images:serve nasa-images:check-a11y",
+    "nasa-images:http-server": "angular-http-server --path dist/apps/nasa-images --port 8080 --silent",
+    "prenasa-images:a11y": "nx run nasa-images:build",
+    "nasa-images:a11y": "npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run",
+    "nasa-images:a11y:run": "pa11y-ci --config ./apps/nasa-images/.pa11yci.json",
     "nasa-images:build:github": "nx run nasa-images:build:prod",
     "branch:lint": "branch-name-lint branchNameLint.json"
   },
@@ -107,6 +110,7 @@
     "@types/node": "16.11.7",
     "@typescript-eslint/eslint-plugin": "5.59.2",
     "@typescript-eslint/parser": "5.59.2",
+    "angular-http-server": "^1.11.1",
     "autoprefixer": "^10.4.13",
     "branch-name-lint": "^2.1.1",
     "commitizen": "^4.3.0",
@@ -135,8 +139,7 @@
     "tailwindcss": "^3.2.4",
     "ts-jest": "29.1.0",
     "ts-node": "10.9.1",
-    "typescript": "5.0.4",
-    "wait-on": "^7.0.1"
+    "typescript": "5.0.4"
   },
   "config": {
     "commitizen": {
