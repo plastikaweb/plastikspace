@@ -9,12 +9,13 @@ on:
 
 jobs:
   pa11y:
-    name: pa11y CI
     runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
+      - name: Build nasa images
+        run: yarn nasa-images:build
       - name: Run pa11y-ci
         run: yarn nasa-images:a11y
       - name: Read pa11y_output file.
