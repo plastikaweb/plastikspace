@@ -20,12 +20,11 @@
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns" class="even:bg-gray-5 odd:bg-white"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns" class="even:bg-gray-5/20 odd:bg-white"></mat-row>
     </mat-table>
 
     <mat-paginator
       #matPaginator
-      aria-label="Select page"
       [hidePageSize]="paginationVisibility?.hidePageSize"
       [length]="resultsLength"
       [ngClass]="{

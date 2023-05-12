@@ -1,28 +1,19 @@
 {
   "defaults": {
-    "timeout": 5000,
-    "viewport": {
-      "width": 800,
-      "height": 600
+    "timeout": 120000,
+    "concurrency": 1,
+    "standard": "WCAG2AA",
+    "ignore": ["notice", "warning"],
+    "runners": ["axe"],
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox"]
     }
   },
   "urls": [
-    {
-      "url": "http://localhost:8080/search",
-      "timeout": 10000,
-      "screenCapture": "./pa11y/nasa-images/search.png"
-    },
-    {
-      "url": "http://localhost:8080/search?q=pluto&page=2",
-      "screenCapture": "./pa11y/nasa-images/search-with-results.png"
-    },
-    {
-      "url": "http://localhost:8080/search?q=nasa&page=101",
-      "screenCapture": "./pa11y/nasa-images/search-with-warning.png"
-    },
-    {
-      "url": "http://localhost:8080/faqs",
-      "screenCapture": "./pa11y/nasa-images/faqs.png"
-    }
+    "http://localhost:8080/search",
+    "http://localhost:8080/search?q=pluto&page=2",
+    "http://localhost:8080/search?q=nasa&page=101",
+    "http://localhost:8080/search?q=xfssdfxsdssdf&page=101",
+    "http://localhost:8080/faqs"
   ]
 }

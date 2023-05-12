@@ -27,7 +27,7 @@ $nasa-images-theme: mat.define-light-theme(
     --primary-dark: #061f4a;
     --secondary-light: #e59892;
     --secondary: #dd361c;
-    --secondary-dark: #c62d1f;
+    --secondary-dark: #a32519;
 
     --green: #168628;
 
@@ -53,6 +53,9 @@ $nasa-images-theme: mat.define-light-theme(
     --font-size-lg: 1.8rem;
     --font-size-xl: 2.2rem;
     --font-size-xxl: 2.6rem;
+
+    /* Custom Material */
+    --mdc-floating-label-color: var(--primary-dark);
   }
 
   html {
@@ -116,6 +119,10 @@ $nasa-images-theme: mat.define-light-theme(
 }
 
 // mat sidenav
+.mat-sidenav .mat-mdc-list-item {
+  --mdc-list-list-item-focus-state-layer-opacity: 0 !important;
+}
+
 .mat-sidenav .mat-mdc-list-item:not(.mat-mdc-list-item-interactive) {
   @apply cursor-pointer;
 }

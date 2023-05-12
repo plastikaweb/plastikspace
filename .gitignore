@@ -43,3 +43,4 @@ Thumbs.db
 .eslintcache
 NX
 migrations.json
+.pa11y-report.json
