@@ -29,9 +29,9 @@ A todo list of accessibility actions and related information can be found [here]
 ### Semantic HTML
 
 - Use semantic HTML.
-- Use landmarks: `<header>`, `<footer>`, `<main>`, `<aside>`.  
-  While using material components, you can mark elements like `mat-toolbar` or `mat-sidenav-content` with the correct `role`:  
-   > `<mat-toolbar role="banner"></mat-toolbar>`  
+- Use landmarks: `<header>`, `<footer>`, `<main>`, `<aside>`.
+  While using material components, you can mark elements like `mat-toolbar` or `mat-sidenav-content` with the correct `role`:
+   > `<mat-toolbar role="banner"></mat-toolbar>`
    >
    > `<mat-sidenav-content role="main"></mat-sidenav-content>`
 - Use angular dynamic title strategy.
@@ -166,7 +166,7 @@ See [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslin
 
 ### Pa11y CI Accessibility Test Runner
 
-We use [pa11cy-ci](https://github.com/pa11y/pa11y-ci) accessibility test runner to run CI.
+We use [pa11cy-ci](https://github.com/pa11y/pa11y-ci) accessibility test runner.
 
 It runs against the different app pages, so each app should have a configuration file named `.pa11yci.json`:
 
@@ -191,7 +191,7 @@ In `package.json` you must add a script to run the test runner:
 "my-app:a11y:run": "pa11y-ci --config ./apps/my-app/.pa11yci.json",
 ```
 
-This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`.
+This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`. You can see an example [here](./git-flow.md#pull-request-github-actions).
 
 ## Useful links
 
