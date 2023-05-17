@@ -1,10 +1,10 @@
 name: a11y nasa-images
 
 on:
-  workflow_run:
-    workflows: [CI]
-    types:
-      - completed
+  push:
+    branches:
+      - develop
+  pull_request:
 
 jobs:
   pa11y:
