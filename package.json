@@ -51,7 +51,7 @@
     "nasa-images:http-server": "angular-http-server --path ./dist/apps/nasa-images --port 8080",
     "prenasa-images:a11y": "yarn nasa-images:build",
     "nasa-images:a11y": "npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run",
-    "nasa-images:a11y:run": "pa11y-ci --config ./apps/nasa-images/.pa11yci.json --reporter json > ./apps/nasa-images/.pa11y-report.json",
+    "nasa-images:a11y:run": "pa11y-ci --config ./apps/nasa-images/.pa11yci.json",
     "nasa-images:build:github": "nx run nasa-images:build:prod",
     "branch:lint": "branch-name-lint branchNameLint.json"
   },
