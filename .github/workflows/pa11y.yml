@@ -14,6 +14,8 @@ jobs:
     steps:
       - name: Checkout source
         uses: actions/checkout@v3
+      - name: Install
+        run: yarn
       - name: Build nasa images
         run: yarn nasa-images:build
       - name: Run pa11y-ci
