@@ -2,7 +2,7 @@ name: Deploy Staging
 
 on:
   workflow_run:
-    workflows: [CI, a11y nasa-images]
+    workflows: [CI, pa11y nasa-images]
     types: [completed]
     branches:
       - 'develop'
@@ -13,10 +13,11 @@ env:
 jobs:
   on-success:
     runs-on: ubuntu-latest
-    if: (github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow == 'CI') &&
-      (github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow == 'a11y nasa-images')
+    if: github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow == 'CI' &&
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow == 'pa11y nasa-images' &&
+      github.event.workflow_run.conclusion == 'success'
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
