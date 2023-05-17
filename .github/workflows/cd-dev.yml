@@ -2,7 +2,7 @@ name: Deploy Staging
 
 on:
   workflow_run:
-    workflows: [CI]
+    workflows: [CI, pa11y nasa-images]
     types: [completed]
     branches:
       - 'develop'

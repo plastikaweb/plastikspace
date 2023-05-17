@@ -2,9 +2,12 @@
   "defaults": {
     "timeout": 120000,
     "concurrency": 1,
-    "standard": "WCAG2AA",
+    "viewport": {
+      "width": 320,
+      "height": 480
+    },
     "ignore": ["notice", "warning"],
-    "runners": ["axe"],
+    "standard": "WCAG2AA",
     "chromeLaunchConfig": {
       "args": ["--no-sandbox"]
     }
