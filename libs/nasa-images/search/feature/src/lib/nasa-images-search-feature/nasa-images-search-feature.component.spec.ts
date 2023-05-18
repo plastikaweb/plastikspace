@@ -1,14 +1,13 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { NasaImagesSearchFacade } from '@plastik/nasa-images/search/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { NasaImagesSearchFeatureComponent } from './nasa-images-search-feature.component';
 
 describe('NasaImagesSearchFeatureComponent', () => {
@@ -18,13 +17,7 @@ describe('NasaImagesSearchFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-        NasaImagesSearchFeatureComponent,
-        HttpClientTestingModule,
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([]),
-      ],
+      imports: [NoopAnimationsModule, NasaImagesSearchFeatureComponent, HttpClientTestingModule],
       providers: [provideEnvironmentMock(), provideMockStore()],
     })
       .overrideProvider(NasaImagesSearchFacade, {
@@ -71,5 +64,11 @@ describe('NasaImagesSearchFeatureComponent', () => {
     const tablePagination: PageEventConfig = { pageIndex: 1, pageSize: 100 };
     component.onChangePagination(tablePagination);
     expect(facade.changePagination).toHaveBeenCalledWith(tablePagination);
+  });
+
+  it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
   });
 });

@@ -2,6 +2,7 @@ import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { buttonMock } from '@plastik/shared/button';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { SharedButtonUiComponent } from './shared-button-ui.component';
 
@@ -29,5 +30,11 @@ describe('SharedButtonUiComponent', () => {
     component.sendAction.subscribe(action => (result = action));
     component.onClick();
     expect(result).toEqual(result);
+  });
+
+  it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
   });
 });

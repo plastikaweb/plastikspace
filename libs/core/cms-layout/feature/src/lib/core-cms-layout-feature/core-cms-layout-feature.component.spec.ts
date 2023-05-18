@@ -4,8 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule, createAction } from '@ngrx/store';
+import { createAction } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -13,8 +12,6 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { NotificationFacade } from '@plastik/core/notification/data-access';
 import { CoreCmsLayoutFeatureComponent } from './core-cms-layout-feature.component';
-
-expect.extend(toHaveNoViolations);
 
 describe('CoreCmsLayoutFeatureComponent', () => {
   let component: CoreCmsLayoutFeatureComponent;
@@ -28,16 +25,13 @@ describe('CoreCmsLayoutFeatureComponent', () => {
         CoreCmsLayoutFeatureComponent,
         HttpClientTestingModule,
         NoopAnimationsModule,
-        StoreModule.forRoot({}),
-        EffectsModule.forRoot([]),
         AngularSvgIconModule.forRoot(),
         MatSidenavModule,
-        MatListModule,
         MatIconModule,
         MatListModule,
       ],
       providers: [
-        provideMockStore(),
+        provideMockStore({}),
         {
           provide: LayoutFacade,
           useValue: {
@@ -94,6 +88,7 @@ describe('CoreCmsLayoutFeatureComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

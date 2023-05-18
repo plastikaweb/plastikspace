@@ -1,15 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-import { EffectsMetadata, EffectsModule, getEffectsMetadata } from '@ngrx/effects';
+import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
-import { Action, StoreModule } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 
 import * as LayoutActions from './layout.actions';
 import { LayoutEffects } from './layout.effects';
-import { initialState } from './layout.reducer';
+import { LayoutPartialState } from './layout.reducer';
 import { selectIsMobile, selectSidenavOpened } from './layout.selectors';
 
 describe('LayoutEffects', () => {
@@ -18,14 +18,17 @@ describe('LayoutEffects', () => {
   let metadata: EffectsMetadata<LayoutEffects>;
   let store: MockStore<unknown>;
 
+  const initialState: LayoutPartialState = {
+    layout: { isMobile: false, sidenavOpened: false },
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({}), EffectsModule.forRoot()],
       providers: [
         LayoutEffects,
         provideMockActions(() => actions),
         provideMockStore({
-          ...initialState,
+          initialState,
           selectors: [
             { selector: selectSidenavOpened, value: true },
             { selector: selectIsMobile, value: true },

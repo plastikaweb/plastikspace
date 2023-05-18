@@ -18,6 +18,7 @@
     - [Lighthouse](#lighthouse)
     - [Angular ESLint](#angular-eslint)
     - [Pa11y CI Accessibility Test Runner](#pa11y-ci-accessibility-test-runner)
+    - [jest axe](#jest-axe)
   - [Useful links](#useful-links)
 
 ## Analysis
@@ -193,6 +194,35 @@ In `package.json` you must add a script to run the test runner:
 
 This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`. You can see an example [here](./git-flow.md#pull-request-github-actions).
 
+### jest axe
+
+We should also add unit testing for any UI type component using the [jest-axe](https://github.com/nickcolley/jest-axe#readme) library.
+
+```typescript
+import { axe, toHaveNoViolations } from 'jest-axe';
+// other imports...
+
+describe('MyComponent', () => {
+  let component: MyComponent;
+  let fixture: ComponentFixture<MyComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MyComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(MyComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
+  });
+});
+```
+
 ## Useful links
 
 - [lighthouse for chrome](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk/related?hl=es)
@@ -205,3 +235,4 @@ This script (`my-app:a11y`) can be used with `husky hooks` and `github actions C
 - [Angular, Accessibility, and You](https://dev.to/mattnmoore/angular-accessibility-and-you-12g9)
 - [Pa11y CI](https://github.com/pa11y/pa11y-ci)
 - [Test for accessibility and help millions of people by Tim Deschryver](https://timdeschryver.dev/blog/test-for-accessibility-and-help-millions-of-people#pa11y)
+- [jest-axe](https://github.com/nickcolley/jest-axe#readme)

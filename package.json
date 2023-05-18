@@ -14,7 +14,7 @@
     "test": "nx test",
     "test:watch": "nx test --watch",
     "test:coverage": "nx test --coverage",
-    "test:all": "nx run-many --all --target=test --ci --passWithNoTests --parallel --max-parallel=3 --run-in-band --coverage --max-warnings=0",
+    "test:all": "nx run-many --all --target=test --ci --passWithNoTests --parallel --max-parallel=3 --run-in-band --code-coverage --max-warnings=0",
     "test:ci": "nx affected --target=test --base=remotes/origin/develop --parallel",
     "lint": "nx lint",
     "lint:all": "nx run-many --all --target=lint --parallel --max-parallel=3 --max-warnings=0",

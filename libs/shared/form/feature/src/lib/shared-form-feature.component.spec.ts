@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
-import { StoreModule } from '@ngrx/store';
 import { FormlyModule } from '@ngx-formly/core';
 
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { SharedFormFeatureComponent } from './shared-form-feature.component';
 
 describe('SharedFormFeatureComponent', () => {
@@ -11,7 +11,7 @@ describe('SharedFormFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedFormFeatureComponent, ReactiveFormsModule, FormlyModule.forRoot(), StoreModule.forRoot({})],
+      imports: [SharedFormFeatureComponent, ReactiveFormsModule, FormlyModule.forRoot()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedFormFeatureComponent);
@@ -64,6 +64,12 @@ describe('SharedFormFeatureComponent', () => {
 
       expect(component.model).toBeNull();
       expect(submit).not.toBeDefined();
+    });
+
+    it('should have no accessibility violations', async () => {
+      expect.extend(toHaveNoViolations);
+      const results = await axe(fixture.nativeElement);
+      expect(results).toHaveNoViolations();
     });
   });
 });
