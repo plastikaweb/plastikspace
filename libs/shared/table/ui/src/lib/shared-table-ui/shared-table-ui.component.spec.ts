@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { SharedTableUiComponent } from './shared-table-ui.component';
 
 describe('SharedTableUiComponent', () => {
@@ -31,5 +32,11 @@ describe('SharedTableUiComponent', () => {
     component.changePagination.subscribe(value => (data = value));
     component.onChangePagination(pagination);
     expect(data).toEqual(pagination);
+  });
+
+  it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
   });
 });
