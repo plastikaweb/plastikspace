@@ -6,13 +6,11 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { getMockedRouterNavigation, selectRouteDataName, selectRouteQueryParams } from '@plastik/core/router-state';
-import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
 import { selectActivityActive, setActivity } from '@plastik/shared/activity/data-access';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
 import { showNotification } from '@plastik/core/notification/data-access';
-import { NotificationType } from '@plastik/core/notification/entities';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
 import * as NasaImagesActions from './nasa-images.actions';
@@ -36,7 +34,7 @@ describe('NasaImagesEffects', () => {
         provideMockActions(() => actions),
         provideMockStore({
           selectors: [
-            { selector: selectRouteDataName, value: NasaImagesViews.SEARCH },
+            { selector: selectRouteDataName, value: 'SEARCH' },
             {
               selector: selectRouteQueryParams,
               value: { q: 'pluto', media_type: 'image' },
@@ -88,7 +86,7 @@ describe('NasaImagesEffects', () => {
     });
 
     it('should not dispatch loadNasaImages with queryParams if no /search route is found', () => {
-      store.overrideSelector(selectRouteDataName, NasaImagesViews.FAQS);
+      store.overrideSelector(selectRouteDataName, 'FAQS');
 
       actions = hot('-a', { a: action });
       const expected = cold('', { b: [] });
@@ -178,7 +176,7 @@ describe('NasaImagesEffects', () => {
       const action = NasaImagesActions.loadNasaImagesFailure({ error: ERROR_MSG });
       const outcome = showNotification({
         configuration: {
-          type: NotificationType.Error,
+          type: 'ERROR',
           icon: 'cancel',
           action: 'close',
           ariaLabel: 'Close error notification',

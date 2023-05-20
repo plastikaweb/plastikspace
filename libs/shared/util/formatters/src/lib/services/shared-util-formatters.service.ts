@@ -2,7 +2,7 @@ import { formatCurrency, formatDate, formatNumber, formatPercent, TitleCasePipe 
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { FormattingDateInput, FormattingExtras, FormattingTypes, PropertyFormattingConf } from '../formatting';
+import { FormattingDateInput, FormattingExtras, PropertyFormattingConf } from '../formatting';
 
 @Injectable()
 /**
@@ -23,10 +23,7 @@ export class SharedUtilFormattersService {
    */
   dateFormatter(
     value: FormattingDateInput,
-    {
-      dateDigitsInfo = 'shortDate',
-      locale = this.locale,
-    }: Partial<Pick<FormattingExtras<unknown, FormattingTypes.DATE>, 'dateDigitsInfo' | 'locale'>>,
+    { dateDigitsInfo = 'shortDate', locale = this.locale }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale'>>,
   ): string {
     return formatDate(value, dateDigitsInfo, locale) || '';
   }
@@ -40,7 +37,7 @@ export class SharedUtilFormattersService {
    */
   dateTimeFormatter(
     value: FormattingDateInput,
-    { locale = this.locale }: Partial<Pick<FormattingExtras<unknown, FormattingTypes.DATE_TIME>, 'locale'>>,
+    { locale = this.locale }: Partial<Pick<FormattingExtras<unknown, 'DATE_TIME'>, 'locale'>>,
   ): string {
     return formatDate(value, 'M/d/yy, HH:mm:ss', locale) || '';
   }
@@ -58,7 +55,7 @@ export class SharedUtilFormattersService {
     {
       numberDigitsInfo = '1.2-2',
       locale = this.locale,
-    }: Partial<Pick<FormattingExtras<unknown, FormattingTypes.PERCENTAGE>, 'numberDigitsInfo' | 'locale'>>,
+    }: Partial<Pick<FormattingExtras<unknown, 'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>,
   ): string {
     return formatPercent(Number(value) / 100, locale, numberDigitsInfo) || '';
   }
@@ -76,7 +73,7 @@ export class SharedUtilFormattersService {
     {
       numberDigitsInfo = '1.0-0',
       locale = this.locale,
-    }: Partial<Pick<FormattingExtras<unknown, FormattingTypes.CURRENCY>, 'numberDigitsInfo' | 'locale'>>,
+    }: Partial<Pick<FormattingExtras<unknown, 'CURRENCY'>, 'numberDigitsInfo' | 'locale'>>,
   ): string {
     return formatCurrency(Number(value), locale, '$', 'USD', numberDigitsInfo) || '';
   }
@@ -91,10 +88,7 @@ export class SharedUtilFormattersService {
    */
   numberFormatter(
     value: number,
-    {
-      numberDigitsInfo = '1.2-2',
-      locale = this.locale,
-    }: Partial<Pick<FormattingExtras<unknown, FormattingTypes.NUMBER>, 'numberDigitsInfo' | 'locale'>>,
+    { numberDigitsInfo = '1.2-2', locale = this.locale }: Partial<Pick<FormattingExtras<unknown, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>,
   ): string {
     return formatNumber(Number(value), locale, numberDigitsInfo) || '';
   }
@@ -119,7 +113,7 @@ export class SharedUtilFormattersService {
    */
   imageFormatter(
     value: string,
-    { title = '', classes = '' }: Partial<Pick<FormattingExtras<unknown, FormattingTypes.IMAGE>, 'classes' | 'title'>>,
+    { title = '', classes = '' }: Partial<Pick<FormattingExtras<unknown, 'IMAGE'>, 'classes' | 'title'>>,
     item: unknown,
   ): SafeHtml {
     const imgTitle = typeof title === 'string' ? title : title(item);

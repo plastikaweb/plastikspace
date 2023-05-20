@@ -90,32 +90,32 @@ data: Data[] = [
 
 // Table columns formatting configuration
 
-const index: TableColumnFormatting<Data, FormattingTypes.CUSTOM> = {
+const index: TableColumnFormatting<Data, CUSTOM> = {
   key: 'index',
   title: '',
   propertyPath: '',
   cssClasses: 'max-w-[4rem] lg:max-w-[10rem]',
   formatting: {
-    type: FormattingTypes.CUSTOM,
+    type: CUSTOM,
     execute: (_, __, index) => String(index),
   },
 };
 
-const id: TableColumnFormatting<Data, FormattingTypes.TEXT> = {
+const id: TableColumnFormatting<Data, TEXT> = {
   key: 'id',
   title: 'ID',
   propertyPath: 'id',
   formatting: {
-    type: FormattingTypes.TEXT,
+    type: TEXT,
   },
 };
 
-const date: TableColumnFormatting<Data, FormattingTypes.DATE> = {
+const date: TableColumnFormatting<Data, DATE> = {
   key: 'startTime',
   title: 'Created',
   propertyPath: 'startTime',
   formatting: {
-    type: FormattingTypes.DATE,
+    type: DATE,
     extras: { numberDigitsInfo: 'longDate' },
   },
 };

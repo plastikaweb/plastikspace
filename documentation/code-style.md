@@ -7,6 +7,7 @@
     - [Minimal configuration settings](#minimal-configuration-settings)
   - [Prettier auto formatter](#prettier-auto-formatter)
   - [Lint rules](#lint-rules)
+  - [Other recommended rules](#other-recommended-rules)
   - [Links](#links)
 
 ## Angular Style Guide
@@ -55,6 +56,22 @@ These are the manually added rules to the `.eslintrc.json` base file:
   - adds the recommended linting rules for `JSDoc`.
   - adds a regex match for description text in order to begin it in Uppercase and always end with a ".".
 - [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslint#readme): enables ESLint to lint Angular projects. Added accessibility related rules. For more information visit [accessibility.md](accessibility).
+
+## Other recommended rules
+
+- Do not use enums. Use instead union types. Enums increment bundle size.
+
+  ```typescript
+  // instead of this 🛑
+  export enum NotificationType {
+    Error = 'ERROR',
+    Warning = 'WARNING',
+    Info = 'INFO',
+    Success = 'SUCCESS',
+  }
+  // use this 💚
+  export type NotificationType = 'ERROR' | 'WARNING' | 'INFO' | 'SUCCESS';
+  ```
 
 ## Links
 

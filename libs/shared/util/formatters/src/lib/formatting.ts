@@ -3,28 +3,22 @@ import { SafeHtml } from '@angular/platform-browser';
 /**
  * @description Formatting types members.
  */
-export enum FormattingTypes {
-  DATE = 'date',
-  DATE_TIME = 'dateTime',
-  PERCENTAGE = 'percentage',
-  CURRENCY = 'currency',
-  NUMBER = 'number',
-  BOOLEAN_WITH_CONTROL = 'booleanWithControl',
-  TITLE_CASE = 'titleCase',
-  IMAGE = 'image',
-  LINK = 'link',
-  CUSTOM = 'custom',
-  TEXT = 'text',
-}
 
-type FormattingTypesNumeric = Extract<
-  FormattingTypes,
-  FormattingTypes.DATE | FormattingTypes.DATE_TIME | FormattingTypes.PERCENTAGE | FormattingTypes.CURRENCY | FormattingTypes.NUMBER
->;
-type FormattingTypesDefault = Extract<
-  FormattingTypes,
-  FormattingTypes.BOOLEAN_WITH_CONTROL | FormattingTypes.LINK | FormattingTypes.CUSTOM | FormattingTypes.TEXT | FormattingTypes.TITLE_CASE
->;
+export type FormattingTypes =
+  | 'DATE'
+  | 'DATE_TIME'
+  | 'PERCENTAGE'
+  | 'CURRENCY'
+  | 'NUMBER'
+  | 'BOOLEAN_WITH_CONTROL'
+  | 'TITLE_CASE'
+  | 'IMAGE'
+  | 'LINK'
+  | 'CUSTOM'
+  | 'TEXT';
+
+type FormattingTypesNumeric = Extract<FormattingTypes, 'DATE' | 'DATE_TIME' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER'>;
+type FormattingTypesDefault = Extract<FormattingTypes, 'BOOLEAN_WITH_CONTROL' | 'LINK' | 'CUSTOM' | 'TEXT' | 'TITLE_CASE'>;
 
 /**
  * @description The formatting object type in `DataFormatService` must extend from this.
@@ -57,9 +51,9 @@ type FormattingNumericExtras = Partial<{
 }>;
 
 /**
- * @description Formatting extras blueprint based on FormattingTypes.
+ * @description Formatting extras blueprint based on
  */
-export type FormattingExtras<OBJ, TYPE> = TYPE extends FormattingTypes.IMAGE
+export type FormattingExtras<OBJ, TYPE extends FormattingTypes> = TYPE extends 'IMAGE'
   ? Partial<FormattingImageExtras<OBJ>>
   : TYPE extends FormattingTypesNumeric
   ? FormattingNumericExtras
@@ -68,7 +62,7 @@ export type FormattingExtras<OBJ, TYPE> = TYPE extends FormattingTypes.IMAGE
 /**
  * @description Formatting property blueprint.
  */
-export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = FormattingTypes.TEXT> {
+export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEXT'> {
   type: TYPE;
   execute?: (value: unknown, element?: OBJ, index?: number, extras?: unknown) => FormattingOutput;
   extras?: FormattingExtras<OBJ, TYPE>;
@@ -85,14 +79,14 @@ type PropertyFormattingTypeDef<OBJ, TYPE extends FormattingTypes> = {
 };
 
 type PropertyFormattingDefault<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormattingTypeDef<OBJ, FormattingTypesDefault>;
-type PropertyFormattingImage<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormattingTypeDef<OBJ, FormattingTypes.IMAGE>;
+type PropertyFormattingImage<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormattingTypeDef<OBJ, 'IMAGE'>;
 type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormattingTypeDef<OBJ, FormattingTypesNumeric>;
 
 /**
  * @description The blueprint for any formatting item constraint by its FormattingTypes value.
  */
-export type PropertyFormatting<OBJ, TYPE = FormattingTypes.TEXT> = TYPE extends FormattingTypesNumeric
+export type PropertyFormatting<OBJ, TYPE = 'TEXT'> = TYPE extends FormattingTypesNumeric
   ? PropertyFormattingNumeric<OBJ>
-  : TYPE extends FormattingTypes.IMAGE
+  : TYPE extends 'IMAGE'
   ? PropertyFormattingImage<OBJ>
   : PropertyFormattingDefault<OBJ>;

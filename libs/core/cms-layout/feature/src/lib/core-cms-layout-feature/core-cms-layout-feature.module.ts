@@ -17,7 +17,7 @@ import { CoreNotificationUiMatSnackbarModule } from '@plastik/core/notification/
   ],
 })
 export class CoreCmsLayoutFeatureModule {
-  static withConfig<T>(
+  static withConfig<T extends string>(
     headerConfig: CoreCmsLayoutHeaderConfig,
     sidenavConfig: ViewsConfigRecord<T>,
   ): ModuleWithProviders<CoreCmsLayoutFeatureModule> {

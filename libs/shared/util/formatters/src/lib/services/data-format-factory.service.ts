@@ -33,26 +33,26 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
     const { type, extras = {} } = formatting;
 
     switch (type) {
-      case FormattingTypes.DATE:
+      case 'DATE':
         return this.formatter.dateFormatter(String(value), extras);
-      case FormattingTypes.DATE_TIME:
+      case 'DATE_TIME':
         return this.formatter.dateTimeFormatter(String(value), extras);
-      case FormattingTypes.PERCENTAGE:
+      case 'PERCENTAGE':
         return this.formatter.percentageFormatter(Number(value), extras);
-      case FormattingTypes.CURRENCY:
+      case 'CURRENCY':
         return this.formatter.currencyFormatter(Number(value), extras);
-      case FormattingTypes.NUMBER:
+      case 'NUMBER':
         return this.formatter.numberFormatter(Number(value), extras);
-      case FormattingTypes.BOOLEAN_WITH_CONTROL:
+      case 'BOOLEAN_WITH_CONTROL':
         return !!value;
-      case FormattingTypes.TITLE_CASE:
+      case 'TITLE_CASE':
         return this.formatter.titleCaseFormatter(String(value));
-      case FormattingTypes.IMAGE:
+      case 'IMAGE':
         return this.formatter.imageFormatter(String(value), extras, item);
-      case FormattingTypes.CUSTOM:
-      case FormattingTypes.LINK:
+      case 'CUSTOM':
+      case 'LINK':
         return this.formatter.customFormatter(String(value), formatting as PropertyFormattingConf<T>, item, index, extraConfig);
-      case FormattingTypes.TEXT:
+      case 'TEXT':
       default:
         return this.formatter.defaultFormatter(String(value));
     }

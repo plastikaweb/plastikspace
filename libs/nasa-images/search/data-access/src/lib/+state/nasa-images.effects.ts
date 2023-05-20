@@ -6,7 +6,6 @@ import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { NotificationConfigService, showNotification } from '@plastik/core/notification/data-access';
-import { NotificationType } from '@plastik/core/notification/entities';
 import { NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews } from '@plastik/nasa-images/search/entities';
 import { selectActivityActive, setActivity } from '@plastik/shared/activity/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
@@ -24,7 +23,7 @@ export class NasaImagesEffects {
 
   navigation$ = createEffect(() => {
     return this.actions$.pipe(
-      this.navigationFilter.checkRouterNavigation<NasaImagesViews>(NasaImagesViews.SEARCH),
+      this.navigationFilter.checkRouterNavigation<NasaImagesViews>('SEARCH'),
       concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectActivityActive)]),
       filter(([, , activity]) => !activity),
       map(([, queryParams]) => {
@@ -81,7 +80,7 @@ export class NasaImagesEffects {
         this.liveAnnouncer.announce(message, 'assertive', 5000);
         return showNotification({
           configuration: this.notificationService.getInstance({
-            type: NotificationType.Error,
+            type: 'ERROR',
             message: `<span class="sr-only">Error: </span>${message}`,
           }),
         });

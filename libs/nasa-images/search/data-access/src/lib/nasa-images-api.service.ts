@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '@plastik/core/api';
 import {
+  NasaImagesApiSegment,
   NasaImagesSearch,
   NasaImagesSearchApiParams,
   NasaImagesSearchApiResponse,
-  NasaImagesViews,
 } from '@plastik/nasa-images/search/entities';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NasaImagesApiService extends ApiService<NasaImagesSearch, NasaImagesSearchApiParams> {
-  protected resourceUrlSegment(): string {
-    return NasaImagesViews.SEARCH;
+  protected resourceUrlSegment(): NasaImagesApiSegment {
+    return 'search';
   }
 
   protected override mapListResponse({

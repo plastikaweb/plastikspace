@@ -99,7 +99,6 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
 
   dataSource = new MatTableDataSource();
   displayedColumns: (string | number | symbol)[] = [];
-  formattingTypes = FormattingTypes;
 
   ngAfterViewInit() {
     this.displayedColumns = this?.columnProperties?.map(property => property.key) || [];

@@ -1,13 +1,13 @@
 import { Action } from '@ngrx/store';
 
-import { NotificationType } from '@plastik/core/notification/entities';
+import { Notification } from '@plastik/core/notification/entities';
 import { dismissNotification, showNotification } from './notification.actions';
 import { State, initialState, notificationReducer } from './notification.reducer';
 
 describe('Notification Reducer', () => {
   describe('valid Notification actions', () => {
     it('showNotification should return the message configuration', () => {
-      const configuration = { type: NotificationType.Error, message: 'OK' };
+      const configuration: Notification = { type: 'ERROR', message: 'OK' };
       const action = showNotification({ configuration, preserve: true });
 
       const result: State = notificationReducer(initialState, action);

@@ -1,26 +1,26 @@
 import { InjectionToken } from '@angular/core';
-import { NotificationType, NotificationTypesConfig } from './notification';
+import { NotificationTypesConfig } from './notification';
 
 export const defaultNotification: NotificationTypesConfig = {
-  [NotificationType.Error]: {
-    type: NotificationType.Error,
+  ['ERROR']: {
+    type: 'ERROR',
     icon: 'cancel',
     action: 'close',
     ariaLabel: 'Close error notification',
     duration: undefined,
   },
-  [NotificationType.Warning]: {
-    type: NotificationType.Warning,
+  ['WARNING']: {
+    type: 'WARNING',
     icon: 'warning',
     duration: 5000,
   },
-  [NotificationType.Info]: {
-    type: NotificationType.Info,
+  ['INFO']: {
+    type: 'INFO',
     icon: 'info',
     duration: 5000,
   },
-  [NotificationType.Success]: {
-    type: NotificationType.Success,
+  ['SUCCESS']: {
+    type: 'SUCCESS',
     icon: 'check',
     duration: 3000,
   },
