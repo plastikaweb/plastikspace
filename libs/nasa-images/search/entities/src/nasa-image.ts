@@ -1,10 +1,13 @@
 /**
  * @description A collection for available pages for Nasa Images App.
  */
-export enum NasaImagesViews {
-  SEARCH = 'search',
-  FAQS = 'faqs',
-}
+export type NasaImagesViews = 'SEARCH' | 'FAQS';
+
+/**
+ * @description A segment of the Nasa Images API.
+ */
+export type NasaImagesApiSegment = Lowercase<NasaImagesViews> & string;
+
 /**
  * @description A single NASA media item descriptor.
  */

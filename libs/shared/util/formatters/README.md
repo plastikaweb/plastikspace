@@ -38,13 +38,13 @@ export class FeatureFormatFactoryService<T extends Record<string, keyof T>> exte
 - Use the `SafeFormattedPipe` in your feature template to format the passed input value and PropertyFormatting configuration.
 
 ```typescript
-const descriptionFormatting: PropertyFormatting<Item, FormattingTypes.TEXT> = {
+const descriptionFormatting: PropertyFormatting<Item, TEXT> = {
   key: 'description',
   title: 'Description',
   propertyPath: 'description',
   cssClasses: 'min-w-[9rem] 2xl:min-w-[24rem]',
   formatting: {
-    type: FormattingTypes.TEXT,
+    type: TEXT,
   },
 };
 ```

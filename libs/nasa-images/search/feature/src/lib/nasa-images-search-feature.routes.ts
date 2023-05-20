@@ -7,7 +7,6 @@ import {
   NasaImagesSearchFacade,
   nasaMediaReducer,
 } from '@plastik/nasa-images/search/data-access';
-import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
 
 import { NasaImagesSearchSearchRouterTitleService } from './nasa-images-search-feature-route-title.service';
 import { NasaImagesSearchFeatureComponent } from './nasa-images-search-feature/nasa-images-search-feature.component';
@@ -15,7 +14,7 @@ import { NasaImagesSearchFeatureComponent } from './nasa-images-search-feature/n
 export const nasaImagesSearchFeatureRoutes: Routes = [
   {
     path: '',
-    data: { name: NasaImagesViews.SEARCH },
+    data: { name: 'SEARCH' },
     title: NasaImagesSearchSearchRouterTitleService,
     component: NasaImagesSearchFeatureComponent,
     providers: [provideState(NASA_IMAGES_FEATURE_KEY, nasaMediaReducer), provideEffects(NasaImagesEffects), NasaImagesSearchFacade],

@@ -15,7 +15,7 @@ export class NotificationConfigService {
    * @param  { string } notification.message The content of the message to notify.
    * @returns { Notification } A notification object.
    */
-  getInstance({ type = NotificationType.Error, message = '', ...extras }: Partial<Notification> = {}): Notification {
+  getInstance({ type = 'ERROR', message = '', ...extras }: Partial<Notification> = {}): Notification {
     return {
       ...this.notificationTypesConfig[type],
       ...extras,

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
-import { Notification, NotificationType } from '@plastik/core/notification/entities';
+import { Notification } from '@plastik/core/notification/entities';
 
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CoreNotificationUiMatSnackbarComponent } from './core-notification-ui-mat-snackbar.component';
@@ -34,13 +34,13 @@ describe('CoreNotificationUiMatSnackbarDirective', () => {
 
   describe('open', () => {
     it('should open the Snackbar with the given configuration and custom styling', () => {
-      const config: Notification = { message: 'Test message', type: NotificationType.Success, duration: 1000 };
+      const config: Notification = { message: 'Test message', type: 'SUCCESS', duration: 1000 };
       const openFromComponentSpy = jest.spyOn(snackBar, 'openFromComponent');
 
       directive.open(config);
 
       expect(openFromComponentSpy).toHaveBeenCalledWith(CoreNotificationUiMatSnackbarComponent, {
-        data: { message: config.message, type: NotificationType.Success },
+        data: { message: config.message, type: 'SUCCESS' },
         duration: 1000,
         panelClass: ['message-box', 'message-box-success'],
       });

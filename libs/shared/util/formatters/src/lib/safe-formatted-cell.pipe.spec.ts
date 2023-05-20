@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FormattingTypes } from './formatting';
 import { SafeFormattedPipe } from './safe-formatted-cell.pipe';
 import { DataFormatFactoryService } from './services';
 import { objectMocked, TypeMocked } from './services/formatting.mock';
@@ -37,7 +36,7 @@ describe('SafeFormattedCellPipe', () => {
       title: 'ID',
       propertyPath: 'id',
       formatting: {
-        type: FormattingTypes.TEXT,
+        type: 'TEXT',
       },
     });
 

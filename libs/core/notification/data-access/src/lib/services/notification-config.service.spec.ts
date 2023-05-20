@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NOTIFICATION_TYPES_CONFIG, NotificationType, defaultNotification } from '@plastik/core/notification/entities';
+import { NOTIFICATION_TYPES_CONFIG, defaultNotification } from '@plastik/core/notification/entities';
 import { NotificationConfigService } from './notification-config.service';
 
 describe('NotificationConfigService', () => {
@@ -18,10 +18,10 @@ describe('NotificationConfigService', () => {
   });
 
   it('should return a custom formatted Notification configuration with provided Notification', () => {
-    const instance = service.getInstance({ type: NotificationType.Warning, message: 'Ok' });
+    const instance = service.getInstance({ type: 'WARNING', message: 'Ok' });
 
     expect(instance).toEqual({
-      type: NotificationType.Warning,
+      type: 'WARNING',
       icon: 'warning',
       message: 'Ok',
       duration: 5000,

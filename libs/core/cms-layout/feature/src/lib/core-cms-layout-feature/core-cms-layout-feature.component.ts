@@ -107,11 +107,11 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
     this.notificationFacade.dismiss();
   }
 
-  trackSidenavItems(_: number, item: ViewConfig<unknown>) {
+  trackSidenavItems(_: number, item: ViewConfig<string>): number {
     return item.id;
   }
 
-  trackSocialLinks(_: number, item: ButtonConfig) {
-    return item?.id;
+  trackSocialLinks(_: number, item: ButtonConfig): number {
+    return item.id;
   }
 }

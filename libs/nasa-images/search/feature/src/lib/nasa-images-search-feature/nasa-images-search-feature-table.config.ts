@@ -6,13 +6,13 @@ import { FormattingTypes } from '@plastik/shared/formatters';
 import { DEFAULT_TABLE_CONFIG, PageEventConfig, TableColumnFormatting, TableControlStructure } from '@plastik/shared/table/entities';
 import { Observable, map } from 'rxjs';
 
-const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
+const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
   key: 'index',
   title: '#',
   propertyPath: '',
   cssClasses: ['min-w-[4rem] hidden md:flex'],
   formatting: {
-    type: FormattingTypes.CUSTOM,
+    type: 'CUSTOM',
     execute: (_, __, index = 0, extraConfig) => {
       const { pageIndex, pageSize } = extraConfig as PageEventConfig;
       return String(index + pageIndex * pageSize);
@@ -21,54 +21,54 @@ const index: TableColumnFormatting<NasaImage, FormattingTypes.CUSTOM> = {
   sticky: true,
 };
 
-const id: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
+const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'id',
   title: 'ID',
   propertyPath: 'id',
   cssClasses: ['min-w-[12rem] hidden md:flex lg:min-w-[14rem]', 'text-sm text-black bg-secondary-light rounded-md p-tiny sepia'],
   formatting: {
-    type: FormattingTypes.TEXT,
+    type: 'TEXT',
   },
 };
 
-const title: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
+const title: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'title',
   title: 'Title',
   propertyPath: 'title',
   cssClasses: ['min-w-[10rem] lg:max-w-[25rem]', 'content-center line-clamp-5'],
   formatting: {
-    type: FormattingTypes.TEXT,
+    type: 'TEXT',
   },
 };
 
-const description: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
+const description: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'description',
   title: 'Description',
   propertyPath: 'description',
   cssClasses: ['min-w-[9rem] 2xl:min-w-[24rem] hidden md:flex', 'content-center line-clamp-4'],
   formatting: {
-    type: FormattingTypes.TEXT,
+    type: 'TEXT',
   },
 };
 
-const dateCreated: TableColumnFormatting<NasaImage, FormattingTypes.DATE> = {
+const dateCreated: TableColumnFormatting<NasaImage, 'DATE'> = {
   key: 'dateCreated',
   title: 'Created',
   propertyPath: 'dateCreated',
   cssClasses: ['min-w-[6rem]'],
   formatting: {
-    type: FormattingTypes.DATE,
+    type: 'DATE',
     extras: { numberDigitsInfo: 'longDate' },
   },
 };
 
-const thumbnail: TableColumnFormatting<NasaImage, FormattingTypes.IMAGE> = {
+const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
   key: 'thumbnail',
   title: 'Image',
   propertyPath: 'thumbnail',
   cssClasses: ['max-w-[200px] min-w-[120px]'],
   formatting: {
-    type: FormattingTypes.IMAGE,
+    type: 'IMAGE',
     extras: {
       type: 'img',
       title: (item: NasaImage) => item.title,
@@ -77,23 +77,23 @@ const thumbnail: TableColumnFormatting<NasaImage, FormattingTypes.IMAGE> = {
   },
 };
 
-const creator: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
+const creator: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'creator',
   title: 'Creator',
   propertyPath: 'creator',
   cssClasses: ['max-w-[16rem] hidden md:flex', 'xl:whitespace-normal content-center line-clamp-4'],
   formatting: {
-    type: FormattingTypes.TEXT,
+    type: 'TEXT',
   },
 };
 
-const center: TableColumnFormatting<NasaImage, FormattingTypes.TEXT> = {
+const center: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'center',
   title: 'Center',
   propertyPath: 'center',
   cssClasses: ['max-w-[5rem] hidden md:flex lg:max-w-[6rem]'],
   formatting: {
-    type: FormattingTypes.TEXT,
+    type: 'TEXT',
   },
 };
 

@@ -1,4 +1,3 @@
-import { NotificationType } from '@plastik/core/notification/entities';
 import { NotificationPartialState, initialState } from './notification.reducer';
 import { selectNotificationConfiguration, selectNotificationPreserveOnRouteRequest } from './notification.selectors';
 
@@ -9,7 +8,7 @@ describe('Notification Selectors', () => {
     state = {
       notification: {
         ...initialState,
-        configuration: { type: NotificationType.Error, message: 'ERROR' },
+        configuration: { type: 'ERROR', message: 'ERROR' },
         preserveOnRouteRequest: true,
       },
     };
@@ -18,7 +17,7 @@ describe('Notification Selectors', () => {
   it('selectNotificationConfiguration should return the Notification configuration', () => {
     const results = selectNotificationConfiguration(state);
 
-    expect(results).toEqual({ type: NotificationType.Error, message: 'ERROR' });
+    expect(results).toEqual({ type: 'ERROR', message: 'ERROR' });
   });
 
   it('selectNotificationPreserveOnRouteRequest should return the NotificationPreserveOnRouteRequest value', () => {

@@ -2,7 +2,6 @@ import { DatePipe, PercentPipe, TitleCasePipe } from '@angular/common';
 import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { FormattingTypes } from '../formatting';
 import { DataFormatFactoryService } from './data-format-factory.service';
 import { objectMocked, TypeMocked } from './formatting.mock';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
@@ -37,7 +36,7 @@ describe('DataFormatFactoryService', () => {
       title: 'Title',
       propertyPath: 'noFormatting.child.value',
       formatting: {
-        type: FormattingTypes.TEXT,
+        type: 'TEXT',
       },
     });
     expect(result.toString()).toContain('12');
@@ -48,7 +47,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'text.child.value',
-      formatting: { type: FormattingTypes.TEXT },
+      formatting: { type: 'TEXT' },
     });
     expect(result).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
   });
@@ -58,7 +57,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'link',
-      formatting: { type: FormattingTypes.LINK },
+      formatting: { type: 'LINK' },
     });
     expect(result).toBe('www.example.com');
   });
@@ -68,7 +67,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'time',
-      formatting: { type: FormattingTypes.DATE, extras: { locale: 'en-US' } },
+      formatting: { type: 'DATE', extras: { locale: 'en-US' } },
     });
     expect(result).toBe('9/1/21');
   });
@@ -78,7 +77,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'time',
-      formatting: { type: FormattingTypes.DATE_TIME, extras: { locale: 'en-US', timezone: 'GMT' } },
+      formatting: { type: 'DATE_TIME', extras: { locale: 'en-US', timezone: 'GMT' } },
     });
     expect(result).toBe('9/1/21, 02:10:06');
   });
@@ -88,7 +87,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'percentage',
-      formatting: { type: FormattingTypes.PERCENTAGE },
+      formatting: { type: 'PERCENTAGE' },
     });
     expect(result).toBe('80.00%');
   });
@@ -98,7 +97,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'truthy',
-      formatting: { type: FormattingTypes.BOOLEAN_WITH_CONTROL },
+      formatting: { type: 'BOOLEAN_WITH_CONTROL' },
     });
     expect(result).toBeTruthy();
   });
@@ -109,7 +108,7 @@ describe('DataFormatFactoryService', () => {
         key: 'a',
         title: 'Title',
         propertyPath: 'price',
-        formatting: { type: FormattingTypes.CURRENCY },
+        formatting: { type: 'CURRENCY' },
       });
       expect(result).toBe('$3');
     });
@@ -119,7 +118,7 @@ describe('DataFormatFactoryService', () => {
         key: 'a',
         title: 'Title',
         propertyPath: 'price',
-        formatting: { type: FormattingTypes.CURRENCY, extras: { numberDigitsInfo: '1.2-2' } },
+        formatting: { type: 'CURRENCY', extras: { numberDigitsInfo: '1.2-2' } },
       });
       expect(result).toBe('$3.08');
     });
@@ -130,7 +129,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'price',
-      formatting: { type: FormattingTypes.NUMBER },
+      formatting: { type: 'NUMBER' },
     });
     expect(result).toBe('3.08');
 
@@ -138,7 +137,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'price',
-      formatting: { type: FormattingTypes.NUMBER, extras: { numberDigitsInfo: '1.0-0' } },
+      formatting: { type: 'NUMBER', extras: { numberDigitsInfo: '1.0-0' } },
     });
     expect(result).toBe('3');
   });
@@ -148,7 +147,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'percentage',
-      formatting: { type: FormattingTypes.PERCENTAGE },
+      formatting: { type: 'PERCENTAGE' },
     });
     expect(result).toBe('80.00%');
   });
@@ -160,7 +159,7 @@ describe('DataFormatFactoryService', () => {
         title: 'Title',
         propertyPath: 'image',
         formatting: {
-          type: FormattingTypes.IMAGE,
+          type: 'IMAGE',
           extras: {
             type: 'img',
             title: 'alt text',
@@ -176,7 +175,7 @@ describe('DataFormatFactoryService', () => {
         title: 'Title',
         propertyPath: 'image',
         formatting: {
-          type: FormattingTypes.IMAGE,
+          type: 'IMAGE',
           extras: {
             type: 'img',
             title: item => item['title'] as string,
@@ -193,7 +192,7 @@ describe('DataFormatFactoryService', () => {
       title: 'Title',
       propertyPath: 'text.child.value',
       formatting: {
-        type: FormattingTypes.TITLE_CASE,
+        type: 'TITLE_CASE',
       },
     });
     expect(result).toBe(`Value`);
@@ -206,7 +205,7 @@ describe('DataFormatFactoryService', () => {
         title: 'Title',
         propertyPath: 'custom',
         formatting: {
-          type: FormattingTypes.CUSTOM,
+          type: 'CUSTOM',
         },
       });
       expect(result).toBe(`---`);
@@ -218,7 +217,7 @@ describe('DataFormatFactoryService', () => {
         title: 'Title',
         propertyPath: 'title',
         formatting: {
-          type: FormattingTypes.CUSTOM,
+          type: 'CUSTOM',
           execute: title => `This is the ${title}`,
         },
       });

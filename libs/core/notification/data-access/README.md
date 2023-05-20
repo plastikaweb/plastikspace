@@ -38,7 +38,7 @@ interface State {
 this.store.dispatch(
   showNotification({
     configuration: {
-      data: { type: NotificationType.Error, notification: 'Error!' },
+      data: { type: 'ERROR', notification: 'Error!' },
       duration: 2500,
     },
     preserve: true,
@@ -67,7 +67,7 @@ export class FeatureEffects {
       ofType(loadEntitiesFailure),
       map(({ error: notification }) =>
         showNotification({
-          configuration: this.messagingService.getInstance(NotificationType.Error),
+          configuration: this.messagingService.getInstance('ERROR'),
         }),
       ),
     ),

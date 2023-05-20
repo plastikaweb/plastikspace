@@ -1,9 +1,7 @@
-export enum NotificationType {
-  Error = 'ERROR',
-  Warning = 'WARNING',
-  Info = 'INFO',
-  Success = 'SUCCESS',
-}
+/**
+ * The type of notification.
+ */
+export type NotificationType = 'ERROR' | 'WARNING' | 'INFO' | 'SUCCESS';
 
 /**
  * Configuration for a snackBar notification box.
@@ -52,4 +50,7 @@ export interface Notification {
   horizontalPosition?: 'start' | 'center' | 'end';
 }
 
+/**
+ * Configuration for notification types with Notification types as Record Type properties.
+ */
 export type NotificationTypesConfig = Record<NotificationType, Partial<Notification>>;
