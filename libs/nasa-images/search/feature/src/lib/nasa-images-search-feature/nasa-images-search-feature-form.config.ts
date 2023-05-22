@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
-import { map, Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 
 // eslint-disable-next-line jsdoc/require-jsdoc
 export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldConfig[]> {

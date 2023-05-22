@@ -1,7 +1,7 @@
 import { NasaImage } from '@plastik/nasa-images/search/entities';
 
 import { createNasaImagesEntity } from '../nasa-images.mock';
-import { initialNasaImagesState, NasaImagesPartialState, nasaMediaAdapter, NASA_IMAGES_FEATURE_KEY } from './nasa-images.reducer';
+import { NASA_IMAGES_FEATURE_KEY, NasaImagesPartialState, initialNasaImagesState, nasaMediaAdapter } from './nasa-images.reducer';
 import * as NasaImagesSelectors from './nasa-images.selectors';
 
 describe('NasaImages Selectors', () => {
@@ -60,7 +60,7 @@ describe('NasaImages Selectors', () => {
 
         const result = NasaImagesSelectors.selectNasaImagesEntity(customState) as NasaImage;
 
-        expect(result).toBeUndefined();
+        expect(result).toBeNull();
       });
     });
 

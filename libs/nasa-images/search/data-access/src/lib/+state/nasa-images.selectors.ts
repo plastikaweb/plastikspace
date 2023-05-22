@@ -15,7 +15,7 @@ export const selectNasaImagesEntities = createSelector(selectNasaImagesState, (s
 export const selectNasaImagesSelectedId = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.selectedId);
 
 export const selectNasaImagesEntity = createSelector(selectNasaImagesEntities, selectNasaImagesSelectedId, (entities, selectedId) =>
-  selectedId ? entities[selectedId] : undefined,
+  selectedId ? entities[selectedId] : null,
 );
 
 export const selectNasaImagesCount = createSelector(selectNasaImagesState, (state: NasaImagesState) => state.count);
