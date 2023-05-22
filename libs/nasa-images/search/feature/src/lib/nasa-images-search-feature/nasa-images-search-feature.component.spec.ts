@@ -50,7 +50,7 @@ describe('NasaImagesSearchFeatureComponent', () => {
     it('should not call search facade method with empty q param', () => {
       const params: NasaImagesSearchApiParams = { q: '' };
       component.onChange(params);
-      expect(facade.search).not.toHaveBeenCalled();
+      expect(facade.search).toHaveBeenCalled();
     });
 
     it('should not call search facade method with no q param', () => {

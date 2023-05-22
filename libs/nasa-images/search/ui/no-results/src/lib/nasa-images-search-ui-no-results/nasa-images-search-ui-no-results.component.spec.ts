@@ -11,7 +11,7 @@ import { NasaImagesSearchUiNoResultsComponent } from './nasa-images-search-ui-no
     <span title>NASA images search</span>
     <span message
       >Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto assumenda ad ipsam. Deserunt eligendi quos exercitationem, earum
-      officiis eum, quod repellat eos quae id et? Explicabo, magnam dolorem. Delectus, nisi.</span
+      officiis eum, quod repellat eos quae id et?</span
     >
   </plastik-nasa-images-search-ui-no-results>`,
 })
