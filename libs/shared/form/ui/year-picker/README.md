@@ -13,6 +13,7 @@ A form controller to pick up a date as a single year (YYYY).
 | Name      | Type    | Description                                                                 | Default |
 | --------- | ------- | --------------------------------------------------------------------------- | ------- |
 | `touchUi` | boolean | sets the view of the picker as an overflow dialog (valid for mobile screen) | false   |
+| `label`   | string  | sets the label for the year picker input                                    | ''      |
 
 ## How to use with formly
 
