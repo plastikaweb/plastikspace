@@ -6,7 +6,7 @@ import { NasaImagesFaqsService } from './nasa-images-faqs.service';
 export const nasaImagesFaqsFeatureRoutes: Routes = [
   {
     path: '',
-    data: { name: 'FAQS' },
+    data: { name: 'faqs' },
     title: 'FAQs',
     component: NasaImagesFaqsFeatureComponent,
     providers: [NasaImagesFaqsService],

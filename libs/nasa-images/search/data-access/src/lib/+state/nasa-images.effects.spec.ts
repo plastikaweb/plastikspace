@@ -34,7 +34,7 @@ describe('NasaImagesEffects', () => {
         provideMockActions(() => actions),
         provideMockStore({
           selectors: [
-            { selector: selectRouteDataName, value: 'SEARCH' },
+            { selector: selectRouteDataName, value: 'search' },
             {
               selector: selectRouteQueryParams,
               value: { q: 'pluto', media_type: 'image' },
@@ -86,7 +86,7 @@ describe('NasaImagesEffects', () => {
     });
 
     it('should not dispatch loadNasaImages with queryParams if no /search route is found', () => {
-      store.overrideSelector(selectRouteDataName, 'FAQS');
+      store.overrideSelector(selectRouteDataName, 'faqs');
 
       actions = hot('-a', { a: action });
       const expected = cold('', { b: [] });

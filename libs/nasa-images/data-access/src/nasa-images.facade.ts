@@ -8,6 +8,5 @@ import { map } from 'rxjs';
 })
 export class NasaImagesFacade extends RouterFacade {
   sidenavConfig = inject(VIEW_CONFIG);
-
   routeInfo$ = this.routeName$.pipe(map(name => this.sidenavConfig?.find(routeData => routeData.name === name)));
 }

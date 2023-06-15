@@ -1,55 +1,68 @@
-import { inject } from '@angular/core';
-import { Store } from '@ngrx/store';
+/* eslint-disable jsdoc/require-jsdoc */
 import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
-import { selectRouteQueryParams } from '@plastik/core/router-state';
-import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
-import { Observable, map } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 
-// eslint-disable-next-line jsdoc/require-jsdoc
+function setAddOnRightVisibility(config: FormlyFieldConfig): void {
+  const classes = config.formControl?.value ? 'text-primary-dark' : 'text-primary-dark invisible';
+  const addonRight = { ...config.props?.['addonRight'], classes };
+  config.props = { ...config.props, addonRight };
+}
+
 export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldConfig[]> {
-  return inject(Store)
-    .select(selectRouteQueryParams)
-    .pipe(
-      map(params => (params as NasaImagesSearchApiParams)?.['q'] || ''),
-      map(defaultValue => {
-        return [
-          {
-            key: 'q',
-            type: 'input',
-            defaultValue,
-            modelOptions: {
-              debounce: {
-                default: 400,
-              },
+  return of([
+    {
+      fieldGroupClassName: 'flex flex-col lg:flex-row flex-wrap gap-sm',
+      fieldGroup: [
+        {
+          key: 'q',
+          type: 'input',
+          hooks: {
+            onInit: config => config.form?.valueChanges.pipe(tap(() => setAddOnRightVisibility(config))),
+            onChanges: setAddOnRightVisibility,
+          },
+          props: {
+            type: 'search',
+            label: 'Search by term',
+            placeholder: 'Search by term',
+            required: true,
+            maxLength: 256,
+            addonLeft: {
+              icon: 'search',
             },
-            hooks: {
-              onChanges: (field: FormlyFieldConfig) => {
-                const classes = field.defaultValue ? 'text-primary-dark' : 'text-primary-dark invisible';
-                const addonRight = { ...field.props?.['addonRight'], classes };
-                field.props = { ...field.props, addonRight };
-              },
-            },
-            props: {
-              type: 'search',
-              label: 'Search by term',
-              placeholder: 'Search by term',
-              required: false,
-              maxLength: 256,
-              addonLeft: {
-                icon: 'search',
-              },
-              addonRight: {
-                icon: 'cancel',
-                aria: 'Reset search',
-                onClick: (_: unknown, { resetModel }: FormlyFormOptions): void => {
-                  if (resetModel) {
-                    resetModel({ q: '' });
-                  }
-                },
+            addonRight: {
+              icon: 'cancel',
+              aria: 'Reset search',
+              onClick: (_: unknown, { resetModel }: FormlyFormOptions): void => {
+                if (resetModel) {
+                  resetModel({ q: '' });
+                }
               },
             },
           },
-        ];
-      }),
-    );
+        },
+        {
+          key: 'year_start',
+          type: 'year-picker',
+          className: 'lg:w-[180px]',
+          props: {
+            label: 'Start year',
+            placeholder: 'YYYY',
+            required: true,
+            startView: 'multi-year',
+          },
+        },
+        {
+          key: 'year_end',
+          type: 'year-picker',
+          className: 'lg:w-[180px]',
+          props: {
+            label: 'End year',
+            placeholder: 'YYYY',
+            required: true,
+            startView: 'multi-year',
+          },
+        },
+      ],
+    },
+  ]);
 }

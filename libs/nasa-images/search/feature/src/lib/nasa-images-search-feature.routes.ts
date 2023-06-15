@@ -14,7 +14,7 @@ import { NasaImagesSearchFeatureComponent } from './nasa-images-search-feature/n
 export const nasaImagesSearchFeatureRoutes: Routes = [
   {
     path: '',
-    data: { name: 'SEARCH' },
+    data: { name: 'search' },
     title: NasaImagesSearchSearchRouterTitleService,
     component: NasaImagesSearchFeatureComponent,
     providers: [provideState(NASA_IMAGES_FEATURE_KEY, nasaMediaReducer), provideEffects(NasaImagesEffects), NasaImagesSearchFacade],

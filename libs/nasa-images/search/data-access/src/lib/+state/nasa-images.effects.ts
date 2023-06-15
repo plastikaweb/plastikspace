@@ -23,7 +23,7 @@ export class NasaImagesEffects {
 
   navigation$ = createEffect(() => {
     return this.actions$.pipe(
-      this.navigationFilter.checkRouterNavigation<NasaImagesViews>('SEARCH'),
+      this.navigationFilter.checkRouterNavigation<NasaImagesViews>('search'),
       concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectActivityActive)]),
       filter(([, , activity]) => !activity),
       map(([, queryParams]) => {
