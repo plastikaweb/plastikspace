@@ -149,3 +149,9 @@ $nasa-images-theme: mat.define-light-theme(
     }
   }
 }
+
+// mat input
+
+.mat-datepicker-toggle {
+  @apply flex justify-center items-center -mr-sm;
+}

@@ -44,32 +44,33 @@ describe('SharedFormFeatureComponent', () => {
   });
 
   describe('onModelChange', () => {
+    let submit = false;
     it('should update model and emit changeEvent', () => {
       const model = { q: 'pluto' };
-      let submit;
       component.model = {};
+      component.submitAvailable = true;
       component.changeEvent.subscribe(() => (submit = true));
       component.onModelChange(model);
 
       expect(component.model).toEqual(model);
-      expect(submit).toBeDefined();
+      expect(submit).toBeFalsy();
     });
 
     it('should update model but not emit changeEvent', () => {
       const model = null;
-      let submit;
       component.model = model;
+      component.submitAvailable = false;
       component.changeEvent.subscribe(() => (submit = true));
       component.onModelChange(model);
 
       expect(component.model).toBeNull();
-      expect(submit).not.toBeDefined();
+      expect(submit).toBeFalsy();
     });
+  });
 
-    it('should have no accessibility violations', async () => {
-      expect.extend(toHaveNoViolations);
-      const results = await axe(fixture.nativeElement);
-      expect(results).toHaveNoViolations();
-    });
+  it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
   });
 });

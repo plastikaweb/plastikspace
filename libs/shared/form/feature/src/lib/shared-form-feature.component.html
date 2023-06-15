@@ -1,4 +1,9 @@
-<form novalidate [formGroup]="form" (ngSubmit)="onSubmit($event)">
+<form
+  novalidate
+  class="flex flex-col flex-wrap justify-start w-full gap-0 lg:flex-row lg:gap-lg my-md"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit($event)"
+>
   <!-- form -->
 
   <formly-form
@@ -12,12 +17,8 @@
 
   <!-- buttons -->
   <div class="mt-6 max-height-flex">
-    <div *ngIf="submitAvailable" class="form-actions">
-      <div>
-        <button color="accent" type="submit" [ngClass]="['main-button', 'mat-accent', 'mat-flat-button']" [disabled]="!form.valid">
-          Submit
-        </button>
-      </div>
-    </div>
+    <button *ngIf="submitAvailable" mat-flat-button color="primary" type="submit" class="h-[56px] w-[150px]" [disabled]="!form.valid">
+      Submit
+    </button>
   </div>
 </form>

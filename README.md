@@ -94,6 +94,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 #### Form
 
 - [shared-form-feature](libs/shared/form/feature/README.md)
+- [shared-form-ui-year-picker/shared-form-ui-year-picker-type](libs/shared/form/ui/year-picker/README.md)
 
 #### Activity
 

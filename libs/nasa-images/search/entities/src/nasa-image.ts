@@ -1,7 +1,7 @@
 /**
  * @description A collection for available pages for Nasa Images App.
  */
-export type NasaImagesViews = 'SEARCH' | 'FAQS';
+export type NasaImagesViews = 'search' | 'faqs';
 
 /**
  * @description A segment of the Nasa Images API.
@@ -45,11 +45,11 @@ export interface NasaImagesSearchApiParams {
   /**
    * The start year for results. Format: YYYY.
    */
-  yearStart?: number;
+  year_start?: number;
   /**
    * The end year for results. Format: YYYY.
    */
-  yearEnd?: number;
+  year_end?: number;
   /**
    * The media type of the response.
    * We set it always to 'image' as the app is using only images, no audio data.

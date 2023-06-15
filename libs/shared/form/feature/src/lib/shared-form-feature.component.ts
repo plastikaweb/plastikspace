@@ -39,7 +39,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
 
   onModelChange(model: T): void {
     this.model = model;
-    this.emitChange();
+    if (!this.submitAvailable) this.emitChange();
   }
 
   private emitChange(): void {

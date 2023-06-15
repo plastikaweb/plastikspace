@@ -6,7 +6,6 @@
   <!-- filtering -->
   <plastik-shared-form-feature
     class="flex flex-row items-end content-center justify-between mx-0 mb-0 mt-sm md:my-md filters-box"
-    [submitAvailable]="false"
     [fields]="(formStructure$ | ngrxPush) || []"
     [model]="(formModel$ | ngrxPush) || {}"
     (changeEvent)="onChange($event)"

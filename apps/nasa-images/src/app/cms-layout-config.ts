@@ -22,7 +22,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
 };
 
 export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
-  ['SEARCH']: {
+  ['search']: {
     id: 1,
     name: 'search',
     title: 'Search images',
@@ -31,7 +31,7 @@ export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
     includedInNavigation: true,
     routerLinkActiveOptionsExact: false,
   },
-  ['FAQS']: {
+  ['faqs']: {
     id: 2,
     name: 'faqs',
     title: 'FAQs',

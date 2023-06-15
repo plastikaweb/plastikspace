@@ -43,6 +43,7 @@
       "@plastik/shared/button": ["libs/shared/button/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
+      "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
       "@plastik/shared/return-as-observable": ["libs/shared/util/return-as-observable-pipe/src/index.ts"],
