@@ -43,6 +43,10 @@ module.exports = {
       lg: 'var(--spacing-lg)',
       xl: 'var(--spacing-xl)',
       xxl: 'var(--spacing-xxl)',
+      half: '50%',
+      third: '33.33333%',
+      quarter: '25%',
+      full: '100%',
     },
     flexBasis: {
       0: '0',
