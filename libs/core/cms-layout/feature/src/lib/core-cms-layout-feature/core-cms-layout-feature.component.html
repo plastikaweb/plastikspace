@@ -16,7 +16,7 @@
     </div>
     <div *ngIf="headerConfig.socialLinks?.position === 'end' || sidenavPosition === 'end'" end class="flex items-center gap-sm">
       <ng-container *ngIf="headerConfig?.socialLinks?.position === 'end'" [ngTemplateOutlet]="socialLinks"></ng-container>
-      <ng-container *ngIf="sidenavPosition === 'end'" [ngTemplateOutlet="toggleSidenavButton"></ng-container>
+      <ng-container *ngIf="sidenavPosition === 'end'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
     </div>
   </plastik-core-cms-layout-ui-header>
 
@@ -79,6 +79,7 @@
 <ng-template #toggleSidenavButton>
   <button mat-icon-button aria-label="sidenav toggle button" class="flex justify-center align-middle" (click)="onToggleSidenav()">
     <mat-icon *ngIf="!(sidenavOpened$ | ngrxPush); else closeButton" class="mat-18">menu</mat-icon>
+
     <ng-template #closeButton>
       <mat-icon class="mat-18">close</mat-icon>
     </ng-template>

@@ -16,7 +16,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
-import { PushModule } from '@ngrx/component';
+import { PushPipe } from '@ngrx/component';
 import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
 import { PageEventConfig, TableColumnFormatting, TablePaginationVisibility } from '@plastik/shared/table/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -26,7 +26,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
   standalone: true,
   imports: [
     CommonModule,
-    PushModule,
+    PushPipe,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
