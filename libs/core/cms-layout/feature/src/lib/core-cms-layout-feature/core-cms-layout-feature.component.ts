@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { PushModule } from '@ngrx/component';
+import { PushPipe } from '@ngrx/component';
 import { Action } from '@ngrx/store';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
@@ -31,7 +31,7 @@ import { Subject, map, takeUntil } from 'rxjs';
     NgTemplateOutlet,
     RouterLinkActive,
     DatePipe,
-    PushModule,
+    PushPipe,
     MatSidenavModule,
     MatListModule,
     MatIconModule,
