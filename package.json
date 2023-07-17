@@ -43,6 +43,7 @@
     "clean:dist": "rimraf dist",
     "install:local": "yarn husky-install && yarn clean:all && yarn install --frozen-lockfile",
     "markdownlint": "markdownlint *.md",
+    "branch:lint": "branch-name-lint branchNameLint.json",
     "nasa-images:serve": "nx run nasa-images:serve",
     "nasa-images:lint": "nx run nasa-images:lint",
     "nasa-images:build": "nx run nasa-images:build --parallel",
@@ -53,7 +54,15 @@
     "nasa-images:a11y": "npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run",
     "nasa-images:a11y:run": "pa11y-ci --config ./apps/nasa-images/.pa11yci.json",
     "nasa-images:build:github": "nx run nasa-images:build:prod",
-    "branch:lint": "branch-name-lint branchNameLint.json"
+    "experimental:serve": "nx run experimental:serve",
+    "experimental:lint": "nx run experimental:lint",
+    "experimental:build": "nx run experimental:build --parallel",
+    "experimental:test": "nx run experimental:test",
+    "experimental:e2e": "nx run experimental-e2e:e2e",
+    "experimental:http-server": "angular-http-server --path ./dist/apps/experimental --port 8080",
+    "preexperimental:a11y": "yarn experimental:build",
+    "experimental:a11y": "npm-run-all --parallel --race experimental:http-server experimental:a11y:run",
+    "experimental:a11y:run": "pa11y-ci --config ./apps/experimental/.pa11yci.json"
   },
   "private": true,
   "dependencies": {
@@ -105,6 +114,7 @@
     "@nx/jest": "16.5.1",
     "@nx/js": "16.5.1",
     "@nx/linter": "16.5.1",
+    "@nx/web": "16.5.1",
     "@nx/workspace": "16.5.1",
     "@schematics/angular": "16.1.4",
     "@tailwindcss/line-clamp": "^0.4.4",

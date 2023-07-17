@@ -32,6 +32,10 @@
                 "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core", "scope:shared"]
               },
               {
+                "sourceTag": "scope:experimental",
+                "onlyDependOnLibsWithTags": ["scope:experimental", "scope:core", "scope:shared"]
+              },
+              {
                 "sourceTag": "type:feature",
                 "onlyDependOnLibsWithTags": ["type:ui", "type:util", "type:data-access", "type:entity", "type:feature"]
               },
