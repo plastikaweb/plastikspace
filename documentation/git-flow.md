@@ -93,7 +93,7 @@ On any PR creation:
   > You can see the `CI` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml).
 
 - **`a11y {app-name}`**: this action is fired to execute accessibility test using `pa11y-cy` runner.
-  > You can see the `a11y nasa-images` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/pa11y.yml).  
+  * > You can see the `a11y nasa-images` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/pa11y.yml).  
   > You can see a local app a11y configuration [here](./accessibility.md#pa11y-ci-accessibility-test-runner)
 
 ## Merge

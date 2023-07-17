@@ -53,6 +53,7 @@ To see a full list of available scripts see **package.json file > scripts**.
 ## Available applications
 
 - [nasa-images](apps/nasa-images/README.md)
+- [experimental](apps/experimental/README.md)
 
 ## Available libraries
 

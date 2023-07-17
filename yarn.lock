@@ -4105,6 +4105,13 @@
   dependencies:
     nx "16.5.1"
 
+"@nrwl/web@16.5.1":
+  version "16.5.1"
+  resolved "https://registry.yarnpkg.com/@nrwl/web/-/web-16.5.1.tgz#11e58e2f04556cd5d1b674f583b4151862b1a8ee"
+  integrity sha512-9uOz3SrgJBdvipbvrcrEkOHvL+YORKoc31DHB0WBr2hWW1itMajOBVB06JJ6FbIibgCgHTLXOFvNsEzMpQcUJQ==
+  dependencies:
+    "@nx/web" "16.5.1"
+
 "@nrwl/webpack@16.5.1":
   version "16.5.1"
   resolved "https://registry.yarnpkg.com/@nrwl/webpack/-/webpack-16.5.1.tgz#7d68bbf34155ba148562c45fb30e4ae2be3ec219"
@@ -4301,6 +4308,21 @@
   version "16.5.1"
   resolved "https://registry.yarnpkg.com/@nx/nx-win32-x64-msvc/-/nx-win32-x64-msvc-16.5.1.tgz#d2f4a1b2bf675bceb6fb16174b836438293f9dca"
   integrity sha512-kUJBLakK7iyA9WfsGGQBVennA4jwf5XIgm0lu35oMOphtZIluvzItMt0EYBmylEROpmpEIhHq0P6J9FA+WH0Rg==
+
+"@nx/web@16.5.1":
+  version "16.5.1"
+  resolved "https://registry.yarnpkg.com/@nx/web/-/web-16.5.1.tgz#0e32f6ef6eef24b814a82aaa78d9f2632221115f"
+  integrity sha512-Mf3zx8rTw4ngSLIetfTMHzyoG1X7vQ9W+V1t5XKmSUCsDWcoRoezLhtvuQRG+w2P04+HLiBFBfqe58euE8pPrw==
+  dependencies:
+    "@nrwl/web" "16.5.1"
+    "@nx/devkit" "16.5.1"
+    "@nx/js" "16.5.1"
+    chalk "^4.1.0"
+    chokidar "^3.5.1"
+    detect-port "^1.5.1"
+    http-server "^14.1.0"
+    ignore "^5.0.4"
+    tslib "^2.3.0"
 
 "@nx/webpack@16.5.1":
   version "16.5.1"
