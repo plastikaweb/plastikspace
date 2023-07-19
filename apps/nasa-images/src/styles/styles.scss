@@ -1,63 +1,12 @@
-@use '@angular/material' as mat;
-
-@include mat.core();
-
-$nasa-images-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: mat.define-palette(mat.$indigo-palette),
-      accent: mat.define-palette(mat.$pink-palette),
-    ),
-  )
-);
-
-@include mat.all-component-themes($nasa-images-theme);
-
-@import 'loading';
+@use 'theme';
+@use 'core_styles_util_material';
+@use 'loading';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  :root {
-    /* Colors */
-    --primary-light: #105bd8;
-    --primary: #19418c;
-    --primary-dark: #061f4a;
-    --secondary-light: #e59892;
-    --secondary: #dd361c;
-    --secondary-dark: #a32519;
-
-    --green: #168628;
-
-    --error: var(--secondary-dark);
-    --info: var(--primary-light);
-    --warning: var(--secondary-light);
-    --success: var(--green);
-
-    /* Spacing */
-    --spacing-tiny: 0.25rem;
-    --spacing-sub: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
-    --spacing-xxl: 6rem;
-
-    /* Font Size */
-    --font-size-sub: 0.7rem;
-    --font-size-sm: 0.85rem;
-    --font-size-base: 1rem;
-    --font-size-md: 1.4rem;
-    --font-size-lg: 1.8rem;
-    --font-size-xl: 2.2rem;
-    --font-size-xxl: 2.6rem;
-
-    /* Custom Material */
-    --mdc-floating-label-color: var(--primary-dark);
-  }
-
   html {
     font-size: 14px;
     @apply box-border;
@@ -109,48 +58,4 @@ $nasa-images-theme: mat.define-light-theme(
       @apply underline underline-offset-2;
     }
   }
-}
-
-// mat progress bar
-.mat-mdc-progress-bar {
-  @apply bg-secondary-light;
-  --mdc-linear-progress-track-height: var(--spacing-tiny);
-  --mdc-linear-progress-active-indicator-color: var(--secondary-dark);
-}
-
-// mat sidenav
-.mat-sidenav .mat-mdc-list-item {
-  --mdc-list-list-item-focus-state-layer-opacity: 0 !important;
-}
-
-.mat-sidenav .mat-mdc-list-item:not(.mat-mdc-list-item-interactive) {
-  @apply cursor-pointer;
-}
-
-// mat paginator
-.mat-mdc-paginator .mat-mdc-paginator-range-label {
-  @apply mx-sub text-sm;
-}
-
-// mat snackbar
-.mat-mdc-snack-bar-container {
-  &.message-box {
-    &-error {
-      --mdc-snackbar-container-color: var(--error);
-    }
-    &-warning {
-      --mdc-snackbar-container-color: var(--warning);
-    }
-    &-info {
-      --mdc-snackbar-container-color: var(--info);
-    }
-    &-success {
-      --mdc-snackbar-container-color: var(--success);
-    }
-  }
-}
-
-// mat input
-.mat-datepicker-toggle {
-  @apply flex justify-center items-center -mr-sm;
 }

@@ -1,0 +1,44 @@
+@layer base {
+  :root {
+    /* Colors */
+    --primary-light: 74, 131, 229;
+    --primary: 25, 65, 140;
+    --primary-dark: 6, 31, 74;
+    --secondary-light: 229, 152, 146;
+    --secondary: 221, 54, 28;
+    --secondary-dark: 163, 37, 25;
+
+    /* Spacing */
+    --spacing-tiny: 0.25rem;
+    --spacing-sub: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 6rem;
+
+    /* Font Size */
+    --font-size-sub: 0.7rem;
+    --font-size-sm: 0.85rem;
+    --font-size-base: 1rem;
+    --font-size-md: 1.4rem;
+    --font-size-lg: 1.8rem;
+    --font-size-xl: 2.2rem;
+    --font-size-xxl: 2.6rem;
+
+    /* Input */
+    --plastik-mdc-floating-label-color: rgb(var(--primary));
+    /* Linear progress activity */
+    --plastik-mdc-linear-progress-track-height: var(--spacing-tiny);
+    --plastik-mdc-linear-progress-active-indicator-height: var(--spacing-tiny);
+    --plastik-mdc-linear-progress-active-indicator-color: rgb(var(--secondary-dark));
+    --plastik-mdc-linear-progress-track-color: rgb(var(--secondary-light));
+    /* Table */
+    --plastik-mdc-table-row-min-height: 120px;
+    /* Notification Snackbar Boxes */
+    --plastik-error-notification-box-color: rgb(195, 6, 6);
+    --plastik-info-notification-box-color: rgb(14, 122, 190);
+    --plastik-warning-notification-box-color: rgb(221, 148, 20);
+    --plastik-success-notification-box-colors: rgb(22, 134, 40);
+  }
+}

@@ -1,5 +1,16 @@
 # shared-form-feature
 
+- [shared-form-feature](#shared-form-feature)
+  - [Description](#description)
+  - [HTML element](#html-element)
+  - [Formly](#formly)
+  - [Inputs](#inputs)
+  - [Output](#output)
+  - [Example](#example)
+    - [How to style](#how-to-style)
+  - [Links](#links)
+  - [Running unit tests](#running-unit-tests)
+
 ## Description
 
 A container to inject a form configuration and dynamically create a form with buttons and extras.
@@ -73,6 +84,14 @@ It uses internally [Formly Library](https://formly.dev/) that is build on top of
 # template
 
 <plastik-shared-form-feature [fields]="fields" [model]="model" (changeEvent)="onSubmit($event)"> </plastik-shared-form-feature>
+```
+
+### How to style
+
+You can overwrite the styles from your main application declaring these CSS variables in your app `styles/_theme.scss` file:
+
+```css
+- --plastik-mdc-floating-label-color: rgb(var(--primary));
 ```
 
 ## Links

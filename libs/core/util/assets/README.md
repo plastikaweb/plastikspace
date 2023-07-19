@@ -1,5 +1,11 @@
 # core-util-assets
 
+- [core-util-assets](#core-util-assets)
+  - [Description](#description)
+  - [How to use](#how-to-use)
+    - [Images and icons](#images-and-icons)
+    - [Font families](#font-families)
+
 ## Description
 
 A collection of global repository assets, mainly fonts, icons and images that are available across all applications.
@@ -41,5 +47,5 @@ You can reference a font definitions file in your code pointing to the output de
 
 ```scss
 // The target directory will be 'libs/core/assets/src/lib/fonts/circular-std/circular-std.scss'.
-@import 'circular-std/circular-std.scss';
+@use 'circular-std/circular-std.scss';
 ````

@@ -85,13 +85,14 @@ export class CoreCmsLayoutFeatureComponent {
 
 ### 3. Styling
 
-You can overwrite the styles from your main application using these CSS classes:
+You can overwrite the styles from your main application declaring these CSS variables in your app `styles/_theme.scss` file:
 
-- `message-box`: main message element.
-- `message-box-error`.
-- `message-box-warning`.
-- `message-box-info`.
-- `message-box-success`.
+```css
+- --plastik-error-notification-box-color: rgb(195, 6, 6);
+- --plastik-info-notification-box-color: rgb(14, 122, 190);
+- --plastik-warning-notification-box-color: rgb(221, 148, 20);
+- --plastik-success-notification-box-colors: rgb(22, 134, 40);
+```
 
 ## Running unit tests
 

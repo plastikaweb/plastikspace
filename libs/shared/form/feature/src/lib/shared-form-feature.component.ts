@@ -12,8 +12,8 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/
   templateUrl: './shared-form-feature.component.html',
   styles: [
     `
-      ::ng-deep .mdc-text-field:not(.mdc-text-field--disabled) .mdc-floating-label {
-        color: var(--mdc-floating-label-color, #000000);
+      :host ::ng-deep .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--invalid) .mdc-floating-label {
+        color: var(--plastik-mdc-floating-label-color, #000000);
       }
     `,
   ],

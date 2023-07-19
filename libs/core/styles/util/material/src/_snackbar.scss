@@ -1,0 +1,17 @@
+//  ----- Snack Bar https://material.angular.io/components/snack-bar ----- //
+.mat-mdc-snack-bar-container {
+  &.message-box {
+    &-error {
+      --mdc-snackbar-container-color: var(--plastik-error-notification-box-color, rgb(208, 0, 0));
+    }
+    &-warning {
+      --mdc-snackbar-container-color: var(--plastik-warning-notification-box-color, rgb(255, 181, 43));
+    }
+    &-info {
+      --mdc-snackbar-container-color: var(--plastik-info-notification-box-color, rgb(25, 25, 255));
+    }
+    &-success {
+      --mdc-snackbar-container-color: var(--plastik-success-notification-box-colors, rgb(31, 163, 31));
+    }
+  }
+}

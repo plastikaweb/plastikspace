@@ -1,25 +1,24 @@
-:host ::ng-deep {
-  .mat-mdc-table mat-row.mat-mdc-row {
-    @apply min-h-[120px];
+.mat-mdc-table > .mat-mdc-row {
+  @apply items-stretch;
+  min-height: var(--plastik-mdc-table-row-min-height, auto);
+}
+
+.table__cell--link a {
+  @apply cursor-pointer;
+}
+
+:host ::ng-deep .mat-mdc-paginator {
+  &.paginator--hide .mat-paginator-range-label {
+    @apply hidden;
   }
 
-  .mat-row {
-    @apply items-stretch;
+  &.paginator--hide-range-buttons .mat-mdc-paginator-range-actions > button {
+    @apply hidden;
   }
-
-  .table__cell--link a {
-    @apply cursor-pointer;
-  }
-
-  .paginator--hide {
-    .mat-paginator-range-label {
-      @apply hidden;
-    }
-  }
-
-  .paginator--hide-range-buttons {
-    .mat-paginator-range-actions {
-      @apply hidden;
+  .mat-mdc-paginator-container {
+    @apply text-sm;
+    .mat-mdc-paginator-range-label {
+      @apply mx-sub;
     }
   }
 }
