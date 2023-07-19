@@ -12,7 +12,6 @@ import { NasaImagesFaqsService } from '../nasa-images-faqs.service';
   standalone: true,
   imports: [NgFor, NgIf, MatExpansionModule, MatIconModule, PushPipe],
   templateUrl: './nasa-images-faqs-feature.component.html',
-  styleUrls: ['./nasa-images-faqs-feature.component.scss'],
 })
 export class NasaImagesFaqsFeatureComponent {
   routeInfo$ = inject(NasaImagesFacade).routeInfo$;

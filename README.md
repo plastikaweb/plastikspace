@@ -49,6 +49,7 @@ To see a full list of available scripts see **package.json file > scripts**.
 - [Accessibility](documentation/accessibility.md)
 - [Git commit conventions](documentation/commit-conventions.md)
 - [Git Flow and CI/CD](documentation/git-flow.md)
+- [CSS Styling](documentation/css-styles.md)
 
 ## Available applications
 
@@ -65,6 +66,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [core-util-assets](libs/core/util/assets/README.md)
 - [core-util-api](libs/core/util/api/README.md)
 - [core-styles-util-tailwind-preset](libs/core/styles/util/tailwind-preset/README.md)
+- [core-styles-util-material](libs/core/styles/util/material/README.md)
 - [core-ng-entry-html-util](libs/core/ng-entry-html/util/README.md)
 - [core-router-data-access](libs/core/router/data-access//README.md)
 - [core-entities](libs/core/entities/README.md)

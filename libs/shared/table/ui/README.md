@@ -7,6 +7,7 @@
   - [Inputs](#inputs)
   - [Outputs](#outputs)
   - [Example](#example)
+    - [How to style](#how-to-style)
   - [Running unit tests](#running-unit-tests)
   - [Useful links](#useful-links)
 
@@ -160,6 +161,14 @@ onChangeTablePagination(tablePagination: TablePagination) {
   (changePagination)="onChangeTablePagination($event)"
 >
 </plastik-shared-table>
+```
+
+### How to style
+
+You can overwrite the styles from your main application declaring these CSS variables in your app `styles/_theme.scss` file:
+
+```css
+-  --plastik-mdc-table-row-min-height: 120px;
 ```
 
 ## Running unit tests

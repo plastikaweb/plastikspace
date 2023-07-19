@@ -1,0 +1,15 @@
+.mat-expansion-panel {
+  .mat-expansion-panel-header .mat-content {
+    @apply block lg:flex;
+    .mat-expansion-panel-header-title {
+      @apply lg:flex-grow-[3];
+      h3 {
+        @apply text-base md:text-md;
+      }
+    }
+  }
+
+  .mat-expansion-panel-body .highlight {
+    @apply font-semibold;
+  }
+}

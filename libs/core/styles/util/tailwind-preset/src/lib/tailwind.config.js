@@ -1,18 +1,23 @@
 /** @type {import('tailwindcss').Config} */
+
+function withOpacity(variableName) {
+  return ({ opacityValue }) => (!!opacityValue ? `rgba(var(${variableName}), ${opacityValue})` : `rgb(var(${variableName}))`);
+}
+
 module.exports = {
-  content: ['./apps/**/*.{html,ts,json}', './libs/**/*.{html,ts,json}'],
+  content: ['./apps/**/!(*.stories|*.spec).{html,ts,json}', './libs/**/!(*.stories|*.spec).{html,ts,json}'],
   important: true,
   theme: {
     colors: {
       primary: {
-        light: 'var(--primary-light)',
-        DEFAULT: 'var(--primary)',
-        dark: 'var(--primary-dark)',
+        light: withOpacity('--primary-light'),
+        DEFAULT: withOpacity('--primary'),
+        dark: withOpacity('--primary-dark'),
       },
       secondary: {
-        light: 'var(--secondary-light)',
-        DEFAULT: 'var(--secondary)',
-        dark: 'var(--secondary-dark)',
+        light: withOpacity('--secondary-light'),
+        DEFAULT: withOpacity('--secondary'),
+        dark: withOpacity('--secondary-dark'),
       },
       gray: {
         5: '#f2f2f2',
@@ -29,10 +34,10 @@ module.exports = {
       white: '#ffffff',
       black: '#000000',
       transparent: 'transparent',
-      error: 'var(--error)',
-      info: 'var(--info)',
-      warning: 'var(--warning)',
-      success: 'var(--success)',
+      error: 'var(--plastik-error-notification-box-color)',
+      info: 'var(--plastik-info-notification-box-color)',
+      warning: 'var(--plastik-warning-notification-box-color)',
+      success: 'var(--plastik-success-notification-box-colors)',
     },
     spacing: {
       0: 0,

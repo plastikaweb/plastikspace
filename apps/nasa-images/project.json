@@ -25,6 +25,9 @@
           }
         ],
         "styles": ["apps/nasa-images/src/styles/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/core/styles/util/material/src"]
+        },
         "allowedCommonJsDependencies": ["moment"],
         "scripts": []
       },
