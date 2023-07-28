@@ -73,15 +73,42 @@ export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
 };
 ```
 
-- Add the header and sidenav configurations as arguments to the `CoreCmsLayoutDataAccessModule.withConfig` static method imported into the providers list in main.app file.
+- Import `CoreCmsLayoutDataAccessModule` into main.ts file.
 
 ```typescript
 // apps/my-app/src/main.ts
 
-import { CoreCmsLayoutFeatureModule } from '@plastik/core/cms-layout';
+import { CoreCmsLayoutDataAccessModule } from '@plastik/core/cms-layout/data-access';
 
 bootstrapApplication(AppComponent, {
-  providers: [importProvidersFrom(CoreCmsLayoutFeatureModule.withConfig<AppViews>(headerConfig, viewConfig))],
+  providers: [importProvidersFrom(CoreCmsLayoutDataAccessModule)],
+});
+```
+
+- Set `CORE_CMS_LAYOUT_HEADER_CONFIG` provider to the headerConfig configuration object to set header contents.
+
+```typescript
+// apps/my-app/src/main.ts
+
+bootstrapApplication(AppComponent, {
+  providers: [{ provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig }],
+});
+```
+
+- Set `VIEW_CONFIG` provider to the viewConfig configuration object to set sidenav menu contents.
+
+```typescript
+// apps/my-app/src/main.ts
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    {
+      provide: VIEW_CONFIG,
+      useValue:
+        // getVisibleNavigationList returns just the elements marked as `includedInNavigation = true` in viewConfig.
+        getVisibleNavigationList(viewConfig),
+    },
+  ],
 });
 ```
 

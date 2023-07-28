@@ -33,23 +33,16 @@ It exposes the `CoreNotificationUiMatSnackbarDirective` to use.
 
 ## How to use
 
-### 1. Import CoreNotificationUiMatSnackbarModule module into your feature module
+### 1. Import Notification modules into your app bootstrap
 
 ```typescript
+// apps/my-app/src/main.ts
+import { CoreNotificationDataAccessModule } from '@plastik/core/notification/data-access';
 import { CoreNotificationUiMatSnackbarModule } from '@plastik/core/notification/ui/mat-snackbar';
 
-@NgModule({
-  imports: [
-    // other imports...
-    CoreNotificationUiMatSnackbarModule.forRoot({
-      // You can overwrite partly the default configuration
-      duration: 3000,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-    }),
-  ],
-})
-export class FeatureModule {}
+bootstrapApplication(AppComponent, {
+  providers: [importProvidersFrom(CoreNotificationDataAccessModule, CoreNotificationUiMatSnackbarModule)],
+});
 ```
 
 ### 2. Add it to your feature component
@@ -92,6 +85,27 @@ You can overwrite the styles from your main application declaring these CSS vari
 - --plastik-info-notification-box-color: rgb(14, 122, 190);
 - --plastik-warning-notification-box-color: rgb(221, 148, 20);
 - --plastik-success-notification-box-colors: rgb(22, 134, 40);
+```
+
+### 4. Snackbar configuration
+
+If you want to adjust some of the snackbar material component properties, use the [`MAT_SNACK_BAR_DEFAULT_OPTIONS`](https://material.angular.io/components/snack-bar/api#MAT_SNACK_BAR_DEFAULT_OPTIONS) token.
+
+```typescript
+// apps/my-app/src/main.ts
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    {
+      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
+      useValue: {
+        verticalPosition: 'top',
+        politeness: 'assertive',
+      },
+    },
+  ],
+});
 ```
 
 ## Running unit tests
