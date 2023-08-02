@@ -5,7 +5,7 @@ import { NavigationFilterService, selectRouteQueryParams } from '@plastik/core/r
 import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { NotificationConfigService, showNotification } from '@plastik/core/notification/data-access';
+import { notificationActions, NotificationConfigService } from '@plastik/core/notification/data-access';
 import { NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews } from '@plastik/nasa-images/search/entities';
 import { selectIsActive, setActivity } from '@plastik/shared/activity/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
@@ -77,7 +77,7 @@ export class NasaImagesEffects {
       map(({ error }) => {
         const message = error || 'The request has failed. Please try it again.';
         this.liveAnnouncer.announce(message, 'assertive', 5000);
-        return showNotification({
+        return notificationActions.show({
           configuration: this.notificationService.getInstance({
             type: 'ERROR',
             message: `<span class="sr-only">Error: </span>${message}`,

@@ -10,7 +10,7 @@ import { selectIsActive, setActivity } from '@plastik/shared/activity/data-acces
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
-import { showNotification } from '@plastik/core/notification/data-access';
+import { notificationActions } from '@plastik/core/notification/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
@@ -174,7 +174,7 @@ describe('NasaImagesEffects', () => {
   describe('showNotification$', () => {
     it('should return showNotification action on loadNasaImagesFailure', () => {
       const action = nasaImagesAPIActions.loadFailure({ error: ERROR_MSG });
-      const outcome = showNotification({
+      const outcome = notificationActions.show({
         configuration: {
           type: 'ERROR',
           icon: 'cancel',

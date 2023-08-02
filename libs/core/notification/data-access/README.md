@@ -6,7 +6,6 @@
   - [How to use](#how-to-use)
     - [Notification Actions](#notification-actions)
     - [Use it with @ngrx Effects](#use-it-with-ngrx-effects)
-    - [Selectors](#selectors)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -36,7 +35,7 @@ interface State {
 // By default on route change, if any notification is present in the UI, it is hidden.
 
 this.store.dispatch(
-  showNotification({
+  notificationActions.show({
     configuration: {
       data: { type: 'ERROR', notification: 'Error!' },
       duration: 2500,
@@ -47,7 +46,7 @@ this.store.dispatch(
 
 // removes notification configuration after notification box dismisses.
 
-this.store.dispatch(dismissNotification());
+this.store.dispatch(notificationActions.dismiss());
 ```
 
 ### Use it with @ngrx Effects
@@ -56,8 +55,6 @@ this.store.dispatch(dismissNotification());
 - It uses the `NotificationConfigService -> getInstance` method to get the final configuration for the box notifications.
 
 ```typescript
-import { NotificationConfigService, showNotification } from '@plastik/core/notification/data-access';
-
 @Injectable()
 export class FeatureEffects {
   private readonly notificationService = inject(NotificationConfigService);
@@ -66,7 +63,7 @@ export class FeatureEffects {
     this.actions$.pipe(
       ofType(loadEntitiesFailure),
       map(({ error: notification }) =>
-        showNotification({
+        notificationActions.show({
           configuration: this.messagingService.getInstance('ERROR'),
         }),
       ),
@@ -74,13 +71,6 @@ export class FeatureEffects {
   );
 }
 ```
-
-### Selectors
-
-You can listen to these selectors to use the messaging parameters within your application:
-
-- selectNotificationConfiguration
-- selectNotificationPreserveOnRouteRequest
 
 ## Running unit tests
 

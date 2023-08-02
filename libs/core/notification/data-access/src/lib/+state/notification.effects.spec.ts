@@ -8,9 +8,9 @@ import { getMockedRouterRequest } from '@plastik/core/router-state';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 
-import { dismissNotification } from './notification.actions';
+import { notificationActions } from './notification.actions';
 import { NotificationEffects } from './notification.effects';
-import { selectNotificationPreserveOnRouteRequest } from './notification.selectors';
+import { selectPreserveOnRouteRequest } from './notification.feature';
 
 describe('NotificationEffects Effects', () => {
   let actions$: Observable<Action>;
@@ -25,7 +25,7 @@ describe('NotificationEffects Effects', () => {
         NotificationEffects,
         provideMockActions(() => actions$),
         provideMockStore({
-          selectors: [{ selector: selectNotificationPreserveOnRouteRequest, value: false }],
+          selectors: [{ selector: selectPreserveOnRouteRequest, value: false }],
         }),
       ],
     });
@@ -40,14 +40,14 @@ describe('NotificationEffects Effects', () => {
       actions$ = hot('-a', {
         a: getMockedRouterRequest('/test'),
       });
-      const outcome = dismissNotification();
+      const outcome = notificationActions.dismiss();
       const expected = cold('-b', { b: outcome });
 
       expect(effects.dismissNotification$).toBeObservable(expected);
     });
 
     it('should not return an dismissNotification action', () => {
-      store.overrideSelector(selectNotificationPreserveOnRouteRequest, true);
+      store.overrideSelector(selectPreserveOnRouteRequest, true);
 
       actions$ = hot('-a', {
         a: getMockedRouterRequest('/test'),
