@@ -9,8 +9,7 @@ import { NotificationConfigService, showNotification } from '@plastik/core/notif
 import { NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews } from '@plastik/nasa-images/search/entities';
 import { selectActivityActive, setActivity } from '@plastik/shared/activity/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
-import * as NasaImagesActions from './nasa-images.actions';
-import { loadNasaImages } from './nasa-images.actions';
+import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 
 @Injectable()
 export class NasaImagesEffects {
@@ -28,28 +27,28 @@ export class NasaImagesEffects {
       filter(([, , activity]) => !activity),
       map(([, queryParams]) => {
         if (!queryParams['q']) {
-          return NasaImagesActions.cleanupNasaImages();
+          return nasaImagesPageActions.cleanUp();
         }
-        return loadNasaImages({ params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } } });
+        return nasaImagesPageActions.load({ params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } } });
       }),
     );
   });
 
   activeOn$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(NasaImagesActions.loadNasaImages),
+      ofType(nasaImagesPageActions.load),
       map(() => setActivity({ active: true })),
     );
   });
 
   load$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(NasaImagesActions.loadNasaImages),
+      ofType(nasaImagesPageActions.load),
       tap(({ params }) => this.liveAnnouncer.announce(`searching for ${params.q}`, 'assertive', 5000)),
       exhaustMap(({ params }) =>
         this.apiService.getList(params).pipe(
-          map(({ items, count }) => NasaImagesActions.loadNasaImagesSuccess({ items, count })),
-          catchError((error: NasaImagesSearchApiError) => of(NasaImagesActions.loadNasaImagesFailure({ error: error?.reason }))),
+          map(({ items, count }) => nasaImagesAPIActions.loadSuccess({ items, count })),
+          catchError((error: NasaImagesSearchApiError) => of(nasaImagesAPIActions.loadFailure({ error: error?.reason }))),
         ),
       ),
     );
@@ -58,7 +57,7 @@ export class NasaImagesEffects {
   loadSuccess$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(NasaImagesActions.loadNasaImagesSuccess),
+        ofType(nasaImagesAPIActions.loadSuccess),
         tap(() => this.liveAnnouncer.announce('Search completed successfully', 'assertive', 5000)),
       );
     },
@@ -67,14 +66,14 @@ export class NasaImagesEffects {
 
   activeOff$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(NasaImagesActions.loadNasaImagesSuccess, NasaImagesActions.loadNasaImagesFailure),
+      ofType(nasaImagesAPIActions.loadSuccess, nasaImagesAPIActions.loadFailure),
       map(() => setActivity({ active: false })),
     );
   });
 
   showNotification$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(NasaImagesActions.loadNasaImagesFailure),
+      ofType(nasaImagesAPIActions.loadFailure),
       map(({ error }) => {
         const message = error || 'The request has failed. Please try it again.';
         this.liveAnnouncer.announce(message, 'assertive', 5000);

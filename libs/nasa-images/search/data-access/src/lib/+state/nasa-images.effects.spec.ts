@@ -13,7 +13,7 @@ import { Observable, of, throwError } from 'rxjs';
 import { showNotification } from '@plastik/core/notification/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
-import * as NasaImagesActions from './nasa-images.actions';
+import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 import { NasaImagesEffects } from './nasa-images.effects';
 
 describe('NasaImagesEffects', () => {
@@ -70,7 +70,7 @@ describe('NasaImagesEffects', () => {
     let action = getMockedRouterNavigation('/search?q=pluto');
     it('should dispatch loadNasaImages with queryParams if /search route is found and "q" search value is not empty', () => {
       actions = hot('-a', { a: action });
-      const expected = cold('-b', { b: NasaImagesActions.loadNasaImages({ params: { q: 'pluto', media_type: 'image' } }) });
+      const expected = cold('-b', { b: nasaImagesPageActions.load({ params: { q: 'pluto', media_type: 'image' } }) });
 
       expect(effects.navigation$).toBeObservable(expected);
     });
@@ -80,7 +80,7 @@ describe('NasaImagesEffects', () => {
 
       action = getMockedRouterNavigation('/search?q=');
       actions = hot('-a', { a: action });
-      const expected = cold('-b', { b: NasaImagesActions.cleanupNasaImages() });
+      const expected = cold('-b', { b: nasaImagesPageActions.cleanUp() });
 
       expect(effects.navigation$).toBeObservable(expected);
     });
@@ -103,11 +103,11 @@ describe('NasaImagesEffects', () => {
   });
 
   describe('load$', () => {
-    const action = NasaImagesActions.loadNasaImages({ params: { q: 'pluto', media_type: 'image' } });
+    const action = nasaImagesPageActions.load({ params: { q: 'pluto', media_type: 'image' } });
     it('should work on success', () => {
       jest.spyOn(service, 'getList').mockImplementation(() => of({ items, count }));
       actions = hot('-a-|', { a: action });
-      const expected = hot('-a-|', { a: NasaImagesActions.loadNasaImagesSuccess({ items, count }) });
+      const expected = hot('-a-|', { a: nasaImagesAPIActions.loadSuccess({ items, count }) });
 
       expect(effects.load$).toBeObservable(expected);
     });
@@ -115,7 +115,7 @@ describe('NasaImagesEffects', () => {
     it('should work on failure', () => {
       jest.spyOn(service, 'getList').mockImplementation(() => throwError(() => ({ reason: ERROR_MSG })));
       actions = hot('-a-#', { a: action });
-      const expected = cold('-b-#', { b: NasaImagesActions.loadNasaImagesFailure({ error: ERROR_MSG }) });
+      const expected = cold('-b-#', { b: nasaImagesAPIActions.loadFailure({ error: ERROR_MSG }) });
 
       expect(effects.load$).toBeObservable(expected);
     });
@@ -129,7 +129,7 @@ describe('NasaImagesEffects', () => {
   });
 
   describe('activeOn$', () => {
-    const action = NasaImagesActions.loadNasaImages({ params: { q: 'pluto' } });
+    const action = nasaImagesPageActions.load({ params: { q: 'pluto' } });
     it('should work', () => {
       actions = hot('-a-|', { a: action });
       const expected = hot('-a-|', { a: setActivity({ active: true }) });
@@ -155,7 +155,7 @@ describe('NasaImagesEffects', () => {
   });
 
   describe('activeOff$', () => {
-    const action = NasaImagesActions.loadNasaImagesSuccess({ items, count });
+    const action = nasaImagesAPIActions.loadSuccess({ items, count });
     it('should work', () => {
       actions = hot('-a-|', { a: action });
       const expected = hot('-a-|', { a: setActivity({ active: false }) });
@@ -173,7 +173,7 @@ describe('NasaImagesEffects', () => {
 
   describe('showNotification$', () => {
     it('should return showNotification action on loadNasaImagesFailure', () => {
-      const action = NasaImagesActions.loadNasaImagesFailure({ error: ERROR_MSG });
+      const action = nasaImagesAPIActions.loadFailure({ error: ERROR_MSG });
       const outcome = showNotification({
         configuration: {
           type: 'ERROR',
