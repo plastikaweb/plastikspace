@@ -6,7 +6,7 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { getMockedRouterNavigation, selectRouteDataName, selectRouteQueryParams } from '@plastik/core/router-state';
-import { selectActivityActive, setActivity } from '@plastik/shared/activity/data-access';
+import { selectIsActive, setActivity } from '@plastik/shared/activity/data-access';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
@@ -40,7 +40,7 @@ describe('NasaImagesEffects', () => {
               value: { q: 'pluto', media_type: 'image' },
             },
             {
-              selector: selectActivityActive,
+              selector: selectIsActive,
               value: false,
             },
           ],
@@ -132,7 +132,7 @@ describe('NasaImagesEffects', () => {
     const action = nasaImagesPageActions.load({ params: { q: 'pluto' } });
     it('should work', () => {
       actions = hot('-a-|', { a: action });
-      const expected = hot('-a-|', { a: setActivity({ active: true }) });
+      const expected = hot('-a-|', { a: setActivity({ isActive: true }) });
 
       expect(effects.activeOn$).toBeObservable(expected);
     });
@@ -158,7 +158,7 @@ describe('NasaImagesEffects', () => {
     const action = nasaImagesAPIActions.loadSuccess({ items, count });
     it('should work', () => {
       actions = hot('-a-|', { a: action });
-      const expected = hot('-a-|', { a: setActivity({ active: false }) });
+      const expected = hot('-a-|', { a: setActivity({ isActive: false }) });
 
       expect(effects.activeOff$).toBeObservable(expected);
     });

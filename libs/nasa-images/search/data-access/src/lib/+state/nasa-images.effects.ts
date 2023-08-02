@@ -7,7 +7,7 @@ import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { NotificationConfigService, showNotification } from '@plastik/core/notification/data-access';
 import { NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews } from '@plastik/nasa-images/search/entities';
-import { selectActivityActive, setActivity } from '@plastik/shared/activity/data-access';
+import { selectIsActive, setActivity } from '@plastik/shared/activity/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 
@@ -23,7 +23,7 @@ export class NasaImagesEffects {
   navigation$ = createEffect(() => {
     return this.actions$.pipe(
       this.navigationFilter.checkRouterNavigation<NasaImagesViews>('search'),
-      concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectActivityActive)]),
+      concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectIsActive)]),
       filter(([, , activity]) => !activity),
       map(([, queryParams]) => {
         if (!queryParams['q']) {
@@ -37,7 +37,7 @@ export class NasaImagesEffects {
   activeOn$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(nasaImagesPageActions.load),
-      map(() => setActivity({ active: true })),
+      map(() => setActivity({ isActive: true })),
     );
   });
 
@@ -67,7 +67,7 @@ export class NasaImagesEffects {
   activeOff$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(nasaImagesAPIActions.loadSuccess, nasaImagesAPIActions.loadFailure),
-      map(() => setActivity({ active: false })),
+      map(() => setActivity({ isActive: false })),
     );
   });
 

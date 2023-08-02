@@ -55,7 +55,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
   currentDate = new Date();
   sidenavOpened$ = this.layoutFacade.sidenavOpened$;
   isMobile$ = this.layoutFacade.isMobile$;
-  activity$ = this.layoutFacade.activity$;
+  isActive$ = this.layoutFacade.isActive$;
   headerConfig = this.layoutFacade.headerConfig;
   sidenavConfig = this.layoutFacade.sidenavConfig;
   notificationConfig$ = this.notificationFacade.config$;
