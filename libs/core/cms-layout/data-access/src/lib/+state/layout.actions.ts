@@ -1,4 +1,9 @@
-import { createAction, props } from '@ngrx/store';
+import { createActionGroup, props } from '@ngrx/store';
 
-export const setIsMobile = createAction('[Screen] Set Is Mobile', props<{ isMobile: boolean }>());
-export const toggleSidenav = createAction('[Sidenav] Toggle Sidenav', props<{ opened?: boolean }>());
+export const layoutActions = createActionGroup({
+  source: '[Layout]',
+  events: {
+    'Set Is Mobile': props<{ isMobile: boolean }>(),
+    'Toggle Sidenav': props<{ opened?: boolean }>(),
+  },
+});

@@ -5,8 +5,8 @@ import { selectActivityActive } from '@plastik/shared/activity/data-access';
 
 import { CORE_CMS_LAYOUT_HEADER_CONFIG, CoreCmsLayoutHeaderConfig } from '../core-cms-layout-header-config';
 import { VIEW_CONFIG } from '../core-cms-view-config';
-import { setIsMobile, toggleSidenav } from './layout.actions';
-import { selectIsMobile, selectSidenavOpened } from './layout.selectors';
+import { layoutActions } from './layout.actions';
+import { selectIsMobile, selectSidenavOpened } from './layout.feature';
 
 @Injectable({ providedIn: 'root' })
 export class LayoutFacade {
@@ -24,11 +24,11 @@ export class LayoutFacade {
   ) {}
 
   toggleSidenav(opened: boolean | undefined): void {
-    this.store.dispatch(toggleSidenav({ opened }));
+    this.store.dispatch(layoutActions.toggleSidenav({ opened }));
   }
 
   setIsMobile(isMobile: boolean): void {
-    this.store.dispatch(setIsMobile({ isMobile }));
+    this.store.dispatch(layoutActions.setIsMobile({ isMobile }));
   }
 
   dispatchAction(action: () => Action): void {
