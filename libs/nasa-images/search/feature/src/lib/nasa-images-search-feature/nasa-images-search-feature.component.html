@@ -1,5 +1,5 @@
 <h2 *ngIf="routeInfo$ | ngrxPush as info" class="flex items-center gap-sm">
-  <mat-icon> {{ info.icon }} </mat-icon> <span>{{ info.title }}</span>
+  <mat-icon> {{ info?.icon }} </mat-icon> <span>{{ info?.title }}</span>
 </h2>
 
 <section>
@@ -14,23 +14,23 @@
 
   <!-- table -->
   <plastik-shared-table
-    *ngIf="{ data: images$ | ngrxPush, tableStructure: tableStructure$ | ngrxPush } as obs"
+    *ngrxLet="{ data: images$, tableStructure: tableStructure$, isActiveSearch: isActiveSearch$ } as obs"
     [data]="obs?.data || []"
     [caption]="obs?.tableStructure?.caption || ''"
-    [columnProperties]="obs.tableStructure?.columnProperties || []"
+    [columnProperties]="obs.tableStructure.columnProperties || []"
     [resultsLength]="(count$ | ngrxPush) || 0"
-    [pageSizeOptions]="obs.tableStructure?.pageSizeOptions || []"
-    [pagination]="obs.tableStructure?.pagination"
-    [paginationVisibility]="obs.tableStructure?.paginationVisibility"
+    [pageSizeOptions]="obs.tableStructure.pageSizeOptions || []"
+    [pagination]="obs.tableStructure.pagination"
+    [paginationVisibility]="obs.tableStructure.paginationVisibility"
     (changePagination)="onChangePagination($event)"
   >
-    <plastik-nasa-images-search-ui-no-results *ngIf="isActiveSearch$ | ngrxPush" noResults>
+    <plastik-nasa-images-search-ui-no-results *ngIf="obs.isActiveSearch" noResults>
       <span icon> search_off </span>
       <span title>No results found</span>
       <span message>We can't find any item matching your search.</span>
     </plastik-nasa-images-search-ui-no-results>
 
-    <plastik-nasa-images-search-ui-no-results *ngIf="!(isActiveSearch$ | ngrxPush)" noValidSearch>
+    <plastik-nasa-images-search-ui-no-results *ngIf="!obs.isActiveSearch" noValidSearch>
       <span icon> search_on </span>
       <span title>NASA images search</span>
       <span message>Use the filter to find related NASA pictures.<br />You must provide a valid matching string.</span>

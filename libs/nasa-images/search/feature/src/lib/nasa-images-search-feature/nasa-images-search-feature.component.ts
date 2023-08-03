@@ -1,7 +1,7 @@
 import { JsonPipe, NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { PushPipe } from '@ngrx/component';
+import { LetDirective, PushPipe } from '@ngrx/component';
 import { NasaImagesSearchFacade } from '@plastik/nasa-images/search/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
 import { NasaImagesSearchUiNoResultsComponent } from '@plastik/nasa-images/search/ui/no-results';
@@ -15,7 +15,16 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
 @Component({
   selector: 'plastik-nasa-images-search',
   standalone: true,
-  imports: [NgIf, JsonPipe, PushPipe, SharedTableUiComponent, SharedFormFeatureModule, NasaImagesSearchUiNoResultsComponent, MatIconModule],
+  imports: [
+    NgIf,
+    JsonPipe,
+    PushPipe,
+    SharedTableUiComponent,
+    SharedFormFeatureModule,
+    NasaImagesSearchUiNoResultsComponent,
+    MatIconModule,
+    LetDirective,
+  ],
   templateUrl: './nasa-images-search-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
