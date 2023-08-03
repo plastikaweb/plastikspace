@@ -4,7 +4,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '../core-cms-layout-header-config';
 import { VIEW_CONFIG } from '../core-cms-view-config';
-import { setIsMobile, toggleSidenav } from './layout.actions';
+import { layoutActions } from './layout.actions';
 import { LayoutFacade } from './layout.facade';
 
 describe('LayoutFacade', () => {
@@ -39,14 +39,14 @@ describe('LayoutFacade', () => {
 
     it('should dispatch a toggleSidenav action', () => {
       const opened = true;
-      const action = toggleSidenav({ opened });
+      const action = layoutActions.toggleSidenav({ opened });
       facade.toggleSidenav(opened);
       expect(store.dispatch).toHaveBeenCalledWith(action);
     });
 
     it('should dispatch a setIsMobile action', () => {
       const isMobile = true;
-      const action = setIsMobile({ isMobile });
+      const action = layoutActions.setIsMobile({ isMobile });
       facade.setIsMobile(isMobile);
       expect(store.dispatch).toHaveBeenCalledWith(action);
     });

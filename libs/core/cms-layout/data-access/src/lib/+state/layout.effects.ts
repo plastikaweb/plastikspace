@@ -4,9 +4,8 @@ import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs';
 
-import { toggleSidenav } from './layout.actions';
-import { selectIsMobile, selectSidenavOpened } from './layout.selectors';
-
+import { layoutActions } from './layout.actions';
+import { selectIsMobile, selectSidenavOpened } from './layout.feature';
 @Injectable()
 export class LayoutEffects {
   private readonly actions$ = inject(Actions);
@@ -17,7 +16,7 @@ export class LayoutEffects {
       ofType(ROUTER_NAVIGATION),
       concatLatestFrom(() => [this.store.select(selectSidenavOpened), this.store.select(selectIsMobile)]),
       filter(([, sideBarVisibility, isMobile]) => sideBarVisibility && isMobile),
-      map(() => toggleSidenav({ opened: false })),
+      map(() => layoutActions.toggleSidenav({ opened: false })),
     );
   });
 }

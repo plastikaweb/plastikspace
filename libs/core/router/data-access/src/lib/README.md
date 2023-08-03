@@ -12,7 +12,6 @@
     - [Route title](#route-title)
       - [Route title with app name prefix](#route-title-with-app-name-prefix)
     - [Automatic scroll on route navigation](#automatic-scroll-on-route-navigation)
-    - [Selectors](#selectors)
   - [Running unit tests](#running-unit-tests)
   - [Useful links](#useful-links)
 
@@ -105,15 +104,15 @@ Every time a route change is dispatched, the local state will be updated.
 ```typescript
 // navigate to a given URL. Any segment must be part of the path param array
 
-this.store.dispatch(go({ path: ['section'], params: {id: 1}, queryParams: {name: 'test'} }));
+this.store.dispatch(routerActions.go({ path: ['section'], params: {id: 1}, queryParams: {name: 'test'} }));
 
 // navigate back
 
-this.store.dispatch(back());
+this.store.dispatch(routerActions.back());
 
 // navigate forward
 
-this.store.dispatch(forward();
+this.store.dispatch(routerActions.forward();
 
 ```
 
@@ -180,16 +179,6 @@ In the Effects file, we have an `@Effect` called `scrollToTop$` that makes an `s
 It can be used to scroll a container with a table and pagination, so on each table results filtering, it will scroll to top of the table.
 
 > If no `mainContent` is present, no scrolling will be applied.
-
-### Selectors
-
-You can listen to these selectors to use the router state parameters within your application:
-
-- selectRouteUrl
-- selectRouteParams
-- selectRouteQueryParams
-- selectRouteData
-- selectRouteDataName
 
 ## Running unit tests
 

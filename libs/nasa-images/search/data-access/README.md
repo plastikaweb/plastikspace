@@ -6,7 +6,6 @@
     - [NasaImagesApiService](#nasaimagesapiservice)
   - [State](#state)
     - [Actions](#actions)
-    - [Selectors](#selectors)
     - [Facade](#facade)
   - [Running unit tests](#running-unit-tests)
   - [Useful links](#useful-links)
@@ -47,25 +46,14 @@ export interface NasaImagesState extends EntityState<NasaImage> {
 }
 ```
 
-Import the store segment and the corresponding Effects array it in the feature module as usual.
+Import the store feature and the corresponding Effects array it in the feature module as usual.
 
 ### Actions
 
-- loadNasaImages
-- loadNasaImagesSuccess
-- loadNasaImagesFailure
-- cleanupNasaImages
-
-### Selectors
-
-- selectNasaImagesLoading
-- selectNasaImagesError
-- selectAllNasaImages
-- selectNasaImagesEntities
-- selectSelectedId
-- selectEntity
-- selectNasaImagesCount
-- selectNasaImagesIsActiveSearch
+- load
+- loadSuccess
+- loadFailure
+- cleanUp
 
 ### Facade
 

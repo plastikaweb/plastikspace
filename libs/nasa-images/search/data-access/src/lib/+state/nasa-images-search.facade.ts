@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
 import { select } from '@ngrx/store';
-import { go, selectRouteQueryParams } from '@plastik/core/router-state';
+import { routerActions, selectRouteQueryParams } from '@plastik/core/router-state';
 import { NasaImagesFacade } from '@plastik/nasa-images/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 import { take } from 'rxjs';
 
-import * as NasaImagesSelectors from './nasa-images.selectors';
+import { selectNasaImagesFeature } from './nasa-images.feature';
 
 @Injectable()
 export class NasaImagesSearchFacade extends NasaImagesFacade {
-  images$ = this.store.pipe(select(NasaImagesSelectors.selectAllNasaImages));
-  count$ = this.store.pipe(select(NasaImagesSelectors.selectNasaImagesCount));
-  isActiveSearch$ = this.store.pipe(select(NasaImagesSelectors.selectNasaImagesIsActiveSearch));
+  images$ = this.store.pipe(select(selectNasaImagesFeature.selectAll));
+  count$ = this.store.pipe(select(selectNasaImagesFeature.selectCount));
+  isActiveSearch$ = this.store.pipe(select(selectNasaImagesFeature.selectIsActiveSearch));
 
   search(params: NasaImagesSearchApiParams): void {
     this.store.dispatch(
-      go({
+      routerActions.go({
         path: [],
         extras: {
           queryParams: { ...params, page: '1' },
@@ -31,7 +31,9 @@ export class NasaImagesSearchFacade extends NasaImagesFacade {
       .select(selectRouteQueryParams)
       .pipe(take(1))
       .subscribe(queryParams => {
-        this.store.dispatch(go({ path: [], extras: { queryParams: { ...queryParams, page: ++pageIndex }, queryParamsHandling: 'merge' } }));
+        this.store.dispatch(
+          routerActions.go({ path: [], extras: { queryParams: { ...queryParams, page: ++pageIndex }, queryParamsHandling: 'merge' } }),
+        );
       });
   }
 }

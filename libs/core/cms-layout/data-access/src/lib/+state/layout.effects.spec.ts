@@ -6,11 +6,9 @@ import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
-
-import * as LayoutActions from './layout.actions';
+import { layoutActions } from './layout.actions';
 import { LayoutEffects } from './layout.effects';
-import { LayoutPartialState } from './layout.reducer';
-import { selectIsMobile, selectSidenavOpened } from './layout.selectors';
+import { LayoutPartialState, selectIsMobile, selectSidenavOpened } from './layout.feature';
 
 describe('LayoutEffects', () => {
   let actions: Observable<Action>;
@@ -48,7 +46,7 @@ describe('LayoutEffects', () => {
 
   describe('routerRequest$', () => {
     it('should close sidenav if visible and if device is tablet or bigger', () => {
-      const outcome = LayoutActions.toggleSidenav({ opened: false });
+      const outcome = layoutActions.toggleSidenav({ opened: false });
 
       actions = hot('-a', { a: { type: ROUTER_NAVIGATION } });
       const expected = cold('-b', { b: outcome });

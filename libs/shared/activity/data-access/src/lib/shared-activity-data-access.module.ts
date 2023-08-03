@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { StoreModule } from '@ngrx/store';
 
-import { ACTIVITY_FEATURE_KEY, activityReducer } from './+state/activity.reducer';
+import { selectActivityFeature } from './+state/activity.feature';
 
 @NgModule({
-  imports: [StoreModule.forFeature(ACTIVITY_FEATURE_KEY, activityReducer)],
+  imports: [StoreModule.forFeature(selectActivityFeature)],
 })
 export class SharedActivityDataAccessModule {}

@@ -1,12 +1,12 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
 import { ViewConfig } from '@plastik/core/entities';
-import { selectActivityActive } from '@plastik/shared/activity/data-access';
+import { selectIsActive } from '@plastik/shared/activity/data-access';
 
 import { CORE_CMS_LAYOUT_HEADER_CONFIG, CoreCmsLayoutHeaderConfig } from '../core-cms-layout-header-config';
 import { VIEW_CONFIG } from '../core-cms-view-config';
-import { setIsMobile, toggleSidenav } from './layout.actions';
-import { selectIsMobile, selectSidenavOpened } from './layout.selectors';
+import { layoutActions } from './layout.actions';
+import { selectIsMobile, selectSidenavOpened } from './layout.feature';
 
 @Injectable({ providedIn: 'root' })
 export class LayoutFacade {
@@ -14,7 +14,7 @@ export class LayoutFacade {
 
   sidenavOpened$ = this.store.select(selectSidenavOpened);
   isMobile$ = this.store.select(selectIsMobile);
-  activity$ = this.store.select(selectActivityActive);
+  isActive$ = this.store.select(selectIsActive);
   headerConfig = this.header;
   sidenavConfig = this.sidenav;
 
@@ -24,11 +24,11 @@ export class LayoutFacade {
   ) {}
 
   toggleSidenav(opened: boolean | undefined): void {
-    this.store.dispatch(toggleSidenav({ opened }));
+    this.store.dispatch(layoutActions.toggleSidenav({ opened }));
   }
 
   setIsMobile(isMobile: boolean): void {
-    this.store.dispatch(setIsMobile({ isMobile }));
+    this.store.dispatch(layoutActions.setIsMobile({ isMobile }));
   }
 
   dispatchAction(action: () => Action): void {

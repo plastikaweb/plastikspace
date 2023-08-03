@@ -20,9 +20,9 @@
     </div>
   </plastik-core-cms-layout-ui-header>
 
-  <plastik-shared-activity-ui-linear [active]="(activity$ | ngrxPush) || false"></plastik-shared-activity-ui-linear>
+  <plastik-shared-activity-ui-linear [active]="(isActive$ | ngrxPush) || false"></plastik-shared-activity-ui-linear>
 
-  <plastik-shared-activity-ui-overlay *ngIf="(activity$ | ngrxPush) || false" class="z-10">
+  <plastik-shared-activity-ui-overlay *ngIf="(isActive$ | ngrxPush) || false" class="z-10">
     <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
     <div class="spinner-container">
       <div class="lds-ripple">

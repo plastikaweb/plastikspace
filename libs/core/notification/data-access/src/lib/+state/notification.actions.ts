@@ -1,5 +1,10 @@
-import { createAction, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { Notification } from '@plastik/core/notification/entities';
 
-export const showNotification = createAction('[Notification] Show', props<{ configuration: Notification; preserve?: boolean }>());
-export const dismissNotification = createAction('[Notification] Dismiss');
+export const notificationActions = createActionGroup({
+  source: 'Notification',
+  events: {
+    Show: props<{ configuration: Notification; preserve?: boolean }>(),
+    Dismiss: emptyProps(),
+  },
+});

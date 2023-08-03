@@ -4,8 +4,8 @@ import { ROUTER_REQUEST } from '@ngrx/router-store';
 import { Store } from '@ngrx/store';
 import { filter, map } from 'rxjs/operators';
 
-import { dismissNotification } from './notification.actions';
-import { selectNotificationPreserveOnRouteRequest } from './notification.selectors';
+import { notificationActions } from './notification.actions';
+import { selectPreserveOnRouteRequest } from './notification.feature';
 
 @Injectable()
 export class NotificationEffects {
@@ -15,9 +15,9 @@ export class NotificationEffects {
   dismissNotification$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(ROUTER_REQUEST),
-      concatLatestFrom(() => this.store.select(selectNotificationPreserveOnRouteRequest)),
+      concatLatestFrom(() => this.store.select(selectPreserveOnRouteRequest)),
       filter(([, preserve]) => !preserve),
-      map(() => dismissNotification()),
+      map(() => notificationActions.dismiss()),
     );
   });
 }
