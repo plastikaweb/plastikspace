@@ -99,7 +99,7 @@ export class ParentComponent {}
 - Add the shared component into your component template.
 
 ```html
-<plastik-shared-activity-ui-overlay *ngIf*="active$ | async"> Loading... </plastik-shared-activity-ui-overlay>
+<plastik-shared-activity-ui-overlay *ngrxLet="active$"> Loading... </plastik-shared-activity-ui-overlay>
 ```
 
 ## Running unit tests
