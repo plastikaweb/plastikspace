@@ -5,14 +5,14 @@ import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { tap } from 'rxjs/operators';
 
 import { NavigationService } from '../../services/navigation.service';
-import { back, forward, go } from '../actions/router-state.actions';
+import { routerActions } from '../actions/router-state.actions';
 
 @Injectable()
 export class RouterStateEffects {
   navigate$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(go),
+        ofType(routerActions.go),
         tap(action => this.navigationService.navigate(action)),
       );
     },
@@ -22,7 +22,7 @@ export class RouterStateEffects {
   navigateBack$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(back),
+        ofType(routerActions.back),
         tap(({ url, regex }) => this.navigationService.back(url, regex)),
       );
     },
@@ -32,7 +32,7 @@ export class RouterStateEffects {
   navigateForward$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(forward),
+        ofType(routerActions.forward),
         tap(() => this.location.forward()),
       );
     },

@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { provideEnvironmentMock } from '@plastik/core/environments';
-import { go, selectRouteQueryParams } from '@plastik/core/router-state';
+import { routerActions, selectRouteQueryParams } from '@plastik/core/router-state';
 
 import { NasaImagesSearchFacade } from './nasa-images-search.facade';
 
@@ -44,13 +44,13 @@ describe('NasaImagesSearchFacade', () => {
   });
 
   it('should dispatch go action on search', () => {
-    const action = go({ path: [], extras: { queryParams: { q: 'pluto', page: '1' }, queryParamsHandling: 'merge' } });
+    const action = routerActions.go({ path: [], extras: { queryParams: { q: 'pluto', page: '1' }, queryParamsHandling: 'merge' } });
     facade.search({ q: 'pluto' });
     expect(store.dispatch).toHaveBeenCalledWith(action);
   });
 
   it('should dispatch go action on changePagination', () => {
-    const action = go({ path: [], extras: { queryParams: { q: 'pluto', page: 3 }, queryParamsHandling: 'merge' } });
+    const action = routerActions.go({ path: [], extras: { queryParams: { q: 'pluto', page: 3 }, queryParamsHandling: 'merge' } });
     facade.changePagination({ pageIndex: 2, pageSize: 100 });
     expect(store.dispatch).toHaveBeenCalledWith(action);
   });
