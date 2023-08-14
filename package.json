@@ -37,7 +37,7 @@
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
     "help": "nx help",
-    "husky-install": "husky install",
+    "husky-install": "npx husky install",
     "clean": "rimraf node_modules",
     "clean:all": "rimraf node_modules dist dll && yarn cache clean --force",
     "clean:dist": "rimraf dist",
