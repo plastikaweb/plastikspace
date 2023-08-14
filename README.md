@@ -20,6 +20,12 @@ This project was generated using [Nx](https://nx.dev).
 
 ## Install repo locally
 
+> Please make sure you have [rimraf](https://www.npmjs.com/package/rimraf) package installed globally.
+
+```bash
+  npm install -g rimraf
+```
+
 - clone repo: `git clone git@github.com:plastikaweb/plastikspace.git`.
 - run `yarn install:local`.
 - **to serve it locally in development run `yarn <apn-name>:serve`**.

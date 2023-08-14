@@ -20,7 +20,14 @@ We use [commitizen](https://commitizen.github.io/cz-cli/) to apply some simple f
 
 The main types of commitizen available are those corresponding to the [cz-customizable](https://github.com/leoforfree/cz-customizable) plugin.
 
+> Please make sure you have globally installed both packages.
+
+```bash
+npm install -g commitizen cz-customizable
+```
+
 ```typescript
+// commit example
 feat(shared-button): #54 add Notifications button
 
 Allow users to toggle particular notifications by app section.
@@ -33,7 +40,7 @@ ISSUES CLOSED: #54
 ## Commit execution
 
 ```typescript
-cz
+git cz
 // Not recommended: add --no-verify flag to skip any hook before the commit resolution
 ```
 

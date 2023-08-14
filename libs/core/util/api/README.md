@@ -26,6 +26,9 @@ export class FeatureApiService extends ApiService<Feature, FeatureApiParams> {
     return 'feature';
   }
 
+  // Override this property in child classes to set the request cache time.
+  protected override cacheTime = 1000 * 60;
+
   // you must override the concrete mapping logic on GET a list,
   // between the API response object and the internal blueprint
   // used to work with the feature model.

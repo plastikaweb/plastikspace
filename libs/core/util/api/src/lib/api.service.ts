@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Inject, inject, Injectable } from '@angular/core';
+import { Inject, Injectable, inject } from '@angular/core';
 import { ENVIRONMENT, Environment } from '@plastik/core/environments';
-import { catchError, map, Observable, throwError } from 'rxjs';
+import { Observable, ReplaySubject, catchError, map, share, throwError, timer } from 'rxjs';
 
 /**
  * @description Abstract class to inherit from on creating a feature api service.
@@ -15,13 +15,19 @@ import { catchError, map, Observable, throwError } from 'rxjs';
 @Injectable()
 export abstract class ApiService<T, P extends object> {
   private readonly httpClient = inject(HttpClient);
+  private readonly apiUrl = `${this.environment.apiUrl}/${this.resourceUrlSegment()}`;
+
   /**
    * @description Implement this method in child classes to have the feature resource URL segment name.
    * @returns {string} The resource URL segment.
    */
   protected abstract resourceUrlSegment(): string;
 
-  private readonly apiUrl = `${this.environment.apiUrl}/${this.resourceUrlSegment()}`;
+  /**
+   * @description Implement this method in child classes to set the request cache time.
+   * @returns {number} The time in milliseconds.
+   */
+  protected cacheTime = 1000 * 60 * 60 * 24;
 
   constructor(
     @Inject(ENVIRONMENT)
@@ -46,9 +52,14 @@ export abstract class ApiService<T, P extends object> {
    * @returns { Observable<P | never> } The API data response after mapping or an error catch.
    */
   getList(params: P): Observable<T> {
-    return this.httpClient
-      .get(`${this.apiUrl}`, { params: this.getHttpParams(params) })
-      .pipe(map(this.mapListResponse), catchError(this.handleError));
+    return this.httpClient.get(this.apiUrl, { params: this.getHttpParams(params) }).pipe(
+      map(this.mapListResponse),
+      share({
+        connector: () => new ReplaySubject(1),
+        resetOnComplete: () => timer(this.cacheTime),
+      }),
+      catchError(this.handleError),
+    );
   }
 
   private getHttpParams(params: P): HttpParams {
