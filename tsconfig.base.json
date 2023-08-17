@@ -26,6 +26,7 @@
       "@plastik/core/cms-layout/footer": ["libs/core/cms-layout/ui/footer/src/index.ts"],
       "@plastik/core/cms-layout/header": ["libs/core/cms-layout/ui/header/src/index.ts"],
       "@plastik/core/cms-layout/sidenav": ["libs/core/cms-layout/ui/sidenav/src/index.ts"],
+      "@plastik/core/cypress-commands": ["libs/core/util/cypress-commands/src/index.ts"],
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/notification/data-access": ["libs/core/notification/data-access/src/index.ts"],

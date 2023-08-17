@@ -5,12 +5,20 @@
   [ngClass]="config.classes || {}"
   [disabled]="config.disabled"
   [attr.aria-label]="config.ariaLabel"
+  [attr.data-test]="config.dataTestId"
   (click)="onClick()"
 >
   <ng-container *ngTemplateOutlet="content"></ng-container>
 </button>
 
-<a *ngIf="config.type === 'link'" class="block" target="_blank" [attr.aria-label]="config.ariaLabel" [href]="config.link">
+<a
+  *ngIf="config.type === 'link'"
+  class="block"
+  target="_blank"
+  [attr.aria-label]="config.ariaLabel"
+  [href]="config.link"
+  [attr.data-test]="config.dataTestId"
+>
   <ng-container *ngTemplateOutlet="content">button content</ng-container>
 </a>
 

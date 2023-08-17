@@ -15,6 +15,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
         type: 'link',
         elements: [{ type: 'icon', content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' } }],
         ariaLabel: 'plastikspace -> apps -> nasa-images readme',
+        dataTestId: 'github-button',
         link: 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
       },
     ],

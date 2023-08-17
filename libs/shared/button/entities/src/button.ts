@@ -7,6 +7,7 @@ interface ButtonBaseConfig {
   elements: ButtonElement[];
   ariaLabel: string;
   classes?: string;
+  dataTestId?: string;
   disabled?: boolean | Observable<boolean>;
   link?: string;
   doAction?(): Action;

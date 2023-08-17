@@ -1,0 +1,16 @@
+{
+  "name": "core-util-cypress-commands",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/core/util/cypress-commands/src",
+  "projectType": "library",
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/core/util/cypress-commands/**/*.ts"]
+      }
+    }
+  },
+  "tags": ["scope:core", ""]
+}
