@@ -6,7 +6,7 @@
 </div>
 
 [![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml)
-
+[![nasa-images-e2e](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/count/b47wpf/develop&style=flat-square&logo=cypress)](https://cloud.cypress.io/projects/b47wpf/runs)
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
@@ -71,6 +71,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [core-util-environments](libs/core/util/environments/README.md)
 - [core-util-assets](libs/core/util/assets/README.md)
 - [core-util-api](libs/core/util/api/README.md)
+- [core-util-cypress-commands](libs/core/util/cypress-commands/README.md)
 - [core-styles-util-tailwind-preset](libs/core/styles/util/tailwind-preset/README.md)
 - [core-styles-util-material](libs/core/styles/util/material/README.md)
 - [core-ng-entry-html-util](libs/core/ng-entry-html/util/README.md)
