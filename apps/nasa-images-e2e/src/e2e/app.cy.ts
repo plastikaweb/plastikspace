@@ -1,24 +1,28 @@
-export const titleHeader = () => cy.getEl('layout-title');
-export const toggleSidenavButton = () => cy.getEl('toggle-sidenav-button');
-export const toggleSidenavButtonIcon = () => toggleSidenavButton().children('mat-icon');
-export const githubButton = () => cy.getEl('github-button');
-export const githubButtonIcon = () => githubButton().children('svg-icon');
+const titleHeader = () => cy.getEl('layout-title');
+const toggleSidenavButton = () => cy.getEl('toggle-sidenav-button');
+const toggleSidenavButtonIcon = () => toggleSidenavButton().children('mat-icon');
+const githubButton = () => cy.getEl('github-button');
+const githubButtonIcon = () => githubButton().children('svg-icon');
 
-export const sidenav = () => cy.getEl('sidenav');
-export const sidenavList = () => cy.getEl('sidenav-list');
-export const sidenavListItems = () => sidenavList().children('a');
+const sidenav = () => cy.getEl('sidenav');
+const sidenavList = () => cy.getEl('sidenav-list');
+const sidenavListItems = () => sidenavList().children('a');
 
-export const footer = () => cy.getEl('layout-footer');
-export const footerIcon = () => footer().find('svg-icon');
-export const footerLink = () => footer().find('a');
+const footer = () => cy.getEl('layout-footer');
+const footerIcon = () => footer().find('svg-icon');
+const footerLink = () => footer().find('a');
 
 describe('nasa-images layout', () => {
   beforeEach(() => {
     cy.visit('/');
   });
 
+  it('should have a head title', () => {
+    cy.title().should('contain', 'Nasa Images');
+  });
+
   describe('header', () => {
-    it('should have a header with a title', () => {
+    it('should have main title', () => {
       titleHeader().contains('NASA Images Search');
     });
 
