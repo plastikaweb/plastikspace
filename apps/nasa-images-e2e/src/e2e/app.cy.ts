@@ -21,7 +21,7 @@ describe('nasa-images layout', () => {
     cy.title().should('contain', 'Nasa Images');
   });
 
-  describe('header', () => {
+  context('header', () => {
     it('should have main title', () => {
       titleHeader().contains('NASA Images Search');
     });
@@ -42,7 +42,7 @@ describe('nasa-images layout', () => {
     });
   });
 
-  describe('sidenav', () => {
+  context('sidenav', () => {
     it('should have a sidenav with a menu with 2 items', () => {
       sidenavListItems().should('have.length', 2);
     });
@@ -59,7 +59,7 @@ describe('nasa-images layout', () => {
       sidenav().should('be.visible');
     });
 
-    describe('on small screens', () => {
+    context('on small screens', () => {
       beforeEach(() => {
         cy.viewport('iphone-6');
       });
@@ -70,7 +70,7 @@ describe('nasa-images layout', () => {
     });
   });
 
-  describe('footer', () => {
+  context('footer', () => {
     it('should have elements', () => {
       footer().contains('© 2006-');
       footer().contains('Carlos Matheu | FrontEnd Freelancer.');

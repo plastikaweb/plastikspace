@@ -1,7 +1,8 @@
-const pageTitle = () => cy.getEl('page-title');
-const faqItems = () => cy.getEl('faq-item');
+import { pageTitle } from '../support/app.po';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import json from '../../../../apps/nasa-images/src/assets/json/faqs.json';
+
+const faqItems = () => cy.getEl('faq-item');
 
 describe('nasa-images faqs page', () => {
   beforeEach(() => {
@@ -16,7 +17,7 @@ describe('nasa-images faqs page', () => {
     pageTitle().contains('FAQs');
   });
 
-  describe('accordion list', () => {
+  context('accordion list', () => {
     beforeEach(() => {
       faqItems().first().as('firstFaqItem');
       faqItems().eq(3).as('otherFaqItem');

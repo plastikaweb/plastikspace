@@ -82,6 +82,7 @@ export class SharedFormUiYearPickerComponent implements ControlValueAccessor {
     if (this.disabled) return;
 
     datepicker.close();
+
     date.set({ date: 1 });
     this.formControl.setValue(date, { emitEvent: false });
     this.onChanged(date.toDate().getFullYear());

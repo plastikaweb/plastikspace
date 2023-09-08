@@ -5,6 +5,9 @@
   "engines": {
     "node": ">=16.x <=18.x"
   },
+  "resolutions": {
+    "webpack": "5.72.1"
+  },
   "scripts": {
     "ng": "nx",
     "postinstall": "node ./decorate-angular-cli.js",
@@ -19,8 +22,7 @@
     "lint": "nx lint",
     "lint:all": "nx run-many --all --target=lint --parallel --max-parallel=3 --max-warnings=0",
     "lint:ci": "nx affected --target=lint --base=remotes/origin/develop --head=HEAD --parallel",
-    "e2e": "ng e2e",
-    "e2e:all": "nx run-many --all --target=e2e --headed=false --watch=false --parallel",
+    "e2e:all": "nx run-many --all --target=e2e --headed=false --watch=false",
     "e2e:ci": "nx affected --target=e2e --base=remotes/origin/develop --parallel --headed=false --watch=false",
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
@@ -50,7 +52,7 @@
     "nasa-images:test": "nx run nasa-images:test",
     "nasa-images:e2e": "nx run nasa-images-e2e:e2e",
     "nasa-images:e2e:local": "yarn nx run nasa-images-e2e:e2e --browser=chrome --port='cypress-auto' --watch=true",
-    "nasa-images:e2e:ci": "yarn nx run nasa-images-e2e:e2e --record=true",
+    "nasa-images:e2e:ci": "yarn nx run nasa-images-e2e:e2e --port='cypress-auto' --record=true",
     "nasa-images:http-server": "angular-http-server --path ./dist/apps/nasa-images --port 8080",
     "prenasa-images:a11y": "yarn nasa-images:build",
     "nasa-images:a11y": "npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run",
@@ -61,6 +63,7 @@
     "experimental:build": "nx run experimental:build --parallel",
     "experimental:test": "nx run experimental:test",
     "experimental:e2e": "nx run experimental-e2e:e2e",
+    "experimental:e2e:local": "yarn nx run experimental-e2e:e2e --browser=firefox --port='cypress-auto' --watch=true",
     "experimental:http-server": "angular-http-server --path ./dist/apps/experimental --port 8080",
     "preexperimental:a11y": "yarn experimental:build",
     "experimental:a11y": "npm-run-all --parallel --race experimental:http-server experimental:a11y:run",
@@ -108,6 +111,7 @@
     "@angular/language-service": "16.1.4",
     "@commitlint/cli": "17.6.3",
     "@commitlint/config-conventional": "17.6.3",
+    "@jscutlery/cypress-harness": "^0.4.4",
     "@ngrx/schematics": "16.0.1",
     "@ngrx/store-devtools": "16.0.1",
     "@ngx-formly/schematics": "^6.1.5",
@@ -131,6 +135,7 @@
     "branch-name-lint": "^2.1.1",
     "commitizen": "^4.3.0",
     "cypress": "12.17.1",
+    "cypress-pipe": "^2.0.0",
     "cz-customizable": "^7.0.0",
     "cz-customizable-ghooks": "^2.0.0",
     "eslint": "~8.15.0",

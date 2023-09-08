@@ -1,1 +1,2 @@
-import './lib/core-util-cypress-commands';
+import './lib/core-util-cypress-commands-material';
+import './lib/core-util-cypress-commands-selector';

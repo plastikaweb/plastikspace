@@ -61,5 +61,4 @@ export const appConfig: ApplicationConfig = {
       },
     },
   ],
-  // eslint-disable-next-line no-console
 };

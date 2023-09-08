@@ -1,10 +1,12 @@
 import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 import { defineConfig } from 'cypress';
+import { getPreprocessorConfig } from '@jscutlery/cypress-harness/preprocessor-config';
 
 export default defineConfig({
   projectId: 'b47wpf',
   e2e: {
     ...nxE2EPreset(__dirname),
+    ...getPreprocessorConfig(),
     /*
      * TODO(@nx/cypress): In Cypress v12,the testIsolation option is turned on by default.
      * This can cause tests to start breaking where not indended.
@@ -12,5 +14,6 @@ export default defineConfig({
      * More Info: https://docs.cypress.io/guides/references/migration-guide#Test-Isolation
      */
     testIsolation: false,
+    experimentalStudio: true,
   },
 });
