@@ -7,6 +7,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
 import { SharedFormUiYearPickerComponent } from './shared-form-ui-year-picker.component';
 
 interface DatepickerProps extends FormlyFieldProps {
+  dataTest: string;
   touchUi: boolean;
   disabled: boolean;
   min: number;

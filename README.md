@@ -6,7 +6,8 @@
 </div>
 
 [![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml)
-[![nasa-images-e2e](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/count/b47wpf/develop&style=flat-square&logo=cypress)](https://cloud.cypress.io/projects/b47wpf/runs)
+[![nasa-images-e2e](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/b47wpf&style=flat&logo=cypress)](https://cloud.cypress.io/projects/b47wpf/runs)
+
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)

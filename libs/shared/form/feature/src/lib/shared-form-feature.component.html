@@ -17,7 +17,15 @@
 
   <!-- buttons -->
   <div class="mt-6 max-height-flex">
-    <button *ngIf="submitAvailable" mat-flat-button color="primary" type="submit" class="h-[56px] w-[150px]" [disabled]="!form.valid">
+    <button
+      *ngIf="submitAvailable"
+      mat-flat-button
+      color="primary"
+      type="submit"
+      class="h-[56px] w-[150px]"
+      data-test="submit-button"
+      [disabled]="!form.valid"
+    >
       Submit
     </button>
   </div>

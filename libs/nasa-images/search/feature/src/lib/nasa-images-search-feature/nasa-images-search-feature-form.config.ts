@@ -26,6 +26,7 @@ export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldCo
             placeholder: 'Search by term',
             required: true,
             maxLength: 256,
+            minLength: 2,
             addonLeft: {
               icon: 'search',
             },
