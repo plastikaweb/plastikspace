@@ -27,7 +27,7 @@
     "affected:apps": "nx affected:apps",
     "affected:libs": "nx affected:libs",
     "affected:build": "nx affected:build --configuration=production",
-    "affected:e2e": "nx affected:e2e",
+    "affected:e2e": "nx affected:e2e --port='cypress-auto'",
     "affected:e2e:watch": "nx affected:e2e --watch",
     "affected:test": "nx affected:test --parallel --max-parallel=3 --run-in-band --max-warnings=0",
     "affected:lint": "nx affected:lint --parallel --max-parallel=3 --verbose --cache --max-warnings=0",

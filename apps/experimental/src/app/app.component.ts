@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NxWelcomeComponent } from './nx-welcome.component';
+import { SharedUtilDynamicBgColorDirective } from '@plastik/shared/dynamic-bg-color';
 
 @Component({
   standalone: true,
-  imports: [NxWelcomeComponent, RouterModule],
+  imports: [RouterModule, SharedUtilDynamicBgColorDirective],
   selector: 'exp-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  title = 'experimental';
+  title = 'Welcome experimental';
 }
