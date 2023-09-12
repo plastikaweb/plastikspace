@@ -10,7 +10,10 @@ import { NavigationProps } from '../navigation';
 export class NavigationService {
   private history: string[] = [];
 
-  constructor(private readonly router: Router, private readonly location: Location) {
+  constructor(
+    private readonly router: Router,
+    private readonly location: Location,
+  ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.history = [event.urlAfterRedirects, ...this.history];

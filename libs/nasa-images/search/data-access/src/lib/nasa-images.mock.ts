@@ -4,7 +4,7 @@ export const createNasaImagesEntity = (id: string, title = '') =>
   ({
     id,
     title: title || `title-${id}`,
-  } as NasaImage);
+  }) as NasaImage;
 
 export const createDummyNasaImagesSearch = (count = 3) => {
   const items: NasaImage[] = [];

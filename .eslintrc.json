@@ -100,7 +100,7 @@
         "jsdoc/match-description": [
           "error",
           {
-            "matchDescription": "/^[A-Z].+[.]/g"
+            "matchDescription": "/^[A-Z].+[.]/"
           }
         ]
       }

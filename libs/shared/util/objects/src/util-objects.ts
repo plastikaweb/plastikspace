@@ -1,8 +1,7 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
- * Check if an array or object are empty.
- *
+ * @description Check if an array or object are empty.
  * @param {any} obj Object parameter passed.
  * @returns {boolean}.
  */
@@ -12,8 +11,7 @@ export function isEmpty(obj: any): boolean {
 }
 
 /**
- * Check if passed parameter is a string.
- *
+ * @description Check if passed parameter is a string.
  * @param {any} obj Object parameter passed.
  * @returns {boolean}.
  */
@@ -23,8 +21,7 @@ export function isString(obj: any): obj is string {
 }
 
 /**
- * Check if passed parameter is null or undefined.
- *
+ * @description Check if passed parameter is null or undefined.
  * @param  {unknown} value The passed parameter.
  * @returns {boolean}.
  */
@@ -33,8 +30,7 @@ export function isNil(value: unknown): boolean {
 }
 
 /**
- * Check if passed parameter is an object.
- *
+ * @description Check if passed parameter is an object.
  * @param  {any} obj Object parameter passed.
  * @returns {boolean}.
  */
@@ -44,8 +40,7 @@ export function isObject(obj: any): boolean {
 }
 
 /**
- * Given an url returns an object with name/value pairs of all the query params available.
- *
+ * @description Given an url returns an object with name/value pairs of all the query params available.
  * @param  {string} url The string URL.
  * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
  * @returns {Record<string, unknown>}.
@@ -53,8 +48,7 @@ export function isObject(obj: any): boolean {
 export function getQueryParams(url: string, defaultParams?: Record<string, unknown>): Record<string, unknown>;
 
 /**
- * Given a name/value pairs object it returns an object with name/value pairs of all the query params available.
- *
+ * @description Given a name/value pairs object it returns an object with name/value pairs of all the query params available.
  * @param  {Record<string, unknown>} urlParams A list of query parameters.
  * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
  * @returns {Record<string, unknown>}.
@@ -62,8 +56,7 @@ export function getQueryParams(url: string, defaultParams?: Record<string, unkno
 export function getQueryParams(urlParams: Record<string, unknown>, defaultParams?: Record<string, unknown>): Record<string, unknown>;
 
 /**
- * Given an URL or a name/value pairs object it returns an object with name/value pairs of all the query params available.
- *
+ * @description Given an URL or a name/value pairs object it returns an object with name/value pairs of all the query params available.
  * @param {any} params A list of query params.
  * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
  * @returns {Record<string, unknown>}.
@@ -79,8 +72,7 @@ export function getQueryParams(params: any, defaultParams = {}): Record<string, 
 }
 
 /**
- * Returns an object from a url with query params.
- *
+ * @description Returns an object from a url with query params.
  * @param  {string} url The URL with query params.
  * @returns {Record<string, unknown>}.
  */
@@ -96,8 +88,7 @@ export function formatURLQueryParams(url: string): Record<string, unknown> {
 }
 
 /**
- * Returns an object without properties with null value.
- *
+ * @description Returns an object without properties with null value.
  * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
  * @returns {Record<string, string | number | boolean>}.
  */
@@ -112,8 +103,7 @@ export function removeNullProperties(
 }
 
 /**
- * Returns an object with properties with empty string value replaced by null.
- *
+ * @description Returns an object with properties with empty string value replaced by null.
  * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
  * @returns {Record<string, string | number | boolean | null>}.
  */
@@ -127,8 +117,7 @@ export function setEmptyStringPropertiesToNull(
 }
 
 /**
- * Returns a boolean after comparing the object entries.
- *
+ * @description Returns a boolean after comparing the object entries.
  * @param {object} prev First object.
  * @param {object} curr Current object.
  * @returns {boolean}.
@@ -146,8 +135,7 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
 }
 
 /**
- * Returns an object with replaced values for "false" and "true" as boolean values.
- *
+ * @description Returns an object with replaced values for "false" and "true" as boolean values.
  * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
  * @returns {Record<string, string | number | boolean>}.
  */
@@ -161,8 +149,7 @@ export function transformStringToBooleanProperties(
 }
 
 /**
- * Returns a boolean value depending if all elements in the passed array are false or not.
- *
+ * @description Returns a boolean value depending if all elements in the passed array are false or not.
  * @param {boolean[]} arr An array of boolean values passed as parameter.
  * @returns {boolean}.
  */
@@ -171,8 +158,7 @@ export function allAreFalsy(arr: boolean[]): boolean {
 }
 
 /**
- * Returns a string value when the input was able to be converted in string, otherwise null.
- *
+ * @description Returns a string value when the input was able to be converted in string, otherwise null.
  * @param {unknown} value The passed valued as parameter.
  * @returns {string}.
  */
@@ -193,8 +179,7 @@ export function transformToString(value: unknown): string {
 }
 
 /**
- * Returns an array based on passed collection.
- *
+ * @description Returns an array based on passed collection.
  * @param {Record} collection The passed collection as parameter.
  * @returns {Array}.
  */
