@@ -42,13 +42,16 @@ describe('nasa-images faqs page', () => {
     });
 
     it('should open/close a child expansion panel on click', () => {
-      cy.get('@firstFaqItem').click().find('.mat-expansion-panel-content').should('be.visible');
-      cy.get('@firstFaqItem').click().find('.mat-expansion-panel-content').should('not.be.visible');
+      cy.get('@firstFaqItem').click();
+      cy.get('@firstFaqItem').find('.mat-expansion-panel-content').should('be.visible');
+      cy.get('@firstFaqItem').click();
+      cy.get('@firstFaqItem').find('.mat-expansion-panel-content').should('not.be.visible');
     });
 
     it('should close any opened sibling panel on opening another one', () => {
       cy.get('@firstFaqItem').click();
-      cy.get('@otherFaqItem').scrollIntoView().should('be.visible').click();
+      cy.get('@otherFaqItem').scrollIntoView();
+      cy.get('@otherFaqItem').should('be.visible').click();
 
       cy.get('@otherFaqItem').find('.mat-expansion-panel-content').should('be.visible');
       cy.get('@firstFaqItem').find('.mat-expansion-panel-content').should('not.be.visible');

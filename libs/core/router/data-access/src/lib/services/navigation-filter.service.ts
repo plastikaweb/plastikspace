@@ -14,8 +14,7 @@ export class NavigationFilterService {
   constructor(protected readonly store: Store) {}
 
   /**
-   * Checks if the selected view matches the route on ROUTER_NAVIGATION.
-   *
+   * @description Checks if the selected view matches the route on ROUTER_NAVIGATION.
    * @param {string} view The current view/route name.
    * @returns {UnaryFunction<Observable<Action>, Observable<[RouterNavigationAction<SerializedRouterStateSnapshot>, unknown]>>}.
    */

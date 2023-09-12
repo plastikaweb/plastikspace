@@ -8,7 +8,7 @@ import { NOTIFICATION_TYPES_CONFIG, Notification, NotificationType, Notification
 export class NotificationConfigService {
   constructor(@Inject(NOTIFICATION_TYPES_CONFIG) private readonly notificationTypesConfig: NotificationTypesConfig) {}
   /**
-   * @description returns a valid configuration of object for ui messages
+   * @description Returns a valid configuration of object for ui messages.
    * it returns an angular material Snackbar MatSnackBarConfig class configuration.
    * @param { Partial<Notification> } notification The control configuration to format the object property value.
    * @param  { NotificationType } notification.type The type of notification.

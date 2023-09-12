@@ -34,7 +34,10 @@
     --plastik-mdc-linear-progress-active-indicator-color: rgb(var(--secondary-dark));
     --plastik-mdc-linear-progress-track-color: rgb(var(--secondary-light));
     /* Table */
-    --plastik-mdc-table-row-min-height: 120px;
+    --plastik-mdc-table-row-min-height: 80px;
+    --plastik-mdc-table-row-max-height: 120px;
+    --mat-table-header-headline-font: 'Poppins', 'sans-serif';
+    --mat-table-row-item-label-text-font: 'Poppins', 'sans-serif';
     /* Notification Snackbar Boxes */
     --plastik-error-notification-box-color: rgb(195, 6, 6);
     --plastik-info-notification-box-color: rgb(14, 122, 190);

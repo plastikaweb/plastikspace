@@ -16,8 +16,7 @@ export class PrefixTitleService extends TitleStrategy {
   }
 
   /**
-   * Update page title with the environment app name.
-   *
+   * @description Update page title with the environment app name.
    * @param {RouterStateSnapshot} snapshot The state of the router at a moment in time.
    */
   updateTitle(snapshot: RouterStateSnapshot): void {

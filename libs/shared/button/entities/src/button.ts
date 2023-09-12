@@ -39,8 +39,7 @@ export type ButtonElement =
     };
 
 /**
- * Checks if button config is of type ButtonConfigAsLink.
- *
+ * @description Checks if button config is of type ButtonConfigAsLink.
  * @param { ButtonConfig } toBeDetermined The button instance to be checked.
  * @returns { boolean } Returns true if type button is a link.
  */

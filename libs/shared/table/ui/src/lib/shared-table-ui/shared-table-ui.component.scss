@@ -1,6 +1,7 @@
 .mat-mdc-table > .mat-mdc-row {
   @apply items-stretch;
   min-height: var(--plastik-mdc-table-row-min-height, auto);
+  max-height: var(--plastik-mdc-table-row-max-height, auto);
 }
 
 .table__cell--link a {
