@@ -1,3 +1,4 @@
+@use 'material';
 @use 'theme';
 @use 'core_styles_util_material';
 @use 'loading';
@@ -18,30 +19,38 @@
     box-sizing: inherit;
   }
 
-  @screen sm {
-    html {
-      font-size: 13px;
-    }
-  }
-
   body {
-    @apply text-gray-10 font-light font-poppins;
+    font-family: var(--sans-serif);
   }
 
-  h1 {
-    @apply text-xxl;
+  h1,
+  .h1 {
+    font-size: var(--h1);
   }
 
-  h2 {
-    @apply text-xl text-primary-dark;
+  h2,
+  .h2 {
+    font-size: var(--h2);
   }
 
-  h3 {
-    @apply text-lg;
+  h3,
+  .h3 {
+    font-size: var(--h3);
   }
 
-  h4 {
-    @apply text-md;
+  h4,
+  .h4 {
+    font-size: var(--h4);
+  }
+
+  h5,
+  .h5 {
+    font-size: var(--h5);
+  }
+
+  h6,
+  .h6 {
+    font-size: var(--h6);
   }
 
   ul {

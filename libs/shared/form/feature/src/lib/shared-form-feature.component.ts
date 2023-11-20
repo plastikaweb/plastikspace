@@ -10,13 +10,7 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/
   standalone: true,
   imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass, NgIf],
   templateUrl: './shared-form-feature.component.html',
-  styles: [
-    `
-      :host ::ng-deep .mdc-text-field:not(.mdc-text-field--disabled):not(.mdc-text-field--invalid) .mdc-floating-label {
-        color: var(--plastik-mdc-floating-label-color, #000000);
-      }
-    `,
-  ],
+
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedFormFeatureComponent<T> implements AfterViewInit {

@@ -1,0 +1,14 @@
+:host ::ng-deep .faqs-wrapper {
+  .mat-expansion-panel {
+    .mat-expansion-panel-header .mat-content {
+      @apply block lg:flex;
+      .mat-expansion-panel-header-title {
+        @apply lg:flex-grow-[3];
+      }
+    }
+
+    .mat-expansion-panel-body .highlight {
+      @apply font-semibold;
+    }
+  }
+}

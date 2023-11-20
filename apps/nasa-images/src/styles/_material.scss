@@ -1,0 +1,38 @@
+@use '@angular/material' as mat;
+@use 'sass:map';
+@use 'palette';
+@use 'theme';
+
+@include mat.core();
+
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: mat.define-palette(palette.$md-primary, 500, 100, 700),
+      accent: mat.define-palette(palette.$md-accent, A200, A100, A400),
+      warn: mat.define-palette(palette.$md-warn),
+    ),
+    typography:
+      mat.define-typography-config(
+        $font-family: var(--sans-serif),
+        $body-1: mat.define-typography-level(var(--font-size-base), var(--spacing-md), 400),
+      ),
+    density: -1,
+  )
+);
+
+$merged-theme: map.deep-merge(
+  $theme,
+  (
+    color: (
+      background: (
+        background: mat.get-color-from-palette(palette.$md-primary, 50),
+      ),
+      foreground: (
+        text: mat.get-color-from-palette(palette.$md-primary, 900),
+      ),
+    ),
+  )
+);
+
+@include mat.all-component-themes($merged-theme);
