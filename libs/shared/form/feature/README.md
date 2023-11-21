@@ -91,7 +91,7 @@ It uses internally [Formly Library](https://formly.dev/) that is build on top of
 You can overwrite the styles from your main application declaring these CSS variables in your app `styles/_theme.scss` file:
 
 ```css
-- --plastik-mdc-floating-label-color: rgb(var(--primary));
+--plastik-mdc-floating-label-color: rgb(var(--primary));
 ```
 
 ## Links

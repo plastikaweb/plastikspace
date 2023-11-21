@@ -1,47 +1,75 @@
+@use '@angular/material' as mat;
+@import 'palette';
+@import 'font-family';
+
 @layer base {
   :root {
+    --base-size: 1rem;
+    --scale: 1.25;
+    --h1: calc(var(--h2) * var(--scale));
+    --h2: calc(var(--h3) * var(--scale));
+    --h3: calc(var(--h4) * var(--scale));
+    --h4: calc(var(--h5) * var(--scale));
+    --h5: calc(var(--h6) * var(--scale));
+    --h6: var(--base-size);
+    --sub: calc(var(--base-size) * 0.7);
+    --tiny: calc(var(--sub) * 0.5);
+    --xl: calc(var(--h1) * var(--scale));
+    --xxl: calc(var(--xl) * var(--scale));
+
     /* Colors */
-    --primary-light: 74, 131, 229;
-    --primary: 25, 65, 140;
-    --primary-dark: 6, 31, 74;
-    --secondary-light: 229, 152, 146;
-    --secondary: 221, 54, 28;
-    --secondary-dark: 163, 37, 25;
+    --primary-100: #b6cbdf;
+    --primary-500: #0b5394;
+    --primary-700: #084281;
+    --accent-100: #fef6ed;
+    --accent-500: #b45f06;
+    --accent-800: #9c4303;
+
+    /* Tailwind Colors */
+    --primary: var(--primary-500);
+    --primary-light: var(--primary-100);
+    --primary-dark: var(--primary-700);
+    --secondary: var(--accent-500);
+    --secondary-light: var(--accent-100);
+    --secondary-dark: var(--accent-800);
+
+    --white: #ffffff;
+    --black: #000000;
 
     /* Spacing */
-    --spacing-tiny: 0.25rem;
-    --spacing-sub: 0.5rem;
-    --spacing-sm: 1rem;
-    --spacing-md: 1.5rem;
-    --spacing-lg: 2rem;
-    --spacing-xl: 3rem;
-    --spacing-xxl: 6rem;
+    --spacing-tiny: var(--tiny);
+    --spacing-sub: var(--sub);
+    --spacing-sm: var(--h5);
+    --spacing-md: var(--h3);
+    --spacing-lg: var(--h1);
+    --spacing-xl: var(--xl);
+    --spacing-xxl: var(--xxl);
 
+    /* Font Family */
+    --sans-serif: 'Poppins', sans-serif;
     /* Font Size */
-    --font-size-sub: 0.7rem;
-    --font-size-sm: 0.85rem;
-    --font-size-base: 1rem;
-    --font-size-md: 1.4rem;
-    --font-size-lg: 1.8rem;
-    --font-size-xl: 2.2rem;
-    --font-size-xxl: 2.6rem;
+    --font-size-tiny: var(--tiny);
+    --font-size-sm: var(--sub);
+    --font-size-base: var(--base-size);
+    --font-size-md: var(--h5);
+    --font-size-lg: var(--h4);
+    --font-size-xl: var(--h3);
+    --font-size-xxl: var(--h2);
 
-    /* Input */
-    --plastik-mdc-floating-label-color: rgb(var(--primary));
     /* Linear progress activity */
     --plastik-mdc-linear-progress-track-height: var(--spacing-tiny);
     --plastik-mdc-linear-progress-active-indicator-height: var(--spacing-tiny);
     --plastik-mdc-linear-progress-active-indicator-color: rgb(var(--secondary-dark));
     --plastik-mdc-linear-progress-track-color: rgb(var(--secondary-light));
     /* Table */
-    --plastik-mdc-table-row-min-height: 80px;
-    --plastik-mdc-table-row-max-height: 120px;
-    --mat-table-header-headline-font: 'Poppins', 'sans-serif';
-    --mat-table-row-item-label-text-font: 'Poppins', 'sans-serif';
+    --plastik-mdc-table-row-min-height: 120px;
+    --plastik-mdc-table-row-max-height: 160px;
     /* Notification Snackbar Boxes */
     --plastik-error-notification-box-color: rgb(195, 6, 6);
     --plastik-info-notification-box-color: rgb(14, 122, 190);
     --plastik-warning-notification-box-color: rgb(221, 148, 20);
     --plastik-success-notification-box-colors: rgb(22, 134, 40);
+    /* Mat Expansion Panel */
+    --mat-expansion-header-collapsed-state-height: 4rem;
   }
 }

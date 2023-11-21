@@ -25,7 +25,7 @@ const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'id',
   title: 'ID',
   propertyPath: 'id',
-  cssClasses: ['min-w-[12rem] hidden md:flex lg:min-w-[14rem]', 'text-sm text-black bg-secondary-light rounded-md p-tiny sepia'],
+  cssClasses: ['min-w-[12rem] hidden md:flex lg:min-w-[14rem]', 'text-sm text-black bg-secondary rounded-md p-tiny sepia'],
   formatting: {
     type: 'TEXT',
   },
