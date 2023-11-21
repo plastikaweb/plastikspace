@@ -1,23 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 
-function withOpacity(variableName) {
-  return ({ opacityValue }) => (!!opacityValue ? `rgba(var(${variableName}), ${opacityValue})` : `rgb(var(${variableName}))`);
-}
-
 module.exports = {
   content: ['./apps/**/!(*.stories|*.spec).{html,ts,json}', './libs/**/!(*.stories|*.spec).{html,ts,json}'],
   important: true,
+  mode: 'jit',
   theme: {
     colors: {
       primary: {
-        light: withOpacity('--primary-light'),
-        DEFAULT: withOpacity('--primary'),
-        dark: withOpacity('--primary-dark'),
+        light: 'var(--primary-light)',
+        DEFAULT: `var(--primary)`,
+        dark: 'var(--primary-dark)',
       },
       secondary: {
-        light: withOpacity('--secondary-light'),
-        DEFAULT: withOpacity('--secondary'),
-        dark: withOpacity('--secondary-dark'),
+        light: 'var(--secondary-light)',
+        DEFAULT: 'var(--secondary)',
+        dark: 'var(--secondary-dark)',
       },
       gray: {
         5: '#f2f2f2',
@@ -62,7 +59,7 @@ module.exports = {
       5: '5rem',
     },
     fontSize: {
-      sub: 'var(--font-size-sub)',
+      tiny: 'var(--font-size-tiny)',
       sm: 'var(--font-size-sm)',
       base: 'var(--font-size-base)',
       md: 'var(--font-size-md)',
@@ -82,7 +79,9 @@ module.exports = {
       black: '900',
     },
   },
-
+  corePlugins: {
+    preflight: true,
+  },
   plugins: [
     require('tailwindcss/plugin')(({ addBase }) => {
       addBase({

@@ -15,7 +15,6 @@ We follow the [Angular Component styles](https://angular.io/guide/component-styl
 This repo uses:
 
 - [Angular Material](https://material.angular.io/) components to have a base styling and functionality.
-- 
 - [tailwindCSS](https://tailwindcss.com/) as the base framework to style components.
 - [CSS custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties) to customize some properties by theme or application.
 
@@ -35,12 +34,20 @@ A simple app example could be like this:
 
 :root {
   /* Colors */
-  --primary-light: 74, 131, 229;
-  --primary: 25, 65, 140;
-  --primary-dark: 6, 31, 74;
-  --secondary-light: 229, 152, 146;
-  --secondary: 221, 54, 28;
-  --secondary-dark: 163, 37, 25;
+  // To have a consistent color palette, use the same color names and variants for the same colors defined for material in `_palette.scss`.
+  --primary-100: #b6cbdf;
+  --primary-500: #0b5394;
+  --primary-700: #084281;
+  --accent-100: #fef6ed;
+  --accent-600: #f5ab63;
+  --accent-800: #f2994e;
+
+  --primary: var(--primary-500);
+  --primary-light: var(--primary-100);
+  --primary-dark: var(--primary-700);
+  --secondary-light: var(--accent-100);
+  --secondary: var(--accent-600);
+  --secondary-dark: var(--accent-800);
 
   /* State colors */
   --plastik-error-notification-box-color: var(--secondary-dark);
@@ -58,7 +65,7 @@ A simple app example could be like this:
   --spacing-xxl: 6rem;
 
   /* Font Size */
-  --font-size-sub: 0.7rem;
+  --font-size-tiny: 0.7rem;
   --font-size-sm: 0.85rem;
   --font-size-base: 1rem;
   --font-size-md: 1.4rem;
@@ -95,12 +102,6 @@ Import it in the main styles.scss app file.
     box-sizing: inherit;
   }
 
-  @screen sm {
-    html {
-      font-size: 13px;
-    }
-  }
-
   body {
     @apply text-gray-80 font-light font-poppins;
   }
@@ -125,6 +126,154 @@ If you are repeating styling (applying the same list of tailwindCSS classes to a
 ```
 
 ## Material configuration
+
+Add a custom palette colors to the `_palette.scss` file. You can use the [Material design palette generator](http://mcg.mbitson.com/) to generate a palette.
+
+```css
+/* apps/my-app/src/styles/_palette.scss */
+$md-primary: (
+  50: #e2eaf2,
+  100: #b6cbdf,
+  200: #85a9ca,
+  300: #5487b4,
+  400: #306da4,
+  500: #0b5394,
+  600: #0a4c8c,
+  700: #084281,
+  800: #063977,
+  900: #032965,
+  A100: #95b6ff,
+  A200: #6294ff,
+  A400: #2f71ff,
+  A700: #155fff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  ),
+);
+
+$md-accent: (
+  50: #fef6ed,
+  100: #fce8d3,
+  200: #fbd9b5,
+  300: #f9c997,
+  400: #f7be81,
+  500: #f6b26b,
+  600: #f5ab63,
+  700: #f3a258,
+  800: #f2994e,
+  900: #ef8a3c,
+  A100: #ffffff,
+  A200: #ffffff,
+  A400: #ffe7d5,
+  A700: #ffd8bc,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #000000,
+    800: #000000,
+    900: #000000,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$md-warn: (
+  50: #f9e0e0,
+  100: #f0b3b3,
+  200: #e68080,
+  300: #db4d4d,
+  400: #d42626,
+  500: #cc0000,
+  600: #c70000,
+  700: #c00000,
+  800: #b90000,
+  900: #ad0000,
+  A100: #ffd7d7,
+  A200: #ffa4a4,
+  A400: #ff7171,
+  A700: #ff5858,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+```
+
+Use it in your `_material.scss` file.
+
+```css
+/* apps/my-app/src/styles/_material.scss */
+@use '@angular/material' as mat;
+@use 'sass:map';
+@use 'palette';
+@use 'theme';
+
+@include mat.core();
+
+$theme: mat.define-light-theme(
+  (
+    color: (
+      primary: mat.define-palette(palette.$md-primary, 500, 100, 700),
+      accent: mat.define-palette(palette.$md-accent, A200, A100, A400),
+      warn: mat.define-palette(palette.$md-warn),
+    ),
+    typography:
+      mat.define-typography-config(
+        $font-family: var(--sans-serif),
+        $body-1: mat.define-typography-level(var(--font-size-base), var(--spacing-md), 400),
+      ),
+    density: -1,
+  )
+);
+
+$merged-theme: map.deep-merge(
+  $theme,
+  (
+    color: (
+      background: (
+        background: mat.get-color-from-palette(palette.$md-primary, 50),
+      ),
+      foreground: (
+        text: mat.get-color-from-palette(palette.$md-primary, 900),
+      ),
+    ),
+  )
+);
+
+@include mat.all-component-themes($merged-theme);
+```
 
 In order to get advantage of the Angular Material components we'll use:
 
@@ -185,7 +334,7 @@ Some component libraries that uses Material components are ready to style some o
 
 For a list of available properties to be customized, take a look at the documentation for each UI library or add yours... and document it.
 
-- CSS overwrite of Angular Material styles  
+- CSS overwrite of Angular Material styles
 You can also overwrite Material styles. Try to overwrite them by using [CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) and avoid `!important` flag.
 
 ```css
@@ -196,13 +345,17 @@ You can also overwrite Material styles. Try to overwrite them by using [CSS spec
 }
 ```
 
+- Material component CSS configuration
+
+ <!-- TODO: add documentation about how to use component material CSS configuration -->
+
 ### Bad practices to avoid
 
 > **Do not break components CSS encapsulation!**
 
 Don't use deprecated `/deep/` pseudo-class to avoid unexpected behaviors while overwritten global styles from a component.
 
-> "Applying the ::ng-deep pseudo-class to any CSS rule completely disables view-encapsulation for that rule. Any style with ::ng-deep applied becomes a global style.  
+> "Applying the ::ng-deep pseudo-class to any CSS rule completely disables view-encapsulation for that rule. Any style with ::ng-deep applied becomes a global style.  ****
 > In order to scope the specified style to the current component and all its descendants, be sure to include the :host selector before ::ng-deep.  
 > If the ::ng-deep combinator is used without the :host pseudo-class selector, the style can bleed into other components."
 >
@@ -221,3 +374,4 @@ Don't use deprecated `/deep/` pseudo-class to avoid unexpected behaviors while o
 - [Using CSS custom properties (variables)](https://developer.mozilla.org/en-US/docs/Web/CSS/Using_CSS_custom_properties)
 - [CSS Variable Secrets | Lea Verou | CSS Day 2022](https://www.youtube.com/watch?v=ZuZizqDF4q8&list=PLjnstNlepBvNqk-CeIgptyQFhZY0s5Ubp&index=21)
 - [BEM: CSS Naming Conventions that Will Save You Hours of Debugging](https://www.freecodecamp.org/news/css-naming-conventions-that-will-save-you-hours-of-debugging-35cea737d849/)
+- [Material design palette generator](http://mcg.mbitson.com/)

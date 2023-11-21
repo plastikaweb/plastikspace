@@ -1,15 +1,15 @@
 <div *ngIf="notificationConfig$ | ngrxPush as config" [plastikSnackbar]="config" (sendDismiss)="onNotificationDismiss()"></div>
 
-<div class="flex flex-col h-max">
+<div class="flex flex-col">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
-    <div start class="flex items-center gap-sm">
+    <div start class="flex items-center gap-0 sm:gap-sm">
       <ng-container *ngIf="sidenavPosition === 'start'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerConfig.title }}</span>
         <a class="flex items-center content-center justify-between text-white hover:no-underline" href="">
           <svg-icon *ngIf="headerConfig.mainIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
-          <span class="block md:hidden text-md">{{ headerConfig.title }}</span>
-          <span class="hidden md:block text-md">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
+          <span class="block text-xl md:hidden">{{ headerConfig.title }}</span>
+          <span class="hidden md:block">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
         </a>
       </h1>
       <ng-container *ngIf="headerConfig?.socialLinks?.position === 'start'" [ngTemplateOutlet]="socialLinks"></ng-container>
