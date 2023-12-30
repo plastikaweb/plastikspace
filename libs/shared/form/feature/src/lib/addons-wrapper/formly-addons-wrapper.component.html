@@ -1,33 +1,43 @@
 <ng-template #matPrefix>
-  <button
-    *ngIf="props['addonLeft']"
-    class="flex flex-row"
-    [attr.tabindex]="!props['addonLeft']['onClick'] ? '-1' : '0'"
-    [attr.aria-hidden]="!props['addonLeft']['onClick']"
-    [attr.aria-label]="props['addonLeft']['aria'] || ''"
-    [ngClass]="props['addonLeft'].classes"
-    [ngStyle]="{ cursor: props['addonLeft'].onClick ? 'pointer' : 'inherit' }"
-    (click)="addonLeftClick()"
-  >
-    <mat-icon *ngIf="props['addonLeft'].icon">{{ props['addonLeft'].icon }}</mat-icon>
-    <span *ngIf="props['addonLeft'].text">{{ props['addonLeft'].text }}</span>
-  </button>
+  @if (props['addonLeft']) {
+    <button
+      class="flex flex-row"
+      [attr.tabindex]="!props['addonLeft']['onClick'] ? '-1' : '0'"
+      [attr.aria-hidden]="!props['addonLeft']['onClick']"
+      [attr.aria-label]="props['addonLeft']['aria'] || ''"
+      [ngClass]="props['addonLeft'].classes"
+      [ngStyle]="{ cursor: props['addonLeft'].onClick ? 'pointer' : 'inherit' }"
+      (click)="addonLeftClick()"
+    >
+      @if (props['addonLeft'].icon) {
+        <mat-icon>{{ props['addonLeft'].icon }}</mat-icon>
+      }
+      @if (props['addonLeft'].text) {
+        <span>{{ props['addonLeft'].text }}</span>
+      }
+    </button>
+  }
 </ng-template>
 
 <ng-container #fieldComponent></ng-container>
 
 <ng-template #matSuffix>
-  <button
-    *ngIf="props['addonRight']"
-    class="flex flex-row"
-    [attr.aria-label]="props['addonRight']['aria'] || ''"
-    [attr.tabindex]="!props['addonRight']['onClick'] ? '-1' : '0'"
-    [attr.aria-hidden]="!props['addonRight']['onClick']"
-    [ngClass]="props['addonRight'].classes"
-    [ngStyle]="{ cursor: props['addonRight'].onClick ? 'pointer' : 'inherit' }"
-    (click)="addonRightClick()"
-  >
-    <mat-icon *ngIf="props['addonRight'].icon">{{ props['addonRight'].icon }}</mat-icon>
-    <span *ngIf="props['addonRight'].text">{{ props['addonRight'].text }}</span>
-  </button>
+  @if (props['addonRight']) {
+    <button
+      class="flex flex-row"
+      [attr.aria-label]="props['addonRight']['aria'] || ''"
+      [attr.tabindex]="!props['addonRight']['onClick'] ? '-1' : '0'"
+      [attr.aria-hidden]="!props['addonRight']['onClick']"
+      [ngClass]="props['addonRight'].classes"
+      [ngStyle]="{ cursor: props['addonRight'].onClick ? 'pointer' : 'inherit' }"
+      (click)="addonRightClick()"
+    >
+      @if (props['addonRight'].icon) {
+        <mat-icon>{{ props['addonRight'].icon }}</mat-icon>
+      }
+      @if (props['addonRight'].text) {
+        <span>{{ props['addonRight'].text }}</span>
+      }
+    </button>
+  }
 </ng-template>

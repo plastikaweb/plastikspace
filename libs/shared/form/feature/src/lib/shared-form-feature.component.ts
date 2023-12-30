@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,7 +8,7 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/
 @Component({
   selector: 'plastik-shared-form-feature',
   standalone: true,
-  imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass, NgIf],
+  imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass],
   templateUrl: './shared-form-feature.component.html',
 
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -45,3 +45,9 @@ NX
 migrations.json
 .pa11y-report.json
 pa11y-ci-report
+<<<<<<< Updated upstream
+
+.nx/cache
+=======
+.nx/cache
+>>>>>>> Stashed changes

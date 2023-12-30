@@ -1,4 +1,4 @@
-import { NgClass, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { PushPipe } from '@ngrx/component';
@@ -10,7 +10,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
   selector: 'plastik-shared-button',
   standalone: true,
-  imports: [NgClass, NgFor, NgIf, NgTemplateOutlet, PushPipe, MatButtonModule, AngularSvgIconModule, ReturnAsObservablePipe],
+  imports: [NgClass, NgTemplateOutlet, PushPipe, MatButtonModule, AngularSvgIconModule, ReturnAsObservablePipe],
   templateUrl: './shared-button-ui.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -31,9 +31,5 @@ export class SharedButtonUiComponent {
     if (!buttonHasALinkGuard(this.config)) {
       this.sendAction.emit(this.config.doAction);
     }
-  }
-
-  trackButtonsContent(index: number): number {
-    return index;
   }
 }

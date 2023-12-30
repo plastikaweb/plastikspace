@@ -53,10 +53,12 @@ A core basic sidenav with content configuration options.
 >
   <h1 header>Menu</h1>
   <mat-list menu-items>
-    <mat-list-item *ngFor="let item of sidenavConfig" [routerLink]="item?.route">
+    @ngFor (let item of sidenavConfig) {
+    <mat-list-item [routerLink]="item?.route">
       <mat-icon> {{ item.icon }} </mat-icon>
       <span>{{ item.title }}</span>
     </mat-list-item>
+    }
   </mat-list>
   <p footer>&copy; 2023</p>
 </plastik-core-cms-layout-ui-sidenav>

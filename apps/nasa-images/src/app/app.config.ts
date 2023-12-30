@@ -34,7 +34,7 @@ export const appConfig: ApplicationConfig = {
         },
       }),
       EffectsModule.forRoot([RouterStateEffects]),
-      isDevMode() ? StoreDevtoolsModule.instrument({ name: environment.name, maxAge: 25 }) : [],
+      isDevMode() ? StoreDevtoolsModule.instrument({ name: environment.name, maxAge: 25, connectInZone: true }) : [],
       CoreCmsLayoutDataAccessModule,
       CoreNotificationDataAccessModule,
       CoreNotificationUiMatSnackbarModule,

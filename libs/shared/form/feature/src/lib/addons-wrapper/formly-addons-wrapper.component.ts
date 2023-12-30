@@ -1,4 +1,4 @@
-import { NgClass, NgIf, NgStyle } from '@angular/common';
+import { NgClass, NgStyle } from '@angular/common';
 import { AfterViewInit, ChangeDetectionStrategy, Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +9,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   standalone: true,
   templateUrl: './formly-addons-wrapper.component.html',
   styleUrls: ['./formly-addons-wrapper.component.scss'],
-  imports: [MatIconModule, MatButtonModule, NgIf, NgStyle, NgClass],
+  imports: [MatIconModule, MatButtonModule, NgStyle, NgClass],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

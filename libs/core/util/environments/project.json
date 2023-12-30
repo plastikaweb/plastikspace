@@ -6,10 +6,7 @@
   "prefix": "plastik",
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": ["libs/core/util/environments/**/*.ts", "libs/core/util/environments/**/*.html"]
-      }
+      "executor": "@nx/eslint:lint"
     }
   },
   "tags": ["scope:core", "type:util"]
