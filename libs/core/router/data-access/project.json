@@ -9,15 +9,11 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/core/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/core/router/data-access/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/core/router/data-access/jest.config.ts"
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "options": {
-        "lintFilePatterns": ["libs/core/router/data-access/**/*.ts", "libs/core/router/data-access/**/*.html"]
-      }
+      "executor": "@nx/eslint:lint"
     }
   },
   "tags": ["scope:core", "type:data-access"]

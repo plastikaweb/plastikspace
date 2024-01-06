@@ -1,5 +1,5 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { DatePipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,12 +12,11 @@ import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
-import { ViewConfig } from '@plastik/core/entities';
 import { NotificationFacade } from '@plastik/core/notification/data-access';
 import { CoreNotificationUiMatSnackbarDirective } from '@plastik/core/notification/ui/mat-snackbar';
 import { RouterFacade } from '@plastik/core/router-state';
 import { SharedActivityUiLinearComponent, SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
-import { ButtonConfig, SharedButtonUiComponent } from '@plastik/shared/button';
+import { SharedButtonUiComponent } from '@plastik/shared/button';
 import { LayoutPosition } from '@plastik/shared/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { Subject, map, takeUntil } from 'rxjs';
@@ -25,8 +24,6 @@ import { Subject, map, takeUntil } from 'rxjs';
   selector: 'plastik-core-cms-layout-feature',
   standalone: true,
   imports: [
-    NgFor,
-    NgIf,
     RouterLink,
     NgTemplateOutlet,
     RouterLinkActive,
@@ -105,13 +102,5 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
 
   onNotificationDismiss(): void {
     this.notificationFacade.dismiss();
-  }
-
-  trackSidenavItems(_: number, item: ViewConfig<string>): number {
-    return item.id;
-  }
-
-  trackSocialLinks(_: number, item: ButtonConfig): number {
-    return item.id;
   }
 }

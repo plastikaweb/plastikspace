@@ -31,7 +31,9 @@ class CustomComponent {
 ```
 
 ```html
-<div *ngFor="let item of data | returnAsObservable | ngrxPush">{{ item.name }}</div>
+@ngFor (let item of data | returnAsObservable | async) {
+<div>{{ item.name }}</div>
+}
 ```
 
 ## Running unit tests

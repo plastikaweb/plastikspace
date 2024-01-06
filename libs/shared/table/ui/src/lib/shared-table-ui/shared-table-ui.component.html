@@ -1,40 +1,40 @@
 <div class="block mt-0 overflow-auto border-t border-solid md:mt-4 border-gray-10">
-  <div *ngIf="!!dataSource.data.length; else noResults">
-    <mat-table class="table w-full table-fixed" [dataSource]="dataSource" [attr.aria-label]="caption">
-      <ng-container
-        *ngFor="let column of columnProperties; trackBy: trackColumnProperties"
-        [matColumnDef]="column.key"
-        [sticky]="column.sticky"
+  @if (!!dataSource.data.length) {
+    <div>
+      <mat-table class="table w-full table-fixed" [dataSource]="dataSource" [attr.aria-label]="caption">
+        @for (column of columnProperties; track $index) {
+          <ng-container [matColumnDef]="column.key" [sticky]="column.sticky">
+            <mat-header-cell *matHeaderCellDef [ngClass]="column.cssClasses?.[0] || ''">
+              {{ column.title }}
+            </mat-header-cell>
+            <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
+              <div [ngClass]="column.cssClasses?.[1] || ''" [innerHTML]="row | safeFormatted: column : i + 1 : pagination"></div>
+            </mat-cell>
+          </ng-container>
+        }
+        <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns" class="even:bg-gray-5/20 odd:bg-white"></mat-row>
+      </mat-table>
+      <mat-paginator
+        #matPaginator
+        [hidePageSize]="paginationVisibility?.hidePageSize"
+        [length]="resultsLength"
+        [ngClass]="{
+          'paginator--hide': paginationVisibility?.hideRangeLabel,
+          'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons
+        }"
+        [pageIndex]="pagination?.pageIndex"
+        [pageSize]="pagination?.pageSize"
+        [pageSizeOptions]="pageSizeOptions"
+        [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
+        (page)="onChangePagination($event)"
       >
-        <mat-header-cell *matHeaderCellDef [ngClass]="column.cssClasses?.[0] || ''">
-          {{ column.title }}
-        </mat-header-cell>
-
-        <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
-          <div [ngClass]="column.cssClasses?.[1] || ''" [innerHTML]="row | safeFormatted: column : i + 1 : pagination"></div>
-        </mat-cell>
-      </ng-container>
-
-      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns" class="even:bg-gray-5/20 odd:bg-white"></mat-row>
-    </mat-table>
-
-    <mat-paginator
-      #matPaginator
-      [hidePageSize]="paginationVisibility?.hidePageSize"
-      [length]="resultsLength"
-      [ngClass]="{
-        'paginator--hide': paginationVisibility?.hideRangeLabel,
-        'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons
-      }"
-      [pageIndex]="pagination?.pageIndex"
-      [pageSize]="pagination?.pageSize"
-      [pageSizeOptions]="pageSizeOptions"
-      [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
-      (page)="onChangePagination($event)"
-    >
-    </mat-paginator>
-  </div>
+      </mat-paginator>
+    </div>
+  } @else {
+    <ng-content select="[noResults]"></ng-content>
+    <ng-content select="[noValidSearch]"></ng-content>
+  }
 
   <ng-template #noResults>
     <ng-content select="[noResults]"></ng-content>

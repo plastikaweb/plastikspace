@@ -29,7 +29,9 @@ It has three child components:
 And a notification snackbar:
 
 ```html
-<div *ngIf="notificationConfig$ | ngrxPush as config" [plastikSnackbar]="config" (sendDismiss)="onNotificationDismiss()"></div>
+@if(notificationConfig$ | async as config) {
+<div plastikSnackbar [config]="config" (sendDismiss)="onNotificationDismiss()"></div>
+}
 ```
 
 ### Data Access

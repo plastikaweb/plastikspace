@@ -21,17 +21,17 @@
     --primary-100: #b6cbdf;
     --primary-500: #0b5394;
     --primary-700: #084281;
-    --accent-100: #fef6ed;
-    --accent-500: #b45f06;
-    --accent-800: #9c4303;
+    --accent-100: #ffccb8;
+    --accent-400: #ff8252;
+    --accent-700: #a44d04;
 
     /* Tailwind Colors */
     --primary: var(--primary-500);
     --primary-light: var(--primary-100);
     --primary-dark: var(--primary-700);
-    --secondary: var(--accent-500);
+    --secondary: var(--accent-400);
     --secondary-light: var(--accent-100);
-    --secondary-dark: var(--accent-800);
+    --secondary-dark: var(--accent-700);
 
     --white: #ffffff;
     --black: #000000;

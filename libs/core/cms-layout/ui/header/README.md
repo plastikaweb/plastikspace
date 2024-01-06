@@ -23,12 +23,16 @@ A core basic header with content configuration options.
 <plastik-core-cms-layout-ui-header>
   <div start>
     <a href="">
-      <svg-icon *ngIf="headerConfig.mainIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+      @if (headerConfig.mainIcon; as icon) {
+      <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+      }
       <span class="text-md">{{ headerConfig.mainTitle }}</span>
     </a>
   </div>
   <div end>
-    <svg-icon *ngIf="headerConfig.secondaryIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+    @if (headerConfig.secondaryIcon; as icon) {
+    <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+    }
   </div>
 </plastik-core-cms-layout-ui-header>
 ```
