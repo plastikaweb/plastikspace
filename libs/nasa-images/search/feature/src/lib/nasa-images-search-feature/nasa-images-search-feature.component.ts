@@ -1,4 +1,4 @@
-import { JsonPipe, NgIf } from '@angular/common';
+import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { LetDirective, PushPipe } from '@ngrx/component';
@@ -16,7 +16,6 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
   selector: 'plastik-nasa-images-search',
   standalone: true,
   imports: [
-    NgIf,
     JsonPipe,
     PushPipe,
     SharedTableUiComponent,

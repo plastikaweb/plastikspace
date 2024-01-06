@@ -1,11 +1,10 @@
-import { NgIf } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'plastik-shared-activity-ui-linear',
   standalone: true,
-  imports: [MatProgressBarModule, NgIf],
+  imports: [MatProgressBarModule],
   templateUrl: './shared-activity-ui-linear.component.html',
   styles: [
     `

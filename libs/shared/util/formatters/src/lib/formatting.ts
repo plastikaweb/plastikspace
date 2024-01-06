@@ -56,8 +56,8 @@ type FormattingNumericExtras = Partial<{
 export type FormattingExtras<OBJ, TYPE extends FormattingTypes> = TYPE extends 'IMAGE'
   ? Partial<FormattingImageExtras<OBJ>>
   : TYPE extends FormattingTypesNumeric
-  ? FormattingNumericExtras
-  : object;
+    ? FormattingNumericExtras
+    : object;
 
 /**
  * @description Formatting property blueprint.
@@ -88,5 +88,5 @@ type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> & PropertyForm
 export type PropertyFormatting<OBJ, TYPE = 'TEXT'> = TYPE extends FormattingTypesNumeric
   ? PropertyFormattingNumeric<OBJ>
   : TYPE extends 'IMAGE'
-  ? PropertyFormattingImage<OBJ>
-  : PropertyFormattingDefault<OBJ>;
+    ? PropertyFormattingImage<OBJ>
+    : PropertyFormattingDefault<OBJ>;

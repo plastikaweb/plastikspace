@@ -91,6 +91,5 @@ module.exports = {
         'input[type="search"]::-webkit-search-results-decoration': { display: 'none' },
       });
     }),
-    require('@tailwindcss/line-clamp'),
   ],
 };

@@ -6,31 +6,22 @@ on:
       - develop
   pull_request:
 
-env:
-  NX_CLOUD_DISTRIBUTED_EXECUTION: 'true'
-  NX_BRANCH: ${{github.event.number}}
-  NX_RUN_GROUP: ${{github.run_id}}
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
-  CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-
 jobs:
   develop:
     name: nx-cloud
     uses: nrwl/ci/.github/workflows/nx-cloud-main.yml@v0.13.0
     with:
-      number-of-agents: 8
+      number-of-agents: 3
       init-commands: |
-        yarn nx-cloud start-ci-run --stop-agents-after="build" --agent-count=8
+        yarn nx-cloud start-ci-run --stop-agents-after="build" --agent-count=3
       parallel-commands: |
-        yarn nx-cloud record yarn nx format:check
         yarn nx-cloud record yarn markdownlint
+        yarn nx-cloud record yarn nx format:check
       parallel-commands-on-agents: |
-        yarn nx affected --target=lint --parallel=3
-        yarn nx affected --target=test --parallel=3 --ci --code-coverage
-        yarn nx affected --target=build --parallel=3
+        npx nx affected -t lint,test,build --parallel=2
 
   agents:
     name: Nx Cloud - Agents
     uses: nrwl/ci/.github/workflows/nx-cloud-agents.yml@v0.13.0
     with:
-      number-of-agents: 8
+      number-of-agents: 3

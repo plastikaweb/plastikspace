@@ -1,36 +1,52 @@
-<div *ngIf="notificationConfig$ | ngrxPush as config" [plastikSnackbar]="config" (sendDismiss)="onNotificationDismiss()"></div>
+@if (notificationConfig$ | ngrxPush; as config) {
+  <div [plastikSnackbar]="config" (sendDismiss)="onNotificationDismiss()"></div>
+}
 
 <div class="flex flex-col">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
     <div start class="flex items-center gap-0 sm:gap-sm">
-      <ng-container *ngIf="sidenavPosition === 'start'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+      @if (sidenavPosition === 'start') {
+        <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+      }
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerConfig.title }}</span>
         <a class="flex items-center content-center justify-between text-white hover:no-underline" href="">
-          <svg-icon *ngIf="headerConfig.mainIcon as icon" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+          @if (headerConfig.mainIcon; as icon) {
+            <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+          }
           <span class="block text-xl md:hidden">{{ headerConfig.title }}</span>
           <span class="hidden md:block">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
         </a>
       </h1>
-      <ng-container *ngIf="headerConfig?.socialLinks?.position === 'start'" [ngTemplateOutlet]="socialLinks"></ng-container>
+      @if (headerConfig.socialLinks?.position === 'start') {
+        <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
+      }
     </div>
-    <div *ngIf="headerConfig.socialLinks?.position === 'end' || sidenavPosition === 'end'" end class="flex items-center gap-sm">
-      <ng-container *ngIf="headerConfig?.socialLinks?.position === 'end'" [ngTemplateOutlet]="socialLinks"></ng-container>
-      <ng-container *ngIf="sidenavPosition === 'end'" [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
-    </div>
+    @if (headerConfig.socialLinks?.position === 'end' || sidenavPosition === 'end') {
+      <div end class="flex items-center gap-sm">
+        @if (headerConfig.socialLinks?.position === 'end') {
+          <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
+        }
+        @if (sidenavPosition === 'end') {
+          <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+        }
+      </div>
+    }
   </plastik-core-cms-layout-ui-header>
 
   <plastik-shared-activity-ui-linear [active]="(isActive$ | ngrxPush) || false"></plastik-shared-activity-ui-linear>
 
-  <plastik-shared-activity-ui-overlay *ngIf="(isActive$ | ngrxPush) || false" class="z-10">
-    <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
-    <div class="spinner-container">
-      <div class="lds-ripple">
-        <div></div>
-        <div></div>
+  @if ((isActive$ | ngrxPush) || false) {
+    <plastik-shared-activity-ui-overlay class="z-10">
+      <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
+      <div class="spinner-container">
+        <div class="lds-ripple">
+          <div></div>
+          <div></div>
+        </div>
       </div>
-    </div>
-  </plastik-shared-activity-ui-overlay>
+    </plastik-shared-activity-ui-overlay>
+  }
 
   <plastik-core-cms-layout-ui-sidenav
     [position]="sidenavPosition"
@@ -40,19 +56,20 @@
     (toggleSidenav)="onToggleSidenav()"
   >
     <mat-nav-list menu-items data-test="sidenav-list">
-      <a
-        *ngFor="let item of sidenavConfig; trackBy: trackSidenavItems"
-        mat-list-item
-        class="my-tiny h-xll hover:bg-gray-5 focus:bg-gray-10"
-        routerLinkActive="bg-gray-5"
-        ariaCurrentWhenActive="page"
-        [routerLink]="item?.route"
-        [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
-      >
-        <div class="flex content-center justify-start gap-sm">
-          <p>{{ item.title }}</p>
-        </div>
-      </a>
+      @for (item of sidenavConfig; track item.id) {
+        <a
+          mat-list-item
+          class="my-tiny h-xll hover:bg-gray-5 focus:bg-gray-10"
+          routerLinkActive="bg-gray-5"
+          ariaCurrentWhenActive="page"
+          [routerLink]="item?.route"
+          [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
+        >
+          <div class="flex content-center justify-start gap-sm">
+            <p>{{ item.title }}</p>
+          </div>
+        </a>
+      }
     </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>
 
@@ -84,19 +101,16 @@
     data-test="toggle-sidenav-button"
     (click)="onToggleSidenav()"
   >
-    <mat-icon *ngIf="!(sidenavOpened$ | ngrxPush); else closeButton" class="mat-18">menu</mat-icon>
-
-    <ng-template #closeButton>
+    @if (!(sidenavOpened$ | ngrxPush)) {
+      <mat-icon class="mat-18">menu</mat-icon>
+    } @else {
       <mat-icon class="mat-18">close</mat-icon>
-    </ng-template>
+    }
   </button>
 </ng-template>
 
 <ng-template #socialLinks>
-  <plastik-shared-button
-    *ngFor="let buttonConfig of headerConfig.socialLinks?.config; trackBy: trackSocialLinks"
-    [config]="buttonConfig"
-    (sendAction)="onButtonClickAction($event)"
-  >
-  </plastik-shared-button>
+  @for (buttonConfig of headerConfig.socialLinks?.config; track buttonConfig.id) {
+    <plastik-shared-button [config]="buttonConfig" (sendAction)="onButtonClickAction($event)"> </plastik-shared-button>
+  }
 </ng-template>

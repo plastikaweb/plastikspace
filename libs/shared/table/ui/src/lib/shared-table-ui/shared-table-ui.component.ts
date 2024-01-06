@@ -131,8 +131,4 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
   onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
     this.changePagination.emit({ previousPageIndex, pageIndex, pageSize });
   }
-
-  trackColumnProperties(index: number): number {
-    return index;
-  }
 }
