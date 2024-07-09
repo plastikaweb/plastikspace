@@ -26,5 +26,6 @@
   "projectManager.vscode.ignoredFolders": ["out", "typings", "test"],
   "svg.previewAll.exclude": "",
   "markdown.extension.completion.respectVscodeSearchExclude": false,
-  "cSpell.words": ["llecoop"]
+  "cSpell.words": ["llecoop"],
+  "svg.preview.background": "transparent"
 }

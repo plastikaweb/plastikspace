@@ -11,13 +11,24 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/llecoop",
-        "index": "apps/llecoop/src/index.html",
+        "index": "libs/core/ng-entry-html/util/src/index.html",
         "browser": "apps/llecoop/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/llecoop/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
-        "assets": ["apps/llecoop/src/favicon.ico", "apps/llecoop/src/assets"],
-        "styles": ["apps/llecoop/src/styles.scss"],
+        "assets": [
+          "apps/llecoop/src/favicon.ico",
+          "apps/llecoop/src/assets",
+          {
+            "glob": "**/*",
+            "input": "libs/core/util/assets/src",
+            "output": "/assets/"
+          }
+        ],
+        "styles": ["apps/llecoop/src/styles/styles.scss"],
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/core/styles/util/material/src"]
+        },
         "scripts": []
       },
       "configurations": {
@@ -39,7 +50,13 @@
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/llecoop/src/environments/environment.ts",
+              "with": "apps/llecoop/src/environments/environment.development.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"

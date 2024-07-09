@@ -10,7 +10,7 @@
       }
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerConfig.title }}</span>
-        <a class="flex items-center content-center justify-between text-white hover:no-underline" href="">
+        <a class="flex items-center content-center justify-between text-white hover:no-underline gap-sub" href="">
           @if (headerConfig.mainIcon; as icon) {
             <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
           }
@@ -73,24 +73,26 @@
     </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>
 
-  <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-    <div content class="flex items-center justify-center gap-sm">
-      <svg-icon svgClass="fill-white w-xl h-xl" src="/assets/svg/plastikaweb.svg"></svg-icon>
-      <div class="flex flex-row gap-[4px]">
-        <div>
-          © 2006-{{ currentDate | date: 'yyyy' }}
-          <a
-            aria-label="visit www.plastikaweb.com page"
-            class="text-white underline underline-offset-2"
-            href="https://www.plastikaweb.com"
-            target="_blank"
-            >Plastikaweb</a
-          >
+  @if (!hideFooter) {
+    <plastik-core-cms-layout-ui-footer data-test="layout-footer">
+      <div content class="flex items-center justify-center gap-sm">
+        <svg-icon svgClass="fill-white w-xl h-xl" src="/assets/svg/plastikaweb.svg"></svg-icon>
+        <div class="flex flex-row gap-[4px]">
+          <div>
+            © 2006-{{ currentDate | date: 'yyyy' }}
+            <a
+              aria-label="visit www.plastikaweb.com page"
+              class="text-white underline underline-offset-2"
+              href="https://www.plastikaweb.com"
+              target="_blank"
+              >Plastikaweb</a
+            >
+          </div>
+          <span class="hidden sm:block">| Carlos Matheu | FrontEnd Freelancer.</span>
         </div>
-        <span class="hidden sm:block">| Carlos Matheu | FrontEnd Freelancer.</span>
       </div>
-    </div>
-  </plastik-core-cms-layout-ui-footer>
+    </plastik-core-cms-layout-ui-footer>
+  }
 </div>
 
 <ng-template #toggleSidenavButton>

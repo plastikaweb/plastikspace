@@ -48,6 +48,7 @@ import { Subject, map, takeUntil } from 'rxjs';
 })
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
   @Input() sidenavPosition: LayoutPosition = 'start';
+  @Input() hideFooter = false;
 
   currentDate = new Date();
   sidenavOpened$ = this.layoutFacade.sidenavOpened$;

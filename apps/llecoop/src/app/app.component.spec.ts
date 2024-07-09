@@ -1,25 +1,34 @@
-import { TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideMockStore } from '@ngrx/store/testing';
+import { CORE_CMS_LAYOUT_HEADER_CONFIG, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AppComponent } from './app.component';
-import { NxWelcomeComponent } from './nx-welcome.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+
+  const initialState = {
+    activity: {},
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent, NxWelcomeComponent, RouterTestingModule],
+      imports: [NoopAnimationsModule, AppComponent, AngularSvgIconModule.forRoot(), HttpClientTestingModule],
+      providers: [
+        provideMockStore({ initialState }),
+        { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: null },
+        { provide: VIEW_CONFIG, useValue: null },
+      ],
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Welcome llecoop');
-  });
-
-  it(`should have as title 'llecoop'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('llecoop');
+  it('should create the app', () => {
+    expect(component).toBeTruthy();
   });
 });
