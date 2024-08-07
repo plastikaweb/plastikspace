@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { concatLatestFrom, ofType } from '@ngrx/effects';
+import { ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { ROUTER_NAVIGATION, RouterNavigationAction, SerializedRouterStateSnapshot } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
 import { Observable, UnaryFunction, pipe } from 'rxjs';

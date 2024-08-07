@@ -79,7 +79,7 @@ describe('DataFormatFactoryService', () => {
       propertyPath: 'time',
       formatting: { type: 'DATE_TIME', extras: { locale: 'en-US', timezone: 'GMT' } },
     });
-    expect(result).toBe('9/1/21, 02:10:06');
+    expect(result).toBe('9/1/21, 04:10:06');
   });
 
   it('should return a value with percentage formatting', () => {

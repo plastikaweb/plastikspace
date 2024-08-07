@@ -4,6 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/nasa-images/data-access/src",
   "prefix": "plastik",
+  "tags": ["scope:nasa-images", "type:data-access"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -13,9 +14,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": ["scope:nasa-images", "type:data-access"]
+  }
 }

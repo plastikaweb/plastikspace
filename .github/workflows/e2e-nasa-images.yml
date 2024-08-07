@@ -5,10 +5,13 @@ on:
       - develop
   pull_request:
 
+permissions:
+  actions: read
+  contents: read
+
 jobs:
   e2e:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4

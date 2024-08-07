@@ -4,6 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/core/util/api/src",
   "prefix": "plastik",
+  "tags": ["scope:core", "type:util"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -13,9 +14,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": ["scope:core", "type:util"]
+  }
 }

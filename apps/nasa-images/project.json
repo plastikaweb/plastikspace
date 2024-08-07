@@ -4,6 +4,7 @@
   "projectType": "application",
   "sourceRoot": "apps/nasa-images/src",
   "prefix": "plastik",
+  "tags": ["scope:nasa-images", "type:app"],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
@@ -92,6 +93,5 @@
         "jestConfig": "apps/nasa-images/jest.config.ts"
       }
     }
-  },
-  "tags": ["scope:nasa-images", "type:app"]
+  }
 }

@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
 import { Component } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
+import { provideRouter } from '@angular/router';
 import { NavigationService } from './navigation.service';
 
 @Component({})
@@ -24,8 +24,9 @@ describe('NavigationService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([
+      providers: [
+        provideMockStore(),
+        provideRouter([
           {
             path: 'root',
             component: RootComponent,
@@ -54,7 +55,6 @@ describe('NavigationService', () => {
           },
         ]),
       ],
-      providers: [provideMockStore()],
     });
     service = TestBed.inject(NavigationService);
     location = TestBed.inject(Location);
@@ -80,7 +80,7 @@ describe('NavigationService', () => {
     it('router should navigate to the passed path with fragment extras', fakeAsync(() => {
       service.navigate({ path: ['/custom'], extras: { fragment: 'aaaa' } });
       tick();
-      expect(location.path()).toBe('/custom#aaaa');
+      expect(location.path(true)).toBe('/custom#aaaa');
     }));
   });
 

@@ -4,10 +4,10 @@
   "projectType": "library",
   "sourceRoot": "libs/core/util/environments/src",
   "prefix": "plastik",
+  "tags": ["scope:core", "type:util"],
   "targets": {
     "lint": {
       "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": ["scope:core", "type:util"]
+  }
 }

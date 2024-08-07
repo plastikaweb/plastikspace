@@ -47,3 +47,4 @@ migrations.json
 pa11y-ci-report
 
 .nx/*
+.yarn/

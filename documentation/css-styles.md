@@ -242,15 +242,15 @@ Use it in your `_material.scss` file.
 
 @include mat.core();
 
-$theme: mat.define-light-theme(
+$theme: mat.m2-define-light-theme(
   (
     color: (
-      primary: mat.define-palette(palette.$md-primary, 500, 100, 700),
-      accent: mat.define-palette(palette.$md-accent, A200, A100, A400),
-      warn: mat.define-palette(palette.$md-warn),
+      primary:mat.m2-define-palette(palette.$md-primary, 500, 100, 700),
+      accent:mat.m2-define-palette(palette.$md-accent, A200, A100, A400),
+      warn:mat.m2-define-palette(palette.$md-warn),
     ),
     typography:
-      mat.define-typography-config(
+      mat.m2-define-typography-config(
         $font-family: var(--sans-serif),
         $body-1: mat.define-typography-level(var(--font-size-base), var(--spacing-md), 400),
       ),
@@ -263,10 +263,10 @@ $merged-theme: map.deep-merge(
   (
     color: (
       background: (
-        background: mat.get-color-from-palette(palette.$md-primary, 50),
+        background: mat.m2-get-color-from-palette(palette.$md-primary, 50),
       ),
       foreground: (
-        text: mat.get-color-from-palette(palette.$md-primary, 900),
+        text: mat.m2-get-color-from-palette(palette.$md-primary, 900),
       ),
     ),
   )

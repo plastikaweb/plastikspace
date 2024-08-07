@@ -1,7 +1,7 @@
 # Plastikspace
 
 <div align="center">
-  <img width="15%" height="15%" src="./documentation/img/plastikaweb.png">
+  <img width="15%" height="15%" src="./documentation/img/plastikaweb.png" alt="plastikaweb">
   <p>A personal multi-repository to do tests and experiments with Nx and Angular. </p>
 </div>
 

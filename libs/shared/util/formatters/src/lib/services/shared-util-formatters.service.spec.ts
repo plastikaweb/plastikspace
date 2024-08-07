@@ -3,7 +3,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
-describe('SharedFormattersshared-util-objectsService', () => {
+describe('SharedUtilFormattersService', () => {
   let service: SharedUtilFormattersService;
 
   beforeEach(() => {

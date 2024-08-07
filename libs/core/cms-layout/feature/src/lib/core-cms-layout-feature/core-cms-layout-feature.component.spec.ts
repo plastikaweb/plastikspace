@@ -1,4 +1,3 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -10,6 +9,7 @@ import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
+import { provideHttpClient } from '@angular/common/http';
 import { NotificationFacade } from '@plastik/core/notification/data-access';
 import { CoreCmsLayoutFeatureComponent } from './core-cms-layout-feature.component';
 
@@ -23,7 +23,6 @@ describe('CoreCmsLayoutFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         CoreCmsLayoutFeatureComponent,
-        HttpClientTestingModule,
         NoopAnimationsModule,
         AngularSvgIconModule.forRoot(),
         MatSidenavModule,
@@ -31,6 +30,7 @@ describe('CoreCmsLayoutFeatureComponent', () => {
         MatListModule,
       ],
       providers: [
+        provideHttpClient(),
         provideMockStore({}),
         {
           provide: LayoutFacade,

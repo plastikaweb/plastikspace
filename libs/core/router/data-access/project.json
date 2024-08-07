@@ -4,6 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/core/router/data-access/src",
   "prefix": "plastik",
+  "tags": ["scope:core", "type:data-access"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -15,6 +16,5 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": ["scope:core", "type:data-access"]
+  }
 }

@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -16,8 +16,9 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, AppComponent, AngularSvgIconModule.forRoot(), HttpClientTestingModule],
+      imports: [NoopAnimationsModule, AppComponent, AngularSvgIconModule.forRoot()],
       providers: [
+        provideHttpClient(),
         provideMockStore({ initialState }),
         { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: null },
         { provide: VIEW_CONFIG, useValue: null },

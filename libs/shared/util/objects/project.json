@@ -4,6 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/shared/util/objects/src",
   "prefix": "plastik",
+  "tags": ["scope:shared", "type:util"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -15,6 +16,5 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": ["scope:shared", "type:util"]
+  }
 }
