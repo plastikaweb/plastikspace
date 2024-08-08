@@ -3,8 +3,8 @@
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/form/ui/year-picker/src",
   "prefix": "plastik",
-  "tags": ["type:ui", "scope:shared"],
   "projectType": "library",
+  "tags": ["type:ui", "scope:shared"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -14,8 +14,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
   }
 }

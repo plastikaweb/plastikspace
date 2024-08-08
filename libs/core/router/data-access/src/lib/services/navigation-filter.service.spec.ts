@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { of, Subscription } from 'rxjs';
 
+import { provideRouter } from '@angular/router';
 import { selectRouteDataName } from '../+state/selectors/router-state.selectors';
 import { NavigationFilterService } from './navigation-filter.service';
 
@@ -17,18 +17,16 @@ describe('NavigationFilterService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [RootComponent],
-      imports: [
-        RouterTestingModule.withRoutes([
+      providers: [
+        provideMockStore({
+          selectors: [{ selector: selectRouteDataName, value: 'valid' }],
+        }),
+        provideRouter([
           {
             path: 'valid',
             component: RootComponent,
           },
         ]),
-      ],
-      providers: [
-        provideMockStore({
-          selectors: [{ selector: selectRouteDataName, value: 'valid' }],
-        }),
       ],
     });
     service = TestBed.inject(NavigationFilterService);

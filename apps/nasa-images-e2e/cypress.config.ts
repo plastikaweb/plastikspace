@@ -1,19 +1,22 @@
 import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
+
 import { defineConfig } from 'cypress';
 import { getPreprocessorConfig } from '@jscutlery/cypress-harness/preprocessor-config';
 
 export default defineConfig({
   projectId: 'b47wpf',
   e2e: {
-    ...nxE2EPreset(__dirname),
+    ...nxE2EPreset(__filename, {
+      cypressDir: 'src',
+      webServerCommands: {
+        default: 'nx run nasa-images:serve:development',
+        production: 'nx run nasa-images:serve:production',
+      },
+      ciWebServerCommand: 'nx run nasa-images:serve-static',
+    }),
     ...getPreprocessorConfig(),
-    /*
-     * TODO(@nx/cypress): In Cypress v12,the testIsolation option is turned on by default.
-     * This can cause tests to start breaking where not indended.
-     * You should consider enabling this once you verify tests do not depend on each other
-     * More Info: https://docs.cypress.io/guides/references/migration-guide#Test-Isolation
-     */
     testIsolation: false,
     experimentalStudio: true,
+    baseUrl: 'http://localhost:4201',
   },
 });

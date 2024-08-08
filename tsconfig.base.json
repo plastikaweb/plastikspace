@@ -8,16 +8,11 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
-    "target": "es2015",
+    "target": "ES2022",
     "module": "esnext",
-    "lib": ["es2017", "dom"],
+    "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "noImplicitOverride": true,
-    "noImplicitReturns": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
       "@plastik/core/api": ["libs/core/util/api/src/index.ts"],
@@ -54,5 +49,5 @@
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["node_modules", "tmp", "cypress"]
 }

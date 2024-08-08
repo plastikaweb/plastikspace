@@ -1,12 +1,12 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 
+import { provideHttpClient } from '@angular/common/http';
 import { NasaImagesFacade } from '@plastik/nasa-images/data-access';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { NasaImagesFaqsService } from '../nasa-images-faqs.service';
 import { NasaImagesFaqsFeatureComponent } from './nasa-images-faqs-feature.component';
-import { toHaveNoViolations, axe } from 'jest-axe';
 
 describe('NasaImagesFaqsFeatureComponent', () => {
   let component: NasaImagesFaqsFeatureComponent;
@@ -14,8 +14,14 @@ describe('NasaImagesFaqsFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NasaImagesFaqsFeatureComponent, HttpClientTestingModule],
-      providers: [provideMockStore(), { provide: VIEW_CONFIG, useValue: null }, NasaImagesFacade, NasaImagesFaqsService],
+      imports: [NasaImagesFaqsFeatureComponent],
+      providers: [
+        provideMockStore(),
+        provideHttpClient(),
+        { provide: VIEW_CONFIG, useValue: null },
+        NasaImagesFacade,
+        NasaImagesFaqsService,
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NasaImagesFaqsFeatureComponent);

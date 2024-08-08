@@ -1,4 +1,4 @@
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -17,8 +17,8 @@ describe('NasaImagesSearchFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NasaImagesSearchFeatureComponent, HttpClientTestingModule],
-      providers: [provideEnvironmentMock(), provideMockStore()],
+      imports: [NoopAnimationsModule, NasaImagesSearchFeatureComponent],
+      providers: [provideEnvironmentMock(), provideHttpClientTesting(), provideMockStore()],
     })
       .overrideProvider(NasaImagesSearchFacade, {
         useValue: { search: jest.fn(), changePagination: jest.fn() },

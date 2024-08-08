@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
@@ -8,6 +7,7 @@ import { getMockedRouterRequest } from '@plastik/core/router-state';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 
+import { provideRouter } from '@angular/router';
 import { notificationActions } from './notification.actions';
 import { NotificationEffects } from './notification.effects';
 import { selectPreserveOnRouteRequest } from './notification.feature';
@@ -20,9 +20,9 @@ describe('NotificationEffects Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       providers: [
         NotificationEffects,
+        provideRouter([]),
         provideMockActions(() => actions$),
         provideMockStore({
           selectors: [{ selector: selectPreserveOnRouteRequest, value: false }],

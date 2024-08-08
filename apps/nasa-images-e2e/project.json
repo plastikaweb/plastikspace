@@ -3,6 +3,8 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/nasa-images-e2e/src",
   "projectType": "application",
+  "tags": ["scope:nasa-images"],
+  "implicitDependencies": ["nasa-images"],
   "targets": {
     "e2e": {
       "executor": "@nx/cypress:cypress",
@@ -18,10 +20,7 @@
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
-  },
-  "tags": ["scope:nasa-images"],
-  "implicitDependencies": ["nasa-images"]
+  }
 }

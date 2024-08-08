@@ -3,7 +3,6 @@ export default {
   displayName: 'shared-button-ui',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  globals: {},
   coverageDirectory: '../../../../coverage/libs/shared/button/ui',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [

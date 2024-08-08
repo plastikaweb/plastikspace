@@ -18,12 +18,12 @@
     --xxl: calc(var(--xl) * var(--scale));
 
     /* Colors */
-    --primary-100: #{mat.get-color-from-palette(palette.$md-primary, 100)};
-    --primary-700: #{mat.get-color-from-palette(palette.$md-primary, 700)};
-    --primary-500: #{mat.get-color-from-palette(palette.$md-primary, 500)};
-    --accent-100: #{mat.get-color-from-palette(palette.$md-accent, 100)};
-    --accent-400: #{mat.get-color-from-palette(palette.$md-accent, 400)};
-    --accent-700: #{mat.get-color-from-palette(palette.$md-accent, 700)};
+    --primary-100: #{mat.m2-get-color-from-palette(palette.$md-primary, 100)};
+    --primary-700: #{mat.m2-get-color-from-palette(palette.$md-primary, 700)};
+    --primary-500: #{mat.m2-get-color-from-palette(palette.$md-primary, 500)};
+    --accent-100: #{mat.m2-get-color-from-palette(palette.$md-accent, 100)};
+    --accent-400: #{mat.m2-get-color-from-palette(palette.$md-accent, 400)};
+    --accent-700: #{mat.m2-get-color-from-palette(palette.$md-accent, 700)};
 
     /* Tailwind Colors */
     --primary: var(--primary-500);

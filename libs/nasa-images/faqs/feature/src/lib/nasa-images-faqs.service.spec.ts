@@ -1,7 +1,8 @@
-import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 
+import { provideHttpClient } from '@angular/common/http';
 import { FAQ } from './faq';
 import { NasaImagesFaqsService } from './nasa-images-faqs.service';
 
@@ -11,8 +12,7 @@ describe('NasaImagesFaqsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [provideEnvironmentMock(), NasaImagesFaqsService],
+      providers: [provideHttpClient(), provideHttpClientTesting(), provideEnvironmentMock(), NasaImagesFaqsService],
     });
     service = TestBed.inject(NasaImagesFaqsService);
     httpMock = TestBed.inject(HttpTestingController);

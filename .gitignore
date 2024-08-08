@@ -45,4 +45,6 @@ NX
 migrations.json
 .pa11y-report.json
 pa11y-ci-report
-.nx/cache
+
+.nx/*
+.yarn/
