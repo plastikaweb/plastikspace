@@ -1,7 +1,8 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, WritableSignal } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { FormattingTypes, PropertyFormatting } from '@plastik/shared/formatters';
+import { Observable } from 'rxjs';
 
 /**
  * @description An specific configuration for a table column <=> object property.
@@ -44,6 +45,7 @@ export interface TableControlStructure<OBJ = unknown> {
  * {direction} is the direction of the sorting, 'asc' | 'desc'.
  */
 export type TableSorting = Pick<MatSort, 'active' | 'direction'>;
+export type TableSortingConfig = [active: TableSorting['active'], direction: TableSorting['direction']];
 
 /**
  * @description Configuration type for paginate a table.
@@ -77,6 +79,13 @@ export interface TableSwitchEvent {
  * @description Default table page size options.
  */
 const pageSizeOptions = [15, 25, 50];
+
+export interface TableStructureConfig<T> {
+  getTableStructure(
+    overwrite?: ({ key: string } & Record<string, string>) | null,
+    tableControlStructureMerge?: Partial<TableControlStructure<T>>,
+  ): Observable<TableControlStructure<T>> | WritableSignal<TableControlStructure<T>>;
+}
 
 /**
  * @description Default TableControlStructure configuration.

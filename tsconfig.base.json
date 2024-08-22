@@ -28,6 +28,8 @@
       "@plastik/core/notification/entities": ["libs/core/notification/entities/src/index.ts"],
       "@plastik/core/notification/ui/mat-snackbar": ["libs/core/notification/ui/mat-snackbar/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
+      "@plastik/llecoop/category": ["libs/llecoop/category/feature/src/index.ts"],
+      "@plastik/llecoop/category/data-access": ["libs/llecoop/category/data-access/src/index.ts"],
       "@plastik/llecoop/entities": ["libs/llecoop/entities/src/index.ts"],
       "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
       "@plastik/nasa-images/faqs": ["libs/nasa-images/faqs/feature/src/index.ts"],

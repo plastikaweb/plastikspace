@@ -55,5 +55,9 @@
     --font-size-lg: var(--h4);
     --font-size-xl: var(--h3);
     --font-size-xxl: var(--h2);
+
+    /* Table */
+    --plastik-mdc-table-row-min-height: 40px;
+    --plastik-mdc-table-row-max-height: 160px;
   }
 }

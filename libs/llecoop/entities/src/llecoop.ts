@@ -1,1 +1,1 @@
-export type LlecoopViews = 'categories' | 'faqs';
+export type LlecoopViews = 'category' | 'faqs';

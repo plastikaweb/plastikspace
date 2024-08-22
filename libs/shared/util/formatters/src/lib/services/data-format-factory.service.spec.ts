@@ -1,7 +1,7 @@
 import { DatePipe, PercentPipe, TitleCasePipe } from '@angular/common';
-import { LOCALE_ID } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { LOCALE_ID } from '@angular/core';
 import { DataFormatFactoryService } from './data-format-factory.service';
 import { objectMocked, TypeMocked } from './formatting.mock';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
@@ -18,7 +18,7 @@ describe('DataFormatFactoryService', () => {
         DatePipe,
         PercentPipe,
         {
-          provide: LOCALE_ID,
+          LOCALE_ID,
           useValue: 'en-US',
         },
       ],
@@ -77,7 +77,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'time',
-      formatting: { type: 'DATE_TIME', extras: { locale: 'en-US', timezone: 'GMT' } },
+      formatting: { type: 'DATE_TIME', extras: { locale: 'en-US', timezone: '+0200' } },
     });
     expect(result).toBe('9/1/21, 04:10:06');
   });

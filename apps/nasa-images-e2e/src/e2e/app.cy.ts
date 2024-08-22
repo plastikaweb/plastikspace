@@ -73,7 +73,7 @@ describe('nasa-images layout', () => {
   context('footer', () => {
     it('should have elements', () => {
       footer().contains('© 2006-');
-      footer().contains('Carlos Matheu | FrontEnd Freelancer.');
+      footer().contains('Carlos Matheu');
       footerIcon().should('have.attr', 'ng-reflect-src', '/assets/svg/plastikaweb.svg');
       footerLink().should('have.attr', 'href', 'https://www.plastikaweb.com');
     });
