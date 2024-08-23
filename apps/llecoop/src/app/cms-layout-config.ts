@@ -5,8 +5,8 @@ import { LlecoopViews } from '@plastik/llecoop/entities';
 export const headerConfig: CoreCmsLayoutHeaderConfig = {
   showToggleMenuButton: true,
   mainIcon: { iconPath: 'assets/img/el-llevat-logo.svg', svgClass: 'w-lg h-lg' },
-  title: 'LleCOOP',
-  extendedTitle: 'LleCOOP',
+  title: 'El Llevat',
+  extendedTitle: 'El Llevat',
 };
 
 export const viewConfig: ViewsConfigRecord<LlecoopViews> = {
