@@ -5,8 +5,12 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
-import { getMockedRouterNavigation, selectRouteDataName, selectRouteQueryParams } from '@plastik/core/router-state';
-import { selectIsActive, setActivity } from '@plastik/shared/activity/data-access';
+import {
+  getMockedRouterNavigation,
+  selectRouteDataName,
+  selectRouteQueryParams,
+} from '@plastik/core/router-state';
+import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
@@ -70,7 +74,9 @@ describe('NasaImagesEffects', () => {
     let action = getMockedRouterNavigation('/search?q=pluto');
     it('should dispatch loadNasaImages with queryParams if /search route is found and "q" search value is not empty', () => {
       actions = hot('-a', { a: action });
-      const expected = cold('-b', { b: nasaImagesPageActions.load({ params: { q: 'pluto', media_type: 'image' } }) });
+      const expected = cold('-b', {
+        b: nasaImagesPageActions.load({ params: { q: 'pluto', media_type: 'image' } }),
+      });
 
       expect(effects.navigation$).toBeObservable(expected);
     });
@@ -113,7 +119,9 @@ describe('NasaImagesEffects', () => {
     });
 
     it('should work on failure', () => {
-      jest.spyOn(service, 'getList').mockImplementation(() => throwError(() => ({ reason: ERROR_MSG })));
+      jest
+        .spyOn(service, 'getList')
+        .mockImplementation(() => throwError(() => ({ reason: ERROR_MSG })));
       actions = hot('-a-#', { a: action });
       const expected = cold('-b-#', { b: nasaImagesAPIActions.loadFailure({ error: ERROR_MSG }) });
 
@@ -132,7 +140,7 @@ describe('NasaImagesEffects', () => {
     const action = nasaImagesPageActions.load({ params: { q: 'pluto' } });
     it('should work', () => {
       actions = hot('-a-|', { a: action });
-      const expected = hot('-a-|', { a: setActivity({ isActive: true }) });
+      const expected = hot('-a-|', { a: activityActions.setActivity({ isActive: true }) });
 
       expect(effects.activeOn$).toBeObservable(expected);
     });
@@ -158,7 +166,7 @@ describe('NasaImagesEffects', () => {
     const action = nasaImagesAPIActions.loadSuccess({ items, count });
     it('should work', () => {
       actions = hot('-a-|', { a: action });
-      const expected = hot('-a-|', { a: setActivity({ isActive: false }) });
+      const expected = hot('-a-|', { a: activityActions.setActivity({ isActive: false }) });
 
       expect(effects.activeOff$).toBeObservable(expected);
     });

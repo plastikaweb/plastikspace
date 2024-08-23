@@ -25,7 +25,7 @@ $merged-theme: map.deep-merge(
   (
     color: (
       background: (
-        background: mat.m2-get-color-from-palette(palette.$md-primary, 50),
+        background: mat.m2-get-color-from-palette(palette.$md-primary, 100),
       ),
     ),
   )

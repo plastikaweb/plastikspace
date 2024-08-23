@@ -8,12 +8,14 @@ import { ProductCategorySearchFeatureTableConfig } from './llecoop-category-feat
   selector: 'plastik-llecoop-category-feature',
   standalone: true,
   imports: [AsyncPipe, JsonPipe, SharedTableUiComponent],
-  providers: [LlecoopCategoryStore, ProductCategorySearchFeatureTableConfig],
+  providers: [ProductCategorySearchFeatureTableConfig],
   templateUrl: './llecoop-category-feature.component.html',
   styleUrl: './llecoop-category-feature.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LlecoopCategoryFeatureComponent {
   protected readonly store = inject(LlecoopCategoryStore);
-  protected readonly tableStructure = inject(ProductCategorySearchFeatureTableConfig).getTableStructure();
+  protected readonly tableStructure = inject(
+    ProductCategorySearchFeatureTableConfig
+  ).getTableStructure();
 }

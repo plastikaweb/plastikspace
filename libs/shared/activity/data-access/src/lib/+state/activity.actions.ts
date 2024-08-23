@@ -1,3 +1,8 @@
-import { createAction, props } from '@ngrx/store';
+import { createActionGroup, props } from '@ngrx/store';
 
-export const setActivity = createAction('[Activity] Set Activity', props<{ isActive: boolean }>());
+export const activityActions = createActionGroup({
+  source: 'Activity',
+  events: {
+    'Set Activity': props<{ isActive: boolean }>(),
+  },
+});

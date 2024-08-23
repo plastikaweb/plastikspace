@@ -1,13 +1,19 @@
 import { Action } from '@ngrx/store';
 
-import { setActivity } from './activity.actions';
-import { ActivityPartialState, initialState, reducer, selectIsActive, State } from './activity.feature';
+import { activityActions } from './activity.actions';
+import {
+  ActivityPartialState,
+  initialState,
+  reducer,
+  selectIsActive,
+  State,
+} from './activity.feature';
 
 describe('Activity Reducer', () => {
   describe('valid Activity actions', () => {
     it('setActivity should return active value', () => {
       const isActive = false;
-      const action = setActivity({ isActive });
+      const action = activityActions.setActivity({ isActive });
 
       const result: State = reducer(initialState, action);
 

@@ -1,0 +1,19 @@
+.spinner-container {
+  @apply flex flex-col justify-center items-center absolute top-0 left-0 right-0 bottom-0 z-50 gap-md pointer-events-none;
+
+  .logo {
+    @apply my-0 mx-auto w-[100px] saturate-100 contrast-100 brightness-95;
+  }
+
+  .lds-ripple {
+    @apply relative inline-block w-[80px] h-[80px] motion-reduce:before:content-['loading...'];
+
+    > div {
+      @apply absolute border-primary-dark border-4 opacity-100 rounded-full animate-fast-radar motion-reduce:animate-none motion-reduce:hidden;
+
+      &:nth-child(2) {
+        animation-delay: -0.35s;
+      }
+    }
+  }
+}

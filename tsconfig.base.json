@@ -26,7 +26,9 @@
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/notification/data-access": ["libs/core/notification/data-access/src/index.ts"],
       "@plastik/core/notification/entities": ["libs/core/notification/entities/src/index.ts"],
-      "@plastik/core/notification/ui/mat-snackbar": ["libs/core/notification/ui/mat-snackbar/src/index.ts"],
+      "@plastik/core/notification/ui/mat-snackbar": [
+        "libs/core/notification/ui/mat-snackbar/src/index.ts"
+      ],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
       "@plastik/llecoop/category": ["libs/llecoop/category/feature/src/index.ts"],
       "@plastik/llecoop/category/data-access": ["libs/llecoop/category/data-access/src/index.ts"],
@@ -34,9 +36,13 @@
       "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
       "@plastik/nasa-images/faqs": ["libs/nasa-images/faqs/feature/src/index.ts"],
       "@plastik/nasa-images/search": ["libs/nasa-images/search/feature/src/index.ts"],
-      "@plastik/nasa-images/search/data-access": ["libs/nasa-images/search/data-access/src/index.ts"],
+      "@plastik/nasa-images/search/data-access": [
+        "libs/nasa-images/search/data-access/src/index.ts"
+      ],
       "@plastik/nasa-images/search/entities": ["libs/nasa-images/search/entities/src/index.ts"],
-      "@plastik/nasa-images/search/ui/no-results": ["libs/nasa-images/search/ui/no-results/src/index.ts"],
+      "@plastik/nasa-images/search/ui/no-results": [
+        "libs/nasa-images/search/ui/no-results/src/index.ts"
+      ],
       "@plastik/shared/activity/data-access": ["libs/shared/activity/data-access/src/index.ts"],
       "@plastik/shared/activity/ui": ["libs/shared/activity/ui/src/index.ts"],
       "@plastik/shared/button": ["libs/shared/button/index.ts"],
@@ -46,7 +52,9 @@
       "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
-      "@plastik/shared/return-as-observable": ["libs/shared/util/return-as-observable-pipe/src/index.ts"],
+      "@plastik/shared/return-as-observable": [
+        "libs/shared/util/return-as-observable-pipe/src/index.ts"
+      ],
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"]
     }

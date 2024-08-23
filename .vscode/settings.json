@@ -5,13 +5,39 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.tabSize": 2,
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.inlineSuggest.enabled": true,
+  "editor.autoIndent": "full",
+  "editor.formatOnType": true,
+  "editor.wordWrap": "off",
+  "editor.wrappingIndent": "same",
+  "editor.wrappingStrategy": "simple",
+  "diffEditor.wordWrap": "inherit",
+  "workbench.editor.wrapTabs": false,
+  "html.format.wrapAttributes": "force-expand-multiline",
   "files.trimTrailingWhitespace": true,
-  "[markdown]": {
-    "files.trimTrailingWhitespace": false
+  "[typescript]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit",
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
   },
   "files.exclude": {
-    "**/.git": true,
     "**/.DS_Store": true,
+    "**/.git": true,
     "**/.js": {
       "when": "$(basename).ts"
     },
@@ -19,44 +45,11 @@
       "when": "$(basename)"
     }
   },
-  "projectManager.git.ignoredFolders": [
-    "out",
-    "typings",
-    "test",
-    ".haxelib"
-  ],
-  "projectManager.hg.ignoredFolders": [
-    "out",
-    "typings",
-    "test",
-    ".haxelib"
-  ],
-  "projectManager.svn.ignoredFolders": [
-    "out",
-    "typings",
-    "test"
-  ],
-  "projectManager.any.ignoredFolders": [
-    "out",
-    "typings",
-    "test"
-  ],
-  "projectManager.vscode.ignoredFolders": [
-    "out",
-    "typings",
-    "test"
-  ],
-  "svg.previewAll.exclude": "",
-  "markdown.extension.completion.respectVscodeSearchExclude": false,
-  "cSpell.words": [
-    "Firestore",
-    "jscutlery",
-    "llecoop",
-    "Llevat",
-    "preexperimental",
-    "prellecoop",
-    "prenasa",
-    "productes"
-  ],
-  "angular.enable-strict-mode-prompt": false
+  "[html][json]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "angular.log": "verbose",
+  "cSpell.words": ["firebaseapp", "Llecoop"]
 }
