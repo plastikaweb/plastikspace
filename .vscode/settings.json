@@ -26,6 +26,6 @@
   "projectManager.vscode.ignoredFolders": ["out", "typings", "test"],
   "svg.previewAll.exclude": "",
   "markdown.extension.completion.respectVscodeSearchExclude": false,
-  "cSpell.words": ["Firestore", "jscutlery", "llecoop", "preexperimental", "prellecoop", "prenasa"],
+  "cSpell.words": ["Firestore", "jscutlery", "llecoop", "Llevat", "preexperimental", "prellecoop", "prenasa"],
   "angular.enable-strict-mode-prompt": false
 }

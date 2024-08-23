@@ -4,7 +4,7 @@ import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
+import { provideRouter, TitleStrategy, withComponentInputBinding, withViewTransitions } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule, provideStore } from '@ngrx/store';
@@ -14,7 +14,7 @@ import { getVisibleNavigationList } from '@plastik/core/entities';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import { CoreNotificationDataAccessModule } from '@plastik/core/notification/data-access';
 import { CoreNotificationUiMatSnackbarModule } from '@plastik/core/notification/ui/mat-snackbar';
-import { CustomRouterSerializer, RouterStateEffects, routerReducers } from '@plastik/core/router-state';
+import { CustomRouterSerializer, PrefixTitleService, RouterStateEffects, routerReducers } from '@plastik/core/router-state';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { firebaseConfig } from '../../firebase';
 import { environment } from '../environments/environment';
@@ -50,6 +50,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: ENVIRONMENT,
       useValue: environment,
+    },
+    {
+      provide: TitleStrategy,
+      useClass: PrefixTitleService,
     },
     { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig },
     { provide: VIEW_CONFIG, useValue: getVisibleNavigationList(viewConfig) },
