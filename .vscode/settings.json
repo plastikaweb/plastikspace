@@ -19,13 +19,44 @@
       "when": "$(basename)"
     }
   },
-  "projectManager.git.ignoredFolders": ["out", "typings", "test", ".haxelib"],
-  "projectManager.hg.ignoredFolders": ["out", "typings", "test", ".haxelib"],
-  "projectManager.svn.ignoredFolders": ["out", "typings", "test"],
-  "projectManager.any.ignoredFolders": ["out", "typings", "test"],
-  "projectManager.vscode.ignoredFolders": ["out", "typings", "test"],
+  "projectManager.git.ignoredFolders": [
+    "out",
+    "typings",
+    "test",
+    ".haxelib"
+  ],
+  "projectManager.hg.ignoredFolders": [
+    "out",
+    "typings",
+    "test",
+    ".haxelib"
+  ],
+  "projectManager.svn.ignoredFolders": [
+    "out",
+    "typings",
+    "test"
+  ],
+  "projectManager.any.ignoredFolders": [
+    "out",
+    "typings",
+    "test"
+  ],
+  "projectManager.vscode.ignoredFolders": [
+    "out",
+    "typings",
+    "test"
+  ],
   "svg.previewAll.exclude": "",
   "markdown.extension.completion.respectVscodeSearchExclude": false,
-  "cSpell.words": ["Firestore", "jscutlery", "llecoop", "Llevat", "preexperimental", "prellecoop", "prenasa"],
+  "cSpell.words": [
+    "Firestore",
+    "jscutlery",
+    "llecoop",
+    "Llevat",
+    "preexperimental",
+    "prellecoop",
+    "prenasa",
+    "productes"
+  ],
   "angular.enable-strict-mode-prompt": false
 }
