@@ -1,0 +1,11 @@
+<h2>Categories de productes</h2>
+
+<plastik-shared-table
+  [data]="store.categories() || []"
+  [caption]="tableStructure().caption || ''"
+  [columnProperties]="tableStructure().columnProperties || []"
+  [resultsLength]="store.count() || 0"
+  [pageSizeOptions]="tableStructure().pageSizeOptions || []"
+  [paginationVisibility]="tableStructure().paginationVisibility"
+>
+</plastik-shared-table>

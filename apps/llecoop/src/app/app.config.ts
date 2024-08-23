@@ -1,8 +1,10 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { provideAnimations } from '@angular/platform-browser/animations';
-import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideRouter, withComponentInputBinding, withViewTransitions } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule, provideStore } from '@ngrx/store';
@@ -14,15 +16,18 @@ import { CoreNotificationDataAccessModule } from '@plastik/core/notification/dat
 import { CoreNotificationUiMatSnackbarModule } from '@plastik/core/notification/ui/mat-snackbar';
 import { CustomRouterSerializer, RouterStateEffects, routerReducers } from '@plastik/core/router-state';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { firebaseConfig } from '../../firebase';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { headerConfig, viewConfig } from './cms-layout-config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideAnimations(),
+    provideAnimationsAsync(),
     provideHttpClient(),
-    provideRouter(appRoutes),
+    provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideFirestore(() => getFirestore()),
     provideStore(),
     importProvidersFrom(
       AngularSvgIconModule.forRoot(),

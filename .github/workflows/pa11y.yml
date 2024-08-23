@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install
-        run: yarn install --frozen-lockfile --network-timeout 1000000
+        run: yarn install --immutable --network-timeout 1000000
 
       - name: Build
         run: yarn nasa-images:build

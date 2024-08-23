@@ -1,4 +1,3 @@
-import { JsonPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { LetDirective, PushPipe } from '@ngrx/component';
@@ -15,15 +14,7 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
 @Component({
   selector: 'plastik-nasa-images-search',
   standalone: true,
-  imports: [
-    JsonPipe,
-    PushPipe,
-    SharedTableUiComponent,
-    SharedFormFeatureModule,
-    NasaImagesSearchUiNoResultsComponent,
-    MatIconModule,
-    LetDirective,
-  ],
+  imports: [PushPipe, SharedTableUiComponent, SharedFormFeatureModule, NasaImagesSearchUiNoResultsComponent, MatIconModule, LetDirective],
   templateUrl: './nasa-images-search-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

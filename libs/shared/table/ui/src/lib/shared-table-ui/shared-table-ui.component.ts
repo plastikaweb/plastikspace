@@ -12,13 +12,19 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
-import { PageEventConfig, TableColumnFormatting, TablePaginationVisibility } from '@plastik/shared/table/entities';
+import {
+  PageEventConfig,
+  TableColumnFormatting,
+  TablePaginationVisibility,
+  TableSorting,
+  TableSortingConfig,
+} from '@plastik/shared/table/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
@@ -89,13 +95,25 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
   @Input() caption!: string;
 
   /**
+   * Table sorting configuration.
+   */
+  @Input() sort?: TableSortingConfig;
+
+  /**
    * An Output emitter to send table pagination changes.
    */
   @Output()
   changePagination: EventEmitter<PageEventConfig> = new EventEmitter();
 
+  /**
+   * An Output emitter to send table sorting changes.
+   */
+  @Output()
+  changeSorting = new EventEmitter<TableSorting>();
+
   @ViewChild(MatTable) matTable!: MatTable<T>;
   @ViewChild(MatPaginator) matPaginator!: MatPaginator;
+  @ViewChild(MatSort) matSort?: MatSort;
 
   dataSource = new MatTableDataSource();
   displayedColumns: (string | number | symbol)[] = [];
@@ -106,6 +124,12 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
     if (this.matPaginator && this.pagination) {
       this.matPaginator.pageIndex = this.pagination?.pageIndex || 0;
       this.matPaginator.pageSize = this.pagination?.pageSize || 10;
+    }
+
+    if (this.matSort) {
+      this.matSort.active = this.sort?.[0] || '';
+      this.matSort.direction = this.sort?.[1] || 'asc';
+      this.dataSource.sort = this.matSort;
     }
   }
 
@@ -130,5 +154,12 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
 
   onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
     this.changePagination.emit({ previousPageIndex, pageIndex, pageSize });
+  }
+
+  onChangeSorting({ active, direction }: TableSorting): void {
+    this.changeSorting.emit({
+      active,
+      direction,
+    });
   }
 }

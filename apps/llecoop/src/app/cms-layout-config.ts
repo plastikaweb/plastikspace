@@ -10,12 +10,12 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
 };
 
 export const viewConfig: ViewsConfigRecord<LlecoopViews> = {
-  ['categories']: {
+  ['category']: {
     id: 1,
-    name: 'categories',
+    name: 'category',
     title: 'Categories',
     icon: 'image_search',
-    route: [`/categories`],
+    route: [`/category`],
     includedInNavigation: true,
     routerLinkActiveOptionsExact: false,
   },

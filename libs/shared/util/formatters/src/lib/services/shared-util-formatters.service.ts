@@ -23,9 +23,13 @@ export class SharedUtilFormattersService {
    */
   dateFormatter(
     value: FormattingDateInput,
-    { dateDigitsInfo = 'shortDate', locale = this.locale }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale'>>,
+    {
+      dateDigitsInfo = 'shortDate',
+      locale = this.locale,
+      timezone = 'UTC',
+    }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>,
   ): string {
-    return formatDate(value, dateDigitsInfo, locale) || '';
+    return formatDate(value, dateDigitsInfo, locale, timezone) || '';
   }
 
   /**
@@ -37,9 +41,9 @@ export class SharedUtilFormattersService {
    */
   dateTimeFormatter(
     value: FormattingDateInput,
-    { locale = this.locale }: Partial<Pick<FormattingExtras<unknown, 'DATE_TIME'>, 'locale'>>,
+    { locale = this.locale, timezone = 'UTC' }: Partial<Pick<FormattingExtras<unknown, 'DATE_TIME'>, 'locale' | 'timezone'>>,
   ): string {
-    return formatDate(value, 'M/d/yy, HH:mm:ss', locale) || '';
+    return formatDate(value, 'M/d/yy, HH:mm:ss', locale, timezone) || '';
   }
 
   /**
