@@ -10,12 +10,16 @@
       }
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerConfig.title }}</span>
-        <a class="flex items-center content-center justify-between text-white hover:no-underline gap-sub" href="">
+        <a
+          class="flex items-center content-center justify-between text-white hover:no-underline gap-sub"
+          href="">
           @if (headerConfig.mainIcon; as icon) {
             <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
           }
           <span class="block text-xl md:hidden">{{ headerConfig.title }}</span>
-          <span class="hidden md:block">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
+          <span class="hidden md:block">{{
+            headerConfig.extendedTitle || headerConfig.title
+          }}</span>
         </a>
       </h1>
       @if (headerConfig.socialLinks?.position === 'start') {
@@ -34,8 +38,6 @@
     }
   </plastik-core-cms-layout-ui-header>
 
-  <plastik-shared-activity-ui-linear [active]="(isActive$ | ngrxPush) || false"></plastik-shared-activity-ui-linear>
-
   @if ((isActive$ | ngrxPush) || false) {
     <plastik-shared-activity-ui-overlay class="z-10">
       <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
@@ -53,8 +55,7 @@
     [mode]="(isMobile$ | ngrxPush) ? 'over' : 'side'"
     [fixedInViewport]="(isMobile$ | ngrxPush) || false"
     [sidenavOpened]="(sidenavOpened$ | ngrxPush) || false"
-    (toggleSidenav)="onToggleSidenav()"
-  >
+    (toggleSidenav)="onToggleSidenav()">
     <mat-nav-list menu-items data-test="sidenav-list">
       @for (item of sidenavConfig; track item.id) {
         <a
@@ -63,8 +64,7 @@
           routerLinkActive="bg-gray-5"
           ariaCurrentWhenActive="page"
           [routerLink]="item?.route"
-          [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
-        >
+          [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }">
           <div class="flex content-center justify-start gap-sm">
             <p>{{ item.title }}</p>
           </div>
@@ -101,8 +101,7 @@
     aria-label="sidenav toggle button"
     class="flex justify-center align-middle"
     data-test="toggle-sidenav-button"
-    (click)="onToggleSidenav()"
-  >
+    (click)="onToggleSidenav()">
     @if (!(sidenavOpened$ | ngrxPush)) {
       <mat-icon class="mat-18">menu</mat-icon>
     } @else {
@@ -113,6 +112,7 @@
 
 <ng-template #socialLinks>
   @for (buttonConfig of headerConfig.socialLinks?.config; track buttonConfig.id) {
-    <plastik-shared-button [config]="buttonConfig" (sendAction)="onButtonClickAction($event)"> </plastik-shared-button>
+    <plastik-shared-button [config]="buttonConfig" (sendAction)="onButtonClickAction($event)">
+    </plastik-shared-button>
   }
 </ng-template>

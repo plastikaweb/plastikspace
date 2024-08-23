@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
 
-import { setActivity } from './activity.actions';
+import { activityActions } from './activity.actions';
 
 const ACTIVITY_FEATURE_KEY = 'activity';
 
@@ -18,7 +18,7 @@ export interface ActivityPartialState {
 
 const activityReducer = createReducer(
   initialState,
-  on(setActivity, (state, { isActive }): State => ({ ...state, isActive })),
+  on(activityActions.setActivity, (state, { isActive }): State => ({ ...state, isActive }))
 );
 
 export const selectActivityFeature = createFeature({

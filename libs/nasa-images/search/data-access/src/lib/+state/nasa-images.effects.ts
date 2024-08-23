@@ -6,9 +6,16 @@ import { NavigationFilterService, selectRouteQueryParams } from '@plastik/core/r
 import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { notificationActions, NotificationConfigService } from '@plastik/core/notification/data-access';
-import { NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews } from '@plastik/nasa-images/search/entities';
-import { selectIsActive, setActivity } from '@plastik/shared/activity/data-access';
+import {
+  notificationActions,
+  NotificationConfigService,
+} from '@plastik/core/notification/data-access';
+import {
+  NasaImagesSearchApiError,
+  NasaImagesSearchApiParams,
+  NasaImagesViews,
+} from '@plastik/nasa-images/search/entities';
+import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 
@@ -24,34 +31,43 @@ export class NasaImagesEffects {
   navigation$ = createEffect(() => {
     return this.actions$.pipe(
       this.navigationFilter.checkRouterNavigation<NasaImagesViews>('search'),
-      concatLatestFrom(() => [this.store.select(selectRouteQueryParams), this.store.select(selectIsActive)]),
+      concatLatestFrom(() => [
+        this.store.select(selectRouteQueryParams),
+        this.store.select(selectIsActive),
+      ]),
       filter(([, , activity]) => !activity),
       map(([, queryParams]) => {
         if (!queryParams['q']) {
           return nasaImagesPageActions.cleanUp();
         }
-        return nasaImagesPageActions.load({ params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } } });
-      }),
+        return nasaImagesPageActions.load({
+          params: { ...(queryParams as NasaImagesSearchApiParams), ...{ media_type: 'image' } },
+        });
+      })
     );
   });
 
   activeOn$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(nasaImagesPageActions.load),
-      map(() => setActivity({ isActive: true })),
+      map(() => activityActions.setActivity({ isActive: true }))
     );
   });
 
   load$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(nasaImagesPageActions.load),
-      tap(({ params }) => this.liveAnnouncer.announce(`searching for ${params.q}`, 'assertive', 5000)),
+      tap(({ params }) =>
+        this.liveAnnouncer.announce(`searching for ${params.q}`, 'assertive', 5000)
+      ),
       exhaustMap(({ params }) =>
         this.apiService.getList(params).pipe(
           map(({ items, count }) => nasaImagesAPIActions.loadSuccess({ items, count })),
-          catchError((error: NasaImagesSearchApiError) => of(nasaImagesAPIActions.loadFailure({ error: error?.reason }))),
-        ),
-      ),
+          catchError((error: NasaImagesSearchApiError) =>
+            of(nasaImagesAPIActions.loadFailure({ error: error?.reason }))
+          )
+        )
+      )
     );
   });
 
@@ -59,16 +75,16 @@ export class NasaImagesEffects {
     () => {
       return this.actions$.pipe(
         ofType(nasaImagesAPIActions.loadSuccess),
-        tap(() => this.liveAnnouncer.announce('Search completed successfully', 'assertive', 5000)),
+        tap(() => this.liveAnnouncer.announce('Search completed successfully', 'assertive', 5000))
       );
     },
-    { dispatch: false },
+    { dispatch: false }
   );
 
   activeOff$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(nasaImagesAPIActions.loadSuccess, nasaImagesAPIActions.loadFailure),
-      map(() => setActivity({ isActive: false })),
+      map(() => activityActions.setActivity({ isActive: false }))
     );
   });
 
@@ -84,7 +100,7 @@ export class NasaImagesEffects {
             message: `<span class="sr-only">Error: </span>${message}`,
           }),
         });
-      }),
+      })
     );
   });
 }

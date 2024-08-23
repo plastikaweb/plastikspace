@@ -15,7 +15,7 @@ import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidena
 import { NotificationFacade } from '@plastik/core/notification/data-access';
 import { CoreNotificationUiMatSnackbarDirective } from '@plastik/core/notification/ui/mat-snackbar';
 import { RouterFacade } from '@plastik/core/router-state';
-import { SharedActivityUiLinearComponent, SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
+import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SharedButtonUiComponent } from '@plastik/shared/button';
 import { LayoutPosition } from '@plastik/shared/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -39,7 +39,6 @@ import { Subject, map, takeUntil } from 'rxjs';
     CoreCmsLayoutUiHeaderComponent,
     CoreCmsLayoutUiSidenavComponent,
     SharedButtonUiComponent,
-    SharedActivityUiLinearComponent,
     SharedActivityUiOverlayComponent,
     CoreNotificationUiMatSnackbarDirective,
   ],
@@ -65,7 +64,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
     private readonly layoutFacade: LayoutFacade,
     private readonly notificationFacade: NotificationFacade,
     private readonly routerFacade: RouterFacade,
-    private readonly breakpointObserver: BreakpointObserver,
+    private readonly breakpointObserver: BreakpointObserver
   ) {}
 
   ngOnInit(): void {
@@ -74,7 +73,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
       .observe([Breakpoints.Handset])
       .pipe(
         takeUntil(this.destroyed$),
-        map(handset => handset.matches),
+        map(handset => handset.matches)
       )
       .subscribe((matches: boolean) => {
         if (matches) this.onToggleSidenav(!matches);

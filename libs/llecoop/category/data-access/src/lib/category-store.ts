@@ -1,8 +1,17 @@
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withHooks,
+  withMethods,
+  withState,
+} from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { Store } from '@ngrx/store';
 import { ProductCategory } from '@plastik/llecoop/entities';
+import { activityActions } from '@plastik/shared/activity/data-access';
 import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import { CategoryFireService } from './category-fire.service';
 
@@ -23,30 +32,32 @@ export const LlecoopCategoryStore = signalStore(
   withComputed(({ categories }) => ({
     count: computed(() => categories().length),
   })),
-  withMethods((store, categoryService = inject(CategoryFireService)) => ({
+  withMethods((store, categoryService = inject(CategoryFireService), state = inject(Store)) => ({
     getAll: rxMethod<void>(
       pipe(
         distinctUntilChanged(),
         tap(() => patchState(store, { loaded: false })),
+        tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
         switchMap(() =>
           categoryService.getAll().pipe(
             tapResponse({
               next: categories => {
                 const lastUpdated = new Date();
                 patchState(store, () => ({ categories, lastUpdated }));
+                state.dispatch(activityActions.setActivity({ isActive: false }));
               },
               // eslint-disable-next-line no-console
               error: error => console.error('Error loading categories', error),
               finalize: () => patchState(store, { loaded: true }),
-            }),
-          ),
-        ),
-      ),
+            })
+          )
+        )
+      )
     ),
   })),
   withHooks({
     onInit({ getAll }) {
       getAll();
     },
-  }),
+  })
 );
