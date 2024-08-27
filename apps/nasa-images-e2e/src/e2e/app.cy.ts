@@ -6,7 +6,7 @@ const githubButtonIcon = () => githubButton().children('svg-icon');
 
 const sidenav = () => cy.getEl('sidenav');
 const sidenavList = () => cy.getEl('sidenav-list');
-const sidenavListItems = () => sidenavList().children('a');
+const sidenavListItems = () => sidenavList().children('mat-list-item');
 
 const footer = () => cy.getEl('layout-footer');
 const footerIcon = () => footer().find('svg-icon');
@@ -37,7 +37,11 @@ describe('nasa-images layout', () => {
     });
 
     it('should have a icon button link to the github repository', () => {
-      githubButton().should('have.attr', 'href', 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md');
+      githubButton().should(
+        'have.attr',
+        'href',
+        'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md'
+      );
       githubButtonIcon().should('have.attr', 'ng-reflect-src', 'assets/svg/github.svg');
     });
   });

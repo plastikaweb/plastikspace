@@ -84,6 +84,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 - [core-cms-layout-feature](libs/core/cms-layout/feature/README.md)
 - [core-cms-layout-data-access](libs/core/cms-layout/data-access/README.md)
+- [core-cms-layout-entities](libs/core/cms-layout/entities/README.md)
 
 #### Notification
 

@@ -22,17 +22,25 @@
           }}</span>
         </a>
       </h1>
+
       @if (headerConfig.socialLinks?.position === 'start') {
         <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
       }
     </div>
-    @if (headerConfig.socialLinks?.position === 'end' || sidenavPosition === 'end') {
+    @if (
+      headerConfig.socialLinks?.position === 'end' ||
+      sidenavPosition === 'end' ||
+      headerConfig.menu?.position === 'end'
+    ) {
       <div end class="flex items-center gap-sm">
         @if (headerConfig.socialLinks?.position === 'end') {
           <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
         }
         @if (sidenavPosition === 'end') {
           <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+        }
+        @if (headerConfig.menu?.position === 'end') {
+          <ng-container [ngTemplateOutlet]="headerMenu"></ng-container>
         }
       </div>
     }
@@ -58,17 +66,17 @@
     (toggleSidenav)="onToggleSidenav()">
     <mat-nav-list menu-items data-test="sidenav-list">
       @for (item of sidenavConfig; track item.id) {
-        <a
-          mat-list-item
+        <mat-list-item
           class="my-tiny h-xll hover:bg-gray-5 focus:bg-gray-10"
           routerLinkActive="bg-gray-5"
           ariaCurrentWhenActive="page"
           [routerLink]="item?.route"
           [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }">
-          <div class="flex content-center justify-start gap-sm">
-            <p>{{ item.title }}</p>
-          </div>
-        </a>
+          <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
+            item.icon
+          }}</mat-icon>
+          <span matListItemTitle>{{ item.title }}</span>
+        </mat-list-item>
       }
     </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>
@@ -115,4 +123,26 @@
     <plastik-shared-button [config]="buttonConfig" (sendAction)="onButtonClickAction($event)">
     </plastik-shared-button>
   }
+</ng-template>
+
+<ng-template #headerMenu>
+  <button mat-button aria-label="header menu" [matMenuTriggerFor]="menu">
+    <span>Carlos Matheu</span>
+    <mat-icon class="w-[30px] h-[30px] text-[30px]">account_circle</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    @for (item of headerConfig.menu?.config; track item.id) {
+      @if (item && item.route) {
+        <button type="button" mat-menu-item [routerLink]="item.route">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.title }}</span>
+        </button>
+      } @else {
+        <button type="button" mat-menu-item (click)="onSendAction(item.name)">
+          <mat-icon>{{ item.icon }}</mat-icon>
+          <span>{{ item.title }}</span>
+        </button>
+      }
+    }
+  </mat-menu>
 </ng-template>

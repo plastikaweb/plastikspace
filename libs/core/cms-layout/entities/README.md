@@ -1,4 +1,4 @@
-# core-entities
+# Core CMS Layout entities
 
 ## Description
 

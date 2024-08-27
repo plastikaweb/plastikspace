@@ -8,12 +8,18 @@ import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule, provideStore } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { CORE_CMS_LAYOUT_HEADER_CONFIG, CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { getVisibleNavigationList } from '@plastik/core/entities';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import { CoreNotificationDataAccessModule } from '@plastik/core/notification/data-access';
 import { CoreNotificationUiMatSnackbarModule } from '@plastik/core/notification/ui/mat-snackbar';
-import { CustomRouterSerializer, PrefixTitleService, RouterStateEffects, routerReducers } from '@plastik/core/router-state';
+import {
+  CustomRouterSerializer,
+  PrefixTitleService,
+  RouterStateEffects,
+  routerReducers,
+} from '@plastik/core/router-state';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { environment } from '../environments/environment';
 import { routes } from './app.routing';
@@ -34,10 +40,16 @@ export const appConfig: ApplicationConfig = {
         },
       }),
       EffectsModule.forRoot([RouterStateEffects]),
-      isDevMode() ? StoreDevtoolsModule.instrument({ name: environment.name, maxAge: 25, connectInZone: true }) : [],
+      isDevMode()
+        ? StoreDevtoolsModule.instrument({
+            name: environment.name,
+            maxAge: 25,
+            connectInZone: true,
+          })
+        : [],
       CoreCmsLayoutDataAccessModule,
       CoreNotificationDataAccessModule,
-      CoreNotificationUiMatSnackbarModule,
+      CoreNotificationUiMatSnackbarModule
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,

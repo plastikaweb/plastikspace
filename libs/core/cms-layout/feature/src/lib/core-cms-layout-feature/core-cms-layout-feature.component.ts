@@ -4,6 +4,7 @@ import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@a
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
@@ -34,6 +35,7 @@ import { Subject, map, takeUntil } from 'rxjs';
     MatIconModule,
     MatListModule,
     MatButtonModule,
+    MatMenuModule,
     AngularSvgIconModule,
     CoreCmsLayoutUiFooterComponent,
     CoreCmsLayoutUiHeaderComponent,
@@ -102,5 +104,10 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
 
   onNotificationDismiss(): void {
     this.notificationFacade.dismiss();
+  }
+
+  onSendAction(name: string): void {
+    // eslint-disable-next-line no-console
+    console.log(name);
   }
 }

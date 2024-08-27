@@ -1,0 +1,13 @@
+{
+  "name": "core-cms-layout-entities",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/core/cms-layout/entities/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["scope:core", "type:entity"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

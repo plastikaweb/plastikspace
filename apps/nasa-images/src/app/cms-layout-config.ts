@@ -1,4 +1,4 @@
-import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/data-access';
+import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
 import { ViewsConfigRecord } from '@plastik/core/entities';
 import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
 
@@ -13,7 +13,12 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
       {
         id: 1,
         type: 'link',
-        elements: [{ type: 'icon', content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' } }],
+        elements: [
+          {
+            type: 'icon',
+            content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' },
+          },
+        ],
         ariaLabel: 'plastikspace -> apps -> nasa-images readme',
         dataTestId: 'github-button',
         link: 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',

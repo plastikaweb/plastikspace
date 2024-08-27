@@ -14,11 +14,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule, provideStore } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import {
-  CORE_CMS_LAYOUT_HEADER_CONFIG,
-  CoreCmsLayoutDataAccessModule,
-  VIEW_CONFIG,
-} from '@plastik/core/cms-layout/data-access';
+import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { getVisibleNavigationList } from '@plastik/core/entities';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import { CoreNotificationDataAccessModule } from '@plastik/core/notification/data-access';
