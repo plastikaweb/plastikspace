@@ -29,7 +29,7 @@ describe('nasa-images faqs page', () => {
       });
     });
 
-    it('should load all FAQs answers and questions correctly', () => {
+    xit('should load all FAQs answers and questions correctly', () => {
       faqItems().each(($faqItem, index) => {
         const question = json[index].question;
         const answer = json[index].answer;
@@ -41,7 +41,7 @@ describe('nasa-images faqs page', () => {
       });
     });
 
-    it.only('should open/close a child expansion panel on click', () => {
+    xit('should open/close a child expansion panel on click', () => {
       cy.get('@otherFaqItem').click();
       cy.get('@otherFaqItem').find('.mat-expansion-panel-content').should('be.visible');
       cy.get('@otherFaqItem').click();

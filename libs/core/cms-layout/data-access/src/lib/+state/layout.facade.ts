@@ -3,7 +3,10 @@ import { Action, Store } from '@ngrx/store';
 import { ViewConfig } from '@plastik/core/entities';
 import { selectIsActive } from '@plastik/shared/activity/data-access';
 
-import { CORE_CMS_LAYOUT_HEADER_CONFIG, CoreCmsLayoutHeaderConfig } from '../core-cms-layout-header-config';
+import {
+  CORE_CMS_LAYOUT_HEADER_CONFIG,
+  CoreCmsLayoutHeaderConfig,
+} from '@plastik/core/cms-layout/entities';
 import { VIEW_CONFIG } from '../core-cms-view-config';
 import { layoutActions } from './layout.actions';
 import { selectIsMobile, selectSidenavOpened } from './layout.feature';
@@ -20,7 +23,7 @@ export class LayoutFacade {
 
   constructor(
     @Inject(CORE_CMS_LAYOUT_HEADER_CONFIG) private readonly header: CoreCmsLayoutHeaderConfig,
-    @Inject(VIEW_CONFIG) private readonly sidenav: ViewConfig<string>[],
+    @Inject(VIEW_CONFIG) private readonly sidenav: ViewConfig<string>[]
   ) {}
 
   toggleSidenav(opened: boolean | undefined): void {

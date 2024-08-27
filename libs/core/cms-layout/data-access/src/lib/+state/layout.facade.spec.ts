@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { createAction, Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '../core-cms-layout-header-config';
+import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { VIEW_CONFIG } from '../core-cms-view-config';
 import { layoutActions } from './layout.actions';
 import { LayoutFacade } from './layout.facade';
