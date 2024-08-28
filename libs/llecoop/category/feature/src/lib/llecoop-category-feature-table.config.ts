@@ -2,10 +2,19 @@ import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ProductCategory } from '@plastik/llecoop/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
-import { DEFAULT_TABLE_CONFIG, TableColumnFormatting, TableControlStructure, TableStructureConfig } from '@plastik/shared/table/entities';
+import {
+  DEFAULT_TABLE_CONFIG,
+  TableColumnFormatting,
+  TableControlStructure,
+  TableStructureConfig,
+} from '@plastik/shared/table/entities';
 
-@Injectable()
-export class ProductCategorySearchFeatureTableConfig implements TableStructureConfig<ProductCategory> {
+@Injectable({
+  providedIn: 'root',
+})
+export class LlecoopCategorySearchFeatureTableConfig
+  implements TableStructureConfig<ProductCategory>
+{
   private readonly sanitizer = inject(DomSanitizer);
 
   private readonly name: TableColumnFormatting<ProductCategory, 'CUSTOM'> = {
@@ -30,7 +39,10 @@ export class ProductCategorySearchFeatureTableConfig implements TableStructureCo
     },
   };
 
-  private readonly columnProperties: TableColumnFormatting<ProductCategory, FormattingTypes>[] = [this.name, this.description];
+  private readonly columnProperties: TableColumnFormatting<ProductCategory, FormattingTypes>[] = [
+    this.name,
+    this.description,
+  ];
 
   getTableStructure(): WritableSignal<TableControlStructure<ProductCategory>> {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

@@ -45,7 +45,10 @@ export interface TableControlStructure<OBJ = unknown> {
  * {direction} is the direction of the sorting, 'asc' | 'desc'.
  */
 export type TableSorting = Pick<MatSort, 'active' | 'direction'>;
-export type TableSortingConfig = [active: TableSorting['active'], direction: TableSorting['direction']];
+export type TableSortingConfig = [
+  active: TableSorting['active'],
+  direction: TableSorting['direction'],
+];
 
 /**
  * @description Configuration type for paginate a table.
@@ -83,7 +86,7 @@ const pageSizeOptions = [15, 25, 50];
 export interface TableStructureConfig<T> {
   getTableStructure(
     overwrite?: ({ key: string } & Record<string, string>) | null,
-    tableControlStructureMerge?: Partial<TableControlStructure<T>>,
+    tableControlStructureMerge?: Partial<TableControlStructure<T>>
   ): Observable<TableControlStructure<T>> | WritableSignal<TableControlStructure<T>>;
 }
 
@@ -98,13 +101,23 @@ export const defaultTableConfig: TableControlStructure = {
     pageIndex: 0,
     pageSize: pageSizeOptions[0],
   },
-  paginationVisibility: { hidePageSize: false, hidePaginationFirstLastButtons: true, hideRangeLabel: true, hideRangeButtons: true },
+  paginationVisibility: {
+    hidePageSize: false,
+    hidePaginationFirstLastButtons: true,
+    hideRangeLabel: true,
+    hideRangeButtons: true,
+  },
 };
 
 /**
  * @description Default TableControlStructure Token. It can be mapped, combined or overwritten by any custom or feature configuration.
  */
-export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableControlStructure>('DEFAULT_TABLE_CONFIG', {
-  providedIn: 'root',
-  factory: () => defaultTableConfig,
-});
+export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableControlStructure>(
+  'DEFAULT_TABLE_CONFIG',
+  {
+    providedIn: 'root',
+    factory: () => defaultTableConfig,
+  }
+);
+
+export const TABLE_TOKEN = new InjectionToken<TableStructureConfig<unknown>>('TABLE_TOKEN');

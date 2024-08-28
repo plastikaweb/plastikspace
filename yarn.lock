@@ -20,6 +20,13 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
+"@angular-architects/ngrx-toolkit@^18.0.3":
+  version "18.0.3"
+  resolved "https://registry.yarnpkg.com/@angular-architects/ngrx-toolkit/-/ngrx-toolkit-18.0.3.tgz#41ade4cff8f19903d4b2b27e6f45b56112d7566b"
+  integrity sha512-L8ctHd/GhjY6tx/iD6LYH+Zcjy3akWAcksvriD3jtoetpIQZqGBE9CSE9QN0AgVdUwa8WsB24ox7CRRTS/QElQ==
+  dependencies:
+    tslib "^2.3.0"
+
 "@angular-devkit/architect@0.1801.4":
   version "0.1801.4"
   resolved "https://registry.yarnpkg.com/@angular-devkit/architect/-/architect-0.1801.4.tgz#83e785c76701fdd42c030c9315f0929579cfee4a"
