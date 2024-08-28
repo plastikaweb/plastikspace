@@ -54,6 +54,9 @@
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
       "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
+      "@plastik/shared/list-view": [
+        "libs/shared/layouts/feature/table-with-filtering/src/index.ts"
+      ],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
       "@plastik/shared/return-as-observable": [
         "libs/shared/util/return-as-observable-pipe/src/index.ts"
@@ -61,6 +64,9 @@
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"]
     }
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true
   },
   "exclude": ["node_modules", "tmp", "cypress"]
 }

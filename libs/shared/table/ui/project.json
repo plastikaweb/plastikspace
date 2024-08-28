@@ -4,7 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/shared/table/ui/src",
   "prefix": "plastik",
-  "tags": ["scope:shared", "type:feature"],
+  "tags": ["scope:shared", "type:ui"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",

@@ -1,0 +1,10 @@
+<h2>{{ facade.viewName | titlecase }}</h2>
+
+<plastik-shared-table
+  [data]="facade.tableData() || []"
+  [caption]="facade.tableStructure().caption || ''"
+  [columnProperties]="facade.tableStructure().columnProperties || []"
+  [resultsLength]="facade.count() || 0"
+  [pageSizeOptions]="facade.tableStructure().pageSizeOptions || []"
+  [paginationVisibility]="facade.tableStructure().paginationVisibility">
+</plastik-shared-table>
