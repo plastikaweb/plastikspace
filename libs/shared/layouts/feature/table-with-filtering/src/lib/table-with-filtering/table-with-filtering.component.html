@@ -5,6 +5,8 @@
   [caption]="facade.tableStructure().caption || ''"
   [columnProperties]="facade.tableStructure().columnProperties || []"
   [resultsLength]="facade.count() || 0"
+  [sort]="facade.tableStructure().sort"
   [pageSizeOptions]="facade.tableStructure().pageSizeOptions || []"
-  [paginationVisibility]="facade.tableStructure().paginationVisibility">
+  [paginationVisibility]="facade.tableStructure().paginationVisibility"
+  (changeSorting)="onChangeSorting($event)">
 </plastik-shared-table>

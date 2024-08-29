@@ -1,0 +1,19 @@
+{
+  "version": "0.2",
+  "language": "ca-ES, ca",
+  "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "words": [
+    "anterior",
+    "Facade",
+    "pàgina",
+    "pagination",
+    "prettier",
+    "Primera",
+    "següent",
+    "Última"
+  ],
+  "ignoreWords": [],
+  "import": []
+}
