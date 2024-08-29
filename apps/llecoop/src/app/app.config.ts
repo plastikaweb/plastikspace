@@ -2,6 +2,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -31,6 +32,7 @@ import { firebaseConfig } from '../../firebase';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { headerConfig, viewConfig } from './cms-layout-config';
+import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -80,6 +82,10 @@ export const appConfig: ApplicationConfig = {
         verticalPosition: 'top',
         politeness: 'assertive',
       },
+    },
+    {
+      provide: MatPaginatorIntl,
+      useClass: LlecoopMatPaginatorIntl,
     },
   ],
 };

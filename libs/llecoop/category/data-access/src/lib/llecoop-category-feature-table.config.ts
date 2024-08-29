@@ -21,6 +21,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
+    sorting: true,
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
@@ -50,6 +51,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     return signal({
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
+      sort: [this.name.key, 'asc'],
       paginationVisibility: {
         hidePageSize: true,
         hideRangeLabel: true,
