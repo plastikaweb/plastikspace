@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TABLE_WITH_FILTERING_TOKEN } from './table-with-filtering-facade.type';
+import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type';
 import { TableWithFilteringComponent } from './table-with-filtering.component';
 
 describe('TableWithFilteringComponent', () => {
@@ -12,12 +12,13 @@ describe('TableWithFilteringComponent', () => {
       imports: [TableWithFilteringComponent],
       providers: [
         {
-          provide: TABLE_WITH_FILTERING_TOKEN,
+          provide: TABLE_WITH_FILTERING_FACADE,
           useValue: {
             tableStructure: signal({}),
             tableData: signal([]),
+            formStructure: signal([]),
             count: signal(0),
-            viewName: 'viewName',
+            viewConfig: signal({}),
           },
         },
       ],

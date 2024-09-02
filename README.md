@@ -125,6 +125,8 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [shared-util-return-as-observable-pipe](libs/shared/util/return-as-observable-pipe/README.md)
 - [shared-util-formatters](libs/shared/util/formatters/README.md)
 - [shared-util-dynamic-bg-color](libs/shared/util/dynamic-bg-color/README.md)
+- [shared-util-latinize](libs/shared/util/latinize/README.md)
+- [shared-util-filter-array-pipe](libs/shared/util/filter-array-pipe/README.md)
 
 ## Contact
 

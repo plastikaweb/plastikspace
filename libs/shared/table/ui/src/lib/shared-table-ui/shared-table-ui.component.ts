@@ -23,7 +23,6 @@ import {
   TableColumnFormatting,
   TablePaginationVisibility,
   TableSorting,
-  TableSortingConfig,
 } from '@plastik/shared/table/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -97,7 +96,7 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
   /**
    * Table sorting configuration.
    */
-  @Input() sort?: TableSortingConfig;
+  @Input() sort?: TableSorting;
 
   /**
    * An Output emitter to send table pagination changes.
@@ -127,13 +126,13 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
     }
 
     if (this.matSort) {
-      this.matSort.active = this.sort?.[0] || '';
-      this.matSort.direction = this.sort?.[1] || 'asc';
+      this.matSort.active = this.sort?.active || '';
+      this.matSort.direction = this.sort?.direction || 'asc';
       this.dataSource.sort = this.matSort;
     }
   }
 
-  ngOnChanges({ data, resultsLength, pagination, columnProperties }: SimpleChanges) {
+  ngOnChanges({ data, resultsLength, pagination, sort, columnProperties }: SimpleChanges) {
     if (columnProperties) {
       this.displayedColumns = this?.columnProperties?.map(property => property.key) || [];
     }
@@ -145,6 +144,12 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
       const { pageIndex, pageSize } = pagination.currentValue as PageEventConfig;
       this.matPaginator.pageIndex = pageIndex || 0;
       this.matPaginator.pageSize = pageSize || 10;
+    }
+
+    if (this.matSort && sort?.currentValue) {
+      this.matSort.active = sort.currentValue.active;
+      this.matSort.direction = sort.currentValue.direction;
+      this.dataSource.sort = this.matSort;
     }
 
     if (data) {

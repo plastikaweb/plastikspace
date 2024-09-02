@@ -1,11 +1,22 @@
-<h2>{{ facade.viewName | titlecase }}</h2>
+<h2 class="flex items-center content-center gap-sub">
+  <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ facade.viewConfig().icon }}</mat-icon>
+  <span>{{ facade.viewConfig().title | titlecase }}</span>
+</h2>
+
+<plastik-shared-form-feature
+  class="flex flex-row items-end content-center justify-between filters-box"
+  [fields]="facade.formStructure() || []"
+  [model]="{ text: '' }"
+  [submitAvailable]="false"
+  (changeEvent)="onChangeFiltering($event)">
+</plastik-shared-form-feature>
 
 <plastik-shared-table
-  [data]="facade.tableData() || []"
+  [data]="facade.tableData() | filterArray: facade.tableFilter?.() || []"
   [caption]="facade.tableStructure().caption || ''"
   [columnProperties]="facade.tableStructure().columnProperties || []"
   [resultsLength]="facade.count() || 0"
-  [sort]="facade.tableStructure().sort"
+  [sort]="facade.tableSorting?.()"
   [pageSizeOptions]="facade.tableStructure().pageSizeOptions || []"
   [paginationVisibility]="facade.tableStructure().paginationVisibility"
   (changeSorting)="onChangeSorting($event)">
