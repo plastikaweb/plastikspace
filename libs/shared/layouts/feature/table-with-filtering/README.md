@@ -12,11 +12,14 @@ A shared feature component that displays a table with filtering capabilities.
 ## How to use
 
 1. Load the `TableWithFilteringComponent` in a route.
-2. Set providers for `STORE_TOKEN` and `TABLE_WITH_FILTERING_TOKEN` to be used in the feature route with the `TableWithFilteringComponent`.
+2. Set providers for `STORE_TOKEN` and `TABLE_WITH_FILTERING_FACADE` to be used in the feature route with the `TableWithFilteringComponent`.
 
 ```typescript
 import { STORE_TOKEN } from '@plastik/core/entities';
-import { TABLE_WITH_FILTERING_TOKEN, TableWithFilteringComponent } from '@plastik/shared/list-view';
+import {
+  TABLE_WITH_FILTERING_FACADE,
+  TableWithFilteringComponent,
+} from '@plastik/shared/list-view';
 
 export const exampleFeatureRoutes: Route[] = [
   {
@@ -29,7 +32,7 @@ export const exampleFeatureRoutes: Route[] = [
         useExisting: ExampleStore,
       },
       {
-        provide: TABLE_WITH_FILTERING_TOKEN,
+        provide: TABLE_WITH_FILTERING_FACADE,
         useExisting: ExampleListFacadeService,
       },
     ],
@@ -37,7 +40,7 @@ export const exampleFeatureRoutes: Route[] = [
 ];
 ```
 
-> The `TABLE_WITH_FILTERING_TOKEN` is a facade service that implements the `TableWithFilteringFacade` interface:
+> The `TABLE_WITH_FILTERING_FACADE` is a facade service that implements the `TableWithFilteringFacade` interface:
 >
 > ```typescript
 > export interface TableWithFilteringFacade<T extends BaseEntity> {

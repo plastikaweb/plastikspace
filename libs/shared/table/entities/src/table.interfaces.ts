@@ -25,7 +25,7 @@ export type TableColumnFormatting<OBJ, TYPE> = PropertyFormatting<OBJ, TYPE> & {
 /**
  * @description Main configuration for a table structure.
  */
-export interface TableControlStructure<OBJ = unknown> {
+export interface TableControlStructure<OBJ> {
   /**
    * Array with each column configuration properties.
    */
@@ -38,6 +38,7 @@ export interface TableControlStructure<OBJ = unknown> {
    * Main title of the table. Used for accessibility purposes.
    */
   caption?: string;
+  filter?: Record<string, (keyof OBJ)[]> | null;
 }
 
 /**
@@ -94,7 +95,7 @@ export interface TableStructureConfig<T> {
 /**
  * @description Default TableControlStructure configuration.
  */
-export const defaultTableConfig: TableControlStructure = {
+export const defaultTableConfig: TableControlStructure<unknown> = {
   columnProperties: [],
   pageSizeOptions,
   pagination: {
@@ -113,7 +114,7 @@ export const defaultTableConfig: TableControlStructure = {
 /**
  * @description Default TableControlStructure Token. It can be mapped, combined or overwritten by any custom or feature configuration.
  */
-export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableControlStructure>(
+export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableControlStructure<unknown>>(
   'DEFAULT_TABLE_CONFIG',
   {
     providedIn: 'root',

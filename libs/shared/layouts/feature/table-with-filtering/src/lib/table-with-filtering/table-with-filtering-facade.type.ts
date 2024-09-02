@@ -1,15 +1,21 @@
 import { InjectionToken, Signal } from '@angular/core';
-import { BaseEntity } from '@plastik/core/entities';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { BaseEntity, ViewConfig } from '@plastik/core/entities';
+import { FilterArrayPipeConfig } from '@plastik/shared/filter-array-pipe';
 import { TableControlStructure, TableSorting } from '@plastik/shared/table/entities';
 
 export interface TableWithFilteringFacade<T extends BaseEntity> {
   tableStructure: Signal<TableControlStructure<T>>;
   tableData: Signal<T[]>;
+  tableSorting?: Signal<TableSorting>;
+  tableFilter?: Signal<FilterArrayPipeConfig<T>[]>;
   count: Signal<number>;
-  viewName: string;
-  onChangeSorting(sorting: TableSorting): void;
+  formStructure: Signal<FormlyFieldConfig[]>;
+  viewConfig: Signal<ViewConfig<string>>;
+  onSorting?(sorting: TableSorting): void;
+  onSearch?(search: object): void;
 }
 
-export const TABLE_WITH_FILTERING_TOKEN = new InjectionToken<TableWithFilteringFacade<BaseEntity>>(
-  'TABLE_WITH_FILTERING_TOKEN'
+export const TABLE_WITH_FILTERING_FACADE = new InjectionToken<TableWithFilteringFacade<BaseEntity>>(
+  'TABLE_WITH_FILTERING_FACADE'
 );

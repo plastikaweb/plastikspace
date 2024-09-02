@@ -30,6 +30,7 @@ It uses internally [Material Table](https://material.angular.io/components/table
 | `data`                 | `<T[]>`                                       | The data to fill the table with a generic type annotation.             | []                                         |
 | `columnProperties`     | `TableColumnFormatting<T, FormattingTypes>[]` | Table structure skeleton.                                              |                                            |
 | `resultsLength`        | `number`                                      | The total number of items available for the current table data fields. |                                            |
+| `sort`                 | `TableSorting`                                | The sorting configuration based on column and direction.               |                                            |
 | `pagination`           | `PageEventConfig`                             | The table pagination configuration.                                    |                                            |
 | `noPagination`         | `boolean`                                     | Remove pagination component to the table.                              | false                                      |
 | `paginationVisibility` | `Partial<TablePaginationVisibility>`          | Pagination visibility configuration.                                   | All properties are set to false by default |
@@ -158,8 +159,7 @@ onChangeTablePagination(tablePagination: TablePagination) {
         hideRangeButtons: false,
         hideRangeLabel: true,
       }"
-  (changePagination)="onChangeTablePagination($event)"
->
+  (changePagination)="onChangeTablePagination($event)">
 </plastik-shared-table>
 ```
 

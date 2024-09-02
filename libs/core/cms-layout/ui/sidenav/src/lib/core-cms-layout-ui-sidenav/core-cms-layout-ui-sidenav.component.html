@@ -6,8 +6,7 @@
     [fixedInViewport]="fixedInViewport"
     [position]="position"
     [opened]="sidenavOpened"
-    (keydown.escape)="onToggleSidenav(false)"
-  >
+    (keydown.escape)="onToggleSidenav(false)">
     <ng-content select="[header]"></ng-content>
     <mat-divider></mat-divider>
     <ng-content select="[menu-items]"></ng-content>
@@ -15,7 +14,11 @@
     <ng-content select="[footer]"></ng-content>
   </mat-sidenav>
 
-  <mat-sidenav-content role="main" tabindex="-1" id="mainContent" class="bg-white p-md h-[calc(100vh-181px)] motion-safe:scroll-smooth">
+  <mat-sidenav-content
+    role="main"
+    tabindex="-1"
+    id="mainContent"
+    class="bg-white p-md h-[calc(100vh-125px)] motion-safe:scroll-smooth">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>
