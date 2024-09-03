@@ -24,7 +24,7 @@ jobs:
           yarn nx build llecoop --prod
 
       - name: Set up FTP
-        uses: SamKirkland/FTP-Deploy-Action@4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.LLECOOP_FTP_SERVER }}
           username: ${{ secrets.LLECOOP_FTP_USERNAME }}
