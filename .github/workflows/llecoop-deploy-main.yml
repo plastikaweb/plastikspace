@@ -1,0 +1,33 @@
+name: Deploy Llecoop to hosting
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          yarn install --immutable --network-timeout 1000000
+          yarn nx build llecoop --prod
+
+      - name: Set up FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.1.1
+        with:
+          server: ${{ secrets.LLECOOP_FTP_SERVER }}
+          username: ${{ secrets.LLECOOP_FTP_USERNAME }}
+          password: ${{ secrets.LLECOOP_FTP_PASSWORD }}
+          local-dir: ./dist/apps/llecoop/
+          server-dir: /home/llevator/botiga/
