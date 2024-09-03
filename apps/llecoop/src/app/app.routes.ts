@@ -1,8 +1,9 @@
-import { Route } from '@angular/router';
+import { Routes } from '@angular/router';
 
-export const appRoutes: Route[] = [
+export const appRoutes: Routes = [
   {
     path: 'category',
-    loadChildren: () => import('@plastik/llecoop/category').then(routes => routes.llecoopCategoryFeatureRoutes),
+    loadChildren: () =>
+      import('@plastik/llecoop/category').then(routes => routes.llecoopCategoryFeatureRoutes),
   },
 ];
