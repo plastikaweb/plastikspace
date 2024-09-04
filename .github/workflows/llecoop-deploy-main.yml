@@ -33,7 +33,7 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install --immutable --network-timeout 1000000
-          yarn nx build llecoop --prod --base-href /botiga.llevat.org/
+          yarn nx build llecoop --prod
 
       - name: Set up FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
@@ -42,4 +42,3 @@ jobs:
           username: ${{ secrets.LLECOOP_FTP_USERNAME }}
           password: ${{ secrets.LLECOOP_FTP_PASSWORD }}
           local-dir: ./dist/apps/llecoop/browser/
-          server-dir: /
