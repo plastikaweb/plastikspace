@@ -41,5 +41,5 @@ jobs:
           server: ${{ secrets.LLECOOP_FTP_SERVER }}
           username: ${{ secrets.LLECOOP_FTP_USERNAME }}
           password: ${{ secrets.LLECOOP_FTP_PASSWORD }}
-          local-dir: ./dist/apps/llecoop/
-          server-dir: /home/llevator/botiga/
+          local-dir: ./dist/apps/llecoop/browser/
+          server-dir: /domains/botiga.llevat.org/public_html/
