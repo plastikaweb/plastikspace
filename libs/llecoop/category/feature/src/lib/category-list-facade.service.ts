@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { inject, Injectable, signal } from '@angular/core';
-import {
-  getLlecoopSearchFeatureFormConfig,
-  LlecoopCategoryStore,
-} from '@plastik/llecoop/category/data-access';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
-import { LlecoopCategorySearchFeatureTableConfig } from '@plastik/llecoop/category/data-access';
-import { ProductCategory } from '@plastik/llecoop/entities';
+import {
+  getLlecoopSearchFeatureFormConfig,
+  LlecoopCategorySearchFeatureTableConfig,
+  LlecoopCategoryStore,
+} from '@plastik/llecoop/category/data-access';
+import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { FilterArrayPipeConfig } from '@plastik/shared/filter-array-pipe';
 import { TableWithFilteringFacade } from '@plastik/shared/list-view';
 import { TableSorting } from '@plastik/shared/table/entities';
@@ -15,7 +15,9 @@ import { TableSorting } from '@plastik/shared/table/entities';
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopCategoryListFacadeService implements TableWithFilteringFacade<ProductCategory> {
+export class LlecoopCategoryListFacadeService
+  implements TableWithFilteringFacade<LlecoopProductCategory>
+{
   private readonly store = inject(LlecoopCategoryStore);
   private readonly table = inject(LlecoopCategorySearchFeatureTableConfig);
 
@@ -38,7 +40,9 @@ export class LlecoopCategoryListFacadeService implements TableWithFilteringFacad
     this.store.setFilter(filtering);
   }
 
-  private formatSearchCriteria(searchCriteria: object): FilterArrayPipeConfig<ProductCategory>[] {
+  private formatSearchCriteria(
+    searchCriteria: object
+  ): FilterArrayPipeConfig<LlecoopProductCategory>[] {
     return Object.entries(searchCriteria).map(([key, value]) => {
       return {
         fields: this.tableStructure().filter?.[key] || [],

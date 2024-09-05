@@ -10,8 +10,8 @@ import {
   TableWithFilteringComponent,
 } from '@plastik/shared/list-view';
 import { TABLE_TOKEN } from '@plastik/shared/table/entities';
-import { LlecoopCategoryListResolver } from './llecoop-category-feature-list.resolver';
-import { LlecoopCategoryListFacadeService } from './llecoop-category-list-facade.service';
+import { LlecoopCategoryListResolver } from './category-feature-list.resolver';
+import { LlecoopCategoryListFacadeService } from './category-list-facade.service';
 
 export const llecoopCategoryFeatureRoutes: Route[] = [
   {

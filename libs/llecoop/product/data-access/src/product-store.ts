@@ -13,53 +13,53 @@ import {
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { FilterArrayPipeConfig } from '@plastik/shared/filter-array-pipe';
 import { TableSorting } from '@plastik/shared/table/entities';
 import { pipe, switchMap, tap } from 'rxjs';
-import { LlecoopCategoryFireService } from './category-fire.service';
+import { LlecoopProductFireService } from './product-fire.service';
 
-type CategoryState = {
+type ProductState = {
   loaded: boolean;
   lastUpdated: Date;
   sorting: TableSorting;
-  filter: FilterArrayPipeConfig<LlecoopProductCategory>[];
+  filter: FilterArrayPipeConfig<LlecoopProduct>[];
 };
 
-export const LlecoopCategoryStore = signalStore(
+export const LlecoopProductStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('categories'),
-  withState<CategoryState>({
+  withDevtools('products'),
+  withState<ProductState>({
     loaded: false,
     lastUpdated: new Date(),
     sorting: { active: 'name', direction: 'asc' },
     filter: [
       {
-        fields: ['name', 'description'],
+        fields: ['name', 'info'],
         value: '',
       },
     ],
   }),
-  withEntities({ entity: type<LlecoopProductCategory>(), collection: 'category' }),
-  withComputed(({ categoryIds }) => ({
-    count: computed(() => categoryIds().length),
+  withEntities({ entity: type<LlecoopProduct>(), collection: 'product' }),
+  withComputed(({ productIds }) => ({
+    count: computed(() => productIds().length),
   })),
   withMethods(
-    (store, categoryService = inject(LlecoopCategoryFireService), state = inject(Store)) => ({
+    (store, productService = inject(LlecoopProductFireService), state = inject(Store)) => ({
       getAll: rxMethod<void>(
         pipe(
           tap(() => patchState(store, { loaded: false })),
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(() =>
-            categoryService.getAll().pipe(
+            productService.getAll().pipe(
               tapResponse({
-                next: categories => {
+                next: products => {
                   const lastUpdated = new Date();
                   patchState(
                     store,
-                    setAllEntities(categories, {
-                      collection: 'category',
+                    setAllEntities(products, {
+                      collection: 'product',
                       selectId: entity => entity.id || '',
                     })
                   );
@@ -67,20 +67,20 @@ export const LlecoopCategoryStore = signalStore(
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 // eslint-disable-next-line no-console
-                error: error => console.error('Error loading categories', error),
+                error: error => console.error('Error loading products', error),
               })
             )
           )
         )
       ),
-      setSorting: (sorting: CategoryState['sorting']) => patchState(store, { sorting }),
-      setFilter: (filter: CategoryState['filter']) => patchState(store, { filter }),
+      setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),
+      setFilter: (filter: ProductState['filter']) => patchState(store, { filter }),
     })
   ),
   withHooks({
     onDestroy() {
       // eslint-disable-next-line no-console
-      console.log('Destroying category store');
+      console.log('Destroying product store');
     },
   })
 );

@@ -1,4 +1,10 @@
-import { formatCurrency, formatDate, formatNumber, formatPercent, TitleCasePipe } from '@angular/common';
+import {
+  formatCurrency,
+  formatDate,
+  formatNumber,
+  formatPercent,
+  TitleCasePipe,
+} from '@angular/common';
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
@@ -27,7 +33,7 @@ export class SharedUtilFormattersService {
       dateDigitsInfo = 'shortDate',
       locale = this.locale,
       timezone = 'UTC',
-    }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>,
+    }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
     return formatDate(value, dateDigitsInfo, locale, timezone) || '';
   }
@@ -41,7 +47,10 @@ export class SharedUtilFormattersService {
    */
   dateTimeFormatter(
     value: FormattingDateInput,
-    { locale = this.locale, timezone = 'UTC' }: Partial<Pick<FormattingExtras<unknown, 'DATE_TIME'>, 'locale' | 'timezone'>>,
+    {
+      locale = this.locale,
+      timezone = 'UTC',
+    }: Partial<Pick<FormattingExtras<unknown, 'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
     return formatDate(value, 'M/d/yy, HH:mm:ss', locale, timezone) || '';
   }
@@ -59,7 +68,7 @@ export class SharedUtilFormattersService {
     {
       numberDigitsInfo = '1.2-2',
       locale = this.locale,
-    }: Partial<Pick<FormattingExtras<unknown, 'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>,
+    }: Partial<Pick<FormattingExtras<unknown, 'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
     return formatPercent(Number(value) / 100, locale, numberDigitsInfo) || '';
   }
@@ -77,9 +86,16 @@ export class SharedUtilFormattersService {
     {
       numberDigitsInfo = '1.0-0',
       locale = this.locale,
-    }: Partial<Pick<FormattingExtras<unknown, 'CURRENCY'>, 'numberDigitsInfo' | 'locale'>>,
+      currency = '$',
+      currencyCode = 'USD',
+    }: Partial<
+      Pick<
+        FormattingExtras<unknown, 'CURRENCY'>,
+        'numberDigitsInfo' | 'locale' | 'currency' | 'currencyCode'
+      >
+    >
   ): string {
-    return formatCurrency(Number(value), locale, '$', 'USD', numberDigitsInfo) || '';
+    return formatCurrency(value, locale, currency, currencyCode, numberDigitsInfo) || '';
   }
 
   /**
@@ -92,7 +108,10 @@ export class SharedUtilFormattersService {
    */
   numberFormatter(
     value: number,
-    { numberDigitsInfo = '1.2-2', locale = this.locale }: Partial<Pick<FormattingExtras<unknown, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>,
+    {
+      numberDigitsInfo = '1.2-2',
+      locale = this.locale,
+    }: Partial<Pick<FormattingExtras<unknown, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
     return formatNumber(Number(value), locale, numberDigitsInfo) || '';
   }
@@ -117,11 +136,16 @@ export class SharedUtilFormattersService {
    */
   imageFormatter(
     value: string,
-    { title = '', classes = '' }: Partial<Pick<FormattingExtras<unknown, 'IMAGE'>, 'classes' | 'title'>>,
-    item: unknown,
+    {
+      title = '',
+      classes = '',
+    }: Partial<Pick<FormattingExtras<unknown, 'IMAGE'>, 'classes' | 'title'>>,
+    item: unknown
   ): SafeHtml {
     const imgTitle = typeof title === 'string' ? title : title(item);
-    return this.sanitizer.bypassSecurityTrustHtml(`<img alt="${imgTitle}" src="${value}" class="${classes}">`);
+    return this.sanitizer.bypassSecurityTrustHtml(
+      `<img alt="${imgTitle}" src="${value}" class="${classes}">`
+    );
   }
 
   /**
@@ -140,7 +164,13 @@ export class SharedUtilFormattersService {
     },
    * @returns { SafeHtml } The formatted value passed through the execute formatting function.
    */
-  customFormatter<T>(value: string, { execute }: PropertyFormattingConf<T>, element: T, index?: number, extraConfig?: unknown): SafeHtml {
+  customFormatter<T>(
+    value: string,
+    { execute }: PropertyFormattingConf<T>,
+    element: T,
+    index?: number,
+    extraConfig?: unknown
+  ): SafeHtml {
     return execute ? execute(value, element, index, extraConfig) : value ? value : '';
   }
 

@@ -1,6 +1,6 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { ProductCategory } from '@plastik/llecoop/entities';
+import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -13,11 +13,11 @@ import {
   providedIn: 'root',
 })
 export class LlecoopCategorySearchFeatureTableConfig
-  implements TableStructureConfig<ProductCategory>
+  implements TableStructureConfig<LlecoopProductCategory>
 {
   private readonly sanitizer = inject(DomSanitizer);
 
-  private readonly name: TableColumnFormatting<ProductCategory, 'CUSTOM'> = {
+  private readonly name: TableColumnFormatting<LlecoopProductCategory, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
@@ -31,7 +31,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     },
   };
 
-  private readonly description: TableColumnFormatting<ProductCategory, 'TEXT'> = {
+  private readonly description: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
     key: 'description',
     title: 'Descripció',
     propertyPath: 'description',
@@ -40,12 +40,12 @@ export class LlecoopCategorySearchFeatureTableConfig
     },
   };
 
-  private readonly columnProperties: TableColumnFormatting<ProductCategory, FormattingTypes>[] = [
-    this.name,
-    this.description,
-  ];
+  private readonly columnProperties: TableColumnFormatting<
+    LlecoopProductCategory,
+    FormattingTypes
+  >[] = [this.name, this.description];
 
-  getTableStructure(): WritableSignal<TableControlStructure<ProductCategory>> {
+  getTableStructure(): WritableSignal<TableControlStructure<LlecoopProductCategory>> {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return signal({

@@ -1,1 +1,1 @@
-export * from './lib/llecoop-category-feature.routes';
+export * from './lib/category-feature.routes';

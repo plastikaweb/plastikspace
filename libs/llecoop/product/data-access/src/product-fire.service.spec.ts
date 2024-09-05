@@ -2,10 +2,10 @@ import { TestBed } from '@angular/core/testing';
 import { provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { initializeApp } from 'firebase/app';
-import { LlecoopCategoryFireService } from './category-fire.service';
+import { LlecoopProductFireService } from './product-fire.service';
 
-describe('LlecoopCategoryFireService', () => {
-  let service: LlecoopCategoryFireService;
+describe('LlecoopProductFireService', () => {
+  let service: LlecoopProductFireService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -20,7 +20,7 @@ describe('LlecoopCategoryFireService', () => {
         provideFirestore(() => getFirestore()),
       ],
     });
-    service = TestBed.inject(LlecoopCategoryFireService);
+    service = TestBed.inject(LlecoopProductFireService);
   });
 
   it('should be created', () => {

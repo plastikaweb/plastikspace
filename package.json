@@ -121,6 +121,7 @@
     "@angular/cli": "~18.1.0",
     "@angular/compiler-cli": "~18.1.0",
     "@angular/language-service": "~18.1.0",
+    "@angular/localize": "^18.2.3",
     "@commitlint/cli": "19.3.0",
     "@commitlint/config-conventional": "19.2.2",
     "@jscutlery/cypress-harness": "^0.7.8",

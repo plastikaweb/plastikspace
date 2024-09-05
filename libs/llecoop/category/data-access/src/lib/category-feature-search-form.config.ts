@@ -22,10 +22,11 @@ export function getLlecoopSearchFeatureFormConfig(): WritableSignal<FormlyFieldC
               config.form?.valueChanges.pipe(tap(() => setAddOnRightVisibility(config))),
             onChanges: setAddOnRightVisibility,
           },
+          className: 'w-full',
           props: {
             type: 'search',
-            label: 'Filtrar',
-            placeholder: 'Filtar',
+            label: 'Filtrar per nom o descripció',
+            placeholder: 'Filtrar per nom o descripció',
             required: false,
             maxLength: 256,
             minLength: 2,

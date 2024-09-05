@@ -10,7 +10,7 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   tableSorting?: Signal<TableSorting>;
   tableFilter?: Signal<FilterArrayPipeConfig<T>[]>;
   count: Signal<number>;
-  formStructure: Signal<FormlyFieldConfig[]>;
+  formStructure?: Signal<FormlyFieldConfig[]>;
   viewConfig: Signal<ViewConfig<string>>;
   onSorting?(sorting: TableSorting): void;
   onSearch?(search: object): void;
