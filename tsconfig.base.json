@@ -36,6 +36,8 @@
       "@plastik/llecoop/category": ["libs/llecoop/category/feature/src/index.ts"],
       "@plastik/llecoop/category/data-access": ["libs/llecoop/category/data-access/src/index.ts"],
       "@plastik/llecoop/entities": ["libs/llecoop/entities/src/index.ts"],
+      "@plastik/llecoop/product/data-access": ["libs/llecoop/product/data-access/src/index.ts"],
+      "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
       "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
       "@plastik/nasa-images/faqs": ["libs/nasa-images/faqs/feature/src/index.ts"],
       "@plastik/nasa-images/search": ["libs/nasa-images/search/feature/src/index.ts"],

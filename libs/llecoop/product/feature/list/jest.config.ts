@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'llecoop-category-data-access',
-  preset: '../../../../jest.preset.js',
+  displayName: 'list',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/llecoop/category/data-access',
+  coverageDirectory: '../../../../../coverage/libs/llecoop/product/feature/list',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

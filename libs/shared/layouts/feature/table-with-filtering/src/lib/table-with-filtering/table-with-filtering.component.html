@@ -5,7 +5,7 @@
 
 <plastik-shared-form-feature
   class="flex flex-row items-end content-center justify-between filters-box"
-  [fields]="facade.formStructure() || []"
+  [fields]="facade.formStructure?.() || []"
   [model]="{ text: '' }"
   [submitAvailable]="false"
   (changeEvent)="onChangeFiltering($event)">

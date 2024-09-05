@@ -1,5 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MatPaginatorIntl } from '@angular/material/paginator';
@@ -69,6 +69,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: ENVIRONMENT,
       useValue: environment,
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'ca-ES',
     },
     {
       provide: TitleStrategy,

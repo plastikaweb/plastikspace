@@ -17,8 +17,14 @@ export type FormattingTypes =
   | 'CUSTOM'
   | 'TEXT';
 
-type FormattingTypesNumeric = Extract<FormattingTypes, 'DATE' | 'DATE_TIME' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER'>;
-type FormattingTypesDefault = Extract<FormattingTypes, 'BOOLEAN_WITH_CONTROL' | 'LINK' | 'CUSTOM' | 'TEXT' | 'TITLE_CASE'>;
+type FormattingTypesNumeric = Extract<
+  FormattingTypes,
+  'DATE' | 'DATE_TIME' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER'
+>;
+type FormattingTypesDefault = Extract<
+  FormattingTypes,
+  'BOOLEAN_WITH_CONTROL' | 'LINK' | 'CUSTOM' | 'TEXT' | 'TITLE_CASE'
+>;
 
 /**
  * @description The formatting object type in `DataFormatService` must extend from this.
@@ -48,6 +54,8 @@ type FormattingNumericExtras = Partial<{
   numberDigitsInfo: string;
   locale: string;
   timezone: string;
+  currency: string;
+  currencyCode: string;
 }>;
 
 /**
@@ -78,9 +86,12 @@ type PropertyFormattingTypeDef<OBJ, TYPE extends FormattingTypes> = {
   formatting: PropertyFormattingConf<OBJ, TYPE>;
 };
 
-type PropertyFormattingDefault<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormattingTypeDef<OBJ, FormattingTypesDefault>;
-type PropertyFormattingImage<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormattingTypeDef<OBJ, 'IMAGE'>;
-type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> & PropertyFormattingTypeDef<OBJ, FormattingTypesNumeric>;
+type PropertyFormattingDefault<OBJ> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, FormattingTypesDefault>;
+type PropertyFormattingImage<OBJ> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, 'IMAGE'>;
+type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, FormattingTypesNumeric>;
 
 /**
  * @description The blueprint for any formatting item constraint by its FormattingTypes value.

@@ -8,5 +8,9 @@
     "types": []
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../data-access/src/lib/llecoop-category-feature-table.config.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../data-access/src/lib/category-feature-table.config.ts",
+    "src/lib/category-list-facade.service.ts"
+  ]
 }

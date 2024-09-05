@@ -51,3 +51,6 @@ pa11y-ci-report
 
 # firebase
 **/firebase.*
+
+# trash
+/trash

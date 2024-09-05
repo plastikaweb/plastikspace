@@ -1,3 +1,3 @@
+export * from './lib/category-feature-search-form.config';
+export * from './lib/category-feature-table.config';
 export * from './lib/category-store';
-export * from './lib/llecoop-category-feature-search-form.config';
-export * from './lib/llecoop-category-feature-table.config';
