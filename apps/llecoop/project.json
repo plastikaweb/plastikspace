@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/llecoop",
         "index": "libs/core/ng-entry-html/util/src/index.html",
         "browser": "apps/llecoop/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": ["zone.js", "@angular/localize/init"],
         "tsConfig": "apps/llecoop/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [

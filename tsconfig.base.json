@@ -72,5 +72,5 @@
   "angularCompilerOptions": {
     "strictTemplates": true
   },
-  "exclude": ["node_modules", "tmp", "cypress"]
+  "exclude": ["node_modules", "tmp", "cypress", "./cypress.config.ts", "**/*.cy.tsx"]
 }
