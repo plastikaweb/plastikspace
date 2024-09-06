@@ -1,5 +1,5 @@
 {
-  "extends": ["../../../../../.eslintrc.json", "../../../../../apps/llecoop/.eslintrc.json"],
+  "extends": ["../../../.eslintrc.json"],
   "ignorePatterns": ["!**/*"],
   "overrides": [
     {

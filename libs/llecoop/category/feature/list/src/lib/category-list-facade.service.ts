@@ -2,6 +2,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import {
   getLlecoopSearchFeatureFormConfig,
   LlecoopCategorySearchFeatureTableConfig,
@@ -9,7 +10,6 @@ import {
 } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { FilterArrayPipeConfig } from '@plastik/shared/filter-array-pipe';
-import { TableWithFilteringFacade } from '@plastik/shared/list-view';
 import { TableSorting } from '@plastik/shared/table/entities';
 
 @Injectable({
@@ -24,7 +24,7 @@ export class LlecoopCategoryListFacadeService
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'category')[0]);
 
   tableStructure = this.table.getTableStructure();
-  tableData = this.store.categoryEntities;
+  tableData = this.store.entities;
   tableSorting = this.store.sorting;
   tableFilter = this.store.filter;
   count = this.store.count;

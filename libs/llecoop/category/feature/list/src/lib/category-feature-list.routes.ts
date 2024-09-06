@@ -1,14 +1,12 @@
 import { Route } from '@angular/router';
-import { FILTER_FORM_TOKEN, STORE_TOKEN } from '@plastik/core/entities';
+import { FILTER_FORM_TOKEN } from '@plastik/core/entities';
+import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plastik/core/list-view';
 import {
   getLlecoopSearchFeatureFormConfig,
   LlecoopCategorySearchFeatureTableConfig,
   LlecoopCategoryStore,
 } from '@plastik/llecoop/category/data-access';
-import {
-  TABLE_WITH_FILTERING_FACADE,
-  TableWithFilteringComponent,
-} from '@plastik/shared/list-view';
+import { STORE_TOKEN } from '@plastik/llecoop/data-access';
 import { TABLE_TOKEN } from '@plastik/shared/table/entities';
 import { LlecoopCategoryListResolver } from './category-feature-list.resolver';
 import { LlecoopCategoryListFacadeService } from './category-list-facade.service';

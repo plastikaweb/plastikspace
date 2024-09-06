@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { JsonPipe, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { FilterArrayPipe } from '@plastik/shared/filter-array-pipe';
@@ -16,6 +16,7 @@ import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type'
     TitleCasePipe,
     MatIconModule,
     FilterArrayPipe,
+    JsonPipe,
   ],
   templateUrl: './table-with-filtering.component.html',
   styleUrl: './table-with-filtering.component.scss',
