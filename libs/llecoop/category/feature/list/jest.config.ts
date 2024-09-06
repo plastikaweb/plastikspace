@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'llecoop-category-feature',
-  preset: '../../../../jest.preset.js',
+  displayName: 'llecoop-category-feature-list',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/llecoop/category/feature',
+  coverageDirectory: '../../../../../coverage/libs/llecoop/category/feature/list',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

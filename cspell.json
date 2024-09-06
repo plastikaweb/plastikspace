@@ -1,25 +1,10 @@
 {
   "version": "0.2",
-  "language": "ca-ES, ca",
+  "language": "ca-ES, ca, en-ES, en",
   "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
   "ignorePaths": [],
   "dictionaryDefinitions": [],
-  "words": [
-    "anterior",
-    "buidar",
-    "Buscar",
-    "Facade",
-    "jest",
-    "latinize",
-    "latinized",
-    "pàgina",
-    "pagination",
-    "prettier",
-    "Primera",
-    "següent",
-    "Última",
-    "valor"
-  ],
+  "words": ["Llecoop", "preexperimental", "prellecoop", "prenasa"],
   "ignoreWords": [],
   "import": []
 }

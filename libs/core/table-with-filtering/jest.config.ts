@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'llecoop-product-feature-list',
-  preset: '../../../../../jest.preset.js',
+  displayName: 'core-table-with-filtering',
+  preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../../coverage/libs/llecoop/product/feature/list',
+  coverageDirectory: '../../../..//coverage/libs/core/table-with-filtering',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

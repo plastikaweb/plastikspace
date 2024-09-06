@@ -4,7 +4,6 @@ import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
-  type,
   withComputed,
   withHooks,
   withMethods,
@@ -13,19 +12,13 @@ import {
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { LlecoopFeatureStore } from '@plastik/llecoop/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
-import { FilterArrayPipeConfig } from '@plastik/shared/filter-array-pipe';
-import { TableSorting } from '@plastik/shared/table/entities';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopCategoryFireService } from './category-fire.service';
 
-type CategoryState = {
-  loaded: boolean;
-  lastUpdated: Date;
-  sorting: TableSorting;
-  filter: FilterArrayPipeConfig<LlecoopProductCategory>[];
-};
+type CategoryState = LlecoopFeatureStore<LlecoopProductCategory>;
 
 export const LlecoopCategoryStore = signalStore(
   { providedIn: 'root' },
@@ -41,9 +34,9 @@ export const LlecoopCategoryStore = signalStore(
       },
     ],
   }),
-  withEntities({ entity: type<LlecoopProductCategory>(), collection: 'category' }),
-  withComputed(({ categoryIds }) => ({
-    count: computed(() => categoryIds().length),
+  withEntities<LlecoopProductCategory>(),
+  withComputed(({ ids }) => ({
+    count: computed(() => ids().length),
   })),
   withMethods(
     (store, categoryService = inject(LlecoopCategoryFireService), state = inject(Store)) => ({
@@ -59,7 +52,6 @@ export const LlecoopCategoryStore = signalStore(
                   patchState(
                     store,
                     setAllEntities(categories, {
-                      collection: 'category',
                       selectId: entity => entity.id || '',
                     })
                   );

@@ -4,7 +4,6 @@ import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
-  type,
   withComputed,
   withHooks,
   withMethods,
@@ -13,19 +12,13 @@ import {
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { LlecoopFeatureStore } from '@plastik/llecoop/data-access';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
-import { FilterArrayPipeConfig } from '@plastik/shared/filter-array-pipe';
-import { TableSorting } from '@plastik/shared/table/entities';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopProductFireService } from './product-fire.service';
 
-type ProductState = {
-  loaded: boolean;
-  lastUpdated: Date;
-  sorting: TableSorting;
-  filter: FilterArrayPipeConfig<LlecoopProduct>[];
-};
+type ProductState = LlecoopFeatureStore<LlecoopProduct>;
 
 export const LlecoopProductStore = signalStore(
   { providedIn: 'root' },
@@ -41,9 +34,9 @@ export const LlecoopProductStore = signalStore(
       },
     ],
   }),
-  withEntities({ entity: type<LlecoopProduct>(), collection: 'product' }),
-  withComputed(({ productIds }) => ({
-    count: computed(() => productIds().length),
+  withEntities<LlecoopProduct>(),
+  withComputed(({ ids }) => ({
+    count: computed(() => ids().length),
   })),
   withMethods(
     (store, productService = inject(LlecoopProductFireService), state = inject(Store)) => ({
@@ -59,7 +52,6 @@ export const LlecoopProductStore = signalStore(
                   patchState(
                     store,
                     setAllEntities(products, {
-                      collection: 'product',
                       selectId: entity => entity.id || '',
                     })
                   );

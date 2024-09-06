@@ -4,7 +4,7 @@ export const appRoutes: Routes = [
   {
     path: 'category',
     loadChildren: () =>
-      import('@plastik/llecoop/category').then(routes => routes.llecoopCategoryFeatureRoutes),
+      import('@plastik/llecoop/category/list').then(routes => routes.llecoopCategoryFeatureRoutes),
   },
   {
     path: 'product',

@@ -1,13 +1,13 @@
-# table-with-filtering
+# core-table-with-filtering
 
-- [table-with-filtering](#table-with-filtering)
+- [core-table-with-filtering](#core-table-with-filtering)
   - [Description](#description)
   - [How to use](#how-to-use)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-A shared feature component that displays a table with filtering capabilities.
+A core feature component that displays a table with filtering capabilities.
 
 ## How to use
 
@@ -16,10 +16,7 @@ A shared feature component that displays a table with filtering capabilities.
 
 ```typescript
 import { STORE_TOKEN } from '@plastik/core/entities';
-import {
-  TABLE_WITH_FILTERING_FACADE,
-  TableWithFilteringComponent,
-} from '@plastik/shared/list-view';
+import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plastik/core/list-view';
 
 export const exampleFeatureRoutes: Route[] = [
   {
@@ -53,4 +50,4 @@ export const exampleFeatureRoutes: Route[] = [
 
 ## Running unit tests
 
-Run `nx test table-with-filtering` to execute the unit tests.
+Run `nx test core-table-with-filtering` to execute the unit tests.

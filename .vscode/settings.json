@@ -44,17 +44,5 @@
     }
   },
   "angular.log": "verbose",
-  "cSpell.words": [
-    "Comandes",
-    "Etiquetes",
-    "firebaseapp",
-    "Llecoop",
-    "Llevat",
-    "Perfil",
-    "Productes",
-    "sessió",
-    "Tancar",
-    "Usuaris"
-  ],
   "editor.formatOnPaste": true
 }

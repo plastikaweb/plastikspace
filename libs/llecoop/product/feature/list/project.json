@@ -1,5 +1,5 @@
 {
-  "name": "list",
+  "name": "llecoop-product-feature-list",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/llecoop/product/feature/list/src",
   "prefix": "plastik",
