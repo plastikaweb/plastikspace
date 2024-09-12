@@ -1,6 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { ButtonConfig } from '@plastik/shared/button';
 import { LayoutPosition, SvgIconConfig } from '@plastik/shared/entities';
+import { Observable } from 'rxjs';
 
 export type ViewConfigRoute<T extends string> =
   | `/${Lowercase<T>}`
@@ -39,6 +40,7 @@ export interface CoreCmsLayoutHeaderConfig {
     config: ButtonConfig[];
   };
   menu?: {
+    label?: string | Observable<string>;
     position: LayoutPosition;
     config: HeaderMenuConfig<string>[];
   };

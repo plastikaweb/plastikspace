@@ -1,0 +1,22 @@
+<div class="flex items-center justify-center min-h-screen contain-layout">
+  <mat-card appearance="outlined" class="flex items-center justify-center align-middle max-w-third">
+    <mat-card-header>
+      <mat-card-title class="flex justify-center align-middle gap-sub">
+        @if (logo()) {
+          <img [src]="logo()" [alt]="title()" />
+        }
+        @if (title()) {
+          <span>{{ title() }}</span>
+        }
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <plastik-shared-form-feature
+        [fields]="facade.formStructure?.() || []"
+        [submitConfig]="{ label: label(), buttonStyle: buttonStyle() }"
+        (changeEvent)="facade.onSubmit($event)">
+      </plastik-shared-form-feature>
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,6 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -33,7 +34,6 @@ import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { headerConfig, viewConfig } from './cms-layout-config';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
@@ -41,6 +41,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
+    provideAuth(() => getAuth()),
     provideStore(),
     importProvidersFrom(
       AngularSvgIconModule.forRoot(),
@@ -78,7 +79,7 @@ export const appConfig: ApplicationConfig = {
       provide: TitleStrategy,
       useClass: PrefixTitleService,
     },
-    { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig },
+    { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useFactory: headerConfig },
     { provide: VIEW_CONFIG, useValue: getVisibleNavigationList(viewConfig) },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

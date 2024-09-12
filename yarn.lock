@@ -4771,6 +4771,11 @@
     "@sigstore/core" "^1.1.0"
     "@sigstore/protobuf-specs" "^0.3.2"
 
+"@simondotm/nx-firebase@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@simondotm/nx-firebase/-/nx-firebase-2.3.0.tgz#d7e77f8b86c08c107621bf6d7d46638e69b7591a"
+  integrity sha512-6wb86yyl1UieqAL/9MvGFWo2MUHBL/1/HKRT10iuAEAmj1ETd5+hMYOVgR08Zy85UQJALWRq8DgcSAW1Z2aLGA==
+
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"
@@ -9791,7 +9796,7 @@ findup-sync@^4.0.0:
     micromatch "^4.0.2"
     resolve-dir "^1.0.1"
 
-firebase@^10.12.0, firebase@^10.12.5:
+firebase@^10.12.0:
   version "10.13.0"
   resolved "https://registry.yarnpkg.com/firebase/-/firebase-10.13.0.tgz#f2c802ccbad9c1335452fd0f326fb3208bcd6102"
   integrity sha512-a8gm8c9CYO98QuXJn7m5W5Gj7kHV8fme81/mQ9dBs+VMz9uI5HdavnMVPXCILputpZFMFpiKK+u7VVsn5lQg+w==
