@@ -1,0 +1,12 @@
+<h2 class="flex items-center content-center gap-sub">
+  <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ facade.viewConfig().icon }}</mat-icon>
+  <span>{{ facade.viewConfig().title | titlecase }}</span>
+</h2>
+
+<plastik-shared-form-feature
+  class="flex flex-row items-end content-center justify-between filters-box"
+  [fields]="facade.formStructure?.() || []"
+  [model]="{ text: '' }"
+  [submitAvailable]="false"
+  (changeEvent)="onSubmit($event)">
+</plastik-shared-form-feature>

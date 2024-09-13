@@ -16,7 +16,6 @@ import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type'
     TitleCasePipe,
     MatIconModule,
     FilterArrayPipe,
-    JsonPipe,
   ],
   templateUrl: './table-with-filtering.component.html',
   styleUrl: './table-with-filtering.component.scss',

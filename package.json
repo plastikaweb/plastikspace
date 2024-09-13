@@ -28,7 +28,6 @@
     "affected:dep-graph": "nx affected:dep-graph",
     "format:write": "nx format:write",
     "format:check": "nx format:check",
-    "prepare": "husky install",
     "update": "nx migrate latest",
     "workspace-generator": "nx workspace-generator",
     "dep-graph": "nx dep-graph",
