@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
-import { SharedFormUiYearPickerTypeComponent } from '@plastik/shared/form/ui';
+import {
+  InputPasswordWithVisibilityTypeComponent,
+  SharedFormUiYearPickerTypeComponent,
+} from '@plastik/shared/form/ui';
 
 import { addonsExtension } from './addons-extension';
 import { FormlyAddonsWrapperComponent } from './addons-wrapper/formly-addons-wrapper.component';
@@ -35,6 +38,10 @@ import {
         {
           name: 'year-picker',
           component: SharedFormUiYearPickerTypeComponent,
+        },
+        {
+          name: 'password-with-visibility',
+          component: InputPasswordWithVisibilityTypeComponent,
         },
       ],
     }),

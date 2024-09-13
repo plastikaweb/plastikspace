@@ -106,8 +106,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
     this.notificationFacade.dismiss();
   }
 
-  onSendAction(name: string): void {
-    // eslint-disable-next-line no-console
-    console.log(name);
+  onSendAction(action: () => void): void {
+    action();
   }
 }

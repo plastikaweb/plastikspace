@@ -13,7 +13,7 @@ export interface ViewConfig<T extends string> {
     header: string;
   };
   children?: Array<ViewConfig<T>>;
-  route: [ViewConfigRoute<T>];
+  route: [ViewConfigRoute<T> | string];
   includedInNavigation?: boolean;
   routerLinkActiveOptionsExact?: boolean;
 }
@@ -30,6 +30,10 @@ export type ViewsConfigRecord<T extends string> = Record<T, ViewConfig<T>>;
  * @param {ViewsConfigRecord} viewsConfig The app views configuration.
  * @returns {ViewConfig[]}.
  */
-export function getVisibleNavigationList<T extends string>(viewsConfig: ViewsConfigRecord<T>): ViewConfig<T>[] {
-  return collectionToArray<ViewConfig<T>>(viewsConfig).filter(viewConfig => viewConfig.includedInNavigation);
+export function getVisibleNavigationList<T extends string>(
+  viewsConfig: ViewsConfigRecord<T>
+): ViewConfig<T>[] {
+  return collectionToArray<ViewConfig<T>>(viewsConfig).filter(
+    viewConfig => viewConfig.includedInNavigation
+  );
 }

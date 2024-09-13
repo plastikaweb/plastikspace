@@ -1,5 +1,6 @@
+import { redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { Route } from '@angular/router';
-import { FILTER_FORM_TOKEN } from '@plastik/core/entities';
+import { FORM_TOKEN } from '@plastik/core/entities';
 import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plastik/core/list-view';
 import {
   getLlecoopSearchFeatureFormConfig,
@@ -11,6 +12,8 @@ import { TABLE_TOKEN } from '@plastik/shared/table/entities';
 import { LlecoopCategoryListResolver } from './category-feature-list.resolver';
 import { LlecoopCategoryListFacadeService } from './category-list-facade.service';
 
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+
 export const llecoopCategoryFeatureRoutes: Route[] = [
   {
     path: '',
@@ -19,6 +22,10 @@ export const llecoopCategoryFeatureRoutes: Route[] = [
     resolve: {
       data: LlecoopCategoryListResolver,
     },
+    // canActivate: [AuthGuard],
+    // data: {
+    //   authGuardPipe: redirectUnauthorizedToLogin,
+    // },
     providers: [
       {
         provide: STORE_TOKEN,
@@ -33,7 +40,7 @@ export const llecoopCategoryFeatureRoutes: Route[] = [
         useExisting: LlecoopCategorySearchFeatureTableConfig,
       },
       {
-        provide: FILTER_FORM_TOKEN,
+        provide: FORM_TOKEN,
         useValue: getLlecoopSearchFeatureFormConfig(),
       },
     ],
