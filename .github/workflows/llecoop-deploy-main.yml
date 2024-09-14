@@ -33,8 +33,8 @@ jobs:
       - name: Install dependencies
         run: |
           yarn install --immutable --network-timeout 1000000
-          yarn nx build llecoop --prod
-
+          yarn nx build llecoop --prod --skip-nx-cache
+      # yarn nx build llecoop --prod
       - name: Set up FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:

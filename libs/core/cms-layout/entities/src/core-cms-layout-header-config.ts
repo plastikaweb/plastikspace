@@ -32,6 +32,7 @@ export type HeaderMenuConfig<T extends string> = HeaderMenuConfigBase<T> & {
  */
 export interface CoreCmsLayoutHeaderConfig {
   showToggleMenuButton: boolean;
+  sidenavPosition?: LayoutPosition;
   title: string;
   extendedTitle?: string;
   mainIcon?: SvgIconConfig;

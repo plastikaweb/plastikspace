@@ -18,9 +18,8 @@ import { CoreNotificationUiMatSnackbarDirective } from '@plastik/core/notificati
 import { RouterFacade } from '@plastik/core/router-state';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SharedButtonUiComponent } from '@plastik/shared/button';
-import { LayoutPosition } from '@plastik/shared/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { Subject, map, takeUntil } from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'plastik-core-cms-layout-feature',
   standalone: true,
@@ -48,13 +47,13 @@ import { Subject, map, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
-  @Input() sidenavPosition: LayoutPosition = 'start';
   @Input() hideFooter = false;
 
   currentDate = new Date();
   sidenavOpened$ = this.layoutFacade.sidenavOpened$;
   isMobile$ = this.layoutFacade.isMobile$;
   isActive$ = this.layoutFacade.isActive$;
+  sidenavPosition = this.layoutFacade.headerConfig?.sidenavPosition || 'start';
   headerConfig = this.layoutFacade.headerConfig;
   sidenavConfig = this.layoutFacade.sidenavConfig;
   notificationConfig$ = this.notificationFacade.config$;
@@ -75,7 +74,8 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
       .observe([Breakpoints.Handset])
       .pipe(
         takeUntil(this.destroyed$),
-        map(handset => handset.matches)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        map((handset: any) => handset.matches)
       )
       .subscribe((matches: boolean) => {
         if (matches) this.onToggleSidenav(!matches);

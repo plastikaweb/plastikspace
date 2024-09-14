@@ -12,6 +12,7 @@ import {
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore } from '@plastik/llecoop/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
@@ -65,11 +66,33 @@ export const LlecoopCategoryStore = signalStore(
           )
         )
       ),
+      create: rxMethod<Partial<LlecoopProductCategory>>(
+        pipe(
+          tap(() => patchState(store, { loaded: false })),
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap((category: Partial<LlecoopProductCategory>) => {
+            return categoryService.create(category).pipe(
+              tapResponse({
+                next: () => {
+                  patchState(store, { loaded: true });
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
+                },
+                // eslint-disable-next-line no-console
+                error: error => console.error('Error creating category', error),
+              })
+            );
+          })
+        )
+      ),
       setSorting: (sorting: CategoryState['sorting']) => patchState(store, { sorting }),
       setFilter: (filter: CategoryState['filter']) => patchState(store, { filter }),
     })
   ),
   withHooks({
+    onInit({ getAll }) {
+      getAll();
+    },
     onDestroy() {
       // eslint-disable-next-line no-console
       console.log('Destroying category store');

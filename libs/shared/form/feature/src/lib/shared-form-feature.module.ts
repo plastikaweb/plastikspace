@@ -3,6 +3,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
+  InputColorPickerTypeComponent,
   InputPasswordWithVisibilityTypeComponent,
   SharedFormUiYearPickerTypeComponent,
 } from '@plastik/shared/form/ui';
@@ -42,6 +43,10 @@ import {
         {
           name: 'password-with-visibility',
           component: InputPasswordWithVisibilityTypeComponent,
+        },
+        {
+          name: 'color-picker',
+          component: InputColorPickerTypeComponent,
         },
       ],
     }),

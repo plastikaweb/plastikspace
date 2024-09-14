@@ -37,3 +37,5 @@ export function getVisibleNavigationList<T extends string>(
     viewConfig => viewConfig.includedInNavigation
   );
 }
+
+export type ViewConfigUI = Pick<ViewConfig<string>, 'icon' | 'title'>;

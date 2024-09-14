@@ -1,6 +1,8 @@
-import { JsonPipe, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { FilterArrayPipe } from '@plastik/shared/filter-array-pipe';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { TableSorting } from '@plastik/shared/table/entities';
@@ -15,8 +17,9 @@ import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type'
     SharedFormFeatureModule,
     TitleCasePipe,
     MatIconModule,
+    RouterLink,
+    MatButtonModule,
     FilterArrayPipe,
-    JsonPipe,
   ],
   templateUrl: './table-with-filtering.component.html',
   styleUrl: './table-with-filtering.component.scss',

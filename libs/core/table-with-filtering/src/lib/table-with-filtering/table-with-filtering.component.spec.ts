@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type';
 import { TableWithFilteringComponent } from './table-with-filtering.component';
 
@@ -11,6 +12,7 @@ describe('TableWithFilteringComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TableWithFilteringComponent],
       providers: [
+        provideRouter([]),
         {
           provide: TABLE_WITH_FILTERING_FACADE,
           useValue: {
