@@ -39,6 +39,7 @@
       ],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
       "@plastik/llecoop/category/data-access": ["libs/llecoop/category/data-access/src/index.ts"],
+      "@plastik/llecoop/category/detail": ["libs/llecoop/category/feature/detail/src/index.ts"],
       "@plastik/llecoop/category/list": ["libs/llecoop/category/feature/list/src/index.ts"],
       "@plastik/llecoop/data-access": ["libs/llecoop/data-access/src/index.ts"],
       "@plastik/llecoop/entities": ["libs/llecoop/entities/src/index.ts"],

@@ -16,8 +16,8 @@
           @if (headerConfig.mainIcon; as icon) {
             <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
           }
-          <span class="block text-xl md:hidden">{{ headerConfig.title }}</span>
-          <span class="hidden md:block">{{
+          <span class="block text-xl sm:hidden">{{ headerConfig.title }}</span>
+          <span class="hidden sm:block">{{
             headerConfig.extendedTitle || headerConfig.title
           }}</span>
         </a>

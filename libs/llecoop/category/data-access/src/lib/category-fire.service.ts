@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,5 +14,9 @@ export class LlecoopCategoryFireService {
     return collectionData(this.categoryCollection, { idField: 'id' }) as Observable<
       LlecoopProductCategory[]
     >;
+  }
+
+  create(category: Partial<LlecoopProductCategory>) {
+    return of(addDoc(this.categoryCollection, category));
   }
 }

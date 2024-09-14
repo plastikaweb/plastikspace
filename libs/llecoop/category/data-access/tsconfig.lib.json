@@ -11,6 +11,7 @@
   "include": [
     "src/**/*.ts",
     "src/lib/category-feature-table.config.ts",
-    "../feature/list/src/lib/category-list-facade.service.ts"
+    "../feature/list/src/lib/category-list-facade.service.ts",
+    "../feature/list/src/lib/category-feature-search-form.config.ts"
   ]
 }

@@ -3,14 +3,12 @@ import { inject, Injectable, signal } from '@angular/core';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import {
-  getLlecoopSearchFeatureFormConfig,
-  LlecoopCategorySearchFeatureTableConfig,
-  LlecoopCategoryStore,
-} from '@plastik/llecoop/category/data-access';
+import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { FilterArrayPipeConfig } from '@plastik/shared/filter-array-pipe';
 import { TableSorting } from '@plastik/shared/table/entities';
+import { getLlecoopSearchFeatureFormConfig } from './category-feature-search-form.config';
+import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-table.config';
 
 @Injectable({
   providedIn: 'root',

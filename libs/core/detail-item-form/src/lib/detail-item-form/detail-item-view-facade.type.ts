@@ -1,13 +1,14 @@
 import { InjectionToken, Signal } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { ViewConfig } from '@plastik/core/entities';
+import { BaseEntity, ViewConfigUI } from '@plastik/core/entities';
 
-export interface DetailItemViewFacade {
-  formStructure?: Signal<FormlyFieldConfig[]>;
-  viewConfig: Signal<ViewConfig<string>>;
-  onSubmit?(data: object): void;
+export interface DetailItemViewFacade<T extends BaseEntity> {
+  formStructure: Signal<FormlyFieldConfig[]>;
+  viewConfig: Signal<ViewConfigUI>;
+  model?: T;
+  onSubmit(data: object): void;
 }
 
-export const DETAIL_ITEM_VIEW_FACADE = new InjectionToken<DetailItemViewFacade>(
+export const DETAIL_ITEM_VIEW_FACADE = new InjectionToken<DetailItemViewFacade<BaseEntity>>(
   'DETAIL_ITEM_VIEW_FACADE'
 );

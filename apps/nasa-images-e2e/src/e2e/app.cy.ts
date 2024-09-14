@@ -9,7 +9,6 @@ const sidenavList = () => cy.getEl('sidenav-list');
 const sidenavListItems = () => sidenavList().children('mat-list-item');
 
 const footer = () => cy.getEl('layout-footer');
-const footerIcon = () => footer().find('svg-icon');
 const footerLink = () => footer().find('a');
 
 describe('nasa-images layout', () => {

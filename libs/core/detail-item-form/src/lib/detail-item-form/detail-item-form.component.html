@@ -1,12 +1,16 @@
-<h2 class="flex items-center content-center gap-sub">
-  <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ facade.viewConfig().icon }}</mat-icon>
-  <span>{{ facade.viewConfig().title | titlecase }}</span>
-</h2>
+<div class="flex flex-wrap items-center justify-center md:justify-between gap-sub">
+  <h2 class="flex items-center content-center gap-sub">
+    <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ facade.viewConfig().icon }}</mat-icon>
+    <span>{{ facade.viewConfig().title | titlecase }}</span>
+  </h2>
+  <button type="button" mat-flat-button color="accent" class="text-white" [routerLink]="['../']">
+    <mat-icon>arrow_back</mat-icon> Tornar al llistat
+  </button>
+</div>
 
 <plastik-shared-form-feature
-  class="flex flex-row items-end content-center justify-between filters-box"
-  [fields]="facade.formStructure?.() || []"
-  [model]="{ text: '' }"
-  [submitAvailable]="false"
+  class="block w-full lg:w-1/2"
+  [fields]="facade.formStructure() || []"
+  [model]="{}"
   (changeEvent)="onSubmit($event)">
 </plastik-shared-form-feature>

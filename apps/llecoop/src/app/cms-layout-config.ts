@@ -10,8 +10,9 @@ export function headerConfig(): CoreCmsLayoutHeaderConfig {
   const firebaseAuthService = inject(FirebaseAuthService);
   return {
     showToggleMenuButton: true,
+    sidenavPosition: 'start',
     mainIcon: { iconPath: 'assets/img/favicon.svg', svgClass: 'w-lg h-lg' },
-    title: 'El Llevat',
+    title: '',
     extendedTitle: 'El Llevat',
     menu: {
       label: firebaseAuthService.user$.pipe(map(user => user?.email || 'welcome')),
