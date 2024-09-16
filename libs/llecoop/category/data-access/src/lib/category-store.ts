@@ -36,8 +36,16 @@ export const LlecoopCategoryStore = signalStore(
     ],
   }),
   withEntities<LlecoopProductCategory>(),
-  withComputed(({ ids }) => ({
+  withComputed(({ ids, entities }) => ({
     count: computed(() => ids().length),
+    selectOptions: computed(() => {
+      return entities()
+        .map(category => ({
+          label: category.name?.toLowerCase(),
+          value: category,
+        }))
+        .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+    }),
   })),
   withMethods(
     (store, categoryService = inject(LlecoopCategoryFireService), state = inject(Store)) => ({

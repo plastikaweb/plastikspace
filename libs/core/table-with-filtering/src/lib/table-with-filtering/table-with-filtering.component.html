@@ -3,7 +3,12 @@
     <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ facade.viewConfig().icon }}</mat-icon>
     <span>{{ facade.viewConfig().title | titlecase }}</span>
   </h2>
-  <button type="button" mat-flat-button color="accent" class="text-white" [routerLink]="['./nova']">
+  <button
+    type="button"
+    mat-flat-button
+    color="accent"
+    class="text-white"
+    [routerLink]="['./crear']">
     <mat-icon>add</mat-icon> Afegir
   </button>
 </div>

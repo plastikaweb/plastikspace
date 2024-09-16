@@ -2,7 +2,10 @@
   @apply border-r-0 border-r-transparent;
 }
 
-.mat-mdc-form-field-icon-suffix,
+.mat-mdc-form-field-icon-suffix {
+  @apply pr-sm;
+}
+
 .mat-mdc-form-field-icon-prefix {
-  @apply px-sm;
+  @apply pl-sm;
 }

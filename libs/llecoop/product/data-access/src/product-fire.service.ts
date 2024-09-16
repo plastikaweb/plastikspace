@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, collectionData, Firestore } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -14,5 +14,9 @@ export class LlecoopProductFireService {
     return collectionData(this.productCollection, { idField: 'id' }) as Observable<
       LlecoopProduct[]
     >;
+  }
+
+  create(product: Partial<LlecoopProduct>) {
+    return of(addDoc(this.productCollection, product));
   }
 }

@@ -1,9 +1,8 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { signal, WritableSignal } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-export function getLlecoopDetailFormConfig(): WritableSignal<FormlyFieldConfig[]> {
-  return signal([
+export function getLlecoopCategoryDetailFormConfig(): FormlyFieldConfig[] {
+  return [
     {
       fieldGroupClassName: 'flex flex-row flex-wrap gap-sm',
       fieldGroup: [
@@ -44,5 +43,5 @@ export function getLlecoopDetailFormConfig(): WritableSignal<FormlyFieldConfig[]
         },
       ],
     },
-  ]);
+  ];
 }
