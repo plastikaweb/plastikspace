@@ -11,6 +11,7 @@ export type FormattingTypes =
   | 'CURRENCY'
   | 'NUMBER'
   | 'BOOLEAN_WITH_CONTROL'
+  | 'BOOLEAN_WITH_ICON'
   | 'TITLE_CASE'
   | 'IMAGE'
   | 'LINK'
@@ -21,6 +22,8 @@ type FormattingTypesNumeric = Extract<
   FormattingTypes,
   'DATE' | 'DATE_TIME' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER'
 >;
+type FormattingTypesBoolean = Extract<FormattingTypes, 'BOOLEAN_WITH_ICON'>;
+
 type FormattingTypesDefault = Extract<
   FormattingTypes,
   'BOOLEAN_WITH_CONTROL' | 'LINK' | 'CUSTOM' | 'TEXT' | 'TITLE_CASE'
@@ -58,6 +61,11 @@ type FormattingNumericExtras = Partial<{
   currencyCode: string;
 }>;
 
+type FormattingBooleanWithIconExtras = {
+  iconTrue: string;
+  iconFalse: string;
+};
+
 /**
  * @description Formatting extras blueprint based on
  */
@@ -65,7 +73,9 @@ export type FormattingExtras<OBJ, TYPE extends FormattingTypes> = TYPE extends '
   ? Partial<FormattingImageExtras<OBJ>>
   : TYPE extends FormattingTypesNumeric
     ? FormattingNumericExtras
-    : object;
+    : TYPE extends FormattingTypesBoolean
+      ? FormattingBooleanWithIconExtras
+      : object;
 
 /**
  * @description Formatting property blueprint.
@@ -92,7 +102,8 @@ type PropertyFormattingImage<OBJ> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, 'IMAGE'>;
 type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesNumeric>;
-
+type PropertyFormattingBooleanWithIcon<OBJ> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, FormattingTypesBoolean>;
 /**
  * @description The blueprint for any formatting item constraint by its FormattingTypes value.
  */
@@ -100,4 +111,6 @@ export type PropertyFormatting<OBJ, TYPE = 'TEXT'> = TYPE extends FormattingType
   ? PropertyFormattingNumeric<OBJ>
   : TYPE extends 'IMAGE'
     ? PropertyFormattingImage<OBJ>
-    : PropertyFormattingDefault<OBJ>;
+    : TYPE extends 'BOOLEAN_WITH_ICON'
+      ? PropertyFormattingBooleanWithIcon<OBJ>
+      : PropertyFormattingDefault<OBJ>;

@@ -2,7 +2,13 @@ import { inject, Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { isNil } from '@plastik/shared/objects';
 
-import { FormattingInput, FormattingOutput, FormattingTypes, PropertyFormatting, PropertyFormattingConf } from '../formatting';
+import {
+  FormattingInput,
+  FormattingOutput,
+  FormattingTypes,
+  PropertyFormatting,
+  PropertyFormattingConf,
+} from '../formatting';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
 @Injectable()
@@ -26,7 +32,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
     item: T,
     { propertyPath, formatting }: PropertyFormatting<T, FormattingTypes>,
     index?: number,
-    extraConfig?: unknown,
+    extraConfig?: unknown
   ): SafeHtml {
     const getValueToShow = typeof propertyPath === 'string' ? propertyPath : propertyPath(item);
     const value = this.getValueFromRow(getValueToShow, item);
@@ -45,13 +51,21 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
         return this.formatter.numberFormatter(Number(value), extras);
       case 'BOOLEAN_WITH_CONTROL':
         return !!value;
+      case 'BOOLEAN_WITH_ICON':
+        return this.formatter.booleanWithIconFormatter(!!value, extras);
       case 'TITLE_CASE':
         return this.formatter.titleCaseFormatter(String(value));
       case 'IMAGE':
         return this.formatter.imageFormatter(String(value), extras, item);
       case 'CUSTOM':
       case 'LINK':
-        return this.formatter.customFormatter(String(value), formatting as PropertyFormattingConf<T>, item, index, extraConfig);
+        return this.formatter.customFormatter(
+          String(value),
+          formatting as PropertyFormattingConf<T>,
+          item,
+          index,
+          extraConfig
+        );
       case 'TEXT':
       default:
         return this.formatter.defaultFormatter(String(value));

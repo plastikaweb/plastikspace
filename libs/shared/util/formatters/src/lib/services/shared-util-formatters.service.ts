@@ -148,6 +148,12 @@ export class SharedUtilFormattersService {
     );
   }
 
+  booleanWithIconFormatter(value: boolean, { iconTrue = '', iconFalse = '' }): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(
+      `<span class="material-icons">${value ? iconTrue : iconFalse}</span>`
+    );
+  }
+
   /**
    * @description Formats value passing a custom method to format it.
    * @param { string } value The value to format.

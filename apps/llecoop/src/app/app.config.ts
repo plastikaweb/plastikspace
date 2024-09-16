@@ -1,6 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MatPaginatorIntl } from '@angular/material/paginator';
@@ -40,8 +40,8 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
-    provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth()),
+    provideFirestore(() => getFirestore(getApp())),
+    provideAuth(() => getAuth(getApp())),
     provideStore(),
     importProvidersFrom(
       AngularSvgIconModule.forRoot(),
