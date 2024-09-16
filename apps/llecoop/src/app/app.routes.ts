@@ -24,7 +24,7 @@ export const appRoutes: Routes = [
     loadComponent: () => CoreCmsLayoutFeatureComponent,
     children: [
       {
-        path: 'categoria/nova',
+        path: 'categoria/crear',
         loadChildren: () =>
           import('@plastik/llecoop/category/detail').then(
             routes => routes.categoryFeatureDetailRoutes
@@ -35,6 +35,13 @@ export const appRoutes: Routes = [
         loadChildren: () =>
           import('@plastik/llecoop/category/list').then(
             routes => routes.llecoopCategoryFeatureRoutes
+          ),
+      },
+      {
+        path: 'producte/crear',
+        loadChildren: () =>
+          import('@plastik/llecoop/product/detail').then(
+            routes => routes.productFeatureDetailRoutes
           ),
       },
       {

@@ -17,6 +17,7 @@ import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopProductFireService } from './product-fire.service';
+import { routerActions } from '@plastik/core/router-state';
 
 type ProductState = LlecoopFeatureStore<LlecoopProduct>;
 
@@ -63,6 +64,25 @@ export const LlecoopProductStore = signalStore(
               })
             )
           )
+        )
+      ),
+      create: rxMethod<Partial<LlecoopProduct>>(
+        pipe(
+          tap(() => patchState(store, { loaded: false })),
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap((category: Partial<LlecoopProduct>) => {
+            return productService.create(category).pipe(
+              tapResponse({
+                next: () => {
+                  patchState(store, { loaded: true });
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
+                },
+                // eslint-disable-next-line no-console
+                error: error => console.error('Error creating product', error),
+              })
+            );
+          })
         )
       ),
       setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),

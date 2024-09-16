@@ -5,7 +5,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
-import { getLlecoopDetailFormConfig } from './category-feature-detail-form.config';
+import { getLlecoopCategoryDetailFormConfig } from './category-feature-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class LlecoopCategoryDetailFacadeService
     title: 'Nova categoria',
   });
 
-  formStructure = getLlecoopDetailFormConfig();
+  formStructure = signal(getLlecoopCategoryDetailFormConfig());
 
   onSubmit(data: Partial<LlecoopProductCategory>): void {
     this.store.create(data);

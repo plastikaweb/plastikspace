@@ -30,3 +30,8 @@ export interface SubmitFormConfig {
   compareCommonKeysOnly?: boolean;
   ignoredKeysWhileComparing?: string[];
 }
+
+export interface FormSelectOption {
+  label: string;
+  value: string;
+}
