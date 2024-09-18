@@ -9,7 +9,7 @@ function setAddOnRightVisibility(config: FormlyFieldConfig): void {
   config.props = { ...config.props, addonRight };
 }
 
-export function getLlecoopCategorySearchFeatureFormConfig(): WritableSignal<FormlyFieldConfig[]> {
+export function getLlecoopProductSearchFeatureFormConfig(): WritableSignal<FormlyFieldConfig[]> {
   return signal([
     {
       fieldGroupClassName: 'flex flex-col md:flex-row flex-wrap gap-sm',
@@ -31,11 +31,11 @@ export function getLlecoopCategorySearchFeatureFormConfig(): WritableSignal<Form
           className: 'w-full',
           props: {
             type: 'search',
-            label: 'Filtrar per nom o descripció',
-            placeholder: 'Filtrar per nom o descripció',
+            label: 'Filtrar per nom, descripció, procedència o proveïdor',
+            placeholder: 'Filtrar per nom, descripció, procedència o proveïdor',
             required: false,
             maxLength: 256,
-            minLength: 2,
+            minLength: 1,
             addonLeft: {
               icon: 'search',
             },
@@ -50,6 +50,34 @@ export function getLlecoopCategorySearchFeatureFormConfig(): WritableSignal<Form
             },
           },
         },
+        // {
+        //   key: 'category',
+        //   type: 'select',
+        //   defaultValue: '',
+        //   className: 'w-full md:w-1/2',
+        //   templateOptions: {
+        //     label: 'Categories',
+        //     placeholder: 'Categories',
+        //     required: false,
+        //     options: [],
+        //   },
+        // },
+        // {
+        //   key: 'inStock',
+        //   type: 'select',
+        //   defaultValue: '',
+        //   className: 'w-full md:w-1/2',
+        //   templateOptions: {
+        //     label: 'Disponibilitat',
+        //     placeholder: 'Disponibilitat',
+        //     required: false,
+        //     options: [
+        //       { label: 'Tots', value: '' },
+        //       { label: 'Disponible', value: 'true' },
+        //       { label: 'No disponible', value: 'false' },
+        //     ],
+        //   },
+        // }
       ],
     },
   ]);

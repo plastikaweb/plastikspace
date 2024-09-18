@@ -5,9 +5,8 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
-import { FilterArrayPipeConfig } from '@plastik/shared/filter-array-pipe';
 import { TableSorting } from '@plastik/shared/table/entities';
-import { getLlecoopSearchFeatureFormConfig } from './category-feature-search-form.config';
+import { getLlecoopCategorySearchFeatureFormConfig } from './category-feature-search-form.config';
 import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-table.config';
 
 @Injectable({
@@ -24,28 +23,11 @@ export class LlecoopCategoryListFacadeService
   tableStructure = this.table.getTableStructure();
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
-  tableFilter = this.store.filter;
   count = this.store.count;
 
-  formStructure = getLlecoopSearchFeatureFormConfig();
+  formStructure = getLlecoopCategorySearchFeatureFormConfig();
 
   onSorting(sorting: TableSorting): void {
     this.store.setSorting(sorting);
-  }
-
-  onSearch(searchCriteria: object): void {
-    const filtering = this.formatSearchCriteria(searchCriteria);
-    this.store.setFilter(filtering);
-  }
-
-  private formatSearchCriteria(
-    searchCriteria: object
-  ): FilterArrayPipeConfig<LlecoopProductCategory>[] {
-    return Object.entries(searchCriteria).map(([key, value]) => {
-      return {
-        fields: this.tableStructure().filter?.[key] || [],
-        value,
-      };
-    });
   }
 }

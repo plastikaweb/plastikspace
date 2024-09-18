@@ -22,12 +22,13 @@
 </plastik-shared-form-feature>
 
 <plastik-shared-table
-  [data]="facade.tableData() | filterArray: facade.tableFilter?.() || []"
+  [data]="facade.tableData()"
   [caption]="facade.tableStructure().caption || ''"
   [columnProperties]="facade.tableStructure().columnProperties || []"
   [resultsLength]="facade.count() || 0"
   [sort]="facade.tableSorting?.()"
   [pageSizeOptions]="facade.tableStructure().pageSizeOptions || []"
   [paginationVisibility]="facade.tableStructure().paginationVisibility"
+  [filterCriteria]="filterCriteria()"
   (changeSorting)="onChangeSorting($event)">
 </plastik-shared-table>

@@ -61,7 +61,6 @@
       "@plastik/shared/button": ["libs/shared/button/index.ts"],
       "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
-      "@plastik/shared/filter-array-pipe": ["libs/shared/util/filter-array-pipe/src/index.ts"],
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
       "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],

@@ -28,12 +28,6 @@ export const LlecoopCategoryStore = signalStore(
     loaded: false,
     lastUpdated: new Date(),
     sorting: { active: 'name', direction: 'asc' },
-    filter: [
-      {
-        fields: ['name', 'description'],
-        value: '',
-      },
-    ],
   }),
   withEntities<LlecoopProductCategory>(),
   withComputed(({ ids, entities }) => ({
@@ -45,6 +39,15 @@ export const LlecoopCategoryStore = signalStore(
           value: category,
         }))
         .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+    }),
+    selectByNameOptions: computed(() => {
+      const options = entities()
+        .map(category => ({
+          label: category.name?.toLowerCase(),
+          value: category.name?.toLowerCase(),
+        }))
+        .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+      return [{ label: 'Totes les categories', value: '' }, ...options];
     }),
   })),
   withMethods(
@@ -94,12 +97,11 @@ export const LlecoopCategoryStore = signalStore(
         )
       ),
       setSorting: (sorting: CategoryState['sorting']) => patchState(store, { sorting }),
-      setFilter: (filter: CategoryState['filter']) => patchState(store, { filter }),
     })
   ),
   withHooks({
-    onInit({ getAll }) {
-      getAll();
+    onInit({ getAll, loaded }) {
+      if (!loaded()) getAll();
     },
     onDestroy() {
       // eslint-disable-next-line no-console

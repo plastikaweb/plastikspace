@@ -38,7 +38,6 @@ export interface TableControlStructure<OBJ> {
    * Main title of the table. Used for accessibility purposes.
    */
   caption?: string;
-  filter?: Record<string, (keyof OBJ)[]> | null;
 }
 
 /**

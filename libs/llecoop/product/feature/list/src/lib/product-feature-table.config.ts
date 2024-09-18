@@ -17,13 +17,20 @@ export class LlecoopProductSearchFeatureTableConfig
 {
   private readonly sanitizer = inject(DomSanitizer);
 
-  private readonly name: TableColumnFormatting<LlecoopProduct, 'TITLE_CASE'> = {
+  private readonly name: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
     sorting: true,
+    sticky: true,
+    cssClasses: ['min-w-[100px] md:min-w-[200px]'],
     formatting: {
-      type: 'TITLE_CASE',
+      type: 'CUSTOM',
+      execute: (_, element) => {
+        const name = `<span class="font-bold">${element?.name}</span>`;
+        const description = element?.description ? `<span>${element.description}</span>` : '';
+        return this.sanitizer.bypassSecurityTrustHtml(`${name}${description}`) as SafeHtml;
+      },
     },
   };
 
@@ -32,11 +39,14 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Categoria',
     propertyPath: 'category',
     sorting: true,
+    cssClasses: ['hidden md:flex md:min-w-[150px] justify-center', 'flex'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
         const value = element?.category?.name || '';
-        const htmlString = `<p class="flex gap-sub justify-center items-center"><span class="w-sm h-sm rounded-full" style="background-color:${element?.category?.color || '#aaaaaa'}"></span><span class="capitalize">${value || 'desconeguda'}</span></p>`;
+        const htmlString = `<p class="flex rounded-md capitalize px-sub py-tiny text-white tracking-wider" style="background-color:${element?.category?.color || '#aaaaaa'}">
+                              ${value || 'desconeguda'}
+                            </p>`;
         return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
       },
     },
@@ -47,6 +57,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Procedència',
     propertyPath: 'origin',
     sorting: true,
+    cssClasses: ['hidden lg:flex'],
     formatting: {
       type: 'TITLE_CASE',
     },
@@ -57,6 +68,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Proveïdor',
     propertyPath: 'provider',
     sorting: true,
+    cssClasses: ['hidden lg:flex'],
     formatting: {
       type: 'TITLE_CASE',
     },
@@ -67,6 +79,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Preu',
     propertyPath: 'price',
     sorting: true,
+    cssClasses: ['hidden md:flex max-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
       extras: {
@@ -81,6 +94,7 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'iva',
     title: 'IVA',
     propertyPath: 'iva',
+    cssClasses: ['hidden md:flex max-w-[75px]'],
     formatting: {
       type: 'PERCENTAGE',
     },
@@ -91,6 +105,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Preu amb IVA',
     propertyPath: 'priceWithIva',
     sorting: true,
+    cssClasses: ['max-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
       extras: {
@@ -103,9 +118,10 @@ export class LlecoopProductSearchFeatureTableConfig
 
   private readonly inStock: TableColumnFormatting<LlecoopProduct, 'BOOLEAN_WITH_ICON'> = {
     key: 'inStock',
-    title: 'En stock',
+    title: 'Disponible',
     propertyPath: 'inStock',
     sorting: true,
+    cssClasses: ['max-w-[100px]'],
     formatting: {
       type: 'BOOLEAN_WITH_ICON',
       extras: { iconTrue: 'check_circle', iconFalse: '' },
@@ -136,9 +152,6 @@ export class LlecoopProductSearchFeatureTableConfig
         hidePaginationFirstLastButtons: true,
       },
       caption: 'Product Table Results',
-      filter: {
-        text: ['name'],
-      },
     });
   }
 }

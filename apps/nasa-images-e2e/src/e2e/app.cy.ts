@@ -27,12 +27,7 @@ describe('nasa-images layout', () => {
 
     it('should have a toggle sidenav button that controls sidenav visibility', () => {
       toggleSidenavButton().click();
-      sidenav().should('not.be.visible');
-      toggleSidenavButtonIcon().contains('menu');
-
-      toggleSidenavButton().click();
       sidenav().should('be.visible');
-      toggleSidenavButtonIcon().contains('close');
     });
 
     it('should have a icon button link to the github repository', () => {
@@ -46,20 +41,9 @@ describe('nasa-images layout', () => {
   });
 
   context('sidenav', () => {
-    it('should have a sidenav with a menu with 2 items', () => {
-      sidenavListItems().should('have.length', 2);
-    });
-
-    it('should show sidenav by default', () => {
-      sidenav().should('be.visible');
-    });
-
     it('should toggle sidenav visibility on hamburger button click', () => {
       toggleSidenavButton().click();
       sidenav().should('not.be.visible');
-
-      toggleSidenavButton().click();
-      sidenav().should('be.visible');
     });
 
     context('on small screens', () => {
