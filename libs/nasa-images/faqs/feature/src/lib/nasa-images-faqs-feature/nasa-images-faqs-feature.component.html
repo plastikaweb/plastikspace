@@ -1,0 +1,21 @@
+@if (routeInfo$ | ngrxPush; as info) {
+  <h2 class="flex items-center gap-sm h3" data-test="page-title">
+    <mat-icon> {{ info.icon }} </mat-icon> <span>{{ info.title }}</span>
+  </h2>
+}
+
+<section class="faqs-wrapper">
+  <mat-accordion class="mx-xl my-md">
+    @for (faq of faqs$ | ngrxPush; track $index) {
+      <mat-expansion-panel data-test="faq-item">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <p class="h5" data-test="faq-question">{{ faq.question }}</p>
+          </mat-panel-title>
+          <mat-panel-description></mat-panel-description>
+        </mat-expansion-panel-header>
+        <div data-test="faq-answer" [innerHTML]="faq.answer"></div>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
+</section>

@@ -1,12 +1,15 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nrwl/nx"],
+  "plugins": ["@nx", "deprecation", "jsdoc", "@angular-eslint"],
+  "parserOptions": {
+    "project": ["./tsconfig.base.json"]
+  },
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "rules": {
-        "@nrwl/nx/enforce-module-boundaries": [
+        "@nx/enforce-module-boundaries": [
           "error",
           {
             "enforceBuildableLibDependency": true,
@@ -15,6 +18,53 @@
               {
                 "sourceTag": "*",
                 "onlyDependOnLibsWithTags": ["*"]
+              },
+              {
+                "sourceTag": "scope:core",
+                "onlyDependOnLibsWithTags": [
+                  "scope:core",
+                  "type:entity",
+                  "type:util",
+                  "scope:shared"
+                ]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared", "type:entity"]
+              },
+              {
+                "sourceTag": "scope:nasa-images",
+                "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core", "scope:shared"]
+              },
+              {
+                "sourceTag": "scope:experimental",
+                "onlyDependOnLibsWithTags": ["scope:experimental", "scope:core", "scope:shared"]
+              },
+              {
+                "sourceTag": "type:feature",
+                "onlyDependOnLibsWithTags": [
+                  "type:ui",
+                  "type:util",
+                  "type:data-access",
+                  "type:entity",
+                  "type:feature"
+                ]
+              },
+              {
+                "sourceTag": "type:ui",
+                "onlyDependOnLibsWithTags": ["type:entity", "type:ui", "type:util"]
+              },
+              {
+                "sourceTag": "type:util",
+                "onlyDependOnLibsWithTags": ["type:util", "type:entity"]
+              },
+              {
+                "sourceTag": "type:entity",
+                "onlyDependOnLibsWithTags": ["type:entity", "type:util"]
+              },
+              {
+                "sourceTag": "type:data-access",
+                "onlyDependOnLibsWithTags": ["type:util", "type:entity", "type:data-access"]
               }
             ]
           }
@@ -23,13 +73,28 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
-      "extends": ["plugin:@nrwl/nx/typescript"],
-      "rules": {}
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {
+        "no-console": "error",
+        "@typescript-eslint/prefer-readonly": "error",
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
+    },
+    {
+      "files": ["*.ts"],
+      "extends": ["plugin:ngrx/recommended"],
+      "rules": {
+        "ngrx/select-style": "error"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],
-      "extends": ["plugin:@nrwl/nx/javascript"],
-      "rules": {}
+      "extends": ["plugin:@nx/javascript"],
+      "rules": {
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
     },
     {
       "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
@@ -37,6 +102,69 @@
         "jest": true
       },
       "rules": {}
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "deprecation/deprecation": "warn"
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": ["plugin:jsdoc/recommended"],
+      "rules": {
+        "jsdoc/match-description": [
+          "error",
+          {
+            "matchDescription": "/^[A-Z].+[.]/"
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.html"],
+      "extends": [
+        "plugin:@angular-eslint/template/recommended",
+        "plugin:@angular-eslint/template/accessibility"
+      ],
+      "rules": {
+        "@angular-eslint/template/no-positive-tabindex": "error",
+        "@angular-eslint/template/alt-text": "error",
+        "@angular-eslint/template/click-events-have-key-events": "error",
+        "@angular-eslint/template/elements-content": "error",
+        "@angular-eslint/template/interactive-supports-focus": "error",
+        "@angular-eslint/template/label-has-associated-control": "error",
+        "@angular-eslint/template/mouse-events-have-key-events": "error",
+        "@angular-eslint/template/no-autofocus": "error",
+        "@angular-eslint/template/role-has-required-aria": "error",
+        "@angular-eslint/template/table-scope": "error",
+        "@angular-eslint/template/valid-aria": "error",
+        "@angular-eslint/template/no-any": "error",
+        "@angular-eslint/template/no-duplicate-attributes": "error",
+        "@angular-eslint/no-input-prefix": "error",
+        "@angular-eslint/use-lifecycle-interface": "error",
+        "@angular-eslint/prefer-output-readonly": "error",
+        "@angular-eslint/component-max-inline-declarations": "error",
+        "@angular-eslint/template/use-track-by-function": "error",
+        "@angular-eslint/use-pipe-transform-interface": "error",
+        "@angular-eslint/no-conflicting-lifecycle": "error",
+        "@angular-eslint/relative-url-prefix": "error",
+        "@angular-eslint/use-component-selector": "error",
+        "@angular-eslint/template/conditional-complexity": "error",
+        "@angular-eslint/use-injectable-provided-in": "error",
+        "@angular-eslint/no-host-metadata-property": "error",
+        "@angular-eslint/no-inputs-metadata-property": "error",
+        "@angular-eslint/no-outputs-metadata-property": "error",
+        "@angular-eslint/no-queries-metadata-property": "error",
+        "@angular-eslint/template/no-distracting-elements": "error",
+        "@angular-eslint/component-class-suffix": "error",
+        "@angular-eslint/no-empty-lifecycle-method": "error",
+        "@angular-eslint/template/attributes-order": "error",
+        "@angular-eslint/template/banana-in-box": "error",
+        "@angular-eslint/template/eqeqeq": "error",
+        "@angular-eslint/template/no-interpolation-in-attributes": "error",
+        "@angular-eslint/template/no-negated-async": "error"
+      }
     }
   ]
 }

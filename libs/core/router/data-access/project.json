@@ -1,0 +1,20 @@
+{
+  "name": "core-router-data-access",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/router/data-access/src",
+  "prefix": "plastik",
+  "tags": ["scope:core", "type:data-access"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/core/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/core/router/data-access/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

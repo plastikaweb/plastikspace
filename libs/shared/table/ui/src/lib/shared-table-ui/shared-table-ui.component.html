@@ -1,0 +1,67 @@
+<div class="block mt-0 overflow-auto border-t border-solid md:mt-4 border-gray-10 table-wrapper">
+  @if (!!dataSource.data.length) {
+    <mat-table
+      class="table w-full table-fixed"
+      matSort
+      matSortDisableClear
+      [dataSource]="dataSource"
+      [attr.aria-label]="caption"
+      [matSortActive]="matSort?.active || ''"
+      [matSortDirection]="matSort?.direction || 'asc'"
+      (matSortChange)="onChangeSorting($event)">
+      @if (caption) {
+        <caption class="sr-only">
+          {{
+            caption
+          }}
+        </caption>
+      }
+
+      @for (column of columnProperties; track column.key) {
+        <ng-container [matColumnDef]="column.key" [sticky]="column.sticky">
+          <mat-header-cell
+            *matHeaderCellDef
+            [mat-sort-header]="column.key"
+            [disabled]="!column.sorting"
+            [ngClass]="column.cssClasses?.[0] || ''">
+            {{ column.title }}
+          </mat-header-cell>
+
+          <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
+            <div
+              [ngClass]="column.cssClasses?.[1] || ''"
+              [innerHTML]="row | safeFormatted: column : i + 1 : pagination"></div>
+          </mat-cell>
+        </ng-container>
+      }
+      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+      <mat-row
+        *matRowDef="let row; columns: displayedColumns"
+        class="even:bg-gray-5/20 odd:bg-white"></mat-row>
+    </mat-table>
+
+    <mat-paginator
+      #matPaginator
+      class="mt-md jus"
+      [hidePageSize]="paginationVisibility?.hidePageSize"
+      [length]="resultsLength"
+      [ngClass]="{
+        'paginator--hide': paginationVisibility?.hideRangeLabel,
+        'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons,
+      }"
+      [pageIndex]="pagination?.pageIndex || 0"
+      [pageSize]="pagination?.pageSize || resultsLength"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
+      (page)="onChangePagination($event)">
+    </mat-paginator>
+  } @else {
+    <ng-content select="[noResults]"></ng-content>
+    <ng-content select="[noValidSearch]"></ng-content>
+  }
+
+  <ng-template #noResults>
+    <ng-content select="[noResults]"></ng-content>
+    <ng-content select="[noValidSearch]"></ng-content>
+  </ng-template>
+</div>

@@ -1,0 +1,23 @@
+name: E2E nasa-images
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install
+        run: yarn install --immutable --network-timeout 1000000
+
+      - name: Run Cypress tests with video recording
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        run: |
+          yarn nasa-images:e2e:ci

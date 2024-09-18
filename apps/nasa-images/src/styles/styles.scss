@@ -1,0 +1,70 @@
+@use 'material';
+@use 'theme';
+@use 'core_styles_util_material';
+@use 'loading';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-size: 14px;
+    @apply box-border;
+  }
+
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
+  body {
+    font-family: var(--sans-serif);
+  }
+
+  h1,
+  .h1 {
+    font-size: var(--h1);
+  }
+
+  h2,
+  .h2 {
+    font-size: var(--h2);
+  }
+
+  h3,
+  .h3 {
+    font-size: var(--h3);
+  }
+
+  h4,
+  .h4 {
+    font-size: var(--h4);
+  }
+
+  h5,
+  .h5 {
+    font-size: var(--h5);
+  }
+
+  h6,
+  .h6 {
+    font-size: var(--h6);
+  }
+
+  ul {
+    @apply list-disc list-inside;
+  }
+
+  li {
+    @apply ml-sub mb-sub;
+  }
+
+  a {
+    @apply text-secondary-dark;
+    &:hover {
+      @apply underline underline-offset-2;
+    }
+  }
+}

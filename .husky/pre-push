@@ -1,4 +1,1 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-yarn affected:test
+yarn branch:lint && yarn affected:test && yarn affected:e2e

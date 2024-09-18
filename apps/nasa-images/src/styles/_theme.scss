@@ -1,0 +1,75 @@
+@use '@angular/material' as mat;
+@import 'palette';
+@import 'font-family';
+
+@layer base {
+  :root {
+    --base-size: 1rem;
+    --scale: 1.25;
+    --h1: calc(var(--h2) * var(--scale));
+    --h2: calc(var(--h3) * var(--scale));
+    --h3: calc(var(--h4) * var(--scale));
+    --h4: calc(var(--h5) * var(--scale));
+    --h5: calc(var(--h6) * var(--scale));
+    --h6: var(--base-size);
+    --sub: calc(var(--base-size) * 0.7);
+    --tiny: calc(var(--sub) * 0.5);
+    --xl: calc(var(--h1) * var(--scale));
+    --xxl: calc(var(--xl) * var(--scale));
+
+    /* Colors */
+    --primary-100: #b6cbdf;
+    --primary-500: #0b5394;
+    --primary-700: #084281;
+    --accent-100: #ffccb8;
+    --accent-400: #ff8252;
+    --accent-700: #a44d04;
+
+    /* Tailwind Colors */
+    --primary: var(--primary-500);
+    --primary-light: var(--primary-100);
+    --primary-dark: var(--primary-700);
+    --secondary: var(--accent-400);
+    --secondary-light: var(--accent-100);
+    --secondary-dark: var(--accent-700);
+
+    --white: #ffffff;
+    --black: #000000;
+
+    /* Spacing */
+    --spacing-tiny: var(--tiny);
+    --spacing-sub: var(--sub);
+    --spacing-sm: var(--h5);
+    --spacing-md: var(--h3);
+    --spacing-lg: var(--h1);
+    --spacing-xl: var(--xl);
+    --spacing-xxl: var(--xxl);
+
+    /* Font Family */
+    --sans-serif: 'Poppins', sans-serif;
+    /* Font Size */
+    --font-size-tiny: var(--tiny);
+    --font-size-sm: var(--sub);
+    --font-size-base: var(--base-size);
+    --font-size-md: var(--h5);
+    --font-size-lg: var(--h4);
+    --font-size-xl: var(--h3);
+    --font-size-xxl: var(--h2);
+
+    /* Linear progress activity */
+    --plastik-mdc-linear-progress-track-height: var(--spacing-tiny);
+    --plastik-mdc-linear-progress-active-indicator-height: var(--spacing-tiny);
+    --plastik-mdc-linear-progress-active-indicator-color: rgb(var(--secondary-dark));
+    --plastik-mdc-linear-progress-track-color: rgb(var(--secondary-light));
+    /* Table */
+    --plastik-mdc-table-row-min-height: 120px;
+    --plastik-mdc-table-row-max-height: 160px;
+    /* Notification Snackbar Boxes */
+    --plastik-error-notification-box-color: rgb(195, 6, 6);
+    --plastik-info-notification-box-color: rgb(14, 122, 190);
+    --plastik-warning-notification-box-color: rgb(221, 148, 20);
+    --plastik-success-notification-box-colors: rgb(22, 134, 40);
+    /* Mat Expansion Panel */
+    --mat-expansion-header-collapsed-state-height: 4rem;
+  }
+}

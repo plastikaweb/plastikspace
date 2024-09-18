@@ -1,0 +1,33 @@
+@if (config.type === 'button') {
+  <button
+    mat-button
+    class="button--rounded"
+    [ngClass]="config.classes || {}"
+    [disabled]="config.disabled"
+    [attr.aria-label]="config.ariaLabel"
+    [attr.data-test]="config.dataTestId"
+    (click)="onClick()"
+  >
+    <ng-container *ngTemplateOutlet="content"></ng-container>
+  </button>
+}
+
+@if (config.type === 'link') {
+  <a class="block" target="_blank" [attr.aria-label]="config.ariaLabel" [href]="config.link" [attr.data-test]="config.dataTestId">
+    <ng-container *ngTemplateOutlet="content">button content</ng-container>
+  </a>
+}
+
+<ng-template #content>
+  @for (element of config.elements; track $index) {
+    @if (element.type === 'text') {
+      <span>{{ element.content | returnAsObservable | ngrxPush }}</span>
+    }
+    @if (element.type === 'icon') {
+      <svg-icon
+        [src]="(element.content | returnAsObservable | ngrxPush)?.iconPath || ''"
+        [svgClass]="(element.content | returnAsObservable | ngrxPush)?.svgClass || ''"
+      ></svg-icon>
+    }
+  }
+</ng-template>

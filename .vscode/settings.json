@@ -1,0 +1,48 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.suggest.snippetsPreventQuickSuggestions": false,
+  "editor.inlineSuggest.enabled": true,
+  "editor.autoIndent": "full",
+  "editor.formatOnType": true,
+  "editor.wordWrap": "off",
+  "editor.wrappingIndent": "same",
+  "editor.wrappingStrategy": "simple",
+  "diffEditor.wordWrap": "inherit",
+  "workbench.editor.wrapTabs": false,
+  "html.format.wrapAttributes": "force-expand-multiline",
+  "files.trimTrailingWhitespace": true,
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "files.exclude": {
+    "**/.DS_Store": true,
+    "**/.git": true,
+    "**/.js": {
+      "when": "$(basename).ts"
+    },
+    "**/.js.map": {
+      "when": "$(basename)"
+    }
+  },
+  "[html][json]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    }
+  },
+  "angular.log": "verbose",
+  "editor.formatOnPaste": true
+}

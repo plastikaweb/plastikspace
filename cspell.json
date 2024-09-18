@@ -1,0 +1,10 @@
+{
+  "version": "0.2",
+  "language": "ca-ES, ca, en-ES, en",
+  "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
+  "ignorePaths": [],
+  "dictionaryDefinitions": [],
+  "words": ["Llecoop", "preexperimental", "prellecoop", "prenasa"],
+  "ignoreWords": [],
+  "import": []
+}

@@ -4,3 +4,8 @@
 /coverage
 /documentation
 /node_modules
+
+.angular
+
+/.nx/cache
+/.nx/workspace-data

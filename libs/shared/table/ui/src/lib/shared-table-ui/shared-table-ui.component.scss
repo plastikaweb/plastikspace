@@ -1,0 +1,56 @@
+::ng-deep .table-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  display: grid;
+  width: 100%;
+  margin-bottom: 1rem;
+
+  .mdc-data-table__table {
+    min-width: auto;
+  }
+
+  .mat-mdc-header-cell {
+    font-weight: bold;
+    white-space: nowrap;
+
+    > .mat-sort-header-container {
+      white-space: pre-line;
+      word-break: normal;
+      min-width: 5rem;
+    }
+  }
+
+  .mat-mdc-cell:not(.mat-cell-actions) * {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: block;
+    transition: 0.2s;
+    padding: 0.35em 0;
+  }
+}
+.mat-mdc-table > .mat-mdc-row {
+  @apply items-stretch;
+  min-height: var(--plastik-mdc-table-row-min-height, auto);
+  max-height: var(--plastik-mdc-table-row-max-height, auto);
+}
+
+.table__cell--link a {
+  @apply cursor-pointer;
+}
+
+::ng-deep .mat-mdc-paginator {
+  &.paginator--hide .mat-paginator-range-label {
+    @apply hidden;
+  }
+
+  &.paginator--hide-range-buttons .mat-mdc-paginator-range-actions > button {
+    @apply hidden;
+  }
+  .mat-mdc-paginator-container {
+    @apply text-sm;
+    .mat-mdc-paginator-range-label {
+      @apply mx-sub;
+    }
+  }
+}

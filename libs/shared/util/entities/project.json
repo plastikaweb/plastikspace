@@ -1,0 +1,13 @@
+{
+  "name": "shared-util-entities",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/util/entities/src",
+  "prefix": "plastik",
+  "tags": ["scope:shared", "type:entity"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

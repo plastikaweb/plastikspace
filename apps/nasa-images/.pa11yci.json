@@ -1,0 +1,23 @@
+{
+  "defaults": {
+    "timeout": 120000,
+    "concurrency": 1,
+    "standard": "WCAG2AA",
+    "viewport": {
+      "width": 320,
+      "height": 480
+    },
+    "reporters": ["cli", ["json", { "fileName": "./apps/nasa-images/.pa11y-report.json" }]],
+    "ignore": ["notice", "warning"],
+    "chromeLaunchConfig": {
+      "args": ["--no-sandbox"]
+    }
+  },
+  "urls": [
+    "http://localhost:8080/search",
+    "http://localhost:8080/search?q=pluto&page=2",
+    "http://localhost:8080/search?q=nasa&page=101",
+    "http://localhost:8080/search?q=xfssdfxsdssdf&page=101",
+    "http://localhost:8080/faqs"
+  ]
+}

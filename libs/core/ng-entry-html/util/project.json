@@ -1,0 +1,13 @@
+{
+  "name": "core-ng-entry-html-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/ng-entry-html/util/src",
+  "prefix": "plastik",
+  "tags": ["scope:core", "type:util"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

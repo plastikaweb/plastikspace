@@ -33,6 +33,7 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+/pa11y
 
 # System Files
 .DS_Store
@@ -40,3 +41,16 @@ Thumbs.db
 
 .angular
 .eslintcache
+NX
+migrations.json
+.pa11y-report.json
+pa11y-ci-report
+
+.nx/*
+.yarn/*
+
+# firebase
+**/firebase.*
+
+# trash
+/trash

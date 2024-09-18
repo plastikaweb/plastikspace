@@ -1,0 +1,11 @@
+<div class="w-5/6 mx-auto mt-0 text-center mb-sm md:my-xl">
+  <h3 class="flex flex-col items-center">
+    <mat-icon aria-hidden="true" class="text-[15rem] text-secondary-dark h-[15rem] w-[15rem]">
+      <ng-content select="[icon]"></ng-content>
+    </mat-icon>
+    <ng-content select="[title]"></ng-content>
+  </h3>
+  <div class="mt-md" data-test="search-no-results-message">
+    <ng-content select="[message]"></ng-content>
+  </div>
+</div>

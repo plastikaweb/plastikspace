@@ -1,0 +1,34 @@
+<div class="flex flex-wrap items-center justify-center md:justify-between gap-sub">
+  <h2 class="flex items-center content-center gap-sub">
+    <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ facade.viewConfig().icon }}</mat-icon>
+    <span>{{ facade.viewConfig().title | titlecase }}</span>
+  </h2>
+  <button
+    type="button"
+    mat-flat-button
+    color="accent"
+    class="text-white"
+    [routerLink]="['./crear']">
+    <mat-icon>add</mat-icon> Afegir
+  </button>
+</div>
+
+<plastik-shared-form-feature
+  class="flex flex-row items-end content-center justify-between filters-box"
+  [fields]="facade.formStructure?.() || []"
+  [model]="{ text: '' }"
+  [submitAvailable]="false"
+  (changeEvent)="onChangeFiltering($event)">
+</plastik-shared-form-feature>
+
+<plastik-shared-table
+  [data]="facade.tableData()"
+  [caption]="facade.tableStructure().caption || ''"
+  [columnProperties]="facade.tableStructure().columnProperties || []"
+  [resultsLength]="facade.count() || 0"
+  [sort]="facade.tableSorting?.()"
+  [pageSizeOptions]="facade.tableStructure().pageSizeOptions || []"
+  [paginationVisibility]="facade.tableStructure().paginationVisibility"
+  [filterCriteria]="filterCriteria()"
+  (changeSorting)="onChangeSorting($event)">
+</plastik-shared-table>

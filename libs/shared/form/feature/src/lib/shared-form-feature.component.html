@@ -1,0 +1,29 @@
+<form
+  novalidate
+  class="flex flex-col flex-wrap justify-start w-full gap-0 lg:gap-lg my-md"
+  [formGroup]="form"
+  (ngSubmit)="onSubmit($event)">
+  <!-- form -->
+
+  <formly-form
+    class="form-container"
+    [form]="form"
+    [options]="options"
+    [fields]="fields"
+    [model]="model"
+    (modelChange)="onModelChange($event)"></formly-form>
+
+  <!-- buttons -->
+  @if (submitAvailable) {
+    <button
+      mat-flat-button
+      color="primary"
+      type="submit"
+      class="h-[56px] w-[150px]"
+      data-test="submit-button"
+      [ngClass]="submitConfig?.buttonStyle || ''"
+      [disabled]="!form.valid">
+      {{ submitConfig?.label || 'Submit' }}
+    </button>
+  }
+</form>

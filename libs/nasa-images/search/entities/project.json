@@ -1,0 +1,20 @@
+{
+  "name": "nasa-images-search-entities",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/nasa-images/search/entities/src",
+  "prefix": "plastik",
+  "tags": ["scope:nasa-images", "type:entity"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nasa-images/search/entities/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

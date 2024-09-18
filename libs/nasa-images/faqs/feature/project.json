@@ -1,0 +1,20 @@
+{
+  "name": "nasa-images-faqs-feature",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/nasa-images/faqs/feature/src",
+  "prefix": "plastik",
+  "tags": ["scope:nasa-images", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/nasa-images/faqs/feature/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

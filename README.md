@@ -1,105 +1,143 @@
-
-
 # Plastikspace
+
+<div align="center">
+  <img width="15%" height="15%" src="./documentation/img/plastikaweb.png" alt="plastikaweb">
+  <p>A personal multi-repository to do tests and experiments with Nx and Angular. </p>
+</div>
+
+[![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml)
+[![nasa-images-e2e](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/b47wpf&style=flat&logo=cypress)](https://cloud.cypress.io/projects/b47wpf/runs)
+
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
+[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
+![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 
 This project was generated using [Nx](https://nx.dev).
 
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="450"></p>
+## Install repo locally
 
-🔎 **Smart, Fast and Extensible Build System**
+> Please make sure you have [rimraf](https://www.npmjs.com/package/rimraf) package installed globally.
 
-## Quick Start & Documentation
+```bash
+  npm install -g rimraf
+```
 
-[Nx Documentation](https://nx.dev/getting-started/intro)
+- clone repo: `git clone git@github.com:plastikaweb/plastikspace.git`.
+- run `yarn install:local`.
+- **to serve it locally in development run `yarn <apn-name>:serve`**.
 
-[Mental model is a good starting point for those who like to understand things theoretically first.](https://nx.dev/concepts/mental-model)
+## Commands & generators
 
-[Interactive Tutorial](https://nx.dev/getting-started/angular-tutorial)
+Some of the more usual generators and scripts:
 
-## Adding capabilities to your workspace
+- Run `ng g @nx/angular:app my-app` to generate an application.
+- Run `ng g @nx/angular:lib my-lib` to generate a library.
+- Run `ng serve my-app` for a dev server. Navigate to localhost:xxxx. The app will automatically reload if you change any of the source files.
+- Run `ng g component my-component --project=my-app` to generate a new component.
+- Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- Run `yarn test` to execute the unit tests via [Jest](https://jestjs.io).
+- Run `yarn affected:test` to execute the unit tests affected by a change.
+- Run `yarn dep-graph` to see a diagram of the dependencies of your projects.
 
-Nx supports many plugins which add capabilities for developing different types of applications and different tools.
+To see a full list of available scripts see **package.json file > scripts**.
 
-These capabilities include generating applications, libraries, etc as well as the devtools to test, and build projects as well.
+> It is strongly recommended to use [Nx Console for VSCode](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console) in order to run Nx generators.
+> ![Nx Console for VSCode](documentation/img/nx-console-screenshot.png)
 
-Below are our core plugins:
+## Workflow configuration and conventions
 
-- [Angular](https://angular.io)
-  - `ng add @nrwl/angular`
-- [React](https://reactjs.org)
-  - `ng add @nrwl/react`
-- Web (no framework frontends)
-  - `ng add @nrwl/web`
-- [Nest](https://nestjs.com)
-  - `ng add @nrwl/nest`
-- [Express](https://expressjs.com)
-  - `ng add @nrwl/express`
-- [Node](https://nodejs.org)
-  - `ng add @nrwl/node`
+- [NX architecture](documentation/nx-architecture.md)
+- [Code style](documentation/code-style.md)
+- [Accessibility](documentation/accessibility.md)
+- [Git commit conventions](documentation/commit-conventions.md)
+- [Git Flow and CI/CD](documentation/git-flow.md)
+- [CSS Styling](documentation/css-styles.md)
 
-There are also many [community plugins](https://nx.dev/community) you could add.
+## Available applications
 
-## Generate an application
+- [nasa-images](apps/nasa-images/README.md)
+- [experimental](apps/experimental/README.md)
+- [llecoop](apps/llecoop/README.md)
 
-Run `ng g @nrwl/angular:app my-app` to generate an application.
+## Available libraries
 
-> You can use any of the plugins above to generate applications as well.
+This is a list of all the global shared libraries. It is very likely that other libraries exist but are related to a single project, so they are listed in the concrete project domain.
 
-When using Nx, you can create multiple applications and libraries in the same workspace.
+### Core
 
-## Generate a library
+- [core-util-environments](libs/core/util/environments/README.md)
+- [core-util-assets](libs/core/util/assets/README.md)
+- [core-util-api](libs/core/util/api/README.md)
+- [core-util-cypress-commands](libs/core/util/cypress-commands/README.md)
+- [core-styles-util-tailwind-preset](libs/core/styles/util/tailwind-preset/README.md)
+- [core-styles-util-material](libs/core/styles/util/material/README.md)
+- [core-ng-entry-html-util](libs/core/ng-entry-html/util/README.md)
+- [core-router-data-access](libs/core/router/data-access//README.md)
+- [core-entities](libs/core/entities/README.md)
 
-Run `ng g @nrwl/angular:lib my-lib` to generate a library.
+#### CMS-layout
 
-> You can also use any of the plugins above to generate libraries as well.
+- [core-cms-layout-feature](libs/core/cms-layout/feature/README.md)
+- [core-cms-layout-data-access](libs/core/cms-layout/data-access/README.md)
+- [core-cms-layout-entities](libs/core/cms-layout/entities/README.md)
 
-Libraries are shareable across libraries and applications. They can be imported from `@plastikspace/mylib`.
+#### Notification
 
-## Development server
+- [core-notification-entities](libs/core/notification/entities/README.md)
+- [core-notification-data-access](libs/core/notification/data-access/README.md)
+- [core-notification-ui-mat-snackbar](libs/core/notification/ui/mat-snackbar/README.md)
 
-Run `ng serve my-app` for a dev server. Navigate to http://localhost:4200/. The app will automatically reload if you change any of the source files.
+### Shared
 
-## Code scaffolding
+#### Button
 
-Run `ng g component my-component --project=my-app` to generate a new component.
+- [shared-button-entities](libs/shared/button/entities/README.md)
+- [shared-button-ui](libs/shared/button/ui/README.md)
 
-## Build
+#### Table
 
-Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+- [shared-table-entities](libs/shared/table/entities/README.md)
+- [shared-table-ui](libs/shared/table/ui/README.md)
 
-## Running unit tests
+#### Form
 
-Run `ng test my-app` to execute the unit tests via [Jest](https://jestjs.io).
+- [shared-form-feature](libs/shared/form/feature/README.md)
+- [shared-form-ui-year-picker/shared-form-ui-year-picker-type](libs/shared/form/ui/year-picker/README.md)
 
-Run `nx affected:test` to execute the unit tests affected by a change.
+#### Activity
 
-## Running end-to-end tests
+- [shared-activity-ui](libs/shared/activity/ui/README.md)
+- [shared-activity-data-access](libs/shared/activity/data-access/README.md)
 
-Run `ng e2e my-app` to execute the end-to-end tests via [Cypress](https://www.cypress.io).
+#### Layouts
 
-Run `nx affected:e2e` to execute the end-to-end tests affected by a change.
+- [table-with-filtering](libs/shared/layouts/feature/table-with-filtering/README.md)
 
-## Understand your workspace
+#### Util
 
-Run `nx graph` to see a diagram of the dependencies of your projects.
+- [shared-util-entities](libs/shared/util/entities/README.md)
+- [shared-util-objects](libs/shared/util/objects/README.md)
+- [shared-util-return-as-observable-pipe](libs/shared/util/return-as-observable-pipe/README.md)
+- [shared-util-formatters](libs/shared/util/formatters/README.md)
+- [shared-util-dynamic-bg-color](libs/shared/util/dynamic-bg-color/README.md)
+- [shared-util-latinize](libs/shared/util/latinize/README.md)
 
-## Further help
+## Contact
 
-Visit the [Nx Documentation](https://nx.dev/angular) to learn more.
+Carlos Matheu Armengol
 
+![Freelancer](https://img.shields.io/badge/Freelancer-29B2FE?style=for-the-badge&logo=Freelancer&logoColor=white)
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/plastikaweb)
+[![Stackblitz](https://img.shields.io/badge/Stackblitz-fff?style=for-the-badge&logo=Stackblitz&logoColor=1389FD)](https://stackblitz.com/@plastikaweb)
+[![GitLab](https://img.shields.io/badge/gitlab-%23181717.svg?style=for-the-badge&logo=gitlab&logoColor=white)](https://gitlab.com/plastikaweb)
 
+> [info@plastikaweb.org](mailto:<info@plastikaweb.com>) > [www.plastikaweb.com](https://www.plastikaweb.com)
 
+## Useful links
 
-
-
-## ☁ Nx Cloud
-
-### Distributed Computation Caching & Distributed Task Execution
-
-<p style="text-align: center;"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-cloud-card.png"></p>
-
-Nx Cloud pairs with Nx in order to enable you to build and test code more rapidly, by up to 10 times. Even teams that are new to Nx can connect to Nx Cloud and start saving time instantly.
-
-Teams using Nx gain the advantage of building full-stack applications with their preferred framework alongside Nx’s advanced code generation and project dependency graph, plus a unified experience for both frontend and backend developers.
-
-Visit [Nx Cloud](https://nx.app/) to learn more.
+- [Nx Angular Documentation](https://nx.dev/angular)

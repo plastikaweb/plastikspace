@@ -1,0 +1,13 @@
+{
+  "name": "core-util-environments",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/util/environments/src",
+  "prefix": "plastik",
+  "tags": ["scope:core", "type:util"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
