@@ -4,7 +4,7 @@ import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plast
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { STORE_TOKEN } from '@plastik/llecoop/data-access';
 import { TABLE_TOKEN } from '@plastik/shared/table/entities';
-import { getLlecoopSearchFeatureFormConfig } from './category-feature-search-form.config';
+import { getLlecoopCategorySearchFeatureFormConfig } from './category-feature-search-form.config';
 import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-table.config';
 import { LlecoopCategoryListFacadeService } from './category-list-facade.service';
 
@@ -28,7 +28,7 @@ export const llecoopCategoryFeatureRoutes: Route[] = [
       },
       {
         provide: FORM_TOKEN,
-        useValue: getLlecoopSearchFeatureFormConfig(),
+        useValue: getLlecoopCategorySearchFeatureFormConfig(),
       },
     ],
   },

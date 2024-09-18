@@ -12,12 +12,12 @@ import {
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore } from '@plastik/llecoop/data-access';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopProductFireService } from './product-fire.service';
-import { routerActions } from '@plastik/core/router-state';
 
 type ProductState = LlecoopFeatureStore<LlecoopProduct>;
 
@@ -28,12 +28,6 @@ export const LlecoopProductStore = signalStore(
     loaded: false,
     lastUpdated: new Date(),
     sorting: { active: 'name', direction: 'asc' },
-    filter: [
-      {
-        fields: ['name', 'info'],
-        value: '',
-      },
-    ],
   }),
   withEntities<LlecoopProduct>(),
   withComputed(({ ids }) => ({
@@ -86,10 +80,12 @@ export const LlecoopProductStore = signalStore(
         )
       ),
       setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),
-      setFilter: (filter: ProductState['filter']) => patchState(store, { filter }),
     })
   ),
   withHooks({
+    onInit({ getAll, loaded }) {
+      if (!loaded()) getAll();
+    },
     onDestroy() {
       // eslint-disable-next-line no-console
       console.log('Destroying product store');

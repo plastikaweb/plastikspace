@@ -42,15 +42,15 @@
 
     <mat-paginator
       #matPaginator
-      class="mt-md"
+      class="mt-md jus"
       [hidePageSize]="paginationVisibility?.hidePageSize"
       [length]="resultsLength"
       [ngClass]="{
         'paginator--hide': paginationVisibility?.hideRangeLabel,
         'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons,
       }"
-      [pageIndex]="pagination?.pageIndex"
-      [pageSize]="pagination?.pageSize"
+      [pageIndex]="pagination?.pageIndex || 0"
+      [pageSize]="pagination?.pageSize || resultsLength"
       [pageSizeOptions]="pageSizeOptions"
       [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
       (page)="onChangePagination($event)">

@@ -98,6 +98,8 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
    */
   @Input() sort?: TableSorting;
 
+  @Input() filterCriteria = '';
+
   /**
    * An Output emitter to send table pagination changes.
    */
@@ -130,9 +132,18 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
       this.matSort.direction = this.sort?.direction || 'asc';
       this.dataSource.sort = this.matSort;
     }
+
+    this.dataSource.data = this.data || [];
   }
 
-  ngOnChanges({ data, resultsLength, pagination, sort, columnProperties }: SimpleChanges) {
+  ngOnChanges({
+    data,
+    resultsLength,
+    pagination,
+    sort,
+    columnProperties,
+    filterCriteria,
+  }: SimpleChanges) {
     if (columnProperties) {
       this.displayedColumns = this?.columnProperties?.map(property => property.key) || [];
     }
@@ -152,8 +163,12 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
       this.dataSource.sort = this.matSort;
     }
 
+    if (filterCriteria) {
+      this.dataSource.filter = filterCriteria.currentValue;
+    }
+
     if (data) {
-      this.dataSource.data = this.data;
+      this.dataSource.data = data.currentValue;
     }
   }
 

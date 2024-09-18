@@ -25,7 +25,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
-        const htmlString = `<p class="flex gap-sub justify-center items-center"><span class="w-sm h-sm rounded-full" style="background-color:${element?.color}"></span><span class="capitalize">${value}</span></p>`;
+        const htmlString = `<p class="flex items-center justify-center gap-sub"><span class="rounded-full w-sm h-sm" style="background-color:${element?.color}"></span><span class="capitalize">${value}</span></p>`;
         return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
       },
     },
@@ -58,9 +58,6 @@ export class LlecoopCategorySearchFeatureTableConfig
         hidePaginationFirstLastButtons: true,
       },
       caption: 'Product Categories Table Results',
-      filter: {
-        text: ['name', 'description'],
-      },
     });
   }
 }

@@ -71,7 +71,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // TODO: Isolate breakpoint observer into its own service https://github.com/plastikaweb/plastikspace/issues/68
     this.breakpointObserver
-      .observe([Breakpoints.Handset])
+      .observe([Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Medium])
       .pipe(
         takeUntil(this.destroyed$),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

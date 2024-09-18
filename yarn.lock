@@ -4771,11 +4771,6 @@
     "@sigstore/core" "^1.1.0"
     "@sigstore/protobuf-specs" "^0.3.2"
 
-"@simondotm/nx-firebase@^2.3.0":
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/@simondotm/nx-firebase/-/nx-firebase-2.3.0.tgz#d7e77f8b86c08c107621bf6d7d46638e69b7591a"
-  integrity sha512-6wb86yyl1UieqAL/9MvGFWo2MUHBL/1/HKRT10iuAEAmj1ETd5+hMYOVgR08Zy85UQJALWRq8DgcSAW1Z2aLGA==
-
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
   resolved "https://registry.yarnpkg.com/@sinclair/typebox/-/typebox-0.27.8.tgz#6667fac16c436b5434a387a34dedb013198f6e6e"

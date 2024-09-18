@@ -1,4 +1,4 @@
-name: Deploy Staging
+name: Deploy Nasa Images to staging
 
 on:
   workflow_run:
