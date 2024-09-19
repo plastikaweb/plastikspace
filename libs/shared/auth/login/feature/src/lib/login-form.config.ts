@@ -31,9 +31,6 @@ export function getLoginFormConfig(): WritableSignal<FormlyFieldConfig[]> {
         minLength: 8,
         maxLength: 25,
       },
-      validators: {
-        validation: [],
-      },
     },
   ]);
 }
