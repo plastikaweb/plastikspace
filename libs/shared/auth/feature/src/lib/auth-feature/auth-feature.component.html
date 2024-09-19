@@ -1,12 +1,18 @@
 <div class="flex items-center justify-center min-h-screen contain-layout">
-  <mat-card appearance="outlined" class="flex items-center justify-center align-middle max-w-third">
+  <mat-card
+    appearance="raised"
+    class="flex items-center justify-center max-w-full align-middle shadow-md lg:max-w-third bg-gray-10"
+  >
     <mat-card-header>
       <mat-card-title class="flex justify-center align-middle gap-sub">
         @if (logo()) {
-          <img [src]="logo()" [alt]="title()" />
+        <img
+          [src]="logo()"
+          [alt]="title()"
+        />
         }
         @if (title()) {
-          <span>{{ title() }}</span>
+        <span>{{ title() }}</span>
         }
       </mat-card-title>
     </mat-card-header>
@@ -15,7 +21,8 @@
       <plastik-shared-form-feature
         [fields]="facade.formStructure?.() || []"
         [submitConfig]="{ label: label(), buttonStyle: buttonStyle() }"
-        (changeEvent)="facade.onSubmit($event)">
+        (changeEvent)="facade.onSubmit($event)"
+      >
       </plastik-shared-form-feature>
     </mat-card-content>
   </mat-card>
