@@ -7,10 +7,23 @@
       "width": 320,
       "height": 480
     },
-    "reporters": ["cli", ["json", { "fileName": "./apps/nasa-images/.pa11y-report.json" }]],
-    "ignore": ["notice", "warning"],
+    "reporters": [
+      "cli",
+      [
+        "json",
+        {
+          "fileName": "./apps/nasa-images/.pa11y-report.json"
+        }
+      ]
+    ],
+    "ignore": [
+      "notice",
+      "warning"
+    ],
     "chromeLaunchConfig": {
-      "args": ["--no-sandbox"]
+      "args": [
+        "--no-sandbox"
+      ]
     }
   },
   "urls": [
