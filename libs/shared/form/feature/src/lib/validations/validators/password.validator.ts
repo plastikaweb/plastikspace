@@ -6,7 +6,6 @@ import { AbstractControl } from '@angular/forms';
  * @returns {null | object} - Returns null if the password is valid, otherwise returns an object with the error.
  */
 export function passwordValidator(control: AbstractControl) {
-  console.log('control.value', control.value);
   if (!control.value || isValidPassword(control.value)) {
     return null;
   }
