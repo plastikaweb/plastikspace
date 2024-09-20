@@ -17,7 +17,6 @@ $theme: mat.m2-define-light-theme(
         $font-family: var(--sans-serif),
         $body-1: mat.m2-define-typography-level(var(--font-size-base), var(--spacing-md), 400),
       ),
-    density: -1,
   )
 );
 
