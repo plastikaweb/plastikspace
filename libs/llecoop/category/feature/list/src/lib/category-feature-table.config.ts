@@ -1,6 +1,7 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -22,6 +23,8 @@ export class LlecoopCategorySearchFeatureTableConfig
     title: 'Nom',
     propertyPath: 'name',
     sorting: true,
+    sticky: true,
+    cssClasses: ['min-w-[180px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
@@ -40,33 +43,8 @@ export class LlecoopCategorySearchFeatureTableConfig
     },
   };
 
-  private readonly createdAt: TableColumnFormatting<LlecoopProductCategory, 'FIREBASE_TIMESTAMP'> =
-    {
-      key: 'createdAt',
-      title: 'Data de creació',
-      propertyPath: 'createdAt',
-      sorting: true,
-      formatting: {
-        type: 'FIREBASE_TIMESTAMP',
-        extras: {
-          dateDigitsInfo: 'medium',
-        },
-      },
-    };
-
-  private readonly updatedAt: TableColumnFormatting<LlecoopProductCategory, 'FIREBASE_TIMESTAMP'> =
-    {
-      key: 'updatedAt',
-      title: "Data d'actualització",
-      propertyPath: 'updatedAt',
-      sorting: true,
-      formatting: {
-        type: 'FIREBASE_TIMESTAMP',
-        extras: {
-          dateDigitsInfo: 'medium',
-        },
-      },
-    };
+  private readonly createdAt = createdAt<LlecoopProductCategory>();
+  private readonly updatedAt = updatedAt<LlecoopProductCategory>();
 
   private readonly columnProperties: TableColumnFormatting<
     LlecoopProductCategory,

@@ -1,3 +1,10 @@
-.mdc-text-field--outlined:not(.mdc-text-field--disabled) .mat-mdc-form-field-flex .mdc-notched-outline .mdc-notched-outline__notch {
+.mdc-text-field--outlined:not(.mdc-text-field--disabled)
+  .mat-mdc-form-field-flex
+  .mdc-notched-outline
+  .mdc-notched-outline__notch {
   border-right-width: var(--plastik-outlined-text-field-border-left-width);
+}
+
+formly-field {
+  width: 100%;
 }

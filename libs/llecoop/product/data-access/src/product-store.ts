@@ -1,6 +1,5 @@
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
-import { Timestamp } from '@angular/fire/firestore';
 import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
@@ -64,10 +63,9 @@ export const LlecoopProductStore = signalStore(
       ),
       create: rxMethod<Partial<LlecoopProduct>>(
         pipe(
-          tap(() => patchState(store, { loaded: false })),
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((category: Partial<LlecoopProduct>) => {
-            return productService.create({ ...category, createdAt: Timestamp.now() }).pipe(
+            return productService.create(category).pipe(
               tapResponse({
                 next: () => {
                   patchState(store, { loaded: true });
@@ -81,7 +79,28 @@ export const LlecoopProductStore = signalStore(
           })
         )
       ),
+      update: rxMethod<Partial<LlecoopProduct>>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap((category: Partial<LlecoopProduct>) => {
+            return productService.update(category).pipe(
+              tapResponse({
+                next: () => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
+                },
+                // eslint-disable-next-line no-console
+                error: error => console.error('Error updating product', error),
+              })
+            );
+          })
+        )
+      ),
       setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),
+      setSelectedItem: (id: string | null) =>
+        patchState(store, {
+          selectedItem: id ? store.entityMap()[id] : null,
+        }),
     })
   ),
   withHooks({

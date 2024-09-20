@@ -6,6 +6,7 @@ import { STORE_TOKEN } from '@plastik/llecoop/data-access';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { LlecoopProductDetailFacadeService } from './product-detail-facade.service';
 import { getLlecoopProductDetailFormConfig } from './product-feature-detail-form.config';
+import { ProductDetailResolver } from './product-detail.resolver';
 
 const providers: Provider[] = [
   {
@@ -37,6 +38,9 @@ export const productFeatureDetailUpdateRoutes: Route[] = [
     title: 'Editar producte',
     component: DetailItemFormComponent,
     providers,
+    resolve: {
+      item: ProductDetailResolver,
+    },
     runGuardsAndResolvers: 'always',
   },
 ];

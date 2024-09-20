@@ -23,12 +23,12 @@ export class LlecoopCategoryFireService {
     >;
   }
 
-  create(category: Partial<LlecoopProductCategory>) {
-    return of(addDoc(this.categoryCollection, category));
+  create(item: Partial<LlecoopProductCategory>) {
+    return of(addDoc(this.categoryCollection, item));
   }
 
-  update(category: Partial<LlecoopProductCategory>) {
-    const categoryDoc = doc(this.firestore, `category/${category.id}`);
-    return of(updateDoc(categoryDoc, category));
+  update(item: Partial<LlecoopProductCategory>) {
+    const document = doc(this.firestore, `category/${item.id}`);
+    return of(updateDoc(document, item));
   }
 }

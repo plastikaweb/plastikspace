@@ -105,7 +105,6 @@ export const LlecoopCategoryStore = signalStore(
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
-                  patchState(store, { selectedItem: null });
                 },
                 // eslint-disable-next-line no-console
                 error: error => console.error('Error updating category', error),
@@ -117,7 +116,7 @@ export const LlecoopCategoryStore = signalStore(
       setSorting: (sorting: CategoryState['sorting']) => patchState(store, { sorting }),
       setSelectedItem: (id: string | null) =>
         patchState(store, {
-          selectedItem: store.entities().filter(entity => entity.id === id)[0] || null,
+          selectedItem: id ? store.entityMap()[id] : null,
         }),
     })
   ),
