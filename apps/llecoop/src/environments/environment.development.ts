@@ -4,4 +4,5 @@ export const environment: Environment = {
   name: 'El Llevat',
   production: true,
   apiUrl: 'http://',
+  useEmulators: true,
 };

@@ -23,6 +23,37 @@ export type TableColumnFormatting<OBJ, TYPE> = PropertyFormatting<OBJ, TYPE> & {
 };
 
 /**
+ * @description Configuration values for Table Actions.
+ */
+export type TableControlActionTypes =
+  | 'EDIT'
+  | 'DELETE'
+  | 'PARTIAL_EDIT'
+  | 'PREVIEW'
+  | 'SELECT'
+  | ('CUSTOM' & Uppercase<string>);
+
+export interface TableControlActionDefinition<T> {
+  visible: (element: T) => boolean;
+  disabled?: (element: T) => boolean;
+  execute?: (element: T) => boolean | string | void;
+  link?: (element: T) => string[];
+  fragment?: (element?: T) => string;
+  icon?: (element: T) => string;
+  description?: (element?: T) => string;
+  order?: number;
+  containerBtnClass?: string;
+  grouping?: boolean;
+}
+
+/**
+ * @description Configuration for Table Actions rows.
+ */
+export type TableControlAction<T> = {
+  [field in TableControlActionTypes]?: TableControlActionDefinition<T>;
+};
+
+/**
  * @description Main configuration for a table structure.
  */
 export interface TableControlStructure<OBJ> {
@@ -38,6 +69,7 @@ export interface TableControlStructure<OBJ> {
    * Main title of the table. Used for accessibility purposes.
    */
   caption?: string;
+  actions?: TableControlAction<OBJ>;
 }
 
 /**

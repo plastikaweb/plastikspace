@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { FormlyModule } from '@ngx-formly/core';
+import { FORMLY_CONFIG, FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
   InputColorPickerTypeComponent,
@@ -11,30 +11,21 @@ import {
 import { addonsExtension } from './addons-extension';
 import { FormlyAddonsWrapperComponent } from './addons-wrapper/formly-addons-wrapper.component';
 import { SharedFormFeatureComponent } from './shared-form-feature.component';
-import {
-  maxLengthValidationMessage,
-  maxValidationMessage,
-  minLengthValidationMessage,
-  minValidationMessage,
-  requiredValidationMessage,
-} from './shared-form-validation.util';
+import { registerValidatorsMessageExtension } from './validations/validators-message';
+import { passwordMatchValidator } from './validations/validators/password-match.validator';
+import { passwordValidator } from './validations/validators/password.validator';
+import { urlValidator } from './validations/validators/url.validator';
 
 @NgModule({
   imports: [
     SharedFormFeatureComponent,
+    FormlyMaterialModule,
     FormlyModule.forRoot({
       extras: {
         immutable: true,
       },
       wrappers: [{ name: 'addons', component: FormlyAddonsWrapperComponent }],
       extensions: [{ name: 'addons', extension: { onPopulate: addonsExtension } }],
-      validationMessages: [
-        { name: 'required', message: requiredValidationMessage },
-        { name: 'minLength', message: minLengthValidationMessage },
-        { name: 'maxLength', message: maxLengthValidationMessage },
-        { name: 'min', message: minValidationMessage },
-        { name: 'max', message: maxValidationMessage },
-      ],
       types: [
         {
           name: 'year-picker',
@@ -42,6 +33,7 @@ import {
         },
         {
           name: 'password-with-visibility',
+          extends: 'input',
           component: InputPasswordWithVisibilityTypeComponent,
         },
         {
@@ -49,8 +41,12 @@ import {
           component: InputColorPickerTypeComponent,
         },
       ],
+      validators: [
+        { name: 'url', validation: urlValidator },
+        { name: 'password', validation: passwordValidator },
+        { name: 'passwordMatch', validation: passwordMatchValidator },
+      ],
     }),
-    FormlyMaterialModule,
   ],
   providers: [
     {
@@ -58,6 +54,11 @@ import {
       useValue: {
         appearance: 'fill',
       },
+    },
+    {
+      provide: FORMLY_CONFIG,
+      useFactory: registerValidatorsMessageExtension,
+      multi: true,
     },
   ],
   exports: [SharedFormFeatureComponent],

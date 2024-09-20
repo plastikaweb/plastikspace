@@ -34,5 +34,9 @@ jobs:
       # - run: npx nx-cloud record -- echo Hello World
       # Nx Affected runs only tasks affected by the changes in this PR/commit. Learn more: https://nx.dev/ci/features/affected
       - run: npx nx-cloud record -- yarn markdownlint
-      - run: npx nx affected -t lint test
+
+      # Run affected lint and test for other projects
+      - run: npx nx affected -t lint --exclude=llecoop-firebase
+      - run: npx nx affected -t test --exclude=llecoop-firebase
+
       - run: npx nx affected --parallel 1 -t e2e-ci

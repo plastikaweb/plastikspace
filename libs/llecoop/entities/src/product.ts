@@ -11,7 +11,8 @@ export interface LlecoopProduct extends BaseEntity {
   category: LlecoopProductCategory;
   tags?: string[];
   unit: LlecoopProductUnit;
-  inStock: boolean;
+  isAvailable: boolean;
+  stock?: number;
 }
 
 export type LlecoopProductUnit =

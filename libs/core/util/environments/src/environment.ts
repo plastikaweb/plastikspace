@@ -1,8 +1,8 @@
 /**
  * A blueprint for all apps environments.
  */
-export interface Environment {
+export type Environment = {
   production: boolean;
   name: string;
   apiUrl: string;
-}
+} & Record<string, unknown>;

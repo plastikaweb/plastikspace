@@ -18,7 +18,6 @@ import { SubmitFormConfig } from '@plastik/core/entities';
   standalone: true,
   imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass],
   templateUrl: './shared-form-feature.component.html',
-
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedFormFeatureComponent<T> implements AfterViewInit {
@@ -34,9 +33,11 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.form.markAsUntouched();
+    this.form.markAsPristine();
   }
 
   onSubmit(event: Event): void {
+    event.preventDefault();
     event.stopPropagation();
     this.emitChange();
   }
@@ -46,8 +47,14 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
     if (!this.submitAvailable) this.emitChange();
   }
 
+  private onReset(): void {
+    this.form.reset();
+    this.form.markAsPristine();
+    this.form.markAsUntouched();
+  }
+
   private emitChange(): void {
-    if (this.model) {
+    if (this.model && this.form.valid) {
       this.changeEvent.emit(this.model);
     }
   }

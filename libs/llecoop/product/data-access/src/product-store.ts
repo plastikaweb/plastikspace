@@ -28,6 +28,7 @@ export const LlecoopProductStore = signalStore(
     loaded: false,
     lastUpdated: new Date(),
     sorting: { active: 'name', direction: 'asc' },
+    selectedItem: null,
   }),
   withEntities<LlecoopProduct>(),
   withComputed(({ ids }) => ({
@@ -62,7 +63,6 @@ export const LlecoopProductStore = signalStore(
       ),
       create: rxMethod<Partial<LlecoopProduct>>(
         pipe(
-          tap(() => patchState(store, { loaded: false })),
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((category: Partial<LlecoopProduct>) => {
             return productService.create(category).pipe(
@@ -79,7 +79,28 @@ export const LlecoopProductStore = signalStore(
           })
         )
       ),
+      update: rxMethod<Partial<LlecoopProduct>>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap((category: Partial<LlecoopProduct>) => {
+            return productService.update(category).pipe(
+              tapResponse({
+                next: () => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
+                },
+                // eslint-disable-next-line no-console
+                error: error => console.error('Error updating product', error),
+              })
+            );
+          })
+        )
+      ),
       setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),
+      setSelectedItem: (id: string | null) =>
+        patchState(store, {
+          selectedItem: id ? store.entityMap()[id] : null,
+        }),
     })
   ),
   withHooks({

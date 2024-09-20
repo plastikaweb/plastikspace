@@ -3,14 +3,17 @@ import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
+  inject,
   Input,
   OnChanges,
   Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -21,6 +24,7 @@ import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/for
 import {
   PageEventConfig,
   TableColumnFormatting,
+  TableControlAction,
   TablePaginationVisibility,
   TableSorting,
 } from '@plastik/shared/table/entities';
@@ -37,6 +41,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     MatSortModule,
     CdkTableModule,
     MatTooltipModule,
+    MatIconModule,
     RouterModule,
     AngularSvgIconModule,
     SharedUtilFormattersModule,
@@ -46,6 +51,8 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
+  private readonly cdr = inject(ChangeDetectorRef);
+
   /**
    * Data that will populate the table.
    */
@@ -98,6 +105,11 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
    */
   @Input() sort?: TableSorting;
 
+  /**
+   * Table actions configuration.
+   */
+  @Input() actions?: TableControlAction<T>;
+
   @Input() filterCriteria = '';
 
   /**
@@ -112,6 +124,12 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
   @Output()
   changeSorting = new EventEmitter<TableSorting>();
 
+  /**
+   * An Output emitter to send table delete action.
+   */
+  @Output()
+  delete = new EventEmitter<T>();
+
   @ViewChild(MatTable) matTable!: MatTable<T>;
   @ViewChild(MatPaginator) matPaginator!: MatPaginator;
   @ViewChild(MatSort) matSort?: MatSort;
@@ -121,6 +139,11 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.displayedColumns = this?.columnProperties?.map(property => property.key) || [];
+
+    if (this.actions) {
+      this.displayedColumns.push('actions');
+      this.cdr.detectChanges();
+    }
 
     if (this.matPaginator && this.pagination) {
       this.matPaginator.pageIndex = this.pagination?.pageIndex || 0;
@@ -181,5 +204,10 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
       active,
       direction,
     });
+  }
+
+  onDelete(event: Event, element: T): void {
+    event.stopPropagation();
+    this.delete.emit(element);
   }
 }

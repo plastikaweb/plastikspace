@@ -5,7 +5,7 @@ import { BaseEntity, ViewConfigUI } from '@plastik/core/entities';
 export interface DetailItemViewFacade<T extends BaseEntity> {
   formStructure: Signal<FormlyFieldConfig[]>;
   viewConfig: Signal<ViewConfigUI>;
-  model?: T;
+  model?: Signal<T | null>;
   onSubmit(data: object): void;
 }
 

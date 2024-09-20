@@ -34,10 +34,56 @@
           </mat-cell>
         </ng-container>
       }
+
+      <!-- Actions column -->
+      @if (actions) {
+        <ng-container matColumnDef="actions">
+          <mat-header-cell *matHeaderCellDef class="mat-cell-actions"></mat-header-cell>
+          <mat-cell *matCellDef="let element" class="mat-cell-actions">
+            @for (action of actions | keyvalue; track action.key) {
+              @if (action.key === 'EDIT') {
+                <button
+                  type="button"
+                  mat-icon-button
+                  [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
+                  [attr.aria-label]="action.value?.description(element) || ''"
+                  [matTooltip]="action.value?.description(element) || ''"
+                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
+                  <mat-icon>edit</mat-icon>
+                </button>
+              } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
+                <button
+                  type="button"
+                  mat-icon-button
+                  [attr.aria-label]="action.value?.description(element) || ''"
+                  [matTooltip]="action.value?.description(element) || ''"
+                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                  (click)="onDelete($event, element)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              } @else if (action.value?.visible(element)) {
+                <div class="table-actions-grouping">
+                  <button
+                    type="button"
+                    mat-icon-button
+                    class="btn-sm"
+                    [attr.aria-label]="action.value?.description(element) || ''"
+                    [matTooltip]="action.value?.description(element) || ''"
+                    [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                    (click)="$event.stopPropagation(); action.value?.execute?.(element)">
+                    <mat-icon>{{ action.value?.icon(element) }}</mat-icon>
+                  </button>
+                </div>
+              }
+            }
+          </mat-cell>
+        </ng-container>
+      }
+
       <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
       <mat-row
         *matRowDef="let row; columns: displayedColumns"
-        class="even:bg-gray-5/20 odd:bg-white"></mat-row>
+        class="even:bg-gray-5 odd:bg-white"></mat-row>
     </mat-table>
 
     <mat-paginator

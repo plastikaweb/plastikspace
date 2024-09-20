@@ -28,6 +28,7 @@ export const LlecoopCategoryStore = signalStore(
     loaded: false,
     lastUpdated: new Date(),
     sorting: { active: 'name', direction: 'asc' },
+    selectedItem: null,
   }),
   withEntities<LlecoopProductCategory>(),
   withComputed(({ ids, entities }) => ({
@@ -79,15 +80,14 @@ export const LlecoopCategoryStore = signalStore(
       ),
       create: rxMethod<Partial<LlecoopProductCategory>>(
         pipe(
-          tap(() => patchState(store, { loaded: false })),
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((category: Partial<LlecoopProductCategory>) => {
             return categoryService.create(category).pipe(
               tapResponse({
                 next: () => {
-                  patchState(store, { loaded: true });
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
+                  patchState(store, { selectedItem: null });
                 },
                 // eslint-disable-next-line no-console
                 error: error => console.error('Error creating category', error),
@@ -96,7 +96,28 @@ export const LlecoopCategoryStore = signalStore(
           })
         )
       ),
+      update: rxMethod<Partial<LlecoopProductCategory>>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap((category: Partial<LlecoopProductCategory>) => {
+            return categoryService.update(category).pipe(
+              tapResponse({
+                next: () => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
+                },
+                // eslint-disable-next-line no-console
+                error: error => console.error('Error updating category', error),
+              })
+            );
+          })
+        )
+      ),
       setSorting: (sorting: CategoryState['sorting']) => patchState(store, { sorting }),
+      setSelectedItem: (id: string | null) =>
+        patchState(store, {
+          selectedItem: id ? store.entityMap()[id] : null,
+        }),
     })
   ),
   withHooks({

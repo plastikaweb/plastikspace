@@ -1,5 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  collectionData,
+  doc,
+  Firestore,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { Observable, of } from 'rxjs';
 
@@ -16,7 +23,12 @@ export class LlecoopProductFireService {
     >;
   }
 
-  create(product: Partial<LlecoopProduct>) {
-    return of(addDoc(this.productCollection, product));
+  create(item: Partial<LlecoopProduct>) {
+    return of(addDoc(this.productCollection, item));
+  }
+
+  update(item: Partial<LlecoopProduct>) {
+    const document = doc(this.firestore, `product/${item.id}`);
+    return of(updateDoc(document, item));
   }
 }

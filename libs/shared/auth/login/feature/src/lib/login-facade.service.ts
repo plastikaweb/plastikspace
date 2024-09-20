@@ -12,7 +12,7 @@ interface LoginData {
 @Injectable({
   providedIn: 'root',
 })
-export class LoginFacadeService implements AuthFormFacade<any> {
+export class LoginFacadeService implements AuthFormFacade {
   authService = inject(AUTH_FACADE);
   formStructure = getLoginFormConfig();
 
