@@ -1,5 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  collectionData,
+  doc,
+  Firestore,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { Observable, of } from 'rxjs';
 
@@ -18,5 +25,10 @@ export class LlecoopCategoryFireService {
 
   create(category: Partial<LlecoopProductCategory>) {
     return of(addDoc(this.categoryCollection, category));
+  }
+
+  update(category: Partial<LlecoopProductCategory>) {
+    const categoryDoc = doc(this.firestore, `category/${category.id}`);
+    return of(updateDoc(categoryDoc, category));
   }
 }

@@ -40,10 +40,38 @@ export class LlecoopCategorySearchFeatureTableConfig
     },
   };
 
+  private readonly createdAt: TableColumnFormatting<LlecoopProductCategory, 'FIREBASE_TIMESTAMP'> =
+    {
+      key: 'createdAt',
+      title: 'Data de creació',
+      propertyPath: 'createdAt',
+      sorting: true,
+      formatting: {
+        type: 'FIREBASE_TIMESTAMP',
+        extras: {
+          dateDigitsInfo: 'medium',
+        },
+      },
+    };
+
+  private readonly updatedAt: TableColumnFormatting<LlecoopProductCategory, 'FIREBASE_TIMESTAMP'> =
+    {
+      key: 'updatedAt',
+      title: "Data d'actualització",
+      propertyPath: 'updatedAt',
+      sorting: true,
+      formatting: {
+        type: 'FIREBASE_TIMESTAMP',
+        extras: {
+          dateDigitsInfo: 'medium',
+        },
+      },
+    };
+
   private readonly columnProperties: TableColumnFormatting<
     LlecoopProductCategory,
     FormattingTypes
-  >[] = [this.name, this.description];
+  >[] = [this.name, this.description, this.createdAt, this.updatedAt];
 
   getTableStructure(): WritableSignal<TableControlStructure<LlecoopProductCategory>> {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
@@ -57,7 +85,13 @@ export class LlecoopCategorySearchFeatureTableConfig
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
-      caption: 'Product Categories Table Results',
+      caption: 'Llistat de categories',
+      actions: {
+        EDIT: {
+          visible: () => true,
+          description: () => 'Edita la categoria',
+        },
+      },
     });
   }
 }

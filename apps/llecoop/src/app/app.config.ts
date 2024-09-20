@@ -1,8 +1,19 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { connectAuthEmulator, initializeAuth, provideAuth } from '@angular/fire/auth';
-import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
+import {
+  connectAuthEmulator,
+  indexedDBLocalPersistence,
+  initializeAuth,
+  provideAuth,
+  setPersistence,
+} from '@angular/fire/auth';
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+  persistentLocalCache,
+  provideFirestore,
+} from '@angular/fire/firestore';
 import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -36,25 +47,34 @@ import { appRoutes } from './app.routes';
 import { headerConfig, viewConfig } from './cms-layout-config';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
+let resolvePersistenceEnabled: (enabled: boolean) => void;
+
+export const persistenceEnabled = new Promise<boolean>(resolve => {
+  resolvePersistenceEnabled = resolve;
+});
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(),
-    provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     provideFirebaseApp(() => initializeApp(firebaseConfig, 'llecoop')),
     provideFirestore(() => {
       const firestore = getFirestore(getApp('llecoop'));
       if (environment['useEmulators']) {
         connectFirestoreEmulator(firestore, 'localhost', 8080);
       }
+      persistentLocalCache();
       return firestore;
     }),
     provideAuth(() => {
-      const app = getApp('llecoop');
-      const auth = initializeAuth(app);
+      const auth = initializeAuth(getApp('llecoop'));
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
       }
+      setPersistence(auth, indexedDBLocalPersistence).then(
+        () => resolvePersistenceEnabled(true),
+        () => resolvePersistenceEnabled(false)
+      );
       return auth;
     }),
     provideStorage(() => {
@@ -72,6 +92,7 @@ export const appConfig: ApplicationConfig = {
     //   return functions;
     // }),
     // provideFirestore(() => getFirestore(getApp())),
+    provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     provideStore(),
     importProvidersFrom(
       AngularSvgIconModule.forRoot(),

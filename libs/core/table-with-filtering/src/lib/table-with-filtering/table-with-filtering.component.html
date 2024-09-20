@@ -30,5 +30,6 @@
   [pageSizeOptions]="facade.tableStructure().pageSizeOptions || []"
   [paginationVisibility]="facade.tableStructure().paginationVisibility"
   [filterCriteria]="filterCriteria()"
+  [actions]="facade.tableStructure().actions || {}"
   (changeSorting)="onChangeSorting($event)">
 </plastik-shared-table>

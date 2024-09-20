@@ -11,6 +11,6 @@
 <plastik-shared-form-feature
   class="block w-full lg:w-1/2"
   [fields]="facade.formStructure() || []"
-  [model]="{}"
+  [model]="facade.model?.() || {}"
   (changeEvent)="onSubmit($event)">
 </plastik-shared-form-feature>

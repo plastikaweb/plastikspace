@@ -56,7 +56,6 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   private emitChange(): void {
     if (this.model && this.form.valid) {
       this.changeEvent.emit(this.model);
-      this.onReset();
     }
   }
 }

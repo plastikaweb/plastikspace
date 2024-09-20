@@ -10,6 +10,9 @@ import { NgxColorsModule } from 'ngx-colors';
 interface ColorPickerProps extends FormlyFieldProps {
   acceptLabel: string;
   cancelLabel: string;
+  colorPalette: string[];
+  hideColorPicker: boolean;
+  hideTextInput: boolean;
 }
 
 @Component({

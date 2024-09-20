@@ -10,6 +10,7 @@ import {
   PropertyFormattingConf,
 } from '../formatting';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
+import { Timestamp } from '@angular/fire/firestore';
 
 @Injectable()
 /**
@@ -43,6 +44,8 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
         return this.formatter.dateFormatter(String(value), extras);
       case 'DATE_TIME':
         return this.formatter.dateTimeFormatter(String(value), extras);
+      case 'FIREBASE_TIMESTAMP':
+        return this.formatter.firebaseTimestampFormatter(value as Timestamp, extras);
       case 'PERCENTAGE':
         return this.formatter.percentageFormatter(Number(value), extras);
       case 'CURRENCY':

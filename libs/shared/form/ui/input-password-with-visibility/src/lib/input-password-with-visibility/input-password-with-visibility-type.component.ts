@@ -23,7 +23,9 @@ import { FieldType, FormlyMaterialModule } from '@ngx-formly/material';
 export class InputPasswordWithVisibilityTypeComponent extends FieldType<FieldTypeConfig> {
   hiddenPass = signal(true);
 
-  hidePassword(): void {
+  hidePassword(event: Event): void {
+    event.preventDefault();
+    event.stopPropagation();
     this.hiddenPass.update(value => !value);
   }
 }
