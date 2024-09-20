@@ -27,7 +27,14 @@ export const appRoutes: Routes = [
         path: 'categoria/crear',
         loadChildren: () =>
           import('@plastik/llecoop/category/detail').then(
-            routes => routes.categoryFeatureDetailRoutes
+            routes => routes.categoryFeatureDetailCreateRoutes
+          ),
+      },
+      {
+        path: 'categoria/:id',
+        loadChildren: () =>
+          import('@plastik/llecoop/category/detail').then(
+            routes => routes.categoryFeatureDetailUpdateRoutes
           ),
       },
       {
@@ -41,7 +48,14 @@ export const appRoutes: Routes = [
         path: 'producte/crear',
         loadChildren: () =>
           import('@plastik/llecoop/product/detail').then(
-            routes => routes.productFeatureDetailRoutes
+            routes => routes.productFeatureDetailCreateRoutes
+          ),
+      },
+      {
+        path: 'producte/:id',
+        loadChildren: () =>
+          import('@plastik/llecoop/product/detail').then(
+            routes => routes.productFeatureDetailUpdateRoutes
           ),
       },
       {

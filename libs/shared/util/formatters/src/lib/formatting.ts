@@ -7,6 +7,7 @@ import { SafeHtml } from '@angular/platform-browser';
 export type FormattingTypes =
   | 'DATE'
   | 'DATE_TIME'
+  | 'FIREBASE_TIMESTAMP'
   | 'PERCENTAGE'
   | 'CURRENCY'
   | 'NUMBER'
@@ -20,7 +21,7 @@ export type FormattingTypes =
 
 type FormattingTypesNumeric = Extract<
   FormattingTypes,
-  'DATE' | 'DATE_TIME' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER'
+  'DATE' | 'DATE_TIME' | 'FIREBASE_TIMESTAMP' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER'
 >;
 type FormattingTypesBoolean = Extract<FormattingTypes, 'BOOLEAN_WITH_ICON'>;
 

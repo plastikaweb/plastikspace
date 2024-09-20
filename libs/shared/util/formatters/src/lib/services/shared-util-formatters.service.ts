@@ -8,6 +8,7 @@ import {
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
+import { Timestamp } from '@angular/fire/firestore';
 import { FormattingDateInput, FormattingExtras, PropertyFormattingConf } from '../formatting';
 
 @Injectable()
@@ -22,9 +23,7 @@ export class SharedUtilFormattersService {
   /**
    * @description Formats value as a string date ('M/d/yy').
    * @param { FormattingDateInput } value The value to format.
-   * @param { Partial<Pick<FormattingExtras, 'dateDigitsInfo' | 'locale'>> } param The control configuration to format the object property value.
-   * @param { string } param.dateDigitsInfo The format string that Angular uses to format dates.
-   * @param { string } param.locale The format locale that Angular uses to format dates.
+   * @param { Partial<Pick<FormattingExtras, 'dateDigitsInfo' | 'locale' | 'timezone'>> } param The control configuration to format the object property value.
    * @returns { string } The formatted value.
    */
   dateFormatter(
@@ -32,7 +31,7 @@ export class SharedUtilFormattersService {
     {
       dateDigitsInfo = 'shortDate',
       locale = this.locale,
-      timezone = 'UTC',
+      timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
     }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
     return formatDate(value, dateDigitsInfo, locale, timezone) || '';
@@ -41,7 +40,7 @@ export class SharedUtilFormattersService {
   /**
    * @description Formats value as a string date ('M/d/yy, HH:mm:ss').
    * @param { FormattingDateInput } value The value to format.
-   * @param { Partial<Pick<FormattingExtras, 'locale'>> } param The control configuration to format the object property value.
+   * @param { Partial<Pick<FormattingExtras, 'locale' | 'timezone'>> } param The control configuration to format the object property value.
    * @param { string } param.locale The format locale that Angular uses to format dates.
    * @returns { string } The formatted value.
    */
@@ -49,10 +48,27 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     {
       locale = this.locale,
-      timezone = 'UTC',
+      timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
     }: Partial<Pick<FormattingExtras<unknown, 'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
     return formatDate(value, 'M/d/yy, HH:mm:ss', locale, timezone) || '';
+  }
+
+  /**
+   * @description Formats a Firebase `Timestamp` into a string based on the provided locale and timezone.
+   * @param { Timestamp } value - The Firebase `Timestamp` to format.
+   * @param { Partial<Pick<FormattingExtras, 'dateDigitsInfo' | 'locale'>> } param The control configuration to format the object property value.
+   * @returns { string } The formatted date string.
+   */
+  firebaseTimestampFormatter(
+    value: Timestamp,
+    {
+      dateDigitsInfo = 'shortDate',
+      locale = this.locale,
+      timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
+    }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
+  ): string {
+    return value ? formatDate(value?.toDate(), dateDigitsInfo, locale, timezone) : '-';
   }
 
   /**

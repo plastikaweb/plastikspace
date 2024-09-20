@@ -194,11 +194,11 @@ export function getLlecoopProductDetailFormConfig(): WritableSignal<FormlyFieldC
           },
         },
         {
-          key: 'inStock',
+          key: 'isAvailable',
           type: 'checkbox',
           defaultValue: false,
           props: {
-            label: 'En stock',
+            label: 'Disponible',
           },
         },
       ],

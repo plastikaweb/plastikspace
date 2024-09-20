@@ -65,6 +65,7 @@
     "llecoop:build:github": "nx run llecoop:build:prod",
     "llecoop:firestore": "firebase emulators:start --only firestore",
     "llecoop:emulate": "yarn nx run llecoop-firebase:emulate",
+    "llecoop:local": "npm-run-all --parallel --race llecoop:emulate llecoop:serve",
     "experimental:serve": "nx run experimental:serve",
     "experimental:lint": "nx run experimental:lint",
     "experimental:build": "nx run experimental:build --parallel",

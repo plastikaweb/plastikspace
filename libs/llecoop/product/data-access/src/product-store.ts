@@ -1,5 +1,6 @@
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
+import { Timestamp } from '@angular/fire/firestore';
 import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
@@ -28,6 +29,7 @@ export const LlecoopProductStore = signalStore(
     loaded: false,
     lastUpdated: new Date(),
     sorting: { active: 'name', direction: 'asc' },
+    selectedItem: null,
   }),
   withEntities<LlecoopProduct>(),
   withComputed(({ ids }) => ({
@@ -65,7 +67,7 @@ export const LlecoopProductStore = signalStore(
           tap(() => patchState(store, { loaded: false })),
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((category: Partial<LlecoopProduct>) => {
-            return productService.create(category).pipe(
+            return productService.create({ ...category, createdAt: Timestamp.now() }).pipe(
               tapResponse({
                 next: () => {
                   patchState(store, { loaded: true });
