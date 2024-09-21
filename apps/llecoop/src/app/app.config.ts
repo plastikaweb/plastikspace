@@ -1,21 +1,8 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import {
-  connectAuthEmulator,
-  indexedDBLocalPersistence,
-  initializeAuth,
-  provideAuth,
-  setPersistence,
-} from '@angular/fire/auth';
-import {
-  connectFirestoreEmulator,
-  getFirestore,
-  persistentLocalCache,
-  provideFirestore,
-} from '@angular/fire/firestore';
-import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
-import { MatPaginatorIntl } from '@angular/material/paginator';
+import { connectAuthEmulator, initializeAuth, provideAuth } from '@angular/fire/auth';
+import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -40,50 +27,37 @@ import {
   RouterStateEffects,
   routerReducers,
 } from '@plastik/core/router-state';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { firebaseConfig } from '../../firebase';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { headerConfig, viewConfig } from './cms-layout-config';
-import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
-
-let resolvePersistenceEnabled: (enabled: boolean) => void;
-
-export const persistenceEnabled = new Promise<boolean>(resolve => {
-  resolvePersistenceEnabled = resolve;
-});
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(firebaseConfig, 'llecoop')),
-    provideFirestore(() => {
-      const firestore = getFirestore(getApp('llecoop'));
-      if (environment['useEmulators']) {
-        connectFirestoreEmulator(firestore, 'localhost', 8080);
-      }
-      persistentLocalCache();
-      return firestore;
-    }),
     provideAuth(() => {
       const auth = initializeAuth(getApp('llecoop'));
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
       }
-      setPersistence(auth, indexedDBLocalPersistence).then(
-        () => resolvePersistenceEnabled(true),
-        () => resolvePersistenceEnabled(false)
-      );
       return auth;
     }),
-    provideStorage(() => {
-      const storage = getStorage();
+    provideFirestore(() => {
+      const firestore = getFirestore(getApp('llecoop'));
       if (environment['useEmulators']) {
-        connectStorageEmulator(storage, 'localhost', 9199);
+        connectFirestoreEmulator(firestore, 'localhost', 8080);
       }
-      return storage;
+      return firestore;
     }),
+    // provideStorage(() => {
+    //   const storage = getStorage();
+    //   if (environment['useEmulators']) {
+    //     connectStorageEmulator(storage, 'localhost', 9199);
+    //   }
+    //   return storage;
+    // }),
     // provideFunctions(() => {
     //   const functions = getFunctions();
     //   if (environment['useEmulators']) {
@@ -95,7 +69,6 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     provideStore(),
     importProvidersFrom(
-      AngularSvgIconModule.forRoot(),
       StoreModule.forRoot(routerReducers, {
         runtimeChecks: {
           strictActionImmutability: true,
@@ -138,10 +111,6 @@ export const appConfig: ApplicationConfig = {
         verticalPosition: 'top',
         politeness: 'assertive',
       },
-    },
-    {
-      provide: MatPaginatorIntl,
-      useClass: LlecoopMatPaginatorIntl,
     },
   ],
 };

@@ -3,8 +3,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { FieldType, FieldTypeConfig, FormlyFieldProps, FormlyModule } from '@ngx-formly/core';
-import { FormlyMaterialModule } from '@ngx-formly/material';
+import { FieldType, FieldTypeConfig, FormlyFieldProps } from '@ngx-formly/core';
 import { NgxColorsModule } from 'ngx-colors';
 
 interface ColorPickerProps extends FormlyFieldProps {
@@ -24,8 +23,6 @@ interface ColorPickerProps extends FormlyFieldProps {
     MatInputModule,
     MatFormFieldModule,
     ReactiveFormsModule,
-    FormlyMaterialModule,
-    FormlyModule,
   ],
   templateUrl: './input-color-picker-type.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
