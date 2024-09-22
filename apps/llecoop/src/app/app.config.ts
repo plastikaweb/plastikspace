@@ -1,7 +1,12 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { connectAuthEmulator, initializeAuth, provideAuth } from '@angular/fire/auth';
+import {
+  browserSessionPersistence,
+  connectAuthEmulator,
+  initializeAuth,
+  provideAuth,
+} from '@angular/fire/auth';
 import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -19,14 +24,14 @@ import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-la
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { getVisibleNavigationList } from '@plastik/core/entities';
 import { ENVIRONMENT } from '@plastik/core/environments';
-import { CoreNotificationDataAccessModule } from '@plastik/core/notification/data-access';
-import { CoreNotificationUiMatSnackbarModule } from '@plastik/core/notification/ui/mat-snackbar';
 import {
   CustomRouterSerializer,
   PrefixTitleService,
   RouterStateEffects,
   routerReducers,
 } from '@plastik/core/router-state';
+import { NotificationDataAccessModule } from '@plastik/shared/notification/data-access';
+import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 import { firebaseConfig } from '../../firebase';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
@@ -41,6 +46,7 @@ export const appConfig: ApplicationConfig = {
       const auth = initializeAuth(getApp('llecoop'));
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+        auth.setPersistence(browserSessionPersistence);
       }
       return auth;
     }),
@@ -84,8 +90,8 @@ export const appConfig: ApplicationConfig = {
           })
         : [],
       CoreCmsLayoutDataAccessModule,
-      CoreNotificationDataAccessModule,
-      CoreNotificationUiMatSnackbarModule
+      NotificationDataAccessModule,
+      NotificationUiMatSnackbarModule
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,

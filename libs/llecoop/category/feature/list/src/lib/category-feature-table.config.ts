@@ -63,6 +63,7 @@ export class LlecoopCategorySearchFeatureTableConfig
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
+      sort: ['updatedAt', 'desc'],
       caption: 'Llistat de categories',
       actions: {
         EDIT: {

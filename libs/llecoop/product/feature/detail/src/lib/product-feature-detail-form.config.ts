@@ -237,6 +237,6 @@ function setStockUnitAddonRight(
   unitValue: LlecoopProductUnit
 ): void {
   if (formlyProps?.['addonRight']) {
-    formlyProps['addonRight'].text = unitValue.type === 'weight' ? 'kg' : 'u.';
+    formlyProps['addonRight'].text = unitValue?.type === 'weight' ? 'kg' : 'u.';
   }
 }

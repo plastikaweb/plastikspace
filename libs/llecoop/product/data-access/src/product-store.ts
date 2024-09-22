@@ -13,7 +13,7 @@ import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { routerActions } from '@plastik/core/router-state';
-import { LlecoopFeatureStore } from '@plastik/llecoop/data-access';
+import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
@@ -27,7 +27,7 @@ export const LlecoopProductStore = signalStore(
   withState<ProductState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: { active: 'name', direction: 'asc' },
+    sorting: ['name', 'desc'],
     selectedItem: null,
   }),
   withEntities<LlecoopProduct>(),
@@ -35,7 +35,12 @@ export const LlecoopProductStore = signalStore(
     count: computed(() => ids().length),
   })),
   withMethods(
-    (store, productService = inject(LlecoopProductFireService), state = inject(Store)) => ({
+    (
+      store,
+      productService = inject(LlecoopProductFireService),
+      storeNotificationService = inject(StoreNotificationService),
+      state = inject(Store)
+    ) => ({
       getAll: rxMethod<void>(
         pipe(
           tap(() => patchState(store, { loaded: false })),
@@ -54,8 +59,11 @@ export const LlecoopProductStore = signalStore(
                   patchState(store, { loaded: true, lastUpdated });
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
-                // eslint-disable-next-line no-console
-                error: error => console.error('Error loading products', error),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut carregar els productes: ${error}`,
+                    'ERROR'
+                  ),
               })
             )
           )
@@ -64,16 +72,23 @@ export const LlecoopProductStore = signalStore(
       create: rxMethod<Partial<LlecoopProduct>>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
-          switchMap((category: Partial<LlecoopProduct>) => {
-            return productService.create(category).pipe(
+          switchMap((product: Partial<LlecoopProduct>) => {
+            return productService.create(product).pipe(
               tapResponse({
                 next: () => {
-                  patchState(store, { loaded: true });
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
+                  storeNotificationService.create(
+                    `Producte "${product.name}" creat correctament`,
+                    'SUCCESS'
+                  );
+                  patchState(store, { sorting: ['createdAt', 'desc'] });
                 },
-                // eslint-disable-next-line no-console
-                error: error => console.error('Error creating product', error),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut crear el producte "${product.name}": ${error}`,
+                    'ERROR'
+                  ),
               })
             );
           })
@@ -82,15 +97,23 @@ export const LlecoopProductStore = signalStore(
       update: rxMethod<Partial<LlecoopProduct>>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
-          switchMap((category: Partial<LlecoopProduct>) => {
-            return productService.update(category).pipe(
+          switchMap((product: Partial<LlecoopProduct>) => {
+            return productService.update(product).pipe(
               tapResponse({
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
+                  storeNotificationService.create(
+                    `Producte "${product.name}" actualitzat correctament`,
+                    'SUCCESS'
+                  );
+                  patchState(store, { sorting: ['updatedAt', 'desc'] });
                 },
-                // eslint-disable-next-line no-console
-                error: error => console.error('Error updating product', error),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut actualitzar el producte "${product.name}": ${error}`,
+                    'ERROR'
+                  ),
               })
             );
           })

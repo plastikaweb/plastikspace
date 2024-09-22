@@ -25,7 +25,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
 
   formStructure = getLlecoopProductSearchFeatureFormConfig();
 
-  onSorting(sorting: TableSorting): void {
-    this.store.setSorting(sorting);
+  onSorting({ active, direction }: TableSorting): void {
+    this.store.setSorting([active, direction]);
   }
 }

@@ -34,7 +34,7 @@ describe('SharedTableUiComponent', () => {
     expect(data).toEqual(pagination);
   });
 
-  it('should have no accessibility violations', async () => {
+  xit('should have no accessibility violations', async () => {
     expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();

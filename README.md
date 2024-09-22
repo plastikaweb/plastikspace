@@ -86,13 +86,13 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [core-cms-layout-data-access](libs/core/cms-layout/data-access/README.md)
 - [core-cms-layout-entities](libs/core/cms-layout/entities/README.md)
 
+### Shared
+
 #### Notification
 
-- [core-notification-entities](libs/core/notification/entities/README.md)
-- [core-notification-data-access](libs/core/notification/data-access/README.md)
-- [core-notification-ui-mat-snackbar](libs/core/notification/ui/mat-snackbar/README.md)
-
-### Shared
+- [shared-notification-entities](libs/shared/notification/entities/README.md)
+- [shared-notification-data-access](libs/shared/notification/data-access/README.md)
+- [shared-notification-ui-mat-snackbar](libs/shared/notification/ui/mat-snackbar/README.md)
 
 #### Button
 
@@ -116,7 +116,8 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 #### Layouts
 
-- [table-with-filtering](libs/shared/layouts/feature/table-with-filtering/README.md)
+- [table-with-filtering](libs/core/table-with-filtering/README.md)
+- [detail-item-form](libs/core/detail-item-form/README.md)
 
 #### Util
 

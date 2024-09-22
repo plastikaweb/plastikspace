@@ -1,107 +1,107 @@
 <div class="block mt-0 overflow-auto border-t border-solid md:mt-4 border-gray-10 table-wrapper">
-  @if (!!dataSource.data.length) {
-    <mat-table
-      class="table w-full table-fixed"
-      matSort
-      matSortDisableClear
-      [dataSource]="dataSource"
-      [attr.aria-label]="caption"
-      [matSortActive]="matSort?.active || ''"
-      [matSortDirection]="matSort?.direction || 'asc'"
-      (matSortChange)="onChangeSorting($event)">
-      @if (caption) {
-        <caption class="sr-only">
-          {{
-            caption
-          }}
-        </caption>
-      }
+  <mat-table
+    class="table w-full table-fixed"
+    matSort
+    matSortDisableClear
+    [dataSource]="dataSource"
+    [attr.aria-label]="caption"
+    [matSortActive]="matSort?.active || ''"
+    [matSortDirection]="matSort?.direction || ''"
+    (matSortChange)="onChangeSorting($event)">
+    @if (caption) {
+      <caption class="sr-only">
+        {{
+          caption
+        }}
+      </caption>
+    }
 
-      @for (column of columnProperties; track column.key) {
-        <ng-container [matColumnDef]="column.key" [sticky]="column.sticky">
-          <mat-header-cell
-            *matHeaderCellDef
-            [mat-sort-header]="column.key"
-            [disabled]="!column.sorting"
-            [ngClass]="column.cssClasses?.[0] || ''">
-            {{ column.title }}
-          </mat-header-cell>
+    @for (column of columnProperties; track column.key) {
+      <ng-container [matColumnDef]="column.key" [sticky]="column.sticky">
+        <mat-header-cell
+          *matHeaderCellDef
+          [mat-sort-header]="column.key"
+          [disabled]="!column.sorting"
+          [ngClass]="column.cssClasses?.[0] || ''">
+          {{ column.title }}
+        </mat-header-cell>
 
-          <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
-            <div
-              [ngClass]="column.cssClasses?.[1] || ''"
-              [innerHTML]="row | safeFormatted: column : i + 1 : pagination"></div>
-          </mat-cell>
-        </ng-container>
-      }
+        <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
+          <div
+            [ngClass]="column.cssClasses?.[1] || ''"
+            [innerHTML]="row | safeFormatted: column : i + 1 : pagination"></div>
+        </mat-cell>
+      </ng-container>
+    }
 
-      <!-- Actions column -->
-      @if (actions) {
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef class="mat-cell-actions"></mat-header-cell>
-          <mat-cell *matCellDef="let element" class="mat-cell-actions">
-            @for (action of actions | keyvalue; track action.key) {
-              @if (action.key === 'EDIT') {
+    <!-- Actions column -->
+    @if (actions) {
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef class="mat-cell-actions"></mat-header-cell>
+        <mat-cell *matCellDef="let element" class="mat-cell-actions">
+          @for (action of actions | keyvalue; track action.key) {
+            @if (action.key === 'EDIT') {
+              <button
+                type="button"
+                mat-icon-button
+                [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
+                <mat-icon>edit</mat-icon>
+              </button>
+            } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
+              <button
+                type="button"
+                mat-icon-button
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                (click)="onDelete($event, element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            } @else if (action.value?.visible(element)) {
+              <div class="table-actions-grouping">
                 <button
                   type="button"
                   mat-icon-button
-                  [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
-                  <mat-icon>edit</mat-icon>
-                </button>
-              } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
-                <button
-                  type="button"
-                  mat-icon-button
+                  class="btn-sm"
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                  (click)="onDelete($event, element)">
-                  <mat-icon>delete</mat-icon>
+                  (click)="$event.stopPropagation(); action.value?.execute?.(element)">
+                  <mat-icon>{{ action.value?.icon(element) }}</mat-icon>
                 </button>
-              } @else if (action.value?.visible(element)) {
-                <div class="table-actions-grouping">
-                  <button
-                    type="button"
-                    mat-icon-button
-                    class="btn-sm"
-                    [attr.aria-label]="action.value?.description(element) || ''"
-                    [matTooltip]="action.value?.description(element) || ''"
-                    [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                    (click)="$event.stopPropagation(); action.value?.execute?.(element)">
-                    <mat-icon>{{ action.value?.icon(element) }}</mat-icon>
-                  </button>
-                </div>
-              }
+              </div>
             }
-          </mat-cell>
-        </ng-container>
-      }
+          }
+        </mat-cell>
+      </ng-container>
+    }
 
-      <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-      <mat-row
-        *matRowDef="let row; columns: displayedColumns"
-        class="even:bg-gray-5 odd:bg-white"></mat-row>
-    </mat-table>
+    <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+    <mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      class="even:bg-gray-5 odd:bg-white"></mat-row>
+  </mat-table>
 
-    <mat-paginator
-      #matPaginator
-      class="mt-md jus"
-      [hidePageSize]="paginationVisibility?.hidePageSize"
-      [length]="resultsLength"
-      [ngClass]="{
-        'paginator--hide': paginationVisibility?.hideRangeLabel,
-        'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons,
-      }"
-      [pageIndex]="pagination?.pageIndex || 0"
-      [pageSize]="pagination?.pageSize || resultsLength"
-      [pageSizeOptions]="pageSizeOptions"
-      [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
-      (page)="onChangePagination($event)">
-    </mat-paginator>
-  } @else {
+  <mat-paginator
+    #matPaginator
+    class="mt-md jus"
+    [hidePageSize]="paginationVisibility?.hidePageSize"
+    [length]="resultsLength"
+    [ngClass]="{
+      'paginator--hide': paginationVisibility?.hideRangeLabel,
+      'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons,
+    }"
+    [pageIndex]="pagination?.pageIndex || 0"
+    [pageSize]="pagination?.pageSize || resultsLength"
+    [pageSizeOptions]="pageSizeOptions"
+    [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
+    (page)="onChangePagination($event)">
+  </mat-paginator>
+
+  @if (!dataSource.data.length) {
     <ng-content select="[noResults]"></ng-content>
     <ng-content select="[noValidSearch]"></ng-content>
   }
