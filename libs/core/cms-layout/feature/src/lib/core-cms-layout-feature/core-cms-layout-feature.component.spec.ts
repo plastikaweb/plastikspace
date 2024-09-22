@@ -10,7 +10,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
-import { NotificationFacade } from '@plastik/core/notification/data-access';
+import { NotificationFacade } from '@plastik/shared/notification/data-access';
 import { CoreCmsLayoutFeatureComponent } from './core-cms-layout-feature.component';
 
 describe('CoreCmsLayoutFeatureComponent', () => {

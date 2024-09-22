@@ -1,5 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { CommonModule } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -27,6 +27,7 @@ import {
   TableControlAction,
   TablePaginationVisibility,
   TableSorting,
+  TableSortingConfig,
 } from '@plastik/shared/table/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -45,6 +46,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     RouterModule,
     AngularSvgIconModule,
     SharedUtilFormattersModule,
+    JsonPipe,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrls: ['./shared-table-ui.component.scss'],
@@ -103,7 +105,7 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
   /**
    * Table sorting configuration.
    */
-  @Input() sort?: TableSorting;
+  @Input() sort?: TableSortingConfig;
 
   /**
    * Table actions configuration.
@@ -151,12 +153,10 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
     }
 
     if (this.matSort) {
-      this.matSort.active = this.sort?.active || '';
-      this.matSort.direction = this.sort?.direction || 'asc';
+      this.matSort.active = this.sort?.[0] || '';
+      this.matSort.direction = this.sort?.[1] || 'asc';
       this.dataSource.sort = this.matSort;
     }
-
-    this.dataSource.data = this.data || [];
   }
 
   ngOnChanges({
@@ -180,18 +180,17 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
       this.matPaginator.pageSize = pageSize || 10;
     }
 
-    if (this.matSort && sort?.currentValue) {
-      this.matSort.active = sort.currentValue.active;
-      this.matSort.direction = sort.currentValue.direction;
-      this.dataSource.sort = this.matSort;
-    }
-
     if (filterCriteria) {
       this.dataSource.filter = filterCriteria.currentValue;
     }
 
     if (data) {
       this.dataSource.data = data.currentValue;
+    }
+
+    if (this.matSort && sort) {
+      this.matSort.active = sort.currentValue?.[0] || '';
+      this.matSort.direction = sort.currentValue?.[1] || 'asc';
     }
   }
 

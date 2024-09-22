@@ -13,11 +13,11 @@ import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
-import { NotificationFacade } from '@plastik/core/notification/data-access';
-import { CoreNotificationUiMatSnackbarDirective } from '@plastik/core/notification/ui/mat-snackbar';
 import { RouterFacade } from '@plastik/core/router-state';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SharedButtonUiComponent } from '@plastik/shared/button';
+import { NotificationFacade } from '@plastik/shared/notification/data-access';
+import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { map, Subject, takeUntil } from 'rxjs';
 @Component({
@@ -41,7 +41,7 @@ import { map, Subject, takeUntil } from 'rxjs';
     CoreCmsLayoutUiSidenavComponent,
     SharedButtonUiComponent,
     SharedActivityUiOverlayComponent,
-    CoreNotificationUiMatSnackbarDirective,
+    NotificationUiMatSnackbarDirective,
   ],
   templateUrl: './core-cms-layout-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

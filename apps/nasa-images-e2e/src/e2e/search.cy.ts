@@ -101,7 +101,9 @@ describe('nasa-images search page', () => {
           // location
           cy.location().should(({ search, pathname }) => {
             expect(pathname).to.eq('/search');
-            expect(search).to.eq(`?q=${testCase.q}&year_start=${testCase.yearStart}&year_end=${testCase.yearEnd}&page=1`);
+            expect(search).to.eq(
+              `?q=${testCase.q}&year_start=${testCase.yearStart}&year_end=${testCase.yearEnd}&page=1`
+            );
           });
 
           // api response
@@ -115,7 +117,7 @@ describe('nasa-images search page', () => {
           cy.title().should('eq', `Nasa Images - search by "${testCase.q}" (pag. 1)`);
 
           // table
-          tables.should('have.length', testCase.noResults ? 0 : 1).then(tables => {
+          tables.should('have.length', 1).then(tables => {
             if (tables.length) {
               tables[0].getRows().then(rows => {
                 expect(rows).to.have.length(collectionLength);
@@ -124,7 +126,9 @@ describe('nasa-images search page', () => {
           });
 
           // no results message
-          testCase.noResults ? noResultsMessage().should('contain', testCase.noResults) : noResultsMessage().should('not.exist');
+          testCase.noResults
+            ? noResultsMessage().should('contain', testCase.noResults)
+            : noResultsMessage().should('not.exist');
         });
       }
     });
