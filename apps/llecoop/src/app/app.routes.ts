@@ -3,6 +3,8 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { CoreCmsLayoutFeatureComponent } from '@plastik/core/cms-layout';
 import { isLoggedGuard } from './isLogged.guard';
 import { isNotLoggedGuard } from './isNotLogged.guard';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
 export const appRoutes: Routes = [
   {
@@ -22,6 +24,12 @@ export const appRoutes: Routes = [
     path: 'admin',
     canActivate: [isLoggedGuard],
     loadComponent: () => CoreCmsLayoutFeatureComponent,
+    providers: [
+      {
+        provide: MatPaginatorIntl,
+        useClass: LlecoopMatPaginatorIntl,
+      },
+    ],
     children: [
       {
         path: 'categoria/crear',

@@ -12,14 +12,14 @@ import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-la
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { getVisibleNavigationList } from '@plastik/core/entities';
 import { ENVIRONMENT } from '@plastik/core/environments';
-import { CoreNotificationDataAccessModule } from '@plastik/core/notification/data-access';
-import { CoreNotificationUiMatSnackbarModule } from '@plastik/core/notification/ui/mat-snackbar';
 import {
   CustomRouterSerializer,
   PrefixTitleService,
   RouterStateEffects,
   routerReducers,
 } from '@plastik/core/router-state';
+import { NotificationDataAccessModule } from '@plastik/shared/notification/data-access';
+import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { environment } from '../environments/environment';
 import { routes } from './app.routing';
@@ -48,8 +48,8 @@ export const appConfig: ApplicationConfig = {
           })
         : [],
       CoreCmsLayoutDataAccessModule,
-      CoreNotificationDataAccessModule,
-      CoreNotificationUiMatSnackbarModule
+      NotificationDataAccessModule,
+      NotificationUiMatSnackbarModule
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,

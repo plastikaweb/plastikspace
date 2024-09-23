@@ -22,7 +22,6 @@
           }}</span>
         </a>
       </h1>
-
       @if (headerConfig.socialLinks?.position === 'start') {
         <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
       }
@@ -46,16 +45,18 @@
     }
   </plastik-core-cms-layout-ui-header>
 
-  @if ((isActive$ | ngrxPush) || false) {
-    <plastik-shared-activity-ui-overlay class="z-10">
-      <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
-      <div class="spinner-container">
-        <div class="lds-ripple">
-          <div></div>
-          <div></div>
+  @defer {
+    @if ((isActive$ | ngrxPush) || false) {
+      <plastik-shared-activity-ui-overlay class="z-10">
+        <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
+        <div class="spinner-container">
+          <div class="lds-ripple">
+            <div></div>
+            <div></div>
+          </div>
         </div>
-      </div>
-    </plastik-shared-activity-ui-overlay>
+      </plastik-shared-activity-ui-overlay>
+    }
   }
 
   <plastik-core-cms-layout-ui-sidenav
@@ -81,34 +82,36 @@
     </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>
 
-  @if (!hideFooter) {
-    <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-      <div content class="flex items-center justify-center gap-sm">
-        <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
-        <div class="flex flex-row gap-[4px]">
-          <div>
-            © 2006-{{ currentDate | date: 'yyyy' }}
-            <a
-              aria-label="visit www.plastikaweb.com page"
-              class="text-white underline underline-offset-2"
-              href="https://www.plastikaweb.com"
-              target="_blank"
-              >Plastikaweb</a
+  @defer {
+    @if (!hideFooter) {
+      <plastik-core-cms-layout-ui-footer data-test="layout-footer">
+        <div content class="flex items-center justify-center gap-sm">
+          <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
+          <div class="flex flex-row gap-[4px]">
+            <div>
+              © 2006-{{ currentDate | date: 'yyyy' }}
+              <a
+                aria-label="visit www.plastikaweb.com page"
+                class="text-white underline underline-offset-2"
+                href="https://www.plastikaweb.com"
+                target="_blank"
+                >Plastikaweb</a
+              >
+            </div>
+            <span class="hidden sm:block"
+              >|
+              <a
+                aria-label="visitar www.llevat.org"
+                class="text-white underline underline-offset-2"
+                href="https://www.llevat.org"
+                target="_blank"
+                >El Llevat</a
+              >.</span
             >
           </div>
-          <span class="hidden sm:block"
-            >|
-            <a
-              aria-label="visitar www.llevat.org"
-              class="text-white underline underline-offset-2"
-              href="https://www.llevat.org"
-              target="_blank"
-              >El Llevat</a
-            >.</span
-          >
         </div>
-      </div>
-    </plastik-core-cms-layout-ui-footer>
+      </plastik-core-cms-layout-ui-footer>
+    }
   }
 </div>
 

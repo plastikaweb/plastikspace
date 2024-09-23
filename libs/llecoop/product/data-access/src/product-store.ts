@@ -13,8 +13,8 @@ import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { routerActions } from '@plastik/core/router-state';
-import { LlecoopFeatureStore } from '@plastik/llecoop/data-access';
-import { LlecoopProduct } from '@plastik/llecoop/entities';
+import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
+import { LlecoopProduct, LlecoopProductWithUpdateNotification } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopProductFireService } from './product-fire.service';
@@ -27,7 +27,7 @@ export const LlecoopProductStore = signalStore(
   withState<ProductState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: { active: 'name', direction: 'asc' },
+    sorting: ['name', 'asc'],
     selectedItem: null,
   }),
   withEntities<LlecoopProduct>(),
@@ -35,7 +35,12 @@ export const LlecoopProductStore = signalStore(
     count: computed(() => ids().length),
   })),
   withMethods(
-    (store, productService = inject(LlecoopProductFireService), state = inject(Store)) => ({
+    (
+      store,
+      productService = inject(LlecoopProductFireService),
+      storeNotificationService = inject(StoreNotificationService),
+      state = inject(Store)
+    ) => ({
       getAll: rxMethod<void>(
         pipe(
           tap(() => patchState(store, { loaded: false })),
@@ -54,8 +59,11 @@ export const LlecoopProductStore = signalStore(
                   patchState(store, { loaded: true, lastUpdated });
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
-                // eslint-disable-next-line no-console
-                error: error => console.error('Error loading products', error),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut carregar els productes: ${error}`,
+                    'ERROR'
+                  ),
               })
             )
           )
@@ -64,33 +72,68 @@ export const LlecoopProductStore = signalStore(
       create: rxMethod<Partial<LlecoopProduct>>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
-          switchMap((category: Partial<LlecoopProduct>) => {
-            return productService.create(category).pipe(
+          switchMap((product: Partial<LlecoopProduct>) => {
+            return productService.create(product).pipe(
               tapResponse({
                 next: () => {
-                  patchState(store, { loaded: true });
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
+                  storeNotificationService.create(
+                    `Producte "${product.name}" creat correctament`,
+                    'SUCCESS'
+                  );
                 },
-                // eslint-disable-next-line no-console
-                error: error => console.error('Error creating product', error),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut crear el producte "${product.name}": ${error}`,
+                    'ERROR'
+                  ),
               })
             );
           })
         )
       ),
-      update: rxMethod<Partial<LlecoopProduct>>(
+      update: rxMethod<LlecoopProductWithUpdateNotification>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
-          switchMap((category: Partial<LlecoopProduct>) => {
-            return productService.update(category).pipe(
+          switchMap(({ product, showNotification }) => {
+            return productService.update(product).pipe(
               tapResponse({
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
+                  if (showNotification) {
+                    storeNotificationService.create(
+                      `Producte "${product.name}" actualitzat correctament`,
+                      'SUCCESS'
+                    );
+                  }
                 },
-                // eslint-disable-next-line no-console
-                error: error => console.error('Error updating product', error),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut actualitzar el producte "${product.name}": ${error}`,
+                    'ERROR'
+                  ),
+              })
+            );
+          })
+        )
+      ),
+      delete: rxMethod<LlecoopProduct>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(product => {
+            return productService.delete(product).pipe(
+              tapResponse({
+                next: () => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  storeNotificationService.create(`Producte "${product.name}" eliminat`, 'SUCCESS');
+                },
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut eliminar el producte "${product.name}": ${error}`,
+                    'ERROR'
+                  ),
               })
             );
           })

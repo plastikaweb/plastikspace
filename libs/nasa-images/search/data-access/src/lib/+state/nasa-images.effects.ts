@@ -9,7 +9,7 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   notificationActions,
   NotificationConfigService,
-} from '@plastik/core/notification/data-access';
+} from '@plastik/shared/notification/data-access';
 import {
   NasaImagesSearchApiError,
   NasaImagesSearchApiParams,

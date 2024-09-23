@@ -3,12 +3,14 @@ import {
   addDoc,
   collection,
   collectionData,
+  deleteDoc,
   doc,
   Firestore,
+  Timestamp,
   updateDoc,
 } from '@angular/fire/firestore';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
-import { Observable, of } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,11 +26,27 @@ export class LlecoopCategoryFireService {
   }
 
   create(item: Partial<LlecoopProductCategory>) {
-    return of(addDoc(this.categoryCollection, item));
+    return from(
+      addDoc(this.categoryCollection, {
+        ...item,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      })
+    );
   }
 
   update(item: Partial<LlecoopProductCategory>) {
     const document = doc(this.firestore, `category/${item.id}`);
-    return of(updateDoc(document, item));
+    return from(
+      updateDoc(document, {
+        ...item,
+        updatedAt: Timestamp.now(),
+      })
+    );
+  }
+
+  delete(item: LlecoopProductCategory) {
+    const document = doc(this.firestore, `category/${item.id}`);
+    return from(deleteDoc(document));
   }
 }

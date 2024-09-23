@@ -1,3 +1,7 @@
+@if (notificationFacade.config$ | ngrxPush; as config) {
+  <div [plastikSnackbar]="config" (sendDismiss)="notificationFacade.dismiss()"></div>
+}
+
 <div class="flex items-center justify-center min-h-screen contain-layout">
   <mat-card
     appearance="raised"

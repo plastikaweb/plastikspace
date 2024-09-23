@@ -14,7 +14,7 @@ import { activityActions, selectIsActive } from '@plastik/shared/activity/data-a
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
-import { notificationActions } from '@plastik/core/notification/data-access';
+import { notificationActions } from '@plastik/shared/notification/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';

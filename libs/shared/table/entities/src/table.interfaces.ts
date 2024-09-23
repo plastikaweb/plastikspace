@@ -20,6 +20,10 @@ export type TableColumnFormatting<OBJ, TYPE> = PropertyFormatting<OBJ, TYPE> & {
    * Sets the sticky position value for a given column.
    */
   sticky?: boolean;
+  /**
+   * Adds a title HTML attribute to the cell in order to show the content of it (useful when contents are truncated).
+   */
+  showTitle?: boolean;
 };
 
 /**
@@ -70,6 +74,7 @@ export interface TableControlStructure<OBJ> {
    */
   caption?: string;
   actions?: TableControlAction<OBJ>;
+  extraRowStyles?: (element: OBJ) => string;
 }
 
 /**
@@ -78,6 +83,7 @@ export interface TableControlStructure<OBJ> {
  * {direction} is the direction of the sorting, 'asc' | 'desc'.
  */
 export type TableSorting = Pick<MatSort, 'active' | 'direction'>;
+
 export type TableSortingConfig = [
   active: TableSorting['active'],
   direction: TableSorting['direction'],

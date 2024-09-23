@@ -20,7 +20,7 @@ module.exports = {
         dark: 'var(--secondary-dark)',
       },
       gray: {
-        5: '#f2f2f2',
+        5: '#fafafa',
         10: '#e6e6e6',
         20: '#c9c9c9',
         30: '#adadad',

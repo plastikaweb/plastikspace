@@ -1,5 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { CommonModule } from '@angular/common';
+import { KeyValuePipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -20,6 +20,7 @@ import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
+import { BaseEntity } from '@plastik/core/entities';
 import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
 import {
   PageEventConfig,
@@ -27,14 +28,16 @@ import {
   TableControlAction,
   TablePaginationVisibility,
   TableSorting,
+  TableSortingConfig,
 } from '@plastik/shared/table/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
+import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
 @Component({
   selector: 'plastik-shared-table',
   standalone: true,
   imports: [
-    CommonModule,
     PushPipe,
     MatTableModule,
     MatPaginatorModule,
@@ -45,12 +48,16 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     RouterModule,
     AngularSvgIconModule,
     SharedUtilFormattersModule,
+    TableCellTitleDirective,
+    OrderTableActionsElementsPipe,
+    KeyValuePipe,
+    NgClass,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrls: ['./shared-table-ui.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
+export class SharedTableUiComponent<T extends BaseEntity> implements OnChanges, AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   /**
@@ -103,7 +110,7 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
   /**
    * Table sorting configuration.
    */
-  @Input() sort?: TableSorting;
+  @Input() sort?: TableSortingConfig;
 
   /**
    * Table actions configuration.
@@ -111,6 +118,8 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
   @Input() actions?: TableControlAction<T>;
 
   @Input() filterCriteria = '';
+
+  @Input() extraRowStyles?: (element: T) => string;
 
   /**
    * An Output emitter to send table pagination changes.
@@ -151,12 +160,10 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
     }
 
     if (this.matSort) {
-      this.matSort.active = this.sort?.active || '';
-      this.matSort.direction = this.sort?.direction || 'asc';
+      this.matSort.active = this.sort?.[0] || '';
+      this.matSort.direction = this.sort?.[1] || 'asc';
       this.dataSource.sort = this.matSort;
     }
-
-    this.dataSource.data = this.data || [];
   }
 
   ngOnChanges({
@@ -180,18 +187,17 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
       this.matPaginator.pageSize = pageSize || 10;
     }
 
-    if (this.matSort && sort?.currentValue) {
-      this.matSort.active = sort.currentValue.active;
-      this.matSort.direction = sort.currentValue.direction;
-      this.dataSource.sort = this.matSort;
-    }
-
     if (filterCriteria) {
       this.dataSource.filter = filterCriteria.currentValue;
     }
 
     if (data) {
       this.dataSource.data = data.currentValue;
+    }
+
+    if (this.matSort && sort) {
+      this.matSort.active = sort.currentValue?.[0] || '';
+      this.matSort.direction = sort.currentValue?.[1] || 'asc';
     }
   }
 
@@ -208,6 +214,6 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
 
   onDelete(event: Event, element: T): void {
     event.stopPropagation();
-    this.delete.emit(element);
+    this.delete.emit(element as T);
   }
 }

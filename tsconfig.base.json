@@ -32,11 +32,6 @@
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/list-view": ["libs/core/table-with-filtering/src/index.ts"],
-      "@plastik/core/notification/data-access": ["libs/core/notification/data-access/src/index.ts"],
-      "@plastik/core/notification/entities": ["libs/core/notification/entities/src/index.ts"],
-      "@plastik/core/notification/ui/mat-snackbar": [
-        "libs/core/notification/ui/mat-snackbar/src/index.ts"
-      ],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
       "@plastik/llecoop/category/data-access": ["libs/llecoop/category/data-access/src/index.ts"],
       "@plastik/llecoop/category/detail": ["libs/llecoop/category/feature/detail/src/index.ts"],
@@ -60,12 +55,20 @@
       "@plastik/shared/activity/data-access": ["libs/shared/activity/data-access/src/index.ts"],
       "@plastik/shared/activity/ui": ["libs/shared/activity/ui/src/index.ts"],
       "@plastik/shared/button": ["libs/shared/button/index.ts"],
+      "@plastik/shared/confirm": ["libs/shared/confirm/data-access/src/index.ts"],
       "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
       "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
+      "@plastik/shared/notification/data-access": [
+        "libs/shared/notification/data-access/src/index.ts"
+      ],
+      "@plastik/shared/notification/entities": ["libs/shared/notification/entities/src/index.ts"],
+      "@plastik/shared/notification/ui/mat-snackbar": [
+        "libs/shared/notification/ui/mat-snackbar/src/index.ts"
+      ],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
       "@plastik/shared/return-as-observable": [
         "libs/shared/util/return-as-observable-pipe/src/index.ts"

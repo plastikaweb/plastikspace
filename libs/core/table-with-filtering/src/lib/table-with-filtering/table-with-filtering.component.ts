@@ -36,4 +36,8 @@ export class TableWithFilteringComponent {
       return model.text.trim().toLowerCase();
     });
   }
+
+  onDelete(item: unknown): void {
+    this.facade.onDelete(item);
+  }
 }

@@ -24,7 +24,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[180px]'],
+    cssClasses: ['hidden lg:flex lg:min-w-[180px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
@@ -68,6 +68,12 @@ export class LlecoopCategorySearchFeatureTableConfig
         EDIT: {
           visible: () => true,
           description: () => 'Edita la categoria',
+          order: 1,
+        },
+        DELETE: {
+          visible: () => true,
+          description: () => 'Elimina la categoria',
+          order: 2,
         },
       },
     });

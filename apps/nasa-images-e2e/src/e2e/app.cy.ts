@@ -1,12 +1,12 @@
 const titleHeader = () => cy.getEl('layout-title');
 const toggleSidenavButton = () => cy.getEl('toggle-sidenav-button');
-const toggleSidenavButtonIcon = () => toggleSidenavButton().children('mat-icon');
+// const toggleSidenavButtonIcon = () => toggleSidenavButton().children('mat-icon');
 const githubButton = () => cy.getEl('github-button');
 const githubButtonIcon = () => githubButton().children('svg-icon');
 
 const sidenav = () => cy.getEl('sidenav');
-const sidenavList = () => cy.getEl('sidenav-list');
-const sidenavListItems = () => sidenavList().children('mat-list-item');
+// const sidenavList = () => cy.getEl('sidenav-list');
+// const sidenavListItems = () => sidenavList().children('mat-list-item');
 
 const footer = () => cy.getEl('layout-footer');
 const footerLink = () => footer().find('a');
