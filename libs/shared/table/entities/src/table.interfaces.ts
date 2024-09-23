@@ -20,6 +20,10 @@ export type TableColumnFormatting<OBJ, TYPE> = PropertyFormatting<OBJ, TYPE> & {
    * Sets the sticky position value for a given column.
    */
   sticky?: boolean;
+  /**
+   * Adds a title HTML attribute to the cell in order to show the content of it (useful when contents are truncated).
+   */
+  showTitle?: boolean;
 };
 
 /**

@@ -1,5 +1,5 @@
 import { CdkTableModule } from '@angular/cdk/table';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { KeyValuePipe, NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -20,6 +20,7 @@ import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
+import { BaseEntity } from '@plastik/core/entities';
 import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
 import {
   PageEventConfig,
@@ -30,12 +31,13 @@ import {
   TableSortingConfig,
 } from '@plastik/shared/table/entities';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
+import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
 @Component({
   selector: 'plastik-shared-table',
   standalone: true,
   imports: [
-    CommonModule,
     PushPipe,
     MatTableModule,
     MatPaginatorModule,
@@ -46,13 +48,16 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     RouterModule,
     AngularSvgIconModule,
     SharedUtilFormattersModule,
-    JsonPipe,
+    TableCellTitleDirective,
+    OrderTableActionsElementsPipe,
+    KeyValuePipe,
+    NgClass,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrls: ['./shared-table-ui.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
+export class SharedTableUiComponent<T extends BaseEntity> implements OnChanges, AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
 
   /**
@@ -207,6 +212,6 @@ export class SharedTableUiComponent<T> implements OnChanges, AfterViewInit {
 
   onDelete(event: Event, element: T): void {
     event.stopPropagation();
-    this.delete.emit(element);
+    this.delete.emit(element as T);
   }
 }

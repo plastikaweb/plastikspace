@@ -1,3 +1,5 @@
+import { BaseEntity } from '@plastik/core/entities';
+
 /**
  * @description A collection for available pages for Nasa Images App.
  */
@@ -11,9 +13,7 @@ export type NasaImagesApiSegment = Lowercase<NasaImagesViews> & string;
 /**
  * @description A single NASA media item descriptor.
  */
-export interface NasaImage extends Record<string, string | string[] | Date | NasaImageLink[] | undefined> {
-  id: string;
-  title: string;
+export interface NasaImage extends BaseEntity {
   description: string;
   dateCreated: Date;
   thumbnail: string;

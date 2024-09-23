@@ -1,9 +1,13 @@
-import { NasaImage, NasaImagesSearch, NasaImagesSearchApiResponse } from '@plastik/nasa-images/search/entities';
+import {
+  NasaImage,
+  NasaImagesSearch,
+  NasaImagesSearchApiResponse,
+} from '@plastik/nasa-images/search/entities';
 
 export const createNasaImagesEntity = (id: string, title = '') =>
   ({
     id,
-    title: title || `title-${id}`,
+    name: title || `title-${id}`,
   }) as NasaImage;
 
 export const createDummyNasaImagesSearch = (count = 3) => {
@@ -12,7 +16,7 @@ export const createDummyNasaImagesSearch = (count = 3) => {
   for (let index = 0; index < count; index++) {
     items.push({
       id: index.toString(),
-      title: index.toString(),
+      name: index.toString(),
       description: '---',
       dateCreated: new Date('2000'),
       creator: 'Creator',

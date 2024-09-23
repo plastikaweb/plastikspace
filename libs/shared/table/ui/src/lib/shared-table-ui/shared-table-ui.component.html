@@ -26,7 +26,10 @@
           {{ column.title }}
         </mat-header-cell>
 
-        <mat-cell *matCellDef="let row; let i = index" [ngClass]="column.cssClasses?.[0] || ''">
+        <mat-cell
+          *matCellDef="let row; let i = index"
+          [plastikTableCellTitle]="column.showTitle ?? true"
+          [ngClass]="column.cssClasses?.[0] || ''">
           <div
             [ngClass]="column.cssClasses?.[1] || ''"
             [innerHTML]="row | safeFormatted: column : i + 1 : pagination"></div>
@@ -37,9 +40,9 @@
     <!-- Actions column -->
     @if (actions) {
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef class="mat-cell-actions"></mat-header-cell>
-        <mat-cell *matCellDef="let element" class="mat-cell-actions">
-          @for (action of actions | keyvalue; track action.key) {
+        <mat-header-cell *matHeaderCellDef class="flex mat-cell-actions gap-sub"></mat-header-cell>
+        <mat-cell *matCellDef="let element" class="flex mat-cell-actions gap-sub">
+          @for (action of actions | keyvalue | orderTableActionsElements; track action.key) {
             @if (action.key === 'EDIT') {
               <button
                 type="button"
