@@ -119,6 +119,8 @@ export class SharedTableUiComponent<T extends BaseEntity> implements OnChanges, 
 
   @Input() filterCriteria = '';
 
+  @Input() extraRowStyles?: (element: T) => string;
+
   /**
    * An Output emitter to send table pagination changes.
    */

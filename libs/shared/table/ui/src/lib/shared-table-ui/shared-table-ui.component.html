@@ -40,8 +40,10 @@
     <!-- Actions column -->
     @if (actions) {
       <ng-container matColumnDef="actions">
-        <mat-header-cell *matHeaderCellDef class="flex mat-cell-actions gap-sub"></mat-header-cell>
-        <mat-cell *matCellDef="let element" class="flex mat-cell-actions gap-sub">
+        <mat-header-cell
+          *matHeaderCellDef
+          class="flex mat-cell-actions gap-sub min-w-fit"></mat-header-cell>
+        <mat-cell *matCellDef="let element" class="flex mat-cell-actions gap-sub min-w-fit">
           @for (action of actions | keyvalue | orderTableActionsElements; track action.key) {
             @if (action.key === 'EDIT') {
               <button
@@ -85,7 +87,8 @@
     <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
     <mat-row
       *matRowDef="let row; columns: displayedColumns"
-      class="even:bg-gray-5 odd:bg-white"></mat-row>
+      class="even:bg-gray-5 odd:bg-white"
+      [ngClass]="extraRowStyles?.(row) || ''"></mat-row>
   </mat-table>
 
   <mat-paginator

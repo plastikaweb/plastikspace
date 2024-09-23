@@ -24,7 +24,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[180px]'],
+    cssClasses: ['hidden lg:flex lg:min-w-[180px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
@@ -63,7 +63,6 @@ export class LlecoopCategorySearchFeatureTableConfig
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
-      sort: ['updatedAt', 'desc'],
       caption: 'Llistat de categories',
       actions: {
         EDIT: {

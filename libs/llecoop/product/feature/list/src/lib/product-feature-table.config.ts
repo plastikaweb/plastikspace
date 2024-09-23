@@ -1,6 +1,7 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
+import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -17,6 +18,7 @@ export class LlecoopProductSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProduct>
 {
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly store = inject(LlecoopProductStore);
 
   private readonly name: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
     key: 'name',
@@ -49,7 +51,7 @@ export class LlecoopProductSearchFeatureTableConfig
           const htmlString = `<p class="flex rounded-md capitalize
                                 px-sub py-tiny
                                 text-white tracking-wider"
-                                style="background-color:${element?.category?.color}">
+                                style="background-color:${element?.category?.color || '#330033'}">
                                 ${value || '-'}
                               </p>`;
           return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
@@ -59,25 +61,25 @@ export class LlecoopProductSearchFeatureTableConfig
     },
   };
 
-  private readonly origin: TableColumnFormatting<LlecoopProduct, 'TITLE_CASE'> = {
+  private readonly origin: TableColumnFormatting<LlecoopProduct, 'TEXT'> = {
     key: 'origin',
     title: 'Procedència',
     propertyPath: 'origin',
     sorting: true,
     cssClasses: ['hidden lg:flex lg:min-w-[150px]'],
     formatting: {
-      type: 'TITLE_CASE',
+      type: 'TEXT',
     },
   };
 
-  private readonly provider: TableColumnFormatting<LlecoopProduct, 'TITLE_CASE'> = {
+  private readonly provider: TableColumnFormatting<LlecoopProduct, 'TEXT'> = {
     key: 'provider',
     title: 'Proveïdor',
     propertyPath: 'provider',
     sorting: true,
     cssClasses: ['hidden lg:flex lg:min-w-[150px]'],
     formatting: {
-      type: 'TITLE_CASE',
+      type: 'TEXT',
     },
   };
 
@@ -123,15 +125,15 @@ export class LlecoopProductSearchFeatureTableConfig
     },
   };
 
-  private readonly isAvailable: TableColumnFormatting<LlecoopProduct, 'BOOLEAN_WITH_ICON'> = {
+  private readonly isAvailable: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
     key: 'isAvailable',
     title: 'Disponible',
     propertyPath: 'isAvailable',
     sorting: true,
-    cssClasses: ['min-w-[85px]'],
+    cssClasses: ['min-w-[110px]'],
     formatting: {
-      type: 'BOOLEAN_WITH_ICON',
-      extras: { iconTrue: 'check_circle', iconFalse: '' },
+      type: 'CUSTOM',
+      execute: (_, element) => (element?.isAvailable ? '✔' : '✘'),
     },
   };
 
@@ -152,6 +154,7 @@ export class LlecoopProductSearchFeatureTableConfig
   private readonly updatedAt = updatedAt<LlecoopProduct>();
 
   private readonly columnProperties: TableColumnFormatting<LlecoopProduct, FormattingTypes>[] = [
+    this.isAvailable,
     this.name,
     this.category,
     this.price,
@@ -159,7 +162,6 @@ export class LlecoopProductSearchFeatureTableConfig
     this.priceWithIva,
     this.origin,
     this.provider,
-    this.isAvailable,
     this.createdAt,
     this.updatedAt,
     this.stock,
@@ -178,16 +180,31 @@ export class LlecoopProductSearchFeatureTableConfig
         hidePaginationFirstLastButtons: true,
       },
       caption: 'Llistat de productes',
+      extraRowStyles: element => {
+        return !element.isAvailable ? 'marked opacity-50' : '';
+      },
       actions: {
+        CUSTOM: {
+          visible: () => true,
+          description: () => 'Canviar la disponibilitat del producte',
+          order: 1,
+          icon: (product: LlecoopProduct) => (!product.isAvailable ? 'cancel' : 'check_circle'),
+          execute: (product: LlecoopProduct) => {
+            this.store.update({
+              product: { ...product, isAvailable: !product.isAvailable },
+              showNotification: false,
+            });
+          },
+        },
         EDIT: {
           visible: () => true,
           description: () => 'Edita el producte',
-          order: 1,
+          order: 2,
         },
         DELETE: {
           visible: () => true,
           description: () => 'Elimina el producte',
-          order: 2,
+          order: 3,
         },
       },
     });

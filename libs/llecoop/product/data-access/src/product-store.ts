@@ -14,7 +14,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
-import { LlecoopProduct } from '@plastik/llecoop/entities';
+import { LlecoopProduct, LlecoopProductWithUpdateNotification } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopProductFireService } from './product-fire.service';
@@ -82,7 +82,6 @@ export const LlecoopProductStore = signalStore(
                     `Producte "${product.name}" creat correctament`,
                     'SUCCESS'
                   );
-                  patchState(store, { sorting: ['createdAt', 'desc'] });
                 },
                 error: error =>
                   storeNotificationService.create(
@@ -94,20 +93,21 @@ export const LlecoopProductStore = signalStore(
           })
         )
       ),
-      update: rxMethod<Partial<LlecoopProduct>>(
+      update: rxMethod<LlecoopProductWithUpdateNotification>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
-          switchMap((product: Partial<LlecoopProduct>) => {
+          switchMap(({ product, showNotification }) => {
             return productService.update(product).pipe(
               tapResponse({
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
-                  storeNotificationService.create(
-                    `Producte "${product.name}" actualitzat correctament`,
-                    'SUCCESS'
-                  );
-                  patchState(store, { sorting: ['updatedAt', 'desc'] });
+                  if (showNotification) {
+                    storeNotificationService.create(
+                      `Producte "${product.name}" actualitzat correctament`,
+                      'SUCCESS'
+                    );
+                  }
                 },
                 error: error =>
                   storeNotificationService.create(

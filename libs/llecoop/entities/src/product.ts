@@ -46,3 +46,8 @@ export const LlecoopProductSelectData: LlecoopProductSelectOption[] = [
     value: 'unitWithVariableWeight',
   },
 ] as const;
+
+export interface LlecoopProductWithUpdateNotification {
+  product: Partial<LlecoopProduct>;
+  showNotification: boolean;
+}

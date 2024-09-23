@@ -32,6 +32,7 @@
   [paginationVisibility]="facade.tableStructure().paginationVisibility"
   [filterCriteria]="filterCriteria()"
   [actions]="facade.tableStructure().actions || {}"
+  [extraRowStyles]="facade.tableStructure().extraRowStyles"
   (changeSorting)="onChangeSorting($event)"
   (delete)="onDelete($event)">
 </plastik-shared-table>

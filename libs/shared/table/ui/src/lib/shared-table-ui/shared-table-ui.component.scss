@@ -33,6 +33,9 @@
   @apply items-stretch;
   min-height: var(--plastik-mdc-table-row-min-height, auto);
   max-height: var(--plastik-mdc-table-row-max-height, auto);
+  &.marked {
+    background-color: var(--plastik-mdc-table-row-marked-bg-color, #f8c8c8) !important;
+  }
 }
 
 .table__cell--link a {
