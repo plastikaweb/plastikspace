@@ -114,6 +114,10 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [shared-activity-ui](libs/shared/activity/ui/README.md)
 - [shared-activity-data-access](libs/shared/activity/data-access/README.md)
 
+#### Confirm
+
+- [shared-confirm](libs/shared/confirm/data-access/README.md)
+
 #### Layouts
 
 - [table-with-filtering](libs/core/table-with-filtering/README.md)

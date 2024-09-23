@@ -69,6 +69,12 @@ export class LlecoopCategorySearchFeatureTableConfig
         EDIT: {
           visible: () => true,
           description: () => 'Edita la categoria',
+          order: 1,
+        },
+        DELETE: {
+          visible: () => true,
+          description: () => 'Elimina la categoria',
+          order: 2,
         },
       },
     });

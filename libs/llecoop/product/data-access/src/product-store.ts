@@ -27,7 +27,7 @@ export const LlecoopProductStore = signalStore(
   withState<ProductState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'desc'],
+    sorting: ['name', 'asc'],
     selectedItem: null,
   }),
   withEntities<LlecoopProduct>(),

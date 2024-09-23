@@ -3,7 +3,12 @@ import { Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { NasaImage } from '@plastik/nasa-images/search/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
-import { DEFAULT_TABLE_CONFIG, PageEventConfig, TableColumnFormatting, TableControlStructure } from '@plastik/shared/table/entities';
+import {
+  DEFAULT_TABLE_CONFIG,
+  PageEventConfig,
+  TableColumnFormatting,
+  TableControlStructure,
+} from '@plastik/shared/table/entities';
 import { Observable, map } from 'rxjs';
 
 const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
@@ -25,16 +30,19 @@ const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'id',
   title: 'ID',
   propertyPath: 'id',
-  cssClasses: ['min-w-[12rem] hidden md:flex lg:min-w-[14rem]', 'text-sm text-white bg-secondary-dark rounded-md p-tiny'],
+  cssClasses: [
+    'min-w-[12rem] hidden md:flex lg:min-w-[14rem]',
+    'text-sm text-white bg-secondary-dark rounded-md p-tiny',
+  ],
   formatting: {
     type: 'TEXT',
   },
 };
 
 const title: TableColumnFormatting<NasaImage, 'TEXT'> = {
-  key: 'title',
+  key: 'name',
   title: 'Title',
-  propertyPath: 'title',
+  propertyPath: 'name',
   cssClasses: ['min-w-[10rem] lg:max-w-[25rem]', 'content-center line-clamp-5'],
   formatting: {
     type: 'TEXT',
@@ -71,7 +79,7 @@ const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
     type: 'IMAGE',
     extras: {
       type: 'img',
-      title: (item: NasaImage) => item.title,
+      title: (item: NasaImage) => item.name,
       classes: 'object-cover h-[100px] w-[100px] rounded-md',
     },
   },
@@ -132,7 +140,7 @@ export class NasaImagesSearchFeatureTableConfig {
           },
           caption: 'Nasa Images Table Results',
         };
-      }),
+      })
     );
   }
 }

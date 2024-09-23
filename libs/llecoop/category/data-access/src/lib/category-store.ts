@@ -27,7 +27,7 @@ export const LlecoopCategoryStore = signalStore(
   withState<CategoryState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'desc'],
+    sorting: ['name', 'asc'],
     selectedItem: null,
   }),
   withEntities<LlecoopProductCategory>(),
@@ -95,10 +95,7 @@ export const LlecoopCategoryStore = signalStore(
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
-                  storeNotificationService.create(
-                    `Categoria "${category.name}" creada correctament`,
-                    'SUCCESS'
-                  );
+                  storeNotificationService.create(`Categoria "${category.name}" creada`, 'SUCCESS');
                   patchState(store, { sorting: ['createdAt', 'desc'] });
                 },
                 error: error =>
@@ -121,7 +118,7 @@ export const LlecoopCategoryStore = signalStore(
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
                   storeNotificationService.create(
-                    `Categoria "${category.name}" actualitzada correctament`,
+                    `Categoria "${category.name}" actualitzada`,
                     'SUCCESS'
                   );
                   patchState(store, { sorting: ['updatedAt', 'desc'] });
@@ -129,6 +126,29 @@ export const LlecoopCategoryStore = signalStore(
                 error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar la categoria "${category.name}": ${error}`,
+                    'ERROR'
+                  ),
+              })
+            );
+          })
+        )
+      ),
+      delete: rxMethod<LlecoopProductCategory>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(category => {
+            return categoryService.delete(category).pipe(
+              tapResponse({
+                next: () => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  storeNotificationService.create(
+                    `Categoria "${category.name}" eliminada`,
+                    'SUCCESS'
+                  );
+                },
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut eliminar la categoria "${category.name}": ${error}`,
                     'ERROR'
                   ),
               })

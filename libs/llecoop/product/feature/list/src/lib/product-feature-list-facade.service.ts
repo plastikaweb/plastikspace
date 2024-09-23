@@ -28,4 +28,9 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   onSorting({ active, direction }: TableSorting): void {
     this.store.setSorting([active, direction]);
   }
+
+  onDelete(item: LlecoopProduct): void {
+    // eslint-disable-next-line no-console
+    console.log('Delete item', item);
+  }
 }

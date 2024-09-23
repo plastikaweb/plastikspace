@@ -3,10 +3,11 @@ import { PageEventConfig } from '@plastik/shared/table/entities';
 
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { SharedTableUiComponent } from './shared-table-ui.component';
+import { BaseEntity } from '@plastik/core/entities';
 
 describe('SharedTableUiComponent', () => {
-  let component: SharedTableUiComponent<unknown>;
-  let fixture: ComponentFixture<SharedTableUiComponent<unknown>>;
+  let component: SharedTableUiComponent<BaseEntity>;
+  let fixture: ComponentFixture<SharedTableUiComponent<BaseEntity>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

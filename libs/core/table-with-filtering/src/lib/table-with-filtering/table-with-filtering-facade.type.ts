@@ -15,6 +15,7 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   formStructure?: Signal<FormlyFieldConfig[]>;
   viewConfig: Signal<ViewConfigUI>;
   onSorting?(sorting: TableSorting): void;
+  onDelete(item: unknown): void;
 }
 
 export const TABLE_WITH_FILTERING_FACADE = new InjectionToken<TableWithFilteringFacade<BaseEntity>>(
