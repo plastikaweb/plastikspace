@@ -74,6 +74,7 @@ export interface TableControlStructure<OBJ> {
    */
   caption?: string;
   actions?: TableControlAction<OBJ>;
+  extraRowStyles?: (element: OBJ) => string;
 }
 
 /**
@@ -134,7 +135,6 @@ export interface TableStructureConfig<T> {
 export const defaultTableConfig: TableControlStructure<unknown> = {
   columnProperties: [],
   pageSizeOptions,
-  sort: ['updatedAt', 'asc'],
   pagination: {
     previousPageIndex: 0,
     pageIndex: 0,

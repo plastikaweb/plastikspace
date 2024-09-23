@@ -96,7 +96,6 @@ export const LlecoopCategoryStore = signalStore(
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
                   storeNotificationService.create(`Categoria "${category.name}" creada`, 'SUCCESS');
-                  patchState(store, { sorting: ['createdAt', 'desc'] });
                 },
                 error: error =>
                   storeNotificationService.create(
@@ -121,7 +120,6 @@ export const LlecoopCategoryStore = signalStore(
                     `Categoria "${category.name}" actualitzada`,
                     'SUCCESS'
                   );
-                  patchState(store, { sorting: ['updatedAt', 'desc'] });
                 },
                 error: error =>
                   storeNotificationService.create(

@@ -6,6 +6,7 @@ import {
   deleteDoc,
   doc,
   Firestore,
+  Timestamp,
   updateDoc,
 } from '@angular/fire/firestore';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
@@ -25,12 +26,23 @@ export class LlecoopCategoryFireService {
   }
 
   create(item: Partial<LlecoopProductCategory>) {
-    return from(addDoc(this.categoryCollection, item));
+    return from(
+      addDoc(this.categoryCollection, {
+        ...item,
+        createdAt: Timestamp.now(),
+        updatedAt: Timestamp.now(),
+      })
+    );
   }
 
   update(item: Partial<LlecoopProductCategory>) {
     const document = doc(this.firestore, `category/${item.id}`);
-    return from(updateDoc(document, item));
+    return from(
+      updateDoc(document, {
+        ...item,
+        updatedAt: Timestamp.now(),
+      })
+    );
   }
 
   delete(item: LlecoopProductCategory) {

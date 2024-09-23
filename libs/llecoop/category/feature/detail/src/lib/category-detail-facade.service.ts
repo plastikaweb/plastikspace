@@ -26,8 +26,6 @@ export class LlecoopCategoryDetailFacadeService
   formStructure = signal(getLlecoopCategoryDetailFormConfig());
 
   onSubmit(data: Partial<LlecoopProductCategory>): void {
-    this.model()?.id
-      ? this.store.update({ ...data, updatedAt: Timestamp.now() })
-      : this.store.create({ ...data, createdAt: Timestamp.now() });
+    this.model()?.id ? this.store.update(data) : this.store.create(data);
   }
 }

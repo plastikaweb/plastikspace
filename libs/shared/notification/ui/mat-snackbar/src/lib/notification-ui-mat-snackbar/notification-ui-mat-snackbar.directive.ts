@@ -44,6 +44,8 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
   }
 
   open(config: Notification) {
+    this.snackBar.dismiss();
+
     const snackBarConfig = {
       ...this.addNotificationMatSnackBarConfig(config),
       ...this.addTypeStyling(config),
