@@ -182,6 +182,12 @@ export class LlecoopProductSearchFeatureTableConfig
         EDIT: {
           visible: () => true,
           description: () => 'Edita el producte',
+          order: 1,
+        },
+        DELETE: {
+          visible: () => true,
+          description: () => 'Elimina el producte',
+          order: 2,
         },
       },
     });

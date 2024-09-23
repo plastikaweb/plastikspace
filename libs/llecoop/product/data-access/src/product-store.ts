@@ -119,6 +119,26 @@ export const LlecoopProductStore = signalStore(
           })
         )
       ),
+      delete: rxMethod<LlecoopProduct>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(product => {
+            return productService.delete(product).pipe(
+              tapResponse({
+                next: () => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  storeNotificationService.create(`Producte "${product.name}" eliminat`, 'SUCCESS');
+                },
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut eliminar el producte "${product.name}": ${error}`,
+                    'ERROR'
+                  ),
+              })
+            );
+          })
+        )
+      ),
       setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),
       setSelectedItem: (id: string | null) =>
         patchState(store, {
