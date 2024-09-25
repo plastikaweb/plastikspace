@@ -44,15 +44,46 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
           },
         },
         {
-          key: 'description',
-          type: 'textarea',
-          className: 'w-full',
-          props: {
-            label: 'Descripció',
-            placeholder: 'Descripció',
-            rows: 5,
-            required: true,
-          },
+          key: 'unit',
+          fieldGroupClassName:
+            'flex flex-col md:flex-row gap-0 md:gap-sm bg-gray-10 p-sm rounded-md',
+          fieldGroup: [
+            {
+              key: 'type',
+              type: 'select',
+              props: {
+                label: "Tipus d'unitat",
+                placeholder: "Tipus d'unitat",
+                required: true,
+                options: LlecoopProductSelectData,
+              },
+            },
+            {
+              key: 'base',
+              type: 'number',
+              props: {
+                label: 'Pes aproximat per unitat',
+                placeholder: 'Pes aproximat per unitat',
+                required: true,
+                min: 0,
+                step: 0.1,
+                addonRight: {},
+              },
+              expressions: {
+                hide: ({ model }) => model?.type === 'unit' || model?.type === 'weight',
+              },
+              hooks: {
+                onInit: (formly: FormlyFieldConfig) => {
+                  setUnitBaseInfo(formly.props, formly.model?.type);
+
+                  return formly.options?.fieldChanges?.pipe(
+                    filter(e => e.type === 'valueChanges' && e.field['key'] === 'type'),
+                    tap(({ value }) => setUnitBaseInfo(formly.props, value))
+                  );
+                },
+              },
+            },
+          ],
         },
         {
           fieldGroupClassName:
@@ -61,7 +92,6 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
             {
               key: 'price',
               type: 'input',
-              defaultValue: 0,
               className: 'w-full md:w-1/3',
               props: {
                 type: 'number',
@@ -78,7 +108,6 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
             {
               key: 'iva',
               type: 'input',
-              defaultValue: 0,
               className: 'w-full md:w-1/3',
               props: {
                 type: 'number',
@@ -97,7 +126,6 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
               key: 'priceWithIva',
               type: 'input',
               className: 'w-full md:w-1/3',
-              defaultValue: 0,
               props: {
                 type: 'text',
                 label: 'Preu amb IVA',
@@ -132,62 +160,6 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
               },
             },
           ],
-        },
-        {
-          key: 'unit',
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sm bg-gray-10 p-sm rounded-md',
-          fieldGroup: [
-            {
-              key: 'type',
-              type: 'select',
-              props: {
-                label: "Tipus d'unitat",
-                placeholder: "Tipus d'unitat",
-                required: true,
-                options: LlecoopProductSelectData,
-              },
-            },
-            {
-              key: 'baseWeight',
-              type: 'number',
-              props: {
-                label: 'Pes aproximat per unitat',
-                placeholder: 'Pes aproximat per unitat',
-                required: true,
-                min: 0,
-                step: 0.01,
-                addonRight: {
-                  text: 'g',
-                },
-              },
-              expressions: {
-                hide: ({ model }) => model?.type !== 'unitWithVariableWeight',
-              },
-            },
-          ],
-        },
-        {
-          key: 'origin',
-          type: 'input',
-          className: 'w-full',
-          props: {
-            type: 'text',
-            label: 'Origen',
-            placeholder: 'Origen',
-            required: false,
-          },
-        },
-        {
-          key: 'provider',
-          type: 'input',
-          className: 'w-full',
-          props: {
-            type: 'text',
-            label: 'Proveïdor',
-            placeholder: 'Proveïdor',
-            required: false,
-          },
         },
         {
           fieldGroupClassName:
@@ -227,6 +199,38 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
             },
           ],
         },
+        {
+          key: 'info',
+          type: 'textarea',
+          className: 'w-full',
+          props: {
+            label: 'Més informació',
+            placeholder: 'Més informació',
+            rows: 3,
+          },
+        },
+        {
+          key: 'origin',
+          type: 'input',
+          className: 'w-full',
+          props: {
+            type: 'text',
+            label: 'Origen',
+            placeholder: 'Origen',
+            required: false,
+          },
+        },
+        {
+          key: 'provider',
+          type: 'input',
+          className: 'w-full',
+          props: {
+            type: 'text',
+            label: 'Proveïdor',
+            placeholder: 'Proveïdor',
+            required: false,
+          },
+        },
       ],
     },
   ];
@@ -238,5 +242,28 @@ function setStockUnitAddonRight(
 ): void {
   if (formlyProps?.['addonRight']) {
     formlyProps['addonRight'].text = unitValue?.type === 'weight' ? 'kg' : 'u.';
+  }
+}
+
+function setUnitBaseInfo(
+  formlyProps: FormlyFieldConfig['props'],
+  unitValue: LlecoopProductUnit['type']
+): void {
+  if (formlyProps) {
+    const label =
+      unitValue === 'unitWithFixedVolume'
+        ? 'Volum per unitat'
+        : unitValue === 'unitWithFixedWeight'
+          ? 'Pes per unitat'
+          : unitValue === 'unitWithVariableWeight'
+            ? 'Pes aproximat per unitat'
+            : '';
+    formlyProps.label = label;
+    formlyProps.placeholder = label;
+
+    if (formlyProps) {
+      formlyProps['addonRight'].text =
+        unitValue === 'unitWithFixedWeight' || unitValue === 'unitWithVariableWeight' ? 'kg' : 'l';
+    }
   }
 }

@@ -20,66 +20,51 @@ export class LlecoopProductSearchFeatureTableConfig
   private readonly sanitizer = inject(DomSanitizer);
   private readonly store = inject(LlecoopProductStore);
 
-  private readonly name: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
+  private readonly name: TableColumnFormatting<LlecoopProduct, 'LINK'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[200px]'],
+    cssClasses: ['min-w-[240px]'],
     formatting: {
-      type: 'CUSTOM',
+      type: 'LINK',
       execute: (_, element) => {
-        const name = `<span class="font-bold">${element?.name}</span>`;
-        const description = element?.description ? `<span>${element.description}</span>` : '';
-        return this.sanitizer.bypassSecurityTrustHtml(`${name}${description}`) as SafeHtml;
+        const link = `<a class="font-bold uppercase"
+          data-link="admin/producte/${element?.id}">
+          ${element?.name}
+        </a>`;
+        const info = element?.info ? `<li class="font-bold">${element?.info}</li>` : '';
+        const provider = element?.provider ? `<li>Proveïdor: ${element?.provider}</li>` : '';
+        const origin = element?.origin ? `<li>Procedència: ${element?.origin}</li>` : '';
+        const extra = `<ul>${info}${provider}${origin}</ul>`;
+        return this.sanitizer.bypassSecurityTrustHtml(`${link}${extra}`) as SafeHtml;
       },
     },
   };
 
   private readonly category: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
-    key: 'category',
+    key: 'categoryName',
     title: 'Categoria',
-    propertyPath: 'category',
+    propertyPath: 'category.name',
     sorting: true,
-    cssClasses: ['hidden md:flex md:min-w-[150px] justify-center', 'flex'],
+    cssClasses: ['hidden md:flex md:min-w-[210px] justify-start'],
     formatting: {
       type: 'CUSTOM',
-      execute: (_, element) => {
-        const value = element?.category?.name || '';
+      execute: (value, element) => {
         if (value) {
-          const htmlString = `<p class="flex rounded-md capitalize
-                                px-sub py-tiny
-                                text-white tracking-wider"
-                                style="background-color:${element?.category?.color || '#330033'}">
-                                ${value || '-'}
-                              </p>`;
+          const htmlString = element?.category.color
+            ? `
+                              <p class="flex items-center gap-tiny justify-start">
+                                <span class="rounded-full w-sub h-sub p-sub"
+                                  style="background-color:${element?.category?.color}"></span>
+                                <span class="capitalize">${value}</span>
+                              </p>`
+            : `<p class="capitalize">${value}</p>`;
           return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
         }
         return '-';
       },
-    },
-  };
-
-  private readonly origin: TableColumnFormatting<LlecoopProduct, 'TEXT'> = {
-    key: 'origin',
-    title: 'Procedència',
-    propertyPath: 'origin',
-    sorting: true,
-    cssClasses: ['hidden lg:flex lg:min-w-[150px]'],
-    formatting: {
-      type: 'TEXT',
-    },
-  };
-
-  private readonly provider: TableColumnFormatting<LlecoopProduct, 'TEXT'> = {
-    key: 'provider',
-    title: 'Proveïdor',
-    propertyPath: 'provider',
-    sorting: true,
-    cssClasses: ['hidden lg:flex lg:min-w-[150px]'],
-    formatting: {
-      type: 'TEXT',
     },
   };
 
@@ -109,6 +94,28 @@ export class LlecoopProductSearchFeatureTableConfig
     },
   };
 
+  private readonly unit: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
+    key: 'unit',
+    title: 'Presentació',
+    propertyPath: 'unit.base',
+    cssClasses: ['hidden md:flex md:min-w-[150px]'],
+    formatting: {
+      type: 'CUSTOM',
+      execute: (value, element) => {
+        switch (element?.unit.type) {
+          case 'unitWithFixedVolume':
+            return `volum per unitat: ${Number(value)} l`;
+          case 'unitWithFixedWeight':
+            return `pes per unitat: ${Number(value)} kg`;
+          case 'unitWithVariableWeight':
+            return `pes aprox. per unitat: ${Number(value)} kg`;
+          default:
+            return '-';
+        }
+      },
+    },
+  };
+
   private readonly priceWithIva: TableColumnFormatting<LlecoopProduct, 'PERCENTAGE'> = {
     key: 'priceWithIva',
     title: 'Preu amb IVA',
@@ -130,7 +137,8 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Disponible',
     propertyPath: 'isAvailable',
     sorting: true,
-    cssClasses: ['min-w-[110px]'],
+    showTitle: false,
+    cssClasses: ['hidden md:flex min-w-[110px] max-w-[110px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => (element?.isAvailable ? '✔' : '✘'),
@@ -145,7 +153,7 @@ export class LlecoopProductSearchFeatureTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
-        return `${value} ${element?.unit?.type === 'weight' ? 'kg' : 'u.'}`;
+        return !value ? '-' : `${value} ${element?.unit?.type === 'weight' ? 'kg' : 'u.'}`;
       },
     },
   };
@@ -157,14 +165,13 @@ export class LlecoopProductSearchFeatureTableConfig
     this.isAvailable,
     this.name,
     this.category,
+    this.unit,
+    this.stock,
     this.price,
     this.iva,
     this.priceWithIva,
-    this.origin,
-    this.provider,
     this.createdAt,
     this.updatedAt,
-    this.stock,
   ];
 
   getTableStructure(): WritableSignal<TableControlStructure<LlecoopProduct>> {
@@ -181,7 +188,7 @@ export class LlecoopProductSearchFeatureTableConfig
       },
       caption: 'Llistat de productes',
       extraRowStyles: element => {
-        return !element.isAvailable ? 'marked opacity-50' : '';
+        return !element.isAvailable ? 'marked' : '';
       },
       actions: {
         CUSTOM: {

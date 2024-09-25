@@ -29,6 +29,9 @@ export const productFeatureDetailCreateRoutes: Route[] = [
     title: 'Nou producte',
     component: DetailItemFormComponent,
     providers,
+    resolve: {
+      noItem: ProductDetailResolver,
+    },
   },
 ];
 

@@ -23,10 +23,14 @@
   .mat-mdc-cell:not(.mat-cell-actions) * {
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
     display: block;
     transition: 0.2s;
     padding: 0.35em 0;
+  }
+
+  .mat-mdc-cell li {
+    margin: 0;
+    padding: 0;
   }
 }
 .mat-mdc-table > .mat-mdc-row {

@@ -16,6 +16,7 @@ import {
   withComponentInputBinding,
   withViewTransitions,
 } from '@angular/router';
+import { persistentMultipleTabManager } from '@firebase/firestore';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule, provideStore } from '@ngrx/store';
@@ -46,8 +47,8 @@ export const appConfig: ApplicationConfig = {
       const auth = initializeAuth(getApp('llecoop'));
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-        auth.setPersistence(browserSessionPersistence);
       }
+      auth.setPersistence(browserSessionPersistence);
       return auth;
     }),
     provideFirestore(() => {
@@ -55,6 +56,8 @@ export const appConfig: ApplicationConfig = {
       if (environment['useEmulators']) {
         connectFirestoreEmulator(firestore, 'localhost', 8080);
       }
+      persistentMultipleTabManager();
+
       return firestore;
     }),
     // provideStorage(() => {

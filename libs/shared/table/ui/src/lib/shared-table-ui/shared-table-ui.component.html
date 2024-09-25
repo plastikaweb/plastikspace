@@ -30,9 +30,21 @@
           *matCellDef="let row; let i = index"
           [plastikTableCellTitle]="column.showTitle ?? true"
           [ngClass]="column.cssClasses?.[0] || ''">
-          <div
-            [ngClass]="column.cssClasses?.[1] || ''"
-            [innerHTML]="row | safeFormatted: column : i + 1 : pagination"></div>
+          @switch (column.formatting.type) {
+            @case ('LINK') {
+              <div
+                class="cursor-pointer table__cell--link"
+                tabindex="0"
+                [innerHTML]="row | safeFormatted: column : i + 1"
+                (click)="onGetRoute($event)"
+                (keyup)="onGetRoute($event)"></div>
+            }
+            @default {
+              <div
+                [ngClass]="column.cssClasses?.[1] || ''"
+                [innerHTML]="row | safeFormatted: column : i + 1 : pagination"></div>
+            }
+          }
         </mat-cell>
       </ng-container>
     }
@@ -53,7 +65,7 @@
                 [attr.aria-label]="action.value?.description(element) || ''"
                 [matTooltip]="action.value?.description(element) || ''"
                 [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
-                <mat-icon>edit</mat-icon>
+                <mat-icon class="mat-primary">edit</mat-icon>
               </button>
             } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
               <button
@@ -63,19 +75,18 @@
                 [matTooltip]="action.value?.description(element) || ''"
                 [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
                 (click)="onDelete($event, element)">
-                <mat-icon>delete</mat-icon>
+                <mat-icon class="mat-warn">delete</mat-icon>
               </button>
             } @else if (action.value?.visible(element)) {
               <div class="table-actions-grouping">
                 <button
                   type="button"
                   mat-icon-button
-                  class="btn-sm"
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
                   (click)="$event.stopPropagation(); action.value?.execute?.(element)">
-                  <mat-icon>{{ action.value?.icon(element) }}</mat-icon>
+                  <mat-icon class="mat-primary">{{ action.value?.icon(element) }}</mat-icon>
                 </button>
               </div>
             }

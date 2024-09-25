@@ -29,6 +29,9 @@ export const categoryFeatureDetailCreateRoutes: Route[] = [
     title: 'Nova categoria',
     component: DetailItemFormComponent,
     providers,
+    resolve: {
+      noItem: CategoryDetailResolver,
+    },
   },
 ];
 
