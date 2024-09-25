@@ -9,10 +9,10 @@ export const CategoryDetailResolver: ResolveFn<boolean> = (
   const id = route.paramMap.get('id');
 
   if (!id) {
-    store.setSelectedItem(null);
+    store.setSelectedItemId(null);
     return false;
   }
 
-  store.setSelectedItem(id);
+  store.setSelectedItemId(id);
   return true;
 };

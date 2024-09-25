@@ -18,7 +18,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { BaseEntity } from '@plastik/core/entities';
 import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
@@ -59,6 +59,7 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 })
 export class SharedTableUiComponent<T extends BaseEntity> implements OnChanges, AfterViewInit {
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
 
   /**
    * Data that will populate the table.
@@ -215,5 +216,14 @@ export class SharedTableUiComponent<T extends BaseEntity> implements OnChanges, 
   onDelete(event: Event, element: T): void {
     event.stopPropagation();
     this.delete.emit(element as T);
+  }
+
+  /**
+   * @description Gets route path data from DOM element data-link attribute and navigates.
+   * @param  {HTMLAnchorElement} target - The target HTML anchor element from which to get the route path.
+   */
+  onGetRoute({ target }: Event) {
+    const route = (target as HTMLAnchorElement).getAttribute('data-link');
+    this.router.navigateByUrl(route || '/');
   }
 }

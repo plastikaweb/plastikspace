@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
@@ -15,9 +15,11 @@ export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<L
   private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'product')[0];
   model = this.store.selectedItem;
 
-  viewConfig = signal({
-    ...this.view,
-    title: this.model()?.name || 'Nou producte',
+  viewConfig = computed(() => {
+    return {
+      ...this.view,
+      title: this.model()?.name || 'Nou producte',
+    };
   });
 
   formStructure = signal(getLlecoopProductDetailFormConfig());

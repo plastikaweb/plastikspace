@@ -24,7 +24,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['hidden lg:flex lg:min-w-[180px]'],
+    cssClasses: ['min-w-[240px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
@@ -38,6 +38,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     key: 'description',
     title: 'Descripció',
     propertyPath: 'description',
+    cssClasses: ['hidden lg:flex lg:min-w-[210px]'],
     formatting: {
       type: 'TEXT',
     },

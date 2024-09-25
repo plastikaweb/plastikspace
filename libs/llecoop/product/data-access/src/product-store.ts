@@ -19,7 +19,7 @@ import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopProductFireService } from './product-fire.service';
 
-type ProductState = LlecoopFeatureStore<LlecoopProduct>;
+type ProductState = LlecoopFeatureStore;
 
 export const LlecoopProductStore = signalStore(
   { providedIn: 'root' },
@@ -28,11 +28,15 @@ export const LlecoopProductStore = signalStore(
     loaded: false,
     lastUpdated: new Date(),
     sorting: ['name', 'asc'],
-    selectedItem: null,
+    selectedItemId: null,
   }),
   withEntities<LlecoopProduct>(),
-  withComputed(({ ids }) => ({
+  withComputed(({ ids, selectedItemId, entityMap }) => ({
     count: computed(() => ids().length),
+    selectedItem: computed(() => {
+      const id = selectedItemId();
+      return id !== null ? entityMap()[id] : null;
+    }),
   })),
   withMethods(
     (
@@ -43,27 +47,27 @@ export const LlecoopProductStore = signalStore(
     ) => ({
       getAll: rxMethod<void>(
         pipe(
-          tap(() => patchState(store, { loaded: false })),
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(() =>
             productService.getAll().pipe(
               tapResponse({
                 next: products => {
-                  const lastUpdated = new Date();
                   patchState(
                     store,
                     setAllEntities(products, {
                       selectId: entity => entity.id || '',
-                    })
+                    }),
+                    { loaded: true, lastUpdated: new Date() }
                   );
-                  patchState(store, { loaded: true, lastUpdated });
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
-                error: error =>
+                error: error => {
                   storeNotificationService.create(
                     `No s'ha pogut carregar els productes: ${error}`,
                     'ERROR'
-                  ),
+                  );
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
               })
             )
           )
@@ -76,18 +80,20 @@ export const LlecoopProductStore = signalStore(
             return productService.create(product).pipe(
               tapResponse({
                 next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
-                  storeNotificationService.create(
-                    `Producte "${product.name}" creat correctament`,
-                    'SUCCESS'
-                  );
                 },
                 error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut crear el producte "${product.name}": ${error}`,
                     'ERROR'
                   ),
+                complete: () => {
+                  storeNotificationService.create(
+                    `Producte "${product.name}" creat correctament`,
+                    'SUCCESS'
+                  );
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
               })
             );
           })
@@ -100,20 +106,22 @@ export const LlecoopProductStore = signalStore(
             return productService.update(product).pipe(
               tapResponse({
                 next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
-                  if (showNotification) {
-                    storeNotificationService.create(
-                      `Producte "${product.name}" actualitzat correctament`,
-                      'SUCCESS'
-                    );
-                  }
                 },
                 error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar el producte "${product.name}": ${error}`,
                     'ERROR'
                   ),
+                complete: () => {
+                  if (showNotification) {
+                    storeNotificationService.create(
+                      `Producte "${product.name}" actualitzat correctament`,
+                      'SUCCESS'
+                    );
+                    state.dispatch(activityActions.setActivity({ isActive: false }));
+                  }
+                },
               })
             );
           })
@@ -125,24 +133,26 @@ export const LlecoopProductStore = signalStore(
           switchMap(product => {
             return productService.delete(product).pipe(
               tapResponse({
-                next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
-                  storeNotificationService.create(`Producte "${product.name}" eliminat`, 'SUCCESS');
-                },
+                // eslint-disable-next-line @typescript-eslint/no-empty-function
+                next: () => {},
                 error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut eliminar el producte "${product.name}": ${error}`,
                     'ERROR'
                   ),
+                complete: () => {
+                  storeNotificationService.create(`Producte "${product.name}" eliminat`, 'SUCCESS'),
+                    state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
               })
             );
           })
         )
       ),
       setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),
-      setSelectedItem: (id: string | null) =>
+      setSelectedItemId: (id: string | null) =>
         patchState(store, {
-          selectedItem: id ? store.entityMap()[id] : null,
+          selectedItemId: id,
         }),
     })
   ),
