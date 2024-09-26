@@ -7,7 +7,12 @@ import {
   initializeAuth,
   provideAuth,
 } from '@angular/fire/auth';
-import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+  persistentMultipleTabManager,
+  provideFirestore,
+} from '@angular/fire/firestore';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -16,7 +21,6 @@ import {
   withComponentInputBinding,
   withViewTransitions,
 } from '@angular/router';
-import { persistentMultipleTabManager } from '@firebase/firestore';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule, provideStore } from '@ngrx/store';

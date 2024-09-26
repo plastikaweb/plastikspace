@@ -102,7 +102,7 @@ export class LlecoopProductSearchFeatureTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
-        switch (element?.unit.type) {
+        switch (element?.unit?.type) {
           case 'unitWithFixedVolume':
             return `volum per unitat: ${Number(value)} l`;
           case 'unitWithFixedWeight':
