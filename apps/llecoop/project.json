@@ -26,11 +26,9 @@
         "tsConfig": "apps/llecoop/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "apps/llecoop/src/favicon.ico",
-          "apps/llecoop/src/assets",
           {
             "glob": "**/*",
-            "input": "libs/core/util/assets/src",
+            "input": "apps/llecoop/src/assets",
             "output": "/assets/"
           }
         ],
