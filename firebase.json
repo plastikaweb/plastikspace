@@ -1,0 +1,32 @@
+{
+  "firestore": {
+    "rules": "apps/llecoop-firebase/firestore.rules",
+    "indexes": "apps/llecoop-firebase/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "apps/llecoop-firebase/storage.rules"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "storage": {
+      "port": 9199
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  },
+  "functions": [
+    {
+      "codebase": "llecoop-triggers",
+      "source": "dist/apps/llecoop-triggers",
+      "runtime": "nodejs20",
+      "ignore": ["*.local"]
+    }
+  ]
+}

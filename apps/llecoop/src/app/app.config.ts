@@ -46,9 +46,9 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(),
-    provideFirebaseApp(() => initializeApp(firebaseConfig, 'llecoop')),
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => {
-      const auth = initializeAuth(getApp('llecoop'));
+      const auth = initializeAuth(getApp());
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
       }
@@ -56,7 +56,7 @@ export const appConfig: ApplicationConfig = {
       return auth;
     }),
     provideFirestore(() => {
-      const firestore = getFirestore(getApp('llecoop'));
+      const firestore = getFirestore(getApp());
       if (environment['useEmulators']) {
         connectFirestoreEmulator(firestore, 'localhost', 8080);
       }
