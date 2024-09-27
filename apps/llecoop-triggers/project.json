@@ -1,0 +1,53 @@
+{
+  "name": "llecoop-triggers",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/llecoop-triggers/src",
+  "projectType": "application",
+  "tags": ["firebase:function", "firebase:name:llecoop-triggers", "firebase:dep:llecoop-firebase"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/llecoop-triggers",
+        "main": "apps/llecoop-triggers/src/main.ts",
+        "tsConfig": "apps/llecoop-triggers/tsconfig.app.json",
+        "assets": [
+          "apps/llecoop-triggers/src/assets",
+          {
+            "glob": "**/*",
+            "input": "apps/llecoop-firebase/environment",
+            "output": "."
+          }
+        ],
+        "generatePackageJson": true,
+        "platform": "node",
+        "bundle": true,
+        "thirdParty": false,
+        "dependenciesFieldType": "dependencies",
+        "target": "node16",
+        "format": ["esm"],
+        "esbuildOptions": {
+          "logLevel": "info"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/llecoop-triggers/jest.config.ts"
+      }
+    },
+    "deploy": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "nx run llecoop-firebase:deploy --only functions:llecoop-triggers"
+      },
+      "dependsOn": ["build"]
+    }
+  }
+}
