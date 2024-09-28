@@ -2,7 +2,7 @@ import { BaseEntity } from '@plastik/core/entities';
 import { LlecoopProductCategory } from './product-category';
 
 export interface LlecoopProduct extends BaseEntity {
-  description: string;
+  info?: string;
   price: number;
   iva: number;
   priceWithIva?: number;
@@ -23,8 +23,16 @@ export type LlecoopProductUnit =
       type: 'weight';
     }
   | {
+      type: 'unitWithFixedVolume';
+      base: number;
+    }
+  | {
+      type: 'unitWithFixedWeight';
+      base: number;
+    }
+  | {
       type: 'unitWithVariableWeight';
-      baseWeight?: number;
+      base: number;
     };
 
 type LlecoopProductSelectOption = {
@@ -38,11 +46,19 @@ export const LlecoopProductSelectData: LlecoopProductSelectOption[] = [
     value: 'unit',
   },
   {
-    label: 'pes',
+    label: 'pes exacte (kg)',
     value: 'weight',
   },
   {
-    label: 'unitat amb pes variable',
+    label: 'unitat amb volum fix (l)',
+    value: 'unitWithFixedVolume',
+  },
+  {
+    label: 'unitat amb pes fix (kg)',
+    value: 'unitWithFixedWeight',
+  },
+  {
+    label: 'unitat amb pes variable (kg)',
     value: 'unitWithVariableWeight',
   },
 ] as const;

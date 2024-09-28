@@ -50,7 +50,7 @@ pa11y-ci-report
 .yarn/*
 
 # firebase
-**/firebase.*
+**/firebase.ts
 
 # trash
 /trash# Nx-Firebase

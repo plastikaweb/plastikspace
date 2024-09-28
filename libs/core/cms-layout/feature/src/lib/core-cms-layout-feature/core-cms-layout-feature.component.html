@@ -45,18 +45,16 @@
     }
   </plastik-core-cms-layout-ui-header>
 
-  @defer {
-    @if ((isActive$ | ngrxPush) || false) {
-      <plastik-shared-activity-ui-overlay class="z-10">
-        <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
-        <div class="spinner-container">
-          <div class="lds-ripple">
-            <div></div>
-            <div></div>
-          </div>
+  @if ((isActive$ | ngrxPush) || false) {
+    <plastik-shared-activity-ui-overlay class="z-10">
+      <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
+      <div class="spinner-container">
+        <div class="lds-ripple">
+          <div></div>
+          <div></div>
         </div>
-      </plastik-shared-activity-ui-overlay>
-    }
+      </div>
+    </plastik-shared-activity-ui-overlay>
   }
 
   <plastik-core-cms-layout-ui-sidenav

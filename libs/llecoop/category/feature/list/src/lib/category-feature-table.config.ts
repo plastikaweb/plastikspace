@@ -24,7 +24,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['hidden lg:flex lg:min-w-[180px]'],
+    cssClasses: ['min-w-[240px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
@@ -38,6 +38,17 @@ export class LlecoopCategorySearchFeatureTableConfig
     key: 'description',
     title: 'Descripció',
     propertyPath: 'description',
+    cssClasses: ['hidden lg:flex lg:min-w-[210px]'],
+    formatting: {
+      type: 'TEXT',
+    },
+  };
+
+  private readonly totalProducts: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
+    key: 'totalProducts',
+    title: 'Nombre de productes',
+    propertyPath: 'totalProducts',
+    cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -49,7 +60,7 @@ export class LlecoopCategorySearchFeatureTableConfig
   private readonly columnProperties: TableColumnFormatting<
     LlecoopProductCategory,
     FormattingTypes
-  >[] = [this.name, this.description, this.createdAt, this.updatedAt];
+  >[] = [this.name, this.description, this.totalProducts, this.createdAt, this.updatedAt];
 
   getTableStructure(): WritableSignal<TableControlStructure<LlecoopProductCategory>> {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

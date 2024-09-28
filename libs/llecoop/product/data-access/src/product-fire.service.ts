@@ -6,7 +6,7 @@ import {
   deleteDoc,
   doc,
   Firestore,
-  Timestamp,
+  serverTimestamp,
   updateDoc,
 } from '@angular/fire/firestore';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
@@ -29,8 +29,8 @@ export class LlecoopProductFireService {
     return from(
       addDoc(this.productCollection, {
         ...item,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
       })
     );
   }
@@ -40,7 +40,7 @@ export class LlecoopProductFireService {
     return from(
       updateDoc(document, {
         ...item,
-        updatedAt: Timestamp.now(),
+        updatedAt: serverTimestamp(),
       })
     );
   }

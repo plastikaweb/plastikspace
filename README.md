@@ -63,6 +63,8 @@ To see a full list of available scripts see **package.json file > scripts**.
 - [nasa-images](apps/nasa-images/README.md)
 - [experimental](apps/experimental/README.md)
 - [llecoop](apps/llecoop/README.md)
+- [llecoop-firebase](apps/llecoop-firebase/README.md)
+- [llecoop-triggers](apps/llecoop-triggers/README.md)
 
 ## Available libraries
 

@@ -7,7 +7,12 @@ import {
   initializeAuth,
   provideAuth,
 } from '@angular/fire/auth';
-import { connectFirestoreEmulator, getFirestore, provideFirestore } from '@angular/fire/firestore';
+import {
+  connectFirestoreEmulator,
+  getFirestore,
+  persistentMultipleTabManager,
+  provideFirestore,
+} from '@angular/fire/firestore';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -41,20 +46,22 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(),
-    provideFirebaseApp(() => initializeApp(firebaseConfig, 'llecoop')),
+    provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => {
-      const auth = initializeAuth(getApp('llecoop'));
+      const auth = initializeAuth(getApp());
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
-        auth.setPersistence(browserSessionPersistence);
       }
+      auth.setPersistence(browserSessionPersistence);
       return auth;
     }),
     provideFirestore(() => {
-      const firestore = getFirestore(getApp('llecoop'));
+      const firestore = getFirestore(getApp());
       if (environment['useEmulators']) {
         connectFirestoreEmulator(firestore, 'localhost', 8080);
       }
+      persistentMultipleTabManager();
+
       return firestore;
     }),
     // provideStorage(() => {

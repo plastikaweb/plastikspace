@@ -1,5 +1,12 @@
 {
   "projects": {
     "default": "llevat-b0d66"
-  }
+  },
+  "targets": {},
+  "etags": {
+    "llevat-b0d66": {
+      "extensionInstances": {}
+    }
+  },
+  "dataconnectEmulatorConfig": {}
 }

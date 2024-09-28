@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/llecoop-firebase",
   "projectType": "application",
+  "tags": ["firebase:app", "firebase:name:llecoop-firebase"],
   "targets": {
     "build": {
       "executor": "nx:run-commands",
@@ -77,5 +78,5 @@
       }
     }
   },
-  "tags": ["firebase:app", "firebase:name:llecoop-firebase"]
+  "implicitDependencies": ["llecoop-triggers"]
 }
