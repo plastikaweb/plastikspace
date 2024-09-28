@@ -44,13 +44,23 @@ export class LlecoopCategorySearchFeatureTableConfig
     },
   };
 
+  private readonly totalProducts: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
+    key: 'totalProducts',
+    title: 'Nombre de productes',
+    propertyPath: 'totalProducts',
+    cssClasses: ['min-w-[100px]'],
+    formatting: {
+      type: 'TEXT',
+    },
+  };
+
   private readonly createdAt = createdAt<LlecoopProductCategory>();
   private readonly updatedAt = updatedAt<LlecoopProductCategory>();
 
   private readonly columnProperties: TableColumnFormatting<
     LlecoopProductCategory,
     FormattingTypes
-  >[] = [this.name, this.description, this.createdAt, this.updatedAt];
+  >[] = [this.name, this.description, this.totalProducts, this.createdAt, this.updatedAt];
 
   getTableStructure(): WritableSignal<TableControlStructure<LlecoopProductCategory>> {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
