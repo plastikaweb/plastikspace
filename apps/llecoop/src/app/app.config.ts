@@ -23,7 +23,7 @@ import {
 } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
-import { StoreModule, provideStore } from '@ngrx/store';
+import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
@@ -80,7 +80,6 @@ export const appConfig: ApplicationConfig = {
     // }),
     // provideFirestore(() => getFirestore(getApp())),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
-    provideStore(),
     importProvidersFrom(
       StoreModule.forRoot(routerReducers, {
         runtimeChecks: {

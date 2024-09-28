@@ -1,6 +1,5 @@
 name: E2E nasa-images
 on:
-  push:
   pull_request:
     branches:
       - develop

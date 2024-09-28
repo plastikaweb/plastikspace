@@ -1,8 +1,9 @@
 name: pa11y nasa-images
 
 on:
-  push:
   pull_request:
+    branches:
+      - develop
 
 permissions:
   actions: read
