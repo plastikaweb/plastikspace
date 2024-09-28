@@ -5,7 +5,7 @@ on:
     workflows: [CI, E2E nasa-images, pa11y nasa-images]
     types: [completed]
     branches:
-      - 'develop'
+      - develop
 
 env:
   NPM_CONFIG_LEGACY_PEER_DEPS: true

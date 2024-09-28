@@ -20,11 +20,39 @@ import * as functions from 'firebase-functions';
 export const onUpdateCategoryUpdateProductCategory = functions.firestore
   .document('category/{categoryId}')
   .onUpdate(async (change, context) => {
-    await (await import('./category/onUpdateCourse')).default(change, context);
+    await (
+      await import('./category/onUpdateCategoryUpdateProductCategory')
+    ).default(change, context);
   });
 
 export const onDeleteCategoryUpdateProductCategory = functions.firestore
   .document('category/{categoryId}')
   .onDelete(async (snapshot, context) => {
-    await (await import('./category/onDeleteCourse')).default(snapshot, context);
+    await (
+      await import('./category/onDeleteCategoryUpdateProductCategory')
+    ).default(snapshot, context);
+  });
+
+export const onCreateProductCategoryUpdateCategoryProductCount = functions.firestore
+  .document('product/{productId}')
+  .onCreate(async (snapshot, context) => {
+    await (
+      await import('./product/onCreateProductCategoryUpdateCategoryProductCount')
+    ).default(snapshot, context);
+  });
+
+export const onUpdateProductCategoryUpdateCategoryProductCount = functions.firestore
+  .document('product/{productId}')
+  .onUpdate(async (change, context) => {
+    await (
+      await import('./product/onUpdateProductCategoryUpdateCategoryProductCount')
+    ).default(change, context);
+  });
+
+export const onDeleteProductUpdateCategoryProductCount = functions.firestore
+  .document('product/{productId}')
+  .onDelete(async (snapshot, context) => {
+    await (
+      await import('./product/onDeleteProductUpdateCategoryProductCount')
+    ).default(snapshot, context);
   });
