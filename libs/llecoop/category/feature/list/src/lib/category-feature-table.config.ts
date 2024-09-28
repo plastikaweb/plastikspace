@@ -44,10 +44,11 @@ export class LlecoopCategorySearchFeatureTableConfig
     },
   };
 
-  private readonly totalProducts: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
-    key: 'totalProducts',
+  private readonly productCount: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
+    key: 'productCount',
     title: 'Nombre de productes',
-    propertyPath: 'totalProducts',
+    propertyPath: 'productCount',
+    sorting: true,
     cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'TEXT',
@@ -60,7 +61,7 @@ export class LlecoopCategorySearchFeatureTableConfig
   private readonly columnProperties: TableColumnFormatting<
     LlecoopProductCategory,
     FormattingTypes
-  >[] = [this.name, this.description, this.totalProducts, this.createdAt, this.updatedAt];
+  >[] = [this.name, this.description, this.productCount, this.createdAt, this.updatedAt];
 
   getTableStructure(): WritableSignal<TableControlStructure<LlecoopProductCategory>> {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
