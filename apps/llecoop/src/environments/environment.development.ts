@@ -2,7 +2,7 @@ import { Environment } from '@plastik/core/environments';
 
 export const environment: Environment = {
   name: 'El Llevat',
-  production: true,
+  production: false,
   apiUrl: 'http://',
   useEmulators: true,
 };
