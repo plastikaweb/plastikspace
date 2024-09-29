@@ -1,11 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import {
-  Auth,
-  onAuthStateChanged,
-  signInWithEmailAndPassword,
-  signOut,
-  User,
-} from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, signOut, User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ENVIRONMENT } from '@plastik/core/environments';
@@ -50,36 +44,27 @@ export class FirebaseAuthService {
   }
 
   async getUser(): Promise<User | null> {
-    if (this.environment['useEmulators']) {
-      const storedUserKey = Object.keys(sessionStorage).find(key =>
-        key.startsWith('firebase:authUser:')
-      );
-      if (!storedUserKey) {
-        return Promise.resolve(null);
-      }
-
-      const storedUser = sessionStorage.getItem(storedUserKey);
-      if (!storedUser) {
-        return Promise.resolve(null);
-      }
-
-      const user = JSON.parse(storedUser);
-      const expirationTime = user.stsTokenManager.expirationTime;
-      if (expirationTime > Date.now()) {
-        this.user.next(user);
-        return Promise.resolve(user);
-      }
-
-      sessionStorage.removeItem(storedUserKey);
+    const storedUserKey = Object.keys(sessionStorage).find(key =>
+      key.startsWith('firebase:authUser:')
+    );
+    if (!storedUserKey) {
       return Promise.resolve(null);
     }
 
-    return new Promise(resolve =>
-      onAuthStateChanged(this.auth, user => {
-        this.user.next(user);
-        resolve(user || null);
-      })
-    );
+    const storedUser = sessionStorage.getItem(storedUserKey);
+    if (!storedUser) {
+      return Promise.resolve(null);
+    }
+
+    const user = JSON.parse(storedUser);
+    const expirationTime = user.stsTokenManager.expirationTime;
+    if (expirationTime > Date.now()) {
+      this.user.next(user);
+      return Promise.resolve(user);
+    }
+
+    sessionStorage.removeItem(storedUserKey);
+    return Promise.resolve(null);
   }
 
   // async register(email: string, password: string, username: string): Promise<void> {
