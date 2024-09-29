@@ -6,7 +6,7 @@ export const isLoggedGuard: CanActivateFn = async () => {
   const authService = inject(FirebaseAuthService);
   const router = inject(Router);
 
-  const user = await authService.getUser();
+  const user = authService.currentUser();
 
   if (!user) {
     router.navigate(['login']);

@@ -1,12 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import {
-  browserSessionPersistence,
-  connectAuthEmulator,
-  initializeAuth,
-  provideAuth,
-} from '@angular/fire/auth';
+import { connectAuthEmulator, initializeAuth, provideAuth } from '@angular/fire/auth';
 import {
   connectFirestoreEmulator,
   getFirestore,
@@ -52,7 +47,6 @@ export const appConfig: ApplicationConfig = {
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
       }
-      auth.setPersistence(browserSessionPersistence);
       return auth;
     }),
     provideFirestore(() => {
@@ -78,7 +72,6 @@ export const appConfig: ApplicationConfig = {
     //   }
     //   return functions;
     // }),
-    // provideFirestore(() => getFirestore(getApp())),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     importProvidersFrom(
       StoreModule.forRoot(routerReducers, {
