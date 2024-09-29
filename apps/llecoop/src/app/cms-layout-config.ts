@@ -4,7 +4,6 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
 import { ViewsConfigRecord } from '@plastik/core/entities';
 import { LlecoopViews } from '@plastik/llecoop/entities';
-import { map } from 'rxjs';
 
 export function headerConfig(): CoreCmsLayoutHeaderConfig {
   const firebaseAuthService = inject(FirebaseAuthService);
@@ -15,7 +14,7 @@ export function headerConfig(): CoreCmsLayoutHeaderConfig {
     title: '',
     extendedTitle: 'El Llevat',
     menu: {
-      label: firebaseAuthService.user$.pipe(map(user => user?.email || 'welcome')),
+      label: firebaseAuthService.currentUser()?.email || 'welcome',
       position: 'end',
       config: [
         // {
