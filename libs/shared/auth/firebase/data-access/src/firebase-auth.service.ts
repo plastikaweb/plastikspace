@@ -41,6 +41,14 @@ export class FirebaseAuthService {
     return this.auth.currentUser;
   }
 
+  // registerUser(email: string) {
+  //   const actionCodeSettings = {
+  //     // URL a la que se redirigirá al usuario después de que haga clic en el enlace de verificación
+  //     url: 'https://llevat-b0d66.firebaseapp.com/finishSignUp?cartId=1234',
+  //     handleCodeInApp: false,
+  //   };
+  // }
+
   // async getUser(): Promise<User | null> {
   //   const storedUserKey = Object.keys(sessionStorage).find(key =>
   //     key.startsWith('firebase:authUser:')

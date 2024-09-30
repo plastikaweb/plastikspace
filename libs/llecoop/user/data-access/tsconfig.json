@@ -12,15 +12,13 @@
   "include": [],
   "references": [
     {
-      "path": "./tsconfig.lib.json",
-      "composite": true
+      "path": "./tsconfig.lib.json"
     },
     {
-      "path": "./tsconfig.spec.json",
-      "composite": true
+      "path": "./tsconfig.spec.json"
     }
   ],
-  "extends": "../../../../../tsconfig.base.json",
+  "extends": "../../../../tsconfig.base.json",
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

@@ -3,7 +3,6 @@ import { Observable } from 'rxjs';
 
 export interface AuthFacade {
   login(email: string, password: string): Observable<unknown>;
-  getUser(): unknown;
 }
 
 export const AUTH_FACADE = new InjectionToken<AuthFacade>('AUTH_FACADE');

@@ -1,7 +1,7 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
-import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { connectAuthEmulator, initializeAuth, provideAuth } from '@angular/fire/auth';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import {
   connectFirestoreEmulator,
   getFirestore,
@@ -43,14 +43,14 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideAuth(() => {
-      const auth = initializeAuth(getApp());
+      const auth = getAuth();
       if (environment['useEmulators']) {
         connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
       }
       return auth;
     }),
     provideFirestore(() => {
-      const firestore = getFirestore(getApp());
+      const firestore = getFirestore();
       if (environment['useEmulators']) {
         connectFirestoreEmulator(firestore, 'localhost', 8080);
       }

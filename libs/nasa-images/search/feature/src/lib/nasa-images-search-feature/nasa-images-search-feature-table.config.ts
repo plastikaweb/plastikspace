@@ -79,7 +79,7 @@ const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
     type: 'IMAGE',
     extras: {
       type: 'img',
-      title: (item: NasaImage) => item.name,
+      title: (item: NasaImage) => item?.name || 'No title',
       classes: 'object-cover h-[100px] w-[100px] rounded-md',
     },
   },

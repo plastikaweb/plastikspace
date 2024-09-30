@@ -70,7 +70,7 @@ export const viewConfig: ViewsConfigRecord<LlecoopViews> = {
     name: 'user',
     title: 'Usuaris',
     icon: 'person',
-    route: [`/user`],
+    route: [`/admin/usuari`],
     includedInNavigation: true,
     routerLinkActiveOptionsExact: false,
   },
