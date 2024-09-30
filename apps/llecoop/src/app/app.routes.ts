@@ -73,6 +73,18 @@ export const appRoutes: Routes = [
             routes => routes.llecoopProductFeatureListRoutes
           ),
       },
+      {
+        path: 'usuari',
+        loadChildren: () =>
+          import('@plastik/llecoop/user/list').then(routes => routes.llecoopUserFeatureListRoutes),
+      },
+      {
+        path: 'usuari/crear',
+        loadChildren: () =>
+          import('@plastik/llecoop/user/create').then(
+            routes => routes.llecoopUserFeatureCreateRoutes
+          ),
+      },
     ],
   },
   {
