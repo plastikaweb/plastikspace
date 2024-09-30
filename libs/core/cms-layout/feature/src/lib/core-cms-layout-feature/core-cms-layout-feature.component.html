@@ -1,11 +1,16 @@
-@if (notificationConfig$ | ngrxPush; as config) {
-  <div [plastikSnackbar]="config" (sendDismiss)="onNotificationDismiss()"></div>
+@let isActive = (isActive$ | ngrxPush) || false;
+@let sidenavOpened = (sidenavOpened$ | ngrxPush) || false;
+@let notificationConfig = (notificationConfig$ | ngrxPush) || null;
+@let isMobile = (isMobile$ | ngrxPush) || false;
+
+@if (notificationConfig) {
+  <div [plastikSnackbar]="notificationConfig || {}" (sendDismiss)="onNotificationDismiss()"></div>
 }
 
 <div class="flex flex-col">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
     <div start class="flex items-center gap-0 sm:gap-sm">
-      @if (sidenavPosition === 'start') {
+      @defer (when sidenavPosition === 'start') {
         <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
       }
       <h1 data-test="layout-title">
@@ -22,7 +27,7 @@
           }}</span>
         </a>
       </h1>
-      @if (headerConfig.socialLinks?.position === 'start') {
+      @defer (when headerConfig.socialLinks?.position === 'start') {
         <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
       }
     </div>
@@ -32,20 +37,21 @@
       headerConfig.menu?.position === 'end'
     ) {
       <div end class="flex items-center gap-sm">
-        @if (headerConfig.socialLinks?.position === 'end') {
+        @defer (when headerConfig.socialLinks?.position === 'end') {
           <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
         }
-        @if (sidenavPosition === 'end') {
+        @defer (when sidenavPosition === 'end') {
           <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
         }
-        @if (headerConfig.menu?.position === 'end') {
+        <!-- TODO: Create a shared user menu -->
+        @defer (when headerConfig.menu?.position === 'end') {
           <ng-container [ngTemplateOutlet]="headerMenu"></ng-container>
         }
       </div>
     }
   </plastik-core-cms-layout-ui-header>
 
-  @if ((isActive$ | ngrxPush) || false) {
+  @if (isActive) {
     <plastik-shared-activity-ui-overlay class="z-10">
       <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
       <div class="spinner-container">
@@ -59,9 +65,9 @@
 
   <plastik-core-cms-layout-ui-sidenav
     [position]="sidenavPosition"
-    [mode]="(isMobile$ | ngrxPush) ? 'over' : 'side'"
-    [fixedInViewport]="(isMobile$ | ngrxPush) || false"
-    [sidenavOpened]="(sidenavOpened$ | ngrxPush) || false"
+    [mode]="isMobile ? 'over' : 'side'"
+    [fixedInViewport]="isMobile"
+    [sidenavOpened]="sidenavOpened"
     (toggleSidenav)="onToggleSidenav()">
     <mat-nav-list menu-items data-test="sidenav-list">
       @for (item of sidenavConfig; track item.id) {
@@ -80,36 +86,34 @@
     </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>
 
-  @defer {
-    @if (!hideFooter) {
-      <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-        <div content class="flex items-center justify-center gap-sm">
-          <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
-          <div class="flex flex-row gap-[4px]">
-            <div>
-              © 2006-{{ currentDate | date: 'yyyy' }}
-              <a
-                aria-label="visit www.plastikaweb.com page"
-                class="text-white underline underline-offset-2"
-                href="https://www.plastikaweb.com"
-                target="_blank"
-                >Plastikaweb</a
-              >
-            </div>
-            <span class="hidden sm:block"
-              >|
-              <a
-                aria-label="visitar www.llevat.org"
-                class="text-white underline underline-offset-2"
-                href="https://www.llevat.org"
-                target="_blank"
-                >El Llevat</a
-              >.</span
+  @defer (when !hideFooter) {
+    <plastik-core-cms-layout-ui-footer data-test="layout-footer">
+      <div content class="flex items-center justify-center gap-sm">
+        <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
+        <div class="flex flex-row gap-[4px]">
+          <div>
+            © 2006-{{ currentDate | date: 'yyyy' }}
+            <a
+              aria-label="visit www.plastikaweb.com page"
+              class="text-white underline underline-offset-2"
+              href="https://www.plastikaweb.com"
+              target="_blank"
+              >Plastikaweb</a
             >
           </div>
+          <span class="hidden sm:block"
+            >|
+            <a
+              aria-label="visitar www.llevat.org"
+              class="text-white underline underline-offset-2"
+              href="https://www.llevat.org"
+              target="_blank"
+              >El Llevat</a
+            >.</span
+          >
         </div>
-      </plastik-core-cms-layout-ui-footer>
-    }
+      </div>
+    </plastik-core-cms-layout-ui-footer>
   }
 </div>
 
@@ -120,9 +124,9 @@
     class="flex justify-center align-middle"
     data-test="toggle-sidenav-button"
     (click)="onToggleSidenav()">
-    @if (!(sidenavOpened$ | ngrxPush)) {
+    @if (!sidenavOpened) {
       <mat-icon class="mat-18">menu</mat-icon>
-    } @else {
+    } @else if (sidenavOpened) {
       <mat-icon class="mat-18">close</mat-icon>
     }
   </button>
