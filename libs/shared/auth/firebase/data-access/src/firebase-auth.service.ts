@@ -1,5 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import {
+  Auth,
+  createUserWithEmailAndPassword,
+  sendSignInLinkToEmail,
+  signInWithEmailAndPassword,
+  signOut,
+} from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 
@@ -73,18 +79,27 @@ export class FirebaseAuthService {
   //   return Promise.resolve(null);
   // }
 
-  // async register(email: string, password: string, username: string): Promise<void> {
-  //   return await createUserWithEmailAndPassword(this.auth, email, password)
-  //     .then(response => {
-  //       updateProfile(response.user, {
-  //         displayName: username,
-  //       });
-  //       this.router.navigate(['']);
-  //     })
-  //     .catch(error => {
-  //       window.alert(error.message);
-  //     });
-  // }
+  registerUser(email: string, password: string): Promise<void> {
+    return createUserWithEmailAndPassword(this.auth, email, password)
+      .then(response => {
+        console.log(response);
+        this.router.navigate(['']);
+      })
+      .catch((error: any) => {
+        window.alert(error.message);
+      });
+  }
+
+  registerUserWithLink(email: string): Promise<void> {
+    const actionCodeSettings = {
+      // Your redirect URL
+      url: `https://llevat-b0d66.firebaseapp.com/login&email=${email}`,
+      handleCodeInApp: true,
+    };
+    return sendSignInLinkToEmail(this.auth, email, actionCodeSettings).then(response => {
+      console.log(response);
+    });
+  }
 
   logout() {
     return signOut(this.auth).then(() => {

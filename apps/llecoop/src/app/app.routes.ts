@@ -78,11 +78,13 @@ export const appRoutes: Routes = [
         loadChildren: () =>
           import('@plastik/llecoop/user/list').then(routes => routes.llecoopUserFeatureListRoutes),
       },
-      // {
-      //   path: 'usuari/crear',
-      //   loadChildren: () =>
-      //     import('@plastik/llecoop/user/add').then(routes => routes.userFeatureAddRoutes),
-      // },
+      {
+        path: 'usuari/crear',
+        loadChildren: () =>
+          import('@plastik/llecoop/user/create').then(
+            routes => routes.llecoopUserFeatureCreateRoutes
+          ),
+      },
     ],
   },
   {
