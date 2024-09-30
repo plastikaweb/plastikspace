@@ -41,6 +41,7 @@
       "@plastik/llecoop/product/data-access": ["libs/llecoop/product/data-access/src/index.ts"],
       "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
+      "@plastik/llecoop/user/create": ["libs/llecoop/user/feature/create/src/index.ts"],
       "@plastik/llecoop/user/data-access": ["libs/llecoop/user/data-access/src/index.ts"],
       "@plastik/llecoop/user/list": ["libs/llecoop/user/feature/list/src/index.ts"],
       "@plastik/llecoop/util": ["libs/llecoop/util/src/index.ts"],
