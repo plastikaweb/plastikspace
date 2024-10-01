@@ -1,13 +1,19 @@
-import { AuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { Routes } from '@angular/router';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { CoreCmsLayoutFeatureComponent } from '@plastik/core/cms-layout';
+import { isLoggedGuard } from './isLogged.guard';
+import { isNotLoggedGuard } from './isNotLogged.guard';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+// const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
-const redirectLoggedInToHome = () => redirectLoggedInTo(['']);
+// const redirectLoggedInAndVerifiedToHome = () => map((user: User) => {
+//   return !user.uid || !user.emailVerified ? ['login'] : ['']
+// });
+// const redirectLoggedOutOrNoVerifiedToLogin = () => map((user: User) => {
+//   console.log('user', user);
+//   return user?.uid && user?.emailVerified ? [''] : ['login']
+// });
 
 export const appRoutes: Routes = [
   {
@@ -18,10 +24,8 @@ export const appRoutes: Routes = [
       logo: 'assets/img/favicon-32x32.png',
       label: 'Iniciar sessió',
       buttonStyle: 'w-full',
-      authGuardPipe: redirectLoggedInToHome,
     },
-    providers: [FirebaseAuthService],
-    canActivate: [AuthGuard],
+    canActivate: [isNotLoggedGuard],
     loadChildren: () => import('@plastik/auth/login').then(routes => routes.authLoginFeatureRoutes),
   },
   {
@@ -32,17 +36,14 @@ export const appRoutes: Routes = [
       logo: 'assets/img/favicon-32x32.png',
       label: 'Registrar-se',
       buttonStyle: 'w-full',
-      authGuardPipe: redirectLoggedInToHome,
     },
-    providers: [FirebaseAuthService],
-    canActivate: [AuthGuard],
+    canActivate: [isNotLoggedGuard],
     loadChildren: () =>
       import('@plastik/auth/register').then(routes => routes.authRegisterFeatureRoutes),
   },
   {
     path: 'admin',
-    canActivate: [AuthGuard],
-    data: { authGuardPipe: redirectUnauthorizedToLogin },
+    canActivate: [isLoggedGuard],
     loadComponent: () => CoreCmsLayoutFeatureComponent,
     providers: [
       {
@@ -111,5 +112,9 @@ export const appRoutes: Routes = [
     path: '',
     redirectTo: 'admin/producte',
     pathMatch: 'full',
+  },
+  {
+    path: '**',
+    redirectTo: 'admin/producte',
   },
 ];

@@ -1,16 +1,19 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { Auth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
 
-export const isNotLoggedGuard: CanActivateFn = async () => {
-  const authService = inject(FirebaseAuthService);
+export const isNotLoggedGuard = async () => {
+  const auth = inject(Auth);
   const router = inject(Router);
 
-  const user = authService.currentUser();
+  return new Promise<boolean>(resolve => {
+    auth.onAuthStateChanged(user => {
+      if (user?.uid && user?.emailVerified) {
+        router.navigate(['']);
+        resolve(false);
+      }
 
-  if (user) {
-    router.navigate(['']);
-    return false;
-  }
-  return true;
+      resolve(true);
+    });
+  });
 };

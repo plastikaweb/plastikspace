@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -26,14 +26,15 @@ export class FirebaseAuthService {
   private readonly state = inject(Store);
   private readonly notificationService = inject(NotificationConfigService);
   private readonly user = new BehaviorSubject<User | null>(null);
+
   currentUser$ = this.user.asObservable();
-  loggedIn = false;
+  currentUser = signal<User | null>(null);
+  currentUserEmail = computed(() => this.currentUser()?.email ?? '');
+  loggedIn = computed(() => !!this.currentUser());
+  verified = computed(() => !!this.currentUser()?.emailVerified);
 
   constructor() {
-    this.auth.onAuthStateChanged(user => {
-      this.user.next(user);
-      this.loggedIn = !!user;
-    });
+    this.auth.onAuthStateChanged(user => this.currentUser.set(user));
   }
 
   login(email: string, password: string): Promise<void> {
@@ -41,13 +42,15 @@ export class FirebaseAuthService {
       .then(() => {
         this.router.navigate(['']);
       })
-
       .catch(error => {
+        if (error.message?.match(/"message":"BLOCKING_FUNCTION_ERROR_RESPONSE"/)) {
+          console.error('BLOCKING_FUNCTION_ERROR_RESPONSE');
+        }
         this.state.dispatch(
           notificationActions.show({
             configuration: this.notificationService.getInstance({
               type: 'ERROR',
-              message: error?.message?.match(/"message":"(.*?)"/)[1] ?? 'Revisa les teves dades',
+              message: error?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Revisa les teves dades',
               duration: 5000,
               action: 'tancar',
             }),
@@ -56,53 +59,18 @@ export class FirebaseAuthService {
       });
   }
 
-  // async getUser(): Promise<User | null> {
-  //   const storedUserKey = Object.keys(sessionStorage).find(key =>
-  //     key.startsWith('firebase:authUser:')
-  //   );
-  //   if (!storedUserKey) {
-  //     return Promise.resolve(null);
-  //   }
-
-  //   const storedUser = sessionStorage.getItem(storedUserKey);
-  //   if (!storedUser) {
-  //     return Promise.resolve(null);
-  //   }
-
-  //   const user = JSON.parse(storedUser);
-  //   const expirationTime = user.stsTokenManager.expirationTime;
-  //   if (expirationTime > Date.now()) {
-  //     this.user.next(user);
-  //     return Promise.resolve(user);
-  //   }
-
-  //   sessionStorage.removeItem(storedUserKey);
-  //   return Promise.resolve(null);
-  // }
-
   register(email: string, password: string) {
     createUserWithEmailAndPassword(this.auth, email, password)
       .then(credentials => {
-        console.log('User registered', credentials);
-        sendEmailVerification(credentials.user).then(e => {
-          console.log('Email verification sent', e);
-          this.state.dispatch(
-            notificationActions.show({
-              configuration: this.notificationService.getInstance({
-                type: 'SUCCESS',
-                message:
-                  'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
-              }),
-            })
-          );
-        });
+        this.logout();
+        this.sendVerification(credentials.user);
       })
       .catch(error => {
         this.state.dispatch(
           notificationActions.show({
             configuration: this.notificationService.getInstance({
               type: 'ERROR',
-              message: error?.message?.match(/"message":"(.*?)"/)[1] ?? 'Error de registre',
+              message: error?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Error de registre',
               action: 'tancar',
             }),
           })
@@ -121,9 +89,21 @@ export class FirebaseAuthService {
   //   });
   // }
 
-  logout() {
-    return signOut(this.auth).then(() => {
-      this.router.navigate(['login']);
+  logout(): void {
+    signOut(this.auth).then(() => this.router.navigate(['login']));
+  }
+
+  sendVerification(user: User) {
+    sendEmailVerification(user).then(e => {
+      this.state.dispatch(
+        notificationActions.show({
+          configuration: this.notificationService.getInstance({
+            type: 'SUCCESS',
+            message:
+              'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
+          }),
+        })
+      );
     });
   }
 }
