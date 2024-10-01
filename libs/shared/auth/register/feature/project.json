@@ -1,7 +1,7 @@
 {
-  "name": "auth-login-feature",
+  "name": "auth-register-feature",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/auth/login/feature/src",
+  "sourceRoot": "libs/shared/auth/register/feature/src",
   "prefix": "plastik",
   "projectType": "library",
   "tags": ["type:feature", "scope:shared"],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/shared/auth/login/feature/jest.config.ts"
+        "jestConfig": "libs/shared/auth/register/feature/jest.config.ts"
       }
     },
     "lint": {
