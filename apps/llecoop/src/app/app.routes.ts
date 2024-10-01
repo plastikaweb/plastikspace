@@ -1,28 +1,48 @@
+import { AuthGuard, redirectLoggedInTo, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { Routes } from '@angular/router';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { CoreCmsLayoutFeatureComponent } from '@plastik/core/cms-layout';
-import { isLoggedGuard } from './isLogged.guard';
-import { isNotLoggedGuard } from './isNotLogged.guard';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
+
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+
+const redirectLoggedInToHome = () => redirectLoggedInTo(['']);
 
 export const appRoutes: Routes = [
   {
     path: 'login',
-    title: 'Autenticació',
+    title: 'Entrar a El Llevat',
     data: {
-      title: 'El Llevat',
+      title: 'Entrar a la botiga',
       logo: 'assets/img/favicon-32x32.png',
       label: 'Iniciar sessió',
       buttonStyle: 'w-full',
+      authGuardPipe: redirectLoggedInToHome,
     },
     providers: [FirebaseAuthService],
-    canActivate: [isNotLoggedGuard],
+    canActivate: [AuthGuard],
     loadChildren: () => import('@plastik/auth/login').then(routes => routes.authLoginFeatureRoutes),
   },
   {
+    path: 'registre',
+    title: 'Registre de socis de El Llevat',
+    data: {
+      title: 'Registre de socis',
+      logo: 'assets/img/favicon-32x32.png',
+      label: 'Registrar-se',
+      buttonStyle: 'w-full',
+      authGuardPipe: redirectLoggedInToHome,
+    },
+    providers: [FirebaseAuthService],
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('@plastik/auth/register').then(routes => routes.authRegisterFeatureRoutes),
+  },
+  {
     path: 'admin',
-    canActivate: [isLoggedGuard],
+    canActivate: [AuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin },
     loadComponent: () => CoreCmsLayoutFeatureComponent,
     providers: [
       {
