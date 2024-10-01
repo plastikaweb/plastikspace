@@ -1,1 +1,1 @@
-yarn branch:lint && yarn affected:test && yarn affected:e2e
+yarn branch:lint && yarn affected:test

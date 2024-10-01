@@ -12,6 +12,7 @@ import {
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProduct, LlecoopProductWithUpdateNotification } from '@plastik/llecoop/entities';
@@ -43,6 +44,7 @@ export const LlecoopProductStore = signalStore(
       store,
       productService = inject(LlecoopProductFireService),
       storeNotificationService = inject(StoreNotificationService),
+      firebaseAuthService = inject(FirebaseAuthService),
       state = inject(Store)
     ) => ({
       getAll: rxMethod<void>(
@@ -62,10 +64,12 @@ export const LlecoopProductStore = signalStore(
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
-                  storeNotificationService.create(
-                    `No s'ha pogut carregar els productes: ${error}`,
-                    'ERROR'
-                  );
+                  if (firebaseAuthService.loggedIn) {
+                    storeNotificationService.create(
+                      `No s'ha pogut carregar els productes: ${error}`,
+                      'ERROR'
+                    );
+                  }
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
               })

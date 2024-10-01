@@ -17,6 +17,7 @@ import * as functions from 'firebase-functions';
 //   response.send('Hello from Firebase!');
 // });
 
+// Category
 export const onUpdateCategoryUpdateProductCategory = functions.firestore
   .document('category/{categoryId}')
   .onUpdate(async (change, context) => {
@@ -33,6 +34,7 @@ export const onDeleteCategoryUpdateProductCategory = functions.firestore
     ).default(snapshot, context);
   });
 
+// Product
 export const onCreateProductCategoryUpdateCategoryProductCount = functions.firestore
   .document('product/{productId}')
   .onCreate(async (snapshot, context) => {
@@ -55,4 +57,17 @@ export const onDeleteProductUpdateCategoryProductCount = functions.firestore
     await (
       await import('./product/onDeleteProductUpdateCategoryProductCount')
     ).default(snapshot, context);
+  });
+
+// User
+export const onRegisterUserBlockIfUserIsNotWhitelisted = functions.auth
+  .user()
+  .beforeCreate(async user => {
+    await (await import('./user/onRequestRegisterUserBlockIfUserIsNotWhitelisted')).default(user);
+  });
+
+export const OnLoginUserBlockIfUserIsNotVerified = functions.auth
+  .user()
+  .beforeSignIn(async user => {
+    await (await import('./user/onRequestLoginUserBlockIfUserIsNotVerified')).default(user);
   });

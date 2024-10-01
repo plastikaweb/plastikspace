@@ -12,6 +12,7 @@ import {
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
@@ -60,7 +61,8 @@ export const LlecoopCategoryStore = signalStore(
       store,
       categoryService = inject(LlecoopCategoryFireService),
       storeNotificationService = inject(StoreNotificationService),
-      state = inject(Store)
+      state = inject(Store),
+      firebaseAuthService = inject(FirebaseAuthService)
     ) => ({
       getAll: rxMethod<void>(
         pipe(
@@ -80,11 +82,15 @@ export const LlecoopCategoryStore = signalStore(
                   patchState(store, { loaded: true, lastUpdated });
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut carregar les categories: ${error}`,
-                    'ERROR'
-                  ),
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  if (firebaseAuthService.loggedIn) {
+                    storeNotificationService.create(
+                      `No s'ha pogut carregar les categories: ${error}`,
+                      'ERROR'
+                    );
+                  }
+                },
               })
             )
           )
@@ -101,11 +107,13 @@ export const LlecoopCategoryStore = signalStore(
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
                   storeNotificationService.create(`Categoria "${category.name}" creada`, 'SUCCESS');
                 },
-                error: error =>
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `No s'ha pogut crear la categoria "${category.name}": ${error}`,
                     'ERROR'
-                  ),
+                  );
+                },
               })
             );
           })
@@ -125,11 +133,13 @@ export const LlecoopCategoryStore = signalStore(
                     'SUCCESS'
                   );
                 },
-                error: error =>
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar la categoria "${category.name}": ${error}`,
                     'ERROR'
-                  ),
+                  );
+                },
               })
             );
           })
@@ -148,11 +158,13 @@ export const LlecoopCategoryStore = signalStore(
                     'SUCCESS'
                   );
                 },
-                error: error =>
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `No s'ha pogut eliminar la categoria "${category.name}": ${error}`,
                     'ERROR'
-                  ),
+                  );
+                },
               })
             );
           })
