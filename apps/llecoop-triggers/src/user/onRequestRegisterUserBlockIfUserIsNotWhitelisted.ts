@@ -28,6 +28,9 @@ export default async user => {
   const userCollection = firestore.collection('user');
   await userCollection.doc(user.uid).set({
     email: user.email,
+    createdAt: new Date(),
+    isAdmin: false,
+    disabled: false,
   });
 
   functions.logger.debug(`Soci registrat amb el correu electrònic ${user.email}`);
