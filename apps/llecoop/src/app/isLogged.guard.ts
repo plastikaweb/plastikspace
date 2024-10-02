@@ -1,16 +1,39 @@
 import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { Auth } from '@angular/fire/auth';
+import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import {
+  notificationActions,
+  NotificationConfigService,
+} from '@plastik/shared/notification/data-access';
 
-export const isLoggedGuard: CanActivateFn = async () => {
-  const authService = inject(FirebaseAuthService);
+export const isLoggedGuard = async () => {
+  const auth = inject(Auth);
   const router = inject(Router);
+  const state = inject(Store);
+  const notificationService = inject(NotificationConfigService);
 
-  const user = authService.currentUser();
-
-  if (!user) {
-    router.navigate(['login']);
-    return false;
-  }
-  return true;
+  return new Promise<boolean>(resolve => {
+    auth.onAuthStateChanged(user => {
+      if (user?.uid && user?.emailVerified) {
+        resolve(true);
+      } else if (user?.uid && !user?.emailVerified) {
+        state.dispatch(
+          notificationActions.show({
+            configuration: notificationService.getInstance({
+              type: 'ERROR',
+              message:
+                'Estàs registrat al sistema però el teu compte no està validat. Revisa el teu correu per verificar-lo',
+              action: 'tancar',
+            }),
+          })
+        );
+        auth.signOut();
+        resolve(false);
+      } else {
+        router.navigate(['login']);
+        resolve(false);
+      }
+    });
+  });
 };

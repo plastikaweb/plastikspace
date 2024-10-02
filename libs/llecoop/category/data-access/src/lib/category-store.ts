@@ -84,7 +84,7 @@ export const LlecoopCategoryStore = signalStore(
                 },
                 error: error => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
-                  if (firebaseAuthService.loggedIn) {
+                  if (firebaseAuthService.loggedIn()) {
                     storeNotificationService.create(
                       `No s'ha pogut carregar les categories: ${error}`,
                       'ERROR'

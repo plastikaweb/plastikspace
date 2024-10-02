@@ -1,4 +1,4 @@
-import { InjectionToken } from '@angular/core';
+import { InjectionToken, Signal } from '@angular/core';
 import { ButtonConfig } from '@plastik/shared/button';
 import { LayoutPosition, SvgIconConfig } from '@plastik/shared/entities';
 import { Observable } from 'rxjs';
@@ -41,7 +41,7 @@ export interface CoreCmsLayoutHeaderConfig {
     config: ButtonConfig[];
   };
   menu?: {
-    label?: string | Observable<string>;
+    label?: Signal<string>;
     position: LayoutPosition;
     config: HeaderMenuConfig<string>[];
   };

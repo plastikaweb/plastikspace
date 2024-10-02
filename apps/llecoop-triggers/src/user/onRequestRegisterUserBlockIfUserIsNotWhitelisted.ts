@@ -11,15 +11,24 @@ export default async user => {
     `Running registering user to see if user is whitelisted for ${user.email}`
   );
 
-  const allWhitelistDocs = await firestore
-    .collection('userWhiteList')
-    .where('email', '==', user.email)
-    .get();
+  const whiteListUsersCollection = firestore.collection('userWhiteList');
+  const allWhitelistDocs = await whiteListUsersCollection.where('email', '==', user.email).get();
 
   if (allWhitelistDocs.empty) {
     functions.logger.debug(`El correu electrònic ${user.email} no correspon a cap soci del Llevat`);
-    throw new functions.https.HttpsError('permission-denied', 'No estàs autoritzat a registrar-te');
+    throw new functions.https.HttpsError(
+      'permission-denied',
+      "Només els socis d'El Llevat poden registrar-se a la plataforma"
+    );
   }
+
+  const whiteListDoc = allWhitelistDocs.docs[0];
+  await whiteListDoc.ref.update({ registered: true, userId: user.uid, updatedAt: new Date() });
+
+  const userCollection = firestore.collection('user');
+  await userCollection.doc(user.uid).set({
+    email: user.email,
+  });
 
   functions.logger.debug(`Soci registrat amb el correu electrònic ${user.email}`);
 

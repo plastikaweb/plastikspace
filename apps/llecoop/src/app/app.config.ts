@@ -114,6 +114,7 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {
         verticalPosition: 'top',
+        horizontalPosition: 'center',
         politeness: 'assertive',
       },
     },

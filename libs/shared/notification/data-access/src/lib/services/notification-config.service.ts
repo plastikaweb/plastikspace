@@ -10,10 +10,17 @@ import {
   providedIn: 'root',
 })
 export class NotificationConfigService {
+  private notification: Notification | null = null;
+
   constructor(
     @Inject(NOTIFICATION_TYPES_CONFIG)
     private readonly notificationTypesConfig: NotificationTypesConfig
   ) {}
+
+  private removeInstance(): void {
+    this.notification = null;
+  }
+
   /**
    * @description Returns a valid configuration of object for ui messages.
    * it returns an angular material Snackbar MatSnackBarConfig class configuration.
@@ -26,11 +33,14 @@ export class NotificationConfigService {
     message = '',
     ...extras
   }: Partial<Notification> = {}): Notification {
-    return {
+    // this.removeInstance();
+
+    this.notification = {
       ...this.notificationTypesConfig[type],
       ...extras,
       type,
       message,
     };
+    return this.notification;
   }
 }
