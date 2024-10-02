@@ -17,12 +17,23 @@
       </mat-card-title>
     </mat-card-header>
 
-    <mat-card-content>
+    <mat-card-content class="my-sm">
       <plastik-shared-form-feature
         [fields]="facade.formStructure?.() || []"
         [submitConfig]="{ label: label(), buttonStyle: buttonStyle() }"
         (changeEvent)="facade.onSubmit($event)">
+        <div class="extraLinks">
+          @for (link of facade.extraLinks?.(); track link) {
+            <a [routerLink]="link.route">{{ link.label }}</a>
+          }
+        </div>
       </plastik-shared-form-feature>
     </mat-card-content>
+
+    <mat-card-footer
+      class="w-full text-center text-white border-t-2 text-[12px] text-pretty bg-primary py-sub border-spacing-sm border-t-primary-light">
+      <a class="text-white" target="_self" [href]="nameLink()">{{ name() }}</a> ©
+      {{ currentDate | date: 'yyyy' }}
+    </mat-card-footer>
   </mat-card>
 </div>

@@ -1,6 +1,6 @@
 <form
   novalidate
-  class="flex flex-col flex-wrap justify-start w-full gap-sm lg:gap-lg my-md"
+  class="flex flex-col w-full gap-sm mt-sm"
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
   <!-- form -->
@@ -26,4 +26,8 @@
       {{ submitConfig?.label || 'Submit' }}
     </button>
   }
+
+  <div class="flex justify-center text-base shared-form--extraLinks-container pt-sm">
+    <ng-content select=".extraLinks"></ng-content>
+  </div>
 </form>
