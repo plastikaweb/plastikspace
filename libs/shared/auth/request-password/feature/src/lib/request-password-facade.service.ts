@@ -1,23 +1,21 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { inject, Injectable, signal } from '@angular/core';
 import { AUTH_FACADE, AuthFormFacade } from '@plastik/auth';
+import { getRequestPasswordFormConfig } from './request-password-form.config';
 
-import { getRegisterFormConfig } from './register-form.config';
-
-interface LoginData {
+interface RequestPasswordData {
   email: string;
-  password: string;
 }
 
 @Injectable({
   providedIn: 'root',
 })
-export class RegisterFacadeService implements AuthFormFacade {
+export class RequestPasswordFacadeService implements AuthFormFacade {
   authService = inject(AUTH_FACADE);
-  formStructure = getRegisterFormConfig();
+  formStructure = getRequestPasswordFormConfig();
   extraLinks = signal([{ label: "Torna a la pàgina d'entrada", route: '/login' }]);
 
-  onSubmit({ email, password }: LoginData): void {
-    this.authService.register(email, password);
+  onSubmit({ email }: RequestPasswordData): void {
+    this.authService.requestPassword(email);
   }
 }

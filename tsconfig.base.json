@@ -21,6 +21,7 @@
       "@plastik/auth/firebase/data-access": ["libs/shared/auth/firebase/data-access/src/index.ts"],
       "@plastik/auth/login": ["libs/shared/auth/login/feature/src/index.ts"],
       "@plastik/auth/register": ["libs/shared/auth/register/feature/src/index.ts"],
+      "@plastik/auth/request-password": ["libs/shared/auth/request-password/feature/src/index.ts"],
       "@plastik/core/api": ["libs/core/util/api/src/index.ts"],
       "@plastik/core/cms-layout": ["libs/core/cms-layout/feature/src/index.ts"],
       "@plastik/core/cms-layout/data-access": ["libs/core/cms-layout/data-access/src/index.ts"],

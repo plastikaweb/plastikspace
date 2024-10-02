@@ -18,6 +18,7 @@ import { SubmitFormConfig } from '@plastik/core/entities';
   standalone: true,
   imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass],
   templateUrl: './shared-form-feature.component.html',
+  styleUrls: ['./shared-form-feature.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedFormFeatureComponent<T> implements AfterViewInit {
