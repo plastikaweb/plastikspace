@@ -4,6 +4,7 @@ import {
   Auth,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
   User,
@@ -78,17 +79,6 @@ export class FirebaseAuthService {
       });
   }
 
-  // registerUserWithLink(email: string): Promise<void> {
-  //   const actionCodeSettings = {
-  //     // Your redirect URL
-  //     url: 'http://localhost:4200/login',
-  //     handleCodeInApp: true,
-  //   };
-  //   return sendSignInLinkToEmail(this.auth, email, actionCodeSettings).then(() => {
-  //     this.router.navigate(['login']);
-  //   });
-  // }
-
   logout(): void {
     signOut(this.auth).then(() => this.router.navigate(['login']));
   }
@@ -105,5 +95,35 @@ export class FirebaseAuthService {
         })
       );
     });
+  }
+
+  requestPassword(email: string) {
+    sendPasswordResetEmail(this.auth, email)
+      .then(() => {
+        this.router.navigate(['login']);
+        this.state.dispatch(
+          notificationActions.show({
+            configuration: this.notificationService.getInstance({
+              type: 'SUCCESS',
+              message: 'Revisa el teu correu per restablir la contrasenya',
+            }),
+            preserve: true,
+          })
+        );
+      })
+      .catch(error => {
+        console.error('error', error);
+        this.state.dispatch(
+          notificationActions.show({
+            configuration: this.notificationService.getInstance({
+              type: 'ERROR',
+              message:
+                error?.message?.match(/"message":"(.*?)"/)?.[1] ??
+                "Error a l'enviar el correu per regenerar la contrasenya",
+              action: 'tancar',
+            }),
+          })
+        );
+      });
   }
 }

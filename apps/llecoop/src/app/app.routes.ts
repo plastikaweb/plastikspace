@@ -46,6 +46,21 @@ export const appRoutes: Routes = [
       import('@plastik/auth/register').then(routes => routes.authRegisterFeatureRoutes),
   },
   {
+    path: 'peticio-clau',
+    title: 'Petició de clau nova',
+    data: {
+      title: 'Petició de clau nova',
+      logo: 'assets/img/favicon-32x32.png',
+      label: 'Enviar petició',
+      buttonStyle: 'w-full',
+      name: 'El Llevat',
+      nameLink: 'https://www.llevat.org',
+    },
+    canActivate: [isNotLoggedGuard],
+    loadChildren: () =>
+      import('@plastik/auth/request-password').then(routes => routes.authRequestPasswordRoutes),
+  },
+  {
     path: 'admin',
     canActivate: [isLoggedGuard],
     loadComponent: () => CoreCmsLayoutFeatureComponent,
