@@ -11,12 +11,12 @@ import {
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { activityActions } from '@plastik/shared/activity/data-access';
 
 import {
   notificationActions,
   NotificationConfigService,
 } from '@plastik/shared/notification/data-access';
-import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,9 +26,7 @@ export class FirebaseAuthService {
   private readonly router = inject(Router);
   private readonly state = inject(Store);
   private readonly notificationService = inject(NotificationConfigService);
-  private readonly user = new BehaviorSubject<User | null>(null);
 
-  currentUser$ = this.user.asObservable();
   currentUser = signal<User | null>(null);
   currentUserEmail = computed(() => this.currentUser()?.email ?? '');
   loggedIn = computed(() => !!this.currentUser());
@@ -44,6 +42,7 @@ export class FirebaseAuthService {
         this.router.navigate(['']);
       })
       .catch(error => {
+        console.error(error);
         if (error.message?.match(/"message":"BLOCKING_FUNCTION_ERROR_RESPONSE"/)) {
           console.error('BLOCKING_FUNCTION_ERROR_RESPONSE');
         }
@@ -61,12 +60,16 @@ export class FirebaseAuthService {
   }
 
   register(email: string, password: string) {
+    this.state.dispatch(activityActions.setActivity({ isActive: true }));
+
     createUserWithEmailAndPassword(this.auth, email, password)
       .then(credentials => {
         this.logout();
         this.sendVerification(credentials.user);
+        this.state.dispatch(activityActions.setActivity({ isActive: false }));
       })
       .catch(error => {
+        console.error(error);
         this.state.dispatch(
           notificationActions.show({
             configuration: this.notificationService.getInstance({
@@ -76,6 +79,7 @@ export class FirebaseAuthService {
             }),
           })
         );
+        this.state.dispatch(activityActions.setActivity({ isActive: false }));
       });
   }
 
@@ -84,20 +88,26 @@ export class FirebaseAuthService {
   }
 
   sendVerification(user: User) {
-    sendEmailVerification(user).then(e => {
-      this.state.dispatch(
-        notificationActions.show({
-          configuration: this.notificationService.getInstance({
-            type: 'SUCCESS',
-            message:
-              'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
-          }),
-        })
-      );
-    });
+    sendEmailVerification(user)
+      .then(() => {
+        this.state.dispatch(
+          notificationActions.show({
+            configuration: this.notificationService.getInstance({
+              type: 'SUCCESS',
+              message:
+                'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
+            }),
+          })
+        );
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 
   requestPassword(email: string) {
+    this.state.dispatch(activityActions.setActivity({ isActive: true }));
+
     sendPasswordResetEmail(this.auth, email)
       .then(() => {
         this.router.navigate(['login']);
@@ -107,23 +117,24 @@ export class FirebaseAuthService {
               type: 'SUCCESS',
               message: 'Revisa el teu correu per restablir la contrasenya',
             }),
-            preserve: true,
           })
         );
+        this.state.dispatch(activityActions.setActivity({ isActive: false }));
       })
       .catch(error => {
-        console.error('error', error);
+        console.error(error);
         this.state.dispatch(
           notificationActions.show({
             configuration: this.notificationService.getInstance({
               type: 'ERROR',
               message:
                 error?.message?.match(/"message":"(.*?)"/)?.[1] ??
-                "Error a l'enviar el correu per regenerar la contrasenya",
+                'Petició denegada, revisa les teves dades',
               action: 'tancar',
             }),
           })
         );
+        this.state.dispatch(activityActions.setActivity({ isActive: false }));
       });
   }
 }
