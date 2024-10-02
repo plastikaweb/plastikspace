@@ -17,7 +17,7 @@ export class LoginFacadeService implements AuthFormFacade {
   formStructure = getLoginFormConfig();
   extraLinks = signal([
     { label: 'Registre per sòcies', route: '/registre' },
-    { label: 'Has oblidat la contrasenya?', route: '/regenerar-clau' },
+    { label: 'Has oblidat la contrasenya?', route: '/peticio-clau' },
   ]);
 
   onSubmit({ email, password }: LoginData): void {
