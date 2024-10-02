@@ -141,7 +141,7 @@
 
 <ng-template #headerMenu>
   <button mat-button aria-label="header menu" [matMenuTriggerFor]="menu">
-    <span>{{ headerConfig.menu?.label | ngrxPush }}</span>
+    <span>{{ headerConfig.menu?.label() }}</span>
     <mat-icon class="w-[30px] h-[30px] text-[30px]">account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu">

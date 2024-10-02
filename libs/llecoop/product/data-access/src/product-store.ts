@@ -64,7 +64,7 @@ export const LlecoopProductStore = signalStore(
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
-                  if (firebaseAuthService.loggedIn) {
+                  if (firebaseAuthService.loggedIn()) {
                     storeNotificationService.create(
                       `No s'ha pogut carregar els productes: ${error}`,
                       'ERROR'

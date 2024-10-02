@@ -40,11 +40,11 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
 
   ngOnDestroy() {
     this.subscriptions?.unsubscribe();
-    this.snackBar.dismiss();
+    // this.snackBar.dismiss();
   }
 
   open(config: Notification) {
-    this.snackBar.dismiss();
+    // this.snackBar.dismiss();
 
     const snackBarConfig = {
       ...this.addNotificationMatSnackBarConfig(config),
@@ -55,7 +55,7 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
       snackBarConfig
     );
 
-    this.subscriptions.add(snackBarRef.afterDismissed().subscribe(() => this.sendDismiss.emit()));
+    // this.subscriptions.add(snackBarRef.afterDismissed().subscribe(() => this.sendDismiss.emit()));
   }
 
   private addNotificationMatSnackBarConfig({
