@@ -11,8 +11,11 @@ export default async user => {
     `Running registering user to see if user is whitelisted for ${user.email}`
   );
 
-  const whiteListUsersCollection = firestore.collection('userWhiteList');
-  const allWhitelistDocs = await whiteListUsersCollection.where('email', '==', user.email).get();
+  const userCollection = firestore.collection('user');
+  const allWhitelistDocs = await userCollection
+    .where('email', '==', user.email)
+    .where('registered', '!=', true)
+    .get();
 
   if (allWhitelistDocs.empty) {
     functions.logger.debug(`El correu electrònic ${user.email} no correspon a cap soci del Llevat`);
@@ -23,15 +26,18 @@ export default async user => {
   }
 
   const whiteListDoc = allWhitelistDocs.docs[0];
-  await whiteListDoc.ref.update({ registered: true, userId: user.uid, updatedAt: new Date() });
 
-  const userCollection = firestore.collection('user');
   await userCollection.doc(user.uid).set({
     email: user.email,
-    createdAt: new Date(),
+    createdAt: whiteListDoc.data().createdAt,
+    updatedAt: new Date(),
+    registered: true,
+    emailVerified: false,
     isAdmin: false,
     disabled: false,
   });
+
+  await whiteListDoc.ref.delete();
 
   functions.logger.debug(`Soci registrat amb el correu electrònic ${user.email}`);
 

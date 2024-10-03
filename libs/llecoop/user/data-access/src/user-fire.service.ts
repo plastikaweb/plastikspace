@@ -7,15 +7,14 @@ import { from } from 'rxjs';
 })
 export class LlecoopUserFireService {
   private readonly firestore = inject(Firestore);
-  private readonly userWhiteListCollection = collection(this.firestore, 'userWhiteList');
+  private readonly userCollection = collection(this.firestore, 'user');
 
-  addToWhiteList(email: string) {
+  addWhiteListedUser(email: string) {
     return from(
-      addDoc(this.userWhiteListCollection, {
+      addDoc(this.userCollection, {
         email,
         registered: false,
         createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
       })
     );
   }
