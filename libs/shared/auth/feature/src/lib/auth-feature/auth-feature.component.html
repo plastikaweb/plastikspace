@@ -18,7 +18,7 @@
   <div class="flex items-center justify-center min-h-screen contain-layout">
     <mat-card
       appearance="raised"
-      class="flex items-center justify-center max-w-full align-middle shadow-md lg:max-w-third bg-gray-10">
+      class="flex items-center justify-center max-w-full align-middle shadow-md min-w-third lg:max-w-third bg-gray-10">
       <mat-card-header>
         <mat-card-title class="flex justify-center align-middle gap-sub">
           @if (logo()) {
@@ -30,7 +30,7 @@
         </mat-card-title>
       </mat-card-header>
 
-      <mat-card-content class="my-sm">
+      <mat-card-content class="w-full my-sm">
         <plastik-shared-form-feature
           [fields]="facade.formStructure?.() || []"
           [submitConfig]="{ label: label(), buttonStyle: buttonStyle() }"

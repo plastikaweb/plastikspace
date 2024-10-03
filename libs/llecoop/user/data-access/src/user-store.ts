@@ -34,11 +34,11 @@ export const LLecoopUserStore = signalStore(
       storeNotificationService = inject(StoreNotificationService),
       state = inject(Store)
     ) => ({
-      addToWhiteList: rxMethod<Pick<LlecoopUser, 'email'>>(
+      addWhiteListedUser: rxMethod<Pick<LlecoopUser, 'email'>>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(({ email }) => {
-            return userService.addToWhiteList(email).pipe(
+            return userService.addWhiteListedUser(email).pipe(
               tapResponse({
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
