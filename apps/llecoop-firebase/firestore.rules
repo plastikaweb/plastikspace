@@ -19,7 +19,7 @@ service cloud.firestore {
       allow read, write: if isAuthenticated() && isVerified();
     }
 
-    match /userWhiteList/{userId} {
+    match /user/{userId} {
       allow read, write: if isAuthenticated() && isVerified();
     }
   }

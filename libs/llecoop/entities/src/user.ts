@@ -5,5 +5,7 @@ export interface LlecoopUser extends BaseEntity {
   isAdmin: boolean;
   address?: string;
   phone?: string;
-  isBlocked?: boolean;
+  registered?: boolean;
+  emailVerified?: boolean;
+  activated?: boolean;
 }
