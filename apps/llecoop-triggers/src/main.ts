@@ -66,8 +66,8 @@ export const onRegisterUserBlockIfUserIsNotWhitelisted = functions.auth
     await (await import('./user/onRequestRegisterUserBlockIfUserIsNotWhitelisted')).default(user);
   });
 
-// export const OnLoginUserBlockIfUserIsNotVerified = functions.auth
-//   .user()
-//   .beforeSignIn(async user => {
-//     await (await import('./user/onRequestLoginUserBlockIfUserIsNotVerified')).default(user);
-//   });
+export const OnLoginUserUpdateVerifiedEmailProperty = functions.auth
+  .user()
+  .beforeSignIn(async user => {
+    await (await import('./user/onLoginUserUpdateVerifiedEmailProperty')).default(user);
+  });
