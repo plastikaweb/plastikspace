@@ -21,6 +21,6 @@ export class LlecoopUserCreateFacadeService implements DetailItemViewFacade<Llec
   formStructure = signal(getLlecoopUserCreateFormConfig());
 
   onSubmit(user: Pick<LlecoopUser, 'email'>): void {
-    this.store.addWhiteListedUser(user);
+    this.store.create(user);
   }
 }
