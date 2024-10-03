@@ -13,7 +13,7 @@ export class LlecoopUserFireService {
     return from(
       addDoc(this.userCollection, {
         email,
-        registered: false,
+        whiteListed: true,
         createdAt: Timestamp.now(),
       })
     );
