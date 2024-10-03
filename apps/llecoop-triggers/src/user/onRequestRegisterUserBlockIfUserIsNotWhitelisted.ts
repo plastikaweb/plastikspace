@@ -14,7 +14,7 @@ export default async user => {
   const userCollection = firestore.collection('user');
   const allWhitelistDocs = await userCollection
     .where('email', '==', user.email)
-    .where('registered', '!=', true)
+    .where('whiteListed', '==', true)
     .get();
 
   if (allWhitelistDocs.empty) {
@@ -37,7 +37,13 @@ export default async user => {
     disabled: false,
   });
 
+  functions.logger.debug(
+    `Soci afegit a user collection with email ${user.email} amb uid ${user.uid}`
+  );
+
   await whiteListDoc.ref.delete();
+
+  functions.logger.debug(`Registre temporal corresponent a ${user.email} eliminat`);
 
   functions.logger.debug(`Soci registrat amb el correu electrònic ${user.email}`);
 
