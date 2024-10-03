@@ -1,6 +1,6 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { LlecoopProductCategory, LlecoopUser } from '@plastik/llecoop/entities';
+import { LlecoopUser } from '@plastik/llecoop/entities';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
