@@ -31,6 +31,7 @@ export class FirebaseAuthService {
   currentUserEmail = computed(() => this.currentUser()?.email ?? '');
   loggedIn = computed(() => !!this.currentUser());
   verified = computed(() => !!this.currentUser()?.emailVerified);
+  firstLoginAfterRegister = signal(true);
 
   constructor() {
     this.auth.onAuthStateChanged(user => this.currentUser.set(user));
@@ -88,6 +89,8 @@ export class FirebaseAuthService {
   }
 
   sendVerification(user: User) {
+    this.firstLoginAfterRegister.set(false);
+
     sendEmailVerification(user)
       .then(() => {
         this.state.dispatch(
