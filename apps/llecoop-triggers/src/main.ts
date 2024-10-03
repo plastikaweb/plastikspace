@@ -71,3 +71,11 @@ export const OnLoginUserUpdateVerifiedEmailProperty = functions.auth
   .beforeSignIn(async user => {
     await (await import('./user/onLoginUserUpdateVerifiedEmailProperty')).default(user);
   });
+
+export const onCreateWhiteListedUserCheckIfUserAlreadyExists = functions.firestore
+  .document('user/{userId}')
+  .onCreate(async (snapshot, context) => {
+    await (
+      await import('./user/onCreateWhiteListedUserCheckIfUserAlreadyExists')
+    ).default(snapshot, context);
+  });

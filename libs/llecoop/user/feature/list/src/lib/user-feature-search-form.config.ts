@@ -31,8 +31,8 @@ export function getLlecoopUserSearchFeatureFormConfig(): WritableSignal<FormlyFi
           className: 'w-full',
           props: {
             type: 'search',
-            label: 'Filtrar per nom o email',
-            placeholder: 'Filtrar per nom o email',
+            label: 'Filtrar per correu electrònic',
+            placeholder: 'Filtrar per correu electrònic',
             required: false,
             maxLength: 256,
             minLength: 2,
