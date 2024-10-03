@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import {
   notificationActions,
   NotificationConfigService,
@@ -12,12 +13,17 @@ export const isLoggedGuard = async () => {
   const router = inject(Router);
   const state = inject(Store);
   const notificationService = inject(NotificationConfigService);
+  const firebaseAuthService = inject(FirebaseAuthService);
 
   return new Promise<boolean>(resolve => {
     auth.onAuthStateChanged(user => {
       if (user?.uid && user?.emailVerified) {
         resolve(true);
-      } else if (user?.uid && !user?.emailVerified) {
+      } else if (
+        user?.uid &&
+        !user?.emailVerified &&
+        !firebaseAuthService.firstLoginAfterRegister()
+      ) {
         state.dispatch(
           notificationActions.show({
             configuration: notificationService.getInstance({
