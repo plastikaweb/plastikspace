@@ -1,20 +1,20 @@
-import * as admin from 'firebase-admin';
+import pkg from 'firebase-admin';
 import * as functions from 'firebase-functions';
 import { firestore } from '../init';
+const { auth } = pkg;
 
-export default async (id, context) => {
+export default async id => {
   functions.logger.debug(`Running setUserAdminClaim trigger for ${id}`);
-  return admin
-    .auth()
+  return auth()
     .getUser(id)
     .then(user => {
       if (!user) {
         throw new functions.https.HttpsError('not-found', `L'usuari ${id} no existeix`);
       }
 
-      return admin.auth().setCustomUserClaims(user.uid, {
+      return auth().setCustomUserClaims(user.uid, {
         ...user.customClaims,
-        admin: true,
+        isAdmin: true,
       });
     })
     .then(() => {
