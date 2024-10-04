@@ -72,8 +72,8 @@
     <mat-nav-list menu-items data-test="sidenav-list">
       @for (item of sidenavConfig; track item.id) {
         <mat-list-item
-          class="my-tiny h-xll hover:bg-gray-5 focus:bg-gray-10"
-          routerLinkActive="bg-gray-5"
+          class="my-tiny h-xll hover:bg-gray-10 focus:bg-gray-10"
+          routerLinkActive="bg-gray-10"
           ariaCurrentWhenActive="page"
           [routerLink]="item?.route"
           [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }">

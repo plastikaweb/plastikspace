@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
@@ -104,22 +105,27 @@ export const LLecoopUserStore = signalStore(
             }
             return userService.addAdminClaim(id).pipe(
               tapResponse({
-                next: () =>
+                next: () => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `Usuari amb id "${id}" afegit com a administrador`,
                     'SUCCESS'
-                  ),
-                error: error =>
+                  );
+                },
+                error: error => {
+                  console.error(error);
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
-                    `No s'ha pogut afegir l'usuari com a administrador: ${error}`,
+                    `No s'ha pogut afegir l'usuari com a administrador`,
                     'ERROR'
-                  ),
-                complete: () => state.dispatch(activityActions.setActivity({ isActive: false })),
+                  );
+                },
               })
             );
           })
         )
       ),
+      setSorting: (sorting: UserState['sorting']) => patchState(store, { sorting }),
     })
   ),
   withHooks({
@@ -127,7 +133,6 @@ export const LLecoopUserStore = signalStore(
       if (!loaded()) getAll();
     },
     onDestroy() {
-      // eslint-disable-next-line no-console
       console.log('Destroying product store');
     },
   })

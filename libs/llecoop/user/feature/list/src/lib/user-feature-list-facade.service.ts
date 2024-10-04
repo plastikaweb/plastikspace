@@ -28,7 +28,7 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
   formStructure = getLlecoopUserSearchFeatureFormConfig();
 
   onSorting({ active, direction }: TableSorting): void {
-    // this.store.setSorting([active, direction]);
+    this.store.setSorting([active, direction]);
   }
 
   onDelete(item: LlecoopUser): void {
