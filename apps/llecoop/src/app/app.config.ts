@@ -23,7 +23,6 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
-import { getVisibleNavigationList } from '@plastik/core/entities';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import {
   CustomRouterSerializer,
@@ -110,7 +109,7 @@ export const appConfig: ApplicationConfig = {
       useClass: PrefixTitleService,
     },
     { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useFactory: headerConfig },
-    { provide: VIEW_CONFIG, useValue: getVisibleNavigationList(viewConfig) },
+    { provide: VIEW_CONFIG, useFactory: viewConfig },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {

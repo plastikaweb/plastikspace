@@ -78,8 +78,8 @@ export const setUserAdminClaim = functions.https.onCall(async data => {
 
 export const onCreateWhiteListedUserCheckIfUserAlreadyExists = functions.firestore
   .document('user/{userId}')
-  .onCreate(async (snapshot, context) => {
+  .onCreate(async snapshot => {
     await (
       await import('./user/onCreateWhiteListedUserCheckIfUserAlreadyExists')
-    ).default(snapshot, context);
+    ).default(snapshot);
   });

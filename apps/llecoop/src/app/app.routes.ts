@@ -1,10 +1,10 @@
+import { AuthGuard, hasCustomClaim } from '@angular/fire/auth-guard';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { Routes } from '@angular/router';
 import { CoreCmsLayoutFeatureComponent } from '@plastik/core/cms-layout';
 import { isLoggedGuard } from './isLogged.guard';
 import { isNotLoggedGuard } from './isNotLogged.guard';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
-
 // const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
 // const redirectLoggedInAndVerifiedToHome = () => map((user: User) => {
@@ -14,6 +14,8 @@ import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 //   console.log('user', user);
 //   return user?.uid && user?.emailVerified ? [''] : ['login']
 // });
+
+const adminOnly = () => hasCustomClaim('isAdmin');
 
 export const appRoutes: Routes = [
   {
@@ -62,8 +64,12 @@ export const appRoutes: Routes = [
   },
   {
     path: 'admin',
-    canActivate: [isLoggedGuard],
+    canActivate: [isLoggedGuard, AuthGuard],
+    data: {
+      authGuardPipe: adminOnly,
+    },
     loadComponent: () => CoreCmsLayoutFeatureComponent,
+
     providers: [
       {
         provide: MatPaginatorIntl,
@@ -128,12 +134,26 @@ export const appRoutes: Routes = [
     ],
   },
   {
+    path: 'soci',
+    canActivate: [isLoggedGuard],
+    loadComponent: () => CoreCmsLayoutFeatureComponent,
+    children: [
+      {
+        path: 'order-list',
+        loadChildren: () =>
+          import('@plastik/llecoop/order-list/list').then(
+            routes => routes.llecoopOrderListFeatureListRoutes
+          ),
+      },
+    ],
+  },
+  {
     path: '',
-    redirectTo: 'admin/producte',
+    redirectTo: 'soci/order-list',
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'admin/producte',
+    redirectTo: 'soci/order-list',
   },
 ];
