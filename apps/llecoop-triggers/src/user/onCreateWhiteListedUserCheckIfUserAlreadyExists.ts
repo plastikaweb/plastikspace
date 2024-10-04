@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 
 import { firestore } from '../init';
 
-export default async (snapshot, context) => {
+export default async snapshot => {
   const userId = snapshot.id;
   const userEmail = snapshot.data().email;
 

@@ -31,10 +31,20 @@ export class FirebaseAuthService {
   currentUserEmail = computed(() => this.currentUser()?.email ?? '');
   loggedIn = computed(() => !!this.currentUser());
   verified = computed(() => !!this.currentUser()?.emailVerified);
+  isAdmin = signal<boolean>(false);
+
   firstLoginAfterRegister = signal(true);
 
   constructor() {
-    this.auth.onAuthStateChanged(user => this.currentUser.set(user));
+    this.auth.onAuthStateChanged(async user => {
+      this.currentUser.set(user);
+      if (user) {
+        const tokenResult = await user.getIdTokenResult();
+        this.isAdmin.set(!!tokenResult.claims['isAdmin']);
+      } else {
+        this.isAdmin.set(false);
+      }
+    });
   }
 
   login(email: string, password: string): Promise<void> {
