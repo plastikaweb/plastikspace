@@ -4,7 +4,7 @@ import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plast
 import { STORE_TOKEN } from '@plastik/llecoop/data-access';
 import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { TABLE_TOKEN } from '@plastik/shared/table/entities';
-import { LlecoopTableListFacadeService } from './table-list-facade.service';
+import { LlecoopUserListFacadeService } from './user-feature-list-facade.service';
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
 import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config';
 
@@ -20,7 +20,7 @@ export const llecoopUserFeatureListRoutes: Route[] = [
       },
       {
         provide: TABLE_WITH_FILTERING_FACADE,
-        useExisting: LlecoopTableListFacadeService,
+        useExisting: LlecoopUserListFacadeService,
       },
       {
         provide: TABLE_TOKEN,
