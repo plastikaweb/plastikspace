@@ -83,9 +83,7 @@ export const LlecoopProductStore = signalStore(
           switchMap((product: Partial<LlecoopProduct>) => {
             return productService.create(product).pipe(
               tapResponse({
-                next: () => {
-                  state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
-                },
+                next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
                 error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut crear el producte "${product.name}": ${error}`,

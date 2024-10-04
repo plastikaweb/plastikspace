@@ -8,6 +8,7 @@ import {
   persistentMultipleTabManager,
   provideFirestore,
 } from '@angular/fire/firestore';
+import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -58,19 +59,19 @@ export const appConfig: ApplicationConfig = {
 
       return firestore;
     }),
+    provideFunctions(() => {
+      const functions = getFunctions();
+      if (environment['useEmulators']) {
+        connectFunctionsEmulator(functions, 'localhost', 5001);
+      }
+      return functions;
+    }),
     // provideStorage(() => {
     //   const storage = getStorage();
     //   if (environment['useEmulators']) {
     //     connectStorageEmulator(storage, 'localhost', 9199);
     //   }
     //   return storage;
-    // }),
-    // provideFunctions(() => {
-    //   const functions = getFunctions();
-    //   if (environment['useEmulators']) {
-    //       connectFunctionsEmulator(functions, 'localhost', 5001);
-    //   }
-    //   return functions;
     // }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     importProvidersFrom(
