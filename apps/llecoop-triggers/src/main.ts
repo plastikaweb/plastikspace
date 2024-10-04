@@ -72,8 +72,8 @@ export const onLoginUserUpdateVerifiedEmailProperty = functions.auth
     await (await import('./user/onLoginUserUpdateVerifiedEmailProperty')).default(user);
   });
 
-export const setUserAdminClaim = functions.https.onCall(async (data, context) => {
-  await (await import('./user/setUserAdminClaim')).default(data, context);
+export const setUserAdminClaim = functions.https.onCall(async data => {
+  await (await import('./user/setUserAdminClaim')).default(data);
 });
 
 export const onCreateWhiteListedUserCheckIfUserAlreadyExists = functions.firestore
