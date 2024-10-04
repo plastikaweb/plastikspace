@@ -9,7 +9,7 @@ export function headerConfig(): CoreCmsLayoutHeaderConfig {
     showToggleMenuButton: true,
     sidenavPosition: 'start',
     mainIcon: { iconPath: 'assets/img/favicon.svg', svgClass: 'w-lg h-lg' },
-    title: '',
+    title: 'El Llevat',
     extendedTitle: 'El Llevat',
     menu: {
       label: firebaseAuthService.currentUserEmail,
