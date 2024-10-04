@@ -1,5 +1,6 @@
 import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { LlecoopUser } from '@plastik/llecoop/entities';
+import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -13,6 +14,7 @@ import {
   providedIn: 'root',
 })
 export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig<LlecoopUser> {
+  private readonly store = inject(LLecoopUserStore);
   // private readonly name: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
   //   key: 'name',
   //   title: 'Nom',
@@ -114,10 +116,19 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       },
       caption: "Llistat d'usuaris",
       actions: {
+        SET_ADMIN: {
+          visible: () => true,
+          description: () => "Fes l'usuari administrador",
+          order: 1,
+          icon: (user: LlecoopUser) => (!user.isAdmin ? 'person' : 'shield_person'),
+          execute: (user: LlecoopUser) => {
+            if (user.id && !user.isAdmin) this.store.setAdmin({ id: user.id });
+          },
+        },
         DELETE: {
           visible: () => true,
           description: () => "Elimina l'usuari",
-          order: 1,
+          order: 2,
         },
       },
     });

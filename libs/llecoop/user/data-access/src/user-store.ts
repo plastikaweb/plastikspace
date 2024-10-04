@@ -19,6 +19,7 @@ import { LlecoopUser } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopUserFireService } from './user-fire.service';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 
 type UserState = LlecoopFeatureStore;
 
@@ -86,6 +87,33 @@ export const LLecoopUserStore = signalStore(
                 complete: () => {
                   storeNotificationService.create(
                     `Soci amb email "${email}" afegit a la llista`,
+                    'SUCCESS'
+                  );
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+              })
+            );
+          })
+        )
+      ),
+      setAdmin: rxMethod<Pick<LlecoopUser, 'id'>>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(({ id }) => {
+            if (!id) {
+              throw new Error('User ID is undefined');
+            }
+            return userService.addAdminClaim(id).pipe(
+              tapResponse({
+                next: () => state.dispatch(routerActions.go({ path: ['/admin/usuari'] })),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut afegir l'usuari com a administrador: ${error}`,
+                    'ERROR'
+                  ),
+                complete: () => {
+                  storeNotificationService.create(
+                    `Usuari amb id "${id}" afegit com a administrador`,
                     'SUCCESS'
                   );
                   state.dispatch(activityActions.setActivity({ isActive: false }));

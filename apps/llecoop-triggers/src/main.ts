@@ -66,11 +66,15 @@ export const onRegisterUserBlockIfUserIsNotWhitelisted = functions.auth
     await (await import('./user/onRequestRegisterUserBlockIfUserIsNotWhitelisted')).default(user);
   });
 
-export const OnLoginUserUpdateVerifiedEmailProperty = functions.auth
+export const onLoginUserUpdateVerifiedEmailProperty = functions.auth
   .user()
   .beforeSignIn(async user => {
     await (await import('./user/onLoginUserUpdateVerifiedEmailProperty')).default(user);
   });
+
+export const setUserAdminClaim = functions.https.onCall(async (data, context) => {
+  await (await import('./user/setUserAdminClaim')).default(data, context);
+});
 
 export const onCreateWhiteListedUserCheckIfUserAlreadyExists = functions.firestore
   .document('user/{userId}')
