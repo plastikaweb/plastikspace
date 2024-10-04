@@ -77,20 +77,18 @@ export const LLecoopUserStore = signalStore(
           switchMap(({ email }) => {
             return userService.create(email).pipe(
               tapResponse({
-                next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
-                  state.dispatch(routerActions.go({ path: ['/admin/usuari'] }));
+                next: () => state.dispatch(routerActions.go({ path: ['/admin/usuari'] })),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut guardar el email "${email}": ${error}`,
+                    'ERROR'
+                  ),
+                complete: () => {
                   storeNotificationService.create(
                     `Soci amb email "${email}" afegit a la llista`,
                     'SUCCESS'
                   );
-                },
-                error: error => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
-                  storeNotificationService.create(
-                    `No s'ha pogut guardar el email "${email}": ${error}`,
-                    'ERROR'
-                  );
                 },
               })
             );
