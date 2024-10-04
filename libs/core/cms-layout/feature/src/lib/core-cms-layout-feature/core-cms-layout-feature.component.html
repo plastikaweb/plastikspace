@@ -21,7 +21,7 @@
           @if (headerConfig.mainIcon; as icon) {
             <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
           }
-          <span class="block text-xl sm:hidden">{{ headerConfig.title }}</span>
+          <span class="block text-md sm:hidden">{{ headerConfig.title }}</span>
           <span class="hidden sm:block">{{
             headerConfig.extendedTitle || headerConfig.title
           }}</span>
@@ -88,30 +88,25 @@
 
   @defer (when !hideFooter) {
     <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-      <div content class="flex items-center justify-center gap-sm">
+      <div content class="flex flex-row items-center justify-center gap-tiny">
         <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
-        <div class="flex flex-row gap-[4px]">
-          <div>
-            © 2006-{{ currentDate | date: 'yyyy' }}
-            <a
-              aria-label="visit www.plastikaweb.com page"
-              class="text-white underline underline-offset-2"
-              href="https://www.plastikaweb.com"
-              target="_blank"
-              >Plastikaweb</a
-            >
-          </div>
-          <span class="hidden sm:block"
-            >|
-            <a
-              aria-label="visitar www.llevat.org"
-              class="text-white underline underline-offset-2"
-              href="https://www.llevat.org"
-              target="_blank"
-              >El Llevat</a
-            >.</span
-          >
-        </div>
+
+        ©{{ currentDate | date: 'yyyy' }}
+        <a
+          aria-label="visit www.plastikaweb.com page"
+          class="text-white underline underline-offset-2"
+          href="https://www.plastikaweb.com"
+          target="_blank"
+          >Plastikaweb</a
+        >
+        |
+        <a
+          aria-label="visitar www.llevat.org"
+          class="text-white underline underline-offset-2"
+          href="https://www.llevat.org"
+          target="_blank"
+          >El Llevat</a
+        >
       </div>
     </plastik-core-cms-layout-ui-footer>
   }
@@ -141,10 +136,14 @@
 
 <ng-template #headerMenu>
   <button mat-button aria-label="header menu" [matMenuTriggerFor]="menu">
-    <span>{{ headerConfig.menu?.label() }}</span>
+    <span class="hidden sm:block">{{ headerConfig.menu?.label() }}</span>
     <mat-icon class="w-[30px] h-[30px] text-[30px]">account_circle</mat-icon>
   </button>
-  <mat-menu #menu="matMenu">
+  <mat-menu #menu="matMenu" class="px-sub">
+    <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{
+      headerConfig.menu?.label()
+    }}</span>
+
     @for (item of headerConfig.menu?.config; track item.id) {
       @if (item && item.route) {
         <button type="button" mat-menu-item [routerLink]="item.route">
