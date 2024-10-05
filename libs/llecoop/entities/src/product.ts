@@ -1,3 +1,4 @@
+import { DocumentReference } from '@angular/fire/firestore';
 import { BaseEntity } from '@plastik/core/entities';
 import { LlecoopProductCategory } from './product-category';
 
@@ -8,7 +9,8 @@ export interface LlecoopProduct extends BaseEntity {
   priceWithIva?: number;
   origin?: string;
   provider?: string;
-  category: LlecoopProductCategory;
+  categoryRef: DocumentReference<LlecoopProductCategory>;
+  category?: LlecoopProductCategory;
   tags?: string[];
   unit: LlecoopProductUnit;
   isAvailable: boolean;
