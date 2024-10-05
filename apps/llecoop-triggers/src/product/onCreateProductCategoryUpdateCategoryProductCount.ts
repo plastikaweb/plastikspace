@@ -8,12 +8,12 @@ export default async (snapshot, context) => {
 
   const product = snapshot.data();
 
-  if (!product.category?.id) {
+  if (!product.categoryRef) {
     functions.logger.debug(`Product did not have a category, skipping update`);
     return;
   }
-
-  return firestore.doc(`category/${product.category.id}`).update({
+  const categoryId = product.categoryRef.split('/')[1];
+  return firestore.doc(`category/${categoryId}`).update({
     productCount: FieldValue.increment(1),
   });
 };

@@ -136,7 +136,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
           order: 1,
         },
         SET_ADMIN: {
-          visible: (user: LlecoopUser) => !user.isAdmin,
+          visible: (user: LlecoopUser) => !user.isAdmin && user.registered && user.emailVerified,
           description: () => "Fes l'usuari administrador",
           order: 2,
           icon: () => 'person',

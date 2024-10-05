@@ -86,12 +86,12 @@ export const LlecoopProductStore = signalStore(
                 next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
                 error: error =>
                   storeNotificationService.create(
-                    `No s'ha pogut crear el producte "${product.name}": ${error}`,
+                    `No s'ha pogut crear el producte "${product['name']}": ${error}`,
                     'ERROR'
                   ),
                 complete: () => {
                   storeNotificationService.create(
-                    `Producte "${product.name}" creat correctament`,
+                    `Producte "${product['name']}" creat correctament`,
                     'SUCCESS'
                   );
                   state.dispatch(activityActions.setActivity({ isActive: false }));
@@ -112,13 +112,13 @@ export const LlecoopProductStore = signalStore(
                 },
                 error: error =>
                   storeNotificationService.create(
-                    `No s'ha pogut actualitzar el producte "${product.name}": ${error}`,
+                    `No s'ha pogut actualitzar el producte "${product['name']}": ${error}`,
                     'ERROR'
                   ),
                 complete: () => {
                   if (showNotification) {
                     storeNotificationService.create(
-                      `Producte "${product.name}" actualitzat correctament`,
+                      `Producte "${product['name']}" actualitzat correctament`,
                       'SUCCESS'
                     );
                     state.dispatch(activityActions.setActivity({ isActive: false }));

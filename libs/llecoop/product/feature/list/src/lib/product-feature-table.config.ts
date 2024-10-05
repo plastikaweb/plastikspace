@@ -47,13 +47,12 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'categoryName',
     title: 'Categoria',
     propertyPath: 'category.name',
-    sorting: true,
     cssClasses: ['hidden md:flex md:min-w-[210px] justify-start'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
         if (value) {
-          const htmlString = element?.category.color
+          const htmlString = element?.category?.color
             ? `
                               <p class="flex items-center gap-tiny justify-start">
                                 <span class="rounded-full w-sub h-sub p-sub"
