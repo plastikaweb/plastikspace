@@ -9,7 +9,7 @@ export default async (change, context) => {
   const productCollection = firestore.collection('product');
 
   return productCollection
-    .where('category.id', '==', context.params.categoryId)
+    .where('categoryRef', '==', `category/${context.params.categoryId}`)
     .get()
     .then(snapshot => {
       const batch = firestore.batch();

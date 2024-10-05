@@ -1,6 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
+import { DocumentReference } from '@angular/fire/firestore';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import {
@@ -31,7 +32,7 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
           },
         },
         {
-          key: 'category',
+          key: 'categoryRef',
           type: 'select',
           className: 'w-full',
           props: {
@@ -39,14 +40,16 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
             placeholder: 'Categoria',
             required: true,
             options: toObservable(categoryStore.selectOptions),
-            compareWith: (o1: LlecoopProductCategory, o2: LlecoopProductCategory) =>
-              o1?.id === o2?.id,
+            compareWith: (
+              o1: DocumentReference<LlecoopProductCategory>,
+              o2: DocumentReference<LlecoopProductCategory>
+            ) => o1 === o2,
           },
         },
         {
           key: 'unit',
           fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sm bg-gray-10 p-sm rounded-md',
+            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
           fieldGroup: [
             {
               key: 'type',
@@ -87,7 +90,7 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
         },
         {
           fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sm bg-gray-10 p-sm rounded-md',
+            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
           fieldGroup: [
             {
               key: 'price',
@@ -163,7 +166,7 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
         },
         {
           fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sm bg-gray-10 p-sm rounded-md',
+            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
           fieldGroup: [
             {
               key: 'isAvailable',

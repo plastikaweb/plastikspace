@@ -1,6 +1,6 @@
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import {
   connectFirestoreEmulator,
@@ -41,27 +41,27 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(),
-    provideFirebaseApp(() => initializeApp(firebaseConfig)),
+    provideFirebaseApp(() => initializeApp(firebaseConfig, 'llecoop')),
     provideAuth(() => {
-      const auth = getAuth();
+      const auth = getAuth(getApp('llecoop'));
       if (environment['useEmulators']) {
-        connectAuthEmulator(auth, 'http://localhost:9099', { disableWarnings: true });
+        connectAuthEmulator(auth, 'http://127.0.0.1:9099', { disableWarnings: true });
       }
       return auth;
     }),
     provideFirestore(() => {
-      const firestore = getFirestore();
+      const firestore = getFirestore(getApp('llecoop'));
       if (environment['useEmulators']) {
-        connectFirestoreEmulator(firestore, 'localhost', 8080);
+        connectFirestoreEmulator(firestore, '127.0.0.1', 8080);
       }
       persistentMultipleTabManager();
 
       return firestore;
     }),
     provideFunctions(() => {
-      const functions = getFunctions();
+      const functions = getFunctions(getApp('llecoop'));
       if (environment['useEmulators']) {
-        connectFunctionsEmulator(functions, 'localhost', 5001);
+        connectFunctionsEmulator(functions, '127.0.0.1', 5001);
       }
       return functions;
     }),
