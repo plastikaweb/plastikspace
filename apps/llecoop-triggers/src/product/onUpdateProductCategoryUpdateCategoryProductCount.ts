@@ -6,8 +6,8 @@ import { firestore } from '../init';
 export default async (change, context) => {
   functions.logger.debug(`Running update product trigger for ${context.params.productId}`);
 
-  const previousProductCategoryId = change.before.data().category?.id;
-  const updatedProductCategoryId = change.after.data().category?.id;
+  const previousProductCategoryId = change.before.data().categoryRef?.split('/')[1];
+  const updatedProductCategoryId = change.after.data().categoryRef?.split('/')[1];
 
   if (updatedProductCategoryId === previousProductCategoryId) {
     functions.logger.debug(`Product category did not change, skipping update`);

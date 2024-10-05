@@ -8,7 +8,7 @@
     [opened]="sidenavOpened"
     (keydown.escape)="onToggleSidenav(false)">
     <ng-content select="[header]"></ng-content>
-    <mat-divider></mat-divider>
+    <mat-divider class="mt-sm"></mat-divider>
     <ng-content select="[menu-items]"></ng-content>
     <mat-divider></mat-divider>
     <ng-content select="[footer]"></ng-content>

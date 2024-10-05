@@ -25,9 +25,11 @@ export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<L
   formStructure = signal(getLlecoopProductDetailFormConfig());
 
   onSubmit(data: Partial<LlecoopProduct>): void {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { category, ...product } = data;
     this.model()?.id
       ? this.store.update({
-          product: data,
+          product,
           showNotification: true,
         })
       : this.store.create(data);

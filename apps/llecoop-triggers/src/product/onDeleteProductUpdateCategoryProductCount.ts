@@ -8,7 +8,7 @@ export default async (snapshot, context) => {
 
   const deletedProduct = snapshot.data();
 
-  const categoryId = deletedProduct.category?.id;
+  const categoryId = deletedProduct?.categoryRef?.split('/')[1];
 
   functions.logger.debug(`category affected: ${categoryId}`);
 

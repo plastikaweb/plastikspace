@@ -4,63 +4,68 @@
 @let isMobile = (isMobile$ | ngrxPush) || false;
 
 @if (notificationConfig) {
-  <div [plastikSnackbar]="notificationConfig || {}" (sendDismiss)="onNotificationDismiss()"></div>
+<div
+  [plastikSnackbar]="notificationConfig || {}"
+  (sendDismiss)="onNotificationDismiss()"
+></div>
 }
 
 <div class="flex flex-col">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
-    <div start class="flex items-center gap-0 sm:gap-sm">
+    <div
+      start
+      class="flex items-center gap-0 sm:gap-sm"
+    >
       @defer (when sidenavPosition === 'start') {
-        <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+      <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
       }
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerConfig.title }}</span>
         <a
           class="flex items-center content-center justify-between text-white hover:no-underline gap-sub"
-          href="">
-          @if (headerConfig.mainIcon; as icon) {
-            <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
-          }
-          <span class="block text-md sm:hidden">{{ headerConfig.title }}</span>
-          <span class="hidden sm:block">{{
-            headerConfig.extendedTitle || headerConfig.title
-          }}</span>
+          href=""
+          [attr.title]="headerConfig.title"
+        >
+          <ng-container [ngTemplateOutlet]="h1"></ng-container>
         </a>
       </h1>
       @defer (when headerConfig.socialLinks?.position === 'start') {
-        <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
+      <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
       }
     </div>
     @if (
-      headerConfig.socialLinks?.position === 'end' ||
-      sidenavPosition === 'end' ||
-      headerConfig.menu?.position === 'end'
+    headerConfig.socialLinks?.position === 'end' ||
+    sidenavPosition === 'end' ||
+    headerConfig.menu?.position === 'end'
     ) {
-      <div end class="flex items-center gap-sm">
-        @defer (when headerConfig.socialLinks?.position === 'end') {
-          <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
-        }
-        @defer (when sidenavPosition === 'end') {
-          <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
-        }
-        <!-- TODO: Create a shared user menu -->
-        @defer (when headerConfig.menu?.position === 'end') {
-          <ng-container [ngTemplateOutlet]="headerMenu"></ng-container>
-        }
-      </div>
+    <div
+      end
+      class="flex items-center gap-sm"
+    >
+      @defer (when headerConfig.socialLinks?.position === 'end') {
+      <ng-container [ngTemplateOutlet]="socialLinks"></ng-container>
+      }
+      @defer (when sidenavPosition === 'end') {
+      <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+      }
+      <!-- TODO: Create a shared user menu -->
+      @defer (when headerConfig.menu?.position === 'end') {
+      <ng-container [ngTemplateOutlet]="headerMenu"></ng-container>
+      }
+    </div>
     }
   </plastik-core-cms-layout-ui-header>
 
   @if (isActive) {
-    <plastik-shared-activity-ui-overlay class="z-10">
-      <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
-      <div class="spinner-container">
-        <div class="lds-ripple">
-          <div></div>
-          <div></div>
-        </div>
+  <plastik-shared-activity-ui-overlay class="z-10">
+    <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
+    <div class="spinner-container">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
       </div>
-    </plastik-shared-activity-ui-overlay>
+    </div>
+  </plastik-shared-activity-ui-overlay>
   }
 
   <plastik-core-cms-layout-ui-sidenav
@@ -68,47 +73,64 @@
     [mode]="isMobile ? 'over' : 'side'"
     [fixedInViewport]="isMobile"
     [sidenavOpened]="sidenavOpened"
-    (toggleSidenav)="onToggleSidenav()">
-    <mat-nav-list menu-items data-test="sidenav-list">
+    (toggleSidenav)="onToggleSidenav()"
+  >
+    @if (isMobile && sidenavOpened) {
+    <ng-container
+      header
+      [ngTemplateOutlet]="h1"
+    ></ng-container>
+    }
+
+    <mat-nav-list
+      menu-items
+      data-test="sidenav-list"
+    >
       @for (item of sidenavConfig; track item.id) {
-        <mat-list-item
-          class="my-tiny h-xll hover:bg-gray-10 focus:bg-gray-10"
-          routerLinkActive="bg-gray-10"
-          ariaCurrentWhenActive="page"
-          [routerLink]="item?.route"
-          [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }">
-          <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
-            item.icon
+      <mat-list-item
+        class="my-tiny h-xll hover:bg-gray-10 focus:bg-gray-10"
+        routerLinkActive="bg-gray-10"
+        ariaCurrentWhenActive="page"
+        [routerLink]="item?.route"
+        [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
+      >
+        <mat-icon
+          matListItemIcon
+          [attr.aria-hidden]="false"
+          [attr.aria-label]="item.title"
+        >{{
+          item.icon
           }}</mat-icon>
-          <span matListItemTitle>{{ item.title }}</span>
-        </mat-list-item>
+        <span matListItemTitle>{{ item.title }}</span>
+      </mat-list-item>
       }
     </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>
 
   @defer (when !hideFooter) {
-    <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-      <div content class="flex flex-row items-center justify-center gap-tiny">
-        <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
+  <plastik-core-cms-layout-ui-footer data-test="layout-footer">
+    <div
+      content
+      class="flex flex-row items-center justify-center gap-tiny"
+    >
+      <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
 
-        ©{{ currentDate | date: 'yyyy' }}
-        <a
-          aria-label="visit www.plastikaweb.com page"
-          class="text-white underline underline-offset-2"
-          href="https://www.plastikaweb.com"
-          target="_blank"
-          >Plastikaweb</a
-        >
-        |
-        <a
-          aria-label="visitar www.llevat.org"
-          class="text-white underline underline-offset-2"
-          href="https://www.llevat.org"
-          target="_blank"
-          >El Llevat</a
-        >
-      </div>
-    </plastik-core-cms-layout-ui-footer>
+      ©{{ currentDate | date: 'yyyy' }}
+      <a
+        aria-label="visit www.plastikaweb.com page"
+        class="text-white underline underline-offset-2"
+        href="https://www.plastikaweb.com"
+        target="_blank"
+      >Plastikaweb</a>
+      |
+      <a
+        aria-label="visitar www.llevat.org"
+        class="text-white underline underline-offset-2"
+        href="https://www.llevat.org"
+        target="_blank"
+      >El Llevat</a>
+    </div>
+  </plastik-core-cms-layout-ui-footer>
   }
 </div>
 
@@ -118,44 +140,77 @@
     aria-label="sidenav toggle button"
     class="flex justify-center align-middle"
     data-test="toggle-sidenav-button"
-    (click)="onToggleSidenav()">
+    (click)="onToggleSidenav()"
+  >
     @if (!sidenavOpened) {
-      <mat-icon class="mat-18">menu</mat-icon>
+    <mat-icon class="mat-18">menu</mat-icon>
     } @else if (sidenavOpened) {
-      <mat-icon class="mat-18">close</mat-icon>
+    <mat-icon class="mat-18">close</mat-icon>
     }
   </button>
 </ng-template>
 
 <ng-template #socialLinks>
   @for (buttonConfig of headerConfig.socialLinks?.config; track buttonConfig.id) {
-    <plastik-shared-button [config]="buttonConfig" (sendAction)="onButtonClickAction($event)">
-    </plastik-shared-button>
+  <plastik-shared-button
+    [config]="buttonConfig"
+    (sendAction)="onButtonClickAction($event)"
+  >
+  </plastik-shared-button>
   }
 </ng-template>
 
 <ng-template #headerMenu>
-  <button mat-button aria-label="header menu" [matMenuTriggerFor]="menu">
+  <button
+    mat-button
+    aria-label="header menu"
+    [matMenuTriggerFor]="menu"
+  >
     <span class="hidden sm:block">{{ headerConfig.menu?.label() }}</span>
     <mat-icon class="w-[30px] h-[30px] text-[30px]">account_circle</mat-icon>
   </button>
-  <mat-menu #menu="matMenu" class="px-sub">
+  <mat-menu
+    #menu="matMenu"
+    class="px-sub"
+  >
     <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{
       headerConfig.menu?.label()
-    }}</span>
+      }}</span>
 
     @for (item of headerConfig.menu?.config; track item.id) {
-      @if (item && item.route) {
-        <button type="button" mat-menu-item [routerLink]="item.route">
-          <mat-icon>{{ item.icon }}</mat-icon>
-          <span>{{ item.title }}</span>
-        </button>
-      } @else if (item && item.action) {
-        <button type="button" mat-menu-item (click)="onSendAction(item.action)">
-          <mat-icon>{{ item.icon }}</mat-icon>
-          <span>{{ item.title }}</span>
-        </button>
-      }
+    @if (item && item.route) {
+    <button
+      type="button"
+      mat-menu-item
+      [routerLink]="item.route"
+    >
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.title }}</span>
+    </button>
+    } @else if (item && item.action) {
+    <button
+      type="button"
+      mat-menu-item
+      (click)="onSendAction(item.action)"
+    >
+      <mat-icon>{{ item.icon }}</mat-icon>
+      <span>{{ item.title }}</span>
+    </button>
+    }
     }
   </mat-menu>
+</ng-template>
+
+<ng-template #h1>
+  @if (headerConfig.mainIcon; as icon) {
+  <div class="flex items-center justify-center gap-sub">
+    <svg-icon
+      [src]="icon.iconPath"
+      [svgClass]="icon.svgClass"
+    ></svg-icon>
+
+    <span class="block text-md sm:hidden">{{ headerConfig.title }}</span>
+    <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
+  </div>
+  }
 </ng-template>

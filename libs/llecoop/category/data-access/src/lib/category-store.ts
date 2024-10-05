@@ -42,7 +42,7 @@ export const LlecoopCategoryStore = signalStore(
       return entities()
         .map(category => ({
           label: category.name?.toLowerCase(),
-          value: category,
+          value: `category/${category.id}`,
         }))
         .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
     }),
