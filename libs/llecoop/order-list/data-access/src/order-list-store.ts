@@ -13,6 +13,7 @@ import {
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
@@ -39,6 +40,7 @@ export const LLecoopOrderListStore = signalStore(
       store,
       orderListService = inject(LlecoopOrderListFireService),
       storeNotificationService = inject(StoreNotificationService),
+      firebaseAuthService = inject(FirebaseAuthService),
       state = inject(Store)
     ) => ({
       getAll: rxMethod<void>(
@@ -56,10 +58,12 @@ export const LLecoopOrderListStore = signalStore(
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
-                  storeNotificationService.create(
-                    `No s'ha pogut carregar el llistat de comandes: ${error}`,
-                    'ERROR'
-                  );
+                  if (firebaseAuthService.loggedIn()) {
+                    storeNotificationService.create(
+                      `No s'ha pogut carregar el llistat de comandes: ${error}`,
+                      'ERROR'
+                    );
+                  }
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
               })
