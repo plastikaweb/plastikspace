@@ -7,6 +7,7 @@ import { LlecoopUser } from '@plastik/llecoop/entities';
 import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { TableSorting } from '@plastik/shared/table/entities';
+import { filter, take } from 'rxjs';
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
 import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config';
 
@@ -24,14 +25,15 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
   count = this.store.count;
+  routingToDetailPage = signal({ visible: true });
 
   formStructure = getLlecoopUserSearchFeatureFormConfig();
 
-  onSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: TableSorting): void {
     this.store.setSorting([active, direction]);
   }
 
-  onDelete(item: LlecoopUser): void {
+  onTableActionDelete(item: LlecoopUser): void {
     // if (item.id) {
     //   this.confirmService
     //     .confirm(

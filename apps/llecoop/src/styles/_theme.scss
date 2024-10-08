@@ -24,6 +24,10 @@
     --accent-100: #{mat.m2-get-color-from-palette(palette.$md-accent, 100)};
     --accent-400: #{mat.m2-get-color-from-palette(palette.$md-accent, 400)};
     --accent-700: #{mat.m2-get-color-from-palette(palette.$md-accent, 700)};
+    --warn-50: #{mat.m2-get-color-from-palette(palette.$md-warn, 50)};
+    --warn: #{mat.m2-get-color-from-palette(palette.$md-warn, 500)};
+    --warn-700: #{mat.m2-get-color-from-palette(palette.$md-warn, 700)};
+    --warn-900: #{mat.m2-get-color-from-palette(palette.$md-warn, 900)};
 
     /* Tailwind Colors */
     --primary: var(--primary-500);
@@ -66,5 +70,11 @@
 
     /* Header */
     --mat-toolbar-title-text-size: var(--h4);
+
+    /* Notification Snackbar Boxes */
+    --plastik-error-notification-box-color: var(--warn);
+    --plastik-info-notification-box-color: rgb(14, 122, 190);
+    --plastik-warning-notification-box-color: rgb(221, 148, 20);
+    --plastik-success-notification-box-colors: rgb(22, 134, 40);
   }
 }

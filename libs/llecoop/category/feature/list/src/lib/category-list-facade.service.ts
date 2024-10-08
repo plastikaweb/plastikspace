@@ -27,14 +27,15 @@ export class LlecoopCategoryListFacadeService
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
   count = this.store.count;
+  routingToDetailPage = signal({ visible: true });
 
   formStructure = getLlecoopCategorySearchFeatureFormConfig();
 
-  onSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: TableSorting): void {
     this.store.setSorting([active, direction]);
   }
 
-  onDelete(item: LlecoopProductCategory): void {
+  onTableActionDelete(item: LlecoopProductCategory): void {
     if (item.id) {
       this.confirmService
         .confirm(

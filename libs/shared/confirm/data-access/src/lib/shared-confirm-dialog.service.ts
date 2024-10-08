@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
+import { SafeHtml } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { SharedConfirmFeatureComponent } from './shared-confirm-feature.component';
 
@@ -11,8 +12,8 @@ export class SharedConfirmDialogService {
   private readonly dialog = inject(MatDialog);
 
   confirm(
-    title = 'Attention!',
-    message = 'Do you really want to delete this item?',
+    title: string,
+    message: string | SafeHtml,
     ko = 'Cancel',
     ok = 'Delete'
   ): Observable<boolean> {

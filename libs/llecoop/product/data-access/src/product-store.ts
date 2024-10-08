@@ -32,11 +32,14 @@ export const LlecoopProductStore = signalStore(
     selectedItemId: null,
   }),
   withEntities<LlecoopProduct>(),
-  withComputed(({ ids, selectedItemId, entityMap }) => ({
+  withComputed(({ ids, selectedItemId, entityMap, entities }) => ({
     count: computed(() => ids().length),
     selectedItem: computed(() => {
       const id = selectedItemId();
       return id !== null ? entityMap()[id] : null;
+    }),
+    getAvailableProducts: computed(() => {
+      return entities().filter(product => product.isAvailable);
     }),
   })),
   withMethods(

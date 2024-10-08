@@ -21,6 +21,7 @@ describe('TableWithFilteringComponent', () => {
             formStructure: signal([]),
             count: signal(0),
             viewConfig: signal({}),
+            routingToDetailPage: signal({ visible: false }),
           },
         },
       ],
