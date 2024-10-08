@@ -92,6 +92,28 @@ export const LLecoopOrderListStore = signalStore(
           })
         )
       ),
+      delete: rxMethod<LlecoopOrder>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(product => {
+            return orderListService.delete(product).pipe(
+              tapResponse({
+                next: () => {
+                  storeNotificationService.create(`Comanda "${product.name}" eliminada`, 'SUCCESS'),
+                    state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  storeNotificationService.create(
+                    `No s'ha pogut eliminar la comanda "${product.name}": ${error}`,
+                    'ERROR'
+                  );
+                },
+              })
+            );
+          })
+        )
+      ),
       setSorting: (sorting: LlecoopOrderListState['sorting']) => patchState(store, { sorting }),
     })
   ),

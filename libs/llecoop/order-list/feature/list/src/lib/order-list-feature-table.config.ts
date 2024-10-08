@@ -98,7 +98,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
       caption: 'Llistat de comandes setmanals',
       actions: {
         DELETE: {
-          visible: () => true,
+          visible: (item: LlecoopOrder) => item.status === 'waiting',
           description: () => 'Elimina la comanda',
           order: 1,
         },

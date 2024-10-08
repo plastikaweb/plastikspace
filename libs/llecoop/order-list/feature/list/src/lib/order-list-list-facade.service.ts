@@ -66,18 +66,18 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
     this.store.setSorting([active, direction]);
   }
 
-  onTableActionDelete(item: LlecoopProductCategory): void {
-    // if (item.id) {
-    //   this.confirmService
-    //     .confirm(
-    //       'Eliminar categoria',
-    //       `Segur que vols eliminar "${item.name}"?`,
-    //       'Cancel·lar',
-    //       'Eliminar'
-    //     )
-    //     .pipe(take(1), filter(Boolean))
-    //     .subscribe(() => this.store.delete(item));
-    // }
+  onTableActionDelete(item: LlecoopOrder): void {
+    if (item.id) {
+      this.confirmService
+        .confirm(
+          'Eliminar comanda setmanal',
+          `Segur que vols eliminar la comanda "${item.name}"?`,
+          'Cancel·lar',
+          'Eliminar'
+        )
+        .pipe(take(1), filter(Boolean))
+        .subscribe(() => this.store.delete(item));
+    }
   }
 
   private getNewOrderName(): string {

@@ -12,7 +12,7 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return request.auth.token.isAdmin && request.auth.token.isAdmin == true;
+      return 'isAdmin' in request.auth.token;
     }
 
     function hasSociAccess() {

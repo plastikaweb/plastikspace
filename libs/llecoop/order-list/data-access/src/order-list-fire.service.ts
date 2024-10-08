@@ -1,5 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore, Timestamp } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  Firestore,
+  Timestamp,
+} from '@angular/fire/firestore';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { from, Observable } from 'rxjs';
 
@@ -23,5 +31,10 @@ export class LlecoopOrderListFireService {
         createdAt: Timestamp.now(),
       })
     );
+  }
+
+  delete(item: LlecoopOrder) {
+    const document = doc(this.firestore, `order-list/${item.id}`);
+    return from(deleteDoc(document));
   }
 }
