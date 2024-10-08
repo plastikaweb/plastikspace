@@ -48,9 +48,13 @@ export class FirebaseAuthService {
   }
 
   login(email: string, password: string): Promise<void> {
+    this.state.dispatch(activityActions.setActivity({ isActive: true }));
+
     return signInWithEmailAndPassword(this.auth, email, password)
       .then(() => {
-        this.router.navigate(['']);
+        this.router.navigate(['']).then(() => {
+          this.state.dispatch(activityActions.setActivity({ isActive: false }));
+        });
       })
       .catch(error => {
         console.error(error);
@@ -67,6 +71,7 @@ export class FirebaseAuthService {
             }),
           })
         );
+        this.state.dispatch(activityActions.setActivity({ isActive: false }));
       });
   }
 
