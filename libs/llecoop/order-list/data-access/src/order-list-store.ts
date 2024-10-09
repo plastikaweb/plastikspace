@@ -96,6 +96,30 @@ export const LLecoopOrderListStore = signalStore(
           })
         )
       ),
+      activate: rxMethod<LlecoopOrder>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(order => {
+            return orderListService.update({ ...order, status: 'progress' }).pipe(
+              tapResponse({
+                next: () => state.dispatch(activityActions.setActivity({ isActive: false })),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut activar la comanda "${order['name']}": ${error}`,
+                    'ERROR'
+                  ),
+                complete: () => {
+                  storeNotificationService.create(
+                    `Comanda "${order['name']}" activada correctament`,
+                    'SUCCESS'
+                  );
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+              })
+            );
+          })
+        )
+      ),
       delete: rxMethod<LlecoopOrder>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),

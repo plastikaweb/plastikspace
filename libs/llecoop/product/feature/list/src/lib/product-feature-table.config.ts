@@ -108,8 +108,10 @@ export class LlecoopProductSearchFeatureTableConfig
             return `pes per unitat: ${Number(value)} kg`;
           case 'unitWithVariableWeight':
             return `pes aprox. per unitat: ${Number(value)} kg`;
+          case 'weight':
+            return 'quantitat final a pes';
           default:
-            return '-';
+            return 'unitat';
         }
       },
     },

@@ -6,7 +6,9 @@ import {
   deleteDoc,
   doc,
   Firestore,
+  serverTimestamp,
   Timestamp,
+  updateDoc,
 } from '@angular/fire/firestore';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { from, Observable } from 'rxjs';
@@ -31,6 +33,11 @@ export class LlecoopOrderListFireService {
         createdAt: Timestamp.now(),
       })
     );
+  }
+
+  update(item: Partial<LlecoopOrder>) {
+    const document = doc(this.firestore, `order-list/${item.id}`);
+    return from(updateDoc(document, { ...item, updatedAt: serverTimestamp() }));
   }
 
   delete(item: LlecoopOrder) {

@@ -7,7 +7,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
   mainIcon: { iconPath: 'assets/img/nasa.svg', svgClass: 'fill-white text-black w-[80px]' },
   title: 'NASA images',
   extendedTitle: 'NASA Images Search',
-  socialLinks: {
+  headerActions: {
     position: 'end',
     config: [
       {
