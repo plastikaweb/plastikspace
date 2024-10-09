@@ -131,15 +131,8 @@ export const appRoutes: Routes = [
             routes => routes.llecoopUserFeatureCreateRoutes
           ),
       },
-    ],
-  },
-  {
-    path: 'soci',
-    canActivate: [isLoggedGuard],
-    loadComponent: () => CoreCmsLayoutFeatureComponent,
-    children: [
       {
-        path: 'order-list',
+        path: 'comanda',
         loadChildren: () =>
           import('@plastik/llecoop/order-list/list').then(
             routes => routes.llecoopOrderListFeatureListRoutes
@@ -149,11 +142,11 @@ export const appRoutes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'soci/order-list',
+    redirectTo: 'soci/comanda',
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'soci/order-list',
+    redirectTo: 'soci/comanda',
   },
 ];

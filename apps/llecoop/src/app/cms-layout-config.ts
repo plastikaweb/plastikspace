@@ -79,10 +79,10 @@ export function viewConfig() {
     {
       id: 5,
       name: 'order-list',
-      title: 'Comandes setmanals',
+      title: 'Comandes',
       icon: 'shopping_bag',
-      route: [`/soci/order-list`],
-      includedInNavigation: true,
+      route: [`/admin/comanda`],
+      includedInNavigation: isAdmin,
       routerLinkActiveOptionsExact: false,
     },
   ].filter(view => view.includedInNavigation);
