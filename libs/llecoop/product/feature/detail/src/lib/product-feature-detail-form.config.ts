@@ -241,10 +241,10 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
 
 function setStockUnitAddonRight(
   formlyProps: FormlyFieldConfig['props'],
-  unitValue: LlecoopProductUnit
+  unitValue: LlecoopProductUnit['type']
 ): void {
   if (formlyProps?.['addonRight']) {
-    formlyProps['addonRight'].text = unitValue?.type === 'weight' ? 'kg' : 'u.';
+    formlyProps['addonRight'].text = unitValue === 'weight' ? 'kg' : 'u.';
   }
 }
 
