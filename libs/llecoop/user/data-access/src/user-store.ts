@@ -10,7 +10,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { EntityId, setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
@@ -90,6 +90,31 @@ export const LLecoopUserStore = signalStore(
                     'SUCCESS'
                   );
                   state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+              })
+            );
+          })
+        )
+      ),
+      delete: rxMethod<LlecoopUser>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(user => {
+            return userService.delete(user).pipe(
+              tapResponse({
+                next: () => {
+                  storeNotificationService.create(
+                    `Usuari amb correu electrònic "${user.email}" eliminat`,
+                    'SUCCESS'
+                  ),
+                    state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  storeNotificationService.create(
+                    `No s'ha pogut eliminar l'usuari amb correu electrònic "${user.email}": ${error}`,
+                    'ERROR'
+                  );
                 },
               })
             );

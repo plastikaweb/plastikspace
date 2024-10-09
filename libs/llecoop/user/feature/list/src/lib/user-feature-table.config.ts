@@ -131,7 +131,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       caption: "Llistat d'usuaris",
       actions: {
         DELETE: {
-          visible: () => true,
+          visible: (user: LlecoopUser) => !user.isAdmin,
           description: () => "Elimina l'usuari",
           order: 1,
         },

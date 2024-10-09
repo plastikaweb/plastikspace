@@ -1,5 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, Firestore, Timestamp } from '@angular/fire/firestore';
+import {
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  Firestore,
+  Timestamp,
+} from '@angular/fire/firestore';
 import { Functions, httpsCallable } from '@angular/fire/functions';
 import { EntityId } from '@ngrx/signals/entities';
 import { LlecoopUser } from '@plastik/llecoop/entities';
@@ -30,5 +38,10 @@ export class LlecoopUserFireService {
   addAdminClaim(userId: EntityId) {
     const callable = httpsCallable(this.functions, 'setUserAdminClaim');
     return from(callable(userId));
+  }
+
+  delete(user: LlecoopUser) {
+    const document = doc(this.firestore, `user/${user.id}`);
+    return from(deleteDoc(document));
   }
 }
