@@ -34,16 +34,16 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
   }
 
   onTableActionDelete(item: LlecoopUser): void {
-    // if (item.id) {
-    //   this.confirmService
-    //     .confirm(
-    //       'Eliminar usuari',
-    //       `Segur que vols eliminar "${item.name}"?`,
-    //       'Cancel·lar',
-    //       'Eliminar'
-    //     )
-    //     .pipe(take(1), filter(Boolean))
-    //     .subscribe(() => this.store.delete(item));
-    // }
+    if (item.id) {
+      this.confirmService
+        .confirm(
+          'Eliminar usuari',
+          `Segur que vols eliminar l'usuari "${item.email}"?`,
+          'Cancel·lar',
+          'Eliminar'
+        )
+        .pipe(take(1), filter(Boolean))
+        .subscribe(() => this.store.delete(item));
+    }
   }
 }
