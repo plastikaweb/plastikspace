@@ -89,3 +89,11 @@ export const onDeleteUserDeleteUserFromAuth = functions.firestore
   .onDelete(async snapshot => {
     await (await import('./user/onDeleteUserDeleteUserFromAuth')).default(snapshot);
   });
+
+// List order
+export const onListOrderTimeFinishUpdateListOrderState = functions.pubsub
+  .schedule('0 12 * * 1')
+  .timeZone('Europe/Madrid')
+  .onRun(async () => {
+    await (await import('./list-order/onListOrderTimeFinishUpdateListOrderState')).default();
+  });
