@@ -5,7 +5,9 @@ import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
   InputColorPickerTypeComponent,
   InputPasswordWithVisibilityTypeComponent,
+  InputTableTypeComponent,
   SharedFormUiYearPickerTypeComponent,
+  TextareaWithCounterTypeComponent,
 } from '@plastik/shared/form/ui';
 
 import { addonsExtension } from './addons-extension';
@@ -39,6 +41,15 @@ import { urlValidator } from './validations/validators/url.validator';
         {
           name: 'color-picker',
           component: InputColorPickerTypeComponent,
+        },
+        {
+          name: 'table',
+          component: InputTableTypeComponent,
+        },
+        {
+          name: 'textarea-with-counter',
+          component: TextareaWithCounterTypeComponent,
+          wrappers: ['form-field'],
         },
       ],
       validators: [

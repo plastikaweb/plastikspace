@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   formatCurrency,
   formatDate,
@@ -20,116 +21,135 @@ export class SharedUtilFormattersService {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly locale = inject(LOCALE_ID);
 
-  /**
-   * @description Formats value as a string date ('M/d/yy').
-   * @param { FormattingDateInput } value The value to format.
-   * @param { Partial<Pick<FormattingExtras, 'dateDigitsInfo' | 'locale' | 'timezone'>> } param The control configuration to format the object property value.
-   * @returns { string } The formatted value.
-   */
-  dateFormatter(
+  dateFormatter<T>(
     value: FormattingDateInput,
-    {
-      dateDigitsInfo = 'shortDate',
-      locale = this.locale,
-      timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
-    }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
+    extras?: () => Partial<
+      Pick<FormattingExtras<T, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>
+    >
   ): string {
-    return formatDate(value, dateDigitsInfo, locale, timezone) || '';
+    let format = {
+      dateDigitsInfo: 'shortDate',
+      locale: this.locale,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+
+    if (extras) {
+      format = {
+        ...format,
+        ...extras(),
+      };
+    }
+
+    return formatDate(value, format.dateDigitsInfo, format.locale, format.timezone) || '';
   }
 
-  /**
-   * @description Formats value as a string date ('M/d/yy, HH:mm:ss').
-   * @param { FormattingDateInput } value The value to format.
-   * @param { Partial<Pick<FormattingExtras, 'locale' | 'timezone'>> } param The control configuration to format the object property value.
-   * @param { string } param.locale The format locale that Angular uses to format dates.
-   * @returns { string } The formatted value.
-   */
-  dateTimeFormatter(
+  dateTimeFormatter<T>(
     value: FormattingDateInput,
-    {
-      locale = this.locale,
-      timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
-    }: Partial<Pick<FormattingExtras<unknown, 'DATE_TIME'>, 'locale' | 'timezone'>>
+    extras?: () => Partial<Pick<FormattingExtras<T, 'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
-    return formatDate(value, 'M/d/yy, HH:mm:ss', locale, timezone) || '';
+    let format = {
+      locale: this.locale,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+
+    if (extras) {
+      format = {
+        ...format,
+        ...extras(),
+      };
+    }
+    return formatDate(value, 'M/d/yy, HH:mm:ss', format.locale, format.timezone) || '';
   }
 
-  /**
-   * @description Formats a Firebase `Timestamp` into a string based on the provided locale and timezone.
-   * @param { Timestamp } value - The Firebase `Timestamp` to format.
-   * @param { Partial<Pick<FormattingExtras, 'dateDigitsInfo' | 'locale'>> } param The control configuration to format the object property value.
-   * @returns { string } The formatted date string.
-   */
-  firebaseTimestampFormatter(
+  firebaseTimestampFormatter<T>(
     value: Timestamp,
-    {
-      dateDigitsInfo = 'shortDate',
-      locale = this.locale,
-      timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
-    }: Partial<Pick<FormattingExtras<unknown, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
+    extras?: () => Partial<
+      Pick<FormattingExtras<T, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>
+    >
   ): string {
-    return value ? formatDate(value?.toDate(), dateDigitsInfo, locale, timezone) : '-';
+    let format = {
+      dateDigitsInfo: 'shortDate',
+      locale: this.locale,
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+    };
+
+    if (extras) {
+      format = {
+        ...format,
+        ...extras(),
+      };
+    }
+
+    return value
+      ? formatDate(value?.toDate(), format.dateDigitsInfo, format.locale, format.timezone)
+      : '-';
   }
 
-  /**
-   * @description Formats value as a percentage (value %').
-   * @param { string | number | Date } value The value to format.
-   * @param { Partial<Pick<FormattingExtras, 'numberDigitsInfo' | 'locale'>> } param The control configuration to format the object property value.
-   * @param { string } param.numberDigitsInfo The format string that Angular uses to format numbers.
-   * @param { string } param.locale The format locale that Angular uses to format numbers.
-   * @returns { string } The formatted value.
-   */
-  percentageFormatter(
+  percentageFormatter<T>(
     value: number,
-    {
-      numberDigitsInfo = '1.2-2',
-      locale = this.locale,
-    }: Partial<Pick<FormattingExtras<unknown, 'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
+    extras?: () => Partial<Pick<FormattingExtras<T, 'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    return formatPercent(Number(value) / 100, locale, numberDigitsInfo) || '';
+    let format = {
+      numberDigitsInfo: '1.2-2',
+      locale: this.locale,
+    };
+    if (extras) {
+      format = {
+        ...format,
+        ...extras(),
+      };
+    }
+
+    return formatPercent(Number(value) / 100, format.locale, format.numberDigitsInfo) || '';
   }
 
-  /**
-   * @description Formats value as a currency ($value).
-   * @param { number } value The value to format.
-   * @param { Partial<Pick<FormattingExtras, 'numberDigitsInfo' | 'locale'>> } param The control configuration to format the object property value.
-   * @param { string } param.numberDigitsInfo The format string that Angular uses to format currency.
-   * @param { string } param.locale The format locale that Angular uses to format currency.
-   * @returns { string } The formatted value.
-   */
-  currencyFormatter(
+  currencyFormatter<T>(
     value: number,
-    {
-      numberDigitsInfo = '1.0-0',
-      locale = this.locale,
-      currency = '$',
-      currencyCode = 'USD',
-    }: Partial<
+    extras?: () => Partial<
       Pick<
-        FormattingExtras<unknown, 'CURRENCY'>,
+        FormattingExtras<T, 'CURRENCY'>,
         'numberDigitsInfo' | 'locale' | 'currency' | 'currencyCode'
       >
     >
   ): string {
-    return formatCurrency(value, locale, currency, currencyCode, numberDigitsInfo) || '';
+    let format = {
+      numberDigitsInfo: '1.0-0',
+      locale: this.locale,
+      currency: '$',
+      currencyCode: 'USD',
+    };
+    if (extras) {
+      format = {
+        ...format,
+        ...extras(),
+      };
+    }
+    return (
+      formatCurrency(
+        value,
+        format.locale,
+        format.currency,
+        format.currencyCode,
+        format.numberDigitsInfo
+      ) || ''
+    );
   }
 
-  /**
-   * @description Formats value as a number (00.00).
-   * @param { number } value The value to format.
-   * @param { Partial<Pick<FormattingExtras, 'numberDigitsInfo' | 'locale'>> } param The control configuration to format the object property value.
-   * @param { string } param.numberDigitsInfo The format string that Angular uses to format numbers.
-   * @param { string } param.locale The format locale that Angular uses to format numbers.
-   * @returns { string } The formatted value.
-   */
-  numberFormatter(
+  numberFormatter<T>(
     value: number,
-    {
-      numberDigitsInfo = '1.2-2',
-      locale = this.locale,
-    }: Partial<Pick<FormattingExtras<unknown, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
+    extras?: () => Partial<Pick<FormattingExtras<T, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    return formatNumber(Number(value), locale, numberDigitsInfo) || '';
+    let format = {
+      numberDigitsInfo: '1.2-2',
+      locale: this.locale,
+    };
+    if (extras) {
+      format = {
+        ...format,
+        ...extras(),
+      };
+    }
+    return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
   }
 
   /**
@@ -141,32 +161,31 @@ export class SharedUtilFormattersService {
     return this.titleCasePipe.transform(value);
   }
 
-  /**
-   * @description Returns a formatted image.
-   * @param { string } value - the value to format.
-   * @param { Partial<Pick<FormattingExtras, 'classes' | 'svgClass' | 'type' | 'title'>> } param The control configuration to format the object property value.
-   * @param { string } param.classes A string containing CSS classes to apply to the <img> tag.
-   * @param { string | ((item: unknown) => string) } param.title A string or method that returns the text to add to the 'alt' <img> tag attribute.
-   * @param { unknown } item The full object that contains the property to be formatted.
-   * @returns { SafeHtml } The formatted value.
-   */
-  imageFormatter(
-    value: string,
-    {
-      title = '',
-      classes = '',
-    }: Partial<Pick<FormattingExtras<unknown, 'IMAGE'>, 'classes' | 'title'>>,
-    item: unknown
-  ): SafeHtml {
-    const imgTitle = typeof title === 'string' ? title : title(item);
+  imageFormatter<T>(value: string, item: T, extras?: () => FormattingExtras<T, 'IMAGE'>): SafeHtml {
+    const imgTitle = extras?.().title?.(item) || '';
+    const classes = extras?.().classes || '';
+
     return this.sanitizer.bypassSecurityTrustHtml(
       `<img alt="${imgTitle}" src="${value}" class="${classes}">`
     );
   }
 
-  booleanWithIconFormatter(value: boolean, { iconTrue = '', iconFalse = '' }): SafeHtml {
+  booleanWithIconFormatter<T>(
+    value: boolean,
+    extras?: () => FormattingExtras<T, 'BOOLEAN_WITH_ICON'>
+  ): SafeHtml {
+    let format = {
+      iconTrue: 'check',
+      iconFalse: 'close',
+    };
+    if (extras) {
+      format = {
+        ...format,
+        ...extras(),
+      };
+    }
     return this.sanitizer.bypassSecurityTrustHtml(
-      `<span class="material-icons">${value ? iconTrue : iconFalse}</span>`
+      `<span class="material-icons">${value ? format.iconTrue : format.iconFalse}</span>`
     );
   }
 
@@ -175,9 +194,9 @@ export class SharedUtilFormattersService {
    * @param { string } value The value to format.
    * @param { PropertyFormattingConf } param The control configuration to format the object property value.
    * @param { Function } param.execute  The function to execute to format the value.
-   * @param { unknown } element The whole item object where the formatting property belongs.
+   * @param { T } element The whole item object where the formatting property belongs.
    * @param { number } index The index of the object i a list (f.e. a table).
-   * @param { unknown } extraConfig Extra configuration object to format values when defining `execute` method blueprint.
+   * @param { T } extraConfig Extra configuration object to format values when defining `execute` method blueprint.
    * @example
    * Returns a value for a row index number in a table.
    * execute: (_, __, index = 0, extraConfig) => {

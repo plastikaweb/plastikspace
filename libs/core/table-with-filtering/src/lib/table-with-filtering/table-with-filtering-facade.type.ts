@@ -14,6 +14,7 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   count: Signal<number>;
   onTableSorting?(sorting: TableSorting): void;
   onTableActionDelete?(item: unknown): void;
+  onGetData?(data: unknown[]): void;
   viewConfig: Signal<ViewConfigUI>;
   formStructure?: Signal<FormlyFieldConfig[]>;
   routingToDetailPage: Signal<{ visible: boolean; path?: string[]; label?: string }>;

@@ -66,7 +66,7 @@ const dateCreated: TableColumnFormatting<NasaImage, 'DATE'> = {
   cssClasses: ['min-w-[6rem]'],
   formatting: {
     type: 'DATE',
-    extras: { numberDigitsInfo: 'longDate' },
+    extras: () => ({ numberDigitsInfo: 'longDate' }),
   },
 };
 
@@ -77,11 +77,11 @@ const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
   cssClasses: ['max-w-[200px] min-w-[120px]'],
   formatting: {
     type: 'IMAGE',
-    extras: {
+    extras: () => ({
       type: 'img',
-      title: (item: NasaImage) => item?.name || 'No title',
+      title: (item?: NasaImage) => item?.name || 'No title',
       classes: 'object-cover h-[100px] w-[100px] rounded-md',
-    },
+    }),
   },
 };
 

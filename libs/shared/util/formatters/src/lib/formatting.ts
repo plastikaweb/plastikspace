@@ -17,7 +17,8 @@ export type FormattingTypes =
   | 'IMAGE'
   | 'LINK'
   | 'CUSTOM'
-  | 'TEXT';
+  | 'TEXT'
+  | 'INPUT';
 
 type FormattingTypesNumeric = Extract<
   FormattingTypes,
@@ -25,9 +26,11 @@ type FormattingTypesNumeric = Extract<
 >;
 type FormattingTypesBoolean = Extract<FormattingTypes, 'BOOLEAN_WITH_ICON'>;
 
+type FormattingTypesInput = Extract<FormattingTypes, 'INPUT'>;
+
 type FormattingTypesDefault = Extract<
   FormattingTypes,
-  'BOOLEAN_WITH_CONTROL' | 'LINK' | 'CUSTOM' | 'TEXT' | 'TITLE_CASE'
+  'BOOLEAN_WITH_CONTROL' | 'LINK' | 'CUSTOM' | 'TEXT' | 'TITLE_CASE' | 'IMAGE'
 >;
 
 /**
@@ -47,7 +50,7 @@ export type FormattingOutput = Date | number | boolean | string | SafeHtml;
 
 type FormattingImageExtras<OBJ> = {
   type: 'svg' | 'img';
-  title: string | ((item: OBJ) => string);
+  title: (item?: OBJ) => string;
   classes?: string;
   svgClass?: string;
 };
@@ -67,6 +70,16 @@ type FormattingBooleanWithIconExtras = {
   iconFalse: string;
 };
 
+type FormattingInputExtras = {
+  type: 'text' | 'number';
+  placeholder: string;
+  min?: number;
+  max?: number;
+  step?: number;
+  prefix?: string;
+  suffix?: string;
+};
+
 /**
  * @description Formatting extras blueprint based on
  */
@@ -76,7 +89,9 @@ export type FormattingExtras<OBJ, TYPE extends FormattingTypes> = TYPE extends '
     ? FormattingNumericExtras
     : TYPE extends FormattingTypesBoolean
       ? FormattingBooleanWithIconExtras
-      : object;
+      : TYPE extends 'INPUT'
+        ? FormattingInputExtras
+        : object;
 
 /**
  * @description Formatting property blueprint.
@@ -84,7 +99,8 @@ export type FormattingExtras<OBJ, TYPE extends FormattingTypes> = TYPE extends '
 export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEXT'> {
   type: TYPE;
   execute?: (value: unknown, element?: OBJ, index?: number, extras?: unknown) => FormattingOutput;
-  extras?: FormattingExtras<OBJ, TYPE>;
+  extras?: (value?: OBJ) => FormattingExtras<OBJ, TYPE>;
+  onInputChanges?: (value: unknown, element: OBJ, index?: number, extras?: unknown) => object;
 }
 
 type PropertyFormattingBase<OBJ extends Record<keyof OBJ, unknown>> = {
@@ -105,6 +121,9 @@ type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesNumeric>;
 type PropertyFormattingBooleanWithIcon<OBJ> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesBoolean>;
+type PropertyFormattingInput<OBJ> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, FormattingTypesInput>;
+
 /**
  * @description The blueprint for any formatting item constraint by its FormattingTypes value.
  */
@@ -114,4 +133,6 @@ export type PropertyFormatting<OBJ, TYPE = 'TEXT'> = TYPE extends FormattingType
     ? PropertyFormattingImage<OBJ>
     : TYPE extends 'BOOLEAN_WITH_ICON'
       ? PropertyFormattingBooleanWithIcon<OBJ>
-      : PropertyFormattingDefault<OBJ>;
+      : TYPE extends 'INPUT'
+        ? PropertyFormattingInput<OBJ>
+        : PropertyFormattingDefault<OBJ>;

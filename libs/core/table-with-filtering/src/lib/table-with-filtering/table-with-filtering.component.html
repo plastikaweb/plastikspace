@@ -58,5 +58,6 @@
   [actions]="tableStructure.actions || {}"
   [extraRowStyles]="tableStructure.extraRowStyles"
   (changeSorting)="onChangeSorting($event)"
+  (getData)="onGetData($event)"
   (delete)="onDelete($event)">
 </plastik-shared-table>

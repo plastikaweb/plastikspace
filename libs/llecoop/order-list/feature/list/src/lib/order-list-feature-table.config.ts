@@ -102,7 +102,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
       },
       caption: 'Llistat de comandes setmanals',
       actions: {
-        ACTIVATE: {
+        SET_ACTIVE: {
           visible: (item: LlecoopOrder) => item.status === 'waiting',
           description: () => 'Activa la comanda',
           order: 1,

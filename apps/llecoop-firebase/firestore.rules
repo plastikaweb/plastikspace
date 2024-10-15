@@ -39,5 +39,9 @@ service cloud.firestore {
       allow read: if hasSociAccess();
       allow write: if hasAdminAccess();
     }
+
+    match /order/{orderId}/user/{userId} {
+      allow read, write: if hasAdminAccess() || request.auth.uid == userId;
+    }
   }
 }

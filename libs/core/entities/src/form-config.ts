@@ -29,6 +29,7 @@ export interface SubmitFormConfig {
   resetOnSubmit?: boolean;
   compareCommonKeysOnly?: boolean;
   ignoredKeysWhileComparing?: string[];
+  emitOnChange?: boolean;
 }
 
 export interface FormSelectOption {

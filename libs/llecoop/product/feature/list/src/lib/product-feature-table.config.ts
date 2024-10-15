@@ -2,7 +2,7 @@ import { inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
-import { createdAt, updatedAt } from '@plastik/llecoop/util';
+import { createdAt, productCategoryColumn, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -43,30 +43,6 @@ export class LlecoopProductSearchFeatureTableConfig
     },
   };
 
-  private readonly category: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
-    key: 'categoryName',
-    title: 'Categoria',
-    propertyPath: 'category.name',
-    cssClasses: ['hidden md:flex md:min-w-[210px] justify-start'],
-    formatting: {
-      type: 'CUSTOM',
-      execute: (value, element) => {
-        if (value) {
-          const htmlString = element?.category?.color
-            ? `
-                              <p class="flex items-center gap-tiny justify-start">
-                                <span class="rounded-full w-sub h-sub p-sub"
-                                  style="background-color:${element?.category?.color}"></span>
-                                <span class="capitalize">${value}</span>
-                              </p>`
-            : `<p class="capitalize">${value}</p>`;
-          return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
-        }
-        return '-';
-      },
-    },
-  };
-
   private readonly price: TableColumnFormatting<LlecoopProduct, 'CURRENCY'> = {
     key: 'price',
     title: 'Preu',
@@ -75,11 +51,11 @@ export class LlecoopProductSearchFeatureTableConfig
     cssClasses: ['hidden md:flex min-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
-      extras: {
+      extras: () => ({
         numberDigitsInfo: '1.2-2',
         currency: '€',
         currencyCode: 'EUR',
-      },
+      }),
     },
   };
 
@@ -117,7 +93,7 @@ export class LlecoopProductSearchFeatureTableConfig
     },
   };
 
-  private readonly priceWithIva: TableColumnFormatting<LlecoopProduct, 'PERCENTAGE'> = {
+  private readonly priceWithIva: TableColumnFormatting<LlecoopProduct, 'CURRENCY'> = {
     key: 'priceWithIva',
     title: 'Preu amb IVA',
     propertyPath: 'priceWithIva',
@@ -125,11 +101,11 @@ export class LlecoopProductSearchFeatureTableConfig
     cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
-      extras: {
+      extras: () => ({
         numberDigitsInfo: '1.2-2',
         currency: '€',
         currencyCode: 'EUR',
-      },
+      }),
     },
   };
 
@@ -165,7 +141,7 @@ export class LlecoopProductSearchFeatureTableConfig
   private readonly columnProperties: TableColumnFormatting<LlecoopProduct, FormattingTypes>[] = [
     this.isAvailable,
     this.name,
-    this.category,
+    productCategoryColumn<LlecoopProduct>(),
     this.unit,
     this.stock,
     this.price,
@@ -189,10 +165,10 @@ export class LlecoopProductSearchFeatureTableConfig
       },
       caption: 'Llistat de productes',
       extraRowStyles: element => {
-        return !element.isAvailable ? 'marked' : '';
+        return !element.isAvailable ? 'marked-ko' : '';
       },
       actions: {
-        CUSTOM: {
+        SET_AVAILABILITY: {
           visible: () => true,
           description: () => 'Canviar la disponibilitat del producte',
           order: 1,

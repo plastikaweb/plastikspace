@@ -39,6 +39,27 @@
                 (click)="onGetRoute($event)"
                 (keyup)="onGetRoute($event)"></div>
             }
+            @case ('INPUT') {
+              <mat-form-field class="inline" [ngClass]="column.cssClasses?.[1] || ''">
+                @let extras = column.formatting.extras?.(row);
+
+                @if (extras?.prefix) {
+                  <span matTextPrefix>{{ extras?.prefix }}</span>
+                }
+                <input
+                  matInput
+                  [value]="row[column.key] || 0"
+                  [attr.type]="extras?.type || 'text'"
+                  [attr.min]="extras?.min || 0"
+                  [attr.max]="extras?.max || 100"
+                  [attr.step]="extras?.step || 1"
+                  [placeholder]="extras?.placeholder || ''"
+                  (change)="onChangeInput($event, row, column.formatting)" />
+                @if (extras?.suffix) {
+                  <span matTextSuffix>{{ extras?.suffix }}</span>
+                }
+              </mat-form-field>
+            }
             @default {
               <div
                 [ngClass]="column.cssClasses?.[1] || ''"
@@ -102,21 +123,23 @@
       [ngClass]="extraRowStyles?.(row) || ''"></mat-row>
   </mat-table>
 
-  <mat-paginator
-    #matPaginator
-    class="mt-md jus"
-    [hidePageSize]="paginationVisibility?.hidePageSize"
-    [length]="resultsLength"
-    [ngClass]="{
-      'paginator--hide': paginationVisibility?.hideRangeLabel,
-      'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons,
-    }"
-    [pageIndex]="pagination?.pageIndex || 0"
-    [pageSize]="pagination?.pageSize || resultsLength"
-    [pageSizeOptions]="pageSizeOptions"
-    [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
-    (page)="onChangePagination($event)">
-  </mat-paginator>
+  @if (!noPagination) {
+    <mat-paginator
+      #matPaginator
+      class="mt-md jus"
+      [hidePageSize]="paginationVisibility?.hidePageSize"
+      [length]="resultsLength"
+      [ngClass]="{
+        'paginator--hide': paginationVisibility?.hideRangeLabel,
+        'paginator--hide-range-buttons': paginationVisibility?.hideRangeButtons,
+      }"
+      [pageIndex]="pagination?.pageIndex || 0"
+      [pageSize]="pagination?.pageSize || resultsLength"
+      [pageSizeOptions]="pageSizeOptions"
+      [showFirstLastButtons]="!paginationVisibility?.hidePaginationFirstLastButtons"
+      (page)="onChangePagination($event)">
+    </mat-paginator>
+  }
 
   @if (!dataSource.data.length) {
     <ng-content select="[noResults]"></ng-content>

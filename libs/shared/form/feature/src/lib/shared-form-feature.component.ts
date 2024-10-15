@@ -28,6 +28,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   @Input() submitConfig?: SubmitFormConfig;
 
   @Output() changeEvent: EventEmitter<T> = new EventEmitter<T>();
+  @Output() temporaryChangeEvent: EventEmitter<T> = new EventEmitter<T>();
 
   options: FormlyFormOptions = {};
   form = new FormGroup({});
@@ -46,6 +47,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   onModelChange(model: T): void {
     this.model = model;
     if (!this.submitAvailable) this.emitChange();
+    if (this.submitConfig?.emitOnChange) this.temporaryChangeEvent.emit(model);
   }
 
   private onReset(): void {

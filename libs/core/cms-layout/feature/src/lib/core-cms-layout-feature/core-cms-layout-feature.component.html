@@ -81,6 +81,10 @@
           }}</mat-icon>
           <span matListItemTitle>{{ item.title }}</span>
         </mat-list-item>
+
+        @if (item.divider) {
+          <mat-divider></mat-divider>
+        }
       }
     </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>

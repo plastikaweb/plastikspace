@@ -67,7 +67,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'time',
-      formatting: { type: 'DATE', extras: { locale: 'en-US' } },
+      formatting: { type: 'DATE', extras: () => ({ locale: 'en-US' }) },
     });
     expect(result).toBe('9/1/21');
   });
@@ -77,7 +77,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'time',
-      formatting: { type: 'DATE_TIME', extras: { locale: 'en-US', timezone: '+0200' } },
+      formatting: { type: 'DATE_TIME', extras: () => ({ locale: 'en-US', timezone: '+0200' }) },
     });
     expect(result).toBe('9/1/21, 04:10:06');
   });
@@ -118,7 +118,7 @@ describe('DataFormatFactoryService', () => {
         key: 'a',
         title: 'Title',
         propertyPath: 'price',
-        formatting: { type: 'CURRENCY', extras: { numberDigitsInfo: '1.2-2' } },
+        formatting: { type: 'CURRENCY', extras: () => ({ numberDigitsInfo: '1.2-2' }) },
       });
       expect(result).toBe('$3.08');
     });
@@ -137,7 +137,7 @@ describe('DataFormatFactoryService', () => {
       key: 'a',
       title: 'Title',
       propertyPath: 'price',
-      formatting: { type: 'NUMBER', extras: { numberDigitsInfo: '1.0-0' } },
+      formatting: { type: 'NUMBER', extras: () => ({ numberDigitsInfo: '1.0-0' }) },
     });
     expect(result).toBe('3');
   });
@@ -160,13 +160,15 @@ describe('DataFormatFactoryService', () => {
         propertyPath: 'image',
         formatting: {
           type: 'IMAGE',
-          extras: {
+          extras: () => ({
             type: 'img',
-            title: 'alt text',
-          },
+            title: () => 'alt text',
+          }),
         },
       });
-      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '<img alt="alt text" src="thumb.png" class="">' });
+      expect(result).toEqual({
+        changingThisBreaksApplicationSecurity: '<img alt="alt text" src="thumb.png" class="">',
+      });
     });
 
     it('should return a value with image formatting and dynamic extras.title', () => {
@@ -176,13 +178,19 @@ describe('DataFormatFactoryService', () => {
         propertyPath: 'image',
         formatting: {
           type: 'IMAGE',
-          extras: {
+          extras: () => ({
             type: 'img',
-            title: item => item['title'] as string,
-          },
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            title: (item: any) => item['name'] as string,
+            classes: 'img-class',
+          }),
         },
       });
-      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '<img alt="TITLE" src="thumb.png" class="">' });
+
+      expect(result).toEqual({
+        changingThisBreaksApplicationSecurity:
+          '<img alt="TITLE" src="thumb.png" class="img-class">',
+      });
     });
   });
 
@@ -215,7 +223,7 @@ describe('DataFormatFactoryService', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
         title: 'Title',
-        propertyPath: 'title',
+        propertyPath: 'name',
         formatting: {
           type: 'CUSTOM',
           execute: title => `This is the ${title}`,

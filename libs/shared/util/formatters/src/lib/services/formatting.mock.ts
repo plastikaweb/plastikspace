@@ -3,7 +3,7 @@ import { FormattingInput } from '../formatting';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const objectMocked: Record<string, any> = {
   id: 'kkk0000ads',
-  title: 'TITLE',
+  name: 'TITLE',
   noFormatting: {
     child: {
       value: 12,
