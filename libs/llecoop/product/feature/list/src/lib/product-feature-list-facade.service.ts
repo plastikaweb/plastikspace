@@ -25,14 +25,15 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
   count = this.store.count;
+  routingToDetailPage = signal({ visible: true });
 
   formStructure = getLlecoopProductSearchFeatureFormConfig();
 
-  onSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: TableSorting): void {
     this.store.setSorting([active, direction]);
   }
 
-  onDelete(item: LlecoopProduct): void {
+  onTableActionDelete(item: LlecoopProduct): void {
     if (item.id) {
       this.confirmService
         .confirm(

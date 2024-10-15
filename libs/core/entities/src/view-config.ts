@@ -16,6 +16,7 @@ export interface ViewConfig<T extends string> {
   route: [ViewConfigRoute<T> | string];
   includedInNavigation?: boolean;
   routerLinkActiveOptionsExact?: boolean;
+  divider?: boolean;
 }
 
 type ViewConfigRoute<T extends string> = `/${Lowercase<T>}`;

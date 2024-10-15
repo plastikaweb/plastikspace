@@ -21,19 +21,6 @@ export function getLlecoopUserCreateFormConfig(): FormlyFieldConfig[] {
             validation: [Validators.email],
           },
         },
-        // {
-        //   key: 'password',
-        //   type: 'password-with-visibility',
-        //   className: 'w-full',
-        //   templateOptions: {
-        //     type: 'password',
-        //     label: 'Contrasenya',
-        //     placeholder: 'Contrasenya',
-        //     required: true,
-        //     minLength: 8,
-        //     maxLength: 25,
-        //   },
-        // },
       ],
     },
   ];

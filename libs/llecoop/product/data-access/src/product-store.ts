@@ -32,11 +32,14 @@ export const LlecoopProductStore = signalStore(
     selectedItemId: null,
   }),
   withEntities<LlecoopProduct>(),
-  withComputed(({ ids, selectedItemId, entityMap }) => ({
+  withComputed(({ ids, selectedItemId, entityMap, entities }) => ({
     count: computed(() => ids().length),
     selectedItem: computed(() => {
       const id = selectedItemId();
       return id !== null ? entityMap()[id] : null;
+    }),
+    getAvailableProducts: computed(() => {
+      return entities().filter(product => product.isAvailable);
     }),
   })),
   withMethods(
@@ -135,16 +138,16 @@ export const LlecoopProductStore = signalStore(
           switchMap(product => {
             return productService.delete(product).pipe(
               tapResponse({
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                next: () => {},
-                error: error =>
+                next: () => {
+                  storeNotificationService.create(`Producte "${product.name}" eliminat`, 'SUCCESS'),
+                    state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `No s'ha pogut eliminar el producte "${product.name}": ${error}`,
                     'ERROR'
-                  ),
-                complete: () => {
-                  storeNotificationService.create(`Producte "${product.name}" eliminat`, 'SUCCESS'),
-                    state.dispatch(activityActions.setActivity({ isActive: false }));
+                  );
                 },
               })
             );

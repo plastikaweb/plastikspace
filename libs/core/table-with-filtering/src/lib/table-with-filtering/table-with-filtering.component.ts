@@ -28,7 +28,7 @@ export class TableWithFilteringComponent {
   protected filterCriteria = signal('');
 
   onChangeSorting(tableSorting: TableSorting): void {
-    this.facade.onSorting?.(tableSorting);
+    this.facade.onTableSorting?.(tableSorting);
   }
 
   onChangeFiltering(model: { text: string }): void {
@@ -38,6 +38,10 @@ export class TableWithFilteringComponent {
   }
 
   onDelete(item: unknown): void {
-    this.facade.onDelete(item);
+    this.facade.onTableActionDelete?.(item);
+  }
+
+  onGetData(data: unknown[]): void {
+    this.facade.onGetData?.(data);
   }
 }

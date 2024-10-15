@@ -63,13 +63,9 @@ export const appRoutes: Routes = [
       import('@plastik/auth/request-password').then(routes => routes.authRequestPasswordRoutes),
   },
   {
-    path: 'admin',
-    canActivate: [isLoggedGuard, AuthGuard],
-    data: {
-      authGuardPipe: adminOnly,
-    },
+    path: '',
+    canActivate: [isLoggedGuard],
     loadComponent: () => CoreCmsLayoutFeatureComponent,
-
     providers: [
       {
         provide: MatPaginatorIntl,
@@ -78,82 +74,98 @@ export const appRoutes: Routes = [
     ],
     children: [
       {
-        path: 'categoria/crear',
-        loadChildren: () =>
-          import('@plastik/llecoop/category/detail').then(
-            routes => routes.categoryFeatureDetailCreateRoutes
-          ),
+        path: 'admin',
+        canActivate: [AuthGuard],
+        data: {
+          authGuardPipe: adminOnly,
+        },
+        children: [
+          {
+            path: 'categoria/crear',
+            loadChildren: () =>
+              import('@plastik/llecoop/category/detail').then(
+                routes => routes.categoryFeatureDetailCreateRoutes
+              ),
+          },
+          {
+            path: 'categoria/:id',
+            loadChildren: () =>
+              import('@plastik/llecoop/category/detail').then(
+                routes => routes.categoryFeatureDetailUpdateRoutes
+              ),
+          },
+          {
+            path: 'categoria',
+            loadChildren: () =>
+              import('@plastik/llecoop/category/list').then(
+                routes => routes.llecoopCategoryFeatureRoutes
+              ),
+          },
+          {
+            path: 'producte/crear',
+            loadChildren: () =>
+              import('@plastik/llecoop/product/detail').then(
+                routes => routes.productFeatureDetailCreateRoutes
+              ),
+          },
+          {
+            path: 'producte/:id',
+            loadChildren: () =>
+              import('@plastik/llecoop/product/detail').then(
+                routes => routes.productFeatureDetailUpdateRoutes
+              ),
+          },
+          {
+            path: 'producte',
+            loadChildren: () =>
+              import('@plastik/llecoop/product/list').then(
+                routes => routes.llecoopProductFeatureListRoutes
+              ),
+          },
+          {
+            path: 'usuari',
+            loadChildren: () =>
+              import('@plastik/llecoop/user/list').then(
+                routes => routes.llecoopUserFeatureListRoutes
+              ),
+          },
+          {
+            path: 'usuari/crear',
+            loadChildren: () =>
+              import('@plastik/llecoop/user/create').then(
+                routes => routes.llecoopUserFeatureCreateRoutes
+              ),
+          },
+          {
+            path: 'comanda',
+            loadChildren: () =>
+              import('@plastik/llecoop/order-list/list').then(
+                routes => routes.llecoopOrderListFeatureListRoutes
+              ),
+          },
+        ],
       },
       {
-        path: 'categoria/:id',
-        loadChildren: () =>
-          import('@plastik/llecoop/category/detail').then(
-            routes => routes.categoryFeatureDetailUpdateRoutes
-          ),
-      },
-      {
-        path: 'categoria',
-        loadChildren: () =>
-          import('@plastik/llecoop/category/list').then(
-            routes => routes.llecoopCategoryFeatureRoutes
-          ),
-      },
-      {
-        path: 'producte/crear',
-        loadChildren: () =>
-          import('@plastik/llecoop/product/detail').then(
-            routes => routes.productFeatureDetailCreateRoutes
-          ),
-      },
-      {
-        path: 'producte/:id',
-        loadChildren: () =>
-          import('@plastik/llecoop/product/detail').then(
-            routes => routes.productFeatureDetailUpdateRoutes
-          ),
-      },
-      {
-        path: 'producte',
-        loadChildren: () =>
-          import('@plastik/llecoop/product/list').then(
-            routes => routes.llecoopProductFeatureListRoutes
-          ),
-      },
-      {
-        path: 'usuari',
-        loadChildren: () =>
-          import('@plastik/llecoop/user/list').then(routes => routes.llecoopUserFeatureListRoutes),
-      },
-      {
-        path: 'usuari/crear',
-        loadChildren: () =>
-          import('@plastik/llecoop/user/create').then(
-            routes => routes.llecoopUserFeatureCreateRoutes
-          ),
-      },
-    ],
-  },
-  {
-    path: 'soci',
-    canActivate: [isLoggedGuard],
-    loadComponent: () => CoreCmsLayoutFeatureComponent,
-    children: [
-      {
-        path: 'order-list',
-        loadChildren: () =>
-          import('@plastik/llecoop/order-list/list').then(
-            routes => routes.llecoopOrderListFeatureListRoutes
-          ),
+        path: 'soci',
+        children: [
+          {
+            path: 'comanda-activa',
+            loadChildren: () =>
+              import('@plastik/llecoop/order/detail').then(
+                routes => routes.llecoopOrderFeatureDetailRoutes
+              ),
+          },
+        ],
       },
     ],
   },
   {
     path: '',
-    redirectTo: 'soci/order-list',
+    redirectTo: 'soci/comanda',
     pathMatch: 'full',
   },
   {
     path: '**',
-    redirectTo: 'soci/order-list',
+    redirectTo: 'soci/comanda',
   },
 ];

@@ -27,7 +27,6 @@ export function headerConfig(): CoreCmsLayoutHeaderConfig {
           name: 'logout',
           title: 'Tancar sessió',
           icon: 'logout',
-          // eslint-disable-next-line no-console
           action: () => firebaseAuthService.logout(),
         },
       ],
@@ -41,7 +40,7 @@ export function viewConfig() {
 
   return [
     {
-      id: 3,
+      id: 1,
       name: 'product',
       title: 'Productes',
       icon: 'shopping_cart',
@@ -50,7 +49,7 @@ export function viewConfig() {
       routerLinkActiveOptionsExact: false,
     },
     {
-      id: 1,
+      id: 2,
       name: 'category',
       title: 'Categories',
       icon: 'category',
@@ -68,7 +67,7 @@ export function viewConfig() {
     //   routerLinkActiveOptionsExact: false,
     // },
     {
-      id: 4,
+      id: 3,
       name: 'user',
       title: 'Usuaris',
       icon: 'person',
@@ -77,11 +76,21 @@ export function viewConfig() {
       routerLinkActiveOptionsExact: false,
     },
     {
-      id: 5,
+      id: 4,
       name: 'order-list',
-      title: 'Comandes setmanals',
+      title: 'Comandes',
       icon: 'shopping_bag',
-      route: [`/soci/order-list`],
+      route: [`/admin/comanda`],
+      includedInNavigation: isAdmin,
+      routerLinkActiveOptionsExact: false,
+      divider: true,
+    },
+    {
+      id: 5,
+      name: 'order',
+      title: 'Comanda activa',
+      icon: 'shopping_cart',
+      route: [`/soci/comanda-activa`],
       includedInNavigation: true,
       routerLinkActiveOptionsExact: false,
     },

@@ -1,7 +1,6 @@
 import { InjectionToken, Signal } from '@angular/core';
 import { ButtonConfig } from '@plastik/shared/button';
 import { LayoutPosition, SvgIconConfig } from '@plastik/shared/entities';
-import { Observable } from 'rxjs';
 
 export type ViewConfigRoute<T extends string> =
   | `/${Lowercase<T>}`
@@ -36,7 +35,7 @@ export interface CoreCmsLayoutHeaderConfig {
   title: string;
   extendedTitle?: string;
   mainIcon?: SvgIconConfig;
-  socialLinks?: {
+  headerActions?: {
     position: LayoutPosition;
     config: ButtonConfig[];
   };

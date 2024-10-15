@@ -40,7 +40,12 @@
       "@plastik/llecoop/category/list": ["libs/llecoop/category/feature/list/src/index.ts"],
       "@plastik/llecoop/data-access": ["libs/llecoop/data-access/src/index.ts"],
       "@plastik/llecoop/entities": ["libs/llecoop/entities/src/index.ts"],
+      "@plastik/llecoop/order-list/data-access": [
+        "libs/llecoop/order-list/data-access/src/index.ts"
+      ],
       "@plastik/llecoop/order-list/list": ["libs/llecoop/order-list/feature/list/src/index.ts"],
+      "@plastik/llecoop/order/data-access": ["libs/llecoop/order/data-access/src/index.ts"],
+      "@plastik/llecoop/order/detail": ["libs/llecoop/order/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/data-access": ["libs/llecoop/product/data-access/src/index.ts"],
       "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],

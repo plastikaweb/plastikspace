@@ -1,0 +1,14 @@
+@if (label(); as label) {
+  <mat-label>{{ label }}</mat-label>
+}
+<plastik-shared-table
+  [data]="tableData()"
+  [caption]="tableCaption()"
+  [columnProperties]="tableColumnProperties()"
+  [resultsLength]="tableDataLength()"
+  [sort]="tableSorting()"
+  [paginationVisibility]="tablePaginationVisibility()"
+  [actions]="tableActions()"
+  [extraRowStyles]="tableExtraRowStyles()"
+  (getChangedData)="onGetChangedData($event)">
+</plastik-shared-table>

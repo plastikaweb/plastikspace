@@ -11,16 +11,37 @@ service cloud.firestore {
       return request.auth.token.email_verified != false;
     }
 
+    function isAdmin() {
+      return 'isAdmin' in request.auth.token;
+    }
+
+    function hasSociAccess() {
+      return isAuthenticated() && isVerified();
+    }
+
+    function hasAdminAccess() {
+      return isAuthenticated() && isVerified() && isAdmin();
+    }
+
     match /category/{categoryId} {
-      allow read, write: if isAuthenticated() && isVerified();
+      allow read, write: if hasAdminAccess();
     }
 
     match /product/{productId} {
-      allow read, write: if isAuthenticated() && isVerified();
+      allow read, write: if hasAdminAccess();
     }
 
     match /user/{userId} {
-      allow read, write: if isAuthenticated() && isVerified();
+      allow read, write: if hasAdminAccess();
+    }
+
+    match /order-list/{orderId} {
+      allow read: if hasSociAccess();
+      allow write: if hasAdminAccess();
+    }
+
+    match /order/{orderId}/user/{userId} {
+      allow read, write: if hasAdminAccess() || request.auth.uid == userId;
     }
   }
 }

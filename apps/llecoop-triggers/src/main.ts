@@ -83,3 +83,9 @@ export const onCreateWhiteListedUserCheckIfUserAlreadyExists = functions.firesto
       await import('./user/onCreateWhiteListedUserCheckIfUserAlreadyExists')
     ).default(snapshot);
   });
+
+export const onDeleteUserDeleteUserFromAuth = functions.firestore
+  .document('user/{userId}')
+  .onDelete(async snapshot => {
+    await (await import('./user/onDeleteUserDeleteUserFromAuth')).default(snapshot);
+  });

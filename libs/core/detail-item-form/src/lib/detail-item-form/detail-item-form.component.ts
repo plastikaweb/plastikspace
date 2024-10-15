@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -9,7 +9,14 @@ import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
 @Component({
   selector: 'plastik-detail-item-form',
   standalone: true,
-  imports: [SharedFormFeatureModule, MatIconModule, TitleCasePipe, MatButtonModule, RouterLink],
+  imports: [
+    SharedFormFeatureModule,
+    MatIconModule,
+    TitleCasePipe,
+    MatButtonModule,
+    RouterLink,
+    NgClass,
+  ],
   templateUrl: './detail-item-form.component.html',
   styleUrl: './detail-item-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,5 +26,9 @@ export class DetailItemFormComponent {
 
   onSubmit(data: object): void {
     this.facade.onSubmit?.(data);
+  }
+
+  onChange(data: object): void {
+    this.facade.onChange?.(data);
   }
 }

@@ -12,10 +12,20 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   tableData: Signal<T[]>;
   tableSorting?: Signal<TableSortingConfig>;
   count: Signal<number>;
-  formStructure?: Signal<FormlyFieldConfig[]>;
+  onTableSorting?(sorting: TableSorting): void;
+  onTableActionDelete?(item: unknown): void;
+  onGetData?(data: unknown[]): void;
   viewConfig: Signal<ViewConfigUI>;
-  onSorting?(sorting: TableSorting): void;
-  onDelete(item: unknown): void;
+  formStructure?: Signal<FormlyFieldConfig[]>;
+  routingToDetailPage: Signal<{ visible: boolean; path?: string[]; label?: string }>;
+  viewExtraActions?: Signal<
+    {
+      label: string;
+      icon: string;
+      execute: (element?: T) => void;
+      disabled: (element?: T) => boolean;
+    }[]
+  >;
 }
 
 export const TABLE_WITH_FILTERING_FACADE = new InjectionToken<TableWithFilteringFacade<BaseEntity>>(
