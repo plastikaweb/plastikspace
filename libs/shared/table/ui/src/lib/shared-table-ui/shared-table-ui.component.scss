@@ -20,10 +20,9 @@
     }
   }
 
-  .mat-mdc-cell:not(.mat-cell-actions) * {
+  .mat-mdc-cell:not(.mat-cell-actions, .mat-cell-input) * {
     overflow: hidden;
     text-overflow: ellipsis;
-    display: block;
     transition: 0.2s;
     padding: 0.35em 0;
   }
@@ -32,13 +31,27 @@
     margin: 0;
     padding: 0;
   }
+
+  .mat-mdc-cell {
+    .mdc-text-field--no-label .mat-mdc-form-field-infix {
+      --mat-form-field-container-vertical-padding: 0;
+      --mat-form-field-container-vertical-padding: 0;
+    }
+    .mat-mdc-form-field-subscript-wrapper {
+      --mat-form-field-subscript-text-line-height: 0;
+      display: none;
+    }
+  }
 }
 .mat-mdc-table > .mat-mdc-row {
   @apply items-stretch;
   min-height: var(--plastik-mdc-table-row-min-height, auto);
   max-height: var(--plastik-mdc-table-row-max-height, auto);
-  &.marked {
-    background-color: var(--plastik-mdc-table-row-marked-bg-color, #f8c8c8) !important;
+  &.marked-ok {
+    background-color: var(--plastik-mdc-table-row-marked-ok-bg-color, #a1e380) !important;
+  }
+  &.marked-ko {
+    background-color: var(--plastik-mdc-table-row-marked-ko-bg-color, #f8c8c8) !important;
   }
 }
 

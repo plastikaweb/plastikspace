@@ -1,1 +1,1 @@
-export type LlecoopViews = 'category' | 'product' | 'user' | 'order-list';
+export type LlecoopViews = 'category' | 'product' | 'user' | 'order-list' | 'order';

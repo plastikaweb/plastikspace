@@ -32,9 +32,9 @@ export function createFirebaseTimestampTableColumn<T extends BaseEntity>(
     cssClasses,
     formatting: {
       type: 'FIREBASE_TIMESTAMP',
-      extras: {
+      extras: () => ({
         dateDigitsInfo,
-      },
+      }),
     },
   };
 }

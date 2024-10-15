@@ -2,7 +2,9 @@ import { inject, Injectable } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 import { isNil } from '@plastik/shared/objects';
 
+import { Timestamp } from '@angular/fire/firestore';
 import {
+  FormattingExtras,
   FormattingInput,
   FormattingOutput,
   FormattingTypes,
@@ -10,7 +12,6 @@ import {
   PropertyFormattingConf,
 } from '../formatting';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
-import { Timestamp } from '@angular/fire/firestore';
 
 @Injectable()
 /**
@@ -37,7 +38,8 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
   ): SafeHtml {
     const getValueToShow = typeof propertyPath === 'string' ? propertyPath : propertyPath(item);
     const value = this.getValueFromRow(getValueToShow, item);
-    const { type, extras = {} } = formatting;
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const { type, extras } = formatting;
 
     switch (type) {
       case 'DATE':
@@ -59,7 +61,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
       case 'TITLE_CASE':
         return this.formatter.titleCaseFormatter(String(value));
       case 'IMAGE':
-        return this.formatter.imageFormatter(String(value), extras, item);
+        return this.formatter.imageFormatter(String(value), item, extras);
       case 'CUSTOM':
       case 'LINK':
         return this.formatter.customFormatter(
@@ -70,6 +72,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
           extraConfig
         );
       case 'TEXT':
+      case 'INPUT':
       default:
         return this.formatter.defaultFormatter(String(value));
     }

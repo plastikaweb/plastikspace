@@ -4,7 +4,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopOrder, LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
@@ -96,12 +96,12 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
     const availableProducts = this.productStore
       .getAvailableProducts()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .map(({ stock, isAvailable, category, ...rest }) => ({
+      .map(({ stock, isAvailable, ...rest }) => ({
         ...rest,
         initQuantity: 0,
         finalQuantity: 0,
-        initOrderPrice: 0,
-        finalOrderPrice: 0,
+        initPrice: 0,
+        finalPrice: 0,
         delivered: false,
       }));
 

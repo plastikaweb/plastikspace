@@ -1,0 +1,13 @@
+<plastik-input-table
+  [tableCaption]="props.tableStructure().caption || ''"
+  [tableColumnProperties]="props.tableStructure().columnProperties || []"
+  [tableActions]="props.tableStructure().actions || {}"
+  [tableSorting]="props.tableStructure().sort"
+  [tableExtraRowStyles]="props.tableStructure().extraRowStyles"
+  [tableData]="props.tableData()"
+  [tableDataLength]="props.tableData().length"
+  [formControl]="formControl"
+  [formlyAttributes]="field"
+  [tableRowValueConditionFn]="props.tableRowValueConditionFn"
+  [label]="props.label || ''">
+</plastik-input-table>

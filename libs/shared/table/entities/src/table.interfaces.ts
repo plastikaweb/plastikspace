@@ -35,7 +35,9 @@ export type TableControlActionTypes =
   | 'PARTIAL_EDIT'
   | 'PREVIEW'
   | 'SELECT'
-  | ('CUSTOM' & Uppercase<string>);
+  | `CLEAR_${Uppercase<string>}`
+  | `SET_${Uppercase<string>}`
+  | `UPDATE_${Uppercase<string>}`;
 
 export interface TableControlActionDefinition<T> {
   visible: (element: T) => boolean;

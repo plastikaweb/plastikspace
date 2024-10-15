@@ -13,7 +13,9 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -21,7 +23,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { BaseEntity } from '@plastik/core/entities';
-import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
+import {
+  FormattingTypes,
+  PropertyFormattingConf,
+  SharedUtilFormattersModule,
+} from '@plastik/shared/formatters';
 import {
   PageEventConfig,
   TableColumnFormatting,
@@ -52,12 +58,16 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
     OrderTableActionsElementsPipe,
     KeyValuePipe,
     NgClass,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrls: ['./shared-table-ui.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedTableUiComponent<T extends BaseEntity> implements OnChanges, AfterViewInit {
+export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
+  implements OnChanges, AfterViewInit
+{
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
 
@@ -139,6 +149,12 @@ export class SharedTableUiComponent<T extends BaseEntity> implements OnChanges, 
    */
   @Output()
   delete = new EventEmitter<T>();
+
+  @Output()
+  getData = new EventEmitter<T[]>();
+
+  @Output()
+  getChangedData = new EventEmitter<T>();
 
   @ViewChild(MatTable) matTable!: MatTable<T>;
   @ViewChild(MatPaginator) matPaginator!: MatPaginator;
@@ -225,5 +241,25 @@ export class SharedTableUiComponent<T extends BaseEntity> implements OnChanges, 
   onGetRoute({ target }: Event) {
     const route = (target as HTMLAnchorElement).getAttribute('data-link');
     this.router.navigateByUrl(route || '/');
+  }
+
+  onGetData(): void {
+    this.getData.emit([...this.data]);
+  }
+
+  protected onChangeInput(
+    event: Event,
+    row: T,
+    formatting: PropertyFormattingConf<T, 'INPUT'>
+  ): void {
+    event.stopPropagation();
+    const value = (event.target as HTMLInputElement).value;
+    const newRow = formatting?.onInputChanges?.(value, row);
+    row = { ...row, ...newRow };
+    this.getChangedData.emit(row);
+    this.data = this.data.map(item => (item.id === row.id ? row : item));
+    this.dataSource.data = [...this.data];
+    this.getData.emit(this.data);
+    this.cdr.detectChanges();
   }
 }

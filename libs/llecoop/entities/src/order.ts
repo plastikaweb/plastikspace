@@ -1,13 +1,13 @@
-import { DocumentReference, Timestamp } from '@angular/fire/firestore';
-import { BaseEntity } from '@plastik/core/entities';
-import { LlecoopProduct } from './product';
+import { DocumentReference } from '@angular/fire/firestore';
+import { BaseEntity, FormSelectOption } from '@plastik/core/entities';
+import { LlecoopBaseProduct } from './product';
 import { LlecoopUser } from './user';
 
-export type LlecoopOrderProduct = Omit<LlecoopProduct, 'stock' | 'isAvailable'> & {
+export type LlecoopOrderProduct = LlecoopBaseProduct & {
   initQuantity: number;
   finalQuantity: number;
-  initOrderPrice: number;
-  finalOrderPrice: number;
+  initPrice: number;
+  finalPrice: number;
   extraInfo?: string;
   delivered: boolean;
 };
@@ -24,9 +24,79 @@ export interface LlecoopUserOrder extends BaseEntity {
   orderRef: DocumentReference<LlecoopOrder>;
   cart: LlecoopOrderProduct[];
   address: string;
-  deliveryTime: Timestamp;
+  deliveryType: 'pickup' | 'delivery';
+  deliveryTime: FormSelectOption['value'];
+  deliveryDate: FormSelectOption['value'];
   deliveryInfo?: string;
 }
+
+export const llecoopUserOrderTimeOptions: Record<
+  LlecoopUserOrder['deliveryType'],
+  FormSelectOption[]
+> = {
+  pickup: [
+    {
+      value: '10/11',
+      label: 'entre les 10h i les 11h',
+    },
+    {
+      value: '11/12',
+      label: 'entre les 11h i les 12h',
+    },
+    {
+      value: '12/13',
+      label: 'entre les 12h i les 13h',
+    },
+    {
+      value: '13/14',
+      label: 'entre les 13h i les 14h',
+    },
+  ],
+  delivery: [
+    {
+      value: '16/17',
+      label: 'entre les 16h i les 17h',
+    },
+    {
+      value: '17/18',
+      label: 'entre les 17h i les 18h',
+    },
+    {
+      value: '18/19',
+      label: 'entre les 18h i les 19h',
+    },
+    {
+      value: '19/20',
+      label: 'entre les 19h i les 20h',
+    },
+    {
+      value: '20/21',
+      label: 'entre les 20h i les 21h',
+    },
+  ],
+} as const;
+
+export const llecoopUserOrderDateOptions: Record<
+  LlecoopUserOrder['deliveryType'],
+  FormSelectOption[]
+> = {
+  pickup: [
+    {
+      value: 'wednesday',
+      label: 'dimecres',
+    },
+    {
+      value: 'tuesday',
+      label: 'dijous',
+    },
+  ],
+  delivery: [
+    {
+      value: 'tuesday',
+      label: 'dijous',
+    },
+  ],
+} as const;
 
 export const llecoopOrderStatus: Record<
   LlecoopOrder['status'],

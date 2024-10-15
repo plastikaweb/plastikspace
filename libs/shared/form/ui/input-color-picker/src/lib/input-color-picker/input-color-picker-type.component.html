@@ -1,13 +1,13 @@
 <div class="flex items-center justify-center gap-sm">
-  <mat-label>{{ to.label }}</mat-label>
+  <mat-label>{{ props.label }}</mat-label>
   <ngx-colors
     ngx-colors-trigger
     style="display: inline-block; margin: 5px"
-    [acceptLabel]="to.acceptLabel || 'Accept'"
-    [cancelLabel]="to.cancelLabel || 'Cancel'"
+    [acceptLabel]="props.acceptLabel || 'Accept'"
+    [cancelLabel]="props.cancelLabel || 'Cancel'"
     [formControl]="formControl"
     [format]="'hex'"
-    [hideColorPicker]="to.hideColorPicker || false"
-    [hideTextInput]="to.hideTextInput || false"
-    [palette]="to.colorPalette"></ngx-colors>
+    [hideColorPicker]="props.hideColorPicker || false"
+    [hideTextInput]="props.hideTextInput || false"
+    [palette]="props.colorPalette"></ngx-colors>
 </div>

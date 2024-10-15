@@ -18,13 +18,16 @@
     --xxl: calc(var(--xl) * var(--scale));
 
     /* Colors */
+    --primary-50: #{mat.m2-get-color-from-palette(palette.$md-primary, 50)};
     --primary-100: #{mat.m2-get-color-from-palette(palette.$md-primary, 100)};
+    --primary-200: #{mat.m2-get-color-from-palette(palette.$md-primary, 200)};
     --primary-700: #{mat.m2-get-color-from-palette(palette.$md-primary, 700)};
     --primary-500: #{mat.m2-get-color-from-palette(palette.$md-primary, 500)};
     --accent-100: #{mat.m2-get-color-from-palette(palette.$md-accent, 100)};
     --accent-400: #{mat.m2-get-color-from-palette(palette.$md-accent, 400)};
     --accent-700: #{mat.m2-get-color-from-palette(palette.$md-accent, 700)};
     --warn-50: #{mat.m2-get-color-from-palette(palette.$md-warn, 50)};
+    --warn-100: #{mat.m2-get-color-from-palette(palette.$md-warn, 100)};
     --warn: #{mat.m2-get-color-from-palette(palette.$md-warn, 500)};
     --warn-700: #{mat.m2-get-color-from-palette(palette.$md-warn, 700)};
     --warn-900: #{mat.m2-get-color-from-palette(palette.$md-warn, 900)};
@@ -63,7 +66,8 @@
     /* Table */
     --plastik-mdc-table-row-min-height: 40px;
     --plastik-mdc-table-row-max-height: 160px;
-    --plastik-mdc-table-row-marked-bg-color: var(--warn-50);
+    --plastik-mdc-table-row-marked-ok-bg-color: var(--primary-100);
+    --plastik-mdc-table-row-marked-ko-bg-color: var(--warn-100);
 
     /* Form */
     --mat-form-field-container-text-line-height: 2.4;

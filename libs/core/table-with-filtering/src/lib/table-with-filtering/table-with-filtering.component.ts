@@ -40,4 +40,8 @@ export class TableWithFilteringComponent {
   onDelete(item: unknown): void {
     this.facade.onTableActionDelete?.(item);
   }
+
+  onGetData(data: unknown[]): void {
+    this.facade.onGetData?.(data);
+  }
 }
