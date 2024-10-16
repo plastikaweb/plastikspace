@@ -4,18 +4,21 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade, ExtraFormAction } from '@plastik/core/detail-edit-view';
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore, LlecoopOrderStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  LLecoopOrderListStore,
+  LlecoopOrderUserStore,
+} from '@plastik/llecoop/order-list/data-access';
 import { getLlecoopOrderDetailFormConfig } from './order-feature-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<LlecoopUserOrder> {
-  private readonly store = inject(LlecoopOrderStore);
+  private readonly orderUserStore = inject(LlecoopOrderUserStore);
   private readonly orderListStore = inject(LLecoopOrderListStore);
 
   private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'order')[0];
-  model = this.store.selectedItem;
+  model = this.orderUserStore.selectedItem;
   formFullWidth = signal(true);
   formSubmitConfig = signal({
     label: 'Desar comanda',
@@ -53,7 +56,7 @@ export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<Lle
 
   onSubmit(data: Partial<LlecoopUserOrder>): void {
     // this.model()?.id ? this.store.update(data) : this.store.create(data);
-    this.store.create({
+    this.orderUserStore.create({
       ...data,
       name: this.orderListStore.currentOrder()?.name || '',
     });

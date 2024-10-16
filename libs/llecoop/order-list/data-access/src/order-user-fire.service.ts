@@ -4,6 +4,8 @@ import {
   collection,
   collectionData,
   collectionGroup,
+  deleteDoc,
+  doc,
   Firestore,
   query,
   Timestamp,
@@ -16,7 +18,7 @@ import { from, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderFireService {
+export class LlecoopOrderUserFireService {
   private readonly firestore = inject(Firestore);
   private readonly authService = inject(FirebaseAuthService);
   private readonly ordersGroup = collectionGroup(this.firestore, 'orders');
@@ -40,5 +42,10 @@ export class LlecoopOrderFireService {
         updatedAt: Timestamp.now(),
       })
     );
+  }
+
+  delete(item: LlecoopUserOrder, currentOrderId: LlecoopOrder['id']) {
+    const document = doc(this.firestore, `order-list/${currentOrderId}/orders/${item.id}`);
+    return from(deleteDoc(document));
   }
 }
