@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'llecoop-order',
-  preset: '../../../../jest.preset.js',
+  displayName: 'llecoop-user-order-feature-list',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/llecoop/order/data-access',
+  coverageDirectory: '../../../../../coverage/libs/llecoop/order-list/feature/user-order-list',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

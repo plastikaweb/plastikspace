@@ -8,5 +8,11 @@
     "types": []
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../../shared/auth/firebase/data-access/src/isLogged.guard.ts",
+    "../../shared/auth/firebase/data-access/src/isNotLogged.guard.ts",
+    "../../shared/auth/firebase/data-access/src/isAdmin.guard.ts",
+    "../order-list/data-access/src/isAnActiveOrderList.guard.ts"
+  ]
 }

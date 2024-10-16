@@ -36,11 +36,7 @@ export const LLecoopOrderListStore = signalStore(
     count: computed(() => ids().length),
     currentOrder: computed(() => entities().find(order => order.status === 'progress')),
     currentOrderProducts: computed(() => {
-      const products =
-        entities().find(order => order.status === 'progress')?.availableProducts || [];
-      return products.map((category, ...product) => ({
-        ...product,
-      }));
+      return entities().find(order => order.status === 'progress')?.availableProducts || [];
     }),
     currentOrderCount: computed(() => {
       return entities().find(order => order.status === 'progress')?.availableProducts.length || 0;

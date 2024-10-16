@@ -11,7 +11,7 @@ import { LlecoopOrderListListFacadeService } from './order-list-list-facade.serv
 export const llecoopOrderListFeatureListRoutes: Route[] = [
   {
     path: '',
-    title: 'Llista de comandes setmanals',
+    title: 'Llista de comandes',
     component: TableWithFilteringComponent,
     providers: [
       {

@@ -4,8 +4,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade, ExtraFormAction } from '@plastik/core/detail-edit-view';
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import { LlecoopOrderStore } from '@plastik/llecoop/order/data-access';
+import { LLecoopOrderListStore, LlecoopOrderStore } from '@plastik/llecoop/order-list/data-access';
 import { getLlecoopOrderDetailFormConfig } from './order-feature-detail-form.config';
 
 @Injectable({
@@ -54,7 +53,10 @@ export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<Lle
 
   onSubmit(data: Partial<LlecoopUserOrder>): void {
     // this.model()?.id ? this.store.update(data) : this.store.create(data);
-    this.store.create(data);
+    this.store.create({
+      ...data,
+      name: this.orderListStore.currentOrder()?.name || '',
+    });
   }
 
   private calculateTotalPrice(cart: LlecoopOrderProduct[]): number {

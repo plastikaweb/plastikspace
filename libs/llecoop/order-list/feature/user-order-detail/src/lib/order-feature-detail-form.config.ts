@@ -7,12 +7,10 @@ import {
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import { LlecoopOrderStore } from '@plastik/llecoop/order/data-access';
 import { filter, tap } from 'rxjs';
 import { LlecoopOrderDetailFormTableConfig } from './order-detail-table-form.config';
 
 export function getLlecoopOrderDetailFormConfig(): FormlyFieldConfig[] {
-  const orderStore = inject(LlecoopOrderStore);
   const orderListStore = inject(LLecoopOrderListStore);
 
   const tableColumnProperties = inject(LlecoopOrderDetailFormTableConfig);
