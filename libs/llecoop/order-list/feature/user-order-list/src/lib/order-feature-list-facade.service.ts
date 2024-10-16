@@ -4,9 +4,13 @@ import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore, LlecoopOrderStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  LLecoopOrderListStore,
+  LlecoopOrderUserStore,
+} from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { TableSorting } from '@plastik/shared/table/entities';
+import { filter, take } from 'rxjs';
 import { getLlecoopOrderSearchFeatureFormConfig } from './order-feature-search-form.config';
 import { LlecoopOrderSearchFeatureTableConfig } from './order-feature-table.config';
 
@@ -24,7 +28,7 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
         }[]
       >
     | undefined;
-  private readonly store = inject(LlecoopOrderStore);
+  private readonly orderUserStore = inject(LlecoopOrderUserStore);
   private readonly orderListStore = inject(LLecoopOrderListStore);
   private readonly table = inject(LlecoopOrderSearchFeatureTableConfig);
   private readonly confirmService = inject(SharedConfirmDialogService);
@@ -32,15 +36,15 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order')[0]);
 
   tableStructure = this.table.getTableStructure();
-  tableData = this.store.entities;
-  tableSorting = this.store.sorting;
-  count = this.store.count;
+  tableData = this.orderUserStore.entities;
+  tableSorting = this.orderUserStore.sorting;
+  count = this.orderUserStore.count;
   routingToDetailPage = computed(() => {
     return {
       visible: true,
       label: 'Fer comanda setmanal',
       disabled:
-        this.store
+        this.orderUserStore
           .entities()
           .some(entity => entity['orderListId'] === this.orderListStore.currentOrder()?.id) &&
         this.orderListStore.entities().some(entity => entity.status === 'progress'),
@@ -49,20 +53,20 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
   formStructure = getLlecoopOrderSearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.store.setSorting([active, direction]);
+    this.orderUserStore.setSorting([active, direction]);
   }
 
-  // onTableActionDelete(item: LlecoopProduct): void {
-  //   if (item.id) {
-  //     this.confirmService
-  //       .confirm(
-  //         'Eliminar producte',
-  //         `Segur que vols eliminar "${item.name}"?`,
-  //         'Cancel·lar',
-  //         'Eliminar'
-  //       )
-  //       .pipe(take(1), filter(Boolean))
-  //       .subscribe(() => this.store.delete(item));
-  //   }
-  // }
+  onTableActionDelete(item: LlecoopUserOrder): void {
+    if (item.id) {
+      this.confirmService
+        .confirm(
+          'Eliminar comanda',
+          `Segur que vols eliminar la comanda "${item.name}"?`,
+          'Cancel·lar',
+          'Eliminar'
+        )
+        .pipe(take(1), filter(Boolean))
+        .subscribe(() => this.orderUserStore.delete(item));
+    }
+  }
 }

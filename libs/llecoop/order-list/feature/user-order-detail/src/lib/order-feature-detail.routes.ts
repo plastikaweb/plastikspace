@@ -2,7 +2,7 @@ import { Route } from '@angular/router';
 import { DETAIL_ITEM_VIEW_FACADE, DetailItemFormComponent } from '@plastik/core/detail-edit-view';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { STORE_TOKEN } from '@plastik/llecoop/data-access';
-import { LlecoopOrderStore } from '@plastik/llecoop/order-list/data-access';
+import { LlecoopOrderUserStore } from '@plastik/llecoop/order-list/data-access';
 import { LlecoopOrderDetailFacadeService } from './order-detail-facade.service';
 import { getLlecoopOrderDetailFormConfig } from './order-feature-detail-form.config';
 
@@ -14,7 +14,7 @@ export const llecoopOrderFeatureDetailRoutes: Route[] = [
     providers: [
       {
         provide: STORE_TOKEN,
-        useExisting: LlecoopOrderStore,
+        useExisting: LlecoopOrderUserStore,
       },
       {
         provide: DETAIL_ITEM_VIEW_FACADE,
