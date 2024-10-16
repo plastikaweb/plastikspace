@@ -47,7 +47,7 @@ export const LlecoopProductStore = signalStore(
       store,
       productService = inject(LlecoopProductFireService),
       storeNotificationService = inject(StoreNotificationService),
-      firebaseAuthService = inject(FirebaseAuthService),
+      authService = inject(FirebaseAuthService),
       state = inject(Store)
     ) => ({
       getAll: rxMethod<void>(
@@ -67,7 +67,7 @@ export const LlecoopProductStore = signalStore(
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
-                  if (firebaseAuthService.loggedIn()) {
+                  if (authService.loggedIn()) {
                     storeNotificationService.create(
                       `No s'ha pogut carregar els productes: ${error}`,
                       'ERROR'

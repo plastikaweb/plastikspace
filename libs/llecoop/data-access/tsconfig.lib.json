@@ -10,6 +10,7 @@
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
   "include": [
     "src/**/*.ts",
-    "../../core/table-with-filtering/src/lib/table-with-filtering/table-with-filtering-facade.type.ts"
+    "../../core/table-with-filtering/src/lib/table-with-filtering/table-with-filtering-facade.type.ts",
+    "../order-list/data-access/src/isAnActiveOrderList.guard.ts"
   ]
 }

@@ -88,9 +88,9 @@ export function viewConfig() {
     {
       id: 5,
       name: 'order',
-      title: 'Comanda activa',
+      title: 'Les meves comandes',
       icon: 'shopping_cart',
-      route: [`/soci/comanda-activa`],
+      route: [`/soci/comanda`],
       includedInNavigation: true,
       routerLinkActiveOptionsExact: false,
     },

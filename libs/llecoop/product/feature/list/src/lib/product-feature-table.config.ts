@@ -34,11 +34,12 @@ export class LlecoopProductSearchFeatureTableConfig
           data-link="admin/producte/${element?.id}">
           ${element?.name}
         </a>`;
-        const info = element?.info ? `<li class="font-bold">${element?.info}</li>` : '';
-        const provider = element?.provider ? `<li>Proveïdor: ${element?.provider}</li>` : '';
-        const origin = element?.origin ? `<li>Procedència: ${element?.origin}</li>` : '';
-        const extra = `<ul>${info}${provider}${origin}</ul>`;
-        return this.sanitizer.bypassSecurityTrustHtml(`${link}${extra}`) as SafeHtml;
+        // const info = element?.info ? `<li class="font-bold">${element?.info}</li>` : '';
+        // const provider = element?.provider ? `<li>Proveïdor: ${element?.provider}</li>` : '';
+        // const origin = element?.origin ? `<li>Procedència: ${element?.origin}</li>` : '';
+        // const extra = `<ul>${info}${provider}${origin}</ul>`;
+        // return this.sanitizer.bypassSecurityTrustHtml(`${link}${extra}`) as SafeHtml;
+        return this.sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
       },
     },
   };

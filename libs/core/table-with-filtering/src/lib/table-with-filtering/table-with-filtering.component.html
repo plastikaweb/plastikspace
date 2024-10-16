@@ -32,6 +32,7 @@
       mat-flat-button
       color="accent"
       class="text-white"
+      [disabled]="routingToDetailPage.disabled"
       [routerLink]="routingToDetailPage.path || ['./crear']">
       <mat-icon>add</mat-icon> {{ routingToDetailPage.label || 'Crear' }}
     </button>

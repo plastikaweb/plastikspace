@@ -17,7 +17,12 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   onGetData?(data: unknown[]): void;
   viewConfig: Signal<ViewConfigUI>;
   formStructure?: Signal<FormlyFieldConfig[]>;
-  routingToDetailPage: Signal<{ visible: boolean; path?: string[]; label?: string }>;
+  routingToDetailPage: Signal<{
+    visible: boolean;
+    disabled?: boolean;
+    path?: string[];
+    label?: string;
+  }>;
   viewExtraActions?: Signal<
     {
       label: string;

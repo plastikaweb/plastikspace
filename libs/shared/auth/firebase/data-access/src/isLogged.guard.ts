@@ -2,13 +2,13 @@ import { inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import {
   notificationActions,
   NotificationConfigService,
 } from '@plastik/shared/notification/data-access';
+import { FirebaseAuthService } from './firebase-auth.service';
 
-export const isAdminGuard = async () => {
+export const isLoggedGuard = async () => {
   const auth = inject(Auth);
   const router = inject(Router);
   const state = inject(Store);
