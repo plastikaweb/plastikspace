@@ -2,6 +2,8 @@
 @let sidenavOpened = (sidenavOpened$ | ngrxPush) || false;
 @let notificationConfig = (notificationConfig$ | ngrxPush) || null;
 @let isMobile = (isMobile$ | ngrxPush) || false;
+@let headerTitle = headerConfig.title;
+@let headerWidgetsPosition = headerWidgetsConfig?.position;
 
 @if (notificationConfig) {
   <div [plastikSnackbar]="notificationConfig || {}" (sendDismiss)="onNotificationDismiss()"></div>
@@ -14,36 +16,29 @@
         <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
       }
       <h1 data-test="layout-title">
-        <span class="sr-only">{{ headerConfig.title }}</span>
+        <span class="sr-only">{{ headerTitle }}</span>
         <a
           class="flex items-center content-center justify-between text-white hover:no-underline gap-sub"
           href=""
-          [attr.title]="headerConfig.title">
+          [attr.title]="headerTitle">
           <ng-container [ngTemplateOutlet]="h1"></ng-container>
         </a>
       </h1>
-      @defer (when headerConfig.headerActions?.position === 'start') {
-        <ng-container [ngTemplateOutlet]="headerActions"></ng-container>
+      @if (headerWidgetsPosition === 'start') {
+        <ng-container #widgetsContainer></ng-container>
       }
     </div>
-    @if (
-      headerConfig.headerActions?.position === 'end' ||
-      sidenavPosition === 'end' ||
-      headerConfig.menu?.position === 'end'
-    ) {
-      <div end class="flex items-center gap-sm">
-        @defer (when headerConfig.headerActions?.position === 'end') {
-          <ng-container [ngTemplateOutlet]="headerActions"></ng-container>
-        }
-        @defer (when sidenavPosition === 'end') {
-          <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
-        }
-        <!-- TODO: Create a shared user menu -->
-        @defer (when headerConfig.menu?.position === 'end') {
-          <ng-container [ngTemplateOutlet]="headerMenu"></ng-container>
-        }
-      </div>
-    }
+
+    <div end class="flex items-center gap-sm">
+      @if (headerWidgetsPosition === 'end') {
+        <ng-container #widgetsContainer></ng-container>
+      }
+      @defer (when sidenavPosition === 'end') {
+        <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+      }
+      <!-- TODO: Create a shared user menu -->
+      <ng-container [ngTemplateOutlet]="headerMenu"></ng-container>
+    </div>
   </plastik-core-cms-layout-ui-header>
 
   @if (isActive) {
@@ -89,7 +84,7 @@
     </mat-nav-list>
   </plastik-core-cms-layout-ui-sidenav>
 
-  @defer (when !hideFooter) {
+  @defer (when !hideFooter()) {
     <plastik-core-cms-layout-ui-footer data-test="layout-footer">
       <div content class="flex flex-row items-center justify-center gap-tiny">
         <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
@@ -130,12 +125,15 @@
   </button>
 </ng-template>
 
-<ng-template #headerActions>
-  @for (buttonConfig of headerConfig.headerActions?.config; track buttonConfig.id) {
-    <plastik-shared-button [config]="buttonConfig" (sendAction)="onButtonClickAction($event)">
-    </plastik-shared-button>
+<!-- <ng-template #headerWidgets>
+  @for (widget of headerConfig.headerWidgets?.widgets; track widget) {
+  <plastik-shared-button
+    [config]="buttonConfig"
+    (sendAction)="onButtonClickAction($event)"
+  >
+  </plastik-shared-button>
   }
-</ng-template>
+</ng-template> -->
 
 <ng-template #headerMenu>
   <button mat-button aria-label="header menu" [matMenuTriggerFor]="menu">
@@ -168,8 +166,8 @@
     <div class="flex items-center justify-center gap-sub">
       <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
 
-      <span class="block text-md sm:hidden">{{ headerConfig.title }}</span>
-      <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerConfig.title }}</span>
+      <span class="block text-md sm:hidden">{{ headerTitle }}</span>
+      <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
     </div>
   }
 </ng-template>

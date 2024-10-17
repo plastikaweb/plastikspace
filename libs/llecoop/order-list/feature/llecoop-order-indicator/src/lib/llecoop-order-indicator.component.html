@@ -1,0 +1,15 @@
+<div
+  class="flex flex-row items-center justify-center rounded-md shadow-lg gap-sm m-tiny px-sub py-tiny bg-gradient-to-l from-gray-80 to-gray-90 text-gray-5">
+  <p class="hidden text-base lg:block">
+    {{ orderListStore.currentOrder()?.name || 'Cap comanda oberta' }}
+  </p>
+  <p class="text-pretty">
+    {{ userOrderStore.openedOrderTotalPrice() | currency: 'EUR' : 'symbol' : '2.2-2' }}
+  </p>
+  <mat-icon
+    matBadgeColor="warn"
+    aria-hidden="true"
+    [matBadge]="userOrderStore.openedOrder()?.cart?.length || 0"
+    >shopping_cart</mat-icon
+  >
+</div>

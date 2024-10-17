@@ -35,7 +35,8 @@ import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui
 import { firebaseConfig } from '../../firebase';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
-import { headerConfig, viewConfig } from './cms-layout-config';
+import { HeaderConfigService } from './cms-header-config';
+import { viewConfig } from './cms-layout-config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -108,7 +109,7 @@ export const appConfig: ApplicationConfig = {
       provide: TitleStrategy,
       useClass: PrefixTitleService,
     },
-    { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useFactory: headerConfig },
+    { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useFactory: HeaderConfigService },
     { provide: VIEW_CONFIG, useFactory: viewConfig },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

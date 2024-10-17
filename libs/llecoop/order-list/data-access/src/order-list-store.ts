@@ -35,12 +35,12 @@ export const LLecoopOrderListStore = signalStore(
   withComputed(({ ids, entities }) => ({
     count: computed(() => ids().length),
     currentOrder: computed(() => entities().find(order => order.status === 'progress')),
-    currentOrderProducts: computed(() => {
-      return entities().find(order => order.status === 'progress')?.availableProducts || [];
-    }),
-    currentOrderCount: computed(() => {
-      return entities().find(order => order.status === 'progress')?.availableProducts.length || 0;
-    }),
+    currentOrderProducts: computed(
+      () => entities().find(order => order.status === 'progress')?.availableProducts || []
+    ),
+    currentOrderCount: computed(
+      () => entities().find(order => order.status === 'progress')?.availableProducts.length || 0
+    ),
   })),
   withMethods(
     (
@@ -62,6 +62,7 @@ export const LLecoopOrderListStore = signalStore(
                     setAllEntities(orders, { selectId: entity => entity.id || '' }),
                     { loaded: true, lastUpdated: new Date() }
                   );
+                  console.log(orders);
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
