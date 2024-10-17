@@ -1,3 +1,4 @@
+import { signal } from '@angular/core';
 import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
 import { ViewsConfigRecord } from '@plastik/core/entities';
 import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
@@ -7,23 +8,33 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
   mainIcon: { iconPath: 'assets/img/nasa.svg', svgClass: 'fill-white text-black w-[80px]' },
   title: 'NASA images',
   extendedTitle: 'NASA Images Search',
-  headerActions: {
+  widgetsConfig: {
     position: 'end',
-    config: [
+    widgets: signal([
       {
         id: 1,
-        type: 'link',
-        elements: [
-          {
-            type: 'icon',
-            content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' },
+        component: () => import('@plastik/shared/button').then(c => c.SharedButtonUiComponent),
+        inputs: {
+          config: {
+            type: 'link',
+            link: 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
+            ariaLabel: 'plastikspace -> apps -> nasa-images readme',
+            dataTestId: 'github-button',
+            elements: [
+              {
+                type: 'icon',
+                content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' },
+              },
+            ],
+            doAction: () =>
+              window.open(
+                'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
+                '_blank'
+              ),
           },
-        ],
-        ariaLabel: 'plastikspace -> apps -> nasa-images readme',
-        dataTestId: 'github-button',
-        link: 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
+        },
       },
-    ],
+    ]),
   },
 };
 

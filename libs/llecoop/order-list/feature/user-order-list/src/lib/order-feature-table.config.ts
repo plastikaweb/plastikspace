@@ -48,7 +48,7 @@ export class LlecoopOrderSearchFeatureTableConfig
       type: 'CUSTOM',
       execute: (_, element) => {
         const price = element?.cart.reduce((acc, item) => {
-          return acc + (item.finalPrice || item.initPrice) * (item.finalPrice || item.initQuantity);
+          return acc + (item.finalPrice || item.initPrice);
         }, 0);
         return this.sanitizer.bypassSecurityTrustHtml(`${Number(price).toFixed(2)} €`) as SafeHtml;
       },

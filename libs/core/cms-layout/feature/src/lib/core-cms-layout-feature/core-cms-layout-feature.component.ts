@@ -1,6 +1,15 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  OnDestroy,
+  OnInit,
+  viewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -20,6 +29,7 @@ import { NotificationFacade } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { map, Subject, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'plastik-core-cms-layout-feature',
   standalone: true,
@@ -46,19 +56,25 @@ import { map, Subject, takeUntil } from 'rxjs';
   templateUrl: './core-cms-layout-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
-  @Input() hideFooter = false;
+export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterViewInit {
+  hideFooter = input(false);
+  widgetsContainer = viewChild('widgetsContainer', {
+    read: ViewContainerRef,
+  });
 
   currentDate = new Date();
   sidenavOpened$ = this.layoutFacade.sidenavOpened$;
   isMobile$ = this.layoutFacade.isMobile$;
   isActive$ = this.layoutFacade.isActive$;
-  sidenavPosition = this.layoutFacade.headerConfig?.sidenavPosition || 'start';
   headerConfig = this.layoutFacade.headerConfig;
   sidenavConfig = this.layoutFacade.sidenavConfig;
   notificationConfig$ = this.notificationFacade.config$;
   skipLinkPath!: string;
   path$ = this.routerFacade.routeUrl$;
+
+  protected readonly sidenavPosition = this.headerConfig?.sidenavPosition || 'start';
+  protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
+
   private readonly destroyed$ = new Subject<void>();
 
   constructor(
@@ -85,6 +101,10 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
     this.sidenavOpened$ = this.layoutFacade.sidenavOpened$;
   }
 
+  ngAfterViewInit(): void {
+    this.createWidgets();
+  }
+
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
@@ -108,5 +128,25 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
 
   onSendAction(action: () => void): void {
     action();
+  }
+
+  private createWidgets(): void {
+    if (!this.headerWidgetsConfig) return;
+
+    const container = this.widgetsContainer();
+    if (container) {
+      container.clear();
+
+      this.headerWidgetsConfig?.widgets()?.forEach(async widget => {
+        const component = await widget.component();
+        const componentRef = container.createComponent(component);
+
+        if (widget.inputs) {
+          Object.keys(widget.inputs ?? {}).map(key => {
+            componentRef?.setInput(key, widget.inputs?.[key]);
+          });
+        }
+      });
+    }
   }
 }
