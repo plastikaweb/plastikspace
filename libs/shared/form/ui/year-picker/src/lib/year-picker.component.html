@@ -9,15 +9,13 @@
     (focus)="onOpenPicker(picker)"
     (click)="onOpenPicker(picker)"
     (keydown.arrowdown)="onOpenPicker(picker)"
-    (keydown.enter)="onOpenPicker(picker)"
-  />
+    (keydown.enter)="onOpenPicker(picker)" />
   <mat-datepicker-toggle matIconSuffix [disabled]="disabled" [for]="picker"></mat-datepicker-toggle>
   <mat-datepicker
     #picker
     startView="multi-year"
     panelClass="shared-year-picker"
     [touchUi]="touchUi"
-    (yearSelected)="onYearSelected($event, picker)"
-  >
+    (yearSelected)="onYearSelected($event, picker)">
   </mat-datepicker>
 </mat-form-field>

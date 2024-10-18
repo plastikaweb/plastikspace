@@ -6,8 +6,8 @@ import {
   InputColorPickerTypeComponent,
   InputPasswordWithVisibilityTypeComponent,
   InputTableTypeComponent,
-  SharedFormUiYearPickerTypeComponent,
   TextareaWithCounterTypeComponent,
+  YearPickerTypeComponent,
 } from '@plastik/shared/form/ui';
 
 import { addonsExtension } from './addons-extension';
@@ -31,7 +31,7 @@ import { urlValidator } from './validations/validators/url.validator';
       types: [
         {
           name: 'year-picker',
-          component: SharedFormUiYearPickerTypeComponent,
+          component: YearPickerTypeComponent,
         },
         {
           name: 'password-with-visibility',

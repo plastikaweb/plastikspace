@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { SharedFormUiYearPickerComponent } from './shared-form-ui-year-picker.component';
+import { YearPickerComponent } from './year-picker.component';
 
-describe('SharedFormUiYearPickerComponent', () => {
-  let component: SharedFormUiYearPickerComponent;
-  let fixture: ComponentFixture<SharedFormUiYearPickerComponent>;
+describe('YearPickerComponent', () => {
+  let component: YearPickerComponent;
+  let fixture: ComponentFixture<YearPickerComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedFormUiYearPickerComponent, NoopAnimationsModule],
+      imports: [YearPickerComponent, NoopAnimationsModule],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(SharedFormUiYearPickerComponent);
+    fixture = TestBed.createComponent(YearPickerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

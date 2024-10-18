@@ -1,5 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation, forwardRef } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  ViewEncapsulation,
+  forwardRef,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormControl,
+  FormsModule,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatButtonModule } from '@angular/material/button';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -22,7 +34,7 @@ export const YEAR_MODE_FORMATS = {
 };
 
 @Component({
-  selector: 'plastik-shared-form-ui-year-picker',
+  selector: 'plastik-year-picker',
   standalone: true,
   imports: [
     FormsModule,
@@ -43,16 +55,16 @@ export const YEAR_MODE_FORMATS = {
     { provide: MAT_DATE_FORMATS, useValue: YEAR_MODE_FORMATS },
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => SharedFormUiYearPickerComponent),
+      useExisting: forwardRef(() => YearPickerComponent),
       multi: true,
     },
   ],
-  templateUrl: './shared-form-ui-year-picker.component.html',
-  styleUrls: ['./shared-form-ui-year-picker.component.scss'],
+  templateUrl: './year-picker.component.html',
+  styleUrls: ['./year-picker.component.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedFormUiYearPickerComponent implements ControlValueAccessor {
+export class YearPickerComponent implements ControlValueAccessor {
   @Input() touchUi = false;
   @Input() label?: string;
 

@@ -205,7 +205,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     }
 
     if (filterCriteria) {
-      this.dataSource.filter = filterCriteria.currentValue;
+      this.dataSource.filter = filterCriteria.currentValue.trim().toLowerCase();
     }
 
     if (data) {
