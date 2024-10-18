@@ -4,6 +4,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  inject,
   input,
   OnDestroy,
   OnInit,
@@ -17,12 +18,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
-import { Action } from '@ngrx/store';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
-import { RouterFacade } from '@plastik/core/router-state';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SharedButtonUiComponent } from '@plastik/shared/button';
 import { NotificationFacade } from '@plastik/shared/notification/data-access';
@@ -57,32 +56,24 @@ import { map, Subject, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterViewInit {
-  hideFooter = input(false);
-  widgetsContainer = viewChild('widgetsContainer', {
+  private readonly layoutFacade = inject(LayoutFacade);
+  private readonly notificationFacade = inject(NotificationFacade);
+  private readonly destroyed$ = new Subject<void>();
+
+  private readonly breakpointObserver = inject(BreakpointObserver);
+  protected readonly hideFooter = input(false);
+  protected readonly widgetsContainer = viewChild('widgetsContainer', {
     read: ViewContainerRef,
   });
 
-  currentDate = new Date();
-  sidenavOpened$ = this.layoutFacade.sidenavOpened$;
-  isMobile$ = this.layoutFacade.isMobile$;
-  isActive$ = this.layoutFacade.isActive$;
+  protected readonly currentDate = new Date();
+  protected readonly sidenavOpened$ = this.layoutFacade.sidenavOpened$;
+  protected readonly isMobile$ = this.layoutFacade.isMobile$;
+  protected readonly isActive$ = this.layoutFacade.isActive$;
   headerConfig = this.layoutFacade.headerConfig;
-  sidenavConfig = this.layoutFacade.sidenavConfig;
-  notificationConfig$ = this.notificationFacade.config$;
-  skipLinkPath!: string;
-  path$ = this.routerFacade.routeUrl$;
-
-  protected readonly sidenavPosition = this.headerConfig?.sidenavPosition || 'start';
   protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
-
-  private readonly destroyed$ = new Subject<void>();
-
-  constructor(
-    private readonly layoutFacade: LayoutFacade,
-    private readonly notificationFacade: NotificationFacade,
-    private readonly routerFacade: RouterFacade,
-    private readonly breakpointObserver: BreakpointObserver
-  ) {}
+  protected readonly sidenavConfig = this.layoutFacade.sidenavConfig;
+  protected readonly notificationConfig$ = this.notificationFacade.config$;
 
   ngOnInit(): void {
     // TODO: Isolate breakpoint observer into its own service https://github.com/plastikaweb/plastikspace/issues/68
@@ -97,8 +88,6 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
         if (matches) this.onToggleSidenav(!matches);
         this.onSetIsMobile(matches);
       });
-
-    this.sidenavOpened$ = this.layoutFacade.sidenavOpened$;
   }
 
   ngAfterViewInit(): void {
@@ -110,24 +99,20 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
     this.destroyed$.complete();
   }
 
+  onNotificationDismiss(): void {
+    this.notificationFacade.dismiss();
+  }
+
+  protected onSendAction(action: () => void): void {
+    action();
+  }
+
   onToggleSidenav(opened?: boolean): void {
     this.layoutFacade.toggleSidenav(opened);
   }
 
   onSetIsMobile(isMobile: boolean): void {
     this.layoutFacade.setIsMobile(isMobile);
-  }
-
-  onButtonClickAction(action: () => Action): void {
-    this.layoutFacade.dispatchAction(action);
-  }
-
-  onNotificationDismiss(): void {
-    this.notificationFacade.dismiss();
-  }
-
-  onSendAction(action: () => void): void {
-    action();
   }
 
   private createWidgets(): void {

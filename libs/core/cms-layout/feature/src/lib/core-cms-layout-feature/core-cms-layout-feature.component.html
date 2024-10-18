@@ -2,14 +2,28 @@
 @let sidenavOpened = (sidenavOpened$ | ngrxPush) || false;
 @let notificationConfig = (notificationConfig$ | ngrxPush) || null;
 @let isMobile = (isMobile$ | ngrxPush) || false;
+@let headerMenu = headerConfig.menu;
 @let headerTitle = headerConfig.title;
+@let sidenavPosition = headerConfig.sidenavPosition || 'start';
 @let headerWidgetsPosition = headerWidgetsConfig?.position;
+
+@if (isActive) {
+  <plastik-shared-activity-ui-overlay>
+    <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
+    <div class="spinner-container">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+    </div>
+  </plastik-shared-activity-ui-overlay>
+}
 
 @if (notificationConfig) {
   <div [plastikSnackbar]="notificationConfig || {}" (sendDismiss)="onNotificationDismiss()"></div>
 }
 
-<div class="flex flex-col">
+<div class="core-cms-container">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
     <div start class="flex items-center gap-0 sm:gap-sm">
       @defer (when sidenavPosition === 'start') {
@@ -37,21 +51,9 @@
         <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
       }
       <!-- TODO: Create a shared user menu -->
-      <ng-container [ngTemplateOutlet]="headerMenu"></ng-container>
+      <ng-container [ngTemplateOutlet]="headerMenuTpl"></ng-container>
     </div>
   </plastik-core-cms-layout-ui-header>
-
-  @if (isActive) {
-    <plastik-shared-activity-ui-overlay class="z-10">
-      <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
-      <div class="spinner-container">
-        <div class="lds-ripple">
-          <div></div>
-          <div></div>
-        </div>
-      </div>
-    </plastik-shared-activity-ui-overlay>
-  }
 
   <plastik-core-cms-layout-ui-sidenav
     [position]="sidenavPosition"
@@ -125,27 +127,17 @@
   </button>
 </ng-template>
 
-<!-- <ng-template #headerWidgets>
-  @for (widget of headerConfig.headerWidgets?.widgets; track widget) {
-  <plastik-shared-button
-    [config]="buttonConfig"
-    (sendAction)="onButtonClickAction($event)"
-  >
-  </plastik-shared-button>
-  }
-</ng-template> -->
-
-<ng-template #headerMenu>
+<ng-template #headerMenuTpl>
   <button mat-button aria-label="header menu" [matMenuTriggerFor]="menu">
-    <span class="hidden sm:block">{{ headerConfig.menu?.label() }}</span>
+    <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
     <mat-icon class="w-[30px] h-[30px] text-[30px]">account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="px-sub">
     <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{
-      headerConfig.menu?.label()
+      headerMenu?.label()
     }}</span>
 
-    @for (item of headerConfig.menu?.config; track item.id) {
+    @for (item of headerMenu?.config; track item.id) {
       @if (item && item.route) {
         <button type="button" mat-menu-item [routerLink]="item.route">
           <mat-icon>{{ item.icon }}</mat-icon>
