@@ -46,8 +46,8 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
       disabled:
         this.orderUserStore
           .entities()
-          .some(entity => entity['orderListId'] === this.orderListStore.currentOrder()?.id) &&
-        this.orderListStore.entities().some(entity => entity.status === 'progress'),
+          .some(entity => entity['orderListId'] === this.orderListStore.currentOrder()?.id) ||
+        !this.orderListStore.currentOrder(),
     };
   });
   formStructure = getLlecoopOrderSearchFeatureFormConfig();

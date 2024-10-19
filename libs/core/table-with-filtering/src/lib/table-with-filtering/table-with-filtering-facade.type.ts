@@ -12,6 +12,7 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   tableData: Signal<T[]>;
   tableSorting?: Signal<TableSortingConfig>;
   count: Signal<number>;
+  tableFilterPredicate?: (data: T, filter: string) => boolean;
   onTableSorting?(sorting: TableSorting): void;
   onTableActionDelete?(item: unknown): void;
   onGetData?(data: unknown[]): void;

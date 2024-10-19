@@ -7,7 +7,7 @@ import { FieldTypeConfig } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material';
 
 @Component({
-  selector: 'plastik-input-password-with-type-visibility',
+  selector: 'plastik-input-password-with-visibility-type',
   standalone: true,
   imports: [MatButtonModule, MatIconModule, MatInputModule, ReactiveFormsModule],
   templateUrl: './input-password-with-visibility-type.component.html',

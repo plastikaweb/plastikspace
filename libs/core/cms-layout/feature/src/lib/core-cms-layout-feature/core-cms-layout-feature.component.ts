@@ -59,21 +59,20 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   private readonly layoutFacade = inject(LayoutFacade);
   private readonly notificationFacade = inject(NotificationFacade);
   private readonly destroyed$ = new Subject<void>();
-
   private readonly breakpointObserver = inject(BreakpointObserver);
+
   protected readonly hideFooter = input(false);
   protected readonly widgetsContainer = viewChild('widgetsContainer', {
     read: ViewContainerRef,
   });
-
   protected readonly currentDate = new Date();
   protected readonly sidenavOpened$ = this.layoutFacade.sidenavOpened$;
   protected readonly isMobile$ = this.layoutFacade.isMobile$;
   protected readonly isActive$ = this.layoutFacade.isActive$;
-  headerConfig = this.layoutFacade.headerConfig;
-  protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
   protected readonly sidenavConfig = this.layoutFacade.sidenavConfig;
   protected readonly notificationConfig$ = this.notificationFacade.config$;
+  headerConfig = this.layoutFacade.headerConfig;
+  protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
 
   ngOnInit(): void {
     // TODO: Isolate breakpoint observer into its own service https://github.com/plastikaweb/plastikspace/issues/68

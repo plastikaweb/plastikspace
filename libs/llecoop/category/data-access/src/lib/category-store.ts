@@ -33,7 +33,7 @@ export const LlecoopCategoryStore = signalStore(
   }),
   withEntities<LlecoopProductCategory>(),
   withComputed(({ ids, entities, selectedItemId, entityMap }) => ({
-    count: computed(() => ids().length),
+    count: computed(() => ids().length || 0),
     selectedItem: computed(() => {
       const id = selectedItemId();
       return id !== null ? entityMap()[id] : null;

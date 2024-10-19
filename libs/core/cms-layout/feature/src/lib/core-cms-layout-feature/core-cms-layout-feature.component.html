@@ -27,7 +27,7 @@
   <plastik-core-cms-layout-ui-header data-test="layout-header">
     <div start class="flex items-center gap-0 sm:gap-sm">
       @defer (when sidenavPosition === 'start') {
-        <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+        <ng-container [ngTemplateOutlet]="toggleSidenavButtonTpl"></ng-container>
       }
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerTitle }}</span>
@@ -35,7 +35,7 @@
           class="flex items-center content-center justify-between text-white hover:no-underline gap-sub"
           href=""
           [attr.title]="headerTitle">
-          <ng-container [ngTemplateOutlet]="h1"></ng-container>
+          <ng-container [ngTemplateOutlet]="h1Tpl"></ng-container>
         </a>
       </h1>
       @if (headerWidgetsPosition === 'start') {
@@ -48,7 +48,7 @@
         <ng-container #widgetsContainer></ng-container>
       }
       @defer (when sidenavPosition === 'end') {
-        <ng-container [ngTemplateOutlet]="toggleSidenavButton"></ng-container>
+        <ng-container [ngTemplateOutlet]="toggleSidenavButtonTpl"></ng-container>
       }
       <!-- TODO: Create a shared user menu -->
       <ng-container [ngTemplateOutlet]="headerMenuTpl"></ng-container>
@@ -62,7 +62,7 @@
     [sidenavOpened]="sidenavOpened"
     (toggleSidenav)="onToggleSidenav()">
     @if (isMobile && sidenavOpened) {
-      <ng-container header [ngTemplateOutlet]="h1"></ng-container>
+      <ng-container header [ngTemplateOutlet]="h1Tpl"></ng-container>
     }
 
     <mat-nav-list menu-items data-test="sidenav-list">
@@ -112,21 +112,6 @@
   }
 </div>
 
-<ng-template #toggleSidenavButton>
-  <button
-    mat-icon-button
-    aria-label="sidenav toggle button"
-    class="flex justify-center align-middle"
-    data-test="toggle-sidenav-button"
-    (click)="onToggleSidenav()">
-    @if (!sidenavOpened) {
-      <mat-icon class="mat-18">menu</mat-icon>
-    } @else if (sidenavOpened) {
-      <mat-icon class="mat-18">close</mat-icon>
-    }
-  </button>
-</ng-template>
-
 <ng-template #headerMenuTpl>
   <button mat-button aria-label="header menu" [matMenuTriggerFor]="menu">
     <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
@@ -153,7 +138,7 @@
   </mat-menu>
 </ng-template>
 
-<ng-template #h1>
+<ng-template #h1Tpl>
   @if (headerConfig.mainIcon; as icon) {
     <div class="flex items-center justify-center gap-sub">
       <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
@@ -162,4 +147,19 @@
       <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
     </div>
   }
+</ng-template>
+
+<ng-template #toggleSidenavButtonTpl>
+  <button
+    mat-icon-button
+    aria-label="sidenav toggle button"
+    class="flex justify-center align-middle"
+    data-test="toggle-sidenav-button"
+    (click)="onToggleSidenav()">
+    @if (!sidenavOpened) {
+      <mat-icon class="mat-18">menu</mat-icon>
+    } @else if (sidenavOpened) {
+      <mat-icon class="mat-18">close</mat-icon>
+    }
+  </button>
 </ng-template>

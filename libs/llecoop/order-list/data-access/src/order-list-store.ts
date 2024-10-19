@@ -62,7 +62,6 @@ export const LLecoopOrderListStore = signalStore(
                     setAllEntities(orders, { selectId: entity => entity.id || '' }),
                     { loaded: true, lastUpdated: new Date() }
                   );
-                  console.log(orders);
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
