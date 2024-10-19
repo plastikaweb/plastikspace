@@ -130,6 +130,8 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   @Input() filterCriteria = '';
 
+  @Input() filterPredicate?: (data: T, filter: string) => boolean;
+
   @Input() extraRowStyles?: (element: T) => string;
 
   /**
@@ -181,6 +183,13 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       this.matSort.direction = this.sort?.[1] || 'asc';
       this.dataSource.sort = this.matSort;
     }
+
+    if (this.filterPredicate) {
+      this.dataSource.filterPredicate = this.filterPredicate as (
+        data: unknown,
+        filter: string
+      ) => boolean;
+    }
   }
 
   ngOnChanges({
@@ -205,7 +214,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     }
 
     if (filterCriteria) {
-      this.dataSource.filter = filterCriteria.currentValue;
+      this.dataSource.filter = filterCriteria.currentValue.trim().toLowerCase();
     }
 
     if (data) {

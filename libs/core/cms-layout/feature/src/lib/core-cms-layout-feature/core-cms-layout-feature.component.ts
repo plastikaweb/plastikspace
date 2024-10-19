@@ -1,6 +1,16 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  OnInit,
+  viewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -8,18 +18,17 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
-import { Action } from '@ngrx/store';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
-import { RouterFacade } from '@plastik/core/router-state';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SharedButtonUiComponent } from '@plastik/shared/button';
 import { NotificationFacade } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { map, Subject, takeUntil } from 'rxjs';
+
 @Component({
   selector: 'plastik-core-cms-layout-feature',
   standalone: true,
@@ -46,27 +55,24 @@ import { map, Subject, takeUntil } from 'rxjs';
   templateUrl: './core-cms-layout-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
-  @Input() hideFooter = false;
-
-  currentDate = new Date();
-  sidenavOpened$ = this.layoutFacade.sidenavOpened$;
-  isMobile$ = this.layoutFacade.isMobile$;
-  isActive$ = this.layoutFacade.isActive$;
-  sidenavPosition = this.layoutFacade.headerConfig?.sidenavPosition || 'start';
-  headerConfig = this.layoutFacade.headerConfig;
-  sidenavConfig = this.layoutFacade.sidenavConfig;
-  notificationConfig$ = this.notificationFacade.config$;
-  skipLinkPath!: string;
-  path$ = this.routerFacade.routeUrl$;
+export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterViewInit {
+  private readonly layoutFacade = inject(LayoutFacade);
+  private readonly notificationFacade = inject(NotificationFacade);
   private readonly destroyed$ = new Subject<void>();
+  private readonly breakpointObserver = inject(BreakpointObserver);
 
-  constructor(
-    private readonly layoutFacade: LayoutFacade,
-    private readonly notificationFacade: NotificationFacade,
-    private readonly routerFacade: RouterFacade,
-    private readonly breakpointObserver: BreakpointObserver
-  ) {}
+  protected readonly hideFooter = input(false);
+  protected readonly widgetsContainer = viewChild('widgetsContainer', {
+    read: ViewContainerRef,
+  });
+  protected readonly currentDate = new Date();
+  protected readonly sidenavOpened$ = this.layoutFacade.sidenavOpened$;
+  protected readonly isMobile$ = this.layoutFacade.isMobile$;
+  protected readonly isActive$ = this.layoutFacade.isActive$;
+  protected readonly sidenavConfig = this.layoutFacade.sidenavConfig;
+  protected readonly notificationConfig$ = this.notificationFacade.config$;
+  headerConfig = this.layoutFacade.headerConfig;
+  protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
 
   ngOnInit(): void {
     // TODO: Isolate breakpoint observer into its own service https://github.com/plastikaweb/plastikspace/issues/68
@@ -81,13 +87,23 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
         if (matches) this.onToggleSidenav(!matches);
         this.onSetIsMobile(matches);
       });
+  }
 
-    this.sidenavOpened$ = this.layoutFacade.sidenavOpened$;
+  ngAfterViewInit(): void {
+    this.createWidgets();
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next();
     this.destroyed$.complete();
+  }
+
+  onNotificationDismiss(): void {
+    this.notificationFacade.dismiss();
+  }
+
+  protected onSendAction(action: () => void): void {
+    action();
   }
 
   onToggleSidenav(opened?: boolean): void {
@@ -98,15 +114,23 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy {
     this.layoutFacade.setIsMobile(isMobile);
   }
 
-  onButtonClickAction(action: () => Action): void {
-    this.layoutFacade.dispatchAction(action);
-  }
+  private createWidgets(): void {
+    if (!this.headerWidgetsConfig) return;
 
-  onNotificationDismiss(): void {
-    this.notificationFacade.dismiss();
-  }
+    const container = this.widgetsContainer();
+    if (container) {
+      container.clear();
 
-  onSendAction(action: () => void): void {
-    action();
+      this.headerWidgetsConfig?.widgets()?.forEach(async widget => {
+        const component = await widget.component();
+        const componentRef = container.createComponent(component);
+
+        if (widget.inputs) {
+          Object.keys(widget.inputs ?? {}).map(key => {
+            componentRef?.setInput(key, widget.inputs?.[key]);
+          });
+        }
+      });
+    }
   }
 }

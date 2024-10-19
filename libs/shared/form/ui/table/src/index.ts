@@ -1,1 +1,1 @@
-export * from './lib/input-table/input-table-type.component';
+export * from './lib/input-table-type.component';

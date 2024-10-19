@@ -63,7 +63,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
         propertyPath: 'endTime',
         cssClasses: ['min-w-[125px]'],
       },
-      'dd/MM/yyyy HH:mm:ss'
+      'dd/MM/yyyy HH:mm'
     );
   }
 

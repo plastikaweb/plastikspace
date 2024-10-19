@@ -1,5 +1,4 @@
-import { InjectionToken, Signal } from '@angular/core';
-import { ButtonConfig } from '@plastik/shared/button';
+import { InjectionToken, Signal, Type } from '@angular/core';
 import { LayoutPosition, SvgIconConfig } from '@plastik/shared/entities';
 
 export type ViewConfigRoute<T extends string> =
@@ -26,6 +25,12 @@ export type HeaderMenuConfig<T extends string> = HeaderMenuConfigBase<T> & {
   action?: () => void;
 };
 
+export type CoreCmsLayoutHeaderWidget = {
+  id: number;
+  component: () => Promise<Type<unknown>>;
+  inputs?: Record<string, unknown>;
+};
+
 /**
  * A header content elements configuration for CMS layouts.
  */
@@ -35,9 +40,9 @@ export interface CoreCmsLayoutHeaderConfig {
   title: string;
   extendedTitle?: string;
   mainIcon?: SvgIconConfig;
-  headerActions?: {
+  widgetsConfig?: {
     position: LayoutPosition;
-    config: ButtonConfig[];
+    widgets: Signal<CoreCmsLayoutHeaderWidget[]>;
   };
   menu?: {
     label?: Signal<string>;

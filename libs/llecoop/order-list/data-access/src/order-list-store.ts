@@ -35,16 +35,12 @@ export const LLecoopOrderListStore = signalStore(
   withComputed(({ ids, entities }) => ({
     count: computed(() => ids().length),
     currentOrder: computed(() => entities().find(order => order.status === 'progress')),
-    currentOrderProducts: computed(() => {
-      const products =
-        entities().find(order => order.status === 'progress')?.availableProducts || [];
-      return products.map((category, ...product) => ({
-        ...product,
-      }));
-    }),
-    currentOrderCount: computed(() => {
-      return entities().find(order => order.status === 'progress')?.availableProducts.length || 0;
-    }),
+    currentOrderProducts: computed(
+      () => entities().find(order => order.status === 'progress')?.availableProducts || []
+    ),
+    currentOrderCount: computed(
+      () => entities().find(order => order.status === 'progress')?.availableProducts.length || 0
+    ),
   })),
   withMethods(
     (

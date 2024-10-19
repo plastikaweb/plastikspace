@@ -35,13 +35,13 @@ service cloud.firestore {
       allow read, write: if hasAdminAccess();
     }
 
-    match /order-list/{orderId} {
+    match /order-list/{orderListId} {
       allow read: if hasSociAccess();
       allow write: if hasAdminAccess();
     }
 
-    match /order/{orderId}/user/{userId} {
-      allow read, write: if hasAdminAccess() || request.auth.uid == userId;
+    match /{path=**}/orders/{orderId} {
+      allow read, write: if hasAdminAccess() || resource.data.userId == request.auth.uid;
     }
   }
 }

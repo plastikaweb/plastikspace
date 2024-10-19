@@ -28,6 +28,7 @@ export interface LlecoopUserOrder extends BaseEntity {
   deliveryTime: FormSelectOption['value'];
   deliveryDate: FormSelectOption['value'];
   deliveryInfo?: string;
+  status: 'waiting' | 'review' | 'deliver' | 'cancel';
 }
 
 export const llecoopUserOrderTimeOptions: Record<
@@ -121,5 +122,31 @@ export const llecoopOrderStatus: Record<
     label: 'Completada',
     icon: 'check_circle',
     class: 'text-success',
+  },
+} as const;
+
+export const llecoopUserOrderStatus: Record<
+  LlecoopUserOrder['status'],
+  { label: string; icon: string; class: string }
+> = {
+  waiting: {
+    label: 'Pendent',
+    icon: 'hourglass_empty',
+    class: 'text-info',
+  },
+  review: {
+    label: 'Cistella feta',
+    icon: 'sync',
+    class: 'text-warning',
+  },
+  deliver: {
+    label: 'Cistella entregada',
+    icon: 'local_shipping',
+    class: 'text-warning',
+  },
+  cancel: {
+    label: 'Cancel·lada',
+    icon: 'cancel',
+    class: 'text-error',
   },
 } as const;

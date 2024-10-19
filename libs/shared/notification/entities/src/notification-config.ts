@@ -22,7 +22,7 @@ export const defaultNotification: NotificationTypesConfig = {
   ['SUCCESS']: {
     type: 'SUCCESS',
     icon: 'check',
-    duration: 3000,
+    duration: 5000,
   },
 };
 

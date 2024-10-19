@@ -44,11 +44,18 @@
         "libs/llecoop/order-list/data-access/src/index.ts"
       ],
       "@plastik/llecoop/order-list/list": ["libs/llecoop/order-list/feature/list/src/index.ts"],
-      "@plastik/llecoop/order/data-access": ["libs/llecoop/order/data-access/src/index.ts"],
-      "@plastik/llecoop/order/detail": ["libs/llecoop/order/feature/detail/src/index.ts"],
+      "@plastik/llecoop/order-list/order-indicator": [
+        "libs/llecoop/order-list/feature/llecoop-order-indicator/src/index.ts"
+      ],
       "@plastik/llecoop/product/data-access": ["libs/llecoop/product/data-access/src/index.ts"],
       "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
+      "@plastik/llecoop/user-order/detail": [
+        "libs/llecoop/order-list/feature/user-order-detail/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order/list": [
+        "libs/llecoop/order-list/feature/user-order-list/src/index.ts"
+      ],
       "@plastik/llecoop/user/create": ["libs/llecoop/user/feature/create/src/index.ts"],
       "@plastik/llecoop/user/data-access": ["libs/llecoop/user/data-access/src/index.ts"],
       "@plastik/llecoop/user/list": ["libs/llecoop/user/feature/list/src/index.ts"],

@@ -24,6 +24,16 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   tableStructure = this.table.getTableStructure();
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
+  tableFilterPredicate = (data: LlecoopProduct, filter: string) => {
+    return (
+      data.name?.toLowerCase().includes(filter.toLowerCase()) ||
+      data.category?.name?.toLowerCase().includes(filter.toLowerCase()) ||
+      data.info?.toLowerCase().includes(filter.toLowerCase()) ||
+      data.provider?.toLowerCase().includes(filter.toLowerCase()) ||
+      data.origin?.toLowerCase().includes(filter.toLowerCase()) ||
+      false
+    );
+  };
   count = this.store.count;
   routingToDetailPage = signal({ visible: true });
 

@@ -1,0 +1,20 @@
+<button mat-flat-button color="accent" class="text-white w-max m-tiny px-sub py-tiny">
+  <div class="flex flex-row items-center justify-center gap-sm">
+    <p class="hidden md:block">
+      {{ orderListStore.currentOrder()?.name || 'Cap comanda oberta' }}
+    </p>
+
+    @if (orderListStore.currentOrder()) {
+      <p class="text-pretty">
+        {{ userOrderStore.openedOrderTotalPrice() || 0 | currency: 'EUR' : 'symbol' : '2.2-2' }}
+      </p>
+
+      <mat-icon
+        matBadgeColor="warn"
+        aria-hidden="true"
+        [matBadge]="userOrderStore.openedOrder()?.cart?.length || 0"
+        >shopping_cart</mat-icon
+      >
+    }
+  </div>
+</button>

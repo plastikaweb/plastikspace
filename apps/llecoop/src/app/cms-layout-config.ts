@@ -1,38 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { inject } from '@angular/core';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
-
-export function headerConfig(): CoreCmsLayoutHeaderConfig {
-  const firebaseAuthService = inject(FirebaseAuthService);
-  return {
-    showToggleMenuButton: true,
-    sidenavPosition: 'start',
-    mainIcon: { iconPath: 'assets/img/favicon.svg', svgClass: 'w-lg h-lg' },
-    title: 'El Llevat',
-    extendedTitle: 'El Llevat',
-    menu: {
-      label: firebaseAuthService.currentUserEmail,
-      position: 'end',
-      config: [
-        // {
-        //   id: 1,
-        //   name: 'profile',
-        //   title: 'Perfil',
-        //   icon: 'person',
-        //   route: [`/profile`],
-        // },
-        {
-          id: 2,
-          name: 'logout',
-          title: 'Tancar sessió',
-          icon: 'logout',
-          action: () => firebaseAuthService.logout(),
-        },
-      ],
-    },
-  };
-}
 
 export function viewConfig() {
   const authFirebaseService = inject(FirebaseAuthService);
@@ -88,9 +56,9 @@ export function viewConfig() {
     {
       id: 5,
       name: 'order',
-      title: 'Comanda activa',
+      title: 'Les meves comandes',
       icon: 'shopping_cart',
-      route: [`/soci/comanda-activa`],
+      route: [`/soci/comanda`],
       includedInNavigation: true,
       routerLinkActiveOptionsExact: false,
     },

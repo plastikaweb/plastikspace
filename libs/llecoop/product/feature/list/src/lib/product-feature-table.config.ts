@@ -39,6 +39,7 @@ export class LlecoopProductSearchFeatureTableConfig
         const origin = element?.origin ? `<li>Procedència: ${element?.origin}</li>` : '';
         const extra = `<ul>${info}${provider}${origin}</ul>`;
         return this.sanitizer.bypassSecurityTrustHtml(`${link}${extra}`) as SafeHtml;
+        // return this.sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
       },
     },
   };

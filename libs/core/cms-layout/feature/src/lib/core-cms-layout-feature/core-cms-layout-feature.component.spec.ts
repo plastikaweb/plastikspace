@@ -3,7 +3,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { createAction } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -74,12 +73,6 @@ describe('CoreCmsLayoutFeatureComponent', () => {
   it('should call setIsMobile layoutFacade method on onSetIsMobile event', () => {
     component.onSetIsMobile(true);
     expect(layoutFacade.setIsMobile).toHaveBeenCalledWith(true);
-  });
-
-  it('should call dispatchAction layoutFacade method on onSetIsMobile event', () => {
-    const doAction = createAction('[Action] do');
-    component.onButtonClickAction(doAction);
-    expect(layoutFacade.dispatchAction).toHaveBeenCalledWith(doAction);
   });
 
   it('should call dismiss notificationFacade method on onNotificationDismiss event', () => {

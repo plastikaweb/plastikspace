@@ -1,9 +1,9 @@
 import { AuthGuard, hasCustomClaim } from '@angular/fire/auth-guard';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { Routes } from '@angular/router';
+import { isLoggedGuard, isNotLoggedGuard } from '@plastik/auth/firebase/data-access';
 import { CoreCmsLayoutFeatureComponent } from '@plastik/core/cms-layout';
-import { isLoggedGuard } from './isLogged.guard';
-import { isNotLoggedGuard } from './isNotLogged.guard';
+import { isAnActiveOrderListGuard } from '@plastik/llecoop/order-list/data-access';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 // const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
@@ -149,10 +149,18 @@ export const appRoutes: Routes = [
         path: 'soci',
         children: [
           {
-            path: 'comanda-activa',
+            path: 'comanda/crear',
             loadChildren: () =>
-              import('@plastik/llecoop/order/detail').then(
+              import('@plastik/llecoop/user-order/detail').then(
                 routes => routes.llecoopOrderFeatureDetailRoutes
+              ),
+            canActivate: [isAnActiveOrderListGuard],
+          },
+          {
+            path: 'comanda',
+            loadChildren: () =>
+              import('@plastik/llecoop/user-order/list').then(
+                routes => routes.llecoopOrderFeatureListRoutes
               ),
           },
         ],

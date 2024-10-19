@@ -12,12 +12,18 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   tableData: Signal<T[]>;
   tableSorting?: Signal<TableSortingConfig>;
   count: Signal<number>;
+  tableFilterPredicate?: (data: T, filter: string) => boolean;
   onTableSorting?(sorting: TableSorting): void;
   onTableActionDelete?(item: unknown): void;
   onGetData?(data: unknown[]): void;
   viewConfig: Signal<ViewConfigUI>;
   formStructure?: Signal<FormlyFieldConfig[]>;
-  routingToDetailPage: Signal<{ visible: boolean; path?: string[]; label?: string }>;
+  routingToDetailPage: Signal<{
+    visible: boolean;
+    disabled?: boolean;
+    path?: string[];
+    label?: string;
+  }>;
   viewExtraActions?: Signal<
     {
       label: string;
