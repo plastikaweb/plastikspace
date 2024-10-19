@@ -57,7 +57,7 @@ export class LlecoopOrderSearchFeatureTableConfig
 
   private readonly numberOfProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'numberOfProducts',
-    title: 'Nombre de productes',
+    title: 'N. de productes',
     propertyPath: 'cart',
     sorting: true,
     cssClasses: ['hidden md:flex min-w-[100px]'],
@@ -72,7 +72,7 @@ export class LlecoopOrderSearchFeatureTableConfig
     title: 'Estat de la comanda',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['hidden md:flex min-w-[120px]'],
     formatting: {
       type: 'CUSTOM',
       execute: value => {

@@ -26,6 +26,13 @@ export class LlecoopCategoryListFacadeService
   tableStructure = this.table.getTableStructure();
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
+  tableFilterPredicate = (data: LlecoopProductCategory, filter: string) => {
+    return (
+      data.name?.toLowerCase().includes(filter.toLowerCase()) ||
+      data.description?.toLowerCase().includes(filter.toLowerCase()) ||
+      false
+    );
+  };
   count = this.store.count;
   routingToDetailPage = signal({ visible: true });
 

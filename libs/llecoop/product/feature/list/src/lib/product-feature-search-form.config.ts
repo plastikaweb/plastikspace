@@ -8,19 +8,10 @@ export function getLlecoopProductSearchFeatureFormConfig(): WritableSignal<Forml
     {
       fieldGroupClassName: 'flex flex-col md:flex-row flex-wrap gap-sm',
       fieldGroup: [
-        addSearchInput('Filtrar per nom, descripció, procedència o proveïdor', 'buidar valor'),
-        // {
-        //   key: 'category',
-        //   type: 'select',
-        //   defaultValue: '',
-        //   className: 'w-full md:w-1/2',
-        //   templateOptions: {
-        //     label: 'Categories',
-        //     placeholder: 'Categories',
-        //     required: false,
-        //     options: [],
-        //   },
-        // },
+        addSearchInput(
+          'Filtrar per nom, categoria, descripció, origen o proveïdor',
+          'buidar valor'
+        ),
         // {
         //   key: 'inStock',
         //   type: 'select',

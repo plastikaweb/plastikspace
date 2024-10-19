@@ -70,6 +70,10 @@ export function getLlecoopCategoryDetailFormConfig(): FormlyFieldConfig[] {
             required: false,
           },
         },
+        {
+          key: 'productCount',
+          defaultValue: 0,
+        },
       ],
     },
   ];

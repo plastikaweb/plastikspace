@@ -35,7 +35,7 @@ export const onDeleteCategoryUpdateProductCategory = functions.firestore
   });
 
 // Product
-export const onCreateProductCategoryUpdateCategoryProductCount = functions.firestore
+export const onCreateProductUpdateCategoryProductCount = functions.firestore
   .document('product/{productId}')
   .onCreate(async (snapshot, context) => {
     await (
@@ -43,7 +43,7 @@ export const onCreateProductCategoryUpdateCategoryProductCount = functions.fires
     ).default(snapshot, context);
   });
 
-export const onUpdateProductCategoryUpdateCategoryProductCount = functions.firestore
+export const onUpdateProductUpdateCategoryProductCount = functions.firestore
   .document('product/{productId}')
   .onUpdate(async (change, context) => {
     await (

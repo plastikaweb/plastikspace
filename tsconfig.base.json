@@ -10,200 +10,93 @@
     "importHelpers": true,
     "target": "ES2022",
     "module": "esnext",
-    "lib": [
-      "es2020",
-      "dom"
-    ],
+    "lib": ["es2020", "dom"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@plastik/auth": [
-        "libs/shared/auth/feature/src/index.ts"
-      ],
-      "@plastik/auth/firebase/data-access": [
-        "libs/shared/auth/firebase/data-access/src/index.ts"
-      ],
-      "@plastik/auth/login": [
-        "libs/shared/auth/login/feature/src/index.ts"
-      ],
-      "@plastik/auth/register": [
-        "libs/shared/auth/register/feature/src/index.ts"
-      ],
-      "@plastik/auth/request-password": [
-        "libs/shared/auth/request-password/feature/src/index.ts"
-      ],
-      "@plastik/core/api": [
-        "libs/core/util/api/src/index.ts"
-      ],
-      "@plastik/core/cms-layout": [
-        "libs/core/cms-layout/feature/src/index.ts"
-      ],
-      "@plastik/core/cms-layout/data-access": [
-        "libs/core/cms-layout/data-access/src/index.ts"
-      ],
-      "@plastik/core/cms-layout/entities": [
-        "libs/core/cms-layout/entities/src/index.ts"
-      ],
-      "@plastik/core/cms-layout/footer": [
-        "libs/core/cms-layout/ui/footer/src/index.ts"
-      ],
-      "@plastik/core/cms-layout/header": [
-        "libs/core/cms-layout/ui/header/src/index.ts"
-      ],
-      "@plastik/core/cms-layout/sidenav": [
-        "libs/core/cms-layout/ui/sidenav/src/index.ts"
-      ],
-      "@plastik/core/cypress-commands": [
-        "libs/core/util/cypress-commands/src/index.ts"
-      ],
-      "@plastik/core/detail-edit-view": [
-        "libs/core/detail-item-form/src/index.ts"
-      ],
-      "@plastik/core/entities": [
-        "libs/core/entities/src/index.ts"
-      ],
-      "@plastik/core/environments": [
-        "libs/core/util/environments/src/index.ts"
-      ],
-      "@plastik/core/list-view": [
-        "libs/core/table-with-filtering/src/index.ts"
-      ],
-      "@plastik/core/router-state": [
-        "libs/core/router/data-access/src/index.ts"
-      ],
-      "@plastik/llecoop/category/data-access": [
-        "libs/llecoop/category/data-access/src/index.ts"
-      ],
-      "@plastik/llecoop/category/detail": [
-        "libs/llecoop/category/feature/detail/src/index.ts"
-      ],
-      "@plastik/llecoop/category/list": [
-        "libs/llecoop/category/feature/list/src/index.ts"
-      ],
-      "@plastik/llecoop/data-access": [
-        "libs/llecoop/data-access/src/index.ts"
-      ],
-      "@plastik/llecoop/entities": [
-        "libs/llecoop/entities/src/index.ts"
-      ],
+      "@plastik/auth": ["libs/shared/auth/feature/src/index.ts"],
+      "@plastik/auth/firebase/data-access": ["libs/shared/auth/firebase/data-access/src/index.ts"],
+      "@plastik/auth/login": ["libs/shared/auth/login/feature/src/index.ts"],
+      "@plastik/auth/register": ["libs/shared/auth/register/feature/src/index.ts"],
+      "@plastik/auth/request-password": ["libs/shared/auth/request-password/feature/src/index.ts"],
+      "@plastik/core/api": ["libs/core/util/api/src/index.ts"],
+      "@plastik/core/cms-layout": ["libs/core/cms-layout/feature/src/index.ts"],
+      "@plastik/core/cms-layout/data-access": ["libs/core/cms-layout/data-access/src/index.ts"],
+      "@plastik/core/cms-layout/entities": ["libs/core/cms-layout/entities/src/index.ts"],
+      "@plastik/core/cms-layout/footer": ["libs/core/cms-layout/ui/footer/src/index.ts"],
+      "@plastik/core/cms-layout/header": ["libs/core/cms-layout/ui/header/src/index.ts"],
+      "@plastik/core/cms-layout/sidenav": ["libs/core/cms-layout/ui/sidenav/src/index.ts"],
+      "@plastik/core/cypress-commands": ["libs/core/util/cypress-commands/src/index.ts"],
+      "@plastik/core/detail-edit-view": ["libs/core/detail-item-form/src/index.ts"],
+      "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
+      "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
+      "@plastik/core/list-view": ["libs/core/table-with-filtering/src/index.ts"],
+      "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
+      "@plastik/llecoop/category/data-access": ["libs/llecoop/category/data-access/src/index.ts"],
+      "@plastik/llecoop/category/detail": ["libs/llecoop/category/feature/detail/src/index.ts"],
+      "@plastik/llecoop/category/list": ["libs/llecoop/category/feature/list/src/index.ts"],
+      "@plastik/llecoop/data-access": ["libs/llecoop/data-access/src/index.ts"],
+      "@plastik/llecoop/entities": ["libs/llecoop/entities/src/index.ts"],
       "@plastik/llecoop/order-list/data-access": [
         "libs/llecoop/order-list/data-access/src/index.ts"
       ],
-      "@plastik/llecoop/order-list/list": [
-        "libs/llecoop/order-list/feature/list/src/index.ts"
-      ],
+      "@plastik/llecoop/order-list/list": ["libs/llecoop/order-list/feature/list/src/index.ts"],
       "@plastik/llecoop/order-list/order-indicator": [
         "libs/llecoop/order-list/feature/llecoop-order-indicator/src/index.ts"
       ],
-      "@plastik/llecoop/product/data-access": [
-        "libs/llecoop/product/data-access/src/index.ts"
-      ],
-      "@plastik/llecoop/product/detail": [
-        "libs/llecoop/product/feature/detail/src/index.ts"
-      ],
-      "@plastik/llecoop/product/list": [
-        "libs/llecoop/product/feature/list/src/index.ts"
-      ],
+      "@plastik/llecoop/product/data-access": ["libs/llecoop/product/data-access/src/index.ts"],
+      "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
+      "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
       "@plastik/llecoop/user-order/detail": [
         "libs/llecoop/order-list/feature/user-order-detail/src/index.ts"
       ],
       "@plastik/llecoop/user-order/list": [
         "libs/llecoop/order-list/feature/user-order-list/src/index.ts"
       ],
-      "@plastik/llecoop/user/create": [
-        "libs/llecoop/user/feature/create/src/index.ts"
-      ],
-      "@plastik/llecoop/user/data-access": [
-        "libs/llecoop/user/data-access/src/index.ts"
-      ],
-      "@plastik/llecoop/user/list": [
-        "libs/llecoop/user/feature/list/src/index.ts"
-      ],
-      "@plastik/llecoop/util": [
-        "libs/llecoop/util/src/index.ts"
-      ],
-      "@plastik/nasa-images/data-access": [
-        "libs/nasa-images/data-access/src/index.ts"
-      ],
-      "@plastik/nasa-images/faqs": [
-        "libs/nasa-images/faqs/feature/src/index.ts"
-      ],
-      "@plastik/nasa-images/search": [
-        "libs/nasa-images/search/feature/src/index.ts"
-      ],
+      "@plastik/llecoop/user/create": ["libs/llecoop/user/feature/create/src/index.ts"],
+      "@plastik/llecoop/user/data-access": ["libs/llecoop/user/data-access/src/index.ts"],
+      "@plastik/llecoop/user/list": ["libs/llecoop/user/feature/list/src/index.ts"],
+      "@plastik/llecoop/util": ["libs/llecoop/util/src/index.ts"],
+      "@plastik/nasa-images/data-access": ["libs/nasa-images/data-access/src/index.ts"],
+      "@plastik/nasa-images/faqs": ["libs/nasa-images/faqs/feature/src/index.ts"],
+      "@plastik/nasa-images/search": ["libs/nasa-images/search/feature/src/index.ts"],
       "@plastik/nasa-images/search/data-access": [
         "libs/nasa-images/search/data-access/src/index.ts"
       ],
-      "@plastik/nasa-images/search/entities": [
-        "libs/nasa-images/search/entities/src/index.ts"
-      ],
+      "@plastik/nasa-images/search/entities": ["libs/nasa-images/search/entities/src/index.ts"],
       "@plastik/nasa-images/search/ui/no-results": [
         "libs/nasa-images/search/ui/no-results/src/index.ts"
       ],
-      "@plastik/shared/activity/data-access": [
-        "libs/shared/activity/data-access/src/index.ts"
-      ],
-      "@plastik/shared/activity/ui": [
-        "libs/shared/activity/ui/src/index.ts"
-      ],
-      "@plastik/shared/button": [
-        "libs/shared/button/index.ts"
-      ],
-      "@plastik/shared/confirm": [
-        "libs/shared/confirm/data-access/src/index.ts"
-      ],
-      "@plastik/shared/dynamic-bg-color": [
-        "libs/shared/util/dynamic-bg-color/src/index.ts"
-      ],
-      "@plastik/shared/entities": [
-        "libs/shared/util/entities/src/index.ts"
-      ],
-      "@plastik/shared/form": [
-        "libs/shared/form/feature/src/index.ts"
-      ],
-      "@plastik/shared/form/ui": [
-        "libs/shared/form/ui/index.ts"
-      ],
-      "@plastik/shared/formatters": [
-        "libs/shared/util/formatters/src/index.ts"
-      ],
-      "@plastik/shared/latinize": [
-        "libs/shared/util/latinize/src/index.ts"
-      ],
+      "@plastik/shared/activity/data-access": ["libs/shared/activity/data-access/src/index.ts"],
+      "@plastik/shared/activity/ui": ["libs/shared/activity/ui/src/index.ts"],
+      "@plastik/shared/button": ["libs/shared/button/index.ts"],
+      "@plastik/shared/confirm": ["libs/shared/confirm/data-access/src/index.ts"],
+      "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
+      "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
+      "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
+      "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
+      "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
+      "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
       "@plastik/shared/notification/data-access": [
         "libs/shared/notification/data-access/src/index.ts"
       ],
-      "@plastik/shared/notification/entities": [
-        "libs/shared/notification/entities/src/index.ts"
-      ],
+      "@plastik/shared/notification/entities": ["libs/shared/notification/entities/src/index.ts"],
       "@plastik/shared/notification/ui/mat-snackbar": [
         "libs/shared/notification/ui/mat-snackbar/src/index.ts"
       ],
-      "@plastik/shared/objects": [
-        "libs/shared/util/objects/src/index.ts"
-      ],
+      "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
       "@plastik/shared/return-as-observable": [
         "libs/shared/util/return-as-observable-pipe/src/index.ts"
       ],
-      "@plastik/shared/table/entities": [
-        "libs/shared/table/entities/src/index.ts"
-      ],
-      "@plastik/shared/table/ui": [
-        "libs/shared/table/ui/src/index.ts"
-      ]
+      "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
+      "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"]
     }
   },
   "angularCompilerOptions": {
     "strictTemplates": true
   },
-  "exclude": [
-    "node_modules",
-    "tmp",
-    "cypress",
-    "./cypress.config.ts",
-    "**/*.cy.tsx"
-  ]
+  "exclude": ["node_modules", "tmp", "cypress", "./cypress.config.ts", "**/*.cy.tsx"]
 }

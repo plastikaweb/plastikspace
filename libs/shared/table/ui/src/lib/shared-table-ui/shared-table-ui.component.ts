@@ -130,6 +130,8 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   @Input() filterCriteria = '';
 
+  @Input() filterPredicate?: (data: T, filter: string) => boolean;
+
   @Input() extraRowStyles?: (element: T) => string;
 
   /**
@@ -180,6 +182,13 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       this.matSort.active = this.sort?.[0] || '';
       this.matSort.direction = this.sort?.[1] || 'asc';
       this.dataSource.sort = this.matSort;
+    }
+
+    if (this.filterPredicate) {
+      this.dataSource.filterPredicate = this.filterPredicate as (
+        data: unknown,
+        filter: string
+      ) => boolean;
     }
   }
 
