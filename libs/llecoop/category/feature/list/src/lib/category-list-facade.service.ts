@@ -26,12 +26,12 @@ export class LlecoopCategoryListFacadeService
   tableStructure = this.table.getTableStructure();
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
-  tableFilterPredicate = (data: LlecoopProductCategory, filter: string) => {
-    return (
-      data.name?.toLowerCase().includes(filter.toLowerCase()) ||
-      data.description?.toLowerCase().includes(filter.toLowerCase()) ||
-      false
-    );
+  filterCriteria = signal<Record<string, string>>({
+    text: '',
+  });
+  tableFilterPredicate = (data: LlecoopProductCategory, criteria: Record<string, string>) => {
+    const value = criteria['text'].toLowerCase();
+    return [data.name, data.description].some(text => text?.toLowerCase().includes(value));
   };
   count = this.store.count;
   routingToDetailPage = signal({ visible: true });
@@ -40,6 +40,10 @@ export class LlecoopCategoryListFacadeService
 
   onTableSorting({ active, direction }: TableSorting): void {
     this.store.setSorting([active, direction]);
+  }
+
+  onChangeFilterCriteria(criteria: Record<string, string>): void {
+    this.filterCriteria.update(() => criteria);
   }
 
   onTableActionDelete(item: LlecoopProductCategory): void {

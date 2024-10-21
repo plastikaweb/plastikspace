@@ -165,12 +165,12 @@ export const appRoutes: Routes = [
           },
         ],
       },
+      {
+        path: '',
+        redirectTo: 'soci/comanda',
+        pathMatch: 'full',
+      },
     ],
-  },
-  {
-    path: '',
-    redirectTo: 'soci/comanda',
-    pathMatch: 'full',
   },
   {
     path: '**',

@@ -24,11 +24,6 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
             import('@plastik/llecoop/order-list/order-indicator').then(
               c => c.LlecoopOrderIndicatorComponent
             ),
-          // inputs: {
-          //   title: `${order?.['title'] || 'No hi ha cap comanda activa'}`,
-          //   totalProducts: `${userOrder.length || 0}`,
-          //   totalPrice: `${price || 0}`,
-          // },
         },
       ]),
     },

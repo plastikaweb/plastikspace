@@ -6,28 +6,28 @@ import { addSearchInput } from '@plastik/shared/form/ui';
 export function getLlecoopProductSearchFeatureFormConfig(): WritableSignal<FormlyFieldConfig[]> {
   return signal([
     {
-      fieldGroupClassName: 'flex flex-col md:flex-row flex-wrap gap-sm',
+      fieldGroupClassName: 'flex flex-col md:flex-row gap-sm md:gap-tiny',
       fieldGroup: [
         addSearchInput(
           'Filtrar per nom, categoria, descripció, origen o proveïdor',
           'buidar valor'
         ),
-        // {
-        //   key: 'inStock',
-        //   type: 'select',
-        //   defaultValue: '',
-        //   className: 'w-full md:w-1/2',
-        //   templateOptions: {
-        //     label: 'Disponibilitat',
-        //     placeholder: 'Disponibilitat',
-        //     required: false,
-        //     options: [
-        //       { label: 'Tots', value: '' },
-        //       { label: 'Disponible', value: 'true' },
-        //       { label: 'No disponible', value: 'false' },
-        //     ],
-        //   },
-        // }
+        {
+          key: 'inStock',
+          type: 'select',
+          defaultValue: 'all',
+          className: 'w-full md:w-1/2',
+          templateOptions: {
+            label: 'Disponibilitat',
+            placeholder: 'Disponibilitat',
+            required: false,
+            options: [
+              { label: 'Tots', value: 'all' },
+              { label: 'Disponible', value: 'available' },
+              { label: 'No disponible', value: 'not-available' },
+            ],
+          },
+        },
       ],
     },
   ]);

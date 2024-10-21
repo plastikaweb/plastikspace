@@ -1,5 +1,5 @@
 import { TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
@@ -25,16 +25,13 @@ import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type'
 })
 export class TableWithFilteringComponent {
   protected facade = inject(TABLE_WITH_FILTERING_FACADE);
-  protected filterCriteria = signal('');
 
   onChangeSorting(tableSorting: TableSorting): void {
     this.facade.onTableSorting?.(tableSorting);
   }
 
-  onChangeFiltering(model: { text: string }): void {
-    this.filterCriteria.update(() => {
-      return model.text.trim().toLowerCase();
-    });
+  onChangeFiltering(model: Record<string, string>): void {
+    this.facade.onChangeFilterCriteria?.(model);
   }
 
   onDelete(item: unknown): void {

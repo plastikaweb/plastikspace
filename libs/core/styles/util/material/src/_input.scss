@@ -7,4 +7,16 @@
 
 formly-field {
   width: 100%;
+
+  .input-with-enabled-appearance .mdc-text-field--disabled {
+    --mdc-filled-text-field-disabled-label-text-color: var(
+      --mdc-filled-text-field-input-text-color
+    );
+    --mdc-filled-text-field-disabled-input-text-color: var(
+      --mdc-filled-text-field-input-text-color
+    );
+    --mdc-filled-text-field-disabled-placeholder-text-color: var(
+      --mdc-filled-text-field-input-text-color
+    );
+  }
 }
