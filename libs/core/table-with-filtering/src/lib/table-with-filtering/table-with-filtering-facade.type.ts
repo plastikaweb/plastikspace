@@ -12,10 +12,12 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   tableData: Signal<T[]>;
   tableSorting?: Signal<TableSortingConfig>;
   count: Signal<number>;
-  tableFilterPredicate?: (data: T, filter: string) => boolean;
+  filterCriteria?: Signal<Record<string, string>>;
+  tableFilterPredicate?: (data: T, criteria: Record<string, string>) => boolean;
   onTableSorting?(sorting: TableSorting): void;
   onTableActionDelete?(item: unknown): void;
   onGetData?(data: unknown[]): void;
+  onChangeFilterCriteria?: (criteria: Record<string, string>) => void;
   viewConfig: Signal<ViewConfigUI>;
   formStructure?: Signal<FormlyFieldConfig[]>;
   routingToDetailPage: Signal<{

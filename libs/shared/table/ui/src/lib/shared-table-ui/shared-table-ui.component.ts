@@ -128,9 +128,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    */
   @Input() actions?: TableControlAction<T>;
 
-  @Input() filterCriteria = '';
+  @Input() filterCriteria: Record<string, string> = {};
 
-  @Input() filterPredicate?: (data: T, filter: string) => boolean;
+  @Input() filterPredicate?: (data: T, criteria: Record<string, string>) => boolean;
 
   @Input() extraRowStyles?: (element: T) => string;
 
@@ -184,11 +184,10 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       this.dataSource.sort = this.matSort;
     }
 
-    if (this.filterPredicate) {
-      this.dataSource.filterPredicate = this.filterPredicate as (
-        data: unknown,
-        filter: string
-      ) => boolean;
+    if (this.filterPredicate && this.filterCriteria) {
+      this.dataSource.filterPredicate = (data: unknown) => {
+        return this.filterPredicate ? this.filterPredicate(data as T, this.filterCriteria) : true;
+      };
     }
   }
 
@@ -213,8 +212,8 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       this.matPaginator.pageSize = pageSize || 10;
     }
 
-    if (filterCriteria) {
-      this.dataSource.filter = filterCriteria.currentValue.trim().toLowerCase();
+    if (filterCriteria && !filterCriteria.firstChange && this.filterPredicate) {
+      this.dataSource.filter = `${filterCriteria.currentValue}`;
     }
 
     if (data) {

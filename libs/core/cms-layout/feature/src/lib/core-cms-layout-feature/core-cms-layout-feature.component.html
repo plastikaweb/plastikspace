@@ -10,12 +10,10 @@
 @if (isActive) {
   <plastik-shared-activity-ui-overlay>
     <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
-    <div class="spinner-container">
-      <div class="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
-    </div>
+    <p class="flex flex-col items-center justify-center text-white gap-sub text-md">
+      Carregant dades...
+      <img src="assets/img/favicon.svg" alt="carregant dades..." class="w-xl h-xl" />
+    </p>
   </plastik-shared-activity-ui-overlay>
 }
 
@@ -43,7 +41,7 @@
       }
     </div>
 
-    <div end class="flex items-center gap-sm">
+    <div end class="flex items-center gap-tiny lg:gap-sm">
       @if (headerWidgetsPosition === 'end') {
         <ng-container #widgetsContainer></ng-container>
       }
@@ -115,7 +113,7 @@
 <ng-template #headerMenuTpl>
   <button mat-button aria-label="header menu" [matMenuTriggerFor]="menu">
     <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
-    <mat-icon class="w-[30px] h-[30px] text-[30px]">account_circle</mat-icon>
+    <mat-icon class="w-[30px] h-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="px-sub">
     <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{
@@ -141,10 +139,10 @@
 <ng-template #h1Tpl>
   @if (headerConfig.mainIcon; as icon) {
     <div class="flex items-center justify-center gap-sub">
-      <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+      <svg-icon class="hidden sm:block" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
 
       <span class="block text-md sm:hidden">{{ headerTitle }}</span>
-      <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
+      <span class="hidden text-sm sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
     </div>
   }
 </ng-template>

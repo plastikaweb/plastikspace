@@ -1,4 +1,4 @@
-import { FormlyFieldConfig, FormlyFormOptions } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { tap } from 'rxjs';
 
 export function addSearchInput(
@@ -33,11 +33,7 @@ export function addSearchInput(
       addonRight: {
         icon: 'cancel',
         aria: cancelLabel,
-        onClick: (_: unknown, { resetModel }: FormlyFormOptions): void => {
-          if (resetModel) {
-            resetModel({ text: '' });
-          }
-        },
+        onClick: (field: FormlyFieldConfig): void => field.formControl?.reset(),
       },
     },
   };

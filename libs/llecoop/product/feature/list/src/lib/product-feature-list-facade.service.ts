@@ -6,6 +6,7 @@ import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
+import { latinize } from '@plastik/shared/latinize';
 import { TableSorting } from '@plastik/shared/table/entities';
 import { filter, take } from 'rxjs';
 import { getLlecoopProductSearchFeatureFormConfig } from './product-feature-search-form.config';
@@ -24,15 +25,30 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   tableStructure = this.table.getTableStructure();
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
-  tableFilterPredicate = (data: LlecoopProduct, filter: string) => {
-    return (
-      data.name?.toLowerCase().includes(filter.toLowerCase()) ||
-      data.category?.name?.toLowerCase().includes(filter.toLowerCase()) ||
-      data.info?.toLowerCase().includes(filter.toLowerCase()) ||
-      data.provider?.toLowerCase().includes(filter.toLowerCase()) ||
-      data.origin?.toLowerCase().includes(filter.toLowerCase()) ||
-      false
-    );
+  filterCriteria = signal<Record<string, string>>({
+    text: '',
+    inStock: 'all',
+  });
+  tableFilterPredicate = (data: LlecoopProduct, criteria: Record<string, string>) => {
+    let filterText = true;
+    let filterInStock = true;
+    for (const key in criteria) {
+      const value = criteria[key].toLowerCase();
+
+      if (key === 'text') {
+        filterText = [data.name, data.category?.name, data.info, data.provider, data.origin].some(
+          text => latinize(text?.toLowerCase() || '').includes(value)
+        );
+      }
+      if (key === 'inStock') {
+        filterInStock =
+          value === 'all' ||
+          (value === 'available' && data.isAvailable) ||
+          (value === 'not-available' && !data.isAvailable);
+      }
+    }
+
+    return filterText && filterInStock;
   };
   count = this.store.count;
   routingToDetailPage = signal({ visible: true });
@@ -41,6 +57,10 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
 
   onTableSorting({ active, direction }: TableSorting): void {
     this.store.setSorting([active, direction]);
+  }
+
+  onChangeFilterCriteria(criteria: Record<string, string>): void {
+    this.filterCriteria.update(() => criteria);
   }
 
   onTableActionDelete(item: LlecoopProduct): void {

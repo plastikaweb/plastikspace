@@ -38,6 +38,13 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
   tableStructure = this.table.getTableStructure();
   tableData = this.orderUserStore.entities;
   tableSorting = this.orderUserStore.sorting;
+  filterCriteria = signal<Record<string, string>>({
+    text: '',
+  });
+  tableFilterPredicate = (data: LlecoopUserOrder, criteria: Record<string, string>) => {
+    const value = criteria['text'].toLowerCase();
+    return [data.name].some(text => text?.toLowerCase().includes(value));
+  };
   count = this.orderUserStore.count;
   routingToDetailPage = computed(() => {
     return {
@@ -54,6 +61,10 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
 
   onTableSorting({ active, direction }: TableSorting): void {
     this.orderUserStore.setSorting([active, direction]);
+  }
+
+  onChangeFilterCriteria(criteria: Record<string, string>): void {
+    this.filterCriteria.update(() => criteria);
   }
 
   onTableActionDelete(item: LlecoopUserOrder): void {

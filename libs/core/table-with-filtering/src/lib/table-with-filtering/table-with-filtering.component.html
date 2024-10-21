@@ -55,7 +55,7 @@
   [sort]="facade.tableSorting?.()"
   [pageSizeOptions]="tableStructure.pageSizeOptions || []"
   [paginationVisibility]="tableStructure.paginationVisibility"
-  [filterCriteria]="filterCriteria()"
+  [filterCriteria]="facade.filterCriteria?.() || {}"
   [filterPredicate]="facade.tableFilterPredicate"
   [actions]="tableStructure.actions || {}"
   [extraRowStyles]="tableStructure.extraRowStyles"
