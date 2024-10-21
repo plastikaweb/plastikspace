@@ -39,7 +39,7 @@ export class LlecoopOrderSearchFeatureTableConfig
   };
 
   private readonly price: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
-    key: 'price',
+    key: 'totalPrice',
     title: 'Preu total',
     propertyPath: '',
     sorting: true,
@@ -47,9 +47,7 @@ export class LlecoopOrderSearchFeatureTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
-        const price = element?.cart.reduce((acc, item) => {
-          return acc + (item.finalPrice || item.initPrice);
-        }, 0);
+        const price = element?.totalPrice || 0;
         return this.sanitizer.bypassSecurityTrustHtml(`${Number(price).toFixed(2)} €`) as SafeHtml;
       },
     },
