@@ -25,6 +25,7 @@ export class LlecoopOrderUserFireService {
 
   getAll(): Observable<LlecoopUserOrder[]> {
     const userId = this.authService.currentUser()?.uid;
+    console.log(userId);
     if (!userId) {
       return of([]);
     }
@@ -45,7 +46,8 @@ export class LlecoopOrderUserFireService {
   }
 
   delete(item: LlecoopUserOrder, currentOrderId: LlecoopOrder['id']) {
-    const document = doc(this.firestore, `order-list/${currentOrderId}/orders/${item.id}`);
+    console.log('delete', `order-list/${currentOrderId}/orders/${item.id}`);
+    const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
     return from(deleteDoc(document));
   }
 }

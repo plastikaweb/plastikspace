@@ -61,6 +61,7 @@ export const LlecoopOrderUserStore = signalStore(
             orderUserService.getAll().pipe(
               tapResponse({
                 next: orders => {
+                  console.log('orders', orders);
                   patchState(
                     store,
                     setAllEntities(orders, {

@@ -138,6 +138,113 @@ export function getLlecoopOrderDetailFormConfig(): FormlyFieldConfig[] {
             },
           },
         },
+        {
+          fieldGroupClassName:
+            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroup: [
+            {
+              key: 'price',
+              type: 'input',
+              className: 'w-full input-with-enabled-appearance',
+              defaultValue: 0,
+              props: {
+                type: 'number',
+                label: 'Preu',
+                placeholder: 'Preu',
+                disabled: true,
+                step: 0.01,
+                addonRight: {
+                  text: '€',
+                },
+              },
+              hooks: {
+                onInit: (formly: FormlyFieldConfig) => {
+                  return formly.options?.fieldChanges?.pipe(
+                    filter(e => e.type === 'valueChanges' && e.field['key'] === 'cart'),
+                    tap(({ value }) => {
+                      const total = value.reduce((acc: number, item: LlecoopOrderProduct) => {
+                        return acc + item.initPrice;
+                      }, 0);
+                      formly.formControl?.setValue(Number(total.toFixed(2)));
+                    })
+                  );
+                },
+              },
+            },
+            {
+              key: 'deliveryPrice',
+              type: 'input',
+              className: 'w-full input-with-enabled-appearance',
+              defaultValue: 0,
+              props: {
+                type: 'number',
+                label: 'Preu de lliurament',
+                placeholder: 'Preu de lliurament',
+                disabled: true,
+                step: 0.01,
+                addonRight: {
+                  text: '€',
+                },
+              },
+              hooks: {
+                onInit: (formly: FormlyFieldConfig) => {
+                  return formly.options?.fieldChanges?.pipe(
+                    filter(
+                      e =>
+                        e.type === 'valueChanges' &&
+                        (e.field['key'] === 'price' || e.field['key'] === 'deliveryType')
+                    ),
+                    tap(({ value }) => {
+                      const deliveryType = formly.model?.deliveryType;
+                      const deliveryPrice =
+                        value === 0 || deliveryType !== 'delivery'
+                          ? 0.0
+                          : value <= 60
+                            ? 3.0
+                            : value > 100.01
+                              ? 1.0
+                              : 2.0;
+
+                      formly.formControl?.setValue(Number(deliveryPrice.toFixed(2)));
+                    })
+                  );
+                },
+              },
+            },
+            {
+              key: 'totalPrice',
+              type: 'input',
+              className: 'w-full input-with-enabled-appearance',
+              defaultValue: 0,
+              props: {
+                type: 'number',
+                label: 'Preu final',
+                placeholder: 'Preu final',
+                disabled: true,
+                step: 0.01,
+                addonRight: {
+                  text: '€',
+                },
+              },
+              hooks: {
+                onInit: (formly: FormlyFieldConfig) => {
+                  return formly.options?.fieldChanges?.pipe(
+                    filter(
+                      e =>
+                        e.type === 'valueChanges' &&
+                        (e.field['key'] === 'price' || e.field['key'] === 'deliveryType')
+                    ),
+                    tap(() => {
+                      const deliveryPrice = formly.model?.deliveryPrice || 0;
+                      const price = formly.model?.price || 0;
+                      formly.formControl?.setValue(Number(price + deliveryPrice).toFixed(2));
+                    })
+                  );
+                },
+              },
+            },
+          ],
+        },
       ],
     },
   ];
