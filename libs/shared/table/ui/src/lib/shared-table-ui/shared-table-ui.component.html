@@ -48,7 +48,8 @@
                 }
                 <input
                   matInput
-                  [value]="row[column.key] || 0"
+                  cdkFocusInitial
+                  [value]="row[column.key]"
                   [attr.type]="extras?.type || 'text'"
                   [attr.min]="extras?.min || 0"
                   [attr.max]="extras?.max || 100"

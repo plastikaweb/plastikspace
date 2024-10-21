@@ -1,5 +1,12 @@
 import { NgClass, NgStyle } from '@angular/common';
-import { AfterViewInit, ChangeDetectionStrategy, Component, TemplateRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  TemplateRef,
+  ViewChild,
+  ViewEncapsulation,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FieldWrapper } from '@ngx-formly/core';
@@ -29,13 +36,13 @@ export class FormlyAddonsWrapperComponent extends FieldWrapper implements AfterV
 
   addonRightClick(): void {
     if (this.props['addonRight'].onClick) {
-      this.props['addonRight'].onClick(this.props, this.options);
+      this.props['addonRight'].onClick(this.field, this.props, this.options);
     }
   }
 
   addonLeftClick(): void {
     if (this.props['addonLeft'].onClick) {
-      this.props['addonLeft'].onClick(this.props, this.options);
+      this.props['addonLeft'].onClick(this.field, this.props, this.options);
     }
   }
 }

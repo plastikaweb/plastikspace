@@ -6,6 +6,7 @@ import {
   Component,
   inject,
   input,
+  NgZone,
   OnDestroy,
   OnInit,
   viewChild,
@@ -74,6 +75,8 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   headerConfig = this.layoutFacade.headerConfig;
   protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
 
+  private readonly zone = inject(NgZone);
+
   ngOnInit(): void {
     // TODO: Isolate breakpoint observer into its own service https://github.com/plastikaweb/plastikspace/issues/68
     this.breakpointObserver
@@ -90,7 +93,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.createWidgets();
+    this.zone.runOutsideAngular(() => this.createWidgets());
   }
 
   ngOnDestroy(): void {
@@ -103,15 +106,15 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   }
 
   protected onSendAction(action: () => void): void {
-    action();
+    this.zone.runOutsideAngular(() => action());
   }
 
   onToggleSidenav(opened?: boolean): void {
-    this.layoutFacade.toggleSidenav(opened);
+    this.zone.runOutsideAngular(() => this.layoutFacade.toggleSidenav(opened));
   }
 
   onSetIsMobile(isMobile: boolean): void {
-    this.layoutFacade.setIsMobile(isMobile);
+    this.zone.runOutsideAngular(() => this.layoutFacade.setIsMobile(isMobile));
   }
 
   private createWidgets(): void {

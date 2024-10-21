@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  NgZone,
+  Output,
+} from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
@@ -17,8 +25,11 @@ export class CoreCmsLayoutUiSidenavComponent {
   @Input() fixedInViewport = false;
   @Input() sidenavOpened = true;
   @Output() toggleSidenav: EventEmitter<boolean> = new EventEmitter<boolean>();
+  private readonly zone = inject(NgZone);
 
   onToggleSidenav(opened?: boolean): void {
-    this.toggleSidenav.emit(opened);
+    this.zone.run(() => {
+      this.toggleSidenav.emit(opened);
+    });
   }
 }

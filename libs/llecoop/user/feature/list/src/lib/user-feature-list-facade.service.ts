@@ -6,6 +6,7 @@ import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
+import { latinize } from '@plastik/shared/latinize';
 import { TableSorting } from '@plastik/shared/table/entities';
 import { filter, take } from 'rxjs';
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
@@ -24,6 +25,29 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
   tableStructure = this.table.getTableStructure();
   tableData = this.store.entities;
   tableSorting = this.store.sorting;
+  filterCriteria = signal<Record<string, string>>({
+    text: '',
+    role: 'all',
+  });
+  tableFilterPredicate = (data: LlecoopUser, criteria: Record<string, string>) => {
+    let filterText = true;
+    let filterRole = true;
+    for (const key in criteria) {
+      const value = criteria[key].toLowerCase();
+
+      if (key === 'text') {
+        filterText = [data.email].some(text => latinize(text?.toLowerCase() || '').includes(value));
+      }
+
+      if (key === 'role') {
+        filterRole =
+          value === 'all' ||
+          (value === 'admin' && !!data.isAdmin) ||
+          (value === 'soci' && !data.isAdmin);
+      }
+    }
+    return filterText && filterRole;
+  };
   count = this.store.count;
   routingToDetailPage = signal({ visible: true });
 
@@ -31,6 +55,10 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
 
   onTableSorting({ active, direction }: TableSorting): void {
     this.store.setSorting([active, direction]);
+  }
+
+  onChangeFilterCriteria(criteria: Record<string, string>): void {
+    this.filterCriteria.update(() => criteria);
   }
 
   onTableActionDelete(item: LlecoopUser): void {
