@@ -19,11 +19,11 @@ import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { filter, pipe, switchMap, tap } from 'rxjs';
 import { LLecoopOrderListStore } from './order-list-store';
-import { LlecoopOrderUserFireService } from './order-user-fire.service';
 
+import { LlecoopUserOrderFireService } from './user-order-fire.service';
 type OrderState = LlecoopFeatureStore;
 
-export const LlecoopOrderUserStore = signalStore(
+export const LlecoopUserOrderStore = signalStore(
   { providedIn: 'root' },
   withDevtools('orders'),
   withState<OrderState>({
@@ -48,7 +48,7 @@ export const LlecoopOrderUserStore = signalStore(
   withMethods(
     (
       store,
-      orderUserService = inject(LlecoopOrderUserFireService),
+      userOrderService = inject(LlecoopUserOrderFireService),
       storeNotificationService = inject(StoreNotificationService),
       orderListStore = inject(LLecoopOrderListStore),
       authService = inject(FirebaseAuthService),
@@ -58,7 +58,7 @@ export const LlecoopOrderUserStore = signalStore(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(() =>
-            orderUserService.getAll().pipe(
+            userOrderService.getAll().pipe(
               tapResponse({
                 next: orders => {
                   console.log('orders', orders);
@@ -97,7 +97,7 @@ export const LlecoopOrderUserStore = signalStore(
               orderListId,
               userId,
             };
-            return orderUserService.create(finalOrder, orderListId).pipe(
+            return userOrderService.create(finalOrder, orderListId).pipe(
               tapResponse({
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
@@ -121,7 +121,7 @@ export const LlecoopOrderUserStore = signalStore(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(product => {
             const currentOrderListId = orderListStore.currentOrder()?.id;
-            return orderUserService.delete(product, currentOrderListId).pipe(
+            return userOrderService.delete(product, currentOrderListId).pipe(
               tapResponse({
                 next: () => {
                   storeNotificationService.create(

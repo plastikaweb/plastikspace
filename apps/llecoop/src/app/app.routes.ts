@@ -160,7 +160,7 @@ export const appRoutes: Routes = [
             path: 'comanda',
             loadChildren: () =>
               import('@plastik/llecoop/user-order/list').then(
-                routes => routes.llecoopOrderFeatureListRoutes
+                routes => routes.llecoopUserOrderFeatureListRoutes
               ),
           },
         ],

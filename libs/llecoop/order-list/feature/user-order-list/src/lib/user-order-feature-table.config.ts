@@ -13,7 +13,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderSearchFeatureTableConfig
+export class LlecoopUserOrderSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
   private readonly sanitizer = inject(DomSanitizer);

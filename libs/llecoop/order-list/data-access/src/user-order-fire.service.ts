@@ -18,7 +18,7 @@ import { from, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderUserFireService {
+export class LlecoopUserOrderFireService {
   private readonly firestore = inject(Firestore);
   private readonly authService = inject(FirebaseAuthService);
   private readonly ordersGroup = collectionGroup(this.firestore, 'orders');
