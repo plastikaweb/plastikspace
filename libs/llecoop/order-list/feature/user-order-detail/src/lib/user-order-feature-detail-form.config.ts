@@ -8,12 +8,12 @@ import {
 } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { filter, tap } from 'rxjs';
-import { LlecoopOrderDetailFormTableConfig } from './order-detail-table-form.config';
+import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
 
-export function getLlecoopOrderDetailFormConfig(): FormlyFieldConfig[] {
+export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
   const orderListStore = inject(LLecoopOrderListStore);
 
-  const tableColumnProperties = inject(LlecoopOrderDetailFormTableConfig);
+  const tableColumnProperties = inject(LlecoopUserOrderDetailFormTableConfig);
 
   return [
     {

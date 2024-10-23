@@ -117,12 +117,12 @@ export class LlecoopUserOrderSearchFeatureTableConfig
         EDIT: {
           visible: () => true,
           description: () => 'Edita la comanda',
-          order: 2,
+          order: 1,
         },
         DELETE: {
           visible: () => true,
           description: () => 'Elimina la comanda',
-          order: 3,
+          order: 2,
         },
       },
     });

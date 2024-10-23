@@ -61,7 +61,6 @@ export const LlecoopUserOrderStore = signalStore(
             userOrderService.getAll().pipe(
               tapResponse({
                 next: orders => {
-                  console.log('orders', orders);
                   patchState(
                     store,
                     setAllEntities(orders, {
@@ -101,7 +100,7 @@ export const LlecoopUserOrderStore = signalStore(
               tapResponse({
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
-                  state.dispatch(routerActions.go({ path: ['/soci/order'] }));
+                  state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
                   storeNotificationService.create(`Comanda creada`, 'SUCCESS');
                 },
                 error: error => {
@@ -116,12 +115,39 @@ export const LlecoopUserOrderStore = signalStore(
           })
         )
       ),
+      update: rxMethod<Partial<LlecoopUserOrder>>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(order => {
+            return userOrderService.update(order).pipe(
+              tapResponse({
+                next: () => {
+                  state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
+                },
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  storeNotificationService.create(
+                    `No s'ha pogut actualitzar la comanda": ${error}`,
+                    'ERROR'
+                  );
+                },
+                complete: () => {
+                  storeNotificationService.create(
+                    `Comanda "${order.name}" actualitzada`,
+                    'SUCCESS'
+                  ),
+                    state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+              })
+            );
+          })
+        )
+      ),
       delete: rxMethod<LlecoopUserOrder>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(product => {
-            const currentOrderListId = orderListStore.currentOrder()?.id;
-            return userOrderService.delete(product, currentOrderListId).pipe(
+            return userOrderService.delete(product).pipe(
               tapResponse({
                 next: () => {
                   storeNotificationService.create(
@@ -143,10 +169,13 @@ export const LlecoopUserOrderStore = signalStore(
         )
       ),
       setSorting: (sorting: OrderState['sorting']) => patchState(store, { sorting }),
-      setSelectedItemId: (id: string | null) =>
-        patchState(store, {
-          selectedItemId: id,
-        }),
+      setSelectedItemId: (id: string | null) => {
+        if (id !== store.selectedItemId()) {
+          patchState(store, {
+            selectedItemId: id,
+          });
+        }
+      },
     })
   ),
   withHooks({

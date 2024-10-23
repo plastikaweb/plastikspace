@@ -8,16 +8,17 @@ import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { getLlecoopOrderDetailFormConfig } from './order-feature-detail-form.config';
+import { getLlecoopUserOrderDetailFormConfig } from './user-order-feature-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<LlecoopUserOrder> {
+export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade<LlecoopUserOrder> {
   private readonly userOrderStore = inject(LlecoopUserOrderStore);
   private readonly orderListStore = inject(LLecoopOrderListStore);
 
   private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'order')[0];
+
   model = this.userOrderStore.selectedItem;
   formFullWidth = signal(true);
   formSubmitConfig = signal({
@@ -41,7 +42,7 @@ export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<Lle
     };
   });
 
-  formStructure = signal(getLlecoopOrderDetailFormConfig());
+  formStructure = getLlecoopUserOrderDetailFormConfig();
 
   onChange(data: Partial<LlecoopUserOrder>): void {
     const price = this.calculateTotalPrice(data.cart || []);
@@ -55,7 +56,11 @@ export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<Lle
   }
 
   onSubmit(data: Partial<LlecoopUserOrder>): void {
-    // this.model()?.id ? this.store.update(data) : this.store.create(data);
+    if (this.model()?.id) {
+      this.userOrderStore.update(data);
+      return;
+    }
+
     this.userOrderStore.create({
       ...data,
       name: this.orderListStore.currentOrder()?.name || '',

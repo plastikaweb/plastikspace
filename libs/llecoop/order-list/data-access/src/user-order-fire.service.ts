@@ -9,6 +9,7 @@ import {
   Firestore,
   query,
   Timestamp,
+  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
@@ -25,7 +26,6 @@ export class LlecoopUserOrderFireService {
 
   getAll(): Observable<LlecoopUserOrder[]> {
     const userId = this.authService.currentUser()?.uid;
-    console.log(userId);
     if (!userId) {
       return of([]);
     }
@@ -45,8 +45,17 @@ export class LlecoopUserOrderFireService {
     );
   }
 
-  delete(item: LlecoopUserOrder, currentOrderId: LlecoopOrder['id']) {
-    console.log('delete', `order-list/${currentOrderId}/orders/${item.id}`);
+  update(item: Partial<LlecoopUserOrder>) {
+    const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
+    return from(
+      updateDoc(document, {
+        ...item,
+        updatedAt: Timestamp.now(),
+      })
+    );
+  }
+
+  delete(item: LlecoopUserOrder) {
     const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
     return from(deleteDoc(document));
   }

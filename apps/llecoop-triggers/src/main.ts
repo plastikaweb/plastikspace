@@ -97,3 +97,12 @@ export const onListOrderTimeFinishUpdateListOrderState = functions.pubsub
   .onRun(async () => {
     await (await import('./list-order/onListOrderTimeFinishUpdateListOrderState')).default();
   });
+
+// User order
+export const onCreateUserOrderCheckIfAnUserOrderExists = functions.firestore
+  .document('order-list/{orderListId}/orders/{orderId}')
+  .onCreate(async (snapshot, context) => {
+    await (
+      await import('./user-order/onCreateUserOrderCheckIfAnUserOrderExists')
+    ).default(snapshot, context);
+  });
