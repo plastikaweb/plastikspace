@@ -90,11 +90,9 @@ export const LlecoopUserOrderStore = signalStore(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((order: Partial<LlecoopUserOrder>) => {
             const orderListId = orderListStore.currentOrder()?.id;
-            const userId = authService.currentUser()?.uid;
             const finalOrder = {
               ...order,
               orderListId,
-              userId,
             };
             return userOrderService.create(finalOrder, orderListId).pipe(
               tapResponse({

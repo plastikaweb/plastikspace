@@ -16,11 +16,11 @@ service cloud.firestore {
     }
 
     function hasSociAccess() {
-      return isAuthenticated() && isVerified();
+    	return isAuthenticated() && isVerified();
     }
 
     function hasAdminAccess() {
-      return isAuthenticated() && isVerified() && isAdmin();
+    	return isAuthenticated() && isVerified() && isAdmin();
     }
 
     match /category/{categoryId} {
@@ -41,7 +41,9 @@ service cloud.firestore {
     }
 
     match /{path=**}/orders/{orderId} {
-      allow read, write: if hasAdminAccess() || resource.data.userId == request.auth.uid;
-    }
+      allow read: if hasAdminAccess() || resource.data.userId == request.auth.uid;
+      allow delete, update: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+  	}
   }
 }

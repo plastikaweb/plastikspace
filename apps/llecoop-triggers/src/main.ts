@@ -106,3 +106,19 @@ export const onCreateUserOrderCheckIfAnUserOrderExists = functions.firestore
       await import('./user-order/onCreateUserOrderCheckIfAnUserOrderExists')
     ).default(snapshot, context);
   });
+
+export const onUserOrderCreatedUpdateListOrderUserOrdersCount = functions.firestore
+  .document('order-list/{orderListId}/orders/{orderId}')
+  .onCreate(async (snapshot, context) => {
+    await (
+      await import('./list-order/onUserOrderCreatedUpdateListOrderUserOrdersCount')
+    ).default(snapshot, context);
+  });
+
+export const onUserOrderDeletedUpdateListOrderUserOrdersCount = functions.firestore
+  .document('order-list/{orderListId}/orders/{orderId}')
+  .onDelete(async (snapshot, context) => {
+    await (
+      await import('./list-order/onUserOrderDeletedUpdateListOrderUserOrdersCount')
+    ).default(snapshot, context);
+  });
