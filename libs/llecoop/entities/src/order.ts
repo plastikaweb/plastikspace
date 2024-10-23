@@ -18,6 +18,7 @@ export interface LlecoopOrder extends BaseEntity {
   status: 'waiting' | 'progress' | 'cancel' | 'done';
   availableProducts: LlecoopOrderProduct[];
   orderCount?: number;
+  orders?: LlecoopUserOrder[];
 }
 
 export interface LlecoopUserOrder extends BaseEntity {

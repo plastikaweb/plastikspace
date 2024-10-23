@@ -10,7 +10,13 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import {
+  EntityId,
+  SelectEntityId,
+  setAllEntities,
+  updateEntity,
+  withEntities,
+} from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
@@ -21,6 +27,8 @@ import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopOrderListFireService } from './order-list-fire.service';
 
 type LlecoopOrderListState = LlecoopFeatureStore;
+
+const selectId: SelectEntityId<LlecoopOrder> = orderList => orderList?.id || '';
 
 export const LLecoopOrderListStore = signalStore(
   { providedIn: 'root' },
@@ -57,11 +65,10 @@ export const LLecoopOrderListStore = signalStore(
             orderListService.getAll().pipe(
               tapResponse({
                 next: orders => {
-                  patchState(
-                    store,
-                    setAllEntities(orders, { selectId: entity => entity.id || '' }),
-                    { loaded: true, lastUpdated: new Date() }
-                  );
+                  patchState(store, setAllEntities(orders, { selectId }), {
+                    loaded: true,
+                    lastUpdated: new Date(),
+                  });
                   state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
@@ -143,6 +150,30 @@ export const LLecoopOrderListStore = signalStore(
                     `No s'ha pogut eliminar la comanda "${product.name}": ${error}`,
                     'ERROR'
                   );
+                },
+              })
+            );
+          })
+        )
+      ),
+      getAllOrderListOrders: rxMethod<Partial<EntityId>>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap((id: EntityId) => {
+            return orderListService.getAllByOrderListId(id).pipe(
+              tapResponse({
+                next: orders => {
+                  patchState(store, updateEntity({ id, changes: { orders } }, { selectId }));
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+                error: error => {
+                  if (firebaseAuthService.loggedIn()) {
+                    storeNotificationService.create(
+                      `No s'ha pogut carregar el llistat de comandes: ${error}`,
+                      'ERROR'
+                    );
+                  }
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
               })
             );
