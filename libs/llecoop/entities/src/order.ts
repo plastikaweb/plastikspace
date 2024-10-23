@@ -14,9 +14,10 @@ export type LlecoopOrderProduct = LlecoopBaseProduct & {
 
 export interface LlecoopOrder extends BaseEntity {
   initTime?: Date;
-  endTime: Date;
+  endTime?: Date;
   status: 'waiting' | 'progress' | 'cancel' | 'done';
   availableProducts: LlecoopOrderProduct[];
+  orderCount?: number;
 }
 
 export interface LlecoopUserOrder extends BaseEntity {
