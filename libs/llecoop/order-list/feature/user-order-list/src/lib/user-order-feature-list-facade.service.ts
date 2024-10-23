@@ -6,18 +6,20 @@ import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
-  LlecoopOrderUserStore,
+  LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { TableSorting } from '@plastik/shared/table/entities';
 import { filter, take } from 'rxjs';
-import { getLlecoopOrderSearchFeatureFormConfig } from './order-feature-search-form.config';
-import { LlecoopOrderSearchFeatureTableConfig } from './order-feature-table.config';
+import { getLlecoopUserOrderSearchFeatureFormConfig } from './user-order-feature-search-form.config';
+import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-table.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<LlecoopUserOrder> {
+export class LlecoopUserOrderListFacadeService
+  implements TableWithFilteringFacade<LlecoopUserOrder>
+{
   viewExtraActions?:
     | Signal<
         {
@@ -28,16 +30,16 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
         }[]
       >
     | undefined;
-  private readonly orderUserStore = inject(LlecoopOrderUserStore);
+  private readonly userOrderStore = inject(LlecoopUserOrderStore);
   private readonly orderListStore = inject(LLecoopOrderListStore);
-  private readonly table = inject(LlecoopOrderSearchFeatureTableConfig);
+  private readonly table = inject(LlecoopUserOrderSearchFeatureTableConfig);
   private readonly confirmService = inject(SharedConfirmDialogService);
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order')[0]);
 
   tableStructure = this.table.getTableStructure();
-  tableData = this.orderUserStore.entities;
-  tableSorting = this.orderUserStore.sorting;
+  tableData = this.userOrderStore.entities;
+  tableSorting = this.userOrderStore.sorting;
   filterCriteria = signal<Record<string, string>>({
     text: '',
   });
@@ -45,22 +47,22 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
     const value = criteria['text'].toLowerCase();
     return [data.name].some(text => text?.toLowerCase().includes(value));
   };
-  count = this.orderUserStore.count;
+  count = this.userOrderStore.count;
   routingToDetailPage = computed(() => {
     return {
       visible: true,
       label: 'Fer comanda setmanal',
       disabled:
-        this.orderUserStore
+        this.userOrderStore
           .entities()
           .some(entity => entity['orderListId'] === this.orderListStore.currentOrder()?.id) ||
         !this.orderListStore.currentOrder(),
     };
   });
-  formStructure = getLlecoopOrderSearchFeatureFormConfig();
+  formStructure = getLlecoopUserOrderSearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.orderUserStore.setSorting([active, direction]);
+    this.userOrderStore.setSorting([active, direction]);
   }
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
@@ -77,7 +79,7 @@ export class LlecoopOrderListFacadeService implements TableWithFilteringFacade<L
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.orderUserStore.delete(item));
+        .subscribe(() => this.userOrderStore.delete(item));
     }
   }
 }

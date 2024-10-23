@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
@@ -24,7 +24,7 @@ export class LlecoopCategoryDetailFacadeService
     };
   });
 
-  formStructure = signal(getLlecoopCategoryDetailFormConfig());
+  formStructure = getLlecoopCategoryDetailFormConfig();
 
   onSubmit(data: Partial<LlecoopProductCategory>): void {
     this.model()?.id ? this.store.update(data) : this.store.create(data);

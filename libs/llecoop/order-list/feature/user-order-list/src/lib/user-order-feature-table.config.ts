@@ -13,7 +13,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderSearchFeatureTableConfig
+export class LlecoopUserOrderSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
   private readonly sanitizer = inject(DomSanitizer);
@@ -117,12 +117,12 @@ export class LlecoopOrderSearchFeatureTableConfig
         EDIT: {
           visible: () => true,
           description: () => 'Edita la comanda',
-          order: 2,
+          order: 1,
         },
         DELETE: {
           visible: () => true,
           description: () => 'Elimina la comanda',
-          order: 3,
+          order: 2,
         },
       },
     });

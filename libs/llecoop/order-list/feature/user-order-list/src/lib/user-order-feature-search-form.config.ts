@@ -3,7 +3,7 @@ import { signal, WritableSignal } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { addSearchInput } from '@plastik/shared/form/ui';
 
-export function getLlecoopOrderSearchFeatureFormConfig(): WritableSignal<FormlyFieldConfig[]> {
+export function getLlecoopUserOrderSearchFeatureFormConfig(): WritableSignal<FormlyFieldConfig[]> {
   return signal([
     {
       fieldGroupClassName: 'flex flex-col md:flex-row flex-wrap gap-sm',

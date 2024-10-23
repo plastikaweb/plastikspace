@@ -19,11 +19,11 @@ import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { filter, pipe, switchMap, tap } from 'rxjs';
 import { LLecoopOrderListStore } from './order-list-store';
-import { LlecoopOrderUserFireService } from './order-user-fire.service';
 
+import { LlecoopUserOrderFireService } from './user-order-fire.service';
 type OrderState = LlecoopFeatureStore;
 
-export const LlecoopOrderUserStore = signalStore(
+export const LlecoopUserOrderStore = signalStore(
   { providedIn: 'root' },
   withDevtools('orders'),
   withState<OrderState>({
@@ -48,7 +48,7 @@ export const LlecoopOrderUserStore = signalStore(
   withMethods(
     (
       store,
-      orderUserService = inject(LlecoopOrderUserFireService),
+      userOrderService = inject(LlecoopUserOrderFireService),
       storeNotificationService = inject(StoreNotificationService),
       orderListStore = inject(LLecoopOrderListStore),
       authService = inject(FirebaseAuthService),
@@ -58,10 +58,9 @@ export const LlecoopOrderUserStore = signalStore(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(() =>
-            orderUserService.getAll().pipe(
+            userOrderService.getAll().pipe(
               tapResponse({
                 next: orders => {
-                  console.log('orders', orders);
                   patchState(
                     store,
                     setAllEntities(orders, {
@@ -97,11 +96,11 @@ export const LlecoopOrderUserStore = signalStore(
               orderListId,
               userId,
             };
-            return orderUserService.create(finalOrder, orderListId).pipe(
+            return userOrderService.create(finalOrder, orderListId).pipe(
               tapResponse({
                 next: () => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
-                  state.dispatch(routerActions.go({ path: ['/soci/order'] }));
+                  state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
                   storeNotificationService.create(`Comanda creada`, 'SUCCESS');
                 },
                 error: error => {
@@ -116,12 +115,39 @@ export const LlecoopOrderUserStore = signalStore(
           })
         )
       ),
+      update: rxMethod<Partial<LlecoopUserOrder>>(
+        pipe(
+          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
+          switchMap(order => {
+            return userOrderService.update(order).pipe(
+              tapResponse({
+                next: () => {
+                  state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
+                },
+                error: error => {
+                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  storeNotificationService.create(
+                    `No s'ha pogut actualitzar la comanda": ${error}`,
+                    'ERROR'
+                  );
+                },
+                complete: () => {
+                  storeNotificationService.create(
+                    `Comanda "${order.name}" actualitzada`,
+                    'SUCCESS'
+                  ),
+                    state.dispatch(activityActions.setActivity({ isActive: false }));
+                },
+              })
+            );
+          })
+        )
+      ),
       delete: rxMethod<LlecoopUserOrder>(
         pipe(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(product => {
-            const currentOrderListId = orderListStore.currentOrder()?.id;
-            return orderUserService.delete(product, currentOrderListId).pipe(
+            return userOrderService.delete(product).pipe(
               tapResponse({
                 next: () => {
                   storeNotificationService.create(
@@ -143,10 +169,13 @@ export const LlecoopOrderUserStore = signalStore(
         )
       ),
       setSorting: (sorting: OrderState['sorting']) => patchState(store, { sorting }),
-      setSelectedItemId: (id: string | null) =>
-        patchState(store, {
-          selectedItemId: id,
-        }),
+      setSelectedItemId: (id: string | null) => {
+        if (id !== store.selectedItemId()) {
+          patchState(store, {
+            selectedItemId: id,
+          });
+        }
+      },
     })
   ),
   withHooks({

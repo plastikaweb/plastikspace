@@ -5,9 +5,10 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   EventEmitter,
   inject,
-  Input,
+  input,
   OnChanges,
   Output,
   SimpleChanges,
@@ -74,65 +75,65 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   /**
    * Data that will populate the table.
    */
-  @Input() data: T[] = [];
+  data = input<T[]>([]);
 
   /**
    * Table columns structure.
    */
-  @Input() columnProperties!: TableColumnFormatting<T, FormattingTypes>[];
+  columnProperties = input.required<TableColumnFormatting<T, FormattingTypes>[]>();
 
   /**
    * The total number of items available for the current table data request.
    * Used for pagination and to show the total number of items.
    */
-  @Input() resultsLength?: number;
+  resultsLength = input<number>();
 
   /**
    * Pagination configuration.
    */
-  @Input() pagination?: PageEventConfig;
+  pagination = input<PageEventConfig>();
 
   /**
    * Remove pagination component to the table. Present by default.
    */
-  @Input() noPagination = false;
+  noPagination = input<boolean>(false);
 
   /**
    * Sets the pagination elements visibility configuration.
    */
-  @Input() paginationVisibility?: Partial<TablePaginationVisibility> = {
+  paginationVisibility = input<Partial<TablePaginationVisibility> | undefined>({
     hidePageSize: false,
     hidePaginationFirstLastButtons: false,
     hideRangeButtons: false,
     hideRangeLabel: false,
-  };
+  });
 
   /**
    * Page sizes available.
    * array with the number of items per page.
    */
-  @Input() pageSizeOptions!: number[];
+  pageSizeOptions = input<number[]>([10, 25, 50, 100]);
 
   /**
    * Main title of the table.
    */
-  @Input() caption!: string;
+  caption = input<string>('');
 
   /**
    * Table sorting configuration.
    */
-  @Input() sort?: TableSortingConfig;
+  sort = input<TableSortingConfig>();
 
   /**
    * Table actions configuration.
    */
-  @Input() actions?: TableControlAction<T>;
+  actions = input<TableControlAction<T>>();
 
-  @Input() filterCriteria: Record<string, string> = {};
+  filterCriteria = input<Record<string, string>>({});
 
-  @Input() filterPredicate?: (data: T, criteria: Record<string, string>) => boolean;
+  filterPredicate = input<(data: T, criteria: Record<string, string>) => boolean>();
 
-  @Input() extraRowStyles?: (element: T) => string;
+  extraRowStyles = input<(element: T) => string>();
 
   /**
    * An Output emitter to send table pagination changes.
@@ -162,48 +163,34 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   @ViewChild(MatPaginator) matPaginator!: MatPaginator;
   @ViewChild(MatSort) matSort?: MatSort;
 
-  dataSource = new MatTableDataSource();
-  displayedColumns: (string | number | symbol)[] = [];
+  protected dataSource = new MatTableDataSource<T>([]);
+  protected displayedColumns = computed(() => {
+    const actions = this.actions();
+    const cols = this.columnProperties().map(property => property.key) || [];
+    return actions ? [...cols, 'actions'] : cols;
+  });
 
   ngAfterViewInit() {
-    this.displayedColumns = this?.columnProperties?.map(property => property.key) || [];
-
-    if (this.actions) {
-      this.displayedColumns.push('actions');
-      this.cdr.detectChanges();
-    }
-
     if (this.matPaginator && this.pagination) {
-      this.matPaginator.pageIndex = this.pagination?.pageIndex || 0;
-      this.matPaginator.pageSize = this.pagination?.pageSize || 10;
+      this.matPaginator.pageIndex = this.pagination()?.pageIndex || 0;
+      this.matPaginator.pageSize = this.pagination()?.pageSize || 10;
     }
 
     if (this.matSort) {
-      this.matSort.active = this.sort?.[0] || '';
-      this.matSort.direction = this.sort?.[1] || 'asc';
+      this.matSort.active = this.sort()?.[0] || '';
+      this.matSort.direction = this.sort()?.[1] || 'asc';
       this.dataSource.sort = this.matSort;
     }
 
     if (this.filterPredicate && this.filterCriteria) {
-      this.dataSource.filterPredicate = (data: unknown) => {
-        return this.filterPredicate ? this.filterPredicate(data as T, this.filterCriteria) : true;
+      this.dataSource.filterPredicate = (data: T) => {
+        return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
       };
     }
   }
 
-  ngOnChanges({
-    data,
-    resultsLength,
-    pagination,
-    sort,
-    columnProperties,
-    filterCriteria,
-  }: SimpleChanges) {
-    if (columnProperties) {
-      this.displayedColumns = this?.columnProperties?.map(property => property.key) || [];
-    }
-
-    if (this.matPaginator && resultsLength?.currentValue < (this.pagination?.pageSize || 10)) {
+  ngOnChanges({ data, resultsLength, pagination, sort, filterCriteria }: SimpleChanges) {
+    if (this.matPaginator && resultsLength?.currentValue < (this.pagination()?.pageSize || 10)) {
       this.matPaginator.pageIndex = 0;
     }
     if (this.matPaginator && pagination?.currentValue) {
@@ -212,7 +199,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       this.matPaginator.pageSize = pageSize || 10;
     }
 
-    if (filterCriteria && !filterCriteria.firstChange && this.filterPredicate) {
+    if (filterCriteria && !filterCriteria.firstChange && this.filterPredicate()) {
       this.dataSource.filter = `${filterCriteria.currentValue}`;
     }
 
@@ -252,7 +239,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   }
 
   onGetData(): void {
-    this.getData.emit([...this.data]);
+    this.getData.emit(this.dataSource.data);
   }
 
   protected onChangeInput(
@@ -265,9 +252,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     const newRow = formatting?.onInputChanges?.(value, row);
     row = { ...row, ...newRow };
     this.getChangedData.emit(row);
-    this.data = this.data.map(item => (item.id === row.id ? row : item));
-    this.dataSource.data = [...this.data];
-    this.getData.emit(this.data);
+    const newData = this.data().map(item => (item.id === row.id ? row : item));
+    this.dataSource.data = newData;
+    this.getData.emit(newData);
     this.cdr.detectChanges();
   }
 }

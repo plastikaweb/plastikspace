@@ -1,11 +1,13 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { LLecoopOrderListStore } from './order-list-store';
-import { LlecoopOrderUserStore } from './order-user-store';
+import {
+  LLecoopOrderListStore,
+  LlecoopUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
 
-export const isAnActiveOrderListGuard = async () => {
+export const isAnActiveOrderListGuard = () => {
   const router = inject(Router);
-  const orderStore = inject(LlecoopOrderUserStore);
+  const orderStore = inject(LlecoopUserOrderStore);
   const orderListStore = inject(LLecoopOrderListStore);
 
   if (

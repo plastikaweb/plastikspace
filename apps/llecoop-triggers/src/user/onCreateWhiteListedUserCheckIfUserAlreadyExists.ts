@@ -9,25 +9,15 @@ export default async snapshot => {
   functions.logger.debug(`Running create whiteListed user trigger for ${userId}`);
 
   const userCollection = firestore.collection('user');
-
   const userDocs = await userCollection.where('email', '==', userEmail).get();
 
-  functions.logger.debug(`User with email ${userEmail} in users list ${userDocs.size} times`);
-
   if (userDocs.size > 1) {
-    await firestore
-      .doc(`user/${userId}}`)
-      .get()
-      .then(doc => {
-        functions.logger.debug(`Deleting user with id ${userId}`);
-        if (doc.exists) {
-          doc.ref.delete();
-        }
-      });
+    await firestore.doc(`user/${userId}}`).delete();
+    functions.logger.debug(`Deleted user with ID ${userId} from firestore`);
 
     throw new functions.https.HttpsError(
-      'permission-denied',
-      `L'usuari amb id ${userId} ja existeix en la llista blanca de socis`
+      'already-exists',
+      `L'usuari amb id ${userId} s'ha eliminat perquè ja existeix en la llista blanca de socis`
     );
   }
 

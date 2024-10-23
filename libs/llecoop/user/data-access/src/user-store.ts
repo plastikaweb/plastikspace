@@ -10,7 +10,7 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
-import { EntityId, setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';

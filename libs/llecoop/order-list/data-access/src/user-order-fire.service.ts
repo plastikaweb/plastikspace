@@ -9,6 +9,7 @@ import {
   Firestore,
   query,
   Timestamp,
+  updateDoc,
   where,
 } from '@angular/fire/firestore';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
@@ -18,14 +19,13 @@ import { from, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderUserFireService {
+export class LlecoopUserOrderFireService {
   private readonly firestore = inject(Firestore);
   private readonly authService = inject(FirebaseAuthService);
   private readonly ordersGroup = collectionGroup(this.firestore, 'orders');
 
   getAll(): Observable<LlecoopUserOrder[]> {
     const userId = this.authService.currentUser()?.uid;
-    console.log(userId);
     if (!userId) {
       return of([]);
     }
@@ -45,8 +45,17 @@ export class LlecoopOrderUserFireService {
     );
   }
 
-  delete(item: LlecoopUserOrder, currentOrderId: LlecoopOrder['id']) {
-    console.log('delete', `order-list/${currentOrderId}/orders/${item.id}`);
+  update(item: Partial<LlecoopUserOrder>) {
+    const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
+    return from(
+      updateDoc(document, {
+        ...item,
+        updatedAt: Timestamp.now(),
+      })
+    );
+  }
+
+  delete(item: LlecoopUserOrder) {
     const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
     return from(deleteDoc(document));
   }

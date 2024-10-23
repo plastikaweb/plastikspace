@@ -1,8 +1,9 @@
 @if (label(); as label) {
   <mat-label>{{ label }}</mat-label>
 }
+
 <plastik-shared-table
-  [data]="tableData()"
+  [data]="computedTableData()"
   [caption]="tableCaption()"
   [columnProperties]="tableColumnProperties()"
   [resultsLength]="tableDataLength()"

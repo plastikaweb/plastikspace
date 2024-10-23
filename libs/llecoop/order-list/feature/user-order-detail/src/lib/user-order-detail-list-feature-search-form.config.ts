@@ -3,7 +3,7 @@ import { signal, WritableSignal } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { addSearchInput } from '@plastik/shared/form/ui';
 
-export function getLlecoopOrderDetailListSearchFeatureFormConfig(): WritableSignal<
+export function getLlecoopUserOrderDetailListSearchFeatureFormConfig(): WritableSignal<
   FormlyFieldConfig[]
 > {
   return signal([

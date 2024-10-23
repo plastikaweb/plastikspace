@@ -1,5 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ChangeDetectionStrategy, Component, forwardRef, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  forwardRef,
+  input,
+  signal,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { BaseEntity } from '@plastik/core/entities';
@@ -47,8 +54,29 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
   tableRowValueConditionFn = input<(element: T) => boolean>();
   label = input<string>('');
 
+  computedTableData = computed(() => {
+    if (this.value() && this.value().length > 0) {
+      const data = this.tableData().map(element => {
+        const isSelected = this.value().find(selectedElement => {
+          return selectedElement.id === element.id;
+        });
+        if (isSelected) {
+          return isSelected;
+        }
+        return element;
+      });
+      return data || [];
+    }
+    return this.tableData();
+  });
+
   writeValue(value: T[]): void {
-    this.value.set(value || []);
+    if (!value || value.length === 0) {
+      return;
+    }
+    if (value.length !== this.value().length) {
+      this.value.set(value);
+    }
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;

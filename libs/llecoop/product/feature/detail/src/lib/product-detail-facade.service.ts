@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
@@ -22,7 +22,7 @@ export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<L
     };
   });
 
-  formStructure = signal(getLlecoopProductDetailFormConfig());
+  formStructure = getLlecoopProductDetailFormConfig();
 
   onSubmit(data: Partial<LlecoopProduct>): void {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

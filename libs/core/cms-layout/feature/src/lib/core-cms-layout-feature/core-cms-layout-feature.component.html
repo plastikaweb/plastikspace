@@ -139,10 +139,10 @@
 <ng-template #h1Tpl>
   @if (headerConfig.mainIcon; as icon) {
     <div class="flex items-center justify-center gap-sub">
-      <svg-icon class="hidden sm:block" [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+      <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
 
       <span class="block text-md sm:hidden">{{ headerTitle }}</span>
-      <span class="hidden text-sm sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
+      <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
     </div>
   }
 </ng-template>

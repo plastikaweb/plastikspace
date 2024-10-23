@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "include": [
     "src/**/*.ts",
-    "../../libs/llecoop/order-list/data-access/src/isAnActiveOrderList.guard.ts",
+    "../../libs/llecoop/order-list/feature/user-order-detail/src/lib/isAnActiveOrderList.guard.ts",
     "../../libs/shared/auth/firebase/data-access/src/isLogged.guard.ts",
     "../../libs/shared/auth/firebase/data-access/src/isNotLogged.guard.ts",
     "../../libs/shared/auth/firebase/data-access/src/isAdmin.guard.ts"

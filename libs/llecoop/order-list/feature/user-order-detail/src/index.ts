@@ -1,1 +1,1 @@
-export * from './lib/order-feature-detail.routes';
+export * from './lib/user-order-feature-detail.routes';

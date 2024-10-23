@@ -3,7 +3,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BaseEntity, SubmitFormConfig, ViewConfigUI } from '@plastik/core/entities';
 
 export interface DetailItemViewFacade<T extends BaseEntity> {
-  formStructure: Signal<FormlyFieldConfig[]>;
+  formStructure: FormlyFieldConfig[];
   viewConfig: Signal<ViewConfigUI>;
   onSubmit(data: object): void;
   onChange?(data: object): void;
