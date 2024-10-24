@@ -15,10 +15,6 @@ export const llecoopCategoryFeatureRoutes: Route[] = [
     component: TableWithFilteringComponent,
     providers: [
       {
-        provide: STORE_TOKEN,
-        useExisting: LlecoopCategoryStore,
-      },
-      {
         provide: TABLE_WITH_FILTERING_FACADE,
         useExisting: LlecoopCategoryListFacadeService,
       },

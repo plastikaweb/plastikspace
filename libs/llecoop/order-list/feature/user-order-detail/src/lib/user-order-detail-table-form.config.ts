@@ -18,7 +18,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderDetailFormTableConfig
+export class LlecoopUserOrderDetailFormTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
   private readonly sanitizer = inject(DomSanitizer);
@@ -113,7 +113,6 @@ export class LlecoopOrderDetailFormTableConfig
       type: 'CURRENCY',
       extras: () => ({
         numberDigitsInfo: '1.2-2',
-
         currency: '€',
         currencyCode: 'EUR',
       }),
@@ -150,6 +149,7 @@ export class LlecoopOrderDetailFormTableConfig
           icon: () => 'cancel',
           execute: (product: LlecoopOrderProduct) => {
             product.initQuantity = 0;
+            product.initPrice = 0;
           },
         },
       },

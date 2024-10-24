@@ -6,19 +6,20 @@ import { DetailItemViewFacade, ExtraFormAction } from '@plastik/core/detail-edit
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
-  LlecoopOrderUserStore,
+  LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { getLlecoopOrderDetailFormConfig } from './order-feature-detail-form.config';
+import { getLlecoopUserOrderDetailFormConfig } from './user-order-feature-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<LlecoopUserOrder> {
-  private readonly orderUserStore = inject(LlecoopOrderUserStore);
+export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade<LlecoopUserOrder> {
+  private readonly userOrderStore = inject(LlecoopUserOrderStore);
   private readonly orderListStore = inject(LLecoopOrderListStore);
 
   private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'order')[0];
-  model = this.orderUserStore.selectedItem;
+
+  model = this.userOrderStore.selectedItem;
   formFullWidth = signal(true);
   formSubmitConfig = signal({
     label: 'Desar comanda',
@@ -41,7 +42,7 @@ export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<Lle
     };
   });
 
-  formStructure = signal(getLlecoopOrderDetailFormConfig());
+  formStructure = getLlecoopUserOrderDetailFormConfig();
 
   onChange(data: Partial<LlecoopUserOrder>): void {
     const price = this.calculateTotalPrice(data.cart || []);
@@ -55,8 +56,12 @@ export class LlecoopOrderDetailFacadeService implements DetailItemViewFacade<Lle
   }
 
   onSubmit(data: Partial<LlecoopUserOrder>): void {
-    // this.model()?.id ? this.store.update(data) : this.store.create(data);
-    this.orderUserStore.create({
+    if (this.model()?.id) {
+      this.userOrderStore.update(data);
+      return;
+    }
+
+    this.userOrderStore.create({
       ...data,
       name: this.orderListStore.currentOrder()?.name || '',
     });

@@ -41,11 +41,10 @@
     </div>
   }
 </div>
-
 <plastik-shared-form-feature
   class="block w-full"
   [ngClass]="{ 'lg:w-10/12 xxl:w-1/2': !facade.formFullWidth?.() }"
-  [fields]="facade.formStructure() || []"
+  [fields]="facade.formStructure || []"
   [model]="facade.model?.() || {}"
   [submitConfig]="facade.formSubmitConfig?.()"
   (temporaryChangeEvent)="onChange($event)"

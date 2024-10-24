@@ -67,6 +67,17 @@ export class LlecoopOrderListSearchFeatureTableConfig
     );
   }
 
+  private readonly orderCount: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
+    key: 'orderCount',
+    title: 'Comandes realitzades',
+    propertyPath: 'orderCount',
+    sorting: true,
+    cssClasses: ['min-w-[125px]'],
+    formatting: {
+      type: 'TEXT',
+    },
+  };
+
   private readonly totalProducts: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
     key: 'totalProducts',
     title: 'Productes inclosos',
@@ -85,6 +96,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     this.status,
     this.endTime(),
     this.totalProducts,
+    this.orderCount,
     this.createdAt,
   ];
 

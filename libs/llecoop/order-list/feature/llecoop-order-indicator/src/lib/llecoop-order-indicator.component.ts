@@ -1,11 +1,11 @@
 import { CurrencyPipe, JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import {
   LLecoopOrderListStore,
-  LlecoopOrderUserStore,
+  LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
 
 @Component({
@@ -17,6 +17,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LlecoopOrderIndicatorComponent {
-  protected readonly userOrderStore = inject(LlecoopOrderUserStore);
+  protected readonly userOrderStore = inject(LlecoopUserOrderStore);
   protected readonly orderListStore = inject(LLecoopOrderListStore);
 }
