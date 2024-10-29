@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductBasedUnitText,
@@ -6,12 +6,13 @@ import {
   getLlecoopProductUnitSuffix,
   LlecoopOrderProduct,
 } from '@plastik/llecoop/entities';
+import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { productCategoryColumn } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
-  TableControlStructure,
+  TableDefinition,
   TableStructureConfig,
 } from '@plastik/shared/table/entities';
 
@@ -22,6 +23,9 @@ export class LlecoopUserOrderDetailFormTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly store = inject(LLecoopOrderListStore);
+
+  private readonly userProducts = signal([...this.store.currentOrderProducts()]);
 
   private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -87,20 +91,41 @@ export class LlecoopUserOrderDetailFormTableConfig
     cssClasses: ['min-w-[140px]', 'flex'],
     formatting: {
       type: 'INPUT',
-      extras: (value?: LlecoopOrderProduct) => ({
-        type: 'number',
-        placeholder: 'Quantitat',
-        min: 0,
-        step: getLlecoopProductUnitStep(value?.unit ?? { type: 'unit' }),
-        suffix: getLlecoopProductUnitSuffix(value?.unit ?? { type: 'unit' }),
-      }),
-      onInputChanges: (value, element) => {
-        return {
-          initQuantity: Number(value),
-          initPrice: (element?.priceWithIva || 0) * Number(value),
-        };
-      },
+      // extras: (orderProduct?: LlecoopOrderProduct) => ({
+      //   type: 'number',
+      //   placeholder: 'Quantitat',
+      //   min: 0,
+      //   step: getLlecoopProductUnitStep(orderProduct?.unit ?? { type: 'unit' }),
+      //   suffix: getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' }),
+      // }),
+      // onInputChanges: (value, orderProduct) => {
+      //   return {
+      //     initQuantity: Number(value),
+      //     initPrice: (orderProduct?.priceWithIva || 0) * Number(value),
+      //   };
+      // },
     },
+    isEditableConfig: orderProduct => ({
+      type: 'number',
+      attributes: {
+        min: 0,
+        step: getLlecoopProductUnitStep(orderProduct?.unit ?? { type: 'unit' }),
+        suffix: getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' }),
+        placeholder: 'Quantitat',
+      },
+      onChanges: (value, orderProduct) => {
+        const quantity = Number(value);
+        const price = (orderProduct?.priceWithIva || 0) * quantity;
+        const newProduct = {
+          ...orderProduct,
+          initQuantity: quantity,
+          initPrice: price,
+          finalQuantity: quantity,
+          finalPrice: price,
+        };
+        return newProduct;
+      },
+    }),
   };
 
   private readonly initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
@@ -130,29 +155,29 @@ export class LlecoopUserOrderDetailFormTableConfig
       this.initPrice,
     ];
 
-  getTableStructure(): WritableSignal<TableControlStructure<LlecoopOrderProduct>> {
+  getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return signal({
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
-      sort: ['name', 'asc'],
+      sort: this.store.sorting,
       caption: 'Llistat de productes',
-      extraRowStyles: element => {
-        return element.initPrice > 0 ? 'marked-ok' : '';
+      getData: () => this.userProducts(),
+      extraRowStyles: (orderProduct: LlecoopOrderProduct) => {
+        return orderProduct.initPrice > 0 ? 'marked-ok' : '';
       },
       actions: {
         CLEAR_PRODUCT: {
-          visible: (product: LlecoopOrderProduct) => product.initPrice > 0,
-          description: () => 'Treure producte',
           order: 1,
+          type: 'input',
+          visible: (orderProduct: LlecoopOrderProduct) => orderProduct.initPrice > 0,
+          description: () => 'Treure producte',
           icon: () => 'cancel',
-          execute: (product: LlecoopOrderProduct) => {
-            product.initQuantity = 0;
-            product.initPrice = 0;
-          },
+          execute: (orderProduct: LlecoopOrderProduct) =>
+            this.initQuantity?.isEditableConfig?.(orderProduct)?.onChanges?.(0, orderProduct),
         },
       },
-    });
+    }) as Signal<TableDefinition<LlecoopOrderProduct>>;
   }
 }

@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   computed,
   forwardRef,
+  inject,
   input,
   signal,
 } from '@angular/core';
@@ -35,6 +37,8 @@ const INPUT_TABLE_ACCESSOR = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputTableComponent<T extends BaseEntity> implements ControlValueAccessor {
+  protected readonly cdr = inject(ChangeDetectorRef);
+
   value = signal<T[]>([]);
   disabled = signal<boolean>(false);
   tablePaginationVisibility = signal<TablePaginationVisibility>({
@@ -89,7 +93,7 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
   }
 
   protected onGetChangedData(data: T): void {
-    const addOrRemoveElement = this.tableRowValueConditionFn()?.(data);
+    const addOrRemoveElement = this.tableRowValueConditionFn()?.(data) || false;
 
     const currentValue = this.value();
     const dataExists = currentValue.some(element => element.id === data.id);
@@ -106,6 +110,7 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
 
     this.onChange(this.value());
     this.onTouch();
+    this.cdr.detectChanges();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars

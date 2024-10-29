@@ -1,15 +1,17 @@
 import { inject } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { select, Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
+import { selectNasaImagesFeature } from '@plastik/nasa-images/search/data-access';
 import { NasaImage } from '@plastik/nasa-images/search/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   PageEventConfig,
   TableColumnFormatting,
-  TableControlStructure,
+  TableDefinition,
 } from '@plastik/shared/table/entities';
-import { Observable, map } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
   key: 'index',
@@ -117,14 +119,16 @@ const columnProperties: TableColumnFormatting<NasaImage, FormattingTypes>[] = [
 ];
 
 export class NasaImagesSearchFeatureTableConfig {
-  static getTableStructure(): Observable<TableControlStructure<NasaImage>> {
+  static getTableDefinition() {
     const store = inject(Store);
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
+    const count = toSignal(store.pipe(select(selectNasaImagesFeature.selectCount)));
 
     return store.select(selectRouteQueryParams).pipe(
       map(({ page = 0 }) => {
         return {
           ...defaultTableConfig,
+          count,
           columnProperties,
           pageSizeOptions: [100],
           pagination: {
@@ -141,6 +145,6 @@ export class NasaImagesSearchFeatureTableConfig {
           caption: 'Nasa Images Table Results',
         };
       })
-    );
+    ) as Observable<TableDefinition<NasaImage>>;
   }
 }

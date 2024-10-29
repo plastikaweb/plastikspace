@@ -10,22 +10,24 @@
     class="flex flex-row items-end content-center justify-between mx-0 mb-0 mt-sm md:my-md filters-box"
     [fields]="(formStructure$ | ngrxPush) || []"
     [model]="(formModel$ | ngrxPush) || {}"
-    (changeEvent)="onChange($event)"
-  >
+    (changeEvent)="onChange($event)">
   </plastik-shared-form-feature>
 
   <!-- table -->
   <plastik-shared-table
-    *ngrxLet="{ data: images$, tableStructure: tableStructure$, isActiveSearch: isActiveSearch$ } as obs"
-    [data]="obs?.data || []"
-    [caption]="obs?.tableStructure?.caption || ''"
-    [columnProperties]="obs.tableStructure.columnProperties || []"
-    [resultsLength]="(count$ | ngrxPush) || 0"
-    [pageSizeOptions]="obs.tableStructure.pageSizeOptions || []"
-    [pagination]="obs.tableStructure.pagination"
-    [paginationVisibility]="obs.tableStructure.paginationVisibility"
-    (changePagination)="onChangePagination($event)"
-  >
+    *ngrxLet="{
+      data: images$,
+      tableDefinition: tableDefinition$,
+      isActiveSearch: isActiveSearch$,
+    } as obs"
+    [data]="obs.data || []"
+    [caption]="obs.tableDefinition.caption || ''"
+    [columnProperties]="obs.tableDefinition.columnProperties || []"
+    [resultsLength]="obs.tableDefinition.count?.() || 0"
+    [pageSizeOptions]="obs.tableDefinition.pageSizeOptions || []"
+    [pagination]="obs.tableDefinition.pagination"
+    [paginationVisibility]="obs.tableDefinition.paginationVisibility"
+    (changePagination)="onChangePagination($event)">
     @if (obs.isActiveSearch) {
       <plastik-nasa-images-search-ui-no-results noResults>
         <span icon> search_off </span>
@@ -38,7 +40,10 @@
       <plastik-nasa-images-search-ui-no-results noValidSearch>
         <span icon> search_on </span>
         <span title>NASA images search</span>
-        <span message>Use the filter to find related NASA pictures.<br />You must provide a valid matching string.</span>
+        <span message
+          >Use the filter to find related NASA pictures.<br />You must provide a valid matching
+          string.</span
+        >
       </plastik-nasa-images-search-ui-no-results>
     }
 

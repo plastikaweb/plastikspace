@@ -18,7 +18,7 @@ export abstract class LlecoopFeatureFacadeService<T extends BaseEntity>
 {
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'product')[0]);
 
-  tableStructure: Signal<TableControlStructure<T>>;
+  tableDefinition: Signal<TableControlStructure<T>>;
   tableData: Signal<T[]>;
   tableSorting: Signal<TableSorting>;
   tableFilter: Signal<FilterArrayPipeConfig<T>[]>;
@@ -28,7 +28,7 @@ export abstract class LlecoopFeatureFacadeService<T extends BaseEntity>
     @Inject(STORE_TOKEN) protected store: StoreFeatureToken,
     @Inject(TABLE_TOKEN) protected table: TableStructureConfig<unknown>
   ) {
-    this.tableStructure = this.table.getTableStructure() as Signal<TableControlStructure<T>>;
+    this.tableDefinition = this.table.getTableStructure() as Signal<TableControlStructure<T>>;
     this.tableData = this.store.entities;
     this.tableSorting = this.store.sorting;
     this.tableFilter = this.store.filter;
@@ -47,7 +47,7 @@ export abstract class LlecoopFeatureFacadeService<T extends BaseEntity>
   private formatSearchCriteria(searchCriteria: object): FilterArrayPipeConfig<T>[] {
     return Object.entries(searchCriteria).map(([key, value]) => {
       return {
-        fields: this.tableStructure().filter?.[key] || [],
+        fields: this.tableDefinition().filter?.[key] || [],
         value,
       };
     });

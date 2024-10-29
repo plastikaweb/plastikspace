@@ -22,9 +22,7 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'user')[0]);
 
-  tableStructure = this.table.getTableStructure();
-  tableData = this.store.entities;
-  tableSorting = this.store.sorting;
+  tableDefinition = this.table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
     text: '',
     role: 'all',
@@ -48,7 +46,6 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
     }
     return filterText && filterRole;
   };
-  count = this.store.count;
   routingToDetailPage = signal({ visible: true });
 
   formStructure = getLlecoopUserSearchFeatureFormConfig();

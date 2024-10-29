@@ -1,35 +1,42 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { KeyValuePipe, NgClass } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   computed,
+  effect,
+  ElementRef,
   EventEmitter,
   inject,
   input,
-  OnChanges,
+  OnInit,
   Output,
-  SimpleChanges,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
+import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTable, MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { BaseEntity } from '@plastik/core/entities';
+import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
+import { isString } from '@plastik/shared/objects';
 import {
-  FormattingTypes,
-  PropertyFormattingConf,
-  SharedUtilFormattersModule,
-} from '@plastik/shared/formatters';
-import {
+  EditableAttributeBase,
+  isCheckboxTypeGuard,
+  isNumberTypeGuard,
+  isRadioTypeGuard,
+  isSelectTypeGuard,
+  isTextareaTypeGuard,
+  isTextTypeGuard,
   PageEventConfig,
   TableColumnFormatting,
   TableControlAction,
@@ -61,15 +68,17 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
     NgClass,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatRadioModule,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrls: ['./shared-table-ui.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
-  implements OnChanges, AfterViewInit
+  implements OnInit
 {
-  private readonly cdr = inject(ChangeDetectorRef);
   private readonly router = inject(Router);
 
   /**
@@ -86,7 +95,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    * The total number of items available for the current table data request.
    * Used for pagination and to show the total number of items.
    */
-  resultsLength = input<number>();
+  resultsLength = input.required<number>();
 
   /**
    * Pagination configuration.
@@ -159,9 +168,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   @Output()
   getChangedData = new EventEmitter<T>();
 
-  @ViewChild(MatTable) matTable!: MatTable<T>;
   @ViewChild(MatPaginator) matPaginator!: MatPaginator;
   @ViewChild(MatSort) matSort?: MatSort;
+  @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef;
 
   protected dataSource = new MatTableDataSource<T>([]);
   protected displayedColumns = computed(() => {
@@ -170,17 +179,49 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     return actions ? [...cols, 'actions'] : cols;
   });
 
-  ngAfterViewInit() {
-    if (this.matPaginator && this.pagination) {
-      this.matPaginator.pageIndex = this.pagination()?.pageIndex || 0;
-      this.matPaginator.pageSize = this.pagination()?.pageSize || 10;
-    }
+  protected isNumber = isNumberTypeGuard;
+  protected isText = isTextTypeGuard;
+  protected isTextarea = isTextareaTypeGuard;
+  protected isSelect = isSelectTypeGuard;
+  protected isCheckBox = isCheckboxTypeGuard;
+  protected isRadio = isRadioTypeGuard;
 
-    if (this.matSort) {
-      this.matSort.active = this.sort()?.[0] || '';
-      this.matSort.direction = this.sort()?.[1] || 'asc';
-      this.dataSource.sort = this.matSort;
-    }
+  constructor() {
+    effect(() => (this.dataSource.data = this.data()));
+    effect(() => {
+      if (this.matSort && this.sort()) {
+        this.matSort.active = this.sort()?.[0] || '';
+        this.matSort.direction = this.sort()?.[1] || 'asc';
+        this.dataSource.sort = this.matSort;
+      }
+    });
+    effect(() => {
+      if (this.filterCriteria() && this.filterPredicate()) {
+        this.dataSource.filter = `${this.filterCriteria()}`;
+      }
+    });
+    effect(() => {
+      if (this.matPaginator && this.pagination()) {
+        const pageIndex =
+          this.resultsLength() < (this.pagination()?.pageSize || 10)
+            ? 0
+            : this.pagination()?.pageIndex || 0;
+        this.matPaginator.pageIndex = pageIndex;
+        this.matPaginator.pageSize = this.pagination()?.pageSize || this.resultsLength();
+        this.dataSource.paginator = this.matPaginator;
+      }
+    });
+    // effect(() => {
+    //   this.getChangedData.emit(this.data());
+    // });
+  }
+
+  ngOnInit(): void {
+    this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
+      return isString(data[sortHeaderId])
+        ? data[sortHeaderId].toLowerCase()
+        : (data[sortHeaderId] as number);
+    };
 
     if (this.filterPredicate && this.filterCriteria) {
       this.dataSource.filterPredicate = (data: T) => {
@@ -189,72 +230,45 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     }
   }
 
-  ngOnChanges({ data, resultsLength, pagination, sort, filterCriteria }: SimpleChanges) {
-    if (this.matPaginator && resultsLength?.currentValue < (this.pagination()?.pageSize || 10)) {
-      this.matPaginator.pageIndex = 0;
-    }
-    if (this.matPaginator && pagination?.currentValue) {
-      const { pageIndex, pageSize } = pagination.currentValue as PageEventConfig;
-      this.matPaginator.pageIndex = pageIndex || 0;
-      this.matPaginator.pageSize = pageSize || 10;
-    }
-
-    if (filterCriteria && !filterCriteria.firstChange && this.filterPredicate()) {
-      this.dataSource.filter = `${filterCriteria.currentValue}`;
-    }
-
-    if (data) {
-      this.dataSource.data = data.currentValue;
-    }
-
-    if (this.matSort && sort) {
-      this.matSort.active = sort.currentValue?.[0] || '';
-      this.matSort.direction = sort.currentValue?.[1] || 'asc';
-    }
-  }
-
-  onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
+  protected onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
     this.changePagination.emit({ previousPageIndex, pageIndex, pageSize });
   }
 
-  onChangeSorting({ active, direction }: TableSorting): void {
+  protected onChangeSorting({ active, direction }: TableSorting): void {
     this.changeSorting.emit({
       active,
       direction,
     });
   }
 
-  onDelete(event: Event, element: T): void {
+  protected onDelete(event: Event, element: T): void {
     event.stopPropagation();
     this.delete.emit(element as T);
+  }
+
+  protected onInputChange(
+    event: Event | MatSelectChange | MatCheckboxChange | MatRadioChange,
+    element: T,
+    editableAttr: EditableAttributeBase<T>
+  ): void {
+    let value: string | number | boolean;
+    if (event instanceof MatSelectChange || event instanceof MatRadioChange) {
+      value = event.value;
+    } else if (event instanceof MatCheckboxChange) {
+      value = event.checked;
+    } else {
+      value = (event.target as HTMLInputElement).value;
+    }
+    const result = editableAttr.onChanges?.(value, element);
+    this.getChangedData.emit(result);
   }
 
   /**
    * @description Gets route path data from DOM element data-link attribute and navigates.
    * @param  {HTMLAnchorElement} target - The target HTML anchor element from which to get the route path.
    */
-  onGetRoute({ target }: Event) {
+  protected onGetRoute({ target }: Event) {
     const route = (target as HTMLAnchorElement).getAttribute('data-link');
     this.router.navigateByUrl(route || '/');
-  }
-
-  onGetData(): void {
-    this.getData.emit(this.dataSource.data);
-  }
-
-  protected onChangeInput(
-    event: Event,
-    row: T,
-    formatting: PropertyFormattingConf<T, 'INPUT'>
-  ): void {
-    event.stopPropagation();
-    const value = (event.target as HTMLInputElement).value;
-    const newRow = formatting?.onInputChanges?.(value, row);
-    row = { ...row, ...newRow };
-    this.getChangedData.emit(row);
-    const newData = this.data().map(item => (item.id === row.id ? row : item));
-    this.dataSource.data = newData;
-    this.getData.emit(newData);
-    this.cdr.detectChanges();
   }
 }

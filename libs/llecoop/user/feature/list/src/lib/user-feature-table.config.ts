@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
@@ -8,7 +8,7 @@ import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
-  TableControlStructure,
+  TableDefinition,
   TableStructureConfig,
 } from '@plastik/shared/table/entities';
 import { filter, take } from 'rxjs';
@@ -39,8 +39,8 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     cssClasses: ['min-w-[50px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: (_, element) =>
-        element?.isAdmin
+      execute: (_, user) =>
+        user?.isAdmin
           ? this.sanitizer.bypassSecurityTrustHtml(
               '<span class="material-icons text-primary-dark bg-gray-10 rounded-full p-tiny m-tiny">shield</span>'
             )
@@ -68,7 +68,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     sorting: true,
     formatting: {
       type: 'CUSTOM',
-      execute: (_, element) => (element?.registered ? '✔' : '✘'),
+      execute: (_, user) => (user?.registered ? '✔' : '✘'),
     },
   };
 
@@ -80,7 +80,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     sorting: true,
     formatting: {
       type: 'CUSTOM',
-      execute: (_, element) => (element?.emailVerified ? '✔' : '✘'),
+      execute: (_, user) => (user?.emailVerified ? '✔' : '✘'),
     },
   };
 
@@ -116,7 +116,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     this.updatedAt,
   ];
 
-  getTableStructure(): WritableSignal<TableControlStructure<LlecoopUser>> {
+  getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return signal({
@@ -128,7 +128,10 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
+      sort: this.store.sorting,
       caption: "Llistat d'usuaris",
+      count: this.store.count,
+      getData: () => this.store.entities(),
       actions: {
         DELETE: {
           visible: (user: LlecoopUser) => !user.isAdmin,
@@ -156,6 +159,6 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
           },
         },
       },
-    });
+    }) as Signal<TableDefinition<LlecoopUser>>;
   }
 }

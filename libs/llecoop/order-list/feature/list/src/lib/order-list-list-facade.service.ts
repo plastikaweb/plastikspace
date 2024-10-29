@@ -26,9 +26,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order-list')[0]);
 
-  tableStructure = this.table.getTableStructure();
-  tableData = this.store.entities;
-  tableSorting = this.store.sorting;
+  tableDefinition = this.table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
     text: '',
   });
@@ -36,7 +34,6 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
     const value = criteria['text'].toLowerCase();
     return [data.name].some(text => text?.toLowerCase().includes(value));
   };
-  count = this.store.count;
   routingToDetailPage = signal({ visible: false });
 
   viewExtraActions = signal([

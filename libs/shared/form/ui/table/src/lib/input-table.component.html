@@ -6,7 +6,7 @@
   [data]="computedTableData()"
   [caption]="tableCaption()"
   [columnProperties]="tableColumnProperties()"
-  [resultsLength]="tableDataLength()"
+  [resultsLength]="tableDataLength() || 0"
   [sort]="tableSorting()"
   [paginationVisibility]="tablePaginationVisibility()"
   [actions]="tableActions()"

@@ -1,6 +1,6 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { LlecoopOrder, llecoopOrderStatus } from '@plastik/llecoop/entities';
+import { LlecoopOrder, llecoopOrderStatus, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
@@ -8,7 +8,7 @@ import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
-  TableControlStructure,
+  TableDefinition,
   TableStructureConfig,
 } from '@plastik/shared/table/entities';
 import { filter, take } from 'rxjs';
@@ -100,7 +100,23 @@ export class LlecoopOrderListSearchFeatureTableConfig
     this.createdAt,
   ];
 
-  getTableStructure(): WritableSignal<TableControlStructure<LlecoopOrder>> {
+  private readonly userEmail: TableColumnFormatting<LlecoopUserOrder, 'TEXT'> = {
+    key: 'userEmail',
+    title: 'Correu electrònic',
+    propertyPath: 'userEmail',
+    sorting: true,
+    cssClasses: ['min-w-[125px]'],
+    formatting: {
+      type: 'TEXT',
+    },
+  };
+
+  private readonly nestedColumnProperties: TableColumnFormatting<
+    LlecoopUserOrder,
+    FormattingTypes
+  >[] = [this.userEmail];
+
+  getTableDefinition(): Signal<TableDefinition<LlecoopOrder, LlecoopUserOrder>> {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return signal({
@@ -112,20 +128,23 @@ export class LlecoopOrderListSearchFeatureTableConfig
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
+      sort: this.store.sorting,
       caption: 'Llistat de comandes setmanals',
+      count: this.store.count,
+      getData: () => this.store.entities(),
       actions: {
         SET_ACTIVE: {
-          visible: (item: LlecoopOrder) => item.status === 'waiting',
+          visible: (order: LlecoopOrder) => order.status === 'waiting',
           description: () => 'Activa la comanda',
           order: 1,
           icon: () => 'play_circle',
-          execute: (item: LlecoopOrder) => {
+          execute: (order: LlecoopOrder) => {
             this.confirmService
               .confirm(
                 'Activació de comanda',
                 this.sanitizer.bypassSecurityTrustHtml(
                   `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
-                    <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md">Segur que vols activar la comanda "${item.name}"?</h5>
+                    <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md">Segur que vols activar la comanda "${order.name}"?</h5>
                     <p class="text-secondary-dark">Un cop activada no es podrà desfer fins la data de tancament.</p>
                   </div>
                 `
@@ -134,13 +153,29 @@ export class LlecoopOrderListSearchFeatureTableConfig
                 'Acceptar'
               )
               .pipe(take(1), filter(Boolean))
-              .subscribe(() => this.store.activate(item));
+              .subscribe(() => this.store.activate(order));
           },
         },
         DELETE: {
-          visible: (item: LlecoopOrder) => item.status === 'waiting',
+          visible: (order: LlecoopOrder) => order.status === 'waiting',
           description: () => 'Elimina la comanda',
           order: 2,
+        },
+      },
+      nestedTableConfig: {
+        columnProperties: this.nestedColumnProperties,
+        paginationVisibility: {
+          hidePageSize: true,
+          hideRangeLabel: true,
+          hideRangeButtons: true,
+          hidePaginationFirstLastButtons: true,
+        },
+        caption: 'Llistat de comandes',
+        getData: (id?: string) => {
+          if (!id) return [] as LlecoopUserOrder[];
+
+          this.store.getAllOrderListOrders(id);
+          return this.store.entityMap()[id]?.orders as LlecoopUserOrder[];
         },
       },
     });

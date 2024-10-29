@@ -1,12 +1,13 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
-  TableControlStructure,
+  TableDefinition,
   TableStructureConfig,
 } from '@plastik/shared/table/entities';
 
@@ -17,6 +18,7 @@ export class LlecoopCategorySearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProductCategory>
 {
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly store = inject(LlecoopCategoryStore);
 
   private readonly name: TableColumnFormatting<LlecoopProductCategory, 'CUSTOM'> = {
     key: 'name',
@@ -63,7 +65,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     FormattingTypes
   >[] = [this.name, this.description, this.productCount, this.createdAt, this.updatedAt];
 
-  getTableStructure(): WritableSignal<TableControlStructure<LlecoopProductCategory>> {
+  getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return signal({
@@ -76,6 +78,9 @@ export class LlecoopCategorySearchFeatureTableConfig
         hidePaginationFirstLastButtons: true,
       },
       caption: 'Llistat de categories',
+      sort: this.store.sorting,
+      count: this.store.count,
+      getData: () => this.store.entities(),
       actions: {
         EDIT: {
           visible: () => true,
@@ -88,6 +93,6 @@ export class LlecoopCategorySearchFeatureTableConfig
           order: 2,
         },
       },
-    });
+    }) as Signal<TableDefinition<LlecoopProductCategory>>;
   }
 }
