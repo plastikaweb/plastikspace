@@ -12,7 +12,7 @@ import {
 import { filter, tap } from 'rxjs';
 
 export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
-  const categoryStore = inject(LlecoopCategoryStore);
+  const store = inject(LlecoopCategoryStore);
 
   return [
     {
@@ -39,7 +39,7 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
             label: 'Categoria',
             placeholder: 'Categoria',
             required: true,
-            options: toObservable(categoryStore.selectOptions),
+            options: toObservable(store.selectOptions),
             compareWith: (
               o1: DocumentReference<LlecoopProductCategory>,
               o2: DocumentReference<LlecoopProductCategory>

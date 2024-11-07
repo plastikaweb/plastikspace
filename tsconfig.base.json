@@ -43,6 +43,7 @@
       "@plastik/llecoop/order-list/data-access": [
         "libs/llecoop/order-list/data-access/src/index.ts"
       ],
+      "@plastik/llecoop/order-list/detail": ["libs/llecoop/order-list/feature/detail/src/index.ts"],
       "@plastik/llecoop/order-list/list": ["libs/llecoop/order-list/feature/list/src/index.ts"],
       "@plastik/llecoop/order-list/order-indicator": [
         "libs/llecoop/order-list/feature/llecoop-order-indicator/src/index.ts"

@@ -21,7 +21,7 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
             'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
           fieldGroup: [
             {
-              key: 'name',
+              key: 'userName',
               type: 'input',
               className: 'w-full',
               props: {

@@ -60,6 +60,7 @@
   [actions]="tableDefinition.actions || {}"
   [noPagination]="tableDefinition.noPagination || false"
   [extraRowStyles]="tableDefinition.extraRowStyles"
+  [actionsColStyles]="tableDefinition.actionsColStyles || ''"
   (changeSorting)="onChangeSorting($event)"
   (delete)="onDelete($event)">
 </plastik-shared-table>

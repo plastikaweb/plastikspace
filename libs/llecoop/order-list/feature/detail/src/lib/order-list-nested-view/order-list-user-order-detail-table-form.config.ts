@@ -19,13 +19,11 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserOrderDetailFormTableConfig
+export class LlecoopOrderListUserOrderDetailFormTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly store = inject(LLecoopOrderListStore);
-
-  private readonly userProducts = signal([...this.store.currentOrderProducts()]);
 
   private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -33,7 +31,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px]', 'flex flex-col justify-start'],
+    cssClasses: ['min-w-[200px]', 'flex flex-col justify-start'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
@@ -41,28 +39,6 @@ export class LlecoopUserOrderDetailFormTableConfig
         const info = element?.['info'] ? `<p class="font-bold">${element['info']}</p>` : '';
         return this.sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
-    },
-  };
-
-  private readonly provider: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
-    key: 'provider',
-    title: 'Proveïdor',
-    propertyPath: 'provider',
-    sorting: true,
-    cssClasses: ['hidden md:flex md:min-w-[180px]'],
-    formatting: {
-      type: 'TEXT',
-    },
-  };
-
-  private readonly origin: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
-    key: 'origin',
-    title: 'Procedència',
-    propertyPath: 'origin',
-    sorting: true,
-    cssClasses: ['hidden md:flex md:min-w-[180px]'],
-    formatting: {
-      type: 'TEXT',
     },
   };
 
@@ -83,12 +59,44 @@ export class LlecoopUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+  private readonly initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'initQuantity',
-    title: 'Quantitat',
+    title: 'Quantitat inicial',
     propertyPath: 'initQuantity',
     sorting: true,
-    cssClasses: ['min-w-[140px]', 'flex'],
+    cssClasses: ['min-w-[100px]'],
+    formatting: {
+      type: 'CUSTOM',
+      extras: () => ({
+        numberDigitsInfo: '1.2-2',
+        currency: '€',
+        currencyCode: 'EUR',
+      }),
+    },
+  };
+
+  private readonly initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
+    key: 'initPrice',
+    title: 'Preu inicial',
+    propertyPath: 'initPrice',
+    sorting: true,
+    cssClasses: ['min-w-[100px]'],
+    formatting: {
+      type: 'CURRENCY',
+      extras: () => ({
+        numberDigitsInfo: '1.2-2',
+        currency: '€',
+        currencyCode: 'EUR',
+      }),
+    },
+  };
+
+  private readonly finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+    key: 'finalQuantity',
+    title: 'Quantitat final',
+    propertyPath: 'finalQuantity',
+    sorting: true,
+    cssClasses: ['min-w-[100px] pe-md'],
     formatting: {
       type: 'INPUT',
     },
@@ -105,8 +113,6 @@ export class LlecoopUserOrderDetailFormTableConfig
         const price = (orderProduct?.priceWithIva || 0) * quantity;
         const newProduct = {
           ...orderProduct,
-          initQuantity: quantity,
-          initPrice: price,
           finalQuantity: quantity,
           finalPrice: price,
         };
@@ -115,10 +121,10 @@ export class LlecoopUserOrderDetailFormTableConfig
     }),
   };
 
-  private readonly initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
-    key: 'initPrice',
-    title: 'Preu total',
-    propertyPath: 'initPrice',
+  private readonly finalPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
+    key: 'finalPrice',
+    title: 'Preu final',
+    propertyPath: 'finalPrice',
     sorting: true,
     cssClasses: ['min-w-[100px]'],
     formatting: {
@@ -131,15 +137,67 @@ export class LlecoopUserOrderDetailFormTableConfig
     },
   };
 
+  private readonly extraInfo: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+    key: 'extraInfo',
+    title: 'Comentaris',
+    propertyPath: 'extraInfo',
+    sorting: true,
+    cssClasses: ['min-w-[250px] px-sm'],
+    formatting: {
+      type: 'INPUT',
+    },
+    isEditableConfig: () => ({
+      type: 'textarea',
+      attributes: {
+        rows: 3,
+      },
+      onChanges: (value, orderProduct) => {
+        return {
+          ...orderProduct,
+          extraInfo: (value as string).trim() || '',
+        };
+      },
+    }),
+  };
+
+  private readonly reviewed: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+    key: 'reviewed',
+    title: 'Revisat',
+    propertyPath: 'reviewed',
+    sorting: true,
+    cssClasses: ['min-w-[100px] px-sm'],
+    formatting: {
+      type: 'INPUT',
+    },
+    isEditableConfig: orderProduct => ({
+      type: 'toggle',
+      attributes: {
+        checked: orderProduct?.reviewed,
+      },
+      onChanges: (value, orderProduct) => {
+        const reviewed = Boolean(value);
+        const newProduct = {
+          ...orderProduct,
+          reviewed,
+        };
+        return newProduct;
+      },
+    }),
+  };
+
   private readonly columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] =
     [
       this.name,
-      productCategoryColumn<LlecoopOrderProduct>(),
-      this.provider,
-      this.origin,
+      productCategoryColumn<LlecoopOrderProduct>({
+        cssClasses: ['hidden lg:flex lg:min-w-[170px] justify-start'],
+      }),
       this.priceWithIva,
       this.initQuantity,
       this.initPrice,
+      this.finalQuantity,
+      this.finalPrice,
+      this.extraInfo,
+      this.reviewed,
     ];
 
   getTableDefinition() {
@@ -149,21 +207,15 @@ export class LlecoopUserOrderDetailFormTableConfig
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
       sort: this.store.sorting,
-      caption: 'Llistat de productes',
-      getData: () => this.userProducts(),
+      caption: 'Comanda de soci: Llistat de productes',
+      noPagination: true,
       extraRowStyles: (orderProduct: LlecoopOrderProduct) => {
-        return orderProduct.initPrice > 0 ? 'marked-ok' : '';
-      },
-      actions: {
-        CLEAR_PRODUCT: {
-          order: 1,
-          type: 'input',
-          visible: (orderProduct: LlecoopOrderProduct) => orderProduct.initPrice > 0,
-          description: () => 'Treure producte',
-          icon: () => 'cancel',
-          execute: (orderProduct: LlecoopOrderProduct) =>
-            this.initQuantity?.isEditableConfig?.(orderProduct)?.onChanges?.(0, orderProduct),
-        },
+        return orderProduct.reviewed
+          ? 'marked-ok'
+          : orderProduct.finalQuantity !== orderProduct.initQuantity ||
+              (orderProduct.extraInfo ?? '').trim().length > 0
+            ? 'marked-changed'
+            : '';
       },
     }) as Signal<TableDefinition<LlecoopOrderProduct>>;
   }

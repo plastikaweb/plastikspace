@@ -1,14 +1,16 @@
-import { InjectionToken, Signal } from '@angular/core';
+import { InjectionToken, Signal, signal } from '@angular/core';
 import { MatCheckboxChange } from '@angular/material/checkbox';
 import { PageEvent } from '@angular/material/paginator';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatSelectChange } from '@angular/material/select';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSort } from '@angular/material/sort';
+import { BaseEntity } from '@plastik/core/entities';
 import { FormattingTypes, PropertyFormatting } from '@plastik/shared/formatters';
 import { Observable } from 'rxjs';
 
 export interface EditableAttributeBase<T> {
-  type: string;
+  type: 'text' | 'number' | 'select' | 'textarea' | 'checkbox' | 'toggle' | 'radio';
   attributes: {
     label?: string;
     placeholder?: string;
@@ -45,7 +47,7 @@ type EditableSelectAttributes<T> = EditableAttributeBase<T> & {
 type EditableTextareaAttributes<T> = EditableAttributeBase<T> & {
   type: 'textarea';
   attributes: EditableAttributeBase<T>['attributes'] & {
-    rows?: string;
+    rows?: number;
   };
 };
 
@@ -55,6 +57,14 @@ type EditableCheckboxAttributes<T> = EditableAttributeBase<T> & {
     checked?: boolean;
   };
   onChanges?: (value: MatCheckboxChange, item: T) => T;
+};
+
+type EditableToggleAttributes<T> = EditableAttributeBase<T> & {
+  type: 'toggle';
+  attributes: EditableAttributeBase<T>['attributes'] & {
+    checked?: boolean;
+  };
+  onChanges?: (value: MatSlideToggleChange, item: T) => T;
 };
 
 type EditableRadioAttributes<T> = EditableAttributeBase<T> & {
@@ -67,6 +77,7 @@ type EditableRadioAttributes<T> = EditableAttributeBase<T> & {
 
 type EditableAttributes<OBJ> =
   | EditableCheckboxAttributes<OBJ>
+  | EditableToggleAttributes<OBJ>
   | EditableRadioAttributes<OBJ>
   | EditableSelectAttributes<OBJ>
   | EditableTextareaAttributes<OBJ>
@@ -96,6 +107,10 @@ export const isCheckboxTypeGuard = <T>(
 export const isRadioTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableRadioAttributes<T> => attributes.type === 'radio';
+
+export const isToggleTypeGuard = <T>(
+  attributes: EditableAttributes<T>
+): attributes is EditableToggleAttributes<T> => attributes.type === 'toggle';
 
 /**
  * @description An specific configuration for a table column <=> object property.
@@ -158,7 +173,7 @@ export type TableControlAction<T> = {
 /**
  * @description Main configuration for a table structure.
  */
-export interface TableDefinition<OBJ, NESTED_OBJ = null> {
+export interface TableDefinition<OBJ> {
   /**
    * Array with each column configuration properties.
    */
@@ -168,15 +183,15 @@ export interface TableDefinition<OBJ, NESTED_OBJ = null> {
   pageSizeOptions?: number[];
   paginationVisibility?: Partial<TablePaginationVisibility>;
   sort?: Signal<TableSortingConfig>;
-  count?: Signal<number>;
+  count: Signal<number>;
   /**
    * Main title of the table. Used for accessibility purposes.
    */
   caption?: string;
   actions?: TableControlAction<OBJ>;
   extraRowStyles?: (element: OBJ) => string;
+  actionsColStyles?: string;
   getData?: (id?: string) => OBJ[];
-  nestedTableConfig?: TableDefinition<NESTED_OBJ>;
 }
 
 /**
@@ -224,11 +239,11 @@ export interface TableSwitchEvent {
  */
 const pageSizeOptions = [15, 25, 50];
 
-export interface TableStructureConfig<T, S = null> {
+export interface TableStructureConfig<T> {
   getTableDefinition(
     overwrite?: ({ key: string } & Record<string, string>) | null,
-    tableControlStructureMerge?: Partial<TableDefinition<T, S>>
-  ): Observable<TableDefinition<T, S>> | Signal<TableDefinition<T, S>>;
+    tableControlStructureMerge?: Partial<TableDefinition<T>>
+  ): Observable<TableDefinition<T>> | Signal<TableDefinition<T>>;
 }
 
 /**
@@ -248,12 +263,13 @@ export const defaultTableConfig: TableDefinition<unknown> = {
     hideRangeLabel: true,
     hideRangeButtons: true,
   },
+  count: signal(0),
 };
 
 /**
  * @description Default TableControlStructure Token. It can be mapped, combined or overwritten by any custom or feature configuration.
  */
-export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableDefinition<unknown, unknown>>(
+export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableDefinition<unknown>>(
   'DEFAULT_TABLE_CONFIG',
   {
     providedIn: 'root',
@@ -261,6 +277,4 @@ export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableDefinition<unknown, 
   }
 );
 
-export const TABLE_TOKEN = new InjectionToken<TableStructureConfig<unknown, unknown>>(
-  'TABLE_TOKEN'
-);
+export const TABLE_TOKEN = new InjectionToken<TableStructureConfig<unknown>>('TABLE_TOKEN');

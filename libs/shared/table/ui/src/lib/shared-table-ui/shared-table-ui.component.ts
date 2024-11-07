@@ -1,19 +1,22 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkTableModule } from '@angular/cdk/table';
-import { KeyValuePipe, NgClass } from '@angular/common';
+import { KeyValuePipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   effect,
   ElementRef,
-  EventEmitter,
   inject,
   input,
   OnInit,
-  Output,
+  output,
+  signal,
+  TemplateRef,
   ViewChild,
   ViewChildren,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,14 +24,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
+import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
-import { BaseEntity } from '@plastik/core/entities';
 import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
-import { isString } from '@plastik/shared/objects';
+import { isEmpty, isString } from '@plastik/shared/objects';
 import {
   EditableAttributeBase,
   isCheckboxTypeGuard,
@@ -37,6 +40,7 @@ import {
   isSelectTypeGuard,
   isTextareaTypeGuard,
   isTextTypeGuard,
+  isToggleTypeGuard,
   PageEventConfig,
   TableColumnFormatting,
   TableControlAction,
@@ -47,6 +51,7 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
 import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
+import { BaseEntity } from '@plastik/core/entities';
 
 @Component({
   selector: 'plastik-shared-table',
@@ -60,6 +65,7 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
     MatTooltipModule,
     MatIconModule,
     RouterModule,
+    MatButtonModule,
     AngularSvgIconModule,
     SharedUtilFormattersModule,
     TableCellTitleDirective,
@@ -71,9 +77,18 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
     MatSelectModule,
     MatCheckboxModule,
     MatRadioModule,
+    MatSlideToggleModule,
+    NgTemplateOutlet,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrls: ['./shared-table-ui.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
@@ -144,39 +159,44 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   extraRowStyles = input<(element: T) => string>();
 
+  actionsColStyles = input<string>('');
+
+  expandable = input<boolean>(false);
+
+  expandedDetailTpl = input<TemplateRef<unknown> | null>(null);
+
   /**
    * An Output emitter to send table pagination changes.
    */
-  @Output()
-  changePagination: EventEmitter<PageEventConfig> = new EventEmitter();
+  changePagination = output<PageEventConfig>();
 
   /**
    * An Output emitter to send table sorting changes.
    */
-  @Output()
-  changeSorting = new EventEmitter<TableSorting>();
+  changeSorting = output<TableSorting>();
 
   /**
    * An Output emitter to send table delete action.
    */
-  @Output()
-  delete = new EventEmitter<T>();
+  delete = output<T>();
 
-  @Output()
-  getData = new EventEmitter<T[]>();
+  getData = output<T[]>();
 
-  @Output()
-  getChangedData = new EventEmitter<T>();
+  getChangedData = output<T | undefined>();
 
   @ViewChild(MatPaginator) matPaginator!: MatPaginator;
   @ViewChild(MatSort) matSort?: MatSort;
   @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef;
 
   protected dataSource = new MatTableDataSource<T>([]);
-  protected displayedColumns = computed(() => {
+  protected columnsToDisplay = computed(() => {
     const actions = this.actions();
     const cols = this.columnProperties().map(property => property.key) || [];
-    return actions ? [...cols, 'actions'] : cols;
+    return [
+      ...(this.expandable() ? ['expand'] : []),
+      ...cols,
+      ...(!!actions && !isEmpty(actions) ? ['actions'] : []),
+    ];
   });
 
   protected isNumber = isNumberTypeGuard;
@@ -185,6 +205,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isSelect = isSelectTypeGuard;
   protected isCheckBox = isCheckboxTypeGuard;
   protected isRadio = isRadioTypeGuard;
+  protected isToggle = isToggleTypeGuard;
+
+  protected expandedElement = signal<T | null>(null);
 
   constructor() {
     effect(() => (this.dataSource.data = this.data()));
@@ -211,9 +234,6 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
         this.dataSource.paginator = this.matPaginator;
       }
     });
-    // effect(() => {
-    //   this.getChangedData.emit(this.data());
-    // });
   }
 
   ngOnInit(): void {
@@ -247,14 +267,14 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   }
 
   protected onInputChange(
-    event: Event | MatSelectChange | MatCheckboxChange | MatRadioChange,
+    event: Event | MatSelectChange | MatCheckboxChange | MatRadioChange | MatSlideToggleChange,
     element: T,
     editableAttr: EditableAttributeBase<T>
   ): void {
     let value: string | number | boolean;
     if (event instanceof MatSelectChange || event instanceof MatRadioChange) {
       value = event.value;
-    } else if (event instanceof MatCheckboxChange) {
+    } else if (event instanceof MatCheckboxChange || event instanceof MatSlideToggleChange) {
       value = event.checked;
     } else {
       value = (event.target as HTMLInputElement).value;
@@ -270,5 +290,15 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected onGetRoute({ target }: Event) {
     const route = (target as HTMLAnchorElement).getAttribute('data-link');
     this.router.navigateByUrl(route || '/');
+  }
+
+  protected setCellNgClass(column: TableColumnFormatting<T, FormattingTypes>): {
+    [className: string]: boolean;
+  } {
+    return {
+      ...(column.cssClasses?.[0] ? { [column.cssClasses[0]]: true } : {}),
+      ...(column.formatting.type === 'INPUT' ? { 'mat-cell-input': true } : {}),
+      ...(column.formatting.type === 'LINK' ? { 'mat-cell-link': true } : {}),
+    };
   }
 }

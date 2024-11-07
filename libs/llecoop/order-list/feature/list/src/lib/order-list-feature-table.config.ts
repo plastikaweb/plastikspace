@@ -1,6 +1,6 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { LlecoopOrder, llecoopOrderStatus, LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { LlecoopOrder, llecoopOrderStatus } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
@@ -100,23 +100,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     this.createdAt,
   ];
 
-  private readonly userEmail: TableColumnFormatting<LlecoopUserOrder, 'TEXT'> = {
-    key: 'userEmail',
-    title: 'Correu electrònic',
-    propertyPath: 'userEmail',
-    sorting: true,
-    cssClasses: ['min-w-[125px]'],
-    formatting: {
-      type: 'TEXT',
-    },
-  };
-
-  private readonly nestedColumnProperties: TableColumnFormatting<
-    LlecoopUserOrder,
-    FormattingTypes
-  >[] = [this.userEmail];
-
-  getTableDefinition(): Signal<TableDefinition<LlecoopOrder, LlecoopUserOrder>> {
+  getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return signal({
@@ -161,23 +145,14 @@ export class LlecoopOrderListSearchFeatureTableConfig
           description: () => 'Elimina la comanda',
           order: 2,
         },
-      },
-      nestedTableConfig: {
-        columnProperties: this.nestedColumnProperties,
-        paginationVisibility: {
-          hidePageSize: true,
-          hideRangeLabel: true,
-          hideRangeButtons: true,
-          hidePaginationFirstLastButtons: true,
-        },
-        caption: 'Llistat de comandes',
-        getData: (id?: string) => {
-          if (!id) return [] as LlecoopUserOrder[];
-
-          this.store.getAllOrderListOrders(id);
-          return this.store.entityMap()[id]?.orders as LlecoopUserOrder[];
+        VIEW: {
+          visible: (order: LlecoopOrder) => order.status !== 'waiting',
+          description: () => 'Mostra les comandes realitzades',
+          order: 3,
+          icon: () => 'visibility',
+          link: (order: LlecoopOrder) => `${order.id}`,
         },
       },
-    });
+    }) as Signal<TableDefinition<LlecoopOrder>>;
   }
 }

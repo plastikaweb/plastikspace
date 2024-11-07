@@ -110,7 +110,6 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
         finalQuantity: 0,
         initPrice: 0,
         finalPrice: 0,
-        delivered: false,
       }));
 
     return {

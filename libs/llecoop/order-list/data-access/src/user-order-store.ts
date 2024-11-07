@@ -13,11 +13,11 @@ import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { routerActions } from '@plastik/core/router-state';
+import { routerActions, selectRouteUrl } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
-import { filter, pipe, switchMap, tap } from 'rxjs';
+import { filter, pipe, switchMap, tap, withLatestFrom } from 'rxjs';
 import { LLecoopOrderListStore } from './order-list-store';
 
 import { LlecoopUserOrderFireService } from './user-order-fire.service';
@@ -118,9 +118,11 @@ export const LlecoopUserOrderStore = signalStore(
           tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(order => {
             return userOrderService.update(order).pipe(
+              withLatestFrom(state.select(selectRouteUrl)),
               tapResponse({
-                next: () => {
-                  state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
+                next: ([, routeDataName]) => {
+                  if (routeDataName.includes('/soci/'))
+                    state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
                 },
                 error: error => {
                   state.dispatch(activityActions.setActivity({ isActive: false }));
@@ -130,10 +132,7 @@ export const LlecoopUserOrderStore = signalStore(
                   );
                 },
                 complete: () => {
-                  storeNotificationService.create(
-                    `Comanda "${order.name}" actualitzada`,
-                    'SUCCESS'
-                  ),
+                  storeNotificationService.create(`Comanda actualitzada`, 'SUCCESS'),
                     state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
               })

@@ -81,6 +81,7 @@ export class LlecoopCategorySearchFeatureTableConfig
       sort: this.store.sorting,
       count: this.store.count,
       getData: () => this.store.entities(),
+      actionsColStyles: 'max-w-[135px]',
       actions: {
         EDIT: {
           visible: () => true,

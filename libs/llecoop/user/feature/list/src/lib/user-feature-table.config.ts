@@ -132,6 +132,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       caption: "Llistat d'usuaris",
       count: this.store.count,
       getData: () => this.store.entities(),
+      actionsColStyles: 'max-w-[135px]',
       actions: {
         DELETE: {
           visible: (user: LlecoopUser) => !user.isAdmin,

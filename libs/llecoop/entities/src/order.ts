@@ -10,6 +10,7 @@ export type LlecoopOrderProduct = LlecoopBaseProduct & {
   initPrice: number;
   finalPrice: number;
   extraInfo?: string;
+  reviewed?: boolean;
 };
 
 export interface LlecoopOrder extends BaseEntity {
@@ -22,6 +23,7 @@ export interface LlecoopOrder extends BaseEntity {
 }
 
 export interface LlecoopUserOrder extends BaseEntity {
+  userName: string;
   userRef: DocumentReference<LlecoopUser>;
   orderRef: DocumentReference<LlecoopOrder>;
   cart: LlecoopOrderProduct[];

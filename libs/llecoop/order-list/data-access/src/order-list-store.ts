@@ -21,7 +21,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
-import { LlecoopOrder } from '@plastik/llecoop/entities';
+import { LlecoopOrder, LlecoopOrderProduct } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopOrderListFireService } from './order-list-fire.service';
@@ -40,7 +40,7 @@ export const LLecoopOrderListStore = signalStore(
     selectedItemId: null,
   }),
   withEntities<LlecoopOrder>(),
-  withComputed(({ ids, entities }) => ({
+  withComputed(({ ids, selectedItemId, entities, entityMap }) => ({
     count: computed(() => ids().length),
     currentOrder: computed(() => entities().find(order => order.status === 'progress')),
     currentOrderProducts: computed(
@@ -49,6 +49,10 @@ export const LLecoopOrderListStore = signalStore(
     currentOrderCount: computed(
       () => entities().find(order => order.status === 'progress')?.availableProducts.length || 0
     ),
+    selectedItem: computed(() => {
+      const id = selectedItemId();
+      return id !== null ? entityMap()[id] : null;
+    }),
   })),
   withMethods(
     (
@@ -181,6 +185,11 @@ export const LLecoopOrderListStore = signalStore(
         )
       ),
       setSorting: (sorting: LlecoopOrderListState['sorting']) => patchState(store, { sorting }),
+      setSelectedItemId: (id: EntityId | null) =>
+        patchState(store, {
+          selectedItemId: id,
+        }),
+      getItemById: (id: EntityId) => store.entityMap()[id],
     })
   ),
   withHooks({

@@ -26,7 +26,7 @@ export class LlecoopProductSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px]'],
+    cssClasses: ['min-w-[240px] py-tiny'],
     formatting: {
       type: 'LINK',
       execute: (_, product) => {
@@ -49,7 +49,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Preu',
     propertyPath: 'price',
     sorting: true,
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['hidden md:flex md:min-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -64,7 +64,7 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'iva',
     title: 'IVA',
     propertyPath: 'iva',
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['hidden md:flex md:min-w-[100px]'],
     formatting: {
       type: 'PERCENTAGE',
     },
@@ -116,7 +116,7 @@ export class LlecoopProductSearchFeatureTableConfig
     propertyPath: 'isAvailable',
     sorting: true,
     showTitle: false,
-    cssClasses: ['hidden md:flex min-w-[110px] max-w-[110px]'],
+    cssClasses: ['hidden md:flex md:min-w-[120px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, product) => (product?.isAvailable ? '✔' : '✘'),
@@ -127,7 +127,7 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'stock',
     title: 'Stock',
     propertyPath: 'stock',
-    cssClasses: ['hidden md:flex min-w-[125px]'],
+    cssClasses: ['hidden md:flex md:min-w-[125px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, product) => {
@@ -171,6 +171,7 @@ export class LlecoopProductSearchFeatureTableConfig
       extraRowStyles: (product: LlecoopProduct) => {
         return !product.isAvailable ? 'marked-ko' : '';
       },
+      actionsColStyles: 'min-w-[190px]',
       actions: {
         SET_AVAILABILITY: {
           visible: () => true,
