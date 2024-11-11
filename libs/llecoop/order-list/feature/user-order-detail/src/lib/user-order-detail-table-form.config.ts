@@ -88,7 +88,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     title: 'Quantitat',
     propertyPath: 'initQuantity',
     sorting: true,
-    cssClasses: ['min-w-[140px]', 'flex'],
+    cssClasses: ['', 'flex max-width-[110px]'],
     formatting: {
       type: 'INPUT',
     },
@@ -98,7 +98,6 @@ export class LlecoopUserOrderDetailFormTableConfig
         min: 0,
         step: getLlecoopProductUnitStep(orderProduct?.unit ?? { type: 'unit' }),
         suffix: getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' }),
-        placeholder: 'Quantitat',
       },
       onChanges: (value, orderProduct) => {
         const quantity = Number(value);

@@ -5,7 +5,7 @@ import { MatRadioChange } from '@angular/material/radio';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSort } from '@angular/material/sort';
-import { BaseEntity } from '@plastik/core/entities';
+import { EntityId } from '@ngrx/signals/entities';
 import { FormattingTypes, PropertyFormatting } from '@plastik/shared/formatters';
 import { Observable } from 'rxjs';
 
@@ -192,6 +192,7 @@ export interface TableDefinition<OBJ> {
   extraRowStyles?: (element: OBJ) => string;
   actionsColStyles?: string;
   getData?: (id?: string) => OBJ[];
+  getSelectedItemId?: Signal<EntityId | null>;
 }
 
 /**

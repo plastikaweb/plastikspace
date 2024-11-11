@@ -1,24 +1,29 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { CanActivateFn, RedirectCommand, Router } from '@angular/router';
 import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
+import { filter, map } from 'rxjs';
 
-export const isAnActiveOrderListGuard = () => {
+export const isAnActiveOrderListGuard: CanActivateFn = () => {
   const router = inject(Router);
-  const orderStore = inject(LlecoopUserOrderStore);
+  const userOrderStore = inject(LlecoopUserOrderStore);
   const orderListStore = inject(LLecoopOrderListStore);
 
-  if (
-    !orderStore
-      .entities()
-      .some(entity => entity['orderListId'] === orderListStore.currentOrder()?.id) &&
-    orderListStore.entities().some(entity => entity.status === 'progress')
-  ) {
-    return true;
-  }
-
-  router.navigate(['/soci/comanda']);
-  return false;
+  return toObservable(userOrderStore.loaded).pipe(
+    filter(Boolean),
+    map(() => {
+      if (
+        !userOrderStore
+          .entities()
+          .some(entity => entity['orderListId'] === orderListStore.currentOrder()?.id) &&
+        orderListStore.entities().some(entity => entity.status === 'progress')
+      ) {
+        return true;
+      }
+      return new RedirectCommand(router.parseUrl('/soci/comanda'));
+    })
+  );
 };

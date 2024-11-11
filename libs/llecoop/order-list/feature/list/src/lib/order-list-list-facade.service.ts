@@ -117,6 +117,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
       endTime: this.getNewOrderDate().toDate(),
       status: 'waiting',
       availableProducts,
+      orderCount: 0,
     };
   }
 }

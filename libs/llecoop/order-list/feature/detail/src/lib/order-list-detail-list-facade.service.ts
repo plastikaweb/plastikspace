@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { computed, inject, Injectable, signal } from '@angular/core';
 
+import { Store } from '@ngrx/store';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
@@ -25,6 +26,8 @@ export class LlecoopOrderListDetailListFacadeService
   private readonly mainViewConfig = signal(
     inject(VIEW_CONFIG).filter(item => item.name === 'order-list')[0]
   );
+
+  private readonly store = inject(Store);
 
   viewConfig = computed(() => ({
     ...this.mainViewConfig(),

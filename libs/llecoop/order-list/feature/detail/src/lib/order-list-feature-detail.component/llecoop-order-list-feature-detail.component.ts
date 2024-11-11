@@ -1,4 +1,4 @@
-import { NgClass, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,7 +19,6 @@ import { LlecoopOrderListDetailListFacadeService } from '../order-list-detail-li
     TitleCasePipe,
     MatButtonModule,
     RouterLink,
-    NgClass,
   ],
   templateUrl: './llecoop-order-list-feature-detail.component.html',
   styleUrl: './llecoop-order-list-feature-detail.component.scss',

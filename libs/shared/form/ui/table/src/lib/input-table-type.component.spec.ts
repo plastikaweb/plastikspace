@@ -25,6 +25,7 @@ describe('InputTableComponent', () => {
     component = fixture.componentInstance;
     component.props.tableDefinition = signal({
       columnProperties: [],
+      count: signal(0),
     });
 
     fixture.detectChanges();

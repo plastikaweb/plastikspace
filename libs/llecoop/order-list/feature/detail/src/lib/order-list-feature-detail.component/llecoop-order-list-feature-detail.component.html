@@ -9,7 +9,12 @@
   </h2>
 
   <div class="flex flex-row items-center justify-end gap-sm">
-    <button type="button" mat-flat-button color="accent" class="text-white" [routerLink]="['../']">
+    <button
+      type="button"
+      mat-flat-button
+      color="accent"
+      class="text-white"
+      [routerLink]="['/admin/comanda']">
       <mat-icon>arrow_back</mat-icon> Tornar al llistat
     </button>
   </div>
@@ -38,14 +43,17 @@
   [extraRowStyles]="tableDefinition.extraRowStyles"
   [expandedDetailTpl]="orderDetail"
   [expandable]="true"
+  [expandedElementId]="tableDefinition.getSelectedItemId?.() || null"
   (changeSorting)="onChangeSorting($event)">
 </plastik-shared-table>
 
-<ng-template #orderDetail let-element="element" let-isExpanded="isExpanded">
-  <plastik-shared-form-feature
-    class="flex flex-row items-end content-center justify-between filters-box"
-    [fields]="facade.orderDetailFormStructure() || []"
-    [model]="{ id: element.id, orderListId: element.orderListId, cart: element.cart }"
-    (changeEvent)="onSaveUserOrder($event)">
-  </plastik-shared-form-feature>
+<ng-template #orderDetail let-element="element">
+  @defer (when !!element) {
+    <plastik-shared-form-feature
+      class="flex flex-row items-end content-center justify-between filters-box"
+      [fields]="facade.orderDetailFormStructure() || []"
+      [model]="{ id: element.id, orderListId: element.orderListId, cart: element.cart }"
+      (changeEvent)="onSaveUserOrder($event)">
+    </plastik-shared-form-feature>
+  }
 </ng-template>

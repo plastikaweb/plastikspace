@@ -1,5 +1,10 @@
 import { Params, RouterStateSnapshot } from '@angular/router';
-import { BaseRouterStoreState, routerReducer, RouterReducerState, RouterStateSerializer } from '@ngrx/router-store';
+import {
+  BaseRouterStoreState,
+  routerReducer,
+  RouterReducerState,
+  RouterStateSerializer,
+} from '@ngrx/router-store';
 import { Action, ActionReducerMap } from '@ngrx/store';
 
 import { routerKey } from '../../router-state';

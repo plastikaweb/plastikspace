@@ -16,8 +16,7 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions, selectRouteUrl } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { activityActions } from '@plastik/shared/activity/data-access';
-import { filter, pipe, switchMap, tap, withLatestFrom } from 'rxjs';
+import { filter, pipe, switchMap, withLatestFrom } from 'rxjs';
 import { LLecoopOrderListStore } from './order-list-store';
 
 import { LlecoopUserOrderFireService } from './user-order-fire.service';
@@ -56,7 +55,6 @@ export const LlecoopUserOrderStore = signalStore(
     ) => ({
       getAll: rxMethod<void>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(() =>
             userOrderService.getAll().pipe(
               tapResponse({
@@ -68,7 +66,6 @@ export const LlecoopUserOrderStore = signalStore(
                     }),
                     { loaded: true, lastUpdated: new Date() }
                   );
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
                   if (authService.loggedIn()) {
@@ -77,7 +74,6 @@ export const LlecoopUserOrderStore = signalStore(
                       'ERROR'
                     );
                   }
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
               })
             )
@@ -87,7 +83,6 @@ export const LlecoopUserOrderStore = signalStore(
       create: rxMethod<Partial<LlecoopUserOrder>>(
         pipe(
           filter(() => !!authService.currentUser()?.uid && orderListStore.currentOrder() !== null),
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((order: Partial<LlecoopUserOrder>) => {
             const orderListId = orderListStore.currentOrder()?.id;
             const finalOrder = {
@@ -97,17 +92,14 @@ export const LlecoopUserOrderStore = signalStore(
             return userOrderService.create(finalOrder, orderListId).pipe(
               tapResponse({
                 next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
                   storeNotificationService.create(`Comanda creada`, 'SUCCESS');
                 },
-                error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut crear la comanda": ${error}`,
                     'ERROR'
-                  );
-                },
+                  ),
               })
             );
           })
@@ -115,26 +107,28 @@ export const LlecoopUserOrderStore = signalStore(
       ),
       update: rxMethod<Partial<LlecoopUserOrder>>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(order => {
             return userOrderService.update(order).pipe(
               withLatestFrom(state.select(selectRouteUrl)),
               tapResponse({
                 next: ([, routeDataName]) => {
-                  if (routeDataName.includes('/soci/'))
-                    state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
+                  const adminRegex = /admin\/comanda\/([^/]+)\/([^/]+)/;
+                  let path = '/soci/comanda';
+
+                  if (adminRegex.test(routeDataName)) {
+                    const match = routeDataName.match(adminRegex);
+                    path = match ? `/admin/comanda/${match[1]}` : '/admin/comanda';
+                  }
+
+                  state.dispatch(routerActions.go({ path: [path] }));
                 },
                 error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar la comanda": ${error}`,
                     'ERROR'
                   );
                 },
-                complete: () => {
-                  storeNotificationService.create(`Comanda actualitzada`, 'SUCCESS'),
-                    state.dispatch(activityActions.setActivity({ isActive: false }));
-                },
+                complete: () => storeNotificationService.create(`Comanda actualitzada`, 'SUCCESS'),
               })
             );
           })
@@ -142,24 +136,19 @@ export const LlecoopUserOrderStore = signalStore(
       ),
       delete: rxMethod<LlecoopUserOrder>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(product => {
             return userOrderService.delete(product).pipe(
               tapResponse({
-                next: () => {
+                next: () =>
                   storeNotificationService.create(
                     `Comanda "${product.name}" eliminada. Recorda: sempre pots tornar a fer una comanda fins la data de tancament.`,
                     'INFO'
                   ),
-                    state.dispatch(activityActions.setActivity({ isActive: false }));
-                },
-                error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut eliminar la comanda "${product.name}": ${error}`,
                     'ERROR'
-                  );
-                },
+                  ),
               })
             );
           })
@@ -181,7 +170,7 @@ export const LlecoopUserOrderStore = signalStore(
     },
     onDestroy() {
       // eslint-disable-next-line no-console
-      console.log('Destroying order store');
+      console.log('Destroying user order store');
     },
   })
 );

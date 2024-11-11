@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   LlecoopUserOrder,
@@ -6,7 +6,10 @@ import {
   llecoopUserOrderStatus,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  LLecoopOrderListStore,
+  LlecoopUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -23,6 +26,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
 {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly store = inject(LLecoopOrderListStore);
+  private readonly userOrderStore = inject(LlecoopUserOrderStore);
 
   private readonly userName: TableColumnFormatting<LlecoopUserOrder, 'TITLE_CASE'> = {
     key: 'userName',
@@ -158,10 +162,13 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
       },
       caption: 'Llistat de comandes',
       sort: this.store.sorting,
-      count: this.store.count,
+      count: computed(() => this.store.selectedItem()?.orderCount || 0) as Signal<number>,
       getData: () => {
         return this.store.selectedItem()?.orders || [];
       },
+      getSelectedItemId: computed(() => this.store.selectedItemUserOrderId()) as Signal<
+        string | null
+      >,
     }) as Signal<TableDefinition<LlecoopUserOrder>>;
   }
 }

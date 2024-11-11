@@ -29,7 +29,8 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
-import { PushPipe } from '@ngrx/component';
+import { EntityId } from '@ngrx/signals/entities';
+import { BaseEntity } from '@plastik/core/entities';
 import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
 import { isEmpty, isString } from '@plastik/shared/objects';
 import {
@@ -51,13 +52,11 @@ import {
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
 import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
-import { BaseEntity } from '@plastik/core/entities';
 
 @Component({
   selector: 'plastik-shared-table',
   standalone: true,
   imports: [
-    PushPipe,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -163,6 +162,8 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   expandable = input<boolean>(false);
 
+  expandedElementId = input<EntityId | null>(null);
+
   expandedDetailTpl = input<TemplateRef<unknown> | null>(null);
 
   /**
@@ -208,7 +209,6 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isToggle = isToggleTypeGuard;
 
   protected expandedElement = signal<T | null>(null);
-
   constructor() {
     effect(() => (this.dataSource.data = this.data()));
     effect(() => {
@@ -250,7 +250,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     }
   }
 
-  protected onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
+  onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
     this.changePagination.emit({ previousPageIndex, pageIndex, pageSize });
   }
 

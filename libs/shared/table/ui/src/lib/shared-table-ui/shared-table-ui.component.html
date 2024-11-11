@@ -49,7 +49,7 @@
                   @if (isText(editable)) {
                     <mat-form-field
                       #matFormField
-                      class="inline editable"
+                      class="inline editable w-[110px]"
                       [ngClass]="attributes?.styles || ''">
                       @if (attributes?.prefix) {
                         <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -68,7 +68,7 @@
                   @if (isNumber(editable)) {
                     <mat-form-field
                       #matFormField
-                      class="inline editable"
+                      class="inline editable w-[110px]"
                       [ngClass]="attributes?.styles || ''">
                       @if (attributes?.prefix) {
                         <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -247,7 +247,7 @@
           *matCellDef="let element"
           class="justify-evenly"
           [attr.colspan]="columnsToDisplay().length"
-          [@detailExpand]="element.id === expandedElement()?.id ? 'expanded' : 'collapsed'">
+          [@detailExpand]="element === expandedElement() ? 'expanded' : 'collapsed'">
           <ng-container
             *ngTemplateOutlet="
               expandedDetailTpl();
