@@ -22,9 +22,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'product')[0]);
 
-  tableStructure = this.table.getTableStructure();
-  tableData = this.store.entities;
-  tableSorting = this.store.sorting;
+  tableDefinition = this.table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
     text: '',
     inStock: 'all',
@@ -50,7 +48,6 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
 
     return filterText && filterInStock;
   };
-  count = this.store.count;
   routingToDetailPage = signal({ visible: true });
 
   formStructure = getLlecoopProductSearchFeatureFormConfig();

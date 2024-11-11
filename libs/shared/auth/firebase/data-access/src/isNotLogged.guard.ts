@@ -1,8 +1,8 @@
 import { inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { Router } from '@angular/router';
+import { CanActivateFn, Router } from '@angular/router';
 
-export const isNotLoggedGuard = async () => {
+export const isNotLoggedGuard: CanActivateFn = async () => {
   const auth = inject(Auth);
   const router = inject(Router);
 

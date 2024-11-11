@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
@@ -7,7 +7,7 @@ import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
-  TableControlStructure,
+  TableDefinition,
   TableStructureConfig,
 } from '@plastik/shared/table/entities';
 
@@ -26,17 +26,17 @@ export class LlecoopProductSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px]'],
+    cssClasses: ['min-w-[240px] py-tiny'],
     formatting: {
       type: 'LINK',
-      execute: (_, element) => {
+      execute: (_, product) => {
         const link = `<a class="font-bold uppercase"
-          data-link="admin/producte/${element?.id}">
-          ${element?.name}
+          data-link="admin/producte/${product?.id}">
+          ${product?.name}
         </a>`;
-        const info = element?.info ? `<li class="font-bold">${element?.info}</li>` : '';
-        const provider = element?.provider ? `<li>Proveïdor: ${element?.provider}</li>` : '';
-        const origin = element?.origin ? `<li>Procedència: ${element?.origin}</li>` : '';
+        const info = product?.info ? `<li class="font-bold">${product?.info}</li>` : '';
+        const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
+        const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
         const extra = `<ul>${info}${provider}${origin}</ul>`;
         return this.sanitizer.bypassSecurityTrustHtml(`${link}${extra}`) as SafeHtml;
         // return this.sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
@@ -49,7 +49,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Preu',
     propertyPath: 'price',
     sorting: true,
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['hidden md:flex md:min-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -64,7 +64,7 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'iva',
     title: 'IVA',
     propertyPath: 'iva',
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['hidden md:flex md:min-w-[100px]'],
     formatting: {
       type: 'PERCENTAGE',
     },
@@ -77,8 +77,8 @@ export class LlecoopProductSearchFeatureTableConfig
     cssClasses: ['hidden md:flex md:min-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: (value, element) => {
-        switch (element?.unit?.type) {
+      execute: (value, product) => {
+        switch (product?.unit?.type) {
           case 'unitWithFixedVolume':
             return `volum per unitat: ${Number(value)} l`;
           case 'unitWithFixedWeight':
@@ -116,10 +116,10 @@ export class LlecoopProductSearchFeatureTableConfig
     propertyPath: 'isAvailable',
     sorting: true,
     showTitle: false,
-    cssClasses: ['hidden md:flex min-w-[110px] max-w-[110px]'],
+    cssClasses: ['hidden md:flex md:min-w-[120px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: (_, element) => (element?.isAvailable ? '✔' : '✘'),
+      execute: (_, product) => (product?.isAvailable ? '✔' : '✘'),
     },
   };
 
@@ -127,11 +127,11 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'stock',
     title: 'Stock',
     propertyPath: 'stock',
-    cssClasses: ['hidden md:flex min-w-[125px]'],
+    cssClasses: ['hidden md:flex md:min-w-[125px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: (value, element) => {
-        return !value ? '-' : `${value} ${element?.unit?.type === 'weight' ? 'kg' : 'u.'}`;
+      execute: (value, product) => {
+        return !value ? '-' : `${value} ${product?.unit?.type === 'weight' ? 'kg' : 'u.'}`;
       },
     },
   };
@@ -152,7 +152,7 @@ export class LlecoopProductSearchFeatureTableConfig
     this.updatedAt,
   ];
 
-  getTableStructure(): WritableSignal<TableControlStructure<LlecoopProduct>> {
+  getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return signal({
@@ -164,10 +164,14 @@ export class LlecoopProductSearchFeatureTableConfig
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
+      sort: this.store.sorting,
       caption: 'Llistat de productes',
-      extraRowStyles: element => {
-        return !element.isAvailable ? 'marked-ko' : '';
+      getData: () => this.store.entities(),
+      count: this.store.count,
+      extraRowStyles: (product: LlecoopProduct) => {
+        return !product.isAvailable ? 'marked-ko' : '';
       },
+      actionsColStyles: 'min-w-[190px]',
       actions: {
         SET_AVAILABILITY: {
           visible: () => true,
@@ -192,6 +196,6 @@ export class LlecoopProductSearchFeatureTableConfig
           order: 3,
         },
       },
-    });
+    }) as Signal<TableDefinition<LlecoopProduct>>;
   }
 }

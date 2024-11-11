@@ -1,18 +1,30 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { ActivatedRouteSnapshot, RedirectCommand, ResolveFn, Router } from '@angular/router';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { filter, map, Observable } from 'rxjs';
 
-export const ProductDetailResolver: ResolveFn<boolean> = (
+export const ProductDetailResolver: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot
-): boolean => {
+) => {
+  const router = inject(Router);
   const store = inject(LlecoopProductStore);
   const id = route.paramMap.get('id');
 
   if (!id) {
     store.setSelectedItemId(null);
-    return false;
+    return new RedirectCommand(router.parseUrl('/admin/producte'));
   }
 
   store.setSelectedItemId(id);
-  return true;
+
+  return toObservable(store.selectedItem).pipe(
+    map(product => {
+      if (!product) {
+        store.getAll();
+      }
+      return !!product;
+    }),
+    filter(Boolean)
+  );
 };

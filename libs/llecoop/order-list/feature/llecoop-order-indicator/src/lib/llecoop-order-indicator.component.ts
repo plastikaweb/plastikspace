@@ -1,4 +1,4 @@
-import { CurrencyPipe, JsonPipe } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +11,7 @@ import {
 @Component({
   selector: 'plastik-llecoop-order-indicator',
   standalone: true,
-  imports: [MatIconModule, MatBadgeModule, MatButtonModule, CurrencyPipe, JsonPipe],
+  imports: [MatIconModule, MatBadgeModule, MatButtonModule, CurrencyPipe],
   templateUrl: './llecoop-order-indicator.component.html',
   styleUrl: './llecoop-order-indicator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

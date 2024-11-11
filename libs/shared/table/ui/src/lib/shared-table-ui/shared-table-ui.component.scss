@@ -20,31 +20,45 @@
     }
   }
 
-  .mat-mdc-cell:not(.mat-cell-actions, .mat-cell-input) * {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: 0.2s;
-    padding: 0.35em 0;
-  }
-
-  .mat-mdc-cell li {
-    margin: 0;
-    padding: 0;
+  .mat-column-expand {
+    white-space: nowrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 5rem;
+    padding: 0 2rem;
   }
 
   .mat-mdc-cell {
-    .mdc-text-field--no-label .mat-mdc-form-field-infix {
-      --mat-form-field-container-vertical-padding: 0;
-      --mat-form-field-container-vertical-padding: 0;
+    &:not(.mat-cell-actions, .mat-cell-input, .mat-column-expand) * {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: 0.2s;
     }
+
+    &.mat-cell-link a {
+      @apply cursor-pointer;
+    }
+
+    &.mat-cell-input textarea {
+      overflow: scroll;
+      resize: vertical;
+    }
+
+    li {
+      margin: 0;
+      padding: 0;
+    }
+
+    .mdc-text-field--no-label .mat-mdc-form-field-infix {
+      padding: 0.5rem 0 0;
+    }
+
     .mat-mdc-form-field-subscript-wrapper {
-      --mat-form-field-subscript-text-line-height: 0;
       display: none;
     }
   }
 }
 .mat-mdc-table > .mat-mdc-row {
-  @apply items-stretch;
   min-height: var(--plastik-mdc-table-row-min-height, auto);
   max-height: var(--plastik-mdc-table-row-max-height, auto);
   &.marked-ok {
@@ -53,10 +67,21 @@
   &.marked-ko {
     background-color: var(--plastik-mdc-table-row-marked-ko-bg-color, #f8c8c8) !important;
   }
-}
+  &.marked-changed {
+    background-color: var(--plastik-mdc-table-row-marked-changed-bg-color, #e8bf79) !important;
+  }
+  &.expanded-detail-row {
+    display: table-row;
+    height: 0;
+  }
 
-.table__cell--link a {
-  @apply cursor-pointer;
+  &.expanded-row:hover > .mat-mdc-cell {
+    background-color: var(--accent-100);
+  }
+
+  &.expanded-row > .mat-mdc-cell {
+    background-color: var(--accent-50);
+  }
 }
 
 ::ng-deep .mat-mdc-paginator {

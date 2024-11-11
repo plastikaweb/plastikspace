@@ -24,7 +24,6 @@ import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer'
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
-import { SharedButtonUiComponent } from '@plastik/shared/button';
 import { NotificationFacade } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -49,7 +48,6 @@ import { map, Subject, takeUntil } from 'rxjs';
     CoreCmsLayoutUiFooterComponent,
     CoreCmsLayoutUiHeaderComponent,
     CoreCmsLayoutUiSidenavComponent,
-    SharedButtonUiComponent,
     SharedActivityUiOverlayComponent,
     NotificationUiMatSnackbarDirective,
   ],

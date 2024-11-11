@@ -1,18 +1,30 @@
 import { inject } from '@angular/core';
-import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { ActivatedRouteSnapshot, RedirectCommand, ResolveFn, Router } from '@angular/router';
 import { LlecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
+import { filter, map, Observable } from 'rxjs';
 
-export const UserOrderDetailResolver: ResolveFn<boolean> = (
+export const UserOrderDetailResolver: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot
-): boolean => {
+) => {
+  const router = inject(Router);
   const store = inject(LlecoopUserOrderStore);
   const id = route.paramMap.get('id');
 
   if (!id) {
     store.setSelectedItemId(null);
-    return false;
+    return new RedirectCommand(router.parseUrl('/soci/comanda'));
   }
 
   store.setSelectedItemId(id);
-  return true;
+
+  return toObservable(store.selectedItem).pipe(
+    map(userOrder => {
+      if (!userOrder) {
+        store.getAll();
+      }
+      return !!userOrder;
+    }),
+    filter(Boolean)
+  );
 };

@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   computed,
   forwardRef,
+  inject,
   input,
   signal,
 } from '@angular/core';
@@ -35,6 +37,8 @@ const INPUT_TABLE_ACCESSOR = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputTableComponent<T extends BaseEntity> implements ControlValueAccessor {
+  protected readonly cdr = inject(ChangeDetectorRef);
+
   value = signal<T[]>([]);
   disabled = signal<boolean>(false);
   tablePaginationVisibility = signal<TablePaginationVisibility>({
@@ -52,9 +56,13 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
   tableActions = input<TableControlAction<T>>();
   tableExtraRowStyles = input<(element: T) => string>();
   tableRowValueConditionFn = input<(element: T) => boolean>();
+  tableNoPagination = input<boolean>(false);
   label = input<string>('');
 
   computedTableData = computed(() => {
+    if (!this.tableData() || this.tableData().length === 0) {
+      return this.value();
+    }
     if (this.value() && this.value().length > 0) {
       const data = this.tableData().map(element => {
         const isSelected = this.value().find(selectedElement => {
@@ -88,17 +96,17 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
     this.disabled.set(isDisabled);
   }
 
-  protected onGetChangedData(data: T): void {
-    const addOrRemoveElement = this.tableRowValueConditionFn()?.(data);
+  protected onGetChangedData(data?: T): void {
+    const addOrRemoveElement = data ? this.tableRowValueConditionFn()?.(data) : false;
 
     const currentValue = this.value();
-    const dataExists = currentValue.some(element => element.id === data.id);
-    if (addOrRemoveElement && !dataExists) {
+    const dataExists = currentValue.some(element => element.id === data?.id);
+    if (addOrRemoveElement && !dataExists && data) {
       this.value.set([...currentValue, data]);
     } else if (!addOrRemoveElement && dataExists) {
-      this.value.set(currentValue.filter(element => element.id !== data.id));
-    } else if (addOrRemoveElement && dataExists) {
-      const updatedValue = currentValue.map(element => (element.id === data.id ? data : element));
+      this.value.set(currentValue.filter(element => element.id !== data?.id));
+    } else if (addOrRemoveElement && dataExists && data) {
+      const updatedValue = currentValue.map(element => (element.id === data?.id ? data : element));
       this.value.set(updatedValue);
     } else {
       this.value.set(currentValue);
@@ -106,6 +114,7 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
 
     this.onChange(this.value());
     this.onTouch();
+    this.cdr.detectChanges();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars

@@ -11,7 +11,6 @@ import { selectNasaImagesFeature } from './nasa-images.feature';
 @Injectable()
 export class NasaImagesSearchFacade extends NasaImagesFacade {
   images$ = this.store.pipe(select(selectNasaImagesFeature.selectAll));
-  count$ = this.store.pipe(select(selectNasaImagesFeature.selectCount));
   isActiveSearch$ = this.store.pipe(select(selectNasaImagesFeature.selectIsActiveSearch));
 
   search(params: NasaImagesSearchApiParams): void {
@@ -22,7 +21,7 @@ export class NasaImagesSearchFacade extends NasaImagesFacade {
           queryParams: { ...params, page: '1' },
           queryParamsHandling: 'merge',
         },
-      }),
+      })
     );
   }
 
@@ -32,7 +31,13 @@ export class NasaImagesSearchFacade extends NasaImagesFacade {
       .pipe(take(1))
       .subscribe(queryParams => {
         this.store.dispatch(
-          routerActions.go({ path: [], extras: { queryParams: { ...queryParams, page: ++pageIndex }, queryParamsHandling: 'merge' } }),
+          routerActions.go({
+            path: [],
+            extras: {
+              queryParams: { ...queryParams, page: ++pageIndex },
+              queryParamsHandling: 'merge',
+            },
+          })
         );
       });
   }

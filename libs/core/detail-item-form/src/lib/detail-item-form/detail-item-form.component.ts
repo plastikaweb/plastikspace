@@ -1,4 +1,4 @@
-import { JsonPipe, NgClass, TitleCasePipe } from '@angular/common';
+import { NgClass, TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +16,6 @@ import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
     MatButtonModule,
     RouterLink,
     NgClass,
-    JsonPipe,
   ],
   templateUrl: './detail-item-form.component.html',
   styleUrl: './detail-item-form.component.scss',

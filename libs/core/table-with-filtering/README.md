@@ -41,7 +41,7 @@ export const exampleFeatureRoutes: Route[] = [
 >
 > ```typescript
 > export interface TableWithFilteringFacade<T extends BaseEntity> {
->   tableStructure: Signal<TableControlStructure<T>>;
+>   tableDefinition: Signal<TableControlStructure<T>>;
 >   tableData: Signal<T[]>;
 >   count: Signal<number>;
 >   viewName: string;

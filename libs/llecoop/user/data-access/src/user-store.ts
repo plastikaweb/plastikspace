@@ -17,8 +17,7 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
-import { activityActions } from '@plastik/shared/activity/data-access';
-import { pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap } from 'rxjs';
 import { LlecoopUserFireService } from './user-fire.service';
 
 type UserState = LlecoopFeatureStore;
@@ -46,18 +45,15 @@ export const LLecoopUserStore = signalStore(
     ) => ({
       getAll: rxMethod<void>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(() =>
             userService.getAll().pipe(
               tapResponse({
-                next: users => {
+                next: users =>
                   patchState(
                     store,
                     setAllEntities(users, { selectId: entity => entity.id || '' }),
                     { loaded: true, lastUpdated: new Date() }
-                  );
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
-                },
+                  ),
                 error: error => {
                   if (firebaseAuthService.loggedIn()) {
                     storeNotificationService.create(
@@ -65,7 +61,6 @@ export const LLecoopUserStore = signalStore(
                       'ERROR'
                     );
                   }
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
               })
             )
@@ -74,7 +69,6 @@ export const LLecoopUserStore = signalStore(
       ),
       create: rxMethod<Pick<LlecoopUser, 'email'>>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(({ email }) => {
             return userService.create(email).pipe(
               tapResponse({
@@ -84,13 +78,11 @@ export const LLecoopUserStore = signalStore(
                     `No s'ha pogut guardar el email "${email}": ${error}`,
                     'ERROR'
                   ),
-                complete: () => {
+                complete: () =>
                   storeNotificationService.create(
                     `Soci amb email "${email}" afegit a la llista`,
                     'SUCCESS'
-                  );
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
-                },
+                  ),
               })
             );
           })
@@ -98,24 +90,19 @@ export const LLecoopUserStore = signalStore(
       ),
       delete: rxMethod<LlecoopUser>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(user => {
             return userService.delete(user).pipe(
               tapResponse({
-                next: () => {
+                next: () =>
                   storeNotificationService.create(
                     `Usuari amb correu electrònic "${user.email}" eliminat`,
                     'SUCCESS'
                   ),
-                    state.dispatch(activityActions.setActivity({ isActive: false }));
-                },
-                error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut eliminar l'usuari amb correu electrònic "${user.email}": ${error}`,
                     'ERROR'
-                  );
-                },
+                  ),
               })
             );
           })
@@ -123,28 +110,22 @@ export const LLecoopUserStore = signalStore(
       ),
       setAdmin: rxMethod<Pick<LlecoopUser, 'id'>>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(({ id }) => {
             if (!id) {
               throw new Error('User ID is undefined');
             }
             return userService.addAdminClaim(id).pipe(
               tapResponse({
-                next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                next: () =>
                   storeNotificationService.create(
                     `Usuari amb id "${id}" afegit com a administrador`,
                     'SUCCESS'
-                  );
-                },
-                error: error => {
-                  console.error(error);
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
+                  ),
+                error: () =>
                   storeNotificationService.create(
                     `No s'ha pogut afegir l'usuari com a administrador`,
                     'ERROR'
-                  );
-                },
+                  ),
               })
             );
           })

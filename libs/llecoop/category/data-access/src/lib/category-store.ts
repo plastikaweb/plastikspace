@@ -67,7 +67,6 @@ export const LlecoopCategoryStore = signalStore(
       getAll: rxMethod<void>(
         pipe(
           tap(() => patchState(store, { loaded: false })),
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(() =>
             categoryService.getAll().pipe(
               tapResponse({
@@ -80,10 +79,8 @@ export const LlecoopCategoryStore = signalStore(
                     })
                   );
                   patchState(store, { loaded: true, lastUpdated });
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
                 error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   if (firebaseAuthService.loggedIn()) {
                     storeNotificationService.create(
                       `No s'ha pogut carregar les categories: ${error}`,
@@ -98,17 +95,14 @@ export const LlecoopCategoryStore = signalStore(
       ),
       create: rxMethod<Partial<LlecoopProductCategory>>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((category: Partial<LlecoopProductCategory>) => {
             return categoryService.create(category).pipe(
               tapResponse({
                 next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
                   storeNotificationService.create(`Categoria "${category.name}" creada`, 'SUCCESS');
                 },
                 error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `No s'ha pogut crear la categoria "${category.name}": ${error}`,
                     'ERROR'
@@ -121,12 +115,10 @@ export const LlecoopCategoryStore = signalStore(
       ),
       update: rxMethod<Partial<LlecoopProductCategory>>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((category: Partial<LlecoopProductCategory>) => {
             return categoryService.update(category).pipe(
               tapResponse({
                 next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
                   storeNotificationService.create(
                     `Categoria "${category.name}" actualitzada`,
@@ -134,7 +126,6 @@ export const LlecoopCategoryStore = signalStore(
                   );
                 },
                 error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar la categoria "${category.name}": ${error}`,
                     'ERROR'
@@ -147,19 +138,16 @@ export const LlecoopCategoryStore = signalStore(
       ),
       delete: rxMethod<LlecoopProductCategory>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(category => {
             return categoryService.delete(category).pipe(
               tapResponse({
                 next: () => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `Categoria "${category.name}" eliminada`,
                     'SUCCESS'
                   );
                 },
                 error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                   storeNotificationService.create(
                     `No s'ha pogut eliminar la categoria "${category.name}": ${error}`,
                     'ERROR'

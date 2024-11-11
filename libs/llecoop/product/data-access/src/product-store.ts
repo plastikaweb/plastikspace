@@ -16,8 +16,7 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProduct, LlecoopProductWithUpdateNotification } from '@plastik/llecoop/entities';
-import { activityActions } from '@plastik/shared/activity/data-access';
-import { pipe, switchMap, tap } from 'rxjs';
+import { pipe, switchMap } from 'rxjs';
 import { LlecoopProductFireService } from './product-fire.service';
 
 type ProductState = LlecoopFeatureStore;
@@ -52,20 +51,17 @@ export const LlecoopProductStore = signalStore(
     ) => ({
       getAll: rxMethod<void>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(() =>
             productService.getAll().pipe(
               tapResponse({
-                next: products => {
+                next: products =>
                   patchState(
                     store,
                     setAllEntities(products, {
                       selectId: entity => entity.id || '',
                     }),
                     { loaded: true, lastUpdated: new Date() }
-                  );
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
-                },
+                  ),
                 error: error => {
                   if (authService.loggedIn()) {
                     storeNotificationService.create(
@@ -73,7 +69,6 @@ export const LlecoopProductStore = signalStore(
                       'ERROR'
                     );
                   }
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
                 },
               })
             )
@@ -82,7 +77,6 @@ export const LlecoopProductStore = signalStore(
       ),
       create: rxMethod<Partial<LlecoopProduct>>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap((product: Partial<LlecoopProduct>) => {
             return productService.create(product).pipe(
               tapResponse({
@@ -92,13 +86,11 @@ export const LlecoopProductStore = signalStore(
                     `No s'ha pogut crear el producte "${product['name']}": ${error}`,
                     'ERROR'
                   ),
-                complete: () => {
+                complete: () =>
                   storeNotificationService.create(
                     `Producte "${product['name']}" creat correctament`,
                     'SUCCESS'
-                  );
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
-                },
+                  ),
               })
             );
           })
@@ -106,13 +98,10 @@ export const LlecoopProductStore = signalStore(
       ),
       update: rxMethod<LlecoopProductWithUpdateNotification>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(({ product, showNotification }) => {
             return productService.update(product).pipe(
               tapResponse({
-                next: () => {
-                  state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
-                },
+                next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
                 error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar el producte "${product['name']}": ${error}`,
@@ -124,7 +113,6 @@ export const LlecoopProductStore = signalStore(
                       `Producte "${product['name']}" actualitzat correctament`,
                       'SUCCESS'
                     );
-                    state.dispatch(activityActions.setActivity({ isActive: false }));
                   }
                 },
               })
@@ -134,21 +122,17 @@ export const LlecoopProductStore = signalStore(
       ),
       delete: rxMethod<LlecoopProduct>(
         pipe(
-          tap(() => state.dispatch(activityActions.setActivity({ isActive: true }))),
           switchMap(product => {
             return productService.delete(product).pipe(
               tapResponse({
-                next: () => {
+                next: () =>
                   storeNotificationService.create(`Producte "${product.name}" eliminat`, 'SUCCESS'),
-                    state.dispatch(activityActions.setActivity({ isActive: false }));
-                },
-                error: error => {
-                  state.dispatch(activityActions.setActivity({ isActive: false }));
+
+                error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut eliminar el producte "${product.name}": ${error}`,
                     'ERROR'
-                  );
-                },
+                  ),
               })
             );
           })

@@ -1,12 +1,13 @@
-import { inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { inject, Injectable, signal, Signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopUserOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
+import { LlecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
-  TableControlStructure,
+  TableDefinition,
   TableStructureConfig,
 } from '@plastik/shared/table/entities';
 
@@ -17,6 +18,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
   private readonly sanitizer = inject(DomSanitizer);
+  private readonly store = inject(LlecoopUserOrderStore);
 
   private readonly name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
     key: 'name',
@@ -27,11 +29,11 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     cssClasses: ['min-w-[240px]'],
     formatting: {
       type: 'LINK',
-      execute: (_, element) => {
+      execute: (_, userOrder) => {
         const link = `
         <a class="font-bold uppercase"
-          data-link="soci/comanda/${element?.id}">
-          ${element?.name}
+          data-link="soci/comanda/${userOrder?.id}">
+          ${userOrder?.name}
         </a>`;
         return this.sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
       },
@@ -46,8 +48,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     cssClasses: ['hidden md:flex min-w-[100px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: (_, element) => {
-        const price = element?.totalPrice || 0;
+      execute: (_, userOrder) => {
+        const price = userOrder?.totalPrice || 0;
         return this.sanitizer.bypassSecurityTrustHtml(`${Number(price).toFixed(2)} €`) as SafeHtml;
       },
     },
@@ -61,7 +63,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     cssClasses: ['hidden md:flex min-w-[100px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: (_, element) => element?.cart.length || 0,
+      execute: (_, userOrder) => userOrder?.cart.length || 0,
     },
   };
 
@@ -73,9 +75,9 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     cssClasses: ['hidden md:flex min-w-[120px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: value => {
+      execute: userOrder => {
         const status =
-          llecoopUserOrderStatus[value as LlecoopUserOrder['status']] ||
+          llecoopUserOrderStatus[userOrder as LlecoopUserOrder['status']] ||
           llecoopUserOrderStatus.waiting;
 
         return this.sanitizer.bypassSecurityTrustHtml(`
@@ -100,7 +102,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     this.updatedAt,
   ];
 
-  getTableStructure(): WritableSignal<TableControlStructure<LlecoopUserOrder>> {
+  getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return signal({
@@ -112,7 +114,10 @@ export class LlecoopUserOrderSearchFeatureTableConfig
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
+      sort: this.store.sorting,
+      count: this.store.count,
       caption: 'Llistat de les meves comandes',
+      getData: () => this.store.entities(),
       actions: {
         EDIT: {
           visible: () => true,
@@ -125,6 +130,6 @@ export class LlecoopUserOrderSearchFeatureTableConfig
           order: 2,
         },
       },
-    });
+    }) as Signal<TableDefinition<LlecoopUserOrder>>;
   }
 }
