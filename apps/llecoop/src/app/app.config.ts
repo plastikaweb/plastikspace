@@ -12,13 +12,16 @@ import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angul
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
+  PreloadAllModules,
+  RouteReuseStrategy,
   TitleStrategy,
   provideRouter,
   withComponentInputBinding,
+  withPreloading,
   withViewTransitions,
 } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
-import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
+import { NavigationActionTiming, RouterState, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
@@ -37,6 +40,7 @@ import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { HeaderConfigService } from './cms-header-config';
 import { viewConfig } from './cms-layout-config';
+import { LlecoopRouteReuseStrategy } from './llecoop-route-reuse.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -73,14 +77,18 @@ export const appConfig: ApplicationConfig = {
     //   }
     //   return storage;
     // }),
-    provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
+    provideRouter(
+      appRoutes,
+      withViewTransitions(),
+      withComponentInputBinding(),
+      withPreloading(PreloadAllModules)
+    ),
+    {
+      provide: RouteReuseStrategy,
+      useClass: LlecoopRouteReuseStrategy,
+    },
     importProvidersFrom(
-      StoreModule.forRoot(routerReducers, {
-        runtimeChecks: {
-          strictActionImmutability: true,
-          strictStateImmutability: true,
-        },
-      }),
+      StoreModule.forRoot(routerReducers, {}),
       EffectsModule.forRoot([RouterStateEffects]),
       isDevMode()
         ? StoreDevtoolsModule.instrument({
@@ -96,6 +104,7 @@ export const appConfig: ApplicationConfig = {
     provideRouterStore({
       serializer: CustomRouterSerializer,
       navigationActionTiming: NavigationActionTiming.PreActivation,
+      routerState: RouterState.Full,
     }),
     {
       provide: ENVIRONMENT,

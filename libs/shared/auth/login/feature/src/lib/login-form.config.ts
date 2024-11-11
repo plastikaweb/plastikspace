@@ -1,9 +1,9 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { signal, WritableSignal } from '@angular/core';
+import { signal, Signal } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
-export function getLoginFormConfig(): WritableSignal<FormlyFieldConfig[]> {
+export function getLoginFormConfig(): Signal<FormlyFieldConfig[]> {
   return signal([
     {
       key: 'email',

@@ -2,6 +2,7 @@ import { Provider } from '@angular/core';
 import { Route } from '@angular/router';
 import { DETAIL_ITEM_VIEW_FACADE, DetailItemFormComponent } from '@plastik/core/detail-edit-view';
 import { FORM_TOKEN } from '@plastik/core/entities';
+import { NewProductDetailResolver } from './new-product-detail.resolver';
 import { LlecoopProductDetailFacadeService } from './product-detail-facade.service';
 import { ProductDetailResolver } from './product-detail.resolver';
 import { getLlecoopProductDetailFormConfig } from './product-feature-detail-form.config';
@@ -24,7 +25,7 @@ export const productFeatureDetailCreateRoutes: Route[] = [
     component: DetailItemFormComponent,
     providers,
     resolve: {
-      noItem: ProductDetailResolver,
+      item: NewProductDetailResolver,
     },
   },
 ];
@@ -38,6 +39,5 @@ export const productFeatureDetailUpdateRoutes: Route[] = [
     resolve: {
       item: ProductDetailResolver,
     },
-    runGuardsAndResolvers: 'always',
   },
 ];

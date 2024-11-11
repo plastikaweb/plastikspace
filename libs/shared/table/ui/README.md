@@ -129,7 +129,7 @@ const columnProperties: TableColumnFormatting<Data, FormattingTypes>[] = [
 ];
 
 export class DataFeatureSearchTableConfig {
-  static getTableStructure(): TableControlStructure<Data> {
+  static getTableDefinition(): TableDefinition<Data> {
     return {
       ...defaultTableConfig,
       columnProperties,
@@ -150,8 +150,8 @@ onChangeTablePagination(tablePagination: TablePagination) {
 
 <plastik-shared-table
   [data]="data"
-  [columnProperties]="tableStructure.columnProperties"
-  [caption]="tableStructure.caption"
+  [columnProperties]="tableDefinition.columnProperties"
+  [caption]="tableDefinition.caption"
   [resultsLength]="resultsLength"
   [paginationVisibility]="{
         hidePageSize: false,

@@ -1,0 +1,59 @@
+@let viewConfig = facade.viewConfig();
+@let tableDefinition = facade.tableDefinition();
+
+<div
+  class="flex flex-col flex-wrap items-center justify-center gap-sm md:flex-row md:justify-between">
+  <h2 class="flex items-center content-center h4 gap-sub">
+    <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ viewConfig.icon }}</mat-icon>
+    <span>{{ viewConfig.title | titlecase }}</span>
+  </h2>
+
+  <div class="flex flex-row items-center justify-end gap-sm">
+    <button
+      type="button"
+      mat-flat-button
+      color="accent"
+      class="text-white"
+      [routerLink]="['/admin/comanda']">
+      <mat-icon>arrow_back</mat-icon> Tornar al llistat
+    </button>
+  </div>
+</div>
+
+<plastik-shared-form-feature
+  class="flex flex-row items-end content-center justify-between filters-box"
+  [fields]="facade.tableSearchFormStructure() || []"
+  [model]="{ text: '' }"
+  [submitAvailable]="false"
+  (changeEvent)="onChangeFiltering($event)">
+</plastik-shared-form-feature>
+
+<plastik-shared-table
+  [data]="tableDefinition.getData?.() || []"
+  [caption]="tableDefinition.caption || ''"
+  [columnProperties]="tableDefinition.columnProperties || []"
+  [resultsLength]="tableDefinition?.count() || 0"
+  [sort]="tableDefinition.sort?.()"
+  [pageSizeOptions]="tableDefinition.pageSizeOptions || []"
+  [paginationVisibility]="tableDefinition?.paginationVisibility"
+  [filterCriteria]="facade.filterCriteria() || {}"
+  [filterPredicate]="facade.tableFilterPredicate"
+  [actions]="tableDefinition.actions || {}"
+  [noPagination]="tableDefinition.noPagination || false"
+  [extraRowStyles]="tableDefinition.extraRowStyles"
+  [expandedDetailTpl]="orderDetail"
+  [expandable]="true"
+  [expandedElementId]="tableDefinition.getSelectedItemId?.() || null"
+  (changeSorting)="onChangeSorting($event)">
+</plastik-shared-table>
+
+<ng-template #orderDetail let-element="element">
+  @defer (when !!element) {
+    <plastik-shared-form-feature
+      class="flex flex-row items-end content-center justify-between filters-box"
+      [fields]="facade.orderDetailFormStructure() || []"
+      [model]="{ id: element.id, orderListId: element.orderListId, cart: element.cart }"
+      (changeEvent)="onSaveUserOrder($event)">
+    </plastik-shared-form-feature>
+  }
+</ng-template>

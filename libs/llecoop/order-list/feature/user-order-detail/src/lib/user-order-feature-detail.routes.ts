@@ -7,6 +7,7 @@ import { isAnActiveOrderListAndUserOrderGuard } from './isAnActiveOrderListAndUs
 import { LlecoopUserOrderDetailFacadeService } from './user-order-detail-facade.service';
 import { UserOrderDetailResolver } from './user-order-detail.resolver';
 import { getLlecoopUserOrderDetailFormConfig } from './user-order-feature-detail-form.config';
+import { NewUserOrderDetailResolver } from './new-user-order-detail.resolver';
 
 const providers: Provider[] = [
   {
@@ -27,9 +28,8 @@ export const llecoopUserOrderFeatureDetailCreateRoutes: Route[] = [
     providers,
     canActivate: [isAnActiveOrderListGuard],
     resolve: {
-      item: UserOrderDetailResolver,
+      item: NewUserOrderDetailResolver,
     },
-    runGuardsAndResolvers: 'always',
   },
 ];
 
@@ -43,6 +43,5 @@ export const llecoopUserOrderFeatureDetailUpdateRoutes: Route[] = [
     resolve: {
       item: UserOrderDetailResolver,
     },
-    runGuardsAndResolvers: 'always',
   },
 ];

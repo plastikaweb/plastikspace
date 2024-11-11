@@ -23,9 +23,7 @@ export class LlecoopCategoryListFacadeService
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'category')[0]);
 
-  tableStructure = this.table.getTableStructure();
-  tableData = this.store.entities;
-  tableSorting = this.store.sorting;
+  tableDefinition = this.table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
     text: '',
   });
@@ -33,7 +31,6 @@ export class LlecoopCategoryListFacadeService
     const value = criteria['text'].toLowerCase();
     return [data.name, data.description].some(text => text?.toLowerCase().includes(value));
   };
-  count = this.store.count;
   routingToDetailPage = signal({ visible: true });
 
   formStructure = getLlecoopCategorySearchFeatureFormConfig();

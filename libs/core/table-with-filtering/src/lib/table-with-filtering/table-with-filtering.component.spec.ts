@@ -16,7 +16,7 @@ describe('TableWithFilteringComponent', () => {
         {
           provide: TABLE_WITH_FILTERING_FACADE,
           useValue: {
-            tableStructure: signal({}),
+            tableDefinition: signal({}),
             tableData: signal([]),
             formStructure: signal([]),
             count: signal(0),

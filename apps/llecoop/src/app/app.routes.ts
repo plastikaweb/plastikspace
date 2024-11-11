@@ -85,6 +85,7 @@ export const appRoutes: Routes = [
         canActivate: [AuthGuard],
         data: {
           authGuardPipe: adminOnly,
+          mustBeStored: true,
         },
         children: [
           {
@@ -184,10 +185,22 @@ export const appRoutes: Routes = [
                 useExisting: LLecoopOrderListStore,
               },
             ],
-            loadChildren: () =>
-              import('@plastik/llecoop/order-list/list').then(
-                routes => routes.llecoopOrderListFeatureListRoutes
-              ),
+            children: [
+              {
+                path: ':order-list-id',
+                loadChildren: () =>
+                  import('@plastik/llecoop/order-list/detail').then(
+                    routes => routes.llecoopOrderListFeatureDetailRoutes
+                  ),
+              },
+              {
+                path: '',
+                loadChildren: () =>
+                  import('@plastik/llecoop/order-list/list').then(
+                    routes => routes.llecoopOrderListFeatureListRoutes
+                  ),
+              },
+            ],
           },
         ],
       },

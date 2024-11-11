@@ -1,8 +1,6 @@
 import { Route } from '@angular/router';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plastik/core/list-view';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
-import { STORE_TOKEN } from '@plastik/llecoop/data-access';
 import { TABLE_TOKEN } from '@plastik/shared/table/entities';
 import { getLlecoopCategorySearchFeatureFormConfig } from './category-feature-search-form.config';
 import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-table.config';

@@ -5,6 +5,7 @@ import { FORM_TOKEN } from '@plastik/core/entities';
 import { LlecoopCategoryDetailFacadeService } from './category-detail-facade.service';
 import { CategoryDetailResolver } from './category-detail.resolver';
 import { getLlecoopCategoryDetailFormConfig } from './category-feature-detail-form.config';
+import { NewCategoryDetailResolver } from './new-category-detail.resolver';
 
 const providers: Provider[] = [
   {
@@ -24,7 +25,7 @@ export const categoryFeatureDetailCreateRoutes: Route[] = [
     component: DetailItemFormComponent,
     providers,
     resolve: {
-      noItem: CategoryDetailResolver,
+      noItem: NewCategoryDetailResolver,
     },
   },
 ];
@@ -38,6 +39,5 @@ export const categoryFeatureDetailUpdateRoutes: Route[] = [
     resolve: {
       item: CategoryDetailResolver,
     },
-    runGuardsAndResolvers: 'always',
   },
 ];

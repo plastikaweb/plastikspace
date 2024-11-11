@@ -1,9 +1,9 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { signal, WritableSignal } from '@angular/core';
+import { signal, Signal } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { addSearchInput } from '@plastik/shared/form/ui';
 
-export function getLlecoopCategorySearchFeatureFormConfig(): WritableSignal<FormlyFieldConfig[]> {
+export function getLlecoopCategorySearchFeatureFormConfig(): Signal<FormlyFieldConfig[]> {
   return signal([
     {
       fieldGroupClassName: 'flex flex-col md:flex-row flex-wrap gap-sm',

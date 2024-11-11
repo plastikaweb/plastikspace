@@ -6,13 +6,10 @@ import {
   llecoopUserOrderDateOptions,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { filter, tap } from 'rxjs';
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
 
 export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
-  const orderListStore = inject(LLecoopOrderListStore);
-
   const tableColumnProperties = inject(LlecoopUserOrderDetailFormTableConfig);
 
   return [
@@ -24,7 +21,7 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
             'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
           fieldGroup: [
             {
-              key: 'name',
+              key: 'userName',
               type: 'input',
               className: 'w-full',
               props: {
@@ -131,11 +128,8 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
           className: 'w-full',
           props: {
             required: true,
-            tableData: orderListStore.currentOrderProducts,
-            tableStructure: tableColumnProperties.getTableStructure(),
-            tableRowValueConditionFn: (element: LlecoopOrderProduct) => {
-              return element?.initQuantity > 0;
-            },
+            tableDefinition: tableColumnProperties.getTableDefinition(),
+            tableRowValueConditionFn: (element: LlecoopOrderProduct) => element?.initQuantity > 0,
           },
         },
         {

@@ -3,14 +3,17 @@ import {
   addDoc,
   collection,
   collectionData,
+  collectionGroup,
   deleteDoc,
   doc,
   Firestore,
+  query,
   serverTimestamp,
   Timestamp,
   updateDoc,
+  where,
 } from '@angular/fire/firestore';
-import { LlecoopOrder } from '@plastik/llecoop/entities';
+import { LlecoopOrder, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { from, Observable } from 'rxjs';
 
 @Injectable({
@@ -19,6 +22,7 @@ import { from, Observable } from 'rxjs';
 export class LlecoopOrderListFireService {
   private readonly firestore = inject(Firestore);
   private readonly orderListCollection = collection(this.firestore, 'order-list');
+  private readonly orderListOrdersGroup = collectionGroup(this.firestore, 'orders');
 
   getAll(): Observable<LlecoopOrder[]> {
     return collectionData(this.orderListCollection, { idField: 'id' }) as Observable<
@@ -43,5 +47,10 @@ export class LlecoopOrderListFireService {
   delete(item: LlecoopOrder) {
     const document = doc(this.firestore, `order-list/${item.id}`);
     return from(deleteDoc(document));
+  }
+
+  getAllByOrderListId(orderListId: LlecoopOrder['id']) {
+    const q = query(this.orderListOrdersGroup, where(`orderListId`, '==', orderListId));
+    return collectionData(q, { idField: 'id' }) as Observable<LlecoopUserOrder[]>;
   }
 }

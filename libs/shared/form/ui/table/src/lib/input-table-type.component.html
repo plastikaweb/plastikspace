@@ -1,13 +1,17 @@
+@let tableDefinition = props.tableDefinition();
+@let data = tableDefinition.getData?.() || [];
+
 <plastik-input-table
-  [tableCaption]="props.tableStructure().caption || ''"
-  [tableColumnProperties]="props.tableStructure().columnProperties || []"
-  [tableActions]="props.tableStructure().actions || {}"
-  [tableSorting]="props.tableStructure().sort"
-  [tableExtraRowStyles]="props.tableStructure().extraRowStyles"
-  [tableData]="props.tableData()"
-  [tableDataLength]="props.tableData().length"
+  [tableCaption]="tableDefinition.caption || ''"
+  [tableColumnProperties]="tableDefinition.columnProperties || []"
+  [tableActions]="tableDefinition.actions || {}"
+  [tableSorting]="tableDefinition?.sort()"
+  [tableExtraRowStyles]="tableDefinition.extraRowStyles"
+  [tableData]="data || []"
+  [tableDataLength]="data.length"
   [formControl]="formControl"
   [formlyAttributes]="field"
   [tableRowValueConditionFn]="props.tableRowValueConditionFn"
+  [tableNoPagination]="tableDefinition.noPagination || false"
   [label]="props.label || ''">
 </plastik-input-table>

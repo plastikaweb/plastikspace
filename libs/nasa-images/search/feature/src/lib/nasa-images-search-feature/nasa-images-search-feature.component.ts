@@ -14,7 +14,14 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
 @Component({
   selector: 'plastik-nasa-images-search',
   standalone: true,
-  imports: [PushPipe, SharedTableUiComponent, SharedFormFeatureModule, NasaImagesSearchUiNoResultsComponent, MatIconModule, LetDirective],
+  imports: [
+    PushPipe,
+    SharedTableUiComponent,
+    SharedFormFeatureModule,
+    NasaImagesSearchUiNoResultsComponent,
+    MatIconModule,
+    LetDirective,
+  ],
   templateUrl: './nasa-images-search-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -22,9 +29,8 @@ export class NasaImagesSearchFeatureComponent {
   private readonly facade = inject(NasaImagesSearchFacade);
 
   images$ = this.facade.images$;
-  count$ = this.facade.count$;
   isActiveSearch$ = this.facade.isActiveSearch$;
-  tableStructure$ = NasaImagesSearchFeatureTableConfig.getTableStructure();
+  tableDefinition$ = NasaImagesSearchFeatureTableConfig.getTableDefinition();
   formStructure$ = getNasaImagesSearchFeatureFormConfig();
   formModel$ = this.facade.routeQueryParams$;
   routeInfo$ = this.facade.routeInfo$;

@@ -37,17 +37,16 @@ export class LlecoopUserOrderListFacadeService
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order')[0]);
 
-  tableStructure = this.table.getTableStructure();
-  tableData = this.userOrderStore.entities;
-  tableSorting = this.userOrderStore.sorting;
+  tableDefinition = this.table.getTableDefinition();
+  formStructure = getLlecoopUserOrderSearchFeatureFormConfig();
   filterCriteria = signal<Record<string, string>>({
     text: '',
   });
+
   tableFilterPredicate = (data: LlecoopUserOrder, criteria: Record<string, string>) => {
     const value = criteria['text'].toLowerCase();
     return [data.name].some(text => text?.toLowerCase().includes(value));
   };
-  count = this.userOrderStore.count;
   routingToDetailPage = computed(() => {
     return {
       visible: true,
@@ -59,7 +58,6 @@ export class LlecoopUserOrderListFacadeService
         !this.orderListStore.currentOrder(),
     };
   });
-  formStructure = getLlecoopUserOrderSearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
     this.userOrderStore.setSorting([active, direction]);
