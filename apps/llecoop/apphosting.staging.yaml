@@ -1,0 +1,20 @@
+runConfig:
+  cpu: 3
+  memoryMiB: 1024
+  maxInstances: 4
+  minInstances: 0
+  concurrency: 100
+
+env:
+  - variable: API_URL
+    value: api.staging.service.com
+    availability:
+      - BUILD
+
+  - variable: STORAGE_BUCKET
+    value: llevat-b0d66.appspot.com
+    availability:
+      - RUNTIME
+
+  - variable: API_KEY
+    secret: AIzaSyAPtqItl2UtYscGTCBnnNUK9gdWOikXU1c

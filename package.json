@@ -53,6 +53,7 @@
     "nasa-images:build:github": "nx run nasa-images:build:prod",
     "llecoop:serve": "firebase use default && nx run llecoop:serve",
     "llecoop:serve:prod": "firebase use production && nx run llecoop:serve --configuration=production",
+    "llecoop:serve:staging": "firebase use default && nx run llecoop:serve --configuration=staging",
     "llecoop:lint": "nx run llecoop:lint",
     "llecoop:build": "nx run llecoop:build --parallel",
     "llecoop:test": "nx run llecoop:test",
