@@ -1,6 +1,7 @@
 {
   "projects": {
-    "default": "llevat-b0d66"
+    "default": "llevat-b0d66",
+    "production": "llecoop-plastikaweb"
   },
   "targets": {},
   "etags": {

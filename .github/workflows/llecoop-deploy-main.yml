@@ -1,4 +1,4 @@
-name: Deploy Llecoop to remote hosting
+name: Deploy Llecoop Prod
 
 on:
   push:
@@ -17,18 +17,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '20'
-
-      - name: Set up firebase
-        run: |
-          echo "export const firebaseConfig = {" > apps/llecoop/firebase.ts
-          echo "  apiKey: '${{ secrets.FIREBASE_API_KEY }}'," >> apps/llecoop/firebase.ts
-          echo "  authDomain: '${{ secrets.FIREBASE_AUTH_DOMAIN }}'," >> apps/llecoop/firebase.ts
-          echo "  databaseURL: '${{ secrets.FIREBASE_DATABASE_URL }}'," >> apps/llecoop/firebase.ts
-          echo "  projectId: '${{ secrets.FIREBASE_PROJECT_ID }}'," >> apps/llecoop/firebase.ts
-          echo "  storageBucket: '${{ secrets.FIREBASE_STORAGE_BUCKET }}'," >> apps/llecoop/firebase.ts
-          echo "  messagingSenderId: '${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}'," >> apps/llecoop/firebase.ts
-          echo "  appId: '${{ secrets.FIREBASE_APP_ID }}'," >> apps/llecoop/firebase.ts
-          echo "};" >> apps/llecoop/firebase.ts
 
       - name: Install dependencies
         run: |

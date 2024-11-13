@@ -4,5 +4,5 @@
 export type Environment = {
   production: boolean;
   name: string;
-  apiUrl: string;
+  apiUrl?: string;
 } & Record<string, unknown>;

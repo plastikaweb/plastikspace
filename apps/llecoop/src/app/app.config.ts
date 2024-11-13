@@ -35,7 +35,6 @@ import {
 } from '@plastik/core/router-state';
 import { NotificationDataAccessModule } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
-import { firebaseConfig } from '../../firebase';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { HeaderConfigService } from './cms-header-config';
@@ -46,7 +45,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideAnimationsAsync(),
     provideHttpClient(),
-    provideFirebaseApp(() => initializeApp(firebaseConfig, 'llecoop')),
+    provideFirebaseApp(() => initializeApp(environment.firebase, 'llecoop')),
     provideAuth(() => {
       const auth = getAuth(getApp('llecoop'));
       if (environment['useEmulators']) {
