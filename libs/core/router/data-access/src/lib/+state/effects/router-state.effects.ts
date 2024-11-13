@@ -9,7 +9,7 @@ import {
   ROUTER_REQUEST,
   RouterRequestPayload,
 } from '@ngrx/router-store';
-import { map, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { NavigationService } from '../../services/navigation.service';
@@ -63,26 +63,31 @@ export class RouterStateEffects {
     { dispatch: false }
   );
 
-  setActivityOnNavigation$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(ROUTER_REQUEST),
-      map(({ payload }) => {
-        const queryParams = (payload as RouterRequestPayload<RouterStateUrl>).routerState
-          ?.queryParams;
-        if (!queryParams?.['noActivity']) {
-          return activityActions.setActivity({ isActive: true });
-        }
-        return { type: '[Router] No Activity' };
-      })
-    );
-  });
+  setActivityOnNavigation$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(ROUTER_REQUEST),
+        tap(({ payload }) => {
+          const queryParams = (payload as RouterRequestPayload<RouterStateUrl>).routerState
+            ?.queryParams;
+          if (!queryParams?.['noActivity']) {
+            activityActions.setActivity({ isActive: true });
+          }
+        })
+      );
+    },
+    { dispatch: false }
+  );
 
-  setActivityOffNavigation$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(ROUTER_NAVIGATED, ROUTER_CANCEL, ROUTER_ERROR),
-      map(() => activityActions.setActivity({ isActive: false }))
-    );
-  });
+  setActivityOffNavigation$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(ROUTER_NAVIGATED, ROUTER_CANCEL, ROUTER_ERROR),
+        tap(() => activityActions.setActivity({ isActive: false }))
+      );
+    },
+    { dispatch: false }
+  );
 
   constructor(
     private readonly actions$: Actions,
