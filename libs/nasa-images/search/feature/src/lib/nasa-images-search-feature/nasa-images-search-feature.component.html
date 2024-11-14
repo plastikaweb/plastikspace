@@ -23,7 +23,7 @@
     [data]="obs.data || []"
     [caption]="obs.tableDefinition.caption || ''"
     [columnProperties]="obs.tableDefinition.columnProperties || []"
-    [resultsLength]="obs.tableDefinition.count?.() || 0"
+    [resultsLength]="obs.tableDefinition.count() || 0"
     [pageSizeOptions]="obs.tableDefinition.pageSizeOptions || []"
     [pagination]="obs.tableDefinition.pagination"
     [paginationVisibility]="obs.tableDefinition.paginationVisibility"

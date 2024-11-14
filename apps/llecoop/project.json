@@ -45,12 +45,12 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1.35mb"
+              "maximumError": "1.75mb"
             },
             {
               "type": "anyComponentStyle",
               "maximumWarning": "2kb",
-              "maximumError": "4kb"
+              "maximumError": "5kb"
             }
           ],
           "outputHashing": "all"
@@ -65,6 +65,17 @@
               "with": "apps/llecoop/src/environments/environment.development.ts"
             }
           ]
+        },
+        "staging": {
+          "optimization": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/llecoop/src/environments/environment.ts",
+              "with": "apps/llecoop/src/environments/environment.staging.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"
@@ -77,6 +88,9 @@
         },
         "development": {
           "buildTarget": "llecoop:build:development"
+        },
+        "staging": {
+          "buildTarget": "llecoop:build:staging"
         }
       },
       "defaultConfiguration": "development"

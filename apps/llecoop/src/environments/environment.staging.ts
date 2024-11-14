@@ -3,7 +3,7 @@ import { LlecoopEnvironment } from '../app/llecoop-environment.token';
 export const environment: LlecoopEnvironment = {
   name: 'El Llevat',
   production: false,
-  useEmulators: true,
+  useEmulators: false,
   firebase: {
     apiKey: 'AIzaSyAPtqItl2UtYscGTCBnnNUK9gdWOikXU1c',
     authDomain: 'llevat-b0d66.firebaseapp.com',

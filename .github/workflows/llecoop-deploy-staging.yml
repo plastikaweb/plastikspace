@@ -1,0 +1,32 @@
+name: Deploy Llecoop Staging
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          yarn install --immutable --network-timeout 1000000
+          yarn nx build llecoop --configuration=staging --skip-nx-cache
+
+      - name: Set up FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.LLECOOP_FTP_SERVER }}
+          username: ${{ secrets.LLECOOP_STAGING_FTP_USERNAME }}
+          password: ${{ secrets.LLECOOP_STAGING_FTP_PASSWORD }}
+          local-dir: ./dist/apps/llecoop/browser/
