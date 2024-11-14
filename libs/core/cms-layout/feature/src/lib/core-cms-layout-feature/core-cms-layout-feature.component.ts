@@ -122,7 +122,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
     if (container) {
       container.clear();
 
-      this.headerWidgetsConfig?.widgets()?.forEach(async widget => {
+      this.headerWidgetsConfig?.widgets?.forEach(async widget => {
         const component = await widget.component();
         const componentRef = container.createComponent(component);
 

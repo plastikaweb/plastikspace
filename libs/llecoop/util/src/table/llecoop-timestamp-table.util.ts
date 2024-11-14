@@ -50,7 +50,7 @@ export function createdAt<T extends BaseEntity>(): TableColumnFormatting<T, 'FIR
       key: 'createdAt',
       title: 'Data de creació',
       propertyPath: 'createdAt',
-      cssClasses: ['hidden lg:flex min-w-[125px]'],
+      cssClasses: ['hidden lg:flex max-w-[220px]'],
     },
     'dd/MM/yyyy HH:mm:ss'
   );
@@ -67,7 +67,7 @@ export function updatedAt<T extends BaseEntity>(): TableColumnFormatting<T, 'FIR
       key: 'updatedAt',
       title: 'Data de modificació',
       propertyPath: 'updatedAt',
-      cssClasses: ['hidden lg:flex min-w-[125px]'],
+      cssClasses: ['hidden lg:flex max-w-[220px]'],
     },
     'dd/MM/yyyy HH:mm:ss'
   );

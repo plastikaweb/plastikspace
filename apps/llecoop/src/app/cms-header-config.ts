@@ -1,4 +1,4 @@
-import { inject, signal } from '@angular/core';
+import { inject } from '@angular/core';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
 
@@ -17,7 +17,7 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
     extendedTitle: 'El Llevat',
     widgetsConfig: {
       position: 'end',
-      widgets: signal([
+      widgets: [
         {
           id: 1,
           component: () =>
@@ -25,7 +25,7 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
               c => c.LlecoopOrderIndicatorComponent
             ),
         },
-      ]),
+      ],
     },
     menu: {
       label: firebaseAuthService.currentUserEmail,
