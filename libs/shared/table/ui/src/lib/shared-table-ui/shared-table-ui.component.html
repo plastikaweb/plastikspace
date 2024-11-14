@@ -172,50 +172,51 @@
           class="overflow-visible mat-cell-actions"
           [ngClass]="actionsColStyles() || ''">
           @for (action of actions() | keyvalue | orderTableActionsElements; track action.key) {
-            <div class="table-actions-grouping">
-              @if (action.key === 'EDIT') {
-                <button
-                  type="button"
-                  mat-icon-button
-                  [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
-                  <mat-icon class="mat-primary">edit</mat-icon>
-                </button>
-              } @else if (action.value?.visible(element) && action.value?.type === 'input') {
-                <button
-                  type="button"
-                  mat-icon-button
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                  (click)="getChangedData.emit(action.value?.execute(element))">
-                  <mat-icon class="mat-warn">delete</mat-icon>
-                </button>
-              } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
-                <button
-                  type="button"
-                  mat-icon-button
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                  (click)="onDelete($event, element)">
-                  <mat-icon class="mat-warn">delete</mat-icon>
-                </button>
-              } @else if (action.value?.visible(element)) {
-                <button
-                  type="button"
-                  mat-icon-button
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                  [routerLink]="action.value?.link ? action.value?.link(element) : null"
-                  (click)="$event.stopPropagation(); action.value?.execute?.(element)">
-                  <mat-icon class="mat-primary">{{ action.value?.icon(element) }}</mat-icon>
-                </button>
-              }
-            </div>
+            @if (action.key === 'EDIT') {
+              <button
+                type="button"
+                mat-icon-button
+                [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
+                <mat-icon class="mat-primary">edit</mat-icon>
+              </button>
+            } @else if (action.value?.visible(element) && action.value?.type === 'input') {
+              <button
+                type="button"
+                mat-icon-button
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                (click)="getChangedData.emit(action.value?.execute(element))">
+                <mat-icon class="mat-warn">delete</mat-icon>
+              </button>
+            } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
+              <button
+                type="button"
+                mat-icon-button
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                (click)="onDelete($event, element)">
+                <mat-icon class="mat-warn">delete</mat-icon>
+              </button>
+            } @else if (action.value?.visible(element)) {
+              <button
+                type="button"
+                mat-icon-button
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                [routerLink]="action.value?.link ? action.value?.link(element) : null"
+                (click)="$event.stopPropagation(); action.value?.execute?.(element)">
+                <mat-icon class="mat-primary">{{ action.value?.icon(element) }}</mat-icon>
+              </button>
+            } @else {
+              <!-- TODO: #447 find a better way to handle the height of the cell when it has no buttons --->
+              <button type="button" mat-icon-button class="invisible"></button>
+            }
           }
         </mat-cell>
       </ng-container>
