@@ -26,11 +26,13 @@ export class LlecoopCategorySearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px]'],
+    cssClasses: [
+      'min-w-[170px] py-0 px-tiny md:py-tiny md:px-sm md:min-w-[240px] md:max-w-[350px]',
+    ],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
-        const htmlString = `<p class="flex items-center justify-center gap-sub"><span class="rounded-full w-sm h-sm" style="background-color:${element?.color}"></span><span class="capitalize">${value}</span></p>`;
+        const htmlString = `<p class="flex items-center justify-center gap-tiny"><span class="rounded-full w-sub h-sub" style="background-color:${element?.color}"></span><span class="capitalize w-auto">${value}</span></p>`;
         return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
       },
     },
@@ -40,7 +42,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     key: 'description',
     title: 'Descripció',
     propertyPath: 'description',
-    cssClasses: ['hidden lg:flex lg:min-w-[210px]'],
+    cssClasses: ['hidden md:flex lg:min-w-[220px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -48,10 +50,10 @@ export class LlecoopCategorySearchFeatureTableConfig
 
   private readonly productCount: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
     key: 'productCount',
-    title: 'Nombre de productes',
+    title: 'Nre. de productes',
     propertyPath: 'productCount',
     sorting: true,
-    cssClasses: ['min-w-[100px]'],
+    cssClasses: ['max-w-[80px] md:max-w-[180px]'],
     formatting: {
       type: 'TEXT',
     },

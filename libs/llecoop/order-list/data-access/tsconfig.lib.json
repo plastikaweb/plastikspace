@@ -8,12 +8,7 @@
     "types": [],
     "composite": true
   },
-  "exclude": [
-    "src/**/*.spec.ts",
-    "src/test-setup.ts",
-    "jest.config.ts",
-    "src/**/*.test.ts"
-  ],
+  "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
   "include": [
     "src/**/*.ts",
     "../feature/user-order-detail/src/lib/isAnActiveOrderList.guard.ts",

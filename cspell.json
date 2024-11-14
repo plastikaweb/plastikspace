@@ -1,21 +1,10 @@
 {
   "version": "0.2",
   "language": "ca-ES, ca, en-ES, en",
-  "dictionaries": [
-    "cpp",
-    "csharp",
-    "dotnet",
-    "typescript"
-  ],
+  "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
   "ignorePaths": [],
   "dictionaryDefinitions": [],
-  "words": [
-    "aprox",
-    "Llecoop",
-    "preexperimental",
-    "prellecoop",
-    "prenasa"
-  ],
+  "words": ["aprox", "Llecoop", "preexperimental", "prellecoop", "prenasa"],
   "ignoreWords": [],
   "import": []
 }
