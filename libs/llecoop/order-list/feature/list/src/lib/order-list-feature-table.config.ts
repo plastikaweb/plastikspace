@@ -29,7 +29,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px]'],
+    cssClasses: ['max-w-[100px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -40,7 +40,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['min-w-[240px]'],
+    cssClasses: ['max-w-[60px] md:max-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
       execute: value => {
@@ -48,7 +48,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
         return this.sanitizer.bypassSecurityTrustHtml(`
           <p class="flex gap-tiny justify-center items-center">
           <span class="material-icons ${status.class}">${status.icon}</span>
-          <span class="capitalize">${status.label}</span>
+          <span class="capitalize hidden md:flex">${status.label}</span>
           </p>
           `) as SafeHtml;
       },
@@ -61,7 +61,6 @@ export class LlecoopOrderListSearchFeatureTableConfig
         key: 'endTime',
         title: 'Data de tancament',
         propertyPath: 'endTime',
-        cssClasses: ['min-w-[125px]'],
       },
       'dd/MM/yyyy HH:mm'
     );
@@ -72,7 +71,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     title: 'Comandes realitzades',
     propertyPath: 'orderCount',
     sorting: true,
-    cssClasses: ['min-w-[125px]'],
+    cssClasses: ['hidden md:flex max-w-[100px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -83,7 +82,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     title: 'Productes inclosos',
     propertyPath: 'availableProducts.length',
     sorting: true,
-    cssClasses: ['min-w-[125px]'],
+    cssClasses: ['hidden lg:flex max-w-[100px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -116,9 +115,11 @@ export class LlecoopOrderListSearchFeatureTableConfig
       caption: 'Llistat de comandes setmanals',
       count: this.store.count,
       getData: () => this.store.entities(),
+      actionsColStyles: 'min-w-[190px]',
       actions: {
         SET_ACTIVE: {
-          visible: (order: LlecoopOrder) => order.status === 'waiting',
+          visible: () => true,
+          disabled: (order: LlecoopOrder) => order.status !== 'waiting',
           description: () => 'Activa la comanda',
           order: 1,
           icon: () => 'play_circle',
@@ -140,17 +141,19 @@ export class LlecoopOrderListSearchFeatureTableConfig
               .subscribe(() => this.store.activate(order));
           },
         },
-        DELETE: {
-          visible: (order: LlecoopOrder) => order.status === 'waiting',
-          description: () => 'Elimina la comanda',
-          order: 2,
-        },
         VIEW: {
-          visible: (order: LlecoopOrder) => order.status !== 'waiting',
+          visible: () => true,
+          disabled: (order: LlecoopOrder) => order.status === 'waiting',
           description: () => 'Mostra les comandes realitzades',
-          order: 3,
+          order: 2,
           icon: () => 'visibility',
           link: (order: LlecoopOrder) => `${order.id}`,
+        },
+        DELETE: {
+          visible: () => true,
+          disabled: (order: LlecoopOrder) => order.status !== 'waiting',
+          description: () => 'Elimina la comanda',
+          order: 3,
         },
       },
     }) as Signal<TableDefinition<LlecoopOrder>>;

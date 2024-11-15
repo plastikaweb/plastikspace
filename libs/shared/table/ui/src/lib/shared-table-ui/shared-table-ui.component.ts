@@ -49,7 +49,6 @@ import {
   TableSorting,
   TableSortingConfig,
 } from '@plastik/shared/table/entities';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
 import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
@@ -57,27 +56,26 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
   selector: 'plastik-shared-table',
   standalone: true,
   imports: [
+    RouterModule,
+    KeyValuePipe,
+    NgClass,
+    NgTemplateOutlet,
+    CdkTableModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    CdkTableModule,
     MatTooltipModule,
     MatIconModule,
-    RouterModule,
     MatButtonModule,
-    AngularSvgIconModule,
-    SharedUtilFormattersModule,
-    TableCellTitleDirective,
-    OrderTableActionsElementsPipe,
-    KeyValuePipe,
-    NgClass,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,
     MatCheckboxModule,
     MatRadioModule,
     MatSlideToggleModule,
-    NgTemplateOutlet,
+    SharedUtilFormattersModule,
+    TableCellTitleDirective,
+    OrderTableActionsElementsPipe,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrls: ['./shared-table-ui.component.scss'],
