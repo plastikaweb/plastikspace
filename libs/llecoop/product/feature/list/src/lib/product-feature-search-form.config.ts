@@ -6,12 +6,9 @@ import { addSearchInput } from '@plastik/shared/form/ui';
 export function getLlecoopProductSearchFeatureFormConfig(): Signal<FormlyFieldConfig[]> {
   return signal([
     {
-      fieldGroupClassName: 'flex flex-col md:flex-row gap-sm md:gap-tiny',
+      fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
       fieldGroup: [
-        addSearchInput(
-          'Filtrar per nom, categoria, descripció, origen o proveïdor',
-          'buidar valor'
-        ),
+        addSearchInput('Filtrar per nom, categoria, descripció', 'buidar valor'),
         {
           key: 'inStock',
           type: 'select',

@@ -42,7 +42,7 @@ export interface CoreCmsLayoutHeaderConfig {
   mainIcon?: SvgIconConfig;
   widgetsConfig?: {
     position: LayoutPosition;
-    widgets: Signal<CoreCmsLayoutHeaderWidget[]>;
+    widgets: CoreCmsLayoutHeaderWidget[];
   };
   menu?: {
     label?: Signal<string>;

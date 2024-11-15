@@ -6,7 +6,7 @@ import { addSearchInput } from '@plastik/shared/form/ui';
 export function getLlecoopUserSearchFeatureFormConfig(): Signal<FormlyFieldConfig[]> {
   return signal([
     {
-      fieldGroupClassName: 'flex flex-col md:flex-row gap-sm md:gap-tiny',
+      fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
       fieldGroup: [
         addSearchInput('Filtrar per correu electrònic', 'buidar valor'),
         {

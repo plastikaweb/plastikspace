@@ -6,10 +6,7 @@ import {
   llecoopUserOrderStatus,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
-import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
-} from '@plastik/llecoop/order-list/data-access';
+import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -26,15 +23,13 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
 {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly store = inject(LLecoopOrderListStore);
-  private readonly userOrderStore = inject(LlecoopUserOrderStore);
 
   private readonly userName: TableColumnFormatting<LlecoopUserOrder, 'TITLE_CASE'> = {
     key: 'userName',
     title: 'Sòcia/unitat familiar',
     propertyPath: 'userName',
     sorting: true,
-    sticky: true,
-    cssClasses: ['min-w-[140px]', 'flex flex-col justify-start'],
+    cssClasses: ['max-w-[170px]  md:max-w-[250px]'],
     formatting: {
       type: 'TITLE_CASE',
     },
@@ -44,7 +39,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     title: 'Tipus de lliurament',
     propertyPath: 'deliveryType',
     sorting: true,
-    cssClasses: ['min-w-[120px]', 'flex flex-col justify-start'],
+    cssClasses: ['max-w-[150px] md:max-w-[250px]'],
     formatting: {
       type: 'CUSTOM',
       execute: value => {
@@ -59,7 +54,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     title: 'Adreça de lliurament',
     propertyPath: 'address',
     sorting: true,
-    cssClasses: ['min-w-[140px]', 'flex flex-col justify-start'],
+    cssClasses: ['min-w-[120px] md:min-w-[250px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -70,7 +65,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     title: 'Data i hora de lliurament',
     propertyPath: 'deliveryDateAndTime',
     sorting: true,
-    cssClasses: ['min-w-[160px]', 'flex flex-col justify-start'],
+    cssClasses: ['min-w-[120px] md:min-w-[250px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
@@ -95,7 +90,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     title: 'Preu',
     propertyPath: 'totalPrice',
     sorting: true,
-    cssClasses: ['min-w-[120px]'],
+    cssClasses: ['max-w-[100px] md:max-w-[130px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -108,10 +103,10 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
 
   private readonly totalProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'cart',
-    title: 'N. productes',
+    title: 'Nre. de productes',
     propertyPath: 'cart',
     sorting: true,
-    cssClasses: ['min-w-[120px]', 'flex'],
+    cssClasses: ['max-w-[130px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => element?.cart.length ?? 0,
@@ -123,7 +118,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['min-w-[150px]'],
+    cssClasses: ['max-w-[70px] md:max-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
       execute: value => {
@@ -131,7 +126,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
         return this.sanitizer.bypassSecurityTrustHtml(`
           <p class="flex gap-tiny justify-center items-center">
           <span class="material-icons ${status.class}">${status.icon}</span>
-          <span class="capitalize">${status.label}</span>
+          <span class="capitalize hidden md:flex">${status.label}</span>
           </p>
           `) as SafeHtml;
       },
