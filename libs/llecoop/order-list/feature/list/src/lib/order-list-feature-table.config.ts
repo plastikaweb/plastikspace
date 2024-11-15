@@ -129,8 +129,8 @@ export class LlecoopOrderListSearchFeatureTableConfig
                 'Activació de comanda',
                 this.sanitizer.bypassSecurityTrustHtml(
                   `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
-                    <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md">Segur que vols activar la comanda "${order.name}"?</h5>
-                    <p class="text-secondary-dark">Un cop activada no es podrà desfer fins la data de tancament.</p>
+                    <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center">Segur que vols activar la comanda "${order.name}"?</h5>
+                    <p class="text-secondary-dark text-center md:text-left">Un cop activada no es podrà desfer fins la data de tancament.</p>
                   </div>
                 `
                 ),

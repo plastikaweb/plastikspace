@@ -1,11 +1,17 @@
 <div>
-  <h4 mat-dialog-title>{{ data.title }}</h4>
-  <div mat-dialog-content [innerHTML]="data.message"></div>
-  <mat-dialog-actions align="end">
-    <button type="button" mat-flat-button color="primary" mat-dialog-close>
+  <h4 mat-dialog-title class="text-center md:text-left">{{ data.title }}</h4>
+  <div mat-dialog-content class="text-center md:text-left" [innerHTML]="data.message"></div>
+  <mat-dialog-actions class="flex justify-center flex-nowrap md:justify-end">
+    <button type="button" mat-flat-button color="primary" mat-dialog-close class="w-1/2 md:w-auto">
       {{ data.ko }}
     </button>
-    <button type="button" mat-flat-button mat-dialog-close="true" color="warn" cdkFocusInitial>
+    <button
+      type="button"
+      mat-flat-button
+      mat-dialog-close="true"
+      color="warn"
+      cdkFocusInitial
+      class="w-1/2 md:w-auto">
       {{ data.ok }}
     </button>
   </mat-dialog-actions>
