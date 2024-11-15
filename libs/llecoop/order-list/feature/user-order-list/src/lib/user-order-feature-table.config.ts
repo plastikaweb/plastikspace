@@ -26,7 +26,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px]'],
+    cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'LINK',
       execute: (_, userOrder) => {
@@ -45,7 +45,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     title: 'Preu total',
     propertyPath: '',
     sorting: true,
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['max-w-[90px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, userOrder) => {
@@ -57,10 +57,10 @@ export class LlecoopUserOrderSearchFeatureTableConfig
 
   private readonly numberOfProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'numberOfProducts',
-    title: 'N. de productes',
+    title: 'Nre. de productes',
     propertyPath: 'cart',
     sorting: true,
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['hidden md:flex max-w-[130px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, userOrder) => userOrder?.cart.length || 0,
@@ -69,10 +69,10 @@ export class LlecoopUserOrderSearchFeatureTableConfig
 
   private readonly status: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'status',
-    title: 'Estat de la comanda',
+    title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['hidden md:flex min-w-[120px]'],
+    cssClasses: ['max-w-[60px] md:max-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
       execute: userOrder => {
@@ -83,7 +83,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
         return this.sanitizer.bypassSecurityTrustHtml(`
           <p class="flex gap-tiny justify-center items-center">
           <span class="material-icons ${status?.class}">${status?.icon}</span>
-          <span class="capitalize">${status?.label}</span>
+          <span class="capitalize hidden md:flex">${status?.label}</span>
           </p>
           `) as SafeHtml;
       },
@@ -118,6 +118,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
       count: this.store.count,
       caption: 'Llistat de les meves comandes',
       getData: () => this.store.entities(),
+      actionsColStyles: 'min-w-[135px]',
       actions: {
         EDIT: {
           visible: () => true,

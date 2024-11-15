@@ -4,9 +4,9 @@
 @let viewExtraActions = facade.viewExtraActions?.() || [];
 
 <div class="flex flex-row flex-wrap items-center justify-center gap-sm sm:justify-between">
-  <h2 class="flex items-center content-center h4 gap-sub">
+  <h2 class="flex items-center content-center text-center h4 md:gap-sub">
     <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ viewConfig?.icon }}</mat-icon>
-    <span>{{ viewConfig?.title | titlecase }}</span>
+    {{ viewConfig?.title | titlecase }}
   </h2>
 
   @if (viewExtraActions.length) {
