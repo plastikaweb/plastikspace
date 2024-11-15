@@ -53,7 +53,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     title: 'Nre. de productes',
     propertyPath: 'productCount',
     sorting: true,
-    cssClasses: ['max-w-[80px] md:max-w-[180px]'],
+    cssClasses: ['max-w-[100px] md:max-w-[180px]'],
     formatting: {
       type: 'TEXT',
     },

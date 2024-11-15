@@ -29,7 +29,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['max-w-[100px]'],
+    cssClasses: ['max-w-[120px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -40,7 +40,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['max-w-[60px] md:max-w-[150px]'],
+    cssClasses: ['min-w-[130px] md:max-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
       execute: value => {

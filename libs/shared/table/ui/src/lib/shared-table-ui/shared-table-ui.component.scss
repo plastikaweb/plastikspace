@@ -17,6 +17,10 @@
       white-space: pre-line;
       word-break: normal;
       min-width: 5rem;
+      text-align: left;
+      > .mat-sort-header-content {
+        text-align: left;
+      }
     }
   }
 
@@ -24,8 +28,8 @@
     white-space: nowrap;
     justify-content: center;
     align-items: center;
-    max-width: 5rem;
-    padding: 0 2rem;
+    max-width: 4rem;
+    padding: 0;
   }
 
   .mat-mdc-cell {

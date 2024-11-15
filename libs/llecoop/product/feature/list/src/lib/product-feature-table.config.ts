@@ -99,7 +99,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Preu amb IVA',
     propertyPath: 'priceWithIva',
     sorting: true,
-    cssClasses: ['max-w-[100px] md:max-w-[120px]'],
+    cssClasses: ['max-w-[120px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({

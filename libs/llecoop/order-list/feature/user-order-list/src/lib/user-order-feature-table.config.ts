@@ -45,7 +45,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     title: 'Preu total',
     propertyPath: '',
     sorting: true,
-    cssClasses: ['max-w-[90px]'],
+    cssClasses: ['max-w-[100px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, userOrder) => {
@@ -72,7 +72,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['max-w-[60px] md:max-w-[150px]'],
+    cssClasses: ['max-w-[70px] md:max-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
       execute: userOrder => {

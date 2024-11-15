@@ -27,11 +27,9 @@ export class LlecoopOrderListDetailListFacadeService
     inject(VIEW_CONFIG).filter(item => item.name === 'order-list')[0]
   );
 
-  private readonly store = inject(Store);
-
   viewConfig = computed(() => ({
     ...this.mainViewConfig(),
-    title: this.orderListStore.selectedItem()?.name || '',
+    title: `Comanda ${this.orderListStore.selectedItem()?.name}` || '',
   }));
 
   tableDefinition = this.table.getTableDefinition();
