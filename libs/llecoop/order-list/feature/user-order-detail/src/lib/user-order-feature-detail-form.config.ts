@@ -17,19 +17,38 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
       fieldGroupClassName: 'flex flex-row flex-wrap gap-sm',
       fieldGroup: [
         {
+          key: 'userName',
+          type: 'input',
+          className: 'w-full',
+          props: {
+            label: 'Sòcia/unitat familiar',
+            placeholder: 'Sòcia/unitat familiar',
+            required: true,
+          },
+        },
+        {
+          key: 'deliveryType',
+          type: 'radio',
+          className: 'w-full',
+          props: {
+            label: 'Recollida o lliurament de la comanda',
+            required: true,
+            options: [
+              {
+                value: 'pickup',
+                label: 'recollida a El Llevat',
+              },
+              {
+                value: 'delivery',
+                label: 'lliurament a domicili (cost entre 1 i 3€)',
+              },
+            ],
+          },
+        },
+        {
           fieldGroupClassName:
             'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
           fieldGroup: [
-            {
-              key: 'userName',
-              type: 'input',
-              className: 'w-full',
-              props: {
-                label: 'Sòcia/unitat familiar',
-                placeholder: 'Sòcia/unitat familiar',
-                required: true,
-              },
-            },
             {
               key: 'address',
               type: 'input',
@@ -39,28 +58,8 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
                 placeholder: 'Adreça de lliurament',
                 required: true,
               },
-            },
-          ],
-        },
-        {
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
-          fieldGroup: [
-            {
-              key: 'deliveryType',
-              type: 'radio',
-              props: {
-                required: true,
-                options: [
-                  {
-                    value: 'pickup',
-                    label: 'recollida',
-                  },
-                  {
-                    value: 'delivery',
-                    label: 'lliurament',
-                  },
-                ],
+              expressions: {
+                hide: 'model.deliveryType === "pickup"',
               },
             },
             {
