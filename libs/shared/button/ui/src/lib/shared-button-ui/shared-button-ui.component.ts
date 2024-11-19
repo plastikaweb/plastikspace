@@ -10,9 +10,15 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
   selector: 'plastik-shared-button',
   standalone: true,
-  imports: [NgClass, NgTemplateOutlet, PushPipe, MatButtonModule, AngularSvgIconModule, ReturnAsObservablePipe],
+  imports: [
+    NgClass,
+    NgTemplateOutlet,
+    PushPipe,
+    MatButtonModule,
+    AngularSvgIconModule,
+    ReturnAsObservablePipe,
+  ],
   templateUrl: './shared-button-ui.component.html',
-  styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedButtonUiComponent {

@@ -27,17 +27,19 @@ It uses internally [Formly Library](https://formly.dev/) that is build on top of
 
 | Name              | Type                       | Description                     | Default |
 | ----------------- | -------------------------- | ------------------------------- | ------- |
-| `fields`          | `<Array>FormlyFieldConfig` | the form controls configuration |         |
+| `fields`          | `<Array>FormlyFieldConfig` | the form controls configuration | []      |
 | `model`           | `T`                        | data model to populate the form |         |
 | `submitAvailable` | `boolean`                  | show submit button              | true    |
+| `submitConfig`    | `SubmitFormConfig`         | configuration for submit button |         |
 
 > To use a button with an image, you must provide image or icon input but no both. Image has preference.
 
 ## Output
 
-| Name          | Type              | Description          |
-| ------------- | ----------------- | -------------------- |
-| `changeEvent` | `EventEmitter<T>` | emits a change event |
+| Name                   | Type              | Description                    |
+| ---------------------- | ----------------- | ------------------------------ |
+| `changeEvent`          | `EventEmitter<T>` | emits a change event           |
+| `temporaryChangeEvent` | `EventEmitter<T>` | emits a temporary change event |
 
 ## Example
 
@@ -83,7 +85,8 @@ It uses internally [Formly Library](https://formly.dev/) that is build on top of
 ```html
 # template
 
-<plastik-shared-form-feature [fields]="fields" [model]="model" (changeEvent)="onSubmit($event)"> </plastik-shared-form-feature>
+<plastik-shared-form-feature [fields]="fields" [model]="model" (changeEvent)="onSubmit($event)">
+</plastik-shared-form-feature>
 ```
 
 ### How to style

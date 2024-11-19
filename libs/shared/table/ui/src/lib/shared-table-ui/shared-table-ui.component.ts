@@ -179,8 +179,6 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    */
   delete = output<T>();
 
-  getData = output<T[]>();
-
   getChangedData = output<T | undefined>();
 
   @ViewChild(MatPaginator) matPaginator!: MatPaginator;

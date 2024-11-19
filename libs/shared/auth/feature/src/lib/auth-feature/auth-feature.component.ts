@@ -24,7 +24,6 @@ import { AUTH_FORM_FACADE } from './auth-form-facade.type';
     RouterLink,
   ],
   templateUrl: './auth-feature.component.html',
-  styleUrl: './auth-feature.component.scss',
 })
 export class AuthFeatureComponent {
   private readonly store = inject(Store);

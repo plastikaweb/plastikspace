@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ComponentRef, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from '@angular/router';
 
@@ -50,7 +51,7 @@ export class LlecoopRouteReuseStrategy extends RouteReuseStrategy {
       return;
     }
 
-    (handle as { componentRef: ComponentRef<any> }).componentRef.destroy();
+    (handle as { componentRef: ComponentRef<unknown> }).componentRef.destroy();
     this.storedRoutes.delete(url);
   }
 

@@ -285,24 +285,6 @@
     }
   </mat-table>
 
-  @if (!noPagination()) {
-    <mat-paginator
-      #matPaginator
-      class="mt-md jus"
-      [hidePageSize]="paginationVisibility()?.hidePageSize"
-      [length]="resultsLength()"
-      [ngClass]="{
-        'paginator--hide': paginationVisibility()?.hideRangeLabel,
-        'paginator--hide-range-buttons': paginationVisibility()?.hideRangeButtons,
-      }"
-      [pageIndex]="pagination()?.pageIndex || 0"
-      [pageSize]="pagination()?.pageSize || resultsLength()"
-      [pageSizeOptions]="pageSizeOptions()"
-      [showFirstLastButtons]="!paginationVisibility()?.hidePaginationFirstLastButtons"
-      (page)="onChangePagination($event)">
-    </mat-paginator>
-  }
-
   @if (!dataSource.data.length) {
     <ng-content select="[noResults]"></ng-content>
     <ng-content select="[noValidSearch]"></ng-content>
@@ -313,3 +295,21 @@
     <ng-content select="[noValidSearch]"></ng-content>
   </ng-template>
 </div>
+
+@if (!noPagination()) {
+  <mat-paginator
+    #matPaginator
+    class="mt-md jus"
+    [hidePageSize]="paginationVisibility()?.hidePageSize"
+    [length]="resultsLength()"
+    [ngClass]="{
+      'paginator--hide': paginationVisibility()?.hideRangeLabel,
+      'paginator--hide-range-buttons': paginationVisibility()?.hideRangeButtons,
+    }"
+    [pageIndex]="pagination()?.pageIndex || 0"
+    [pageSize]="pagination()?.pageSize || resultsLength()"
+    [pageSizeOptions]="pageSizeOptions()"
+    [showFirstLastButtons]="!paginationVisibility()?.hidePaginationFirstLastButtons"
+    (page)="onChangePagination($event)">
+  </mat-paginator>
+}

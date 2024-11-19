@@ -9,21 +9,21 @@
     class="form-container"
     [form]="form"
     [options]="options"
-    [fields]="fields"
-    [model]="model"
+    [fields]="fields()"
+    [model]="computedModel()"
     (modelChange)="onModelChange($event)"></formly-form>
 
   <!-- buttons -->
-  @if (submitAvailable) {
+  @if (submitAvailable()) {
     <button
       mat-flat-button
       color="primary"
       type="submit"
       class="h-[56px] w-[150px]"
       data-test="submit-button"
-      [ngClass]="submitConfig?.buttonStyle || ''"
+      [ngClass]="submitConfig()?.buttonStyle || ''"
       [disabled]="!form.valid">
-      {{ submitConfig?.label || 'Submit' }}
+      {{ submitConfig()?.label || 'Submit' }}
     </button>
   }
 

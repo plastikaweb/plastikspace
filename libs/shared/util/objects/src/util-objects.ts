@@ -45,7 +45,10 @@ export function isObject(obj: any): boolean {
  * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
  * @returns {Record<string, unknown>}.
  */
-export function getQueryParams(url: string, defaultParams?: Record<string, unknown>): Record<string, unknown>;
+export function getQueryParams(
+  url: string,
+  defaultParams?: Record<string, unknown>
+): Record<string, unknown>;
 
 /**
  * @description Given a name/value pairs object it returns an object with name/value pairs of all the query params available.
@@ -53,7 +56,10 @@ export function getQueryParams(url: string, defaultParams?: Record<string, unkno
  * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
  * @returns {Record<string, unknown>}.
  */
-export function getQueryParams(urlParams: Record<string, unknown>, defaultParams?: Record<string, unknown>): Record<string, unknown>;
+export function getQueryParams(
+  urlParams: Record<string, unknown>,
+  defaultParams?: Record<string, unknown>
+): Record<string, unknown>;
 
 /**
  * @description Given an URL or a name/value pairs object it returns an object with name/value pairs of all the query params available.
@@ -68,7 +74,9 @@ export function getQueryParams(params: any, defaultParams = {}): Record<string, 
   } else if (isObject(params)) {
     return { ...defaultParams, ...params };
   }
-  throw new Error('getQueryParams has no valid parameters. You need to pass a string or a object of name/value pairs.');
+  throw new Error(
+    'getQueryParams has no valid parameters. You need to pass a string or a object of name/value pairs.'
+  );
 }
 
 /**
@@ -93,12 +101,14 @@ export function formatURLQueryParams(url: string): Record<string, unknown> {
  * @returns {Record<string, string | number | boolean>}.
  */
 export function removeNullProperties(
-  collection: Record<string, string | number | boolean | null>,
+  collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean> {
   return Object.entries(collection).reduce(
     (currentCollection: Record<string, string | number | boolean | null>, [property, value]) =>
-      value === null ? currentCollection : ((currentCollection[property] = value), currentCollection),
-    {},
+      value === null
+        ? currentCollection
+        : ((currentCollection[property] = value), currentCollection),
+    {}
   ) as Record<string, string | number | boolean>;
 }
 
@@ -108,12 +118,15 @@ export function removeNullProperties(
  * @returns {Record<string, string | number | boolean | null>}.
  */
 export function setEmptyStringPropertiesToNull(
-  collection: Record<string, string | number | boolean | null>,
+  collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean | null> {
-  return Object.entries(collection).reduce((currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
-    currentCollection[property] = isString(value) && !value.length ? null : value;
-    return currentCollection;
-  }, {}) as Record<string, string | number | boolean | null>;
+  return Object.entries(collection).reduce(
+    (currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
+      currentCollection[property] = isString(value) && !value.length ? null : value;
+      return currentCollection;
+    },
+    {}
+  ) as Record<string, string | number | boolean | null>;
 }
 
 /**
@@ -140,12 +153,18 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
  * @returns {Record<string, string | number | boolean>}.
  */
 export function transformStringToBooleanProperties(
-  collection: Record<string, string | number | boolean | null>,
+  collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean> {
-  return Object.entries(collection).reduce((currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
-    currentCollection[property] = isString(value) && (value === 'false' || value === 'true') ? coerceBooleanProperty(value) : value;
-    return currentCollection;
-  }, {}) as Record<string, string | number | boolean>;
+  return Object.entries(collection).reduce(
+    (currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
+      currentCollection[property] =
+        isString(value) && (value === 'false' || value === 'true')
+          ? coerceBooleanProperty(value)
+          : value;
+      return currentCollection;
+    },
+    {}
+  ) as Record<string, string | number | boolean>;
 }
 
 /**
@@ -158,7 +177,7 @@ export function allAreFalsy(arr: boolean[]): boolean {
 }
 
 /**
- * @description Returns a string value when the input was able to be converted in string, otherwise null.
+ * @description Returns a string value when the input was able to be converted in string format otherwise it returns an empty string.
  * @param {unknown} value The passed valued as parameter.
  * @returns {string}.
  */

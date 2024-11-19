@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { AUTH_FACADE, AUTH_FORM_FACADE, AuthFeatureComponent } from '@plastik/auth';
+import { AUTH_FORM_FACADE, AUTH_SERVICE, AuthFeatureComponent } from '@plastik/auth';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { LoginFacadeService } from './login-facade.service';
@@ -11,7 +11,7 @@ export const authLoginFeatureRoutes: Route[] = [
     component: AuthFeatureComponent,
     providers: [
       {
-        provide: AUTH_FACADE,
+        provide: AUTH_SERVICE,
         useClass: FirebaseAuthService,
       },
       {
@@ -23,6 +23,5 @@ export const authLoginFeatureRoutes: Route[] = [
         useValue: getLoginFormConfig(),
       },
     ],
-    runGuardsAndResolvers: 'always',
   },
 ];
