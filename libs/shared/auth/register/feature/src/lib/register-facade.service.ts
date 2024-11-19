@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { inject, Injectable, signal } from '@angular/core';
-import { AUTH_FACADE, AuthFormFacade } from '@plastik/auth';
+import { AUTH_SERVICE, AuthFormFacade } from '@plastik/auth';
 
 import { getRegisterFormConfig } from './register-form.config';
 
@@ -13,7 +13,7 @@ interface LoginData {
   providedIn: 'root',
 })
 export class RegisterFacadeService implements AuthFormFacade {
-  authService = inject(AUTH_FACADE);
+  authService = inject(AUTH_SERVICE);
   formStructure = getRegisterFormConfig();
   extraLinks = signal([{ label: "Torna a la pàgina d'entrada", route: '/login' }]);
 

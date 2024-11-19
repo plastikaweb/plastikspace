@@ -1,9 +1,9 @@
 import { Route } from '@angular/router';
-import { AUTH_FACADE, AUTH_FORM_FACADE, AuthFeatureComponent } from '@plastik/auth';
-import { getRequestPasswordFormConfig } from './request-password-form.config';
+import { AUTH_FORM_FACADE, AUTH_SERVICE, AuthFeatureComponent } from '@plastik/auth';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { RequestPasswordFacadeService } from './request-password-facade.service';
 import { FORM_TOKEN } from '@plastik/core/entities';
+import { RequestPasswordFacadeService } from './request-password-facade.service';
+import { getRequestPasswordFormConfig } from './request-password-form.config';
 
 export const authRequestPasswordRoutes: Route[] = [
   {
@@ -11,7 +11,7 @@ export const authRequestPasswordRoutes: Route[] = [
     component: AuthFeatureComponent,
     providers: [
       {
-        provide: AUTH_FACADE,
+        provide: AUTH_SERVICE,
         useClass: FirebaseAuthService,
       },
       {
@@ -23,6 +23,5 @@ export const authRequestPasswordRoutes: Route[] = [
         useValue: getRequestPasswordFormConfig(),
       },
     ],
-    runGuardsAndResolvers: 'always',
   },
 ];

@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'auth-login-request-password',
+  displayName: 'auth-request-password',
   preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../../coverage/libs/shared/auth/request-password/feature',
