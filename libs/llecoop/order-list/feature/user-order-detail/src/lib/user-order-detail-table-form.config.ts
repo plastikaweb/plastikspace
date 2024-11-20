@@ -33,7 +33,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px]', 'flex flex-col justify-start'],
+    cssClasses: ['min-w-[160px] md:min-w-[250px] py-tiny', 'flex flex-col justify-start'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
@@ -88,7 +88,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     title: 'Quantitat',
     propertyPath: 'initQuantity',
     sorting: true,
-    cssClasses: ['', 'flex max-width-[110px]'],
+    cssClasses: ['w-[175px]', 'flex max-w-[175px]'],
     formatting: {
       type: 'INPUT',
     },
@@ -98,6 +98,7 @@ export class LlecoopUserOrderDetailFormTableConfig
         min: 0,
         step: getLlecoopProductUnitStep(orderProduct?.unit ?? { type: 'unit' }),
         suffix: getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' }),
+        styles: 'w-[110px]',
       },
       onChanges: (value, orderProduct) => {
         const quantity = Number(value);

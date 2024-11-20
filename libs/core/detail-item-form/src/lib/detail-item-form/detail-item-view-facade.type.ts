@@ -13,20 +13,24 @@ export interface DetailItemViewFacade<T extends BaseEntity> {
   viewExtraActions?: Signal<ExtraFormAction<T>[]>;
 }
 
-export type ExtraFormAction<T> =
-  | {
-      type: 'button';
-      label: string;
-      icon: string;
-      execute: (element?: T) => void;
-      disabled: (element?: T) => boolean;
-    }
-  | {
-      type: 'text';
-      text: string;
-      icon: string;
-      styles?: string;
-    };
+export type ExtraFormButtonAction<T> = {
+  id: string;
+  label: string;
+  icon: string;
+  type: 'button';
+  execute: (element?: T) => void;
+  disabled: (element?: T) => boolean;
+};
+
+export type ExtraFormTextAction = {
+  id: string;
+  type: 'text';
+  text: string;
+  icon: string;
+  styles?: string;
+};
+
+export type ExtraFormAction<T> = ExtraFormButtonAction<T> | ExtraFormTextAction;
 
 export const DETAIL_ITEM_VIEW_FACADE = new InjectionToken<DetailItemViewFacade<BaseEntity>>(
   'DETAIL_ITEM_VIEW_FACADE'
