@@ -1,8 +1,10 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
@@ -11,7 +13,7 @@ import {
 @Component({
   selector: 'plastik-llecoop-order-indicator',
   standalone: true,
-  imports: [MatIconModule, MatBadgeModule, MatButtonModule, CurrencyPipe],
+  imports: [MatIconModule, MatBadgeModule, MatButtonModule, CurrencyPipe, RouterLink],
   templateUrl: './llecoop-order-indicator.component.html',
   styleUrl: './llecoop-order-indicator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -19,4 +21,13 @@ import {
 export class LlecoopOrderIndicatorComponent {
   protected readonly userOrderStore = inject(LlecoopUserOrderStore);
   protected readonly orderListStore = inject(LLecoopOrderListStore);
+
+  protected openedUserOrderList = computed(() => {
+    const openedOrderListId = this.orderListStore.currentOrder()?.id;
+    return openedOrderListId
+      ? this.userOrderStore
+          .entities()
+          .filter((entity: LlecoopUserOrder) => entity.orderListId === openedOrderListId)[0]
+      : null;
+  });
 }
