@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, signal, Signal } from '@angular/core';
+import { computed, inject, Injectable, Signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   LlecoopUserOrder,
@@ -146,7 +146,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
-    return signal({
+    return {
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
       paginationVisibility: {
@@ -164,6 +164,6 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
       getSelectedItemId: computed(() => this.store.selectedItemUserOrderId()) as Signal<
         string | null
       >,
-    }) as Signal<TableDefinition<LlecoopUserOrder>>;
+    } as TableDefinition<LlecoopUserOrder>;
   }
 }

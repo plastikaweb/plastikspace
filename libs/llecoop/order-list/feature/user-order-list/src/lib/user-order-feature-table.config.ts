@@ -1,7 +1,10 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopUserOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
-import { LlecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  LLecoopOrderListStore,
+  LlecoopUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -18,7 +21,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
   private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LlecoopUserOrderStore);
+  private readonly userOrderStore = inject(LlecoopUserOrderStore);
+  private readonly orderListStore = inject(LLecoopOrderListStore);
 
   private readonly name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
     key: 'name',
@@ -102,10 +106,14 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     this.updatedAt,
   ];
 
+  private checkIfOrderIsDone(order: LlecoopUserOrder): boolean {
+    return this.orderListStore.entityMap()[order.orderListId]?.status === 'done';
+  }
+
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
-    return signal({
+    return {
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
       paginationVisibility: {
@@ -114,23 +122,25 @@ export class LlecoopUserOrderSearchFeatureTableConfig
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
-      sort: this.store.sorting,
-      count: this.store.count,
+      sort: this.userOrderStore.sorting,
+      count: this.userOrderStore.count,
       caption: 'Llistat de les meves comandes',
-      getData: () => this.store.entities(),
+      getData: () => this.userOrderStore.entities(),
       actionsColStyles: 'min-w-[135px]',
       actions: {
         EDIT: {
           visible: () => true,
+          disabled: this.checkIfOrderIsDone.bind(this),
           description: () => 'Edita la comanda',
           order: 1,
         },
         DELETE: {
           visible: () => true,
+          disabled: this.checkIfOrderIsDone.bind(this),
           description: () => 'Elimina la comanda',
           order: 2,
         },
       },
-    }) as Signal<TableDefinition<LlecoopUserOrder>>;
+    } as TableDefinition<LlecoopUserOrder>;
   }
 }

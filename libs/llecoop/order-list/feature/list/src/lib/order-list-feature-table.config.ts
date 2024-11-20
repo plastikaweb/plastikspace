@@ -1,4 +1,4 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopOrder, llecoopOrderStatus } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
@@ -102,7 +102,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
-    return signal({
+    return {
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
       paginationVisibility: {
@@ -156,6 +156,6 @@ export class LlecoopOrderListSearchFeatureTableConfig
           order: 3,
         },
       },
-    }) as Signal<TableDefinition<LlecoopOrder>>;
+    } as TableDefinition<LlecoopOrder>;
   }
 }

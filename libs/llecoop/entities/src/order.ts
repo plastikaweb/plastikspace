@@ -35,7 +35,7 @@ export interface LlecoopUserOrder extends BaseEntity {
   price: number;
   deliveryPrice: number;
   totalPrice: number;
-  orderListId: EntityId;
+  orderListId: EntityId | string;
   userId: EntityId;
   status: 'waiting' | 'review' | 'deliver' | 'cancel';
 }

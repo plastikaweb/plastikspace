@@ -7,7 +7,6 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSort } from '@angular/material/sort';
 import { EntityId } from '@ngrx/signals/entities';
 import { FormattingTypes, PropertyFormatting } from '@plastik/shared/formatters';
-import { Observable } from 'rxjs';
 
 /**
  * Represents the base interface for an editable attribute.
@@ -409,7 +408,7 @@ export interface TableStructureConfig<T> {
   getTableDefinition(
     overwrite?: ({ key: string } & Record<string, string>) | null,
     tableControlStructureMerge?: Partial<TableDefinition<T>>
-  ): Observable<TableDefinition<T>> | Signal<TableDefinition<T>>;
+  ): TableDefinition<T>;
 }
 
 /**

@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductBasedUnitText,
@@ -203,7 +203,7 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
-    return signal({
+    return {
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
       sort: this.store.sorting,
@@ -217,6 +217,6 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
             ? 'marked-changed'
             : '';
       },
-    }) as Signal<TableDefinition<LlecoopOrderProduct>>;
+    } as TableDefinition<LlecoopOrderProduct>;
   }
 }
