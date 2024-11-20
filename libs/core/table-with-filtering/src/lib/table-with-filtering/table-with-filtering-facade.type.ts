@@ -4,7 +4,7 @@ import { BaseEntity, ViewConfigUI } from '@plastik/core/entities';
 import { TableDefinition, TableSorting } from '@plastik/shared/table/entities';
 
 export interface TableWithFilteringFacade<T extends BaseEntity> {
-  tableDefinition: Signal<TableDefinition<T>>;
+  tableDefinition: TableDefinition<T>;
   filterCriteria?: Signal<Record<string, string>>;
   tableFilterPredicate?: (data: T, criteria: Record<string, string>) => boolean;
   onTableSorting?(sorting: TableSorting): void;

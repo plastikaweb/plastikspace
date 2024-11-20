@@ -26,7 +26,7 @@ export function getLlecoopOrderListUserOrderDetailFormConfig(): Signal<FormlyFie
       validators: {
         allReviewed: {
           expression: (control: AbstractControl) =>
-            control.value.every((element: LlecoopOrderProduct) => element.reviewed),
+            control.value?.every((element: LlecoopOrderProduct) => element.reviewed),
           message: 'Tots els productes han de ser revisats',
         },
       },

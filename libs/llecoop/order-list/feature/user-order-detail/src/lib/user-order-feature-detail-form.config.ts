@@ -1,6 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { inject } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormSelectOption } from '@plastik/core/entities';
 import {
   LlecoopOrderProduct,
   llecoopUserOrderDateOptions,
@@ -72,6 +73,8 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
                 options: [],
                 required: true,
                 disabled: true,
+                compareWith: (o1: FormSelectOption, o2: FormSelectOption) =>
+                  o1?.value === o2?.value,
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
@@ -94,6 +97,8 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
                 options: [],
                 required: true,
                 disabled: true,
+                compareWith: (o1: FormSelectOption, o2: FormSelectOption) =>
+                  o1?.value === o2?.value,
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
