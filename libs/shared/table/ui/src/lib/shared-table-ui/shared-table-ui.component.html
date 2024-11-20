@@ -49,7 +49,7 @@
                   @if (isText(editable)) {
                     <mat-form-field
                       #matFormField
-                      class="inline editable w-[110px]"
+                      class="inline editable"
                       [ngClass]="attributes?.styles || ''">
                       @if (attributes?.prefix) {
                         <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -68,7 +68,7 @@
                   @if (isNumber(editable)) {
                     <mat-form-field
                       #matFormField
-                      class="inline editable w-[110px]"
+                      class="inline editable"
                       [ngClass]="attributes?.styles || ''">
                       @if (attributes?.prefix) {
                         <span matTextPrefix>{{ attributes?.prefix }}</span>

@@ -95,7 +95,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
     const weekNumber = nextWeek.isoWeek();
     const year = nextWeek.year();
 
-    return `#${weekNumber}-${year}`;
+    return `${weekNumber}-${year}`;
   }
 
   private getNewOrderDate() {

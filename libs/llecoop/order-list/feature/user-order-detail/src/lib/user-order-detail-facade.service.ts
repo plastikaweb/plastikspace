@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import { computed, inject, Injectable, signal } from '@angular/core';
 
+import { formatCurrency } from '@angular/common';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
-import { DetailItemViewFacade, ExtraFormAction } from '@plastik/core/detail-edit-view';
+import {
+  DetailItemViewFacade,
+  ExtraFormAction,
+  ExtraFormTextAction,
+} from '@plastik/core/detail-edit-view';
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
@@ -28,10 +33,11 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
   });
   viewExtraActions = signal<ExtraFormAction<LlecoopUserOrder>[]>([
     {
-      text: 'Preu total: 0,00 €',
-      icon: 'shopping-cart',
+      text: formatCurrency(0, 'ca-ES', '€'),
+      icon: 'shopping_basket',
       type: 'text',
-      styles: 'font-bold bg-primary-dark text-gray-5 p-sub rounded-lg',
+      id: 'total',
+      styles: 'text-md text-primary-dark py-tiny px-sub',
     },
   ]);
 
@@ -44,14 +50,17 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
 
   formStructure = getLlecoopUserOrderDetailFormConfig();
 
-  onChange(data: Partial<LlecoopUserOrder>): void {
-    const price = this.calculateTotalPrice(data.cart || []);
+  onChange({ totalPrice }: Partial<LlecoopUserOrder>): void {
     this.viewExtraActions.update(actions => {
-      const total = actions.find(action => action.type === 'text');
+      let total = actions.filter(action => action.id === 'total')[0] as ExtraFormTextAction;
       if (total) {
-        total.text = `Preu total: ${price.toFixed(2)} €`;
+        total = {
+          ...total,
+          text: formatCurrency(totalPrice ?? 0, 'ca-ES', '€'),
+        };
       }
-      return actions;
+
+      return [...actions.filter(action => action.id !== 'total'), total];
     });
   }
 

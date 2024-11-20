@@ -12,7 +12,10 @@
       <span class="hidden md:flex"> #{{ orderListStore.currentOrder()?.name }} </span>
       <span class="hidden md:flex">|</span>
       <span class="text-pretty">
-        {{ openedUserOrderList()?.totalPrice || 0 | currency: 'EUR' : 'symbol' : '2.2-2' }}
+        {{
+          (openedUserOrderList()?.totalPrice || 0) + (openedUserOrderList()?.deliveryPrice || 0)
+            | currency: 'EUR' : 'symbol' : '2.2-2'
+        }}
       </span>
 
       <mat-icon
