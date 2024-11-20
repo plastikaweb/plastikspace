@@ -18,7 +18,7 @@ import { LlecoopOrderListSearchFeatureTableConfig } from './order-list-feature-t
   providedIn: 'root',
 })
 export class LlecoopOrderListListFacadeService implements TableWithFilteringFacade<LlecoopOrder> {
-  private readonly store = inject(LLecoopOrderListStore);
+  private readonly orderListStore = inject(LLecoopOrderListStore);
   private readonly productStore = inject(LlecoopProductStore);
   private readonly table = inject(LlecoopOrderListSearchFeatureTableConfig);
   private readonly confirmService = inject(SharedConfirmDialogService);
@@ -49,7 +49,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
                 <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md">${this.getNewOrderName()}</h5>
                 <p class="font-extrabold">Oberta fins el ${this.getNewOrderDate().format('DD/MM/YYYY')}
                 a les ${this.getNewOrderDate().format('HH:mm')}</span> hores.</p>
-                <p class="text-secondary-dark">Els productes marcats com a disponibles s'afegiran a la llista.</p>
+                <p class="text-secondary-dark">${this.productStore.getAvailableProducts().length} productes s'afegiran a la llista.</p>
               </div>
               `
             ),
@@ -57,17 +57,19 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
             'Iniciar'
           )
           .pipe(take(1), filter(Boolean))
-          .subscribe(() => this.store.create(this.createOrderList()));
+          .subscribe(() => this.orderListStore.create(this.createOrderList()));
       },
       disabled: () =>
-        this.store.entities().some(({ status }) => status === 'waiting' || status === 'progress'),
+        this.orderListStore
+          .entities()
+          .some(({ status }) => status === 'waiting' || status === 'progress'),
     },
   ]);
 
   formStructure = getLlecoopOrderListSearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.store.setSorting([active, direction]);
+    this.orderListStore.setSorting([active, direction]);
   }
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
@@ -84,7 +86,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.store.delete(item));
+        .subscribe(() => this.orderListStore.delete(item));
     }
   }
 
@@ -93,7 +95,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
     const weekNumber = nextWeek.isoWeek();
     const year = nextWeek.year();
 
-    return `${weekNumber}-${year}`;
+    return `#${weekNumber}-${year}`;
   }
 
   private getNewOrderDate() {
