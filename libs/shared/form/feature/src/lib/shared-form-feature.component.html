@@ -4,13 +4,12 @@
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
   <!-- form -->
-
   <formly-form
     class="form-container"
     [form]="form"
     [options]="options"
     [fields]="fields()"
-    [model]="computedModel()"
+    [model]="model()"
     (modelChange)="onModelChange($event)"></formly-form>
 
   <!-- buttons -->

@@ -28,7 +28,7 @@ export class LlecoopOrderListDetailListFacadeService
 
   viewConfig = computed(() => ({
     ...this.mainViewConfig(),
-    title: `Comanda ${this.orderListStore.selectedItem()?.name}` || '',
+    title: `Comanda #${this.orderListStore.selectedItem()?.name}` || '',
   }));
 
   tableDefinition = this.table.getTableDefinition();

@@ -38,7 +38,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
   viewConfig = computed(() => {
     return {
       ...this.view,
-      title: this.orderListStore.currentOrder()?.name || 'Nova comanda',
+      title: `Comanda #${this.orderListStore.currentOrder()?.name}` || 'Nova comanda',
     };
   });
 

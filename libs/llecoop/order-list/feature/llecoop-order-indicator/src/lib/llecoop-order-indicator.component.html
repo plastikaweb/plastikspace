@@ -1,17 +1,24 @@
 @defer (when orderListStore.currentOrder()) {
-  <button mat-flat-button color="accent" class="text-white w-max m-tiny px-sub py-tiny">
-    <div class="flex flex-row items-center justify-center break-words gap-sm">
-      <span class="hidden md:flex">
-        {{ orderListStore.currentOrder()?.name }}
-      </span>
+  <button
+    mat-flat-button
+    color="accent"
+    class="text-white w-max m-tiny px-sub py-tiny"
+    [routerLink]="[
+      openedUserOrderList()?.id
+        ? './soci/comanda/' + openedUserOrderList()?.id
+        : './soci/comanda/crear',
+    ]">
+    <div class="flex flex-row items-center justify-center break-words gap-sub">
+      <span class="hidden md:flex"> #{{ orderListStore.currentOrder()?.name }} </span>
+      <span class="hidden md:flex">|</span>
       <span class="text-pretty">
-        {{ userOrderStore.openedOrder()?.totalPrice | currency: 'EUR' : 'symbol' : '2.2-2' }}
+        {{ openedUserOrderList()?.totalPrice || 0 | currency: 'EUR' : 'symbol' : '2.2-2' }}
       </span>
 
       <mat-icon
         matBadgeColor="warn"
         aria-hidden="true"
-        [matBadge]="userOrderStore.openedOrder()?.cart?.length || 0"
+        [matBadge]="openedUserOrderList()?.cart?.length || 0"
         >shopping_cart</mat-icon
       >
     </div>

@@ -1,6 +1,19 @@
 {
   "branchNameLinter": {
-    "prefixes": ["feat", "fix", "docs", "test", "refactor", "perf", "style", "build", "ci", "chore", "revert", "prod"],
+    "prefixes": [
+      "feat",
+      "fix",
+      "docs",
+      "test",
+      "refactor",
+      "perf",
+      "style",
+      "build",
+      "ci",
+      "chore",
+      "revert",
+      "prod"
+    ],
     "suggestions": {
       "features": "feat",
       "feature": "feat",
@@ -11,7 +24,7 @@
     },
     "banned": ["wip"],
     "skip": ["skip-ci"],
-    "disallowed": ["master", "develop", "staging"],
+    "disallowed": ["master", "main", "develop", "staging"],
     "separator": "/",
     "msgBranchBanned": "Branches with the name \"%s\" are not allowed.",
     "msgBranchDisallowed": "Pushing to \"%s\" is not allowed, use git-flow.",

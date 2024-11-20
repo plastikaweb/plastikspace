@@ -39,7 +39,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
     this.form.markAsUntouched();
     this.form.markAsPristine();
 
-    this.computedModel.set(this.model());
+    this.computedModel.update(() => this.model());
   }
 
   onSubmit(event: Event): void {

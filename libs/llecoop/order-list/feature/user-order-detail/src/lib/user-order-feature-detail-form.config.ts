@@ -70,16 +70,18 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
               props: {
                 label: 'Dia',
                 placeholder: 'Dia',
-                options: [],
+                options: [
+                  { value: 'wednesday', label: 'dimecres' },
+                  { value: 'tuesday', label: 'dijous' },
+                ],
                 required: true,
                 disabled: true,
-                compareWith: (o1: FormSelectOption, o2: FormSelectOption) =>
-                  o1?.value === o2?.value,
+                compareWith: (o1: FormSelectOption['value'], o2: FormSelectOption['value']) =>
+                  o1 === o2,
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
                   setDayOptionsByDeliveryOption(formly.props, formly.model?.deliveryType);
-
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field.key === 'deliveryType'),
                     tap(({ value }) => setDayOptionsByDeliveryOption(formly.props, value))
@@ -97,8 +99,8 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
                 options: [],
                 required: true,
                 disabled: true,
-                compareWith: (o1: FormSelectOption, o2: FormSelectOption) =>
-                  o1?.value === o2?.value,
+                compareWith: (o1: FormSelectOption['value'], o2: FormSelectOption['value']) =>
+                  o1 === o2,
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
