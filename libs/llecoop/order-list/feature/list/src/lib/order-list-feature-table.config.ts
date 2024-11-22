@@ -141,6 +141,33 @@ export class LlecoopOrderListSearchFeatureTableConfig
               .subscribe(() => this.store.activate(order));
           },
         },
+        CANCEL: {
+          visible: () => true,
+          disabled: (order: LlecoopOrder) =>
+            order.status === 'waiting' ||
+            order.status === 'done' ||
+            (order.status !== 'progress' && order.orderCount > 0),
+          description: () => 'Cancel·la la comanda',
+          order: 4,
+          icon: () => 'cancel',
+          execute: (order: LlecoopOrder) => {
+            this.confirmService
+              .confirm(
+                'Desactivació de comanda',
+                this.sanitizer.bypassSecurityTrustHtml(
+                  `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
+                    <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center">Segur que vols cancel·lar la comanda "${order.name}"?</h5>
+                    <p class="text-secondary-dark text-center md:text-left">Un cop desactivada es podrà tornar a activar fins la data de tancament.</p>
+                  </div>
+                `
+                ),
+                'Cancel·lar',
+                'Acceptar'
+              )
+              .pipe(take(1), filter(Boolean))
+              .subscribe(() => this.store.cancel(order));
+          },
+        },
         VIEW: {
           visible: () => true,
           disabled: (order: LlecoopOrder) => order.status === 'waiting',
@@ -151,7 +178,8 @@ export class LlecoopOrderListSearchFeatureTableConfig
         },
         DELETE: {
           visible: () => true,
-          disabled: (order: LlecoopOrder) => order.status !== 'waiting',
+          disabled: (order: LlecoopOrder) =>
+            order.status !== 'waiting' && order.status !== 'cancel',
           description: () => 'Elimina la comanda',
           order: 3,
         },
