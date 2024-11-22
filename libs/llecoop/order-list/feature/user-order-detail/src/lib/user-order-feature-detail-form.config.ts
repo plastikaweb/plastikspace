@@ -1,19 +1,40 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { inject } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormSelectOption } from '@plastik/core/entities';
+import { FormConfig, FormSelectOption } from '@plastik/core/entities';
 import {
   LlecoopOrderProduct,
+  LlecoopUserOrder,
   llecoopUserOrderDateOptions,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
 import { filter, tap } from 'rxjs';
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
 
-export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
+function setDayOptionsByDeliveryOption(
+  formlyProps: FormlyFieldConfig['props'],
+  deliveryType: 'pickup' | 'delivery'
+): void {
+  if (formlyProps) {
+    formlyProps['disabled'] = !deliveryType || false;
+    formlyProps['options'] = llecoopUserOrderDateOptions[deliveryType];
+  }
+}
+
+function setHourOptionsByDeliveryOption(
+  formlyProps: FormlyFieldConfig['props'],
+  deliveryType: 'pickup' | 'delivery'
+): void {
+  if (formlyProps) {
+    formlyProps['disabled'] = !deliveryType || false;
+    formlyProps['options'] = llecoopUserOrderTimeOptions[deliveryType];
+  }
+}
+
+export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder> {
   const tableColumnProperties = inject(LlecoopUserOrderDetailFormTableConfig);
 
-  return [
+  const formConfig: FormlyFieldConfig[] = [
     {
       fieldGroupClassName: 'flex flex-row flex-wrap gap-sm',
       fieldGroup: [
@@ -248,24 +269,14 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
       ],
     },
   ];
-}
 
-function setDayOptionsByDeliveryOption(
-  formlyProps: FormlyFieldConfig['props'],
-  deliveryType: 'pickup' | 'delivery'
-): void {
-  if (formlyProps) {
-    formlyProps['disabled'] = !deliveryType || false;
-    formlyProps['options'] = llecoopUserOrderDateOptions[deliveryType];
-  }
-}
-
-function setHourOptionsByDeliveryOption(
-  formlyProps: FormlyFieldConfig['props'],
-  deliveryType: 'pickup' | 'delivery'
-): void {
-  if (formlyProps) {
-    formlyProps['disabled'] = !deliveryType || false;
-    formlyProps['options'] = llecoopUserOrderTimeOptions[deliveryType];
-  }
+  return {
+    getConfig: () => formConfig,
+    getSubmitFormConfig: () => ({
+      label: 'Desar comanda',
+      emitOnChange: true,
+      resetOnSubmit: true,
+    }),
+    getFormFullWidth: true,
+  };
 }

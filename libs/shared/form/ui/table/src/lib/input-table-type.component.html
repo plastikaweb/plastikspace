@@ -5,7 +5,7 @@
   [tableCaption]="tableDefinition.caption || ''"
   [tableColumnProperties]="tableDefinition.columnProperties || []"
   [tableActions]="tableDefinition.actions || {}"
-  [tableSorting]="tableDefinition?.sort()"
+  [tableSorting]="tableDefinition.sort?.()"
   [tableExtraRowStyles]="tableDefinition.extraRowStyles"
   [tableData]="data || []"
   [tableDataLength]="data.length"

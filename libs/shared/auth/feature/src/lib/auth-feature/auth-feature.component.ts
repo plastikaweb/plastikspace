@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
@@ -24,19 +24,17 @@ import { AUTH_FORM_FACADE } from './auth-form-facade.type';
     RouterLink,
   ],
   templateUrl: './auth-feature.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthFeatureComponent {
   private readonly store = inject(Store);
 
   protected facade = inject(AUTH_FORM_FACADE);
+  protected notificationFacade = inject(NotificationFacade);
   protected title = input('title');
   protected name = input('name');
   protected nameLink = input('nameLink');
   protected logo = input('logo');
-  protected label = input('label');
-  protected buttonStyle = input('buttonStyle');
-  protected notificationFacade = inject(NotificationFacade);
-  protected extraLinks = inject(AUTH_FORM_FACADE).extraLinks;
   protected currentDate = new Date();
   protected isActive$ = this.store.select(selectIsActive);
 }

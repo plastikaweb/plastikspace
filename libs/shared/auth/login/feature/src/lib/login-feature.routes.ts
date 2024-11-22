@@ -3,7 +3,7 @@ import { AUTH_FORM_FACADE, AUTH_SERVICE, AuthFeatureComponent } from '@plastik/a
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { LoginFacadeService } from './login-facade.service';
-import { getLoginFormConfig } from './login-form.config';
+import { loginFormConfig } from './login-form.config';
 
 export const authLoginFeatureRoutes: Route[] = [
   {
@@ -20,7 +20,7 @@ export const authLoginFeatureRoutes: Route[] = [
       },
       {
         provide: FORM_TOKEN,
-        useValue: getLoginFormConfig(),
+        useFactory: loginFormConfig,
       },
     ],
   },

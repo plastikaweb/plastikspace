@@ -69,6 +69,7 @@
     "llecoop:functions": "firebase emulators:start --only functions",
     "llecoop:emulate": "yarn nx run llecoop-firebase:emulate",
     "llecoop:local": "npm-run-all --parallel --race llecoop:emulate llecoop:serve",
+    "llecoop:local:staging": "npm-run-all --parallel --race llecoop:emulate llecoop:serve:staging",
     "llecoop:local:prod": "npm-run-all --parallel --race llecoop:emulate llecoop:serve --configuration=production",
     "llecoop:firebase:functions:build": "nx build llecoop-triggers",
     "llecoop:firebase:functions:deploy:staging": "firebase use default && firebase deploy --only functions",

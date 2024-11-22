@@ -13,7 +13,7 @@ import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { getLlecoopUserOrderDetailFormConfig } from './user-order-feature-detail-form.config';
+import { userOrderFeatureDetailFormConfig } from './user-order-feature-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
@@ -25,12 +25,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
   private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'order')[0];
 
   model = this.userOrderStore.selectedItem;
-  formFullWidth = signal(true);
-  formSubmitConfig = signal({
-    label: 'Desar comanda',
-    emitOnChange: true,
-    resetOnSubmit: true,
-  });
+
   viewExtraActions = signal<ExtraFormAction<LlecoopUserOrder>[]>([
     {
       text: formatCurrency(0, 'ca-ES', '€'),
@@ -48,7 +43,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
     };
   });
 
-  formStructure = getLlecoopUserOrderDetailFormConfig();
+  formConfig = userOrderFeatureDetailFormConfig();
 
   onChange({ totalPrice }: Partial<LlecoopUserOrder>): void {
     this.viewExtraActions.update(actions => {

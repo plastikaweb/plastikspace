@@ -4,10 +4,10 @@ import { DETAIL_ITEM_VIEW_FACADE, DetailItemFormComponent } from '@plastik/core/
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { isAnActiveOrderListGuard } from './isAnActiveOrderList.guard';
 import { isAnActiveOrderListAndUserOrderGuard } from './isAnActiveOrderListAndUserOrder.guard';
+import { NewUserOrderDetailResolver } from './new-user-order-detail.resolver';
 import { LlecoopUserOrderDetailFacadeService } from './user-order-detail-facade.service';
 import { UserOrderDetailResolver } from './user-order-detail.resolver';
-import { getLlecoopUserOrderDetailFormConfig } from './user-order-feature-detail-form.config';
-import { NewUserOrderDetailResolver } from './new-user-order-detail.resolver';
+import { userOrderFeatureDetailFormConfig } from './user-order-feature-detail-form.config';
 
 const providers: Provider[] = [
   {
@@ -16,7 +16,7 @@ const providers: Provider[] = [
   },
   {
     provide: FORM_TOKEN,
-    useFactory: getLlecoopUserOrderDetailFormConfig,
+    useFactory: userOrderFeatureDetailFormConfig,
   },
 ];
 

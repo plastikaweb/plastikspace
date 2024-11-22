@@ -5,7 +5,7 @@ import { FORM_TOKEN } from '@plastik/core/entities';
 import { NewProductDetailResolver } from './new-product-detail.resolver';
 import { LlecoopProductDetailFacadeService } from './product-detail-facade.service';
 import { ProductDetailResolver } from './product-detail.resolver';
-import { getLlecoopProductDetailFormConfig } from './product-feature-detail-form.config';
+import { productFeatureDetailFormConfig } from './product-feature-detail-form.config';
 
 const providers: Provider[] = [
   {
@@ -14,7 +14,7 @@ const providers: Provider[] = [
   },
   {
     provide: FORM_TOKEN,
-    useFactory: getLlecoopProductDetailFormConfig,
+    useFactory: productFeatureDetailFormConfig,
   },
 ];
 

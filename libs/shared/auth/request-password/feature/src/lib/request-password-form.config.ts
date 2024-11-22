@@ -1,23 +1,29 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { Signal, signal } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormConfig } from '@plastik/core/entities';
+import { RequestPasswordData } from './request-password-facade.service';
 
-export function getRequestPasswordFormConfig(): Signal<FormlyFieldConfig[]> {
-  return signal([
-    {
-      key: 'email',
-      type: 'input',
-      className: 'w-full',
-      templateOptions: {
-        type: 'email',
-        label: 'Adreça electrònica',
-        placeholder: 'Adreça electrònica',
-        required: true,
+export function requestPasswordFormConfig(): FormConfig<RequestPasswordData> {
+  return {
+    getConfig: () => [
+      {
+        key: 'email',
+        type: 'input',
+        className: 'w-full',
+        templateOptions: {
+          type: 'email',
+          label: 'Adreça electrònica',
+          placeholder: 'Adreça electrònica',
+          required: true,
+        },
+        validators: {
+          validation: [Validators.email],
+        },
       },
-      validators: {
-        validation: [Validators.email],
-      },
-    },
-  ]);
+    ],
+    getSubmitFormConfig: () => ({
+      label: 'Enviar requeriment de contrasenya',
+      buttonStyle: 'w-full sm:w-full',
+    }),
+  };
 }

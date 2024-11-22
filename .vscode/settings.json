@@ -44,6 +44,5 @@
     }
   },
   "angular.log": "verbose",
-  "editor.formatOnPaste": true,
-  "cSpell.words": ["simondotm"]
+  "editor.formatOnPaste": true
 }

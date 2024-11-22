@@ -2,14 +2,15 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { FormConfig } from '@plastik/core/entities';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
 import { TableSorting } from '@plastik/shared/table/entities';
-import { getLlecoopOrderListUserOrderDetailFormConfig } from './order-list-nested-view/order-list-user-order-feature-detail-form.config';
+import { OrderListUserOrderDetailFormConfig } from './order-list-nested-view/order-list-user-order-feature-detail-form.config';
 import { getLlecoopOrderListDetailSearchFeatureFormConfig } from './order-list-table-view/order-list-detail-feature-search-form.config';
 import { LlecoopOrderListOrderDetailSearchFeatureTableConfig } from './order-list-table-view/order-list-order-detail-table-search.config';
 
@@ -25,6 +26,10 @@ export class LlecoopOrderListDetailListFacadeService
   private readonly mainViewConfig = signal(
     inject(VIEW_CONFIG).filter(item => item.name === 'order-list')[0]
   );
+
+  orderDetailFormStructure: FormConfig<LlecoopOrderProduct> = inject(
+    OrderListUserOrderDetailFormConfig
+  ).get();
 
   viewConfig = computed(() => ({
     ...this.mainViewConfig(),
@@ -42,7 +47,6 @@ export class LlecoopOrderListDetailListFacadeService
   routingToDetailPage = signal({ visible: true });
 
   tableSearchFormStructure = getLlecoopOrderListDetailSearchFeatureFormConfig();
-  orderDetailFormStructure = getLlecoopOrderListUserOrderDetailFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
     this.orderListStore.setSorting([active, direction]);

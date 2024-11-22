@@ -31,8 +31,6 @@ export const appRoutes: Routes = [
     data: {
       title: 'Entrar a la botiga',
       logo: 'assets/img/favicon-32x32.png',
-      label: 'Iniciar sessió',
-      buttonStyle: 'w-full',
       name: 'El Llevat',
       nameLink: 'https://www.llevat.org',
     },

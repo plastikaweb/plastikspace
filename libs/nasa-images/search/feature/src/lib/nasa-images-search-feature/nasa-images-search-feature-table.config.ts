@@ -128,7 +128,6 @@ export class NasaImagesSearchFeatureTableConfig {
       map(({ page = 0 }) => {
         return {
           ...defaultTableConfig,
-          count,
           columnProperties,
           pageSizeOptions: [100],
           pagination: {
@@ -142,6 +141,7 @@ export class NasaImagesSearchFeatureTableConfig {
             hideRangeButtons: false,
             hidePaginationFirstLastButtons: false,
           },
+          count,
           caption: 'Nasa Images Table Results',
         };
       })

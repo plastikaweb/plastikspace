@@ -1,10 +1,9 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { signal, Signal } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { addSearchInput } from '@plastik/shared/form/ui';
 
-export function getLlecoopProductSearchFeatureFormConfig(): Signal<FormlyFieldConfig[]> {
-  return signal([
+export function getLlecoopProductSearchFeatureFormConfig(): FormlyFieldConfig[] {
+  return [
     {
       fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
       fieldGroup: [
@@ -27,5 +26,5 @@ export function getLlecoopProductSearchFeatureFormConfig(): Signal<FormlyFieldCo
         },
       ],
     },
-  ]);
+  ];
 }
