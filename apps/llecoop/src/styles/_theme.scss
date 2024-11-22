@@ -6,16 +6,16 @@
   :root {
     --base-size: 1rem;
     --scale: 1.2;
-    --h1: calc(var(--h2) * var(--scale));
-    --h2: calc(var(--h3) * var(--scale));
-    --h3: calc(var(--h4) * var(--scale));
-    --h4: calc(var(--h5) * var(--scale));
-    --h5: calc(var(--h6) * var(--scale));
-    --h6: var(--base-size);
     --sub: calc(var(--base-size) * 0.7);
     --tiny: calc(var(--sub) * 0.5);
-    --xl: calc(var(--h1) * var(--scale));
-    --xxl: calc(var(--xl) * var(--scale));
+    --h6: var(--base-size);
+    --h5: calc(var(--h6) * var(--scale));
+    --h4: calc(1.3rem * var(--scale));
+    --h3: calc(1.5rem * var(--scale));
+    --h2: calc(1.75rem * var(--scale));
+    --h1: calc(2rem * var(--scale));
+    --xl: calc(3.5rem * var(--scale));
+    --xxl: calc(4.5rem * var(--scale));
 
     /* Colors */
     --primary-50: #{mat.m2-get-color-from-palette(palette.$md-primary, 50)};
@@ -63,8 +63,8 @@
     --sans-serif: 'Nunito Sans', sans-serif;
     /* Font Size */
     --font-size-tiny: var(--tiny);
-    --font-size-sm: var(--sub);
     --font-size-base: var(--base-size);
+    --font-size-sm: var(--sub);
     --font-size-md: var(--h5);
     --font-size-lg: var(--h4);
     --font-size-xl: var(--h3);

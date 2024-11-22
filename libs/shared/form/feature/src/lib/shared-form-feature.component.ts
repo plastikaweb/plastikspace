@@ -38,7 +38,6 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   ngAfterViewInit(): void {
     this.form.markAsUntouched();
     this.form.markAsPristine();
-
     this.computedModel.update(() => this.model());
   }
 

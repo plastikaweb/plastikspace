@@ -5,7 +5,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
-import { getLlecoopProductDetailFormConfig } from './product-feature-detail-form.config';
+import { productFeatureDetailFormConfig } from './product-feature-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +22,7 @@ export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<L
     };
   });
 
-  formStructure = getLlecoopProductDetailFormConfig();
+  formConfig = productFeatureDetailFormConfig();
 
   onSubmit(data: Partial<LlecoopProduct>): void {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

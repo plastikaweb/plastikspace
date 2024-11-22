@@ -49,10 +49,14 @@
 
 <ng-template #orderDetail let-element="element">
   @defer (when !!element) {
+    @let fields = facade.orderDetailFormStructure.getConfig() || [];
+    @let submitConfig = facade.orderDetailFormStructure.getSubmitFormConfig?.(!!element) || {};
+
     <plastik-shared-form-feature
       class="flex flex-row items-end content-center justify-between filters-box"
-      [fields]="facade.orderDetailFormStructure() || []"
-      [model]="{ id: element.id, orderListId: element.orderListId, cart: element.cart }"
+      [fields]="fields"
+      [model]="element"
+      [submitConfig]="submitConfig"
       (changeEvent)="onSaveUserOrder($event)">
     </plastik-shared-form-feature>
   }

@@ -24,6 +24,7 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
 {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly store = inject(LLecoopOrderListStore);
+  private readonly defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
   private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -201,10 +202,8 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     ];
 
   getTableDefinition() {
-    const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
-
     return {
-      ...defaultTableConfig,
+      ...this.defaultTableConfig,
       columnProperties: this.columnProperties,
       sort: this.store.sorting,
       caption: 'Comanda de soci: Llistat de productes',

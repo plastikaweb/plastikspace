@@ -1,4 +1,3 @@
-import { signal } from '@angular/core';
 import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
 import { ViewsConfigRecord } from '@plastik/core/entities';
 import { NasaImagesViews } from '@plastik/nasa-images/search/entities';
@@ -10,7 +9,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
   extendedTitle: 'NASA Images Search',
   widgetsConfig: {
     position: 'end',
-    widgets: signal([
+    widgets: [
       {
         id: 1,
         component: () => import('@plastik/shared/button').then(c => c.SharedButtonUiComponent),
@@ -34,7 +33,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
           },
         },
       },
-    ]),
+    ],
   },
 };
 

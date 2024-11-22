@@ -1,4 +1,4 @@
-import { InjectionToken, Signal } from '@angular/core';
+import { InjectionToken } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 
@@ -8,9 +8,10 @@ export interface FormConfig<T> {
   executeAction?: (extraFormAction: ExtraFormAction<T>, element$: Observable<T>) => void;
   getExtraSubmitActions?: (editMode: boolean) => ExtraSubmitFormAction<T>[];
   getSubmitFormConfig?: (editMode?: boolean) => SubmitFormConfig;
+  getFormFullWidth?: boolean;
 }
 
-export const FORM_TOKEN = new InjectionToken<Signal<FormConfig<unknown>>>('FORM_TOKEN');
+export const FORM_TOKEN = new InjectionToken<FormConfig<unknown>>('FORM_TOKEN');
 
 export interface ExtraFormAction<T> {
   label: string;

@@ -3,18 +3,52 @@ import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { DocumentReference } from '@angular/fire/firestore';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormConfig } from '@plastik/core/entities';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import {
+  LlecoopProduct,
   LlecoopProductCategory,
   LlecoopProductSelectData,
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
 import { filter, tap } from 'rxjs';
 
-export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
+function setStockUnitAddonRight(
+  formlyProps: FormlyFieldConfig['props'],
+  unitValue: LlecoopProductUnit['type']
+): void {
+  if (formlyProps?.['addonRight']) {
+    formlyProps['addonRight'].text = unitValue === 'weight' ? 'kg' : 'u.';
+  }
+}
+
+function setUnitBaseInfo(
+  formlyProps: FormlyFieldConfig['props'],
+  unitValue: LlecoopProductUnit['type']
+): void {
+  if (formlyProps) {
+    const label =
+      unitValue === 'unitWithFixedVolume'
+        ? 'Volum per unitat'
+        : unitValue === 'unitWithFixedWeight'
+          ? 'Pes per unitat'
+          : unitValue === 'unitWithVariableWeight'
+            ? 'Pes aproximat per unitat'
+            : '';
+    formlyProps.label = label;
+    formlyProps.placeholder = label;
+
+    if (formlyProps) {
+      formlyProps['addonRight'].text =
+        unitValue === 'unitWithFixedWeight' || unitValue === 'unitWithVariableWeight' ? 'kg' : 'l';
+    }
+  }
+}
+
+export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
   const store = inject(LlecoopCategoryStore);
 
-  return [
+  const formConfig = [
     {
       fieldGroupClassName: 'flex flex-row flex-wrap gap-sm',
       fieldGroup: [
@@ -73,7 +107,8 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
                 addonRight: {},
               },
               expressions: {
-                hide: ({ model }) => model?.type === 'unit' || model?.type === 'weight',
+                hide: ({ model }: FormlyFieldConfig) =>
+                  model?.type === 'unit' || model?.type === 'weight',
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
@@ -237,36 +272,11 @@ export function getLlecoopProductDetailFormConfig(): FormlyFieldConfig[] {
       ],
     },
   ];
-}
 
-function setStockUnitAddonRight(
-  formlyProps: FormlyFieldConfig['props'],
-  unitValue: LlecoopProductUnit['type']
-): void {
-  if (formlyProps?.['addonRight']) {
-    formlyProps['addonRight'].text = unitValue === 'weight' ? 'kg' : 'u.';
-  }
-}
-
-function setUnitBaseInfo(
-  formlyProps: FormlyFieldConfig['props'],
-  unitValue: LlecoopProductUnit['type']
-): void {
-  if (formlyProps) {
-    const label =
-      unitValue === 'unitWithFixedVolume'
-        ? 'Volum per unitat'
-        : unitValue === 'unitWithFixedWeight'
-          ? 'Pes per unitat'
-          : unitValue === 'unitWithVariableWeight'
-            ? 'Pes aproximat per unitat'
-            : '';
-    formlyProps.label = label;
-    formlyProps.placeholder = label;
-
-    if (formlyProps) {
-      formlyProps['addonRight'].text =
-        unitValue === 'unitWithFixedWeight' || unitValue === 'unitWithVariableWeight' ? 'kg' : 'l';
-    }
-  }
+  return {
+    getConfig: () => formConfig,
+    getSubmitFormConfig: (editMode = false) => ({
+      label: editMode ? 'Desar producte' : 'Crear producte',
+    }),
+  };
 }

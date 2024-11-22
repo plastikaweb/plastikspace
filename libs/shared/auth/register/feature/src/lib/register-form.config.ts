@@ -1,10 +1,10 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { signal, Signal } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormConfig } from '@plastik/core/entities';
+import { LoginData } from './register-facade.service';
 
-export function getRegisterFormConfig(): Signal<FormlyFieldConfig[]> {
-  return signal([
+export function registerFormConfig(): FormConfig<LoginData> {
+  const formConfig = [
     {
       key: 'email',
       type: 'input',
@@ -32,5 +32,13 @@ export function getRegisterFormConfig(): Signal<FormlyFieldConfig[]> {
         maxLength: 25,
       },
     },
-  ]);
+  ];
+
+  return {
+    getConfig: () => formConfig,
+    getSubmitFormConfig: () => ({
+      label: 'Enviar registre',
+      buttonStyle: 'w-full sm:w-full',
+    }),
+  };
 }

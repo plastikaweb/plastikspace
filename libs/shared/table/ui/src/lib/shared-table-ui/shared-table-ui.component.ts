@@ -21,7 +21,7 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -181,7 +181,6 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   getChangedData = output<T | undefined>();
 
-  @ViewChild(MatPaginator) matPaginator!: MatPaginator;
   @ViewChild(MatSort) matSort?: MatSort;
   @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef;
 
@@ -217,17 +216,6 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     effect(() => {
       if (this.filterCriteria() && this.filterPredicate()) {
         this.dataSource.filter = `${this.filterCriteria()}`;
-      }
-    });
-    effect(() => {
-      if (this.matPaginator && this.pagination()) {
-        const pageIndex =
-          this.resultsLength() < (this.pagination()?.pageSize || 10)
-            ? 0
-            : this.pagination()?.pageIndex || 0;
-        this.matPaginator.pageIndex = pageIndex;
-        this.matPaginator.pageSize = this.pagination()?.pageSize || this.resultsLength();
-        this.dataSource.paginator = this.matPaginator;
       }
     });
   }

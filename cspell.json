@@ -4,7 +4,17 @@
   "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
   "ignorePaths": [],
   "dictionaryDefinitions": [],
-  "words": ["aprox", "Llecoop", "preexperimental", "prellecoop", "prenasa"],
+  "words": [
+    "appspot",
+    "aprox",
+    "firebaseapp",
+    "Llecoop",
+    "preexperimental",
+    "prellecoop",
+    "prenasa",
+    "Savkin",
+    "simondotm"
+  ],
   "ignoreWords": [],
   "import": []
 }

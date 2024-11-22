@@ -1,4 +1,4 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductBasedUnitText,
@@ -24,8 +24,6 @@ export class LlecoopUserOrderDetailFormTableConfig
 {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly store = inject(LLecoopOrderListStore);
-
-  private readonly userProducts = signal([...this.store.currentOrderProducts()]);
 
   private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -150,7 +148,7 @@ export class LlecoopUserOrderDetailFormTableConfig
       columnProperties: this.columnProperties,
       sort: this.store.sorting,
       caption: 'Llistat de productes',
-      getData: () => this.userProducts(),
+      getData: () => this.store.currentOrderProducts(),
       extraRowStyles: (orderProduct: LlecoopOrderProduct) => {
         return orderProduct.initPrice > 0 ? 'marked-ok' : '';
       },
