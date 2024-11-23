@@ -1,4 +1,3 @@
-import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,7 +15,6 @@ import { LlecoopOrderListDetailListFacadeService } from '../order-list-detail-li
     SharedFormFeatureModule,
     SharedTableUiComponent,
     MatIconModule,
-    TitleCasePipe,
     MatButtonModule,
     RouterLink,
   ],
