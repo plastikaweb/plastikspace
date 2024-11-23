@@ -5,7 +5,8 @@
     "../../libs/llecoop/order-list/feature/user-order-detail/src/lib/isAnActiveOrderList.guard.ts",
     "../../libs/shared/auth/firebase/data-access/src/isLogged.guard.ts",
     "../../libs/shared/auth/firebase/data-access/src/isNotLogged.guard.ts",
-    "../../libs/shared/auth/firebase/data-access/src/isAdmin.guard.ts"
+    "../../libs/shared/auth/firebase/data-access/src/isAdmin.guard.ts",
+    "../../libs/core/util/environments/src/index.ts"
   ],
   "compilerOptions": {
     "types": ["jest", "node"]

@@ -4,7 +4,12 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { FormConfig } from '@plastik/core/entities';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
+import {
+  LlecoopOrder,
+  LlecoopOrderProduct,
+  llecoopOrderStatus,
+  LlecoopUserOrder,
+} from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
@@ -33,17 +38,20 @@ export class LlecoopOrderListDetailListFacadeService
 
   viewConfig = computed(() => ({
     ...this.mainViewConfig(),
-    title: `Comanda #${this.orderListStore.selectedItem()?.name}` || '',
+    title: this.setTitle(this.orderListStore.selectedItem()),
   }));
 
   tableDefinition = this.table.getTableDefinition();
+
   filterCriteria = signal<Record<string, string>>({
     text: '',
   });
+
   tableFilterPredicate = (data: LlecoopUserOrder, criteria: Record<string, string>) => {
     const value = criteria['text'].toLowerCase();
     return [data.address, data.userName].some(text => text?.toLowerCase().includes(value));
   };
+
   routingToDetailPage = signal({ visible: true });
 
   tableSearchFormStructure = getLlecoopOrderListDetailSearchFeatureFormConfig();
@@ -58,5 +66,17 @@ export class LlecoopOrderListDetailListFacadeService
 
   onSaveUserOrder(model: Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>): void {
     this.userOrderStore.update({ ...model, status: 'review' });
+  }
+
+  private setTitle(order: LlecoopOrder | null): string {
+    if (!order) return '';
+
+    const status = llecoopOrderStatus[order.status as LlecoopOrder['status']];
+    return `
+      <div class="flex gap-tiny justify-center items-center">
+        <span>Comanda #${order.name}</span>
+        <span class="material-icons ${status.class}">${status.icon}</span>
+      </div>
+    `;
   }
 }
