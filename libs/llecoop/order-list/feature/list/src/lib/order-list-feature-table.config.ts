@@ -40,7 +40,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['min-w-[130px] md:max-w-[150px]'],
+    cssClasses: ['max-w-[60px] md:min-w-[140px] md:max-w-[180px]'],
     formatting: {
       type: 'CUSTOM',
       execute: value => {
@@ -61,6 +61,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
         key: 'endTime',
         title: 'Data de tancament',
         propertyPath: 'endTime',
+        cssClasses: ['max-w-[290px]'],
       },
       'dd/MM/yyyy HH:mm'
     );
@@ -71,7 +72,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     title: 'Comandes realitzades',
     propertyPath: 'orderCount',
     sorting: true,
-    cssClasses: ['hidden md:flex max-w-[100px]'],
+    cssClasses: ['hidden md:flex max-w-[160px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -82,7 +83,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     title: 'Productes inclosos',
     propertyPath: 'availableProducts',
     sorting: true,
-    cssClasses: ['hidden lg:flex max-w-[100px]'],
+    cssClasses: ['hidden lg:flex max-w-[160px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, item) => item?.availableProducts.length || 0,
@@ -116,7 +117,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
       caption: 'Llistat de comandes setmanals',
       count: this.store.count,
       getData: () => this.store.entities(),
-      actionsColStyles: 'min-w-[190px]',
+      actionsColStyles: 'min-w-[250px]',
       actions: {
         SET_ACTIVE: {
           visible: () => true,
