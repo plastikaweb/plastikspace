@@ -77,14 +77,15 @@ export class LlecoopOrderListSearchFeatureTableConfig
     },
   };
 
-  private readonly totalProducts: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
-    key: 'totalProducts',
+  private readonly availableProducts: TableColumnFormatting<LlecoopOrder, 'CUSTOM'> = {
+    key: 'availableProducts',
     title: 'Productes inclosos',
-    propertyPath: 'availableProducts.length',
+    propertyPath: 'availableProducts',
     sorting: true,
     cssClasses: ['hidden lg:flex max-w-[100px]'],
     formatting: {
-      type: 'TEXT',
+      type: 'CUSTOM',
+      execute: (_, item) => item?.availableProducts.length || 0,
     },
   };
 
@@ -94,7 +95,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     this.name,
     this.status,
     this.endTime(),
-    this.totalProducts,
+    this.availableProducts,
     this.orderCount,
     this.createdAt,
   ];
