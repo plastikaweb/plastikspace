@@ -84,8 +84,8 @@
     }
   },
   "defaultProject": "nasa-images",
-  "nxCloudAccessToken": "MGZiMTczZDAtOTcyNC00NjA3LTk2MzktMmM1OGQ2ZWUxNWQwfHJlYWQtd3JpdGU=",
   "cacheDirectory": "./tmp/my-cache",
   "useInferencePlugins": false,
-  "defaultBase": "develop"
+  "defaultBase": "develop",
+  "useLegacyCache": true
 }
