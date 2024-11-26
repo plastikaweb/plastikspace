@@ -4,7 +4,6 @@ import { isNil } from '@plastik/shared/objects';
 
 import { Timestamp } from '@angular/fire/firestore';
 import {
-  FormattingExtras,
   FormattingInput,
   FormattingOutput,
   FormattingTypes,
