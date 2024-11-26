@@ -1,5 +1,8 @@
 name: pa11y nasa-images
 
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ env.NX_CLOUD_ACCESS_TOKEN }}
+
 on:
   push:
     branches:
