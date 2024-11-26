@@ -13,10 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check NX_CLOUD_ACCESS_TOKEN
-        run: echo "NX_CLOUD_ACCESS_TOKEN is set"
-        if: env.NX_CLOUD_ACCESS_TOKEN != ''
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
