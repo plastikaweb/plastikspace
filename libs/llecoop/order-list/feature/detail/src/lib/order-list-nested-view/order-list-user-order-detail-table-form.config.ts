@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductBasedUnitText,
@@ -24,6 +24,7 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
 {
   private readonly sanitizer = inject(DomSanitizer);
   private readonly store = inject(LLecoopOrderListStore);
+  private readonly defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
   private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -201,10 +202,8 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     ];
 
   getTableDefinition() {
-    const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
-
-    return signal({
-      ...defaultTableConfig,
+    return {
+      ...this.defaultTableConfig,
       columnProperties: this.columnProperties,
       sort: this.store.sorting,
       caption: 'Comanda de soci: Llistat de productes',
@@ -217,6 +216,6 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
             ? 'marked-changed'
             : '';
       },
-    }) as Signal<TableDefinition<LlecoopOrderProduct>>;
+    } as TableDefinition<LlecoopOrderProduct>;
   }
 }

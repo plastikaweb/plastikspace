@@ -18,7 +18,7 @@ export function productCategoryColumn<T extends LlecoopBaseProduct>(
     key: 'categoryName',
     title: 'Categoria',
     propertyPath: 'category.name',
-    cssClasses: ['hidden md:flex md:min-w-[210px]'],
+    cssClasses: ['hidden md:flex md:min-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {

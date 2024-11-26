@@ -132,6 +132,26 @@ export const LLecoopOrderListStore = signalStore(
           })
         )
       ),
+      cancel: rxMethod<LlecoopOrder>(
+        pipe(
+          switchMap(order => {
+            return orderListService.update({ ...order, status: 'cancel' }).pipe(
+              tapResponse({
+                next: () =>
+                  storeNotificationService.create(
+                    `Comanda "${order['name']}" cancel·lada correctament`,
+                    'SUCCESS'
+                  ),
+                error: error =>
+                  storeNotificationService.create(
+                    `No s'ha pogut cancel·lar la comanda "${order['name']}": ${error}`,
+                    'ERROR'
+                  ),
+              })
+            );
+          })
+        )
+      ),
       delete: rxMethod<LlecoopOrder>(
         pipe(
           switchMap(product => {

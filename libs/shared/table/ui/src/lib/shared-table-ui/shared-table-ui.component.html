@@ -49,7 +49,7 @@
                   @if (isText(editable)) {
                     <mat-form-field
                       #matFormField
-                      class="inline editable w-[110px]"
+                      class="inline editable"
                       [ngClass]="attributes?.styles || ''">
                       @if (attributes?.prefix) {
                         <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -68,7 +68,7 @@
                   @if (isNumber(editable)) {
                     <mat-form-field
                       #matFormField
-                      class="inline editable w-[110px]"
+                      class="inline editable"
                       [ngClass]="attributes?.styles || ''">
                       @if (attributes?.prefix) {
                         <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -172,50 +172,54 @@
           class="overflow-visible mat-cell-actions"
           [ngClass]="actionsColStyles() || ''">
           @for (action of actions() | keyvalue | orderTableActionsElements; track action.key) {
-            <div class="table-actions-grouping">
-              @if (action.key === 'EDIT') {
-                <button
-                  type="button"
-                  mat-icon-button
-                  [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
-                  <mat-icon class="mat-primary">edit</mat-icon>
-                </button>
-              } @else if (action.value?.visible(element) && action.value?.type === 'input') {
-                <button
-                  type="button"
-                  mat-icon-button
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                  (click)="getChangedData.emit(action.value?.execute(element))">
-                  <mat-icon class="mat-warn">delete</mat-icon>
-                </button>
-              } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
-                <button
-                  type="button"
-                  mat-icon-button
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                  (click)="onDelete($event, element)">
-                  <mat-icon class="mat-warn">delete</mat-icon>
-                </button>
-              } @else if (action.value?.visible(element)) {
-                <button
-                  type="button"
-                  mat-icon-button
-                  [attr.aria-label]="action.value?.description(element) || ''"
-                  [matTooltip]="action.value?.description(element) || ''"
-                  [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                  [routerLink]="action.value?.link ? action.value?.link(element) : null"
-                  (click)="$event.stopPropagation(); action.value?.execute?.(element)">
-                  <mat-icon class="mat-primary">{{ action.value?.icon(element) }}</mat-icon>
-                </button>
-              }
-            </div>
+            @if (action.key === 'EDIT' && action.value?.visible(element)) {
+              <button
+                type="button"
+                mat-icon-button
+                color="primary"
+                [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
+                <mat-icon>edit</mat-icon>
+              </button>
+            } @else if (action.value?.visible(element) && action.value?.type === 'input') {
+              <button
+                type="button"
+                mat-icon-button
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                (click)="getChangedData.emit(action.value?.execute(element))">
+                <mat-icon>delete</mat-icon>
+              </button>
+            } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
+              <button
+                type="button"
+                mat-icon-button
+                color="warn"
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                (click)="onDelete($event, element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            } @else if (action.value?.visible(element)) {
+              <button
+                type="button"
+                mat-icon-button
+                color="accent"
+                [attr.aria-label]="action.value?.description(element) || ''"
+                [matTooltip]="action.value?.description(element) || ''"
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                [routerLink]="action.value?.link ? action.value?.link(element) : null"
+                (click)="$event.stopPropagation(); action.value?.execute?.(element)">
+                <mat-icon>{{ action.value?.icon(element) }}</mat-icon>
+              </button>
+            } @else if (!action.value?.visible(element)) {
+              <!-- TODO: #447 find a better way to handle the height of the cell when it has no buttons --->
+              <button type="button" mat-icon-button class="invisible">&nbsp;</button>
+            }
           }
         </mat-cell>
       </ng-container>
@@ -281,24 +285,6 @@
     }
   </mat-table>
 
-  @if (!noPagination()) {
-    <mat-paginator
-      #matPaginator
-      class="mt-md jus"
-      [hidePageSize]="paginationVisibility()?.hidePageSize"
-      [length]="resultsLength()"
-      [ngClass]="{
-        'paginator--hide': paginationVisibility()?.hideRangeLabel,
-        'paginator--hide-range-buttons': paginationVisibility()?.hideRangeButtons,
-      }"
-      [pageIndex]="pagination()?.pageIndex || 0"
-      [pageSize]="pagination()?.pageSize || resultsLength()"
-      [pageSizeOptions]="pageSizeOptions()"
-      [showFirstLastButtons]="!paginationVisibility()?.hidePaginationFirstLastButtons"
-      (page)="onChangePagination($event)">
-    </mat-paginator>
-  }
-
   @if (!dataSource.data.length) {
     <ng-content select="[noResults]"></ng-content>
     <ng-content select="[noValidSearch]"></ng-content>
@@ -309,3 +295,21 @@
     <ng-content select="[noValidSearch]"></ng-content>
   </ng-template>
 </div>
+
+@if (!noPagination()) {
+  <mat-paginator
+    #matPaginator
+    class="mt-md jus"
+    [hidePageSize]="paginationVisibility()?.hidePageSize"
+    [length]="resultsLength()"
+    [ngClass]="{
+      'paginator--hide': paginationVisibility()?.hideRangeLabel,
+      'paginator--hide-range-buttons': paginationVisibility()?.hideRangeButtons,
+    }"
+    [pageIndex]="pagination()?.pageIndex || 0"
+    [pageSize]="pagination()?.pageSize || resultsLength()"
+    [pageSizeOptions]="pageSizeOptions()"
+    [showFirstLastButtons]="!paginationVisibility()?.hidePaginationFirstLastButtons"
+    (page)="onChangePagination($event)">
+  </mat-paginator>
+}

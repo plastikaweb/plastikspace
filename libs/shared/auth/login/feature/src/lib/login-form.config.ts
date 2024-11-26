@@ -1,15 +1,15 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { signal, Signal } from '@angular/core';
 import { Validators } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormConfig } from '@plastik/core/entities';
+import { LoginData } from './login-facade.service';
 
-export function getLoginFormConfig(): Signal<FormlyFieldConfig[]> {
-  return signal([
+export function loginFormConfig(): FormConfig<LoginData> {
+  const formConfig = [
     {
       key: 'email',
       type: 'input',
       className: 'w-full',
-      templateOptions: {
+      props: {
         type: 'email',
         label: 'Adreça electrònica',
         placeholder: 'Adreça electrònica',
@@ -23,7 +23,7 @@ export function getLoginFormConfig(): Signal<FormlyFieldConfig[]> {
       key: 'password',
       type: 'password-with-visibility',
       className: 'w-full',
-      templateOptions: {
+      props: {
         type: 'password',
         label: 'Contrasenya',
         placeholder: 'Contrasenya',
@@ -32,5 +32,13 @@ export function getLoginFormConfig(): Signal<FormlyFieldConfig[]> {
         maxLength: 25,
       },
     },
-  ]);
+  ];
+
+  return {
+    getConfig: () => formConfig,
+    getSubmitFormConfig: () => ({
+      label: 'Iniciar sessió',
+      buttonStyle: 'w-full sm:w-full',
+    }),
+  };
 }

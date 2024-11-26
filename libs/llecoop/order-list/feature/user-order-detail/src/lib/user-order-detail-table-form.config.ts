@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductBasedUnitText,
@@ -25,15 +25,13 @@ export class LlecoopUserOrderDetailFormTableConfig
   private readonly sanitizer = inject(DomSanitizer);
   private readonly store = inject(LLecoopOrderListStore);
 
-  private readonly userProducts = signal([...this.store.currentOrderProducts()]);
-
   private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px]', 'flex flex-col justify-start'],
+    cssClasses: ['min-w-[160px] md:min-w-[250px] py-tiny', 'flex flex-col justify-start'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
@@ -88,7 +86,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     title: 'Quantitat',
     propertyPath: 'initQuantity',
     sorting: true,
-    cssClasses: ['', 'flex max-width-[110px]'],
+    cssClasses: ['w-[175px]', 'flex max-w-[175px]'],
     formatting: {
       type: 'INPUT',
     },
@@ -98,6 +96,7 @@ export class LlecoopUserOrderDetailFormTableConfig
         min: 0,
         step: getLlecoopProductUnitStep(orderProduct?.unit ?? { type: 'unit' }),
         suffix: getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' }),
+        styles: 'w-[110px]',
       },
       onChanges: (value, orderProduct) => {
         const quantity = Number(value);
@@ -144,12 +143,12 @@ export class LlecoopUserOrderDetailFormTableConfig
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
-    return signal({
+    return {
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
       sort: this.store.sorting,
       caption: 'Llistat de productes',
-      getData: () => this.userProducts(),
+      getData: () => this.store.currentOrderProducts(),
       extraRowStyles: (orderProduct: LlecoopOrderProduct) => {
         return orderProduct.initPrice > 0 ? 'marked-ok' : '';
       },
@@ -164,6 +163,6 @@ export class LlecoopUserOrderDetailFormTableConfig
             this.initQuantity?.isEditableConfig?.(orderProduct)?.onChanges?.(0, orderProduct),
         },
       },
-    }) as Signal<TableDefinition<LlecoopOrderProduct>>;
+    } as TableDefinition<LlecoopOrderProduct>;
   }
 }

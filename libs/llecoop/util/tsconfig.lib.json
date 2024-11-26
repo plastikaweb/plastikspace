@@ -5,7 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "composite": true
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
   "include": [
@@ -13,6 +14,7 @@
     "../../shared/auth/firebase/data-access/src/isLogged.guard.ts",
     "../../shared/auth/firebase/data-access/src/isNotLogged.guard.ts",
     "../../shared/auth/firebase/data-access/src/isAdmin.guard.ts",
-    "../order-list/data-access/src/isAnActiveOrderList.guard.ts"
+    "../order-list/data-access/src/isAnActiveOrderList.guard.ts",
+    "../../../util/src/**/*.ts"
   ]
 }

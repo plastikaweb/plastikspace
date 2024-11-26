@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
@@ -26,7 +26,7 @@ export class LlecoopProductSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[240px] py-tiny'],
+    cssClasses: ['min-w-[130px] py-0 px-tiny md:py-tiny md:px-sm md:min-w-[240px]'],
     formatting: {
       type: 'LINK',
       execute: (_, product) => {
@@ -37,7 +37,7 @@ export class LlecoopProductSearchFeatureTableConfig
         const info = product?.info ? `<li class="font-bold">${product?.info}</li>` : '';
         const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
         const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
-        const extra = `<ul>${info}${provider}${origin}</ul>`;
+        const extra = `<ul class="hidden md:block">${info}${provider}${origin}</ul>`;
         return this.sanitizer.bypassSecurityTrustHtml(`${link}${extra}`) as SafeHtml;
         // return this.sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
       },
@@ -49,7 +49,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Preu',
     propertyPath: 'price',
     sorting: true,
-    cssClasses: ['hidden md:flex md:min-w-[100px]'],
+    cssClasses: ['hidden md:flex md:max-w-[120px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -64,7 +64,7 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'iva',
     title: 'IVA',
     propertyPath: 'iva',
-    cssClasses: ['hidden md:flex md:min-w-[100px]'],
+    cssClasses: ['hidden md:flex md:max-w-[120px]'],
     formatting: {
       type: 'PERCENTAGE',
     },
@@ -74,7 +74,7 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'unit',
     title: 'Presentació',
     propertyPath: 'unit.base',
-    cssClasses: ['hidden md:flex md:min-w-[150px]'],
+    cssClasses: ['hidden md:flex md:max-w-[200px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, product) => {
@@ -99,7 +99,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Preu amb IVA',
     propertyPath: 'priceWithIva',
     sorting: true,
-    cssClasses: ['min-w-[100px]'],
+    cssClasses: ['max-w-[120px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -112,11 +112,11 @@ export class LlecoopProductSearchFeatureTableConfig
 
   private readonly isAvailable: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
     key: 'isAvailable',
-    title: 'Disponible',
+    title: '',
     propertyPath: 'isAvailable',
     sorting: true,
     showTitle: false,
-    cssClasses: ['hidden md:flex md:min-w-[120px]'],
+    cssClasses: ['hidden md:flex md:max-w-[50px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, product) => (product?.isAvailable ? '✔' : '✘'),
@@ -127,7 +127,8 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'stock',
     title: 'Stock',
     propertyPath: 'stock',
-    cssClasses: ['hidden md:flex md:min-w-[125px]'],
+    sorting: true,
+    cssClasses: ['hidden md:flex md:max-w-[125px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, product) => {
@@ -155,7 +156,7 @@ export class LlecoopProductSearchFeatureTableConfig
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
-    return signal({
+    return {
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
       paginationVisibility: {
@@ -196,6 +197,6 @@ export class LlecoopProductSearchFeatureTableConfig
           order: 3,
         },
       },
-    }) as Signal<TableDefinition<LlecoopProduct>>;
+    } as TableDefinition<LlecoopProduct>;
   }
 }

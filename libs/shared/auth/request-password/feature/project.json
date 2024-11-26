@@ -1,5 +1,5 @@
 {
-  "name": "auth-login-request-password",
+  "name": "auth-request-password",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/shared/auth/request-password/feature/src",
   "prefix": "plastik",

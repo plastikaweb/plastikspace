@@ -1,35 +1,76 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { inject } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormConfig, FormSelectOption } from '@plastik/core/entities';
 import {
   LlecoopOrderProduct,
+  LlecoopUserOrder,
   llecoopUserOrderDateOptions,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
 import { filter, tap } from 'rxjs';
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
 
-export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
+function setDayOptionsByDeliveryOption(
+  formlyProps: FormlyFieldConfig['props'],
+  deliveryType: 'pickup' | 'delivery'
+): void {
+  if (formlyProps) {
+    formlyProps['disabled'] = !deliveryType || false;
+    formlyProps['options'] = llecoopUserOrderDateOptions[deliveryType];
+  }
+}
+
+function setHourOptionsByDeliveryOption(
+  formlyProps: FormlyFieldConfig['props'],
+  deliveryType: 'pickup' | 'delivery'
+): void {
+  if (formlyProps) {
+    formlyProps['disabled'] = !deliveryType || false;
+    formlyProps['options'] = llecoopUserOrderTimeOptions[deliveryType];
+  }
+}
+
+export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder> {
   const tableColumnProperties = inject(LlecoopUserOrderDetailFormTableConfig);
 
-  return [
+  const formConfig: FormlyFieldConfig[] = [
     {
       fieldGroupClassName: 'flex flex-row flex-wrap gap-sm',
       fieldGroup: [
         {
+          key: 'userName',
+          type: 'input',
+          className: 'w-full',
+          props: {
+            label: 'Sòcia/unitat familiar',
+            placeholder: 'Sòcia/unitat familiar',
+            required: true,
+          },
+        },
+        {
+          key: 'deliveryType',
+          type: 'radio',
+          className: 'w-full',
+          props: {
+            label: 'Recollida o lliurament de la comanda',
+            required: true,
+            options: [
+              {
+                value: 'pickup',
+                label: 'recollida a El Llevat',
+              },
+              {
+                value: 'delivery',
+                label: 'lliurament a domicili (cost entre 1 i 3€)',
+              },
+            ],
+          },
+        },
+        {
           fieldGroupClassName:
             'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
           fieldGroup: [
-            {
-              key: 'userName',
-              type: 'input',
-              className: 'w-full',
-              props: {
-                label: 'Sòcia/unitat familiar',
-                placeholder: 'Sòcia/unitat familiar',
-                required: true,
-              },
-            },
             {
               key: 'address',
               type: 'input',
@@ -39,28 +80,8 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
                 placeholder: 'Adreça de lliurament',
                 required: true,
               },
-            },
-          ],
-        },
-        {
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
-          fieldGroup: [
-            {
-              key: 'deliveryType',
-              type: 'radio',
-              props: {
-                required: true,
-                options: [
-                  {
-                    value: 'pickup',
-                    label: 'recollida',
-                  },
-                  {
-                    value: 'delivery',
-                    label: 'lliurament',
-                  },
-                ],
+              expressions: {
+                hide: 'model.deliveryType === "pickup"',
               },
             },
             {
@@ -70,14 +91,18 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
               props: {
                 label: 'Dia',
                 placeholder: 'Dia',
-                options: [],
+                options: [
+                  { value: 'wednesday', label: 'dimecres' },
+                  { value: 'tuesday', label: 'dijous' },
+                ],
                 required: true,
                 disabled: true,
+                compareWith: (o1: FormSelectOption['value'], o2: FormSelectOption['value']) =>
+                  o1 === o2,
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
                   setDayOptionsByDeliveryOption(formly.props, formly.model?.deliveryType);
-
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field.key === 'deliveryType'),
                     tap(({ value }) => setDayOptionsByDeliveryOption(formly.props, value))
@@ -95,6 +120,8 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
                 options: [],
                 required: true,
                 disabled: true,
+                compareWith: (o1: FormSelectOption['value'], o2: FormSelectOption['value']) =>
+                  o1 === o2,
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
@@ -242,24 +269,14 @@ export function getLlecoopUserOrderDetailFormConfig(): FormlyFieldConfig[] {
       ],
     },
   ];
-}
 
-function setDayOptionsByDeliveryOption(
-  formlyProps: FormlyFieldConfig['props'],
-  deliveryType: 'pickup' | 'delivery'
-): void {
-  if (formlyProps) {
-    formlyProps['disabled'] = !deliveryType || false;
-    formlyProps['options'] = llecoopUserOrderDateOptions[deliveryType];
-  }
-}
-
-function setHourOptionsByDeliveryOption(
-  formlyProps: FormlyFieldConfig['props'],
-  deliveryType: 'pickup' | 'delivery'
-): void {
-  if (formlyProps) {
-    formlyProps['disabled'] = !deliveryType || false;
-    formlyProps['options'] = llecoopUserOrderTimeOptions[deliveryType];
-  }
+  return {
+    getConfig: () => formConfig,
+    getSubmitFormConfig: () => ({
+      label: 'Desar comanda',
+      emitOnChange: true,
+      resetOnSubmit: true,
+    }),
+    getFormFullWidth: true,
+  };
 }

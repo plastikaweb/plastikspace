@@ -3,9 +3,9 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
+  input,
+  output,
+  signal,
 } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -22,20 +22,23 @@ import { SubmitFormConfig } from '@plastik/core/entities';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedFormFeatureComponent<T> implements AfterViewInit {
-  @Input() fields!: FormlyFieldConfig[];
-  @Input() model!: T;
-  @Input() submitAvailable = true;
-  @Input() submitConfig?: SubmitFormConfig;
+  fields = input.required<FormlyFieldConfig[]>();
+  model = input<T | null>(null);
+  submitAvailable = input(true);
+  submitConfig = input<SubmitFormConfig>();
 
-  @Output() changeEvent: EventEmitter<T> = new EventEmitter<T>();
-  @Output() temporaryChangeEvent: EventEmitter<T> = new EventEmitter<T>();
+  changeEvent = output<T>();
+  temporaryChangeEvent = output<T>();
 
   options: FormlyFormOptions = {};
   form = new FormGroup({});
 
+  protected computedModel = signal<T | null>(null);
+
   ngAfterViewInit(): void {
     this.form.markAsUntouched();
     this.form.markAsPristine();
+    this.computedModel.update(() => this.model());
   }
 
   onSubmit(event: Event): void {
@@ -45,9 +48,9 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   }
 
   onModelChange(model: T): void {
-    this.model = model;
-    if (!this.submitAvailable) this.emitChange();
-    if (this.submitConfig?.emitOnChange) this.temporaryChangeEvent.emit(model);
+    this.computedModel.set(model);
+    if (!this.submitAvailable()) this.emitChange();
+    if (this.submitConfig()?.emitOnChange) this.temporaryChangeEvent.emit(model);
   }
 
   private onReset(): void {
@@ -57,8 +60,8 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   }
 
   private emitChange(): void {
-    if (this.model && this.form.valid) {
-      this.changeEvent.emit(this.model);
+    if (this.computedModel() && this.form.valid) {
+      this.changeEvent.emit(this.computedModel() as T);
     }
   }
 }

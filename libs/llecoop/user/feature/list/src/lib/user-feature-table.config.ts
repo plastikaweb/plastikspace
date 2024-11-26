@@ -1,4 +1,4 @@
-import { inject, Injectable, signal, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
@@ -34,17 +34,17 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
 
   private readonly isAdmin: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
     key: 'isAdmin',
-    title: 'Administrador',
+    title: 'Rol',
     propertyPath: 'isAdmin',
-    cssClasses: ['min-w-[50px]'],
+    cssClasses: ['max-w-[70px] px-tiny md:px-sub'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, user) =>
         user?.isAdmin
           ? this.sanitizer.bypassSecurityTrustHtml(
-              '<span class="material-icons text-primary-dark bg-gray-10 rounded-full p-tiny m-tiny">shield</span>'
+              '<span class="material-icons text-primary-dark">shield</span>'
             )
-          : '',
+          : '<span class="material-icons text-secondary">face</span>',
     },
   };
 
@@ -52,7 +52,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'email',
     title: 'Correu electrònic',
     propertyPath: 'email',
-    cssClasses: ['min-w-[210px]'],
+    cssClasses: ['min-w-[180px]'],
     sticky: true,
     sorting: true,
     formatting: {
@@ -64,7 +64,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'registered',
     title: 'Registrat',
     propertyPath: 'registered',
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['hidden md:flex min-w-[70px]'],
     sorting: true,
     formatting: {
       type: 'CUSTOM',
@@ -76,7 +76,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'emailVerified',
     title: 'Verificat',
     propertyPath: 'emailVerified',
-    cssClasses: ['hidden md:flex min-w-[100px]'],
+    cssClasses: ['hidden md:flex min-w-[70px]'],
     sorting: true,
     formatting: {
       type: 'CUSTOM',
@@ -119,7 +119,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
-    return signal({
+    return {
       ...defaultTableConfig,
       columnProperties: this.columnProperties,
       paginationVisibility: {
@@ -132,18 +132,13 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       caption: "Llistat d'usuaris",
       count: this.store.count,
       getData: () => this.store.entities(),
-      actionsColStyles: 'max-w-[135px]',
+      actionsColStyles: 'max-w-[120px]',
       actions: {
-        DELETE: {
-          visible: (user: LlecoopUser) => !user.isAdmin,
-          description: () => "Elimina l'usuari",
-          order: 1,
-        },
         SET_ADMIN: {
-          visible: (user: LlecoopUser) =>
-            !user.isAdmin && !!user.registered && !!user.emailVerified,
+          visible: () => true,
+          disabled: (user: LlecoopUser) => !user.registered || !user.emailVerified || user.isAdmin,
           description: () => "Fes l'usuari administrador",
-          order: 2,
+          order: 1,
           icon: () => 'person',
           execute: (user: LlecoopUser) => {
             if (user.id && !user.isAdmin) {
@@ -159,7 +154,13 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
             }
           },
         },
+        DELETE: {
+          visible: () => true,
+          disabled: (user: LlecoopUser) => user.isAdmin,
+          description: () => "Elimina l'usuari",
+          order: 2,
+        },
       },
-    }) as Signal<TableDefinition<LlecoopUser>>;
+    } as TableDefinition<LlecoopUser>;
   }
 }

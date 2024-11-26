@@ -6,7 +6,7 @@ import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
 import { StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
-import { getLlecoopUserCreateFormConfig } from './user-feature-create-form.config';
+import { userFeatureCreateFormConfig } from './user-feature-create-form.config';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class LlecoopUserCreateFacadeService implements DetailItemViewFacade<Llec
     title: 'Afegir usuari',
   });
 
-  formStructure = getLlecoopUserCreateFormConfig();
+  formConfig = userFeatureCreateFormConfig();
 
   onSubmit(user: Pick<LlecoopUser, 'email'>): void {
     if (this.store.entities().some(u => u.email === user.email)) {

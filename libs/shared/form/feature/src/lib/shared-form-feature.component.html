@@ -4,30 +4,29 @@
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
   <!-- form -->
-
   <formly-form
     class="form-container"
     [form]="form"
     [options]="options"
-    [fields]="fields"
-    [model]="model"
+    [fields]="fields()"
+    [model]="computedModel()"
     (modelChange)="onModelChange($event)"></formly-form>
 
   <!-- buttons -->
-  @if (submitAvailable) {
+  @if (submitAvailable()) {
     <button
       mat-flat-button
       color="primary"
       type="submit"
-      class="h-[56px] w-[150px]"
+      class="h-[56px] w-full sm:w-[150px]"
       data-test="submit-button"
-      [ngClass]="submitConfig?.buttonStyle || ''"
+      [ngClass]="submitConfig()?.buttonStyle || ''"
       [disabled]="!form.valid">
-      {{ submitConfig?.label || 'Submit' }}
+      {{ submitConfig()?.label || 'Submit' }}
     </button>
   }
 
-  <div class="flex justify-center text-base shared-form--extraLinks-container pt-sm">
+  <div class="flex justify-center pt-0 text-base shared-form--extraLinks-container md:pt-sm">
     <ng-content select=".extraLinks"></ng-content>
   </div>
 </form>

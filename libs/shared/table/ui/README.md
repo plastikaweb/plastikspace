@@ -25,23 +25,34 @@ It uses internally [Material Table](https://material.angular.io/components/table
 
 ## Inputs
 
-| Name                   | Type                                          | Description                                                            | Default                                    |
-| ---------------------- | --------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------ |
-| `data`                 | `<T[]>`                                       | The data to fill the table with a generic type annotation.             | []                                         |
-| `columnProperties`     | `TableColumnFormatting<T, FormattingTypes>[]` | Table structure skeleton.                                              |                                            |
-| `resultsLength`        | `number`                                      | The total number of items available for the current table data fields. |                                            |
-| `sort`                 | `TableSorting`                                | The sorting configuration based on column and direction.               |                                            |
-| `pagination`           | `PageEventConfig`                             | The table pagination configuration.                                    |                                            |
-| `noPagination`         | `boolean`                                     | Remove pagination component to the table.                              | false                                      |
-| `paginationVisibility` | `Partial<TablePaginationVisibility>`          | Pagination visibility configuration.                                   | All properties are set to false by default |
-| `pageSizeOptions`      | `number[]`                                    | The pagination page sizes available in the UI.                         |                                            |
-| `caption`              | `string`                                      | Main title of the table.                                               |                                            |
+| Name                      | Type                                                     | Description                                                            | Default                                    |
+| ------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------ |
+| `data`                    | `<T[]>`                                                  | The data to fill the table with a generic type annotation.             | []                                         |
+| `columnProperties`        | `TableColumnFormatting<T, FormattingTypes>[]`            | Table structure skeleton.                                              | Required                                   |
+| `resultsLength`           | `number`                                                 | The total number of items available for the current table data fields. | Required                                   |
+| `sort`                    | `TableSorting`                                           | The sorting configuration based on column and direction.               |                                            |
+| `pagination`              | `PageEventConfig`                                        | The table pagination configuration.                                    |                                            |
+| `noPagination`            | `boolean`                                                | Remove pagination component to the table.                              | false                                      |
+| `paginationVisibility`    | `Partial<TablePaginationVisibility>`                     | Pagination visibility configuration.                                   | All properties are set to false by default |
+| `pageSizeOptions`         | `number[]`                                               | The pagination page sizes available in the UI.                         |                                            |
+| `caption`                 | `string`                                                 | Main title of the table.                                               |                                            |
+| `actions`                 | `TableControlAction<T>`                                  | Table actions configuration.                                           |                                            |
+| `filterCriteria`          | `Record<string, string>`                                 | Table filter criteria configuration.                                   |                                            |
+| `filterCriteriaPredicate` | `(data: T, criteria: Record<string, string>) => boolean` | Table filter criteria predicate.                                       |                                            |
+| `extraRowStyles`          | `(element: T) => string`                                 | Table extra row styles configuration.                                  |                                            |
+| `actionsColStyles`        | `string`                                                 | Table actions column styles configuration.                             | ''                                         |
+| `expandable`              | `boolean`                                                | Table has expandable row behavior                                      | false                                      |
+| `expandableElementId`     | `EntityId\string\null`                                   | Table expandable element id                                            | null                                       |
+| `expandedDetailTpl`       | `TemplateRef<unknown>\null`                              | Table expandable element reference.                                    | null                                       |
 
 ## Outputs
 
 | Name               | Type                            | Description                               |
 | ------------------ | ------------------------------- | ----------------------------------------- |
 | `changePagination` | `EventEmitter<PageEventConfig>` | emits the pagination table configuration. |
+| `changeSorting`    | `EventEmitter<TableSorting>`    | emits the sorting configuration.          |
+| `delete`           | `EventEmitter<T>`               | emits the delete action for a row.        |
+| `getChangedData`   | `T/undefined`                   | emits the changed data for a row.         |
 
 ## Example
 

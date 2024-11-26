@@ -18,6 +18,7 @@ A shared library to transform data that involves object manipulation and/or gene
 
 - `isEmpty`: checks if an array or object are empty.
 - `isString`: checks if passed parameter is a string.
+- `ìsNil`: checks if passed parameter is null or undefined.
 - `isObject`: checks if passed parameter is an object.
 - `getQueryParams`: given an url or a name/value pairs object returns an object with name/value pairs of all the query params available.
 - `formatURLQueryParams`: returns an object from a url with query params.
@@ -26,6 +27,7 @@ A shared library to transform data that involves object manipulation and/or gene
 - `areObjectEntriesEqual`: returns a boolean after comparing the object entries.
 - `transformStringToBooleanProperties`: returns an object with replaced values for "false" and "true" as boolean values.
 - `allAreFalsy`: returns a boolean value depending if all elements in the passed array are false or not.
+- `transformToString`: returns a string value when the input was able to be converted in string format otherwise it returns an empty string.
 - `collectionToArray`: returns an array based on passed collection.
 
 ## Running unit tests

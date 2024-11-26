@@ -1,9 +1,9 @@
 import { Route } from '@angular/router';
-import { AUTH_FACADE, AUTH_FORM_FACADE, AuthFeatureComponent } from '@plastik/auth';
-import { getRegisterFormConfig } from './register-form.config';
+import { AUTH_FORM_FACADE, AUTH_SERVICE, AuthFeatureComponent } from '@plastik/auth';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { RegisterFacadeService } from './register-facade.service';
 import { FORM_TOKEN } from '@plastik/core/entities';
+import { RegisterFacadeService } from './register-facade.service';
+import { registerFormConfig } from './register-form.config';
 
 export const authRegisterFeatureRoutes: Route[] = [
   {
@@ -11,7 +11,7 @@ export const authRegisterFeatureRoutes: Route[] = [
     component: AuthFeatureComponent,
     providers: [
       {
-        provide: AUTH_FACADE,
+        provide: AUTH_SERVICE,
         useClass: FirebaseAuthService,
       },
       {
@@ -20,9 +20,8 @@ export const authRegisterFeatureRoutes: Route[] = [
       },
       {
         provide: FORM_TOKEN,
-        useValue: getRegisterFormConfig(),
+        useFactory: registerFormConfig,
       },
     ],
-    runGuardsAndResolvers: 'always',
   },
 ];

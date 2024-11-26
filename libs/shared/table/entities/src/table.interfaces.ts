@@ -7,18 +7,58 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSort } from '@angular/material/sort';
 import { EntityId } from '@ngrx/signals/entities';
 import { FormattingTypes, PropertyFormatting } from '@plastik/shared/formatters';
-import { Observable } from 'rxjs';
 
+/**
+ * Represents the base interface for an editable attribute.
+ * @template T - The type of the item that the attribute belongs to.
+ */
 export interface EditableAttributeBase<T> {
+  /**
+   * The type of the editable attribute.
+   */
   type: 'text' | 'number' | 'select' | 'textarea' | 'checkbox' | 'toggle' | 'radio';
+
+  /**
+   * The attributes of the editable attribute.
+   */
   attributes: {
+    /**
+     * The label of the attribute.
+     */
     label?: string;
+
+    /**
+     * The placeholder text for the attribute.
+     */
     placeholder?: string;
+
+    /**
+     * The suffix text for the attribute.
+     */
     suffix?: string;
+
+    /**
+     * The prefix text for the attribute.
+     */
     prefix?: string;
+
+    /**
+     * Indicates whether the attribute is disabled.
+     */
     disabled?: boolean;
+
+    /**
+     * The styles to be applied to the attribute.
+     */
     styles?: string;
   };
+
+  /**
+   * A callback function that is called when the value of the attribute changes.
+   * @param value - The new value of the attribute.
+   * @param item - The item that the attribute belongs to.
+   * @returns The updated item.
+   */
   onChanges?: (value: string | number | boolean, item: T) => T;
 }
 
@@ -75,6 +115,17 @@ type EditableRadioAttributes<T> = EditableAttributeBase<T> & {
   onChanges?: (value: MatRadioChange, item: T) => T;
 };
 
+/**
+ * Represents a union type of various editable attribute types for an object.
+ * @template OBJ - The type of the object that the attributes belong to.
+ * @see EditableCheckboxAttributes
+ * @see EditableToggleAttributes
+ * @see EditableRadioAttributes
+ * @see EditableSelectAttributes
+ * @see EditableTextareaAttributes
+ * @see EditableTextAttributes
+ * @see EditableNumberAttributes
+ */
 type EditableAttributes<OBJ> =
   | EditableCheckboxAttributes<OBJ>
   | EditableToggleAttributes<OBJ>
@@ -84,30 +135,72 @@ type EditableAttributes<OBJ> =
   | EditableTextAttributes<OBJ>
   | EditableNumberAttributes<OBJ>;
 
+/**
+ * Type guard function to check if the given attributes are of type `EditableTextAttributes`.
+ * @template T - The type of the attributes.
+ * @param {EditableAttributes<T>} attributes - The attributes to check.
+ * @returns {boolean} True if the attributes are of type `EditableTextAttributes`, otherwise false.
+ */
 export const isTextTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableTextAttributes<T> => attributes.type === 'text';
 
+/**
+ * Type guard function to check if the given attributes are of type `EditableNumberAttributes`.
+ * @template T - The type of the attributes.
+ * @param {EditableAttributes<T>} attributes - The attributes to check.
+ * @returns {boolean} True if the attributes are of type `EditableNumberAttributes`, otherwise false.
+ */
 export const isNumberTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableNumberAttributes<T> => attributes.type === 'number';
 
+/**
+ * Type guard function to check if the given attributes are of type `EditableSelectAttributes`.
+ * @template T - The type of the attributes.
+ * @param {EditableAttributes<T>} attributes - The attributes to check.
+ * @returns {boolean} True if the attributes are of type `EditableSelectAttributes`, otherwise false.
+ */
 export const isSelectTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableSelectAttributes<T> => attributes.type === 'select';
 
+/**
+ * Type guard function to check if the given attributes are of type `EditableTextareaAttributes`.
+ * @template T - The type of the attributes.
+ * @param {EditableAttributes<T>} attributes - The attributes to check.
+ * @returns {boolean} True if the attributes are of type `EditableTextareaAttributes`, otherwise false.
+ */
 export const isTextareaTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableTextareaAttributes<T> => attributes.type === 'textarea';
 
+/**
+ * Type guard function to check if the given attributes are of type `EditableCheckboxAttributes`.
+ * @template T - The type of the attributes.
+ * @param {EditableAttributes<T>} attributes - The attributes to check.
+ * @returns {boolean} `true` if the attributes are of type `EditableCheckboxAttributes`, otherwise `false`.
+ */
 export const isCheckboxTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableCheckboxAttributes<T> => attributes.type === 'checkbox';
 
+/**
+ * Type guard function to check if the given attributes are of type `EditableRadioAttributes`.
+ * @template T - The type of the attributes.
+ * @param {EditableAttributes<T>} attributes - The attributes to check.
+ * @returns {boolean} `true` if the attributes are of type `EditableRadioAttributes`, otherwise `false`.
+ */
 export const isRadioTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableRadioAttributes<T> => attributes.type === 'radio';
 
+/**
+ * Type guard function to check if the given attributes are of type `EditableToggleAttributes`.
+ * @template T - The type of the attributes.
+ * @param {EditableAttributes<T>} attributes - The attributes to check.
+ * @returns {boolean} `true` if the attributes are of type `EditableToggleAttributes`, otherwise `false`.
+ */
 export const isToggleTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableToggleAttributes<T> => attributes.type === 'toggle';
@@ -149,17 +242,78 @@ export type TableControlActionTypes =
   | `SET_${Uppercase<string>}`
   | `UPDATE_${Uppercase<string>}`;
 
+/**
+ * Interface representing the definition of a table control action.
+ * @template T - The type of the element that the action will be performed on.
+ */
 export interface TableControlActionDefinition<T> {
+  /**
+   * Determines whether the action is visible for the given element.
+   * @param element - The element to check visibility for.
+   * @returns `true` if the action is visible, otherwise `false`.
+   */
   visible: (element: T) => boolean;
+
+  /**
+   * Determines whether the action is disabled for the given element.
+   * @param element - The element to check if the action is disabled.
+   * @returns `true` if the action is disabled, otherwise `false`.
+   */
   disabled?: (element: T) => boolean;
+
+  /**
+   * Executes the action for the given element.
+   * @param element - The element to execute the action on.
+   * @returns The result of the action, which can be a boolean, string, the element itself, or void.
+   */
   execute?: (element: T) => boolean | string | T | void;
+
+  /**
+   * Generates a link for the given element.
+   * @param element - The element to generate the link for.
+   * @returns An array of strings representing the link.
+   */
   link?: (element: T) => string[];
+
+  /**
+   * Generates a fragment identifier for the given element.
+   * @param element - The element to generate the fragment for.
+   * @returns A string representing the fragment identifier.
+   */
   fragment?: (element?: T) => string;
+
+  /**
+   * Retrieves the icon for the given element.
+   * @param element - The element to get the icon for.
+   * @returns A string representing the icon.
+   */
   icon?: (element: T) => string;
-  description?: (element?: T) => string;
+
+  /**
+   * Retrieves the description for the given element.
+   * @param element - The element to get the description for.
+   * @returns A string representing the description.
+   */
+  description?: (element: T) => string;
+
+  /**
+   * Specifies the order in the UI of the action.
+   */
   order?: number;
+
+  /**
+   * Specifies the CSS class for the container button.
+   */
   containerBtnClass?: string;
+
+  /**
+   * Indicates whether the action is part of a grouping.
+   */
   grouping?: boolean;
+
+  /**
+   * Specifies the type of the action.
+   */
   type?: 'custom' | 'input';
 }
 
@@ -240,11 +394,21 @@ export interface TableSwitchEvent {
  */
 const pageSizeOptions = [15, 25, 50];
 
+/**
+ * Interface representing the configuration for a table structure.
+ * @template T - The type of the table data.
+ */
 export interface TableStructureConfig<T> {
+  /**
+   * Retrieves the table definition.
+   * @param overwrite - An optional object that can overwrite specific keys in the table definition.
+   * @param tableControlStructureMerge - An optional partial table definition to merge with the existing one.
+   * @returns An observable or signal that emits the table definition.
+   */
   getTableDefinition(
     overwrite?: ({ key: string } & Record<string, string>) | null,
     tableControlStructureMerge?: Partial<TableDefinition<T>>
-  ): Observable<TableDefinition<T>> | Signal<TableDefinition<T>>;
+  ): TableDefinition<T>;
 }
 
 /**
@@ -278,4 +442,8 @@ export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableDefinition<unknown>>
   }
 );
 
+/**
+ * @description Table token.
+ * @description This token is used to provide the table structure configuration.
+ */
 export const TABLE_TOKEN = new InjectionToken<TableStructureConfig<unknown>>('TABLE_TOKEN');

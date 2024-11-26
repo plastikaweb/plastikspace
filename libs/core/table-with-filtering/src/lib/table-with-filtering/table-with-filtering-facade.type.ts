@@ -4,14 +4,14 @@ import { BaseEntity, ViewConfigUI } from '@plastik/core/entities';
 import { TableDefinition, TableSorting } from '@plastik/shared/table/entities';
 
 export interface TableWithFilteringFacade<T extends BaseEntity> {
-  tableDefinition: Signal<TableDefinition<T>>;
+  tableDefinition: TableDefinition<T>;
   filterCriteria?: Signal<Record<string, string>>;
   tableFilterPredicate?: (data: T, criteria: Record<string, string>) => boolean;
   onTableSorting?(sorting: TableSorting): void;
   onTableActionDelete?(item: unknown): void;
   onChangeFilterCriteria?: (criteria: Record<string, string>) => void;
   viewConfig: Signal<ViewConfigUI>;
-  formStructure?: Signal<FormlyFieldConfig[]>;
+  formStructure?: FormlyFieldConfig[];
   routingToDetailPage: Signal<{
     visible: boolean;
     disabled?: boolean;

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA, Signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NO_ERRORS_SCHEMA } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,7 +9,7 @@ import { TableDefinition } from '@plastik/shared/table/entities';
 import { InputTableComponent } from './input-table.component';
 
 interface InputTableProps extends FormlyFieldProps {
-  tableDefinition: Signal<TableDefinition<BaseEntity>>;
+  tableDefinition: TableDefinition<BaseEntity>;
   tableRowValueConditionFn: (element: BaseEntity) => boolean;
 }
 

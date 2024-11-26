@@ -7,4 +7,4 @@ export interface AuthFacade {
   requestPassword(email: string): Observable<unknown>;
 }
 
-export const AUTH_FACADE = new InjectionToken<AuthFacade>('AUTH_FACADE');
+export const AUTH_SERVICE = new InjectionToken<AuthFacade>('AUTH_SERVICE');

@@ -42,11 +42,12 @@ Thumbs.db
 .angular
 .eslintcache
 NX
+.nx/*
+nx-cloud.env
 migrations.json
 .pa11y-report.json
 pa11y-ci-report
 
-.nx/*
 .yarn/*
 
 # firebase

@@ -23,10 +23,10 @@ describe('InputTableComponent', () => {
 
     fixture = TestBed.createComponent(InputTableTypeComponent);
     component = fixture.componentInstance;
-    component.props.tableDefinition = signal({
+    component.props.tableDefinition = {
       columnProperties: [],
       count: signal(0),
-    });
+    };
 
     fixture.detectChanges();
   });

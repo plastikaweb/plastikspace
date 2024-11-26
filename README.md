@@ -90,6 +90,14 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 ### Shared
 
+#### Auth
+
+- [shared-auth-feature](libs/shared/auth/feature/README.md)
+- [shared-auth-firebase-data-access](libs/shared/auth/firebase/data-access/README.md)
+- [shared-auth-login-feature](libs/shared/auth/login/feature/README.md)
+- [shared-auth-register-feature](libs/shared/auth/register/feature/README.md)
+- [shared-auth-request-password-feature](libs/shared/auth/request-password/feature/README.md)
+
 #### Notification
 
 - [shared-notification-entities](libs/shared/notification/entities/README.md)
@@ -110,6 +118,10 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 - [shared-form-feature](libs/shared/form/feature/README.md)
 - [shared-form-ui-year-picker/shared-form-ui-year-picker-type](libs/shared/form/ui/year-picker/README.md)
+- [shared-textarea-with-counter](libs/shared/form/ui/textarea-with-counter/README.md)
+- [shared-input-color-picker](libs/shared/form/ui/input-color-picker/README.md)
+- [shared-input-password-with-visibility](libs/shared/form/ui/input-password-with-visibility/README.md)
+- [shared-input-table](libs/shared/form/ui/table/README.md)
 
 #### Activity
 

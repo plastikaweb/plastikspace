@@ -1,10 +1,28 @@
 {
   "version": "0.2",
-  "language": "ca-ES, ca, en-ES, en",
+  "language": "ca, es, en",
   "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
   "ignorePaths": [],
   "dictionaryDefinitions": [],
-  "words": ["Llecoop", "preexperimental", "prellecoop", "prenasa"],
+  "words": [
+    "appspot",
+    "aprox",
+    "dotnet",
+    "faqs",
+    "firebaseapp",
+    "firefox",
+    "formly",
+    "llecoop",
+    "Llecoop",
+    "peticio",
+    "preexperimental",
+    "prellecoop",
+    "prenasa",
+    "Savkin",
+    "simondotm",
+    "tuesday",
+    "wednesday"
+  ],
   "ignoreWords": [],
   "import": []
 }

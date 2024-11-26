@@ -5,7 +5,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
-import { getLlecoopCategoryDetailFormConfig } from './category-feature-detail-form.config';
+import { categoryFeatureDetailFormConfig } from './category-feature-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +24,7 @@ export class LlecoopCategoryDetailFacadeService
     };
   });
 
-  formStructure = getLlecoopCategoryDetailFormConfig();
+  formConfig = categoryFeatureDetailFormConfig();
 
   onSubmit(data: Partial<LlecoopProductCategory>): void {
     this.model()?.id ? this.store.update(data) : this.store.create(data);

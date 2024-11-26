@@ -1,14 +1,16 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { inject, signal, Signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormConfig } from '@plastik/core/entities';
 import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
 import { LlecoopOrderListUserOrderDetailFormTableConfig } from './order-list-user-order-detail-table-form.config';
 
-export function getLlecoopOrderListUserOrderDetailFormConfig(): Signal<FormlyFieldConfig[]> {
-  const tableColumnProperties = inject(LlecoopOrderListUserOrderDetailFormTableConfig);
-
-  return signal<FormlyFieldConfig[]>([
+@Injectable({
+  providedIn: 'root',
+})
+export class OrderListUserOrderDetailFormConfig {
+  private readonly tableColumnProperties = inject(LlecoopOrderListUserOrderDetailFormTableConfig);
+  private readonly config = [
     {
       key: 'id',
     },
@@ -20,16 +22,26 @@ export function getLlecoopOrderListUserOrderDetailFormConfig(): Signal<FormlyFie
       type: 'table',
       props: {
         required: true,
-        tableDefinition: tableColumnProperties.getTableDefinition(),
+        tableDefinition: this.tableColumnProperties.getTableDefinition(),
         tableRowValueConditionFn: (element: LlecoopOrderProduct) => element,
       },
       validators: {
         allReviewed: {
           expression: (control: AbstractControl) =>
-            control.value.every((element: LlecoopOrderProduct) => element.reviewed),
+            control.value?.every((element: LlecoopOrderProduct) => element.reviewed),
           message: 'Tots els productes han de ser revisats',
         },
       },
     },
-  ]);
+  ];
+
+  get(): FormConfig<LlecoopOrderProduct> {
+    return {
+      getConfig: () => this.config,
+      getSubmitFormConfig: () => ({
+        label: 'Desar comanda',
+        buttonStyle: 'w-[150px]',
+      }),
+    };
+  }
 }
