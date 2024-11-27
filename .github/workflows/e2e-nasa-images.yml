@@ -1,4 +1,4 @@
-name: E2E nasa-images
+name: Nasa Images e2e
 on:
   workflow_dispatch:
 

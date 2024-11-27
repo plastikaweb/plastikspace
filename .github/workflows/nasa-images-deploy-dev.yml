@@ -1,8 +1,8 @@
-name: Deploy Nasa Images to staging
+name: Nasa Images deploy staging
 
 on:
   workflow_run:
-    workflows: [CI, pa11y nasa-images]
+    workflows: [CI]
     types: [completed]
     branches:
       - develop

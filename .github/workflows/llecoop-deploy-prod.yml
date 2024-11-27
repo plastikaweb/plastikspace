@@ -1,4 +1,4 @@
-name: Deploy Llecoop Prod
+name: Llecoop deploy prod
 
 on:
   push:
