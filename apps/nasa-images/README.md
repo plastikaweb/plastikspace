@@ -18,10 +18,10 @@ See the [NASA Image library analysis wiki](https://github.com/plastikaweb/plasti
 
 It has 2 main views:
 
-> ![nasa images search](nasa-images-search.png)
+> nasa images search
 > Search page
 >
-> ![nasa images faqs](nasa-images-faqs.png)
+> nasa images faqs
 > FAQs page
 
 ## Running commands

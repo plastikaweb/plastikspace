@@ -31,6 +31,7 @@ export interface SubmitFormConfig {
   compareCommonKeysOnly?: boolean;
   ignoredKeysWhileComparing?: string[];
   emitOnChange?: boolean;
+  disableOnSubmit?: boolean;
 }
 
 export interface FormSelectOption {

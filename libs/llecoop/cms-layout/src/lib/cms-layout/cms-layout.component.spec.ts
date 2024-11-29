@@ -1,20 +1,24 @@
+import { provideHttpClient } from '@angular/common/http';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideFirebaseApp } from '@angular/fire/app';
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
-import { initializeApp } from 'firebase/app';
-import { LlecoopOrderListFeatureDetailComponent } from './llecoop-order-list-feature-detail.component';
+import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { CmsLayoutComponent } from './cms-layout.component';
 
-describe('LlecoopOrderListFeatureDetailComponent', () => {
-  let component: LlecoopOrderListFeatureDetailComponent;
-  let fixture: ComponentFixture<LlecoopOrderListFeatureDetailComponent>;
+describe('CmsLayoutComponent', () => {
+  let component: CmsLayoutComponent;
+  let fixture: ComponentFixture<CmsLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LlecoopOrderListFeatureDetailComponent],
+      imports: [NoopAnimationsModule, CmsLayoutComponent, AngularSvgIconModule.forRoot()],
       providers: [
-        provideMockStore(),
+        provideHttpClient(),
+        provideMockStore({}),
         provideFirebaseApp(() =>
           initializeApp({
             apiKey: 'AIzaSyAPtqItl2UtYscGTCBnnNUK9gdWOikXU1c',
@@ -24,15 +28,16 @@ describe('LlecoopOrderListFeatureDetailComponent', () => {
         ),
         provideFirestore(() => getFirestore()),
         provideAuth(() => getAuth()),
+        { provide: VIEW_CONFIG, useValue: null },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LlecoopOrderListFeatureDetailComponent);
+    fixture = TestBed.createComponent(CmsLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

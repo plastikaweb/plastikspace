@@ -6,7 +6,9 @@
     "../../libs/shared/auth/firebase/data-access/src/isLogged.guard.ts",
     "../../libs/shared/auth/firebase/data-access/src/isNotLogged.guard.ts",
     "../../libs/shared/auth/firebase/data-access/src/isAdmin.guard.ts",
-    "../../libs/core/util/environments/src/index.ts"
+    "../../libs/core/util/environments/src/index.ts",
+    "src/app/cms-layout-config.ts",
+    "../../libs/llecoop/cms-layout/src/lib/cms-layout/mat-paginator-intl.service.ts"
   ],
   "compilerOptions": {
     "types": ["jest", "node"]

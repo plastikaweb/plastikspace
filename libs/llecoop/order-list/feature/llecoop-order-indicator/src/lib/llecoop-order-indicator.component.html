@@ -1,14 +1,14 @@
 @defer (when orderListStore.currentOrder()) {
   <button
     mat-flat-button
-    color="accent"
-    class="text-white w-max m-tiny px-sub py-tiny"
+    aria-label="comanda"
+    class="w-max rounded-full border-2 border-white m-tiny px-sub py-tiny bg-primary-light"
     [routerLink]="[
       openedUserOrderList()?.id
         ? './soci/comanda/' + openedUserOrderList()?.id
         : './soci/comanda/crear',
     ]">
-    <div class="flex flex-row items-center justify-center break-words gap-sub">
+    <div class="flex flex-row justify-center items-center break-words gap-sub">
       <span class="hidden md:flex"> #{{ orderListStore.currentOrder()?.name }} </span>
       <span class="hidden md:flex">|</span>
       <span class="text-pretty">

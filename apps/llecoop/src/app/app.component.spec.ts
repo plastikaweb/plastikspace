@@ -2,10 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
-import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AppComponent } from './app.component';
-import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -17,13 +14,8 @@ describe('AppComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, AppComponent, AngularSvgIconModule.forRoot()],
-      providers: [
-        provideRouter([]),
-        provideMockStore({ initialState }),
-        { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: null },
-        { provide: VIEW_CONFIG, useValue: null },
-      ],
+      imports: [NoopAnimationsModule, AppComponent],
+      providers: [provideRouter([]), provideMockStore({ initialState })],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
