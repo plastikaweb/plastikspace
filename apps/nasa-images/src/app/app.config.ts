@@ -5,7 +5,7 @@ import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { TitleStrategy, provideRouter } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
-import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
+import { NavigationActionTiming, RouterState, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule, provideStore } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
@@ -54,6 +54,7 @@ export const appConfig: ApplicationConfig = {
     provideRouterStore({
       serializer: CustomRouterSerializer,
       navigationActionTiming: NavigationActionTiming.PreActivation,
+      routerState: RouterState.Minimal,
     }),
     {
       provide: ENVIRONMENT,

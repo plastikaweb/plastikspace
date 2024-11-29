@@ -12,7 +12,7 @@ export class NavigationService {
 
   constructor(
     private readonly router: Router,
-    private readonly location: Location,
+    private readonly location: Location
   ) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {

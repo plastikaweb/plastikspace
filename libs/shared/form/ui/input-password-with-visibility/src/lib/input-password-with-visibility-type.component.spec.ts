@@ -12,10 +12,18 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
 
     fixture = TestBed.createComponent(InputPasswordWithVisibilityTypeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should toggle password visibility when hidePassword is called', () => {
+    const initialVisibility = component.hiddenPass();
+    const event = new Event('click');
+
+    component.hidePassword(event);
+
+    expect(component.hiddenPass()).toBe(!initialVisibility);
   });
 });

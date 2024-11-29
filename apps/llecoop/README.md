@@ -20,3 +20,5 @@ Main application entry point for Llecoop, an application to do handle users coop
 ## Available libraries
 
 This is a list of all the related only to llecoop app.
+
+- [llecoop-cms-layout](../../libs/llecoop/cms-layout/README.md)

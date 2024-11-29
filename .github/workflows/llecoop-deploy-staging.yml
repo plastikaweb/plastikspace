@@ -1,4 +1,4 @@
-name: Deploy Llecoop Staging
+name: Llecoop deploy staging
 
 on:
   push:

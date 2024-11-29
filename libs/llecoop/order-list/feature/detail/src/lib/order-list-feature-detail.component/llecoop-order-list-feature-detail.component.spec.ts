@@ -17,7 +17,7 @@ describe('LlecoopOrderListFeatureDetailComponent', () => {
         provideMockStore(),
         provideFirebaseApp(() =>
           initializeApp({
-            apiKey: '',
+            apiKey: 'AIzaSyAPtqItl2UtYscGTCBnnNUK9gdWOikXU1c',
             authDomain: 'llecoop.firebaseapp.com',
             projectId: 'llecoop',
           })

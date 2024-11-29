@@ -1,0 +1,25 @@
+.core-cms-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 55px 1fr 55px;
+  min-block-size: 100vh;
+  min-block-size: 100dvh;
+  grid-template-areas: 'header header' 'content content' 'footer footer';
+
+  plastik-core-cms-layout-ui-header {
+    grid-area: header;
+  }
+
+  .mat-sidenav-container {
+    grid-area: content;
+
+    > .mat-sidenav-content {
+      height: calc(100dvh - 110px);
+    }
+  }
+
+  plastik-core-cms-layout-ui-footer {
+    grid-area: footer;
+    align-content: end;
+  }
+}

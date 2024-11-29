@@ -5,6 +5,7 @@ import { Action } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 import { RouterStateEffects } from './router-state.effects';
 
 describe('RouterState Effects', () => {
@@ -14,7 +15,12 @@ describe('RouterState Effects', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RouterStateEffects, provideRouter([]), provideMockActions(() => actions$)],
+      providers: [
+        RouterStateEffects,
+        provideRouter([]),
+        provideMockStore(),
+        provideMockActions(() => actions$),
+      ],
     });
 
     effects = TestBed.inject(RouterStateEffects);

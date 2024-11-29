@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { FORMLY_CONFIG, FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
@@ -60,12 +59,6 @@ import { urlValidator } from './validations/validators/url.validator';
     }),
   ],
   providers: [
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'fill',
-      },
-    },
     {
       provide: FORMLY_CONFIG,
       useFactory: registerValidatorsMessageExtension,

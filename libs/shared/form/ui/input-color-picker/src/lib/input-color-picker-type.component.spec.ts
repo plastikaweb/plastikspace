@@ -12,10 +12,9 @@ describe('InputColorPickerTypeComponent', () => {
 
     fixture = TestBed.createComponent(InputColorPickerTypeComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

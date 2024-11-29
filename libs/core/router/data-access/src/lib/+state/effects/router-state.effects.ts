@@ -1,3 +1,4 @@
+/* eslint-disable ngrx/no-dispatch-in-effects */
 import { Location } from '@angular/common';
 import { Injectable, NgZone } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -6,15 +7,13 @@ import {
   ROUTER_ERROR,
   ROUTER_NAVIGATED,
   ROUTER_NAVIGATION,
-  ROUTER_REQUEST,
-  RouterRequestPayload,
 } from '@ngrx/router-store';
 import { tap } from 'rxjs';
 
+import { Store } from '@ngrx/store';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { NavigationService } from '../../services/navigation.service';
 import { routerActions } from '../actions/router-state.actions';
-import { RouterStateUrl } from '../reducer/router-state.reducer';
 
 @Injectable()
 export class RouterStateEffects {
@@ -66,14 +65,8 @@ export class RouterStateEffects {
   setActivityOnNavigation$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(ROUTER_REQUEST),
-        tap(({ payload }) => {
-          const queryParams = (payload as RouterRequestPayload<RouterStateUrl>).routerState
-            ?.queryParams;
-          if (!queryParams?.['noActivity']) {
-            activityActions.setActivity({ isActive: true });
-          }
-        })
+        ofType(ROUTER_NAVIGATION),
+        tap(() => this.store.dispatch(activityActions.setActivity({ isActive: true })))
       );
     },
     { dispatch: false }
@@ -83,7 +76,7 @@ export class RouterStateEffects {
     () => {
       return this.actions$.pipe(
         ofType(ROUTER_NAVIGATED, ROUTER_CANCEL, ROUTER_ERROR),
-        tap(() => activityActions.setActivity({ isActive: false }))
+        tap(() => this.store.dispatch(activityActions.setActivity({ isActive: false })))
       );
     },
     { dispatch: false }
@@ -93,6 +86,7 @@ export class RouterStateEffects {
     private readonly actions$: Actions,
     private readonly location: Location,
     private readonly navigationService: NavigationService,
-    private readonly zone: NgZone
+    private readonly zone: NgZone,
+    private readonly store: Store
   ) {}
 }

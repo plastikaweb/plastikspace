@@ -44,5 +44,8 @@
     }
   },
   "angular.log": "verbose",
-  "editor.formatOnPaste": true
+  "editor.formatOnPaste": true,
+  "[scss]": {
+    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+  }
 }

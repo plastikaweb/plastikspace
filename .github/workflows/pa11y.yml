@@ -1,4 +1,7 @@
-name: pa11y nasa-images
+name: Nasa Images pa11y
+
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
 on:
   push:

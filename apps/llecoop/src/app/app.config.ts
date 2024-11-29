@@ -12,20 +12,17 @@ import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angul
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
-  PreloadAllModules,
   RouteReuseStrategy,
   TitleStrategy,
   provideRouter,
   withComponentInputBinding,
-  withPreloading,
   withViewTransitions,
 } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, RouterState, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
-import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
+import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import {
   CustomRouterSerializer,
@@ -33,11 +30,11 @@ import {
   RouterStateEffects,
   routerReducers,
 } from '@plastik/core/router-state';
+import { selectActivityFeature } from '@plastik/shared/activity/data-access';
 import { NotificationDataAccessModule } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
-import { HeaderConfigService } from './cms-header-config';
 import { viewConfig } from './cms-layout-config';
 import { LlecoopRouteReuseStrategy } from './llecoop-route-reuse.strategy';
 
@@ -76,19 +73,20 @@ export const appConfig: ApplicationConfig = {
     //   }
     //   return storage;
     // }),
-    provideRouter(
-      appRoutes,
-      withViewTransitions(),
-      withComponentInputBinding(),
-      withPreloading(PreloadAllModules)
-    ),
+    provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     {
       provide: RouteReuseStrategy,
       useClass: LlecoopRouteReuseStrategy,
     },
     importProvidersFrom(
-      StoreModule.forRoot(routerReducers, {}),
+      StoreModule.forRoot(routerReducers, {
+        runtimeChecks: {
+          strictActionImmutability: true,
+          strictStateImmutability: true,
+        },
+      }),
       EffectsModule.forRoot([RouterStateEffects]),
+      StoreModule.forFeature(selectActivityFeature),
       isDevMode()
         ? StoreDevtoolsModule.instrument({
             name: environment.name,
@@ -96,14 +94,13 @@ export const appConfig: ApplicationConfig = {
             connectInZone: true,
           })
         : [],
-      CoreCmsLayoutDataAccessModule,
       NotificationDataAccessModule,
       NotificationUiMatSnackbarModule
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,
       navigationActionTiming: NavigationActionTiming.PreActivation,
-      routerState: RouterState.Full,
+      routerState: RouterState.Minimal,
     }),
     {
       provide: ENVIRONMENT,
@@ -117,7 +114,6 @@ export const appConfig: ApplicationConfig = {
       provide: TitleStrategy,
       useClass: PrefixTitleService,
     },
-    { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useFactory: HeaderConfigService },
     { provide: VIEW_CONFIG, useFactory: viewConfig },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

@@ -1,5 +1,5 @@
 <div
-  class="z-10 block mt-0 overflow-auto border-t border-solid md:mt-4 border-gray-10 table-wrapper">
+  class="block overflow-auto z-10 mt-0 border-t border-solid md:mt-4 border-gray-10 table-wrapper">
   <mat-table
     class="table w-full"
     matSort
@@ -31,6 +31,7 @@
 
         <mat-cell
           *matCellDef="let row; let i = index"
+          class="py-sub"
           [plastikTableCellTitle]="column.showTitle ?? true"
           [ngClass]="setCellNgClass(column)">
           @switch (column.formatting.type) {
@@ -169,7 +170,7 @@
           [ngClass]="actionsColStyles() || ''"></mat-header-cell>
         <mat-cell
           *matCellDef="let element"
-          class="overflow-visible mat-cell-actions"
+          class="overflow-visible mat-cell-actions py-sub"
           [ngClass]="actionsColStyles() || ''">
           @for (action of actions() | keyvalue | orderTableActionsElements; track action.key) {
             @if (action.key === 'EDIT' && action.value?.visible(element)) {
@@ -228,7 +229,7 @@
     @if (expandable()) {
       <ng-container matColumnDef="expand" sticky="true">
         <mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</mat-header-cell>
-        <mat-cell *matCellDef="let element">
+        <mat-cell *matCellDef="let element" class="py-sub">
           <button
             mat-icon-button
             aria-label="expand row"

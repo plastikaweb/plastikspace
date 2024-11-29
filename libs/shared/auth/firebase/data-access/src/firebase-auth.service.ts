@@ -11,7 +11,6 @@ import {
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { activityActions } from '@plastik/shared/activity/data-access';
 
 import {
   notificationActions,
@@ -67,8 +66,6 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the login process is complete.
    */
   async login(email: string, password: string): Promise<void> {
-    this.state.dispatch(activityActions.setActivity({ isActive: true }));
-
     try {
       await signInWithEmailAndPassword(this.auth, email, password);
       await this.router.navigate(['']);
@@ -89,8 +86,6 @@ export class FirebaseAuthService {
           }),
         })
       );
-    } finally {
-      this.state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -108,8 +103,6 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the registration process is complete.
    */
   async register(email: string, password: string): Promise<void> {
-    this.state.dispatch(activityActions.setActivity({ isActive: true }));
-
     try {
       const credentials = await createUserWithEmailAndPassword(this.auth, email, password);
       await this.logout();
@@ -126,8 +119,6 @@ export class FirebaseAuthService {
           }),
         })
       );
-    } finally {
-      this.state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -200,8 +191,6 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the password reset request process is complete.
    */
   async requestPassword(email: string): Promise<void> {
-    this.state.dispatch(activityActions.setActivity({ isActive: true }));
-
     try {
       await sendPasswordResetEmail(this.auth, email);
       await this.router.navigate(['login']);
@@ -226,8 +215,6 @@ export class FirebaseAuthService {
           }),
         })
       );
-    } finally {
-      this.state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 }
