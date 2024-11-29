@@ -1,0 +1,131 @@
+@let headerTitle = headerConfig.title;
+@let headerMenu = headerConfig.menu;
+
+<div class="core-cms-container">
+  <plastik-core-cms-layout-ui-header data-test="layout-header">
+    <div start class="flex items-center gap-sub sm:gap-sm">
+      <button
+        mat-icon-button
+        aria-label="sidenav toggle button"
+        class="flex justify-center align-middle"
+        data-test="toggle-sidenav-button"
+        (click)="sidenav.toggle()">
+        @if (!sidenav.opened) {
+          <mat-icon class="mat-18">menu</mat-icon>
+        } @else if (sidenav.opened) {
+          <mat-icon class="mat-18">close</mat-icon>
+        }
+      </button>
+
+      <h1 data-test="layout-title">
+        <span class="sr-only">{{ headerTitle }}</span>
+        <a
+          class="flex justify-between content-center items-center text-white hover:no-underline gap-sub"
+          href=""
+          [attr.title]="headerTitle">
+          @if (headerConfig.mainIcon; as icon) {
+            <div class="flex justify-center items-center gap-sub">
+              <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+
+              <span class="hidden">{{ headerTitle }}</span>
+              <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
+            </div>
+          }
+        </a>
+      </h1>
+    </div>
+
+    <div end class="flex items-center gap-tiny lg:gap-sm">
+      <ng-container #widgetsContainer></ng-container>
+
+      <button mat-button aria-label="header menu" class="flex gap-tiny" [matMenuTriggerFor]="menu">
+        <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
+        <mat-icon class="w-[30px] h-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu" class="px-sub">
+        <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{
+          headerMenu?.label()
+        }}</span>
+
+        @for (item of headerMenu?.config; track item.id) {
+          @if (item && item.route) {
+            <button type="button" mat-menu-item [routerLink]="item.route">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.title }}</span>
+            </button>
+          } @else if (item && item.action) {
+            <button type="button" mat-menu-item (click)="item.action()">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.title }}</span>
+            </button>
+          }
+        }
+      </mat-menu>
+    </div>
+  </plastik-core-cms-layout-ui-header>
+
+  <mat-sidenav-container class="example-container" [hasBackdrop]="isMobile()">
+    <mat-sidenav
+      #sidenav
+      class="p-md"
+      position="start"
+      fixedTopGap="55"
+      data-test="sidenav"
+      [mode]="isMobile() ? 'over' : 'side'"
+      [fixedInViewport]="isMobile()"
+      [opened]="!isMobile()"
+      (keydown.escape)="sidenav.close()">
+      <mat-nav-list menu-items data-test="sidenav-list">
+        @for (item of viewConfig; track item.id) {
+          <mat-list-item
+            class="my-tiny h-xll hover:bg-gray-10 focus:bg-gray-10"
+            routerLinkActive="bg-gray-10"
+            ariaCurrentWhenActive="page"
+            [routerLink]="item?.route"
+            [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
+            (click)="isMobile() && sidenav.close()">
+            <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
+              item.icon
+            }}</mat-icon>
+            <span matListItemTitle>{{ item.title }}</span>
+          </mat-list-item>
+
+          @if (item.divider) {
+            <mat-divider></mat-divider>
+          }
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content
+      role="main"
+      tabindex="-1"
+      id="mainContent"
+      class="bg-white p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <plastik-core-cms-layout-ui-footer data-test="layout-footer">
+    <div content class="flex flex-row justify-center items-center gap-tiny">
+      <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
+
+      ©{{ currentDate | date: 'yyyy' }}
+      <a
+        aria-label="visit www.plastikaweb.com page"
+        class="text-white underline underline-offset-2"
+        href="https://www.plastikaweb.com"
+        target="_blank"
+        >Plastikaweb</a
+      >
+      |
+      <a
+        aria-label="visitar www.llevat.org"
+        class="text-white underline underline-offset-2"
+        href="https://www.llevat.org"
+        target="_blank"
+        >El Llevat</a
+      >
+    </div>
+  </plastik-core-cms-layout-ui-footer>
+</div>

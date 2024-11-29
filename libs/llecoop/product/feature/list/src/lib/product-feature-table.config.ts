@@ -26,7 +26,7 @@ export class LlecoopProductSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[130px] py-0 px-tiny md:py-tiny md:px-sm md:min-w-[240px]'],
+    cssClasses: ['min-w-[130px] md:min-w-[240px]'],
     formatting: {
       type: 'LINK',
       execute: (_, product) => {
@@ -39,87 +39,7 @@ export class LlecoopProductSearchFeatureTableConfig
         const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
         const extra = `<ul class="hidden md:block">${info}${provider}${origin}</ul>`;
         return this.sanitizer.bypassSecurityTrustHtml(`${link}${extra}`) as SafeHtml;
-        // return this.sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
       },
-    },
-  };
-
-  private readonly price: TableColumnFormatting<LlecoopProduct, 'CURRENCY'> = {
-    key: 'price',
-    title: 'Preu',
-    propertyPath: 'price',
-    sorting: true,
-    cssClasses: ['hidden md:flex md:max-w-[120px]'],
-    formatting: {
-      type: 'CURRENCY',
-      extras: () => ({
-        numberDigitsInfo: '1.2-2',
-        currency: '€',
-        currencyCode: 'EUR',
-      }),
-    },
-  };
-
-  private readonly iva: TableColumnFormatting<LlecoopProduct, 'PERCENTAGE'> = {
-    key: 'iva',
-    title: 'IVA',
-    propertyPath: 'iva',
-    cssClasses: ['hidden md:flex md:max-w-[120px]'],
-    formatting: {
-      type: 'PERCENTAGE',
-    },
-  };
-
-  private readonly unit: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
-    key: 'unit',
-    title: 'Presentació',
-    propertyPath: 'unit.base',
-    cssClasses: ['hidden md:flex md:max-w-[200px]'],
-    formatting: {
-      type: 'CUSTOM',
-      execute: (value, product) => {
-        switch (product?.unit?.type) {
-          case 'unitWithFixedVolume':
-            return `volum per unitat: ${Number(value)} l`;
-          case 'unitWithFixedWeight':
-            return `pes per unitat: ${Number(value)} kg`;
-          case 'unitWithVariableWeight':
-            return `pes aprox. per unitat: ${Number(value)} kg`;
-          case 'weight':
-            return 'quantitat final a pes';
-          default:
-            return 'unitat';
-        }
-      },
-    },
-  };
-
-  private readonly priceWithIva: TableColumnFormatting<LlecoopProduct, 'CURRENCY'> = {
-    key: 'priceWithIva',
-    title: 'Preu amb IVA',
-    propertyPath: 'priceWithIva',
-    sorting: true,
-    cssClasses: ['max-w-[120px]'],
-    formatting: {
-      type: 'CURRENCY',
-      extras: () => ({
-        numberDigitsInfo: '1.2-2',
-        currency: '€',
-        currencyCode: 'EUR',
-      }),
-    },
-  };
-
-  private readonly isAvailable: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
-    key: 'isAvailable',
-    title: '',
-    propertyPath: 'isAvailable',
-    sorting: true,
-    showTitle: false,
-    cssClasses: ['hidden md:flex md:max-w-[50px]'],
-    formatting: {
-      type: 'CUSTOM',
-      execute: (_, product) => (product?.isAvailable ? '✔' : '✘'),
     },
   };
 
@@ -141,14 +61,9 @@ export class LlecoopProductSearchFeatureTableConfig
   private readonly updatedAt = updatedAt<LlecoopProduct>();
 
   private readonly columnProperties: TableColumnFormatting<LlecoopProduct, FormattingTypes>[] = [
-    this.isAvailable,
     this.name,
     productCategoryColumn<LlecoopProduct>(),
-    this.unit,
     this.stock,
-    this.price,
-    this.iva,
-    this.priceWithIva,
     this.createdAt,
     this.updatedAt,
   ];

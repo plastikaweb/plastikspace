@@ -38,6 +38,7 @@
       "@plastik/llecoop/category/data-access": ["libs/llecoop/category/data-access/src/index.ts"],
       "@plastik/llecoop/category/detail": ["libs/llecoop/category/feature/detail/src/index.ts"],
       "@plastik/llecoop/category/list": ["libs/llecoop/category/feature/list/src/index.ts"],
+      "@plastik/llecoop/cms-layout": ["libs/llecoop/cms-layout/src/index.ts"],
       "@plastik/llecoop/data-access": ["libs/llecoop/data-access/src/index.ts"],
       "@plastik/llecoop/entities": ["libs/llecoop/entities/src/index.ts"],
       "@plastik/llecoop/order-list/data-access": [
@@ -81,9 +82,7 @@
       "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
-      "@plastik/shared/notification/data-access": [
-        "libs/shared/notification/data-access/src/index.ts"
-      ],
+      "@plastik/shared/notification/data-access": ["libs/shared/notification/data-access/src/index.ts"],
       "@plastik/shared/notification/entities": ["libs/shared/notification/entities/src/index.ts"],
       "@plastik/shared/notification/ui/mat-snackbar": [
         "libs/shared/notification/ui/mat-snackbar/src/index.ts"

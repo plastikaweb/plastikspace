@@ -9,5 +9,13 @@
     "composite": true
   },
   "exclude": ["src/test-setup.ts", "src/**/*.spec.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../data-access/src/**/*.ts",
+    "../ui/footer/src/**/*.ts",
+    "../ui/header/src/**/*.ts",
+    "../ui/sidenav/src/**/*.ts",
+    "../../../shared/activity/**/*.ts",
+    "../../../shared/notification/**/*.ts"
+  ]
 }

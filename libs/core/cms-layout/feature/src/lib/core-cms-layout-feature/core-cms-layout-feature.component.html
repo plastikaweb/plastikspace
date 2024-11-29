@@ -9,28 +9,30 @@
 
 @if (isActive) {
   <plastik-shared-activity-ui-overlay>
-    <!-- TODO: Create a shared activity indicator https://github.com/plastikaweb/plastikspace/issues/96 -->
-    <p class="flex flex-col items-center justify-center text-white w- gap-sub text-md">
-      Carregant dades...
-      <img src="assets/img/favicon.svg" alt="carregant dades..." class="w-xl h-xl" />
-    </p>
+    <div class="spinner-container">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+      <p class="sr-only">Loading...</p>
+    </div>
   </plastik-shared-activity-ui-overlay>
 }
 
-@if (notificationConfig) {
+@defer (when notificationConfig) {
   <div [plastikSnackbar]="notificationConfig || {}" (sendDismiss)="onNotificationDismiss()"></div>
 }
 
 <div class="core-cms-container">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
-    <div start class="flex items-center gap-0 sm:gap-sm">
+    <div start class="flex gap-0 items-center sm:gap-sm">
       @defer (when sidenavPosition === 'start') {
         <ng-container [ngTemplateOutlet]="toggleSidenavButtonTpl"></ng-container>
       }
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerTitle }}</span>
         <a
-          class="flex items-center content-center justify-between text-white hover:no-underline gap-sub"
+          class="flex justify-between content-center items-center text-white hover:no-underline gap-sub"
           href=""
           [attr.title]="headerTitle">
           <ng-container [ngTemplateOutlet]="h1Tpl"></ng-container>
@@ -86,7 +88,7 @@
 
   @defer (when !hideFooter()) {
     <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-      <div content class="flex flex-row items-center justify-center gap-tiny">
+      <div content class="flex flex-row justify-center items-center gap-tiny">
         <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
 
         ©{{ currentDate | date: 'yyyy' }}
@@ -138,7 +140,7 @@
 
 <ng-template #h1Tpl>
   @if (headerConfig.mainIcon; as icon) {
-    <div class="flex items-center justify-center gap-sub">
+    <div class="flex justify-center items-center gap-sub">
       <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
 
       <span class="hidden">{{ headerTitle }}</span>

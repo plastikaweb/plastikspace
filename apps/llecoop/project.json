@@ -70,6 +70,7 @@
           "optimization": true,
           "extractLicenses": false,
           "sourceMap": true,
+          "namedChunks": true,
           "fileReplacements": [
             {
               "replace": "apps/llecoop/src/environments/environment.ts",

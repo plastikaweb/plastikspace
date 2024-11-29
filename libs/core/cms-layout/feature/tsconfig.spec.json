@@ -3,9 +3,20 @@
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
     "module": "commonjs",
-    "types": ["jest", "node"],
+    "types": [
+      "jest",
+      "node"
+    ],
     "composite": true
   },
-  "files": ["src/test-setup.ts"],
-  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": [
+    "jest.config.ts",
+    "src/**/*.ts",
+    "../data-access/src/**/*.ts",
+    "../ui/footer/src/**/*.ts",
+    "../ui/header/src/**/*.ts",
+    "../ui/sidenav/src/**/*.ts",
+    "../../../shared/notification/**/src/**/*.ts",
+    "../../../shared/activity/ui/src/**/*.ts"
+  ]
 }

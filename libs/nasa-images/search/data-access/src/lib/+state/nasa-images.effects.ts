@@ -7,15 +7,15 @@ import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
-  notificationActions,
-  NotificationConfigService,
-} from '@plastik/shared/notification/data-access';
-import {
   NasaImagesSearchApiError,
   NasaImagesSearchApiParams,
   NasaImagesViews,
 } from '@plastik/nasa-images/search/entities';
 import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
+import {
+  notificationActions,
+  NotificationConfigService,
+} from '@plastik/shared/notification/data-access';
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 

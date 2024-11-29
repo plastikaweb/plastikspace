@@ -44,13 +44,19 @@ describe('NasaImagesSearchFacade', () => {
   });
 
   it('should dispatch go action on search', () => {
-    const action = routerActions.go({ path: [], extras: { queryParams: { q: 'pluto', page: '1' }, queryParamsHandling: 'merge' } });
+    const action = routerActions.go({
+      path: [],
+      extras: { queryParams: { q: 'pluto', page: '1' }, queryParamsHandling: 'merge' },
+    });
     facade.search({ q: 'pluto' });
     expect(store.dispatch).toHaveBeenCalledWith(action);
   });
 
   it('should dispatch go action on changePagination', () => {
-    const action = routerActions.go({ path: [], extras: { queryParams: { q: 'pluto', page: 3 }, queryParamsHandling: 'merge' } });
+    const action = routerActions.go({
+      path: [],
+      extras: { queryParams: { q: 'pluto', page: 3 }, queryParamsHandling: 'merge' },
+    });
     facade.changePagination({ pageIndex: 2, pageSize: 100 });
     expect(store.dispatch).toHaveBeenCalledWith(action);
   });

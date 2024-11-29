@@ -62,6 +62,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   private emitChange(): void {
     if (this.computedModel() && this.form.valid) {
       this.changeEvent.emit(this.computedModel() as T);
+      if (this.submitConfig()?.disableOnSubmit) this.form.disable();
     }
   }
 }

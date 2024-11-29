@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
-import { ROUTER_NAVIGATION, RouterNavigationAction, SerializedRouterStateSnapshot } from '@ngrx/router-store';
+import {
+  ROUTER_NAVIGATION,
+  RouterNavigationAction,
+  SerializedRouterStateSnapshot,
+} from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
 import { Observable, UnaryFunction, pipe } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -20,12 +24,15 @@ export class NavigationFilterService {
    * @returns {UnaryFunction<Observable<Action>, Observable<[RouterNavigationAction<SerializedRouterStateSnapshot>, unknown]>>}.
    */
   checkRouterNavigation<T = 'string'>(
-    view: T,
-  ): UnaryFunction<Observable<Action>, Observable<[RouterNavigationAction<SerializedRouterStateSnapshot>, unknown]>> {
+    view: T
+  ): UnaryFunction<
+    Observable<Action>,
+    Observable<[RouterNavigationAction<SerializedRouterStateSnapshot>, unknown]>
+  > {
     return pipe(
       ofType<RouterNavigationAction>(ROUTER_NAVIGATION),
       concatLatestFrom(() => this.store.select(selectRouteDataName)),
-      filter(([, name]) => name === view),
+      filter(([, name]) => name === view)
     );
   }
 }
