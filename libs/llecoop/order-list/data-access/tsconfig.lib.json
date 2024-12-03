@@ -12,6 +12,11 @@
   "include": [
     "src/**/*.ts",
     "../feature/user-order-detail/src/lib/isAnActiveOrderList.guard.ts",
-    "../feature/user-order-detail/src/lib/isAnActiveOrderListAndUserOrder.guard.ts"
+    "../feature/user-order-detail/src/lib/isAnActiveOrderListAndUserOrder.guard.ts",
+    "../../../../libs/shared/**/*.ts",
+    "../../../../libs/shared/auth/firebase/data-access/src/**/*.ts",
+    "../../../../libs/llecoop/entities/src/**/*.ts",
+    "../../../../libs/llecoop/data-access/src/**/*.ts",
+    "../../../../libs/core/router/data-access/src/**/*.ts"
   ]
 }

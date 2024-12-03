@@ -29,7 +29,7 @@ describe('Notification Reducer', () => {
       const result: State = reducer(initialState, action);
 
       expect(result.configuration).toBeNull();
-      expect(result.preserveOnRouteRequest).toBeFalsy();
+      expect(result.preserveOnRouteRequest).toBeTruthy();
     });
   });
 

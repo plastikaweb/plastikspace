@@ -82,7 +82,9 @@
       "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
-      "@plastik/shared/notification/data-access": ["libs/shared/notification/data-access/src/index.ts"],
+      "@plastik/shared/notification/data-access": [
+        "libs/shared/notification/data-access/src/index.ts"
+      ],
       "@plastik/shared/notification/entities": ["libs/shared/notification/entities/src/index.ts"],
       "@plastik/shared/notification/ui/mat-snackbar": [
         "libs/shared/notification/ui/mat-snackbar/src/index.ts"

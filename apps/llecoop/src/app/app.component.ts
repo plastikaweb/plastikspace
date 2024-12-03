@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
   private readonly store = inject(Store);
   private readonly meta = inject(Meta);
   protected readonly notificationFacade = inject(NotificationFacade);
-  protected readonly notificationConfig = toSignal(this.notificationFacade.config$);
+  protected readonly notificationConfig = toSignal(this.notificationFacade?.config$);
   protected readonly isActive = toSignal(this.store.select(selectIsActive));
 
   ngOnInit(): void {

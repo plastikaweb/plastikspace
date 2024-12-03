@@ -16,9 +16,10 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions, selectRouteUrl } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { filter, pipe, switchMap, withLatestFrom } from 'rxjs';
+import { filter, pipe, switchMap, tap, withLatestFrom } from 'rxjs';
 import { LLecoopOrderListStore } from './order-list-store';
 
+import { activityActions } from '@plastik/shared/activity/data-access';
 import { LlecoopUserOrderFireService } from './user-order-fire.service';
 type OrderState = LlecoopFeatureStore;
 
@@ -55,35 +56,40 @@ export const LlecoopUserOrderStore = signalStore(
     ) => ({
       getAll: rxMethod<void>(
         pipe(
-          switchMap(() =>
-            userOrderService.getAll().pipe(
-              tapResponse({
-                next: orders => {
-                  patchState(
-                    store,
-                    setAllEntities(orders, {
-                      selectId: entity => entity.id || '',
-                    }),
-                    { loaded: true, lastUpdated: new Date() }
-                  );
-                },
-                error: error => {
-                  if (authService.loggedIn()) {
-                    storeNotificationService.create(
-                      `No s'ha pogut carregar les comandes: ${error}`,
-                      'ERROR'
-                    );
-                  }
-                },
-              })
-            )
-          )
+          switchMap(() => {
+            if (!store.loaded()) {
+              state.dispatch(activityActions.setActivity({ isActive: true }));
+              return userOrderService.getAll().pipe(
+                tapResponse({
+                  next: orders =>
+                    patchState(
+                      store,
+                      setAllEntities(orders, {
+                        selectId: entity => entity.id || '',
+                      }),
+                      { loaded: true, lastUpdated: new Date() }
+                    ),
+                  error: error => {
+                    if (authService.loggedIn()) {
+                      storeNotificationService.create(
+                        `No s'ha pogut carregar les comandes: ${error}`,
+                        'ERROR'
+                      );
+                    }
+                  },
+                }),
+                tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
+              );
+            }
+            return [];
+          })
         )
       ),
       create: rxMethod<Partial<LlecoopUserOrder>>(
         pipe(
           filter(() => !!authService.currentUser()?.uid && orderListStore.currentOrder() !== null),
           switchMap((order: Partial<LlecoopUserOrder>) => {
+            state.dispatch(activityActions.setActivity({ isActive: true }));
             const orderListId = orderListStore.currentOrder()?.id;
             const finalOrder = {
               ...order,
@@ -100,7 +106,8 @@ export const LlecoopUserOrderStore = signalStore(
                     `No s'ha pogut crear la comanda": ${error}`,
                     'ERROR'
                   ),
-              })
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
             );
           })
         )
@@ -108,6 +115,7 @@ export const LlecoopUserOrderStore = signalStore(
       update: rxMethod<Partial<LlecoopUserOrder>>(
         pipe(
           switchMap(order => {
+            state.dispatch(activityActions.setActivity({ isActive: true }));
             return userOrderService.update(order).pipe(
               withLatestFrom(state.select(selectRouteUrl)),
               tapResponse({
@@ -122,14 +130,14 @@ export const LlecoopUserOrderStore = signalStore(
 
                   state.dispatch(routerActions.go({ path: [path] }));
                 },
-                error: error => {
+                error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar la comanda": ${error}`,
                     'ERROR'
-                  );
-                },
+                  ),
                 complete: () => storeNotificationService.create(`Comanda actualitzada`, 'SUCCESS'),
-              })
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
             );
           })
         )
@@ -137,6 +145,7 @@ export const LlecoopUserOrderStore = signalStore(
       delete: rxMethod<LlecoopUserOrder>(
         pipe(
           switchMap(product => {
+            state.dispatch(activityActions.setActivity({ isActive: true }));
             return userOrderService.delete(product).pipe(
               tapResponse({
                 next: () =>
@@ -149,7 +158,8 @@ export const LlecoopUserOrderStore = signalStore(
                     `No s'ha pogut eliminar la comanda "${product.name}": ${error}`,
                     'ERROR'
                   ),
-              })
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
             );
           })
         )
@@ -166,7 +176,9 @@ export const LlecoopUserOrderStore = signalStore(
   ),
   withHooks({
     onInit({ getAll, loaded }) {
-      if (!loaded()) getAll();
+      if (!loaded()) {
+        getAll();
+      }
     },
     onDestroy() {
       // eslint-disable-next-line no-console

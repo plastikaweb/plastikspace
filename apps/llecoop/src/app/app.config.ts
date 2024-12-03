@@ -92,6 +92,8 @@ export const appConfig: ApplicationConfig = {
             name: environment.name,
             maxAge: 25,
             connectInZone: true,
+            trace: true,
+            traceLimit: 75,
           })
         : [],
       NotificationDataAccessModule,
