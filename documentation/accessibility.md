@@ -187,7 +187,7 @@ In `package.json` you must add a script to run the test runner:
 
 ```json
 "my-app:http-server": "angular-http-server --path dist/apps/my-app --port 8080 --silent",
-"premy-app:a11y": "nx run my-app:build",
+"my-app:a11y": "nx run my-app:build",
 "my-app:a11y": "npm-run-all --parallel --race my-app:http-server my-app:a11y:run",
 "my-app:a11y:run": "pa11y-ci --config ./apps/my-app/.pa11yci.json",
 ```
