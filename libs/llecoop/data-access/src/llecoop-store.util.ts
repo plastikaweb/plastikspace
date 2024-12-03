@@ -11,13 +11,14 @@ export class StoreNotificationService {
   private readonly notificationService = inject(NotificationConfigService);
   private readonly state = inject(Store);
 
-  create(message: string, type: NotificationType): void {
+  create(message: string, type: NotificationType, preserve = true): void {
     this.state.dispatch(
       notificationActions.show({
         configuration: this.notificationService.getInstance({
           type,
           message,
         }),
+        preserve,
       })
     );
   }

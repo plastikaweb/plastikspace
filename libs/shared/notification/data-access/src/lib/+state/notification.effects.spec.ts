@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { provideRouter } from '@angular/router';
 import { notificationActions } from './notification.actions';
 import { NotificationEffects } from './notification.effects';
-import { selectPreserveOnRouteRequest } from './notification.feature';
+import { selectConfiguration, selectPreserveOnRouteRequest } from './notification.feature';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { getMockedRouterRequest } from '@plastik/core/router-state';
 
@@ -26,7 +26,15 @@ describe('NotificationEffects Effects', () => {
         provideRouter([]),
         provideMockActions(() => actions$),
         provideMockStore({
-          selectors: [{ selector: selectPreserveOnRouteRequest, value: false }],
+          selectors: [
+            {
+              selector: selectConfiguration,
+              value: {
+                message: 'message',
+                type: 'ERROR',
+              },
+            },
+          ],
         }),
       ],
     });
@@ -38,6 +46,8 @@ describe('NotificationEffects Effects', () => {
 
   describe('dismissNotification$', () => {
     it('should return an dismissNotification action', () => {
+      store.overrideSelector(selectPreserveOnRouteRequest, false);
+
       actions$ = hot('-a', {
         a: getMockedRouterRequest('/test'),
       });
@@ -47,8 +57,19 @@ describe('NotificationEffects Effects', () => {
       expect(effects.dismissNotification$).toBeObservable(expected);
     });
 
-    it('should not return an dismissNotification action', () => {
+    it('should not return a dismissNotification action if preserveOnRouteRequest is true', () => {
       store.overrideSelector(selectPreserveOnRouteRequest, true);
+
+      actions$ = hot('-a', {
+        a: getMockedRouterRequest('/test'),
+      });
+      const expected = cold('', { b: [] });
+
+      expect(effects.dismissNotification$).toBeObservable(expected);
+    });
+
+    it('should not return a dismissNotification action if no configuration is set', () => {
+      store.overrideSelector(selectConfiguration, null);
 
       actions$ = hot('-a', {
         a: getMockedRouterRequest('/test'),

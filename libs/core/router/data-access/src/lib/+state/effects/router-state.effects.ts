@@ -2,16 +2,10 @@
 import { Location } from '@angular/common';
 import { Injectable, NgZone } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  ROUTER_CANCEL,
-  ROUTER_ERROR,
-  ROUTER_NAVIGATED,
-  ROUTER_NAVIGATION,
-} from '@ngrx/router-store';
+import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { tap } from 'rxjs';
 
 import { Store } from '@ngrx/store';
-import { activityActions } from '@plastik/shared/activity/data-access';
 import { NavigationService } from '../../services/navigation.service';
 import { routerActions } from '../actions/router-state.actions';
 
@@ -57,26 +51,6 @@ export class RouterStateEffects {
             mainElement?.scrollTo(0, 0);
           });
         })
-      );
-    },
-    { dispatch: false }
-  );
-
-  setActivityOnNavigation$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(ROUTER_NAVIGATION),
-        tap(() => this.store.dispatch(activityActions.setActivity({ isActive: true })))
-      );
-    },
-    { dispatch: false }
-  );
-
-  setActivityOffNavigation$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(ROUTER_NAVIGATED, ROUTER_CANCEL, ROUTER_ERROR),
-        tap(() => this.store.dispatch(activityActions.setActivity({ isActive: false })))
       );
     },
     { dispatch: false }

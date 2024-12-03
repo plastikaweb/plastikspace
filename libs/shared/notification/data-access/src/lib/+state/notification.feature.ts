@@ -12,7 +12,7 @@ export interface State {
 
 export const initialState: State = {
   configuration: null,
-  preserveOnRouteRequest: false,
+  preserveOnRouteRequest: true,
 };
 
 export interface NotificationPartialState {
@@ -26,12 +26,12 @@ const notificationReducer = createReducer(
     (state, { configuration, preserve }): State => ({
       ...state,
       configuration,
-      preserveOnRouteRequest: preserve || false,
+      preserveOnRouteRequest: preserve ?? true,
     })
   ),
   on(
     notificationActions.dismiss,
-    (state): State => ({ ...state, configuration: null, preserveOnRouteRequest: false })
+    (state): State => ({ ...state, configuration: null, preserveOnRouteRequest: true })
   )
 );
 

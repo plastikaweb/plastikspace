@@ -12,6 +12,11 @@
   "include": [
     "src/**/*.ts",
     "../feature/list/src/lib/product-feature-table.config.ts",
-    "src/product-store.ts"
+    "src/product-store.ts",
+    "../../../../shared/**/*.ts",
+    "../../../../libs/core/**/*.ts",
+    "../../../../libs/shared/auth/firebase/data-access/src/index.ts",
+    "../../entities/src/index.ts",
+    "../../data-access//src/index.ts"
   ]
 }

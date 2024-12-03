@@ -22,7 +22,7 @@ import { NotificationUiMatSnackbarComponent } from './notification-ui-mat-snackb
   standalone: true,
 })
 export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy {
-  @Input('plastikSnackbar') config!: MatSnackBarConfig<Notification>;
+  @Input('plastikSnackbar') config!: MatSnackBarConfig<Notification> | null | undefined;
   @Output() sendDismiss: EventEmitter<void> = new EventEmitter();
 
   private readonly subscriptions = new Subscription();
@@ -35,24 +35,29 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
   ngOnChanges({ config: { currentValue } }: SimpleChanges) {
     if (currentValue) {
       this.open({ ...this.defaultSnackBarConfig, ...currentValue });
+    } else {
+      this.snackBar.dismiss();
     }
   }
 
   ngOnDestroy() {
     this.subscriptions?.unsubscribe();
-    // this.snackBar.dismiss();
+    this.snackBar.dismiss();
   }
 
   open(config: Notification) {
-    // this.snackBar.dismiss();
+    this.snackBar.dismiss();
 
     const snackBarConfig = {
       ...this.addNotificationMatSnackBarConfig(config),
       ...this.addTypeStyling(config),
     };
-    this.snackBar.openFromComponent(NotificationUiMatSnackbarComponent, snackBarConfig);
+    const snackBarRef = this.snackBar.openFromComponent(
+      NotificationUiMatSnackbarComponent,
+      snackBarConfig
+    );
 
-    // this.subscriptions.add(snackBarRef.afterDismissed().subscribe(() => this.sendDismiss.emit()));
+    this.subscriptions.add(snackBarRef.afterDismissed().subscribe(() => this.sendDismiss.emit()));
   }
 
   private addNotificationMatSnackBarConfig({
@@ -71,7 +76,7 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
 
   private addTypeStyling({ containerClass, type }: Notification) {
     return {
-      panelClass: [...(containerClass || ''), 'message-box', `message-box-${type.toLowerCase()}`],
+      panelClass: [...(containerClass || ''), 'message-box', `message-box-${type?.toLowerCase()}`],
     };
   }
 }

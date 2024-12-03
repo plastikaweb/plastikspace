@@ -16,6 +16,7 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { activityActions } from '@plastik/shared/activity/data-access';
 import { pipe, switchMap, tap } from 'rxjs';
 import { LlecoopCategoryFireService } from './category-fire.service';
 
@@ -23,7 +24,7 @@ type CategoryState = LlecoopFeatureStore;
 
 export const LlecoopCategoryStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('categories'),
+  withDevtools('category'),
   withState<CategoryState>({
     loaded: false,
     lastUpdated: new Date(),
@@ -49,65 +50,73 @@ export const LlecoopCategoryStore = signalStore(
       const options = entities()
         .map(category => ({
           label: category.name?.toLowerCase(),
-          value: category.name?.toLowerCase(),
+          value: category.id,
         }))
         .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
-      return [{ label: 'Totes les categories', value: '' }, ...options];
+      return options;
     }),
   })),
   withMethods(
     (
       store,
-      categoryService = inject(LlecoopCategoryFireService),
+      categoryFireService = inject(LlecoopCategoryFireService),
       storeNotificationService = inject(StoreNotificationService),
       state = inject(Store),
       firebaseAuthService = inject(FirebaseAuthService)
     ) => ({
       getAll: rxMethod<void>(
         pipe(
-          tap(() => patchState(store, { loaded: false })),
-          switchMap(() =>
-            categoryService.getAll().pipe(
-              tapResponse({
-                next: categories => {
-                  const lastUpdated = new Date();
-                  patchState(
-                    store,
-                    setAllEntities(categories, {
-                      selectId: entity => entity.id || '',
-                    })
-                  );
-                  patchState(store, { loaded: true, lastUpdated });
-                },
-                error: error => {
-                  if (firebaseAuthService.loggedIn()) {
-                    storeNotificationService.create(
-                      `No s'ha pogut carregar les categories: ${error}`,
-                      'ERROR'
+          switchMap(() => {
+            if (!store.loaded()) {
+              state.dispatch(activityActions.setActivity({ isActive: true }));
+              return categoryFireService.getAll().pipe(
+                tapResponse({
+                  next: categories => {
+                    patchState(
+                      store,
+                      setAllEntities(categories, {
+                        selectId: entity => entity.id || '',
+                      }),
+                      {
+                        loaded: true,
+                        lastUpdated: new Date(),
+                      }
                     );
-                  }
-                },
-              })
-            )
-          )
+                  },
+                  error: error => {
+                    if (firebaseAuthService.loggedIn()) {
+                      storeNotificationService.create(
+                        `No s'ha pogut carregar les categories: ${error}`,
+                        'ERROR'
+                      );
+                    }
+                  },
+                }),
+                tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
+              );
+            }
+            return [];
+          })
         )
       ),
       create: rxMethod<Partial<LlecoopProductCategory>>(
         pipe(
           switchMap((category: Partial<LlecoopProductCategory>) => {
-            return categoryService.create(category).pipe(
+            state.dispatch(activityActions.setActivity({ isActive: true }));
+
+            return categoryFireService.create(category).pipe(
               tapResponse({
                 next: () => {
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
                   storeNotificationService.create(`Categoria "${category.name}" creada`, 'SUCCESS');
                 },
-                error: error => {
+                error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut crear la categoria "${category.name}": ${error}`,
                     'ERROR'
-                  );
-                },
-              })
+                  ),
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
             );
           })
         )
@@ -115,22 +124,25 @@ export const LlecoopCategoryStore = signalStore(
       update: rxMethod<Partial<LlecoopProductCategory>>(
         pipe(
           switchMap((category: Partial<LlecoopProductCategory>) => {
-            return categoryService.update(category).pipe(
+            state.dispatch(activityActions.setActivity({ isActive: true }));
+
+            return categoryFireService.update(category).pipe(
               tapResponse({
                 next: () => {
                   state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
                   storeNotificationService.create(
                     `Categoria "${category.name}" actualitzada`,
-                    'SUCCESS'
+                    'SUCCESS',
+                    false
                   );
                 },
-                error: error => {
+                error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar la categoria "${category.name}": ${error}`,
                     'ERROR'
-                  );
-                },
-              })
+                  ),
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
             );
           })
         )
@@ -138,21 +150,21 @@ export const LlecoopCategoryStore = signalStore(
       delete: rxMethod<LlecoopProductCategory>(
         pipe(
           switchMap(category => {
-            return categoryService.delete(category).pipe(
+            state.dispatch(activityActions.setActivity({ isActive: true }));
+            return categoryFireService.delete(category).pipe(
               tapResponse({
-                next: () => {
+                next: () =>
                   storeNotificationService.create(
                     `Categoria "${category.name}" eliminada`,
                     'SUCCESS'
-                  );
-                },
-                error: error => {
+                  ),
+                error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut eliminar la categoria "${category.name}": ${error}`,
                     'ERROR'
-                  );
-                },
-              })
+                  ),
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
             );
           })
         )
@@ -166,7 +178,9 @@ export const LlecoopCategoryStore = signalStore(
   ),
   withHooks({
     onInit({ getAll, loaded }) {
-      if (!loaded()) getAll();
+      if (!loaded()) {
+        getAll();
+      }
     },
     onDestroy() {
       // eslint-disable-next-line no-console
