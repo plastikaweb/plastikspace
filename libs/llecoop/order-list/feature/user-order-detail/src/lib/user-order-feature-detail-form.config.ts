@@ -140,6 +140,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
           key: 'deliveryInfo',
           type: 'textarea-with-counter',
           className: 'w-full',
+          defaultValue: '',
           props: {
             placeholder:
               'Qualsevol informació que ens vulguis fer arribar sobre la comanda i el seu lliurament o recollida',

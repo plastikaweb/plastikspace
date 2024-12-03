@@ -67,7 +67,7 @@
           ]
         },
         "staging": {
-          "optimization": true,
+          "optimization": false,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true,

@@ -1,12 +1,5 @@
 import { NgClass } from '@angular/common';
-import {
-  AfterViewInit,
-  ChangeDetectionStrategy,
-  Component,
-  input,
-  output,
-  signal,
-} from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,15 +23,12 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   changeEvent = output<T>();
   temporaryChangeEvent = output<T>();
 
-  options: FormlyFormOptions = {};
-  form = new FormGroup({});
-
-  protected computedModel = signal<T | null>(null);
+  protected form = new FormGroup({});
+  protected options: FormlyFormOptions = {};
 
   ngAfterViewInit(): void {
     this.form.markAsUntouched();
     this.form.markAsPristine();
-    this.computedModel.update(() => this.model());
   }
 
   onSubmit(event: Event): void {
@@ -48,7 +38,6 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   }
 
   onModelChange(model: T): void {
-    this.computedModel.set(model);
     if (!this.submitAvailable()) this.emitChange();
     if (this.submitConfig()?.emitOnChange) this.temporaryChangeEvent.emit(model);
   }
@@ -60,8 +49,12 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   }
 
   private emitChange(): void {
-    if (this.computedModel() && this.form.valid) {
-      this.changeEvent.emit(this.computedModel() as T);
+    const model = {
+      ...this.model(),
+      ...this.form.value,
+    };
+    if (this.form.valid) {
+      this.changeEvent.emit(model as T);
       if (this.submitConfig()?.disableOnSubmit) this.form.disable();
     }
   }
