@@ -1,4 +1,4 @@
-import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
 import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -8,8 +8,7 @@ import {
   afterNextRender,
   inject,
 } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
@@ -20,9 +19,8 @@ import { FieldType } from '@ngx-formly/material/form-field';
   templateUrl: './textarea-with-counter-type.component.html',
   imports: [
     CdkTextareaAutosize,
-    FormsModule,
+    TextFieldModule,
     ReactiveFormsModule,
-    MatFormFieldModule,
     MatInputModule,
     FormlyModule,
     NgClass,

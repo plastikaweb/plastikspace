@@ -7,9 +7,14 @@
     "types": ["jest", "node"],
     "composite": true
   },
-  "files": [
-    "src/test-setup.ts",
-    "src/lib/order-list-feature-detail.component/llecoop-order-list-feature-detail.component.ts"
-  ],
-  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
+  "files": ["src/test-setup.ts"],
+  "include": [
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "src/lib/**/*.ts",
+    "../../../../../libs/shared/**/*.ts",
+    "../../../../../libs/llecoop/entities/src/**/*.ts"
+  ]
 }

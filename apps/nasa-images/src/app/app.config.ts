@@ -8,6 +8,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, RouterState, provideRouterStore } from '@ngrx/router-store';
 import { StoreModule, provideStore } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlyMaterialModule } from '@ngx-formly/material';
 import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { getVisibleNavigationList } from '@plastik/core/entities';
@@ -49,7 +51,13 @@ export const appConfig: ApplicationConfig = {
         : [],
       CoreCmsLayoutDataAccessModule,
       NotificationDataAccessModule,
-      NotificationUiMatSnackbarModule
+      NotificationUiMatSnackbarModule,
+      FormlyMaterialModule,
+      FormlyModule.forRoot({
+        extras: {
+          immutable: true,
+        },
+      })
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,

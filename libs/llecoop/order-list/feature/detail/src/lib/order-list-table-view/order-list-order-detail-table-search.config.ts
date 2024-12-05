@@ -123,10 +123,12 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
       type: 'CUSTOM',
       execute: value => {
         const status = llecoopUserOrderStatus[value as LlecoopUserOrder['status']];
+        if (!status) return '-';
+
         return this.sanitizer.bypassSecurityTrustHtml(`
           <p class="flex gap-tiny justify-center items-center">
-          <span class="material-icons ${status.class}">${status.icon}</span>
-          <span class="capitalize hidden md:flex">${status.label}</span>
+          <span class="material-icons ${status?.class}">${status?.icon}</span>
+          <span class="capitalize hidden md:flex">${status?.label}</span>
           </p>
           `) as SafeHtml;
       },
@@ -135,12 +137,12 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
 
   private readonly columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
     this.userName,
+    this.status,
     this.deliveryType,
     this.address,
     this.deliveryDateAndTime,
     this.totalPrice,
     this.totalProducts,
-    this.status,
   ];
 
   getTableDefinition() {

@@ -137,18 +137,24 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
           ],
         },
         {
-          key: 'deliveryInfo',
-          type: 'textarea-with-counter',
-          className: 'w-full',
-          defaultValue: '',
-          props: {
-            placeholder:
-              'Qualsevol informació que ens vulguis fer arribar sobre la comanda i el seu lliurament o recollida',
-            label: 'Informació addicional',
-            minLength: 5,
-            maxLength: 100,
-            maxRows: 3,
-          },
+          fieldGroupClassName:
+            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroup: [
+            {
+              key: 'deliveryInfo',
+              type: 'textarea-with-counter',
+              className: 'w-full',
+              defaultValue: '',
+              props: {
+                placeholder:
+                  'Qualsevol informació que ens vulguis fer arribar sobre la comanda i el seu lliurament o recollida',
+                label: 'Informació addicional',
+                minLength: 5,
+                maxLength: 100,
+                maxRows: 2,
+              },
+            },
+          ],
         },
         {
           key: 'cart',

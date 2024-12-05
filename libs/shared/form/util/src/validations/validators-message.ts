@@ -2,7 +2,7 @@ import { inject, LOCALE_ID } from '@angular/core';
 import { ConfigOption, FormlyFieldConfig } from '@ngx-formly/core';
 
 /**
- * Registers translation extensions in catalan for form validators.
+ * Registers translation extensions for form validators.
  * @returns {ConfigOption} The configuration options for validation messages.
  */
 export function registerValidatorsMessageExtension(): ConfigOption {
@@ -98,32 +98,6 @@ export function registerValidatorsMessageExtension(): ConfigOption {
               return `URL no válida`;
             default:
               return `invalid URL`;
-          }
-        },
-      },
-      {
-        name: 'password',
-        message() {
-          switch (locale) {
-            case 'ca-ES':
-              return `contrasenya no vàlida`;
-            case 'es-ES':
-              return `contraseña no válida`;
-            default:
-              return `invalid password`;
-          }
-        },
-      },
-      {
-        name: 'passwordMatch',
-        message() {
-          switch (locale) {
-            case 'ca-ES':
-              return `Les contrasenyes no coincideixen`;
-            case 'es-ES':
-              return `Las contraseñas no coinciden`;
-            default:
-              return `Passwords do not match`;
           }
         },
       },

@@ -6,7 +6,7 @@
       <mat-card-header>
         <mat-card-title class="flex justify-center align-middle gap-sub">
           @if (logo()) {
-            <img [alt]="title()" [src]="logo()" />
+            <img [attr.alt]="title()" [src]="logo()" />
           }
           @if (title()) {
             <span>{{ title() }}</span>

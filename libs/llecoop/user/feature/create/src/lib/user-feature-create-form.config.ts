@@ -12,7 +12,7 @@ const getLlecoopUserCreateFormConfig: FormlyFieldConfig[] = [
         key: 'email',
         type: 'input',
         className: 'w-full',
-        templateOptions: {
+        props: {
           type: 'email',
           label: 'Adreça electrònica',
           placeholder: 'Adreça electrònica',

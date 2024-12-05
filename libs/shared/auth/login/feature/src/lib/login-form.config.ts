@@ -8,7 +8,6 @@ export function loginFormConfig(): FormConfig<LoginData> {
     {
       key: 'email',
       type: 'input',
-      className: 'w-full',
       props: {
         type: 'email',
         label: 'Adreça electrònica',
@@ -22,7 +21,6 @@ export function loginFormConfig(): FormConfig<LoginData> {
     {
       key: 'password',
       type: 'password-with-visibility',
-      className: 'w-full',
       props: {
         type: 'password',
         label: 'Contrasenya',

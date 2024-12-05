@@ -9,7 +9,7 @@ export function registerFormConfig(): FormConfig<LoginData> {
       key: 'email',
       type: 'input',
       className: 'w-full',
-      templateOptions: {
+      props: {
         type: 'email',
         label: 'Adreça electrònica',
         placeholder: 'Adreça electrònica',
@@ -23,7 +23,7 @@ export function registerFormConfig(): FormConfig<LoginData> {
       key: 'password',
       type: 'password-with-visibility',
       className: 'w-full',
-      templateOptions: {
+      props: {
         type: 'password',
         label: 'Contrasenya',
         placeholder: 'Contrasenya',
