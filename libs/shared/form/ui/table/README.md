@@ -1,12 +1,20 @@
 # input-table
 
+## Table of Contents
+
 - [input-table](#input-table)
+  - [Table of Contents](#table-of-contents)
   - [Description](#description)
-  - [Features](#features)
   - [Usage](#usage)
-  - [Inputs](#inputs)
-  - [Outputs](#outputs)
-  - [Usage with Formly](#usage-with-formly)
+    - [HTML Element](#html-element)
+    - [Module Setup](#module-setup)
+    - [Formly Configuration](#formly-configuration)
+    - [Basic Example](#basic-example)
+  - [API Reference](#api-reference)
+    - [Props Interface](#props-interface)
+    - [Return Value](#return-value)
+  - [Troubleshooting](#troubleshooting)
+    - [Common Issues](#common-issues)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -15,15 +23,13 @@ The `input-table` component is a reusable Angular component designed to handle t
 
 The `input-table-type` component is a formly type that can be used with Angular Formly to create and manage table data.
 
-## Features
-
-- **ControlValueAccessor** implementation for seamless form integration.
-- Customizable table columns and data formatting.
-- Pagination control with visibility options.
-- Row selection and conditional styling.
-- Reactive signals for managing component state.
-
 ## Usage
+
+### HTML Element
+
+`<plastik-input-table>`
+
+### Module Setup
 
 To use the `input-table` component, import it into your Angular module and include it in your template:
 
@@ -51,36 +57,16 @@ In your template:
 </plastik-input-table>
 ```
 
-## Inputs
+### Formly Configuration
 
-- `tableData`: The data to be displayed in the table.
-- `tableColumnProperties`: Configuration for table columns.
-- `tableSorting`: Sorting configuration for the table.
-- `tableActions`: Actions available for table rows.
-- `tableNoPagination`: Boolean to disable pagination.
-- `label`: Label for the table.
+The component type name is: `input-table-type`
 
-## Outputs
-
-- `onGetChangedData`: Method emitted when table data changes.
-
-For more detailed usage and examples, refer to the component documentation.
-
-## Usage with Formly
-
-Formly Props:
-
-```typescript
-interface InputTableProps extends FormlyFieldProps {
-  tableDefinition: Signal<TableDefinition<BaseEntity>>;
-  tableRowValueConditionFn: (element: BaseEntity) => boolean;
-}
-```
+### Basic Example
 
 ```typescript
 const formly: FormlyFieldConfig = {
   key: 'table',
-  type: 'table',
+  type: 'input-table-type',
   props: {
     required: true,
     tableDefinition: {
@@ -105,6 +91,90 @@ const formly: FormlyFieldConfig = {
   },
 };
 ```
+
+## API Reference
+
+### Props Interface
+
+```typescript
+interface InputTableProps extends FormlyFieldProps {
+  /**
+   * Column definitions for the table
+   */
+  tableColumnProperties: TableColumnProperty[];
+
+  /**
+   * Sorting configuration
+   */
+  tableSorting?: {
+    active: string;
+    direction: 'asc' | 'desc';
+  };
+
+  /**
+   * Disable pagination
+   * @default false
+   */
+  tableNoPagination?: boolean;
+
+  /**
+   * Custom actions for table rows
+   */
+  tableActions?: TableAction[];
+
+  /**
+   * Label for the table
+   */
+  label?: string;
+}
+
+interface TableColumnProperty {
+  /**
+   * Key of the column in data object
+   */
+  key: string;
+
+  /**
+   * Display header text
+   */
+  header: string;
+
+  /**
+   * Optional formatter function
+   */
+  formatter?: (value: any) => string;
+}
+
+interface TableAction {
+  /**
+   * Action identifier
+   */
+  id: string;
+
+  /**
+   * Display label
+   */
+  label: string;
+
+  /**
+   * Icon name
+   */
+  icon?: string;
+}
+```
+
+### Return Value
+
+Returns an array of objects representing the table data.
+
+## Troubleshooting
+
+### Common Issues
+
+1. Sorting not working: Verify tableSorting configuration
+2. Pagination issues: Check if tableNoPagination is set correctly
+3. Column formatting problems: Ensure tableColumnProperties are properly defined
+4. Performance issues with large datasets: Consider enabling virtual scrolling
 
 ## Running unit tests
 

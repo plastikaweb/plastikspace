@@ -5,7 +5,9 @@
   <p>A personal multi-repository to do tests and experiments with Nx and Angular. </p>
 </div>
 
-<!-- [![Deploy Nasa Images Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml) -->
+[![Deploy Nasa Images Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml)
+
+[![nasa-images-e2e](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/b47wpf/develop&style=flat&logo=cypress)](https://cloud.cypress.io/projects/b47wpf/runs)
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
@@ -15,7 +17,6 @@
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
-[![nasa-images-e2e](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/b47wpf/develop&style=flat&logo=cypress)](https://cloud.cypress.io/projects/b47wpf/runs)
 
 This project was generated using [Nx](https://nx.dev).
 
@@ -117,11 +118,19 @@ This is a list of all the global shared libraries. It is very likely that other 
 #### Form
 
 - [shared-form-feature](libs/shared/form/feature/README.md)
+
+##### UI
+
 - [shared-form-ui-year-picker/shared-form-ui-year-picker-type](libs/shared/form/ui/year-picker/README.md)
 - [shared-textarea-with-counter](libs/shared/form/ui/textarea-with-counter/README.md)
 - [shared-input-color-picker](libs/shared/form/ui/input-color-picker/README.md)
 - [shared-input-password-with-visibility](libs/shared/form/ui/input-password-with-visibility/README.md)
 - [shared-input-table](libs/shared/form/ui/table/README.md)
+- [shared-input-search-util](libs/shared/form/ui/input-search-util/README.md)
+
+##### Util
+
+- [shared-form-util](libs/shared/form/util/README.md)
 
 #### Activity
 
@@ -153,7 +162,6 @@ Carlos Matheu Armengol
 ![Freelancer](https://img.shields.io/badge/Freelancer-29B2FE?style=for-the-badge&logo=Freelancer&logoColor=white)
 [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/plastikaweb)
 [![Stackblitz](https://img.shields.io/badge/Stackblitz-fff?style=for-the-badge&logo=Stackblitz&logoColor=1389FD)](https://stackblitz.com/@plastikaweb)
-[![GitLab](https://img.shields.io/badge/gitlab-%23181717.svg?style=for-the-badge&logo=gitlab&logoColor=white)](https://gitlab.com/plastikaweb)
 
 > [info@plastikaweb.org](mailto:<info@plastikaweb.com>) > [www.plastikaweb.com](https://www.plastikaweb.com)
 

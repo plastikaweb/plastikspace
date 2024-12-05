@@ -1,54 +1,64 @@
 # shared-form-feature
 
+## Table of Contents
+
 - [shared-form-feature](#shared-form-feature)
+  - [Table of Contents](#table-of-contents)
   - [Description](#description)
-  - [HTML element](#html-element)
-  - [Formly](#formly)
-  - [Inputs](#inputs)
-  - [Output](#output)
-  - [Example](#example)
-    - [How to style](#how-to-style)
-  - [Links](#links)
+  - [Usage](#usage)
+    - [HTML Element](#html-element)
+    - [Module Setup](#module-setup)
+    - [Basic Example](#basic-example)
+  - [API Reference](#api-reference)
+    - [Inputs](#inputs)
+    - [Outputs](#outputs)
+    - [Available Form Types](#available-form-types)
+  - [Styling](#styling)
+  - [Troubleshooting](#troubleshooting)
+    - [Common Issues](#common-issues)
   - [Running unit tests](#running-unit-tests)
+  - [Useful Links](#useful-links)
 
 ## Description
 
-A container to inject a form configuration and dynamically create a form with buttons and extras.
+A feature module that provides a dynamic form container built on top of [Formly Library](https://formly.dev/).
+It allows you to create forms dynamically from a configuration object, with built-in support for validation, custom UI components, and form submission handling.
 
-## HTML element
+## Usage
 
-`<plastik-shared-table>`
+### HTML Element
 
-## Formly
+`<plastik-shared-form-feature>`
 
-It uses internally [Formly Library](https://formly.dev/) that is build on top of Angular Reactive Forms to generate automatically forms.
+### Module Setup
 
-## Inputs
-
-| Name              | Type                       | Description                     | Default |
-| ----------------- | -------------------------- | ------------------------------- | ------- |
-| `fields`          | `<Array>FormlyFieldConfig` | the form controls configuration | []      |
-| `model`           | `T`                        | data model to populate the form |         |
-| `submitAvailable` | `boolean`                  | show submit button              | true    |
-| `submitConfig`    | `SubmitFormConfig`         | configuration for submit button |         |
-
-> To use a button with an image, you must provide image or icon input but no both. Image has preference.
-
-## Output
-
-| Name                   | Type              | Description                    |
-| ---------------------- | ----------------- | ------------------------------ |
-| `changeEvent`          | `EventEmitter<T>` | emits a change event           |
-| `temporaryChangeEvent` | `EventEmitter<T>` | emits a temporary change event |
-
-## Example
+Import the `SharedFormFeatureModule` in your component:
 
 ```typescript
-  # model and fields @Input
+import { SharedFormFeatureModule } from '@plastikspace/shared/form/feature';
 
+@Component({
+  // ...
+  imports: [SharedFormFeatureModule],
+})
+```
+
+### Basic Example
+
+```typescript
+@Component({
+  selector: 'my-component',
+  standalone: true,
+  imports: [SharedFormFeatureModule],
+  template: `
+    <plastik-shared-form-feature [fields]="fields" [model]="model" (changeEvent)="onSubmit($event)">
+    </plastik-shared-form-feature>
+  `,
+})
+export class MyComponent {
   model = {
     email: 'test@test.com',
-    name: 'test,
+    name: 'test',
   };
 
   fields: FormlyFieldConfig[] = [
@@ -77,31 +87,114 @@ It uses internally [Formly Library](https://formly.dev/) that is build on top of
     },
   ];
 
-  onSubmit(model) {
-    // do any action with model, call an API service, a local storage service, or a @ngrx action.
+  onSubmit(model: any) {
+    // Handle form submission
   }
+}
 ```
 
-```html
-# template
+## API Reference
 
-<plastik-shared-form-feature [fields]="fields" [model]="model" (changeEvent)="onSubmit($event)">
-</plastik-shared-form-feature>
+### Inputs
+
+```typescript
+interface SharedFormFeatureInputs {
+  /**
+   * The form controls configuration
+   * @required
+   */
+  fields: FormlyFieldConfig[];
+
+  /**
+   * Data model to populate the form
+   * @default null
+   */
+  model: T | null;
+
+  /**
+   * Show submit button
+   * @default true
+   */
+  submitAvailable: boolean;
+
+  /**
+   * Configuration for submit button
+   */
+  submitConfig: SubmitFormConfig;
+}
+
+interface SubmitFormConfig {
+  /**
+   * Button text
+   * @default "Submit"
+   */
+  text?: string;
+
+  /**
+   * Button icon (mutually exclusive with image)
+   */
+  icon?: string;
+
+  /**
+   * Button image URL (takes precedence over icon)
+   */
+  image?: string;
+}
 ```
 
-### How to style
+### Outputs
 
-You can overwrite the styles from your main application declaring these CSS variables in your app `styles/_theme.scss` file:
+```typescript
+interface SharedFormFeatureOutputs {
+  /**
+   * Emits when form is submitted
+   */
+  changeEvent: EventEmitter<T>;
 
-```css
---plastik-mdc-floating-label-color: rgb(var(--primary));
+  /**
+   * Emits on form value changes
+   */
+  temporaryChangeEvent: EventEmitter<T>;
+}
 ```
 
-## Links
+### Available Form Types
 
-- [Formly Library](https://formly.dev/)
-- [Angular Reactive Forms](https://angular.io/guide/reactive-forms)
+The module includes several custom form types located in `libs/shared/form/ui`:
+
+- [`input-color-picker`](../ui/input-color-picker/README.md) - Color picker input with palette support
+- [`input-password-with-visibility`](../ui/input-password-with-visibility/README.md) - Password input with show/hide toggle
+- [`input-search-util`](../ui/input-search-util/README.md) - Search input with debounce functionality
+- [`input-table`](../ui/table/README.md) - Table input with sorting and pagination
+- [`textarea-with-counter`](../ui/textarea-with-counter/README.md) - Textarea with character counter
+- [`year-picker`](../ui/year-picker/README.md) - Year selection input
+
+## Styling
+
+Customize the appearance using CSS variables in your app's `styles/_theme.scss`:
+
+```scss
+:root {
+  --plastik-mdc-floating-label-color: rgb(var(--primary));
+  // Add more custom variables here
+}
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. Form not rendering: Ensure `SharedFormFeatureModule` is properly imported
+2. Validation not working: Check if validators are correctly configured
+3. Custom components not available: Verify the required UI modules are imported
+4. Submit button not showing: Check `submitAvailable` property
+5. Button icon/image not displaying: Ensure `submitConfig` is properly configured
 
 ## Running unit tests
 
 Run `nx test shared-form-feature` to execute the unit tests.
+
+## Useful Links
+
+- [Formly Documentation](https://formly.dev/)
+- [Angular Reactive Forms Guide](https://angular.io/guide/reactive-forms)
