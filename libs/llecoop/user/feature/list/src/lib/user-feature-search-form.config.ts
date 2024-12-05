@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { addSearchInput } from '@plastik/shared/form/ui';
+import { addSearchInput } from '@plastik/shared/form/search';
 
 export function getLlecoopUserSearchFeatureFormConfig(): FormlyFieldConfig[] {
   return [
@@ -13,7 +13,7 @@ export function getLlecoopUserSearchFeatureFormConfig(): FormlyFieldConfig[] {
           type: 'select',
           defaultValue: 'all',
           className: 'w-full md:w-1/2',
-          templateOptions: {
+          props: {
             label: 'Rol',
             placeholder: 'Rol',
             required: false,

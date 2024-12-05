@@ -20,7 +20,7 @@ xdescribe('AuthFeatureComponent', () => {
               {
                 key: 'email',
                 type: 'input',
-                templateOptions: {
+                props: {
                   label: 'Email',
                   required: true,
                 },
@@ -28,7 +28,7 @@ xdescribe('AuthFeatureComponent', () => {
               {
                 key: 'password',
                 type: 'input',
-                templateOptions: {
+                props: {
                   label: 'Password',
                   required: true,
                   type: 'password',

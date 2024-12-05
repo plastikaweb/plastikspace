@@ -2,20 +2,11 @@ import { NgModule } from '@angular/core';
 import { FORMLY_CONFIG, FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
-  InputColorPickerTypeComponent,
-  InputPasswordWithVisibilityTypeComponent,
-  InputTableTypeComponent,
-  TextareaWithCounterTypeComponent,
-  YearPickerTypeComponent,
-} from '@plastik/shared/form/ui';
-
-import { addonsExtension } from './addons-extension';
-import { FormlyAddonsWrapperComponent } from './addons-wrapper/formly-addons-wrapper.component';
+  FormlyAddonsWrapperComponent,
+  addonsExtension,
+  registerValidatorsMessageExtension,
+} from '@plastik/shared/form/util';
 import { SharedFormFeatureComponent } from './shared-form-feature.component';
-import { registerValidatorsMessageExtension } from './validations/validators-message';
-import { passwordMatchValidator } from './validations/validators/password-match.validator';
-import { passwordValidator } from './validations/validators/password.validator';
-import { urlValidator } from './validations/validators/url.validator';
 
 @NgModule({
   imports: [
@@ -27,35 +18,6 @@ import { urlValidator } from './validations/validators/url.validator';
       },
       wrappers: [{ name: 'addons', component: FormlyAddonsWrapperComponent }],
       extensions: [{ name: 'addons', extension: { onPopulate: addonsExtension } }],
-      types: [
-        {
-          name: 'year-picker',
-          component: YearPickerTypeComponent,
-        },
-        {
-          name: 'password-with-visibility',
-          extends: 'input',
-          component: InputPasswordWithVisibilityTypeComponent,
-        },
-        {
-          name: 'color-picker',
-          component: InputColorPickerTypeComponent,
-        },
-        {
-          name: 'table',
-          component: InputTableTypeComponent,
-        },
-        {
-          name: 'textarea-with-counter',
-          component: TextareaWithCounterTypeComponent,
-          wrappers: ['form-field'],
-        },
-      ],
-      validators: [
-        { name: 'url', validation: urlValidator },
-        { name: 'password', validation: passwordValidator },
-        { name: 'passwordMatch', validation: passwordMatchValidator },
-      ],
     }),
   ],
   providers: [

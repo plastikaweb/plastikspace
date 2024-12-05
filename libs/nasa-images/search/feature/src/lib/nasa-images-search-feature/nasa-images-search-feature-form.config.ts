@@ -1,6 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { addSearchInput } from '@plastik/shared/form/ui';
+import { addSearchInput } from '@plastik/shared/form/search';
 import { Observable, of } from 'rxjs';
 
 export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldConfig[]> {
@@ -16,7 +16,6 @@ export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldCo
               key: 'year_start',
               type: 'year-picker',
               className: 'w-fit',
-
               props: {
                 label: 'Start year',
                 placeholder: 'YYYY',

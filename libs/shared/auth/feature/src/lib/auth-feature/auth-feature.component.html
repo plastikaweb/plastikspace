@@ -2,14 +2,18 @@
   <div class="flex justify-center items-center min-h-screen contain-layout p-sub">
     <mat-card
       appearance="raised"
-      class="flex items-center justify-center align-middle shadow-md bg-gray-10 min-w-[300px]">
+      class="flex items-center justify-center align-middle shadow-md bg-gray-10 min-w-[300px]"
+    >
       <mat-card-header>
         <mat-card-title class="flex justify-center align-middle gap-sub">
-          @if (logo()) {
-            <img [alt]="title()" [src]="logo()" />
+          @if (logo() && title()) {
+          <img
+            [attr.alt]="title() || ''"
+            [src]="logo()"
+          />
           }
           @if (title()) {
-            <span>{{ title() }}</span>
+          <span>{{ title() }}</span>
           }
         </mat-card-title>
       </mat-card-header>
@@ -20,18 +24,24 @@
         <plastik-shared-form-feature
           [fields]="formConfig.getConfig() || []"
           [submitConfig]="formConfig.getSubmitFormConfig?.()"
-          (changeEvent)="facade.onSubmit($event)">
+          (changeEvent)="facade.onSubmit($event)"
+        >
           <div class="extraLinks">
             @for (link of facade.extraLinks?.(); track link) {
-              <a [routerLink]="link.route">{{ link.label }}</a>
+            <a [routerLink]="link.route">{{ link.label }}</a>
             }
           </div>
         </plastik-shared-form-feature>
       </mat-card-content>
 
       <mat-card-footer
-        class="w-full text-center text-white border-t-2 text-[12px] text-pretty bg-strippedPrimaryDark py-sub border-spacing-sm border-t-primary-light">
-        <a class="text-white" target="_self" [href]="nameLink()">{{ name() }}</a> ©
+        class="w-full text-center text-white border-t-2 text-[12px] text-pretty bg-strippedPrimaryDark py-sub border-spacing-sm border-t-primary-light"
+      >
+        <a
+          class="text-white"
+          target="_self"
+          [href]="nameLink()"
+        >{{ name() }}</a>
         {{ currentDate | date: 'yyyy' }}
       </mat-card-footer>
     </mat-card>

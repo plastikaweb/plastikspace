@@ -79,7 +79,17 @@
       "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
-      "@plastik/shared/form/ui": ["libs/shared/form/ui/index.ts"],
+      "@plastik/shared/form/color-picker": ["libs/shared/form/ui/input-color-picker/src/index.ts"],
+      "@plastik/shared/form/password": [
+        "libs/shared/form/ui/input-password-with-visibility/src/index.ts"
+      ],
+      "@plastik/shared/form/search": ["libs/shared/form/ui/input-search-util/src/index.ts"],
+      "@plastik/shared/form/table": ["libs/shared/form/ui/table/src/index.ts"],
+      "@plastik/shared/form/textarea-with-counter": [
+        "libs/shared/form/ui/textarea-with-counter/src/index.ts"
+      ],
+      "@plastik/shared/form/util": ["libs/shared/form/util/src/index.ts"],
+      "@plastik/shared/form/year-picker": ["libs/shared/form/ui/year-picker/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
       "@plastik/shared/notification/data-access": [

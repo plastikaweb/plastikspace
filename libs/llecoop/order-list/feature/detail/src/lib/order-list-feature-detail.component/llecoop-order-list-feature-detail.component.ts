@@ -4,6 +4,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
+import { TableFormlyModule } from '@plastik/shared/form/table';
 import { TableSorting } from '@plastik/shared/table/entities';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 import { LlecoopOrderListDetailListFacadeService } from '../order-list-detail-list-facade.service';
@@ -12,11 +13,12 @@ import { LlecoopOrderListDetailListFacadeService } from '../order-list-detail-li
   selector: 'plastik-llecoop-order-list-feature-detail',
   standalone: true,
   imports: [
-    SharedFormFeatureModule,
-    SharedTableUiComponent,
     MatIconModule,
     MatButtonModule,
     RouterLink,
+    TableFormlyModule,
+    SharedFormFeatureModule,
+    SharedTableUiComponent,
   ],
   templateUrl: './llecoop-order-list-feature-detail.component.html',
   styleUrl: './llecoop-order-list-feature-detail.component.scss',

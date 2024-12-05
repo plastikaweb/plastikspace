@@ -10,7 +10,7 @@ export function requestPasswordFormConfig(): FormConfig<RequestPasswordData> {
         key: 'email',
         type: 'input',
         className: 'w-full',
-        templateOptions: {
+        props: {
           type: 'email',
           label: 'Adreça electrònica',
           placeholder: 'Adreça electrònica',

@@ -4,9 +4,19 @@
     "outDir": "../../../../../dist/out-tsc",
     "module": "commonjs",
     "target": "es2016",
-    "types": ["jest", "node"],
-    "composite": true
+    "types": [
+      "jest",
+      "node"
+    ],
+    "composite": true,
+    "declaration": true
   },
-  "files": ["src/test-setup.ts"],
-  "include": ["jest.config.ts", "src/**/*.ts", "src/**/*.d.ts"]
+  "files": [
+    "src/test-setup.ts"
+  ],
+  "include": [
+    "jest.config.ts",
+    "src/**/*.ts",
+    "src/**/*.d.ts"
+  ]
 }
