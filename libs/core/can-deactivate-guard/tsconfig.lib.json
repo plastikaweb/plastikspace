@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../../../dist/out-tsc",
+    "outDir": "../../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
@@ -9,10 +9,5 @@
     "composite": true
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": [
-    "src/**/*",
-    "../../../../core/detail-item-form/src/index.ts",
-    "../../../category/data-access/src/**/*.ts",
-    "../../../../core/can-deactivate-guard/src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts", "../../shared/confirm/data-access/src/**/*.ts"]
 }

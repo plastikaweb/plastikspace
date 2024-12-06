@@ -32,7 +32,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
-        const htmlString = `<p class="flex items-center justify-center gap-tiny"><span class="rounded-full w-sub h-sub" style="background-color:${element?.color}"></span><span class="capitalize w-auto">${value}</span></p>`;
+        const htmlString = `<p class="flex items-center justify-center gap-tiny"><span class="rounded-full size-sub" style="background-color:${element?.color}"></span><span class="capitalize w-auto">${value}</span></p>`;
         return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
       },
     },

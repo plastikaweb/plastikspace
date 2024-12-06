@@ -89,8 +89,6 @@
   @defer (when !hideFooter()) {
     <plastik-core-cms-layout-ui-footer data-test="layout-footer">
       <div content class="flex flex-row justify-center items-center gap-tiny">
-        <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
-
         ©{{ currentDate | date: 'yyyy' }}
         <a
           aria-label="visit www.plastikaweb.com page"
@@ -115,7 +113,7 @@
 <ng-template #headerMenuTpl>
   <button mat-button aria-label="header menu" class="flex gap-tiny" [matMenuTriggerFor]="menu">
     <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
-    <mat-icon class="w-[30px] h-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
+    <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="px-sub">
     <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{

@@ -5,8 +5,18 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": []
+    "types": [],
+    "composite": true
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../../../apps/llecoop/src/app/cms-layout-config.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../../../apps/llecoop/src/app/cms-layout-config.ts",
+    "../../../libs/llecoop/order-list/feature/llecoop-order-indicator/src/index.ts",
+    "../../../libs/llecoop/category/**/src/**/*.ts",
+    "../../../libs/llecoop/order-list/**/src/**/*.ts",
+    "../../../libs/llecoop/product/**/src/**/*.ts",
+    "../../../libs/llecoop/user-order/**/src/**/*.ts",
+    "../../../libs/llecoop/user/**/src/**/*.ts"
+  ]
 }

@@ -75,28 +75,26 @@ export const LLecoopOrderListStore = signalStore(
       getAll: rxMethod<void>(
         pipe(
           switchMap(() => {
-            if (!store.loaded()) {
-              state.dispatch(activityActions.setActivity({ isActive: true }));
-              return orderListService.getAll().pipe(
-                tapResponse({
-                  next: orders =>
-                    patchState(store, setAllEntities(orders, { selectId }), {
-                      loaded: true,
-                      lastUpdated: new Date(),
-                    }),
-                  error: error => {
-                    if (firebaseAuthService.loggedIn()) {
-                      storeNotificationService.create(
-                        `No s'ha pogut carregar el llistat de comandes: ${error}`,
-                        'ERROR'
-                      );
-                    }
-                  },
-                }),
-                tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-              );
-            }
-            return [];
+            state.dispatch(activityActions.setActivity({ isActive: true }));
+
+            return orderListService.getAll().pipe(
+              tapResponse({
+                next: orders =>
+                  patchState(store, setAllEntities(orders, { selectId }), {
+                    loaded: true,
+                    lastUpdated: new Date(),
+                  }),
+                error: error => {
+                  if (firebaseAuthService.loggedIn()) {
+                    storeNotificationService.create(
+                      `No s'ha pogut carregar el llistat de comandes: ${error}`,
+                      'ERROR'
+                    );
+                  }
+                },
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
+            );
           })
         )
       ),
@@ -104,6 +102,7 @@ export const LLecoopOrderListStore = signalStore(
         pipe(
           switchMap(order => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return orderListService.create(order).pipe(
               tapResponse({
                 next: () =>
@@ -126,6 +125,7 @@ export const LLecoopOrderListStore = signalStore(
         pipe(
           switchMap(order => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return orderListService.update({ ...order, status: 'progress' }).pipe(
               tapResponse({
                 next: () =>
@@ -148,6 +148,7 @@ export const LLecoopOrderListStore = signalStore(
         pipe(
           switchMap(order => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return orderListService.update({ ...order, status: 'cancel' }).pipe(
               tapResponse({
                 next: () =>
@@ -170,6 +171,7 @@ export const LLecoopOrderListStore = signalStore(
         pipe(
           switchMap(product => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return orderListService.delete(product).pipe(
               tapResponse({
                 next: () =>
@@ -189,6 +191,7 @@ export const LLecoopOrderListStore = signalStore(
         pipe(
           switchMap((id: EntityId) => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return orderListService.getAllByOrderListId(id).pipe(
               tapResponse({
                 next: orders =>

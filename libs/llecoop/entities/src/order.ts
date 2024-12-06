@@ -37,7 +37,7 @@ export interface LlecoopUserOrder extends BaseEntity {
   totalPrice: number;
   orderListId: EntityId | string;
   userId: EntityId;
-  status: 'waiting' | 'review' | 'deliver' | 'cancel';
+  status: 'waiting' | 'review' | 'deliver' | 'cancel' | 'miss';
 }
 
 export const llecoopUserOrderTimeOptions: Record<
@@ -156,6 +156,11 @@ export const llecoopUserOrderStatus: Record<
   cancel: {
     label: 'Cancel·lada',
     icon: 'cancel',
+    class: 'text-error',
+  },
+  miss: {
+    label: 'No revisada',
+    icon: 'error',
     class: 'text-error',
   },
 } as const;

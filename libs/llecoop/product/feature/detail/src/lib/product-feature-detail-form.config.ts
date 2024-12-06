@@ -277,6 +277,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
     getConfig: () => formConfig,
     getSubmitFormConfig: (editMode = false) => ({
       label: editMode ? 'Desar producte' : 'Crear producte',
+      emitOnChange: true,
     }),
   };
 }

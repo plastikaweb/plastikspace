@@ -10,7 +10,7 @@ body {
   }
 
   .lds-ripple {
-    @apply relative inline-block w-[80px] h-[80px] motion-reduce:before:content-['loading...'];
+    @apply relative inline-block size-[80px] motion-reduce:before:content-['loading...'];
 
     > div {
       @apply absolute border-white border-4 opacity-100 rounded-full animate-radar motion-reduce:animate-none motion-reduce:hidden;
