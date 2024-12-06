@@ -41,6 +41,7 @@ export class OrderListUserOrderDetailFormConfig {
       getSubmitFormConfig: () => ({
         label: 'Desar comanda',
         buttonStyle: 'w-[150px]',
+        emitOnChange: true,
       }),
     };
   }

@@ -82,6 +82,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [core-ng-entry-html-util](libs/core/ng-entry-html/util/README.md)
 - [core-router-data-access](libs/core/router/data-access//README.md)
 - [core-entities](libs/core/entities/README.md)
+- [core-can-deactivate-guard](libs/core/can-deactivate-guard/README.md)
 
 #### CMS-layout
 

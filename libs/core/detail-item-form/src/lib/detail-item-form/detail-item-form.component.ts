@@ -1,8 +1,9 @@
 import { NgClass, TitleCasePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { CanDeactivateComponent } from '@plastik/core/can-deactivate';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { ColorPickerFormlyModule } from '@plastik/shared/form/color-picker';
 import { TableFormlyModule } from '@plastik/shared/form/table';
@@ -27,14 +28,16 @@ import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
   styleUrl: './detail-item-form.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DetailItemFormComponent {
+export class DetailItemFormComponent implements CanDeactivateComponent {
   protected facade = inject(DETAIL_ITEM_VIEW_FACADE);
+  pendingChanges = signal(false);
 
-  onSubmit(data: object): void {
+  protected onSubmit(data: object): void {
+    this.pendingChanges.set(false);
     this.facade.onSubmit?.(data);
   }
 
-  onChange(data: object): void {
+  protected onChange(data: object): void {
     this.facade.onChange?.(data);
   }
 }

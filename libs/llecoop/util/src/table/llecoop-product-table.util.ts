@@ -26,7 +26,7 @@ export function productCategoryColumn<T extends LlecoopBaseProduct>(
           const htmlString = element?.category?.color
             ? `
               <div class="flex items-center gap-sub justify-start">
-                <span class="rounded-full w-sub h-sub p-sub"
+                <span class="rounded-full size-sub p-sub"
                   style="background-color:${element?.category?.color}"></span>
                 <span class="capitalize">${value}</span>
               </div>`

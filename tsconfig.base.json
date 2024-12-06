@@ -23,6 +23,7 @@
       "@plastik/auth/register": ["libs/shared/auth/register/feature/src/index.ts"],
       "@plastik/auth/request-password": ["libs/shared/auth/request-password/feature/src/index.ts"],
       "@plastik/core/api": ["libs/core/util/api/src/index.ts"],
+      "@plastik/core/can-deactivate": ["libs/core/can-deactivate-guard/src/index.ts"],
       "@plastik/core/cms-layout": ["libs/core/cms-layout/feature/src/index.ts"],
       "@plastik/core/cms-layout/data-access": ["libs/core/cms-layout/data-access/src/index.ts"],
       "@plastik/core/cms-layout/entities": ["libs/core/cms-layout/entities/src/index.ts"],

@@ -14,17 +14,15 @@ export const isAnActiveOrderListAndUserOrderGuard: CanActivateFn = (
   const userOrderStore = inject(LlecoopUserOrderStore);
   const orderListStore = inject(LLecoopOrderListStore);
   const id = route.paramMap.get('id');
+  const currentOrderListId = orderListStore.currentOrder()?.id;
+  const userOrderId = userOrderStore
+    .entities()
+    .find(entity => entity.orderListId === currentOrderListId && id === entity.id)?.id;
 
   return toObservable(userOrderStore.loaded).pipe(
     filter(Boolean),
     map(() => {
-      if (
-        userOrderStore
-          .entities()
-          .some(entity => entity['orderListId'] === orderListStore.currentOrder()?.id) &&
-        orderListStore.entities().some(entity => entity.status === 'progress') &&
-        userOrderStore.openedOrder()?.id === id
-      ) {
+      if (userOrderId) {
         return true;
       }
       return new RedirectCommand(router.parseUrl('/soci/comanda'));

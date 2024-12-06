@@ -84,6 +84,7 @@ export function categoryFeatureDetailFormConfig(): FormConfig<LlecoopProductCate
     getConfig: () => getLlecoopCategoryDetailFormConfig,
     getSubmitFormConfig: (editMode = false) => ({
       label: editMode ? 'Desar categoria' : 'Crear categoria',
+      emitOnChange: true,
     }),
   };
 }

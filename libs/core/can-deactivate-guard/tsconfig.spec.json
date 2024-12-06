@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../../../dist/out-tsc",
+    "outDir": "../../../dist/out-tsc",
     "module": "commonjs",
     "target": "es2016",
     "types": ["jest", "node"],
@@ -10,13 +10,12 @@
   },
   "files": ["src/test-setup.ts"],
   "include": [
-    "../../../../llecoop/util/src/**/*",
     "jest.config.ts",
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
-    "src/lib/**/*.ts",
-    "../../../../../libs/shared/**/*.ts",
-    "../../../../../libs/llecoop/entities/src/**/*.ts"
+    "src/**/*.ts",
+    "src/*.ts",
+    "../../shared/confirm/data-access/src/**/*.ts"
   ]
 }

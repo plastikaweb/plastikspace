@@ -1,8 +1,8 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { MatDialog } from '@angular/material/dialog';
 import { SafeHtml } from '@angular/platform-browser';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { SharedConfirmFeatureComponent } from './shared-confirm-feature.component';
 
 @Injectable({
@@ -21,6 +21,6 @@ export class SharedConfirmDialogService {
       data: { title, message, ko, ok },
     });
 
-    return dialogRef.afterClosed();
+    return dialogRef.afterClosed().pipe(map(result => result || false));
   }
 }

@@ -69,6 +69,7 @@ export const LlecoopCategoryStore = signalStore(
           switchMap(() => {
             if (!store.loaded()) {
               state.dispatch(activityActions.setActivity({ isActive: true }));
+
               return categoryFireService.getAll().pipe(
                 tapResponse({
                   next: categories => {
@@ -151,6 +152,7 @@ export const LlecoopCategoryStore = signalStore(
         pipe(
           switchMap(category => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return categoryFireService.delete(category).pipe(
               tapResponse({
                 next: () =>

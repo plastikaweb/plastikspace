@@ -49,6 +49,7 @@ export const LLecoopUserStore = signalStore(
           switchMap(() => {
             if (!store.loaded()) {
               state.dispatch(activityActions.setActivity({ isActive: true }));
+
               return userService.getAll().pipe(
                 tapResponse({
                   next: users =>
@@ -77,6 +78,7 @@ export const LLecoopUserStore = signalStore(
         pipe(
           switchMap(({ email }) => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return userService.create(email).pipe(
               tapResponse({
                 next: () => state.dispatch(routerActions.go({ path: ['/admin/usuari'] })),
@@ -100,6 +102,7 @@ export const LLecoopUserStore = signalStore(
         pipe(
           switchMap(user => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return userService.delete(user).pipe(
               tapResponse({
                 next: () =>
@@ -122,6 +125,7 @@ export const LLecoopUserStore = signalStore(
         pipe(
           switchMap(({ id }) => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             if (!id) {
               throw new Error('User ID is undefined');
             }

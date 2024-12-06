@@ -12,7 +12,7 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
   return {
     showToggleMenuButton: true,
     sidenavPosition: 'start',
-    mainIcon: { iconPath: 'assets/img/favicon.svg', svgClass: 'w-lg h-lg' },
+    mainIcon: { iconPath: 'assets/img/favicon.svg', svgClass: 'size-lg' },
     title: '',
     extendedTitle: 'El Llevat',
     widgetsConfig: {

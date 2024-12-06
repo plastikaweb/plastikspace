@@ -55,6 +55,7 @@ export const LlecoopProductStore = signalStore(
           switchMap(() => {
             if (!store.loaded()) {
               state.dispatch(activityActions.setActivity({ isActive: true }));
+
               return productService.getAll().pipe(
                 tapResponse({
                   next: products =>
@@ -85,6 +86,7 @@ export const LlecoopProductStore = signalStore(
         pipe(
           switchMap((product: Partial<LlecoopProduct>) => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return productService.create(product).pipe(
               tapResponse({
                 next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
@@ -108,6 +110,7 @@ export const LlecoopProductStore = signalStore(
         pipe(
           switchMap(({ product, showNotification }) => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return productService.update(product).pipe(
               tapResponse({
                 next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
@@ -134,6 +137,7 @@ export const LlecoopProductStore = signalStore(
         pipe(
           switchMap(product => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
+
             return productService.delete(product).pipe(
               tapResponse({
                 next: () =>
