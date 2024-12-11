@@ -14,18 +14,17 @@ import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
-  selector: 'plastik-textarea-with-counter-type',
-  standalone: true,
-  templateUrl: './textarea-with-counter-type.component.html',
-  imports: [
-    CdkTextareaAutosize,
-    TextFieldModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    FormlyModule,
-    NgClass,
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-textarea-with-counter-type',
+    templateUrl: './textarea-with-counter-type.component.html',
+    imports: [
+        CdkTextareaAutosize,
+        TextFieldModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        FormlyModule,
+        NgClass,
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 /**
  * A component that extends the `FieldType` from the `@ngx-formly/material/form-field` library.

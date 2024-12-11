@@ -34,35 +34,34 @@ export const YEAR_MODE_FORMATS = {
 };
 
 @Component({
-  selector: 'plastik-year-picker',
-  standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatDatepickerModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatMomentDateModule,
-  ],
-  providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE],
-    },
-    { provide: MAT_DATE_FORMATS, useValue: YEAR_MODE_FORMATS },
-    {
-      provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => YearPickerComponent),
-      multi: true,
-    },
-  ],
-  templateUrl: './year-picker.component.html',
-  styleUrls: ['./year-picker.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-year-picker',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatIconModule,
+        MatDatepickerModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatMomentDateModule,
+    ],
+    providers: [
+        {
+            provide: DateAdapter,
+            useClass: MomentDateAdapter,
+            deps: [MAT_DATE_LOCALE],
+        },
+        { provide: MAT_DATE_FORMATS, useValue: YEAR_MODE_FORMATS },
+        {
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => YearPickerComponent),
+            multi: true,
+        },
+    ],
+    templateUrl: './year-picker.component.html',
+    styleUrls: ['./year-picker.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class YearPickerComponent implements ControlValueAccessor {
   @Input() touchUi = false;

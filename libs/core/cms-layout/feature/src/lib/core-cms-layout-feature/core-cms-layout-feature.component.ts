@@ -30,29 +30,28 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'plastik-core-cms-layout-feature',
-  standalone: true,
-  imports: [
-    RouterLink,
-    NgTemplateOutlet,
-    RouterLinkActive,
-    DatePipe,
-    PushPipe,
-    MatSidenavModule,
-    MatListModule,
-    MatIconModule,
-    MatListModule,
-    MatButtonModule,
-    MatMenuModule,
-    AngularSvgIconModule,
-    CoreCmsLayoutUiFooterComponent,
-    CoreCmsLayoutUiHeaderComponent,
-    CoreCmsLayoutUiSidenavComponent,
-    SharedActivityUiOverlayComponent,
-    NotificationUiMatSnackbarDirective,
-  ],
-  templateUrl: './core-cms-layout-feature.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-core-cms-layout-feature',
+    imports: [
+        RouterLink,
+        NgTemplateOutlet,
+        RouterLinkActive,
+        DatePipe,
+        PushPipe,
+        MatSidenavModule,
+        MatListModule,
+        MatIconModule,
+        MatListModule,
+        MatButtonModule,
+        MatMenuModule,
+        AngularSvgIconModule,
+        CoreCmsLayoutUiFooterComponent,
+        CoreCmsLayoutUiHeaderComponent,
+        CoreCmsLayoutUiSidenavComponent,
+        SharedActivityUiOverlayComponent,
+        NotificationUiMatSnackbarDirective,
+    ],
+    templateUrl: './core-cms-layout-feature.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterViewInit {
   private readonly layoutFacade = inject(LayoutFacade);

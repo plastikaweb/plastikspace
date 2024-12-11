@@ -28,13 +28,12 @@ const INPUT_TABLE_ACCESSOR = {
 };
 
 @Component({
-  selector: 'plastik-input-table',
-  standalone: true,
-  imports: [SharedTableUiComponent, MatInputModule],
-  templateUrl: './input-table.component.html',
-  styleUrl: './input-table.component.scss',
-  providers: [INPUT_TABLE_ACCESSOR],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-input-table',
+    imports: [SharedTableUiComponent, MatInputModule],
+    templateUrl: './input-table.component.html',
+    styleUrl: './input-table.component.scss',
+    providers: [INPUT_TABLE_ACCESSOR],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputTableComponent<T extends BaseEntity> implements ControlValueAccessor {
   protected readonly cdr = inject(ChangeDetectorRef);

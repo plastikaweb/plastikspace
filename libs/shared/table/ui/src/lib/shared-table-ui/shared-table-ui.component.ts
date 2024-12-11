@@ -53,40 +53,39 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
 import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
 @Component({
-  selector: 'plastik-shared-table',
-  standalone: true,
-  imports: [
-    RouterModule,
-    KeyValuePipe,
-    NgClass,
-    NgTemplateOutlet,
-    CdkTableModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatTooltipModule,
-    MatIconModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatRadioModule,
-    MatSlideToggleModule,
-    SharedUtilFormattersModule,
-    TableCellTitleDirective,
-    OrderTableActionsElementsPipe,
-  ],
-  templateUrl: './shared-table-ui.component.html',
-  styleUrls: ['./shared-table-ui.component.scss'],
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-shared-table',
+    imports: [
+        RouterModule,
+        KeyValuePipe,
+        NgClass,
+        NgTemplateOutlet,
+        CdkTableModule,
+        MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
+        MatTooltipModule,
+        MatIconModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatRadioModule,
+        MatSlideToggleModule,
+        SharedUtilFormattersModule,
+        TableCellTitleDirective,
+        OrderTableActionsElementsPipe,
+    ],
+    templateUrl: './shared-table-ui.component.html',
+    styleUrls: ['./shared-table-ui.component.scss'],
+    animations: [
+        trigger('detailExpand', [
+            state('collapsed,void', style({ height: '0px', minHeight: '0' })),
+            state('expanded', style({ height: '*' })),
+            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+        ]),
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
   implements OnInit

@@ -11,22 +11,21 @@ import { TextAreaWithCounterFormlyModule } from '@plastik/shared/form/textarea-w
 import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
 
 @Component({
-  selector: 'plastik-detail-item-form',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    MatButtonModule,
-    TitleCasePipe,
-    RouterLink,
-    NgClass,
-    TableFormlyModule,
-    SharedFormFeatureModule,
-    ColorPickerFormlyModule,
-    TextAreaWithCounterFormlyModule,
-  ],
-  templateUrl: './detail-item-form.component.html',
-  styleUrl: './detail-item-form.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-detail-item-form',
+    imports: [
+        MatIconModule,
+        MatButtonModule,
+        TitleCasePipe,
+        RouterLink,
+        NgClass,
+        TableFormlyModule,
+        SharedFormFeatureModule,
+        ColorPickerFormlyModule,
+        TextAreaWithCounterFormlyModule,
+    ],
+    templateUrl: './detail-item-form.component.html',
+    styleUrl: './detail-item-form.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DetailItemFormComponent implements CanDeactivateComponent {
   protected facade = inject(DETAIL_ITEM_VIEW_FACADE);

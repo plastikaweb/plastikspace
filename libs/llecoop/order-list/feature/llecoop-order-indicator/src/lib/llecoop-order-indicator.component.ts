@@ -11,12 +11,11 @@ import {
 } from '@plastik/llecoop/order-list/data-access';
 
 @Component({
-  selector: 'plastik-llecoop-order-indicator',
-  standalone: true,
-  imports: [MatIconModule, MatBadgeModule, MatButtonModule, CurrencyPipe, RouterLink],
-  templateUrl: './llecoop-order-indicator.component.html',
-  styleUrl: './llecoop-order-indicator.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-llecoop-order-indicator',
+    imports: [MatIconModule, MatBadgeModule, MatButtonModule, CurrencyPipe, RouterLink],
+    templateUrl: './llecoop-order-indicator.component.html',
+    styleUrl: './llecoop-order-indicator.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LlecoopOrderIndicatorComponent {
   protected readonly userOrderStore = inject(LlecoopUserOrderStore);

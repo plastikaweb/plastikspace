@@ -9,19 +9,18 @@ import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type';
 
 @Component({
-  selector: 'plastik-table-with-filtering',
-  standalone: true,
-  imports: [
-    MatIconModule,
-    MatButtonModule,
-    TitleCasePipe,
-    RouterLink,
-    SharedTableUiComponent,
-    SharedFormFeatureModule,
-  ],
-  templateUrl: './table-with-filtering.component.html',
-  styleUrl: './table-with-filtering.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-table-with-filtering',
+    imports: [
+        MatIconModule,
+        MatButtonModule,
+        TitleCasePipe,
+        RouterLink,
+        SharedTableUiComponent,
+        SharedFormFeatureModule,
+    ],
+    templateUrl: './table-with-filtering.component.html',
+    styleUrl: './table-with-filtering.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TableWithFilteringComponent {
   protected facade = inject(TABLE_WITH_FILTERING_FACADE);

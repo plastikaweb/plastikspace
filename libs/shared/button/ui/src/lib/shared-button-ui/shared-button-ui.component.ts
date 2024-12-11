@@ -8,18 +8,17 @@ import { ReturnAsObservablePipe } from '@plastik/shared/return-as-observable';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
-  selector: 'plastik-shared-button',
-  standalone: true,
-  imports: [
-    NgClass,
-    NgTemplateOutlet,
-    PushPipe,
-    MatButtonModule,
-    AngularSvgIconModule,
-    ReturnAsObservablePipe,
-  ],
-  templateUrl: './shared-button-ui.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-shared-button',
+    imports: [
+        NgClass,
+        NgTemplateOutlet,
+        PushPipe,
+        MatButtonModule,
+        AngularSvgIconModule,
+        ReturnAsObservablePipe,
+    ],
+    templateUrl: './shared-button-ui.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SharedButtonUiComponent {
   /**

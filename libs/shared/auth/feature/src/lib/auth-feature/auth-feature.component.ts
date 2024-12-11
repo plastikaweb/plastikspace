@@ -7,17 +7,16 @@ import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/passwor
 import { AUTH_FORM_FACADE } from './auth-form-facade.type';
 
 @Component({
-  selector: 'plastik-auth-feature',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatCardModule,
-    RouterModule,
-    PasswordWithVisibilityFormlyModule,
-    SharedFormFeatureModule,
-  ],
-  templateUrl: './auth-feature.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-auth-feature',
+    imports: [
+        CommonModule,
+        MatCardModule,
+        RouterModule,
+        PasswordWithVisibilityFormlyModule,
+        SharedFormFeatureModule,
+    ],
+    templateUrl: './auth-feature.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AuthFeatureComponent {
   protected facade = inject(AUTH_FORM_FACADE);

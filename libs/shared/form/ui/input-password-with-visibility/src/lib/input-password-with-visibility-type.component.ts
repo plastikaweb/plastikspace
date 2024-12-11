@@ -7,11 +7,10 @@ import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material';
 
 @Component({
-  selector: 'plastik-input-password-with-visibility-type',
-  standalone: true,
-  imports: [MatButtonModule, MatIconModule, MatInputModule, FormlyModule, ReactiveFormsModule],
-  templateUrl: './input-password-with-visibility-type.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'plastik-input-password-with-visibility-type',
+    imports: [MatButtonModule, MatIconModule, MatInputModule, FormlyModule, ReactiveFormsModule],
+    templateUrl: './input-password-with-visibility-type.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class InputPasswordWithVisibilityTypeComponent extends FieldType<FieldTypeConfig> {
   hiddenPass = signal(true);
