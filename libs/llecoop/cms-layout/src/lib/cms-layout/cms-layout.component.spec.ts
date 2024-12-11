@@ -34,7 +34,6 @@ describe('CmsLayoutComponent', () => {
 
     fixture = TestBed.createComponent(CmsLayoutComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

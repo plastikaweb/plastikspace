@@ -12,12 +12,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
-    selector: 'plastik-formly-addons-wrapper',
-    templateUrl: './formly-addons-wrapper.component.html',
-    styleUrls: ['./formly-addons-wrapper.component.scss'],
-    imports: [MatIconModule, MatButtonModule, NgStyle, NgClass],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-formly-addons-wrapper',
+  templateUrl: './formly-addons-wrapper.component.html',
+  styleUrls: ['./formly-addons-wrapper.component.scss'],
+  imports: [MatIconModule, MatButtonModule, NgStyle, NgClass],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyAddonsWrapperComponent extends FieldWrapper implements AfterViewInit {
   @ViewChild('matPrefix', { static: true }) matPrefix!: TemplateRef<unknown>;

@@ -13,10 +13,10 @@ import { RouterOutlet } from '@angular/router';
 import { LayoutPosition } from '@plastik/shared/entities';
 
 @Component({
-    selector: 'plastik-core-cms-layout-ui-sidenav',
-    imports: [RouterOutlet, MatSidenavModule, MatListModule],
-    templateUrl: './core-cms-layout-ui-sidenav.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-core-cms-layout-ui-sidenav',
+  imports: [RouterOutlet, MatSidenavModule, MatListModule],
+  templateUrl: './core-cms-layout-ui-sidenav.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutUiSidenavComponent {
   @Input() position: LayoutPosition = 'start';

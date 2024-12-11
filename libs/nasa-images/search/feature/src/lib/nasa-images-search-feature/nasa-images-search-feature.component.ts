@@ -13,18 +13,18 @@ import { getNasaImagesSearchFeatureFormConfig } from './nasa-images-search-featu
 import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature-table.config';
 
 @Component({
-    selector: 'plastik-nasa-images-search',
-    imports: [
-        MatIconModule,
-        PushPipe,
-        LetDirective,
-        SharedTableUiComponent,
-        SharedFormFeatureModule,
-        YearPickerFormlyModule,
-        NasaImagesSearchUiNoResultsComponent,
-    ],
-    templateUrl: './nasa-images-search-feature.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-nasa-images-search',
+  imports: [
+    MatIconModule,
+    PushPipe,
+    LetDirective,
+    SharedTableUiComponent,
+    SharedFormFeatureModule,
+    YearPickerFormlyModule,
+    NasaImagesSearchUiNoResultsComponent,
+  ],
+  templateUrl: './nasa-images-search-feature.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NasaImagesSearchFeatureComponent {
   private readonly facade = inject(NasaImagesSearchFacade);

@@ -15,17 +15,17 @@ interface DatepickerProps extends FormlyFieldProps {
 }
 
 @Component({
-    selector: 'plastik-year-picker-type',
-    templateUrl: './year-picker-type.component.html',
-    imports: [
-        YearPickerComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormlyModule,
-    ],
-    encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-year-picker-type',
+  templateUrl: './year-picker-type.component.html',
+  imports: [
+    YearPickerComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormlyModule,
+  ],
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class YearPickerTypeComponent extends FieldType<FieldTypeConfig<Partial<DatepickerProps>>> {}

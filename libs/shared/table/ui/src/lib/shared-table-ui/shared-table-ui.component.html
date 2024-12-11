@@ -1,5 +1,5 @@
 <div
-  class="block overflow-auto z-10 mt-0 border-t border-solid md:mt-4 border-gray-10 table-wrapper">
+  class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-md">
   <mat-table
     class="table w-full"
     matSort
@@ -276,7 +276,7 @@
       <mat-row
         *matRowDef="let row; columns: ['expandedDetail']"
         sticky="true"
-        class="expanded-detail-row"></mat-row>
+        class="table-row height-0"></mat-row>
     } @else {
       <!-- Row that will be used to display the regular data -->
       <mat-row

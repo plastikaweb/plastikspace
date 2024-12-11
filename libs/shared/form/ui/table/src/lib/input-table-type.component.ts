@@ -14,18 +14,18 @@ interface InputTableProps extends FormlyFieldProps {
 }
 
 @Component({
-    selector: 'plastik-input-table-type',
-    imports: [
-        InputTableComponent,
-        FormsModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        FormlyModule,
-    ],
-    templateUrl: './input-table-type.component.html',
-    styleUrl: './input-table-type.component.scss',
-    schemas: [NO_ERRORS_SCHEMA],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-input-table-type',
+  imports: [
+    InputTableComponent,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormlyModule,
+  ],
+  templateUrl: './input-table-type.component.html',
+  styleUrl: './input-table-type.component.scss',
+  schemas: [NO_ERRORS_SCHEMA],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputTableTypeComponent extends FieldType<FieldTypeConfig<InputTableProps>> {}

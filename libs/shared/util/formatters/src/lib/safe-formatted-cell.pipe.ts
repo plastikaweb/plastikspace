@@ -11,8 +11,7 @@ import { DataFormatFactoryService } from './services';
  * @param { unknown } extraConfig A custom configuration object to add extra formatting options.
  */
 @Pipe({
-    name: 'safeFormatted',
-    standalone: false
+  name: 'safeFormatted',
 })
 export class SafeFormattedPipe<T extends FormattingInput<keyof T>> implements PipeTransform {
   constructor(private readonly dataFormatService: DataFormatFactoryService<T>) {}

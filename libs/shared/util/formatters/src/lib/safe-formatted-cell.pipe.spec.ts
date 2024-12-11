@@ -3,7 +3,6 @@ import { TestBed } from '@angular/core/testing';
 import { SafeFormattedPipe } from './safe-formatted-cell.pipe';
 import { DataFormatFactoryService } from './services';
 import { objectMocked, TypeMocked } from './services/formatting.mock';
-import { SharedUtilFormattersModule } from './shared-util-formatters.module';
 
 describe('SafeFormattedCellPipe', () => {
   let pipe: SafeFormattedPipe<TypeMocked>;
@@ -11,7 +10,7 @@ describe('SafeFormattedCellPipe', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedUtilFormattersModule],
+      imports: [SafeFormattedPipe],
       providers: [
         {
           provide: DataFormatFactoryService,

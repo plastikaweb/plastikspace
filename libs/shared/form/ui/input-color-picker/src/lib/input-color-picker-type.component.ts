@@ -14,9 +14,9 @@ interface ColorPickerProps extends FormlyFieldProps {
 }
 
 @Component({
-    selector: 'plastik-input-color-picker-type',
-    imports: [NgxColorsModule, MatIconModule, MatInputModule, FormlyModule, ReactiveFormsModule],
-    templateUrl: './input-color-picker-type.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-input-color-picker-type',
+  imports: [NgxColorsModule, MatIconModule, MatInputModule, FormlyModule, ReactiveFormsModule],
+  templateUrl: './input-color-picker-type.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputColorPickerTypeComponent extends FieldType<FieldTypeConfig<ColorPickerProps>> {}

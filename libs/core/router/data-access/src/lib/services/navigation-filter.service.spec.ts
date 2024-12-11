@@ -16,7 +16,7 @@ describe('NavigationFilterService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RootComponent],
+      imports: [RootComponent],
       providers: [
         provideMockStore({
           selectors: [{ selector: selectRouteDataName, value: 'valid' }],

@@ -25,31 +25,31 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { map } from 'rxjs';
 import { HeaderConfigService } from './cms-header-config';
 @Component({
-    selector: 'plastik-cms-layout',
-    imports: [
-        MatSidenavModule,
-        MatButtonModule,
-        MatIconModule,
-        MatMenuModule,
-        MatListModule,
-        RouterOutlet,
-        RouterLink,
-        RouterLinkActive,
-        AngularSvgIconModule,
-        CoreCmsLayoutUiHeaderComponent,
-        CoreCmsLayoutUiFooterComponent,
-        DatePipe,
-    ],
-    providers: [
-        { provide: FocusTrapFactory, useClass: ConfigurableFocusTrapFactory },
-        {
-            provide: CORE_CMS_LAYOUT_HEADER_CONFIG,
-            useFactory: HeaderConfigService,
-        },
-    ],
-    templateUrl: './cms-layout.component.html',
-    styleUrl: './cms-layout.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-cms-layout',
+  imports: [
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    MatMenuModule,
+    MatListModule,
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    AngularSvgIconModule,
+    CoreCmsLayoutUiHeaderComponent,
+    CoreCmsLayoutUiFooterComponent,
+    DatePipe,
+  ],
+  providers: [
+    { provide: FocusTrapFactory, useClass: ConfigurableFocusTrapFactory },
+    {
+      provide: CORE_CMS_LAYOUT_HEADER_CONFIG,
+      useFactory: HeaderConfigService,
+    },
+  ],
+  templateUrl: './cms-layout.component.html',
+  styleUrl: './cms-layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CmsLayoutComponent implements AfterViewInit {
   protected readonly firebaseAuthService = inject(FirebaseAuthService);

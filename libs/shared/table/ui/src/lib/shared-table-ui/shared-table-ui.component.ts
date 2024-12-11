@@ -31,7 +31,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
-import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
+import {
+  FormattingTypes,
+  SafeFormattedPipe,
+  SharedUtilFormattersModule,
+} from '@plastik/shared/formatters';
 import { isEmpty, isString } from '@plastik/shared/objects';
 import {
   EditableAttributeBase,
@@ -53,39 +57,40 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
 import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
 @Component({
-    selector: 'plastik-shared-table',
-    imports: [
-        RouterModule,
-        KeyValuePipe,
-        NgClass,
-        NgTemplateOutlet,
-        CdkTableModule,
-        MatTableModule,
-        MatPaginatorModule,
-        MatSortModule,
-        MatTooltipModule,
-        MatIconModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatSelectModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        MatSlideToggleModule,
-        SharedUtilFormattersModule,
-        TableCellTitleDirective,
-        OrderTableActionsElementsPipe,
-    ],
-    templateUrl: './shared-table-ui.component.html',
-    styleUrls: ['./shared-table-ui.component.scss'],
-    animations: [
-        trigger('detailExpand', [
-            state('collapsed,void', style({ height: '0px', minHeight: '0' })),
-            state('expanded', style({ height: '*' })),
-            transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-        ]),
-    ],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-shared-table',
+  imports: [
+    RouterModule,
+    KeyValuePipe,
+    NgClass,
+    NgTemplateOutlet,
+    CdkTableModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatTooltipModule,
+    MatIconModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatSlideToggleModule,
+    SharedUtilFormattersModule,
+    TableCellTitleDirective,
+    OrderTableActionsElementsPipe,
+    SafeFormattedPipe,
+  ],
+  templateUrl: './shared-table-ui.component.html',
+  styleUrls: ['./shared-table-ui.component.scss'],
+  animations: [
+    trigger('detailExpand', [
+      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
+      state('expanded', style({ height: '*' })),
+      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+    ]),
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
   implements OnInit

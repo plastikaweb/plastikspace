@@ -11,18 +11,18 @@ import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 import { LlecoopOrderListDetailListFacadeService } from '../order-list-detail-list-facade.service';
 
 @Component({
-    selector: 'plastik-llecoop-order-list-feature-detail',
-    imports: [
-        MatIconModule,
-        MatButtonModule,
-        RouterLink,
-        TableFormlyModule,
-        SharedFormFeatureModule,
-        SharedTableUiComponent,
-    ],
-    templateUrl: './llecoop-order-list-feature-detail.component.html',
-    styleUrl: './llecoop-order-list-feature-detail.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'plastik-llecoop-order-list-feature-detail',
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    RouterLink,
+    TableFormlyModule,
+    SharedFormFeatureModule,
+    SharedTableUiComponent,
+  ],
+  templateUrl: './llecoop-order-list-feature-detail.component.html',
+  styleUrl: './llecoop-order-list-feature-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LlecoopOrderListFeatureDetailComponent implements CanDeactivateComponent {
   protected facade = inject(LlecoopOrderListDetailListFacadeService);

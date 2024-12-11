@@ -5,6 +5,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { SafeFormattedPipe } from '@plastik/shared/formatters';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 import { LlecoopUserOrderResumeFacadeService } from '../user-order-resume-facade.service';
 import { LlecoopUserOrderFeatureResumeComponent } from './user-order-feature-resume.component';
@@ -15,7 +16,7 @@ describe('LlecoopUserOrderFeatureResumeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LlecoopUserOrderFeatureResumeComponent, SharedTableUiComponent],
+      imports: [LlecoopUserOrderFeatureResumeComponent, SharedTableUiComponent, SafeFormattedPipe],
       providers: [
         provideRouter([]),
         provideMockStore({}),
