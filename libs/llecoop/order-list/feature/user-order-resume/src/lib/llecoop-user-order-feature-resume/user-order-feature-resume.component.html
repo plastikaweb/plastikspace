@@ -1,0 +1,91 @@
+@let viewConfig = facade.viewConfig();
+@let tableDefinition = facade.tableDefinition;
+@let order = facade.userOrder();
+
+<div
+  class="flex flex-col flex-wrap justify-center items-center gap-tiny md:flex-row md:justify-between">
+  <h2 class="flex content-center items-center h4 gap-sub">
+    <mat-icon class="text-[40px] size-[40px]">{{ viewConfig.icon }}</mat-icon>
+    <span>{{ viewConfig.title | titlecase }}</span>
+  </h2>
+
+  <div class="flex flex-col items-center sm:flex-row sm:justify-end gap-tiny">
+    <button type="button" mat-flat-button color="accent" class="text-white" [routerLink]="['../']">
+      <mat-icon>arrow_back</mat-icon> Tornar al llistat
+    </button>
+  </div>
+</div>
+
+<div class="flex flex-col justify-between gap-md pt-lg">
+  <section class="rounded-lg shadow-sm bg-gray-5 p-md mb-md" aria-label="Resum de la comanda">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+      <article class="flex flex-col">
+        <header>
+          <h3 class="flex justify-start items-center gap-tiny mb-sm">
+            <span class="text-primary">Resum de la comanda</span
+            ><span
+              class="text-sm text-secondary-dark"
+              [innerHTML]="facade.formattedUserOrderStatus()"></span>
+          </h3>
+        </header>
+        <dl class="space-y-2">
+          <div class="flex items-center gap-tiny">
+            <dt class="text-gray-80">Id:</dt>
+            <dd>{{ order?.id }}</dd>
+          </div>
+          <div class="flex items-center gap-tiny">
+            <dd>{{ order?.name }}</dd>
+          </div>
+          <div class="flex items-center gap-tiny">
+            <dt class="text-gray-80">Nom:</dt>
+            <dd>{{ order?.userName }}</dd>
+          </div>
+          @if (order?.address) {
+            <div class="flex items-center gap-tiny">
+              <dt class="text-gray-80">Adreça:</dt>
+              <dd>
+                <address class="not-italic">
+                  {{ order?.address }}
+                </address>
+              </dd>
+            </div>
+          }
+          <div class="flex items-center gap-tiny">
+            <dt class="text-gray-80">Email:</dt>
+            <dd>
+              {{ order?.userEmail }}
+            </dd>
+          </div>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <plastik-shared-table
+    [data]="tableDefinition.getData?.() || []"
+    [caption]="tableDefinition.caption || ''"
+    [columnProperties]="tableDefinition.columnProperties || []"
+    [resultsLength]="tableDefinition?.count() || 0"
+    [pageSizeOptions]="tableDefinition.pageSizeOptions || []"
+    [noPagination]="tableDefinition.noPagination || false">
+  </plastik-shared-table>
+
+  <section
+    class="flex flex-col self-end rounded-lg shadow-sm p-sm min-w-third bg-gray-5 gap-tiny"
+    aria-label="Total de la compra">
+    <dl class="divide-y divide-secondary-dark">
+      <div class="flex flex-row justify-between items-center p-tiny">
+        <dt class="text-md">Total productes</dt>
+        <dd class="font-medium">33,00 €</dd>
+      </div>
+      <div class="flex flex-row justify-between items-center p-tiny">
+        <dt class="text-md">Transport</dt>
+        <dd class="font-medium">3,00 €</dd>
+      </div>
+      <div class="flex flex-row justify-between items-center p-tiny">
+        <dt class="text-lg font-semibold">Total</dt>
+        <dd class="text-lg font-bold text-secondary-dark">36,00 €</dd>
+      </div>
+    </dl>
+  </section>
+</div>

@@ -156,8 +156,8 @@ export const LLecoopUserStore = signalStore(
         getAll();
       }
     },
-    onDestroy() {
-      console.log('Destroying product store');
+    onDestroy(state) {
+      console.log('Destroying user store');
     },
   })
 );

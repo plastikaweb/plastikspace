@@ -38,7 +38,7 @@ export const LLecoopOrderListStore = signalStore(
   withState<LlecoopOrderListState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'asc'],
+    sorting: ['name', 'desc'],
     selectedItemId: null,
     selectedItemUserOrderId: null,
   }),

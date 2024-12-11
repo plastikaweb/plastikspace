@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { LlecoopUserOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
+import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
+import { formatUserOrderStatus } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -79,18 +80,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     cssClasses: ['max-w-[70px] md:max-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: userOrder => {
-        const status =
-          llecoopUserOrderStatus[userOrder as LlecoopUserOrder['status']] ||
-          llecoopUserOrderStatus.waiting;
-
-        return this.sanitizer.bypassSecurityTrustHtml(`
-          <p class="flex gap-tiny justify-center items-center">
-          <span class="material-icons ${status?.class}">${status?.icon}</span>
-          <span class="capitalize hidden md:flex">${status?.label}</span>
-          </p>
-          `) as SafeHtml;
-      },
+      execute: status =>
+        formatUserOrderStatus(this.sanitizer, status as LlecoopUserOrder['status']),
     },
   };
 
@@ -106,11 +97,26 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     this.updatedAt,
   ];
 
+  private readonly orderDoneStatusCache = new Map<string, boolean>();
+
   private checkIfOrderIsDone(order: LlecoopUserOrder): boolean {
-    return this.orderListStore.entityMap()[order.orderListId]?.status === 'done';
+    if (!order) return false;
+
+    const cacheKey = `${order.orderListId}`;
+    if (this.orderDoneStatusCache.has(cacheKey)) {
+      return this.orderDoneStatusCache.get(cacheKey) as boolean;
+    }
+
+    const isDone = this.orderListStore.entityMap()[order.orderListId]?.status === 'done';
+    this.orderDoneStatusCache.set(cacheKey, isDone);
+
+    return isDone;
   }
 
-  getTableDefinition() {
+  getTableDefinition(): TableDefinition<LlecoopUserOrder> {
+    // Clear cache when getting new table definition
+    this.orderDoneStatusCache.clear();
+
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return {
@@ -128,17 +134,25 @@ export class LlecoopUserOrderSearchFeatureTableConfig
       getData: () => this.userOrderStore.entities(),
       actionsColStyles: 'min-w-[135px]',
       actions: {
+        VIEW: {
+          visible: () => true,
+          disabled: (userOrder: LlecoopUserOrder) => !this.checkIfOrderIsDone(userOrder),
+          description: () => 'Resum de la comanda',
+          order: 1,
+          icon: () => 'visibility',
+          link: (userOrder: LlecoopUserOrder) => `resum/${userOrder?.id}`,
+        },
         EDIT: {
           visible: () => true,
-          disabled: this.checkIfOrderIsDone.bind(this),
+          disabled: (userOrder: LlecoopUserOrder) => this.checkIfOrderIsDone(userOrder),
           description: () => 'Edita la comanda',
-          order: 1,
+          order: 2,
         },
         DELETE: {
           visible: () => true,
-          disabled: this.checkIfOrderIsDone.bind(this),
+          disabled: (userOrder: LlecoopUserOrder) => this.checkIfOrderIsDone(userOrder),
           description: () => 'Elimina la comanda',
-          order: 2,
+          order: 3,
         },
       },
     } as TableDefinition<LlecoopUserOrder>;

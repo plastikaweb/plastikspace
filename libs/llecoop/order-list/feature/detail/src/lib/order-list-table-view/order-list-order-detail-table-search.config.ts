@@ -1,12 +1,11 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import {
-  LlecoopUserOrder,
-  llecoopUserOrderDateOptions,
-  llecoopUserOrderStatus,
-  llecoopUserOrderTimeOptions,
-} from '@plastik/llecoop/entities';
+import { DomSanitizer } from '@angular/platform-browser';
+import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  formatUserOrderDeliveryDate,
+  formatUserOrderStatus,
+} from '@plastik/llecoop/order-list/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -68,20 +67,8 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     cssClasses: ['min-w-[120px] md:min-w-[250px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: (_, element) => {
-        const deliveryDate = element?.deliveryDate as LlecoopUserOrder['deliveryDate'];
-        const deliveryType = element?.deliveryType as LlecoopUserOrder['deliveryType'];
-        const findDeliveryDate = llecoopUserOrderDateOptions?.[deliveryType]?.find(
-          date => date?.value === deliveryDate
-        );
-        const deliveryTime = element?.deliveryTime;
-        const findDeliveryTime = llecoopUserOrderTimeOptions[deliveryType]?.find(
-          date => date.value === deliveryTime
-        );
-        return this.sanitizer.bypassSecurityTrustHtml(
-          `<p>${findDeliveryDate?.label} ${findDeliveryTime?.label}</p>`
-        ) as SafeHtml;
-      },
+      execute: (_, element) =>
+        (element && formatUserOrderDeliveryDate(element, this.sanitizer)) ?? '-',
     },
   };
 
@@ -121,17 +108,8 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     cssClasses: ['max-w-[70px] md:max-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: value => {
-        const status = llecoopUserOrderStatus[value as LlecoopUserOrder['status']];
-        if (!status) return '-';
-
-        return this.sanitizer.bypassSecurityTrustHtml(`
-          <p class="flex gap-tiny justify-center items-center">
-          <span class="material-icons ${status?.class}">${status?.icon}</span>
-          <span class="capitalize hidden md:flex">${status?.label}</span>
-          </p>
-          `) as SafeHtml;
-      },
+      execute: status =>
+        formatUserOrderStatus(this.sanitizer, status as LlecoopUserOrder['status']),
     },
   };
 

@@ -1,7 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { LlecoopOrder, llecoopOrderStatus } from '@plastik/llecoop/entities';
+import { DomSanitizer } from '@angular/platform-browser';
+import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { formatOrderListStatus } from '@plastik/llecoop/order-list/util';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -43,15 +44,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     cssClasses: ['max-w-[60px] md:min-w-[140px] md:max-w-[180px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: value => {
-        const status = llecoopOrderStatus[value as LlecoopOrder['status']];
-        return this.sanitizer.bypassSecurityTrustHtml(`
-          <p class="flex gap-tiny justify-center items-center">
-          <span class="material-icons ${status.class}">${status.icon}</span>
-          <span class="capitalize hidden md:flex">${status.label}</span>
-          </p>
-          `) as SafeHtml;
-      },
+      execute: status => formatOrderListStatus(this.sanitizer, status as LlecoopOrder['status']),
     },
   };
 

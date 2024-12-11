@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
-  getLlecoopProductBasedUnitText,
   getLlecoopProductUnitStep,
   getLlecoopProductUnitSuffix,
   LlecoopOrderProduct,
@@ -43,23 +42,6 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly priceWithIva: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
-    key: 'priceWithIva',
-    title: 'Preu',
-    propertyPath: 'priceWithIva',
-    sorting: true,
-    cssClasses: ['min-w-[120px]'],
-    formatting: {
-      type: 'CUSTOM',
-      execute: (value, element) => {
-        const price = `<p>${Number(value).toFixed(2)} €</p>`;
-        const unit = element?.unit ? getLlecoopProductBasedUnitText(element.unit) : '';
-
-        return this.sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
-      },
-    },
-  };
-
   private readonly initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'initQuantity',
     title: 'Quantitat inicial',
@@ -68,11 +50,11 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'CUSTOM',
-      extras: () => ({
-        numberDigitsInfo: '1.2-2',
-        currency: '€',
-        currencyCode: 'EUR',
-      }),
+      execute: (value, orderProduct) => {
+        return value
+          ? `${value} ${getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' })}`
+          : '-';
+      },
     },
   };
 
@@ -192,7 +174,6 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
       productCategoryColumn<LlecoopOrderProduct>({
         cssClasses: ['hidden lg:flex lg:min-w-[170px] justify-start'],
       }),
-      this.priceWithIva,
       this.initQuantity,
       this.initPrice,
       this.finalQuantity,

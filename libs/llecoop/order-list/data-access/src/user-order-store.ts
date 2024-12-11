@@ -30,20 +30,15 @@ export const LlecoopUserOrderStore = signalStore(
   withState<OrderState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'asc'],
+    sorting: ['name', 'desc'],
     selectedItemId: null,
   }),
   withEntities<LlecoopUserOrder>(),
-  withComputed(({ ids, selectedItemId, entityMap, entities }) => ({
+  withComputed(({ ids, selectedItemId, entityMap }) => ({
     count: computed(() => ids().length),
     selectedItem: computed(() => {
       const selectedId = selectedItemId();
       return selectedId ? entityMap()[selectedId] : null;
-    }),
-    openedOrder: computed(() => entities().find(order => order.status === 'waiting')),
-    openedOrderTotalPrice: computed(() => {
-      const order = entities().find(order => order.status === 'waiting');
-      return order?.cart.reduce((acc, item) => acc + (item.finalPrice || item.initPrice), 0);
     }),
   })),
   withMethods(

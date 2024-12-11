@@ -41,6 +41,7 @@ export class LlecoopUserOrderFireService {
         ...item,
         status: 'waiting',
         userId: this.userId,
+        userEmail: this.authService.currentUser()?.email,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
       })
