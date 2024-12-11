@@ -5,8 +5,18 @@
     "module": "commonjs",
     "target": "es2016",
     "types": ["jest", "node"],
-    "composite": true
+    "composite": true,
+    "declaration": true
   },
   "files": ["src/test-setup.ts"],
-  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": [
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "src/**/*.ts",
+    "../../../shared/auth/firebase/data-access/src/**/*.ts",
+    "../../../core/router/data-access/src/**/*.ts",
+    "../../data-access/src/**/*.ts"
+  ]
 }

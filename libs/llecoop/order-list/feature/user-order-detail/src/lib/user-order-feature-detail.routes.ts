@@ -7,8 +7,8 @@ import { isAnActiveOrderListGuard } from './isAnActiveOrderList.guard';
 import { isAnActiveOrderListAndUserOrderGuard } from './isAnActiveOrderListAndUserOrder.guard';
 import { NewUserOrderDetailResolver } from './new-user-order-detail.resolver';
 import { LlecoopUserOrderDetailFacadeService } from './user-order-detail-facade.service';
-import { UserOrderDetailResolver } from './user-order-detail.resolver';
 import { userOrderFeatureDetailFormConfig } from './user-order-feature-detail-form.config';
+import { UserOrderDetailResolver } from '@plastik/llecoop/order-list/data-access';
 
 const providers: Provider[] = [
   {

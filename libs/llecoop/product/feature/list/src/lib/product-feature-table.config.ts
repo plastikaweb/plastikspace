@@ -34,11 +34,11 @@ export class LlecoopProductSearchFeatureTableConfig
           data-link="admin/producte/${product?.id}">
           ${product?.name}
         </a>`;
-        const info = product?.info ? `<li class="font-bold">${product?.info}</li>` : '';
+        const info = product?.info ? `<p class="font-bold">${product?.info}</p>` : '';
         const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
         const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
-        const extra = `<ul class="hidden md:block">${info}${provider}${origin}</ul>`;
-        return this.sanitizer.bypassSecurityTrustHtml(`${link}${extra}`) as SafeHtml;
+        const extra = `<ul class="hidden md:block">${provider}${origin}</ul>`;
+        return this.sanitizer.bypassSecurityTrustHtml(`${link}${info}${extra}`) as SafeHtml;
       },
     },
   };

@@ -24,6 +24,7 @@
 
   body {
     font-family: var(--sans-serif);
+    font-variant-numeric: slashed-zero;
   }
 
   h1,
@@ -69,6 +70,10 @@
     &:hover {
       @apply underline underline-offset-2;
     }
+  }
+
+  p {
+    text-wrap: pretty;
   }
 
   plastik-shared-activity-ui-overlay .overlay-container {

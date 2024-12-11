@@ -10,10 +10,9 @@
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
   "include": [
-    "./src/**/*.ts",
-    "/Volumes/Feina/Projects/plastikspace/libs/core/cms-layout/data-access/src/**/*.ts",
-    "../../data-access/src/user-order-detail.resolver.ts",
-    "../../../../core/can-deactivate-guard/src/index.ts",
-    "../../../../core/detail-item-form/src/index.ts"
+    "src/**/*.ts",
+    "../../../../core/cms-layout/data-access/src/**/*.ts",
+    "../../data-access/src/**/*.ts",
+    "../../util/src/**/*.ts"
   ]
 }
