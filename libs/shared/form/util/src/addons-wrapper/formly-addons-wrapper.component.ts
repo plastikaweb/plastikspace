@@ -13,7 +13,6 @@ import { FieldWrapper } from '@ngx-formly/core';
 
 @Component({
   selector: 'plastik-formly-addons-wrapper',
-  standalone: true,
   templateUrl: './formly-addons-wrapper.component.html',
   styleUrls: ['./formly-addons-wrapper.component.scss'],
   imports: [MatIconModule, MatButtonModule, NgStyle, NgClass],

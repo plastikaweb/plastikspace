@@ -14,7 +14,6 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
 
 @Component({
   selector: 'plastik-nasa-images-search',
-  standalone: true,
   imports: [
     MatIconModule,
     PushPipe,

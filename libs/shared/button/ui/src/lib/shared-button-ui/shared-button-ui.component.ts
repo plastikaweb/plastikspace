@@ -9,7 +9,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
   selector: 'plastik-shared-button',
-  standalone: true,
   imports: [
     NgClass,
     NgTemplateOutlet,

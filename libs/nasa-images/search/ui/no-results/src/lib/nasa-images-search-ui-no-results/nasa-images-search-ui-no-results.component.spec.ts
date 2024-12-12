@@ -10,8 +10,8 @@ import { NasaImagesSearchUiNoResultsComponent } from './nasa-images-search-ui-no
     <span icon> search_on </span>
     <span title>NASA images search</span>
     <span message
-      >Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto assumenda ad ipsam. Deserunt eligendi quos exercitationem, earum
-      officiis eum, quod repellat eos quae id et?</span
+      >Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto assumenda ad ipsam.
+      Deserunt eligendi quos exercitationem, earum officiis eum, quod repellat eos quae id et?</span
     >
   </plastik-nasa-images-search-ui-no-results>`,
 })
@@ -23,13 +23,11 @@ describe('NasaImagesSearchUiNoResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NasaImagesSearchUiNoResultsComponent],
-      declarations: [TestHostComponent],
+      imports: [TestHostComponent, NasaImagesSearchUiNoResultsComponent],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

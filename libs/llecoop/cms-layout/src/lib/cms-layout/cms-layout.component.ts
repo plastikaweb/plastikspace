@@ -26,7 +26,6 @@ import { map } from 'rxjs';
 import { HeaderConfigService } from './cms-header-config';
 @Component({
   selector: 'plastik-cms-layout',
-  standalone: true,
   imports: [
     MatSidenavModule,
     MatButtonModule,

@@ -35,7 +35,6 @@ export const YEAR_MODE_FORMATS = {
 
 @Component({
   selector: 'plastik-year-picker',
-  standalone: true,
   imports: [
     FormsModule,
     ReactiveFormsModule,

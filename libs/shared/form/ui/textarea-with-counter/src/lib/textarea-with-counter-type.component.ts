@@ -15,7 +15,6 @@ import { FieldType } from '@ngx-formly/material/form-field';
 
 @Component({
   selector: 'plastik-textarea-with-counter-type',
-  standalone: true,
   templateUrl: './textarea-with-counter-type.component.html',
   imports: [
     CdkTextareaAutosize,

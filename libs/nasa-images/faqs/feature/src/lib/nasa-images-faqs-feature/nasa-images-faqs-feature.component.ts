@@ -8,7 +8,6 @@ import { NasaImagesFaqsService } from '../nasa-images-faqs.service';
 
 @Component({
   selector: 'plastik-nasa-images-faqs-feature',
-  standalone: true,
   imports: [MatExpansionModule, MatIconModule, PushPipe],
   templateUrl: './nasa-images-faqs-feature.component.html',
   styleUrls: ['./nasa-images-faqs-feature.component.scss'],

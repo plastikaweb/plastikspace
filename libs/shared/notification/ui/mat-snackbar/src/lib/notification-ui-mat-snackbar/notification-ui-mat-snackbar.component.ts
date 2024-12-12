@@ -5,7 +5,6 @@ import { Notification } from '@plastik/shared/notification/entities';
 
 @Component({
   selector: 'plastik-shared-notification-ui-mat-snackbar',
-  standalone: true,
   imports: [MatIconModule],
   templateUrl: './notification-ui-mat-snackbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

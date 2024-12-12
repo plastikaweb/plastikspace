@@ -12,7 +12,6 @@ import {
 
 @Component({
   selector: 'plastik-llecoop-order-indicator',
-  standalone: true,
   imports: [MatIconModule, MatBadgeModule, MatButtonModule, CurrencyPipe, RouterLink],
   templateUrl: './llecoop-order-indicator.component.html',
   styleUrl: './llecoop-order-indicator.component.scss',

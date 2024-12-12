@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-  standalone: true,
   selector: 'plastik-core-cms-layout-ui-header',
   imports: [MatToolbarModule],
   template: `

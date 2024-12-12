@@ -29,7 +29,6 @@ const INPUT_TABLE_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-table',
-  standalone: true,
   imports: [SharedTableUiComponent, MatInputModule],
   templateUrl: './input-table.component.html',
   styleUrl: './input-table.component.scss',

@@ -10,7 +10,6 @@ import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type'
 
 @Component({
   selector: 'plastik-table-with-filtering',
-  standalone: true,
   imports: [
     MatIconModule,
     MatButtonModule,

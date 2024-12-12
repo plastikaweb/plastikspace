@@ -12,7 +12,6 @@ import { LlecoopOrderListDetailListFacadeService } from '../order-list-detail-li
 
 @Component({
   selector: 'plastik-llecoop-order-list-feature-detail',
-  standalone: true,
   imports: [
     MatIconModule,
     MatButtonModule,

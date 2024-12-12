@@ -14,7 +14,6 @@ import { LayoutPosition } from '@plastik/shared/entities';
 
 @Component({
   selector: 'plastik-core-cms-layout-ui-sidenav',
-  standalone: true,
   imports: [RouterOutlet, MatSidenavModule, MatListModule],
   templateUrl: './core-cms-layout-ui-sidenav.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

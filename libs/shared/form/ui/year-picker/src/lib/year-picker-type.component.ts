@@ -16,7 +16,6 @@ interface DatepickerProps extends FormlyFieldProps {
 
 @Component({
   selector: 'plastik-year-picker-type',
-  standalone: true,
   templateUrl: './year-picker-type.component.html',
   imports: [
     YearPickerComponent,

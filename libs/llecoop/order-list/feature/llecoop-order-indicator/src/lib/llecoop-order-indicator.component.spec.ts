@@ -29,7 +29,6 @@ describe('LlecoopOrderIndicatorComponent', () => {
 
     fixture = TestBed.createComponent(LlecoopOrderIndicatorComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {

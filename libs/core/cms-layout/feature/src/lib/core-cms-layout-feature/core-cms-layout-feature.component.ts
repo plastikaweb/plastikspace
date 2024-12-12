@@ -31,7 +31,6 @@ import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'plastik-core-cms-layout-feature',
-  standalone: true,
   imports: [
     RouterLink,
     NgTemplateOutlet,

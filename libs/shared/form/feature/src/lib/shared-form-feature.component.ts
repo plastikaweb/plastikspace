@@ -14,7 +14,6 @@ import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/
 import { SubmitFormConfig } from '@plastik/core/entities';
 @Component({
   selector: 'plastik-shared-form-feature',
-  standalone: true,
   imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass],
   templateUrl: './shared-form-feature.component.html',
   styleUrls: ['./shared-form-feature.component.scss'],

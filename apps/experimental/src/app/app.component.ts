@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { SharedUtilDynamicBgColorDirective } from '@plastik/shared/dynamic-bg-color';
 
 @Component({
-  standalone: true,
   imports: [RouterModule, SharedUtilDynamicBgColorDirective],
   selector: 'exp-root',
   templateUrl: './app.component.html',

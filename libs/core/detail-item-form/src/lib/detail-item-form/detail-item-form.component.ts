@@ -12,7 +12,6 @@ import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
 
 @Component({
   selector: 'plastik-detail-item-form',
-  standalone: true,
   imports: [
     MatIconModule,
     MatButtonModule,

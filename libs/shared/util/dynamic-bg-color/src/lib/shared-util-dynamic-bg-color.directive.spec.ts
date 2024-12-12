@@ -1,15 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { SharedUtilDynamicBgColorDirective } from './shared-util-dynamic-bg-color.directive';
 // Create a simple test component to host the directive for testing
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { By } from '@angular/platform-browser';
 
 @Component({
-  template: ` <div plastikDynamicBgColor [color]="color"></div> `,
+  template: `<h1 plastikDynamicBgColor color="orange">{{ title }}</h1> `,
+  imports: [SharedUtilDynamicBgColorDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-class TestComponent {
-  color = 'green';
-}
+class TestComponent {}
 
 describe('SharedUtilDynamicBgColorDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
@@ -17,28 +17,25 @@ describe('SharedUtilDynamicBgColorDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TestComponent],
-      imports: [SharedUtilDynamicBgColorDirective],
+      imports: [TestComponent, SharedUtilDynamicBgColorDirective],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestComponent);
-    element = fixture.debugElement.query(By.css('div'));
+    element = fixture.debugElement.queryAll(By.directive(SharedUtilDynamicBgColorDirective))[0];
     fixture.detectChanges();
   });
 
-  it('should not have a background color by default', () => {
-    expect(element.nativeElement.style.backgroundColor).toEqual('');
-  });
+  it('should change color on hover and reset color on leave', () => {
+    expect(element.nativeElement.style.backgroundColor).toBe('');
 
-  it('should have a background color when color is set and we do hover', () => {
     element.triggerEventHandler('mouseenter', null);
     fixture.detectChanges();
-    expect(element.nativeElement.style.backgroundColor).toEqual('green');
-  });
 
-  it('should have a background color when color is set and we do hover', () => {
+    expect(element.nativeElement.style.backgroundColor).toBe('orange');
+
     element.triggerEventHandler('mouseleave', null);
     fixture.detectChanges();
-    expect(element.nativeElement.style.backgroundColor).toEqual('');
+
+    expect(element.nativeElement.style.backgroundColor).toBe('');
   });
 });

@@ -13,7 +13,6 @@ import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification
 registerLocaleData(localeCa, 'ca-ES');
 
 @Component({
-  standalone: true,
   selector: 'plastik-root',
   imports: [RouterOutlet, SharedActivityUiOverlayComponent, NotificationUiMatSnackbarDirective],
   templateUrl: './app.component.html',

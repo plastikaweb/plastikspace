@@ -8,7 +8,6 @@ import { FieldType } from '@ngx-formly/material';
 
 @Component({
   selector: 'plastik-input-password-with-visibility-type',
-  standalone: true,
   imports: [MatButtonModule, MatIconModule, MatInputModule, FormlyModule, ReactiveFormsModule],
   templateUrl: './input-password-with-visibility-type.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

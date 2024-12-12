@@ -31,7 +31,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
-import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
+import {
+  FormattingTypes,
+  SafeFormattedPipe,
+  SharedUtilFormattersModule,
+} from '@plastik/shared/formatters';
 import { isEmpty, isString } from '@plastik/shared/objects';
 import {
   EditableAttributeBase,
@@ -54,7 +58,6 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
 @Component({
   selector: 'plastik-shared-table',
-  standalone: true,
   imports: [
     RouterModule,
     KeyValuePipe,
@@ -76,6 +79,7 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
     SharedUtilFormattersModule,
     TableCellTitleDirective,
     OrderTableActionsElementsPipe,
+    SafeFormattedPipe,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrls: ['./shared-table-ui.component.scss'],

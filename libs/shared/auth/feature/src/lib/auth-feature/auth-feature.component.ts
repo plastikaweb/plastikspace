@@ -8,7 +8,6 @@ import { AUTH_FORM_FACADE } from './auth-form-facade.type';
 
 @Component({
   selector: 'plastik-auth-feature',
-  standalone: true,
   imports: [
     CommonModule,
     MatCardModule,

@@ -8,7 +8,6 @@ import { LlecoopUserOrderResumeFacadeService } from '../user-order-resume-facade
 
 @Component({
   selector: 'plastik-llecoop-user-order-feature-resume',
-  standalone: true,
   imports: [MatIconModule, MatButtonModule, RouterLink, TitleCasePipe, SharedTableUiComponent],
   templateUrl: './user-order-feature-resume.component.html',
   styleUrl: './user-order-feature-resume.component.scss',

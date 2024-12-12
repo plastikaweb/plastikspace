@@ -15,7 +15,6 @@ interface InputTableProps extends FormlyFieldProps {
 
 @Component({
   selector: 'plastik-input-table-type',
-  standalone: true,
   imports: [
     InputTableComponent,
     FormsModule,
