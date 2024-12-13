@@ -1,7 +1,16 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["**/*.ts", "../../libs/shared/button/index.ts"],
+  "include": [
+    "**/*.ts",
+    "src/**/*",
+    "../../libs/core/**/src/**/*",
+    "../../libs/shared/button/index.ts",
+    "../../libs/nasa-images/search/feature/src/**/*",
+    "../../libs/nasa-images/faqs/feature/src/**/*"
+  ],
   "compilerOptions": {
-    "types": ["jest", "node"]
+    "types": ["jest", "node"],
+    "composite": true,
+    "declaration": true
   }
 }

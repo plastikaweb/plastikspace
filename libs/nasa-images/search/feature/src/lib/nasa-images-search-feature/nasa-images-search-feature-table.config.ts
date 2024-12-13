@@ -76,14 +76,13 @@ const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
   key: 'thumbnail',
   title: 'Image',
   propertyPath: 'thumbnail',
-  cssClasses: ['max-w-[200px] min-w-[120px]'],
+  cssClasses: [
+    'max-w-[120px] max-h-[120px] relative',
+    'object-cover size-[120px] rounded-2xl p-tiny',
+  ],
   formatting: {
     type: 'IMAGE',
-    extras: () => ({
-      type: 'img',
-      title: (item?: NasaImage) => item?.name || 'No title',
-      classes: 'object-cover size-[100px] rounded-md',
-    }),
+    extras: () => ({ placeholder: 'https://via.placeholder.com/120x120' }),
   },
 };
 

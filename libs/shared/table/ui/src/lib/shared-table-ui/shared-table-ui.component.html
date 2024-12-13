@@ -151,6 +151,16 @@
               }
             }
 
+            @case ('IMAGE') {
+              <img
+                fill
+                priority
+                placeholder="https://via.placeholder.com/150"
+                [alt]="row.name || ''"
+                [ngSrc]="row[column.key] || ''"
+                [ngClass]="column.cssClasses?.[1] || ''" />
+            }
+
             @default {
               <div
                 [ngClass]="column.cssClasses?.[1] || ''"
@@ -166,7 +176,7 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell
           *matHeaderCellDef
-          class="overflow-visible mat-cell-actions"
+          class="overflow-visible mat-cell-actions rou"
           [ngClass]="actionsColStyles() || ''"></mat-header-cell>
         <mat-cell
           *matCellDef="let element"

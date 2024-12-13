@@ -152,48 +152,6 @@ describe('DataFormatFactoryService', () => {
     expect(result).toBe('80.00%');
   });
 
-  describe('image formatting', () => {
-    it('should return a value with image formatting and static extras.title', () => {
-      const result = service.getFormattedValue(objectMocked, {
-        key: 'a',
-        title: 'Title',
-        propertyPath: 'image',
-        formatting: {
-          type: 'IMAGE',
-          extras: () => ({
-            type: 'img',
-            title: () => 'alt text',
-          }),
-        },
-      });
-      expect(result).toEqual({
-        changingThisBreaksApplicationSecurity: '<img alt="alt text" src="thumb.png" class="">',
-      });
-    });
-
-    it('should return a value with image formatting and dynamic extras.title', () => {
-      const result = service.getFormattedValue(objectMocked, {
-        key: 'a',
-        title: 'Title',
-        propertyPath: 'image',
-        formatting: {
-          type: 'IMAGE',
-          extras: () => ({
-            type: 'img',
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            title: (item: any) => item['name'] as string,
-            classes: 'img-class',
-          }),
-        },
-      });
-
-      expect(result).toEqual({
-        changingThisBreaksApplicationSecurity:
-          '<img alt="TITLE" src="thumb.png" class="img-class">',
-      });
-    });
-  });
-
   it('should return a value with titleCase formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
