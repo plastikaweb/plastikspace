@@ -1,6 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkTableModule } from '@angular/cdk/table';
-import { KeyValuePipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { KeyValuePipe, NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -76,6 +76,7 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
     MatCheckboxModule,
     MatRadioModule,
     MatSlideToggleModule,
+    NgOptimizedImage,
     SharedUtilFormattersModule,
     TableCellTitleDirective,
     OrderTableActionsElementsPipe,

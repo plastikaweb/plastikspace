@@ -1,4 +1,5 @@
 import { A11yModule } from '@angular/cdk/a11y';
+import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom, isDevMode } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -74,5 +75,6 @@ export const appConfig: ApplicationConfig = {
         politeness: 'assertive',
       },
     },
+    { provide: PRECONNECT_CHECK_BLOCKLIST, useValue: 'https://images-assets.nasa.gov' },
   ],
 };

@@ -60,7 +60,6 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
       case 'TITLE_CASE':
         return this.formatter.titleCaseFormatter(String(value));
       case 'IMAGE':
-        return this.formatter.imageFormatter(String(value), item, extras);
       case 'CUSTOM':
       case 'LINK':
         return this.formatter.customFormatter(

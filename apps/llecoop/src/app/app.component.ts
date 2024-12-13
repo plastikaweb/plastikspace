@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   protected readonly notificationConfig = toSignal(this.notificationFacade?.config$);
   protected readonly isActive = toSignal(this.store.select(selectIsActive));
 
+  // <link rel="preconnect" href="https://images-assets.nasa.gov">
   ngOnInit(): void {
     this.meta.addTag({
       name: 'description',

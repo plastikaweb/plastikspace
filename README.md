@@ -6,7 +6,6 @@
 </div>
 
 [![Deploy Nasa Images Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml)
-
 [![nasa-images-e2e](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/b47wpf/develop&style=flat&logo=cypress)](https://cloud.cypress.io/projects/b47wpf/runs)
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
@@ -18,7 +17,7 @@
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 
-This project was generated using [Nx](https://nx.dev).
+[![built with Codeium](https://codeium.com/badges/main)](https://codeium.com)
 
 ## Install repo locally
 

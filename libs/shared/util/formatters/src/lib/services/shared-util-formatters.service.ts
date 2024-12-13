@@ -30,9 +30,7 @@ export class SharedUtilFormattersService {
    */
   dateFormatter<T extends object>(
     value: FormattingDateInput,
-    extras?: () => Partial<
-      Pick<FormattingExtras<T, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>
-    >
+    extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
     let format = {
       dateDigitsInfo: 'shortDate',
@@ -60,7 +58,7 @@ export class SharedUtilFormattersService {
    */
   dateTimeFormatter<T>(
     value: FormattingDateInput,
-    extras?: () => Partial<Pick<FormattingExtras<T, 'DATE_TIME'>, 'locale' | 'timezone'>>
+    extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
     let format = {
       locale: this.locale,
@@ -86,9 +84,7 @@ export class SharedUtilFormattersService {
    */
   firebaseTimestampFormatter<T>(
     value: Timestamp,
-    extras?: () => Partial<
-      Pick<FormattingExtras<T, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>
-    >
+    extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
     let format = {
       dateDigitsInfo: 'shortDate',
@@ -117,7 +113,7 @@ export class SharedUtilFormattersService {
    */
   percentageFormatter<T>(
     value: number,
-    extras?: () => Partial<Pick<FormattingExtras<T, 'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
+    extras?: () => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
     let format = {
       numberDigitsInfo: '1.2-2',
@@ -144,7 +140,7 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<
       Pick<
-        FormattingExtras<T, 'CURRENCY'>,
+        FormattingExtras<'CURRENCY'>,
         'numberDigitsInfo' | 'locale' | 'currency' | 'currencyCode'
       >
     >
@@ -176,12 +172,12 @@ export class SharedUtilFormattersService {
    * Formats a given number according to specified formatting options.
    * @template T - The type parameter for formatting extras.
    * @param {number} value - The number to format.
-   * @param {() => Partial<Pick<FormattingExtras<T, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
+   * @param {() => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
    * @returns {string} - The formatted number as a string.
    */
   numberFormatter<T>(
     value: number,
-    extras?: () => Partial<Pick<FormattingExtras<T, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
+    extras?: () => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
     let format = {
       numberDigitsInfo: '1.2-2',
@@ -206,23 +202,6 @@ export class SharedUtilFormattersService {
   }
 
   /**
-   * Formats an image URL into a safe HTML image element.
-   * @template T - The type of the item being formatted.
-   * @param {string} value - The URL of the image.
-   * @param {T} item - The item associated with the image.
-   * @param {() => FormattingExtras<T, 'IMAGE'>} [extras] - Optional function to provide additional formatting options.
-   * @returns {SafeHtml} - The sanitized HTML image element.
-   */
-  imageFormatter<T>(value: string, item: T, extras?: () => FormattingExtras<T, 'IMAGE'>): SafeHtml {
-    const imgTitle = extras?.().title?.(item) || '';
-    const classes = extras?.().classes || '';
-
-    return this.sanitizer.bypassSecurityTrustHtml(
-      `<img alt="${imgTitle}" src="${value}" class="${classes}">`
-    );
-  }
-
-  /**
    * Formats a boolean value into an HTML string with an icon.
    * @template T - The type parameter for the formatting extras.
    * @param {boolean} value - The boolean value to format.
@@ -231,7 +210,7 @@ export class SharedUtilFormattersService {
    */
   booleanWithIconFormatter<T>(
     value: boolean,
-    extras?: () => FormattingExtras<T, 'BOOLEAN_WITH_ICON'>
+    extras?: () => FormattingExtras<'BOOLEAN_WITH_ICON'>
   ): SafeHtml {
     let format = {
       iconTrue: 'check',

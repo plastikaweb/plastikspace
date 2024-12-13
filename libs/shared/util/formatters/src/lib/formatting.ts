@@ -48,11 +48,8 @@ export type FormattingDateInput = Date | number | string;
  */
 export type FormattingOutput = Date | number | boolean | string | SafeHtml;
 
-type FormattingImageExtras<OBJ> = {
-  type: 'svg' | 'img';
-  title: (item?: OBJ) => string;
-  classes?: string;
-  svgClass?: string;
+type FormattingImageExtras = {
+  placeholder: string;
 };
 
 type FormattingNumericExtras = Partial<{
@@ -83,8 +80,8 @@ type FormattingInputExtras = {
 /**
  * @description Formatting extras blueprint based on
  */
-export type FormattingExtras<OBJ, TYPE extends FormattingTypes> = TYPE extends 'IMAGE'
-  ? Partial<FormattingImageExtras<OBJ>>
+export type FormattingExtras<TYPE extends FormattingTypes> = TYPE extends 'IMAGE'
+  ? Partial<FormattingImageExtras>
   : TYPE extends FormattingTypesNumeric
     ? FormattingNumericExtras
     : TYPE extends FormattingTypesBoolean
@@ -98,8 +95,13 @@ export type FormattingExtras<OBJ, TYPE extends FormattingTypes> = TYPE extends '
  */
 export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEXT'> {
   type: TYPE;
-  execute?: (value: unknown, element?: OBJ, index?: number, extras?: unknown) => FormattingOutput;
-  extras?: (value?: OBJ) => FormattingExtras<OBJ, TYPE>;
+  execute?: (
+    value: OBJ[keyof OBJ] | string,
+    element?: OBJ,
+    index?: number,
+    extras?: unknown
+  ) => FormattingOutput;
+  extras?: (value?: OBJ) => FormattingExtras<TYPE>;
   onInputChanges?: (value: unknown, element: OBJ, index?: number, extras?: unknown) => object;
 }
 
