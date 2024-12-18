@@ -17,10 +17,10 @@ import {
 export class LlecoopCategorySearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProductCategory>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LlecoopCategoryStore);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #store = inject(LlecoopCategoryStore);
 
-  private readonly name: TableColumnFormatting<LlecoopProductCategory, 'CUSTOM'> = {
+  readonly #name: TableColumnFormatting<LlecoopProductCategory, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
@@ -33,12 +33,12 @@ export class LlecoopCategorySearchFeatureTableConfig
       type: 'CUSTOM',
       execute: (value, element) => {
         const htmlString = `<p class="flex items-center justify-center gap-tiny"><span class="rounded-full size-sub" style="background-color:${element?.color}"></span><span class="capitalize w-auto">${value}</span></p>`;
-        return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
       },
     },
   };
 
-  private readonly description: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
+  readonly #description: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
     key: 'description',
     title: 'Descripció',
     propertyPath: 'description',
@@ -48,7 +48,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     },
   };
 
-  private readonly productCount: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
+  readonly #productCount: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
     key: 'productCount',
     title: 'Nre. de productes',
     propertyPath: 'productCount',
@@ -59,20 +59,23 @@ export class LlecoopCategorySearchFeatureTableConfig
     },
   };
 
-  private readonly createdAt = createdAt<LlecoopProductCategory>();
-  private readonly updatedAt = updatedAt<LlecoopProductCategory>();
+  readonly #createdAt = createdAt<LlecoopProductCategory>();
+  readonly #updatedAt = updatedAt<LlecoopProductCategory>();
 
-  private readonly columnProperties: TableColumnFormatting<
-    LlecoopProductCategory,
-    FormattingTypes
-  >[] = [this.name, this.description, this.productCount, this.createdAt, this.updatedAt];
+  readonly #columnProperties: TableColumnFormatting<LlecoopProductCategory, FormattingTypes>[] = [
+    this.#name,
+    this.#description,
+    this.#productCount,
+    this.#createdAt,
+    this.#updatedAt,
+  ];
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
+      columnProperties: this.#columnProperties,
       paginationVisibility: {
         hidePageSize: true,
         hideRangeLabel: true,
@@ -80,9 +83,9 @@ export class LlecoopCategorySearchFeatureTableConfig
         hidePaginationFirstLastButtons: true,
       },
       caption: 'Llistat de categories',
-      sort: this.store.sorting,
-      count: this.store.count,
-      getData: () => this.store.entities(),
+      sort: this.#store.sorting,
+      count: this.#store.count,
+      getData: () => this.#store.entities(),
       actionsColStyles: 'max-w-[135px]',
       actions: {
         EDIT: {

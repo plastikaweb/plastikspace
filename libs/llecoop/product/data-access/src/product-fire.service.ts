@@ -17,16 +17,16 @@ import { from, Observable, switchMap } from 'rxjs';
   providedIn: 'root',
 })
 export class LlecoopProductFireService {
-  private readonly firestore = inject(Firestore);
-  private readonly productCollection = collection(this.firestore, 'product');
+  readonly #firestore = inject(Firestore);
+  readonly #productCollection = collection(this.#firestore, 'product');
 
   getAll(): Observable<LlecoopProduct[]> {
-    return collectionData(this.productCollection, { idField: 'id' }).pipe(
+    return collectionData(this.#productCollection, { idField: 'id' }).pipe(
       switchMap(products => {
         const productPromises = products.map(async product => {
           let categoryDoc;
           try {
-            categoryDoc = await getDoc(doc(this.firestore, product?.['categoryRef']));
+            categoryDoc = await getDoc(doc(this.#firestore, product?.['categoryRef']));
           } catch (error) {
             categoryDoc = null;
           }
@@ -42,7 +42,7 @@ export class LlecoopProductFireService {
 
   create(item: Partial<LlecoopProduct>) {
     return from(
-      addDoc(this.productCollection, {
+      addDoc(this.#productCollection, {
         ...item,
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),
@@ -51,7 +51,7 @@ export class LlecoopProductFireService {
   }
 
   update(item: Partial<LlecoopProduct>) {
-    const document = doc(this.firestore, `product/${item.id}`);
+    const document = doc(this.#firestore, `product/${item.id}`);
     return from(
       updateDoc(document, {
         ...item,
@@ -61,7 +61,7 @@ export class LlecoopProductFireService {
   }
 
   delete(item: LlecoopProduct) {
-    const document = doc(this.firestore, `product/${item.id}`);
+    const document = doc(this.#firestore, `product/${item.id}`);
     return from(deleteDoc(document));
   }
 }

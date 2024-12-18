@@ -8,13 +8,13 @@ import { NotificationType } from '@plastik/shared/notification/entities';
 
 @Injectable({ providedIn: 'root' })
 export class StoreNotificationService {
-  private readonly notificationService = inject(NotificationConfigService);
-  private readonly state = inject(Store);
+  readonly #notificationService = inject(NotificationConfigService);
+  readonly #state = inject(Store);
 
   create(message: string, type: NotificationType, preserve = true): void {
-    this.state.dispatch(
+    this.#state.dispatch(
       notificationActions.show({
-        configuration: this.notificationService.getInstance({
+        configuration: this.#notificationService.getInstance({
           type,
           message,
         }),

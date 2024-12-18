@@ -22,10 +22,10 @@ import {
 export class LlecoopUserOrderDetailFormTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LLecoopOrderListStore);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #store = inject(LLecoopOrderListStore);
 
-  private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
@@ -37,12 +37,12 @@ export class LlecoopUserOrderDetailFormTableConfig
       execute: (_, element) => {
         const name = `<p class="font-bold uppercase">${element?.['name']}</p>`;
         const info = element?.['info'] ? `<p class="font-bold">${element['info']}</p>` : '';
-        return this.sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },
   };
 
-  private readonly provider: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
+  readonly #provider: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
     key: 'provider',
     title: 'Proveïdor',
     propertyPath: 'provider',
@@ -53,7 +53,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly origin: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
+  readonly #origin: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
     key: 'origin',
     title: 'Procedència',
     propertyPath: 'origin',
@@ -64,7 +64,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly priceWithIva: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #priceWithIva: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'priceWithIva',
     title: 'Preu',
     propertyPath: 'priceWithIva',
@@ -76,12 +76,12 @@ export class LlecoopUserOrderDetailFormTableConfig
         const price = `<p>${Number(value).toFixed(2)} €</p>`;
         const unit = element?.unit ? getLlecoopProductBasedUnitText(element.unit) : '';
 
-        return this.sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
       },
     },
   };
 
-  private readonly initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'initQuantity',
     title: 'Quantitat',
     propertyPath: 'initQuantity',
@@ -113,7 +113,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     }),
   };
 
-  private readonly initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
+  readonly #initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'initPrice',
     title: 'Preu total',
     propertyPath: 'initPrice',
@@ -129,26 +129,25 @@ export class LlecoopUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] =
-    [
-      this.name,
-      productCategoryColumn<LlecoopOrderProduct>(),
-      this.provider,
-      this.origin,
-      this.priceWithIva,
-      this.initQuantity,
-      this.initPrice,
-    ];
+  readonly #columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] = [
+    this.#name,
+    productCategoryColumn<LlecoopOrderProduct>(),
+    this.#provider,
+    this.#origin,
+    this.#priceWithIva,
+    this.#initQuantity,
+    this.#initPrice,
+  ];
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
-      sort: this.store.sorting,
+      columnProperties: this.#columnProperties,
+      sort: this.#store.sorting,
       caption: 'Llistat de productes',
-      getData: () => this.store.currentOrderProducts(),
+      getData: () => this.#store.currentOrderProducts(),
       extraRowStyles: (orderProduct: LlecoopOrderProduct) => {
         return orderProduct.initPrice > 0 ? 'marked-ok' : '';
       },
@@ -160,7 +159,7 @@ export class LlecoopUserOrderDetailFormTableConfig
           description: () => 'Treure producte',
           icon: () => 'cancel',
           execute: (orderProduct: LlecoopOrderProduct) =>
-            this.initQuantity?.isEditableConfig?.(orderProduct)?.onChanges?.(0, orderProduct),
+            this.#initQuantity?.isEditableConfig?.(orderProduct)?.onChanges?.(0, orderProduct),
         },
       },
     } as TableDefinition<LlecoopOrderProduct>;

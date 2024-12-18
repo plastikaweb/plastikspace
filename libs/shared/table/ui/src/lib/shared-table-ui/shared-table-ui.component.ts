@@ -96,7 +96,7 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
   implements OnInit
 {
-  private readonly router = inject(Router);
+  readonly #router = inject(Router);
 
   /**
    * Data that will populate the table.
@@ -278,7 +278,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    */
   protected onGetRoute({ target }: Event) {
     const route = (target as HTMLAnchorElement).getAttribute('data-link');
-    this.router.navigateByUrl(route || '/');
+    this.#router.navigateByUrl(route || '/');
   }
 
   protected setCellNgClass(column: TableColumnFormatting<T, FormattingTypes>): {

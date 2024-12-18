@@ -32,7 +32,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
  * The component uses the `CdkTextareaAutosize` directive from the Angular CDK to automatically resize the textarea based on its content.
  */
 export class TextareaWithCounterTypeComponent extends FieldType<FieldTypeConfig> {
-  private readonly _injector = inject(Injector);
+  readonly #injector = inject(Injector);
 
   @ViewChild('autosize') autosize!: CdkTextareaAutosize;
 
@@ -42,7 +42,7 @@ export class TextareaWithCounterTypeComponent extends FieldType<FieldTypeConfig>
         this.autosize.resizeToFitContent(true);
       },
       {
-        injector: this._injector,
+        injector: this.#injector,
       }
     );
   }

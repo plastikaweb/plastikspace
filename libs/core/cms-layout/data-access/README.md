@@ -49,21 +49,20 @@ import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatureComponent {
+  readonly #facade = inject(LayoutFacade);
   sidenavOpened$ = this.facade.sidenavOpened$;
   isMobile$ = this.facade.isMobile$;
 
-  constructor(private readonly facade: LayoutFacade) {}
-
   onToggleSidenav(opened?: boolean): void {
-    this.facade.toggleSidenav(opened);
+    this.#facade.toggleSidenav(opened);
   }
 
   onSetIsMobile(isMobile: boolean): void {
-    this.facade.setIsMobile(isMobile);
+    this.#facade.setIsMobile(isMobile);
   }
 
   onDispatchAction(action: () => Action): void {
-    this.facade.dispatchAction(action);
+    this.#facade.dispatchAction(action);
   }
 }
 ```
@@ -83,7 +82,9 @@ export interface CoreCmsLayoutHeaderConfig {
   mainIcon?: SvgIconConfig;
 }
 
-export const CORE_CMS_LAYOUT_HEADER_CONFIG = new InjectionToken<CoreCmsLayoutHeaderConfig>('CORE_CMS_LAYOUT_HEADER_CONFIG');
+export const CORE_CMS_LAYOUT_HEADER_CONFIG = new InjectionToken<CoreCmsLayoutHeaderConfig>(
+  'CORE_CMS_LAYOUT_HEADER_CONFIG'
+);
 ```
 
 ### VIEW_CONFIG

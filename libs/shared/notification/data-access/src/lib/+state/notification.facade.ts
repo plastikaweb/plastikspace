@@ -5,11 +5,11 @@ import { selectConfiguration } from './notification.feature';
 
 @Injectable({ providedIn: 'root' })
 export class NotificationFacade {
-  private readonly store = inject(Store);
+  readonly #store = inject(Store);
 
-  config$ = this.store.select(selectConfiguration);
+  config$ = this.#store.select(selectConfiguration);
 
   dismiss(): void {
-    this.store.dispatch(notificationActions.dismiss());
+    this.#store.dispatch(notificationActions.dismiss());
   }
 }

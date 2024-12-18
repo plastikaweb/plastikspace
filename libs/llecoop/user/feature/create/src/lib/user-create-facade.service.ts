@@ -12,25 +12,25 @@ import { userFeatureCreateFormConfig } from './user-feature-create-form.config';
   providedIn: 'root',
 })
 export class LlecoopUserCreateFacadeService implements DetailItemViewFacade<LlecoopUser> {
-  private readonly store = inject(LLecoopUserStore);
-  private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'user')[0];
-  private readonly storeNotificationService = inject(StoreNotificationService);
+  readonly #store = inject(LLecoopUserStore);
+  readonly #view = inject(VIEW_CONFIG).filter(item => item.name === 'user')[0];
+  readonly #storeNotificationService = inject(StoreNotificationService);
 
   viewConfig = signal({
-    ...this.view,
+    ...this.#view,
     title: 'Afegir usuari',
   });
 
   formConfig = userFeatureCreateFormConfig();
 
   onSubmit(user: Pick<LlecoopUser, 'email'>): void {
-    if (this.store.entities().some(u => u.email === user.email)) {
-      this.storeNotificationService.create(
+    if (this.#store.entities().some(u => u.email === user.email)) {
+      this.#storeNotificationService.create(
         `El correu electrònic ${user.email} ja està en la llista d'usuaris`,
         'ERROR'
       );
       return;
     }
-    this.store.create(user);
+    this.#store.create(user);
   }
 }

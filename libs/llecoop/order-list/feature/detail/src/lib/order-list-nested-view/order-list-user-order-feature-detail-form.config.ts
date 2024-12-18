@@ -9,8 +9,8 @@ import { LlecoopOrderListUserOrderDetailFormTableConfig } from './order-list-use
   providedIn: 'root',
 })
 export class OrderListUserOrderDetailFormConfig {
-  private readonly tableColumnProperties = inject(LlecoopOrderListUserOrderDetailFormTableConfig);
-  private readonly config = [
+  readonly #tableColumnProperties = inject(LlecoopOrderListUserOrderDetailFormTableConfig);
+  readonly #config = [
     {
       key: 'id',
     },
@@ -22,7 +22,7 @@ export class OrderListUserOrderDetailFormConfig {
       type: 'table',
       props: {
         required: true,
-        tableDefinition: this.tableColumnProperties.getTableDefinition(),
+        tableDefinition: this.#tableColumnProperties.getTableDefinition(),
         tableRowValueConditionFn: (element: LlecoopOrderProduct) => element,
       },
       validators: {
@@ -37,7 +37,7 @@ export class OrderListUserOrderDetailFormConfig {
 
   get(): FormConfig<LlecoopOrderProduct> {
     return {
-      getConfig: () => this.config,
+      getConfig: () => this.#config,
       getSubmitFormConfig: () => ({
         label: 'Desar comanda',
         buttonStyle: 'w-[150px]',

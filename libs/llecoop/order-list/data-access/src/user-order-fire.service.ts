@@ -20,28 +20,28 @@ import { from, Observable, of } from 'rxjs';
   providedIn: 'root',
 })
 export class LlecoopUserOrderFireService {
-  private readonly firestore = inject(Firestore);
-  private readonly authService = inject(FirebaseAuthService);
-  private readonly ordersGroup = collectionGroup(this.firestore, 'orders');
-  private readonly userId = this.authService.currentUser()?.uid;
+  readonly #firestore = inject(Firestore);
+  readonly #authService = inject(FirebaseAuthService);
+  readonly #ordersGroup = collectionGroup(this.#firestore, 'orders');
+  readonly #userId = this.#authService.currentUser()?.uid;
 
   getAll(): Observable<LlecoopUserOrder[]> {
-    if (!this.userId) {
+    if (!this.#userId) {
       return of([]);
     }
-    const q = query(this.ordersGroup, where(`userId`, '==', this.userId));
+    const q = query(this.#ordersGroup, where(`userId`, '==', this.#userId));
     return collectionData(q, { idField: 'id' }) as Observable<LlecoopUserOrder[]>;
   }
 
   create(item: Partial<LlecoopUserOrder>, currentOrderId: LlecoopOrder['id']) {
-    const orderCollection = collection(this.firestore, `order-list/${currentOrderId}/orders`);
+    const orderCollection = collection(this.#firestore, `order-list/${currentOrderId}/orders`);
 
     return from(
       addDoc(orderCollection, {
         ...item,
         status: 'waiting',
-        userId: this.userId,
-        userEmail: this.authService.currentUser()?.email,
+        userId: this.#userId,
+        userEmail: this.#authService.currentUser()?.email,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
       })
@@ -49,7 +49,7 @@ export class LlecoopUserOrderFireService {
   }
 
   update(item: Partial<LlecoopUserOrder>) {
-    const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
+    const document = doc(this.#firestore, `order-list/${item.orderListId}/orders/${item.id}`);
     return from(
       updateDoc(document, {
         ...item,
@@ -59,7 +59,7 @@ export class LlecoopUserOrderFireService {
   }
 
   delete(item: LlecoopUserOrder) {
-    const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
+    const document = doc(this.#firestore, `order-list/${item.orderListId}/orders/${item.id}`);
     return from(deleteDoc(document));
   }
 }

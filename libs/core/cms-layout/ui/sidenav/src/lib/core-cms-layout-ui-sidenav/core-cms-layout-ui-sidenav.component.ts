@@ -19,15 +19,16 @@ import { LayoutPosition } from '@plastik/shared/entities';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutUiSidenavComponent {
+  readonly #zone = inject(NgZone);
+
   @Input() position: LayoutPosition = 'start';
   @Input() mode: MatDrawerMode = 'over';
   @Input() fixedInViewport = false;
   @Input() sidenavOpened = true;
   @Output() toggleSidenav: EventEmitter<boolean> = new EventEmitter<boolean>();
-  private readonly zone = inject(NgZone);
 
   onToggleSidenav(opened?: boolean): void {
-    this.zone.run(() => {
+    this.#zone.run(() => {
       this.toggleSidenav.emit(opened);
     });
   }

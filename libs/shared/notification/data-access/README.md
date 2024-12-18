@@ -57,13 +57,13 @@ this.store.dispatch(notificationActions.dismiss());
 ```typescript
 @Injectable()
 export class FeatureEffects {
-  private readonly notificationService = inject(NotificationConfigService);
+  readonly #notificationService = inject(NotificationConfigService);
 
   showError$ = createEffect(() =>
     this.actions$.pipe(
       ofType(loadEntitiesFailure),
       map(({ error: notification }) =>
-        notificationActions.show({
+        this.#notificationActions.show({
           configuration: this.messagingService.getInstance('ERROR'),
         })
       )

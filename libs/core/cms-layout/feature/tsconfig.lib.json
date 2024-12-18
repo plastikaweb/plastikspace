@@ -2,20 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
-    "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": [],
-    "composite": true
+    "types": []
   },
   "exclude": ["src/test-setup.ts", "src/**/*.spec.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": [
-    "src/**/*.ts",
-    "../data-access/src/**/*.ts",
-    "../ui/footer/src/**/*.ts",
-    "../ui/header/src/**/*.ts",
-    "../ui/sidenav/src/**/*.ts",
-    "../../../shared/activity/**/*.ts",
-    "../../../shared/notification/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }

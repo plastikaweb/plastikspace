@@ -9,15 +9,18 @@ import { layoutActions } from './layout.actions';
 import { selectIsMobile, selectSidenavOpened } from './layout.feature';
 @Injectable()
 export class LayoutEffects {
-  private readonly actions$ = inject(Actions);
-  private readonly store = inject(Store);
+  readonly #actions$ = inject(Actions);
+  readonly #store = inject(Store);
 
   routerRequest$ = createEffect(() => {
-    return this.actions$.pipe(
+    return this.#actions$.pipe(
       ofType(ROUTER_NAVIGATION),
-      concatLatestFrom(() => [this.store.select(selectSidenavOpened), this.store.select(selectIsMobile)]),
+      concatLatestFrom(() => [
+        this.#store.select(selectSidenavOpened),
+        this.#store.select(selectIsMobile),
+      ]),
       filter(([, sideBarVisibility, isMobile]) => sideBarVisibility && isMobile),
-      map(() => layoutActions.toggleSidenav({ opened: false })),
+      map(() => layoutActions.toggleSidenav({ opened: false }))
     );
   });
 }

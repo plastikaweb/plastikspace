@@ -19,12 +19,12 @@ import { userOrderFeatureDetailFormConfig } from './user-order-feature-detail-fo
   providedIn: 'root',
 })
 export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade<LlecoopUserOrder> {
-  private readonly userOrderStore = inject(LlecoopUserOrderStore);
-  private readonly orderListStore = inject(LLecoopOrderListStore);
+  readonly #userOrderStore = inject(LlecoopUserOrderStore);
+  readonly #orderListStore = inject(LLecoopOrderListStore);
 
-  private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'order')[0];
+  readonly #view = inject(VIEW_CONFIG).filter(item => item.name === 'order')[0];
 
-  model = this.userOrderStore.selectedItem;
+  model = this.#userOrderStore.selectedItem;
 
   viewExtraActions = signal<ExtraFormAction<LlecoopUserOrder>[]>([
     {
@@ -38,8 +38,8 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
 
   viewConfig = computed(() => {
     return {
-      ...this.view,
-      title: `Comanda #${this.orderListStore.currentOrder()?.name}` || 'Nova comanda',
+      ...this.#view,
+      title: `Comanda #${this.#orderListStore.currentOrder()?.name}` || 'Nova comanda',
     };
   });
 
@@ -61,13 +61,13 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
 
   onSubmit(data: Partial<LlecoopUserOrder>): void {
     if (this.model()?.id) {
-      this.userOrderStore.update(data);
+      this.#userOrderStore.update(data);
       return;
     }
 
-    this.userOrderStore.create({
+    this.#userOrderStore.create({
       ...data,
-      name: this.orderListStore.currentOrder()?.name || '',
+      name: this.#orderListStore.currentOrder()?.name || '',
     });
   }
 

@@ -5,15 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": [],
-    "composite": true
+    "types": []
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": [
-    "src/**/*.ts",
-    "../../../core/router/data-access/src/**/*.ts",
-    "../../entities/src/**/*.ts",
-    "../../../shared/auth/firebase/data-access/src/**/*.ts",
-    "../../data-access/src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }

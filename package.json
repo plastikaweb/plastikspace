@@ -114,7 +114,7 @@
     "@ngx-formly/core": "^6.3.11",
     "@ngx-formly/material": "^6.3.11",
     "@nx/angular": "20.2.2",
-    "angular-svg-icon": "^18.0.1",
+    "angular-svg-icon": "^19.0.1",
     "babel-loader": "^9.2.1",
     "firebase-admin": "^12.6.0",
     "firebase-functions": "^5.1.1",

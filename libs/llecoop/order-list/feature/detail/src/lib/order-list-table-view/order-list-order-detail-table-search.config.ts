@@ -20,10 +20,10 @@ import {
 export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LLecoopOrderListStore);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #store = inject(LLecoopOrderListStore);
 
-  private readonly userName: TableColumnFormatting<LlecoopUserOrder, 'TITLE_CASE'> = {
+  readonly #userName: TableColumnFormatting<LlecoopUserOrder, 'TITLE_CASE'> = {
     key: 'userName',
     title: 'Sòcia/unitat familiar',
     propertyPath: 'userName',
@@ -33,7 +33,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
       type: 'TITLE_CASE',
     },
   };
-  private readonly deliveryType: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+  readonly #deliveryType: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'deliveryType',
     title: 'Tipus de lliurament',
     propertyPath: 'deliveryType',
@@ -48,7 +48,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     },
   };
 
-  private readonly address: TableColumnFormatting<LlecoopUserOrder, 'TEXT'> = {
+  readonly #address: TableColumnFormatting<LlecoopUserOrder, 'TEXT'> = {
     key: 'address',
     title: 'Adreça de lliurament',
     propertyPath: 'address',
@@ -59,7 +59,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     },
   };
 
-  private readonly deliveryDateAndTime: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+  readonly #deliveryDateAndTime: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'deliveryDateAndTime',
     title: 'Data i hora de lliurament',
     propertyPath: 'deliveryDateAndTime',
@@ -68,11 +68,11 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) =>
-        (element && formatUserOrderDeliveryDate(element, this.sanitizer)) ?? '-',
+        (element && formatUserOrderDeliveryDate(element, this.#sanitizer)) ?? '-',
     },
   };
 
-  private readonly totalPrice: TableColumnFormatting<LlecoopUserOrder, 'CURRENCY'> = {
+  readonly #totalPrice: TableColumnFormatting<LlecoopUserOrder, 'CURRENCY'> = {
     key: 'totalPrice',
     title: 'Preu',
     propertyPath: 'totalPrice',
@@ -88,7 +88,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     },
   };
 
-  private readonly totalProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+  readonly #totalProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'cart',
     title: 'Nre. de productes',
     propertyPath: 'cart',
@@ -100,7 +100,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     },
   };
 
-  private readonly status: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+  readonly #status: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'status',
     title: 'Estat',
     propertyPath: 'status',
@@ -109,18 +109,18 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: status =>
-        formatUserOrderStatus(this.sanitizer, status as LlecoopUserOrder['status']),
+        formatUserOrderStatus(this.#sanitizer, status as LlecoopUserOrder['status']),
     },
   };
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
-    this.userName,
-    this.status,
-    this.deliveryType,
-    this.address,
-    this.deliveryDateAndTime,
-    this.totalPrice,
-    this.totalProducts,
+  readonly #columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
+    this.#userName,
+    this.#status,
+    this.#deliveryType,
+    this.#address,
+    this.#deliveryDateAndTime,
+    this.#totalPrice,
+    this.#totalProducts,
   ];
 
   getTableDefinition() {
@@ -128,7 +128,7 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
+      columnProperties: this.#columnProperties,
       paginationVisibility: {
         hidePageSize: true,
         hideRangeLabel: true,
@@ -136,12 +136,12 @@ export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
         hidePaginationFirstLastButtons: true,
       },
       caption: 'Llistat de comandes',
-      sort: this.store.sorting,
-      count: computed(() => this.store.selectedItem()?.orderCount || 0) as Signal<number>,
+      sort: this.#store.sorting,
+      count: computed(() => this.#store.selectedItem()?.orderCount || 0) as Signal<number>,
       getData: () => {
-        return this.store.selectedItem()?.orders || [];
+        return this.#store.selectedItem()?.orders || [];
       },
-      getSelectedItemId: computed(() => this.store.selectedItemUserOrderId()) as Signal<
+      getSelectedItemId: computed(() => this.#store.selectedItemUserOrderId()) as Signal<
         string | null
       >,
     } as TableDefinition<LlecoopUserOrder>;

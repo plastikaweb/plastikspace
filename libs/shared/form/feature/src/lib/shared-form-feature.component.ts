@@ -34,11 +34,12 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   protected form = new FormGroup({});
   protected options: FormlyFormOptions = {};
 
-  private readonly newModel = signal<T | null>(null);
+  readonly #newModel = signal<T | null>(null);
 
   ngAfterViewInit(): void {
     this.form.markAsUntouched();
     this.form.markAsPristine();
+    this.#newModel.set(this.model());
   }
 
   onSubmit(event: Event): void {
@@ -48,7 +49,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   }
 
   onModelChange(model: T): void {
-    this.newModel.set(model);
+    this.#newModel.set(model);
     this.pendingChangesEvent.emit(this.form.dirty);
     if (!this.submitAvailable()) this.emitChange();
     if (this.submitConfig()?.emitOnChange) this.temporaryChangeEvent.emit(model);
@@ -64,7 +65,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
     if (this.form.valid) {
       this.form.markAsPristine();
       this.form.markAsUntouched();
-      this.changeEvent.emit(this.newModel() as T);
+      this.changeEvent.emit(this.#newModel() as T);
       if (this.submitConfig()?.disableOnSubmit) this.form.disable();
     }
   }

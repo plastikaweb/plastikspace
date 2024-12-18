@@ -17,11 +17,11 @@ import { filter, take } from 'rxjs';
   providedIn: 'root',
 })
 export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig<LlecoopUser> {
-  private readonly store = inject(LLecoopUserStore);
-  private readonly confirmService = inject(SharedConfirmDialogService);
-  private readonly sanitizer = inject(DomSanitizer);
+  readonly #store = inject(LLecoopUserStore);
+  readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #sanitizer = inject(DomSanitizer);
 
-  // private readonly name: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
+  // readonly #name: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
   //   key: 'name',
   //   title: 'Nom',
   //   propertyPath: 'name',
@@ -32,7 +32,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   //   },
   // };
 
-  private readonly isAdmin: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
+  readonly #isAdmin: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
     key: 'isAdmin',
     title: 'Rol',
     propertyPath: 'isAdmin',
@@ -41,14 +41,14 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       type: 'CUSTOM',
       execute: (_, user) =>
         user?.isAdmin
-          ? this.sanitizer.bypassSecurityTrustHtml(
+          ? this.#sanitizer.bypassSecurityTrustHtml(
               '<span class="material-icons text-primary-dark">shield</span>'
             )
           : '<span class="material-icons text-secondary">face</span>',
     },
   };
 
-  private readonly email: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
+  readonly #email: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
     key: 'email',
     title: 'Correu electrònic',
     propertyPath: 'email',
@@ -60,7 +60,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     },
   };
 
-  private readonly registered: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
+  readonly #registered: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
     key: 'registered',
     title: 'Registrat',
     propertyPath: 'registered',
@@ -72,7 +72,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     },
   };
 
-  private readonly emailVerified: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
+  readonly #emailVerified: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
     key: 'emailVerified',
     title: 'Verificat',
     propertyPath: 'emailVerified',
@@ -84,7 +84,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     },
   };
 
-  // private readonly address: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
+  // readonly #address: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
   //   key: 'address',
   //   title: `Adreça d'entrega`,
   //   propertyPath: 'address',
@@ -94,7 +94,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   //   },
   // };
 
-  // private readonly phone: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
+  // readonly #phone: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
   //   key: 'phone',
   //   title: `Telèfon de contacte`,
   //   propertyPath: 'phone',
@@ -104,16 +104,16 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   //   },
   // };
 
-  private readonly createdAt = createdAt<LlecoopUser>();
-  private readonly updatedAt = updatedAt<LlecoopUser>();
+  readonly #createdAt = createdAt<LlecoopUser>();
+  readonly #updatedAt = updatedAt<LlecoopUser>();
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopUser, FormattingTypes>[] = [
-    this.isAdmin,
-    this.email,
-    this.registered,
-    this.emailVerified,
-    this.createdAt,
-    this.updatedAt,
+  readonly #columnProperties: TableColumnFormatting<LlecoopUser, FormattingTypes>[] = [
+    this.#isAdmin,
+    this.#email,
+    this.#registered,
+    this.#emailVerified,
+    this.#createdAt,
+    this.#updatedAt,
   ];
 
   getTableDefinition() {
@@ -121,17 +121,17 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
+      columnProperties: this.#columnProperties,
       paginationVisibility: {
         hidePageSize: true,
         hideRangeLabel: true,
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
-      sort: this.store.sorting,
+      sort: this.#store.sorting,
       caption: "Llistat d'usuaris",
-      count: this.store.count,
-      getData: () => this.store.entities(),
+      count: this.#store.count,
+      getData: () => this.#store.entities(),
       actionsColStyles: 'max-w-[120px]',
       actions: {
         SET_ADMIN: {
@@ -142,7 +142,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
           icon: () => 'person',
           execute: (user: LlecoopUser) => {
             if (user.id && !user.isAdmin) {
-              this.confirmService
+              this.#confirmService
                 .confirm(
                   "Donar permisos d'administrador",
                   `Segur que vols fer administrador a "${user.email}"?`,
@@ -150,7 +150,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
                   'Acceptar'
                 )
                 .pipe(take(1), filter(Boolean))
-                .subscribe(() => this.store.setAdmin({ id: user.id }));
+                .subscribe(() => this.#store.setAdmin({ id: user.id }));
             }
           },
         },

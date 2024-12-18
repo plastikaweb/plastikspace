@@ -20,10 +20,10 @@ import {
 export class LlecoopUserOrderResumeTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LlecoopUserOrderStore);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #store = inject(LlecoopUserOrderStore);
 
-  private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
@@ -40,12 +40,12 @@ export class LlecoopUserOrderResumeTableConfig
         const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
         const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
         const extra = `<ul class="hidden md:block">${provider}${origin}</ul>`;
-        return this.sanitizer.bypassSecurityTrustHtml(`${name}${info}${unit}${extra}`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}${unit}${extra}`) as SafeHtml;
       },
     },
   };
 
-  private readonly initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'initQuantity',
     title: 'Quantitat demanada',
     propertyPath: 'initQuantity',
@@ -60,7 +60,7 @@ export class LlecoopUserOrderResumeTableConfig
     },
   };
 
-  private readonly finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'finalQuantity',
     title: 'Quantitat final',
     propertyPath: 'finalQuantity',
@@ -75,7 +75,7 @@ export class LlecoopUserOrderResumeTableConfig
     },
   };
 
-  private readonly finalPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
+  readonly #finalPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'finalPrice',
     title: 'Preu final',
     propertyPath: 'finalPrice',
@@ -89,7 +89,7 @@ export class LlecoopUserOrderResumeTableConfig
     },
   };
 
-  private readonly iva: TableColumnFormatting<LlecoopOrderProduct, 'PERCENTAGE'> = {
+  readonly #iva: TableColumnFormatting<LlecoopOrderProduct, 'PERCENTAGE'> = {
     key: 'iva',
     title: 'IVA',
     propertyPath: 'iva',
@@ -99,7 +99,7 @@ export class LlecoopUserOrderResumeTableConfig
     },
   };
 
-  private readonly extraInfo: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
+  readonly #extraInfo: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
     key: 'extraInfo',
     title: 'Comentaris',
     propertyPath: 'extraInfo',
@@ -109,18 +109,24 @@ export class LlecoopUserOrderResumeTableConfig
     },
   };
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] =
-    [this.name, this.initQuantity, this.finalQuantity, this.iva, this.finalPrice, this.extraInfo];
+  readonly #columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] = [
+    this.#name,
+    this.#initQuantity,
+    this.#finalQuantity,
+    this.#iva,
+    this.#finalPrice,
+    this.#extraInfo,
+  ];
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
+      columnProperties: this.#columnProperties,
       caption: 'Llistat de productes',
       noPagination: true,
-      getData: () => this.store.selectedItem()?.cart || [],
+      getData: () => this.#store.selectedItem()?.cart || [],
     } as TableDefinition<LlecoopOrderProduct>;
   }
 }

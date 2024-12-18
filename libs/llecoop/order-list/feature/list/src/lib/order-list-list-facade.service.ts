@@ -18,15 +18,15 @@ import { LlecoopOrderListSearchFeatureTableConfig } from './order-list-feature-t
   providedIn: 'root',
 })
 export class LlecoopOrderListListFacadeService implements TableWithFilteringFacade<LlecoopOrder> {
-  private readonly orderListStore = inject(LLecoopOrderListStore);
-  private readonly productStore = inject(LlecoopProductStore);
-  private readonly table = inject(LlecoopOrderListSearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
-  private readonly sanitizer = inject(DomSanitizer);
+  readonly #orderListStore = inject(LLecoopOrderListStore);
+  readonly #productStore = inject(LlecoopProductStore);
+  readonly #table = inject(LlecoopOrderListSearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #sanitizer = inject(DomSanitizer);
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order-list')[0]);
 
-  tableDefinition = this.table.getTableDefinition();
+  tableDefinition = this.#table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
     text: '',
   });
@@ -41,15 +41,15 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
       label: 'Iniciar comanda',
       icon: 'add',
       execute: () => {
-        this.confirmService
+        this.#confirmService
           .confirm(
             'Iniciar nova comanda',
-            this.sanitizer.bypassSecurityTrustHtml(
+            this.#sanitizer.bypassSecurityTrustHtml(
               `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
                 <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md">${this.getNewOrderName()}</h5>
                 <p class="font-extrabold">Oberta fins el ${this.getNewOrderDate().format('DD/MM/YYYY')}
                 a les ${this.getNewOrderDate().format('HH:mm')}</span> hores.</p>
-                <p class="text-secondary-dark">${this.productStore.getAvailableProducts().length} productes s'afegiran a la llista.</p>
+                <p class="text-secondary-dark">${this.#productStore.getAvailableProducts().length} productes s'afegiran a la llista.</p>
               </div>
               `
             ),
@@ -57,10 +57,10 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
             'Iniciar'
           )
           .pipe(take(1), filter(Boolean))
-          .subscribe(() => this.orderListStore.create(this.createOrderList()));
+          .subscribe(() => this.#orderListStore.create(this.createOrderList()));
       },
       disabled: () =>
-        this.orderListStore
+        this.#orderListStore
           .entities()
           .some(({ status }) => status === 'waiting' || status === 'progress'),
     },
@@ -69,7 +69,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
   formStructure = getLlecoopOrderListSearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.orderListStore.setSorting([active, direction]);
+    this.#orderListStore.setSorting([active, direction]);
   }
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
@@ -78,7 +78,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
 
   onTableActionDelete(item: LlecoopOrder): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar comanda setmanal',
           `Segur que vols eliminar la comanda "${item.name}"?`,
@@ -86,7 +86,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.orderListStore.delete(item));
+        .subscribe(() => this.#orderListStore.delete(item));
     }
   }
 
@@ -103,7 +103,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
   }
 
   private createOrderList(): LlecoopOrder {
-    const availableProducts = this.productStore
+    const availableProducts = this.#productStore
       .getAvailableProducts()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .map(({ stock, isAvailable, ...rest }) => ({

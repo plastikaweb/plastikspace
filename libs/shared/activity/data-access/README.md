@@ -31,10 +31,10 @@ This library contains the data access layer for the activity feature.
   import { activityActions } from '@plastik/shared/activity/data-access';
 
   export class MyComponent implements OnInit {
-    private readonly store = inject(Store);
+    readonly #store = inject(Store);
 
     ngOnInit(): void {
-      this.store.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#store.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
   ```
@@ -47,9 +47,9 @@ This library contains the data access layer for the activity feature.
   import { selectIsActive } from '@plastik/shared/activity/data-access';
 
   export class MyOtherComponent {
-    private readonly store = inject(Store);
+    readonly #store = inject(Store);
 
-    isActive$ = this.store.select(selectIsActive);
+    isActive$ = this.#store.select(selectIsActive);
   }
   ```
 

@@ -17,10 +17,10 @@ import {
 export class LlecoopProductSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProduct>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LlecoopProductStore);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #store = inject(LlecoopProductStore);
 
-  private readonly name: TableColumnFormatting<LlecoopProduct, 'LINK'> = {
+  readonly #name: TableColumnFormatting<LlecoopProduct, 'LINK'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
@@ -38,12 +38,12 @@ export class LlecoopProductSearchFeatureTableConfig
         const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
         const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
         const extra = `<ul class="hidden md:block">${provider}${origin}</ul>`;
-        return this.sanitizer.bypassSecurityTrustHtml(`${link}${info}${extra}`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${link}${info}${extra}`) as SafeHtml;
       },
     },
   };
 
-  private readonly stock: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
+  readonly #stock: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
     key: 'stock',
     title: 'Stock',
     propertyPath: 'stock',
@@ -57,15 +57,15 @@ export class LlecoopProductSearchFeatureTableConfig
     },
   };
 
-  private readonly createdAt = createdAt<LlecoopProduct>();
-  private readonly updatedAt = updatedAt<LlecoopProduct>();
+  readonly #createdAt = createdAt<LlecoopProduct>();
+  readonly #updatedAt = updatedAt<LlecoopProduct>();
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopProduct, FormattingTypes>[] = [
-    this.name,
+  readonly #columnProperties: TableColumnFormatting<LlecoopProduct, FormattingTypes>[] = [
+    this.#name,
     productCategoryColumn<LlecoopProduct>(),
-    this.stock,
-    this.createdAt,
-    this.updatedAt,
+    this.#stock,
+    this.#createdAt,
+    this.#updatedAt,
   ];
 
   getTableDefinition() {
@@ -73,17 +73,17 @@ export class LlecoopProductSearchFeatureTableConfig
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
+      columnProperties: this.#columnProperties,
       paginationVisibility: {
         hidePageSize: true,
         hideRangeLabel: true,
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
-      sort: this.store.sorting,
+      sort: this.#store.sorting,
       caption: 'Llistat de productes',
-      getData: () => this.store.entities(),
-      count: this.store.count,
+      getData: () => this.#store.entities(),
+      count: this.#store.count,
       extraRowStyles: (product: LlecoopProduct) => {
         return !product.isAvailable ? 'marked-ko' : '';
       },
@@ -95,7 +95,7 @@ export class LlecoopProductSearchFeatureTableConfig
           order: 1,
           icon: (product: LlecoopProduct) => (!product.isAvailable ? 'cancel' : 'check_circle'),
           execute: (product: LlecoopProduct) => {
-            this.store.update({
+            this.#store.update({
               product: { ...product, isAvailable: !product.isAvailable },
               showNotification: false,
             });

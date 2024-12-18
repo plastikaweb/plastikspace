@@ -16,18 +16,18 @@ import { from, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LlecoopCategoryFireService {
-  private readonly firestore = inject(Firestore);
-  private readonly categoryCollection = collection(this.firestore, 'category');
+  readonly #firestore = inject(Firestore);
+  readonly #categoryCollection = collection(this.#firestore, 'category');
 
   getAll(): Observable<LlecoopProductCategory[]> {
-    return collectionData(this.categoryCollection, { idField: 'id' }) as Observable<
+    return collectionData(this.#categoryCollection, { idField: 'id' }) as Observable<
       LlecoopProductCategory[]
     >;
   }
 
   create(item: Partial<LlecoopProductCategory>) {
     return from(
-      addDoc(this.categoryCollection, {
+      addDoc(this.#categoryCollection, {
         ...item,
         createdAt: Timestamp.now(),
         updatedAt: Timestamp.now(),
@@ -36,7 +36,7 @@ export class LlecoopCategoryFireService {
   }
 
   update(item: Partial<LlecoopProductCategory>) {
-    const document = doc(this.firestore, `category/${item.id}`);
+    const document = doc(this.#firestore, `category/${item.id}`);
     return from(
       updateDoc(document, {
         ...item,
@@ -46,7 +46,7 @@ export class LlecoopCategoryFireService {
   }
 
   delete(item: LlecoopProductCategory) {
-    const document = doc(this.firestore, `category/${item.id}`);
+    const document = doc(this.#firestore, `category/${item.id}`);
     return from(deleteDoc(document));
   }
 }

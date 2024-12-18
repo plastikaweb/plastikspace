@@ -4,7 +4,7 @@ import { Directive, ElementRef, HostListener, inject, input } from '@angular/cor
   selector: '[plastikDynamicBgColor]',
 })
 export class SharedUtilDynamicBgColorDirective {
-  private readonly el = inject(ElementRef);
+  readonly #el = inject(ElementRef);
 
   color = input('color');
 
@@ -19,6 +19,6 @@ export class SharedUtilDynamicBgColorDirective {
   }
 
   private setBackgroundColor(color: string): void {
-    this.el.nativeElement.style.backgroundColor = color;
+    this.#el.nativeElement.style.backgroundColor = color;
   }
 }

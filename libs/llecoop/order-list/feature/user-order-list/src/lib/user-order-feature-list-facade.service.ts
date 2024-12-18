@@ -30,14 +30,14 @@ export class LlecoopUserOrderListFacadeService
         }[]
       >
     | undefined;
-  private readonly userOrderStore = inject(LlecoopUserOrderStore);
-  private readonly orderListStore = inject(LLecoopOrderListStore);
-  private readonly table = inject(LlecoopUserOrderSearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+  readonly #userOrderStore = inject(LlecoopUserOrderStore);
+  readonly #orderListStore = inject(LLecoopOrderListStore);
+  readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order')[0]);
 
-  tableDefinition = this.table.getTableDefinition();
+  tableDefinition = this.#table.getTableDefinition();
   formStructure = getLlecoopUserOrderSearchFeatureFormConfig();
   filterCriteria = signal<Record<string, string>>({
     text: '',
@@ -52,15 +52,15 @@ export class LlecoopUserOrderListFacadeService
       visible: true,
       label: 'Fer comanda setmanal',
       disabled:
-        this.userOrderStore
+        this.#userOrderStore
           .entities()
-          .some(entity => entity['orderListId'] === this.orderListStore.currentOrder()?.id) ||
-        !this.orderListStore.currentOrder(),
+          .some(entity => entity['orderListId'] === this.#orderListStore.currentOrder()?.id) ||
+        !this.#orderListStore.currentOrder(),
     };
   });
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.userOrderStore.setSorting([active, direction]);
+    this.#userOrderStore.setSorting([active, direction]);
   }
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
@@ -69,7 +69,7 @@ export class LlecoopUserOrderListFacadeService
 
   onTableActionDelete(item: LlecoopUserOrder): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar comanda',
           `Segur que vols eliminar la comanda "${item.name}"?`,
@@ -77,7 +77,7 @@ export class LlecoopUserOrderListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.userOrderStore.delete(item));
+        .subscribe(() => this.#userOrderStore.delete(item));
     }
   }
 }

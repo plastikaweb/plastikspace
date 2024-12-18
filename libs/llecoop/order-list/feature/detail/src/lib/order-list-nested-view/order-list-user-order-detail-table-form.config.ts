@@ -21,11 +21,11 @@ import {
 export class LlecoopOrderListUserOrderDetailFormTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LLecoopOrderListStore);
-  private readonly defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #store = inject(LLecoopOrderListStore);
+  readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
-  private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
@@ -37,12 +37,12 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
       execute: (_, element) => {
         const name = `<p class="font-bold uppercase">${element?.['name']}</p>`;
         const info = element?.['info'] ? `<p class="font-bold">${element['info']}</p>` : '';
-        return this.sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },
   };
 
-  private readonly initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'initQuantity',
     title: 'Quantitat inicial',
     propertyPath: 'initQuantity',
@@ -58,7 +58,7 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
+  readonly #initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'initPrice',
     title: 'Preu inicial',
     propertyPath: 'initPrice',
@@ -74,7 +74,7 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+  readonly #finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'finalQuantity',
     title: 'Quantitat final',
     propertyPath: 'finalQuantity',
@@ -104,7 +104,7 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     }),
   };
 
-  private readonly finalPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
+  readonly #finalPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'finalPrice',
     title: 'Preu final',
     propertyPath: 'finalPrice',
@@ -120,7 +120,7 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly extraInfo: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+  readonly #extraInfo: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'extraInfo',
     title: 'Comentaris',
     propertyPath: 'extraInfo',
@@ -143,7 +143,7 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     }),
   };
 
-  private readonly reviewed: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+  readonly #reviewed: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'reviewed',
     title: 'Revisat',
     propertyPath: 'reviewed',
@@ -168,25 +168,24 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     }),
   };
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] =
-    [
-      this.name,
-      productCategoryColumn<LlecoopOrderProduct>({
-        cssClasses: ['hidden lg:flex lg:min-w-[170px] justify-start'],
-      }),
-      this.initQuantity,
-      this.initPrice,
-      this.finalQuantity,
-      this.finalPrice,
-      this.extraInfo,
-      this.reviewed,
-    ];
+  readonly #columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] = [
+    this.#name,
+    productCategoryColumn<LlecoopOrderProduct>({
+      cssClasses: ['hidden lg:flex lg:min-w-[170px] justify-start'],
+    }),
+    this.#initQuantity,
+    this.#initPrice,
+    this.#finalQuantity,
+    this.#finalPrice,
+    this.#extraInfo,
+    this.#reviewed,
+  ];
 
   getTableDefinition() {
     return {
-      ...this.defaultTableConfig,
-      columnProperties: this.columnProperties,
-      sort: this.store.sorting,
+      ...this.#defaultTableConfig,
+      columnProperties: this.#columnProperties,
+      sort: this.#store.sorting,
       caption: 'Comanda de soci: Llistat de productes',
       noPagination: true,
       extraRowStyles: (orderProduct: LlecoopOrderProduct) => {

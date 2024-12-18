@@ -21,7 +21,7 @@
       class="h-[56px] w-full sm:w-[150px]"
       data-test="submit-button"
       [ngClass]="submitConfig()?.buttonStyle || ''"
-      [disabled]="!form.valid">
+      [disabled]="!form.valid || !form.dirty">
       {{ submitConfig()?.label || 'Submit' }}
     </button>
   }

@@ -25,7 +25,7 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
   @Input('plastikSnackbar') config!: MatSnackBarConfig<Notification> | null | undefined;
   @Output() sendDismiss: EventEmitter<void> = new EventEmitter();
 
-  private readonly subscriptions = new Subscription();
+  readonly #subscriptions = new Subscription();
 
   constructor(
     @Inject(MatSnackBar) private readonly snackBar: MatSnackBar,
@@ -41,7 +41,7 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
   }
 
   ngOnDestroy() {
-    this.subscriptions?.unsubscribe();
+    this.#subscriptions?.unsubscribe();
     this.snackBar.dismiss();
   }
 
@@ -57,7 +57,7 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
       snackBarConfig
     );
 
-    this.subscriptions.add(snackBarRef.afterDismissed().subscribe(() => this.sendDismiss.emit()));
+    this.#subscriptions.add(snackBarRef.afterDismissed().subscribe(() => this.sendDismiss.emit()));
   }
 
   private addNotificationMatSnackBarConfig({

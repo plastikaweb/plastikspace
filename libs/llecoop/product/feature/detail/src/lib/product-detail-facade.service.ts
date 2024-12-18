@@ -11,13 +11,13 @@ import { productFeatureDetailFormConfig } from './product-feature-detail-form.co
   providedIn: 'root',
 })
 export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<LlecoopProduct> {
-  private readonly store = inject(LlecoopProductStore);
-  private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'product')[0];
-  model = this.store.selectedItem;
+  readonly #store = inject(LlecoopProductStore);
+  readonly #view = inject(VIEW_CONFIG).filter(item => item.name === 'product')[0];
+  model = this.#store.selectedItem;
 
   viewConfig = computed(() => {
     return {
-      ...this.view,
+      ...this.#view,
       title: this.model()?.name || 'Nou producte',
     };
   });
@@ -28,10 +28,10 @@ export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<L
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { category, ...product } = data;
     this.model()?.id
-      ? this.store.update({
+      ? this.#store.update({
           product,
           showNotification: true,
         })
-      : this.store.create(data);
+      : this.#store.create(data);
   }
 }

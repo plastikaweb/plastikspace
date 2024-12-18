@@ -9,8 +9,6 @@
     "../../libs/nasa-images/faqs/feature/src/**/*"
   ],
   "compilerOptions": {
-    "types": ["jest", "node"],
-    "composite": true,
-    "declaration": true
+    "types": ["jest", "node"]
   }
 }

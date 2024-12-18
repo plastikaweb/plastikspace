@@ -10,15 +10,15 @@ import { selectConfiguration, selectPreserveOnRouteRequest } from './notificatio
 
 @Injectable()
 export class NotificationEffects {
-  private readonly actions$ = inject(Actions);
-  private readonly store = inject(Store);
+  readonly #actions$ = inject(Actions);
+  readonly #store = inject(Store);
 
   dismissNotification$ = createEffect(() => {
-    return this.actions$.pipe(
+    return this.#actions$.pipe(
       ofType(ROUTER_REQUEST),
       concatLatestFrom(() => [
-        this.store.select(selectConfiguration),
-        this.store.select(selectPreserveOnRouteRequest),
+        this.#store.select(selectConfiguration),
+        this.#store.select(selectPreserveOnRouteRequest),
       ]),
       filter(([, conf, preserve]) => !!conf && !preserve),
       map(() => notificationActions.dismiss())
