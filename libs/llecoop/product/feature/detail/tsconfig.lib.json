@@ -5,14 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": [],
-    "composite": true
+    "types": []
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": [
-    "src/**/*",
-    "../../../../core/detail-item-form/src/index.ts",
-    "../../../category/data-access/src/**/*.ts",
-    "../../../../core/can-deactivate-guard/src/**/*.ts"
-  ]
+  "include": ["src/**/*"]
 }

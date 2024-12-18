@@ -5,15 +5,9 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "types": [],
-    "composite": true
+    "allowSyntheticDefaultImports": true,
+    "types": []
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": [
-    "src/**/*.ts",
-    "../../../../shared/form/ui/input-search-util/src/**/*.ts",
-    "../../../../shared//confirm/data-access/src/index.ts",
-    "../../../../shared/util/**/*.ts",
-    "../../../util/src/**/*.ts"
-  ]
+  "include": ["src/**/*.ts"]
 }

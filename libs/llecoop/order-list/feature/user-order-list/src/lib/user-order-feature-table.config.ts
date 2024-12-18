@@ -21,11 +21,11 @@ import {
 export class LlecoopUserOrderSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly userOrderStore = inject(LlecoopUserOrderStore);
-  private readonly orderListStore = inject(LLecoopOrderListStore);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #userOrderStore = inject(LlecoopUserOrderStore);
+  readonly #orderListStore = inject(LLecoopOrderListStore);
 
-  private readonly name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
+  readonly #name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
@@ -40,12 +40,12 @@ export class LlecoopUserOrderSearchFeatureTableConfig
           data-link="soci/comanda/${userOrder?.id}">
           ${userOrder?.name}
         </a>`;
-        return this.sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
       },
     },
   };
 
-  private readonly price: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+  readonly #price: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'totalPrice',
     title: 'Preu total',
     propertyPath: '',
@@ -55,12 +55,12 @@ export class LlecoopUserOrderSearchFeatureTableConfig
       type: 'CUSTOM',
       execute: (_, userOrder) => {
         const price = userOrder?.totalPrice || 0;
-        return this.sanitizer.bypassSecurityTrustHtml(`${Number(price).toFixed(2)} €`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${Number(price).toFixed(2)} €`) as SafeHtml;
       },
     },
   };
 
-  private readonly numberOfProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+  readonly #numberOfProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'numberOfProducts',
     title: 'Nre. de productes',
     propertyPath: 'cart',
@@ -72,7 +72,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     },
   };
 
-  private readonly status: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+  readonly #status: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'status',
     title: 'Estat',
     propertyPath: 'status',
@@ -81,57 +81,57 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: status =>
-        formatUserOrderStatus(this.sanitizer, status as LlecoopUserOrder['status']),
+        formatUserOrderStatus(this.#sanitizer, status as LlecoopUserOrder['status']),
     },
   };
 
-  private readonly createdAt = createdAt<LlecoopUserOrder>();
-  private readonly updatedAt = updatedAt<LlecoopUserOrder>();
+  readonly #createdAt = createdAt<LlecoopUserOrder>();
+  readonly #updatedAt = updatedAt<LlecoopUserOrder>();
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
-    this.name,
-    this.price,
-    this.numberOfProducts,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
+  readonly #columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
+    this.#name,
+    this.#price,
+    this.#numberOfProducts,
+    this.#status,
+    this.#createdAt,
+    this.#updatedAt,
   ];
 
-  private readonly orderDoneStatusCache = new Map<string, boolean>();
+  readonly #orderDoneStatusCache = new Map<string, boolean>();
 
   private checkIfOrderIsDone(order: LlecoopUserOrder): boolean {
     if (!order) return false;
 
     const cacheKey = `${order.orderListId}`;
-    if (this.orderDoneStatusCache.has(cacheKey)) {
-      return this.orderDoneStatusCache.get(cacheKey) as boolean;
+    if (this.#orderDoneStatusCache.has(cacheKey)) {
+      return this.#orderDoneStatusCache.get(cacheKey) as boolean;
     }
 
-    const isDone = this.orderListStore.entityMap()[order.orderListId]?.status === 'done';
-    this.orderDoneStatusCache.set(cacheKey, isDone);
+    const isDone = this.#orderListStore.entityMap()[order.orderListId]?.status === 'done';
+    this.#orderDoneStatusCache.set(cacheKey, isDone);
 
     return isDone;
   }
 
   getTableDefinition(): TableDefinition<LlecoopUserOrder> {
     // Clear cache when getting new table definition
-    this.orderDoneStatusCache.clear();
+    this.#orderDoneStatusCache.clear();
 
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
+      columnProperties: this.#columnProperties,
       paginationVisibility: {
         hidePageSize: true,
         hideRangeLabel: true,
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
-      sort: this.userOrderStore.sorting,
-      count: this.userOrderStore.count,
+      sort: this.#userOrderStore.sorting,
+      count: this.#userOrderStore.count,
       caption: 'Llistat de les meves comandes',
-      getData: () => this.userOrderStore.entities(),
+      getData: () => this.#userOrderStore.entities(),
       actionsColStyles: 'min-w-[135px]',
       actions: {
         VIEW: {

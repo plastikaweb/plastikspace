@@ -16,13 +16,13 @@ import { LlecoopProductSearchFeatureTableConfig } from './product-feature-table.
   providedIn: 'root',
 })
 export class LlecoopProductListFacadeService implements TableWithFilteringFacade<LlecoopProduct> {
-  private readonly store = inject(LlecoopProductStore);
-  private readonly table = inject(LlecoopProductSearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+  readonly #store = inject(LlecoopProductStore);
+  readonly #table = inject(LlecoopProductSearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'product')[0]);
 
-  tableDefinition = this.table.getTableDefinition();
+  tableDefinition = this.#table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
     text: '',
     inStock: 'all',
@@ -53,7 +53,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   formStructure = getLlecoopProductSearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.store.setSorting([active, direction]);
+    this.#store.setSorting([active, direction]);
   }
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
@@ -62,7 +62,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
 
   onTableActionDelete(item: LlecoopProduct): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar producte',
           `Segur que vols eliminar "${item.name}"?`,
@@ -70,7 +70,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.store.delete(item));
+        .subscribe(() => this.#store.delete(item));
     }
   }
 }

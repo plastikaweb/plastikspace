@@ -13,13 +13,13 @@ import { categoryFeatureDetailFormConfig } from './category-feature-detail-form.
 export class LlecoopCategoryDetailFacadeService
   implements DetailItemViewFacade<LlecoopProductCategory>
 {
-  private readonly store = inject(LlecoopCategoryStore);
-  private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'category')[0];
-  model = this.store.selectedItem;
+  readonly #store = inject(LlecoopCategoryStore);
+  readonly #view = inject(VIEW_CONFIG).filter(item => item.name === 'category')[0];
+  model = this.#store.selectedItem;
 
   viewConfig = computed(() => {
     return {
-      ...this.view,
+      ...this.#view,
       title: this.model()?.name || 'Nova categoria',
     };
   });
@@ -27,6 +27,6 @@ export class LlecoopCategoryDetailFacadeService
   formConfig = categoryFeatureDetailFormConfig();
 
   onSubmit(data: Partial<LlecoopProductCategory>): void {
-    this.model()?.id ? this.store.update(data) : this.store.create(data);
+    this.model()?.id ? this.#store.update(data) : this.#store.create(data);
   }
 }

@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Inject, Injectable, inject } from '@angular/core';
-import { ENVIRONMENT, Environment } from '@plastik/core/environments';
+import { Injectable, inject } from '@angular/core';
+import { ENVIRONMENT } from '@plastik/core/environments';
 import { Observable, ReplaySubject, catchError, map, share, throwError, timer } from 'rxjs';
 
 /**
@@ -14,8 +14,9 @@ import { Observable, ReplaySubject, catchError, map, share, throwError, timer } 
  */
 @Injectable()
 export abstract class ApiService<T, P extends object> {
-  private readonly httpClient = inject(HttpClient);
-  private readonly apiUrl = `${this.environment.apiUrl}/${this.resourceUrlSegment()}`;
+  readonly #environment = inject(ENVIRONMENT);
+  readonly #httpClient = inject(HttpClient);
+  readonly #apiUrl = `${this.#environment.apiUrl}/${this.resourceUrlSegment()}`;
 
   /**
    * @description Implement this method in child classes to have the feature resource URL segment name.
@@ -28,11 +29,6 @@ export abstract class ApiService<T, P extends object> {
    * @returns {number} The time in milliseconds.
    */
   protected cacheTime = 1000 * 60 * 60 * 24;
-
-  constructor(
-    @Inject(ENVIRONMENT)
-    private readonly environment: Environment,
-  ) {}
 
   /**
    * @description Method to map the API response with the inner typings before storing it in app.
@@ -52,13 +48,13 @@ export abstract class ApiService<T, P extends object> {
    * @returns { Observable<P | never> } The API data response after mapping or an error catch.
    */
   getList(params: P): Observable<T> {
-    return this.httpClient.get(this.apiUrl, { params: this.getHttpParams(params) }).pipe(
+    return this.#httpClient.get(this.#apiUrl, { params: this.getHttpParams(params) }).pipe(
       map(this.mapListResponse),
       share({
         connector: () => new ReplaySubject(1),
         resetOnComplete: () => timer(this.cacheTime),
       }),
-      catchError(this.handleError),
+      catchError(this.handleError)
     );
   }
 

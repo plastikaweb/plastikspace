@@ -18,15 +18,15 @@ registerLocaleData(localeCa, 'ca-ES');
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  private readonly store = inject(Store);
-  private readonly meta = inject(Meta);
+  readonly #store = inject(Store);
+  readonly #meta = inject(Meta);
   protected readonly notificationFacade = inject(NotificationFacade);
   protected readonly notificationConfig = toSignal(this.notificationFacade?.config$);
-  protected readonly isActive = toSignal(this.store.select(selectIsActive));
+  protected readonly isActive = toSignal(this.#store.select(selectIsActive));
 
   // <link rel="preconnect" href="https://images-assets.nasa.gov">
   ngOnInit(): void {
-    this.meta.addTag({
+    this.#meta.addTag({
       name: 'description',
       content: 'Botiga per socis del Llevat, associació de consum ecològic i de proximitat',
     });

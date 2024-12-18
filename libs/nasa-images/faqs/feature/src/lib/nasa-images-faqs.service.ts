@@ -5,9 +5,9 @@ import { FAQ } from './faq';
 
 @Injectable()
 export class NasaImagesFaqsService {
-  private readonly httpClient = inject(HttpClient);
+  readonly #httpClient = inject(HttpClient);
 
   getList() {
-    return this.httpClient.get<FAQ[]>('assets/json/faqs.json');
+    return this.#httpClient.get<FAQ[]>('assets/json/faqs.json');
   }
 }

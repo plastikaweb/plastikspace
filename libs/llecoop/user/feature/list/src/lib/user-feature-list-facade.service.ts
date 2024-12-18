@@ -16,13 +16,13 @@ import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config
   providedIn: 'root',
 })
 export class LlecoopUserListFacadeService implements TableWithFilteringFacade<LlecoopUser> {
-  private readonly store = inject(LLecoopUserStore);
-  private readonly table = inject(LlecoopUserSearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+  readonly #store = inject(LLecoopUserStore);
+  readonly #table = inject(LlecoopUserSearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'user')[0]);
 
-  tableDefinition = this.table.getTableDefinition();
+  tableDefinition = this.#table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
     text: '',
     role: 'all',
@@ -51,7 +51,7 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
   formStructure = getLlecoopUserSearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.store.setSorting([active, direction]);
+    this.#store.setSorting([active, direction]);
   }
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
@@ -60,7 +60,7 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
 
   onTableActionDelete(item: LlecoopUser): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar usuari',
           `Segur que vols eliminar l'usuari "${item.email}"?`,
@@ -68,7 +68,7 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.store.delete(item));
+        .subscribe(() => this.#store.delete(item));
     }
   }
 }

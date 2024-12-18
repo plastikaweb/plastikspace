@@ -20,11 +20,11 @@ import { filter, take } from 'rxjs';
 export class LlecoopOrderListSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopOrder>
 {
-  private readonly store = inject(LLecoopOrderListStore);
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+  readonly #store = inject(LLecoopOrderListStore);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #confirmService = inject(SharedConfirmDialogService);
 
-  private readonly name: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
+  readonly #name: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
@@ -36,7 +36,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     },
   };
 
-  private readonly status: TableColumnFormatting<LlecoopOrder, 'CUSTOM'> = {
+  readonly #status: TableColumnFormatting<LlecoopOrder, 'CUSTOM'> = {
     key: 'status',
     title: 'Estat',
     propertyPath: 'status',
@@ -44,7 +44,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     cssClasses: ['max-w-[60px] md:min-w-[140px] md:max-w-[180px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: status => formatOrderListStatus(this.sanitizer, status as LlecoopOrder['status']),
+      execute: status => formatOrderListStatus(this.#sanitizer, status as LlecoopOrder['status']),
     },
   };
 
@@ -60,7 +60,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     );
   }
 
-  private readonly orderCount: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
+  readonly #orderCount: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
     key: 'orderCount',
     title: 'Comandes realitzades',
     propertyPath: 'orderCount',
@@ -71,7 +71,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
     },
   };
 
-  private readonly availableProducts: TableColumnFormatting<LlecoopOrder, 'CUSTOM'> = {
+  readonly #availableProducts: TableColumnFormatting<LlecoopOrder, 'CUSTOM'> = {
     key: 'availableProducts',
     title: 'Productes inclosos',
     propertyPath: 'availableProducts',
@@ -83,15 +83,15 @@ export class LlecoopOrderListSearchFeatureTableConfig
     },
   };
 
-  private readonly createdAt = createdAt<LlecoopOrder>();
+  readonly #createdAt = createdAt<LlecoopOrder>();
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopOrder, FormattingTypes>[] = [
-    this.name,
-    this.status,
+  readonly #columnProperties: TableColumnFormatting<LlecoopOrder, FormattingTypes>[] = [
+    this.#name,
+    this.#status,
     this.endTime(),
-    this.availableProducts,
-    this.orderCount,
-    this.createdAt,
+    this.#availableProducts,
+    this.#orderCount,
+    this.#createdAt,
   ];
 
   getTableDefinition() {
@@ -99,17 +99,17 @@ export class LlecoopOrderListSearchFeatureTableConfig
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
+      columnProperties: this.#columnProperties,
       paginationVisibility: {
         hidePageSize: true,
         hideRangeLabel: true,
         hideRangeButtons: true,
         hidePaginationFirstLastButtons: true,
       },
-      sort: this.store.sorting,
+      sort: this.#store.sorting,
       caption: 'Llistat de comandes setmanals',
-      count: this.store.count,
-      getData: () => this.store.entities(),
+      count: this.#store.count,
+      getData: () => this.#store.entities(),
       actionsColStyles: 'min-w-[250px]',
       actions: {
         SET_ACTIVE: {
@@ -119,10 +119,10 @@ export class LlecoopOrderListSearchFeatureTableConfig
           order: 1,
           icon: () => 'play_circle',
           execute: (order: LlecoopOrder) => {
-            this.confirmService
+            this.#confirmService
               .confirm(
                 'Activació de comanda',
-                this.sanitizer.bypassSecurityTrustHtml(
+                this.#sanitizer.bypassSecurityTrustHtml(
                   `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
                     <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center">Segur que vols activar la comanda "${order.name}"?</h5>
                     <p class="text-secondary-dark text-center md:text-left">Un cop activada no es podrà desfer fins la data de tancament.</p>
@@ -133,7 +133,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
                 'Acceptar'
               )
               .pipe(take(1), filter(Boolean))
-              .subscribe(() => this.store.activate(order));
+              .subscribe(() => this.#store.activate(order));
           },
         },
         CANCEL: {
@@ -146,10 +146,10 @@ export class LlecoopOrderListSearchFeatureTableConfig
           order: 4,
           icon: () => 'cancel',
           execute: (order: LlecoopOrder) => {
-            this.confirmService
+            this.#confirmService
               .confirm(
                 'Desactivació de comanda',
-                this.sanitizer.bypassSecurityTrustHtml(
+                this.#sanitizer.bypassSecurityTrustHtml(
                   `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
                     <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center">Segur que vols cancel·lar la comanda "${order.name}"?</h5>
                     <p class="text-secondary-dark text-center md:text-left">Un cop desactivada es podrà tornar a activar fins la data de tancament.</p>
@@ -160,7 +160,7 @@ export class LlecoopOrderListSearchFeatureTableConfig
                 'Acceptar'
               )
               .pipe(take(1), filter(Boolean))
-              .subscribe(() => this.store.cancel(order));
+              .subscribe(() => this.#store.cancel(order));
           },
         },
         VIEW: {

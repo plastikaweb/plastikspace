@@ -22,10 +22,10 @@ import {
   providedIn: 'root',
 })
 export class FirebaseAuthService {
-  private readonly auth = inject(Auth);
-  private readonly router = inject(Router);
-  private readonly state = inject(Store);
-  private readonly notificationService = inject(NotificationConfigService);
+  readonly #auth = inject(Auth);
+  readonly #router = inject(Router);
+  readonly #state = inject(Store);
+  readonly #notificationService = inject(NotificationConfigService);
 
   currentUser = signal<User | null>(null);
   currentUserEmail = computed(() => this.currentUser()?.email ?? '');
@@ -36,7 +36,7 @@ export class FirebaseAuthService {
   firstLoginAfterRegister = signal(true);
 
   constructor() {
-    this.auth.onAuthStateChanged(this.handleAuthStateChanged.bind(this));
+    this.#auth.onAuthStateChanged(this.handleAuthStateChanged.bind(this));
   }
 
   private async handleAuthStateChanged(user: User | null): Promise<void> {
@@ -67,19 +67,19 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the login process is complete.
    */
   async login(email: string, password: string): Promise<void> {
-    this.state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
 
     try {
-      await signInWithEmailAndPassword(this.auth, email, password);
-      await this.router.navigate(['']);
+      await signInWithEmailAndPassword(this.#auth, email, password);
+      await this.#router.navigate(['']);
     } catch (error) {
       console.error(error);
       if ((error as Error).message?.includes('BLOCKING_FUNCTION_ERROR_RESPONSE')) {
         console.error('BLOCKING_FUNCTION_ERROR_RESPONSE');
       }
-      this.state.dispatch(
+      this.#state.dispatch(
         notificationActions.show({
-          configuration: this.notificationService.getInstance({
+          configuration: this.#notificationService.getInstance({
             type: 'ERROR',
             message:
               (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
@@ -90,7 +90,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -108,16 +108,16 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the registration process is complete.
    */
   async register(email: string, password: string): Promise<void> {
-    this.state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
     try {
-      const credentials = await createUserWithEmailAndPassword(this.auth, email, password);
+      const credentials = await createUserWithEmailAndPassword(this.#auth, email, password);
       await this.logout();
       this.sendVerification(credentials.user);
     } catch (error) {
       console.error(error);
-      this.state.dispatch(
+      this.#state.dispatch(
         notificationActions.show({
-          configuration: this.notificationService.getInstance({
+          configuration: this.#notificationService.getInstance({
             type: 'ERROR',
             message:
               (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Error de registre',
@@ -126,7 +126,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -140,15 +140,15 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the logout process is complete.
    */
   async logout(): Promise<void> {
-    this.state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
     try {
-      await signOut(this.auth);
-      await this.router.navigate(['login']);
+      await signOut(this.#auth);
+      await this.#router.navigate(['login']);
     } catch (error) {
       console.error('Error during logout:', error);
-      this.state.dispatch(
+      this.#state.dispatch(
         notificationActions.show({
-          configuration: this.notificationService.getInstance({
+          configuration: this.#notificationService.getInstance({
             type: 'ERROR',
             message: 'Error during logout. Please try again.',
             action: 'tancar',
@@ -156,7 +156,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -171,14 +171,14 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the email has been sent.
    */
   async sendVerification(user: User): Promise<void> {
-    this.state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
     this.firstLoginAfterRegister.set(false);
 
     try {
       await sendEmailVerification(user);
-      this.state.dispatch(
+      this.#state.dispatch(
         notificationActions.show({
-          configuration: this.notificationService.getInstance({
+          configuration: this.#notificationService.getInstance({
             type: 'SUCCESS',
             message:
               'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
@@ -188,7 +188,7 @@ export class FirebaseAuthService {
     } catch (error) {
       console.error('Error sending verification email:', error);
     } finally {
-      this.state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -205,14 +205,14 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the password reset request process is complete.
    */
   async requestPassword(email: string): Promise<void> {
-    this.state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
 
     try {
-      await sendPasswordResetEmail(this.auth, email);
-      await this.router.navigate(['login']);
-      this.state.dispatch(
+      await sendPasswordResetEmail(this.#auth, email);
+      await this.#router.navigate(['login']);
+      this.#state.dispatch(
         notificationActions.show({
-          configuration: this.notificationService.getInstance({
+          configuration: this.#notificationService.getInstance({
             type: 'SUCCESS',
             message: 'Revisa el teu correu per restablir la contrasenya',
           }),
@@ -220,9 +220,9 @@ export class FirebaseAuthService {
       );
     } catch (error) {
       console.error(error);
-      this.state.dispatch(
+      this.#state.dispatch(
         notificationActions.show({
-          configuration: this.notificationService.getInstance({
+          configuration: this.#notificationService.getInstance({
             type: 'ERROR',
             message:
               (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
@@ -232,7 +232,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 }

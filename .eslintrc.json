@@ -111,6 +111,20 @@
     },
     {
       "files": ["*.ts", "*.tsx"],
+      "parser": "@typescript-eslint/parser",
+      "plugins": ["@typescript-eslint"],
+      "rules": {
+        "no-restricted-syntax": [
+          "error",
+          {
+            "selector": "ClassProperty[accessibility='private']",
+            "message": "Use ES6 private fields (#) instead of the private modifier."
+          }
+        ]
+      }
+    },
+    {
+      "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:jsdoc/recommended"],
       "rules": {
         "jsdoc/match-description": [

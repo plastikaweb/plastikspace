@@ -27,23 +27,23 @@ import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NasaImagesSearchFeatureComponent {
-  private readonly facade = inject(NasaImagesSearchFacade);
+  readonly #facade = inject(NasaImagesSearchFacade);
 
-  images$ = this.facade.images$;
-  isActiveSearch$ = this.facade.isActiveSearch$;
+  images$ = this.#facade.images$;
+  isActiveSearch$ = this.#facade.isActiveSearch$;
   tableDefinition$ = NasaImagesSearchFeatureTableConfig.getTableDefinition();
   formStructure$ = getNasaImagesSearchFeatureFormConfig();
-  formModel$ = this.facade.routeQueryParams$;
-  routeInfo$ = this.facade.routeInfo$;
+  formModel$ = this.#facade.routeQueryParams$;
+  routeInfo$ = this.#facade.routeInfo$;
 
   onChange(model: Partial<NasaImagesSearchApiParams>): void {
     const length = model.q?.length ?? -1;
     if (length === 0 || length >= 2) {
-      this.facade.search(model as NasaImagesSearchApiParams);
+      this.#facade.search(model as NasaImagesSearchApiParams);
     }
   }
 
   onChangePagination(tablePagination: PageEventConfig) {
-    this.facade.changePagination(tablePagination);
+    this.#facade.changePagination(tablePagination);
   }
 }

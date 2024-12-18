@@ -17,17 +17,17 @@ import { from, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class LlecoopUserFireService {
-  private readonly firestore = inject(Firestore);
-  private readonly userCollection = collection(this.firestore, 'user');
-  private readonly functions = inject(Functions);
+  readonly #firestore = inject(Firestore);
+  readonly #userCollection = collection(this.#firestore, 'user');
+  readonly #functions = inject(Functions);
 
   getAll(): Observable<LlecoopUser[]> {
-    return collectionData(this.userCollection, { idField: 'id' }) as Observable<LlecoopUser[]>;
+    return collectionData(this.#userCollection, { idField: 'id' }) as Observable<LlecoopUser[]>;
   }
 
   create(email: string) {
     return from(
-      addDoc(this.userCollection, {
+      addDoc(this.#userCollection, {
         email,
         whiteListed: true,
         createdAt: Timestamp.now(),
@@ -36,12 +36,12 @@ export class LlecoopUserFireService {
   }
 
   addAdminClaim(userId: EntityId) {
-    const callable = httpsCallable(this.functions, 'setUserAdminClaim');
+    const callable = httpsCallable(this.#functions, 'setUserAdminClaim');
     return from(callable(userId));
   }
 
   delete(user: LlecoopUser) {
-    const document = doc(this.firestore, `user/${user.id}`);
+    const document = doc(this.#firestore, `user/${user.id}`);
     return from(deleteDoc(document));
   }
 }

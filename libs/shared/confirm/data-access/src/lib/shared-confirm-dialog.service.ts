@@ -9,7 +9,7 @@ import { SharedConfirmFeatureComponent } from './shared-confirm-feature.componen
   providedIn: 'root',
 })
 export class SharedConfirmDialogService {
-  private readonly dialog = inject(MatDialog);
+  readonly #dialog = inject(MatDialog);
 
   confirm(
     title: string,
@@ -17,7 +17,7 @@ export class SharedConfirmDialogService {
     ko = 'Cancel',
     ok = 'Delete'
   ): Observable<boolean> {
-    const dialogRef = this.dialog.open(SharedConfirmFeatureComponent, {
+    const dialogRef = this.#dialog.open(SharedConfirmFeatureComponent, {
       data: { title, message, ko, ok },
     });
 

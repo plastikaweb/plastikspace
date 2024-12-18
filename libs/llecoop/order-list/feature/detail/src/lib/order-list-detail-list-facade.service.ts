@@ -25,10 +25,10 @@ import { LlecoopOrderListOrderDetailSearchFeatureTableConfig } from './order-lis
 export class LlecoopOrderListDetailListFacadeService
   implements TableWithFilteringFacade<LlecoopUserOrder>
 {
-  private readonly orderListStore = inject(LLecoopOrderListStore);
-  private readonly userOrderStore = inject(LlecoopUserOrderStore);
-  private readonly table = inject(LlecoopOrderListOrderDetailSearchFeatureTableConfig);
-  private readonly mainViewConfig = signal(
+  readonly #orderListStore = inject(LLecoopOrderListStore);
+  readonly #userOrderStore = inject(LlecoopUserOrderStore);
+  readonly #table = inject(LlecoopOrderListOrderDetailSearchFeatureTableConfig);
+  readonly #mainViewConfig = signal(
     inject(VIEW_CONFIG).filter(item => item.name === 'order-list')[0]
   );
 
@@ -37,11 +37,11 @@ export class LlecoopOrderListDetailListFacadeService
   ).get();
 
   viewConfig = computed(() => ({
-    ...this.mainViewConfig(),
-    title: this.setTitle(this.orderListStore.selectedItem()),
+    ...this.#mainViewConfig(),
+    title: this.setTitle(this.#orderListStore.selectedItem()),
   }));
 
-  tableDefinition = this.table.getTableDefinition();
+  tableDefinition = this.#table.getTableDefinition();
 
   filterCriteria = signal<Record<string, string>>({
     text: '',
@@ -57,7 +57,7 @@ export class LlecoopOrderListDetailListFacadeService
   tableSearchFormStructure = getLlecoopOrderListDetailSearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.orderListStore.setSorting([active, direction]);
+    this.#orderListStore.setSorting([active, direction]);
   }
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
@@ -65,7 +65,7 @@ export class LlecoopOrderListDetailListFacadeService
   }
 
   onSaveUserOrder(model: Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>): void {
-    this.userOrderStore.update({ ...model, status: 'review' });
+    this.#userOrderStore.update({ ...model, status: 'review' });
   }
 
   private setTitle(order: LlecoopOrder | null): string {

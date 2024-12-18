@@ -17,13 +17,13 @@ import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-tabl
 export class LlecoopCategoryListFacadeService
   implements TableWithFilteringFacade<LlecoopProductCategory>
 {
-  private readonly store = inject(LlecoopCategoryStore);
-  private readonly table = inject(LlecoopCategorySearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+  readonly #store = inject(LlecoopCategoryStore);
+  readonly #table = inject(LlecoopCategorySearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
 
   viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'category')[0]);
 
-  tableDefinition = this.table.getTableDefinition();
+  tableDefinition = this.#table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
     text: '',
   });
@@ -36,7 +36,7 @@ export class LlecoopCategoryListFacadeService
   formStructure = getLlecoopCategorySearchFeatureFormConfig();
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.store.setSorting([active, direction]);
+    this.#store.setSorting([active, direction]);
   }
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
@@ -45,7 +45,7 @@ export class LlecoopCategoryListFacadeService
 
   onTableActionDelete(item: LlecoopProductCategory): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar categoria',
           `Segur que vols eliminar "${item.name}"?`,
@@ -53,7 +53,7 @@ export class LlecoopCategoryListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.store.delete(item));
+        .subscribe(() => this.#store.delete(item));
     }
   }
 }

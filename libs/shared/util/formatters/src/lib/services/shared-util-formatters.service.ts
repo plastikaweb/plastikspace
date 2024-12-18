@@ -17,9 +17,9 @@ import { FormattingDateInput, FormattingExtras, PropertyFormattingConf } from '.
  * @description A service to serve formatting methods.
  */
 export class SharedUtilFormattersService {
-  private readonly titleCasePipe = inject(TitleCasePipe);
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly locale = inject(LOCALE_ID);
+  readonly #titleCasePipe = inject(TitleCasePipe);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #locale = inject(LOCALE_ID);
 
   /**
    * Formats a date value using the specified formatting options.
@@ -34,7 +34,7 @@ export class SharedUtilFormattersService {
   ): string {
     let format = {
       dateDigitsInfo: 'shortDate',
-      locale: this.locale,
+      locale: this.#locale,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
 
@@ -61,7 +61,7 @@ export class SharedUtilFormattersService {
     extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
     let format = {
-      locale: this.locale,
+      locale: this.#locale,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
 
@@ -88,7 +88,7 @@ export class SharedUtilFormattersService {
   ): string {
     let format = {
       dateDigitsInfo: 'shortDate',
-      locale: this.locale,
+      locale: this.#locale,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
 
@@ -117,7 +117,7 @@ export class SharedUtilFormattersService {
   ): string {
     let format = {
       numberDigitsInfo: '1.2-2',
-      locale: this.locale,
+      locale: this.#locale,
     };
     if (extras) {
       format = {
@@ -147,7 +147,7 @@ export class SharedUtilFormattersService {
   ): string {
     let format = {
       numberDigitsInfo: '1.0-0',
-      locale: this.locale,
+      locale: this.#locale,
       currency: '$',
       currencyCode: 'USD',
     };
@@ -181,7 +181,7 @@ export class SharedUtilFormattersService {
   ): string {
     let format = {
       numberDigitsInfo: '1.2-2',
-      locale: this.locale,
+      locale: this.#locale,
     };
     if (extras) {
       format = {
@@ -198,7 +198,7 @@ export class SharedUtilFormattersService {
    * @returns { string } The formatted value.
    */
   titleCaseFormatter(value: string): string {
-    return this.titleCasePipe.transform(value);
+    return this.#titleCasePipe.transform(value);
   }
 
   /**
@@ -222,7 +222,7 @@ export class SharedUtilFormattersService {
         ...extras(),
       };
     }
-    return this.sanitizer.bypassSecurityTrustHtml(
+    return this.#sanitizer.bypassSecurityTrustHtml(
       `<span class="material-icons">${value ? format.iconTrue : format.iconFalse}</span>`
     );
   }
@@ -260,6 +260,6 @@ export class SharedUtilFormattersService {
    * @returns { SafeHtml } The value passed through the sanitizer.
    */
   defaultFormatter(value: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(value);
+    return this.#sanitizer.bypassSecurityTrustHtml(value);
   }
 }

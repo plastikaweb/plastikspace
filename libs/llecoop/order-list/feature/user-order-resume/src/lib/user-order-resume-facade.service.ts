@@ -11,23 +11,25 @@ import { LlecoopUserOrderResumeTableConfig } from './llecoop-user-order-feature-
   providedIn: 'root',
 })
 export class LlecoopUserOrderResumeFacadeService {
-  private readonly userOrderStore = inject(LlecoopUserOrderStore);
-  private readonly table = inject(LlecoopUserOrderResumeTableConfig);
-  private readonly sanitizer = inject(DomSanitizer);
+  readonly #userOrderStore = inject(LlecoopUserOrderStore);
+  readonly #table = inject(LlecoopUserOrderResumeTableConfig);
+  readonly #sanitizer = inject(DomSanitizer);
 
-  private readonly view = inject(VIEW_CONFIG)?.filter(item => item.name === 'order')[0];
+  readonly #view = inject(VIEW_CONFIG)?.filter(item => item.name === 'order')[0];
 
-  tableDefinition = this.table.getTableDefinition();
-  userOrder = this.userOrderStore.selectedItem;
+  tableDefinition = this.#table.getTableDefinition();
+  userOrder = this.#userOrderStore.selectedItem;
 
   viewConfig = computed(() => {
     return {
-      ...this.view,
-      title: `Comanda #${this.userOrderStore.selectedItem()?.name || ''}`,
+      ...this.#view,
+      title: `Comanda #${this.#userOrderStore.selectedItem()?.name || ''}`,
     };
   });
 
   formattedUserOrderStatus = computed(() => {
-    return this.userOrder && formatUserOrderStatus(this.sanitizer, this.userOrder()?.status, false);
+    return (
+      this.userOrder && formatUserOrderStatus(this.#sanitizer, this.userOrder()?.status, false)
+    );
   });
 }

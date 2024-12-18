@@ -4,9 +4,7 @@
     "outDir": "../../../../dist/out-tsc",
     "module": "commonjs",
     "target": "es2016",
-    "types": ["jest", "node"],
-    "composite": true,
-    "declaration": true
+    "types": ["jest", "node"]
   },
   "files": ["src/test-setup.ts"],
   "include": [
@@ -17,6 +15,7 @@
     "src/**/*.ts",
     "../../../shared/auth/firebase/data-access/src/**/*.ts",
     "../../../core/router/data-access/src/**/*.ts",
-    "../../data-access/src/**/*.ts"
+    "../../data-access/src/**/*.ts",
+    "../../entities/src/**/*.ts"
   ]
 }
