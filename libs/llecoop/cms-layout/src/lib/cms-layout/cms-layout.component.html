@@ -76,7 +76,7 @@
       [opened]="!isMobile()"
       (keydown.escape)="sidenav.close()">
       <mat-nav-list menu-items data-test="sidenav-list">
-        @for (item of viewConfig; track item.id) {
+        @for (item of viewConfig(); track item.id) {
           <mat-list-item
             class="my-tiny h-xll hover:bg-gray-10 focus:bg-gray-10"
             routerLinkActive="bg-gray-10"

@@ -9,6 +9,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
+import { signal } from '@angular/core';
 import { NotificationFacade } from '@plastik/shared/notification/data-access';
 import { CoreCmsLayoutFeatureComponent } from './core-cms-layout-feature.component';
 
@@ -37,6 +38,7 @@ describe('CoreCmsLayoutFeatureComponent', () => {
             toggleSidenav: jest.fn(),
             setIsMobile: jest.fn(),
             dispatchAction: jest.fn(),
+            sidenavConfig: signal([]),
           },
         },
         {

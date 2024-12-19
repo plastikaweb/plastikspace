@@ -1,4 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -28,7 +29,7 @@ describe('CmsLayoutComponent', () => {
         ),
         provideFirestore(() => getFirestore()),
         provideAuth(() => getAuth()),
-        { provide: VIEW_CONFIG, useValue: null },
+        { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     }).compileComponents();
 

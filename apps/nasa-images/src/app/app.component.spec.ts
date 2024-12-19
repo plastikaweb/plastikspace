@@ -1,4 +1,5 @@
 import { provideHttpClient } from '@angular/common/http';
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -22,7 +23,7 @@ describe('AppComponent', () => {
         provideHttpClient(),
         provideMockStore({ initialState }),
         { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: null },
-        { provide: VIEW_CONFIG, useValue: null },
+        { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     }).compileComponents();
 

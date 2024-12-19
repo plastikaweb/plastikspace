@@ -29,7 +29,7 @@ export class LlecoopOrderListDetailListFacadeService
   readonly #userOrderStore = inject(LlecoopUserOrderStore);
   readonly #table = inject(LlecoopOrderListOrderDetailSearchFeatureTableConfig);
   readonly #mainViewConfig = signal(
-    inject(VIEW_CONFIG).filter(item => item.name === 'order-list')[0]
+    inject(VIEW_CONFIG)().filter(item => item.name === 'order-list')[0]
   );
 
   orderDetailFormStructure: FormConfig<LlecoopOrderProduct> = inject(

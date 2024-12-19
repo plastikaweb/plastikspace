@@ -12,7 +12,7 @@ import { productFeatureDetailFormConfig } from './product-feature-detail-form.co
 })
 export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<LlecoopProduct> {
   readonly #store = inject(LlecoopProductStore);
-  readonly #view = inject(VIEW_CONFIG).filter(item => item.name === 'product')[0];
+  readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'product')[0];
   model = this.#store.selectedItem;
 
   viewConfig = computed(() => {

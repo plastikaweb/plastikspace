@@ -20,7 +20,7 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
   readonly #table = inject(LlecoopUserSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'user')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'user')[0]);
 
   tableDefinition = this.#table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({

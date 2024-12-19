@@ -3,14 +3,14 @@
 @let tableDefinition = facade.tableDefinition;
 @let viewExtraActions = facade.viewExtraActions?.() || [];
 
-<div class="flex flex-row flex-wrap items-center justify-center gap-sm sm:justify-between">
-  <h2 class="flex items-center content-center text-center h4 md:gap-sub">
+<div class="flex flex-row flex-wrap justify-center items-center gap-sm sm:justify-between">
+  <h2 class="flex content-center items-center text-center h4 md:gap-sub">
     <mat-icon class="text-[40px] size-[40px]">{{ viewConfig?.icon }}</mat-icon>
     {{ viewConfig?.title | titlecase }}
   </h2>
 
   @if (viewExtraActions.length) {
-    <div class="flex flex-row items-center justify-center gap-sm">
+    <div class="flex flex-row justify-center items-center gap-sm">
       @for (action of viewExtraActions; track action) {
         <button
           type="button"
@@ -39,7 +39,7 @@
 </div>
 
 <plastik-shared-form-feature
-  class="flex flex-row items-end content-center justify-between filters-box"
+  class="flex flex-row justify-between content-center items-end filters-box"
   [fields]="facade.formStructure || []"
   [model]="{ text: '' }"
   [submitAvailable]="false"

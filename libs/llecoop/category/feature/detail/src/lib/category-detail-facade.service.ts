@@ -14,15 +14,13 @@ export class LlecoopCategoryDetailFacadeService
   implements DetailItemViewFacade<LlecoopProductCategory>
 {
   readonly #store = inject(LlecoopCategoryStore);
-  readonly #view = inject(VIEW_CONFIG).filter(item => item.name === 'category')[0];
+  readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0];
   model = this.#store.selectedItem;
 
-  viewConfig = computed(() => {
-    return {
-      ...this.#view,
-      title: this.model()?.name || 'Nova categoria',
-    };
-  });
+  viewConfig = computed(() => ({
+    ...this.#view,
+    title: this.model()?.name || 'Nova categoria',
+  }));
 
   formConfig = categoryFeatureDetailFormConfig();
 

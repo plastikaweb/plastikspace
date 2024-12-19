@@ -1,3 +1,4 @@
+import { signal, Signal } from '@angular/core';
 import { collectionToArray } from '@plastik/shared/objects';
 
 /**
@@ -29,13 +30,15 @@ export type ViewsConfigRecord<T extends string> = Record<T, ViewConfig<T>>;
 /**
  * @description Returns an array with just the includedInNavigation ViewConfig elements.
  * @param {ViewsConfigRecord} viewsConfig The app views configuration.
- * @returns {ViewConfig[]}.
+ * @returns {Signal<ViewConfig[]>}.
  */
 export function getVisibleNavigationList<T extends string>(
   viewsConfig: ViewsConfigRecord<T>
-): ViewConfig<T>[] {
-  return collectionToArray<ViewConfig<T>>(viewsConfig).filter(
-    viewConfig => viewConfig.includedInNavigation
+): Signal<ViewConfig<T>[]> {
+  return signal(
+    collectionToArray<ViewConfig<T>>(viewsConfig).filter(
+      viewConfig => viewConfig.includedInNavigation
+    )
   );
 }
 

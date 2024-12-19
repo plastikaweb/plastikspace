@@ -15,7 +15,7 @@ export class LlecoopUserOrderResumeFacadeService {
   readonly #table = inject(LlecoopUserOrderResumeTableConfig);
   readonly #sanitizer = inject(DomSanitizer);
 
-  readonly #view = inject(VIEW_CONFIG)?.filter(item => item.name === 'order')[0];
+  readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0];
 
   tableDefinition = this.#table.getTableDefinition();
   userOrder = this.#userOrderStore.selectedItem;

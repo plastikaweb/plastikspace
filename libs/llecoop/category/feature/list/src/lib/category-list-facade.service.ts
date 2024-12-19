@@ -21,7 +21,7 @@ export class LlecoopCategoryListFacadeService
   readonly #table = inject(LlecoopCategorySearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'category')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0]);
 
   tableDefinition = this.#table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
