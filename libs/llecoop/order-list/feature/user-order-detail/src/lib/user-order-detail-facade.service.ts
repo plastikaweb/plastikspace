@@ -22,7 +22,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
   readonly #userOrderStore = inject(LlecoopUserOrderStore);
   readonly #orderListStore = inject(LLecoopOrderListStore);
 
-  readonly #view = inject(VIEW_CONFIG).filter(item => item.name === 'order')[0];
+  readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0];
 
   model = this.#userOrderStore.selectedItem;
 
@@ -36,12 +36,10 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
     },
   ]);
 
-  viewConfig = computed(() => {
-    return {
-      ...this.#view,
-      title: `Comanda #${this.#orderListStore.currentOrder()?.name}` || 'Nova comanda',
-    };
-  });
+  viewConfig = computed(() => ({
+    ...this.#view,
+    title: `Comanda #${this.#orderListStore.currentOrder()?.name}` || 'Nova comanda',
+  }));
 
   formConfig = userOrderFeatureDetailFormConfig();
 

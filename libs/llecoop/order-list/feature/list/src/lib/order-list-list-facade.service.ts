@@ -24,7 +24,7 @@ export class LlecoopOrderListListFacadeService implements TableWithFilteringFaca
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #sanitizer = inject(DomSanitizer);
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order-list')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order-list')[0]);
 
   tableDefinition = this.#table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({

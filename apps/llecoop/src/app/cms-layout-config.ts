@@ -1,66 +1,67 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 
 export function viewConfig() {
-  const authFirebaseService = inject(FirebaseAuthService);
-  const isAdmin = authFirebaseService.isAdmin();
+  const isAdmin = inject(FirebaseAuthService).isAdmin;
 
-  return [
-    {
-      id: 1,
-      name: 'product',
-      title: 'Productes',
-      icon: 'shopping_cart',
-      route: [`/admin/producte`],
-      includedInNavigation: isAdmin,
-      routerLinkActiveOptionsExact: false,
-    },
-    {
-      id: 2,
-      name: 'category',
-      title: 'Categories',
-      icon: 'category',
-      route: [`/admin/categoria`],
-      includedInNavigation: isAdmin,
-      routerLinkActiveOptionsExact: false,
-    },
-    // ['tag']: {
-    //   id: 2,
-    //   name: 'tag',
-    //   title: 'Etiquetes',
-    //   icon: 'label',
-    //   route: [`/tag`],
-    //   includedInNavigation: true,
-    //   routerLinkActiveOptionsExact: false,
-    // },
-    {
-      id: 3,
-      name: 'user',
-      title: 'Usuaris',
-      icon: 'person',
-      route: [`/admin/usuari`],
-      includedInNavigation: isAdmin,
-      routerLinkActiveOptionsExact: false,
-    },
-    {
-      id: 4,
-      name: 'order-list',
-      title: 'Comandes',
-      icon: 'shopping_bag',
-      route: [`/admin/comanda`],
-      includedInNavigation: isAdmin,
-      routerLinkActiveOptionsExact: false,
-      divider: true,
-    },
-    {
-      id: 5,
-      name: 'order',
-      title: 'Les meves comandes',
-      icon: 'shopping_cart',
-      route: [`/soci/comanda`],
-      includedInNavigation: true,
-      routerLinkActiveOptionsExact: false,
-    },
-  ].filter(view => view.includedInNavigation);
+  return computed(() =>
+    [
+      {
+        id: 1,
+        name: 'product',
+        title: 'Productes',
+        icon: 'shopping_cart',
+        route: [`/admin/producte`],
+        includedInNavigation: isAdmin(),
+        routerLinkActiveOptionsExact: false,
+      },
+      {
+        id: 2,
+        name: 'category',
+        title: 'Categories',
+        icon: 'category',
+        route: [`/admin/categoria`],
+        includedInNavigation: isAdmin(),
+        routerLinkActiveOptionsExact: false,
+      },
+      // ['tag']: {
+      //   id: 2,
+      //   name: 'tag',
+      //   title: 'Etiquetes',
+      //   icon: 'label',
+      //   route: [`/tag`],
+      //   includedInNavigation: true,
+      //   routerLinkActiveOptionsExact: false,
+      // },
+      {
+        id: 3,
+        name: 'user',
+        title: 'Usuaris',
+        icon: 'person',
+        route: [`/admin/usuari`],
+        includedInNavigation: isAdmin(),
+        routerLinkActiveOptionsExact: false,
+      },
+      {
+        id: 4,
+        name: 'order-list',
+        title: 'Comandes',
+        icon: 'shopping_bag',
+        route: [`/admin/comanda`],
+        includedInNavigation: isAdmin(),
+        routerLinkActiveOptionsExact: false,
+        divider: true,
+      },
+      {
+        id: 5,
+        name: 'order',
+        title: 'Les meves comandes',
+        icon: 'shopping_cart',
+        route: [`/soci/comanda`],
+        includedInNavigation: true,
+        routerLinkActiveOptionsExact: false,
+      },
+    ].filter(view => view.includedInNavigation)
+  );
 }

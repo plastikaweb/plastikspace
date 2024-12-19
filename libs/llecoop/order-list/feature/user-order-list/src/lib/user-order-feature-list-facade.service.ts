@@ -35,7 +35,7 @@ export class LlecoopUserOrderListFacadeService
   readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0]);
 
   tableDefinition = this.#table.getTableDefinition();
   formStructure = getLlecoopUserOrderSearchFeatureFormConfig();

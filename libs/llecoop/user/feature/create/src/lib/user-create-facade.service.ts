@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, computed } from '@angular/core';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
@@ -13,13 +13,13 @@ import { userFeatureCreateFormConfig } from './user-feature-create-form.config';
 })
 export class LlecoopUserCreateFacadeService implements DetailItemViewFacade<LlecoopUser> {
   readonly #store = inject(LLecoopUserStore);
-  readonly #view = inject(VIEW_CONFIG).filter(item => item.name === 'user')[0];
+  readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'user')[0];
   readonly #storeNotificationService = inject(StoreNotificationService);
 
-  viewConfig = signal({
+  viewConfig = computed(() => ({
     ...this.#view,
     title: 'Afegir usuari',
-  });
+  }));
 
   formConfig = userFeatureCreateFormConfig();
 

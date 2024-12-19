@@ -3,6 +3,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 
 import { provideHttpClient } from '@angular/common/http';
+import { signal } from '@angular/core';
 import { NasaImagesFacade } from '@plastik/nasa-images/data-access';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { NasaImagesFaqsService } from '../nasa-images-faqs.service';
@@ -18,7 +19,7 @@ describe('NasaImagesFaqsFeatureComponent', () => {
       providers: [
         provideMockStore(),
         provideHttpClient(),
-        { provide: VIEW_CONFIG, useValue: null },
+        { provide: VIEW_CONFIG, useValue: signal([]) },
         NasaImagesFacade,
         NasaImagesFaqsService,
       ],

@@ -20,7 +20,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   readonly #table = inject(LlecoopProductSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'product')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'product')[0]);
 
   tableDefinition = this.#table.getTableDefinition();
   filterCriteria = signal<Record<string, string>>({
