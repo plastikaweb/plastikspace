@@ -1,6 +1,7 @@
 import { DocumentReference } from '@angular/fire/firestore';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity, FormSelectOption } from '@plastik/core/entities';
+
 import { LlecoopBaseProduct } from './product';
 import { LlecoopUser } from './user';
 
@@ -13,6 +14,15 @@ export type LlecoopOrderProduct = LlecoopBaseProduct & {
   reviewed?: boolean;
 };
 
+export type LlecoopOrderProductTotal = Pick<
+  LlecoopOrderProduct,
+  'id' | 'name' | 'price' | 'iva' | 'priceWithIva' | 'unit'
+> & {
+  quantity: number;
+  totalPrice: number;
+  reviewed: boolean;
+};
+
 export interface LlecoopOrder extends BaseEntity {
   initTime?: Date;
   endTime?: Date;
@@ -20,6 +30,7 @@ export interface LlecoopOrder extends BaseEntity {
   availableProducts: LlecoopOrderProduct[];
   orderCount: number;
   orders?: LlecoopUserOrder[];
+  total?: LlecoopOrderProductTotal[];
 }
 
 export interface LlecoopUserOrder extends BaseEntity {

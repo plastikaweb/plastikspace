@@ -120,6 +120,12 @@
             "selector": "ClassProperty[accessibility='private']",
             "message": "Use ES6 private fields (#) instead of the private modifier."
           }
+        ],
+        "@typescript-eslint/member-ordering": [
+          "error",
+          {
+            "default": ["signature", "field", "constructor", "method"]
+          }
         ]
       }
     },

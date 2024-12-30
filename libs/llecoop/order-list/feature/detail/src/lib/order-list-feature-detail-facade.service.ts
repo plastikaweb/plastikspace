@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { computed, inject, Injectable, signal } from '@angular/core';
-
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { FormConfig } from '@plastik/core/entities';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
@@ -15,55 +13,53 @@ import {
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
 import { TableSorting } from '@plastik/shared/table/entities';
-import { OrderListUserOrderDetailFormConfig } from './order-list-nested-view/order-list-user-order-feature-detail-form.config';
-import { getLlecoopOrderListDetailSearchFeatureFormConfig } from './order-list-table-view/order-list-detail-feature-search-form.config';
-import { LlecoopOrderListOrderDetailSearchFeatureTableConfig } from './order-list-table-view/order-list-order-detail-table-search.config';
+
+import { getLlecoopOrderListFeatureDetailSearchFormConfig } from './order-list-feature-detail-table/order-list-feature-detail-search-form.config';
+import { LlecoopOrderListFeatureDetailTableConfig } from './order-list-feature-detail-table/order-list-feature-detail-table.config';
+import { OrderListFeatureDetailUserOrderDetailFormConfig } from './order-list-feature-detail-user-order-detail/order-list-feature- detail-user-order-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListDetailListFacadeService
+export class LlecoopOrderListFeatureDetailFacadeService
   implements TableWithFilteringFacade<LlecoopUserOrder>
 {
   readonly #orderListStore = inject(LLecoopOrderListStore);
   readonly #userOrderStore = inject(LlecoopUserOrderStore);
-  readonly #table = inject(LlecoopOrderListOrderDetailSearchFeatureTableConfig);
+  readonly #table = inject(LlecoopOrderListFeatureDetailTableConfig);
   readonly #mainViewConfig = signal(
     inject(VIEW_CONFIG)().filter(item => item.name === 'order-list')[0]
   );
 
-  orderDetailFormStructure: FormConfig<LlecoopOrderProduct> = inject(
-    OrderListUserOrderDetailFormConfig
+  // specific properties not included in TableWithFilteringFacade
+  orderLIstDetailUserOrderDetailFormStructure: FormConfig<LlecoopOrderProduct> = inject(
+    OrderListFeatureDetailUserOrderDetailFormConfig
   ).get();
 
   viewConfig = computed(() => ({
     ...this.#mainViewConfig(),
     title: this.setTitle(this.#orderListStore.selectedItem()),
   }));
-
+  routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
-
+  filterFormConfig = getLlecoopOrderListFeatureDetailSearchFormConfig();
   filterCriteria = signal<Record<string, string>>({
     text: '',
   });
-
   tableFilterPredicate = (data: LlecoopUserOrder, criteria: Record<string, string>) => {
     const value = criteria['text'].toLowerCase();
     return [data.address, data.userName].some(text => text?.toLowerCase().includes(value));
   };
 
-  routingToDetailPage = signal({ visible: true });
-
-  tableSearchFormStructure = getLlecoopOrderListDetailSearchFeatureFormConfig();
+  onChangeFilterCriteria(criteria: Record<string, string>): void {
+    this.filterCriteria.update(() => criteria);
+  }
 
   onTableSorting({ active, direction }: TableSorting): void {
     this.#orderListStore.setSorting([active, direction]);
   }
 
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
-  }
-
+  // specific methods not included in TableWithFilteringFacade
   onSaveUserOrder(model: Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>): void {
     this.#userOrderStore.update({ ...model, status: 'review' });
   }

@@ -1,7 +1,8 @@
+import { catchError, map, Observable, ReplaySubject, share, throwError, timer } from 'rxjs';
+
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ENVIRONMENT } from '@plastik/core/environments';
-import { Observable, ReplaySubject, catchError, map, share, throwError, timer } from 'rxjs';
 
 /**
  * @description Abstract class to inherit from on creating a feature api service.
@@ -19,16 +20,16 @@ export abstract class ApiService<T, P extends object> {
   readonly #apiUrl = `${this.#environment.apiUrl}/${this.resourceUrlSegment()}`;
 
   /**
-   * @description Implement this method in child classes to have the feature resource URL segment name.
-   * @returns {string} The resource URL segment.
-   */
-  protected abstract resourceUrlSegment(): string;
-
-  /**
    * @description Implement this method in child classes to set the request cache time.
    * @returns {number} The time in milliseconds.
    */
   protected cacheTime = 1000 * 60 * 60 * 24;
+
+  /**
+   * @description Implement this method in child classes to have the feature resource URL segment name.
+   * @returns {string} The resource URL segment.
+   */
+  protected abstract resourceUrlSegment(): string;
 
   /**
    * @description Method to map the API response with the inner typings before storing it in app.

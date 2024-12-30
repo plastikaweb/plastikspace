@@ -45,7 +45,7 @@
   [fields]="formConfig.getConfig() || []"
   [model]="facade.model?.() || {}"
   [submitConfig]="formConfig.getSubmitFormConfig?.(!!facade.model?.()) || {}"
-  (temporaryChangeEvent)="onChange($event)"
+  (temporaryChangeEvent)="facade.onChange?.($event)"
   (pendingChangesEvent)="pendingChanges.set($event)"
-  (changeEvent)="onSubmit($event)">
+  (changeEvent)="facade.onSubmit($event); pendingChanges.set(false)">
 </plastik-shared-form-feature>

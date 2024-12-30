@@ -1,6 +1,7 @@
+import { Observable } from 'rxjs';
+
 import { InjectionToken } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
 
 export interface FormConfig<T> {
   getConfig: (editMode?: boolean, extra?: unknown) => FormlyFieldConfig[];
@@ -32,6 +33,7 @@ export interface SubmitFormConfig {
   ignoredKeysWhileComparing?: string[];
   emitOnChange?: boolean;
   disableOnSubmit?: boolean;
+  submitAvailable?: boolean;
 }
 
 export interface FormSelectOption {

@@ -2,11 +2,11 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { addSearchInput } from '@plastik/shared/form/search';
 
-export function getLlecoopOrderListSearchFeatureFormConfig(): FormlyFieldConfig[] {
+export function getLlecoopOrderListFeatureDetailSearchFormConfig(): FormlyFieldConfig[] {
   return [
     {
       fieldGroupClassName: 'flex flex-col md:flex-row flex-wrap gap-sm',
-      fieldGroup: [addSearchInput('Filtrar per nom', 'buidar valor')],
+      fieldGroup: [addSearchInput('Filtrar per nom o adreça', 'buidar valor')],
     },
   ];
 }

@@ -1,3 +1,5 @@
+import { pipe, switchMap, tap } from 'rxjs';
+
 /* eslint-disable no-console */
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
@@ -23,7 +25,7 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
-import { pipe, switchMap, tap } from 'rxjs';
+
 import { LlecoopOrderListFireService } from './order-list-fire.service';
 
 type LlecoopOrderListState = LlecoopFeatureStore & {
@@ -121,26 +123,30 @@ export const LLecoopOrderListStore = signalStore(
           })
         )
       ),
-      activate: rxMethod<LlecoopOrder>(
+      changeStatus: rxMethod<LlecoopOrder>(
         pipe(
           switchMap(order => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
 
-            return orderListService.update({ ...order, status: 'progress' }).pipe(
-              tapResponse({
-                next: () =>
-                  storeNotificationService.create(
-                    `Comanda "${order['name']}" activada correctament`,
-                    'SUCCESS'
-                  ),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut activar la comanda "${order['name']}": ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
+            return orderListService
+              .update({ ...order, status: order.status === 'progress' ? 'waiting' : 'progress' })
+              .pipe(
+                tapResponse({
+                  next: response => {
+                    console.log(response);
+                    storeNotificationService.create(
+                      `Estat de la comanda "${order['name']}" actualitzat correctament`,
+                      'SUCCESS'
+                    );
+                  },
+                  error: error =>
+                    storeNotificationService.create(
+                      `No s'ha pogut actualitzar l'estat de la comanda "${order['name']}": ${error}`,
+                      'ERROR'
+                    ),
+                }),
+                tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
+              );
           })
         )
       ),

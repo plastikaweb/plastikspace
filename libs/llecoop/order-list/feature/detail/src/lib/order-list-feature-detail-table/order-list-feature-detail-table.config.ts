@@ -17,7 +17,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListOrderDetailSearchFeatureTableConfig
+export class LlecoopOrderListFeatureDetailTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
   readonly #sanitizer = inject(DomSanitizer);

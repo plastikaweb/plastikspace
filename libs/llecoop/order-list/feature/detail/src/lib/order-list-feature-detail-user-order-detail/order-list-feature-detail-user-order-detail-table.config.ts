@@ -18,7 +18,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListUserOrderDetailFormTableConfig
+export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
   readonly #sanitizer = inject(DomSanitizer);
@@ -50,11 +50,10 @@ export class LlecoopOrderListUserOrderDetailFormTableConfig
     cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'CUSTOM',
-      execute: (value, orderProduct) => {
-        return value
-          ? `${value} ${getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' })}`
-          : '-';
-      },
+      execute: (value, product) =>
+        value
+          ? `${Number(value).toFixed(2)} ${getLlecoopProductUnitSuffix(product?.unit ?? { type: 'unit' })}`
+          : '-',
     },
   };
 

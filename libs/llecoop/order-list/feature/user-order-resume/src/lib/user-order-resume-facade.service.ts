@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { computed, inject, Injectable } from '@angular/core';
-
 import { DomSanitizer } from '@angular/platform-browser';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { LlecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
 import { formatUserOrderStatus } from '@plastik/llecoop/order-list/util';
+
 import { LlecoopUserOrderResumeTableConfig } from './llecoop-user-order-feature-resume/user-order-feature-resume-table.config';
 
 @Injectable({

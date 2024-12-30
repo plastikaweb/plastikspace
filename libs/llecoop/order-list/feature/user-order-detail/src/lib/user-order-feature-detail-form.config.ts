@@ -1,3 +1,5 @@
+import { filter, tap } from 'rxjs';
+
 /* eslint-disable jsdoc/require-jsdoc */
 import { inject } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -8,7 +10,7 @@ import {
   llecoopUserOrderDateOptions,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
-import { filter, tap } from 'rxjs';
+
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
 
 function setDayOptionsByDeliveryOption(
@@ -162,8 +164,17 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
           className: 'w-full',
           props: {
             required: true,
+            disabled: true,
             tableDefinition: tableColumnProperties.getTableDefinition(),
             tableRowValueConditionFn: (element: LlecoopOrderProduct) => element?.initQuantity > 0,
+          },
+          expressions: {
+            'props.disabled': ({ model }: FormlyFieldConfig) =>
+              !model.userName ||
+              !model.deliveryType ||
+              !model.deliveryDate ||
+              !model.deliveryTime ||
+              (model.deliveryType === 'delivery' && !model.address),
           },
         },
         {
@@ -190,9 +201,10 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field['key'] === 'cart'),
                     tap(({ value }) => {
-                      const total = value.reduce((acc: number, item: LlecoopOrderProduct) => {
-                        return acc + item.initPrice;
-                      }, 0);
+                      const total =
+                        value?.reduce((acc: number, item: LlecoopOrderProduct) => {
+                          return acc + item.initPrice;
+                        }, 0) || 0;
                       formly.formControl?.setValue(Number(total.toFixed(2)));
                     })
                   );

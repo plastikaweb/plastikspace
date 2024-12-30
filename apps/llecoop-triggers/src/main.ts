@@ -122,3 +122,11 @@ export const onUserOrderDeletedUpdateListOrderUserOrdersCount = functions.firest
       await import('./list-order/onUserOrderDeletedUpdateListOrderUserOrdersCount')
     ).default(snapshot, context);
   });
+
+export const onUserOrderChangedUpdateListOrderTotal = functions.firestore
+  .document('order-list/{orderListId}/orders/{orderId}')
+  .onWrite(async (snapshot, context) => {
+    await (
+      await import('./user-order/onChangeUserOrderUpdateOrderListTotal')
+    ).default(snapshot, context);
+  });

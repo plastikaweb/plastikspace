@@ -1,10 +1,11 @@
+import { filter, map, Observable } from 'rxjs';
+
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, RedirectCommand, ResolveFn, Router } from '@angular/router';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import { filter, map, Observable } from 'rxjs';
 
-export const OrderListDetailResolver: ResolveFn<Observable<boolean>> = (
+export const OrderListFeatureDetailResolver: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot
 ) => {
   const router = inject(Router);
