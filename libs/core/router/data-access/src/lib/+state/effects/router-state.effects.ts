@@ -1,9 +1,10 @@
+import { tap } from 'rxjs';
+
 /* eslint-disable ngrx/no-dispatch-in-effects */
 import { Location } from '@angular/common';
 import { inject, Injectable, NgZone } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
-import { tap } from 'rxjs';
 
 import { NavigationService } from '../../services/navigation.service';
 import { routerActions } from '../actions/router-state.actions';

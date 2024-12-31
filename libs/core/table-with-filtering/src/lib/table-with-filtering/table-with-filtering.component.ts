@@ -6,10 +6,10 @@ import { RouterLink } from '@angular/router';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { TableSorting } from '@plastik/shared/table/entities';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
+
 import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type';
 
 @Component({
-  selector: 'plastik-table-with-filtering',
   imports: [
     MatIconModule,
     MatButtonModule,

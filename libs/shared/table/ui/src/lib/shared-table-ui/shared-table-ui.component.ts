@@ -2,6 +2,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { CdkTableModule } from '@angular/cdk/table';
 import { KeyValuePipe, NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -53,6 +54,7 @@ import {
   TableSorting,
   TableSortingConfig,
 } from '@plastik/shared/table/entities';
+
 import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
 import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
@@ -94,7 +96,7 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
-  implements OnInit
+  implements OnInit, AfterViewInit
 {
   readonly #router = inject(Router);
 
@@ -186,8 +188,8 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   getChangedData = output<T | undefined>();
 
-  @ViewChild(MatSort) matSort?: MatSort;
-  @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef;
+  @ViewChild(MatSort) matSort: MatSort | undefined;
+  @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef[];
 
   protected dataSource = new MatTableDataSource<T>([]);
   protected columnsToDisplay = computed(() => {
@@ -209,15 +211,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isToggle = isToggleTypeGuard;
 
   protected expandedElement = signal<T | null>(null);
+
   constructor() {
     effect(() => (this.dataSource.data = this.data()));
-    effect(() => {
-      if (this.matSort && this.sort()) {
-        this.matSort.active = this.sort()?.[0] || '';
-        this.matSort.direction = this.sort()?.[1] || 'asc';
-        this.dataSource.sort = this.matSort;
-      }
-    });
     effect(() => {
       if (this.filterCriteria() && this.filterPredicate()) {
         this.dataSource.filter = `${this.filterCriteria()}`;
@@ -236,6 +232,14 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       this.dataSource.filterPredicate = (data: T) => {
         return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
       };
+    }
+  }
+
+  ngAfterViewInit(): void {
+    if (this.sort() && this.matSort && this.dataSource) {
+      this.matSort.active = this.sort()?.[0] || '';
+      this.matSort.direction = this.sort()?.[1] || 'asc';
+      this.dataSource.sort = this.matSort;
     }
   }
 

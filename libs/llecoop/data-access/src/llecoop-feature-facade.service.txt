@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/member-ordering */
+
 import { Inject, inject, Signal, signal } from '@angular/core';
 
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';

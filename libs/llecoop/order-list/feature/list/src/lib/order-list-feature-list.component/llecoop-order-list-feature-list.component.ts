@@ -1,27 +1,24 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { RouterLink } from '@angular/router';
-import { CanDeactivateComponent } from '@plastik/core/can-deactivate';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { TableFormlyModule } from '@plastik/shared/form/table';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 
-import { LlecoopOrderListFeatureDetailFacadeService } from '../order-list-feature-detail-facade.service';
+import { LlecoopOrderListFeatureListFacadeService } from '../order-list-feature-list-facade.service';
 
 @Component({
   imports: [
     MatIconModule,
     MatButtonModule,
-    RouterLink,
     TableFormlyModule,
     SharedFormFeatureModule,
     SharedTableUiComponent,
   ],
-  templateUrl: './llecoop-order-list-feature-detail.component.html',
+  templateUrl: './llecoop-order-list-feature-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LlecoopOrderListFeatureDetailComponent implements CanDeactivateComponent {
-  protected facade = inject(LlecoopOrderListFeatureDetailFacadeService);
+export class LlecoopOrderListFeatureListComponent {
+  protected facade = inject(LlecoopOrderListFeatureListFacadeService);
   pendingChanges = signal(false);
 }

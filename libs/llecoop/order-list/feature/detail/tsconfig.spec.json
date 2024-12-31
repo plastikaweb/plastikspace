@@ -7,15 +7,5 @@
     "types": ["jest", "node"]
   },
   "files": ["src/test-setup.ts"],
-  "include": [
-    "../../../../llecoop/util/src/**/*",
-    "jest.config.ts",
-    "src/**/*.test.ts",
-    "src/**/*.spec.ts",
-    "src/**/*.d.ts",
-    "src/lib/**/*.ts",
-    "../../../../../libs/shared/**/*.ts",
-    "../../../../../libs/llecoop/entities/src/**/*.ts",
-    "../../../../../libs/llecoop/order-list/util/src/index.ts"
-  ]
+  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
 }

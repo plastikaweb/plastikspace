@@ -4,14 +4,7 @@ import { BaseEntity, ViewConfigUI } from '@plastik/core/entities';
 import { TableDefinition, TableSorting } from '@plastik/shared/table/entities';
 
 export interface TableWithFilteringFacade<T extends BaseEntity> {
-  tableDefinition: TableDefinition<T>;
-  filterCriteria?: Signal<Record<string, string>>;
-  tableFilterPredicate?: (data: T, criteria: Record<string, string>) => boolean;
-  onTableSorting?(sorting: TableSorting): void;
-  onTableActionDelete?(item: unknown): void;
-  onChangeFilterCriteria?: (criteria: Record<string, string>) => void;
   viewConfig: Signal<ViewConfigUI>;
-  formStructure?: FormlyFieldConfig[];
   routingToDetailPage: Signal<{
     visible: boolean;
     disabled?: boolean;
@@ -26,6 +19,13 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
       disabled: (element?: T) => boolean;
     }[]
   >;
+  tableDefinition: TableDefinition<T>;
+  filterFormConfig?: FormlyFieldConfig[];
+  filterCriteria?: Signal<Record<string, string>>;
+  tableFilterPredicate?: (data: T, criteria: Record<string, string>) => boolean;
+  onChangeFilterCriteria?: (criteria: Record<string, string>) => void;
+  onTableSorting?(sorting: TableSorting): void;
+  onTableActionDelete?(item: unknown): void;
 }
 
 export const TABLE_WITH_FILTERING_FACADE = new InjectionToken<TableWithFilteringFacade<BaseEntity>>(

@@ -1,11 +1,10 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { inject, Injectable, computed } from '@angular/core';
-
+import { computed, inject, Injectable } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
 import { StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
+
 import { userFeatureCreateFormConfig } from './user-feature-create-form.config';
 
 @Injectable({

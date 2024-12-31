@@ -74,7 +74,7 @@
     "llecoop:firebase:functions:build": "nx build llecoop-triggers",
     "llecoop:firebase:functions:deploy:staging": "firebase use default && firebase deploy --only functions",
     "llecoop:firebase:functions:deploy:prod": "firebase use production && firebase deploy --only functions",
-    "llecoop:deploy:functions": "yarn llecoop:firebase:functions:deploy:staging && yarn llecoop:firebase:functions:deploy:prod",
+    "llecoop:deploy:functions": "yarn llecoop:firebase:functions:build && yarn llecoop:firebase:functions:deploy:staging && yarn llecoop:firebase:functions:deploy:prod",
     "llecoop:explore": "source-map-explorer dist/apps/llecoop/browser/**/*.js",
     "experimental:serve": "nx run experimental:serve",
     "experimental:lint": "nx run experimental:lint",

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -29,7 +30,7 @@ const INPUT_TABLE_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-table',
-  imports: [SharedTableUiComponent, MatInputModule],
+  imports: [SharedTableUiComponent, MatInputModule, NgClass],
   templateUrl: './input-table.component.html',
   styleUrl: './input-table.component.scss',
   providers: [INPUT_TABLE_ACCESSOR],

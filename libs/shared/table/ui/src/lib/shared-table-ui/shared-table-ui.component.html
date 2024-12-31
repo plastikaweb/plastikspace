@@ -176,8 +176,10 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell
           *matHeaderCellDef
-          class="overflow-visible mat-cell-actions rou"
-          [ngClass]="actionsColStyles() || ''"></mat-header-cell>
+          class="overflow-visible justify-center mat-cell-actions"
+          [ngClass]="actionsColStyles() || ''">
+          Accions
+        </mat-header-cell>
         <mat-cell
           *matCellDef="let element"
           class="overflow-visible mat-cell-actions py-sub"
@@ -244,10 +246,10 @@
             mat-icon-button
             aria-label="expand row"
             (click)="
-              expandedElement.set(expandedElement() === element ? null : element);
+              expandedElement.set(expandedElement()?.id === element.id ? null : element);
               $event.stopPropagation()
             ">
-            @if (expandedElement() === element) {
+            @if (expandedElement()?.id === element.id) {
               <mat-icon>keyboard_arrow_up</mat-icon>
             } @else {
               <mat-icon>keyboard_arrow_down</mat-icon>
@@ -262,12 +264,14 @@
           *matCellDef="let element"
           class="justify-evenly"
           [attr.colspan]="columnsToDisplay().length"
-          [@detailExpand]="element === expandedElement() ? 'expanded' : 'collapsed'">
-          <ng-container
-            *ngTemplateOutlet="
-              expandedDetailTpl();
-              context: { element, isExpanded: element.id === expandedElement()?.id }
-            "></ng-container>
+          [@detailExpand]="element.id === expandedElement()?.id ? 'expanded' : 'collapsed'">
+          @if (element.id === expandedElement()?.id) {
+            <ng-container
+              *ngTemplateOutlet="
+                expandedDetailTpl();
+                context: { element, isExpanded: element.id === expandedElement()?.id }
+              "></ng-container>
+          }
         </mat-cell>
       </ng-container>
     }
@@ -280,7 +284,7 @@
         *matRowDef="let row; columns: columnsToDisplay()"
         sticky="true"
         class="[&:nth-child(1n)]:bg-gray-5 [&:nth-child(3n)]:bg-white"
-        [class.expanded-row]="expandedElement() === row"
+        [class.expanded-row]="expandedElement()?.id === row.id"
         [ngClass]="extraRowStyles()?.(row) || ''"
         (click)="expandedElement.set(expandedElement() === row ? null : row)"></mat-row>
       <mat-row

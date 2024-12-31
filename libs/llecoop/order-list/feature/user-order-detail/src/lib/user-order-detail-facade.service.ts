@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { computed, inject, Injectable, signal } from '@angular/core';
-
 import { formatCurrency } from '@angular/common';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import {
   DetailItemViewFacade,
@@ -13,6 +11,7 @@ import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
+
 import { userOrderFeatureDetailFormConfig } from './user-order-feature-detail-form.config';
 
 @Injectable({

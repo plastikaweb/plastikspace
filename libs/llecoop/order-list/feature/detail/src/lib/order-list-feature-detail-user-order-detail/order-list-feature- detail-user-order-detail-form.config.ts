@@ -3,13 +3,14 @@ import { inject, Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { FormConfig } from '@plastik/core/entities';
 import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
-import { LlecoopOrderListUserOrderDetailFormTableConfig } from './order-list-user-order-detail-table-form.config';
+
+import { LlecoopOrderListFeatureDetailUserOrderDetailTableConfig } from './order-list-feature-detail-user-order-detail-table.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class OrderListUserOrderDetailFormConfig {
-  readonly #tableColumnProperties = inject(LlecoopOrderListUserOrderDetailFormTableConfig);
+export class OrderListFeatureDetailUserOrderDetailFormConfig {
+  readonly #tableColumnProperties = inject(LlecoopOrderListFeatureDetailUserOrderDetailTableConfig);
   readonly #config = [
     {
       key: 'id',
