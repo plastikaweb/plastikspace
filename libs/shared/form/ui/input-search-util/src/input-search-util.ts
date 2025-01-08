@@ -1,5 +1,6 @@
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { tap } from 'rxjs';
+
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 /**
  * Creates a Formly field configuration for a search input field.
@@ -39,11 +40,15 @@ export function addSearchInput(
       minLength: 1,
       addonLeft: {
         icon: 'search',
+        aria: label,
       },
       addonRight: {
         icon: 'cancel',
         aria: cancelLabel,
         onClick: (field: FormlyFieldConfig): void => field.formControl?.reset(),
+      },
+      attributes: {
+        autocomplete: 'off',
       },
     },
   };

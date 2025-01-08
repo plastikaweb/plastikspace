@@ -18,6 +18,9 @@ const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
           required: true,
           maxLength: 256,
           minLength: 2,
+          attributes: {
+            autocomplete: 'off',
+          },
         },
       },
       {
@@ -58,6 +61,10 @@ const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
             '#D2691E', // Chocolate
             '#8B4513', // SaddleBrown
           ],
+          attributes: {
+            role: 'button',
+            tabIndex: 0,
+          },
         },
       },
       {
@@ -69,6 +76,9 @@ const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
           placeholder: 'Descripció',
           rows: 5,
           required: false,
+          attributes: {
+            autocomplete: 'off',
+          },
         },
       },
       {

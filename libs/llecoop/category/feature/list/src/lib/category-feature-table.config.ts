@@ -20,19 +20,22 @@ export class LlecoopCategorySearchFeatureTableConfig
   readonly #sanitizer = inject(DomSanitizer);
   readonly #store = inject(LlecoopCategoryStore);
 
-  readonly #name: TableColumnFormatting<LlecoopProductCategory, 'CUSTOM'> = {
+  readonly #name: TableColumnFormatting<LlecoopProductCategory, 'LINK'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: [
-      'min-w-[170px] py-0 px-tiny md:py-tiny md:px-sm md:min-w-[240px] md:max-w-[350px]',
-    ],
+    link: category => `./${category?.id}`,
     formatting: {
-      type: 'CUSTOM',
+      type: 'LINK',
       execute: (value, element) => {
-        const htmlString = `<p class="flex items-center justify-center gap-tiny"><span class="rounded-full size-sub" style="background-color:${element?.color}"></span><span class="capitalize w-auto">${value}</span></p>`;
+        const htmlString = `
+        <p class="grid grid-cols-[15px_1fr] items-center justify-center gap-tiny">
+          <span class="rounded-full size-sub" style="background-color:${element?.color}"></span>
+          <span class="uppercase font-bold">${value}</span>
+        </p>
+        `;
         return this.#sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
       },
     },
@@ -42,7 +45,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     key: 'description',
     title: 'Descripció',
     propertyPath: 'description',
-    cssClasses: ['hidden md:flex lg:min-w-[220px]'],
+    cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -53,7 +56,7 @@ export class LlecoopCategorySearchFeatureTableConfig
     title: 'Nre. de productes',
     propertyPath: 'productCount',
     sorting: true,
-    cssClasses: ['max-w-[100px] md:max-w-[180px]'],
+    cssClasses: ['max-w-[100px] @xl:max-w-none'],
     formatting: {
       type: 'TEXT',
     },

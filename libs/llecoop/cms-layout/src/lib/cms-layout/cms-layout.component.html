@@ -1,4 +1,5 @@
 @let headerTitle = headerConfig.title;
+@let extendedTitle = headerConfig.extendedTitle;
 @let headerMenu = headerConfig.menu;
 
 <div class="core-cms-container">
@@ -20,17 +21,20 @@
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerTitle }}</span>
         <a
-          class="flex justify-between content-center items-center text-white hover:no-underline gap-sub"
-          href=""
+          class="flex justify-between content-center items-center no-underline gap-sub"
+          [routerLink]="['/']"
           [attr.title]="headerTitle">
-          @if (headerConfig.mainIcon; as icon) {
-            <div class="flex justify-center items-center gap-sub">
-              <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+          <div class="flex justify-center items-center gap-sub">
+            @if (headerConfig.mainIcon; as icon) {
+              <svg-icon
+                [name]="extendedTitle"
+                [svgAriaLabel]="extendedTitle"
+                [src]="icon.iconPath"
+                [svgClass]="icon.svgClass"></svg-icon>
+            }
 
-              <span class="hidden">{{ headerTitle }}</span>
-              <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
-            </div>
-          }
+            <span class="hidden sm:block">{{ extendedTitle || headerTitle }}</span>
+          </div>
         </a>
       </h1>
     </div>
@@ -38,11 +42,15 @@
     <div end class="flex items-center gap-tiny lg:gap-sm">
       <ng-container #widgetsContainer></ng-container>
 
-      <button mat-button aria-label="header menu" class="flex gap-tiny" [matMenuTriggerFor]="menu">
+      <button
+        mat-button
+        class="flex gap-tiny"
+        [attr.aria-label]="headerMenu?.label()"
+        [matMenuTriggerFor]="menu">
         <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
-        <mat-icon class="size-[30px]text-[30px] m-0 p-0">account_circle</mat-icon>
+        <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
       </button>
-      <mat-menu #menu="matMenu" class="px-sub">
+      <mat-menu #menu="matMenu">
         <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{
           headerMenu?.label()
         }}</span>
@@ -64,7 +72,7 @@
     </div>
   </plastik-core-cms-layout-ui-header>
 
-  <mat-sidenav-container class="example-container" [hasBackdrop]="isMobile()">
+  <mat-sidenav-container [hasBackdrop]="isMobile()">
     <mat-sidenav
       #sidenav
       class="p-md"
@@ -78,8 +86,9 @@
       <mat-nav-list menu-items data-test="sidenav-list">
         @for (item of viewConfig(); track item.id) {
           <mat-list-item
-            class="my-tiny h-xll hover:bg-gray-10 focus:bg-gray-10"
-            routerLinkActive="bg-gray-10"
+            role="link"
+            class="my-tiny"
+            routerLinkActive="bg-primary-light"
             ariaCurrentWhenActive="page"
             [routerLink]="item?.route"
             [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
@@ -101,25 +110,23 @@
       role="main"
       tabindex="-1"
       id="mainContent"
-      class="bg-white p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth">
+      class="p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth @container">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 
   <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-    <div content class="flex flex-row justify-center items-center gap-tiny">
-      ©{{ currentDate | date: 'yyyy' }}
+    <div content class="flex flex-row justify-center items-center text-base gap-tiny">
+      © 2024-{{ currentDate | date: 'yyyy' }}
       <a
         aria-label="visit www.plastikaweb.com page"
-        class="text-white underline underline-offset-2"
         href="https://www.plastikaweb.com"
         target="_blank"
         >Plastikaweb</a
       >
-      |
+      &vert;
       <a
-        aria-label="visitar www.llevat.org"
-        class="text-white underline underline-offset-2"
+        aria-label="visitar la pàgina de El Llevat a www.llevat.org"
         href="https://www.llevat.org"
         target="_blank"
         >El Llevat</a

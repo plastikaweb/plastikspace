@@ -1,4 +1,4 @@
-import * as moment from 'moment';
+import moment from 'moment';
 import { filter, take } from 'rxjs';
 
 import { inject, Injectable, signal } from '@angular/core';
@@ -42,11 +42,11 @@ export class LlecoopOrderListFeatureListFacadeService
           .confirm(
             'Iniciar nova comanda',
             this.#sanitizer.bypassSecurityTrustHtml(
-              `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
-                <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md">${this.getNewOrderName()}</h5>
+              `<div class="flex flex-col gap-sm justify-center items-center bg-gray-10 rounded-xl p-md">
+                <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.getNewOrderName()}</p>
                 <p class="font-extrabold">Oberta fins el ${this.getNewOrderDate().format('DD/MM/YYYY')}
                 a les ${this.getNewOrderDate().format('HH:mm')}</span> hores.</p>
-                <p class="text-secondary-dark">${this.#productStore.getAvailableProducts().length} productes s'afegiran a la llista.</p>
+                <p>${this.#productStore.getAvailableProducts().length} productes s'afegiran a la llista.</p>
               </div>
               `
             ),

@@ -1,4 +1,5 @@
-@use 'material';
+@use '@angular/material' as mat;
+@use 'styles_theme-colors' as palette;
 @use 'theme';
 @use 'core_styles_util_material';
 @use 'loading';
@@ -9,10 +10,33 @@
 
 @layer base {
   html {
-    font-size: 16px;
+    color-scheme: light dark;
+    font-size: 15px;
     font-optical-sizing: auto;
     font-style: normal;
+    font-synthesis: none;
+    font-family: var(--serif);
+    font-weight: 400;
     font-variation-settings: 'wdth' 100;
+    font-variant-numeric: slashed-zero;
+
+    @include mat.theme(
+      (
+        color: (
+          primary: palette.$primary-palette,
+          tertiary: palette.$tertiary-palette,
+          theme-type: light,
+        ),
+        typography: (
+          plain-family: var(--serif),
+          bold-weight: 800,
+          medium-weight: 600,
+          regular-weight: 400,
+        ),
+        density: 0,
+      )
+    );
+
     @apply box-border;
   }
 
@@ -23,8 +47,21 @@
   }
 
   body {
-    font-family: var(--sans-serif);
-    font-variant-numeric: slashed-zero;
+    background: var(--mat-sys-primary-fixed-dim);
+    color: var(--mat-sys-on-surface);
+    overflow: hidden;
+  }
+
+  .dark-mode {
+    @include mat.theme(
+      (
+        color: (
+          primary: palette.$primary-palette,
+          tertiary: palette.$tertiary-palette,
+          theme-type: dark,
+        ),
+      )
+    );
   }
 
   h1,
@@ -66,48 +103,72 @@
   }
 
   a {
-    @apply text-secondary-dark;
+    @apply rounded-md text-secondary-dark decoration-secondary-dark underline underline-offset-2;
+
     &:hover {
-      @apply underline underline-offset-2;
+      @apply text-primary-dark decoration-primary-dark;
     }
   }
 
   p {
-    text-wrap: pretty;
+    @apply text-balance;
+  }
+
+  *::-webkit-scrollbar {
+    width: 0.8rem;
+
+    &-track {
+      @apply bg-gray-20 rounded-md;
+    }
+
+    &-thumb {
+      @apply bg-primary-light rounded-md;
+    }
   }
 
   plastik-shared-activity-ui-overlay .overlay-container {
     z-index: 9999;
   }
+}
 
-  plastik-core-cms-layout-feature {
-    .core-cms-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 55px 1fr 55px;
-      min-block-size: 100vh;
-      min-block-size: 100dvh;
+@layer components {
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-primary-fixed),
+      container-text-color: var(--mat-sys-primary),
+      standard-height: 55px,
+      mobile-height: 55px,
+    )
+  );
 
-      grid-template-areas: 'header header' 'content content' 'footer footer';
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--mat-sys-primary-fixed-dim),
+      container-text-color: var(--mat-on-sys-container),
+      content-background-color: var(--mat-sys-background),
+      container-width: 310px,
+    )
+  );
 
-      plastik-core-cms-layout-ui-header {
-        grid-area: header;
-      }
+  @include mat.table-overrides(
+    (
+      background-color: var(--mat-sys-background),
+      header-headline-weight: bold,
+      row-item-label-text-tracking: normal,
+      row-item-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
 
-      plastik-core-cms-layout-ui-sidenav {
-        grid-area: content;
+  @include mat.form-field-overrides(
+    (
+      filled-disabled-label-text-color: var(--mat-sys-outline),
+      filled-disabled-input-text-color: var(--mat-sys-outline),
+    )
+  );
 
-        .mat-sidenav-container {
-          .mat-sidenav-content {
-            height: calc(100vh - 110px);
-          }
-        }
-      }
-
-      plastik-core-cms-layout-ui-footer {
-        grid-area: footer;
-        align-content: end;
-      }
-    }
-  }
+  @include mat.badge-overrides(
+    (
+      background-color: var(--warn-25),
+    )
+  );
 }

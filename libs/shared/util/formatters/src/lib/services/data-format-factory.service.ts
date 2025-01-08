@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
+import { Timestamp } from '@angular/fire/firestore';
 import { SafeHtml } from '@angular/platform-browser';
 import { isNil } from '@plastik/shared/objects';
 
-import { Timestamp } from '@angular/fire/firestore';
 import {
   FormattingInput,
   FormattingOutput,

@@ -1,3 +1,5 @@
+import { filter, take } from 'rxjs';
+
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUser } from '@plastik/llecoop/entities';
@@ -11,7 +13,6 @@ import {
   TableDefinition,
   TableStructureConfig,
 } from '@plastik/shared/table/entities';
-import { filter, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -36,7 +37,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'isAdmin',
     title: 'Rol',
     propertyPath: 'isAdmin',
-    cssClasses: ['max-w-[70px] px-tiny md:px-sub'],
+    cssClasses: ['min-w-[50px] max-w-[50px] p-0 pl-sm'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, user) =>
@@ -52,7 +53,6 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'email',
     title: 'Correu electrònic',
     propertyPath: 'email',
-    cssClasses: ['min-w-[180px]'],
     sticky: true,
     sorting: true,
     formatting: {
@@ -64,7 +64,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'registered',
     title: 'Registrat',
     propertyPath: 'registered',
-    cssClasses: ['hidden md:flex min-w-[70px]'],
+    cssClasses: ['hidden @lg:flex @lg:min-w-[60px]'],
     sorting: true,
     formatting: {
       type: 'CUSTOM',
@@ -76,7 +76,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'emailVerified',
     title: 'Verificat',
     propertyPath: 'emailVerified',
-    cssClasses: ['hidden md:flex min-w-[70px]'],
+    cssClasses: ['hidden @lg:flex @lg:min-w-[60px]'],
     sorting: true,
     formatting: {
       type: 'CUSTOM',
@@ -132,7 +132,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       caption: "Llistat d'usuaris",
       count: this.#store.count,
       getData: () => this.#store.entities(),
-      actionsColStyles: 'max-w-[120px]',
+      actionsColStyles: 'max-w-[135px]',
       actions: {
         SET_ADMIN: {
           visible: () => true,

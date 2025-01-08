@@ -1,6 +1,6 @@
 <form
   novalidate
-  class="flex flex-col w-full gap-sm mt-sm"
+  class="flex flex-col w-full gap-sub mt-sm"
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
   <!-- form -->
@@ -16,9 +16,8 @@
   @if (submitAvailable()) {
     <button
       mat-flat-button
-      color="primary"
       type="submit"
-      class="h-[56px] w-full sm:w-[150px]"
+      class="h-[56px] w-full sm:w-auto text-base"
       data-test="submit-button"
       [ngClass]="submitConfig()?.buttonStyle || ''"
       [disabled]="!form.valid || !form.dirty">

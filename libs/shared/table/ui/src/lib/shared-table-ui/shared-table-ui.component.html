@@ -1,23 +1,15 @@
 <div
-  class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-md">
+  class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-tiny">
   <mat-table
-    class="table w-full"
+    class="table w-full mb-md"
     matSort
     matSortDisableClear
     multiTemplateDataRows
     [dataSource]="dataSource"
-    [attr.aria-label]="caption()"
+    [attr.aria-label]="caption() || 'tabular data'"
     [matSortActive]="matSort?.active || ''"
     [matSortDirection]="matSort?.direction || ''"
     (matSortChange)="onChangeSorting($event)">
-    @if (caption()) {
-      <caption class="sr-only">
-        {{
-          caption()
-        }}
-      </caption>
-    }
-
     <!-- Columns -->
     @for (column of columnProperties(); track column.key) {
       <ng-container [matColumnDef]="column.key" [sticky]="column.sticky">
@@ -32,16 +24,15 @@
         <mat-cell
           *matCellDef="let row; let i = index"
           class="py-sub"
-          [plastikTableCellTitle]="column.showTitle ?? true"
           [ngClass]="setCellNgClass(column)">
           @switch (column.formatting.type) {
             @case ('LINK') {
-              <div
-                tabindex="0"
+              <a
                 [ngClass]="column.cssClasses?.[1] || ''"
+                [routerLink]="column.link ? column.link(row) : null"
                 [innerHTML]="row | safeFormatted: column : i + 1"
-                (click)="onGetRoute($event)"
-                (keyup)="onGetRoute($event)"></div>
+                (click)="$event.stopPropagation()">
+              </a>
             }
             @case ('INPUT') {
               @if (column.isEditableConfig?.(row); as editable) {
@@ -59,6 +50,9 @@
                         matInput
                         [value]="row[column.key]"
                         [placeholder]="editable.attributes.placeholder || ''"
+                        [attr.aria-label]="
+                          row.name + ': ' + (editable.attributes.placeholder || '')
+                        "
                         (change)="onInputChange($event, row, editable)" />
                       @if (attributes?.suffix) {
                         <span matTextSuffix>{{ attributes?.suffix }}</span>
@@ -82,6 +76,9 @@
                         [attr.max]="editable.attributes.max || 100"
                         [attr.step]="editable.attributes.step || 1"
                         [placeholder]="editable.attributes.placeholder || ''"
+                        [attr.aria-label]="
+                          row.name + ': ' + (editable.attributes.placeholder || '')
+                        "
                         (change)="onInputChange($event, row, editable)" />
                       @if (attributes?.suffix) {
                         <span matTextSuffix>{{ attributes?.suffix }}</span>
@@ -93,6 +90,7 @@
                     <mat-select
                       [value]="row[column.key]"
                       [multiple]="editable.attributes.multiple || false"
+                      [attr.aria-label]="row.name + ': ' + (editable.attributes.placeholder || '')"
                       (selectionChange)="onInputChange($event, row, editable)">
                       @for (option of editable.attributes.options; track option.value) {
                         <mat-option [value]="option.value">
@@ -106,18 +104,21 @@
                     <mat-checkbox
                       [value]="row[column.key]"
                       [checked]="editable.attributes.checked || false"
+                      [attr.aria-label]="row.name + ': ' + (editable.attributes.placeholder || '')"
                       (change)="onInputChange($event, row, editable)"></mat-checkbox>
                   }
 
                   @if (isToggle(editable)) {
                     <mat-slide-toggle
                       [checked]="row[column.key] || false"
+                      [attr.aria-label]="row.name + ': ' + (editable.attributes.placeholder || '')"
                       (change)="onInputChange($event, row, editable)"></mat-slide-toggle>
                   }
 
                   @if (isRadio(editable)) {
                     <mat-radio-group
                       [value]="row[column.key]"
+                      [attr.aria-label]="row.name + ': ' + (editable.attributes.placeholder || '')"
                       (change)="onInputChange($event, row, editable)">
                       @for (option of editable.attributes.options; track option.value) {
                         <mat-radio-button [value]="option.value">
@@ -137,9 +138,15 @@
                       }
                       <textarea
                         matInput
-                        class="overflow-y-scroll leading-6"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="4"
+                        autocomplete="off"
                         [value]="row[column.key] || ''"
                         [placeholder]="editable.attributes.placeholder || ''"
+                        [attr.aria-label]="
+                          row.name + ': ' + (editable.attributes.placeholder || '')
+                        "
                         [rows]="editable.attributes.rows || 2"
                         (change)="onInputChange($event, row, editable)"></textarea>
                       @if (attributes?.suffix) {
@@ -189,7 +196,6 @@
               <button
                 type="button"
                 mat-icon-button
-                color="primary"
                 [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
                 [attr.aria-label]="action.value?.description(element) || ''"
                 [matTooltip]="action.value?.description(element) || ''"
@@ -210,7 +216,6 @@
               <button
                 type="button"
                 mat-icon-button
-                color="warn"
                 [attr.aria-label]="action.value?.description(element) || ''"
                 [matTooltip]="action.value?.description(element) || ''"
                 [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -221,7 +226,6 @@
               <button
                 type="button"
                 mat-icon-button
-                color="accent"
                 [attr.aria-label]="action.value?.description(element) || ''"
                 [matTooltip]="action.value?.description(element) || ''"
                 [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -240,11 +244,14 @@
 
     @if (expandable()) {
       <ng-container matColumnDef="expand" sticky="true">
-        <mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</mat-header-cell>
-        <mat-cell *matCellDef="let element" class="py-sub">
+        <mat-header-cell *matHeaderCellDef aria-label="row actions" class="max-w-[70px]"
+          >&nbsp;</mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="max-w-[70px]">
           <button
             mat-icon-button
             aria-label="expand row"
+            class="-left-sub"
             (click)="
               expandedElement.set(expandedElement()?.id === element.id ? null : element);
               $event.stopPropagation()
@@ -262,7 +269,7 @@
       <ng-container matColumnDef="expandedDetail">
         <mat-cell
           *matCellDef="let element"
-          class="justify-evenly"
+          class="justify-evenly border-b-0"
           [attr.colspan]="columnsToDisplay().length"
           [@detailExpand]="element.id === expandedElement()?.id ? 'expanded' : 'collapsed'">
           @if (element.id === expandedElement()?.id) {
@@ -283,7 +290,7 @@
       <mat-row
         *matRowDef="let row; columns: columnsToDisplay()"
         sticky="true"
-        class="[&:nth-child(1n)]:bg-gray-5 [&:nth-child(3n)]:bg-white"
+        class="expandable-row"
         [class.expanded-row]="expandedElement()?.id === row.id"
         [ngClass]="extraRowStyles()?.(row) || ''"
         (click)="expandedElement.set(expandedElement() === row ? null : row)"></mat-row>
@@ -295,7 +302,6 @@
       <!-- Row that will be used to display the regular data -->
       <mat-row
         *matRowDef="let row; columns: columnsToDisplay()"
-        class="even:bg-gray-5 odd:bg-white"
         [ngClass]="extraRowStyles()?.(row) || ''"></mat-row>
     }
   </mat-table>

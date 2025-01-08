@@ -47,9 +47,9 @@ export class LlecoopUserOrderResumeTableConfig
 
   readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'initQuantity',
-    title: 'Quantitat demanada',
+    title: 'Quantitat inici',
     propertyPath: 'initQuantity',
-    cssClasses: ['min-w-[170px]'],
+    cssClasses: ['min-w-[80px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, orderProduct) => {
@@ -64,7 +64,7 @@ export class LlecoopUserOrderResumeTableConfig
     key: 'finalQuantity',
     title: 'Quantitat final',
     propertyPath: 'finalQuantity',
-    cssClasses: ['min-w-[170px]'],
+    cssClasses: ['min-w-[80px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, orderProduct) => {
@@ -77,9 +77,9 @@ export class LlecoopUserOrderResumeTableConfig
 
   readonly #finalPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'finalPrice',
-    title: 'Preu final',
+    title: 'Preu total',
     propertyPath: 'finalPrice',
-    cssClasses: ['w-[120px]'],
+    cssClasses: ['min-w-[120px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -93,7 +93,7 @@ export class LlecoopUserOrderResumeTableConfig
     key: 'iva',
     title: 'IVA',
     propertyPath: 'iva',
-    cssClasses: ['w-[120px]'],
+    cssClasses: ['w-[60px]'],
     formatting: {
       type: 'PERCENTAGE',
     },
@@ -103,7 +103,7 @@ export class LlecoopUserOrderResumeTableConfig
     key: 'extraInfo',
     title: 'Comentaris',
     propertyPath: 'extraInfo',
-    cssClasses: ['w-[250px]', 'flex max-w-[250px]'],
+    cssClasses: ['w-[150px]', 'flex max-w-[250px]'],
     formatting: {
       type: 'TEXT',
     },

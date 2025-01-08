@@ -1,3 +1,6 @@
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { map, Subject, takeUntil } from 'rxjs';
+
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import {
@@ -26,8 +29,6 @@ import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidena
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { NotificationFacade } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'plastik-core-cms-layout-feature',
@@ -70,7 +71,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   protected readonly isActive$ = this.#layoutFacade.isActive$;
   protected readonly sidenavConfig = this.#layoutFacade.sidenavConfig;
   protected readonly notificationConfig$ = this.#notificationFacade.config$;
-  headerConfig = this.#layoutFacade.headerConfig;
+  readonly headerConfig = this.#layoutFacade.headerConfig;
   protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
 
   ngOnInit(): void {

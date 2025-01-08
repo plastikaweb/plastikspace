@@ -1,4 +1,6 @@
 /* eslint-disable jsdoc/require-jsdoc */
+import { filter, tap } from 'rxjs';
+
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { DocumentReference } from '@angular/fire/firestore';
@@ -11,7 +13,6 @@ import {
   LlecoopProductSelectData,
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
-import { filter, tap } from 'rxjs';
 
 function setStockUnitAddonRight(
   formlyProps: FormlyFieldConfig['props'],
@@ -19,6 +20,7 @@ function setStockUnitAddonRight(
 ): void {
   if (formlyProps?.['addonRight']) {
     formlyProps['addonRight'].text = unitValue === 'weight' ? 'kg' : 'u.';
+    formlyProps['addonRight'].aria = unitValue === 'weight' ? 'pes en kgs' : 'unitats';
   }
 }
 
@@ -59,10 +61,13 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           props: {
             type: 'text',
             label: 'Nom',
-            placeholder: 'Nom',
+            placeholder: 'Nom del producte',
             required: true,
             maxLength: 256,
             minLength: 2,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
         {
@@ -82,8 +87,6 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
         },
         {
           key: 'unit',
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
           fieldGroup: [
             {
               key: 'type',
@@ -140,6 +143,10 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu en euros',
+                },
+                attributes: {
+                  autocomplete: 'off',
                 },
               },
             },
@@ -157,6 +164,10 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 step: 0.1,
                 addonRight: {
                   text: '%',
+                  aria: "percentatge d'IVA",
+                },
+                attributes: {
+                  autocomplete: 'off',
                 },
               },
             },
@@ -174,6 +185,10 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu amb IVA en euros',
+                },
+                attributes: {
+                  autocomplete: 'off',
                 },
               },
               hooks: {
@@ -222,6 +237,10 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 step: 0.1,
                 addonRight: {
                   text: '',
+                  aria: '',
+                },
+                attributes: {
+                  autocomplete: 'off',
                 },
               },
               hooks: {
@@ -245,6 +264,9 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Més informació',
             placeholder: 'Més informació',
             rows: 3,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
         {
@@ -256,6 +278,9 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Origen',
             placeholder: 'Origen',
             required: false,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
         {
@@ -267,6 +292,9 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Proveïdor',
             placeholder: 'Proveïdor',
             required: false,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
       ],

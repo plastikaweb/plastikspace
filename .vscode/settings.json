@@ -9,6 +9,7 @@
   "editor.inlineSuggest.enabled": true,
   "editor.autoIndent": "full",
   "editor.formatOnType": true,
+  "editor.formatOnPaste": true,
   "editor.wordWrap": "off",
   "editor.wrappingIndent": "same",
   "editor.wrappingStrategy": "simple",
@@ -17,13 +18,15 @@
   "html.format.wrapAttributes": "force-expand-multiline",
   "files.trimTrailingWhitespace": true,
   "[html]": {
-    "editor.defaultFormatter": "vscode.html-language-features",
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    }
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[html][json]": {
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "explicit"
     }
@@ -38,14 +41,5 @@
       "when": "$(basename)"
     }
   },
-  "[html][json]": {
-    "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": "explicit"
-    }
-  },
-  "angular.log": "verbose",
-  "editor.formatOnPaste": true,
-  "[scss]": {
-    "editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
-  }
+  "angular.log": "verbose"
 }

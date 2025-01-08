@@ -24,7 +24,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[200px]', 'flex flex-col justify-start'],
+    cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'TITLE_CASE',
     },
@@ -35,7 +35,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     title: 'Quantitat',
     propertyPath: 'quantity',
     sorting: true,
-    cssClasses: ['min-w-[100px]'],
+    cssClasses: ['min-w-[110px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, product) =>
@@ -47,10 +47,10 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
 
   readonly #price: TableColumnFormatting<LlecoopOrderProductTotal, 'CURRENCY'> = {
     key: 'price',
-    title: 'Preu',
+    title: 'Preu individual',
     propertyPath: 'price',
     sorting: true,
-    cssClasses: ['min-w-[140px]'],
+    cssClasses: ['hidden @xl:flex @xl:min-w-[125px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -65,7 +65,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     key: 'iva',
     title: 'IVA',
     propertyPath: 'iva',
-    cssClasses: ['w-[100px]'],
+    cssClasses: ['hidden @xl:flex @xl:min-w-[60px]'],
     formatting: {
       type: 'PERCENTAGE',
     },
@@ -76,7 +76,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     title: 'Preu amb IVA',
     propertyPath: 'totalPrice',
     sorting: true,
-    cssClasses: ['min-w-[140px]'],
+    cssClasses: ['hidden @lg:flex @lg:min-w-[105px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -91,7 +91,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     key: 'reviewed',
     title: 'Revisat',
     propertyPath: 'reviewed',
-    cssClasses: ['hidden md:flex min-w-[70px]'],
+    cssClasses: ['hidden @md:flex @md:min-w-[110px]'],
     sorting: true,
     formatting: {
       type: 'CUSTOM',
@@ -101,8 +101,8 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
 
   readonly #columnProperties: TableColumnFormatting<LlecoopOrderProductTotal, FormattingTypes>[] = [
     this.#name,
-    this.#quantity,
     this.#price,
+    this.#quantity,
     this.#iva,
     this.#totalPrice,
     this.#reviewed,

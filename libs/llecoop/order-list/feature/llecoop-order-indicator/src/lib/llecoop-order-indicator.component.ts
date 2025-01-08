@@ -2,6 +2,7 @@ import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
@@ -12,7 +13,14 @@ import {
 
 @Component({
   selector: 'plastik-llecoop-order-indicator',
-  imports: [MatIconModule, MatBadgeModule, MatButtonModule, CurrencyPipe, RouterLink],
+  imports: [
+    MatIconModule,
+    MatBadgeModule,
+    MatButtonModule,
+    MatChipsModule,
+    CurrencyPipe,
+    RouterLink,
+  ],
   templateUrl: './llecoop-order-indicator.component.html',
   styleUrl: './llecoop-order-indicator.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

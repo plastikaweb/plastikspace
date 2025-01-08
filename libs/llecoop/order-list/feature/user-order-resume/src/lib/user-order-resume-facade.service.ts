@@ -1,6 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { llecoopUserOrderStatus } from '@plastik/llecoop/entities';
 import { LlecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
 import { formatUserOrderStatus } from '@plastik/llecoop/order-list/util';
 
@@ -22,13 +23,16 @@ export class LlecoopUserOrderResumeFacadeService {
   viewConfig = computed(() => {
     return {
       ...this.#view,
-      title: `Comanda #${this.#userOrderStore.selectedItem()?.name || ''}`,
+      title: `Resum de la comanda`,
     };
   });
 
   formattedUserOrderStatus = computed(() => {
-    return (
-      this.userOrder && formatUserOrderStatus(this.#sanitizer, this.userOrder()?.status, false)
-    );
+    return this.userOrder && formatUserOrderStatus(this.#sanitizer, this.userOrder()?.status, true);
+  });
+
+  orderStatus = computed(() => {
+    const status = this.userOrder()?.status;
+    return status ? llecoopUserOrderStatus[status] : null;
   });
 }

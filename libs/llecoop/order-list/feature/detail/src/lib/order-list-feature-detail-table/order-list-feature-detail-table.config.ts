@@ -28,7 +28,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     title: 'Sòcia/unitat familiar',
     propertyPath: 'userName',
     sorting: true,
-    cssClasses: ['max-w-[170px]  md:max-w-[250px]'],
+    cssClasses: ['min-w-[120px]'],
     formatting: {
       type: 'TITLE_CASE',
     },
@@ -38,7 +38,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     title: 'Tipus de lliurament',
     propertyPath: 'deliveryType',
     sorting: true,
-    cssClasses: ['max-w-[150px] md:max-w-[250px]'],
+    cssClasses: ['min-w-[110px] @2xl:min-w-[125px]'],
     formatting: {
       type: 'CUSTOM',
       execute: value => {
@@ -53,7 +53,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     title: 'Adreça de lliurament',
     propertyPath: 'address',
     sorting: true,
-    cssClasses: ['min-w-[120px] md:min-w-[250px]'],
+    cssClasses: ['hidden @4xl:flex @4xl:min-w-[100px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -64,7 +64,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     title: 'Data i hora de lliurament',
     propertyPath: 'deliveryDateAndTime',
     sorting: true,
-    cssClasses: ['min-w-[120px] md:min-w-[250px]'],
+    cssClasses: ['min-w-[125px] @2xl:min-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) =>
@@ -77,7 +77,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     title: 'Preu',
     propertyPath: 'totalPrice',
     sorting: true,
-    cssClasses: ['max-w-[100px] md:max-w-[130px]'],
+    cssClasses: ['min-w-[80px] 2xl:min-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -93,7 +93,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     title: 'Nre. de productes',
     propertyPath: 'cart',
     sorting: true,
-    cssClasses: ['max-w-[130px]'],
+    cssClasses: ['hidden @2xl:flex @2xl:min-w-[80px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => element?.cart.length ?? 0,
@@ -105,7 +105,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['max-w-[70px] md:max-w-[150px]'],
+    cssClasses: ['max-w-[70px] md:min-w-[140px] md:max-w-[180px]'],
     formatting: {
       type: 'CUSTOM',
       execute: status =>
@@ -117,8 +117,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
     this.#userName,
     this.#status,
     this.#deliveryType,
-    this.#address,
     this.#deliveryDateAndTime,
+    this.#address,
     this.#totalPrice,
     this.#totalProducts,
   ];

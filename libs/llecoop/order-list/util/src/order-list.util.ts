@@ -80,7 +80,7 @@ export function formatOrderListStatus(
   return sanitizer.bypassSecurityTrustHtml(`
     <p class="flex gap-tiny justify-center items-center">
       <span class="material-icons ${status?.class}">${status?.icon}</span>
-      <span class="capitalize hidden md:flex">${status?.label}</span>
+      <span class="capitalize hidden @3xl:flex">${status?.label}</span>
     </p>
     `) as SafeHtml;
 }

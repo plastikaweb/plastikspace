@@ -26,14 +26,11 @@ export class LlecoopProductSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[130px] md:min-w-[240px]'],
+    link: (product?: LlecoopProduct) => `./${product?.id}`,
     formatting: {
       type: 'LINK',
       execute: (_, product) => {
-        const link = `<a class="font-bold uppercase"
-          data-link="admin/producte/${product?.id}">
-          ${product?.name}
-        </a>`;
+        const link = `<p class="font-bold uppercase">${product?.name}</p>`;
         const info = product?.info ? `<p class="font-bold">${product?.info}</p>` : '';
         const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
         const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
@@ -48,7 +45,7 @@ export class LlecoopProductSearchFeatureTableConfig
     title: 'Stock',
     propertyPath: 'stock',
     sorting: true,
-    cssClasses: ['hidden md:flex md:max-w-[125px]'],
+    cssClasses: ['hidden @lg:flex @lg:min-w-[70px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, product) => {
@@ -87,7 +84,7 @@ export class LlecoopProductSearchFeatureTableConfig
       extraRowStyles: (product: LlecoopProduct) => {
         return !product.isAvailable ? 'marked-ko' : '';
       },
-      actionsColStyles: 'min-w-[190px]',
+      actionsColStyles: 'max-w-[160px]',
       actions: {
         SET_AVAILABILITY: {
           visible: () => true,

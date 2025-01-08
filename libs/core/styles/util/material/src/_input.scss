@@ -1,22 +1,16 @@
-.mdc-text-field--outlined:not(.mdc-text-field--disabled)
-  .mat-mdc-form-field-flex
-  .mdc-notched-outline
-  .mdc-notched-outline__notch {
-  border-right-width: var(--plastik-outlined-text-field-border-left-width);
-}
+@use '@angular/material' as mat;
 
-formly-field {
-  width: 100%;
+:root {
+  @include mat.form-field-overrides(
+    (
+      filled-container-color: var(--mat-sys-surface-container),
+      filled-focus-active-indicator-color: var(--mat-sys-primary),
+      container-vertical-padding: 0.5rem,
+      filled-with-label-container-padding-top: 1.5rem,
+    )
+  );
 
-  .input-with-enabled-appearance .mdc-text-field--disabled {
-    --mdc-filled-text-field-disabled-label-text-color: var(
-      --mdc-filled-text-field-input-text-color
-    );
-    --mdc-filled-text-field-disabled-input-text-color: var(
-      --mdc-filled-text-field-input-text-color
-    );
-    --mdc-filled-text-field-disabled-placeholder-text-color: var(
-      --mdc-filled-text-field-input-text-color
-    );
+  formly-field {
+    width: 100%;
   }
 }

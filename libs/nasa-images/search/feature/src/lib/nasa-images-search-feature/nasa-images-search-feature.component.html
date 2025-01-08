@@ -7,7 +7,7 @@
 <section>
   <!-- filtering -->
   <plastik-shared-form-feature
-    class="flex flex-row items-end content-center justify-between mx-0 mb-0 mt-sm md:my-md filters-box"
+    class="flex flex-row justify-between content-center items-end mx-0 mb-0 mt-sm md:my-md filters-box"
     [fields]="(formStructure$ | ngrxPush) || []"
     [model]="(formModel$ | ngrxPush) || {}"
     (changeEvent)="onChange($event)">

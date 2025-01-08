@@ -31,7 +31,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[200px]', 'flex flex-col justify-start'],
+    cssClasses: ['min-w-[120px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
@@ -47,7 +47,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     title: 'Quantitat inicial',
     propertyPath: 'initQuantity',
     sorting: true,
-    cssClasses: ['min-w-[100px]'],
+    cssClasses: ['min-w-[85px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, product) =>
@@ -62,7 +62,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     title: 'Preu inicial',
     propertyPath: 'initPrice',
     sorting: true,
-    cssClasses: ['min-w-[100px]'],
+    cssClasses: ['min-w-[85px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -78,7 +78,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     title: 'Quantitat final',
     propertyPath: 'finalQuantity',
     sorting: true,
-    cssClasses: ['min-w-[100px] pe-md'],
+    cssClasses: ['min-w-[140px] pe-md', 'min-w-[100px]'],
     formatting: {
       type: 'INPUT',
     },
@@ -88,7 +88,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
         min: 0,
         step: getLlecoopProductUnitStep(orderProduct?.unit ?? { type: 'unit' }),
         suffix: getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' }),
-        placeholder: 'Quantitat',
+        placeholder: 'Quantitat final',
       },
       onChanges: (value, orderProduct) => {
         const quantity = Number(value);
@@ -108,7 +108,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     title: 'Preu final',
     propertyPath: 'finalPrice',
     sorting: true,
-    cssClasses: ['min-w-[100px]'],
+    cssClasses: ['min-w-[90px]'],
     formatting: {
       type: 'CURRENCY',
       extras: () => ({
@@ -131,7 +131,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     isEditableConfig: () => ({
       type: 'textarea',
       attributes: {
-        rows: 3,
+        placeholder: 'Comentaris',
       },
       onChanges: (value, orderProduct) => {
         return {
