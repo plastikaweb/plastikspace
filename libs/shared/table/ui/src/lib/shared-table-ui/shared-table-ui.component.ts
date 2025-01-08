@@ -1,5 +1,6 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkTableModule } from '@angular/cdk/table';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import { KeyValuePipe, NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
@@ -29,7 +30,7 @@ import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/sl
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
 import {
@@ -56,16 +57,16 @@ import {
 } from '@plastik/shared/table/entities';
 
 import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
-import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
 @Component({
   selector: 'plastik-shared-table',
   imports: [
-    RouterModule,
+    RouterLink,
     KeyValuePipe,
     NgClass,
     NgTemplateOutlet,
     CdkTableModule,
+    CdkTextareaAutosize,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -80,7 +81,6 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
     MatSlideToggleModule,
     NgOptimizedImage,
     SharedUtilFormattersModule,
-    TableCellTitleDirective,
     OrderTableActionsElementsPipe,
     SafeFormattedPipe,
   ],
@@ -274,15 +274,6 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     }
     const result = editableAttr.onChanges?.(value, element);
     this.getChangedData.emit(result);
-  }
-
-  /**
-   * @description Gets route path data from DOM element data-link attribute and navigates.
-   * @param  {HTMLAnchorElement} target - The target HTML anchor element from which to get the route path.
-   */
-  protected onGetRoute({ target }: Event) {
-    const route = (target as HTMLAnchorElement).getAttribute('data-link');
-    this.#router.navigateByUrl(route || '/');
   }
 
   protected setCellNgClass(column: TableColumnFormatting<T, FormattingTypes>): {

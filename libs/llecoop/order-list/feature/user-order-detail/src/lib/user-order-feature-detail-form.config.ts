@@ -48,6 +48,9 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
             label: 'Sòcia/unitat familiar',
             placeholder: 'Sòcia/unitat familiar',
             required: true,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
         {
@@ -81,6 +84,9 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 label: 'Adreça de lliurament',
                 placeholder: 'Adreça de lliurament',
                 required: true,
+                attributes: {
+                  autocomplete: 'off',
+                },
               },
               expressions: {
                 hide: 'model.deliveryType === "pickup"',
@@ -154,6 +160,9 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 minLength: 5,
                 maxLength: 100,
                 maxRows: 2,
+                attributes: {
+                  autocomplete: 'off',
+                },
               },
             },
           ],
@@ -194,6 +203,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu',
                 },
               },
               hooks: {
@@ -224,6 +234,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu de lliurament',
                 },
               },
               hooks: {
@@ -264,6 +275,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu final',
                 },
               },
               hooks: {

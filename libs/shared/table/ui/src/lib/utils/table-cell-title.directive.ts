@@ -17,6 +17,7 @@ export class TableCellTitleDirective implements AfterViewInit {
 
       const titleText = this.getTextContent(childElement);
       this.#elementRefElement.setAttribute('title', titleText.trim());
+      this.#elementRefElement.setAttribute('aria-label', titleText.trim());
 
       this.addTitleToLiElements(childElement);
     }
@@ -52,6 +53,7 @@ export class TableCellTitleDirective implements AfterViewInit {
         for (let i = 0; i < liElements.length; i++) {
           const liTextContent = this.getTextContent(liElements[i]);
           liElements[i].setAttribute('title', liTextContent);
+          liElements[i].setAttribute('aria-label', liTextContent);
         }
       }
       Array.from(node.childNodes).forEach(childNode => {

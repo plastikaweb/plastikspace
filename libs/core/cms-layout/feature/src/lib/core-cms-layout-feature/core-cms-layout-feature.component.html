@@ -33,25 +33,27 @@
         <span class="sr-only">{{ headerTitle }}</span>
         <a
           class="flex justify-between content-center items-center text-white hover:no-underline gap-sub"
-          href=""
+          [routerLink]="['/']"
           [attr.title]="headerTitle">
           <ng-container [ngTemplateOutlet]="h1Tpl"></ng-container>
         </a>
       </h1>
-      @if (headerWidgetsPosition === 'start') {
+      @if (headerWidgetsConfig && headerWidgetsPosition === 'start') {
         <ng-container #widgetsContainer></ng-container>
       }
     </div>
 
     <div end class="flex items-center gap-tiny lg:gap-sm">
-      @if (headerWidgetsPosition === 'end') {
+      @if (headerWidgetsConfig && headerWidgetsPosition === 'end') {
         <ng-container #widgetsContainer></ng-container>
       }
       @defer (when sidenavPosition === 'end') {
         <ng-container [ngTemplateOutlet]="toggleSidenavButtonTpl"></ng-container>
       }
-      <!-- TODO: Create a shared user menu -->
-      <ng-container [ngTemplateOutlet]="headerMenuTpl"></ng-container>
+      @if (headerMenu) {
+        <!-- TODO: Create a shared user menu -->
+        <ng-container [ngTemplateOutlet]="headerMenuTpl"></ng-container>
+      }
     </div>
   </plastik-core-cms-layout-ui-header>
 
@@ -88,8 +90,8 @@
 
   @defer (when !hideFooter()) {
     <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-      <div content class="flex flex-row justify-center items-center gap-tiny">
-        ©{{ currentDate | date: 'yyyy' }}
+      <div content class="flex flex-row justify-center items-center text-base gap-tiny">
+        {{ currentDate | date: 'yyyy' }}
         <a
           aria-label="visit www.plastikaweb.com page"
           class="text-white underline underline-offset-2"
@@ -111,7 +113,11 @@
 </div>
 
 <ng-template #headerMenuTpl>
-  <button mat-button aria-label="header menu" class="flex gap-tiny" [matMenuTriggerFor]="menu">
+  <button
+    mat-button
+    class="flex gap-tiny"
+    [attr.aria-label]="headerMenu?.label()"
+    [matMenuTriggerFor]="menu">
     <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
     <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
   </button>
@@ -137,14 +143,15 @@
 </ng-template>
 
 <ng-template #h1Tpl>
-  @if (headerConfig.mainIcon; as icon) {
-    <div class="flex justify-center items-center gap-sub">
-      <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
-
-      <span class="hidden">{{ headerTitle }}</span>
-      <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
-    </div>
-  }
+  <div class="flex justify-center items-center gap-sub">
+    @if (headerConfig.mainIcon; as icon) {
+      <svg-icon
+        [src]="icon.iconPath"
+        [svgClass]="icon.svgClass"
+        [svgAriaLabel]="headerTitle"></svg-icon>
+    }
+    <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
+  </div>
 </ng-template>
 
 <ng-template #toggleSidenavButtonTpl>

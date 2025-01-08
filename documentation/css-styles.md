@@ -127,172 +127,74 @@ If you are repeating styling (applying the same list of tailwindCSS classes to a
 
 ## Material configuration
 
-Add a custom palette colors to the `_palette.scss` file. You can use the [Material design palette generator](http://mcg.mbitson.com/) to generate a palette.
+The project uses Angular Material v19.0.2 which brings several improvements and changes:
 
-```css
-/* apps/my-app/src/styles/_palette.scss */
-$md-primary: (
-  50: #e2eaf2,
-  100: #b6cbdf,
-  200: #85a9ca,
-  300: #5487b4,
-  400: #306da4,
-  500: #0b5394,
-  600: #0a4c8c,
-  700: #084281,
-  800: #063977,
-  900: #032965,
-  A100: #95b6ff,
-  A200: #6294ff,
-  A400: #2f71ff,
-  A700: #155fff,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #ffffff,
-    400: #ffffff,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #ffffff,
-    A700: #ffffff,
-  ),
-);
+- Enhanced Theming system with better CSS custom properties support
+- Improved accessibility features
+- Better component styling customization options
 
-$md-accent: (
-  50: #fef6ed,
-  100: #fce8d3,
-  200: #fbd9b5,
-  300: #f9c997,
-  400: #f7be81,
-  500: #f6b26b,
-  600: #f5ab63,
-  700: #f3a258,
-  800: #f2994e,
-  900: #ef8a3c,
-  A100: #ffffff,
-  A200: #ffffff,
-  A400: #ffe7d5,
-  A700: #ffd8bc,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #000000,
-    400: #000000,
-    500: #000000,
-    600: #000000,
-    700: #000000,
-    800: #000000,
-    900: #000000,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000,
-  ),
-);
+To use Material in a project:
 
-$md-warn: (
-  50: #f9e0e0,
-  100: #f0b3b3,
-  200: #e68080,
-  300: #db4d4d,
-  400: #d42626,
-  500: #cc0000,
-  600: #c70000,
-  700: #c00000,
-  800: #b90000,
-  900: #ad0000,
-  A100: #ffd7d7,
-  A200: #ffa4a4,
-  A400: #ff7171,
-  A700: #ff5858,
-  contrast: (
-    50: #000000,
-    100: #000000,
-    200: #000000,
-    300: #ffffff,
-    400: #ffffff,
-    500: #ffffff,
-    600: #ffffff,
-    700: #ffffff,
-    800: #ffffff,
-    900: #ffffff,
-    A100: #000000,
-    A200: #000000,
-    A400: #000000,
-    A700: #000000,
-  ),
-);
+1. Ensure the required dependencies are installed:
+
+   ```json
+   {
+     "@angular/material": "19.0.2",
+     "@angular/material-moment-adapter": "19.0.2"
+   }
+   ```
+
+2. Import the core Material styles:
+   - The core styles are available in `@core/styles/util/material`
+   - These include customizations for:
+     - Input fields
+     - Datepicker
+     - Snackbar notifications
+
+3. Configure your application theme:
+   - Create a `_theme.scss` file in your app's styles directory
+   - Define your color palette and theme variables or use the default ones
+   - Import and use the Material Theming system
+
+4. Apply the theme in your `styles.scss`:
+
+> [Angular Material Theming](https://material.angular.io/guide/theming)
+
+```scss
+   @use '@angular/material' as mat;
+
+   // Include Material core styles
+
+  html {
+    color-scheme: light dark;
+    @include mat.theme((
+      color: mat.$violet-palette,
+      typography: Roboto,
+      density: 0
+    ));
+  }
 ```
-
-Use it in your `_material.scss` file.
-
-```css
-/* apps/my-app/src/styles/_material.scss */
-@use '@angular/material' as mat;
-@use 'sass:map';
-@use 'palette';
-@use 'theme';
-
-@include mat.core();
-
-$theme: mat.m2-define-light-theme(
-  (
-    color: (
-      primary:mat.m2-define-palette(palette.$md-primary, 500, 100, 700),
-      accent:mat.m2-define-palette(palette.$md-accent, A200, A100, A400),
-      warn:mat.m2-define-palette(palette.$md-warn),
-    ),
-    typography:
-      mat.m2-define-typography-config(
-        $font-family: var(--sans-serif),
-        $body-1: mat.define-typography-level(var(--font-size-base), var(--spacing-md), 400),
-      ),
-    density: -1,
-  )
-);
-
-$merged-theme: map.deep-merge(
-  $theme,
-  (
-    color: (
-      background: (
-        background: mat.m2-get-color-from-palette(palette.$md-primary, 50),
-      ),
-      foreground: (
-        text: mat.m2-get-color-from-palette(palette.$md-primary, 900),
-      ),
-    ),
-  )
-);
-
-@include mat.all-component-themes($merged-theme);
-```
-
-In order to get advantage of the Angular Material components we'll use:
-
-- CSS variables attached to a UI library using material components.
-- the `core_styles_util_material.scss` from the [core-styles-util-material](../libs/core/styles/util/material/README.md) library.
-
-```css
-/* apps/my-app/src/styles/styles.scss */
-
-@use 'core_styles_util_material';
-```
-
-In this way we are loading the Angular Material styles entrypoint and some CSS configuration by component.
 
 ## Customize Angular Material Components: CSS custom properties
 
 To customize some Angular Material component properties we can use different approaches:
 
-- CSS custom global properties.  
+- Component Tokens
+
+> [Component tokens](https://material.angular.io/guide/theming#component-tokens) are a new way to style Material components.
+
+```css
+/* apps/my-app/src/styles/styles.scss */
+
+@include mat.form-field-overrides(
+    (
+      filled-disabled-label-text-color: var(--mat-sys-outline),
+      filled-disabled-input-text-color: var(--mat-sys-outline),
+    )
+  );
+```
+
+- CSS custom properties.
 Some component libraries that uses Material components are ready to style some of their properties using global CSS variables that overwrite existing material components variables.
 
 ```css
@@ -335,7 +237,8 @@ Some component libraries that uses Material components are ready to style some o
 For a list of available properties to be customized, take a look at the documentation for each UI library or add yours... and document it.
 
 - CSS overwrite of Angular Material styles
-You can also overwrite Material styles. Try to overwrite them by using [CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) and avoid `!important` flag.
+You can also overwrite Material styles if for some reason the previous approach doesn't work.  
+Try to overwrite them by using [CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) and avoid `!important` flag.
 
 ```css
 /* core/styles/util/material/src/_paginator.scss */
@@ -345,25 +248,25 @@ You can also overwrite Material styles. Try to overwrite them by using [CSS spec
 }
 ```
 
-- Material component CSS configuration
-
- <!-- TODO: add documentation about how to use component material CSS configuration -->
-
 ### Bad practices to avoid
 
 > **Do not break components CSS encapsulation!**
 
 Don't use deprecated `/deep/` pseudo-class to avoid unexpected behaviors while overwritten global styles from a component.
 
-> "Applying the ::ng-deep pseudo-class to any CSS rule completely disables view-encapsulation for that rule. Any style with ::ng-deep applied becomes a global style.  ****
-> In order to scope the specified style to the current component and all its descendants, be sure to include the :host selector before ::ng-deep.  
-> If the ::ng-deep combinator is used without the :host pseudo-class selector, the style can bleed into other components."
+> Applying the ::ng-deep pseudo-class to any CSS rule completely disables view-encapsulation for that rule. Any style with ::ng-deep applied becomes a global style.
 >
-> From [(deprecated) /deep/, >>>, and ::ng-deep](https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep) for more details.
+> In order to scope the specified style to the current component and all its descendants, be sure to include the :host selector before ::ng-deep.
+>
+> If the ::ng-deep combinator is used without the :host pseudo-class selector, the style can bleed into other components.
+>
+> Visit [(deprecated) /deep/, >>>, and ::ng-deep](https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep) for more details.
 
 ## Useful Links
 
-- [Angular Component styles](https://angular.io/guide/component-styles)
+- [Angular Material Theming](https://material.angular.io/guide/theming)
+- [Angular Material System variables](https://material.angular.io/guide/system-variables)
+- [Angular Component styles](https://angular.dev/guide/components/styling)
 - [tailwindcss](https://tailwindcss.com/)
 - [How to use tailwindcss in Angular](https://www.angularjswiki.com/angular/angular-tailwind-css/)
 - [tailwindcss Tutorial by the Net Ninja (videos)](https://www.youtube.com/watch?v=bxmDnn7lrnk&list=PL4cUxeGkcC9gpXORlEHjc5bgnIi5HEGhw)

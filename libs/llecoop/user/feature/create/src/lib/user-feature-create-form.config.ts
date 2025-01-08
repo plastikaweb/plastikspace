@@ -17,6 +17,9 @@ const getLlecoopUserCreateFormConfig: FormlyFieldConfig[] = [
           label: 'Adreça electrònica',
           placeholder: 'Adreça electrònica',
           required: true,
+          attributes: {
+            autocomplete: 'off',
+          },
         },
         validators: {
           validation: [Validators.email],

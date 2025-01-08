@@ -3,7 +3,6 @@
     <button
       class="flex flex-row"
       [attr.tabindex]="!props['addonLeft']['onClick'] ? '-1' : '0'"
-      [attr.aria-hidden]="!props['addonLeft']['onClick']"
       [attr.aria-label]="props['addonLeft']['aria'] || ''"
       [ngClass]="props['addonLeft'].classes"
       [ngStyle]="{ cursor: props['addonLeft'].onClick ? 'pointer' : 'inherit' }"

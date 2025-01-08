@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @use 'material';
 @use 'theme';
 @use 'core_styles_util_material';
@@ -68,6 +69,16 @@
     }
   }
 
+  mat-toolbar {
+    @include mat.toolbar-overrides(
+      (
+        container-background-color: var(--primary-700),
+        container-text-color: var(--white),
+        standard-height: 70px,
+      )
+    );
+  }
+
   plastik-shared-activity-ui-overlay .overlay-container {
     z-index: 9999;
   }
@@ -76,7 +87,7 @@
     .core-cms-container {
       display: grid;
       grid-template-columns: 1fr;
-      grid-template-rows: 85px 1fr 45px;
+      grid-template-rows: 70px 1fr 35px;
       min-block-size: 100vh;
       min-block-size: 100dvh;
 
@@ -91,7 +102,7 @@
 
         .mat-sidenav-container {
           .mat-sidenav-content {
-            height: calc(100vh - 130px);
+            height: calc(100vh - 105px);
           }
         }
       }

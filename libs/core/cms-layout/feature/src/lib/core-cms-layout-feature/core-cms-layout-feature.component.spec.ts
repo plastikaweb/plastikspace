@@ -1,16 +1,18 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MatIconModule } from '@angular/material/icon';
-import { MatListModule } from '@angular/material/list';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideMockStore } from '@ngrx/store/testing';
-import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
 import { signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
+import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 import { NotificationFacade } from '@plastik/shared/notification/data-access';
+
 import { CoreCmsLayoutFeatureComponent } from './core-cms-layout-feature.component';
 
 describe('CoreCmsLayoutFeatureComponent', () => {
@@ -31,6 +33,7 @@ describe('CoreCmsLayoutFeatureComponent', () => {
       ],
       providers: [
         provideHttpClient(),
+        provideRouter([]),
         provideMockStore({}),
         {
           provide: LayoutFacade,
@@ -39,6 +42,18 @@ describe('CoreCmsLayoutFeatureComponent', () => {
             setIsMobile: jest.fn(),
             dispatchAction: jest.fn(),
             sidenavConfig: signal([]),
+            sidenavOpened$: signal(false),
+            isMobile$: signal(false),
+            isActive$: signal(false),
+            headerConfig: {
+              showToggleMenuButton: true,
+              sidenavPosition: 'start',
+              title: 'title',
+              extendedTitle: 'extendedTitle',
+              mainIcon: { iconPath: '', label: 'icon' },
+              widgetsConfig: {},
+              menu: { label: signal('label'), position: 'start', config: [] },
+            },
           },
         },
         {
@@ -54,11 +69,6 @@ describe('CoreCmsLayoutFeatureComponent', () => {
     component = fixture.componentInstance;
     layoutFacade = TestBed.inject(LayoutFacade);
     notificationFacade = TestBed.inject(NotificationFacade);
-
-    component.headerConfig = {
-      title: 'title',
-      showToggleMenuButton: true,
-    };
 
     fixture.detectChanges();
   });

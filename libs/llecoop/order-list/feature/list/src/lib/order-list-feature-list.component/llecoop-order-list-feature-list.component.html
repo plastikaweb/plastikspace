@@ -15,7 +15,6 @@
         type="button"
         mat-flat-button
         color="accent"
-        class="text-white"
         [disabled]="action.disabled()"
         (click)="action.execute()">
         <mat-icon>{{ action.icon }}</mat-icon> {{ action.label }}

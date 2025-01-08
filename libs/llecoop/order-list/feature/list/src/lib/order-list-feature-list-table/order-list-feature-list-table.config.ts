@@ -23,15 +23,17 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
   readonly #sanitizer = inject(DomSanitizer);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
-  readonly #name: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
+  readonly #name: TableColumnFormatting<LlecoopOrder, 'LINK'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['max-w-[120px]'],
+    cssClasses: ['min-w-[90px] @lg:min-w-[105px]'],
+    link: order => `./${order?.id}`,
     formatting: {
-      type: 'TEXT',
+      type: 'LINK',
+      execute: (_, order) => `<p class="font-bold uppercase">${order?.name}</p>`,
     },
   };
 
@@ -40,29 +42,25 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['max-w-[60px] md:min-w-[140px] md:max-w-[180px]'],
+    cssClasses: ['max-w-[70px] @3xl:min-w-[140px] @3xl:max-w-[180px]'],
     formatting: {
       type: 'CUSTOM',
       execute: status => formatOrderListStatus(this.#sanitizer, status as LlecoopOrder['status']),
     },
   };
 
-  readonly #endTime = createFirebaseTimestampTableColumn<LlecoopOrder>(
-    {
-      key: 'endTime',
-      title: 'Data de tancament',
-      propertyPath: 'endTime',
-      cssClasses: ['max-w-[290px]'],
-    },
-    'dd/MM/yyyy HH:mm'
-  );
+  readonly #endTime = createFirebaseTimestampTableColumn<LlecoopOrder>({
+    key: 'endTime',
+    title: 'Data de tancament',
+    propertyPath: 'endTime',
+  });
 
   readonly #orderCount: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
     key: 'orderCount',
     title: 'Comandes realitzades',
     propertyPath: 'orderCount',
     sorting: true,
-    cssClasses: ['hidden md:flex max-w-[160px]'],
+    cssClasses: ['hidden @lg:flex @lg:min-w-[110px]'],
     formatting: {
       type: 'TEXT',
     },
@@ -73,7 +71,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     title: 'Productes inclosos',
     propertyPath: 'availableProducts',
     sorting: true,
-    cssClasses: ['hidden lg:flex max-w-[160px]'],
+    cssClasses: ['hidden @xl:flex @xl:min-w-[110px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, item) => item?.availableProducts.length || 0,
@@ -107,7 +105,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
       caption: 'Llistat de comandes setmanals',
       count: this.#store.count,
       getData: () => this.#store.entities(),
-      actionsColStyles: 'min-w-[250px]',
+      actionsColStyles: 'min-w-[180px] max-w-[200px]',
       actions: {
         SET_STATUS: {
           visible: () => true,
@@ -122,16 +120,16 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
                 order.status === 'waiting' ? 'Activació de comanda' : 'Desactivació de comanda',
                 order.status === 'waiting'
                   ? this.#sanitizer.bypassSecurityTrustHtml(
-                      `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
-                    <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center">Segur que vols activar la comanda "${order.name}"?</h5>
-                    <p class="text-secondary-dark text-center md:text-left">Un cop activada es podrà tornar a pausar fins la data de tancament.</p>
+                      `<div class="flex flex-col gap-sm justify-center items-center bg-gray-10 rounded-xl p-md">
+                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-pretty">Segur que vols activar <nobr>la comanda "${order.name}" ?</nobr></p>
+                    <p class="text-center">Un cop activada es podrà tornar a pausar fins la data de tancament.</p>
                   </div>
                 `
                     )
                   : this.#sanitizer.bypassSecurityTrustHtml(
-                      `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
-                    <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center">Segur que vols ficar en pausa la comanda "${order.name}"?</h5>
-                    <p class="text-secondary-dark text-center md:text-left">La podràs tornar a activar en qualsevol moment fins la data de tancament.</p>
+                      `<div class="flex flex-col gap-sm justify-center items-center bg-gray-10 rounded-xl p-md">
+                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-pretty">Segur que vols ficar en pausa <nobr>la comanda "${order.name}" ?</nobr></p>
+                    <p class="text-center">La podràs tornar a activar en qualsevol moment fins la data de tancament.</p>
                   </div>
                 `
                     ),
@@ -142,6 +140,12 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
               .subscribe(() => this.#store.changeStatus(order));
           },
         },
+        EDIT: {
+          visible: () => true,
+          disabled: order => order.status === 'waiting',
+          description: order => `Edita les comandes de ${order.name}`,
+          order: 2,
+        },
         CANCEL: {
           visible: () => true,
           disabled: (order: LlecoopOrder) =>
@@ -150,40 +154,31 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
             order.status === 'done' ||
             (order.status !== 'progress' && order.orderCount > 0),
           description: () => 'Cancel·la la comanda',
-          order: 4,
+          order: 3,
           icon: () => 'cancel',
           execute: (order: LlecoopOrder) => {
             this.#confirmService
               .confirm(
                 'Cancel·lació de comanda',
                 this.#sanitizer.bypassSecurityTrustHtml(
-                  `<div class="flex flex-col gap-sm justify-center items-center bg-secondary-light rounded-xl p-md">
-                    <h5 class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center">Segur que vols cancel·lar la comanda "${order.name}"?</h5>
-                    <p class="text-secondary-dark text-center md:text-left">Un cop cancel·lada ja no es pot tornar a activar.</p>
+                  `<div class="flex flex-col gap-sm justify-center items-center bg-gray-10 rounded-xl p-md">
+                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-pretty">Segur que vols cancel·lar <nobr>la comanda "${order.name}" ?</nobr></p>
+                    <p class="text-center">Un cop fet ja no es podrà tornar a activar.</p>
                   </div>
                 `
                 ),
                 'Cancel·lar',
-                'Acceptar'
+                'Cancel·lar comanda'
               )
               .pipe(take(1), filter(Boolean))
               .subscribe(() => this.#store.cancel(order));
           },
         },
-        VIEW: {
-          visible: () => true,
-          disabled: (order: LlecoopOrder) => order.status === 'waiting',
-          description: () => 'Mostra les comandes realitzades',
-          order: 2,
-          icon: () => 'visibility',
-          link: (order: LlecoopOrder) => `${order.id}`,
-        },
         DELETE: {
           visible: () => true,
-          disabled: (order: LlecoopOrder) =>
-            order.status !== 'waiting' && order.status !== 'cancel',
-          description: () => 'Elimina la comanda',
-          order: 3,
+          disabled: order => order.status !== 'waiting' && order.status !== 'cancel',
+          description: order => `Elimina la comanda ${order.name}`,
+          order: 4,
         },
       },
     } as TableDefinition<LlecoopOrder>;

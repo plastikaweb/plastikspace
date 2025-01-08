@@ -6,7 +6,7 @@ export function getLlecoopUserOrderSearchFeatureFormConfig(): FormlyFieldConfig[
   return [
     {
       fieldGroupClassName: 'flex flex-col md:flex-row flex-wrap gap-sm',
-      fieldGroup: [addSearchInput('Filtrar per Nom', 'buidar valor')],
+      fieldGroup: [addSearchInput('Filtrar per nom', 'buidar valor')],
     },
   ];
 }

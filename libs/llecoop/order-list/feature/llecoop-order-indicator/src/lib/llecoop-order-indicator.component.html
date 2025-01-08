@@ -1,29 +1,29 @@
-@defer (when orderListStore.currentOrder()) {
-  <button
-    mat-flat-button
-    aria-label="comanda"
-    class="w-max rounded-full border-2 border-white m-tiny px-sub py-tiny bg-primary-light"
+@if (orderListStore.currentOrder()) {
+  <mat-chip
+    role="button"
+    class="p-sm"
+    [matBadgeDescription]="(openedUserOrderList()?.cart?.length || 0) + ' productes seleccionats'"
     [routerLink]="[
       openedUserOrderList()?.id
         ? './soci/comanda/' + openedUserOrderList()?.id
         : './soci/comanda/crear',
-    ]">
+    ]"
+    [matBadge]="openedUserOrderList()?.cart?.length || 0">
+    <mat-icon matChipAvatar> shopping_cart </mat-icon>
     <div class="flex flex-row justify-center items-center break-words gap-sub">
       <span class="hidden md:flex"> #{{ orderListStore.currentOrder()?.name }} </span>
       <span class="hidden md:flex">|</span>
       <span class="text-pretty">
         {{
-          (openedUserOrderList()?.totalPrice || 0) + (openedUserOrderList()?.deliveryPrice || 0)
-            | currency: 'EUR' : 'symbol' : '1.2-2'
+      (openedUserOrderList()?.totalPrice || 0) + (openedUserOrderList()?.deliveryPrice || 0)
+      &vert; currency: 'EUR' : 'symbol' : '1.2-2'
         }}
       </span>
-
-      <mat-icon
-        matBadgeColor="warn"
-        aria-hidden="false"
-        [matBadge]="openedUserOrderList()?.cart?.length || 0"
-        >shopping_cart</mat-icon
-      >
     </div>
-  </button>
+  </mat-chip>
+} @else {
+  <mat-chip disableRipple class="p-sm">
+    <mat-icon matChipAvatar> shopping_cart </mat-icon>
+    Cap comanda activa
+  </mat-chip>
 }

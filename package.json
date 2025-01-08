@@ -155,6 +155,7 @@
     "@swc-node/register": "~1.9.1",
     "@swc/core": "~1.5.7",
     "@swc/helpers": "~0.5.11",
+    "@tailwindcss/container-queries": "^0.1.1",
     "@types/jest": "29.5.14",
     "@types/jest-axe": "^3.5.9",
     "@types/moment": "^2.13.0",

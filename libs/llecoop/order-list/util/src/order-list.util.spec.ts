@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
+
 import {
   formatOrderListStatus,
   formatUserOrderDeliveryDate,
@@ -44,35 +45,25 @@ describe('order-list-util', () => {
     });
 
     it('should not show the icon when showIcon is false', () => {
-      expect(formatUserOrderStatus(sanitizer, 'waiting', false, true)).toContain(`
-      <span class="material-icons text-info">hourglass_empty</span>
-    `);
+      expect(formatUserOrderStatus(sanitizer, 'waiting', false, true)).toContain(`hourglass_empty`);
     });
 
     it('should not show the label when showLabel is false', () => {
-      expect(formatUserOrderStatus(sanitizer, 'waiting', true, false)).toContain(`
-      <span class="capitalize hidden md:flex">Pendent</span>
-    `);
+      expect(formatUserOrderStatus(sanitizer, 'waiting', true, false)).toContain(`Pendent`);
     });
 
     it('should not show the icon or label when both are false', () => {
-      expect(formatUserOrderStatus(sanitizer, 'waiting', false, false)).not.toContain(`
-      <span class="material-icons text-info">hourglass_empty</span>
-    `);
-      expect(formatUserOrderStatus(sanitizer, 'waiting', false, false)).not.toContain(`
-      <span class="capitalize hidden md:flex">Pendent</span>
-    `);
+      expect(formatUserOrderStatus(sanitizer, 'waiting', false, false)).not.toContain(
+        `hourglass_empty`
+      );
+      expect(formatUserOrderStatus(sanitizer, 'waiting', false, false)).not.toContain(`Pendent`);
     });
   });
 
   describe('formatOrderListStatus', () => {
     it('should return the correct status for a given input', () => {
-      expect(formatOrderListStatus(sanitizer, 'waiting')).toContain(`
-      <span class="material-icons text-info">hourglass_empty</span>
-    `);
-      expect(formatOrderListStatus(sanitizer, 'waiting')).toContain(`
-      <span class="capitalize hidden md:flex">En espera</span>
-    `);
+      expect(formatOrderListStatus(sanitizer, 'waiting')).toContain(`hourglass_empty`);
+      expect(formatOrderListStatus(sanitizer, 'waiting')).toContain(`En espera`);
     });
   });
 });

@@ -31,17 +31,15 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[100px]'],
+    cssClasses: ['min-w-[90px] @lg:min-w-[105px]'],
+    link: (userOrder?: LlecoopUserOrder) => {
+      return userOrder && this.checkIfOrderIsDone(userOrder)
+        ? `./resum/${userOrder?.id}`
+        : `./${userOrder?.id}`;
+    },
     formatting: {
       type: 'LINK',
-      execute: (_, userOrder) => {
-        const link = `
-        <a class="font-bold uppercase"
-          data-link="soci/comanda/${userOrder?.id}">
-          ${userOrder?.name}
-        </a>`;
-        return this.#sanitizer.bypassSecurityTrustHtml(`${link}`) as SafeHtml;
-      },
+      execute: (_, userOrder) => `<p class="font-bold uppercase">${userOrder?.name}</p>`,
     },
   };
 
@@ -50,7 +48,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     title: 'Preu total',
     propertyPath: '',
     sorting: true,
-    cssClasses: ['max-w-[100px]'],
+    cssClasses: ['min-w-[80px] 2xl:min-w-[100px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, userOrder) => {
@@ -65,7 +63,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     title: 'Nre. de productes',
     propertyPath: 'cart',
     sorting: true,
-    cssClasses: ['hidden md:flex max-w-[130px]'],
+    cssClasses: ['hidden @lg:flex'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, userOrder) => userOrder?.cart.length || 0,
@@ -77,7 +75,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     title: 'Estat',
     propertyPath: 'status',
     sorting: true,
-    cssClasses: ['max-w-[70px] md:max-w-[150px]'],
+    cssClasses: ['min-w-[70px] @3xl:min-w-[140px]'],
     formatting: {
       type: 'CUSTOM',
       execute: status =>
@@ -132,7 +130,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
       count: this.#userOrderStore.count,
       caption: 'Llistat de les meves comandes',
       getData: () => this.#userOrderStore.entities(),
-      actionsColStyles: 'min-w-[135px]',
+      actionsColStyles: 'max-w-[150px]',
       actions: {
         VIEW: {
           visible: () => true,

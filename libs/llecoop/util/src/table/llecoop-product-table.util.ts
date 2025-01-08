@@ -18,19 +18,19 @@ export function productCategoryColumn<T extends LlecoopBaseProduct>(
     key: 'categoryName',
     title: 'Categoria',
     propertyPath: 'category.name',
-    cssClasses: ['hidden md:flex md:min-w-[220px]'],
+    cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (value, element) => {
         if (value) {
           const htmlString = element?.category?.color
             ? `
-              <div class="flex items-center gap-sub justify-start">
-                <span class="rounded-full size-sub p-sub"
+              <p class="grid grid-cols-[15px_1fr] items-center justify-start gap-tiny">
+                <span class="rounded-full size-sub"
                   style="background-color:${element?.category?.color}"></span>
-                <span class="capitalize">${value}</span>
-              </div>`
-            : `<div class="capitalize">${value}</div>`;
+                <span class="capitalize overflow-hidden">${value}</span>
+              </p>`
+            : `<div class="capitalize overflow-hidden">${value}</div>`;
           return sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
         }
         return '-';

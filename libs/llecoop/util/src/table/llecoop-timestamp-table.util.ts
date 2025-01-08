@@ -17,12 +17,12 @@ export function createFirebaseTimestampTableColumn<T extends BaseEntity>(
     key,
     title,
     propertyPath,
-    cssClasses,
+    cssClasses = ['hidden @5xl:flex @5xl:min-w-[130px]'],
   }: Pick<
     TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'>,
     'key' | 'title' | 'propertyPath' | 'cssClasses'
   >,
-  dateDigitsInfo = 'medium'
+  dateDigitsInfo = 'dd/MM/yyyy HH:mm:ss'
 ): TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'> {
   return {
     key,
@@ -45,15 +45,11 @@ export function createFirebaseTimestampTableColumn<T extends BaseEntity>(
  * @returns {TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'>} The table column formatting for the 'createdAt' timestamp.
  */
 export function createdAt<T extends BaseEntity>(): TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'> {
-  return createFirebaseTimestampTableColumn<T>(
-    {
-      key: 'createdAt',
-      title: 'Data de creació',
-      propertyPath: 'createdAt',
-      cssClasses: ['hidden lg:flex max-w-[220px]'],
-    },
-    'dd/MM/yyyy HH:mm:ss'
-  );
+  return createFirebaseTimestampTableColumn<T>({
+    key: 'createdAt',
+    title: 'Data de creació',
+    propertyPath: 'createdAt',
+  });
 }
 
 /**
@@ -62,13 +58,9 @@ export function createdAt<T extends BaseEntity>(): TableColumnFormatting<T, 'FIR
  * @returns {TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'>} The table column formatting for the 'updatedAt' timestamp.
  */
 export function updatedAt<T extends BaseEntity>(): TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'> {
-  return createFirebaseTimestampTableColumn<T>(
-    {
-      key: 'updatedAt',
-      title: 'Data de modificació',
-      propertyPath: 'updatedAt',
-      cssClasses: ['hidden lg:flex max-w-[220px]'],
-    },
-    'dd/MM/yyyy HH:mm:ss'
-  );
+  return createFirebaseTimestampTableColumn<T>({
+    key: 'updatedAt',
+    title: 'Data de modificació',
+    propertyPath: 'updatedAt',
+  });
 }
