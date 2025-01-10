@@ -19,11 +19,18 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
       position: 'end',
       widgets: [
         {
-          id: 1,
+          id: 'order-indicator',
           component: () =>
             import('@plastik/llecoop/order-list/order-indicator').then(
               c => c.LlecoopOrderIndicatorComponent
             ),
+          order: 1,
+        },
+        {
+          id: 'theme-toggle',
+          component: () =>
+            import('@plastik/core/mat-theme-toggle').then(c => c.MatThemeToggleComponent),
+          order: 2,
         },
       ],
     },

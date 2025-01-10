@@ -25,7 +25,6 @@
         color: (
           primary: palette.$primary-palette,
           tertiary: palette.$tertiary-palette,
-          theme-type: light,
         ),
         typography: (
           plain-family: var(--serif),
@@ -47,21 +46,9 @@
   }
 
   body {
-    background: var(--mat-sys-primary-fixed-dim);
+    background: var(--mat-sys-surface);
     color: var(--mat-sys-on-surface);
     overflow: hidden;
-  }
-
-  .dark-mode {
-    @include mat.theme(
-      (
-        color: (
-          primary: palette.$primary-palette,
-          tertiary: palette.$tertiary-palette,
-          theme-type: dark,
-        ),
-      )
-    );
   }
 
   h1,
@@ -103,10 +90,10 @@
   }
 
   a {
-    @apply rounded-md text-secondary-dark decoration-secondary-dark underline underline-offset-2;
+    @apply underline underline-offset-2 transition-colors duration-300;
 
     &:hover {
-      @apply text-primary-dark decoration-primary-dark;
+      @apply text-black decoration-black;
     }
   }
 
@@ -134,16 +121,32 @@
 @layer components {
   @include mat.toolbar-overrides(
     (
-      container-background-color: var(--mat-sys-primary-fixed),
+      container-background-color: var(--mat-sys-primary-container),
       container-text-color: var(--mat-sys-primary),
       standard-height: 55px,
       mobile-height: 55px,
     )
   );
 
+  @include mat.list-overrides(
+    (
+      list-item-container-color: var(--mat-sys-surface-container),
+      list-item-selected-container-color: var(--mat-sys-primary-container),
+      list-item-hover-state-layer-opacity: 0.1,
+    )
+  );
+
+  .active {
+    @include mat.list-overrides(
+      (
+        list-item-container-color: var(--mat-sys-inverse-primary),
+      )
+    );
+  }
+
   @include mat.sidenav-overrides(
     (
-      container-background-color: var(--mat-sys-primary-fixed-dim),
+      container-background-color: var(--mat-sys-secondary-container),
       container-text-color: var(--mat-on-sys-container),
       content-background-color: var(--mat-sys-background),
       container-width: 310px,
@@ -163,12 +166,6 @@
     (
       filled-disabled-label-text-color: var(--mat-sys-outline),
       filled-disabled-input-text-color: var(--mat-sys-outline),
-    )
-  );
-
-  @include mat.badge-overrides(
-    (
-      background-color: var(--warn-25),
     )
   );
 }

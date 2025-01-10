@@ -7,28 +7,40 @@
       &-error {
         @include mat.snack-bar-overrides(
           (
-            container-color: var(--plastik-error-notification-box-color, rgb(208, 0, 0)),
+            container-color:
+              var(--plastik-error-notification-box-color, var(--mat-sys-error), rgb(208, 0, 0)),
           )
         );
       }
       &-warning {
         @include mat.snack-bar-overrides(
           (
-            container-color: var(--plastik-warning-notification-box-color, rgb(255, 181, 43)),
+            container-color:
+              var(
+                --plastik-warning-notification-box-color,
+                var(--mat-sys-warning),
+                rgb(255, 181, 43)
+              ),
           )
         );
       }
       &-info {
         @include mat.snack-bar-overrides(
           (
-            container-color: var(--plastik-info-notification-box-color, rgb(25, 25, 255)),
+            container-color:
+              var(--plastik-info-notification-box-color, var(--mat-sys-info), rgb(25, 25, 255)),
           )
         );
       }
       &-success {
         @include mat.snack-bar-overrides(
           (
-            container-color: var(--plastik-success-notification-box-colors, rgb(31, 163, 31)),
+            container-color:
+              var(
+                --plastik-success-notification-box-colors,
+                var(--mat-sys-success),
+                rgb(31, 163, 31)
+              ),
           )
         );
       }

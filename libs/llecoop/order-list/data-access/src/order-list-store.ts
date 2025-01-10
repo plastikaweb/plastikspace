@@ -5,19 +5,10 @@ import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
-  patchState,
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withState,
+    patchState, signalStore, withComputed, withHooks, withMethods, withState
 } from '@ngrx/signals';
 import {
-  EntityId,
-  SelectEntityId,
-  setAllEntities,
-  updateEntity,
-  withEntities,
+    EntityId, SelectEntityId, setAllEntities, updateEntity, withEntities
 } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
@@ -40,7 +31,7 @@ export const LLecoopOrderListStore = signalStore(
   withState<LlecoopOrderListState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'desc'],
+    sorting: ['createdAt', 'desc'],
     selectedItemId: null,
     selectedItemUserOrderId: null,
   }),
@@ -132,8 +123,7 @@ export const LLecoopOrderListStore = signalStore(
               .update({ ...order, status: order.status === 'progress' ? 'waiting' : 'progress' })
               .pipe(
                 tapResponse({
-                  next: response => {
-                    console.log(response);
+                  next: () => {
                     storeNotificationService.create(
                       `Estat de la comanda "${order['name']}" actualitzat correctament`,
                       'SUCCESS'

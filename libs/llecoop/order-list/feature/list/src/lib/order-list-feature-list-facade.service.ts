@@ -11,9 +11,15 @@ import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { TableSorting } from '@plastik/shared/table/entities';
 
-import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
-import { LlecoopOrderListFeatureListTableConfig } from './order-list-feature-list-table/order-list-feature-list-table.config';
-import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
+import {
+    getLlecoopOrderListFeatureListSearchFormConfig
+} from './order-list-feature-list-table/order-list-feature-list-search-form.config';
+import {
+    LlecoopOrderListFeatureListTableConfig
+} from './order-list-feature-list-table/order-list-feature-list-table.config';
+import {
+    LlecoopOrderListFeatureListTotalDetailTableConfig
+} from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +48,7 @@ export class LlecoopOrderListFeatureListFacadeService
           .confirm(
             'Iniciar nova comanda',
             this.#sanitizer.bypassSecurityTrustHtml(
-              `<div class="flex flex-col gap-sm justify-center items-center bg-gray-10 rounded-xl p-md">
+              `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
                 <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.getNewOrderName()}</p>
                 <p class="font-extrabold">Oberta fins el ${this.getNewOrderDate().format('DD/MM/YYYY')}
                 a les ${this.getNewOrderDate().format('HH:mm')}</span> hores.</p>
