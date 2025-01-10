@@ -1,18 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
-  getLlecoopProductUnitStep,
-  getLlecoopProductUnitSuffix,
-  LlecoopOrderProduct,
+    getLlecoopProductUnitStep, getLlecoopProductUnitSuffix, LlecoopOrderProduct
 } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { productCategoryColumn } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
-  DEFAULT_TABLE_CONFIG,
-  TableColumnFormatting,
-  TableDefinition,
-  TableStructureConfig,
+    DEFAULT_TABLE_CONFIG, TableColumnFormatting, TableDefinition, TableStructureConfig
 } from '@plastik/shared/table/entities';
 
 @Injectable({
@@ -154,6 +149,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     isEditableConfig: orderProduct => ({
       type: 'toggle',
       attributes: {
+        placeholder: 'canvia estat de la revisió',
         checked: orderProduct?.reviewed,
       },
       onChanges: (value, orderProduct) => {
@@ -188,11 +184,11 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
       caption: 'Comanda de soci: Llistat de productes',
       noPagination: true,
       extraRowStyles: (orderProduct: LlecoopOrderProduct) => {
-        return orderProduct.reviewed
-          ? 'marked-ok'
-          : orderProduct.finalQuantity !== orderProduct.initQuantity ||
-              (orderProduct.extraInfo ?? '').trim().length > 0
-            ? 'marked-changed'
+        return orderProduct.finalQuantity !== orderProduct.initQuantity ||
+          (orderProduct.extraInfo ?? '').trim().length > 0
+          ? 'marked-changed'
+          : orderProduct.reviewed
+            ? 'marked-ok'
             : '';
       },
     } as TableDefinition<LlecoopOrderProduct>;

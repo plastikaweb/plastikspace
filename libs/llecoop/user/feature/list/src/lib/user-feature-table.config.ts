@@ -8,10 +8,7 @@ import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
-  DEFAULT_TABLE_CONFIG,
-  TableColumnFormatting,
-  TableDefinition,
-  TableStructureConfig,
+    DEFAULT_TABLE_CONFIG, TableColumnFormatting, TableDefinition, TableStructureConfig
 } from '@plastik/shared/table/entities';
 
 @Injectable({
@@ -42,10 +39,8 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       type: 'CUSTOM',
       execute: (_, user) =>
         user?.isAdmin
-          ? this.#sanitizer.bypassSecurityTrustHtml(
-              '<span class="material-icons text-primary-dark">shield</span>'
-            )
-          : '<span class="material-icons text-secondary">face</span>',
+          ? this.#sanitizer.bypassSecurityTrustHtml('<span class="material-icons">shield</span>')
+          : '<span class="material-icons">face</span>',
     },
   };
 

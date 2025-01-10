@@ -1,4 +1,5 @@
 import { InjectionToken } from '@angular/core';
+
 import { NotificationTypesConfig } from './notification';
 
 export const defaultNotification: NotificationTypesConfig = {
@@ -22,7 +23,7 @@ export const defaultNotification: NotificationTypesConfig = {
   ['SUCCESS']: {
     type: 'SUCCESS',
     icon: 'check',
-    duration: 5000,
+    duration: undefined,
   },
 };
 

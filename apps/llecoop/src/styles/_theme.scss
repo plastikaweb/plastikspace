@@ -28,6 +28,11 @@
   --tertiary-95: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 95)};
   --tertiary-25: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 25)};
   --tertiary-10: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 10)};
+  --secondary-50: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 50)};
+  --secondary-70: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 70)};
+  --secondary-95: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 95)};
+  --secondary-25: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 25)};
+  --secondary-10: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 10)};
   --warn: #{mat.m2-get-color-from-palette(palette.$error-palette, 50)};
   --warn-70: #{mat.m2-get-color-from-palette(palette.$error-palette, 70)};
   --warn-90: #{mat.m2-get-color-from-palette(palette.$error-palette, 90)};
@@ -42,11 +47,11 @@
   --primary-lighter: var(--primary-95);
   --primary-dark: var(--primary-40);
   --primary-darker: var(--primary-10);
-  --secondary: var(--tertiary-50);
-  --secondary-light: var(--tertiary-70);
-  --secondary-lighter: var(--tertiary-95);
-  --secondary-dark: var(--tertiary-25);
-  --secondary-darker: var(--tertiary-10);
+  --secondary: var(--secondary-50);
+  --secondary-light: var(--secondary-70);
+  --secondary-lighter: var(--secondary-95);
+  --secondary-dark: var(--secondary-25);
+  --secondary-darker: var(--secondary-10);
 
   /* Spacing */
   --spacing-tiny: var(--tiny);
@@ -70,15 +75,15 @@
   --font-size-xxl: var(--h2);
 
   /* Table */
-  --plastik-mdc-table-row-marked-ok-bg-color: var(--tertiary-95);
+  --plastik-mdc-table-row-marked-ok-bg-color: var(--mat-sys-primary-container);
   --plastik-mdc-nested-data-bg-color: var(--mat-sys-secondary-container);
   --plastik-mdc-nested-container-bg-color: var(--mat-sys-surface-container);
-  --plastik-mdc-table-row-marked-ko-bg-color: var(--warn-90);
-  --plastik-mdc-table-row-marked-changed-bg-color: var(--primary-lighter);
+  --plastik-mdc-table-row-marked-ko-bg-color: var(--mat-sys-error-container);
+  --plastik-mdc-table-row-marked-changed-bg-color: var(--mat-sys-inverse-primary);
 
   /* Notification Snackbar Boxes */
-  --plastik-error-notification-box-color: var(--warn);
-  --plastik-info-notification-box-color: rgb(10, 100, 155);
-  --plastik-warning-notification-box-color: rgb(156, 104, 14);
-  --plastik-success-notification-box-colors: var(--secondary);
+  --plastik-error-notification-box-color: var(--mat-sys-error);
+  --plastik-info-notification-box-color: rgba(10, 117, 210, 0.87);
+  --plastik-warning-notification-box-color: rgba(204, 79, 12, 0.87);
+  --plastik-success-notification-box-colors: var(--mat-sys-tertiary);
 }

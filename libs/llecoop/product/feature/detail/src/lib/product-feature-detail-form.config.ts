@@ -8,10 +8,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import {
-  LlecoopProduct,
-  LlecoopProductCategory,
-  LlecoopProductSelectData,
-  LlecoopProductUnit,
+    LlecoopProduct, LlecoopProductCategory, LlecoopProductSelectData, LlecoopProductUnit
 } from '@plastik/llecoop/entities';
 
 function setStockUnitAddonRight(
@@ -127,8 +124,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           ],
         },
         {
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sub p-sub rounded-md',
           fieldGroup: [
             {
               key: 'price',
@@ -215,8 +211,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           ],
         },
         {
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sub p-sub',
           fieldGroup: [
             {
               key: 'isAvailable',

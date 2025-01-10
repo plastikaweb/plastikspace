@@ -1,13 +1,20 @@
-<div class="flex flex-row items-center justify-between text-white gap-sm">
-  <div class="flex flex-row items-center justify-start gap-sm">
+<div class="flex flex-row justify-between items-center gap-sm">
+  <div class="flex flex-row justify-start items-center gap-sm">
     @if (data.icon; as icon) {
-      <mat-icon aria-hidden="true" class="basis-5 md:basis-2">{{ icon }}</mat-icon>
+    <mat-icon
+      aria-hidden="true"
+      class="basis-5 md:basis-2"
+    >{{ icon }}</mat-icon>
     }
     <p [innerHTML]="data.message"></p>
   </div>
   @if (data.action; as action) {
-    <button mat-button [attr.aria-label]="data.ariaLabel" (click)="dismiss()">
-      {{ action }}
-    </button>
+  <button
+    mat-button
+    [attr.aria-label]="data.ariaLabel"
+    (click)="dismiss()"
+  >
+    {{ action }}
+  </button>
   }
 </div>
