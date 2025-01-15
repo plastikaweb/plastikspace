@@ -13,7 +13,7 @@
     <div class="flex flex-row justify-center items-center break-words gap-sub">
       <span class="hidden md:flex"> #{{ orderListStore.currentOrder()?.name }} </span>
       <span class="hidden md:flex">|</span>
-      <span class="text-pretty">
+      <span class="text-balance">
         {{
       (openedUserOrderList()?.totalPrice || 0) + (openedUserOrderList()?.deliveryPrice || 0)
       &vert; currency: 'EUR' : 'symbol' : '1.2-2'

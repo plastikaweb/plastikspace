@@ -4,21 +4,17 @@
 
 <div class="core-cms-container">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
-    <div
-      start
-      class="flex items-center gap-sub sm:gap-sm"
-    >
+    <div start class="flex items-center gap-sub sm:gap-sm">
       <button
         mat-icon-button
         aria-label="sidenav toggle button"
         class="flex justify-center align-middle"
         data-test="toggle-sidenav-button"
-        (click)="sidenav.toggle()"
-      >
+        (click)="sidenav.toggle()">
         @if (!sidenav.opened) {
-        <mat-icon class="mat-18">menu</mat-icon>
+          <mat-icon class="mat-18">menu</mat-icon>
         } @else if (sidenav.opened) {
-        <mat-icon class="mat-18">close</mat-icon>
+          <mat-icon class="mat-18">close</mat-icon>
         }
       </button>
 
@@ -27,16 +23,14 @@
         <a
           class="flex justify-between content-center items-center no-underline gap-sub"
           [routerLink]="['/']"
-          [attr.title]="headerTitle"
-        >
+          [attr.title]="headerTitle">
           <div class="flex justify-center items-center gap-sub">
             @if (headerConfig.mainIcon; as icon) {
-            <svg-icon
-              [name]="extendedTitle"
-              [svgAriaLabel]="extendedTitle"
-              [src]="icon.iconPath"
-              [svgClass]="icon.svgClass"
-            ></svg-icon>
+              <svg-icon
+                [name]="extendedTitle"
+                [svgAriaLabel]="extendedTitle"
+                [src]="icon.iconPath"
+                [svgClass]="icon.svgClass"></svg-icon>
             }
 
             <span class="hidden sm:block">{{ extendedTitle || headerTitle }}</span>
@@ -45,46 +39,34 @@
       </h1>
     </div>
 
-    <div
-      end
-      class="flex items-center gap-tiny"
-    >
+    <div end class="flex items-center gap-tiny">
       <ng-container #widgetsContainer></ng-container>
 
       <button
         mat-button
         class="flex gap-tiny"
         [attr.aria-label]="headerMenu?.label()"
-        [matMenuTriggerFor]="menu"
-      >
+        [matMenuTriggerFor]="menu">
         <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
         <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{
+        <span class="block border-b-2 sm:hidden w-fit text-balance p-tiny border-b-gray-10">{{
           headerMenu?.label()
-          }}</span>
+        }}</span>
 
         @for (item of headerMenu?.config; track item.id) {
-        @if (item && item.route) {
-        <button
-          type="button"
-          mat-menu-item
-          [routerLink]="item.route"
-        >
-          <mat-icon>{{ item.icon }}</mat-icon>
-          <span>{{ item.title }}</span>
-        </button>
-        } @else if (item && item.action) {
-        <button
-          type="button"
-          mat-menu-item
-          (click)="item.action()"
-        >
-          <mat-icon>{{ item.icon }}</mat-icon>
-          <span>{{ item.title }}</span>
-        </button>
-        }
+          @if (item && item.route) {
+            <button type="button" mat-menu-item [routerLink]="item.route">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.title }}</span>
+            </button>
+          } @else if (item && item.action) {
+            <button type="button" mat-menu-item (click)="item.action()">
+              <mat-icon>{{ item.icon }}</mat-icon>
+              <span>{{ item.title }}</span>
+            </button>
+          }
         }
       </mat-menu>
     </div>
@@ -100,35 +82,26 @@
       [mode]="isMobile() ? 'over' : 'side'"
       [fixedInViewport]="isMobile()"
       [opened]="!isMobile()"
-      (keydown.escape)="sidenav.close()"
-    >
-      <mat-nav-list
-        menu-items
-        data-test="sidenav-list"
-      >
+      (keydown.escape)="sidenav.close()">
+      <mat-nav-list menu-items data-test="sidenav-list">
         @for (item of viewConfig(); track item.id) {
-        <mat-list-item
-          role="link"
-          class="my-tiny"
-          routerLinkActive="active"
-          ariaCurrentWhenActive="page"
-          [routerLink]="item?.route"
-          [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
-          (click)="isMobile() && sidenav.close()"
-        >
-          <mat-icon
-            matListItemIcon
-            [attr.aria-hidden]="false"
-            [attr.aria-label]="item.title"
-          >{{
-            item.icon
+          <mat-list-item
+            role="link"
+            class="my-tiny"
+            routerLinkActive="active"
+            ariaCurrentWhenActive="page"
+            [routerLink]="item?.route"
+            [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
+            (click)="isMobile() && sidenav.close()">
+            <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
+              item.icon
             }}</mat-icon>
-          <span matListItemTitle>{{ item.title }}</span>
-        </mat-list-item>
+            <span matListItemTitle>{{ item.title }}</span>
+          </mat-list-item>
 
-        @if (item.divider) {
-        <mat-divider></mat-divider>
-        }
+          @if (item.divider) {
+            <mat-divider></mat-divider>
+          }
         }
       </mat-nav-list>
     </mat-sidenav>
@@ -137,29 +110,27 @@
       role="main"
       tabindex="-1"
       id="mainContent"
-      class="p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth @container"
-    >
+      class="p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth @container">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 
   <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-    <div
-      content
-      class="flex flex-row justify-center items-center text-base gap-tiny"
-    >
+    <div content class="flex flex-row justify-center items-center text-base gap-tiny">
       © 2024-{{ currentDate | date: 'yyyy' }}
       <a
         aria-label="visit www.plastikaweb.com page"
         href="https://www.plastikaweb.com"
         target="_blank"
-      >Plastikaweb</a>
+        >Plastikaweb</a
+      >
       &vert;
       <a
         aria-label="visitar la pàgina de El Llevat a www.llevat.org"
         href="https://www.llevat.org"
         target="_blank"
-      >El Llevat</a>
+        >El Llevat</a
+      >
     </div>
   </plastik-core-cms-layout-ui-footer>
 </div>

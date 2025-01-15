@@ -5,21 +5,15 @@ import { inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopOrder } from '@plastik/llecoop/entities';
+import { LlecoopOrder, YearWeek } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { TableSorting } from '@plastik/shared/table/entities';
 
-import {
-    getLlecoopOrderListFeatureListSearchFormConfig
-} from './order-list-feature-list-table/order-list-feature-list-search-form.config';
-import {
-    LlecoopOrderListFeatureListTableConfig
-} from './order-list-feature-list-table/order-list-feature-list-table.config';
-import {
-    LlecoopOrderListFeatureListTotalDetailTableConfig
-} from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
+import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
+import { LlecoopOrderListFeatureListTableConfig } from './order-list-feature-list-table/order-list-feature-list-table.config';
+import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
 
 @Injectable({
   providedIn: 'root',
@@ -97,11 +91,11 @@ export class LlecoopOrderListFeatureListFacadeService
     }
   }
 
-  private getNewOrderName(): string {
-    const week = moment().week();
+  private getNewOrderName(): YearWeek {
     const year = moment().year();
+    const week = moment().week();
 
-    return `${week}-${year}`;
+    return `${year.toString().padStart(4, '0')}-${week.toString().padStart(2, '0')}` as YearWeek;
   }
 
   private getNewOrderDate() {
