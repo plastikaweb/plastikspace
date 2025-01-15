@@ -1,8 +1,10 @@
-<div class="flex flex-col">
+<main class="flex flex-col">
+  <plastik-mat-theme-toggle class="absolute z-10 top-md right-md"></plastik-mat-theme-toggle>
+
   <div class="flex justify-center items-center min-h-screen contain-layout p-sub">
     <mat-card
       appearance="raised"
-      class="flex items-center justify-center align-middle shadow-md bg-gray-10 min-w-[300px]">
+      class="flex items-center justify-center align-middle shadow-md min-w-[300px]">
       <mat-card-header>
         <mat-card-title class="flex justify-center align-middle gap-sub">
           @if (logo() && title()) {
@@ -12,7 +14,7 @@
               [src]="logo()" />
           }
           @if (title()) {
-            <span>{{ title() }}</span>
+            <h1 class="text-lg">{{ title() }}</h1>
           }
         </mat-card-title>
       </mat-card-header>
@@ -41,4 +43,4 @@
       </mat-card-footer>
     </mat-card>
   </div>
-</div>
+</main>

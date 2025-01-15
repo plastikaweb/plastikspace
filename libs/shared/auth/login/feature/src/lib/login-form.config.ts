@@ -1,6 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { Validators } from '@angular/forms';
 import { FormConfig } from '@plastik/core/entities';
+
 import { LoginData } from './login-facade.service';
 
 export function loginFormConfig(): FormConfig<LoginData> {
@@ -13,6 +14,9 @@ export function loginFormConfig(): FormConfig<LoginData> {
         label: 'Adreça electrònica',
         placeholder: 'Adreça electrònica',
         required: true,
+        attributes: {
+          autocomplete: 'off',
+        },
       },
       validators: {
         validation: [Validators.email],
@@ -28,6 +32,9 @@ export function loginFormConfig(): FormConfig<LoginData> {
         required: true,
         minLength: 8,
         maxLength: 25,
+        attributes: {
+          autocomplete: 'off',
+        },
       },
     },
   ];
