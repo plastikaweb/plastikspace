@@ -1,6 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { Validators } from '@angular/forms';
 import { FormConfig } from '@plastik/core/entities';
+
 import { RequestPasswordData } from './request-password-facade.service';
 
 export function requestPasswordFormConfig(): FormConfig<RequestPasswordData> {
@@ -15,6 +16,9 @@ export function requestPasswordFormConfig(): FormConfig<RequestPasswordData> {
           label: 'Adreça electrònica',
           placeholder: 'Adreça electrònica',
           required: true,
+          attributes: {
+            autocomplete: 'off',
+          },
         },
         validators: {
           validation: [Validators.email],

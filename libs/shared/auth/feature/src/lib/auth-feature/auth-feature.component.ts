@@ -4,6 +4,8 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterModule } from '@angular/router';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/password';
+import { MatThemeToggleComponent } from '@plastik/shared/mat-theme-toggle';
+
 import { AUTH_FORM_FACADE } from './auth-form-facade.type';
 
 @Component({
@@ -14,6 +16,7 @@ import { AUTH_FORM_FACADE } from './auth-form-facade.type';
     RouterModule,
     PasswordWithVisibilityFormlyModule,
     SharedFormFeatureModule,
+    MatThemeToggleComponent,
   ],
   templateUrl: './auth-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
