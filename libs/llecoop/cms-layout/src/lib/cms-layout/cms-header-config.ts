@@ -29,7 +29,7 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
         {
           id: 'theme-toggle',
           component: () =>
-            import('@plastik/core/mat-theme-toggle').then(c => c.MatThemeToggleComponent),
+            import('@plastik/shared/mat-theme-toggle').then(c => c.MatThemeToggleComponent),
           order: 2,
         },
       ],

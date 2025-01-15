@@ -168,4 +168,14 @@
       filled-disabled-input-text-color: var(--mat-sys-outline),
     )
   );
+
+  @include mat.card-overrides(
+    (
+      elevated-container-color: var(--mat-sys-inverse-on-surface),
+    )
+  );
+}
+
+.mat-mdc-icon-button {
+  line-height: normal;
 }

@@ -35,7 +35,6 @@
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/list-view": ["libs/core/table-with-filtering/src/index.ts"],
-      "@plastik/core/mat-theme-toggle": ["libs/core/mat-theme-toggle/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
       "@plastik/llecoop/category/data-access": ["libs/llecoop/category/data-access/src/index.ts"],
       "@plastik/llecoop/category/detail": ["libs/llecoop/category/feature/detail/src/index.ts"],
@@ -98,6 +97,7 @@
       "@plastik/shared/form/year-picker": ["libs/shared/form/ui/year-picker/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
+      "@plastik/shared/mat-theme-toggle": ["libs/shared/mat-theme-toggle/src/index.ts"],
       "@plastik/shared/notification/data-access": [
         "libs/shared/notification/data-access/src/index.ts"
       ],

@@ -1,6 +1,6 @@
-# mat-theme-toggle
+# shared-mat-theme-toggle
 
-- [mat-theme-toggle](#mat-theme-toggle)
+- [shared-mat-theme-toggle](#shared-mat-theme-toggle)
   - [Description](#description)
   - [Features](#features)
   - [Usage](#usage)
@@ -31,7 +31,7 @@ A reusable Angular Material theme toggle component that allows users to switch b
 ### 1. Import the `MatThemeToggleComponent` in your component
 
 ```typescript
-import { MatThemeToggleComponent } from '@plastikspace/mat-theme-toggle';
+import { MatThemeToggleComponent } from '@plastikspace/shared-mat-theme-toggle';
 
 @Component({
   imports: [MatThemeToggleComponent],
@@ -42,7 +42,7 @@ export class YourComponent {}
 ### 2. Use the component in your template
 
 ```html
-<mat-theme-toggle></mat-theme-toggle>
+<shared-mat-theme-toggle></shared-mat-theme-toggle>
 ```
 
 ## API
@@ -67,7 +67,7 @@ Each theme has the following properties:
 
 ## Running unit tests
 
-Run `nx test mat-theme-toggle` to execute the unit tests.
+Run `nx test shared-mat-theme-toggle` to execute the unit tests.
 
 ## Useful links
 

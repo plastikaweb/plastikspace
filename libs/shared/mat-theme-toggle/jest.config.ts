@@ -1,8 +1,8 @@
 export default {
-  displayName: 'mat-theme-toggle',
+  displayName: 'shared-mat-theme-toggle',
   preset: '../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../coverage/libs/core/mat-theme-toggle',
+  coverageDirectory: '../../../coverage/libs/shared/mat-theme-toggle',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
