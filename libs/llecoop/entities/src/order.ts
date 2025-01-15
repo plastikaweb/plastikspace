@@ -5,6 +5,17 @@ import { BaseEntity, FormSelectOption } from '@plastik/core/entities';
 import { LlecoopBaseProduct } from './product';
 import { LlecoopUser } from './user';
 
+export type YearWeek = `${number}${number}${number}${number}-${number}${number}`;
+
+/**
+ * @description Checks if a given string is in the format of a YearWeek.
+ * @param {string} value - The string to check.
+ * @returns {value is YearWeek} - True if the string is in the correct format, false otherwise.
+ */
+export function isYearWeek(value: string): value is YearWeek {
+  return /^\d{4}-([0-4]\d|5[0-3])$/.test(value);
+}
+
 export type LlecoopOrderProduct = LlecoopBaseProduct & {
   initQuantity: number;
   finalQuantity: number;
@@ -31,6 +42,7 @@ export interface LlecoopOrder extends BaseEntity {
   orderCount: number;
   orders?: LlecoopUserOrder[];
   total?: LlecoopOrderProductTotal[];
+  name: YearWeek;
 }
 
 export interface LlecoopUserOrder extends BaseEntity {
