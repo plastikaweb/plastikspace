@@ -2,18 +2,15 @@
 @let tableDefinition = facade.tableDefinition;
 @let order = facade.userOrder();
 
-<div class="flex flex-col flex-wrap justify-center items-center gap-tiny md:flex-row md:justify-between">
+<div
+  class="flex flex-col flex-wrap justify-center items-center gap-tiny md:flex-row md:justify-between">
   <h2 class="flex content-center items-center h4 gap-sub">
     <mat-icon class="text-[40px] size-[40px]">{{ viewConfig.icon }}</mat-icon>
     <span>{{ viewConfig.title | titlecase }}</span>
   </h2>
 
   <div class="flex flex-col items-center sm:flex-row sm:justify-end gap-tiny">
-    <button
-      type="button"
-      mat-flat-button
-      [routerLink]="['../']"
-    >
+    <button type="button" mat-flat-button [routerLink]="['../']">
       <mat-icon>arrow_back</mat-icon> Tornar al llistat
     </button>
   </div>
@@ -22,21 +19,14 @@
 <div class="flex flex-col justify-between gap-md pt-lg">
   <section
     class="rounded-lg shadow-sm p-md mb-md"
-    [attr.aria-label]="'Resum de la comanda ' + order?.name"
-  >
+    [attr.aria-label]="'Resum de la comanda ' + order?.name">
     <article>
-      <h3 class="text-md text-pretty">
+      <h3 class="text-md text-balance">
         {{ order?.name }}
       </h3>
 
-      <mat-chip
-        disableRipple
-        class="my-sm"
-      >
-        <mat-icon
-          matChipAvatar
-          [class]="facade.orderStatus()?.class"
-        >
+      <mat-chip disableRipple class="my-sm">
+        <mat-icon matChipAvatar [class]="facade.orderStatus()?.class">
           {{ facade.orderStatus()?.icon }}
         </mat-icon>
         {{ facade.orderStatus()?.label }}
@@ -56,14 +46,14 @@
           <dd>{{ order?.userName }}</dd>
         </div>
         @if (order?.address) {
-        <div class="flex items-center gap-tiny">
-          <dt>Adreça:</dt>
-          <dd>
-            <address class="not-italic">
-              {{ order?.address }}
-            </address>
-          </dd>
-        </div>
+          <div class="flex items-center gap-tiny">
+            <dt>Adreça:</dt>
+            <dd>
+              <address class="not-italic">
+                {{ order?.address }}
+              </address>
+            </dd>
+          </div>
         }
         <div class="flex items-center gap-tiny">
           <dt>Email:</dt>
@@ -81,14 +71,12 @@
     [columnProperties]="tableDefinition.columnProperties || []"
     [resultsLength]="tableDefinition?.count() || 0"
     [pageSizeOptions]="tableDefinition.pageSizeOptions || []"
-    [noPagination]="tableDefinition.noPagination || false"
-  >
+    [noPagination]="tableDefinition.noPagination || false">
   </plastik-shared-table>
 
   <section
     class="flex flex-col self-end rounded-lg shadow-sm p-sm min-w-third gap-tiny"
-    aria-label="Total de la compra"
-  >
+    aria-label="Total de la compra">
     <dl class="divide-y divide-secondary-dark">
       <div class="flex flex-row justify-between items-center p-tiny">
         <dt class="text-md">Total productes</dt>
