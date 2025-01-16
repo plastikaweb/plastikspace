@@ -4,7 +4,7 @@ import { inject, Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import { formatOrderListStatus } from '@plastik/llecoop/order-list/util';
+import { formatOrderStatus } from '@plastik/llecoop/order-list/util';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -29,7 +29,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[90px] @lg:min-w-[105px]'],
+    cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     link: order => `./${order?.id}`,
     formatting: {
       type: 'LINK',
@@ -37,17 +37,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     },
   };
 
-  readonly #status: TableColumnFormatting<LlecoopOrder, 'CUSTOM'> = {
-    key: 'status',
-    title: 'Estat',
-    propertyPath: 'status',
-    sorting: true,
-    cssClasses: ['max-w-[70px] @3xl:min-w-[140px] @3xl:max-w-[180px]'],
-    formatting: {
-      type: 'CUSTOM',
-      execute: status => formatOrderListStatus(this.#sanitizer, status as LlecoopOrder['status']),
-    },
-  };
+  readonly #status = formatOrderStatus<LlecoopOrder>();
 
   readonly #endTime = createFirebaseTimestampTableColumn<LlecoopOrder>({
     key: 'endTime',

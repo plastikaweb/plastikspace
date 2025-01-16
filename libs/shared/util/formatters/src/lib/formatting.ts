@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
 
 /**
@@ -18,7 +19,8 @@ export type FormattingTypes =
   | 'LINK'
   | 'CUSTOM'
   | 'TEXT'
-  | 'INPUT';
+  | 'INPUT'
+  | 'COMPONENT';
 
 type FormattingTypesNumeric = Extract<
   FormattingTypes,
@@ -27,6 +29,8 @@ type FormattingTypesNumeric = Extract<
 type FormattingTypesBoolean = Extract<FormattingTypes, 'BOOLEAN_WITH_ICON'>;
 
 type FormattingTypesInput = Extract<FormattingTypes, 'INPUT'>;
+
+type FormattingTypesComponent = Extract<FormattingTypes, 'COMPONENT'>;
 
 type FormattingTypesDefault = Extract<
   FormattingTypes,
@@ -44,14 +48,33 @@ export type FormattingInput<T> = Record<keyof T, unknown>;
 export type FormattingDateInput = Date | number | string;
 
 /**
+ * @description The types allowed for returned values from a formatting component method.
+ */
+export type FormattingComponentOutput = {
+  component: Type<unknown>;
+  inputs?: Record<string, unknown>;
+};
+/**
  * @description The types allowed for returned values from a formatting utility method.
  */
-export type FormattingOutput = Date | number | boolean | string | SafeHtml;
+export type FormattingOutput =
+  | Date
+  | number
+  | boolean
+  | string
+  | SafeHtml
+  | FormattingComponentOutput;
 
+/**
+ * @description Formatting image extras blueprint.
+ */
 type FormattingImageExtras = {
   placeholder: string;
 };
 
+/**
+ * @description Formatting numeric extras blueprint.
+ */
 type FormattingNumericExtras = Partial<{
   dateDigitsInfo: string;
   timeDigitsInfo: string;
@@ -62,11 +85,17 @@ type FormattingNumericExtras = Partial<{
   currencyCode: string;
 }>;
 
+/**
+ * @description Formatting boolean extras blueprint.
+ */
 type FormattingBooleanWithIconExtras = {
   iconTrue: string;
   iconFalse: string;
 };
 
+/**
+ * @description Formatting input extras blueprint.
+ */
 type FormattingInputExtras = {
   type: 'text' | 'number';
   placeholder: string;
@@ -91,7 +120,7 @@ export type FormattingExtras<TYPE extends FormattingTypes> = TYPE extends 'IMAGE
         : object;
 
 /**
- * @description Formatting property blueprint.
+ * @description The blueprint for default formatting item.
  */
 export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEXT'> {
   type: TYPE;
@@ -103,6 +132,14 @@ export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEX
   ) => FormattingOutput;
   extras?: (value?: OBJ) => FormattingExtras<TYPE>;
   onInputChanges?: (value: unknown, element: OBJ, index?: number, extras?: unknown) => object;
+}
+
+/**
+ * @description The blueprint for component-based formatting item.
+ */
+export interface PropertyComponentFormattingConf<OBJ, TYPE extends FormattingTypes = 'COMPONENT'> {
+  type: TYPE;
+  execute: (value: OBJ[keyof OBJ] | string, element?: OBJ) => FormattingComponentOutput;
 }
 
 type PropertyFormattingBase<OBJ extends Record<keyof OBJ, unknown>> = {
@@ -126,6 +163,8 @@ type PropertyFormattingBooleanWithIcon<OBJ> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesBoolean>;
 type PropertyFormattingInput<OBJ> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesInput>;
+type PropertyFormattingComponent<OBJ> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, FormattingTypesComponent>;
 
 /**
  * @description The blueprint for any formatting item constraint by its FormattingTypes value.
@@ -138,4 +177,6 @@ export type PropertyFormatting<OBJ, TYPE = 'TEXT'> = TYPE extends FormattingType
       ? PropertyFormattingBooleanWithIcon<OBJ>
       : TYPE extends 'INPUT'
         ? PropertyFormattingInput<OBJ>
-        : PropertyFormattingDefault<OBJ>;
+        : TYPE extends 'COMPONENT'
+          ? PropertyFormattingComponent<OBJ>
+          : PropertyFormattingDefault<OBJ>;

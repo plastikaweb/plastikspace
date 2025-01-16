@@ -25,12 +25,11 @@
         {{ order?.name }}
       </h3>
 
-      <mat-chip disableRipple class="my-sm">
-        <mat-icon matChipAvatar [class]="facade.orderStatus()?.class">
-          {{ facade.orderStatus()?.icon }}
-        </mat-icon>
-        {{ facade.orderStatus()?.label }}
-      </mat-chip>
+      <plastik-ui-order-status-chip
+        [iconClass]="facade.orderStatus()?.class || ''"
+        [icon]="facade.orderStatus()?.icon || ''"
+        [label]="facade.orderStatus()?.label || ''">
+      </plastik-ui-order-status-chip>
 
       <dl class="space-y-2">
         <div class="flex items-center gap-tiny">
