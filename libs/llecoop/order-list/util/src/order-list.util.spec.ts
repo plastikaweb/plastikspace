@@ -2,11 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 
-import {
-  formatOrderListStatus,
-  formatUserOrderDeliveryDate,
-  formatUserOrderStatus,
-} from './order-list.util';
+import { formatOrderStatus, formatUserOrderDeliveryDate } from './order-list.util';
 
 describe('order-list-util', () => {
   let sanitizer: DomSanitizer;
@@ -30,40 +26,29 @@ describe('order-list-util', () => {
         deliveryDate: 'tuesday' as LlecoopUserOrder['deliveryDate'],
       };
       const result = formatUserOrderDeliveryDate(order, sanitizer);
-      expect(result).toContain('<p>dijous entre les 16h i les 17h</p>'); // Adjust based on your formatting logic
+      expect(result).toContain('<p>dijous entre les 16h i les 17h</p>');
     });
   });
 
-  describe('formatUserOrderStatus', () => {
-    it('should return the correct status for a given input', () => {
-      expect(formatUserOrderStatus(sanitizer, 'waiting')).toContain(`
-    <p class="flex gap-tiny justify-center items-center">
-      <span class="material-icons text-info">hourglass_empty</span>
-      <span class="capitalize hidden md:flex">Pendent</span>
-    </p>
-  `);
+  describe('formatOrderStatus', () => {
+    it('should return formatted order status with default values', () => {
+      const format = formatOrderStatus();
+      expect(format).toEqual({
+        key: 'status',
+        title: 'Estat',
+        propertyPath: 'status',
+        sorting: true,
+        cssClasses: ['min-w-[145px]'],
+        formatting: {
+          type: 'COMPONENT',
+          execute: expect.any(Function),
+        },
+      });
     });
 
-    it('should not show the icon when showIcon is false', () => {
-      expect(formatUserOrderStatus(sanitizer, 'waiting', false, true)).toContain(`hourglass_empty`);
-    });
-
-    it('should not show the label when showLabel is false', () => {
-      expect(formatUserOrderStatus(sanitizer, 'waiting', true, false)).toContain(`Pendent`);
-    });
-
-    it('should not show the icon or label when both are false', () => {
-      expect(formatUserOrderStatus(sanitizer, 'waiting', false, false)).not.toContain(
-        `hourglass_empty`
-      );
-      expect(formatUserOrderStatus(sanitizer, 'waiting', false, false)).not.toContain(`Pendent`);
-    });
-  });
-
-  describe('formatOrderListStatus', () => {
-    it('should return the correct status for a given input', () => {
-      expect(formatOrderListStatus(sanitizer, 'waiting')).toContain(`hourglass_empty`);
-      expect(formatOrderListStatus(sanitizer, 'waiting')).toContain(`En espera`);
+    it('should throw error when execute is called without element', () => {
+      const format = formatOrderStatus();
+      expect(() => format.formatting?.execute?.(null)).toThrow('Element is required');
     });
   });
 });

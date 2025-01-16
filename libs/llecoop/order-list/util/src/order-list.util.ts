@@ -7,6 +7,9 @@ import {
   llecoopUserOrderStatus,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import { UiOrderStatusChipComponent } from '@plastik/llecoop/order-status-chip';
+import { TableColumnFormatting } from '@plastik/shared/table/entities';
 
 /**
  * Formats the delivery date for a user order.
@@ -34,53 +37,59 @@ export function formatUserOrderDeliveryDate(
 }
 
 /**
- * Formats the status of a user order and returns it as a SafeHtml object.
- * @param {DomSanitizer} sanitizer - The Angular sanitizer service.
- * @param {LlecoopUserOrder['status']} orderStatus - The status of the user order.
- * @param {boolean} showLabel - Whether to show the label or not.
- * @param {boolean} showIcon - Whether to show the icon or not.
- * @returns {SafeHtml} The formatted status as a SafeHtml object.
+ * @description Checks if the passed value is a LlecoopUserOrder.
+ * @param {LlecoopOrder | LlecoopUserOrder} value The value to check.
+ * @returns {value is LlecoopUserOrder} True if the value is a LlecoopUserOrder, false otherwise.
  */
-export function formatUserOrderStatus(
-  sanitizer: DomSanitizer,
-  orderStatus?: LlecoopUserOrder['status'],
-  showLabel = true,
-  showIcon = true
-): SafeHtml {
-  if (!orderStatus) {
-    return sanitizer.bypassSecurityTrustHtml('<span>No Status</span>') as SafeHtml;
-  }
-
-  const status = llecoopUserOrderStatus[orderStatus];
-
-  return sanitizer.bypassSecurityTrustHtml(`
-    <p class="flex gap-tiny justify-center items-center">
-      ${showIcon ? `<span class="material-icons ${status?.class}">${status?.icon}</span>` : ``}
-      ${showLabel ? `<span class="capitalize hidden md:flex">${status?.label}</span>` : ``}
-    </p>
-    `) as SafeHtml;
+export function isLlecoopUserOrder(
+  value: LlecoopOrder | LlecoopUserOrder
+): value is LlecoopUserOrder {
+  return 'userId' in value;
 }
 
 /**
- * Formats the status of an order and returns it as a SafeHtml object.
- * @param {DomSanitizer} sanitizer - The Angular sanitizer service.
- * @param {LlecoopOrder['status']} orderStatus - The status of the order.
- * @returns {SafeHtml} The formatted status as a SafeHtml object.
+ * @description Formats the status of an order and returns it as a SafeHtml object.
+ * @template T
+ * @param {string} key The key of the column.
+ * @param {Capitalize<string>} title The title of the column.
+ * @param {string} propertyPath The property path of the column.
+ * @param {string[]} cssClasses The CSS classes of the column.
+ * @param {boolean} sorting Whether the column is sortable or not.
+ * @returns {TableColumnFormatting<T, 'COMPONENT'>} The formatted column.
  */
-export function formatOrderListStatus(
-  sanitizer: DomSanitizer,
-  orderStatus?: LlecoopOrder['status']
-): SafeHtml {
-  if (!orderStatus) {
-    return sanitizer.bypassSecurityTrustHtml('<span>No Status</span>') as SafeHtml;
-  }
+export function formatOrderStatus<T extends LlecoopUserOrder | LlecoopOrder>(
+  key = 'status',
+  title: Capitalize<string> = 'Estat',
+  propertyPath = 'status',
+  cssClasses: [cell?: string, content?: string] = ['min-w-[145px]'],
+  sorting = true
+): TableColumnFormatting<T, 'COMPONENT'> {
+  return {
+    key,
+    title,
+    propertyPath,
+    sorting,
+    cssClasses,
+    formatting: {
+      type: 'COMPONENT',
+      execute: (value, element?: T) => {
+        if (!element) {
+          throw new Error('Element is required');
+        }
 
-  const status = llecoopOrderStatus[orderStatus];
-
-  return sanitizer.bypassSecurityTrustHtml(`
-    <p class="flex gap-tiny justify-center items-center">
-      <span class="material-icons ${status?.class}">${status?.icon}</span>
-      <span class="capitalize hidden @3xl:flex">${status?.label}</span>
-    </p>
-    `) as SafeHtml;
+        const status = value as T['status'];
+        const orderStatus = isLlecoopUserOrder(element)
+          ? llecoopUserOrderStatus[status as LlecoopUserOrder['status']]
+          : llecoopOrderStatus[status as LlecoopOrder['status']];
+        return {
+          component: UiOrderStatusChipComponent,
+          inputs: {
+            iconClass: orderStatus?.class || '',
+            icon: orderStatus?.icon || '',
+            label: orderStatus?.label || '',
+          },
+        };
+      },
+    },
+  };
 }

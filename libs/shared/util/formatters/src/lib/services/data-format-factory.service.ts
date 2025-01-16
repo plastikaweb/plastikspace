@@ -4,9 +4,11 @@ import { SafeHtml } from '@angular/platform-browser';
 import { isNil } from '@plastik/shared/objects';
 
 import {
+  FormattingComponentOutput,
   FormattingInput,
   FormattingOutput,
   FormattingTypes,
+  PropertyComponentFormattingConf,
   PropertyFormatting,
   PropertyFormattingConf,
 } from '../formatting';
@@ -34,7 +36,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
     { propertyPath, formatting }: PropertyFormatting<T, FormattingTypes>,
     index?: number,
     extraConfig?: unknown
-  ): SafeHtml {
+  ): SafeHtml | string | FormattingComponentOutput {
     const getValueToShow = typeof propertyPath === 'string' ? propertyPath : propertyPath(item);
     const value = this.getValueFromRow(getValueToShow, item);
     // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -68,6 +70,12 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
           item,
           index,
           extraConfig
+        );
+      case 'COMPONENT':
+        return this.formatter.componentFormatter(
+          String(value),
+          formatting as PropertyComponentFormattingConf<T>,
+          item
         );
       case 'TEXT':
       case 'INPUT':

@@ -1,9 +1,9 @@
 import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { UiOrderStatusChipComponent } from '@plastik/llecoop/order-status-chip';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 
 import { LlecoopUserOrderResumeFacadeService } from '../user-order-resume-facade.service';
@@ -14,7 +14,7 @@ import { LlecoopUserOrderResumeFacadeService } from '../user-order-resume-facade
   imports: [
     MatIconModule,
     MatButtonModule,
-    MatChipsModule,
+    UiOrderStatusChipComponent,
     RouterLink,
     TitleCasePipe,
     SharedTableUiComponent,
