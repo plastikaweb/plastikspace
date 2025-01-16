@@ -2,10 +2,7 @@ import { computed, inject, Injectable, Signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import {
-  formatUserOrderDeliveryDate,
-  formatUserOrderStatus,
-} from '@plastik/llecoop/order-list/util';
+import { formatOrderStatus, formatUserOrderDeliveryDate } from '@plastik/llecoop/order-list/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -100,18 +97,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     },
   };
 
-  readonly #status: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
-    key: 'status',
-    title: 'Estat',
-    propertyPath: 'status',
-    sorting: true,
-    cssClasses: ['max-w-[70px] md:min-w-[140px] md:max-w-[180px]'],
-    formatting: {
-      type: 'CUSTOM',
-      execute: status =>
-        formatUserOrderStatus(this.#sanitizer, status as LlecoopUserOrder['status']),
-    },
-  };
+  readonly #status = formatOrderStatus<LlecoopUserOrder>();
 
   readonly #columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
     this.#userName,

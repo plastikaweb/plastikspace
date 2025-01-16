@@ -7,10 +7,16 @@ import {
   TitleCasePipe,
 } from '@angular/common';
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { Timestamp } from '@angular/fire/firestore';
-import { FormattingDateInput, FormattingExtras, PropertyFormattingConf } from '../formatting';
+import {
+  FormattingComponentOutput,
+  FormattingDateInput,
+  FormattingExtras,
+  PropertyComponentFormattingConf,
+  PropertyFormattingConf,
+} from '../formatting';
 
 @Injectable()
 /**
@@ -252,6 +258,23 @@ export class SharedUtilFormattersService {
     extraConfig?: unknown
   ): SafeHtml {
     return execute ? execute(value, element, index, extraConfig) : value ? value : '';
+  }
+
+  /**
+   * @description Formats a value using a component-based formatting configuration.
+   * @template T - The type of the object containing the value to format.
+   * @param {string} value - The value to format.
+   * @param {PropertyFormattingConf<T>} param - The formatting configuration.
+   * @param {((value: string, element?: T) => FormattingComponentOutput) | undefined} param.execute - The function to execute for component-based formatting.
+   * @param {T} element - The complete object containing the value being formatted.
+   * @returns {FormattingComponentOutput | string} The formatted component configuration or the original value if no execute function is provided.
+   */
+  componentFormatter<T>(
+    value: string,
+    { execute }: PropertyComponentFormattingConf<T>,
+    element: T
+  ): FormattingComponentOutput | string {
+    return execute ? execute(value, element) : value;
   }
 
   /**

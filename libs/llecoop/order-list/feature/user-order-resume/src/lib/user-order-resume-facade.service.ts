@@ -1,9 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { llecoopUserOrderStatus } from '@plastik/llecoop/entities';
 import { LlecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
-import { formatUserOrderStatus } from '@plastik/llecoop/order-list/util';
 
 import { LlecoopUserOrderResumeTableConfig } from './llecoop-user-order-feature-resume/user-order-feature-resume-table.config';
 
@@ -13,7 +11,6 @@ import { LlecoopUserOrderResumeTableConfig } from './llecoop-user-order-feature-
 export class LlecoopUserOrderResumeFacadeService {
   readonly #userOrderStore = inject(LlecoopUserOrderStore);
   readonly #table = inject(LlecoopUserOrderResumeTableConfig);
-  readonly #sanitizer = inject(DomSanitizer);
 
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0];
 
@@ -25,10 +22,6 @@ export class LlecoopUserOrderResumeFacadeService {
       ...this.#view,
       title: `Resum de la comanda`,
     };
-  });
-
-  formattedUserOrderStatus = computed(() => {
-    return this.userOrder && formatUserOrderStatus(this.#sanitizer, this.userOrder()?.status, true);
   });
 
   orderStatus = computed(() => {

@@ -18,7 +18,7 @@
     font-family: var(--serif);
     font-weight: 400;
     font-variation-settings: 'wdth' 100;
-    font-variant-numeric: slashed-zero;
+    font-variant-numeric: tabular-nums;
 
     @include mat.theme(
       (
@@ -174,8 +174,4 @@
       elevated-container-color: var(--mat-sys-inverse-on-surface),
     )
   );
-}
-
-.mat-mdc-icon-button {
-  line-height: normal;
 }

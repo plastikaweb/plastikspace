@@ -1,7 +1,13 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
-import { KeyValuePipe, NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
+import {
+  KeyValuePipe,
+  NgClass,
+  NgComponentOutlet,
+  NgOptimizedImage,
+  NgTemplateOutlet,
+} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,7 +15,6 @@ import {
   computed,
   effect,
   ElementRef,
-  inject,
   input,
   OnInit,
   output,
@@ -30,7 +35,7 @@ import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/sl
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
 import {
@@ -42,6 +47,7 @@ import { isEmpty, isString } from '@plastik/shared/objects';
 import {
   EditableAttributeBase,
   isCheckboxTypeGuard,
+  isDynamicComponentTypeGuard,
   isNumberTypeGuard,
   isRadioTypeGuard,
   isSelectTypeGuard,
@@ -64,6 +70,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
     RouterLink,
     KeyValuePipe,
     NgClass,
+    NgComponentOutlet,
     NgTemplateOutlet,
     CdkTableModule,
     CdkTextareaAutosize,
@@ -98,8 +105,6 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
   implements OnInit, AfterViewInit
 {
-  readonly #router = inject(Router);
-
   /**
    * Data that will populate the table.
    */
@@ -209,6 +214,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isCheckBox = isCheckboxTypeGuard;
   protected isRadio = isRadioTypeGuard;
   protected isToggle = isToggleTypeGuard;
+  protected isDynamicComponent = isDynamicComponentTypeGuard;
 
   protected expandedElement = signal<T | null>(null);
 

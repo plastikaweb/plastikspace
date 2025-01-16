@@ -6,7 +6,11 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSort } from '@angular/material/sort';
 import { EntityId } from '@ngrx/signals/entities';
-import { FormattingTypes, PropertyFormatting } from '@plastik/shared/formatters';
+import {
+  FormattingComponentOutput,
+  FormattingTypes,
+  PropertyFormatting,
+} from '@plastik/shared/formatters';
 
 /**
  * Represents the base interface for an editable attribute.
@@ -204,6 +208,15 @@ export const isRadioTypeGuard = <T>(
 export const isToggleTypeGuard = <T>(
   attributes: EditableAttributes<T>
 ): attributes is EditableToggleAttributes<T> => attributes.type === 'toggle';
+
+/**
+ * Type guard function to check if the given value is of type `FormattingComponentOutput`.
+ * @param {unknown} value - The value to check.
+ * @returns {boolean} True if the value is of type `FormattingComponentOutput`, otherwise false.
+ */
+export const isDynamicComponentTypeGuard = (value: unknown): value is FormattingComponentOutput => {
+  return typeof value === 'object' && value !== null && 'component' in value;
+};
 
 /**
  * @description An specific configuration for a table column <=> object property.

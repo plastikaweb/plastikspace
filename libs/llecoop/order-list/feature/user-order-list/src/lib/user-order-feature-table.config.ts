@@ -5,7 +5,7 @@ import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { formatUserOrderStatus } from '@plastik/llecoop/order-list/util';
+import { formatOrderStatus } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -31,7 +31,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    cssClasses: ['min-w-[90px] @lg:min-w-[105px]'],
+    cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     link: (userOrder?: LlecoopUserOrder) => {
       return userOrder && this.checkIfOrderIsDone(userOrder)
         ? `./resum/${userOrder?.id}`
@@ -48,7 +48,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     title: 'Preu total',
     propertyPath: '',
     sorting: true,
-    cssClasses: ['min-w-[80px] 2xl:min-w-[100px]'],
+    cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, userOrder) => {
@@ -70,19 +70,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     },
   };
 
-  readonly #status: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
-    key: 'status',
-    title: 'Estat',
-    propertyPath: 'status',
-    sorting: true,
-    cssClasses: ['min-w-[70px] @3xl:min-w-[140px]'],
-    formatting: {
-      type: 'CUSTOM',
-      execute: status =>
-        formatUserOrderStatus(this.#sanitizer, status as LlecoopUserOrder['status']),
-    },
-  };
-
+  readonly #status = formatOrderStatus<LlecoopUserOrder>();
   readonly #createdAt = createdAt<LlecoopUserOrder>();
   readonly #updatedAt = updatedAt<LlecoopUserOrder>();
 
