@@ -26,7 +26,7 @@ export type HeaderMenuConfig<T extends string> = HeaderMenuConfigBase<T> & {
 };
 
 export type CoreCmsLayoutHeaderWidget = {
-  id: string;
+  id: number | string;
   component: () => Promise<Type<unknown>>;
   order?: number;
   inputs?: Record<string, unknown>;

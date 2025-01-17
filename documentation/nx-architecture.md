@@ -146,11 +146,13 @@ A UI library is a collection of related presentational components. There are gen
 
 A utility contains common utilities/services used by many libraries. Often there is no ngModule and the library is simply a collection of utilities or pure functions.
 
+> Naming: util (if nested), or util-* (e.g., util-arrays)
+
 #### entity
 
 These libraries should handle scope related types definitions. Utilities strongly related with these entities could also live hear near the types definitions.
 
-> Naming: util (if nested), or util-* (e.g., util-arrays)
+> Naming: entity (if nested), or entity-* (e.g., entity-arrays)
 
 ### Linting Rules and built-in constraints Based Upon Tags
 
