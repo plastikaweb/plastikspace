@@ -28,16 +28,24 @@ export const initialNasaImagesState: NasaImagesState = nasaMediaAdapter.getIniti
 
 const nasaImagesReducer = createReducer(
   initialNasaImagesState,
-  on(nasaImagesPageActions.load, (state): NasaImagesState => ({ ...state, error: null, isActiveSearch: false })),
+  on(
+    nasaImagesPageActions.load,
+    (state): NasaImagesState => ({ ...state, error: null, isActiveSearch: false })
+  ),
   on(
     nasaImagesAPIActions.loadSuccess,
-    (state, { items, count }): NasaImagesState => nasaMediaAdapter.setAll(items, { ...state, count, isActiveSearch: true }),
+    (state, { items, count }): NasaImagesState =>
+      nasaMediaAdapter.setAll(items, { ...state, count, isActiveSearch: true })
   ),
-  on(nasaImagesAPIActions.loadFailure, (state, { error }): NasaImagesState => ({ ...state, error, isActiveSearch: false })),
+  on(
+    nasaImagesAPIActions.loadFailure,
+    (state, { error }): NasaImagesState => ({ ...state, error, isActiveSearch: false })
+  ),
   on(
     nasaImagesPageActions.cleanUp,
-    (state): NasaImagesState => nasaMediaAdapter.removeAll({ ...state, count: 0, error: null, isActiveSearch: false }),
-  ),
+    (state): NasaImagesState =>
+      nasaMediaAdapter.removeAll({ ...state, count: 0, error: null, isActiveSearch: false })
+  )
 );
 
 export const selectNasaImagesFeature = createFeature({
@@ -46,7 +54,9 @@ export const selectNasaImagesFeature = createFeature({
   extraSelectors: ({ selectImagesState, selectEntities, selectSelectedId }) => {
     return {
       ...nasaMediaAdapter.getSelectors(selectImagesState),
-      selectSelectedEntity: createSelector(selectEntities, selectSelectedId, (entities, id) => (entities && id ? entities[id] : null)),
+      selectSelectedEntity: createSelector(selectEntities, selectSelectedId, (entities, id) =>
+        entities && id ? entities[id] : null
+      ),
     };
   },
 });

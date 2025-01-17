@@ -4,16 +4,23 @@
   "projectType": "application",
   "sourceRoot": "apps/nasa-images/src",
   "prefix": "plastik",
-  "tags": ["scope:nasa-images", "type:app"],
+  "tags": [
+    "scope:nasa-images",
+    "type:app"
+  ],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/nasa-images",
         "index": "libs/core/ng-entry-html/util/src/index.html",
         "main": "apps/nasa-images/src/main.ts",
-        "polyfills": ["apps/nasa-images/src/polyfills.ts"],
+        "polyfills": [
+          "apps/nasa-images/src/polyfills.ts"
+        ],
         "tsConfig": "apps/nasa-images/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -25,11 +32,17 @@
             "output": "/assets/"
           }
         ],
-        "styles": ["apps/nasa-images/src/styles/styles.scss"],
+        "styles": [
+          "apps/nasa-images/src/styles/styles.scss"
+        ],
         "stylePreprocessorOptions": {
-          "includePaths": ["libs/core/styles/util/material/src"]
+          "includePaths": [
+            "libs/core/styles/util/material/src"
+          ]
         },
-        "allowedCommonJsDependencies": ["moment"],
+        "allowedCommonJsDependencies": [
+          "moment"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -88,9 +101,18 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/nasa-images"],
+      "outputs": [
+        "{workspaceRoot}/coverage/apps/nasa-images"
+      ],
       "options": {
         "jestConfig": "apps/nasa-images/jest.config.ts"
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "nasa-images:build",
+        "port": 4202
       }
     }
   }

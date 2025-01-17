@@ -4,16 +4,23 @@
   "projectType": "application",
   "prefix": "plastik",
   "sourceRoot": "apps/llecoop/src",
-  "tags": ["scope:llecoop", "type:app"],
+  "tags": [
+    "scope:llecoop",
+    "type:app"
+  ],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:application",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/llecoop",
         "index": "libs/core/ng-entry-html/util/src/index.html",
         "browser": "apps/llecoop/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [
+          "zone.js"
+        ],
         "optimization": true,
         "sourceMap": {
           "scripts": true,
@@ -32,11 +39,17 @@
             "output": "/assets/"
           }
         ],
-        "styles": ["apps/llecoop/src/styles/styles.scss"],
+        "styles": [
+          "apps/llecoop/src/styles/styles.scss"
+        ],
         "stylePreprocessorOptions": {
-          "includePaths": ["libs/core/styles/util/material/src"]
+          "includePaths": [
+            "libs/core/styles/util/material/src"
+          ]
         },
-        "allowedCommonJsDependencies": ["moment"],
+        "allowedCommonJsDependencies": [
+          "moment"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -107,7 +120,9 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": [
+        "{workspaceRoot}/coverage/apps/llecoop"
+      ],
       "options": {
         "jestConfig": "apps/llecoop/jest.config.ts"
       }
@@ -116,7 +131,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "llecoop:build",
-        "staticFilePath": "dist/apps/llecoop/browser"
+        "port": 4201
       }
     }
   }

@@ -16,14 +16,9 @@
         }
       ]
     ],
-    "ignore": [
-      "notice",
-      "warning"
-    ],
+    "ignore": ["notice", "warning"],
     "chromeLaunchConfig": {
-      "args": [
-        "--no-sandbox"
-      ]
+      "args": ["--no-sandbox"]
     }
   },
   "urls": [

@@ -117,15 +117,33 @@ describe('Object Util', () => {
 
   describe('removeNullProperties method', () => {
     it('should return an object without properties with no values equal to null ', () => {
-      const result = removeNullProperties({ param1: null, param2: '', param3: true, param4: false, param6: 'test' });
+      const result = removeNullProperties({
+        param1: null,
+        param2: '',
+        param3: true,
+        param4: false,
+        param6: 'test',
+      });
       expect(result).toEqual({ param2: '', param3: true, param4: false, param6: 'test' });
     });
   });
 
   describe('setEmptyStringPropertiesToNull method', () => {
     it('should return an object with properties with an empty string value replaced with null', () => {
-      const result = setEmptyStringPropertiesToNull({ param1: null, param2: '', param3: true, param4: false, param6: 'test' });
-      expect(result).toEqual({ param1: null, param2: null, param3: true, param4: false, param6: 'test' });
+      const result = setEmptyStringPropertiesToNull({
+        param1: null,
+        param2: '',
+        param3: true,
+        param4: false,
+        param6: 'test',
+      });
+      expect(result).toEqual({
+        param1: null,
+        param2: null,
+        param3: true,
+        param4: false,
+        param6: 'test',
+      });
     });
   });
 
@@ -138,8 +156,20 @@ describe('Object Util', () => {
 
   describe('transformStringToBooleanProperties method', () => {
     it('should return an object with properties with "true" of "false" values replaced with corresponding boolean values', () => {
-      const result = transformStringToBooleanProperties({ param1: 'false', param2: 'true', param3: true, param4: false, param6: 'test' });
-      expect(result).toEqual({ param1: false, param2: true, param3: true, param4: false, param6: 'test' });
+      const result = transformStringToBooleanProperties({
+        param1: 'false',
+        param2: 'true',
+        param3: true,
+        param4: false,
+        param6: 'test',
+      });
+      expect(result).toEqual({
+        param1: false,
+        param2: true,
+        param3: true,
+        param4: false,
+        param6: 'test',
+      });
     });
   });
 

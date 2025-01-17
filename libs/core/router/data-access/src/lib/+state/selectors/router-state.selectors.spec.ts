@@ -1,5 +1,11 @@
 import { routerMockState } from '../../mocks/router.mock';
-import { selectRouteData, selectRouteDataName, selectRouteParams, selectRouteQueryParams, selectRouteUrl } from './router-state.selectors';
+import {
+  selectRouteData,
+  selectRouteDataName,
+  selectRouteParams,
+  selectRouteQueryParams,
+  selectRouteUrl,
+} from './router-state.selectors';
 
 describe('RouterState selectors', () => {
   const { state } = routerMockState;

@@ -1,7 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { Component } from '@angular/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { NasaImagesSearchUiNoResultsComponent } from './nasa-images-search-ui-no-results.component';
 
 @Component({
@@ -14,6 +15,7 @@ import { NasaImagesSearchUiNoResultsComponent } from './nasa-images-search-ui-no
       Deserunt eligendi quos exercitationem, earum officiis eum, quod repellat eos quae id et?</span
     >
   </plastik-nasa-images-search-ui-no-results>`,
+  imports: [NasaImagesSearchUiNoResultsComponent],
 })
 class TestHostComponent {}
 

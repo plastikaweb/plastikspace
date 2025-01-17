@@ -1,6 +1,6 @@
-import { pageTitle } from '../support/app.po';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import json from '../../../../apps/nasa-images/src/assets/json/faqs.json';
+import { pageTitle } from '../support/app.po';
 
 const faqItems = () => cy.getEl('faq-item');
 
@@ -29,7 +29,7 @@ describe('nasa-images faqs page', () => {
       });
     });
 
-    xit('should load all FAQs answers and questions correctly', () => {
+    it('should load all FAQs answers and questions correctly', () => {
       faqItems().each(($faqItem, index) => {
         const question = json[index].question;
         const answer = json[index].answer;
@@ -41,7 +41,7 @@ describe('nasa-images faqs page', () => {
       });
     });
 
-    xit('should open/close a child expansion panel on click', () => {
+    it('should open/close a child expansion panel on click', () => {
       cy.get('@otherFaqItem').click();
       cy.get('@otherFaqItem').find('.mat-expansion-panel-content').should('be.visible');
       cy.get('@otherFaqItem').click();

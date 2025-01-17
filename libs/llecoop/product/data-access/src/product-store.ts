@@ -1,3 +1,5 @@
+import { pipe, switchMap, tap } from 'rxjs';
+
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
@@ -17,7 +19,7 @@ import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProduct, LlecoopProductWithUpdateNotification } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
-import { pipe, switchMap, tap } from 'rxjs';
+
 import { LlecoopProductFireService } from './product-fire.service';
 
 type ProductState = LlecoopFeatureStore;
@@ -165,10 +167,6 @@ export const LlecoopProductStore = signalStore(
       if (!loaded()) {
         getAll();
       }
-    },
-    onDestroy() {
-      // eslint-disable-next-line no-console
-      console.log('Destroying product store');
     },
   })
 );

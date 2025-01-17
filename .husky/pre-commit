@@ -1,1 +1,1 @@
-yarn branch:lint && yarn format:write --uncommited && yarn affected:lint & yarn markdownlint
+yarn branch:lint && yarn format:write --all && yarn affected:lint & yarn markdownlint

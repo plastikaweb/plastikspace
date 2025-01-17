@@ -1,3 +1,5 @@
+import { filter, pipe, switchMap, tap } from 'rxjs';
+
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
@@ -16,10 +18,9 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { filter, pipe, switchMap, tap } from 'rxjs';
-import { LLecoopOrderListStore } from './order-list-store';
-
 import { activityActions } from '@plastik/shared/activity/data-access';
+
+import { LLecoopOrderListStore } from './order-list-store';
 import { LlecoopUserOrderFireService } from './user-order-fire.service';
 
 type OrderState = LlecoopFeatureStore;
@@ -167,10 +168,6 @@ export const LlecoopUserOrderStore = signalStore(
       if (!loaded()) {
         getAll();
       }
-    },
-    onDestroy() {
-      // eslint-disable-next-line no-console
-      console.log('Destroying user order store');
     },
   })
 );

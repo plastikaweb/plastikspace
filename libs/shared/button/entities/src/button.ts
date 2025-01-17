@@ -43,6 +43,8 @@ export type ButtonElement =
  * @param { ButtonConfig } toBeDetermined The button instance to be checked.
  * @returns { boolean } Returns true if type button is a link.
  */
-export function buttonHasALinkGuard(toBeDetermined: ButtonConfig): toBeDetermined is ButtonConfigAsLink {
+export function buttonHasALinkGuard(
+  toBeDetermined: ButtonConfig
+): toBeDetermined is ButtonConfigAsLink {
   return (toBeDetermined as ButtonConfigAsLink).type === 'link';
 }

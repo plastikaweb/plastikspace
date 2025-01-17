@@ -7,6 +7,10 @@ import { LayoutEffects } from './+state/layout.effects';
 import { selectLayoutFeature } from './+state/layout.feature';
 
 @NgModule({
-  imports: [StoreModule.forFeature(selectLayoutFeature), EffectsModule.forFeature([LayoutEffects]), SharedActivityDataAccessModule],
+  imports: [
+    StoreModule.forFeature(selectLayoutFeature),
+    EffectsModule.forFeature([LayoutEffects]),
+    SharedActivityDataAccessModule,
+  ],
 })
 export class CoreCmsLayoutDataAccessModule {}

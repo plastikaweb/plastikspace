@@ -8,7 +8,10 @@ import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
-    DEFAULT_TABLE_CONFIG, TableColumnFormatting, TableDefinition, TableStructureConfig
+  DEFAULT_TABLE_CONFIG,
+  TableColumnFormatting,
+  TableDefinition,
+  TableStructureConfig,
 } from '@plastik/shared/table/entities';
 
 @Injectable({

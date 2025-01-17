@@ -1,3 +1,5 @@
+import { pipe, switchMap, tap } from 'rxjs';
+
 /* eslint-disable no-console */
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
@@ -18,7 +20,7 @@ import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
-import { pipe, switchMap, tap } from 'rxjs';
+
 import { LlecoopUserFireService } from './user-fire.service';
 
 type UserState = LlecoopFeatureStore;
@@ -155,9 +157,6 @@ export const LLecoopUserStore = signalStore(
       if (!loaded()) {
         getAll();
       }
-    },
-    onDestroy() {
-      console.log('Destroying user store');
     },
   })
 );
