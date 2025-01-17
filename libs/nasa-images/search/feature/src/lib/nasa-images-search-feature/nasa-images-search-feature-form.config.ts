@@ -1,14 +1,15 @@
+import { Observable, of } from 'rxjs';
+
 /* eslint-disable jsdoc/require-jsdoc */
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { addSearchInput } from '@plastik/shared/form/search';
-import { Observable, of } from 'rxjs';
 
 export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldConfig[]> {
   return of([
     {
       fieldGroupClassName: 'flex flex-col md:flex-row gap-sm',
       fieldGroup: [
-        addSearchInput('Search by term', 'Reset search', 'q'),
+        addSearchInput('Search by term', 'Reset search', 'q', true),
         {
           fieldGroupClassName: 'flex flex-col md:flex-row gap-sm justify-start',
           fieldGroup: [

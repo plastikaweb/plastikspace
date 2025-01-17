@@ -22,7 +22,7 @@
         </mat-header-cell>
 
         <mat-cell
-          *matCellDef="let row; let i = index"
+          *matCellDef="let row; let i = dataIndex"
           class="py-sub"
           [ngClass]="setCellNgClass(column)">
           @switch (column.formatting.type) {

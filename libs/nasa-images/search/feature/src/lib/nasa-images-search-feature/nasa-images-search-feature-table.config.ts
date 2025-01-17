@@ -1,3 +1,5 @@
+import { map, Observable } from 'rxjs';
+
 import { inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { select, Store } from '@ngrx/store';
@@ -11,7 +13,6 @@ import {
   TableColumnFormatting,
   TableDefinition,
 } from '@plastik/shared/table/entities';
-import { map, Observable } from 'rxjs';
 
 const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
   key: 'index',

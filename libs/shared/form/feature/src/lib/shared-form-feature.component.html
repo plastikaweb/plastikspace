@@ -17,10 +17,10 @@
     <button
       mat-flat-button
       type="submit"
-      class="h-[56px] w-full sm:w-auto text-base"
+      class="w-full sm:w-auto"
       data-test="submit-button"
       [ngClass]="submitConfig()?.buttonStyle || ''"
-      [disabled]="!form.valid || !form.dirty">
+      [disabled]="!form.valid">
       {{ submitConfig()?.label || 'Submit' }}
     </button>
   }

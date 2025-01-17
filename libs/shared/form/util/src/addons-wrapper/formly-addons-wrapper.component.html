@@ -6,7 +6,7 @@
       [attr.aria-label]="props['addonLeft']['aria'] || ''"
       [ngClass]="props['addonLeft'].classes"
       [ngStyle]="{ cursor: props['addonLeft'].onClick ? 'pointer' : 'inherit' }"
-      (click)="addonLeftClick()">
+      (click)="addonLeftClick($event)">
       @if (props['addonLeft'].icon) {
         <mat-icon>{{ props['addonLeft'].icon }}</mat-icon>
       }
@@ -27,7 +27,7 @@
       [attr.tabindex]="!props['addonRight']['onClick'] ? '-1' : '0'"
       [ngClass]="props['addonRight'].classes"
       [ngStyle]="{ cursor: props['addonRight'].onClick ? 'pointer' : 'inherit' }"
-      (click)="addonRightClick()">
+      (click)="addonRightClick($event)">
       @if (props['addonRight'].icon) {
         <mat-icon>{{ props['addonRight'].icon }}</mat-icon>
       }

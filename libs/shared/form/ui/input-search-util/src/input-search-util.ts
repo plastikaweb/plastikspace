@@ -7,6 +7,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
  * @param {string} label - The label for the search input field.
  * @param {string} [cancelLabel] - The aria label for the cancel button.
  * @param {string} [key] - The key for the search input field.
+ * @param {boolean} [required] - Whether the search input field is required.
  * @description Returns a Formly field configuration object with the specified label, cancel label, and key.
  * The configuration includes a search input field with a debounce model option,
  * and an addon right element with a cancel icon that resets the form control when clicked.
@@ -15,7 +16,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 export function addSearchInput(
   label: string,
   cancelLabel = 'empty value',
-  key = 'text'
+  key = 'text',
+  required = false
 ): FormlyFieldConfig {
   return {
     key,
@@ -35,7 +37,7 @@ export function addSearchInput(
       type: 'search',
       label,
       placeholder: label ?? 'Search',
-      required: false,
+      required,
       maxLength: 256,
       minLength: 1,
       addonLeft: {
@@ -45,7 +47,7 @@ export function addSearchInput(
       addonRight: {
         icon: 'cancel',
         aria: cancelLabel,
-        onClick: (field: FormlyFieldConfig): void => field.formControl?.reset(),
+        onClick: (field: FormlyFieldConfig): void => field.formControl?.setValue(''),
       },
       attributes: {
         autocomplete: 'off',

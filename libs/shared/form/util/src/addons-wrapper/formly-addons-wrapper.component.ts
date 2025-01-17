@@ -33,13 +33,15 @@ export class FormlyAddonsWrapperComponent extends FieldWrapper implements AfterV
     }
   }
 
-  addonRightClick(): void {
+  addonRightClick(event: MouseEvent): void {
+    event.stopPropagation();
     if (this.props['addonRight'].onClick) {
       this.props['addonRight'].onClick(this.field, this.props, this.options);
     }
   }
 
-  addonLeftClick(): void {
+  addonLeftClick(event: MouseEvent): void {
+    event.stopPropagation();
     if (this.props['addonLeft'].onClick) {
       this.props['addonLeft'].onClick(this.field, this.props, this.options);
     }

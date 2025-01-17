@@ -3,8 +3,8 @@ import { MatInputHarness } from '@angular/material/input/testing';
 import { MatSnackBarHarness } from '@angular/material/snack-bar/testing';
 import { MatTableHarness } from '@angular/material/table/testing';
 import { getAllHarnesses } from '@jscutlery/cypress-harness';
-
 import { ChainableHarness } from '@jscutlery/cypress-harness/src/lib/internals';
+
 import { pageTitle } from '../support/app.po';
 
 type NasaImagesTestCase = {
@@ -18,6 +18,7 @@ type NasaImagesTestCase = {
 
 const noResultsMessage = () => cy.getEl('search-no-results-message');
 const submitBtn = () => cy.getEl('submit-button');
+const document = () => cy.get('body');
 
 describe('nasa-images search page', () => {
   beforeEach(() => {
@@ -91,26 +92,39 @@ describe('nasa-images search page', () => {
             cy.intercept('GET', '*', { fixture: testCase.fixture }).as('response');
           });
 
-          cy.setMatInput(inputs, testCase.q);
+          cy.setMatInput(inputs, testCase.q, 0);
           cy.setMatDatePicker(yearPickers, testCase.yearStart, 0);
           cy.setMatDatePicker(yearPickers, testCase.yearEnd, 1);
 
-          submitBtn().should('not.be.disabled');
-          submitBtn().click({ force: true });
-
-          // location
-          cy.location().should(({ search, pathname }) => {
-            expect(pathname).to.eq('/search');
-            expect(search).to.eq(
-              `?q=${testCase.q}&year_start=${testCase.yearStart}&year_end=${testCase.yearEnd}&page=1`
-            );
+          // Wait for input value to be set
+          inputs.then(inputs => {
+            inputs[0].getValue().then(value => {
+              expect(value).to.equal(testCase.q);
+            });
+            inputs[1].getValue().then(value => {
+              expect(value).to.equal(testCase.yearStart);
+            });
+            inputs[2].getValue().then(value => {
+              expect(value).to.equal(testCase.yearEnd);
+            });
           });
+
+          document().click();
+          submitBtn().should('not.be.disabled');
+
+          submitBtn().click({ force: true });
 
           // api response
           cy.wait('@response').then(({ response }) => {
             expect(response?.statusCode).to.eq(200);
             expect(response?.body.collection.items).to.have.length(collectionLength);
             expect(response?.body.collection.metadata.total_hits).to.eq(collectionTotalHits);
+            cy.location().should(({ search, pathname }) => {
+              expect(pathname).to.eq('/search');
+              expect(search).to.eq(
+                `?q=${testCase.q}&year_start=${testCase.yearStart}&year_end=${testCase.yearEnd}&page=1`
+              );
+            });
           });
 
           // header title
@@ -148,10 +162,24 @@ describe('nasa-images search page', () => {
           },
         }).as('response');
 
-        cy.setMatInput(inputs, 'mars');
+        cy.setMatInput(inputs, 'mars', 0);
         cy.setMatDatePicker(yearPickers, '2020', 0);
         cy.setMatDatePicker(yearPickers, '2021', 1);
 
+        // Wait for input value to be set
+        inputs.then(inputs => {
+          inputs[0].getValue().then(value => {
+            expect(value).to.equal('mars');
+          });
+          inputs[1].getValue().then(value => {
+            expect(value).to.equal('2020');
+          });
+          inputs[2].getValue().then(value => {
+            expect(value).to.equal('2021');
+          });
+        });
+
+        document().click();
         submitBtn().should('not.be.disabled');
         submitBtn().click({ force: true });
         // api response
