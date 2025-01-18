@@ -1,8 +1,17 @@
 {
   "version": "0.2",
   "language": "ca, es, en",
-  "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
-  "ignorePaths": ["node_modules/**/*", "dist/**/*", "apps/llecoop-firebase/.emulators/**/*"],
+  "dictionaries": [
+    "cpp",
+    "csharp",
+    "dotnet",
+    "typescript"
+  ],
+  "ignorePaths": [
+    "node_modules/**/*",
+    "dist/**/*",
+    "apps/llecoop-firebase/.emulators/**/*"
+  ],
   "dictionaryDefinitions": [],
   "words": [
     "appspot",
@@ -17,6 +26,8 @@
     "firefox",
     "formly",
     "getconfig",
+    "github",
+    "juliangruber",
     "killports",
     "llecoop",
     "Llecoop",
@@ -29,6 +40,7 @@
     "runtimeconfig",
     "Savkin",
     "simondotm",
+    "thollander",
     "tuesday",
     "Verou",
     "wednesday"
