@@ -22,7 +22,10 @@ export const routerMockState: {
   },
 };
 
-export function getMockedRouterNavigation(url: string): { type: typeof ROUTER_NAVIGATION; payload: Payload } {
+export function getMockedRouterNavigation(url: string): {
+  type: typeof ROUTER_NAVIGATION;
+  payload: Payload;
+} {
   return {
     type: ROUTER_NAVIGATION,
     payload: {
@@ -33,7 +36,10 @@ export function getMockedRouterNavigation(url: string): { type: typeof ROUTER_NA
   };
 }
 
-export function getMockedRouterRequest(url: string): { type: typeof ROUTER_REQUEST; payload: Payload } {
+export function getMockedRouterRequest(url: string): {
+  type: typeof ROUTER_REQUEST;
+  payload: Payload;
+} {
   return {
     type: ROUTER_REQUEST,
     payload: {

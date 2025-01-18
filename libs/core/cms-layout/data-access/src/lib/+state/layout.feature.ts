@@ -27,15 +27,15 @@ export const selectLayoutFeature = createFeature({
       (state, { isMobile }): State => ({
         ...state,
         isMobile,
-      }),
+      })
     ),
     on(
       layoutActions.toggleSidenav,
       (state, { opened }): State => ({
         ...state,
         sidenavOpened: opened ?? !state.sidenavOpened,
-      }),
-    ),
+      })
+    )
   ),
 });
 

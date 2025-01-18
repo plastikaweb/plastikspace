@@ -1,7 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { selectRouteDataName, selectRouteQueryParams, selectRouteUrl } from './selectors/router-state.selectors';
+import {
+  selectRouteDataName,
+  selectRouteQueryParams,
+  selectRouteUrl,
+} from './selectors/router-state.selectors';
 
 @Injectable({
   providedIn: 'root',

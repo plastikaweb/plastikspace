@@ -5,7 +5,10 @@ import { inject } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig, FormSelectOption } from '@plastik/core/entities';
 import {
-    LlecoopOrderProduct, LlecoopUserOrder, llecoopUserOrderDateOptions, llecoopUserOrderTimeOptions
+  LlecoopOrderProduct,
+  LlecoopUserOrder,
+  llecoopUserOrderDateOptions,
+  llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
 
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';

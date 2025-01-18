@@ -5,7 +5,12 @@ import { ConfigurableFocusTrapFactory, FocusTrapFactory } from '@angular/cdk/a11
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DatePipe } from '@angular/common';
 import {
-    AfterViewInit, ChangeDetectionStrategy, Component, inject, viewChild, ViewContainerRef
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  viewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';

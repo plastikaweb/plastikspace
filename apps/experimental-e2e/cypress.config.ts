@@ -1,6 +1,6 @@
-import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
-
 import { defineConfig } from 'cypress';
+
+import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 
 export default defineConfig({
   e2e: {
@@ -12,6 +12,6 @@ export default defineConfig({
       },
       ciWebServerCommand: 'nx run experimental:serve-static',
     }),
-    baseUrl: 'http://localhost:4202',
+    baseUrl: 'http://localhost:4300',
   },
 });
