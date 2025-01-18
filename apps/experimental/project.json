@@ -78,9 +78,10 @@
       }
     },
     "serve-static": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/web:file-server",
       "options": {
-        "command": "npx http-server dist/apps/experimental --cors -p 4300"
+        "buildTarget": "experimental:build",
+        "port": 4300
       }
     }
   }

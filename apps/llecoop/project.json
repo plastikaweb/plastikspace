@@ -113,9 +113,10 @@
       }
     },
     "serve-static": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/web:file-server",
       "options": {
-        "command": "npx http-server dist/apps/llecoop/browser --cors -p 4200"
+        "buildTarget": "llecoop:build",
+        "port": 4201
       }
     }
   }

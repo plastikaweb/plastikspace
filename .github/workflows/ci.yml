@@ -41,7 +41,9 @@ jobs:
 
       # Build apps before e2e tests
       - name: Build Apps
-        run: yarn nx affected --target=build --parallel=true --maxParallel=3 --configuration=production
+        run: |
+          export NX_CLOUD_DISTRIBUTED_EXECUTION=false
+          yarn nx affected --target=build --parallel=true --maxParallel=3 --configuration=production
 
       # Run e2e tests in parallel using Nx Cloud agents
       - name: E2E Tests
