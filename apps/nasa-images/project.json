@@ -92,6 +92,12 @@
       "options": {
         "jestConfig": "apps/nasa-images/jest.config.ts"
       }
+    },
+    "serve-static": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx http-server dist/apps/nasa-images --cors -p 4201"
+      }
     }
   }
 }

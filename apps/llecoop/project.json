@@ -107,16 +107,15 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/apps/llecoop"],
       "options": {
         "jestConfig": "apps/llecoop/jest.config.ts"
       }
     },
     "serve-static": {
-      "executor": "@nx/web:file-server",
+      "executor": "nx:run-commands",
       "options": {
-        "buildTarget": "llecoop:build",
-        "staticFilePath": "dist/apps/llecoop/browser"
+        "command": "npx http-server dist/apps/llecoop/browser --cors -p 4200"
       }
     }
   }

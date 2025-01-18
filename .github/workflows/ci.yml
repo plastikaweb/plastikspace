@@ -39,6 +39,10 @@ jobs:
       - name: Test
         run: yarn nx affected --target=test --parallel=true --maxParallel=3 --exclude=llecoop-firebase
 
+      # Build apps before e2e tests
+      - name: Build Apps
+        run: yarn nx affected --target=build --parallel=true --maxParallel=3 --configuration=production
+
       # Run e2e tests in parallel using Nx Cloud agents
       - name: E2E Tests
         run: yarn nx affected --target=e2e-ci --parallel=true --maxParallel=3
