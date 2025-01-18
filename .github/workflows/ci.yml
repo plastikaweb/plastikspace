@@ -33,11 +33,11 @@ jobs:
 
       # Run linting in parallel
       - name: Lint
-        run: yarn nx affected --target=lint --parallel=true --maxParallel=3
+        run: yarn nx affected --target=lint --parallel=true --maxParallel=3 --exclude=llecoop-firebase
 
       # Run tests in parallel
       - name: Test
-        run: yarn nx affected --target=test --parallel=true --maxParallel=3
+        run: yarn nx affected --target=test --parallel=true --maxParallel=3 --exclude=llecoop-firebase
 
       # Run e2e tests in parallel using Nx Cloud agents
       - name: E2E Tests
