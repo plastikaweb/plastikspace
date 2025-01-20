@@ -1,13 +1,18 @@
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
-    getLlecoopProductUnitStep, getLlecoopProductUnitSuffix, LlecoopOrderProduct
+  getLlecoopProductUnitStep,
+  getLlecoopProductUnitSuffix,
+  LlecoopOrderProduct,
 } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { productCategoryColumn } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
-    DEFAULT_TABLE_CONFIG, TableColumnFormatting, TableDefinition, TableStructureConfig
+  DEFAULT_TABLE_CONFIG,
+  TableColumnFormatting,
+  TableDefinition,
+  TableStructureConfig,
 } from '@plastik/shared/table/entities';
 
 @Injectable({

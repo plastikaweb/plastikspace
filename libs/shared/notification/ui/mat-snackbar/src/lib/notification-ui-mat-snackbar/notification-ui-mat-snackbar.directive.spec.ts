@@ -4,18 +4,26 @@ import {
   MatSnackBar,
   MatSnackBarConfig,
 } from '@angular/material/snack-bar';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Notification } from '@plastik/shared/notification/entities';
 
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NotificationUiMatSnackbarComponent } from './notification-ui-mat-snackbar.component';
 import { NotificationUiMatSnackbarDirective } from './notification-ui-mat-snackbar.directive';
 
 describe('NotificationUiMatSnackbarDirective', () => {
   let directive: NotificationUiMatSnackbarDirective;
-  let snackBar: MatSnackBar;
+  let snackBar: jest.Mocked<MatSnackBar>;
   let defaultSnackBarConfig: MatSnackBarConfig;
 
   beforeEach(() => {
+    const mockSnackBar = {
+      openFromComponent: jest.fn().mockReturnValue({
+        afterDismissed: () => ({ subscribe: jest.fn() }),
+        onAction: () => ({ subscribe: jest.fn() }),
+      }),
+      dismiss: jest.fn(),
+    };
+
     TestBed.configureTestingModule({
       imports: [
         NotificationUiMatSnackbarDirective,
@@ -23,15 +31,20 @@ describe('NotificationUiMatSnackbarDirective', () => {
         NoopAnimationsModule,
       ],
       providers: [
-        MatSnackBar,
+        {
+          provide: MatSnackBar,
+          useValue: mockSnackBar,
+        },
         {
           provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-          useValue: {},
+          useValue: {
+            duration: 5000,
+          },
         },
       ],
     });
 
-    snackBar = TestBed.inject(MatSnackBar);
+    snackBar = TestBed.inject(MatSnackBar) as jest.Mocked<MatSnackBar>;
     defaultSnackBarConfig = TestBed.inject(MAT_SNACK_BAR_DEFAULT_OPTIONS);
     directive = new NotificationUiMatSnackbarDirective(snackBar, defaultSnackBarConfig);
   });

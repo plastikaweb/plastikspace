@@ -1,27 +1,11 @@
 <div>
-  <p
-    mat-dialog-title
-    class="text-center md:text-left"
-  >{{ data.title }}</p>
-  <div
-    mat-dialog-content
-    class="text-center md:text-left"
-    [innerHTML]="data.message"
-  ></div>
+  <p mat-dialog-title class="text-center md:text-left">{{ data.title }}</p>
+  <div mat-dialog-content class="text-center md:text-left" [innerHTML]="data.message"></div>
   <mat-dialog-actions class="flex flex-nowrap justify-center md:justify-end">
-    <button
-      mat-button
-      type="button"
-      mat-dialog-close
-    >
+    <button mat-button type="button" mat-dialog-close>
       {{ data.ko }}
     </button>
-    <button
-      mat-button
-      type="button"
-      mat-dialog-close="true"
-      cdkFocusInitial
-    >
+    <button mat-button type="button" mat-dialog-close="true" cdkFocusInitial>
       {{ data.ok }}
     </button>
   </mat-dialog-actions>

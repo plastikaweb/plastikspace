@@ -5,8 +5,7 @@
   <p>A personal multi-repository to do tests and experiments with Nx and Angular. </p>
 </div>
 
-[![Deploy Nasa Images Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml)
-[![nasa-images-e2e](https://img.shields.io/endpoint?url=https://cloud.cypress.io/badge/detailed/b47wpf/develop&style=flat&logo=cypress)](https://cloud.cypress.io/projects/b47wpf/runs)
+[![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml)
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)

@@ -74,7 +74,11 @@ describe('NasaImages Selectors', () => {
   beforeEach(() => {
     state = {
       [name]: nasaMediaAdapter.setAll(
-        [createNasaImagesEntity('PRODUCT-AAA'), createNasaImagesEntity('PRODUCT-BBB'), createNasaImagesEntity('PRODUCT-CCC')],
+        [
+          createNasaImagesEntity('PRODUCT-AAA'),
+          createNasaImagesEntity('PRODUCT-BBB'),
+          createNasaImagesEntity('PRODUCT-CCC'),
+        ],
         {
           ...initialNasaImagesState,
           selectedId: 'PRODUCT-BBB',
@@ -82,7 +86,7 @@ describe('NasaImages Selectors', () => {
           loading: false,
           isActiveSearch: true,
           count: 3,
-        },
+        }
       ),
     };
   });

@@ -92,6 +92,13 @@
       "options": {
         "jestConfig": "apps/nasa-images/jest.config.ts"
       }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "nasa-images:build",
+        "port": 4202
+      }
     }
   }
 }

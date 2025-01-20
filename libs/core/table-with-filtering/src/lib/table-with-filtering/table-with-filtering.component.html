@@ -10,29 +10,27 @@
   </h2>
 
   @if (viewExtraActions.length) {
-  <div class="flex flex-row justify-center items-center gap-sm">
-    @for (action of viewExtraActions; track action) {
-    <button
-      type="button"
-      mat-flat-button
-      [disabled]="action.disabled()"
-      (click)="action.execute()"
-    >
-      <mat-icon>{{ action.icon }}</mat-icon> {{ action.label }}
-    </button>
-    }
-  </div>
+    <div class="flex flex-row justify-center items-center gap-sm">
+      @for (action of viewExtraActions; track action) {
+        <button
+          type="button"
+          mat-flat-button
+          [disabled]="action.disabled()"
+          (click)="action.execute()">
+          <mat-icon>{{ action.icon }}</mat-icon> {{ action.label }}
+        </button>
+      }
+    </div>
   }
 
   @if (routingToDetailPage.visible) {
-  <button
-    type="button"
-    mat-flat-button
-    [disabled]="routingToDetailPage.disabled"
-    [routerLink]="routingToDetailPage.path || ['./crear']"
-  >
-    <mat-icon>add</mat-icon> {{ routingToDetailPage.label || 'Crear' }}
-  </button>
+    <button
+      type="button"
+      mat-flat-button
+      [disabled]="routingToDetailPage.disabled"
+      [routerLink]="routingToDetailPage.path || ['./crear']">
+      <mat-icon>add</mat-icon> {{ routingToDetailPage.label || 'Crear' }}
+    </button>
   }
 </div>
 
@@ -41,8 +39,7 @@
   [fields]="facade.filterFormConfig || []"
   [model]="{ text: '' }"
   [submitAvailable]="false"
-  (changeEvent)="onChangeFiltering($event)"
->
+  (changeEvent)="onChangeFiltering($event)">
 </plastik-shared-form-feature>
 
 <plastik-shared-table
@@ -60,6 +57,5 @@
   [extraRowStyles]="tableDefinition.extraRowStyles"
   [actionsColStyles]="tableDefinition.actionsColStyles || ''"
   (changeSorting)="onChangeSorting($event)"
-  (delete)="onDelete($event)"
->
+  (delete)="onDelete($event)">
 </plastik-shared-table>

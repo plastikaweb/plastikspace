@@ -12,7 +12,12 @@ describe('NasaImagesFaqsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideHttpClient(), provideHttpClientTesting(), provideEnvironmentMock(), NasaImagesFaqsService],
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting(),
+        provideEnvironmentMock(),
+        NasaImagesFaqsService,
+      ],
     });
     service = TestBed.inject(NasaImagesFaqsService);
     httpMock = TestBed.inject(HttpTestingController);

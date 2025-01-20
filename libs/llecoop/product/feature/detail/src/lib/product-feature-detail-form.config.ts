@@ -8,7 +8,10 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import {
-    LlecoopProduct, LlecoopProductCategory, LlecoopProductSelectData, LlecoopProductUnit
+  LlecoopProduct,
+  LlecoopProductCategory,
+  LlecoopProductSelectData,
+  LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
 
 function setStockUnitAddonRight(
