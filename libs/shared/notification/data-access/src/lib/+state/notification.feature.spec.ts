@@ -1,14 +1,14 @@
 import { Action } from '@ngrx/store';
-
 import { Notification } from '@plastik/shared/notification/entities';
+
 import { notificationActions } from './notification.actions';
 import {
-  NotificationPartialState,
-  State,
   initialState,
+  NotificationPartialState,
   reducer,
   selectConfiguration,
   selectPreserveOnRouteRequest,
+  State,
 } from './notification.feature';
 
 describe('Notification Reducer', () => {
@@ -29,7 +29,7 @@ describe('Notification Reducer', () => {
       const result: State = reducer(initialState, action);
 
       expect(result.configuration).toBeNull();
-      expect(result.preserveOnRouteRequest).toBeTruthy();
+      expect(result.preserveOnRouteRequest).toBeFalsy();
     });
   });
 

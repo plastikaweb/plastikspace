@@ -85,7 +85,7 @@ describe('nasa-images search page', () => {
         // let collectionTotalHits: number;
 
         it(`should allow a request ${testCase.case}`, () => {
-          cy.fixture(testCase.fixture).then(fixture => {
+          cy.fixture(testCase.fixture).then(() => {
             // collectionLength = fixture.collection.items.length || 0;
             // collectionTotalHits = fixture.collection.metadata.total_hits || 0;
             cy.intercept('GET', '*', { fixture: testCase.fixture }).as('response');

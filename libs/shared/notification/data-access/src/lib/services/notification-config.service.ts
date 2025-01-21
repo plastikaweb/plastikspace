@@ -1,5 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-
 import { Notification, NOTIFICATION_TYPES_CONFIG } from '@plastik/shared/notification/entities';
 
 @Injectable({
@@ -25,7 +24,7 @@ export class NotificationConfigService {
     message = '',
     ...extras
   }: Partial<Notification> = {}): Notification {
-    // this.removeInstance();
+    this.removeInstance();
 
     this.#notification = {
       ...this.#notificationTypesConfig[type],
