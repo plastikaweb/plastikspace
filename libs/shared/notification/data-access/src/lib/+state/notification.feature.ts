@@ -1,6 +1,6 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-
 import { Notification } from '@plastik/shared/notification/entities';
+
 import { notificationActions } from './notification.actions';
 
 const NOTIFICATION_FEATURE_KEY = 'notification';
@@ -12,7 +12,7 @@ export interface State {
 
 export const initialState: State = {
   configuration: null,
-  preserveOnRouteRequest: true,
+  preserveOnRouteRequest: false,
 };
 
 export interface NotificationPartialState {
@@ -26,13 +26,10 @@ const notificationReducer = createReducer(
     (state, { configuration, preserve }): State => ({
       ...state,
       configuration,
-      preserveOnRouteRequest: preserve ?? true,
+      preserveOnRouteRequest: preserve ?? false,
     })
   ),
-  on(
-    notificationActions.dismiss,
-    (state): State => ({ ...state, configuration: null, preserveOnRouteRequest: true })
-  )
+  on(notificationActions.dismiss, (state): State => ({ ...state, ...initialState }))
 );
 
 export const selectNotificationFeature = createFeature({

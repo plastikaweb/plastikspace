@@ -12,7 +12,6 @@ import {
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { activityActions } from '@plastik/shared/activity/data-access';
-
 import {
   notificationActions,
   NotificationConfigService,
@@ -84,7 +83,6 @@ export class FirebaseAuthService {
             message:
               (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
               'Revisa les teves dades',
-            duration: 5000,
             action: 'tancar',
           }),
         })
