@@ -46,7 +46,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   readonly #price: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'totalPrice',
     title: 'Preu total',
-    propertyPath: '',
+    propertyPath: 'totalPrice',
     sorting: true,
     cssClasses: ['min-w-[100px]'],
     formatting: {
@@ -58,8 +58,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     },
   };
 
-  readonly #numberOfProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
-    key: 'numberOfProducts',
+  readonly #productCount: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+    key: 'cart',
     title: 'Nre. de productes',
     propertyPath: 'cart',
     sorting: true,
@@ -77,7 +77,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   readonly #columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
     this.#name,
     this.#price,
-    this.#numberOfProducts,
+    this.#productCount,
     this.#status,
     this.#createdAt,
     this.#updatedAt,
