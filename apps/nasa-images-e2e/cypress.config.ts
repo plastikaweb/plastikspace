@@ -3,6 +3,7 @@ import { defineConfig } from 'cypress';
 import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 
 export default defineConfig({
+  projectId: 'b47wpf',
   e2e: {
     ...nxE2EPreset(__filename, {
       cypressDir: 'src',
@@ -12,6 +13,8 @@ export default defineConfig({
       },
       ciWebServerCommand: 'nx run nasa-images:serve-static',
     }),
+    testIsolation: false,
+    experimentalStudio: true,
     baseUrl: 'http://localhost:4201',
     setupNodeEvents(on, config) {
       config.defaultCommandTimeout = 120000;
