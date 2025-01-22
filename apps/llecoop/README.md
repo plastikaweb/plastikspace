@@ -67,6 +67,7 @@ This is a list of all the related libraries to llecoop app.
 - [llecoop-product-data-access](../../libs/llecoop/product/data-access/README.md)
 - [llecoop-product-feature-detail](../../libs/llecoop/product/feature/detail/README.md)
 - [llecoop-product-feature-list](../../libs/llecoop/product/feature/list/README.md)
+- [llecoop-product-ui-product-name-cell](../../libs/llecoop/product/ui/product-name-cell/README.md)
 
 ### User
 

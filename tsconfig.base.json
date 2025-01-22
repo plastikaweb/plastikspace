@@ -52,6 +52,9 @@
       ],
       "@plastik/llecoop/order-list/util": ["libs/llecoop/order-list/util/src/index.ts"],
       "@plastik/llecoop/order-status-chip": ["libs/llecoop/ui/order-status-chip/src/index.ts"],
+      "@plastik/llecoop/product-name-cell": [
+        "libs/llecoop/product/ui/product-name-cell/src/index.ts"
+      ],
       "@plastik/llecoop/product/data-access": ["libs/llecoop/product/data-access/src/index.ts"],
       "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
