@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
+import { UiProductNameCellComponent } from '@plastik/llecoop/product-name-cell';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { createdAt, productCategoryColumn, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -17,25 +17,24 @@ import {
 export class LlecoopProductSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProduct>
 {
-  readonly #sanitizer = inject(DomSanitizer);
   readonly #store = inject(LlecoopProductStore);
 
-  readonly #name: TableColumnFormatting<LlecoopProduct, 'LINK'> = {
+  readonly #name: TableColumnFormatting<LlecoopProduct, 'COMPONENT'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    link: (product?: LlecoopProduct) => `./${product?.id}`,
     formatting: {
-      type: 'LINK',
+      type: 'COMPONENT',
       execute: (_, product) => {
-        const link = `<p class="font-bold uppercase">${product?.name}</p>`;
-        const info = product?.info ? `<p class="font-bold">${product?.info}</p>` : '';
-        const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
-        const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
-        const extra = `<ul class="hidden md:block">${provider}${origin}</ul>`;
-        return this.#sanitizer.bypassSecurityTrustHtml(`${link}${info}${extra}`) as SafeHtml;
+        if (!product) {
+          throw new Error('Product is required');
+        }
+        return {
+          component: UiProductNameCellComponent,
+          inputs: { product },
+        };
       },
     },
   };

@@ -1,0 +1,26 @@
+<div class="mb-tiny">
+  <a class="font-bold uppercase" [routerLink]="[product().id]">
+    {{ product().name }}
+  </a>
+  @if (product().info) {
+    <p class="text-sm font-bold">{{ product().info }}</p>
+  }
+</div>
+
+@if (product().provider || product().origin) {
+  <dl class="hidden md:block">
+    @if (product().provider) {
+      <div class="flex flex-row gap-[2px]">
+        <dt>Proveïdor:</dt>
+        <dd>{{ product().provider }}</dd>
+      </div>
+    }
+
+    @if (product().origin) {
+      <div class="flex flex-row gap-[2px]">
+        <dt>Procedència:</dt>
+        <dd>{{ product().origin }}</dd>
+      </div>
+    }
+  </dl>
+}
