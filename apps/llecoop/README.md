@@ -33,6 +33,10 @@ This is a list of all the related libraries to llecoop app.
 
 - [llecoop-entities](../../libs/llecoop/entities/README.md)
 
+### Util
+
+- [llecoop-util](../../libs/llecoop/util/README.md)
+
 ### CMS Layout
 
 - [llecoop-cms-layout](../../libs/llecoop/cms-layout/README.md)
@@ -50,6 +54,7 @@ This is a list of all the related libraries to llecoop app.
 - [llecoop-category-data-access](../../libs/llecoop/category/data-access/README.md)
 - [llecoop-category-feature-detail](../../libs/llecoop/category/feature/detail/README.md)
 - [llecoop-category-feature-list](../../libs/llecoop/category/feature/list/README.md)
+- [llecoop-category-ui-category-name-cell](../../libs/llecoop/category/ui/category-name-cell/README.md)
 
 ### Order List
 

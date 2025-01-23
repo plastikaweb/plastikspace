@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { UiProductNameCellComponent } from '@plastik/llecoop/product-name-cell';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
-import { createdAt, productCategoryColumn, updatedAt } from '@plastik/llecoop/util';
+import { categoryNameCell, createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -33,7 +33,7 @@ export class LlecoopProductSearchFeatureTableConfig
         }
         return {
           component: UiProductNameCellComponent,
-          inputs: { product },
+          inputs: { product, nameStyle: 'uppercase font-bold' },
         };
       },
     },
@@ -58,7 +58,12 @@ export class LlecoopProductSearchFeatureTableConfig
 
   readonly #columnProperties: TableColumnFormatting<LlecoopProduct, FormattingTypes>[] = [
     this.#name,
-    productCategoryColumn<LlecoopProduct>(),
+    categoryNameCell<LlecoopProduct>({
+      key: 'category',
+      title: 'Categoria',
+      propertyPath: 'category',
+      cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
+    }),
     this.#stock,
     this.#createdAt,
     this.#updatedAt,
