@@ -7,7 +7,7 @@ import {
   LlecoopOrderProduct,
 } from '@plastik/llecoop/entities';
 import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import { productCategoryColumn } from '@plastik/llecoop/util';
+import { categoryNameCell } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -131,7 +131,12 @@ export class LlecoopUserOrderDetailFormTableConfig
 
   readonly #columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] = [
     this.#name,
-    productCategoryColumn<LlecoopOrderProduct>(),
+    categoryNameCell<LlecoopOrderProduct>({
+      key: 'category',
+      title: 'Categoria',
+      propertyPath: 'category',
+      cssClasses: ['hidden lg:flex lg:min-w-[170px] justify-start'],
+    }),
     this.#provider,
     this.#origin,
     this.#priceWithIva,

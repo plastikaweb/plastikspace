@@ -1,5 +1,5 @@
 <div class="mb-tiny">
-  <a class="font-bold uppercase" [routerLink]="[product().id]">
+  <a [ngClass]="nameStyle()" [routerLink]="[product().id]">
     {{ product().name }}
   </a>
   @if (product().info) {
@@ -8,19 +8,17 @@
 </div>
 
 @if (product().provider || product().origin) {
-  <dl class="hidden md:block">
+  <ul class="hidden md:block">
     @if (product().provider) {
-      <div class="flex flex-row gap-[2px]">
-        <dt>Proveïdor:</dt>
-        <dd>{{ product().provider }}</dd>
-      </div>
+      <li>
+        {{ product().provider }}
+      </li>
     }
 
     @if (product().origin) {
-      <div class="flex flex-row gap-[2px]">
-        <dt>Procedència:</dt>
-        <dd>{{ product().origin }}</dd>
-      </div>
+      <li>
+        {{ product().origin }}
+      </li>
     }
-  </dl>
+  </ul>
 }

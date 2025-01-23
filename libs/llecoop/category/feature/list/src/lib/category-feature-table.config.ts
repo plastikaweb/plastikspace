@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { UiCategoryNameCellComponent } from '@plastik/llecoop/category-name-cell';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
@@ -17,26 +17,24 @@ import {
 export class LlecoopCategorySearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProductCategory>
 {
-  readonly #sanitizer = inject(DomSanitizer);
   readonly #store = inject(LlecoopCategoryStore);
 
-  readonly #name: TableColumnFormatting<LlecoopProductCategory, 'LINK'> = {
+  readonly #name: TableColumnFormatting<LlecoopProductCategory, 'COMPONENT'> = {
     key: 'name',
     title: 'Nom',
     propertyPath: 'name',
     sorting: true,
     sticky: true,
-    link: category => `./${category?.id}`,
     formatting: {
-      type: 'LINK',
-      execute: (value, element) => {
-        const htmlString = `
-        <p class="grid grid-cols-[15px_1fr] items-center justify-center gap-tiny">
-          <span class="rounded-full size-sub" style="background-color:${element?.color}"></span>
-          <span class="uppercase font-bold">${value}</span>
-        </p>
-        `;
-        return this.#sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
+      type: 'COMPONENT',
+      execute: (_, category) => {
+        if (!category) {
+          throw new Error('Category is required');
+        }
+        return {
+          component: UiCategoryNameCellComponent,
+          inputs: { category, nameStyle: 'uppercase font-bold', withLink: true },
+        };
       },
     },
   };
