@@ -27,12 +27,14 @@ interface LlecoopProduct {
 ## Dependencies
 
 - RouterLink
+- NgClass
 
 ## Inputs
 
-| Name      | Type             | Description                                             | Default   |
-| --------- | ---------------- | ------------------------------------------------------- | --------- |
-| `product` | `LlecoopProduct` | Product object containing name, info, and other details | undefined |
+| Name        | Type             | Description                                             | Default   |
+| ----------- | ---------------- | ------------------------------------------------------- | --------- |
+| `product`   | `LlecoopProduct` | Product object containing name, info, and other details | undefined |
+| `nameStyle` | `string`         | CSS class for the name style                            | `''`      |
 
 ## How to use
 
@@ -53,7 +55,8 @@ export class ProductListComponent {
 
 ```html
 <!-- component template -->
-<plastik-ui-product-name-cell [product]="product"> </plastik-ui-product-name-cell>
+<plastik-ui-product-name-cell [product]="product" [nameStyle]="uppercase">
+</plastik-ui-product-name-cell>
 ```
 
 ## Running unit tests

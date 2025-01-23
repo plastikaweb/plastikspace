@@ -1,0 +1,20 @@
+{
+  "name": "ui-category-name-cell",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/llecoop/category/ui/category-name-cell/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["scope:llecoop", "type:ui"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/llecoop/category/ui/category-name-cell/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
