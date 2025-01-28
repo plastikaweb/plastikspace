@@ -15,7 +15,7 @@
       <ng-container [matColumnDef]="column.key" [sticky]="column.sticky">
         <mat-header-cell
           *matHeaderCellDef
-          [mat-sort-header]="column.key"
+          [mat-sort-header]="column.propertyPath"
           [disabled]="!column.sorting"
           [ngClass]="column.cssClasses?.[0] || ''">
           {{ column.title }}
