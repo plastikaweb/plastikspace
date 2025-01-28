@@ -61,7 +61,8 @@ export class LlecoopProductSearchFeatureTableConfig
     categoryNameCell<LlecoopProduct>({
       key: 'category',
       title: 'Categoria',
-      propertyPath: 'category',
+      propertyPath: 'category.name',
+      sorting: true,
       cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
     }),
     this.#stock,

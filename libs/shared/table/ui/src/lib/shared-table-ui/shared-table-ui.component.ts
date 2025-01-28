@@ -15,6 +15,7 @@ import {
   computed,
   effect,
   ElementRef,
+  inject,
   input,
   OnInit,
   output,
@@ -39,11 +40,12 @@ import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
 import {
+  DataFormatFactoryService,
   FormattingTypes,
   SafeFormattedPipe,
   SharedUtilFormattersModule,
 } from '@plastik/shared/formatters';
-import { isEmpty, isString } from '@plastik/shared/objects';
+import { isEmpty } from '@plastik/shared/objects';
 import {
   EditableAttributeBase,
   isCheckboxTypeGuard,
@@ -105,6 +107,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
   implements OnInit, AfterViewInit
 {
+  protected dataFormatFactoryService = inject(DataFormatFactoryService);
   /**
    * Data that will populate the table.
    */
@@ -229,9 +232,15 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   ngOnInit(): void {
     this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
-      return isString(data[sortHeaderId])
-        ? data[sortHeaderId].toLowerCase()
-        : (data[sortHeaderId] as number);
+      const value = sortHeaderId.split('.').reduce((obj, key) => {
+        return obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key] : obj;
+      }, data as unknown) as unknown;
+
+      if (value === null || value === undefined) return '';
+      if (typeof value === 'number') return value;
+      if (typeof value === 'boolean') return value ? 1 : 0;
+      if (value instanceof Date) return value.getTime();
+      return String(value).toLowerCase();
     };
 
     if (this.filterPredicate && this.filterCriteria) {

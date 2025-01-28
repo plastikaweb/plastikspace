@@ -37,9 +37,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
     index?: number,
     extraConfig?: unknown
   ): SafeHtml | string | FormattingComponentOutput {
-    const getValueToShow = typeof propertyPath === 'string' ? propertyPath : propertyPath(item);
-    const value = this.getValueFromRow(getValueToShow, item);
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    const value = this.getValueFromRow(propertyPath, item);
     const { type, extras } = formatting;
 
     switch (type) {
