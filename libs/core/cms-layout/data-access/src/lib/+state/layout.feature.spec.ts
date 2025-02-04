@@ -2,8 +2,8 @@ import { Action } from '@ngrx/store';
 
 import { layoutActions } from './layout.actions';
 import {
-  LayoutPartialState,
   initialState,
+  LayoutPartialState,
   name,
   reducer,
   selectIsMobile,

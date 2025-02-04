@@ -1,6 +1,7 @@
-import { signal } from '@angular/core';
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+
 import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type';
 import { TableWithFilteringComponent } from './table-with-filtering.component';
 
@@ -12,11 +13,15 @@ describe('TableWithFilteringComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TableWithFilteringComponent],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         provideRouter([]),
         {
           provide: TABLE_WITH_FILTERING_FACADE,
           useValue: {
-            tableDefinition: signal({}),
+            tableDefinition: {
+              columnProperties: [],
+              count: signal(0),
+            },
             tableData: signal([]),
             formStructure: signal([]),
             count: signal(0),
@@ -32,7 +37,7 @@ describe('TableWithFilteringComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -1,8 +1,14 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedUtilDynamicBgColorDirective } from './shared-util-dynamic-bg-color.directive';
 // Create a simple test component to host the directive for testing
-import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DebugElement,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+
+import { SharedUtilDynamicBgColorDirective } from './shared-util-dynamic-bg-color.directive';
 
 @Component({
   template: `<h1 plastikDynamicBgColor color="orange">{{ title }}</h1> `,
@@ -17,6 +23,7 @@ describe('SharedUtilDynamicBgColorDirective', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideExperimentalZonelessChangeDetection()],
       imports: [TestComponent, SharedUtilDynamicBgColorDirective],
     }).compileComponents();
 

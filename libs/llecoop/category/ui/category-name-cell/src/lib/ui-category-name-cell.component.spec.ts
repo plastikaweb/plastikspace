@@ -1,6 +1,7 @@
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { expect } from '@jest/globals';
 
 import { UiCategoryNameCellComponent } from './ui-category-name-cell.component';
 
@@ -12,7 +13,7 @@ describe('UiCategoryNameCellComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UiCategoryNameCellComponent],
-      providers: [provideRouter([])],
+      providers: [provideExperimentalZonelessChangeDetection(), provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiCategoryNameCellComponent);

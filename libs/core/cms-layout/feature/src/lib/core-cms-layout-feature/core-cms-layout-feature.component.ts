@@ -27,7 +27,7 @@ import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer'
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
-import { NotificationFacade } from '@plastik/shared/notification/data-access';
+import { NotificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
 
 @Component({
@@ -56,11 +56,11 @@ import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification
 })
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly #layoutFacade = inject(LayoutFacade);
-  readonly #notificationFacade = inject(NotificationFacade);
   readonly #destroyed$ = new Subject<void>();
   readonly #breakpointObserver = inject(BreakpointObserver);
   readonly #zone = inject(NgZone);
 
+  protected readonly notificationStore = inject(NotificationStore);
   protected readonly hideFooter = input(false);
   protected readonly widgetsContainer = viewChild('widgetsContainer', {
     read: ViewContainerRef,
@@ -70,7 +70,6 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   protected readonly isMobile$ = this.#layoutFacade.isMobile$;
   protected readonly isActive$ = this.#layoutFacade.isActive$;
   protected readonly sidenavConfig = this.#layoutFacade.sidenavConfig;
-  protected readonly notificationConfig$ = this.#notificationFacade.config$;
   readonly headerConfig = this.#layoutFacade.headerConfig;
   protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
 
@@ -99,7 +98,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   }
 
   onNotificationDismiss(): void {
-    this.#notificationFacade.dismiss();
+    this.notificationStore.dismiss();
   }
 
   protected onSendAction(action: () => void): void {

@@ -1,9 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import {
-  MAT_SNACK_BAR_DEFAULT_OPTIONS,
-  MatSnackBar,
-  MatSnackBarConfig,
-} from '@angular/material/snack-bar';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
+import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Notification } from '@plastik/shared/notification/entities';
 
@@ -13,13 +10,13 @@ import { NotificationUiMatSnackbarDirective } from './notification-ui-mat-snackb
 describe('NotificationUiMatSnackbarDirective', () => {
   let directive: NotificationUiMatSnackbarDirective;
   let snackBar: jest.Mocked<MatSnackBar>;
-  let defaultSnackBarConfig: MatSnackBarConfig;
 
   beforeEach(() => {
     const mockSnackBar = {
       openFromComponent: jest.fn().mockReturnValue({
         afterDismissed: () => ({ subscribe: jest.fn() }),
         onAction: () => ({ subscribe: jest.fn() }),
+        dismiss: jest.fn(),
       }),
       dismiss: jest.fn(),
     };
@@ -31,10 +28,12 @@ describe('NotificationUiMatSnackbarDirective', () => {
         NoopAnimationsModule,
       ],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         {
           provide: MatSnackBar,
           useValue: mockSnackBar,
         },
+        { provide: ComponentFixtureAutoDetect, useValue: true },
         {
           provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
           useValue: {
@@ -44,9 +43,10 @@ describe('NotificationUiMatSnackbarDirective', () => {
       ],
     });
 
-    snackBar = TestBed.inject(MatSnackBar) as jest.Mocked<MatSnackBar>;
-    defaultSnackBarConfig = TestBed.inject(MAT_SNACK_BAR_DEFAULT_OPTIONS);
-    directive = new NotificationUiMatSnackbarDirective(snackBar, defaultSnackBarConfig);
+    TestBed.runInInjectionContext(() => {
+      directive = new NotificationUiMatSnackbarDirective();
+      snackBar = TestBed.inject(MatSnackBar) as jest.Mocked<MatSnackBar>;
+    });
   });
 
   it('should create an instance', () => {

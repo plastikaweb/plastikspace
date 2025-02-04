@@ -1,6 +1,6 @@
 import { axe, toHaveNoViolations } from 'jest-axe';
 
-import { Component } from '@angular/core';
+import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { NasaImagesSearchUiNoResultsComponent } from './nasa-images-search-ui-no-results.component';
@@ -26,10 +26,12 @@ describe('NasaImagesSearchUiNoResultsComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TestHostComponent, NasaImagesSearchUiNoResultsComponent],
+      providers: [provideExperimentalZonelessChangeDetection()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {

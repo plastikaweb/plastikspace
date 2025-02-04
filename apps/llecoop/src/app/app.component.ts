@@ -7,7 +7,7 @@ import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectIsActive } from '@plastik/shared/activity/data-access';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
-import { NotificationFacade } from '@plastik/shared/notification/data-access';
+import { NotificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
 
 registerLocaleData(localeCa, 'ca-ES');
@@ -20,11 +20,9 @@ registerLocaleData(localeCa, 'ca-ES');
 export class AppComponent implements OnInit {
   readonly #store = inject(Store);
   readonly #meta = inject(Meta);
-  protected readonly notificationFacade = inject(NotificationFacade);
-  protected readonly notificationConfig = toSignal(this.notificationFacade?.config$);
+  protected readonly notificationStore = inject(NotificationStore);
   protected readonly isActive = toSignal(this.#store.select(selectIsActive));
 
-  // <link rel="preconnect" href="https://images-assets.nasa.gov">
   ngOnInit(): void {
     this.#meta.addTag({
       name: 'description',

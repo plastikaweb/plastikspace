@@ -11,6 +11,7 @@
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2020", "dom"],
+    "types": ["node", "jest", "@types/jest"],
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
@@ -117,7 +118,8 @@
         "libs/shared/util/return-as-observable-pipe/src/index.ts"
       ],
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
-      "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"]
+      "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"],
+      "@plastik/shared/testing": ["libs/shared/testing/index.ts"]
     }
   },
   "angularCompilerOptions": {

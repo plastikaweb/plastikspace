@@ -1,3 +1,4 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { SafeFormattedPipe } from './safe-formatted-cell.pipe';
@@ -12,6 +13,7 @@ describe('SafeFormattedCellPipe', () => {
     await TestBed.configureTestingModule({
       imports: [SafeFormattedPipe],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         {
           provide: DataFormatFactoryService,
           useValue: {

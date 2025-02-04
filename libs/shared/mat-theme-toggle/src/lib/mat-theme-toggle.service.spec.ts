@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 import { MatThemeToggleService } from './mat-theme-toggle.service';
 
@@ -7,7 +8,7 @@ describe('MatThemeToggleService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [MatThemeToggleService],
+      providers: [MatThemeToggleService, provideExperimentalZonelessChangeDetection()],
     });
     service = TestBed.inject(MatThemeToggleService);
   });

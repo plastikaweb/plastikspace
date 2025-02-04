@@ -1,5 +1,7 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 import { YearPickerComponent } from './year-picker.component';
 
 describe('YearPickerComponent', () => {
@@ -8,6 +10,7 @@ describe('YearPickerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideExperimentalZonelessChangeDetection()],
       imports: [YearPickerComponent, NoopAnimationsModule],
     }).compileComponents();
 

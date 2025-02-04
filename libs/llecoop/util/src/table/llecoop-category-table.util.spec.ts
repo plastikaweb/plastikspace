@@ -1,3 +1,5 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { BaseEntity } from '@plastik/core/entities';
 import { FormattingComponentOutput } from '@plastik/shared/formatters';
 
@@ -10,6 +12,12 @@ interface MockEntity extends BaseEntity {
 }
 
 describe('categoryNameCell', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideExperimentalZonelessChangeDetection()],
+    });
+  });
+
   it('should return a formatting configuration with default values', () => {
     const config = categoryNameCell<MockEntity>({});
     expect(config.key).toBe('name');

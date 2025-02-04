@@ -3,13 +3,9 @@ import { CanDeactivateFn } from '@angular/router';
 
 import { canDeactivateGuard } from './can-deactivate.guard';
 
-describe('canDeactivateGuard', () => {
+describe('CanDeactivateGuard', () => {
   const executeGuard: CanDeactivateFn<{ pendingChanges: () => boolean }> = (...guardParameters) =>
     TestBed.runInInjectionContext(() => canDeactivateGuard(...guardParameters));
-
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-  });
 
   it('should be created', () => {
     expect(executeGuard).toBeTruthy();

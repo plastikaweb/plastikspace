@@ -1,7 +1,8 @@
-import { AuthGuard, hasCustomClaim } from '@angular/fire/auth-guard';
+import { inject } from '@angular/core';
+import { Auth } from '@angular/fire/auth';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { Routes } from '@angular/router';
+import { CanActivateFn, Router, Routes } from '@angular/router';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { STORE_TOKEN } from '@plastik/llecoop/data-access';
 import {
@@ -10,10 +11,36 @@ import {
 } from '@plastik/llecoop/order-list/data-access';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
+
 import { CmsLayoutComponent } from './cms-layout.component';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
+const hasCustomClaim = (claim: string) => async () => {
+  const auth = inject(Auth);
+  const idTokenResult = await auth.currentUser?.getIdTokenResult();
+  return !!idTokenResult?.claims[claim];
+};
+
 const adminOnly = () => hasCustomClaim('isAdmin');
+
+const customAuthGuard: CanActivateFn = async route => {
+  const auth = inject(Auth);
+  const router = inject(Router);
+
+  if (!auth.currentUser) {
+    await router.navigate(['/']);
+    return false;
+  }
+
+  const authPipe = route.data['authGuardPipe']?.();
+  if (!authPipe) return true;
+
+  const isAuthorized = await authPipe();
+  if (!isAuthorized) {
+    await router.navigate(['/']);
+  }
+  return isAuthorized;
+};
 
 export const llecoopLayoutRoutes: Routes = [
   {
@@ -34,7 +61,7 @@ export const llecoopLayoutRoutes: Routes = [
     children: [
       {
         path: 'admin',
-        canActivate: [AuthGuard],
+        canActivate: [customAuthGuard],
         data: {
           authGuardPipe: adminOnly,
           mustBeStored: true,

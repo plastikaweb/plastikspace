@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedUtilDynamicBgColorDirective } from '@plastik/shared/dynamic-bg-color';
 
@@ -7,7 +7,8 @@ import { SharedUtilDynamicBgColorDirective } from '@plastik/shared/dynamic-bg-co
   selector: 'exp-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  title = 'Welcome experimental';
+  title = signal('Welcome experimental');
 }

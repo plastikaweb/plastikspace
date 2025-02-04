@@ -8,9 +8,11 @@
     "appspot",
     "aprox",
     "arrowdown",
+    "classpath",
     "Codeium",
     "Deschryver",
     "dotnet",
+    "eslintcache",
     "faqs",
     "firebaseapp",
     "firebaserc",
@@ -20,6 +22,7 @@
     "github",
     "juliangruber",
     "killports",
+    "libpeerconnection",
     "llecoop",
     "Llecoop",
     "peticio",
@@ -34,7 +37,8 @@
     "thollander",
     "tuesday",
     "Verou",
-    "wednesday"
+    "wednesday",
+    "windsurfrules"
   ],
   "ignoreWords": [],
   "import": []

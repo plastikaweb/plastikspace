@@ -1,6 +1,5 @@
 @let isActive = (isActive$ | ngrxPush) || false;
 @let sidenavOpened = (sidenavOpened$ | ngrxPush) || false;
-@let notificationConfig = (notificationConfig$ | ngrxPush) || null;
 @let isMobile = (isMobile$ | ngrxPush) || false;
 @let headerMenu = headerConfig.menu;
 @let headerTitle = headerConfig.title;
@@ -19,8 +18,10 @@
   </plastik-shared-activity-ui-overlay>
 }
 
-@defer (when notificationConfig) {
-  <div [plastikSnackbar]="notificationConfig || {}" (sendDismiss)="onNotificationDismiss()"></div>
+@defer (when notificationStore.configuration()) {
+  <div
+    [plastikSnackbar]="notificationStore.configuration()"
+    (sendDismiss)="notificationStore.dismiss()"></div>
 }
 
 <div class="core-cms-container">
