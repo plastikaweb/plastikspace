@@ -1,11 +1,14 @@
+import { cold, hot } from 'jasmine-marbles';
+import { Observable } from 'rxjs';
+
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { cold, hot } from 'jasmine-marbles';
-import { Observable } from 'rxjs';
+
 import { layoutActions } from './layout.actions';
 import { LayoutEffects } from './layout.effects';
 import { LayoutPartialState, selectIsMobile, selectSidenavOpened } from './layout.feature';
@@ -23,8 +26,7 @@ describe('LayoutEffects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        LayoutEffects,
-        provideMockActions(() => actions),
+        provideExperimentalZonelessChangeDetection(),
         provideMockStore({
           initialState,
           selectors: [
@@ -32,6 +34,8 @@ describe('LayoutEffects', () => {
             { selector: selectIsMobile, value: true },
           ],
         }),
+        provideMockActions(() => actions),
+        LayoutEffects,
       ],
     });
 

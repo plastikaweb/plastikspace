@@ -1,5 +1,13 @@
+import { of } from 'rxjs';
+
 import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  isDevMode,
+  LOCALE_ID,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import {
@@ -12,14 +20,14 @@ import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angul
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
+  provideRouter,
   RouteReuseStrategy,
   TitleStrategy,
-  provideRouter,
   withComponentInputBinding,
   withViewTransitions,
 } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
-import { NavigationActionTiming, RouterState, provideRouterStore } from '@ngrx/router-store';
+import { NavigationActionTiming, provideRouterStore, RouterState } from '@ngrx/router-store';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
@@ -27,12 +35,13 @@ import { ENVIRONMENT } from '@plastik/core/environments';
 import {
   CustomRouterSerializer,
   PrefixTitleService,
-  RouterStateEffects,
   routerReducers,
+  RouterStateEffects,
 } from '@plastik/core/router-state';
 import { selectActivityFeature } from '@plastik/shared/activity/data-access';
-import { NotificationDataAccessModule } from '@plastik/shared/notification/data-access';
+import { NotificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
+
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { viewConfig } from './cms-layout-config';
@@ -40,6 +49,7 @@ import { LlecoopRouteReuseStrategy } from './llecoop-route-reuse.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(environment.firebase, 'llecoop')),
@@ -66,13 +76,6 @@ export const appConfig: ApplicationConfig = {
       }
       return functions;
     }),
-    // provideStorage(() => {
-    //   const storage = getStorage();
-    //   if (environment['useEmulators']) {
-    //     connectStorageEmulator(storage, 'localhost', 9199);
-    //   }
-    //   return storage;
-    // }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     {
       provide: RouteReuseStrategy,
@@ -91,12 +94,12 @@ export const appConfig: ApplicationConfig = {
         ? StoreDevtoolsModule.instrument({
             name: environment.name,
             maxAge: 25,
-            connectInZone: true,
+            connectInZone: false,
             trace: true,
             traceLimit: 75,
           })
         : [],
-      NotificationDataAccessModule,
+      NotificationStore,
       NotificationUiMatSnackbarModule
     ),
     provideRouterStore({

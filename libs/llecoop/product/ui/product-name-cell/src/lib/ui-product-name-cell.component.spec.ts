@@ -1,4 +1,4 @@
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
@@ -12,7 +12,7 @@ describe('UiProductNameCellComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UiProductNameCellComponent],
-      providers: [provideRouter([])],
+      providers: [provideExperimentalZonelessChangeDetection(), provideRouter([])],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiProductNameCellComponent);

@@ -29,7 +29,7 @@ export class LlecoopOrderIndicatorComponent {
   protected readonly userOrderStore = inject(LlecoopUserOrderStore);
   protected readonly orderListStore = inject(LLecoopOrderListStore);
 
-  protected openedUserOrderList = computed(() => {
+  openedUserOrderList = computed(() => {
     const openedOrderListId = this.orderListStore.currentOrder()?.id;
     return openedOrderListId
       ? this.userOrderStore

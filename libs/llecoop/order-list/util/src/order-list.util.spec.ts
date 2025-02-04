@@ -1,3 +1,4 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
@@ -13,7 +14,10 @@ describe('order-list-util', () => {
     };
 
     TestBed.configureTestingModule({
-      providers: [{ provide: DomSanitizer, useValue: mockSanitizer }],
+      providers: [
+        provideExperimentalZonelessChangeDetection(),
+        { provide: DomSanitizer, useValue: mockSanitizer },
+      ],
     });
     sanitizer = TestBed.inject(DomSanitizer);
   });

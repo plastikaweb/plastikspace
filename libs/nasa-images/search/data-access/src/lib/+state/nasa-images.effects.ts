@@ -1,11 +1,11 @@
+import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
+
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { NavigationFilterService, selectRouteQueryParams } from '@plastik/core/router-state';
-import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
-
-import { LiveAnnouncer } from '@angular/cdk/a11y';
 import {
   NasaImagesSearchApiError,
   NasaImagesSearchApiParams,
@@ -13,9 +13,10 @@ import {
 } from '@plastik/nasa-images/search/entities';
 import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
 import {
-  notificationActions,
   NotificationConfigService,
+  NotificationStore,
 } from '@plastik/shared/notification/data-access';
+
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 
@@ -26,6 +27,7 @@ export class NasaImagesEffects {
   readonly #navigationFilter = inject(NavigationFilterService);
   readonly #notificationService = inject(NotificationConfigService);
   readonly #store = inject(Store);
+  readonly #notificationStore = inject(NotificationStore);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   navigation$ = createEffect(() => {
@@ -88,19 +90,22 @@ export class NasaImagesEffects {
     );
   });
 
-  showNotification$ = createEffect(() => {
-    return this.#actions$.pipe(
-      ofType(nasaImagesAPIActions.loadFailure),
-      map(({ error }) => {
-        const message = error || 'The request has failed. Please try it again.';
-        this.#liveAnnouncer.announce(message, 'assertive', 5000);
-        return notificationActions.show({
-          configuration: this.#notificationService.getInstance({
-            type: 'ERROR',
-            message: `<span class="sr-only">Error: </span>${message}`,
-          }),
-        });
-      })
-    );
-  });
+  showNotification$ = createEffect(
+    () => {
+      return this.#actions$.pipe(
+        ofType(nasaImagesAPIActions.loadFailure),
+        map(({ error }) => {
+          const message = error || 'The request has failed. Please try it again.';
+          this.#liveAnnouncer.announce(message, 'assertive', 5000);
+          this.#notificationStore.show(
+            this.#notificationService.getInstance({
+              type: 'ERROR',
+              message,
+            })
+          );
+        })
+      );
+    },
+    { dispatch: false }
+  );
 }

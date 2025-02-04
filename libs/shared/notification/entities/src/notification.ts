@@ -1,3 +1,5 @@
+import { AriaLivePoliteness } from '@angular/cdk/a11y';
+
 /**
  * The type of notification.
  */
@@ -10,7 +12,7 @@ export interface Notification {
   /**
    * The main text of the notification.
    */
-  message: string;
+  message: string | undefined;
   /**
    * The type of notification: Error | Info | Success | Warning.
    */
@@ -51,7 +53,9 @@ export interface Notification {
   /**
    * Screen x basis position of the notification.
    */
-  horizontalPosition?: 'start' | 'center' | 'end';
+  horizontalPosition?: 'start' | 'center' | 'end' | 'left' | 'right';
+
+  politeness?: AriaLivePoliteness;
 }
 
 /**

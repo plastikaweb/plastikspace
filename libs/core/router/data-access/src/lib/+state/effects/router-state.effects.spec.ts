@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { RouterStateEffects } from './router-state.effects';
 
 describe('RouterState Effects', () => {
@@ -20,6 +21,7 @@ describe('RouterState Effects', () => {
         provideRouter([]),
         provideMockStore(),
         provideMockActions(() => actions$),
+        provideExperimentalZonelessChangeDetection(),
       ],
     });
 

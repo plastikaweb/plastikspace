@@ -1,7 +1,7 @@
 import { DatePipe, PercentPipe, TitleCasePipe } from '@angular/common';
+import { LOCALE_ID, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { LOCALE_ID } from '@angular/core';
 import { DataFormatFactoryService } from './data-format-factory.service';
 import { objectMocked, TypeMocked } from './formatting.mock';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
@@ -12,6 +12,7 @@ describe('DataFormatFactoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         DataFormatFactoryService,
         SharedUtilFormattersService,
         TitleCasePipe,

@@ -10,8 +10,10 @@
   </plastik-shared-activity-ui-overlay>
 }
 
-@defer (when !!notificationConfig()) {
-  <div [plastikSnackbar]="notificationConfig()" (sendDismiss)="notificationFacade.dismiss()"></div>
+@defer (when !!notificationStore.configuration()) {
+  <div
+    [plastikSnackbar]="notificationStore.configuration()"
+    (sendDismiss)="notificationStore.dismiss()"></div>
 }
 
 <router-outlet></router-outlet>

@@ -1,3 +1,9 @@
-import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
+import '@plastik/shared/testing';
 
-setupZoneTestEnv();
+import { TestBed } from '@angular/core/testing';
+import {
+  BrowserDynamicTestingModule,
+  platformBrowserDynamicTesting,
+} from '@angular/platform-browser-dynamic/testing';
+
+TestBed.initTestEnvironment([BrowserDynamicTestingModule], platformBrowserDynamicTesting());

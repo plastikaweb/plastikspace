@@ -8,7 +8,5 @@
     "../../libs/nasa-images/search/feature/src/**/*",
     "../../libs/nasa-images/faqs/feature/src/**/*"
   ],
-  "compilerOptions": {
-    "types": ["jest", "node"]
-  }
+  "compilerOptions": {}
 }

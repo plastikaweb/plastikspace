@@ -5,6 +5,7 @@ import { ComponentRef } from '@angular/core';
 import { BaseEntity } from '@plastik/core/entities';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { SharedTableUiComponent } from './shared-table-ui.component';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 
 describe('SharedTableUiComponent', () => {
   let component: SharedTableUiComponent<BaseEntity>;
@@ -14,6 +15,7 @@ describe('SharedTableUiComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedTableUiComponent],
+      providers: [provideExperimentalZonelessChangeDetection()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedTableUiComponent);

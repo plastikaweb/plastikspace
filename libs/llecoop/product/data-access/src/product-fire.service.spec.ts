@@ -1,7 +1,6 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideFirebaseApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { initializeApp } from 'firebase/app';
+
 import { LlecoopProductFireService } from './product-fire.service';
 
 describe('LlecoopProductFireService', () => {
@@ -10,14 +9,16 @@ describe('LlecoopProductFireService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideFirebaseApp(() =>
-          initializeApp({
-            apiKey: '',
-            authDomain: 'llecoop.firebaseapp.com',
-            projectId: 'llecoop',
-          })
-        ),
-        provideFirestore(() => getFirestore()),
+        provideExperimentalZonelessChangeDetection(),
+        {
+          provide: LlecoopProductFireService,
+          useValue: {
+            getAll: jest.fn(),
+            create: jest.fn(),
+            update: jest.fn(),
+            delete: jest.fn(),
+          },
+        },
       ],
     });
     service = TestBed.inject(LlecoopProductFireService);

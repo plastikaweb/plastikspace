@@ -1,9 +1,8 @@
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { provideMockStore } from '@ngrx/store/testing';
-import { initializeApp } from 'firebase/app';
+import { provideRouter } from '@angular/router';
+
+import { LlecoopOrderListFeatureDetailFacadeService } from '../order-list-feature-detail-facade.service';
 import { LlecoopOrderListFeatureDetailComponent } from './llecoop-order-list-feature-detail.component';
 
 describe('LlecoopOrderListFeatureDetailComponent', () => {
@@ -14,16 +13,33 @@ describe('LlecoopOrderListFeatureDetailComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LlecoopOrderListFeatureDetailComponent],
       providers: [
-        provideMockStore(),
-        provideFirebaseApp(() =>
-          initializeApp({
-            apiKey: 'AIzaSyAPtqItl2UtYscGTCBnnNUK9gdWOikXU1c',
-            authDomain: 'llecoop.firebaseapp.com',
-            projectId: 'llecoop',
-          })
-        ),
-        provideFirestore(() => getFirestore()),
-        provideAuth(() => getAuth()),
+        provideExperimentalZonelessChangeDetection(),
+        provideRouter([]),
+        {
+          provide: LlecoopOrderListFeatureDetailFacadeService,
+          useValue: {
+            viewConfig: signal({
+              title: 'title',
+              icon: 'icon',
+            }),
+            routingToDetailPage: signal({
+              visible: true,
+            }),
+            tableDefinition: {
+              columnProperties: [],
+              getData: () => [],
+              sort: signal({}),
+              caption: '',
+              count: signal(0),
+              actions: {},
+              noPagination: false,
+            },
+            filterCriteria: signal({}),
+            tableFilterPredicate: () => false,
+            // eslint-disable-next-line no-console
+            onChangeFilterCriteria: (criteria: Record<string, string>) => console.log(criteria),
+          },
+        },
       ],
     }).compileComponents();
 
@@ -32,7 +48,7 @@ describe('LlecoopOrderListFeatureDetailComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

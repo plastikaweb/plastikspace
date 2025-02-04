@@ -1,9 +1,11 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { buttonMock } from '@plastik/shared/button';
+
 import { SharedButtonUiComponent } from './shared-button-ui.component';
 
 describe('SharedButtonUiComponent', () => {
@@ -13,7 +15,7 @@ describe('SharedButtonUiComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedButtonUiComponent, AngularSvgIconModule.forRoot()],
-      providers: [provideHttpClient()],
+      providers: [provideExperimentalZonelessChangeDetection(), provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedButtonUiComponent);

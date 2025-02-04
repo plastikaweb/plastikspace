@@ -13,8 +13,8 @@ import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import {
-  notificationActions,
   NotificationConfigService,
+  NotificationStore,
 } from '@plastik/shared/notification/data-access';
 
 @Injectable({
@@ -25,6 +25,7 @@ export class FirebaseAuthService {
   readonly #router = inject(Router);
   readonly #state = inject(Store);
   readonly #notificationService = inject(NotificationConfigService);
+  readonly #notificationStore = inject(NotificationStore);
 
   currentUser = signal<User | null>(null);
   currentUserEmail = computed(() => this.currentUser()?.email ?? '');
@@ -35,7 +36,7 @@ export class FirebaseAuthService {
   firstLoginAfterRegister = signal(true);
 
   constructor() {
-    this.#auth.onAuthStateChanged(this.handleAuthStateChanged.bind(this));
+    this.#auth.onAuthStateChanged(user => this.handleAuthStateChanged(user));
   }
 
   private async handleAuthStateChanged(user: User | null): Promise<void> {
@@ -69,6 +70,7 @@ export class FirebaseAuthService {
     this.#state.dispatch(activityActions.setActivity({ isActive: true }));
 
     try {
+      this.#notificationStore.dismiss();
       await signInWithEmailAndPassword(this.#auth, email, password);
       await this.#router.navigate(['']);
     } catch (error) {
@@ -76,15 +78,13 @@ export class FirebaseAuthService {
       if ((error as Error).message?.includes('BLOCKING_FUNCTION_ERROR_RESPONSE')) {
         console.error('BLOCKING_FUNCTION_ERROR_RESPONSE');
       }
-      this.#state.dispatch(
-        notificationActions.show({
-          configuration: this.#notificationService.getInstance({
-            type: 'ERROR',
-            message:
-              (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
-              'Revisa les teves dades',
-            action: 'tancar',
-          }),
+
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message:
+            (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Revisa les teves dades',
+          action: 'tancar',
         })
       );
     } finally {
@@ -108,19 +108,18 @@ export class FirebaseAuthService {
   async register(email: string, password: string): Promise<void> {
     this.#state.dispatch(activityActions.setActivity({ isActive: true }));
     try {
+      this.#notificationStore.dismiss();
       const credentials = await createUserWithEmailAndPassword(this.#auth, email, password);
       await this.logout();
       this.sendVerification(credentials.user);
     } catch (error) {
       console.error(error);
       this.#state.dispatch(
-        notificationActions.show({
-          configuration: this.#notificationService.getInstance({
-            type: 'ERROR',
-            message:
-              (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Error de registre',
-            action: 'tancar',
-          }),
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message:
+            (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Error de registre',
+          action: 'tancar',
         })
       );
     } finally {
@@ -140,17 +139,16 @@ export class FirebaseAuthService {
   async logout(): Promise<void> {
     this.#state.dispatch(activityActions.setActivity({ isActive: true }));
     try {
+      this.#notificationStore.dismiss();
       await signOut(this.#auth);
       await this.#router.navigate(['login']);
     } catch (error) {
       console.error('Error during logout:', error);
-      this.#state.dispatch(
-        notificationActions.show({
-          configuration: this.#notificationService.getInstance({
-            type: 'ERROR',
-            message: 'Error during logout. Please try again.',
-            action: 'tancar',
-          }),
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message: 'Error during logout. Please try again.',
+          action: 'tancar',
         })
       );
     } finally {
@@ -173,14 +171,13 @@ export class FirebaseAuthService {
     this.firstLoginAfterRegister.set(false);
 
     try {
+      this.#notificationStore.dismiss();
       await sendEmailVerification(user);
       this.#state.dispatch(
-        notificationActions.show({
-          configuration: this.#notificationService.getInstance({
-            type: 'SUCCESS',
-            message:
-              'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
-          }),
+        this.#notificationService.getInstance({
+          type: 'SUCCESS',
+          message:
+            'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
         })
       );
     } catch (error) {
@@ -206,27 +203,24 @@ export class FirebaseAuthService {
     this.#state.dispatch(activityActions.setActivity({ isActive: true }));
 
     try {
+      this.#notificationStore.dismiss();
       await sendPasswordResetEmail(this.#auth, email);
       await this.#router.navigate(['login']);
       this.#state.dispatch(
-        notificationActions.show({
-          configuration: this.#notificationService.getInstance({
-            type: 'SUCCESS',
-            message: 'Revisa el teu correu per restablir la contrasenya',
-          }),
+        this.#notificationService.getInstance({
+          type: 'SUCCESS',
+          message: 'Revisa el teu correu per restablir la contrasenya',
         })
       );
     } catch (error) {
       console.error(error);
       this.#state.dispatch(
-        notificationActions.show({
-          configuration: this.#notificationService.getInstance({
-            type: 'ERROR',
-            message:
-              (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
-              'Petició denegada, revisa les teves dades',
-            action: 'tancar',
-          }),
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message:
+            (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
+            'Petició denegada, revisa les teves dades',
+          action: 'tancar',
         })
       );
     } finally {

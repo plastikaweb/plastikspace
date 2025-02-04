@@ -1,13 +1,11 @@
-import { signal } from '@angular/core';
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { SafeFormattedPipe } from '@plastik/shared/formatters';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
+
 import { LlecoopUserOrderResumeFacadeService } from '../user-order-resume-facade.service';
 import { LlecoopUserOrderFeatureResumeComponent } from './user-order-feature-resume.component';
 
@@ -19,24 +17,31 @@ describe('LlecoopUserOrderFeatureResumeComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LlecoopUserOrderFeatureResumeComponent, SharedTableUiComponent, SafeFormattedPipe],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         provideRouter([]),
-        provideMockStore({}),
-        LlecoopUserOrderResumeFacadeService,
-        provideFirebaseApp(() =>
-          initializeApp({
-            apiKey: 'AIzaSyAPtqItl2UtYscGTCBnnNUK9gdWOikXU1c',
-            authDomain: 'llecoop.firebaseapp.com',
-            projectId: 'llecoop',
-          })
-        ),
-        provideFirestore(() => getFirestore()),
-        provideAuth(() => getAuth()),
+        provideMockStore(),
+        {
+          provide: LlecoopUserOrderResumeFacadeService,
+          useValue: {
+            tableDefinition: {
+              columnProperties: [],
+              count: signal(0),
+            },
+            viewConfig: signal({
+              title: '',
+              icon: '',
+            }),
+            userOrder: signal(null),
+            orderStatus: signal(null),
+          },
+        },
         { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LlecoopUserOrderFeatureResumeComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
