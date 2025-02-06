@@ -1,11 +1,13 @@
+import { filter, map } from 'rxjs';
+
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CanActivateFn, RedirectCommand, Router } from '@angular/router';
+import { LlecoopOrder, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { filter, map } from 'rxjs';
 
 export const isAnActiveOrderListGuard: CanActivateFn = () => {
   const router = inject(Router);
@@ -18,8 +20,11 @@ export const isAnActiveOrderListGuard: CanActivateFn = () => {
       if (
         !userOrderStore
           .entities()
-          .some(entity => entity['orderListId'] === orderListStore.currentOrder()?.id) &&
-        orderListStore.entities().some(entity => entity.status === 'progress')
+          .some(
+            (entity: LlecoopUserOrder) =>
+              entity['orderListId'] === orderListStore.currentOrder()?.id
+          ) &&
+        orderListStore.entities().some((entity: LlecoopOrder) => entity.status === 'progress')
       ) {
         return true;
       }

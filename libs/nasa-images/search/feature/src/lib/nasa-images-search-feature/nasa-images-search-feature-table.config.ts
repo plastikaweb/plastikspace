@@ -1,6 +1,6 @@
 import { map, Observable } from 'rxjs';
 
-import { inject } from '@angular/core';
+import { inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { select, Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
@@ -129,18 +129,11 @@ export class NasaImagesSearchFeatureTableConfig {
         return {
           ...defaultTableConfig,
           columnProperties,
-          pageSizeOptions: [100],
-          pagination: {
+          pagination: signal({
             ...defaultTableConfig.pagination,
             pageSize: 100,
             pageIndex: --page,
-          },
-          paginationVisibility: {
-            hidePageSize: true,
-            hideRangeLabel: true,
-            hideRangeButtons: false,
-            hidePaginationFirstLastButtons: false,
-          },
+          }),
           count,
           caption: 'Nasa Images Table Results',
         };

@@ -345,9 +345,8 @@ export interface TableDefinition<OBJ> {
    * Array with each column configuration properties.
    */
   columnProperties: TableColumnFormatting<OBJ, FormattingTypes>[];
-  pagination?: PageEventConfig;
+  pagination?: Signal<PageEventConfig>;
   noPagination?: boolean;
-  pageSizeOptions?: number[];
   paginationVisibility?: Partial<TablePaginationVisibility>;
   sort?: Signal<TableSortingConfig>;
   count: Signal<number>;
@@ -386,8 +385,6 @@ export type PageEventConfig = Pick<PageEvent, 'previousPageIndex' | 'pageIndex' 
  * @description Configuration for Table Pagination.
  */
 export interface TablePaginationVisibility {
-  hidePageSize: boolean;
-  hidePaginationFirstLastButtons: boolean;
   hideRangeLabel: boolean;
   hideRangeButtons: boolean;
 }
@@ -429,15 +426,12 @@ export interface TableStructureConfig<T> {
  */
 export const defaultTableConfig: TableDefinition<unknown> = {
   columnProperties: [],
-  pageSizeOptions,
-  pagination: {
+  pagination: signal({
     previousPageIndex: 0,
     pageIndex: 0,
     pageSize: pageSizeOptions[0],
-  },
+  }),
   paginationVisibility: {
-    hidePageSize: false,
-    hidePaginationFirstLastButtons: true,
     hideRangeLabel: true,
     hideRangeButtons: true,
   },

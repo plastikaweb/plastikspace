@@ -7,8 +7,8 @@
     multiTemplateDataRows
     [dataSource]="dataSource"
     [attr.aria-label]="caption() || 'tabular data'"
-    [matSortActive]="matSort?.active || ''"
-    [matSortDirection]="matSort?.direction || ''"
+    [matSortActive]="matSort()?.active || ''"
+    [matSortDirection]="matSort()?.direction || ''"
     (matSortChange)="onChangeSorting($event)">
     <!-- Columns -->
     @for (column of columnProperties(); track column.key) {
@@ -334,17 +334,10 @@
 @if (!noPagination()) {
   <mat-paginator
     #matPaginator
-    class="mt-md jus"
-    [hidePageSize]="paginationVisibility()?.hidePageSize"
+    class="justify-end mt-md"
+    [pageIndex]="pagination()?.pageIndex"
+    [pageSize]="pagination()?.pageSize"
     [length]="resultsLength()"
-    [ngClass]="{
-      'paginator--hide': paginationVisibility()?.hideRangeLabel,
-      'paginator--hide-range-buttons': paginationVisibility()?.hideRangeButtons,
-    }"
-    [pageIndex]="pagination()?.pageIndex || 0"
-    [pageSize]="pagination()?.pageSize || resultsLength()"
-    [pageSizeOptions]="pageSizeOptions()"
-    [showFirstLastButtons]="!paginationVisibility()?.hidePaginationFirstLastButtons"
     (page)="onChangePagination($event)">
   </mat-paginator>
 }

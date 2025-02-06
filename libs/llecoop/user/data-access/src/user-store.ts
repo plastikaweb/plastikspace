@@ -2,16 +2,9 @@ import { pipe, switchMap, tap } from 'rxjs';
 
 /* eslint-disable no-console */
 import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { computed, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
+import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
@@ -23,21 +16,22 @@ import { activityActions } from '@plastik/shared/activity/data-access';
 
 import { LlecoopUserFireService } from './user-fire.service';
 
-type UserState = LlecoopFeatureStore;
-
 export const LLecoopUserStore = signalStore(
   { providedIn: 'root' },
   withDevtools('user'),
-  withState<UserState>({
+  withState<LlecoopFeatureStore<LlecoopUser>>({
     loaded: false,
     lastUpdated: new Date(),
     sorting: ['email', 'asc'],
     selectedItemId: null,
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+      pageLastElements: new Map<number, LlecoopUser>(),
+    },
+    count: 0,
   }),
   withEntities<LlecoopUser>(),
-  withComputed(({ ids }) => ({
-    count: computed(() => ids().length),
-  })),
   withMethods(
     (
       store,
@@ -149,7 +143,8 @@ export const LLecoopUserStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: UserState['sorting']) => patchState(store, { sorting }),
+      setSorting: (sorting: LlecoopFeatureStore<LlecoopUser>['sorting']) =>
+        patchState(store, { sorting }),
     })
   ),
   withHooks({

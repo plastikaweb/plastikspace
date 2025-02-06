@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl } from '@angular/material/paginator';
 import { CanActivateFn, Router, Routes } from '@angular/router';
 import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { STORE_TOKEN } from '@plastik/llecoop/data-access';
@@ -55,6 +55,14 @@ export const llecoopLayoutRoutes: Routes = [
         provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
         useValue: {
           appearance: 'fill',
+        },
+      },
+      {
+        provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
+        useValue: {
+          pageSize: 10,
+          pageSizeOptions: [5, 10, 25],
+          showFirstLastButtons: false,
         },
       },
     ],

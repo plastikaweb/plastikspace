@@ -109,10 +109,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
       paginationVisibility: {
-        hidePageSize: true,
         hideRangeLabel: true,
         hideRangeButtons: true,
-        hidePaginationFirstLastButtons: true,
       },
       sort: this.#userOrderStore.sorting,
       count: this.#userOrderStore.count,

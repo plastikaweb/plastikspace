@@ -3,6 +3,7 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
+import { LlecoopFeatureStorePagination } from '@plastik/llecoop/data-access';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
@@ -52,6 +53,10 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
     this.filterCriteria.update(() => criteria);
+  }
+
+  onChangePagination(pagination: LlecoopFeatureStorePagination<LlecoopProduct>): void {
+    this.#store.setPagination(pagination);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {

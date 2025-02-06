@@ -22,20 +22,23 @@ import { activityActions } from '@plastik/shared/activity/data-access';
 
 import { LlecoopCategoryFireService } from './category-fire.service';
 
-type CategoryState = LlecoopFeatureStore;
-
 export const LlecoopCategoryStore = signalStore(
   { providedIn: 'root' },
   withDevtools('category'),
-  withState<CategoryState>({
+  withState<LlecoopFeatureStore<LlecoopProductCategory>>({
     loaded: false,
     lastUpdated: new Date(),
     sorting: ['name', 'asc'],
     selectedItemId: null,
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+      pageLastElements: new Map<number, LlecoopProductCategory>(),
+    },
+    count: 0,
   }),
   withEntities<LlecoopProductCategory>(),
-  withComputed(({ ids, entities, selectedItemId, entityMap }) => ({
-    count: computed(() => ids().length || 0),
+  withComputed(({ entities, selectedItemId, entityMap }) => ({
     selectedItem: computed(() => {
       const id = selectedItemId();
       return id !== null ? entityMap()[id] : null;
@@ -173,7 +176,8 @@ export const LlecoopCategoryStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: CategoryState['sorting']) => patchState(store, { sorting }),
+      setSorting: (sorting: LlecoopFeatureStore<LlecoopProductCategory>['sorting']) =>
+        patchState(store, { sorting }),
       setSelectedItemId: (id: string | null) =>
         patchState(store, {
           selectedItemId: id,

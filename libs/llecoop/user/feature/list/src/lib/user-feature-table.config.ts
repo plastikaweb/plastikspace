@@ -121,10 +121,8 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
       paginationVisibility: {
-        hidePageSize: true,
         hideRangeLabel: true,
         hideRangeButtons: true,
-        hidePaginationFirstLastButtons: true,
       },
       sort: this.#store.sorting,
       caption: "Llistat d'usuaris",

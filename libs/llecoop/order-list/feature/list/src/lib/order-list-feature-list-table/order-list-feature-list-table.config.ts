@@ -86,10 +86,8 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
       paginationVisibility: {
-        hidePageSize: true,
         hideRangeLabel: true,
         hideRangeButtons: true,
-        hidePaginationFirstLastButtons: true,
       },
       sort: this.#store.sorting,
       caption: 'Llistat de comandes setmanals',

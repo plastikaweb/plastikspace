@@ -72,17 +72,11 @@ export class LlecoopProductSearchFeatureTableConfig
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
-
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
-      paginationVisibility: {
-        hidePageSize: true,
-        hideRangeLabel: true,
-        hideRangeButtons: true,
-        hidePaginationFirstLastButtons: true,
-      },
       sort: this.#store.sorting,
+      pagination: this.#store.pagination,
       caption: 'Llistat de productes',
       getData: () => this.#store.entities(),
       count: this.#store.count,

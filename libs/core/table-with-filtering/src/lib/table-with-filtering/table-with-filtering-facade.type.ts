@@ -1,7 +1,7 @@
 import { InjectionToken, Signal } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BaseEntity, ViewConfigUI } from '@plastik/core/entities';
-import { TableDefinition, TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig, TableDefinition, TableSorting } from '@plastik/shared/table/entities';
 
 export interface TableWithFilteringFacade<T extends BaseEntity> {
   viewConfig: Signal<ViewConfigUI>;
@@ -26,6 +26,7 @@ export interface TableWithFilteringFacade<T extends BaseEntity> {
   onChangeFilterCriteria?: (criteria: Record<string, string>) => void;
   onTableSorting?(sorting: TableSorting): void;
   onTableActionDelete?(item: unknown): void;
+  onChangePagination?(pagination: PageEventConfig): void;
 }
 
 export const TABLE_WITH_FILTERING_FACADE = new InjectionToken<TableWithFilteringFacade<BaseEntity>>(

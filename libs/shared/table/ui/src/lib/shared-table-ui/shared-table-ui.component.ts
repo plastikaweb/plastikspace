@@ -9,7 +9,6 @@ import {
   NgTemplateOutlet,
 } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
@@ -21,7 +20,7 @@ import {
   output,
   signal,
   TemplateRef,
-  ViewChild,
+  viewChild,
   ViewChildren,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -29,7 +28,7 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -105,13 +104,13 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
-  implements OnInit, AfterViewInit
+  implements OnInit
 {
   protected dataFormatFactoryService = inject(DataFormatFactoryService);
   /**
    * Data that will populate the table.
    */
-  data = input<T[]>([]);
+  data = input.required<T[]>();
 
   /**
    * Table columns structure.
@@ -138,17 +137,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    * Sets the pagination elements visibility configuration.
    */
   paginationVisibility = input<Partial<TablePaginationVisibility> | undefined>({
-    hidePageSize: false,
-    hidePaginationFirstLastButtons: false,
     hideRangeButtons: false,
     hideRangeLabel: false,
   });
-
-  /**
-   * Page sizes available.
-   * array with the number of items per page.
-   */
-  pageSizeOptions = input<number[]>([10, 25, 50, 100]);
 
   /**
    * Main title of the table.
@@ -196,10 +187,11 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   getChangedData = output<T | undefined>();
 
-  @ViewChild(MatSort) matSort: MatSort | undefined;
+  protected readonly matSort = viewChild<MatSort | null>(MatSort);
+  protected readonly matPaginator = viewChild<MatPaginator | null>(MatPaginator);
   @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef[];
 
-  protected dataSource = new MatTableDataSource<T>([]);
+  protected dataSource = new MatTableDataSource<T>();
   protected columnsToDisplay = computed(() => {
     const actions = this.actions();
     const cols = this.columnProperties().map(property => property.key) || [];
@@ -248,18 +240,19 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
         return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
       };
     }
-  }
 
-  ngAfterViewInit(): void {
-    if (this.sort() && this.matSort && this.dataSource) {
-      this.matSort.active = this.sort()?.[0] || '';
-      this.matSort.direction = this.sort()?.[1] || 'asc';
-      this.dataSource.sort = this.matSort;
-    }
+    this.dataSource.sort = this.matSort() as MatSort | null;
   }
 
   onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
-    this.changePagination.emit({ previousPageIndex, pageIndex, pageSize });
+    if (pageSize !== this.pagination()?.pageSize) {
+      pageIndex = 0;
+    }
+    this.changePagination.emit({
+      previousPageIndex,
+      pageIndex,
+      pageSize,
+    });
   }
 
   protected onChangeSorting({ active, direction }: TableSorting): void {

@@ -1,11 +1,13 @@
+import { filter, map } from 'rxjs';
+
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, CanActivateFn, RedirectCommand, Router } from '@angular/router';
+import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   LLecoopOrderListStore,
   LlecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { filter, map } from 'rxjs';
 
 export const isAnActiveOrderListAndUserOrderGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot
@@ -17,7 +19,9 @@ export const isAnActiveOrderListAndUserOrderGuard: CanActivateFn = (
   const currentOrderListId = orderListStore.currentOrder()?.id;
   const userOrderId = userOrderStore
     .entities()
-    .find(entity => entity.orderListId === currentOrderListId && id === entity.id)?.id;
+    .find(
+      (entity: LlecoopUserOrder) => entity.orderListId === currentOrderListId && id === entity.id
+    )?.id;
 
   return toObservable(userOrderStore.loaded).pipe(
     filter(Boolean),

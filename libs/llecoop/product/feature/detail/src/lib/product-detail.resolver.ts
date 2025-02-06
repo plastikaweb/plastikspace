@@ -1,8 +1,9 @@
+import { filter, map, Observable } from 'rxjs';
+
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, RedirectCommand, ResolveFn, Router } from '@angular/router';
 import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
-import { filter, map, Observable } from 'rxjs';
 
 export const ProductDetailResolver: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot

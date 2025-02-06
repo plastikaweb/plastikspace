@@ -1,6 +1,6 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
-import { llecoopUserOrderStatus } from '@plastik/llecoop/entities';
+import { LlecoopUserOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
 import { LlecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
 
 import { LlecoopUserOrderResumeTableConfig } from './llecoop-user-order-feature-resume/user-order-feature-resume-table.config';
@@ -25,7 +25,7 @@ export class LlecoopUserOrderResumeFacadeService {
   });
 
   orderStatus = computed(() => {
-    const status = this.userOrder()?.status;
-    return status ? llecoopUserOrderStatus[status] : null;
+    const status = this.userOrder()?.status as LlecoopUserOrder['status'];
+    return llecoopUserOrderStatus[status] ?? null;
   });
 }
