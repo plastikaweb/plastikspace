@@ -1,4 +1,4 @@
-import { registerLocaleData } from '@angular/common';
+import { NgClass, registerLocaleData } from '@angular/common';
 import localeCa from '@angular/common/locales/ca';
 import { Component, inject, OnInit } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -14,7 +14,7 @@ registerLocaleData(localeCa, 'ca-ES');
 
 @Component({
   selector: 'plastik-root',
-  imports: [RouterOutlet, SharedActivityUiOverlayComponent, NotificationUiMatSnackbarDirective],
+  imports: [RouterOutlet, SharedActivityUiOverlayComponent, NotificationUiMatSnackbarDirective, NgClass],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
