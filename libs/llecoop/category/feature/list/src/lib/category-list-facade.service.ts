@@ -3,7 +3,8 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { CategoryStoreFilter, LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { LlecoopFeatureStorePagination } from '@plastik/llecoop/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { TableSorting } from '@plastik/shared/table/entities';
@@ -25,16 +26,20 @@ export class LlecoopCategoryListFacadeService
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopCategorySearchFeatureFormConfig();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-  });
-  tableFilterPredicate = (data: LlecoopProductCategory, criteria: Record<string, string>) => {
-    const value = criteria['text'].toLowerCase();
-    return [data.name, data.description].some(text => text?.toLowerCase().includes(value));
-  };
+  // filterCriteria = signal<Record<string, string>>({
+  //   text: '',
+  // });
+  // tableFilterPredicate = (data: LlecoopProductCategory, criteria: Record<string, string>) => {
+  //   const value = criteria['text'].toLowerCase();
+  //   return [data.name, data.description].some(text => text?.toLowerCase().includes(value));
+  // };
 
   onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+    this.#store.setFilter(criteria as CategoryStoreFilter);
+  }
+
+  onChangePagination(pagination: LlecoopFeatureStorePagination<LlecoopProductCategory>): void {
+    this.#store.setPagination(pagination);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {

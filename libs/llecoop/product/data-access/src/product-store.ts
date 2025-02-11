@@ -82,6 +82,7 @@ export const LlecoopProductStore = signalStore(
             const pagination = store.pagination();
             const sorting = store.sorting();
             const filter = store.filter();
+
             return productService.getAll(pagination, sorting, filter).pipe(
               tapResponse({
                 next: products => {
@@ -175,7 +176,9 @@ export const LlecoopProductStore = signalStore(
 
             return productService.update(product).pipe(
               tapResponse({
-                next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
+                next: () => {
+                  state.dispatch(routerActions.go({ path: ['/admin/producte'] }));
+                },
                 error: error =>
                   storeNotificationService.create(
                     `No s'ha pogut actualitzar el producte "${product['name']}": ${error}`,

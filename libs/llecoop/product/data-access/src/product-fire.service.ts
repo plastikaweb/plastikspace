@@ -135,12 +135,19 @@ export class LlecoopProductFireService {
   }
 
   update(item: Partial<LlecoopProduct>) {
-    const document = doc(this.#firestore, `product/${item.id}`);
-    return from(updateDoc(document, item as WithFieldValue<LlecoopProduct>));
+    if (!item.id) {
+      throw new Error('ID is required for update operation');
+    }
+    const document = doc(this.#firestore, this.#path, item.id as string);
+    const updateData = firebaseAssignTypes<LlecoopProduct>().toFirestore(item as LlecoopProduct);
+    return from(updateDoc(document, updateData));
   }
 
   delete(item: LlecoopProduct) {
-    const document = doc(this.#firestore, `product/${item.id}`);
+    if (!item.id) {
+      throw new Error('ID is required for delete operation');
+    }
+    const document = doc(this.#firestore, this.#path, item.id as string);
     return from(deleteDoc(document));
   }
 

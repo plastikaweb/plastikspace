@@ -16,7 +16,7 @@ import { LlecoopProductSearchFeatureTableConfig } from './product-feature-table.
   providedIn: 'root',
 })
 export class LlecoopProductListFacadeService implements TableWithFilteringFacade<LlecoopProduct> {
-  readonly #productStore = inject(LlecoopProductStore);
+  readonly #store = inject(LlecoopProductStore);
   readonly #table = inject(LlecoopProductSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #formConfig = inject(LlecoopProductSearchFeatureFormConfig);
@@ -52,15 +52,15 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   // };
 
   onChangeFilterCriteria(criteria: Record<string, string | null | boolean>): void {
-    this.#productStore.setFilter(criteria as ProductStoreFilter);
+    this.#store.setFilter(criteria as ProductStoreFilter);
   }
 
   onChangePagination(pagination: LlecoopFeatureStorePagination<LlecoopProduct>): void {
-    this.#productStore.setPagination(pagination);
+    this.#store.setPagination(pagination);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#productStore.setSorting([active, direction]);
+    this.#store.setSorting([active, direction]);
   }
 
   onTableActionDelete(item: LlecoopProduct): void {
@@ -73,7 +73,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#productStore.delete(item));
+        .subscribe(() => this.#store.delete(item));
     }
   }
 }

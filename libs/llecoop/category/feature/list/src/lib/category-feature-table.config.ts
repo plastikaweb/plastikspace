@@ -22,7 +22,7 @@ export class LlecoopCategorySearchFeatureTableConfig
   readonly #name: TableColumnFormatting<LlecoopProductCategory, 'COMPONENT'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
+    propertyPath: 'normalizedName',
     sorting: true,
     sticky: true,
     formatting: {
@@ -77,8 +77,10 @@ export class LlecoopCategorySearchFeatureTableConfig
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
-      caption: 'Llistat de categories',
       sort: this.#store.sorting,
+      pagination: this.#store.pagination,
+      filter: this.#store.filter,
+      caption: 'Llistat de categories',
       count: this.#store.count,
       getData: () => this.#store.entities(),
       actionsColStyles: 'max-w-[135px]',
