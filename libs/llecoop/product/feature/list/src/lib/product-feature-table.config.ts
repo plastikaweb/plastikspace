@@ -22,7 +22,7 @@ export class LlecoopProductSearchFeatureTableConfig
   readonly #name: TableColumnFormatting<LlecoopProduct, 'COMPONENT'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
+    propertyPath: 'normalizedName',
     sorting: true,
     sticky: true,
     formatting: {
@@ -43,7 +43,6 @@ export class LlecoopProductSearchFeatureTableConfig
     key: 'stock',
     title: 'Stock',
     propertyPath: 'stock',
-    sorting: true,
     cssClasses: ['hidden @lg:flex @lg:min-w-[70px]'],
     formatting: {
       type: 'CUSTOM',
@@ -61,7 +60,7 @@ export class LlecoopProductSearchFeatureTableConfig
     categoryNameCell<LlecoopProduct>({
       key: 'category',
       title: 'Categoria',
-      propertyPath: 'category.name',
+      propertyPath: 'categoryName',
       sorting: true,
       cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
     }),
@@ -77,6 +76,7 @@ export class LlecoopProductSearchFeatureTableConfig
       columnProperties: this.#columnProperties,
       sort: this.#store.sorting,
       pagination: this.#store.pagination,
+      filter: this.#store.filter,
       caption: 'Llistat de productes',
       getData: () => this.#store.entities(),
       count: this.#store.count,

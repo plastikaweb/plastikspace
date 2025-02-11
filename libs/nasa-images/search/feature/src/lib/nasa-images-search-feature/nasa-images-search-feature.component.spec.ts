@@ -80,7 +80,7 @@ describe('NasaImagesSearchFeatureComponent', () => {
         },
       ],
       pageSizeOptions: [100],
-      pagination: { pageIndex: 0, pageSize: 100 },
+      pagination: signal({ pageIndex: 0, pageSize: 100 }),
       paginationVisibility: {
         hideRangeLabel: true,
         hideRangeButtons: false,

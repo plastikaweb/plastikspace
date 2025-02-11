@@ -10,7 +10,6 @@
     - [Basic Example](#basic-example)
   - [API Reference](#api-reference)
     - [Function Parameters](#function-parameters)
-    - [Return Value](#return-value)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -29,7 +28,12 @@ import { addSearchInput } from '@plastikspace/shared/form/ui/input-search-util';
 
 ```typescript
 const fields: FormlyFieldConfig[] = [
-  addSearchInput('Search users', 'Clear search', 'userSearch'),
+  addSearchInput({
+    label: 'Search users',
+    placeholder: 'Search users',
+    key: 'userSearch',
+    defaultValue: '',
+  }),
   // other fields...
 ];
 ```
@@ -55,23 +59,15 @@ function addSearchInput(
    * The key for the search input field
    * @default 'text'
    */
-  key?: string
+  key?: string,
+
+  /**
+   * The default value for the form control
+   * @default ''
+   */
+  defaultValue?: string
 ): FormlyFieldConfig;
 ```
-
-### Return Value
-
-Returns a `FormlyFieldConfig` object with the following features:
-
-- Input type: 'search'
-- Debounce: 250ms
-- Left addon: Search icon
-- Right addon: Cancel button (resets the field)
-- Default configuration:
-  - Required: false
-  - Max length: 256
-  - Min length: 1
-  - Class: 'w-full'
 
 ## Running unit tests
 

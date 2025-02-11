@@ -241,7 +241,14 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       };
     }
 
-    this.dataSource.sort = this.matSort() as MatSort | null;
+    if (this.sort()) {
+      const matSortInstance = this.matSort();
+      if (matSortInstance) {
+        matSortInstance.active = this.sort()?.[0] || '';
+        matSortInstance.direction = this.sort()?.[1] || 'asc';
+        this.dataSource.sort = matSortInstance;
+      }
+    }
   }
 
   onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {

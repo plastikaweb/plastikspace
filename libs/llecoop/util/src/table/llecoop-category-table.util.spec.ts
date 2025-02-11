@@ -7,7 +7,7 @@ import { categoryNameCell } from './llecoop-category-table.util';
 
 interface MockEntity extends BaseEntity {
   category?: {
-    name: string;
+    name?: string;
   };
 }
 
@@ -27,14 +27,19 @@ describe('categoryNameCell', () => {
   });
 
   it('should execute with the correct component and inputs', () => {
-    const entity: MockEntity = { id: 1, category: { name: 'Vegetables' } };
+    const entity: MockEntity = {
+      id: 1,
+      name: 'Apples',
+      normalizedName: 'apples',
+      category: { name: 'Vegetables' },
+    };
     const config = categoryNameCell<MockEntity>({});
     const result = config.formatting.execute?.(null, entity) as FormattingComponentOutput;
     expect(result?.inputs).toEqual({ category: entity.category, nameStyle: '', withLink: false });
   });
 
   it('should handle missing category gracefully', () => {
-    const entity: MockEntity = { id: 2 };
+    const entity: MockEntity = { id: 2, name: 'Oranges', normalizedName: 'oranges' };
     const config = categoryNameCell<MockEntity>({});
     const result = config.formatting.execute?.(null, entity) as FormattingComponentOutput;
     expect(result?.inputs).toEqual({ category: null, nameStyle: '', withLink: false });

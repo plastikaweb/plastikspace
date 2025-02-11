@@ -1,4 +1,5 @@
-<plastik-shared-activity-ui-overlay [ngClass]="{ 'opacity-0 transition-opacity duration-300': !isActive() }">
+<plastik-shared-activity-ui-overlay
+  [ngClass]="{ 'opacity-0 transition-opacity duration-300': !isActive() }">
   <div class="spinner-container">
     <div class="lds-ripple">
       <div></div>
@@ -9,10 +10,9 @@
 </plastik-shared-activity-ui-overlay>
 
 @defer (when !!notificationStore.configuration()) {
-<div
-  [plastikSnackbar]="notificationStore.configuration()"
-  (sendDismiss)="notificationStore.dismiss()"
-></div>
+  <div
+    [plastikSnackbar]="notificationStore.configuration()"
+    (sendDismiss)="notificationStore.dismiss()"></div>
 }
 
 <router-outlet></router-outlet>

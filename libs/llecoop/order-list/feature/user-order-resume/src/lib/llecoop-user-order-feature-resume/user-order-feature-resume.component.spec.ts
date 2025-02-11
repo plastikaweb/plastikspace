@@ -2,7 +2,6 @@ import { provideExperimentalZonelessChangeDetection, signal } from '@angular/cor
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
-import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { SafeFormattedPipe } from '@plastik/shared/formatters';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 
@@ -32,10 +31,13 @@ describe('LlecoopUserOrderFeatureResumeComponent', () => {
               icon: '',
             }),
             userOrder: signal(null),
-            orderStatus: signal(null),
+            orderStatus: signal({
+              class: '',
+              icon: '',
+              label: '',
+            }),
           },
         },
-        { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     }).compileComponents();
 

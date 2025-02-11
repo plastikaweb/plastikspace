@@ -1,30 +1,59 @@
+import { map } from 'rxjs';
+
 /* eslint-disable jsdoc/require-jsdoc */
+import { inject, Injectable } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { addSearchInput } from '@plastik/shared/form/search';
 
-export function getLlecoopProductSearchFeatureFormConfig(): FormlyFieldConfig[] {
-  return [
-    {
-      fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
-      fieldGroup: [
-        addSearchInput('Filtrar per nom, categoria, descripció', 'buidar valor'),
-        {
-          key: 'inStock',
-          type: 'select',
-          defaultValue: 'all',
-          className: 'w-full md:w-1/2',
-          props: {
-            label: 'Disponibilitat',
-            placeholder: 'Disponibilitat',
-            required: false,
-            options: [
-              { label: 'Tots', value: 'all' },
-              { label: 'Disponible', value: 'available' },
-              { label: 'No disponible', value: 'not-available' },
-            ],
+@Injectable({
+  providedIn: 'root',
+})
+export class LlecoopProductSearchFeatureFormConfig {
+  readonly #categoryStore = inject(LlecoopCategoryStore);
+
+  getConfig(): FormlyFieldConfig[] {
+    return [
+      {
+        fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
+        fieldGroup: [
+          addSearchInput({
+            label: 'Filtrar per nom',
+            placeholder: 'Buidar valor',
+          }),
+          {
+            key: 'category',
+            type: 'select',
+            defaultValue: this.#categoryStore.filter()['category'],
+            className: 'w-full md:w-1/2',
+            props: {
+              label: 'Categoría',
+              placeholder: 'Categoría',
+              required: false,
+              options: toObservable(this.#categoryStore.selectByNameOptions).pipe(
+                map(options => [{ label: 'Totes', value: 'all' }, ...options])
+              ),
+            },
           },
-        },
-      ],
-    },
-  ];
+          {
+            key: 'inStock',
+            type: 'select',
+            defaultValue: this.#categoryStore.filter()['inStock'],
+            className: 'w-full md:w-1/2',
+            props: {
+              label: 'Disponibilitat',
+              placeholder: 'Disponibilitat',
+              required: false,
+              options: [
+                { label: 'Tots', value: 'all' },
+                { label: 'Disponible', value: true },
+                { label: 'No disponible', value: false },
+              ],
+            },
+          },
+        ],
+      },
+    ];
+  }
 }

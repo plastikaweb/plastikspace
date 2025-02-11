@@ -27,18 +27,33 @@ import { activityActions } from '@plastik/shared/activity/data-access';
 
 import { LlecoopProductFireService } from './product-fire.service';
 
+export type ProductStoreFilter = {
+  text: string;
+  category: 'all' | string;
+  inStock: 'all' | true | false;
+};
+
+type ProductStoreState = LlecoopFeatureStore<LlecoopProduct> & {
+  filter: ProductStoreFilter;
+};
+
 export const LlecoopProductStore = signalStore(
   { providedIn: 'root' },
   withDevtools('product'),
-  withState<LlecoopFeatureStore<LlecoopProduct>>({
+  withState<ProductStoreState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'asc'],
     selectedItemId: null,
+    sorting: ['updatedAt', 'desc'],
     pagination: {
       pageIndex: 0,
       pageSize: 10,
       pageLastElements: new Map<number, LlecoopProduct>(),
+    },
+    filter: {
+      text: '',
+      category: 'all',
+      inStock: 'all',
     },
     count: 0,
   }),
@@ -65,14 +80,16 @@ export const LlecoopProductStore = signalStore(
           switchMap(() => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
             const pagination = store.pagination();
-            return productService.getAll(pagination).pipe(
+            const sorting = store.sorting();
+            const filter = store.filter();
+            return productService.getAll(pagination, sorting, filter).pipe(
               tapResponse({
                 next: products => {
-                  const pageLastElements =
-                    pagination?.pageLastElements?.set(
-                      pagination.pageIndex,
-                      products[products.length - 1]
-                    ) || undefined;
+                  const pageLastElements = pagination?.pageLastElements?.set(
+                    pagination.pageIndex,
+                    products[products.length - 1]
+                  );
+
                   patchState(
                     store,
                     setAllEntities(products, {
@@ -87,6 +104,7 @@ export const LlecoopProductStore = signalStore(
                         pageIndex: pagination?.pageIndex ?? 0,
                         pageSize: pagination?.pageSize ?? 10,
                       },
+                      sorting,
                     }
                   );
                 },
@@ -108,8 +126,8 @@ export const LlecoopProductStore = signalStore(
         pipe(
           switchMap(() => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return productService.getCount().pipe(
+            const filter = store.filter();
+            return productService.getCount(filter).pipe(
               tapResponse({
                 next: count => patchState(store, { count }),
                 error: error => {
@@ -126,9 +144,9 @@ export const LlecoopProductStore = signalStore(
           })
         )
       ),
-      create: rxMethod<Partial<LlecoopProduct>>(
+      create: rxMethod<LlecoopProduct>(
         pipe(
-          switchMap((product: Partial<LlecoopProduct>) => {
+          switchMap((product: LlecoopProduct) => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
 
             return productService.create(product).pipe(
@@ -136,12 +154,12 @@ export const LlecoopProductStore = signalStore(
                 next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
                 error: error =>
                   storeNotificationService.create(
-                    `No s'ha pogut crear el producte "${product['name']}": ${error}`,
+                    `No s'ha pogut crear el producte "${product.name}": ${error}`,
                     'ERROR'
                   ),
                 complete: () =>
                   storeNotificationService.create(
-                    `Producte "${product['name']}" creat correctament`,
+                    `Producte "${product.name}" creat correctament`,
                     'SUCCESS'
                   ),
               }),
@@ -198,12 +216,29 @@ export const LlecoopProductStore = signalStore(
         )
       ),
       setSorting: (sorting: LlecoopFeatureStore<LlecoopProduct>['sorting']) =>
-        patchState(store, { sorting }),
+        patchState(store, {
+          sorting,
+          pagination: { ...store.pagination(), pageIndex: 0, pageLastElements: new Map() },
+        }),
       setPagination: (
         pagination: Pick<LlecoopFeatureStorePagination<LlecoopProduct>, 'pageIndex' | 'pageSize'>
       ) => {
-        patchState(store, { pagination: { ...store.pagination(), ...pagination } });
+        if (!pagination.pageIndex && !pagination.pageSize) return;
+        const newPagination = {
+          pageSize: pagination.pageSize ?? store.pagination()?.pageSize,
+          pageIndex: pagination.pageIndex ?? store.pagination()?.pageIndex,
+          pageLastElements:
+            pagination.pageSize !== store.pagination()?.pageSize
+              ? new Map()
+              : store.pagination()?.pageLastElements,
+        };
+        patchState(store, { pagination: newPagination });
       },
+      setFilter: (filter: ProductStoreFilter) =>
+        patchState(store, {
+          filter,
+          pagination: { ...store.pagination(), pageIndex: 0, pageLastElements: new Map() },
+        }),
       setSelectedItemId: (id: string | null) =>
         patchState(store, {
           selectedItemId: id,
@@ -216,17 +251,30 @@ export const LlecoopProductStore = signalStore(
       getCount();
 
       let previousPagination = store.pagination();
+      let previousSorting = store.sorting();
+      let previousFilter = store.filter();
 
       watchState(store, () => {
         const currentPagination = store.pagination();
+        const currentSorting = store.sorting();
+        const currentFilter = store.filter();
         if (
           !store.loaded() ||
           currentPagination.pageIndex !== previousPagination.pageIndex ||
-          currentPagination.pageSize !== previousPagination.pageSize
+          currentPagination.pageSize !== previousPagination.pageSize ||
+          currentSorting !== previousSorting ||
+          currentFilter !== previousFilter
         ) {
           getAll();
         }
+
+        if (currentFilter !== previousFilter) {
+          getCount();
+        }
+
         previousPagination = currentPagination;
+        previousSorting = currentSorting;
+        previousFilter = currentFilter;
       });
     },
   })

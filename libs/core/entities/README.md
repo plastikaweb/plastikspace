@@ -7,9 +7,6 @@
     - [Form Configuration](#form-configuration)
     - [View Configuration](#view-configuration)
       - [Example Usage of ViewConfig](#example-usage-of-viewconfig)
-    - [Firebase](#firebase)
-      - [Example Usage of firebaseAssignTypes](#example-usage-of-firebaseassigntypes)
-  - [Useful links](#useful-links)
 
 ## Description
 
@@ -87,25 +84,3 @@ const viewConfig: Record<string, ViewConfig<string>> = {
 ```
 
 This example defines a set of views for a hypothetical application and uses the `getVisibleNavigationList` function to filter out only those views that should appear in the navigation menu.
-
-### Firebase
-
-- **File**: `firebase-assign-types.ts`
-- **Description**: Assigns types to Firestore documents.
-- **Functions**:
-  - `firebaseAssignTypes`: Assigns types to Firestore documents.
-
-#### Example Usage of firebaseAssignTypes
-
-```typescript
-import { firebaseAssignTypes } from '@plastik/core/entities';
-
-// Use the firebaseAssignTypes function to assign a converter to a Firestore collection.
-const collection = collection(this.#firestore, 'firebase-path').withConverter(
-  firebaseAssignTypes<BaseEntity>()
-);
-```
-
-## Useful links
-
-- [Firebase Data Converter](https://firebase.google.com/docs/reference/node/firebase.firestore.FirestoreDataConverter)

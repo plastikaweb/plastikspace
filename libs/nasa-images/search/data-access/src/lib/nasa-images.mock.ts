@@ -17,6 +17,7 @@ export const createDummyNasaImagesSearch = (count = 3) => {
     items.push({
       id: index.toString(),
       name: index.toString(),
+      normalizedName: index.toString(),
       description: '---',
       dateCreated: new Date('2000'),
       creator: 'Creator',

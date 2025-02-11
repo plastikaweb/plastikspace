@@ -3,7 +3,7 @@ import { addSearchInput } from './input-search-util';
 describe('addSearchInput', () => {
   it('should return a FormlyFieldConfig with default properties', () => {
     const label = 'Search';
-    const config = addSearchInput(label);
+    const config = addSearchInput({ label });
     expect(config.key).toBe('text');
     expect(config.type).toBe('input');
     expect(config.defaultValue).toBe('');

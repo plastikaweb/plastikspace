@@ -14,7 +14,12 @@ registerLocaleData(localeCa, 'ca-ES');
 
 @Component({
   selector: 'plastik-root',
-  imports: [RouterOutlet, SharedActivityUiOverlayComponent, NotificationUiMatSnackbarDirective, NgClass],
+  imports: [
+    RouterOutlet,
+    SharedActivityUiOverlayComponent,
+    NotificationUiMatSnackbarDirective,
+    NgClass,
+  ],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {

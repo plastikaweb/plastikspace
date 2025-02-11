@@ -15,6 +15,7 @@ import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { FormSelectOption } from '@plastik/core/entities';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
@@ -28,12 +29,15 @@ export const LlecoopCategoryStore = signalStore(
   withState<LlecoopFeatureStore<LlecoopProductCategory>>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'asc'],
     selectedItemId: null,
+    sorting: ['name', 'asc'],
     pagination: {
       pageIndex: 0,
       pageSize: 10,
       pageLastElements: new Map<number, LlecoopProductCategory>(),
+    },
+    filter: {
+      text: '',
     },
     count: 0,
   }),
@@ -54,11 +58,11 @@ export const LlecoopCategoryStore = signalStore(
     selectByNameOptions: computed(() => {
       const options = entities()
         .map(category => ({
-          label: category.name?.toLowerCase(),
-          value: category.id,
+          label: category.name,
+          value: `category/${category.id}`,
         }))
         .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
-      return options;
+      return options as FormSelectOption[];
     }),
   })),
   withMethods(

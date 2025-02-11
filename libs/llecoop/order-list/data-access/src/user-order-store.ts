@@ -29,12 +29,15 @@ export const LlecoopUserOrderStore = signalStore(
   withState<LlecoopFeatureStore<LlecoopUserOrder>>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'desc'],
     selectedItemId: null,
+    sorting: ['name', 'desc'],
     pagination: {
       pageIndex: 0,
       pageSize: 10,
       pageLastElements: new Map<number, LlecoopUserOrder>(),
+    },
+    filter: {
+      text: '',
     },
     count: 0,
   }),

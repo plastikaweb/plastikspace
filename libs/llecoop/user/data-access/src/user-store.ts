@@ -22,12 +22,16 @@ export const LLecoopUserStore = signalStore(
   withState<LlecoopFeatureStore<LlecoopUser>>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['email', 'asc'],
     selectedItemId: null,
+    sorting: ['email', 'asc'],
     pagination: {
       pageIndex: 0,
       pageSize: 10,
       pageLastElements: new Map<number, LlecoopUser>(),
+    },
+    filter: {
+      text: '',
+      role: 'all',
     },
     count: 0,
   }),

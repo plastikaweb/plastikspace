@@ -12,6 +12,7 @@ export interface LlecoopBaseProduct extends BaseEntity {
   provider?: string;
   categoryRef: DocumentReference<LlecoopProductCategory>;
   category?: LlecoopProductCategory;
+  categoryName?: string;
   tags?: string[];
   unit: LlecoopProductUnit;
 }

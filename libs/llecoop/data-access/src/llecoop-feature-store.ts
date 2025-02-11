@@ -6,9 +6,10 @@ import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entit
 export interface LlecoopFeatureStore<T extends BaseEntity> {
   loaded: boolean;
   lastUpdated: Date;
-  sorting: TableSortingConfig;
   selectedItemId: EntityId | null;
+  sorting: TableSortingConfig;
   pagination: LlecoopFeatureStorePagination<T>;
+  filter: Record<string, string | null | boolean>;
   count: number;
 }
 

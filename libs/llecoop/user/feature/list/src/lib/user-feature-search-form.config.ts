@@ -7,7 +7,10 @@ export function getLlecoopUserSearchFeatureFormConfig(): FormlyFieldConfig[] {
     {
       fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
       fieldGroup: [
-        addSearchInput('Filtrar per correu electrònic', 'buidar valor'),
+        addSearchInput({
+          label: 'Filtrar per correu electrònic',
+          placeholder: 'Filtrar per correu electrònic',
+        }),
         {
           key: 'role',
           type: 'select',

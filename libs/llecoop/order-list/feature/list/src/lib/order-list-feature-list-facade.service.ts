@@ -116,6 +116,7 @@ export class LlecoopOrderListFeatureListFacadeService
 
     return {
       name: this.getNewOrderName(),
+      normalizedName: this.getNewOrderName().toLowerCase(),
       endTime: this.getNewOrderDate().toDate(),
       status: 'progress',
       availableProducts,
