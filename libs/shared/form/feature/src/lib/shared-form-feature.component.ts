@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
 import { SubmitFormConfig } from '@plastik/core/entities';
+
 @Component({
   selector: 'plastik-shared-form-feature',
   imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass],

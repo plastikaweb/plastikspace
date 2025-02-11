@@ -27,7 +27,7 @@ export type LlecoopOrderProduct = LlecoopBaseProduct & {
 
 export type LlecoopOrderProductTotal = Pick<
   LlecoopOrderProduct,
-  'id' | 'name' | 'price' | 'iva' | 'priceWithIva' | 'unit'
+  'id' | 'name' | 'price' | 'iva' | 'priceWithIva' | 'unit' | 'normalizedName' | 'link'
 > & {
   quantity: number;
   totalPrice: number;

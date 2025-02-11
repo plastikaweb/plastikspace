@@ -42,10 +42,8 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
   value = signal<T[]>([]);
   disabled = signal<boolean>(false);
   tablePaginationVisibility = signal<TablePaginationVisibility>({
-    hidePageSize: true,
     hideRangeLabel: true,
     hideRangeButtons: true,
-    hidePaginationFirstLastButtons: true,
   });
 
   tableData = input<T[]>([]);

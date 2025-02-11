@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
-import { TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 
 import { TABLE_WITH_FILTERING_FACADE } from './table-with-filtering-facade.type';
@@ -31,6 +31,10 @@ export class TableWithFilteringComponent {
 
   onChangeFiltering(model: Record<string, string>): void {
     this.facade.onChangeFilterCriteria?.(model);
+  }
+
+  onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
+    this.facade.onChangePagination?.({ pageIndex, pageSize });
   }
 
   onDelete(item: unknown): void {

@@ -6,6 +6,7 @@ import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStore,
+  watchState,
   withComputed,
   withHooks,
   withMethods,
@@ -16,26 +17,48 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { routerActions } from '@plastik/core/router-state';
-import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
+import {
+  LlecoopFeatureStore,
+  LlecoopFeatureStorePagination,
+  StoreNotificationService,
+} from '@plastik/llecoop/data-access';
 import { LlecoopProduct, LlecoopProductWithUpdateNotification } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 
 import { LlecoopProductFireService } from './product-fire.service';
 
-type ProductState = LlecoopFeatureStore;
+export type ProductStoreFilter = {
+  text: string;
+  category: 'all' | string;
+  inStock: 'all' | true | false;
+};
+
+type ProductStoreState = LlecoopFeatureStore<LlecoopProduct> & {
+  filter: ProductStoreFilter;
+};
 
 export const LlecoopProductStore = signalStore(
   { providedIn: 'root' },
   withDevtools('product'),
-  withState<ProductState>({
+  withState<ProductStoreState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'asc'],
     selectedItemId: null,
+    sorting: ['updatedAt', 'desc'],
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+      pageLastElements: new Map<number, LlecoopProduct>(),
+    },
+    filter: {
+      text: '',
+      category: 'all',
+      inStock: 'all',
+    },
+    count: 0,
   }),
   withEntities<LlecoopProduct>(),
-  withComputed(({ ids, selectedItemId, entityMap, entities }) => ({
-    count: computed(() => ids().length),
+  withComputed(({ selectedItemId, entityMap, entities }) => ({
     selectedItem: computed(() => {
       const id = selectedItemId();
       return id !== null ? entityMap()[id] : null;
@@ -55,38 +78,75 @@ export const LlecoopProductStore = signalStore(
       getAll: rxMethod<void>(
         pipe(
           switchMap(() => {
-            if (!store.loaded()) {
-              state.dispatch(activityActions.setActivity({ isActive: true }));
+            state.dispatch(activityActions.setActivity({ isActive: true }));
+            const pagination = store.pagination();
+            const sorting = store.sorting();
+            const filter = store.filter();
+            return productService.getAll(pagination, sorting, filter).pipe(
+              tapResponse({
+                next: products => {
+                  const pageLastElements = pagination?.pageLastElements?.set(
+                    pagination.pageIndex,
+                    products[products.length - 1]
+                  );
 
-              return productService.getAll().pipe(
-                tapResponse({
-                  next: products =>
-                    patchState(
-                      store,
-                      setAllEntities(products, {
-                        selectId: entity => entity.id || '',
-                      }),
-                      { loaded: true, lastUpdated: new Date() }
-                    ),
-                  error: error => {
-                    if (authService.loggedIn()) {
-                      storeNotificationService.create(
-                        `No s'ha pogut carregar els productes: ${error}`,
-                        'ERROR'
-                      );
+                  patchState(
+                    store,
+                    setAllEntities(products, {
+                      selectId: entity => entity.id || '',
+                    }),
+                    {
+                      loaded: true,
+                      lastUpdated: new Date(),
+                      pagination: {
+                        ...pagination,
+                        pageLastElements,
+                        pageIndex: pagination?.pageIndex ?? 0,
+                        pageSize: pagination?.pageSize ?? 10,
+                      },
+                      sorting,
                     }
-                  },
-                }),
-                tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-              );
-            }
-            return [];
+                  );
+                },
+                error: error => {
+                  if (authService.loggedIn()) {
+                    storeNotificationService.create(
+                      `No s'ha pogut carregar els productes: ${error}`,
+                      'ERROR'
+                    );
+                  }
+                },
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
+            );
           })
         )
       ),
-      create: rxMethod<Partial<LlecoopProduct>>(
+      getCount: rxMethod<void>(
         pipe(
-          switchMap((product: Partial<LlecoopProduct>) => {
+          switchMap(() => {
+            state.dispatch(activityActions.setActivity({ isActive: true }));
+            const filter = store.filter();
+            return productService.getCount(filter).pipe(
+              tapResponse({
+                next: count => patchState(store, { count }),
+                error: error => {
+                  if (authService.loggedIn()) {
+                    storeNotificationService.create(
+                      `No s'ha pogut carregar el total de productes: ${error}`,
+                      'ERROR'
+                    );
+                  }
+                },
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
+            );
+          })
+        )
+      ),
+      create: rxMethod<LlecoopProduct>(
+        pipe(
+          switchMap((product: LlecoopProduct) => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
 
             return productService.create(product).pipe(
@@ -94,12 +154,12 @@ export const LlecoopProductStore = signalStore(
                 next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
                 error: error =>
                   storeNotificationService.create(
-                    `No s'ha pogut crear el producte "${product['name']}": ${error}`,
+                    `No s'ha pogut crear el producte "${product.name}": ${error}`,
                     'ERROR'
                   ),
                 complete: () =>
                   storeNotificationService.create(
-                    `Producte "${product['name']}" creat correctament`,
+                    `Producte "${product.name}" creat correctament`,
                     'SUCCESS'
                   ),
               }),
@@ -155,7 +215,30 @@ export const LlecoopProductStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),
+      setSorting: (sorting: LlecoopFeatureStore<LlecoopProduct>['sorting']) =>
+        patchState(store, {
+          sorting,
+          pagination: { ...store.pagination(), pageIndex: 0, pageLastElements: new Map() },
+        }),
+      setPagination: (
+        pagination: Pick<LlecoopFeatureStorePagination<LlecoopProduct>, 'pageIndex' | 'pageSize'>
+      ) => {
+        if (!pagination.pageIndex && !pagination.pageSize) return;
+        const newPagination = {
+          pageSize: pagination.pageSize ?? store.pagination()?.pageSize,
+          pageIndex: pagination.pageIndex ?? store.pagination()?.pageIndex,
+          pageLastElements:
+            pagination.pageSize !== store.pagination()?.pageSize
+              ? new Map()
+              : store.pagination()?.pageLastElements,
+        };
+        patchState(store, { pagination: newPagination });
+      },
+      setFilter: (filter: ProductStoreFilter) =>
+        patchState(store, {
+          filter,
+          pagination: { ...store.pagination(), pageIndex: 0, pageLastElements: new Map() },
+        }),
       setSelectedItemId: (id: string | null) =>
         patchState(store, {
           selectedItemId: id,
@@ -163,10 +246,36 @@ export const LlecoopProductStore = signalStore(
     })
   ),
   withHooks({
-    onInit({ getAll, loaded }) {
-      if (!loaded()) {
-        getAll();
-      }
+    onInit(store) {
+      const { getAll, getCount } = store;
+      getCount();
+
+      let previousPagination = store.pagination();
+      let previousSorting = store.sorting();
+      let previousFilter = store.filter();
+
+      watchState(store, () => {
+        const currentPagination = store.pagination();
+        const currentSorting = store.sorting();
+        const currentFilter = store.filter();
+        if (
+          !store.loaded() ||
+          currentPagination.pageIndex !== previousPagination.pageIndex ||
+          currentPagination.pageSize !== previousPagination.pageSize ||
+          currentSorting !== previousSorting ||
+          currentFilter !== previousFilter
+        ) {
+          getAll();
+        }
+
+        if (currentFilter !== previousFilter) {
+          getCount();
+        }
+
+        previousPagination = currentPagination;
+        previousSorting = currentSorting;
+        previousFilter = currentFilter;
+      });
     },
   })
 );

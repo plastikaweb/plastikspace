@@ -1,3 +1,5 @@
+import { from, map, Observable } from 'rxjs';
+
 import { inject, Injectable } from '@angular/core';
 import {
   addDoc,
@@ -5,63 +7,146 @@ import {
   collectionData,
   deleteDoc,
   doc,
+  DocumentData,
   Firestore,
-  getDoc,
+  limit,
+  orderBy,
+  query,
+  QueryConstraint,
+  QueryDocumentSnapshot,
   serverTimestamp,
+  startAfter,
   updateDoc,
+  where,
+  WithFieldValue,
 } from '@angular/fire/firestore';
+import { LlecoopFeatureStorePagination } from '@plastik/llecoop/data-access';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
-import { from, Observable, switchMap } from 'rxjs';
+import { latinize } from '@plastik/shared/latinize';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
+
+import { ProductStoreFilter } from './product-store';
+
+/**
+ * @description Assign types to Firestore product documents.
+ * @template T
+ * **T** refers to the main feature model item used inside applications.
+ * @returns {object} An object with methods to convert between Firestore documents and types:
+ * - `toFirestore`: Converts a typed document to Firestore DocumentData
+ * - `fromFirestore`: Converts a Firestore snapshot to typed document
+ */
+function firebaseAssignTypes<T extends LlecoopProduct>() {
+  return {
+    toFirestore(doc: T): DocumentData {
+      return {
+        ...doc,
+        normalizedName: latinize(doc.name).toLowerCase(),
+        isAvailable: doc.isAvailable ?? false,
+        createdAt: doc.createdAt ?? serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      };
+    },
+    fromFirestore(snapshot: QueryDocumentSnapshot): T {
+      const data = snapshot.data() as T;
+
+      return data;
+    },
+  };
+}
 
 @Injectable({
   providedIn: 'root',
 })
 export class LlecoopProductFireService {
+  readonly #path = 'product';
   readonly #firestore = inject(Firestore);
-  readonly #productCollection = collection(this.#firestore, 'product');
+  readonly #collection = collection(this.#firestore, this.#path).withConverter(
+    firebaseAssignTypes<LlecoopProduct>()
+  );
 
-  getAll(): Observable<LlecoopProduct[]> {
-    return collectionData(this.#productCollection, { idField: 'id' }).pipe(
-      switchMap(products => {
-        const productPromises = products.map(async product => {
-          let categoryDoc;
-          try {
-            categoryDoc = await getDoc(doc(this.#firestore, product?.['categoryRef']));
-          } catch (error) {
-            categoryDoc = null;
-          }
-          return {
-            ...product,
-            category: categoryDoc?.data() || {},
-          } as LlecoopProduct;
-        });
-        return Promise.all(productPromises);
-      })
-    );
+  #getFilterConditions(filter: ProductStoreFilter): QueryConstraint[] {
+    const conditions: QueryConstraint[] = [];
+
+    if (Object.entries(filter).length > 0) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (key === 'text' && value) {
+          const normalizedText = latinize(value as string).toLowerCase();
+          conditions.push(
+            where('normalizedName', '>=', normalizedText),
+            where('normalizedName', '<=', normalizedText + '\uf8ff')
+          );
+        } else if (key === 'category' && value !== 'all') {
+          conditions.push(where('categoryRef', '==', value));
+        } else if (key === 'inStock' && value !== 'all') {
+          conditions.push(where('isAvailable', '==', value));
+        }
+      });
+    }
+
+    return conditions;
   }
 
-  create(item: Partial<LlecoopProduct>) {
-    return from(
-      addDoc(this.#productCollection, {
-        ...item,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      })
-    );
+  #getPaginationConditions(
+    pagination: LlecoopFeatureStorePagination<LlecoopProduct>,
+    sorting: TableSortingConfig
+  ): QueryConstraint[] {
+    const { pageSize, pageIndex, pageLastElements } = pagination;
+    const [active, direction] = sorting;
+    const conditions: QueryConstraint[] = [];
+
+    // Add ordering
+    conditions.push(orderBy(active, direction || 'asc'));
+
+    if (active !== 'normalizedName') {
+      conditions.push(orderBy('normalizedName', direction || 'asc'));
+    }
+
+    // Add pagination
+    conditions.push(limit(pageSize));
+
+    if (pageIndex > 0 && pageLastElements?.has(pageIndex - 1)) {
+      const lastDoc = pageLastElements.get(pageIndex - 1);
+      if (active !== 'normalizedName') {
+        conditions.push(startAfter(lastDoc?.[active], lastDoc?.normalizedName));
+      } else {
+        conditions.push(startAfter(lastDoc?.[active]));
+      }
+    }
+
+    return conditions;
+  }
+
+  getAll(
+    pagination: LlecoopFeatureStorePagination<LlecoopProduct>,
+    sorting: TableSortingConfig,
+    filter: ProductStoreFilter
+  ): Observable<LlecoopProduct[]> {
+    const conditions: QueryConstraint[] = [
+      ...this.#getFilterConditions(filter),
+      ...this.#getPaginationConditions(pagination, sorting),
+    ];
+
+    const postCollection = query(this.#collection, ...conditions);
+    return collectionData(postCollection, { idField: 'id' });
+  }
+
+  create(item: LlecoopProduct) {
+    return from(addDoc(this.#collection, item as WithFieldValue<LlecoopProduct>));
   }
 
   update(item: Partial<LlecoopProduct>) {
     const document = doc(this.#firestore, `product/${item.id}`);
-    return from(
-      updateDoc(document, {
-        ...item,
-        updatedAt: serverTimestamp(),
-      })
-    );
+    return from(updateDoc(document, item as WithFieldValue<LlecoopProduct>));
   }
 
   delete(item: LlecoopProduct) {
     const document = doc(this.#firestore, `product/${item.id}`);
     return from(deleteDoc(document));
+  }
+
+  getCount(filter: ProductStoreFilter) {
+    const conditions = this.#getFilterConditions(filter);
+    const postCollection = query(this.#collection, ...conditions);
+    return collectionData(postCollection).pipe(map(products => products.length));
   }
 }

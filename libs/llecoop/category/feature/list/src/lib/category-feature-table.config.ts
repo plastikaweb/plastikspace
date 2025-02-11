@@ -77,12 +77,6 @@ export class LlecoopCategorySearchFeatureTableConfig
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
-      paginationVisibility: {
-        hidePageSize: true,
-        hideRangeLabel: true,
-        hideRangeButtons: true,
-        hidePaginationFirstLastButtons: true,
-      },
       caption: 'Llistat de categories',
       sort: this.#store.sorting,
       count: this.#store.count,

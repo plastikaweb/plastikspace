@@ -28,7 +28,7 @@ import { activityActions } from '@plastik/shared/activity/data-access';
 
 import { LlecoopOrderListFireService } from './order-list-fire.service';
 
-type LlecoopOrderListState = LlecoopFeatureStore & {
+type LlecoopOrderListState = LlecoopFeatureStore<LlecoopOrder> & {
   selectedItemUserOrderId: EntityId | null;
 };
 
@@ -40,13 +40,21 @@ export const LLecoopOrderListStore = signalStore(
   withState<LlecoopOrderListState>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['createdAt', 'desc'],
     selectedItemId: null,
+    sorting: ['createdAt', 'desc'],
     selectedItemUserOrderId: null,
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+      pageLastElements: new Map<number, LlecoopOrder>(),
+    },
+    filter: {
+      text: '',
+    },
+    count: 0,
   }),
   withEntities<LlecoopOrder>(),
-  withComputed(({ ids, selectedItemId, selectedItemUserOrderId, entities, entityMap }) => ({
-    count: computed(() => ids().length),
+  withComputed(({ selectedItemId, selectedItemUserOrderId, entities, entityMap }) => ({
     currentOrder: computed(() => entities().find(order => order.status === 'progress')),
     currentOrderProducts: computed(
       () => entities().find(order => order.status === 'progress')?.availableProducts || []

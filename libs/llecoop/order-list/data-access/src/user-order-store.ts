@@ -23,20 +23,26 @@ import { activityActions } from '@plastik/shared/activity/data-access';
 import { LLecoopOrderListStore } from './order-list-store';
 import { LlecoopUserOrderFireService } from './user-order-fire.service';
 
-type OrderState = LlecoopFeatureStore;
-
 export const LlecoopUserOrderStore = signalStore(
   { providedIn: 'root' },
   withDevtools('orders'),
-  withState<OrderState>({
+  withState<LlecoopFeatureStore<LlecoopUserOrder>>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'desc'],
     selectedItemId: null,
+    sorting: ['name', 'desc'],
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+      pageLastElements: new Map<number, LlecoopUserOrder>(),
+    },
+    filter: {
+      text: '',
+    },
+    count: 0,
   }),
   withEntities<LlecoopUserOrder>(),
-  withComputed(({ ids, selectedItemId, entityMap }) => ({
-    count: computed(() => ids().length),
+  withComputed(({ selectedItemId, entityMap }) => ({
     selectedItem: computed(() => {
       const selectedId = selectedItemId();
       return selectedId ? entityMap()[selectedId] : null;
@@ -153,7 +159,8 @@ export const LlecoopUserOrderStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: OrderState['sorting']) => patchState(store, { sorting }),
+      setSorting: (sorting: LlecoopFeatureStore<LlecoopUserOrder>['sorting']) =>
+        patchState(store, { sorting }),
       setSelectedItemId: (id: string | null) => {
         if (id !== store.selectedItemId()) {
           patchState(store, {

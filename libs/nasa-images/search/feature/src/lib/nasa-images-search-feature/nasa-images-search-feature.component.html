@@ -23,9 +23,7 @@
     [caption]="obs.tableDefinition.caption || ''"
     [columnProperties]="obs.tableDefinition.columnProperties || []"
     [resultsLength]="obs.tableDefinition.count() || 0"
-    [pageSizeOptions]="obs.tableDefinition.pageSizeOptions || []"
-    [pagination]="obs.tableDefinition.pagination"
-    [paginationVisibility]="obs.tableDefinition.paginationVisibility"
+    [pagination]="obs.tableDefinition.pagination?.()"
     (changePagination)="onChangePagination($event)">
     @if (obs.isActiveSearch) {
       <plastik-nasa-images-search-ui-no-results noResults>

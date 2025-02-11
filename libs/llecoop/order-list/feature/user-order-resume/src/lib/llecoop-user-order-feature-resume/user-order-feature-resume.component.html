@@ -26,9 +26,9 @@
       </h3>
 
       <plastik-ui-order-status-chip
-        [iconClass]="facade.orderStatus()?.class || ''"
-        [icon]="facade.orderStatus()?.icon || ''"
-        [label]="facade.orderStatus()?.label || ''">
+        [iconClass]="facade.orderStatus().class || ''"
+        [icon]="facade.orderStatus().icon || ''"
+        [label]="facade.orderStatus().label || ''">
       </plastik-ui-order-status-chip>
 
       <dl class="space-y-2">
@@ -69,7 +69,6 @@
     [caption]="tableDefinition.caption || ''"
     [columnProperties]="tableDefinition.columnProperties || []"
     [resultsLength]="tableDefinition?.count() || 0"
-    [pageSizeOptions]="tableDefinition.pageSizeOptions || []"
     [noPagination]="tableDefinition.noPagination || false">
   </plastik-shared-table>
 

@@ -227,6 +227,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             {
               key: 'stock',
               type: 'input',
+              defaultValue: 0,
               props: {
                 type: 'number',
                 label: 'Quantitat en stock',

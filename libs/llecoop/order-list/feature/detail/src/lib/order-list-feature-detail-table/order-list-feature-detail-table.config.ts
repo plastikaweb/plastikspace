@@ -116,10 +116,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
       paginationVisibility: {
-        hidePageSize: true,
         hideRangeLabel: true,
         hideRangeButtons: true,
-        hidePaginationFirstLastButtons: true,
       },
       caption: 'Llistat de comandes',
       sort: this.#store.sorting,

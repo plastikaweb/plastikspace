@@ -14,7 +14,7 @@ export default async (change, context) => {
     .then(snapshot => {
       const batch = firestore.batch();
       snapshot.docs.forEach(doc => {
-        batch.update(doc.ref, { category: newCategory });
+        batch.update(doc.ref, { category: newCategory, categoryName: newCategory.name });
       });
       return batch.commit();
     });

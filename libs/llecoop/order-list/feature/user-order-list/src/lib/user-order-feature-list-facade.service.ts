@@ -33,8 +33,10 @@ export class LlecoopUserOrderListFacadeService
       disabled:
         this.#userOrderStore
           .entities()
-          .some(entity => entity['orderListId'] === this.#orderListStore.currentOrder()?.id) ||
-        !this.#orderListStore.currentOrder(),
+          .some(
+            (entity: LlecoopUserOrder) =>
+              entity['orderListId'] === this.#orderListStore.currentOrder()?.id
+          ) || !this.#orderListStore.currentOrder(),
     };
   });
   viewExtraActions?:

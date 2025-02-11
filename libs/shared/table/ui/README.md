@@ -8,6 +8,7 @@
   - [Outputs](#outputs)
   - [Example](#example)
     - [How to style](#how-to-style)
+    - [Set global values for paginator](#set-global-values-for-paginator)
   - [Running unit tests](#running-unit-tests)
   - [Useful links](#useful-links)
 
@@ -34,7 +35,6 @@ It uses internally [Material Table](https://material.angular.io/components/table
 | `pagination`              | `PageEventConfig`                                        | The table pagination configuration.                                    |                                            |
 | `noPagination`            | `boolean`                                                | Remove pagination component to the table.                              | false                                      |
 | `paginationVisibility`    | `Partial<TablePaginationVisibility>`                     | Pagination visibility configuration.                                   | All properties are set to false by default |
-| `pageSizeOptions`         | `number[]`                                               | The pagination page sizes available in the UI.                         |                                            |
 | `caption`                 | `string`                                                 | Main title of the table.                                               |                                            |
 | `actions`                 | `TableControlAction<T>`                                  | Table actions configuration.                                           |                                            |
 | `filterCriteria`          | `Record<string, string>`                                 | Table filter criteria configuration.                                   |                                            |
@@ -163,10 +163,10 @@ onChangeTablePagination(tablePagination: TablePagination) {
   [data]="data"
   [columnProperties]="tableDefinition.columnProperties"
   [caption]="tableDefinition.caption"
+  [sort]="tableDefinition.sort"
+  [pagination]="tableDefinition.pagination"
   [resultsLength]="resultsLength"
   [paginationVisibility]="{
-        hidePageSize: false,
-        hidePaginationFirstLastButtons: true,
         hideRangeButtons: false,
         hideRangeLabel: true,
       }"
@@ -182,6 +182,21 @@ You can overwrite the styles from your main application declaring these CSS vari
 -  --plastik-mdc-table-row-min-height: 120px;
 ```
 
+### Set global values for paginator
+
+Provide [MAT_PAGINATOR_DEFAULT_OPTIONS](https://material.angular.io/components/paginator/api#MAT_PAGINATOR_DEFAULT_OPTIONS) token with the desired values.
+
+```typescript
+{
+  provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
+  useValue: {
+    pageSize: 10,
+    pageSizeOptions: [5, 10, 25],
+    showFirstLastButtons: false,
+  },
+}
+```
+
 ## Running unit tests
 
 Run `nx test shared-table-ui` to execute the unit tests.
@@ -189,3 +204,5 @@ Run `nx test shared-table-ui` to execute the unit tests.
 ## Useful links
 
 - [Material Table](https://material.angular.io/components/table/overview)
+- [Material Paginator](https://material.angular.io/components/paginator/overview)
+- [Material Paginator Default Options](https://material.angular.io/components/paginator/api#MAT_PAGINATOR_DEFAULT_OPTIONS)

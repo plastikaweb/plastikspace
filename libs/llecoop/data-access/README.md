@@ -1,10 +1,11 @@
-# llecoop-category-data-access
+# llecoop-data-access
 
-- [llecoop-category-data-access](#llecoop-category-data-access)
+- [llecoop-data-access](#llecoop-data-access)
   - [Description](#description)
   - [Features](#features)
   - [How to use](#how-to-use)
     - [Notification Service](#notification-service)
+    - [STORE_TOKEN](#store_token)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -17,6 +18,7 @@ This library contains the data access logic for the llecoop application. It prov
 - Integration with shared notification system.
 - Support for different notification types.
 - Configurable notification preservation.
+- STORE_TOKEN for providing a basic store feature.
 
 ## How to use
 
@@ -32,6 +34,25 @@ this.storeNotificationService.create(
   NotificationType.Success, // or Error, Warning, Info
   true // preserve: optional, defaults to true
 );
+```
+
+### STORE_TOKEN
+
+This token provides a basic store feature to provide a store for a feature route.
+
+```typescript
+// feature.routes.ts
+export const FeatureRoutes: Route[] = [
+  {
+    path: 'feature',
+    providers: [
+      {
+        provide: STORE_TOKEN,
+        useExisting: FeatureStore,
+      },
+    ],
+  },
+];
 ```
 
 ## Running unit tests

@@ -15,6 +15,7 @@ import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { FormSelectOption } from '@plastik/core/entities';
 import { routerActions } from '@plastik/core/router-state';
 import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
@@ -22,20 +23,26 @@ import { activityActions } from '@plastik/shared/activity/data-access';
 
 import { LlecoopCategoryFireService } from './category-fire.service';
 
-type CategoryState = LlecoopFeatureStore;
-
 export const LlecoopCategoryStore = signalStore(
   { providedIn: 'root' },
   withDevtools('category'),
-  withState<CategoryState>({
+  withState<LlecoopFeatureStore<LlecoopProductCategory>>({
     loaded: false,
     lastUpdated: new Date(),
-    sorting: ['name', 'asc'],
     selectedItemId: null,
+    sorting: ['name', 'asc'],
+    pagination: {
+      pageIndex: 0,
+      pageSize: 10,
+      pageLastElements: new Map<number, LlecoopProductCategory>(),
+    },
+    filter: {
+      text: '',
+    },
+    count: 0,
   }),
   withEntities<LlecoopProductCategory>(),
-  withComputed(({ ids, entities, selectedItemId, entityMap }) => ({
-    count: computed(() => ids().length || 0),
+  withComputed(({ entities, selectedItemId, entityMap }) => ({
     selectedItem: computed(() => {
       const id = selectedItemId();
       return id !== null ? entityMap()[id] : null;
@@ -51,11 +58,11 @@ export const LlecoopCategoryStore = signalStore(
     selectByNameOptions: computed(() => {
       const options = entities()
         .map(category => ({
-          label: category.name?.toLowerCase(),
-          value: category.id,
+          label: category.name,
+          value: `category/${category.id}`,
         }))
         .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
-      return options;
+      return options as FormSelectOption[];
     }),
   })),
   withMethods(
@@ -173,7 +180,8 @@ export const LlecoopCategoryStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: CategoryState['sorting']) => patchState(store, { sorting }),
+      setSorting: (sorting: LlecoopFeatureStore<LlecoopProductCategory>['sorting']) =>
+        patchState(store, { sorting }),
       setSelectedItemId: (id: string | null) =>
         patchState(store, {
           selectedItemId: id,

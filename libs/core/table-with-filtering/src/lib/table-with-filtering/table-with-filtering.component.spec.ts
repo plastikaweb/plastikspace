@@ -21,6 +21,7 @@ describe('TableWithFilteringComponent', () => {
             tableDefinition: {
               columnProperties: [],
               count: signal(0),
+              pagination: signal({ pageIndex: 0, pageSize: 5, previousPageIndex: 0 }),
             },
             tableData: signal([]),
             formStructure: signal([]),

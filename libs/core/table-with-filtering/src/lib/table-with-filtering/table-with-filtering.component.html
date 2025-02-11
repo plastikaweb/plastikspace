@@ -46,10 +46,9 @@
   [data]="tableDefinition.getData?.() || []"
   [caption]="tableDefinition.caption || ''"
   [columnProperties]="tableDefinition.columnProperties || []"
+  [pagination]="tableDefinition?.pagination()"
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"
-  [pageSizeOptions]="tableDefinition.pageSizeOptions || []"
-  [paginationVisibility]="tableDefinition?.paginationVisibility"
   [filterCriteria]="facade.filterCriteria?.() || {}"
   [filterPredicate]="facade.tableFilterPredicate"
   [actions]="tableDefinition.actions || {}"
@@ -57,5 +56,6 @@
   [extraRowStyles]="tableDefinition.extraRowStyles"
   [actionsColStyles]="tableDefinition.actionsColStyles || ''"
   (changeSorting)="onChangeSorting($event)"
+  (changePagination)="onChangePagination($event)"
   (delete)="onDelete($event)">
 </plastik-shared-table>

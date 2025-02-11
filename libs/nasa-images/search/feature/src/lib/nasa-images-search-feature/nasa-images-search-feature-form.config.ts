@@ -9,7 +9,10 @@ export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldCo
     {
       fieldGroupClassName: 'flex flex-col md:flex-row gap-sm',
       fieldGroup: [
-        addSearchInput('Search by term', 'Reset search', 'q', true),
+        addSearchInput(
+          { label: 'Search by term', placeholder: 'Search by term', required: true },
+          'q'
+        ),
         {
           fieldGroupClassName: 'flex flex-col md:flex-row gap-sm justify-start',
           fieldGroup: [
