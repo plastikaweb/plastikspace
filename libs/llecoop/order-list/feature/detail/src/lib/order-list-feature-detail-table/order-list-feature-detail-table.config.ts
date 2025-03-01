@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { formatOrderStatus, formatUserOrderDeliveryDate } from '@plastik/llecoop/order-list/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -18,7 +18,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
   readonly #sanitizer = inject(DomSanitizer);
-  readonly #store = inject(LLecoopOrderListStore);
+  readonly #store = inject(llecoopOrderListStore);
 
   readonly #userName: TableColumnFormatting<LlecoopUserOrder, 'TITLE_CASE'> = {
     key: 'userName',
@@ -49,7 +49,6 @@ export class LlecoopOrderListFeatureDetailTableConfig
     key: 'address',
     title: 'Adreça de lliurament',
     propertyPath: 'address',
-    sorting: true,
     cssClasses: ['hidden @4xl:flex @4xl:min-w-[100px]'],
     formatting: {
       type: 'TEXT',
@@ -60,7 +59,6 @@ export class LlecoopOrderListFeatureDetailTableConfig
     key: 'deliveryDateAndTime',
     title: 'Data i hora de lliurament',
     propertyPath: 'deliveryDateAndTime',
-    sorting: true,
     cssClasses: ['min-w-[125px] @2xl:min-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
@@ -115,12 +113,9 @@ export class LlecoopOrderListFeatureDetailTableConfig
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
-      paginationVisibility: {
-        hideRangeLabel: true,
-        hideRangeButtons: true,
-      },
       caption: 'Llistat de comandes',
-      sort: this.#store.sorting,
+      sort: this.#store.selectedItemUserSorting,
+      pagination: this.#store.selectedItemUserPagination,
       count: computed(() => this.#store.selectedItem()?.orderCount || 0) as Signal<number>,
       getData: () => {
         return this.#store.selectedItem()?.orders || [];

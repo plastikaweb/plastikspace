@@ -3,10 +3,10 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { CategoryStoreFilter, LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
-import { LlecoopFeatureStorePagination } from '@plastik/llecoop/data-access';
+import { llecoopCategoryStore, StoreCategoryFilter } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
+import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
 import { TableSorting } from '@plastik/shared/table/entities';
 
 import { getLlecoopCategorySearchFeatureFormConfig } from './category-feature-search-form.config';
@@ -16,9 +16,9 @@ import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-tabl
   providedIn: 'root',
 })
 export class LlecoopCategoryListFacadeService
-  implements TableWithFilteringFacade<LlecoopProductCategory>
+  implements TableWithFilteringFacade<LlecoopProductCategory, StoreCategoryFilter>
 {
-  readonly #store = inject(LlecoopCategoryStore);
+  readonly #store = inject(llecoopCategoryStore);
   readonly #table = inject(LlecoopCategorySearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
@@ -26,19 +26,12 @@ export class LlecoopCategoryListFacadeService
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopCategorySearchFeatureFormConfig();
-  // filterCriteria = signal<Record<string, string>>({
-  //   text: '',
-  // });
-  // tableFilterPredicate = (data: LlecoopProductCategory, criteria: Record<string, string>) => {
-  //   const value = criteria['text'].toLowerCase();
-  //   return [data.name, data.description].some(text => text?.toLowerCase().includes(value));
-  // };
 
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.#store.setFilter(criteria as CategoryStoreFilter);
+  onChangeFilterCriteria(criteria: StoreCategoryFilter): void {
+    this.#store.setFilter(criteria);
   }
 
-  onChangePagination(pagination: LlecoopFeatureStorePagination<LlecoopProductCategory>): void {
+  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopProductCategory>): void {
     this.#store.setPagination(pagination);
   }
 

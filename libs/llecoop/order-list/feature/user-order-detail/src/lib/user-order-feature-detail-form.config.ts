@@ -98,10 +98,6 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               props: {
                 label: 'Dia',
                 placeholder: 'Dia',
-                options: [
-                  { value: 'wednesday', label: 'dimecres' },
-                  { value: 'tuesday', label: 'dijous' },
-                ],
                 required: true,
                 disabled: true,
                 compareWith: (o1: FormSelectOption['value'], o2: FormSelectOption['value']) =>
@@ -110,9 +106,11 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
                   setDayOptionsByDeliveryOption(formly.props, formly.model?.deliveryType);
+
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field.key === 'deliveryType'),
-                    tap(({ value }) => setDayOptionsByDeliveryOption(formly.props, value))
+                    tap(({ value }) => setDayOptionsByDeliveryOption(formly.props, value)),
+                    tap(() => formly.formControl?.setValue(null))
                   );
                 },
               },
@@ -124,7 +122,6 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               props: {
                 label: 'Hora',
                 placeholder: 'Hora',
-                options: [],
                 required: true,
                 disabled: true,
                 compareWith: (o1: FormSelectOption['value'], o2: FormSelectOption['value']) =>
@@ -136,7 +133,8 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
 
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field.key === 'deliveryType'),
-                    tap(({ value }) => setHourOptionsByDeliveryOption(formly.props, value))
+                    tap(({ value }) => setHourOptionsByDeliveryOption(formly.props, value)),
+                    tap(() => formly.formControl?.setValue(null))
                   );
                 },
               },

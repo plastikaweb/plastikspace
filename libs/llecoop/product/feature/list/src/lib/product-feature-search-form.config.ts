@@ -4,16 +4,19 @@ import { map } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { addSearchInput } from '@plastik/shared/form/search';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LlecoopProductSearchFeatureFormConfig {
-  readonly #categoryStore = inject(LlecoopCategoryStore);
+  readonly #categoryStore = inject(llecoopCategoryStore);
+  readonly #productStore = inject(llecoopProductStore);
 
   getConfig(): FormlyFieldConfig[] {
+    this.#categoryStore.getAll();
     return [
       {
         fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
@@ -25,7 +28,7 @@ export class LlecoopProductSearchFeatureFormConfig {
           {
             key: 'category',
             type: 'select',
-            defaultValue: this.#categoryStore.filter()['category'],
+            defaultValue: this.#productStore.filter()['category'],
             className: 'w-full md:w-1/2',
             props: {
               label: 'Categoría',
@@ -39,7 +42,7 @@ export class LlecoopProductSearchFeatureFormConfig {
           {
             key: 'inStock',
             type: 'select',
-            defaultValue: this.#categoryStore.filter()['inStock'],
+            defaultValue: this.#productStore.filter()['inStock'],
             className: 'w-full md:w-1/2',
             props: {
               label: 'Disponibilitat',

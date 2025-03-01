@@ -49,8 +49,6 @@
   [pagination]="tableDefinition?.pagination()"
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"
-  [filterCriteria]="facade.filterCriteria?.() || {}"
-  [filterPredicate]="facade.tableFilterPredicate"
   [actions]="tableDefinition.actions || {}"
   [noPagination]="tableDefinition.noPagination || false"
   [extraRowStyles]="tableDefinition.extraRowStyles"

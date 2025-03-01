@@ -3,7 +3,7 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUser } from '@plastik/llecoop/entities';
-import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -18,7 +18,7 @@ import {
   providedIn: 'root',
 })
 export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig<LlecoopUser> {
-  readonly #store = inject(LLecoopUserStore);
+  readonly #store = inject(llecoopUserStore);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #sanitizer = inject(DomSanitizer);
 
@@ -62,7 +62,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'registered',
     title: 'Registrat',
     propertyPath: 'registered',
-    cssClasses: ['hidden @lg:flex @lg:min-w-[60px]'],
+    cssClasses: ['hidden @lg:flex @lg:max-w-[120px]'],
     sorting: true,
     formatting: {
       type: 'CUSTOM',
@@ -74,7 +74,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'emailVerified',
     title: 'Verificat',
     propertyPath: 'emailVerified',
-    cssClasses: ['hidden @lg:flex @lg:min-w-[60px]'],
+    cssClasses: ['hidden @lg:flex @lg:max-w-[120px]'],
     sorting: true,
     formatting: {
       type: 'CUSTOM',
@@ -120,11 +120,8 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
-      paginationVisibility: {
-        hideRangeLabel: true,
-        hideRangeButtons: true,
-      },
       sort: this.#store.sorting,
+      pagination: this.#store.pagination,
       caption: "Llistat d'usuaris",
       count: this.#store.count,
       getData: () => this.#store.entities(),

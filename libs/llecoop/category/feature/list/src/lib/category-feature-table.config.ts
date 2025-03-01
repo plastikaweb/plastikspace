@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { UiCategoryNameCellComponent } from '@plastik/llecoop/category-name-cell';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -17,7 +17,7 @@ import {
 export class LlecoopCategorySearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProductCategory>
 {
-  readonly #store = inject(LlecoopCategoryStore);
+  readonly #store = inject(llecoopCategoryStore);
 
   readonly #name: TableColumnFormatting<LlecoopProductCategory, 'COMPONENT'> = {
     key: 'name',
@@ -79,7 +79,6 @@ export class LlecoopCategorySearchFeatureTableConfig
       columnProperties: this.#columnProperties,
       sort: this.#store.sorting,
       pagination: this.#store.pagination,
-      filter: this.#store.filter,
       caption: 'Llistat de categories',
       count: this.#store.count,
       getData: () => this.#store.entities(),

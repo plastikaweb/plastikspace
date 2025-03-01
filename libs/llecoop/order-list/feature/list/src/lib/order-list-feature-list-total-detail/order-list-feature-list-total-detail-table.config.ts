@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { getLlecoopProductUnitSuffix, LlecoopOrderProductTotal } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -15,7 +15,7 @@ import {
 export class LlecoopOrderListFeatureListTotalDetailTableConfig
   implements TableStructureConfig<LlecoopOrderProductTotal>
 {
-  readonly #store = inject(LLecoopOrderListStore);
+  readonly #store = inject(llecoopOrderListStore);
   readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProductTotal, 'TITLE_CASE'> = {

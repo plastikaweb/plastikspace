@@ -3,7 +3,7 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { formatOrderStatus } from '@plastik/llecoop/order-list/util';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
@@ -19,7 +19,7 @@ import {
   providedIn: 'root',
 })
 export class LlecoopOrderListFeatureListTableConfig implements TableStructureConfig<LlecoopOrder> {
-  readonly #store = inject(LLecoopOrderListStore);
+  readonly #store = inject(llecoopOrderListStore);
   readonly #sanitizer = inject(DomSanitizer);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
@@ -60,7 +60,6 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     key: 'availableProducts',
     title: 'Productes inclosos',
     propertyPath: 'availableProducts',
-    sorting: true,
     cssClasses: ['hidden @xl:flex @xl:min-w-[110px]'],
     formatting: {
       type: 'CUSTOM',
@@ -85,11 +84,8 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
-      paginationVisibility: {
-        hideRangeLabel: true,
-        hideRangeButtons: true,
-      },
       sort: this.#store.sorting,
+      pagination: this.#store.pagination,
       caption: 'Llistat de comandes setmanals',
       count: this.#store.count,
       getData: () => this.#store.entities(),

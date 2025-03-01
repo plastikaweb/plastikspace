@@ -36,9 +36,7 @@
   [columnProperties]="tableDefinition.columnProperties || []"
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"
-  [paginationVisibility]="tableDefinition?.paginationVisibility"
-  [filterCriteria]="facade.filterCriteria() || {}"
-  [filterPredicate]="facade.tableFilterPredicate"
+  [pagination]="tableDefinition?.pagination()"
   [actions]="tableDefinition.actions || {}"
   [noPagination]="tableDefinition.noPagination || false"
   [extraRowStyles]="tableDefinition.extraRowStyles"
@@ -47,6 +45,7 @@
   [expandable]="true"
   [expandedElementId]="tableDefinition.getSelectedItemId?.() || null"
   (changeSorting)="facade.onTableSorting($event)"
+  (changePagination)="facade.onTablePagination($event)"
   (delete)="facade.onTableActionDelete($event)">
 </plastik-shared-table>
 
@@ -55,14 +54,13 @@
     @let totalTableDefinition = facade.totalTableDefinition;
 
     <div class="flex flex-col justify-between gap-md pt-lg">
-      <h3 class="text-md">Totals de la comanda {{ element.name }}:</h3>
+      <h3 class="text-md">Totals de la comanda {{ element.name }}</h3>
       <plastik-shared-table
         [data]="totalTableDefinition.getData?.(element.id) || []"
         [caption]="totalTableDefinition.caption || ''"
         [columnProperties]="totalTableDefinition.columnProperties || []"
         [resultsLength]="totalTableDefinition?.count() || 0"
         [sort]="totalTableDefinition.sort?.()"
-        [paginationVisibility]="totalTableDefinition?.paginationVisibility"
         [noPagination]="true">
       </plastik-shared-table>
     </div>

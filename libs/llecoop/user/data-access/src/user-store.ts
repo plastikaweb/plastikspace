@@ -1,126 +1,56 @@
 import { pipe, switchMap, tap } from 'rxjs';
 
 /* eslint-disable no-console */
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { patchState, signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { signalStore, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { routerActions } from '@plastik/core/router-state';
-import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
+import {
+  StoreFirebaseCrudFilter,
+  StoreNotificationService,
+  withFirebaseCrud,
+} from '@plastik/shared/signal-state-data-access';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
 
 import { LlecoopUserFireService } from './user-fire.service';
 
-export const LLecoopUserStore = signalStore(
+export type StoreUserFilter = StoreFirebaseCrudFilter & {
+  text: string;
+  role: 'all' | string;
+};
+
+export const initUserStoreFilter: StoreUserFilter = {
+  text: '',
+  role: 'all',
+};
+
+export const initUserStorePagination = {
+  pageSize: 5,
+  pageIndex: 0,
+  pageLastElements: new Map<number, LlecoopUser>(),
+};
+
+export const initUserStoreSorting = ['updatedAt', 'desc'] as TableSortingConfig;
+
+export const llecoopUserStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('user'),
-  withState<LlecoopFeatureStore<LlecoopUser>>({
-    loaded: false,
-    lastUpdated: new Date(),
-    selectedItemId: null,
-    sorting: ['email', 'asc'],
-    pagination: {
-      pageIndex: 0,
-      pageSize: 10,
-      pageLastElements: new Map<number, LlecoopUser>(),
-    },
-    filter: {
-      text: '',
-      role: 'all',
-    },
-    count: 0,
+  withFirebaseCrud<LlecoopUser, LlecoopUserFireService, StoreUserFilter>({
+    featureName: 'user',
+    dataServiceType: LlecoopUserFireService,
+    initFilter: initUserStoreFilter,
+    initSorting: initUserStoreSorting,
+    initPagination: initUserStorePagination,
+    baseRoute: 'admin/usuari',
   }),
-  withEntities<LlecoopUser>(),
-  withMethods(
-    (
-      store,
-      userService = inject(LlecoopUserFireService),
-      storeNotificationService = inject(StoreNotificationService),
-      state = inject(Store),
-      firebaseAuthService = inject(FirebaseAuthService)
-    ) => ({
-      getAll: rxMethod<void>(
-        pipe(
-          switchMap(() => {
-            if (!store.loaded()) {
-              state.dispatch(activityActions.setActivity({ isActive: true }));
+  withMethods(() => {
+    const userService = inject(LlecoopUserFireService);
+    const storeNotificationService = inject(StoreNotificationService);
+    const state = inject(Store);
 
-              return userService.getAll().pipe(
-                tapResponse({
-                  next: users =>
-                    patchState(
-                      store,
-                      setAllEntities(users, { selectId: entity => entity.id || '' }),
-                      { loaded: true, lastUpdated: new Date() }
-                    ),
-                  error: error => {
-                    if (firebaseAuthService.loggedIn()) {
-                      storeNotificationService.create(
-                        `No s'ha pogut carregar els productes: ${error}`,
-                        'ERROR'
-                      );
-                    }
-                  },
-                }),
-                tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-              );
-            }
-            return [];
-          })
-        )
-      ),
-      create: rxMethod<Pick<LlecoopUser, 'email'>>(
-        pipe(
-          switchMap(({ email }) => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return userService.create(email).pipe(
-              tapResponse({
-                next: () => state.dispatch(routerActions.go({ path: ['/admin/usuari'] })),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut guardar el email "${email}": ${error}`,
-                    'ERROR'
-                  ),
-                complete: () =>
-                  storeNotificationService.create(
-                    `Soci amb email "${email}" afegit a la llista`,
-                    'SUCCESS'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
-      delete: rxMethod<LlecoopUser>(
-        pipe(
-          switchMap(user => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return userService.delete(user).pipe(
-              tapResponse({
-                next: () =>
-                  storeNotificationService.create(
-                    `Usuari amb correu electrònic "${user.email}" eliminat`,
-                    'SUCCESS'
-                  ),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut eliminar l'usuari amb correu electrònic "${user.email}": ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
+    return {
       setAdmin: rxMethod<Pick<LlecoopUser, 'id'>>(
         pipe(
           switchMap(({ id }) => {
@@ -147,15 +77,6 @@ export const LLecoopUserStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: LlecoopFeatureStore<LlecoopUser>['sorting']) =>
-        patchState(store, { sorting }),
-    })
-  ),
-  withHooks({
-    onInit({ getAll, loaded }) {
-      if (!loaded()) {
-        getAll();
-      }
-    },
+    };
   })
 );

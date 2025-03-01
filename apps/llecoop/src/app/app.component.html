@@ -1,5 +1,4 @@
-<plastik-shared-activity-ui-overlay
-  [ngClass]="{ 'opacity-0 transition-opacity duration-300': !isActive() }">
+<plastik-shared-activity-ui-overlay class="activity-overlay" [class.fade-out]="!isActive()">
   <div class="spinner-container">
     <div class="lds-ripple">
       <div></div>

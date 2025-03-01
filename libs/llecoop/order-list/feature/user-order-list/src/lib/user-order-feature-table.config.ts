@@ -2,8 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
 import { formatOrderStatus } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
@@ -22,8 +22,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
   readonly #sanitizer = inject(DomSanitizer);
-  readonly #userOrderStore = inject(LlecoopUserOrderStore);
-  readonly #orderListStore = inject(LLecoopOrderListStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
 
   readonly #name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
     key: 'name',
@@ -83,7 +83,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     this.#updatedAt,
   ];
 
-  readonly #orderDoneStatusCache = new Map<string, boolean>();
+  readonly #orderDoneStatusCache: Map<string, boolean> = new Map();
 
   private checkIfOrderIsDone(order: LlecoopUserOrder): boolean {
     if (!order) return false;
@@ -93,7 +93,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
       return this.#orderDoneStatusCache.get(cacheKey) as boolean;
     }
 
-    const isDone = this.#orderListStore.entityMap()[order.orderListId]?.status === 'done';
+    const isDone = this.#orderListStore?.entityMap()?.[order.orderListId]?.status === 'done';
     this.#orderDoneStatusCache.set(cacheKey, isDone);
 
     return isDone;
@@ -108,13 +108,10 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
-      paginationVisibility: {
-        hideRangeLabel: true,
-        hideRangeButtons: true,
-      },
       sort: this.#userOrderStore.sorting,
-      count: this.#userOrderStore.count,
+      pagination: this.#userOrderStore.pagination,
       caption: 'Llistat de les meves comandes',
+      count: this.#userOrderStore.count,
       getData: () => this.#userOrderStore.entities(),
       actionsColStyles: 'max-w-[150px]',
       actions: {

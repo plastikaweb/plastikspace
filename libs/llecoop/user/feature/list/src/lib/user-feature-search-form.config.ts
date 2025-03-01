@@ -12,7 +12,7 @@ export function getLlecoopUserSearchFeatureFormConfig(): FormlyFieldConfig[] {
           placeholder: 'Filtrar per correu electrònic',
         }),
         {
-          key: 'role',
+          key: 'isAdmin',
           type: 'select',
           defaultValue: 'all',
           className: 'w-full md:w-1/2',
@@ -22,8 +22,8 @@ export function getLlecoopUserSearchFeatureFormConfig(): FormlyFieldConfig[] {
             required: false,
             options: [
               { label: 'Tots', value: 'all' },
-              { label: 'Administrador', value: 'admin' },
-              { label: 'Soci', value: 'soci' },
+              { label: 'Administrador', value: true },
+              { label: 'Soci', value: false },
             ],
           },
         },

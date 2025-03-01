@@ -1,9 +1,8 @@
-/* eslint-disable */
 export default {
-  displayName: 'llecoop-data-access',
-  preset: '../../../jest.preset.js',
+  displayName: 'signal-state-data-access',
+  preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../coverage/libs/llecoop/data-access',
+  coverageDirectory: '../../../../coverage/libs/shared/signal-state/data-access',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

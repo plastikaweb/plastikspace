@@ -2,6 +2,8 @@ import { Route } from '@angular/router';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plastik/core/list-view';
 import { TABLE_TOKEN } from '@plastik/shared/table/entities';
+
+import { categoryFeatureListResolver } from './category-feature-list.resolver';
 import { getLlecoopCategorySearchFeatureFormConfig } from './category-feature-search-form.config';
 import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-table.config';
 import { LlecoopCategoryListFacadeService } from './category-list-facade.service';
@@ -25,5 +27,8 @@ export const llecoopCategoryFeatureRoutes: Route[] = [
         useValue: getLlecoopCategorySearchFeatureFormConfig(),
       },
     ],
+    resolve: {
+      resetCategoryStore: categoryFeatureListResolver,
+    },
   },
 ];

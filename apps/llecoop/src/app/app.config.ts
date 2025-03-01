@@ -1,5 +1,3 @@
-import { of } from 'rxjs';
-
 import { provideHttpClient } from '@angular/common/http';
 import {
   ApplicationConfig,

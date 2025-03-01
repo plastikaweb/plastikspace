@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { BaseEntity } from '@plastik/core/entities';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
@@ -37,7 +38,7 @@ export class TableWithFilteringComponent {
     this.facade.onChangePagination?.({ pageIndex, pageSize });
   }
 
-  onDelete(item: unknown): void {
+  onDelete(item: BaseEntity): void {
     this.facade.onTableActionDelete?.(item);
   }
 }

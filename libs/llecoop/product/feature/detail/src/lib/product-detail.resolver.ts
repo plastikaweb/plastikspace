@@ -3,13 +3,13 @@ import { filter, map, Observable } from 'rxjs';
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, RedirectCommand, ResolveFn, Router } from '@angular/router';
-import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 
-export const ProductDetailResolver: ResolveFn<Observable<boolean>> = (
+export const productDetailResolver: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot
 ) => {
   const router = inject(Router);
-  const store = inject(LlecoopProductStore);
+  const store = inject(llecoopProductStore);
   const id = route.paramMap.get('id');
 
   if (!id) {
@@ -22,7 +22,7 @@ export const ProductDetailResolver: ResolveFn<Observable<boolean>> = (
   return toObservable(store.selectedItem).pipe(
     map(product => {
       if (!product) {
-        store.getAll();
+        store.getItem(id);
       }
       return !!product;
     }),

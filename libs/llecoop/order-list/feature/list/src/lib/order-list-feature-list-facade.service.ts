@@ -1,15 +1,17 @@
 import moment from 'moment';
-import { filter, take } from 'rxjs';
+import { filter, take, tap } from 'rxjs';
 
 import { inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopOrder, YearWeek } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { LlecoopOrder, LlecoopProduct, YearWeek } from '@plastik/llecoop/entities';
+import {
+  llecoopOrderListStore,
+  StoreOrderListFilter,
+} from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 
 import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
 import { LlecoopOrderListFeatureListTableConfig } from './order-list-feature-list-table/order-list-feature-list-table.config';
@@ -19,14 +21,12 @@ import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-
   providedIn: 'root',
 })
 export class LlecoopOrderListFeatureListFacadeService
-  implements TableWithFilteringFacade<LlecoopOrder>
+  implements TableWithFilteringFacade<LlecoopOrder, StoreOrderListFilter>
 {
-  // specific properties not included in TableWithFilteringFacade
   orderListTotalDetailTableConfig = inject(LlecoopOrderListFeatureListTotalDetailTableConfig);
   totalTableDefinition = this.orderListTotalDetailTableConfig.getTableDefinition();
 
-  readonly #orderListStore = inject(LLecoopOrderListStore);
-  readonly #productStore = inject(LlecoopProductStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #table = inject(LlecoopOrderListFeatureListTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #sanitizer = inject(DomSanitizer);
@@ -38,6 +38,8 @@ export class LlecoopOrderListFeatureListFacadeService
       label: 'Iniciar comanda',
       icon: 'add',
       execute: () => {
+        this.#orderListStore.getAvailableProducts();
+
         this.#confirmService
           .confirm(
             'Iniciar nova comanda',
@@ -46,37 +48,38 @@ export class LlecoopOrderListFeatureListFacadeService
                 <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.getNewOrderName()}</p>
                 <p class="font-extrabold">Oberta fins el ${this.getNewOrderDate().format('DD/MM/YYYY')}
                 a les ${this.getNewOrderDate().format('HH:mm')}</span> hores.</p>
-                <p>${this.#productStore.getAvailableProducts().length} productes s'afegiran a la llista.</p>
               </div>
               `
             ),
             'Cancel·lar',
             'Iniciar'
           )
-          .pipe(take(1), filter(Boolean))
-          .subscribe(() => this.#orderListStore.create(this.createOrderList()));
+          .pipe(
+            take(1),
+            filter(Boolean),
+            tap(() => this.#orderListStore.create(this.createOrderList())),
+            tap(() => this.#orderListStore.clearAvailableProducts())
+          )
+          .subscribe();
       },
-      disabled: () =>
-        this.#orderListStore
-          .entities()
-          .some(({ status }) => status === 'waiting' || status === 'progress'),
+      disabled: () => !!this.#orderListStore.currentOrderList(),
     },
   ]);
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopOrderListFeatureListSearchFormConfig();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-  });
-  tableFilterPredicate = (data: LlecoopOrder, criteria: Record<string, string>) => {
-    const value = criteria['text'].toLowerCase();
-    return [data.name].some(text => text?.toLowerCase().includes(value));
-  };
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+
+  onChangeFilterCriteria(criteria: StoreOrderListFilter): void {
+    this.#orderListStore.setFilter(criteria);
   }
+
   onTableSorting({ active, direction }: TableSorting): void {
     this.#orderListStore.setSorting([active, direction]);
   }
+
+  onTablePagination({ pageIndex, pageSize }: PageEventConfig): void {
+    this.#orderListStore.setPagination({ pageIndex, pageSize });
+  }
+
   onTableActionDelete(item: LlecoopOrder): void {
     if (item.id) {
       this.#confirmService
@@ -103,10 +106,10 @@ export class LlecoopOrderListFeatureListFacadeService
   }
 
   private createOrderList(): LlecoopOrder {
-    const availableProducts = this.#productStore
-      .getAvailableProducts()
+    const availableProducts = this.#orderListStore
+      .availableProducts()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      .map(({ stock, isAvailable, ...rest }) => ({
+      .map(({ stock, isAvailable, ...rest }: LlecoopProduct) => ({
         ...rest,
         initQuantity: 0,
         finalQuantity: 0,

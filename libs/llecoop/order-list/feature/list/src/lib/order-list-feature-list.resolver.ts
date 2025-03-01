@@ -1,15 +1,30 @@
 import { Observable, of } from 'rxjs';
 
 import { inject } from '@angular/core';
-import { ResolveFn } from '@angular/router';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { ResolveFn, Router } from '@angular/router';
+import {
+  initOrderListStoreFilter,
+  initOrderListStorePagination,
+  initOrderListStoreSorting,
+  llecoopOrderListStore,
+} from '@plastik/llecoop/order-list/data-access';
 
-export const OrderListFeatureListResolver: ResolveFn<
+export const orderListFeatureListResolver: ResolveFn<
   Observable<boolean>
 > = (): Observable<boolean> => {
-  const store = inject(LLecoopOrderListStore);
+  const orderListStore = inject(llecoopOrderListStore);
+  const router = inject(Router);
+  const previousUrl = router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
 
-  store.setSelectedItemId(null);
+  orderListStore.setSelectedItemId(null);
+
+  if (!previousUrl?.startsWith('/admin/comanda') || !orderListStore.initiallyLoaded()) {
+    orderListStore.setSorting(initOrderListStoreSorting);
+    orderListStore.setFilter(initOrderListStoreFilter);
+    orderListStore.setPagination(initOrderListStorePagination);
+    orderListStore.getAll();
+    orderListStore.setCount();
+  }
 
   return of(true);
 };

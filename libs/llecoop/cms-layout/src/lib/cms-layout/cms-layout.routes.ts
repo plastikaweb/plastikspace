@@ -3,14 +3,8 @@ import { Auth } from '@angular/fire/auth';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl } from '@angular/material/paginator';
 import { CanActivateFn, Router, Routes } from '@angular/router';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
-import { STORE_TOKEN } from '@plastik/llecoop/data-access';
-import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
-} from '@plastik/llecoop/order-list/data-access';
-import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
-import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { STORE_TOKEN } from '@plastik/shared/signal-state-data-access';
 
 import { CmsLayoutComponent } from './cms-layout.component';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
@@ -80,7 +74,7 @@ export const llecoopLayoutRoutes: Routes = [
             providers: [
               {
                 provide: STORE_TOKEN,
-                useExisting: LlecoopCategoryStore,
+                useValue: llecoopCategoryStore,
               },
             ],
             children: [
@@ -109,12 +103,6 @@ export const llecoopLayoutRoutes: Routes = [
           },
           {
             path: 'producte',
-            providers: [
-              {
-                provide: STORE_TOKEN,
-                useExisting: LlecoopProductStore,
-              },
-            ],
             children: [
               {
                 path: 'crear',
@@ -141,12 +129,6 @@ export const llecoopLayoutRoutes: Routes = [
           },
           {
             path: 'usuari',
-            providers: [
-              {
-                provide: STORE_TOKEN,
-                useExisting: LLecoopUserStore,
-              },
-            ],
             children: [
               {
                 path: 'crear',
@@ -166,12 +148,6 @@ export const llecoopLayoutRoutes: Routes = [
           },
           {
             path: 'comanda',
-            providers: [
-              {
-                provide: STORE_TOKEN,
-                useExisting: LLecoopOrderListStore,
-              },
-            ],
             children: [
               {
                 path: ':order-list-id',
@@ -193,12 +169,6 @@ export const llecoopLayoutRoutes: Routes = [
       },
       {
         path: 'soci',
-        providers: [
-          {
-            provide: STORE_TOKEN,
-            useExisting: LlecoopUserOrderStore,
-          },
-        ],
         children: [
           {
             path: 'comanda/crear',
