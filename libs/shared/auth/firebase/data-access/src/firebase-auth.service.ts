@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { FirebaseError } from '@angular/fire/app';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -14,7 +15,7 @@ import { Store } from '@ngrx/store';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import {
   NotificationConfigService,
-  NotificationStore,
+  notificationStore,
 } from '@plastik/shared/notification/data-access';
 
 @Injectable({
@@ -25,7 +26,7 @@ export class FirebaseAuthService {
   readonly #router = inject(Router);
   readonly #state = inject(Store);
   readonly #notificationService = inject(NotificationConfigService);
-  readonly #notificationStore = inject(NotificationStore);
+  readonly #notificationStore = inject(notificationStore);
 
   currentUser = signal<User | null>(null);
   currentUserEmail = computed(() => this.currentUser()?.email ?? '');
@@ -73,17 +74,23 @@ export class FirebaseAuthService {
       this.#notificationStore.dismiss();
       await signInWithEmailAndPassword(this.#auth, email, password);
       await this.#router.navigate(['']);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
       if ((error as Error).message?.includes('BLOCKING_FUNCTION_ERROR_RESPONSE')) {
         console.error('BLOCKING_FUNCTION_ERROR_RESPONSE');
       }
 
+      const firebaseError = error as FirebaseError;
+
+      const message =
+        firebaseError.code === 'auth/invalid-credential'
+          ? 'Revisa les teves dades'
+          : firebaseError.message;
+
       this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
-          message:
-            (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Revisa les teves dades',
+          message,
           action: 'tancar',
         })
       );
@@ -112,13 +119,22 @@ export class FirebaseAuthService {
       const credentials = await createUserWithEmailAndPassword(this.#auth, email, password);
       await this.logout();
       this.sendVerification(credentials.user);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
-      this.#state.dispatch(
+
+      const firebaseError = error as FirebaseError;
+
+      const message =
+        firebaseError.code === 'auth/email-already-in-use'
+          ? 'Aquest correu electrònic ja esta registrat'
+          : (error as Error).message.includes('PERMISSION_DENIED')
+            ? "Només els socis d'El Llevat poden registrar-se a la plataforma"
+            : 'Error de registre';
+
+      this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
-          message:
-            (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Error de registre',
+          message,
           action: 'tancar',
         })
       );
@@ -142,12 +158,13 @@ export class FirebaseAuthService {
       this.#notificationStore.dismiss();
       await signOut(this.#auth);
       await this.#router.navigate(['login']);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error during logout:', error);
+
       this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
-          message: 'Error during logout. Please try again.',
+          message: 'Error durante el tancament de la sessió. Si us plau, torna a intentar-ho.',
           action: 'tancar',
         })
       );
@@ -173,15 +190,26 @@ export class FirebaseAuthService {
     try {
       this.#notificationStore.dismiss();
       await sendEmailVerification(user);
-      this.#state.dispatch(
+
+      this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'SUCCESS',
           message:
             'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
         })
       );
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error sending verification email:', error);
+
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message:
+            (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
+            'Error enviant el correu de verificació',
+          action: 'tancar',
+        })
+      );
     } finally {
       this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
@@ -206,15 +234,16 @@ export class FirebaseAuthService {
       this.#notificationStore.dismiss();
       await sendPasswordResetEmail(this.#auth, email);
       await this.#router.navigate(['login']);
-      this.#state.dispatch(
+      this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'SUCCESS',
           message: 'Revisa el teu correu per restablir la contrasenya',
         })
       );
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
-      this.#state.dispatch(
+
+      this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
           message:

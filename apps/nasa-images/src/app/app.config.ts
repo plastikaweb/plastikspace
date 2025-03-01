@@ -26,7 +26,7 @@ import {
   routerReducers,
   RouterStateEffects,
 } from '@plastik/core/router-state';
-import { NotificationStore } from '@plastik/shared/notification/data-access';
+import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 
 import { environment } from '../environments/environment';
@@ -58,7 +58,7 @@ export const appConfig: ApplicationConfig = {
           })
         : [],
       CoreCmsLayoutDataAccessModule,
-      NotificationStore,
+      notificationStore,
       NotificationUiMatSnackbarModule
     ),
     provideRouterStore({

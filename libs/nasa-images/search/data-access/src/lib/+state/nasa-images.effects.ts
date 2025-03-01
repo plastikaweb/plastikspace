@@ -7,14 +7,11 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { NavigationFilterService, selectRouteQueryParams } from '@plastik/core/router-state';
 import {
-  NasaImagesSearchApiError,
-  NasaImagesSearchApiParams,
-  NasaImagesViews,
+  NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews
 } from '@plastik/nasa-images/search/entities';
 import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
 import {
-  NotificationConfigService,
-  NotificationStore,
+  NotificationConfigService, notificationStore
 } from '@plastik/shared/notification/data-access';
 
 import { NasaImagesApiService } from '../nasa-images-api.service';
@@ -27,7 +24,7 @@ export class NasaImagesEffects {
   readonly #navigationFilter = inject(NavigationFilterService);
   readonly #notificationService = inject(NotificationConfigService);
   readonly #store = inject(Store);
-  readonly #notificationStore = inject(NotificationStore);
+  readonly #notificationStore = inject(notificationStore);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   navigation$ = createEffect(() => {

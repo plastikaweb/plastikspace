@@ -37,7 +37,7 @@ import {
   RouterStateEffects,
 } from '@plastik/core/router-state';
 import { selectActivityFeature } from '@plastik/shared/activity/data-access';
-import { NotificationStore } from '@plastik/shared/notification/data-access';
+import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 
 import { environment } from '../environments/environment';
@@ -97,7 +97,7 @@ export const appConfig: ApplicationConfig = {
             traceLimit: 75,
           })
         : [],
-      NotificationStore,
+      notificationStore,
       NotificationUiMatSnackbarModule
     ),
     provideRouterStore({

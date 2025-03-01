@@ -126,6 +126,10 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 - [shared-testing](libs/shared/testing/README.md)
 
+#### Signal State
+
+- [shared-signal-state-data-access](libs/shared/signal-state/data-access/README.md)
+
 ##### UI
 
 - [shared-form-ui-year-picker/shared-form-ui-year-picker-type](libs/shared/form/ui/year-picker/README.md)

@@ -27,7 +27,7 @@ import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer'
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
-import { NotificationStore } from '@plastik/shared/notification/data-access';
+import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
 
 @Component({
@@ -60,7 +60,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   readonly #breakpointObserver = inject(BreakpointObserver);
   readonly #zone = inject(NgZone);
 
-  protected readonly notificationStore = inject(NotificationStore);
+  protected readonly notificationStore = inject(notificationStore);
   protected readonly hideFooter = input(false);
   protected readonly widgetsContainer = viewChild('widgetsContainer', {
     read: ViewContainerRef,
