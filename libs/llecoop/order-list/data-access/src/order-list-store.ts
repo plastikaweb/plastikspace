@@ -1,71 +1,97 @@
-import { pipe, switchMap, tap } from 'rxjs';
+import { EMPTY, pipe, switchMap, tap } from 'rxjs';
 
+import { updateState } from '@angular-architects/ngrx-toolkit';
 /* eslint-disable no-console */
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
-  patchState,
   signalStore,
+  watchState,
   withComputed,
   withHooks,
   withMethods,
   withState,
 } from '@ngrx/signals';
-import {
-  EntityId,
-  SelectEntityId,
-  setAllEntities,
-  updateEntity,
-  withEntities,
-} from '@ngrx/signals/entities';
+import { EntityId, SelectEntityId, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
-import { LlecoopOrder } from '@plastik/llecoop/entities';
+import { LlecoopOrder, LlecoopProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
+import {
+  initStoreFirebaseCrudState,
+  StoreFirebaseCrudFilter,
+  StoreFirebaseCrudPagination,
+  StoreFirebaseCrudState,
+  StoreNotificationService,
+  withFirebaseCrud,
+} from '@plastik/shared/signal-state-data-access';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
 
 import { LlecoopOrderListFireService } from './order-list-fire.service';
 
-type LlecoopOrderListState = LlecoopFeatureStore<LlecoopOrder> & {
-  selectedItemUserOrderId: EntityId | null;
+export type StoreOrderListFilter = StoreFirebaseCrudFilter & {
+  text: string;
 };
+
+export type OrderListStoreFirebaseCrudState = StoreFirebaseCrudState<
+  LlecoopOrder,
+  StoreOrderListFilter
+> & {
+  selectedItemUserOrderId: EntityId | null;
+  currentOrderList: LlecoopOrder | null;
+  currentOrderListInitialLoaded: boolean;
+  selectedItemUserFilter: StoreOrderListFilter;
+  selectedItemUserSorting: TableSortingConfig;
+  selectedItemUserPagination: StoreFirebaseCrudPagination<LlecoopUserOrder>;
+  availableProducts: LlecoopProduct[];
+};
+
+export const initOrderListStoreFilter: StoreOrderListFilter = {
+  text: '',
+};
+
+export const initOrderListStoreSorting = ['createdAt', 'desc'] as TableSortingConfig;
+
+export const initOrderListStorePagination = {
+  pageSize: 5,
+  pageIndex: 0,
+  pageLastElements: new Map<number, LlecoopOrder>(),
+};
+
+export const initOrderListBaseState = initStoreFirebaseCrudState<
+  LlecoopOrder,
+  StoreOrderListFilter
+>(initOrderListStoreFilter);
 
 const selectId: SelectEntityId<LlecoopOrder> = orderList => orderList?.id || '';
 
-export const LLecoopOrderListStore = signalStore(
+export const llecoopOrderListStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('order-list'),
-  withState<LlecoopOrderListState>({
-    loaded: false,
-    lastUpdated: new Date(),
-    selectedItemId: null,
-    sorting: ['createdAt', 'desc'],
+  withState<OrderListStoreFirebaseCrudState>({
+    ...initOrderListBaseState,
     selectedItemUserOrderId: null,
-    pagination: {
+    currentOrderList: null,
+    currentOrderListInitialLoaded: false,
+    selectedItemUserFilter: { text: '' },
+    selectedItemUserSorting: ['userName', 'desc'],
+    selectedItemUserPagination: {
+      pageSize: 5,
       pageIndex: 0,
-      pageSize: 10,
-      pageLastElements: new Map<number, LlecoopOrder>(),
+      pageLastElements: new Map<number, LlecoopUserOrder>(),
     },
-    filter: {
-      text: '',
-    },
-    count: 0,
+    availableProducts: [],
   }),
-  withEntities<LlecoopOrder>(),
-  withComputed(({ selectedItemId, selectedItemUserOrderId, entities, entityMap }) => ({
-    currentOrder: computed(() => entities().find(order => order.status === 'progress')),
-    currentOrderProducts: computed(
-      () => entities().find(order => order.status === 'progress')?.availableProducts || []
-    ),
-    currentOrderCount: computed(
-      () => entities().find(order => order.status === 'progress')?.availableProducts.length || 0
-    ),
-    selectedItem: computed(() => {
-      const id = selectedItemId();
-      return id !== null ? entityMap()[id] : null;
-    }),
+  withFirebaseCrud<LlecoopOrder, LlecoopOrderListFireService, StoreOrderListFilter>({
+    featureName: 'order-list',
+    dataServiceType: LlecoopOrderListFireService,
+    initFilter: initOrderListStoreFilter,
+    initSorting: initOrderListStoreSorting,
+    initPagination: initOrderListStorePagination,
+    baseRoute: 'admin/comanda',
+  }),
+  withComputed(({ selectedItemId, selectedItemUserOrderId, entityMap, currentOrderList }) => ({
+    currentOrderCount: computed(() => currentOrderList()?.availableProducts.length || 0),
+    currentOrderAvailableProducts: computed(() => currentOrderList()?.availableProducts || []),
     selectedItemUserOrder: computed(() => {
       const id = selectedItemId();
       const selectedOrderList = id !== null ? entityMap()[id] : null;
@@ -79,58 +105,8 @@ export const LLecoopOrderListStore = signalStore(
       store,
       orderListService = inject(LlecoopOrderListFireService),
       storeNotificationService = inject(StoreNotificationService),
-      state = inject(Store),
-      firebaseAuthService = inject(FirebaseAuthService)
+      state = inject(Store)
     ) => ({
-      getAll: rxMethod<void>(
-        pipe(
-          switchMap(() => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return orderListService.getAll().pipe(
-              tapResponse({
-                next: orders =>
-                  patchState(store, setAllEntities(orders, { selectId }), {
-                    loaded: true,
-                    lastUpdated: new Date(),
-                  }),
-                error: error => {
-                  if (firebaseAuthService.loggedIn()) {
-                    storeNotificationService.create(
-                      `No s'ha pogut carregar el llistat de comandes: ${error}`,
-                      'ERROR'
-                    );
-                  }
-                },
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
-      create: rxMethod<Partial<LlecoopOrder>>(
-        pipe(
-          switchMap(order => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return orderListService.create(order).pipe(
-              tapResponse({
-                next: () =>
-                  storeNotificationService.create(
-                    `Comanda ${order.name} creada amb èxit`,
-                    'SUCCESS'
-                  ),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut crear la comanda: ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
       changeStatus: rxMethod<LlecoopOrder>(
         pipe(
           switchMap(order => {
@@ -180,18 +156,47 @@ export const LLecoopOrderListStore = signalStore(
           })
         )
       ),
-      delete: rxMethod<LlecoopOrder>(
+      getAllOrderListOrders: rxMethod<Partial<void>>(
         pipe(
-          switchMap(product => {
+          switchMap(() => {
+            const pagination = store.selectedItemUserPagination();
+            const filter = store.selectedItemUserFilter();
+            const sorting = store.selectedItemUserSorting();
+            const id = store.selectedItemId();
+
+            if (!id) return EMPTY;
+
             state.dispatch(activityActions.setActivity({ isActive: true }));
 
-            return orderListService.delete(product).pipe(
+            return orderListService.getAllByOrderListId(id, pagination, sorting, filter).pipe(
               tapResponse({
-                next: () =>
-                  storeNotificationService.create(`Comanda "${product.name}" eliminada`, 'SUCCESS'),
+                next: orders => {
+                  updateState(
+                    store,
+                    `[order-list] get orders for selected order list with id ${id}`,
+                    updateEntity({ id, changes: { orders } }, { selectId })
+                  );
+
+                  const pageLastElements = store
+                    .selectedItemUserPagination()
+                    ?.pageLastElements?.set(
+                      store.selectedItemUserPagination()?.pageIndex,
+                      orders[orders.length - 1]
+                    );
+                  updateState(
+                    store,
+                    `[order-list] update pagination for selected order list with id ${id}`,
+                    {
+                      selectedItemUserPagination: {
+                        ...pagination,
+                        pageLastElements,
+                      },
+                    }
+                  );
+                },
                 error: error =>
                   storeNotificationService.create(
-                    `No s'ha pogut eliminar la comanda "${product.name}": ${error}`,
+                    `No s'ha pogut carregar el llistat de comandes: ${error}`,
                     'ERROR'
                   ),
               }),
@@ -200,22 +205,23 @@ export const LLecoopOrderListStore = signalStore(
           })
         )
       ),
-      getAllOrderListOrders: rxMethod<Partial<EntityId>>(
+      getCurrentOrderList: rxMethod<void>(
         pipe(
-          switchMap((id: EntityId) => {
+          switchMap(() => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
 
-            return orderListService.getAllByOrderListId(id).pipe(
+            return orderListService.getCurrentOrderList().pipe(
               tapResponse({
-                next: orders =>
-                  patchState(store, updateEntity({ id, changes: { orders } }, { selectId })),
+                next: currentOrderList =>
+                  updateState(store, `[order-list] get current order List`, {
+                    currentOrderList,
+                    currentOrderListInitialLoaded: true,
+                  }),
                 error: error => {
-                  if (firebaseAuthService.loggedIn()) {
-                    storeNotificationService.create(
-                      `No s'ha pogut carregar el llistat de comandes: ${error}`,
-                      'ERROR'
-                    );
-                  }
+                  storeNotificationService.create(
+                    `No s'ha pogut carregar la comanda actual: ${error}`,
+                    'ERROR'
+                  );
                 },
               }),
               tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
@@ -223,21 +229,99 @@ export const LLecoopOrderListStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: LlecoopOrderListState['sorting']) => patchState(store, { sorting }),
-      setSelectedItemId: (id: EntityId | null) =>
-        patchState(store, {
-          selectedItemId: id,
+      getAvailableProducts: rxMethod<void>(
+        pipe(
+          switchMap(() => {
+            state.dispatch(activityActions.setActivity({ isActive: true }));
+
+            return orderListService.getAvailableProducts().pipe(
+              tapResponse({
+                next: availableProducts =>
+                  updateState(store, `[order-list] get available products`, {
+                    availableProducts,
+                  }),
+                error: error => {
+                  storeNotificationService.create(
+                    `No s'ha pogut carregar els productes disponibles: ${error}`,
+                    'ERROR'
+                  );
+                },
+              }),
+              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
+            );
+          })
+        )
+      ),
+      clearAvailableProducts: () =>
+        updateState(store, `[order-list] clear available products`, {
+          availableProducts: [],
         }),
       getItemById: (id: EntityId) => store.entityMap()[id],
       setSelectedItemUserOrderId: (id: EntityId | null) =>
-        patchState(store, { selectedItemUserOrderId: id }),
+        updateState(store, `[order-list] set selected User Order id`, {
+          selectedItemUserOrderId: id,
+        }),
+      setSelectedItemUserFilter: (filter: StoreOrderListFilter) =>
+        updateState(store, `[order-list] update selected order List filter`, {
+          selectedItemUserFilter: filter,
+          selectedItemUserPagination: {
+            ...store.selectedItemUserPagination(),
+            pageIndex: 0,
+            pageLastElements: new Map(),
+          },
+        }),
+      setSelectedItemUserSorting: (sorting: TableSortingConfig) =>
+        updateState(store, `[order-list] set selected order List sorting`, {
+          selectedItemUserSorting: sorting,
+        }),
+      setSelectedItemUserPagination: (
+        pagination: Pick<StoreFirebaseCrudPagination<LlecoopOrder>, 'pageIndex' | 'pageSize'>
+      ) => {
+        const newPagination = {
+          pageSize: pagination.pageSize ?? store.selectedItemUserPagination().pageSize,
+          pageIndex: pagination.pageIndex ?? store.selectedItemUserPagination().pageIndex,
+          pageLastElements:
+            pagination.pageSize !== store.selectedItemUserPagination().pageSize
+              ? new Map()
+              : store.selectedItemUserPagination.pageLastElements(),
+        };
+
+        updateState(store, `[order-list] set selected order List pagination`, {
+          selectedItemUserPagination: newPagination,
+        });
+      },
     })
   ),
   withHooks({
-    onInit({ getAll, loaded }) {
-      if (!loaded()) {
-        getAll();
-      }
+    onInit(store) {
+      store.getCurrentOrderList();
+
+      let previousSelectedItemId = store.selectedItemId();
+      let previousSelectedItemUserFilter = store.selectedItemUserFilter();
+      let previousSelectedItemUserSorting = store.selectedItemUserSorting();
+      let previousSelectedItemUserPagination = store.selectedItemUserPagination();
+
+      watchState(store, () => {
+        const currentSelectedItemId = store.selectedItemId();
+        const currentSelectedItemUserFilter = store.selectedItemUserFilter();
+        const currentSelectedItemUserSorting = store.selectedItemUserSorting();
+        const currentSelectedItemUserPagination = store.selectedItemUserPagination();
+        if (
+          currentSelectedItemId !== previousSelectedItemId ||
+          currentSelectedItemUserFilter !== previousSelectedItemUserFilter ||
+          currentSelectedItemUserSorting !== previousSelectedItemUserSorting ||
+          currentSelectedItemUserPagination.pageIndex !==
+            previousSelectedItemUserPagination.pageIndex ||
+          currentSelectedItemUserPagination.pageSize !== previousSelectedItemUserPagination.pageSize
+        ) {
+          store.getAllOrderListOrders();
+        }
+
+        previousSelectedItemId = currentSelectedItemId;
+        previousSelectedItemUserFilter = currentSelectedItemUserFilter;
+        previousSelectedItemUserSorting = currentSelectedItemUserSorting;
+        previousSelectedItemUserPagination = currentSelectedItemUserPagination;
+      });
     },
   })
 );

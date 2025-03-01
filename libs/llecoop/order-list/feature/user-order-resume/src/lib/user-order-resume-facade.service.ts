@@ -1,7 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { LlecoopUserOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
-import { LlecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
+import { llecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
 
 import { LlecoopUserOrderResumeTableConfig } from './llecoop-user-order-feature-resume/user-order-feature-resume-table.config';
 
@@ -9,7 +9,7 @@ import { LlecoopUserOrderResumeTableConfig } from './llecoop-user-order-feature-
   providedIn: 'root',
 })
 export class LlecoopUserOrderResumeFacadeService {
-  readonly #userOrderStore = inject(LlecoopUserOrderStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #table = inject(LlecoopUserOrderResumeTableConfig);
 
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0];

@@ -117,6 +117,9 @@
       "@plastik/shared/return-as-observable": [
         "libs/shared/util/return-as-observable-pipe/src/index.ts"
       ],
+      "@plastik/shared/signal-state-data-access": [
+        "libs/shared/signal-state/data-access/src/index.ts"
+      ],
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"],
       "@plastik/shared/testing": ["libs/shared/testing/index.ts"]

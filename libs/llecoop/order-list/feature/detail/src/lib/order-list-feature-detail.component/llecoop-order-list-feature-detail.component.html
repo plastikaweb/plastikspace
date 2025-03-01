@@ -30,15 +30,14 @@
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"
   [paginationVisibility]="tableDefinition?.paginationVisibility"
-  [filterCriteria]="facade.filterCriteria() || {}"
-  [filterPredicate]="facade.tableFilterPredicate"
   [actions]="tableDefinition.actions || {}"
   [noPagination]="tableDefinition.noPagination || false"
   [extraRowStyles]="tableDefinition.extraRowStyles"
   [expandedDetailTpl]="orderDetail"
   [expandable]="true"
   [expandedElementId]="tableDefinition.getSelectedItemId?.() || null"
-  (changeSorting)="facade.onTableSorting($event)">
+  (changeSorting)="facade.onTableSorting($event)"
+  (changePagination)="facade.onChangePagination($event)">
 </plastik-shared-table>
 
 <ng-template #orderDetail let-element="element">

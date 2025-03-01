@@ -3,32 +3,30 @@ import { filter, map, Observable } from 'rxjs';
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, RedirectCommand, ResolveFn, Router } from '@angular/router';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 
-export const OrderListFeatureDetailResolver: ResolveFn<Observable<boolean>> = (
+export const orderListFeatureDetailResolver: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot
 ) => {
   const router = inject(Router);
-  const orderListStore = inject(LLecoopOrderListStore);
+  const store = inject(llecoopOrderListStore);
   const id = route.paramMap.get('order-list-id');
 
-  orderListStore.setSelectedItemUserOrderId(null);
+  store.setSelectedItemUserOrderId(null);
 
   if (!id) {
-    orderListStore.setSelectedItemId(null);
+    store.setSelectedItemId(null);
     return new RedirectCommand(router.parseUrl('/admin/comanda'));
   }
 
-  orderListStore.setSelectedItemId(id);
+  store.setSelectedItemId(id);
 
-  return toObservable(orderListStore.selectedItem).pipe(
+  return toObservable(store.selectedItem).pipe(
     map(orderList => {
-      if (!orderList?.orders) {
-        orderListStore.getAllOrderListOrders(id);
+      if (!orderList) {
+        store.getItem(id);
       }
-      return (
-        !!orderList?.orders && (orderList?.orderCount ?? 0) === (orderList?.orders?.length ?? 0)
-      );
+      return !!orderList;
     }),
     filter(Boolean)
   );

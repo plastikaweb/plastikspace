@@ -5,10 +5,11 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
+  llecoopUserOrderStore,
+  StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
+import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
 import { TableSorting } from '@plastik/shared/table/entities';
 
 import { getLlecoopUserOrderSearchFeatureFormConfig } from './user-order-feature-search-form.config';
@@ -18,10 +19,9 @@ import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-t
   providedIn: 'root',
 })
 export class LlecoopUserOrderListFacadeService
-  implements TableWithFilteringFacade<LlecoopUserOrder>
+  implements TableWithFilteringFacade<LlecoopUserOrder, StoreUserOrderFilter>
 {
-  readonly #userOrderStore = inject(LlecoopUserOrderStore);
-  readonly #orderListStore = inject(LLecoopOrderListStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
@@ -30,13 +30,7 @@ export class LlecoopUserOrderListFacadeService
     return {
       visible: true,
       label: 'Fer comanda setmanal',
-      disabled:
-        this.#userOrderStore
-          .entities()
-          .some(
-            (entity: LlecoopUserOrder) =>
-              entity['orderListId'] === this.#orderListStore.currentOrder()?.id
-          ) || !this.#orderListStore.currentOrder(),
+      disabled: !!this.#userOrderStore.currentUserOrder(),
     };
   });
   viewExtraActions?:
@@ -51,16 +45,13 @@ export class LlecoopUserOrderListFacadeService
     | undefined;
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopUserOrderSearchFeatureFormConfig();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-  });
-  tableFilterPredicate = (data: LlecoopUserOrder, criteria: Record<string, string>) => {
-    const value = criteria['text'].toLowerCase();
-    return [data.name].some(text => text?.toLowerCase().includes(value));
-  };
 
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+  onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
+    this.#userOrderStore.setFilter(criteria);
+  }
+
+  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>): void {
+    this.#userOrderStore.setPagination(pagination);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {

@@ -5,7 +5,7 @@ import {
   getLlecoopProductUnitSuffix,
   LlecoopOrderProduct,
 } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { categoryNameCell } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -22,7 +22,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
   readonly #sanitizer = inject(DomSanitizer);
-  readonly #store = inject(LLecoopOrderListStore);
+  readonly #store = inject(llecoopOrderListStore);
   readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {

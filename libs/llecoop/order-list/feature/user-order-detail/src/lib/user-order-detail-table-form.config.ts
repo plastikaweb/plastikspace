@@ -6,7 +6,10 @@ import {
   getLlecoopProductUnitSuffix,
   LlecoopOrderProduct,
 } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
 import { categoryNameCell } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -23,7 +26,8 @@ export class LlecoopUserOrderDetailFormTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
   readonly #sanitizer = inject(DomSanitizer);
-  readonly #store = inject(LLecoopOrderListStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -150,9 +154,11 @@ export class LlecoopUserOrderDetailFormTableConfig
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
-      sort: this.#store.sorting,
+      sort: this.#userOrderStore.orderProductsSorting,
+      pagination: this.#userOrderStore.orderProductsPagination,
       caption: 'Llistat de productes',
-      getData: () => this.#store.currentOrderProducts(),
+      count: this.#orderListStore.currentOrderCount,
+      getData: () => this.#orderListStore.currentOrderAvailableProducts(),
       extraRowStyles: (orderProduct: LlecoopOrderProduct) => {
         return orderProduct.initPrice > 0 ? 'marked-ok' : '';
       },

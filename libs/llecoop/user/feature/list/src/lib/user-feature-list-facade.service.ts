@@ -4,9 +4,9 @@ import { inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
-import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopUserStore, StoreUserFilter } from '@plastik/llecoop/user/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { latinize } from '@plastik/shared/latinize';
+import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
 import { TableSorting } from '@plastik/shared/table/entities';
 
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
@@ -15,8 +15,10 @@ import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserListFacadeService implements TableWithFilteringFacade<LlecoopUser> {
-  readonly #store = inject(LLecoopUserStore);
+export class LlecoopUserListFacadeService
+  implements TableWithFilteringFacade<LlecoopUser, StoreUserFilter>
+{
+  readonly #store = inject(llecoopUserStore);
   readonly #table = inject(LlecoopUserSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
@@ -24,32 +26,13 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopUserSearchFeatureFormConfig();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-    role: 'all',
-  });
-  tableFilterPredicate = (data: LlecoopUser, criteria: Record<string, string>) => {
-    let filterText = true;
-    let filterRole = true;
-    for (const key in criteria) {
-      const value = criteria[key].toLowerCase();
 
-      if (key === 'text') {
-        filterText = [data.email].some(text => latinize(text?.toLowerCase() || '').includes(value));
-      }
+  onChangeFilterCriteria(criteria: StoreUserFilter): void {
+    this.#store.setFilter(criteria);
+  }
 
-      if (key === 'role') {
-        filterRole =
-          value === 'all' ||
-          (value === 'admin' && !!data.isAdmin) ||
-          (value === 'soci' && !data.isAdmin);
-      }
-    }
-    return filterText && filterRole;
-  };
-
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUser>): void {
+    this.#store.setPagination(pagination);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {

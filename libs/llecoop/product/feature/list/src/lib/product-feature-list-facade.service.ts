@@ -3,10 +3,10 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopFeatureStorePagination } from '@plastik/llecoop/data-access';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
-import { LlecoopProductStore, ProductStoreFilter } from '@plastik/llecoop/product/data-access';
+import { llecoopProductStore, StoreProductFilter } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
+import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
 import { TableSorting } from '@plastik/shared/table/entities';
 
 import { LlecoopProductSearchFeatureFormConfig } from './product-feature-search-form.config';
@@ -15,8 +15,10 @@ import { LlecoopProductSearchFeatureTableConfig } from './product-feature-table.
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopProductListFacadeService implements TableWithFilteringFacade<LlecoopProduct> {
-  readonly #productStore = inject(LlecoopProductStore);
+export class LlecoopProductListFacadeService
+  implements TableWithFilteringFacade<LlecoopProduct, StoreProductFilter>
+{
+  readonly #store = inject(llecoopProductStore);
   readonly #table = inject(LlecoopProductSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #formConfig = inject(LlecoopProductSearchFeatureFormConfig);
@@ -25,42 +27,17 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = this.#formConfig.getConfig();
-  // filterCriteria = signal<Record<string, string>>({
-  //   text: '',
-  //   inStock: 'all',
-  // });
-  // tableFilterPredicate = (data: LlecoopProduct, criteria: Record<string, string>) => {
-  //   let filterText = true;
-  //   let filterInStock = true;
-  //   for (const key in criteria) {
-  //     const value = criteria[key].toLowerCase();
 
-  //     if (key === 'text') {
-  //       filterText = [data.name, data.category?.name, data.info, data.provider, data.origin].some(
-  //         text => latinize(text?.toLowerCase() || '').includes(value)
-  //       );
-  //     }
-  //     if (key === 'inStock') {
-  //       filterInStock =
-  //         value === 'all' ||
-  //         (value === 'available' && data.isAvailable) ||
-  //         (value === 'not-available' && !data.isAvailable);
-  //     }
-  //   }
-
-  //   return filterText && filterInStock;
-  // };
-
-  onChangeFilterCriteria(criteria: Record<string, string | null | boolean>): void {
-    this.#productStore.setFilter(criteria as ProductStoreFilter);
+  onChangeFilterCriteria(criteria: StoreProductFilter): void {
+    this.#store.setFilter(criteria);
   }
 
-  onChangePagination(pagination: LlecoopFeatureStorePagination<LlecoopProduct>): void {
-    this.#productStore.setPagination(pagination);
+  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopProduct>): void {
+    this.#store.setPagination(pagination);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#productStore.setSorting([active, direction]);
+    this.#store.setSorting([active, direction]);
   }
 
   onTableActionDelete(item: LlecoopProduct): void {
@@ -73,7 +50,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#productStore.delete(item));
+        .subscribe(() => this.#store.delete(item));
     }
   }
 }

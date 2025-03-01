@@ -1,25 +1,29 @@
-@if (orderListStore.currentOrder()) {
+@let currentOrderList = orderListStore.currentOrderList;
+@let currentUserOrder = userOrderStore.currentUserOrder;
+
+@if (currentOrderList() && currentUserOrder()) {
   <mat-chip
     role="button"
     class="p-sm"
-    [matBadgeDescription]="(openedUserOrderList()?.cart?.length || 0) + ' productes seleccionats'"
-    [routerLink]="[
-      openedUserOrderList()?.id
-        ? './soci/comanda/' + openedUserOrderList()?.id
-        : './soci/comanda/crear',
-    ]"
-    [matBadge]="openedUserOrderList()?.cart?.length || 0">
+    [matBadgeDescription]="(currentUserOrder()?.cart?.length || 0) + ' productes seleccionats'"
+    [routerLink]="['./soci/comanda/' + currentUserOrder()?.id]"
+    [matBadge]="currentUserOrder()?.cart?.length || 0">
     <mat-icon matChipAvatar> shopping_cart </mat-icon>
     <div class="flex flex-row justify-center items-center break-words gap-sub">
-      <span class="hidden md:flex"> #{{ orderListStore.currentOrder()?.name }} </span>
+      <span class="hidden md:flex"> #{{ currentUserOrder()?.name }} </span>
       <span class="hidden md:flex">|</span>
       <span class="text-balance">
         {{
-      (openedUserOrderList()?.totalPrice || 0) + (openedUserOrderList()?.deliveryPrice || 0)
+      (currentUserOrder()?.totalPrice || 0) + (currentUserOrder()?.deliveryPrice || 0)
       &vert; currency: 'EUR' : 'symbol' : '1.2-2'
         }}
       </span>
     </div>
+  </mat-chip>
+} @else if (currentOrderList()) {
+  <mat-chip role="button" class="p-sm" [routerLink]="['./soci/comanda/crear']">
+    <mat-icon matChipAvatar> shopping_cart </mat-icon>
+    Fes comanda
   </mat-chip>
 } @else {
   <mat-chip disableRipple class="p-sm">

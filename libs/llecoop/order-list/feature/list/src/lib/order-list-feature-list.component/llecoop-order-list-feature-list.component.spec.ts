@@ -1,5 +1,7 @@
+/* eslint-disable no-console */
 import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 
 import { LlecoopOrderListFeatureListFacadeService } from '../order-list-feature-list-facade.service';
 import { LlecoopOrderListFeatureListComponent } from './llecoop-order-list-feature-list.component';
@@ -28,13 +30,17 @@ describe('LlecoopOrderListFeatureListComponent', () => {
               columnProperties: [],
               count: signal(0),
               getData: () => [],
-              filterCriteria: signal({}),
+              pagination: signal({
+                pageIndex: 0,
+                pageSize: 5,
+                previousPageIndex: 0,
+              }),
               tableFilterPredicate: () => true,
             },
             filterFormConfig: [],
-            filterCriteria: signal({}),
-            // eslint-disable-next-line no-console
             onChangeFilterCriteria: (criteria: Record<string, string>) => console.log(criteria),
+            onTableSorting: (sorting: TableSorting) => console.log(sorting),
+            onTablePagination: (pageEventConfig: PageEventConfig) => console.log(pageEventConfig),
           },
         },
       ],

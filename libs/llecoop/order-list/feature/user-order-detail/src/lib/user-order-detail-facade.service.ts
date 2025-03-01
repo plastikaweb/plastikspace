@@ -8,8 +8,8 @@ import {
 } from '@plastik/core/detail-edit-view';
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
 
 import { userOrderFeatureDetailFormConfig } from './user-order-feature-detail-form.config';
@@ -18,8 +18,8 @@ import { userOrderFeatureDetailFormConfig } from './user-order-feature-detail-fo
   providedIn: 'root',
 })
 export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade<LlecoopUserOrder> {
-  readonly #userOrderStore = inject(LlecoopUserOrderStore);
-  readonly #orderListStore = inject(LLecoopOrderListStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
 
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0];
 
@@ -37,7 +37,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
 
   viewConfig = computed(() => ({
     ...this.#view,
-    title: `Comanda #${this.#orderListStore.currentOrder()?.name}` || 'Nova comanda',
+    title: `Comanda #${this.#orderListStore.currentOrderList()?.name}` || 'Nova comanda',
   }));
 
   formConfig = userOrderFeatureDetailFormConfig();
@@ -64,7 +64,8 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
 
     this.#userOrderStore.create({
       ...data,
-      name: this.#orderListStore.currentOrder()?.name || '',
+      orderListId: this.#orderListStore.currentOrderList()?.id || '',
+      name: this.#orderListStore.currentOrderList()?.name || '',
     });
   }
 

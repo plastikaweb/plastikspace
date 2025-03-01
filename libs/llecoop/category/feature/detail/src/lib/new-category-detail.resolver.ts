@@ -1,9 +1,9 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 
-export const NewCategoryDetailResolver: ResolveFn<boolean> = () => {
-  const store = inject(LlecoopCategoryStore);
+export const newCategoryDetailResolver: ResolveFn<boolean> = () => {
+  const store = inject(llecoopCategoryStore);
 
   store.setSelectedItemId(null);
   return true;

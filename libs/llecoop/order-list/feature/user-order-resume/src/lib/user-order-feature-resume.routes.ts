@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
-import { UserOrderDetailResolver } from '@plastik/llecoop/order-list/data-access';
+import { userOrderDetailResolver } from '@plastik/llecoop/order-list/data-access';
+
 import { LlecoopUserOrderFeatureResumeComponent } from './llecoop-user-order-feature-resume/user-order-feature-resume.component';
 
 export const llecoopUserOrderFeatureResumeRoutes: Route[] = [
@@ -8,7 +9,7 @@ export const llecoopUserOrderFeatureResumeRoutes: Route[] = [
     title: 'Resum de la comanda',
     component: LlecoopUserOrderFeatureResumeComponent,
     resolve: {
-      item: UserOrderDetailResolver,
+      item: userOrderDetailResolver,
     },
   },
 ];

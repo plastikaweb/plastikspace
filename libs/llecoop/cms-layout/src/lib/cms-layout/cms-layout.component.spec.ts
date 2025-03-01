@@ -10,8 +10,8 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
   MockedOrderListStore,
   MockedUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
@@ -36,8 +36,8 @@ describe('CmsLayoutComponent', () => {
             currentUserEmail: signal('email'),
           },
         },
-        { provide: LlecoopUserOrderStore, useValue: MockedUserOrderStore },
-        { provide: LLecoopOrderListStore, useValue: MockedOrderListStore },
+        { provide: llecoopUserOrderStore, useValue: MockedUserOrderStore },
+        { provide: llecoopOrderListStore, useValue: MockedOrderListStore },
         {
           provide: VIEW_CONFIG,
           useValue: signal([

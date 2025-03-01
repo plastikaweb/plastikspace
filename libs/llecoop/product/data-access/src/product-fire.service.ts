@@ -1,70 +1,18 @@
-import { from, map, Observable } from 'rxjs';
-
-import { inject, Injectable } from '@angular/core';
-import {
-  addDoc,
-  collection,
-  collectionData,
-  deleteDoc,
-  doc,
-  DocumentData,
-  Firestore,
-  limit,
-  orderBy,
-  query,
-  QueryConstraint,
-  QueryDocumentSnapshot,
-  serverTimestamp,
-  startAfter,
-  updateDoc,
-  where,
-  WithFieldValue,
-} from '@angular/fire/firestore';
-import { LlecoopFeatureStorePagination } from '@plastik/llecoop/data-access';
+import { Injectable } from '@angular/core';
+import { QueryConstraint, where } from '@angular/fire/firestore';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
-import { TableSortingConfig } from '@plastik/shared/table/entities';
+import { EntityFireService } from '@plastik/shared/signal-state-data-access';
 
-import { ProductStoreFilter } from './product-store';
-
-/**
- * @description Assign types to Firestore product documents.
- * @template T
- * **T** refers to the main feature model item used inside applications.
- * @returns {object} An object with methods to convert between Firestore documents and types:
- * - `toFirestore`: Converts a typed document to Firestore DocumentData
- * - `fromFirestore`: Converts a Firestore snapshot to typed document
- */
-function firebaseAssignTypes<T extends LlecoopProduct>() {
-  return {
-    toFirestore(doc: T): DocumentData {
-      return {
-        ...doc,
-        normalizedName: latinize(doc.name).toLowerCase(),
-        isAvailable: doc.isAvailable ?? false,
-        createdAt: doc.createdAt ?? serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      };
-    },
-    fromFirestore(snapshot: QueryDocumentSnapshot): T {
-      const data = snapshot.data() as T;
-
-      return data;
-    },
-  };
-}
+import { StoreProductFilter } from './product-store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopProductFireService {
-  readonly #path = 'product';
-  readonly #firestore = inject(Firestore);
-  readonly #collection = collection(this.#firestore, this.#path).withConverter(
-    firebaseAssignTypes<LlecoopProduct>()
-  );
+export class LlecoopProductFireService extends EntityFireService<LlecoopProduct> {
+  protected readonly path = 'product';
 
-  #getFilterConditions(filter: ProductStoreFilter): QueryConstraint[] {
+  override getFilterConditions(filter: StoreProductFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
 
     if (Object.entries(filter).length > 0) {
@@ -84,69 +32,5 @@ export class LlecoopProductFireService {
     }
 
     return conditions;
-  }
-
-  #getPaginationConditions(
-    pagination: LlecoopFeatureStorePagination<LlecoopProduct>,
-    sorting: TableSortingConfig
-  ): QueryConstraint[] {
-    const { pageSize, pageIndex, pageLastElements } = pagination;
-    const [active, direction] = sorting;
-    const conditions: QueryConstraint[] = [];
-
-    // Add ordering
-    conditions.push(orderBy(active, direction || 'asc'));
-
-    if (active !== 'normalizedName') {
-      conditions.push(orderBy('normalizedName', direction || 'asc'));
-    }
-
-    // Add pagination
-    conditions.push(limit(pageSize));
-
-    if (pageIndex > 0 && pageLastElements?.has(pageIndex - 1)) {
-      const lastDoc = pageLastElements.get(pageIndex - 1);
-      if (active !== 'normalizedName') {
-        conditions.push(startAfter(lastDoc?.[active], lastDoc?.normalizedName));
-      } else {
-        conditions.push(startAfter(lastDoc?.[active]));
-      }
-    }
-
-    return conditions;
-  }
-
-  getAll(
-    pagination: LlecoopFeatureStorePagination<LlecoopProduct>,
-    sorting: TableSortingConfig,
-    filter: ProductStoreFilter
-  ): Observable<LlecoopProduct[]> {
-    const conditions: QueryConstraint[] = [
-      ...this.#getFilterConditions(filter),
-      ...this.#getPaginationConditions(pagination, sorting),
-    ];
-
-    const postCollection = query(this.#collection, ...conditions);
-    return collectionData(postCollection, { idField: 'id' });
-  }
-
-  create(item: LlecoopProduct) {
-    return from(addDoc(this.#collection, item as WithFieldValue<LlecoopProduct>));
-  }
-
-  update(item: Partial<LlecoopProduct>) {
-    const document = doc(this.#firestore, `product/${item.id}`);
-    return from(updateDoc(document, item as WithFieldValue<LlecoopProduct>));
-  }
-
-  delete(item: LlecoopProduct) {
-    const document = doc(this.#firestore, `product/${item.id}`);
-    return from(deleteDoc(document));
-  }
-
-  getCount(filter: ProductStoreFilter) {
-    const conditions = this.#getFilterConditions(filter);
-    const postCollection = query(this.#collection, ...conditions);
-    return collectionData(postCollection).pipe(map(products => products.length));
   }
 }

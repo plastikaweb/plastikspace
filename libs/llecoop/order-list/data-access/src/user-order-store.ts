@@ -1,180 +1,128 @@
-import { filter, pipe, switchMap, tap } from 'rxjs';
+import { EMPTY, pipe, switchMap, withLatestFrom } from 'rxjs';
 
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { computed, inject } from '@angular/core';
+import { updateState } from '@angular-architects/ngrx-toolkit';
+import { effect, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { Store } from '@ngrx/store';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { routerActions } from '@plastik/core/router-state';
-import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
-import { LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { activityActions } from '@plastik/shared/activity/data-access';
+import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
+import {
+  initStoreFirebaseCrudState,
+  StoreFirebaseCrudFilter,
+  StoreFirebaseCrudPagination,
+  StoreFirebaseCrudState,
+  StoreNotificationService,
+  withFirebaseCrud,
+} from '@plastik/shared/signal-state-data-access';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
 
-import { LLecoopOrderListStore } from './order-list-store';
+import { llecoopOrderListStore } from './order-list-store';
 import { LlecoopUserOrderFireService } from './user-order-fire.service';
 
-export const LlecoopUserOrderStore = signalStore(
+export type StoreUserOrderFilter = StoreFirebaseCrudFilter & {
+  text: string;
+};
+
+export type UserOrderListStoreCrudState = StoreFirebaseCrudState<
+  LlecoopUserOrder,
+  StoreUserOrderFilter
+> & {
+  orderProductsFilter: StoreUserOrderFilter;
+  orderProductsSorting: TableSortingConfig;
+  orderProductsPagination: StoreFirebaseCrudPagination<LlecoopOrderProduct>;
+  currentUserOrder: LlecoopUserOrder | null;
+  currentUserOrderInitialLoaded: boolean;
+};
+
+export const initUserOrderStoreFilter: StoreUserOrderFilter = {
+  text: '',
+};
+
+export const initUserOrderStoreSorting = ['updatedAt', 'desc'] as TableSortingConfig;
+
+export const initUserOrderStorePagination = {
+  pageSize: 10,
+  pageIndex: 0,
+  pageLastElements: new Map<number, LlecoopUserOrder>(),
+};
+
+export const initUserOrderBaseState = initStoreFirebaseCrudState<
+  LlecoopUserOrder,
+  StoreUserOrderFilter
+>(initUserOrderStoreFilter);
+
+export const llecoopUserOrderStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('orders'),
-  withState<LlecoopFeatureStore<LlecoopUserOrder>>({
-    loaded: false,
-    lastUpdated: new Date(),
-    selectedItemId: null,
-    sorting: ['name', 'desc'],
-    pagination: {
-      pageIndex: 0,
+  withState<UserOrderListStoreCrudState>({
+    ...initUserOrderBaseState,
+    orderProductsFilter: { text: '' },
+    orderProductsSorting: ['normalizedName', 'desc'],
+    orderProductsPagination: {
       pageSize: 10,
-      pageLastElements: new Map<number, LlecoopUserOrder>(),
+      pageIndex: 0,
+      pageLastElements: new Map<number, LlecoopOrderProduct>(),
     },
-    filter: {
-      text: '',
-    },
-    count: 0,
+    currentUserOrder: null,
+    currentUserOrderInitialLoaded: false,
   }),
-  withEntities<LlecoopUserOrder>(),
-  withComputed(({ selectedItemId, entityMap }) => ({
-    selectedItem: computed(() => {
-      const selectedId = selectedItemId();
-      return selectedId ? entityMap()[selectedId] : null;
-    }),
-  })),
+  withFirebaseCrud<LlecoopUserOrder, LlecoopUserOrderFireService, StoreUserOrderFilter>({
+    featureName: 'user-order',
+    dataServiceType: LlecoopUserOrderFireService,
+    initFilter: initUserOrderStoreFilter,
+    initSorting: initUserOrderStoreSorting,
+    initPagination: initUserOrderStorePagination,
+    baseRoute: '/soci/comanda',
+  }),
   withMethods(
     (
       store,
       userOrderService = inject(LlecoopUserOrderFireService),
       storeNotificationService = inject(StoreNotificationService),
-      orderListStore = inject(LLecoopOrderListStore),
-      authService = inject(FirebaseAuthService),
-      state = inject(Store)
+      orderListStore = inject(llecoopOrderListStore)
     ) => ({
-      getAll: rxMethod<void>(
+      getCurrentUserOrder: rxMethod<void>(
         pipe(
-          switchMap(() => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
+          withLatestFrom(toObservable(orderListStore.currentOrderList)),
+          switchMap(([, currentOrderList]) => {
+            const id = currentOrderList?.id;
 
-            return userOrderService.getAll().pipe(
-              tapResponse({
-                next: orders =>
-                  patchState(
-                    store,
-                    setAllEntities(orders, {
-                      selectId: entity => entity.id || '',
-                    }),
-                    { loaded: true, lastUpdated: new Date() }
-                  ),
-                error: error => {
-                  if (authService.loggedIn()) {
+            if (id) {
+              // Guardar el ID en una constante para evitar que sea undefined
+              return userOrderService.getCurrentUserOrder(id).pipe(
+                tapResponse({
+                  next: currentUserOrder => {
+                    updateState(store, `[user-order] get current user order`, {
+                      currentUserOrder,
+                      currentUserOrderInitialLoaded: true,
+                    });
+                  },
+                  error: error => {
                     storeNotificationService.create(
-                      `No s'ha pogut carregar les comandes: ${error}`,
+                      `No s'ha pogut carregar la teva comanda actual: ${error}`,
                       'ERROR'
                     );
-                  }
-                },
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
-      create: rxMethod<Partial<LlecoopUserOrder>>(
-        pipe(
-          filter(() => !!authService.currentUser()?.uid && orderListStore.currentOrder() !== null),
-          switchMap((order: Partial<LlecoopUserOrder>) => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
+                  },
+                })
+              );
+            }
 
-            const orderListId = orderListStore.currentOrder()?.id;
-            const finalOrder = {
-              ...order,
-              orderListId,
-            };
-            return userOrderService.create(finalOrder, orderListId).pipe(
-              tapResponse({
-                next: () => {
-                  state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
-                  storeNotificationService.create(`Comanda creada`, 'SUCCESS');
-                },
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut crear la comanda": ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
+            return EMPTY;
           })
         )
       ),
-      update: rxMethod<Partial<LlecoopUserOrder>>(
-        pipe(
-          switchMap(order => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return userOrderService.update(order).pipe(
-              tapResponse({
-                next: () => {
-                  state.dispatch(routerActions.go({ path: ['/soci/comanda'] }));
-                  storeNotificationService.create(`Comanda actualitzada`, 'SUCCESS');
-                },
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut actualitzar la comanda "${order.name}": ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
-      delete: rxMethod<LlecoopUserOrder>(
-        pipe(
-          switchMap(product => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return userOrderService.delete(product).pipe(
-              tapResponse({
-                next: () =>
-                  storeNotificationService.create(
-                    `Comanda "${product.name}" eliminada. Recorda: sempre pots tornar a fer una comanda fins la data de tancament.`,
-                    'INFO'
-                  ),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut eliminar la comanda "${product.name}": ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
-      setSorting: (sorting: LlecoopFeatureStore<LlecoopUserOrder>['sorting']) =>
-        patchState(store, { sorting }),
-      setSelectedItemId: (id: string | null) => {
-        if (id !== store.selectedItemId()) {
-          patchState(store, {
-            selectedItemId: id,
-          });
-        }
-      },
     })
   ),
   withHooks({
-    onInit({ getAll, loaded }) {
-      if (!loaded()) {
-        getAll();
-      }
+    onInit({ getCurrentUserOrder }) {
+      const orderListStore = inject(llecoopOrderListStore);
+      const currentUserOrderList = orderListStore.currentOrderList;
+
+      effect(() => {
+        if (currentUserOrderList()) {
+          getCurrentUserOrder();
+        }
+      });
     },
   })
 );

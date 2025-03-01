@@ -1,7 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 
 import { categoryFeatureDetailFormConfig } from './category-feature-detail-form.config';
@@ -12,7 +12,7 @@ import { categoryFeatureDetailFormConfig } from './category-feature-detail-form.
 export class LlecoopCategoryDetailFacadeService
   implements DetailItemViewFacade<LlecoopProductCategory>
 {
-  readonly #store = inject(LlecoopCategoryStore);
+  readonly #store = inject(llecoopCategoryStore);
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0];
   model = this.#store.selectedItem;
 

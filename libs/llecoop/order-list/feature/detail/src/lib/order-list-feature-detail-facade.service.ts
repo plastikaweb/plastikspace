@@ -9,10 +9,11 @@ import {
   LlecoopUserOrder,
 } from '@plastik/llecoop/entities';
 import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+  StoreOrderListFilter,
 } from '@plastik/llecoop/order-list/data-access';
-import { TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 
 import { getLlecoopOrderListFeatureDetailSearchFormConfig } from './order-list-feature-detail-table/order-list-feature-detail-search-form.config';
 import { LlecoopOrderListFeatureDetailTableConfig } from './order-list-feature-detail-table/order-list-feature-detail-table.config';
@@ -22,10 +23,10 @@ import { OrderListFeatureDetailUserOrderDetailFormConfig } from './order-list-fe
   providedIn: 'root',
 })
 export class LlecoopOrderListFeatureDetailFacadeService
-  implements TableWithFilteringFacade<LlecoopUserOrder>
+  implements TableWithFilteringFacade<LlecoopUserOrder, StoreOrderListFilter>
 {
-  readonly #orderListStore = inject(LLecoopOrderListStore);
-  readonly #userOrderStore = inject(LlecoopUserOrderStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #table = inject(LlecoopOrderListFeatureDetailTableConfig);
   readonly #mainViewConfig = signal(
     inject(VIEW_CONFIG)().filter(item => item.name === 'order-list')[0]
@@ -43,23 +44,22 @@ export class LlecoopOrderListFeatureDetailFacadeService
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopOrderListFeatureDetailSearchFormConfig();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-  });
-  tableFilterPredicate = (data: LlecoopUserOrder, criteria: Record<string, string>) => {
-    const value = criteria['text'].toLowerCase();
-    return [data.address, data.userName].some(text => text?.toLowerCase().includes(value));
-  };
 
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+  onChangeFilterCriteria(criteria: StoreOrderListFilter): void {
+    this.#orderListStore.setSelectedItemUserFilter(criteria);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#orderListStore.setSorting([active, direction]);
+    this.#orderListStore.setSelectedItemUserSorting([active, direction]);
   }
 
-  // specific methods not included in TableWithFilteringFacade
+  onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
+    this.#orderListStore.setSelectedItemUserPagination({
+      pageSize,
+      pageIndex,
+    });
+  }
+
   onSaveUserOrder(model: Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>): void {
     this.#userOrderStore.update({ ...model, status: 'review' });
   }

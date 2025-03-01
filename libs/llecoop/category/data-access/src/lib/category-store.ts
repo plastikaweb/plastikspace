@@ -1,198 +1,52 @@
-import { pipe, switchMap, tap } from 'rxjs';
-
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { computed, inject } from '@angular/core';
-import { tapResponse } from '@ngrx/operators';
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { Store } from '@ngrx/store';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { computed } from '@angular/core';
+import { signalStore, withComputed } from '@ngrx/signals';
 import { FormSelectOption } from '@plastik/core/entities';
-import { routerActions } from '@plastik/core/router-state';
-import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
-import { activityActions } from '@plastik/shared/activity/data-access';
+import {
+  StoreFirebaseCrudFilter,
+  StoreFirebaseCrudPagination,
+  withFirebaseCrud,
+} from '@plastik/shared/signal-state-data-access';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
 
 import { LlecoopCategoryFireService } from './category-fire.service';
 
-export const LlecoopCategoryStore = signalStore(
+export type StoreCategoryFilter = StoreFirebaseCrudFilter & { text: string };
+
+export const initCategoryStoreFilter: StoreCategoryFilter = {
+  text: '',
+};
+
+export const initCategoryStorePagination: StoreFirebaseCrudPagination<LlecoopProductCategory> = {
+  pageSize: 10,
+  pageIndex: 0,
+  pageLastElements: new Map<number, LlecoopProductCategory>(),
+};
+
+export const initCategoryStoreSorting = ['updatedAt', 'desc'] as TableSortingConfig;
+
+export const llecoopCategoryStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('category'),
-  withState<LlecoopFeatureStore<LlecoopProductCategory>>({
-    loaded: false,
-    lastUpdated: new Date(),
-    selectedItemId: null,
-    sorting: ['name', 'asc'],
-    pagination: {
-      pageIndex: 0,
-      pageSize: 10,
-      pageLastElements: new Map<number, LlecoopProductCategory>(),
-    },
-    filter: {
-      text: '',
-    },
-    count: 0,
+  withFirebaseCrud<LlecoopProductCategory, LlecoopCategoryFireService, StoreCategoryFilter>({
+    featureName: 'category',
+    dataServiceType: LlecoopCategoryFireService,
+    initFilter: initCategoryStoreFilter,
+    initSorting: initCategoryStoreSorting,
+    initPagination: initCategoryStorePagination,
+    baseRoute: 'admin/categoria',
   }),
-  withEntities<LlecoopProductCategory>(),
-  withComputed(({ entities, selectedItemId, entityMap }) => ({
-    selectedItem: computed(() => {
-      const id = selectedItemId();
-      return id !== null ? entityMap()[id] : null;
-    }),
-    selectOptions: computed(() => {
-      return entities()
-        .map(category => ({
-          label: category.name?.toLowerCase(),
-          value: `category/${category.id}`,
-        }))
-        .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
-    }),
+  withComputed(store => ({
     selectByNameOptions: computed(() => {
-      const options = entities()
-        .map(category => ({
+      const options = store
+        .entities()
+        .map((category: LlecoopProductCategory) => ({
           label: category.name,
           value: `category/${category.id}`,
         }))
-        .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+        .sort((a: FormSelectOption, b: FormSelectOption) =>
+          (a.label || '').localeCompare(b.label || '')
+        );
       return options as FormSelectOption[];
     }),
-  })),
-  withMethods(
-    (
-      store,
-      categoryFireService = inject(LlecoopCategoryFireService),
-      storeNotificationService = inject(StoreNotificationService),
-      state = inject(Store),
-      firebaseAuthService = inject(FirebaseAuthService)
-    ) => ({
-      getAll: rxMethod<void>(
-        pipe(
-          switchMap(() => {
-            if (!store.loaded()) {
-              state.dispatch(activityActions.setActivity({ isActive: true }));
-
-              return categoryFireService.getAll().pipe(
-                tapResponse({
-                  next: categories => {
-                    patchState(
-                      store,
-                      setAllEntities(categories, {
-                        selectId: entity => entity.id || '',
-                      }),
-                      {
-                        loaded: true,
-                        lastUpdated: new Date(),
-                      }
-                    );
-                  },
-                  error: error => {
-                    if (firebaseAuthService.loggedIn()) {
-                      storeNotificationService.create(
-                        `No s'ha pogut carregar les categories: ${error}`,
-                        'ERROR'
-                      );
-                    }
-                  },
-                }),
-                tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-              );
-            }
-            return [];
-          })
-        )
-      ),
-      create: rxMethod<Partial<LlecoopProductCategory>>(
-        pipe(
-          switchMap((category: Partial<LlecoopProductCategory>) => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return categoryFireService.create(category).pipe(
-              tapResponse({
-                next: () => {
-                  state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
-                  storeNotificationService.create(`Categoria "${category.name}" creada`, 'SUCCESS');
-                },
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut crear la categoria "${category.name}": ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
-      update: rxMethod<Partial<LlecoopProductCategory>>(
-        pipe(
-          switchMap((category: Partial<LlecoopProductCategory>) => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return categoryFireService.update(category).pipe(
-              tapResponse({
-                next: () => {
-                  state.dispatch(routerActions.go({ path: ['/admin/categoria'] }));
-                  storeNotificationService.create(
-                    `Categoria "${category.name}" actualitzada`,
-                    'SUCCESS',
-                    false
-                  );
-                },
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut actualitzar la categoria "${category.name}": ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
-      delete: rxMethod<LlecoopProductCategory>(
-        pipe(
-          switchMap(category => {
-            state.dispatch(activityActions.setActivity({ isActive: true }));
-
-            return categoryFireService.delete(category).pipe(
-              tapResponse({
-                next: () =>
-                  storeNotificationService.create(
-                    `Categoria "${category.name}" eliminada`,
-                    'SUCCESS'
-                  ),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut eliminar la categoria "${category.name}": ${error}`,
-                    'ERROR'
-                  ),
-              }),
-              tap(() => state.dispatch(activityActions.setActivity({ isActive: false })))
-            );
-          })
-        )
-      ),
-      setSorting: (sorting: LlecoopFeatureStore<LlecoopProductCategory>['sorting']) =>
-        patchState(store, { sorting }),
-      setSelectedItemId: (id: string | null) =>
-        patchState(store, {
-          selectedItemId: id,
-        }),
-    })
-  ),
-  withHooks({
-    onInit({ getAll, loaded }) {
-      if (!loaded()) {
-        getAll();
-      }
-    },
-  })
+  }))
 );

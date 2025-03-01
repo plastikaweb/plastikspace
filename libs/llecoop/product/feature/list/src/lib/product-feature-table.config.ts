@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { UiProductNameCellComponent } from '@plastik/llecoop/product-name-cell';
-import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { categoryNameCell, createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -17,7 +17,7 @@ import {
 export class LlecoopProductSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProduct>
 {
-  readonly #store = inject(LlecoopProductStore);
+  readonly #store = inject(llecoopProductStore);
 
   readonly #name: TableColumnFormatting<LlecoopProduct, 'COMPONENT'> = {
     key: 'name',
@@ -91,10 +91,7 @@ export class LlecoopProductSearchFeatureTableConfig
           order: 1,
           icon: (product: LlecoopProduct) => (!product.isAvailable ? 'cancel' : 'check_circle'),
           execute: (product: LlecoopProduct) => {
-            this.#store.update({
-              product: { ...product, isAvailable: !product.isAvailable },
-              showNotification: false,
-            });
+            this.#store.update({ ...product, isAvailable: !product.isAvailable });
           },
         },
         EDIT: {

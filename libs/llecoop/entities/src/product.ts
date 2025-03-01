@@ -70,11 +70,6 @@ export const LlecoopProductSelectData: LlecoopProductSelectOption[] = [
   },
 ] as const;
 
-export interface LlecoopProductWithUpdateNotification {
-  product: Partial<LlecoopProduct>;
-  showNotification: boolean;
-}
-
 /**
  * @description Returns a text description based on the type of LlecoopProductUnit.
  * @param {LlecoopProductUnit} unit - The unit object to get the description for.

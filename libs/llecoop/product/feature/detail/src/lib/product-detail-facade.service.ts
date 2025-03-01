@@ -2,7 +2,7 @@ import { computed, inject, Injectable } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
-import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 
 import { productFeatureDetailFormConfig } from './product-feature-detail-form.config';
 
@@ -10,7 +10,7 @@ import { productFeatureDetailFormConfig } from './product-feature-detail-form.co
   providedIn: 'root',
 })
 export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<LlecoopProduct> {
-  readonly #store = inject(LlecoopProductStore);
+  readonly #store = inject(llecoopProductStore);
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'product')[0];
   model = this.#store.selectedItem;
 
@@ -30,11 +30,6 @@ export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<L
       ...product,
     };
 
-    this.model()?.id
-      ? this.#store.update({
-          product: newProduct,
-          showNotification: true,
-        })
-      : this.#store.create(newProduct);
+    this.model()?.id ? this.#store.update(newProduct) : this.#store.create(newProduct);
   }
 }
