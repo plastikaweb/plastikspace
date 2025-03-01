@@ -1,14 +1,14 @@
 import { inject, Injectable } from '@angular/core';
 import {
   NotificationConfigService,
-  NotificationStore,
+  notificationStore,
 } from '@plastik/shared/notification/data-access';
 import { NotificationType } from '@plastik/shared/notification/entities';
 
 @Injectable({ providedIn: 'root' })
 export class StoreNotificationService {
   readonly #notificationService = inject(NotificationConfigService);
-  readonly #notificationStore = inject(NotificationStore);
+  readonly #notificationStore = inject(notificationStore);
 
   create(message: string, type: NotificationType, preserve = true): void {
     this.#notificationStore.show(

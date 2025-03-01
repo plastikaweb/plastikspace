@@ -1,4 +1,4 @@
-import { NgClass, registerLocaleData } from '@angular/common';
+import { registerLocaleData } from '@angular/common';
 import localeCa from '@angular/common/locales/ca';
 import { Component, inject, OnInit } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -7,7 +7,7 @@ import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { selectIsActive } from '@plastik/shared/activity/data-access';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
-import { NotificationStore } from '@plastik/shared/notification/data-access';
+import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
 
 registerLocaleData(localeCa, 'ca-ES');
@@ -20,7 +20,7 @@ registerLocaleData(localeCa, 'ca-ES');
 export class AppComponent implements OnInit {
   readonly #store = inject(Store);
   readonly #meta = inject(Meta);
-  protected readonly notificationStore = inject(NotificationStore);
+  protected readonly notificationStore = inject(notificationStore);
   protected readonly isActive = toSignal(this.#store.select(selectIsActive));
 
   ngOnInit(): void {

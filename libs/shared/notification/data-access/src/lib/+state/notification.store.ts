@@ -7,7 +7,7 @@ export interface NotificationState {
   preserveOnRouteRequest: boolean;
 }
 
-export const NotificationStore = signalStore(
+export const notificationStore = signalStore(
   { providedIn: 'root' },
   withDevtools('notification'),
   withState<NotificationState>({

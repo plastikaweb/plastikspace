@@ -3,7 +3,7 @@ import { Auth } from '@angular/fire/auth';
 import { CanActivateFn, Router } from '@angular/router';
 import {
   NotificationConfigService,
-  NotificationStore,
+  notificationStore,
 } from '@plastik/shared/notification/data-access';
 
 import { FirebaseAuthService } from './firebase-auth.service';
@@ -11,7 +11,7 @@ import { FirebaseAuthService } from './firebase-auth.service';
 export const isLoggedGuard: CanActivateFn = async () => {
   const auth = inject(Auth);
   const router = inject(Router);
-  const store = inject(NotificationStore);
+  const store = inject(notificationStore);
   const notificationService = inject(NotificationConfigService);
   const firebaseAuthService = inject(FirebaseAuthService);
 

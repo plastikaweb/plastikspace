@@ -15,7 +15,7 @@ import {
   selectRouteQueryParams,
 } from '@plastik/core/router-state';
 import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
-import { NotificationStore } from '@plastik/shared/notification/data-access';
+import { notificationStore } from '@plastik/shared/notification/data-access';
 
 import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
@@ -37,7 +37,7 @@ describe('NasaImagesEffects', () => {
       providers: [
         provideExperimentalZonelessChangeDetection(),
         NasaImagesEffects,
-        NotificationStore,
+        notificationStore,
         provideHttpClientTesting(),
         provideMockActions(() => actions),
         provideMockStore({
