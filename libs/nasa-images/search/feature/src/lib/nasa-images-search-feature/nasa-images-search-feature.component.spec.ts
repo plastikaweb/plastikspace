@@ -61,7 +61,7 @@ describe('NasaImagesSearchFeatureComponent', () => {
         {
           key: 'index',
           title: '#',
-          propertyPath: '',
+          pathToKey: '',
           cssClasses: ['min-w-[4rem] hidden md:flex'],
           formatting: {
             type: 'CUSTOM',
@@ -71,7 +71,7 @@ describe('NasaImagesSearchFeatureComponent', () => {
         {
           key: 'title',
           title: 'Title',
-          propertyPath: '',
+          pathToKey: '',
           cssClasses: ['min-w-[20rem] hidden md:flex'],
           formatting: {
             type: 'CUSTOM',

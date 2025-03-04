@@ -22,7 +22,7 @@ describe('categoryNameCell', () => {
     const config = categoryNameCell<MockEntity>({});
     expect(config.key).toBe('name');
     expect(config.title).toBe('Categoria');
-    expect(config.propertyPath).toBe('category.name');
+    expect(config.pathToKey).toBe('category.name');
     expect(config.formatting.type).toBe('COMPONENT');
   });
 

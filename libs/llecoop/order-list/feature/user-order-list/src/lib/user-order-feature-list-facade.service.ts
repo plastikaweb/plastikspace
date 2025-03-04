@@ -45,6 +45,7 @@ export class LlecoopUserOrderListFacadeService
     | undefined;
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopUserOrderSearchFeatureFormConfig();
+  filterCriteria = this.#userOrderStore.filter;
 
   onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
     this.#userOrderStore.setFilter(criteria);

@@ -8,6 +8,7 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
   User,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
@@ -110,13 +111,16 @@ export class FirebaseAuthService {
    * with the error message.
    * @param {string} email - The email address of the user to register.
    * @param {string} password - The password for the new user.
+   * @param {string} name - The name of the user.
    * @returns {Promise<void>} A promise that resolves when the registration process is complete.
    */
-  async register(email: string, password: string): Promise<void> {
+  async register(email: string, password: string, name: string): Promise<void> {
     this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#notificationStore.dismiss();
+
     try {
-      this.#notificationStore.dismiss();
       const credentials = await createUserWithEmailAndPassword(this.#auth, email, password);
+      await updateProfile(credentials.user, { displayName: name });
       await this.logout();
       this.sendVerification(credentials.user);
     } catch (error: unknown) {

@@ -27,7 +27,7 @@ export interface TableWithFilteringFacade<
   filterFormConfig?: FormlyFieldConfig[];
   filterCriteria?: Signal<F>;
   tableFilterPredicate?: (data: T, criteria: F) => boolean;
-  onChangeFilterCriteria?: (criteria: F) => void;
+  onChangeFilterCriteria: (criteria: F) => void;
   onTableSorting?(sorting: TableSorting): void;
   onTableActionDelete?(item: T): void;
   onChangePagination?(pagination: PageEventConfig): void;

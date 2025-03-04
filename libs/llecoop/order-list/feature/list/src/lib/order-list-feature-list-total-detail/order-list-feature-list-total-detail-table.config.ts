@@ -21,8 +21,8 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
   readonly #name: TableColumnFormatting<LlecoopOrderProductTotal, 'TITLE_CASE'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
-    sorting: true,
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     sticky: true,
     cssClasses: ['min-w-[100px]'],
     formatting: {
@@ -33,8 +33,8 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
   readonly #quantity: TableColumnFormatting<LlecoopOrderProductTotal, 'CUSTOM'> = {
     key: 'quantity',
     title: 'Quantitat',
-    propertyPath: 'quantity',
-    sorting: true,
+    pathToKey: 'quantity',
+    sorting: 'quantity',
     cssClasses: ['min-w-[110px]'],
     formatting: {
       type: 'CUSTOM',
@@ -48,8 +48,8 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
   readonly #price: TableColumnFormatting<LlecoopOrderProductTotal, 'CURRENCY'> = {
     key: 'price',
     title: 'Preu individual',
-    propertyPath: 'price',
-    sorting: true,
+    pathToKey: 'price',
+    sorting: 'price',
     cssClasses: ['hidden @xl:flex @xl:min-w-[125px]'],
     formatting: {
       type: 'CURRENCY',
@@ -64,7 +64,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
   readonly #iva: TableColumnFormatting<LlecoopOrderProductTotal, 'PERCENTAGE'> = {
     key: 'iva',
     title: 'IVA',
-    propertyPath: 'iva',
+    pathToKey: 'iva',
     cssClasses: ['hidden @xl:flex @xl:min-w-[60px]'],
     formatting: {
       type: 'PERCENTAGE',
@@ -74,8 +74,8 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
   readonly #totalPrice: TableColumnFormatting<LlecoopOrderProductTotal, 'CURRENCY'> = {
     key: 'totalPrice',
     title: 'Preu amb IVA',
-    propertyPath: 'totalPrice',
-    sorting: true,
+    pathToKey: 'totalPrice',
+    sorting: 'totalPrice',
     cssClasses: ['hidden @lg:flex @lg:min-w-[105px]'],
     formatting: {
       type: 'CURRENCY',
@@ -90,9 +90,9 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
   readonly #reviewed: TableColumnFormatting<LlecoopOrderProductTotal, 'CUSTOM'> = {
     key: 'reviewed',
     title: 'Revisat',
-    propertyPath: 'reviewed',
+    pathToKey: 'reviewed',
     cssClasses: ['hidden @md:flex @md:min-w-[110px]'],
-    sorting: true,
+    sorting: 'reviewed',
     formatting: {
       type: 'CUSTOM',
       execute: (_, product) => (product?.reviewed ? '✔' : '✘'),

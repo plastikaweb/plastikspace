@@ -43,7 +43,7 @@ export class FeatureFormatFactoryService<
 const descriptionFormatting: PropertyFormatting<Item, TEXT> = {
   key: 'description',
   title: 'Description',
-  propertyPath: 'description',
+  pathToKey: 'description',
   cssClasses: 'min-w-[9rem] 2xl:min-w-[24rem]',
   formatting: {
     type: TEXT,

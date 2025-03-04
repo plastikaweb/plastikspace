@@ -22,8 +22,8 @@ export class LlecoopCategorySearchFeatureTableConfig
   readonly #name: TableColumnFormatting<LlecoopProductCategory, 'COMPONENT'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'normalizedName',
-    sorting: true,
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     sticky: true,
     formatting: {
       type: 'COMPONENT',
@@ -42,7 +42,8 @@ export class LlecoopCategorySearchFeatureTableConfig
   readonly #description: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
     key: 'description',
     title: 'Descripció',
-    propertyPath: 'description',
+    pathToKey: 'description',
+    sorting: 'description',
     cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
     formatting: {
       type: 'TEXT',
@@ -52,8 +53,8 @@ export class LlecoopCategorySearchFeatureTableConfig
   readonly #productCount: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
     key: 'productCount',
     title: 'Nre. de productes',
-    propertyPath: 'productCount',
-    sorting: true,
+    pathToKey: 'productCount',
+    sorting: 'productCount',
     cssClasses: ['max-w-[100px] @xl:max-w-none'],
     formatting: {
       type: 'TEXT',

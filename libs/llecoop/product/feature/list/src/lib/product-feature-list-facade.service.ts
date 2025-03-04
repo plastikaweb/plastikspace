@@ -27,6 +27,7 @@ export class LlecoopProductListFacadeService
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = this.#formConfig.getConfig();
+  filterCriteria = this.#store.filter;
 
   onChangeFilterCriteria(criteria: StoreProductFilter): void {
     this.#store.setFilter(criteria);

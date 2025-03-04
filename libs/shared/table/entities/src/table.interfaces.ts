@@ -225,7 +225,7 @@ export type TableColumnFormatting<OBJ, TYPE> = PropertyFormatting<OBJ, TYPE> & {
   /**
    * Sets if a table column must have sorting capacities.
    */
-  sorting?: boolean;
+  sorting?: string;
   /**
    * Sets styling for the cell and the child container.
    */
