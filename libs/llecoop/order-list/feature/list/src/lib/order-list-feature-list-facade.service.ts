@@ -67,6 +67,7 @@ export class LlecoopOrderListFeatureListFacadeService
   ]);
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopOrderListFeatureListSearchFormConfig();
+  filterCriteria = this.#orderListStore.filter;
 
   onChangeFilterCriteria(criteria: StoreOrderListFilter): void {
     this.#orderListStore.setFilter(criteria);

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { pipe, switchMap, tap } from 'rxjs';
 
 import { updateState, withDevtools, withGlitchTracking } from '@angular-architects/ngrx-toolkit';
@@ -172,8 +173,9 @@ export function withFirebaseCrud<
                 tapResponse({
                   next: count => updateState(store, `[${featureName}] set count`, { count }),
                   error: error => {
+                    console.error(error);
                     store._storeNotificationService.create(
-                      `No s'ha pogut carregar el total: ${error}`,
+                      `No s'ha pogut obtenir el total de elements de tipus '${featureName}'`,
                       'ERROR'
                     );
                   },
@@ -219,8 +221,9 @@ export function withFirebaseCrud<
                       );
                     },
                     error: error => {
+                      console.error(error);
                       store._storeNotificationService.create(
-                        `No s'ha pogut carregar els elements de tipus '${featureName}' : ${error}`,
+                        `No s'ha pogut carregar els elements de tipus '${featureName}'`,
                         'ERROR'
                       );
                     },
@@ -256,11 +259,13 @@ export function withFirebaseCrud<
                       }
                     );
                   },
-                  error: () =>
+                  error: error => {
+                    console.error(error);
                     store._storeNotificationService.create(
                       `No s'ha pogut carregar l'element de tipus '${featureName}' amb id ${id}`,
                       'ERROR'
-                    ),
+                    );
+                  },
                 }),
                 tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
               );
@@ -277,7 +282,7 @@ export function withFirebaseCrud<
                     router.navigate([store.baseRoute()]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
-                        `S'ha creat "${item.name || ''}"`,
+                        item.name ? `S'ha creat "${item.name}"` : `S'ha creat el nou element`,
                         'SUCCESS'
                       );
                     }
@@ -288,11 +293,15 @@ export function withFirebaseCrud<
                       });
                     }
                   },
-                  error: () =>
+                  error: error => {
+                    console.error(error);
                     store._storeNotificationService.create(
-                      `No s'ha pogut crear "${item.name || ''}"`,
+                      item.name
+                        ? `No s'ha pogut crear "${item.name}"`
+                        : `No s'ha pogut crear el nou element`,
                       'ERROR'
-                    ),
+                    );
+                  },
                 }),
                 tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
               );
@@ -309,7 +318,9 @@ export function withFirebaseCrud<
                     router.navigate([store.baseRoute()]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
-                        `S'ha actualitzat "${item.name || ''}"`,
+                        item.name
+                          ? `S'ha actualitzat "${item.name}"`
+                          : `S'ha actualitzat el element`,
                         'SUCCESS'
                       );
                     }
@@ -320,11 +331,15 @@ export function withFirebaseCrud<
                       });
                     }
                   },
-                  error: () =>
+                  error: error => {
+                    console.error(error);
                     store._storeNotificationService.create(
-                      `No s'ha pogut actualitzar "${item.name || ''}"`,
+                      item.name
+                        ? `No s'ha pogut actualitzar "${item.name}"`
+                        : `No s'ha pogut actualitzar el element`,
                       'ERROR'
-                    ),
+                    );
+                  },
                 }),
                 tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
               );
@@ -340,7 +355,7 @@ export function withFirebaseCrud<
                   next: () => {
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
-                        `S'ha eliminat "${item.name}"`,
+                        item.name ? `S'ha eliminat "${item.name}"` : `S'ha eliminat el element`,
                         'SUCCESS'
                       );
                     }
@@ -351,11 +366,15 @@ export function withFirebaseCrud<
                       });
                     }
                   },
-                  error: () =>
+                  error: error => {
+                    console.error(error);
                     store._storeNotificationService.create(
-                      `No s'ha pogut eliminar "${item.name}"`,
+                      item.name
+                        ? `No s'ha pogut eliminar "${item.name}"`
+                        : `No s'ha pogut eliminar el element`,
                       'ERROR'
-                    ),
+                    );
+                  },
                 }),
                 tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
               );

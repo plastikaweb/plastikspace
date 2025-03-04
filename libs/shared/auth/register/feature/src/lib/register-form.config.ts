@@ -2,10 +2,28 @@
 import { Validators } from '@angular/forms';
 import { FormConfig } from '@plastik/core/entities';
 
-import { LoginData } from './register-facade.service';
+import { RegisterData } from './register-facade.service';
 
-export function registerFormConfig(): FormConfig<LoginData> {
+export function registerFormConfig(): FormConfig<RegisterData> {
   const formConfig = [
+    {
+      key: 'name',
+      type: 'input',
+      props: {
+        type: 'text',
+        label: 'Nom sòcia o unitat familiar',
+        placeholder: 'Nom sòcia o unitat familiar',
+        required: true,
+        minLength: 3,
+        maxLength: 40,
+        attributes: {
+          autocomplete: 'off',
+        },
+      },
+      validators: {
+        validation: [Validators.required],
+      },
+    },
     {
       key: 'email',
       type: 'input',

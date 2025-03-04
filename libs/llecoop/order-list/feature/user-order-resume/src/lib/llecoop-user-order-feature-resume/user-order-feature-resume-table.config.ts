@@ -26,7 +26,7 @@ export class LlecoopUserOrderResumeTableConfig
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
+    pathToKey: 'normalizedName',
     sticky: true,
     cssClasses: ['min-w-[160px] md:min-w-[250px] py-tiny', 'flex flex-col justify-start'],
     formatting: {
@@ -48,7 +48,7 @@ export class LlecoopUserOrderResumeTableConfig
   readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'initQuantity',
     title: 'Quantitat inici',
-    propertyPath: 'initQuantity',
+    pathToKey: 'initQuantity',
     cssClasses: ['min-w-[80px]'],
     formatting: {
       type: 'CUSTOM',
@@ -63,7 +63,7 @@ export class LlecoopUserOrderResumeTableConfig
   readonly #finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'finalQuantity',
     title: 'Quantitat final',
-    propertyPath: 'finalQuantity',
+    pathToKey: 'finalQuantity',
     cssClasses: ['min-w-[80px]'],
     formatting: {
       type: 'CUSTOM',
@@ -78,7 +78,7 @@ export class LlecoopUserOrderResumeTableConfig
   readonly #finalPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'finalPrice',
     title: 'Preu total',
-    propertyPath: 'finalPrice',
+    pathToKey: 'finalPrice',
     cssClasses: ['min-w-[120px]'],
     formatting: {
       type: 'CURRENCY',
@@ -92,7 +92,7 @@ export class LlecoopUserOrderResumeTableConfig
   readonly #iva: TableColumnFormatting<LlecoopOrderProduct, 'PERCENTAGE'> = {
     key: 'iva',
     title: 'IVA',
-    propertyPath: 'iva',
+    pathToKey: 'iva',
     cssClasses: ['w-[60px]'],
     formatting: {
       type: 'PERCENTAGE',
@@ -102,7 +102,7 @@ export class LlecoopUserOrderResumeTableConfig
   readonly #extraInfo: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
     key: 'extraInfo',
     title: 'Comentaris',
-    propertyPath: 'extraInfo',
+    pathToKey: 'extraInfo',
     cssClasses: ['w-[150px]', 'flex max-w-[250px]'],
     formatting: {
       type: 'TEXT',

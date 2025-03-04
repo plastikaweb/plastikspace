@@ -26,6 +26,7 @@ export class LlecoopUserListFacadeService
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopUserSearchFeatureFormConfig();
+  filterCriteria = this.#store.filter;
 
   onChangeFilterCriteria(criteria: StoreUserFilter): void {
     this.#store.setFilter(criteria);

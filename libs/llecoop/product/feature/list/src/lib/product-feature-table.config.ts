@@ -22,8 +22,8 @@ export class LlecoopProductSearchFeatureTableConfig
   readonly #name: TableColumnFormatting<LlecoopProduct, 'COMPONENT'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'normalizedName',
-    sorting: true,
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     sticky: true,
     formatting: {
       type: 'COMPONENT',
@@ -42,7 +42,7 @@ export class LlecoopProductSearchFeatureTableConfig
   readonly #stock: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
     key: 'stock',
     title: 'Stock',
-    propertyPath: 'stock',
+    pathToKey: 'stock',
     cssClasses: ['hidden @lg:flex @lg:min-w-[70px]'],
     formatting: {
       type: 'CUSTOM',
@@ -60,8 +60,8 @@ export class LlecoopProductSearchFeatureTableConfig
     categoryNameCell<LlecoopProduct>({
       key: 'category',
       title: 'Categoria',
-      propertyPath: 'categoryName',
-      sorting: true,
+      pathToKey: 'category.name',
+      sorting: 'categoryName',
       cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
     }),
     this.#stock,

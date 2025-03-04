@@ -19,7 +19,7 @@ export function categoryNameCell<T extends BaseEntity>(
   return {
     key: partialFormat.key ?? 'name',
     title: partialFormat.title ?? 'Categoria',
-    propertyPath: partialFormat.propertyPath ?? 'category.name',
+    pathToKey: partialFormat.pathToKey ?? 'category.name',
     formatting: {
       type: 'COMPONENT',
       execute: (_, element) => {

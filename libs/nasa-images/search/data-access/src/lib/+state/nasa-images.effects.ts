@@ -7,11 +7,14 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { NavigationFilterService, selectRouteQueryParams } from '@plastik/core/router-state';
 import {
-  NasaImagesSearchApiError, NasaImagesSearchApiParams, NasaImagesViews
+  NasaImagesSearchApiError,
+  NasaImagesSearchApiParams,
+  NasaImagesViews,
 } from '@plastik/nasa-images/search/entities';
 import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
 import {
-  NotificationConfigService, notificationStore
+  NotificationConfigService,
+  notificationStore,
 } from '@plastik/shared/notification/data-access';
 
 import { NasaImagesApiService } from '../nasa-images-api.service';

@@ -52,7 +52,7 @@ export function isLlecoopUserOrder(
  * @template T
  * @param {string} key The key of the column.
  * @param {Capitalize<string>} title The title of the column.
- * @param {string} propertyPath The property path of the column.
+ * @param {string} pathToKey The property path of the column.
  * @param {string[]} cssClasses The CSS classes of the column.
  * @param {boolean} sorting Whether the column is sortable or not.
  * @returns {TableColumnFormatting<T, 'COMPONENT'>} The formatted column.
@@ -60,14 +60,14 @@ export function isLlecoopUserOrder(
 export function formatOrderStatus<T extends LlecoopUserOrder | LlecoopOrder>(
   key = 'status',
   title: Capitalize<string> = 'Estat',
-  propertyPath = 'status',
+  pathToKey = 'status',
   cssClasses: [cell?: string, content?: string] = ['min-w-[145px]'],
-  sorting = true
+  sorting = 'status'
 ): TableColumnFormatting<T, 'COMPONENT'> {
   return {
     key,
     title,
-    propertyPath,
+    pathToKey,
     sorting,
     cssClasses,
     formatting: {

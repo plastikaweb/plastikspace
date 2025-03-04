@@ -37,9 +37,9 @@
 <plastik-shared-form-feature
   class="flex flex-row justify-between content-center items-end filters-box"
   [fields]="facade.filterFormConfig || []"
-  [model]="{ text: '' }"
+  [model]="facade.filterCriteria?.() || {}"
   [submitAvailable]="false"
-  (changeEvent)="onChangeFiltering($event)">
+  (changeEvent)="facade.onChangeFilterCriteria($event)">
 </plastik-shared-form-feature>
 
 <plastik-shared-table

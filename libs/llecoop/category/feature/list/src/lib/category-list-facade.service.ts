@@ -26,6 +26,7 @@ export class LlecoopCategoryListFacadeService
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopCategorySearchFeatureFormConfig();
+  filterCriteria = this.#store.filter;
 
   onChangeFilterCriteria(criteria: StoreCategoryFilter): void {
     this.#store.setFilter(criteria);

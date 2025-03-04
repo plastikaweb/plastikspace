@@ -106,7 +106,7 @@ data: Data[] = [
 const index: TableColumnFormatting<Data, CUSTOM> = {
   key: 'index',
   title: '',
-  propertyPath: '',
+  pathToKey: '',
   cssClasses: 'max-w-[4rem] lg:max-w-[10rem]',
   formatting: {
     type: CUSTOM,
@@ -117,7 +117,7 @@ const index: TableColumnFormatting<Data, CUSTOM> = {
 const id: TableColumnFormatting<Data, TEXT> = {
   key: 'id',
   title: 'ID',
-  propertyPath: 'id',
+  pathToKey: 'id',
   formatting: {
     type: TEXT,
   },
@@ -126,7 +126,7 @@ const id: TableColumnFormatting<Data, TEXT> = {
 const date: TableColumnFormatting<Data, DATE> = {
   key: 'startTime',
   title: 'Created',
-  propertyPath: 'startTime',
+  pathToKey: 'startTime',
   formatting: {
     type: DATE,
     extras: { numberDigitsInfo: 'longDate' },

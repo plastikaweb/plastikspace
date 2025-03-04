@@ -34,11 +34,17 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
 
     if (Object.entries(filter).length > 0) {
       Object.entries(filter).forEach(([key, value]) => {
-        if (key === 'text' && value) {
-          const normalizedText = latinize(value as string).toLowerCase();
+        if (key === 'name' && value) {
+          const normalizedText = this.normalizeText(value as string);
           conditions.push(
-            where('email', '>=', normalizedText),
-            where('email', '<=', normalizedText + '\uf8ff')
+            where('normalizedName', '>=', normalizedText),
+            where('normalizedName', '<=', normalizedText + '\uf8ff')
+          );
+        } else if (key === 'email' && value) {
+          const normalizedEmail = this.normalizeText(value as string);
+          conditions.push(
+            where('email', '>=', normalizedEmail),
+            where('email', '<=', normalizedEmail + '\uf8ff')
           );
         } else if (key === 'isAdmin' && value !== 'all') {
           conditions.push(where('isAdmin', '==', value));
@@ -88,7 +94,8 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
       toFirestore: (doc: LlecoopUser): DocumentData => {
         return {
           ...doc,
-          normalizedName: latinize(doc.email).toLowerCase(),
+          name: doc.name || doc.email,
+          normalizedName: latinize(doc.name || doc.email).toLowerCase(),
           whiteListed: doc.whiteListed ?? true,
           registered: doc.registered ?? false,
           emailVerified: doc.emailVerified ?? false,
@@ -103,5 +110,9 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
   addAdminClaim(userId: EntityId) {
     const callable = httpsCallable(this.#functions, 'setUserAdminClaim');
     return from(callable(userId));
+  }
+
+  private normalizeText(value: string): string {
+    return latinize(value).toLowerCase();
   }
 }

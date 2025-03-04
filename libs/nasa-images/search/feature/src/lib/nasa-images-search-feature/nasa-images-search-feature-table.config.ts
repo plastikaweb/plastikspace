@@ -17,7 +17,7 @@ import {
 const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
   key: 'index',
   title: '#',
-  propertyPath: '',
+  pathToKey: '',
   cssClasses: ['min-w-[4rem] hidden md:flex'],
   formatting: {
     type: 'CUSTOM',
@@ -32,7 +32,7 @@ const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
 const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'id',
   title: 'ID',
-  propertyPath: 'id',
+  pathToKey: 'id',
   cssClasses: [
     'min-w-[12rem] hidden md:flex lg:min-w-[14rem]',
     'text-sm text-white bg-secondary-dark rounded-md p-tiny',
@@ -45,7 +45,7 @@ const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
 const title: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'name',
   title: 'Title',
-  propertyPath: 'name',
+  pathToKey: 'name',
   cssClasses: ['min-w-[10rem] lg:max-w-[25rem]', 'content-center line-clamp-5'],
   formatting: {
     type: 'TEXT',
@@ -55,7 +55,7 @@ const title: TableColumnFormatting<NasaImage, 'TEXT'> = {
 const description: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'description',
   title: 'Description',
-  propertyPath: 'description',
+  pathToKey: 'description',
   cssClasses: ['min-w-[9rem] 2xl:min-w-[24rem] hidden md:flex', 'content-center line-clamp-4'],
   formatting: {
     type: 'TEXT',
@@ -65,7 +65,7 @@ const description: TableColumnFormatting<NasaImage, 'TEXT'> = {
 const dateCreated: TableColumnFormatting<NasaImage, 'DATE'> = {
   key: 'dateCreated',
   title: 'Created',
-  propertyPath: 'dateCreated',
+  pathToKey: 'dateCreated',
   cssClasses: ['min-w-[6rem]'],
   formatting: {
     type: 'DATE',
@@ -76,7 +76,7 @@ const dateCreated: TableColumnFormatting<NasaImage, 'DATE'> = {
 const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
   key: 'thumbnail',
   title: 'Image',
-  propertyPath: 'thumbnail',
+  pathToKey: 'thumbnail',
   cssClasses: [
     'max-w-[120px] max-h-[120px] relative',
     'object-cover size-[120px] rounded-2xl p-tiny',
@@ -90,7 +90,7 @@ const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
 const creator: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'creator',
   title: 'Creator',
-  propertyPath: 'creator',
+  pathToKey: 'creator',
   cssClasses: ['max-w-[16rem] hidden md:flex', 'xl:whitespace-normal content-center line-clamp-4'],
   formatting: {
     type: 'TEXT',
@@ -100,7 +100,7 @@ const creator: TableColumnFormatting<NasaImage, 'TEXT'> = {
 const center: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'center',
   title: 'Center',
-  propertyPath: 'center',
+  pathToKey: 'center',
   cssClasses: ['max-w-[5rem] hidden md:flex lg:max-w-[6rem]'],
   formatting: {
     type: 'TEXT',

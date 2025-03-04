@@ -26,8 +26,8 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
   readonly #name: TableColumnFormatting<LlecoopOrder, 'LINK'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
-    sorting: true,
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     sticky: true,
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     link: order => `./${order?.id}`,
@@ -42,14 +42,14 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
   readonly #endTime = createFirebaseTimestampTableColumn<LlecoopOrder>({
     key: 'endTime',
     title: 'Data de tancament',
-    propertyPath: 'endTime',
+    pathToKey: 'endTime',
   });
 
   readonly #orderCount: TableColumnFormatting<LlecoopOrder, 'TEXT'> = {
     key: 'orderCount',
     title: 'Comandes realitzades',
-    propertyPath: 'orderCount',
-    sorting: true,
+    pathToKey: 'orderCount',
+    sorting: 'orderCount',
     cssClasses: ['hidden @lg:flex @lg:min-w-[110px]'],
     formatting: {
       type: 'TEXT',
@@ -59,7 +59,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
   readonly #availableProducts: TableColumnFormatting<LlecoopOrder, 'CUSTOM'> = {
     key: 'availableProducts',
     title: 'Productes inclosos',
-    propertyPath: 'availableProducts',
+    pathToKey: 'availableProducts',
     cssClasses: ['hidden @xl:flex @xl:min-w-[110px]'],
     formatting: {
       type: 'CUSTOM',

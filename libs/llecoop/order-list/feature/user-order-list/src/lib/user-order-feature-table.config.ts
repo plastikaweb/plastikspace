@@ -28,8 +28,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   readonly #name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
-    sorting: true,
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     sticky: true,
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     link: (userOrder?: LlecoopUserOrder) => {
@@ -46,8 +46,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   readonly #price: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'totalPrice',
     title: 'Preu total',
-    propertyPath: 'totalPrice',
-    sorting: true,
+    pathToKey: 'totalPrice',
+    sorting: 'totalPrice',
     cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'CUSTOM',
@@ -61,8 +61,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   readonly #productCount: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'cart',
     title: 'Nre. de productes',
-    propertyPath: 'cart',
-    sorting: true,
+    pathToKey: 'cart',
+    sorting: 'cart',
     cssClasses: ['hidden @lg:flex'],
     formatting: {
       type: 'CUSTOM',

@@ -22,21 +22,20 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #sanitizer = inject(DomSanitizer);
 
-  // readonly #name: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
-  //   key: 'name',
-  //   title: 'Nom',
-  //   propertyPath: 'name',
-  //   sorting: true,
-  //   cssClasses: ['min-w-[240px]'],
-  //   formatting: {
-  //     type: 'TEXT',
-  //   },
-  // };
+  readonly #name: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
+    key: 'name',
+    title: 'Nom / família',
+    pathToKey: 'name',
+    sorting: 'normalizedName',
+    formatting: {
+      type: 'TEXT',
+    },
+  };
 
   readonly #isAdmin: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
     key: 'isAdmin',
     title: 'Rol',
-    propertyPath: 'isAdmin',
+    pathToKey: 'isAdmin',
     cssClasses: ['min-w-[50px] max-w-[50px] p-0 pl-sm'],
     formatting: {
       type: 'CUSTOM',
@@ -50,9 +49,9 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   readonly #email: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
     key: 'email',
     title: 'Correu electrònic',
-    propertyPath: 'email',
+    pathToKey: 'email',
     sticky: true,
-    sorting: true,
+    sorting: 'email',
     formatting: {
       type: 'TEXT',
     },
@@ -61,9 +60,9 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   readonly #registered: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
     key: 'registered',
     title: 'Registrat',
-    propertyPath: 'registered',
-    cssClasses: ['hidden @lg:flex @lg:max-w-[120px]'],
-    sorting: true,
+    pathToKey: 'registered',
+    cssClasses: ['hidden @xl:flex @xl:max-w-[120px]'],
+    sorting: 'registered',
     formatting: {
       type: 'CUSTOM',
       execute: (_, user) => (user?.registered ? '✔' : '✘'),
@@ -73,9 +72,9 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   readonly #emailVerified: TableColumnFormatting<LlecoopUser, 'CUSTOM'> = {
     key: 'emailVerified',
     title: 'Verificat',
-    propertyPath: 'emailVerified',
-    cssClasses: ['hidden @lg:flex @lg:max-w-[120px]'],
-    sorting: true,
+    pathToKey: 'emailVerified',
+    cssClasses: ['hidden @xl:flex @xl:max-w-[120px]'],
+    sorting: 'emailVerified',
     formatting: {
       type: 'CUSTOM',
       execute: (_, user) => (user?.emailVerified ? '✔' : '✘'),
@@ -85,7 +84,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   // readonly #address: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
   //   key: 'address',
   //   title: `Adreça d'entrega`,
-  //   propertyPath: 'address',
+  //   pathToKey: 'address',
   //   cssClasses: ['min-w-[100px]'],
   //   formatting: {
   //     type: 'TEXT',
@@ -95,7 +94,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   // readonly #phone: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
   //   key: 'phone',
   //   title: `Telèfon de contacte`,
-  //   propertyPath: 'phone',
+  //   pathToKey: 'phone',
   //   cssClasses: ['min-w-[100px]'],
   //   formatting: {
   //     type: 'TEXT',
@@ -107,6 +106,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
 
   readonly #columnProperties: TableColumnFormatting<LlecoopUser, FormattingTypes>[] = [
     this.#isAdmin,
+    this.#name,
     this.#email,
     this.#registered,
     this.#emailVerified,

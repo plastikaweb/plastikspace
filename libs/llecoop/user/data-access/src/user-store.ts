@@ -18,12 +18,14 @@ import { TableSortingConfig } from '@plastik/shared/table/entities';
 import { LlecoopUserFireService } from './user-fire.service';
 
 export type StoreUserFilter = StoreFirebaseCrudFilter & {
-  text: string;
+  name: string;
+  email: string;
   role: 'all' | string;
 };
 
 export const initUserStoreFilter: StoreUserFilter = {
-  text: '',
+  name: '',
+  email: '',
   role: 'all',
 };
 

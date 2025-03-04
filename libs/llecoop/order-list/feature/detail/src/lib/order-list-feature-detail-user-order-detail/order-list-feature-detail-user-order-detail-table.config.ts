@@ -28,8 +28,8 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
-    sorting: true,
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     sticky: true,
     cssClasses: ['min-w-[120px]'],
     formatting: {
@@ -45,8 +45,8 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'initQuantity',
     title: 'Quantitat inicial',
-    propertyPath: 'initQuantity',
-    sorting: true,
+    pathToKey: 'initQuantity',
+    sorting: 'initQuantity',
     cssClasses: ['min-w-[85px]'],
     formatting: {
       type: 'CUSTOM',
@@ -60,8 +60,8 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   readonly #initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'initPrice',
     title: 'Preu inicial',
-    propertyPath: 'initPrice',
-    sorting: true,
+    pathToKey: 'initPrice',
+    sorting: 'initPrice',
     cssClasses: ['min-w-[85px]'],
     formatting: {
       type: 'CURRENCY',
@@ -76,8 +76,8 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   readonly #finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'finalQuantity',
     title: 'Quantitat final',
-    propertyPath: 'finalQuantity',
-    sorting: true,
+    pathToKey: 'finalQuantity',
+    sorting: 'finalQuantity',
     cssClasses: ['min-w-[140px] pe-md', 'min-w-[100px]'],
     formatting: {
       type: 'INPUT',
@@ -106,8 +106,8 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   readonly #finalPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'finalPrice',
     title: 'Preu final',
-    propertyPath: 'finalPrice',
-    sorting: true,
+    pathToKey: 'finalPrice',
+    sorting: 'finalPrice',
     cssClasses: ['min-w-[90px]'],
     formatting: {
       type: 'CURRENCY',
@@ -122,8 +122,8 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   readonly #extraInfo: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'extraInfo',
     title: 'Comentaris',
-    propertyPath: 'extraInfo',
-    sorting: true,
+    pathToKey: 'extraInfo',
+    sorting: 'extraInfo',
     cssClasses: ['min-w-[250px] px-sm'],
     formatting: {
       type: 'INPUT',
@@ -145,8 +145,8 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
   readonly #reviewed: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'reviewed',
     title: 'Revisat',
-    propertyPath: 'reviewed',
-    sorting: true,
+    pathToKey: 'reviewed',
+    sorting: 'reviewed',
     cssClasses: ['min-w-[100px] px-sm'],
     formatting: {
       type: 'INPUT',
@@ -173,8 +173,8 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     categoryNameCell<LlecoopOrderProduct>({
       key: 'category',
       title: 'Categoria',
-      propertyPath: 'category',
-      cssClasses: ['hidden lg:flex lg:min-w-[170px] justify-start'],
+      pathToKey: 'category',
+      cssClasses: ['hidden @lg:flex @lg:min-w-[170px] justify-start'],
     }),
     this.#initQuantity,
     this.#initPrice,

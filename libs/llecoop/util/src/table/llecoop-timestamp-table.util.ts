@@ -7,7 +7,7 @@ import { TableColumnFormatting } from '@plastik/shared/table/entities';
  * @param {object} params - The parameters for the table column formatting.
  * @param {string} params.key - The key for the table column.
  * @param {string} params.title - The title for the table column.
- * @param {string} params.propertyPath - The property path for the table column.
+ * @param {string} params.pathToKey - The property path for the table column.
  * @param {string[]} params.cssClasses - The CSS classes for the table column.
  * @param {string} [dateDigitsInfo] - The date digits info for formatting.
  * @returns {TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'>} The table column formatting for the Firebase timestamp.
@@ -16,19 +16,19 @@ export function createFirebaseTimestampTableColumn<T extends BaseEntity>(
   {
     key,
     title,
-    propertyPath,
+    pathToKey,
     cssClasses = ['hidden @5xl:flex @5xl:min-w-[130px]'],
   }: Pick<
     TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'>,
-    'key' | 'title' | 'propertyPath' | 'cssClasses'
+    'key' | 'title' | 'pathToKey' | 'cssClasses'
   >,
   dateDigitsInfo = 'dd/MM/yyyy HH:mm:ss'
 ): TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'> {
   return {
     key,
     title,
-    propertyPath,
-    sorting: true,
+    pathToKey,
+    sorting: pathToKey,
     cssClasses,
     formatting: {
       type: 'FIREBASE_TIMESTAMP',
@@ -48,7 +48,7 @@ export function createdAt<T extends BaseEntity>(): TableColumnFormatting<T, 'FIR
   return createFirebaseTimestampTableColumn<T>({
     key: 'createdAt',
     title: 'Data de creació',
-    propertyPath: 'createdAt',
+    pathToKey: 'createdAt',
   });
 }
 
@@ -61,6 +61,6 @@ export function updatedAt<T extends BaseEntity>(): TableColumnFormatting<T, 'FIR
   return createFirebaseTimestampTableColumn<T>({
     key: 'updatedAt',
     title: 'Data de modificació',
-    propertyPath: 'updatedAt',
+    pathToKey: 'updatedAt',
   });
 }

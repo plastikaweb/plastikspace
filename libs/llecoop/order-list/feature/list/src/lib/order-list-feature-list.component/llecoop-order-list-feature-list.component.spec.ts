@@ -38,6 +38,7 @@ describe('LlecoopOrderListFeatureListComponent', () => {
               tableFilterPredicate: () => true,
             },
             filterFormConfig: [],
+            filterCriteria: signal({}),
             onChangeFilterCriteria: (criteria: Record<string, string>) => console.log(criteria),
             onTableSorting: (sorting: TableSorting) => console.log(sorting),
             onTablePagination: (pageEventConfig: PageEventConfig) => console.log(pageEventConfig),

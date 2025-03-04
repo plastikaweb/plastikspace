@@ -55,9 +55,9 @@ Formats the status of an order and returns it as a component configuration.
 
 - `key: string` - The key of the column (default: 'status').
 - `title: Capitalize<string>` - The title of the column (default: 'Estat').
-- `propertyPath: string` - The property path of the column (default: 'status').
+- `pathToKey: string` - The property path of the column (default: 'status').
 - `cssClasses: string[]` - The CSS classes of the column (default: [`min-w-[145px]`]).
-- `sorting: boolean` - Whether the column is sortable or not (default: true).
+- `sorting: string` - Whether the column is sortable and by which key.
 
 **Returns:** `TableColumnFormatting<T, 'COMPONENT'>` - The formatted column configuration.
 
@@ -67,7 +67,7 @@ const result = formatOrderStatus<LlecoopUserOrder>();
 
 The function returns a configuration object that includes:
 
-- Column metadata (key, title, propertyPath)
+- Column metadata (key, title, pathToKey)
 - Styling configuration (cssClasses)
 - Sorting behavior
 - Component-based formatting with UiOrderStatusChipComponent

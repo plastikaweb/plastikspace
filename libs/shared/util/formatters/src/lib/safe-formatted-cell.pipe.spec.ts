@@ -35,7 +35,7 @@ describe('SafeFormattedCellPipe', () => {
     pipe.transform(objectMocked, {
       key: objectMocked['id'],
       title: 'ID',
-      propertyPath: 'id',
+      pathToKey: 'id',
       formatting: {
         type: 'TEXT',
       },

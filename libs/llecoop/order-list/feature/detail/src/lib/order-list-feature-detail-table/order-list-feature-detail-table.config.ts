@@ -23,8 +23,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
   readonly #userName: TableColumnFormatting<LlecoopUserOrder, 'TITLE_CASE'> = {
     key: 'userName',
     title: 'Sòcia/unitat familiar',
-    propertyPath: 'userName',
-    sorting: true,
+    pathToKey: 'userName',
+    sorting: 'userName',
     cssClasses: ['min-w-[120px]'],
     formatting: {
       type: 'TITLE_CASE',
@@ -33,8 +33,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
   readonly #deliveryType: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'deliveryType',
     title: 'Tipus de lliurament',
-    propertyPath: 'deliveryType',
-    sorting: true,
+    pathToKey: 'deliveryType',
+    sorting: 'deliveryType',
     cssClasses: ['min-w-[110px] @2xl:min-w-[125px]'],
     formatting: {
       type: 'CUSTOM',
@@ -48,7 +48,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
   readonly #address: TableColumnFormatting<LlecoopUserOrder, 'TEXT'> = {
     key: 'address',
     title: 'Adreça de lliurament',
-    propertyPath: 'address',
+    pathToKey: 'address',
+    sorting: 'address',
     cssClasses: ['hidden @4xl:flex @4xl:min-w-[100px]'],
     formatting: {
       type: 'TEXT',
@@ -58,7 +59,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
   readonly #deliveryDateAndTime: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'deliveryDateAndTime',
     title: 'Data i hora de lliurament',
-    propertyPath: 'deliveryDateAndTime',
+    pathToKey: 'deliveryDateAndTime',
+    sorting: 'deliveryDateAndTime',
     cssClasses: ['min-w-[125px] @2xl:min-w-[150px]'],
     formatting: {
       type: 'CUSTOM',
@@ -70,8 +72,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
   readonly #totalPrice: TableColumnFormatting<LlecoopUserOrder, 'CURRENCY'> = {
     key: 'totalPrice',
     title: 'Preu',
-    propertyPath: 'totalPrice',
-    sorting: true,
+    pathToKey: 'totalPrice',
+    sorting: 'totalPrice',
     cssClasses: ['min-w-[80px] 2xl:min-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
@@ -86,8 +88,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
   readonly #totalProducts: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
     key: 'cart',
     title: 'Nre. de productes',
-    propertyPath: 'cart',
-    sorting: true,
+    pathToKey: 'cart',
+    sorting: 'cart',
     cssClasses: ['hidden @2xl:flex @2xl:min-w-[80px]'],
     formatting: {
       type: 'CUSTOM',

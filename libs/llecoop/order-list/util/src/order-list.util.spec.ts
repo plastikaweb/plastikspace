@@ -40,8 +40,8 @@ describe('order-list-util', () => {
       expect(format).toEqual({
         key: 'status',
         title: 'Estat',
-        propertyPath: 'status',
-        sorting: true,
+        pathToKey: 'status',
+        sorting: 'status',
         cssClasses: ['min-w-[145px]'],
         formatting: {
           type: 'COMPONENT',
