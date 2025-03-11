@@ -1,6 +1,5 @@
 import { pipe, switchMap, tap } from 'rxjs';
 
-/* eslint-disable no-console */
 import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { signalStore, withMethods } from '@ngrx/signals';
@@ -9,7 +8,9 @@ import { Store } from '@ngrx/store';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import {
+  initStoreFirebaseCrudState,
   StoreFirebaseCrudFilter,
+  StoreFirebaseCrudState,
   StoreNotificationService,
   withFirebaseCrud,
 } from '@plastik/shared/signal-state-data-access';
@@ -23,29 +24,33 @@ export type StoreUserFilter = StoreFirebaseCrudFilter & {
   role: 'all' | string;
 };
 
-export const initUserStoreFilter: StoreUserFilter = {
-  name: '',
-  email: '',
-  role: 'all',
+export const initState: StoreFirebaseCrudState<LlecoopUser, StoreUserFilter> = {
+  ...initStoreFirebaseCrudState(),
+  filter: {
+    name: '',
+    email: '',
+    role: 'all',
+  },
+  pagination: {
+    pageSize: 5,
+    pageIndex: 0,
+    pageLastElements: new Map<number, LlecoopUser>(),
+  },
+  sorting: ['updatedAt', 'desc'] as TableSortingConfig,
+  baseRoute: 'admin/usuari',
 };
-
-export const initUserStorePagination = {
-  pageSize: 5,
-  pageIndex: 0,
-  pageLastElements: new Map<number, LlecoopUser>(),
-};
-
-export const initUserStoreSorting = ['updatedAt', 'desc'] as TableSortingConfig;
 
 export const llecoopUserStore = signalStore(
   { providedIn: 'root' },
-  withFirebaseCrud<LlecoopUser, LlecoopUserFireService, StoreUserFilter>({
+  withFirebaseCrud<
+    LlecoopUser,
+    LlecoopUserFireService,
+    StoreUserFilter,
+    StoreFirebaseCrudState<LlecoopUser, StoreUserFilter>
+  >({
     featureName: 'user',
     dataServiceType: LlecoopUserFireService,
-    initFilter: initUserStoreFilter,
-    initSorting: initUserStoreSorting,
-    initPagination: initUserStorePagination,
-    baseRoute: 'admin/usuari',
+    initState,
   }),
   withMethods(() => {
     const userService = inject(LlecoopUserFireService);

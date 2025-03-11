@@ -1,10 +1,10 @@
-import { EMPTY, pipe, switchMap, withLatestFrom } from 'rxjs';
+import { EMPTY, filter, pipe, switchMap, withLatestFrom } from 'rxjs';
 
 import { updateState } from '@angular-architects/ngrx-toolkit';
 import { effect, inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
-import { signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
+import { signalStore, withHooks, withMethods, withProps, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
@@ -12,7 +12,6 @@ import {
   StoreFirebaseCrudFilter,
   StoreFirebaseCrudPagination,
   StoreFirebaseCrudState,
-  StoreNotificationService,
   withFirebaseCrud,
 } from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
@@ -35,61 +34,69 @@ export type UserOrderListStoreCrudState = StoreFirebaseCrudState<
   currentUserOrderInitialLoaded: boolean;
 };
 
-export const initUserOrderStoreFilter: StoreUserOrderFilter = {
-  text: '',
-};
+type SpecificUserOrderListStoreFirebaseCrudState = Omit<
+  UserOrderListStoreCrudState,
+  keyof StoreFirebaseCrudState<LlecoopUserOrder, StoreUserOrderFilter>
+>;
 
-export const initUserOrderStoreSorting = ['updatedAt', 'desc'] as TableSortingConfig;
-
-export const initUserOrderStorePagination = {
-  pageSize: 10,
-  pageIndex: 0,
-  pageLastElements: new Map<number, LlecoopUserOrder>(),
-};
-
-export const initUserOrderBaseState = initStoreFirebaseCrudState<
+export const userOrderMainInitState: StoreFirebaseCrudState<
   LlecoopUserOrder,
   StoreUserOrderFilter
->(initUserOrderStoreFilter);
+> = {
+  ...initStoreFirebaseCrudState(),
+  filter: {
+    text: '',
+  },
+  pagination: {
+    pageSize: 10,
+    pageIndex: 0,
+    pageLastElements: new Map<number, LlecoopUserOrder>(),
+  },
+  sorting: ['updatedAt', 'desc'] as TableSortingConfig,
+  baseRoute: '/soci/comanda',
+};
+
+const specificInitState: SpecificUserOrderListStoreFirebaseCrudState = {
+  orderProductsFilter: { text: '' },
+  orderProductsSorting: ['normalizedName', 'desc'],
+  orderProductsPagination: {
+    pageSize: 10,
+    pageIndex: 0,
+    pageLastElements: new Map<number, LlecoopOrderProduct>(),
+  },
+  currentUserOrder: null,
+  currentUserOrderInitialLoaded: false,
+};
 
 export const llecoopUserOrderStore = signalStore(
   { providedIn: 'root' },
-  withState<UserOrderListStoreCrudState>({
-    ...initUserOrderBaseState,
-    orderProductsFilter: { text: '' },
-    orderProductsSorting: ['normalizedName', 'desc'],
-    orderProductsPagination: {
-      pageSize: 10,
-      pageIndex: 0,
-      pageLastElements: new Map<number, LlecoopOrderProduct>(),
-    },
-    currentUserOrder: null,
-    currentUserOrderInitialLoaded: false,
-  }),
-  withFirebaseCrud<LlecoopUserOrder, LlecoopUserOrderFireService, StoreUserOrderFilter>({
+  withFirebaseCrud<
+    LlecoopUserOrder,
+    LlecoopUserOrderFireService,
+    StoreUserOrderFilter,
+    StoreFirebaseCrudState<LlecoopUserOrder, StoreUserOrderFilter>
+  >({
     featureName: 'user-order',
     dataServiceType: LlecoopUserOrderFireService,
-    initFilter: initUserOrderStoreFilter,
-    initSorting: initUserOrderStoreSorting,
-    initPagination: initUserOrderStorePagination,
-    baseRoute: '/soci/comanda',
+    initState: { ...userOrderMainInitState, ...specificInitState },
   }),
-  withMethods(
-    (
-      store,
-      userOrderService = inject(LlecoopUserOrderFireService),
-      storeNotificationService = inject(StoreNotificationService),
-      orderListStore = inject(llecoopOrderListStore)
-    ) => ({
+  withState<SpecificUserOrderListStoreFirebaseCrudState>(specificInitState),
+  withProps(() => ({
+    _currentOrderList: inject(llecoopOrderListStore).currentOrderList,
+    _currentOrderListInitialLoaded: inject(llecoopOrderListStore).currentOrderListInitialLoaded,
+  })),
+  withMethods(store => {
+    return {
       getCurrentUserOrder: rxMethod<void>(
         pipe(
-          withLatestFrom(toObservable(orderListStore.currentOrderList)),
+          filter(() => store._activeConnection() && store._currentOrderListInitialLoaded()),
+          withLatestFrom(toObservable(store._currentOrderList)),
           switchMap(([, currentOrderList]) => {
             const id = currentOrderList?.id;
 
             if (id) {
               // Guardar el ID en una constante para evitar que sea undefined
-              return userOrderService.getCurrentUserOrder(id).pipe(
+              return store._dataService.getCurrentUserOrder(id).pipe(
                 tapResponse({
                   next: currentUserOrder => {
                     updateState(store, `[user-order] get current user order`, {
@@ -98,7 +105,7 @@ export const llecoopUserOrderStore = signalStore(
                     });
                   },
                   error: error => {
-                    storeNotificationService.create(
+                    store._storeNotificationService.create(
                       `No s'ha pogut carregar la teva comanda actual: ${error}`,
                       'ERROR'
                     );
@@ -111,15 +118,12 @@ export const llecoopUserOrderStore = signalStore(
           })
         )
       ),
-    })
-  ),
+    };
+  }),
   withHooks({
-    onInit({ getCurrentUserOrder }) {
-      const orderListStore = inject(llecoopOrderListStore);
-      const currentUserOrderList = orderListStore.currentOrderList;
-
+    onInit({ getCurrentUserOrder, _activeConnection, _currentOrderListInitialLoaded }) {
       effect(() => {
-        if (currentUserOrderList()) {
+        if (_activeConnection() && _currentOrderListInitialLoaded()) {
           getCurrentUserOrder();
         }
       });

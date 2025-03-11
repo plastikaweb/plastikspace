@@ -88,7 +88,7 @@ export class MyComponent {
   ];
 
   onSubmit(model: any) {
-    // Handle form submission
+    // Handle form submission.
   }
 }
 ```
@@ -100,43 +100,49 @@ export class MyComponent {
 ```typescript
 interface SharedFormFeatureInputs {
   /**
-   * The form controls configuration
+   * The form controls configuration.
    * @required
    */
   fields: FormlyFieldConfig[];
 
   /**
-   * Data model to populate the form
+   * Data model to populate the form.
    * @default null
    */
   model: T | null;
 
   /**
-   * Show submit button
+   * Show submit button.
    * @default true
    */
   submitAvailable: boolean;
 
   /**
-   * Configuration for submit button
+   * Configuration for submit button.
    */
   submitConfig: SubmitFormConfig;
+
+  /**
+   * Auto focus first input.
+   * @default true
+   */
+  autoFocus: boolean;
 }
 
 interface SubmitFormConfig {
   /**
-   * Button text
+   * Button text.
    * @default "Submit"
    */
   text?: string;
 
   /**
-   * Button icon (mutually exclusive with image)
+   * Button icon (mutually exclusive with image).
    */
   icon?: string;
 
   /**
-   * Button image URL (takes precedence over icon)
+   * Button image URL (takes precedence over icon).
    */
   image?: string;
 }
@@ -147,12 +153,12 @@ interface SubmitFormConfig {
 ```typescript
 interface SharedFormFeatureOutputs {
   /**
-   * Emits when form is submitted
+   * Emits when form is submitted.
    */
   changeEvent: EventEmitter<T>;
 
   /**
-   * Emits on form value changes
+   * Emits on form value changes.
    */
   temporaryChangeEvent: EventEmitter<T>;
 }
@@ -162,12 +168,12 @@ interface SharedFormFeatureOutputs {
 
 The module includes several custom form types located in `libs/shared/form/ui`:
 
-- [`input-color-picker`](../ui/input-color-picker/README.md) - Color picker input with palette support
-- [`input-password-with-visibility`](../ui/input-password-with-visibility/README.md) - Password input with show/hide toggle
-- [`input-search-util`](../ui/input-search-util/README.md) - Search input with debounce functionality
-- [`input-table`](../ui/table/README.md) - Table input with sorting and pagination
-- [`textarea-with-counter`](../ui/textarea-with-counter/README.md) - Textarea with character counter
-- [`year-picker`](../ui/year-picker/README.md) - Year selection input
+- [`input-color-picker`](../ui/input-color-picker/README.md) - Color picker input with palette support.
+- [`input-password-with-visibility`](../ui/input-password-with-visibility/README.md) - Password input with show/hide toggle.
+- [`input-search-util`](../ui/input-search-util/README.md) - Search input with debounce functionality.
+- [`input-table`](../ui/table/README.md) - Table input with sorting and pagination.
+- [`textarea-with-counter`](../ui/textarea-with-counter/README.md) - Textarea with character counter.
+- [`year-picker`](../ui/year-picker/README.md) - Year selection input.
 
 ## Styling
 
@@ -184,11 +190,11 @@ Customize the appearance using CSS variables in your app's `styles/_theme.scss`:
 
 ### Common Issues
 
-1. Form not rendering: Ensure `SharedFormFeatureModule` is properly imported
-2. Validation not working: Check if validators are correctly configured
-3. Custom components not available: Verify the required UI modules are imported
-4. Submit button not showing: Check `submitAvailable` property
-5. Button icon/image not displaying: Ensure `submitConfig` is properly configured
+1. Form not rendering: Ensure `SharedFormFeatureModule` is properly imported.
+2. Validation not working: Check if validators are correctly configured.
+3. Custom components not available: Verify the required UI modules are imported.
+4. Submit button not showing: Check `submitAvailable` property.
+5. Button icon/image not displaying: Ensure `submitConfig` is properly configured.
 
 ## Running unit tests
 

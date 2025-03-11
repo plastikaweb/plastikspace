@@ -3,8 +3,9 @@ import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
 import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entities';
 
-export interface StoreFirebaseCrudState<T extends BaseEntity, F extends StoreFirebaseCrudFilter> {
+export type StoreFirebaseCrudState<T extends BaseEntity, F extends StoreFirebaseCrudFilter> = {
   initiallyLoaded: boolean;
+  _activeConnection: boolean;
   _lastUpdated: Date;
   selectedItemId: EntityId | null;
   sorting: TableSortingConfig;
@@ -13,7 +14,12 @@ export interface StoreFirebaseCrudState<T extends BaseEntity, F extends StoreFir
   count: number;
   showNotification: boolean;
   baseRoute: string;
-}
+};
+
+export type StoreFirebaseCrudStateBase = Pick<
+  StoreFirebaseCrudState<BaseEntity, StoreFirebaseCrudFilter>,
+  'initiallyLoaded' | '_lastUpdated' | 'selectedItemId' | 'count' | 'showNotification'
+>;
 
 export type StoreFirebaseCrudPagination<T> = Omit<PageEventConfig, 'previousPageIndex'> & {
   pageLastElements: Map<number, T>;

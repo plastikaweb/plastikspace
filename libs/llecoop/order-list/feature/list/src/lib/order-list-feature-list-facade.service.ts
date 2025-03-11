@@ -7,15 +7,20 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopOrder, LlecoopProduct, YearWeek } from '@plastik/llecoop/entities';
 import {
-  llecoopOrderListStore,
-  StoreOrderListFilter,
+    llecoopOrderListStore, StoreOrderListFilter
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 
-import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
-import { LlecoopOrderListFeatureListTableConfig } from './order-list-feature-list-table/order-list-feature-list-table.config';
-import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
+import {
+    getLlecoopOrderListFeatureListSearchFormConfig
+} from './order-list-feature-list-table/order-list-feature-list-search-form.config';
+import {
+    LlecoopOrderListFeatureListTableConfig
+} from './order-list-feature-list-table/order-list-feature-list-table.config';
+import {
+    LlecoopOrderListFeatureListTotalDetailTableConfig
+} from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
 
 @Injectable({
   providedIn: 'root',
@@ -26,7 +31,7 @@ export class LlecoopOrderListFeatureListFacadeService
   orderListTotalDetailTableConfig = inject(LlecoopOrderListFeatureListTotalDetailTableConfig);
   totalTableDefinition = this.orderListTotalDetailTableConfig.getTableDefinition();
 
-  readonly #orderListStore = inject(llecoopOrderListStore);
+  readonly #store = inject(llecoopOrderListStore);
   readonly #table = inject(LlecoopOrderListFeatureListTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #sanitizer = inject(DomSanitizer);
@@ -38,7 +43,7 @@ export class LlecoopOrderListFeatureListFacadeService
       label: 'Iniciar comanda',
       icon: 'add',
       execute: () => {
-        this.#orderListStore.getAvailableProducts();
+        this.#store.getAvailableProducts();
 
         this.#confirmService
           .confirm(
@@ -57,28 +62,28 @@ export class LlecoopOrderListFeatureListFacadeService
           .pipe(
             take(1),
             filter(Boolean),
-            tap(() => this.#orderListStore.create(this.createOrderList())),
-            tap(() => this.#orderListStore.clearAvailableProducts())
+            tap(() => this.#store.create(this.createOrderList())),
+            tap(() => this.#store.clearAvailableProducts())
           )
           .subscribe();
       },
-      disabled: () => !!this.#orderListStore.currentOrderList(),
+      disabled: () => !!this.#store.currentOrderList(),
     },
   ]);
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopOrderListFeatureListSearchFormConfig();
-  filterCriteria = this.#orderListStore.filter;
+  filterCriteria = this.#store.filter;
 
   onChangeFilterCriteria(criteria: StoreOrderListFilter): void {
-    this.#orderListStore.setFilter(criteria);
+    this.#store.setFilter(criteria);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#orderListStore.setSorting([active, direction]);
+    this.#store.setSorting([active, direction]);
   }
 
   onTablePagination({ pageIndex, pageSize }: PageEventConfig): void {
-    this.#orderListStore.setPagination({ pageIndex, pageSize });
+    this.#store.setPagination({ pageIndex, pageSize });
   }
 
   onTableActionDelete(item: LlecoopOrder): void {
@@ -91,7 +96,7 @@ export class LlecoopOrderListFeatureListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#orderListStore.delete(item));
+        .subscribe(() => this.#store.delete(item));
     }
   }
 
@@ -107,7 +112,7 @@ export class LlecoopOrderListFeatureListFacadeService
   }
 
   private createOrderList(): LlecoopOrder {
-    const availableProducts = this.#orderListStore
+    const availableProducts = this.#store
       .availableProducts()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       .map(({ stock, isAvailable, ...rest }: LlecoopProduct) => ({

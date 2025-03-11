@@ -3,10 +3,8 @@ import { Observable, of } from 'rxjs';
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
 import {
-  initUserOrderStoreFilter,
-  initUserOrderStorePagination,
-  initUserOrderStoreSorting,
   llecoopUserOrderStore,
+  userOrderMainInitState,
 } from '@plastik/llecoop/order-list/data-access';
 
 export const userOrderFeatureListResolver: ResolveFn<
@@ -19,11 +17,11 @@ export const userOrderFeatureListResolver: ResolveFn<
   userOrderStore.setSelectedItemId(null);
 
   if (!previousUrl?.startsWith('/soci/comanda') || !userOrderStore.initiallyLoaded()) {
-    userOrderStore.setSorting(initUserOrderStoreSorting);
-    userOrderStore.setFilter(initUserOrderStoreFilter);
-    userOrderStore.setPagination(initUserOrderStorePagination);
-    userOrderStore.getAll();
-    userOrderStore.setCount();
+    userOrderStore.resetTableConfig(
+      userOrderMainInitState.pagination,
+      userOrderMainInitState.filter,
+      userOrderMainInitState.sorting
+    );
   }
 
   return of(true);

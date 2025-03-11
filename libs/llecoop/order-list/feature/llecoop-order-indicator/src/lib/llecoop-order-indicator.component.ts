@@ -25,6 +25,6 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LlecoopOrderIndicatorComponent {
-  protected readonly orderListStore = inject(llecoopOrderListStore);
-  protected readonly userOrderStore = inject(llecoopUserOrderStore);
+  protected readonly currentOrderList = inject(llecoopOrderListStore).currentOrderList;
+  protected readonly currentUserOrder = inject(llecoopUserOrderStore).currentUserOrder;
 }

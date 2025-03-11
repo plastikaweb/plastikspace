@@ -43,15 +43,46 @@ The Signal State Data Access library provides:
 
 #### EntityFireService
 
-Base service that provides CRUD functionalities for entities in Firestore.
+Abstract base service that provides CRUD functionalities for entities in Firestore. It is designed to work with entities that extend from `BaseEntity` and provides complete integration with Firebase/Firestore.
+
+**Main Features:**
+
+- **Connection Management**: Maintains an active connection state with Firestore using signals. The `activeConnection` signal controls all Firestore operations:
+  - When `true`: Enables all Firestore operations and maintains the collection reference.
+  - When `false`: Disables all Firestore operations, returns empty results, and clears the collection reference.
+  - Each CRUD operation checks this signal before executing to ensure proper connection state.
+
+- **CRUD Operations**:
+  - `getAll()`: Retrieves entities with pagination, filtering, and sorting.
+  - `getItem()`: Retrieves a specific entity by ID.
+  - `create()`: Creates a new entity.
+  - `update()`: Updates an existing entity.
+  - `delete()`: Removes an entity.
+  - `getCount()`: Gets the total number of entities based on the applied filter.
+
+**Customization:**
+
+- Allows defining custom filtering conditions through `getFilterConditions()`.
+- Supports pagination with `getPaginationConditions()`.
+- Manages sorting through `getSortingConditions()`.
+- Includes integrated error handling.
+
+**Usage:**
+
+To implement a specific service:
+
+1. Extend `EntityFireService<T>`.
+2. Define the `path` property with the Firestore route.
+3. Implement `getFilterConditions()` according to needs.
+4. Optionally override other methods to customize behavior.
 
 #### StoreFirebaseCrudFeature
 
-Feature to implement stores with CRUD and Firebase functionalities.
+Feature to implement stores with CRUD and Firebase functionalities. It provides a comprehensive set of methods for managing state and data operations.
 
 #### StoreNotificationService
 
-Service to display notifications related to store operations.
+Service to display notifications related to store operations. It handles success and error messages for all CRUD operations.
 
 ## Usage Example
 
@@ -66,13 +97,27 @@ interface Product extends BaseEntity {
 }
 ```
 
-### 2. Add custom filter type if needed
+### 2. Add custom feature types and initial store values type if needed
 
 ```typescript
 export type StoreProductFilter = StoreFirebaseCrudFilter & {
   text: string;
   category: 'all' | string;
   inStock?: boolean;
+};
+
+export const initState: StoreFirebaseCrudState<Product, StoreProductFilter> = {
+  ...initStoreFirebaseCrudState(),
+  filter: {
+    text: '',
+  },
+  pagination: {
+    pageSize: 5,
+    pageIndex: 0,
+    pageLastElements: new Map<number, Product>(),
+  },
+  sorting: ['updatedAt', 'desc'] as TableSortingConfig,
+  baseRoute: 'product/list',
 };
 ```
 
@@ -113,21 +158,12 @@ export class ProductFirebaseService extends EntityFireService<Product> {
 ```typescript
 export const productStore = signalStore(
   { providedIn: 'root' },
-  withFirebaseCrud<Product, ProductFirebaseService, StoreProductFilter>({
+  withFirebaseCrud<Product, ProductFirebaseService, StoreProductFilter, StoreFirebaseCrudState<Product, StoreProductFilter>>({
     featureName: 'product',
     dataServiceType: ProductFirebaseService,
-    initFilter: {
-      text: '',
-      category: 'all',
-    },
-    initPagination: {
-      pageIndex: 0,
-      pageSize: 25,
-      pageLastElements: new Map<number, Product>(),
-    },
-    initSorting: ['updatedAt', 'desc'],
-    baseRoute: '/products', // Used for redirections when item not found
-  })
+    initState,
+  }),
+  // add here specific state or methods for product store
 );
 ```
 
@@ -172,29 +208,39 @@ export class ProductListComponent {
 
 ### State Management
 
-- `loading()`: Get loading state
-- `initiallyLoaded()`: Get initially loaded state
-- `error()`: Get error state
+- `_activeConnection()`: Get active connection state. If the value is `true`, the store is connected to Firestore. If it is `false`, the store is disconnected from Firestore and the store is reset to initial state.
+- `initiallyLoaded()`: Get initially loaded state. When we get a list of entities for the first time, this state is set to `true`.
+- `_lastUpdated()`: Sets last change state time.
+- `selectedItemId()`: Get selected item ID.
+- `showNotification()`: Get show notification state.
+- `count()`: Get count of entities.
+- `baseRoute()`: Get base route used by default to navigate after creating or updating an entity.
+- `filter()`: Get filter state.
+- `pagination()`: Get pagination state.
+- `sorting()`: Get sorting state.
 
 ### CRUD Operations
 
-- `getAll()`: Get all entities
-- `getItem(id: string)`: Get single entity (redirects to baseRoute if item not found)
-- `create(entity: Partial<T>)`: Create new entity
-- `update(entity: Partial<T>)`: Update entity
-- `delete(entity: T)`: Delete entity
+- `getAll()`: Get all entities paginated and filtered.
+- `getItem(id: string)`: Get single entity (redirects to baseRoute if item not found).
+- `create(entity: Partial<T>)`: Create new entity.
+- `update(entity: Partial<T>)`: Update entity.
+- `delete(entity: T)`: Delete entity.
 
 ### Filtering & Pagination
 
-- `setFilter(filter: F)`: Update filter
-- `setPagination(pagination: Pick<StoreFirebaseCrudPagination<T>, 'pageIndex' | 'pageSize'>)`: Update pagination
-- `setSorting(sorting: TableSortingConfig)`: Update sorting
+- `setFilter(filter: F)`: Update filter.
+- `setPagination(pagination: Pick<StoreFirebaseCrudPagination<T>, 'pageIndex' | 'pageSize'>)`: Update pagination.
+- `setSorting(sorting: TableSortingConfig)`: Update sorting.
+- `resetTableConfig(pagination: Pick<StoreFirebaseCrudPagination<T>, 'pageSize' | 'pageIndex'>, filter: F, sorting: TableSortingConfig)`: Reset pagination, filter and sorting, normally when changing a route.
 
 ### Other Methods
 
-- `setShowNotification(show: boolean)`: Update show notification state
-- `setSelectedItemId(id: EntityId | null)`: Update selected item ID
-- `setCount()`: Update count
+- `setShowNotification(show: boolean)`: Update show notification state.
+- `setSelectedItemId(id: EntityId | null)`: Update selected item ID.
+- `setCount()`: Update entities count.
+- `setActive(active: boolean)`: Set active connection to Firestore.
+- `destroy()`: Kill connection to Firestore and resets the store.
 
 ## Advanced Usage
 

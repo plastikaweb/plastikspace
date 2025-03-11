@@ -27,6 +27,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   submitConfig = input<SubmitFormConfig | null>({
     emitOnChange: true,
   });
+  autoFocus = input(true);
 
   changeEvent = output<T>();
   temporaryChangeEvent = output<T>();
@@ -41,6 +42,15 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
     this.form.markAsUntouched();
     this.form.markAsPristine();
     this.#newModel.set(this.model());
+
+    if (this.autoFocus()) {
+      setTimeout(() => {
+        const firstInput = document.querySelector('input:not([type="hidden"]):not([readonly])');
+        if (firstInput instanceof HTMLInputElement) {
+          firstInput.focus();
+        }
+      });
+    }
   }
 
   onSubmit(event: Event): void {

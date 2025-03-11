@@ -2,12 +2,7 @@ import { Observable, of } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
-import {
-  initProductStoreFilter,
-  initProductStorePagination,
-  initProductStoreSorting,
-  llecoopProductStore,
-} from '@plastik/llecoop/product/data-access';
+import { initState, llecoopProductStore } from '@plastik/llecoop/product/data-access';
 
 export const productFeatureListResolver: ResolveFn<
   Observable<boolean>
@@ -18,11 +13,7 @@ export const productFeatureListResolver: ResolveFn<
 
   store.setSelectedItemId(null);
   if (!previousUrl?.startsWith('/admin/producte') || !store.initiallyLoaded()) {
-    store.setSorting(initProductStoreSorting);
-    store.setFilter(initProductStoreFilter);
-    store.setPagination(initProductStorePagination);
-    store.getAll();
-    store.setCount();
+    store.resetTableConfig(initState.pagination, initState.filter, initState.sorting);
   }
 
   return of(true);

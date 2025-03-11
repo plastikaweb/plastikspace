@@ -1,4 +1,4 @@
-import { distinctUntilChanged, map, Observable, of } from 'rxjs';
+import { catchError, distinctUntilChanged, map, Observable, of, takeUntil, throwError } from 'rxjs';
 
 import { inject, Injectable } from '@angular/core';
 import {
@@ -29,42 +29,82 @@ import { StoreUserOrderFilter } from './user-order-store';
 export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOrder> {
   protected readonly path = 'orders';
   readonly #authService = inject(FirebaseAuthService);
-  readonly #ordersGroupCollection = collectionGroup(this.firestore, this.path);
+  #ordersGroupCollection: ReturnType<typeof collectionGroup> | null = null;
+
+  protected get firestoreOrderGroupCollection() {
+    if (!this.#ordersGroupCollection && this.activeConnection()) {
+      this.#ordersGroupCollection = collectionGroup(this.firestore, this.path);
+    }
+    return this.#ordersGroupCollection;
+  }
+
+  private setCollection(item: LlecoopUserOrder): void {
+    if (!this.collection && this.activeConnection()) {
+      this.collection = collection(
+        this.firestore,
+        `order-list/${item.orderListId}/orders`
+      ).withConverter(this.firebaseAssignTypes());
+    }
+  }
 
   override getAll(
     pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>,
     sorting: TableSortingConfig,
     filter: StoreUserOrderFilter
   ): Observable<LlecoopUserOrder[]> {
-    const userId = this.#authService.currentUser()?.uid;
-    if (!userId) {
-      return of([]);
+    try {
+      const userId = this.#authService.currentUser()?.uid;
+      if (!userId) {
+        return of([]);
+      }
+
+      if (!this.firestoreOrderGroupCollection) {
+        return of([]);
+      }
+
+      const conditions: QueryConstraint[] = [
+        ...this.getFilterConditions(filter),
+        ...this.getSortingConditions(sorting),
+        ...this.getPaginationConditions(pagination, sorting[0]),
+      ];
+
+      const q = query(
+        this.firestoreOrderGroupCollection,
+        ...conditions,
+        where('userId', '==', userId)
+      );
+      return collectionData(q, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+        map(orders => orders as LlecoopUserOrder[]),
+        catchError(error => this.handlePermissionError(error, []))
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-
-    const conditions: QueryConstraint[] = [
-      ...this.getFilterConditions(filter),
-      ...this.getSortingConditions(sorting),
-      ...this.getPaginationConditions(pagination, sorting[0]),
-    ];
-
-    const q = query(this.#ordersGroupCollection, ...conditions, where('userId', '==', userId));
-    return collectionData(q, { idField: 'id' }).pipe(
-      distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
-      map(orders => orders as LlecoopUserOrder[])
-    );
   }
 
   override getItem(id: EntityId): Observable<LlecoopUserOrder | null> {
-    const userId = this.#authService.currentUser()?.uid;
-    if (!userId) {
-      return of(null);
+    try {
+      const userId = this.#authService.currentUser()?.uid;
+      if (!userId) {
+        return of(null);
+      }
+
+      if (!this.firestoreOrderGroupCollection) {
+        return of(null);
+      }
+
+      const q = query(this.firestoreOrderGroupCollection, where('userId', '==', userId));
+
+      return collectionData(q, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        map(orders => (orders.find(order => order.id === id) as LlecoopUserOrder) || null),
+        catchError(error => this.handlePermissionError(error, null))
+      );
+    } catch (error) {
+      return throwError(() => error);
     }
-
-    const q = query(this.#ordersGroupCollection, where('userId', '==', userId));
-
-    return collectionData(q, { idField: 'id' }).pipe(
-      map(orders => (orders.find(order => order.id === id) as LlecoopUserOrder) || null)
-    );
   }
 
   override create(item: LlecoopUserOrder) {
@@ -80,6 +120,57 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
   override delete(item: LlecoopUserOrder) {
     this.setCollection(item);
     return super.delete(item);
+  }
+
+  override getCount(filter: StoreUserOrderFilter): Observable<number> {
+    try {
+      const userId = this.#authService.currentUser()?.uid;
+      if (!userId) {
+        return of(0);
+      }
+      const conditions = [...this.getFilterConditions(filter), where('userId', '==', userId)];
+
+      if (!this.firestoreOrderGroupCollection) {
+        return of(0);
+      }
+
+      const q = query(this.firestoreOrderGroupCollection, ...conditions);
+      return collectionData(q, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+        map(orders => orders.length),
+        catchError(error => this.handlePermissionError(error, 0))
+      );
+    } catch (error) {
+      return throwError(() => error);
+    }
+  }
+
+  getCurrentUserOrder(orderListId: EntityId): Observable<LlecoopUserOrder | null> {
+    try {
+      const userId = this.#authService.currentUser()?.uid;
+      if (!userId) {
+        return of(null);
+      }
+
+      if (!this.firestoreOrderGroupCollection) {
+        return of(null);
+      }
+
+      const q = query(
+        this.firestoreOrderGroupCollection,
+        where('userId', '==', userId),
+        where('orderListId', '==', orderListId)
+      );
+
+      return collectionData(q, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        map(orders => orders[0] || null),
+        catchError(error => this.handlePermissionError(error, null))
+      ) as Observable<LlecoopUserOrder | null>;
+    } catch (error) {
+      return throwError(() => error);
+    }
   }
 
   override getFilterConditions(filter: StoreUserOrderFilter): QueryConstraint[] {
@@ -101,20 +192,6 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     return conditions;
   }
 
-  override getCount(filter: StoreUserOrderFilter): Observable<number> {
-    const userId = this.#authService.currentUser()?.uid;
-    if (!userId) {
-      return of(0);
-    }
-    const conditions = [...this.getFilterConditions(filter), where('userId', '==', userId)];
-
-    const q = query(this.#ordersGroupCollection, ...conditions);
-    return collectionData(q).pipe(
-      distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
-      map(orders => orders.length)
-    );
-  }
-
   protected override firebaseAssignTypes() {
     const userId = this.#authService.currentUser()?.uid;
     const userEmail = this.#authService.currentUser()?.email;
@@ -131,28 +208,5 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
         updatedAt: Timestamp.now(),
       }),
     };
-  }
-
-  getCurrentUserOrder(orderListId: EntityId): Observable<LlecoopUserOrder | null> {
-    const userId = this.#authService.currentUser()?.uid;
-    if (!userId) {
-      return of(null);
-    }
-    const q = query(
-      this.#ordersGroupCollection,
-      where('userId', '==', userId),
-      where('orderListId', '==', orderListId)
-    );
-
-    return collectionData(q, { idField: 'id' }).pipe(
-      map(orders => orders[0] || null)
-    ) as Observable<LlecoopUserOrder | null>;
-  }
-
-  private setCollection(item: LlecoopUserOrder): void {
-    this.collection = collection(
-      this.firestore,
-      `order-list/${item.orderListId}/orders`
-    ).withConverter(this.firebaseAssignTypes());
   }
 }
