@@ -2,14 +2,21 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { FirebaseError } from '@angular/fire/app';
 import {
-    Auth, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail,
-    signInWithEmailAndPassword, signOut, updateProfile, User
+  Auth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signOut,
+  updateProfile,
+  User,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import {
-    NotificationConfigService, notificationStore
+  NotificationConfigService,
+  notificationStore,
 } from '@plastik/shared/notification/data-access';
 
 @Injectable({
