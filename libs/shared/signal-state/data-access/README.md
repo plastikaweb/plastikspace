@@ -48,6 +48,7 @@ Abstract base service that provides CRUD functionalities for entities in Firesto
 **Main Features:**
 
 - **Connection Management**: Maintains an active connection state with Firestore using signals. The `activeConnection` signal controls all Firestore operations:
+
   - When `true`: Enables all Firestore operations and maintains the collection reference.
   - When `false`: Disables all Firestore operations, returns empty results, and clears the collection reference.
   - Each CRUD operation checks this signal before executing to ensure proper connection state.
@@ -158,11 +159,16 @@ export class ProductFirebaseService extends EntityFireService<Product> {
 ```typescript
 export const productStore = signalStore(
   { providedIn: 'root' },
-  withFirebaseCrud<Product, ProductFirebaseService, StoreProductFilter, StoreFirebaseCrudState<Product, StoreProductFilter>>({
+  withFirebaseCrud<
+    Product,
+    ProductFirebaseService,
+    StoreProductFilter,
+    StoreFirebaseCrudState<Product, StoreProductFilter>
+  >({
     featureName: 'product',
     dataServiceType: ProductFirebaseService,
     initState,
-  }),
+  })
   // add here specific state or methods for product store
 );
 ```

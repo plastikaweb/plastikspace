@@ -7,20 +7,15 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopOrder, LlecoopProduct, YearWeek } from '@plastik/llecoop/entities';
 import {
-    llecoopOrderListStore, StoreOrderListFilter
+  llecoopOrderListStore,
+  StoreOrderListFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 
-import {
-    getLlecoopOrderListFeatureListSearchFormConfig
-} from './order-list-feature-list-table/order-list-feature-list-search-form.config';
-import {
-    LlecoopOrderListFeatureListTableConfig
-} from './order-list-feature-list-table/order-list-feature-list-table.config';
-import {
-    LlecoopOrderListFeatureListTotalDetailTableConfig
-} from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
+import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
+import { LlecoopOrderListFeatureListTableConfig } from './order-list-feature-list-table/order-list-feature-list-table.config';
+import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
 
 @Injectable({
   providedIn: 'root',
