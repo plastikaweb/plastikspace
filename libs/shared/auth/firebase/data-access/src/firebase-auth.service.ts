@@ -2,21 +2,14 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { FirebaseError } from '@angular/fire/app';
 import {
-  Auth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  signInWithEmailAndPassword,
-  signOut,
-  updateProfile,
-  User,
+    Auth, createUserWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail,
+    signInWithEmailAndPassword, signOut, updateProfile, User
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import {
-  NotificationConfigService,
-  notificationStore,
+    NotificationConfigService, notificationStore
 } from '@plastik/shared/notification/data-access';
 
 @Injectable({
@@ -161,6 +154,7 @@ export class FirebaseAuthService {
     try {
       this.#notificationStore.dismiss();
       await signOut(this.#auth);
+      await this.resetAuth();
       await this.#router.navigate(['login']);
     } catch (error: unknown) {
       console.error('Error during logout:', error);
@@ -258,6 +252,31 @@ export class FirebaseAuthService {
       );
     } finally {
       this.#state.dispatch(activityActions.setActivity({ isActive: false }));
+    }
+  }
+
+  /**
+   * Resets the authentication state by clearing the current user and admin signals and ensuring the user is logged out.
+   * @returns {Promise<void>} A promise that resolves when the authentication state is reset.
+   */
+  async resetAuth(): Promise<void> {
+    this.currentUser.set(null);
+    this.isAdmin.set(false);
+
+    try {
+      if (this.#auth.currentUser) {
+        await this.#auth.currentUser.getIdToken(true);
+
+        const currentUser = this.#auth.currentUser;
+        if (currentUser) {
+          // Forzar una actualización del token para asegurar que se invalide cualquier sesión anterior
+          await currentUser.reload();
+        }
+      } else {
+        console.log('state after resetAuth: User not found');
+      }
+    } catch (error) {
+      console.warn('Error al limpiar el estado de autenticación:', error);
     }
   }
 }

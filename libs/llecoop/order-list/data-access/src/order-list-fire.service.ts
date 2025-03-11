@@ -1,4 +1,4 @@
-import { map } from 'rxjs';
+import { catchError, map, takeUntil } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import {
@@ -99,10 +99,15 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
   }
 
   getCurrentOrderList() {
+    if (!this.firestoreCollection) {
+      throw new Error('Firestore collection not initialized');
+    }
     const document = query(this.firestoreCollection, where('status', '==', 'progress'));
+
     return collectionData(document, { idField: 'id' }).pipe(
-      map(orders => orders[0]),
-      map(order => order as LlecoopOrder)
+      takeUntil(this.destroy$),
+      map(orders => orders[0] as LlecoopOrder),
+      catchError(error => this.handlePermissionError(error, null))
     );
   }
 
@@ -127,11 +132,21 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
       where('userName', '>=', filter.text),
       where('userName', '<=', filter.text + '\uf8ff')
     );
-    return collectionData(q, { idField: 'id' }).pipe(map(orders => orders as LlecoopUserOrder[]));
+
+    return collectionData(q, { idField: 'id' }).pipe(
+      takeUntil(this.destroy$),
+      map(orders => orders as LlecoopUserOrder[]),
+      catchError(error => this.handlePermissionError(error, []))
+    );
   }
 
   getAvailableProducts() {
     const q = query(this.#productCollection, where('isAvailable', '==', true));
-    return collectionData(q, { idField: 'id' }).pipe(map(products => products as LlecoopProduct[]));
+
+    return collectionData(q, { idField: 'id' }).pipe(
+      takeUntil(this.destroy$),
+      map(products => products as LlecoopProduct[]),
+      catchError(error => this.handlePermissionError(error, []))
+    );
   }
 }

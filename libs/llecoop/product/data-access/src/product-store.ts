@@ -1,7 +1,9 @@
 import { signalStore } from '@ngrx/signals';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import {
+  initStoreFirebaseCrudState,
   StoreFirebaseCrudFilter,
+  StoreFirebaseCrudState,
   withFirebaseCrud,
 } from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
@@ -14,26 +16,32 @@ export type StoreProductFilter = StoreFirebaseCrudFilter & {
   inStock: 'all' | true | false;
 };
 
-export const initProductStoreFilter: StoreProductFilter = {
-  text: '',
-  category: 'all',
-  inStock: 'all',
-};
-export const initProductStoreSorting = ['updatedAt', 'desc'] as TableSortingConfig;
-export const initProductStorePagination = {
-  pageSize: 10,
-  pageIndex: 0,
-  pageLastElements: new Map<number, LlecoopProduct>(),
+export const initState: StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter> = {
+  ...initStoreFirebaseCrudState(),
+  filter: {
+    text: '',
+    category: 'all',
+    inStock: 'all',
+  },
+  pagination: {
+    pageSize: 10,
+    pageIndex: 0,
+    pageLastElements: new Map<number, LlecoopProduct>(),
+  },
+  sorting: ['updatedAt', 'desc'] as TableSortingConfig,
+  baseRoute: 'admin/producte',
 };
 
 export const llecoopProductStore = signalStore(
   { providedIn: 'root' },
-  withFirebaseCrud<LlecoopProduct, LlecoopProductFireService, StoreProductFilter>({
+  withFirebaseCrud<
+    LlecoopProduct,
+    LlecoopProductFireService,
+    StoreProductFilter,
+    StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter>
+  >({
     featureName: 'product',
     dataServiceType: LlecoopProductFireService,
-    initFilter: initProductStoreFilter,
-    initSorting: initProductStoreSorting,
-    initPagination: initProductStorePagination,
-    baseRoute: 'admin/producte',
+    initState,
   })
 );

@@ -1,28 +1,18 @@
 import { provideHttpClient } from '@angular/common/http';
 import {
-  ApplicationConfig,
-  importProvidersFrom,
-  isDevMode,
-  LOCALE_ID,
-  provideExperimentalZonelessChangeDetection,
+    ApplicationConfig, importProvidersFrom, isDevMode, LOCALE_ID,
+    provideExperimentalZonelessChangeDetection
 } from '@angular/core';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import {
-  connectFirestoreEmulator,
-  getFirestore,
-  persistentMultipleTabManager,
-  provideFirestore,
+    connectFirestoreEmulator, getFirestore, persistentMultipleTabManager, provideFirestore
 } from '@angular/fire/firestore';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
-  provideRouter,
-  RouteReuseStrategy,
-  TitleStrategy,
-  withComponentInputBinding,
-  withViewTransitions,
+    provideRouter, RouteReuseStrategy, TitleStrategy, withComponentInputBinding, withViewTransitions
 } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore, RouterState } from '@ngrx/router-store';
@@ -31,13 +21,9 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import {
-  CustomRouterSerializer,
-  PrefixTitleService,
-  routerReducers,
-  RouterStateEffects,
+    CustomRouterSerializer, PrefixTitleService, routerReducers, RouterStateEffects
 } from '@plastik/core/router-state';
 import { selectActivityFeature } from '@plastik/shared/activity/data-access';
-import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 
 import { environment } from '../environments/environment';
@@ -97,7 +83,6 @@ export const appConfig: ApplicationConfig = {
             traceLimit: 75,
           })
         : [],
-      notificationStore,
       NotificationUiMatSnackbarModule
     ),
     provideRouterStore({

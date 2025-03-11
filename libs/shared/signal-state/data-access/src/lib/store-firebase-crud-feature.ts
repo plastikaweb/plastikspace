@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
-import { pipe, switchMap, tap } from 'rxjs';
+import { filter, pipe, switchMap, tap } from 'rxjs';
 
 import { updateState, withDevtools, withGlitchTracking } from '@angular-architects/ngrx-toolkit';
-import { computed, inject, Type } from '@angular/core';
+import { computed, effect, inject, Type } from '@angular/core';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import {
@@ -17,6 +17,7 @@ import {
 import { EntityId, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { Store } from '@ngrx/store';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { BaseEntity } from '@plastik/core/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
@@ -29,33 +30,27 @@ import {
 } from './store-firebase-crud';
 import { StoreNotificationService } from './store-notification.service';
 
-export interface StoreFirebaseCrudFeature<
+export type StoreFirebaseCrudFeature<
   T extends BaseEntity,
   S extends FirebaseServiceType<T>,
   F extends StoreFirebaseCrudFilter,
-> {
+  C extends StoreFirebaseCrudState<T, F>,
+> = {
   featureName: string;
   dataServiceType: Type<S>;
-  initFilter?: F;
-  initPagination?: {
-    pageIndex: number;
-    pageSize: number;
-    pageLastElements: Map<number, T>;
-  };
-  initSorting?: TableSortingConfig;
-  showNotification?: boolean;
   baseRoute?: string;
-}
+  initState: C;
+};
 
 /**
- * @description Initializes the state of a signal store feature for entity CRUD operations with Firebase.
+ * @description Initializes the state for a signal store feature to implement entity CRUD operations with Firebase.
  * @template T The type of the entity.
  * @template F The type of the filter.
- * @param {F} filter The filter configuration.
- * @param {StoreFirebaseCrudPagination<T>} pagination The pagination configuration.
- * @param {TableSortingConfig} sorting The sorting configuration.
- * @param {string} baseRoute The base route of the feature.
- * @returns {StoreFirebaseCrudState<T, F>} The initialized state.
+ * @param {F} [filter] The initial filter state.
+ * @param {StoreFirebaseCrudPagination<T>} [pagination] The initial pagination state with pageIndex=0, pageSize=10 and empty pageLastElements.
+ * @param {TableSortingConfig} [sorting] The initial sorting state.
+ * @param {string} [baseRoute] The base route for the feature used to navigate to the entity list, f.e. after creating or updating an entity.
+ * @returns {StoreFirebaseCrudState<T, F>} The initial state for the signal store feature.
  */
 export function initStoreFirebaseCrudState<T extends BaseEntity, F extends StoreFirebaseCrudFilter>(
   filter: F = {} as F,
@@ -69,13 +64,14 @@ export function initStoreFirebaseCrudState<T extends BaseEntity, F extends Store
 ): StoreFirebaseCrudState<T, F> {
   return {
     initiallyLoaded: false,
+    _activeConnection: false,
     _lastUpdated: new Date(),
+    selectedItemId: null,
+    count: 0,
+    showNotification: true,
     filter,
     pagination,
     sorting,
-    count: 0,
-    selectedItemId: null,
-    showNotification: true,
     baseRoute,
   };
 }
@@ -97,36 +93,39 @@ export function withFirebaseCrud<
   T extends BaseEntity,
   S extends FirebaseServiceType<T>,
   F extends StoreFirebaseCrudFilter,
->({
-  featureName,
-  dataServiceType,
-  initFilter = {} as F,
-  initPagination = {
-    pageIndex: 0,
-    pageSize: 10,
-    pageLastElements: new Map<number, T>(),
-  },
-  initSorting = ['updatedAt', 'desc'] as TableSortingConfig,
-  baseRoute = '',
-}: StoreFirebaseCrudFeature<T, S, F>) {
+  C extends StoreFirebaseCrudState<T, F>,
+>({ featureName, dataServiceType, initState }: StoreFirebaseCrudFeature<T, S, F, C>) {
   return signalStoreFeature(
     withDevtools(featureName, withGlitchTracking()),
     withState<StoreFirebaseCrudState<T, F>>(
-      initStoreFirebaseCrudState(initFilter, initPagination, initSorting, baseRoute)
+      initStoreFirebaseCrudState(
+        initState.filter,
+        initState.pagination,
+        initState.sorting,
+        initState.baseRoute
+      )
     ),
     withProps(() => ({
       _storeNotificationService: inject(StoreNotificationService),
+      _firebaseAuthService: inject(FirebaseAuthService),
+      _dataService: inject(dataServiceType) as S,
       _state: inject(Store),
     })),
     withEntities<T>(),
-    withComputed(({ selectedItemId, entityMap }) => ({
-      selectedItem: computed(() => {
-        const id = selectedItemId();
-        return id !== null ? entityMap()[id] : null;
-      }),
-    })),
+    withComputed((store: unknown) => {
+      const { selectedItemId, entityMap } = store as {
+        selectedItemId: () => EntityId | null;
+        entityMap: () => Record<EntityId, T>;
+      };
+
+      return {
+        selectedItem: computed(() => {
+          const id = selectedItemId();
+          return id !== null ? entityMap()[id] : null;
+        }),
+      };
+    }),
     withMethods(store => {
-      const dataService = inject(dataServiceType) as S;
       const router = inject(Router);
 
       return {
@@ -151,6 +150,26 @@ export function withFirebaseCrud<
             pagination: newPagination,
           });
         },
+        resetTableConfig: (
+          pagination: Pick<StoreFirebaseCrudPagination<T>, 'pageSize' | 'pageIndex'>,
+          filter: F,
+          sorting: TableSortingConfig
+        ) => {
+          const newPagination = {
+            pageSize: pagination.pageSize ?? store.pagination.pageSize(),
+            pageIndex: pagination.pageIndex ?? store.pagination.pageIndex(),
+            pageLastElements:
+              pagination.pageSize !== store.pagination.pageSize()
+                ? new Map()
+                : store.pagination.pageLastElements(),
+          };
+
+          return updateState(store, `[${featureName}] reset table config`, {
+            filter,
+            pagination: newPagination,
+            sorting,
+          });
+        },
         setSorting: (sorting: TableSortingConfig) =>
           updateState(store, `[${featureName}] set sorting`, {
             sorting,
@@ -166,10 +185,12 @@ export function withFirebaseCrud<
           }),
         setCount: rxMethod<void>(
           pipe(
+            filter(() => store._activeConnection()),
             tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
             switchMap(() => {
               const filter = store.filter();
-              return dataService.getCount(filter).pipe(
+
+              return store._dataService.getCount(filter).pipe(
                 tapResponse({
                   next: count => updateState(store, `[${featureName}] set count`, { count }),
                   error: error => {
@@ -187,9 +208,10 @@ export function withFirebaseCrud<
         ),
         getAll: rxMethod<void>(
           pipe(
+            filter(() => store._activeConnection()),
             tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
             switchMap(() => {
-              return dataService
+              return store._dataService
                 .getAll(store.pagination(), store.sorting(), store.filter() as F)
                 .pipe(
                   tapResponse({
@@ -235,9 +257,10 @@ export function withFirebaseCrud<
         ),
         getItem: rxMethod<EntityId>(
           pipe(
+            filter(() => store._activeConnection()),
             tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
             switchMap(id => {
-              return dataService.getItem(id).pipe(
+              return store._dataService.getItem(id).pipe(
                 tapResponse({
                   next: item => {
                     if (!item) {
@@ -274,9 +297,10 @@ export function withFirebaseCrud<
         ),
         create: rxMethod<Partial<T>>(
           pipe(
+            filter(() => store._activeConnection()),
             tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
             switchMap((item: Partial<T>) => {
-              return dataService.create(item).pipe(
+              return store._dataService.create(item).pipe(
                 tapResponse({
                   next: () => {
                     router.navigate([store.baseRoute()]);
@@ -310,9 +334,10 @@ export function withFirebaseCrud<
         ),
         update: rxMethod<Partial<T>>(
           pipe(
+            filter(() => store._activeConnection()),
             tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
             switchMap((item: Partial<T>) => {
-              return dataService.update(item).pipe(
+              return store._dataService.update(item).pipe(
                 tapResponse({
                   next: () => {
                     router.navigate([store.baseRoute()]);
@@ -348,9 +373,10 @@ export function withFirebaseCrud<
         ),
         delete: rxMethod<T>(
           pipe(
+            filter(() => store._activeConnection()),
             tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
             switchMap(item => {
-              return dataService.delete(item).pipe(
+              return store._dataService.delete(item).pipe(
                 tapResponse({
                   next: () => {
                     if (store.showNotification()) {
@@ -381,11 +407,34 @@ export function withFirebaseCrud<
             })
           )
         ),
+        setActive: (active: boolean) => {
+          store._dataService.setActiveConnection(true);
+
+          updateState(store, `[${featureName}] set active connection: ${active}`, {
+            _activeConnection: active,
+          });
+        },
+        destroy: () => {
+          try {
+            store._dataService.setActiveConnection(false);
+
+            updateState(
+              store,
+              `[${featureName}] reset store`,
+              setAllEntities(<T[]>[], {
+                selectId: entity => entity.id || '',
+              }),
+              initState
+            );
+          } catch (error) {
+            console.error(`${featureName} destroy error`, error);
+          }
+        },
       };
     }),
     withHooks({
       onInit(store) {
-        const { getAll, setCount } = store;
+        const { getAll, setCount, initiallyLoaded } = store;
 
         let previousPagination = store.pagination();
         let previousSorting = store.sorting();
@@ -397,21 +446,35 @@ export function withFirebaseCrud<
           const currentFilter = store.filter();
 
           if (
-            currentPagination.pageIndex !== previousPagination.pageIndex ||
-            currentPagination.pageSize !== previousPagination.pageSize ||
-            currentSorting !== previousSorting ||
-            currentFilter !== previousFilter
+            store._activeConnection() &&
+            (currentPagination.pageIndex !== previousPagination.pageIndex ||
+              currentPagination.pageSize !== previousPagination.pageSize ||
+              currentSorting !== previousSorting ||
+              currentFilter !== previousFilter ||
+              !initiallyLoaded())
           ) {
             getAll();
           }
 
-          if (currentFilter !== previousFilter) {
+          if (
+            store._activeConnection() &&
+            (currentFilter !== previousFilter || !initiallyLoaded())
+          ) {
             setCount();
           }
 
           previousPagination = currentPagination;
           previousSorting = currentSorting;
+          previousSorting = currentSorting;
           previousFilter = currentFilter;
+        });
+
+        effect(() => {
+          if (!store._firebaseAuthService.currentUser()) {
+            store.destroy();
+          } else if (!store._activeConnection()) {
+            store.setActive(true);
+          }
         });
       },
     })

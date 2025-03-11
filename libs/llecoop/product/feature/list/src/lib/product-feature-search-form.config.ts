@@ -16,7 +16,8 @@ export class LlecoopProductSearchFeatureFormConfig {
   readonly #productStore = inject(llecoopProductStore);
 
   getConfig(): FormlyFieldConfig[] {
-    this.#categoryStore.getAll();
+    // this.#categoryStore.getAll();
+
     return [
       {
         fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',

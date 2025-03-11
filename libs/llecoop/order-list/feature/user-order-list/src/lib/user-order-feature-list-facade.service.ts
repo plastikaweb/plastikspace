@@ -21,7 +21,7 @@ import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-t
 export class LlecoopUserOrderListFacadeService
   implements TableWithFilteringFacade<LlecoopUserOrder, StoreUserOrderFilter>
 {
-  readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #store = inject(llecoopUserOrderStore);
   readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
@@ -30,7 +30,7 @@ export class LlecoopUserOrderListFacadeService
     return {
       visible: true,
       label: 'Fer comanda setmanal',
-      disabled: !!this.#userOrderStore.currentUserOrder(),
+      disabled: !!this.#store.currentUserOrder(),
     };
   });
   viewExtraActions?:
@@ -45,18 +45,18 @@ export class LlecoopUserOrderListFacadeService
     | undefined;
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopUserOrderSearchFeatureFormConfig();
-  filterCriteria = this.#userOrderStore.filter;
+  filterCriteria = this.#store.filter;
 
   onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
-    this.#userOrderStore.setFilter(criteria);
+    this.#store.setFilter(criteria);
   }
 
   onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>): void {
-    this.#userOrderStore.setPagination(pagination);
+    this.#store.setPagination(pagination);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#userOrderStore.setSorting([active, direction]);
+    this.#store.setSorting([active, direction]);
   }
 
   onTableActionDelete(item: LlecoopUserOrder): void {
@@ -69,7 +69,7 @@ export class LlecoopUserOrderListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#userOrderStore.delete(item));
+        .subscribe(() => this.#store.delete(item));
     }
   }
 }

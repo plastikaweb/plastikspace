@@ -1,8 +1,8 @@
-import { EMPTY, pipe, switchMap, tap } from 'rxjs';
+import { EMPTY, filter, pipe, switchMap, tap } from 'rxjs';
 
 import { updateState } from '@angular-architects/ngrx-toolkit';
 /* eslint-disable no-console */
-import { computed, inject } from '@angular/core';
+import { computed, effect, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
   signalStore,
@@ -46,49 +46,54 @@ export type OrderListStoreFirebaseCrudState = StoreFirebaseCrudState<
   availableProducts: LlecoopProduct[];
 };
 
-export const initOrderListStoreFilter: StoreOrderListFilter = {
-  text: '',
+type SpecificOrderListStoreFirebaseCrudState = Omit<
+  OrderListStoreFirebaseCrudState,
+  keyof StoreFirebaseCrudState<LlecoopOrder, StoreOrderListFilter>
+>;
+
+export const orderListMainInitState: StoreFirebaseCrudState<LlecoopOrder, StoreOrderListFilter> = {
+  ...initStoreFirebaseCrudState(),
+  filter: {
+    text: '',
+  },
+  pagination: {
+    pageSize: 5,
+    pageIndex: 0,
+    pageLastElements: new Map<number, LlecoopOrder>(),
+  },
+  sorting: ['createdAt', 'desc'] as TableSortingConfig,
+  baseRoute: 'admin/comanda',
 };
 
-export const initOrderListStoreSorting = ['createdAt', 'desc'] as TableSortingConfig;
-
-export const initOrderListStorePagination = {
-  pageSize: 5,
-  pageIndex: 0,
-  pageLastElements: new Map<number, LlecoopOrder>(),
+const specificInitState: SpecificOrderListStoreFirebaseCrudState = {
+  selectedItemUserOrderId: null,
+  currentOrderList: null,
+  currentOrderListInitialLoaded: false,
+  selectedItemUserFilter: { text: '' },
+  selectedItemUserSorting: ['userName', 'desc'],
+  selectedItemUserPagination: {
+    pageSize: 5,
+    pageIndex: 0,
+    pageLastElements: new Map<number, LlecoopUserOrder>(),
+  },
+  availableProducts: [],
 };
-
-export const initOrderListBaseState = initStoreFirebaseCrudState<
-  LlecoopOrder,
-  StoreOrderListFilter
->(initOrderListStoreFilter);
 
 const selectId: SelectEntityId<LlecoopOrder> = orderList => orderList?.id || '';
 
 export const llecoopOrderListStore = signalStore(
   { providedIn: 'root' },
-  withState<OrderListStoreFirebaseCrudState>({
-    ...initOrderListBaseState,
-    selectedItemUserOrderId: null,
-    currentOrderList: null,
-    currentOrderListInitialLoaded: false,
-    selectedItemUserFilter: { text: '' },
-    selectedItemUserSorting: ['userName', 'desc'],
-    selectedItemUserPagination: {
-      pageSize: 5,
-      pageIndex: 0,
-      pageLastElements: new Map<number, LlecoopUserOrder>(),
-    },
-    availableProducts: [],
-  }),
-  withFirebaseCrud<LlecoopOrder, LlecoopOrderListFireService, StoreOrderListFilter>({
+  withFirebaseCrud<
+    LlecoopOrder,
+    LlecoopOrderListFireService,
+    StoreOrderListFilter,
+    StoreFirebaseCrudState<LlecoopOrder, StoreOrderListFilter>
+  >({
     featureName: 'order-list',
     dataServiceType: LlecoopOrderListFireService,
-    initFilter: initOrderListStoreFilter,
-    initSorting: initOrderListStoreSorting,
-    initPagination: initOrderListStorePagination,
-    baseRoute: 'admin/comanda',
+    initState: { ...orderListMainInitState, ...specificInitState },
   }),
+  withState<SpecificOrderListStoreFirebaseCrudState>(specificInitState),
   withComputed(({ selectedItemId, selectedItemUserOrderId, entityMap, currentOrderList }) => ({
     currentOrderCount: computed(() => currentOrderList()?.availableProducts.length || 0),
     currentOrderAvailableProducts: computed(() => currentOrderList()?.availableProducts || []),
@@ -109,6 +114,7 @@ export const llecoopOrderListStore = signalStore(
     ) => ({
       changeStatus: rxMethod<LlecoopOrder>(
         pipe(
+          filter(() => !!store._activeConnection()),
           switchMap(order => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
 
@@ -135,6 +141,7 @@ export const llecoopOrderListStore = signalStore(
       ),
       cancel: rxMethod<LlecoopOrder>(
         pipe(
+          filter(() => !!store._activeConnection()),
           switchMap(order => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
 
@@ -158,6 +165,7 @@ export const llecoopOrderListStore = signalStore(
       ),
       getAllOrderListOrders: rxMethod<Partial<void>>(
         pipe(
+          filter(() => !!store._activeConnection()),
           switchMap(() => {
             const pagination = store.selectedItemUserPagination();
             const filter = store.selectedItemUserFilter();
@@ -207,9 +215,14 @@ export const llecoopOrderListStore = signalStore(
       ),
       getCurrentOrderList: rxMethod<void>(
         pipe(
+          filter(() => store._activeConnection() && !store.currentOrderListInitialLoaded()),
           switchMap(() => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
-
+            console.log(
+              'order-list',
+              store._activeConnection(),
+              store.currentOrderListInitialLoaded()
+            );
             return orderListService.getCurrentOrderList().pipe(
               tapResponse({
                 next: currentOrderList =>
@@ -231,6 +244,7 @@ export const llecoopOrderListStore = signalStore(
       ),
       getAvailableProducts: rxMethod<void>(
         pipe(
+          filter(() => !!store._activeConnection()),
           switchMap(() => {
             state.dispatch(activityActions.setActivity({ isActive: true }));
 
@@ -294,8 +308,6 @@ export const llecoopOrderListStore = signalStore(
   ),
   withHooks({
     onInit(store) {
-      store.getCurrentOrderList();
-
       let previousSelectedItemId = store.selectedItemId();
       let previousSelectedItemUserFilter = store.selectedItemUserFilter();
       let previousSelectedItemUserSorting = store.selectedItemUserSorting();
@@ -307,12 +319,14 @@ export const llecoopOrderListStore = signalStore(
         const currentSelectedItemUserSorting = store.selectedItemUserSorting();
         const currentSelectedItemUserPagination = store.selectedItemUserPagination();
         if (
-          currentSelectedItemId !== previousSelectedItemId ||
-          currentSelectedItemUserFilter !== previousSelectedItemUserFilter ||
-          currentSelectedItemUserSorting !== previousSelectedItemUserSorting ||
-          currentSelectedItemUserPagination.pageIndex !==
-            previousSelectedItemUserPagination.pageIndex ||
-          currentSelectedItemUserPagination.pageSize !== previousSelectedItemUserPagination.pageSize
+          store._activeConnection() &&
+          (currentSelectedItemId !== previousSelectedItemId ||
+            currentSelectedItemUserFilter !== previousSelectedItemUserFilter ||
+            currentSelectedItemUserSorting !== previousSelectedItemUserSorting ||
+            currentSelectedItemUserPagination.pageIndex !==
+              previousSelectedItemUserPagination.pageIndex ||
+            currentSelectedItemUserPagination.pageSize !==
+              previousSelectedItemUserPagination.pageSize)
         ) {
           store.getAllOrderListOrders();
         }
@@ -321,6 +335,15 @@ export const llecoopOrderListStore = signalStore(
         previousSelectedItemUserFilter = currentSelectedItemUserFilter;
         previousSelectedItemUserSorting = currentSelectedItemUserSorting;
         previousSelectedItemUserPagination = currentSelectedItemUserPagination;
+      });
+
+      effect(onCleanup => {
+        if (store._activeConnection() && !store.currentOrderListInitialLoaded()) {
+          store.getCurrentOrderList();
+        }
+        onCleanup(() => {
+          console.log('order-list getCurrentOrderList cleanup');
+        });
       });
     },
   })
