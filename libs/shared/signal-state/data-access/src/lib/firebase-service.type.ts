@@ -2,7 +2,10 @@ import { Observable } from 'rxjs';
 
 import { Signal } from '@angular/core';
 import {
-    DocumentData, DocumentReference, QueryConstraint, QueryDocumentSnapshot
+  DocumentData,
+  DocumentReference,
+  QueryConstraint,
+  QueryDocumentSnapshot,
 } from '@angular/fire/firestore';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
