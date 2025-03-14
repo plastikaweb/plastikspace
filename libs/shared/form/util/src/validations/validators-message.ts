@@ -101,6 +101,19 @@ export function registerValidatorsMessageExtension(): ConfigOption {
           }
         },
       },
+      {
+        name: 'phone',
+        message() {
+          switch (locale) {
+            case 'ca-ES':
+              return `telèfon no vàlid`;
+            case 'es-ES':
+              return `teléfono no válido`;
+            default:
+              return `invalid phone`;
+          }
+        },
+      },
     ],
   };
 }

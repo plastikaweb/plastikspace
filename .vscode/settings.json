@@ -44,5 +44,6 @@
       "when": "$(basename)"
     }
   },
-  "angular.log": "verbose"
+  "angular.log": "verbose",
+  "nxConsole.nxWorkspacePath": ""
 }

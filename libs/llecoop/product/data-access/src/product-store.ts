@@ -1,10 +1,7 @@
 import { signalStore } from '@ngrx/signals';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import {
-  initStoreFirebaseCrudState,
-  StoreFirebaseCrudFilter,
-  StoreFirebaseCrudState,
-  withFirebaseCrud,
+    initStoreFirebaseCrudState, StoreFirebaseCrudFilter, StoreFirebaseCrudState, withFirebaseCrud
 } from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 

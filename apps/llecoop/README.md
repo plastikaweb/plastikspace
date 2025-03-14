@@ -5,6 +5,7 @@
   - [Running commands](#running-commands)
   - [Available libraries](#available-libraries)
     - [Entities](#entities)
+    - [Util](#util)
     - [CMS Layout](#cms-layout)
     - [UI Components](#ui-components)
     - [Data Access](#data-access)
@@ -12,6 +13,8 @@
     - [Order List](#order-list)
     - [Product](#product)
     - [User](#user)
+    - [Profile](#profile)
+    - [Triggers](#triggers)
 
 ## Description
 
@@ -79,3 +82,11 @@ This is a list of all the related libraries to llecoop app.
 - [llecoop-user-data-access](../../libs/llecoop/user/data-access/README.md)
 - [llecoop-user-feature-create](../../libs/llecoop/user/feature/create/README.md)
 - [llecoop-user-feature-list](../../libs/llecoop/user/feature/list/README.md)
+
+### Profile
+
+- [llecoop-profile-feature](../../libs/llecoop/profile/feature/README.md)
+
+### Triggers
+
+- [llecoop-triggers](../llecoop-triggers/README.md)

@@ -198,6 +198,11 @@ export const llecoopLayoutRoutes: Routes = [
                 routes => routes.llecoopUserOrderFeatureListRoutes
               ),
           },
+          {
+            path: 'perfil',
+            loadChildren: () =>
+              import('@plastik/llecoop/profile').then(routes => routes.profileFeatureRoutes),
+          },
         ],
       },
       {
