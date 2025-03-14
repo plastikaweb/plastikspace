@@ -10,6 +10,7 @@ import {
   llecoopUserOrderDateOptions,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
+import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
 
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
 
@@ -35,6 +36,7 @@ function setHourOptionsByDeliveryOption(
 
 export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder> {
   const tableColumnProperties = inject(LlecoopUserOrderDetailFormTableConfig);
+  const userStore = inject(llecoopUserStore);
 
   const formConfig: FormlyFieldConfig[] = [
     {
@@ -42,16 +44,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
       fieldGroup: [
         {
           key: 'userName',
-          type: 'input',
-          className: 'w-full',
-          props: {
-            label: 'Sòcia/unitat familiar',
-            placeholder: 'Sòcia/unitat familiar',
-            required: true,
-            attributes: {
-              autocomplete: 'off',
-            },
-          },
+          defaultValue: userStore.getUserName(),
         },
         {
           key: 'deliveryType',
@@ -79,6 +72,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               key: 'address',
               type: 'input',
               className: 'w-full',
+              defaultValue: userStore.loggedUser()?.address,
               props: {
                 label: 'Adreça de lliurament',
                 placeholder: 'Adreça de lliurament',

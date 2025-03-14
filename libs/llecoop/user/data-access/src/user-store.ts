@@ -8,7 +8,10 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { activityActions } from '@plastik/shared/activity/data-access';
 import {
-    initStoreFirebaseCrudState, StoreFirebaseCrudFilter, StoreFirebaseCrudState, withFirebaseCrud
+  initStoreFirebaseCrudState,
+  StoreFirebaseCrudFilter,
+  StoreFirebaseCrudState,
+  withFirebaseCrud,
 } from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 

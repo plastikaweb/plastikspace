@@ -6,7 +6,13 @@ import { computed, effect, inject, Type } from '@angular/core';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import {
-    signalStoreFeature, watchState, withComputed, withHooks, withMethods, withProps, withState
+  signalStoreFeature,
+  watchState,
+  withComputed,
+  withHooks,
+  withMethods,
+  withProps,
+  withState,
 } from '@ngrx/signals';
 import { EntityId, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -18,7 +24,9 @@ import { TableSortingConfig } from '@plastik/shared/table/entities';
 
 import { FirebaseServiceType } from './firebase-service.type';
 import {
-    StoreFirebaseCrudFilter, StoreFirebaseCrudPagination, StoreFirebaseCrudState
+  StoreFirebaseCrudFilter,
+  StoreFirebaseCrudPagination,
+  StoreFirebaseCrudState,
 } from './store-firebase-crud';
 import { StoreNotificationService } from './store-notification.service';
 

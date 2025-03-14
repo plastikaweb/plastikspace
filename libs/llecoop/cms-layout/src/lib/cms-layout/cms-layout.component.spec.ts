@@ -10,7 +10,10 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import {
-    llecoopOrderListStore, llecoopUserOrderStore, MockedOrderListStore, MockedUserOrderStore
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+  MockedOrderListStore,
+  MockedUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
 import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
 

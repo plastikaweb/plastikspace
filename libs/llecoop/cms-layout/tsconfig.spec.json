@@ -12,6 +12,7 @@
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
     "src/**/*.ts",
-    "../../core/cms-layout/**/*.ts"
+    "../../core/cms-layout/**/*.ts",
+    "../profile/feature/src/lib/profile-feature.routes.ts"
   ]
 }

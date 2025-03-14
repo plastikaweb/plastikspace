@@ -5,14 +5,22 @@ import { updateState } from '@angular-architects/ngrx-toolkit';
 import { computed, effect } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
-    signalStore, watchState, withComputed, withHooks, withMethods, withState
+  signalStore,
+  watchState,
+  withComputed,
+  withHooks,
+  withMethods,
+  withState,
 } from '@ngrx/signals';
 import { EntityId, SelectEntityId, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopOrder, LlecoopProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
-    initStoreFirebaseCrudState, StoreFirebaseCrudFilter, StoreFirebaseCrudPagination,
-    StoreFirebaseCrudState, withFirebaseCrud
+  initStoreFirebaseCrudState,
+  StoreFirebaseCrudFilter,
+  StoreFirebaseCrudPagination,
+  StoreFirebaseCrudState,
+  withFirebaseCrud,
 } from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 
@@ -226,7 +234,7 @@ export const llecoopOrderListStore = signalStore(
                   'ERROR'
                 );
               },
-            }),
+            })
           );
         })
       )

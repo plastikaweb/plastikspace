@@ -3,10 +3,9 @@ import { Auth } from '@angular/fire/auth';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl } from '@angular/material/paginator';
 import { CanActivateFn, Router, Routes } from '@angular/router';
-import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
-import { STORE_TOKEN } from '@plastik/shared/signal-state-data-access';
 
 import { CmsLayoutComponent } from './cms-layout.component';
+import { loadProfileResolver } from './load-profile.resolver';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
 const hasCustomClaim = (claim: string) => async () => {
@@ -60,6 +59,9 @@ export const llecoopLayoutRoutes: Routes = [
         },
       },
     ],
+    resolve: {
+      resolveUser: loadProfileResolver,
+    },
     children: [
       {
         path: 'admin',
@@ -71,12 +73,6 @@ export const llecoopLayoutRoutes: Routes = [
         children: [
           {
             path: 'categoria',
-            providers: [
-              {
-                provide: STORE_TOKEN,
-                useValue: llecoopCategoryStore,
-              },
-            ],
             children: [
               {
                 path: 'crear',

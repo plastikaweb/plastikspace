@@ -6,7 +6,6 @@ import { FORM_TOKEN } from '@plastik/core/entities';
 import { LlecoopProfileFeatureFacadeService } from './profile-feature-facade.service';
 import { profileFeatureFormConfig } from './profile-feature-form.config';
 import { ProfileFeatureComponent } from './profile-feature.component';
-import { profileFeatureResolver } from './profile-feature.resolver';
 
 export const profileFeatureRoutes: Route[] = [
   {
@@ -24,8 +23,5 @@ export const profileFeatureRoutes: Route[] = [
         useFactory: profileFeatureFormConfig,
       },
     ],
-    resolve: {
-      resolveProfile: profileFeatureResolver,
-    },
   },
 ];

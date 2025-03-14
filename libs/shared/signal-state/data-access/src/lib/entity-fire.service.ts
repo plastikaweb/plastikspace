@@ -1,14 +1,37 @@
 /* eslint-disable no-console */
 import {
-    catchError, distinctUntilChanged, from, map, Observable, of, Subject, takeUntil, throwError
+  catchError,
+  distinctUntilChanged,
+  from,
+  map,
+  Observable,
+  of,
+  Subject,
+  takeUntil,
+  throwError,
 } from 'rxjs';
 
 import { inject, signal } from '@angular/core';
 import { FirebaseError } from '@angular/fire/app';
 import {
-    addDoc, collection, collectionData, deleteDoc, doc, docData, DocumentData, DocumentReference,
-    Firestore, limit, orderBy, query, QueryConstraint, QueryDocumentSnapshot, serverTimestamp,
-    startAfter, updateDoc, WithFieldValue
+  addDoc,
+  collection,
+  collectionData,
+  deleteDoc,
+  doc,
+  docData,
+  DocumentData,
+  DocumentReference,
+  Firestore,
+  limit,
+  orderBy,
+  query,
+  QueryConstraint,
+  QueryDocumentSnapshot,
+  serverTimestamp,
+  startAfter,
+  updateDoc,
+  WithFieldValue,
 } from '@angular/fire/firestore';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
