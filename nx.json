@@ -97,5 +97,6 @@
   "defaultProject": "nasa-images",
   "cacheDirectory": "./tmp/my-cache",
   "defaultBase": "develop",
-  "nxCloudId": "67d04af725ba974fa8c9defe"
+  "nxCloudId": "67d04af725ba974fa8c9defe",
+  "nxCloudUrl": ""
 }
