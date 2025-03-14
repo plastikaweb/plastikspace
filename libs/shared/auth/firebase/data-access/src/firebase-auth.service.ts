@@ -41,7 +41,27 @@ export class FirebaseAuthService {
     this.#auth.onAuthStateChanged(user => this.handleAuthStateChanged(user));
   }
 
-  private async handleAuthStateChanged(user: User | null): Promise<void> {
+  /**
+   * Actualitza el email del usuari actual a Firebase Auth.
+   * @returns {Promise<void>} Una promesa que es resol quan s'ha actualitzat el email.
+   */
+  async updateEmail(): Promise<void> {
+    try {
+      const user = this.currentUser();
+      if (!user) {
+        throw new Error('No hi ha usuari autenticat');
+      }
+      // Forzar una actualización del estado de autenticación
+      console.log('Updating user email:', user);
+      await this.handleAuthStateChanged(user);
+    } catch (error) {
+      console.error('Error al actualitzar el email:', error);
+
+      throw error;
+    }
+  }
+
+  async handleAuthStateChanged(user: User | null): Promise<void> {
     this.currentUser.set(user);
     if (user) {
       const tokenResult = await user.getIdTokenResult();

@@ -62,6 +62,15 @@ export function viewConfig() {
         includedInNavigation: true,
         routerLinkActiveOptionsExact: false,
       },
+      {
+        id: 6,
+        name: 'profile',
+        title: 'Perfil',
+        icon: 'person',
+        route: [`/soci/perfil`],
+        includedInNavigation: false,
+        routerLinkActiveOptionsExact: true,
+      },
     ].filter(view => view.includedInNavigation)
   );
 }

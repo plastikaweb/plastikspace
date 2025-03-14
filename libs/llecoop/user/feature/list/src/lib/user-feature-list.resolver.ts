@@ -2,7 +2,7 @@ import { Observable, of } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { ResolveFn, Router } from '@angular/router';
-import { initState, llecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopUserStore, userMainInitState } from '@plastik/llecoop/user/data-access';
 
 export const userFeatureListResolver: ResolveFn<Observable<boolean>> = (): Observable<boolean> => {
   const store = inject(llecoopUserStore);
@@ -12,7 +12,11 @@ export const userFeatureListResolver: ResolveFn<Observable<boolean>> = (): Obser
   store.setSelectedItemId(null);
 
   if (!previousUrl?.startsWith('/admin/usuari') || !store.initiallyLoaded()) {
-    store.resetTableConfig(initState.pagination, initState.filter, initState.sorting);
+    store.resetTableConfig(
+      userMainInitState.pagination,
+      userMainInitState.filter,
+      userMainInitState.sorting
+    );
   }
 
   return of(true);

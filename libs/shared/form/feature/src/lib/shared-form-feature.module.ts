@@ -2,10 +2,13 @@ import { NgModule } from '@angular/core';
 import { FORMLY_CONFIG, FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
-  FormlyAddonsWrapperComponent,
   addonsExtension,
+  FormlyAddonsWrapperComponent,
+  phoneValidator,
   registerValidatorsMessageExtension,
+  urlValidator,
 } from '@plastik/shared/form/util';
+
 import { SharedFormFeatureComponent } from './shared-form-feature.component';
 
 @NgModule({
@@ -18,6 +21,10 @@ import { SharedFormFeatureComponent } from './shared-form-feature.component';
       },
       wrappers: [{ name: 'addons', component: FormlyAddonsWrapperComponent }],
       extensions: [{ name: 'addons', extension: { onPopulate: addonsExtension } }],
+      validators: [
+        { name: 'url', validation: urlValidator },
+        { name: 'phone', validation: phoneValidator },
+      ],
     }),
   ],
   providers: [

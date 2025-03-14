@@ -5,9 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "composite": true,
     "types": []
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "../../cms-layout/src/lib/cms-layout/profile-feature.resolver.ts"]
 }

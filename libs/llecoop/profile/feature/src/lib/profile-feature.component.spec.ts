@@ -1,20 +1,18 @@
 import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { DETAIL_ITEM_VIEW_FACADE } from '@plastik/core/detail-edit-view';
 
-import { DetailItemFormComponent } from './detail-item-form.component';
-import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
+import { ProfileFeatureComponent } from './profile-feature.component';
 
-describe('DetailItemFormComponent', () => {
-  let component: DetailItemFormComponent;
-  let fixture: ComponentFixture<DetailItemFormComponent>;
+describe('ProfileFeatureComponent', () => {
+  let component: ProfileFeatureComponent;
+  let fixture: ComponentFixture<ProfileFeatureComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DetailItemFormComponent],
+      imports: [ProfileFeatureComponent],
       providers: [
         provideExperimentalZonelessChangeDetection(),
-        provideRouter([]),
         {
           provide: DETAIL_ITEM_VIEW_FACADE,
           useValue: {
@@ -27,7 +25,7 @@ describe('DetailItemFormComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(DetailItemFormComponent);
+    fixture = TestBed.createComponent(ProfileFeatureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

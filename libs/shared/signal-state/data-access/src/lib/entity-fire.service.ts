@@ -137,7 +137,10 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
       }
 
       const docRef = doc(firestoreCollection, item.id?.toString() ?? '');
-      return from(updateDoc(docRef, { ...item, updatedAt: serverTimestamp() })).pipe(
+      const converter = this.firebaseAssignTypes();
+      const convertedData = converter.toFirestore(item as T);
+
+      return from(updateDoc(docRef, convertedData)).pipe(
         takeUntil(this.destroy$),
         catchError(error => throwError(() => error))
       );
@@ -171,7 +174,6 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
       }
 
       const conditions = this.getFilterConditions(filter);
-      console.log('conditions', conditions);
       const postCollection = query(firestoreCollection, ...conditions);
 
       return collectionData(postCollection).pipe(

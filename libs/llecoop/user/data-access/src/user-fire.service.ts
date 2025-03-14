@@ -1,4 +1,4 @@
-import { from } from 'rxjs';
+import { from, map, Observable, throwError } from 'rxjs';
 
 import { inject, Injectable } from '@angular/core';
 import {
@@ -10,8 +10,9 @@ import {
   Timestamp,
   where,
 } from '@angular/fire/firestore';
-import { Functions, httpsCallable } from '@angular/fire/functions';
+import { Functions, httpsCallable, HttpsCallableResult } from '@angular/fire/functions';
 import { EntityId } from '@ngrx/signals/entities';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
 import {
@@ -28,6 +29,7 @@ import { StoreUserFilter } from './user-store';
 export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
   protected readonly path = 'user';
   readonly #functions = inject(Functions);
+  readonly #firebaseAuthService = inject(FirebaseAuthService);
 
   protected override getFilterConditions(filter: StoreUserFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
@@ -107,9 +109,33 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
     };
   }
 
-  addAdminClaim(userId: EntityId) {
+  override update(item: Partial<LlecoopUser>) {
+    this.#firebaseAuthService.updateEmail();
+    return super.update(item);
+  }
+
+  addAdminClaim(userId: EntityId): Observable<HttpsCallableResult<unknown>> {
     const callable = httpsCallable(this.#functions, 'setUserAdminClaim');
     return from(callable(userId));
+  }
+
+  getLoggedUser(): Observable<LlecoopUser> {
+    try {
+      const userId = this.#firebaseAuthService.currentUser()?.uid;
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
+      return this.getItem(userId).pipe(
+        map(user => {
+          if (!user) {
+            throw new Error('User not found');
+          }
+          return user;
+        })
+      );
+    } catch (error) {
+      return throwError(() => error);
+    }
   }
 
   private normalizeText(value: string): string {

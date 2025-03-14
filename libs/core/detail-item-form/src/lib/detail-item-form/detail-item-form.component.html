@@ -32,9 +32,11 @@
         }
       }
     }
-    <button type="button" mat-flat-button [routerLink]="['../']">
-      <mat-icon>arrow_back</mat-icon> Tornar al llistat
-    </button>
+    @if (!facade.hideBackBtn?.()) {
+      <button type="button" mat-flat-button [routerLink]="['../']">
+        <mat-icon>arrow_back</mat-icon> Tornar al llistat
+      </button>
+    }
   </div>
 </div>
 

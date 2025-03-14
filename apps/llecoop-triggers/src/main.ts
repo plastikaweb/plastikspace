@@ -90,6 +90,12 @@ export const onDeleteUserDeleteUserFromAuth = functions.firestore
     await (await import('./user/onDeleteUserDeleteUserFromAuth')).default(snapshot);
   });
 
+export const onUpdateUserUpdateAuth = functions.firestore
+  .document('user/{userId}')
+  .onUpdate(async (change, context) => {
+    await (await import('./user/onUpdateUserUpdateAuth')).default(change, context);
+  });
+
 // List order
 export const onListOrderTimeFinishUpdateListOrderState = functions.pubsub
   .schedule('0 12 * * 1')
