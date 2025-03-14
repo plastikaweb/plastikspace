@@ -2,8 +2,11 @@ import { NgModule } from '@angular/core';
 import { FORMLY_CONFIG, FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import {
-    addonsExtension, FormlyAddonsWrapperComponent, phoneValidator,
-    registerValidatorsMessageExtension, urlValidator
+  addonsExtension,
+  FormlyAddonsWrapperComponent,
+  phoneValidator,
+  registerValidatorsMessageExtension,
+  urlValidator,
 } from '@plastik/shared/form/util';
 
 import { SharedFormFeatureComponent } from './shared-form-feature.component';
