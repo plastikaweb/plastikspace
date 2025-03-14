@@ -1,37 +1,14 @@
 /* eslint-disable no-console */
 import {
-  catchError,
-  distinctUntilChanged,
-  from,
-  map,
-  Observable,
-  of,
-  Subject,
-  takeUntil,
-  throwError,
+    catchError, distinctUntilChanged, from, map, Observable, of, Subject, takeUntil, throwError
 } from 'rxjs';
 
 import { inject, signal } from '@angular/core';
 import { FirebaseError } from '@angular/fire/app';
 import {
-  addDoc,
-  collection,
-  collectionData,
-  deleteDoc,
-  doc,
-  docData,
-  DocumentData,
-  DocumentReference,
-  Firestore,
-  limit,
-  orderBy,
-  query,
-  QueryConstraint,
-  QueryDocumentSnapshot,
-  serverTimestamp,
-  startAfter,
-  updateDoc,
-  WithFieldValue,
+    addDoc, collection, collectionData, deleteDoc, doc, docData, DocumentData, DocumentReference,
+    Firestore, limit, orderBy, query, QueryConstraint, QueryDocumentSnapshot, serverTimestamp,
+    startAfter, updateDoc, WithFieldValue
 } from '@angular/fire/firestore';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
@@ -137,7 +114,10 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
       }
 
       const docRef = doc(firestoreCollection, item.id?.toString() ?? '');
-      return from(updateDoc(docRef, { ...item, updatedAt: serverTimestamp() })).pipe(
+      const converter = this.firebaseAssignTypes();
+      const convertedData = converter.toFirestore(item as T);
+
+      return from(updateDoc(docRef, convertedData)).pipe(
         takeUntil(this.destroy$),
         catchError(error => throwError(() => error))
       );
@@ -171,7 +151,6 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
       }
 
       const conditions = this.getFilterConditions(filter);
-      console.log('conditions', conditions);
       const postCollection = query(firestoreCollection, ...conditions);
 
       return collectionData(postCollection).pipe(

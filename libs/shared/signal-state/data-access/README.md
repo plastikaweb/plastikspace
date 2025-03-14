@@ -11,7 +11,7 @@
       - [StoreNotificationService](#storenotificationservice)
   - [Usage Example](#usage-example)
     - [1. Define your entity model](#1-define-your-entity-model)
-    - [2. Add custom filter type if needed](#2-add-custom-filter-type-if-needed)
+    - [2. Add custom feature types and initial store values type if needed](#2-add-custom-feature-types-and-initial-store-values-type-if-needed)
     - [3. Create your Firebase service](#3-create-your-firebase-service)
     - [4. Implement your Store](#4-implement-your-store)
     - [5. Use in Component](#5-use-in-component)

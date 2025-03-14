@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
+import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
 
 /**
  * @description Provides the configuration for the header of the CMS layout.
@@ -8,6 +9,7 @@ import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
  */
 export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
   const firebaseAuthService = inject(FirebaseAuthService);
+  const user = inject(llecoopUserStore).getUserName;
 
   return {
     showToggleMenuButton: true,
@@ -35,16 +37,16 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
       ],
     },
     menu: {
-      label: firebaseAuthService.currentUserEmail,
+      label: user,
       position: 'end',
       config: [
-        // {
-        //   id: 1,
-        //   name: 'profile',
-        //   title: 'Perfil',
-        //   icon: 'person',
-        //   route: [`/profile`],
-        // },
+        {
+          id: 1,
+          name: 'profile',
+          title: 'Perfil',
+          icon: 'person',
+          route: [`/soci/perfil`],
+        },
         {
           id: 2,
           name: 'logout',

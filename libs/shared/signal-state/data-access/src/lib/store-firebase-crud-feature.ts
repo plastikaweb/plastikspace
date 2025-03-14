@@ -6,13 +6,7 @@ import { computed, effect, inject, Type } from '@angular/core';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
 import {
-  signalStoreFeature,
-  watchState,
-  withComputed,
-  withHooks,
-  withMethods,
-  withProps,
-  withState,
+    signalStoreFeature, watchState, withComputed, withHooks, withMethods, withProps, withState
 } from '@ngrx/signals';
 import { EntityId, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -24,9 +18,7 @@ import { TableSortingConfig } from '@plastik/shared/table/entities';
 
 import { FirebaseServiceType } from './firebase-service.type';
 import {
-  StoreFirebaseCrudFilter,
-  StoreFirebaseCrudPagination,
-  StoreFirebaseCrudState,
+    StoreFirebaseCrudFilter, StoreFirebaseCrudPagination, StoreFirebaseCrudState
 } from './store-firebase-crud';
 import { StoreNotificationService } from './store-notification.service';
 
@@ -38,7 +30,7 @@ export type StoreFirebaseCrudFeature<
 > = {
   featureName: string;
   dataServiceType: Type<S>;
-  baseRoute?: string;
+  baseRoute?: StoreFirebaseCrudState<T, F>['baseRoute'];
   initState: C;
 };
 
@@ -49,7 +41,7 @@ export type StoreFirebaseCrudFeature<
  * @param {F} [filter] The initial filter state.
  * @param {StoreFirebaseCrudPagination<T>} [pagination] The initial pagination state with pageIndex=0, pageSize=10 and empty pageLastElements.
  * @param {TableSortingConfig} [sorting] The initial sorting state.
- * @param {string} [baseRoute] The base route for the feature used to navigate to the entity list, f.e. after creating or updating an entity.
+ * @param {StoreFirebaseCrudState<T, F>['baseRoute']} [baseRoute] The base route for the feature used to navigate to the entity list, f.e. after creating or updating an entity.
  * @returns {StoreFirebaseCrudState<T, F>} The initial state for the signal store feature.
  */
 export function initStoreFirebaseCrudState<T extends BaseEntity, F extends StoreFirebaseCrudFilter>(
@@ -60,7 +52,7 @@ export function initStoreFirebaseCrudState<T extends BaseEntity, F extends Store
     pageLastElements: new Map<number, T>(),
   },
   sorting: TableSortingConfig = ['updatedAt', 'desc'] as TableSortingConfig,
-  baseRoute = ''
+  baseRoute: StoreFirebaseCrudState<T, F>['baseRoute'] = ''
 ): StoreFirebaseCrudState<T, F> {
   return {
     initiallyLoaded: false,
@@ -107,7 +99,7 @@ export function withFirebaseCrud<
     ),
     withProps(() => ({
       _storeNotificationService: inject(StoreNotificationService),
-      _firebaseAuthService: inject(FirebaseAuthService),
+      _currentUser: inject(FirebaseAuthService).currentUser(),
       _dataService: inject(dataServiceType) as S,
       _state: inject(Store),
     })),
@@ -264,11 +256,9 @@ export function withFirebaseCrud<
                 tapResponse({
                   next: item => {
                     if (!item) {
-                      updateState(store, `[${featureName}] get item with id ${id} not found`, {
-                        selectedItemId: null,
-                        initiallyLoaded: false,
-                      });
-                      router.navigate([store.baseRoute()]);
+                      const baseRoute = store.baseRoute();
+                      const route = typeof baseRoute === 'string' ? baseRoute : baseRoute?.onError;
+                      router.navigate([route]);
                       throw new Error();
                     }
 
@@ -303,7 +293,9 @@ export function withFirebaseCrud<
               return store._dataService.create(item).pipe(
                 tapResponse({
                   next: () => {
-                    router.navigate([store.baseRoute()]);
+                    const baseRoute = store.baseRoute();
+                    const route = typeof baseRoute === 'string' ? baseRoute : baseRoute?.onCreate;
+                    router.navigate([route]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
                         item.name ? `S'ha creat "${item.name}"` : `S'ha creat el nou element`,
@@ -340,7 +332,9 @@ export function withFirebaseCrud<
               return store._dataService.update(item).pipe(
                 tapResponse({
                   next: () => {
-                    router.navigate([store.baseRoute()]);
+                    const baseRoute = store.baseRoute();
+                    const route = typeof baseRoute === 'string' ? baseRoute : baseRoute?.onUpdate;
+                    router.navigate([route]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
                         item.name
@@ -470,7 +464,7 @@ export function withFirebaseCrud<
         });
 
         effect(() => {
-          if (!store._firebaseAuthService.currentUser()) {
+          if (!store._currentUser) {
             store.destroy();
           } else if (!store._activeConnection()) {
             store.setActive(true);

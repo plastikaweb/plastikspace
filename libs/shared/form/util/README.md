@@ -35,7 +35,8 @@ A Formly wrapper component that handles the rendering of left and right addons f
 
 Custom form validators including:
 
-- URL validator: Validates that a field contains a valid URL format
+- URL validator: Validates that a field contains a valid URL format.
+- Phone validator: Validates that a field contains a valid phone number format with 9 digits starting with 6, 7 or 9.
 
 ## Usage
 
