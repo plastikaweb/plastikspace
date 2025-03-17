@@ -174,9 +174,9 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
       }
 
       const conditions = this.getFilterConditions(filter);
-      const postCollection = query(firestoreCollection, ...conditions);
+      const countQuery = query(firestoreCollection, ...conditions);
 
-      return collectionData(postCollection).pipe(
+      return collectionData(countQuery).pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
         map(items => items.length),

@@ -1,6 +1,4 @@
-import { computed } from '@angular/core';
-import { signalStore, withComputed } from '@ngrx/signals';
-import { FormSelectOption } from '@plastik/core/entities';
+import { signalStore } from '@ngrx/signals';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import {
   initStoreFirebaseCrudState,
@@ -44,19 +42,5 @@ export const llecoopCategoryStore = signalStore(
     featureName: 'category',
     dataServiceType: LlecoopCategoryFireService,
     initState,
-  }),
-  withComputed(store => ({
-    selectByNameOptions: computed(() => {
-      const options = store
-        .entities()
-        .map((category: LlecoopProductCategory) => ({
-          label: category.name,
-          value: `category/${category.id}`,
-        }))
-        .sort((a: FormSelectOption, b: FormSelectOption) =>
-          (a.label || '').localeCompare(b.label || '')
-        );
-      return options as FormSelectOption[];
-    }),
-  }))
+  })
 );

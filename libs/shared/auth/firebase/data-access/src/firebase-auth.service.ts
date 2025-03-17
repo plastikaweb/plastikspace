@@ -51,8 +51,6 @@ export class FirebaseAuthService {
       if (!user) {
         throw new Error('No hi ha usuari autenticat');
       }
-      // Forzar una actualización del estado de autenticación
-      console.log('Updating user email:', user);
       await this.handleAuthStateChanged(user);
     } catch (error) {
       console.error('Error al actualitzar el email:', error);

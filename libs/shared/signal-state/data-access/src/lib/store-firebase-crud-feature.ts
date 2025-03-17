@@ -471,12 +471,15 @@ export function withFirebaseCrud<
           previousFilter = currentFilter;
         });
 
-        effect(() => {
+        effect(onCleanup => {
           if (!store._currentUser) {
             store.destroy();
           } else if (!store._activeConnection()) {
             store.setActive(true);
           }
+          onCleanup(() => {
+            console.log(`${featureName} cleanup`);
+          });
         });
       },
     })
