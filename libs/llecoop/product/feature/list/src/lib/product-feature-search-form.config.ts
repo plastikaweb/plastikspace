@@ -1,10 +1,8 @@
-import { map } from 'rxjs';
-
 /* eslint-disable jsdoc/require-jsdoc */
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { FormSelectOption } from '@plastik/core/entities';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { addSearchInput } from '@plastik/shared/form/search';
 
@@ -12,12 +10,13 @@ import { addSearchInput } from '@plastik/shared/form/search';
   providedIn: 'root',
 })
 export class LlecoopProductSearchFeatureFormConfig {
-  readonly #categoryStore = inject(llecoopCategoryStore);
   readonly #productStore = inject(llecoopProductStore);
+  readonly #categories = computed(() => [
+    { label: 'Totes', value: 'all' },
+    ...this.#productStore.categories(),
+  ]);
 
   getConfig(): FormlyFieldConfig[] {
-    // this.#categoryStore.getAll();
-
     return [
       {
         fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
@@ -35,9 +34,8 @@ export class LlecoopProductSearchFeatureFormConfig {
               label: 'Categoría',
               placeholder: 'Categoría',
               required: false,
-              options: toObservable(this.#categoryStore.selectByNameOptions).pipe(
-                map(options => [{ label: 'Totes', value: 'all' }, ...options])
-              ),
+              options: toObservable(this.#categories),
+              compareWith: (o1: FormSelectOption, o2: FormSelectOption) => o1?.value === o2?.value,
             },
           },
           {
