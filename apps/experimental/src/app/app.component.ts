@@ -6,7 +6,7 @@ import { SharedUtilDynamicBgColorDirective } from '@plastik/shared/dynamic-bg-co
   imports: [RouterModule, SharedUtilDynamicBgColorDirective],
   selector: 'exp-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrl: './app.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {

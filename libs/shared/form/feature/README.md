@@ -13,7 +13,6 @@
     - [Inputs](#inputs)
     - [Outputs](#outputs)
     - [Available Form Types](#available-form-types)
-  - [Styling](#styling)
   - [Troubleshooting](#troubleshooting)
     - [Common Issues](#common-issues)
   - [Running unit tests](#running-unit-tests)
@@ -22,7 +21,9 @@
 ## Description
 
 A feature module that provides a dynamic form container built on top of [Formly Library](https://formly.dev/).
-It allows you to create forms dynamically from a configuration object, with built-in support for validation, custom UI components, and form submission handling.
+It allows you to create forms dynamically from a configuration object, with built-in support for
+validation, custom UI components, and form submission handling. It provides a flexible configuration
+for form submission, model changes tracking, and accessibility features like auto-focus.
 
 ## Usage
 
@@ -51,7 +52,14 @@ import { SharedFormFeatureModule } from '@plastikspace/shared/form/feature';
   standalone: true,
   imports: [SharedFormFeatureModule],
   template: `
-    <plastik-shared-form-feature [fields]="fields" [model]="model" (changeEvent)="onSubmit($event)">
+    <plastik-shared-form-feature
+      [fields]="fields"
+      [model]="model"
+      [submitConfig]="submitConfig"
+      [autoFocus]="true"
+      (changeEvent)="onSubmit($event)"
+      (temporaryChangeEvent)="onTemporaryChange($event)"
+      (pendingChangesEvent)="onPendingChanges($event)">
     </plastik-shared-form-feature>
   `,
 })
@@ -59,6 +67,12 @@ export class MyComponent {
   model = {
     email: 'test@test.com',
     name: 'test',
+  };
+
+  submitConfig: SubmitFormConfig = {
+    label: 'Save',
+    disableOnSubmit: true,
+    emitOnChange: true,
   };
 
   fields: FormlyFieldConfig[] = [
@@ -90,6 +104,14 @@ export class MyComponent {
   onSubmit(model: any) {
     // Handle form submission.
   }
+
+  onTemporaryChange(model: any) {
+    // Handle temporary form changes while typing
+  }
+
+  onPendingChanges(hasPendingChanges: boolean) {
+    // Handle form dirty state changes
+  }
 }
 ```
 
@@ -112,15 +134,10 @@ interface SharedFormFeatureInputs {
   model: T | null;
 
   /**
-   * Show submit button.
-   * @default true
+   * Configuration for the form submission.
+   * The component will merge this with default values.
    */
-  submitAvailable: boolean;
-
-  /**
-   * Configuration for submit button.
-   */
-  submitConfig: SubmitFormConfig;
+  submitConfig: SubmitFormConfig | null;
 
   /**
    * Auto focus first input.
@@ -131,20 +148,62 @@ interface SharedFormFeatureInputs {
 
 interface SubmitFormConfig {
   /**
-   * Button text.
+   * Button label text.
    * @default "Submit"
    */
-  text?: string;
+  label?: string;
 
   /**
-   * Button icon (mutually exclusive with image).
+   * Whether the button is disabled.
+   * @default false
    */
-  icon?: string;
+  disabled?: boolean;
 
   /**
-   * Button image URL (takes precedence over icon).
+   * Default enabled state.
+   * @default true
    */
-  image?: string;
+  enabledByDefault?: boolean;
+
+  /**
+   * CSS class to apply to the button.
+   */
+  buttonStyle?: string;
+
+  /**
+   * Reset form after submit.
+   * @default false
+   */
+  resetOnSubmit?: boolean;
+
+  /**
+   * During form comparison, only compare common keys.
+   * @default false
+   */
+  compareCommonKeysOnly?: boolean;
+
+  /**
+   * Keys to ignore when comparing form values.
+   */
+  ignoredKeysWhileComparing?: string[];
+
+  /**
+   * Emit change events as form values change.
+   * @default false
+   */
+  emitOnChange?: boolean;
+
+  /**
+   * Disable the form after submission.
+   * @default true
+   */
+  disableOnSubmit?: boolean;
+
+  /**
+   * Whether to show the submit button.
+   * @default true
+   */
+  submitAvailable?: boolean;
 }
 ```
 
@@ -153,14 +212,19 @@ interface SubmitFormConfig {
 ```typescript
 interface SharedFormFeatureOutputs {
   /**
-   * Emits when form is submitted.
+   * Emits when form is submitted or when submitAvailable is false and model changes.
    */
   changeEvent: EventEmitter<T>;
 
   /**
-   * Emits on form value changes.
+   * Emits on temporary form value changes when emitOnChange is true.
    */
   temporaryChangeEvent: EventEmitter<T>;
+
+  /**
+   * Emits when form dirty state changes.
+   */
+  pendingChangesEvent: EventEmitter<boolean>;
 }
 ```
 
@@ -175,17 +239,6 @@ The module includes several custom form types located in `libs/shared/form/ui`:
 - [`textarea-with-counter`](../ui/textarea-with-counter/README.md) - Textarea with character counter.
 - [`year-picker`](../ui/year-picker/README.md) - Year selection input.
 
-## Styling
-
-Customize the appearance using CSS variables in your app's `styles/_theme.scss`:
-
-```scss
-:root {
-  --plastik-mdc-floating-label-color: rgb(var(--primary));
-  // Add more custom variables here
-}
-```
-
 ## Troubleshooting
 
 ### Common Issues
@@ -193,8 +246,9 @@ Customize the appearance using CSS variables in your app's `styles/_theme.scss`:
 1. Form not rendering: Ensure `SharedFormFeatureModule` is properly imported.
 2. Validation not working: Check if validators are correctly configured.
 3. Custom components not available: Verify the required UI modules are imported.
-4. Submit button not showing: Check `submitAvailable` property.
-5. Button icon/image not displaying: Ensure `submitConfig` is properly configured.
+4. Submit button not showing: Check `submitConfig.submitAvailable` property.
+5. Form not being disabled after submission: Verify `submitConfig.disableOnSubmit` is set to true.
+6. No temporary changes emitted: Make sure `submitConfig.emitOnChange` is set to true.
 
 ## Running unit tests
 

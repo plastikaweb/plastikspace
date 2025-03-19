@@ -31,11 +31,13 @@ export class LlecoopUserOrderListFacadeService
   routingToDetailPage = computed(() => {
     return {
       visible: true,
-      label: !this.#userOrderStore.currentUserOrder()
-        ? 'Fer comanda setmanal'
-        : 'Editar comanda setmanal',
+      label: this.#userOrderStore.currentUserOrder()
+        ? 'Editar comanda setmanal'
+        : 'Fer comanda setmanal',
       disabled: !this.#orderListStore.currentOrderList(),
-      path: [`./${this.#userOrderStore.currentUserOrder()?.id}` || ''],
+      path: this.#userOrderStore.currentUserOrder()
+        ? [`./${this.#userOrderStore.currentUserOrder()?.id}`]
+        : ['./crear'],
     };
   });
   viewExtraActions?:

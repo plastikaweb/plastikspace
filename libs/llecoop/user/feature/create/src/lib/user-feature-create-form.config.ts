@@ -34,7 +34,6 @@ export function userFeatureCreateFormConfig(): FormConfig<LlecoopUser> {
     getConfig: () => getLlecoopUserCreateFormConfig,
     getSubmitFormConfig: () => ({
       label: 'Afegir usuari',
-      emitOnChange: true,
     }),
   };
 }

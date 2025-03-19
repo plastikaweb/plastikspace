@@ -42,7 +42,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
 
   formConfig = userOrderFeatureDetailFormConfig();
 
-  onChange({ totalPrice }: Partial<LlecoopUserOrder>): void {
+  onFormTemporaryChange({ totalPrice }: Partial<LlecoopUserOrder>): void {
     this.viewExtraActions.update(actions => {
       let total = actions.filter(action => action.id === 'total')[0] as ExtraFormTextAction;
       if (total) {

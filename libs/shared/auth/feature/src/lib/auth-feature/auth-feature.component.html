@@ -26,7 +26,7 @@
           [fields]="formConfig.getConfig() || []"
           [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
           (changeEvent)="facade.onSubmit($event)">
-          <div class="extraLinks">
+          <div class="my-sub extraLinks md:my-sm">
             @for (link of facade.extraLinks?.(); track link) {
               <a [routerLink]="link.route">{{ link.label }}</a>
             }

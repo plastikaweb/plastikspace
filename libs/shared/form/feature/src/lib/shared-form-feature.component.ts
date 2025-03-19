@@ -4,6 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   input,
+  linkedSignal,
   output,
   signal,
 } from '@angular/core';
@@ -17,26 +18,37 @@ import { SubmitFormConfig } from '@plastik/core/entities';
   selector: 'plastik-shared-form-feature',
   imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass],
   templateUrl: './shared-form-feature.component.html',
-  styleUrls: ['./shared-form-feature.component.scss'],
+  styleUrl: './shared-form-feature.component.scss',
+  host: {
+    class: 'w-full',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedFormFeatureComponent<T> implements AfterViewInit {
   fields = input.required<FormlyFieldConfig[]>();
   model = input<T | null>(null);
-  submitAvailable = input(true);
-  submitConfig = input<SubmitFormConfig | null>({
-    emitOnChange: true,
-  });
+  submitConfig = input<SubmitFormConfig | null>(null);
   autoFocus = input(true);
 
   changeEvent = output<T>();
   temporaryChangeEvent = output<T>();
   pendingChangesEvent = output<boolean>();
 
+  protected readonly config = linkedSignal({
+    source: this.submitConfig,
+    computation: (newConfig: SubmitFormConfig | null) => {
+      return {
+        emitOnChange: false,
+        submitAvailable: true,
+        disableOnSubmit: true,
+        ...newConfig,
+      };
+    },
+  });
+  readonly #newModel = signal<T | null>(null);
+
   protected form = new FormGroup({});
   protected options: FormlyFormOptions = {};
-
-  readonly #newModel = signal<T | null>(null);
 
   ngAfterViewInit(): void {
     this.form.markAsUntouched();
@@ -62,22 +74,17 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   onModelChange(model: T): void {
     this.#newModel.set(model);
     this.pendingChangesEvent.emit(this.form.dirty);
-    if (!this.submitAvailable()) this.emitChange();
-    if (this.submitConfig()?.emitOnChange) this.temporaryChangeEvent.emit(model);
-  }
-
-  private onReset(): void {
-    this.form.reset();
-    this.form.markAsPristine();
-    this.form.markAsUntouched();
+    if (!this.config().submitAvailable) this.emitChange();
+    if (this.config().emitOnChange) this.temporaryChangeEvent.emit(model);
   }
 
   private emitChange(): void {
     if (this.form.valid) {
       this.form.markAsPristine();
       this.form.markAsUntouched();
+      this.pendingChangesEvent.emit(false);
       this.changeEvent.emit(this.#newModel() as T);
-      if (this.submitConfig()?.disableOnSubmit) this.form.disable();
+      if (this.config().disableOnSubmit) this.form.disable();
     }
   }
 }

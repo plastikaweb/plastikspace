@@ -23,6 +23,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
 {
   readonly #sanitizer = inject(DomSanitizer);
   readonly #store = inject(llecoopOrderListStore);
+  readonly #currentOrderList = this.#store.currentOrderList();
   readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
@@ -31,7 +32,6 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     pathToKey: 'name',
     sorting: 'normalizedName',
     sticky: true,
-    cssClasses: ['min-w-[120px]'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
@@ -44,7 +44,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
 
   readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'initQuantity',
-    title: 'Quantitat inicial',
+    title: 'Quantitat',
     pathToKey: 'initQuantity',
     sorting: 'initQuantity',
     cssClasses: ['min-w-[85px]'],
@@ -59,7 +59,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
 
   readonly #initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'initPrice',
-    title: 'Preu inicial',
+    title: 'Preu',
     pathToKey: 'initPrice',
     sorting: 'initPrice',
     cssClasses: ['min-w-[85px]'],
@@ -121,7 +121,7 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
 
   readonly #extraInfo: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'extraInfo',
-    title: 'Comentaris',
+    title: 'Comentaris de El Llevat',
     pathToKey: 'extraInfo',
     sorting: 'extraInfo',
     cssClasses: ['min-w-[250px] px-sm'],
@@ -178,10 +178,10 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     }),
     this.#initQuantity,
     this.#initPrice,
-    this.#finalQuantity,
-    this.#finalPrice,
-    this.#extraInfo,
-    this.#reviewed,
+    ...(this.#currentOrderList?.status !== 'progress' ? [this.#finalQuantity] : []),
+    ...(this.#currentOrderList?.status !== 'progress' ? [this.#finalPrice] : []),
+    ...(this.#currentOrderList?.status !== 'progress' ? [this.#extraInfo] : []),
+    ...(this.#currentOrderList?.status !== 'progress' ? [this.#reviewed] : []),
   ];
 
   getTableDefinition() {

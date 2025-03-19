@@ -38,7 +38,7 @@
   class="flex flex-row justify-between content-center items-end filters-box"
   [fields]="facade.filterFormConfig || []"
   [model]="facade.filterCriteria?.() || {}"
-  [submitAvailable]="false"
+  [submitConfig]="{ submitAvailable: false, disableOnSubmit: false }"
   (changeEvent)="facade.onChangeFilterCriteria($event)">
 </plastik-shared-form-feature>
 

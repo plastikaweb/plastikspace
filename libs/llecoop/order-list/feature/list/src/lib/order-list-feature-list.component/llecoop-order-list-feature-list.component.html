@@ -26,7 +26,7 @@
   class="flex flex-row justify-between content-center items-end filters-box"
   [fields]="facade.filterFormConfig || []"
   [model]="facade.filterCriteria()"
-  [submitAvailable]="false"
+  [submitConfig]="{ submitAvailable: false, disableOnSubmit: false }"
   [autoFocus]="true"
   (changeEvent)="facade.onChangeFilterCriteria($event)">
 </plastik-shared-form-feature>
@@ -54,7 +54,7 @@
   @defer (when !!element) {
     @let totalTableDefinition = facade.totalTableDefinition;
 
-    <div class="flex flex-col justify-between gap-md pt-lg">
+    <div class="flex flex-col justify-between w-full gap-md py-md">
       <h3 class="text-md">Totals de la comanda {{ element.name }}</h3>
       <plastik-shared-table
         [data]="totalTableDefinition.getData?.(element.id) || []"

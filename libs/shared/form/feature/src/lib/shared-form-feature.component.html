@@ -13,19 +13,19 @@
     (modelChange)="onModelChange($event)"></formly-form>
 
   <!-- buttons -->
-  @if (submitAvailable()) {
+  @if (config().submitAvailable) {
     <button
       mat-flat-button
       type="submit"
       class="w-full sm:w-auto"
       data-test="submit-button"
-      [ngClass]="submitConfig()?.buttonStyle || ''"
+      [ngClass]="config().buttonStyle || ''"
       [disabled]="!form.valid">
-      {{ submitConfig()?.label || 'Submit' }}
+      {{ config().label || 'Submit' }}
     </button>
   }
 
-  <div class="flex justify-center pt-0 text-base shared-form--extraLinks-container md:pt-sm">
+  <div class="flex justify-center p-0 text-base shared-form--extraLinks-container">
     <ng-content select=".extraLinks"></ng-content>
   </div>
 </form>

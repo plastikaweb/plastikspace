@@ -99,7 +99,6 @@ export function profileFeatureFormConfig(): FormConfig<LlecoopUser> {
     getConfig: () => getProfileFeatureFormConfig,
     getSubmitFormConfig: () => ({
       label: 'Desar perfil',
-      emitOnChange: true,
     }),
   };
 }

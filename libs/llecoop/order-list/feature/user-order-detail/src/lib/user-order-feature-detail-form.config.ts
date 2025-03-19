@@ -294,8 +294,6 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
     getConfig: () => formConfig,
     getSubmitFormConfig: () => ({
       label: 'Desar comanda',
-      emitOnChange: true,
-      resetOnSubmit: true,
     }),
     getFormFullWidth: true,
   };

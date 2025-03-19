@@ -14,7 +14,7 @@ import { FieldWrapper } from '@ngx-formly/core';
 @Component({
   selector: 'plastik-formly-addons-wrapper',
   templateUrl: './formly-addons-wrapper.component.html',
-  styleUrls: ['./formly-addons-wrapper.component.scss'],
+  styleUrl: './formly-addons-wrapper.component.scss',
   imports: [MatIconModule, MatButtonModule, NgStyle, NgClass],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -93,7 +93,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
     SafeFormattedPipe,
   ],
   templateUrl: './shared-table-ui.component.html',
-  styleUrls: ['./shared-table-ui.component.scss'],
+  styleUrl: './shared-table-ui.component.scss',
   animations: [
     trigger('detailExpand', [
       state('collapsed,void', style({ height: '0px', minHeight: '0' })),
