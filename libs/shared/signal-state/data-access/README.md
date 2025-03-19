@@ -168,6 +168,7 @@ export const productStore = signalStore(
     featureName: 'product',
     dataServiceType: ProductFirebaseService,
     initState,
+    baseRoute: { onCreate: 'product/list', onUpdate: 'product/list', onError: '' },
   })
   // add here specific state or methods for product store
 );
@@ -229,9 +230,11 @@ export class ProductListComponent {
 
 - `getAll()`: Get all entities paginated and filtered.
 - `getItem(id: string)`: Get single entity (redirects to baseRoute if item not found).
-- `create(entity: Partial<T>)`: Create new entity.
-- `update(entity: Partial<T>)`: Update entity.
-- `delete(entity: T)`: Delete entity.
+- `create({ item: Partial<T>, redirectUrl?: string })`: Create new entity.
+- `update({ item: Partial<T>, redirectUrl?: string })`: Update entity.
+- `delete(item: T)`: Delete entity.
+
+> RedirectUrl is optional and is used to navigate after creating or updating an entity. If not provided, the store will navigate to the baseRoute defined in the store configuration.
 
 ### Filtering & Pagination
 

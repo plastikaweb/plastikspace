@@ -22,14 +22,14 @@ export class LlecoopUserCreateFacadeService implements DetailItemViewFacade<Llec
 
   formConfig = userFeatureCreateFormConfig();
 
-  onSubmit(user: Pick<LlecoopUser, 'email'>): void {
-    if (this.#store.entities().some((u: LlecoopUser) => u.email === user.email)) {
+  onSubmit(item: Pick<LlecoopUser, 'email'>): void {
+    if (this.#store.entities().some((u: LlecoopUser) => u.email === item.email)) {
       this.#storeNotificationService.create(
-        `El correu electrònic ${user.email} ja està en la llista d'usuaris`,
+        `El correu electrònic ${item.email} ja està en la llista d'usuaris`,
         'ERROR'
       );
       return;
     }
-    this.#store.create(user);
+    this.#store.create({ item });
   }
 }

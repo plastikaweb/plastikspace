@@ -1,7 +1,10 @@
 import { computed, inject, Injectable, Signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import {
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
 import { formatOrderStatus, formatUserOrderDeliveryDate } from '@plastik/llecoop/order-list/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -18,7 +21,8 @@ export class LlecoopOrderListFeatureDetailTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
   readonly #sanitizer = inject(DomSanitizer);
-  readonly #store = inject(llecoopOrderListStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
 
   readonly #userName: TableColumnFormatting<LlecoopUserOrder, 'TITLE_CASE'> = {
     key: 'userName',
@@ -116,15 +120,31 @@ export class LlecoopOrderListFeatureDetailTableConfig
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
       caption: 'Llistat de comandes',
-      sort: this.#store.selectedItemUserSorting,
-      pagination: this.#store.selectedItemUserPagination,
-      count: computed(() => this.#store.selectedItem()?.orderCount || 0) as Signal<number>,
+      sort: this.#orderListStore.selectedItemUserSorting,
+      pagination: this.#orderListStore.selectedItemUserPagination,
+      filter: this.#orderListStore.selectedItemUserFilter,
       getData: () => {
-        return this.#store.selectedItem()?.orders || [];
+        return this.#orderListStore.selectedItem()?.orders || [];
       },
-      getSelectedItemId: computed(() => this.#store.selectedItemUserOrderId()) as Signal<
+      count: computed(() => this.#orderListStore.selectedItem()?.orderCount || 0) as Signal<number>,
+      getSelectedItemId: computed(() => this.#orderListStore.selectedItemUserOrderId()) as Signal<
         string | null
       >,
+      actions: {
+        SET_DELIVERED: {
+          visible: () => true,
+          disabled: (order: LlecoopUserOrder) => order.status !== 'reviewed',
+          description: () => 'Marcar com a entregada',
+          order: 1,
+          icon: () => 'local_shipping',
+          execute: (order: LlecoopUserOrder) => {
+            this.#userOrderStore.update({
+              item: { ...order, status: 'delivered' },
+              redirectUrl: `./admin/comanda/${order.orderListId}`,
+            });
+          },
+        },
+      },
     } as TableDefinition<LlecoopUserOrder>;
   }
 }

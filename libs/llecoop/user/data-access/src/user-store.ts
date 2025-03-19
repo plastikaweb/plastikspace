@@ -45,7 +45,11 @@ export const userMainInitState: StoreFirebaseCrudState<LlecoopUser, StoreUserFil
     pageLastElements: new Map<number, LlecoopUser>(),
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
-  baseRoute: { onCreate: 'admin/usuari', onUpdate: 'soci/perfil', onError: 'admin/usuari' },
+  baseRoute: {
+    onCreate: 'admin/usuari',
+    onUpdate: 'soci/perfil',
+    onError: 'admin/usuari',
+  },
 };
 
 const specificInitState: SpecificUserStoreFirebaseCrudState = {

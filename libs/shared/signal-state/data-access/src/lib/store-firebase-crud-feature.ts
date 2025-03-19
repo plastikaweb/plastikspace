@@ -293,16 +293,18 @@ export function withFirebaseCrud<
             })
           )
         ),
-        create: rxMethod<Partial<T>>(
+        create: rxMethod<{ item: Partial<T>; redirectUrl?: string }>(
           pipe(
             filter(() => store._activeConnection()),
             tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
-            switchMap((item: Partial<T>) => {
+            switchMap(({ item, redirectUrl }) => {
               return store._dataService.create(item).pipe(
                 tapResponse({
                   next: () => {
                     const baseRoute = store.baseRoute();
-                    const route = typeof baseRoute === 'string' ? baseRoute : baseRoute?.onCreate;
+                    const route =
+                      redirectUrl ||
+                      (typeof baseRoute === 'string' ? baseRoute : baseRoute?.onCreate);
                     router.navigate([route]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
@@ -332,16 +334,18 @@ export function withFirebaseCrud<
             })
           )
         ),
-        update: rxMethod<Partial<T>>(
+        update: rxMethod<{ item: Partial<T>; redirectUrl?: string }>(
           pipe(
             filter(() => store._activeConnection()),
             tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
-            switchMap((item: Partial<T>) => {
+            switchMap(({ item, redirectUrl }) => {
               return store._dataService.update(item).pipe(
                 tapResponse({
                   next: () => {
                     const baseRoute = store.baseRoute();
-                    const route = typeof baseRoute === 'string' ? baseRoute : baseRoute?.onUpdate;
+                    const route =
+                      redirectUrl ||
+                      (typeof baseRoute === 'string' ? baseRoute : baseRoute?.onUpdate);
                     router.navigate([route]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(

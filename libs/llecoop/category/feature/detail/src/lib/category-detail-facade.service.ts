@@ -23,7 +23,7 @@ export class LlecoopCategoryDetailFacadeService
 
   formConfig = categoryFeatureDetailFormConfig();
 
-  onSubmit(data: Partial<LlecoopProductCategory>): void {
-    this.model()?.id ? this.#store.update(data) : this.#store.create(data);
+  onSubmit(item: Partial<LlecoopProductCategory>): void {
+    this.model()?.id ? this.#store.update({ item }) : this.#store.create({ item });
   }
 }
