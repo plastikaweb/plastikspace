@@ -193,7 +193,7 @@ export const llecoopUserOrderStatus: Record<
     class: 'text-warning',
   },
   delivered: {
-    label: 'Cistella entregada',
+    label: 'Entregada',
     icon: 'local_shipping',
     class: 'text-warning',
   },

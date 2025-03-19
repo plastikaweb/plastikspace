@@ -91,7 +91,7 @@ export class LlecoopProductSearchFeatureTableConfig
           order: 1,
           icon: (product: LlecoopProduct) => (!product.isAvailable ? 'cancelled' : 'check_circle'),
           execute: (product: LlecoopProduct) => {
-            this.#store.update({ ...product, isAvailable: !product.isAvailable });
+            this.#store.update({ item: { ...product, isAvailable: !product.isAvailable } });
           },
         },
         EDIT: {

@@ -56,16 +56,18 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
     });
   }
 
-  onSubmit(data: Partial<LlecoopUserOrder>): void {
+  onSubmit(item: Partial<LlecoopUserOrder>): void {
     if (this.model()?.id) {
-      this.#userOrderStore.update(data);
+      this.#userOrderStore.update({ item });
       return;
     }
 
     this.#userOrderStore.create({
-      ...data,
-      orderListId: this.#orderListStore.currentOrderList()?.id || '',
-      name: this.#orderListStore.currentOrderList()?.name || '',
+      item: {
+        ...item,
+        orderListId: this.#orderListStore.currentOrderList()?.id || '',
+        name: this.#orderListStore.currentOrderList()?.name || '',
+      },
     });
   }
 }

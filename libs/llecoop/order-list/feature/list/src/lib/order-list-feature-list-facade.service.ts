@@ -57,7 +57,7 @@ export class LlecoopOrderListFeatureListFacadeService
           .pipe(
             take(1),
             filter(Boolean),
-            tap(() => this.#store.create(this.createOrderList())),
+            tap(() => this.#store.create({ item: this.createOrderList() })),
             tap(() => this.#store.clearAvailableProducts())
           )
           .subscribe();

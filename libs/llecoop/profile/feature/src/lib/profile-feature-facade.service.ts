@@ -22,7 +22,7 @@ export class LlecoopProfileFeatureFacadeService implements DetailItemViewFacade<
 
   formConfig = profileFeatureFormConfig();
 
-  onSubmit(data: Partial<LlecoopUser>): void {
-    this.#store.update(data);
+  onSubmit(item: Partial<LlecoopUser>): void {
+    this.#store.update({ item });
   }
 }
