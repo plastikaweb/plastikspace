@@ -1,9 +1,11 @@
+import { Moment } from 'moment';
+
 import {
   ChangeDetectionStrategy,
   Component,
+  forwardRef,
   Input,
   ViewEncapsulation,
-  forwardRef,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -19,7 +21,6 @@ import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Moment } from 'moment';
 
 export const YEAR_MODE_FORMATS = {
   parse: {
@@ -59,7 +60,7 @@ export const YEAR_MODE_FORMATS = {
     },
   ],
   templateUrl: './year-picker.component.html',
-  styleUrls: ['./year-picker.component.scss'],
+  styleUrl: './year-picker.component.scss',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

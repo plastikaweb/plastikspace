@@ -22,7 +22,7 @@ export function createFirebaseTimestampTableColumn<T extends BaseEntity>(
     TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'>,
     'key' | 'title' | 'pathToKey' | 'cssClasses'
   >,
-  dateDigitsInfo = 'dd/MM/yyyy HH:mm:ss'
+  dateDigitsInfo = 'dd/MM/yyyy HH:mm'
 ): TableColumnFormatting<T, 'FIREBASE_TIMESTAMP'> {
   return {
     key,

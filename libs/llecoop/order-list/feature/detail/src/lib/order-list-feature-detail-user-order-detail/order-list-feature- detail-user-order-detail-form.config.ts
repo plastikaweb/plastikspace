@@ -3,6 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 import { FormConfig } from '@plastik/core/entities';
 import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
+import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 
 import { LlecoopOrderListFeatureDetailUserOrderDetailTableConfig } from './order-list-feature-detail-user-order-detail-table.config';
 
@@ -10,6 +11,7 @@ import { LlecoopOrderListFeatureDetailUserOrderDetailTableConfig } from './order
   providedIn: 'root',
 })
 export class OrderListFeatureDetailUserOrderDetailFormConfig {
+  readonly #store = inject(llecoopOrderListStore);
   readonly #tableColumnProperties = inject(LlecoopOrderListFeatureDetailUserOrderDetailTableConfig);
   readonly #config = [
     {
@@ -42,6 +44,7 @@ export class OrderListFeatureDetailUserOrderDetailFormConfig {
       getSubmitFormConfig: () => ({
         label: 'Desar comanda',
         emitOnChange: true,
+        submitAvailable: this.#store.currentOrderList()?.status !== 'progress',
       }),
     };
   }

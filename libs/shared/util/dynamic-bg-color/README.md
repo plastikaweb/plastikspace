@@ -21,7 +21,7 @@ import { SharedUtilDynamicBgColorDirective } from '@plastik/shared/dynamic-bg-co
   imports: [SharedUtilDynamicBgColorDirective],
   selector: 'exp-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {}
 ```

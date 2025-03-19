@@ -7,8 +7,8 @@ export interface DetailItemViewFacade<T extends BaseEntity> {
   hideBackBtn?: Signal<boolean>;
   formConfig: FormConfig<T>;
   model?: Signal<T | null>;
-  onSubmit(data: object): void;
-  onChange?(data: object): void;
+  onSubmit(data: Partial<T>): void;
+  onFormTemporaryChange?(data: Partial<T>): void;
 }
 
 export type ExtraFormButtonAction<T> = {

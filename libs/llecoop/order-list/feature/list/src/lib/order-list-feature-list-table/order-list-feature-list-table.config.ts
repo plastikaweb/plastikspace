@@ -126,7 +126,6 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
         },
         EDIT: {
           visible: () => true,
-          disabled: order => order.status === 'waiting',
           description: order => `Edita les comandes de ${order.name}`,
           order: 2,
         },

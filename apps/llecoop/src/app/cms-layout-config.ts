@@ -46,7 +46,7 @@ export function viewConfig() {
       {
         id: 4,
         name: 'order-list',
-        title: 'Comandes',
+        title: 'Comandes per setmana',
         icon: 'shopping_bag',
         route: [`/admin/comanda`],
         includedInNavigation: isAdmin(),
