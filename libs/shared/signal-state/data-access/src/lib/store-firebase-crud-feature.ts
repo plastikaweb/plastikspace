@@ -107,7 +107,7 @@ export function withFirebaseCrud<
     ),
     withProps(() => ({
       _storeNotificationService: inject(StoreNotificationService),
-      _currentUser: inject(FirebaseAuthService).currentUser(),
+      _currentUser: inject(FirebaseAuthService).currentUser,
       _dataService: inject(dataServiceType) as S,
       _state: inject(Store),
     })),
@@ -275,7 +275,7 @@ export function withFirebaseCrud<
                       `[${featureName}] get item with id ${id}`,
                       setEntity(item, { selectId: entity => entity.id || '' }),
                       {
-                        selectedItemId: item.id || '',
+                        selectedItemId: item.id || null,
                         initiallyLoaded: false,
                       }
                     );
@@ -471,15 +471,12 @@ export function withFirebaseCrud<
           previousFilter = currentFilter;
         });
 
-        effect(onCleanup => {
-          if (!store._currentUser) {
+        effect(() => {
+          if (!store._currentUser()) {
             store.destroy();
           } else if (!store._activeConnection()) {
             store.setActive(true);
           }
-          onCleanup(() => {
-            console.log(`${featureName} cleanup`);
-          });
         });
       },
     })

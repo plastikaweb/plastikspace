@@ -89,7 +89,7 @@ export class LlecoopProductSearchFeatureTableConfig
           visible: () => true,
           description: () => 'Canviar la disponibilitat del producte',
           order: 1,
-          icon: (product: LlecoopProduct) => (!product.isAvailable ? 'cancel' : 'check_circle'),
+          icon: (product: LlecoopProduct) => (!product.isAvailable ? 'cancelled' : 'check_circle'),
           execute: (product: LlecoopProduct) => {
             this.#store.update({ ...product, isAvailable: !product.isAvailable });
           },

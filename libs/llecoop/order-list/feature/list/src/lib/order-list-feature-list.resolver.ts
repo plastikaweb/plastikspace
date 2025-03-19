@@ -15,6 +15,8 @@ export const orderListFeatureListResolver: ResolveFn<
   const previousUrl = router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
 
   orderListStore.setSelectedItemId(null);
+  orderListStore.setSelectedItemUserOrderId(null);
+  orderListStore.setSelectedItemCartLoaded(false);
 
   if (!previousUrl?.startsWith('/admin/comanda') || !orderListStore.initiallyLoaded()) {
     orderListStore.resetTableConfig(

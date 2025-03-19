@@ -6,7 +6,7 @@ import {
   ExtraFormAction,
   ExtraFormTextAction,
 } from '@plastik/core/detail-edit-view';
-import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
@@ -37,7 +37,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
 
   viewConfig = computed(() => ({
     ...this.#view,
-    title: `Comanda #${this.#orderListStore.currentOrderList()?.name}` || 'Nova comanda',
+    title: `Comanda #${this.#userOrderStore.selectedItem()?.name}` || 'Nova comanda',
   }));
 
   formConfig = userOrderFeatureDetailFormConfig();
@@ -67,9 +67,5 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
       orderListId: this.#orderListStore.currentOrderList()?.id || '',
       name: this.#orderListStore.currentOrderList()?.name || '',
     });
-  }
-
-  private calculateTotalPrice(cart: LlecoopOrderProduct[]): number {
-    return cart.reduce((acc, product) => acc + product.initPrice, 0);
   }
 }

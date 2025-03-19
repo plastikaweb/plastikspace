@@ -1,5 +1,5 @@
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { patchState, signalStore, withMethods, withState } from '@ngrx/signals';
+import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { signalStore, withMethods, withState } from '@ngrx/signals';
 import { Notification } from '@plastik/shared/notification/entities';
 
 export interface NotificationState {
@@ -16,13 +16,13 @@ export const notificationStore = signalStore(
   }),
   withMethods(store => ({
     show: (configuration: Notification, preserveOnRouteRequest?: boolean) => {
-      patchState(store, {
+      updateState(store, `[notification] show`, {
         configuration,
         preserveOnRouteRequest: preserveOnRouteRequest ?? false,
       });
     },
     dismiss: () => {
-      patchState(store, {
+      updateState(store, `[notification] dismiss`, {
         configuration: null,
         preserveOnRouteRequest: false,
       });

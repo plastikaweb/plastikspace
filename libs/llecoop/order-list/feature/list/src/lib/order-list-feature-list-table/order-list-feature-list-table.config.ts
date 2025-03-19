@@ -133,7 +133,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
         CANCEL: {
           visible: () => true,
           disabled: (order: LlecoopOrder) =>
-            order.status === 'cancel' ||
+            order.status === 'cancelled' ||
             order.status === 'waiting' ||
             order.status === 'done' ||
             (order.status !== 'progress' && order.orderCount > 0),
@@ -160,7 +160,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
         },
         DELETE: {
           visible: () => true,
-          disabled: order => order.status !== 'waiting' && order.status !== 'cancel',
+          disabled: order => order.status !== 'waiting' && order.status !== 'cancelled',
           description: order => `Elimina la comanda ${order.name}`,
           order: 4,
         },

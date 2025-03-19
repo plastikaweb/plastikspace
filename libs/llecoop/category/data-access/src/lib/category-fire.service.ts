@@ -1,4 +1,4 @@
-import { catchError, distinctUntilChanged, map, Observable, of, takeUntil, throwError } from 'rxjs';
+import { catchError, distinctUntilChanged, map, Observable, takeUntil, throwError } from 'rxjs';
 
 import { Injectable } from '@angular/core';
 import { collectionData, query, QueryConstraint, where } from '@angular/fire/firestore';
@@ -36,7 +36,7 @@ export class LlecoopCategoryFireService extends EntityFireService<LlecoopProduct
     try {
       const firestoreCollection = this.firestoreCollection;
       if (!firestoreCollection) {
-        return of([]);
+        return throwError(() => new Error('No collection available'));
       }
 
       const postCollection = query(firestoreCollection);

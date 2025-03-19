@@ -39,7 +39,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
   }
 
   private setCollection(item: LlecoopUserOrder): void {
-    if (!this.collection && this.activeConnection()) {
+    if (this.activeConnection()) {
       this.collection = collection(
         this.firestore,
         `order-list/${item.orderListId}/orders`

@@ -174,7 +174,7 @@ export const llecoopLayoutRoutes: Routes = [
               ),
           },
           {
-            path: 'comanda/resum/:id',
+            path: 'comanda/:id/resum',
             loadChildren: () =>
               import('@plastik/llecoop/user-order/resume').then(
                 routes => routes.llecoopUserOrderFeatureResumeRoutes
