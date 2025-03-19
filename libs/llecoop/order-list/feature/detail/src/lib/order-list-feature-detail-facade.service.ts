@@ -61,7 +61,7 @@ export class LlecoopOrderListFeatureDetailFacadeService
   }
 
   onSaveUserOrder(model: Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>): void {
-    this.#userOrderStore.update({ ...model, status: 'review' });
+    this.#userOrderStore.update({ ...model, status: 'reviewed' });
   }
 
   private setTitle(order: LlecoopOrder | null): string {

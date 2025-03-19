@@ -1,4 +1,4 @@
-import { combineLatest, filter, map } from 'rxjs';
+import { combineLatest, map } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -15,21 +15,10 @@ export const isAnActiveOrderListGuard: CanActivateFn = () => {
 
   const currentUserOrder = toObservable(userOrderStore.currentUserOrder);
   const currentOrderList = toObservable(orderListStore.currentOrderList);
-  const currentOrderListInitialLoaded = toObservable(orderListStore.currentOrderListInitialLoaded);
-  const currentUserOrderInitialLoaded = toObservable(userOrderStore.currentUserOrderInitialLoaded);
 
-  return combineLatest([
-    currentUserOrder,
-    currentOrderList,
-    currentOrderListInitialLoaded,
-    currentUserOrderInitialLoaded,
-  ]).pipe(
-    filter(
-      ([, , orderListInitialLoaded, currentUserOrderInitialLoaded]) =>
-        orderListInitialLoaded && currentUserOrderInitialLoaded
-    ),
+  return combineLatest([currentUserOrder, currentOrderList]).pipe(
     map(([currentUserOrder, currentOrderList]) => {
-      if (!currentUserOrder && currentOrderList) {
+      if (!currentUserOrder && !!currentOrderList) {
         return true;
       }
       return new RedirectCommand(router.parseUrl('/soci/comanda'));

@@ -37,7 +37,16 @@ export type LlecoopOrderProductTotal = Pick<
 export interface LlecoopOrder extends BaseEntity {
   initTime?: Date;
   endTime?: Date;
-  status: 'waiting' | 'progress' | 'cancel' | 'done';
+  /**
+   * @description The status of the order
+   * 'waiting' means the order is waiting for the admin to review it
+   * 'progress' means the order is being opened and processed by the admin
+   * 'cancelled' means the order has been cancelled by the admin
+   * 'done' means the order has been closed and completed because the due date has passed
+   * @type {'waiting' | 'progress' | 'cancelled' | 'done'}
+   * @default 'waiting'
+   */
+  status: 'waiting' | 'progress' | 'cancelled' | 'done';
   availableProducts: LlecoopOrderProduct[];
   orderCount: number;
   orders?: LlecoopUserOrder[];
@@ -61,7 +70,18 @@ export interface LlecoopUserOrder extends BaseEntity {
   orderListId: EntityId | string;
   userId: EntityId;
   userEmail?: string;
-  status: 'waiting' | 'review' | 'deliver' | 'cancel' | 'miss';
+  /**
+   * @description The status of the order
+   * 'waiting' means the order is waiting for the admin to review it
+   * 'reviewed' means the order has been reviewed by the admin
+   * 'delivered' means the order has been delivered to the user by the admin
+   * 'cancelled' means the order has been cancelled by the user
+   * 'notReviewed' means the order has not been reviewed by the admin
+   * 'notDelivered' means the order has not been delivered by the admin
+   * @type {'waiting' | 'reviewed' | 'delivered' | 'cancelled' | 'notReviewed' | 'notDelivered'}
+   * @default 'waiting'
+   */
+  status: 'waiting' | 'reviewed' | 'delivered' | 'cancelled' | 'notReviewed' | 'notDelivered';
 }
 
 export const llecoopUserOrderTimeOptions: Record<
@@ -146,7 +166,7 @@ export const llecoopOrderStatus: Record<
     icon: 'sync',
     class: 'text-warning',
   },
-  cancel: {
+  cancelled: {
     label: 'Cancel·lada',
     icon: 'cancel',
     class: 'text-error',
@@ -167,23 +187,28 @@ export const llecoopUserOrderStatus: Record<
     icon: 'hourglass_empty',
     class: 'text-info',
   },
-  review: {
+  reviewed: {
     label: 'Cistella feta',
     icon: 'sync',
     class: 'text-warning',
   },
-  deliver: {
+  delivered: {
     label: 'Cistella entregada',
     icon: 'local_shipping',
     class: 'text-warning',
   },
-  cancel: {
+  cancelled: {
     label: 'Cancel·lada',
     icon: 'cancel',
     class: 'text-error',
   },
-  miss: {
+  notReviewed: {
     label: 'No revisada',
+    icon: 'error',
+    class: 'text-error',
+  },
+  notDelivered: {
+    label: 'No entregada',
     icon: 'error',
     class: 'text-error',
   },

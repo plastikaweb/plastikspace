@@ -37,6 +37,7 @@ export type OrderListStoreFirebaseCrudState = StoreFirebaseCrudState<
   selectedItemUserOrderId: EntityId | null;
   currentOrderList: LlecoopOrder | null;
   currentOrderListInitialLoaded: boolean;
+  selectedItemCartLoaded: boolean;
   selectedItemUserFilter: StoreOrderListFilter;
   selectedItemUserSorting: TableSortingConfig;
   selectedItemUserPagination: StoreFirebaseCrudPagination<LlecoopUserOrder>;
@@ -66,6 +67,7 @@ const specificInitState: SpecificOrderListStoreFirebaseCrudState = {
   selectedItemUserOrderId: null,
   currentOrderList: null,
   currentOrderListInitialLoaded: false,
+  selectedItemCartLoaded: false,
   selectedItemUserFilter: { text: '' },
   selectedItemUserSorting: ['userName', 'desc'],
   selectedItemUserPagination: {
@@ -147,7 +149,7 @@ export const llecoopOrderListStore = signalStore(
             'SUCCESS'
           );
 
-          return store._dataService.update({ ...order, status: 'cancel' }).pipe(
+          return store._dataService.update({ ...order, status: 'cancelled' }).pipe(
             tapResponse({
               next: () =>
                 store._storeNotificationService.create(
@@ -187,7 +189,10 @@ export const llecoopOrderListStore = signalStore(
                 updateState(
                   store,
                   `[order-list] get orders for selected order list with id ${id}`,
-                  updateEntity({ id, changes: { orders } }, { selectId })
+                  updateEntity({ id, changes: { orders } }, { selectId }),
+                  {
+                    selectedItemCartLoaded: true,
+                  }
                 );
 
                 const pageLastElements = store
@@ -223,9 +228,9 @@ export const llecoopOrderListStore = signalStore(
         switchMap(() => {
           return store._dataService.getCurrentOrderList().pipe(
             tapResponse({
-              next: currentOrderList =>
+              next: orderList =>
                 updateState(store, `[order-list] get current order List`, {
-                  currentOrderList,
+                  currentOrderList: orderList || null,
                   currentOrderListInitialLoaded: true,
                 }),
               error: error => {
@@ -269,6 +274,10 @@ export const llecoopOrderListStore = signalStore(
       updateState(store, `[order-list] set selected User Order id`, {
         selectedItemUserOrderId: id,
       }),
+    setSelectedItemCartLoaded: (loaded: boolean) =>
+      updateState(store, `[order-list] set selected order list cart loaded`, {
+        selectedItemCartLoaded: loaded,
+      }),
     setSelectedItemUserFilter: (filter: StoreOrderListFilter) =>
       updateState(store, `[order-list] update selected order List filter`, {
         selectedItemUserFilter: filter,
@@ -301,19 +310,17 @@ export const llecoopOrderListStore = signalStore(
   })),
   withHooks({
     onInit(store) {
-      let previousSelectedItemId = store.selectedItemId();
       let previousSelectedItemUserFilter = store.selectedItemUserFilter();
       let previousSelectedItemUserSorting = store.selectedItemUserSorting();
       let previousSelectedItemUserPagination = store.selectedItemUserPagination();
-
+      console.log('order-list onInit');
       watchState(store, () => {
-        const currentSelectedItemId = store.selectedItemId();
         const currentSelectedItemUserFilter = store.selectedItemUserFilter();
         const currentSelectedItemUserSorting = store.selectedItemUserSorting();
         const currentSelectedItemUserPagination = store.selectedItemUserPagination();
         if (
           store._activeConnection() &&
-          (currentSelectedItemId !== previousSelectedItemId ||
+          ((store.selectedItemId() && !store.selectedItemCartLoaded()) ||
             currentSelectedItemUserFilter !== previousSelectedItemUserFilter ||
             currentSelectedItemUserSorting !== previousSelectedItemUserSorting ||
             currentSelectedItemUserPagination.pageIndex !==
@@ -324,19 +331,15 @@ export const llecoopOrderListStore = signalStore(
           store.getAllOrderListOrders();
         }
 
-        previousSelectedItemId = currentSelectedItemId;
         previousSelectedItemUserFilter = currentSelectedItemUserFilter;
         previousSelectedItemUserSorting = currentSelectedItemUserSorting;
         previousSelectedItemUserPagination = currentSelectedItemUserPagination;
       });
 
-      effect(onCleanup => {
+      effect(() => {
         if (store._activeConnection() && !store.currentOrderListInitialLoaded()) {
           store.getCurrentOrderList();
         }
-        onCleanup(() => {
-          console.log('order-list getCurrentOrderList cleanup');
-        });
       });
     },
   })

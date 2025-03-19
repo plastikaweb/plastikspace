@@ -5,6 +5,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
+  llecoopOrderListStore,
   llecoopUserOrderStore,
   StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
@@ -21,7 +22,8 @@ import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-t
 export class LlecoopUserOrderListFacadeService
   implements TableWithFilteringFacade<LlecoopUserOrder, StoreUserOrderFilter>
 {
-  readonly #store = inject(llecoopUserOrderStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
@@ -29,8 +31,11 @@ export class LlecoopUserOrderListFacadeService
   routingToDetailPage = computed(() => {
     return {
       visible: true,
-      label: 'Fer comanda setmanal',
-      disabled: !!this.#store.currentUserOrder(),
+      label: !this.#userOrderStore.currentUserOrder()
+        ? 'Fer comanda setmanal'
+        : 'Editar comanda setmanal',
+      disabled: !this.#orderListStore.currentOrderList(),
+      path: [`./${this.#userOrderStore.currentUserOrder()?.id}` || ''],
     };
   });
   viewExtraActions?:
@@ -45,18 +50,18 @@ export class LlecoopUserOrderListFacadeService
     | undefined;
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopUserOrderSearchFeatureFormConfig();
-  filterCriteria = this.#store.filter;
+  filterCriteria = this.#userOrderStore.filter;
 
   onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
-    this.#store.setFilter(criteria);
+    this.#userOrderStore.setFilter(criteria);
   }
 
   onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>): void {
-    this.#store.setPagination(pagination);
+    this.#userOrderStore.setPagination(pagination);
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#store.setSorting([active, direction]);
+    this.#userOrderStore.setSorting([active, direction]);
   }
 
   onTableActionDelete(item: LlecoopUserOrder): void {
@@ -69,7 +74,7 @@ export class LlecoopUserOrderListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#store.delete(item));
+        .subscribe(() => this.#userOrderStore.delete(item));
     }
   }
 }

@@ -1,7 +1,7 @@
 import moment from 'moment';
 import { filter, take, tap } from 'rxjs';
 
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
@@ -33,7 +33,7 @@ export class LlecoopOrderListFeatureListFacadeService
 
   viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order-list')[0]);
   routingToDetailPage = signal({ visible: false });
-  viewExtraActions = signal([
+  viewExtraActions = computed(() => [
     {
       label: 'Iniciar comanda',
       icon: 'add',

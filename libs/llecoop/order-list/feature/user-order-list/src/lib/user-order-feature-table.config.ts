@@ -34,7 +34,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     link: (userOrder?: LlecoopUserOrder) => {
       return userOrder && this.checkIfOrderIsDone(userOrder)
-        ? `./resum/${userOrder?.id}`
+        ? `./${userOrder?.id}/resum`
         : `./${userOrder?.id}`;
     },
     formatting: {
@@ -121,7 +121,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
           description: () => 'Resum de la comanda',
           order: 1,
           icon: () => 'visibility',
-          link: (userOrder: LlecoopUserOrder) => `resum/${userOrder?.id}`,
+          link: (userOrder: LlecoopUserOrder) => `${userOrder?.id}/resum`,
         },
         EDIT: {
           visible: () => true,
