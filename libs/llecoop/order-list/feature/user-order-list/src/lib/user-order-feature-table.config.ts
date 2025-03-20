@@ -93,7 +93,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
       return this.#orderDoneStatusCache.get(cacheKey) as boolean;
     }
 
-    const isDone = this.#orderListStore?.entityMap()?.[order.orderListId]?.status === 'done';
+    const status = this.#orderListStore?.entityMap()?.[order.orderListId]?.status;
+    const isDone = status === 'done' || status === 'cancelled';
     this.#orderDoneStatusCache.set(cacheKey, isDone);
 
     return isDone;
