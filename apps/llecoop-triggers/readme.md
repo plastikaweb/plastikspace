@@ -9,9 +9,9 @@
   - [Available triggers](#available-triggers)
     - [Category](#category)
     - [Product](#product)
-    - [List Order](#list-order)
-    - [User Order](#user-order)
     - [User](#user)
+    - [Order List](#order-list)
+    - [User Order](#user-order)
 
 ## Deploy Llecoop Functions to Firebase Cloud Functions
 
@@ -56,25 +56,28 @@ See the plugin [README](https://github.com/simondotm/nx-firebase/blob/main/READM
 - `onDeleteProductUpdateCategoryProductCount`: Updates category product count when a product is deleted.
 - `onUpdateProductCategoryUpdateCategoryProductCount`: Updates category product count when product category changes.
 
-### List Order
-
-- `onListOrderTimeFinishUpdateListOrderState`: Updates order list state based on finish time.
-- `onUserOrderCreatedUpdateListOrderUserOrdersCount`: Updates order list user orders count when a new order is created.
-- `onUserOrderDeletedUpdateListOrderUserOrdersCount`: Updates order list user orders count when an order is deleted.
-
-### User Order
-
-- `onChangeUserOrderUpdateOrderListTotal`: Updates order list totals when an order changes.
-- `onCreateUserOrderCheckIfAnUserOrderExists`: Validates if a user order already exists before creation.
-
 ### User
 
+- `onRequestRegisterUserBlockIfUserIsNotWhiteListed`: Blocks registration if user email is not whitelisted.
+- `onLoginUserUpdateVerifiedEmailProperty`: Updates email verification status on user login.
+- `setUserAdminClaim`: Sets admin claim for a user and updates Firestore document.
 - `onCreateWhiteListedUserCheckIfUserAlreadyExists`: Validates new user creation against existing Auth users.
 - `onDeleteUserDeleteUserFromAuth`: Removes user from Firebase Auth when Firestore document is deleted.
-- `onLoginUserUpdateVerifiedEmailProperty`: Updates email verification status on user login.
-- `onRequestRegisterUserBlockIfUserIsNotWhiteListed`: Blocks registration if user email is not whitelisted.
 - `onUpdateUserUpdateAuth`: Updates Firebase Auth user data when Firestore document changes.
   - Updates basic info (name, photo, phone).
   - Handles email changes with verification.
   - Formats phone numbers to E.164 standard.
-- `setUserAdminClaim`: Sets admin claim for a user and updates Firestore document.
+
+### Order List
+
+- `onOrderListTimeFinishUpdateOrderListState`: Updates order list state based on finish time.
+- `onUserOrderCreatedUpdateOrderListUserOrdersCount`: Updates order list user orders count when a new order is created.
+- `onUserOrderDeletedUpdateOrderListUserOrdersCount`: Updates order list user orders count when an order is deleted.
+- `onUserOrderStatusUpdateUpdateOrderListUserOrdersStatus`: Updates order list user orders status when an order status changes.
+
+### User Order
+
+- `onCreateUserOrderCheckIfAnUserOrderExists`: Validates if a user order already exists before creation.
+- `onChangeUserOrderUpdateOrderListTotal`: Updates order list totals when an order changes.
+- `onCancelOrderListCancelRelatedUserOrdersStatus`: When an order list is canceled, it updates the related user orders status.
+- `onDeleteOrderListDeleteRelatedUserOrders`: When an order list is deleted, it deletes all related user orders.

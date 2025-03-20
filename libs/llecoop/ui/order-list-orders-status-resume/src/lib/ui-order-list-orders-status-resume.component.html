@@ -1,0 +1,15 @@
+@if (ordersStatus(); as status) {
+  <ul class="flex flex-wrap text-sm" [attr.aria-label]="'Estat de les comandes de ' + orderName()">
+    @for (item of status | keyvalue: compareOrderStatus; track item.key) {
+      @let class = getStatusClass(item.key);
+      @let icon = getIcon(item.key);
+      @let label = getStatusLabel(item.key);
+
+      <li class="flex justify-start items-start border-none gap-tiny" [ngClass]="class">
+        <mat-icon class="size-[20px] text-[20px]" [attr.aria-label]="label">{{ icon }}</mat-icon>
+        <span>{{ label }}</span>
+        <span class="font-bold">{{ item.value }}</span>
+      </li>
+    }
+  </ul>
+}
