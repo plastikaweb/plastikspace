@@ -35,6 +35,7 @@ export type LlecoopOrderProductTotal = Pick<
 };
 
 export interface LlecoopOrder extends BaseEntity {
+  name: YearWeek;
   initTime?: Date;
   endTime?: Date;
   /**
@@ -51,7 +52,9 @@ export interface LlecoopOrder extends BaseEntity {
   orderCount: number;
   orders?: LlecoopUserOrder[];
   total?: LlecoopOrderProductTotal[];
-  name: YearWeek;
+  userOrdersStatus?: {
+    [key in LlecoopUserOrder['status']]: number;
+  };
 }
 
 export interface LlecoopUserOrder extends BaseEntity {
@@ -195,7 +198,7 @@ export const llecoopUserOrderStatus: Record<
   delivered: {
     label: 'Entregada',
     icon: 'local_shipping',
-    class: 'text-warning',
+    class: 'text-success',
   },
   cancelled: {
     label: 'Cancel·lada',

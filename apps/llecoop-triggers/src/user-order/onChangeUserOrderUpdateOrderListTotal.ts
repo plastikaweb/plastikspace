@@ -51,7 +51,7 @@ const calculateTotal = (orderListData: FirebaseFirestore.QuerySnapshot) => {
   }, []);
 };
 
-export default async (snapshot, context) => {
+export default async context => {
   functions.logger.debug(`Running update total trigger for ${context.params.orderListId}`);
 
   const orderListOrdersGroup = firestore

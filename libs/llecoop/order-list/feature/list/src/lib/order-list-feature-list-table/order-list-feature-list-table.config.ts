@@ -3,6 +3,7 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
+import { UiOrderListOrdersStatusResumeComponent } from '@plastik/llecoop/order-list-orders-status-resume';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { formatOrderStatus } from '@plastik/llecoop/order-list/util';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
@@ -56,6 +57,26 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     },
   };
 
+  readonly #userOrdersStatus: TableColumnFormatting<LlecoopOrder, 'COMPONENT'> = {
+    key: 'userOrdersStatus',
+    title: 'Estat de les comandes',
+    pathToKey: 'userOrdersStatus',
+    sorting: 'userOrdersStatus',
+    cssClasses: ['flex min-w-[180px]'],
+    formatting: {
+      type: 'COMPONENT',
+      execute: (_, element) => {
+        return {
+          component: UiOrderListOrdersStatusResumeComponent,
+          inputs: {
+            orderName: element?.name,
+            ordersStatus: element?.userOrdersStatus,
+          },
+        };
+      },
+    },
+  };
+
   readonly #availableProducts: TableColumnFormatting<LlecoopOrder, 'CUSTOM'> = {
     key: 'availableProducts',
     title: 'Productes inclosos',
@@ -75,6 +96,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     this.#endTime,
     this.#availableProducts,
     this.#orderCount,
+    this.#userOrdersStatus,
     this.#createdAt,
   ];
 

@@ -69,6 +69,7 @@ This is a list of all the related libraries to llecoop app.
 - [llecoop-user-order-feature-list](../../libs/llecoop/order-list/feature/user-order-list/README.md)
 - [llecoop-user-order-feature-resume](../../libs/llecoop/order-list/feature/user-order-resume/README.md)
 - [llecoop-order-indicator](../../libs/llecoop/order-list/feature/llecoop-order-indicator/README.md)
+- [ui-order-list-orders-status-resume](../../libs/llecoop/ui/order-list-orders-status-resume/README.md)
 
 ### Product
 

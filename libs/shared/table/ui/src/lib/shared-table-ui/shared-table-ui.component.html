@@ -257,7 +257,7 @@
     @if (expandable()) {
       <ng-container matColumnDef="expand" sticky="true">
         <mat-header-cell *matHeaderCellDef aria-label="row" class="max-w-[70px]" aria-hidden="true"
-          >&nbsp;</mat-header-cell
+          ><span class="invisible">expand</span></mat-header-cell
         >
         <mat-cell *matCellDef="let element" class="max-w-[70px]">
           <button
