@@ -122,6 +122,7 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
   getLoggedUser(): Observable<LlecoopUser> {
     try {
       const userId = this.#firebaseAuthService.currentUser()?.uid;
+
       if (!userId) {
         throw new Error('User not authenticated');
       }

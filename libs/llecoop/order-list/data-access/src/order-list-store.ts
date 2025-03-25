@@ -313,7 +313,7 @@ export const llecoopOrderListStore = signalStore(
       let previousSelectedItemUserFilter = store.selectedItemUserFilter();
       let previousSelectedItemUserSorting = store.selectedItemUserSorting();
       let previousSelectedItemUserPagination = store.selectedItemUserPagination();
-      console.log('order-list onInit');
+
       watchState(store, () => {
         const currentSelectedItemUserFilter = store.selectedItemUserFilter();
         const currentSelectedItemUserSorting = store.selectedItemUserSorting();
