@@ -54,6 +54,7 @@ export const userOrderMainInitState: StoreFirebaseCrudState<
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
   baseRoute: '/soci/comanda',
+  _adminOnly: false,
 };
 
 const specificInitState: SpecificUserOrderListStoreFirebaseCrudState = {

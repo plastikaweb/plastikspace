@@ -119,6 +119,7 @@ export const initState: StoreFirebaseCrudState<Product, StoreProductFilter> = {
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
   baseRoute: 'product/list',
+  _adminOnly: true,
 };
 ```
 
@@ -225,6 +226,7 @@ export class ProductListComponent {
 - `filter()`: Get filter state.
 - `pagination()`: Get pagination state.
 - `sorting()`: Get sorting state.
+- `_adminOnly()`: Instructs store to get the collection entities only if the user is an admin. Set to `false` to disable this feature and allow all users to access the collection. Default is `true`.
 
 ### CRUD Operations
 

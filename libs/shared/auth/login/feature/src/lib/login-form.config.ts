@@ -44,6 +44,7 @@ export function loginFormConfig(): FormConfig<LoginData> {
     getSubmitFormConfig: () => ({
       label: 'Iniciar sessió',
       buttonStyle: 'w-full sm:w-full',
+      disableOnSubmit: false,
     }),
   };
 }

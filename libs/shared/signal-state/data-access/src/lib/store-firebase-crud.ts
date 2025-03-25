@@ -19,17 +19,8 @@ export type StoreFirebaseCrudState<T extends BaseEntity, F extends StoreFirebase
   count: number;
   showNotification: boolean;
   baseRoute: string | { onCreate: string; onUpdate: string; onError: string };
+  _adminOnly: boolean;
 };
-
-/**
- * @description The base state for a signal store feature to implement entity CRUD operations with Firebase.
- * @template T The type of the entity.
- * @template F The type of the filter.
- */
-export type StoreFirebaseCrudStateBase = Pick<
-  StoreFirebaseCrudState<BaseEntity, StoreFirebaseCrudFilter>,
-  'initiallyLoaded' | '_lastUpdated' | 'selectedItemId' | 'count' | 'showNotification'
->;
 
 /**
  * @description The pagination state for a signal store feature to implement entity CRUD operations with Firebase.

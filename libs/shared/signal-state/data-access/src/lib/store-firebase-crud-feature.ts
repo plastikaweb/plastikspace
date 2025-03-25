@@ -50,6 +50,7 @@ export type StoreFirebaseCrudFeature<
  * @param {StoreFirebaseCrudPagination<T>} [pagination] The initial pagination state with pageIndex=0, pageSize=10 and empty pageLastElements.
  * @param {TableSortingConfig} [sorting] The initial sorting state.
  * @param {StoreFirebaseCrudState<T, F>['baseRoute']} [baseRoute] The base route for the feature used to navigate to the entity list, f.e. after creating or updating an entity.
+ * @param {StoreFirebaseCrudState<T, F>['_adminOnly']} [_adminOnly] The initial admin only state.
  * @returns {StoreFirebaseCrudState<T, F>} The initial state for the signal store feature.
  */
 export function initStoreFirebaseCrudState<T extends BaseEntity, F extends StoreFirebaseCrudFilter>(
@@ -60,7 +61,8 @@ export function initStoreFirebaseCrudState<T extends BaseEntity, F extends Store
     pageLastElements: new Map<number, T>(),
   },
   sorting: TableSortingConfig = ['updatedAt', 'desc'] as TableSortingConfig,
-  baseRoute: StoreFirebaseCrudState<T, F>['baseRoute'] = ''
+  baseRoute: StoreFirebaseCrudState<T, F>['baseRoute'] = '',
+  _adminOnly: StoreFirebaseCrudState<T, F>['_adminOnly'] = true
 ): StoreFirebaseCrudState<T, F> {
   return {
     initiallyLoaded: false,
@@ -73,6 +75,7 @@ export function initStoreFirebaseCrudState<T extends BaseEntity, F extends Store
     pagination,
     sorting,
     baseRoute,
+    _adminOnly,
   };
 }
 
@@ -84,9 +87,6 @@ export function initStoreFirebaseCrudState<T extends BaseEntity, F extends Store
  * @param {StoreFirebaseCrudFeature<T, S, F>} options The configuration options
  * @param {string} options.featureName The name of the feature.
  * @param {Type<S>} options.dataServiceType The type of the Firebase service.
- * @param {F} [options.initFilter] The initial filter state.
- * @param {StoreFirebaseCrudPagination<T>} [options.initPagination] The initial pagination state.
- * @param {TableSortingConfig} [options.initSorting] The initial sorting state.
  * @returns {StoreFirebaseCrudFeature<T, S, F>} The signal store feature for CRUD operations with Firebase.
  */
 export function withFirebaseCrud<
@@ -102,12 +102,13 @@ export function withFirebaseCrud<
         initState.filter,
         initState.pagination,
         initState.sorting,
-        initState.baseRoute
+        initState.baseRoute,
+        initState._adminOnly
       )
     ),
     withProps(() => ({
       _storeNotificationService: inject(StoreNotificationService),
-      _currentUser: inject(FirebaseAuthService).currentUser,
+      _authService: inject(FirebaseAuthService),
       _dataService: inject(dataServiceType) as S,
       _state: inject(Store),
     })),
@@ -446,13 +447,17 @@ export function withFirebaseCrud<
         let previousSorting = store.sorting();
         let previousFilter = store.filter();
 
+        const isAdmin = store._authService.isAdmin();
+
         watchState(store, () => {
+          console.log('store changed', store, featureName);
           const currentPagination = store.pagination();
           const currentSorting = store.sorting();
           const currentFilter = store.filter();
 
           if (
             store._activeConnection() &&
+            ((store._adminOnly() && isAdmin) || !store._adminOnly()) &&
             (currentPagination.pageIndex !== previousPagination.pageIndex ||
               currentPagination.pageSize !== previousPagination.pageSize ||
               currentSorting !== previousSorting ||
@@ -464,6 +469,7 @@ export function withFirebaseCrud<
 
           if (
             store._activeConnection() &&
+            ((store._adminOnly() && isAdmin) || !store._adminOnly()) &&
             (currentFilter !== previousFilter || !initiallyLoaded())
           ) {
             setCount();
@@ -476,7 +482,7 @@ export function withFirebaseCrud<
         });
 
         effect(() => {
-          if (!store._currentUser()) {
+          if (!store._authService.currentUser()) {
             store.destroy();
           } else if (!store._activeConnection()) {
             store.setActive(true);
