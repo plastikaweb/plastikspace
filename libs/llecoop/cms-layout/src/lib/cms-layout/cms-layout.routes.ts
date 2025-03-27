@@ -72,7 +72,7 @@ export const llecoopLayoutRoutes: Routes = [
         },
         children: [
           {
-            path: 'categoria',
+            path: 'categories',
             children: [
               {
                 path: 'crear',
@@ -98,7 +98,7 @@ export const llecoopLayoutRoutes: Routes = [
             ],
           },
           {
-            path: 'producte',
+            path: 'productes',
             children: [
               {
                 path: 'crear',
@@ -124,7 +124,7 @@ export const llecoopLayoutRoutes: Routes = [
             ],
           },
           {
-            path: 'usuari',
+            path: 'usuaris',
             children: [
               {
                 path: 'crear',
@@ -143,7 +143,14 @@ export const llecoopLayoutRoutes: Routes = [
             ],
           },
           {
-            path: 'comanda',
+            path: 'comandes',
+            loadChildren: () =>
+              import('@plastik/llecoop/order-list-user-order').then(
+                routes => routes.llecoopOrderListUserOrdersListRoutes
+              ),
+          },
+          {
+            path: 'comandes-setmanals',
             children: [
               {
                 path: ':order-list-id',
@@ -161,55 +168,64 @@ export const llecoopLayoutRoutes: Routes = [
               },
             ],
           },
+          {
+            path: '',
+            redirectTo: 'comandes',
+            pathMatch: 'full',
+          },
+          {
+            path: '**',
+            redirectTo: 'comandes',
+          },
         ],
       },
       {
-        path: 'soci',
+        path: 'perfil',
+        loadChildren: () =>
+          import('@plastik/llecoop/profile').then(routes => routes.profileFeatureRoutes),
+      },
+      {
+        path: 'comandes',
         children: [
           {
-            path: 'comanda/crear',
+            path: 'crear',
             loadChildren: () =>
               import('@plastik/llecoop/user-order/detail').then(
                 routes => routes.llecoopUserOrderFeatureDetailCreateRoutes
               ),
           },
           {
-            path: 'comanda/:id/resum',
+            path: ':id/resum',
             loadChildren: () =>
               import('@plastik/llecoop/user-order/resume').then(
                 routes => routes.llecoopUserOrderFeatureResumeRoutes
               ),
           },
           {
-            path: 'comanda/:id',
+            path: ':id',
             loadChildren: () =>
               import('@plastik/llecoop/user-order/detail').then(
                 routes => routes.llecoopUserOrderFeatureDetailUpdateRoutes
               ),
           },
           {
-            path: 'comanda',
+            path: '',
             loadChildren: () =>
               import('@plastik/llecoop/user-order/list').then(
                 routes => routes.llecoopUserOrderFeatureListRoutes
               ),
           },
-          {
-            path: 'perfil',
-            loadChildren: () =>
-              import('@plastik/llecoop/profile').then(routes => routes.profileFeatureRoutes),
-          },
         ],
       },
       {
         path: '',
-        redirectTo: 'soci/comanda',
+        redirectTo: 'comandes',
         pathMatch: 'full',
       },
     ],
   },
   {
     path: '**',
-    redirectTo: 'soci/comanda',
+    redirectTo: 'comandes',
   },
 ];

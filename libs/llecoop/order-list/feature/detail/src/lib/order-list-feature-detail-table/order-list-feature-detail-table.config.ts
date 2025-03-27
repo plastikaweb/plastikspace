@@ -140,7 +140,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
           execute: (order: LlecoopUserOrder) => {
             this.#userOrderStore.update({
               item: { ...order, status: 'delivered' },
-              redirectUrl: `./admin/comanda/${order.orderListId}`,
+              redirectUrl: `./admin/comandes-setmanals/${order.orderListId}`,
             });
           },
         },

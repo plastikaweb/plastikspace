@@ -21,13 +21,19 @@ import { LlecoopUserOrderFireService } from './user-order-fire.service';
 
 export type StoreUserOrderFilter = StoreFirebaseCrudFilter & {
   text: string;
+  userName: string;
+  status: LlecoopUserOrder['status'] | '';
+};
+
+export type StoreUserOrderProductsFilter = StoreFirebaseCrudFilter & {
+  text: string;
 };
 
 export type UserOrderListStoreCrudState = StoreFirebaseCrudState<
   LlecoopUserOrder,
   StoreUserOrderFilter
 > & {
-  orderProductsFilter: StoreUserOrderFilter;
+  orderProductsFilter: StoreUserOrderProductsFilter;
   orderProductsSorting: TableSortingConfig;
   orderProductsPagination: StoreFirebaseCrudPagination<LlecoopOrderProduct>;
   currentUserOrder: LlecoopUserOrder | null;
@@ -46,14 +52,16 @@ export const userOrderMainInitState: StoreFirebaseCrudState<
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
+    userName: '',
+    status: '',
   },
   pagination: {
-    pageSize: 10,
+    pageSize: 5,
     pageIndex: 0,
     pageLastElements: new Map<number, LlecoopUserOrder>(),
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
-  baseRoute: '/soci/comanda',
+  baseRoute: '/comandes',
   _adminOnly: false,
 };
 

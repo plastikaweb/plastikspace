@@ -14,7 +14,7 @@ export const categoryDetailResolver: ResolveFn<Observable<boolean>> = (
 
   if (!id) {
     store.setSelectedItemId(null);
-    return new RedirectCommand(router.parseUrl('/admin/categoria'));
+    return new RedirectCommand(router.parseUrl('/admin/categories'));
   }
 
   store.setSelectedItemId(id);

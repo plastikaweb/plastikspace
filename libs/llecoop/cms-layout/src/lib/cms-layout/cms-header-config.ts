@@ -45,7 +45,7 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
           name: 'profile',
           title: 'Perfil',
           icon: 'person',
-          route: [`/soci/perfil`],
+          route: [`/perfil`],
         },
         {
           id: 2,

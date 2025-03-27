@@ -7,17 +7,17 @@ import {
   userOrderMainInitState,
 } from '@plastik/llecoop/order-list/data-access';
 
-export const userOrderFeatureListResolver: ResolveFn<
+export const orderListUserOrderFeatureListResolver: ResolveFn<
   Observable<boolean>
 > = (): Observable<boolean> => {
-  const userOrderStore = inject(llecoopUserOrderStore);
+  const store = inject(llecoopUserOrderStore);
   const router = inject(Router);
   const previousUrl = router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
 
-  userOrderStore.setSelectedItemId(null);
+  store.setSelectedItemId(null);
 
-  if (!previousUrl?.startsWith('/comandes') || !userOrderStore.initiallyLoaded()) {
-    userOrderStore.resetTableConfig(
+  if (!previousUrl?.startsWith('/admin/comandes') || !store.initiallyLoaded()) {
+    store.resetTableConfig(
       userOrderMainInitState.pagination,
       userOrderMainInitState.filter,
       userOrderMainInitState.sorting

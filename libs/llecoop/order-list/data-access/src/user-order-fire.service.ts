@@ -70,8 +70,8 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
 
       const q = query(
         this.firestoreOrderGroupCollection,
-        ...conditions,
-        where('userId', '==', userId)
+        ...conditions
+        // where('userId', '==', userId)
       );
       return collectionData(q, { idField: 'id' }).pipe(
         takeUntil(this.destroy$),
@@ -128,7 +128,10 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
       if (!userId) {
         return of(0);
       }
-      const conditions = [...this.getFilterConditions(filter), where('userId', '==', userId)];
+      const conditions = [
+        ...this.getFilterConditions(filter),
+        // where('userId', '==', userId)
+      ];
 
       if (!this.firestoreOrderGroupCollection) {
         return of(0);

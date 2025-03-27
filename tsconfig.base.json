@@ -49,6 +49,9 @@
       "@plastik/llecoop/order-list-orders-status-resume": [
         "libs/llecoop/ui/order-list-orders-status-resume/src/index.ts"
       ],
+      "@plastik/llecoop/order-list-user-order": [
+        "libs/llecoop/order-list/feature/order-list-user-order/src/index.ts"
+      ],
       "@plastik/llecoop/order-list/data-access": [
         "libs/llecoop/order-list/data-access/src/index.ts"
       ],

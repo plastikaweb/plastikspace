@@ -1,0 +1,71 @@
+import { filter, take } from 'rxjs';
+
+import { inject, Injectable, Signal, signal } from '@angular/core';
+import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { TableWithFilteringFacade } from '@plastik/core/list-view';
+import { LlecoopUserOrder } from '@plastik/llecoop/entities';
+import {
+  llecoopUserOrderStore,
+  StoreUserOrderFilter,
+} from '@plastik/llecoop/order-list/data-access';
+import { SharedConfirmDialogService } from '@plastik/shared/confirm';
+import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
+import { TableSorting } from '@plastik/shared/table/entities';
+
+import { getLlecoopOrderListUserOrderFeatureListSearchFormConfig } from './order-list-user-order-feature-list-search-form.config';
+import { LlecoopOrderListUserOrderFeatureListTableConfig } from './order-list-user-order-feature-list-table.config';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LlecoopOrderListUserOrderFeatureListFacadeService
+  implements TableWithFilteringFacade<LlecoopUserOrder, StoreUserOrderFilter>
+{
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #table = inject(LlecoopOrderListUserOrderFeatureListTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
+
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order-list-users')[0]);
+  routingToDetailPage = signal({
+    visible: false,
+  });
+  viewExtraActions?:
+    | Signal<
+        {
+          label: string;
+          icon: string;
+          execute: (element?: LlecoopUserOrder | undefined) => void;
+          disabled: (element?: LlecoopUserOrder | undefined) => boolean;
+        }[]
+      >
+    | undefined;
+  tableDefinition = this.#table.getTableDefinition();
+  filterFormConfig = getLlecoopOrderListUserOrderFeatureListSearchFormConfig();
+  filterCriteria = this.#userOrderStore.filter;
+
+  onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
+    this.#userOrderStore.setFilter(criteria);
+  }
+
+  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>): void {
+    this.#userOrderStore.setPagination(pagination);
+  }
+
+  onTableSorting({ active, direction }: TableSorting): void {
+    this.#userOrderStore.setSorting([active, direction]);
+  }
+
+  onTableActionDelete(item: LlecoopUserOrder): void {
+    if (item.id) {
+      this.#confirmService
+        .confirm(
+          'Eliminar comanda',
+          `Segur que vols eliminar la comanda "${item.name}"?`,
+          'Cancel·lar',
+          'Eliminar'
+        )
+        .pipe(take(1), filter(Boolean))
+        .subscribe(() => this.#userOrderStore.delete(item));
+    }
+  }
+}

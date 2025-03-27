@@ -6,6 +6,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
  * Creates a Formly field configuration for a search input field.
  * @param {Partial<FormlyFieldConfig['props']>} customProps - Additional properties to be merged with the default field configuration.
  * @param {string} key - The key for the form control.
+ * @param {string} className - The CSS class name for the field.
  * @param {string} defaultValue - The default value for the form control.
  * @description Returns a Formly field configuration object with the specified label, cancel label, and key.
  * The configuration includes a search input field with a debounce model option,
@@ -15,6 +16,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 export function addSearchInput(
   customProps: Partial<FormlyFieldConfig['props']> = {},
   key = 'text',
+  className = 'w-full',
   defaultValue = ''
 ): FormlyFieldConfig {
   return {
@@ -30,7 +32,7 @@ export function addSearchInput(
       onInit: config => config.form?.valueChanges.pipe(tap(() => setAddOnRightVisibility(config))),
       onChanges: setAddOnRightVisibility,
     },
-    className: 'w-full',
+    className,
     props: {
       type: 'search',
       label: 'Search',

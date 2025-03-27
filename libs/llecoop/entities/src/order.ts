@@ -216,3 +216,12 @@ export const llecoopUserOrderStatus: Record<
     class: 'text-error',
   },
 } as const;
+
+export const llecoopUserOrderStatusOptions: FormSelectOption[] = Object.keys(
+  llecoopUserOrderStatus
+).map(key => ({
+  value: key,
+  label: llecoopUserOrderStatus[key as LlecoopUserOrder['status']].label,
+  icon: llecoopUserOrderStatus[key as LlecoopUserOrder['status']].icon,
+  class: llecoopUserOrderStatus[key as LlecoopUserOrder['status']].class,
+}));

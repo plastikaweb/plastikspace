@@ -46,9 +46,9 @@ export const userMainInitState: StoreFirebaseCrudState<LlecoopUser, StoreUserFil
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
   baseRoute: {
-    onCreate: 'admin/usuari',
-    onUpdate: 'soci/perfil',
-    onError: 'admin/usuari',
+    onCreate: 'admin/usuaris',
+    onUpdate: 'perfil',
+    onError: 'admin/usuaris',
   },
 };
 

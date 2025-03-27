@@ -60,7 +60,7 @@ export const orderListMainInitState: StoreFirebaseCrudState<LlecoopOrder, StoreO
     pageLastElements: new Map<number, LlecoopOrder>(),
   },
   sorting: ['createdAt', 'desc'] as TableSortingConfig,
-  baseRoute: 'admin/comanda',
+  baseRoute: 'admin/comandes-setmanals',
 };
 
 const specificInitState: SpecificOrderListStoreFirebaseCrudState = {

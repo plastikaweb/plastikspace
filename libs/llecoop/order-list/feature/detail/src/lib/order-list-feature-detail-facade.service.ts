@@ -63,7 +63,7 @@ export class LlecoopOrderListFeatureDetailFacadeService
   onSaveUserOrder(model: Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>): void {
     this.#userOrderStore.update({
       item: { ...model, status: 'reviewed' },
-      redirectUrl: 'admin/comanda',
+      redirectUrl: 'admin/comandes-setmanals',
     });
   }
 

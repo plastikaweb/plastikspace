@@ -18,7 +18,7 @@ export const orderListFeatureListResolver: ResolveFn<
   orderListStore.setSelectedItemUserOrderId(null);
   orderListStore.setSelectedItemCartLoaded(false);
 
-  if (!previousUrl?.startsWith('/admin/comanda') || !orderListStore.initiallyLoaded()) {
+  if (!previousUrl?.startsWith('/admin/comandes-setmanals') || !orderListStore.initiallyLoaded()) {
     orderListStore.resetTableConfig(
       orderListMainInitState.pagination,
       orderListMainInitState.filter,

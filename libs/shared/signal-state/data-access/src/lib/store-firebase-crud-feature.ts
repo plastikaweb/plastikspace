@@ -450,7 +450,6 @@ export function withFirebaseCrud<
         const isAdmin = store._authService.isAdmin();
 
         watchState(store, () => {
-          console.log('store changed', store, featureName);
           const currentPagination = store.pagination();
           const currentSorting = store.sorting();
           const currentFilter = store.filter();
