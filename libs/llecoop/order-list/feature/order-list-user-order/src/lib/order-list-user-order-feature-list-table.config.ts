@@ -1,11 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { formatOrderStatus } from '@plastik/llecoop/order-list/util';
+import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -24,24 +24,7 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
   readonly #sanitizer = inject(DomSanitizer);
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #orderListStore = inject(llecoopOrderListStore);
-
-  readonly #name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
-    key: 'name',
-    title: 'Comanda setmanal',
-    pathToKey: 'name',
-    sorting: 'normalizedName',
-    sticky: true,
-    cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
-    link: (userOrder?: LlecoopUserOrder) => {
-      return userOrder && this.checkIfOrderIsDone(userOrder)
-        ? `./${userOrder?.id}/resum`
-        : `./${userOrder?.id}`;
-    },
-    formatting: {
-      type: 'LINK',
-      execute: (_, userOrder) => `<p class="font-bold uppercase">${userOrder?.name}</p>`,
-    },
-  };
+  readonly #userOrderUtilsService = inject(UserOrderUtilsService);
 
   readonly #userName: TableColumnFormatting<LlecoopUserOrder, 'TEXT'> = {
     key: 'userName',
@@ -49,6 +32,17 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
     pathToKey: 'userName',
     sorting: 'userName',
     sticky: true,
+    cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
+    formatting: {
+      type: 'TEXT',
+    },
+  };
+
+  readonly #name: TableColumnFormatting<LlecoopUserOrder, 'TEXT'> = {
+    key: 'name',
+    title: 'Comanda setmanal',
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     formatting: {
       type: 'TEXT',
@@ -82,35 +76,44 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
     },
   };
 
-  readonly #status = formatOrderStatus<LlecoopUserOrder>();
+  readonly #status = this.#userOrderUtilsService.formatOrderStatus<LlecoopUserOrder>();
   readonly #createdAt = createdAt<LlecoopUserOrder>();
   readonly #updatedAt = updatedAt<LlecoopUserOrder>();
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
-    this.#name,
-    this.#userName,
-    this.#price,
-    this.#productCount,
-    this.#status,
-    this.#createdAt,
-    this.#updatedAt,
-  ];
+  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[]> =
+    signal([
+      this.#userName,
+      this.#name,
+      this.#price,
+      this.#productCount,
+      this.#status,
+      this.#createdAt,
+      this.#updatedAt,
+    ]);
 
-  readonly #orderDoneStatusCache: Map<string, boolean> = new Map();
+  readonly #orderDoneStatusCache: Map<string, { allowBlock: boolean; allowView: boolean }> =
+    new Map();
 
-  private checkIfOrderIsDone(order: LlecoopUserOrder): boolean {
-    if (!order) return false;
+  private checkOrderStatus(order: LlecoopUserOrder): { allowBlock: boolean; allowView: boolean } {
+    if (!order) return { allowBlock: false, allowView: false };
 
-    const cacheKey = `${order.orderListId}`;
+    const cacheKey = `${order.id}`;
     if (this.#orderDoneStatusCache.has(cacheKey)) {
-      return this.#orderDoneStatusCache.get(cacheKey) as boolean;
+      return this.#orderDoneStatusCache.get(cacheKey) as {
+        allowBlock: boolean;
+        allowView: boolean;
+      };
     }
 
-    const status = this.#orderListStore?.entityMap()?.[order.orderListId]?.status;
-    const isDone = status === 'done' || status === 'cancelled';
-    this.#orderDoneStatusCache.set(cacheKey, isDone);
+    const orderListStatus = this.#orderListStore?.entityMap()?.[order.orderListId]?.status;
+    const userOrderStatus = order.status;
+    const allowBlock =
+      (orderListStatus === 'waiting' || orderListStatus === 'progress') &&
+      (userOrderStatus === 'waitingReview' || userOrderStatus === 'reviewed');
+    const allowView = userOrderStatus !== 'waitingReview';
+    this.#orderDoneStatusCache.set(cacheKey, { allowBlock, allowView });
 
-    return isDone;
+    return { allowBlock, allowView };
   }
 
   getTableDefinition(): TableDefinition<LlecoopUserOrder> {
@@ -125,29 +128,39 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
       sort: this.#userOrderStore.sorting,
       pagination: this.#userOrderStore.pagination,
       caption: 'Llistat de les meves comandes',
-      count: this.#userOrderStore.count,
       getData: () => this.#userOrderStore.entities(),
+      count: this.#userOrderStore.count,
+      extraRowStyles: (userOrder: LlecoopUserOrder) => {
+        return userOrder.status === 'blocked' ? 'marked-ko' : '';
+      },
       actionsColStyles: 'max-w-[150px]',
       actions: {
         VIEW: {
           visible: () => true,
-          disabled: (userOrder: LlecoopUserOrder) => !this.checkIfOrderIsDone(userOrder),
-          description: () => 'Resum de la comanda',
+          disabled: (userOrder: LlecoopUserOrder) => !this.checkOrderStatus(userOrder).allowView,
+          description: (userOrder: LlecoopUserOrder) =>
+            `Factura de la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`,
           order: 1,
-          icon: () => 'visibility',
-          link: (userOrder: LlecoopUserOrder) => `${userOrder?.id}/resum`,
+          icon: () => 'receipt',
+          link: (userOrder: LlecoopUserOrder) => ['../../comandes', userOrder?.id, 'resum'],
         },
-        EDIT: {
+        BLOCK: {
           visible: () => true,
-          disabled: (userOrder: LlecoopUserOrder) => this.checkIfOrderIsDone(userOrder),
-          description: () => 'Edita la comanda',
+          disabled: (userOrder: LlecoopUserOrder) => !this.checkOrderStatus(userOrder).allowBlock,
+          description: (userOrder: LlecoopUserOrder) =>
+            userOrder.status === 'blocked' ? 'Desbloqueja la comanda' : 'Bloqueja la comanda',
           order: 2,
-        },
-        DELETE: {
-          visible: () => true,
-          disabled: (userOrder: LlecoopUserOrder) => this.checkIfOrderIsDone(userOrder),
-          description: () => 'Elimina la comanda',
-          order: 3,
+          icon: (userOrder: LlecoopUserOrder) =>
+            userOrder.status === 'blocked' ? 'enhanced_encryption' : 'no_encryption',
+          execute: (userOrder: LlecoopUserOrder) => {
+            this.#userOrderStore.update({
+              item: {
+                ...userOrder,
+                status: userOrder.status === 'blocked' ? 'waitingReview' : 'blocked',
+              },
+              redirectUrl: `./comandes/totes`,
+            });
+          },
         },
       },
     } as TableDefinition<LlecoopUserOrder>;

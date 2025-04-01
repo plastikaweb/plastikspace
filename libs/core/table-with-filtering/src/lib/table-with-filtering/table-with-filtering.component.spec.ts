@@ -19,7 +19,7 @@ describe('TableWithFilteringComponent', () => {
           provide: TABLE_WITH_FILTERING_FACADE,
           useValue: {
             tableDefinition: {
-              columnProperties: [],
+              columnProperties: signal([]),
               count: signal(0),
               pagination: signal({ pageIndex: 0, pageSize: 5, previousPageIndex: 0 }),
             },

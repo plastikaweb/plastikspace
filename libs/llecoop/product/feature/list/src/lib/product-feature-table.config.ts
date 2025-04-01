@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { UiProductNameCellComponent } from '@plastik/llecoop/product-name-cell';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
@@ -55,19 +55,20 @@ export class LlecoopProductSearchFeatureTableConfig
   readonly #createdAt = createdAt<LlecoopProduct>();
   readonly #updatedAt = updatedAt<LlecoopProduct>();
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopProduct, FormattingTypes>[] = [
-    this.#name,
-    categoryNameCell<LlecoopProduct>({
-      key: 'category',
-      title: 'Categoria',
-      pathToKey: 'category.name',
-      sorting: 'categoryName',
-      cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
-    }),
-    this.#stock,
-    this.#createdAt,
-    this.#updatedAt,
-  ];
+  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopProduct, FormattingTypes>[]> =
+    signal([
+      this.#name,
+      categoryNameCell<LlecoopProduct>({
+        key: 'category',
+        title: 'Categoria',
+        pathToKey: 'category.name',
+        sorting: 'categoryName',
+        cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
+      }),
+      this.#stock,
+      this.#createdAt,
+      this.#updatedAt,
+    ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

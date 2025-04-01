@@ -27,7 +27,7 @@ describe('LlecoopOrderListFeatureListComponent', () => {
             }),
             viewExtraActions: signal([]),
             tableDefinition: {
-              columnProperties: [],
+              columnProperties: signal([]),
               count: signal(0),
               getData: () => [],
               pagination: signal({

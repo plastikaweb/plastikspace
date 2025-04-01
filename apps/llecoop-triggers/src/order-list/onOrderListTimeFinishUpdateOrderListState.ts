@@ -57,7 +57,7 @@ async function processUserOrders(
     const orderData = orderDoc.data();
     const status = orderData.status;
     const newOrderStatus =
-      status === 'waiting' ? 'notReviewed' : status === 'reviewed' ? 'notDelivered' : status;
+      status === 'waitingReview' ? 'notReviewed' : status === 'reviewed' ? 'notDelivered' : status;
 
     // If the order does not have a 'deliver' status, change it to 'miss'
     if (status !== newOrderStatus) {

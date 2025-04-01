@@ -1,11 +1,11 @@
 import { filter, take } from 'rxjs';
 
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { UiOrderListOrdersStatusResumeComponent } from '@plastik/llecoop/order-list-orders-status-resume';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import { formatOrderStatus } from '@plastik/llecoop/order-list/util';
+import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -23,6 +23,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
   readonly #store = inject(llecoopOrderListStore);
   readonly #sanitizer = inject(DomSanitizer);
   readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #userOrderUtilsService = inject(UserOrderUtilsService);
 
   readonly #name: TableColumnFormatting<LlecoopOrder, 'LINK'> = {
     key: 'name',
@@ -38,7 +39,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     },
   };
 
-  readonly #status = formatOrderStatus<LlecoopOrder>();
+  readonly #status = this.#userOrderUtilsService.formatOrderStatus<LlecoopOrder>();
 
   readonly #endTime = createFirebaseTimestampTableColumn<LlecoopOrder>({
     key: 'endTime',
@@ -90,15 +91,16 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
 
   readonly #createdAt = createdAt<LlecoopOrder>();
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopOrder, FormattingTypes>[] = [
-    this.#name,
-    this.#status,
-    this.#endTime,
-    this.#availableProducts,
-    this.#orderCount,
-    this.#userOrdersStatus,
-    this.#createdAt,
-  ];
+  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopOrder, FormattingTypes>[]> =
+    signal([
+      this.#name,
+      this.#status,
+      this.#endTime,
+      this.#availableProducts,
+      this.#orderCount,
+      this.#userOrdersStatus,
+      this.#createdAt,
+    ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

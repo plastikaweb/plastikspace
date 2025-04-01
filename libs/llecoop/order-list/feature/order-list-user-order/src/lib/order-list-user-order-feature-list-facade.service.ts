@@ -2,18 +2,19 @@ import { filter, take } from 'rxjs';
 
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { FormConfig } from '@plastik/core/entities';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopUserOrderStore,
   StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
-import { TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 
 import { getLlecoopOrderListUserOrderFeatureListSearchFormConfig } from './order-list-user-order-feature-list-search-form.config';
 import { LlecoopOrderListUserOrderFeatureListTableConfig } from './order-list-user-order-feature-list-table.config';
+import { OrderListUserOrderResumeFormConfig } from './order-list-user-order-resume/order-list-user-order-resume-form.config';
 
 @Injectable({
   providedIn: 'root',
@@ -25,7 +26,7 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService
   readonly #table = inject(LlecoopOrderListUserOrderFeatureListTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
 
-  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order-list-users')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0]);
   routingToDetailPage = signal({
     visible: false,
   });
@@ -42,13 +43,19 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopOrderListUserOrderFeatureListSearchFormConfig();
   filterCriteria = this.#userOrderStore.filter;
+  orderListDetailUserOrderDetailFormStructure: FormConfig<LlecoopOrderProduct> = inject(
+    OrderListUserOrderResumeFormConfig
+  ).get();
 
   onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
     this.#userOrderStore.setFilter(criteria);
   }
 
-  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>): void {
-    this.#userOrderStore.setPagination(pagination);
+  onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
+    this.#userOrderStore.setPagination({
+      pageSize,
+      pageIndex,
+    });
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
@@ -67,5 +74,12 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService
         .pipe(take(1), filter(Boolean))
         .subscribe(() => this.#userOrderStore.delete(item));
     }
+  }
+
+  onSaveUserOrder(model: Pick<LlecoopUserOrder, 'id' | 'cart' | 'orderListId'>): void {
+    this.#userOrderStore.update({
+      item: { ...model, status: 'reviewed' },
+      redirectUrl: '/comandes/totes',
+    });
   }
 }

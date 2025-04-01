@@ -6,9 +6,10 @@ import { FieldTypeConfig, FormlyFieldProps, FormlyModule } from '@ngx-formly/cor
 import { FieldType } from '@ngx-formly/material';
 import { BaseEntity } from '@plastik/core/entities';
 import { TableDefinition } from '@plastik/shared/table/entities';
+
 import { InputTableComponent } from './input-table.component';
 
-interface InputTableProps extends FormlyFieldProps {
+export interface InputTableProps extends FormlyFieldProps {
   tableDefinition: TableDefinition<BaseEntity>;
   tableRowValueConditionFn: (element: BaseEntity) => boolean;
 }

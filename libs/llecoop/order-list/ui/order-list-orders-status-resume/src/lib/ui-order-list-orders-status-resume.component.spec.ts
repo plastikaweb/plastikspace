@@ -14,12 +14,13 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
   let componentRef: ComponentRef<UiOrderListOrdersStatusResumeComponent>;
 
   const mockOrdersStatus: LlecoopOrder['userOrdersStatus'] = {
-    waiting: 5,
+    waitingReview: 5,
     reviewed: 3,
     delivered: 2,
     notReviewed: 1,
     notDelivered: 0,
     cancelled: 4,
+    blocked: 0,
   };
 
   beforeEach(async () => {
@@ -49,13 +50,17 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
 
   describe('Helper methods', () => {
     it('should return correct status label', () => {
-      expect(component['getStatusLabel']('waiting')).toBe(llecoopUserOrderStatus.waiting.label);
+      expect(component['getStatusLabel']('waitingReview')).toBe(
+        llecoopUserOrderStatus.waitingReview.label
+      );
       expect(component['getStatusLabel']('reviewed')).toBe(llecoopUserOrderStatus.reviewed.label);
       expect(component['getStatusLabel']('cancelled')).toBe(llecoopUserOrderStatus.cancelled.label);
     });
 
     it('should return correct status class', () => {
-      expect(component['getStatusClass']('waiting')).toBe(llecoopUserOrderStatus.waiting.class);
+      expect(component['getStatusClass']('waitingReview')).toBe(
+        llecoopUserOrderStatus.waitingReview.class
+      );
       expect(component['getStatusClass']('delivered')).toBe(llecoopUserOrderStatus.delivered.class);
       expect(component['getStatusClass']('notDelivered')).toBe(
         llecoopUserOrderStatus.notDelivered.class
@@ -63,14 +68,14 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
     });
 
     it('should return correct status icon', () => {
-      expect(component['getIcon']('waiting')).toBe(llecoopUserOrderStatus.waiting.icon);
-      expect(component['getIcon']('notReviewed')).toBe(llecoopUserOrderStatus.notReviewed.icon);
+      expect(component['getIcon']('waitingReview')).toBe(llecoopUserOrderStatus.waitingReview.icon);
+      expect(component['getIcon']('reviewed')).toBe(llecoopUserOrderStatus.reviewed.icon);
       expect(component['getIcon']('cancelled')).toBe(llecoopUserOrderStatus.cancelled.icon);
     });
 
     it('should compare and sort statuses correctly', () => {
       const a: KeyValue<string, number> = { key: 'cancelled', value: 5 };
-      const b: KeyValue<string, number> = { key: 'waiting', value: 3 };
+      const b: KeyValue<string, number> = { key: 'waitingReview', value: 3 };
 
       expect(component['compareOrderStatus'](a, b)).toBeGreaterThan(0);
       expect(component['compareOrderStatus'](b, a)).toBeLessThan(0);
@@ -94,7 +99,7 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
 
       expect(
         labels.some(label =>
-          label.nativeElement.textContent.includes(llecoopUserOrderStatus.waiting.label)
+          label.nativeElement.textContent.includes(llecoopUserOrderStatus.waitingReview.label)
         )
       ).toBe(true);
 
@@ -107,7 +112,7 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
 
     it('should display status counts correctly', () => {
       const waitingItem = fixture.debugElement.query(
-        By.css(`li.${llecoopUserOrderStatus.waiting.class} span:last-child`)
+        By.css(`li.${llecoopUserOrderStatus.waitingReview.class} span:last-child`)
       );
       expect(waitingItem.nativeElement.textContent).toBe('5');
 
@@ -125,10 +130,10 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
     it('should display items in correct order based on priority', () => {
       const items = fixture.debugElement.queryAll(By.css('li'));
 
-      const firstItemClass = items[0].classes[llecoopUserOrderStatus.waiting.class];
+      const firstItemClass = items[0].classes[llecoopUserOrderStatus.waitingReview.class];
       expect(firstItemClass).toBe(true);
       const expectedOrder = [
-        'waiting',
+        'waitingReview',
         'reviewed',
         'delivered',
         'notReviewed',

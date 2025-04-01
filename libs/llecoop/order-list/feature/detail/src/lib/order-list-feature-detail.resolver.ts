@@ -16,7 +16,7 @@ export const orderListFeatureDetailResolver: ResolveFn<Observable<boolean>> = (
 
   if (!id) {
     store.setSelectedItemId(null);
-    return new RedirectCommand(router.parseUrl('/admin/comandes-setmanals'));
+    return new RedirectCommand(router.parseUrl('/comandes-setmanals'));
   }
 
   store.setSelectedItemId(id);

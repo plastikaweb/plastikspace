@@ -1,11 +1,11 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { formatOrderStatus } from '@plastik/llecoop/order-list/util';
+import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
@@ -24,6 +24,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   readonly #sanitizer = inject(DomSanitizer);
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #orderListStore = inject(llecoopOrderListStore);
+  readonly #userOrderUtilsService = inject(UserOrderUtilsService);
 
   readonly #name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
     key: 'name',
@@ -70,18 +71,19 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     },
   };
 
-  readonly #status = formatOrderStatus<LlecoopUserOrder>();
+  readonly #status = this.#userOrderUtilsService.formatOrderStatus<LlecoopUserOrder>();
   readonly #createdAt = createdAt<LlecoopUserOrder>();
   readonly #updatedAt = updatedAt<LlecoopUserOrder>();
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
-    this.#name,
-    this.#price,
-    this.#productCount,
-    this.#status,
-    this.#createdAt,
-    this.#updatedAt,
-  ];
+  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[]> =
+    signal([
+      this.#name,
+      this.#price,
+      this.#productCount,
+      this.#status,
+      this.#createdAt,
+      this.#updatedAt,
+    ]);
 
   readonly #orderDoneStatusCache: Map<string, boolean> = new Map();
 

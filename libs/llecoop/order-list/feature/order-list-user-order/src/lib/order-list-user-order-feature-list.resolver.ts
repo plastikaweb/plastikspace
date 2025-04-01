@@ -16,7 +16,7 @@ export const orderListUserOrderFeatureListResolver: ResolveFn<
 
   store.setSelectedItemId(null);
 
-  if (!previousUrl?.startsWith('/admin/comandes') || !store.initiallyLoaded()) {
+  if (!previousUrl?.startsWith('/comandes') || !store.initiallyLoaded()) {
     store.resetTableConfig(
       userOrderMainInitState.pagination,
       userOrderMainInitState.filter,

@@ -1,8 +1,8 @@
 export default {
-  displayName: 'ui-order-status-chip',
-  preset: '../../../../jest.preset.js',
+  displayName: 'user-order-card-detail',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/llecoop/ui/order-status-chip',
+  coverageDirectory: '../../../../../coverage/libs/llecoop/order-list/ui/user-order-card-detail',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

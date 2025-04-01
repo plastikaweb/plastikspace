@@ -28,7 +28,7 @@ export const initState: StoreFirebaseCrudState<LlecoopProductCategory, StoreCate
     pageLastElements: new Map<number, LlecoopProductCategory>(),
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
-  baseRoute: 'admin/categories',
+  baseRoute: 'categories',
 };
 
 export const llecoopCategoryStore = signalStore(

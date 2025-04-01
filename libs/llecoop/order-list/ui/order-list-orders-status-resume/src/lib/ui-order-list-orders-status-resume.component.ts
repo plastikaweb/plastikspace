@@ -28,12 +28,13 @@ export class UiOrderListOrdersStatusResumeComponent {
 
   protected compareOrderStatus(a: KeyValue<string, number>, b: KeyValue<string, number>): number {
     const orderPriority: Record<string, number> = {
-      waiting: 1,
+      waitingReview: 1,
       reviewed: 2,
       delivered: 3,
       notReviewed: 4,
       notDelivered: 5,
       cancelled: 6,
+      blocked: 7,
     };
 
     return orderPriority[a.key] - orderPriority[b.key];

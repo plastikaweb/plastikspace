@@ -64,7 +64,7 @@ export const llecoopLayoutRoutes: Routes = [
     },
     children: [
       {
-        path: 'admin',
+        path: 'categories',
         canActivate: [customAuthGuard],
         data: {
           authGuardPipe: adminOnly,
@@ -72,85 +72,117 @@ export const llecoopLayoutRoutes: Routes = [
         },
         children: [
           {
-            path: 'categories',
-            children: [
-              {
-                path: 'crear',
-                loadChildren: () =>
-                  import('@plastik/llecoop/category/detail').then(
-                    routes => routes.categoryFeatureDetailCreateRoutes
-                  ),
-              },
-              {
-                path: ':id',
-                loadChildren: () =>
-                  import('@plastik/llecoop/category/detail').then(
-                    routes => routes.categoryFeatureDetailUpdateRoutes
-                  ),
-              },
-              {
-                path: '',
-                loadChildren: () =>
-                  import('@plastik/llecoop/category/list').then(
-                    routes => routes.llecoopCategoryFeatureRoutes
-                  ),
-              },
-            ],
+            path: 'crear',
+            loadChildren: () =>
+              import('@plastik/llecoop/category/detail').then(
+                routes => routes.categoryFeatureDetailCreateRoutes
+              ),
           },
           {
-            path: 'productes',
-            children: [
-              {
-                path: 'crear',
-                loadChildren: () =>
-                  import('@plastik/llecoop/product/detail').then(
-                    routes => routes.productFeatureDetailCreateRoutes
-                  ),
-              },
-              {
-                path: ':id',
-                loadChildren: () =>
-                  import('@plastik/llecoop/product/detail').then(
-                    routes => routes.productFeatureDetailUpdateRoutes
-                  ),
-              },
-              {
-                path: '',
-                loadChildren: () =>
-                  import('@plastik/llecoop/product/list').then(
-                    routes => routes.llecoopProductFeatureListRoutes
-                  ),
-              },
-            ],
+            path: ':id',
+            loadChildren: () =>
+              import('@plastik/llecoop/category/detail').then(
+                routes => routes.categoryFeatureDetailUpdateRoutes
+              ),
           },
           {
-            path: 'usuaris',
-            children: [
-              {
-                path: 'crear',
-                loadChildren: () =>
-                  import('@plastik/llecoop/user/create').then(
-                    routes => routes.llecoopUserFeatureCreateRoutes
-                  ),
-              },
-              {
-                path: '',
-                loadChildren: () =>
-                  import('@plastik/llecoop/user/list').then(
-                    routes => routes.llecoopUserFeatureListRoutes
-                  ),
-              },
-            ],
+            path: '',
+            loadChildren: () =>
+              import('@plastik/llecoop/category/list').then(
+                routes => routes.llecoopCategoryFeatureRoutes
+              ),
+          },
+        ],
+      },
+      {
+        path: 'productes',
+        canActivate: [customAuthGuard],
+        data: {
+          authGuardPipe: adminOnly,
+          mustBeStored: true,
+        },
+        children: [
+          {
+            path: 'crear',
+            loadChildren: () =>
+              import('@plastik/llecoop/product/detail').then(
+                routes => routes.productFeatureDetailCreateRoutes
+              ),
           },
           {
-            path: 'comandes',
+            path: ':id',
+            loadChildren: () =>
+              import('@plastik/llecoop/product/detail').then(
+                routes => routes.productFeatureDetailUpdateRoutes
+              ),
+          },
+          {
+            path: '',
+            loadChildren: () =>
+              import('@plastik/llecoop/product/list').then(
+                routes => routes.llecoopProductFeatureListRoutes
+              ),
+          },
+        ],
+      },
+      {
+        path: 'usuaris',
+        canActivate: [customAuthGuard],
+        data: {
+          authGuardPipe: adminOnly,
+          mustBeStored: true,
+        },
+        children: [
+          {
+            path: 'crear',
+            loadChildren: () =>
+              import('@plastik/llecoop/user/create').then(
+                routes => routes.llecoopUserFeatureCreateRoutes
+              ),
+          },
+          {
+            path: '',
+            loadChildren: () =>
+              import('@plastik/llecoop/user/list').then(
+                routes => routes.llecoopUserFeatureListRoutes
+              ),
+          },
+        ],
+      },
+      {
+        path: 'perfil',
+        loadChildren: () =>
+          import('@plastik/llecoop/profile').then(routes => routes.profileFeatureRoutes),
+      },
+      {
+        path: 'comandes',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('@plastik/llecoop/user-order/list').then(
+                routes => routes.llecoopUserOrderFeatureListRoutes
+              ),
+          },
+          {
+            path: 'totes',
+            canActivate: [customAuthGuard],
+            data: {
+              authGuardPipe: adminOnly,
+              mustBeStored: true,
+            },
             loadChildren: () =>
               import('@plastik/llecoop/order-list-user-order').then(
                 routes => routes.llecoopOrderListUserOrdersListRoutes
               ),
           },
           {
-            path: 'comandes-setmanals',
+            path: 'setmanals',
+            canActivate: [customAuthGuard],
+            data: {
+              authGuardPipe: adminOnly,
+              mustBeStored: true,
+            },
             children: [
               {
                 path: ':order-list-id',
@@ -168,25 +200,6 @@ export const llecoopLayoutRoutes: Routes = [
               },
             ],
           },
-          {
-            path: '',
-            redirectTo: 'comandes',
-            pathMatch: 'full',
-          },
-          {
-            path: '**',
-            redirectTo: 'comandes',
-          },
-        ],
-      },
-      {
-        path: 'perfil',
-        loadChildren: () =>
-          import('@plastik/llecoop/profile').then(routes => routes.profileFeatureRoutes),
-      },
-      {
-        path: 'comandes',
-        children: [
           {
             path: 'crear',
             loadChildren: () =>
@@ -208,13 +221,6 @@ export const llecoopLayoutRoutes: Routes = [
                 routes => routes.llecoopUserOrderFeatureDetailUpdateRoutes
               ),
           },
-          {
-            path: '',
-            loadChildren: () =>
-              import('@plastik/llecoop/user-order/list').then(
-                routes => routes.llecoopUserOrderFeatureListRoutes
-              ),
-          },
         ],
       },
       {
@@ -223,6 +229,11 @@ export const llecoopLayoutRoutes: Routes = [
         pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: '',
+    redirectTo: 'comandes',
+    pathMatch: 'full',
   },
   {
     path: '**',

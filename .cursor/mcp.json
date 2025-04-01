@@ -2,6 +2,10 @@
   "mcpServers": {
     "nx-mcp": {
       "url": "http://localhost:9497/sse"
+    },
+    "console-ninja": {
+      "command": "node",
+      "args": ["~/.console-ninja/mcp/"]
     }
   }
 }

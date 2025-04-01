@@ -203,7 +203,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
       ...super.firebaseAssignTypes(),
       toFirestore: (doc: LlecoopUserOrder): DocumentData => ({
         ...doc,
-        status: doc.status ?? 'waiting',
+        status: doc.status ?? 'waitingReview',
         userId,
         userEmail,
         normalizedName: latinize(doc.name).toLowerCase(),

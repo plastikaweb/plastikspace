@@ -1,7 +1,7 @@
 {
-  "name": "ui-order-status-chip",
-  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/llecoop/ui/order-status-chip/src",
+  "name": "ui-order-list-orders-status-resume",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/llecoop/order-list/ui/order-list-orders-status-resume/src",
   "prefix": "plastik",
   "projectType": "library",
   "tags": ["type:ui", "scope:llecoop"],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/llecoop/ui/order-status-chip/jest.config.ts"
+        "jestConfig": "libs/llecoop/order-list/ui/order-list-orders-status-resume/jest.config.ts"
       }
     },
     "lint": {

@@ -39,10 +39,10 @@ export interface LlecoopOrder extends BaseEntity {
   initTime?: Date;
   endTime?: Date;
   /**
-   * @description The status of the order
-   * 'waiting' means the order is waiting for the admin to review it
-   * 'progress' means the order is being opened and processed by the admin
-   * 'cancelled' means the order has been cancelled by the admin
+   * @description The status of the order.
+   * 'waiting' means the order is in standby, waiting for the admin and no user orders can be done.
+   * 'progress' means the order is being opened and the user can add products to it.
+   * 'cancelled' means the order has been cancelled by the admin.
    * 'done' means the order has been closed and completed because the due date has passed
    * @type {'waiting' | 'progress' | 'cancelled' | 'done'}
    * @default 'waiting'
@@ -63,6 +63,7 @@ export interface LlecoopUserOrder extends BaseEntity {
   orderRef: DocumentReference<LlecoopOrder>;
   cart: LlecoopOrderProduct[];
   address: string;
+  phone: string;
   deliveryType: 'pickup' | 'delivery';
   deliveryTime: FormSelectOption['value'];
   deliveryDate: FormSelectOption['value'];
@@ -75,16 +76,24 @@ export interface LlecoopUserOrder extends BaseEntity {
   userEmail?: string;
   /**
    * @description The status of the order
-   * 'waiting' means the order is waiting for the admin to review it
-   * 'reviewed' means the order has been reviewed by the admin
-   * 'delivered' means the order has been delivered to the user by the admin
-   * 'cancelled' means the order has been cancelled by the user
-   * 'notReviewed' means the order has not been reviewed by the admin
-   * 'notDelivered' means the order has not been delivered by the admin
-   * @type {'waiting' | 'reviewed' | 'delivered' | 'cancelled' | 'notReviewed' | 'notDelivered'}
-   * @default 'waiting'
+   * 'waiting' means the order is done by the user and is waiting for the admin to review it.
+   * 'reviewed' means the order has been reviewed by the admin.
+   * 'delivered' means the order has been delivered to the user by the admin.
+   * 'cancelled' means the order has been cancelled by the user.
+   * 'blocked' means the order has been blocked by the admin.
+   * 'notReviewed' means the order has not been reviewed by the admin when the related order list date due date has passed.
+   * 'notDelivered' means the order has not been delivered by the admin when the related order list date due date has passed.
+   * @type {'waitingReview' | 'reviewed' | 'delivered' | 'cancelled' | 'blocked' | 'notReviewed' | 'notDelivered'}
+   * @default 'waitingReview'
    */
-  status: 'waiting' | 'reviewed' | 'delivered' | 'cancelled' | 'notReviewed' | 'notDelivered';
+  status:
+    | 'waitingReview'
+    | 'reviewed'
+    | 'delivered'
+    | 'cancelled'
+    | 'blocked'
+    | 'notReviewed'
+    | 'notDelivered';
 }
 
 export const llecoopUserOrderTimeOptions: Record<
@@ -185,8 +194,8 @@ export const llecoopUserOrderStatus: Record<
   LlecoopUserOrder['status'],
   { label: string; icon: string; class: string }
 > = {
-  waiting: {
-    label: 'Pendent',
+  waitingReview: {
+    label: 'Per revisar',
     icon: 'hourglass_empty',
     class: 'text-info',
   },
@@ -203,6 +212,11 @@ export const llecoopUserOrderStatus: Record<
   cancelled: {
     label: 'Cancel·lada',
     icon: 'cancel',
+    class: 'text-error',
+  },
+  blocked: {
+    label: 'Bloquejada',
+    icon: 'lock',
     class: 'text-error',
   },
   notReviewed: {

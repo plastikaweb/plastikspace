@@ -1,6 +1,6 @@
 import { map, Observable } from 'rxjs';
 
-import { inject, signal } from '@angular/core';
+import { inject, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { select, Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
@@ -107,7 +107,7 @@ const center: TableColumnFormatting<NasaImage, 'TEXT'> = {
   },
 };
 
-const columnProperties: TableColumnFormatting<NasaImage, FormattingTypes>[] = [
+const columnProperties: Signal<TableColumnFormatting<NasaImage, FormattingTypes>[]> = signal([
   index,
   id,
   title,
@@ -116,7 +116,7 @@ const columnProperties: TableColumnFormatting<NasaImage, FormattingTypes>[] = [
   dateCreated,
   creator,
   center,
-];
+]);
 
 export class NasaImagesSearchFeatureTableConfig {
   static getTableDefinition() {

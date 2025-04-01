@@ -1,11 +1,10 @@
-import { computed, inject, Injectable, Signal } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { computed, inject, Injectable, signal, Signal } from '@angular/core';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { formatOrderStatus, formatUserOrderDeliveryDate } from '@plastik/llecoop/order-list/util';
+import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -20,9 +19,9 @@ import {
 export class LlecoopOrderListFeatureDetailTableConfig
   implements TableStructureConfig<LlecoopUserOrder>
 {
-  readonly #sanitizer = inject(DomSanitizer);
   readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #userOrderUtilsService = inject(UserOrderUtilsService);
 
   readonly #userName: TableColumnFormatting<LlecoopUserOrder, 'TITLE_CASE'> = {
     key: 'userName',
@@ -69,7 +68,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) =>
-        (element && formatUserOrderDeliveryDate(element, this.#sanitizer)) ?? '-',
+        (element && this.#userOrderUtilsService.formatDeliveryDateAndTime(element)) ?? '-',
     },
   };
 
@@ -101,17 +100,18 @@ export class LlecoopOrderListFeatureDetailTableConfig
     },
   };
 
-  readonly #status = formatOrderStatus<LlecoopUserOrder>();
+  readonly #status = this.#userOrderUtilsService.formatOrderStatus<LlecoopUserOrder>();
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[] = [
-    this.#userName,
-    this.#status,
-    this.#deliveryType,
-    this.#deliveryDateAndTime,
-    this.#address,
-    this.#totalPrice,
-    this.#totalProducts,
-  ];
+  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[]> =
+    signal([
+      this.#userName,
+      this.#status,
+      this.#deliveryType,
+      this.#deliveryDateAndTime,
+      this.#address,
+      this.#totalPrice,
+      this.#totalProducts,
+    ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
@@ -140,7 +140,7 @@ export class LlecoopOrderListFeatureDetailTableConfig
           execute: (order: LlecoopUserOrder) => {
             this.#userOrderStore.update({
               item: { ...order, status: 'delivered' },
-              redirectUrl: `./admin/comandes-setmanals/${order.orderListId}`,
+              redirectUrl: `./comandes-setmanals/${order.orderListId}`,
             });
           },
         },

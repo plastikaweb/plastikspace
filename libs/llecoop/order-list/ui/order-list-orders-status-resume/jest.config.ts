@@ -1,8 +1,9 @@
 export default {
   displayName: 'ui-order-list-orders-status-resume',
-  preset: '../../../../jest.preset.js',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/llecoop/ui/order-list-orders-status-resume',
+  coverageDirectory:
+    '../../../../../coverage/libs/llecoop/order-list/ui/order-list-orders-status-resume',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

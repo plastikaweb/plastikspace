@@ -26,9 +26,12 @@ describe('LlecoopOrderListFeatureDetailComponent', () => {
               visible: true,
             }),
             tableDefinition: {
-              columnProperties: [],
+              columnProperties: signal([]),
               getData: () => [],
-              sort: signal({}),
+              sort: signal({
+                field: '',
+                direction: 'asc',
+              }),
               caption: '',
               count: signal(0),
               actions: {},

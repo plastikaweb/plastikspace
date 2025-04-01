@@ -45,7 +45,7 @@
 <plastik-shared-table
   [data]="tableDefinition.getData?.() || []"
   [caption]="tableDefinition.caption || ''"
-  [columnProperties]="tableDefinition.columnProperties || []"
+  [columnProperties]="tableDefinition.columnProperties() || []"
   [pagination]="tableDefinition?.pagination()"
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"

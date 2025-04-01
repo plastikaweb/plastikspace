@@ -3,6 +3,9 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  effect,
+  ElementRef,
+  inject,
   input,
   linkedSignal,
   output,
@@ -49,20 +52,24 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
 
   protected form = new FormGroup({});
   protected options: FormlyFormOptions = {};
+  readonly #elementRef = inject(ElementRef);
+  readonly #firstInput = signal<HTMLInputElement | null>(null);
+
+  constructor() {
+    effect(() => {
+      if (this.autoFocus() && this.#firstInput() instanceof HTMLInputElement) {
+        this.#firstInput()?.focus();
+      }
+    });
+  }
 
   ngAfterViewInit(): void {
     this.form.markAsUntouched();
     this.form.markAsPristine();
     this.#newModel.set(this.model());
-
-    if (this.autoFocus()) {
-      setTimeout(() => {
-        const firstInput = document.querySelector('input:not([type="hidden"]):not([readonly])');
-        if (firstInput instanceof HTMLInputElement) {
-          firstInput.focus();
-        }
-      });
-    }
+    this.#firstInput.set(
+      this.#elementRef.nativeElement.querySelector('input:not([type="hidden"]):not([readonly])')
+    );
   }
 
   onSubmit(event: Event): void {

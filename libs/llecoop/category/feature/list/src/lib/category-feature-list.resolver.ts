@@ -13,7 +13,7 @@ export const categoryFeatureListResolver: ResolveFn<
 
   store.setSelectedItemId(null);
 
-  if (!previousUrl?.startsWith('/admin/categories') || !store.initiallyLoaded()) {
+  if (!previousUrl?.startsWith('/categories') || !store.initiallyLoaded()) {
     store.resetTableConfig(initState.pagination, initState.filter, initState.sorting);
   }
 

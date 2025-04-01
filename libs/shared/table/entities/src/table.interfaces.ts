@@ -344,7 +344,7 @@ export interface TableDefinition<OBJ> {
   /**
    * Array with each column configuration properties.
    */
-  columnProperties: TableColumnFormatting<OBJ, FormattingTypes>[];
+  columnProperties: Signal<TableColumnFormatting<OBJ, FormattingTypes>[]>;
   pagination?: Signal<PageEventConfig>;
   noPagination?: boolean;
   paginationVisibility?: Partial<TablePaginationVisibility>;
@@ -425,7 +425,7 @@ export interface TableStructureConfig<T> {
  * @description Default TableControlStructure configuration.
  */
 export const defaultTableConfig: TableDefinition<unknown> = {
-  columnProperties: [],
+  columnProperties: signal([]),
   pagination: signal({
     previousPageIndex: 0,
     pageIndex: 0,

@@ -30,7 +30,7 @@ const calculateTotal = (orderListData: FirebaseFirestore.QuerySnapshot) => {
             priceWithIva,
             unit,
             totalPrice: finalQuantity * priceWithIva,
-            reviewed: status !== 'waiting',
+            reviewed: status !== 'waitingReview',
           },
         ];
       }
@@ -44,7 +44,7 @@ const calculateTotal = (orderListData: FirebaseFirestore.QuerySnapshot) => {
           ...existingProduct,
           quantity: totalQuantity,
           totalPrice: totalQuantity * priceWithIva,
-          reviewed: reviewed || (status !== 'waiting' && finalQuantity > 0),
+          reviewed: reviewed || (status !== 'waitingReview' && finalQuantity > 0),
         },
       ];
     }, total);

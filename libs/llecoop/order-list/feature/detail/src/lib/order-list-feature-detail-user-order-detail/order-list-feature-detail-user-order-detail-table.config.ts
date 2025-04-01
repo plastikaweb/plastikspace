@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductUnitStep,
@@ -168,7 +168,9 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     }),
   };
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] = [
+  readonly #columnProperties: Signal<
+    TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[]
+  > = signal([
     this.#name,
     categoryNameCell<LlecoopOrderProduct>({
       key: 'category',
@@ -182,7 +184,11 @@ export class LlecoopOrderListFeatureDetailUserOrderDetailTableConfig
     ...(this.#currentOrderList?.status !== 'progress' ? [this.#finalPrice] : []),
     ...(this.#currentOrderList?.status !== 'progress' ? [this.#extraInfo] : []),
     ...(this.#currentOrderList?.status !== 'progress' ? [this.#reviewed] : []),
-  ];
+    // this.#finalQuantity,
+    // this.#finalPrice,
+    // this.#extraInfo,
+    // this.#reviewed,
+  ]);
 
   getTableDefinition() {
     return {

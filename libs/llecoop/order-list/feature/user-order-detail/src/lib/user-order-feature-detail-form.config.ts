@@ -47,6 +47,10 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
           defaultValue: userStore.getUserName(),
         },
         {
+          key: 'phone',
+          defaultValue: userStore.loggedUser()?.phone,
+        },
+        {
           key: 'deliveryType',
           type: 'radio',
           className: 'w-full',

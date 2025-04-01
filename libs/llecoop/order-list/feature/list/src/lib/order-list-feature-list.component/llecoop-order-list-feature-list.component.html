@@ -34,7 +34,7 @@
 <plastik-shared-table
   [data]="tableDefinition.getData?.() || []"
   [caption]="tableDefinition.caption || ''"
-  [columnProperties]="tableDefinition.columnProperties || []"
+  [columnProperties]="tableDefinition.columnProperties() || []"
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"
   [pagination]="tableDefinition?.pagination()"
@@ -59,7 +59,7 @@
       <plastik-shared-table
         [data]="totalTableDefinition.getData?.(element.id) || []"
         [caption]="totalTableDefinition.caption || ''"
-        [columnProperties]="totalTableDefinition.columnProperties || []"
+        [columnProperties]="totalTableDefinition.columnProperties() || []"
         [resultsLength]="totalTableDefinition?.count() || 0"
         [sort]="totalTableDefinition.sort?.()"
         [noPagination]="true">
