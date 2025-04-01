@@ -38,14 +38,19 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
     },
   };
 
-  readonly #name: TableColumnFormatting<LlecoopUserOrder, 'TEXT'> = {
+  readonly #name: TableColumnFormatting<LlecoopUserOrder, 'LINK'> = {
     key: 'name',
     title: 'Comanda setmanal',
     pathToKey: 'name',
     sorting: 'normalizedName',
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
+    link: () => ['/comandes', 'setmanals'],
+    queryParams: (order?: LlecoopUserOrder) => ({
+      text: order?.name || '',
+    }),
     formatting: {
-      type: 'TEXT',
+      type: 'LINK',
+      execute: (_, order) => order?.name || '-',
     },
   };
 

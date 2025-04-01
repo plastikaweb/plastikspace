@@ -227,3 +227,12 @@ export const llecoopUserOrderStatusOptions: FormSelectOption[] = Object.keys(
   icon: llecoopUserOrderStatus[key as LlecoopUserOrder['status']].icon,
   class: llecoopUserOrderStatus[key as LlecoopUserOrder['status']].class,
 }));
+
+export const llecoopOrderListStatusOptions: FormSelectOption[] = Object.keys(
+  llecoopOrderStatus
+).map(key => ({
+  value: key,
+  label: llecoopOrderStatus[key as LlecoopOrder['status']].label,
+  icon: llecoopOrderStatus[key as LlecoopOrder['status']].icon,
+  class: llecoopOrderStatus[key as LlecoopOrder['status']].class,
+}));

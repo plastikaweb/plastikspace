@@ -4,14 +4,7 @@ import { updateState } from '@angular-architects/ngrx-toolkit';
 /* eslint-disable no-console */
 import { computed, effect } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import {
-  signalStore,
-  watchState,
-  withComputed,
-  withHooks,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
+import { signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { EntityId, SelectEntityId, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopOrder, LlecoopProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
@@ -28,6 +21,7 @@ import { LlecoopOrderListFireService } from './order-list-fire.service';
 
 export type StoreOrderListFilter = StoreFirebaseCrudFilter & {
   text: string;
+  status: LlecoopOrder['status'] | '';
 };
 
 export type OrderListStoreFirebaseCrudState = StoreFirebaseCrudState<
@@ -53,6 +47,7 @@ export const orderListMainInitState: StoreFirebaseCrudState<LlecoopOrder, StoreO
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
+    status: '',
   },
   pagination: {
     pageSize: 5,
@@ -68,7 +63,7 @@ const specificInitState: SpecificOrderListStoreFirebaseCrudState = {
   currentOrderList: null,
   currentOrderListInitialLoaded: false,
   selectedItemCartLoaded: false,
-  selectedItemUserFilter: { text: '' },
+  selectedItemUserFilter: { text: '', status: '' },
   selectedItemUserSorting: ['userName', 'desc'],
   selectedItemUserPagination: {
     pageSize: 5,
@@ -310,31 +305,31 @@ export const llecoopOrderListStore = signalStore(
   })),
   withHooks({
     onInit(store) {
-      let previousSelectedItemUserFilter = store.selectedItemUserFilter();
-      let previousSelectedItemUserSorting = store.selectedItemUserSorting();
-      let previousSelectedItemUserPagination = store.selectedItemUserPagination();
+      // let previousSelectedItemUserFilter = store.selectedItemUserFilter();
+      // let previousSelectedItemUserSorting = store.selectedItemUserSorting();
+      // let previousSelectedItemUserPagination = store.selectedItemUserPagination();
 
-      watchState(store, () => {
-        const currentSelectedItemUserFilter = store.selectedItemUserFilter();
-        const currentSelectedItemUserSorting = store.selectedItemUserSorting();
-        const currentSelectedItemUserPagination = store.selectedItemUserPagination();
-        if (
-          store._activeConnection() &&
-          ((store.selectedItemId() && !store.selectedItemCartLoaded()) ||
-            currentSelectedItemUserFilter !== previousSelectedItemUserFilter ||
-            currentSelectedItemUserSorting !== previousSelectedItemUserSorting ||
-            currentSelectedItemUserPagination.pageIndex !==
-              previousSelectedItemUserPagination.pageIndex ||
-            currentSelectedItemUserPagination.pageSize !==
-              previousSelectedItemUserPagination.pageSize)
-        ) {
-          store.getAllOrderListOrders();
-        }
+      // watchState(store, () => {
+      //   const currentSelectedItemUserFilter = store.selectedItemUserFilter();
+      //   const currentSelectedItemUserSorting = store.selectedItemUserSorting();
+      //   const currentSelectedItemUserPagination = store.selectedItemUserPagination();
+      //   if (
+      //     store._activeConnection() &&
+      //     ((store.selectedItemId() && !store.selectedItemCartLoaded()) ||
+      //       currentSelectedItemUserFilter !== previousSelectedItemUserFilter ||
+      //       currentSelectedItemUserSorting !== previousSelectedItemUserSorting ||
+      //       currentSelectedItemUserPagination.pageIndex !==
+      //         previousSelectedItemUserPagination.pageIndex ||
+      //       currentSelectedItemUserPagination.pageSize !==
+      //         previousSelectedItemUserPagination.pageSize)
+      //   ) {
+      //     store.getAllOrderListOrders();
+      //   }
 
-        previousSelectedItemUserFilter = currentSelectedItemUserFilter;
-        previousSelectedItemUserSorting = currentSelectedItemUserSorting;
-        previousSelectedItemUserPagination = currentSelectedItemUserPagination;
-      });
+      //   previousSelectedItemUserFilter = currentSelectedItemUserFilter;
+      //   previousSelectedItemUserSorting = currentSelectedItemUserSorting;
+      //   previousSelectedItemUserPagination = currentSelectedItemUserPagination;
+      // });
 
       effect(() => {
         if (store._activeConnection() && !store.currentOrderListInitialLoaded()) {

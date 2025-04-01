@@ -3,14 +3,14 @@
 
 <div
   class="flex flex-col flex-wrap justify-center items-center mb-4 gap-sm md:flex-row md:justify-between">
-  <h2 class="flex content-center items-center h4 gap-sub">
-    <mat-icon class="text-[40px] size-[40px] text-primary">{{ viewConfig.icon }}</mat-icon>
+  <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
+    <mat-icon class="text-[40px] size-[40px]">{{ viewConfig.icon }}</mat-icon>
     <div [innerHTML]="viewConfig.title"></div>
   </h2>
 
   <div class="flex flex-row justify-end items-center gap-sm">
-    <button type="button" mat-flat-button color="primary" [routerLink]="['/comandes-setmanals']">
-      <mat-icon>arrow_back</mat-icon> Tornar al llistat
+    <button type="button" mat-flat-button color="primary" [routerLink]="['/comandes', 'setmanals']">
+      <mat-icon>date_range</mat-icon> Veure ell llistat de comandes per setmanes
     </button>
   </div>
 </div>

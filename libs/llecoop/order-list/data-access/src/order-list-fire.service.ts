@@ -44,6 +44,8 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
           );
+        } else if (value) {
+          conditions.push(where(key, '==', value));
         }
       });
     }
