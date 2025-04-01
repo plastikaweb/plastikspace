@@ -10,22 +10,24 @@
 
       <mat-card-content>
         <div class="flex flex-wrap gap-sm p-sm">
-          <div class="flex items-center">
+          <div class="flex items-center gap-tiny">
             <mat-icon class="text-secondary">person</mat-icon>
             <span class="text-sm">{{ order.userName }}</span>
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-tiny">
             <mat-icon class="text-secondary">email</mat-icon>
             <span class="text-sm">{{ order.userEmail }}</span>
           </div>
 
-          <div class="flex items-center">
-            <mat-icon class="text-secondary">phone</mat-icon>
-            <span class="text-sm">{{ order.phone || '-' }}</span>
-          </div>
+          @if (order.phone) {
+            <div class="flex items-center gap-tiny">
+              <mat-icon class="text-secondary">phone</mat-icon>
+              <span class="text-sm">{{ order.phone }}</span>
+            </div>
+          }
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-tiny">
             <mat-icon class="text-secondary">{{
               order.deliveryType === 'pickup' ? 'store' : 'place'
             }}</mat-icon>
@@ -36,7 +38,7 @@
             >
           </div>
 
-          <div class="flex items-center">
+          <div class="flex items-center gap-tiny">
             <mat-icon class="text-secondary">schedule</mat-icon>
             <span
               class="text-sm"

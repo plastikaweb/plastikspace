@@ -11,5 +11,6 @@ export const llecoopOrderListFeatureListRoutes: Route[] = [
     resolve: {
       resetOrderListStore: orderListFeatureListResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];

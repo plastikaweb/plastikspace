@@ -183,22 +183,10 @@ export const llecoopLayoutRoutes: Routes = [
               authGuardPipe: adminOnly,
               mustBeStored: true,
             },
-            children: [
-              {
-                path: ':order-list-id',
-                loadChildren: () =>
-                  import('@plastik/llecoop/order-list/detail').then(
-                    routes => routes.llecoopOrderListFeatureDetailRoutes
-                  ),
-              },
-              {
-                path: '',
-                loadChildren: () =>
-                  import('@plastik/llecoop/order-list/list').then(
-                    routes => routes.llecoopOrderListFeatureListRoutes
-                  ),
-              },
-            ],
+            loadChildren: () =>
+              import('@plastik/llecoop/order-list/list').then(
+                routes => routes.llecoopOrderListFeatureListRoutes
+              ),
           },
           {
             path: 'crear',

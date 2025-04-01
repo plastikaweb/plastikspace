@@ -1,3 +1,4 @@
+// eslint-disable-next-line @nx/enforce-module-boundaries
 import { UiOrderStatusChipComponent } from 'ui-order-status-chip';
 
 import { inject, Injectable } from '@angular/core';
@@ -10,7 +11,6 @@ import {
   llecoopUserOrderStatus,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
-// eslint-disable-next-line @nx/enforce-module-boundaries
 import { TableColumnFormatting } from '@plastik/shared/table/entities';
 
 /**

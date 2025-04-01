@@ -1,6 +1,7 @@
 import { filter, take } from 'rxjs';
 
 import { inject, Injectable, Signal, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { FormConfig } from '@plastik/core/entities';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
@@ -25,6 +26,7 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #table = inject(LlecoopOrderListUserOrderFeatureListTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #router = inject(Router);
 
   viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0]);
   routingToDetailPage = signal({
@@ -48,18 +50,21 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService
   ).get();
 
   onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
-    this.#userOrderStore.setFilter(criteria);
+    this.#router.navigate([], { queryParams: criteria });
   }
 
   onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
-    this.#userOrderStore.setPagination({
-      pageSize,
-      pageIndex,
+    this.#router.navigate([], {
+      queryParams: { pageIndex, pageSize },
+      queryParamsHandling: 'merge',
     });
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#userOrderStore.setSorting([active, direction]);
+    this.#router.navigate([], {
+      queryParams: { active, direction },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableActionDelete(item: LlecoopUserOrder): void {

@@ -131,16 +131,37 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
       getData: () => this.#userOrderStore.entities(),
       count: this.#userOrderStore.count,
       extraRowStyles: (userOrder: LlecoopUserOrder) => {
-        return userOrder.status === 'blocked' ? 'marked-ko' : '';
+        return userOrder.status === 'blocked'
+          ? 'marked-ko'
+          : userOrder.status === 'delivered'
+            ? 'marked-ok'
+            : '';
       },
       actionsColStyles: 'max-w-[150px]',
       actions: {
+        SET_DELIVERED: {
+          visible: () => true,
+          disabled: (userOrder: LlecoopUserOrder) => userOrder.status !== 'reviewed',
+          description: (userOrder: LlecoopUserOrder) =>
+            `Marcar la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name} com entregada`,
+          order: 2,
+          icon: () => 'local_shipping',
+          execute: (userOrder: LlecoopUserOrder) => {
+            this.#userOrderStore.update({
+              item: {
+                ...userOrder,
+                status: 'delivered',
+              },
+              redirectUrl: `./comandes/totes`,
+            });
+          },
+        },
         VIEW: {
           visible: () => true,
           disabled: (userOrder: LlecoopUserOrder) => !this.checkOrderStatus(userOrder).allowView,
           description: (userOrder: LlecoopUserOrder) =>
             `Factura de la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`,
-          order: 1,
+          order: 3,
           icon: () => 'receipt',
           link: (userOrder: LlecoopUserOrder) => ['../../comandes', userOrder?.id, 'resum'],
         },
@@ -148,8 +169,10 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
           visible: () => true,
           disabled: (userOrder: LlecoopUserOrder) => !this.checkOrderStatus(userOrder).allowBlock,
           description: (userOrder: LlecoopUserOrder) =>
-            userOrder.status === 'blocked' ? 'Desbloqueja la comanda' : 'Bloqueja la comanda',
-          order: 2,
+            userOrder.status === 'blocked'
+              ? `Desbloqueja la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`
+              : `Bloqueja la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`,
+          order: 1,
           icon: (userOrder: LlecoopUserOrder) =>
             userOrder.status === 'blocked' ? 'enhanced_encryption' : 'no_encryption',
           execute: (userOrder: LlecoopUserOrder) => {

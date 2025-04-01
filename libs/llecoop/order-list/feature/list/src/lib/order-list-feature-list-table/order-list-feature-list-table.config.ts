@@ -2,6 +2,7 @@ import { filter, take } from 'rxjs';
 
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
 import { UiOrderListOrdersStatusResumeComponent } from '@plastik/llecoop/order-list-orders-status-resume';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
@@ -24,6 +25,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
   readonly #sanitizer = inject(DomSanitizer);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #userOrderUtilsService = inject(UserOrderUtilsService);
+  readonly #router = inject(Router);
 
   readonly #name: TableColumnFormatting<LlecoopOrder, 'LINK'> = {
     key: 'name',
@@ -32,7 +34,8 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     sorting: 'normalizedName',
     sticky: true,
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
-    link: order => `./${order?.id}`,
+    link: () => ['/comandes', 'totes'],
+    queryParams: (order?: LlecoopOrder) => ({ text: order?.name || '' }),
     formatting: {
       type: 'LINK',
       execute: (_, order) => `<p class="font-bold uppercase">${order?.name}</p>`,
@@ -148,9 +151,17 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
               .subscribe(() => this.#store.changeStatus(order));
           },
         },
-        EDIT: {
+        VIEW_ORDER_LIST_USER_ORDERS: {
           visible: () => true,
-          description: order => `Edita les comandes de ${order.name}`,
+          description: (order: LlecoopOrder) => `Edita les comandes de ${order.name}`,
+          icon: () => 'edit',
+          execute: (order: LlecoopOrder) => {
+            this.#router.navigate(['comandes', 'totes'], {
+              queryParams: {
+                text: order.name,
+              },
+            });
+          },
           order: 2,
         },
         CANCEL: {

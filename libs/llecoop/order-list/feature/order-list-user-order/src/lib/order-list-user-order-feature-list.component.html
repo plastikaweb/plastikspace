@@ -30,6 +30,7 @@
   [columnProperties]="tableDefinition.columnProperties() || []"
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"
+  [pagination]="tableDefinition.pagination?.()"
   [paginationVisibility]="tableDefinition?.paginationVisibility"
   [actions]="tableDefinition.actions || {}"
   [noPagination]="tableDefinition.noPagination || false"

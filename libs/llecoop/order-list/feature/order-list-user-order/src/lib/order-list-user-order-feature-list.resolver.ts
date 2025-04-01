@@ -1,28 +1,44 @@
-import { Observable, of } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 import { inject } from '@angular/core';
-import { ResolveFn, Router } from '@angular/router';
+import { ResolveFn } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectRouteQueryParams } from '@plastik/core/router-state';
 import {
   llecoopUserOrderStore,
   userOrderMainInitState,
 } from '@plastik/llecoop/order-list/data-access';
+import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entities';
 
 export const orderListUserOrderFeatureListResolver: ResolveFn<
   Observable<boolean>
 > = (): Observable<boolean> => {
-  const store = inject(llecoopUserOrderStore);
-  const router = inject(Router);
-  const previousUrl = router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
+  const userOrderStore = inject(llecoopUserOrderStore);
+  const store = inject(Store);
 
-  store.setSelectedItemId(null);
+  userOrderStore.setSelectedItemId(null);
 
-  if (!previousUrl?.startsWith('/comandes') || !store.initiallyLoaded()) {
-    store.resetTableConfig(
-      userOrderMainInitState.pagination,
-      userOrderMainInitState.filter,
-      userOrderMainInitState.sorting
-    );
-  }
+  const queryParams = store.select(selectRouteQueryParams);
+  const { text, userNormalizedName, status } = userOrderMainInitState.filter;
+  const [active, direction] = userOrderMainInitState.sorting as TableSortingConfig;
+  const { pageIndex, pageSize } = userOrderMainInitState.pagination;
 
-  return of(true);
+  return queryParams.pipe(
+    map(params => ({
+      filter: {
+        text: params['text'] || text,
+        userNormalizedName: params['userNormalizedName'] || userNormalizedName,
+        status: params['status'] || status,
+      },
+      sorting: [params['active'] || active, params['direction'] || direction] as TableSortingConfig,
+      pagination: {
+        pageIndex: Number(params['pageIndex'] || pageIndex),
+        pageSize: Number(params['pageSize'] || pageSize),
+      } as PageEventConfig,
+    })),
+    tap(({ filter, sorting, pagination }) => {
+      userOrderStore.resetTableConfig(pagination, filter, sorting);
+    }),
+    map(() => true)
+  );
 };

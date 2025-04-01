@@ -64,6 +64,7 @@ export interface LlecoopUserOrder extends BaseEntity {
   cart: LlecoopOrderProduct[];
   address: string;
   phone: string;
+  userNormalizedName: string;
   deliveryType: 'pickup' | 'delivery';
   deliveryTime: FormSelectOption['value'];
   deliveryDate: FormSelectOption['value'];
@@ -79,21 +80,13 @@ export interface LlecoopUserOrder extends BaseEntity {
    * 'waiting' means the order is done by the user and is waiting for the admin to review it.
    * 'reviewed' means the order has been reviewed by the admin.
    * 'delivered' means the order has been delivered to the user by the admin.
-   * 'cancelled' means the order has been cancelled by the user.
    * 'blocked' means the order has been blocked by the admin.
    * 'notReviewed' means the order has not been reviewed by the admin when the related order list date due date has passed.
    * 'notDelivered' means the order has not been delivered by the admin when the related order list date due date has passed.
-   * @type {'waitingReview' | 'reviewed' | 'delivered' | 'cancelled' | 'blocked' | 'notReviewed' | 'notDelivered'}
+   * @type {'waitingReview' | 'reviewed' | 'delivered' | 'blocked' | 'notReviewed' | 'notDelivered'}
    * @default 'waitingReview'
    */
-  status:
-    | 'waitingReview'
-    | 'reviewed'
-    | 'delivered'
-    | 'cancelled'
-    | 'blocked'
-    | 'notReviewed'
-    | 'notDelivered';
+  status: 'waitingReview' | 'reviewed' | 'delivered' | 'blocked' | 'notReviewed' | 'notDelivered';
 }
 
 export const llecoopUserOrderTimeOptions: Record<
@@ -208,11 +201,6 @@ export const llecoopUserOrderStatus: Record<
     label: 'Entregada',
     icon: 'local_shipping',
     class: 'text-success',
-  },
-  cancelled: {
-    label: 'Cancel·lada',
-    icon: 'cancel',
-    class: 'text-error',
   },
   blocked: {
     label: 'Bloquejada',

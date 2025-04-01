@@ -29,7 +29,6 @@ export class OrderListUserOrderResumeFormConfig {
 
     return (
       orderList.status === 'done' &&
-      this.userOrderData()?.status !== 'cancelled' &&
       this.userOrderData()?.status !== 'delivered' &&
       this.userOrderData()?.status !== 'blocked'
     );

@@ -14,7 +14,7 @@ export function getLlecoopOrderListUserOrderFeatureListSearchFormConfig(): Forml
         }),
         addSearchInput(
           { label: 'Filtrar per nom sòcia', placeholder: 'Filtrar per nom sòcia' },
-          'userName'
+          'userNormalizedName'
         ),
         {
           key: 'status',

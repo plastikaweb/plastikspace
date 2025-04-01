@@ -30,6 +30,7 @@
               <a
                 [ngClass]="column.cssClasses?.[1] || ''"
                 [routerLink]="column.link ? column.link(row) : null"
+                [queryParams]="column.queryParams ? column.queryParams(row) : null"
                 [innerHTML]="row | safeFormatted: column : i + 1"
                 (click)="$event.stopPropagation()">
               </a>

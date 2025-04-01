@@ -31,5 +31,6 @@ export const llecoopOrderListUserOrdersListRoutes: Route[] = [
     resolve: {
       allOrders: orderListUserOrderFeatureListResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];

@@ -186,6 +186,12 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
           );
+        } else if (key === 'userNormalizedName' && value) {
+          const normalizedText = latinize(value as string).toLowerCase();
+          conditions.push(
+            where('userNormalizedName', '>=', normalizedText),
+            where('userNormalizedName', '<=', normalizedText + '\uf8ff')
+          );
         } else if (value) {
           conditions.push(where(key, '==', value));
         }

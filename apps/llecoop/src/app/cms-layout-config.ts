@@ -46,7 +46,7 @@ export function viewConfig() {
       {
         id: 4,
         name: 'order-list',
-        title: 'Comandes setmanals',
+        title: 'Comandes per setmana',
         icon: 'shopping_basket',
         route: [`/comandes/setmanals`],
         includedInNavigation: isAdmin(),
@@ -59,7 +59,7 @@ export function viewConfig() {
         icon: 'shopping_bag',
         route: [`/comandes/totes`],
         includedInNavigation: isAdmin(),
-        routerLinkActiveOptionsExact: true,
+        routerLinkActiveOptionsExact: false,
         divider: true,
       },
       {

@@ -21,7 +21,7 @@ import { LlecoopUserOrderFireService } from './user-order-fire.service';
 
 export type StoreUserOrderFilter = StoreFirebaseCrudFilter & {
   text: string;
-  userName: string;
+  userNormalizedName: string;
   status: LlecoopUserOrder['status'] | '';
 };
 
@@ -52,7 +52,7 @@ export const userOrderMainInitState: StoreFirebaseCrudState<
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
-    userName: '',
+    userNormalizedName: '',
     status: '',
   },
   pagination: {
