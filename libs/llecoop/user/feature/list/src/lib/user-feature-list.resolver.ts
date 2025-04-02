@@ -11,7 +11,7 @@ export const userFeatureListResolver: ResolveFn<Observable<boolean>> = (): Obser
 
   store.setSelectedItemId(null);
 
-  if (!previousUrl?.startsWith('/admin/usuari') || !store.initiallyLoaded()) {
+  if (!previousUrl?.startsWith('/admin/usuaris') || !store.initiallyLoaded()) {
     store.resetTableConfig(
       userMainInitState.pagination,
       userMainInitState.filter,

@@ -16,14 +16,6 @@
   }
 }
 
-.activity-overlay {
-  @apply opacity-100 bg-primary-light;
-  transition: opacity 3s ease-in-out;
-  &.fade-out {
-    @apply opacity-0;
-  }
-}
-
 @keyframes ripple {
   0% {
     transform: scale(0);

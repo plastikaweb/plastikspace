@@ -42,14 +42,14 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
       config: [
         {
           id: 1,
-          name: 'profile',
+          name: 'profile' as Lowercase<string>,
           title: 'Perfil',
           icon: 'person',
-          route: [`/soci/perfil`],
+          route: ['/perfil'],
         },
         {
           id: 2,
-          name: 'logout',
+          name: 'logout' as Lowercase<string>,
           title: 'Tancar sessió',
           icon: 'logout',
           action: () => firebaseAuthService.logout(),

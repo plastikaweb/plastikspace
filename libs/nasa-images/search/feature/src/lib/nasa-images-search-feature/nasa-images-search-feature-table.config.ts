@@ -1,6 +1,6 @@
-import { map, Observable } from 'rxjs';
+import { map } from 'rxjs';
 
-import { inject, signal } from '@angular/core';
+import { computed, inject, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { select, Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
@@ -8,10 +8,7 @@ import { selectNasaImagesFeature } from '@plastik/nasa-images/search/data-access
 import { NasaImage } from '@plastik/nasa-images/search/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
-  DEFAULT_TABLE_CONFIG,
-  PageEventConfig,
-  TableColumnFormatting,
-  TableDefinition,
+    DEFAULT_TABLE_CONFIG, PageEventConfig, TableColumnFormatting
 } from '@plastik/shared/table/entities';
 
 const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
@@ -107,7 +104,7 @@ const center: TableColumnFormatting<NasaImage, 'TEXT'> = {
   },
 };
 
-const columnProperties: TableColumnFormatting<NasaImage, FormattingTypes>[] = [
+const columnProperties: Signal<TableColumnFormatting<NasaImage, FormattingTypes>[]> = signal([
   index,
   id,
   title,
@@ -116,7 +113,7 @@ const columnProperties: TableColumnFormatting<NasaImage, FormattingTypes>[] = [
   dateCreated,
   creator,
   center,
-];
+]);
 
 export class NasaImagesSearchFeatureTableConfig {
   static getTableDefinition() {
@@ -124,20 +121,22 @@ export class NasaImagesSearchFeatureTableConfig {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
     const count = toSignal(store.pipe(select(selectNasaImagesFeature.selectCount)));
 
-    return store.select(selectRouteQueryParams).pipe(
-      map(({ page = 0 }) => {
-        return {
-          ...defaultTableConfig,
-          columnProperties,
-          pagination: signal({
-            ...defaultTableConfig.pagination,
-            pageSize: 100,
-            pageIndex: --page,
-          }),
-          count,
-          caption: 'Nasa Images Table Results',
-        };
-      })
-    ) as Observable<TableDefinition<NasaImage>>;
+    return toSignal(
+      store.select(selectRouteQueryParams).pipe(
+        map(({ page = 0 }) => {
+          return {
+            ...defaultTableConfig,
+            columnProperties,
+            pagination: computed(() => ({
+              ...(defaultTableConfig.pagination || {}),
+              pageSize: 100,
+              pageIndex: --page,
+            })),
+            count,
+            caption: 'Nasa Images Table Results',
+          };
+        })
+      )
+    );
   }
 }

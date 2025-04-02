@@ -1,13 +1,14 @@
-<plastik-shared-activity-ui-overlay class="activity-overlay" [class.fade-out]="!isActive()">
-  <div class="spinner-container">
-    <div class="lds-ripple">
-      <div></div>
-      <div></div>
+@if (isActive()) {
+  <plastik-shared-activity-ui-overlay>
+    <div class="spinner-container">
+      <div class="lds-ripple">
+        <div></div>
+        <div></div>
+      </div>
+      <p class="sr-only">carregant dades...</p>
     </div>
-    <p class="sr-only">carregant dades...</p>
-  </div>
-</plastik-shared-activity-ui-overlay>
-
+  </plastik-shared-activity-ui-overlay>
+}
 @defer (when !!notificationStore.configuration()) {
   <div
     [plastikSnackbar]="notificationStore.configuration()"

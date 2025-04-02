@@ -1,36 +1,38 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { computed, inject } from '@angular/core';
+import { computed, inject, Signal } from '@angular/core';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { ViewConfig } from '@plastik/core/entities';
+import { LlecoopViews } from '@plastik/llecoop/entities';
 
-export function viewConfig() {
-  const isAdmin = inject(FirebaseAuthService).isAdmin;
+export function viewConfig(): Signal<ViewConfig<LlecoopViews>[]> {
+  const firebaseAuthService = inject(FirebaseAuthService);
 
-  return computed(() =>
-    [
+  return computed(() => {
+    return [
       {
         id: 1,
         name: 'product',
         title: 'Productes',
         icon: 'shopping_cart',
-        route: [`/admin/producte`],
-        includedInNavigation: isAdmin(),
-        routerLinkActiveOptionsExact: false,
+        route: ['/productes'],
+        includedInNavigation: firebaseAuthService.isAdmin(),
+        routerLinkActiveOptionsExact: { exact: false },
       },
       {
         id: 2,
         name: 'category',
         title: 'Categories',
         icon: 'category',
-        route: [`/admin/categoria`],
-        includedInNavigation: isAdmin(),
-        routerLinkActiveOptionsExact: false,
+        route: ['/categories'],
+        includedInNavigation: firebaseAuthService.isAdmin(),
+        routerLinkActiveOptionsExact: { exact: false },
       },
       // ['tag']: {
       //   id: 2,
       //   name: 'tag',
       //   title: 'Etiquetes',
       //   icon: 'label',
-      //   route: [`/tag`],
+      //   route: ['/tag'],
       //   includedInNavigation: true,
       //   routerLinkActiveOptionsExact: false,
       // },
@@ -38,39 +40,64 @@ export function viewConfig() {
         id: 3,
         name: 'user',
         title: 'Usuaris',
-        icon: 'person',
-        route: [`/admin/usuari`],
-        includedInNavigation: isAdmin(),
-        routerLinkActiveOptionsExact: false,
+        icon: 'mood',
+        route: ['/usuaris'],
+        includedInNavigation: firebaseAuthService.isAdmin(),
+        routerLinkActiveOptionsExact: { exact: false },
       },
       {
         id: 4,
-        name: 'order-list',
-        title: 'Comandes per setmana',
+        name: 'order',
+        title: 'Comandes',
         icon: 'shopping_bag',
-        route: [`/admin/comanda`],
-        includedInNavigation: isAdmin(),
-        routerLinkActiveOptionsExact: false,
-        divider: true,
+        route: ['/comandes'],
+        includedInNavigation: true,
+        routerLinkActiveOptionsExact: { exact: false },
+        children: [
+          {
+            id: 6,
+            name: 'order-list',
+            title: 'per setmana',
+            icon: 'shopping_basket',
+            route: ['/comandes/setmanals'],
+            includedInNavigation: firebaseAuthService.isAdmin(),
+            routerLinkActiveOptionsExact: { exact: false },
+          },
+          {
+            id: 7,
+            name: 'all-order',
+            title: 'totes',
+            icon: 'shopping_bag',
+            route: ['/comandes/totes'],
+            includedInNavigation: firebaseAuthService.isAdmin(),
+            routerLinkActiveOptionsExact: { exact: false },
+            divider: true,
+          },
+          {
+            id: 8,
+            name: 'my-order',
+            title: 'les meves',
+            icon: 'face_2',
+            route: ['/comandes'],
+            includedInNavigation: true,
+            routerLinkActiveOptionsExact: {
+              paths: 'exact',
+              queryParams: 'ignored',
+              fragment: 'ignored',
+              matrixParams: 'ignored',
+            },
+          },
+        ],
       },
       {
         id: 5,
-        name: 'order',
-        title: 'Les meves comandes',
-        icon: 'shopping_cart',
-        route: [`/soci/comanda`],
-        includedInNavigation: true,
-        routerLinkActiveOptionsExact: false,
-      },
-      {
-        id: 6,
         name: 'profile',
         title: 'Perfil',
         icon: 'person',
-        route: [`/soci/perfil`],
+        route: ['/perfil'],
         includedInNavigation: false,
-        routerLinkActiveOptionsExact: true,
+        routerLinkActiveOptionsExact: { exact: true },
       },
-    ].filter(view => view.includedInNavigation)
-  );
+    ].filter(view => view.includedInNavigation) as ViewConfig<LlecoopViews>[];
+  });
 }

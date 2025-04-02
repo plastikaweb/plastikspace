@@ -3,7 +3,7 @@
 
 <plastik-input-table
   [tableCaption]="tableDefinition.caption || ''"
-  [tableColumnProperties]="tableDefinition.columnProperties || []"
+  [tableColumnProperties]="tableDefinition.columnProperties() || []"
   [tableActions]="tableDefinition.actions || {}"
   [tableSorting]="tableDefinition.sort?.()"
   [tableExtraRowStyles]="tableDefinition.extraRowStyles"

@@ -4,9 +4,9 @@
 @let viewExtraActions = facade.viewExtraActions?.() || [];
 
 <div class="flex flex-row flex-wrap justify-center items-center gap-sm sm:justify-between">
-  <h2 class="flex content-center items-center text-center h4 md:gap-sub">
+  <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
     <mat-icon class="text-[40px] size-[40px]">{{ viewConfig?.icon }}</mat-icon>
-    {{ viewConfig?.title | titlecase }}
+    <span>{{ viewConfig?.title | titlecase }}</span>
   </h2>
 
   @if (viewExtraActions.length) {
@@ -35,7 +35,7 @@
 </div>
 
 <plastik-shared-form-feature
-  class="flex flex-row justify-between content-center items-end filters-box"
+  class="flex flex-row justify-between content-center items-end mb-4 filters-box"
   [fields]="facade.filterFormConfig || []"
   [model]="facade.filterCriteria?.() || {}"
   [submitConfig]="{ submitAvailable: false, disableOnSubmit: false }"
@@ -45,7 +45,7 @@
 <plastik-shared-table
   [data]="tableDefinition.getData?.() || []"
   [caption]="tableDefinition.caption || ''"
-  [columnProperties]="tableDefinition.columnProperties || []"
+  [columnProperties]="tableDefinition.columnProperties() || []"
   [pagination]="tableDefinition?.pagination()"
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"

@@ -1,6 +1,8 @@
+import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import {
   ApplicationConfig,
+  DEFAULT_CURRENCY_CODE,
   importProvidersFrom,
   isDevMode,
   LOCALE_ID,
@@ -108,10 +110,6 @@ export const appConfig: ApplicationConfig = {
       useValue: environment,
     },
     {
-      provide: LOCALE_ID,
-      useValue: 'ca-ES',
-    },
-    {
       provide: TitleStrategy,
       useClass: PrefixTitleService,
     },
@@ -122,6 +120,20 @@ export const appConfig: ApplicationConfig = {
         verticalPosition: 'bottom',
         horizontalPosition: 'center',
         politeness: 'assertive',
+      },
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'ca-ES',
+    },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: 'EUR',
+    },
+    {
+      provide: DATE_PIPE_DEFAULT_OPTIONS,
+      useValue: {
+        dateFormat: 'dd/MM/yyyy',
       },
     },
   ],

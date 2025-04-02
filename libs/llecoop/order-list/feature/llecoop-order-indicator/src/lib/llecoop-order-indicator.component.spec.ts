@@ -56,7 +56,7 @@ describe('LlecoopOrderIndicatorComponent', () => {
     const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
     const routerLink = matChip.nativeElement.getAttribute('ng-reflect-router-link');
 
-    expect(routerLink).toContain('./soci/comanda/1');
+    expect(routerLink).toContain('./comandes/1');
   });
 
   it('should display "Fes comanda" chip when only currentOrderList is available', () => {
@@ -76,7 +76,7 @@ describe('LlecoopOrderIndicatorComponent', () => {
     const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
     const routerLink = matChip.nativeElement.getAttribute('ng-reflect-router-link');
 
-    expect(routerLink).toContain('./soci/comanda/crear');
+    expect(routerLink).toContain('./comandes/crear');
   });
 
   it('should display "Cap comanda activa" chip when neither currentOrderList nor currentUserOrder are available', () => {

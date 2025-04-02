@@ -1,7 +1,8 @@
 import { filter, take } from 'rxjs';
 
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Signal } from '@ngrx/signals/src/deep-signal';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
@@ -104,15 +105,16 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
   readonly #createdAt = createdAt<LlecoopUser>();
   readonly #updatedAt = updatedAt<LlecoopUser>();
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopUser, FormattingTypes>[] = [
-    this.#isAdmin,
-    this.#name,
-    this.#email,
-    this.#registered,
-    this.#emailVerified,
-    this.#createdAt,
-    this.#updatedAt,
-  ];
+  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopUser, FormattingTypes>[]> =
+    signal([
+      this.#isAdmin,
+      this.#name,
+      this.#email,
+      this.#registered,
+      this.#emailVerified,
+      this.#createdAt,
+      this.#updatedAt,
+    ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

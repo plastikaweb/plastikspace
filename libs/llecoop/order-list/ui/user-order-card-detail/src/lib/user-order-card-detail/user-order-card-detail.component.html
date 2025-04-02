@@ -1,0 +1,71 @@
+@if (order(); as order) {
+  <div class="w-full mb-sm">
+    <mat-card class="bg-white">
+      <mat-card-header>
+        <mat-card-title class="flex gap-tiny">
+          <mat-icon class="text-secondary-dark">shopping_basket</mat-icon>
+          <span>Comanda #{{ order.id }}</span>
+        </mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="flex flex-wrap gap-sm p-sm">
+          <div class="flex items-center gap-tiny">
+            <mat-icon class="text-secondary">person</mat-icon>
+            <span class="text-sm">{{ order.userName }}</span>
+          </div>
+
+          <div class="flex items-center gap-tiny">
+            <mat-icon class="text-secondary">email</mat-icon>
+            <span class="text-sm">{{ order.userEmail }}</span>
+          </div>
+
+          @if (order.phone) {
+            <div class="flex items-center gap-tiny">
+              <mat-icon class="text-secondary">phone</mat-icon>
+              <span class="text-sm">{{ order.phone }}</span>
+            </div>
+          }
+
+          <div class="flex items-center gap-tiny">
+            <mat-icon class="text-secondary">{{
+              order.deliveryType === 'pickup' ? 'store' : 'place'
+            }}</mat-icon>
+            <span
+              class="text-sm"
+              >{{ order.deliveryType === 'pickup' ? 'Recollida a la seu de El Llevat' : `Entrega a
+            ${order.address}` }}</span
+            >
+          </div>
+
+          <div class="flex items-center gap-tiny">
+            <mat-icon class="text-secondary">schedule</mat-icon>
+            <span
+              class="text-sm"
+              [innerHTML]="userOrderUtilsService.formatDeliveryDateAndTime(order)"></span>
+          </div>
+
+          @if (order.deliveryInfo) {
+            <div
+              class="flex items-center w-full text-white rounded gap-sub p-sub mt-sub bg-primary-dark">
+              <mat-icon class="text-primary-light">info</mat-icon>
+              <span class="text-sm italic">{{ order.deliveryInfo }}</span>
+            </div>
+          }
+        </div>
+
+        <div class="px-sub pb-sub">
+          <plastik-shared-form-feature
+            class="flex flex-row justify-between content-center items-end"
+            [fields]="fields()"
+            [model]="order"
+            [submitConfig]="submitConfig()"
+            [autoFocus]="true"
+            (pendingChangesEvent)="pendingChangesEvent.emit($event)"
+            (changeEvent)="changeEvent.emit($event)">
+          </plastik-shared-form-feature>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+}

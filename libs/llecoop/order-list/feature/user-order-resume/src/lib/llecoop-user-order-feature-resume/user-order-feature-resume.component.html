@@ -1,16 +1,17 @@
 @let viewConfig = facade.viewConfig();
 @let tableDefinition = facade.tableDefinition;
 @let order = facade.userOrder();
+@let orderStatus = facade.orderStatus();
 
 <div
   class="flex flex-col flex-wrap justify-center items-center gap-tiny md:flex-row md:justify-between">
-  <h2 class="flex content-center items-center h4 gap-sub">
-    <mat-icon class="text-[40px] size-[40px]">{{ viewConfig.icon }}</mat-icon>
-    <span>{{ viewConfig.title | titlecase }}</span>
+  <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
+    <mat-icon class="text-[40px] size-[40px]">{{ viewConfig?.icon }}</mat-icon>
+    <span>{{ viewConfig?.title | titlecase }}</span>
   </h2>
 
   <div class="flex flex-col items-center sm:flex-row sm:justify-end gap-tiny">
-    <button type="button" mat-flat-button [routerLink]="['soci', 'comanda']">
+    <button type="button" mat-flat-button [routerLink]="['/comandes', 'totes']">
       <mat-icon>arrow_back</mat-icon> Tornar al llistat
     </button>
   </div>
@@ -25,12 +26,13 @@
         {{ order?.name }}
       </h3>
 
-      <plastik-ui-order-status-chip
-        [iconClass]="facade.orderStatus().class || ''"
-        [icon]="facade.orderStatus().icon || ''"
-        [label]="facade.orderStatus().label || ''">
-      </plastik-ui-order-status-chip>
-
+      @if (orderStatus) {
+        <plastik-ui-order-status-chip
+          [iconClass]="orderStatus.class || ''"
+          [icon]="orderStatus.icon || ''"
+          [label]="orderStatus.label || ''">
+        </plastik-ui-order-status-chip>
+      }
       <dl class="space-y-2">
         <div class="flex items-center gap-tiny">
           <dt>Id:</dt>
@@ -67,7 +69,7 @@
   <plastik-shared-table
     [data]="tableDefinition.getData?.() || []"
     [caption]="tableDefinition.caption || ''"
-    [columnProperties]="tableDefinition.columnProperties || []"
+    [columnProperties]="tableDefinition.columnProperties() || []"
     [resultsLength]="tableDefinition?.count() || 0"
     [noPagination]="tableDefinition.noPagination || false">
   </plastik-shared-table>
@@ -78,15 +80,15 @@
     <dl class="divide-y divide-secondary-dark">
       <div class="flex flex-row justify-between items-center p-tiny">
         <dt class="text-md">Total productes</dt>
-        <dd class="font-medium">33,00 €</dd>
+        <dd class="font-medium">{{ order?.totalPrice | currency }}</dd>
       </div>
       <div class="flex flex-row justify-between items-center p-tiny">
         <dt class="text-md">Transport</dt>
-        <dd class="font-medium">3,00 €</dd>
+        <dd class="font-medium">{{ order?.deliveryPrice | currency }}</dd>
       </div>
       <div class="flex flex-row justify-between items-center p-tiny">
         <dt class="text-lg font-semibold">Total</dt>
-        <dd class="text-lg font-bold">36,00 €</dd>
+        <dd class="text-lg font-bold">{{ order?.totalPrice | currency }}</dd>
       </div>
     </dl>
   </section>

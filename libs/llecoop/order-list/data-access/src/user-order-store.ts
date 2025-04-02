@@ -21,13 +21,20 @@ import { LlecoopUserOrderFireService } from './user-order-fire.service';
 
 export type StoreUserOrderFilter = StoreFirebaseCrudFilter & {
   text: string;
+  userNormalizedName: string;
+  status: LlecoopUserOrder['status'] | '';
+  userId?: string | null;
+};
+
+export type StoreUserOrderProductsFilter = StoreFirebaseCrudFilter & {
+  text: string;
 };
 
 export type UserOrderListStoreCrudState = StoreFirebaseCrudState<
   LlecoopUserOrder,
   StoreUserOrderFilter
 > & {
-  orderProductsFilter: StoreUserOrderFilter;
+  orderProductsFilter: StoreUserOrderProductsFilter;
   orderProductsSorting: TableSortingConfig;
   orderProductsPagination: StoreFirebaseCrudPagination<LlecoopOrderProduct>;
   currentUserOrder: LlecoopUserOrder | null;
@@ -46,14 +53,17 @@ export const userOrderMainInitState: StoreFirebaseCrudState<
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
+    userNormalizedName: '',
+    status: '',
+    userId: null,
   },
   pagination: {
-    pageSize: 10,
+    pageSize: 5,
     pageIndex: 0,
     pageLastElements: new Map<number, LlecoopUserOrder>(),
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
-  baseRoute: '/soci/comanda',
+  baseRoute: '/comandes',
   _adminOnly: false,
 };
 
@@ -96,7 +106,6 @@ export const llecoopUserOrderStore = signalStore(
             const id = currentOrderList?.id;
 
             if (id) {
-              // Guardar el ID en una constante para evitar que sea undefined
               return store._dataService.getCurrentUserOrder(id).pipe(
                 tapResponse({
                   next: currentUserOrder => {

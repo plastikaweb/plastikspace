@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { UiCategoryNameCellComponent } from '@plastik/llecoop/category-name-cell';
 import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
@@ -64,13 +64,9 @@ export class LlecoopCategorySearchFeatureTableConfig
   readonly #createdAt = createdAt<LlecoopProductCategory>();
   readonly #updatedAt = updatedAt<LlecoopProductCategory>();
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopProductCategory, FormattingTypes>[] = [
-    this.#name,
-    this.#description,
-    this.#productCount,
-    this.#createdAt,
-    this.#updatedAt,
-  ];
+  readonly #columnProperties: Signal<
+    TableColumnFormatting<LlecoopProductCategory, FormattingTypes>[]
+  > = signal([this.#name, this.#description, this.#productCount, this.#createdAt, this.#updatedAt]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

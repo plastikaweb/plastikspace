@@ -1,4 +1,5 @@
 import { signal, Signal } from '@angular/core';
+import { RouterLinkActive } from '@angular/router';
 import { collectionToArray } from '@plastik/shared/objects';
 
 /**
@@ -14,13 +15,13 @@ export interface ViewConfig<T extends string> {
     header: string;
   };
   children?: Array<ViewConfig<T>>;
-  route: [ViewConfigRoute<T> | string];
+  route: [ViewConfigRoute<T>];
   includedInNavigation?: boolean;
-  routerLinkActiveOptionsExact?: boolean;
+  routerLinkActiveOptionsExact?: RouterLinkActive['routerLinkActiveOptions'];
   divider?: boolean;
 }
 
-type ViewConfigRoute<T extends string> = `/${Lowercase<T>}`;
+export type ViewConfigRoute<T extends string> = `/${Lowercase<T>}`;
 
 /**
  * @description A Record shape for UI views.

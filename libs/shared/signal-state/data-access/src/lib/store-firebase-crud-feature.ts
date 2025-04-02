@@ -200,6 +200,7 @@ export function withFirebaseCrud<
                       `No s'ha pogut obtenir el total de elements de tipus '${featureName}'`,
                       'ERROR'
                     );
+                    store._state.dispatch(activityActions.setActivity({ isActive: false }));
                   },
                 }),
                 tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
@@ -249,6 +250,7 @@ export function withFirebaseCrud<
                         `No s'ha pogut carregar els elements de tipus '${featureName}'`,
                         'ERROR'
                       );
+                      store._state.dispatch(activityActions.setActivity({ isActive: false }));
                     },
                   }),
                   tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
@@ -450,7 +452,6 @@ export function withFirebaseCrud<
         const isAdmin = store._authService.isAdmin();
 
         watchState(store, () => {
-          console.log('store changed', store, featureName);
           const currentPagination = store.pagination();
           const currentSorting = store.sorting();
           const currentFilter = store.filter();

@@ -3,7 +3,7 @@
     role="button"
     class="p-sm"
     [matBadgeDescription]="(currentUserOrder()?.cart?.length || 0) + ' productes seleccionats'"
-    [routerLink]="['./soci/comanda/' + currentUserOrder()?.id]"
+    [routerLink]="['./comandes/' + currentUserOrder()?.id]"
     [matBadge]="currentUserOrder()?.cart?.length || 0">
     <mat-icon matChipAvatar> shopping_cart </mat-icon>
     <div class="flex flex-row justify-center items-center break-words gap-sub">
@@ -18,7 +18,7 @@
     </div>
   </mat-chip>
 } @else if (currentOrderList()) {
-  <mat-chip role="button" class="p-sm" [routerLink]="['./soci/comanda/crear']">
+  <mat-chip role="button" class="p-sm" [routerLink]="['./comandes/crear']">
     <mat-icon matChipAvatar> shopping_cart </mat-icon>
     Fes comanda
   </mat-chip>

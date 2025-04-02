@@ -3,6 +3,7 @@ import { filter, take, tap } from 'rxjs';
 
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopOrder, LlecoopProduct, YearWeek } from '@plastik/llecoop/entities';
@@ -30,12 +31,22 @@ export class LlecoopOrderListFeatureListFacadeService
   readonly #table = inject(LlecoopOrderListFeatureListTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #sanitizer = inject(DomSanitizer);
-
-  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order-list')[0]);
+  readonly #router = inject(Router);
+  readonly #viewConfig = inject(VIEW_CONFIG);
+  readonly #viewConfigMainRoute = this.#viewConfig().filter(item => item.name === 'order')[0];
+  readonly #viewConfigSubRoute = this.#viewConfigMainRoute.children?.filter(
+    item => item.name === 'order-list'
+  )[0];
+  viewConfig = computed(() => {
+    return {
+      ...this.#viewConfigSubRoute,
+      title: `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`,
+    };
+  });
   routingToDetailPage = signal({ visible: false });
   viewExtraActions = computed(() => [
     {
-      label: 'Iniciar comanda',
+      label: 'Iniciar comanda setmanal',
       icon: 'add',
       execute: () => {
         this.#store.getAvailableProducts();
@@ -70,15 +81,18 @@ export class LlecoopOrderListFeatureListFacadeService
   filterCriteria = this.#store.filter;
 
   onChangeFilterCriteria(criteria: StoreOrderListFilter): void {
-    this.#store.setFilter(criteria);
+    this.#router.navigate([], { queryParams: criteria });
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#store.setSorting([active, direction]);
+    this.#router.navigate([], { queryParams: { active, direction }, queryParamsHandling: 'merge' });
   }
 
   onTablePagination({ pageIndex, pageSize }: PageEventConfig): void {
-    this.#store.setPagination({ pageIndex, pageSize });
+    this.#router.navigate([], {
+      queryParams: { pageIndex, pageSize },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableActionDelete(item: LlecoopOrder): void {

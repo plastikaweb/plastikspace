@@ -6,10 +6,11 @@ import { orderListFeatureListResolver } from './order-list-feature-list.resolver
 export const llecoopOrderListFeatureListRoutes: Route[] = [
   {
     path: '',
-    title: 'Llista de comandes',
+    title: 'Llista de comandes per setmana',
     component: LlecoopOrderListFeatureListComponent,
     resolve: {
       resetOrderListStore: orderListFeatureListResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];

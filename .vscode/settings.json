@@ -45,5 +45,7 @@
     }
   },
   "angular.log": "verbose",
-  "nxConsole.nxWorkspacePath": ""
+  "nxConsole.nxWorkspacePath": "./",
+  "nxConsole.enableCodeLens": true,
+  "nxConsole.projectViewingStyle": "automatic"
 }

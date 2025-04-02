@@ -146,7 +146,8 @@ type PropertyFormattingBase<OBJ extends Record<keyof OBJ, unknown>> = {
   key: string & keyof OBJ;
   title: Capitalize<string>;
   pathToKey: string;
-  link?: (item?: OBJ) => string;
+  link?: (item?: OBJ) => string | string[];
+  queryParams?: (item?: OBJ) => Record<string, string>;
 };
 
 type PropertyFormattingTypeDef<OBJ, TYPE extends FormattingTypes> = {

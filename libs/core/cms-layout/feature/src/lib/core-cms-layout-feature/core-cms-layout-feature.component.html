@@ -75,7 +75,7 @@
           routerLinkActive="bg-gray-10"
           ariaCurrentWhenActive="page"
           [routerLink]="item?.route"
-          [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }">
+          [routerLinkActiveOptions]="item?.routerLinkActiveOptionsExact || { exact: false }">
           <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
             item.icon
           }}</mat-icon>

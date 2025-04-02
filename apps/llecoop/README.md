@@ -63,13 +63,12 @@ This is a list of all the related libraries to llecoop app.
 
 - [llecoop-order-list-util](../../libs/llecoop/order-list/util/README.md)
 - [llecoop-order-list-data-access](../../libs/llecoop/order-list/data-access/README.md)
-- [llecoop-order-list-feature-detail](../../libs/llecoop/order-list/feature/detail/README.md)
 - [llecoop-order-list-feature-list](../../libs/llecoop/order-list/feature/list/README.md)
 - [llecoop-user-order-feature-detail](../../libs/llecoop/order-list/feature/user-order-detail/README.md)
 - [llecoop-user-order-feature-list](../../libs/llecoop/order-list/feature/user-order-list/README.md)
 - [llecoop-user-order-feature-resume](../../libs/llecoop/order-list/feature/user-order-resume/README.md)
 - [llecoop-order-indicator](../../libs/llecoop/order-list/feature/llecoop-order-indicator/README.md)
-- [ui-order-list-orders-status-resume](../../libs/llecoop/ui/order-list-orders-status-resume/README.md)
+- [llecoop-order-list-user-order](../../libs/llecoop/order-list/feature/order-list-user-order/README.md)
 
 ### Product
 

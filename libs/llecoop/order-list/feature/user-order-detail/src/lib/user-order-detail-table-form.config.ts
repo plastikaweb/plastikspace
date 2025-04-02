@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductBasedUnitText,
@@ -133,7 +133,9 @@ export class LlecoopUserOrderDetailFormTableConfig
     },
   };
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] = [
+  readonly #columnProperties: Signal<
+    TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[]
+  > = signal([
     this.#name,
     categoryNameCell<LlecoopOrderProduct>({
       key: 'category',
@@ -146,7 +148,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     this.#priceWithIva,
     this.#initQuantity,
     this.#initPrice,
-  ];
+  ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

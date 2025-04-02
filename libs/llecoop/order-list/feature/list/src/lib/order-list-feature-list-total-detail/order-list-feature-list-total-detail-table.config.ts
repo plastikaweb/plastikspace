@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { getLlecoopProductUnitSuffix, LlecoopOrderProductTotal } from '@plastik/llecoop/entities';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -99,14 +99,16 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     },
   };
 
-  readonly #columnProperties: TableColumnFormatting<LlecoopOrderProductTotal, FormattingTypes>[] = [
+  readonly #columnProperties: Signal<
+    TableColumnFormatting<LlecoopOrderProductTotal, FormattingTypes>[]
+  > = signal([
     this.#name,
     this.#price,
     this.#quantity,
     this.#iva,
     this.#totalPrice,
     this.#reviewed,
-  ];
+  ]);
 
   getTableDefinition() {
     return {

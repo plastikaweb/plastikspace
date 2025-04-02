@@ -31,7 +31,7 @@ export class NasaImagesSearchFeatureComponent {
 
   images$ = this.#facade.images$;
   isActiveSearch$ = this.#facade.isActiveSearch$;
-  tableDefinition$ = NasaImagesSearchFeatureTableConfig.getTableDefinition();
+  tableDefinition = NasaImagesSearchFeatureTableConfig.getTableDefinition();
   formStructure$ = getNasaImagesSearchFeatureFormConfig();
   formModel$ = this.#facade.routeQueryParams$;
   routeInfo$ = this.#facade.routeInfo$;

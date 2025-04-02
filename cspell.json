@@ -29,6 +29,7 @@
     "peticio",
     "pluto",
     "poppins",
+    "powerpack",
     "preexperimental",
     "prellecoop",
     "prenasa",
@@ -40,7 +41,8 @@
     "tuesday",
     "Verou",
     "wednesday",
-    "windsurfrules"
+    "windsurfrules",
+    "xdescribe"
   ],
   "ignoreWords": [],
   "import": []

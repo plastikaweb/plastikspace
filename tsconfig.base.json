@@ -47,18 +47,19 @@
       "@plastik/llecoop/data-access": ["libs/llecoop/data-access/src/index.ts"],
       "@plastik/llecoop/entities": ["libs/llecoop/entities/src/index.ts"],
       "@plastik/llecoop/order-list-orders-status-resume": [
-        "libs/llecoop/ui/order-list-orders-status-resume/src/index.ts"
+        "libs/llecoop/order-list/ui/order-list-orders-status-resume/src/index.ts"
+      ],
+      "@plastik/llecoop/order-list-user-order": [
+        "libs/llecoop/order-list/feature/order-list-user-order/src/index.ts"
       ],
       "@plastik/llecoop/order-list/data-access": [
         "libs/llecoop/order-list/data-access/src/index.ts"
       ],
-      "@plastik/llecoop/order-list/detail": ["libs/llecoop/order-list/feature/detail/src/index.ts"],
       "@plastik/llecoop/order-list/list": ["libs/llecoop/order-list/feature/list/src/index.ts"],
       "@plastik/llecoop/order-list/order-indicator": [
         "libs/llecoop/order-list/feature/llecoop-order-indicator/src/index.ts"
       ],
       "@plastik/llecoop/order-list/util": ["libs/llecoop/order-list/util/src/index.ts"],
-      "@plastik/llecoop/order-status-chip": ["libs/llecoop/ui/order-status-chip/src/index.ts"],
       "@plastik/llecoop/product-name-cell": [
         "libs/llecoop/product/ui/product-name-cell/src/index.ts"
       ],
@@ -66,6 +67,9 @@
       "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
       "@plastik/llecoop/profile": ["libs/llecoop/profile/feature/src/index.ts"],
+      "@plastik/llecoop/user-order-card": [
+        "libs/llecoop/order-list/ui/user-order-card-detail/src/index.ts"
+      ],
       "@plastik/llecoop/user-order/detail": [
         "libs/llecoop/order-list/feature/user-order-detail/src/index.ts"
       ],
@@ -126,7 +130,8 @@
       ],
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"],
-      "@plastik/shared/testing": ["libs/shared/testing/index.ts"]
+      "@plastik/shared/testing": ["libs/shared/testing/index.ts"],
+      "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

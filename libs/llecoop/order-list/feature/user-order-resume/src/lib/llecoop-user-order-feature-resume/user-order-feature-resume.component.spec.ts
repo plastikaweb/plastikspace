@@ -23,7 +23,7 @@ describe('LlecoopUserOrderFeatureResumeComponent', () => {
           provide: LlecoopUserOrderResumeFacadeService,
           useValue: {
             tableDefinition: {
-              columnProperties: [],
+              columnProperties: signal([]),
               count: signal(0),
             },
             viewConfig: signal({

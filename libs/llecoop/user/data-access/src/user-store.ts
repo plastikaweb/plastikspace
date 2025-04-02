@@ -46,9 +46,9 @@ export const userMainInitState: StoreFirebaseCrudState<LlecoopUser, StoreUserFil
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
   baseRoute: {
-    onCreate: 'admin/usuari',
-    onUpdate: 'soci/perfil',
-    onError: 'admin/usuari',
+    onCreate: 'usuaris',
+    onUpdate: 'perfil',
+    onError: 'usuaris',
   },
 };
 
@@ -79,7 +79,6 @@ export const llecoopUserStore = signalStore(
           filter(() => !!store._activeConnection()),
           switchMap(({ id }) => {
             store._state.dispatch(activityActions.setActivity({ isActive: true }));
-
             if (!id) {
               throw new Error('User ID is undefined');
             }

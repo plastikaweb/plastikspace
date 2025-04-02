@@ -1,25 +1,18 @@
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 
-import { formatOrderStatus, formatUserOrderDeliveryDate } from './order-list.util';
+import { UserOrderUtilsService } from './order-list.util';
 
 describe('order-list-util', () => {
-  let sanitizer: DomSanitizer;
+  let service: UserOrderUtilsService;
 
   beforeEach(() => {
-    const mockSanitizer = {
-      bypassSecurityTrustHtml: (html: string) => html,
-    };
-
     TestBed.configureTestingModule({
-      providers: [
-        provideExperimentalZonelessChangeDetection(),
-        { provide: DomSanitizer, useValue: mockSanitizer },
-      ],
+      providers: [provideExperimentalZonelessChangeDetection(), UserOrderUtilsService],
     });
-    sanitizer = TestBed.inject(DomSanitizer);
+
+    service = TestBed.inject(UserOrderUtilsService);
   });
 
   describe('formatUserOrderDeliveryDate', () => {
@@ -29,14 +22,22 @@ describe('order-list-util', () => {
         deliveryTime: '16/17' as LlecoopUserOrder['deliveryTime'],
         deliveryDate: 'tuesday' as LlecoopUserOrder['deliveryDate'],
       };
-      const result = formatUserOrderDeliveryDate(order, sanitizer);
-      expect(result).toContain('<p>dijous entre les 16h i les 17h</p>');
+      const result = service.formatDeliveryDateAndTime(order);
+      expect(result).toEqual({
+        changingThisBreaksApplicationSecurity: '<p>dijous entre les 16h i les 17h</p>',
+      });
     });
   });
 
   describe('formatOrderStatus', () => {
     it('should return formatted order status with default values', () => {
-      const format = formatOrderStatus();
+      const format = service.formatOrderStatus(
+        'status',
+        'Estat',
+        'status',
+        ['min-w-[145px]'],
+        'status'
+      );
       expect(format).toEqual({
         key: 'status',
         title: 'Estat',
@@ -51,7 +52,13 @@ describe('order-list-util', () => {
     });
 
     it('should throw error when execute is called without element', () => {
-      const format = formatOrderStatus();
+      const format = service.formatOrderStatus(
+        'status',
+        'Estat',
+        'status',
+        ['min-w-[145px]'],
+        'status'
+      );
       expect(() => format.formatting?.execute?.(null)).toThrow('Element is required');
     });
   });

@@ -1,6 +1,7 @@
 import { filter, take } from 'rxjs';
 
-import { computed, inject, Injectable, Signal, signal } from '@angular/core';
+import { computed, inject, Injectable, Signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
@@ -10,8 +11,7 @@ import {
   StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
-import { TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 
 import { getLlecoopUserOrderSearchFeatureFormConfig } from './user-order-feature-search-form.config';
 import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-table.config';
@@ -26,8 +26,18 @@ export class LlecoopUserOrderListFacadeService
   readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
-
-  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0]);
+  readonly #router = inject(Router);
+  readonly #viewConfig = inject(VIEW_CONFIG);
+  readonly #viewConfigMainRoute = this.#viewConfig().filter(item => item.name === 'order')[0];
+  readonly #viewConfigSubRoute = this.#viewConfigMainRoute.children?.filter(
+    item => item.name === 'my-order'
+  )[0];
+  viewConfig = computed(() => {
+    return {
+      ...this.#viewConfigSubRoute,
+      title: `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`,
+    };
+  });
   routingToDetailPage = computed(() => {
     return {
       visible: true,
@@ -55,15 +65,21 @@ export class LlecoopUserOrderListFacadeService
   filterCriteria = this.#userOrderStore.filter;
 
   onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
-    this.#userOrderStore.setFilter(criteria);
+    this.#router.navigate([], { queryParams: criteria });
   }
 
-  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>): void {
-    this.#userOrderStore.setPagination(pagination);
+  onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
+    this.#router.navigate([], {
+      queryParams: { pageIndex, pageSize },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#userOrderStore.setSorting([active, direction]);
+    this.#router.navigate([], {
+      queryParams: { active, direction },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableActionDelete(item: LlecoopUserOrder): void {

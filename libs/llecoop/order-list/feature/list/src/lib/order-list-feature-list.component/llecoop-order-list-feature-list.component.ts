@@ -1,3 +1,4 @@
+import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -14,6 +15,7 @@ import { LlecoopOrderListFeatureListFacadeService } from '../order-list-feature-
     TableFormlyModule,
     SharedFormFeatureModule,
     SharedTableUiComponent,
+    TitleCasePipe,
   ],
   templateUrl: './llecoop-order-list-feature-list.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
