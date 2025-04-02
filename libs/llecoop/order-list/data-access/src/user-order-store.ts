@@ -23,6 +23,7 @@ export type StoreUserOrderFilter = StoreFirebaseCrudFilter & {
   text: string;
   userNormalizedName: string;
   status: LlecoopUserOrder['status'] | '';
+  userId?: string | null;
 };
 
 export type StoreUserOrderProductsFilter = StoreFirebaseCrudFilter & {
@@ -54,6 +55,7 @@ export const userOrderMainInitState: StoreFirebaseCrudState<
     text: '',
     userNormalizedName: '',
     status: '',
+    userId: null,
   },
   pagination: {
     pageSize: 5,
@@ -104,7 +106,6 @@ export const llecoopUserOrderStore = signalStore(
             const id = currentOrderList?.id;
 
             if (id) {
-              // Guardar el ID en una constante para evitar que sea undefined
               return store._dataService.getCurrentUserOrder(id).pipe(
                 tapResponse({
                   next: currentUserOrder => {

@@ -29,6 +29,7 @@ export const orderListUserOrderFeatureListResolver: ResolveFn<
         text: params['text'] || text,
         userNormalizedName: params['userNormalizedName'] || userNormalizedName,
         status: params['status'] || status,
+        userId: null,
       },
       sorting: [params['active'] || active, params['direction'] || direction] as TableSortingConfig,
       pagination: {

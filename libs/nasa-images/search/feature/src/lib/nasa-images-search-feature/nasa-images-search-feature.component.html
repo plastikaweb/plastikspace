@@ -12,18 +12,18 @@
     (changeEvent)="onChange($event)">
   </plastik-shared-form-feature>
 
+  @let table = tableDefinition();
   <!-- table -->
   <plastik-shared-table
     *ngrxLet="{
       data: images$,
-      tableDefinition: tableDefinition$,
       isActiveSearch: isActiveSearch$,
     } as obs"
     [data]="obs.data || []"
-    [caption]="obs.tableDefinition.caption || ''"
-    [columnProperties]="obs.tableDefinition.columnProperties || []"
-    [resultsLength]="obs.tableDefinition.count() || 0"
-    [pagination]="obs.tableDefinition.pagination?.()"
+    [caption]="table?.caption || ''"
+    [columnProperties]="table?.columnProperties() || []"
+    [resultsLength]="table?.count() || 0"
+    [pagination]="table?.pagination()"
     (changePagination)="onChangePagination($event)">
     @if (obs.isActiveSearch) {
       <plastik-nasa-images-search-ui-no-results noResults>

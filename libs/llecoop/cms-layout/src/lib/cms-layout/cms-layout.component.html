@@ -85,23 +85,55 @@
       (keydown.escape)="sidenav.close()">
       <mat-nav-list menu-items data-test="sidenav-list">
         @for (item of viewConfig(); track item.id) {
-          <mat-list-item
-            role="link"
-            class="my-tiny"
-            routerLinkActive="active"
-            ariaCurrentWhenActive="page"
-            [routerLink]="item?.route"
-            [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
-            (click)="isMobile() && sidenav.close()">
-            <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
-              item.icon
-            }}</mat-icon>
-            <span matListItemTitle>{{ item.title }}</span>
-          </mat-list-item>
+          <ng-container>
+            <!-- Elemento principal -->
+            <mat-list-item
+              role="link"
+              class="my-tiny"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              [routerLink]="item?.route"
+              [routerLinkActiveOptions]="item?.routerLinkActiveOptionsExact || { exact: false }"
+              (click)="isMobile() && sidenav.close()">
+              <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
+                item.icon
+              }}</mat-icon>
+              <span matListItemTitle>{{ item.title }}</span>
+            </mat-list-item>
 
-          @if (item.divider) {
-            <mat-divider></mat-divider>
-          }
+            @if (item.children && item.children.length > 0) {
+              <div class="pl-sub">
+                @for (child of item.children; track child.id) {
+                  <mat-list-item
+                    role="link"
+                    class="my-tiny pl-sub"
+                    routerLinkActive="active"
+                    ariaCurrentWhenActive="page"
+                    [routerLink]="child?.route"
+                    [routerLinkActiveOptions]="
+                      child?.routerLinkActiveOptionsExact || { exact: false }
+                    "
+                    (click)="isMobile() && sidenav.close()">
+                    <mat-icon
+                      matListItemIcon
+                      [attr.aria-hidden]="false"
+                      [attr.aria-label]="child.title"
+                      >{{ child.icon }}</mat-icon
+                    >
+                    <span matListItemTitle>{{ child.title }}</span>
+                  </mat-list-item>
+
+                  @if (child.divider) {
+                    <mat-divider class="ml-md mr-sm my-tiny"></mat-divider>
+                  }
+                }
+              </div>
+            }
+
+            @if (item.divider) {
+              <mat-divider></mat-divider>
+            }
+          </ng-container>
         }
       </mat-nav-list>
     </mat-sidenav>

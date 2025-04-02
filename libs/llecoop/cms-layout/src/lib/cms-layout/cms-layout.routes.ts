@@ -158,13 +158,6 @@ export const llecoopLayoutRoutes: Routes = [
         path: 'comandes',
         children: [
           {
-            path: '',
-            loadChildren: () =>
-              import('@plastik/llecoop/user-order/list').then(
-                routes => routes.llecoopUserOrderFeatureListRoutes
-              ),
-          },
-          {
             path: 'totes',
             canActivate: [customAuthGuard],
             data: {
@@ -209,11 +202,18 @@ export const llecoopLayoutRoutes: Routes = [
                 routes => routes.llecoopUserOrderFeatureDetailUpdateRoutes
               ),
           },
+          {
+            path: '',
+            loadChildren: () =>
+              import('@plastik/llecoop/user-order/list').then(
+                routes => routes.llecoopUserOrderFeatureListRoutes
+              ),
+          },
         ],
       },
       {
         path: '',
-        redirectTo: 'comandes',
+        redirectTo: 'comandes/meves',
         pathMatch: 'full',
       },
     ],

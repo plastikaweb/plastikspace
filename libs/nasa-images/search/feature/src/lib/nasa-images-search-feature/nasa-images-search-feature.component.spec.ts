@@ -8,8 +8,8 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { NasaImagesSearchFacade } from '@plastik/nasa-images/search/data-access';
-import { NasaImage, NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
-import { PageEventConfig, TableDefinition } from '@plastik/shared/table/entities';
+import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
 import { NasaImagesSearchFeatureComponent } from './nasa-images-search-feature.component';
 
@@ -57,11 +57,11 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
     component = fixture.componentInstance;
     facade = TestBed.inject(NasaImagesSearchFacade);
 
-    const tableDefinition: TableDefinition<NasaImage> = {
+    const tableDefinition = signal({
       columnProperties: signal([
         {
           key: 'name',
-          title: 'Title',
+          title: 'Title' as Capitalize<string>,
           pathToKey: 'name',
           cssClasses: ['min-w-[20rem] hidden md:flex'],
           formatting: {
@@ -70,15 +70,10 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
         },
       ]),
       pagination: signal({ pageIndex: 0, pageSize: 100 }),
-      paginationVisibility: {
-        hideRangeButtons: true,
-        hideRangeLabel: false,
-      },
       count: signal(0),
       caption: 'Imágenes de la NASA',
-    };
+    });
 
-    component.tableDefinition$ = of(tableDefinition);
     component.formStructure$ = of([]);
     component.formModel$ = of({});
     fixture.detectChanges();

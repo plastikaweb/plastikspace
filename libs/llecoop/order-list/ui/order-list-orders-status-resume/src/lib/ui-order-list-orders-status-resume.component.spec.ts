@@ -6,7 +6,9 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { LlecoopOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
 
-import { UiOrderListOrdersStatusResumeComponent } from './ui-order-list-orders-status-resume.component';
+import {
+    UiOrderListOrdersStatusResumeComponent
+} from './ui-order-list-orders-status-resume.component';
 
 describe('UiOrderListOrdersStatusResumeComponent', () => {
   let component: UiOrderListOrdersStatusResumeComponent;
@@ -19,7 +21,6 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
     delivered: 2,
     notReviewed: 1,
     notDelivered: 0,
-    cancelled: 4,
     blocked: 0,
   };
 
@@ -54,7 +55,6 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
         llecoopUserOrderStatus.waitingReview.label
       );
       expect(component['getStatusLabel']('reviewed')).toBe(llecoopUserOrderStatus.reviewed.label);
-      expect(component['getStatusLabel']('cancelled')).toBe(llecoopUserOrderStatus.cancelled.label);
     });
 
     it('should return correct status class', () => {
@@ -70,7 +70,6 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
     it('should return correct status icon', () => {
       expect(component['getIcon']('waitingReview')).toBe(llecoopUserOrderStatus.waitingReview.icon);
       expect(component['getIcon']('reviewed')).toBe(llecoopUserOrderStatus.reviewed.icon);
-      expect(component['getIcon']('cancelled')).toBe(llecoopUserOrderStatus.cancelled.icon);
     });
 
     it('should compare and sort statuses correctly', () => {
@@ -137,7 +136,7 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
         'reviewed',
         'delivered',
         'notReviewed',
-        'cancelled',
+        'notDelivered',
       ] as const;
       items.forEach((item, index) => {
         if (index < expectedOrder.length) {

@@ -1,6 +1,6 @@
 import { filter, take } from 'rxjs';
 
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { FormConfig } from '@plastik/core/entities';
@@ -27,8 +27,17 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService
   readonly #table = inject(LlecoopOrderListUserOrderFeatureListTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #router = inject(Router);
-
-  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0]);
+  readonly #viewConfig = inject(VIEW_CONFIG);
+  readonly #viewConfigMainRoute = this.#viewConfig().filter(item => item.name === 'order')[0];
+  readonly #viewConfigSubRoute = this.#viewConfigMainRoute.children?.filter(
+    item => item.name === 'all-order'
+  )[0];
+  viewConfig = computed(() => {
+    return {
+      ...this.#viewConfigSubRoute,
+      title: `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`,
+    };
+  });
   routingToDetailPage = signal({
     visible: false,
   });

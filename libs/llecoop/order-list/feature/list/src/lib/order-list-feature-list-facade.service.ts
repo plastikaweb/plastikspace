@@ -32,12 +32,21 @@ export class LlecoopOrderListFeatureListFacadeService
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #sanitizer = inject(DomSanitizer);
   readonly #router = inject(Router);
-
-  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'order-list')[0]);
+  readonly #viewConfig = inject(VIEW_CONFIG);
+  readonly #viewConfigMainRoute = this.#viewConfig().filter(item => item.name === 'order')[0];
+  readonly #viewConfigSubRoute = this.#viewConfigMainRoute.children?.filter(
+    item => item.name === 'order-list'
+  )[0];
+  viewConfig = computed(() => {
+    return {
+      ...this.#viewConfigSubRoute,
+      title: `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`,
+    };
+  });
   routingToDetailPage = signal({ visible: false });
   viewExtraActions = computed(() => [
     {
-      label: 'Iniciar comanda',
+      label: 'Iniciar comanda setmanal',
       icon: 'add',
       execute: () => {
         this.#store.getAvailableProducts();

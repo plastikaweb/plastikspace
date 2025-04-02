@@ -54,6 +54,8 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
   ): Observable<LlecoopUserOrder[]> {
     try {
       const userId = this.#authService.currentUser()?.uid;
+      const isAdmin = this.#authService.isAdmin();
+
       if (!userId) {
         return of([]);
       }
@@ -66,13 +68,10 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
         ...this.getFilterConditions(filter),
         ...this.getSortingConditions(sorting),
         ...this.getPaginationConditions(pagination, sorting[0]),
+        ...(!isAdmin ? [where('userId', '==', userId)] : []),
       ];
 
-      const q = query(
-        this.firestoreOrderGroupCollection,
-        ...conditions
-        // where('userId', '==', userId)
-      );
+      const q = query(this.firestoreOrderGroupCollection, ...conditions);
       return collectionData(q, { idField: 'id' }).pipe(
         takeUntil(this.destroy$),
         distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
@@ -125,12 +124,13 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
   override getCount(filter: StoreUserOrderFilter): Observable<number> {
     try {
       const userId = this.#authService.currentUser()?.uid;
+      const isAdmin = this.#authService.isAdmin();
       if (!userId) {
         return of(0);
       }
       const conditions = [
         ...this.getFilterConditions(filter),
-        // where('userId', '==', userId)
+        ...(!isAdmin ? [where('userId', '==', userId)] : []),
       ];
 
       if (!this.firestoreOrderGroupCollection) {
@@ -192,6 +192,8 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
             where('userNormalizedName', '>=', normalizedText),
             where('userNormalizedName', '<=', normalizedText + '\uf8ff')
           );
+        } else if (key === 'userId' && value) {
+          conditions.push(where('userId', '==', value));
         } else if (value) {
           conditions.push(where(key, '==', value));
         }
