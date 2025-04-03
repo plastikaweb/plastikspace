@@ -213,7 +213,7 @@ export const llecoopLayoutRoutes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'comandes/meves',
+        redirectTo: 'comandes',
         pathMatch: 'full',
       },
     ],

@@ -6,9 +6,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { LlecoopOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
 
-import {
-    UiOrderListOrdersStatusResumeComponent
-} from './ui-order-list-orders-status-resume.component';
+import { UiOrderListOrdersStatusResumeComponent } from './ui-order-list-orders-status-resume.component';
 
 describe('UiOrderListOrdersStatusResumeComponent', () => {
   let component: UiOrderListOrdersStatusResumeComponent;

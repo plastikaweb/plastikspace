@@ -449,7 +449,7 @@ export function withFirebaseCrud<
         let previousSorting = store.sorting();
         let previousFilter = store.filter();
 
-        const isAdmin = store._authService.isAdmin();
+        const isAdmin = store._authService.isAdmin;
 
         watchState(store, () => {
           const currentPagination = store.pagination();
@@ -458,7 +458,7 @@ export function withFirebaseCrud<
 
           if (
             store._activeConnection() &&
-            ((store._adminOnly() && isAdmin) || !store._adminOnly()) &&
+            ((store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
             (currentPagination.pageIndex !== previousPagination.pageIndex ||
               currentPagination.pageSize !== previousPagination.pageSize ||
               currentSorting !== previousSorting ||
@@ -470,7 +470,7 @@ export function withFirebaseCrud<
 
           if (
             store._activeConnection() &&
-            ((store._adminOnly() && isAdmin) || !store._adminOnly()) &&
+            ((store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
             (currentFilter !== previousFilter || !initiallyLoaded())
           ) {
             setCount();

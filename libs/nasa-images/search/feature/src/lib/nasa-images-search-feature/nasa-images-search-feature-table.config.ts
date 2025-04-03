@@ -8,7 +8,9 @@ import { selectNasaImagesFeature } from '@plastik/nasa-images/search/data-access
 import { NasaImage } from '@plastik/nasa-images/search/entities';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
-    DEFAULT_TABLE_CONFIG, PageEventConfig, TableColumnFormatting
+  DEFAULT_TABLE_CONFIG,
+  PageEventConfig,
+  TableColumnFormatting,
 } from '@plastik/shared/table/entities';
 
 const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
