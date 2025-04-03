@@ -37,13 +37,13 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
     if (Object.entries(filter).length > 0) {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'name' && value) {
-          const normalizedText = this.normalizeText(value as string);
+          const normalizedText = latinize(value as string).toLowerCase();
           conditions.push(
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
           );
         } else if (key === 'email' && value) {
-          const normalizedEmail = this.normalizeText(value as string);
+          const normalizedEmail = latinize(value as string).toLowerCase();
           conditions.push(
             where('email', '>=', normalizedEmail),
             where('email', '<=', normalizedEmail + '\uf8ff')
@@ -137,9 +137,5 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
     } catch (error) {
       return throwError(() => error);
     }
-  }
-
-  private normalizeText(value: string): string {
-    return latinize(value).toLowerCase();
   }
 }
