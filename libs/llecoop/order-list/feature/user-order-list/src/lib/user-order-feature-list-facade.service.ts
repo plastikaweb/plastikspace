@@ -35,7 +35,9 @@ export class LlecoopUserOrderListFacadeService
   viewConfig = computed(() => {
     return {
       ...this.#viewConfigSubRoute,
-      title: `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`,
+      title: this.#viewConfigSubRoute?.title
+        ? `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`
+        : this.#viewConfigMainRoute.title,
     };
   });
   routingToDetailPage = computed(() => {

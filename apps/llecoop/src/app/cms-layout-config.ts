@@ -79,7 +79,7 @@ export function viewConfig(): Signal<ViewConfig<LlecoopViews>[]> {
             title: 'les meves',
             icon: 'face_2',
             route: ['/comandes'],
-            includedInNavigation: true,
+            includedInNavigation: firebaseAuthService.isAdmin(),
             routerLinkActiveOptionsExact: {
               paths: 'exact',
               queryParams: 'ignored',
@@ -98,6 +98,17 @@ export function viewConfig(): Signal<ViewConfig<LlecoopViews>[]> {
         includedInNavigation: false,
         routerLinkActiveOptionsExact: { exact: true },
       },
-    ].filter(view => view.includedInNavigation) as ViewConfig<LlecoopViews>[];
+    ].filter(view => {
+      if (!view.children) {
+        return view.includedInNavigation;
+      }
+
+      if (view.includedInNavigation) {
+        view.children = view.children.filter(child => child.includedInNavigation);
+        return true;
+      }
+
+      return false;
+    }) as ViewConfig<LlecoopViews>[];
   });
 }
