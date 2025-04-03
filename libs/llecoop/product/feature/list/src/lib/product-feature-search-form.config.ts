@@ -23,7 +23,7 @@ export class LlecoopProductSearchFeatureFormConfig {
         fieldGroup: [
           addSearchInput({
             label: 'Filtrar per nom',
-            placeholder: 'Buidar valor',
+            placeholder: 'Filtrar per nom',
           }),
           {
             key: 'category',
