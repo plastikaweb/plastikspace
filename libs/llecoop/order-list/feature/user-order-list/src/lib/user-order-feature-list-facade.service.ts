@@ -67,7 +67,10 @@ export class LlecoopUserOrderListFacadeService
   filterCriteria = this.#userOrderStore.filter;
 
   onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
-    this.#router.navigate([], { queryParams: criteria });
+    this.#router.navigate([], {
+      queryParams: { ...criteria, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
@@ -79,7 +82,7 @@ export class LlecoopUserOrderListFacadeService
 
   onTableSorting({ active, direction }: TableSorting): void {
     this.#router.navigate([], {
-      queryParams: { active, direction },
+      queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',
     });
   }

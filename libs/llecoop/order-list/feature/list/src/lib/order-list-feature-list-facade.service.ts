@@ -81,11 +81,17 @@ export class LlecoopOrderListFeatureListFacadeService
   filterCriteria = this.#store.filter;
 
   onChangeFilterCriteria(criteria: StoreOrderListFilter): void {
-    this.#router.navigate([], { queryParams: criteria });
+    this.#router.navigate([], {
+      queryParams: { ...criteria, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#router.navigate([], { queryParams: { active, direction }, queryParamsHandling: 'merge' });
+    this.#router.navigate([], {
+      queryParams: { active, direction, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTablePagination({ pageIndex, pageSize }: PageEventConfig): void {
