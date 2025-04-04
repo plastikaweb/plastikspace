@@ -12,6 +12,8 @@
   - [API Reference](#api-reference)
     - [Inputs](#inputs)
     - [Outputs](#outputs)
+    - [Global Configuration](#global-configuration)
+      - [`FORM_DISABLE_TOKEN`](#form_disable_token)
     - [Available Form Types](#available-form-types)
   - [Troubleshooting](#troubleshooting)
     - [Common Issues](#common-issues)
@@ -144,6 +146,12 @@ interface SharedFormFeatureInputs {
    * @default true
    */
   autoFocus: boolean;
+
+  /**
+   * Controls if the form is disabled due a condition (like loading or saving to an API).
+   * @default false
+   */
+  disableForm: boolean;
 }
 
 interface SubmitFormConfig {
@@ -195,7 +203,7 @@ interface SubmitFormConfig {
 
   /**
    * Disable the form after submission.
-   * @default true
+   * @default false
    */
   disableOnSubmit?: boolean;
 
@@ -226,6 +234,25 @@ interface SharedFormFeatureOutputs {
    */
   pendingChangesEvent: EventEmitter<boolean>;
 }
+```
+
+### Global Configuration
+
+#### `FORM_DISABLE_TOKEN`
+
+This token can be used to set globally the disable state of the form due a condition (like loading or saving to an API).
+
+```typescript
+import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/feature';
+
+// use it with a route or an app configuration.
+// ...
+providers: [
+  {
+    provide: FORM_DISABLE_TOKEN,
+    useFactory: () => signal(activitySelector),
+  },
+];
 ```
 
 ### Available Form Types

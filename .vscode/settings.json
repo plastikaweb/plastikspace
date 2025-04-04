@@ -47,5 +47,11 @@
   "angular.log": "verbose",
   "nxConsole.nxWorkspacePath": "./",
   "nxConsole.enableCodeLens": true,
-  "nxConsole.projectViewingStyle": "automatic"
+  "nxConsole.projectViewingStyle": "automatic",
+  "angular-schematics.schematicsDefaultOptions": {
+    "angular-*": {
+      "style": "scss",
+      "skipStyle": true
+    }
+  }
 }

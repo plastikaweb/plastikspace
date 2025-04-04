@@ -4,10 +4,12 @@ import {
   ApplicationConfig,
   DEFAULT_CURRENCY_CODE,
   importProvidersFrom,
+  inject,
   isDevMode,
   LOCALE_ID,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import {
@@ -28,7 +30,7 @@ import {
 } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore, RouterState } from '@ngrx/router-store';
-import { StoreModule } from '@ngrx/store';
+import { Store, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
@@ -38,7 +40,8 @@ import {
   routerReducers,
   RouterStateEffects,
 } from '@plastik/core/router-state';
-import { selectActivityFeature } from '@plastik/shared/activity/data-access';
+import { selectActivityFeature, selectIsActive } from '@plastik/shared/activity/data-access';
+import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 
 import { environment } from '../environments/environment';
@@ -135,6 +138,10 @@ export const appConfig: ApplicationConfig = {
       useValue: {
         dateFormat: 'dd/MM/yyyy',
       },
+    },
+    {
+      provide: FORM_DISABLE_TOKEN,
+      useFactory: () => toSignal(inject(Store).select(selectIsActive)),
     },
   ],
 };

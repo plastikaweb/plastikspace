@@ -14,7 +14,6 @@ export const userOrderDetailResolver: ResolveFn<Observable<boolean>> = (
   const id = route.paramMap.get('id');
 
   if (!id) {
-    store.setSelectedItemId(null);
     return new RedirectCommand(router.parseUrl('/comandes'));
   }
 
