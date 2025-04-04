@@ -3,16 +3,14 @@ import { filter, tap } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { DocumentReference } from '@angular/fire/firestore';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
-import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import {
   LlecoopProduct,
-  LlecoopProductCategory,
   LlecoopProductSelectData,
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
+import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 
 function setStockUnitAddonRight(
   formlyProps: FormlyFieldConfig['props'],
@@ -48,7 +46,7 @@ function setUnitBaseInfo(
 }
 
 export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
-  const store = inject(llecoopCategoryStore);
+  const categories = inject(llecoopProductStore).categories;
 
   const formConfig = [
     {
@@ -78,14 +76,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Categoria',
             placeholder: 'Categoria',
             required: true,
-            options: toObservable(store.entities),
-            compareWith: (
-              o1: DocumentReference<LlecoopProductCategory>,
-              o2: DocumentReference<LlecoopProductCategory>
-            ) => o1?.id === o2?.id,
-            attributes: {
-              autocomplete: 'off',
-            },
+            options: toObservable(categories),
           },
         },
         {

@@ -49,7 +49,7 @@ export const productMainInitState: StoreFirebaseCrudState<LlecoopProduct, StoreP
     pageLastElements: new Map<number, LlecoopProduct>(),
   },
   sorting: ['updatedAt', 'desc'] as TableSortingConfig,
-  baseRoute: 'admin/productes',
+  baseRoute: 'productes',
 };
 
 const specificInitState: SpecificProductStoreFirebaseCrudState = {
