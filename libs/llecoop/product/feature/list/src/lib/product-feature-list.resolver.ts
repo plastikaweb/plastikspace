@@ -12,7 +12,7 @@ export const productFeatureListResolver: ResolveFn<
   const previousUrl = router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
 
   store.setSelectedItemId(null);
-  if (!previousUrl?.startsWith('/admin/productes') || !store.initiallyLoaded()) {
+  if (!previousUrl?.startsWith('/productes') || !store.initiallyLoaded()) {
     store.resetTableConfig(
       productMainInitState.pagination,
       productMainInitState.filter,

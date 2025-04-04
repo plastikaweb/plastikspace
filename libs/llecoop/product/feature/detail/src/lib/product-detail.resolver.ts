@@ -14,7 +14,7 @@ export const productDetailResolver: ResolveFn<Observable<boolean>> = (
 
   if (!id) {
     store.setSelectedItemId(null);
-    return new RedirectCommand(router.parseUrl('/admin/productes'));
+    return new RedirectCommand(router.parseUrl('/productes'));
   }
 
   store.setSelectedItemId(id);
