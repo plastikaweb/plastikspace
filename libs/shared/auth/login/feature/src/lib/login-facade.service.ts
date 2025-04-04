@@ -17,8 +17,7 @@ export class LoginFacadeService implements AuthFormFacade<LoginData> {
     { label: 'Registre per sòcies', route: '/registre' },
     { label: 'Has oblidat la contrasenya?', route: '/peticio-clau' },
   ]);
-
-  onSubmit({ email, password }: LoginData): void {
-    this.authService.login(email, password);
+  async onSubmit({ email, password }: LoginData): Promise<void> {
+    await this.authService.login(email, password);
   }
 }

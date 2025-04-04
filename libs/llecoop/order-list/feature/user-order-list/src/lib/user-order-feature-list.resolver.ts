@@ -15,10 +15,9 @@ export const userOrderFeatureListResolver: ResolveFn<
   Observable<boolean>
 > = (): Observable<boolean> => {
   const userOrderStore = inject(llecoopUserOrderStore);
-  const store = inject(Store);
   const userStore = inject(llecoopUserStore);
+  const store = inject(Store);
 
-  userOrderStore.setSelectedItemId(null);
   const queryParams = store.select(selectRouteQueryParams);
   const { text, status, userNormalizedName } = userOrderMainInitState.filter;
   const [active, direction] = userOrderMainInitState.sorting as TableSortingConfig;

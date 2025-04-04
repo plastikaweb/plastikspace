@@ -241,6 +241,7 @@ export function withFirebaseCrud<
                             pageSize: store.pagination()?.pageSize ?? 10,
                           },
                           sorting: store.sorting(),
+                          // selectedItemId: null,
                         }
                       );
                     },

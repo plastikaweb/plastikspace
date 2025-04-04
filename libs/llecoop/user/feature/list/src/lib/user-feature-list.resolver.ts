@@ -9,8 +9,6 @@ export const userFeatureListResolver: ResolveFn<Observable<boolean>> = (): Obser
   const router = inject(Router);
   const previousUrl = router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
 
-  store.setSelectedItemId(null);
-
   if (!previousUrl?.startsWith('/usuaris') || !store.initiallyLoaded()) {
     store.resetTableConfig(
       userMainInitState.pagination,

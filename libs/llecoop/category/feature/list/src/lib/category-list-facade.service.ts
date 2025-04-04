@@ -28,6 +28,10 @@ export class LlecoopCategoryListFacadeService
   filterFormConfig = getLlecoopCategorySearchFeatureFormConfig();
   filterCriteria = this.#store.filter;
 
+  constructor() {
+    this.#store.setSelectedItemId(null);
+  }
+
   onChangeFilterCriteria(criteria: StoreCategoryFilter): void {
     this.#store.setFilter(criteria);
   }

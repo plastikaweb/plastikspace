@@ -11,8 +11,6 @@ export const categoryFeatureListResolver: ResolveFn<
   const router = inject(Router);
   const previousUrl = router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
 
-  store.setSelectedItemId(null);
-
   if (!previousUrl?.startsWith('/categories') || !store.initiallyLoaded()) {
     store.resetTableConfig(initState.pagination, initState.filter, initState.sorting);
   }
