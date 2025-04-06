@@ -28,7 +28,8 @@ export const llecoopCategoryFeatureRoutes: Route[] = [
       },
     ],
     resolve: {
-      resetCategoryStore: categoryFeatureListResolver,
+      listCategoryStore: categoryFeatureListResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];
