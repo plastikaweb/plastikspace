@@ -1,0 +1,10 @@
+{
+  "name": "plastikaweb-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/plastikaweb-e2e/src",
+  "tags": [],
+  "implicitDependencies": ["plastikaweb"],
+  "// targets": "to see all targets run: nx show project plastikaweb-e2e --web",
+  "targets": {}
+}

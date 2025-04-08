@@ -41,6 +41,14 @@
                 "onlyDependOnLibsWithTags": ["scope:experimental", "scope:core", "scope:shared"]
               },
               {
+                "sourceTag": "scope:llecoop",
+                "onlyDependOnLibsWithTags": ["scope:llecoop", "scope:core", "scope:shared"]
+              },
+              {
+                "sourceTag": "scope:plastikaweb",
+                "onlyDependOnLibsWithTags": ["scope:plastikaweb", "scope:core", "scope:shared"]
+              },
+              {
                 "sourceTag": "type:feature",
                 "onlyDependOnLibsWithTags": [
                   "type:ui",
