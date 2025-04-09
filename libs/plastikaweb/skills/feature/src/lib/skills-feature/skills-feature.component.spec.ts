@@ -2,15 +2,13 @@ import { of } from 'rxjs';
 
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
-import { SkillsFeatureComponent } from '@plastik/plastikaweb/skills';
 import { PlastikawebSkillsService } from '@plastik/plastikaweb/skills/data-access';
 
-import { AppComponent } from './app.component';
+import { SkillsFeatureComponent } from './skills-feature.component';
 
-describe('AppComponent', () => {
-  let component: AppComponent;
-  let fixture: ComponentFixture<AppComponent>;
+describe('SkillsFeatureComponent', () => {
+  let component: SkillsFeatureComponent;
+  let fixture: ComponentFixture<SkillsFeatureComponent>;
 
   beforeEach(async () => {
     const skillsServiceMock = {
@@ -29,20 +27,19 @@ describe('AppComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [AppComponent, SkillsFeatureComponent],
+      imports: [SkillsFeatureComponent],
       providers: [
         provideExperimentalZonelessChangeDetection(),
-        provideRouter([]),
         { provide: PlastikawebSkillsService, useValue: skillsServiceMock },
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(AppComponent);
+    fixture = TestBed.createComponent(SkillsFeatureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('should create the app', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

@@ -93,6 +93,11 @@
       "@plastik/nasa-images/search/ui/no-results": [
         "libs/nasa-images/search/ui/no-results/src/index.ts"
       ],
+      "@plastik/plastikaweb/graphql-models": ["libs/plastikaweb/graphql-models/src/index.ts"],
+      "@plastik/plastikaweb/skills": ["libs/plastikaweb/skills/feature/src/index.ts"],
+      "@plastik/plastikaweb/skills/data-access": [
+        "libs/plastikaweb/skills/data-access/src/index.ts"
+      ],
       "@plastik/shared/activity/data-access": ["libs/shared/activity/data-access/src/index.ts"],
       "@plastik/shared/activity/ui": ["libs/shared/activity/ui/src/index.ts"],
       "@plastik/shared/button": ["libs/shared/button/index.ts"],

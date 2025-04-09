@@ -96,7 +96,8 @@
     "preplastikaweb:a11y": "yarn plastikaweb:build",
     "plastikaweb:a11y": "npm-run-all --parallel --race plastikaweb:http-server plastikaweb:a11y:run",
     "plastikaweb:a11y:run": "pa11y-ci --config ./apps/plastikaweb/.pa11yci.json",
-    "plastikaweb:build:github": "nx run plastikaweb:build:prod"
+    "plastikaweb:build:github": "nx run plastikaweb:build:prod",
+    "plastikaweb:codegen": "npx nx codegen plastikaweb-graphql-models"
   },
   "private": true,
   "dependencies": {
@@ -149,6 +150,10 @@
     "@angular/language-service": "19.2.1",
     "@commitlint/cli": "19.8.0",
     "@commitlint/config-conventional": "19.8.0",
+    "@graphql-codegen/cli": "^5.0.5",
+    "@graphql-codegen/typescript": "^4.1.6",
+    "@graphql-codegen/typescript-apollo-angular": "^4.0.0",
+    "@graphql-codegen/typescript-operations": "^4.6.0",
     "@jscutlery/cypress-harness": "^0.7.22",
     "@ngrx/schematics": "19.0.1",
     "@ngrx/store-devtools": "19.0.1",

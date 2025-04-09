@@ -64,6 +64,7 @@ To see a full list of available scripts see **package.json file > scripts**.
 - [llecoop](apps/llecoop/README.md)
 - [llecoop-firebase](apps/llecoop-firebase/README.md)
 - [llecoop-triggers](apps/llecoop-triggers/README.md)
+- [plastikaweb](apps/plastikaweb/README.md)
 
 ## Available libraries
 

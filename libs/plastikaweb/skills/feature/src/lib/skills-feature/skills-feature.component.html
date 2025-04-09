@@ -1,0 +1,11 @@
+@let skills = skillService.allSkills$ | async;
+
+@if (skills === null) {
+  <div>Loading...</div>
+} @else {
+  <ul>
+    @for (skill of skills; track skill?.title) {
+      <li>{{ skill?.title }}</li>
+    }
+  </ul>
+}
