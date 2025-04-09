@@ -1,0 +1,16 @@
+{
+  "name": "plastikaweb-graphql-models",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/plastikaweb/graphql-models/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["type:entity", "scope:plastikaweb"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "codegen": {
+      "command": "npx graphql-codegen --config {projectRoot}/codegen.yml"
+    }
+  }
+}

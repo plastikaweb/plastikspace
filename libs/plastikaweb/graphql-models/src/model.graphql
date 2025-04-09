@@ -1,0 +1,29 @@
+type Skills {
+  nodes: [SkillNode]
+}
+
+type SkillData {
+  skillMainUrl: String
+}
+
+type SkillNode {
+  title: String
+  excerpt: String
+  skillsData: SkillData
+}
+
+type Query {
+  skills: Skills
+}
+
+query GetSkills {
+  skills {
+    nodes {
+      title
+      excerpt
+      skillsData {
+        skillMainUrl
+      }
+    }
+  }
+}
