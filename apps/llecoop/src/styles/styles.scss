@@ -175,4 +175,11 @@
       elevated-container-color: var(--mat-sys-inverse-on-surface),
     )
   );
+
+  @include mat.progress-bar-overrides(
+    (
+      active-indicator-color: var(--mat-sys-inverse-primary),
+      track-color: var(--mat-sys-inverse-on-surface),
+    )
+  );
 }

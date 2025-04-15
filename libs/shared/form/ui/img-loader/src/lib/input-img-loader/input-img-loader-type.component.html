@@ -1,0 +1,20 @@
+<div class="loader-file-container">
+  @if (to.label) {
+    <label for="">{{ to.label }}<span [hidden]="!to.required"> *</span></label>
+  }
+
+  <plastik-input-img-loader
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+    [progress]="props.progress?.() || 0"
+    [upload]="props.upload"
+    [title]="props.title?.() || ''"
+    [folder]="props.folder?.() || ''"
+    [maxSize]="props.maxSize?.() || 1000000"></plastik-input-img-loader>
+</div>
+
+@if (formControl.errors && formControl.touched && !formControl.pristine) {
+  <div class="mat-error" role="alert">
+    <formly-validation-message [field]="field"></formly-validation-message>
+  </div>
+}

@@ -19,6 +19,7 @@ import {
   provideFirestore,
 } from '@angular/fire/firestore';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
+import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -70,6 +71,13 @@ export const appConfig: ApplicationConfig = {
       persistentMultipleTabManager();
 
       return firestore;
+    }),
+    provideStorage(() => {
+      const storage = getStorage(getApp('llecoop'));
+      if (environment['useEmulators']) {
+        connectStorageEmulator(storage, '127.0.0.1', 9199);
+      }
+      return storage;
     }),
     provideFunctions(() => {
       const functions = getFunctions(getApp('llecoop'));

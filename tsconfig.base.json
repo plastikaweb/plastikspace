@@ -104,8 +104,12 @@
       "@plastik/shared/confirm": ["libs/shared/confirm/data-access/src/index.ts"],
       "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
+      "@plastik/shared/firebase-storage/data-access": [
+        "libs/shared/firebase-storage/data-access/src/index.ts"
+      ],
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
       "@plastik/shared/form/color-picker": ["libs/shared/form/ui/input-color-picker/src/index.ts"],
+      "@plastik/shared/form/img-loader": ["libs/shared/form/ui/img-loader/src/index.ts"],
       "@plastik/shared/form/password": [
         "libs/shared/form/ui/input-password-with-visibility/src/index.ts"
       ],

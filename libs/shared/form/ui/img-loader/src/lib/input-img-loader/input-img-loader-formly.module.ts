@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { FormlyModule } from '@ngx-formly/core';
 
-import { InputTableTypeComponent } from './input-table-type.component';
+import { InputImgLoaderTypeComponent } from './input-img-loader-type.component';
 
 @NgModule({
   imports: [
@@ -9,10 +9,10 @@ import { InputTableTypeComponent } from './input-table-type.component';
       types: [
         {
           name: 'img-loader',
-          component: InputTableTypeComponent,
+          component: InputImgLoaderTypeComponent,
         },
       ],
     }),
   ],
 })
-export class TableFormlyModule {}
+export class ImgLoaderFormlyModule {}

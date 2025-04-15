@@ -1,7 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { filter, tap } from 'rxjs';
 
-import { inject } from '@angular/core';
+import { inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
@@ -11,6 +11,7 @@ import {
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { FirebaseStorageService } from '@plastik/shared/firebase-storage/data-access';
 
 function setStockUnitAddonRight(
   formlyProps: FormlyFieldConfig['props'],
@@ -46,7 +47,8 @@ function setUnitBaseInfo(
 }
 
 export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
-  const categories = inject(llecoopProductStore).categories;
+  const productStore = inject(llecoopProductStore);
+  const firebaseStorage = inject(FirebaseStorageService);
 
   const formConfig = [
     {
@@ -76,7 +78,22 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Categoria',
             placeholder: 'Categoria',
             required: true,
-            options: toObservable(categories),
+            options: toObservable(productStore.categories),
+          },
+        },
+        {
+          key: 'imgUrl',
+          type: 'img-loader',
+          className: 'w-full',
+          props: {
+            label: 'Imatge del producte',
+            placeholder: 'Imatge del producte',
+            required: false,
+            maxSize: signal(1000000),
+            folder: signal('products'),
+            title: productStore.selectedItemName || signal('nou producte'),
+            progress: firebaseStorage.progress.bind(firebaseStorage),
+            upload: firebaseStorage.upload.bind(firebaseStorage),
           },
         },
         {
@@ -85,6 +102,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             {
               key: 'type',
               type: 'select',
+              className: 'w-full',
               props: {
                 label: "Tipus d'unitat",
                 placeholder: "Tipus d'unitat",

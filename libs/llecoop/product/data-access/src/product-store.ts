@@ -71,6 +71,7 @@ export const llecoopProductStore = signalStore(
   }),
   withMethods(store => {
     const categoryFireService = inject(LlecoopCategoryFireService);
+
     return {
       getCategoryList: rxMethod<void>(
         pipe(
