@@ -176,10 +176,10 @@
     )
   );
 
-  @include mat.progress-bar-overrides(
+  @include mat.progress-spinner-overrides(
     (
       active-indicator-color: var(--mat-sys-inverse-primary),
-      track-color: var(--mat-sys-inverse-on-surface),
+      size: 40px,
     )
   );
 }

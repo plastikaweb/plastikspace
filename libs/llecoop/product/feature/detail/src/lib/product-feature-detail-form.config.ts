@@ -11,6 +11,7 @@ import {
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { ImageKitService } from '@plastik/llecoop/util';
 import { FirebaseStorageService } from '@plastik/shared/firebase-storage/data-access';
 
 function setStockUnitAddonRight(
@@ -49,6 +50,7 @@ function setUnitBaseInfo(
 export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
   const productStore = inject(llecoopProductStore);
   const firebaseStorage = inject(FirebaseStorageService);
+  const imageKit = inject(ImageKitService);
 
   const formConfig = [
     {
@@ -89,11 +91,29 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Imatge del producte',
             placeholder: 'Imatge del producte',
             required: false,
-            maxSize: signal(1000000),
             folder: signal('products'),
+            maxSize: signal(1 * 1024 * 1024),
             title: productStore.selectedItemName || signal('nou producte'),
             progress: firebaseStorage.progress.bind(firebaseStorage),
             upload: firebaseStorage.upload.bind(firebaseStorage),
+            fileUrl: firebaseStorage.fileUrl.bind(firebaseStorage),
+            cdnUrl: signal(null),
+          },
+          hooks: {
+            onInit: (formly: FormlyFieldConfig) => {
+              if (formly.model?.imgUrl) {
+                formly.props?.['cdnUrl'].set(imageKit.getEndpoint(formly.model.imgUrl));
+              }
+
+              return formly.options?.fieldChanges?.pipe(
+                filter(e => e.type === 'valueChanges' && e.field['key'] === 'imgUrl'),
+                tap(() => {
+                  if (formly.model?.imgUrl) {
+                    formly.props?.['cdnUrl'].set(imageKit.getEndpoint(formly.model.imgUrl));
+                  }
+                })
+              );
+            },
           },
         },
         {
@@ -316,6 +336,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
     getConfig: () => formConfig,
     getSubmitFormConfig: (editMode = false) => ({
       label: editMode ? 'Desar producte' : 'Crear producte',
+      disableOnSubmit: true,
     }),
   };
 }

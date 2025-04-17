@@ -40,6 +40,8 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   temporaryChangeEvent = output<T>();
   pendingChangesEvent = output<boolean>();
 
+  readonly #submitted = signal(false);
+
   protected readonly config = linkedSignal({
     source: this.submitConfig,
     computation: (newConfig: SubmitFormConfig | null) => {
@@ -84,6 +86,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   ngAfterViewInit(): void {
     this.form.markAsUntouched();
     this.form.markAsPristine();
+    this.#submitted.set(false);
     this.#newModel.set(this.model());
     this.#firstInput.set(
       this.#elementRef.nativeElement.querySelector('input:not([type="hidden"]):not([readonly])')
@@ -97,6 +100,8 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   }
 
   onModelChange(model: T): void {
+    if (this.#submitted()) return;
+
     this.#newModel.set(model);
     this.pendingChangesEvent.emit(this.form.dirty);
     if (!this.config().submitAvailable) this.emitChange();
@@ -105,11 +110,12 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
 
   private emitChange(): void {
     if (this.form.valid) {
+      if (this.config().disableOnSubmit) this.form.disable({ emitEvent: false });
       this.form.markAsPristine();
       this.form.markAsUntouched();
       this.pendingChangesEvent.emit(false);
+      this.#submitted.set(true);
       this.changeEvent.emit(this.#newModel() as T);
-      if (this.config().disableOnSubmit) this.form.disable();
     }
   }
 }

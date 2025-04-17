@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  effect,
   ElementRef,
   forwardRef,
   inject,
@@ -13,7 +14,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 const LOADER_IMG_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
@@ -23,7 +24,7 @@ const LOADER_IMG_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-img-loader',
-  imports: [MatIconModule, MatButtonModule, MatProgressBarModule, NgOptimizedImage],
+  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, NgOptimizedImage],
   providers: [LOADER_IMG_ACCESSOR],
   templateUrl: './input-img-loader.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,18 +40,37 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   folder = input<string>('');
   title = input<string>();
   progress = input<number>(0);
-  upload = input<(file: File | null, folder?: string) => Promise<string | null>>();
-  maxSize = input<number>(1000000);
+  upload = input<(file: File | null, folder?: string) => Promise<void> | void>();
+  maxSize = input<number>(1 * 1024 * 1024);
+  fileUrl = input<string | null>(null);
+  cdnUrl = input<string | null>(null);
+
+  constructor() {
+    effect(() => {
+      if (this.fileUrl()) {
+        this.value.set(this.fileUrl());
+        this.onChange(this.fileUrl());
+        this.cdr.detectChanges();
+      }
+
+      if (this.progress() > 0) {
+        this.value.set(null);
+        this.onChange(null);
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
   writeValue(value: string | null): void {
     if (!value) {
       this.value.set(null);
+      this.cdr.detectChanges();
       return;
     }
     if (value !== this.value()) {
       this.value.set(value);
+      this.cdr.detectChanges();
     }
-    this.cdr.detectChanges();
   }
   registerOnChange(fn: (value: string | null) => void): void {
     this.onChange = fn;
@@ -73,23 +93,21 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
     this.value.set(null);
     this.onChange(this.value());
     this.onTouch();
-    this.cdr.markForCheck();
+    this.cdr.detectChanges();
   }
 
   async onSelectFile(event: Event): Promise<void> {
     const file = (event.target as HTMLInputElement).files;
 
     if (file && file[0] && file[0].size > this.maxSize()) {
+      // TODO: show toast with error
       throw new Error('File size exceeds maximum allowed size');
     }
 
     if (file && file[0]) {
       this.isLoading.set(true);
-      const value = (await this.upload()?.(file[0], this.folder())) || null;
-      this.value.set(value);
-      this.onChange(this.value());
+      await (this.upload()?.(file[0], this.folder()) ?? Promise.resolve());
       this.isLoading.set(false);
-      this.cdr.markForCheck();
     }
     this.onTouch();
   }

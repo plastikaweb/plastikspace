@@ -8,9 +8,11 @@
     [formlyAttributes]="field"
     [progress]="props.progress?.() || 0"
     [upload]="props.upload"
+    [fileUrl]="props.fileUrl?.() || null"
     [title]="props.title?.() || ''"
     [folder]="props.folder?.() || ''"
-    [maxSize]="props.maxSize?.() || 1000000"></plastik-input-img-loader>
+    [maxSize]="props.maxSize?.() || 1000000"
+    [cdnUrl]="props.cdnUrl?.() || null"></plastik-input-img-loader>
 </div>
 
 @if (formControl.errors && formControl.touched && !formControl.pristine) {

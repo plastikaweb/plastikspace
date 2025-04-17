@@ -1,83 +1,81 @@
-<div class="flex flex-col w-full">
-  <div
-    class="relative w-[200px] h-[200px] border-2 border-dashed text-primary border-primary rounded-lg flex items-center justify-center cursor-pointer overflow-hidden transition-all duration-300 outline-none hover:border-primary-dark hover:text-secondary-dark disabled:opacity-60 disabled:cursor-not-allowed focus:border-primary-dark focus:text-secondary-dark focus:outline-none"
-    tabindex="0"
-    role="button"
-    [class.disabled]="disabled()"
-    [attr.aria-label]="'Pujar Imatge' + (value() ? ' (actualment: ' + value() + ')' : '')"
-    (click)="openAddFilesDialog()"
-    (keydown.enter)="openAddFilesDialog()"
-    (keydown.space)="openAddFilesDialog()">
-    @if (!value() && !isLoading()) {
-      <div class="flex flex-col justify-center items-center">
-        <mat-icon class="w-[100px] h-[100px] text-[100px]">image</mat-icon>
-        <span>Pujar Imatge</span>
-      </div>
-    }
+<div
+  class="relative w-[224px] h-[224px] p-[10px] border-2 border-dashed text-primary border-gray-40 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden transition-all duration-300 outline-none hover:border-gray-80 hover:text-secondary-dark hover:bg-black/10 disabled:opacity-60 disabled:cursor-not-allowed focus:border-gray-80 focus:text-secondary-dark focus:bg-black/10 focus:outline-none"
+  tabindex="0"
+  [class.disabled]="disabled()"
+  [attr.aria-label]="'Pujar Imatge' + (value() ? ' (actualment: ' + value() + ')' : '')"
+  (click)="openAddFilesDialog()"
+  (keydown.enter)="openAddFilesDialog()"
+  (keydown.space)="openAddFilesDialog()">
+  @if (!value() && !isLoading()) {
+    <div class="flex flex-col justify-center items-center p-0 m-0 w-full h-full">
+      <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">image</mat-icon>
+      <span>Pujar Imatge</span>
+    </div>
+  }
 
-    @if (value()) {
-      <div class="relative w-full h-full transition-all duration-300">
-        <img
-          fill
-          priority
-          placeholder="https://placehold.co/200"
-          class="block object-cover w-full h-full"
-          [alt]="title()"
-          [ngSrc]="value() || ''" />
-        <div
-          class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 text-white bg-black/50 px-sub">
-          <p class="flex-grow text-sm font-bold truncate">{{ title() }}</p>
-          <div class="flex items-center">
-            <button
-              type="button"
-              mat-icon-button
-              class="text-white"
-              [attr.aria-label]="`Editar imatge ${title()}`"
-              [disabled]="disabled()"
-              (click)="openAddFilesDialog(); $event.stopPropagation()"
-              (keydown.enter)="openAddFilesDialog(); $event.stopPropagation()">
-              <mat-icon class="text-lg">edit</mat-icon>
-            </button>
-            <button
-              type="button"
-              mat-icon-button
-              class="text-white"
-              [attr.aria-label]="`Eliminar imatge ${title()}`"
-              [disabled]="disabled()"
-              (click)="onDeleteFile(); $event.stopPropagation()"
-              (keydown.enter)="onDeleteFile(); $event.stopPropagation()">
-              <mat-icon class="text-lg">delete</mat-icon>
-            </button>
-          </div>
-        </div>
+  @if (value()) {
+    <img
+      fill
+      loading="lazy"
+      placeholder="https://placehold.co/224"
+      class="absolute top-0 right-0 bottom-0 left-0 w-full h-full object-cover rounded-lg p-[10px]"
+      [alt]="title()"
+      [ngSrc]="cdnUrl() || ''" />
+    <div
+      class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 rounded-b-lg text-primary-dark bg-white/80 px-sub"
+      tabindex="0"
+      (focus)="firstActionBtn?.focus()">
+      <p class="flex-grow text-sm font-bold truncate">{{ title() }}</p>
+      <div class="flex items-center">
+        <button
+          #firstActionBtn
+          type="button"
+          mat-icon-button
+          [attr.aria-label]="`Editar imatge ${title()}`"
+          [disabled]="disabled()"
+          (click)="openAddFilesDialog(); $event.stopPropagation()"
+          (keydown.enter)="openAddFilesDialog(); $event.stopPropagation()">
+          <mat-icon class="text-lg">edit</mat-icon>
+        </button>
+        <button
+          #secondActionBtn
+          type="button"
+          mat-icon-button
+          [attr.aria-label]="`Eliminar imatge ${title()}`"
+          [disabled]="disabled()"
+          (click)="onDeleteFile(); $event.stopPropagation()"
+          (keydown.enter)="onDeleteFile(); $event.stopPropagation()">
+          <mat-icon class="text-lg">delete</mat-icon>
+        </button>
       </div>
-    }
+    </div>
+  }
 
-    @if (isLoading()) {
-      <div
-        class="flex absolute flex-col justify-center items-center w-full h-full rounded-lg transition-all duration-300 p-sub">
-        <output
-          id="upload-progress"
-          class="z-10 w-full text-sm font-bold text-center text-white"
-          [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"
-          [attr.aria-live]="'polite'"
-          >{{ progress() || 0 }}%</output
-        >
-        <mat-progress-bar
-          class="z-10 w-full"
-          [value]="progress() || 0"
-          [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"></mat-progress-bar>
-        <div class="absolute w-full h-full bg-black opacity-80"></div>
-      </div>
-    }
-  </div>
-
-  <input
-    #inputFile
-    aria-label="file"
-    type="file"
-    accept="image/*"
-    class="hidden"
-    [disabled]="disabled()"
-    (change)="onSelectFile($event)" />
+  @if (isLoading()) {
+    <div
+      class="flex absolute flex-col justify-center items-center w-full h-full rounded-lg transition-all duration-300 p-sub">
+      <output
+        id="upload-progress"
+        class="absolute z-10 w-full text-sm font-bold text-center text-white"
+        [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"
+        [attr.aria-live]="'polite'"
+        >{{ progress() || 0 }}%</output
+      >
+      <mat-progress-spinner
+        class="z-10"
+        mode="determinate"
+        [value]="progress() || 0"
+        [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"></mat-progress-spinner>
+      <div class="absolute w-full h-full bg-black opacity-80"></div>
+    </div>
+  }
 </div>
+
+<input
+  #inputFile
+  aria-label="file"
+  type="file"
+  accept="image/*"
+  class="hidden"
+  [disabled]="disabled()"
+  (change)="onSelectFile($event)" />

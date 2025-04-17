@@ -5,8 +5,30 @@ rules_version = '2';
 //    /databases/(default)/documents/users/$(request.auth.uid)).data.isAdmin;
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if false;
+
+    function isAuthenticated() {
+      return request.auth.uid != null;
+    }
+
+    function isVerified() {
+      return request.auth.token.email_verified != false;
+    }
+
+    function isAdmin() {
+      return 'isAdmin' in request.auth.token;
+    }
+
+    function hasAdminAccess() {
+      return isAuthenticated() && isVerified() && isAdmin();
+    }
+
+    function hasCorrectSize() {
+      return request.resource.size < 1 * 1024 * 1024;
+    }
+
+    match /products/{fileName} {
+      allow read;
+      allow write: if hasAdminAccess() && hasCorrectSize();
     }
   }
 }

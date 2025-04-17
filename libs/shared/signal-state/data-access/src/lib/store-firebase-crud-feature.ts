@@ -126,7 +126,7 @@ export function withFirebaseCrud<
         }),
         selectedItemName: computed(() => {
           const id = selectedItemId();
-          return id !== null ? entityMap()[id].name : '';
+          return id !== null ? entityMap()[id]?.name : '';
         }),
       };
     }),

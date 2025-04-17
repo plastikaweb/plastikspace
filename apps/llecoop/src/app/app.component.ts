@@ -31,9 +31,14 @@ export class AppComponent implements OnInit {
       content: 'Botiga per socis del Llevat, associació de consum ecològic i de proximitat',
     });
 
-    const linkElement = this.#renderer.createElement('link');
-    this.#renderer.setAttribute(linkElement, 'rel', 'preconnect');
-    this.#renderer.setAttribute(linkElement, 'href', 'https://firebasestorage.googleapis.com');
-    this.#renderer.appendChild(this.#document.head, linkElement);
+    // const linkElement = this.#renderer.createElement('link');
+    // this.#renderer.setAttribute(linkElement, 'rel', 'preconnect');
+    // this.#renderer.setAttribute(linkElement, 'href', 'https://firebasestorage.googleapis.com');
+    // this.#renderer.appendChild(this.#document.head, linkElement);
+
+    const linkElement2 = this.#renderer.createElement('link');
+    this.#renderer.setAttribute(linkElement2, 'rel', 'preconnect');
+    this.#renderer.setAttribute(linkElement2, 'href', 'https://ik.imagekit.io');
+    this.#renderer.appendChild(this.#document.head, linkElement2);
   }
 }

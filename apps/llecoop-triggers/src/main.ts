@@ -139,7 +139,7 @@ export const onCreateUserOrderCheckIfAnUserOrderExists = functions.firestore
 
 export const onChangeUserOrderUpdateOrderListTotal = functions.firestore
   .document('order-list/{orderListId}/orders/{orderId}')
-  .onWrite(async (snapshot, context) => {
+  .onWrite(async (_, context) => {
     await (await import('./user-order/onChangeUserOrderUpdateOrderListTotal')).default(context);
   });
 

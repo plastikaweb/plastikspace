@@ -1,4 +1,4 @@
-import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { DATE_PIPE_DEFAULT_OPTIONS, provideImageKitLoader } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import {
   ApplicationConfig,
@@ -91,6 +91,7 @@ export const appConfig: ApplicationConfig = {
       provide: RouteReuseStrategy,
       useClass: LlecoopRouteReuseStrategy,
     },
+    provideImageKitLoader(environment.imageKit.endpoint),
     importProvidersFrom(
       StoreModule.forRoot(routerReducers, {
         runtimeChecks: {

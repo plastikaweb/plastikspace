@@ -1,4 +1,6 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+
 import { InputImgLoaderComponent } from './input-img-loader.component';
 
 describe('InputImgLoaderComponent', () => {
@@ -7,6 +9,7 @@ describe('InputImgLoaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideExperimentalZonelessChangeDetection()],
       imports: [InputImgLoaderComponent],
     }).compileComponents();
 
