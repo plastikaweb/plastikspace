@@ -101,6 +101,7 @@
       "@plastik/shared/activity/data-access": ["libs/shared/activity/data-access/src/index.ts"],
       "@plastik/shared/activity/ui": ["libs/shared/activity/ui/src/index.ts"],
       "@plastik/shared/button": ["libs/shared/button/index.ts"],
+      "@plastik/shared/bytes-to-size": ["libs/shared/util/bytes-to-size/src/index.ts"],
       "@plastik/shared/confirm": ["libs/shared/confirm/data-access/src/index.ts"],
       "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
