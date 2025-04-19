@@ -13,6 +13,7 @@ import {
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { ImageKitService } from '@plastik/llecoop/util';
 import { FirebaseStorageService } from '@plastik/shared/firebase-storage/data-access';
+import { InputImgLoaderProps } from '@plastik/shared/form/img-loader';
 
 function setStockUnitAddonRight(
   formlyProps: FormlyFieldConfig['props'],
@@ -86,19 +87,22 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
         {
           key: 'imgUrl',
           type: 'img-loader',
-          className: 'w-full',
+          className:
+            'w-full flex justify-center items-center text-center md:justify-start md:items-start md:text-left',
           props: {
             label: 'Imatge del producte',
             placeholder: 'Imatge del producte',
             required: false,
             folder: signal('products'),
-            maxSize: signal(1 * 1024 * 1024),
+            maxSize: signal(2 * 1024 * 1024),
+            minHeight: signal(1024),
+            minWidth: signal(1024),
             title: productStore.selectedItemName || signal('nou producte'),
             progress: firebaseStorage.progress.bind(firebaseStorage),
             upload: firebaseStorage.upload.bind(firebaseStorage),
             fileUrl: firebaseStorage.fileUrl.bind(firebaseStorage),
             cdnUrl: signal(null),
-          },
+          } as InputImgLoaderProps,
           hooks: {
             onInit: (formly: FormlyFieldConfig) => {
               if (formly.model?.imgUrl) {

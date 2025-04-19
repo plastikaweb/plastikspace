@@ -88,7 +88,7 @@ const formly: FormlyFieldConfig = {
       getData: () => this.data,
     },
     tableRowValueConditionFn: (element: BaseEntity) => element.age > 18,
-  },
+  } as InputTableProps,
 };
 ```
 

@@ -2,6 +2,7 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { ColorPickerProps } from '@plastik/shared/form/color-picker';
 
 const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
   {
@@ -65,7 +66,7 @@ const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
             role: 'button',
             tabIndex: 0,
           },
-        },
+        } as ColorPickerProps,
       },
       {
         key: 'description',

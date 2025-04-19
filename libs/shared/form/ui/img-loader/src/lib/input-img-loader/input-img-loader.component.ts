@@ -1,4 +1,4 @@
-import { NgOptimizedImage } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,7 +24,7 @@ const LOADER_IMG_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-img-loader',
-  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, NgOptimizedImage],
+  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, NgOptimizedImage, NgClass],
   providers: [LOADER_IMG_ACCESSOR],
   templateUrl: './input-img-loader.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,6 +32,7 @@ const LOADER_IMG_ACCESSOR = {
 export class InputImgLoaderComponent implements ControlValueAccessor {
   protected readonly inputFile = viewChild<ElementRef>('inputFile');
   protected readonly cdr = inject(ChangeDetectorRef);
+  protected isDragOver = signal<boolean>(false);
 
   value = signal<string | null>(null);
   isLoading = signal<boolean>(false);
@@ -42,6 +43,8 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   progress = input<number>(0);
   upload = input<(file: File | null, folder?: string) => Promise<void> | void>();
   maxSize = input<number>(1 * 1024 * 1024);
+  minHeight = input<number>(1024);
+  minWidth = input<number>(1024);
   fileUrl = input<string | null>(null);
   cdnUrl = input<string | null>(null);
 
@@ -97,19 +100,76 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   }
 
   async onSelectFile(event: Event): Promise<void> {
-    const file = (event.target as HTMLInputElement).files;
+    const files = (event.target as HTMLInputElement).files;
+    const file = files?.[0];
+    if (!file) return;
 
-    if (file && file[0] && file[0].size > this.maxSize()) {
-      // TODO: show toast with error
-      throw new Error('File size exceeds maximum allowed size');
-    }
+    try {
+      if (file.size > this.maxSize()) {
+        // TODO: show toast con error
+        throw new Error('El archivo supera el tamaño máximo permitido');
+      }
 
-    if (file && file[0]) {
+      await this.validateImageDimensions(file);
+
       this.isLoading.set(true);
-      await (this.upload()?.(file[0], this.folder()) ?? Promise.resolve());
+      await (this.upload()?.(file, this.folder()) ?? Promise.resolve());
       this.isLoading.set(false);
+      this.onTouch();
+    } catch (error) {
+      // TODO: mostrar toast con error
+      this.isLoading.set(false);
+      this.onTouch();
+      // eslint-disable-next-line no-console
+      console.error(error);
     }
-    this.onTouch();
+  }
+
+  private validateImageDimensions(file: File): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const image = new Image();
+        image.onload = () => {
+          if (image.height < this.minHeight() || image.width < this.minWidth()) {
+            reject(
+              new Error(
+                `Las dimensiones de la imagen no cumplen los mínimos: ${this.minHeight()}x${this.minWidth()}`
+              )
+            );
+          } else {
+            resolve();
+          }
+        };
+        image.onerror = () => {
+          reject(new Error('No se ha podido cargar la imagen para validar dimensiones.'));
+        };
+        image.src = reader.result as string;
+      };
+      reader.onerror = () => {
+        reject(new Error('No se ha podido leer el archivo de imagen.'));
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  onDragOver(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver.set(true);
+  }
+
+  onDragLeave(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver.set(false);
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault();
+    this.isDragOver.set(false);
+    const files = event.dataTransfer?.files;
+    if (files && files.length > 0) {
+      this.onSelectFile({ target: { files } } as unknown as Event);
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars

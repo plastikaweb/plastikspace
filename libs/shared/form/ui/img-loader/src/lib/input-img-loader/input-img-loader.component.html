@@ -1,15 +1,28 @@
 <div
-  class="relative w-[224px] h-[224px] p-[10px] border-2 border-dashed text-primary border-gray-40 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden transition-all duration-300 outline-none hover:border-gray-80 hover:text-secondary-dark hover:bg-black/10 disabled:opacity-60 disabled:cursor-not-allowed focus:border-gray-80 focus:text-secondary-dark focus:bg-black/10 focus:outline-none"
+  class="relative w-[224px] h-[224px] p-[10px] border-2 border-dashed text-primary border-gray-40 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden outline-none"
   tabindex="0"
   [class.disabled]="disabled()"
   [attr.aria-label]="'Pujar Imatge' + (value() ? ' (actualment: ' + value() + ')' : '')"
-  (click)="openAddFilesDialog()"
-  (keydown.enter)="openAddFilesDialog()"
-  (keydown.space)="openAddFilesDialog()">
+  [ngClass]="{ 'border-gray-80 text-secondary-dark bg-black/10': isDragOver() }"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)">
   @if (!value() && !isLoading()) {
     <div class="flex flex-col justify-center items-center p-0 m-0 w-full h-full">
-      <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">image</mat-icon>
-      <span>Pujar Imatge</span>
+      <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">upload</mat-icon>
+      <span class="text-sm text-center text-balance">Arrastra una imatge aquí</span>
+      <span class="text-sm text-center text-balance">o</span>
+      <button
+        type="button"
+        mat-flat-button
+        class="w-full sm:w-auto"
+        [disabled]="disabled()"
+        (click)="openAddFilesDialog()"
+        (keydown.enter)="openAddFilesDialog()"
+        (keydown.space)="openAddFilesDialog()">
+        <mat-icon class="text-lg">image</mat-icon>
+        Cerca una imatge
+      </button>
     </div>
   }
 
