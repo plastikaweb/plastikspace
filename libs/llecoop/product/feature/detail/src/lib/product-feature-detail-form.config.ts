@@ -97,6 +97,8 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             maxSize: signal(2 * 1024 * 1024),
             minHeight: signal(1024),
             minWidth: signal(1024),
+            imgHeight: signal(250),
+            imgWidth: signal(250),
             title: productStore.selectedItemName || signal('nou producte'),
             progress: firebaseStorage.progress.bind(firebaseStorage),
             upload: firebaseStorage.upload.bind(firebaseStorage),
@@ -105,17 +107,11 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           } as InputImgLoaderProps,
           hooks: {
             onInit: (formly: FormlyFieldConfig) => {
-              if (formly.model?.imgUrl) {
-                formly.props?.['cdnUrl'].set(imageKit.getEndpoint(formly.model.imgUrl));
-              }
+              getCdnUrl(formly);
 
               return formly.options?.fieldChanges?.pipe(
                 filter(e => e.type === 'valueChanges' && e.field['key'] === 'imgUrl'),
-                tap(() => {
-                  if (formly.model?.imgUrl) {
-                    formly.props?.['cdnUrl'].set(imageKit.getEndpoint(formly.model.imgUrl));
-                  }
-                })
+                tap(() => getCdnUrl(formly))
               );
             },
           },
@@ -343,4 +339,18 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
       disableOnSubmit: true,
     }),
   };
+
+  function getCdnUrl({ model, props }: FormlyFieldConfig): void {
+    if (model?.imgUrl) {
+      props?.['cdnUrl'].set(
+        imageKit.getEndpoint({
+          src: model.imgUrl,
+          loaderParams: {
+            width: props?.['imgWidth']() || 200,
+            height: props?.['imgHeight']() || 200,
+          },
+        })
+      );
+    }
+  }
 }

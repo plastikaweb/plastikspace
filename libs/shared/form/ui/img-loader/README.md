@@ -73,13 +73,15 @@ const fields: FormlyFieldConfig[] = [
 | ----------- | ---------------------------------------------------------------- | --------------- | ------------------------------------------------------------------ |
 | `upload`    | `(file: File \| null, folder?: string) => Promise<void> \| void` |                 | Function called on file selection. Handles upload logic. Required. |
 | `progress`  | `number`                                                         | `0`             | Upload progress.(0-100).                                           |
-| `fileUrl`   | `string \| null`                                                 | `null`          | URL of the image to display as preview.                            |
+| `fileUrl`   | `string \| null`                                                 | `null`          | URL of the image used as the input value.                          |
 | `cdnUrl`    | `string \| null`                                                 | `null`          | CDN base URL for image preview.                                    |
 | `title`     | `string`                                                         | `''`            | Title or label for the upload button.                              |
-| `folder`    | `string`                                                         | `''`            | Folder or path for uploads (passed to `upload`).                   |
+| `folder`    | `string`                                                         | `''`            | Folder or path for uploads (passed to `upload` function).          |
 | `maxSize`   | `number`                                                         | `1048576` (1MB) | Maximum allowed file size in bytes.                                |
 | `minHeight` | `number`                                                         | `1024`          | Minimum image height in pixels.                                    |
 | `minWidth`  | `number`                                                         | `1024`          | Minimum image width in pixels.                                     |
+| `imgHeight` | `number`                                                         | `200`           | Height of the container for the image preview.                     |
+| `imgWidth`  | `number`                                                         | `200`           | Width of the image preview.                                        |
 
 ## Troubleshooting
 

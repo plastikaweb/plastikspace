@@ -1,8 +1,9 @@
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   effect,
   ElementRef,
   forwardRef,
@@ -16,6 +17,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
+import { InputImgLoaderProps } from './input-img-loader-props';
+
 const LOADER_IMG_ACCESSOR = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => InputImgLoaderComponent),
@@ -24,7 +27,7 @@ const LOADER_IMG_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-img-loader',
-  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, NgOptimizedImage, NgClass],
+  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, NgClass],
   providers: [LOADER_IMG_ACCESSOR],
   templateUrl: './input-img-loader.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,30 +38,32 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   protected isDragOver = signal<boolean>(false);
 
   value = signal<string | null>(null);
-  isLoading = signal<boolean>(false);
+  isLoading = computed(() => this.progress() > 0);
   disabled = signal<boolean>(false);
 
   folder = input<string>('');
   title = input<string>();
   progress = input<number>(0);
-  upload = input<(file: File | null, folder?: string) => Promise<void> | void>();
+  upload = input<InputImgLoaderProps['upload']>();
   maxSize = input<number>(1 * 1024 * 1024);
   minHeight = input<number>(1024);
   minWidth = input<number>(1024);
   fileUrl = input<string | null>(null);
   cdnUrl = input<string | null>(null);
+  imgHeight = input<number>(200);
+  imgWidth = input<number>(200);
 
   constructor() {
     effect(() => {
-      if (this.fileUrl()) {
-        this.value.set(this.fileUrl());
-        this.onChange(this.fileUrl());
-        this.cdr.detectChanges();
-      }
-
       if (this.progress() > 0) {
         this.value.set(null);
         this.onChange(null);
+        this.cdr.detectChanges();
+      }
+
+      if (this.fileUrl()) {
+        this.value.set(this.fileUrl());
+        this.onChange(this.fileUrl());
         this.cdr.detectChanges();
       }
     });
@@ -67,12 +72,11 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   writeValue(value: string | null): void {
     if (!value) {
       this.value.set(null);
-      this.cdr.detectChanges();
       return;
     }
+
     if (value !== this.value()) {
       this.value.set(value);
-      this.cdr.detectChanges();
     }
   }
   registerOnChange(fn: (value: string | null) => void): void {
@@ -112,13 +116,10 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
 
       await this.validateImageDimensions(file);
 
-      this.isLoading.set(true);
       await (this.upload()?.(file, this.folder()) ?? Promise.resolve());
-      this.isLoading.set(false);
       this.onTouch();
     } catch (error) {
-      // TODO: mostrar toast con error
-      this.isLoading.set(false);
+      // TODO: mostrar toast con erro
       this.onTouch();
       // eslint-disable-next-line no-console
       console.error(error);

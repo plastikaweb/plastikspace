@@ -23,7 +23,7 @@ service firebase.storage {
     }
 
     function hasCorrectSize() {
-      return request.resource.size < 1 * 1024 * 1024;
+      return request.resource.size < 2 * 1024 * 1024;
     }
 
     match /products/{fileName} {

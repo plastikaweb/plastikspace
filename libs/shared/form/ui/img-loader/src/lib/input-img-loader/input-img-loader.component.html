@@ -1,9 +1,11 @@
 <div
-  class="relative w-[224px] h-[224px] p-[10px] border-2 border-dashed text-primary border-gray-40 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden outline-none"
+  class="relative p-[10px] border-2 border-dashed text-primary border-gray-40 rounded-lg flex items-center justify-center cursor-pointer overflow-hidden outline-none"
   tabindex="0"
+  [style.height.px]="imgHeight()"
+  [style.width.px]="imgWidth()"
   [class.disabled]="disabled()"
   [attr.aria-label]="'Pujar Imatge' + (value() ? ' (actualment: ' + value() + ')' : '')"
-  [ngClass]="{ 'border-gray-80 text-secondary-dark bg-black/10': isDragOver() }"
+  [ngClass]="[isDragOver() ? 'border-gray-80 text-secondary-dark bg-black/10' : '']"
   (dragover)="onDragOver($event)"
   (dragleave)="onDragLeave($event)"
   (drop)="onDrop($event)">
@@ -25,15 +27,14 @@
       </button>
     </div>
   }
-
-  @if (value()) {
+  @if (value() && cdnUrl() && !isLoading()) {
     <img
-      fill
-      loading="lazy"
-      placeholder="https://placehold.co/224"
-      class="absolute top-0 right-0 bottom-0 left-0 w-full h-full object-cover rounded-lg p-[10px]"
-      [alt]="title()"
-      [ngSrc]="cdnUrl() || ''" />
+      placeholder="assets/img/img-loader-placeholder.png"
+      class="absolute top-0 right-0 bottom-0 left-0 object-cover rounded-lg p-[10px]"
+      [src]="cdnUrl() || ''"
+      [width]="imgWidth()"
+      [height]="imgHeight()"
+      [alt]="title()" />
     <div
       class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 rounded-b-lg text-primary-dark bg-white/80 px-sub"
       tabindex="0"
