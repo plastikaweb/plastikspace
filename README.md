@@ -131,6 +131,11 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 - [shared-signal-state-data-access](libs/shared/signal-state/data-access/README.md)
 
+#### Storage
+
+- [shared-storage-entities](libs/shared/storage/entities/README.md)
+- [shared-storage-data-access](libs/shared/storage/data-access/README.md)
+
 ##### UI
 
 - [shared-form-ui-year-picker/shared-form-ui-year-picker-type](libs/shared/form/ui/year-picker/README.md)

@@ -1,16 +1,14 @@
-import { NgClass } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  computed,
   effect,
-  ElementRef,
   forwardRef,
   inject,
   input,
+  linkedSignal,
   signal,
-  viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -27,18 +25,16 @@ const LOADER_IMG_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-img-loader',
-  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, NgClass],
+  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, NgOptimizedImage, NgClass],
   providers: [LOADER_IMG_ACCESSOR],
   templateUrl: './input-img-loader.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputImgLoaderComponent implements ControlValueAccessor {
-  protected readonly inputFile = viewChild<ElementRef>('inputFile');
   protected readonly cdr = inject(ChangeDetectorRef);
   protected isDragOver = signal<boolean>(false);
 
   value = signal<string | null>(null);
-  isLoading = computed(() => this.progress() > 0);
   disabled = signal<boolean>(false);
 
   folder = input<string>('');
@@ -49,18 +45,17 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   minHeight = input<number>(1024);
   minWidth = input<number>(1024);
   fileUrl = input<string | null>(null);
-  cdnUrl = input<string | null>(null);
+  cdnUrl = input<string>();
   imgHeight = input<number>(200);
   imgWidth = input<number>(200);
+  lcpImage = input<boolean>(false);
+  isLoading = linkedSignal({
+    source: this.progress,
+    computation: (progress: number) => progress > 0,
+  });
 
   constructor() {
     effect(() => {
-      if (this.progress() > 0) {
-        this.value.set(null);
-        this.onChange(null);
-        this.cdr.detectChanges();
-      }
-
       if (this.fileUrl()) {
         this.value.set(this.fileUrl());
         this.onChange(this.fileUrl());
@@ -89,14 +84,8 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
     this.disabled.set(isDisabled);
   }
 
-  openAddFilesDialog() {
-    if (this.inputFile()) {
-      const e: HTMLElement = this.inputFile()?.nativeElement;
-      e.click();
-    }
-  }
-
-  onDeleteFile(): void {
+  onDeleteFile(event: Event): void {
+    event.stopPropagation();
     this.value.set(null);
     this.onChange(this.value());
     this.onTouch();
@@ -116,6 +105,8 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
 
       await this.validateImageDimensions(file);
 
+      this.isLoading.set(true);
+
       await (this.upload()?.(file, this.folder()) ?? Promise.resolve());
       this.onTouch();
     } catch (error) {
@@ -123,6 +114,9 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
       this.onTouch();
       // eslint-disable-next-line no-console
       console.error(error);
+    } finally {
+      this.isLoading.set(false);
+      this.isDragOver.set(false);
     }
   }
 
@@ -166,7 +160,6 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
 
   onDrop(event: DragEvent) {
     event.preventDefault();
-    this.isDragOver.set(false);
     const files = event.dataTransfer?.files;
     if (files && files.length > 0) {
       this.onSelectFile({ target: { files } } as unknown as Event);

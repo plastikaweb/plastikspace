@@ -1,8 +1,8 @@
 export default {
-  displayName: 'firebase-storage-data-access',
+  displayName: 'storage-data-access',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/shared/firebase-storage/data-access',
+  coverageDirectory: '../../../../coverage/libs/shared/storage/data-access',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

@@ -11,8 +11,7 @@ import {
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
-import { ImageKitService } from '@plastik/llecoop/util';
-import { FirebaseStorageService } from '@plastik/shared/firebase-storage/data-access';
+import { FirebaseStorageService } from '@plastik/storage/data-access';
 import { InputImgLoaderProps } from '@plastik/shared/form/img-loader';
 
 function setStockUnitAddonRight(
@@ -51,7 +50,6 @@ function setUnitBaseInfo(
 export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
   const productStore = inject(llecoopProductStore);
   const firebaseStorage = inject(FirebaseStorageService);
-  const imageKit = inject(ImageKitService);
 
   const formConfig = [
     {
@@ -95,20 +93,20 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             required: false,
             folder: signal('products'),
             maxSize: signal(2 * 1024 * 1024),
-            minHeight: signal(1024),
-            minWidth: signal(1024),
+            minHeight: signal(800),
+            minWidth: signal(800),
             imgHeight: signal(250),
             imgWidth: signal(250),
+            lcpImage: signal(true),
             title: productStore.selectedItemName || signal('nou producte'),
             progress: firebaseStorage.progress.bind(firebaseStorage),
             upload: firebaseStorage.upload.bind(firebaseStorage),
             fileUrl: firebaseStorage.fileUrl.bind(firebaseStorage),
-            cdnUrl: signal(null),
+            cdnUrl: signal(''),
           } as InputImgLoaderProps,
           hooks: {
             onInit: (formly: FormlyFieldConfig) => {
               getCdnUrl(formly);
-
               return formly.options?.fieldChanges?.pipe(
                 filter(e => e.type === 'valueChanges' && e.field['key'] === 'imgUrl'),
                 tap(() => getCdnUrl(formly))
@@ -342,15 +340,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
 
   function getCdnUrl({ model, props }: FormlyFieldConfig): void {
     if (model?.imgUrl) {
-      props?.['cdnUrl'].set(
-        imageKit.getEndpoint({
-          src: model.imgUrl,
-          loaderParams: {
-            width: props?.['imgWidth']() || 200,
-            height: props?.['imgHeight']() || 200,
-          },
-        })
-      );
+      props?.['cdnUrl'].set(model.imgUrl);
     }
   }
 }

@@ -105,9 +105,6 @@
       "@plastik/shared/confirm": ["libs/shared/confirm/data-access/src/index.ts"],
       "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
-      "@plastik/shared/firebase-storage/data-access": [
-        "libs/shared/firebase-storage/data-access/src/index.ts"
-      ],
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
       "@plastik/shared/form/color-picker": ["libs/shared/form/ui/input-color-picker/src/index.ts"],
       "@plastik/shared/form/img-loader": ["libs/shared/form/ui/img-loader/src/index.ts"],
@@ -141,6 +138,8 @@
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"],
       "@plastik/shared/testing": ["libs/shared/testing/index.ts"],
+      "@plastik/storage/data-access": ["libs/shared/storage/data-access/src/index.ts"],
+      "@plastik/storage/entities": ["libs/shared/storage/entities/src/index.ts"],
       "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"]
     }
   },

@@ -31,4 +31,5 @@ export class InputImgLoaderTypeComponent extends FieldType<
   protected readonly minWidth = 1024;
   protected readonly imgHeight = 200;
   protected readonly imgWidth = 200;
+  protected readonly lcpImage = false;
 }

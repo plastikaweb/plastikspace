@@ -12,5 +12,6 @@ export interface InputImgLoaderProps extends FormlyFieldProps {
   imgHeight?: Signal<number>;
   imgWidth?: Signal<number>;
   folder?: Signal<string>;
-  cdnUrl: Signal<string | null>;
+  cdnUrl?: Signal<string>;
+  lcpImage?: Signal<boolean>;
 }

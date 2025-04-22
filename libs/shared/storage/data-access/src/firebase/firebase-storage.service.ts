@@ -1,6 +1,7 @@
+import { distinctUntilChanged } from 'rxjs';
 import { map, takeWhile } from 'rxjs/operators';
 
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   getDownloadURL,
   listAll,
@@ -9,16 +10,15 @@ import {
   Storage,
   uploadBytesResumable,
 } from '@angular/fire/storage';
+import { StorageService, StorageServiceType } from '@plastik/storage/entities';
 
 @Injectable({
   providedIn: 'root',
 })
-export class FirebaseStorageService {
+export class FirebaseStorageService extends StorageService implements StorageServiceType {
   readonly #firebaseStorage = inject(Storage);
-  progress = signal<number>(0);
-  fileUrl = signal<string | null>(null);
 
-  async upload(file: File | null, folder = 'images'): Promise<void> {
+  async upload(file: File | null, folder?: string): Promise<void> {
     this.reset();
 
     try {
@@ -32,12 +32,11 @@ export class FirebaseStorageService {
 
       percentage(task)
         .pipe(
-          map((data: { progress: number }) => data.progress ?? 0),
-          takeWhile((progress: number) => progress < 100, true)
+          distinctUntilChanged((a, b) => a.progress === b.progress),
+          map((data: { progress: number }) => data.progress),
+          takeWhile((progress: number) => progress <= 100, true)
         )
-        .subscribe(data => {
-          this.progress.set(Math.round(data));
-        });
+        .subscribe(data => this.progress.set(Math.round(data)));
 
       const snapshot = await task;
       this.fileUrl.set(await getDownloadURL(snapshot.ref));
@@ -48,7 +47,7 @@ export class FirebaseStorageService {
     }
   }
 
-  async getFileUrl(fileName: string, folder = 'images'): Promise<string> {
+  async getFileUrl(fileName: string, folder?: string): Promise<string> {
     const storageRef = ref(this.#firebaseStorage, `${folder}/${fileName}`);
     const getFile = await listAll(storageRef);
     if (getFile.items.length === 0) {
@@ -57,10 +56,5 @@ export class FirebaseStorageService {
     const url = await getDownloadURL(getFile.items[0]);
     this.fileUrl.set(url);
     return url;
-  }
-
-  reset(): void {
-    this.progress.set(0);
-    this.fileUrl.set(null);
   }
 }
