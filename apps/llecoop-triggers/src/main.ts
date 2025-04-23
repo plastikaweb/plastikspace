@@ -20,10 +20,10 @@ import * as functions from 'firebase-functions';
 // Category
 export const onUpdateCategoryUpdateProductCategory = functions.firestore
   .document('category/{categoryId}')
-  .onUpdate(async (change, context) => {
+  .onUpdate(async (snapshot, context) => {
     await (
       await import('./category/onUpdateCategoryUpdateProductCategory')
-    ).default(change, context);
+    ).default(snapshot, context);
   });
 
 export const onDeleteCategoryUpdateProductCategory = functions.firestore
@@ -45,10 +45,10 @@ export const onCreateProductUpdateCategoryProductCount = functions.firestore
 
 export const onUpdateProductUpdateCategoryProductCount = functions.firestore
   .document('product/{productId}')
-  .onUpdate(async (change, context) => {
+  .onUpdate(async (snapshot, context) => {
     await (
       await import('./product/onUpdateProductCategoryUpdateCategoryProductCount')
-    ).default(change, context);
+    ).default(snapshot, context);
   });
 
 export const onDeleteProductUpdateCategoryProductCount = functions.firestore
@@ -57,6 +57,12 @@ export const onDeleteProductUpdateCategoryProductCount = functions.firestore
     await (
       await import('./product/onDeleteProductUpdateCategoryProductCount')
     ).default(snapshot, context);
+  });
+
+export const onChangeProductCheckImageToDelete = functions.firestore
+  .document('product/{productId}')
+  .onWrite(async (snapshot, context) => {
+    await (await import('./product/onUpdateProductCheckImageToDelete')).default(snapshot, context);
   });
 
 // User
@@ -92,8 +98,8 @@ export const onDeleteUserDeleteUserFromAuth = functions.firestore
 
 export const onUpdateUserUpdateAuth = functions.firestore
   .document('user/{userId}')
-  .onUpdate(async (change, context) => {
-    await (await import('./user/onUpdateUserUpdateAuth')).default(change, context);
+  .onUpdate(async (snapshot, context) => {
+    await (await import('./user/onUpdateUserUpdateAuth')).default(snapshot, context);
   });
 
 // Order list
@@ -145,10 +151,10 @@ export const onChangeUserOrderUpdateOrderListTotal = functions.firestore
 
 export const onCancelOrderListCancelRelatedUserOrdersStatus = functions.firestore
   .document('order-list/{orderListId}')
-  .onUpdate(async (change, context) => {
+  .onUpdate(async (snapshot, context) => {
     await (
       await import('./user-order/onCancelOrderListCancelRelatedUserOrdersStatus')
-    ).default(change, context);
+    ).default(snapshot, context);
   });
 
 export const onDeleteOrderListDeleteRelatedUserOrders = functions.firestore

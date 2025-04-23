@@ -2,12 +2,12 @@ import * as functions from 'firebase-functions';
 
 import { firestore } from '../init';
 
-export default async (change, context) => {
+export default async (snapshot, context) => {
   const orderListId = context.params.orderListId;
   functions.logger.debug(`Running cancel list order trigger for ${orderListId}`);
 
   // get if the orderList status is 'canceled'
-  const orderList = change.after.data();
+  const orderList = snapshot.after.data();
   if (orderList.status !== 'cancelled') {
     functions.logger.debug(`Order list ${orderListId} is not canceled, skipping update`);
     return;

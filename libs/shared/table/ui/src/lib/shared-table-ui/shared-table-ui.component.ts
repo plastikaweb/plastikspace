@@ -57,7 +57,7 @@ import {
   isToggleTypeGuard,
   PageEventConfig,
   TableColumnFormatting,
-  TableControlAction,
+  TableDefinition,
   TablePaginationVisibility,
   TableSorting,
   TableSortingConfig,
@@ -144,7 +144,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   /**
    * Main title of the table.
    */
-  caption = input<string>('');
+  caption = input<TableDefinition<T>['caption']>('');
 
   /**
    * Table sorting configuration.
@@ -154,15 +154,17 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   /**
    * Table actions configuration.
    */
-  actions = input<TableControlAction<T>>();
+  actions = input<TableDefinition<T>['actions']>();
 
   filterCriteria = input<Record<string, string>>({});
 
   filterPredicate = input<(data: T, criteria: Record<string, string>) => boolean>();
 
-  extraRowStyles = input<(element: T) => string>();
+  extraRowStyles = input<TableDefinition<T>['extraRowStyles']>();
 
-  actionsColStyles = input<string>('');
+  actionsColStyles = input<TableDefinition<T>['actionsColStyles']>();
+
+  rowHeight = input<TableDefinition<T>['rowHeight']>('unset');
 
   expandable = input<boolean>(false);
 

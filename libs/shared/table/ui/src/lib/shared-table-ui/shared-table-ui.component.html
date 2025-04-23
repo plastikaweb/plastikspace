@@ -317,6 +317,7 @@
       <!-- Row that will be used to display the regular data -->
       <mat-row
         *matRowDef="let row; columns: columnsToDisplay()"
+        [style.height]="rowHeight()"
         [ngClass]="extraRowStyles()?.(row) || ''"></mat-row>
     }
   </mat-table>

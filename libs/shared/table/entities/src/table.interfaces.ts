@@ -357,6 +357,7 @@ export interface TableDefinition<OBJ> {
   actions?: TableControlAction<OBJ>;
   extraRowStyles?: (element: OBJ) => string;
   actionsColStyles?: string;
+  rowHeight?: `${number}px` | `${number}vh` | `${number}rem` | `${number}em` | 'unset';
   getData?: (id?: string) => OBJ[];
   getSelectedItemId?: Signal<EntityId | null>;
 }

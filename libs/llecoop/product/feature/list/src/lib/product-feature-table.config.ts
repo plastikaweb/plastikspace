@@ -111,6 +111,7 @@ export class LlecoopProductSearchFeatureTableConfig
       extraRowStyles: (product: LlecoopProduct) => {
         return !product.isAvailable ? 'marked-ko' : '';
       },
+      rowHeight: '160px',
       actionsColStyles: 'max-w-[160px]',
       actions: {
         SET_AVAILABILITY: {

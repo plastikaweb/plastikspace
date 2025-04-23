@@ -80,6 +80,7 @@ export class LlecoopCategorySearchFeatureTableConfig
       count: this.#store.count,
       getData: () => this.#store.entities(),
       actionsColStyles: 'max-w-[135px]',
+      rowHeight: '70px',
       actions: {
         EDIT: {
           visible: () => true,
