@@ -1,5 +1,5 @@
 <div
-  class="flex overflow-hidden relative justify-center items-center rounded-lg border-2 border-dashed cursor-pointer outline-none text-primary-dark border-gray-40"
+  class="flex overflow-hidden relative justify-center items-center rounded-lg border-2 border-dashed outline-none text-primary-dark border-gray-40"
   tabindex="0"
   [style.height.px]="imgHeight()"
   [style.width.px]="imgWidth()"
@@ -9,7 +9,6 @@
   (dragleave)="onDragLeave($event)"
   (drop)="onDrop($event)">
   <!-- loading indicator -->
-
   <div
     class="flex absolute inset-0 z-20 flex-col justify-center items-center w-full h-full rounded-lg opacity-0 transition-all duration-150 pointer-events-none bg-gray-10"
     [ngClass]="{ 'opacity-100': isLoading() }">
@@ -57,15 +56,14 @@
 
   <!-- image preview -->
   @if (value() && cdnUrl() && !isLoading()) {
-    <img
-      placeholder="assets/img/img-loader-placeholder.png"
-      class="absolute top-0 right-0 bottom-0 left-0 object-cover rounded-lg p-[10px]"
-      [ngSrc]="cdnUrl() || ''"
+    <plastik-shared-img-container
+      class="absolute top-0 right-0 bottom-0 left-0 rounded-lg"
+      [src]="cdnUrl() || ''"
       [width]="imgWidth()"
       [height]="imgHeight()"
-      [priority]="lcpImage() ? 'high' : 'low'"
-      [alt]="title()"
-      [loaderParams]="{ width: imgWidth(), height: imgHeight() }" />
+      [title]="title()"
+      [lcpImage]="lcpImage()">
+    </plastik-shared-img-container>
     <div
       class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 rounded-b-lg text-primary-dark bg-white/90 px-sub"
       tabindex="0"

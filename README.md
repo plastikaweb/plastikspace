@@ -119,6 +119,10 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 - [shared-form-feature](libs/shared/form/feature/README.md)
 
+#### Img Container
+
+- [shared-img-container-ui](libs/shared/img-container/ui/README.md)
+
 #### Mat Theme Toggle
 
 - [shared-mat-theme-toggle](libs/shared/mat-theme-toggle/README.md)

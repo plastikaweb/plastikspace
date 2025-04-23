@@ -42,7 +42,7 @@
 
 <plastik-shared-form-feature
   class="block w-full"
-  [ngClass]="{ 'lg:w-10/12 xxl:w-1/2': !formConfig.getFormFullWidth }"
+  [ngClass]="{ '@lg:w-10/12 @xxl:w-1/2': !formConfig.getFormFullWidth }"
   [fields]="formConfig.getConfig() || []"
   [model]="facade.model?.() || {}"
   [submitConfig]="formConfig.getSubmitFormConfig?.(!!facade.model?.()) || {}"

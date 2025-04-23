@@ -1,4 +1,4 @@
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -14,6 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 import { InputImgLoaderProps } from './input-img-loader-props';
 
@@ -25,7 +26,13 @@ const LOADER_IMG_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-img-loader',
-  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, NgOptimizedImage, NgClass],
+  imports: [
+    MatIconModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    SharedImgContainerComponent,
+    NgClass,
+  ],
   providers: [LOADER_IMG_ACCESSOR],
   templateUrl: './input-img-loader.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -2,7 +2,7 @@
 
 //  ----- Snack Bar https://material.angular.io/components/snack-bar ----- //
 :root {
-  .mat-mdc-snack-bar-container {
+  .mdc-snackbar {
     &.message-box {
       &-error {
         @include mat.snack-bar-overrides(

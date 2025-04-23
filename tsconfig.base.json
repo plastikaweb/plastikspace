@@ -119,6 +119,7 @@
       "@plastik/shared/form/util": ["libs/shared/form/util/src/index.ts"],
       "@plastik/shared/form/year-picker": ["libs/shared/form/ui/year-picker/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
+      "@plastik/shared/img-container": ["libs/shared/img-container/ui/src/index.ts"],
       "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
       "@plastik/shared/mat-theme-toggle": ["libs/shared/mat-theme-toggle/src/index.ts"],
       "@plastik/shared/notification/data-access": [

@@ -15,7 +15,7 @@ export interface LlecoopBaseProduct extends BaseEntity {
   categoryName?: string;
   unit: LlecoopProductUnit;
   tags?: string[];
-  imageUrl?: string;
+  imgUrl?: string;
 }
 
 export interface LlecoopProduct extends LlecoopBaseProduct {

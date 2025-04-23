@@ -11,8 +11,8 @@ import {
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
-import { FirebaseStorageService } from '@plastik/storage/data-access';
 import { InputImgLoaderProps } from '@plastik/shared/form/img-loader';
+import { FirebaseStorageService } from '@plastik/storage/data-access';
 
 function setStockUnitAddonRight(
   formlyProps: FormlyFieldConfig['props'],
@@ -86,7 +86,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           key: 'imgUrl',
           type: 'img-loader',
           className:
-            'w-full flex justify-center items-center text-center md:justify-start md:items-start md:text-left',
+            'w-full flex justify-center items-center text-center @md:justify-start @md:items-start @md:text-left',
           props: {
             label: 'Imatge del producte',
             placeholder: 'Imatge del producte',
@@ -116,11 +116,13 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
         },
         {
           key: 'unit',
+          fieldGroupClassName: 'flex flex-col @lg:flex-row gap-0 @lg:gap-sub',
+
           fieldGroup: [
             {
               key: 'type',
               type: 'select',
-              className: 'w-full',
+              className: 'w-full @lg:w-2/3',
               props: {
                 label: "Tipus d'unitat",
                 placeholder: "Tipus d'unitat",
@@ -131,6 +133,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             {
               key: 'base',
               type: 'number',
+              className: 'w-full @lg:w-1/3',
               props: {
                 label: 'Pes aproximat per unitat',
                 placeholder: 'Pes aproximat per unitat',
@@ -138,6 +141,9 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 min: 0,
                 step: 0.1,
                 addonRight: {},
+                attributes: {
+                  autocomplete: 'off',
+                },
               },
               expressions: {
                 hide: ({ model }: FormlyFieldConfig) =>
@@ -157,12 +163,12 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           ],
         },
         {
-          fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sub p-sub rounded-md',
+          fieldGroupClassName: 'flex flex-col @lg:flex-row gap-0 @lg:gap-sub max-w-full',
           fieldGroup: [
             {
               key: 'price',
               type: 'input',
-              className: 'w-full md:w-1/3',
+              className: 'flex-1 min-w-0 @lg:basis-1/3',
               props: {
                 type: 'number',
                 label: 'Preu',
@@ -182,7 +188,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             {
               key: 'iva',
               type: 'input',
-              className: 'w-full md:w-1/3',
+              className: 'flex-1 min-w-0 @lg:basis-1/3',
               props: {
                 type: 'number',
                 label: 'IVA',
@@ -203,7 +209,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             {
               key: 'priceWithIva',
               type: 'input',
-              className: 'w-full md:w-1/3',
+              className: 'flex-1 min-w-0 @lg:basis-1/3',
               props: {
                 type: 'text',
                 label: 'Preu amb IVA',
@@ -244,11 +250,12 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           ],
         },
         {
-          fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sub p-sub',
+          fieldGroupClassName: 'flex flex-col @lg:flex-row gap-0 @lg:gap-sub',
           fieldGroup: [
             {
               key: 'isAvailable',
               type: 'checkbox',
+              className: 'w-full @lg:w-1/2',
               defaultValue: false,
               props: {
                 label: 'Disponible',
@@ -257,6 +264,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             {
               key: 'stock',
               type: 'input',
+              className: 'w-full @lg:w-1/2',
               defaultValue: 0,
               props: {
                 type: 'number',

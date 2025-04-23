@@ -9,7 +9,7 @@ export abstract class StorageService implements StorageServiceType {
   abstract upload(file: File | null, folder?: string): Promise<void>;
   abstract getFileUrl(fileName: string, folder?: string): Promise<string>;
 
-  protected reset(): void {
+  reset(): void {
     this.progress.set(0);
     this.fileUrl.set(null);
   }

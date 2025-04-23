@@ -25,6 +25,7 @@ export class FirebaseStorageService extends StorageService implements StorageSer
       if (!file) {
         throw new Error('File not found');
       }
+
       const storageRef = ref(this.#firebaseStorage, `${folder}/${file.name}`);
       const task = uploadBytesResumable(storageRef, file, {
         cacheControl: 'public, max-age=31536000',
@@ -44,6 +45,7 @@ export class FirebaseStorageService extends StorageService implements StorageSer
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error);
+      this.progress.set(0);
     }
   }
 
@@ -56,5 +58,9 @@ export class FirebaseStorageService extends StorageService implements StorageSer
     const url = await getDownloadURL(getFile.items[0]);
     this.fileUrl.set(url);
     return url;
+  }
+
+  setFileUrl(url: string | null): void {
+    this.fileUrl.set(url);
   }
 }

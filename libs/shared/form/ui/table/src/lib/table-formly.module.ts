@@ -8,7 +8,7 @@ import { InputTableTypeComponent } from './input-table-type.component';
     FormlyModule.forChild({
       types: [
         {
-          name: 'img-loader',
+          name: 'table',
           component: InputTableTypeComponent,
         },
       ],

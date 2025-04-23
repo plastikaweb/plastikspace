@@ -2,6 +2,7 @@
 @use 'styles_theme-colors' as palette;
 @use 'theme';
 @use 'loading';
+@use 'core_styles_util_material';
 
 @tailwind base;
 @tailwind components;
@@ -34,14 +35,12 @@
         density: 0,
       )
     );
-
-    @apply box-border;
   }
 
   *,
   *:before,
   *:after {
-    box-sizing: inherit;
+    @apply box-border;
   }
 
   body {
