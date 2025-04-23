@@ -11,4 +11,7 @@ export type LlecoopEnvironment = Environment & {
     appId: string;
     measurementId?: string;
   };
+  imageKit: {
+    endpoint: string;
+  };
 };

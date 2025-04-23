@@ -5,6 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { InputTableProps } from '@plastik/shared/form/table';
 
 import { OrderListUserOrderResumeTableConfig } from './order-list-user-order-resume-table.config';
 
@@ -46,8 +47,9 @@ export class OrderListUserOrderResumeFormConfig {
       type: 'table',
       props: {
         required: true,
-        tableRowValueConditionFn: (element: LlecoopOrderProduct) => element,
-      },
+        tableRowValueConditionFn: (element: LlecoopOrderProduct) => !!element,
+        tableDefinition: this.#tableColumnProperties.getTableDefinition(),
+      } as InputTableProps<LlecoopOrderProduct>,
       validators: {
         allReviewed: {
           expression: (control: AbstractControl) =>

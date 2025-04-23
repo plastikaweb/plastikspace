@@ -36,13 +36,14 @@ It uses internally [Material Table](https://material.angular.io/components/table
 | `noPagination`            | `boolean`                                                | Remove pagination component to the table.                              | false                                      |
 | `paginationVisibility`    | `Partial<TablePaginationVisibility>`                     | Pagination visibility configuration.                                   | All properties are set to false by default |
 | `caption`                 | `string`                                                 | Main title of the table.                                               |                                            |
-| `actions`                 | `TableControlAction<T>`                                  | Table actions configuration.                                           |                                            |
+| `actions`                 | `TableControlAction<T>`                                  | Table actions. configuration.                                          |                                            |
 | `filterCriteria`          | `Record<string, string>`                                 | Table filter criteria configuration.                                   |                                            |
 | `filterCriteriaPredicate` | `(data: T, criteria: Record<string, string>) => boolean` | Table filter criteria predicate.                                       |                                            |
 | `extraRowStyles`          | `(element: T) => string`                                 | Table extra row styles configuration.                                  |                                            |
 | `actionsColStyles`        | `string`                                                 | Table actions column styles configuration.                             | ''                                         |
-| `expandable`              | `boolean`                                                | Table has expandable row behavior                                      | false                                      |
-| `expandableElementId`     | `EntityId\string\null`                                   | Table expandable element id                                            | null                                       |
+| `rowHeight`               | `string`                                                 | Table row height configuration.                                        | 'unset'                                    |
+| `expandable`              | `boolean`                                                | Table has expandable row behavior.                                     | false                                      |
+| `expandableElementId`     | `EntityId\string\null`                                   | Table expandable element id.                                           | null                                       |
 | `expandedDetailTpl`       | `TemplateRef<unknown>\null`                              | Table expandable element reference.                                    | null                                       |
 
 ## Outputs

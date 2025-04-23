@@ -6,7 +6,7 @@ const { auth } = pkg;
 
 initializeApp();
 
-export default async (change, context) => {
+export default async (snapshot, context) => {
   const userId = context.params.userId;
   functions.logger.debug(`Running update trigger for ${userId}`);
 
@@ -16,7 +16,7 @@ export default async (change, context) => {
     return;
   }
 
-  const user = change.after.data();
+  const user = snapshot.after.data();
 
   // Format phone number to E.164
   let phoneNumber = null;

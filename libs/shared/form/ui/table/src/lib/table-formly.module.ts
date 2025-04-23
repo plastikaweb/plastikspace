@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { FormlyModule } from '@ngx-formly/core';
+
 import { InputTableTypeComponent } from './input-table-type.component';
 
 @NgModule({

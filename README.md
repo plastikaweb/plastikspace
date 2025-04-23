@@ -119,6 +119,10 @@ This is a list of all the global shared libraries. It is very likely that other 
 
 - [shared-form-feature](libs/shared/form/feature/README.md)
 
+#### Img Container
+
+- [shared-img-container-ui](libs/shared/img-container/ui/README.md)
+
 #### Mat Theme Toggle
 
 - [shared-mat-theme-toggle](libs/shared/mat-theme-toggle/README.md)
@@ -130,6 +134,11 @@ This is a list of all the global shared libraries. It is very likely that other 
 #### Signal State
 
 - [shared-signal-state-data-access](libs/shared/signal-state/data-access/README.md)
+
+#### Storage
+
+- [shared-storage-entities](libs/shared/storage/entities/README.md)
+- [shared-storage-data-access](libs/shared/storage/data-access/README.md)
 
 ##### UI
 
@@ -166,6 +175,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [shared-util-formatters](libs/shared/util/formatters/README.md)
 - [shared-util-dynamic-bg-color](libs/shared/util/dynamic-bg-color/README.md)
 - [shared-util-latinize](libs/shared/util/latinize/README.md)
+- [shared-util-bytes-to-size](libs/shared/util/bytes-to-size/README.md)
 
 ## Contact
 

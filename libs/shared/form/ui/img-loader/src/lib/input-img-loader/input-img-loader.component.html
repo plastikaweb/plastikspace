@@ -1,0 +1,106 @@
+<div
+  class="flex overflow-hidden relative justify-center items-center rounded-lg border-2 border-dashed outline-none text-primary-dark border-gray-40"
+  tabindex="0"
+  [style.height.px]="imgHeight()"
+  [style.width.px]="imgWidth()"
+  [class.disabled]="disabled()"
+  [attr.aria-label]="'Pujar Imatge' + (value() ? ' (actualment: ' + value() + ')' : '')"
+  (dragover)="onDragOver($event)"
+  (dragleave)="onDragLeave($event)"
+  (drop)="onDrop($event)">
+  <!-- loading indicator -->
+  <div
+    class="flex absolute inset-0 z-20 flex-col justify-center items-center w-full h-full rounded-lg opacity-0 transition-all duration-150 pointer-events-none bg-gray-10"
+    [ngClass]="{ 'opacity-100': isLoading() }">
+    <output
+      class="absolute z-20 w-full text-sm font-bold text-center text-white"
+      [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"
+      [attr.aria-live]="'polite'"
+      >{{ progress() || 0 }}%</output
+    >
+    <mat-progress-spinner
+      class="z-20"
+      mode="determinate"
+      [value]="progress() || 0"
+      [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"></mat-progress-spinner>
+    <div class="absolute w-full h-full bg-black opacity-80"></div>
+  </div>
+
+  <!-- on drag and drop indicator -->
+  <div
+    class="flex absolute inset-0 z-10 flex-col justify-center items-center rounded-lg opacity-0 transition-all duration-150 bg-gray-10"
+    style="pointer-events: none"
+    [ngClass]="{ 'opacity-100': isDragOver() }">
+    <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">upload</mat-icon>
+    <span class="text-sm text-center text-balance">Suelta la imagen aquí</span>
+  </div>
+
+  <!-- image load button and drag and drop instructions -->
+  @if (!value() && !isLoading()) {
+    <div class="flex flex-col justify-center items-center p-0 m-0 w-full h-full bg-gray-10">
+      <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">upload</mat-icon>
+      <span class="text-sm text-center text-balance">Arrastra una imatge</span>
+      <span class="text-sm text-center text-balance">o</span>
+      <button
+        type="button"
+        mat-flat-button
+        class="w-full sm:w-auto"
+        [disabled]="disabled()"
+        (click)="inputFile.click()"
+        (keydown.enter)="inputFile.click()">
+        <mat-icon class="text-lg">image</mat-icon>
+        Cerca una imatge
+      </button>
+    </div>
+  }
+
+  <!-- image preview -->
+  @if (value() && cdnUrl() && !isLoading()) {
+    <plastik-shared-img-container
+      class="absolute top-0 right-0 bottom-0 left-0 rounded-lg"
+      [src]="cdnUrl() || ''"
+      [width]="imgWidth()"
+      [height]="imgHeight()"
+      [title]="title()"
+      [lcpImage]="lcpImage()">
+    </plastik-shared-img-container>
+    <div
+      class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 rounded-b-lg text-primary-dark bg-white/90 px-sub"
+      tabindex="0"
+      (focus)="firstActionBtn?.focus()">
+      <p class="flex-grow text-sm font-bold truncate">{{ title() }}</p>
+      <div class="flex items-center">
+        <button
+          #firstActionBtn
+          type="button"
+          mat-icon-button
+          [attr.aria-label]="`Editar imatge ${title()}`"
+          [disabled]="disabled()"
+          (click)="inputFile.click()"
+          (keydown.enter)="inputFile.click()">
+          <mat-icon class="text-lg">edit</mat-icon>
+        </button>
+        <button
+          #secondActionBtn
+          type="button"
+          mat-icon-button
+          [attr.aria-label]="`Eliminar imatge ${title()}`"
+          [disabled]="disabled()"
+          (click)="onDeleteFile($event)"
+          (keydown.enter)="onDeleteFile($event)">
+          <mat-icon class="text-lg">delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+</div>
+
+<!-- file input -->
+<input
+  #inputFile
+  aria-label="file"
+  type="file"
+  accept="image/*"
+  class="hidden"
+  [disabled]="disabled()"
+  (change)="onSelectFile($event)" />

@@ -3,6 +3,7 @@ import { Observable, of } from 'rxjs';
 /* eslint-disable jsdoc/require-jsdoc */
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { addSearchInput } from '@plastik/shared/form/search';
+import { DatepickerProps } from '@plastik/shared/form/year-picker';
 
 export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldConfig[]> {
   return of([
@@ -25,7 +26,7 @@ export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldCo
                 placeholder: 'YYYY',
                 required: true,
                 startView: 'multi-year',
-              },
+              } as DatepickerProps,
             },
             {
               key: 'year_end',
@@ -36,7 +37,7 @@ export function getNasaImagesSearchFeatureFormConfig(): Observable<FormlyFieldCo
                 placeholder: 'YYYY',
                 required: true,
                 startView: 'multi-year',
-              },
+              } as DatepickerProps,
             },
           ],
         },

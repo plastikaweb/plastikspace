@@ -4,6 +4,7 @@ import { UiProductNameCellComponent } from '@plastik/llecoop/product-name-cell';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { categoryNameCell, createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -18,6 +19,31 @@ export class LlecoopProductSearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProduct>
 {
   readonly #store = inject(llecoopProductStore);
+
+  readonly #image: TableColumnFormatting<LlecoopProduct, 'COMPONENT'> = {
+    key: 'imgUrl',
+    title: 'Imatge',
+    pathToKey: 'imgUrl',
+    cssClasses: ['flex min-w-[70px]'],
+    formatting: {
+      type: 'COMPONENT',
+      execute: (value, product) => {
+        if (!product) {
+          throw new Error('Product is required');
+        }
+        return {
+          component: SharedImgContainerComponent,
+          inputs: {
+            src: value || 'https://fakeimg.pl/150x150?text=El+Llevat&font=lobster',
+            width: 150,
+            height: 150,
+            title: product?.name,
+            lcpImage: false,
+          },
+        };
+      },
+    },
+  };
 
   readonly #name: TableColumnFormatting<LlecoopProduct, 'COMPONENT'> = {
     key: 'name',
@@ -57,6 +83,7 @@ export class LlecoopProductSearchFeatureTableConfig
 
   readonly #columnProperties: Signal<TableColumnFormatting<LlecoopProduct, FormattingTypes>[]> =
     signal([
+      this.#image,
       this.#name,
       categoryNameCell<LlecoopProduct>({
         key: 'category',
@@ -84,6 +111,7 @@ export class LlecoopProductSearchFeatureTableConfig
       extraRowStyles: (product: LlecoopProduct) => {
         return !product.isAvailable ? 'marked-ko' : '';
       },
+      rowHeight: '160px',
       actionsColStyles: 'max-w-[160px]',
       actions: {
         SET_AVAILABILITY: {

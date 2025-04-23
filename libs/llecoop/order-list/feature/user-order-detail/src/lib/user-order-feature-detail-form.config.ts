@@ -11,6 +11,7 @@ import {
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
 import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { InputTableProps } from '@plastik/shared/form/table';
 
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
 
@@ -174,7 +175,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
             disabled: true,
             tableDefinition: tableColumnProperties.getTableDefinition(),
             tableRowValueConditionFn: (element: LlecoopOrderProduct) => element?.initQuantity > 0,
-          },
+          } as InputTableProps<LlecoopOrderProduct>,
           expressions: {
             'props.disabled': ({ model }: FormlyFieldConfig) =>
               !model.userName ||

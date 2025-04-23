@@ -1,6 +1,6 @@
-import { registerLocaleData } from '@angular/common';
+import { DOCUMENT, registerLocaleData } from '@angular/common';
 import localeCa from '@angular/common/locales/ca';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Renderer2 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Meta } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
@@ -20,6 +20,8 @@ registerLocaleData(localeCa, 'ca-ES');
 export class AppComponent implements OnInit {
   readonly #store = inject(Store);
   readonly #meta = inject(Meta);
+  readonly #document = inject(DOCUMENT);
+  readonly #renderer = inject(Renderer2);
   protected readonly notificationStore = inject(notificationStore);
   protected readonly isActive = toSignal(this.#store.select(selectIsActive));
 
@@ -28,5 +30,15 @@ export class AppComponent implements OnInit {
       name: 'description',
       content: 'Botiga per socis del Llevat, associació de consum ecològic i de proximitat',
     });
+
+    // const linkElement = this.#renderer.createElement('link');
+    // this.#renderer.setAttribute(linkElement, 'rel', 'preconnect');
+    // this.#renderer.setAttribute(linkElement, 'href', 'https://firebasestorage.googleapis.com');
+    // this.#renderer.appendChild(this.#document.head, linkElement);
+
+    const linkElement2 = this.#renderer.createElement('link');
+    this.#renderer.setAttribute(linkElement2, 'rel', 'preconnect');
+    this.#renderer.setAttribute(linkElement2, 'href', 'https://ik.imagekit.io');
+    this.#renderer.appendChild(this.#document.head, linkElement2);
   }
 }

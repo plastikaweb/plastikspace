@@ -113,7 +113,7 @@ export function withFirebaseCrud<
       _state: inject(Store),
     })),
     withEntities<T>(),
-    withComputed((store: unknown) => {
+    withComputed(store => {
       const { selectedItemId, entityMap } = store as {
         selectedItemId: () => EntityId | null;
         entityMap: () => Record<EntityId, T>;
@@ -123,6 +123,10 @@ export function withFirebaseCrud<
         selectedItem: computed(() => {
           const id = selectedItemId();
           return id !== null ? entityMap()[id] : null;
+        }),
+        selectedItemName: computed(() => {
+          const id = selectedItemId();
+          return id !== null ? entityMap()[id]?.name : '';
         }),
       };
     }),

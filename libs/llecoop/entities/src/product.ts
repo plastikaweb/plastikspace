@@ -13,8 +13,9 @@ export interface LlecoopBaseProduct extends BaseEntity {
   categoryRef: DocumentReference<LlecoopProductCategory>;
   category?: LlecoopProductCategory;
   categoryName?: string;
-  tags?: string[];
   unit: LlecoopProductUnit;
+  tags?: string[];
+  imgUrl?: string;
 }
 
 export interface LlecoopProduct extends LlecoopBaseProduct {

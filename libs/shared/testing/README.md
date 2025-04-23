@@ -6,6 +6,7 @@
   - [Basic Usage](#basic-usage)
   - [API Documentation](#api-documentation)
     - [`angularFireAuthMock`](#angularfireauthmock)
+    - [`angularFireStorageMock`](#angularfirestoragemock)
 
 ## Description
 
@@ -32,3 +33,7 @@ import '@plastik/shared/testing';
 ### `angularFireAuthMock`
 
 Implements `@angular/fire/auth` interface with Jest spy methods.
+
+### `angularFireStorageMock`
+
+Implements `@angular/fire/storage` interface with Jest spy methods.

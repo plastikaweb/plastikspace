@@ -1,4 +1,4 @@
-import { LlecoopEnvironment } from '../app/llecoop-environment.token';
+import { LlecoopEnvironment } from '@plastik/llecoop/entities';
 
 export const environment: LlecoopEnvironment = {
   name: 'El Llevat',
@@ -11,5 +11,8 @@ export const environment: LlecoopEnvironment = {
     storageBucket: 'llevat-b0d66.appspot.com',
     messagingSenderId: '100976955250',
     appId: '1:100976955250:web:9f3de6745bab5964f657eb',
+  },
+  imageKit: {
+    endpoint: 'https://ik.imagekit.io/jx7xzmliv6/',
   },
 };

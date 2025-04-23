@@ -265,6 +265,7 @@ The module includes several custom form types located in `libs/shared/form/ui`:
 - [`input-table`](../ui/table/README.md) - Table input with sorting and pagination.
 - [`textarea-with-counter`](../ui/textarea-with-counter/README.md) - Textarea with character counter.
 - [`year-picker`](../ui/year-picker/README.md) - Year selection input.
+- [`input-img-loader`](../ui/img-loader/README.md) - Image loader with upload and preview.
 
 ## Troubleshooting
 

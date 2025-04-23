@@ -2,8 +2,10 @@ import { provideExperimentalZonelessChangeDetection, signal } from '@angular/cor
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
+import { BaseEntity } from '@plastik/core/entities';
 
-import { InputTableProps, InputTableTypeComponent } from './input-table-type.component';
+import { InputTableProps } from './input-table-props';
+import { InputTableTypeComponent } from './input-table-type.component';
 
 describe('InputTableTypeComponent', () => {
   let component: InputTableTypeComponent;
@@ -43,7 +45,7 @@ describe('InputTableTypeComponent', () => {
         },
         tableRowValueConditionFn: () => true,
       },
-    } as FieldTypeConfig<InputTableProps>;
+    } as FieldTypeConfig<InputTableProps<BaseEntity>>;
 
     component.field = fieldConfig;
     fixture.detectChanges();

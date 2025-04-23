@@ -1,4 +1,4 @@
-import { DATE_PIPE_DEFAULT_OPTIONS } from '@angular/common';
+import { DATE_PIPE_DEFAULT_OPTIONS, IMAGE_LOADER } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import {
   ApplicationConfig,
@@ -19,6 +19,7 @@ import {
   provideFirestore,
 } from '@angular/fire/firestore';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
+import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -40,9 +41,11 @@ import {
   routerReducers,
   RouterStateEffects,
 } from '@plastik/core/router-state';
+import { LlecoopEnvironment } from '@plastik/llecoop/entities';
 import { selectActivityFeature, selectIsActive } from '@plastik/shared/activity/data-access';
 import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
+import { imageKitLoader } from '@plastik/storage/data-access';
 
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
@@ -70,6 +73,13 @@ export const appConfig: ApplicationConfig = {
       persistentMultipleTabManager();
 
       return firestore;
+    }),
+    provideStorage(() => {
+      const storage = getStorage(getApp('llecoop'));
+      if (environment['useEmulators']) {
+        connectStorageEmulator(storage, '127.0.0.1', 9199);
+      }
+      return storage;
     }),
     provideFunctions(() => {
       const functions = getFunctions(getApp('llecoop'));
@@ -117,6 +127,10 @@ export const appConfig: ApplicationConfig = {
       useClass: PrefixTitleService,
     },
     { provide: VIEW_CONFIG, useFactory: viewConfig },
+    {
+      provide: IMAGE_LOADER,
+      useFactory: () => imageKitLoader(inject(ENVIRONMENT) as LlecoopEnvironment),
+    },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {
