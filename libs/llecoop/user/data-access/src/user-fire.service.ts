@@ -48,8 +48,8 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
             where('email', '>=', normalizedEmail),
             where('email', '<=', normalizedEmail + '\uf8ff')
           );
-        } else if (key === 'isAdmin' && value !== 'all') {
-          conditions.push(where('isAdmin', '==', value));
+        } else if (key === 'role' && value !== 'all') {
+          conditions.push(where('isAdmin', '==', value === 'admin' ? true : false));
         }
       });
     }
