@@ -110,11 +110,14 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
 
   private emitChange(): void {
     if (this.form.valid) {
-      if (this.config().disableOnSubmit) this.form.disable({ emitEvent: false });
+      if (this.config().disableOnSubmit) {
+        this.form.disable({ emitEvent: false });
+        this.#submitted.set(true);
+      }
+
       this.form.markAsPristine();
       this.form.markAsUntouched();
       this.pendingChangesEvent.emit(false);
-      this.#submitted.set(true);
       this.changeEvent.emit(this.#newModel() as T);
     }
   }
