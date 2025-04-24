@@ -104,7 +104,7 @@ interface Product extends BaseEntity {
 export type StoreProductFilter = StoreFirebaseCrudFilter & {
   text: string;
   category: 'all' | string;
-  inStock?: boolean;
+  isAvailable?: boolean;
 };
 
 export const initState: StoreFirebaseCrudState<Product, StoreProductFilter> = {
@@ -144,7 +144,7 @@ export class ProductFirebaseService extends EntityFireService<Product> {
           );
         } else if (key === 'category' && value !== 'all') {
           conditions.push(where('categoryRef', '==', value));
-        } else if (key === 'inStock' && value !== undefined) {
+        } else if (key === 'isAvailable' && value !== undefined) {
           conditions.push(where('isAvailable', '==', value));
         }
       });

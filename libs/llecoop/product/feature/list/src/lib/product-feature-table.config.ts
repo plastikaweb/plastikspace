@@ -99,20 +99,20 @@ export class LlecoopProductSearchFeatureTableConfig
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
+
     return {
       ...defaultTableConfig,
       columnProperties: this.#columnProperties,
       sort: this.#store.sorting,
       pagination: this.#store.pagination,
-      filter: this.#store.filter,
       caption: 'Llistat de productes',
       getData: () => this.#store.entities(),
       count: this.#store.count,
       extraRowStyles: (product: LlecoopProduct) => {
         return !product.isAvailable ? 'marked-ko' : '';
       },
-      rowHeight: '160px',
       actionsColStyles: 'max-w-[160px]',
+      rowHeight: '160px',
       actions: {
         SET_AVAILABILITY: {
           visible: () => true,

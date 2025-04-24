@@ -2,7 +2,6 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { FormSelectOption } from '@plastik/core/entities';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { addSearchInput } from '@plastik/shared/form/search';
 
@@ -12,7 +11,7 @@ import { addSearchInput } from '@plastik/shared/form/search';
 export class LlecoopProductSearchFeatureFormConfig {
   readonly #productStore = inject(llecoopProductStore);
   readonly #categories = computed(() => [
-    { label: 'Totes', value: 'all' },
+    { label: 'Totes', value: '' },
     ...this.#productStore.categories(),
   ]);
 
@@ -35,13 +34,12 @@ export class LlecoopProductSearchFeatureFormConfig {
               placeholder: 'Categoría',
               required: false,
               options: toObservable(this.#categories),
-              compareWith: (o1: FormSelectOption, o2: FormSelectOption) => o1?.value === o2?.value,
             },
           },
           {
-            key: 'inStock',
+            key: 'isAvailable',
             type: 'select',
-            defaultValue: this.#productStore.filter()['inStock'],
+            defaultValue: this.#productStore.filter()['isAvailable'],
             className: 'w-full md:w-1/2',
             props: {
               label: 'Disponibilitat',
@@ -49,8 +47,8 @@ export class LlecoopProductSearchFeatureFormConfig {
               required: false,
               options: [
                 { label: 'Tots', value: 'all' },
-                { label: 'Disponible', value: true },
-                { label: 'No disponible', value: false },
+                { label: 'Disponible', value: 'on' },
+                { label: 'No disponible', value: 'off' },
               ],
             },
           },

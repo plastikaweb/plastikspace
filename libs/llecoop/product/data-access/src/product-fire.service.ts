@@ -23,10 +23,10 @@ export class LlecoopProductFireService extends EntityFireService<LlecoopProduct>
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
           );
-        } else if (key === 'category' && value !== 'all') {
+        } else if (key === 'category' && value !== '') {
           conditions.push(where('categoryRef', '==', value));
-        } else if (key === 'inStock' && value !== 'all') {
-          conditions.push(where('isAvailable', '==', value));
+        } else if (key === 'isAvailable' && value !== 'all') {
+          conditions.push(where('isAvailable', '==', value === 'on' ? true : false));
         }
       });
     }
