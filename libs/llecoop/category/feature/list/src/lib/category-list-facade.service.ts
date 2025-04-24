@@ -2,7 +2,6 @@ import { filter, take } from 'rxjs';
 
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { llecoopCategoryStore, StoreCategoryFilter } from '@plastik/llecoop/category/data-access';
@@ -20,10 +19,10 @@ export class LlecoopCategoryListFacadeService
   implements TableWithFilteringFacade<LlecoopProductCategory, StoreCategoryFilter>
 {
   readonly #categoryStore = inject(llecoopCategoryStore);
-  readonly #store = inject(Store);
   readonly #table = inject(LlecoopCategorySearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
   readonly #router = inject(Router);
+
   viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0]);
   routingToDetailPage = signal({ visible: true });
   tableDefinition = this.#table.getTableDefinition();

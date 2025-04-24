@@ -77,8 +77,8 @@ export class LlecoopCategorySearchFeatureTableConfig
       sort: this.#store.sorting,
       pagination: this.#store.pagination,
       caption: 'Llistat de categories',
-      count: this.#store.count,
       getData: () => this.#store.entities(),
+      count: this.#store.count,
       actionsColStyles: 'max-w-[135px]',
       rowHeight: '70px',
       actions: {

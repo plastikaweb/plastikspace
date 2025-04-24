@@ -1,23 +1,39 @@
-import { Observable, of } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 
 import { inject } from '@angular/core';
-import { ResolveFn, Router } from '@angular/router';
+import { ResolveFn } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { llecoopProductStore, productMainInitState } from '@plastik/llecoop/product/data-access';
+import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entities';
 
 export const productFeatureListResolver: ResolveFn<
   Observable<boolean>
 > = (): Observable<boolean> => {
-  const store = inject(llecoopProductStore);
-  const router = inject(Router);
-  const previousUrl = router.getCurrentNavigation()?.previousNavigation?.finalUrl?.toString();
+  const productStore = inject(llecoopProductStore);
+  const store = inject(Store);
 
-  if (!previousUrl?.startsWith('/productes') || !store.initiallyLoaded()) {
-    store.resetTableConfig(
-      productMainInitState.pagination,
-      productMainInitState.filter,
-      productMainInitState.sorting
-    );
-  }
+  const queryParams = store.select(selectRouteQueryParams);
+  const { text, category, isAvailable } = productMainInitState.filter;
+  const [active, direction] = productMainInitState.sorting as TableSortingConfig;
+  const { pageIndex, pageSize } = productMainInitState.pagination;
 
-  return of(true);
+  return queryParams.pipe(
+    map(params => ({
+      filter: {
+        text: params['text'] || text,
+        category: params['category'] || category,
+        isAvailable: params['isAvailable'] || isAvailable,
+      },
+      sorting: [params['active'] || active, params['direction'] || direction] as TableSortingConfig,
+      pagination: {
+        pageIndex: Number(params['pageIndex'] || pageIndex),
+        pageSize: Number(params['pageSize'] || pageSize),
+      } as PageEventConfig,
+    })),
+    tap(({ filter, sorting, pagination }) => {
+      productStore.resetTableConfig(pagination, filter, sorting);
+    }),
+    map(() => true)
+  );
 };

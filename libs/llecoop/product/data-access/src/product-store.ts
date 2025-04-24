@@ -20,8 +20,8 @@ import { LlecoopProductFireService } from './product-fire.service';
 
 export type StoreProductFilter = StoreFirebaseCrudFilter & {
   text: string;
-  category: 'all' | string;
-  inStock: 'all' | true | false;
+  category: string;
+  isAvailable: 'all' | 'on' | 'off';
 };
 
 export type ProductStoreFirebaseCrudState = StoreFirebaseCrudState<
@@ -40,8 +40,8 @@ export const productMainInitState: StoreFirebaseCrudState<LlecoopProduct, StoreP
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
-    category: 'all',
-    inStock: 'all',
+    category: '',
+    isAvailable: 'all',
   },
   pagination: {
     pageSize: 10,

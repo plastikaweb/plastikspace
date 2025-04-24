@@ -9,7 +9,7 @@ export const llecoopOrderListFeatureListRoutes: Route[] = [
     title: 'Llista de comandes per setmana',
     component: LlecoopOrderListFeatureListComponent,
     resolve: {
-      resetOrderListStore: orderListFeatureListResolver,
+      listOrderListStore: orderListFeatureListResolver,
     },
     runGuardsAndResolvers: 'always',
   },
