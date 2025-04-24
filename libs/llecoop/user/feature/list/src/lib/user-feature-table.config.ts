@@ -37,7 +37,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'isAdmin',
     title: 'Rol',
     pathToKey: 'isAdmin',
-    cssClasses: ['min-w-[50px] max-w-[50px] p-0 pl-sm'],
+    cssClasses: ['min-w-[45px] max-w-[45px] p-0 pl-sm'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, user) =>
@@ -51,6 +51,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     key: 'email',
     title: 'Correu electrònic',
     pathToKey: 'email',
+    cssClasses: ['min-w-[200px]'],
     sticky: true,
     sorting: 'email',
     formatting: {
@@ -82,25 +83,25 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
     },
   };
 
-  // readonly #address: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
-  //   key: 'address',
-  //   title: `Adreça d'entrega`,
-  //   pathToKey: 'address',
-  //   cssClasses: ['min-w-[100px]'],
-  //   formatting: {
-  //     type: 'TEXT',
-  //   },
-  // };
+  readonly #address: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
+    key: 'address',
+    title: `Adreça d'entrega`,
+    pathToKey: 'address',
+    cssClasses: ['hidden @xl:flex @xl:min-w-[120px]'],
+    formatting: {
+      type: 'TEXT',
+    },
+  };
 
-  // readonly #phone: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
-  //   key: 'phone',
-  //   title: `Telèfon de contacte`,
-  //   pathToKey: 'phone',
-  //   cssClasses: ['min-w-[100px]'],
-  //   formatting: {
-  //     type: 'TEXT',
-  //   },
-  // };
+  readonly #phone: TableColumnFormatting<LlecoopUser, 'TEXT'> = {
+    key: 'phone',
+    title: `Telèfon de contacte`,
+    pathToKey: 'phone',
+    cssClasses: ['hidden @xl:flex @xl:min-w-[120px]'],
+    formatting: {
+      type: 'TEXT',
+    },
+  };
 
   readonly #createdAt = createdAt<LlecoopUser>();
   readonly #updatedAt = updatedAt<LlecoopUser>();
@@ -110,6 +111,8 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       this.#isAdmin,
       this.#name,
       this.#email,
+      this.#phone,
+      this.#address,
       this.#registered,
       this.#emailVerified,
       this.#createdAt,
@@ -125,9 +128,9 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
       sort: this.#store.sorting,
       pagination: this.#store.pagination,
       caption: "Llistat d'usuaris",
-      count: this.#store.count,
       getData: () => this.#store.entities(),
-      actionsColStyles: 'max-w-[135px]',
+      count: this.#store.count,
+      actionsColStyles: 'max-w-[110px]',
       actions: {
         SET_ADMIN: {
           visible: () => true,

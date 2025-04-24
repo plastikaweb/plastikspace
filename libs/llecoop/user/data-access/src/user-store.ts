@@ -20,7 +20,7 @@ import { LlecoopUserFireService } from './user-fire.service';
 export type StoreUserFilter = StoreFirebaseCrudFilter & {
   name: string;
   email: string;
-  role: 'all' | string;
+  role: 'all' | 'admin' | 'user';
 };
 
 export type UserStoreFirebaseCrudState = StoreFirebaseCrudState<LlecoopUser, StoreUserFilter> & {

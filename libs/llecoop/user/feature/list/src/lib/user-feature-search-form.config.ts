@@ -22,7 +22,7 @@ export function getLlecoopUserSearchFeatureFormConfig(): FormlyFieldConfig[] {
           'email'
         ),
         {
-          key: 'isAdmin',
+          key: 'role',
           type: 'select',
           defaultValue: 'all',
           className: 'w-full md:w-1/2',
@@ -32,8 +32,8 @@ export function getLlecoopUserSearchFeatureFormConfig(): FormlyFieldConfig[] {
             required: false,
             options: [
               { label: 'Tots', value: 'all' },
-              { label: 'Administrador', value: true },
-              { label: 'Soci', value: false },
+              { label: 'Administrador', value: 'admin' },
+              { label: 'Soci', value: 'user' },
             ],
           },
         },

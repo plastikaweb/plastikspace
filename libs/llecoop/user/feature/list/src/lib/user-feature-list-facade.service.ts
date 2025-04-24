@@ -1,6 +1,7 @@
 import { filter, take } from 'rxjs';
 
 import { inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
@@ -21,6 +22,7 @@ export class LlecoopUserListFacadeService
   readonly #store = inject(llecoopUserStore);
   readonly #table = inject(LlecoopUserSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #router = inject(Router);
 
   viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'user')[0]);
   routingToDetailPage = signal({ visible: true });
@@ -29,15 +31,24 @@ export class LlecoopUserListFacadeService
   filterCriteria = this.#store.filter;
 
   onChangeFilterCriteria(criteria: StoreUserFilter): void {
-    this.#store.setFilter(criteria);
+    this.#router.navigate([], {
+      queryParams: { ...criteria, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUser>): void {
-    this.#store.setPagination(pagination);
+    this.#router.navigate([], {
+      queryParams: { ...pagination },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableSorting({ active, direction }: TableSorting): void {
-    this.#store.setSorting([active, direction]);
+    this.#router.navigate([], {
+      queryParams: { active, direction, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableActionDelete(item: LlecoopUser): void {
