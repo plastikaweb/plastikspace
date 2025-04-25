@@ -3,6 +3,7 @@ import { provideHttpClient } from '@angular/common/http';
 import {
   ApplicationConfig,
   DEFAULT_CURRENCY_CODE,
+  ErrorHandler,
   importProvidersFrom,
   inject,
   isDevMode,
@@ -44,6 +45,7 @@ import {
 import { LlecoopEnvironment } from '@plastik/llecoop/entities';
 import { selectActivityFeature, selectIsActive } from '@plastik/shared/activity/data-access';
 import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
+import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 import { imageKitLoader } from '@plastik/storage/data-access';
 
@@ -156,6 +158,10 @@ export const appConfig: ApplicationConfig = {
     {
       provide: FORM_DISABLE_TOKEN,
       useFactory: () => toSignal(inject(Store).select(selectIsActive)),
+    },
+    {
+      provide: ErrorHandler,
+      useClass: ErrorHandlerService,
     },
   ],
 };

@@ -14,6 +14,7 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { BytesToSizePipe } from '@plastik/shared/bytes-to-size';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 import { InputImgLoaderProps } from './input-img-loader-props';
@@ -33,13 +34,14 @@ const LOADER_IMG_ACCESSOR = {
     SharedImgContainerComponent,
     NgClass,
   ],
-  providers: [LOADER_IMG_ACCESSOR],
+  providers: [LOADER_IMG_ACCESSOR, BytesToSizePipe],
   templateUrl: './input-img-loader.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputImgLoaderComponent implements ControlValueAccessor {
   protected readonly cdr = inject(ChangeDetectorRef);
   protected isDragOver = signal<boolean>(false);
+  protected readonly bytesToSize = inject(BytesToSizePipe);
 
   value = signal<string | null>(null);
   disabled = signal<boolean>(false);
@@ -65,7 +67,7 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
     effect(() => {
       if (this.fileUrl()) {
         this.value.set(this.fileUrl());
-        this.onChange(this.fileUrl());
+        this.onChange(this.value());
         this.cdr.detectChanges();
       }
     });
@@ -106,21 +108,15 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
 
     try {
       if (file.size > this.maxSize()) {
-        // TODO: show toast con error
-        throw new Error('El archivo supera el tamaño máximo permitido');
+        throw new Error(
+          `El peso del archivo supera el tamaño máximo permitido: ${this.bytesToSize.transform(file.size)} > ${this.bytesToSize.transform(this.maxSize())}`
+        );
       }
 
       await this.validateImageDimensions(file);
-
-      this.isLoading.set(true);
-
-      await (this.upload()?.(file, this.folder()) ?? Promise.resolve());
-      this.onTouch();
     } catch (error) {
-      // TODO: mostrar toast con erro
       this.onTouch();
-      // eslint-disable-next-line no-console
-      console.error(error);
+      throw error;
     } finally {
       this.isLoading.set(false);
       this.isDragOver.set(false);
@@ -136,7 +132,7 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
           if (image.height < this.minHeight() || image.width < this.minWidth()) {
             reject(
               new Error(
-                `Las dimensiones de la imagen no cumplen los mínimos: ${this.minHeight()}x${this.minWidth()}`
+                `Las dimensiones en píxeles de la imagen no cumplen los mínimos: ${image.height}x${image.width} < ${this.minHeight()}x${this.minWidth()}`
               )
             );
           } else {
