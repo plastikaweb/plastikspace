@@ -165,7 +165,7 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
           visible: () => true,
           disabled: (userOrder: LlecoopUserOrder) => !this.checkOrderStatus(userOrder).allowView,
           description: (userOrder: LlecoopUserOrder) =>
-            `Factura de la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`,
+            `Mostrar resum de la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`,
           order: 3,
           icon: () => 'receipt',
           link: (userOrder: LlecoopUserOrder) => ['../../comandes', userOrder?.id, 'resum'],
@@ -175,8 +175,8 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
           disabled: (userOrder: LlecoopUserOrder) => !this.checkOrderStatus(userOrder).allowBlock,
           description: (userOrder: LlecoopUserOrder) =>
             userOrder.status === 'blocked'
-              ? `Desbloqueja la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`
-              : `Bloqueja la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`,
+              ? `Desbloquejar la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`
+              : `Bloquejar la comanda ${userOrder.id} de ${userOrder.userName} corresponent a ${userOrder.name}`,
           order: 1,
           icon: (userOrder: LlecoopUserOrder) =>
             userOrder.status === 'blocked' ? 'enhanced_encryption' : 'no_encryption',

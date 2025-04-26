@@ -14,6 +14,7 @@ export interface TableWithFilteringFacade<
     disabled?: boolean;
     path?: string[];
     label?: string;
+    icon?: string;
   }>;
   viewExtraActions?: Signal<
     {

@@ -122,13 +122,15 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
           visible: () => true,
           disabled: order => order.status !== 'waiting' && order.status !== 'progress',
           description: order =>
-            order.status === 'waiting' ? 'Activa la comanda' : 'Fica la comanda en pausa',
+            order.status === 'waiting'
+              ? `Activar la comanda "${order.name}"`
+              : `Ficar la comanda "${order.name}" en pausa`,
           order: 1,
           icon: order => (order.status === 'waiting' ? 'play_circle' : 'pause_circle'),
           execute: (order: LlecoopOrder) => {
             this.#confirmService
               .confirm(
-                order.status === 'waiting' ? 'Activació de comanda' : 'Desactivació de comanda',
+                order.status === 'waiting' ? 'Activar comanda' : 'Desactivar comanda',
                 order.status === 'waiting'
                   ? this.#sanitizer.bypassSecurityTrustHtml(
                       `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
@@ -153,7 +155,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
         },
         VIEW_ORDER_LIST_USER_ORDERS: {
           visible: () => true,
-          description: (order: LlecoopOrder) => `Edita les comandes de ${order.name}`,
+          description: (order: LlecoopOrder) => `Editar les comandes de ${order.name}`,
           icon: () => 'edit',
           execute: (order: LlecoopOrder) => {
             this.#router.navigate(['comandes', 'totes'], {
@@ -171,7 +173,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
             order.status === 'waiting' ||
             order.status === 'done' ||
             (order.status !== 'progress' && order.orderCount > 0),
-          description: () => 'Cancel·la la comanda',
+          description: (order: LlecoopOrder) => `Cancelar la comanda ${order.name}`,
           order: 3,
           icon: () => 'cancel',
           execute: (order: LlecoopOrder) => {
@@ -195,7 +197,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
         DELETE: {
           visible: () => true,
           disabled: order => order.status !== 'waiting' && order.status !== 'cancelled',
-          description: order => `Elimina la comanda ${order.name}`,
+          description: (order: LlecoopOrder) => `Eliminar la comanda ${order.name}`,
           order: 4,
         },
       },

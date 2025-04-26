@@ -135,15 +135,15 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
         SET_ADMIN: {
           visible: () => true,
           disabled: (user: LlecoopUser) => !user.registered || !user.emailVerified || user.isAdmin,
-          description: () => "Fes l'usuari administrador",
+          description: user => `Donar permisos d'administració a "${user.name || user.email}"`,
           order: 1,
           icon: () => 'person',
           execute: (user: LlecoopUser) => {
             if (user.id && !user.isAdmin) {
               this.#confirmService
                 .confirm(
-                  "Donar permisos d'administrador",
-                  `Segur que vols fer administrador a "${user.email}"?`,
+                  "Donar permisos d'administració",
+                  `Segur que vols donar permisos d'administració a "${user.name || user.email}"?`,
                   'Cancel·lar',
                   'Acceptar'
                 )
@@ -154,8 +154,8 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
         },
         DELETE: {
           visible: () => true,
-          disabled: (user: LlecoopUser) => user.isAdmin,
-          description: () => "Elimina l'usuari",
+          disabled: user => user.isAdmin,
+          description: user => `Eliminar sòcia "${user.name || user.email}"`,
           order: 2,
         },
       },

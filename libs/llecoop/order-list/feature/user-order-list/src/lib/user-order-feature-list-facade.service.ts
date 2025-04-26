@@ -32,6 +32,9 @@ export class LlecoopUserOrderListFacadeService
   readonly #viewConfigSubRoute = this.#viewConfigMainRoute.children?.filter(
     item => item.name === 'my-order'
   )[0];
+  readonly #currentUserOrderDone = computed(() => {
+    return !!this.#userOrderStore.currentUserOrder();
+  });
   viewConfig = computed(() => {
     return {
       ...this.#viewConfigSubRoute,
@@ -40,14 +43,14 @@ export class LlecoopUserOrderListFacadeService
         : this.#viewConfigMainRoute.title,
     };
   });
+
   routingToDetailPage = computed(() => {
     return {
       visible: true,
-      label: this.#userOrderStore.currentUserOrder()
-        ? 'Editar comanda setmanal'
-        : 'Fer comanda setmanal',
+      icon: this.#currentUserOrderDone() ? 'edit' : 'add',
+      label: this.#currentUserOrderDone() ? 'Editar comanda actual' : 'Fer nova comanda',
       disabled: !this.#orderListStore.currentOrderList(),
-      path: this.#userOrderStore.currentUserOrder()
+      path: this.#currentUserOrderDone()
         ? [`./${this.#userOrderStore.currentUserOrder()?.id}`]
         : ['./crear'],
     };
