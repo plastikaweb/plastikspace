@@ -119,6 +119,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
       this.form.markAsUntouched();
       this.pendingChangesEvent.emit(false);
       this.changeEvent.emit(this.#newModel() as T);
+      this.#submitted.set(false);
     }
   }
 }
