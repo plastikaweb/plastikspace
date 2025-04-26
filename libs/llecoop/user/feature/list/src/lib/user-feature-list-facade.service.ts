@@ -25,7 +25,7 @@ export class LlecoopUserListFacadeService
   readonly #router = inject(Router);
 
   viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'user')[0]);
-  routingToDetailPage = signal({ visible: true });
+  routingToDetailPage = signal({ visible: true, label: 'Afegir sòcia' });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopUserSearchFeatureFormConfig();
   filterCriteria = this.#store.filter;

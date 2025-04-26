@@ -24,7 +24,7 @@ export class LlecoopCategoryListFacadeService
   readonly #router = inject(Router);
 
   viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0]);
-  routingToDetailPage = signal({ visible: true });
+  routingToDetailPage = signal({ visible: true, label: 'Afegir categoria' });
   tableDefinition = this.#table.getTableDefinition();
   filterFormConfig = getLlecoopCategorySearchFeatureFormConfig();
   filterCriteria = this.#categoryStore.filter;

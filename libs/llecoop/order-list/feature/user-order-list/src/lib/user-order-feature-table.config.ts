@@ -121,7 +121,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig
         VIEW: {
           visible: () => true,
           disabled: (userOrder: LlecoopUserOrder) => !this.checkIfOrderIsDone(userOrder),
-          description: () => 'Resum de la comanda',
+          description: (userOrder: LlecoopUserOrder) => `Veure resum de la comanda ${userOrder.id}`,
           order: 1,
           icon: () => 'visibility',
           link: (userOrder: LlecoopUserOrder) => `${userOrder?.id}/resum`,
@@ -129,13 +129,13 @@ export class LlecoopUserOrderSearchFeatureTableConfig
         EDIT: {
           visible: () => true,
           disabled: (userOrder: LlecoopUserOrder) => this.checkIfOrderIsDone(userOrder),
-          description: () => 'Edita la comanda',
+          description: (userOrder: LlecoopUserOrder) => `Editar la comanda ${userOrder.id}`,
           order: 2,
         },
         DELETE: {
           visible: () => true,
           disabled: (userOrder: LlecoopUserOrder) => this.checkIfOrderIsDone(userOrder),
-          description: () => 'Elimina la comanda',
+          description: (userOrder: LlecoopUserOrder) => `Eliminar la comanda ${userOrder.id}`,
           order: 3,
         },
       },

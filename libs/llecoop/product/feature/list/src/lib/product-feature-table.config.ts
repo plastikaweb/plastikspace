@@ -116,7 +116,8 @@ export class LlecoopProductSearchFeatureTableConfig
       actions: {
         SET_AVAILABILITY: {
           visible: () => true,
-          description: () => 'Canviar la disponibilitat del producte',
+          description: product =>
+            `Fer que el producte "${product.name}" ${product.isAvailable ? 'no' : ''} estigui disponible`,
           order: 1,
           icon: (product: LlecoopProduct) => (!product.isAvailable ? 'cancelled' : 'check_circle'),
           execute: (product: LlecoopProduct) => {
@@ -125,12 +126,12 @@ export class LlecoopProductSearchFeatureTableConfig
         },
         EDIT: {
           visible: () => true,
-          description: () => 'Edita el producte',
+          description: product => `Editar producte "${product.name}"`,
           order: 2,
         },
         DELETE: {
           visible: () => true,
-          description: () => 'Elimina el producte',
+          description: product => `Eliminar producte "${product.name}"`,
           order: 3,
         },
       },
