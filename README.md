@@ -152,6 +152,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 ##### Util
 
 - [shared-form-util](libs/shared/form/util/README.md)
+- [skip-link](libs/shared/skip-link/skip-link-util/README.md)
 
 #### Activity
 

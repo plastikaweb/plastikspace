@@ -52,9 +52,13 @@ const fields: FormlyFieldConfig[] = [
     props: {
       addonLeft: {
         icon: 'search',
+        type: 'icon',
+        ariaHidden: true,
       },
       addonRight: {
         icon: 'clear',
+        type: 'button',
+        aria: 'empty value',
         onClick: field => field.formControl?.reset(),
       },
     },
@@ -103,6 +107,16 @@ interface AddonConfig {
    * Aria label for accessibility
    */
   aria?: string;
+
+  /**
+   * Type of the addon (icon or button)
+   */
+  type?: 'icon' | 'button';
+
+  /**
+   * Whether the icon should be hidden from screen readers
+   */
+  ariaHidden?: boolean;
 }
 
 interface FormlyFieldProps {

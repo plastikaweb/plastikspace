@@ -1,4 +1,7 @@
-<button mat-icon-button aria-label="Canviar el tema visual" [matMenuTriggerFor]="themeToggle">
+<button
+  mat-icon-button
+  aria-label="Canviar el tema de la interfície a clara, fosca o de sistema"
+  [matMenuTriggerFor]="themeToggle">
   <mat-icon>{{ matThemeToggleService.selectedTheme().icon }}</mat-icon>
 </button>
 <mat-menu #themeToggle="matMenu">

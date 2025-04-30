@@ -1,6 +1,7 @@
 import { tap } from 'rxjs';
 
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { AddonConfig } from '@plastik/shared/form/util';
 
 /**
  * Creates a Formly field configuration for a search input field.
@@ -25,7 +26,7 @@ export function addSearchInput(
     defaultValue,
     modelOptions: {
       debounce: {
-        default: 250,
+        default: 300,
       },
     },
     hooks: {
@@ -43,12 +44,15 @@ export function addSearchInput(
       addonLeft: {
         icon: 'search',
         aria: 'search',
-      },
+        ariaHidden: true,
+        type: 'icon',
+      } as AddonConfig,
       addonRight: {
         icon: 'cancel',
         aria: 'empty value',
+        type: 'button',
         onClick: (field: FormlyFieldConfig): void => field.formControl?.setValue(''),
-      },
+      } as AddonConfig,
       attributes: {
         autocomplete: 'off',
       },
