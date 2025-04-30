@@ -1,10 +1,12 @@
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  inject,
   TemplateRef,
-  ViewChild,
+  viewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,21 +17,24 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'plastik-formly-addons-wrapper',
   templateUrl: './formly-addons-wrapper.component.html',
   styleUrl: './formly-addons-wrapper.component.scss',
-  imports: [MatIconModule, MatButtonModule, NgStyle, NgClass],
+  imports: [MatIconModule, MatButtonModule, NgStyle, NgClass, NgTemplateOutlet],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FormlyAddonsWrapperComponent extends FieldWrapper implements AfterViewInit {
-  @ViewChild('matPrefix', { static: true }) matPrefix!: TemplateRef<unknown>;
-  @ViewChild('matSuffix', { static: true }) matSuffix!: TemplateRef<unknown>;
+  matPrefix = viewChild('matPrefix', { read: TemplateRef });
+  matSuffix = viewChild('matSuffix', { read: TemplateRef });
+  readonly cdr = inject(ChangeDetectorRef);
 
   ngAfterViewInit(): void {
-    if (this.matPrefix) {
-      this.props['prefix'] = this.matPrefix;
+    if (this.matPrefix()) {
+      this.props['prefix'] = this.matPrefix();
+      this.cdr.markForCheck();
     }
 
-    if (this.matSuffix) {
-      this.props['suffix'] = this.matSuffix;
+    if (this.matSuffix()) {
+      this.props['suffix'] = this.matSuffix();
+      this.cdr.markForCheck();
     }
   }
 

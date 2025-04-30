@@ -1,3 +1,4 @@
+import { A11yModule } from '@angular/cdk/a11y';
 import { DATE_PIPE_DEFAULT_OPTIONS, IMAGE_LOADER } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import {
@@ -96,6 +97,7 @@ export const appConfig: ApplicationConfig = {
       useClass: LlecoopRouteReuseStrategy,
     },
     importProvidersFrom(
+      A11yModule,
       StoreModule.forRoot(routerReducers, {
         runtimeChecks: {
           strictActionImmutability: true,

@@ -1,19 +1,52 @@
+<ng-template #addonTemplate let-addon let-direction let-clickHandler="clickHandler">
+  @if (addon.type === 'button' && addon.text) {
+    <!-- Text button -->
+    <button
+      mat-flat-button
+      [attr.aria-label]="addon['aria'] || ''"
+      [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
+      [ngClass]="addon.classes"
+      [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
+      (click)="clickHandler($event)">
+      <span>{{ addon.text }}</span>
+    </button>
+  }
+
+  @if (addon.type === 'button' && addon.icon) {
+    <!-- Icon button -->
+    <button
+      mat-icon-button
+      [attr.aria-label]="addon['aria'] || ''"
+      [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
+      [ngClass]="addon.classes"
+      [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
+      (click)="clickHandler($event)">
+      <mat-icon>{{ addon.icon }}</mat-icon>
+    </button>
+  }
+
+  @if (addon.type === 'text') {
+    <!-- Decorative Text -->
+    <span [ngClass]="direction === 'left' ? 'ml-sub' : 'mr-sub'">{{ addon.text }}</span>
+  }
+
+  @if (addon.type === 'icon') {
+    <!-- Decorative Icon -->
+    <mat-icon [attr.aria-hidden]="addon.ariaHidden">{{ addon.icon }}</mat-icon>
+  }
+</ng-template>
+
 <ng-template #matPrefix>
   @if (props['addonLeft']) {
-    <button
-      class="flex flex-row"
-      [attr.tabindex]="!props['addonLeft']['onClick'] ? '-1' : '0'"
-      [attr.aria-label]="props['addonLeft']['aria'] || ''"
-      [ngClass]="props['addonLeft'].classes"
-      [ngStyle]="{ cursor: props['addonLeft'].onClick ? 'pointer' : 'inherit' }"
-      (click)="addonLeftClick($event)">
-      @if (props['addonLeft'].icon) {
-        <mat-icon>{{ props['addonLeft'].icon }}</mat-icon>
-      }
-      @if (props['addonLeft'].text) {
-        <span>{{ props['addonLeft'].text }}</span>
-      }
-    </button>
+    <ng-container
+      *ngTemplateOutlet="
+        addonTemplate;
+        context: {
+          $implicit: props['addonLeft'],
+          direction: 'left',
+          clickHandler: addonLeftClick.bind(this),
+        }
+      "></ng-container>
   }
 </ng-template>
 
@@ -21,19 +54,14 @@
 
 <ng-template #matSuffix>
   @if (props['addonRight']) {
-    <button
-      class="flex flex-row"
-      [attr.aria-label]="props['addonRight']['aria'] || ''"
-      [attr.tabindex]="!props['addonRight']['onClick'] ? '-1' : '0'"
-      [ngClass]="props['addonRight'].classes"
-      [ngStyle]="{ cursor: props['addonRight'].onClick ? 'pointer' : 'inherit' }"
-      (click)="addonRightClick($event)">
-      @if (props['addonRight'].icon) {
-        <mat-icon>{{ props['addonRight'].icon }}</mat-icon>
-      }
-      @if (props['addonRight'].text) {
-        <span>{{ props['addonRight'].text }}</span>
-      }
-    </button>
+    <ng-container
+      *ngTemplateOutlet="
+        addonTemplate;
+        context: {
+          $implicit: props['addonRight'],
+          direction: 'right',
+          clickHandler: addonRightClick.bind(this),
+        }
+      "></ng-container>
   }
 </ng-template>

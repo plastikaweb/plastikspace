@@ -13,6 +13,9 @@
     - [Tabulation](#tabulation)
     - [ARIA](#aria)
     - [Reduced motion](#reduced-motion)
+    - [Focus](#focus)
+    - [Colors](#colors)
+    - [Skip Link](#skip-link)
     - [Angular Material / CDK](#angular-material--cdk)
   - [Testing tools](#testing-tools)
     - [Lighthouse](#lighthouse)
@@ -92,6 +95,30 @@ A todo list of accessibility actions and related information can be found [here]
 
 ```css
 <mat-loading-bar class="animate-radar motion-reduce:animate-none"></mat-loading-bar>
+```
+
+### Focus
+
+- Use `outline` to highlight focused elements.
+
+```css
+:focus-visible {
+  outline: 2px solid rgb(191, 9, 9) !important;
+  outline-offset: -2px !important;
+}
+```
+
+### Colors
+
+- Make sure to use contrast ratios of at least 4.5:1 for regular text and background colors and 3:1 for large text.
+
+### Skip Link
+
+- Use `skip-link` to navigate to the main content.
+- Use the available [`skip-link-util`](../libs/shared/util/skip-link/README.md) component.
+
+```html
+<plastik-skip-link></plastik-skip-link>
 ```
 
 ### Angular Material / CDK
@@ -225,6 +252,8 @@ describe('MyComponent', () => {
 
 ## Useful links
 
+- [https://www.w3.org/WAI/tips/](https://www.w3.org/WAI/tips/)
+- [https://www.w3.org/WAI/tutorials/](https://www.w3.org/WAI/tutorials/)
 - [lighthouse for chrome](https://chrome.google.com/webstore/detail/lighthouse/blipmdconlkpinefehnmjammfjpmpbjk/related?hl=es)
 - [@angular-eslint/schematics](https://github.com/angular-eslint/angular-eslint#readme)
 - [Build more accessible apps in Angular](https://www.youtube.com/watch?v=Gm_bD1abFXI)

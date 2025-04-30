@@ -2,6 +2,7 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
 import { LlecoopUser } from '@plastik/llecoop/entities';
+import { AddonConfig } from '@plastik/shared/form/util';
 
 const getProfileFeatureFormConfig: FormlyFieldConfig[] = [
   {
@@ -21,7 +22,13 @@ const getProfileFeatureFormConfig: FormlyFieldConfig[] = [
           addonLeft: {
             icon: 'person',
             aria: 'person',
-          },
+            type: 'icon',
+          } as AddonConfig,
+          addonRight: {
+            text: 'cancel',
+            aria: 'empty value',
+            type: 'text',
+          } as AddonConfig,
           attributes: {
             autocomplete: 'off',
           },
@@ -63,7 +70,8 @@ const getProfileFeatureFormConfig: FormlyFieldConfig[] = [
           addonLeft: {
             icon: 'home',
             aria: 'home',
-          },
+            type: 'icon',
+          } as AddonConfig,
           attributes: {
             autocomplete: 'off',
           },
@@ -81,7 +89,8 @@ const getProfileFeatureFormConfig: FormlyFieldConfig[] = [
           addonLeft: {
             icon: 'phone',
             aria: 'phone',
-          },
+            type: 'icon',
+          } as AddonConfig,
           attributes: {
             autocomplete: 'off',
           },

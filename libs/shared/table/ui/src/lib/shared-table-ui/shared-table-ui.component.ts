@@ -1,4 +1,5 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
@@ -32,7 +33,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
@@ -214,6 +215,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isDynamicComponent = isDynamicComponentTypeGuard;
 
   protected expandedElement = signal<T | null>(null);
+  readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   constructor() {
     effect(() => (this.dataSource.data = this.data()));
@@ -269,6 +271,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       active,
       direction,
     });
+    this.announceSortChange({ active, direction });
   }
 
   protected onDelete(event: Event, element: T): void {
@@ -301,5 +304,17 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       ...(column.formatting.type === 'INPUT' ? { 'mat-cell-input': true } : {}),
       ...(column.formatting.type === 'LINK' ? { 'mat-cell-link': true } : {}),
     };
+  }
+
+  private announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this.#liveAnnouncer.announce(
+        `Ordenant columna ${sortState.active} ${sortState.direction === 'asc' ? 'de forma ascendent' : 'de forma descendent'}`,
+        'assertive',
+        1000
+      );
+    } else {
+      this.#liveAnnouncer.announce('Ordenació cancel·lada');
+    }
   }
 }

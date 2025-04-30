@@ -1,3 +1,4 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { DOCUMENT } from '@angular/common';
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
 
@@ -26,6 +27,7 @@ export class MatThemeToggleService {
   readonly #document = inject(DOCUMENT);
   readonly #theme = signal<keyof typeof THEMES>(this.#getThemeFromLocalStorage() || 'system');
   readonly selectedTheme = computed(() => THEMES[this.#theme()]);
+  readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   readonly #setSystemTheme = effect(() => {
     const scheme = this.#theme() === 'system' ? 'light dark' : this.#theme();
@@ -39,6 +41,11 @@ export class MatThemeToggleService {
   setTheme(theme: keyof typeof THEMES): void {
     this.#theme.set(theme);
     this.#setThemeToLocalStorage(theme);
+    this.#liveAnnouncer.announce(
+      `Tema de la interfície canviat a ${THEMES[theme].name}`,
+      'assertive',
+      100
+    );
   }
 
   #setThemeToLocalStorage(theme: keyof typeof THEMES): void {

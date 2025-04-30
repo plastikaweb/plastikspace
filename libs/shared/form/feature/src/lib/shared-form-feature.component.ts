@@ -70,15 +70,15 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
     });
     effect(() => {
       if (this.#formDisableToken() || this.disableForm()) {
-        this.#focusedInput.set(
-          this.#elementRef.nativeElement.querySelector(
-            'input:not([type="hidden"]):not([readonly]):focus'
-          )
-        );
+        // this.#focusedInput.set(
+        //   this.#elementRef.nativeElement.querySelector(
+        //     'input:not([type="hidden"]):not([readonly]):focus'
+        //   )
+        // );
         this.form.disable({ emitEvent: false });
       } else {
         this.form.enable({ emitEvent: false });
-        this.#focusedInput()?.focus();
+        // this.#focusedInput()?.focus();
       }
     });
   }

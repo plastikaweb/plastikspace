@@ -1,3 +1,4 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 /* eslint-disable no-console */
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { FirebaseError } from '@angular/fire/app';
@@ -28,6 +29,7 @@ export class FirebaseAuthService {
   readonly #state = inject(Store);
   readonly #notificationService = inject(NotificationConfigService);
   readonly #notificationStore = inject(notificationStore);
+  readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   currentUser = signal<User | null>(null);
   currentUserEmail = computed(() => this.currentUser()?.email ?? '');
@@ -42,8 +44,8 @@ export class FirebaseAuthService {
   }
 
   /**
-   * Actualitza el email del usuari actual a Firebase Auth.
-   * @returns {Promise<void>} Una promesa que es resol quan s'ha actualitzat el email.
+   * Updates the email of the currently authenticated user.
+   * @returns {Promise<void>} A promise that resolves when the email has been updated.
    */
   async updateEmail(): Promise<void> {
     try {
@@ -59,6 +61,11 @@ export class FirebaseAuthService {
     }
   }
 
+  /**
+   * Handles changes in the authentication state.
+   * @param {User | null} user - The user object or null if the user is not authenticated.
+   * @returns {Promise<void>} A promise that resolves when the authentication state has been handled.
+   */
   async handleAuthStateChanged(user: User | null): Promise<void> {
     this.currentUser.set(user);
     if (user) {
@@ -93,6 +100,7 @@ export class FirebaseAuthService {
       this.#notificationStore.dismiss();
       await signInWithEmailAndPassword(this.#auth, email, password);
       await this.#router.navigate(['']);
+      this.#liveAnnouncer.announce('Sessió iniciada', 'assertive', 100);
     } catch (error: unknown) {
       console.error(error);
       if ((error as Error).message?.includes('BLOCKING_FUNCTION_ERROR_RESPONSE')) {
@@ -181,6 +189,7 @@ export class FirebaseAuthService {
       await signOut(this.#auth);
       await this.resetAuth();
       await this.#router.navigate(['login']);
+      this.#liveAnnouncer.announce('Sessió tancada', 'assertive', 100);
     } catch (error: unknown) {
       console.error('Error during logout:', error);
 

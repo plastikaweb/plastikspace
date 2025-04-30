@@ -1,14 +1,13 @@
 import { inject, LOCALE_ID, NgModule } from '@angular/core';
 import { FORMLY_CONFIG, FormlyModule } from '@ngx-formly/core';
-import { addonsExtension, FormlyAddonsWrapperComponent } from '@plastik/shared/form/util';
+
 import { InputPasswordWithVisibilityTypeComponent } from './input-password-with-visibility-type.component';
 import { passwordMatchValidator } from './validators/password-match.validator';
 import { passwordValidator } from './validators/password.validator';
+
 @NgModule({
   imports: [
     FormlyModule.forChild({
-      wrappers: [{ name: 'addons', component: FormlyAddonsWrapperComponent }],
-      extensions: [{ name: 'addons', extension: { onPopulate: addonsExtension } }],
       types: [
         {
           name: 'password-with-visibility',

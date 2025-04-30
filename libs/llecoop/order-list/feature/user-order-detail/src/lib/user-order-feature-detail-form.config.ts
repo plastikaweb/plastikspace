@@ -157,7 +157,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                   'Qualsevol informació que ens vulguis fer arribar sobre la comanda i el seu lliurament o recollida',
                 label: 'Informació addicional',
                 minLength: 5,
-                maxLength: 100,
+                maxLength: 200,
                 maxRows: 2,
                 attributes: {
                   autocomplete: 'off',

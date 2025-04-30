@@ -7,7 +7,7 @@
     <div start class="flex items-center gap-sub sm:gap-sm">
       <button
         mat-icon-button
-        aria-label="sidenav toggle button"
+        aria-label="menú lateral"
         class="flex justify-center align-middle"
         data-test="toggle-sidenav-button"
         (click)="sidenav.toggle()">
@@ -58,12 +58,12 @@
         @for (item of headerMenu?.config; track item.id) {
           @if (item && item.route) {
             <button type="button" mat-menu-item [routerLink]="item.route">
-              <mat-icon>{{ item.icon }}</mat-icon>
+              <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
               <span>{{ item.title }}</span>
             </button>
           } @else if (item && item.action) {
             <button type="button" mat-menu-item (click)="item.action()">
-              <mat-icon>{{ item.icon }}</mat-icon>
+              <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
               <span>{{ item.title }}</span>
             </button>
           }
@@ -95,9 +95,7 @@
               [routerLink]="item?.route"
               [routerLinkActiveOptions]="item?.routerLinkActiveOptionsExact || { exact: false }"
               (click)="isMobile() && sidenav.close()">
-              <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
-                item.icon
-              }}</mat-icon>
+              <mat-icon matListItemIcon aria-hidden="true">{{ item.icon }}</mat-icon>
               <span matListItemTitle>{{ item.title }}</span>
             </mat-list-item>
 
@@ -114,12 +112,7 @@
                       child?.routerLinkActiveOptionsExact || { exact: false }
                     "
                     (click)="isMobile() && sidenav.close()">
-                    <mat-icon
-                      matListItemIcon
-                      [attr.aria-hidden]="false"
-                      [attr.aria-label]="child.title"
-                      >{{ child.icon }}</mat-icon
-                    >
+                    <mat-icon matListItemIcon aria-hidden="true">{{ child.icon }}</mat-icon>
                     <span matListItemTitle>{{ child.title }}</span>
                   </mat-list-item>
 

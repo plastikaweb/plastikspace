@@ -40,7 +40,7 @@ function setUnitBaseInfo(
     formlyProps.label = label;
     formlyProps.placeholder = label;
 
-    if (formlyProps) {
+    if (formlyProps['addonRight']) {
       formlyProps['addonRight'].text =
         unitValue === 'unitWithFixedWeight' || unitValue === 'unitWithVariableWeight' ? 'kg' : 'l';
     }
@@ -132,15 +132,18 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             },
             {
               key: 'base',
-              type: 'number',
+              type: 'input',
               className: 'w-full @lg:w-1/3',
               props: {
+                type: 'number',
                 label: 'Pes aproximat per unitat',
                 placeholder: 'Pes aproximat per unitat',
                 required: true,
                 min: 0,
                 step: 0.1,
-                addonRight: {},
+                addonRight: {
+                  type: 'text',
+                },
                 attributes: {
                   autocomplete: 'off',
                 },
@@ -179,6 +182,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 addonRight: {
                   text: '€',
                   aria: 'preu en euros',
+                  type: 'text',
                 },
                 attributes: {
                   autocomplete: 'off',
@@ -200,6 +204,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 addonRight: {
                   text: '%',
                   aria: "percentatge d'IVA",
+                  type: 'text',
                 },
                 attributes: {
                   autocomplete: 'off',
@@ -221,6 +226,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 addonRight: {
                   text: '€',
                   aria: 'preu amb IVA en euros',
+                  type: 'text',
                 },
                 attributes: {
                   autocomplete: 'off',
@@ -273,8 +279,9 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 min: 0,
                 step: 0.1,
                 addonRight: {
-                  text: '',
+                  icon: '',
                   aria: '',
+                  type: 'text',
                 },
                 attributes: {
                   autocomplete: 'off',
@@ -295,12 +302,14 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
         },
         {
           key: 'info',
-          type: 'textarea',
+          type: 'textarea-with-counter',
           className: 'w-full',
           props: {
             label: 'Més informació',
             placeholder: 'Més informació',
-            rows: 3,
+            minLength: 5,
+            maxLength: 200,
+            maxRows: 2,
             attributes: {
               autocomplete: 'off',
             },
