@@ -40,7 +40,8 @@ export class LlecoopUserOrderSearchFeatureTableConfig
     },
     formatting: {
       type: 'LINK',
-      execute: (_, userOrder) => `<p class="font-bold uppercase">${userOrder?.name}</p>`,
+      execute: (_, userOrder) =>
+        `<p class="font-bold uppercase" aria-label="Comanda setmana ${userOrder?.name}">${userOrder?.name}</p>`,
     },
   };
 

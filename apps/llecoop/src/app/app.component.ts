@@ -10,18 +10,12 @@ import { selectIsActive } from '@plastik/shared/activity/data-access';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
-import { SkipLinkComponent } from '@plastik/shared/skip-link';
 
 registerLocaleData(localeCa, 'ca-ES');
 
 @Component({
   selector: 'plastik-root',
-  imports: [
-    RouterOutlet,
-    SharedActivityUiOverlayComponent,
-    NotificationUiMatSnackbarDirective,
-    SkipLinkComponent,
-  ],
+  imports: [RouterOutlet, SharedActivityUiOverlayComponent, NotificationUiMatSnackbarDirective],
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {

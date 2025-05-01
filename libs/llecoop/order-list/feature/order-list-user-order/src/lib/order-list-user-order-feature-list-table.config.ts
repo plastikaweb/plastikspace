@@ -50,7 +50,8 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
     }),
     formatting: {
       type: 'LINK',
-      execute: (_, order) => order?.name || '-',
+      execute: (_, order) =>
+        `<p class="font-bold uppercase" aria-label="Veure els totals de la comanda de la setmana ${order?.name}">${order?.name}</p>`,
     },
   };
 

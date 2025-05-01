@@ -112,10 +112,13 @@
     }
   }
 
-  :focus-visible {
-    outline: 2px solid rgb(191, 9, 9) !important;
-    outline-offset: -2px !important;
-  }
+  // button:focus-visible,
+  // mat-list-item:focus-visible,
+  // mat-header-cell:focus-visible,
+  // a:focus-visible {
+  //   outline: 2px solid rgb(18, 9, 191) !important;
+  //   outline-offset: -2px !important;
+  // }
 
   plastik-shared-activity-ui-overlay .overlay-container {
     z-index: 9999;
@@ -123,6 +126,11 @@
 }
 
 @layer components {
+  @include mat.button-overrides(
+    (
+      filled-focus-state-layer-opacity: 0.2,
+    )
+  );
   @include mat.toolbar-overrides(
     (
       container-background-color: var(--mat-sys-primary-container),

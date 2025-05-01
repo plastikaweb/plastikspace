@@ -2,7 +2,7 @@
   @if (addon.type === 'button' && addon.text) {
     <!-- Text button -->
     <button
-      mat-flat-button
+      mat-button
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
       [ngClass]="addon.classes"
