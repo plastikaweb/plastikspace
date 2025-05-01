@@ -2,6 +2,8 @@
 @let extendedTitle = headerConfig.extendedTitle;
 @let headerMenu = headerConfig.menu;
 
+<plastik-skip-link></plastik-skip-link>
+
 <div class="core-cms-container">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
     <div start class="flex items-center gap-sub sm:gap-sm">
@@ -83,7 +85,7 @@
       [fixedInViewport]="isMobile()"
       [opened]="!isMobile()"
       (keydown.escape)="sidenav.close()">
-      <mat-nav-list menu-items data-test="sidenav-list">
+      <mat-nav-list aria-label="Menu principal" data-test="sidenav-list">
         @for (item of viewConfig(); track item.id) {
           <ng-container>
             <!-- Elemento principal -->
@@ -92,6 +94,7 @@
               class="my-tiny"
               routerLinkActive="active"
               ariaCurrentWhenActive="page"
+              [attr.aria-label]="item.ariaLabel || item.title"
               [routerLink]="item?.route"
               [routerLinkActiveOptions]="item?.routerLinkActiveOptionsExact || { exact: false }"
               (click)="isMobile() && sidenav.close()">
@@ -107,6 +110,7 @@
                     class="my-tiny pl-sub"
                     routerLinkActive="active"
                     ariaCurrentWhenActive="page"
+                    [attr.aria-label]="child.ariaLabel || child.title"
                     [routerLink]="child?.route"
                     [routerLinkActiveOptions]="
                       child?.routerLinkActiveOptionsExact || { exact: false }

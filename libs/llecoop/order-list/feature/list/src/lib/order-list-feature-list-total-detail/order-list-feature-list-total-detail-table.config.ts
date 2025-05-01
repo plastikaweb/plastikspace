@@ -116,7 +116,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
       columnProperties: this.#columnProperties,
       getData: (id: string) => this.#store.getItemById(id).total,
       sort: this.#store.sorting,
-      caption: `Comanda ${this.#store.selectedItem()?.name}: Detall de totals`,
+      caption: `Resum del total de productes de la comanda setmanal`,
       noPagination: true,
     } as TableDefinition<LlecoopOrderProductTotal>;
   }

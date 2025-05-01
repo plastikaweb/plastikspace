@@ -15,7 +15,7 @@
         @if (action.type === 'button') {
           <button
             type="button"
-            mat-flat-button
+            mat-stroked-button
             class="w-full sm:w-auto"
             [disabled]="action?.disabled()"
             (click)="action?.execute()">
@@ -33,7 +33,7 @@
       }
     }
     @if (!facade.hideBackBtn?.()) {
-      <button type="button" mat-flat-button [routerLink]="['../']">
+      <button type="button" mat-stroked-button [routerLink]="['../']">
         <mat-icon>arrow_back</mat-icon> Tornar al llistat
       </button>
     }

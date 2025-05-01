@@ -9,6 +9,7 @@ export interface ViewConfig<T extends string> {
   id: number;
   name: Lowercase<T>;
   title: string;
+  ariaLabel?: string;
   icon?: string;
   svgClass?: {
     menu?: string;

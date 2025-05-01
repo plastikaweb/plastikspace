@@ -22,6 +22,7 @@ import {
 } from '@angular/fire/firestore';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
@@ -134,6 +135,12 @@ export const appConfig: ApplicationConfig = {
     {
       provide: IMAGE_LOADER,
       useFactory: () => imageKitLoader(inject(ENVIRONMENT) as LlecoopEnvironment),
+    },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'fill',
+      },
     },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,

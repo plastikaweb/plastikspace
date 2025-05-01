@@ -1,0 +1,6 @@
+:root {
+  .mat-sort-header.cdk-keyboard-focused .mat-sort-header-container,
+  .mat-sort-header.cdk-program-focused .mat-sort-header-container {
+    border-bottom: solid 1px currentColor;
+  }
+}

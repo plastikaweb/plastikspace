@@ -24,6 +24,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
+import { SkipLinkComponent } from '@plastik/shared/skip-link';
 
 import { HeaderConfigService } from './cms-header-config';
 
@@ -42,6 +43,7 @@ import { HeaderConfigService } from './cms-header-config';
     CoreCmsLayoutUiHeaderComponent,
     CoreCmsLayoutUiFooterComponent,
     DatePipe,
+    SkipLinkComponent,
   ],
   providers: [
     { provide: FocusTrapFactory, useClass: ConfigurableFocusTrapFactory },

@@ -38,7 +38,8 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     queryParams: (order?: LlecoopOrder) => ({ text: order?.name || '' }),
     formatting: {
       type: 'LINK',
-      execute: (_, order) => `<p class="font-bold uppercase">${order?.name}</p>`,
+      execute: (_, order) =>
+        `<p class="font-bold uppercase" aria-label="Veure totes les comandes de la setmana ${order?.name}">${order?.name}</p>`,
     },
   };
 

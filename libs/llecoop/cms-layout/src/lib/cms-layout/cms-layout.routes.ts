@@ -1,6 +1,5 @@
 import { inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl } from '@angular/material/paginator';
 import { CanActivateFn, Router, Routes } from '@angular/router';
 
@@ -43,12 +42,6 @@ export const llecoopLayoutRoutes: Routes = [
       {
         provide: MatPaginatorIntl,
         useClass: LlecoopMatPaginatorIntl,
-      },
-      {
-        provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-        useValue: {
-          appearance: 'fill',
-        },
       },
       {
         provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
