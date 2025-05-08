@@ -8,7 +8,7 @@ export default async user => {
   }
 
   functions.logger.debug(
-    `Running registering user to see if user is whitelisted for ${user.email}`
+    `Running registering user to see if user is whitelisted for ${JSON.stringify(user)}`
   );
 
   const userCollection = firestore.collection('user');

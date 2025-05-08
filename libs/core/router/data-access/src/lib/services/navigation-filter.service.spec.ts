@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
-import { ROUTER_NAVIGATION } from '@ngrx/router-store';
-import { provideMockStore } from '@ngrx/store/testing';
 import { of, Subscription } from 'rxjs';
 
+import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { ROUTER_NAVIGATION } from '@ngrx/router-store';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { selectRouteDataName } from '../+state/selectors/router-state.selectors';
 import { NavigationFilterService } from './navigation-filter.service';
 
@@ -16,8 +17,9 @@ describe('NavigationFilterService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RootComponent],
+      imports: [RootComponent],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         provideMockStore({
           selectors: [{ selector: selectRouteDataName, value: 'valid' }],
         }),
@@ -27,6 +29,7 @@ describe('NavigationFilterService', () => {
             component: RootComponent,
           },
         ]),
+        NavigationFilterService,
       ],
     });
     service = TestBed.inject(NavigationFilterService);

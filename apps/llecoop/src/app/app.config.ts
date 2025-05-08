@@ -1,5 +1,17 @@
+import { A11yModule } from '@angular/cdk/a11y';
+import { DATE_PIPE_DEFAULT_OPTIONS, IMAGE_LOADER } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig, LOCALE_ID, importProvidersFrom, isDevMode } from '@angular/core';
+import {
+  ApplicationConfig,
+  DEFAULT_CURRENCY_CODE,
+  ErrorHandler,
+  importProvidersFrom,
+  inject,
+  isDevMode,
+  LOCALE_ID,
+  provideExperimentalZonelessChangeDetection,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import {
@@ -9,30 +21,36 @@ import {
   provideFirestore,
 } from '@angular/fire/firestore';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
+import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
+  provideRouter,
   RouteReuseStrategy,
   TitleStrategy,
-  provideRouter,
   withComponentInputBinding,
   withViewTransitions,
 } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
-import { NavigationActionTiming, RouterState, provideRouterStore } from '@ngrx/router-store';
-import { StoreModule } from '@ngrx/store';
+import { NavigationActionTiming, provideRouterStore, RouterState } from '@ngrx/router-store';
+import { Store, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import {
   CustomRouterSerializer,
   PrefixTitleService,
-  RouterStateEffects,
   routerReducers,
+  RouterStateEffects,
 } from '@plastik/core/router-state';
-import { selectActivityFeature } from '@plastik/shared/activity/data-access';
-import { NotificationDataAccessModule } from '@plastik/shared/notification/data-access';
+import { LlecoopEnvironment } from '@plastik/llecoop/entities';
+import { selectActivityFeature, selectIsActive } from '@plastik/shared/activity/data-access';
+import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
+import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
+import { imageKitLoader } from '@plastik/storage/data-access';
+
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { viewConfig } from './cms-layout-config';
@@ -40,6 +58,7 @@ import { LlecoopRouteReuseStrategy } from './llecoop-route-reuse.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(environment.firebase, 'llecoop')),
@@ -59,6 +78,13 @@ export const appConfig: ApplicationConfig = {
 
       return firestore;
     }),
+    provideStorage(() => {
+      const storage = getStorage(getApp('llecoop'));
+      if (environment['useEmulators']) {
+        connectStorageEmulator(storage, '127.0.0.1', 9199);
+      }
+      return storage;
+    }),
     provideFunctions(() => {
       const functions = getFunctions(getApp('llecoop'));
       if (environment['useEmulators']) {
@@ -66,19 +92,13 @@ export const appConfig: ApplicationConfig = {
       }
       return functions;
     }),
-    // provideStorage(() => {
-    //   const storage = getStorage();
-    //   if (environment['useEmulators']) {
-    //     connectStorageEmulator(storage, 'localhost', 9199);
-    //   }
-    //   return storage;
-    // }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
     {
       provide: RouteReuseStrategy,
       useClass: LlecoopRouteReuseStrategy,
     },
     importProvidersFrom(
+      A11yModule,
       StoreModule.forRoot(routerReducers, {
         runtimeChecks: {
           strictActionImmutability: true,
@@ -91,10 +111,11 @@ export const appConfig: ApplicationConfig = {
         ? StoreDevtoolsModule.instrument({
             name: environment.name,
             maxAge: 25,
-            connectInZone: true,
+            connectInZone: false,
+            trace: true,
+            traceLimit: 75,
           })
         : [],
-      NotificationDataAccessModule,
       NotificationUiMatSnackbarModule
     ),
     provideRouterStore({
@@ -107,14 +128,20 @@ export const appConfig: ApplicationConfig = {
       useValue: environment,
     },
     {
-      provide: LOCALE_ID,
-      useValue: 'ca-ES',
-    },
-    {
       provide: TitleStrategy,
       useClass: PrefixTitleService,
     },
     { provide: VIEW_CONFIG, useFactory: viewConfig },
+    {
+      provide: IMAGE_LOADER,
+      useFactory: () => imageKitLoader(inject(ENVIRONMENT) as LlecoopEnvironment),
+    },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: {
+        appearance: 'fill',
+      },
+    },
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {
@@ -122,6 +149,28 @@ export const appConfig: ApplicationConfig = {
         horizontalPosition: 'center',
         politeness: 'assertive',
       },
+    },
+    {
+      provide: LOCALE_ID,
+      useValue: 'ca-ES',
+    },
+    {
+      provide: DEFAULT_CURRENCY_CODE,
+      useValue: 'EUR',
+    },
+    {
+      provide: DATE_PIPE_DEFAULT_OPTIONS,
+      useValue: {
+        dateFormat: 'dd/MM/yyyy',
+      },
+    },
+    {
+      provide: FORM_DISABLE_TOKEN,
+      useFactory: () => toSignal(inject(Store).select(selectIsActive)),
+    },
+    {
+      provide: ErrorHandler,
+      useClass: ErrorHandlerService,
     },
   ],
 };

@@ -1,10 +1,14 @@
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
 import { provideHttpClient } from '@angular/common/http';
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
-import { AngularSvgIconModule } from 'angular-svg-icon';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -19,10 +23,12 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, AppComponent, AngularSvgIconModule.forRoot()],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         provideHttpClient(),
+        provideRouter([]),
         provideMockStore({ initialState }),
         { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: null },
-        { provide: VIEW_CONFIG, useValue: null },
+        { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     }).compileComponents();
 
@@ -30,7 +36,7 @@ describe('AppComponent', () => {
     component = fixture.componentInstance;
   });
 
-  xit('should create the app', () => {
+  it('should create the app', () => {
     expect(component).toBeTruthy();
   });
 });

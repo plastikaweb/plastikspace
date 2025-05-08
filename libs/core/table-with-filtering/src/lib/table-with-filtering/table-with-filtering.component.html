@@ -3,20 +3,18 @@
 @let tableDefinition = facade.tableDefinition;
 @let viewExtraActions = facade.viewExtraActions?.() || [];
 
-<div class="flex flex-row flex-wrap items-center justify-center gap-sm sm:justify-between">
-  <h2 class="flex items-center content-center text-center h4 md:gap-sub">
-    <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ viewConfig?.icon }}</mat-icon>
-    {{ viewConfig?.title | titlecase }}
+<div class="flex flex-row flex-wrap justify-center items-center gap-sm sm:justify-between">
+  <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
+    <mat-icon class="text-[40px] size-[40px]">{{ viewConfig?.icon }}</mat-icon>
+    <span>{{ viewConfig?.title | titlecase }}</span>
   </h2>
 
   @if (viewExtraActions.length) {
-    <div class="flex flex-row items-center justify-center gap-sm">
+    <div class="flex flex-row justify-center items-center gap-sm">
       @for (action of viewExtraActions; track action) {
         <button
           type="button"
-          mat-flat-button
-          color="accent"
-          class="text-white"
+          mat-stroked-button
           [disabled]="action.disabled()"
           (click)="action.execute()">
           <mat-icon>{{ action.icon }}</mat-icon> {{ action.label }}
@@ -28,38 +26,36 @@
   @if (routingToDetailPage.visible) {
     <button
       type="button"
-      mat-flat-button
-      color="accent"
-      class="text-white"
+      mat-stroked-button
       [disabled]="routingToDetailPage.disabled"
       [routerLink]="routingToDetailPage.path || ['./crear']">
-      <mat-icon>add</mat-icon> {{ routingToDetailPage.label || 'Crear' }}
+      <mat-icon>{{ routingToDetailPage.icon || 'add' }}</mat-icon>
+      {{ routingToDetailPage.label || 'Crear' }}
     </button>
   }
 </div>
 
 <plastik-shared-form-feature
-  class="flex flex-row items-end content-center justify-between filters-box"
-  [fields]="facade.formStructure || []"
-  [model]="{ text: '' }"
-  [submitAvailable]="false"
-  (changeEvent)="onChangeFiltering($event)">
+  class="flex flex-row justify-between content-center items-end mb-4 filters-box"
+  [fields]="facade.filterFormConfig || []"
+  [model]="facade.filterCriteria?.() || {}"
+  [submitConfig]="{ submitAvailable: false, disableOnSubmit: false }"
+  (changeEvent)="facade.onChangeFilterCriteria($event)">
 </plastik-shared-form-feature>
 
 <plastik-shared-table
   [data]="tableDefinition.getData?.() || []"
   [caption]="tableDefinition.caption || ''"
-  [columnProperties]="tableDefinition.columnProperties || []"
+  [columnProperties]="tableDefinition.columnProperties() || []"
+  [pagination]="tableDefinition?.pagination()"
   [resultsLength]="tableDefinition?.count() || 0"
   [sort]="tableDefinition.sort?.()"
-  [pageSizeOptions]="tableDefinition.pageSizeOptions || []"
-  [paginationVisibility]="tableDefinition?.paginationVisibility"
-  [filterCriteria]="facade.filterCriteria?.() || {}"
-  [filterPredicate]="facade.tableFilterPredicate"
   [actions]="tableDefinition.actions || {}"
   [noPagination]="tableDefinition.noPagination || false"
   [extraRowStyles]="tableDefinition.extraRowStyles"
   [actionsColStyles]="tableDefinition.actionsColStyles || ''"
+  [rowHeight]="tableDefinition.rowHeight"
   (changeSorting)="onChangeSorting($event)"
+  (changePagination)="onChangePagination($event)"
   (delete)="onDelete($event)">
 </plastik-shared-table>

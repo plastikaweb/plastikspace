@@ -1,6 +1,11 @@
 name: Nasa Images e2e
+
 on:
-  workflow_dispatch:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches:
+      - develop
 
 jobs:
   e2e:

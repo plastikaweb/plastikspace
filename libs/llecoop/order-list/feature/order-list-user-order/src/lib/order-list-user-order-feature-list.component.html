@@ -1,0 +1,65 @@
+@let viewConfig = facade.viewConfig();
+@let tableDefinition = facade.tableDefinition;
+
+<div
+  class="flex flex-col flex-wrap justify-center items-center mb-4 gap-sm md:flex-row md:justify-between">
+  <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
+    <mat-icon class="text-[40px] size-[40px]">{{ viewConfig?.icon }}</mat-icon>
+    <span>{{ viewConfig?.title | titlecase }}</span>
+  </h2>
+
+  <div class="flex flex-row justify-end items-center gap-sm">
+    <button
+      type="button"
+      mat-stroked-button
+      color="primary"
+      [routerLink]="['/comandes', 'setmanals']">
+      <mat-icon>date_range</mat-icon> Veure ell llistat de comandes per setmanes
+    </button>
+  </div>
+</div>
+
+<plastik-shared-form-feature
+  class="flex flex-row justify-between content-center items-end mb-4 filters-box"
+  [fields]="facade.filterFormConfig || []"
+  [model]="facade.filterCriteria() || {}"
+  [submitConfig]="{ submitAvailable: false, disableOnSubmit: false }"
+  [autoFocus]="true"
+  (changeEvent)="facade.onChangeFilterCriteria($event)">
+</plastik-shared-form-feature>
+
+<plastik-shared-table
+  [data]="tableDefinition.getData?.() || []"
+  [caption]="tableDefinition.caption || ''"
+  [columnProperties]="tableDefinition.columnProperties() || []"
+  [resultsLength]="tableDefinition?.count() || 0"
+  [sort]="tableDefinition.sort?.()"
+  [pagination]="tableDefinition.pagination?.()"
+  [paginationVisibility]="tableDefinition?.paginationVisibility"
+  [actions]="tableDefinition.actions || {}"
+  [noPagination]="tableDefinition.noPagination || false"
+  [extraRowStyles]="tableDefinition.extraRowStyles"
+  [expandedDetailTpl]="orderDetail"
+  [expandable]="true"
+  [expandedElementId]="tableDefinition.getSelectedItemId?.() || null"
+  (changeSorting)="facade.onTableSorting($event)"
+  (changePagination)="facade.onChangePagination($event)">
+</plastik-shared-table>
+
+<ng-template #orderDetail let-element="element">
+  @defer (when !!element) {
+    @let fields = facade.orderListDetailUserOrderDetailFormStructure.getConfig() || [];
+    @let submitConfig =
+      facade.orderListDetailUserOrderDetailFormStructure.getSubmitFormConfig?.(!!element) || {};
+
+    <plastik-user-order-card-detail
+      class="w-full"
+      [order]="element"
+      [fields]="fields"
+      [submitConfig]="submitConfig"
+      (pendingChangesEvent)="pendingChanges.set($event)"
+      (changeEvent)="
+        facade.onSaveUserOrder($event); pendingChanges.set(false)
+      "></plastik-user-order-card-detail>
+  }
+</ng-template>

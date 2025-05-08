@@ -1,17 +1,18 @@
 /* eslint-disable jsdoc/require-jsdoc */
-import { inject } from '@angular/core';
+import { filter, tap } from 'rxjs';
+
+import { inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
-import { DocumentReference } from '@angular/fire/firestore';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import {
   LlecoopProduct,
-  LlecoopProductCategory,
   LlecoopProductSelectData,
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
-import { filter, tap } from 'rxjs';
+import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { InputImgLoaderProps } from '@plastik/shared/form/img-loader';
+import { FirebaseStorageService } from '@plastik/storage/data-access';
 
 function setStockUnitAddonRight(
   formlyProps: FormlyFieldConfig['props'],
@@ -19,6 +20,7 @@ function setStockUnitAddonRight(
 ): void {
   if (formlyProps?.['addonRight']) {
     formlyProps['addonRight'].text = unitValue === 'weight' ? 'kg' : 'u.';
+    formlyProps['addonRight'].aria = unitValue === 'weight' ? 'pes en kgs' : 'unitats';
   }
 }
 
@@ -38,7 +40,7 @@ function setUnitBaseInfo(
     formlyProps.label = label;
     formlyProps.placeholder = label;
 
-    if (formlyProps) {
+    if (formlyProps['addonRight']) {
       formlyProps['addonRight'].text =
         unitValue === 'unitWithFixedWeight' || unitValue === 'unitWithVariableWeight' ? 'kg' : 'l';
     }
@@ -46,7 +48,8 @@ function setUnitBaseInfo(
 }
 
 export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
-  const store = inject(LlecoopCategoryStore);
+  const productStore = inject(llecoopProductStore);
+  const firebaseStorage = inject(FirebaseStorageService);
 
   const formConfig = [
     {
@@ -59,10 +62,13 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           props: {
             type: 'text',
             label: 'Nom',
-            placeholder: 'Nom',
+            placeholder: 'Nom del producte',
             required: true,
             maxLength: 256,
             minLength: 2,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
         {
@@ -73,21 +79,50 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Categoria',
             placeholder: 'Categoria',
             required: true,
-            options: toObservable(store.selectOptions),
-            compareWith: (
-              o1: DocumentReference<LlecoopProductCategory>,
-              o2: DocumentReference<LlecoopProductCategory>
-            ) => o1 === o2,
+            options: toObservable(productStore.categories),
+          },
+        },
+        {
+          key: 'imgUrl',
+          type: 'img-loader',
+          className:
+            'w-full flex justify-center items-center text-center @md:justify-start @md:items-start @md:text-left',
+          props: {
+            label: 'Imatge del producte',
+            placeholder: 'Imatge del producte',
+            required: false,
+            folder: signal('products'),
+            maxSize: signal(2 * 1024 * 1024),
+            minHeight: signal(800),
+            minWidth: signal(800),
+            imgHeight: signal(250),
+            imgWidth: signal(250),
+            lcpImage: signal(true),
+            title: productStore.selectedItemName || signal('nou producte'),
+            progress: firebaseStorage.progress.bind(firebaseStorage),
+            upload: firebaseStorage.upload.bind(firebaseStorage),
+            fileUrl: firebaseStorage.fileUrl.bind(firebaseStorage),
+            cdnUrl: signal(''),
+          } as InputImgLoaderProps,
+          hooks: {
+            onInit: (formly: FormlyFieldConfig) => {
+              getCdnUrl(formly);
+              return formly.options?.fieldChanges?.pipe(
+                filter(e => e.type === 'valueChanges' && e.field['key'] === 'imgUrl'),
+                tap(() => getCdnUrl(formly))
+              );
+            },
           },
         },
         {
           key: 'unit',
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroupClassName: 'flex flex-col @lg:flex-row gap-0 @lg:gap-sub',
+
           fieldGroup: [
             {
               key: 'type',
               type: 'select',
+              className: 'w-full @lg:w-2/3',
               props: {
                 label: "Tipus d'unitat",
                 placeholder: "Tipus d'unitat",
@@ -97,14 +132,21 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             },
             {
               key: 'base',
-              type: 'number',
+              type: 'input',
+              className: 'w-full @lg:w-1/3',
               props: {
+                type: 'number',
                 label: 'Pes aproximat per unitat',
                 placeholder: 'Pes aproximat per unitat',
                 required: true,
                 min: 0,
                 step: 0.1,
-                addonRight: {},
+                addonRight: {
+                  type: 'text',
+                },
+                attributes: {
+                  autocomplete: 'off',
+                },
               },
               expressions: {
                 hide: ({ model }: FormlyFieldConfig) =>
@@ -124,13 +166,12 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           ],
         },
         {
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroupClassName: 'flex flex-col @lg:flex-row gap-0 @lg:gap-sub max-w-full',
           fieldGroup: [
             {
               key: 'price',
               type: 'input',
-              className: 'w-full md:w-1/3',
+              className: 'flex-1 min-w-0 @lg:basis-1/3',
               props: {
                 type: 'number',
                 label: 'Preu',
@@ -140,13 +181,18 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu en euros',
+                  type: 'text',
+                },
+                attributes: {
+                  autocomplete: 'off',
                 },
               },
             },
             {
               key: 'iva',
               type: 'input',
-              className: 'w-full md:w-1/3',
+              className: 'flex-1 min-w-0 @lg:basis-1/3',
               props: {
                 type: 'number',
                 label: 'IVA',
@@ -157,13 +203,18 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 step: 0.1,
                 addonRight: {
                   text: '%',
+                  aria: "percentatge d'IVA",
+                  type: 'text',
+                },
+                attributes: {
+                  autocomplete: 'off',
                 },
               },
             },
             {
               key: 'priceWithIva',
               type: 'input',
-              className: 'w-full md:w-1/3',
+              className: 'flex-1 min-w-0 @lg:basis-1/3',
               props: {
                 type: 'text',
                 label: 'Preu amb IVA',
@@ -174,6 +225,11 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu amb IVA en euros',
+                  type: 'text',
+                },
+                attributes: {
+                  autocomplete: 'off',
                 },
               },
               hooks: {
@@ -200,12 +256,12 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
           ],
         },
         {
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroupClassName: 'flex flex-col @lg:flex-row gap-0 @lg:gap-sub',
           fieldGroup: [
             {
               key: 'isAvailable',
               type: 'checkbox',
+              className: 'w-full @lg:w-1/2',
               defaultValue: false,
               props: {
                 label: 'Disponible',
@@ -214,6 +270,8 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             {
               key: 'stock',
               type: 'input',
+              className: 'w-full @lg:w-1/2',
+              defaultValue: 0,
               props: {
                 type: 'number',
                 label: 'Quantitat en stock',
@@ -221,7 +279,12 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
                 min: 0,
                 step: 0.1,
                 addonRight: {
-                  text: '',
+                  icon: '',
+                  aria: '',
+                  type: 'text',
+                },
+                attributes: {
+                  autocomplete: 'off',
                 },
               },
               hooks: {
@@ -239,12 +302,17 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
         },
         {
           key: 'info',
-          type: 'textarea',
+          type: 'textarea-with-counter',
           className: 'w-full',
           props: {
             label: 'Més informació',
             placeholder: 'Més informació',
-            rows: 3,
+            minLength: 5,
+            maxLength: 200,
+            maxRows: 2,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
         {
@@ -256,6 +324,9 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Origen',
             placeholder: 'Origen',
             required: false,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
         {
@@ -267,6 +338,9 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Proveïdor',
             placeholder: 'Proveïdor',
             required: false,
+            attributes: {
+              autocomplete: 'off',
+            },
           },
         },
       ],
@@ -277,6 +351,13 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
     getConfig: () => formConfig,
     getSubmitFormConfig: (editMode = false) => ({
       label: editMode ? 'Desar producte' : 'Crear producte',
+      disableOnSubmit: true,
     }),
   };
+
+  function getCdnUrl({ model, props }: FormlyFieldConfig): void {
+    if (model?.imgUrl) {
+      props?.['cdnUrl'].set(model.imgUrl);
+    }
+  }
 }

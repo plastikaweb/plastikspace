@@ -1,3 +1,4 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
@@ -12,6 +13,7 @@ describe('NasaImagesSearchSearchRouterTitleService', () => {
     TestBed.configureTestingModule({
       imports: [],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         NasaImagesSearchSearchRouterTitleService,
         provideMockStore({
           selectors: [

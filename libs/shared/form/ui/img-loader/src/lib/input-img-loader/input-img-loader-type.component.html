@@ -1,0 +1,31 @@
+<label for="">{{ props.label }}<span [hidden]="!props.required"> *</span></label>
+
+<plastik-input-img-loader
+  [formControl]="formControl"
+  [formlyAttributes]="field"
+  [progress]="props.progress?.() || 0"
+  [upload]="props.upload"
+  [fileUrl]="props.fileUrl?.() || null"
+  [title]="props.title?.() || ''"
+  [folder]="props.folder?.() || ''"
+  [maxSize]="props.maxSize?.() ?? maxSize"
+  [minHeight]="props.minHeight?.() ?? minHeight"
+  [minWidth]="props.minWidth?.() ?? minWidth"
+  [imgHeight]="props.imgHeight?.() ?? imgHeight"
+  [imgWidth]="props.imgWidth?.() ?? imgWidth"
+  [cdnUrl]="props.cdnUrl?.()"
+  [lcpImage]="props.lcpImage?.() ?? lcpImage"></plastik-input-img-loader>
+
+<div class="flex flex-col gap-0 md:flex-row md:gap-sub mt-tiny">
+  <mat-hint class="text-sm">Pes màxim: {{ props.maxSize?.() ?? maxSize | bytesToSize }}</mat-hint>
+  <mat-hint class="text-sm"
+    >Dimensions mínimes: {{ props.minHeight?.() ?? minHeight }} x
+    {{ props.minWidth?.() ?? minWidth }} px</mat-hint
+  >
+</div>
+
+@if (formControl.errors && formControl.touched && !formControl.pristine) {
+  <div class="mat-error" role="alert">
+    <formly-validation-message [field]="field"></formly-validation-message>
+  </div>
+}

@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductBasedUnitText,
@@ -6,8 +6,11 @@ import {
   getLlecoopProductUnitSuffix,
   LlecoopOrderProduct,
 } from '@plastik/llecoop/entities';
-import { LLecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
-import { productCategoryColumn } from '@plastik/llecoop/util';
+import {
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
+import { categoryNameCell } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -22,53 +25,54 @@ import {
 export class LlecoopUserOrderDetailFormTableConfig
   implements TableStructureConfig<LlecoopOrderProduct>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LLecoopOrderListStore);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #orderListStore = inject(llecoopOrderListStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
 
-  private readonly name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
-    sorting: true,
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     sticky: true,
-    cssClasses: ['min-w-[160px] md:min-w-[250px] py-tiny', 'flex flex-col justify-start'],
+    cssClasses: ['min-w-[160px] @md:min-w-[250px] py-tiny', 'flex flex-col justify-start'],
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
         const name = `<p class="font-bold uppercase">${element?.['name']}</p>`;
         const info = element?.['info'] ? `<p class="font-bold">${element['info']}</p>` : '';
-        return this.sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },
   };
 
-  private readonly provider: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
+  readonly #provider: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
     key: 'provider',
     title: 'Proveïdor',
-    propertyPath: 'provider',
-    sorting: true,
-    cssClasses: ['hidden md:flex md:min-w-[180px]'],
+    pathToKey: 'provider',
+    sorting: 'provider',
+    cssClasses: ['hidden @md:flex @md:min-w-[180px]'],
     formatting: {
       type: 'TEXT',
     },
   };
 
-  private readonly origin: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
+  readonly #origin: TableColumnFormatting<LlecoopOrderProduct, 'TEXT'> = {
     key: 'origin',
     title: 'Procedència',
-    propertyPath: 'origin',
-    sorting: true,
-    cssClasses: ['hidden md:flex md:min-w-[180px]'],
+    pathToKey: 'origin',
+    sorting: 'origin',
+    cssClasses: ['hidden @md:flex @md:min-w-[180px]'],
     formatting: {
       type: 'TEXT',
     },
   };
 
-  private readonly priceWithIva: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #priceWithIva: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'priceWithIva',
     title: 'Preu',
-    propertyPath: 'priceWithIva',
-    sorting: true,
+    pathToKey: 'priceWithIva',
+    sorting: 'priceWithIva',
     cssClasses: ['min-w-[120px]'],
     formatting: {
       type: 'CUSTOM',
@@ -76,16 +80,16 @@ export class LlecoopUserOrderDetailFormTableConfig
         const price = `<p>${Number(value).toFixed(2)} €</p>`;
         const unit = element?.unit ? getLlecoopProductBasedUnitText(element.unit) : '';
 
-        return this.sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
+        return this.#sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
       },
     },
   };
 
-  private readonly initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
+  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'INPUT'> = {
     key: 'initQuantity',
     title: 'Quantitat',
-    propertyPath: 'initQuantity',
-    sorting: true,
+    pathToKey: 'initQuantity',
+    sorting: 'initQuantity',
     cssClasses: ['w-[175px]', 'flex max-w-[175px]'],
     formatting: {
       type: 'INPUT',
@@ -113,11 +117,11 @@ export class LlecoopUserOrderDetailFormTableConfig
     }),
   };
 
-  private readonly initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
+  readonly #initPrice: TableColumnFormatting<LlecoopOrderProduct, 'CURRENCY'> = {
     key: 'initPrice',
     title: 'Preu total',
-    propertyPath: 'initPrice',
-    sorting: true,
+    pathToKey: 'initPrice',
+    sorting: 'initPrice',
     cssClasses: ['min-w-[100px]'],
     formatting: {
       type: 'CURRENCY',
@@ -129,26 +133,34 @@ export class LlecoopUserOrderDetailFormTableConfig
     },
   };
 
-  private readonly columnProperties: TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[] =
-    [
-      this.name,
-      productCategoryColumn<LlecoopOrderProduct>(),
-      this.provider,
-      this.origin,
-      this.priceWithIva,
-      this.initQuantity,
-      this.initPrice,
-    ];
+  readonly #columnProperties: Signal<
+    TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[]
+  > = signal([
+    this.#name,
+    categoryNameCell<LlecoopOrderProduct>({
+      key: 'category',
+      title: 'Categoria',
+      pathToKey: 'category',
+      cssClasses: ['hidden @lg:flex @lg:min-w-[170px] justify-start'],
+    }),
+    this.#provider,
+    this.#origin,
+    this.#priceWithIva,
+    this.#initQuantity,
+    this.#initPrice,
+  ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
-      sort: this.store.sorting,
+      columnProperties: this.#columnProperties,
+      sort: this.#userOrderStore.orderProductsSorting,
+      pagination: this.#userOrderStore.orderProductsPagination,
       caption: 'Llistat de productes',
-      getData: () => this.store.currentOrderProducts(),
+      count: this.#orderListStore.currentOrderCount,
+      getData: () => this.#orderListStore.currentOrderAvailableProducts(),
       extraRowStyles: (orderProduct: LlecoopOrderProduct) => {
         return orderProduct.initPrice > 0 ? 'marked-ok' : '';
       },
@@ -160,7 +172,7 @@ export class LlecoopUserOrderDetailFormTableConfig
           description: () => 'Treure producte',
           icon: () => 'cancel',
           execute: (orderProduct: LlecoopOrderProduct) =>
-            this.initQuantity?.isEditableConfig?.(orderProduct)?.onChanges?.(0, orderProduct),
+            this.#initQuantity?.isEditableConfig?.(orderProduct)?.onChanges?.(0, orderProduct),
         },
       },
     } as TableDefinition<LlecoopOrderProduct>;

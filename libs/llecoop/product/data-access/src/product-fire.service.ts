@@ -1,67 +1,36 @@
-import { inject, Injectable } from '@angular/core';
-import {
-  addDoc,
-  collection,
-  collectionData,
-  deleteDoc,
-  doc,
-  Firestore,
-  getDoc,
-  serverTimestamp,
-  updateDoc,
-} from '@angular/fire/firestore';
+import { Injectable } from '@angular/core';
+import { QueryConstraint, where } from '@angular/fire/firestore';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
-import { from, Observable, switchMap } from 'rxjs';
+import { latinize } from '@plastik/shared/latinize';
+import { EntityFireService } from '@plastik/shared/signal-state-data-access';
+
+import { StoreProductFilter } from './product-store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopProductFireService {
-  private readonly firestore = inject(Firestore);
-  private readonly productCollection = collection(this.firestore, 'product');
+export class LlecoopProductFireService extends EntityFireService<LlecoopProduct> {
+  protected readonly path = 'product';
 
-  getAll(): Observable<LlecoopProduct[]> {
-    return collectionData(this.productCollection, { idField: 'id' }).pipe(
-      switchMap(products => {
-        const productPromises = products.map(async product => {
-          let categoryDoc;
-          try {
-            categoryDoc = await getDoc(doc(this.firestore, product?.['categoryRef']));
-          } catch (error) {
-            categoryDoc = null;
-          }
-          return {
-            ...product,
-            category: categoryDoc?.data() || {},
-          } as LlecoopProduct;
-        });
-        return Promise.all(productPromises);
-      })
-    );
-  }
+  override getFilterConditions(filter: StoreProductFilter): QueryConstraint[] {
+    const conditions: QueryConstraint[] = [];
 
-  create(item: Partial<LlecoopProduct>) {
-    return from(
-      addDoc(this.productCollection, {
-        ...item,
-        createdAt: serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      })
-    );
-  }
+    if (Object.entries(filter).length > 0) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (key === 'text' && value) {
+          const normalizedText = latinize(value as string).toLowerCase();
+          conditions.push(
+            where('normalizedName', '>=', normalizedText),
+            where('normalizedName', '<=', normalizedText + '\uf8ff')
+          );
+        } else if (key === 'category' && value !== '') {
+          conditions.push(where('categoryRef', '==', value));
+        } else if (key === 'isAvailable' && value !== 'all') {
+          conditions.push(where('isAvailable', '==', value === 'on' ? true : false));
+        }
+      });
+    }
 
-  update(item: Partial<LlecoopProduct>) {
-    const document = doc(this.firestore, `product/${item.id}`);
-    return from(
-      updateDoc(document, {
-        ...item,
-        updatedAt: serverTimestamp(),
-      })
-    );
-  }
-
-  delete(item: LlecoopProduct) {
-    const document = doc(this.firestore, `product/${item.id}`);
-    return from(deleteDoc(document));
+    return conditions;
   }
 }

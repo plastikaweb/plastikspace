@@ -1,21 +1,24 @@
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, ElementRef, HostListener, inject, input } from '@angular/core';
 
 @Directive({
   selector: '[plastikDynamicBgColor]',
-  standalone: true,
 })
 export class SharedUtilDynamicBgColorDirective {
-  @Input() color!: string;
-  @HostListener('mouseenter') onMouseEnter(): void {
-    this.changeColor(this.color);
-  }
-  @HostListener('mouseleave') onMouseLeave(): void {
-    this.changeColor(null);
+  readonly #el = inject(ElementRef);
+
+  color = input('color');
+
+  @HostListener('mouseenter')
+  onMouseEnter(): void {
+    this.setBackgroundColor(this.color());
   }
 
-  constructor(private readonly el: ElementRef) {}
+  @HostListener('mouseleave')
+  onMouseLeave(): void {
+    this.setBackgroundColor('');
+  }
 
-  changeColor(color: string | null): void {
-    this.el.nativeElement.style.backgroundColor = color;
+  private setBackgroundColor(color: string): void {
+    this.#el.nativeElement.style.backgroundColor = color;
   }
 }

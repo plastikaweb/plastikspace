@@ -1,8 +1,20 @@
 import { DocumentReference } from '@angular/fire/firestore';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity, FormSelectOption } from '@plastik/core/entities';
+
 import { LlecoopBaseProduct } from './product';
 import { LlecoopUser } from './user';
+
+export type YearWeek = `${number}${number}${number}${number}-${number}${number}`;
+
+/**
+ * @description Checks if a given string is in the format of a YearWeek.
+ * @param {string} value - The string to check.
+ * @returns {value is YearWeek} - True if the string is in the correct format, false otherwise.
+ */
+export function isYearWeek(value: string): value is YearWeek {
+  return /^\d{4}-([0-4]\d|5[0-3])$/.test(value);
+}
 
 export type LlecoopOrderProduct = LlecoopBaseProduct & {
   initQuantity: number;
@@ -13,13 +25,36 @@ export type LlecoopOrderProduct = LlecoopBaseProduct & {
   reviewed?: boolean;
 };
 
+export type LlecoopOrderProductTotal = Pick<
+  LlecoopOrderProduct,
+  'id' | 'name' | 'price' | 'iva' | 'priceWithIva' | 'unit' | 'normalizedName' | 'link'
+> & {
+  quantity: number;
+  totalPrice: number;
+  reviewed: boolean;
+};
+
 export interface LlecoopOrder extends BaseEntity {
+  name: YearWeek;
   initTime?: Date;
   endTime?: Date;
-  status: 'waiting' | 'progress' | 'cancel' | 'done';
+  /**
+   * @description The status of the order.
+   * 'waiting' means the order is in standby, waiting for the admin and no user orders can be done.
+   * 'progress' means the order is being opened and the user can add products to it.
+   * 'cancelled' means the order has been cancelled by the admin.
+   * 'done' means the order has been closed and completed because the due date has passed
+   * @type {'waiting' | 'progress' | 'cancelled' | 'done'}
+   * @default 'waiting'
+   */
+  status: 'waiting' | 'progress' | 'cancelled' | 'done';
   availableProducts: LlecoopOrderProduct[];
   orderCount: number;
   orders?: LlecoopUserOrder[];
+  total?: LlecoopOrderProductTotal[];
+  userOrdersStatus?: {
+    [key in LlecoopUserOrder['status']]: number;
+  };
 }
 
 export interface LlecoopUserOrder extends BaseEntity {
@@ -28,6 +63,8 @@ export interface LlecoopUserOrder extends BaseEntity {
   orderRef: DocumentReference<LlecoopOrder>;
   cart: LlecoopOrderProduct[];
   address: string;
+  phone: string;
+  userNormalizedName: string;
   deliveryType: 'pickup' | 'delivery';
   deliveryTime: FormSelectOption['value'];
   deliveryDate: FormSelectOption['value'];
@@ -37,7 +74,19 @@ export interface LlecoopUserOrder extends BaseEntity {
   totalPrice: number;
   orderListId: EntityId | string;
   userId: EntityId;
-  status: 'waiting' | 'review' | 'deliver' | 'cancel';
+  userEmail?: string;
+  /**
+   * @description The status of the order
+   * 'waiting' means the order is done by the user and is waiting for the admin to review it.
+   * 'reviewed' means the order has been reviewed by the admin.
+   * 'delivered' means the order has been delivered to the user by the admin.
+   * 'blocked' means the order has been blocked by the admin.
+   * 'notReviewed' means the order has not been reviewed by the admin when the related order list date due date has passed.
+   * 'notDelivered' means the order has not been delivered by the admin when the related order list date due date has passed.
+   * @type {'waitingReview' | 'reviewed' | 'delivered' | 'blocked' | 'notReviewed' | 'notDelivered'}
+   * @default 'waitingReview'
+   */
+  status: 'waitingReview' | 'reviewed' | 'delivered' | 'blocked' | 'notReviewed' | 'notDelivered';
 }
 
 export const llecoopUserOrderTimeOptions: Record<
@@ -122,7 +171,7 @@ export const llecoopOrderStatus: Record<
     icon: 'sync',
     class: 'text-warning',
   },
-  cancel: {
+  cancelled: {
     label: 'Cancel·lada',
     icon: 'cancel',
     class: 'text-error',
@@ -138,24 +187,52 @@ export const llecoopUserOrderStatus: Record<
   LlecoopUserOrder['status'],
   { label: string; icon: string; class: string }
 > = {
-  waiting: {
-    label: 'Pendent',
+  waitingReview: {
+    label: 'Per revisar',
     icon: 'hourglass_empty',
     class: 'text-info',
   },
-  review: {
+  reviewed: {
     label: 'Cistella feta',
     icon: 'sync',
     class: 'text-warning',
   },
-  deliver: {
-    label: 'Cistella entregada',
+  delivered: {
+    label: 'Entregada',
     icon: 'local_shipping',
-    class: 'text-warning',
+    class: 'text-success',
   },
-  cancel: {
-    label: 'Cancel·lada',
-    icon: 'cancel',
+  blocked: {
+    label: 'Bloquejada',
+    icon: 'lock',
+    class: 'text-error',
+  },
+  notReviewed: {
+    label: 'No revisada',
+    icon: 'error',
+    class: 'text-error',
+  },
+  notDelivered: {
+    label: 'No entregada',
+    icon: 'error',
     class: 'text-error',
   },
 } as const;
+
+export const llecoopUserOrderStatusOptions: FormSelectOption[] = Object.keys(
+  llecoopUserOrderStatus
+).map(key => ({
+  value: key,
+  label: llecoopUserOrderStatus[key as LlecoopUserOrder['status']].label,
+  icon: llecoopUserOrderStatus[key as LlecoopUserOrder['status']].icon,
+  class: llecoopUserOrderStatus[key as LlecoopUserOrder['status']].class,
+}));
+
+export const llecoopOrderListStatusOptions: FormSelectOption[] = Object.keys(
+  llecoopOrderStatus
+).map(key => ({
+  value: key,
+  label: llecoopOrderStatus[key as LlecoopOrder['status']].label,
+  icon: llecoopOrderStatus[key as LlecoopOrder['status']].icon,
+  class: llecoopOrderStatus[key as LlecoopOrder['status']].class,
+}));

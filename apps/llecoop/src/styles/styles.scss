@@ -1,7 +1,8 @@
-@use 'material';
+@use '@angular/material' as mat;
+@use 'styles_theme-colors' as palette;
 @use 'theme';
-@use 'core_styles_util_material';
 @use 'loading';
+@use 'core_styles_util_material';
 
 @tailwind base;
 @tailwind components;
@@ -9,21 +10,43 @@
 
 @layer base {
   html {
-    font-size: 16px;
+    color-scheme: light dark;
+    font-size: 15px;
     font-optical-sizing: auto;
     font-style: normal;
+    font-synthesis: none;
+    font-family: var(--serif);
+    font-weight: 400;
     font-variation-settings: 'wdth' 100;
-    @apply box-border;
+    font-variant-numeric: tabular-nums;
+
+    @include mat.theme(
+      (
+        color: (
+          primary: palette.$primary-palette,
+          tertiary: palette.$tertiary-palette,
+        ),
+        typography: (
+          plain-family: var(--serif),
+          bold-weight: 800,
+          medium-weight: 600,
+          regular-weight: 400,
+        ),
+        density: 0,
+      )
+    );
   }
 
   *,
   *:before,
   *:after {
-    box-sizing: inherit;
+    @apply box-border;
   }
 
   body {
-    font-family: var(--sans-serif);
+    background: var(--mat-sys-surface);
+    color: var(--mat-sys-on-surface);
+    overflow: hidden;
   }
 
   h1,
@@ -65,44 +88,109 @@
   }
 
   a {
-    @apply text-secondary-dark;
+    @apply underline underline-offset-2 transition-colors duration-300;
+
     &:hover {
-      @apply underline underline-offset-2;
+      color: var(--mat-sys-secondary);
+      border-color: var(--mat-sys-secondary);
     }
   }
+
+  p {
+    @apply text-balance;
+  }
+
+  *::-webkit-scrollbar {
+    width: 0.8rem;
+
+    &-track {
+      @apply bg-gray-20 rounded-md;
+    }
+
+    &-thumb {
+      @apply bg-primary-light rounded-md;
+    }
+  }
+
+  // button:focus-visible,
+  // mat-list-item:focus-visible,
+  // mat-header-cell:focus-visible,
+  // a:focus-visible {
+  //   outline: 2px solid rgb(18, 9, 191) !important;
+  //   outline-offset: -2px !important;
+  // }
 
   plastik-shared-activity-ui-overlay .overlay-container {
     z-index: 9999;
   }
+}
 
-  plastik-core-cms-layout-feature {
-    .core-cms-container {
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-template-rows: 55px 1fr 55px;
-      min-block-size: 100vh;
-      min-block-size: 100dvh;
+@layer components {
+  @include mat.button-overrides(
+    (
+      filled-focus-state-layer-opacity: 0.2,
+    )
+  );
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--mat-sys-primary-container),
+      container-text-color: var(--mat-sys-primary),
+      standard-height: 55px,
+      mobile-height: 55px,
+    )
+  );
 
-      grid-template-areas: 'header header' 'content content' 'footer footer';
+  @include mat.list-overrides(
+    (
+      list-item-container-color: var(--mat-sys-surface-container),
+      list-item-selected-container-color: var(--mat-sys-primary-container),
+      list-item-hover-state-layer-opacity: 0.1,
+    )
+  );
 
-      plastik-core-cms-layout-ui-header {
-        grid-area: header;
-      }
-
-      plastik-core-cms-layout-ui-sidenav {
-        grid-area: content;
-
-        .mat-sidenav-container {
-          .mat-sidenav-content {
-            height: calc(100vh - 110px);
-          }
-        }
-      }
-
-      plastik-core-cms-layout-ui-footer {
-        grid-area: footer;
-        align-content: end;
-      }
-    }
+  .active {
+    @include mat.list-overrides(
+      (
+        list-item-container-color: var(--mat-sys-inverse-primary),
+      )
+    );
   }
+
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--mat-sys-secondary-container),
+      container-text-color: var(--mat-on-sys-container),
+      content-background-color: var(--mat-sys-background),
+      container-width: 310px,
+    )
+  );
+
+  @include mat.table-overrides(
+    (
+      background-color: var(--mat-sys-background),
+      header-headline-weight: bold,
+      row-item-label-text-tracking: normal,
+      row-item-outline-color: var(--mat-sys-outline-variant),
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      filled-disabled-label-text-color: var(--mat-sys-outline),
+      filled-disabled-input-text-color: var(--mat-sys-outline),
+    )
+  );
+
+  @include mat.card-overrides(
+    (
+      elevated-container-color: var(--mat-sys-inverse-on-surface),
+    )
+  );
+
+  @include mat.progress-spinner-overrides(
+    (
+      active-indicator-color: var(--mat-sys-inverse-primary),
+      size: 40px,
+    )
+  );
 }

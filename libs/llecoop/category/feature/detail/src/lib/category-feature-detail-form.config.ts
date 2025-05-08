@@ -2,6 +2,7 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { ColorPickerProps } from '@plastik/shared/form/color-picker';
 
 const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
   {
@@ -18,6 +19,9 @@ const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
           required: true,
           maxLength: 256,
           minLength: 2,
+          attributes: {
+            autocomplete: 'off',
+          },
         },
       },
       {
@@ -58,7 +62,11 @@ const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
             '#D2691E', // Chocolate
             '#8B4513', // SaddleBrown
           ],
-        },
+          attributes: {
+            role: 'button',
+            tabIndex: 0,
+          },
+        } as ColorPickerProps,
       },
       {
         key: 'description',
@@ -69,6 +77,9 @@ const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
           placeholder: 'Descripció',
           rows: 5,
           required: false,
+          attributes: {
+            autocomplete: 'off',
+          },
         },
       },
       {

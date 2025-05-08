@@ -1,6 +1,7 @@
 import pkg from 'firebase-admin';
 import { initializeApp } from 'firebase-admin/app';
 import * as functions from 'firebase-functions';
+
 const { auth } = pkg;
 
 initializeApp();

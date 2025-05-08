@@ -1,16 +1,19 @@
-<textarea
-  #ta
-  #autosize="cdkTextareaAutosize"
-  matInput
-  cdkTextareaAutosize
-  cdkAutosizeMinRows="1"
-  class="leading-6"
-  [required]="props.required || false"
-  [formControl]="formControl"
-  [formlyAttributes]="field"
-  [maxLength]="props.maxLength"
-  [minLength]="props.minLength"
-  [cdkAutosizeMaxRows]="to['maxRows']"></textarea>
-<mat-hint class="mt-3 mb-3 text-sm" [ngClass]="{ 'text-error': ta.value.length >= ta.maxLength }"
-  >{{ ta.value.length }} / {{ props.maxLength }} caràcters</mat-hint
->
+<mat-form-field class="w-full">
+  <mat-label>{{ props.label }}</mat-label>
+  <textarea
+    #ta
+    #autosize="cdkTextareaAutosize"
+    matInput
+    cdkTextareaAutosize
+    cdkAutosizeMinRows="1"
+    class="w-full leading-6"
+    [required]="props.required || false"
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+    [maxLength]="props.maxLength"
+    [minLength]="props.minLength"
+    [cdkAutosizeMaxRows]="to['maxRows']"></textarea>
+  <mat-hint class="text-sm" [ngClass]="{ 'text-error': ta.value.length >= ta.maxLength }"
+    >{{ ta.value.length }} / {{ props.maxLength }} caràcters</mat-hint
+  >
+</mat-form-field>

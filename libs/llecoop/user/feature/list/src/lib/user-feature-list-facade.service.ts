@@ -1,66 +1,59 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { inject, Injectable, signal } from '@angular/core';
+import { filter, take } from 'rxjs';
 
+import { inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
-import { LLecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopUserStore, StoreUserFilter } from '@plastik/llecoop/user/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { latinize } from '@plastik/shared/latinize';
+import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
 import { TableSorting } from '@plastik/shared/table/entities';
-import { filter, take } from 'rxjs';
+
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
 import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserListFacadeService implements TableWithFilteringFacade<LlecoopUser> {
-  private readonly store = inject(LLecoopUserStore);
-  private readonly table = inject(LlecoopUserSearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+export class LlecoopUserListFacadeService
+  implements TableWithFilteringFacade<LlecoopUser, StoreUserFilter>
+{
+  readonly #store = inject(llecoopUserStore);
+  readonly #table = inject(LlecoopUserSearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #router = inject(Router);
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'user')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'user')[0]);
+  routingToDetailPage = signal({ visible: true, label: 'Afegir sòcia' });
+  tableDefinition = this.#table.getTableDefinition();
+  filterFormConfig = getLlecoopUserSearchFeatureFormConfig();
+  filterCriteria = this.#store.filter;
 
-  tableDefinition = this.table.getTableDefinition();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-    role: 'all',
-  });
-  tableFilterPredicate = (data: LlecoopUser, criteria: Record<string, string>) => {
-    let filterText = true;
-    let filterRole = true;
-    for (const key in criteria) {
-      const value = criteria[key].toLowerCase();
-
-      if (key === 'text') {
-        filterText = [data.email].some(text => latinize(text?.toLowerCase() || '').includes(value));
-      }
-
-      if (key === 'role') {
-        filterRole =
-          value === 'all' ||
-          (value === 'admin' && !!data.isAdmin) ||
-          (value === 'soci' && !data.isAdmin);
-      }
-    }
-    return filterText && filterRole;
-  };
-  routingToDetailPage = signal({ visible: true });
-
-  formStructure = getLlecoopUserSearchFeatureFormConfig();
-
-  onTableSorting({ active, direction }: TableSorting): void {
-    this.store.setSorting([active, direction]);
+  onChangeFilterCriteria(criteria: StoreUserFilter): void {
+    this.#router.navigate([], {
+      queryParams: { ...criteria, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUser>): void {
+    this.#router.navigate([], {
+      queryParams: { ...pagination },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  onTableSorting({ active, direction }: TableSorting): void {
+    this.#router.navigate([], {
+      queryParams: { active, direction, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableActionDelete(item: LlecoopUser): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar usuari',
           `Segur que vols eliminar l'usuari "${item.email}"?`,
@@ -68,7 +61,7 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<Ll
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.store.delete(item));
+        .subscribe(() => this.#store.delete(item));
     }
   }
 }

@@ -1,47 +1,40 @@
 <div
-  class="block overflow-auto z-10 mt-0 border-t border-solid md:mt-4 border-gray-10 table-wrapper">
+  class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-tiny">
   <mat-table
     class="table w-full"
     matSort
     matSortDisableClear
     multiTemplateDataRows
     [dataSource]="dataSource"
-    [attr.aria-label]="caption()"
-    [matSortActive]="matSort?.active || ''"
-    [matSortDirection]="matSort?.direction || ''"
+    [attr.aria-label]="caption() || 'tabular data'"
+    [matSortActive]="matSort()?.active || ''"
+    [matSortDirection]="matSort()?.direction || ''"
     (matSortChange)="onChangeSorting($event)">
-    @if (caption()) {
-      <caption class="sr-only">
-        {{
-          caption()
-        }}
-      </caption>
-    }
-
     <!-- Columns -->
     @for (column of columnProperties(); track column.key) {
       <ng-container [matColumnDef]="column.key" [sticky]="column.sticky">
         <mat-header-cell
           *matHeaderCellDef
-          [mat-sort-header]="column.key"
+          [sortActionDescription]="column.sorting ? `Ordenar per ${column.title}` : ''"
+          [mat-sort-header]="column.sorting || ''"
           [disabled]="!column.sorting"
           [ngClass]="column.cssClasses?.[0] || ''">
           {{ column.title }}
         </mat-header-cell>
 
         <mat-cell
-          *matCellDef="let row; let i = index"
+          *matCellDef="let row; let i = dataIndex"
           class="py-sub"
-          [plastikTableCellTitle]="column.showTitle ?? true"
           [ngClass]="setCellNgClass(column)">
           @switch (column.formatting.type) {
             @case ('LINK') {
-              <div
-                tabindex="0"
+              <a
                 [ngClass]="column.cssClasses?.[1] || ''"
+                [routerLink]="column.link ? column.link(row) : null"
+                [queryParams]="column.queryParams ? column.queryParams(row) : null"
                 [innerHTML]="row | safeFormatted: column : i + 1"
-                (click)="onGetRoute($event)"
-                (keyup)="onGetRoute($event)"></div>
+                (click)="$event.stopPropagation()">
+              </a>
             }
             @case ('INPUT') {
               @if (column.isEditableConfig?.(row); as editable) {
@@ -59,6 +52,9 @@
                         matInput
                         [value]="row[column.key]"
                         [placeholder]="editable.attributes.placeholder || ''"
+                        [attr.aria-label]="
+                          row.name + ': ' + (editable.attributes.placeholder || '')
+                        "
                         (change)="onInputChange($event, row, editable)" />
                       @if (attributes?.suffix) {
                         <span matTextSuffix>{{ attributes?.suffix }}</span>
@@ -82,6 +78,9 @@
                         [attr.max]="editable.attributes.max || 100"
                         [attr.step]="editable.attributes.step || 1"
                         [placeholder]="editable.attributes.placeholder || ''"
+                        [attr.aria-label]="
+                          row.name + ': ' + (editable.attributes.placeholder || '')
+                        "
                         (change)="onInputChange($event, row, editable)" />
                       @if (attributes?.suffix) {
                         <span matTextSuffix>{{ attributes?.suffix }}</span>
@@ -93,6 +92,7 @@
                     <mat-select
                       [value]="row[column.key]"
                       [multiple]="editable.attributes.multiple || false"
+                      [attr.aria-label]="row.name + ': ' + (editable.attributes.placeholder || '')"
                       (selectionChange)="onInputChange($event, row, editable)">
                       @for (option of editable.attributes.options; track option.value) {
                         <mat-option [value]="option.value">
@@ -106,18 +106,21 @@
                     <mat-checkbox
                       [value]="row[column.key]"
                       [checked]="editable.attributes.checked || false"
+                      [attr.aria-label]="row.name + ': ' + (editable.attributes.placeholder || '')"
                       (change)="onInputChange($event, row, editable)"></mat-checkbox>
                   }
 
                   @if (isToggle(editable)) {
                     <mat-slide-toggle
                       [checked]="row[column.key] || false"
+                      [aria-label]="row.name + ': ' + (editable.attributes.placeholder || '')"
                       (change)="onInputChange($event, row, editable)"></mat-slide-toggle>
                   }
 
                   @if (isRadio(editable)) {
                     <mat-radio-group
                       [value]="row[column.key]"
+                      [attr.aria-label]="row.name + ': ' + (editable.attributes.placeholder || '')"
                       (change)="onInputChange($event, row, editable)">
                       @for (option of editable.attributes.options; track option.value) {
                         <mat-radio-button [value]="option.value">
@@ -137,9 +140,15 @@
                       }
                       <textarea
                         matInput
-                        class="overflow-y-scroll leading-6"
+                        cdkTextareaAutosize
+                        cdkAutosizeMinRows="1"
+                        cdkAutosizeMaxRows="4"
+                        autocomplete="off"
                         [value]="row[column.key] || ''"
                         [placeholder]="editable.attributes.placeholder || ''"
+                        [attr.aria-label]="
+                          row.name + ': ' + (editable.attributes.placeholder || '')
+                        "
                         [rows]="editable.attributes.rows || 2"
                         (change)="onInputChange($event, row, editable)"></textarea>
                       @if (attributes?.suffix) {
@@ -148,6 +157,25 @@
                     </mat-form-field>
                   }
                 </div>
+              }
+            }
+
+            @case ('IMAGE') {
+              <img
+                fill
+                priority
+                placeholder="https://placehold.co/200"
+                [alt]="row.name || ''"
+                [ngSrc]="row[column.key] || ''"
+                [ngClass]="column.cssClasses?.[1] || ''" />
+            }
+
+            @case ('COMPONENT') {
+              @let config = row | safeFormatted: column;
+
+              @if (config && isDynamicComponent(config)) {
+                <ng-container *ngComponentOutlet="config.component; inputs: config.inputs">
+                </ng-container>
               }
             }
 
@@ -166,8 +194,10 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell
           *matHeaderCellDef
-          class="overflow-visible mat-cell-actions"
-          [ngClass]="actionsColStyles() || ''"></mat-header-cell>
+          class="overflow-visible justify-center mat-cell-actions"
+          [ngClass]="actionsColStyles() || ''">
+          Accions
+        </mat-header-cell>
         <mat-cell
           *matCellDef="let element"
           class="overflow-visible mat-cell-actions py-sub"
@@ -177,11 +207,11 @@
               <button
                 type="button"
                 mat-icon-button
-                color="primary"
                 [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
                 [attr.aria-label]="action.value?.description(element) || ''"
                 [matTooltip]="action.value?.description(element) || ''"
-                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false">
+                [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
+                (click)="$event.stopPropagation()">
                 <mat-icon>edit</mat-icon>
               </button>
             } @else if (action.value?.visible(element) && action.value?.type === 'input') {
@@ -191,25 +221,25 @@
                 [attr.aria-label]="action.value?.description(element) || ''"
                 [matTooltip]="action.value?.description(element) || ''"
                 [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                (click)="getChangedData.emit(action.value?.execute(element))">
+                (click)="
+                  $event.stopPropagation(); getChangedData.emit(action.value?.execute(element))
+                ">
                 <mat-icon>delete</mat-icon>
               </button>
             } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
               <button
                 type="button"
                 mat-icon-button
-                color="warn"
                 [attr.aria-label]="action.value?.description(element) || ''"
                 [matTooltip]="action.value?.description(element) || ''"
                 [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
-                (click)="onDelete($event, element)">
+                (click)="$event.stopPropagation(); onDelete($event, element)">
                 <mat-icon>delete</mat-icon>
               </button>
             } @else if (action.value?.visible(element)) {
               <button
                 type="button"
                 mat-icon-button
-                color="accent"
                 [attr.aria-label]="action.value?.description(element) || ''"
                 [matTooltip]="action.value?.description(element) || ''"
                 [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -228,16 +258,19 @@
 
     @if (expandable()) {
       <ng-container matColumnDef="expand" sticky="true">
-        <mat-header-cell *matHeaderCellDef aria-label="row actions">&nbsp;</mat-header-cell>
-        <mat-cell *matCellDef="let element" class="py-sub">
+        <mat-header-cell *matHeaderCellDef aria-label="row" class="max-w-[70px]" aria-hidden="true"
+          ><span class="invisible">expand</span></mat-header-cell
+        >
+        <mat-cell *matCellDef="let element" class="max-w-[70px]">
           <button
             mat-icon-button
             aria-label="expand row"
+            class="-left-sub"
             (click)="
-              expandedElement.set(expandedElement() === element ? null : element);
-              $event.stopPropagation()
+              $event.stopPropagation();
+              expandedElement.set(expandedElement()?.id === element.id ? null : element)
             ">
-            @if (expandedElement() === element) {
+            @if (expandedElement()?.id === element.id) {
               <mat-icon>keyboard_arrow_up</mat-icon>
             } @else {
               <mat-icon>keyboard_arrow_down</mat-icon>
@@ -250,14 +283,16 @@
       <ng-container matColumnDef="expandedDetail">
         <mat-cell
           *matCellDef="let element"
-          class="justify-evenly"
+          class="justify-evenly border-b-0"
           [attr.colspan]="columnsToDisplay().length"
-          [@detailExpand]="element === expandedElement() ? 'expanded' : 'collapsed'">
-          <ng-container
-            *ngTemplateOutlet="
-              expandedDetailTpl();
-              context: { element, isExpanded: element.id === expandedElement()?.id }
-            "></ng-container>
+          [@detailExpand]="element.id === expandedElement()?.id ? 'expanded' : 'collapsed'">
+          @if (element.id === expandedElement()?.id) {
+            <ng-container
+              *ngTemplateOutlet="
+                expandedDetailTpl();
+                context: { element, isExpanded: element.id === expandedElement()?.id }
+              "></ng-container>
+          }
         </mat-cell>
       </ng-container>
     }
@@ -269,19 +304,21 @@
       <mat-row
         *matRowDef="let row; columns: columnsToDisplay()"
         sticky="true"
-        class="[&:nth-child(1n)]:bg-gray-5 [&:nth-child(3n)]:bg-white"
-        [class.expanded-row]="expandedElement() === row"
+        class="expandable-row"
+        [class.expanded-row]="expandedElement()?.id === row.id"
         [ngClass]="extraRowStyles()?.(row) || ''"
-        (click)="expandedElement.set(expandedElement() === row ? null : row)"></mat-row>
+        (click)="
+          $event.stopPropagation(); expandedElement.set(expandedElement() === row ? null : row)
+        "></mat-row>
       <mat-row
         *matRowDef="let row; columns: ['expandedDetail']"
         sticky="true"
-        class="expanded-detail-row"></mat-row>
+        class="table-row height-0"></mat-row>
     } @else {
       <!-- Row that will be used to display the regular data -->
       <mat-row
         *matRowDef="let row; columns: columnsToDisplay()"
-        class="even:bg-gray-5 odd:bg-white"
+        [style.height]="rowHeight()"
         [ngClass]="extraRowStyles()?.(row) || ''"></mat-row>
     }
   </mat-table>
@@ -300,17 +337,10 @@
 @if (!noPagination()) {
   <mat-paginator
     #matPaginator
-    class="mt-md jus"
-    [hidePageSize]="paginationVisibility()?.hidePageSize"
+    class="justify-end mt-md"
+    [pageIndex]="pagination()?.pageIndex"
+    [pageSize]="pagination()?.pageSize"
     [length]="resultsLength()"
-    [ngClass]="{
-      'paginator--hide': paginationVisibility()?.hideRangeLabel,
-      'paginator--hide-range-buttons': paginationVisibility()?.hideRangeButtons,
-    }"
-    [pageIndex]="pagination()?.pageIndex || 0"
-    [pageSize]="pagination()?.pageSize || resultsLength()"
-    [pageSizeOptions]="pageSizeOptions()"
-    [showFirstLastButtons]="!paginationVisibility()?.hidePaginationFirstLastButtons"
     (page)="onChangePagination($event)">
   </mat-paginator>
 }

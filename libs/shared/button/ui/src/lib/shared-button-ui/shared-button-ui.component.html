@@ -6,14 +6,18 @@
     [disabled]="config.disabled"
     [attr.aria-label]="config.ariaLabel"
     [attr.data-test]="config.dataTestId"
-    (click)="onClick()"
-  >
+    (click)="onClick()">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </button>
 }
 
 @if (config.type === 'link') {
-  <a class="block" target="_blank" [attr.aria-label]="config.ariaLabel" [href]="config.link" [attr.data-test]="config.dataTestId">
+  <a
+    class="block"
+    target="_blank"
+    [attr.aria-label]="config.ariaLabel"
+    [href]="config.link"
+    [attr.data-test]="config.dataTestId">
     <ng-container *ngTemplateOutlet="content">button content</ng-container>
   </a>
 }
@@ -26,8 +30,7 @@
     @if (element.type === 'icon') {
       <svg-icon
         [src]="(element.content | returnAsObservable | ngrxPush)?.iconPath || ''"
-        [svgClass]="(element.content | returnAsObservable | ngrxPush)?.svgClass || ''"
-      ></svg-icon>
+        [svgClass]="(element.content | returnAsObservable | ngrxPush)?.svgClass || ''"></svg-icon>
     }
   }
 </ng-template>

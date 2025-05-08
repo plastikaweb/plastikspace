@@ -1,6 +1,7 @@
-import { signal } from '@angular/core';
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+
 import { DetailItemFormComponent } from './detail-item-form.component';
 import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
 
@@ -12,11 +13,14 @@ describe('DetailItemFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DetailItemFormComponent],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         provideRouter([]),
         {
           provide: DETAIL_ITEM_VIEW_FACADE,
           useValue: {
-            formStructure: signal([]),
+            formConfig: {
+              getConfig: () => [],
+            },
             viewConfig: signal({}),
           },
         },
@@ -28,7 +32,7 @@ describe('DetailItemFormComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

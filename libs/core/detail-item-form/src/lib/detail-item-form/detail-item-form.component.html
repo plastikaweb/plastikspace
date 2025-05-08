@@ -3,21 +3,20 @@
 @let formConfig = facade.formConfig;
 
 <div
-  class="flex flex-col flex-wrap items-center justify-center gap-sm md:flex-row md:justify-between">
-  <h2 class="flex items-center content-center h4 gap-sub">
-    <mat-icon class="text-[40px] h-[40px] w-[40px]">{{ viewConfig.icon }}</mat-icon>
+  class="flex flex-col flex-wrap justify-center items-center gap-sm md:flex-row md:justify-between">
+  <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
+    <mat-icon class="text-[40px] size-[40px]">{{ viewConfig.icon }}</mat-icon>
     <span>{{ viewConfig.title | titlecase }}</span>
   </h2>
 
   <div class="flex flex-col items-center sm:flex-row sm:justify-end gap-sm">
     @if (viewExtraActions.length) {
-      @for (action of viewExtraActions; track action) {
+      @for (action of viewExtraActions; track action.id) {
         @if (action.type === 'button') {
           <button
             type="button"
-            mat-flat-button
-            color="accent"
-            class="w-full text-white sm:w-auto"
+            mat-stroked-button
+            class="w-full sm:w-auto"
             [disabled]="action?.disabled()"
             (click)="action?.execute()">
             <mat-icon>{{ action.icon }}</mat-icon> {{ action.label }}
@@ -25,7 +24,7 @@
         }
         @if (action.type === 'text') {
           <div
-            class="flex items-center justify-center w-full gap-tiny sm:w-auto"
+            class="flex justify-center items-center w-full gap-tiny sm:w-auto"
             [ngClass]="action.styles">
             <mat-icon>{{ action.icon }}</mat-icon>
             {{ action.text }}
@@ -33,18 +32,21 @@
         }
       }
     }
-    <button type="button" mat-flat-button color="accent" class="text-white" [routerLink]="['../']">
-      <mat-icon>arrow_back</mat-icon> Tornar al llistat
-    </button>
+    @if (!facade.hideBackBtn?.()) {
+      <button type="button" mat-stroked-button [routerLink]="['../']">
+        <mat-icon>arrow_back</mat-icon> Tornar al llistat
+      </button>
+    }
   </div>
 </div>
 
 <plastik-shared-form-feature
   class="block w-full"
-  [ngClass]="{ 'lg:w-10/12 xxl:w-1/2': !formConfig.getFormFullWidth }"
+  [ngClass]="{ '@lg:w-10/12 @xxl:w-1/2': !formConfig.getFormFullWidth }"
   [fields]="formConfig.getConfig() || []"
   [model]="facade.model?.() || {}"
-  [submitConfig]="formConfig.getSubmitFormConfig?.(!!facade.model?.())"
-  (temporaryChangeEvent)="onChange($event)"
-  (changeEvent)="onSubmit($event)">
+  [submitConfig]="formConfig.getSubmitFormConfig?.(!!facade.model?.()) || {}"
+  (temporaryChangeEvent)="facade.onFormTemporaryChange?.($event)"
+  (pendingChangesEvent)="pendingChanges.set($event)"
+  (changeEvent)="facade.onSubmit($event); pendingChanges.set(false)">
 </plastik-shared-form-feature>

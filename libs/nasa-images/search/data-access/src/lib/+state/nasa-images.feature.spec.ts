@@ -1,15 +1,17 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { Action } from '@ngrx/store';
-
 import { NasaImage } from '@plastik/nasa-images/search/entities';
+
 import { createDummyNasaImagesSearch, createNasaImagesEntity } from '../nasa-images.mock';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 import {
+  initialNasaImagesState,
   name,
-  reducer,
   NasaImagesPartialState,
   NasaImagesState,
-  initialNasaImagesState,
   nasaMediaAdapter,
+  reducer,
   selectNasaImagesFeature,
 } from './nasa-images.feature';
 
@@ -72,9 +74,16 @@ describe('NasaImages Selectors', () => {
   let state: NasaImagesPartialState;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideExperimentalZonelessChangeDetection()],
+    });
     state = {
       [name]: nasaMediaAdapter.setAll(
-        [createNasaImagesEntity('PRODUCT-AAA'), createNasaImagesEntity('PRODUCT-BBB'), createNasaImagesEntity('PRODUCT-CCC')],
+        [
+          createNasaImagesEntity('PRODUCT-AAA'),
+          createNasaImagesEntity('PRODUCT-BBB'),
+          createNasaImagesEntity('PRODUCT-CCC'),
+        ],
         {
           ...initialNasaImagesState,
           selectedId: 'PRODUCT-BBB',
@@ -82,7 +91,7 @@ describe('NasaImages Selectors', () => {
           loading: false,
           isActiveSearch: true,
           count: 3,
-        },
+        }
       ),
     };
   });

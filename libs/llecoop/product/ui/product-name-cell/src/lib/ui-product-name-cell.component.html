@@ -1,0 +1,24 @@
+<div class="mb-tiny">
+  <a [ngClass]="nameStyle()" [routerLink]="[product().id]">
+    {{ product().name }}
+  </a>
+  @if (product().info) {
+    <p class="text-sm font-bold">{{ product().info }}</p>
+  }
+</div>
+
+@if (product().provider || product().origin) {
+  <ul class="hidden md:block">
+    @if (product().provider) {
+      <li>
+        {{ product().provider }}
+      </li>
+    }
+
+    @if (product().origin) {
+      <li>
+        {{ product().origin }}
+      </li>
+    }
+  </ul>
+}

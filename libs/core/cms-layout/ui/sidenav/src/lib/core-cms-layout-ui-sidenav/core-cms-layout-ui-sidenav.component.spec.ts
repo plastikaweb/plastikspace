@@ -1,7 +1,10 @@
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideMockStore } from '@ngrx/store/testing';
 
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { CoreCmsLayoutUiSidenavComponent } from './core-cms-layout-ui-sidenav.component';
 
 describe('CoreCmsLayoutUiSidenavComponent', () => {
@@ -11,10 +14,12 @@ describe('CoreCmsLayoutUiSidenavComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CoreCmsLayoutUiSidenavComponent, NoopAnimationsModule],
+      providers: [provideExperimentalZonelessChangeDetection(), provideMockStore()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CoreCmsLayoutUiSidenavComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {

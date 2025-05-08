@@ -71,7 +71,12 @@ import { TitleStrategy } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore } from '@ngrx/router-store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { CustomRouterSerializer, PrefixTitleService, routerReducers, RouterStateEffects } from '@plastik/core/router-state';
+import {
+  CustomRouterSerializer,
+  PrefixTitleService,
+  routerReducers,
+  RouterStateEffects,
+} from '@plastik/core/router-state';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -83,7 +88,7 @@ bootstrapApplication(AppComponent, {
         },
       }),
       EffectsModule.forRoot([RouterStateEffects]),
-      isDevMode() ? StoreDevtoolsModule.instrument({ name: environment.name, maxAge: 25 }) : [],
+      isDevMode() ? StoreDevtoolsModule.instrument({ name: environment.name, maxAge: 25 }) : []
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,

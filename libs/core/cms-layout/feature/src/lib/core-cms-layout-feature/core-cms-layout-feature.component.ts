@@ -1,3 +1,6 @@
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { map, Subject, takeUntil } from 'rxjs';
+
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import {
@@ -24,14 +27,11 @@ import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer'
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
-import { NotificationFacade } from '@plastik/shared/notification/data-access';
+import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { map, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'plastik-core-cms-layout-feature',
-  standalone: true,
   imports: [
     RouterLink,
     NgTemplateOutlet,
@@ -55,32 +55,30 @@ import { map, Subject, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterViewInit {
-  private readonly layoutFacade = inject(LayoutFacade);
-  private readonly notificationFacade = inject(NotificationFacade);
-  private readonly destroyed$ = new Subject<void>();
-  private readonly breakpointObserver = inject(BreakpointObserver);
+  readonly #layoutFacade = inject(LayoutFacade);
+  readonly #destroyed$ = new Subject<void>();
+  readonly #breakpointObserver = inject(BreakpointObserver);
+  readonly #zone = inject(NgZone);
 
+  protected readonly notificationStore = inject(notificationStore);
   protected readonly hideFooter = input(false);
   protected readonly widgetsContainer = viewChild('widgetsContainer', {
     read: ViewContainerRef,
   });
   protected readonly currentDate = new Date();
-  protected readonly sidenavOpened$ = this.layoutFacade.sidenavOpened$;
-  protected readonly isMobile$ = this.layoutFacade.isMobile$;
-  protected readonly isActive$ = this.layoutFacade.isActive$;
-  protected readonly sidenavConfig = this.layoutFacade.sidenavConfig;
-  protected readonly notificationConfig$ = this.notificationFacade.config$;
-  headerConfig = this.layoutFacade.headerConfig;
+  protected readonly sidenavOpened$ = this.#layoutFacade.sidenavOpened$;
+  protected readonly isMobile$ = this.#layoutFacade.isMobile$;
+  protected readonly isActive$ = this.#layoutFacade.isActive$;
+  protected readonly sidenavConfig = this.#layoutFacade.sidenavConfig;
+  readonly headerConfig = this.#layoutFacade.headerConfig;
   protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
-
-  private readonly zone = inject(NgZone);
 
   ngOnInit(): void {
     // TODO: Isolate breakpoint observer into its own service https://github.com/plastikaweb/plastikspace/issues/68
-    this.breakpointObserver
+    this.#breakpointObserver
       .observe([Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Medium])
       .pipe(
-        takeUntil(this.destroyed$),
+        takeUntil(this.#destroyed$),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         map((handset: any) => handset.matches)
       )
@@ -91,28 +89,28 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.zone.runOutsideAngular(() => this.createWidgets());
+    this.#zone.runOutsideAngular(() => this.createWidgets());
   }
 
   ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
+    this.#destroyed$.next();
+    this.#destroyed$.complete();
   }
 
   onNotificationDismiss(): void {
-    this.notificationFacade.dismiss();
+    this.notificationStore.dismiss();
   }
 
   protected onSendAction(action: () => void): void {
-    this.zone.runOutsideAngular(() => action());
+    this.#zone.runOutsideAngular(() => action());
   }
 
   onToggleSidenav(opened?: boolean): void {
-    this.zone.runOutsideAngular(() => this.layoutFacade.toggleSidenav(opened));
+    this.#zone.runOutsideAngular(() => this.#layoutFacade.toggleSidenav(opened));
   }
 
   onSetIsMobile(isMobile: boolean): void {
-    this.zone.runOutsideAngular(() => this.layoutFacade.setIsMobile(isMobile));
+    this.#zone.runOutsideAngular(() => this.#layoutFacade.setIsMobile(isMobile));
   }
 
   private createWidgets(): void {

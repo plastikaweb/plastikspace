@@ -6,6 +6,7 @@ import {
   NasaImagesSearchApiParams,
   NasaImagesSearchApiResponse,
 } from '@plastik/nasa-images/search/entities';
+import { latinize } from '@plastik/shared/latinize';
 
 @Injectable({
   providedIn: 'root',
@@ -36,6 +37,7 @@ export class NasaImagesApiService extends ApiService<NasaImagesSearch, NasaImage
       return {
         id,
         name,
+        normalizedName: latinize(name).toLowerCase(),
         description,
         keywords,
         dateCreated: new Date(date_created),

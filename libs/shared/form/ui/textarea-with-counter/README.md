@@ -1,27 +1,49 @@
 # textarea-with-counter
 
+## Table of Contents
+
 - [textarea-with-counter](#textarea-with-counter)
+  - [Table of Contents](#table-of-contents)
   - [Description](#description)
-  - [HTML element](#html-element)
-  - [How to use with formly](#how-to-use-with-formly)
+  - [Usage](#usage)
+    - [HTML Element](#html-element)
+    - [Module Setup](#module-setup)
+    - [Formly Configuration](#formly-configuration)
+    - [Basic Example](#basic-example)
+  - [API Reference](#api-reference)
+    - [Props Interface](#props-interface)
+    - [Return Value](#return-value)
+  - [Troubleshooting](#troubleshooting)
+    - [Common Issues](#common-issues)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-A textarea formly type with a counter to show the number of characters typed.
+A formly controller that provides a textarea input with a character counter. It displays the current number of characters and enforces a maximum length limit.
 
-## HTML element
+## Usage
+
+### HTML Element
 
 `<plastik-textarea-with-counter-type>`
 
-## How to use with formly
+### Module Setup
 
-Use a `FormlyFieldConfig` with the `textarea-with-counter` type:
+To use the `textarea-with-counter` type, you need to import the following modules in your component:
+
+- `TextareaWithCounterFormlyModule`
+- [SharedFormFeatureModule](../../feature/README.md)
+
+### Formly Configuration
+
+The component type name is: `textarea-with-counter`
+
+### Basic Example
 
 ```typescript
 const formly: FormlyFieldConfig = {
   key: 'description',
-  type: 'textarea',
+  type: 'textarea-with-counter',
   props: {
     label: 'Description',
     required: true,
@@ -30,6 +52,44 @@ const formly: FormlyFieldConfig = {
   },
 };
 ```
+
+## API Reference
+
+### Props Interface
+
+```typescript
+interface TextareaWithCounterProps extends FormlyFieldProps {
+  /**
+   * Number of visible text rows
+   * @default 3
+   */
+  rows: number;
+
+  /**
+   * Maximum number of characters allowed
+   * @default 100
+   */
+  maxLength: number;
+
+  /**
+   * Placeholder text for the textarea
+   * @default ""
+   */
+  placeholder?: string;
+}
+```
+
+### Return Value
+
+Returns a string containing the textarea content.
+
+## Troubleshooting
+
+### Common Issues
+
+1. Counter not updating: Check if maxLength is properly set
+2. Textarea size issues: Adjust the rows property
+3. Form validation errors: Ensure required and maxLength properties are correctly configured
 
 ## Running unit tests
 

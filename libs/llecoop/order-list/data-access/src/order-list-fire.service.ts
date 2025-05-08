@@ -1,56 +1,154 @@
-import { inject, Injectable } from '@angular/core';
+import { catchError, map, takeUntil } from 'rxjs';
+
+import { Injectable } from '@angular/core';
 import {
-  addDoc,
   collection,
   collectionData,
   collectionGroup,
-  deleteDoc,
-  doc,
-  Firestore,
+  DocumentData,
+  limit,
+  orderBy,
   query,
-  serverTimestamp,
+  QueryConstraint,
+  startAfter,
   Timestamp,
-  updateDoc,
   where,
 } from '@angular/fire/firestore';
-import { LlecoopOrder, LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { from, Observable } from 'rxjs';
+import { LlecoopOrder, LlecoopProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { latinize } from '@plastik/shared/latinize';
+import {
+  EntityFireService,
+  StoreFirebaseCrudPagination,
+} from '@plastik/shared/signal-state-data-access';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
+
+import { OrderListStoreFirebaseCrudState, StoreOrderListFilter } from './order-list-store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListFireService {
-  private readonly firestore = inject(Firestore);
-  private readonly orderListCollection = collection(this.firestore, 'order-list');
-  private readonly orderListOrdersGroup = collectionGroup(this.firestore, 'orders');
+export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder> {
+  protected readonly path = 'order-list';
 
-  getAll(): Observable<LlecoopOrder[]> {
-    return collectionData(this.orderListCollection, { idField: 'id' }) as Observable<
-      LlecoopOrder[]
-    >;
+  readonly #ordersGroup = collectionGroup(this.firestore, 'orders');
+  readonly #productCollection = collection(this.firestore, 'product');
+
+  override getFilterConditions(filter: StoreOrderListFilter): QueryConstraint[] {
+    const conditions: QueryConstraint[] = [];
+
+    if (Object.entries(filter).length > 0) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (key === 'text' && value) {
+          const normalizedText = latinize(value as string).toLowerCase();
+          conditions.push(
+            where('normalizedName', '>=', normalizedText),
+            where('normalizedName', '<=', normalizedText + '\uf8ff')
+          );
+        } else if (value) {
+          conditions.push(where(key, '==', value));
+        }
+      });
+    }
+
+    return conditions;
   }
 
-  create(item: Partial<LlecoopOrder>) {
-    return from(
-      addDoc(this.orderListCollection, {
-        ...item,
-        createdAt: Timestamp.now(),
-      })
+  protected override getSortingConditions(sorting: TableSortingConfig): QueryConstraint[] {
+    const [active, direction] = sorting;
+    const conditions: QueryConstraint[] = [];
+    conditions.push(orderBy(active, direction || 'asc'));
+
+    if (active === 'orderCount' || active === 'status') {
+      conditions.push(orderBy('normalizedName', direction || 'asc'));
+    }
+
+    return conditions;
+  }
+
+  protected override getPaginationConditions(
+    pagination: StoreFirebaseCrudPagination<LlecoopOrder>,
+    activeField: string
+  ): QueryConstraint[] {
+    const { pageSize, pageIndex, pageLastElements } = pagination;
+    const conditions: QueryConstraint[] = [];
+
+    conditions.push(limit(pageSize));
+
+    if (pageIndex > 0 && pageLastElements?.has(pageIndex - 1)) {
+      const lastDoc = pageLastElements.get(pageIndex - 1);
+      if (activeField === 'orderCount' || activeField === 'status') {
+        conditions.push(startAfter(lastDoc?.[activeField], lastDoc?.normalizedName));
+      } else {
+        conditions.push(startAfter(lastDoc?.[activeField]));
+      }
+    }
+
+    return conditions;
+  }
+
+  protected override firebaseAssignTypes() {
+    return {
+      ...super.firebaseAssignTypes(),
+      toFirestore: (doc: LlecoopOrder): DocumentData => {
+        return {
+          ...doc,
+          normalizedName: latinize(doc.name).toLowerCase(),
+          createdAt: doc.createdAt ?? Timestamp.now(),
+          updatedAt: Timestamp.now(),
+        };
+      },
+    };
+  }
+
+  getCurrentOrderList() {
+    if (!this.firestoreCollection) {
+      throw new Error('Firestore collection not initialized');
+    }
+    const document = query(this.firestoreCollection, where('status', '==', 'progress'));
+
+    return collectionData(document, { idField: 'id' }).pipe(
+      takeUntil(this.destroy$),
+      map(orders => orders[0] as LlecoopOrder),
+      catchError(error => this.handlePermissionError(error, null))
     );
   }
 
-  update(item: Partial<LlecoopOrder>) {
-    const document = doc(this.firestore, `order-list/${item.id}`);
-    return from(updateDoc(document, { ...item, updatedAt: serverTimestamp() }));
+  getAllByOrderListId(
+    orderListId: LlecoopOrder['id'],
+    pagination: OrderListStoreFirebaseCrudState['selectedItemUserPagination'],
+    sorting: OrderListStoreFirebaseCrudState['selectedItemUserSorting'],
+    filter: OrderListStoreFirebaseCrudState['selectedItemUserFilter']
+  ) {
+    const conditions: QueryConstraint[] = [];
+
+    if (pagination.pageIndex > 0 && pagination.pageLastElements?.has(pagination.pageIndex - 1)) {
+      const lastDoc = pagination.pageLastElements.get(pagination.pageIndex - 1);
+      conditions.push(startAfter(lastDoc?.[sorting[0]]));
+    }
+    const q = query(
+      this.#ordersGroup,
+      where(`orderListId`, '==', orderListId),
+      orderBy(sorting[0], sorting[1] === 'asc' ? 'asc' : 'desc'),
+      limit(pagination.pageSize),
+      ...conditions,
+      where('userName', '>=', filter.text),
+      where('userName', '<=', filter.text + '\uf8ff')
+    );
+
+    return collectionData(q, { idField: 'id' }).pipe(
+      takeUntil(this.destroy$),
+      map(orders => orders as LlecoopUserOrder[]),
+      catchError(error => this.handlePermissionError(error, []))
+    );
   }
 
-  delete(item: LlecoopOrder) {
-    const document = doc(this.firestore, `order-list/${item.id}`);
-    return from(deleteDoc(document));
-  }
+  getAvailableProducts() {
+    const q = query(this.#productCollection, where('isAvailable', '==', true));
 
-  getAllByOrderListId(orderListId: LlecoopOrder['id']) {
-    const q = query(this.orderListOrdersGroup, where(`orderListId`, '==', orderListId));
-    return collectionData(q, { idField: 'id' }) as Observable<LlecoopUserOrder[]>;
+    return collectionData(q, { idField: 'id' }).pipe(
+      takeUntil(this.destroy$),
+      map(products => products as LlecoopProduct[]),
+      catchError(error => this.handlePermissionError(error, []))
+    );
   }
 }

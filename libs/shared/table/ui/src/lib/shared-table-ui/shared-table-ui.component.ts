@@ -1,6 +1,14 @@
 import { animate, state, style, transition, trigger } from '@angular/animations';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CdkTableModule } from '@angular/cdk/table';
-import { KeyValuePipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { CdkTextareaAutosize } from '@angular/cdk/text-field';
+import {
+  KeyValuePipe,
+  NgClass,
+  NgComponentOutlet,
+  NgOptimizedImage,
+  NgTemplateOutlet,
+} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -13,7 +21,7 @@ import {
   output,
   signal,
   TemplateRef,
-  ViewChild,
+  viewChild,
   ViewChildren,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -21,21 +29,27 @@ import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatRadioChange, MatRadioModule } from '@angular/material/radio';
 import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { Router, RouterModule } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
-import { FormattingTypes, SharedUtilFormattersModule } from '@plastik/shared/formatters';
-import { isEmpty, isString } from '@plastik/shared/objects';
+import {
+  DataFormatFactoryService,
+  FormattingTypes,
+  SafeFormattedPipe,
+  SharedUtilFormattersModule,
+} from '@plastik/shared/formatters';
+import { isEmpty } from '@plastik/shared/objects';
 import {
   EditableAttributeBase,
   isCheckboxTypeGuard,
+  isDynamicComponentTypeGuard,
   isNumberTypeGuard,
   isRadioTypeGuard,
   isSelectTypeGuard,
@@ -44,23 +58,24 @@ import {
   isToggleTypeGuard,
   PageEventConfig,
   TableColumnFormatting,
-  TableControlAction,
+  TableDefinition,
   TablePaginationVisibility,
   TableSorting,
   TableSortingConfig,
 } from '@plastik/shared/table/entities';
+
 import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
-import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 
 @Component({
   selector: 'plastik-shared-table',
-  standalone: true,
   imports: [
-    RouterModule,
+    RouterLink,
     KeyValuePipe,
     NgClass,
+    NgComponentOutlet,
     NgTemplateOutlet,
     CdkTableModule,
+    CdkTextareaAutosize,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
@@ -73,12 +88,13 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
     MatCheckboxModule,
     MatRadioModule,
     MatSlideToggleModule,
+    NgOptimizedImage,
     SharedUtilFormattersModule,
-    TableCellTitleDirective,
     OrderTableActionsElementsPipe,
+    SafeFormattedPipe,
   ],
   templateUrl: './shared-table-ui.component.html',
-  styleUrls: ['./shared-table-ui.component.scss'],
+  styleUrl: './shared-table-ui.component.scss',
   animations: [
     trigger('detailExpand', [
       state('collapsed,void', style({ height: '0px', minHeight: '0' })),
@@ -91,12 +107,11 @@ import { TableCellTitleDirective } from '../utils/table-cell-title.directive';
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
   implements OnInit
 {
-  private readonly router = inject(Router);
-
+  protected dataFormatFactoryService = inject(DataFormatFactoryService);
   /**
    * Data that will populate the table.
    */
-  data = input<T[]>([]);
+  data = input.required<T[]>();
 
   /**
    * Table columns structure.
@@ -123,22 +138,14 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    * Sets the pagination elements visibility configuration.
    */
   paginationVisibility = input<Partial<TablePaginationVisibility> | undefined>({
-    hidePageSize: false,
-    hidePaginationFirstLastButtons: false,
     hideRangeButtons: false,
     hideRangeLabel: false,
   });
 
   /**
-   * Page sizes available.
-   * array with the number of items per page.
-   */
-  pageSizeOptions = input<number[]>([10, 25, 50, 100]);
-
-  /**
    * Main title of the table.
    */
-  caption = input<string>('');
+  caption = input<TableDefinition<T>['caption']>('');
 
   /**
    * Table sorting configuration.
@@ -148,15 +155,17 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   /**
    * Table actions configuration.
    */
-  actions = input<TableControlAction<T>>();
+  actions = input<TableDefinition<T>['actions']>();
 
   filterCriteria = input<Record<string, string>>({});
 
   filterPredicate = input<(data: T, criteria: Record<string, string>) => boolean>();
 
-  extraRowStyles = input<(element: T) => string>();
+  extraRowStyles = input<TableDefinition<T>['extraRowStyles']>();
 
-  actionsColStyles = input<string>('');
+  actionsColStyles = input<TableDefinition<T>['actionsColStyles']>();
+
+  rowHeight = input<TableDefinition<T>['rowHeight']>('unset');
 
   expandable = input<boolean>(false);
 
@@ -181,10 +190,11 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   getChangedData = output<T | undefined>();
 
-  @ViewChild(MatSort) matSort?: MatSort;
-  @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef;
+  protected readonly matSort = viewChild<MatSort | null>(MatSort);
+  protected readonly matPaginator = viewChild<MatPaginator | null>(MatPaginator);
+  @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef[];
 
-  protected dataSource = new MatTableDataSource<T>([]);
+  protected dataSource = new MatTableDataSource<T>();
   protected columnsToDisplay = computed(() => {
     const actions = this.actions();
     const cols = this.columnProperties().map(property => property.key) || [];
@@ -202,17 +212,13 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isCheckBox = isCheckboxTypeGuard;
   protected isRadio = isRadioTypeGuard;
   protected isToggle = isToggleTypeGuard;
+  protected isDynamicComponent = isDynamicComponentTypeGuard;
 
   protected expandedElement = signal<T | null>(null);
+  readonly #liveAnnouncer = inject(LiveAnnouncer);
+
   constructor() {
     effect(() => (this.dataSource.data = this.data()));
-    effect(() => {
-      if (this.matSort && this.sort()) {
-        this.matSort.active = this.sort()?.[0] || '';
-        this.matSort.direction = this.sort()?.[1] || 'asc';
-        this.dataSource.sort = this.matSort;
-      }
-    });
     effect(() => {
       if (this.filterCriteria() && this.filterPredicate()) {
         this.dataSource.filter = `${this.filterCriteria()}`;
@@ -222,9 +228,15 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   ngOnInit(): void {
     this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
-      return isString(data[sortHeaderId])
-        ? data[sortHeaderId].toLowerCase()
-        : (data[sortHeaderId] as number);
+      const value = sortHeaderId.split('.').reduce((obj, key) => {
+        return obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key] : obj;
+      }, data as unknown) as unknown;
+
+      if (value === null || value === undefined) return '';
+      if (typeof value === 'number') return value;
+      if (typeof value === 'boolean') return value ? 1 : 0;
+      if (value instanceof Date) return value.getTime();
+      return String(value).toLowerCase();
     };
 
     if (this.filterPredicate && this.filterCriteria) {
@@ -232,10 +244,26 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
         return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
       };
     }
+
+    if (this.sort()) {
+      const matSortInstance = this.matSort();
+      if (matSortInstance) {
+        matSortInstance.active = this.sort()?.[0] || '';
+        matSortInstance.direction = this.sort()?.[1] || 'asc';
+        this.dataSource.sort = matSortInstance;
+      }
+    }
   }
 
   onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
-    this.changePagination.emit({ previousPageIndex, pageIndex, pageSize });
+    if (pageSize !== this.pagination()?.pageSize) {
+      pageIndex = 0;
+    }
+    this.changePagination.emit({
+      previousPageIndex,
+      pageIndex,
+      pageSize,
+    });
   }
 
   protected onChangeSorting({ active, direction }: TableSorting): void {
@@ -243,6 +271,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       active,
       direction,
     });
+    this.announceSortChange({ active, direction });
   }
 
   protected onDelete(event: Event, element: T): void {
@@ -267,15 +296,6 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     this.getChangedData.emit(result);
   }
 
-  /**
-   * @description Gets route path data from DOM element data-link attribute and navigates.
-   * @param  {HTMLAnchorElement} target - The target HTML anchor element from which to get the route path.
-   */
-  protected onGetRoute({ target }: Event) {
-    const route = (target as HTMLAnchorElement).getAttribute('data-link');
-    this.router.navigateByUrl(route || '/');
-  }
-
   protected setCellNgClass(column: TableColumnFormatting<T, FormattingTypes>): {
     [className: string]: boolean;
   } {
@@ -284,5 +304,17 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       ...(column.formatting.type === 'INPUT' ? { 'mat-cell-input': true } : {}),
       ...(column.formatting.type === 'LINK' ? { 'mat-cell-link': true } : {}),
     };
+  }
+
+  private announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      this.#liveAnnouncer.announce(
+        `Ordenant columna ${sortState.active} ${sortState.direction === 'asc' ? 'de forma ascendent' : 'de forma descendent'}`,
+        'assertive',
+        1000
+      );
+    } else {
+      this.#liveAnnouncer.announce('Ordenació cancel·lada');
+    }
   }
 }

@@ -48,18 +48,18 @@ export class FeatureApiService extends ApiService<Feature, FeatureApiParams> {
 ```typescript
 @Injectable()
 export class FeatureEffects {
-  private readonly actions$ = inject(Actions);
-  private readonly featureService = inject(FeatureService);
+  readonly #actions$ = inject(Actions);
+  readonly #featureService = inject(FeatureService);
 
   load$ = createEffect(() => {
-    return this.actions$.pipe(
+    return this.#actions$.pipe(
       ofType(FeatureActions.loadFeature),
       exhaustMap(({ params }) =>
-        this.featureService.getList(params).pipe(
+        this.#featureService.getList(params).pipe(
           map(({ items }) => FeatureActions.loadFeatureSuccess({ items })),
-          catchError(error => of(FeatureActions.loadFeatureFailure({ error }))),
-        ),
-      ),
+          catchError(error => of(FeatureActions.loadFeatureFailure({ error })))
+        )
+      )
     );
   });
 }

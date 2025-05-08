@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'shared-notificationui-mat-snackbar',
+  displayName: 'shared-notification-ui-mat-snackbar',
   preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../../coverage/libs/shared/notification/ui/mat-snackbar',

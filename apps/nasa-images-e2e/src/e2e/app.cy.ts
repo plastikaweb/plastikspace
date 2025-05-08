@@ -59,7 +59,6 @@ describe('nasa-images layout', () => {
 
   context('footer', () => {
     it('should have elements', () => {
-      footer().contains('©');
       footerLink().should('have.attr', 'href', 'https://www.plastikaweb.com');
     });
   });

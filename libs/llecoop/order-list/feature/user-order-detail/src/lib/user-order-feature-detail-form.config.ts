@@ -1,3 +1,5 @@
+import { filter, tap } from 'rxjs';
+
 /* eslint-disable jsdoc/require-jsdoc */
 import { inject } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -8,7 +10,9 @@ import {
   llecoopUserOrderDateOptions,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
-import { filter, tap } from 'rxjs';
+import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { InputTableProps } from '@plastik/shared/form/table';
+
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
 
 function setDayOptionsByDeliveryOption(
@@ -33,6 +37,7 @@ function setHourOptionsByDeliveryOption(
 
 export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder> {
   const tableColumnProperties = inject(LlecoopUserOrderDetailFormTableConfig);
+  const userStore = inject(llecoopUserStore);
 
   const formConfig: FormlyFieldConfig[] = [
     {
@@ -40,13 +45,15 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
       fieldGroup: [
         {
           key: 'userName',
-          type: 'input',
-          className: 'w-full',
-          props: {
-            label: 'Sòcia/unitat familiar',
-            placeholder: 'Sòcia/unitat familiar',
-            required: true,
-          },
+          defaultValue: userStore.getUserName(),
+        },
+        {
+          key: 'phone',
+          defaultValue: userStore.loggedUser()?.phone,
+        },
+        {
+          key: 'userNormalizedName',
+          defaultValue: userStore.loggedUser()?.normalizedName,
         },
         {
           key: 'deliveryType',
@@ -68,17 +75,20 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
           },
         },
         {
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sub p-sub rounded-md',
           fieldGroup: [
             {
               key: 'address',
               type: 'input',
               className: 'w-full',
+              defaultValue: userStore.loggedUser()?.address,
               props: {
                 label: 'Adreça de lliurament',
                 placeholder: 'Adreça de lliurament',
                 required: true,
+                attributes: {
+                  autocomplete: 'off',
+                },
               },
               expressions: {
                 hide: 'model.deliveryType === "pickup"',
@@ -91,10 +101,6 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               props: {
                 label: 'Dia',
                 placeholder: 'Dia',
-                options: [
-                  { value: 'wednesday', label: 'dimecres' },
-                  { value: 'tuesday', label: 'dijous' },
-                ],
                 required: true,
                 disabled: true,
                 compareWith: (o1: FormSelectOption['value'], o2: FormSelectOption['value']) =>
@@ -103,9 +109,11 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
                   setDayOptionsByDeliveryOption(formly.props, formly.model?.deliveryType);
+
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field.key === 'deliveryType'),
-                    tap(({ value }) => setDayOptionsByDeliveryOption(formly.props, value))
+                    tap(({ value }) => setDayOptionsByDeliveryOption(formly.props, value)),
+                    tap(() => formly.formControl?.setValue(null))
                   );
                 },
               },
@@ -117,7 +125,6 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               props: {
                 label: 'Hora',
                 placeholder: 'Hora',
-                options: [],
                 required: true,
                 disabled: true,
                 compareWith: (o1: FormSelectOption['value'], o2: FormSelectOption['value']) =>
@@ -129,7 +136,8 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
 
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field.key === 'deliveryType'),
-                    tap(({ value }) => setHourOptionsByDeliveryOption(formly.props, value))
+                    tap(({ value }) => setHourOptionsByDeliveryOption(formly.props, value)),
+                    tap(() => formly.formControl?.setValue(null))
                   );
                 },
               },
@@ -137,17 +145,26 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
           ],
         },
         {
-          key: 'deliveryInfo',
-          type: 'textarea-with-counter',
-          className: 'w-full',
-          props: {
-            placeholder:
-              'Qualsevol informació que ens vulguis fer arribar sobre la comanda i el seu lliurament o recollida',
-            label: 'Informació addicional',
-            minLength: 5,
-            maxLength: 100,
-            maxRows: 3,
-          },
+          fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sub p-sub rounded-md',
+          fieldGroup: [
+            {
+              key: 'deliveryInfo',
+              type: 'textarea-with-counter',
+              className: 'w-full',
+              defaultValue: '',
+              props: {
+                placeholder:
+                  'Qualsevol informació que ens vulguis fer arribar sobre la comanda i el seu lliurament o recollida',
+                label: 'Informació addicional',
+                minLength: 5,
+                maxLength: 200,
+                maxRows: 2,
+                attributes: {
+                  autocomplete: 'off',
+                },
+              },
+            },
+          ],
         },
         {
           key: 'cart',
@@ -155,13 +172,21 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
           className: 'w-full',
           props: {
             required: true,
+            disabled: true,
             tableDefinition: tableColumnProperties.getTableDefinition(),
             tableRowValueConditionFn: (element: LlecoopOrderProduct) => element?.initQuantity > 0,
+          } as InputTableProps<LlecoopOrderProduct>,
+          expressions: {
+            'props.disabled': ({ model }: FormlyFieldConfig) =>
+              !model.userName ||
+              !model.deliveryType ||
+              !model.deliveryDate ||
+              !model.deliveryTime ||
+              (model.deliveryType === 'delivery' && !model.address),
           },
         },
         {
-          fieldGroupClassName:
-            'flex flex-col md:flex-row gap-0 md:gap-sub bg-gray-10 p-sub rounded-md',
+          fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sub p-sub rounded-md',
           fieldGroup: [
             {
               key: 'price',
@@ -176,6 +201,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu',
                 },
               },
               hooks: {
@@ -183,9 +209,10 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field['key'] === 'cart'),
                     tap(({ value }) => {
-                      const total = value.reduce((acc: number, item: LlecoopOrderProduct) => {
-                        return acc + item.initPrice;
-                      }, 0);
+                      const total =
+                        value?.reduce((acc: number, item: LlecoopOrderProduct) => {
+                          return acc + item.initPrice;
+                        }, 0) || 0;
                       formly.formControl?.setValue(Number(total.toFixed(2)));
                     })
                   );
@@ -205,6 +232,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu de lliurament',
                 },
               },
               hooks: {
@@ -245,6 +273,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 step: 0.01,
                 addonRight: {
                   text: '€',
+                  aria: 'preu final',
                 },
               },
               hooks: {
@@ -274,8 +303,6 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
     getConfig: () => formConfig,
     getSubmitFormConfig: () => ({
       label: 'Desar comanda',
-      emitOnChange: true,
-      resetOnSubmit: true,
     }),
     getFormFullWidth: true,
   };

@@ -14,21 +14,21 @@ import { LayoutPosition } from '@plastik/shared/entities';
 
 @Component({
   selector: 'plastik-core-cms-layout-ui-sidenav',
-  standalone: true,
   imports: [RouterOutlet, MatSidenavModule, MatListModule],
   templateUrl: './core-cms-layout-ui-sidenav.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutUiSidenavComponent {
+  readonly #zone = inject(NgZone);
+
   @Input() position: LayoutPosition = 'start';
   @Input() mode: MatDrawerMode = 'over';
   @Input() fixedInViewport = false;
   @Input() sidenavOpened = true;
   @Output() toggleSidenav: EventEmitter<boolean> = new EventEmitter<boolean>();
-  private readonly zone = inject(NgZone);
 
   onToggleSidenav(opened?: boolean): void {
-    this.zone.run(() => {
+    this.#zone.run(() => {
       this.toggleSidenav.emit(opened);
     });
   }

@@ -1,136 +1,98 @@
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { computed, inject } from '@angular/core';
+import { filter, pipe, switchMap } from 'rxjs';
+
+import { updateState } from '@angular-architects/ngrx-toolkit';
+import { inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { signalStore, watchState, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { Store } from '@ngrx/store';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { routerActions } from '@plastik/core/router-state';
-import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
-import { LlecoopProduct, LlecoopProductWithUpdateNotification } from '@plastik/llecoop/entities';
-import { pipe, switchMap } from 'rxjs';
+import { FormSelectOption } from '@plastik/core/entities';
+import { LlecoopCategoryFireService } from '@plastik/llecoop/category/data-access';
+import { LlecoopProduct } from '@plastik/llecoop/entities';
+import {
+  initStoreFirebaseCrudState,
+  StoreFirebaseCrudFilter,
+  StoreFirebaseCrudState,
+  withFirebaseCrud,
+} from '@plastik/shared/signal-state-data-access';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
+
 import { LlecoopProductFireService } from './product-fire.service';
 
-type ProductState = LlecoopFeatureStore;
+export type StoreProductFilter = StoreFirebaseCrudFilter & {
+  text: string;
+  category: string;
+  isAvailable: 'all' | 'on' | 'off';
+};
 
-export const LlecoopProductStore = signalStore(
+export type ProductStoreFirebaseCrudState = StoreFirebaseCrudState<
+  LlecoopProduct,
+  StoreProductFilter
+> & {
+  categories: FormSelectOption[];
+};
+
+type SpecificProductStoreFirebaseCrudState = Omit<
+  ProductStoreFirebaseCrudState,
+  keyof StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter>
+>;
+
+export const productMainInitState: StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter> = {
+  ...initStoreFirebaseCrudState(),
+  filter: {
+    text: '',
+    category: '',
+    isAvailable: 'all',
+  },
+  pagination: {
+    pageSize: 10,
+    pageIndex: 0,
+    pageLastElements: new Map<number, LlecoopProduct>(),
+  },
+  sorting: ['updatedAt', 'desc'] as TableSortingConfig,
+  baseRoute: 'productes',
+};
+
+const specificInitState: SpecificProductStoreFirebaseCrudState = {
+  categories: [],
+};
+
+export const llecoopProductStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('products'),
-  withState<ProductState>({
-    loaded: false,
-    lastUpdated: new Date(),
-    sorting: ['name', 'asc'],
-    selectedItemId: null,
+  withState<SpecificProductStoreFirebaseCrudState>(specificInitState),
+  withFirebaseCrud<
+    LlecoopProduct,
+    LlecoopProductFireService,
+    StoreProductFilter,
+    StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter>
+  >({
+    featureName: 'product',
+    dataServiceType: LlecoopProductFireService,
+    initState: { ...productMainInitState, ...specificInitState },
   }),
-  withEntities<LlecoopProduct>(),
-  withComputed(({ ids, selectedItemId, entityMap, entities }) => ({
-    count: computed(() => ids().length),
-    selectedItem: computed(() => {
-      const id = selectedItemId();
-      return id !== null ? entityMap()[id] : null;
-    }),
-    getAvailableProducts: computed(() => {
-      return entities().filter(product => product.isAvailable);
-    }),
-  })),
-  withMethods(
-    (
-      store,
-      productService = inject(LlecoopProductFireService),
-      storeNotificationService = inject(StoreNotificationService),
-      authService = inject(FirebaseAuthService),
-      state = inject(Store)
-    ) => ({
-      getAll: rxMethod<void>(
-        pipe(
-          switchMap(() =>
-            productService.getAll().pipe(
-              tapResponse({
-                next: products =>
-                  patchState(
-                    store,
-                    setAllEntities(products, {
-                      selectId: entity => entity.id || '',
-                    }),
-                    { loaded: true, lastUpdated: new Date() }
-                  ),
-                error: error => {
-                  if (authService.loggedIn()) {
-                    storeNotificationService.create(
-                      `No s'ha pogut carregar els productes: ${error}`,
-                      'ERROR'
-                    );
-                  }
-                },
-              })
-            )
-          )
-        )
-      ),
-      create: rxMethod<Partial<LlecoopProduct>>(
-        pipe(
-          switchMap((product: Partial<LlecoopProduct>) => {
-            return productService.create(product).pipe(
-              tapResponse({
-                next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut crear el producte "${product['name']}": ${error}`,
-                    'ERROR'
-                  ),
-                complete: () =>
-                  storeNotificationService.create(
-                    `Producte "${product['name']}" creat correctament`,
-                    'SUCCESS'
-                  ),
-              })
-            );
-          })
-        )
-      ),
-      update: rxMethod<LlecoopProductWithUpdateNotification>(
-        pipe(
-          switchMap(({ product, showNotification }) => {
-            return productService.update(product).pipe(
-              tapResponse({
-                next: () => state.dispatch(routerActions.go({ path: ['/admin/producte'] })),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut actualitzar el producte "${product['name']}": ${error}`,
-                    'ERROR'
-                  ),
-                complete: () => {
-                  if (showNotification) {
-                    storeNotificationService.create(
-                      `Producte "${product['name']}" actualitzat correctament`,
-                      'SUCCESS'
-                    );
-                  }
-                },
-              })
-            );
-          })
-        )
-      ),
-      delete: rxMethod<LlecoopProduct>(
-        pipe(
-          switchMap(product => {
-            return productService.delete(product).pipe(
-              tapResponse({
-                next: () =>
-                  storeNotificationService.create(`Producte "${product.name}" eliminat`, 'SUCCESS'),
+  withMethods(store => {
+    const categoryFireService = inject(LlecoopCategoryFireService);
 
+    return {
+      getCategoryList: rxMethod<void>(
+        pipe(
+          filter(() => !!store._activeConnection()),
+          switchMap(() => {
+            return categoryFireService.getAllCategories().pipe(
+              tapResponse({
+                next: categories => {
+                  const categoriesList = categories
+                    .map(category => ({
+                      value: `category/${category.id}`,
+                      label: category.name,
+                    }))
+                    .sort((a: FormSelectOption, b: FormSelectOption) =>
+                      (a.label || '').localeCompare(b.label || '')
+                    );
+                  updateState(store, `[product] get category list`, { categories: categoriesList });
+                },
                 error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut eliminar el producte "${product.name}": ${error}`,
+                  store._storeNotificationService.create(
+                    `No s'ha pogut carregar la llista de categories: ${error}`,
                     'ERROR'
                   ),
               })
@@ -138,20 +100,15 @@ export const LlecoopProductStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: ProductState['sorting']) => patchState(store, { sorting }),
-      setSelectedItemId: (id: string | null) =>
-        patchState(store, {
-          selectedItemId: id,
-        }),
-    })
-  ),
+    };
+  }),
   withHooks({
-    onInit({ getAll, loaded }) {
-      if (!loaded()) getAll();
-    },
-    onDestroy() {
-      // eslint-disable-next-line no-console
-      console.log('Destroying product store');
+    onInit(store) {
+      watchState(store, () => {
+        if (store._activeConnection() && !store.categories().length) {
+          store.getCategoryList();
+        }
+      });
     },
   })
 );

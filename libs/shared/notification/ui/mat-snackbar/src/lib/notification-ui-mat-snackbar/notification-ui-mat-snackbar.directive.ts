@@ -1,58 +1,74 @@
-import {
-  Directive,
-  EventEmitter,
-  Inject,
-  Input,
-  OnChanges,
-  OnDestroy,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { EMPTY } from 'rxjs';
+
+import { Directive, effect, inject, input, OnDestroy, output } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatSnackBar,
   MatSnackBarConfig,
+  MatSnackBarRef,
 } from '@angular/material/snack-bar';
 import { Notification } from '@plastik/shared/notification/entities';
-import { Subscription } from 'rxjs';
+
 import { NotificationUiMatSnackbarComponent } from './notification-ui-mat-snackbar.component';
 
 @Directive({
   selector: '[plastikSnackbar]',
-  standalone: true,
 })
-export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy {
-  @Input('plastikSnackbar') config!: MatSnackBarConfig<Notification>;
-  @Output() sendDismiss: EventEmitter<void> = new EventEmitter();
+export class NotificationUiMatSnackbarDirective implements OnDestroy {
+  plastikSnackbar = input<Notification | null>(null);
+  sendDismiss = output<void>();
 
-  private readonly subscriptions = new Subscription();
+  readonly #snackBar = inject(MatSnackBar);
+  readonly #defaultSnackBarConfig = inject(MAT_SNACK_BAR_DEFAULT_OPTIONS);
 
-  constructor(
-    @Inject(MatSnackBar) private readonly snackBar: MatSnackBar,
-    @Inject(MAT_SNACK_BAR_DEFAULT_OPTIONS) private readonly defaultSnackBarConfig: MatSnackBarConfig
-  ) {}
+  #currentSnackBarRef?: MatSnackBarRef<NotificationUiMatSnackbarComponent>;
+  afterDismissed = toSignal(this.#currentSnackBarRef?.afterDismissed() || EMPTY);
 
-  ngOnChanges({ config: { currentValue } }: SimpleChanges) {
-    if (currentValue) {
-      this.open({ ...this.defaultSnackBarConfig, ...currentValue });
+  constructor() {
+    effect(() => {
+      const notification = this.plastikSnackbar();
+      if (notification) {
+        this.open(notification);
+      } else {
+        this.dismissCurrentSnackBar();
+      }
+    });
+
+    if (this.afterDismissed()) {
+      this.sendDismiss.emit();
+      this.#currentSnackBarRef = undefined;
     }
   }
 
   ngOnDestroy() {
-    this.subscriptions?.unsubscribe();
-    // this.snackBar.dismiss();
+    this.dismissCurrentSnackBar();
   }
 
-  open(config: Notification) {
-    // this.snackBar.dismiss();
+  private dismissCurrentSnackBar(): void {
+    if (this.#currentSnackBarRef) {
+      this.#currentSnackBarRef?.dismiss();
+      this.#currentSnackBarRef = undefined;
+    }
+  }
 
+  open(config: Notification): void {
+    this.dismissCurrentSnackBar();
+    const finalConfig = {
+      ...this.#defaultSnackBarConfig,
+      ...config,
+    } as Notification;
+
+    // Wait for next tick to ensure previous snackbar is fully dismissed
     const snackBarConfig = {
-      ...this.addNotificationMatSnackBarConfig(config),
-      ...this.addTypeStyling(config),
+      ...this.addNotificationMatSnackBarConfig(finalConfig),
+      ...this.addTypeStyling(finalConfig),
     };
-    this.snackBar.openFromComponent(NotificationUiMatSnackbarComponent, snackBarConfig);
 
-    // this.subscriptions.add(snackBarRef.afterDismissed().subscribe(() => this.sendDismiss.emit()));
+    this.#currentSnackBarRef = this.#snackBar.openFromComponent(
+      NotificationUiMatSnackbarComponent,
+      snackBarConfig
+    );
   }
 
   private addNotificationMatSnackBarConfig({
@@ -71,7 +87,7 @@ export class NotificationUiMatSnackbarDirective implements OnChanges, OnDestroy 
 
   private addTypeStyling({ containerClass, type }: Notification) {
     return {
-      panelClass: [...(containerClass || ''), 'message-box', `message-box-${type.toLowerCase()}`],
+      panelClass: [...(containerClass || ''), 'message-box', `message-box-${type?.toLowerCase()}`],
     };
   }
 }

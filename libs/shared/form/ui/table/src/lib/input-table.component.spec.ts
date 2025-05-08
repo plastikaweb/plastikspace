@@ -1,5 +1,7 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BaseEntity } from '@plastik/core/entities';
+
 import { InputTableComponent } from './input-table.component';
 
 describe('InputTableComponent', () => {
@@ -8,6 +10,7 @@ describe('InputTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      providers: [provideExperimentalZonelessChangeDetection()],
       imports: [InputTableComponent],
     }).compileComponents();
 
@@ -16,7 +19,7 @@ describe('InputTableComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });

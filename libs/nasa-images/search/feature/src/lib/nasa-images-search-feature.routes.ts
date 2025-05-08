@@ -1,3 +1,4 @@
+import { MAT_PAGINATOR_DEFAULT_OPTIONS } from '@angular/material/paginator';
 import { Routes } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
@@ -20,6 +21,15 @@ export const nasaImagesSearchFeatureRoutes: Routes = [
       provideState(selectNasaImagesFeature),
       provideEffects(NasaImagesEffects),
       NasaImagesSearchFacade,
+      {
+        provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
+        useValue: {
+          pageSize: 100,
+          pageSizeOptions: [100],
+          hidePageSize: true,
+          showFirstLastButtons: true,
+        },
+      },
     ],
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
   },

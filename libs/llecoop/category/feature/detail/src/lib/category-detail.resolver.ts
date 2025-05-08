@@ -1,19 +1,19 @@
+import { filter, map, Observable } from 'rxjs';
+
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, RedirectCommand, ResolveFn, Router } from '@angular/router';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
-import { filter, map, Observable } from 'rxjs';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 
-export const CategoryDetailResolver: ResolveFn<Observable<boolean>> = (
+export const categoryDetailResolver: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot
 ) => {
   const router = inject(Router);
-  const store = inject(LlecoopCategoryStore);
+  const store = inject(llecoopCategoryStore);
   const id = route.paramMap.get('id');
 
   if (!id) {
-    store.setSelectedItemId(null);
-    return new RedirectCommand(router.parseUrl('/admin/categoria'));
+    return new RedirectCommand(router.parseUrl('/categories'));
   }
 
   store.setSelectedItemId(id);
@@ -21,7 +21,7 @@ export const CategoryDetailResolver: ResolveFn<Observable<boolean>> = (
   return toObservable(store.selectedItem).pipe(
     map(category => {
       if (!category) {
-        store.getAll();
+        store.getItem(id);
       }
       return !!category;
     }),

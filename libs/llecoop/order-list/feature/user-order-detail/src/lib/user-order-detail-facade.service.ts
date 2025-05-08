@@ -1,30 +1,29 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { computed, inject, Injectable, signal } from '@angular/core';
-
 import { formatCurrency } from '@angular/common';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import {
   DetailItemViewFacade,
   ExtraFormAction,
   ExtraFormTextAction,
 } from '@plastik/core/detail-edit-view';
-import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
+
 import { userOrderFeatureDetailFormConfig } from './user-order-feature-detail-form.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade<LlecoopUserOrder> {
-  private readonly userOrderStore = inject(LlecoopUserOrderStore);
-  private readonly orderListStore = inject(LLecoopOrderListStore);
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
 
-  private readonly view = inject(VIEW_CONFIG).filter(item => item.name === 'order')[0];
+  readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'order')[0];
 
-  model = this.userOrderStore.selectedItem;
+  model = this.#userOrderStore.selectedItem;
 
   viewExtraActions = signal<ExtraFormAction<LlecoopUserOrder>[]>([
     {
@@ -36,16 +35,14 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
     },
   ]);
 
-  viewConfig = computed(() => {
-    return {
-      ...this.view,
-      title: `Comanda #${this.orderListStore.currentOrder()?.name}` || 'Nova comanda',
-    };
-  });
+  viewConfig = computed(() => ({
+    ...this.#view,
+    title: this.model() ? `Comanda #${this.model()?.name}` : 'Nova comanda',
+  }));
 
   formConfig = userOrderFeatureDetailFormConfig();
 
-  onChange({ totalPrice }: Partial<LlecoopUserOrder>): void {
+  onFormTemporaryChange({ totalPrice }: Partial<LlecoopUserOrder>): void {
     this.viewExtraActions.update(actions => {
       let total = actions.filter(action => action.id === 'total')[0] as ExtraFormTextAction;
       if (total) {
@@ -59,19 +56,18 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
     });
   }
 
-  onSubmit(data: Partial<LlecoopUserOrder>): void {
+  onSubmit(item: Partial<LlecoopUserOrder>): void {
     if (this.model()?.id) {
-      this.userOrderStore.update(data);
+      this.#userOrderStore.update({ item });
       return;
     }
 
-    this.userOrderStore.create({
-      ...data,
-      name: this.orderListStore.currentOrder()?.name || '',
+    this.#userOrderStore.create({
+      item: {
+        ...item,
+        orderListId: this.#orderListStore.currentOrderList()?.id || '',
+        name: this.#orderListStore.currentOrderList()?.name || '',
+      },
     });
-  }
-
-  private calculateTotalPrice(cart: LlecoopOrderProduct[]): number {
-    return cart.reduce((acc, product) => acc + product.initPrice, 0);
   }
 }

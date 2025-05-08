@@ -1,5 +1,6 @@
 import { DocumentReference } from '@angular/fire/firestore';
 import { BaseEntity } from '@plastik/core/entities';
+
 import { LlecoopProductCategory } from './product-category';
 
 export interface LlecoopBaseProduct extends BaseEntity {
@@ -11,9 +12,12 @@ export interface LlecoopBaseProduct extends BaseEntity {
   provider?: string;
   categoryRef: DocumentReference<LlecoopProductCategory>;
   category?: LlecoopProductCategory;
-  tags?: string[];
+  categoryName?: string;
   unit: LlecoopProductUnit;
+  tags?: string[];
+  imgUrl?: string;
 }
+
 export interface LlecoopProduct extends LlecoopBaseProduct {
   isAvailable: boolean;
   stock?: number;
@@ -66,11 +70,6 @@ export const LlecoopProductSelectData: LlecoopProductSelectOption[] = [
     value: 'unitWithVariableWeight',
   },
 ] as const;
-
-export interface LlecoopProductWithUpdateNotification {
-  product: Partial<LlecoopProduct>;
-  showNotification: boolean;
-}
 
 /**
  * @description Returns a text description based on the type of LlecoopProductUnit.

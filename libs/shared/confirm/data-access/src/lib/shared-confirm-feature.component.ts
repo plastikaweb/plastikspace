@@ -5,7 +5,6 @@ import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'plastik-shared-confirm-feature',
-  standalone: true,
   imports: [MatDialogModule, MatButtonModule],
   templateUrl: './shared-confirm-feature.component.html',
   styleUrl: './shared-confirm-feature.component.scss',

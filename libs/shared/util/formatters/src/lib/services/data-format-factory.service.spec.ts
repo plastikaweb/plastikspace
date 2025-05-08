@@ -1,7 +1,7 @@
 import { DatePipe, PercentPipe, TitleCasePipe } from '@angular/common';
+import { LOCALE_ID, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import { LOCALE_ID } from '@angular/core';
 import { DataFormatFactoryService } from './data-format-factory.service';
 import { objectMocked, TypeMocked } from './formatting.mock';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
@@ -12,6 +12,7 @@ describe('DataFormatFactoryService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         DataFormatFactoryService,
         SharedUtilFormattersService,
         TitleCasePipe,
@@ -34,19 +35,19 @@ describe('DataFormatFactoryService', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'noFormatting.child.value',
+      pathToKey: 'noFormatting.child.value',
       formatting: {
         type: 'TEXT',
       },
     });
-    expect(result.toString()).toContain('12');
+    expect(result).toEqual({ changingThisBreaksApplicationSecurity: '12' });
   });
 
   it('should return a value with text formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'text.child.value',
+      pathToKey: 'text.child.value',
       formatting: { type: 'TEXT' },
     });
     expect(result).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
@@ -56,7 +57,7 @@ describe('DataFormatFactoryService', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'link',
+      pathToKey: 'link',
       formatting: { type: 'LINK' },
     });
     expect(result).toBe('www.example.com');
@@ -66,7 +67,7 @@ describe('DataFormatFactoryService', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'time',
+      pathToKey: 'time',
       formatting: { type: 'DATE', extras: () => ({ locale: 'en-US' }) },
     });
     expect(result).toBe('9/1/21');
@@ -76,7 +77,7 @@ describe('DataFormatFactoryService', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'time',
+      pathToKey: 'time',
       formatting: { type: 'DATE_TIME', extras: () => ({ locale: 'en-US', timezone: '+0200' }) },
     });
     expect(result).toBe('9/1/21, 04:10:06');
@@ -86,7 +87,7 @@ describe('DataFormatFactoryService', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'percentage',
+      pathToKey: 'percentage',
       formatting: { type: 'PERCENTAGE' },
     });
     expect(result).toBe('80.00%');
@@ -96,7 +97,7 @@ describe('DataFormatFactoryService', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'truthy',
+      pathToKey: 'truthy',
       formatting: { type: 'BOOLEAN_WITH_CONTROL' },
     });
     expect(result).toBeTruthy();
@@ -107,7 +108,7 @@ describe('DataFormatFactoryService', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
         title: 'Title',
-        propertyPath: 'price',
+        pathToKey: 'price',
         formatting: { type: 'CURRENCY' },
       });
       expect(result).toBe('$3');
@@ -117,7 +118,7 @@ describe('DataFormatFactoryService', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
         title: 'Title',
-        propertyPath: 'price',
+        pathToKey: 'price',
         formatting: { type: 'CURRENCY', extras: () => ({ numberDigitsInfo: '1.2-2' }) },
       });
       expect(result).toBe('$3.08');
@@ -128,7 +129,7 @@ describe('DataFormatFactoryService', () => {
     let result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'price',
+      pathToKey: 'price',
       formatting: { type: 'NUMBER' },
     });
     expect(result).toBe('3.08');
@@ -136,7 +137,7 @@ describe('DataFormatFactoryService', () => {
     result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'price',
+      pathToKey: 'price',
       formatting: { type: 'NUMBER', extras: () => ({ numberDigitsInfo: '1.0-0' }) },
     });
     expect(result).toBe('3');
@@ -146,59 +147,17 @@ describe('DataFormatFactoryService', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'percentage',
+      pathToKey: 'percentage',
       formatting: { type: 'PERCENTAGE' },
     });
     expect(result).toBe('80.00%');
-  });
-
-  describe('image formatting', () => {
-    it('should return a value with image formatting and static extras.title', () => {
-      const result = service.getFormattedValue(objectMocked, {
-        key: 'a',
-        title: 'Title',
-        propertyPath: 'image',
-        formatting: {
-          type: 'IMAGE',
-          extras: () => ({
-            type: 'img',
-            title: () => 'alt text',
-          }),
-        },
-      });
-      expect(result).toEqual({
-        changingThisBreaksApplicationSecurity: '<img alt="alt text" src="thumb.png" class="">',
-      });
-    });
-
-    it('should return a value with image formatting and dynamic extras.title', () => {
-      const result = service.getFormattedValue(objectMocked, {
-        key: 'a',
-        title: 'Title',
-        propertyPath: 'image',
-        formatting: {
-          type: 'IMAGE',
-          extras: () => ({
-            type: 'img',
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            title: (item: any) => item['name'] as string,
-            classes: 'img-class',
-          }),
-        },
-      });
-
-      expect(result).toEqual({
-        changingThisBreaksApplicationSecurity:
-          '<img alt="TITLE" src="thumb.png" class="img-class">',
-      });
-    });
   });
 
   it('should return a value with titleCase formatting', () => {
     const result = service.getFormattedValue(objectMocked, {
       key: 'a',
       title: 'Title',
-      propertyPath: 'text.child.value',
+      pathToKey: 'text.child.value',
       formatting: {
         type: 'TITLE_CASE',
       },
@@ -211,7 +170,7 @@ describe('DataFormatFactoryService', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
         title: 'Title',
-        propertyPath: 'custom',
+        pathToKey: 'custom',
         formatting: {
           type: 'CUSTOM',
         },
@@ -223,7 +182,7 @@ describe('DataFormatFactoryService', () => {
       const result = service.getFormattedValue(objectMocked, {
         key: 'a',
         title: 'Title',
-        propertyPath: 'name',
+        pathToKey: 'name',
         formatting: {
           type: 'CUSTOM',
           execute: title => `This is the ${title}`,

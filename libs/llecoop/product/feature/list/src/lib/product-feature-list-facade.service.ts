@@ -1,68 +1,58 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { inject, Injectable, signal } from '@angular/core';
+import { filter, take } from 'rxjs';
 
+import { inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
-import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { llecoopProductStore, StoreProductFilter } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { latinize } from '@plastik/shared/latinize';
-import { TableSorting } from '@plastik/shared/table/entities';
-import { filter, take } from 'rxjs';
-import { getLlecoopProductSearchFeatureFormConfig } from './product-feature-search-form.config';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+
+import { LlecoopProductSearchFeatureFormConfig } from './product-feature-search-form.config';
 import { LlecoopProductSearchFeatureTableConfig } from './product-feature-table.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopProductListFacadeService implements TableWithFilteringFacade<LlecoopProduct> {
-  private readonly store = inject(LlecoopProductStore);
-  private readonly table = inject(LlecoopProductSearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+export class LlecoopProductListFacadeService
+  implements TableWithFilteringFacade<LlecoopProduct, StoreProductFilter>
+{
+  readonly #productStore = inject(llecoopProductStore);
+  readonly #table = inject(LlecoopProductSearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #router = inject(Router);
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'product')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'product')[0]);
+  routingToDetailPage = signal({ visible: true, label: 'Afegir producte' });
+  tableDefinition = this.#table.getTableDefinition();
+  filterFormConfig = inject(LlecoopProductSearchFeatureFormConfig).getConfig();
+  filterCriteria = this.#productStore.filter;
 
-  tableDefinition = this.table.getTableDefinition();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-    inStock: 'all',
-  });
-  tableFilterPredicate = (data: LlecoopProduct, criteria: Record<string, string>) => {
-    let filterText = true;
-    let filterInStock = true;
-    for (const key in criteria) {
-      const value = criteria[key].toLowerCase();
-
-      if (key === 'text') {
-        filterText = [data.name, data.category?.name, data.info, data.provider, data.origin].some(
-          text => latinize(text?.toLowerCase() || '').includes(value)
-        );
-      }
-      if (key === 'inStock') {
-        filterInStock =
-          value === 'all' ||
-          (value === 'available' && data.isAvailable) ||
-          (value === 'not-available' && !data.isAvailable);
-      }
-    }
-
-    return filterText && filterInStock;
-  };
-  routingToDetailPage = signal({ visible: true });
-
-  formStructure = getLlecoopProductSearchFeatureFormConfig();
-
-  onTableSorting({ active, direction }: TableSorting): void {
-    this.store.setSorting([active, direction]);
+  onChangeFilterCriteria(criteria: StoreProductFilter): void {
+    this.#router.navigate([], {
+      queryParams: { ...criteria, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+  onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
+    this.#router.navigate([], {
+      queryParams: { pageIndex, pageSize },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  onTableSorting({ active, direction }: TableSorting): void {
+    this.#router.navigate([], {
+      queryParams: { active, direction, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableActionDelete(item: LlecoopProduct): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar producte',
           `Segur que vols eliminar "${item.name}"?`,
@@ -70,7 +60,7 @@ export class LlecoopProductListFacadeService implements TableWithFilteringFacade
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.store.delete(item));
+        .subscribe(() => this.#productStore.delete(item));
     }
   }
 }

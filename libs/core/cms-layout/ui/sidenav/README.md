@@ -49,8 +49,7 @@ A core basic sidenav with content configuration options.
   [mode]="'side'"
   [fixedInViewport]="false"
   [sidenavOpened]="(sidenavOpened$ | ngrxPush) || false"
-  (toggleSidenav)="onToggleSidenav()"
->
+  (toggleSidenav)="onToggleSidenav()">
   <h1 header>Menu</h1>
   <mat-list menu-items>
     @ngFor (let item of sidenavConfig) {

@@ -1,12 +1,15 @@
 @let headerTitle = headerConfig.title;
+@let extendedTitle = headerConfig.extendedTitle;
 @let headerMenu = headerConfig.menu;
+
+<plastik-skip-link></plastik-skip-link>
 
 <div class="core-cms-container">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
     <div start class="flex items-center gap-sub sm:gap-sm">
       <button
         mat-icon-button
-        aria-label="sidenav toggle button"
+        aria-label="menú lateral"
         class="flex justify-center align-middle"
         data-test="toggle-sidenav-button"
         (click)="sidenav.toggle()">
@@ -20,42 +23,49 @@
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerTitle }}</span>
         <a
-          class="flex justify-between content-center items-center text-white hover:no-underline gap-sub"
-          href=""
+          class="flex justify-between content-center items-center no-underline gap-sub"
+          [routerLink]="['/']"
           [attr.title]="headerTitle">
-          @if (headerConfig.mainIcon; as icon) {
-            <div class="flex justify-center items-center gap-sub">
-              <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
+          <div class="flex justify-center items-center gap-sub">
+            @if (headerConfig.mainIcon; as icon) {
+              <svg-icon
+                [name]="extendedTitle"
+                [svgAriaLabel]="extendedTitle"
+                [src]="icon.iconPath"
+                [svgClass]="icon.svgClass"></svg-icon>
+            }
 
-              <span class="hidden">{{ headerTitle }}</span>
-              <span class="hidden sm:block">{{ headerConfig.extendedTitle || headerTitle }}</span>
-            </div>
-          }
+            <span class="hidden sm:block">{{ extendedTitle || headerTitle }}</span>
+          </div>
         </a>
       </h1>
     </div>
 
-    <div end class="flex items-center gap-tiny lg:gap-sm">
+    <div end class="flex items-center gap-tiny">
       <ng-container #widgetsContainer></ng-container>
 
-      <button mat-button aria-label="header menu" class="flex gap-tiny" [matMenuTriggerFor]="menu">
+      <button
+        mat-button
+        class="flex gap-tiny"
+        [attr.aria-label]="headerMenu?.label()"
+        [matMenuTriggerFor]="menu">
         <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
-        <mat-icon class="w-[30px] h-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
+        <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
       </button>
-      <mat-menu #menu="matMenu" class="px-sub">
-        <span class="block border-b-2 sm:hidden w-fit text-pretty p-tiny border-b-gray-10">{{
+      <mat-menu #menu="matMenu">
+        <span class="block border-b-2 sm:hidden w-fit text-balance p-tiny border-b-gray-10">{{
           headerMenu?.label()
         }}</span>
 
         @for (item of headerMenu?.config; track item.id) {
           @if (item && item.route) {
             <button type="button" mat-menu-item [routerLink]="item.route">
-              <mat-icon>{{ item.icon }}</mat-icon>
+              <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
               <span>{{ item.title }}</span>
             </button>
           } @else if (item && item.action) {
             <button type="button" mat-menu-item (click)="item.action()">
-              <mat-icon>{{ item.icon }}</mat-icon>
+              <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
               <span>{{ item.title }}</span>
             </button>
           }
@@ -64,7 +74,7 @@
     </div>
   </plastik-core-cms-layout-ui-header>
 
-  <mat-sidenav-container class="example-container" [hasBackdrop]="isMobile()">
+  <mat-sidenav-container [hasBackdrop]="isMobile()">
     <mat-sidenav
       #sidenav
       class="p-md"
@@ -75,24 +85,52 @@
       [fixedInViewport]="isMobile()"
       [opened]="!isMobile()"
       (keydown.escape)="sidenav.close()">
-      <mat-nav-list menu-items data-test="sidenav-list">
-        @for (item of viewConfig; track item.id) {
-          <mat-list-item
-            class="my-tiny h-xll hover:bg-gray-10 focus:bg-gray-10"
-            routerLinkActive="bg-gray-10"
-            ariaCurrentWhenActive="page"
-            [routerLink]="item?.route"
-            [routerLinkActiveOptions]="{ exact: item?.routerLinkActiveOptionsExact || false }"
-            (click)="isMobile() && sidenav.close()">
-            <mat-icon matListItemIcon [attr.aria-hidden]="false" [attr.aria-label]="item.title">{{
-              item.icon
-            }}</mat-icon>
-            <span matListItemTitle>{{ item.title }}</span>
-          </mat-list-item>
+      <mat-nav-list aria-label="Menu principal" data-test="sidenav-list">
+        @for (item of viewConfig(); track item.id) {
+          <ng-container>
+            <!-- Elemento principal -->
+            <mat-list-item
+              role="link"
+              class="my-tiny"
+              routerLinkActive="active"
+              ariaCurrentWhenActive="page"
+              [attr.aria-label]="item.ariaLabel || item.title"
+              [routerLink]="item?.route"
+              [routerLinkActiveOptions]="item?.routerLinkActiveOptionsExact || { exact: false }"
+              (click)="isMobile() && sidenav.close()">
+              <mat-icon matListItemIcon aria-hidden="true">{{ item.icon }}</mat-icon>
+              <span matListItemTitle>{{ item.title }}</span>
+            </mat-list-item>
 
-          @if (item.divider) {
-            <mat-divider></mat-divider>
-          }
+            @if (item.children && item.children.length > 0) {
+              <div class="pl-sub">
+                @for (child of item.children; track child.id) {
+                  <mat-list-item
+                    role="link"
+                    class="my-tiny pl-sub"
+                    routerLinkActive="active"
+                    ariaCurrentWhenActive="page"
+                    [attr.aria-label]="child.ariaLabel || child.title"
+                    [routerLink]="child?.route"
+                    [routerLinkActiveOptions]="
+                      child?.routerLinkActiveOptionsExact || { exact: false }
+                    "
+                    (click)="isMobile() && sidenav.close()">
+                    <mat-icon matListItemIcon aria-hidden="true">{{ child.icon }}</mat-icon>
+                    <span matListItemTitle>{{ child.title }}</span>
+                  </mat-list-item>
+
+                  @if (child.divider) {
+                    <mat-divider class="ml-md mr-sm my-tiny"></mat-divider>
+                  }
+                }
+              </div>
+            }
+
+            @if (item.divider) {
+              <mat-divider></mat-divider>
+            }
+          </ng-container>
         }
       </mat-nav-list>
     </mat-sidenav>
@@ -101,27 +139,23 @@
       role="main"
       tabindex="-1"
       id="mainContent"
-      class="bg-white p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth">
+      class="p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth @container">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 
   <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-    <div content class="flex flex-row justify-center items-center gap-tiny">
-      <!-- <svg-icon svgClass="fill-white w-lg h-lg" src="/assets/svg/plastikaweb.svg"></svg-icon> -->
-
-      ©{{ currentDate | date: 'yyyy' }}
+    <div content class="flex flex-row justify-center items-center text-base gap-tiny">
+      © 2024-{{ currentDate | date: 'yyyy' }}
       <a
         aria-label="visit www.plastikaweb.com page"
-        class="text-white underline underline-offset-2"
         href="https://www.plastikaweb.com"
         target="_blank"
         >Plastikaweb</a
       >
-      |
+      &vert;
       <a
-        aria-label="visitar www.llevat.org"
-        class="text-white underline underline-offset-2"
+        aria-label="visitar la pàgina de El Llevat a www.llevat.org"
         href="https://www.llevat.org"
         target="_blank"
         >El Llevat</a

@@ -1,6 +1,6 @@
-import { inject, Injectable } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { inject, Injectable, Signal, signal } from '@angular/core';
+import { UiCategoryNameCellComponent } from '@plastik/llecoop/category-name-cell';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -17,82 +17,79 @@ import {
 export class LlecoopCategorySearchFeatureTableConfig
   implements TableStructureConfig<LlecoopProductCategory>
 {
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly store = inject(LlecoopCategoryStore);
+  readonly #store = inject(llecoopCategoryStore);
 
-  private readonly name: TableColumnFormatting<LlecoopProductCategory, 'CUSTOM'> = {
+  readonly #name: TableColumnFormatting<LlecoopProductCategory, 'COMPONENT'> = {
     key: 'name',
     title: 'Nom',
-    propertyPath: 'name',
-    sorting: true,
+    pathToKey: 'name',
+    sorting: 'normalizedName',
     sticky: true,
-    cssClasses: [
-      'min-w-[170px] py-0 px-tiny md:py-tiny md:px-sm md:min-w-[240px] md:max-w-[350px]',
-    ],
     formatting: {
-      type: 'CUSTOM',
-      execute: (value, element) => {
-        const htmlString = `<p class="flex items-center justify-center gap-tiny"><span class="rounded-full w-sub h-sub" style="background-color:${element?.color}"></span><span class="capitalize w-auto">${value}</span></p>`;
-        return this.sanitizer.bypassSecurityTrustHtml(htmlString) as SafeHtml;
+      type: 'COMPONENT',
+      execute: (_, category) => {
+        if (!category) {
+          throw new Error('Category is required');
+        }
+        return {
+          component: UiCategoryNameCellComponent,
+          inputs: { category, nameStyle: 'uppercase font-bold', withLink: true },
+        };
       },
     },
   };
 
-  private readonly description: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
+  readonly #description: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
     key: 'description',
     title: 'Descripció',
-    propertyPath: 'description',
-    cssClasses: ['hidden md:flex lg:min-w-[220px]'],
+    pathToKey: 'description',
+    sorting: 'description',
+    cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
     formatting: {
       type: 'TEXT',
     },
   };
 
-  private readonly productCount: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
+  readonly #productCount: TableColumnFormatting<LlecoopProductCategory, 'TEXT'> = {
     key: 'productCount',
     title: 'Nre. de productes',
-    propertyPath: 'productCount',
-    sorting: true,
-    cssClasses: ['max-w-[100px] md:max-w-[180px]'],
+    pathToKey: 'productCount',
+    sorting: 'productCount',
+    cssClasses: ['max-w-[100px] @xl:max-w-none'],
     formatting: {
       type: 'TEXT',
     },
   };
 
-  private readonly createdAt = createdAt<LlecoopProductCategory>();
-  private readonly updatedAt = updatedAt<LlecoopProductCategory>();
+  readonly #createdAt = createdAt<LlecoopProductCategory>();
+  readonly #updatedAt = updatedAt<LlecoopProductCategory>();
 
-  private readonly columnProperties: TableColumnFormatting<
-    LlecoopProductCategory,
-    FormattingTypes
-  >[] = [this.name, this.description, this.productCount, this.createdAt, this.updatedAt];
+  readonly #columnProperties: Signal<
+    TableColumnFormatting<LlecoopProductCategory, FormattingTypes>[]
+  > = signal([this.#name, this.#description, this.#productCount, this.#createdAt, this.#updatedAt]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
     return {
       ...defaultTableConfig,
-      columnProperties: this.columnProperties,
-      paginationVisibility: {
-        hidePageSize: true,
-        hideRangeLabel: true,
-        hideRangeButtons: true,
-        hidePaginationFirstLastButtons: true,
-      },
+      columnProperties: this.#columnProperties,
+      sort: this.#store.sorting,
+      pagination: this.#store.pagination,
       caption: 'Llistat de categories',
-      sort: this.store.sorting,
-      count: this.store.count,
-      getData: () => this.store.entities(),
+      getData: () => this.#store.entities(),
+      count: this.#store.count,
       actionsColStyles: 'max-w-[135px]',
+      rowHeight: '70px',
       actions: {
         EDIT: {
           visible: () => true,
-          description: () => 'Edita la categoria',
+          description: category => `Editar categoria "${category.name}"`,
           order: 1,
         },
         DELETE: {
           visible: () => true,
-          description: () => 'Elimina la categoria',
+          description: category => `Eliminar categoria "${category.name}"`,
           order: 2,
         },
       },

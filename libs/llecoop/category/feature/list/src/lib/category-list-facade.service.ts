@@ -1,13 +1,14 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { inject, Injectable, signal } from '@angular/core';
+import { filter, take } from 'rxjs';
 
+import { inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { LlecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { llecoopCategoryStore, StoreCategoryFilter } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { TableSorting } from '@plastik/shared/table/entities';
-import { filter, take } from 'rxjs';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+
 import { getLlecoopCategorySearchFeatureFormConfig } from './category-feature-search-form.config';
 import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-table.config';
 
@@ -15,37 +16,43 @@ import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-tabl
   providedIn: 'root',
 })
 export class LlecoopCategoryListFacadeService
-  implements TableWithFilteringFacade<LlecoopProductCategory>
+  implements TableWithFilteringFacade<LlecoopProductCategory, StoreCategoryFilter>
 {
-  private readonly store = inject(LlecoopCategoryStore);
-  private readonly table = inject(LlecoopCategorySearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+  readonly #categoryStore = inject(llecoopCategoryStore);
+  readonly #table = inject(LlecoopCategorySearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #router = inject(Router);
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'category')[0]);
+  viewConfig = signal(inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0]);
+  routingToDetailPage = signal({ visible: true, label: 'Afegir categoria' });
+  tableDefinition = this.#table.getTableDefinition();
+  filterFormConfig = getLlecoopCategorySearchFeatureFormConfig();
+  filterCriteria = this.#categoryStore.filter;
 
-  tableDefinition = this.table.getTableDefinition();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-  });
-  tableFilterPredicate = (data: LlecoopProductCategory, criteria: Record<string, string>) => {
-    const value = criteria['text'].toLowerCase();
-    return [data.name, data.description].some(text => text?.toLowerCase().includes(value));
-  };
-  routingToDetailPage = signal({ visible: true });
-
-  formStructure = getLlecoopCategorySearchFeatureFormConfig();
-
-  onTableSorting({ active, direction }: TableSorting): void {
-    this.store.setSorting([active, direction]);
+  onChangeFilterCriteria(criteria: StoreCategoryFilter): void {
+    this.#router.navigate([], {
+      queryParams: { ...criteria, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+  onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
+    this.#router.navigate([], {
+      queryParams: { pageIndex, pageSize },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  onTableSorting({ active, direction }: TableSorting): void {
+    this.#router.navigate([], {
+      queryParams: { active, direction, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableActionDelete(item: LlecoopProductCategory): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar categoria',
           `Segur que vols eliminar "${item.name}"?`,
@@ -53,7 +60,7 @@ export class LlecoopCategoryListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.store.delete(item));
+        .subscribe(() => this.#categoryStore.delete(item));
     }
   }
 }

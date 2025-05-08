@@ -7,16 +7,17 @@ import { AfterViewInit, Directive, ElementRef, inject, Input } from '@angular/co
 export class TableCellTitleDirective implements AfterViewInit {
   @Input({ required: true }) plastikTableCellTitle = true;
 
-  private readonly elementRefElement: HTMLTableCellElement = inject(ElementRef).nativeElement;
+  readonly #elementRefElement: HTMLTableCellElement = inject(ElementRef).nativeElement;
 
   ngAfterViewInit(): void {
-    if (this.elementRefElement.children.length > 0 && this.plastikTableCellTitle) {
-      const childElement = this.elementRefElement.children[0];
+    if (this.#elementRefElement.children.length > 0 && this.plastikTableCellTitle) {
+      const childElement = this.#elementRefElement.children[0];
 
       this.getTextContent(childElement);
 
       const titleText = this.getTextContent(childElement);
-      this.elementRefElement.setAttribute('title', titleText.trim());
+      this.#elementRefElement.setAttribute('title', titleText.trim());
+      this.#elementRefElement.setAttribute('aria-label', titleText.trim());
 
       this.addTitleToLiElements(childElement);
     }
@@ -52,6 +53,7 @@ export class TableCellTitleDirective implements AfterViewInit {
         for (let i = 0; i < liElements.length; i++) {
           const liTextContent = this.getTextContent(liElements[i]);
           liElements[i].setAttribute('title', liTextContent);
+          liElements[i].setAttribute('aria-label', liTextContent);
         }
       }
       Array.from(node.childNodes).forEach(childNode => {

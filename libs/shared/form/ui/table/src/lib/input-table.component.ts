@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -29,8 +30,7 @@ const INPUT_TABLE_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-table',
-  standalone: true,
-  imports: [SharedTableUiComponent, MatInputModule],
+  imports: [SharedTableUiComponent, MatInputModule, NgClass],
   templateUrl: './input-table.component.html',
   styleUrl: './input-table.component.scss',
   providers: [INPUT_TABLE_ACCESSOR],
@@ -42,10 +42,8 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
   value = signal<T[]>([]);
   disabled = signal<boolean>(false);
   tablePaginationVisibility = signal<TablePaginationVisibility>({
-    hidePageSize: true,
     hideRangeLabel: true,
     hideRangeButtons: true,
-    hidePaginationFirstLastButtons: true,
   });
 
   tableData = input<T[]>([]);

@@ -1,9 +1,9 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
-import { fakeAsync, TestBed, tick } from '@angular/core/testing';
+import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 
-import { provideRouter } from '@angular/router';
 import { NavigationService } from './navigation.service';
 
 @Component({})
@@ -25,6 +25,8 @@ describe('NavigationService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        provideExperimentalZonelessChangeDetection(),
+        NavigationService,
         provideMockStore(),
         provideRouter([
           {
@@ -65,62 +67,48 @@ describe('NavigationService', () => {
   });
 
   describe('navigate method', () => {
-    it('router should navigate to the passed path with no query params', fakeAsync(() => {
-      service.navigate({ path: ['/custom'] });
-      tick();
+    it('router should navigate to the passed path with no query params', async () => {
+      await service.navigate({ path: ['/custom'] });
       expect(location.path()).toBe('/custom');
-    }));
+    });
 
-    it('router should navigate to the passed path with query params', fakeAsync(() => {
-      service.navigate({ path: ['/custom'], query: { id: 'aaaa' } });
-      tick();
+    it('router should navigate to the passed path with query params', async () => {
+      await service.navigate({ path: ['/custom'], query: { id: 'aaaa' } });
       expect(location.path()).toBe('/custom?id=aaaa');
-    }));
+    });
 
-    it('router should navigate to the passed path with fragment extras', fakeAsync(() => {
-      service.navigate({ path: ['/custom'], extras: { fragment: 'aaaa' } });
-      tick();
+    it('router should navigate to the passed path with fragment extras', async () => {
+      await service.navigate({ path: ['/custom'], extras: { fragment: 'aaaa' } });
       expect(location.path(true)).toBe('/custom#aaaa');
-    }));
+    });
   });
 
   describe('back method', () => {
-    it('router should redirect to the location last URL', fakeAsync(() => {
-      service.navigate({ path: ['/root'] });
-      tick();
-      service.navigate({ path: ['/custom'] });
-      tick();
-      service.back();
-      tick();
+    it('router should redirect to the location last URL', async () => {
+      await service.navigate({ path: ['/root'] });
+      await service.navigate({ path: ['/custom'] });
+      await service.back();
       expect(location.path()).toBe('/root');
-    }));
+    });
 
-    it('router should redirect to the previous app route', fakeAsync(() => {
-      service.navigate({ path: ['/root'] });
-      tick();
-      service.navigate({ path: ['/custom'] });
-      tick();
-      service.back('/root');
-      tick();
+    it('router should redirect to the previous app route', async () => {
+      await service.navigate({ path: ['/root'] });
+      await service.navigate({ path: ['/custom'] });
+      await service.back('/root');
       expect(location.path()).toBe('/root');
-    }));
+    });
 
-    it('router should redirect to the previous app route that matches the regex', fakeAsync(() => {
-      service.navigate({ path: ['/other'] });
-      tick();
-      service.navigate({ path: ['/other?key=1'] });
-      tick();
-      service.navigate({ path: ['/custom'] });
-      tick();
-      service.back('/', /other/);
-      tick();
+    it('router should redirect to the previous app route that matches the regex', async () => {
+      await service.navigate({ path: ['/other'] });
+      await service.navigate({ path: ['/other?key=1'] });
+      await service.navigate({ path: ['/custom'] });
+      await service.back('/', /other/);
       expect(location.path()).toBe(`/other${encodeURIComponent('?key=1')}`);
-    }));
+    });
 
-    it('router should redirect to the passed URL if no previous route exists', fakeAsync(() => {
-      service.back('/custom');
-      tick();
+    it('router should redirect to the passed URL if no previous route exists', async () => {
+      await service.back('/custom');
       expect(location.path()).toBe('/custom');
-    }));
+    });
   });
 });

@@ -1,7 +1,6 @@
-import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
-
 import { defineConfig } from 'cypress';
-import { getPreprocessorConfig } from '@jscutlery/cypress-harness/preprocessor-config';
+
+import { nxE2EPreset } from '@nx/cypress/plugins/cypress-preset';
 
 export default defineConfig({
   projectId: 'b47wpf',
@@ -14,9 +13,13 @@ export default defineConfig({
       },
       ciWebServerCommand: 'nx run nasa-images:serve-static',
     }),
-    ...getPreprocessorConfig(),
     testIsolation: false,
     experimentalStudio: true,
     baseUrl: 'http://localhost:4201',
+    setupNodeEvents(on, config) {
+      config.defaultCommandTimeout = 120000;
+      config.requestTimeout = 120000;
+      return config;
+    },
   },
 });

@@ -1,10 +1,10 @@
-# shared-notificationui-mat-snackbar
+# shared-notification-ui-mat-snackbar
 
 ## Description
 
 A visual notification using material snackbar to warn users about different important information in some state change.
 
-![shared-notificationui-mat-snackbar](shared-notificationui-mat-snackbar.png)
+![shared-notification-ui-mat-snackbar](shared-notification-ui-mat-snackbar.png)
 
 It has by default 4 different states:
 
@@ -112,7 +112,7 @@ bootstrapApplication(AppComponent, {
 
 ## Running unit tests
 
-Run `nx test shared-notificationui-mat-snackbar` to execute the unit tests.
+Run `nx test shared-notification-ui-mat-snackbar` to execute the unit tests.
 
 ## Useful links
 

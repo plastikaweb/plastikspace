@@ -1,12 +1,22 @@
-import { provideHttpClient } from '@angular/common/http';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
-import { getAuth, provideAuth } from '@angular/fire/auth';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideMockStore } from '@ngrx/store/testing';
-import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideRouter } from '@angular/router';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
+import {
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+  MockedOrderListStore,
+  MockedUserOrderStore,
+} from '@plastik/llecoop/order-list/data-access';
+import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
+
 import { CmsLayoutComponent } from './cms-layout.component';
 
 describe('CmsLayoutComponent', () => {
@@ -17,18 +27,51 @@ describe('CmsLayoutComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, CmsLayoutComponent, AngularSvgIconModule.forRoot()],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
+        provideRouter([]),
         provideHttpClient(),
-        provideMockStore({}),
-        provideFirebaseApp(() =>
-          initializeApp({
-            apiKey: 'AIzaSyAPtqItl2UtYscGTCBnnNUK9gdWOikXU1c',
-            authDomain: 'llecoop.firebaseapp.com',
-            projectId: 'llecoop',
-          })
-        ),
-        provideFirestore(() => getFirestore()),
-        provideAuth(() => getAuth()),
-        { provide: VIEW_CONFIG, useValue: null },
+        provideHttpClientTesting(),
+        {
+          provide: FirebaseAuthService,
+          useValue: {
+            currentUserEmail: signal('email'),
+          },
+        },
+        { provide: llecoopUserOrderStore, useValue: MockedUserOrderStore },
+        { provide: llecoopOrderListStore, useValue: MockedOrderListStore },
+        { provide: llecoopUserStore, useValue: { getUserName: signal('user') } },
+        {
+          provide: VIEW_CONFIG,
+          useValue: signal([
+            {
+              id: 1,
+              name: 'test',
+              title: 'title',
+              route: ['/test'],
+            },
+          ]),
+        },
+        {
+          provide: CORE_CMS_LAYOUT_HEADER_CONFIG,
+          useValue: {
+            showToggleMenuButton: true,
+            sidenavPosition: 'start',
+            title: 'title',
+            extendedTitle: 'extendedTitle',
+            mainIcon: { iconPath: '', label: 'icon' },
+            widgetsConfig: {
+              position: 'end',
+              widgets: [],
+            },
+            position: 'end',
+            widgets: [],
+            menu: {
+              label: signal('menu'),
+              position: 'end',
+              config: [],
+            },
+          },
+        },
       ],
     }).compileComponents();
 

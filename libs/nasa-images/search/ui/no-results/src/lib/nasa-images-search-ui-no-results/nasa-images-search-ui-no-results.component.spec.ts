@@ -1,7 +1,8 @@
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Component } from '@angular/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { NasaImagesSearchUiNoResultsComponent } from './nasa-images-search-ui-no-results.component';
 
 @Component({
@@ -10,10 +11,11 @@ import { NasaImagesSearchUiNoResultsComponent } from './nasa-images-search-ui-no
     <span icon> search_on </span>
     <span title>NASA images search</span>
     <span message
-      >Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto assumenda ad ipsam. Deserunt eligendi quos exercitationem, earum
-      officiis eum, quod repellat eos quae id et?</span
+      >Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto assumenda ad ipsam.
+      Deserunt eligendi quos exercitationem, earum officiis eum, quod repellat eos quae id et?</span
     >
   </plastik-nasa-images-search-ui-no-results>`,
+  imports: [NasaImagesSearchUiNoResultsComponent],
 })
 class TestHostComponent {}
 
@@ -23,8 +25,8 @@ describe('NasaImagesSearchUiNoResultsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NasaImagesSearchUiNoResultsComponent],
-      declarations: [TestHostComponent],
+      imports: [TestHostComponent, NasaImagesSearchUiNoResultsComponent],
+      providers: [provideExperimentalZonelessChangeDetection()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TestHostComponent);

@@ -6,7 +6,11 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSort } from '@angular/material/sort';
 import { EntityId } from '@ngrx/signals/entities';
-import { FormattingTypes, PropertyFormatting } from '@plastik/shared/formatters';
+import {
+  FormattingComponentOutput,
+  FormattingTypes,
+  PropertyFormatting,
+} from '@plastik/shared/formatters';
 
 /**
  * Represents the base interface for an editable attribute.
@@ -206,13 +210,22 @@ export const isToggleTypeGuard = <T>(
 ): attributes is EditableToggleAttributes<T> => attributes.type === 'toggle';
 
 /**
+ * Type guard function to check if the given value is of type `FormattingComponentOutput`.
+ * @param {unknown} value - The value to check.
+ * @returns {boolean} True if the value is of type `FormattingComponentOutput`, otherwise false.
+ */
+export const isDynamicComponentTypeGuard = (value: unknown): value is FormattingComponentOutput => {
+  return typeof value === 'object' && value !== null && 'component' in value;
+};
+
+/**
  * @description An specific configuration for a table column <=> object property.
  */
 export type TableColumnFormatting<OBJ, TYPE> = PropertyFormatting<OBJ, TYPE> & {
   /**
    * Sets if a table column must have sorting capacities.
    */
-  sorting?: boolean;
+  sorting?: string;
   /**
    * Sets styling for the cell and the child container.
    */
@@ -331,10 +344,9 @@ export interface TableDefinition<OBJ> {
   /**
    * Array with each column configuration properties.
    */
-  columnProperties: TableColumnFormatting<OBJ, FormattingTypes>[];
-  pagination?: PageEventConfig;
+  columnProperties: Signal<TableColumnFormatting<OBJ, FormattingTypes>[]>;
+  pagination?: Signal<PageEventConfig>;
   noPagination?: boolean;
-  pageSizeOptions?: number[];
   paginationVisibility?: Partial<TablePaginationVisibility>;
   sort?: Signal<TableSortingConfig>;
   count: Signal<number>;
@@ -345,6 +357,7 @@ export interface TableDefinition<OBJ> {
   actions?: TableControlAction<OBJ>;
   extraRowStyles?: (element: OBJ) => string;
   actionsColStyles?: string;
+  rowHeight?: `${number}px` | `${number}vh` | `${number}rem` | `${number}em` | 'unset';
   getData?: (id?: string) => OBJ[];
   getSelectedItemId?: Signal<EntityId | null>;
 }
@@ -373,8 +386,6 @@ export type PageEventConfig = Pick<PageEvent, 'previousPageIndex' | 'pageIndex' 
  * @description Configuration for Table Pagination.
  */
 export interface TablePaginationVisibility {
-  hidePageSize: boolean;
-  hidePaginationFirstLastButtons: boolean;
   hideRangeLabel: boolean;
   hideRangeButtons: boolean;
 }
@@ -415,16 +426,13 @@ export interface TableStructureConfig<T> {
  * @description Default TableControlStructure configuration.
  */
 export const defaultTableConfig: TableDefinition<unknown> = {
-  columnProperties: [],
-  pageSizeOptions,
-  pagination: {
+  columnProperties: signal([]),
+  pagination: signal({
     previousPageIndex: 0,
     pageIndex: 0,
     pageSize: pageSizeOptions[0],
-  },
+  }),
   paginationVisibility: {
-    hidePageSize: false,
-    hidePaginationFirstLastButtons: true,
     hideRangeLabel: true,
     hideRangeButtons: true,
   },

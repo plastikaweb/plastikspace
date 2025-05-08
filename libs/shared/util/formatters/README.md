@@ -32,7 +32,9 @@ import { Injectable } from '@angular/core';
 import { DataFormatFactoryService } from '@plastik/shared/formatters';
 
 @Injectable()
-export class FeatureFormatFactoryService<T extends Record<string, keyof T>> extends DataFormatFactoryService<T> {}
+export class FeatureFormatFactoryService<
+  T extends Record<string, keyof T>,
+> extends DataFormatFactoryService<T> {}
 ```
 
 - Use the `SafeFormattedPipe` in your feature template to format the passed input value and PropertyFormatting configuration.
@@ -41,7 +43,7 @@ export class FeatureFormatFactoryService<T extends Record<string, keyof T>> exte
 const descriptionFormatting: PropertyFormatting<Item, TEXT> = {
   key: 'description',
   title: 'Description',
-  propertyPath: 'description',
+  pathToKey: 'description',
   cssClasses: 'min-w-[9rem] 2xl:min-w-[24rem]',
   formatting: {
     type: TEXT,

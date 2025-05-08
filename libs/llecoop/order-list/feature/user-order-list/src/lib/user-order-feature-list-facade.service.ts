@@ -1,16 +1,18 @@
-/* eslint-disable @typescript-eslint/member-ordering */
-import { computed, inject, Injectable, Signal, signal } from '@angular/core';
+import { filter, take } from 'rxjs';
 
+import { computed, inject, Injectable, Signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
-  LLecoopOrderListStore,
-  LlecoopUserOrderStore,
+  llecoopOrderListStore,
+  llecoopUserOrderStore,
+  StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { TableSorting } from '@plastik/shared/table/entities';
-import { filter, take } from 'rxjs';
+import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+
 import { getLlecoopUserOrderSearchFeatureFormConfig } from './user-order-feature-search-form.config';
 import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-table.config';
 
@@ -18,8 +20,41 @@ import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-t
   providedIn: 'root',
 })
 export class LlecoopUserOrderListFacadeService
-  implements TableWithFilteringFacade<LlecoopUserOrder>
+  implements TableWithFilteringFacade<LlecoopUserOrder, StoreUserOrderFilter>
 {
+  readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #orderListStore = inject(llecoopOrderListStore);
+  readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);
+  readonly #confirmService = inject(SharedConfirmDialogService);
+  readonly #router = inject(Router);
+  readonly #viewConfig = inject(VIEW_CONFIG);
+  readonly #viewConfigMainRoute = this.#viewConfig().filter(item => item.name === 'order')[0];
+  readonly #viewConfigSubRoute = this.#viewConfigMainRoute.children?.filter(
+    item => item.name === 'my-order'
+  )[0];
+  readonly #currentUserOrderDone = computed(() => {
+    return !!this.#userOrderStore.currentUserOrder();
+  });
+  viewConfig = computed(() => {
+    return {
+      ...this.#viewConfigSubRoute,
+      title: this.#viewConfigSubRoute?.title
+        ? `${this.#viewConfigMainRoute.title}: ${this.#viewConfigSubRoute?.title}`
+        : this.#viewConfigMainRoute.title,
+    };
+  });
+
+  routingToDetailPage = computed(() => {
+    return {
+      visible: true,
+      icon: this.#currentUserOrderDone() ? 'edit' : 'add',
+      label: this.#currentUserOrderDone() ? 'Editar comanda actual' : 'Fer nova comanda',
+      disabled: !this.#orderListStore.currentOrderList(),
+      path: this.#currentUserOrderDone()
+        ? [`./${this.#userOrderStore.currentUserOrder()?.id}`]
+        : ['./crear'],
+    };
+  });
   viewExtraActions?:
     | Signal<
         {
@@ -30,46 +65,34 @@ export class LlecoopUserOrderListFacadeService
         }[]
       >
     | undefined;
-  private readonly userOrderStore = inject(LlecoopUserOrderStore);
-  private readonly orderListStore = inject(LLecoopOrderListStore);
-  private readonly table = inject(LlecoopUserOrderSearchFeatureTableConfig);
-  private readonly confirmService = inject(SharedConfirmDialogService);
+  tableDefinition = this.#table.getTableDefinition();
+  filterFormConfig = getLlecoopUserOrderSearchFeatureFormConfig();
+  filterCriteria = this.#userOrderStore.filter;
 
-  viewConfig = signal(inject(VIEW_CONFIG).filter(item => item.name === 'order')[0]);
-
-  tableDefinition = this.table.getTableDefinition();
-  formStructure = getLlecoopUserOrderSearchFeatureFormConfig();
-  filterCriteria = signal<Record<string, string>>({
-    text: '',
-  });
-
-  tableFilterPredicate = (data: LlecoopUserOrder, criteria: Record<string, string>) => {
-    const value = criteria['text'].toLowerCase();
-    return [data.name].some(text => text?.toLowerCase().includes(value));
-  };
-  routingToDetailPage = computed(() => {
-    return {
-      visible: true,
-      label: 'Fer comanda setmanal',
-      disabled:
-        this.userOrderStore
-          .entities()
-          .some(entity => entity['orderListId'] === this.orderListStore.currentOrder()?.id) ||
-        !this.orderListStore.currentOrder(),
-    };
-  });
-
-  onTableSorting({ active, direction }: TableSorting): void {
-    this.userOrderStore.setSorting([active, direction]);
+  onChangeFilterCriteria(criteria: StoreUserOrderFilter): void {
+    this.#router.navigate([], {
+      queryParams: { ...criteria, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
-  onChangeFilterCriteria(criteria: Record<string, string>): void {
-    this.filterCriteria.update(() => criteria);
+  onChangePagination({ pageIndex, pageSize }: PageEventConfig): void {
+    this.#router.navigate([], {
+      queryParams: { pageIndex, pageSize },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  onTableSorting({ active, direction }: TableSorting): void {
+    this.#router.navigate([], {
+      queryParams: { active, direction, pageIndex: 0 },
+      queryParamsHandling: 'merge',
+    });
   }
 
   onTableActionDelete(item: LlecoopUserOrder): void {
     if (item.id) {
-      this.confirmService
+      this.#confirmService
         .confirm(
           'Eliminar comanda',
           `Segur que vols eliminar la comanda "${item.name}"?`,
@@ -77,7 +100,7 @@ export class LlecoopUserOrderListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.userOrderStore.delete(item));
+        .subscribe(() => this.#userOrderStore.delete(item));
     }
   }
 }

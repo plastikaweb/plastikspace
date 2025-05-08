@@ -1,12 +1,14 @@
 import { inject, Injectable } from '@angular/core';
+import { Timestamp } from '@angular/fire/firestore';
 import { SafeHtml } from '@angular/platform-browser';
 import { isNil } from '@plastik/shared/objects';
 
-import { Timestamp } from '@angular/fire/firestore';
 import {
+  FormattingComponentOutput,
   FormattingInput,
   FormattingOutput,
   FormattingTypes,
+  PropertyComponentFormattingConf,
   PropertyFormatting,
   PropertyFormattingConf,
 } from '../formatting';
@@ -23,7 +25,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
    * @description Factory to get the correct formatted value from item property with a custom formatting option.
    * @param { unknown } item  The object to extract value from.
    * @param { PropertyFormatting } param The control configuration to format the object property value.
-   * @param { string | Function } param.propertyPath The property of the object which value is going to be formatted.
+   * @param { string | Function } param.key The property of the object which value is going to be formatted.
    * @param { PropertyFormattingConf } param.formatting The formatting configuration for a concrete property object.
    * @param {number } index Index to custom formatters (f.e. a table indexing)
    * @param {unknown } extraConfig Extra configuration object to format values specially when using custom formatters.
@@ -31,13 +33,11 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
    */
   getFormattedValue(
     item: T,
-    { propertyPath, formatting }: PropertyFormatting<T, FormattingTypes>,
+    { pathToKey, formatting }: PropertyFormatting<T, FormattingTypes>,
     index?: number,
     extraConfig?: unknown
-  ): SafeHtml {
-    const getValueToShow = typeof propertyPath === 'string' ? propertyPath : propertyPath(item);
-    const value = this.getValueFromRow(getValueToShow, item);
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+  ): SafeHtml | string | FormattingComponentOutput {
+    const value = this.getValueFromRow(pathToKey, item);
     const { type, extras } = formatting;
 
     switch (type) {
@@ -60,7 +60,6 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
       case 'TITLE_CASE':
         return this.formatter.titleCaseFormatter(String(value));
       case 'IMAGE':
-        return this.formatter.imageFormatter(String(value), item, extras);
       case 'CUSTOM':
       case 'LINK':
         return this.formatter.customFormatter(
@@ -69,6 +68,12 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
           item,
           index,
           extraConfig
+        );
+      case 'COMPONENT':
+        return this.formatter.componentFormatter(
+          String(value),
+          formatting as PropertyComponentFormattingConf<T>,
+          item
         );
       case 'TEXT':
       case 'INPUT':

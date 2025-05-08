@@ -1,3 +1,4 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
@@ -8,7 +9,8 @@ describe('RouterFacade', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [RouterFacade, provideMockStore({})],
+      imports: [],
+      providers: [provideExperimentalZonelessChangeDetection(), RouterFacade, provideMockStore({})],
     });
 
     facade = TestBed.inject(RouterFacade);

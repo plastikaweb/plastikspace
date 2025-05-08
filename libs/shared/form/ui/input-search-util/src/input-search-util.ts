@@ -1,50 +1,62 @@
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { tap } from 'rxjs';
+
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { AddonConfig } from '@plastik/shared/form/util';
 
 /**
  * Creates a Formly field configuration for a search input field.
- * @param {string} label - The label for the search input field.
- * @param {string} [cancelLabel] - The aria label for the cancel button.
- * @param {string} [key] - The key for the search input field.
+ * @param {Partial<FormlyFieldConfig['props']>} customProps - Additional properties to be merged with the default field configuration.
+ * @param {string} key - The key for the form control.
+ * @param {string} className - The CSS class name for the field.
+ * @param {string} defaultValue - The default value for the form control.
  * @description Returns a Formly field configuration object with the specified label, cancel label, and key.
  * The configuration includes a search input field with a debounce model option,
  * and an addon right element with a cancel icon that resets the form control when clicked.
  * @returns {FormlyFieldConfig} The Formly field configuration object.
  */
 export function addSearchInput(
-  label: string,
-  cancelLabel = 'empty value',
-  key = 'text'
+  customProps: Partial<FormlyFieldConfig['props']> = {},
+  key = 'text',
+  className = 'w-full',
+  defaultValue = ''
 ): FormlyFieldConfig {
   return {
     key,
     type: 'input',
-    defaultValue: '',
+    defaultValue,
     modelOptions: {
       debounce: {
-        default: 250,
+        default: 300,
       },
     },
     hooks: {
       onInit: config => config.form?.valueChanges.pipe(tap(() => setAddOnRightVisibility(config))),
       onChanges: setAddOnRightVisibility,
     },
-    className: 'w-full',
+    className,
     props: {
       type: 'search',
-      label,
-      placeholder: label ?? 'Search',
+      label: 'Search',
+      placeholder: 'Search',
       required: false,
       maxLength: 256,
       minLength: 1,
       addonLeft: {
         icon: 'search',
-      },
+        aria: 'search',
+        ariaHidden: true,
+        type: 'icon',
+      } as AddonConfig,
       addonRight: {
         icon: 'cancel',
-        aria: cancelLabel,
-        onClick: (field: FormlyFieldConfig): void => field.formControl?.reset(),
+        aria: 'empty value',
+        type: 'button',
+        onClick: (field: FormlyFieldConfig): void => field.formControl?.setValue(''),
+      } as AddonConfig,
+      attributes: {
+        autocomplete: 'off',
       },
+      ...customProps,
     },
   };
 }

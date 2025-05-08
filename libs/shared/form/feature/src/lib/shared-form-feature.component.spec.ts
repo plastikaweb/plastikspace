@@ -1,9 +1,10 @@
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
-import { ComponentRef } from '@angular/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { SharedFormFeatureComponent } from './shared-form-feature.component';
 
 xdescribe('SharedFormFeatureComponent', () => {
@@ -21,7 +22,7 @@ xdescribe('SharedFormFeatureComponent', () => {
     componentRef = fixture.componentRef;
     componentRef.setInput('fields', []);
     componentRef.setInput('model', {});
-    componentRef.setInput('submitAvailable', true);
+    componentRef.setInput('submitConfig', { submitAvailable: true });
 
     fixture.detectChanges();
   });
@@ -54,7 +55,7 @@ xdescribe('SharedFormFeatureComponent', () => {
     it('should update model and emit changeEvent', () => {
       const model = { q: 'pluto' };
       componentRef.setInput('model', null);
-      componentRef.setInput('submitAvailable', true);
+      componentRef.setInput('submitConfig', { submitAvailable: true });
       component.changeEvent.subscribe(() => (submit = true));
       component.onModelChange(model);
 
@@ -65,7 +66,7 @@ xdescribe('SharedFormFeatureComponent', () => {
     it('should update model but not emit changeEvent', () => {
       const model = null;
       componentRef.setInput('model', model);
-      componentRef.setInput('submitAvailable', false);
+      componentRef.setInput('submitConfig', { submitAvailable: false });
       component.changeEvent.subscribe(() => (submit = true));
       component.onModelChange(model);
 

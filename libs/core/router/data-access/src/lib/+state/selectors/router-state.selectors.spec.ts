@@ -1,8 +1,26 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
+import { provideMockStore } from '@ngrx/store/testing';
+
 import { routerMockState } from '../../mocks/router.mock';
-import { selectRouteData, selectRouteDataName, selectRouteParams, selectRouteQueryParams, selectRouteUrl } from './router-state.selectors';
+import {
+  selectRouteData,
+  selectRouteDataName,
+  selectRouteParams,
+  selectRouteQueryParams,
+  selectRouteUrl,
+} from './router-state.selectors';
 
 describe('RouterState selectors', () => {
   const { state } = routerMockState;
+  const initialState = {};
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [provideMockStore({ initialState }), provideExperimentalZonelessChangeDetection()],
+    });
+  });
+
   it('should return Url', () => {
     expect(selectRouteUrl.projector(routerMockState)).toBe(state.url);
   });

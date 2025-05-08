@@ -7,7 +7,11 @@ declare global {
   namespace Cypress {
     interface Chainable {
       setMatInput(inputs: ChainableHarness<MatInputHarness[]>, text: string, index?: number): void;
-      setMatDatePicker(datePickers: ChainableHarness<MatDatepickerInputHarness[]>, date: string, index?: number): void;
+      setMatDatePicker(
+        datePickers: ChainableHarness<MatDatepickerInputHarness[]>,
+        date: string,
+        index?: number
+      ): void;
     }
   }
 }
@@ -20,6 +24,10 @@ Cypress.Commands.add('setMatDatePicker', (datePickers, date, index = 0) => {
   datePickers.then(pickers => {
     pickers[index].openCalendar();
     pickers[index].setValue(date);
-    pickers[index].getCalendar().then(calendar => calendar.selectCell({ text: date }).then(() => pickers[index].closeCalendar()));
+    pickers[index]
+      .getCalendar()
+      .then(calendar =>
+        calendar.selectCell({ text: date }).then(() => pickers[index].closeCalendar())
+      );
   });
 });

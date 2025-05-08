@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/experimental",
         "index": "apps/experimental/src/index.html",
         "main": "apps/experimental/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
         "tsConfig": "apps/experimental/tsconfig.app.json",
         "assets": ["apps/experimental/src/favicon.ico", "apps/experimental/src/assets"],
         "styles": ["apps/experimental/src/styles.scss"],

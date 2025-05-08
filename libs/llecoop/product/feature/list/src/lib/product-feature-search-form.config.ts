@@ -1,30 +1,59 @@
 /* eslint-disable jsdoc/require-jsdoc */
+import { computed, inject, Injectable } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { addSearchInput } from '@plastik/shared/form/ui';
+import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { addSearchInput } from '@plastik/shared/form/search';
 
-export function getLlecoopProductSearchFeatureFormConfig(): FormlyFieldConfig[] {
-  return [
-    {
-      fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
-      fieldGroup: [
-        addSearchInput('Filtrar per nom, categoria, descripció', 'buidar valor'),
-        {
-          key: 'inStock',
-          type: 'select',
-          defaultValue: 'all',
-          className: 'w-full md:w-1/2',
-          templateOptions: {
-            label: 'Disponibilitat',
-            placeholder: 'Disponibilitat',
-            required: false,
-            options: [
-              { label: 'Tots', value: 'all' },
-              { label: 'Disponible', value: 'available' },
-              { label: 'No disponible', value: 'not-available' },
-            ],
+@Injectable({
+  providedIn: 'root',
+})
+export class LlecoopProductSearchFeatureFormConfig {
+  readonly #productStore = inject(llecoopProductStore);
+  readonly #categories = computed(() => [
+    { label: 'Totes', value: '' },
+    ...this.#productStore.categories(),
+  ]);
+
+  getConfig(): FormlyFieldConfig[] {
+    return [
+      {
+        fieldGroupClassName: 'flex flex-col md:flex-row gap-0 md:gap-sm',
+        fieldGroup: [
+          addSearchInput({
+            label: 'Filtrar per nom',
+            placeholder: 'Filtrar per nom',
+          }),
+          {
+            key: 'category',
+            type: 'select',
+            defaultValue: this.#productStore.filter()['category'],
+            className: 'w-full md:w-1/2',
+            props: {
+              label: 'Categoría',
+              placeholder: 'Categoría',
+              required: false,
+              options: toObservable(this.#categories),
+            },
           },
-        },
-      ],
-    },
-  ];
+          {
+            key: 'isAvailable',
+            type: 'select',
+            defaultValue: this.#productStore.filter()['isAvailable'],
+            className: 'w-full md:w-1/2',
+            props: {
+              label: 'Disponibilitat',
+              placeholder: 'Disponibilitat',
+              required: false,
+              options: [
+                { label: 'Tots', value: 'all' },
+                { label: 'Disponible', value: 'on' },
+                { label: 'No disponible', value: 'off' },
+              ],
+            },
+          },
+        ],
+      },
+    ];
+  }
 }

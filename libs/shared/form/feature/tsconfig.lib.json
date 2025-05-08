@@ -2,12 +2,14 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
-    "declaration": true,
-    "declarationMap": true,
     "inlineSources": true,
-    "types": [],
-    "composite": true
+    "types": []
   },
   "exclude": ["src/test-setup.ts", "src/**/*.spec.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../**/*.ts",
+    "../../../core/entities/src/**/*.ts",
+    "../../core/entities/index.ts"
+  ]
 }

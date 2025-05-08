@@ -2,11 +2,10 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-  standalone: true,
   selector: 'plastik-core-cms-layout-ui-header',
   imports: [MatToolbarModule],
   template: `
-    <mat-toolbar role="banner" color="primary">
+    <mat-toolbar role="banner">
       <ng-content select="[start]"></ng-content>
       <span class="flex-auto"></span>
       <ng-content select="[end]"></ng-content>

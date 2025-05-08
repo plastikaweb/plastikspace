@@ -3,11 +3,11 @@ import * as functions from 'firebase-functions';
 
 import { firestore } from '../init';
 
-export default async (change, context) => {
+export default async (snapshot, context) => {
   functions.logger.debug(`Running update product trigger for ${context.params.productId}`);
 
-  const previousProductCategoryId = change.before.data().categoryRef?.split('/')[1];
-  const updatedProductCategoryId = change.after.data().categoryRef?.split('/')[1];
+  const previousProductCategoryId = snapshot.before.data().categoryRef?.split('/')[1];
+  const updatedProductCategoryId = snapshot.after.data().categoryRef?.split('/')[1];
 
   if (updatedProductCategoryId === previousProductCategoryId) {
     functions.logger.debug(`Product category did not change, skipping update`);

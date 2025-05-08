@@ -1,64 +1,223 @@
+import { catchError, distinctUntilChanged, map, Observable, of, takeUntil, throwError } from 'rxjs';
+
 import { inject, Injectable } from '@angular/core';
 import {
-  addDoc,
   collection,
   collectionData,
   collectionGroup,
-  deleteDoc,
-  doc,
-  Firestore,
+  DocumentData,
   query,
+  QueryConstraint,
   Timestamp,
-  updateDoc,
   where,
 } from '@angular/fire/firestore';
+import { EntityId } from '@ngrx/signals/entities';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { LlecoopOrder, LlecoopUserOrder } from '@plastik/llecoop/entities';
-import { from, Observable, of } from 'rxjs';
+import { LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { latinize } from '@plastik/shared/latinize';
+import {
+  EntityFireService,
+  StoreFirebaseCrudPagination,
+} from '@plastik/shared/signal-state-data-access';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
+
+import { StoreUserOrderFilter } from './user-order-store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserOrderFireService {
-  private readonly firestore = inject(Firestore);
-  private readonly authService = inject(FirebaseAuthService);
-  private readonly ordersGroup = collectionGroup(this.firestore, 'orders');
-  private readonly userId = this.authService.currentUser()?.uid;
+export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOrder> {
+  protected readonly path = 'orders';
+  readonly #authService = inject(FirebaseAuthService);
+  #ordersGroupCollection: ReturnType<typeof collectionGroup> | null = null;
 
-  getAll(): Observable<LlecoopUserOrder[]> {
-    if (!this.userId) {
-      return of([]);
+  protected get firestoreOrderGroupCollection() {
+    if (!this.#ordersGroupCollection && this.activeConnection()) {
+      this.#ordersGroupCollection = collectionGroup(this.firestore, this.path);
     }
-    const q = query(this.ordersGroup, where(`userId`, '==', this.userId));
-    return collectionData(q, { idField: 'id' }) as Observable<LlecoopUserOrder[]>;
+    return this.#ordersGroupCollection;
   }
 
-  create(item: Partial<LlecoopUserOrder>, currentOrderId: LlecoopOrder['id']) {
-    const orderCollection = collection(this.firestore, `order-list/${currentOrderId}/orders`);
+  private setCollection(item: LlecoopUserOrder): void {
+    if (this.activeConnection()) {
+      this.collection = collection(
+        this.firestore,
+        `order-list/${item.orderListId}/orders`
+      ).withConverter(this.firebaseAssignTypes());
+    }
+  }
 
-    return from(
-      addDoc(orderCollection, {
-        ...item,
-        status: 'waiting',
-        userId: this.userId,
-        createdAt: Timestamp.now(),
+  override getAll(
+    pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>,
+    sorting: TableSortingConfig,
+    filter: StoreUserOrderFilter
+  ): Observable<LlecoopUserOrder[]> {
+    try {
+      const userId = this.#authService.currentUser()?.uid;
+      const isAdmin = this.#authService.isAdmin();
+
+      if (!userId) {
+        return of([]);
+      }
+
+      if (!this.firestoreOrderGroupCollection) {
+        return of([]);
+      }
+
+      const conditions: QueryConstraint[] = [
+        ...this.getFilterConditions(filter),
+        ...this.getSortingConditions(sorting),
+        ...this.getPaginationConditions(pagination, sorting[0]),
+        ...(!isAdmin ? [where('userId', '==', userId)] : []),
+      ];
+
+      const q = query(this.firestoreOrderGroupCollection, ...conditions);
+      return collectionData(q, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+        map(orders => orders as LlecoopUserOrder[]),
+        catchError(error => this.handlePermissionError(error, []))
+      );
+    } catch (error) {
+      return throwError(() => error);
+    }
+  }
+
+  override getItem(id: EntityId): Observable<LlecoopUserOrder | null> {
+    try {
+      const userId = this.#authService.currentUser()?.uid;
+      if (!userId) {
+        return of(null);
+      }
+
+      if (!this.firestoreOrderGroupCollection) {
+        return of(null);
+      }
+
+      const q = query(this.firestoreOrderGroupCollection, where('userId', '==', userId));
+
+      return collectionData(q, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        map(orders => (orders.find(order => order.id === id) as LlecoopUserOrder) || null),
+        catchError(error => this.handlePermissionError(error, null))
+      );
+    } catch (error) {
+      return throwError(() => error);
+    }
+  }
+
+  override create(item: LlecoopUserOrder) {
+    this.setCollection(item);
+    return super.create(item);
+  }
+
+  override update(item: LlecoopUserOrder) {
+    this.setCollection(item);
+    return super.update(item);
+  }
+
+  override delete(item: LlecoopUserOrder) {
+    this.setCollection(item);
+    return super.delete(item);
+  }
+
+  override getCount(filter: StoreUserOrderFilter): Observable<number> {
+    try {
+      const userId = this.#authService.currentUser()?.uid;
+      const isAdmin = this.#authService.isAdmin();
+      if (!userId) {
+        return of(0);
+      }
+      const conditions = [
+        ...this.getFilterConditions(filter),
+        ...(!isAdmin ? [where('userId', '==', userId)] : []),
+      ];
+
+      if (!this.firestoreOrderGroupCollection) {
+        return of(0);
+      }
+
+      const q = query(this.firestoreOrderGroupCollection, ...conditions);
+      return collectionData(q, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+        map(orders => orders.length),
+        catchError(error => this.handlePermissionError(error, 0))
+      );
+    } catch (error) {
+      return throwError(() => error);
+    }
+  }
+
+  getCurrentUserOrder(orderListId: EntityId): Observable<LlecoopUserOrder | null> {
+    try {
+      const userId = this.#authService.currentUser()?.uid;
+      if (!userId) {
+        return of(null);
+      }
+
+      if (!this.firestoreOrderGroupCollection) {
+        return of(null);
+      }
+
+      const q = query(
+        this.firestoreOrderGroupCollection,
+        where('userId', '==', userId),
+        where('orderListId', '==', orderListId)
+      );
+
+      return collectionData(q, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        map(orders => orders[0] || null),
+        catchError(error => this.handlePermissionError(error, null))
+      ) as Observable<LlecoopUserOrder | null>;
+    } catch (error) {
+      return throwError(() => error);
+    }
+  }
+
+  override getFilterConditions(filter: StoreUserOrderFilter): QueryConstraint[] {
+    const conditions: QueryConstraint[] = [];
+    if (Object.entries(filter).length > 0) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (key === 'text' && value) {
+          const normalizedText = latinize(value as string).toLowerCase();
+          conditions.push(
+            where('normalizedName', '>=', normalizedText),
+            where('normalizedName', '<=', normalizedText + '\uf8ff')
+          );
+        } else if (key === 'userNormalizedName' && value) {
+          const normalizedText = latinize(value as string).toLowerCase();
+          conditions.push(
+            where('userNormalizedName', '>=', normalizedText),
+            where('userNormalizedName', '<=', normalizedText + '\uf8ff')
+          );
+        } else if (key === 'userId' && value) {
+          conditions.push(where('userId', '==', value));
+        } else if (value) {
+          conditions.push(where(key, '==', value));
+        }
+      });
+    }
+
+    return conditions;
+  }
+
+  protected override firebaseAssignTypes() {
+    const userId = this.#authService.currentUser()?.uid;
+    const userEmail = this.#authService.currentUser()?.email;
+
+    return {
+      ...super.firebaseAssignTypes(),
+      toFirestore: (doc: LlecoopUserOrder): DocumentData => ({
+        ...doc,
+        status: doc.status ?? 'waitingReview',
+        userId,
+        userEmail,
+        normalizedName: latinize(doc.name).toLowerCase(),
+        createdAt: doc.createdAt ?? Timestamp.now(),
         updatedAt: Timestamp.now(),
-      })
-    );
-  }
-
-  update(item: Partial<LlecoopUserOrder>) {
-    const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
-    return from(
-      updateDoc(document, {
-        ...item,
-        updatedAt: Timestamp.now(),
-      })
-    );
-  }
-
-  delete(item: LlecoopUserOrder) {
-    const document = doc(this.firestore, `order-list/${item.orderListId}/orders/${item.id}`);
-    return from(deleteDoc(document));
+      }),
+    };
   }
 }

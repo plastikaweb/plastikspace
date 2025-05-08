@@ -1,9 +1,13 @@
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { LlecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { FirebaseStorageService } from '@plastik/storage/data-access';
 
-export const NewProductDetailResolver: ResolveFn<boolean> = () => {
-  const store = inject(LlecoopProductStore);
+export const newProductDetailResolver: ResolveFn<boolean> = () => {
+  const store = inject(llecoopProductStore);
+  const firebaseStorage = inject(FirebaseStorageService);
+
+  firebaseStorage.reset();
 
   store.setSelectedItemId(null);
 

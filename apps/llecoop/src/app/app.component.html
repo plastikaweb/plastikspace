@@ -5,15 +5,14 @@
         <div></div>
         <div></div>
       </div>
-      <p class="sr-only">carregant botiga...</p>
+      <p class="sr-only">carregant dades...</p>
     </div>
   </plastik-shared-activity-ui-overlay>
 }
-
-@defer (when notificationConfig()) {
+@defer (when !!notificationStore.configuration()) {
   <div
-    [plastikSnackbar]="notificationConfig() || {}"
-    (sendDismiss)="notificationFacade.dismiss()"></div>
+    [plastikSnackbar]="notificationStore.configuration()"
+    (sendDismiss)="notificationStore.dismiss()"></div>
 }
 
 <router-outlet></router-outlet>

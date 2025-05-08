@@ -1,24 +1,15 @@
-import { Inject, Injectable } from '@angular/core';
-
-import {
-  NOTIFICATION_TYPES_CONFIG,
-  Notification,
-  NotificationTypesConfig,
-} from '@plastik/shared/notification/entities';
+import { inject, Injectable } from '@angular/core';
+import { Notification, NOTIFICATION_TYPES_CONFIG } from '@plastik/shared/notification/entities';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationConfigService {
-  private notification: Notification | null = null;
-
-  constructor(
-    @Inject(NOTIFICATION_TYPES_CONFIG)
-    private readonly notificationTypesConfig: NotificationTypesConfig
-  ) {}
+  #notification: Notification | null = null;
+  readonly #notificationTypesConfig = inject(NOTIFICATION_TYPES_CONFIG);
 
   private removeInstance(): void {
-    this.notification = null;
+    this.#notification = null;
   }
 
   /**
@@ -33,14 +24,14 @@ export class NotificationConfigService {
     message = '',
     ...extras
   }: Partial<Notification> = {}): Notification {
-    // this.removeInstance();
+    this.removeInstance();
 
-    this.notification = {
-      ...this.notificationTypesConfig[type],
+    this.#notification = {
+      ...this.#notificationTypesConfig[type],
       ...extras,
       type,
       message,
     };
-    return this.notification;
+    return this.#notification;
   }
 }

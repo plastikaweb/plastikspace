@@ -1,52 +1,54 @@
-import { inject, Injectable } from '@angular/core';
-import {
-  addDoc,
-  collection,
-  collectionData,
-  deleteDoc,
-  doc,
-  Firestore,
-  Timestamp,
-  updateDoc,
-} from '@angular/fire/firestore';
+import { catchError, distinctUntilChanged, map, Observable, takeUntil, throwError } from 'rxjs';
+
+import { Injectable } from '@angular/core';
+import { collectionData, query, QueryConstraint, where } from '@angular/fire/firestore';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
-import { from, Observable } from 'rxjs';
+import { latinize } from '@plastik/shared/latinize';
+import { EntityFireService } from '@plastik/shared/signal-state-data-access';
+
+import { StoreCategoryFilter } from './category-store';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopCategoryFireService {
-  private readonly firestore = inject(Firestore);
-  private readonly categoryCollection = collection(this.firestore, 'category');
+export class LlecoopCategoryFireService extends EntityFireService<LlecoopProductCategory> {
+  protected readonly path = 'category';
 
-  getAll(): Observable<LlecoopProductCategory[]> {
-    return collectionData(this.categoryCollection, { idField: 'id' }) as Observable<
-      LlecoopProductCategory[]
-    >;
+  override getFilterConditions(filter: StoreCategoryFilter): QueryConstraint[] {
+    const conditions: QueryConstraint[] = [];
+
+    if (Object.entries(filter).length > 0) {
+      Object.entries(filter).forEach(([key, value]) => {
+        if (key === 'text' && value) {
+          const normalizedText = latinize(value as string).toLowerCase();
+          conditions.push(
+            where('normalizedName', '>=', normalizedText),
+            where('normalizedName', '<=', normalizedText + '\uf8ff')
+          );
+        }
+      });
+    }
+
+    return conditions;
   }
 
-  create(item: Partial<LlecoopProductCategory>) {
-    return from(
-      addDoc(this.categoryCollection, {
-        ...item,
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-      })
-    );
-  }
+  getAllCategories(): Observable<LlecoopProductCategory[]> {
+    try {
+      const firestoreCollection = this.firestoreCollection;
+      if (!firestoreCollection) {
+        return throwError(() => new Error('No collection available'));
+      }
 
-  update(item: Partial<LlecoopProductCategory>) {
-    const document = doc(this.firestore, `category/${item.id}`);
-    return from(
-      updateDoc(document, {
-        ...item,
-        updatedAt: Timestamp.now(),
-      })
-    );
-  }
+      const postCollection = query(firestoreCollection);
 
-  delete(item: LlecoopProductCategory) {
-    const document = doc(this.firestore, `category/${item.id}`);
-    return from(deleteDoc(document));
+      return collectionData(postCollection, { idField: 'id' }).pipe(
+        takeUntil(this.destroy$),
+        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+        map(items => items as LlecoopProductCategory[]),
+        catchError(error => this.handlePermissionError(error, []))
+      );
+    } catch (error) {
+      return throwError(() => error);
+    }
   }
 }

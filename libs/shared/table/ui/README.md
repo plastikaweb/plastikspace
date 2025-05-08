@@ -8,6 +8,7 @@
   - [Outputs](#outputs)
   - [Example](#example)
     - [How to style](#how-to-style)
+    - [Set global values for paginator](#set-global-values-for-paginator)
   - [Running unit tests](#running-unit-tests)
   - [Useful links](#useful-links)
 
@@ -34,15 +35,15 @@ It uses internally [Material Table](https://material.angular.io/components/table
 | `pagination`              | `PageEventConfig`                                        | The table pagination configuration.                                    |                                            |
 | `noPagination`            | `boolean`                                                | Remove pagination component to the table.                              | false                                      |
 | `paginationVisibility`    | `Partial<TablePaginationVisibility>`                     | Pagination visibility configuration.                                   | All properties are set to false by default |
-| `pageSizeOptions`         | `number[]`                                               | The pagination page sizes available in the UI.                         |                                            |
 | `caption`                 | `string`                                                 | Main title of the table.                                               |                                            |
-| `actions`                 | `TableControlAction<T>`                                  | Table actions configuration.                                           |                                            |
+| `actions`                 | `TableControlAction<T>`                                  | Table actions. configuration.                                          |                                            |
 | `filterCriteria`          | `Record<string, string>`                                 | Table filter criteria configuration.                                   |                                            |
 | `filterCriteriaPredicate` | `(data: T, criteria: Record<string, string>) => boolean` | Table filter criteria predicate.                                       |                                            |
 | `extraRowStyles`          | `(element: T) => string`                                 | Table extra row styles configuration.                                  |                                            |
 | `actionsColStyles`        | `string`                                                 | Table actions column styles configuration.                             | ''                                         |
-| `expandable`              | `boolean`                                                | Table has expandable row behavior                                      | false                                      |
-| `expandableElementId`     | `EntityId\string\null`                                   | Table expandable element id                                            | null                                       |
+| `rowHeight`               | `string`                                                 | Table row height configuration.                                        | 'unset'                                    |
+| `expandable`              | `boolean`                                                | Table has expandable row behavior.                                     | false                                      |
+| `expandableElementId`     | `EntityId\string\null`                                   | Table expandable element id.                                           | null                                       |
 | `expandedDetailTpl`       | `TemplateRef<unknown>\null`                              | Table expandable element reference.                                    | null                                       |
 
 ## Outputs
@@ -106,7 +107,7 @@ data: Data[] = [
 const index: TableColumnFormatting<Data, CUSTOM> = {
   key: 'index',
   title: '',
-  propertyPath: '',
+  pathToKey: '',
   cssClasses: 'max-w-[4rem] lg:max-w-[10rem]',
   formatting: {
     type: CUSTOM,
@@ -117,7 +118,7 @@ const index: TableColumnFormatting<Data, CUSTOM> = {
 const id: TableColumnFormatting<Data, TEXT> = {
   key: 'id',
   title: 'ID',
-  propertyPath: 'id',
+  pathToKey: 'id',
   formatting: {
     type: TEXT,
   },
@@ -126,7 +127,7 @@ const id: TableColumnFormatting<Data, TEXT> = {
 const date: TableColumnFormatting<Data, DATE> = {
   key: 'startTime',
   title: 'Created',
-  propertyPath: 'startTime',
+  pathToKey: 'startTime',
   formatting: {
     type: DATE,
     extras: { numberDigitsInfo: 'longDate' },
@@ -163,10 +164,10 @@ onChangeTablePagination(tablePagination: TablePagination) {
   [data]="data"
   [columnProperties]="tableDefinition.columnProperties"
   [caption]="tableDefinition.caption"
+  [sort]="tableDefinition.sort"
+  [pagination]="tableDefinition.pagination"
   [resultsLength]="resultsLength"
   [paginationVisibility]="{
-        hidePageSize: false,
-        hidePaginationFirstLastButtons: true,
         hideRangeButtons: false,
         hideRangeLabel: true,
       }"
@@ -182,6 +183,21 @@ You can overwrite the styles from your main application declaring these CSS vari
 -  --plastik-mdc-table-row-min-height: 120px;
 ```
 
+### Set global values for paginator
+
+Provide [MAT_PAGINATOR_DEFAULT_OPTIONS](https://material.angular.io/components/paginator/api#MAT_PAGINATOR_DEFAULT_OPTIONS) token with the desired values.
+
+```typescript
+{
+  provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
+  useValue: {
+    pageSize: 10,
+    pageSizeOptions: [5, 10, 25],
+    showFirstLastButtons: false,
+  },
+}
+```
+
 ## Running unit tests
 
 Run `nx test shared-table-ui` to execute the unit tests.
@@ -189,3 +205,5 @@ Run `nx test shared-table-ui` to execute the unit tests.
 ## Useful links
 
 - [Material Table](https://material.angular.io/components/table/overview)
+- [Material Paginator](https://material.angular.io/components/paginator/overview)
+- [Material Paginator Default Options](https://material.angular.io/components/paginator/api#MAT_PAGINATOR_DEFAULT_OPTIONS)

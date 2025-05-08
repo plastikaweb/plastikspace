@@ -20,10 +20,10 @@ import * as functions from 'firebase-functions';
 // Category
 export const onUpdateCategoryUpdateProductCategory = functions.firestore
   .document('category/{categoryId}')
-  .onUpdate(async (change, context) => {
+  .onUpdate(async (snapshot, context) => {
     await (
       await import('./category/onUpdateCategoryUpdateProductCategory')
-    ).default(change, context);
+    ).default(snapshot, context);
   });
 
 export const onDeleteCategoryUpdateProductCategory = functions.firestore
@@ -45,10 +45,10 @@ export const onCreateProductUpdateCategoryProductCount = functions.firestore
 
 export const onUpdateProductUpdateCategoryProductCount = functions.firestore
   .document('product/{productId}')
-  .onUpdate(async (change, context) => {
+  .onUpdate(async (snapshot, context) => {
     await (
       await import('./product/onUpdateProductCategoryUpdateCategoryProductCount')
-    ).default(change, context);
+    ).default(snapshot, context);
   });
 
 export const onDeleteProductUpdateCategoryProductCount = functions.firestore
@@ -59,8 +59,14 @@ export const onDeleteProductUpdateCategoryProductCount = functions.firestore
     ).default(snapshot, context);
   });
 
+export const onChangeProductCheckImageToDelete = functions.firestore
+  .document('product/{productId}')
+  .onWrite(async (snapshot, context) => {
+    await (await import('./product/onUpdateProductCheckImageToDelete')).default(snapshot, context);
+  });
+
 // User
-export const onRegisterUserBlockIfUserIsNotWhitelisted = functions.auth
+export const onRequestRegisterUserBlockIfUserIsNotWhitelisted = functions.auth
   .user()
   .beforeCreate(async user => {
     await (await import('./user/onRequestRegisterUserBlockIfUserIsNotWhitelisted')).default(user);
@@ -90,12 +96,42 @@ export const onDeleteUserDeleteUserFromAuth = functions.firestore
     await (await import('./user/onDeleteUserDeleteUserFromAuth')).default(snapshot);
   });
 
-// List order
-export const onListOrderTimeFinishUpdateListOrderState = functions.pubsub
+export const onUpdateUserUpdateAuth = functions.firestore
+  .document('user/{userId}')
+  .onUpdate(async (snapshot, context) => {
+    await (await import('./user/onUpdateUserUpdateAuth')).default(snapshot, context);
+  });
+
+// Order list
+export const onOrderListTimeFinishUpdateOrderListState = functions.pubsub
   .schedule('0 12 * * 1')
   .timeZone('Europe/Madrid')
   .onRun(async () => {
-    await (await import('./list-order/onListOrderTimeFinishUpdateListOrderState')).default();
+    await (await import('./order-list/onOrderListTimeFinishUpdateOrderListState')).default();
+  });
+
+export const onUserOrderCreatedUpdateOrderListUserOrdersCount = functions.firestore
+  .document('order-list/{orderListId}/orders/{orderId}')
+  .onCreate(async (snapshot, context) => {
+    await (
+      await import('./order-list/onUserOrderCreatedUpdateOrderListUserOrdersCount')
+    ).default(snapshot, context);
+  });
+
+export const onUserOrderDeletedUpdateOrderListUserOrdersCount = functions.firestore
+  .document('order-list/{orderListId}/orders/{orderId}')
+  .onDelete(async (snapshot, context) => {
+    await (
+      await import('./order-list/onUserOrderDeletedUpdateOrderListUserOrdersCount')
+    ).default(snapshot, context);
+  });
+
+export const onUserOrderStatusUpdateUpdateOrderListUserOrdersStatus = functions.firestore
+  .document('order-list/{orderListId}/orders/{orderId}')
+  .onWrite(async snapshot => {
+    await (
+      await import('./order-list/onUserOrderStatusUpdateUpdateOrderListUserOrdersStatus')
+    ).default(snapshot);
   });
 
 // User order
@@ -107,18 +143,22 @@ export const onCreateUserOrderCheckIfAnUserOrderExists = functions.firestore
     ).default(snapshot, context);
   });
 
-export const onUserOrderCreatedUpdateListOrderUserOrdersCount = functions.firestore
+export const onChangeUserOrderUpdateOrderListTotal = functions.firestore
   .document('order-list/{orderListId}/orders/{orderId}')
-  .onCreate(async (snapshot, context) => {
+  .onWrite(async (_, context) => {
+    await (await import('./user-order/onChangeUserOrderUpdateOrderListTotal')).default(context);
+  });
+
+export const onCancelOrderListCancelRelatedUserOrdersStatus = functions.firestore
+  .document('order-list/{orderListId}')
+  .onUpdate(async (snapshot, context) => {
     await (
-      await import('./list-order/onUserOrderCreatedUpdateListOrderUserOrdersCount')
+      await import('./user-order/onCancelOrderListCancelRelatedUserOrdersStatus')
     ).default(snapshot, context);
   });
 
-export const onUserOrderDeletedUpdateListOrderUserOrdersCount = functions.firestore
-  .document('order-list/{orderListId}/orders/{orderId}')
-  .onDelete(async (snapshot, context) => {
-    await (
-      await import('./list-order/onUserOrderDeletedUpdateListOrderUserOrdersCount')
-    ).default(snapshot, context);
+export const onDeleteOrderListDeleteRelatedUserOrders = functions.firestore
+  .document('order-list/{orderListId}')
+  .onDelete(async snapshot => {
+    await (await import('./user-order/onDeleteOrderListDeleteRelatedUserOrders')).default(snapshot);
   });

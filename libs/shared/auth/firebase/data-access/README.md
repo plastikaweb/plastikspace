@@ -19,6 +19,7 @@ This library is responsible for handling all the data access logic for the fireb
   - `sendVerification`: This method is responsible for sending a verification email.
   - `requestPassword`: This method is responsible for sending a password reset email.
   - `handleAuthStateChanged`: This method is responsible for handling the auth state changes.
+  - `resetAuth`: This method is responsible for resetting the authentication state.
 
 ## Guards
 

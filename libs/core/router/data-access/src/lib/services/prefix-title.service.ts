@@ -1,19 +1,14 @@
-import { Inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot, TitleStrategy } from '@angular/router';
-import { ENVIRONMENT, Environment } from '@plastik/core/environments';
+import { ENVIRONMENT } from '@plastik/core/environments';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PrefixTitleService extends TitleStrategy {
-  constructor(
-    private readonly title: Title,
-    @Inject(ENVIRONMENT)
-    private readonly environment: Environment,
-  ) {
-    super();
-  }
+  readonly #title = inject(Title);
+  readonly #environment = inject(ENVIRONMENT);
 
   /**
    * @description Update page title with the environment app name.
@@ -21,6 +16,8 @@ export class PrefixTitleService extends TitleStrategy {
    */
   updateTitle(snapshot: RouterStateSnapshot): void {
     const title = this.buildTitle(snapshot);
-    this.title.setTitle(!title ? `${this.environment.name}` : `${this.environment.name} - ${title}`);
+    this.#title.setTitle(
+      !title ? `${this.#environment.name}` : `${this.#environment.name} - ${title}`
+    );
   }
 }

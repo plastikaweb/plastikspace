@@ -1,5 +1,7 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 /* eslint-disable no-console */
 import { computed, inject, Injectable, signal } from '@angular/core';
+import { FirebaseError } from '@angular/fire/app';
 import {
   Auth,
   createUserWithEmailAndPassword,
@@ -7,24 +9,27 @@ import {
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signOut,
+  updateProfile,
   User,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-
+import { activityActions } from '@plastik/shared/activity/data-access';
 import {
-  notificationActions,
   NotificationConfigService,
+  notificationStore,
 } from '@plastik/shared/notification/data-access';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseAuthService {
-  private readonly auth = inject(Auth);
-  private readonly router = inject(Router);
-  private readonly state = inject(Store);
-  private readonly notificationService = inject(NotificationConfigService);
+  readonly #auth = inject(Auth);
+  readonly #router = inject(Router);
+  readonly #state = inject(Store);
+  readonly #notificationService = inject(NotificationConfigService);
+  readonly #notificationStore = inject(notificationStore);
+  readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   currentUser = signal<User | null>(null);
   currentUserEmail = computed(() => this.currentUser()?.email ?? '');
@@ -35,10 +40,33 @@ export class FirebaseAuthService {
   firstLoginAfterRegister = signal(true);
 
   constructor() {
-    this.auth.onAuthStateChanged(this.handleAuthStateChanged.bind(this));
+    this.#auth.onAuthStateChanged(user => this.handleAuthStateChanged(user));
   }
 
-  private async handleAuthStateChanged(user: User | null): Promise<void> {
+  /**
+   * Updates the email of the currently authenticated user.
+   * @returns {Promise<void>} A promise that resolves when the email has been updated.
+   */
+  async updateEmail(): Promise<void> {
+    try {
+      const user = this.currentUser();
+      if (!user) {
+        throw new Error('No hi ha usuari autenticat');
+      }
+      await this.handleAuthStateChanged(user);
+    } catch (error) {
+      console.error('Error al actualitzar el email:', error);
+
+      throw error;
+    }
+  }
+
+  /**
+   * Handles changes in the authentication state.
+   * @param {User | null} user - The user object or null if the user is not authenticated.
+   * @returns {Promise<void>} A promise that resolves when the authentication state has been handled.
+   */
+  async handleAuthStateChanged(user: User | null): Promise<void> {
     this.currentUser.set(user);
     if (user) {
       const tokenResult = await user.getIdTokenResult();
@@ -66,26 +94,35 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the login process is complete.
    */
   async login(email: string, password: string): Promise<void> {
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+
     try {
-      await signInWithEmailAndPassword(this.auth, email, password);
-      await this.router.navigate(['']);
-    } catch (error) {
+      this.#notificationStore.dismiss();
+      await signInWithEmailAndPassword(this.#auth, email, password);
+      await this.#router.navigate(['']);
+      this.#liveAnnouncer.announce('Sessió iniciada', 'assertive', 100);
+    } catch (error: unknown) {
       console.error(error);
       if ((error as Error).message?.includes('BLOCKING_FUNCTION_ERROR_RESPONSE')) {
         console.error('BLOCKING_FUNCTION_ERROR_RESPONSE');
       }
-      this.state.dispatch(
-        notificationActions.show({
-          configuration: this.notificationService.getInstance({
-            type: 'ERROR',
-            message:
-              (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
-              'Revisa les teves dades',
-            duration: 5000,
-            action: 'tancar',
-          }),
+
+      const firebaseError = error as FirebaseError;
+
+      const message =
+        firebaseError.code === 'auth/invalid-credential'
+          ? 'Revisa les teves dades'
+          : firebaseError.message;
+
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message,
+          action: 'tancar',
         })
       );
+    } finally {
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -100,25 +137,39 @@ export class FirebaseAuthService {
    * with the error message.
    * @param {string} email - The email address of the user to register.
    * @param {string} password - The password for the new user.
+   * @param {string} name - The name of the user.
    * @returns {Promise<void>} A promise that resolves when the registration process is complete.
    */
-  async register(email: string, password: string): Promise<void> {
+  async register(email: string, password: string, name: string): Promise<void> {
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#notificationStore.dismiss();
+
     try {
-      const credentials = await createUserWithEmailAndPassword(this.auth, email, password);
+      const credentials = await createUserWithEmailAndPassword(this.#auth, email, password);
+      await updateProfile(credentials.user, { displayName: name });
       await this.logout();
       this.sendVerification(credentials.user);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
-      this.state.dispatch(
-        notificationActions.show({
-          configuration: this.notificationService.getInstance({
-            type: 'ERROR',
-            message:
-              (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ?? 'Error de registre',
-            action: 'tancar',
-          }),
+
+      const firebaseError = error as FirebaseError;
+
+      const message =
+        firebaseError.code === 'auth/email-already-in-use'
+          ? 'Aquest correu electrònic ja esta registrat'
+          : (error as Error).message.includes('PERMISSION_DENIED')
+            ? "Només els socis d'El Llevat poden registrar-se a la plataforma"
+            : 'Error de registre';
+
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message,
+          action: 'tancar',
         })
       );
+    } finally {
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -132,20 +183,25 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the logout process is complete.
    */
   async logout(): Promise<void> {
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
     try {
-      await signOut(this.auth);
-      await this.router.navigate(['login']);
-    } catch (error) {
+      this.#notificationStore.dismiss();
+      await signOut(this.#auth);
+      await this.resetAuth();
+      await this.#router.navigate(['login']);
+      this.#liveAnnouncer.announce('Sessió tancada', 'assertive', 100);
+    } catch (error: unknown) {
       console.error('Error during logout:', error);
-      this.state.dispatch(
-        notificationActions.show({
-          configuration: this.notificationService.getInstance({
-            type: 'ERROR',
-            message: 'Error during logout. Please try again.',
-            action: 'tancar',
-          }),
+
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message: 'Error durante el tancament de la sessió. Si us plau, torna a intentar-ho.',
+          action: 'tancar',
         })
       );
+    } finally {
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -160,21 +216,34 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the email has been sent.
    */
   async sendVerification(user: User): Promise<void> {
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
     this.firstLoginAfterRegister.set(false);
 
     try {
+      this.#notificationStore.dismiss();
       await sendEmailVerification(user);
-      this.state.dispatch(
-        notificationActions.show({
-          configuration: this.notificationService.getInstance({
-            type: 'SUCCESS',
-            message:
-              'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
-          }),
+
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'SUCCESS',
+          message:
+            'Registre completat correctament<br> Revisa el teu correu per verificar el teu compte',
         })
       );
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Error sending verification email:', error);
+
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message:
+            (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
+            'Error enviant el correu de verificació',
+          action: 'tancar',
+        })
+      );
+    } finally {
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
     }
   }
 
@@ -191,30 +260,57 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the password reset request process is complete.
    */
   async requestPassword(email: string): Promise<void> {
+    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+
     try {
-      await sendPasswordResetEmail(this.auth, email);
-      await this.router.navigate(['login']);
-      this.state.dispatch(
-        notificationActions.show({
-          configuration: this.notificationService.getInstance({
-            type: 'SUCCESS',
-            message: 'Revisa el teu correu per restablir la contrasenya',
-          }),
+      this.#notificationStore.dismiss();
+      await sendPasswordResetEmail(this.#auth, email);
+      await this.#router.navigate(['login']);
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'SUCCESS',
+          message: 'Revisa el teu correu per restablir la contrasenya',
         })
       );
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
-      this.state.dispatch(
-        notificationActions.show({
-          configuration: this.notificationService.getInstance({
-            type: 'ERROR',
-            message:
-              (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
-              'Petició denegada, revisa les teves dades',
-            action: 'tancar',
-          }),
+
+      this.#notificationStore.show(
+        this.#notificationService.getInstance({
+          type: 'ERROR',
+          message:
+            (error as Error)?.message?.match(/"message":"(.*?)"/)?.[1] ??
+            'Petició denegada, revisa les teves dades',
+          action: 'tancar',
         })
       );
+    } finally {
+      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
+    }
+  }
+
+  /**
+   * Resets the authentication state by clearing the current user and admin signals and ensuring the user is logged out.
+   * @returns {Promise<void>} A promise that resolves when the authentication state is reset.
+   */
+  async resetAuth(): Promise<void> {
+    this.currentUser.set(null);
+    this.isAdmin.set(false);
+
+    try {
+      if (this.#auth.currentUser) {
+        await this.#auth.currentUser.getIdToken(true);
+
+        const currentUser = this.#auth.currentUser;
+        if (currentUser) {
+          // Forzar una actualización del token para asegurar que se invalide cualquier sesión anterior
+          await currentUser.reload();
+        }
+      } else {
+        console.log('state after resetAuth: User not found');
+      }
+    } catch (error) {
+      console.warn('Error al limpiar el estado de autenticación:', error);
     }
   }
 }

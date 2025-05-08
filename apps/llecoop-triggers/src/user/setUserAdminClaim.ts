@@ -1,6 +1,8 @@
 import pkg from 'firebase-admin';
 import * as functions from 'firebase-functions';
+
 import { firestore } from '../init';
+
 const { auth } = pkg;
 
 export default async id => {
@@ -9,7 +11,7 @@ export default async id => {
     .getUser(id)
     .then(user => {
       if (!user) {
-        throw new functions.https.HttpsError('not-found', `L'usuari ${id} no existeix`);
+        throw new functions.https.HttpsError('not-found', `User with ID:${id} not found`);
       }
 
       return auth().setCustomUserClaims(user.uid, {
@@ -18,7 +20,7 @@ export default async id => {
       });
     })
     .then(() => {
-      const message = `L'usuari amb el correu electrònic ${id} ara és administrador`;
+      const message = `User with ID:${id} is now an admin`;
       functions.logger.debug(message);
       const userCollection = firestore.collection('user');
       userCollection.doc(id).update({ isAdmin: true });
@@ -31,7 +33,7 @@ export default async id => {
       functions.logger.error(error);
       throw new functions.https.HttpsError(
         'internal',
-        `Error en fer administrador l'usuari amb el correu electrònic ${id}`
+        `Error setting admin claim for user with ID:${id}`
       );
     });
 };

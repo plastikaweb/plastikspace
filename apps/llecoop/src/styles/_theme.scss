@@ -1,87 +1,89 @@
 @use '@angular/material' as mat;
-@use 'palette' as palette;
-@import 'font-family';
+@use 'font-family';
+@use 'styles_theme-colors' as palette;
 
-@layer base {
-  :root {
-    --base-size: 1rem;
-    --scale: 1.2;
-    --sub: calc(var(--base-size) * 0.7);
-    --tiny: calc(var(--sub) * 0.5);
-    --h6: var(--base-size);
-    --h5: calc(var(--h6) * var(--scale));
-    --h4: calc(1.3rem * var(--scale));
-    --h3: calc(1.5rem * var(--scale));
-    --h2: calc(1.75rem * var(--scale));
-    --h1: calc(2rem * var(--scale));
-    --xl: calc(3.5rem * var(--scale));
-    --xxl: calc(4.5rem * var(--scale));
+:root {
+  --base-size: 1rem;
+  --scale: 1.2;
+  --sub: calc(var(--base-size) * 0.85);
+  --tiny: calc(var(--base-size) * 0.65);
+  --h6: var(--base-size);
+  --h5: calc(var(--h6) * var(--scale));
+  --h4: calc(1.3rem * var(--scale));
+  --h3: calc(1.5rem * var(--scale));
+  --h2: calc(1.75rem * var(--scale));
+  --h1: calc(2rem * var(--scale));
+  --xl: calc(3.5rem * var(--scale));
+  --xxl: calc(4.5rem * var(--scale));
 
-    /* Colors */
-    --primary-50: #{mat.m2-get-color-from-palette(palette.$md-primary, 50)};
-    --primary-100: #{mat.m2-get-color-from-palette(palette.$md-primary, 100)};
-    --primary-200: #{mat.m2-get-color-from-palette(palette.$md-primary, 200)};
-    --primary-700: #{mat.m2-get-color-from-palette(palette.$md-primary, 700)};
-    --primary-500: #{mat.m2-get-color-from-palette(palette.$md-primary, 500)};
-    --primary-900: #{mat.m2-get-color-from-palette(palette.$md-primary, 900)};
-    --accent-50: #{mat.m2-get-color-from-palette(palette.$md-accent, 50)};
-    --accent-100: #{mat.m2-get-color-from-palette(palette.$md-accent, 100)};
-    --accent-400: #{mat.m2-get-color-from-palette(palette.$md-accent, 400)};
-    --accent-700: #{mat.m2-get-color-from-palette(palette.$md-accent, 700)};
-    --accent-900: #{mat.m2-get-color-from-palette(palette.$md-accent, 900)};
-    --warn-50: #{mat.m2-get-color-from-palette(palette.$md-warn, 50)};
-    --warn-100: #{mat.m2-get-color-from-palette(palette.$md-warn, 100)};
-    --warn: #{mat.m2-get-color-from-palette(palette.$md-warn, 500)};
-    --warn-700: #{mat.m2-get-color-from-palette(palette.$md-warn, 700)};
-    --warn-900: #{mat.m2-get-color-from-palette(palette.$md-warn, 900)};
+  /* Colors */
+  --primary-50: #{mat.m2-get-color-from-palette(palette.$primary-palette, 50)};
+  --primary-70: #{mat.m2-get-color-from-palette(palette.$primary-palette, 70)};
+  --primary-95: #{mat.m2-get-color-from-palette(palette.$primary-palette, 95)};
+  --primary-40: #{mat.m2-get-color-from-palette(palette.$primary-palette, 40)};
+  --primary-25: #{mat.m2-get-color-from-palette(palette.$primary-palette, 25)};
+  --primary-10: #{mat.m2-get-color-from-palette(palette.$primary-palette, 10)};
+  --tertiary-50: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 50)};
+  --tertiary-70: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 70)};
+  --tertiary-95: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 95)};
+  --tertiary-25: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 25)};
+  --tertiary-10: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 10)};
+  --secondary-50: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 50)};
+  --secondary-70: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 70)};
+  --secondary-95: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 95)};
+  --secondary-25: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 25)};
+  --secondary-10: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 10)};
+  --warn: #{mat.m2-get-color-from-palette(palette.$error-palette, 50)};
+  --warn-70: #{mat.m2-get-color-from-palette(palette.$error-palette, 70)};
+  --warn-90: #{mat.m2-get-color-from-palette(palette.$error-palette, 90)};
+  --warn-25: #{mat.m2-get-color-from-palette(palette.$error-palette, 25)};
+  --warn-10: #{mat.m2-get-color-from-palette(palette.$error-palette, 10)};
+  --white: #ffffff;
+  --black: #000000;
 
-    /* Tailwind Colors */
-    --primary: var(--primary-500);
-    --primary-light: var(--primary-100);
-    --primary-lighter: var(--primary-50);
-    --primary-dark: var(--primary-700);
-    --primary-darker: var(--primary-900);
-    --secondary: var(--accent-400);
-    --secondary-light: var(--accent-100);
-    --secondary-dark: var(--accent-700);
-    --secondary-lighter: var(--accent-50);
-    --secondary-darker: var(--accent-900);
+  /* Tailwind Colors */
+  --primary: var(--primary-50);
+  --primary-light: var(--primary-70);
+  --primary-lighter: var(--primary-95);
+  --primary-dark: var(--primary-40);
+  --primary-darker: var(--primary-10);
+  --secondary: var(--secondary-50);
+  --secondary-light: var(--secondary-70);
+  --secondary-lighter: var(--secondary-95);
+  --secondary-dark: var(--secondary-25);
+  --secondary-darker: var(--secondary-10);
 
-    --white: #ffffff;
-    --black: #000000;
+  /* Spacing */
+  --spacing-tiny: var(--tiny);
+  --spacing-sub: var(--sub);
+  --spacing-sm: var(--h5);
+  --spacing-md: var(--h3);
+  --spacing-lg: var(--h1);
+  --spacing-xl: var(--xl);
+  --spacing-xxl: var(--xxl);
 
-    /* Spacing */
-    --spacing-tiny: var(--tiny);
-    --spacing-sub: var(--sub);
-    --spacing-sm: var(--h5);
-    --spacing-md: var(--h3);
-    --spacing-lg: var(--h1);
-    --spacing-xl: var(--xl);
-    --spacing-xxl: var(--xxl);
+  /* Font Family */
+  --serif: 'Inter', serif;
 
-    /* Font Family */
-    --sans-serif: 'Nunito Sans', sans-serif;
-    /* Font Size */
-    --font-size-tiny: var(--tiny);
-    --font-size-base: var(--base-size);
-    --font-size-sm: var(--sub);
-    --font-size-md: var(--h5);
-    --font-size-lg: var(--h4);
-    --font-size-xl: var(--h3);
-    --font-size-xxl: var(--h2);
+  /* Font Size */
+  --font-size-tiny: var(--tiny);
+  --font-size-base: var(--base-size);
+  --font-size-sm: var(--sub);
+  --font-size-md: var(--h5);
+  --font-size-lg: var(--h4);
+  --font-size-xl: var(--h3);
+  --font-size-xxl: var(--h2);
 
-    /* Table */
-    --plastik-mdc-table-row-marked-ok-bg-color: var(--primary-100);
-    --plastik-mdc-table-row-marked-ko-bg-color: var(--warn-100);
-    --plastik-mdc-table-row-marked-changed-bg-color: var(--accent-100);
+  /* Table */
+  --plastik-mdc-table-row-marked-ok-bg-color: var(--mat-sys-primary-container);
+  --plastik-mdc-nested-data-bg-color: var(--mat-sys-secondary-container);
+  --plastik-mdc-nested-container-bg-color: var(--mat-sys-surface-container);
+  --plastik-mdc-table-row-marked-ko-bg-color: var(--mat-sys-error-container);
+  --plastik-mdc-table-row-marked-changed-bg-color: var(--mat-sys-inverse-primary);
 
-    /* Header */
-    --mat-toolbar-title-text-size: var(--h4);
-
-    /* Notification Snackbar Boxes */
-    --plastik-error-notification-box-color: var(--warn);
-    --plastik-info-notification-box-color: rgb(14, 122, 190);
-    --plastik-warning-notification-box-color: rgb(221, 148, 20);
-    --plastik-success-notification-box-colors: rgb(22, 134, 40);
-  }
+  /* Notification Snackbar Boxes */
+  --plastik-error-notification-box-color: var(--mat-sys-error);
+  --plastik-info-notification-box-color: rgba(7, 68, 121, 0.87);
+  --plastik-warning-notification-box-color: rgba(140, 58, 14, 0.87);
+  --plastik-success-notification-box-colors: var(--mat-sys-tertiary);
 }

@@ -50,9 +50,12 @@ export class AppModule {}
 ```typescript
 // A library service that needs access to app environment values.
 export class MyService {
-  constructor(@Inject(ENVIRONMENT) private readonly env: Environment) {
-    console.log(this.env.name);
+  readonly #env = inject(ENVIRONMENT);
+
+  constructor() {
+    console.log(this.#env.name);
   }
+}
 ```
 
 ## Running unit tests

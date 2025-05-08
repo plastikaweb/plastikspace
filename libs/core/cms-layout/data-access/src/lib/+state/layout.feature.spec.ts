@@ -1,7 +1,14 @@
 import { Action } from '@ngrx/store';
 
 import { layoutActions } from './layout.actions';
-import { LayoutPartialState, initialState, name, reducer, selectIsMobile, selectSidenavOpened } from './layout.feature';
+import {
+  initialState,
+  LayoutPartialState,
+  name,
+  reducer,
+  selectIsMobile,
+  selectSidenavOpened,
+} from './layout.feature';
 
 describe('Layout Reducer', () => {
   describe('valid Layout actions', () => {

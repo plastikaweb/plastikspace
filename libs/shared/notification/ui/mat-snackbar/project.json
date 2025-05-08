@@ -1,6 +1,6 @@
 {
-  "name": "shared-notificationui-mat-snackbar",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "name": "shared-notification-ui-mat-snackbar",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/shared/notification/ui/mat-snackbar/src",
   "prefix": "plastik",

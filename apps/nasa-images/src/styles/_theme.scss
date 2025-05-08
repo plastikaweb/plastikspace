@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
-@import 'palette';
-@import 'font-family';
+@use 'palette';
+@use 'font-family';
 
 @layer base {
   :root {

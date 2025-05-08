@@ -7,26 +7,23 @@
 <section>
   <!-- filtering -->
   <plastik-shared-form-feature
-    class="flex flex-row items-end content-center justify-between mx-0 mb-0 mt-sm md:my-md filters-box"
     [fields]="(formStructure$ | ngrxPush) || []"
     [model]="(formModel$ | ngrxPush) || {}"
     (changeEvent)="onChange($event)">
   </plastik-shared-form-feature>
 
+  @let table = tableDefinition();
   <!-- table -->
   <plastik-shared-table
     *ngrxLet="{
       data: images$,
-      tableDefinition: tableDefinition$,
       isActiveSearch: isActiveSearch$,
     } as obs"
     [data]="obs.data || []"
-    [caption]="obs.tableDefinition.caption || ''"
-    [columnProperties]="obs.tableDefinition.columnProperties || []"
-    [resultsLength]="obs.tableDefinition.count() || 0"
-    [pageSizeOptions]="obs.tableDefinition.pageSizeOptions || []"
-    [pagination]="obs.tableDefinition.pagination"
-    [paginationVisibility]="obs.tableDefinition.paginationVisibility"
+    [caption]="table?.caption || ''"
+    [columnProperties]="table?.columnProperties() || []"
+    [resultsLength]="table?.count() || 0"
+    [pagination]="table?.pagination()"
     (changePagination)="onChangePagination($event)">
     @if (obs.isActiveSearch) {
       <plastik-nasa-images-search-ui-no-results noResults>

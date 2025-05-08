@@ -7,19 +7,25 @@ import {
   TitleCasePipe,
 } from '@angular/common';
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
+import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
-import { Timestamp } from '@angular/fire/firestore';
-import { FormattingDateInput, FormattingExtras, PropertyFormattingConf } from '../formatting';
+import {
+  FormattingComponentOutput,
+  FormattingDateInput,
+  FormattingExtras,
+  PropertyComponentFormattingConf,
+  PropertyFormattingConf,
+} from '../formatting';
 
 @Injectable()
 /**
  * @description A service to serve formatting methods.
  */
 export class SharedUtilFormattersService {
-  private readonly titleCasePipe = inject(TitleCasePipe);
-  private readonly sanitizer = inject(DomSanitizer);
-  private readonly locale = inject(LOCALE_ID);
+  readonly #titleCasePipe = inject(TitleCasePipe);
+  readonly #sanitizer = inject(DomSanitizer);
+  readonly #locale = inject(LOCALE_ID);
 
   /**
    * Formats a date value using the specified formatting options.
@@ -30,13 +36,11 @@ export class SharedUtilFormattersService {
    */
   dateFormatter<T extends object>(
     value: FormattingDateInput,
-    extras?: () => Partial<
-      Pick<FormattingExtras<T, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>
-    >
+    extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
     let format = {
       dateDigitsInfo: 'shortDate',
-      locale: this.locale,
+      locale: this.#locale,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
 
@@ -60,10 +64,10 @@ export class SharedUtilFormattersService {
    */
   dateTimeFormatter<T>(
     value: FormattingDateInput,
-    extras?: () => Partial<Pick<FormattingExtras<T, 'DATE_TIME'>, 'locale' | 'timezone'>>
+    extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
     let format = {
-      locale: this.locale,
+      locale: this.#locale,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
 
@@ -86,13 +90,11 @@ export class SharedUtilFormattersService {
    */
   firebaseTimestampFormatter<T>(
     value: Timestamp,
-    extras?: () => Partial<
-      Pick<FormattingExtras<T, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>
-    >
+    extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
     let format = {
       dateDigitsInfo: 'shortDate',
-      locale: this.locale,
+      locale: this.#locale,
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     };
 
@@ -117,11 +119,11 @@ export class SharedUtilFormattersService {
    */
   percentageFormatter<T>(
     value: number,
-    extras?: () => Partial<Pick<FormattingExtras<T, 'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
+    extras?: () => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
     let format = {
       numberDigitsInfo: '1.2-2',
-      locale: this.locale,
+      locale: this.#locale,
     };
     if (extras) {
       format = {
@@ -144,14 +146,14 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<
       Pick<
-        FormattingExtras<T, 'CURRENCY'>,
+        FormattingExtras<'CURRENCY'>,
         'numberDigitsInfo' | 'locale' | 'currency' | 'currencyCode'
       >
     >
   ): string {
     let format = {
       numberDigitsInfo: '1.0-0',
-      locale: this.locale,
+      locale: this.#locale,
       currency: '$',
       currencyCode: 'USD',
     };
@@ -176,16 +178,16 @@ export class SharedUtilFormattersService {
    * Formats a given number according to specified formatting options.
    * @template T - The type parameter for formatting extras.
    * @param {number} value - The number to format.
-   * @param {() => Partial<Pick<FormattingExtras<T, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
+   * @param {() => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
    * @returns {string} - The formatted number as a string.
    */
   numberFormatter<T>(
     value: number,
-    extras?: () => Partial<Pick<FormattingExtras<T, 'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
+    extras?: () => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
     let format = {
       numberDigitsInfo: '1.2-2',
-      locale: this.locale,
+      locale: this.#locale,
     };
     if (extras) {
       format = {
@@ -202,24 +204,7 @@ export class SharedUtilFormattersService {
    * @returns { string } The formatted value.
    */
   titleCaseFormatter(value: string): string {
-    return this.titleCasePipe.transform(value);
-  }
-
-  /**
-   * Formats an image URL into a safe HTML image element.
-   * @template T - The type of the item being formatted.
-   * @param {string} value - The URL of the image.
-   * @param {T} item - The item associated with the image.
-   * @param {() => FormattingExtras<T, 'IMAGE'>} [extras] - Optional function to provide additional formatting options.
-   * @returns {SafeHtml} - The sanitized HTML image element.
-   */
-  imageFormatter<T>(value: string, item: T, extras?: () => FormattingExtras<T, 'IMAGE'>): SafeHtml {
-    const imgTitle = extras?.().title?.(item) || '';
-    const classes = extras?.().classes || '';
-
-    return this.sanitizer.bypassSecurityTrustHtml(
-      `<img alt="${imgTitle}" src="${value}" class="${classes}">`
-    );
+    return this.#titleCasePipe.transform(value);
   }
 
   /**
@@ -231,7 +216,7 @@ export class SharedUtilFormattersService {
    */
   booleanWithIconFormatter<T>(
     value: boolean,
-    extras?: () => FormattingExtras<T, 'BOOLEAN_WITH_ICON'>
+    extras?: () => FormattingExtras<'BOOLEAN_WITH_ICON'>
   ): SafeHtml {
     let format = {
       iconTrue: 'check',
@@ -243,7 +228,7 @@ export class SharedUtilFormattersService {
         ...extras(),
       };
     }
-    return this.sanitizer.bypassSecurityTrustHtml(
+    return this.#sanitizer.bypassSecurityTrustHtml(
       `<span class="material-icons">${value ? format.iconTrue : format.iconFalse}</span>`
     );
   }
@@ -276,11 +261,28 @@ export class SharedUtilFormattersService {
   }
 
   /**
+   * @description Formats a value using a component-based formatting configuration.
+   * @template T - The type of the object containing the value to format.
+   * @param {string} value - The value to format.
+   * @param {PropertyFormattingConf<T>} param - The formatting configuration.
+   * @param {((value: string, element?: T) => FormattingComponentOutput) | undefined} param.execute - The function to execute for component-based formatting.
+   * @param {T} element - The complete object containing the value being formatted.
+   * @returns {FormattingComponentOutput | string} The formatted component configuration or the original value if no execute function is provided.
+   */
+  componentFormatter<T>(
+    value: string,
+    { execute }: PropertyComponentFormattingConf<T>,
+    element: T
+  ): FormattingComponentOutput | string {
+    return execute ? execute(value, element) : value;
+  }
+
+  /**
    * @description Formats value as default passing sanitizer.
    * @param { string } value The value to sanitize.
    * @returns { SafeHtml } The value passed through the sanitizer.
    */
   defaultFormatter(value: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(value);
+    return this.#sanitizer.bypassSecurityTrustHtml(value);
   }
 }

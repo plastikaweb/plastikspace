@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/member-ordering */
 import { inject, Injectable, signal } from '@angular/core';
 import { AUTH_SERVICE, AuthFormFacade } from '@plastik/auth';
-
 import { FORM_TOKEN, FormConfig } from '@plastik/core/entities';
 
 export interface LoginData {
@@ -19,8 +17,7 @@ export class LoginFacadeService implements AuthFormFacade<LoginData> {
     { label: 'Registre per sòcies', route: '/registre' },
     { label: 'Has oblidat la contrasenya?', route: '/peticio-clau' },
   ]);
-
-  onSubmit({ email, password }: LoginData): void {
-    this.authService.login(email, password);
+  async onSubmit({ email, password }: LoginData): Promise<void> {
+    await this.authService.login(email, password);
   }
 }

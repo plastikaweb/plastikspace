@@ -1,0 +1,69 @@
+@let viewConfig = facade.viewConfig();
+@let tableDefinition = facade.tableDefinition;
+@let viewExtraActions = facade.viewExtraActions() || [];
+
+<div
+  class="flex flex-col flex-wrap justify-center items-center gap-sm md:flex-row md:justify-between">
+  <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
+    <mat-icon class="text-[40px] size-[40px]">{{ viewConfig?.icon }}</mat-icon>
+    <span>{{ viewConfig?.title | titlecase }}</span>
+  </h2>
+
+  <div class="flex flex-row justify-end items-center gap-sm">
+    @for (action of viewExtraActions; track action) {
+      <button
+        type="button"
+        mat-stroked-button
+        [disabled]="action.disabled()"
+        (click)="action.execute()">
+        <mat-icon>{{ action.icon }}</mat-icon> {{ action.label }}
+      </button>
+    }
+  </div>
+</div>
+
+<plastik-shared-form-feature
+  class="flex flex-row justify-between content-center items-end filters-box"
+  [fields]="facade.filterFormConfig || []"
+  [model]="facade.filterCriteria()"
+  [submitConfig]="{ submitAvailable: false, disableOnSubmit: false }"
+  [autoFocus]="true"
+  (changeEvent)="facade.onChangeFilterCriteria($event)">
+</plastik-shared-form-feature>
+
+<plastik-shared-table
+  [data]="tableDefinition.getData?.() || []"
+  [caption]="tableDefinition.caption || ''"
+  [columnProperties]="tableDefinition.columnProperties() || []"
+  [resultsLength]="tableDefinition?.count() || 0"
+  [sort]="tableDefinition.sort?.()"
+  [pagination]="tableDefinition?.pagination()"
+  [actions]="tableDefinition.actions || {}"
+  [noPagination]="tableDefinition.noPagination || false"
+  [extraRowStyles]="tableDefinition.extraRowStyles"
+  [actionsColStyles]="tableDefinition.actionsColStyles || ''"
+  [expandedDetailTpl]="orderDetail"
+  [expandable]="true"
+  [expandedElementId]="tableDefinition.getSelectedItemId?.() || null"
+  (changeSorting)="facade.onTableSorting($event)"
+  (changePagination)="facade.onTablePagination($event)"
+  (delete)="facade.onTableActionDelete($event)">
+</plastik-shared-table>
+
+<ng-template #orderDetail let-element="element">
+  @defer (when !!element) {
+    @let totalTableDefinition = facade.totalTableDefinition;
+
+    <div class="flex flex-col justify-between w-full gap-md py-md">
+      <h3 class="text-md">Totals de la comanda {{ element.name }}</h3>
+      <plastik-shared-table
+        [data]="totalTableDefinition.getData?.(element.id) || []"
+        [caption]="totalTableDefinition.caption || ''"
+        [columnProperties]="totalTableDefinition.columnProperties() || []"
+        [resultsLength]="totalTableDefinition?.count() || 0"
+        [sort]="totalTableDefinition.sort?.()"
+        [noPagination]="true">
+      </plastik-shared-table>
+    </div>
+  }
+</ng-template>

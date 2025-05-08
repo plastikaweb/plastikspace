@@ -1,129 +1,115 @@
-/* eslint-disable no-console */
-import { withDevtools } from '@angular-architects/ngrx-toolkit';
-import { computed, inject } from '@angular/core';
+import { filter, pipe, switchMap, tap } from 'rxjs';
+
+import { updateState } from '@angular-architects/ngrx-toolkit';
+import { computed } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import {
-  patchState,
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withState,
-} from '@ngrx/signals';
-import { setAllEntities, withEntities } from '@ngrx/signals/entities';
+import { signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { Store } from '@ngrx/store';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
-import { routerActions } from '@plastik/core/router-state';
-import { LlecoopFeatureStore, StoreNotificationService } from '@plastik/llecoop/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
-import { pipe, switchMap } from 'rxjs';
+import { activityActions } from '@plastik/shared/activity/data-access';
+import {
+  initStoreFirebaseCrudState,
+  StoreFirebaseCrudFilter,
+  StoreFirebaseCrudState,
+  withFirebaseCrud,
+} from '@plastik/shared/signal-state-data-access';
+import { TableSortingConfig } from '@plastik/shared/table/entities';
+
 import { LlecoopUserFireService } from './user-fire.service';
 
-type UserState = LlecoopFeatureStore;
+export type StoreUserFilter = StoreFirebaseCrudFilter & {
+  name: string;
+  email: string;
+  role: 'all' | 'admin' | 'user';
+};
 
-export const LLecoopUserStore = signalStore(
+export type UserStoreFirebaseCrudState = StoreFirebaseCrudState<LlecoopUser, StoreUserFilter> & {
+  loggedUser: LlecoopUser | null;
+};
+
+type SpecificUserStoreFirebaseCrudState = Omit<
+  UserStoreFirebaseCrudState,
+  keyof StoreFirebaseCrudState<LlecoopUser, StoreUserFilter>
+>;
+
+export const userMainInitState: StoreFirebaseCrudState<LlecoopUser, StoreUserFilter> = {
+  ...initStoreFirebaseCrudState(),
+  filter: {
+    name: '',
+    email: '',
+    role: 'all',
+  },
+  pagination: {
+    pageSize: 5,
+    pageIndex: 0,
+    pageLastElements: new Map<number, LlecoopUser>(),
+  },
+  sorting: ['updatedAt', 'desc'] as TableSortingConfig,
+  baseRoute: {
+    onCreate: 'usuaris',
+    onUpdate: 'perfil',
+    onError: 'usuaris',
+  },
+};
+
+const specificInitState: SpecificUserStoreFirebaseCrudState = {
+  loggedUser: null,
+};
+
+export const llecoopUserStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('users'),
-  withState<UserState>({
-    loaded: false,
-    lastUpdated: new Date(),
-    sorting: ['email', 'asc'],
-    selectedItemId: null,
+  withFirebaseCrud<
+    LlecoopUser,
+    LlecoopUserFireService,
+    StoreUserFilter,
+    StoreFirebaseCrudState<LlecoopUser, StoreUserFilter>
+  >({
+    featureName: 'user',
+    dataServiceType: LlecoopUserFireService,
+    initState: { ...userMainInitState, ...specificInitState },
   }),
-  withEntities<LlecoopUser>(),
-  withComputed(({ ids }) => ({
-    count: computed(() => ids().length),
+  withState<SpecificUserStoreFirebaseCrudState>(specificInitState),
+  withComputed(({ loggedUser }) => ({
+    getUserName: computed(() => loggedUser()?.name || loggedUser()?.email || 'user'),
   })),
-  withMethods(
-    (
-      store,
-      userService = inject(LlecoopUserFireService),
-      storeNotificationService = inject(StoreNotificationService),
-      state = inject(Store),
-      firebaseAuthService = inject(FirebaseAuthService)
-    ) => ({
-      getAll: rxMethod<void>(
-        pipe(
-          switchMap(() =>
-            userService.getAll().pipe(
-              tapResponse({
-                next: users =>
-                  patchState(
-                    store,
-                    setAllEntities(users, { selectId: entity => entity.id || '' }),
-                    { loaded: true, lastUpdated: new Date() }
-                  ),
-                error: error => {
-                  if (firebaseAuthService.loggedIn()) {
-                    storeNotificationService.create(
-                      `No s'ha pogut carregar els productes: ${error}`,
-                      'ERROR'
-                    );
-                  }
-                },
-              })
-            )
-          )
-        )
-      ),
-      create: rxMethod<Pick<LlecoopUser, 'email'>>(
-        pipe(
-          switchMap(({ email }) => {
-            return userService.create(email).pipe(
-              tapResponse({
-                next: () => state.dispatch(routerActions.go({ path: ['/admin/usuari'] })),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut guardar el email "${email}": ${error}`,
-                    'ERROR'
-                  ),
-                complete: () =>
-                  storeNotificationService.create(
-                    `Soci amb email "${email}" afegit a la llista`,
-                    'SUCCESS'
-                  ),
-              })
-            );
-          })
-        )
-      ),
-      delete: rxMethod<LlecoopUser>(
-        pipe(
-          switchMap(user => {
-            return userService.delete(user).pipe(
-              tapResponse({
-                next: () =>
-                  storeNotificationService.create(
-                    `Usuari amb correu electrònic "${user.email}" eliminat`,
-                    'SUCCESS'
-                  ),
-                error: error =>
-                  storeNotificationService.create(
-                    `No s'ha pogut eliminar l'usuari amb correu electrònic "${user.email}": ${error}`,
-                    'ERROR'
-                  ),
-              })
-            );
-          })
-        )
-      ),
+  withMethods(store => {
+    return {
       setAdmin: rxMethod<Pick<LlecoopUser, 'id'>>(
         pipe(
+          filter(() => !!store._activeConnection()),
           switchMap(({ id }) => {
+            store._state.dispatch(activityActions.setActivity({ isActive: true }));
             if (!id) {
               throw new Error('User ID is undefined');
             }
-            return userService.addAdminClaim(id).pipe(
+            return store._dataService.addAdminClaim(id).pipe(
               tapResponse({
                 next: () =>
-                  storeNotificationService.create(
+                  store._storeNotificationService.create(
                     `Usuari amb id "${id}" afegit com a administrador`,
                     'SUCCESS'
                   ),
                 error: () =>
-                  storeNotificationService.create(
+                  store._storeNotificationService.create(
                     `No s'ha pogut afegir l'usuari com a administrador`,
+                    'ERROR'
+                  ),
+              }),
+              tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
+            );
+          })
+        )
+      ),
+      getLoggedUser: rxMethod<void>(
+        pipe(
+          filter(() => !!store._activeConnection()),
+          switchMap(() => {
+            return store._dataService.getLoggedUser().pipe(
+              tapResponse({
+                next: loggedUser => updateState(store, `[user] get logged user`, { loggedUser }),
+                error: error =>
+                  store._storeNotificationService.create(
+                    `No s'ha pogut carregar l'usuari: ${error}`,
                     'ERROR'
                   ),
               })
@@ -131,15 +117,6 @@ export const LLecoopUserStore = signalStore(
           })
         )
       ),
-      setSorting: (sorting: UserState['sorting']) => patchState(store, { sorting }),
-    })
-  ),
-  withHooks({
-    onInit({ getAll, loaded }) {
-      if (!loaded()) getAll();
-    },
-    onDestroy() {
-      console.log('Destroying product store');
-    },
+    };
   })
 );

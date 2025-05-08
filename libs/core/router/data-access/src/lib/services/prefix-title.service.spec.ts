@@ -1,3 +1,4 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot } from '@angular/router';
@@ -13,7 +14,10 @@ describe('PrefixTitleService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        provideExperimentalZonelessChangeDetection(),
+        PrefixTitleService,
         provideEnvironmentMock(),
+        Title,
         {
           provide: RouterStateSnapshot,
           useValue: {

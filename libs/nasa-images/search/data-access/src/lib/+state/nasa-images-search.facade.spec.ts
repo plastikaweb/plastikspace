@@ -1,3 +1,5 @@
+import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -5,7 +7,6 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { routerActions, selectRouteQueryParams } from '@plastik/core/router-state';
 
-import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { NasaImagesSearchFacade } from './nasa-images-search.facade';
 
 describe('NasaImagesSearchFacade', () => {
@@ -15,6 +16,7 @@ describe('NasaImagesSearchFacade', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         NasaImagesSearchFacade,
         provideHttpClientTesting(),
         provideMockStore({
@@ -29,7 +31,7 @@ describe('NasaImagesSearchFacade', () => {
           ],
         }),
         provideEnvironmentMock(),
-        { provide: VIEW_CONFIG, useValue: null },
+        { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     });
 

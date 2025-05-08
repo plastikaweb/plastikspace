@@ -13,7 +13,7 @@
         "outputPath": "dist/apps/llecoop",
         "index": "libs/core/ng-entry-html/util/src/index.html",
         "browser": "apps/llecoop/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
         "optimization": true,
         "sourceMap": {
           "scripts": true,
@@ -67,7 +67,7 @@
           ]
         },
         "staging": {
-          "optimization": true,
+          "optimization": false,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true,
@@ -107,7 +107,7 @@
     },
     "test": {
       "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "outputs": ["{workspaceRoot}/coverage/apps/llecoop"],
       "options": {
         "jestConfig": "apps/llecoop/jest.config.ts"
       }
@@ -116,7 +116,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "llecoop:build",
-        "staticFilePath": "dist/apps/llecoop/browser"
+        "port": 4201
       }
     }
   }

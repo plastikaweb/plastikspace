@@ -1,4 +1,6 @@
-import { inject } from '@angular/core';
+import { map } from 'rxjs';
+
+import { computed, inject, signal, Signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { select, Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
@@ -9,14 +11,12 @@ import {
   DEFAULT_TABLE_CONFIG,
   PageEventConfig,
   TableColumnFormatting,
-  TableDefinition,
 } from '@plastik/shared/table/entities';
-import { map, Observable } from 'rxjs';
 
 const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
   key: 'index',
   title: '#',
-  propertyPath: '',
+  pathToKey: '',
   cssClasses: ['min-w-[4rem] hidden md:flex'],
   formatting: {
     type: 'CUSTOM',
@@ -31,7 +31,7 @@ const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
 const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'id',
   title: 'ID',
-  propertyPath: 'id',
+  pathToKey: 'id',
   cssClasses: [
     'min-w-[12rem] hidden md:flex lg:min-w-[14rem]',
     'text-sm text-white bg-secondary-dark rounded-md p-tiny',
@@ -44,7 +44,7 @@ const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
 const title: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'name',
   title: 'Title',
-  propertyPath: 'name',
+  pathToKey: 'name',
   cssClasses: ['min-w-[10rem] lg:max-w-[25rem]', 'content-center line-clamp-5'],
   formatting: {
     type: 'TEXT',
@@ -54,7 +54,7 @@ const title: TableColumnFormatting<NasaImage, 'TEXT'> = {
 const description: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'description',
   title: 'Description',
-  propertyPath: 'description',
+  pathToKey: 'description',
   cssClasses: ['min-w-[9rem] 2xl:min-w-[24rem] hidden md:flex', 'content-center line-clamp-4'],
   formatting: {
     type: 'TEXT',
@@ -64,7 +64,7 @@ const description: TableColumnFormatting<NasaImage, 'TEXT'> = {
 const dateCreated: TableColumnFormatting<NasaImage, 'DATE'> = {
   key: 'dateCreated',
   title: 'Created',
-  propertyPath: 'dateCreated',
+  pathToKey: 'dateCreated',
   cssClasses: ['min-w-[6rem]'],
   formatting: {
     type: 'DATE',
@@ -75,22 +75,21 @@ const dateCreated: TableColumnFormatting<NasaImage, 'DATE'> = {
 const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
   key: 'thumbnail',
   title: 'Image',
-  propertyPath: 'thumbnail',
-  cssClasses: ['max-w-[200px] min-w-[120px]'],
+  pathToKey: 'thumbnail',
+  cssClasses: [
+    'max-w-[120px] max-h-[120px] relative',
+    'object-cover size-[120px] rounded-2xl p-tiny',
+  ],
   formatting: {
     type: 'IMAGE',
-    extras: () => ({
-      type: 'img',
-      title: (item?: NasaImage) => item?.name || 'No title',
-      classes: 'object-cover h-[100px] w-[100px] rounded-md',
-    }),
+    extras: () => ({ placeholder: 'https://via.placeholder.com/120x120' }),
   },
 };
 
 const creator: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'creator',
   title: 'Creator',
-  propertyPath: 'creator',
+  pathToKey: 'creator',
   cssClasses: ['max-w-[16rem] hidden md:flex', 'xl:whitespace-normal content-center line-clamp-4'],
   formatting: {
     type: 'TEXT',
@@ -100,14 +99,14 @@ const creator: TableColumnFormatting<NasaImage, 'TEXT'> = {
 const center: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'center',
   title: 'Center',
-  propertyPath: 'center',
+  pathToKey: 'center',
   cssClasses: ['max-w-[5rem] hidden md:flex lg:max-w-[6rem]'],
   formatting: {
     type: 'TEXT',
   },
 };
 
-const columnProperties: TableColumnFormatting<NasaImage, FormattingTypes>[] = [
+const columnProperties: Signal<TableColumnFormatting<NasaImage, FormattingTypes>[]> = signal([
   index,
   id,
   title,
@@ -116,7 +115,7 @@ const columnProperties: TableColumnFormatting<NasaImage, FormattingTypes>[] = [
   dateCreated,
   creator,
   center,
-];
+]);
 
 export class NasaImagesSearchFeatureTableConfig {
   static getTableDefinition() {
@@ -124,27 +123,22 @@ export class NasaImagesSearchFeatureTableConfig {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
     const count = toSignal(store.pipe(select(selectNasaImagesFeature.selectCount)));
 
-    return store.select(selectRouteQueryParams).pipe(
-      map(({ page = 0 }) => {
-        return {
-          ...defaultTableConfig,
-          columnProperties,
-          pageSizeOptions: [100],
-          pagination: {
-            ...defaultTableConfig.pagination,
-            pageSize: 100,
-            pageIndex: --page,
-          },
-          paginationVisibility: {
-            hidePageSize: true,
-            hideRangeLabel: true,
-            hideRangeButtons: false,
-            hidePaginationFirstLastButtons: false,
-          },
-          count,
-          caption: 'Nasa Images Table Results',
-        };
-      })
-    ) as Observable<TableDefinition<NasaImage>>;
+    return toSignal(
+      store.select(selectRouteQueryParams).pipe(
+        map(({ page = 0 }) => {
+          return {
+            ...defaultTableConfig,
+            columnProperties,
+            pagination: computed(() => ({
+              ...(defaultTableConfig.pagination || {}),
+              pageSize: 100,
+              pageIndex: --page,
+            })),
+            count,
+            caption: 'Nasa Images Table Results',
+          };
+        })
+      )
+    );
   }
 }

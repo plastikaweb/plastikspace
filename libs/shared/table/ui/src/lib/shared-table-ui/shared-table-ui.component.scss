@@ -1,51 +1,50 @@
-::ng-deep .table-wrapper {
-  overflow-x: auto;
-  overflow-y: hidden;
-  display: grid;
-  width: 100%;
-  margin-bottom: 1rem;
+@use '@angular/material' as mat;
 
-  .mdc-data-table__table {
-    min-width: auto;
-  }
+::ng-deep mat-table {
+  .mat-mdc-row {
+    min-height: var(--plastik-mdc-table-row-min-height, auto);
+    max-height: var(--plastik-mdc-table-row-max-height, auto);
 
-  .mat-mdc-header-cell {
-    font-weight: bold;
-    white-space: nowrap;
+    li {
+      margin: 0;
+      padding: 0;
+    }
 
-    > .mat-sort-header-container {
-      white-space: pre-line;
-      word-break: normal;
-      min-width: 5rem;
-      text-align: left;
-      > .mat-sort-header-content {
-        text-align: left;
-      }
+    &.marked-ok {
+      background-color: var(--plastik-mdc-table-row-marked-ok-bg-color, #a1e380) !important;
+    }
+    &.marked-ko {
+      background-color: var(--plastik-mdc-table-row-marked-ko-bg-color, #f8c8c8) !important;
+    }
+    &.marked-changed {
+      background-color: var(--plastik-mdc-table-row-marked-changed-bg-color, #e8bf79) !important;
+    }
+
+    &.expanded-row > .mat-mdc-cell {
+      background-color: var(--plastik-mdc-nested-container-bg-color);
+      border-bottom-width: 0px;
+    }
+
+    &.expanded-row + .mat-mdc-row > .mat-mdc-cell {
+      border-bottom-width: 1px !important;
+      background-color: var(--plastik-mdc-nested-container-bg-color);
     }
   }
 
-  .mat-column-expand {
-    white-space: nowrap;
-    justify-content: center;
-    align-items: center;
-    max-width: 4rem;
-    padding: 0;
-  }
-
   .mat-mdc-cell {
-    &:not(.mat-cell-actions, .mat-cell-input, .mat-column-expand) * {
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: 0.2s;
+    @include mat.form-field-overrides(
+      (
+        container-height: 45px,
+        container-text-size: var(--mat-sys-body-medium-size),
+      )
+    );
+    // trick to make the cell with an input field takes the full width and not the default one
+    .mat-mdc-form-field-infix {
+      width: auto;
     }
 
     &.mat-cell-link a {
       @apply cursor-pointer;
-    }
-
-    &.mat-cell-input textarea {
-      overflow: scroll;
-      resize: vertical;
     }
 
     li {
@@ -61,33 +60,21 @@
       display: none;
     }
   }
-}
-.mat-mdc-table > .mat-mdc-row {
-  min-height: var(--plastik-mdc-table-row-min-height, auto);
-  max-height: var(--plastik-mdc-table-row-max-height, auto);
-  &.marked-ok {
-    background-color: var(--plastik-mdc-table-row-marked-ok-bg-color, #a1e380) !important;
-  }
-  &.marked-ko {
-    background-color: var(--plastik-mdc-table-row-marked-ko-bg-color, #f8c8c8) !important;
-  }
-  &.marked-changed {
-    background-color: var(--plastik-mdc-table-row-marked-changed-bg-color, #e8bf79) !important;
-  }
-  &.expanded-detail-row {
-    display: table-row;
-    height: 0;
-  }
 
-  &.expanded-row:hover > .mat-mdc-cell {
-    background-color: var(--accent-100);
-  }
+  mat-table {
+    @include mat.table-overrides(
+      (
+        background-color: var(--plastik-mdc-nested-data-bg-color),
+      )
+    );
 
-  &.expanded-row > .mat-mdc-cell {
-    background-color: var(--accent-50);
+    .mdc-data-table__row:not(:last-child) .mat-mdc-cell {
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      border-bottom-color: var(--mat-table-row-item-outline-color);
+    }
   }
 }
-
 ::ng-deep .mat-mdc-paginator {
   &.paginator--hide .mat-paginator-range-label {
     @apply hidden;
@@ -95,11 +82,5 @@
 
   &.paginator--hide-range-buttons .mat-mdc-paginator-range-actions > button {
     @apply hidden;
-  }
-  .mat-mdc-paginator-container {
-    @apply text-sm;
-    .mat-mdc-paginator-range-label {
-      @apply mx-sub;
-    }
   }
 }

@@ -1,10 +1,12 @@
+import { axe, toHaveNoViolations } from 'jest-axe';
+
+import { provideHttpClient } from '@angular/common/http';
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
-
-import { provideHttpClient } from '@angular/common/http';
 import { NasaImagesFacade } from '@plastik/nasa-images/data-access';
-import { axe, toHaveNoViolations } from 'jest-axe';
+
 import { NasaImagesFaqsService } from '../nasa-images-faqs.service';
 import { NasaImagesFaqsFeatureComponent } from './nasa-images-faqs-feature.component';
 
@@ -16,9 +18,10 @@ describe('NasaImagesFaqsFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NasaImagesFaqsFeatureComponent],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         provideMockStore(),
         provideHttpClient(),
-        { provide: VIEW_CONFIG, useValue: null },
+        { provide: VIEW_CONFIG, useValue: signal([]) },
         NasaImagesFacade,
         NasaImagesFaqsService,
       ],

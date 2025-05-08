@@ -1,4 +1,5 @@
 import { InjectionToken } from '@angular/core';
+
 import { NotificationTypesConfig } from './notification';
 
 export const defaultNotification: NotificationTypesConfig = {

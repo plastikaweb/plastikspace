@@ -2,10 +2,10 @@ import * as functions from 'firebase-functions';
 
 import { firestore } from '../init';
 
-export default async (change, context) => {
+export default async (snapshot, context) => {
   functions.logger.debug(`Running update category trigger for ${context.params.categoryId}`);
 
-  const newCategory = change.after.data();
+  const newCategory = snapshot.after.data();
   const productCollection = firestore.collection('product');
 
   return productCollection
@@ -14,7 +14,7 @@ export default async (change, context) => {
     .then(snapshot => {
       const batch = firestore.batch();
       snapshot.docs.forEach(doc => {
-        batch.update(doc.ref, { category: newCategory });
+        batch.update(doc.ref, { category: newCategory, categoryName: newCategory.name });
       });
       return batch.commit();
     });

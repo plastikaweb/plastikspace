@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, DetachedRouteHandle, RouteReuseStrategy } from 
 
 @Injectable()
 export class LlecoopRouteReuseStrategy extends RouteReuseStrategy {
-  private readonly storedRoutes = new Map<string, DetachedRouteHandle>();
+  readonly #storedRoutes = new Map<string, DetachedRouteHandle>();
 
   shouldDetach(route: ActivatedRouteSnapshot): boolean {
     // const { mustBeStored } = route.data;
@@ -45,14 +45,14 @@ export class LlecoopRouteReuseStrategy extends RouteReuseStrategy {
   }
 
   deleteStoredRoute(url: string): void {
-    const handle = this.storedRoutes.get(url);
+    const handle = this.#storedRoutes.get(url);
 
     if (handle === undefined) {
       return;
     }
 
     (handle as { componentRef: ComponentRef<unknown> }).componentRef.destroy();
-    this.storedRoutes.delete(url);
+    this.#storedRoutes.delete(url);
   }
 
   private generateKey(route: ActivatedRouteSnapshot): string {

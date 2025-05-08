@@ -1,6 +1,7 @@
-import { signal } from '@angular/core';
+import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+
 import { AuthFeatureComponent } from './auth-feature.component';
 import { AUTH_FORM_FACADE } from './auth-form-facade.type';
 
@@ -12,6 +13,7 @@ xdescribe('AuthFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AuthFeatureComponent],
       providers: [
+        provideExperimentalZonelessChangeDetection(),
         provideMockStore(),
         {
           provide: AUTH_FORM_FACADE,
@@ -20,7 +22,7 @@ xdescribe('AuthFeatureComponent', () => {
               {
                 key: 'email',
                 type: 'input',
-                templateOptions: {
+                props: {
                   label: 'Email',
                   required: true,
                 },
@@ -28,7 +30,7 @@ xdescribe('AuthFeatureComponent', () => {
               {
                 key: 'password',
                 type: 'input',
-                templateOptions: {
+                props: {
                   label: 'Password',
                   required: true,
                   type: 'password',

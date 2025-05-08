@@ -1,17 +1,17 @@
 import { inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { CanActivateFn, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
 import {
-  notificationActions,
   NotificationConfigService,
+  notificationStore,
 } from '@plastik/shared/notification/data-access';
+
 import { FirebaseAuthService } from './firebase-auth.service';
 
 export const isAdminGuard: CanActivateFn = async () => {
   const auth = inject(Auth);
   const router = inject(Router);
-  const state = inject(Store);
+  const store = inject(notificationStore);
   const notificationService = inject(NotificationConfigService);
   const firebaseAuthService = inject(FirebaseAuthService);
 
@@ -24,14 +24,12 @@ export const isAdminGuard: CanActivateFn = async () => {
         !user?.emailVerified &&
         !firebaseAuthService.firstLoginAfterRegister()
       ) {
-        state.dispatch(
-          notificationActions.show({
-            configuration: notificationService.getInstance({
-              type: 'ERROR',
-              message:
-                'Estàs registrat al sistema però el teu compte no està validat. Revisa el teu correu per verificar-lo',
-              action: 'tancar',
-            }),
+        store.show(
+          notificationService.getInstance({
+            type: 'ERROR',
+            message:
+              'Estàs registrat al sistema però el teu compte no està validat. Revisa el teu correu per verificar-lo',
+            action: 'tancar',
           })
         );
         auth.signOut();
