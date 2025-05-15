@@ -6,6 +6,7 @@ import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSort } from '@angular/material/sort';
 import { EntityId } from '@ngrx/signals/entities';
+import { BaseEntity } from '@plastik/core/entities';
 import {
   FormattingComponentOutput,
   FormattingTypes,
@@ -221,7 +222,7 @@ export const isDynamicComponentTypeGuard = (value: unknown): value is Formatting
 /**
  * @description An specific configuration for a table column <=> object property.
  */
-export type TableColumnFormatting<OBJ, TYPE> = PropertyFormatting<OBJ, TYPE> & {
+export type TableColumnFormatting<OBJ extends BaseEntity, TYPE> = PropertyFormatting<OBJ, TYPE> & {
   /**
    * Sets if a table column must have sorting capacities.
    */
@@ -340,7 +341,7 @@ export type TableControlAction<T> = {
 /**
  * @description Main configuration for a table structure.
  */
-export interface TableDefinition<OBJ> {
+export interface TableDefinition<OBJ extends BaseEntity> {
   /**
    * Array with each column configuration properties.
    */
@@ -418,14 +419,14 @@ export interface TableStructureConfig<T> {
    */
   getTableDefinition(
     overwrite?: ({ key: string } & Record<string, string>) | null,
-    tableControlStructureMerge?: Partial<TableDefinition<T>>
-  ): TableDefinition<T>;
+    tableControlStructureMerge?: Partial<TableDefinition<T extends BaseEntity ? T : never>>
+  ): TableDefinition<T extends BaseEntity ? T : never>;
 }
 
 /**
  * @description Default TableControlStructure configuration.
  */
-export const defaultTableConfig: TableDefinition<unknown> = {
+export const defaultTableConfig: TableDefinition<BaseEntity> = {
   columnProperties: signal([]),
   pagination: signal({
     previousPageIndex: 0,
@@ -442,7 +443,7 @@ export const defaultTableConfig: TableDefinition<unknown> = {
 /**
  * @description Default TableControlStructure Token. It can be mapped, combined or overwritten by any custom or feature configuration.
  */
-export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableDefinition<unknown>>(
+export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableDefinition<BaseEntity>>(
   'DEFAULT_TABLE_CONFIG',
   {
     providedIn: 'root',
@@ -454,4 +455,4 @@ export const DEFAULT_TABLE_CONFIG = new InjectionToken<TableDefinition<unknown>>
  * @description Table token.
  * @description This token is used to provide the table structure configuration.
  */
-export const TABLE_TOKEN = new InjectionToken<TableStructureConfig<unknown>>('TABLE_TOKEN');
+export const TABLE_TOKEN = new InjectionToken<TableStructureConfig<BaseEntity>>('TABLE_TOKEN');

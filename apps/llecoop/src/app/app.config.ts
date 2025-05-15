@@ -1,9 +1,5 @@
-import { A11yModule } from '@angular/cdk/a11y';
-import { DATE_PIPE_DEFAULT_OPTIONS, IMAGE_LOADER } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import {
-  ApplicationConfig,
-  DEFAULT_CURRENCY_CODE,
   ErrorHandler,
   importProvidersFrom,
   inject,
@@ -22,41 +18,27 @@ import {
 } from '@angular/fire/firestore';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideRouter,
-  RouteReuseStrategy,
   TitleStrategy,
   withComponentInputBinding,
   withViewTransitions,
 } from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
-import { NavigationActionTiming, provideRouterStore, RouterState } from '@ngrx/router-store';
 import { Store, StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
-import {
-  CustomRouterSerializer,
-  PrefixTitleService,
-  routerReducers,
-  RouterStateEffects,
-} from '@plastik/core/router-state';
-import { LlecoopEnvironment } from '@plastik/llecoop/entities';
+import { PrefixTitleService } from '@plastik/core/router-state';
 import { selectActivityFeature, selectIsActive } from '@plastik/shared/activity/data-access';
 import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
-import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
-import { imageKitLoader } from '@plastik/storage/data-access';
 
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { viewConfig } from './cms-layout-config';
-import { LlecoopRouteReuseStrategy } from './llecoop-route-reuse.strategy';
 
-export const appConfig: ApplicationConfig = {
+export const appConfig = {
   providers: [
     provideExperimentalZonelessChangeDetection(),
     provideAnimationsAsync(),
@@ -75,7 +57,6 @@ export const appConfig: ApplicationConfig = {
         connectFirestoreEmulator(firestore, '127.0.0.1', 8080);
       }
       persistentMultipleTabManager();
-
       return firestore;
     }),
     provideStorage(() => {
@@ -93,20 +74,8 @@ export const appConfig: ApplicationConfig = {
       return functions;
     }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
-    {
-      provide: RouteReuseStrategy,
-      useClass: LlecoopRouteReuseStrategy,
-    },
     importProvidersFrom(
-      A11yModule,
-      StoreModule.forRoot(routerReducers, {
-        runtimeChecks: {
-          strictActionImmutability: true,
-          strictStateImmutability: true,
-        },
-      }),
-      EffectsModule.forRoot([RouterStateEffects]),
-      StoreModule.forFeature(selectActivityFeature),
+      StoreModule.forRoot({ activity: selectActivityFeature.reducer }),
       isDevMode()
         ? StoreDevtoolsModule.instrument({
             name: environment.name,
@@ -115,54 +84,20 @@ export const appConfig: ApplicationConfig = {
             trace: true,
             traceLimit: 75,
           })
-        : [],
-      NotificationUiMatSnackbarModule
+        : []
     ),
-    provideRouterStore({
-      serializer: CustomRouterSerializer,
-      navigationActionTiming: NavigationActionTiming.PreActivation,
-      routerState: RouterState.Minimal,
-    }),
     {
       provide: ENVIRONMENT,
       useValue: environment,
     },
+    { provide: VIEW_CONFIG, useFactory: viewConfig },
     {
       provide: TitleStrategy,
       useClass: PrefixTitleService,
     },
-    { provide: VIEW_CONFIG, useFactory: viewConfig },
-    {
-      provide: IMAGE_LOADER,
-      useFactory: () => imageKitLoader(inject(ENVIRONMENT) as LlecoopEnvironment),
-    },
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: {
-        appearance: 'fill',
-      },
-    },
-    {
-      provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
-      useValue: {
-        verticalPosition: 'bottom',
-        horizontalPosition: 'center',
-        politeness: 'assertive',
-      },
-    },
     {
       provide: LOCALE_ID,
-      useValue: 'ca-ES',
-    },
-    {
-      provide: DEFAULT_CURRENCY_CODE,
-      useValue: 'EUR',
-    },
-    {
-      provide: DATE_PIPE_DEFAULT_OPTIONS,
-      useValue: {
-        dateFormat: 'dd/MM/yyyy',
-      },
+      useValue: 'ca',
     },
     {
       provide: FORM_DISABLE_TOKEN,

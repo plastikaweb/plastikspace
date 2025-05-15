@@ -1,4 +1,3 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
@@ -95,13 +94,6 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrl: './shared-table-ui.component.scss',
-  animations: [
-    trigger('detailExpand', [
-      state('collapsed,void', style({ height: '0px', minHeight: '0' })),
-      state('expanded', style({ height: '*' })),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
@@ -304,6 +296,12 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       ...(column.formatting.type === 'INPUT' ? { 'mat-cell-input': true } : {}),
       ...(column.formatting.type === 'LINK' ? { 'mat-cell-link': true } : {}),
     };
+  }
+
+  protected updateExpandedElement(element: T | null): void {
+    requestAnimationFrame(() => {
+      this.expandedElement.set(this.expandedElement()?.id === element?.id ? null : element);
+    });
   }
 
   private announceSortChange(sortState: Sort) {

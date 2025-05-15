@@ -1,6 +1,6 @@
 import { catchError, distinctUntilChanged, map, Observable, takeUntil, throwError } from 'rxjs';
 
-import { Injectable } from '@angular/core';
+import { Injectable, runInInjectionContext } from '@angular/core';
 import { collectionData, query, QueryConstraint, where } from '@angular/fire/firestore';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
@@ -33,22 +33,24 @@ export class LlecoopCategoryFireService extends EntityFireService<LlecoopProduct
   }
 
   getAllCategories(): Observable<LlecoopProductCategory[]> {
-    try {
-      const firestoreCollection = this.firestoreCollection;
-      if (!firestoreCollection) {
-        return throwError(() => new Error('No collection available'));
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const firestoreCollection = this.firestoreCollection;
+        if (!firestoreCollection) {
+          return throwError(() => new Error('No collection available'));
+        }
+
+        const postCollection = query(firestoreCollection);
+
+        return collectionData(postCollection, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+          map(items => items as LlecoopProductCategory[]),
+          catchError(error => this.handlePermissionError(error, []))
+        );
+      } catch (error) {
+        return throwError(() => error);
       }
-
-      const postCollection = query(firestoreCollection);
-
-      return collectionData(postCollection, { idField: 'id' }).pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
-        map(items => items as LlecoopProductCategory[]),
-        catchError(error => this.handlePermissionError(error, []))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 }

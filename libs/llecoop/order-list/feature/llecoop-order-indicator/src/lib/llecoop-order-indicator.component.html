@@ -1,30 +1,28 @@
-@if (currentOrderList() && currentUserOrder()) {
-  <mat-chip
-    role="button"
-    class="p-sm"
-    [matBadgeDescription]="(currentUserOrder()?.cart?.length || 0) + ' productes seleccionats'"
-    [routerLink]="['./comandes/' + currentUserOrder()?.id]"
-    [matBadge]="currentUserOrder()?.cart?.length || 0">
-    <mat-icon matChipAvatar> shopping_cart </mat-icon>
-    <div class="flex flex-row justify-center items-center break-words gap-sub">
-      <span class="hidden md:flex"> #{{ currentUserOrder()?.name }} </span>
-      <span class="hidden md:flex">|</span>
-      <span class="text-balance">
-        {{
+@defer (when !active()) {
+  @if (currentOrderList() && currentUserOrder()) {
+    <button
+      mat-button
+      [matBadgeDescription]="(currentUserOrder()?.cart?.length || 0) + ' productes seleccionats'"
+      [routerLink]="['./comandes/' + currentUserOrder()?.id]"
+      [matBadge]="currentUserOrder()?.cart?.length || 0">
+      <mat-icon matChipAvatar> shopping_cart </mat-icon>
+      <div class="flex flex-row justify-center items-center break-words gap-sub">
+        <span class="hidden md:flex"> #{{ currentUserOrder()?.name }} </span>
+        <span class="hidden md:flex">|</span>
+        <span class="text-balance">
+          {{
       (currentUserOrder()?.totalPrice || 0) + (currentUserOrder()?.deliveryPrice || 0)
       &vert; currency: 'EUR' : 'symbol' : '1.2-2'
-        }}
-      </span>
-    </div>
-  </mat-chip>
-} @else if (currentOrderList()) {
-  <mat-chip role="button" class="p-sm" [routerLink]="['./comandes/crear']">
-    <mat-icon matChipAvatar> shopping_cart </mat-icon>
-    Fes comanda
-  </mat-chip>
-} @else {
-  <mat-chip disableRipple class="p-sm">
-    <mat-icon matChipAvatar> shopping_cart </mat-icon>
-    Cap comanda activa
-  </mat-chip>
+          }}
+        </span>
+      </div>
+    </button>
+  } @else if (currentOrderList()) {
+    <button mat-button [routerLink]="['./comandes/crear']">
+      <mat-icon matChipAvatar> shopping_cart </mat-icon>
+      Fes comanda
+    </button>
+  }
+} @placeholder {
+  <p class="text-sm">Consultant comandes...</p>
 }

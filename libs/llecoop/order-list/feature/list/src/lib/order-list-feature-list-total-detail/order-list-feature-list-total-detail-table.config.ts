@@ -1,4 +1,4 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, LOCALE_ID, Signal, signal } from '@angular/core';
 import { getLlecoopProductUnitSuffix, LlecoopOrderProductTotal } from '@plastik/llecoop/entities';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { FormattingTypes } from '@plastik/shared/formatters';
@@ -16,6 +16,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
   implements TableStructureConfig<LlecoopOrderProductTotal>
 {
   readonly #store = inject(llecoopOrderListStore);
+  readonly #locale = inject(LOCALE_ID);
   readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProductTotal, 'TITLE_CASE'> = {
@@ -30,18 +31,23 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     },
   };
 
-  readonly #quantity: TableColumnFormatting<LlecoopOrderProductTotal, 'CUSTOM'> = {
+  readonly #quantity: TableColumnFormatting<LlecoopOrderProductTotal, 'QUANTITY'> = {
     key: 'quantity',
     title: 'Quantitat',
     pathToKey: 'quantity',
     sorting: 'quantity',
     cssClasses: ['min-w-[110px]'],
     formatting: {
-      type: 'CUSTOM',
-      execute: (value, product) =>
-        value
-          ? `${Number(value).toFixed(2)} ${getLlecoopProductUnitSuffix(product?.unit ?? { type: 'unit' })}`
-          : '-',
+      type: 'QUANTITY',
+      extras: item => {
+        const unit = item?.unit ?? { type: 'unit' };
+        const suffix = getLlecoopProductUnitSuffix(unit);
+        const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+        return {
+          suffix,
+          numberDigitsInfo,
+        };
+      },
     },
   };
 
@@ -53,11 +59,6 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     cssClasses: ['hidden @xl:flex @xl:min-w-[125px]'],
     formatting: {
       type: 'CURRENCY',
-      extras: () => ({
-        numberDigitsInfo: '1.2-2',
-        currency: '€',
-        currencyCode: 'EUR',
-      }),
     },
   };
 
@@ -79,11 +80,6 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
     cssClasses: ['hidden @lg:flex @lg:min-w-[105px]'],
     formatting: {
       type: 'CURRENCY',
-      extras: () => ({
-        numberDigitsInfo: '1.2-2',
-        currency: '€',
-        currencyCode: 'EUR',
-      }),
     },
   };
 

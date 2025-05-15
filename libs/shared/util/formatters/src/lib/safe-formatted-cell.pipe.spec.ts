@@ -33,7 +33,7 @@ describe('SafeFormattedCellPipe', () => {
 
   it('should format value properly', () => {
     pipe.transform(objectMocked, {
-      key: objectMocked['id'],
+      key: objectMocked['id'] as string,
       title: 'ID',
       pathToKey: 'id',
       formatting: {

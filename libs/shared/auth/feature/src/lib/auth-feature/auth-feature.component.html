@@ -9,6 +9,7 @@
         <mat-card-title class="flex justify-center align-middle gap-sub">
           @if (logo() && title()) {
             <img
+              loading="lazy"
               class="w-[32px] h-[32px] object-contain"
               [attr.alt]="title() || ''"
               [src]="logo()" />

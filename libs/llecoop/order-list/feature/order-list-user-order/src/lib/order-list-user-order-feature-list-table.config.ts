@@ -1,5 +1,5 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
@@ -55,18 +55,14 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
     },
   };
 
-  readonly #price: TableColumnFormatting<LlecoopUserOrder, 'CUSTOM'> = {
+  readonly #price: TableColumnFormatting<LlecoopUserOrder, 'CURRENCY'> = {
     key: 'totalPrice',
     title: 'Preu total',
     pathToKey: 'totalPrice',
     sorting: 'totalPrice',
     cssClasses: ['min-w-[100px]'],
     formatting: {
-      type: 'CUSTOM',
-      execute: (_, userOrder) => {
-        const price = userOrder?.totalPrice || 0;
-        return this.#sanitizer.bypassSecurityTrustHtml(`${Number(price).toFixed(2)} €`) as SafeHtml;
-      },
+      type: 'CURRENCY',
     },
   };
 

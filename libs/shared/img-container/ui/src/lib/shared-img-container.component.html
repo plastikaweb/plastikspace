@@ -1,9 +1,8 @@
 <img
-  placeholder
   class="object-cover rounded-lg"
   [ngSrc]="src() || ''"
   [width]="width()"
-  [height]="height()"
-  [priority]="lcpImage() ? 'high' : 'low'"
+  [height]="height() || width()"
+  [priority]="lcpImage()"
   [alt]="title()"
-  [loaderParams]="{ width: width(), height: height() }" />
+  [loaderParams]="{ width: width(), height: height() || width(), quality: quality() }" />

@@ -28,11 +28,12 @@
           [attr.title]="headerTitle">
           <div class="flex justify-center items-center gap-sub">
             @if (headerConfig.mainIcon; as icon) {
-              <svg-icon
-                [name]="extendedTitle"
-                [svgAriaLabel]="extendedTitle"
+              <img
+                loading="lazy"
+                [attr.name]="extendedTitle"
+                [attr.alt]="extendedTitle"
                 [src]="icon.iconPath"
-                [svgClass]="icon.svgClass"></svg-icon>
+                [attr.class]="icon.svgClass" />
             }
 
             <span class="hidden sm:block">{{ extendedTitle || headerTitle }}</span>
@@ -42,7 +43,7 @@
     </div>
 
     <div end class="flex items-center gap-tiny">
-      <ng-container #widgetsContainer></ng-container>
+      <plastik-llecoop-order-indicator></plastik-llecoop-order-indicator>
 
       <button
         mat-button
@@ -71,6 +72,8 @@
           }
         }
       </mat-menu>
+
+      <plastik-mat-theme-toggle></plastik-mat-theme-toggle>
     </div>
   </plastik-core-cms-layout-ui-header>
 
@@ -145,7 +148,7 @@
   </mat-sidenav-container>
 
   <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-    <div content class="flex flex-row justify-center items-center text-base gap-tiny">
+    <div content class="flex flex-row justify-center items-center text-sm gap-tiny">
       © 2024-{{ currentDate | date: 'yyyy' }}
       <a
         aria-label="visit www.plastikaweb.com page"

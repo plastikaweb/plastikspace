@@ -27,21 +27,16 @@ export class LlecoopProductSearchFeatureTableConfig
     cssClasses: ['flex min-w-[70px]'],
     formatting: {
       type: 'COMPONENT',
-      execute: (value, product) => {
-        if (!product) {
-          throw new Error('Product is required');
-        }
-        return {
-          component: SharedImgContainerComponent,
-          inputs: {
-            src: value || 'https://fakeimg.pl/150x150?text=El+Llevat&font=lobster',
-            width: 150,
-            height: 150,
-            title: product?.name,
-            lcpImage: false,
-          },
-        };
-      },
+      execute: (value, product, index) => ({
+        component: SharedImgContainerComponent,
+        inputs: {
+          src: value || 'https://fakeimg.pl/150x150?text=El+Llevat&font=lobster',
+          width: 110,
+          title: product?.name,
+          lcpImage: index === 0,
+          quality: 70,
+        },
+      }),
     },
   };
 
@@ -53,27 +48,28 @@ export class LlecoopProductSearchFeatureTableConfig
     sticky: true,
     formatting: {
       type: 'COMPONENT',
-      execute: (_, product) => {
-        if (!product) {
-          throw new Error('Product is required');
-        }
-        return {
-          component: UiProductNameCellComponent,
-          inputs: { product, nameStyle: 'uppercase font-bold' },
-        };
-      },
+      execute: (_, product) => ({
+        component: UiProductNameCellComponent,
+        inputs: { product, nameStyle: 'uppercase font-bold' },
+      }),
     },
   };
 
-  readonly #stock: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
+  readonly #stock: TableColumnFormatting<LlecoopProduct, 'QUANTITY'> = {
     key: 'stock',
     title: 'Stock',
     pathToKey: 'stock',
     cssClasses: ['hidden @lg:flex @lg:min-w-[70px]'],
     formatting: {
-      type: 'CUSTOM',
-      execute: (value, product) => {
-        return !value ? '-' : `${value} ${product?.unit?.type === 'weight' ? 'kg' : 'u.'}`;
+      type: 'QUANTITY',
+      extras: item => {
+        const unitType = item?.unit?.type;
+        const suffix = unitType === 'weight' ? 'kg' : 'u';
+        const numberDigitsInfo = unitType === 'weight' ? '1.2-2' : '1.0-0';
+        return {
+          suffix,
+          numberDigitsInfo,
+        };
       },
     },
   };
@@ -112,7 +108,7 @@ export class LlecoopProductSearchFeatureTableConfig
         return !product.isAvailable ? 'marked-ko' : '';
       },
       actionsColStyles: 'max-w-[160px]',
-      rowHeight: '160px',
+      rowHeight: '140px',
       actions: {
         SET_AVAILABILITY: {
           visible: () => true,

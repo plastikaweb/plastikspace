@@ -11,7 +11,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/llecoop",
-        "index": "libs/core/ng-entry-html/util/src/index.html",
+        "index": "apps/llecoop/src/index.html",
         "browser": "apps/llecoop/src/main.ts",
         "polyfills": [],
         "optimization": true,
@@ -24,7 +24,6 @@
         "namedChunks": true,
         "aot": true,
         "tsConfig": "apps/llecoop/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",

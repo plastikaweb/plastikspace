@@ -1,5 +1,6 @@
 import { Type } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { BaseEntity } from '@plastik/core/entities';
 
 /**
  * @description Formatting types members.
@@ -12,6 +13,7 @@ export type FormattingTypes =
   | 'PERCENTAGE'
   | 'CURRENCY'
   | 'NUMBER'
+  | 'QUANTITY'
   | 'BOOLEAN_WITH_CONTROL'
   | 'BOOLEAN_WITH_ICON'
   | 'TITLE_CASE'
@@ -24,8 +26,9 @@ export type FormattingTypes =
 
 type FormattingTypesNumeric = Extract<
   FormattingTypes,
-  'DATE' | 'DATE_TIME' | 'FIREBASE_TIMESTAMP' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER'
+  'DATE' | 'DATE_TIME' | 'FIREBASE_TIMESTAMP' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER' | 'QUANTITY'
 >;
+
 type FormattingTypesBoolean = Extract<FormattingTypes, 'BOOLEAN_WITH_ICON'>;
 
 type FormattingTypesInput = Extract<FormattingTypes, 'INPUT'>;
@@ -85,6 +88,13 @@ type FormattingNumericExtras = Partial<{
   currencyCode: string;
 }>;
 
+type FormattingQuantityExtras = {
+  numberDigitsInfo?: string;
+  locale?: string;
+  suffix?: string;
+  prefix?: string;
+};
+
 /**
  * @description Formatting boolean extras blueprint.
  */
@@ -111,18 +121,23 @@ type FormattingInputExtras = {
  */
 export type FormattingExtras<TYPE extends FormattingTypes> = TYPE extends 'IMAGE'
   ? Partial<FormattingImageExtras>
-  : TYPE extends FormattingTypesNumeric
-    ? FormattingNumericExtras
-    : TYPE extends FormattingTypesBoolean
-      ? FormattingBooleanWithIconExtras
-      : TYPE extends 'INPUT'
-        ? FormattingInputExtras
-        : object;
+  : TYPE extends 'QUANTITY'
+    ? FormattingQuantityExtras
+    : TYPE extends FormattingTypesNumeric
+      ? FormattingNumericExtras
+      : TYPE extends FormattingTypesBoolean
+        ? FormattingBooleanWithIconExtras
+        : TYPE extends 'INPUT'
+          ? FormattingInputExtras
+          : object;
 
 /**
  * @description The blueprint for default formatting item.
  */
-export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEXT'> {
+export interface PropertyFormattingConf<
+  OBJ extends BaseEntity,
+  TYPE extends FormattingTypes = 'TEXT',
+> {
   type: TYPE;
   execute?: (
     value: OBJ[keyof OBJ] | string,
@@ -130,7 +145,7 @@ export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEX
     index?: number,
     extras?: unknown
   ) => FormattingOutput;
-  extras?: (value?: OBJ) => FormattingExtras<TYPE>;
+  extras?: (item?: OBJ) => FormattingExtras<TYPE>;
   onInputChanges?: (value: unknown, element: OBJ, index?: number, extras?: unknown) => object;
 }
 
@@ -139,7 +154,11 @@ export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEX
  */
 export interface PropertyComponentFormattingConf<OBJ, TYPE extends FormattingTypes = 'COMPONENT'> {
   type: TYPE;
-  execute: (value: OBJ[keyof OBJ] | string, element?: OBJ) => FormattingComponentOutput;
+  execute: (
+    value: OBJ[keyof OBJ] | string,
+    element?: OBJ,
+    index?: number
+  ) => FormattingComponentOutput;
 }
 
 type PropertyFormattingBase<OBJ extends Record<keyof OBJ, unknown>> = {
@@ -150,34 +169,41 @@ type PropertyFormattingBase<OBJ extends Record<keyof OBJ, unknown>> = {
   queryParams?: (item?: OBJ) => Record<string, string>;
 };
 
-type PropertyFormattingTypeDef<OBJ, TYPE extends FormattingTypes> = {
+type PropertyFormattingTypeDef<OBJ extends BaseEntity, TYPE extends FormattingTypes> = {
   formatting: PropertyFormattingConf<OBJ, TYPE>;
 };
 
-type PropertyFormattingDefault<OBJ> = PropertyFormattingBase<OBJ> &
+type PropertyFormattingDefault<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesDefault>;
-type PropertyFormattingImage<OBJ> = PropertyFormattingBase<OBJ> &
+type PropertyFormattingImage<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, 'IMAGE'>;
-type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> &
+type PropertyFormattingQuantity<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, 'QUANTITY'>;
+type PropertyFormattingNumeric<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesNumeric>;
-type PropertyFormattingBooleanWithIcon<OBJ> = PropertyFormattingBase<OBJ> &
+type PropertyFormattingBooleanWithIcon<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesBoolean>;
-type PropertyFormattingInput<OBJ> = PropertyFormattingBase<OBJ> &
+type PropertyFormattingInput<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesInput>;
-type PropertyFormattingComponent<OBJ> = PropertyFormattingBase<OBJ> &
+type PropertyFormattingComponent<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesComponent>;
 
 /**
  * @description The blueprint for any formatting item constraint by its FormattingTypes value.
  */
-export type PropertyFormatting<OBJ, TYPE = 'TEXT'> = TYPE extends FormattingTypesNumeric
+export type PropertyFormatting<
+  OBJ extends BaseEntity,
+  TYPE = 'TEXT',
+> = TYPE extends FormattingTypesNumeric
   ? PropertyFormattingNumeric<OBJ>
   : TYPE extends 'IMAGE'
     ? PropertyFormattingImage<OBJ>
-    : TYPE extends 'BOOLEAN_WITH_ICON'
-      ? PropertyFormattingBooleanWithIcon<OBJ>
-      : TYPE extends 'INPUT'
-        ? PropertyFormattingInput<OBJ>
-        : TYPE extends 'COMPONENT'
-          ? PropertyFormattingComponent<OBJ>
-          : PropertyFormattingDefault<OBJ>;
+    : TYPE extends 'QUANTITY'
+      ? PropertyFormattingQuantity<OBJ>
+      : TYPE extends 'BOOLEAN_WITH_ICON'
+        ? PropertyFormattingBooleanWithIcon<OBJ>
+        : TYPE extends 'INPUT'
+          ? PropertyFormattingInput<OBJ>
+          : TYPE extends 'COMPONENT'
+            ? PropertyFormattingComponent<OBJ>
+            : PropertyFormattingDefault<OBJ>;

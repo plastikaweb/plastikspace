@@ -1,7 +1,6 @@
 @use '@angular/material' as mat;
 @use 'styles_theme-colors' as palette;
 @use 'theme';
-@use 'loading';
 @use 'core_styles_util_material';
 
 @tailwind base;
@@ -110,18 +109,6 @@
     &-thumb {
       @apply bg-primary-light rounded-md;
     }
-  }
-
-  // button:focus-visible,
-  // mat-list-item:focus-visible,
-  // mat-header-cell:focus-visible,
-  // a:focus-visible {
-  //   outline: 2px solid rgb(18, 9, 191) !important;
-  //   outline-offset: -2px !important;
-  // }
-
-  plastik-shared-activity-ui-overlay .overlay-container {
-    z-index: 9999;
   }
 }
 

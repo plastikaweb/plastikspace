@@ -1,7 +1,7 @@
 import { filter, pipe, switchMap, tap } from 'rxjs';
 
 import { updateState } from '@angular-architects/ngrx-toolkit';
-import { computed } from '@angular/core';
+import { computed, inject, NgZone } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -73,6 +73,8 @@ export const llecoopUserStore = signalStore(
     getUserName: computed(() => loggedUser()?.name || loggedUser()?.email || 'user'),
   })),
   withMethods(store => {
+    const zone = inject(NgZone);
+
     return {
       setAdmin: rxMethod<Pick<LlecoopUser, 'id'>>(
         pipe(

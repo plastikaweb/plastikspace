@@ -27,7 +27,6 @@ import {
   RouterStateEffects,
 } from '@plastik/core/router-state';
 import { notificationStore } from '@plastik/shared/notification/data-access';
-import { NotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
 
 import { environment } from '../environments/environment';
 import { routes } from './app.routing';
@@ -58,8 +57,7 @@ export const appConfig: ApplicationConfig = {
           })
         : [],
       CoreCmsLayoutDataAccessModule,
-      notificationStore,
-      NotificationUiMatSnackbarModule
+      notificationStore
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,

@@ -15,7 +15,7 @@ import {
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
+import { MatButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -42,7 +42,7 @@ import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification
     MatListModule,
     MatIconModule,
     MatListModule,
-    MatButtonModule,
+    MatButton,
     MatMenuModule,
     AngularSvgIconModule,
     CoreCmsLayoutUiFooterComponent,

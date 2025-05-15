@@ -9,6 +9,7 @@ import {
 import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { BaseEntity } from '@plastik/core/entities';
 
 import {
   FormattingComponentOutput,
@@ -31,10 +32,10 @@ export class SharedUtilFormattersService {
    * Formats a date value using the specified formatting options.
    * @template T - The type of the attributes.
    * @param {FormattingDateInput} value The date value to format.
-   * @param {Partial<Pick<FormattingExtras<T, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} extras An optional function that returns additional formatting options, such as locale and timezone.
+   * @param {Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} extras An optional function that returns additional formatting options, such as locale and timezone.
    * @returns {string} The formatted date string.
    */
-  dateFormatter<T extends object>(
+  dateFormatter(
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
@@ -58,11 +59,11 @@ export class SharedUtilFormattersService {
    * Formats a given date/time value according to the specified locale and timezone.
    * @template T - The type parameter for the formatting extras.
    * @param {FormattingDateInput} value - The date/time value to be formatted.
-   * @param {() => Partial<Pick<FormattingExtras<T, 'DATE_TIME'>, 'locale' | 'timezone'>>} [extras] -
+   * @param {() => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>} [extras] -
    *        An optional function that returns additional formatting options such as locale and timezone.
    * @returns {string} The formatted date/time string.
    */
-  dateTimeFormatter<T>(
+  dateTimeFormatter(
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
@@ -82,13 +83,12 @@ export class SharedUtilFormattersService {
 
   /**
    * Formats a Firebase `Timestamp` into a string based on the provided formatting options.
-   * @template T - The type parameter for the formatting extras.
    * @param {Timestamp} value - The Firebase `Timestamp` to format.
-   * @param {() => Partial<Pick<FormattingExtras<T, 'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} [extras] -
+   * @param {() => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} [extras] -
    *        An optional function that returns additional formatting options such as `dateDigitsInfo`, `locale`, and `timezone`.
    * @returns {string} - The formatted date string or '-' if the value is not provided.
    */
-  firebaseTimestampFormatter<T>(
+  firebaseTimestampFormatter(
     value: Timestamp,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
@@ -112,12 +112,11 @@ export class SharedUtilFormattersService {
 
   /**
    * Formats a given number as a percentage string.
-   * @template T - The type parameter for the formatting extras.
    * @param {number} value - The number to be formatted as a percentage.
-   * @param {() => Partial<Pick<FormattingExtras<T, 'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
+   * @param {() => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
    * @returns {string} The formatted percentage string.
    */
-  percentageFormatter<T>(
+  percentageFormatter(
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
@@ -137,12 +136,11 @@ export class SharedUtilFormattersService {
 
   /**
    * Formats a given number as a currency string.
-   * @template T - The type parameter for formatting extras.
    * @param {number} value - The numeric value to format as currency.
-   * @param {() => Partial<Pick<FormattingExtras<T, 'CURRENCY'>, 'numberDigitsInfo' | 'locale' | 'currency' | 'currencyCode'>>} [extras] - Optional function that returns an object with additional formatting options.
+   * @param {() => Partial<Pick<FormattingExtras<'CURRENCY'>, 'numberDigitsInfo' | 'locale' | 'currency' | 'currencyCode'>>} [extras] - Optional function that returns an object with additional formatting options.
    * @returns {string} - The formatted currency string.
    */
-  currencyFormatter<T>(
+  currencyFormatter(
     value: number,
     extras?: () => Partial<
       Pick<
@@ -152,10 +150,10 @@ export class SharedUtilFormattersService {
     >
   ): string {
     let format = {
-      numberDigitsInfo: '1.0-0',
+      numberDigitsInfo: '1.2-2',
       locale: this.#locale,
-      currency: '$',
-      currencyCode: 'USD',
+      currency: '€',
+      currencyCode: 'EUR',
     };
     if (extras) {
       format = {
@@ -181,7 +179,7 @@ export class SharedUtilFormattersService {
    * @param {() => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
    * @returns {string} - The formatted number as a string.
    */
-  numberFormatter<T>(
+  numberFormatter(
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
@@ -198,6 +196,34 @@ export class SharedUtilFormattersService {
     return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
   }
 
+  quantityFormatter<T extends BaseEntity>(
+    value: number,
+    item: T,
+    extras?: (
+      item: T
+    ) => Partial<
+      Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>
+    >
+  ): string {
+    let format = {
+      numberDigitsInfo: '1.2-2',
+      locale: this.#locale,
+      suffix: '',
+      prefix: '',
+    };
+    if (extras) {
+      format = {
+        ...format,
+        ...extras(item),
+      };
+    }
+    return `
+    ${format.prefix ? format.prefix : ''}
+    ${formatNumber(Number(value), format.locale, format.numberDigitsInfo)}
+    ${format.suffix ? format.suffix : ''}
+    `;
+  }
+
   /**
    * @description Formats value as title case (value => `Value`).
    * @param { string } value The value to format.
@@ -211,10 +237,10 @@ export class SharedUtilFormattersService {
    * Formats a boolean value into an HTML string with an icon.
    * @template T - The type parameter for the formatting extras.
    * @param {boolean} value - The boolean value to format.
-   * @param {() => FormattingExtras<T, 'BOOLEAN_WITH_ICON'>} [extras] - Optional function to provide additional formatting options.
+   * @param {() => FormattingExtras<'BOOLEAN_WITH_ICON'>} [extras] - Optional function to provide additional formatting options.
    * @returns {SafeHtml} - The formatted HTML string with the appropriate icon.
    */
-  booleanWithIconFormatter<T>(
+  booleanWithIconFormatter(
     value: boolean,
     extras?: () => FormattingExtras<'BOOLEAN_WITH_ICON'>
   ): SafeHtml {
@@ -250,7 +276,7 @@ export class SharedUtilFormattersService {
     },
    * @returns { SafeHtml } The formatted value passed through the execute formatting function.
    */
-  customFormatter<T>(
+  customFormatter<T extends BaseEntity>(
     value: string,
     { execute }: PropertyFormattingConf<T>,
     element: T,
@@ -264,17 +290,19 @@ export class SharedUtilFormattersService {
    * @description Formats a value using a component-based formatting configuration.
    * @template T - The type of the object containing the value to format.
    * @param {string} value - The value to format.
-   * @param {PropertyFormattingConf<T>} param - The formatting configuration.
-   * @param {((value: string, element?: T) => FormattingComponentOutput) | undefined} param.execute - The function to execute for component-based formatting.
+   * @param {PropertyComponentFormattingConf<T>} param - The formatting configuration.
+   * @param {PropertyComponentFormattingConf<T>['execute']} param.execute - The function to execute for component-based formatting.
    * @param {T} element - The complete object containing the value being formatted.
+   * @param {number} index - The index of the object in a list (f.e. a table).
    * @returns {FormattingComponentOutput | string} The formatted component configuration or the original value if no execute function is provided.
    */
   componentFormatter<T>(
     value: string,
     { execute }: PropertyComponentFormattingConf<T>,
-    element: T
+    element: T,
+    index?: number
   ): FormattingComponentOutput | string {
-    return execute ? execute(value, element) : value;
+    return execute ? execute(value, element, index) : value;
   }
 
   /**

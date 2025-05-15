@@ -33,21 +33,7 @@ It exposes the `NotificationUiMatSnackbarDirective` to use.
 
 ## How to use
 
-### 1. Import Notification modules into your app bootstrap
-
-```typescript
-// apps/my-app/src/main.ts
-import { CoreNotificationDataAccessModule } from '@plastik/shared/notification/data-access';
-import { CoreNotificationUiMatSnackbarModule } from '@plastik/shared/notification/ui/mat-snackbar';
-
-bootstrapApplication(AppComponent, {
-  providers: [
-    importProvidersFrom(CoreNotificationDataAccessModule, CoreNotificationUiMatSnackbarModule),
-  ],
-});
-```
-
-### 2. Add it to your feature component
+### 1. Add it to your feature component
 
 ```html
 <!-- feature.component.html -->
@@ -78,7 +64,7 @@ export class CoreCmsLayoutFeatureComponent {
 }
 ```
 
-### 3. Styling
+### 2. Styling
 
 You can overwrite the styles from your main application declaring these CSS variables in your app `styles/_theme.scss` file:
 
@@ -89,7 +75,7 @@ You can overwrite the styles from your main application declaring these CSS vari
 - --plastik-success-notification-box-colors: rgb(22, 134, 40);
 ```
 
-### 4. Snackbar configuration
+### 3. Snackbar configuration (optional)
 
 If you want to adjust some of the snackbar material component properties, use the [`MAT_SNACK_BAR_DEFAULT_OPTIONS`](https://material.angular.io/components/snack-bar/api#MAT_SNACK_BAR_DEFAULT_OPTIONS) token.
 

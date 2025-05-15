@@ -11,13 +11,11 @@ export type ImageKitLoaderConfig = ImageLoaderConfig & {
 
 /**
  * @description A custom image loader that uses ImageKit to resize and optimize images coming from Firebase.
- * @param { LlecoopEnvironment } environment The environment configuration.
+ * @param { string } imageKitEndpoint The ImageKit endpoint.
+ * @param { string } originalEndpoint The original endpoint.
  * @returns { string } Returns the image URL.
  */
-export function imageKitLoader(environment: LlecoopEnvironment) {
-  const imageKitUrl = environment.imageKit.endpoint;
-  const firebaseBucketUrl = `/v0/b/${environment.firebase.storageBucket}/o/`;
-
+export function imageKitLoader(imageKitEndpoint: string, originalEndpoint: string) {
   return ({ src, loaderParams }: ImageLoaderConfig): string => {
     try {
       if (!src) throw new Error('src is required');
@@ -28,13 +26,13 @@ export function imageKitLoader(environment: LlecoopEnvironment) {
       if (!width || !height || width <= 0 || height <= 0)
         throw new Error('width and height are required and must be greater than 0');
 
-      const transform = `tr:w-${width},h-${height},q-${quality}/`;
+      const transform = `tr=w-${width},h-${height},q-${quality}`;
 
       const url = new URL(src);
-      const path = url.pathname.replace(firebaseBucketUrl, '');
+      const path = url.pathname.replace(originalEndpoint, '');
       const search = url.search;
 
-      return `${imageKitUrl}${transform}${path}${search}`;
+      return `${imageKitEndpoint}${path}${search}&${transform}`;
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('[ImageKitLoader] Error:', error);

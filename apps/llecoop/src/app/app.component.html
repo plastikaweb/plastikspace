@@ -1,14 +1,14 @@
 @if (isActive()) {
   <plastik-shared-activity-ui-overlay>
-    <div class="spinner-container">
-      <div class="lds-ripple">
-        <div></div>
-        <div></div>
-      </div>
-      <p class="sr-only">carregant dades...</p>
-    </div>
+    <mat-progress-spinner
+      color="primary"
+      diameter="75"
+      strokeWidth="10"
+      mode="indeterminate"></mat-progress-spinner>
+    <p class="sr-only">carregant dades...</p>
   </plastik-shared-activity-ui-overlay>
 }
+
 @defer (when !!notificationStore.configuration()) {
   <div
     [plastikSnackbar]="notificationStore.configuration()"

@@ -1,9 +1,12 @@
-import { FormattingInput } from '../formatting';
+import { Timestamp } from '@angular/fire/firestore';
+import { BaseEntity } from '@plastik/core/entities';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const objectMocked: Record<string, any> = {
+export const objectMocked: TypeMocked = {
   id: 'kkk0000ads',
   name: 'TITLE',
+  normalizedName: 'TITLE',
+  createdAt: Timestamp.now(),
+  updatedAt: Timestamp.now(),
   noFormatting: {
     child: {
       value: 12,
@@ -24,4 +27,7 @@ export const objectMocked: Record<string, any> = {
   custom: `---`,
 } as const;
 
-export type TypeMocked = FormattingInput<typeof objectMocked>;
+// Definir TypeMocked para que sea compatible con las restricciones de DataFormatFactoryService
+export interface TypeMocked extends BaseEntity {
+  [key: string]: unknown;
+}

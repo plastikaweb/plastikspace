@@ -2,6 +2,7 @@ import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
@@ -11,6 +12,7 @@ import {
   MockedUserOrderStore,
   UserOrder,
 } from '@plastik/llecoop/order-list/data-access';
+import { selectIsActive } from '@plastik/shared/activity/data-access';
 
 import { LlecoopOrderIndicatorComponent } from './llecoop-order-indicator.component';
 
@@ -24,6 +26,10 @@ describe('LlecoopOrderIndicatorComponent', () => {
       providers: [
         provideExperimentalZonelessChangeDetection(),
         provideRouter([]),
+        provideMockStore({
+          initialState: {},
+          selectors: [{ selector: selectIsActive, value: false }],
+        }),
         { provide: llecoopUserOrderStore, useValue: MockedUserOrderStore },
         { provide: llecoopOrderListStore, useValue: MockedOrderListStore },
       ],
@@ -43,19 +49,25 @@ describe('LlecoopOrderIndicatorComponent', () => {
 
   it('should display user order chip when both currentOrderList and currentUserOrder are available', () => {
     fixture.detectChanges();
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const matBadge = matChip.nativeElement.querySelector('.mat-badge-content');
 
-    expect(matChip).toBeTruthy();
+    const matButton = fixture.debugElement.query(By.css('button[mat-button]'));
+
+    expect(matButton).toBeTruthy();
+
+    const matBadge = matButton.nativeElement.querySelector('.mat-badge-content');
+    expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('2');
-    expect(matChip.nativeElement.textContent).toContain('#order A');
-    expect(matChip.nativeElement.textContent).toContain('110'); // totalPrice + deliveryPrice
+    expect(matButton.nativeElement.textContent).toContain('#order A');
+    expect(matButton.nativeElement.textContent).toContain('110'); // totalPrice + deliveryPrice
   });
 
   it('should navigate to correct route when user order chip is clicked', () => {
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const routerLink = matChip.nativeElement.getAttribute('ng-reflect-router-link');
+    fixture.detectChanges();
 
+    const matButton = fixture.debugElement.query(By.css('button[mat-button]'));
+    expect(matButton).toBeTruthy();
+
+    const routerLink = matButton.nativeElement.getAttribute('ng-reflect-router-link');
     expect(routerLink).toContain('./comandes/1');
   });
 
@@ -63,58 +75,64 @@ describe('LlecoopOrderIndicatorComponent', () => {
     MockedUserOrderStore.currentUserOrder.set(null);
     fixture.detectChanges();
 
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-
-    expect(matChip).toBeTruthy();
-    expect(matChip.nativeElement.textContent).toContain('Fes comanda');
+    const matButton = fixture.debugElement.query(By.css('button[mat-button]'));
+    expect(matButton).toBeTruthy();
+    expect(matButton.nativeElement.textContent).toContain('Fes comanda');
   });
 
   it('should navigate to create order route when "Fes comanda" chip is clicked', () => {
     MockedUserOrderStore.currentUserOrder.set(null);
     fixture.detectChanges();
 
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const routerLink = matChip.nativeElement.getAttribute('ng-reflect-router-link');
+    const matButton = fixture.debugElement.query(By.css('button[mat-button]'));
+    expect(matButton).toBeTruthy();
 
+    const routerLink = matButton.nativeElement.getAttribute('ng-reflect-router-link');
     expect(routerLink).toContain('./comandes/crear');
   });
 
-  it('should display "Cap comanda activa" chip when neither currentOrderList nor currentUserOrder are available', () => {
-    MockedOrderListStore.currentOrderList.set(null);
+  it('should display nothing when neither currentOrderList nor currentUserOrder are available', () => {
     MockedUserOrderStore.currentUserOrder.set(null);
+    MockedOrderListStore.currentOrderList.set(null);
+
     fixture.detectChanges();
 
-    // Usar un selector más general
-    const matChip = fixture.debugElement.query(By.css('mat-chip'));
-
-    expect(matChip).toBeTruthy();
-    expect(matChip.nativeElement.textContent).toContain('Cap comanda activa');
+    const element = fixture.debugElement.nativeElement;
+    expect(element.textContent).toBe('');
   });
 
   it('should display correct badge count for cart items', () => {
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const matBadge = matChip.nativeElement.querySelector('.mat-badge-content');
+    fixture.detectChanges();
 
+    const matButton = fixture.debugElement.query(By.css('button[mat-button]'));
+    expect(matButton).toBeTruthy();
+
+    const matBadge = matButton.nativeElement.querySelector('.mat-badge-content');
+    expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('2');
   });
 
   it('should calculate and display correct total price when values change', () => {
-    const orderData = mockedCurrentUserOrder as UserOrder;
-
-    MockedUserOrderStore.currentUserOrder.set({
-      ...orderData,
-      cart: [{ id: 'product1' }, { id: 'product2' }, { id: 'product3' }],
-      totalPrice: 150,
-      deliveryPrice: 15,
-    });
+    const mockedCart = [...(mockedCurrentUserOrder?.cart || []), { id: 'product3' }];
+    const newCurrentUserOrder = {
+      ...mockedCurrentUserOrder,
+      totalPrice: 165,
+      cart: mockedCart,
+    } as UserOrder;
+    MockedUserOrderStore.currentUserOrder.set(newCurrentUserOrder);
     MockedOrderListStore.currentOrderList.set(mockedCurrentOrderList);
     fixture.detectChanges();
 
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const matBadge = matChip.nativeElement.querySelector('.mat-badge-content');
-    const totalPrice = matChip.nativeElement.textContent.trim();
+    const matButton = fixture.debugElement.query(By.css('button[mat-button]'));
+    expect(matButton).toBeTruthy();
 
+    const matBadge = matButton.nativeElement.querySelector('.mat-badge-content');
+    expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('3');
-    expect(totalPrice).toContain('165');
+
+    const totalPrice = matButton.nativeElement.textContent.trim();
+    expect(totalPrice).toContain(
+      (newCurrentUserOrder.totalPrice + newCurrentUserOrder.deliveryPrice).toString()
+    );
   });
 });
