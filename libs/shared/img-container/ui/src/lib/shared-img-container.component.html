@@ -1,9 +1,17 @@
-<img
-  placeholder
-  class="object-cover rounded-lg"
-  [ngSrc]="src() || ''"
-  [width]="width()"
-  [height]="height()"
-  [priority]="lcpImage() ? 'high' : 'low'"
-  [alt]="title()"
-  [loaderParams]="{ width: width(), height: height() }" />
+@if (!width() || !height()) {
+  <img
+    fill
+    class="object-cover rounded-lg"
+    [ngSrc]="src() || ''"
+    [priority]="lcpImage()"
+    [alt]="title()" />
+} @else {
+  <img
+    class="object-cover rounded-lg"
+    [ngSrc]="src() || ''"
+    [width]="width() || height()"
+    [height]="height() || width()"
+    [priority]="lcpImage()"
+    [alt]="title()"
+    [loaderParams]="{ width: width(), height: height() || width(), quality: quality() }" />
+}

@@ -1,4 +1,4 @@
-import { catchError, exhaustMap, filter, map, of, tap } from 'rxjs';
+import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { inject, Injectable } from '@angular/core';
@@ -11,7 +11,7 @@ import {
   NasaImagesSearchApiParams,
   NasaImagesViews,
 } from '@plastik/nasa-images/search/entities';
-import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import {
   NotificationConfigService,
   notificationStore,
@@ -27,17 +27,14 @@ export class NasaImagesEffects {
   readonly #navigationFilter = inject(NavigationFilterService);
   readonly #notificationService = inject(NotificationConfigService);
   readonly #store = inject(Store);
+  readonly #activityStore = inject(activityStore);
   readonly #notificationStore = inject(notificationStore);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   navigation$ = createEffect(() => {
     return this.#actions$.pipe(
       this.#navigationFilter.checkRouterNavigation<NasaImagesViews>('search'),
-      concatLatestFrom(() => [
-        this.#store.select(selectRouteQueryParams),
-        this.#store.select(selectIsActive),
-      ]),
-      filter(([, , activity]) => !activity),
+      concatLatestFrom(() => [this.#store.select(selectRouteQueryParams)]),
       map(([, queryParams]) => {
         if (!queryParams['q']) {
           return nasaImagesPageActions.cleanUp();
@@ -49,12 +46,15 @@ export class NasaImagesEffects {
     );
   });
 
-  activeOn$ = createEffect(() => {
-    return this.#actions$.pipe(
-      ofType(nasaImagesPageActions.load),
-      map(() => activityActions.setActivity({ isActive: true }))
-    );
-  });
+  activeOn$ = createEffect(
+    () => {
+      return this.#actions$.pipe(
+        ofType(nasaImagesPageActions.load),
+        map(() => this.#activityStore.setActivity(true))
+      );
+    },
+    { dispatch: false }
+  );
 
   load$ = createEffect(() => {
     return this.#actions$.pipe(
@@ -83,12 +83,15 @@ export class NasaImagesEffects {
     { dispatch: false }
   );
 
-  activeOff$ = createEffect(() => {
-    return this.#actions$.pipe(
-      ofType(nasaImagesAPIActions.loadSuccess, nasaImagesAPIActions.loadFailure),
-      map(() => activityActions.setActivity({ isActive: false }))
-    );
-  });
+  activeOff$ = createEffect(
+    () => {
+      return this.#actions$.pipe(
+        ofType(nasaImagesAPIActions.loadSuccess, nasaImagesAPIActions.loadFailure),
+        map(() => this.#activityStore.setActivity(false))
+      );
+    },
+    { dispatch: false }
+  );
 
   showNotification$ = createEffect(
     () => {

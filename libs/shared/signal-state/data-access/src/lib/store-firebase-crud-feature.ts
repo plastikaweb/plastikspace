@@ -1,7 +1,12 @@
 /* eslint-disable no-console */
 import { filter, pipe, switchMap, tap } from 'rxjs';
 
-import { updateState, withDevtools, withGlitchTracking } from '@angular-architects/ngrx-toolkit';
+import {
+  updateState,
+  withDevtools,
+  withDisabledNameIndices,
+  withGlitchTracking,
+} from '@angular-architects/ngrx-toolkit';
 import { computed, effect, inject, Type } from '@angular/core';
 import { Router } from '@angular/router';
 import { tapResponse } from '@ngrx/operators';
@@ -16,10 +21,10 @@ import {
 } from '@ngrx/signals';
 import { EntityId, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { Store } from '@ngrx/store';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { BaseEntity } from '@plastik/core/entities';
-import { activityActions } from '@plastik/shared/activity/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
+import { areObjectEntriesEqual } from '@plastik/shared/objects';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 
 import { FirebaseServiceType } from './firebase-service.type';
@@ -96,7 +101,7 @@ export function withFirebaseCrud<
   C extends StoreFirebaseCrudState<T, F>,
 >({ featureName, dataServiceType, initState }: StoreFirebaseCrudFeature<T, S, F, C>) {
   return signalStoreFeature(
-    withDevtools(featureName, withGlitchTracking()),
+    withDevtools(featureName, withGlitchTracking(), withDisabledNameIndices()),
     withState<StoreFirebaseCrudState<T, F>>(
       initStoreFirebaseCrudState(
         initState.filter,
@@ -110,7 +115,7 @@ export function withFirebaseCrud<
       _storeNotificationService: inject(StoreNotificationService),
       _authService: inject(FirebaseAuthService),
       _dataService: inject(dataServiceType) as S,
-      _state: inject(Store),
+      _activityStore: inject(activityStore),
     })),
     withEntities<T>(),
     withComputed(store => {
@@ -191,7 +196,7 @@ export function withFirebaseCrud<
         setCount: rxMethod<void>(
           pipe(
             filter(() => store._activeConnection()),
-            tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
+            tap(() => store._activityStore.setActivity(true)),
             switchMap(() => {
               const filter = store.filter();
 
@@ -204,10 +209,10 @@ export function withFirebaseCrud<
                       `No s'ha pogut obtenir el total de elements de tipus '${featureName}'`,
                       'ERROR'
                     );
-                    store._state.dispatch(activityActions.setActivity({ isActive: false }));
+                    store._activityStore.setActivity(false);
                   },
                 }),
-                tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
+                tap(() => store._activityStore.setActivity(false))
               );
             })
           )
@@ -215,7 +220,7 @@ export function withFirebaseCrud<
         getAll: rxMethod<void>(
           pipe(
             filter(() => store._activeConnection()),
-            tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
+            tap(() => store._activityStore.setActivity(true)),
             switchMap(() => {
               return store._dataService
                 .getAll(store.pagination(), store.sorting(), store.filter() as F)
@@ -254,10 +259,10 @@ export function withFirebaseCrud<
                         `No s'ha pogut carregar els elements de tipus '${featureName}'`,
                         'ERROR'
                       );
-                      store._state.dispatch(activityActions.setActivity({ isActive: false }));
+                      store._activityStore.setActivity(false);
                     },
                   }),
-                  tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
+                  tap(() => store._activityStore.setActivity(false))
                 );
             })
           )
@@ -265,7 +270,7 @@ export function withFirebaseCrud<
         getItem: rxMethod<EntityId>(
           pipe(
             filter(() => store._activeConnection()),
-            tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
+            tap(() => store._activityStore.setActivity(true)),
             switchMap(id => {
               return store._dataService.getItem(id).pipe(
                 tapResponse({
@@ -295,7 +300,7 @@ export function withFirebaseCrud<
                     );
                   },
                 }),
-                tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
+                tap(() => store._activityStore.setActivity(false))
               );
             })
           )
@@ -303,7 +308,7 @@ export function withFirebaseCrud<
         create: rxMethod<{ item: Partial<T>; redirectUrl?: string }>(
           pipe(
             filter(() => store._activeConnection()),
-            tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
+            tap(() => store._activityStore.setActivity(true)),
             switchMap(({ item, redirectUrl }) => {
               return store._dataService.create(item).pipe(
                 tapResponse({
@@ -336,7 +341,7 @@ export function withFirebaseCrud<
                     );
                   },
                 }),
-                tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
+                tap(() => store._activityStore.setActivity(false))
               );
             })
           )
@@ -344,7 +349,7 @@ export function withFirebaseCrud<
         update: rxMethod<{ item: Partial<T>; redirectUrl?: string }>(
           pipe(
             filter(() => store._activeConnection()),
-            tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
+            tap(() => store._activityStore.setActivity(true)),
             switchMap(({ item, redirectUrl }) => {
               return store._dataService.update(item).pipe(
                 tapResponse({
@@ -379,7 +384,7 @@ export function withFirebaseCrud<
                     );
                   },
                 }),
-                tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
+                tap(() => store._activityStore.setActivity(false))
               );
             })
           )
@@ -387,7 +392,7 @@ export function withFirebaseCrud<
         delete: rxMethod<T>(
           pipe(
             filter(() => store._activeConnection()),
-            tap(() => store._state.dispatch(activityActions.setActivity({ isActive: true }))),
+            tap(() => store._activityStore.setActivity(true)),
             switchMap(item => {
               return store._dataService.delete(item).pipe(
                 tapResponse({
@@ -415,7 +420,7 @@ export function withFirebaseCrud<
                     );
                   },
                 }),
-                tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
+                tap(() => store._activityStore.setActivity(false))
               );
             })
           )
@@ -460,22 +465,26 @@ export function withFirebaseCrud<
           const currentSorting = store.sorting();
           const currentFilter = store.filter();
 
+          const isPaginationEqual =
+            currentPagination.pageIndex === previousPagination.pageIndex &&
+            currentPagination.pageSize === previousPagination.pageSize;
+          const isSortingEqual =
+            currentSorting[0] === previousSorting[0] && currentSorting[1] === previousSorting[1];
+          const isFilterEqual = areObjectEntriesEqual(currentFilter, previousFilter);
+
           if (
             store._activeConnection() &&
             ((store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
-            (currentPagination.pageIndex !== previousPagination.pageIndex ||
-              currentPagination.pageSize !== previousPagination.pageSize ||
-              currentSorting !== previousSorting ||
-              currentFilter !== previousFilter ||
-              !initiallyLoaded())
+            (!isPaginationEqual || !isSortingEqual || !isFilterEqual || !initiallyLoaded())
           ) {
+            console.log('getAll', featureName);
             getAll();
           }
 
           if (
             store._activeConnection() &&
             ((store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
-            (currentFilter !== previousFilter || !initiallyLoaded())
+            (!isFilterEqual || !initiallyLoaded())
           ) {
             setCount();
           }

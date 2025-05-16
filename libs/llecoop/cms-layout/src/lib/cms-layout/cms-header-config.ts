@@ -17,25 +17,6 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
     mainIcon: { iconPath: 'assets/img/favicon.svg', svgClass: 'size-lg' },
     title: '',
     extendedTitle: 'El Llevat',
-    widgetsConfig: {
-      position: 'end',
-      widgets: [
-        {
-          id: 'order-indicator',
-          component: () =>
-            import('@plastik/llecoop/order-list/order-indicator').then(
-              c => c.LlecoopOrderIndicatorComponent
-            ),
-          order: 1,
-        },
-        {
-          id: 'theme-toggle',
-          component: () =>
-            import('@plastik/shared/mat-theme-toggle').then(c => c.MatThemeToggleComponent),
-          order: 2,
-        },
-      ],
-    },
     menu: {
       label: user,
       position: 'end',

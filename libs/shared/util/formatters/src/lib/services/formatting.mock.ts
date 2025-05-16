@@ -1,9 +1,7 @@
-import { FormattingInput } from '../formatting';
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const objectMocked: Record<string, any> = {
+export const objectMocked = {
   id: 'kkk0000ads',
   name: 'TITLE',
+  normalizedName: 'TITLE',
   noFormatting: {
     child: {
       value: 12,
@@ -23,5 +21,3 @@ export const objectMocked: Record<string, any> = {
   price: 3.08,
   custom: `---`,
 } as const;
-
-export type TypeMocked = FormattingInput<typeof objectMocked>;

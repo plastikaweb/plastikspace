@@ -1,7 +1,6 @@
 import { AfterViewInit, Directive, ElementRef, inject, Input } from '@angular/core';
 
 @Directive({
-  standalone: true,
   selector: '[plastikTableCellTitle]',
 })
 export class TableCellTitleDirective implements AfterViewInit {

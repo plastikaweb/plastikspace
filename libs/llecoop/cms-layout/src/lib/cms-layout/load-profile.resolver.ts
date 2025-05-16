@@ -1,4 +1,4 @@
-import { filter, map, Observable } from 'rxjs';
+import { filter, map, Observable, take } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -15,6 +15,7 @@ export const loadProfileResolver: ResolveFn<Observable<boolean>> = () => {
       }
       return !!user;
     }),
-    filter(Boolean)
+    filter(Boolean),
+    take(1)
   );
 };

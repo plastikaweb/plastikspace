@@ -1,24 +1,23 @@
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, of, tap } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { llecoopProductStore, productMainInitState } from '@plastik/llecoop/product/data-access';
 import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entities';
 
-export const productFeatureListResolver: ResolveFn<
-  Observable<boolean>
-> = (): Observable<boolean> => {
+export const productFeatureListResolver: ResolveFn<Observable<boolean>> = (
+  route
+): Observable<boolean> => {
   const productStore = inject(llecoopProductStore);
-  const store = inject(Store);
 
-  const queryParams = store.select(selectRouteQueryParams);
   const { text, category, isAvailable } = productMainInitState.filter;
   const [active, direction] = productMainInitState.sorting as TableSortingConfig;
   const { pageIndex, pageSize } = productMainInitState.pagination;
 
-  return queryParams.pipe(
+  // Obtener los query params directamente del route activado
+  const queryParams = route.queryParams;
+
+  return of(queryParams).pipe(
     map(params => ({
       filter: {
         text: params['text'] || text,

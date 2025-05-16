@@ -8,9 +8,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedImgContainerComponent {
-  src = input<string>();
+  src = input.required<string>();
   width = input<number>();
   height = input<number>();
+  quality = input<number>(80);
   title = input<string>();
   lcpImage = input<boolean>();
 }

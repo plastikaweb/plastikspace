@@ -9,6 +9,7 @@ import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
 
 @Component({
   selector: 'plastik-llecoop-order-indicator',
@@ -27,4 +28,5 @@ import {
 export class LlecoopOrderIndicatorComponent {
   protected readonly currentOrderList = inject(llecoopOrderListStore).currentOrderList;
   protected readonly currentUserOrder = inject(llecoopUserOrderStore).currentUserOrder;
+  protected readonly active = inject(activityStore).isActive;
 }

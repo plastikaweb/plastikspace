@@ -43,14 +43,23 @@ export class OrderListUserOrderResumeTableConfig
     },
   };
 
-  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'QUANTITY'> = {
     key: 'initQuantity',
     title: 'Quantitat',
     pathToKey: 'initQuantity',
     sorting: 'initQuantity',
     cssClasses: ['min-w-[85px]'],
     formatting: {
-      type: 'CUSTOM',
+      type: 'QUANTITY',
+      extras: item => {
+        const unit = item?.unit ?? { type: 'unit' };
+        const suffix = getLlecoopProductUnitSuffix(unit);
+        const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+        return {
+          suffix,
+          numberDigitsInfo,
+        };
+      },
       execute: (value, product) =>
         value
           ? `${Number(value).toFixed(2)} ${getLlecoopProductUnitSuffix(product?.unit ?? { type: 'unit' })}`

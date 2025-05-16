@@ -1,6 +1,6 @@
-import { catchError, map, takeUntil } from 'rxjs';
+import { catchError, map, takeUntil, throwError } from 'rxjs';
 
-import { Injectable } from '@angular/core';
+import { Injectable, runInInjectionContext } from '@angular/core';
 import {
   collection,
   collectionData,
@@ -101,16 +101,22 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
   }
 
   getCurrentOrderList() {
-    if (!this.firestoreCollection) {
-      throw new Error('Firestore collection not initialized');
-    }
-    const document = query(this.firestoreCollection, where('status', '==', 'progress'));
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        if (!this.firestoreCollection) {
+          throw new Error('Firestore collection not initialized');
+        }
+        const document = query(this.firestoreCollection, where('status', '==', 'progress'));
 
-    return collectionData(document, { idField: 'id' }).pipe(
-      takeUntil(this.destroy$),
-      map(orders => orders[0] as LlecoopOrder),
-      catchError(error => this.handlePermissionError(error, null))
-    );
+        return collectionData(document, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          map(orders => orders[0] as LlecoopOrder),
+          catchError(error => this.handlePermissionError(error, null))
+        );
+      } catch (error) {
+        return throwError(() => error);
+      }
+    });
   }
 
   getAllByOrderListId(
@@ -119,36 +125,50 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
     sorting: OrderListStoreFirebaseCrudState['selectedItemUserSorting'],
     filter: OrderListStoreFirebaseCrudState['selectedItemUserFilter']
   ) {
-    const conditions: QueryConstraint[] = [];
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const conditions: QueryConstraint[] = [];
 
-    if (pagination.pageIndex > 0 && pagination.pageLastElements?.has(pagination.pageIndex - 1)) {
-      const lastDoc = pagination.pageLastElements.get(pagination.pageIndex - 1);
-      conditions.push(startAfter(lastDoc?.[sorting[0]]));
-    }
-    const q = query(
-      this.#ordersGroup,
-      where(`orderListId`, '==', orderListId),
-      orderBy(sorting[0], sorting[1] === 'asc' ? 'asc' : 'desc'),
-      limit(pagination.pageSize),
-      ...conditions,
-      where('userName', '>=', filter.text),
-      where('userName', '<=', filter.text + '\uf8ff')
-    );
-
-    return collectionData(q, { idField: 'id' }).pipe(
-      takeUntil(this.destroy$),
-      map(orders => orders as LlecoopUserOrder[]),
-      catchError(error => this.handlePermissionError(error, []))
-    );
+        if (
+          pagination.pageIndex > 0 &&
+          pagination.pageLastElements?.has(pagination.pageIndex - 1)
+        ) {
+          const lastDoc = pagination.pageLastElements.get(pagination.pageIndex - 1);
+          conditions.push(startAfter(lastDoc?.[sorting[0]]));
+        }
+        const q = query(
+          this.#ordersGroup,
+          where(`orderListId`, '==', orderListId),
+          orderBy(sorting[0], sorting[1] === 'asc' ? 'asc' : 'desc'),
+          limit(pagination.pageSize),
+          ...conditions,
+          where('userName', '>=', filter.text),
+          where('userName', '<=', filter.text + '\uf8ff')
+        );
+        return collectionData(q, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          map(orders => orders as LlecoopUserOrder[]),
+          catchError(error => this.handlePermissionError(error, []))
+        );
+      } catch (error) {
+        return throwError(() => error);
+      }
+    });
   }
 
   getAvailableProducts() {
-    const q = query(this.#productCollection, where('isAvailable', '==', true));
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const q = query(this.#productCollection, where('isAvailable', '==', true));
 
-    return collectionData(q, { idField: 'id' }).pipe(
-      takeUntil(this.destroy$),
-      map(products => products as LlecoopProduct[]),
-      catchError(error => this.handlePermissionError(error, []))
-    );
+        return collectionData(q, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          map(products => products as LlecoopProduct[]),
+          catchError(error => this.handlePermissionError(error, []))
+        );
+      } catch (error) {
+        return throwError(() => error);
+      }
+    });
   }
 }

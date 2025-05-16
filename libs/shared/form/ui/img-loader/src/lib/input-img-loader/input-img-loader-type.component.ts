@@ -11,7 +11,7 @@ import { InputImgLoaderComponent } from './input-img-loader.component';
 
 @Component({
   selector: 'plastik-input-img-loader-type',
-  standalone: true,
+
   templateUrl: './input-img-loader-type.component.html',
   imports: [
     ReactiveFormsModule,

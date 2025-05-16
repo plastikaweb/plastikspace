@@ -8,7 +8,6 @@ type TableControlActionAsCollection<T> = {
 
 @Pipe({
   name: 'orderTableActionsElements',
-  standalone: true,
 })
 export class OrderTableActionsElementsPipe<T> implements PipeTransform {
   transform(list: TableControlActionAsCollection<T>[]): TableControlActionAsCollection<T>[] {

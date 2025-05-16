@@ -1,46 +1,54 @@
 <main class="flex flex-col">
-  <plastik-mat-theme-toggle class="absolute z-10 top-md right-md"></plastik-mat-theme-toggle>
+  @defer {
+    <plastik-mat-theme-toggle class="absolute z-10 top-md right-md"></plastik-mat-theme-toggle>
+  }
 
   <div class="flex justify-center items-center min-h-screen contain-layout p-sub">
+    @let formConfig = facade.formConfig;
+
     <mat-card
       appearance="raised"
       class="flex items-center justify-center align-middle shadow-md min-w-[425px] max-w-[425px]">
-      <mat-card-header>
-        <mat-card-title class="flex justify-center align-middle gap-sub">
-          @if (logo() && title()) {
-            <img
-              class="w-[32px] h-[32px] object-contain"
-              [attr.alt]="title() || ''"
-              [src]="logo()" />
-          }
-          @if (title()) {
-            <h1 class="text-lg">{{ title() }}</h1>
-          }
-        </mat-card-title>
-      </mat-card-header>
-
-      <mat-card-content class="w-full my-sm">
-        @let formConfig = facade.formConfig;
-
-        <plastik-shared-form-feature
-          [fields]="formConfig.getConfig() || []"
-          [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
-          (changeEvent)="facade.onSubmit($event)">
-          <div class="my-sub extraLinks md:my-sm">
-            @for (link of facade.extraLinks?.(); track link) {
-              <a [routerLink]="link.route">{{ link.label }}</a>
+      @defer {
+        <mat-card-header>
+          <mat-card-title class="flex justify-center align-middle gap-sub">
+            @if (logo() && title()) {
+              <img
+                loading="lazy"
+                class="w-[32px] h-[32px] object-contain"
+                [attr.alt]="title() || ''"
+                [src]="logo()" />
             }
-          </div>
-        </plastik-shared-form-feature>
-      </mat-card-content>
+            @if (title()) {
+              <h1 class="text-lg">{{ title() }}</h1>
+            }
+          </mat-card-title>
+        </mat-card-header>
 
-      <mat-card-footer
-        class="w-full text-center border-t-2 text-[12px] text-balance bg-gray-70 text-white py-sub border-spacing-sm border-t-primary-light">
-        <a class="hover:text-gray-10 hover:decoration-gray-10" target="_self" [href]="nameLink()">{{
-          name()
-        }}</a>
-        {{ currentDate | date: 'yyyy' }}
-      </mat-card-footer>
+        <mat-card-content class="w-full my-sm">
+          <plastik-shared-form-feature
+            [fields]="formConfig.getConfig() || []"
+            [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
+            (changeEvent)="facade.onSubmit($event)">
+            <div class="my-sub extraLinks md:my-sm">
+              @for (link of facade.extraLinks?.(); track link) {
+                <a [routerLink]="link.route">{{ link.label }}</a>
+              }
+            </div>
+          </plastik-shared-form-feature>
+        </mat-card-content>
+
+        <mat-card-footer
+          class="w-full text-center border-t-2 text-[12px] text-balance bg-gray-70 text-white py-sub border-spacing-sm border-t-primary-light">
+          <a
+            class="hover:text-gray-10 hover:decoration-gray-10"
+            target="_self"
+            [href]="nameLink()"
+            >{{ name() }}</a
+          >
+          {{ currentDate | date: 'yyyy' }}
+        </mat-card-footer>
+      }
     </mat-card>
   </div>
 </main>

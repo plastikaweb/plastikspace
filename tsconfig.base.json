@@ -146,7 +146,8 @@
     }
   },
   "angularCompilerOptions": {
-    "strictTemplates": true
+    "strictTemplates": true,
+    "fullTemplateTypeCheck": true
   },
   "exclude": ["node_modules", "tmp", "cypress", "./cypress.config.ts", "**/*.cy.tsx"]
 }

@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { SafeHtml } from '@angular/platform-browser';
+import { BaseEntity } from '@plastik/core/entities';
 import { isNil } from '@plastik/shared/objects';
 
 import {
@@ -18,8 +19,8 @@ import { SharedUtilFormattersService } from './shared-util-formatters.service';
 /**
  * @description A service to format a value from an object applying a formatting configuration.
  */
-export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
-  formatter = inject(SharedUtilFormattersService);
+export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
+  readonly #formatter = inject(SharedUtilFormattersService);
 
   /**
    * @description Factory to get the correct formatted value from item property with a custom formatting option.
@@ -32,7 +33,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
    * @returns { PropertyFormatting } The valid types to be returned after formatting a value.
    */
   getFormattedValue(
-    item: T,
+    item: T extends BaseEntity ? T : never,
     { pathToKey, formatting }: PropertyFormatting<T, FormattingTypes>,
     index?: number,
     extraConfig?: unknown
@@ -42,47 +43,53 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T>> {
 
     switch (type) {
       case 'DATE':
-        return this.formatter.dateFormatter(String(value), extras);
+        return this.#formatter.dateFormatter(String(value), extras);
       case 'DATE_TIME':
-        return this.formatter.dateTimeFormatter(String(value), extras);
+        return this.#formatter.dateTimeFormatter(String(value), extras);
       case 'FIREBASE_TIMESTAMP':
-        return this.formatter.firebaseTimestampFormatter(value as Timestamp, extras);
+        return this.#formatter.firebaseTimestampFormatter(value as Timestamp, extras);
       case 'PERCENTAGE':
-        return this.formatter.percentageFormatter(Number(value), extras);
+        return this.#formatter.percentageFormatter(Number(value), extras);
       case 'CURRENCY':
-        return this.formatter.currencyFormatter(Number(value), extras);
+        return this.#formatter.currencyFormatter(Number(value), extras);
       case 'NUMBER':
-        return this.formatter.numberFormatter(Number(value), extras);
+        return this.#formatter.numberFormatter(Number(value), extras);
+      case 'QUANTITY':
+        return this.#formatter.quantityFormatter(Number(value), item, extras);
       case 'BOOLEAN_WITH_CONTROL':
         return !!value;
       case 'BOOLEAN_WITH_ICON':
-        return this.formatter.booleanWithIconFormatter(!!value, extras);
+        return this.#formatter.booleanWithIconFormatter(!!value, extras);
       case 'TITLE_CASE':
-        return this.formatter.titleCaseFormatter(String(value));
+        return this.#formatter.titleCaseFormatter(String(value));
       case 'IMAGE':
       case 'CUSTOM':
       case 'LINK':
-        return this.formatter.customFormatter(
+        return this.#formatter.customFormatter(
           String(value),
-          formatting as PropertyFormattingConf<T>,
+          formatting as PropertyFormattingConf<T extends BaseEntity ? T : never>,
           item,
           index,
           extraConfig
         );
       case 'COMPONENT':
-        return this.formatter.componentFormatter(
+        return this.#formatter.componentFormatter(
           String(value),
-          formatting as PropertyComponentFormattingConf<T>,
-          item
+          formatting as PropertyComponentFormattingConf<T extends BaseEntity ? T : never>,
+          item,
+          index
         );
       case 'TEXT':
       case 'INPUT':
       default:
-        return this.formatter.defaultFormatter(String(value));
+        return this.#formatter.defaultFormatter(String(value));
     }
   }
 
-  private getValueFromRow(property: string, item: T): FormattingOutput {
+  private getValueFromRow(
+    property: string,
+    item: T extends BaseEntity ? T : never
+  ): FormattingOutput {
     return property.split('.').reduce((accObject: unknown, currentProp: string) => {
       const object = (accObject as T)[currentProp as keyof T];
       return isNil(object) ? '' : (object as FormattingOutput);

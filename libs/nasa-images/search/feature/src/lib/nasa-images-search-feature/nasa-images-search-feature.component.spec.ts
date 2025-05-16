@@ -2,7 +2,7 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 import { of } from 'rxjs';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -56,24 +56,6 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
     fixture = TestBed.createComponent(NasaImagesSearchFeatureComponent);
     component = fixture.componentInstance;
     facade = TestBed.inject(NasaImagesSearchFacade);
-
-    const tableDefinition = signal({
-      columnProperties: signal([
-        {
-          key: 'name',
-          title: 'Title' as Capitalize<string>,
-          pathToKey: 'name',
-          cssClasses: ['min-w-[20rem] hidden md:flex'],
-          formatting: {
-            type: 'TEXT',
-          },
-        },
-      ]),
-      pagination: signal({ pageIndex: 0, pageSize: 100 }),
-      count: signal(0),
-      caption: 'Imágenes de la NASA',
-    });
-
     component.formStructure$ = of([]);
     component.formModel$ = of({});
     fixture.detectChanges();

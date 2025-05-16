@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { Action, Store } from '@ngrx/store';
-import { selectIsActive } from '@plastik/shared/activity/data-access';
-
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
+import { activityStore } from '@plastik/shared/activity/data-access';
+
 import { VIEW_CONFIG } from '../core-cms-view-config';
 import { layoutActions } from './layout.actions';
 import { selectIsMobile, selectSidenavOpened } from './layout.feature';
@@ -13,7 +13,7 @@ export class LayoutFacade {
   sidenavConfig = inject(VIEW_CONFIG);
   sidenavOpened$ = this.#store.select(selectSidenavOpened);
   isMobile$ = this.#store.select(selectIsMobile);
-  isActive$ = this.#store.select(selectIsActive);
+  isActive = inject(activityStore).isActive;
   headerConfig = inject(CORE_CMS_LAYOUT_HEADER_CONFIG);
 
   toggleSidenav(opened: boolean | undefined): void {

@@ -2,8 +2,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
-  standalone: true,
   selector: 'plastik-core-cms-layout-ui-footer',
+  imports: [MatToolbarModule],
   templateUrl: './core-cms-layout-ui-footer.component.html',
   styles: [
     `
@@ -12,7 +12,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
       }
     `,
   ],
-  imports: [MatToolbarModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CoreCmsLayoutUiFooterComponent {}
