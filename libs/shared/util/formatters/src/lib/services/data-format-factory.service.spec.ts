@@ -3,11 +3,11 @@ import { LOCALE_ID, provideExperimentalZonelessChangeDetection } from '@angular/
 import { TestBed } from '@angular/core/testing';
 
 import { DataFormatFactoryService } from './data-format-factory.service';
-import { objectMocked, TypeMocked } from './formatting.mock';
+import { objectMocked } from './formatting.mock';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
 describe('DataFormatFactoryService', () => {
-  let service: DataFormatFactoryService<TypeMocked>;
+  let service: DataFormatFactoryService<typeof objectMocked>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -24,7 +24,7 @@ describe('DataFormatFactoryService', () => {
         },
       ],
     });
-    service = TestBed.inject(DataFormatFactoryService);
+    service = TestBed.inject(DataFormatFactoryService<typeof objectMocked>);
   });
 
   it('should be created', () => {
@@ -109,9 +109,11 @@ describe('DataFormatFactoryService', () => {
         key: 'a',
         title: 'Title',
         pathToKey: 'price',
-        formatting: { type: 'CURRENCY' },
+        formatting: {
+          type: 'CURRENCY',
+        },
       });
-      expect(result).toBe('$3');
+      expect(result).toBe('€3.08');
     });
 
     it('should return a value with custom digits info currency formatting', () => {
@@ -119,7 +121,10 @@ describe('DataFormatFactoryService', () => {
         key: 'a',
         title: 'Title',
         pathToKey: 'price',
-        formatting: { type: 'CURRENCY', extras: () => ({ numberDigitsInfo: '1.2-2' }) },
+        formatting: {
+          type: 'CURRENCY',
+          extras: () => ({ currency: '$', numberDigitsInfo: '1.2-2' }),
+        },
       });
       expect(result).toBe('$3.08');
     });

@@ -162,7 +162,7 @@ export interface PropertyComponentFormattingConf<OBJ, TYPE extends FormattingTyp
 }
 
 type PropertyFormattingBase<OBJ extends Record<keyof OBJ, unknown>> = {
-  key: string & keyof OBJ;
+  key: string;
   title: Capitalize<string>;
   pathToKey: string;
   link?: (item?: OBJ) => string | string[];

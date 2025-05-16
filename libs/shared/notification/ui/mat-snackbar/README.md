@@ -47,7 +47,7 @@ import { Notification } from '@plastik/shared/notification/entities';
 
 @Component({
   selector: 'plastik-feature',
-  standalone: true,
+
   imports: [NotificationUiMatSnackbarDirective],
 })
 export class CoreCmsLayoutFeatureComponent {

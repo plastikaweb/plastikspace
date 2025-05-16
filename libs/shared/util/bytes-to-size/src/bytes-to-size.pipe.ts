@@ -2,7 +2,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
   name: 'bytesToSize',
-  standalone: true,
 })
 export class BytesToSizePipe implements PipeTransform {
   sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];

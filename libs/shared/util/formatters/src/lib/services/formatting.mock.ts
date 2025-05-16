@@ -1,12 +1,7 @@
-import { Timestamp } from '@angular/fire/firestore';
-import { BaseEntity } from '@plastik/core/entities';
-
-export const objectMocked: TypeMocked = {
+export const objectMocked = {
   id: 'kkk0000ads',
   name: 'TITLE',
   normalizedName: 'TITLE',
-  createdAt: Timestamp.now(),
-  updatedAt: Timestamp.now(),
   noFormatting: {
     child: {
       value: 12,
@@ -26,8 +21,3 @@ export const objectMocked: TypeMocked = {
   price: 3.08,
   custom: `---`,
 } as const;
-
-// Definir TypeMocked para que sea compatible con las restricciones de DataFormatFactoryService
-export interface TypeMocked extends BaseEntity {
-  [key: string]: unknown;
-}

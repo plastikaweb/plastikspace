@@ -1,9 +1,9 @@
+import { isObservable, Observable, of } from 'rxjs';
+
 import { Pipe, PipeTransform } from '@angular/core';
-import { Observable, isObservable, of } from 'rxjs';
 
 @Pipe({
   name: 'returnAsObservable',
-  standalone: true,
 })
 export class ReturnAsObservablePipe implements PipeTransform {
   /**

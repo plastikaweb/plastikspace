@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class SharedImgContainerComponent {
   src = input.required<string>();
-  width = input.required<number>();
+  width = input<number>();
   height = input<number>();
   quality = input<number>(80);
   title = input<string>();

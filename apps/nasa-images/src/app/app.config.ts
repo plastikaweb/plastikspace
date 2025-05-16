@@ -26,6 +26,7 @@ import {
   routerReducers,
   RouterStateEffects,
 } from '@plastik/core/router-state';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
 import { environment } from '../environments/environment';
@@ -57,7 +58,8 @@ export const appConfig: ApplicationConfig = {
           })
         : [],
       CoreCmsLayoutDataAccessModule,
-      notificationStore
+      notificationStore,
+      activityStore
     ),
     provideRouterStore({
       serializer: CustomRouterSerializer,

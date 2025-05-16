@@ -73,7 +73,7 @@ describe('NavigationService', () => {
     });
 
     it('router should navigate to the passed path with query params', async () => {
-      await service.navigate({ path: ['/custom'], query: { id: 'aaaa' } });
+      await service.navigate({ path: ['/custom'], extras: { queryParams: { id: 'aaaa' } } });
       expect(location.path()).toBe('/custom?id=aaaa');
     });
 

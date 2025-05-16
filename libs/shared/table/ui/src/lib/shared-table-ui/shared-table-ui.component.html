@@ -1,6 +1,6 @@
-@defer (on idle) {
-  <div
-    class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-tiny">
+<div
+  class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-tiny">
+  @defer (on viewport; prefetch when dataSource.data.length) {
     <mat-table
       class="table w-full"
       matSort
@@ -341,16 +341,18 @@
       <ng-content select="[noResults]"></ng-content>
       <ng-content select="[noValidSearch]"></ng-content>
     </ng-template>
-  </div>
-
-  @if (!noPagination()) {
-    <mat-paginator
-      #matPaginator
-      class="justify-end mt-md"
-      [pageIndex]="pagination()?.pageIndex"
-      [pageSize]="pagination()?.pageSize"
-      [length]="resultsLength()"
-      (page)="onChangePagination($event)">
-    </mat-paginator>
+  } @placeholder {
+    <p class="text-sm">loading data...</p>
   }
+</div>
+
+@if (!noPagination()) {
+  <mat-paginator
+    #matPaginator
+    class="justify-end mt-md"
+    [pageIndex]="pagination()?.pageIndex"
+    [pageSize]="pagination()?.pageSize"
+    [length]="resultsLength()"
+    (page)="onChangePagination($event)">
+  </mat-paginator>
 }

@@ -1,17 +1,15 @@
 import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { Store } from '@ngrx/store';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { selectIsActive } from '@plastik/shared/activity/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
 
 @Component({
   selector: 'plastik-llecoop-order-indicator',
@@ -30,5 +28,5 @@ import { selectIsActive } from '@plastik/shared/activity/data-access';
 export class LlecoopOrderIndicatorComponent {
   protected readonly currentOrderList = inject(llecoopOrderListStore).currentOrderList;
   protected readonly currentUserOrder = inject(llecoopUserOrderStore).currentUserOrder;
-  protected readonly active = toSignal(inject(Store).select(selectIsActive));
+  protected readonly active = inject(activityStore).isActive;
 }

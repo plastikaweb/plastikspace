@@ -68,7 +68,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   protected readonly currentDate = new Date();
   protected readonly sidenavOpened$ = this.#layoutFacade.sidenavOpened$;
   protected readonly isMobile$ = this.#layoutFacade.isMobile$;
-  protected readonly isActive$ = this.#layoutFacade.isActive$;
+  protected readonly isActive = this.#layoutFacade.isActive;
   protected readonly sidenavConfig = this.#layoutFacade.sidenavConfig;
   readonly headerConfig = this.#layoutFacade.headerConfig;
   protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;

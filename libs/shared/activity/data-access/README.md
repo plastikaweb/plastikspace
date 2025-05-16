@@ -7,51 +7,78 @@
 
 ## Description
 
-This library contains the data access layer for the activity feature.
+This library contains the data access layer for the activity feature. It uses NgRx Signals for efficient and straightforward state management.
 
 ## How to use
 
-- Import the Module.
-  Import the `SharedActivityDataAccessModule` into your application's module or wherever you want to use it.
+### 1. Provide the store in your application
 
-  ```typescript
-  import { SharedActivityDataAccessModule } from '@plastik/shared/activity/data-access';
+Provide the `activityStore` in your application configuration:
 
-  @NgModule({
-    imports: [SharedActivityDataAccessModule],
-  })
-  export class AppModule {}
-  ```
+```typescript
+import { activityStore } from '@plastik/shared/activity/data-access';
 
-- Dispatch Actions: Use the activityActions to dispatch actions to the store.
+export const appConfig: ApplicationConfig = {
+  providers: [
+    // ...
+    activityStore,
+    // ...
+  ],
+};
+```
 
-  ```typescript
-  import { inject } from '@angular/core';
-  import { Store } from '@ngrx/store';
-  import { activityActions } from '@plastik/shared/activity/data-access';
+### 2. Use the store in components
 
-  export class MyComponent implements OnInit {
-    readonly #store = inject(Store);
+```typescript
+import { Component, inject } from '@angular/core';
+import { activityStore } from '@plastik/shared/activity/data-access';
 
-    ngOnInit(): void {
-      this.#store.dispatch(activityActions.setActivity({ isActive: false }));
-    }
+@Component({
+  selector: 'app-my-component',
+  template: ` <div *ngIf="isActive()">Loading...</div> `,
+})
+export class MyComponent {
+  private readonly store = inject(activityStore);
+
+  // Access state as a signal
+  readonly isActive = this.store.isActive;
+
+  // Change the state
+  setLoading(loading: boolean): void {
+    this.store.setActivity(loading);
   }
-  ```
+}
+```
 
-- Select State: Use the selectors to get the state from the store.
+### 3. In tests
 
-  ```typescript
-  import { inject } from '@angular/core';
-  import { Store } from '@ngrx/store';
-  import { selectIsActive } from '@plastik/shared/activity/data-access';
+For testing, you need to inject the store instance:
 
-  export class MyOtherComponent {
-    readonly #store = inject(Store);
+```typescript
+import { TestBed } from '@angular/core/testing';
+import { activityStore } from '@plastik/shared/activity/data-access';
 
-    isActive$ = this.#store.select(selectIsActive);
-  }
-  ```
+describe('MyComponent', () => {
+  let activityStoreInstance: unknown;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [activityStore],
+    });
+
+    activityStoreInstance = TestBed.inject(activityStore);
+  });
+
+  it('should set activity state', () => {
+    // Mock the method for testing
+    jest.spyOn(activityStoreInstance as any, 'setActivity');
+
+    // Test it
+    component.someMethod();
+    expect(activityStoreInstance.setActivity).toHaveBeenCalledWith(true);
+  });
+});
+```
 
 ## Running unit tests
 

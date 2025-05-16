@@ -43,7 +43,7 @@ describe('CoreCmsLayoutFeatureComponent', () => {
             sidenavConfig: signal([]),
             sidenavOpened$: signal(false),
             isMobile$: signal(false),
-            isActive$: signal(false),
+            isActive: signal(false),
             headerConfig: {
               showToggleMenuButton: true,
               sidenavPosition: 'start',

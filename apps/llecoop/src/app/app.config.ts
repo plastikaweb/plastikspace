@@ -1,13 +1,13 @@
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { provideHttpClient } from '@angular/common/http';
 import {
+  effect,
   ErrorHandler,
-  importProvidersFrom,
   inject,
-  isDevMode,
   LOCALE_ID,
+  provideAppInitializer,
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
 import {
@@ -25,12 +25,10 @@ import {
   withComponentInputBinding,
   withViewTransitions,
 } from '@angular/router';
-import { Store, StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import { PrefixTitleService } from '@plastik/core/router-state';
-import { selectActivityFeature, selectIsActive } from '@plastik/shared/activity/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 
@@ -74,18 +72,15 @@ export const appConfig = {
       return functions;
     }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
-    importProvidersFrom(
-      StoreModule.forRoot({ activity: selectActivityFeature.reducer }),
-      isDevMode()
-        ? StoreDevtoolsModule.instrument({
-            name: environment.name,
-            maxAge: 25,
-            connectInZone: false,
-            trace: true,
-            traceLimit: 75,
-          })
-        : []
-    ),
+    provideAppInitializer(() => {
+      const liveAnnouncer = inject(LiveAnnouncer);
+      const isActive = inject(activityStore).isActive;
+      effect(() => {
+        if (isActive()) {
+          liveAnnouncer.announce('Carregant dades...', 'polite', 100);
+        }
+      });
+    }),
     {
       provide: ENVIRONMENT,
       useValue: environment,
@@ -101,7 +96,7 @@ export const appConfig = {
     },
     {
       provide: FORM_DISABLE_TOKEN,
-      useFactory: () => toSignal(inject(Store).select(selectIsActive)),
+      useFactory: () => inject(activityStore).isActive,
     },
     {
       provide: ErrorHandler,

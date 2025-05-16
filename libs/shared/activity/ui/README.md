@@ -42,7 +42,7 @@ import { SharedActivityUiLinearComponent } from '@plastik/shared/activity/ui';
 
 @Component({
   selector: 'parent',
-  standalone: true,
+
   imports: [SharedActivityUiLinearComponent],
   templateUrl: './parent.component.html',
 })
@@ -89,7 +89,7 @@ import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 
 @Component({
   selector: 'parent',
-  standalone: true,
+
   imports: [SharedActivityUiOverlayComponent],
   templateUrl: './parent.component.html',
 })
