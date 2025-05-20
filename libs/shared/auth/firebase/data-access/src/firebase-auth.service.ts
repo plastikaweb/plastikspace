@@ -302,7 +302,6 @@ export class FirebaseAuthService {
 
         const currentUser = this.#auth.currentUser;
         if (currentUser) {
-          // Forzar una actualización del token para asegurar que se invalide cualquier sesión anterior
           await currentUser.reload();
         }
       } else {

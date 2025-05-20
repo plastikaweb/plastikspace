@@ -1,9 +1,9 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { UiCategoryNameCellComponent } from '@plastik/llecoop/category-name-cell';
 import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
-import { FormattingTypes } from '@plastik/shared/formatters';
+import { FormattingComponentOutput } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -19,7 +19,11 @@ export class LlecoopCategorySearchFeatureTableConfig
 {
   readonly #store = inject(llecoopCategoryStore);
 
-  readonly #name: TableColumnFormatting<LlecoopProductCategory, 'COMPONENT'> = {
+  readonly #name: TableColumnFormatting<
+    LlecoopProductCategory,
+    'COMPONENT',
+    UiCategoryNameCellComponent
+  > = {
     key: 'name',
     title: 'Nom',
     pathToKey: 'name',
@@ -34,7 +38,7 @@ export class LlecoopCategorySearchFeatureTableConfig
         return {
           component: UiCategoryNameCellComponent,
           inputs: { category, nameStyle: 'uppercase font-bold', withLink: true },
-        };
+        } as FormattingComponentOutput<UiCategoryNameCellComponent>;
       },
     },
   };
@@ -64,9 +68,13 @@ export class LlecoopCategorySearchFeatureTableConfig
   readonly #createdAt = createdAt<LlecoopProductCategory>();
   readonly #updatedAt = updatedAt<LlecoopProductCategory>();
 
-  readonly #columnProperties: Signal<
-    TableColumnFormatting<LlecoopProductCategory, FormattingTypes>[]
-  > = signal([this.#name, this.#description, this.#productCount, this.#createdAt, this.#updatedAt]);
+  readonly #columnProperties = signal([
+    this.#name,
+    this.#description,
+    this.#productCount,
+    this.#createdAt,
+    this.#updatedAt,
+  ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

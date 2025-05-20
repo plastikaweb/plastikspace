@@ -75,7 +75,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
       case 'COMPONENT':
         return this.#formatter.componentFormatter(
           String(value),
-          formatting as PropertyComponentFormattingConf<T extends BaseEntity ? T : never>,
+          formatting as PropertyComponentFormattingConf<T extends BaseEntity ? T : never, unknown>,
           item,
           index
         );

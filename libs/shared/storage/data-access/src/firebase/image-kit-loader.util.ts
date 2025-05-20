@@ -1,5 +1,4 @@
 import { ImageLoaderConfig } from '@angular/common';
-import { LlecoopEnvironment } from '@plastik/llecoop/entities';
 
 export type ImageKitLoaderConfig = ImageLoaderConfig & {
   loaderParams: {

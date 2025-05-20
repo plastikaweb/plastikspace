@@ -95,8 +95,10 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             maxSize: signal(2 * 1024 * 1024),
             minHeight: signal(800),
             minWidth: signal(800),
-            imgHeight: signal(250),
-            imgWidth: signal(250),
+            dimensions: signal({
+              width: 250,
+              height: 250,
+            }),
             lcpImage: signal(true),
             title: productStore.selectedItemName || signal('nou producte'),
             progress: firebaseStorage.progress.bind(firebaseStorage),

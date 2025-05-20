@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  computed,
   effect,
   forwardRef,
   inject,
@@ -15,7 +16,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { BytesToSizePipe } from '@plastik/shared/bytes-to-size';
-import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { ImageDimensions, SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 import { InputImgLoaderProps } from './input-img-loader-props';
 
@@ -55,19 +56,21 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
   minWidth = input<number>(1024);
   fileUrl = input<string | null>(null);
   cdnUrl = input<string>();
-  imgHeight = input<number>(200);
-  imgWidth = input<number>(200);
+  dimensions = input<ImageDimensions>();
   lcpImage = input<boolean>(false);
   isLoading = linkedSignal({
     source: this.progress,
     computation: (progress: number) => progress > 0,
   });
 
+  protected imgHeight = computed(() => this.dimensions()?.height);
+  protected imgWidth = computed(() => this.dimensions()?.width);
+
   constructor() {
     effect(() => {
       if (this.fileUrl()) {
         this.value.set(this.fileUrl());
-        this.onChange(this.value());
+        this.onChange(this.fileUrl());
         this.cdr.detectChanges();
       }
     });
@@ -114,6 +117,10 @@ export class InputImgLoaderComponent implements ControlValueAccessor {
       }
 
       await this.validateImageDimensions(file);
+
+      this.isLoading.set(true);
+      await (this.upload()?.(file, this.folder()) ?? Promise.resolve());
+      this.onTouch();
     } catch (error) {
       this.onTouch();
       throw error;

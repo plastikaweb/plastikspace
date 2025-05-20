@@ -1,4 +1,4 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
@@ -6,7 +6,6 @@ import {
 } from '@plastik/llecoop/order-list/data-access';
 import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
-import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -70,15 +69,14 @@ export class LlecoopUserOrderSearchFeatureTableConfig
   readonly #createdAt = createdAt<LlecoopUserOrder>();
   readonly #updatedAt = updatedAt<LlecoopUserOrder>();
 
-  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopUserOrder, FormattingTypes>[]> =
-    signal([
-      this.#name,
-      this.#price,
-      this.#productCount,
-      this.#status,
-      this.#createdAt,
-      this.#updatedAt,
-    ]);
+  readonly #columnProperties = signal([
+    this.#name,
+    this.#price,
+    this.#productCount,
+    this.#status,
+    this.#createdAt,
+    this.#updatedAt,
+  ]);
 
   readonly #orderDoneStatusCache: Map<string, boolean> = new Map();
 

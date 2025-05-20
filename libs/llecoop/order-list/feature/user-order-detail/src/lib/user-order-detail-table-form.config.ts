@@ -1,4 +1,4 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductBasedUnitText,
@@ -11,7 +11,6 @@ import {
   llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
 import { categoryNameCell } from '@plastik/llecoop/util';
-import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -133,9 +132,7 @@ export class LlecoopUserOrderDetailFormTableConfig
     },
   };
 
-  readonly #columnProperties: Signal<
-    TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[]
-  > = signal([
+  readonly #columnProperties = signal([
     this.#name,
     categoryNameCell<LlecoopOrderProduct>({
       key: 'category',
