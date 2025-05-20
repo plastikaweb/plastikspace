@@ -1,4 +1,4 @@
-import moment from 'moment';
+import { addDays, format, getWeek, getYear, setHours, setMinutes } from 'date-fns';
 import { filter, take, tap } from 'rxjs';
 
 import { computed, inject, Injectable, signal } from '@angular/core';
@@ -57,8 +57,8 @@ export class LlecoopOrderListFeatureListFacadeService
             this.#sanitizer.bypassSecurityTrustHtml(
               `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
                 <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.getNewOrderName()}</p>
-                <p class="font-extrabold">Oberta fins el ${this.getNewOrderDate().format('DD/MM/YYYY')}
-                a les ${this.getNewOrderDate().format('HH:mm')}</span> hores.</p>
+                <p class="font-extrabold">Oberta fins el ${format(this.getNewOrderDate(), 'dd/MM/yyyy')}
+                a les ${format(this.getNewOrderDate(), 'HH:mm')}</span> hores.</p>
               </div>
               `
             ),
@@ -116,14 +116,17 @@ export class LlecoopOrderListFeatureListFacadeService
   }
 
   private getNewOrderName(): YearWeek {
-    const year = moment().year();
-    const week = moment().week();
+    const now = new Date();
+    const year = getYear(now);
+    const week = getWeek(now, { weekStartsOn: 1 }); // La semana empieza en lunes
 
     return `${year.toString().padStart(4, '0')}-${week.toString().padStart(2, '0')}` as YearWeek;
   }
 
-  private getNewOrderDate() {
-    return moment().isoWeekday(8).hour(12).minute(0);
+  private getNewOrderDate(): Date {
+    const now = new Date();
+    const nextMonday = addDays(now, (8 - now.getDay()) % 7 || 7);
+    return setHours(setMinutes(nextMonday, 0), 12);
   }
 
   private createOrderList(): LlecoopOrder {
@@ -141,7 +144,7 @@ export class LlecoopOrderListFeatureListFacadeService
     return {
       name: this.getNewOrderName(),
       normalizedName: this.getNewOrderName().toLowerCase(),
-      endTime: this.getNewOrderDate().toDate(),
+      endTime: this.getNewOrderDate(),
       status: 'progress',
       availableProducts,
       orderCount: 0,
