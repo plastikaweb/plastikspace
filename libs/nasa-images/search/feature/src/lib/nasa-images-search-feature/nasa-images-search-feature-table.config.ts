@@ -6,7 +6,7 @@ import { select, Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { selectNasaImagesFeature } from '@plastik/nasa-images/search/data-access';
 import { NasaImage } from '@plastik/nasa-images/search/entities';
-import { FormattingTypes } from '@plastik/shared/formatters';
+import { FormattingComponentOutput } from '@plastik/shared/formatters';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -74,22 +74,23 @@ const dateCreated: TableColumnFormatting<NasaImage, 'DATE'> = {
   },
 };
 
-const thumbnail: TableColumnFormatting<NasaImage, 'COMPONENT'> = {
+const thumbnail: TableColumnFormatting<NasaImage, 'COMPONENT', SharedImgContainerComponent> = {
   key: 'thumbnail',
   title: 'Image',
   pathToKey: 'thumbnail',
   cssClasses: ['relative', 'object-cover'],
   formatting: {
     type: 'COMPONENT',
-    execute: (src, image, index) => ({
-      component: SharedImgContainerComponent,
-      inputs: {
-        src,
-        title: image?.name,
-        lcpImage: index === 0,
-        quality: 70,
-      },
-    }),
+    execute: (src, image, index) =>
+      ({
+        component: SharedImgContainerComponent,
+        inputs: {
+          src,
+          title: image?.name,
+          lcpImage: index === 0,
+          quality: 70,
+        },
+      }) as FormattingComponentOutput<SharedImgContainerComponent>,
   },
 };
 
@@ -113,7 +114,7 @@ const center: TableColumnFormatting<NasaImage, 'TEXT'> = {
   },
 };
 
-const columnProperties: Signal<TableColumnFormatting<NasaImage, FormattingTypes>[]> = signal([
+const columnProperties = signal([
   index,
   id,
   title,

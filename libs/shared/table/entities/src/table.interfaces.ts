@@ -219,10 +219,22 @@ export const isDynamicComponentTypeGuard = (value: unknown): value is Formatting
   return typeof value === 'object' && value !== null && 'component' in value;
 };
 
+type TableColumnFormattingBase<OBJ extends BaseEntity, TYPE> = PropertyFormatting<OBJ, TYPE, never>;
+type TableColumnFormattingWithComponent<OBJ extends BaseEntity, COMPONENT> = PropertyFormatting<
+  OBJ,
+  'COMPONENT',
+  COMPONENT
+>;
 /**
  * @description An specific configuration for a table column <=> object property.
  */
-export type TableColumnFormatting<OBJ extends BaseEntity, TYPE> = PropertyFormatting<OBJ, TYPE> & {
+export type TableColumnFormatting<
+  OBJ extends BaseEntity,
+  TYPE,
+  COMPONENT = never,
+> = (TYPE extends 'COMPONENT'
+  ? TableColumnFormattingWithComponent<OBJ, COMPONENT>
+  : TableColumnFormattingBase<OBJ, TYPE>) & {
   /**
    * Sets if a table column must have sorting capacities.
    */

@@ -1,6 +1,6 @@
 import { filter, take } from 'rxjs';
 
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { LlecoopOrder } from '@plastik/llecoop/entities';
@@ -9,7 +9,7 @@ import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { FormattingTypes } from '@plastik/shared/formatters';
+import { FormattingComponentOutput } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -62,7 +62,11 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     },
   };
 
-  readonly #userOrdersStatus: TableColumnFormatting<LlecoopOrder, 'COMPONENT'> = {
+  readonly #userOrdersStatus: TableColumnFormatting<
+    LlecoopOrder,
+    'COMPONENT',
+    UiOrderListOrdersStatusResumeComponent
+  > = {
     key: 'userOrdersStatus',
     title: 'Estat de les comandes',
     pathToKey: 'userOrdersStatus',
@@ -77,7 +81,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
             orderName: element?.name,
             ordersStatus: element?.userOrdersStatus,
           },
-        };
+        } as FormattingComponentOutput<UiOrderListOrdersStatusResumeComponent>;
       },
     },
   };
@@ -95,16 +99,15 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
 
   readonly #createdAt = createdAt<LlecoopOrder>();
 
-  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopOrder, FormattingTypes>[]> =
-    signal([
-      this.#name,
-      this.#status,
-      this.#endTime,
-      this.#availableProducts,
-      this.#orderCount,
-      this.#userOrdersStatus,
-      this.#createdAt,
-    ]);
+  readonly #columnProperties = signal([
+    this.#name,
+    this.#status,
+    this.#endTime,
+    this.#availableProducts,
+    this.#orderCount,
+    this.#userOrdersStatus,
+    this.#createdAt,
+  ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);

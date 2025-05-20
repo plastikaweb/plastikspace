@@ -1,6 +1,8 @@
 import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+export type ImageDimensions = { width: number; height: number } | undefined;
+
 @Component({
   selector: 'plastik-shared-img-container',
   imports: [NgOptimizedImage],
@@ -9,9 +11,8 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 })
 export class SharedImgContainerComponent {
   src = input.required<string>();
-  width = input<number>();
-  height = input<number>();
+  title = input.required<string>();
+  dimensions = input<ImageDimensions>();
   quality = input<number>(80);
-  title = input<string>();
-  lcpImage = input<boolean>();
+  lcpImage = input<boolean>(false);
 }

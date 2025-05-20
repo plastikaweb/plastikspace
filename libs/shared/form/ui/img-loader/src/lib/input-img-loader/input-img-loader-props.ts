@@ -1,5 +1,6 @@
 import { Signal } from '@angular/core';
 import { FormlyFieldProps } from '@ngx-formly/core';
+import { ImageDimensions } from '@plastik/shared/img-container';
 
 export interface InputImgLoaderProps extends FormlyFieldProps {
   title: Signal<string>;
@@ -9,8 +10,7 @@ export interface InputImgLoaderProps extends FormlyFieldProps {
   maxSize?: Signal<number>;
   minHeight?: Signal<number>;
   minWidth?: Signal<number>;
-  imgHeight?: Signal<number>;
-  imgWidth?: Signal<number>;
+  dimensions: Signal<ImageDimensions>;
   folder?: Signal<string>;
   cdnUrl?: Signal<string>;
   lcpImage?: Signal<boolean>;

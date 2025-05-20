@@ -298,7 +298,7 @@ export class SharedUtilFormattersService {
    */
   componentFormatter<T>(
     value: string,
-    { execute }: PropertyComponentFormattingConf<T>,
+    { execute }: PropertyComponentFormattingConf<T, unknown>,
     element: T,
     index?: number
   ): FormattingComponentOutput | string {
