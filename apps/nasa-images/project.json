@@ -29,7 +29,7 @@
         "stylePreprocessorOptions": {
           "includePaths": ["libs/core/styles/util/material/src"]
         },
-        "allowedCommonJsDependencies": ["moment"],
+        "allowedCommonJsDependencies": ["date-fns"],
         "scripts": []
       },
       "configurations": {

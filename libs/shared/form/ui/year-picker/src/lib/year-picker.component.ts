@@ -1,4 +1,4 @@
-import { Moment } from 'moment';
+import { enUS } from 'date-fns/locale';
 
 import {
   ChangeDetectionStrategy,
@@ -14,9 +14,9 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { MatMomentDateModule, MomentDateAdapter } from '@angular/material-moment-adapter';
+import { provideDateFnsAdapter } from '@angular/material-date-fns-adapter';
 import { MatButtonModule } from '@angular/material/button';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepicker, MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -24,15 +24,15 @@ import { MatInputModule } from '@angular/material/input';
 
 export const YEAR_MODE_FORMATS = {
   parse: {
-    dateInput: 'YYYY',
+    dateInput: 'yyyy',
   },
   display: {
-    dateInput: 'YYYY',
-    monthYearLabel: 'MMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    dateInput: 'yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'yyyy',
+    monthYearA11yLabel: 'MMMM yyyy',
   },
-};
+} as const;
 
 @Component({
   selector: 'plastik-year-picker',
@@ -44,15 +44,10 @@ export const YEAR_MODE_FORMATS = {
     MatDatepickerModule,
     MatFormFieldModule,
     MatInputModule,
-    MatMomentDateModule,
   ],
   providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE],
-    },
-    { provide: MAT_DATE_FORMATS, useValue: YEAR_MODE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: enUS },
+    provideDateFnsAdapter(YEAR_MODE_FORMATS),
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => YearPickerComponent),
@@ -90,18 +85,16 @@ export class YearPickerComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  protected onYearSelected(date: Moment, datepicker: MatDatepicker<Moment>) {
+  protected onYearSelected(date: Date, datepicker: MatDatepicker<Date>) {
     if (this.disabled) return;
 
     datepicker.close();
-
-    date.set({ date: 1 });
     this.formControl.setValue(date, { emitEvent: false });
-    this.onChanged(date.toDate().getFullYear());
+    this.onChanged(date.getFullYear());
     this.onTouched();
   }
 
-  protected onOpenPicker(picker: MatDatepicker<Moment>) {
+  protected onOpenPicker(picker: MatDatepicker<Date>) {
     if (!picker.opened && !this.disabled) picker.open();
   }
 }
