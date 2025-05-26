@@ -23,8 +23,8 @@ export class NavigationService {
    * @description Navigate to a concrete URL with params and extras if needed.
    * @param { NavigationProps } navigationProps The navigation configuration properties.
    */
-  navigate({ path, query, extras }: NavigationProps): void {
-    this.#router.navigate(path, { queryParams: query || {}, ...extras });
+  navigate({ path, extras }: NavigationProps): void {
+    this.#router.navigate(path, { queryParams: extras?.queryParams, fragment: extras?.fragment });
   }
 
   /**

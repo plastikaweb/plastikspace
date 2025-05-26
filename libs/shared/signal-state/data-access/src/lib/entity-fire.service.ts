@@ -11,7 +11,7 @@ import {
   throwError,
 } from 'rxjs';
 
-import { inject, signal } from '@angular/core';
+import { EnvironmentInjector, inject, runInInjectionContext, signal } from '@angular/core';
 import { FirebaseError } from '@angular/fire/app';
 import {
   addDoc,
@@ -42,9 +42,10 @@ import { FirebaseServiceType } from './firebase-service.type';
 import { StoreFirebaseCrudFilter, StoreFirebaseCrudPagination } from './store-firebase-crud';
 
 export abstract class EntityFireService<T extends BaseEntity> extends FirebaseServiceType<T> {
-  protected readonly destroy$ = new Subject<void>();
   protected abstract path: string;
+  protected readonly destroy$ = new Subject<void>();
   protected readonly firestore = inject(Firestore);
+  protected readonly injectionContext = inject(EnvironmentInjector);
   protected collection: ReturnType<typeof collection> | null = null;
   readonly activeConnection = signal(true);
 
@@ -66,125 +67,137 @@ export abstract class EntityFireService<T extends BaseEntity> extends FirebaseSe
     sorting: TableSortingConfig,
     filter: StoreFirebaseCrudFilter
   ): Observable<T[]> {
-    try {
-      const firestoreCollection = this.firestoreCollection;
-      if (!firestoreCollection) {
-        return of([]);
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const firestoreCollection = this.firestoreCollection;
+        if (!firestoreCollection) {
+          return of([]);
+        }
+
+        const conditions: QueryConstraint[] = [
+          ...this.getFilterConditions(filter),
+          ...this.getSortingConditions(sorting),
+          ...this.getPaginationConditions(pagination, sorting[0]),
+        ];
+        const postCollection = query(firestoreCollection, ...conditions);
+
+        return collectionData(postCollection, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+          map(items => items as T[]),
+          catchError(error => this.handlePermissionError(error, []))
+        );
+      } catch (error) {
+        return throwError(() => error);
       }
-
-      const conditions: QueryConstraint[] = [
-        ...this.getFilterConditions(filter),
-        ...this.getSortingConditions(sorting),
-        ...this.getPaginationConditions(pagination, sorting[0]),
-      ];
-      const postCollection = query(firestoreCollection, ...conditions);
-
-      return collectionData(postCollection, { idField: 'id' }).pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
-        map(items => items as T[]),
-        catchError(error => this.handlePermissionError(error, []))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 
   getItem(id: EntityId): Observable<T | null> {
     try {
-      const firestoreCollection = this.firestoreCollection;
-      if (!firestoreCollection) {
-        return of(null);
-      }
+      return runInInjectionContext(this.injectionContext, () => {
+        const firestoreCollection = this.firestoreCollection;
+        if (!firestoreCollection) {
+          return of(null);
+        }
 
-      const docRef = doc(firestoreCollection, id.toString());
-      return docData(docRef, { idField: 'id' }).pipe(
-        takeUntil(this.destroy$),
-        map(item => item as T),
-        catchError(error => this.handlePermissionError(error, null))
-      );
+        const docRef = doc(firestoreCollection, id.toString());
+        return docData(docRef, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          map(item => item as T),
+          catchError(error => this.handlePermissionError(error, null))
+        );
+      });
     } catch (error) {
       return throwError(() => error);
     }
   }
 
   create(item: Partial<T>): Observable<DocumentReference<T>> {
-    try {
-      const firestoreCollection = this.firestoreCollection;
-      if (!firestoreCollection) {
-        return throwError(() => new Error('No collection available'));
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const firestoreCollection = this.firestoreCollection;
+        if (!firestoreCollection) {
+          return throwError(() => new Error('No collection available'));
+        }
+
+        const addDocumentAndConvert = async (): Promise<DocumentReference<T>> => {
+          const docRef = await addDoc(firestoreCollection, item as WithFieldValue<T>);
+          return docRef as unknown as DocumentReference<T>;
+        };
+
+        return from(addDocumentAndConvert()).pipe(
+          takeUntil(this.destroy$),
+          catchError(error => throwError(() => error))
+        );
+      } catch (error) {
+        return throwError(() => error);
       }
-
-      const addDocumentAndConvert = async (): Promise<DocumentReference<T>> => {
-        const docRef = await addDoc(firestoreCollection, item as WithFieldValue<T>);
-        return docRef as unknown as DocumentReference<T>;
-      };
-
-      return from(addDocumentAndConvert()).pipe(
-        takeUntil(this.destroy$),
-        catchError(error => throwError(() => error))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 
   update(item: Partial<T>): Observable<void> {
-    try {
-      const firestoreCollection = this.firestoreCollection;
-      if (!firestoreCollection) {
-        return throwError(() => new Error('No collection available'));
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const firestoreCollection = this.firestoreCollection;
+        if (!firestoreCollection) {
+          return throwError(() => new Error('No collection available'));
+        }
+
+        const docRef = doc(firestoreCollection, item.id?.toString() ?? '');
+        const converter = this.firebaseAssignTypes();
+        const convertedData = converter.toFirestore(item as T);
+
+        return from(updateDoc(docRef, convertedData)).pipe(
+          takeUntil(this.destroy$),
+          catchError(error => throwError(() => error))
+        );
+      } catch (error) {
+        return throwError(() => error);
       }
-
-      const docRef = doc(firestoreCollection, item.id?.toString() ?? '');
-      const converter = this.firebaseAssignTypes();
-      const convertedData = converter.toFirestore(item as T);
-
-      return from(updateDoc(docRef, convertedData)).pipe(
-        takeUntil(this.destroy$),
-        catchError(error => throwError(() => error))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 
   delete(item: T): Observable<void> {
-    try {
-      const firestoreCollection = this.firestoreCollection;
-      if (!firestoreCollection) {
-        return throwError(() => new Error('No collection available'));
-      }
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const firestoreCollection = this.firestoreCollection;
+        if (!firestoreCollection) {
+          return throwError(() => new Error('No collection available'));
+        }
 
-      const docRef = doc(firestoreCollection, item.id?.toString() ?? '');
-      return from(deleteDoc(docRef)).pipe(
-        takeUntil(this.destroy$),
-        catchError(error => throwError(() => error))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+        const docRef = doc(firestoreCollection, item.id?.toString() ?? '');
+        return from(deleteDoc(docRef)).pipe(
+          takeUntil(this.destroy$),
+          catchError(error => throwError(() => error))
+        );
+      } catch (error) {
+        return throwError(() => error);
+      }
+    });
   }
 
   getCount(filter: StoreFirebaseCrudFilter): Observable<number> {
-    try {
-      const firestoreCollection = this.firestoreCollection;
-      if (!firestoreCollection) {
-        return of(0);
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const firestoreCollection = this.firestoreCollection;
+        if (!firestoreCollection) {
+          return of(0);
+        }
+
+        const conditions = this.getFilterConditions(filter);
+        const countQuery = query(firestoreCollection, ...conditions);
+
+        return collectionData(countQuery).pipe(
+          takeUntil(this.destroy$),
+          distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+          map(items => items.length),
+          catchError(error => this.handlePermissionError(error, 0))
+        );
+      } catch (error) {
+        return throwError(() => error);
       }
-
-      const conditions = this.getFilterConditions(filter);
-      const countQuery = query(firestoreCollection, ...conditions);
-
-      return collectionData(countQuery).pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
-        map(items => items.length),
-        catchError(error => this.handlePermissionError(error, 0))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 
   protected getPaginationConditions(

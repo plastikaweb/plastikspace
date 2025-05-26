@@ -137,12 +137,8 @@ To use Material in a project:
 
 1. Ensure the required dependencies are installed:
 
-   ```json
-   {
-     "@angular/material": "19.0.2",
-     "@angular/material-moment-adapter": "19.0.2"
-   }
-   ```
+    - ["@angular/material"](https://www.npmjs.com/package/@angular/material)
+    - ["@angular/material-date-fns-adapter"](https://www.npmjs.com/package/@angular/material-date-fns-adapter)
 
 2. Import the core Material styles:
    - The core styles are available in `@core/styles/util/material`

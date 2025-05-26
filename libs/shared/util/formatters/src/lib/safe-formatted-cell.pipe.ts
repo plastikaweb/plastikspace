@@ -1,6 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { BaseEntity } from '@plastik/core/entities';
 
-import { FormattingInput, PropertyFormatting } from './formatting';
+import { PropertyFormatting } from './formatting';
 import { DataFormatFactoryService } from './services';
 
 /**
@@ -13,10 +14,15 @@ import { DataFormatFactoryService } from './services';
 @Pipe({
   name: 'safeFormatted',
 })
-export class SafeFormattedPipe<T extends FormattingInput<keyof T>> implements PipeTransform {
+export class SafeFormattedPipe<T extends BaseEntity> implements PipeTransform {
   constructor(private readonly dataFormatService: DataFormatFactoryService<T>) {}
 
-  transform(row: T, column: PropertyFormatting<T, unknown>, index?: number, extraConfig?: unknown) {
+  transform(
+    row: T extends BaseEntity ? T : never,
+    column: PropertyFormatting<T, unknown>,
+    index?: number,
+    extraConfig?: unknown
+  ) {
     return this.dataFormatService.getFormattedValue(row, column, index, extraConfig);
   }
 }

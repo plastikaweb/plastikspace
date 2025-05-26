@@ -6,11 +6,13 @@ import { select, Store } from '@ngrx/store';
 import { selectRouteQueryParams } from '@plastik/core/router-state';
 import { selectNasaImagesFeature } from '@plastik/nasa-images/search/data-access';
 import { NasaImage } from '@plastik/nasa-images/search/entities';
-import { FormattingTypes } from '@plastik/shared/formatters';
+import { FormattingComponentOutput } from '@plastik/shared/formatters';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import {
   DEFAULT_TABLE_CONFIG,
   PageEventConfig,
   TableColumnFormatting,
+  TableDefinition,
 } from '@plastik/shared/table/entities';
 
 const index: TableColumnFormatting<NasaImage, 'CUSTOM'> = {
@@ -72,17 +74,23 @@ const dateCreated: TableColumnFormatting<NasaImage, 'DATE'> = {
   },
 };
 
-const thumbnail: TableColumnFormatting<NasaImage, 'IMAGE'> = {
+const thumbnail: TableColumnFormatting<NasaImage, 'COMPONENT', SharedImgContainerComponent> = {
   key: 'thumbnail',
   title: 'Image',
   pathToKey: 'thumbnail',
-  cssClasses: [
-    'max-w-[120px] max-h-[120px] relative',
-    'object-cover size-[120px] rounded-2xl p-tiny',
-  ],
+  cssClasses: ['relative', 'object-cover'],
   formatting: {
-    type: 'IMAGE',
-    extras: () => ({ placeholder: 'https://via.placeholder.com/120x120' }),
+    type: 'COMPONENT',
+    execute: (src, image, index) =>
+      ({
+        component: SharedImgContainerComponent,
+        inputs: {
+          src,
+          title: image?.name,
+          lcpImage: index === 0,
+          quality: 70,
+        },
+      }) as FormattingComponentOutput<SharedImgContainerComponent>,
   },
 };
 
@@ -106,7 +114,7 @@ const center: TableColumnFormatting<NasaImage, 'TEXT'> = {
   },
 };
 
-const columnProperties: Signal<TableColumnFormatting<NasaImage, FormattingTypes>[]> = signal([
+const columnProperties = signal([
   index,
   id,
   title,
@@ -139,6 +147,6 @@ export class NasaImagesSearchFeatureTableConfig {
           };
         })
       )
-    );
+    ) as Signal<TableDefinition<NasaImage>>;
   }
 }

@@ -1,9 +1,9 @@
-import { inject, Injectable, Signal, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { UiProductNameCellComponent } from '@plastik/llecoop/product-name-cell';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { categoryNameCell, createdAt, updatedAt } from '@plastik/llecoop/util';
-import { FormattingTypes } from '@plastik/shared/formatters';
+import { FormattingComponentOutput } from '@plastik/shared/formatters';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -20,32 +20,30 @@ export class LlecoopProductSearchFeatureTableConfig
 {
   readonly #store = inject(llecoopProductStore);
 
-  readonly #image: TableColumnFormatting<LlecoopProduct, 'COMPONENT'> = {
-    key: 'imgUrl',
-    title: 'Imatge',
-    pathToKey: 'imgUrl',
-    cssClasses: ['flex min-w-[70px]'],
-    formatting: {
-      type: 'COMPONENT',
-      execute: (value, product) => {
-        if (!product) {
-          throw new Error('Product is required');
-        }
-        return {
-          component: SharedImgContainerComponent,
-          inputs: {
-            src: value || 'https://fakeimg.pl/150x150?text=El+Llevat&font=lobster',
-            width: 150,
-            height: 150,
-            title: product?.name,
-            lcpImage: false,
-          },
-        };
+  readonly #image: TableColumnFormatting<LlecoopProduct, 'COMPONENT', SharedImgContainerComponent> =
+    {
+      key: 'imgUrl',
+      title: 'Imatge',
+      pathToKey: 'imgUrl',
+      cssClasses: ['flex min-w-[70px]'],
+      formatting: {
+        type: 'COMPONENT',
+        execute: (value, product, index) => {
+          return {
+            component: SharedImgContainerComponent,
+            inputs: {
+              src: value as string,
+              dimensions: { width: 110, height: 110 },
+              title: product?.name,
+              lcpImage: index === 0,
+              quality: 70,
+            },
+          } as FormattingComponentOutput<SharedImgContainerComponent>;
+        },
       },
-    },
-  };
+    };
 
-  readonly #name: TableColumnFormatting<LlecoopProduct, 'COMPONENT'> = {
+  readonly #name: TableColumnFormatting<LlecoopProduct, 'COMPONENT', UiProductNameCellComponent> = {
     key: 'name',
     title: 'Nom',
     pathToKey: 'name',
@@ -53,27 +51,29 @@ export class LlecoopProductSearchFeatureTableConfig
     sticky: true,
     formatting: {
       type: 'COMPONENT',
-      execute: (_, product) => {
-        if (!product) {
-          throw new Error('Product is required');
-        }
-        return {
+      execute: (_, product) =>
+        ({
           component: UiProductNameCellComponent,
           inputs: { product, nameStyle: 'uppercase font-bold' },
-        };
-      },
+        }) as FormattingComponentOutput<UiProductNameCellComponent>,
     },
   };
 
-  readonly #stock: TableColumnFormatting<LlecoopProduct, 'CUSTOM'> = {
+  readonly #stock: TableColumnFormatting<LlecoopProduct, 'QUANTITY'> = {
     key: 'stock',
     title: 'Stock',
     pathToKey: 'stock',
     cssClasses: ['hidden @lg:flex @lg:min-w-[70px]'],
     formatting: {
-      type: 'CUSTOM',
-      execute: (value, product) => {
-        return !value ? '-' : `${value} ${product?.unit?.type === 'weight' ? 'kg' : 'u.'}`;
+      type: 'QUANTITY',
+      extras: item => {
+        const unitType = item?.unit?.type;
+        const suffix = unitType === 'weight' ? 'kg' : 'u';
+        const numberDigitsInfo = unitType === 'weight' ? '1.2-2' : '1.0-0';
+        return {
+          suffix,
+          numberDigitsInfo,
+        };
       },
     },
   };
@@ -81,21 +81,20 @@ export class LlecoopProductSearchFeatureTableConfig
   readonly #createdAt = createdAt<LlecoopProduct>();
   readonly #updatedAt = updatedAt<LlecoopProduct>();
 
-  readonly #columnProperties: Signal<TableColumnFormatting<LlecoopProduct, FormattingTypes>[]> =
-    signal([
-      this.#image,
-      this.#name,
-      categoryNameCell<LlecoopProduct>({
-        key: 'category',
-        title: 'Categoria',
-        pathToKey: 'category.name',
-        sorting: 'categoryName',
-        cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
-      }),
-      this.#stock,
-      this.#createdAt,
-      this.#updatedAt,
-    ]);
+  readonly #columnProperties = signal([
+    this.#image,
+    this.#name,
+    categoryNameCell<LlecoopProduct>({
+      key: 'category',
+      title: 'Categoria',
+      pathToKey: 'category.name',
+      sorting: 'categoryName',
+      cssClasses: ['hidden @xl:flex @xl:min-w-[150px]'],
+    }),
+    this.#stock,
+    this.#createdAt,
+    this.#updatedAt,
+  ]);
 
   getTableDefinition() {
     const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
@@ -112,7 +111,7 @@ export class LlecoopProductSearchFeatureTableConfig
         return !product.isAvailable ? 'marked-ko' : '';
       },
       actionsColStyles: 'max-w-[160px]',
-      rowHeight: '160px',
+      rowHeight: '140px',
       actions: {
         SET_AVAILABILITY: {
           visible: () => true,

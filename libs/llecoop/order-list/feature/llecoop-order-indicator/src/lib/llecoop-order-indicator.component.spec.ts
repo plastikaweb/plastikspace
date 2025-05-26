@@ -1,7 +1,8 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { DebugElement, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { provideMockStore } from '@ngrx/store/testing';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
@@ -17,6 +18,8 @@ import { LlecoopOrderIndicatorComponent } from './llecoop-order-indicator.compon
 describe('LlecoopOrderIndicatorComponent', () => {
   let component: LlecoopOrderIndicatorComponent;
   let fixture: ComponentFixture<LlecoopOrderIndicatorComponent>;
+  let viewUserOrderBtn: DebugElement;
+  let createUserOrderBtn: DebugElement;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -24,6 +27,9 @@ describe('LlecoopOrderIndicatorComponent', () => {
       providers: [
         provideExperimentalZonelessChangeDetection(),
         provideRouter([]),
+        provideMockStore({
+          initialState: {},
+        }),
         { provide: llecoopUserOrderStore, useValue: MockedUserOrderStore },
         { provide: llecoopOrderListStore, useValue: MockedOrderListStore },
       ],
@@ -35,6 +41,11 @@ describe('LlecoopOrderIndicatorComponent', () => {
     fixture = TestBed.createComponent(LlecoopOrderIndicatorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    viewUserOrderBtn = fixture.debugElement.query(By.css('[test-id="view-user-order-btn"]'));
+    createUserOrderBtn = fixture.debugElement.query(By.css('[test-id="create-user-order-btn"]'));
   });
 
   it('should create', () => {
@@ -42,79 +53,86 @@ describe('LlecoopOrderIndicatorComponent', () => {
   });
 
   it('should display user order chip when both currentOrderList and currentUserOrder are available', () => {
-    fixture.detectChanges();
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const matBadge = matChip.nativeElement.querySelector('.mat-badge-content');
+    expect(viewUserOrderBtn).toBeTruthy();
+    expect(createUserOrderBtn).toBeFalsy();
 
-    expect(matChip).toBeTruthy();
+    const matBadge = viewUserOrderBtn.nativeElement.querySelector('.mat-badge-content');
+    expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('2');
-    expect(matChip.nativeElement.textContent).toContain('#order A');
-    expect(matChip.nativeElement.textContent).toContain('110'); // totalPrice + deliveryPrice
+    expect(viewUserOrderBtn.nativeElement.textContent).toContain('#order A');
+    expect(viewUserOrderBtn.nativeElement.textContent).toContain('110'); // totalPrice + deliveryPrice
   });
 
   it('should navigate to correct route when user order chip is clicked', () => {
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const routerLink = matChip.nativeElement.getAttribute('ng-reflect-router-link');
-
+    const routerLink = viewUserOrderBtn.nativeElement.getAttribute('ng-reflect-router-link');
     expect(routerLink).toContain('./comandes/1');
   });
 
-  it('should display "Fes comanda" chip when only currentOrderList is available', () => {
-    MockedUserOrderStore.currentUserOrder.set(null);
-    fixture.detectChanges();
-
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-
-    expect(matChip).toBeTruthy();
-    expect(matChip.nativeElement.textContent).toContain('Fes comanda');
-  });
-
-  it('should navigate to create order route when "Fes comanda" chip is clicked', () => {
-    MockedUserOrderStore.currentUserOrder.set(null);
-    fixture.detectChanges();
-
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const routerLink = matChip.nativeElement.getAttribute('ng-reflect-router-link');
-
-    expect(routerLink).toContain('./comandes/crear');
-  });
-
-  it('should display "Cap comanda activa" chip when neither currentOrderList nor currentUserOrder are available', () => {
-    MockedOrderListStore.currentOrderList.set(null);
-    MockedUserOrderStore.currentUserOrder.set(null);
-    fixture.detectChanges();
-
-    // Usar un selector más general
-    const matChip = fixture.debugElement.query(By.css('mat-chip'));
-
-    expect(matChip).toBeTruthy();
-    expect(matChip.nativeElement.textContent).toContain('Cap comanda activa');
-  });
-
   it('should display correct badge count for cart items', () => {
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const matBadge = matChip.nativeElement.querySelector('.mat-badge-content');
-
+    const matBadge = viewUserOrderBtn.nativeElement.querySelector('.mat-badge-content');
+    expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('2');
   });
 
   it('should calculate and display correct total price when values change', () => {
-    const orderData = mockedCurrentUserOrder as UserOrder;
-
-    MockedUserOrderStore.currentUserOrder.set({
-      ...orderData,
-      cart: [{ id: 'product1' }, { id: 'product2' }, { id: 'product3' }],
-      totalPrice: 150,
-      deliveryPrice: 15,
-    });
+    const mockedCart = [...(mockedCurrentUserOrder?.cart || []), { id: 'product3' }];
+    const newCurrentUserOrder = {
+      ...mockedCurrentUserOrder,
+      totalPrice: 165,
+      cart: mockedCart,
+    } as UserOrder;
+    MockedUserOrderStore.currentUserOrder.set(newCurrentUserOrder);
     MockedOrderListStore.currentOrderList.set(mockedCurrentOrderList);
     fixture.detectChanges();
 
-    const matChip = fixture.debugElement.query(By.css('mat-chip[role="button"]'));
-    const matBadge = matChip.nativeElement.querySelector('.mat-badge-content');
-    const totalPrice = matChip.nativeElement.textContent.trim();
-
+    const matBadge = viewUserOrderBtn.nativeElement.querySelector('.mat-badge-content');
+    expect(matBadge).toBeTruthy();
     expect(matBadge.textContent).toBe('3');
-    expect(totalPrice).toContain('165');
+
+    const totalPrice = viewUserOrderBtn.nativeElement.textContent.trim();
+    expect(totalPrice).toContain(
+      (newCurrentUserOrder.totalPrice + newCurrentUserOrder.deliveryPrice).toString()
+    );
+  });
+
+  it('should display "Fes comanda" chip when only currentOrderList is available', async () => {
+    MockedUserOrderStore.currentUserOrder.set(null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    createUserOrderBtn = fixture.debugElement.query(By.css('[test-id="create-user-order-btn"]'));
+
+    expect(createUserOrderBtn).toBeTruthy();
+    expect(createUserOrderBtn.nativeElement.textContent).toContain('Fes comanda');
+  });
+
+  it('should navigate to create order route when "Fes comanda" chip is clicked', async () => {
+    MockedUserOrderStore.currentUserOrder.set(null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    createUserOrderBtn = fixture.debugElement.query(By.css('[test-id="create-user-order-btn"]'));
+
+    expect(createUserOrderBtn).toBeTruthy();
+
+    const routerLink = createUserOrderBtn.nativeElement.getAttribute('ng-reflect-router-link');
+    expect(routerLink).toContain('./comandes/crear');
+  });
+
+  it('should display nothing when neither currentOrderList nor currentUserOrder are available', async () => {
+    MockedUserOrderStore.currentUserOrder.set(null);
+    MockedOrderListStore.currentOrderList.set(null);
+
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    viewUserOrderBtn = fixture.debugElement.query(By.css('[test-id="view-user-order-btn"]'));
+    createUserOrderBtn = fixture.debugElement.query(By.css('[test-id="create-user-order-btn"]'));
+
+    expect(viewUserOrderBtn).toBeFalsy();
+    expect(createUserOrderBtn).toBeFalsy();
   });
 });

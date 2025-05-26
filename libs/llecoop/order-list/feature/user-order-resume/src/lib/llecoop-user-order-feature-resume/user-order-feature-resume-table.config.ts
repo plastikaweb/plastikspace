@@ -45,32 +45,40 @@ export class LlecoopUserOrderResumeTableConfig
     },
   };
 
-  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'QUANTITY'> = {
     key: 'initQuantity',
     title: 'Quantitat inici',
     pathToKey: 'initQuantity',
     cssClasses: ['min-w-[80px]'],
     formatting: {
-      type: 'CUSTOM',
-      execute: (value, orderProduct) => {
-        return value
-          ? `${value} ${getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' })}`
-          : '-';
+      type: 'QUANTITY',
+      extras: item => {
+        const unit = item?.unit ?? { type: 'unit' };
+        const suffix = getLlecoopProductUnitSuffix(unit);
+        const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+        return {
+          suffix,
+          numberDigitsInfo,
+        };
       },
     },
   };
 
-  readonly #finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #finalQuantity: TableColumnFormatting<LlecoopOrderProduct, 'QUANTITY'> = {
     key: 'finalQuantity',
     title: 'Quantitat final',
     pathToKey: 'finalQuantity',
     cssClasses: ['min-w-[80px]'],
     formatting: {
-      type: 'CUSTOM',
-      execute: (value, orderProduct) => {
-        return value
-          ? `${value} ${getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' })}`
-          : '-';
+      type: 'QUANTITY',
+      extras: item => {
+        const unit = item?.unit ?? { type: 'unit' };
+        const suffix = getLlecoopProductUnitSuffix(unit);
+        const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+        return {
+          suffix,
+          numberDigitsInfo,
+        };
       },
     },
   };

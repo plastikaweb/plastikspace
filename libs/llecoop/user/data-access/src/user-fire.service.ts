@@ -1,6 +1,6 @@
 import { from, map, Observable, throwError } from 'rxjs';
 
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, runInInjectionContext } from '@angular/core';
 import {
   DocumentData,
   limit,
@@ -120,22 +120,24 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
   }
 
   getLoggedUser(): Observable<LlecoopUser> {
-    try {
-      const userId = this.#firebaseAuthService.currentUser()?.uid;
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const userId = this.#firebaseAuthService.currentUser()?.uid;
 
-      if (!userId) {
-        throw new Error('User not authenticated');
+        if (!userId) {
+          throw new Error('User not authenticated');
+        }
+        return this.getItem(userId).pipe(
+          map(user => {
+            if (!user) {
+              throw new Error('User not found');
+            }
+            return user;
+          })
+        );
+      } catch (error) {
+        return throwError(() => error);
       }
-      return this.getItem(userId).pipe(
-        map(user => {
-          if (!user) {
-            throw new Error('User not found');
-          }
-          return user;
-        })
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 }

@@ -11,7 +11,7 @@ import { InputImgLoaderComponent } from './input-img-loader.component';
 
 @Component({
   selector: 'plastik-input-img-loader-type',
-  standalone: true,
+
   templateUrl: './input-img-loader-type.component.html',
   imports: [
     ReactiveFormsModule,
@@ -29,7 +29,6 @@ export class InputImgLoaderTypeComponent extends FieldType<
   protected readonly maxSize = 1 * 1024 * 1024;
   protected readonly minHeight = 1024;
   protected readonly minWidth = 1024;
-  protected readonly imgHeight = 200;
-  protected readonly imgWidth = 200;
+  protected readonly dimensions = { width: 200, height: 200 };
   protected readonly lcpImage = false;
 }

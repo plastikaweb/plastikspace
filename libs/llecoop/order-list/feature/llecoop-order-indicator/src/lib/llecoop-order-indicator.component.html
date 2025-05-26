@@ -1,7 +1,7 @@
 @if (currentOrderList() && currentUserOrder()) {
-  <mat-chip
-    role="button"
-    class="p-sm"
+  <button
+    test-id="view-user-order-btn"
+    mat-button
     [matBadgeDescription]="(currentUserOrder()?.cart?.length || 0) + ' productes seleccionats'"
     [routerLink]="['./comandes/' + currentUserOrder()?.id]"
     [matBadge]="currentUserOrder()?.cart?.length || 0">
@@ -16,15 +16,10 @@
         }}
       </span>
     </div>
-  </mat-chip>
+  </button>
 } @else if (currentOrderList()) {
-  <mat-chip role="button" class="p-sm" [routerLink]="['./comandes/crear']">
+  <button test-id="create-user-order-btn" mat-button [routerLink]="['./comandes/crear']">
     <mat-icon matChipAvatar> shopping_cart </mat-icon>
     Fes comanda
-  </mat-chip>
-} @else {
-  <mat-chip disableRipple class="p-sm">
-    <mat-icon matChipAvatar> shopping_cart </mat-icon>
-    Cap comanda activa
-  </mat-chip>
+  </button>
 }

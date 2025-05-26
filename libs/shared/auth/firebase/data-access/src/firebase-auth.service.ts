@@ -13,8 +13,7 @@ import {
   User,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { activityActions } from '@plastik/shared/activity/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import {
   NotificationConfigService,
   notificationStore,
@@ -26,9 +25,9 @@ import {
 export class FirebaseAuthService {
   readonly #auth = inject(Auth);
   readonly #router = inject(Router);
-  readonly #state = inject(Store);
   readonly #notificationService = inject(NotificationConfigService);
   readonly #notificationStore = inject(notificationStore);
+  readonly #activityStore = inject(activityStore);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   currentUser = signal<User | null>(null);
@@ -94,7 +93,7 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the login process is complete.
    */
   async login(email: string, password: string): Promise<void> {
-    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#activityStore.setActivity(true);
 
     try {
       this.#notificationStore.dismiss();
@@ -122,7 +121,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#activityStore.setActivity(false);
     }
   }
 
@@ -141,7 +140,7 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the registration process is complete.
    */
   async register(email: string, password: string, name: string): Promise<void> {
-    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#activityStore.setActivity(true);
     this.#notificationStore.dismiss();
 
     try {
@@ -169,7 +168,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#activityStore.setActivity(false);
     }
   }
 
@@ -183,7 +182,7 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the logout process is complete.
    */
   async logout(): Promise<void> {
-    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#activityStore.setActivity(true);
     try {
       this.#notificationStore.dismiss();
       await signOut(this.#auth);
@@ -201,7 +200,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#activityStore.setActivity(false);
     }
   }
 
@@ -216,7 +215,7 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the email has been sent.
    */
   async sendVerification(user: User): Promise<void> {
-    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#activityStore.setActivity(true);
     this.firstLoginAfterRegister.set(false);
 
     try {
@@ -243,7 +242,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#activityStore.setActivity(false);
     }
   }
 
@@ -260,7 +259,7 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the password reset request process is complete.
    */
   async requestPassword(email: string): Promise<void> {
-    this.#state.dispatch(activityActions.setActivity({ isActive: true }));
+    this.#activityStore.setActivity(true);
 
     try {
       this.#notificationStore.dismiss();
@@ -285,7 +284,7 @@ export class FirebaseAuthService {
         })
       );
     } finally {
-      this.#state.dispatch(activityActions.setActivity({ isActive: false }));
+      this.#activityStore.setActivity(false);
     }
   }
 
@@ -303,7 +302,6 @@ export class FirebaseAuthService {
 
         const currentUser = this.#auth.currentUser;
         if (currentUser) {
-          // Forzar una actualización del token para asegurar que se invalide cualquier sesión anterior
           await currentUser.reload();
         }
       } else {

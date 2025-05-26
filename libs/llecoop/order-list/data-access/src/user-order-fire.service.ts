@@ -1,6 +1,6 @@
 import { catchError, distinctUntilChanged, map, Observable, of, takeUntil, throwError } from 'rxjs';
 
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, runInInjectionContext } from '@angular/core';
 import {
   collection,
   collectionData,
@@ -52,58 +52,62 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     sorting: TableSortingConfig,
     filter: StoreUserOrderFilter
   ): Observable<LlecoopUserOrder[]> {
-    try {
-      const userId = this.#authService.currentUser()?.uid;
-      const isAdmin = this.#authService.isAdmin();
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const userId = this.#authService.currentUser()?.uid;
+        const isAdmin = this.#authService.isAdmin();
 
-      if (!userId) {
-        return of([]);
+        if (!userId) {
+          return of([]);
+        }
+
+        if (!this.firestoreOrderGroupCollection) {
+          return of([]);
+        }
+
+        const conditions: QueryConstraint[] = [
+          ...this.getFilterConditions(filter),
+          ...this.getSortingConditions(sorting),
+          ...this.getPaginationConditions(pagination, sorting[0]),
+          ...(!isAdmin ? [where('userId', '==', userId)] : []),
+        ];
+
+        const q = query(this.firestoreOrderGroupCollection, ...conditions);
+        return collectionData(q, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+          map(orders => orders as LlecoopUserOrder[]),
+          catchError(error => this.handlePermissionError(error, []))
+        );
+      } catch (error) {
+        return throwError(() => error);
       }
-
-      if (!this.firestoreOrderGroupCollection) {
-        return of([]);
-      }
-
-      const conditions: QueryConstraint[] = [
-        ...this.getFilterConditions(filter),
-        ...this.getSortingConditions(sorting),
-        ...this.getPaginationConditions(pagination, sorting[0]),
-        ...(!isAdmin ? [where('userId', '==', userId)] : []),
-      ];
-
-      const q = query(this.firestoreOrderGroupCollection, ...conditions);
-      return collectionData(q, { idField: 'id' }).pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
-        map(orders => orders as LlecoopUserOrder[]),
-        catchError(error => this.handlePermissionError(error, []))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 
   override getItem(id: EntityId): Observable<LlecoopUserOrder | null> {
-    try {
-      const userId = this.#authService.currentUser()?.uid;
-      if (!userId) {
-        return of(null);
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const userId = this.#authService.currentUser()?.uid;
+        if (!userId) {
+          return of(null);
+        }
+
+        if (!this.firestoreOrderGroupCollection) {
+          return of(null);
+        }
+
+        const q = query(this.firestoreOrderGroupCollection, where('userId', '==', userId));
+
+        return collectionData(q, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          map(orders => (orders.find(order => order.id === id) as LlecoopUserOrder) || null),
+          catchError(error => this.handlePermissionError(error, null))
+        );
+      } catch (error) {
+        return throwError(() => error);
       }
-
-      if (!this.firestoreOrderGroupCollection) {
-        return of(null);
-      }
-
-      const q = query(this.firestoreOrderGroupCollection, where('userId', '==', userId));
-
-      return collectionData(q, { idField: 'id' }).pipe(
-        takeUntil(this.destroy$),
-        map(orders => (orders.find(order => order.id === id) as LlecoopUserOrder) || null),
-        catchError(error => this.handlePermissionError(error, null))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 
   override create(item: LlecoopUserOrder) {
@@ -122,58 +126,62 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
   }
 
   override getCount(filter: StoreUserOrderFilter): Observable<number> {
-    try {
-      const userId = this.#authService.currentUser()?.uid;
-      const isAdmin = this.#authService.isAdmin();
-      if (!userId) {
-        return of(0);
-      }
-      const conditions = [
-        ...this.getFilterConditions(filter),
-        ...(!isAdmin ? [where('userId', '==', userId)] : []),
-      ];
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const userId = this.#authService.currentUser()?.uid;
+        const isAdmin = this.#authService.isAdmin();
+        if (!userId) {
+          return of(0);
+        }
+        const conditions = [
+          ...this.getFilterConditions(filter),
+          ...(!isAdmin ? [where('userId', '==', userId)] : []),
+        ];
 
-      if (!this.firestoreOrderGroupCollection) {
-        return of(0);
-      }
+        if (!this.firestoreOrderGroupCollection) {
+          return of(0);
+        }
 
-      const q = query(this.firestoreOrderGroupCollection, ...conditions);
-      return collectionData(q, { idField: 'id' }).pipe(
-        takeUntil(this.destroy$),
-        distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
-        map(orders => orders.length),
-        catchError(error => this.handlePermissionError(error, 0))
-      );
-    } catch (error) {
-      return throwError(() => error);
-    }
+        const q = query(this.firestoreOrderGroupCollection, ...conditions);
+        return collectionData(q, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          distinctUntilChanged((prev, next) => JSON.stringify(prev) === JSON.stringify(next)),
+          map(orders => orders.length),
+          catchError(error => this.handlePermissionError(error, 0))
+        );
+      } catch (error) {
+        return throwError(() => error);
+      }
+    });
   }
 
   getCurrentUserOrder(orderListId: EntityId): Observable<LlecoopUserOrder | null> {
-    try {
-      const userId = this.#authService.currentUser()?.uid;
-      if (!userId) {
-        return of(null);
+    return runInInjectionContext(this.injectionContext, () => {
+      try {
+        const userId = this.#authService.currentUser()?.uid;
+        if (!userId) {
+          return of(null);
+        }
+
+        if (!this.firestoreOrderGroupCollection) {
+          return of(null);
+        }
+
+        const q = query(
+          this.firestoreOrderGroupCollection,
+          where('userId', '==', userId),
+          where('orderListId', '==', orderListId)
+        );
+
+        return collectionData(q, { idField: 'id' }).pipe(
+          takeUntil(this.destroy$),
+          map(orders => orders[0] || null),
+          catchError(error => this.handlePermissionError(error, null))
+        ) as Observable<LlecoopUserOrder | null>;
+      } catch (error) {
+        return throwError(() => error);
       }
-
-      if (!this.firestoreOrderGroupCollection) {
-        return of(null);
-      }
-
-      const q = query(
-        this.firestoreOrderGroupCollection,
-        where('userId', '==', userId),
-        where('orderListId', '==', orderListId)
-      );
-
-      return collectionData(q, { idField: 'id' }).pipe(
-        takeUntil(this.destroy$),
-        map(orders => orders[0] || null),
-        catchError(error => this.handlePermissionError(error, null))
-      ) as Observable<LlecoopUserOrder | null>;
-    } catch (error) {
-      return throwError(() => error);
-    }
+    });
   }
 
   override getFilterConditions(filter: StoreUserOrderFilter): QueryConstraint[] {

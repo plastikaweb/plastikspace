@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
@@ -14,7 +15,7 @@ import {
   selectRouteDataName,
   selectRouteQueryParams,
 } from '@plastik/core/router-state';
-import { activityActions, selectIsActive } from '@plastik/shared/activity/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
 import { NasaImagesApiService } from '../nasa-images-api.service';
@@ -30,6 +31,7 @@ describe('NasaImagesEffects', () => {
   let effects: NasaImagesEffects;
   let metadata: EffectsMetadata<NasaImagesEffects>;
   let service: NasaImagesApiService;
+  let activityStoreInstance: any;
   let store: MockStore;
 
   beforeEach(() => {
@@ -38,18 +40,20 @@ describe('NasaImagesEffects', () => {
         provideExperimentalZonelessChangeDetection(),
         NasaImagesEffects,
         notificationStore,
+        activityStore,
         provideHttpClientTesting(),
         provideMockActions(() => actions),
         provideMockStore({
+          initialState: {
+            ['activity']: {
+              isActive: false,
+            },
+          },
           selectors: [
             { selector: selectRouteDataName, value: 'search' },
             {
               selector: selectRouteQueryParams,
               value: { q: 'pluto', media_type: 'image' },
-            },
-            {
-              selector: selectIsActive,
-              value: false,
             },
           ],
         }),
@@ -64,7 +68,9 @@ describe('NasaImagesEffects', () => {
     });
 
     effects = TestBed.inject(NasaImagesEffects);
+    metadata = getEffectsMetadata(effects);
     service = TestBed.inject(NasaImagesApiService);
+    activityStoreInstance = TestBed.inject(activityStore);
     store = TestBed.inject(MockStore);
 
     metadata = getEffectsMetadata(effects);
@@ -76,6 +82,7 @@ describe('NasaImagesEffects', () => {
 
   describe('navigation$', () => {
     let action = getMockedRouterNavigation('/search?q=pluto');
+
     it('should dispatch loadNasaImages with queryParams if /search route is found and "q" search value is not empty', () => {
       actions = hot('-a', { a: action });
       const expected = cold('-b', {
@@ -144,14 +151,17 @@ describe('NasaImagesEffects', () => {
     const action = nasaImagesPageActions.load({ params: { q: 'pluto' } });
     it('should work', () => {
       actions = hot('-a-|', { a: action });
-      const expected = hot('-a-|', { a: activityActions.setActivity({ isActive: true }) });
+      // Mock para verificar que se llama a setActivity
+      const mockAction = { type: '[Activity] Set Activity True' };
+      jest.spyOn(activityStoreInstance, 'setActivity').mockImplementation(() => mockAction);
+      const expected = hot('-a-|', { a: mockAction });
 
       expect(effects.activeOn$).toBeObservable(expected);
     });
 
     it('should be registered', () => {
       expect(metadata.activeOn$).toEqual({
-        dispatch: true,
+        dispatch: false,
         useEffectsErrorHandler: true,
       });
     });
@@ -170,14 +180,17 @@ describe('NasaImagesEffects', () => {
     const action = nasaImagesAPIActions.loadSuccess({ items, count });
     it('should work', () => {
       actions = hot('-a-|', { a: action });
-      const expected = hot('-a-|', { a: activityActions.setActivity({ isActive: false }) });
+      // Mock para verificar que se llama a setActivity
+      const mockAction = { type: '[Activity] Set Activity False' };
+      jest.spyOn(activityStoreInstance, 'setActivity').mockReturnValue(mockAction);
+      const expected = hot('-a-|', { a: mockAction });
 
       expect(effects.activeOff$).toBeObservable(expected);
     });
 
     it('should be registered', () => {
       expect(metadata.activeOff$).toEqual({
-        dispatch: true,
+        dispatch: false,
         useEffectsErrorHandler: true,
       });
     });

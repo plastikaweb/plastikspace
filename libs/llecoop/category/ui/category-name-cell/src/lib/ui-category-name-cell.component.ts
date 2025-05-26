@@ -11,7 +11,7 @@ import { LlecoopProductCategory } from '@plastik/llecoop/entities';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiCategoryNameCellComponent {
-  category = input.required<LlecoopProductCategory>();
+  category = input<LlecoopProductCategory | null>();
   nameStyle = input('');
   withLink = input(false);
 }

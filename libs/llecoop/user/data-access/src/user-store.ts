@@ -6,7 +6,6 @@ import { tapResponse } from '@ngrx/operators';
 import { signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopUser } from '@plastik/llecoop/entities';
-import { activityActions } from '@plastik/shared/activity/data-access';
 import {
   initStoreFirebaseCrudState,
   StoreFirebaseCrudFilter,
@@ -78,7 +77,7 @@ export const llecoopUserStore = signalStore(
         pipe(
           filter(() => !!store._activeConnection()),
           switchMap(({ id }) => {
-            store._state.dispatch(activityActions.setActivity({ isActive: true }));
+            store._activityStore.setActivity(true);
             if (!id) {
               throw new Error('User ID is undefined');
             }
@@ -95,7 +94,7 @@ export const llecoopUserStore = signalStore(
                     'ERROR'
                   ),
               }),
-              tap(() => store._state.dispatch(activityActions.setActivity({ isActive: false })))
+              tap(() => store._activityStore.setActivity(false))
             );
           })
         )

@@ -1,6 +1,8 @@
 import { BaseEntity } from '@plastik/core/entities';
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import { UiCategoryNameCellComponent } from '@plastik/llecoop/category-name-cell';
+import { LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { FormattingComponentOutput } from '@plastik/shared/formatters';
 import { TableColumnFormatting } from '@plastik/shared/table/entities';
 
 /**
@@ -12,23 +14,31 @@ import { TableColumnFormatting } from '@plastik/shared/table/entities';
  * @returns {TableColumnFormatting<T, 'COMPONENT'>} The table column formatting configuration.
  */
 export function categoryNameCell<T extends BaseEntity>(
-  partialFormat: Partial<TableColumnFormatting<T, 'COMPONENT'>> = {},
+  partialFormat: Partial<TableColumnFormatting<T, 'COMPONENT', UiCategoryNameCellComponent>> = {
+    key: 'name',
+    title: 'Categoria',
+    pathToKey: 'category.name',
+  },
   withLink = false,
   nameStyle = ''
-): TableColumnFormatting<T, 'COMPONENT'> {
+): TableColumnFormatting<T, 'COMPONENT', UiCategoryNameCellComponent> {
   return {
     key: partialFormat.key ?? 'name',
-    title: partialFormat.title ?? 'Categoria',
+    title: (partialFormat.title as Capitalize<string>) ?? 'Categoria',
     pathToKey: partialFormat.pathToKey ?? 'category.name',
     formatting: {
       type: 'COMPONENT',
       execute: (_, element) => {
+        const category = (element?.['category'] as LlecoopProductCategory | undefined) ?? null;
+
         return {
           component: UiCategoryNameCellComponent,
-          inputs: element?.['category']
-            ? { category: element['category'], nameStyle, withLink }
-            : { category: null, nameStyle, withLink: false },
-        };
+          inputs: {
+            category,
+            withLink,
+            nameStyle,
+          },
+        } as FormattingComponentOutput<UiCategoryNameCellComponent>;
       },
     },
     ...partialFormat,

@@ -3,11 +3,11 @@ import { TestBed } from '@angular/core/testing';
 
 import { SafeFormattedPipe } from './safe-formatted-cell.pipe';
 import { DataFormatFactoryService } from './services';
-import { objectMocked, TypeMocked } from './services/formatting.mock';
+import { objectMocked } from './services/formatting.mock';
 
 describe('SafeFormattedCellPipe', () => {
-  let pipe: SafeFormattedPipe<TypeMocked>;
-  let service: DataFormatFactoryService<TypeMocked>;
+  let pipe: SafeFormattedPipe<typeof objectMocked>;
+  let service: DataFormatFactoryService<typeof objectMocked>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -23,8 +23,8 @@ describe('SafeFormattedCellPipe', () => {
       ],
     }).compileComponents();
 
-    service = TestBed.inject(DataFormatFactoryService);
-    pipe = new SafeFormattedPipe<TypeMocked>(service);
+    service = TestBed.inject(DataFormatFactoryService<typeof objectMocked>);
+    pipe = new SafeFormattedPipe<typeof objectMocked>(service);
   });
 
   it('create an instance', () => {

@@ -1,3 +1,6 @@
+import { EMPTY, Observable, pipe, UnaryFunction } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
+
 import { Injectable } from '@angular/core';
 import { ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
@@ -7,8 +10,6 @@ import {
   SerializedRouterStateSnapshot,
 } from '@ngrx/router-store';
 import { Action, Store } from '@ngrx/store';
-import { Observable, UnaryFunction, pipe } from 'rxjs';
-import { filter } from 'rxjs/operators';
 
 import { selectRouteDataName } from '../+state/selectors/router-state.selectors';
 
@@ -25,14 +26,12 @@ export class NavigationFilterService {
    */
   checkRouterNavigation<T = 'string'>(
     view: T
-  ): UnaryFunction<
-    Observable<Action>,
-    Observable<[RouterNavigationAction<SerializedRouterStateSnapshot>, unknown]>
-  > {
+  ): UnaryFunction<Observable<Action<string>>, Observable<Observable<never>>> {
     return pipe(
       ofType<RouterNavigationAction>(ROUTER_NAVIGATION),
       concatLatestFrom(() => this.store.select(selectRouteDataName)),
-      filter(([, name]) => name === view)
+      filter(([, name]) => name === view),
+      map(() => EMPTY)
     );
   }
 }

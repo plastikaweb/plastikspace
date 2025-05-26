@@ -1,9 +1,19 @@
-<img
-  placeholder
-  class="object-cover rounded-lg"
-  [ngSrc]="src() || ''"
-  [width]="width()"
-  [height]="height()"
-  [priority]="lcpImage() ? 'high' : 'low'"
-  [alt]="title()"
-  [loaderParams]="{ width: width(), height: height() }" />
+@if (!dimensions()) {
+  <img
+    fill
+    class="object-cover rounded-lg"
+    [ngSrc]="src() || ''"
+    [priority]="lcpImage()"
+    [alt]="title()" />
+} @else {
+  @let width = dimensions()?.width;
+  @let height = dimensions()?.height;
+  <img
+    class="object-cover rounded-lg"
+    [ngSrc]="src() || ''"
+    [width]="width"
+    [height]="height"
+    [priority]="lcpImage()"
+    [alt]="title()"
+    [loaderParams]="{ width, height, quality: quality() }" />
+}

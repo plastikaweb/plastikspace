@@ -11,6 +11,7 @@ import {
   llecoopUserOrderStatus,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
+import { FormattingComponentOutput } from '@plastik/shared/formatters';
 import { TableColumnFormatting } from '@plastik/shared/table/entities';
 
 /**
@@ -67,7 +68,7 @@ export class UserOrderUtilsService {
     pathToKey = 'status',
     cssClasses: [cell?: string, content?: string] = ['min-w-[145px]'],
     sorting = 'status'
-  ): TableColumnFormatting<T, 'COMPONENT'> {
+  ): TableColumnFormatting<T, 'COMPONENT', UiOrderStatusChipComponent> {
     return {
       key,
       title,
@@ -88,11 +89,11 @@ export class UserOrderUtilsService {
           return {
             component: UiOrderStatusChipComponent,
             inputs: {
-              iconClass: orderStatus?.class || '',
               icon: orderStatus?.icon || '',
               label: orderStatus?.label || '',
+              iconClass: orderStatus?.class || '',
             },
-          };
+          } as FormattingComponentOutput<UiOrderStatusChipComponent>;
         },
       },
     };

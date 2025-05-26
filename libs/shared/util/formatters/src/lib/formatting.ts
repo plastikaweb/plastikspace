@@ -1,5 +1,6 @@
 import { Type } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
+import { BaseEntity } from '@plastik/core/entities';
 
 /**
  * @description Formatting types members.
@@ -12,6 +13,7 @@ export type FormattingTypes =
   | 'PERCENTAGE'
   | 'CURRENCY'
   | 'NUMBER'
+  | 'QUANTITY'
   | 'BOOLEAN_WITH_CONTROL'
   | 'BOOLEAN_WITH_ICON'
   | 'TITLE_CASE'
@@ -24,13 +26,12 @@ export type FormattingTypes =
 
 type FormattingTypesNumeric = Extract<
   FormattingTypes,
-  'DATE' | 'DATE_TIME' | 'FIREBASE_TIMESTAMP' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER'
+  'DATE' | 'DATE_TIME' | 'FIREBASE_TIMESTAMP' | 'PERCENTAGE' | 'CURRENCY' | 'NUMBER' | 'QUANTITY'
 >;
+
 type FormattingTypesBoolean = Extract<FormattingTypes, 'BOOLEAN_WITH_ICON'>;
 
 type FormattingTypesInput = Extract<FormattingTypes, 'INPUT'>;
-
-type FormattingTypesComponent = Extract<FormattingTypes, 'COMPONENT'>;
 
 type FormattingTypesDefault = Extract<
   FormattingTypes,
@@ -48,22 +49,9 @@ export type FormattingInput<T> = Record<keyof T, unknown>;
 export type FormattingDateInput = Date | number | string;
 
 /**
- * @description The types allowed for returned values from a formatting component method.
- */
-export type FormattingComponentOutput = {
-  component: Type<unknown>;
-  inputs?: Record<string, unknown>;
-};
-/**
  * @description The types allowed for returned values from a formatting utility method.
  */
-export type FormattingOutput =
-  | Date
-  | number
-  | boolean
-  | string
-  | SafeHtml
-  | FormattingComponentOutput;
+export type FormattingOutput = Date | number | boolean | string | SafeHtml;
 
 /**
  * @description Formatting image extras blueprint.
@@ -84,6 +72,13 @@ type FormattingNumericExtras = Partial<{
   currency: string;
   currencyCode: string;
 }>;
+
+type FormattingQuantityExtras = {
+  numberDigitsInfo?: string;
+  locale?: string;
+  suffix?: string;
+  prefix?: string;
+};
 
 /**
  * @description Formatting boolean extras blueprint.
@@ -111,18 +106,23 @@ type FormattingInputExtras = {
  */
 export type FormattingExtras<TYPE extends FormattingTypes> = TYPE extends 'IMAGE'
   ? Partial<FormattingImageExtras>
-  : TYPE extends FormattingTypesNumeric
-    ? FormattingNumericExtras
-    : TYPE extends FormattingTypesBoolean
-      ? FormattingBooleanWithIconExtras
-      : TYPE extends 'INPUT'
-        ? FormattingInputExtras
-        : object;
+  : TYPE extends 'QUANTITY'
+    ? FormattingQuantityExtras
+    : TYPE extends FormattingTypesNumeric
+      ? FormattingNumericExtras
+      : TYPE extends FormattingTypesBoolean
+        ? FormattingBooleanWithIconExtras
+        : TYPE extends 'INPUT'
+          ? FormattingInputExtras
+          : object;
 
 /**
  * @description The blueprint for default formatting item.
  */
-export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEXT'> {
+export interface PropertyFormattingConf<
+  OBJ extends BaseEntity,
+  TYPE extends FormattingTypes = 'TEXT',
+> {
   type: TYPE;
   execute?: (
     value: OBJ[keyof OBJ] | string,
@@ -130,54 +130,124 @@ export interface PropertyFormattingConf<OBJ, TYPE extends FormattingTypes = 'TEX
     index?: number,
     extras?: unknown
   ) => FormattingOutput;
-  extras?: (value?: OBJ) => FormattingExtras<TYPE>;
+  extras?: (item?: OBJ) => FormattingExtras<TYPE>;
   onInputChanges?: (value: unknown, element: OBJ, index?: number, extras?: unknown) => object;
 }
 
 /**
+ * @description The types allowed for returned values from a formatting component method.
+ */
+export type FormattingComponentOutput<COMPONENT = unknown> = {
+  component: Type<COMPONENT>;
+  inputs?: ComponentInputs<COMPONENT>;
+};
+/**
  * @description The blueprint for component-based formatting item.
  */
-export interface PropertyComponentFormattingConf<OBJ, TYPE extends FormattingTypes = 'COMPONENT'> {
-  type: TYPE;
-  execute: (value: OBJ[keyof OBJ] | string, element?: OBJ) => FormattingComponentOutput;
+export interface PropertyComponentFormattingConf<OBJ, COMPONENT> {
+  type: 'COMPONENT';
+  execute: (
+    value: OBJ[keyof OBJ] | string,
+    element?: OBJ,
+    index?: number
+  ) => FormattingComponentOutput<COMPONENT>;
 }
 
+/**
+ * @description The blueprint for formatting item.
+ */
 type PropertyFormattingBase<OBJ extends Record<keyof OBJ, unknown>> = {
-  key: string & keyof OBJ;
+  key: string;
   title: Capitalize<string>;
   pathToKey: string;
   link?: (item?: OBJ) => string | string[];
   queryParams?: (item?: OBJ) => Record<string, string>;
 };
 
-type PropertyFormattingTypeDef<OBJ, TYPE extends FormattingTypes> = {
+/**
+ * @description The blueprint for formatting item.
+ */
+type PropertyFormattingTypeDef<OBJ extends BaseEntity, TYPE extends FormattingTypes> = {
   formatting: PropertyFormattingConf<OBJ, TYPE>;
 };
 
-type PropertyFormattingDefault<OBJ> = PropertyFormattingBase<OBJ> &
+/**
+ * @description The blueprint for component-based formatting item.
+ */
+type ComponentPropertyFormattingTypeDef<OBJ extends BaseEntity, COMPONENT> = {
+  formatting: PropertyComponentFormattingConf<OBJ, COMPONENT>;
+};
+
+/**
+ * @description The blueprint for default formatting item.
+ */
+type PropertyFormattingDefault<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesDefault>;
-type PropertyFormattingImage<OBJ> = PropertyFormattingBase<OBJ> &
+
+/**
+ * @description The blueprint for image-based formatting item.
+ */
+type PropertyFormattingImage<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, 'IMAGE'>;
-type PropertyFormattingNumeric<OBJ> = PropertyFormattingBase<OBJ> &
+
+/**
+ * @description The blueprint for quantity-based formatting item.
+ */
+type PropertyFormattingQuantity<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, 'QUANTITY'>;
+
+/**
+ * @description The blueprint for numeric-based formatting item.
+ */
+type PropertyFormattingNumeric<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesNumeric>;
-type PropertyFormattingBooleanWithIcon<OBJ> = PropertyFormattingBase<OBJ> &
+
+/**
+ * @description The blueprint for boolean-with-icon-based formatting item.
+ */
+type PropertyFormattingBooleanWithIcon<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesBoolean>;
-type PropertyFormattingInput<OBJ> = PropertyFormattingBase<OBJ> &
+
+/**
+ * @description The blueprint for input-based formatting item.
+ */
+type PropertyFormattingInput<OBJ extends BaseEntity> = PropertyFormattingBase<OBJ> &
   PropertyFormattingTypeDef<OBJ, FormattingTypesInput>;
-type PropertyFormattingComponent<OBJ> = PropertyFormattingBase<OBJ> &
-  PropertyFormattingTypeDef<OBJ, FormattingTypesComponent>;
+type PropertyFormattingComponent<OBJ extends BaseEntity, COMPONENT> = PropertyFormattingBase<OBJ> &
+  PropertyFormattingTypeDef<OBJ, 'COMPONENT'> &
+  ComponentPropertyFormattingTypeDef<OBJ, COMPONENT>;
 
 /**
  * @description The blueprint for any formatting item constraint by its FormattingTypes value.
  */
-export type PropertyFormatting<OBJ, TYPE = 'TEXT'> = TYPE extends FormattingTypesNumeric
+export type PropertyFormatting<
+  OBJ extends BaseEntity,
+  TYPE = 'TEXT',
+  COMPONENT = TYPE extends 'COMPONENT' ? unknown : never,
+> = TYPE extends FormattingTypesNumeric
   ? PropertyFormattingNumeric<OBJ>
   : TYPE extends 'IMAGE'
     ? PropertyFormattingImage<OBJ>
-    : TYPE extends 'BOOLEAN_WITH_ICON'
-      ? PropertyFormattingBooleanWithIcon<OBJ>
-      : TYPE extends 'INPUT'
-        ? PropertyFormattingInput<OBJ>
-        : TYPE extends 'COMPONENT'
-          ? PropertyFormattingComponent<OBJ>
-          : PropertyFormattingDefault<OBJ>;
+    : TYPE extends 'QUANTITY'
+      ? PropertyFormattingQuantity<OBJ>
+      : TYPE extends 'BOOLEAN_WITH_ICON'
+        ? PropertyFormattingBooleanWithIcon<OBJ>
+        : TYPE extends 'INPUT'
+          ? PropertyFormattingInput<OBJ>
+          : TYPE extends 'COMPONENT'
+            ? PropertyFormattingComponent<OBJ, COMPONENT>
+            : PropertyFormattingDefault<OBJ>;
+
+/**
+ * @description The type of inputs for a component based formatting item.
+ * this type is used to infer the type of the inputs of a component.
+ */
+export type ComponentInputs<T> = {
+  [K in keyof T]?: T[K] extends { set: (value: infer V) => void }
+    ? V
+    : T[K] extends () => infer R
+      ? R
+      : never;
+} & {
+  [key: string]: never;
+};

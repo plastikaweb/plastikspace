@@ -1,4 +1,4 @@
-import { computed, inject, Injectable, Signal, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import {
   getLlecoopProductUnitStep,
@@ -7,7 +7,6 @@ import {
 } from '@plastik/llecoop/entities';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
 import { categoryNameCell } from '@plastik/llecoop/util';
-import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -43,14 +42,23 @@ export class OrderListUserOrderResumeTableConfig
     },
   };
 
-  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
+  readonly #initQuantity: TableColumnFormatting<LlecoopOrderProduct, 'QUANTITY'> = {
     key: 'initQuantity',
     title: 'Quantitat',
     pathToKey: 'initQuantity',
     sorting: 'initQuantity',
     cssClasses: ['min-w-[85px]'],
     formatting: {
-      type: 'CUSTOM',
+      type: 'QUANTITY',
+      extras: item => {
+        const unit = item?.unit ?? { type: 'unit' };
+        const suffix = getLlecoopProductUnitSuffix(unit);
+        const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
+        return {
+          suffix,
+          numberDigitsInfo,
+        };
+      },
       execute: (value, product) =>
         value
           ? `${Number(value).toFixed(2)} ${getLlecoopProductUnitSuffix(product?.unit ?? { type: 'unit' })}`
@@ -169,9 +177,7 @@ export class OrderListUserOrderResumeTableConfig
     }),
   };
 
-  readonly #columnProperties: Signal<
-    TableColumnFormatting<LlecoopOrderProduct, FormattingTypes>[]
-  > = computed(() => [
+  readonly #columnProperties = computed(() => [
     this.#name,
     categoryNameCell<LlecoopOrderProduct>({
       key: 'category',

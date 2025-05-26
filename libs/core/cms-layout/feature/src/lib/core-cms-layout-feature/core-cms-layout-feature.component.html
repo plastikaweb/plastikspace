@@ -1,4 +1,3 @@
-@let isActive = (isActive$ | ngrxPush) || false;
 @let sidenavOpened = (sidenavOpened$ | ngrxPush) || false;
 @let isMobile = (isMobile$ | ngrxPush) || false;
 @let headerMenu = headerConfig.menu;
@@ -6,7 +5,7 @@
 @let sidenavPosition = headerConfig.sidenavPosition || 'start';
 @let headerWidgetsPosition = headerWidgetsConfig?.position;
 
-@if (isActive) {
+@if (isActive()) {
   <plastik-shared-activity-ui-overlay>
     <div class="spinner-container">
       <div class="lds-ripple">
@@ -91,7 +90,7 @@
 
   @defer (when !hideFooter()) {
     <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-      <div content class="flex flex-row justify-center items-center text-base gap-tiny">
+      <div content class="flex flex-row justify-center items-center text-sm gap-tiny">
         {{ currentDate | date: 'yyyy' }}
         <a
           aria-label="visit www.plastikaweb.com page"

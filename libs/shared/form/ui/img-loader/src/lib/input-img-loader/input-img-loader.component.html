@@ -59,16 +59,15 @@
     <plastik-shared-img-container
       class="absolute top-0 right-0 bottom-0 left-0 rounded-lg"
       [src]="cdnUrl() || ''"
-      [width]="imgWidth()"
-      [height]="imgHeight()"
-      [title]="title()"
+      [dimensions]="dimensions()"
+      [title]="title() || ''"
       [lcpImage]="lcpImage()">
     </plastik-shared-img-container>
     <div
       class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 rounded-b-lg text-primary-dark bg-white/90 px-sub"
       tabindex="0"
       (focus)="firstActionBtn?.focus()">
-      <p class="flex-grow text-sm font-bold truncate">{{ title() }}</p>
+      <p class="flex-grow text-sm font-bold truncate">{{ title() || '' }}</p>
       <div class="flex items-center">
         <button
           #firstActionBtn

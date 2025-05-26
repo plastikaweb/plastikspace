@@ -17,7 +17,6 @@ A simple directive to highlight the background of a HTML element on hover.
 import { SharedUtilDynamicBgColorDirective } from '@plastik/shared/dynamic-bg-color';
 
 @Component({
-  standalone: true,
   imports: [SharedUtilDynamicBgColorDirective],
   selector: 'exp-root',
   templateUrl: './app.component.html',

@@ -51,7 +51,7 @@ import { SharedFormFeatureModule } from '@plastikspace/shared/form/feature';
 ```typescript
 @Component({
   selector: 'my-component',
-  standalone: true,
+
   imports: [SharedFormFeatureModule],
   template: `
     <plastik-shared-form-feature

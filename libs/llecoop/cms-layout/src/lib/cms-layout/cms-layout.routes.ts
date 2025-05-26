@@ -1,13 +1,23 @@
-import { inject } from '@angular/core';
+import { DATE_PIPE_DEFAULT_OPTIONS, IMAGE_LOADER } from '@angular/common';
+import { DEFAULT_CURRENCY_CODE, inject } from '@angular/core';
 import { Auth } from '@angular/fire/auth';
 import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl } from '@angular/material/paginator';
 import { CanActivateFn, Router, Routes } from '@angular/router';
+import { ENVIRONMENT } from '@plastik/core/environments';
+import { LlecoopEnvironment } from '@plastik/llecoop/entities';
+import { imageKitLoader } from '@plastik/storage/data-access';
 
-import { CmsLayoutComponent } from './cms-layout.component';
 import { loadProfileResolver } from './load-profile.resolver';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
-const hasCustomClaim = (claim: string) => async () => {
+/**
+ * @returns {LlecoopEnvironment} The environment object.
+ */
+function getEnvironment(): LlecoopEnvironment {
+  return inject(ENVIRONMENT) as LlecoopEnvironment;
+}
+
+const hasCustomClaim = (claim: string) => async (): Promise<boolean> => {
   const auth = inject(Auth);
   const idTokenResult = await auth.currentUser?.getIdTokenResult();
   return !!idTokenResult?.claims[claim];
@@ -37,8 +47,26 @@ const customAuthGuard: CanActivateFn = async route => {
 export const llecoopLayoutRoutes: Routes = [
   {
     path: '',
-    component: CmsLayoutComponent,
+    loadComponent: () => import('./cms-layout.component').then(m => m.CmsLayoutComponent),
     providers: [
+      {
+        provide: IMAGE_LOADER,
+        useFactory: () =>
+          imageKitLoader(
+            getEnvironment().imageKit.endpoint,
+            `/v0/b/${getEnvironment().firebase.storageBucket}/o/`
+          ),
+      },
+      {
+        provide: DEFAULT_CURRENCY_CODE,
+        useValue: 'EUR',
+      },
+      {
+        provide: DATE_PIPE_DEFAULT_OPTIONS,
+        useValue: {
+          dateFormat: 'dd/MM/yyyy',
+        },
+      },
       {
         provide: MatPaginatorIntl,
         useClass: LlecoopMatPaginatorIntl,

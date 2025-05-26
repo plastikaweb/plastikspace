@@ -44,7 +44,7 @@ import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
 
 @Component({
   selector: 'layout-feature',
-  standalone: true,
+
   templateUrl: './layout-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
