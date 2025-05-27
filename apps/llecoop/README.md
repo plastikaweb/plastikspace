@@ -46,7 +46,7 @@ This is a list of all the related libraries to llecoop app.
 
 ### UI Components
 
-- [ui-order-status-chip](../../libs/llecoop/ui/order-status-chip/README.md)
+- [ui-order-status-chip](../../libs/llecoop/order-list/ui/order-status-chip/README.md)
 
 ### Data Access
 
@@ -86,6 +86,7 @@ This is a list of all the related libraries to llecoop app.
 ### Profile
 
 - [llecoop-profile-feature](../../libs/llecoop/profile/feature/README.md)
+- [llecoop-profile-data-access](../../libs/llecoop/profile/data-access/README.md)
 
 ### Triggers
 

@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { CoreCmsLayoutHeaderConfig } from '@plastik/core/cms-layout/entities';
-import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopProfileStore } from '@plastik/llecoop/profile/data-access';
 
 /**
  * @description Provides the configuration for the header of the CMS layout.
@@ -9,7 +9,7 @@ import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
  */
 export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
   const firebaseAuthService = inject(FirebaseAuthService);
-  const user = inject(llecoopUserStore).getUserName;
+  const store = inject(llecoopProfileStore);
 
   return {
     showToggleMenuButton: true,
@@ -18,7 +18,7 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
     title: '',
     extendedTitle: 'El Llevat',
     menu: {
-      label: user,
+      label: store.getUserName,
       position: 'end',
       config: [
         {

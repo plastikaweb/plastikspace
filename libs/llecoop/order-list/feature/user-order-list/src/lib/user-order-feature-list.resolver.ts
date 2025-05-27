@@ -6,14 +6,14 @@ import {
   llecoopUserOrderStore,
   userOrderMainInitState,
 } from '@plastik/llecoop/order-list/data-access';
-import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopProfileStore } from '@plastik/llecoop/profile/data-access';
 import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entities';
 
 export const userOrderFeatureListResolver: ResolveFn<Observable<boolean>> = (
   route
 ): Observable<boolean> => {
   const userOrderStore = inject(llecoopUserOrderStore);
-  const userStore = inject(llecoopUserStore);
+  const profileStore = inject(llecoopProfileStore);
 
   // Obtener los query params directamente del route activado
   const queryParams = route.queryParams;
@@ -27,7 +27,7 @@ export const userOrderFeatureListResolver: ResolveFn<Observable<boolean>> = (
         text: params['text'] || text,
         status: params['status'] || status,
         userNormalizedName,
-        userId: (userStore.loggedUser()?.id as string) ?? null,
+        userId: (profileStore.user()?.id as string) ?? null,
       },
       sorting: [params['active'] || active, params['direction'] || direction] as TableSortingConfig,
       pagination: {

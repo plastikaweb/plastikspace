@@ -426,7 +426,7 @@ export function withFirebaseCrud<
           )
         ),
         setActive: (active: boolean) => {
-          store._dataService.setActiveConnection(true);
+          store._dataService.setActiveConnection(active);
 
           updateState(store, `[${featureName}] set active connection: ${active}`, {
             _activeConnection: active,
@@ -477,7 +477,6 @@ export function withFirebaseCrud<
             ((store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
             (!isPaginationEqual || !isSortingEqual || !isFilterEqual || !initiallyLoaded())
           ) {
-            console.log('getAll', featureName);
             getAll();
           }
 

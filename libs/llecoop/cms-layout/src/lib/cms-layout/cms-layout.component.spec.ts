@@ -16,7 +16,7 @@ import {
   MockedOrderListStore,
   MockedUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopProfileStore } from '@plastik/llecoop/profile/data-access';
 
 import { CmsLayoutComponent } from './cms-layout.component';
 
@@ -41,7 +41,7 @@ describe('CmsLayoutComponent', () => {
         },
         { provide: llecoopUserOrderStore, useValue: MockedUserOrderStore },
         { provide: llecoopOrderListStore, useValue: MockedOrderListStore },
-        { provide: llecoopUserStore, useValue: { getUserName: signal('user') } },
+        { provide: llecoopProfileStore, useValue: { getUserName: signal('user') } },
         {
           provide: VIEW_CONFIG,
           useValue: signal([
