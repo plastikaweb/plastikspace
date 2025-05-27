@@ -7,7 +7,6 @@ import { ENVIRONMENT } from '@plastik/core/environments';
 import { LlecoopEnvironment } from '@plastik/llecoop/entities';
 import { imageKitLoader } from '@plastik/storage/data-access';
 
-import { loadProfileResolver } from './load-profile.resolver';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
 /**
@@ -80,9 +79,6 @@ export const llecoopLayoutRoutes: Routes = [
         },
       },
     ],
-    resolve: {
-      resolveUser: loadProfileResolver,
-    },
     children: [
       {
         path: 'categories',

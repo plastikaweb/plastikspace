@@ -20,7 +20,7 @@ It provides components and services for managing user profile information, setti
 
 ## User profile state
 
-The user profile state is managed by the `llecoopUserStore`.
+The user profile state is managed by the `llecoopProfileStore`.
 
 ## Firebase functions
 

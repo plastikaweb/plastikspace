@@ -10,7 +10,7 @@ import {
   llecoopUserOrderDateOptions,
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
-import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopProfileStore } from '@plastik/llecoop/profile/data-access';
 import { InputTableProps } from '@plastik/shared/form/table';
 
 import { LlecoopUserOrderDetailFormTableConfig } from './user-order-detail-table-form.config';
@@ -37,7 +37,7 @@ function setHourOptionsByDeliveryOption(
 
 export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder> {
   const tableColumnProperties = inject(LlecoopUserOrderDetailFormTableConfig);
-  const userStore = inject(llecoopUserStore);
+  const profileStore = inject(llecoopProfileStore);
 
   const formConfig: FormlyFieldConfig[] = [
     {
@@ -45,15 +45,24 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
       fieldGroup: [
         {
           key: 'userName',
-          defaultValue: userStore.getUserName(),
+          hooks: {
+            onInit: ({ formControl }: FormlyFieldConfig) =>
+              formControl?.setValue(profileStore.user()?.name),
+          },
         },
         {
           key: 'phone',
-          defaultValue: userStore.loggedUser()?.phone,
+          hooks: {
+            onInit: ({ formControl }: FormlyFieldConfig) =>
+              formControl?.setValue(profileStore.user()?.phone),
+          },
         },
         {
           key: 'userNormalizedName',
-          defaultValue: userStore.loggedUser()?.normalizedName,
+          hooks: {
+            onInit: ({ formControl }: FormlyFieldConfig) =>
+              formControl?.setValue(profileStore.user()?.normalizedName),
+          },
         },
         {
           key: 'deliveryType',
@@ -81,7 +90,6 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               key: 'address',
               type: 'input',
               className: 'w-full',
-              defaultValue: userStore.loggedUser()?.address,
               props: {
                 label: 'Adreça de lliurament',
                 placeholder: 'Adreça de lliurament',
@@ -92,6 +100,10 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
               },
               expressions: {
                 hide: 'model.deliveryType === "pickup"',
+              },
+              hooks: {
+                onInit: ({ formControl }: FormlyFieldConfig) =>
+                  formControl?.setValue(profileStore.user()?.address),
               },
             },
             {

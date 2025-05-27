@@ -69,6 +69,7 @@ export class FirebaseAuthService {
     this.currentUser.set(user);
     if (user) {
       const tokenResult = await user.getIdTokenResult();
+
       this.isAdmin.set(!!tokenResult.claims['isAdmin']);
     } else {
       this.isAdmin.set(false);

@@ -67,6 +67,7 @@
       "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
       "@plastik/llecoop/profile": ["libs/llecoop/profile/feature/src/index.ts"],
+      "@plastik/llecoop/profile/data-access": ["libs/llecoop/profile/data-access/src/index.ts"],
       "@plastik/llecoop/user-order-card": [
         "libs/llecoop/order-list/ui/user-order-card-detail/src/index.ts"
       ],
