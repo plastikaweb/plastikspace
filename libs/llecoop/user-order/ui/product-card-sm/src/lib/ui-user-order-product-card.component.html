@@ -1,0 +1,61 @@
+@let cardBackgroundColor = product().category?.color || '#000000' | hexToRgba: 0.15;
+@let cardBorderColor = product().category?.color || '#000000' | hexToRgba: 1;
+
+<mat-card
+  appearance="outlined"
+  class="w-[350px] lg:max-w-[275px] overflow-hidden flex flex-col hover:cursor-pointer hover:shadow-md hover:scale-105 transition-all"
+  [style.backgroundColor]="cardBackgroundColor"
+  [style.borderColor]="cardBorderColor"
+  (click)="onViewDetails()">
+  <div class="flex relative justify-center items-center bg-white">
+    @if (product().imgUrl; as imgUrl) {
+      <plastik-shared-img-container
+        mat-card-image
+        [src]="imgUrl"
+        [title]="product().name"
+        [dimensions]="{ width: 250, height: 250 }"
+        [quality]="80"
+        [lcpImage]="index() === 0" />
+    }
+  </div>
+  <mat-card-header>
+    <mat-card-title>{{ product().name | titlecase }}</mat-card-title>
+    <mat-card-subtitle>{{ product().category?.name | titlecase }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="mb-4 font-bold text-md text-secondary-dark">
+      {{ product().priceWithIva | currency: 'EUR' }}
+      <span class="text-sm text-gray-60"> / {{ getBaseUnitInfo() }}</span>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    @if (quantity() === 0) {
+      <button mat-flat-button class="w-full" (click)="onAddToCart(); $event.stopPropagation()">
+        <mat-icon>add</mat-icon>
+        Afegir
+      </button>
+    } @else {
+      <mat-form-field class="w-full">
+        <input
+          matInput
+          type="number"
+          min="0"
+          [step]="getStep()"
+          [ngModel]="quantity()"
+          (ngModelChange)="onQuantityChange($event)"
+          (click)="$event.stopPropagation()" />
+        <span matTextSuffix class="flex flex-row items-center gap-sub">
+          {{ getUnitSuffix() }}
+
+          <mat-chip class="w-[200px] md:w-[140px]">
+            Total: {{ totalPrice() | currency: 'EUR' }}
+
+            <button matChipRemove (click)="onQuantityChange('0')">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+        </span>
+      </mat-form-field>
+    }
+  </mat-card-actions>
+</mat-card>

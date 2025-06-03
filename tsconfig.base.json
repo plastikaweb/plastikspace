@@ -71,11 +71,20 @@
       "@plastik/llecoop/user-order-card": [
         "libs/llecoop/order-list/ui/user-order-card-detail/src/index.ts"
       ],
+      "@plastik/llecoop/user-order-product-list/data-access": [
+        "libs/llecoop/user-order/product-list/data-access/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order-product-list/feature": [
+        "libs/llecoop/user-order/product-list/feature/src/index.ts"
+      ],
       "@plastik/llecoop/user-order/detail": [
         "libs/llecoop/order-list/feature/user-order-detail/src/index.ts"
       ],
       "@plastik/llecoop/user-order/list": [
         "libs/llecoop/order-list/feature/user-order-list/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order/product-card-sm": [
+        "libs/llecoop/user-order/ui/product-card-sm/src/index.ts"
       ],
       "@plastik/llecoop/user-order/resume": [
         "libs/llecoop/order-list/feature/user-order-resume/src/index.ts"
@@ -120,6 +129,7 @@
       "@plastik/shared/form/util": ["libs/shared/form/util/src/index.ts"],
       "@plastik/shared/form/year-picker": ["libs/shared/form/ui/year-picker/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
+      "@plastik/shared/hex-to-rgba": ["libs/shared/util/hex-to-rgba/src/index.ts"],
       "@plastik/shared/img-container": ["libs/shared/img-container/ui/src/index.ts"],
       "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
       "@plastik/shared/mat-theme-toggle": ["libs/shared/mat-theme-toggle/src/index.ts"],
@@ -143,6 +153,7 @@
       "@plastik/shared/testing": ["libs/shared/testing/index.ts"],
       "@plastik/storage/data-access": ["libs/shared/storage/data-access/src/index.ts"],
       "@plastik/storage/entities": ["libs/shared/storage/entities/src/index.ts"],
+      "@plastik/storage/feature": ["libs/shared/storage/feature/src/index.ts"],
       "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"]
     }
   },

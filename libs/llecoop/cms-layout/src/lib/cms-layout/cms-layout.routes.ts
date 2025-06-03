@@ -83,6 +83,7 @@ export const llecoopLayoutRoutes: Routes = [
       {
         path: 'categories',
         canActivate: [customAuthGuard],
+
         data: {
           authGuardPipe: adminOnly,
           mustBeStored: true,
@@ -230,18 +231,15 @@ export const llecoopLayoutRoutes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'comandes',
-        pathMatch: 'full',
+        loadChildren: () =>
+          import('@plastik/llecoop/user-order-product-list/feature').then(
+            routes => routes.llecoopUserOrderProductListFeatureRoutes
+          ),
       },
     ],
   },
   {
-    path: '',
-    redirectTo: 'comandes',
-    pathMatch: 'full',
-  },
-  {
     path: '**',
-    redirectTo: 'comandes',
+    redirectTo: '',
   },
 ];

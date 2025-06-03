@@ -56,6 +56,7 @@ export type StoreFirebaseCrudFeature<
  * @param {TableSortingConfig} [sorting] The initial sorting state.
  * @param {StoreFirebaseCrudState<T, F>['baseRoute']} [baseRoute] The base route for the feature used to navigate to the entity list, f.e. after creating or updating an entity.
  * @param {StoreFirebaseCrudState<T, F>['_adminOnly']} [_adminOnly] The initial admin only state.
+ * @param {StoreFirebaseCrudState<T, F>['_public']} [_public] The initial public state.
  * @returns {StoreFirebaseCrudState<T, F>} The initial state for the signal store feature.
  */
 export function initStoreFirebaseCrudState<T extends BaseEntity, F extends StoreFirebaseCrudFilter>(
@@ -67,7 +68,8 @@ export function initStoreFirebaseCrudState<T extends BaseEntity, F extends Store
   },
   sorting: TableSortingConfig = ['updatedAt', 'desc'] as TableSortingConfig,
   baseRoute: StoreFirebaseCrudState<T, F>['baseRoute'] = '',
-  _adminOnly: StoreFirebaseCrudState<T, F>['_adminOnly'] = true
+  _adminOnly: StoreFirebaseCrudState<T, F>['_adminOnly'] = true,
+  _public: StoreFirebaseCrudState<T, F>['_public'] = false
 ): StoreFirebaseCrudState<T, F> {
   return {
     initiallyLoaded: false,
@@ -81,6 +83,7 @@ export function initStoreFirebaseCrudState<T extends BaseEntity, F extends Store
     sorting,
     baseRoute,
     _adminOnly,
+    _public,
   };
 }
 
@@ -108,7 +111,8 @@ export function withFirebaseCrud<
         initState.pagination,
         initState.sorting,
         initState.baseRoute,
-        initState._adminOnly
+        initState._adminOnly,
+        initState._public
       )
     ),
     withProps(() => ({
@@ -472,9 +476,10 @@ export function withFirebaseCrud<
             currentSorting[0] === previousSorting[0] && currentSorting[1] === previousSorting[1];
           const isFilterEqual = areObjectEntriesEqual(currentFilter, previousFilter);
 
+          console.log('store', featureName);
           if (
             store._activeConnection() &&
-            ((store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
+            (store._public() || (store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
             (!isPaginationEqual || !isSortingEqual || !isFilterEqual || !initiallyLoaded())
           ) {
             getAll();
@@ -482,7 +487,7 @@ export function withFirebaseCrud<
 
           if (
             store._activeConnection() &&
-            ((store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
+            (store._public() || (store._adminOnly() && isAdmin()) || !store._adminOnly()) &&
             (!isFilterEqual || !initiallyLoaded())
           ) {
             setCount();
@@ -490,12 +495,11 @@ export function withFirebaseCrud<
 
           previousPagination = currentPagination;
           previousSorting = currentSorting;
-          previousSorting = currentSorting;
           previousFilter = currentFilter;
         });
 
         effect(() => {
-          if (!store._authService.currentUser()) {
+          if (!store._authService.currentUser() && !store._public()) {
             store.destroy();
           } else if (!store._activeConnection()) {
             store.setActive(true);

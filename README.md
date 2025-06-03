@@ -152,7 +152,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 ##### Util
 
 - [shared-form-util](libs/shared/form/util/README.md)
-- [skip-link](libs/shared/skip-link/skip-link-util/README.md)
+- [skip-link-util](libs/shared/util/skip-link/README.md)
 
 #### Activity
 
@@ -177,6 +177,7 @@ This is a list of all the global shared libraries. It is very likely that other 
 - [shared-util-dynamic-bg-color](libs/shared/util/dynamic-bg-color/README.md)
 - [shared-util-latinize](libs/shared/util/latinize/README.md)
 - [shared-util-bytes-to-size](libs/shared/util/bytes-to-size/README.md)
+- [shared-util-hex-to-rgba](libs/shared/util/hex-to-rgba/README.md)
 
 ## Contact
 

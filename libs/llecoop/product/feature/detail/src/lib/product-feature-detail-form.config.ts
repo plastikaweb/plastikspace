@@ -5,6 +5,7 @@ import { inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import {
   LlecoopProduct,
   LlecoopProductSelectData,
@@ -49,6 +50,7 @@ function setUnitBaseInfo(
 
 export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
   const productStore = inject(llecoopProductStore);
+  const categoryStore = inject(llecoopCategoryStore);
   const firebaseStorage = inject(FirebaseStorageService);
 
   const formConfig = [
@@ -79,7 +81,7 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
             label: 'Categoria',
             placeholder: 'Categoria',
             required: true,
-            options: toObservable(productStore.categories),
+            options: toObservable(categoryStore.categoriesList),
           },
         },
         {

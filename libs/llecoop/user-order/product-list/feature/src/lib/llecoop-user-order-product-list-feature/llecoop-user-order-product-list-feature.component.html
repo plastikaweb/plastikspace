@@ -1,0 +1,26 @@
+<div class="flex flex-col flex-wrap justify-center items-center gap-sm mb-md">
+  @defer {
+    <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
+      Benvigut/da a la botiga d'El Llevat!
+    </h2>
+    <p class="text-center text-md">Descobreix productes ecològics, frescos i de proximitat.</p>
+  }
+</div>
+
+<div class="flex flex-col flex-wrap justify-center items-center gap-sm mb-md">
+  @defer {
+    <h3>Els nostres productes</h3>
+  }
+
+  @defer {
+    <div class="flex flex-wrap justify-center items-center max-w-fit gap-md">
+      @for (product of facade.products(); track product.id; let i = $index) {
+        <plastik-ui-user-order-product-card
+          [product]="product"
+          [index]="i"
+          (addToCart)="facade.addToCart($event)"
+          (viewDetails)="facade.viewDetails($event)" />
+      }
+    </div>
+  }
+</div>

@@ -7,7 +7,7 @@ export interface LlecoopBaseProduct extends BaseEntity {
   info?: string;
   price: number;
   iva: number;
-  priceWithIva?: number;
+  priceWithIva: number;
   origin?: string;
   provider?: string;
   categoryRef: DocumentReference<LlecoopProductCategory>;
@@ -101,7 +101,7 @@ export function getLlecoopProductBasedUnitText(unit: LlecoopProductUnit): string
 export function getLlecoopProductUnitStep(unit: LlecoopProductUnit): number {
   switch (unit.type) {
     case 'weight':
-      return 0.01;
+      return 0.1;
     default:
       return 1.0;
   }

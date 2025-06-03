@@ -75,6 +75,9 @@
     "llecoop:firebase:functions:deploy:staging": "firebase use default && firebase deploy --only functions",
     "llecoop:firebase:functions:deploy:prod": "firebase use production && firebase deploy --only functions",
     "llecoop:deploy:functions": "yarn llecoop:firebase:functions:build && yarn llecoop:firebase:functions:deploy:staging && yarn llecoop:firebase:functions:deploy:prod",
+    "llecoop:firebase:firestore:rules:deploy:staging": "firebase use default && firebase deploy --only firestore:rules",
+    "llecoop:firebase:firestore:rules:deploy:prod": "firebase use production && firebase deploy --only firestore:rules",
+    "llecoop:deploy:firestore:rules": "yarn llecoop:firebase:firestore:rules:deploy:staging && yarn llecoop:firebase:firestore:rules:deploy:prod",
     "llecoop:firebase:storage:deploy:staging": "firebase use default && firebase deploy --only storage",
     "llecoop:firebase:storage:deploy:prod": "firebase use production && firebase deploy --only storage",
     "llecoop:deploy:storage": "yarn llecoop:firebase:storage:deploy:staging && yarn llecoop:firebase:storage:deploy:prod",
@@ -228,7 +231,8 @@
     "tailwindcss": "^3.2.4",
     "ts-jest": "^29.1.0",
     "ts-node": "10.9.1",
-    "typescript": "5.7.3"
+    "typescript": "5.7.3",
+    "verdaccio": "^6.0.5"
   },
   "config": {
     "commitizen": {
@@ -237,5 +241,8 @@
     "cz-customizable": {
       "config": ".cz-config.js"
     }
+  },
+  "nx": {
+    "includedScripts": []
   }
 }

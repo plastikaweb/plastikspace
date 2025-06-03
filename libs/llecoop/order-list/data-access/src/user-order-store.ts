@@ -58,7 +58,7 @@ export const userOrderMainInitState: StoreFirebaseCrudState<
     userId: null,
   },
   pagination: {
-    pageSize: 5,
+    pageSize: 25,
     pageIndex: 0,
     pageLastElements: new Map<number, LlecoopUserOrder>(),
   },

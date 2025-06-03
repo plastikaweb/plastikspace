@@ -1,0 +1,24 @@
+import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { LlecoopUserOrderProductListFeatureComponent } from './llecoop-user-order-product-list-feature.component';
+
+describe('LlecoopUserOrderProductListFeatureComponent', () => {
+  let component: LlecoopUserOrderProductListFeatureComponent;
+  let fixture: ComponentFixture<LlecoopUserOrderProductListFeatureComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      providers: [provideExperimentalZonelessChangeDetection()],
+      imports: [LlecoopUserOrderProductListFeatureComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(LlecoopUserOrderProductListFeatureComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

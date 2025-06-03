@@ -56,7 +56,7 @@ export const appRoutes: Routes = [
   },
   {
     path: '',
-    canActivate: [isLoggedGuard],
+    // canActivate: [isLoggedGuard],
     loadChildren: () =>
       import('@plastik/llecoop/cms-layout').then(routes => routes.llecoopLayoutRoutes),
   },

@@ -2,6 +2,7 @@
 import { computed, inject, Injectable } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { addSearchInput } from '@plastik/shared/form/search';
 
@@ -10,9 +11,10 @@ import { addSearchInput } from '@plastik/shared/form/search';
 })
 export class LlecoopProductSearchFeatureFormConfig {
   readonly #productStore = inject(llecoopProductStore);
+  readonly #categoryStore = inject(llecoopCategoryStore);
   readonly #categories = computed(() => [
     { label: 'Totes', value: '' },
-    ...this.#productStore.categories(),
+    ...this.#categoryStore.categoriesList(),
   ]);
 
   getConfig(): FormlyFieldConfig[] {
