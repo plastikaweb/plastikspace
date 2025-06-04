@@ -1,0 +1,20 @@
+{
+  "name": "product-base-unit-text",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/llecoop/product/util/product-base-unit-text/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["type:util", "scope:llecoop"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/llecoop/product/util/product-base-unit-text/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

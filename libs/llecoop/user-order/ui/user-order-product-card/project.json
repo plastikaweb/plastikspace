@@ -1,7 +1,7 @@
 {
   "name": "ui-user-order-product-card",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/llecoop/user-order/ui/product-card-sm/src",
+  "sourceRoot": "libs/llecoop/user-order/ui/user-order-product-card/src",
   "prefix": "plastik",
   "projectType": "library",
   "tags": ["type:ui", "scope:llecoop"],
@@ -10,7 +10,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/llecoop/user-order/ui/product-card-sm/jest.config.ts"
+        "jestConfig": "libs/llecoop/user-order/ui/user-order-product-card/jest.config.ts"
       }
     },
     "lint": {

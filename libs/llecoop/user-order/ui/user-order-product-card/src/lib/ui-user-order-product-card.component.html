@@ -25,7 +25,7 @@
   <mat-card-content>
     <div class="mb-4 font-bold text-md text-secondary-dark">
       {{ product().priceWithIva | currency: 'EUR' }}
-      <span class="text-sm text-gray-60"> / {{ getBaseUnitInfo() }}</span>
+      <span class="text-sm text-gray-60"> / {{ product().unit | llecoopProductBaseUnitText }}</span>
     </div>
   </mat-card-content>
   <mat-card-actions>
@@ -40,12 +40,12 @@
           matInput
           type="number"
           min="0"
-          [step]="getStep()"
+          [step]="product().unit | llecoopProductUnitStep"
           [ngModel]="quantity()"
           (ngModelChange)="onQuantityChange($event)"
           (click)="$event.stopPropagation()" />
         <span matTextSuffix class="flex flex-row items-center gap-sub">
-          {{ getUnitSuffix() }}
+          {{ product().unit | llecoopProductUnitSuffix }}
 
           <mat-chip class="w-[200px] md:w-[140px]">
             Total: {{ totalPrice() | currency: 'EUR' }}

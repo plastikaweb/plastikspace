@@ -76,6 +76,9 @@ This is a list of all the related libraries to llecoop app.
 - [llecoop-product-feature-detail](../../libs/llecoop/product/feature/detail/README.md)
 - [llecoop-product-feature-list](../../libs/llecoop/product/feature/list/README.md)
 - [llecoop-product-ui-product-name-cell](../../libs/llecoop/product/ui/product-name-cell/README.md)
+- [llecoop-product-util-product-base-unit-text](../../libs/llecoop/product/util/product-base-unit-text/README.md)
+- [llecoop-product-util-product-unit-suffix](../../libs/llecoop/product/util/product-unit-suffix/README.md)
+- [llecoop-product-util-product-unit-step](../../libs/llecoop/product/util/product-unit-step/README.md)
 
 ### User
 

@@ -16,12 +16,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { EntityId } from '@ngrx/signals/entities';
-import {
-  getLlecoopProductBasedUnitText,
-  getLlecoopProductUnitStep,
-  getLlecoopProductUnitSuffix,
-  LlecoopProduct,
-} from '@plastik/llecoop/entities';
+import { LlecoopProduct } from '@plastik/llecoop/entities';
+import { LlecoopProductBaseUnitTextPipe } from '@plastik/llecoop/product/product-base-unit-text';
+import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
+import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
 import { HexToRgbaPipe } from '@plastik/shared/hex-to-rgba';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
@@ -40,6 +38,9 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
     HexToRgbaPipe,
     CurrencyPipe,
     SharedImgContainerComponent,
+    LlecoopProductBaseUnitTextPipe,
+    LlecoopProductUnitStepPipe,
+    LlecoopProductUnitSuffixPipe,
   ],
   templateUrl: './ui-user-order-product-card.component.html',
   styleUrl: './ui-user-order-product-card.component.scss',
@@ -78,18 +79,6 @@ export class UiUserOrderProductCardComponent {
 
   onViewDetails(): void {
     this.viewDetails.emit(this.product().id || '');
-  }
-
-  getStep(): string {
-    return getLlecoopProductUnitStep(this.product().unit).toString();
-  }
-
-  getBaseUnitInfo(): string {
-    return `${getLlecoopProductBasedUnitText(this.product().unit)}`;
-  }
-
-  getUnitSuffix(): string {
-    return getLlecoopProductUnitSuffix(this.product().unit);
   }
 
   onQuantityChange(value: string): void {

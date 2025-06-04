@@ -66,6 +66,15 @@
       "@plastik/llecoop/product/data-access": ["libs/llecoop/product/data-access/src/index.ts"],
       "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
+      "@plastik/llecoop/product/product-base-unit-text": [
+        "libs/llecoop/product/util/product-base-unit-text/src/index.ts"
+      ],
+      "@plastik/llecoop/product/product-unit-step": [
+        "libs/llecoop/product/util/product-unit-step/src/index.ts"
+      ],
+      "@plastik/llecoop/product/product-unit-suffix": [
+        "libs/llecoop/product/util/product-unit-suffix/src/index.ts"
+      ],
       "@plastik/llecoop/profile": ["libs/llecoop/profile/feature/src/index.ts"],
       "@plastik/llecoop/profile/data-access": ["libs/llecoop/profile/data-access/src/index.ts"],
       "@plastik/llecoop/user-order-card": [
@@ -83,8 +92,8 @@
       "@plastik/llecoop/user-order/list": [
         "libs/llecoop/order-list/feature/user-order-list/src/index.ts"
       ],
-      "@plastik/llecoop/user-order/product-card-sm": [
-        "libs/llecoop/user-order/ui/product-card-sm/src/index.ts"
+      "@plastik/llecoop/user-order/product-card": [
+        "libs/llecoop/user-order/ui/user-order-product-card/src/index.ts"
       ],
       "@plastik/llecoop/user-order/resume": [
         "libs/llecoop/order-list/feature/user-order-resume/src/index.ts"

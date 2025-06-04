@@ -15,40 +15,44 @@ import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { InputImgLoaderProps } from '@plastik/shared/form/img-loader';
 import { FirebaseStorageService } from '@plastik/storage/data-access';
 
-function setStockUnitAddonRight(
+function setStockProps(
   formlyProps: FormlyFieldConfig['props'],
-  unitValue: LlecoopProductUnit['type']
+  unitType: LlecoopProductUnit['type']
 ): void {
-  if (formlyProps?.['addonRight']) {
-    formlyProps['addonRight'].text = unitValue === 'weight' ? 'kg' : 'u.';
-    formlyProps['addonRight'].aria = unitValue === 'weight' ? 'pes en kgs' : 'unitats';
+  if (formlyProps?.step && unitType) {
+    formlyProps.step = unitType === 'weight' ? 0.1 : 1;
+  }
+
+  if (formlyProps?.['addonRight'] && unitType) {
+    formlyProps['addonRight'].text = unitType === 'weight' ? 'kg' : 'u.';
+    formlyProps['addonRight'].aria = unitType === 'weight' ? 'pes en kgs' : 'unitats';
   }
 }
 
-function setUnitBaseInfo(
+function setUnitBaseProps(
   formlyProps: FormlyFieldConfig['props'],
-  unitValue: LlecoopProductUnit['type']
+  unitType: LlecoopProductUnit['type']
 ): void {
-  if (formlyProps) {
+  if (formlyProps && unitType) {
     const label =
-      unitValue === 'unitWithFixedVolume'
+      unitType === 'unitWithFixedVolume'
         ? 'Volum per unitat'
-        : unitValue === 'unitWithFixedWeight'
+        : unitType === 'unitWithFixedWeight'
           ? 'Pes per unitat'
-          : unitValue === 'unitWithVariableWeight'
+          : unitType === 'unitWithVariableWeight'
             ? 'Pes aproximat per unitat'
             : '';
     formlyProps.label = label;
     formlyProps.placeholder = label;
+  }
 
-    if (formlyProps['addonRight']) {
-      formlyProps['addonRight'].text =
-        unitValue === 'unitWithFixedWeight' || unitValue === 'unitWithVariableWeight' ? 'kg' : 'l';
-    }
+  if (formlyProps?.['addonRight'] && unitType) {
+    formlyProps['addonRight'].text =
+      unitType === 'unitWithFixedWeight' || unitType === 'unitWithVariableWeight' ? 'kg' : 'l';
   }
 }
 
-export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
+export function productFeatureDetailFormConfig(newProduct: boolean): FormConfig<LlecoopProduct> {
   const productStore = inject(llecoopProductStore);
   const categoryStore = inject(llecoopCategoryStore);
   const firebaseStorage = inject(FirebaseStorageService);
@@ -154,15 +158,15 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
               },
               expressions: {
                 hide: ({ model }: FormlyFieldConfig) =>
-                  model?.type === 'unit' || model?.type === 'weight',
+                  model?.type === 'unit' || model?.type === 'weight' || !model?.type,
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
-                  setUnitBaseInfo(formly.props, formly.model?.type);
+                  setUnitBaseProps(formly.props, formly.model?.type);
 
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field['key'] === 'type'),
-                    tap(({ value }) => setUnitBaseInfo(formly.props, value))
+                    tap(({ value }) => setUnitBaseProps(formly.props, value))
                   );
                 },
               },
@@ -293,11 +297,11 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
               },
               hooks: {
                 onInit: (formly: FormlyFieldConfig) => {
-                  setStockUnitAddonRight(formly.props, formly.model?.unit);
+                  setStockProps(formly.props, formly.model?.unit?.type);
 
                   return formly.options?.fieldChanges?.pipe(
                     filter(e => e.type === 'valueChanges' && e.field['key'] === 'type'),
-                    tap(({ value }) => setStockUnitAddonRight(formly.props, value))
+                    tap(({ value }) => setStockProps(formly.props, value))
                   );
                 },
               },
@@ -353,8 +357,8 @@ export function productFeatureDetailFormConfig(): FormConfig<LlecoopProduct> {
 
   return {
     getConfig: () => formConfig,
-    getSubmitFormConfig: (editMode = false) => ({
-      label: editMode ? 'Desar producte' : 'Crear producte',
+    getSubmitFormConfig: () => ({
+      label: newProduct ? 'Crear producte' : 'Desar producte',
       disableOnSubmit: true,
     }),
   };

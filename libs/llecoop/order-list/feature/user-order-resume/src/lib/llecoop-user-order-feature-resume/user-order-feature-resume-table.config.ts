@@ -1,11 +1,9 @@
 import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import {
-  getLlecoopProductBasedUnitText,
-  getLlecoopProductUnitSuffix,
-  LlecoopOrderProduct,
-} from '@plastik/llecoop/entities';
+import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
 import { llecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
+import { LlecoopProductBaseUnitTextPipe } from '@plastik/llecoop/product/product-base-unit-text';
+import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -22,6 +20,8 @@ export class LlecoopUserOrderResumeTableConfig
 {
   readonly #sanitizer = inject(DomSanitizer);
   readonly #store = inject(llecoopUserOrderStore);
+  readonly #productBaseUnitTextPipe = inject(LlecoopProductBaseUnitTextPipe);
+  readonly #productUnitSuffixPipe = inject(LlecoopProductUnitSuffixPipe);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -34,7 +34,7 @@ export class LlecoopUserOrderResumeTableConfig
       execute: (_, product) => {
         const name = `<p class="font-bold uppercase">${product?.name}</p>`;
         const unit = product?.unit
-          ? `<p class="font-bold text-sm">${Number(product?.price).toFixed(2)} € x ${getLlecoopProductBasedUnitText(product.unit)}</p>`
+          ? `<p class="font-bold text-sm">${Number(product?.price).toFixed(2)} € x ${this.#productBaseUnitTextPipe.transform(product.unit)}</p>`
           : '';
         const info = product?.info ? `<p class="font-bold">${product?.info}</p>` : '';
         const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
@@ -54,7 +54,7 @@ export class LlecoopUserOrderResumeTableConfig
       type: 'QUANTITY',
       extras: item => {
         const unit = item?.unit ?? { type: 'unit' };
-        const suffix = getLlecoopProductUnitSuffix(unit);
+        const suffix = this.#productUnitSuffixPipe.transform(unit);
         const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
         return {
           suffix,
@@ -73,7 +73,7 @@ export class LlecoopUserOrderResumeTableConfig
       type: 'QUANTITY',
       extras: item => {
         const unit = item?.unit ?? { type: 'unit' };
-        const suffix = getLlecoopProductUnitSuffix(unit);
+        const suffix = this.#productUnitSuffixPipe.transform(unit);
         const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
         return {
           suffix,
