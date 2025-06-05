@@ -1,5 +1,3 @@
-import '@plastik/shared/testing';
-
 import { TestBed } from '@angular/core/testing';
 import {
   BrowserDynamicTestingModule,

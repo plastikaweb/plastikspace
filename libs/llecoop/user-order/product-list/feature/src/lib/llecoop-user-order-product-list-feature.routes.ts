@@ -10,5 +10,6 @@ export const llecoopUserOrderProductListFeatureRoutes: Route[] = [
     resolve: {
       allProducts: llecoopUserOrderProductListFeatureResolver,
     },
+    runGuardsAndResolvers: 'always',
   },
 ];

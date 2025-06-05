@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { isLoggedGuard, isNotLoggedGuard } from '@plastik/auth/firebase/data-access';
+import { isNotLoggedGuard } from '@plastik/auth/firebase/data-access';
 
 // const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 
@@ -56,7 +56,6 @@ export const appRoutes: Routes = [
   },
   {
     path: '',
-    // canActivate: [isLoggedGuard],
     loadChildren: () =>
       import('@plastik/llecoop/cms-layout').then(routes => routes.llecoopLayoutRoutes),
   },

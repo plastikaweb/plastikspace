@@ -2,7 +2,10 @@ import { map, Observable, of, tap } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { llecoopUserOrderProductStore } from '@plastik/llecoop/user-order-product-list/data-access';
+import {
+  initState,
+  llecoopUserOrderProductStore,
+} from '@plastik/llecoop/user-order-product-list/data-access';
 import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entities';
 
 export const llecoopUserOrderProductListFeatureResolver: ResolveFn<Observable<boolean>> = (
@@ -10,10 +13,11 @@ export const llecoopUserOrderProductListFeatureResolver: ResolveFn<Observable<bo
 ): Observable<boolean> => {
   const userOrderProductStore = inject(llecoopUserOrderProductStore);
 
+  const { text, category } = initState.filter;
+  const [active, direction] = initState.sorting as TableSortingConfig;
+  const { pageIndex, pageSize } = initState.pagination;
+
   const queryParams = route.queryParams;
-  const { text, category } = userOrderProductStore.filter();
-  const [active, direction] = userOrderProductStore.sorting() as TableSortingConfig;
-  const { pageIndex, pageSize } = userOrderProductStore.pagination();
 
   return of(queryParams).pipe(
     map(params => ({

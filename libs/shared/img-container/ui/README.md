@@ -47,11 +47,6 @@ export class AppComponent {
 - Use the component in your template:
 
 ```html
-<!-- Basic usage -->
-<plastik-shared-img-container [src]="'https://example.com/image.jpg'" [width]="400">
-</plastik-shared-img-container>
-
-<!-- Advanced usage with all options -->
 <plastik-shared-img-container
   [src]="'https://example.com/image.jpg'"
   [width]="400"
