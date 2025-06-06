@@ -1,3 +1,6 @@
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import '@plastik/shared/testing';
+
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { provideHttpClient } from '@angular/common/http';

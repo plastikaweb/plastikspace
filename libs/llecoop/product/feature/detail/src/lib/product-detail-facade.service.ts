@@ -21,7 +21,7 @@ export class LlecoopProductDetailFacadeService implements DetailItemViewFacade<L
     };
   });
 
-  formConfig = productFeatureDetailFormConfig();
+  formConfig = productFeatureDetailFormConfig(!this.model()?.id);
 
   async onSubmit(data: LlecoopProduct): Promise<void> {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars

@@ -1,8 +1,7 @@
-/* eslint-disable jsdoc/require-jsdoc */
-import { computed, inject, Injectable } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { inject, Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { LlecoopSharedCategoryFireService } from '@plastik/llecoop/shared/data-access';
 import { addSearchInput } from '@plastik/shared/form/search';
 
 @Injectable({
@@ -10,10 +9,8 @@ import { addSearchInput } from '@plastik/shared/form/search';
 })
 export class LlecoopProductSearchFeatureFormConfig {
   readonly #productStore = inject(llecoopProductStore);
-  readonly #categories = computed(() => [
-    { label: 'Totes', value: '' },
-    ...this.#productStore.categories(),
-  ]);
+  readonly #categoryService = inject(LlecoopSharedCategoryFireService);
+  readonly #categories$ = this.#categoryService.getCategoriesSelectData();
 
   getConfig(): FormlyFieldConfig[] {
     return [
@@ -33,7 +30,7 @@ export class LlecoopProductSearchFeatureFormConfig {
               label: 'Categoría',
               placeholder: 'Categoría',
               required: false,
-              options: toObservable(this.#categories),
+              options: this.#categories$,
             },
           },
           {

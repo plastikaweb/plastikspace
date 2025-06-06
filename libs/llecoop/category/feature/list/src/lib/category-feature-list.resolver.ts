@@ -2,18 +2,17 @@ import { map, Observable, of, tap } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { initState, llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
+import { categoryMainInitState, llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entities';
 
 export const categoryFeatureListResolver: ResolveFn<Observable<boolean>> = (
   route
 ): Observable<boolean> => {
   const categoryStore = inject(llecoopCategoryStore);
-  const { text } = initState.filter;
-  const [active, direction] = initState.sorting as TableSortingConfig;
-  const { pageIndex, pageSize } = initState.pagination;
+  const { text } = categoryMainInitState.filter;
+  const [active, direction] = categoryMainInitState.sorting as TableSortingConfig;
+  const { pageIndex, pageSize } = categoryMainInitState.pagination;
 
-  // Obtener los query params directamente del route activado
   const queryParams = route.queryParams;
 
   return of(queryParams).pipe(

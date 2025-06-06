@@ -1,4 +1,4 @@
-import { signalStore } from '@ngrx/signals';
+import { signalStore, withState } from '@ngrx/signals';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import {
   initStoreFirebaseCrudState,
@@ -12,12 +12,15 @@ import { LlecoopCategoryFireService } from './category-fire.service';
 
 export type StoreCategoryFilter = StoreFirebaseCrudFilter & { text: string };
 
-export type UserOrderListStoreCrudState = StoreFirebaseCrudState<
+export type CategoryStoreCrudState = StoreFirebaseCrudState<
   LlecoopProductCategory,
   StoreCategoryFilter
 >;
 
-export const initState: StoreFirebaseCrudState<LlecoopProductCategory, StoreCategoryFilter> = {
+export const categoryMainInitState: StoreFirebaseCrudState<
+  LlecoopProductCategory,
+  StoreCategoryFilter
+> = {
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
@@ -33,14 +36,15 @@ export const initState: StoreFirebaseCrudState<LlecoopProductCategory, StoreCate
 
 export const llecoopCategoryStore = signalStore(
   { providedIn: 'root' },
+  withState<CategoryStoreCrudState>(categoryMainInitState),
   withFirebaseCrud<
     LlecoopProductCategory,
     LlecoopCategoryFireService,
     StoreCategoryFilter,
-    UserOrderListStoreCrudState
+    CategoryStoreCrudState
   >({
     featureName: 'category',
     dataServiceType: LlecoopCategoryFireService,
-    initState,
+    initState: categoryMainInitState,
   })
 );

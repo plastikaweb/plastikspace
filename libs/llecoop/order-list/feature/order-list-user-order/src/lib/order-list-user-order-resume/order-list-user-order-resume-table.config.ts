@@ -1,11 +1,9 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import {
-  getLlecoopProductUnitStep,
-  getLlecoopProductUnitSuffix,
-  LlecoopOrderProduct,
-} from '@plastik/llecoop/entities';
+import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
+import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
 import { categoryNameCell } from '@plastik/llecoop/util';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -23,6 +21,9 @@ export class OrderListUserOrderResumeTableConfig
   readonly #sanitizer = inject(DomSanitizer);
   readonly #store = inject(llecoopOrderListStore);
   readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
+
+  readonly #productUnitSuffixPipe = inject(LlecoopProductUnitSuffixPipe);
+  readonly #productUnitStepPipe = inject(LlecoopProductUnitStepPipe);
 
   cartIsEditable = signal(false);
 
@@ -52,7 +53,7 @@ export class OrderListUserOrderResumeTableConfig
       type: 'QUANTITY',
       extras: item => {
         const unit = item?.unit ?? { type: 'unit' };
-        const suffix = getLlecoopProductUnitSuffix(unit);
+        const suffix = this.#productUnitSuffixPipe.transform(unit);
         const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
         return {
           suffix,
@@ -61,7 +62,7 @@ export class OrderListUserOrderResumeTableConfig
       },
       execute: (value, product) =>
         value
-          ? `${Number(value).toFixed(2)} ${getLlecoopProductUnitSuffix(product?.unit ?? { type: 'unit' })}`
+          ? `${Number(value).toFixed(2)} ${this.#productUnitSuffixPipe.transform(product?.unit ?? { type: 'unit' })}`
           : '-',
     },
   };
@@ -95,8 +96,8 @@ export class OrderListUserOrderResumeTableConfig
       type: 'number',
       attributes: {
         min: 0,
-        step: getLlecoopProductUnitStep(orderProduct?.unit ?? { type: 'unit' }),
-        suffix: getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' }),
+        step: this.#productUnitStepPipe.transform(orderProduct?.unit ?? { type: 'unit' }),
+        suffix: this.#productUnitSuffixPipe.transform(orderProduct?.unit ?? { type: 'unit' }),
         placeholder: 'Quantitat final',
       },
       onChanges: (value, orderProduct) => {

@@ -20,6 +20,7 @@ export type StoreFirebaseCrudState<T extends BaseEntity, F extends StoreFirebase
   showNotification: boolean;
   baseRoute: string | { onCreate: string; onUpdate: string; onError: string };
   _adminOnly: boolean;
+  _public: boolean;
 };
 
 /**

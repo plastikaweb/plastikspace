@@ -1,6 +1,7 @@
-import { inject, Injectable, LOCALE_ID, Signal, signal } from '@angular/core';
-import { getLlecoopProductUnitSuffix, LlecoopOrderProductTotal } from '@plastik/llecoop/entities';
+import { inject, Injectable, Signal, signal } from '@angular/core';
+import { LlecoopOrderProductTotal } from '@plastik/llecoop/entities';
 import { llecoopOrderListStore } from '@plastik/llecoop/order-list/data-access';
+import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
 import { FormattingTypes } from '@plastik/shared/formatters';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -16,8 +17,8 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
   implements TableStructureConfig<LlecoopOrderProductTotal>
 {
   readonly #store = inject(llecoopOrderListStore);
-  readonly #locale = inject(LOCALE_ID);
   readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
+  readonly #productUnitSuffixPipe = inject(LlecoopProductUnitSuffixPipe);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProductTotal, 'TITLE_CASE'> = {
     key: 'name',
@@ -41,7 +42,7 @@ export class LlecoopOrderListFeatureListTotalDetailTableConfig
       type: 'QUANTITY',
       extras: item => {
         const unit = item?.unit ?? { type: 'unit' };
-        const suffix = getLlecoopProductUnitSuffix(unit);
+        const suffix = this.#productUnitSuffixPipe.transform(unit);
         const numberDigitsInfo = suffix === 'kg' ? '1.2-2' : '1.0-0';
         return {
           suffix,

@@ -1,3 +1,6 @@
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import '@plastik/shared/testing';
+
 import { DebugElement, provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';

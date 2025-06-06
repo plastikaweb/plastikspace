@@ -1,5 +1,3 @@
-import '@plastik/shared/testing';
-
 import { provideExperimentalZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Storage } from '@angular/fire/storage';

@@ -26,8 +26,7 @@ describe('SharedImgContainerComponent', () => {
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
     componentRef.setInput('src', 'test.jpg');
-    componentRef.setInput('width', 100);
-    componentRef.setInput('height', 100);
+    componentRef.setInput('dimensions', { width: 100, height: 100 });
     componentRef.setInput('title', 'test');
     componentRef.setInput('lcpImage', false);
     fixture.detectChanges();

@@ -1,19 +1,21 @@
-@if (!dimensions()) {
+@let width = dimensions()?.width;
+@let height = dimensions()?.height;
+
+@if (lcpImage()) {
   <img
-    fill
     class="object-cover rounded-lg"
+    priority
     [ngSrc]="src() || ''"
-    [priority]="lcpImage()"
-    [alt]="title()" />
+    [width]="width"
+    [height]="height"
+    [alt]="title()"
+    [loaderParams]="{ width, height, quality: quality() }" />
 } @else {
-  @let width = dimensions()?.width;
-  @let height = dimensions()?.height;
   <img
     class="object-cover rounded-lg"
     [ngSrc]="src() || ''"
     [width]="width"
     [height]="height"
-    [priority]="lcpImage()"
     [alt]="title()"
     [loaderParams]="{ width, height, quality: quality() }" />
 }

@@ -1,15 +1,13 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import {
-  getLlecoopProductBasedUnitText,
-  getLlecoopProductUnitStep,
-  getLlecoopProductUnitSuffix,
-  LlecoopOrderProduct,
-} from '@plastik/llecoop/entities';
+import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
+import { LlecoopProductBaseUnitTextPipe } from '@plastik/llecoop/product/product-base-unit-text';
+import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
+import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
 import { categoryNameCell } from '@plastik/llecoop/util';
 import {
   DEFAULT_TABLE_CONFIG,
@@ -27,6 +25,9 @@ export class LlecoopUserOrderDetailFormTableConfig
   readonly #sanitizer = inject(DomSanitizer);
   readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #userOrderStore = inject(llecoopUserOrderStore);
+  readonly #productBaseUnitTextPipe = inject(LlecoopProductBaseUnitTextPipe);
+  readonly #productUnitSuffixPipe = inject(LlecoopProductUnitSuffixPipe);
+  readonly #productUnitStepPipe = inject(LlecoopProductUnitStepPipe);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -77,7 +78,7 @@ export class LlecoopUserOrderDetailFormTableConfig
       type: 'CUSTOM',
       execute: (value, element) => {
         const price = `<p>${Number(value).toFixed(2)} €</p>`;
-        const unit = element?.unit ? getLlecoopProductBasedUnitText(element.unit) : '';
+        const unit = element?.unit ? this.#productBaseUnitTextPipe.transform(element.unit) : '';
 
         return this.#sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
       },
@@ -97,8 +98,8 @@ export class LlecoopUserOrderDetailFormTableConfig
       type: 'number',
       attributes: {
         min: 0,
-        step: getLlecoopProductUnitStep(orderProduct?.unit ?? { type: 'unit' }),
-        suffix: getLlecoopProductUnitSuffix(orderProduct?.unit ?? { type: 'unit' }),
+        step: this.#productUnitStepPipe.transform(orderProduct?.unit ?? { type: 'unit' }),
+        suffix: this.#productUnitSuffixPipe.transform(orderProduct?.unit ?? { type: 'unit' }),
         styles: 'w-[110px]',
       },
       onChanges: (value, orderProduct) => {

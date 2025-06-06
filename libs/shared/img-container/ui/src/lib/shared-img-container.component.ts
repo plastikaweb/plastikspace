@@ -12,7 +12,7 @@ export type ImageDimensions = { width: number; height: number } | undefined;
 export class SharedImgContainerComponent {
   src = input.required<string>();
   title = input.required<string>();
-  dimensions = input<ImageDimensions>();
+  dimensions = input.required<ImageDimensions>();
   quality = input<number>(80);
   lcpImage = input<boolean>(false);
 }
