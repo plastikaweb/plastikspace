@@ -2,16 +2,15 @@
 import { filter, tap } from 'rxjs';
 
 import { inject, signal } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { FormConfig } from '@plastik/core/entities';
-import { llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import {
   LlecoopProduct,
   LlecoopProductSelectData,
   LlecoopProductUnit,
 } from '@plastik/llecoop/entities';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
+import { LlecoopSharedCategoryFireService } from '@plastik/llecoop/shared/data-access';
 import { InputImgLoaderProps } from '@plastik/shared/form/img-loader';
 import { FirebaseStorageService } from '@plastik/storage/data-access';
 
@@ -54,8 +53,8 @@ function setUnitBaseProps(
 
 export function productFeatureDetailFormConfig(newProduct: boolean): FormConfig<LlecoopProduct> {
   const productStore = inject(llecoopProductStore);
-  const categoryStore = inject(llecoopCategoryStore);
   const firebaseStorage = inject(FirebaseStorageService);
+  const categoryService = inject(LlecoopSharedCategoryFireService);
 
   const formConfig = [
     {
@@ -85,7 +84,7 @@ export function productFeatureDetailFormConfig(newProduct: boolean): FormConfig<
             label: 'Categoria',
             placeholder: 'Categoria',
             required: true,
-            options: toObservable(categoryStore.categoriesList),
+            options: categoryService.getCategoriesSelectData(false),
           },
         },
         {

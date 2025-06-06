@@ -1,12 +1,24 @@
-<div class="flex flex-col flex-wrap justify-center items-center gap-sm mb-md">
-  <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
-    Benvigut/da a la botiga d'El Llevat!
-  </h2>
-  <p class="text-center text-md">Descobreix productes ecològics, frescos i de proximitat.</p>
-</div>
+@defer {
+  <div class="flex flex-col flex-wrap justify-center items-center gap-sm mb-md">
+    <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
+      Benvigut/da a la botiga d'El Llevat!
+    </h2>
+    <p class="text-center text-md">Descobreix productes ecològics, frescos i de proximitat.</p>
+  </div>
+}
 
 <div class="flex flex-col flex-wrap justify-center items-center gap-sm mb-md">
   <h3>Els nostres productes</h3>
+
+  @defer {
+    <plastik-shared-form-feature
+      class="flex flex-row justify-between content-center items-end mb-4 filters-box"
+      [fields]="facade.filterFormConfig || []"
+      [model]="facade.filterCriteria() || {}"
+      [submitConfig]="{ submitAvailable: false, disableOnSubmit: false }"
+      (changeEvent)="facade.onChangeFilterCriteria($event)">
+    </plastik-shared-form-feature>
+  }
 
   @defer {
     <div class="flex flex-wrap justify-center items-center max-w-fit gap-md">
@@ -18,7 +30,9 @@
           (viewDetails)="facade.viewDetails($event)" />
       }
     </div>
+  }
 
+  @defer {
     <div
       class="flex justify-center items-center w-full border-t border-solid border-gray-10 mt-md py-md">
       <mat-paginator

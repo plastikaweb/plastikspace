@@ -14,6 +14,7 @@
     - [Product](#product)
     - [User](#user)
     - [Profile](#profile)
+    - [Shared](#shared)
     - [Triggers](#triggers)
 
 ## Description
@@ -90,6 +91,10 @@ This is a list of all the related libraries to llecoop app.
 
 - [llecoop-profile-feature](../../libs/llecoop/profile/feature/README.md)
 - [llecoop-profile-data-access](../../libs/llecoop/profile/data-access/README.md)
+
+### Shared
+
+- [llecoop-shared-data-access](../../libs/llecoop/shared/data-access/README.md)
 
 ### Triggers
 

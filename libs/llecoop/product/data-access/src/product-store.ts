@@ -1,4 +1,4 @@
-import { signalStore } from '@ngrx/signals';
+import { signalStore, withState } from '@ngrx/signals';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import {
   initStoreFirebaseCrudState,
@@ -15,6 +15,8 @@ export type StoreProductFilter = StoreFirebaseCrudFilter & {
   category: string;
   isAvailable: 'all' | 'on' | 'off';
 };
+
+export type ProductStoreCrudState = StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter>;
 
 export const initState: StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter> = {
   ...initStoreFirebaseCrudState(),
@@ -34,6 +36,7 @@ export const initState: StoreFirebaseCrudState<LlecoopProduct, StoreProductFilte
 
 export const llecoopProductStore = signalStore(
   { providedIn: 'root' },
+  withState<ProductStoreCrudState>(initState),
   withFirebaseCrud<
     LlecoopProduct,
     LlecoopProductFireService,

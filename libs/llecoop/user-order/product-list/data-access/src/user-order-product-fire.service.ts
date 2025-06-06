@@ -108,14 +108,8 @@ export class LlecoopUserOrderProductFireService extends EntityFireService<Llecoo
             where('normalizedName', '>=', normalizedText),
             where('normalizedName', '<=', normalizedText + '\uf8ff')
           );
-        } else if (key === 'category' && value) {
-          const normalizedText = latinize(value as string).toLowerCase();
-          conditions.push(
-            where('category', '>=', normalizedText),
-            where('category', '<=', normalizedText + '\uf8ff')
-          );
-        } else if (value) {
-          conditions.push(where(key, '==', value));
+        } else if (key === 'category' && value !== '') {
+          conditions.push(where('categoryRef', '==', value));
         }
       });
     }

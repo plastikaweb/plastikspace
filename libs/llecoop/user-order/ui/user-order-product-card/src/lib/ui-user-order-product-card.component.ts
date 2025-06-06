@@ -60,14 +60,11 @@ export class UiUserOrderProductCardComponent {
 
   constructor() {
     effect(() => {
-      // Get the current quantity value to trigger the effect
       const currentQuantity = this.quantity();
 
-      // Only emit if it's not the first change
       if (!this.#isFirstChange) {
         this.addToCart.emit({ product: this.product(), quantity: currentQuantity });
       } else {
-        // Mark first change as complete
         this.#isFirstChange = false;
       }
     });

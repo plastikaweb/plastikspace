@@ -15,7 +15,7 @@ export type StoreUserOrderProductProductFilter = StoreFirebaseCrudFilter & {
   category: string;
 };
 
-export type UserOrderProductStoreFirebaseCrudState = StoreFirebaseCrudState<
+export type UserOrderProductStoreCrudState = StoreFirebaseCrudState<
   LlecoopProduct,
   StoreUserOrderProductProductFilter
 >;
@@ -40,12 +40,12 @@ export const initState: StoreFirebaseCrudState<LlecoopProduct, StoreUserOrderPro
 
 export const llecoopUserOrderProductStore = signalStore(
   { providedIn: 'root' },
-  withState<UserOrderProductStoreFirebaseCrudState>(initState),
+  withState<UserOrderProductStoreCrudState>(initState),
   withFirebaseCrud<
     LlecoopProduct,
     LlecoopUserOrderProductFireService,
     StoreUserOrderProductProductFilter,
-    UserOrderProductStoreFirebaseCrudState
+    StoreFirebaseCrudState<LlecoopProduct, StoreUserOrderProductProductFilter>
   >({
     featureName: 'user-order-product',
     dataServiceType: LlecoopUserOrderProductFireService,
