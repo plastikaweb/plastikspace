@@ -1,5 +1,5 @@
 import { IMAGE_LOADER } from '@angular/common';
-import { ComponentRef, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SharedImgContainerComponent } from './shared-img-container.component';
@@ -12,7 +12,7 @@ describe('SharedImgContainerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
 
         {
           provide: IMAGE_LOADER,

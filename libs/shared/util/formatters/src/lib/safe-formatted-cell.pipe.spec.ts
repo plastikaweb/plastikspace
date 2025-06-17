@@ -1,6 +1,7 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
+import { PropertyFormatting } from './formatting';
 import { SafeFormattedPipe } from './safe-formatted-cell.pipe';
 import { DataFormatFactoryService } from './services';
 import { objectMocked } from './services/formatting.mock';
@@ -11,9 +12,8 @@ describe('SafeFormattedCellPipe', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SafeFormattedPipe],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           provide: DataFormatFactoryService,
           useValue: {
@@ -31,16 +31,52 @@ describe('SafeFormattedCellPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('should format value properly', () => {
-    pipe.transform(objectMocked, {
+  it('should properly format text value using DataFormatFactoryService', () => {
+    const expectedResult = 'formatted value';
+    const mockParams: PropertyFormatting<typeof objectMocked, 'TEXT'> = {
       key: objectMocked['id'],
       title: 'ID',
       pathToKey: 'id',
       formatting: {
         type: 'TEXT',
       },
-    });
+    };
 
-    expect(service.getFormattedValue).toHaveBeenCalledTimes(1);
+    (service.getFormattedValue as jest.Mock).mockReturnValue(expectedResult);
+
+    const result = pipe.transform(objectMocked, mockParams);
+
+    expect(result).toBe(expectedResult);
+    expect(service.getFormattedValue).toHaveBeenCalledWith(
+      objectMocked,
+      mockParams,
+      undefined,
+      undefined
+    );
+  });
+  it('should handle optional parameters', () => {
+    const index = 1;
+    const extraConfig = { someConfig: 'value' };
+
+    pipe.transform(
+      objectMocked,
+      {
+        key: objectMocked['id'],
+        title: 'ID',
+        pathToKey: 'id',
+        formatting: {
+          type: 'TEXT',
+        },
+      },
+      index,
+      extraConfig
+    );
+
+    expect(service.getFormattedValue).toHaveBeenCalledWith(
+      objectMocked,
+      expect.any(Object),
+      index,
+      extraConfig
+    );
   });
 });

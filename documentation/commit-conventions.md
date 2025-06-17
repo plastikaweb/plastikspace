@@ -40,7 +40,7 @@ ISSUES CLOSED: #54
 ## Commit execution
 
 ```typescript
-git cz
+yarn cz
 // Not recommended: add --no-verify flag to skip any hook before the commit resolution
 ```
 

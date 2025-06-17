@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
@@ -21,7 +21,7 @@ xdescribe('LlecoopOrderListUserOrderFeatureListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [OrderListUserOrderFeatureListComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideMockStore(),
         UserOrderUtilsService,
         {

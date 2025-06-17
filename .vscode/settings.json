@@ -53,5 +53,7 @@
       "style": "scss",
       "skipStyle": true
     }
-  }
+  },
+  "nxConsole.generateAiAgentRules": true,
+  "editor.formatOnSaveMode": "modificationsIfAvailable"
 }

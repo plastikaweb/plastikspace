@@ -1,6 +1,6 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { DOCUMENT } from '@angular/common';
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+
+import { computed, effect, inject, Injectable, signal, DOCUMENT } from '@angular/core';
 
 const THEMES = {
   light: {

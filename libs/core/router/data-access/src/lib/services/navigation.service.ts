@@ -41,10 +41,9 @@ export class NavigationService {
           return;
         }
       }
-      // If no match for previous URL is found, redirect to default one or previous one.
-      backBaseUrl ? this.#router.navigateByUrl(backBaseUrl || '/') : this.#location.back();
-      return;
-    } else if (backBaseUrl) {
+    }
+
+    if (backBaseUrl) {
       this.#router.navigateByUrl(backBaseUrl || '/');
     } else {
       this.#location.back();

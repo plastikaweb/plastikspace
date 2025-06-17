@@ -6,7 +6,8 @@ import {
   inject,
   LOCALE_ID,
   provideAppInitializer,
-  provideExperimentalZonelessChangeDetection,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
@@ -38,7 +39,8 @@ import { viewConfig } from './cms-layout-config';
 
 export const appConfig = {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
+    provideBrowserGlobalErrorListeners(),
     provideAnimationsAsync(),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(environment.firebase, 'llecoop')),

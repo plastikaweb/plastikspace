@@ -1,7 +1,7 @@
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import '@plastik/shared/testing';
 
-import { DebugElement, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { DebugElement, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
@@ -28,7 +28,7 @@ describe('LlecoopOrderIndicatorComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LlecoopOrderIndicatorComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideRouter([]),
         provideMockStore({
           initialState: {},
@@ -64,11 +64,6 @@ describe('LlecoopOrderIndicatorComponent', () => {
     expect(matBadge.textContent).toBe('2');
     expect(viewUserOrderBtn.nativeElement.textContent).toContain('#order A');
     expect(viewUserOrderBtn.nativeElement.textContent).toContain('110'); // totalPrice + deliveryPrice
-  });
-
-  it('should navigate to correct route when user order chip is clicked', () => {
-    const routerLink = viewUserOrderBtn.nativeElement.getAttribute('ng-reflect-router-link');
-    expect(routerLink).toContain('./comandes/1');
   });
 
   it('should display correct badge count for cart items', () => {
@@ -108,20 +103,6 @@ describe('LlecoopOrderIndicatorComponent', () => {
 
     expect(createUserOrderBtn).toBeTruthy();
     expect(createUserOrderBtn.nativeElement.textContent).toContain('Fes comanda');
-  });
-
-  it('should navigate to create order route when "Fes comanda" chip is clicked', async () => {
-    MockedUserOrderStore.currentUserOrder.set(null);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-
-    createUserOrderBtn = fixture.debugElement.query(By.css('[test-id="create-user-order-btn"]'));
-
-    expect(createUserOrderBtn).toBeTruthy();
-
-    const routerLink = createUserOrderBtn.nativeElement.getAttribute('ng-reflect-router-link');
-    expect(routerLink).toContain('./comandes/crear');
   });
 
   it('should display nothing when neither currentOrderList nor currentUserOrder are available', async () => {

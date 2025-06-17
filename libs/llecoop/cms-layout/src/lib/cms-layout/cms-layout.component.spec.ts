@@ -5,7 +5,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -31,7 +31,7 @@ describe('CmsLayoutComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, CmsLayoutComponent, AngularSvgIconModule.forRoot()],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideRouter([]),
         provideMockStore({}),
         provideHttpClient(),

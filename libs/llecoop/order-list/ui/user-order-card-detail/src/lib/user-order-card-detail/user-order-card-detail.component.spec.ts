@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserOrderCardDetailComponent } from './user-order-card-detail.component';
@@ -10,7 +10,7 @@ describe('UserOrderCardDetailComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UserOrderCardDetailComponent],
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UserOrderCardDetailComponent);

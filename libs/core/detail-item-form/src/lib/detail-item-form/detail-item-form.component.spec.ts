@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
@@ -13,7 +13,7 @@ describe('DetailItemFormComponent', () => {
     await TestBed.configureTestingModule({
       imports: [DetailItemFormComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideRouter([]),
         {
           provide: DETAIL_ITEM_VIEW_FACADE,

@@ -1,6 +1,7 @@
-import { gql } from 'apollo-angular';
-import { Injectable } from '@angular/core';
 import * as Apollo from 'apollo-angular';
+
+import { Injectable } from '@angular/core';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -58,7 +59,7 @@ export type GetSkillsQuery = {
   } | null;
 };
 
-export const GetSkillsDocument = gql`
+export const GetSkillsDocument = Apollo.gql`
   query GetSkills {
     skills {
       nodes {
@@ -78,6 +79,7 @@ export const GetSkillsDocument = gql`
 export class GetSkillsGQL extends Apollo.Query<GetSkillsQuery, GetSkillsQueryVariables> {
   document = GetSkillsDocument;
 
+  // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(apollo: Apollo.Apollo) {
     super(apollo);
   }

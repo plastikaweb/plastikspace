@@ -1,7 +1,7 @@
 import { Timestamp } from 'firebase/firestore';
 
 import { TitleCasePipe } from '@angular/common';
-import { ComponentRef, LOCALE_ID, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentRef, LOCALE_ID, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocumentData, DocumentReference } from '@angular/fire/firestore';
 import { By } from '@angular/platform-browser';
@@ -18,7 +18,7 @@ const mockProduct: LlecoopProduct = {
     type: 'unitWithFixedWeight',
     base: 0.08,
   },
-  id: 'CceixgXYe8bjcG6R0kVW',
+  id: 'Ye8bjcG6R0kVW',
   stock: 4,
   createdAt: new Date() as unknown as Timestamp,
   imgUrl:
@@ -53,7 +53,7 @@ describe('UiUserOrderProductCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           LOCALE_ID,
           useValue: 'es-ES',
@@ -161,7 +161,14 @@ describe('UiUserOrderProductCardComponent', () => {
     const quantitySpy = jest.spyOn(component, 'onQuantityChange');
 
     const removeButton = fixture.debugElement.query(By.css('button[matChipRemove]'));
-    removeButton.triggerEventHandler('click', null);
+    removeButton.triggerEventHandler('click', {
+      preventDefault: () => {
+        return;
+      },
+      stopPropagation: () => {
+        return;
+      },
+    });
 
     expect(quantitySpy).toHaveBeenCalledWith('0');
   });

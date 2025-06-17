@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { GetSkillsGQL, SkillNode } from '@plastik/plastikaweb/graphql-models';
@@ -31,7 +31,7 @@ describe('PlastikawebSkillsService', () => {
 
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         { provide: GetSkillsGQL, useValue: getSkillsGQLMock },
       ],
     });
