@@ -1,6 +1,6 @@
 import { axe, toHaveNoViolations } from 'jest-axe';
 
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -21,7 +21,7 @@ describe('NotificationUiMatSnackbarComponent', () => {
         NotificationUiMatSnackbarDirective,
       ],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           provide: MatSnackBarRef,
           useValue: {

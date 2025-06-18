@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { SharedActivityUiLinearComponent } from './shared-activity-ui-linear.component';
 
@@ -10,7 +10,7 @@ describe('SharedActivityUiLinearComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedActivityUiLinearComponent],
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedActivityUiLinearComponent);

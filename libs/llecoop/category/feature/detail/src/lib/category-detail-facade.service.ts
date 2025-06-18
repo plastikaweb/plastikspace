@@ -21,9 +21,13 @@ export class LlecoopCategoryDetailFacadeService
     title: this.model()?.name || 'Nova categoria',
   }));
 
-  formConfig = categoryFeatureDetailFormConfig();
+  formConfig = categoryFeatureDetailFormConfig(!this.model()?.id);
 
   onSubmit(item: Partial<LlecoopProductCategory>): void {
-    this.model()?.id ? this.#store.update({ item }) : this.#store.create({ item });
+    if (this.model()?.id) {
+      this.#store.update({ item });
+    } else {
+      this.#store.create({ item });
+    }
   }
 }

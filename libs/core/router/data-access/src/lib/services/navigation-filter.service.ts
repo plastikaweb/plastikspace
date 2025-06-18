@@ -1,7 +1,7 @@
 import { EMPTY, Observable, pipe, UnaryFunction } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import {
@@ -17,7 +17,7 @@ import { selectRouteDataName } from '../+state/selectors/router-state.selectors'
   providedIn: 'root',
 })
 export class NavigationFilterService {
-  constructor(protected readonly store: Store) {}
+  protected readonly store = inject(Store);
 
   /**
    * @description Checks if the selected view matches the route on ROUTER_NAVIGATION.

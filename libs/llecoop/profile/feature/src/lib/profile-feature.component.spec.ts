@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DETAIL_ITEM_VIEW_FACADE } from '@plastik/core/detail-edit-view';
 
@@ -12,7 +12,7 @@ describe('ProfileFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [ProfileFeatureComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           provide: DETAIL_ITEM_VIEW_FACADE,
           useValue: {

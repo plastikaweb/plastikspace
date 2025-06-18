@@ -1,6 +1,6 @@
 import { of } from 'rxjs';
 
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { SkillsFeatureComponent } from '@plastik/plastikaweb/skills';
@@ -31,7 +31,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent, SkillsFeatureComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideRouter([]),
         { provide: PlastikawebSkillsService, useValue: skillsServiceMock },
       ],

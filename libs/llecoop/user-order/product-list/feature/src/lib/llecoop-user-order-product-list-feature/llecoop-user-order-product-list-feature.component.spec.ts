@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LlecoopUserOrderProductListFeatureFacadeService } from '../llecoop-user-order-product-list-feature-facade.service';
@@ -11,7 +11,7 @@ describe('LlecoopUserOrderProductListFeatureComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           provide: LlecoopUserOrderProductListFeatureFacadeService,
           useValue: {

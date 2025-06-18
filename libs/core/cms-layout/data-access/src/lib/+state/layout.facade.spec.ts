@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { createAction, Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { VIEW_CONFIG } from '../core-cms-view-config';
@@ -18,7 +18,7 @@ describe('LayoutFacade', () => {
         providers: [
           LayoutFacade,
           provideMockStore({}),
-          provideExperimentalZonelessChangeDetection(),
+          provideZonelessChangeDetection(),
           {
             provide: CORE_CMS_LAYOUT_HEADER_CONFIG,
             useValue: null,

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
 
@@ -14,7 +14,7 @@ describe('LlecoopOrderListFeatureListComponent', () => {
     await TestBed.configureTestingModule({
       imports: [LlecoopOrderListFeatureListComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           provide: LlecoopOrderListFeatureListFacadeService,
           useValue: {

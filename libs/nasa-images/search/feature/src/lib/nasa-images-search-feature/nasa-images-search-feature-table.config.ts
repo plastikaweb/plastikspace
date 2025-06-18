@@ -89,6 +89,7 @@ const thumbnail: TableColumnFormatting<NasaImage, 'COMPONENT', SharedImgContaine
           title: image?.name,
           lcpImage: index === 0,
           quality: 70,
+          dimensions: { width: 100, height: 100 },
         },
       }) as FormattingComponentOutput<SharedImgContainerComponent>,
   },

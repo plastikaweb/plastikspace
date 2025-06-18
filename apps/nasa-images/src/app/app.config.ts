@@ -7,7 +7,7 @@ import {
   ApplicationConfig,
   importProvidersFrom,
   isDevMode,
-  provideExperimentalZonelessChangeDetection,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -35,7 +35,7 @@ import { headerConfig, viewConfig } from './cms-layout-config';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
+    provideZonelessChangeDetection(),
     provideAnimationsAsync(),
     provideHttpClient(),
     provideRouter(routes),

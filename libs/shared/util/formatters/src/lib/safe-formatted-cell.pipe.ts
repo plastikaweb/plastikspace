@@ -15,6 +15,7 @@ import { DataFormatFactoryService } from './services';
   name: 'safeFormatted',
 })
 export class SafeFormattedPipe<T extends BaseEntity> implements PipeTransform {
+  // eslint-disable-next-line @angular-eslint/prefer-inject
   constructor(private readonly dataFormatService: DataFormatFactoryService<T>) {}
 
   transform(

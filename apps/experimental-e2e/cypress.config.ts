@@ -13,5 +13,8 @@ export default defineConfig({
       ciWebServerCommand: 'nx run experimental:serve-static',
     }),
     baseUrl: 'http://localhost:4300',
+    // Please ensure you use `cy.origin()` when navigating between domains and remove this option.
+    // See https://docs.cypress.io/app/references/migration-guide#Changes-to-cyorigin
+    injectDocumentDomain: true,
   },
 });

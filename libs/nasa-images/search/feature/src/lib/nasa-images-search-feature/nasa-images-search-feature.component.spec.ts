@@ -2,7 +2,7 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 import { of } from 'rxjs';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
@@ -22,7 +22,7 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, NasaImagesSearchFeatureComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideEnvironmentMock(),
         provideHttpClientTesting(),
         provideMockStore(),

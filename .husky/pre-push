@@ -1,1 +1,1 @@
-yarn branch:lint && yarn affected:test
+yarn branch:lint && nx affected:test

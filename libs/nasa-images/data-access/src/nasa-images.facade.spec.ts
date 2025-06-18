@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
@@ -15,7 +15,7 @@ describe('NasaImagesFacade', () => {
         NasaImagesFacade,
         { provide: VIEW_CONFIG, useValue: signal([]) },
         provideMockStore({}),
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
       ],
     });
 

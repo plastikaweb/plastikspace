@@ -1,7 +1,7 @@
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { provideHttpClient } from '@angular/common/http';
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
@@ -23,7 +23,7 @@ describe('AppComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, AppComponent, AngularSvgIconModule.forRoot()],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideHttpClient(),
         provideRouter([]),
         provideMockStore({ initialState }),

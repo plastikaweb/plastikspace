@@ -90,11 +90,13 @@ const getLlecoopCategoryDetailFormConfig: FormlyFieldConfig[] = [
   },
 ];
 
-export function categoryFeatureDetailFormConfig(): FormConfig<LlecoopProductCategory> {
+export function categoryFeatureDetailFormConfig(
+  newCategory: boolean
+): FormConfig<LlecoopProductCategory> {
   return {
     getConfig: () => getLlecoopCategoryDetailFormConfig,
-    getSubmitFormConfig: (editMode = false) => ({
-      label: editMode ? 'Desar categoria' : 'Crear categoria',
+    getSubmitFormConfig: () => ({
+      label: newCategory ? 'Crear categoria' : 'Desar categoria',
     }),
   };
 }

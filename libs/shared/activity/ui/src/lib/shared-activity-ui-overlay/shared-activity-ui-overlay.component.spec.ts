@@ -1,6 +1,6 @@
 import { axe, toHaveNoViolations } from 'jest-axe';
 
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SharedActivityUiOverlayComponent } from './shared-activity-ui-overlay.component';
@@ -12,7 +12,7 @@ describe('SharedActivityUiOverlayComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedActivityUiOverlayComponent],
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
   });
 

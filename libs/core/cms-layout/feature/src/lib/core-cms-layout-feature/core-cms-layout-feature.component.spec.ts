@@ -2,7 +2,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -30,7 +30,7 @@ describe('CoreCmsLayoutFeatureComponent', () => {
         MatListModule,
       ],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideHttpClient(),
         provideRouter([]),
         provideMockStore({}),

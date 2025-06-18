@@ -1,7 +1,7 @@
 import { cold, hot } from 'jasmine-marbles';
 import { Observable } from 'rxjs';
 
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -26,7 +26,7 @@ describe('LayoutEffects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideMockStore({
           initialState,
           selectors: [

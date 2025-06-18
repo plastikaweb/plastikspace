@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import {
   defaultNotification,
@@ -13,7 +13,7 @@ describe('NotificationConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         NotificationConfigService,
         { provide: NOTIFICATION_TYPES_CONFIG, useValue: defaultNotification },
       ],

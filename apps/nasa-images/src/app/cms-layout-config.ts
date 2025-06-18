@@ -12,7 +12,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import('@plastik/shared/button').then(c => c.SharedButtonUiComponent),
+        component: () => import('@plastik/shared/button/ui').then(c => c.SharedButtonUiComponent),
         inputs: {
           config: {
             type: 'link',

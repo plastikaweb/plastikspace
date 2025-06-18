@@ -3,7 +3,7 @@ import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
@@ -37,7 +37,7 @@ describe('NasaImagesEffects', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         NasaImagesEffects,
         notificationStore,
         activityStore,
