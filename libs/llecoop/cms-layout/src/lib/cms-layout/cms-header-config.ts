@@ -17,25 +17,29 @@ export function HeaderConfigService(): CoreCmsLayoutHeaderConfig {
     mainIcon: { iconPath: 'assets/img/favicon.svg', svgClass: 'size-lg' },
     title: '',
     extendedTitle: 'El Llevat',
-    menu: {
-      label: store.getUserName,
-      position: 'end',
-      config: [
-        {
-          id: 1,
-          name: 'profile' as Lowercase<string>,
-          title: 'Perfil',
-          icon: 'person',
-          route: ['/perfil'],
-        },
-        {
-          id: 2,
-          name: 'logout' as Lowercase<string>,
-          title: 'Tancar sessió',
-          icon: 'logout',
-          action: () => firebaseAuthService.logout(),
-        },
-      ],
-    },
+    ...(firebaseAuthService.loggedIn()
+      ? {
+          userMenuConfig: {
+            label: store.getUserName,
+            position: 'end',
+            config: [
+              {
+                id: 1,
+                name: 'profile' as Lowercase<string>,
+                title: 'Perfil',
+                icon: 'person',
+                route: ['/perfil'],
+              },
+              {
+                id: 2,
+                name: 'logout' as Lowercase<string>,
+                title: 'Tancar sessió',
+                icon: 'logout',
+                action: () => firebaseAuthService.logout(),
+              },
+            ],
+          },
+        }
+      : {}),
   };
 }

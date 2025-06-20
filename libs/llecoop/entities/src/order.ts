@@ -1,9 +1,7 @@
-import { DocumentReference } from '@angular/fire/firestore';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity, FormSelectOption } from '@plastik/core/entities';
 
 import { LlecoopBaseProduct } from './product';
-import { LlecoopUser } from './user';
 
 export type YearWeek = `${number}${number}${number}${number}-${number}${number}`;
 
@@ -57,10 +55,37 @@ export interface LlecoopOrder extends BaseEntity {
   };
 }
 
+export interface LlecoopUserOrderCart {
+  id?: EntityId;
+  cart: LlecoopOrderProduct[];
+  price?: number;
+  iva?: number;
+  priceWithIva?: number;
+  deliveryPrice?: number;
+  totalPrice?: number;
+  deliveryType?: 'pickup' | 'delivery';
+  deliveryTime?: FormSelectOption['value'];
+  deliveryDate?: FormSelectOption['value'];
+  deliveryInfo?: string;
+  userAddress?: string;
+  userPhone?: string;
+  userName?: string;
+  userNormalizedName?: string;
+  userId?: EntityId;
+  userEmail?: string;
+  status?:
+    | 'draft'
+    | 'submitted'
+    | 'inReview'
+    | 'readyForDelivery'
+    | 'delivered'
+    | 'blocked'
+    | 'failedDelivery'
+    | 'cancelledByUser';
+}
+
 export interface LlecoopUserOrder extends BaseEntity {
   userName: string;
-  userRef: DocumentReference<LlecoopUser>;
-  orderRef: DocumentReference<LlecoopOrder>;
   cart: LlecoopOrderProduct[];
   address: string;
   phone: string;

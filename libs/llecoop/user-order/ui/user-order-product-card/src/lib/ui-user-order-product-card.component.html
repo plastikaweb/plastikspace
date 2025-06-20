@@ -29,8 +29,11 @@
     </div>
   </mat-card-content>
   <mat-card-actions>
-    @if (quantity() === 0) {
-      <button mat-flat-button class="w-full" (click)="onAddToCart(); $event.stopPropagation()">
+    @if (product().quantity === 0) {
+      <button
+        mat-flat-button
+        class="w-full"
+        (click)="onQuantityChange('1'); $event.stopPropagation()">
         <mat-icon>add</mat-icon>
         Afegir
       </button>
@@ -41,7 +44,7 @@
           type="number"
           min="0"
           [step]="product().unit | llecoopProductUnitStep"
-          [ngModel]="quantity()"
+          [ngModel]="product().quantity"
           (ngModelChange)="onQuantityChange($event)"
           (click)="$event.stopPropagation()" />
         <span matTextSuffix class="flex flex-row items-center gap-sub">

@@ -1,6 +1,6 @@
 @let headerTitle = headerConfig.title;
 @let extendedTitle = headerConfig.extendedTitle;
-@let headerMenu = headerConfig.menu;
+@let userMenuConfig = headerConfig.userMenuConfig;
 
 @defer {
   <plastik-skip-link></plastik-skip-link>
@@ -49,33 +49,41 @@
         <plastik-llecoop-order-indicator></plastik-llecoop-order-indicator>
       }
 
-      <button
-        mat-button
-        class="flex gap-tiny"
-        [attr.aria-label]="headerMenu?.label()"
-        [matMenuTriggerFor]="menu">
-        <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
-        <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <span class="block border-b-2 sm:hidden w-fit text-balance p-tiny border-b-gray-10">{{
-          headerMenu?.label()
-        }}</span>
+      @if (userMenuConfig) {
+        <button
+          mat-button
+          class="flex gap-tiny"
+          [attr.aria-label]="userMenuConfig?.label()"
+          [matMenuTriggerFor]="menu">
+          <span class="hidden sm:block">{{ userMenuConfig?.label() }}</span>
+          <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
+        </button>
 
-        @for (item of headerMenu?.config; track item.id) {
-          @if (item && item.route) {
-            <button type="button" mat-menu-item [routerLink]="item.route">
-              <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
-              <span>{{ item.title }}</span>
-            </button>
-          } @else if (item && item.action) {
-            <button type="button" mat-menu-item (click)="item.action()">
-              <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
-              <span>{{ item.title }}</span>
-            </button>
+        <mat-menu #menu="matMenu">
+          <span class="block border-b-2 sm:hidden w-fit text-balance p-tiny border-b-gray-10">{{
+            userMenuConfig?.label()
+          }}</span>
+
+          @for (item of userMenuConfig?.config; track item.id) {
+            @if (item && item.route) {
+              <button type="button" mat-menu-item [routerLink]="item.route">
+                <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+                <span>{{ item.title }}</span>
+              </button>
+            } @else if (item && item.action) {
+              <button type="button" mat-menu-item (click)="item.action()">
+                <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+                <span>{{ item.title }}</span>
+              </button>
+            }
           }
-        }
-      </mat-menu>
+        </mat-menu>
+      } @else {
+        <button mat-button class="flex gap-tiny" routerLink="/login" [attr.aria-label]="'Login'">
+          <mat-icon class="size-[30px] text-[30px] m-0 p-0">login</mat-icon>
+          <span class="hidden sm:block">Login</span>
+        </button>
+      }
 
       <plastik-mat-theme-toggle></plastik-mat-theme-toggle>
     </div>

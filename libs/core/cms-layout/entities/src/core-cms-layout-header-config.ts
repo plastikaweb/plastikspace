@@ -45,7 +45,7 @@ export interface CoreCmsLayoutHeaderConfig {
     position: LayoutPosition;
     widgets: CoreCmsLayoutHeaderWidget[];
   };
-  menu?: {
+  userMenuConfig?: {
     label?: Signal<string>;
     position: LayoutPosition;
     config: HeaderMenuConfig<string>[];

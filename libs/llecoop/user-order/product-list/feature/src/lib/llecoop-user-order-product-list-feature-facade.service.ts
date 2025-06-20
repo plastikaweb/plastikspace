@@ -2,32 +2,35 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
-import { LlecoopProduct } from '@plastik/llecoop/entities';
+import { LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import {
   llecoopUserOrderProductStore,
   StoreUserOrderProductProductFilter,
 } from '@plastik/llecoop/user-order-product-list/data-access';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { llecoopUserOrderCartStore } from '@plastik/llecoop/user-order-cart/data-access';
 import { LlecoopUserOrderProductListFeatureSearchFormConfig } from './llecoop-user-order-product-list-feature-search-form.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LlecoopUserOrderProductListFeatureFacadeService {
-  readonly #store = inject(llecoopUserOrderProductStore);
+  readonly #orderProductStore = inject(llecoopUserOrderProductStore);
+  readonly #cartStore = inject(llecoopUserOrderCartStore);
   readonly #router = inject(Router);
 
-  readonly products = this.#store.entities;
-  readonly count = this.#store.count;
-  readonly pagination = this.#store.pagination;
+  readonly products = this.#orderProductStore.entities;
+  readonly cart = this.#cartStore.cart;
+  readonly count = this.#orderProductStore.count;
+  readonly pagination = this.#orderProductStore.pagination;
   readonly pageSizeOptions = signal([10, 25, 50]);
 
   filterFormConfig = inject(LlecoopUserOrderProductListFeatureSearchFormConfig).getConfig();
-  filterCriteria = this.#store.filter;
+  filterCriteria = this.#orderProductStore.filter;
 
-  addToCart({ product, quantity }: { product: LlecoopProduct; quantity: number }) {
-    console.log(product, quantity);
+  addToCart(product: LlecoopProductWithQuantity) {
+    this.#cartStore.addItem(product);
   }
 
   viewDetails(productId: EntityId) {

@@ -1,15 +1,15 @@
 import { Timestamp } from 'firebase/firestore';
 
-import { TitleCasePipe } from '@angular/common';
+import { IMAGE_LOADER, TitleCasePipe } from '@angular/common';
 import { ComponentRef, LOCALE_ID, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DocumentData, DocumentReference } from '@angular/fire/firestore';
 import { By } from '@angular/platform-browser';
-import { LlecoopProduct, LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { LlecoopProductCategory, LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 
 import { UiUserOrderProductCardComponent } from './ui-user-order-product-card.component';
 
-const mockProduct: LlecoopProduct = {
+const mockProduct: LlecoopProductWithQuantity = {
   categoryRef: 'category/l2lXy4Jjg1KzFEP3KD3o' as unknown as DocumentReference<
     LlecoopProductCategory,
     DocumentData
@@ -43,6 +43,7 @@ const mockProduct: LlecoopProduct = {
   price: 2.8,
   priceWithIva: 2.94,
   updatedAt: new Date() as unknown as Timestamp,
+  quantity: 0,
 };
 
 describe('UiUserOrderProductCardComponent', () => {
@@ -58,6 +59,10 @@ describe('UiUserOrderProductCardComponent', () => {
           LOCALE_ID,
           useValue: 'es-ES',
         },
+        {
+          provide: IMAGE_LOADER,
+          useFactory: () => (src: string) => `https://test.io/${src}`,
+        },
         TitleCasePipe,
       ],
       imports: [UiUserOrderProductCardComponent],
@@ -68,7 +73,6 @@ describe('UiUserOrderProductCardComponent', () => {
     componentRef = fixture.componentRef;
 
     componentRef.setInput('product', mockProduct);
-    componentRef.setInput('quantity', 1);
     componentRef.setInput('index', 1);
     fixture.detectChanges();
   });
@@ -100,7 +104,7 @@ describe('UiUserOrderProductCardComponent', () => {
   });
 
   it('should display add button when quantity is 0', () => {
-    componentRef.setInput('quantity', 0);
+    componentRef.setInput('product', mockProduct);
     fixture.detectChanges();
 
     const addButton = fixture.debugElement.query(By.css('button'));
@@ -109,10 +113,10 @@ describe('UiUserOrderProductCardComponent', () => {
   });
 
   it('should set quantity to 1 when add button is clicked', () => {
-    componentRef.setInput('quantity', 0);
+    componentRef.setInput('product', mockProduct);
     fixture.detectChanges();
 
-    const quantitySpy = jest.spyOn(component.quantity, 'set');
+    const addToCartSpy = jest.spyOn(component.addToCart, 'emit');
 
     const addButton = fixture.debugElement.query(By.css('button'));
     addButton.triggerEventHandler('click', {
@@ -121,11 +125,14 @@ describe('UiUserOrderProductCardComponent', () => {
       },
     });
 
-    expect(quantitySpy).toHaveBeenCalledWith(1);
+    expect(addToCartSpy).toHaveBeenCalledWith({
+      ...mockProduct,
+      quantity: 1,
+    });
   });
 
   it('should display quantity input when quantity is greater than 0', () => {
-    componentRef.setInput('quantity', 1);
+    componentRef.setInput('product', { ...mockProduct, quantity: 2 });
     fixture.detectChanges();
 
     const input = fixture.debugElement.query(By.css('input'));
@@ -133,7 +140,7 @@ describe('UiUserOrderProductCardComponent', () => {
   });
 
   it('should calculate total price correctly', () => {
-    componentRef.setInput('quantity', 2);
+    componentRef.setInput('product', { ...mockProduct, quantity: 2 });
     fixture.detectChanges();
 
     expect(component.totalPrice()).toBe(mockProduct.priceWithIva * 2);
@@ -142,23 +149,11 @@ describe('UiUserOrderProductCardComponent', () => {
     expect(chipElement.nativeElement.textContent).toContain('5.88');
   });
 
-  it('should emit addToCart event when quantity changes (not first change)', () => {
+  it('should emit addToCart event when remove button is clicked', () => {
+    componentRef.setInput('product', { ...mockProduct, quantity: 2 });
+    fixture.detectChanges();
+
     const addToCartSpy = jest.spyOn(component.addToCart, 'emit');
-
-    componentRef.setInput('quantity', 3);
-    fixture.detectChanges();
-
-    expect(addToCartSpy).toHaveBeenCalledWith({
-      product: mockProduct,
-      quantity: 3,
-    });
-  });
-
-  it('should set quantity to 0 when remove button is clicked', () => {
-    componentRef.setInput('quantity', 2);
-    fixture.detectChanges();
-
-    const quantitySpy = jest.spyOn(component, 'onQuantityChange');
 
     const removeButton = fixture.debugElement.query(By.css('button[matChipRemove]'));
     removeButton.triggerEventHandler('click', {
@@ -170,6 +165,9 @@ describe('UiUserOrderProductCardComponent', () => {
       },
     });
 
-    expect(quantitySpy).toHaveBeenCalledWith('0');
+    expect(addToCartSpy).toHaveBeenCalledWith({
+      ...mockProduct,
+      quantity: 0,
+    });
   });
 });
