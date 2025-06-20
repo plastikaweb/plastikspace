@@ -81,6 +81,9 @@
       "@plastik/llecoop/user-order-card": [
         "libs/llecoop/order-list/ui/user-order-card-detail/src/index.ts"
       ],
+      "@plastik/llecoop/user-order-cart/data-access": [
+        "libs/llecoop/user-order/cart/data-access/src/index.ts"
+      ],
       "@plastik/llecoop/user-order-product-list/data-access": [
         "libs/llecoop/user-order/product-list/data-access/src/index.ts"
       ],

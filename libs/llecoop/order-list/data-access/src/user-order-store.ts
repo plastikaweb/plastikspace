@@ -96,40 +96,38 @@ export const llecoopUserOrderStore = signalStore(
     _currentOrderList: inject(llecoopOrderListStore).currentOrderList,
     _currentOrderListInitialLoaded: inject(llecoopOrderListStore).currentOrderListInitialLoaded,
   })),
-  withMethods(store => {
-    return {
-      getCurrentUserOrder: rxMethod<void>(
-        pipe(
-          filter(() => store._activeConnection() && store._currentOrderListInitialLoaded()),
-          withLatestFrom(toObservable(store._currentOrderList)),
-          switchMap(([, currentOrderList]) => {
-            const id = currentOrderList?.id;
+  withMethods(store => ({
+    getCurrentUserOrder: rxMethod<void>(
+      pipe(
+        filter(() => store._activeConnection() && store._currentOrderListInitialLoaded()),
+        withLatestFrom(toObservable(store._currentOrderList)),
+        switchMap(([, currentOrderList]) => {
+          const id = currentOrderList?.id;
 
-            if (id) {
-              return store._dataService.getCurrentUserOrder(id).pipe(
-                tapResponse({
-                  next: currentUserOrder => {
-                    updateState(store, `[user-order] get current user order`, {
-                      currentUserOrder,
-                      currentUserOrderInitialLoaded: true,
-                    });
-                  },
-                  error: error => {
-                    store._storeNotificationService.create(
-                      `No s'ha pogut carregar la teva comanda actual: ${error}`,
-                      'ERROR'
-                    );
-                  },
-                })
-              );
-            }
+          if (id) {
+            return store._dataService.getCurrentUserOrder(id).pipe(
+              tapResponse({
+                next: currentUserOrder => {
+                  updateState(store, `[user-order] get current user order`, {
+                    currentUserOrder,
+                    currentUserOrderInitialLoaded: true,
+                  });
+                },
+                error: error => {
+                  store._storeNotificationService.create(
+                    `No s'ha pogut carregar la teva comanda actual: ${error}`,
+                    'ERROR'
+                  );
+                },
+              })
+            );
+          }
 
-            return EMPTY;
-          })
-        )
-      ),
-    };
-  }),
+          return EMPTY;
+        })
+      )
+    ),
+  })),
   withHooks({
     onInit({ getCurrentUserOrder, _activeConnection, _currentOrderListInitialLoaded }) {
       effect(() => {

@@ -6,6 +6,7 @@ import { UiUserOrderProductCardComponent } from '@plastik/llecoop/user-order/pro
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 
 import { LlecoopUserOrderProductListFeatureFacadeService } from '../llecoop-user-order-product-list-feature-facade.service';
+import { WithCartQuantityPipe } from './with-cart-quantity.pipe';
 
 @Component({
   selector: 'plastik-llecoop-user-order-product-list-feature',
@@ -15,6 +16,7 @@ import { LlecoopUserOrderProductListFeatureFacadeService } from '../llecoop-user
     MatPaginatorModule,
     UiUserOrderProductCardComponent,
     SharedFormFeatureModule,
+    WithCartQuantityPipe,
   ],
   templateUrl: './llecoop-user-order-product-list-feature.component.html',
   styleUrl: './llecoop-user-order-product-list-feature.component.scss',

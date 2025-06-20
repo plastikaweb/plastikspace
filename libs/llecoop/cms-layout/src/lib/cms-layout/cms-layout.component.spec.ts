@@ -40,6 +40,7 @@ describe('CmsLayoutComponent', () => {
           provide: FirebaseAuthService,
           useValue: {
             currentUserEmail: signal('email'),
+            loggedIn: signal(true),
           },
         },
         { provide: llecoopUserOrderStore, useValue: MockedUserOrderStore },
@@ -68,9 +69,7 @@ describe('CmsLayoutComponent', () => {
               position: 'end',
               widgets: [],
             },
-            position: 'end',
-            widgets: [],
-            menu: {
+            userMenuConfig: {
               label: signal('menu'),
               position: 'end',
               config: [],

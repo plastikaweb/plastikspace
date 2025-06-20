@@ -23,6 +23,10 @@ export interface LlecoopProduct extends LlecoopBaseProduct {
   stock?: number;
 }
 
+export interface LlecoopProductWithQuantity extends LlecoopProduct {
+  quantity: number;
+}
+
 export type LlecoopProductUnit =
   | {
       type: 'unit';
