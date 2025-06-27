@@ -45,10 +45,7 @@
     </div>
 
     <div end class="flex items-center gap-tiny">
-      @defer {
-        <plastik-llecoop-order-indicator></plastik-llecoop-order-indicator>
-      }
-
+      <plastik-cart-preview></plastik-cart-preview>
       @if (userMenuConfig) {
         <button
           mat-button
@@ -80,8 +77,8 @@
         </mat-menu>
       } @else {
         <button mat-button class="flex gap-tiny" routerLink="/login" [attr.aria-label]="'Login'">
-          <mat-icon class="size-[30px] text-[30px] m-0 p-0">login</mat-icon>
           <span class="hidden sm:block">Login</span>
+          <mat-icon class="size-[30px] text-[30px] m-0 p-0">login</mat-icon>
         </button>
       }
 

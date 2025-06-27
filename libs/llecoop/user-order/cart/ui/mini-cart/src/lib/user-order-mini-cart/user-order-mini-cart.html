@@ -1,0 +1,59 @@
+@if (cart().length === 0) {
+<div class="py-8 text-center text-gray-500">El teu cistell està buit</div>
+
+} @else {
+<mat-list class="overflow-y-auto max-h-[400px]">
+  @for (item of cart(); track item.id; let i = $index; let last = $last) {
+  <mat-list-item lines="2">
+    <mat-icon
+      matListItemAvatar
+      aria-hidden="true"
+      class="w-[65px] h-[65px] border border-gray-80 rounded"
+      ><plastik-shared-img-container
+        [title]="item.name"
+        [src]="item.imgUrl || ''"
+        [dimensions]="{ width: 65, height: 65 }"
+        [quality]="80"
+    /></mat-icon>
+    <p matListItemTitle class="font-bold capitalize">{{ item.name }}</p>
+
+    <div matListItemLine class="flex flex-row justify-around items-center gap-sub">
+      <mat-form-field class="-ml-sub w-xl">
+        <input
+          matInput
+          type="number"
+          min="0"
+          [step]="item.unit | llecoopProductUnitStep"
+          [ngModel]="item.quantity"
+          (ngModelChange)="onQuantityChange(item, $event)" />
+        <span matTextSuffix class="flex flex-row items-center gap-sub">
+          {{ item.unit | llecoopProductUnitSuffix }}
+        </span>
+      </mat-form-field>
+      <div class="text-right">
+        <div class="font-semibold text-gray-800">
+          {{ item.priceWithIva * item.quantity | number:'1.2-2' }} €
+        </div>
+      </div>
+      <button mat-icon-button aria-label="Eliminar producto" (click)="removeItemFromCart(item)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+  </mat-list-item>
+  @if (!last) {
+  <mat-divider></mat-divider>
+  } }
+</mat-list>
+
+<div
+  class="flex justify-between items-center my-sub text-base font-bold p-sub border-t border-secondary">
+  <span>Total:</span>
+  <span>{{ total() }} €</span>
+</div>
+
+<button class="w-full" mat-button>
+  <mat-icon>shopping_cart</mat-icon>
+  Anar al Cistell
+</button>
+
+}

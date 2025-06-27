@@ -41,6 +41,11 @@ describe('CmsLayoutComponent', () => {
           useValue: {
             currentUserEmail: signal('email'),
             loggedIn: signal(true),
+            currentUser: signal({
+              email: 'email',
+              emailVerified: true,
+              uid: 'uid',
+            }),
           },
         },
         { provide: llecoopUserOrderStore, useValue: MockedUserOrderStore },
