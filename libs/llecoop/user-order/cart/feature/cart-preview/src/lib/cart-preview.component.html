@@ -1,0 +1,30 @@
+<button
+  #trigger="cdkOverlayOrigin"
+  mat-button
+  cdkOverlayOrigin
+  class="flex gap-tiny transition-colors"
+  [class.text-white]="isOpen"
+  [class.bg-primary-dark]="isOpen"
+  [attr.aria-label]="'Cistell'"
+  [matBadge]="userOrderCartStore.cart().length"
+  (click)="isOpen = !isOpen">
+  <span>{{ userOrderCartStore.getCartTotalPrice() | currency }}</span>
+  <mat-icon class="size-[30px] text-[30px] m-0 p-0">shopping_cart</mat-icon>
+</button>
+
+<ng-template
+  cdkConnectedOverlay
+  cdkConnectedOverlayHasBackdrop="true"
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isOpen"
+  (detach)="isOpen = false"
+  (backdropClick)="isOpen = false">
+  <div
+    class="p-sub bg-gray-5 rounded-md shadow-md border border-gray-20 min-w-[250px] @xl:min-w-[350px]">
+    <plastik-user-order-mini-cart
+      [cart]="userOrderCartStore.getOrderedCartItems()"
+      [total]="userOrderCartStore.getCartTotalPrice()"
+      (click)="$event.stopPropagation()"
+      (updateQuantity)="userOrderCartStore.addItem($event)"></plastik-user-order-mini-cart>
+  </div>
+</ng-template>

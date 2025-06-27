@@ -1,0 +1,40 @@
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.form-field-overrides(
+    (
+      container-height: 25px,
+      container-text-size: 12px,
+      container-text-line-height: 20px,
+      subscript-text-line-height: 0,
+      filled-container-color: transparent,
+      container-vertical-padding: 0,
+    )
+  );
+
+  @include mat.list-overrides(
+    (
+      list-item-two-line-container-height: 90px,
+      list-item-leading-icon-end-space: 0,
+      list-item-container-color: transparent,
+    )
+  );
+
+  @include mat.divider-overrides(
+    (
+      color: var(--mat-sys-outline-variant),
+    )
+  );
+}
+
+:host ::ng-deep {
+  .mat-mdc-form-field {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none !important;
+    }
+    .mdc-text-field {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+}

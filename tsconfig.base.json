@@ -81,6 +81,9 @@
       "@plastik/llecoop/user-order-card": [
         "libs/llecoop/order-list/ui/user-order-card-detail/src/index.ts"
       ],
+      "@plastik/llecoop/user-order-cart-preview": [
+        "libs/llecoop/user-order/cart/feature/cart-preview/src/index.ts"
+      ],
       "@plastik/llecoop/user-order-cart/data-access": [
         "libs/llecoop/user-order/cart/data-access/src/index.ts"
       ],
@@ -95,6 +98,9 @@
       ],
       "@plastik/llecoop/user-order/list": [
         "libs/llecoop/order-list/feature/user-order-list/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order/mini-cart": [
+        "libs/llecoop/user-order/cart/ui/mini-cart/src/index.ts"
       ],
       "@plastik/llecoop/user-order/product-card": [
         "libs/llecoop/user-order/ui/user-order-product-card/src/index.ts"
