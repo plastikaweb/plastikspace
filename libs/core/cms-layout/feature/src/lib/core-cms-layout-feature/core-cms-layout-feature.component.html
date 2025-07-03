@@ -1,6 +1,6 @@
 @let sidenavOpened = (sidenavOpened$ | ngrxPush) || false;
 @let isMobile = (isMobile$ | ngrxPush) || false;
-@let headerMenu = headerConfig.menu;
+@let headerMenu = headerConfig.userMenuConfig;
 @let headerTitle = headerConfig.title;
 @let sidenavPosition = headerConfig.sidenavPosition || 'start';
 @let headerWidgetsPosition = headerWidgetsConfig?.position;
@@ -32,7 +32,7 @@
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerTitle }}</span>
         <a
-          class="flex justify-between content-center items-center text-white hover:no-underline gap-sub"
+          class="flex justify-between content-center items-center hover:no-underline gap-sub"
           [routerLink]="['/']"
           [attr.title]="headerTitle">
           <ng-container [ngTemplateOutlet]="h1Tpl"></ng-container>
@@ -94,7 +94,7 @@
         {{ currentDate | date: 'yyyy' }}
         <a
           aria-label="visit www.plastikaweb.com page"
-          class="text-white underline underline-offset-2"
+          class="underline underline-offset-2"
           href="https://www.plastikaweb.com"
           target="_blank"
           >Plastikaweb</a
@@ -102,7 +102,7 @@
         |
         <a
           aria-label="visitar www.llevat.org"
-          class="text-white underline underline-offset-2"
+          class="underline underline-offset-2"
           href="https://www.llevat.org"
           target="_blank"
           >El Llevat</a

@@ -31,7 +31,7 @@ export class LlecoopUserOrderDetailFacadeService implements DetailItemViewFacade
       icon: 'shopping_basket',
       type: 'text',
       id: 'total',
-      styles: 'text-md text-primary-dark py-tiny px-sub',
+      styles: 'text-md py-tiny px-sub',
     },
   ]);
 

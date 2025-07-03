@@ -34,10 +34,7 @@ const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'id',
   title: 'ID',
   pathToKey: 'id',
-  cssClasses: [
-    'min-w-[12rem] hidden md:flex lg:min-w-[14rem]',
-    'text-sm text-white bg-secondary-dark rounded-md p-tiny',
-  ],
+  cssClasses: ['min-w-[12rem] hidden md:flex lg:min-w-[14rem]', 'text-sm rounded-md p-tiny'],
   formatting: {
     type: 'TEXT',
   },

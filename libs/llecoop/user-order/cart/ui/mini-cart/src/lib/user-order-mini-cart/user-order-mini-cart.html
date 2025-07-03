@@ -6,19 +6,19 @@
   @for (item of cart(); track item.id; let i = $index; let last = $last) {
   <mat-list-item lines="2">
     <mat-icon
-      matListItemAvatar
+      matListItemIcon
       aria-hidden="true"
-      class="w-[65px] h-[65px] border border-gray-80 rounded"
+      class="w-[60px] h-[60px] border border-gray-80 rounded mr-sub"
       ><plastik-shared-img-container
         [title]="item.name"
         [src]="item.imgUrl || ''"
-        [dimensions]="{ width: 65, height: 65 }"
+        [dimensions]="{ width: 60, height: 60 }"
         [quality]="80"
     /></mat-icon>
     <p matListItemTitle class="font-bold capitalize">{{ item.name }}</p>
 
-    <div matListItemLine class="flex flex-row justify-around items-center gap-sub">
-      <mat-form-field class="-ml-sub w-xl">
+    <div matListItemLine class="flex flex-row justify-between items-center">
+      <mat-form-field class="min-w-[50px] max-w-[80px] mr-sub lg:-ml-sm">
         <input
           matInput
           type="number"
@@ -26,7 +26,7 @@
           [step]="item.unit | llecoopProductUnitStep"
           [ngModel]="item.quantity"
           (ngModelChange)="onQuantityChange(item, $event)" />
-        <span matTextSuffix class="flex flex-row items-center gap-sub">
+        <span matTextSuffix class="flex flex-row items-center gap-tiny">
           {{ item.unit | llecoopProductUnitSuffix }}
         </span>
       </mat-form-field>

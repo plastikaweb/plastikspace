@@ -1,5 +1,6 @@
 @use '@angular/material' as mat;
-@use 'material';
+@use 'font-family';
+@use 'themes/nasa-theme';
 @use 'theme';
 @use 'core_styles_util_material';
 @use 'loading';
@@ -11,6 +12,7 @@
 @layer base {
   html {
     font-size: 14px;
+    font-family: var(--sans-serif);
     @apply box-border;
   }
 
@@ -21,7 +23,6 @@
   }
 
   body {
-    font-family: var(--sans-serif);
     overflow: hidden;
   }
 
@@ -63,23 +64,6 @@
     @apply ml-sub mb-sub;
   }
 
-  a {
-    @apply text-secondary-dark;
-    &:hover {
-      @apply underline underline-offset-2;
-    }
-  }
-
-  mat-toolbar {
-    @include mat.toolbar-overrides(
-      (
-        container-background-color: var(--primary-700),
-        container-text-color: var(--white),
-        standard-height: 70px,
-      )
-    );
-  }
-
   plastik-shared-activity-ui-overlay .overlay-container {
     z-index: 9999;
   }
@@ -114,4 +98,14 @@
       }
     }
   }
+}
+
+@layer components {
+  @include mat.toolbar-overrides(
+    (
+      standard-height: 70px,
+      container-text-color: var(--mat-sys-on-primary),
+      container-background-color: var(--mat-sys-primary),
+    )
+  );
 }

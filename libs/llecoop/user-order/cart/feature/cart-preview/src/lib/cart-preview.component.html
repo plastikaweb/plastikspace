@@ -2,9 +2,7 @@
   #trigger="cdkOverlayOrigin"
   mat-button
   cdkOverlayOrigin
-  class="flex gap-tiny transition-colors"
-  [class.text-white]="isOpen"
-  [class.bg-primary-dark]="isOpen"
+  class="flex gap-tiny"
   [attr.aria-label]="'Cistell'"
   [matBadge]="userOrderCartStore.cart().length"
   (click)="isOpen = !isOpen">
@@ -19,8 +17,7 @@
   [cdkConnectedOverlayOpen]="isOpen"
   (detach)="isOpen = false"
   (backdropClick)="isOpen = false">
-  <div
-    class="p-sub bg-gray-5 rounded-md shadow-md border border-gray-20 min-w-[250px] @xl:min-w-[350px]">
+  <div class="p-tiny mat-mdc-menu-panel min-w-[300px] lg:min-w-[350px]">
     <plastik-user-order-mini-cart
       [cart]="userOrderCartStore.getOrderedCartItems()"
       [total]="userOrderCartStore.getCartTotalPrice()"

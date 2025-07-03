@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@use 'styles_theme-colors' as palette;
+@use 'themes/yellow-theme';
 @use 'theme';
 @use 'core_styles_util_material';
 
@@ -9,7 +9,6 @@
 
 @layer base {
   html {
-    color-scheme: light dark;
     font-size: 15px;
     font-optical-sizing: auto;
     font-style: normal;
@@ -18,22 +17,6 @@
     font-weight: 400;
     font-variation-settings: 'wdth' 100;
     font-variant-numeric: tabular-nums;
-
-    @include mat.theme(
-      (
-        color: (
-          primary: palette.$primary-palette,
-          tertiary: palette.$tertiary-palette,
-        ),
-        typography: (
-          plain-family: var(--serif),
-          bold-weight: 800,
-          medium-weight: 600,
-          regular-weight: 400,
-        ),
-        density: 0,
-      )
-    );
   }
 
   *,

@@ -1,5 +1,5 @@
 <div
-  class="flex overflow-hidden relative justify-center items-center rounded-lg border-2 border-dashed outline-none text-primary-dark border-gray-40"
+  class="flex overflow-hidden relative justify-center items-center rounded-lg border-2 border-dashed outline-none border-gray-40"
   tabindex="0"
   [style.height.px]="imgHeight()"
   [style.width.px]="imgWidth()"
@@ -64,7 +64,7 @@
       [lcpImage]="lcpImage()">
     </plastik-shared-img-container>
     <div
-      class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 rounded-b-lg text-primary-dark bg-white/90 px-sub"
+      class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 rounded-b-lg bg-white/90 px-sub"
       tabindex="0"
       (focus)="firstActionBtn?.focus()">
       <p class="flex-grow text-sm font-bold truncate">{{ title() || '' }}</p>

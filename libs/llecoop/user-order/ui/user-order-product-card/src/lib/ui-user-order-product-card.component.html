@@ -24,9 +24,9 @@
     <mat-card-subtitle>{{ product().category?.name | titlecase }}</mat-card-subtitle>
   </mat-card-header>
   <mat-card-content>
-    <div class="mb-4 font-bold text-md text-secondary-dark">
+    <div class="mb-4 font-bold text-md">
       {{ product().priceWithIva | currency: 'EUR' }}
-      <span class="text-sm text-gray-60"> / {{ product().unit | llecoopProductBaseUnitText }}</span>
+      <span class="text-sm"> / {{ product().unit | llecoopProductBaseUnitText }}</span>
     </div>
   </mat-card-content>
   <mat-card-actions>
