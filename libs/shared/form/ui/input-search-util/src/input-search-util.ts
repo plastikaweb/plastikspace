@@ -65,11 +65,11 @@ export function addSearchInput(
  * Sets the visibility of the addon right element based on the form control's value.
  * @param {FormlyFieldConfig} config - The Formly field configuration object.
  * @description Modifies the addon right properties to add a 'classes' attribute that controls visibility.
- * When the form control has a value, the addon remains visible with 'text-primary-dark' class.
+ * When the form control has a value, the addon remains visible with '' class.
  * When the form control is empty, the addon becomes invisible by adding the 'invisible' class.
  */
 function setAddOnRightVisibility(config: FormlyFieldConfig): void {
-  const classes = config.formControl?.value ? 'text-primary-dark' : 'text-primary-dark invisible';
+  const classes = config.formControl?.value ? '' : 'invisible';
   const addonRight = { ...config.props?.['addonRight'], classes };
   config.props = { ...config.props, addonRight };
 }

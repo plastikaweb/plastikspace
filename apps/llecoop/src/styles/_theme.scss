@@ -1,6 +1,3 @@
-@use '@angular/material' as mat;
-@use 'styles_theme-colors' as palette;
-
 :root {
   --base-size: 1rem;
   --scale: 1.2;
@@ -15,44 +12,26 @@
   --xl: calc(3.5rem * var(--scale));
   --xxl: calc(4.5rem * var(--scale));
 
-  /* Colors */
-  --primary-50: #{mat.m2-get-color-from-palette(palette.$primary-palette, 50)};
-  --primary-70: #{mat.m2-get-color-from-palette(palette.$primary-palette, 70)};
-  --primary-95: #{mat.m2-get-color-from-palette(palette.$primary-palette, 95)};
-  --primary-40: #{mat.m2-get-color-from-palette(palette.$primary-palette, 40)};
-  --primary-25: #{mat.m2-get-color-from-palette(palette.$primary-palette, 25)};
-  --primary-10: #{mat.m2-get-color-from-palette(palette.$primary-palette, 10)};
-  --tertiary-50: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 50)};
-  --tertiary-70: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 70)};
-  --tertiary-95: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 95)};
-  --tertiary-25: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 25)};
-  --tertiary-10: #{mat.m2-get-color-from-palette(palette.$tertiary-palette, 10)};
-  --secondary-50: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 50)};
-  --secondary-70: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 70)};
-  --secondary-95: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 95)};
-  --secondary-25: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 25)};
-  --secondary-10: #{mat.m2-get-color-from-palette(palette.$secondary-palette, 10)};
-  --warn: #{mat.m2-get-color-from-palette(palette.$error-palette, 50)};
-  --warn-70: #{mat.m2-get-color-from-palette(palette.$error-palette, 70)};
-  --warn-90: #{mat.m2-get-color-from-palette(palette.$error-palette, 90)};
-  --warn-25: #{mat.m2-get-color-from-palette(palette.$error-palette, 25)};
-  --warn-10: #{mat.m2-get-color-from-palette(palette.$error-palette, 10)};
+  /* Tailwind Colors */
+  --primary: var(--mat-sys-primary);
+  --primary-light: var(--mat-sys-primary-container);
+  --primary-lighter: var(--mat-sys-primary-fixed);
+  --primary-dark: var(--mat-sys-on-primary);
+  --primary-darker: var(--mat-sys-on-primary-container);
+  --secondary: var(--mat-sys-secondary);
+  --secondary-light: var(--mat-sys-secondary-container);
+  --secondary-lighter: var(--mat-sys-secondary-fixed);
+  --secondary-dark: var(--mat-sys-on-secondary);
+  --secondary-darker: var(--mat-sys-on-secondary-container);
+
+  --warn: var(--mat-sys-error);
+  --warn-70: var(--mat-sys-error-container);
+  --warn-90: var(--mat-sys-on-error-container);
+  --warn-25: var(--mat-sys-on-error);
+  --warn-10: var(--mat-sys-error-container);
   --white: #ffffff;
   --black: #000000;
 
-  /* Tailwind Colors */
-  --primary: var(--primary-50);
-  --primary-light: var(--primary-70);
-  --primary-lighter: var(--primary-95);
-  --primary-dark: var(--primary-40);
-  --primary-darker: var(--primary-10);
-  --secondary: var(--secondary-50);
-  --secondary-light: var(--secondary-70);
-  --secondary-lighter: var(--secondary-95);
-  --secondary-dark: var(--secondary-25);
-  --secondary-darker: var(--secondary-10);
-
-  /* Spacing */
   --spacing-tiny: var(--tiny);
   --spacing-sub: var(--sub);
   --spacing-sm: var(--h5);
@@ -61,10 +40,8 @@
   --spacing-xl: var(--xl);
   --spacing-xxl: var(--xxl);
 
-  /* Font Family */
   --serif: 'Inter', serif;
 
-  /* Font Size */
   --font-size-tiny: var(--tiny);
   --font-size-base: var(--base-size);
   --font-size-sm: var(--sub);
@@ -73,14 +50,12 @@
   --font-size-xl: var(--h3);
   --font-size-xxl: var(--h2);
 
-  /* Table */
   --plastik-mdc-table-row-marked-ok-bg-color: var(--mat-sys-primary-container);
   --plastik-mdc-nested-data-bg-color: var(--mat-sys-secondary-container);
   --plastik-mdc-nested-container-bg-color: var(--mat-sys-surface-container);
   --plastik-mdc-table-row-marked-ko-bg-color: var(--mat-sys-error-container);
   --plastik-mdc-table-row-marked-changed-bg-color: var(--mat-sys-inverse-primary);
 
-  /* Notification Snackbar Boxes */
   --plastik-error-notification-box-color: var(--mat-sys-error);
   --plastik-info-notification-box-color: rgba(7, 68, 121, 0.87);
   --plastik-warning-notification-box-color: rgba(140, 58, 14, 0.87);

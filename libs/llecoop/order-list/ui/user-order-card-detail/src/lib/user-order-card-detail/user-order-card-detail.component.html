@@ -3,7 +3,7 @@
     <mat-card class="bg-white">
       <mat-card-header>
         <mat-card-title class="flex gap-tiny">
-          <mat-icon class="text-secondary-dark">shopping_basket</mat-icon>
+          <mat-icon>shopping_basket</mat-icon>
           <span>Comanda #{{ order.id }}</span>
         </mat-card-title>
       </mat-card-header>
@@ -46,9 +46,8 @@
           </div>
 
           @if (order.deliveryInfo) {
-            <div
-              class="flex items-center w-full text-white rounded gap-sub p-sub mt-sub bg-primary-dark">
-              <mat-icon class="text-primary-light">info</mat-icon>
+            <div class="flex items-center w-full text-white rounded gap-sub p-sub mt-sub">
+              <mat-icon>info</mat-icon>
               <span class="text-sm italic">{{ order.deliveryInfo }}</span>
             </div>
           }

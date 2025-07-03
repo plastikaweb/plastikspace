@@ -127,7 +127,7 @@ If you are repeating styling (applying the same list of tailwindCSS classes to a
 
 ## Material configuration
 
-The project uses Angular Material v19.0.2 which brings several improvements and changes:
+The project uses Angular Material v20 which brings several improvements and changes:
 
 - Enhanced Theming system with better CSS custom properties support
 - Improved accessibility features
@@ -135,39 +135,70 @@ The project uses Angular Material v19.0.2 which brings several improvements and 
 
 To use Material in a project:
 
-1. Ensure the required dependencies are installed:
+### 1. Create an m3 theme
 
-    - ["@angular/material"](https://www.npmjs.com/package/@angular/material)
-    - ["@angular/material-date-fns-adapter"](https://www.npmjs.com/package/@angular/material-date-fns-adapter)
+```bash
+yarn nx generate @angular/material:m3Theme
+```
 
-2. Import the core Material styles:
-   - The core styles are available in `@core/styles/util/material`
-   - These include customizations for:
-     - Input fields
-     - Datepicker
-     - Snackbar notifications
+> Follow the prompts to select your primary color palette. Select at least the primary color, use CSS instead of SCSS and select the route of the theme file (e.g. `apps/my-app/src/styles/themes/my-apptheme.css`).
 
-3. Configure your application theme:
-   - Create a `_theme.scss` file in your app's styles directory
-   - Define your color palette and theme variables or use the default ones
-   - Import and use the Material Theming system
+### 2. Configure your application theme while creating a `_theme.scss` file in your app's styles directory and use the Material Theming system variables to define your tailwindcss variables
 
-4. Apply the theme in your `styles.scss`:
+```scss
+   --primary: var(--mat-sys-primary);
+   --primary-light: var(--mat-sys-primary-container);
+   --primary-lighter: var(--mat-sys-primary-fixed);
+   --primary-dark: var(--mat-sys-on-primary);
+   --primary-darker: var(--mat-sys-on-primary-container);
+   --secondary: var(--mat-sys-secondary);
+   --secondary-light: var(--mat-sys-secondary-container);
+   --secondary-lighter: var(--mat-sys-secondary-fixed);
+   --secondary-dark: var(--mat-sys-on-secondary);
+   --secondary-darker: var(--mat-sys-on-secondary-container);
+
+   --warn: var(--mat-sys-error);
+   --warn-70: var(--mat-sys-error-container);
+   --warn-90: var(--mat-sys-on-error-container);
+   --warn-25: var(--mat-sys-on-error);
+   --warn-10: var(--mat-sys-error-container);
+   --white: #ffffff;
+   --black: #000000;
+
+```
+
+### 3. Apply the theme in your `styles.scss`
 
 > [Angular Material Theming](https://material.angular.io/guide/theming)
 
 ```scss
    @use '@angular/material' as mat;
+   @use 'themes/my-theme';
+   @use 'theme';
+   @use 'core_styles_util_material';
 
-   // Include Material core styles
+  @tailwind base;
+  @tailwind components;
+  @tailwind utilities;
 
-  html {
-    color-scheme: light dark;
-    @include mat.theme((
-      color: mat.$violet-palette,
-      typography: Roboto,
-      density: 0
-    ));
+  @layer base {
+    html {
+    // ... all the base styles
+    }
+  }
+
+  @layer components {
+    // ... all the components styles
+    // for example:
+    @include mat.button-overrides(
+    (
+      filled-focus-state-layer-opacity: 0.2,
+    )
+  );
+  }
+
+  @layer utilities {
+    // ... all the utilities styles if any
   }
 ```
 
@@ -233,7 +264,7 @@ Some component libraries that uses Material components are ready to style some o
 For a list of available properties to be customized, take a look at the documentation for each UI library or add yours... and document it.
 
 - CSS overwrite of Angular Material styles
-You can also overwrite Material styles if for some reason the previous approach doesn't work.  
+You can also overwrite Material styles if for some reason the previous approach doesn't work.
 Try to overwrite them by using [CSS specificity](https://developer.mozilla.org/en-US/docs/Web/CSS/Specificity) and avoid `!important` flag.
 
 ```css

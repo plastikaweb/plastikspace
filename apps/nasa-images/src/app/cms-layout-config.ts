@@ -22,7 +22,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
             elements: [
               {
                 type: 'icon',
-                content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' },
+                content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-primary' },
               },
             ],
             doAction: () =>
