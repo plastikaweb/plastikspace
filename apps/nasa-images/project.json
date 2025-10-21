@@ -91,7 +91,8 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/nasa-images"],
       "options": {
-        "jestConfig": "apps/nasa-images/jest.config.ts"
+        "jestConfig": "apps/nasa-images/jest.config.ts",
+        "tsConfig": "apps/nasa-images/tsconfig.spec.json"
       }
     },
     "serve-static": {

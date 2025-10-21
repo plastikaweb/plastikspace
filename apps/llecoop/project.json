@@ -109,7 +109,8 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/llecoop"],
       "options": {
-        "jestConfig": "apps/llecoop/jest.config.ts"
+        "jestConfig": "apps/llecoop/jest.config.ts",
+        "tsConfig": "apps/llecoop/tsconfig.spec.json"
       }
     },
     "serve-static": {

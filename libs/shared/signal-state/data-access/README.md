@@ -48,7 +48,6 @@ Abstract base service that provides CRUD functionalities for entities in Firesto
 **Main Features:**
 
 - **Connection Management**: Maintains an active connection state with Firestore using signals. The `activeConnection` signal controls all Firestore operations:
-
   - When `true`: Enables all Firestore operations and maintains the collection reference.
   - When `false`: Disables all Firestore operations, returns empty results, and clears the collection reference.
   - Each CRUD operation checks this signal before executing to ensure proper connection state.
