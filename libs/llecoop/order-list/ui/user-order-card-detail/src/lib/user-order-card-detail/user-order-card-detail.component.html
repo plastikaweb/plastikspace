@@ -31,11 +31,12 @@
             <mat-icon class="text-secondary">{{
               order.deliveryType === 'pickup' ? 'store' : 'place'
             }}</mat-icon>
-            <span
-              class="text-sm"
-              >{{ order.deliveryType === 'pickup' ? 'Recollida a la seu de El Llevat' : `Entrega a
-            ${order.address}` }}</span
-            >
+            <span class="text-sm">{{
+              order.deliveryType === 'pickup'
+                ? 'Recollida a la seu de El Llevat'
+                : `Entrega a
+            ${order.address}`
+            }}</span>
           </div>
 
           <div class="flex items-center gap-tiny">

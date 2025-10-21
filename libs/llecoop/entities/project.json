@@ -4,6 +4,7 @@
   "projectType": "library",
   "sourceRoot": "libs/llecoop/entities/src",
   "prefix": "plastik",
+  "tags": ["scope:llecoop", "type:entity"],
   "targets": {
     "test": {
       "executor": "@nx/jest:jest",
@@ -16,6 +17,5 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
     }
-  },
-  "tags": ["scope:llecoop", "type:entity"]
+  }
 }

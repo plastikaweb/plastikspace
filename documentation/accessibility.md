@@ -26,7 +26,7 @@
 
 ## Analysis
 
-A todo list of accessibility actions and related information can be found [here](https://github.com/plastikaweb/plastikspace/wiki/Accessibility).
+A todo list of accessibility actions and related information can be found in the [Accessibility](https://github.com/plastikaweb/plastikspace/wiki/Accessibility) wiki page.
 
 ## Review list
 
@@ -219,7 +219,7 @@ In `package.json` you must add a script to run the test runner:
 "my-app:a11y:run": "pa11y-ci --config ./apps/my-app/.pa11yci.json",
 ```
 
-This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`. You can see an example [here](./git-flow.md#pull-request-github-actions).
+This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`. You can see an example in the [git-flow](./git-flow.md#pull-request-github-actions) section.
 
 ### jest axe
 
