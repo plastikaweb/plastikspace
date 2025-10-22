@@ -28,6 +28,12 @@
       "files": ["*.html"],
       "extends": ["plugin:@nx/angular-template"],
       "rules": {}
+    },
+    {
+      "files": ["tailwind.config.js"],
+      "parserOptions": {
+        "project": null
+      }
     }
   ]
 }
