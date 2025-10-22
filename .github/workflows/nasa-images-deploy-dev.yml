@@ -8,7 +8,7 @@ on:
       - develop
 
 env:
-  NPM_CONFIG_LEGACY_PEER_DEPS: true
+  YARN_IMMUTABLE: true
 
 jobs:
   on-success:
@@ -18,18 +18,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: 'yarn'
 
       - name: Install dependencies
-        run: npm ci --legacy-peer-deps
+        run:  yarn install --immutable --network-timeout 1000000
 
       - name: Build application
-        run: npx nx build nasa-images --configuration=development
+        run: yarn nx build nasa-images --configuration=development --skip-nx-cache
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
@@ -42,4 +44,14 @@ jobs:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'failure' }}
     steps:
-      - run: echo 'The triggering workflow failed'
+      - name: Display failure information
+        run: |
+          echo "::error::The triggering workflow failed"
+          echo "Workflow name: ${{ github.event.workflow_run.name }}"
+          echo "Workflow ID: ${{ github.event.workflow_run.id }}"
+          echo "Workflow run number: ${{ github.event.workflow_run.run_number }}"
+          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Commit SHA: ${{ github.event.workflow_run.head_sha }}"
+          echo "Commit message: ${{ github.event.workflow_run.head_commit.message }}"
+          echo "Workflow URL: ${{ github.event.workflow_run.html_url }}"
