@@ -1,21 +1,38 @@
 @let width = dimensions()?.width;
 @let height = dimensions()?.height;
 
-@if (lcpImage()) {
-  <img
-    class="object-cover rounded-lg"
-    priority
-    [ngSrc]="src() || ''"
-    [width]="width"
-    [height]="height"
-    [alt]="title()"
-    [loaderParams]="{ width, height, quality: quality() }" />
+@if (width && height) {
+  @if (lcpImage()) {
+    <img
+      class="object-cover rounded-lg my-sub"
+      priority
+      [ngSrc]="src() || ''"
+      [width]="width"
+      [height]="height"
+      [alt]="title()"
+      [loaderParams]="{ width, height, quality: quality() }" />
+  } @else {
+    <img
+      class="object-cover rounded-lg my-sub"
+      [ngSrc]="src() || ''"
+      [width]="width"
+      [height]="height"
+      [alt]="title()"
+      [loaderParams]="{ width, height, quality: quality() }" />
+  }
 } @else {
-  <img
-    class="object-cover rounded-lg"
-    [ngSrc]="src() || ''"
-    [width]="width"
-    [height]="height"
-    [alt]="title()"
-    [loaderParams]="{ width, height, quality: quality() }" />
+  @if (lcpImage()) {
+    <img
+      class="object-cover rounded-lg w-full max-h-[120px] my-sub"
+      priority
+      fill
+      [ngSrc]="src() || ''"
+      [alt]="title()" />
+  } @else {
+    <img
+      class="object-cover rounded-lg w-full max-h-[120px] my-sub"
+      fill
+      [ngSrc]="src() || ''"
+      [alt]="title()" />
+  }
 }

@@ -190,7 +190,9 @@ export function transformToString(value: unknown): string {
 
   try {
     result = JSON.stringify(value) ?? '';
-  } catch (_) {
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
     result = '';
   }
 

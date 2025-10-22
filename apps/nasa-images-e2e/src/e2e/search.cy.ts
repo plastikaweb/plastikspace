@@ -177,7 +177,6 @@ describe('nasa-images search page', () => {
           });
         });
 
-        document().click();
         submitBtn().should('not.be.disabled');
         submitBtn().click({ force: true });
         // api response

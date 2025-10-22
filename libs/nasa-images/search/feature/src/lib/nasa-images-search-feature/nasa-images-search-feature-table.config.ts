@@ -75,7 +75,7 @@ const thumbnail: TableColumnFormatting<NasaImage, 'COMPONENT', SharedImgContaine
   key: 'thumbnail',
   title: 'Image',
   pathToKey: 'thumbnail',
-  cssClasses: ['relative', 'object-cover'],
+  cssClasses: ['relative h-24 w-40', 'object-cover'],
   formatting: {
     type: 'COMPONENT',
     execute: (src, image, index) =>
@@ -86,7 +86,6 @@ const thumbnail: TableColumnFormatting<NasaImage, 'COMPONENT', SharedImgContaine
           title: image?.name,
           lcpImage: index === 0,
           quality: 70,
-          dimensions: { width: 100, height: 100 },
         },
       }) as FormattingComponentOutput<SharedImgContainerComponent>,
   },
