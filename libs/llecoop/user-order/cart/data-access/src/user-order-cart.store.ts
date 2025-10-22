@@ -71,7 +71,8 @@ export const llecoopUserOrderCartStore = signalStore(
               cart: parsedCart,
             });
           } catch (error) {
-            //console.error('Error al cargar el carrito desde localStorage:', error);
+            // eslint-disable-next-line no-console
+            console.error('Error al cargar el carrito desde localStorage:', error);
           }
         }
       },

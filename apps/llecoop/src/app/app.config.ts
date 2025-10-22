@@ -19,7 +19,6 @@ import {
 } from '@angular/fire/firestore';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideRouter,
   TitleStrategy,
@@ -41,7 +40,6 @@ export const appConfig = {
   providers: [
     provideZonelessChangeDetection(),
     provideBrowserGlobalErrorListeners(),
-    provideAnimationsAsync(),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(environment.firebase, 'llecoop')),
     provideAuth(() => {

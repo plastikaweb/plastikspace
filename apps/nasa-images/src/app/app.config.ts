@@ -10,7 +10,6 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, TitleStrategy } from '@angular/router';
 import { EffectsModule } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore, RouterState } from '@ngrx/router-store';
@@ -36,7 +35,6 @@ import { headerConfig, viewConfig } from './cms-layout-config';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
-    provideAnimationsAsync(),
     provideHttpClient(),
     provideRouter(routes),
     provideStore(),
