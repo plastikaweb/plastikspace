@@ -28,7 +28,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run:  yarn install --immutable --network-timeout 1000000
+        run: yarn install --immutable --network-timeout 1000000
 
       - name: Build application
         run: yarn nx build nasa-images --configuration=development --skip-nx-cache
