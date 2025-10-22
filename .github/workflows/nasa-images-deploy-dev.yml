@@ -1,4 +1,4 @@
-name: Nasa Images deploy staging
+name: Nasa Images deploy development
 
 on:
   workflow_run:
@@ -23,9 +23,9 @@ jobs:
         uses: AhsanAyaz/angular-deploy-gh-pages-actions@v1.4.0
         with:
           github_access_token: ${{ secrets.GITHUB_TOKEN }}
-          build_configuration: staging
+          build_configuration: development
           base_href: ''
-          deploy_branch: nasa-images-staging-page
+          deploy_branch: nasa-images-development-page
           angular_dist_build_folder: dist/apps/nasa-images
 
   on-failure:
