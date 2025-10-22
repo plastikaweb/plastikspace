@@ -7,7 +7,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
@@ -23,7 +22,6 @@ describe('CoreCmsLayoutFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         CoreCmsLayoutFeatureComponent,
-        NoopAnimationsModule,
         AngularSvgIconModule.forRoot(),
         MatSidenavModule,
         MatIconModule,

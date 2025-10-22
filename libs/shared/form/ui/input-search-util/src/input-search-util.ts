@@ -40,7 +40,7 @@ export function addSearchInput(
       placeholder: 'Search',
       required: false,
       maxLength: 256,
-      minLength: 1,
+      minLength: 2,
       addonLeft: {
         icon: 'search',
         aria: 'search',

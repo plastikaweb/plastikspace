@@ -1,7 +1,6 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar } from '@angular/material/snack-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Notification } from '@plastik/shared/notification/entities';
 
 import { NotificationUiMatSnackbarComponent } from './notification-ui-mat-snackbar.component';
@@ -22,11 +21,7 @@ describe('NotificationUiMatSnackbarDirective', () => {
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        NotificationUiMatSnackbarDirective,
-        NotificationUiMatSnackbarComponent,
-        NoopAnimationsModule,
-      ],
+      imports: [NotificationUiMatSnackbarDirective, NotificationUiMatSnackbarComponent],
       providers: [
         provideZonelessChangeDetection(),
         {

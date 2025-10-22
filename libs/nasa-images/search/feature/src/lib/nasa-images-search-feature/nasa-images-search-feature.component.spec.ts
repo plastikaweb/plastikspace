@@ -4,7 +4,6 @@ import { of } from 'rxjs';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import { NasaImagesSearchFacade } from '@plastik/nasa-images/search/data-access';
@@ -20,7 +19,7 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NasaImagesSearchFeatureComponent],
+      imports: [NasaImagesSearchFeatureComponent],
       providers: [
         provideZonelessChangeDetection(),
         provideEnvironmentMock(),

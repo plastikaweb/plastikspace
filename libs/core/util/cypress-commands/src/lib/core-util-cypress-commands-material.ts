@@ -21,13 +21,19 @@ Cypress.Commands.add('setMatInput', (inputs, text, index = 0) => {
 });
 
 Cypress.Commands.add('setMatDatePicker', (datePickers, date, index = 0) => {
-  datePickers.then(pickers => {
-    pickers[index].openCalendar();
-    pickers[index].setValue(date);
-    pickers[index]
-      .getCalendar()
-      .then(calendar =>
-        calendar.selectCell({ text: date }).then(() => pickers[index].closeCalendar())
-      );
+  datePickers.then(async pickers => {
+    const picker = pickers[index];
+
+    // Get the native input element
+    const inputElement = await picker.host().then(host => host.getAttribute('id'));
+
+    // Click the input to open the calendar
+    cy.get(`#${inputElement}`).click({ force: true });
+
+    // Click the year button
+    cy.get('.mat-calendar').find('button').contains(date).click();
+
+    // Wait for calendar to close
+    await picker.closeCalendar();
   });
 });

@@ -2,7 +2,6 @@ import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { CoreCmsLayoutUiSidenavComponent } from './core-cms-layout-ui-sidenav.component';
@@ -13,7 +12,7 @@ describe('CoreCmsLayoutUiSidenavComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CoreCmsLayoutUiSidenavComponent, NoopAnimationsModule],
+      imports: [CoreCmsLayoutUiSidenavComponent],
       providers: [provideZonelessChangeDetection(), provideMockStore()],
     }).compileComponents();
 
