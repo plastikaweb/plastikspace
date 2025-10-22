@@ -8,8 +8,8 @@ export class BytesToSizePipe implements PipeTransform {
 
   /**
    * Converts a number representing bytes to a human-readable size format.
-   * @param value {number} - The number of bytes to be converted.
-   * @param fixed {number} - The number of decimal places to round the converted size to (default: 0).
+   * @param {number} value - The number of bytes to be converted.
+   * @param {number} fixed - The number of decimal places to round the converted size to (default: 0).
    * @returns {string} A string representing the converted size in a human-readable format.
    */
   transform(value: number, fixed = 0): string {
