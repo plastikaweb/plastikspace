@@ -70,3 +70,8 @@ firebase-export*
 .windsurfrules
 .cursor/rules/nx-rules.mdc
 .github/instructions/nx.instructions.md
+
+# local utils
+
+issues.js
+mvp_github_issues.md
