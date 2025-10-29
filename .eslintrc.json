@@ -190,6 +190,11 @@
         "@angular-eslint/template/no-interpolation-in-attributes": "error",
         "@angular-eslint/template/no-negated-async": "error"
       }
+    },
+    {
+      "files": ["*.json", "*.jsonc"],
+      "parser": "jsonc-eslint-parser",
+      "rules": {}
     }
   ]
 }

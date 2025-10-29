@@ -19652,6 +19652,11 @@ pnp-webpack-plugin@^1.7.0:
   dependencies:
     ts-pnp "^1.1.6"
 
+pocketbase@^0.26.3:
+  version "0.26.3"
+  resolved "https://registry.yarnpkg.com/pocketbase/-/pocketbase-0.26.3.tgz#26a2f1f0139308b3db73ead35d9527c100960af3"
+  integrity sha512-5deUKRoEczpxxuHzwr6/DHVmgbggxylEVig8CKN+MjvtYxPUqX/C6puU0yaR2yhTi8zrh7J9s7Ty+qBGwVzWOQ==
+
 portfinder@^1.0.28, portfinder@^1.0.32:
   version "1.0.38"
   resolved "https://registry.yarnpkg.com/portfinder/-/portfinder-1.0.38.tgz#e4fb3a2d888b20d2977da050e48ab5e1f57a185e"
