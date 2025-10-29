@@ -75,3 +75,10 @@ firebase-export*
 
 issues.js
 mvp_github_issues.md
+
+# pocketbase files
+**/pocketbase/pocketbase
+**/pocketbase/pb_data/
+**/pocketbase/.env.local
+**/pocketbase/.env
+**/pocketbase/*.md

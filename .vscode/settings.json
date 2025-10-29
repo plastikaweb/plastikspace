@@ -67,5 +67,16 @@
   ],
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "eslint.lintTask.enable": true,
-  "eslint.run": "onType"
+  "eslint.run": "onType",
+  "markdownlint.configFile": "./.markdownlint.json",
+  "markdownlint.lintWorkspaceGlobs": [
+    "**/*.md",
+    "!**/pocketbase/**/*.md",
+    "!**/*.code-search",
+    "!**/bower_components/**",
+    "!**/node_modules/**",
+    "!**/.git/**",
+    "!**/vendor/**"
+  ],
+  "markdownlint.run": "onSave"
 }
