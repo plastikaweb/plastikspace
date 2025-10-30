@@ -1,0 +1,13 @@
+{
+  "name": "entities",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/entities/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["type:entity", "scope:eco-store"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -37,6 +37,7 @@
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/list-view": ["libs/core/table-with-filtering/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
+      "@plastik/eco-store/entities": ["libs/eco-store/entities/src/index.ts"],
       "@plastik/llecoop/category-name-cell": [
         "libs/llecoop/category/ui/category-name-cell/src/index.ts"
       ],
