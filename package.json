@@ -105,6 +105,8 @@
     "plastikaweb:build:github": "nx run plastikaweb:build:prod",
     "plastikaweb:codegen": "npx nx codegen plastikaweb-graphql-models",
     "eco-store:serve": "nx run eco-store:serve",
+    "eco-store:serve:staging": "nx run eco-store:serve:staging",
+    "eco-store:serve:prod": "nx run eco-store:serve:production",
     "eco-store:lint": "nx run eco-store:lint",
     "eco-store:build": "nx run eco-store:build --parallel",
     "eco-store:test": "nx run eco-store:test",
@@ -116,8 +118,10 @@
     "eco-store:a11y:run": "pa11y-ci --config ./apps/eco-store/.pa11yci.json",
     "eco-store:build:github": "nx run eco-store:build:prod",
     "eco-store:pocketbase:run": "cd apps/eco-store/pocketbase && ./pocketbase serve",
-    "eco-store:pocketbase:stop": "cd apps/eco-store/pocketbase && ./pocketbase stop",
-    "eco-store:run": "npm-run-all --parallel --race eco-store:serve eco-store:pocketbase:run"
+    "eco-store:pocketbase:stop": "pkill -f 'pocketbase serve' || true",
+    "eco-store:local": "yarn eco-store:pocketbase:stop && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve",
+    "eco-store:local:staging": "yarn eco-store:pocketbase:stop && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:staging",
+    "eco-store:local:prod": "yarn eco-store:pocketbase:stop && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:prod"
   },
   "private": true,
   "dependencies": {
