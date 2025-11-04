@@ -14,8 +14,38 @@ __webpack_require__.r(__webpack_exports__);
 const environment = {
   name: 'Nasa Images',
   production: false,
-  apiUrl: 'https://images-api.nasa.gov'
+  baseApiUrl: 'https://images-api.nasa.gov'
 };
+
+/***/ }),
+
+/***/ 183:
+/*!***********************************************************************************!*\
+  !*** ./libs/nasa-images/search/data-access/src/lib/+state/nasa-images.actions.ts ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   nasaImagesAPIActions: () => (/* binding */ nasaImagesAPIActions),
+/* harmony export */   nasaImagesPageActions: () => (/* binding */ nasaImagesPageActions)
+/* harmony export */ });
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ 9797);
+
+const nasaImagesPageActions = (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.createActionGroup)({
+  source: 'NasaImages/Page',
+  events: {
+    Load: (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.props)(),
+    'Clean Up': (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.emptyProps)()
+  }
+});
+const nasaImagesAPIActions = (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.createActionGroup)({
+  source: 'NasaImages/API',
+  events: {
+    'Load Success': (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.props)(),
+    'Load Failure': (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.props)()
+  }
+});
 
 /***/ }),
 
@@ -70,6 +100,74 @@ const notificationStore = (0,_ngrx_signals__WEBPACK_IMPORTED_MODULE_1__.signalSt
 
 /***/ }),
 
+/***/ 611:
+/*!*****************************************************************************************!*\
+  !*** ./libs/nasa-images/search/data-access/src/lib/+state/nasa-images-search.facade.ts ***!
+  \*****************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NasaImagesSearchFacade: () => (/* binding */ NasaImagesSearchFacade)
+/* harmony export */ });
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/store */ 9797);
+/* harmony import */ var _plastik_core_router_state__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @plastik/core/router-state */ 3561);
+/* harmony import */ var _plastik_nasa_images_data_access__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @plastik/nasa-images/data-access */ 9810);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 8374);
+/* harmony import */ var _nasa_images_feature__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./nasa-images.feature */ 9286);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 4131);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 3499);
+
+
+
+
+
+
+class NasaImagesSearchFacade extends _plastik_nasa_images_data_access__WEBPACK_IMPORTED_MODULE_2__.NasaImagesFacade {
+  images$ = this.store.pipe((0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.select)(_nasa_images_feature__WEBPACK_IMPORTED_MODULE_4__.selectNasaImagesFeature.selectAll));
+  isActiveSearch$ = this.store.pipe((0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.select)(_nasa_images_feature__WEBPACK_IMPORTED_MODULE_4__.selectNasaImagesFeature.selectIsActiveSearch));
+  search(params) {
+    this.store.dispatch(_plastik_core_router_state__WEBPACK_IMPORTED_MODULE_1__.routerActions.go({
+      path: [],
+      extras: {
+        queryParams: {
+          ...params,
+          page: '1'
+        },
+        queryParamsHandling: 'merge'
+      }
+    }));
+  }
+  changePagination({
+    pageIndex
+  }) {
+    this.store.select(_plastik_core_router_state__WEBPACK_IMPORTED_MODULE_1__.selectRouteQueryParams).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.take)(1)).subscribe(queryParams => {
+      this.store.dispatch(_plastik_core_router_state__WEBPACK_IMPORTED_MODULE_1__.routerActions.go({
+        path: [],
+        extras: {
+          queryParams: {
+            ...queryParams,
+            page: ++pageIndex
+          },
+          queryParamsHandling: 'merge'
+        }
+      }));
+    });
+  }
+  static ɵfac = /*@__PURE__*/(() => {
+    let ɵNasaImagesSearchFacade_BaseFactory;
+    return function NasaImagesSearchFacade_Factory(__ngFactoryType__) {
+      return (ɵNasaImagesSearchFacade_BaseFactory || (ɵNasaImagesSearchFacade_BaseFactory = _angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵgetInheritedFactory"](NasaImagesSearchFacade)))(__ngFactoryType__ || NasaImagesSearchFacade);
+    };
+  })();
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_5__["ɵɵdefineInjectable"]({
+    token: NasaImagesSearchFacade,
+    factory: NasaImagesSearchFacade.ɵfac
+  });
+}
+
+/***/ }),
+
 /***/ 906:
 /*!********************************************************!*\
   !*** ./libs/shared/notification/entities/src/index.ts ***!
@@ -101,6 +199,932 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ 4131);
 
 const CORE_CMS_LAYOUT_HEADER_CONFIG = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken('CORE_CMS_LAYOUT_HEADER_CONFIG');
+
+/***/ }),
+
+/***/ 1339:
+/*!***************************************************!*\
+  !*** ./libs/shared/util/latinize/src/latinize.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   latinize: () => (/* binding */ latinize)
+/* harmony export */ });
+const characters = {
+  Á: 'A',
+  Ă: 'A',
+  Ắ: 'A',
+  Ặ: 'A',
+  Ằ: 'A',
+  Ẳ: 'A',
+  Ẵ: 'A',
+  Ǎ: 'A',
+  Â: 'A',
+  Ấ: 'A',
+  Ậ: 'A',
+  Ầ: 'A',
+  Ẩ: 'A',
+  Ẫ: 'A',
+  Ä: 'A',
+  Ǟ: 'A',
+  Ȧ: 'A',
+  Ǡ: 'A',
+  Ạ: 'A',
+  Ȁ: 'A',
+  À: 'A',
+  Ả: 'A',
+  Ȃ: 'A',
+  Ā: 'A',
+  Ą: 'A',
+  Å: 'A',
+  Ǻ: 'A',
+  Ḁ: 'A',
+  Ⱥ: 'A',
+  Ã: 'A',
+  Ꜳ: 'AA',
+  Æ: 'AE',
+  Ǽ: 'AE',
+  Ǣ: 'AE',
+  Ꜵ: 'AO',
+  Ꜷ: 'AU',
+  Ꜹ: 'AV',
+  Ꜻ: 'AV',
+  Ꜽ: 'AY',
+  Ḃ: 'B',
+  Ḅ: 'B',
+  Ɓ: 'B',
+  Ḇ: 'B',
+  Ƀ: 'B',
+  Ƃ: 'B',
+  Ć: 'C',
+  Č: 'C',
+  Ç: 'C',
+  Ḉ: 'C',
+  Ĉ: 'C',
+  Ċ: 'C',
+  Ƈ: 'C',
+  Ȼ: 'C',
+  Ď: 'D',
+  Ḑ: 'D',
+  Ḓ: 'D',
+  Ḋ: 'D',
+  Ḍ: 'D',
+  Ɗ: 'D',
+  Ḏ: 'D',
+  ǲ: 'D',
+  ǅ: 'D',
+  Đ: 'D',
+  Ð: 'D',
+  Ƌ: 'D',
+  Ǳ: 'DZ',
+  Ǆ: 'DZ',
+  É: 'E',
+  Ĕ: 'E',
+  Ě: 'E',
+  Ȩ: 'E',
+  Ḝ: 'E',
+  Ê: 'E',
+  Ế: 'E',
+  Ệ: 'E',
+  Ề: 'E',
+  Ể: 'E',
+  Ễ: 'E',
+  Ḙ: 'E',
+  Ë: 'E',
+  Ė: 'E',
+  Ẹ: 'E',
+  Ȅ: 'E',
+  È: 'E',
+  Ẻ: 'E',
+  Ȇ: 'E',
+  Ē: 'E',
+  Ḗ: 'E',
+  Ḕ: 'E',
+  Ę: 'E',
+  Ɇ: 'E',
+  Ẽ: 'E',
+  Ḛ: 'E',
+  Ꝫ: 'ET',
+  Ḟ: 'F',
+  Ƒ: 'F',
+  Ǵ: 'G',
+  Ğ: 'G',
+  Ǧ: 'G',
+  Ģ: 'G',
+  Ĝ: 'G',
+  Ġ: 'G',
+  Ɠ: 'G',
+  Ḡ: 'G',
+  Ǥ: 'G',
+  Ḫ: 'H',
+  Ȟ: 'H',
+  Ḩ: 'H',
+  Ĥ: 'H',
+  Ⱨ: 'H',
+  Ḧ: 'H',
+  Ḣ: 'H',
+  Ḥ: 'H',
+  Ħ: 'H',
+  Í: 'I',
+  Ĭ: 'I',
+  Ǐ: 'I',
+  Î: 'I',
+  Ï: 'I',
+  Ḯ: 'I',
+  İ: 'I',
+  Ị: 'I',
+  Ȉ: 'I',
+  Ì: 'I',
+  Ỉ: 'I',
+  Ȋ: 'I',
+  Ī: 'I',
+  Į: 'I',
+  Ɨ: 'I',
+  Ĩ: 'I',
+  Ḭ: 'I',
+  І: 'I',
+  Ꝺ: 'D',
+  Ꝼ: 'F',
+  Ᵹ: 'G',
+  Ꞃ: 'R',
+  Ꞅ: 'S',
+  Ꞇ: 'T',
+  Ꝭ: 'IS',
+  Ĵ: 'J',
+  Ɉ: 'J',
+  Ḱ: 'K',
+  Ǩ: 'K',
+  Ķ: 'K',
+  Ⱪ: 'K',
+  Ꝃ: 'K',
+  Ḳ: 'K',
+  Ƙ: 'K',
+  Ḵ: 'K',
+  Ꝁ: 'K',
+  Ꝅ: 'K',
+  Ĺ: 'L',
+  Ƚ: 'L',
+  Ľ: 'L',
+  Ļ: 'L',
+  Ḽ: 'L',
+  Ḷ: 'L',
+  Ḹ: 'L',
+  Ⱡ: 'L',
+  Ꝉ: 'L',
+  Ḻ: 'L',
+  Ŀ: 'L',
+  Ɫ: 'L',
+  ǈ: 'L',
+  Ł: 'L',
+  Ǉ: 'LJ',
+  Ḿ: 'M',
+  Ṁ: 'M',
+  Ṃ: 'M',
+  Ɱ: 'M',
+  Ń: 'N',
+  Ň: 'N',
+  Ņ: 'N',
+  Ṋ: 'N',
+  Ṅ: 'N',
+  Ṇ: 'N',
+  Ǹ: 'N',
+  Ɲ: 'N',
+  Ṉ: 'N',
+  Ƞ: 'N',
+  ǋ: 'N',
+  Ñ: 'N',
+  Ǌ: 'NJ',
+  Ó: 'O',
+  Ŏ: 'O',
+  Ǒ: 'O',
+  Ô: 'O',
+  Ố: 'O',
+  Ộ: 'O',
+  Ồ: 'O',
+  Ổ: 'O',
+  Ỗ: 'O',
+  Ö: 'O',
+  Ȫ: 'O',
+  Ȯ: 'O',
+  Ȱ: 'O',
+  Ọ: 'O',
+  Ő: 'O',
+  Ȍ: 'O',
+  Ò: 'O',
+  Ỏ: 'O',
+  Ơ: 'O',
+  Ớ: 'O',
+  Ợ: 'O',
+  Ờ: 'O',
+  Ở: 'O',
+  Ỡ: 'O',
+  Ȏ: 'O',
+  Ꝋ: 'O',
+  Ꝍ: 'O',
+  Ō: 'O',
+  Ṓ: 'O',
+  Ṑ: 'O',
+  Ɵ: 'O',
+  Ǫ: 'O',
+  Ǭ: 'O',
+  Ø: 'O',
+  Ǿ: 'O',
+  Õ: 'O',
+  Ṍ: 'O',
+  Ṏ: 'O',
+  Ȭ: 'O',
+  Ƣ: 'OI',
+  Ꝏ: 'OO',
+  Ɛ: 'E',
+  Ɔ: 'O',
+  Ȣ: 'OU',
+  Ṕ: 'P',
+  Ṗ: 'P',
+  Ꝓ: 'P',
+  Ƥ: 'P',
+  Ꝕ: 'P',
+  Ᵽ: 'P',
+  Ꝑ: 'P',
+  Ꝙ: 'Q',
+  Ꝗ: 'Q',
+  Ŕ: 'R',
+  Ř: 'R',
+  Ŗ: 'R',
+  Ṙ: 'R',
+  Ṛ: 'R',
+  Ṝ: 'R',
+  Ȑ: 'R',
+  Ȓ: 'R',
+  Ṟ: 'R',
+  Ɍ: 'R',
+  Ɽ: 'R',
+  Ꜿ: 'C',
+  Ǝ: 'E',
+  Ś: 'S',
+  Ṥ: 'S',
+  Š: 'S',
+  Ṧ: 'S',
+  Ş: 'S',
+  Ŝ: 'S',
+  Ș: 'S',
+  Ṡ: 'S',
+  Ṣ: 'S',
+  Ṩ: 'S',
+  ß: 'ss',
+  Ť: 'T',
+  Ţ: 'T',
+  Ṱ: 'T',
+  Ț: 'T',
+  Ⱦ: 'T',
+  Ṫ: 'T',
+  Ṭ: 'T',
+  Ƭ: 'T',
+  Ṯ: 'T',
+  Ʈ: 'T',
+  Ŧ: 'T',
+  Ɐ: 'A',
+  Ꞁ: 'L',
+  Ɯ: 'M',
+  Ʌ: 'V',
+  Ꜩ: 'TZ',
+  Ú: 'U',
+  Ŭ: 'U',
+  Ǔ: 'U',
+  Û: 'U',
+  Ṷ: 'U',
+  Ü: 'U',
+  Ǘ: 'U',
+  Ǚ: 'U',
+  Ǜ: 'U',
+  Ǖ: 'U',
+  Ṳ: 'U',
+  Ụ: 'U',
+  Ű: 'U',
+  Ȕ: 'U',
+  Ù: 'U',
+  Ủ: 'U',
+  Ư: 'U',
+  Ứ: 'U',
+  Ự: 'U',
+  Ừ: 'U',
+  Ử: 'U',
+  Ữ: 'U',
+  Ȗ: 'U',
+  Ū: 'U',
+  Ṻ: 'U',
+  Ų: 'U',
+  Ů: 'U',
+  Ũ: 'U',
+  Ṹ: 'U',
+  Ṵ: 'U',
+  Ꝟ: 'V',
+  Ṿ: 'V',
+  Ʋ: 'V',
+  Ṽ: 'V',
+  Ꝡ: 'VY',
+  Ẃ: 'W',
+  Ŵ: 'W',
+  Ẅ: 'W',
+  Ẇ: 'W',
+  Ẉ: 'W',
+  Ẁ: 'W',
+  Ⱳ: 'W',
+  Ẍ: 'X',
+  Ẋ: 'X',
+  Ý: 'Y',
+  Ŷ: 'Y',
+  Ÿ: 'Y',
+  Ẏ: 'Y',
+  Ỵ: 'Y',
+  Ỳ: 'Y',
+  Ƴ: 'Y',
+  Ỷ: 'Y',
+  Ỿ: 'Y',
+  Ȳ: 'Y',
+  Ɏ: 'Y',
+  Ỹ: 'Y',
+  Ї: 'YI',
+  Ź: 'Z',
+  Ž: 'Z',
+  Ẑ: 'Z',
+  Ⱬ: 'Z',
+  Ż: 'Z',
+  Ẓ: 'Z',
+  Ȥ: 'Z',
+  Ẕ: 'Z',
+  Ƶ: 'Z',
+  Þ: 'TH',
+  Ĳ: 'IJ',
+  Œ: 'OE',
+  ᴀ: 'A',
+  ᴁ: 'AE',
+  ʙ: 'B',
+  ᴃ: 'B',
+  ᴄ: 'C',
+  ᴅ: 'D',
+  ᴇ: 'E',
+  ꜰ: 'F',
+  ɢ: 'G',
+  ʛ: 'G',
+  ʜ: 'H',
+  ɪ: 'I',
+  ʁ: 'R',
+  ᴊ: 'J',
+  ᴋ: 'K',
+  ʟ: 'L',
+  ᴌ: 'L',
+  ᴍ: 'M',
+  ɴ: 'N',
+  ᴏ: 'O',
+  ɶ: 'OE',
+  ᴐ: 'O',
+  ᴕ: 'OU',
+  ᴘ: 'P',
+  ʀ: 'R',
+  ᴎ: 'N',
+  ᴙ: 'R',
+  ꜱ: 'S',
+  ᴛ: 'T',
+  ⱻ: 'E',
+  ᴚ: 'R',
+  ᴜ: 'U',
+  ᴠ: 'V',
+  ᴡ: 'W',
+  ʏ: 'Y',
+  ᴢ: 'Z',
+  á: 'a',
+  ă: 'a',
+  ắ: 'a',
+  ặ: 'a',
+  ằ: 'a',
+  ẳ: 'a',
+  ẵ: 'a',
+  ǎ: 'a',
+  â: 'a',
+  ấ: 'a',
+  ậ: 'a',
+  ầ: 'a',
+  ẩ: 'a',
+  ẫ: 'a',
+  ä: 'a',
+  ǟ: 'a',
+  ȧ: 'a',
+  ǡ: 'a',
+  ạ: 'a',
+  ȁ: 'a',
+  à: 'a',
+  ả: 'a',
+  ȃ: 'a',
+  ā: 'a',
+  ą: 'a',
+  ᶏ: 'a',
+  ẚ: 'a',
+  å: 'a',
+  ǻ: 'a',
+  ḁ: 'a',
+  ⱥ: 'a',
+  ã: 'a',
+  ꜳ: 'aa',
+  æ: 'ae',
+  ǽ: 'ae',
+  ǣ: 'ae',
+  ꜵ: 'ao',
+  ꜷ: 'au',
+  ꜹ: 'av',
+  ꜻ: 'av',
+  ꜽ: 'ay',
+  ḃ: 'b',
+  ḅ: 'b',
+  ɓ: 'b',
+  ḇ: 'b',
+  ᵬ: 'b',
+  ᶀ: 'b',
+  ƀ: 'b',
+  ƃ: 'b',
+  ɵ: 'o',
+  ć: 'c',
+  č: 'c',
+  ç: 'c',
+  ḉ: 'c',
+  ĉ: 'c',
+  ɕ: 'c',
+  ċ: 'c',
+  ƈ: 'c',
+  ȼ: 'c',
+  ď: 'd',
+  ḑ: 'd',
+  ḓ: 'd',
+  ȡ: 'd',
+  ḋ: 'd',
+  ḍ: 'd',
+  ɗ: 'd',
+  ᶑ: 'd',
+  ḏ: 'd',
+  ᵭ: 'd',
+  ᶁ: 'd',
+  đ: 'd',
+  ɖ: 'd',
+  ƌ: 'd',
+  ð: 'd',
+  ı: 'i',
+  ȷ: 'j',
+  ɟ: 'j',
+  ʄ: 'j',
+  ǳ: 'dz',
+  ǆ: 'dz',
+  é: 'e',
+  ĕ: 'e',
+  ě: 'e',
+  ȩ: 'e',
+  ḝ: 'e',
+  ê: 'e',
+  ế: 'e',
+  ệ: 'e',
+  ề: 'e',
+  ể: 'e',
+  ễ: 'e',
+  ḙ: 'e',
+  ë: 'e',
+  ė: 'e',
+  ẹ: 'e',
+  ȅ: 'e',
+  è: 'e',
+  ẻ: 'e',
+  ȇ: 'e',
+  ē: 'e',
+  ḗ: 'e',
+  ḕ: 'e',
+  ⱸ: 'e',
+  ę: 'e',
+  ᶒ: 'e',
+  ɇ: 'e',
+  ẽ: 'e',
+  ḛ: 'e',
+  ꝫ: 'et',
+  ḟ: 'f',
+  ƒ: 'f',
+  ᵮ: 'f',
+  ᶂ: 'f',
+  ǵ: 'g',
+  ğ: 'g',
+  ǧ: 'g',
+  ģ: 'g',
+  ĝ: 'g',
+  ġ: 'g',
+  ɠ: 'g',
+  ḡ: 'g',
+  ᶃ: 'g',
+  ǥ: 'g',
+  ḫ: 'h',
+  ȟ: 'h',
+  ḩ: 'h',
+  ĥ: 'h',
+  ⱨ: 'h',
+  ḧ: 'h',
+  ḣ: 'h',
+  ḥ: 'h',
+  ɦ: 'h',
+  ẖ: 'h',
+  ħ: 'h',
+  ƕ: 'hv',
+  í: 'i',
+  ĭ: 'i',
+  ǐ: 'i',
+  î: 'i',
+  ï: 'i',
+  ḯ: 'i',
+  ị: 'i',
+  ȉ: 'i',
+  ì: 'i',
+  ỉ: 'i',
+  ȋ: 'i',
+  ī: 'i',
+  į: 'i',
+  ᶖ: 'i',
+  ɨ: 'i',
+  ĩ: 'i',
+  ḭ: 'i',
+  і: 'i',
+  ꝺ: 'd',
+  ꝼ: 'f',
+  ᵹ: 'g',
+  ꞃ: 'r',
+  ꞅ: 's',
+  ꞇ: 't',
+  ꝭ: 'is',
+  ǰ: 'j',
+  ĵ: 'j',
+  ʝ: 'j',
+  ɉ: 'j',
+  ḱ: 'k',
+  ǩ: 'k',
+  ķ: 'k',
+  ⱪ: 'k',
+  ꝃ: 'k',
+  ḳ: 'k',
+  ƙ: 'k',
+  ḵ: 'k',
+  ᶄ: 'k',
+  ꝁ: 'k',
+  ꝅ: 'k',
+  ĺ: 'l',
+  ƚ: 'l',
+  ɬ: 'l',
+  ľ: 'l',
+  ļ: 'l',
+  ḽ: 'l',
+  ȴ: 'l',
+  ḷ: 'l',
+  ḹ: 'l',
+  ⱡ: 'l',
+  ꝉ: 'l',
+  ḻ: 'l',
+  ŀ: 'l',
+  ɫ: 'l',
+  ᶅ: 'l',
+  ɭ: 'l',
+  ł: 'l',
+  ǉ: 'lj',
+  ſ: 's',
+  ẜ: 's',
+  ẛ: 's',
+  ẝ: 's',
+  ḿ: 'm',
+  ṁ: 'm',
+  ṃ: 'm',
+  ɱ: 'm',
+  ᵯ: 'm',
+  ᶆ: 'm',
+  ń: 'n',
+  ň: 'n',
+  ņ: 'n',
+  ṋ: 'n',
+  ȵ: 'n',
+  ṅ: 'n',
+  ṇ: 'n',
+  ǹ: 'n',
+  ɲ: 'n',
+  ṉ: 'n',
+  ƞ: 'n',
+  ᵰ: 'n',
+  ᶇ: 'n',
+  ɳ: 'n',
+  ñ: 'n',
+  ǌ: 'nj',
+  ó: 'o',
+  ŏ: 'o',
+  ǒ: 'o',
+  ô: 'o',
+  ố: 'o',
+  ộ: 'o',
+  ồ: 'o',
+  ổ: 'o',
+  ỗ: 'o',
+  ö: 'o',
+  ȫ: 'o',
+  ȯ: 'o',
+  ȱ: 'o',
+  ọ: 'o',
+  ő: 'o',
+  ȍ: 'o',
+  ò: 'o',
+  ỏ: 'o',
+  ơ: 'o',
+  ớ: 'o',
+  ợ: 'o',
+  ờ: 'o',
+  ở: 'o',
+  ỡ: 'o',
+  ȏ: 'o',
+  ꝋ: 'o',
+  ꝍ: 'o',
+  ⱺ: 'o',
+  ō: 'o',
+  ṓ: 'o',
+  ṑ: 'o',
+  ǫ: 'o',
+  ǭ: 'o',
+  ø: 'o',
+  ǿ: 'o',
+  õ: 'o',
+  ṍ: 'o',
+  ṏ: 'o',
+  ȭ: 'o',
+  ƣ: 'oi',
+  ꝏ: 'oo',
+  ɛ: 'e',
+  ᶓ: 'e',
+  ɔ: 'o',
+  ᶗ: 'o',
+  ȣ: 'ou',
+  ṕ: 'p',
+  ṗ: 'p',
+  ꝓ: 'p',
+  ƥ: 'p',
+  ᵱ: 'p',
+  ᶈ: 'p',
+  ꝕ: 'p',
+  ᵽ: 'p',
+  ꝑ: 'p',
+  ꝙ: 'q',
+  ʠ: 'q',
+  ɋ: 'q',
+  ꝗ: 'q',
+  ŕ: 'r',
+  ř: 'r',
+  ŗ: 'r',
+  ṙ: 'r',
+  ṛ: 'r',
+  ṝ: 'r',
+  ȑ: 'r',
+  ɾ: 'r',
+  ᵳ: 'r',
+  ȓ: 'r',
+  ṟ: 'r',
+  ɼ: 'r',
+  ᵲ: 'r',
+  ᶉ: 'r',
+  ɍ: 'r',
+  ɽ: 'r',
+  ↄ: 'c',
+  ꜿ: 'c',
+  ɘ: 'e',
+  ɿ: 'r',
+  ś: 's',
+  ṥ: 's',
+  š: 's',
+  ṧ: 's',
+  ş: 's',
+  ŝ: 's',
+  ș: 's',
+  ṡ: 's',
+  ṣ: 's',
+  ṩ: 's',
+  ʂ: 's',
+  ᵴ: 's',
+  ᶊ: 's',
+  ȿ: 's',
+  ɡ: 'g',
+  ᴑ: 'o',
+  ᴓ: 'o',
+  ᴝ: 'u',
+  ť: 't',
+  ţ: 't',
+  ṱ: 't',
+  ț: 't',
+  ȶ: 't',
+  ẗ: 't',
+  ⱦ: 't',
+  ṫ: 't',
+  ṭ: 't',
+  ƭ: 't',
+  ṯ: 't',
+  ᵵ: 't',
+  ƫ: 't',
+  ʈ: 't',
+  ŧ: 't',
+  ᵺ: 'th',
+  ɐ: 'a',
+  ᴂ: 'ae',
+  ǝ: 'e',
+  ᵷ: 'g',
+  ɥ: 'h',
+  ʮ: 'h',
+  ʯ: 'h',
+  ᴉ: 'i',
+  ʞ: 'k',
+  ꞁ: 'l',
+  ɯ: 'm',
+  ɰ: 'm',
+  ᴔ: 'oe',
+  ɹ: 'r',
+  ɻ: 'r',
+  ɺ: 'r',
+  ⱹ: 'r',
+  ʇ: 't',
+  ʌ: 'v',
+  ʍ: 'w',
+  ʎ: 'y',
+  ꜩ: 'tz',
+  ú: 'u',
+  ŭ: 'u',
+  ǔ: 'u',
+  û: 'u',
+  ṷ: 'u',
+  ü: 'u',
+  ǘ: 'u',
+  ǚ: 'u',
+  ǜ: 'u',
+  ǖ: 'u',
+  ṳ: 'u',
+  ụ: 'u',
+  ű: 'u',
+  ȕ: 'u',
+  ù: 'u',
+  ủ: 'u',
+  ư: 'u',
+  ứ: 'u',
+  ự: 'u',
+  ừ: 'u',
+  ử: 'u',
+  ữ: 'u',
+  ȗ: 'u',
+  ū: 'u',
+  ṻ: 'u',
+  ų: 'u',
+  ᶙ: 'u',
+  ů: 'u',
+  ũ: 'u',
+  ṹ: 'u',
+  ṵ: 'u',
+  ᵫ: 'ue',
+  ꝸ: 'um',
+  ⱴ: 'v',
+  ꝟ: 'v',
+  ṿ: 'v',
+  ʋ: 'v',
+  ᶌ: 'v',
+  ⱱ: 'v',
+  ṽ: 'v',
+  ꝡ: 'vy',
+  ẃ: 'w',
+  ŵ: 'w',
+  ẅ: 'w',
+  ẇ: 'w',
+  ẉ: 'w',
+  ẁ: 'w',
+  ⱳ: 'w',
+  ẘ: 'w',
+  ẍ: 'x',
+  ẋ: 'x',
+  ᶍ: 'x',
+  ý: 'y',
+  ŷ: 'y',
+  ÿ: 'y',
+  ẏ: 'y',
+  ỵ: 'y',
+  ỳ: 'y',
+  ƴ: 'y',
+  ỷ: 'y',
+  ỿ: 'y',
+  ȳ: 'y',
+  ẙ: 'y',
+  ɏ: 'y',
+  ỹ: 'y',
+  ї: 'yi',
+  ź: 'z',
+  ž: 'z',
+  ẑ: 'z',
+  ʑ: 'z',
+  ⱬ: 'z',
+  ż: 'z',
+  ẓ: 'z',
+  ȥ: 'z',
+  ẕ: 'z',
+  ᵶ: 'z',
+  ᶎ: 'z',
+  ʐ: 'z',
+  ƶ: 'z',
+  ɀ: 'z',
+  þ: 'th',
+  ﬀ: 'ff',
+  ﬃ: 'ffi',
+  ﬄ: 'ffl',
+  ﬁ: 'fi',
+  ﬂ: 'fl',
+  ĳ: 'ij',
+  œ: 'oe',
+  ﬆ: 'st',
+  ₐ: 'a',
+  ₑ: 'e',
+  ᵢ: 'i',
+  ⱼ: 'j',
+  ₒ: 'o',
+  ᵣ: 'r',
+  ᵤ: 'u',
+  ᵥ: 'v',
+  ₓ: 'x',
+  Ё: 'YO',
+  Й: 'I',
+  Ц: 'TS',
+  У: 'U',
+  К: 'K',
+  Е: 'E',
+  Н: 'N',
+  Г: 'G',
+  Ґ: 'G',
+  Ш: 'SH',
+  Щ: 'SCH',
+  З: 'Z',
+  Х: 'H',
+  Ъ: "'",
+  ё: 'yo',
+  й: 'i',
+  ц: 'ts',
+  у: 'u',
+  к: 'k',
+  е: 'e',
+  н: 'n',
+  г: 'g',
+  ґ: 'g',
+  ш: 'sh',
+  щ: 'sch',
+  з: 'z',
+  х: 'h',
+  ъ: "'",
+  Ф: 'F',
+  Ы: 'I',
+  В: 'V',
+  А: 'a',
+  П: 'P',
+  Р: 'R',
+  О: 'O',
+  Л: 'L',
+  Д: 'D',
+  Ж: 'ZH',
+  Э: 'E',
+  ф: 'f',
+  ы: 'i',
+  в: 'v',
+  а: 'a',
+  п: 'p',
+  р: 'r',
+  о: 'o',
+  л: 'l',
+  д: 'd',
+  ж: 'zh',
+  э: 'e',
+  Я: 'Ya',
+  Ч: 'CH',
+  С: 'S',
+  М: 'M',
+  И: 'I',
+  Т: 'T',
+  Ь: "'",
+  Б: 'B',
+  Ю: 'YU',
+  я: 'ya',
+  ч: 'ch',
+  с: 's',
+  м: 'm',
+  и: 'i',
+  т: 't',
+  ь: "'",
+  б: 'b',
+  ю: 'yu'
+};
+/**
+ * Converts a string to its Latinized form.
+ * @param {string} str - The input string.
+ * @returns {string} The Latinized string.
+ */
+function latinize(str) {
+  return str.replace(/[^A-Za-z0-9]/g, function (x) {
+    return characters[x] || x;
+  });
+}
 
 /***/ }),
 
@@ -256,6 +1280,42 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _lib_state_layout_facade__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/+state/layout.facade */ 9567);
 /* harmony import */ var _lib_core_cms_layout_data_access_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/core-cms-layout-data-access.module */ 9086);
 /* harmony import */ var _lib_core_cms_view_config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/core-cms-view-config */ 5628);
+
+
+
+
+
+/***/ }),
+
+/***/ 2905:
+/*!*****************************************!*\
+  !*** ./libs/core/util/api/src/index.ts ***!
+  \*****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   API_SERVICE_TOKEN: () => (/* reexport safe */ _lib_data_crud__WEBPACK_IMPORTED_MODULE_2__.API_SERVICE_TOKEN),
+/* harmony export */   ApiService: () => (/* reexport safe */ _lib_api_service__WEBPACK_IMPORTED_MODULE_0__.ApiService),
+/* harmony export */   BaseDataService: () => (/* reexport safe */ _lib_base_data_service__WEBPACK_IMPORTED_MODULE_1__.BaseDataService),
+/* harmony export */   DATA_CREATE_SERVICE_TOKEN: () => (/* reexport safe */ _lib_data_crud__WEBPACK_IMPORTED_MODULE_2__.DATA_CREATE_SERVICE_TOKEN),
+/* harmony export */   DATA_GET_LIST_SERVICE_TOKEN: () => (/* reexport safe */ _lib_data_crud__WEBPACK_IMPORTED_MODULE_2__.DATA_GET_LIST_SERVICE_TOKEN),
+/* harmony export */   DATA_GET_ONE_SERVICE_TOKEN: () => (/* reexport safe */ _lib_data_crud__WEBPACK_IMPORTED_MODULE_2__.DATA_GET_ONE_SERVICE_TOKEN),
+/* harmony export */   DATA_READ_SERVICE_TOKEN: () => (/* reexport safe */ _lib_data_crud__WEBPACK_IMPORTED_MODULE_2__.DATA_READ_SERVICE_TOKEN),
+/* harmony export */   DATA_UPDATE_SERVICE_TOKEN: () => (/* reexport safe */ _lib_data_crud__WEBPACK_IMPORTED_MODULE_2__.DATA_UPDATE_SERVICE_TOKEN),
+/* harmony export */   DATA_WRITE_SERVICE_TOKEN: () => (/* reexport safe */ _lib_data_crud__WEBPACK_IMPORTED_MODULE_2__.DATA_WRITE_SERVICE_TOKEN),
+/* harmony export */   PocketBaseService: () => (/* reexport safe */ _lib_pocketbase_service__WEBPACK_IMPORTED_MODULE_4__.PocketBaseService),
+/* harmony export */   createDataGetListServiceToken: () => (/* reexport safe */ _lib_data_crud_tokens__WEBPACK_IMPORTED_MODULE_3__.createDataGetListServiceToken),
+/* harmony export */   createDataReadServiceToken: () => (/* reexport safe */ _lib_data_crud_tokens__WEBPACK_IMPORTED_MODULE_3__.createDataReadServiceToken),
+/* harmony export */   createDataServiceToken: () => (/* reexport safe */ _lib_data_crud_tokens__WEBPACK_IMPORTED_MODULE_3__.createDataServiceToken),
+/* harmony export */   createDataWriteServiceToken: () => (/* reexport safe */ _lib_data_crud_tokens__WEBPACK_IMPORTED_MODULE_3__.createDataWriteServiceToken)
+/* harmony export */ });
+/* harmony import */ var _lib_api_service__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/api.service */ 9644);
+/* harmony import */ var _lib_base_data_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/base-data.service */ 9276);
+/* harmony import */ var _lib_data_crud__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/data-crud */ 3462);
+/* harmony import */ var _lib_data_crud_tokens__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/data-crud.tokens */ 8464);
+/* harmony import */ var _lib_pocketbase_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lib/pocketbase.service */ 7547);
+
 
 
 
@@ -431,6 +1491,204 @@ const routerKey = injector.get(ROUTER_STATE_FEATURE_KEY);
 
 /***/ }),
 
+/***/ 3321:
+/*!**********************************************************!*\
+  !*** ./libs/nasa-images/search/data-access/src/index.ts ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NASA_IMAGES_DATA_LIST_TOKEN: () => (/* reexport safe */ _lib_nasa_images_tokens__WEBPACK_IMPORTED_MODULE_4__.NASA_IMAGES_DATA_LIST_TOKEN),
+/* harmony export */   NASA_IMAGES_PROVIDERS: () => (/* reexport safe */ _lib_nasa_images_tokens__WEBPACK_IMPORTED_MODULE_4__.NASA_IMAGES_PROVIDERS),
+/* harmony export */   NasaImagesActions: () => (/* reexport module object */ _lib_state_nasa_images_actions__WEBPACK_IMPORTED_MODULE_0__),
+/* harmony export */   NasaImagesEffects: () => (/* reexport safe */ _lib_state_nasa_images_effects__WEBPACK_IMPORTED_MODULE_2__.NasaImagesEffects),
+/* harmony export */   NasaImagesSearchFacade: () => (/* reexport safe */ _lib_state_nasa_images_search_facade__WEBPACK_IMPORTED_MODULE_1__.NasaImagesSearchFacade),
+/* harmony export */   initialNasaImagesState: () => (/* reexport safe */ _lib_state_nasa_images_feature__WEBPACK_IMPORTED_MODULE_3__.initialNasaImagesState),
+/* harmony export */   name: () => (/* reexport safe */ _lib_state_nasa_images_feature__WEBPACK_IMPORTED_MODULE_3__.name),
+/* harmony export */   nasaMediaAdapter: () => (/* reexport safe */ _lib_state_nasa_images_feature__WEBPACK_IMPORTED_MODULE_3__.nasaMediaAdapter),
+/* harmony export */   reducer: () => (/* reexport safe */ _lib_state_nasa_images_feature__WEBPACK_IMPORTED_MODULE_3__.reducer),
+/* harmony export */   selectNasaImagesFeature: () => (/* reexport safe */ _lib_state_nasa_images_feature__WEBPACK_IMPORTED_MODULE_3__.selectNasaImagesFeature)
+/* harmony export */ });
+/* harmony import */ var _lib_state_nasa_images_actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./lib/+state/nasa-images.actions */ 183);
+/* harmony import */ var _lib_state_nasa_images_search_facade__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lib/+state/nasa-images-search.facade */ 611);
+/* harmony import */ var _lib_state_nasa_images_effects__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./lib/+state/nasa-images.effects */ 3438);
+/* harmony import */ var _lib_state_nasa_images_feature__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./lib/+state/nasa-images.feature */ 9286);
+/* harmony import */ var _lib_nasa_images_tokens__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./lib/nasa-images.tokens */ 8123);
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ 3438:
+/*!***********************************************************************************!*\
+  !*** ./libs/nasa-images/search/data-access/src/lib/+state/nasa-images.effects.ts ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NasaImagesEffects: () => (/* binding */ NasaImagesEffects)
+/* harmony export */ });
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ 7796);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 494);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 6377);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 6663);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 1252);
+/* harmony import */ var _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/cdk/a11y */ 2205);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 4131);
+/* harmony import */ var _ngrx_effects__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngrx/effects */ 9497);
+/* harmony import */ var _ngrx_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @ngrx/operators */ 4821);
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ngrx/store */ 9797);
+/* harmony import */ var _plastik_core_router_state__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! @plastik/core/router-state */ 3561);
+/* harmony import */ var _plastik_shared_activity_data_access__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @plastik/shared/activity/data-access */ 6711);
+/* harmony import */ var _plastik_shared_notification_data_access__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! @plastik/shared/notification/data-access */ 5757);
+/* harmony import */ var _nasa_images_tokens__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../nasa-images.tokens */ 8123);
+/* harmony import */ var _nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./nasa-images.actions */ 183);
+
+
+
+
+
+
+
+
+
+
+
+
+class NasaImagesEffects {
+  #actions$ = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.Actions);
+  #apiService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_nasa_images_tokens__WEBPACK_IMPORTED_MODULE_13__.NASA_IMAGES_DATA_LIST_TOKEN);
+  #navigationFilter = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_plastik_core_router_state__WEBPACK_IMPORTED_MODULE_10__.NavigationFilterService);
+  #notificationService = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_plastik_shared_notification_data_access__WEBPACK_IMPORTED_MODULE_12__.NotificationConfigService);
+  #store = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_ngrx_store__WEBPACK_IMPORTED_MODULE_9__.Store);
+  #activityStore = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_plastik_shared_activity_data_access__WEBPACK_IMPORTED_MODULE_11__.activityStore);
+  #notificationStore = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_plastik_shared_notification_data_access__WEBPACK_IMPORTED_MODULE_12__.notificationStore);
+  #liveAnnouncer = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_5__.LiveAnnouncer);
+  navigation$ = (0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.createEffect)(() => {
+    return this.#actions$.pipe(this.#navigationFilter.checkRouterNavigation('search'), (0,_ngrx_operators__WEBPACK_IMPORTED_MODULE_8__.concatLatestFrom)(() => [this.#store.select(_plastik_core_router_state__WEBPACK_IMPORTED_MODULE_10__.selectRouteQueryParams)]), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(([, queryParams]) => {
+      if (!queryParams['q']) {
+        return _nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesPageActions.cleanUp();
+      }
+      return _nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesPageActions.load({
+        params: {
+          ...queryParams,
+          ...{
+            media_type: 'image'
+          }
+        }
+      });
+    }));
+  });
+  activeOn$ = (0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.createEffect)(() => {
+    return this.#actions$.pipe((0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.ofType)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesPageActions.load), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(() => this.#activityStore.setActivity(true)));
+  }, {
+    dispatch: false
+  });
+  load$ = (0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.createEffect)(() => {
+    return this.#actions$.pipe((0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.ofType)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesPageActions.load), (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.tap)(({
+      params
+    }) => this.#liveAnnouncer.announce(`searching for ${params.q}`, 'assertive', 5000)), (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.exhaustMap)(({
+      params
+    }) => this.#apiService.getList(params).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(({
+      items,
+      count
+    }) => _nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesAPIActions.loadSuccess({
+      items,
+      count
+    })), (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.catchError)(error => (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.of)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesAPIActions.loadFailure({
+      error: error?.reason
+    }))))));
+  });
+  loadSuccess$ = (0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.createEffect)(() => {
+    return this.#actions$.pipe((0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.ofType)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesAPIActions.loadSuccess), (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.tap)(() => this.#liveAnnouncer.announce('Search completed successfully', 'assertive', 5000)));
+  }, {
+    dispatch: false
+  });
+  activeOff$ = (0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.createEffect)(() => {
+    return this.#actions$.pipe((0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.ofType)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesAPIActions.loadSuccess, _nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesAPIActions.loadFailure), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(() => this.#activityStore.setActivity(false)));
+  }, {
+    dispatch: false
+  });
+  showNotification$ = (0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.createEffect)(() => {
+    return this.#actions$.pipe((0,_ngrx_effects__WEBPACK_IMPORTED_MODULE_7__.ofType)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_14__.nasaImagesAPIActions.loadFailure), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(({
+      error
+    }) => {
+      const message = error || 'The request has failed. Please try it again.';
+      this.#liveAnnouncer.announce(message, 'assertive', 5000);
+      this.#notificationStore.show(this.#notificationService.getInstance({
+        type: 'ERROR',
+        message
+      }));
+    }));
+  }, {
+    dispatch: false
+  });
+  static ɵfac = function NasaImagesEffects_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || NasaImagesEffects)();
+  };
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdefineInjectable"]({
+    token: NasaImagesEffects,
+    factory: NasaImagesEffects.ɵfac
+  });
+}
+
+/***/ }),
+
+/***/ 3462:
+/*!*************************************************!*\
+  !*** ./libs/core/util/api/src/lib/data-crud.ts ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   API_SERVICE_TOKEN: () => (/* binding */ API_SERVICE_TOKEN),
+/* harmony export */   DATA_CREATE_SERVICE_TOKEN: () => (/* binding */ DATA_CREATE_SERVICE_TOKEN),
+/* harmony export */   DATA_GET_LIST_SERVICE_TOKEN: () => (/* binding */ DATA_GET_LIST_SERVICE_TOKEN),
+/* harmony export */   DATA_GET_ONE_SERVICE_TOKEN: () => (/* binding */ DATA_GET_ONE_SERVICE_TOKEN),
+/* harmony export */   DATA_READ_SERVICE_TOKEN: () => (/* binding */ DATA_READ_SERVICE_TOKEN),
+/* harmony export */   DATA_UPDATE_SERVICE_TOKEN: () => (/* binding */ DATA_UPDATE_SERVICE_TOKEN),
+/* harmony export */   DATA_WRITE_SERVICE_TOKEN: () => (/* binding */ DATA_WRITE_SERVICE_TOKEN)
+/* harmony export */ });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ 4131);
+
+/**
+ * Injection token for providing a generic CRUD API.
+ */
+const API_SERVICE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken('API_SERVICE_TOKEN');
+/**
+ * Injection token for read-only data services.
+ */
+const DATA_READ_SERVICE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken('DATA_READ_SERVICE_TOKEN');
+/**
+ * Injection token for write-capable data services.
+ */
+const DATA_WRITE_SERVICE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken('DATA_WRITE_SERVICE_TOKEN');
+/**
+ * Injection token for list retrieval services.
+ */
+const DATA_GET_LIST_SERVICE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken('DATA_GET_LIST_SERVICE_TOKEN');
+/**
+ * Injection token for single-entity retrieval services.
+ */
+const DATA_GET_ONE_SERVICE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken('DATA_GET_ONE_SERVICE_TOKEN');
+/**
+ * Injection token for entity creation services.
+ */
+const DATA_CREATE_SERVICE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken('DATA_CREATE_SERVICE_TOKEN');
+/**
+ * Injection token for entity update services.
+ */
+const DATA_UPDATE_SERVICE_TOKEN = new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken('DATA_UPDATE_SERVICE_TOKEN');
+
+/***/ }),
+
 /***/ 3512:
 /*!****************************************************!*\
   !*** ./libs/core/cms-layout/entities/src/index.ts ***!
@@ -576,6 +1834,44 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+/***/ }),
+
+/***/ 3670:
+/*!****************************************************************!*\
+  !*** ./libs/nasa-images/data-access/src/nasa-images.facade.ts ***!
+  \****************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NasaImagesFacade: () => (/* binding */ NasaImagesFacade)
+/* harmony export */ });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ 4131);
+/* harmony import */ var _plastik_core_cms_layout_data_access__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @plastik/core/cms-layout/data-access */ 2882);
+/* harmony import */ var _plastik_core_router_state__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @plastik/core/router-state */ 3561);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 6663);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 3499);
+
+
+
+
+
+class NasaImagesFacade extends _plastik_core_router_state__WEBPACK_IMPORTED_MODULE_2__.RouterFacade {
+  sidenavConfig = (0,_angular_core__WEBPACK_IMPORTED_MODULE_0__.inject)(_plastik_core_cms_layout_data_access__WEBPACK_IMPORTED_MODULE_1__.VIEW_CONFIG);
+  routeInfo$ = this.routeName$.pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(name => this.sidenavConfig()?.find(routeData => routeData.name === name)));
+  static ɵfac = /*@__PURE__*/(() => {
+    let ɵNasaImagesFacade_BaseFactory;
+    return function NasaImagesFacade_Factory(__ngFactoryType__) {
+      return (ɵNasaImagesFacade_BaseFactory || (ɵNasaImagesFacade_BaseFactory = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetInheritedFactory"](NasaImagesFacade)))(__ngFactoryType__ || NasaImagesFacade);
+    };
+  })();
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({
+    token: NasaImagesFacade,
+    factory: NasaImagesFacade.ɵfac,
+    providedIn: 'root'
+  });
+}
 
 /***/ }),
 
@@ -1662,11 +2958,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _plastik_core_entities__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! @plastik/core/entities */ 6925);
 /* harmony import */ var _plastik_core_environments__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! @plastik/core/environments */ 2071);
 /* harmony import */ var _plastik_core_router_state__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! @plastik/core/router-state */ 3561);
-/* harmony import */ var _plastik_shared_activity_data_access__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @plastik/shared/activity/data-access */ 6711);
-/* harmony import */ var _plastik_shared_notification_data_access__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @plastik/shared/notification/data-access */ 5757);
-/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ../environments/environment */ 38);
-/* harmony import */ var _app_routing__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./app.routing */ 3251);
-/* harmony import */ var _cms_layout_config__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./cms-layout-config */ 4919);
+/* harmony import */ var _plastik_nasa_images_search_data_access__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! @plastik/nasa-images/search/data-access */ 3321);
+/* harmony import */ var _plastik_shared_activity_data_access__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! @plastik/shared/activity/data-access */ 6711);
+/* harmony import */ var _plastik_shared_notification_data_access__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! @plastik/shared/notification/data-access */ 5757);
+/* harmony import */ var _environments_environment__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ../environments/environment */ 38);
+/* harmony import */ var _app_routing__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./app.routing */ 3251);
+/* harmony import */ var _cms_layout_config__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./cms-layout-config */ 4919);
+
 
 
 
@@ -1689,31 +2987,40 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const appConfig = {
-  providers: [(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.provideZonelessChangeDetection)(), (0,_angular_common_http__WEBPACK_IMPORTED_MODULE_3__.provideHttpClient)(), (0,_angular_router__WEBPACK_IMPORTED_MODULE_9__.provideRouter)(_app_routing__WEBPACK_IMPORTED_MODULE_22__.routes), (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_12__.provideStore)(), (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.importProvidersFrom)(_angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_1__.A11yModule, angular_svg_icon__WEBPACK_IMPORTED_MODULE_0__.AngularSvgIconModule.forRoot(), _ngrx_store__WEBPACK_IMPORTED_MODULE_12__.StoreModule.forRoot(_plastik_core_router_state__WEBPACK_IMPORTED_MODULE_18__.routerReducers, {
+  providers: [(0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.provideZonelessChangeDetection)(), (0,_angular_common_http__WEBPACK_IMPORTED_MODULE_3__.provideHttpClient)(), (0,_angular_router__WEBPACK_IMPORTED_MODULE_9__.provideRouter)(_app_routing__WEBPACK_IMPORTED_MODULE_23__.routes), (0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.provideAppInitializer)(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    // Rebind RAF APIs to `window` so zoneless schedulers (NgRx Component) avoid "Illegal invocation".
+    const boundRaf = window.requestAnimationFrame.bind(window);
+    const boundCancelRaf = window.cancelAnimationFrame.bind(window);
+    window.requestAnimationFrame = boundRaf;
+    window.cancelAnimationFrame = boundCancelRaf;
+  }), (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_12__.provideStore)(), (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.importProvidersFrom)(_angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_1__.A11yModule, angular_svg_icon__WEBPACK_IMPORTED_MODULE_0__.AngularSvgIconModule.forRoot(), _ngrx_store__WEBPACK_IMPORTED_MODULE_12__.StoreModule.forRoot(_plastik_core_router_state__WEBPACK_IMPORTED_MODULE_18__.routerReducers, {
     runtimeChecks: {
       strictActionImmutability: true,
       strictStateImmutability: true
     }
   }), _ngrx_effects__WEBPACK_IMPORTED_MODULE_10__.EffectsModule.forRoot([_plastik_core_router_state__WEBPACK_IMPORTED_MODULE_18__.RouterStateEffects]), (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.isDevMode)() ? _ngrx_store_devtools__WEBPACK_IMPORTED_MODULE_13__.StoreDevtoolsModule.instrument({
-    name: _environments_environment__WEBPACK_IMPORTED_MODULE_21__.environment.name,
+    name: _environments_environment__WEBPACK_IMPORTED_MODULE_22__.environment.name,
     maxAge: 25,
     connectInZone: true
-  }) : [], _plastik_core_cms_layout_data_access__WEBPACK_IMPORTED_MODULE_14__.CoreCmsLayoutDataAccessModule, _plastik_shared_notification_data_access__WEBPACK_IMPORTED_MODULE_20__.notificationStore, _plastik_shared_activity_data_access__WEBPACK_IMPORTED_MODULE_19__.activityStore), (0,_ngrx_router_store__WEBPACK_IMPORTED_MODULE_11__.provideRouterStore)({
+  }) : [], _plastik_core_cms_layout_data_access__WEBPACK_IMPORTED_MODULE_14__.CoreCmsLayoutDataAccessModule, _plastik_shared_notification_data_access__WEBPACK_IMPORTED_MODULE_21__.notificationStore, _plastik_shared_activity_data_access__WEBPACK_IMPORTED_MODULE_20__.activityStore), ..._plastik_nasa_images_search_data_access__WEBPACK_IMPORTED_MODULE_19__.NASA_IMAGES_PROVIDERS, (0,_ngrx_router_store__WEBPACK_IMPORTED_MODULE_11__.provideRouterStore)({
     serializer: _plastik_core_router_state__WEBPACK_IMPORTED_MODULE_18__.CustomRouterSerializer,
     navigationActionTiming: _ngrx_router_store__WEBPACK_IMPORTED_MODULE_11__.NavigationActionTiming.PreActivation,
     routerState: _ngrx_router_store__WEBPACK_IMPORTED_MODULE_11__.RouterState.Minimal
   }), {
     provide: _plastik_core_environments__WEBPACK_IMPORTED_MODULE_17__.ENVIRONMENT,
-    useValue: _environments_environment__WEBPACK_IMPORTED_MODULE_21__.environment
+    useValue: _environments_environment__WEBPACK_IMPORTED_MODULE_22__.environment
   }, {
     provide: _angular_router__WEBPACK_IMPORTED_MODULE_8__.TitleStrategy,
     useClass: _plastik_core_router_state__WEBPACK_IMPORTED_MODULE_18__.PrefixTitleService
   }, {
     provide: _plastik_core_cms_layout_entities__WEBPACK_IMPORTED_MODULE_15__.CORE_CMS_LAYOUT_HEADER_CONFIG,
-    useValue: _cms_layout_config__WEBPACK_IMPORTED_MODULE_23__.headerConfig
+    useValue: _cms_layout_config__WEBPACK_IMPORTED_MODULE_24__.headerConfig
   }, {
     provide: _plastik_core_cms_layout_data_access__WEBPACK_IMPORTED_MODULE_14__.VIEW_CONFIG,
-    useValue: (0,_plastik_core_entities__WEBPACK_IMPORTED_MODULE_16__.getVisibleNavigationList)(_cms_layout_config__WEBPACK_IMPORTED_MODULE_23__.viewConfig)
+    useValue: (0,_plastik_core_entities__WEBPACK_IMPORTED_MODULE_16__.getVisibleNavigationList)(_cms_layout_config__WEBPACK_IMPORTED_MODULE_24__.viewConfig)
   }, {
     provide: _angular_material_snack_bar__WEBPACK_IMPORTED_MODULE_7__.MAT_SNACK_BAR_DEFAULT_OPTIONS,
     useValue: {
@@ -1885,6 +3192,163 @@ class NavigationService {
     token: NavigationService,
     factory: NavigationService.ɵfac,
     providedIn: 'root'
+  });
+}
+
+/***/ }),
+
+/***/ 7547:
+/*!**********************************************************!*\
+  !*** ./libs/core/util/api/src/lib/pocketbase.service.ts ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   PocketBaseService: () => (/* binding */ PocketBaseService)
+/* harmony export */ });
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ 141);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 494);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 6663);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 6853);
+/* harmony import */ var pocketbase__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! pocketbase */ 4302);
+/* harmony import */ var _base_data_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./base-data.service */ 9276);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 4131);
+
+
+
+
+/**
+ * @description Abstract class to inherit from on creating a feature PocketBase service.
+ * @template T, P, E
+ *
+ * **T** refers to the main feature model item used inside applications.
+ *
+ * **P** refers to the type description of the passed parameters to API call methods.
+ * These parameters are the usual option to pass configuration with the REST call, for example for filtering results, paginate or ordering data.
+ *
+ * **E** refers to the environment type extension with the PocketBase URL property.
+ */
+class PocketBaseService extends _base_data_service__WEBPACK_IMPORTED_MODULE_5__.BaseDataService {
+  #pb;
+  /**
+   * @description Cache time in milliseconds
+   */
+  cacheTime = 1000 * 60 * 5; // 5 minutes default
+  constructor() {
+    super();
+    this.#pb = new pocketbase__WEBPACK_IMPORTED_MODULE_4__["default"](this.getPocketBaseUrlFromEnvironment());
+  }
+  /**
+   * @description Gets the PocketBase URL from the environment. Override if your environment uses a different property name.
+   * @returns {string} The PocketBase URL.
+   */
+  getPocketBaseUrlFromEnvironment() {
+    return this.environment.baseApiUrl;
+  }
+  /**
+   * @description Method to map the PocketBase response with the inner typings before storing it in app.
+   * Override this method in child classes when inheriting from PocketBaseService with your custom response structures.
+   * @param { T } data The PocketBase response data as it is.
+   * @returns { T } The mapped response.
+   */
+  mapResponse(data) {
+    return data;
+  }
+  /**
+   * @param { ListResult<T> } data The list response data as it is.
+   * @returns { ListResult<T> } The mapped list response.
+   * @description Method to map list responses.
+   */
+  mapListResponse(data) {
+    return {
+      ...data,
+      items: data.items.map(item => this.mapResponse(item))
+    };
+  }
+  /**
+   * @param { P } params The list parameters.
+   * @returns { Observable<ListResult<T>> } The list of records.
+   * @description Get a list of records.
+   */
+  getList(params) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(this.#pb.collection(this.collectionName()).getList(params?.page || 1, params?.perPage || 50, params || {})).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_2__.map)(data => this.mapListResponse(data)), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.shareReplay)({
+      bufferSize: 1,
+      refCount: true,
+      windowTime: this.cacheTime
+    }), (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.catchError)(this.handleError));
+  }
+  /**
+   * @param { RecordFullListOptions } params The full list parameters.
+   * @returns { Observable<T[]> } The full list of records.
+   * @description Get all records (max 500 by default).
+   */
+  getFullList(params) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(this.#pb.collection(this.collectionName()).getFullList(params)).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_2__.map)(items => items.map(item => this.mapResponse(item))), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.shareReplay)({
+      bufferSize: 1,
+      refCount: true,
+      windowTime: this.cacheTime
+    }), (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.catchError)(this.handleError));
+  }
+  /**
+   * @param { string } id The record ID.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<T> } The single record.
+   * @description Get a single record by ID.
+   */
+  getOne(id, options) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(this.#pb.collection(this.collectionName()).getOne(id, options)).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_2__.map)(data => this.mapResponse(data)), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.shareReplay)({
+      bufferSize: 1,
+      refCount: true,
+      windowTime: this.cacheTime
+    }), (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.catchError)(this.handleError));
+  }
+  /**
+   * @param { string } filter The filter.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<T> } The first record matching the filter.
+   * @description Get the first record matching the filter.
+   */
+  getFirstListItem(filter, options) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(this.#pb.collection(this.collectionName()).getFirstListItem(filter, options)).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_2__.map)(data => this.mapResponse(data)), (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.shareReplay)({
+      bufferSize: 1,
+      refCount: true,
+      windowTime: this.cacheTime
+    }), (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.catchError)(this.handleError));
+  }
+  /**
+   * @param { Partial<T> } data The record data.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<T> } The created record.
+   * @description Create a new record.
+   */
+  create(data, options) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(this.#pb.collection(this.collectionName()).create(data, options)).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_2__.map)(response => this.mapResponse(response)), (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.catchError)(this.handleError));
+  }
+  /**
+   * @param { string } id The record ID.
+   * @param { Partial<T> } data The record data.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<T> } The updated record.
+   * @description Update an existing record.
+   */
+  update(id, data, options) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(this.#pb.collection(this.collectionName()).update(id, data, options)).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_2__.map)(response => this.mapResponse(response)), (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.catchError)(this.handleError));
+  }
+  /**
+   * @param { string } id The record ID.
+   * @returns { Observable<boolean> } The deletion result.
+   * @description Delete a record.
+   */
+  delete(id) {
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_0__.from)(this.#pb.collection(this.collectionName()).delete(id)).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_2__.map)(() => true), (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.catchError)(this.handleError));
+  }
+  static ɵfac = function PocketBaseService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || PocketBaseService)();
+  };
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdefineInjectable"]({
+    token: PocketBaseService,
+    factory: PocketBaseService.ɵfac
   });
 }
 
@@ -2120,6 +3584,29 @@ function collectionToArray(collection) {
 
 /***/ }),
 
+/***/ 8123:
+/*!***************************************************************************!*\
+  !*** ./libs/nasa-images/search/data-access/src/lib/nasa-images.tokens.ts ***!
+  \***************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NASA_IMAGES_DATA_LIST_TOKEN: () => (/* binding */ NASA_IMAGES_DATA_LIST_TOKEN),
+/* harmony export */   NASA_IMAGES_PROVIDERS: () => (/* binding */ NASA_IMAGES_PROVIDERS)
+/* harmony export */ });
+/* harmony import */ var _plastik_core_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @plastik/core/api */ 2905);
+/* harmony import */ var _nasa_images_api_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./nasa-images-api.service */ 9939);
+
+
+const NASA_IMAGES_DATA_LIST_TOKEN = (0,_plastik_core_api__WEBPACK_IMPORTED_MODULE_0__.createDataGetListServiceToken)('NASA_IMAGES_DATA_LIST_TOKEN');
+const NASA_IMAGES_PROVIDERS = [{
+  provide: NASA_IMAGES_DATA_LIST_TOKEN,
+  useExisting: _nasa_images_api_service__WEBPACK_IMPORTED_MODULE_1__.NasaImagesApiService
+}];
+
+/***/ }),
+
 /***/ 8235:
 /*!***********************************************!*\
   !*** ./libs/shared/util/objects/src/index.ts ***!
@@ -2144,6 +3631,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _util_objects__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./util-objects */ 8002);
 
+
+/***/ }),
+
+/***/ 8379:
+/*!************************************************!*\
+  !*** ./libs/shared/util/latinize/src/index.ts ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   latinize: () => (/* reexport safe */ _latinize__WEBPACK_IMPORTED_MODULE_0__.latinize)
+/* harmony export */ });
+/* harmony import */ var _latinize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./latinize */ 1339);
+
+
+/***/ }),
+
+/***/ 8464:
+/*!********************************************************!*\
+  !*** ./libs/core/util/api/src/lib/data-crud.tokens.ts ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   createDataGetListServiceToken: () => (/* binding */ createDataGetListServiceToken),
+/* harmony export */   createDataReadServiceToken: () => (/* binding */ createDataReadServiceToken),
+/* harmony export */   createDataServiceToken: () => (/* binding */ createDataServiceToken),
+/* harmony export */   createDataWriteServiceToken: () => (/* binding */ createDataWriteServiceToken)
+/* harmony export */ });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ 4131);
+
+/**
+ * @template TList, P
+ * @description Creates an injection token for a data list service.
+ * @param { string } description The description of the token.
+ * @returns { InjectionToken<DataGetListService<TList, P>> } The created injection token.
+ */
+function createDataGetListServiceToken(description = 'DATA_GET_LIST_SERVICE') {
+  return new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken(description);
+}
+/**
+ * @template T, TList, P, ID, ReadOptions, WriteOptions, Create, Update
+ * @description Creates an injection token for a data crud service.
+ * @param { string } description The description of the token.
+ * @returns { InjectionToken<DataApiService<T, TList, P, ID, ReadOptions, WriteOptions, Create, Update>> } The created injection token.
+ */
+function createDataServiceToken(description = 'DATA_CRUD_SERVICE') {
+  return new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken(description);
+}
+/**
+ * @template T, TList, P, ID, ReadOptions
+ * @description Creates an injection token for a data read service.
+ * @param { string } description The description of the token.
+ * @returns { InjectionToken<DataReadService<T, TList, P, ID, ReadOptions>> } The created injection token.
+ */
+function createDataReadServiceToken(description = 'DATA_READ_SERVICE') {
+  return new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken(description);
+}
+/**
+ * @template T, ID, WriteOptions, Create, Update
+ * @description Creates an injection token for a data write service.
+ * @param { string } description The description of the token.
+ * @returns { InjectionToken<DataWriteService<T, ID, WriteOptions, Create, Update>> } The created injection token.
+ */
+function createDataWriteServiceToken(description = 'DATA_WRITE_SERVICE') {
+  return new _angular_core__WEBPACK_IMPORTED_MODULE_0__.InjectionToken(description);
+}
 
 /***/ }),
 
@@ -2248,7 +3804,7 @@ function provideEnvironmentMock() {
     useValue: {
       production: false,
       name: 'my-app',
-      apiUrl: 'https://api'
+      baseApiUrl: 'https://api'
     }
   };
 }
@@ -2351,6 +3907,141 @@ class NotificationConfigService {
 
 /***/ }),
 
+/***/ 9276:
+/*!*********************************************************!*\
+  !*** ./libs/core/util/api/src/lib/base-data.service.ts ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BaseDataService: () => (/* binding */ BaseDataService)
+/* harmony export */ });
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common/http */ 1693);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ 4131);
+/* harmony import */ var _plastik_core_environments__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @plastik/core/environments */ 2071);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 5463);
+
+
+
+
+
+class BaseDataService {
+  environment = (0,_angular_core__WEBPACK_IMPORTED_MODULE_1__.inject)(_plastik_core_environments__WEBPACK_IMPORTED_MODULE_2__.ENVIRONMENT);
+  /**
+   * Cache time by default (1 day). Children can override it.
+   */
+  cacheTime = 1000 * 60 * 60 * 24;
+  /**
+   * @description Generic error handler for HTTP and custom backends.
+   * @param { unknown } error The error object.
+   * @returns { Observable<never> } An observable that throws the formatted error.
+   */
+  handleError = error => {
+    let message = 'An error occurred';
+    let code = 500;
+    let data = null;
+    if (error instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_0__.HttpErrorResponse) {
+      message = (error.error?.message ?? error.message) || message;
+      code = error.status ?? code;
+      data = error.error ?? null;
+    } else if (typeof error === 'object' && error !== null) {
+      const maybe = error;
+      const dataMessage = maybe.data?.message;
+      message = (typeof dataMessage === 'string' ? dataMessage : typeof maybe.message === 'string' ? maybe.message : undefined) ?? message;
+      code = typeof maybe.status === 'number' ? maybe.status : code;
+      data = 'data' in maybe ? maybe.data : data;
+    }
+    return (0,rxjs__WEBPACK_IMPORTED_MODULE_3__.throwError)(() => ({
+      message,
+      code,
+      data,
+      originalError: error
+    }));
+  };
+  static ɵfac = function BaseDataService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || BaseDataService)();
+  };
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjectable"]({
+    token: BaseDataService,
+    factory: BaseDataService.ɵfac
+  });
+}
+
+/***/ }),
+
+/***/ 9286:
+/*!***********************************************************************************!*\
+  !*** ./libs/nasa-images/search/data-access/src/lib/+state/nasa-images.feature.ts ***!
+  \***********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   initialNasaImagesState: () => (/* binding */ initialNasaImagesState),
+/* harmony export */   name: () => (/* binding */ name),
+/* harmony export */   nasaMediaAdapter: () => (/* binding */ nasaMediaAdapter),
+/* harmony export */   reducer: () => (/* binding */ reducer),
+/* harmony export */   selectNasaImagesFeature: () => (/* binding */ selectNasaImagesFeature)
+/* harmony export */ });
+/* harmony import */ var _ngrx_entity__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @ngrx/entity */ 1101);
+/* harmony import */ var _ngrx_store__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngrx/store */ 9797);
+/* harmony import */ var _nasa_images_actions__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./nasa-images.actions */ 183);
+
+
+
+const NASA_IMAGES_FEATURE_KEY = 'images';
+const nasaMediaAdapter = (0,_ngrx_entity__WEBPACK_IMPORTED_MODULE_0__.createEntityAdapter)();
+const initialNasaImagesState = nasaMediaAdapter.getInitialState({
+  count: 0,
+  isActiveSearch: false,
+  error: null,
+  selectedId: null
+});
+const nasaImagesReducer = (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_1__.createReducer)(initialNasaImagesState, (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_1__.on)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_2__.nasaImagesPageActions.load, state => ({
+  ...state,
+  error: null,
+  isActiveSearch: false
+})), (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_1__.on)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_2__.nasaImagesAPIActions.loadSuccess, (state, {
+  items,
+  count
+}) => nasaMediaAdapter.setAll(items, {
+  ...state,
+  count,
+  isActiveSearch: true
+})), (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_1__.on)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_2__.nasaImagesAPIActions.loadFailure, (state, {
+  error
+}) => ({
+  ...state,
+  error,
+  isActiveSearch: false
+})), (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_1__.on)(_nasa_images_actions__WEBPACK_IMPORTED_MODULE_2__.nasaImagesPageActions.cleanUp, state => nasaMediaAdapter.removeAll({
+  ...state,
+  count: 0,
+  error: null,
+  isActiveSearch: false
+})));
+const selectNasaImagesFeature = (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_1__.createFeature)({
+  name: NASA_IMAGES_FEATURE_KEY,
+  reducer: nasaImagesReducer,
+  extraSelectors: ({
+    selectImagesState,
+    selectEntities,
+    selectSelectedId
+  }) => {
+    return {
+      ...nasaMediaAdapter.getSelectors(selectImagesState),
+      selectSelectedEntity: (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_1__.createSelector)(selectEntities, selectSelectedId, (entities, id) => entities && id ? entities[id] : null)
+    };
+  }
+});
+const {
+  name,
+  reducer
+} = selectNasaImagesFeature;
+
+/***/ }),
+
 /***/ 9502:
 /*!********************************************************!*\
   !*** ./libs/core/util/environments/src/environment.ts ***!
@@ -2419,6 +4110,114 @@ class LayoutFacade {
 
 /***/ }),
 
+/***/ 9644:
+/*!***************************************************!*\
+  !*** ./libs/core/util/api/src/lib/api.service.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ApiService: () => (/* binding */ ApiService)
+/* harmony export */ });
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! rxjs */ 8530);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ 4932);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs */ 494);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs */ 6663);
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ 7750);
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/common/http */ 1693);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/core */ 4131);
+/* harmony import */ var _base_data_service__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./base-data.service */ 9276);
+
+
+
+
+
+/**
+ * @description Abstract class to inherit from on creating a feature api service.
+ * @template T, P, E
+ *
+ * **T** refers to the main feature model item used inside applications.
+ *
+ * **P** refers to the type description of the passed parameters to API call methods.
+ * These parameters are the usual option to pass configuration with the REST call, for example for filtering results, paginate or ordering data.
+ *
+ * **E** refers to the environment type extension with the API URL property.
+ */
+class ApiService extends _base_data_service__WEBPACK_IMPORTED_MODULE_7__.BaseDataService {
+  #httpClient = (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.inject)(_angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpClient);
+  #apiUrl;
+  constructor() {
+    super();
+    this.#apiUrl = `${this.getApiUrlFromEnvironment()}/${this.resourceUrlSegment()}`;
+  }
+  /**
+   * @description Gets the API URL from the environment. Override if your environment uses a different property name.
+   * @returns {string} The base API URL.
+   */
+  getApiUrlFromEnvironment() {
+    return this.environment.baseApiUrl;
+  }
+  /**
+   * @description Method to map the API response with the inner typings before storing it in app.
+   * @template T
+   * Override this method in child classes when inheriting from ApiService with your custom API response structures.
+   * @param { unknown } data The API response data as it is.
+   * @returns { T } The mapped API response.
+   */
+  mapListResponse(data) {
+    return data;
+  }
+  /**
+   * @description A GET method to retrieve a list of data.
+   * @template T, P
+   * @param { P } params  The http params to pass with the API call.
+   * @returns { Observable<P | never> } The API data response after mapping or an error catch.
+   */
+  getList(params) {
+    return this.#httpClient.get(this.#apiUrl, {
+      params: this.getHttpParams(params)
+    }).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(this.mapListResponse), (0,rxjs__WEBPACK_IMPORTED_MODULE_4__.share)({
+      connector: () => new rxjs__WEBPACK_IMPORTED_MODULE_0__.ReplaySubject(1),
+      resetOnComplete: () => (0,rxjs__WEBPACK_IMPORTED_MODULE_1__.timer)(this.cacheTime)
+    }), (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.catchError)(this.handleError));
+  }
+  getHttpParams(params) {
+    let httpClientParams = new _angular_common_http__WEBPACK_IMPORTED_MODULE_5__.HttpParams();
+    Object.entries(params || {}).forEach(([key, value]) => {
+      httpClientParams = httpClientParams.set(key, `${value}`);
+    });
+    return httpClientParams;
+  }
+  mapItemResponse(data) {
+    return data;
+  }
+  getOne(id, options) {
+    void options;
+    return this.#httpClient.get(`${this.#apiUrl}/${id}`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(response => this.mapItemResponse(response)), (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.catchError)(this.handleError));
+  }
+  create(data, options) {
+    void options;
+    return this.#httpClient.post(this.#apiUrl, data).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(response => this.mapItemResponse(response)), (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.catchError)(this.handleError));
+  }
+  update(id, data, options) {
+    void options;
+    return this.#httpClient.patch(`${this.#apiUrl}/${id}`, data).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(response => this.mapItemResponse(response)), (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.catchError)(this.handleError));
+  }
+  delete(id) {
+    return this.#httpClient.delete(`${this.#apiUrl}/${id}`).pipe((0,rxjs__WEBPACK_IMPORTED_MODULE_3__.map)(() => true), (0,rxjs__WEBPACK_IMPORTED_MODULE_2__.catchError)(this.handleError));
+  }
+  static ɵfac = function ApiService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || ApiService)();
+  };
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_6__["ɵɵdefineInjectable"]({
+    token: ApiService,
+    factory: ApiService.ɵfac
+  });
+}
+
+/***/ }),
+
 /***/ 9708:
 /*!*****************************************************************************************!*\
   !*** ./libs/core/router/data-access/src/lib/+state/selectors/router-state.selectors.ts ***!
@@ -2444,6 +4243,97 @@ const selectRouteUrl = (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.createSelecto
 const selectRouteParams = (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.createSelector)(selectRouteFeatureState, state => state?.state?.params);
 const selectRouteData = (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.createSelector)(selectRouteFeatureState, state => state?.state?.data);
 const selectRouteDataName = (0,_ngrx_store__WEBPACK_IMPORTED_MODULE_0__.createSelector)(selectRouteData, data => data?.['name']);
+
+/***/ }),
+
+/***/ 9810:
+/*!***************************************************!*\
+  !*** ./libs/nasa-images/data-access/src/index.ts ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NasaImagesFacade: () => (/* reexport safe */ _nasa_images_facade__WEBPACK_IMPORTED_MODULE_0__.NasaImagesFacade)
+/* harmony export */ });
+/* harmony import */ var _nasa_images_facade__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./nasa-images.facade */ 3670);
+
+
+/***/ }),
+
+/***/ 9939:
+/*!********************************************************************************!*\
+  !*** ./libs/nasa-images/search/data-access/src/lib/nasa-images-api.service.ts ***!
+  \********************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   NasaImagesApiService: () => (/* binding */ NasaImagesApiService)
+/* harmony export */ });
+/* harmony import */ var _plastik_core_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @plastik/core/api */ 2905);
+/* harmony import */ var _plastik_shared_latinize__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @plastik/shared/latinize */ 8379);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 4131);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ 3499);
+
+
+
+class NasaImagesApiService extends _plastik_core_api__WEBPACK_IMPORTED_MODULE_0__.ApiService {
+  resourceUrlSegment() {
+    return 'search';
+  }
+  mapListResponse({
+    collection: {
+      metadata: {
+        total_hits: count
+      },
+      items
+    }
+  }) {
+    const mappedItems = items.map(({
+      data,
+      links
+    }) => {
+      const {
+        nasa_id: id,
+        title: name,
+        date_created,
+        description,
+        keywords,
+        center,
+        location,
+        secondary_creator: creator
+      } = data[0];
+      return {
+        id,
+        name,
+        normalizedName: (0,_plastik_shared_latinize__WEBPACK_IMPORTED_MODULE_1__.latinize)(name).toLowerCase(),
+        description,
+        keywords,
+        dateCreated: new Date(date_created),
+        thumbnail: links[0].href,
+        center,
+        location,
+        creator
+      };
+    });
+    return {
+      count,
+      items: mappedItems
+    };
+  }
+  static ɵfac = /*@__PURE__*/(() => {
+    let ɵNasaImagesApiService_BaseFactory;
+    return function NasaImagesApiService_Factory(__ngFactoryType__) {
+      return (ɵNasaImagesApiService_BaseFactory || (ɵNasaImagesApiService_BaseFactory = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetInheritedFactory"](NasaImagesApiService)))(__ngFactoryType__ || NasaImagesApiService);
+    };
+  })();
+  static ɵprov = /*@__PURE__*/_angular_core__WEBPACK_IMPORTED_MODULE_2__["ɵɵdefineInjectable"]({
+    token: NasaImagesApiService,
+    factory: NasaImagesApiService.ɵfac,
+    providedIn: 'root'
+  });
+}
 
 /***/ }),
 
