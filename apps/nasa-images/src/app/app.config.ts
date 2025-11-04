@@ -7,6 +7,7 @@ import {
   ApplicationConfig,
   importProvidersFrom,
   isDevMode,
+  provideAppInitializer,
   provideZonelessChangeDetection,
 } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
@@ -25,6 +26,7 @@ import {
   routerReducers,
   RouterStateEffects,
 } from '@plastik/core/router-state';
+import { NASA_IMAGES_PROVIDERS } from '@plastik/nasa-images/search/data-access';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
@@ -37,6 +39,22 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideHttpClient(),
     provideRouter(routes),
+    provideAppInitializer(() => {
+      if (typeof window === 'undefined') {
+        return;
+      }
+
+      // Rebind RAF APIs to `window` so zoneless schedulers (NgRx Component) avoid "Illegal invocation".
+      const boundRaf = window.requestAnimationFrame.bind(
+        window
+      ) as typeof window.requestAnimationFrame;
+      const boundCancelRaf = window.cancelAnimationFrame.bind(
+        window
+      ) as typeof window.cancelAnimationFrame;
+
+      window.requestAnimationFrame = boundRaf;
+      window.cancelAnimationFrame = boundCancelRaf;
+    }),
     provideStore(),
     importProvidersFrom(
       A11yModule,
@@ -59,6 +77,7 @@ export const appConfig: ApplicationConfig = {
       notificationStore,
       activityStore
     ),
+    ...NASA_IMAGES_PROVIDERS,
     provideRouterStore({
       serializer: CustomRouterSerializer,
       navigationActionTiming: NavigationActionTiming.PreActivation,

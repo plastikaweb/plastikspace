@@ -12,7 +12,7 @@ export function provideEnvironmentMock(): Provider {
     useValue: {
       production: false,
       name: 'my-app',
-      apiUrl: 'https://api',
+      baseApiUrl: 'https://api',
     },
   };
 }

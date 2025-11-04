@@ -1,0 +1,202 @@
+import { catchError, from, map, Observable, shareReplay } from 'rxjs';
+
+import { Injectable } from '@angular/core';
+import PocketBase, {
+  ListResult,
+  RecordFullListOptions,
+  RecordListOptions,
+  RecordModel,
+  RecordOptions,
+} from 'pocketbase';
+import { BaseDataService } from './base-data.service';
+import { DataApiService } from './data-crud';
+
+/**
+ * Interface for PocketBase error responses
+ */
+export interface PocketBaseError {
+  data?: Record<string, unknown>;
+  message: string;
+  status: number;
+}
+
+/**
+ * @description Abstract class to inherit from on creating a feature PocketBase service.
+ * @template T, P, E
+ *
+ * **T** refers to the main feature model item used inside applications.
+ *
+ * **P** refers to the type description of the passed parameters to API call methods.
+ * These parameters are the usual option to pass configuration with the REST call, for example for filtering results, paginate or ordering data.
+ *
+ * **E** refers to the environment type extension with the PocketBase URL property.
+ */
+@Injectable()
+export abstract class PocketBaseService<
+    T extends RecordModel = RecordModel,
+    P extends RecordListOptions | RecordFullListOptions = RecordListOptions,
+  >
+  extends BaseDataService
+  implements
+    DataApiService<
+      T,
+      ListResult<T>,
+      P,
+      string,
+      RecordOptions,
+      RecordOptions,
+      Partial<T>,
+      Partial<T>
+    >
+{
+  readonly #pb: PocketBase;
+
+  /**
+   * @description Cache time in milliseconds
+   */
+  protected override cacheTime = 1000 * 60 * 5; // 5 minutes default
+
+  constructor() {
+    super();
+    this.#pb = new PocketBase(this.getPocketBaseUrlFromEnvironment());
+  }
+
+  /**
+   * @description Gets the PocketBase URL from the environment. Override if your environment uses a different property name.
+   * @returns {string} The PocketBase URL.
+   */
+  protected getPocketBaseUrlFromEnvironment(): string {
+    return this.environment.baseApiUrl;
+  }
+
+  /**
+   * @description Implement this method in child classes to have the collection name.
+   * @returns {string} The collection name.
+   */
+  protected abstract collectionName(): string;
+
+  /**
+   * @description Method to map the PocketBase response with the inner typings before storing it in app.
+   * Override this method in child classes when inheriting from PocketBaseService with your custom response structures.
+   * @param { T } data The PocketBase response data as it is.
+   * @returns { T } The mapped response.
+   */
+  protected mapResponse(data: T): T {
+    return data;
+  }
+
+  /**
+   * @param { ListResult<T> } data The list response data as it is.
+   * @returns { ListResult<T> } The mapped list response.
+   * @description Method to map list responses.
+   */
+  protected mapListResponse(data: ListResult<T>): ListResult<T> {
+    return {
+      ...data,
+      items: data.items.map(item => this.mapResponse(item)),
+    };
+  }
+
+  /**
+   * @param { P } params The list parameters.
+   * @returns { Observable<ListResult<T>> } The list of records.
+   * @description Get a list of records.
+   */
+  getList(params?: P): Observable<ListResult<T>> {
+    return from(
+      this.#pb
+        .collection(this.collectionName())
+        .getList<T>(
+          (params as RecordListOptions)?.page || 1,
+          (params as RecordListOptions)?.perPage || 50,
+          (params as Omit<RecordListOptions, 'page' | 'perPage'>) || {}
+        )
+    ).pipe(
+      map(data => this.mapListResponse(data)),
+      shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * @param { RecordFullListOptions } params The full list parameters.
+   * @returns { Observable<T[]> } The full list of records.
+   * @description Get all records (max 500 by default).
+   */
+  getFullList(params?: RecordFullListOptions): Observable<T[]> {
+    return from(this.#pb.collection(this.collectionName()).getFullList<T>(params)).pipe(
+      map(items => items.map(item => this.mapResponse(item))),
+      shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * @param { string } id The record ID.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<T> } The single record.
+   * @description Get a single record by ID.
+   */
+  getOne(id: string, options?: RecordOptions): Observable<T> {
+    return from(this.#pb.collection(this.collectionName()).getOne<T>(id, options)).pipe(
+      map(data => this.mapResponse(data)),
+      shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * @param { string } filter The filter.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<T> } The first record matching the filter.
+   * @description Get the first record matching the filter.
+   */
+  getFirstListItem(filter: string, options?: RecordOptions): Observable<T> {
+    return from(
+      this.#pb.collection(this.collectionName()).getFirstListItem<T>(filter, options)
+    ).pipe(
+      map(data => this.mapResponse(data)),
+      shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * @param { Partial<T> } data The record data.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<T> } The created record.
+   * @description Create a new record.
+   */
+  create(data: Partial<T>, options?: RecordOptions): Observable<T> {
+    return from(this.#pb.collection(this.collectionName()).create<T>(data, options)).pipe(
+      map(response => this.mapResponse(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * @param { string } id The record ID.
+   * @param { Partial<T> } data The record data.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<T> } The updated record.
+   * @description Update an existing record.
+   */
+  update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T> {
+    return from(this.#pb.collection(this.collectionName()).update<T>(id, data, options)).pipe(
+      map(response => this.mapResponse(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  /**
+   * @param { string } id The record ID.
+   * @returns { Observable<boolean> } The deletion result.
+   * @description Delete a record.
+   */
+  delete(id: string): Observable<boolean> {
+    return from(this.#pb.collection(this.collectionName()).delete(id)).pipe(
+      map(() => true),
+      catchError(this.handleError)
+    );
+  }
+}

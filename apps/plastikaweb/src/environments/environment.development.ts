@@ -1,7 +1,7 @@
 import { Environment } from '@plastik/core/environments';
 
-export const environment: Environment = {
+export const environment: Environment<{ baseApiUrl: string }> = {
   production: false,
   name: 'plastikaweb',
-  apiUrl: 'http://localhost:8881/graphql',
+  baseApiUrl: 'http://localhost:8881/graphql',
 };

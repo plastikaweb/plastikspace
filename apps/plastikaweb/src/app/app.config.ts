@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
       const httpLink = inject(HttpLink);
 
       return {
-        link: httpLink.create({ uri: environment.apiUrl }),
+        link: httpLink.create({ uri: environment.baseApiUrl }),
         cache: new InMemoryCache(),
         defaultOptions: {
           watch: {

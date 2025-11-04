@@ -3,8 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 import { Environment } from '@plastik/core/environments';
 
-export const environment: Environment = {
+export const environment: Environment<{ baseApiUrl: string }> = {
   name: 'Nasa Images',
   production: false,
-  apiUrl: 'https://images-api.nasa.gov',
+  baseApiUrl: 'https://images-api.nasa.gov',
 };
