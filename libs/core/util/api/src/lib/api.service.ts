@@ -1,29 +1,41 @@
-import { catchError, map, Observable, ReplaySubject, share, throwError, timer } from 'rxjs';
+import { catchError, map, Observable, ReplaySubject, share, timer } from 'rxjs';
 
-import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ENVIRONMENT } from '@plastik/core/environments';
+import { BaseDataService } from './base-data.service';
+import { DataApiService } from './data-crud';
 
 /**
  * @description Abstract class to inherit from on creating a feature api service.
- * @template T, P
+ * @template T, P, E
  *
  * **T** refers to the main feature model item used inside applications.
  *
  * **P** refers to the type description of the passed parameters to API call methods.
  * These parameters are the usual option to pass configuration with the REST call, for example for filtering results, paginate or ordering data.
+ *
+ * **E** refers to the environment type extension with the API URL property.
  */
 @Injectable()
-export abstract class ApiService<T, P extends object> {
-  readonly #environment = inject(ENVIRONMENT);
+export abstract class ApiService<TList, P extends object, TEntity = unknown, ID = string>
+  extends BaseDataService
+  implements DataApiService<TEntity, TList, P, ID>
+{
   readonly #httpClient = inject(HttpClient);
-  readonly #apiUrl = `${this.#environment.apiUrl}/${this.resourceUrlSegment()}`;
+  readonly #apiUrl: string;
+
+  constructor() {
+    super();
+    this.#apiUrl = `${this.getApiUrlFromEnvironment()}/${this.resourceUrlSegment()}`;
+  }
 
   /**
-   * @description Implement this method in child classes to set the request cache time.
-   * @returns {number} The time in milliseconds.
+   * @description Gets the API URL from the environment. Override if your environment uses a different property name.
+   * @returns {string} The base API URL.
    */
-  protected cacheTime = 1000 * 60 * 60 * 24;
+  protected getApiUrlFromEnvironment(): string {
+    return this.environment.baseApiUrl;
+  }
 
   /**
    * @description Implement this method in child classes to have the feature resource URL segment name.
@@ -38,8 +50,8 @@ export abstract class ApiService<T, P extends object> {
    * @param { unknown } data The API response data as it is.
    * @returns { T } The mapped API response.
    */
-  protected mapListResponse(data: unknown): T {
-    return data as T;
+  protected mapListResponse(data: unknown): TList {
+    return data as unknown as TList;
   }
 
   /**
@@ -48,7 +60,7 @@ export abstract class ApiService<T, P extends object> {
    * @param { P } params  The http params to pass with the API call.
    * @returns { Observable<P | never> } The API data response after mapping or an error catch.
    */
-  getList(params: P): Observable<T> {
+  getList(params?: P): Observable<TList> {
     return this.#httpClient.get(this.#apiUrl, { params: this.getHttpParams(params) }).pipe(
       map(this.mapListResponse),
       share({
@@ -59,7 +71,7 @@ export abstract class ApiService<T, P extends object> {
     );
   }
 
-  private getHttpParams(params: P): HttpParams {
+  private getHttpParams(params?: P): HttpParams {
     let httpClientParams: HttpParams = new HttpParams();
 
     Object.entries(params || {}).forEach(([key, value]) => {
@@ -69,7 +81,38 @@ export abstract class ApiService<T, P extends object> {
     return httpClientParams;
   }
 
-  private handleError({ error }: HttpErrorResponse): Observable<never> {
-    return throwError(() => error);
+  protected mapItemResponse(data: unknown): TEntity {
+    return data as TEntity;
+  }
+
+  getOne(id: ID, options?: unknown): Observable<TEntity> {
+    void options;
+    return this.#httpClient.get(`${this.#apiUrl}/${id}`).pipe(
+      map(response => this.mapItemResponse(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  create(data: Partial<TEntity>, options?: unknown): Observable<TEntity> {
+    void options;
+    return this.#httpClient.post(this.#apiUrl, data).pipe(
+      map(response => this.mapItemResponse(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  update(id: ID, data: Partial<TEntity>, options?: unknown): Observable<TEntity> {
+    void options;
+    return this.#httpClient.patch(`${this.#apiUrl}/${id}`, data).pipe(
+      map(response => this.mapItemResponse(response)),
+      catchError(this.handleError)
+    );
+  }
+
+  delete(id: ID): Observable<boolean> {
+    return this.#httpClient.delete(`${this.#apiUrl}/${id}`).pipe(
+      map(() => true),
+      catchError(this.handleError)
+    );
   }
 }

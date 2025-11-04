@@ -25,7 +25,8 @@ jobs:
           node-version: 20
           cache: 'yarn'
 
-      - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="build"
+      # Start Nx Cloud without distribution for simpler setup
+      # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js"
       - run: yarn install --immutable --network-timeout 1000000
 
       - uses: nrwl/nx-set-shas@v4
@@ -36,6 +37,6 @@ jobs:
       # Run affected tasks excluding llecoop-firebase
       - name: Run Affected Tasks
         run: |
-          npx nx affected --target=lint --exclude=llecoop-firebase --parallel=3
-          npx nx affected --target=test --exclude=llecoop-firebase --parallel=3
-          npx nx affected --target=build --exclude=llecoop-firebase --parallel=3
+          npx nx-cloud record -- nx affected --target=lint --exclude=llecoop-firebase --parallel=3
+          npx nx-cloud record -- nx affected --target=test --exclude=llecoop-firebase --parallel=3
+          npx nx-cloud record -- nx affected --target=build --exclude=llecoop-firebase --parallel=3

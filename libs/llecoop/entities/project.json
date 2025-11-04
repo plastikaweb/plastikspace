@@ -6,13 +6,6 @@
   "prefix": "plastik",
   "tags": ["scope:llecoop", "type:entity"],
   "targets": {
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "libs/llecoop/entities/jest.config.ts"
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]

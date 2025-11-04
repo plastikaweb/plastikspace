@@ -9,6 +9,7 @@ import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
+import { DataGetListService } from '@plastik/core/api';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import {
   getMockedRouterNavigation,
@@ -18,8 +19,8 @@ import {
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
-import { NasaImagesApiService } from '../nasa-images-api.service';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
+import { NASA_IMAGES_DATA_LIST_TOKEN } from '../nasa-images.tokens';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 import { NasaImagesEffects } from './nasa-images.effects';
 
@@ -30,7 +31,7 @@ describe('NasaImagesEffects', () => {
   let actions: Observable<Action>;
   let effects: NasaImagesEffects;
   let metadata: EffectsMetadata<NasaImagesEffects>;
-  let service: NasaImagesApiService;
+  let dataService: DataGetListService<any, any>;
   let activityStoreInstance: any;
   let store: MockStore;
 
@@ -59,7 +60,7 @@ describe('NasaImagesEffects', () => {
         }),
         provideEnvironmentMock(),
         {
-          provide: NasaImagesApiService,
+          provide: NASA_IMAGES_DATA_LIST_TOKEN,
           useValue: {
             getList: jest.fn(),
           },
@@ -69,7 +70,7 @@ describe('NasaImagesEffects', () => {
 
     effects = TestBed.inject(NasaImagesEffects);
     metadata = getEffectsMetadata(effects);
-    service = TestBed.inject(NasaImagesApiService);
+    dataService = TestBed.inject(NASA_IMAGES_DATA_LIST_TOKEN) as DataGetListService<any, any>;
     activityStoreInstance = TestBed.inject(activityStore);
     store = TestBed.inject(MockStore);
 
@@ -122,7 +123,7 @@ describe('NasaImagesEffects', () => {
   describe('load$', () => {
     const action = nasaImagesPageActions.load({ params: { q: 'pluto', media_type: 'image' } });
     it('should work on success', () => {
-      jest.spyOn(service, 'getList').mockImplementation(() => of({ items, count }));
+      jest.spyOn(dataService, 'getList').mockImplementation(() => of({ items, count }));
       actions = hot('-a-|', { a: action });
       const expected = hot('-a-|', { a: nasaImagesAPIActions.loadSuccess({ items, count }) });
 
@@ -131,7 +132,7 @@ describe('NasaImagesEffects', () => {
 
     it('should work on failure', () => {
       jest
-        .spyOn(service, 'getList')
+        .spyOn(dataService, 'getList')
         .mockImplementation(() => throwError(() => ({ reason: ERROR_MSG })));
       actions = hot('-a-#', { a: action });
       const expected = cold('-b-#', { b: nasaImagesAPIActions.loadFailure({ error: ERROR_MSG }) });

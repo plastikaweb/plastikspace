@@ -11,6 +11,7 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/eco-store",
+        "index": "apps/eco-store/src/index.html",
         "browser": "apps/eco-store/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/eco-store/tsconfig.app.json",
@@ -37,12 +38,32 @@
               "maximumError": "8kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "optimization": true,
+          "extractLicenses": true,
+          "sourceMap": false
+        },
+        "staging": {
+          "optimization": true,
+          "extractLicenses": true,
+          "sourceMap": false,
+          "fileReplacements": [
+            {
+              "replace": "apps/eco-store/src/environments/environment.ts",
+              "with": "apps/eco-store/src/environments/environment.staging.ts"
+            }
+          ]
         },
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/eco-store/src/environments/environment.ts",
+              "with": "apps/eco-store/src/environments/environment.development.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"
@@ -56,6 +77,9 @@
       "configurations": {
         "production": {
           "buildTarget": "eco-store:build:production"
+        },
+        "staging": {
+          "buildTarget": "eco-store:build:staging"
         },
         "development": {
           "buildTarget": "eco-store:build:development"
