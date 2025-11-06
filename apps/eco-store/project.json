@@ -13,16 +13,31 @@
         "outputPath": "dist/apps/eco-store",
         "index": "apps/eco-store/src/index.html",
         "browser": "apps/eco-store/src/main.ts",
-        "polyfills": ["zone.js"],
+        "polyfills": [],
+        "optimization": true,
+        "sourceMap": {
+          "scripts": true,
+          "styles": true,
+          "hidden": true,
+          "vendor": true
+        },
+        "namedChunks": true,
+        "aot": true,
         "tsConfig": "apps/eco-store/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
+        "inlineStyleLanguage": "css",
         "assets": [
           {
             "glob": "**/*",
             "input": "apps/eco-store/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/core/util/assets/src"
           }
         ],
-        "styles": ["apps/eco-store/src/styles.scss"]
+        "styles": ["apps/eco-store/src/styles/styles.scss"],
+        "allowedCommonJsDependencies": [],
+        "scripts": []
       },
       "configurations": {
         "production": {
@@ -44,9 +59,10 @@
           "sourceMap": false
         },
         "staging": {
-          "optimization": true,
-          "extractLicenses": true,
-          "sourceMap": false,
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
           "fileReplacements": [
             {
               "replace": "apps/eco-store/src/environments/environment.ts",

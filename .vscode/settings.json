@@ -78,5 +78,9 @@
     "!**/.git/**",
     "!**/vendor/**"
   ],
-  "markdownlint.run": "onSave"
+  "markdownlint.run": "onSave",
+  "css.customData": [".vscode/tailwind.json"],
+  "css.lint.unknownAtRules": "ignore",
+  "scss.lint.unknownAtRules": "ignore",
+  "less.lint.unknownAtRules": "ignore"
 }
