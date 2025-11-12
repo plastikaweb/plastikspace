@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["libs/shared/form/feature/src/lib/shared-form-feature.component.scss", "libs/shared/form/feature/src/lib/shared-form-feature.component.scss"],
+  "sourcesContent": [".shared-form--extraLinks-container {\n  ::ng-deep > .extraLinks {\n    font-size: 13px;\n    gap: var(--sub);\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n    flex-direction: column;\n  }\n}\n", ".shared-form--extraLinks-container ::ng-deep > .extraLinks {\n  font-size: 13px;\n  gap: var(--sub);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-direction: column;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJmaWxlOi8vL2hvbWUvcnVubmVyL3dvcmsvcGxhc3Rpa3NwYWNlL3BsYXN0aWtzcGFjZS9saWJzL3NoYXJlZC9mb3JtL2ZlYXR1cmUvc3JjL2xpYi9zaGFyZWQtZm9ybS1mZWF0dXJlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUNFO0VBQ0U7RUFDQTtFQUNBO0VBQ0E7RUFDQTtFQUNBIiwic291cmNlc0NvbnRlbnQiOlsiLnNoYXJlZC1mb3JtLS1leHRyYUxpbmtzLWNvbnRhaW5lciB7XG4gIDo6bmctZGVlcCA+IC5leHRyYUxpbmtzIHtcbiAgICBmb250LXNpemU6IDEzcHg7XG4gICAgZ2FwOiB2YXIoLS1zdWIpO1xuICAgIGRpc3BsYXk6IGZsZXg7XG4gICAgYWxpZ24taXRlbXM6IGNlbnRlcjtcbiAgICBqdXN0aWZ5LWNvbnRlbnQ6IHNwYWNlLWJldHdlZW47XG4gICAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgfVxufVxuIl19 */"],
+  "mappings": ";AACE,CAAA,kCAAA,UAAA,EAAA,CAAA;AACE,aAAA;AACA,OAAA,IAAA;AACA,WAAA;AACA,eAAA;AACA,mBAAA;AACA,kBAAA;ACAJ;",
+  "names": []
+}

@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["libs/shared/table/ui/src/lib/utils/order-table-actions-elements.pipe.ts"],
+  "sourcesContent": ["import { Pipe, PipeTransform } from '@angular/core';\nimport { TableControlActionDefinition } from '@plastik/shared/table/entities';\n\ntype TableControlActionAsCollection<T> = {\n  key: Uppercase<string>;\n  value: TableControlActionDefinition<T>;\n};\n\n@Pipe({\n  name: 'orderTableActionsElements',\n})\nexport class OrderTableActionsElementsPipe<T> implements PipeTransform {\n  transform(list: TableControlActionAsCollection<T>[]): TableControlActionAsCollection<T>[] {\n    if (!list) {\n      throw new Error('An Array List is required to use OrderArrayElementsPipe');\n    }\n\n    return list.sort((a, b) => (a.value.order || 0) - (b.value.order || 0));\n  }\n}\n"],
+  "mappings": ";;;;;;;AAWM,IAAO,gCAAP,MAAO,+BAA6B;EACxC,UAAU,MAAyC;AACjD,QAAI,CAAC,MAAM;AACT,YAAM,IAAI,MAAM,yDAAyD;IAC3E;AAEA,WAAO,KAAK,KAAK,CAAC,GAAG,OAAO,EAAE,MAAM,SAAS,MAAM,EAAE,MAAM,SAAS,EAAE;EACxE;;qCAPW,gCAA6B;EAAA;wGAA7B,gCAA6B,MAAA,KAAA,CAAA;;;sEAA7B,+BAA6B,CAAA;UAHzC;WAAK;MACJ,MAAM;KACP;;;",
+  "names": []
+}

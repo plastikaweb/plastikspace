@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["libs/core/cms-layout/ui/footer/src/lib/core-cms-layout-ui-footer.component.ts", "core-cms-layout-ui-footer.component.ts"],
+  "sourcesContent": ["\n      mat-toolbar {\n        --mat-toolbar-standard-height: 35px;\n      }\n    ", "mat-toolbar {\n  --mat-toolbar-standard-height: 35px;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJmaWxlOi8vL2hvbWUvcnVubmVyL3dvcmsvcGxhc3Rpa3NwYWNlL3BsYXN0aWtzcGFjZS9saWJzL2NvcmUvY21zLWxheW91dC91aS9mb290ZXIvc3JjL2xpYi9jb3JlLWNtcy1sYXlvdXQtdWktZm9vdGVyLmNvbXBvbmVudC50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFDTTtFQUNFIiwic291cmNlc0NvbnRlbnQiOlsiXG4gICAgICBtYXQtdG9vbGJhciB7XG4gICAgICAgIC0tbWF0LXRvb2xiYXItc3RhbmRhcmQtaGVpZ2h0OiAzNXB4O1xuICAgICAgfVxuICAgICJdfQ== */"],
+  "mappings": ";AACM;AACE,iCAAA;ACAR;",
+  "names": []
+}

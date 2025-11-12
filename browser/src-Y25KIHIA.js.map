@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["libs/core/cms-layout/ui/footer/src/lib/core-cms-layout-ui-footer.component.ts", "libs/core/cms-layout/ui/footer/src/lib/core-cms-layout-ui-footer.component.html"],
+  "sourcesContent": ["import { ChangeDetectionStrategy, Component } from '@angular/core';\nimport { MatToolbarModule } from '@angular/material/toolbar';\n\n@Component({\n  selector: 'plastik-core-cms-layout-ui-footer',\n  imports: [MatToolbarModule],\n  templateUrl: './core-cms-layout-ui-footer.component.html',\n  styles: [\n    `\n      mat-toolbar {\n        --mat-toolbar-standard-height: 35px;\n      }\n    `,\n  ],\n  changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class CoreCmsLayoutUiFooterComponent {}\n", "<mat-toolbar class=\"flex justify-center items-center\">\n  <footer>\n    <ng-content select=\"[content]\"></ng-content>\n  </footer>\n</mat-toolbar>\n"],
+  "mappings": ";;;;;;;;;;;;;;;;;;;;;;;AAgBM,IAAO,iCAAP,MAAO,gCAA8B;;qCAA9B,iCAA8B;EAAA;yEAA9B,iCAA8B,WAAA,CAAA,CAAA,mCAAA,CAAA,GAAA,oBAAA,KAAA,OAAA,GAAA,MAAA,GAAA,QAAA,CAAA,CAAA,GAAA,QAAA,kBAAA,cAAA,CAAA,GAAA,UAAA,SAAA,wCAAA,IAAA,KAAA;AAAA,QAAA,KAAA,GAAA;;AChB3C,MAAA,yBAAA,GAAA,eAAA,CAAA,EAAsD,GAAA,QAAA;AAElD,MAAA,uBAAA,CAAA;AACF,MAAA,uBAAA,EAAS;;oBDEC,kBAAgB,UAAA,GAAA,QAAA,CAAA,sJAAA,GAAA,iBAAA,EAAA,CAAA;;;sEAWf,gCAA8B,CAAA;UAb1C;uBACW,qCAAmC,SACpC,CAAC,gBAAgB,GAAC,iBASV,wBAAwB,QAAM,UAAA,uJAAA,QAAA,CAAA,iWAAA,EAAA,CAAA;;;;6EAEpC,gCAA8B,EAAA,WAAA,kCAAA,UAAA,iFAAA,YAAA,GAAA,CAAA;AAAA,GAAA;",
+  "names": []
+}

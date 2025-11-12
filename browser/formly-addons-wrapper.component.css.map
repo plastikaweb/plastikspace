@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["libs/shared/form/util/src/addons-wrapper/formly-addons-wrapper.component.scss", "libs/shared/form/util/src/addons-wrapper/formly-addons-wrapper.component.scss"],
+  "sourcesContent": [".mat-mdc-form-field .mdc-notched-outline__notch {\n  border-right-width: 0;\n  border-right-color: transparent;\n}\n", ".mat-mdc-form-field .mdc-notched-outline__notch {\n  border-right-width: 0;\n  border-right-color: transparent;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJmaWxlOi8vL2hvbWUvcnVubmVyL3dvcmsvcGxhc3Rpa3NwYWNlL3BsYXN0aWtzcGFjZS9saWJzL3NoYXJlZC9mb3JtL3V0aWwvc3JjL2FkZG9ucy13cmFwcGVyL2Zvcm1seS1hZGRvbnMtd3JhcHBlci5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFO0VBQ0EiLCJzb3VyY2VzQ29udGVudCI6WyIubWF0LW1kYy1mb3JtLWZpZWxkIC5tZGMtbm90Y2hlZC1vdXRsaW5lX19ub3RjaCB7XG4gIGJvcmRlci1yaWdodC13aWR0aDogMDtcbiAgYm9yZGVyLXJpZ2h0LWNvbG9yOiB0cmFuc3BhcmVudDtcbn1cbiJdfQ== */"],
+  "mappings": ";AAAA,CAAA,mBAAA,CAAA;AACE,sBAAA;AACA,sBAAA;ACCF;",
+  "names": []
+}
