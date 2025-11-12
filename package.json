@@ -47,7 +47,7 @@
     "nasa-images:e2e": "nx run nasa-images-e2e:e2e",
     "nasa-images:e2e:local": "yarn nx run nasa-images-e2e:e2e --browser=chrome --port='cypress-auto' --watch=true",
     "nasa-images:e2e:ci": "yarn nx run nasa-images-e2e:e2e --port='cypress-auto' --record=true",
-    "nasa-images:http-server": "angular-http-server --path ./dist/apps/nasa-images --port 8080",
+    "nasa-images:http-server": "angular-http-server --path ./dist/apps/nasa-images/browser --port 8080",
     "prenasa-images:a11y": "yarn nasa-images:build",
     "nasa-images:a11y:run": "pa11y-ci --config ./apps/nasa-images/.pa11yci.json",
     "nasa-images:a11y": "npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run",
