@@ -1,0 +1,40 @@
+<mat-form-field class="w-full" subscriptSizing="dynamic" floatLabel="always">
+  <mat-label class="sr-only">{{ props.label }}</mat-label>
+  <mat-icon matPreffix class="mr-2">search</mat-icon>
+  <input
+    matInput
+    type="text"
+    [autocomplete]="props['autocomplete'] || 'off'"
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+    [maxLength]="props.maxLength || 256"
+    [minLength]="props.minLength || 1"
+    [placeholder]="props.placeholder || ''"
+    [required]="props.required || false"
+    (input)="triggerPartialSearch($event)"
+    (keyup)="!props.noButton ? triggerPartialSearch($event) : triggerSearch($event)" />
+
+  @if (!props.noButton) {
+    <button
+      matIconButton
+      matSuffix
+      type="button"
+      [attr.aria-label]="'form.search'"
+      [disabled]="isDisabled()"
+      (click)="triggerSearch($event)">
+      <mat-icon>search</mat-icon>
+    </button>
+  }
+  @if (props.resetSearch && formControl.value) {
+    <button
+      class="reset-search-button -left-2"
+      matIconButton
+      matSuffix
+      type="button"
+      [attr.aria-label]="'form.clear'"
+      [disabled]="isDisabled()"
+      (click)="resetSearch()">
+      <mat-icon>clear</mat-icon>
+    </button>
+  }
+</mat-form-field>

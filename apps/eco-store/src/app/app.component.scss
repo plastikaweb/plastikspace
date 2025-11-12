@@ -1,0 +1,9 @@
+@use '@angular/material' as mat;
+
+:host ::ng-deep {
+  display: block;
+
+  .mat-drawer-container {
+    background-color: var(--transparent);
+  }
+}

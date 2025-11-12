@@ -1,13 +1,47 @@
 @import 'tailwindcss/theme';
 
 @theme {
-  --color-primary-light: var(--primary-light);
+  --color-primary-light: var(--primary-light, var(--primary));
   --color-primary: var(--primary);
-  --color-primary-dark: var(--primary-dark);
+  --color-primary-dark: var(--primary-dark, var(--primary));
+  --color-primary-50: var(--primary-soft, var(--color-primary-light));
+  --color-primary-100: var(--primary-soft, var(--color-primary-light));
+  --color-primary-200: var(--primary-soft, var(--color-primary-light));
+  --color-primary-300: var(--primary-soft, var(--color-primary-light));
+  --color-primary-400: var(--color-primary);
+  --color-primary-500: var(--color-primary);
+  --color-primary-600: var(--primary-strong, var(--color-primary-dark));
+  --color-primary-700: var(--primary-strong, var(--color-primary-dark));
+  --color-primary-800: var(--primary-strong, var(--color-primary-dark));
+  --color-primary-900: var(--primary-strong, var(--color-primary-dark));
 
-  --color-secondary-light: var(--secondary-light);
+  --color-secondary-light: var(--secondary-light, var(--secondary));
   --color-secondary: var(--secondary);
-  --color-secondary-dark: var(--secondary-dark);
+  --color-secondary-dark: var(--secondary-dark, var(--secondary));
+  --color-secondary-50: var(--secondary-soft, var(--color-secondary-light));
+  --color-secondary-100: var(--secondary-soft, var(--color-secondary-light));
+  --color-secondary-200: var(--secondary-soft, var(--color-secondary-light));
+  --color-secondary-300: var(--secondary-soft, var(--color-secondary-light));
+  --color-secondary-400: var(--color-secondary);
+  --color-secondary-500: var(--color-secondary);
+  --color-secondary-600: var(--secondary-strong, var(--color-secondary-dark));
+  --color-secondary-700: var(--secondary-strong, var(--color-secondary-dark));
+  --color-secondary-800: var(--secondary-strong, var(--color-secondary-dark));
+  --color-secondary-900: var(--secondary-strong, var(--color-secondary-dark));
+
+  --color-tertiary-light: var(--tertiary-light, var(--tertiary));
+  --color-tertiary: var(--tertiary, var(--color-secondary));
+  --color-tertiary-dark: var(--tertiary-dark, var(--tertiary));
+  --color-tertiary-50: var(--tertiary-soft, var(--color-tertiary-light));
+  --color-tertiary-100: var(--tertiary-soft, var(--color-tertiary-light));
+  --color-tertiary-200: var(--tertiary-soft, var(--color-tertiary-light));
+  --color-tertiary-300: var(--tertiary-soft, var(--color-tertiary-light));
+  --color-tertiary-400: var(--color-tertiary);
+  --color-tertiary-500: var(--color-tertiary);
+  --color-tertiary-600: var(--tertiary-strong, var(--color-tertiary-dark));
+  --color-tertiary-700: var(--tertiary-strong, var(--color-tertiary-dark));
+  --color-tertiary-800: var(--tertiary-strong, var(--color-tertiary-dark));
+  --color-tertiary-900: var(--tertiary-strong, var(--color-tertiary-dark));
 
   --color-gray-5: #fafafa;
   --color-gray-10: #e6e6e6;
@@ -30,13 +64,12 @@
   --color-success: var(--plastik-success-notification-box-colors);
 
   --spacing-0: 0;
-  --spacing-tiny: var(--spacing-tiny, 0.25rem);
-  --spacing-sub: var(--spacing-sub, 0.5rem);
-  --spacing-sm: var(--spacing-sm, 1rem);
-  --spacing-md: var(--spacing-md, 1.5rem);
-  --spacing-lg: var(--spacing-lg, 2rem);
-  --spacing-xl: var(--spacing-xl, 3rem);
-  --spacing-xxl: var(--spacing-xxl, 6rem);
+  --spacing-xs: var(--font-xs, 0.75rem);
+  --spacing-sm: var(--font-sm, 1rem);
+  --spacing-md: var(--font-md, 1.2rem);
+  --spacing-lg: var(--font-lg, 1.44rem);
+  --spacing-xl: var(--font-xl, 1.728rem);
+  --spacing-2xl: var(--font-2xl, 2.074rem);
   --spacing-half: 50%;
   --spacing-third: 33.33333%;
   --spacing-quarter: 25%;
@@ -49,13 +82,16 @@
   --flex-basis-4: 4rem;
   --flex-basis-5: 5rem;
 
-  --font-size-tiny: var(--font-size-tiny, 0.7rem);
-  --font-size-sm: var(--font-size-sm, 0.85rem);
-  --font-size-base: var(--font-size-base, 1rem);
-  --font-size-md: var(--font-size-md, 1.4rem);
-  --font-size-lg: var(--font-size-lg, 1.8rem);
-  --font-size-xl: var(--font-size-xl, 2.2rem);
-  --font-size-xxl: var(--font-size-xxl, 2.6rem);
+  --font-size-xs: var(--font-xs, 0.75rem);
+  --font-size-sm: var(--font-sm, 1rem);
+  --font-size-md: var(--font-md, 1.2rem);
+  --font-size-lg: var(--font-lg, 1.44rem);
+  --font-size-xl: var(--font-xl, 1.728rem);
+  --font-size-2xl: var(--font-2xl, 2.074rem);
+  /* Legacy aliases */
+  --font-size-tiny: var(--font-size-xs);
+  --font-size-base: var(--font-size-sm);
+  --font-size-xxl: var(--font-size-2xl);
 
   --font-weight-thin: 100;
   --font-weight-extralight: 200;
@@ -66,50 +102,4 @@
   --font-weight-bold: 700;
   --font-weight-extrabold: 800;
   --font-weight-black: 900;
-
-  @keyframes radar {
-    0% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 0;
-    }
-
-    4.9% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 0;
-    }
-
-    5% {
-      top: 36px;
-      left: 36px;
-      width: 0;
-      height: 0;
-      opacity: 1;
-    }
-
-    100% {
-      top: 0;
-      left: 0;
-      width: 72px;
-      height: 72px;
-      opacity: 0;
-    }
-  }
-
-  --animate-radar: radar 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-  --animate-fast-radar: radar 0.9s cubic-bezier(0, 0.35, 0.55, 1) infinite;
-}
-
-@layer base {
-  input[type='search']::-webkit-search-decoration,
-  input[type='search']::-webkit-search-cancel-button,
-  input[type='search']::-webkit-search-results-button,
-  input[type='search']::-webkit-search-results-decoration {
-    display: none;
-  }
 }

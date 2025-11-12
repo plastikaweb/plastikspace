@@ -36,7 +36,9 @@
           }
         ],
         "styles": ["apps/eco-store/src/styles/styles.scss"],
-        "allowedCommonJsDependencies": [],
+        "stylePreprocessorOptions": {
+          "includePaths": ["libs/core/styles/util/material/src"]
+        },
         "scripts": []
       },
       "configurations": {

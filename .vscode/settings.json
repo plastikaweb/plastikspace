@@ -1,22 +1,11 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "explicit"
-  },
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.tabSize": 2,
-  "editor.suggest.snippetsPreventQuickSuggestions": false,
-  "editor.inlineSuggest.enabled": true,
-  "editor.autoIndent": "full",
-  "editor.formatOnType": true,
-  "editor.formatOnPaste": true,
-  "editor.wordWrap": "off",
-  "editor.wrappingIndent": "same",
-  "editor.wrappingStrategy": "simple",
   "diffEditor.wordWrap": "inherit",
   "workbench.editor.wrapTabs": false,
   "html.format.wrapAttributes": "force-expand-multiline",
   "files.trimTrailingWhitespace": true,
+  "prettier.configPath": "./.prettierrc",
+  "prettier.requireConfig": true,
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   },
@@ -24,10 +13,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[scss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.css-language-features"
   },
   "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[html][json]": {
     "editor.codeActionsOnSave": {
@@ -54,8 +43,7 @@
       "skipStyle": true
     }
   },
-  "nxConsole.generateAiAgentRules": true,
-  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "editor.formatOnSaveMode": "file",
   "eslint.enable": true,
   "eslint.validate": [
     "javascript",
@@ -82,5 +70,13 @@
   "css.customData": [".vscode/tailwind.json"],
   "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore",
-  "less.lint.unknownAtRules": "ignore"
+  "less.lint.unknownAtRules": "ignore",
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+  "editor.quickSuggestions": {
+    "strings": "on"
+  },
+  "tailwindCSS.emmetCompletions": true,
+  "tailwindCSS.rootFontSize": 15
 }

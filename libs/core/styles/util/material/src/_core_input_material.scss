@@ -1,0 +1,123 @@
+@use '@angular/material' as mat;
+
+:root {
+  // Remove the default search decoration and cancel button.
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    display: none;
+  }
+}
+
+// A mixin to create a rounded input field with a specified height and radius.
+@mixin material-input-rounded(
+  $height: 40px,
+  $radius: 22px,
+  $border-width: 2px,
+  $padding-inline: 0,
+  $hide-floating-label: false
+) {
+  @include mat.form-field-overrides(
+    (
+      container-height: $height,
+      container-text-line-height: $height,
+      filled-container-shape: $radius,
+      filled-active-indicator-height: 0,
+      filled-with-label-container-padding-top: 1rem,
+      filled-with-label-container-padding-bottom: 1rem,
+      filled-label-display: if($hide-floating-label, none, block),
+      filled-input-text-placeholder-color: var(--primary-700),
+    )
+  );
+
+  .mat-mdc-text-field-wrapper {
+    height: $height;
+    border: $border-width solid var(--primary-600);
+    border-bottom-right-radius: $radius;
+    border-bottom-left-radius: $radius;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+
+    &:hover {
+      @include mat.form-field-overrides(
+        (
+          filled-container-color: var(--primary-100),
+          filled-input-text-placeholder-color: var(--primary-800),
+        )
+      );
+      border-color: var(--primary-800);
+      box-shadow: -1px 1px 1px 0px rgba(0, 0, 0, 0.08);
+    }
+
+    &:focus-within {
+      @include mat.form-field-overrides(
+        (
+          filled-container-color: var(--primary-50),
+          filled-input-text-placeholder-color: var(--primary-800),
+        )
+      );
+      border-color: var(--primary-800);
+      border-width: 1px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+
+    &:focus-visible {
+      @include mat.form-field-overrides(
+        (
+          filled-container-color: var(--primary-50),
+          filled-input-text-placeholder-color: var(--primary-800),
+        )
+      );
+      border-color: var(--primary-800);
+      border-width: 1px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  .mat-mdc-form-field-flex {
+    height: 100%;
+    align-items: center;
+  }
+
+  .mat-mdc-form-field-infix {
+    min-height: 100%;
+    padding: 0 $padding-inline;
+    display: flex;
+    align-items: center;
+  }
+
+  .mat-mdc-form-field-prefix,
+  .mat-mdc-form-field-suffix {
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .mat-mdc-input-element {
+    height: $height;
+    line-height: $height;
+    padding: 0;
+  }
+
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
+
+  .mdc-line-ripple {
+    display: none !important;
+  }
+}
+
+.rounded-input--sm {
+  @include material-input-rounded(28px, 28px, 1px, var(--primary-600));
+}
+
+.rounded-input--md {
+  @include material-input-rounded(32px, 32px, 1px, var(--primary-600));
+}
+
+.rounded-input--lg {
+  @include material-input-rounded(40px, 40px, 1px, var(--primary-400));
+}

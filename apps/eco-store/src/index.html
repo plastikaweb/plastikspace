@@ -2,17 +2,29 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <link
+      rel="preload"
+      as="style"
+      href="/fonts/material-icons/material-icons.css"
+      onload="this.onload=null;this.rel='stylesheet'" />
+    <link
+      rel="preload"
+      as="style"
+      href="/fonts/manrope/manrope.css"
+      onload="this.onload=null;this.rel='stylesheet'" />
+    <link
+      rel="preload"
+      as="style"
+      href="/styles.css"
+      onload="this.onload=null;this.rel='stylesheet'" />
     <title>eco-store</title>
     <base href="/" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&display=swap"
-      rel="stylesheet" />
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
-  <body class="mat-typography mat-app-background">
+  <body
+    class="mat-typography bg-linear-to-b from-secondary-50 via-secondary-30% to-primary-100 h-screen w-screen overflow-hidden">
     <eco-root role="application">
       <div
         class="flex absolute top-0 right-0 bottom-0 left-0 justify-center items-center pointer-events-none">

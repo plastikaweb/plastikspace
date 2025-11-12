@@ -28,6 +28,7 @@ import {
 } from '@plastik/core/router-state';
 import { NASA_IMAGES_PROVIDERS } from '@plastik/nasa-images/search/data-access';
 import { activityStore } from '@plastik/shared/activity/data-access';
+import { provideFormlyConfig } from '@plastik/shared/form';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
 import { environment } from '../environments/environment';
@@ -39,6 +40,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideHttpClient(),
     provideRouter(routes),
+    provideFormlyConfig(),
     provideAppInitializer(() => {
       if (typeof window === 'undefined') {
         return;

@@ -1,0 +1,254 @@
+@theme {
+  /* ============================================
+     COLOR SYSTEM
+     Source: eco-store-theme.css
+     ============================================ */
+
+  /* Primary color scale - Tailwind style */
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+  --color-primary-950: var(--primary-950);
+  --color-primary: var(--primary-500);
+
+  /* Secondary color scale - Tailwind style */
+  --color-secondary-50: var(--secondary-50);
+  --color-secondary-100: var(--secondary-100);
+  --color-secondary-200: var(--secondary-200);
+  --color-secondary-300: var(--secondary-300);
+  --color-secondary-400: var(--secondary-400);
+  --color-secondary-500: var(--secondary-500);
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-800: var(--secondary-800);
+  --color-secondary-900: var(--secondary-900);
+  --color-secondary-950: var(--secondary-950);
+  --color-secondary: var(--secondary-500);
+
+  /* Tertiary color scale - Tailwind style */
+  --color-tertiary-50: var(--tertiary-50);
+  --color-tertiary-100: var(--tertiary-100);
+  --color-tertiary-200: var(--tertiary-200);
+  --color-tertiary-300: var(--tertiary-300);
+  --color-tertiary-400: var(--tertiary-400);
+  --color-tertiary-500: var(--tertiary-500);
+  --color-tertiary-600: var(--tertiary-600);
+  --color-tertiary-700: var(--tertiary-700);
+  --color-tertiary-800: var(--tertiary-800);
+  --color-tertiary-900: var(--tertiary-900);
+  --color-tertiary-950: var(--tertiary-950);
+  --color-tertiary: var(--tertiary-500);
+
+  /* Error color scale - Tailwind style */
+  --color-error-50: var(--error-50);
+  --color-error-100: var(--error-100);
+  --color-error-200: var(--error-200);
+  --color-error-300: var(--error-300);
+  --color-error-400: var(--error-400);
+  --color-error-500: var(--error-500);
+  --color-error-600: var(--error-600);
+  --color-error-700: var(--error-700);
+  --color-error-800: var(--error-800);
+  --color-error-900: var(--error-900);
+  --color-error-950: var(--error-950);
+  --color-error: var(--error-500);
+
+  /* Surface/Neutral color scale - Tailwind style */
+  --color-neutral-50: var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-950: var(--neutral-950);
+  --color-neutral: var(--neutral-500);
+
+  /* Color system - Tailwind style */
+  --color-transparent: var(--transparent);
+  --color-black: var(--black);
+  --color-white: var(--white);
+
+  /* ============================================
+     TYPOGRAPHY SYSTEM
+     Font: eco-store-theme.css
+     ============================================ */
+
+  /* Font families - Tailwind 4 syntax */
+  --font-sans: var(--mat-sys-brand-font-family), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+
+  /* Font families - Material Design aliases */
+  --font-brand: var(--mat-sys-brand-font-family);
+  --font-plain: var(--mat-sys-plain-font-family);
+
+  /* Font weights */
+  --font-weight-regular: var(--mat-sys-regular-font-weight);
+  --font-weight-medium: var(--mat-sys-medium-font-weight);
+  --font-weight-bold: var(--mat-sys-bold-font-weight);
+
+  /* Display typescale */
+  --text-display-large: var(--mat-sys-display-large-size);
+  --leading-display-large: var(--mat-sys-display-large-line-height);
+  --tracking-display-large: var(--mat-sys-display-large-tracking);
+  --font-weight-display-large: var(--mat-sys-display-large-weight);
+
+  --text-display-medium: var(--mat-sys-display-medium-size);
+  --leading-display-medium: var(--mat-sys-display-medium-line-height);
+  --tracking-display-medium: var(--mat-sys-display-medium-tracking);
+  --font-weight-display-medium: var(--mat-sys-display-medium-weight);
+
+  --text-display-small: var(--mat-sys-display-small-size);
+  --leading-display-small: var(--mat-sys-display-small-line-height);
+  --tracking-display-small: var(--mat-sys-display-small-tracking);
+  --font-weight-display-small: var(--mat-sys-display-small-weight);
+
+  /* Headline typescale */
+  --text-headline-large: var(--mat-sys-headline-large-size);
+  --leading-headline-large: var(--mat-sys-headline-large-line-height);
+  --tracking-headline-large: var(--mat-sys-headline-large-tracking);
+  --font-weight-headline-large: var(--mat-sys-headline-large-weight);
+
+  --text-headline-medium: var(--mat-sys-headline-medium-size);
+  --leading-headline-medium: var(--mat-sys-headline-medium-line-height);
+  --tracking-headline-medium: var(--mat-sys-headline-medium-tracking);
+  --font-weight-headline-medium: var(--mat-sys-headline-medium-weight);
+
+  --text-headline-small: var(--mat-sys-headline-small-size);
+  --leading-headline-small: var(--mat-sys-headline-small-line-height);
+  --tracking-headline-small: var(--mat-sys-headline-small-tracking);
+  --font-weight-headline-small: var(--mat-sys-headline-small-weight);
+
+  /* Title typescale */
+  --text-title-large: var(--mat-sys-title-large-size);
+  --leading-title-large: var(--mat-sys-title-large-line-height);
+  --tracking-title-large: var(--mat-sys-title-large-tracking);
+  --font-weight-title-large: var(--mat-sys-title-large-weight);
+
+  --text-title-medium: var(--mat-sys-title-medium-size);
+  --leading-title-medium: var(--mat-sys-title-medium-line-height);
+  --tracking-title-medium: var(--mat-sys-title-medium-tracking);
+  --font-weight-title-medium: var(--mat-sys-title-medium-weight);
+
+  --text-title-small: var(--mat-sys-title-small-size);
+  --leading-title-small: var(--mat-sys-title-small-line-height);
+  --tracking-title-small: var(--mat-sys-title-small-tracking);
+  --font-weight-title-small: var(--mat-sys-title-small-weight);
+
+  /* Body typescale */
+  --text-body-large: var(--mat-sys-body-large-size);
+  --leading-body-large: var(--mat-sys-body-large-line-height);
+  --tracking-body-large: var(--mat-sys-body-large-tracking);
+  --font-weight-body-large: var(--mat-sys-body-large-weight);
+
+  --text-body-medium: var(--mat-sys-body-medium-size);
+  --leading-body-medium: var(--mat-sys-body-medium-line-height);
+  --tracking-body-medium: var(--mat-sys-body-medium-tracking);
+  --font-weight-body-medium: var(--mat-sys-body-medium-weight);
+
+  --text-body-small: var(--mat-sys-body-small-size);
+  --leading-body-small: var(--mat-sys-body-small-line-height);
+  --tracking-body-small: var(--mat-sys-body-small-tracking);
+  --font-weight-body-small: var(--mat-sys-body-small-weight);
+
+  /* Label typescale */
+  --text-label-large: var(--mat-sys-label-large-size);
+  --leading-label-large: var(--mat-sys-label-large-line-height);
+  --tracking-label-large: var(--mat-sys-label-large-tracking);
+  --font-weight-label-large: var(--mat-sys-label-large-weight);
+
+  --text-label-medium: var(--mat-sys-label-medium-size);
+  --leading-label-medium: var(--mat-sys-label-medium-line-height);
+  --tracking-label-medium: var(--mat-sys-label-medium-tracking);
+  --font-weight-label-medium: var(--mat-sys-label-medium-weight);
+
+  --text-label-small: var(--mat-sys-label-small-size);
+  --leading-label-small: var(--mat-sys-label-small-line-height);
+  --tracking-label-small: var(--mat-sys-label-small-tracking);
+  --font-weight-label-small: var(--mat-sys-label-small-weight);
+
+  /* ============================================
+     ELEVATION SYSTEM
+     Fuente: eco-store-theme.css
+     ============================================ */
+
+  --shadow-0: var(--mat-sys-level0);
+  --shadow-1: var(--mat-sys-level1);
+  --shadow-2: var(--mat-sys-level2);
+  --shadow-3: var(--mat-sys-level3);
+  --shadow-4: var(--mat-sys-level4);
+  --shadow-5: var(--mat-sys-level5);
+
+  /* Elevation colors (para uso directo si se necesita) */
+  --color-umbra: var(--mat-sys-umbra-color);
+  --color-penumbra: var(--mat-sys-penumbra-color);
+  --color-ambient: var(--mat-sys-ambient-color);
+
+  /* ============================================
+     SHAPE SYSTEM (Border Radius)
+     Fuente: eco-store-theme.css
+     ============================================ */
+
+  --radius-none: var(--mat-sys-corner-none);
+  --radius-extra-small: var(--mat-sys-corner-extra-small);
+  --radius-extra-small-top: var(--mat-sys-corner-extra-small-top);
+  --radius-small: var(--mat-sys-corner-small);
+  --radius-medium: var(--mat-sys-corner-medium);
+  --radius-large: var(--mat-sys-corner-large);
+  --radius-large-start: var(--mat-sys-corner-large-start);
+  --radius-large-end: var(--mat-sys-corner-large-end);
+  --radius-large-top: var(--mat-sys-corner-large-top);
+  --radius-extra-large: var(--mat-sys-corner-extra-large);
+  --radius-extra-large-top: var(--mat-sys-corner-extra-large-top);
+  --radius-full: var(--mat-sys-corner-full);
+
+  /* ============================================
+     STATE SYSTEM (Opacity)
+     Fuente: eco-store-theme.css
+     ============================================ */
+
+  --opacity-hover: var(--mat-sys-hover-state-layer-opacity);
+  --opacity-focus: var(--mat-sys-focus-state-layer-opacity);
+  --opacity-pressed: var(--mat-sys-pressed-state-layer-opacity);
+  --opacity-dragged: var(--mat-sys-dragged-state-layer-opacity);
+
+  /* ============================================
+     BREAKPOINT SYSTEM
+     Values based on Angular Material CDK Breakpoints
+     XSmall: 0-599.98px
+     Small: 600-959.98px
+     Medium: 960-1279.98px
+     Large: 1280-1919.98px
+     XLarge: 1920px+
+     ============================================ */
+
+  --breakpoint-xs: 599.98px;
+  --breakpoint-sm: 600px;
+  --breakpoint-md: 960px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1920px;
+
+  /* ============================================
+     SPACING SYSTEM
+     ============================================ */
+
+  --spacing-xs: var(--eco-space-xs);
+  --spacing-sm: var(--eco-space-sm);
+  --spacing-md: var(--eco-space-md);
+  --spacing-lg: var(--eco-space-lg);
+  --spacing-xl: var(--eco-space-xl);
+  --spacing-2xl: var(--eco-space-2xl);
+}

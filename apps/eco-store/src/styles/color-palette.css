@@ -1,0 +1,75 @@
+:root {
+  --primary-50: color-mix(in oklch, var(--mat-sys-primary) 8%, white);
+  --primary-100: color-mix(in oklch, var(--mat-sys-primary) 15%, white);
+  --primary-200: color-mix(in oklch, var(--mat-sys-primary) 30%, white);
+  --primary-300: color-mix(in oklch, var(--mat-sys-primary) 50%, white);
+  --primary-400: color-mix(in oklch, var(--mat-sys-primary) 75%, white);
+  --primary-500: var(--mat-sys-primary);
+  --primary-600: color-mix(in oklch, var(--mat-sys-primary) 85%, black);
+  --primary-700: color-mix(in oklch, var(--mat-sys-primary) 70%, black);
+  --primary-800: color-mix(in oklch, var(--mat-sys-primary) 50%, black);
+  --primary-900: color-mix(in oklch, var(--mat-sys-primary) 30%, black);
+  --primary-950: color-mix(in oklch, var(--mat-sys-primary) 15%, black);
+}
+
+:root {
+  --secondary-50: color-mix(in oklch, var(--mat-sys-secondary) 8%, white);
+  --secondary-100: color-mix(in oklch, var(--mat-sys-secondary) 15%, white);
+  --secondary-200: color-mix(in oklch, var(--mat-sys-secondary) 30%, white);
+  --secondary-300: color-mix(in oklch, var(--mat-sys-secondary) 50%, white);
+  --secondary-400: color-mix(in oklch, var(--mat-sys-secondary) 75%, white);
+  --secondary-500: var(--mat-sys-secondary);
+  --secondary-600: color-mix(in oklch, var(--mat-sys-secondary) 85%, black);
+  --secondary-700: color-mix(in oklch, var(--mat-sys-secondary) 70%, black);
+  --secondary-800: color-mix(in oklch, var(--mat-sys-secondary) 50%, black);
+  --secondary-900: color-mix(in oklch, var(--mat-sys-secondary) 30%, black);
+  --secondary-950: color-mix(in oklch, var(--mat-sys-secondary) 15%, black);
+}
+
+:root {
+  --tertiary-50: color-mix(in oklch, var(--mat-sys-tertiary) 8%, white);
+  --tertiary-100: color-mix(in oklch, var(--mat-sys-tertiary) 15%, white);
+  --tertiary-200: color-mix(in oklch, var(--mat-sys-tertiary) 30%, white);
+  --tertiary-300: color-mix(in oklch, var(--mat-sys-tertiary) 50%, white);
+  --tertiary-400: color-mix(in oklch, var(--mat-sys-tertiary) 75%, white);
+  --tertiary-500: var(--mat-sys-tertiary);
+  --tertiary-600: color-mix(in oklch, var(--mat-sys-tertiary) 85%, black);
+  --tertiary-700: color-mix(in oklch, var(--mat-sys-tertiary) 70%, black);
+  --tertiary-800: color-mix(in oklch, var(--mat-sys-tertiary) 50%, black);
+  --tertiary-900: color-mix(in oklch, var(--mat-sys-tertiary) 30%, black);
+  --tertiary-950: color-mix(in oklch, var(--mat-sys-tertiary) 15%, black);
+}
+
+:root {
+  --error-50: color-mix(in oklch, var(--mat-sys-error) 8%, white);
+  --error-100: color-mix(in oklch, var(--mat-sys-error) 15%, white);
+  --error-200: color-mix(in oklch, var(--mat-sys-error) 30%, white);
+  --error-300: color-mix(in oklch, var(--mat-sys-error) 50%, white);
+  --error-400: color-mix(in oklch, var(--mat-sys-error) 75%, white);
+  --error-500: var(--mat-sys-error);
+  --error-600: color-mix(in oklch, var(--mat-sys-error) 85%, black);
+  --error-700: color-mix(in oklch, var(--mat-sys-error) 70%, black);
+  --error-800: color-mix(in oklch, var(--mat-sys-error) 50%, black);
+  --error-900: color-mix(in oklch, var(--mat-sys-error) 30%, black);
+  --error-950: color-mix(in oklch, var(--mat-sys-error) 15%, black);
+}
+
+:root {
+  --neutral-50: var(--mat-sys-surface-container-lowest);
+  --neutral-100: var(--mat-sys-surface-container-low);
+  --neutral-200: var(--mat-sys-surface-container);
+  --neutral-300: var(--mat-sys-surface-container-high);
+  --neutral-400: var(--mat-sys-surface-container-highest);
+  --neutral-500: var(--mat-sys-surface);
+  --neutral-600: color-mix(in srgb, var(--mat-sys-on-surface) 20%, var(--mat-sys-surface));
+  --neutral-700: color-mix(in srgb, var(--mat-sys-on-surface) 40%, var(--mat-sys-surface));
+  --neutral-800: color-mix(in srgb, var(--mat-sys-on-surface) 60%, var(--mat-sys-surface));
+  --neutral-900: color-mix(in srgb, var(--mat-sys-on-surface) 80%, var(--mat-sys-surface));
+  --neutral-950: var(--mat-sys-on-surface);
+}
+
+:root {
+  --transparent: transparent;
+  --black: black;
+  --white: white;
+}

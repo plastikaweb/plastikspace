@@ -1,0 +1,55 @@
+<ng-template #primaryMenu>
+  <nav class="flex h-full items-center">
+    <ul class="flex flex-row justify-start items-center gap-4">
+      <li class="flex items-center">
+        <button
+          matButton="outlined"
+          class="no-underline text-sm font-semibold tracking-wide"
+          routerLink="/"
+          routerLinkActive="active">
+          Home
+        </button>
+      </li>
+      <li class="flex items-center">
+        <button
+          matButton="outlined"
+          class="no-underline text-sm font-semibold tracking-wide"
+          routerLink="/store"
+          routerLinkActive="active">
+          Store
+        </button>
+      </li>
+      <li class="flex items-center">
+        <button
+          matButton="outlined"
+          class="no-underline text-sm font-semibold tracking-wide"
+          routerLink="/about-us"
+          routerLinkActive="active">
+          About us
+        </button>
+      </li>
+    </ul>
+  </nav>
+</ng-template>
+
+<ng-template #secondaryMenu>
+  <nav>
+    <ul class="flex flex-row items-center gap-4">
+      <li>
+        <button matIconButton type="button" aria-label="Ver favoritos">
+          <mat-icon>favorite</mat-icon>
+        </button>
+      </li>
+      <li>
+        <button matIconButton type="button" aria-label="Ver carrito">
+          <mat-icon>shopping_cart</mat-icon>
+        </button>
+      </li>
+      <li>
+        <button matIconButton type="button" aria-label="Perfil">
+          <mat-icon>account_circle</mat-icon>
+        </button>
+      </li>
+    </ul>
+  </nav>
+</ng-template>
