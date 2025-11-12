@@ -1,10 +1,8 @@
 import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  inject,
+  effect,
   TemplateRef,
   viewChild,
   ViewEncapsulation,
@@ -16,26 +14,28 @@ import { FieldWrapper } from '@ngx-formly/core';
 @Component({
   selector: 'plastik-formly-addons-wrapper',
   templateUrl: './formly-addons-wrapper.component.html',
-  styleUrl: './formly-addons-wrapper.component.scss',
+  styleUrls: ['./formly-addons-wrapper.component.scss'],
   imports: [MatIconModule, MatButtonModule, NgStyle, NgClass, NgTemplateOutlet],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FormlyAddonsWrapperComponent extends FieldWrapper implements AfterViewInit {
+export class FormlyAddonsWrapperComponent extends FieldWrapper {
   matPrefix = viewChild('matPrefix', { read: TemplateRef });
   matSuffix = viewChild('matSuffix', { read: TemplateRef });
-  readonly cdr = inject(ChangeDetectorRef);
 
-  ngAfterViewInit(): void {
-    if (this.matPrefix()) {
-      this.props['prefix'] = this.matPrefix();
-      this.cdr.markForCheck();
-    }
+  constructor() {
+    super();
+    effect(() => {
+      const prefix = this.matPrefix();
+      if (prefix) {
+        this.props['prefix'] = prefix;
+      }
 
-    if (this.matSuffix()) {
-      this.props['suffix'] = this.matSuffix();
-      this.cdr.markForCheck();
-    }
+      const suffix = this.matSuffix();
+      if (suffix) {
+        this.props['suffix'] = suffix;
+      }
+    });
   }
 
   addonRightClick(event: MouseEvent): void {

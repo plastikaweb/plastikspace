@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+
+// Customize the entire app. Change :root to your selector if you want to scope the styles.
+:host {
+  @include mat.toolbar-overrides(
+    (
+      standard-height: 50px,
+      mobile-height: 40px,
+      container-background-color: var(--primary-600),
+      container-text-color: var(--primary-50),
+      title-text-size: 0.75rem,
+    )
+  );
+}

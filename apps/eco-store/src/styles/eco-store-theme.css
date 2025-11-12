@@ -1,0 +1,326 @@
+/* Note: Color palettes are generated for eco-friendly store with organic, luminous, modern feel */
+/* Primary: #7CB342 (fresh green), Secondary: #FFB84D (warm sun), Tertiary: #81C4E8 (sky blue) */
+html {
+  /* COLOR SYSTEM VARIABLES */
+  color-scheme: light;
+
+  /* Primary palette variables - Fresh Green (Nature/Growth) */
+  --mat-sys-primary: light-dark(#689f38, #aed581);
+  --mat-sys-on-primary: light-dark(#ffffff, #1b3a00);
+  --mat-sys-primary-container: light-dark(#c5e1a5, #558b2f);
+  --mat-sys-on-primary-container: light-dark(#1b3a00, #dcedc8);
+  --mat-sys-inverse-primary: light-dark(#aed581, #689f38);
+  --mat-sys-primary-fixed: light-dark(#dcedc8, #dcedc8);
+  --mat-sys-primary-fixed-dim: light-dark(#aed581, #aed581);
+  --mat-sys-on-primary-fixed: light-dark(#1b3a00, #1b3a00);
+  --mat-sys-on-primary-fixed-variant: light-dark(#558b2f, #558b2f);
+
+  /* Secondary palette variables - Warm Sun (Energy/Warmth) */
+  --mat-sys-secondary: light-dark(#ff9800, #ffcc80);
+  --mat-sys-on-secondary: light-dark(#ffffff, #4e2600);
+  --mat-sys-secondary-container: light-dark(#ffe0b2, #e65100);
+  --mat-sys-on-secondary-container: light-dark(#4e2600, #fff3e0);
+  --mat-sys-secondary-fixed: light-dark(#fff3e0, #fff3e0);
+  --mat-sys-secondary-fixed-dim: light-dark(#ffcc80, #ffcc80);
+  --mat-sys-on-secondary-fixed: light-dark(#4e2600, #4e2600);
+  --mat-sys-on-secondary-fixed-variant: light-dark(#e65100, #e65100);
+
+  /* Tertiary palette variables - Sky Blue (Fresh/Clean) */
+  --mat-sys-tertiary: light-dark(#4fc3f7, #81d4fa);
+  --mat-sys-on-tertiary: light-dark(#ffffff, #002633);
+  --mat-sys-tertiary-container: light-dark(#b3e5fc, #0277bd);
+  --mat-sys-on-tertiary-container: light-dark(#002633, #e1f5fe);
+  --mat-sys-tertiary-fixed: light-dark(#e1f5fe, #e1f5fe);
+  --mat-sys-tertiary-fixed-dim: light-dark(#81d4fa, #81d4fa);
+  --mat-sys-on-tertiary-fixed: light-dark(#002633, #002633);
+  --mat-sys-on-tertiary-fixed-variant: light-dark(#0277bd, #0277bd);
+
+  /* Neutral palette variables - Organic Whites and Earthy Tones */
+  --mat-sys-background: light-dark(#fafaf8, #121311);
+  --mat-sys-on-background: light-dark(#1c1c1a, #e4e4e0);
+  --mat-sys-surface: light-dark(#fefef6, #131311);
+  --mat-sys-surface-dim: light-dark(#deddd5, #131311);
+  --mat-sys-surface-bright: light-dark(#fefef6, #39382f);
+  --mat-sys-surface-container-low: light-dark(#f8f8ef, #1c1c1a);
+  --mat-sys-surface-container-lowest: light-dark(#ffffff, #0e0e0c);
+  --mat-sys-surface-container: light-dark(#f2f1e9, #201f1d);
+  --mat-sys-surface-container-high: light-dark(#ecece4, #2a2a27);
+  --mat-sys-surface-container-highest: light-dark(#e7e6de, #353432);
+  --mat-sys-on-surface: light-dark(#1c1c1a, #e4e4e0);
+  --mat-sys-shadow: light-dark(#000000, #000000);
+  --mat-sys-scrim: light-dark(#000000, #000000);
+  --mat-sys-surface-tint: light-dark(#689f38, #aed581);
+  --mat-sys-inverse-surface: light-dark(#313130, #e4e4e0);
+  --mat-sys-inverse-on-surface: light-dark(#f4f4ec, #313130);
+  --mat-sys-outline: light-dark(#777770, #918f84);
+  --mat-sys-outline-variant: light-dark(#c8c7bc, #47463e);
+  --mat-sys-neutral10: light-dark(
+    #1c1c1a,
+    #1c1c1a
+  ); /* Variable used for the form field native select option text color */
+
+  /* Error palette variables - Earthy Red (Natural Warning) */
+  --mat-sys-error: light-dark(#c62828, #ef9a9a);
+  --mat-sys-on-error: light-dark(#ffffff, #370000);
+  --mat-sys-error-container: light-dark(#ffcdd2, #8e0000);
+  --mat-sys-on-error-container: light-dark(#370000, #ffebee);
+
+  /* Neutral variant palette variables */
+  --mat-sys-surface-variant: light-dark(#e7e6d7, #47463e);
+  --mat-sys-on-surface-variant: light-dark(#47463e, #c8c7bc);
+  --mat-sys-neutral-variant20: light-dark(
+    #2e2d28,
+    #2e2d28
+  ); /* Variable used for the sidenav scrim (container background shadow when opened) */
+
+  /* TYPOGRAPHY SYSTEM VARIABLES */
+
+  /* Typography variables. Only used in the different typescale system variables. */
+  --mat-sys-brand-font-family: 'Manrope'; /* The font-family to use for brand text. */
+  --mat-sys-plain-font-family: 'Manrope'; /* The font-family to use for plain text. */
+  --mat-sys-bold-font-weight: 700; /* The font-weight to use for bold text. */
+  --mat-sys-medium-font-weight: 500; /* The font-weight to use for medium text. */
+  --mat-sys-regular-font-weight: 400; /* The font-weight to use for regular text. */
+
+  /* Typescale variables. */
+  /* Warning: Risk of reduced fidelity from using the composite typography tokens (ex. --mat-sys-body-large) since
+     tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
+  --mat-sys-body-large: var(--mat-sys-body-large-weight) var(--mat-sys-body-large-size) /
+    var(--mat-sys-body-large-line-height) var(--mat-sys-body-large-font);
+  --mat-sys-body-large-font: var(--mat-sys-plain-font-family);
+  --mat-sys-body-large-line-height: 1.6rem;
+  --mat-sys-body-large-size: 1rem;
+  --mat-sys-body-large-tracking: 0.025rem;
+  --mat-sys-body-large-weight: var(--mat-sys-regular-font-weight);
+
+  /* Body medium typescale */
+  --mat-sys-body-medium: var(--mat-sys-body-medium-weight) var(--mat-sys-body-medium-size) /
+    var(--mat-sys-body-medium-line-height) var(--mat-sys-body-medium-font);
+  --mat-sys-body-medium-font: var(--mat-sys-plain-font-family);
+  --mat-sys-body-medium-line-height: 1.35rem;
+  --mat-sys-body-medium-size: 0.875rem;
+  --mat-sys-body-medium-tracking: 0.015rem;
+  --mat-sys-body-medium-weight: var(--mat-sys-regular-font-weight);
+
+  /* Body small typescale */
+  --mat-sys-body-small: var(--mat-sys-body-small-weight) var(--mat-sys-body-small-size) /
+    var(--mat-sys-body-small-line-height) var(--mat-sys-body-small-font);
+  --mat-sys-body-small-font: var(--mat-sys-plain-font-family);
+  --mat-sys-body-small-line-height: 1.1rem;
+  --mat-sys-body-small-size: 0.75rem;
+  --mat-sys-body-small-tracking: 0.02rem;
+  --mat-sys-body-small-weight: var(--mat-sys-regular-font-weight);
+
+  /* Display large typescale */
+  --mat-sys-display-large: var(--mat-sys-display-large-weight) var(--mat-sys-display-large-size) /
+    var(--mat-sys-display-large-line-height) var(--mat-sys-display-large-font);
+  --mat-sys-display-large-font: var(--mat-sys-brand-font-family);
+  --mat-sys-display-large-line-height: 4.2rem;
+  --mat-sys-display-large-size: 3.75rem;
+  --mat-sys-display-large-tracking: -0.01rem;
+  --mat-sys-display-large-weight: var(--mat-sys-bold-font-weight);
+
+  /* Display medium typescale */
+  --mat-sys-display-medium: var(--mat-sys-display-medium-weight)
+    var(--mat-sys-display-medium-size) / var(--mat-sys-display-medium-line-height)
+    var(--mat-sys-display-medium-font);
+  --mat-sys-display-medium-font: var(--mat-sys-brand-font-family);
+  --mat-sys-display-medium-line-height: 3.5rem;
+  --mat-sys-display-medium-size: 3rem;
+  --mat-sys-display-medium-tracking: 0;
+  --mat-sys-display-medium-weight: var(--mat-sys-bold-font-weight);
+
+  /* Display small typescale */
+  --mat-sys-display-small: var(--mat-sys-display-small-weight) var(--mat-sys-display-small-size) /
+    var(--mat-sys-display-small-line-height) var(--mat-sys-display-small-font);
+  --mat-sys-display-small-font: var(--mat-sys-brand-font-family);
+  --mat-sys-display-small-line-height: 2.875rem;
+  --mat-sys-display-small-size: 2.5rem;
+  --mat-sys-display-small-tracking: 0;
+  --mat-sys-display-small-weight: var(--mat-sys-medium-font-weight);
+
+  /* Headline large typescale */
+  --mat-sys-headline-large: var(--mat-sys-headline-large-weight)
+    var(--mat-sys-headline-large-size) / var(--mat-sys-headline-large-line-height)
+    var(--mat-sys-headline-large-font);
+  --mat-sys-headline-large-font: var(--mat-sys-brand-font-family);
+  --mat-sys-headline-large-line-height: 2.6rem;
+  --mat-sys-headline-large-size: 2.125rem;
+  --mat-sys-headline-large-tracking: 0;
+  --mat-sys-headline-large-weight: var(--mat-sys-medium-font-weight);
+
+  /* Headline medium typescale */
+  --mat-sys-headline-medium: var(--mat-sys-headline-medium-weight)
+    var(--mat-sys-headline-medium-size) / var(--mat-sys-headline-medium-line-height)
+    var(--mat-sys-headline-medium-font);
+  --mat-sys-headline-medium-font: var(--mat-sys-brand-font-family);
+  --mat-sys-headline-medium-line-height: 2.35rem;
+  --mat-sys-headline-medium-size: 1.875rem;
+  --mat-sys-headline-medium-tracking: 0;
+  --mat-sys-headline-medium-weight: var(--mat-sys-medium-font-weight);
+
+  /* Headline small typescale */
+  --mat-sys-headline-small: var(--mat-sys-headline-small-weight)
+    var(--mat-sys-headline-small-size) / var(--mat-sys-headline-small-line-height)
+    var(--mat-sys-headline-small-font);
+  --mat-sys-headline-small-font: var(--mat-sys-brand-font-family);
+  --mat-sys-headline-small-line-height: 2.1rem;
+  --mat-sys-headline-small-size: 1.625rem;
+  --mat-sys-headline-small-tracking: 0;
+  --mat-sys-headline-small-weight: var(--mat-sys-medium-font-weight);
+
+  /* Label large typescale */
+  --mat-sys-label-large: var(--mat-sys-label-large-weight) var(--mat-sys-label-large-size) /
+    var(--mat-sys-label-large-line-height) var(--mat-sys-label-large-font);
+  --mat-sys-label-large-font: var(--mat-sys-plain-font-family);
+  --mat-sys-label-large-line-height: 1.35rem;
+  --mat-sys-label-large-size: 0.875rem;
+  --mat-sys-label-large-tracking: 0.005rem;
+  --mat-sys-label-large-weight: var(--mat-sys-medium-font-weight);
+  --mat-sys-label-large-weight-prominent: var(--mat-sys-bold-font-weight);
+
+  /* Label medium typescale */
+  --mat-sys-label-medium: var(--mat-sys-label-medium-weight) var(--mat-sys-label-medium-size) /
+    var(--mat-sys-label-medium-line-height) var(--mat-sys-label-medium-font);
+  --mat-sys-label-medium-font: var(--mat-sys-plain-font-family);
+  --mat-sys-label-medium-line-height: 1.1rem;
+  --mat-sys-label-medium-size: 0.75rem;
+  --mat-sys-label-medium-tracking: 0.025rem;
+  --mat-sys-label-medium-weight: var(--mat-sys-medium-font-weight);
+  --mat-sys-label-medium-weight-prominent: var(--mat-sys-bold-font-weight);
+
+  /* Label small typescale */
+  --mat-sys-label-small: var(--mat-sys-label-small-weight) var(--mat-sys-label-small-size) /
+    var(--mat-sys-label-small-line-height) var(--mat-sys-label-small-font);
+  --mat-sys-label-small-font: var(--mat-sys-plain-font-family);
+  --mat-sys-label-small-line-height: 1rem;
+  --mat-sys-label-small-size: 0.688rem;
+  --mat-sys-label-small-tracking: 0.025rem;
+  --mat-sys-label-small-weight: var(--mat-sys-medium-font-weight);
+
+  /* Title large typescale */
+  --mat-sys-title-large: var(--mat-sys-title-large-weight) var(--mat-sys-title-large-size) /
+    var(--mat-sys-title-large-line-height) var(--mat-sys-title-large-font);
+  --mat-sys-title-large-font: var(--mat-sys-brand-font-family);
+  --mat-sys-title-large-line-height: 1.875rem;
+  --mat-sys-title-large-size: 1.5rem;
+  --mat-sys-title-large-tracking: 0;
+  --mat-sys-title-large-weight: var(--mat-sys-medium-font-weight);
+
+  /* Title medium typescale */
+  --mat-sys-title-medium: var(--mat-sys-title-medium-weight) var(--mat-sys-title-medium-size) /
+    var(--mat-sys-title-medium-line-height) var(--mat-sys-title-medium-font);
+  --mat-sys-title-medium-font: var(--mat-sys-plain-font-family);
+  --mat-sys-title-medium-line-height: 1.6rem;
+  --mat-sys-title-medium-size: 1.0625rem;
+  --mat-sys-title-medium-tracking: 0.008rem;
+  --mat-sys-title-medium-weight: var(--mat-sys-medium-font-weight);
+
+  /* Title small typescale */
+  --mat-sys-title-small: var(--mat-sys-title-small-weight) var(--mat-sys-title-small-size) /
+    var(--mat-sys-title-small-line-height) var(--mat-sys-title-small-font);
+  --mat-sys-title-small-font: var(--mat-sys-plain-font-family);
+  --mat-sys-title-small-line-height: 1.35rem;
+  --mat-sys-title-small-size: 0.875rem;
+  --mat-sys-title-small-tracking: 0.005rem;
+  --mat-sys-title-small-weight: var(--mat-sys-medium-font-weight);
+
+  /* ELEVATION SYSTEM VARIABLES */
+
+  /* Box shadow colors. Only used in the elevation level system variables. */
+  /* Softer shadows for organic feel */
+  --mat-sys-umbra-color: color-mix(in srgb, var(--mat-sys-shadow), transparent 85%);
+  --mat-sys-penumbra-color: color-mix(in srgb, var(--mat-sys-shadow), transparent 90%);
+  --mat-sys-ambient-color: color-mix(in srgb, var(--mat-sys-shadow), transparent 92%);
+
+  /* Elevation level system variables. These are used as the value for box-shadow CSS property. */
+  /* Softer, more natural elevations */
+  --mat-sys-level0:
+    0px 0px 0px 0px var(--mat-sys-umbra-color), 0px 0px 0px 0px var(--mat-sys-penumbra-color),
+    0px 0px 0px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level1:
+    0px 1px 2px 0px var(--mat-sys-umbra-color), 0px 2px 3px 0px var(--mat-sys-penumbra-color),
+    0px 1px 4px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level2:
+    0px 2px 4px -1px var(--mat-sys-umbra-color), 0px 4px 6px 0px var(--mat-sys-penumbra-color),
+    0px 1px 10px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level3:
+    0px 3px 6px -2px var(--mat-sys-umbra-color), 0px 6px 12px 0px var(--mat-sys-penumbra-color),
+    0px 2px 16px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level4:
+    0px 4px 8px -2px var(--mat-sys-umbra-color), 0px 8px 14px 1px var(--mat-sys-penumbra-color),
+    0px 3px 18px 2px var(--mat-sys-ambient-color);
+  --mat-sys-level5:
+    0px 6px 10px -3px var(--mat-sys-umbra-color), 0px 10px 20px 2px var(--mat-sys-penumbra-color),
+    0px 4px 24px 3px var(--mat-sys-ambient-color);
+
+  /* SHAPE SYSTEM VARIABLES */
+  /* More organic, rounded shapes for friendly feel */
+  --mat-sys-corner-extra-large: 32px;
+  --mat-sys-corner-extra-large-top: 32px 32px 0 0;
+  --mat-sys-corner-extra-small: 6px;
+  --mat-sys-corner-extra-small-top: 6px 6px 0 0;
+  --mat-sys-corner-full: 9999px;
+  --mat-sys-corner-large: 20px;
+  --mat-sys-corner-large-end: 0 20px 20px 0;
+  --mat-sys-corner-large-start: 20px 0 0 20px;
+  --mat-sys-corner-large-top: 20px 20px 0 0;
+  --mat-sys-corner-medium: 14px;
+  --mat-sys-corner-none: 0;
+  --mat-sys-corner-small: 10px;
+
+  /* STATE SYSTEM VARIABLES */
+  /* Slightly more prominent states for better feedback */
+  --mat-sys-dragged-state-layer-opacity: 0.18;
+  --mat-sys-focus-state-layer-opacity: 0.14;
+  --mat-sys-hover-state-layer-opacity: 0.1;
+  --mat-sys-pressed-state-layer-opacity: 0.14;
+}
+
+/* Additional custom properties for eco theme enhancements */
+html {
+  /* Accent colors for special elements */
+  --eco-accent-earth: #8b6f47;
+  --eco-accent-leaf: #7cb342;
+  --eco-accent-sun: #ffb84d;
+  --eco-accent-water: #4fc3f7;
+
+  /* Organic gradient combinations */
+  --eco-gradient-nature: linear-gradient(
+    135deg,
+    var(--mat-sys-primary) 0%,
+    var(--mat-sys-tertiary) 100%
+  );
+  --eco-gradient-sunrise: linear-gradient(
+    135deg,
+    var(--mat-sys-secondary) 0%,
+    var(--mat-sys-primary) 100%
+  );
+  --eco-gradient-earth: linear-gradient(
+    135deg,
+    var(--eco-accent-earth) 0%,
+    var(--mat-sys-primary) 100%
+  );
+
+  /* Spacing scale for organic layouts */
+  --eco-space-xs: 0.25rem;
+  --eco-space-sm: 0.5rem;
+  --eco-space-md: 1rem;
+  --eco-space-lg: 1.5rem;
+  --eco-space-xl: 2rem;
+  --eco-space-2xl: 3rem;
+
+  /* Transition timing for natural animations */
+  --eco-transition-quick: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --eco-transition-smooth: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --eco-transition-gentle: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Optional: Dark mode optimizations for eco theme */
+@media (prefers-color-scheme: dark) {
+  html {
+    /* Warmer dark mode for organic feel */
+    --mat-sys-background: #121311;
+    --mat-sys-surface: #1a1a18;
+  }
+}

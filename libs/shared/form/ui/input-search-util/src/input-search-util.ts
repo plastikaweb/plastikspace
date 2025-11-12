@@ -48,7 +48,7 @@ export function addSearchInput(
         type: 'icon',
       } as AddonConfig,
       addonRight: {
-        icon: 'cancel',
+        icon: 'close_small',
         aria: 'empty value',
         type: 'button',
         onClick: (field: FormlyFieldConfig): void => field.formControl?.setValue(''),

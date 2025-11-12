@@ -175,7 +175,8 @@
       "@plastik/storage/data-access": ["libs/shared/storage/data-access/src/index.ts"],
       "@plastik/storage/entities": ["libs/shared/storage/entities/src/index.ts"],
       "@plastik/storage/feature": ["libs/shared/storage/feature/src/index.ts"],
-      "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"]
+      "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"],
+      "@plastik/shared/form/input-search": ["libs/shared/form/ui/input-search/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

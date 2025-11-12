@@ -1,8 +1,17 @@
 {
   "version": "0.2",
   "language": "ca, es, en",
-  "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
-  "ignorePaths": ["node_modules/**/*", "dist/**/*", "apps/llecoop-firebase/.emulators/**/*"],
+  "dictionaries": [
+    "cpp",
+    "csharp",
+    "dotnet",
+    "typescript"
+  ],
+  "ignorePaths": [
+    "node_modules/**/*",
+    "dist/**/*",
+    "apps/llecoop-firebase/.emulators/**/*"
+  ],
   "dictionaryDefinitions": [],
   "words": [
     "Ahsan",
@@ -17,6 +26,7 @@
     "dotnet",
     "egeo",
     "eslintcache",
+    "extralight",
     "faqs",
     "firebaseapp",
     "firebaserc",
@@ -33,8 +43,10 @@
     "llecoop",
     "Llecoop",
     "Matheu",
+    "Menlo",
     "Netanel",
     "ngrx",
+    "oklch",
     "packagr",
     "peaceiris",
     "peticio",
@@ -53,6 +65,7 @@
     "Savkin",
     "sidenav",
     "simondotm",
+    "tailwindcss",
     "thollander",
     "tuesday",
     "typescale",

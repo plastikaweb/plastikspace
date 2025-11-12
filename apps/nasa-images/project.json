@@ -2,18 +2,27 @@
   "name": "nasa-images",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/nasa-images/src",
   "prefix": "plastik",
+  "sourceRoot": "apps/nasa-images/src",
   "tags": ["scope:nasa-images", "type:app"],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/nasa-images",
         "index": "libs/core/ng-entry-html/util/src/index.html",
-        "main": "apps/nasa-images/src/main.ts",
+        "browser": "apps/nasa-images/src/main.ts",
         "polyfills": [],
+        "optimization": true,
+        "sourceMap": {
+          "scripts": true,
+          "styles": true,
+          "hidden": true,
+          "vendor": true
+        },
+        "namedChunks": true,
+        "aot": true,
         "tsConfig": "apps/nasa-images/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -38,7 +47,7 @@
             {
               "type": "initial",
               "maximumWarning": "500kb",
-              "maximumError": "1mb"
+              "maximumError": "1.1mb"
             },
             {
               "type": "anyComponentStyle",
@@ -76,18 +85,15 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
-          "sourceMap": true,
-          "namedChunks": true
+          "sourceMap": true
         }
       },
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@angular/build:dev-server",
       "configurations": {
         "production": {
           "buildTarget": "nasa-images:build:production"
@@ -100,7 +106,7 @@
       "continuous": true
     },
     "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "executor": "@angular/build:extract-i18n",
       "options": {
         "buildTarget": "nasa-images:build"
       }
@@ -117,10 +123,13 @@
       }
     },
     "serve-static": {
+      "continuous": true,
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "nasa-images:build",
-        "port": 4202
+        "port": 4202,
+        "staticFilePath": "dist/apps/nasa-images/browser",
+        "spa": true
       }
     }
   }

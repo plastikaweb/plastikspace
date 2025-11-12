@@ -1,0 +1,24 @@
+<mat-toolbar class="w-full py-2">
+  <div
+    class="flex max-w-[1600px] w-full mx-auto gap-4 md:gap-12 rounded-full shadow-1 px-4 py-2 flex-row items-center bg-linear-to-r from-primary-100 via-white to-primary-100 border-4 border-primary-600">
+    <div class="flex items-center gap-2 font-semibold tracking-wide text-primary-500">
+      <mat-icon class="header-icon">eco</mat-icon>
+      <span>Eco Botiga</span>
+    </div>
+
+    <div class="flex h-full items-center">
+      <ng-content select="[primaryMenu]" />
+    </div>
+
+    @let getFormConfig = formConfig().getConfig();
+    @let getSubmitFormConfig = formConfig().getSubmitFormConfig?.() || {};
+
+    <plastik-shared-form-feature
+      [fields]="getFormConfig"
+      [model]="{ query: '' }"
+      [submitConfig]="getSubmitFormConfig"
+      (changeEvent)="onSubmit($event)"></plastik-shared-form-feature>
+
+    <ng-content select="[secondaryMenu]" />
+  </div>
+</mat-toolbar>

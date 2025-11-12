@@ -1,8 +1,9 @@
-<ng-template #addonTemplate let-addon let-direction let-clickHandler="clickHandler">
+<ng-template #addonTemplate let-addon let-clickHandler="clickHandler" let-direction>
   @if (addon.type === 'button' && addon.text) {
     <!-- Text button -->
     <button
       mat-button
+      type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
       [ngClass]="addon.classes"
@@ -11,11 +12,11 @@
       <span>{{ addon.text }}</span>
     </button>
   }
-
   @if (addon.type === 'button' && addon.icon) {
     <!-- Icon button -->
     <button
       mat-icon-button
+      type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
       [ngClass]="addon.classes"
@@ -24,12 +25,10 @@
       <mat-icon>{{ addon.icon }}</mat-icon>
     </button>
   }
-
   @if (addon.type === 'text') {
     <!-- Decorative Text -->
-    <span [ngClass]="direction === 'left' ? 'ml-sub' : 'mr-sub'">{{ addon.text }}</span>
+    <span [ngClass]="direction === 'left' ? 'ml-2' : 'mr-2'">{{ addon.text }}</span>
   }
-
   @if (addon.type === 'icon') {
     <!-- Decorative Icon -->
     <mat-icon [attr.aria-hidden]="addon.ariaHidden">{{ addon.icon }}</mat-icon>
@@ -46,11 +45,11 @@
           direction: 'left',
           clickHandler: addonLeftClick.bind(this),
         }
-      "></ng-container>
+      " />
   }
 </ng-template>
 
-<ng-container #fieldComponent></ng-container>
+<ng-container #fieldComponent />
 
 <ng-template #matSuffix>
   @if (props['addonRight']) {
@@ -62,6 +61,6 @@
           direction: 'right',
           clickHandler: addonRightClick.bind(this),
         }
-      "></ng-container>
+      " />
   }
 </ng-template>

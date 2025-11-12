@@ -1,5 +1,10 @@
 .shared-form--extraLinks-container {
   ::ng-deep > .extraLinks {
-    @apply text-[13px] gap-sub items-center justify-between flex flex-col;
+    font-size: 13px;
+    gap: var(--sub);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: column;
   }
 }

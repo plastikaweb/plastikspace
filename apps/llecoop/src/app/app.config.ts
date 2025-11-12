@@ -29,6 +29,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import { PrefixTitleService } from '@plastik/core/router-state';
 import { activityStore } from '@plastik/shared/activity/data-access';
+import { provideFormlyConfig } from '@plastik/shared/form';
 import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 
@@ -72,6 +73,7 @@ export const appConfig = {
       return functions;
     }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
+    provideFormlyConfig(),
     provideAppInitializer(() => {
       const liveAnnouncer = inject(LiveAnnouncer);
       const isActive = inject(activityStore).isActive;

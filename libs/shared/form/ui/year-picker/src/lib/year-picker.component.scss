@@ -1,12 +1,12 @@
 plastik-shared-form-ui-year-picker {
-  @apply flex;
+  display: flex;
 }
 
 .shared-year-picker {
   .mat-calendar-period-button {
-    @apply pointer-events-none;
+    pointer-events: none;
   }
   .mat-calendar-arrow {
-    @apply hidden;
+    display: none;
   }
 }

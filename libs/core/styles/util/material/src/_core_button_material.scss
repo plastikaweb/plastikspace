@@ -1,0 +1,22 @@
+:root {
+  .mdc-button,
+  .mdc-icon-button {
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .mdc-button:hover,
+  .mdc-icon-button:hover {
+    background-color: var(--mat-sys-primary-container);
+    color: var(--mat-sys-on-primary-container);
+  }
+
+  .mdc-button:focus,
+  .mdc-icon-button:focus,
+  .mdc-button:active,
+  .mdc-icon-button:active {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+  }
+}
