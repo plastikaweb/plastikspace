@@ -82,3 +82,7 @@ mvp_github_issues.md
 **/pocketbase/.env.local
 **/pocketbase/.env
 **/pocketbase/*.md
+
+# local helpers
+/helpers
+

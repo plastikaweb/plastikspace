@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '@plastik/core/api';
+import { HttpGetAllService } from '@plastik/core/api';
 import {
   NasaImagesApiSegment,
   NasaImagesSearch,
@@ -11,7 +11,10 @@ import { latinize } from '@plastik/shared/latinize';
 @Injectable({
   providedIn: 'root',
 })
-export class NasaImagesApiService extends ApiService<NasaImagesSearch, NasaImagesSearchApiParams> {
+export class NasaImagesApiService extends HttpGetAllService<
+  NasaImagesSearch,
+  NasaImagesSearchApiParams
+> {
   protected resourceUrlSegment(): NasaImagesApiSegment {
     return 'search';
   }

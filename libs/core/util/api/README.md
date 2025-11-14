@@ -2,9 +2,17 @@
 
 - [core-util-api](#core-util-api)
   - [Description](#description)
-  - [Architecture overview](#architecture-overview)
+  - [Quick Start - Unified CRUD Architecture](#quick-start---unified-crud-architecture)
+  - [Architecture Overview](#architecture-overview)
   - [Core building blocks](#core-building-blocks)
   - [CRUD service interfaces](#crud-service-interfaces)
+  - [Unified CRUD Architecture](#unified-crud-architecture)
+    - [Unified interfaces](#unified-interfaces)
+    - [Provider adapters](#provider-adapters)
+      - [HttpUnifiedService](#httpunifiedservice)
+      - [PocketBaseUnifiedService](#pocketbaseunifiedservice)
+    - [Factory configuration](#factory-configuration)
+    - [Usage example](#usage-example)
   - [Token factories](#token-factories)
   - [Providing a REST implementation](#providing-a-rest-implementation)
   - [Providing a PocketBase implementation](#providing-a-pocketbase-implementation)
@@ -13,35 +21,71 @@
 
 ## Description
 
-Utilities to create strongly typed CRUD data services by composing interfaces, base implementations, and reusable Angular injection tokens.
+Utilities to create strongly typed CRUD data services with **unified architecture** for seamless provider switching between HTTP and PocketBase.
+Choose your data provider through configuration without changing your application code.
 
-## Architecture overview
+## Quick Start - Unified CRUD Architecture
+
+```typescript
+import {
+  HttpUnifiedService,
+  PocketBaseUnifiedService,
+  DataProvider,
+  createCrudProviders,
+} from '@plastik/core/util/api';
+
+// 1. Create your HTTP implementation
+@Injectable()
+class ProductHttpService extends HttpUnifiedService<Product, string> {
+  protected resourceUrlSegment(): string {
+    return 'products';
+  }
+}
+
+// 2. Create your PocketBase implementation
+@Injectable()
+class ProductPocketBaseService extends PocketBaseUnifiedService<Product, string> {
+  protected collectionName(): string {
+    return 'products';
+  }
+}
+
+// 3. Configure providers to switch between HTTP/PocketBase
+export const PRODUCT_PROVIDERS = createCrudProviders<Product, string>(
+  'Product',
+  ProductHttpService,
+  ProductPocketBaseService,
+  { provider: DataProvider.POCKETBASE } // Change to HTTP or POCKETBASE
+);
+```
+
+## Architecture Overview
 
 ```bash
-BaseDataService
-├─ ApiService<TList, P, TEntity, ID>
-└─ PocketBaseService<RecordModel, RecordListOptions>
+📦 Unified CRUD Architecture (Recommended)
+├─ CrudApiService<T> - Unified interface for all CRUD operations
+├─ HttpUnifiedService<T, ID> - HTTP adapter implementation
+└─ PocketBaseUnifiedService<T, ID> - PocketBase adapter implementation
 
-DataCrud interfaces
-├─ DataGetListService<TList, P>
-├─ DataGetOneService<TEntity, ID, ReadOptions>
-├─ DataCreateService<TEntity, Create, WriteOptions>
-├─ DataUpdateService<TEntity, ID, Update, WriteOptions>
-├─ DataDeleteService<ID>
-├─ DataReadService = GetList ∩ GetOne
-├─ DataWriteService = Create ∩ Update ∩ Delete
-└─ DataCrudService = Read ∩ Write
+📦 Legacy Services (For backward compatibility)
+├─ BaseDataService - Common error handling and environment access
+├─ HTTP Services - Individual HTTP CRUD services
+└─ PocketBase Services - Individual PocketBase CRUD services
 ```
 
 ## Core building blocks
 
-| Element                   | Location                | Responsibility                                                                |
-| ------------------------- | ----------------------- | ----------------------------------------------------------------------------- |
-| `BaseDataService`         | `base-data.service.ts`  | Provides environment access and a shared error handler.                       |
-| `ApiService`              | `api.service.ts`        | Base class for REST/HTTP CRUD flows with caching and mapping hooks.           |
-| `PocketBaseService`       | `pocketbase.service.ts` | Base class for PocketBase CRUD flows reusing the same CRUD contract.          |
-| `Data*Service` interfaces | `data-crud.ts`          | Contracts defining the capabilities expected from CRUD services.              |
-| Token factories           | `data-crud.tokens.ts`   | Helpers to create feature-specific injection tokens for each CRUD capability. |
+| Element                    | Location                        | Responsibility                                                                |
+| -------------------------- | ------------------------------- | ----------------------------------------------------------------------------- |
+| `BaseDataService`          | `base-data.service.ts`          | Provides environment access and a shared error handler.                       |
+| `ApiService`               | `api.service.ts`                | Base class for REST/HTTP CRUD flows with caching and mapping hooks.           |
+| `HttpUnifiedService`       | `http-unified.adapter.ts`       | New unified base class for HTTP with provider-agnostic interface.             |
+| `PocketBaseService`        | `pocketbase.service.ts`         | Base class for PocketBase CRUD flows reusing the same CRUD contract.          |
+| `PocketBaseUnifiedService` | `pocketbase-unified.adapter.ts` | New unified base class for PocketBase with provider-agnostic interface.       |
+| `Data*Service` interfaces  | `data-crud.ts`                  | Contracts defining the capabilities expected from CRUD services.              |
+| `I*Service` interfaces     | `data-crud-unified.ts`          | New unified contracts for provider-agnostic CRUD operations.                  |
+| Token factories            | `data-crud.tokens.ts`           | Helpers to create feature-specific injection tokens for each CRUD capability. |
+| `createCrudProviders`      | `crud-provider.factory.ts`      | New factory for creating providers based on configuration.                    |
 
 ## CRUD service interfaces
 
@@ -59,6 +103,83 @@ Each interface focuses on a single capability; compose them to match your featur
 | `DataCrudService`                                      | Full CRUD (read + write).                     |                                                |
 
 Default tokens (`DATA_*_SERVICE`) are exported in `data-crud.ts` for quick wiring when only one implementation exists.
+
+## Unified CRUD Architecture
+
+The new unified architecture allows you to switch between HTTP and PocketBase providers without changing your business logic code.
+
+### Unified interfaces
+
+Located in `data-crud-unified.ts`, these interfaces provide a consistent API regardless of the underlying provider:
+
+| Interface           | Methods                                                      |
+| ------------------- | ------------------------------------------------------------ |
+| `IGetAll<T>`        | `getList(params?)`, `getFullList(params?)`                   |
+| `IGetOneService<T>` | `getOne(id, options?)`, `getFirstListItem(filter, options?)` |
+| `ICreateService<T>` | `create(data, options?)`                                     |
+| `IUpdateService<T>` | `update(id, data, options?)`                                 |
+| `IDeleteService<T>` | `delete(id)`                                                 |
+| `CrudApiService<T>` | Combines all unified interfaces                              |
+
+### Provider adapters
+
+#### HttpUnifiedService
+
+```typescript
+@Injectable()
+export class MyEntityHttpService extends HttpUnifiedService<MyEntity, string> {
+  protected resourceUrlSegment(): string {
+    return 'my-entities';
+  }
+}
+```
+
+#### PocketBaseUnifiedService
+
+```typescript
+@Injectable()
+export class MyEntityPocketBaseService extends PocketBaseUnifiedService<MyEntity, string> {
+  protected collectionName(): string {
+    return 'my_entities';
+  }
+}
+```
+
+### Factory configuration
+
+Use the factory to create providers that can switch based on configuration:
+
+```typescript
+const MY_ENTITY_PROVIDERS = createCrudProviders<MyEntity, string>(
+  'MyEntity',
+  MyEntityHttpService,
+  MyEntityPocketBaseService,
+  {
+    provider: DataProvider.HTTP, // or DataProvider.POCKETBASE
+    options: {
+      http: { baseUrl: environment.baseApiUrl },
+      pocketbase: { enableRealtime: true, cacheTime: 300000 },
+    },
+  }
+);
+```
+
+### Usage example
+
+```typescript
+@Component({
+  providers: MY_ENTITY_PROVIDERS,
+})
+export class MyComponent {
+  constructor(private entityService: CrudApiService<MyEntity>) {}
+
+  loadEntities() {
+    this.entityService
+      .getList({ page: 1, perPage: 10 })
+      .subscribe(result => console.log(result.items));
+  }
+}
+```
 
 ## Token factories
 

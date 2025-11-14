@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideEnvironmentMock } from '@plastik/core/environments';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -8,6 +9,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
+      providers: [provideEnvironmentMock()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);
