@@ -1,54 +1,23 @@
-import { catchError, from, map, Observable, shareReplay } from 'rxjs';
-
-import { Injectable } from '@angular/core';
+import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
 import PocketBase, {
   ListResult,
   RecordFullListOptions,
   RecordListOptions,
-  RecordModel,
   RecordOptions,
 } from 'pocketbase';
-import { BaseDataService } from './base-data.service';
-import { DataApiService } from './data-crud';
+import { catchError, from, map, Observable, shareReplay } from 'rxjs';
+import { BaseDataService } from '../base-data.service';
 
 /**
- * Interface for PocketBase error responses
+ * @description Abstract base class for PocketBase services with common functionality.
+ * Provides shared methods and configuration for all PocketBase operations.
+ * @template T - The entity type that extends BasePocketBaseEntity
+ * @template PARAMS - The type of parameters for list operations (RecordListOptions or RecordFullListOptions)
  */
-export interface PocketBaseError {
-  data?: Record<string, unknown>;
-  message: string;
-  status: number;
-}
-
-/**
- * @description Abstract class to inherit from on creating a feature PocketBase service.
- * @template T, P, E
- *
- * **T** refers to the main feature model item used inside applications.
- *
- * **P** refers to the type description of the passed parameters to API call methods.
- * These parameters are the usual option to pass configuration with the REST call, for example for filtering results, paginate or ordering data.
- *
- * **E** refers to the environment type extension with the PocketBase URL property.
- */
-@Injectable()
-export abstract class PocketBaseService<
-    T extends RecordModel = RecordModel,
-    P extends RecordListOptions | RecordFullListOptions = RecordListOptions,
-  >
-  extends BaseDataService
-  implements
-    DataApiService<
-      T,
-      ListResult<T>,
-      P,
-      string,
-      RecordOptions,
-      RecordOptions,
-      Partial<T>,
-      Partial<T>
-    >
-{
+export abstract class PocketBaseCrudService<
+  T extends BasePocketBaseEntity = BasePocketBaseEntity,
+  PARAMS extends RecordListOptions | RecordFullListOptions = RecordListOptions,
+> extends BaseDataService {
   readonly #pb: PocketBase;
 
   /**
@@ -77,7 +46,7 @@ export abstract class PocketBaseService<
 
   /**
    * @description Method to map the PocketBase response with the inner typings before storing it in app.
-   * Override this method in child classes when inheriting from PocketBaseService with your custom response structures.
+   * Override this method in child classes when inheriting from PocketBaseBaseService with your custom response structures.
    * @param { T } data The PocketBase response data as it is.
    * @returns { T } The mapped response.
    */
@@ -93,16 +62,16 @@ export abstract class PocketBaseService<
   protected mapListResponse(data: ListResult<T>): ListResult<T> {
     return {
       ...data,
-      items: data.items.map(item => this.mapResponse(item)),
+      items: data.items.map((item: T) => this.mapResponse(item)),
     };
   }
 
   /**
-   * @param { P } params The list parameters.
+   * @param { PARAMS } params The list parameters.
    * @returns { Observable<ListResult<T>> } The list of records.
    * @description Get a list of records.
    */
-  getList(params?: P): Observable<ListResult<T>> {
+  public getList(params?: PARAMS): Observable<ListResult<T>> {
     return from(
       this.#pb
         .collection(this.collectionName())
@@ -123,7 +92,7 @@ export abstract class PocketBaseService<
    * @returns { Observable<T[]> } The full list of records.
    * @description Get all records (max 500 by default).
    */
-  getFullList(params?: RecordFullListOptions): Observable<T[]> {
+  public getFullList(params?: RecordFullListOptions): Observable<T[]> {
     return from(this.#pb.collection(this.collectionName()).getFullList<T>(params)).pipe(
       map(items => items.map(item => this.mapResponse(item))),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
@@ -137,7 +106,7 @@ export abstract class PocketBaseService<
    * @returns { Observable<T> } The single record.
    * @description Get a single record by ID.
    */
-  getOne(id: string, options?: RecordOptions): Observable<T> {
+  public getOne(id: string, options?: RecordOptions): Observable<T> {
     return from(this.#pb.collection(this.collectionName()).getOne<T>(id, options)).pipe(
       map(data => this.mapResponse(data)),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
@@ -151,7 +120,7 @@ export abstract class PocketBaseService<
    * @returns { Observable<T> } The first record matching the filter.
    * @description Get the first record matching the filter.
    */
-  getFirstListItem(filter: string, options?: RecordOptions): Observable<T> {
+  public getFirstListItem(filter: string, options?: RecordOptions): Observable<T> {
     return from(
       this.#pb.collection(this.collectionName()).getFirstListItem<T>(filter, options)
     ).pipe(
@@ -167,7 +136,7 @@ export abstract class PocketBaseService<
    * @returns { Observable<T> } The created record.
    * @description Create a new record.
    */
-  create(data: Partial<T>, options?: RecordOptions): Observable<T> {
+  public create(data: Partial<T>, options?: RecordOptions): Observable<T> {
     return from(this.#pb.collection(this.collectionName()).create<T>(data, options)).pipe(
       map(response => this.mapResponse(response)),
       catchError(this.handleError)
@@ -181,7 +150,7 @@ export abstract class PocketBaseService<
    * @returns { Observable<T> } The updated record.
    * @description Update an existing record.
    */
-  update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T> {
+  public update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T> {
     return from(this.#pb.collection(this.collectionName()).update<T>(id, data, options)).pipe(
       map(response => this.mapResponse(response)),
       catchError(this.handleError)
@@ -193,7 +162,7 @@ export abstract class PocketBaseService<
    * @returns { Observable<boolean> } The deletion result.
    * @description Delete a record.
    */
-  delete(id: string): Observable<boolean> {
+  public delete(id: string): Observable<boolean> {
     return from(this.#pb.collection(this.collectionName()).delete(id)).pipe(
       map(() => true),
       catchError(this.handleError)

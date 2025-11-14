@@ -176,7 +176,10 @@
       "@plastik/storage/entities": ["libs/shared/storage/entities/src/index.ts"],
       "@plastik/storage/feature": ["libs/shared/storage/feature/src/index.ts"],
       "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"],
-      "@plastik/shared/form/input-search": ["libs/shared/form/ui/input-search/src/index.ts"]
+      "@plastik/shared/form/input-search": ["libs/shared/form/ui/input-search/src/index.ts"],
+      "@plastik/eco-store/product-categories/data-access": [
+        "libs/eco-store/product-categories/data-access/src/index.ts"
+      ]
     }
   },
   "angularCompilerOptions": {

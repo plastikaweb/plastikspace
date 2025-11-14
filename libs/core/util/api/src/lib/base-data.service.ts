@@ -17,7 +17,7 @@ export abstract class BaseDataService {
    * @param { unknown } error The error object.
    * @returns { Observable<never> } An observable that throws the formatted error.
    */
-  protected handleError = (error: unknown): Observable<never> => {
+  public handleError<E = unknown>(error: E): Observable<never> {
     let message = 'An error occurred';
     let code = 500;
     let data: unknown = null;
@@ -40,5 +40,5 @@ export abstract class BaseDataService {
     }
 
     return throwError(() => ({ message, code, data, originalError: error }));
-  };
+  }
 }

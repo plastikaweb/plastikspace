@@ -1,5 +1,7 @@
-export * from './lib/api.service';
-export * from './lib/base-data.service';
+// Legacy CRUD interfaces and tokens
 export * from './lib/data-crud';
 export * from './lib/data-crud.tokens';
-export * from './lib/pocketbase.service';
+
+// Legacy HTTP and PocketBase services (for backward compatibility)
+export * from './lib/http';
+export * from './lib/pocketbase';
