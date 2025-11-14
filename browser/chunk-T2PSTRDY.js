@@ -1,9 +1,9 @@
 import {
   toSignal
-} from "./chunk-J5AWLALY.js";
+} from "./chunk-MJGQ7UIS.js";
 import {
   isPlatformServer
-} from "./chunk-FH2VTLT2.js";
+} from "./chunk-L4ELV5TK.js";
 import {
   ApplicationRef,
   BehaviorSubject,
@@ -58,7 +58,7 @@ import {
   ɵɵdirectiveInject,
   ɵɵgetInheritedFactory,
   ɵɵinject
-} from "./chunk-HYWVNCW4.js";
+} from "./chunk-6A74M7E5.js";
 
 // node_modules/@ngrx/component/fesm2022/ngrx-component.mjs
 function isNgZone(zone) {
@@ -1677,4 +1677,4 @@ export {
   on,
   createReducer
 };
-//# sourceMappingURL=chunk-JHYYICP4.js.map
+//# sourceMappingURL=chunk-T2PSTRDY.js.map

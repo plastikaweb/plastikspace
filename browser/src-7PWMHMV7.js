@@ -49,20 +49,20 @@ import {
   isEmpty,
   isNil,
   selectNasaImagesFeature
-} from "./chunk-4NSRFZXX.js";
+} from "./chunk-E746VU5Z.js";
 import {
   _DisposeViewRepeaterStrategy,
   provideEffects,
   selectRouteQueryParams
-} from "./chunk-GKJSJX3U.js";
+} from "./chunk-ZCQMN6GR.js";
 import {
   LetDirective,
   PushPipe,
   Store,
   provideState,
   select
-} from "./chunk-JHYYICP4.js";
-import "./chunk-EPXP3HSK.js";
+} from "./chunk-T2PSTRDY.js";
+import "./chunk-PU5SFPLZ.js";
 import {
   CdkScrollableModule,
   FlexibleConnectedPositionStrategy,
@@ -76,7 +76,7 @@ import {
   createGlobalPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-NCFKKHWY.js";
+} from "./chunk-XJ5ZJ4KN.js";
 import {
   CdkPortalOutlet,
   ComponentPortal,
@@ -89,7 +89,7 @@ import {
   _VIEW_REPEATER_STRATEGY,
   _ViewRepeaterOperation,
   isDataSource
-} from "./chunk-L7VWDKOV.js";
+} from "./chunk-B7ZO4ZH7.js";
 import {
   MatButton,
   MatButtonModule,
@@ -97,17 +97,17 @@ import {
   MatRipple,
   coerceBooleanProperty,
   coerceStringArray
-} from "./chunk-WCPP7NZE.js";
+} from "./chunk-U2SCFMKV.js";
 import {
   _StructuralStylesLoader,
   _animationsDisabled,
   toSignal
-} from "./chunk-J5AWLALY.js";
+} from "./chunk-MJGQ7UIS.js";
 import {
   DomSanitizer
-} from "./chunk-LNCBPTQ2.js";
-import "./chunk-W4SLJRM6.js";
-import "./chunk-AWOQ7PQQ.js";
+} from "./chunk-GIDPJBNA.js";
+import "./chunk-VHNOS6IU.js";
+import "./chunk-PBY45MZW.js";
 import {
   A11yModule,
   AriaDescriber,
@@ -134,14 +134,14 @@ import {
   _getFocusedElementPierceShadowDom,
   hasModifierKey,
   normalizePassiveListenerOptions
-} from "./chunk-4NK5GA6A.js";
-import "./chunk-JBTCJSXB.js";
+} from "./chunk-54ZU5LBE.js";
+import "./chunk-LBZGZ3NC.js";
 import {
   Platform,
   _CdkPrivateStyleLoader,
   _isNumberValue,
   coerceNumberProperty
-} from "./chunk-3JFEKXMP.js";
+} from "./chunk-T7FEMSKL.js";
 import {
   DatePipe,
   NgClass,
@@ -152,7 +152,7 @@ import {
   formatDate,
   formatNumber,
   formatPercent
-} from "./chunk-FH2VTLT2.js";
+} from "./chunk-L4ELV5TK.js";
 import {
   BehaviorSubject,
   ChangeDetectionStrategy,
@@ -289,7 +289,7 @@ import {
   ɵɵtwoWayProperty,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-HYWVNCW4.js";
+} from "./chunk-6A74M7E5.js";
 
 // node_modules/@angular/material/fesm2022/tooltip2.mjs
 var _c0 = ["tooltip"];
@@ -17158,7 +17158,7 @@ var TABLE_TOKEN = new InjectionToken("TABLE_TOKEN");
 var _c08 = ["matFormField"];
 var _c17 = [[["", "noResults", ""]], [["", "noValidSearch", ""]], [["", "noResults", ""]], [["", "noValidSearch", ""]]];
 var _c22 = ["[noResults]", "[noValidSearch]", "[noResults]", "[noValidSearch]"];
-var SharedTableUiComponent_Defer_3_DepsFn = () => [import("./router-XXKBA7AN.js").then((m) => m.RouterLink), import("./common-EU5IF6FX.js").then((m) => m.NgClass), import("./common-EU5IF6FX.js").then((m) => m.NgComponentOutlet), import("./common-EU5IF6FX.js").then((m) => m.NgTemplateOutlet), import("./text-field-B6UKAZE6.js").then((m) => m.CdkTextareaAutosize), MatTable, MatHeaderCellDef, MatHeaderRowDef, MatColumnDef, MatCellDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatSort, MatSortHeader, MatTooltip, MatIcon, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatInput, MatSelect, MatOption, MatCheckbox, MatRadioGroup, MatRadioButton, MatSlideToggle, import("./common-EU5IF6FX.js").then((m) => m.NgOptimizedImage), import("./common-EU5IF6FX.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-PVZW3YKE.js").then((m) => m.OrderTableActionsElementsPipe), SafeFormattedPipe];
+var SharedTableUiComponent_Defer_3_DepsFn = () => [import("./router-YTYOR56X.js").then((m) => m.RouterLink), import("./common-B5XDYJCF.js").then((m) => m.NgClass), import("./common-B5XDYJCF.js").then((m) => m.NgComponentOutlet), import("./common-B5XDYJCF.js").then((m) => m.NgTemplateOutlet), import("./text-field-AEAJUZ2Z.js").then((m) => m.CdkTextareaAutosize), MatTable, MatHeaderCellDef, MatHeaderRowDef, MatColumnDef, MatCellDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatSort, MatSortHeader, MatTooltip, MatIcon, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatInput, MatSelect, MatOption, MatCheckbox, MatRadioGroup, MatRadioButton, MatSlideToggle, import("./common-B5XDYJCF.js").then((m) => m.NgOptimizedImage), import("./common-B5XDYJCF.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-ZLQ2EU5T.js").then((m) => m.OrderTableActionsElementsPipe), SafeFormattedPipe];
 var _c32 = (a0) => [a0];
 var _c42 = (a0, a1) => ({ element: a0, isExpanded: a1 });
 var _c52 = () => ["expandedDetail"];
@@ -18201,7 +18201,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
   ], styles: ["\n\n  mat-table .mat-mdc-row {\n  min-height: var(--plastik-mdc-table-row-min-height, auto);\n  max-height: var(--plastik-mdc-table-row-max-height, auto);\n}\n  mat-table .mat-mdc-row li {\n  margin: 0;\n  padding: 0;\n}\n  mat-table .mat-mdc-row.marked-ok {\n  background-color: var(--plastik-mdc-table-row-marked-ok-bg-color, #a1e380) !important;\n}\n  mat-table .mat-mdc-row.marked-ko {\n  background-color: var(--plastik-mdc-table-row-marked-ko-bg-color, #f8c8c8) !important;\n}\n  mat-table .mat-mdc-row.marked-changed {\n  background-color: var(--plastik-mdc-table-row-marked-changed-bg-color, #e8bf79) !important;\n}\n  mat-table .mat-mdc-row.expanded-row > .mat-mdc-cell {\n  background-color: var(--plastik-mdc-nested-container-bg-color);\n  border-bottom-width: 0px;\n}\n  mat-table .mat-mdc-row.expanded-row + .mat-mdc-row > .mat-mdc-cell {\n  border-bottom-width: 1px !important;\n  background-color: var(--plastik-mdc-nested-container-bg-color);\n}\n  mat-table .mat-mdc-cell {\n  --mat-form-field-container-height: 45px;\n  --mat-form-field-container-text-size: var(--mat-sys-body-medium-size);\n}\n  mat-table .mat-mdc-cell .mat-mdc-form-field-infix {\n  width: auto;\n}\n  mat-table .mat-mdc-cell.mat-cell-link a {\n  cursor: pointer;\n}\n  mat-table .mat-mdc-cell li {\n  margin: 0;\n  padding: 0;\n}\n  mat-table .mat-mdc-cell .mdc-text-field--no-label .mat-mdc-form-field-infix {\n  padding: 0.5rem 0 0;\n}\n  mat-table .mat-mdc-cell .mat-mdc-form-field-subscript-wrapper {\n  display: none;\n}\n  mat-table mat-table {\n  --mat-table-background-color: var(--plastik-mdc-nested-data-bg-color);\n}\n  mat-table mat-table .mdc-data-table__row:not(:last-child) .mat-mdc-cell {\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n  border-bottom-color: var(--mat-table-row-item-outline-color);\n}\n  .mat-mdc-paginator.paginator--hide .mat-paginator-range-label {\n  display: none;\n}\n  .mat-mdc-paginator.paginator--hide-range-buttons .mat-mdc-paginator-range-actions > button {\n  display: none;\n}\n/*# sourceMappingURL=shared-table-ui.component.css.map */"], changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(SharedTableUiComponent, () => [import("./router-XXKBA7AN.js").then((m) => m.RouterLink), import("./common-EU5IF6FX.js").then((m) => m.NgClass), import("./common-EU5IF6FX.js").then((m) => m.NgComponentOutlet), import("./common-EU5IF6FX.js").then((m) => m.NgTemplateOutlet), import("./text-field-B6UKAZE6.js").then((m) => m.CdkTextareaAutosize), import("./common-EU5IF6FX.js").then((m) => m.NgOptimizedImage), import("./common-EU5IF6FX.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-PVZW3YKE.js").then((m) => m.OrderTableActionsElementsPipe)], (RouterLink, NgClass2, NgComponentOutlet, NgTemplateOutlet, CdkTextareaAutosize, NgOptimizedImage2, KeyValuePipe, OrderTableActionsElementsPipe) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(SharedTableUiComponent, () => [import("./router-YTYOR56X.js").then((m) => m.RouterLink), import("./common-B5XDYJCF.js").then((m) => m.NgClass), import("./common-B5XDYJCF.js").then((m) => m.NgComponentOutlet), import("./common-B5XDYJCF.js").then((m) => m.NgTemplateOutlet), import("./text-field-AEAJUZ2Z.js").then((m) => m.CdkTextareaAutosize), import("./common-B5XDYJCF.js").then((m) => m.NgOptimizedImage), import("./common-B5XDYJCF.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-ZLQ2EU5T.js").then((m) => m.OrderTableActionsElementsPipe)], (RouterLink, NgClass2, NgComponentOutlet, NgTemplateOutlet, CdkTextareaAutosize, NgOptimizedImage2, KeyValuePipe, OrderTableActionsElementsPipe) => {
     setClassMetadata(SharedTableUiComponent, [{
       type: Component,
       args: [{ selector: "plastik-shared-table", imports: [
@@ -19163,4 +19163,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-7MTV52XG.js.map
+//# sourceMappingURL=src-7PWMHMV7.js.map

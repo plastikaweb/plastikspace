@@ -2,7 +2,7 @@ import {
   Pipe,
   setClassMetadata,
   ɵɵdefinePipe
-} from "./chunk-HYWVNCW4.js";
+} from "./chunk-6A74M7E5.js";
 
 // libs/shared/table/ui/src/lib/utils/order-table-actions-elements.pipe.ts
 var OrderTableActionsElementsPipe = class _OrderTableActionsElementsPipe {
@@ -28,4 +28,4 @@ var OrderTableActionsElementsPipe = class _OrderTableActionsElementsPipe {
 export {
   OrderTableActionsElementsPipe
 };
-//# sourceMappingURL=order-table-actions-elements.pipe-PVZW3YKE.js.map
+//# sourceMappingURL=order-table-actions-elements.pipe-ZLQ2EU5T.js.map
