@@ -1,5 +1,6 @@
 import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
 import PocketBase, {
+  ClientResponseError,
   ListResult,
   RecordFullListOptions,
   RecordListOptions,
@@ -83,7 +84,7 @@ export abstract class PocketBaseCrudService<
     ).pipe(
       map(data => this.mapListResponse(data)),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
-      catchError(this.handleError)
+      catchError(error => this.handleError<ClientResponseError>(error))
     );
   }
 
@@ -96,7 +97,7 @@ export abstract class PocketBaseCrudService<
     return from(this.#pb.collection(this.collectionName()).getFullList<T>(params)).pipe(
       map(items => items.map(item => this.mapResponse(item))),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
-      catchError(this.handleError)
+      catchError(error => this.handleError<ClientResponseError>(error))
     );
   }
 
@@ -110,7 +111,7 @@ export abstract class PocketBaseCrudService<
     return from(this.#pb.collection(this.collectionName()).getOne<T>(id, options)).pipe(
       map(data => this.mapResponse(data)),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
-      catchError(this.handleError)
+      catchError(error => this.handleError<ClientResponseError>(error))
     );
   }
 
@@ -126,7 +127,7 @@ export abstract class PocketBaseCrudService<
     ).pipe(
       map(data => this.mapResponse(data)),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
-      catchError(this.handleError)
+      catchError(error => this.handleError<ClientResponseError>(error))
     );
   }
 
@@ -139,7 +140,7 @@ export abstract class PocketBaseCrudService<
   public create(data: Partial<T>, options?: RecordOptions): Observable<T> {
     return from(this.#pb.collection(this.collectionName()).create<T>(data, options)).pipe(
       map(response => this.mapResponse(response)),
-      catchError(this.handleError)
+      catchError(error => this.handleError<ClientResponseError>(error))
     );
   }
 
@@ -153,7 +154,7 @@ export abstract class PocketBaseCrudService<
   public update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T> {
     return from(this.#pb.collection(this.collectionName()).update<T>(id, data, options)).pipe(
       map(response => this.mapResponse(response)),
-      catchError(this.handleError)
+      catchError(error => this.handleError<ClientResponseError>(error))
     );
   }
 
@@ -165,7 +166,7 @@ export abstract class PocketBaseCrudService<
   public delete(id: string): Observable<boolean> {
     return from(this.#pb.collection(this.collectionName()).delete(id)).pipe(
       map(() => true),
-      catchError(this.handleError)
+      catchError(error => this.handleError<ClientResponseError>(error))
     );
   }
 }

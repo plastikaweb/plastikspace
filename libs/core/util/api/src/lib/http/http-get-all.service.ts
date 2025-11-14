@@ -11,10 +11,7 @@ import { HttpBaseService } from './http-base.service';
  * @template RESULT - The result structure type
  * @template PARAMS - The parameters type for the API call (extends Params)
  */
-export abstract class HttpGetAllService<
-    RESULT,
-    PARAMS extends Params,
-  >
+export abstract class HttpGetAllService<RESULT, PARAMS extends Params>
   extends HttpBaseService
   implements IGetAll<RESULT, PARAMS>
 {

@@ -1,8 +1,8 @@
 import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
+import { ClientResponseError } from 'pocketbase';
 import { Observable } from 'rxjs';
 import { BaseDataService } from '../base-data.service';
 import { PocketBaseCrudService } from './pocketbase-crud.service';
-import { PocketBaseError } from './pocketbase.types';
 
 /**
  * @description Abstract class to inherit from on creating a feature PocketBase service.
@@ -31,7 +31,7 @@ export abstract class PocketBaseBaseService<
     })();
   }
 
-  public override handleError<E = PocketBaseError>(error: E): Observable<never> {
+  public override handleError<E = ClientResponseError>(error: E): Observable<never> {
     return super.handleError(error);
   }
 }

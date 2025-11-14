@@ -1,1 +1,6 @@
-yarn branch:lint && nx format:write --all && nx affected:lint && markdownlint *.md
+export NX_CLI_SET=classic
+
+yarn branch:lint \
+  && yarn nx format:write --all \
+  && yarn nx affected:lint \
+  && markdownlint *.md

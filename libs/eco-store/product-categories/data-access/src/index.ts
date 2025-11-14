@@ -1,1 +1,1 @@
-export * from './eco-store-product-categories-api.service';
+export * from './eco-store-product-categories.store';

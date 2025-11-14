@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { IGetAll } from '../data-crud-unified';
 
 /**
- * Interface for read-only operations (get all records)
+ * Interface for read-only operations (get all records).
  */
 export interface IPocketBaseGetAll<T>
   extends IGetAll<ListResult<T>, RecordListOptions | RecordFullListOptions> {
@@ -12,7 +12,7 @@ export interface IPocketBaseGetAll<T>
 }
 
 /**
- * Interface for single record operations
+ * Interface for single record operations.
  */
 export interface IPocketBaseGetOne<T> {
   getOne(id: string, options?: RecordOptions): Observable<T>;
@@ -20,31 +20,22 @@ export interface IPocketBaseGetOne<T> {
 }
 
 /**
- * Interface for create operations
+ * Interface for create operations.
  */
 export interface IPocketBaseCreate<T> {
   create(data: Partial<T>, options?: RecordOptions): Observable<T>;
 }
 
 /**
- * Interface for update operations
+ * Interface for update operations.
  */
 export interface IPocketBaseUpdate<T> {
   update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T>;
 }
 
 /**
- * Interface for delete operations
+ * Interface for delete operations.
  */
 export interface IPocketBaseDelete {
   delete(id: string): Observable<boolean>;
-}
-
-/**
- * Interface for PocketBase error responses
- */
-export interface PocketBaseError {
-  data?: Record<string, unknown>;
-  message: string;
-  status: number;
 }

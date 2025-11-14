@@ -1,1 +1,4 @@
-nx affected:test && nx affected:build
+export NX_CLI_SET=classic
+
+yarn nx affected:test \
+ && yarn nx affected:build

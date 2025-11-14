@@ -1,11 +1,8 @@
-import { JsonPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { EcoStoreProductCategoriesApiService } from '@plastik/eco-store/product-categories/data-access';
 
 @Component({
-  imports: [RouterOutlet, JsonPipe],
+  imports: [RouterOutlet],
   selector: 'eco-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -14,8 +11,4 @@ import { EcoStoreProductCategoriesApiService } from '@plastik/eco-store/product-
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
-  s = inject(EcoStoreProductCategoriesApiService);
-
-  categories = toSignal(this.s.getFullList());
-}
+export class AppComponent {}
