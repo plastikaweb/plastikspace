@@ -2,7 +2,7 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { RouterModule } from '@angular/router';
-import { appSearchFormConfig } from '../config/app.search-form.config';
+import { appSearchFormConfig } from '@plastik/eco-store/formly';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';

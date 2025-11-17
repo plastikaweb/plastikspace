@@ -2,10 +2,19 @@ import { ChangeDetectionStrategy, Component, TemplateRef, viewChild } from '@ang
 import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'eco-menu',
-  imports: [RouterLink, RouterLinkActive, MatAnchor, MatButton, MatIconButton, MatIcon],
+  imports: [
+    RouterLink,
+    RouterLinkActive,
+    MatAnchor,
+    MatButton,
+    MatIconButton,
+    MatIcon,
+    TranslatePipe,
+  ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

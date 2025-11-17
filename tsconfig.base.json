@@ -179,7 +179,8 @@
       "@plastik/shared/form/input-search": ["libs/shared/form/ui/input-search/src/index.ts"],
       "@plastik/eco-store/product-categories/data-access": [
         "libs/eco-store/product-categories/data-access/src/index.ts"
-      ]
+      ],
+      "@plastik/eco-store/formly": ["libs/eco-store/feature/formly/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

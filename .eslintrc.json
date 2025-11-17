@@ -49,6 +49,10 @@
                 "onlyDependOnLibsWithTags": ["scope:plastikaweb", "scope:core", "scope:shared"]
               },
               {
+                "sourceTag": "scope:eco-store",
+                "onlyDependOnLibsWithTags": ["scope:eco-store", "scope:core", "scope:shared"]
+              },
+              {
                 "sourceTag": "type:feature",
                 "onlyDependOnLibsWithTags": [
                   "type:ui",

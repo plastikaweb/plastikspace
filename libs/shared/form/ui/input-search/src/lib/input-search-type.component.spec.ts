@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { InputSearchTypeComponent } from './input-search-type.component';
-
 describe('InputSearchTypeComponent', () => {
   let component: InputSearchTypeComponent;
   let fixture: ComponentFixture<InputSearchTypeComponent>;
@@ -20,6 +20,7 @@ describe('InputSearchTypeComponent', () => {
           ],
         }),
       ],
+      providers: [provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(InputSearchTypeComponent);

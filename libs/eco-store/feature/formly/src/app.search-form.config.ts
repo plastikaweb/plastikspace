@@ -13,11 +13,12 @@ export function appSearchFormConfig(): FormConfig<{ query: string }> {
           key: 'query',
           type: 'input-search',
           props: {
-            label: 'Search products or categories',
-            placeholder: 'Search products or categories',
+            label: 'search.label',
+            placeholder: 'search.placeholder',
             className: 'w-full',
             noButton: true,
             resetSearch: true,
+            translate: true,
             maxLength: 17,
             attributes: {
               autocomplete: 'off',

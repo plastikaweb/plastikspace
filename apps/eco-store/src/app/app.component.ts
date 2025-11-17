@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   imports: [RouterOutlet],
@@ -11,4 +12,10 @@ import { RouterOutlet } from '@angular/router';
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {}
+export class AppComponent {
+  readonly #translate = inject(TranslateService);
+
+  constructor() {
+    this.#translate.addLangs(['ca', 'es']);
+  }
+}
