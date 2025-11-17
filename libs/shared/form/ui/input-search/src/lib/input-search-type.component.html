@@ -19,7 +19,7 @@
       matIconButton
       matSuffix
       type="button"
-      [attr.aria-label]="'form.search'"
+      [attr.aria-label]="'form.search' | translate"
       [disabled]="isDisabled()"
       (click)="triggerSearch($event)">
       <mat-icon>search</mat-icon>
@@ -31,7 +31,7 @@
       matIconButton
       matSuffix
       type="button"
-      [attr.aria-label]="'form.clear'"
+      [attr.aria-label]="'form.clear' | translate"
       [disabled]="isDisabled()"
       (click)="resetSearch()">
       <mat-icon>clear</mat-icon>

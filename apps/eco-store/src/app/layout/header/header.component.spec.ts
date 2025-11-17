@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
+import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { HeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
@@ -29,7 +32,8 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent],
+      imports: [HeaderComponent, EcoStoreFormlyModule],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);

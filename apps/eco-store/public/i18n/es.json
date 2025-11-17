@@ -1,0 +1,18 @@
+{
+  "store-title": "Tienda Eco",
+  "loading": "Cargando datos...",
+  "loading-data": "Cargando datos...",
+  "menu": {
+    "home": "Inicio",
+    "store": "Tienda",
+    "about": "Sobre Nosotros",
+    "contact": "Contacto",
+    "view-favorites": "Ver favoritos",
+    "view-cart": "Ver carrito",
+    "profile": "Perfil"
+  },
+  "search": {
+    "placeholder": "Buscar productos o categorías",
+    "label": "Buscar productos o categorías"
+  }
+}

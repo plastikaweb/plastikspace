@@ -14,6 +14,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FieldTypeConfig, FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material';
+import { TranslatePipe } from '@ngx-translate/core';
 
 export type InputSearchProps = FieldTypeConfig['props'] & {
   onSearch?: (term: string, field: FormlyFieldConfig) => void;
@@ -25,7 +26,14 @@ export type InputSearchProps = FieldTypeConfig['props'] & {
 
 @Component({
   selector: 'plastik-input-search-type',
-  imports: [MatButtonModule, MatIconModule, MatInputModule, FormlyModule, ReactiveFormsModule],
+  imports: [
+    MatButtonModule,
+    MatIconModule,
+    MatInputModule,
+    FormlyModule,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
   templateUrl: './input-search-type.component.html',
   styleUrl: './input-search-type.component.scss',
   host: {

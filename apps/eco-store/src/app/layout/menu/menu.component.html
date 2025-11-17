@@ -7,7 +7,7 @@
           class="no-underline text-sm font-semibold tracking-wide"
           routerLink="/"
           routerLinkActive="active">
-          Home
+          {{ 'menu.home' | translate }}
         </button>
       </li>
       <li class="flex items-center">
@@ -16,7 +16,7 @@
           class="no-underline text-sm font-semibold tracking-wide"
           routerLink="/store"
           routerLinkActive="active">
-          Store
+          {{ 'menu.store' | translate }}
         </button>
       </li>
       <li class="flex items-center">
@@ -25,7 +25,7 @@
           class="no-underline text-sm font-semibold tracking-wide"
           routerLink="/about-us"
           routerLinkActive="active">
-          About us
+          {{ 'menu.about' | translate }}
         </button>
       </li>
     </ul>
@@ -36,17 +36,17 @@
   <nav>
     <ul class="flex flex-row items-center gap-4">
       <li>
-        <button matIconButton type="button" aria-label="Ver favoritos">
+        <button matIconButton type="button" [aria-label]="'menu.view-favorites' | translate">
           <mat-icon>favorite</mat-icon>
         </button>
       </li>
       <li>
-        <button matIconButton type="button" aria-label="Ver carrito">
+        <button matIconButton type="button" [aria-label]="'menu.view-cart' | translate">
           <mat-icon>shopping_cart</mat-icon>
         </button>
       </li>
       <li>
-        <button matIconButton type="button" aria-label="Perfil">
+        <button matIconButton type="button" [aria-label]="'menu.profile' | translate">
           <mat-icon>account_circle</mat-icon>
         </button>
       </li>

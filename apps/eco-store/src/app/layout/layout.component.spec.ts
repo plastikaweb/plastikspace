@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
+import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { LayoutComponent } from './layout.component';
@@ -11,8 +13,14 @@ describe('LayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [LayoutComponent, HeaderComponent, FooterComponent, MenuComponent],
-      providers: [provideRouter([])],
+      imports: [
+        LayoutComponent,
+        HeaderComponent,
+        FooterComponent,
+        MenuComponent,
+        EcoStoreFormlyModule,
+      ],
+      providers: [provideRouter([]), provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LayoutComponent);

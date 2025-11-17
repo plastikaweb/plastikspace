@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
-import { SharedFormFeatureModule } from '@plastik/shared/form';
-import { InputSearchFormlyModule } from '@plastik/shared/form/input-search';
+import { SharedFormFeatureComponent } from '@plastik/shared/form';
 
 @Component({
   selector: 'eco-header',
-  imports: [MatToolbar, MatIcon, MatButtonModule, SharedFormFeatureModule, InputSearchFormlyModule],
+  imports: [MatToolbar, MatIcon, MatButtonModule, TranslatePipe, SharedFormFeatureComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

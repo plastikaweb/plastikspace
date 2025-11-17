@@ -1,0 +1,18 @@
+{
+  "store-title": "Botiga Eco",
+  "loading": "Carregant dades...",
+  "loading-data": "Carregant dades...",
+  "menu": {
+    "home": "Inici",
+    "store": "Botiga",
+    "about": "Sobre Nosaltres",
+    "contact": "Contacte",
+    "view-favorites": "Veure favorits",
+    "view-cart": "Veure carrito",
+    "profile": "Perfil"
+  },
+  "search": {
+    "placeholder": "Buscar productes o categories",
+    "label": "Buscar productes o categories"
+  }
+}
