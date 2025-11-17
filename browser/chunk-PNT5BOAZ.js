@@ -12062,6 +12062,18 @@ var FORM_DISABLE_TOKEN = new InjectionToken("FORM_DISABLE_TOKEN", {
   factory: () => signal(false)
 });
 
+// libs/shared/form/util/src/validations/validators/phone.validator.ts
+function phoneValidator(control) {
+  const phoneRegex = /^[6-9]\d{8}$/;
+  return !control.value || phoneRegex.test(control.value) ? null : { phone: true };
+}
+
+// libs/shared/form/util/src/validations/validators/url.validator.ts
+function urlValidator(control) {
+  const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
+  return !control.value || urlRegex.test(control.value) ? null : { url: true };
+}
+
 // libs/shared/form/util/src/validations/validators-message.ts
 function registerValidatorsMessageExtension() {
   const locale = inject(LOCALE_ID);
@@ -12173,18 +12185,6 @@ function registerValidatorsMessageExtension() {
       }
     ]
   };
-}
-
-// libs/shared/form/util/src/validations/validators/url.validator.ts
-function urlValidator(control) {
-  const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+$/;
-  return !control.value || urlRegex.test(control.value) ? null : { url: true };
-}
-
-// libs/shared/form/util/src/validations/validators/phone.validator.ts
-function phoneValidator(control) {
-  const phoneRegex = /^[6-9]\d{8}$/;
-  return !control.value || phoneRegex.test(control.value) ? null : { phone: true };
 }
 
 // libs/shared/form/feature/src/lib/shared-form-feature.component.ts
@@ -20608,4 +20608,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-E746VU5Z.js.map
+//# sourceMappingURL=chunk-PNT5BOAZ.js.map

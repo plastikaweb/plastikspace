@@ -16,7 +16,7 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-E746VU5Z.js";
+} from "./chunk-PNT5BOAZ.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
@@ -7311,7 +7311,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-7PWMHMV7.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-EXWSVST6.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
