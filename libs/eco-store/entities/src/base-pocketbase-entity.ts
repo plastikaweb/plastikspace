@@ -12,5 +12,5 @@ export interface BasePocketBaseEntity {
  * @description A base entity that needs a client reference to segment data by client.
  */
 export interface BasePocketBaseEntityWithClientRef extends BasePocketBaseEntity {
-  clientId: string;
+  client: string;
 }

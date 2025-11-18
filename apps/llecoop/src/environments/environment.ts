@@ -4,6 +4,7 @@ export const environment: LlecoopEnvironment = {
   name: 'El Llevat',
   production: true,
   useEmulators: false,
+  environment: 'production',
   firebase: {
     apiKey: 'AIzaSyBYAf8AnIFG5XxO2VfQGoW3f3pz1vGdwUY',
     authDomain: 'llecoop-plastikaweb.firebaseapp.com',

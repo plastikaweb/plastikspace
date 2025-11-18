@@ -4,21 +4,11 @@ import { BasePocketBaseEntityWithClientRef, LocalizedFields } from './base-pocke
  * @description Traducción de una categoría de producto.
  * Contiene el nombre y descripción en un idioma específico.
  */
-export interface ProductCategoryTranslation {
-  id: string;
-  product_category: string;
-  language_code: string;
-  name: string;
-  description: string;
-}
 
 export interface ProductCategory extends BasePocketBaseEntityWithClientRef {
   color: string;
   description?: LocalizedFields | string;
   productCount: number;
-  expand?: {
-    'product_categories_translations(product_category)'?: ProductCategoryTranslation[];
-  };
 }
 
 /**
@@ -36,10 +26,7 @@ export type CreateProductCategory = Omit<
  * Excludes system-managed fields.
  */
 export type UpdateProductCategory = Partial<
-  Omit<
-    ProductCategory,
-    'id' | 'created' | 'updated' | 'normalizedName' | 'clientId' | 'productCount'
-  >
+  Omit<ProductCategory, 'id' | 'created' | 'updated' | 'normalizedName' | 'client' | 'productCount'>
 > & {
   id: string; // we make id required for identification
 };
@@ -48,7 +35,7 @@ export type UpdateProductCategory = Partial<
  * @description Type for ProductCategory queries and filters.
  */
 export interface ProductCategoryFilters {
-  clientId?: string;
+  client?: string;
   name?: string;
   search?: string;
 }

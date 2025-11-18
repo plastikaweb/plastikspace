@@ -18,7 +18,7 @@ export abstract class PocketBaseGetAllService<T extends BasePocketBaseEntity = B
    * @returns { Observable<RESULT> } The list of records.
    * @description Get a list of records.
    */
-  getList(params?: RecordListOptions): Observable<ListResult<T>> {
+  getList(params: RecordListOptions = {}): Observable<ListResult<T>> {
     return this.createPocketCrudService().getList(params) as Observable<ListResult<T>>;
   }
 
@@ -27,7 +27,7 @@ export abstract class PocketBaseGetAllService<T extends BasePocketBaseEntity = B
    * @returns { Observable<T[]> } The full list of records.
    * @description Get all records (max 500 by default).
    */
-  getFullList(params?: RecordFullListOptions): Observable<T[]> {
+  getFullList(params: RecordFullListOptions = {}): Observable<T[]> {
     return this.createPocketCrudService().getFullList(params);
   }
 }

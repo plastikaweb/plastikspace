@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { PocketBaseGetAllService } from '@plastik/core/api';
-import { ProductCategory } from '@plastik/eco-store/entities';
+import { Product } from '@plastik/eco-store/entities';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EcoStoreProductCategoriesApiService extends PocketBaseGetAllService<ProductCategory> {
+export class EcoStoreProductsApiService extends PocketBaseGetAllService<Product> {
   protected override collectionName(): string {
-    return 'product_categories';
+    return 'products';
   }
 }

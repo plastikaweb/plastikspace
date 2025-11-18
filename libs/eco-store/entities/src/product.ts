@@ -10,10 +10,14 @@ export type ProductUnitType =
   | 'unitWithVariableWeight'
   | 'unitWithVariableVolume';
 
-export type ProductRating = 0 | 1 | 2 | 3 | 4 | 5;
+/**
+ * Rating del producte, valor decimal entre 0 i 5
+ */
+export type ProductRating = number;
 
 // Tipus base de PocketBase
 export interface Product extends BasePocketBaseEntityWithClientRef {
+  description?: LocalizedFields | string;
   inStock: boolean;
   stock: number;
   origin?: string;
@@ -24,27 +28,25 @@ export interface Product extends BasePocketBaseEntityWithClientRef {
   images?: string[];
   unitType: ProductUnitType;
   unitBase: number | null;
-  description?: LocalizedFields | string;
-  categoryId: ProductCategory['id'];
-  categoryName: ProductCategory['name'];
+  category: ProductCategory['id'];
   rating?: ProductRating;
   reviewCount?: number;
 }
 
 export type CreateProduct = Omit<
   Product,
-  'id' | 'created' | 'updated' | 'normalizedName' | 'clientId' | 'rating' | 'reviewCount'
+  'id' | 'created' | 'updated' | 'normalizedName' | 'client' | 'rating' | 'reviewCount'
 >;
 
 export type UpdateProduct = Partial<
   Omit<
     Product,
-    'id' | 'created' | 'updated' | 'normalizedName' | 'clientId' | 'rating' | 'reviewCount'
+    'id' | 'created' | 'updated' | 'normalizedName' | 'client' | 'rating' | 'reviewCount'
   >
 > & { id: string };
 
 export interface ProductFilters {
-  clientId?: string;
+  client?: string;
   name?: string;
   search?: string;
 }

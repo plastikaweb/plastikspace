@@ -1,3 +1,5 @@
-import { Environment } from '@plastik/core/environments';
+import { EnvironmentWithApiUrl } from '@plastik/core/environments';
 
-export type EcoStoreEnvironment = Environment<{ baseApiUrl: string }>;
+export interface EcoStoreEnvironment extends EnvironmentWithApiUrl {
+  client: string;
+}
