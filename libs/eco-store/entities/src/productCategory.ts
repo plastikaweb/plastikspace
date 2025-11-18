@@ -1,9 +1,24 @@
-import { BasePocketBaseEntityWithClientRef } from './base-pocketbase-entity';
+import { BasePocketBaseEntityWithClientRef, LocalizedFields } from './base-pocketbase-entity';
+
+/**
+ * @description Traducción de una categoría de producto.
+ * Contiene el nombre y descripción en un idioma específico.
+ */
+export interface ProductCategoryTranslation {
+  id: string;
+  product_category: string;
+  language_code: string;
+  name: string;
+  description: string;
+}
 
 export interface ProductCategory extends BasePocketBaseEntityWithClientRef {
   color: string;
-  description?: string;
+  description?: LocalizedFields | string;
   productCount: number;
+  expand?: {
+    'product_categories_translations(product_category)'?: ProductCategoryTranslation[];
+  };
 }
 
 /**

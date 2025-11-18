@@ -1,6 +1,8 @@
+export type LocalizedFields = Record<string, string>;
+
 export interface BasePocketBaseEntity {
   id: string;
-  name: string;
+  name: LocalizedFields | string;
   normalizedName: string;
   created: Date;
   updated: Date;
