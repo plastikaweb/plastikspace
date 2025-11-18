@@ -32,20 +32,20 @@ export const ecoStoreProductCategoriesStore = signalStore(
     const showErrorNotification = (error: ClientResponseError): void => {
       notification.show({
         type: 'ERROR',
-        message: error.message ?? `No s'ha pogut carregar les categories.`,
+        message: error.message ?? `product-categories.fullList.error`,
         action: 'notification.close-short',
         duration: 5000,
       });
     };
 
     return {
-      getAll: rxMethod<void>(
+      getFullList: rxMethod<void>(
         pipe(
           switchMap(() =>
             apiService.getFullList().pipe(
               tapResponse<ProductCategory[], ClientResponseError>({
                 next: categories => {
-                  updateState(store, '[product-categories] getAll success', {
+                  updateState(store, '[product-categories] getFullList success', {
                     categories,
                     initiallyLoaded: true,
                   });
@@ -61,7 +61,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
   withHooks({
     onInit(store) {
       if (!store.initiallyLoaded()) {
-        store.getAll();
+        store.getFullList();
       }
     },
   })

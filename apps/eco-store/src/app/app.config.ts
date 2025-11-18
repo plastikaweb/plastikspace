@@ -22,6 +22,7 @@ import { ENVIRONMENT } from '@plastik/core/environments';
 import { PrefixTitleService } from '@plastik/core/router-state';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
+import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
@@ -38,6 +39,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideAppInitializer(() => {
       inject(ecoStoreProductCategoriesStore);
+      inject(ecoStoreProductsStore);
     }),
     provideHttpClient(),
     provideTranslateService({

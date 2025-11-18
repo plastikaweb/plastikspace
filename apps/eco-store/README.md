@@ -12,6 +12,7 @@
   - [Available libraries](#available-libraries)
     - [Entities](#entities)
     - [Product Categories](#product-categories)
+    - [Products](#products)
     - [Features](#features)
 
 ## Description
@@ -68,6 +69,10 @@ This is a list of all the related libraries to eco-store app.
 ### Product Categories
 
 - [eco-store-product-categories-data-access](../../libs/eco-store/product-categories/data-access/README.md)
+
+### Products
+
+- [eco-store-products-data-access](../../libs/eco-store/products/data-access/README.md)
 
 ### Features
 
