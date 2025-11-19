@@ -16,7 +16,7 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-PNT5BOAZ.js";
+} from "./chunk-WNFJZFUH.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
@@ -7304,14 +7304,15 @@ function getVisibleNavigationList(viewsConfig) {
 var environment = {
   name: "Nasa Images",
   production: false,
-  baseApiUrl: "https://images-api.nasa.gov"
+  baseApiUrl: "https://images-api.nasa.gov",
+  environment: "development"
 };
 
 // apps/nasa-images/src/app/app.routing.ts
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-EXWSVST6.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-VZZHDTH2.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
