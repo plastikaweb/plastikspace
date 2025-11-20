@@ -20,6 +20,18 @@
                 "onlyDependOnLibsWithTags": ["*"]
               },
               {
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": [
+                  "type:feature",
+                  "type:ui",
+                  "type:util",
+                  "type:data-access",
+                  "type:entity",
+                  "scope:core",
+                  "scope:shared"
+                ]
+              },
+              {
                 "sourceTag": "scope:core",
                 "onlyDependOnLibsWithTags": [
                   "scope:core",

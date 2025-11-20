@@ -5,11 +5,19 @@
   "menu": {
     "home": "Inicio",
     "store": "Tienda",
-    "about": "Sobre Nosotros",
+    "about": "Quiénes Somos",
     "contact": "Contacto",
     "view-favorites": "Ver favoritos",
     "view-cart": "Ver carrito",
     "profile": "Perfil"
+  },
+  "products": {
+    "filter": {
+      "categories": {
+        "title": "Categorías",
+        "all": "Todas las categorías"
+      }
+    }
   },
   "search": {
     "placeholder": "Buscar productos o categorías",

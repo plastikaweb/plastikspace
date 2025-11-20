@@ -5,11 +5,19 @@
   "menu": {
     "home": "Inici",
     "store": "Botiga",
-    "about": "Sobre Nosaltres",
+    "about": "Qui Som",
     "contact": "Contacte",
     "view-favorites": "Veure favorits",
-    "view-cart": "Veure carrito",
+    "view-cart": "Veure cistella",
     "profile": "Perfil"
+  },
+  "products": {
+    "filter": {
+      "categories": {
+        "title": "Categories",
+        "all": "Totes les categories"
+      }
+    }
   },
   "search": {
     "placeholder": "Buscar productes o categories",

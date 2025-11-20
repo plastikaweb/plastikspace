@@ -1,11 +1,11 @@
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
-import { inject } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
+import { signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { pipe, switchMap } from 'rxjs';
 
-import { ProductCategory } from '@plastik/eco-store/entities';
+import { ProductCategory, ProductCategoryGroup } from '@plastik/eco-store/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
 import { ClientResponseError } from 'pocketbase';
@@ -25,6 +25,26 @@ export const ecoStoreProductCategoriesStore = signalStore(
   { providedIn: 'root' },
   withDevtools('productsCategories'),
   withState<ProductCategoriesState>(initialState),
+  withComputed(({ categories }) => ({
+    groupedCategories: computed(() => {
+      const groups = new Map<
+        string,
+        { group: ProductCategoryGroup; categories: ProductCategory[] }
+      >();
+
+      categories().forEach(category => {
+        const group = category.expand?.group;
+        if (group) {
+          if (!groups.has(group.id)) {
+            groups.set(group.id, { group, categories: [] });
+          }
+          groups.get(group.id)?.categories.push(category);
+        }
+      });
+
+      return Array.from(groups.values());
+    }),
+  })),
   withMethods(store => {
     const apiService = inject(EcoStoreProductCategoriesApiService);
     const notification = inject(notificationStore);
