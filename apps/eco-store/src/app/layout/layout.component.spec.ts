@@ -4,7 +4,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
-import { LayoutComponent } from './layout.component';
+import LayoutComponent from './layout.component';
 import { MenuComponent } from './menu/menu.component';
 
 describe('LayoutComponent', () => {

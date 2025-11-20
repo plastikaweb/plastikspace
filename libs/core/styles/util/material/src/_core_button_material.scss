@@ -1,9 +1,8 @@
 :root {
   .mdc-button,
-  .mdc-icon-button {
-    transition:
-      background-color 0.2s,
-      color 0.2s;
+  .mdc-icon-button,
+  .mdc-list-item::before {
+    transition: all 0.2s;
   }
 
   .mdc-button:hover,

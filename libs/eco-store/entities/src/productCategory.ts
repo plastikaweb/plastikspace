@@ -1,14 +1,19 @@
-import { BasePocketBaseEntityWithClientRef, LocalizedFields } from './base-pocketbase-entity';
+import {
+  BasePocketBaseEntitySimple,
+  BasePocketBaseEntityWithClientRef,
+  LocalizedFields,
+} from './base-pocketbase-entity';
 
-/**
- * @description Traducción de una categoría de producto.
- * Contiene el nombre y descripción en un idioma específico.
- */
+export type ProductCategoryGroup = BasePocketBaseEntitySimple;
 
 export interface ProductCategory extends BasePocketBaseEntityWithClientRef {
   color: string;
   description?: LocalizedFields | string;
   productCount: number;
+  icon?: string;
+  expand?: {
+    group: ProductCategoryGroup;
+  };
 }
 
 /**

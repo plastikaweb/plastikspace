@@ -1,6 +1,5 @@
 @use '@angular/material' as mat;
 
-// Customize the entire app. Change :root to your selector if you want to scope the styles.
 :host {
   @include mat.toolbar-overrides(
     (
@@ -10,18 +9,7 @@
     )
   );
 
-  @include mat.icon-button-overrides(
-    (
-      icon-color: var(--primary-600),
-    )
-  );
-
   .header-icon {
-    @include mat.icon-overrides(
-      (
-        color: var(--primary-600),
-      )
-    );
     height: 36px;
     width: 36px;
     font-size: 36px;

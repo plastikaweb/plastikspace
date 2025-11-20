@@ -4,8 +4,21 @@
     <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
   </eco-header>
 
-  <mat-sidenav-container class="h-full overflow-auto">
-    <mat-sidenav-content class="px-6 pb-10">
+  <mat-sidenav-container class="h-full overflow-auto p-8">
+    <mat-sidenav
+      #sidenav
+      mode="side"
+      fixedInViewport="true"
+      fixedTopGap="105"
+      fixedBottomGap="85"
+      position="start"
+      [opened]="isSidenavOpen()">
+      <router-outlet
+        name="sidenav"
+        (activate)="onSidenavActivate()"
+        (deactivate)="onSidenavDeactivate()"></router-outlet>
+    </mat-sidenav>
+    <mat-sidenav-content>
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

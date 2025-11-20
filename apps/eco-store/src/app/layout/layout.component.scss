@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.sidenav-overrides(
+    (
+      container-background-color: var(--transparent),
+      container-shape: 0,
+      container-width: 280px,
+    )
+  );
+
+  mat-sidenav {
+    ::ng-deep .mat-drawer-inner-container {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}

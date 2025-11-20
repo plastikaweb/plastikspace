@@ -183,7 +183,8 @@
       "@plastik/eco-store/formly": ["libs/eco-store/feature/formly/src/index.ts"],
       "@plastik/eco-store/products/data-access": [
         "libs/eco-store/products/data-access/src/index.ts"
-      ]
+      ],
+      "@plastik/eco-store/products": ["libs/eco-store/products/feature/src/index.ts"]
     }
   },
   "angularCompilerOptions": {
