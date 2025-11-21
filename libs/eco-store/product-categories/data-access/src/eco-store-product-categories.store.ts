@@ -44,6 +44,9 @@ export const ecoStoreProductCategoriesStore = signalStore(
 
       return Array.from(groups.values());
     }),
+    totalProducts: computed(() => {
+      return categories().reduce((acc, category) => acc + category.productCount, 0);
+    }),
   })),
   withMethods(store => {
     const apiService = inject(EcoStoreProductCategoriesApiService);

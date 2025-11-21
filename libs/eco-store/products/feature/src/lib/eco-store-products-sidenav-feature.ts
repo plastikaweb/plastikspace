@@ -22,7 +22,9 @@ import { map, startWith } from 'rxjs';
 })
 export default class EcoStoreProductsSidenavFeature {
   readonly translateService = inject(TranslateService);
-  readonly groupedCategories = inject(ecoStoreProductCategoriesStore).groupedCategories;
+  readonly categoriesStore = inject(ecoStoreProductCategoriesStore);
+  groupedCategories = this.categoriesStore.groupedCategories;
+  totalProducts = this.categoriesStore.totalProducts;
 
   //TODO:  add all translations in template in a pipe
   protected readonly lang = toSignal(
@@ -47,10 +49,5 @@ export default class EcoStoreProductsSidenavFeature {
       return name;
     }
     return name[this.lang() as keyof LocalizedFields] || name['ca'];
-  }
-
-  onClearFilter() {
-    // eslint-disable-next-line no-console
-    console.log('Clear filter');
   }
 }
