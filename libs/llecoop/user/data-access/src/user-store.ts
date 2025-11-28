@@ -4,25 +4,25 @@ import { tapResponse } from '@ngrx/operators';
 import { signalStore, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopUser } from '@plastik/llecoop/entities';
-import {
-  initStoreFirebaseCrudState,
-  StoreFirebaseCrudFilter,
-  StoreFirebaseCrudState,
-  withFirebaseCrud,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import {
+  FirebaseCrudFilter,
+  FirebaseCrudState,
+  initStoreFirebaseCrudState,
+  withFirebaseCrud,
+} from '@plastik/signal-state/firebase';
 
 import { LlecoopUserFireService } from './user-fire.service';
 
-export type StoreUserFilter = StoreFirebaseCrudFilter & {
+export type StoreUserFilter = FirebaseCrudFilter & {
   name: string;
   email: string;
   role: 'all' | 'admin' | 'user';
 };
 
-export type UserStoreFirebaseCrudState = StoreFirebaseCrudState<LlecoopUser, StoreUserFilter>;
+export type UserStoreFirebaseCrudState = FirebaseCrudState<LlecoopUser, StoreUserFilter>;
 
-export const initState: StoreFirebaseCrudState<LlecoopUser, StoreUserFilter> = {
+export const initState: FirebaseCrudState<LlecoopUser, StoreUserFilter> = {
   ...initStoreFirebaseCrudState(),
   filter: {
     name: '',
@@ -48,7 +48,7 @@ export const llecoopUserStore = signalStore(
     LlecoopUser,
     LlecoopUserFireService,
     StoreUserFilter,
-    StoreFirebaseCrudState<LlecoopUser, StoreUserFilter>
+    FirebaseCrudState<LlecoopUser, StoreUserFilter>
   >({
     featureName: 'user',
     dataServiceType: LlecoopUserFireService,

@@ -1,0 +1,16 @@
+{
+  "name": "data-access-firebase",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/signal-state/data-access-firebase/src",
+  "projectType": "library",
+  "tags": ["type:data-access", "scope:shared"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/signal-state/data-access-firebase/jest.config.ts"
+      }
+    }
+  }
+}

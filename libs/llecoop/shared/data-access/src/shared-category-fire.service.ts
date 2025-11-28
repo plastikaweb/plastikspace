@@ -37,7 +37,7 @@ export class LlecoopSharedCategoryFireService {
   getCategoriesSelectData(allOption = true): Observable<FormSelectOption[]> {
     return this.getAllCategories().pipe(
       map(categories =>
-        categories.map(category => ({ label: category.name, value: `category/${category.id}` }))
+        categories.map(category => ({ label: category.name, value: `category/${category['id']}` }))
       ),
       map(categories => categories.sort((a, b) => a.label.localeCompare(b.label))),
       map(categories => (allOption ? [{ label: 'Totes', value: '' }, ...categories] : categories))

@@ -1,7 +1,7 @@
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity, FormSelectOption } from '@plastik/core/entities';
 
-import { LlecoopBaseProduct } from './product';
+import { LlecoopBaseProduct, LlecoopProductUnit } from './product';
 
 export type YearWeek = `${number}${number}${number}${number}-${number}${number}`;
 
@@ -23,14 +23,17 @@ export type LlecoopOrderProduct = LlecoopBaseProduct & {
   reviewed?: boolean;
 };
 
-export type LlecoopOrderProductTotal = Pick<
-  LlecoopOrderProduct,
-  'id' | 'name' | 'price' | 'iva' | 'priceWithIva' | 'unit' | 'normalizedName' | 'link'
-> & {
+export interface LlecoopOrderProductTotal extends BaseEntity {
+  normalizedName?: string;
+  price: number;
+  iva: number;
+  priceWithIva: number;
+  unit: LlecoopProductUnit;
+  link?: string | string[];
   quantity: number;
   totalPrice: number;
   reviewed: boolean;
-};
+}
 
 export interface LlecoopOrder extends BaseEntity {
   name: YearWeek;

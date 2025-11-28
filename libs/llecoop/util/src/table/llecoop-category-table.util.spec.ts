@@ -1,14 +1,13 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { BaseEntity } from '@plastik/core/entities';
+import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { FormattingComponentOutput } from '@plastik/shared/formatters';
 
 import { categoryNameCell } from './llecoop-category-table.util';
 
 interface MockEntity extends BaseEntity {
-  category?: {
-    name?: string;
-  };
+  category?: LlecoopProductCategory;
 }
 
 describe('categoryNameCell', () => {
@@ -31,17 +30,25 @@ describe('categoryNameCell', () => {
       id: 1,
       name: 'Apples',
       normalizedName: 'apples',
-      category: { name: 'Vegetables' },
+      category: {
+        id: 1,
+        name: 'Vegetables',
+        description: 'Fresh vegetables',
+        color: '#00FF00',
+      },
     };
     const config = categoryNameCell<MockEntity>({});
-    const result = config.formatting.execute?.(null, entity) as FormattingComponentOutput;
+    const result = config.formatting.execute?.(
+      entity.category?.name ?? '',
+      entity
+    ) as FormattingComponentOutput;
     expect(result?.inputs).toEqual({ category: entity.category, nameStyle: '', withLink: false });
   });
 
   it('should handle missing category gracefully', () => {
     const entity: MockEntity = { id: 2, name: 'Oranges', normalizedName: 'oranges' };
     const config = categoryNameCell<MockEntity>({});
-    const result = config.formatting.execute?.(null, entity) as FormattingComponentOutput;
+    const result = config.formatting.execute?.('', entity) as FormattingComponentOutput;
     expect(result?.inputs).toEqual({ category: null, nameStyle: '', withLink: false });
   });
 });

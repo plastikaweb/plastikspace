@@ -9,7 +9,7 @@ import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
-import { DataGetListService } from '@plastik/core/api';
+import { DataGetList } from '@plastik/core/api-base';
 import { provideEnvironmentMock } from '@plastik/core/environments';
 import {
   getMockedRouterNavigation,
@@ -19,6 +19,11 @@ import {
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
+import {
+  NasaImage,
+  NasaImagesSearch,
+  NasaImagesSearchApiParams,
+} from '@plastik/nasa-images/search/entities';
 import { createDummyNasaImagesSearch } from '../nasa-images.mock';
 import { NASA_IMAGES_DATA_LIST_TOKEN } from '../nasa-images.tokens';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
@@ -31,7 +36,7 @@ describe('NasaImagesEffects', () => {
   let actions: Observable<Action>;
   let effects: NasaImagesEffects;
   let metadata: EffectsMetadata<NasaImagesEffects>;
-  let dataService: DataGetListService<any, any>;
+  let dataService: DataGetList<NasaImage, NasaImagesSearch, NasaImagesSearchApiParams>;
   let activityStoreInstance: any;
   let store: MockStore;
 
@@ -70,7 +75,11 @@ describe('NasaImagesEffects', () => {
 
     effects = TestBed.inject(NasaImagesEffects);
     metadata = getEffectsMetadata(effects);
-    dataService = TestBed.inject(NASA_IMAGES_DATA_LIST_TOKEN) as DataGetListService<any, any>;
+    dataService = TestBed.inject(NASA_IMAGES_DATA_LIST_TOKEN) as DataGetList<
+      NasaImage,
+      NasaImagesSearch,
+      NasaImagesSearchApiParams
+    >;
     activityStoreInstance = TestBed.inject(activityStore);
     store = TestBed.inject(MockStore);
 

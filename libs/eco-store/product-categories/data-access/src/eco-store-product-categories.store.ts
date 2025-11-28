@@ -3,7 +3,7 @@ import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { pipe, switchMap } from 'rxjs';
+import { pipe, switchMap, tap } from 'rxjs';
 
 import { ProductCategory, ProductCategoryGroup } from '@plastik/eco-store/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
@@ -64,6 +64,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
     return {
       getFullList: rxMethod<void>(
         pipe(
+          tap(() => updateState(store, '[product-categories] getFullList')),
           switchMap(() =>
             apiService.getFullList().pipe(
               tapResponse<ProductCategory[], ClientResponseError>({

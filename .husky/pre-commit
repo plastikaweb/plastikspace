@@ -1,4 +1,5 @@
 export NX_CLI_SET=classic
+export PAGER=cat
 
 yarn branch:lint \
   && yarn nx format:write --all \

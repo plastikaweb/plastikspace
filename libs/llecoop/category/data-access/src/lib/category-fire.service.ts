@@ -4,9 +4,9 @@ import { Injectable, runInInjectionContext } from '@angular/core';
 import { collectionData, query, QueryConstraint, where } from '@angular/fire/firestore';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
-import { EntityFireService } from '@plastik/shared/signal-state-data-access';
+import { EntityFireService } from '@plastik/signal-state/firebase';
 
-import { StoreCategoryFilter } from './category-store';
+import { CategoryFilter } from './category-store';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ import { StoreCategoryFilter } from './category-store';
 export class LlecoopCategoryFireService extends EntityFireService<LlecoopProductCategory> {
   protected readonly path = 'category';
 
-  override getFilterConditions(filter: StoreCategoryFilter): QueryConstraint[] {
+  override getFilterConditions(filter: CategoryFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
 
     if (Object.entries(filter).length > 0) {

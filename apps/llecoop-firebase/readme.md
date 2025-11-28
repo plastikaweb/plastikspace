@@ -1,41 +1,54 @@
-# llecoop-firebase
+# Llecoop Firebase
 
-- [llecoop-firebase](#llecoop-firebase)
-  - [Generated Application Files](#generated-application-files)
-  - [Generated Workspace Root Files](#generated-workspace-root-files)
-  - [Generated dependencies](#generated-dependencies)
-  - [Next Steps](#next-steps)
-  - [Commands](#commands)
+## Firebase configuration and hosting for Llecoop
 
-## Generated Application Files
+---
 
-- `database.rules.json` - Default Firebase Realtime Database Rules
-- `firestore.indexes.json` - Default Firebase Firestore Database Rules
-- `storage.rules` - Default Firebase Storage Rules
-- `public/index.ts` - Default Firebase hosting site
+- [Llecoop Firebase](#llecoop-firebase)
+  - [Firebase configuration and hosting for Llecoop](#firebase-configuration-and-hosting-for-llecoop)
+  - [📂 Generated Files](#-generated-files)
+    - [Application Files](#application-files)
+    - [Workspace Root Files](#workspace-root-files)
+  - [🛠️ Commands](#️-commands)
+  - [🔗 Dependencies](#-dependencies)
+  - [🚀 Next Steps](#-next-steps)
 
-## Generated Workspace Root Files
+---
 
-- `firebase.json` - Firebase CLI Configuration for this project
-- `.firebaserc` - Default Firebase CLI Deployment Targets Configuration
+## 📂 Generated Files
 
-## Generated dependencies
+### Application Files
 
-Nx-Firebase will add `firebase-tools`, `firebase-admin` and `firebase-functions` to your workspace if they do not already exist.
+- `database.rules.json`: Default Firebase Realtime Database Rules
+- `firestore.indexes.json`: Default Firebase Firestore Database Rules
+- `storage.rules`: Default Firebase Storage Rules
+- `public/index.ts`: Default Firebase hosting site
 
-## Next Steps
+### Workspace Root Files
 
-- Read about the [Firebase CLI here](https://firebase.google.com/docs/cli)
-- `firebase login` - Authenticate the Firebase CLI
-- `firebase use --add` - Add your Firebase Project as a target to `.firebaserc`
-- `nx g @simondotm/nx-firebase:function my-function --firebaseApp llecoop-firebase` - Add a firebase function to this project
+- `firebase.json`: Firebase CLI Configuration
+- `.firebaserc`: Firebase CLI Deployment Targets
 
-See the plugin [README](https://github.com/simondotm/nx-firebase/blob/main/README.md) for more information.
+## 🛠️ Commands
 
-## Commands
+- **Deploy**: `nx run llecoop-firebase:deploy`
+- **Serve (Emulator)**: `nx run llecoop-firebase:serve`
+- **Build Functions**: `nx run llecoop-firebase:build`
+- **Test Functions**: `nx run llecoop-firebase:test`
+- **Lint Functions**: `nx run llecoop-firebase:lint`
 
-- `nx run llecoop-firebase:deploy` - Deploy this app to firebase
-- `nx run llecoop-firebase:serve` - Serve this app using the firebase emulator
-- `nx run llecoop-firebase:build` - Build all functions associated with this app
-- `nx run llecoop-firebase:test` - Test all functions associated with this app
-- `nx run llecoop-firebase:lint` - Lint all functions associated with this app
+## 🔗 Dependencies
+
+Nx-Firebase adds the following to your workspace:
+
+- `firebase-tools`
+- `firebase-admin`
+- `firebase-functions`
+
+## 🚀 Next Steps
+
+1. **Authenticate**: `firebase login`
+2. **Add Target**: `firebase use --add`
+3. **Add Function**: `nx g @simondotm/nx-firebase:function my-function --firebaseApp llecoop-firebase`
+
+> See the [Nx-Firebase README](https://github.com/simondotm/nx-firebase/blob/main/README.md) for more info.

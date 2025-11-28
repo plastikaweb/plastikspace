@@ -1,7 +1,7 @@
+import { LocalizedFields } from '@plastik/core/entities';
 import {
   BasePocketBaseEntitySimple,
   BasePocketBaseEntityWithClientRef,
-  LocalizedFields,
 } from './base-pocketbase-entity';
 
 export type ProductCategoryGroup = BasePocketBaseEntitySimple;

@@ -3,7 +3,7 @@ import { BaseEntity } from '@plastik/core/entities';
 
 import { LlecoopProductCategory } from './product-category';
 
-export interface LlecoopBaseProduct extends BaseEntity {
+export interface LlecoopBaseProduct extends Omit<BaseEntity, 'name' | 'id'> {
   info?: string;
   price: number;
   iva: number;
@@ -16,6 +16,8 @@ export interface LlecoopBaseProduct extends BaseEntity {
   unit: LlecoopProductUnit;
   tags?: string[];
   imgUrl?: string;
+  name: string;
+  id: string;
 }
 
 export interface LlecoopProduct extends LlecoopBaseProduct {

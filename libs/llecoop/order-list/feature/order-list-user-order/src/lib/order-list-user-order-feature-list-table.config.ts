@@ -43,7 +43,7 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     link: () => ['/comandes', 'setmanals'],
     queryParams: (order?: LlecoopUserOrder) => ({
-      text: order?.name || '',
+      text: (order?.name as string) || '',
     }),
     formatting: {
       type: 'LINK',

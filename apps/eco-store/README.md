@@ -1,79 +1,82 @@
 # Eco-Store
 
+## An online cooperative store for sustainable and local products
+
 - [Eco-Store](#eco-store)
-  - [Description](#description)
-  - [Running commands](#running-commands)
+  - [An online cooperative store for sustainable and local products](#an-online-cooperative-store-for-sustainable-and-local-products)
+  - [📝 Description](#-description)
+  - [🛠️ Running Commands](#️-running-commands)
     - [Development](#development)
-    - [With PocketBase](#with-pocketbase)
-    - [PocketBase](#pocketbase)
+    - [With PocketBase (Local)](#with-pocketbase-local)
+    - [PocketBase Management](#pocketbase-management)
     - [Testing \& Quality](#testing--quality)
     - [Build \& Deploy](#build--deploy)
     - [Accessibility](#accessibility)
-  - [Available libraries](#available-libraries)
-    - [Entities](#entities)
-    - [Product Categories](#product-categories)
-    - [Products](#products)
-    - [Features](#features)
+  - [📚 Available Libraries](#-available-libraries)
+    - [🧩 Entities](#-entities)
+    - [📦 Products](#-products)
+    - [🚀 Features](#-features)
 
-## Description
+---
 
-Eco-Store is an online cooperative store that enables members to purchase ecological and local products sustainably.
+## 📝 Description
+
+**Eco-Store** enables members to purchase ecological and local products sustainably.
 The platform facilitates the management of a consumer cooperative with different user levels and functionalities adapted to cooperative needs.
 
-The application uses PocketBase as backend and is built with Angular 20+ with the latest features like signals, standalone components, and the new control flow system.
+**Tech Stack:**
 
-## Running commands
+- **Frontend**: Angular 20+ (Signals, Standalone Components, Control Flow)
+- **Backend**: PocketBase
+- **State Management**: NgRx Signal Store
+
+## 🛠️ Running Commands
 
 ### Development
 
-- **Serve (development)**: Run `yarn eco-store:serve`
-- **Serve (staging)**: Run `yarn eco-store:serve:staging`
-- **Serve (production)**: Run `yarn eco-store:serve:prod`
+- **Serve (Dev)**: `yarn eco-store:serve`
+- **Serve (Staging)**: `yarn eco-store:serve:staging`
+- **Serve (Prod)**: `yarn eco-store:serve:prod`
 
-### With PocketBase
+### With PocketBase (Local)
 
-- **Local with PocketBase (development)**: Run `yarn eco-store:local`
-- **Local with PocketBase (staging)**: Run `yarn eco-store:local:staging`
-- **Local with PocketBase (production)**: Run `yarn eco-store:local:prod`
+- **Dev**: `yarn eco-store:local`
+- **Staging**: `yarn eco-store:local:staging`
+- **Prod**: `yarn eco-store:local:prod`
 
-### PocketBase
+### PocketBase Management
 
-- **Start PocketBase**: Run `yarn eco-store:pocketbase:run`
-- **Stop PocketBase**: Run `yarn eco-store:pocketbase:stop`
+- **Start**: `yarn eco-store:pocketbase:run`
+- **Stop**: `yarn eco-store:pocketbase:stop`
 
 ### Testing & Quality
 
-- **Lint**: Run `yarn eco-store:lint`
-- **Test**: Run `yarn eco-store:test`
-- **E2E**: Run `yarn eco-store:e2e`
-- **E2E (local)**: Run `yarn eco-store:e2e:local`
+- **Lint**: `yarn eco-store:lint`
+- **Test**: `yarn eco-store:test`
+- **E2E**: `yarn eco-store:e2e`
+- **E2E (Local)**: `yarn eco-store:e2e:local`
 
 ### Build & Deploy
 
-- **Build**: Run `yarn eco-store:build`
-- **Build (GitHub)**: Run `yarn eco-store:build:github`
-- **HTTP Server**: Run `yarn eco-store:http-server`
+- **Build**: `yarn eco-store:build`
+- **Build (GitHub)**: `yarn eco-store:build:github`
+- **HTTP Server**: `yarn eco-store:http-server`
 
 ### Accessibility
 
-- **A11y Check**: Run `yarn eco-store:a11y`
+- **A11y Check**: `yarn eco-store:a11y`
 
-## Available libraries
+## 📚 Available Libraries
 
-This is a list of all the related libraries to eco-store app.
+### 🧩 Entities
 
-### Entities
+- [**eco-store-entities**](../../libs/eco-store/entities/README.md)
 
-- [eco-store-entities](../../libs/eco-store/entities/README.md)
+### 📦 Products
 
-### Product Categories
+- [**products-data-access**](../../libs/eco-store/products/data-access/README.md)
+- [**product-categories-data-access**](../../libs/eco-store/product-categories/data-access/README.md)
 
-- [eco-store-product-categories-data-access](../../libs/eco-store/product-categories/data-access/README.md)
+### 🚀 Features
 
-### Products
-
-- [eco-store-products-data-access](../../libs/eco-store/products/data-access/README.md)
-
-### Features
-
-- [eco-store-feature-formly](../../libs/eco-store/feature/formly/README.md)
+- [**feature-formly**](../../libs/eco-store/feature/formly/README.md)

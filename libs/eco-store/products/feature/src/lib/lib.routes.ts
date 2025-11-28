@@ -1,17 +1,14 @@
-import { inject } from '@angular/core';
 import { Route } from '@angular/router';
-import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+
+import { getProductsListResolver } from './eco-store-products-feature.resolver';
 
 export const ecoStoreProductsFeatureRoutes: Route[] = [
   {
     path: '',
     title: 'store.list',
-    canActivate: [
-      () => {
-        inject(ecoStoreProductsStore);
-        return true;
-      },
-    ],
+    resolve: {
+      productListLoaded: getProductsListResolver,
+    },
     children: [
       {
         path: '',

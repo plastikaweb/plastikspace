@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpGetAllService } from '@plastik/core/api';
+import { HttpGetAllService } from '@plastik/core/api-http';
 import {
+  NasaImage,
   NasaImagesApiSegment,
   NasaImagesSearch,
   NasaImagesSearchApiParams,
@@ -12,6 +13,7 @@ import { latinize } from '@plastik/shared/latinize';
   providedIn: 'root',
 })
 export class NasaImagesApiService extends HttpGetAllService<
+  NasaImage,
   NasaImagesSearch,
   NasaImagesSearchApiParams
 > {

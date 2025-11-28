@@ -111,7 +111,7 @@ export class LlecoopOrderListFeatureListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#store.delete(item));
+        .subscribe(() => this.#store.delete(item.id));
     }
   }
 
@@ -129,7 +129,7 @@ export class LlecoopOrderListFeatureListFacadeService
     return setHours(setMinutes(nextMonday, 0), 12);
   }
 
-  private createOrderList(): LlecoopOrder {
+  private createOrderList(): Omit<LlecoopOrder, 'id'> {
     const availableProducts = this.#store
       .availableProducts()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars

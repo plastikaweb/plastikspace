@@ -1,22 +1,29 @@
 # Experimental
 
+## A playground for testing new features and experiments
+
+---
+
 - [Experimental](#experimental)
-  - [Description](#description)
-  - [Running commands](#running-commands)
-  - [Available libraries](#available-libraries)
+  - [A playground for testing new features and experiments](#a-playground-for-testing-new-features-and-experiments)
+  - [📝 Description](#-description)
+  - [🛠️ Running Commands](#️-running-commands)
+  - [📚 Available Libraries](#-available-libraries)
 
-## Description
+---
 
-Main application entry point for Experimental, an application to do experiments and try things.
+## 📝 Description
 
-## Running commands
+Main application entry point for **Experimental**, a sandbox application used to test new technologies, libraries, and architectural patterns before implementing them in production apps.
 
-- Serve: Run `yarn experimental:serve`.
-- LInt: Run `yarn experimental:lint`.
-- Test: Run `yarn experimental:test`.
-- E2E: Run `yarn experimental:e2e`.
-- Build: Run `yarn experimental:build`.
+## 🛠️ Running Commands
 
-## Available libraries
+- **Serve**: `yarn experimental:serve`
+- **Lint**: `yarn experimental:lint`
+- **Test**: `yarn experimental:test`
+- **E2E**: `yarn experimental:e2e`
+- **Build**: `yarn experimental:build`
 
-This is a list of all the related only to experimental app.
+## 📚 Available Libraries
+
+_Currently, there are no specific libraries dedicated solely to this application._

@@ -17,7 +17,7 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
-import { StoreNotificationService } from '@plastik/shared/signal-state-data-access';
+import { StoreNotificationService } from '@plastik/signal-state/firebase';
 
 import { LlecoopProfileFireService } from './profile-fire.service';
 
@@ -42,7 +42,7 @@ export const llecoopProfileStore = signalStore(
     _activityStore: inject(activityStore),
   })),
   withComputed(({ user }) => ({
-    getUserName: computed(() => user()?.name || user()?.email || 'user'),
+    getUserName: computed(() => (user()?.name as string) || user()?.email || 'user'),
   })),
   withMethods(store => ({
     getItem: rxMethod<void>(

@@ -1,46 +1,51 @@
 # Plastikaweb
 
+## Personal portfolio and skills showcase
+
+---
+
 - [Plastikaweb](#plastikaweb)
-  - [Description](#description)
-  - [Running commands](#running-commands)
-  - [Deploys](#deploys)
-  - [Available libraries](#available-libraries)
-    - [Skills](#skills)
-  - [Useful links](#useful-links)
+  - [Personal portfolio and skills showcase](#personal-portfolio-and-skills-showcase)
+  - [📝 Description](#-description)
+    - [Key Features](#key-features)
+  - [🛠️ Running Commands](#️-running-commands)
+  - [🚀 Deploys](#-deploys)
+  - [📚 Available Libraries](#-available-libraries)
+    - [🧠 Skills](#-skills)
+  - [🔗 Useful Links](#-useful-links)
 
-## Description
+---
 
-Main application entry point for Plastikaweb, a personal portfolio and skills showcase using Angular with Nx monorepo structure.
-This application serves as a demonstration of modern web development techniques and best practices.
+## 📝 Description
 
-The application features:
+**Plastikaweb** is the main entry point for my personal portfolio. It showcases my professional skills, technologies,
+and projects, serving as a demonstration of modern web development techniques using Angular and Nx.
 
-> Skills showcase
-> A page displaying professional skills and technologies
+### Key Features
 
-## Running commands
+- **Skills Showcase**: A dynamic page displaying professional skills and technologies.
+- **Portfolio**: Overview of projects and achievements.
 
-- Serve: Run `yarn plastikaweb:serve`.
-- Lint: Run `yarn plastikaweb:lint`.
-- Test: Run `yarn plastikaweb:test`.
-- E2E: Run `yarn plastikaweb:e2e`.
-- Build: Run `yarn plastikaweb:build`.
+## 🛠️ Running Commands
 
-## Deploys
+- **Serve**: `yarn plastikaweb:serve`
+- **Lint**: `yarn plastikaweb:lint`
+- **Test**: `yarn plastikaweb:test`
+- **E2E**: `yarn plastikaweb:e2e`
+- **Build**: `yarn plastikaweb:build`
 
-A deployment can be found at [Plastikaweb](https://www.plastikaweb.com).
+## 🚀 Deploys
 
-## Available libraries
+- **Production**: [www.plastikaweb.com](https://www.plastikaweb.com)
 
-This is a list of all the libraries related only to the plastikaweb app.
+## 📚 Available Libraries
 
-### Skills
+### 🧠 Skills
 
-- [plastikaweb-skills-feature](../../libs/plastikaweb/skills/feature/README.md)
-- [plastikaweb-skills-data-access](../../libs/plastikaweb/skills/data-access/README.md)
+- [**skills-feature**](../../libs/plastikaweb/skills/feature/README.md)
+- [**skills-data-access**](../../libs/plastikaweb/skills/data-access/README.md)
 
-## Useful links
+## 🔗 Useful Links
 
-- [Plastikaweb website](https://www.plastikaweb.com)
-- [Plastikaweb repository folder](https://github.com/plastikaweb/plastikspace/tree/develop/apps/plastikaweb)
+- [Repository Folder](https://github.com/plastikaweb/plastikspace/tree/develop/apps/plastikaweb)
 - [LinkedIn Profile](https://www.linkedin.com/in/plastikaweb)

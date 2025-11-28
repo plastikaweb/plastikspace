@@ -5,11 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListItem, MatNavList } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
-import {
-  LocalizedFields,
-  ProductCategory,
-  ProductCategoryGroup,
-} from '@plastik/eco-store/entities';
+import { LocalizedFields } from '@plastik/core/entities';
+import { ProductCategory, ProductCategoryGroup } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { map, startWith } from 'rxjs';
 
