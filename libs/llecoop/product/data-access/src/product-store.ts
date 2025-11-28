@@ -1,24 +1,24 @@
 import { signalStore, withState } from '@ngrx/signals';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
-import {
-  initStoreFirebaseCrudState,
-  StoreFirebaseCrudFilter,
-  StoreFirebaseCrudState,
-  withFirebaseCrud,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import {
+  FirebaseCrudFilter,
+  FirebaseCrudState,
+  initStoreFirebaseCrudState,
+  withFirebaseCrud,
+} from '@plastik/signal-state/firebase';
 
 import { LlecoopProductFireService } from './product-fire.service';
 
-export type StoreProductFilter = StoreFirebaseCrudFilter & {
+export type StoreProductFilter = FirebaseCrudFilter & {
   text: string;
   category: string;
   isAvailable: 'all' | 'on' | 'off';
 };
 
-export type ProductStoreCrudState = StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter>;
+export type ProductStoreCrudState = FirebaseCrudState<LlecoopProduct, StoreProductFilter>;
 
-export const initState: StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter> = {
+export const initState: FirebaseCrudState<LlecoopProduct, StoreProductFilter> = {
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
@@ -41,7 +41,7 @@ export const llecoopProductStore = signalStore(
     LlecoopProduct,
     LlecoopProductFireService,
     StoreProductFilter,
-    StoreFirebaseCrudState<LlecoopProduct, StoreProductFilter>
+    FirebaseCrudState<LlecoopProduct, StoreProductFilter>
   >({
     featureName: 'product',
     dataServiceType: LlecoopProductFireService,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { PocketBaseGetAllService } from '@plastik/core/api';
+import { PocketBaseGetAllService } from '@plastik/core/api-pocketbase';
 import { ProductCategory } from '@plastik/eco-store/entities';
 import { RecordFullListOptions } from 'pocketbase';
 import { Observable } from 'rxjs';

@@ -17,27 +17,21 @@ describe('LlecoopProductUnitStepPipe', () => {
     expect(() => {
       // @ts-expect-error - Testing null input
       pipe.transform(null);
-    }).toThrowError(
-      'Invalid input: LlecoopProductUnitStepPipe expects a LlecoopProductUnit object'
-    );
+    }).toThrow('Invalid input: LlecoopProductUnitStepPipe expects a LlecoopProductUnit object');
   });
 
   it('throws an error when input is undefined', () => {
     expect(() => {
       // @ts-expect-error - Testing undefined input
       pipe.transform(undefined);
-    }).toThrowError(
-      'Invalid input: LlecoopProductUnitStepPipe expects a LlecoopProductUnit object'
-    );
+    }).toThrow('Invalid input: LlecoopProductUnitStepPipe expects a LlecoopProductUnit object');
   });
 
   it('throws an error when input does not have type property', () => {
     expect(() => {
       // @ts-expect-error - Testing invalid object structure
       pipe.transform({});
-    }).toThrowError(
-      'Invalid input: LlecoopProductUnitStepPipe expects a LlecoopProductUnit object'
-    );
+    }).toThrow('Invalid input: LlecoopProductUnitStepPipe expects a LlecoopProductUnit object');
   });
 
   it('transforms a "weight" type unit correctly returning 0.1', () => {

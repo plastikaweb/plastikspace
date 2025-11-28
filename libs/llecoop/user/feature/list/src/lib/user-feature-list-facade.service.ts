@@ -7,8 +7,8 @@ import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { llecoopUserStore, StoreUserFilter } from '@plastik/llecoop/user/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
 import { TableSorting } from '@plastik/shared/table/entities';
+import { FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
 import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config';
@@ -37,7 +37,7 @@ export class LlecoopUserListFacadeService
     });
   }
 
-  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUser>): void {
+  onChangePagination(pagination: FirebaseCrudPagination<LlecoopUser>): void {
     this.#router.navigate([], {
       queryParams: { ...pagination },
       queryParamsHandling: 'merge',
@@ -61,7 +61,7 @@ export class LlecoopUserListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#store.delete(item));
+        .subscribe(() => this.#store.delete(item.id));
     }
   }
 }

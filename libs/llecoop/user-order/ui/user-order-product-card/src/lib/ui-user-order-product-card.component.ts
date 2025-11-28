@@ -7,7 +7,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { EntityId } from '@ngrx/signals/entities';
+
 import { LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import { LlecoopProductBaseUnitTextPipe } from '@plastik/llecoop/product/product-base-unit-text';
 import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
@@ -44,11 +44,11 @@ export class UiUserOrderProductCardComponent {
 
   totalPrice = computed(() => this.product()?.priceWithIva * this.product().quantity || 0);
 
-  viewDetails = output<EntityId>();
+  viewDetails = output<string>();
   addToCart = output<LlecoopProductWithQuantity>();
 
   onViewDetails(): void {
-    this.viewDetails.emit(this.product().id || '');
+    this.viewDetails.emit(this.product()['id'] as string);
   }
 
   onQuantityChange(value: string): void {

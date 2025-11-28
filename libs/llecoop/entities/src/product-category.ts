@@ -4,6 +4,7 @@ export interface LlecoopProductCategory extends BaseEntity {
   description: string;
   color: `#${string}`;
   productCount?: number;
+  name: string;
 }
 
 export type LlecoopCategorySelectOption = {

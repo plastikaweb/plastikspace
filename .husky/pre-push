@@ -1,3 +1,4 @@
 export NX_CLI_SET=classic
+export PAGER=cat
 
 yarn nx affected:test && yarn nx affected:build

@@ -388,6 +388,16 @@ export type TableSortingConfig = [
 ];
 
 /**
+ * @description Configuration type for sorting for a store feature.
+ * {active} is the current column id.
+ * {direction} is the direction of the sorting, 'asc' | 'desc'.
+ */
+export type CrudSortingConfig = {
+  active: TableSorting['active'];
+  direction: TableSorting['direction'];
+};
+
+/**
  * @description Configuration type for paginate a table.
  * {previousPageIndex} is the previous page index number with base 0.
  * {pageIndex} is the current page index number with base 0.

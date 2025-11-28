@@ -7,49 +7,46 @@ import { tapResponse } from '@ngrx/operators';
 import { signalStore, withHooks, withMethods, withProps, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
-import {
-  initStoreFirebaseCrudState,
-  StoreFirebaseCrudFilter,
-  StoreFirebaseCrudPagination,
-  StoreFirebaseCrudState,
-  withFirebaseCrud,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import {
+  FirebaseCrudFilter,
+  FirebaseCrudPagination,
+  FirebaseCrudState,
+  initStoreFirebaseCrudState,
+  withFirebaseCrud,
+} from '@plastik/signal-state/firebase';
 
 import { llecoopOrderListStore } from './order-list-store';
 import { LlecoopUserOrderFireService } from './user-order-fire.service';
 
-export type StoreUserOrderFilter = StoreFirebaseCrudFilter & {
+export type StoreUserOrderFilter = FirebaseCrudFilter & {
   text: string;
   userNormalizedName: string;
   status: LlecoopUserOrder['status'] | '';
   userId?: string | null;
 };
 
-export type StoreUserOrderProductsFilter = StoreFirebaseCrudFilter & {
+export type StoreUserOrderProductsFilter = FirebaseCrudFilter & {
   text: string;
 };
 
-export type UserOrderListStoreCrudState = StoreFirebaseCrudState<
+export type UserOrderListStoreCrudState = FirebaseCrudState<
   LlecoopUserOrder,
   StoreUserOrderFilter
 > & {
   orderProductsFilter: StoreUserOrderProductsFilter;
   orderProductsSorting: TableSortingConfig;
-  orderProductsPagination: StoreFirebaseCrudPagination<LlecoopOrderProduct>;
+  orderProductsPagination: FirebaseCrudPagination<LlecoopOrderProduct>;
   currentUserOrder: LlecoopUserOrder | null;
   currentUserOrderInitialLoaded: boolean;
 };
 
 type SpecificUserOrderListStoreFirebaseCrudState = Omit<
   UserOrderListStoreCrudState,
-  keyof StoreFirebaseCrudState<LlecoopUserOrder, StoreUserOrderFilter>
+  keyof FirebaseCrudState<LlecoopUserOrder, StoreUserOrderFilter>
 >;
 
-export const userOrderMainInitState: StoreFirebaseCrudState<
-  LlecoopUserOrder,
-  StoreUserOrderFilter
-> = {
+export const userOrderMainInitState: FirebaseCrudState<LlecoopUserOrder, StoreUserOrderFilter> = {
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
@@ -85,7 +82,7 @@ export const llecoopUserOrderStore = signalStore(
     LlecoopUserOrder,
     LlecoopUserOrderFireService,
     StoreUserOrderFilter,
-    StoreFirebaseCrudState<LlecoopUserOrder, StoreUserOrderFilter>
+    FirebaseCrudState<LlecoopUserOrder, StoreUserOrderFilter>
   >({
     featureName: 'user-order',
     dataServiceType: LlecoopUserOrderFireService,

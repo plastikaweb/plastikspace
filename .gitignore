@@ -86,3 +86,8 @@ mvp_github_issues.md
 # local helpers
 /helpers
 
+# agent antigravity notes
+/.agent/notes
+
+# log files
+*.log

@@ -1,111 +1,73 @@
 # Llecoop
 
+## Cooperative management system for orders and payments
+
+---
+
 - [Llecoop](#llecoop)
-  - [Description](#description)
-  - [Running commands](#running-commands)
-  - [Available libraries](#available-libraries)
-    - [Entities](#entities)
-    - [Util](#util)
-    - [CMS Layout](#cms-layout)
-    - [UI Components](#ui-components)
-    - [Data Access](#data-access)
-    - [Category](#category)
-    - [Order List](#order-list)
-    - [Product](#product)
-    - [User](#user)
-    - [Profile](#profile)
-    - [Shared](#shared)
-    - [Triggers](#triggers)
+  - [Cooperative management system for orders and payments](#cooperative-management-system-for-orders-and-payments)
+  - [📝 Description](#-description)
+  - [🛠️ Running Commands](#️-running-commands)
+  - [📚 Available Libraries](#-available-libraries)
+    - [🧩 Entities \& Utils](#-entities--utils)
+    - [🎨 Layout \& UI](#-layout--ui)
+    - [📦 Products \& Categories](#-products--categories)
+    - [🛒 Orders](#-orders)
+    - [👥 Users \& Profile](#-users--profile)
+    - [🔄 Shared](#-shared)
+    - [⚡ Triggers](#-triggers)
 
-## Description
+---
 
-Main application entry point for Llecoop, an application to do handle users cooperative orders and payments.
+## 📝 Description
 
-## Running commands
+**Llecoop** is the main application for managing a consumer cooperative. It handles user management, order processing, product catalogs, and payment tracking, streamlining the operations of the cooperative.
 
-- Serve: Run `yarn llecoop:serve`.
-- LInt: Run `yarn llecoop:lint`.
-- Test: Run `yarn llecoop:test`.
-- E2E: Run `yarn llecoop:e2e`.
-- Build: Run `yarn llecoop:build`.
+## 🛠️ Running Commands
 
-## Available libraries
+- **Serve**: `yarn llecoop:serve`
+- **Lint**: `yarn llecoop:lint`
+- **Test**: `yarn llecoop:test`
+- **E2E**: `yarn llecoop:e2e`
+- **Build**: `yarn llecoop:build`
 
-This is a list of all the related libraries to llecoop app.
+## 📚 Available Libraries
 
-### Entities
+### 🧩 Entities & Utils
 
-- [llecoop-entities](../../libs/llecoop/entities/README.md)
+- [**entities**](../../libs/llecoop/entities/README.md)
+- [**util**](../../libs/llecoop/util/README.md)
 
-### Util
+### 🎨 Layout & UI
 
-- [llecoop-util](../../libs/llecoop/util/README.md)
+- [**cms-layout**](../../libs/llecoop/cms-layout/README.md)
+- [**ui-order-status-chip**](../../libs/llecoop/order-list/ui/order-status-chip/README.md)
 
-### CMS Layout
+### 📦 Products & Categories
 
-- [llecoop-cms-layout](../../libs/llecoop/cms-layout/README.md)
+- [**product-data-access**](../../libs/llecoop/product/data-access/README.md)
+- [**product-feature-list**](../../libs/llecoop/product/feature/list/README.md)
+- [**product-feature-detail**](../../libs/llecoop/product/feature/detail/README.md)
+- [**category-data-access**](../../libs/llecoop/category/data-access/README.md)
+- [**category-feature-list**](../../libs/llecoop/category/feature/list/README.md)
 
-### UI Components
+### 🛒 Orders
 
-- [ui-order-status-chip](../../libs/llecoop/order-list/ui/order-status-chip/README.md)
+- [**order-list-data-access**](../../libs/llecoop/order-list/data-access/README.md)
+- [**order-list-feature-list**](../../libs/llecoop/order-list/feature/list/README.md)
+- [**user-order-cart-data-access**](../../libs/llecoop/user-order/cart/data-access/README.md)
+- [**user-order-product-list-feature**](../../libs/llecoop/user-order/product-list/feature/README.md)
 
-### Data Access
+### 👥 Users & Profile
 
-- [llecoop-order-list-data-access](../../libs/llecoop/order-list/data-access/README.md)
+- [**user-data-access**](../../libs/llecoop/user/data-access/README.md)
+- [**user-feature-list**](../../libs/llecoop/user/feature/list/README.md)
+- [**profile-feature**](../../libs/llecoop/profile/feature/README.md)
 
-### Category
+### 🔄 Shared
 
-- [llecoop-category-data-access](../../libs/llecoop/category/data-access/README.md)
-- [llecoop-category-feature-detail](../../libs/llecoop/category/feature/detail/README.md)
-- [llecoop-category-feature-list](../../libs/llecoop/category/feature/list/README.md)
-- [llecoop-category-ui-category-name-cell](../../libs/llecoop/category/ui/category-name-cell/README.md)
+- [**shared-data-access**](../../libs/llecoop/shared/data-access/README.md)
 
-### Order List
+### ⚡ Triggers
 
-- [llecoop-order-list-util](../../libs/llecoop/order-list/util/README.md)
-- [llecoop-order-list-data-access](../../libs/llecoop/order-list/data-access/README.md)
-- [llecoop-order-list-feature-list](../../libs/llecoop/order-list/feature/list/README.md)
-- [llecoop-user-order-feature-detail](../../libs/llecoop/order-list/feature/user-order-detail/README.md)
-- [llecoop-user-order-feature-list](../../libs/llecoop/order-list/feature/user-order-list/README.md)
-- [llecoop-user-order-feature-resume](../../libs/llecoop/order-list/feature/user-order-resume/README.md)
-- [llecoop-order-indicator](../../libs/llecoop/order-list/feature/llecoop-order-indicator/README.md)
-- [llecoop-order-list-user-order](../../libs/llecoop/order-list/feature/order-list-user-order/README.md)
-
-### Product
-
-- [llecoop-product-data-access](../../libs/llecoop/product/data-access/README.md)
-- [llecoop-product-feature-detail](../../libs/llecoop/product/feature/detail/README.md)
-- [llecoop-product-feature-list](../../libs/llecoop/product/feature/list/README.md)
-- [llecoop-product-ui-product-name-cell](../../libs/llecoop/product/ui/product-name-cell/README.md)
-- [llecoop-product-util-product-base-unit-text](../../libs/llecoop/product/util/product-base-unit-text/README.md)
-- [llecoop-product-util-product-unit-suffix](../../libs/llecoop/product/util/product-unit-suffix/README.md)
-- [llecoop-product-util-product-unit-step](../../libs/llecoop/product/util/product-unit-step/README.md)
-
-### User
-
-- [llecoop-user-data-access](../../libs/llecoop/user/data-access/README.md)
-- [llecoop-user-feature-create](../../libs/llecoop/user/feature/create/README.md)
-- [llecoop-user-feature-list](../../libs/llecoop/user/feature/list/README.md)
-
-### Profile
-
-- [llecoop-profile-feature](../../libs/llecoop/profile/feature/README.md)
-- [llecoop-profile-data-access](../../libs/llecoop/profile/data-access/README.md)
-
-### User Order
-
-- [llecoop-user-order-cart-data-access](../../libs/llecoop/user-order/cart/data-access/README.md)
-- [llecoop-user-order-product-list-feature](../../libs/llecoop/user-order/product-list/feature/README.md)
-- [llecoop-user-order-product-list-data-access](../../libs/llecoop/user-order/product-list/data-access/README.md)
-
-#### UI
-
-- [llecoop-user-order-product-card](../../libs/llecoop/user-order/ui/user-order-product-card/README.md)
-
-### Shared
-
-- [llecoop-shared-data-access](../../libs/llecoop/shared/data-access/README.md)
-
-### Triggers
-
-- [llecoop-triggers](../llecoop-triggers/README.md)
+- [**llecoop-triggers**](../llecoop-triggers/README.md)

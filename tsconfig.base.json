@@ -23,7 +23,6 @@
       "@plastik/auth/login": ["libs/shared/auth/login/feature/src/index.ts"],
       "@plastik/auth/register": ["libs/shared/auth/register/feature/src/index.ts"],
       "@plastik/auth/request-password": ["libs/shared/auth/request-password/feature/src/index.ts"],
-      "@plastik/core/api": ["libs/core/util/api/src/index.ts"],
       "@plastik/core/can-deactivate": ["libs/core/can-deactivate-guard/src/index.ts"],
       "@plastik/core/cms-layout": ["libs/core/cms-layout/feature/src/index.ts"],
       "@plastik/core/cms-layout/data-access": ["libs/core/cms-layout/data-access/src/index.ts"],
@@ -165,9 +164,6 @@
       "@plastik/shared/return-as-observable": [
         "libs/shared/util/return-as-observable-pipe/src/index.ts"
       ],
-      "@plastik/shared/signal-state-data-access": [
-        "libs/shared/signal-state/data-access/src/index.ts"
-      ],
       "@plastik/shared/skip-link": ["libs/shared/util/skip-link/src/index.ts"],
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"],
@@ -184,7 +180,18 @@
       "@plastik/eco-store/products/data-access": [
         "libs/eco-store/products/data-access/src/index.ts"
       ],
-      "@plastik/eco-store/products": ["libs/eco-store/products/feature/src/index.ts"]
+      "@plastik/eco-store/products": ["libs/eco-store/products/feature/src/index.ts"],
+      "@plastik/core/api-pocketbase": ["libs/core/util/api-pocketbase/src/index.ts"],
+      "@plastik/core/api-firebase": ["libs/core/util/api-firebase/src/index.ts"],
+      "@plastik/core/api-http": ["libs/core/util/api-http/src/index.ts"],
+      "@plastik/signal-state/pocketbase": [
+        "libs/shared/signal-state/data-access-pocketbase/src/index.ts"
+      ],
+      "@plastik/signal-state/firebase": [
+        "libs/shared/signal-state/data-access-firebase/src/index.ts"
+      ],
+      "@plastik/signal-state/http": ["libs/shared/signal-state/data-access-http/src/index.ts"],
+      "@plastik/core/api-base": ["libs/core/util/api-base/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

@@ -60,7 +60,7 @@ export class LlecoopProductListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#productStore.delete(item));
+        .subscribe(() => this.#productStore.delete(item.id));
     }
   }
 }

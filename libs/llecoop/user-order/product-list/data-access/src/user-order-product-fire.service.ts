@@ -11,11 +11,8 @@ import {
 } from '@angular/fire/firestore';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
-import {
-  EntityFireService,
-  StoreFirebaseCrudPagination,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import { EntityFireService, FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
 import { StoreUserOrderProductProductFilter } from './user-order-product-store';
 
@@ -25,16 +22,18 @@ import { StoreUserOrderProductProductFilter } from './user-order-product-store';
 export class LlecoopUserOrderProductFireService extends EntityFireService<LlecoopProduct> {
   protected readonly path = 'product';
 
-  override getAll(
-    pagination: StoreFirebaseCrudPagination<LlecoopProduct>,
-    sorting: TableSortingConfig,
-    filter: StoreUserOrderProductProductFilter
-  ): Observable<LlecoopProduct[]> {
+  override getList(params: {
+    pagination: FirebaseCrudPagination<LlecoopProduct>;
+    sorting: TableSortingConfig;
+    filter: StoreUserOrderProductProductFilter;
+  }): Observable<LlecoopProduct[]> {
     return runInInjectionContext(this.injectionContext, () => {
       try {
         if (!this.firestoreCollection) {
           return of([]);
         }
+
+        const { pagination, sorting, filter } = params;
 
         const conditions: QueryConstraint[] = [
           ...this.getFilterConditions(filter),
@@ -76,10 +75,13 @@ export class LlecoopUserOrderProductFireService extends EntityFireService<Llecoo
   //   });
   // }
 
-  override getCount(filter: StoreUserOrderProductProductFilter): Observable<number> {
+  override getCount(params: { filter: StoreUserOrderProductProductFilter }): Observable<number> {
     return runInInjectionContext(this.injectionContext, () => {
       try {
-        const conditions = [...this.getFilterConditions(filter), where('isAvailable', '==', true)];
+        const conditions = [
+          ...this.getFilterConditions(params.filter),
+          where('isAvailable', '==', true),
+        ];
 
         if (!this.firestoreCollection) {
           return of(0);
@@ -123,7 +125,7 @@ export class LlecoopUserOrderProductFireService extends EntityFireService<Llecoo
       toFirestore: (doc: LlecoopProduct): DocumentData => ({
         ...doc,
         normalizedName: latinize(doc.name).toLowerCase(),
-        createdAt: doc.createdAt ?? Timestamp.now(),
+        createdAt: doc['createdAt'] ?? Timestamp.now(),
         updatedAt: Timestamp.now(),
       }),
     };

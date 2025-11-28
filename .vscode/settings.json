@@ -10,7 +10,11 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+      "source.fixAll.eslint": "always"
+    }
   },
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -58,7 +62,7 @@
   ],
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "eslint.lintTask.enable": true,
-  "eslint.run": "onType",
+  "eslint.run": "onSave",
   "markdownlint.configFile": "./.markdownlint.json",
   "markdownlint.lintWorkspaceGlobs": [
     "**/*.md",
@@ -81,5 +85,8 @@
     "strings": "on"
   },
   "tailwindCSS.emmetCompletions": true,
-  "tailwindCSS.rootFontSize": 15
+  "tailwindCSS.rootFontSize": 15,
+  "editor.codeActions.triggerOnFocusChange": true,
+  "files.autoSave": "off",
+  "workbench.colorTheme": "One Dark Pro"
 }

@@ -16,7 +16,7 @@ export class LlecoopProfileFeatureFacadeService implements DetailItemViewFacade<
 
   viewConfig = computed(() => ({
     ...this.#view,
-    title: this.model()?.name ?? 'El meu perfil',
+    title: (this.model()?.name as string) ?? 'El meu perfil',
     icon: this.model()?.isAdmin ? 'shield' : 'face',
   }));
 

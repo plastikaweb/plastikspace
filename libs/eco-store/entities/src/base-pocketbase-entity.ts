@@ -1,13 +1,11 @@
-export type LocalizedFields = Record<'ca' | 'es' | 'en', string>;
 import { ListOptions } from 'pocketbase';
+import { BaseEntity } from '@plastik/core/entities';
 
-export interface BasePocketBaseEntity {
-  id: string;
-  name: LocalizedFields | string;
-  normalizedName: string;
+export type BasePocketBaseEntity = Pick<BaseEntity<string>, 'name' | 'normalizedName'> & {
+  readonly id: string;
   created: Date;
   updated: Date;
-}
+};
 
 export type BasePocketBaseEntitySimple = Omit<BasePocketBaseEntity, 'normalizedName'>;
 

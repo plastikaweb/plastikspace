@@ -46,10 +46,11 @@ export class LlecoopProfileFireService {
   protected firebaseAssignTypes() {
     return {
       toFirestore: (doc: LlecoopUser): DocumentData => {
+        const name = (doc.name as string) || (doc.email as string);
         return {
           ...doc,
-          name: doc.name || doc.email,
-          normalizedName: latinize(doc.name || doc.email).toLowerCase(),
+          name,
+          normalizedName: latinize(name).toLowerCase(),
           createdAt: doc.createdAt ?? Timestamp.now(),
           updatedAt: Timestamp.now(),
         };

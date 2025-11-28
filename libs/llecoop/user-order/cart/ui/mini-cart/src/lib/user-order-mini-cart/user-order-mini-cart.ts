@@ -33,7 +33,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   styleUrls: ['./user-order-mini-cart.scss'],
   host: {
     role: 'listbox',
-    'aria-label': 'carrito de la compra',
+    'aria-label': 'carret de la compra',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

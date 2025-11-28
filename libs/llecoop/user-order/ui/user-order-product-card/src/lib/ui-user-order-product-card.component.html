@@ -21,7 +21,9 @@
   </div>
   <mat-card-header>
     <mat-card-title>{{ product().name | titlecase }}</mat-card-title>
-    <mat-card-subtitle>{{ product().category?.name | titlecase }}</mat-card-subtitle>
+    @if (product().category?.name; as categoryName) {
+      <mat-card-subtitle>{{ categoryName | titlecase }}</mat-card-subtitle>
+    }
   </mat-card-header>
   <mat-card-content>
     <div class="mb-4 font-bold text-md">

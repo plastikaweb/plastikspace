@@ -21,7 +21,7 @@ export class WithCartQuantityPipe implements PipeTransform {
     const cartItems = this.cartStore.cart();
 
     return products.map(product => {
-      const cartItem = cartItems.find(item => item.id === product.id);
+      const cartItem = cartItems.find(item => item['id'] === product['id']);
       return {
         ...product,
         quantity: cartItem?.quantity ?? 0,

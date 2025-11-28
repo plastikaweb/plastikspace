@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { EntityId } from '@ngrx/signals/entities';
 import { LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import {
   llecoopUserOrderProductStore,
@@ -33,7 +32,7 @@ export class LlecoopUserOrderProductListFeatureFacadeService {
     this.#cartStore.addItem(product);
   }
 
-  viewDetails(productId: EntityId) {
+  viewDetails(productId: string) {
     console.log(productId);
   }
 

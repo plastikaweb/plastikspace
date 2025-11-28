@@ -3,7 +3,7 @@
   "ignorePatterns": ["**/*"],
   "plugins": ["@nx", "deprecation", "jsdoc", "@angular-eslint"],
   "parserOptions": {
-    "project": ["./tsconfig.base.json"]
+    "projectService": true
   },
   "overrides": [
     {
@@ -42,7 +42,7 @@
               },
               {
                 "sourceTag": "scope:shared",
-                "onlyDependOnLibsWithTags": ["scope:shared", "type:entity"]
+                "onlyDependOnLibsWithTags": ["scope:shared", "type:entity", "type:util"]
               },
               {
                 "sourceTag": "scope:nasa-images",

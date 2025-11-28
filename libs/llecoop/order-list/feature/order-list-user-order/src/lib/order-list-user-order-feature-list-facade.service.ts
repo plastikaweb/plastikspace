@@ -89,7 +89,7 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#userOrderStore.delete(item));
+        .subscribe(() => this.#userOrderStore.delete(item.id));
     }
   }
 

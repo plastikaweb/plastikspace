@@ -1,0 +1,160 @@
+import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { computed, inject, Type } from '@angular/core';
+import { tapResponse } from '@ngrx/operators';
+import {
+  signalStoreFeature,
+  type,
+  withComputed,
+  withMethods,
+  withProps,
+  withState,
+} from '@ngrx/signals';
+import { EntityState, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { DataGet, DataGetList } from '@plastik/core/api-base';
+import { IdType } from '@plastik/core/entities';
+import {
+  BasePocketBaseEntity,
+  BasePocketBaseEntityFilter,
+  BasePocketBaseEntityPagination,
+  BasePocketBaseEntitySort,
+} from '@plastik/eco-store/entities';
+import { notificationStore } from '@plastik/shared/notification/data-access';
+import { ClientResponseError, ListResult } from 'pocketbase';
+import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { initialGetListState, PocketBaseListParams } from './pocketbase-store.types';
+
+export function withPocketBaseListFeature<
+  T extends BasePocketBaseEntity,
+  S extends DataGetList<T, ListResult<T>, PocketBaseListParams>,
+>({ featureName, dataServiceType }: { featureName: string; dataServiceType: Type<S> }) {
+  return signalStoreFeature(
+    withDevtools(featureName),
+    withState(initialGetListState()),
+    withEntities<T>(),
+    withProps(() => ({
+      _apiService: inject(dataServiceType),
+      _storeNotificationService: inject(notificationStore),
+    })),
+    withComputed(({ pagination, sort, filter }) => ({
+      formattedParams: computed(() => {
+        const s = sort();
+        const p = pagination();
+        const f = filter();
+        return {
+          ...p,
+          sort: s.direction === 'desc' ? `-${s.sort}` : s.sort,
+          ...f,
+        };
+      }),
+    })),
+    withMethods(store => {
+      const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
+        store._storeNotificationService.show({
+          type,
+          message,
+          action: 'notification.close-short',
+          duration: 5000,
+        });
+      };
+
+      return {
+        setParams: (
+          pagination?: BasePocketBaseEntityPagination,
+          filter?: BasePocketBaseEntityFilter,
+          sort?: BasePocketBaseEntitySort
+        ) => {
+          updateState(store, `[${featureName}] set params`, {
+            pagination: pagination ?? initialGetListState().pagination,
+            filter: filter ?? initialGetListState().filter,
+            sort: sort ?? initialGetListState().sort,
+          });
+        },
+
+        getList: rxMethod<void>(
+          pipe(
+            debounceTime(300),
+            distinctUntilChanged(),
+            tap(() => updateState(store, `[${featureName}] getList`)),
+            switchMap(() => {
+              const params = store.formattedParams();
+
+              return store._apiService.getList(params).pipe(
+                tapResponse<ListResult<T>, ClientResponseError>({
+                  next: result => {
+                    updateState(
+                      store,
+                      `[${featureName}] getList success`,
+                      setAllEntities(result.items, {
+                        selectId: entity => entity.id || '',
+                      }),
+                      {
+                        initiallyLoaded: true,
+                        count: result.totalItems,
+                      }
+                    );
+                  },
+                  error: error => {
+                    showNotification('ERROR', error.message ?? `${featureName}.list.error`);
+                  },
+                })
+              );
+            })
+          )
+        ),
+      };
+    })
+  );
+}
+
+export function withPocketBaseGetOneFeature<
+  T extends BasePocketBaseEntity,
+  S extends DataGet<T, ListResult<T>, PocketBaseListParams>,
+>({ featureName }: { featureName: string }) {
+  return signalStoreFeature(
+    {
+      props: type<{ _apiService: S; _storeNotificationService: any }>(),
+      state: type<EntityState<T>>(),
+    },
+    withState({ selectedItemId: null as IdType<T> | null }),
+    withMethods(store => {
+      const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
+        store._storeNotificationService.show({
+          type,
+          message,
+          action: 'notification.close-short',
+          duration: 5000,
+        });
+      };
+
+      return {
+        getOne: rxMethod<IdType<T>>(
+          pipe(
+            tap(() => updateState(store, `[${featureName}] getOne`)),
+            switchMap(id => {
+              return store._apiService.getOne(id).pipe(
+                tapResponse<T, ClientResponseError>({
+                  next: item => {
+                    updateState(
+                      store,
+                      `[${featureName}] getOne success`,
+                      setEntity(item, {
+                        selectId: entity => entity.id || '',
+                      }),
+                      {
+                        selectedItemId: item.id as IdType<T>,
+                      }
+                    );
+                  },
+                  error: error => {
+                    showNotification('ERROR', error.message ?? `${featureName}.getOne.error`);
+                  },
+                })
+              );
+            })
+          )
+        ),
+      };
+    })
+  );
+}
