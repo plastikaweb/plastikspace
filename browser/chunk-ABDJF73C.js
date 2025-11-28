@@ -181,6 +181,7 @@ import {
   of,
   output,
   pairwise,
+  runInInjectionContext,
   setClassMetadata,
   share,
   shareReplay,
@@ -853,21 +854,7 @@ var NasaImagesSearchFacade = class _NasaImagesSearchFacade extends NasaImagesFac
   }], null, null);
 })();
 
-// libs/core/util/api/src/lib/data-crud.ts
-var API_SERVICE_TOKEN = new InjectionToken("API_SERVICE_TOKEN");
-var DATA_READ_SERVICE_TOKEN = new InjectionToken("DATA_READ_SERVICE_TOKEN");
-var DATA_WRITE_SERVICE_TOKEN = new InjectionToken("DATA_WRITE_SERVICE_TOKEN");
-var DATA_GET_LIST_SERVICE_TOKEN = new InjectionToken("DATA_GET_LIST_SERVICE_TOKEN");
-var DATA_GET_ONE_SERVICE_TOKEN = new InjectionToken("DATA_GET_ONE_SERVICE_TOKEN");
-var DATA_CREATE_SERVICE_TOKEN = new InjectionToken("DATA_CREATE_SERVICE_TOKEN");
-var DATA_UPDATE_SERVICE_TOKEN = new InjectionToken("DATA_UPDATE_SERVICE_TOKEN");
-
-// libs/core/util/api/src/lib/data-crud.tokens.ts
-function createDataGetListServiceToken(description = "DATA_GET_LIST_SERVICE") {
-  return new InjectionToken(description);
-}
-
-// libs/core/util/api/src/lib/base-data.service.ts
+// libs/core/util/api-base/src/lib/base-data.service.ts
 var BaseDataService = class _BaseDataService {
   environment = inject(ENVIRONMENT);
   /**
@@ -907,8 +894,13 @@ var BaseDataService = class _BaseDataService {
   }], null, null);
 })();
 
-// libs/core/util/api/src/lib/http/http-base.service.ts
-var HttpBaseService = class extends BaseDataService {
+// libs/core/util/api-base/src/lib/data-get.ts
+function createDataGetListServiceToken(description = "DATA_GET_LIST_SERVICE") {
+  return new InjectionToken(description);
+}
+
+// libs/core/util/api-http/src/lib/http-crud.service.ts
+var HttpCrudService = class extends BaseDataService {
   httpClient = inject(HttpClient);
   apiUrl;
   constructor() {
@@ -922,20 +914,152 @@ var HttpBaseService = class extends BaseDataService {
   getApiUrlFromEnvironment() {
     return this.environment.baseApiUrl;
   }
-};
-
-// libs/core/util/api/src/lib/http/http-get-all.service.ts
-var HttpGetAllService = class extends HttpBaseService {
   /**
-   * @description Method to map the API response with the inner typings before storing it in app.
-   * @template T
+   * @description Method to map the API list response with the inner typings before storing it in app.
    * Override this method in child classes when inheriting from ApiService with your custom API response structures.
    * @param { unknown } data The API response data as it is.
-   * @returns { RESULT } The mapped API response.
+   * @returns { TListResult } The mapped API response.
    */
   mapListResponse(data) {
     return data;
   }
+  /**
+   * @description Method to map the API item response with the inner typings before storing it in app.
+   * Override this method in child classes when inheriting from ApiService with your custom API response structures.
+   * @param { unknown } data The API response data as it is.
+   * @returns { TEntity } The mapped API response.
+   */
+  mapItemResponse(data) {
+    return data;
+  }
+  /**
+   * @description A GET method to retrieve a list of data.
+   * @param { PARAMS } params  The http params to pass with the API call.
+   * @returns { Observable<TListResult> } The API data response after mapping or an error catch.
+   */
+  getList(params) {
+    return this.httpClient.get(this.apiUrl, { params: this.getHttpParams(params) }).pipe(map((data) => this.mapListResponse(data)), share({
+      connector: () => new ReplaySubject(1),
+      resetOnComplete: () => timer(this.cacheTime)
+    }), catchError(this.handleError));
+  }
+  /**
+   * @description Get a single record by ID.
+   * @param {IdType<T>} id - The record ID.
+   * @param {unknown} options - The record options.
+   * @returns {Observable<T>} The single record.
+   */
+  getOne(id, options) {
+    void options;
+    return this.httpClient.get(`${this.apiUrl}/${id}`).pipe(map((response) => this.mapItemResponse(response)), catchError(this.handleError));
+  }
+  /**
+   * @description Create a new record.
+   * @param { Partial<T> } data The record data.
+   * @param { unknown } options The record options.
+   * @returns { Observable<T> } The created record.
+   */
+  create(data, options) {
+    void options;
+    return this.httpClient.post(this.apiUrl, data).pipe(map((response) => this.mapItemResponse(response)), catchError(this.handleError));
+  }
+  /**
+   * @description Update an existing record.
+   * @param {IdType<T>} id - The record ID.
+   * @param {Partial<T>} data - The record data.
+   * @param {unknown} options - The record options.
+   * @returns {Observable<T>} The updated record.
+   */
+  update(id, data, options) {
+    void options;
+    return this.httpClient.patch(`${this.apiUrl}/${id}`, data).pipe(map((response) => this.mapItemResponse(response)), catchError(this.handleError));
+  }
+  /**
+   * @description Delete a record.
+   * @param {IdType<T>} id - The record ID.
+   * @returns {Observable<boolean>} The deletion result.
+   */
+  delete(id) {
+    return this.httpClient.delete(`${this.apiUrl}/${id}`).pipe(map(() => true), catchError(this.handleError));
+  }
+  /**
+   * @description Helper to convert params object to HttpParams.
+   * @param {PARAMS} params - The parameters to convert to HttpParams.
+   * @returns {HttpParams} The converted HttpParams object.
+   */
+  getHttpParams(params) {
+    let httpClientParams = new HttpParams();
+    Object.entries(params || {}).forEach(([key, value]) => {
+      if (value !== void 0 && value !== null) {
+        httpClientParams = httpClientParams.set(key, `${value}`);
+      }
+    });
+    return httpClientParams;
+  }
+};
+
+// libs/core/util/api-http/src/lib/http-base.service.ts
+var HttpBaseService = class extends BaseDataService {
+  httpClient = inject(HttpClient);
+  apiUrl;
+  injector = inject(Injector);
+  constructor() {
+    super();
+    this.apiUrl = `${this.getApiUrlFromEnvironment()}/${this.resourceUrlSegment()}`;
+  }
+  /**
+   * @description Gets the API URL from the environment. Override if your environment uses a different property name.
+   * @returns {string} The base API URL.
+   */
+  getApiUrlFromEnvironment() {
+    return this.environment.baseApiUrl;
+  }
+  /**
+   * @description Method to map the API list response with the inner typings before storing it in app.
+   * Override this method in child classes when inheriting from ApiService with your custom API response structures.
+   * @param { unknown } data The API response data as it is.
+   * @returns { unknown } The mapped API response.
+   */
+  mapListResponse(data) {
+    return data;
+  }
+  /**
+   * @description Method to map the API item response with the inner typings before storing it in app.
+   * Override this method in child classes when inheriting from ApiService with your custom API response structures.
+   * @param { unknown } data The API response data as it is.
+   * @returns { unknown } The mapped API response.
+   */
+  mapItemResponse(data) {
+    return data;
+  }
+  /**
+   * @description Creates a HttpCrudService instance with the correct resource URL segment and mappers.
+   * @returns {HttpCrudService} The service instance.
+   * @private
+   */
+  createHttpCrudService() {
+    const resourceUrlSegment = this.resourceUrlSegment();
+    const mapListResponse = (data) => this.mapListResponse(data);
+    const mapItemResponse = (data) => this.mapItemResponse(data);
+    return runInInjectionContext(this.injector, () => {
+      const ServiceClass = class extends HttpCrudService {
+        resourceUrlSegment() {
+          return resourceUrlSegment;
+        }
+        mapListResponse(data) {
+          return mapListResponse(data);
+        }
+        mapItemResponse(data) {
+          return mapItemResponse(data);
+        }
+      };
+      return new ServiceClass();
+    });
+  }
+};
+
+// libs/core/util/api-http/src/lib/http-get-all.service.ts
+var HttpGetAllService = class extends HttpBaseService {
   /**
    * @description A GET method to retrieve a list of data.
    * @template T, P
@@ -943,29 +1067,10 @@ var HttpGetAllService = class extends HttpBaseService {
    * @returns { Observable<P | never> } The API data response after mapping or an error catch.
    */
   getList(params) {
-    return this.httpClient.get(this.apiUrl, { params: this.getHttpParams(params) }).pipe(map(this.mapListResponse), share({
-      connector: () => new ReplaySubject(1),
-      resetOnComplete: () => timer(this.cacheTime)
-    }), catchError(this.handleError));
-  }
-  getHttpParams(params) {
-    let httpClientParams = new HttpParams();
-    Object.entries(params || {}).forEach(([key, value]) => {
-      httpClientParams = httpClientParams.set(key, `${value}`);
-    });
-    return httpClientParams;
+    const service = this.createHttpCrudService();
+    return service.getList(params);
   }
 };
-
-// node_modules/pocketbase/dist/pocketbase.es.mjs
-var t = "undefined" != typeof navigator && "ReactNative" === navigator.product || "undefined" != typeof global && global.HermesInternal;
-var s;
-s = "function" != typeof atob || t ? (e) => {
-  let t2 = String(e).replace(/=+$/, "");
-  if (t2.length % 4 == 1) throw new Error("'atob' failed: The string to be decoded is not correctly encoded.");
-  for (var s2, i, n = 0, r = 0, o = ""; i = t2.charAt(r++); ~i && (s2 = n % 4 ? 64 * s2 + i : i, n++ % 4) ? o += String.fromCharCode(255 & s2 >> (-2 * n & 6)) : 0) i = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".indexOf(i);
-  return o;
-} : atob;
 
 // libs/shared/util/latinize/src/latinize.ts
 var characters = {
@@ -13387,8 +13492,8 @@ var MatFormField = class _MatFormField {
   _checkPrefixAndSuffixTypes() {
     this._hasIconPrefix = !!this._prefixChildren.find((p) => !p._isText);
     this._hasTextPrefix = !!this._prefixChildren.find((p) => p._isText);
-    this._hasIconSuffix = !!this._suffixChildren.find((s2) => !s2._isText);
-    this._hasTextSuffix = !!this._suffixChildren.find((s2) => s2._isText);
+    this._hasIconSuffix = !!this._suffixChildren.find((s) => !s._isText);
+    this._hasTextSuffix = !!this._suffixChildren.find((s) => s._isText);
   }
   /** Initializes the prefix and suffix containers. */
   _initializePrefixAndSuffix() {
@@ -14683,7 +14788,7 @@ var MatInput = class _MatInput {
   set errorState(value) {
     this._errorStateTracker.errorState = value;
   }
-  _neverEmptyInputTypes = ["date", "datetime", "datetime-local", "month", "time", "week"].filter((t2) => getSupportedInputTypes().has(t2));
+  _neverEmptyInputTypes = ["date", "datetime", "datetime-local", "month", "time", "week"].filter((t) => getSupportedInputTypes().has(t));
   constructor() {
     const parentForm = inject(NgForm, {
       optional: true
@@ -20608,4 +20713,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-WNFJZFUH.js.map
+//# sourceMappingURL=chunk-ABDJF73C.js.map
