@@ -2,19 +2,19 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideEnvironmentMock } from '@plastik/core/environments';
-import EcoStoreProductsSidenavFeature from './eco-store-products-sidenav-feature';
+import EcoStoreProductsSidenavFeatureComponent from './eco-store-products-sidenav-feature.component';
 
 describe('EcoStoreProductsSidenavFeature', () => {
-  let component: EcoStoreProductsSidenavFeature;
-  let fixture: ComponentFixture<EcoStoreProductsSidenavFeature>;
+  let component: EcoStoreProductsSidenavFeatureComponent;
+  let fixture: ComponentFixture<EcoStoreProductsSidenavFeatureComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EcoStoreProductsSidenavFeature],
+      imports: [EcoStoreProductsSidenavFeatureComponent],
       providers: [provideTranslateService(), provideEnvironmentMock(), provideRouter([])],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EcoStoreProductsSidenavFeature);
+    fixture = TestBed.createComponent(EcoStoreProductsSidenavFeatureComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

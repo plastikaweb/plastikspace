@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import EcoStoreProductsFeature from './eco-store-products-feature';
+import EcoStoreProductsFeature from './eco-store-products-feature.component';
+import { provideEnvironmentMock } from '@plastik/core/environments';
 
 describe('EcoStoreProductsFeature', () => {
   let component: EcoStoreProductsFeature;
@@ -9,7 +10,7 @@ describe('EcoStoreProductsFeature', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EcoStoreProductsFeature],
-      providers: [provideTranslateService()],
+      providers: [provideTranslateService(), provideEnvironmentMock()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EcoStoreProductsFeature);

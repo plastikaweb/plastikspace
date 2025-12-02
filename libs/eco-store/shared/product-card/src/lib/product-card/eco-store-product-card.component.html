@@ -1,0 +1,79 @@
+<mat-card
+  class="product-card group relative flex h-full w-full flex-col justify-between overflow-hidden transition-all ring-1! ring-neutral-100! duration-200 hover:ring-neutral-200! hover:shadow-2xl!"
+  appearance="raised">
+  <!-- Favorite Button -->
+  <button
+    matIconButton
+    class="favorite-button absolute! top-3 right-3 z-100!"
+    [aria-label]="'products.favorite' | translate: { value: product().name }"
+    (click)="toggleFavorite.emit(product().id)">
+    <mat-icon>favorite</mat-icon>
+  </button>
+
+  <!-- Image -->
+  <div class="relative isolate mb-4 aspect-square w-full">
+    <div class="flex h-full w-full items-center justify-center">
+      @if (product().images && product().images!.length > 0) {
+        <img
+          class="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
+          [src]="
+            'http://127.0.0.1:8090/api/files/' +
+            product().collectionId +
+            '/' +
+            product().id +
+            '/' +
+            product().images![0]
+          "
+          [alt]="product().name" />
+      } @else {
+        <div class="flex h-full w-full items-center justify-center text-gray-300">
+          <mat-icon class="scale-200">image_not_supported</mat-icon>
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Content Section -->
+  <mat-card-content class="flex grow flex-col space-y-2 p-4">
+    <!-- Category with Color -->
+    <div class="flex items-center gap-2">
+      <div
+        class="h-1.5 w-1.5 rounded-full"
+        [style.background-color]="product().categoryColor"></div>
+      <div
+        class="text-[11px] font-bold uppercase tracking-wider"
+        [style.color]="product().categoryColor">
+        {{ product().categoryName }}
+      </div>
+    </div>
+
+    <!-- Title -->
+    <h3 class="min-h-9 text-lg font-bold leading-tight text-gray-900 line-clamp-2">
+      {{ product().name }}
+    </h3>
+
+    <!-- Price -->
+    <div class="mt-1 flex items-baseline gap-1">
+      <span class="text-2xl font-extrabold text-gray-900"
+        >{{ product().priceWithIva | number: '1.2-2' }} €</span
+      >
+      <span class="text-sm font-medium text-gray-400"
+        >/ {{ 'products.unit-type.' + product().unitType | translate }}</span
+      >
+    </div>
+
+    <!-- Price per unit badge -->
+    <mat-chip class="product-">
+      <mat-icon matChipAvatar>info</mat-icon>
+      {{ 'products.unit.' + product().unitType | translate: { value: product().unitBase } }}
+    </mat-chip>
+  </mat-card-content>
+
+  <!-- Action Button Section -->
+  <mat-card-actions class="mt-5">
+    <eco-store-product-card-quantity-control
+      [product]="product()"
+      [quantity]="quantity()"
+      (quantityChange)="onQuantityChange($event)"></eco-store-product-card-quantity-control>
+  </mat-card-actions>
+</mat-card>

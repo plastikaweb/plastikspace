@@ -1,4 +1,4 @@
-import { ErrorHandler, importProvidersFrom } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, ErrorHandler, importProvidersFrom } from '@angular/core';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { Route, TitleStrategy } from '@angular/router';
 
@@ -23,27 +23,31 @@ export const appRoutes: Route[] = [
         provide: TitleStrategy,
         useClass: PrefixTitleService,
       },
+      {
+        provide: DEFAULT_CURRENCY_CODE,
+        useValue: 'EUR',
+      },
       importProvidersFrom(EcoStoreFormlyModule),
     ],
     children: [
       {
-        path: 'store',
+        path: 'botiga',
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },
       {
-        path: 'store/:category',
+        path: 'botiga/:category',
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },
       {
-        path: '',
-        redirectTo: 'store/',
+        path: 'botiga',
+        redirectTo: 'botiga/',
         pathMatch: 'full',
       },
       {
         path: '**',
-        redirectTo: 'store/',
+        redirectTo: 'botiga/',
         pathMatch: 'full',
       },
     ],

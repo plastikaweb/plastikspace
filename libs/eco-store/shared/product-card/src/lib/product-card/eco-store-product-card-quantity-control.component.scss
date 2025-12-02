@@ -1,0 +1,71 @@
+@use '@angular/material' as mat;
+
+:host {
+  button {
+    transition: transform 0.1s ease-in-out;
+
+    &.add-button {
+      @include mat.button-overrides(
+        (
+          filled-container-color: var(--primary-600),
+          filled-label-text-size: 16px,
+          filled-label-text-weight: bold,
+          filled-container-height: calc(var(--spacing) * 14),
+        )
+      );
+    }
+
+    @include mat.icon-button-overrides(
+      (
+        icon-size: 24px,
+        state-layer-size: 40px,
+      )
+    );
+
+    &.increment-button,
+    &.decrement-button,
+    &.remove-button {
+      @include mat.icon-button-overrides(
+        (
+          icon-color: var(--primary-50),
+          state-layer-color: var(--primary-50),
+        )
+      );
+
+      background-color: var(--primary-600);
+    }
+
+    &.remove-button:hover {
+      @include mat.icon-button-overrides(
+        (
+          icon-color: var(--error-50),
+          state-layer-color: var(--error-50),
+        )
+      );
+
+      background-color: var(--error-600);
+    }
+
+    &:active:not([disabled]) {
+      transform: scale(0.95);
+    }
+
+    &[disabled] {
+      background-color: var(--neutral-100) !important;
+      color: var(--neutral-500) !important;
+
+      @include mat.icon-button-overrides(
+        (
+          icon-color: var(--neutral-600),
+          state-layer-color: var(--neutral-600),
+        )
+      );
+    }
+
+    mat-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}

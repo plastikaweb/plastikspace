@@ -186,20 +186,21 @@
      ============================================ */
 
   --shadow-0: var(--mat-sys-level0);
+  --shadow-01: var(--mat-sys-level01);
   --shadow-1: var(--mat-sys-level1);
   --shadow-2: var(--mat-sys-level2);
   --shadow-3: var(--mat-sys-level3);
   --shadow-4: var(--mat-sys-level4);
   --shadow-5: var(--mat-sys-level5);
 
-  /* Elevation colors (para uso directo si se necesita) */
+  /* Elevation colors */
   --color-umbra: var(--mat-sys-umbra-color);
   --color-penumbra: var(--mat-sys-penumbra-color);
   --color-ambient: var(--mat-sys-ambient-color);
 
   /* ============================================
      SHAPE SYSTEM (Border Radius)
-     Fuente: eco-store-theme.css
+     Source: eco-store-theme.css
      ============================================ */
 
   --radius-none: var(--mat-sys-corner-none);

@@ -6,4 +6,6 @@ export const environment: EcoStoreEnvironment = {
   baseApiUrl: 'https://protection-history.pockethost.io/',
   client: 'tcqkp8j1h6uzext',
   environment: 'staging',
+  languages: ['ca', 'es'],
+  defaultLanguage: 'ca',
 };

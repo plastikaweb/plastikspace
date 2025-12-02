@@ -13,11 +13,11 @@ import { map, startWith } from 'rxjs';
 @Component({
   selector: 'eco-store-products-sidenav-feature',
   imports: [MatCardModule, TranslateModule, MatNavList, MatListItem, MatIconModule, RouterLink],
-  templateUrl: './eco-store-products-sidenav-feature.html',
-  styleUrl: './eco-store-products-sidenav-feature.scss',
+  templateUrl: './eco-store-products-sidenav-feature.component.html',
+  styleUrl: './eco-store-products-sidenav-feature.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class EcoStoreProductsSidenavFeature {
+export default class EcoStoreProductsSidenavFeatureComponent {
   readonly translateService = inject(TranslateService);
   readonly categoriesStore = inject(ecoStoreProductCategoriesStore);
   groupedCategories = this.categoriesStore.groupedCategories;

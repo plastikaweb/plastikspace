@@ -1,0 +1,65 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  height: 100%;
+
+  .product-card {
+    @include mat.card-overrides(
+      (
+        elevated-container-elevation: var(--mat-sys-level01),
+      )
+    );
+
+    &:hover,
+    &:focus,
+    &:active {
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--primary-50),
+          elevated-container-elevation: var(--mat-sys-level2),
+        )
+      );
+    }
+  }
+
+  .favorite-button {
+    @include mat.icon-button-overrides(
+      (
+        icon-size: 20px,
+        state-layer-size: 38px,
+        icon-color: var(--neutral-800),
+      )
+    );
+    background-color: color-mix(in srgb, var(--white) 80%, transparent);
+
+    .mat-icon {
+      height: 20px;
+      width: 20px;
+      font-size: 20px;
+    }
+
+    &:hover,
+    &:focus,
+    &:active {
+      @include mat.icon-overrides(
+        (
+          color: var(--error-500),
+        )
+      );
+      background-color: var(--white);
+    }
+  }
+
+  @include mat.chips-overrides(
+    (
+      outline-color: var(--primary-50),
+      label-text-color: var(--neutral-400),
+      hover-state-layer-opacity: 0,
+      with-icon-icon-color: var(--neutral-400),
+      label-text-size: 0.75rem,
+    )
+  );
+
+  --mat-chip-elevated-container-color: var(--primary-100);
+}

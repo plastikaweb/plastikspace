@@ -1,10 +1,10 @@
-<mat-toolbar class="w-full py-2">
+<mat-toolbar class="py-2">
   <div
-    class="flex max-w-[1600px] w-full mx-auto gap-4 md:gap-12 rounded-full shadow-1 px-4 py-2 flex-row items-center bg-linear-to-r from-primary-100 via-white to-primary-100 border-4 border-primary-600">
-    <div class="flex items-center gap-2 font-semibold tracking-wide text-primary-500">
+    class="flex gap-4 w-full md:gap-12 rounded-full shadow-1 px-4 py-2 flex-row items-center bg-linear-to-r from-primary-100 via-white to-primary-100 border-4 border-primary-600">
+    <a routerLink="/" class="flex items-center gap-2 font-semibold tracking-wide text-primary-500">
       <mat-icon class="header-icon">eco</mat-icon>
       <span>{{ 'store-title' | translate }}</span>
-    </div>
+    </a>
 
     <div class="flex h-full items-center">
       <ng-content select="[primaryMenu]" />

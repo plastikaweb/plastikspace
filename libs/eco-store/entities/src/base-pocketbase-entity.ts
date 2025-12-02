@@ -1,8 +1,10 @@
-import { ListOptions } from 'pocketbase';
 import { BaseEntity } from '@plastik/core/entities';
+import { ListOptions } from 'pocketbase';
 
 export type BasePocketBaseEntity = Pick<BaseEntity<string>, 'name' | 'normalizedName'> & {
   readonly id: string;
+  readonly collectionId: string;
+  readonly collectionName: string;
   created: Date;
   updated: Date;
 };

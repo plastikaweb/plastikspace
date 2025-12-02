@@ -1,24 +1,34 @@
 import { Route } from '@angular/router';
 
-import { getProductsListResolver } from './eco-store-products-feature.resolver';
+import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+import {
+  POCKETBASE_GET_STORE_TOKEN,
+  pocketBaseListResolver,
+} from '@plastik/signal-state/pocketbase';
 
 export const ecoStoreProductsFeatureRoutes: Route[] = [
   {
     path: '',
     title: 'store.list',
+    providers: [
+      {
+        provide: POCKETBASE_GET_STORE_TOKEN,
+        useExisting: ecoStoreProductsStore,
+      },
+    ],
     resolve: {
-      productListLoaded: getProductsListResolver,
+      productListLoaded: pocketBaseListResolver,
     },
     children: [
       {
         path: '',
-        loadComponent: () => import('./eco-store-products-feature'),
+        loadComponent: () => import('./eco-store-products-feature.component'),
         runGuardsAndResolvers: 'paramsOrQueryParamsChange',
       },
       {
         path: '',
         outlet: 'sidenav',
-        loadComponent: () => import('./eco-store-products-sidenav-feature'),
+        loadComponent: () => import('./eco-store-products-sidenav-feature.component'),
       },
     ],
   },

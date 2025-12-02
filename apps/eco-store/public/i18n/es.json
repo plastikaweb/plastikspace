@@ -11,12 +11,52 @@
     "view-cart": "Ver carrito",
     "profile": "Perfil"
   },
+  "product-categories": {
+    "all": "Todas las categorías",
+    "filter": {
+      "sort": "Ordenar",
+      "ecologic": "Ecológico",
+      "total": "productos"
+    },
+    "add": "Agregar"
+  },
   "products": {
+    "all": "Productos",
+    "add": "Agregar",
+    "total": "productos",
+    "favorite": "Agregar {{value}} a favoritos",
     "filter": {
       "categories": {
         "title": "Categorías",
         "all": "Todas las categorías"
       }
+    },
+    "unit-type": {
+      "unit": "Unidad",
+      "weight": "Peso",
+      "volume": "Volumen",
+      "unitWithFixedWeight": "Unidad",
+      "unitWithFixedVolume": "Unidad",
+      "unitWithVariableWeight": "Kg",
+      "unitWithVariableVolume": "L"
+    },
+    "unit": {
+      "unit": "Precio por unidad",
+      "weight": "Precio por kg",
+      "volume": "Precio por L",
+      "unitWithFixedWeight": "La unidad pesa {{value}} kg",
+      "unitWithFixedVolume": "La unidad ocupa {{value}} L",
+      "unitWithVariableWeight": "Precio final según peso",
+      "unitWithVariableVolume": "Precio final según volumen"
+    },
+    "unit-abbreviation": {
+      "unit": "ud.",
+      "weight": "kg",
+      "volume": "L",
+      "unitWithFixedWeight": "ud.",
+      "unitWithFixedVolume": "ud.",
+      "unitWithVariableWeight": "kg",
+      "unitWithVariableVolume": "L"
     }
   },
   "search": {

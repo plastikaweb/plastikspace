@@ -1,0 +1,37 @@
+<div class="min-h-screen p-6 md:p-10">
+  <!-- Header Section -->
+  <header class="mb-8 flex flex-col gap-4 md:flex-row items-center justify-start">
+    <h2 class="text-3xl font-bold text-gray-900 tracking-tight">
+      {{ 'products.all' | translate }}
+    </h2>
+    <span class="text-lg font-medium text-gray-400">({{ store.count() }})</span>
+
+    <!-- <div class="flex flex-wrap items-center gap-3">
+      <div class="relative">
+        <button
+          mat-stroked-button
+          [matMenuTriggerFor]="sortMenu">
+          <div class="flex items-center gap-2">
+            <span class="font-medium">{{ 'products.filter.sort' | translate }}</span>
+            <mat-icon class="text-gray-400 icon-sm">expand_more</mat-icon>
+          </div>
+        </button>
+        <mat-menu #sortMenu="matMenu" class="!rounded-lg !mt-2">
+          <button mat-menu-item>{{ 'products.filter.sort.relevance' | translate }}</button>
+          <button mat-menu-item>{{ 'products.filter.sort.price-asc' | translate }}</button>
+          <button mat-menu-item>{{ 'products.filter.sort.price-desc' | translate }}</button>
+        </mat-menu>
+      </div>
+    </div> -->
+  </header>
+
+  <!-- Products Grid -->
+  <div class="products-grid">
+    @for (item of store.productsWithCategoryName(); track item.id; let i = $index) {
+      <eco-store-product-card
+        [product]="item"
+        (addToCart)="addToCart($event)"
+        (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
+    }
+  </div>
+</div>

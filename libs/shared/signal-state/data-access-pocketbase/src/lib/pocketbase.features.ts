@@ -3,6 +3,7 @@ import { computed, inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
   signalStoreFeature,
+  SignalStoreFeature,
   type,
   withComputed,
   withMethods,
@@ -13,17 +14,23 @@ import { EntityState, setAllEntities, setEntity, withEntities } from '@ngrx/sign
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { DataGet, DataGetList } from '@plastik/core/api-base';
 import { IdType } from '@plastik/core/entities';
-import {
-  BasePocketBaseEntity,
-  BasePocketBaseEntityFilter,
-  BasePocketBaseEntityPagination,
-  BasePocketBaseEntitySort,
-} from '@plastik/eco-store/entities';
+import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { ClientResponseError, ListResult } from 'pocketbase';
 import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { normalizePocketBaseParams } from './pocketbase-query-params.util';
 import { initialGetListState, PocketBaseListParams } from './pocketbase-store.types';
 
+/**
+ * Store feature for list operations with PocketBase.
+ * Use this when you only need to display a list of items.
+ * @template T - The entity type.
+ * @template S - The service type.
+ * @param {object} root0 - Configuration object.
+ * @param {string} root0.featureName - The name of the feature for DevTools.
+ * @param {Type<S>} root0.dataServiceType - The service type for data operations.
+ * @returns {SignalStoreFeature} A signal store feature with list operations.
+ */
 export function withPocketBaseListFeature<
   T extends BasePocketBaseEntity,
   S extends DataGetList<T, ListResult<T>, PocketBaseListParams>,
@@ -59,15 +66,12 @@ export function withPocketBaseListFeature<
       };
 
       return {
-        setParams: (
-          pagination?: BasePocketBaseEntityPagination,
-          filter?: BasePocketBaseEntityFilter,
-          sort?: BasePocketBaseEntitySort
-        ) => {
+        setParams: (rawParams?: Record<string, unknown>) => {
+          const normalized = normalizePocketBaseParams(rawParams, initialGetListState());
           updateState(store, `[${featureName}] set params`, {
-            pagination: pagination ?? initialGetListState().pagination,
-            filter: filter ?? initialGetListState().filter,
-            sort: sort ?? initialGetListState().sort,
+            pagination: normalized.pagination,
+            filter: normalized.filter,
+            sort: normalized.sort,
           });
         },
 
@@ -107,13 +111,25 @@ export function withPocketBaseListFeature<
   );
 }
 
+/**
+ * Store feature for single item operations with PocketBase.
+ * Use this when you only need to display a single item.
+ * @template T - The entity type.
+ * @template S - The service type.
+ * @param {object} root0 - Configuration object.
+ * @param {string} root0.featureName - The name of the feature for DevTools.
+ * @returns {SignalStoreFeature} A signal store feature with single item operations.
+ */
 export function withPocketBaseGetOneFeature<
   T extends BasePocketBaseEntity,
   S extends DataGet<T, ListResult<T>, PocketBaseListParams>,
 >({ featureName }: { featureName: string }) {
   return signalStoreFeature(
     {
-      props: type<{ _apiService: S; _storeNotificationService: any }>(),
+      props: type<{
+        _apiService: S;
+        _storeNotificationService: InstanceType<typeof notificationStore>;
+      }>(),
       state: type<EntityState<T>>(),
     },
     withState({ selectedItemId: null as IdType<T> | null }),
