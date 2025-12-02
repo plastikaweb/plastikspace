@@ -55,21 +55,21 @@
 }
 
 :root {
-  --neutral-50: var(--mat-sys-surface-container-lowest);
-  --neutral-100: var(--mat-sys-surface-container-low);
-  --neutral-200: var(--mat-sys-surface-container);
-  --neutral-300: var(--mat-sys-surface-container-high);
-  --neutral-400: var(--mat-sys-surface-container-highest);
-  --neutral-500: var(--mat-sys-surface);
-  --neutral-600: color-mix(in srgb, var(--mat-sys-on-surface) 20%, var(--mat-sys-surface));
-  --neutral-700: color-mix(in srgb, var(--mat-sys-on-surface) 40%, var(--mat-sys-surface));
-  --neutral-800: color-mix(in srgb, var(--mat-sys-on-surface) 60%, var(--mat-sys-surface));
-  --neutral-900: color-mix(in srgb, var(--mat-sys-on-surface) 80%, var(--mat-sys-surface));
-  --neutral-950: var(--mat-sys-on-surface);
+  --neutral-50: color-mix(in oklch, white 95%, black);
+  --neutral-100: color-mix(in oklch, white 90%, black);
+  --neutral-200: color-mix(in oklch, white 80%, black);
+  --neutral-300: color-mix(in oklch, white 70%, black);
+  --neutral-400: color-mix(in oklch, white 60%, black);
+  --neutral-500: color-mix(in oklch, white 50%, black);
+  --neutral-600: color-mix(in oklch, white 40%, black);
+  --neutral-700: color-mix(in oklch, white 30%, black);
+  --neutral-800: color-mix(in oklch, white 20%, black);
+  --neutral-900: color-mix(in oklch, white 10%, black);
+  --neutral-950: color-mix(in oklch, white 5%, black);
 }
 
 :root {
   --transparent: transparent;
-  --black: black;
-  --white: white;
+  --black: #000000;
+  --white: #ffffff;
 }

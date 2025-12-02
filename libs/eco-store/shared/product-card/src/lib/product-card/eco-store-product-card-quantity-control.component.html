@@ -1,0 +1,62 @@
+@if (!isInCart()) {
+  <button
+    matButton="filled"
+    type="button"
+    class="add-button w-full flex items-center justify-center gap-1"
+    (click)="increment()">
+    <mat-icon class="scale-120">shopping_basket</mat-icon>
+    <span>{{ 'products.add' | translate }}</span>
+  </button>
+} @else {
+  <div
+    class="flex h-14 w-full items-center justify-between rounded-full border border-gray-300 bg-white py-1 pl-1 pr-1 shadow-sm">
+    <button
+      matIconButton
+      type="button"
+      [attr.aria-label]="
+        (quantity() <= minLimit() ? 'products.remove' : 'products.decrement') | translate
+      "
+      [class]="quantity() <= minLimit() ? 'remove-button' : 'decrement-button'"
+      (click)="decrement()">
+      @if (quantity() <= minLimit()) {
+        <mat-icon>delete_outline</mat-icon>
+      } @else {
+        <mat-icon>remove</mat-icon>
+      }
+    </button>
+
+    <div
+      class="flex flex-1 items-baseline justify-center not-first-of-type:cursor-text"
+      tabindex="0"
+      (click)="$event.stopPropagation()"
+      (keydown.enter)="$event.stopPropagation()"
+      (keydown.space)="$event.stopPropagation()">
+      <input
+        #qtyInput
+        matInput
+        readonly
+        type="number"
+        class="w-fit font-bold text-center no-spinners border-none focus:outline-none cursor-default"
+        [value]="quantity()"
+        [step]="step()"
+        [min]="minLimit()"
+        [max]="maxLimit()"
+        (change)="onManualInput($event)"
+        (keydown.enter)="qtyInput.blur()" />
+      <span class="text-gray-500 text-md">{{
+        `products.unit-abbreviation.${product().unitType}` | translate
+      }}</span>
+    </div>
+
+    <button
+      matIconButton
+      type="button"
+      class="increment-button"
+      [disabled]="quantity() >= maxLimit()"
+      [attr.aria-label]="'products.increment' | translate"
+      [class.opacity-50]="quantity() >= maxLimit()"
+      (click)="increment()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+}

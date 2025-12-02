@@ -5,10 +5,18 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { SharedFormFeatureComponent } from '@plastik/shared/form';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'eco-header',
-  imports: [MatToolbar, MatIcon, MatButtonModule, TranslatePipe, SharedFormFeatureComponent],
+  imports: [
+    MatToolbar,
+    MatIcon,
+    MatButtonModule,
+    RouterLink,
+    TranslatePipe,
+    SharedFormFeatureComponent,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -11,12 +11,52 @@
     "view-cart": "Veure cistella",
     "profile": "Perfil"
   },
-  "products": {
+  "product-categories": {
+    "all": "Totes les categories",
     "filter": {
-      "categories": {
-        "title": "Categories",
-        "all": "Totes les categories"
-      }
+      "sort": "Ordenar",
+      "ecologic": "Ecològic",
+      "total": "productes"
+    },
+    "add": "Afegir"
+  },
+  "products": {
+    "all": "Productes",
+    "add": "Afegir",
+    "total": "productes trobats",
+    "favorite": "Afegir {{value}} a favorits",
+    "filter": {
+      "sort": "Ordenar",
+      "sort.relevance": "Més valorats",
+      "sort.price-asc": "Preu ascendent",
+      "sort.price-desc": "Preu descendent"
+    },
+    "unit-type": {
+      "unit": "Unitat",
+      "weight": "Pes",
+      "volume": "Volum",
+      "unitWithFixedVolume": "Unitat",
+      "unitWithFixedWeight": "Unitat",
+      "unitWithVariableWeight": "Kg",
+      "unitWithVariableVolume": "L"
+    },
+    "unit": {
+      "unit": "Preu per unitat",
+      "weight": "Preu per kg",
+      "volume": "Preu per L",
+      "unitWithFixedWeight": "La unitat pesa {{value}} kg",
+      "unitWithFixedVolume": "La unitat ocupa {{value}} L",
+      "unitWithVariableWeight": "Preu final segons pes",
+      "unitWithVariableVolume": "Preu final segons volum"
+    },
+    "unit-abbreviation": {
+      "unit": "un.",
+      "weight": "kg",
+      "volume": "L",
+      "unitWithFixedWeight": "un.",
+      "unitWithFixedVolume": "un.",
+      "unitWithVariableWeight": "kg",
+      "unitWithVariableVolume": "L"
     }
   },
   "search": {

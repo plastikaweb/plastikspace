@@ -6,4 +6,6 @@ export const environment: EcoStoreEnvironment = {
   baseApiUrl: 'http://37.59.113.217:8090/',
   client: 'tcqkp8j1h6uzext',
   environment: 'production',
+  languages: ['ca', 'es'],
+  defaultLanguage: 'ca',
 };

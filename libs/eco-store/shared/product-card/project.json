@@ -1,0 +1,13 @@
+{
+  "name": "eco-store-shared-product-card",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/shared/product-card/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["type:ui", "scope:eco-store"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

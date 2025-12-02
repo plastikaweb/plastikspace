@@ -1,0 +1,10 @@
+:host {
+  --min-col-width: 200px;
+  --product-gap: 1rem;
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
+    gap: var(--product-gap);
+  }
+}

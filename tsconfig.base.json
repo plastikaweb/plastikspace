@@ -191,7 +191,8 @@
         "libs/shared/signal-state/data-access-firebase/src/index.ts"
       ],
       "@plastik/signal-state/http": ["libs/shared/signal-state/data-access-http/src/index.ts"],
-      "@plastik/core/api-base": ["libs/core/util/api-base/src/index.ts"]
+      "@plastik/core/api-base": ["libs/core/util/api-base/src/index.ts"],
+      "@plastik/eco-store/product-card": ["libs/eco-store/shared/product-card/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

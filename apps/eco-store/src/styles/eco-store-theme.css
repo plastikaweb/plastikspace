@@ -238,6 +238,9 @@ html {
   --mat-sys-level0:
     0px 0px 0px 0px var(--mat-sys-umbra-color), 0px 0px 0px 0px var(--mat-sys-penumbra-color),
     0px 0px 0px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level01:
+    0px 1px 1px 0px var(--mat-sys-umbra-color), 0px 1px 1px 0px var(--mat-sys-penumbra-color),
+    0px 1px 1px 0px var(--mat-sys-ambient-color);
   --mat-sys-level1:
     0px 1px 2px 0px var(--mat-sys-umbra-color), 0px 2px 3px 0px var(--mat-sys-penumbra-color),
     0px 1px 4px 0px var(--mat-sys-ambient-color);

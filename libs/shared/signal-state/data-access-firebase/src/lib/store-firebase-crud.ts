@@ -4,9 +4,6 @@ import { FirebaseCrudFilter, FirebaseCrudPagination } from '@plastik/core/api-fi
 import { BaseEntity } from '@plastik/core/entities';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 
-/**
- * @description Re-exported from @plastik/core/api-firebase for backward compatibility
- */
 export type { FirebaseCrudFilter, FirebaseCrudPagination };
 
 /**
@@ -41,6 +38,6 @@ export type StoreFirebaseCrudState<
 /**
  * @description The token for a signal store feature to implement entity CRUD operations with Firebase.
  */
-export const STORE_TOKEN = new InjectionToken<FirebaseCrudState<BaseEntity, FirebaseCrudFilter>>(
-  'STORE_TOKEN'
-);
+export const FIREBASE_STORE_TOKEN = new InjectionToken<
+  FirebaseCrudState<BaseEntity, FirebaseCrudFilter>
+>('FIREBASE_STORE_TOKEN');

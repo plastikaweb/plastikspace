@@ -1,7 +1,7 @@
 import { updateState } from '@angular-architects/ngrx-toolkit';
 import { Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { signalStoreFeature, withHooks, withMethods } from '@ngrx/signals';
+import { signalStoreFeature, SignalStoreFeature, withHooks, withMethods } from '@ngrx/signals';
 import { addEntity, removeEntity, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { DataCrud } from '@plastik/core/api-base';
@@ -9,8 +9,8 @@ import { IdType } from '@plastik/core/entities';
 import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
 import { ClientResponseError, ListResult, RecordOptions } from 'pocketbase';
 import { pipe, switchMap, tap } from 'rxjs';
-import { PocketBaseListParams } from './pocketbase-store.types';
-import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from './pocketbase.features';
+import { PocketBaseListParams } from '../pocketbase-store.types';
+import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocketbase.features';
 
 /**
  * Store feature for full CRUD operations with PocketBase.

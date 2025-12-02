@@ -12,10 +12,10 @@ A core feature component that displays a table with filtering capabilities.
 ## How to use
 
 1. Load the `TableWithFilteringComponent` in a route.
-2. Set providers for `STORE_TOKEN`, `TABLE_WITH_FILTERING_FACADE`, `TABLE_TOKEN`, and `FORM_TOKEN` to be used in the feature route with the `TableWithFilteringComponent`.
+2. Set providers for `FIREBASE_STORE_TOKEN`, `TABLE_WITH_FILTERING_FACADE`, `TABLE_TOKEN`, and `FORM_TOKEN` to be used in the feature route with the `TableWithFilteringComponent`.
 
 ```typescript
-import { STORE_TOKEN } from '@plastik/core/entities';
+import { FIREBASE_STORE_TOKEN } from '@plastik/core/entities';
 import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plastik/core/list-view';
 import { TABLE_TOKEN } from '@plastik/shared/table/entities';
 import { FORM_TOKEN } from '@plastik/core/entities';
@@ -27,7 +27,7 @@ export const exampleFeatureRoutes: Route[] = [
     component: TableWithFilteringComponent,
     providers: [
       {
-        provide: STORE_TOKEN,
+        provide: FIREBASE_STORE_TOKEN,
         useExisting: ExampleStore,
       },
       {
@@ -47,7 +47,7 @@ export const exampleFeatureRoutes: Route[] = [
 ];
 ```
 
-> The `STORE_TOKEN` is a token that provides a `StoreFeatureToken` object to configure the store.
+> The `FIREBASE_STORE_TOKEN` is a token that provides a `StoreFeatureToken` object to configure the store.
 >
 > ```typescript
 > export interface StoreFeatureToken {

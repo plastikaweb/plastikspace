@@ -37,8 +37,8 @@ export const appConfig: ApplicationConfig = {
         prefix: '/i18n/',
         suffix: '.json',
       }),
-      fallbackLang: 'ca',
-      lang: 'ca',
+      fallbackLang: environment.defaultLanguage,
+      lang: environment.defaultLanguage,
     }),
     provideAppInitializer(() => {
       inject(ecoStoreProductCategoriesStore);

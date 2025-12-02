@@ -1,6 +1,6 @@
+import { LocalizedFields } from '@plastik/core/entities';
 import { BasePocketBaseEntityWithClientRef } from './base-pocketbase-entity';
 import { ProductCategory } from './productCategory';
-import { LocalizedFields } from '@plastik/core/entities';
 
 export type ProductUnitType =
   | 'unit'
@@ -11,13 +11,9 @@ export type ProductUnitType =
   | 'unitWithVariableWeight'
   | 'unitWithVariableVolume';
 
-/**
- * Rating del producte, valor decimal entre 0 i 5
- */
 export type ProductRating = number;
 
-// Tipus base de PocketBase
-export interface Product extends BasePocketBaseEntityWithClientRef {
+export interface EcoStoreProduct extends BasePocketBaseEntityWithClientRef {
   description?: LocalizedFields | string;
   inStock: boolean;
   stock: number;
@@ -30,24 +26,31 @@ export interface Product extends BasePocketBaseEntityWithClientRef {
   unitType: ProductUnitType;
   unitBase: number | null;
   category: ProductCategory['id'];
+  minQuantity: number;
+  maxQuantity: number;
   rating?: ProductRating;
   reviewCount?: number;
 }
 
-export type CreateProduct = Omit<
-  Product,
+export type CreateEcoStoreProduct = Omit<
+  EcoStoreProduct,
   'id' | 'created' | 'updated' | 'normalizedName' | 'client' | 'rating' | 'reviewCount'
 >;
 
-export type UpdateProduct = Partial<
+export type UpdateEcoStoreProduct = Partial<
   Omit<
-    Product,
+    EcoStoreProduct,
     'id' | 'created' | 'updated' | 'normalizedName' | 'client' | 'rating' | 'reviewCount'
   >
 > & { id: string };
 
-export interface ProductFilters {
+export interface EcoStoreProductFilter {
   client?: string;
   name?: string;
   search?: string;
 }
+
+export type EcoStoreProductWithCategoryName = EcoStoreProduct & {
+  categoryName: string;
+  categoryColor: string;
+};

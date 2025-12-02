@@ -3,7 +3,7 @@
   "ignorePatterns": ["**/*"],
   "plugins": ["@nx", "deprecation", "jsdoc", "@angular-eslint"],
   "parserOptions": {
-    "projectService": true
+    "project": ["./tsconfig.base.json", "./tsconfig.eslint.json"]
   },
   "overrides": [
     {

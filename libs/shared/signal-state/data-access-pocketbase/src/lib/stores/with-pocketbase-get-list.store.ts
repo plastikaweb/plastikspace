@@ -1,10 +1,10 @@
 import { Type } from '@angular/core';
-import { signalStoreFeature, withHooks } from '@ngrx/signals';
+import { signalStoreFeature, SignalStoreFeature, withHooks } from '@ngrx/signals';
 import { DataGetList } from '@plastik/core/api-base';
 import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
 import { ListResult } from 'pocketbase';
-import { PocketBaseListParams } from './pocketbase-store.types';
-import { withPocketBaseListFeature } from './pocketbase.features';
+import { PocketBaseListParams } from '../pocketbase-store.types';
+import { withPocketBaseListFeature } from '../pocketbase.features';
 
 /**
  * Store feature for read-only list operations with PocketBase.

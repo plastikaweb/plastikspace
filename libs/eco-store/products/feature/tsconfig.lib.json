@@ -8,5 +8,8 @@
     "types": []
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../../../shared/signal-state/data-access-pocketbase/src/lib/eco-store-products-feature.resolver.ts"
+  ]
 }
