@@ -1,0 +1,178 @@
+[
+  {
+    "id": "pbc_2279338944",
+    "name": "_mfas",
+    "type": "base",
+    "system": true,
+    "indexes": [
+      "CREATE INDEX `idx_mfas_collectionRef_recordRef` ON `_mfas` (collectionRef,recordRef)"
+    ],
+    "listRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId",
+    "viewRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  },
+  {
+    "id": "pbc_1638494021",
+    "name": "_otps",
+    "type": "base",
+    "system": true,
+    "indexes": [
+      "CREATE INDEX `idx_otps_collectionRef_recordRef` ON `_otps` (collectionRef, recordRef)"
+    ],
+    "listRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId",
+    "viewRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  },
+  {
+    "id": "pbc_2281828961",
+    "name": "_externalAuths",
+    "type": "base",
+    "system": true,
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_externalAuths_record_provider` ON `_externalAuths` (collectionRef, recordRef, provider)",
+      "CREATE UNIQUE INDEX `idx_externalAuths_collection_provider` ON `_externalAuths` (collectionRef, provider, providerId)"
+    ],
+    "listRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId",
+    "viewRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId"
+  },
+  {
+    "id": "pbc_4275539003",
+    "name": "_authOrigins",
+    "type": "base",
+    "system": true,
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_authOrigins_unique_pairs` ON `_authOrigins` (collectionRef, recordRef, fingerprint)"
+    ],
+    "listRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId",
+    "viewRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": "@request.auth.id != '' && recordRef = @request.auth.id && collectionRef = @request.auth.collectionId"
+  },
+  {
+    "id": "pbc_3142635823",
+    "name": "_superusers",
+    "type": "auth",
+    "system": true,
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_tokenKey_pbc_3142635823` ON `_superusers` (`tokenKey`)",
+      "CREATE UNIQUE INDEX `idx_email_pbc_3142635823` ON `_superusers` (`email`) WHERE `email` != ''"
+    ],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  },
+  {
+    "id": "_pb_users_auth_",
+    "name": "users",
+    "type": "auth",
+    "system": false,
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_tokenKey__pb_users_auth_` ON `users` (`tokenKey`)",
+      "CREATE UNIQUE INDEX `idx_email__pb_users_auth_` ON `users` (`email`) WHERE `email` != ''"
+    ],
+    "listRule": "id = @request.auth.id",
+    "viewRule": "id = @request.auth.id",
+    "createRule": "",
+    "updateRule": "id = @request.auth.id",
+    "deleteRule": "id = @request.auth.id"
+  },
+  {
+    "id": "pbc_3411954233",
+    "name": "product_categories",
+    "type": "base",
+    "system": false,
+    "indexes": ["CREATE UNIQUE INDEX `idx_jJcNH78j9b` ON `product_categories` (`normalizedName`)"],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "@request.auth.record.clientId = client",
+    "updateRule": "@request.auth.record.clientId = client",
+    "deleteRule": "@request.auth.record.clientId = client"
+  },
+  {
+    "id": "pbc_4092854851",
+    "name": "products",
+    "type": "base",
+    "system": false,
+    "indexes": [
+      "CREATE UNIQUE INDEX `idx_UZDWsRJbL1` ON `products` (`normalizedName`)",
+      "CREATE INDEX `idx_QMLIKjBVN7` ON `products` (`category`)",
+      "CREATE INDEX `idx_pcuqdsjzwH` ON `products` (`inStock`)",
+      "CREATE INDEX `idx_pe3oncnQUn` ON `products` (\n  `inStock`,\n  `category`\n)"
+    ],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "@request.auth.record.clientId = @request.body.client\n",
+    "updateRule": "@request.auth.record.clientId = client",
+    "deleteRule": "@request.auth.record.clientId = client"
+  },
+  {
+    "id": "pbc_2442875294",
+    "name": "clients",
+    "type": "base",
+    "system": false,
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  },
+  {
+    "id": "pbc_3304764897",
+    "name": "languages",
+    "type": "base",
+    "system": false,
+    "indexes": ["CREATE UNIQUE INDEX `idx_UvWnDvVydE` ON `languages` (`code`)"],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  },
+  {
+    "id": "pbc_1661841540",
+    "name": "product_categories_translations",
+    "type": "base",
+    "system": false,
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  },
+  {
+    "id": "pbc_3002202272",
+    "name": "products_translations",
+    "type": "base",
+    "system": false,
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  },
+  {
+    "id": "pbc_2445876889",
+    "name": "category_groups",
+    "type": "base",
+    "system": false,
+    "indexes": [],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  }
+]

@@ -119,7 +119,10 @@
     "eco-store:pocketbase:stop": "pkill -f 'pocketbase serve' || true",
     "eco-store:local": "yarn eco-store:pocketbase:stop && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve",
     "eco-store:local:staging": "yarn eco-store:pocketbase:stop && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:staging",
-    "eco-store:local:prod": "yarn eco-store:pocketbase:stop && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:prod"
+    "eco-store:local:prod": "yarn eco-store:pocketbase:stop && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:prod",
+    "pb:export": "node apps/eco-store/scripts/export-pocketbase-schema.js",
+    "pb:sync": "node apps/eco-store/scripts/sync-pocketbase-schema.js",
+    "pb:diff": "git diff apps/eco-store/pocketbase/pb_schema.json"
   },
   "dependencies": {
     "@angular-architects/ngrx-toolkit": "20.4.2",
@@ -217,6 +220,7 @@
     "cypress-pipe": "^2.0.0",
     "cz-customizable": "^7.2.1",
     "cz-customizable-ghooks": "^2.0.0",
+    "dotenv": "^17.2.3",
     "esbuild": "^0.19.2",
     "eslint": "~8.57.0",
     "eslint-config-prettier": "^9.0.0",

@@ -81,6 +81,7 @@ mvp_github_issues.md
 **/pocketbase/pb_data/
 **/pocketbase/.env.local
 **/pocketbase/.env
+apps/eco-store/.env
 **/pocketbase/*.md
 
 # local helpers

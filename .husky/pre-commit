@@ -1,7 +1,33 @@
 export NX_CLI_SET=classic
 export PAGER=cat
 
+# 1. Stop any existing instance to avoid port conflicts
+yarn eco-store:pocketbase:stop
+
+# 2. Start PocketBase in the background
+yarn eco-store:pocketbase:run &
+PB_PID=$!
+
+# 3. Wait a few seconds for it to initialize
+sleep 3
+
+# 4. Run the export
+yarn pb:export
+EXPORT_EXIT_CODE=$?
+
+# 5. Kill the background PocketBase instance
+kill $PB_PID
+
+# 6. Check if export failed
+if [ $EXPORT_EXIT_CODE -ne 0 ]; then
+  echo "❌ PocketBase schema export failed!"
+  exit $EXPORT_EXIT_CODE
+fi
+
+# 7. Add the exported schema to the commit
+git add apps/eco-store/pocketbase/pb_schema.json
+
 yarn branch:lint \
-  && yarn nx format:write --all \
+  && yarn nx format:write \
   && yarn nx affected:lint \
   && markdownlint *.md
