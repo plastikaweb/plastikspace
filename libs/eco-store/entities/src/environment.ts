@@ -4,4 +4,5 @@ export interface EcoStoreEnvironment extends EnvironmentWithApiUrl {
   client: string;
   languages: string[];
   defaultLanguage: string;
+  collectionNames?: Record<string, string>;
 }
