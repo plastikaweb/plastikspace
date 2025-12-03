@@ -4,6 +4,7 @@ import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
 import { RecordOptions } from 'pocketbase';
 
 export interface PocketBaseListStore<T extends BasePocketBaseEntity = BasePocketBaseEntity> {
+  entity?: T;
   setParams(params?: Record<string, unknown>): void;
   getList(): void;
 }
