@@ -1,6 +1,6 @@
-import PocketBase from 'pocketbase';
 import fs from 'fs';
 import path from 'path';
+import PocketBase from 'pocketbase';
 import { fileURLToPath } from 'url';
 import { getPocketBaseUrl } from './load-environment.js';
 
@@ -122,7 +122,7 @@ async function syncSchema() {
       } catch (error) {
         console.error(`❌ Error processing ${collection.name}:`, error.message);
         if (error.response) {
-          console.error('   Response:', error.response);
+          console.error('   Response:', JSON.stringify(error.response, null, 2));
         }
         errors++;
       }
