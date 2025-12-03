@@ -72,7 +72,7 @@ async function exportSchema() {
       name: col.name,
       type: col.type,
       system: col.system,
-      schema: col.schema,
+      fields: col.fields,
       indexes: col.indexes || [],
       listRule: col.listRule,
       viewRule: col.viewRule,
