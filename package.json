@@ -122,7 +122,8 @@
     "eco-store:local:prod": "yarn eco-store:pocketbase:stop && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:prod",
     "pb:export": "node apps/eco-store/scripts/export-pocketbase-schema.js",
     "pb:sync": "node apps/eco-store/scripts/sync-pocketbase-schema.js",
-    "pb:diff": "git diff apps/eco-store/pocketbase/pb_schema.json"
+    "pb:diff": "git diff apps/eco-store/pocketbase/pb_schema.json",
+    "pb:fix-ids": "node apps/eco-store/scripts/fix-collection-ids.js"
   },
   "dependencies": {
     "@angular-architects/ngrx-toolkit": "20.4.2",

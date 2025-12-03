@@ -27,14 +27,14 @@ environments via GitHub Actions.
 
 ### Current Collections
 
-| Collection | Type | Required Fields | Notes |
-|------------|------|----------------|-------|
-| `users` | auth | email, password, clientId | Auth collection |
-| `products` | base | name, normalizedName, unitType, category | Main products |
-| `product_categories` | base | normalizedName, name, description, client, group | Categories |
-| `clients` | base | name, email | Client management |
-| `languages` | base | code | i18n support |
-| `category_groups` | base | name | Category grouping |
+| Collection           | Type | Required Fields                                  | Notes             |
+| -------------------- | ---- | ------------------------------------------------ | ----------------- |
+| `users`              | auth | email, password, clientId                        | Auth collection   |
+| `products`           | base | name, normalizedName, unitType, category         | Main products     |
+| `product_categories` | base | normalizedName, name, description, client, group | Categories        |
+| `clients`            | base | name, email                                      | Client management |
+| `languages`          | base | code                                             | i18n support      |
+| `category_groups`    | base | name                                             | Category grouping |
 
 ---
 
@@ -89,7 +89,7 @@ The sync script uses a two-phase approach to handle complex schemas:
 // ❌ DANGEROUS - Can cause data loss or migration errors
 {
   "name": "price",
-  "type": "text"  // was "number"
+  "type": "text" // was "number"
 }
 ```
 
@@ -113,7 +113,7 @@ The sync script uses a two-phase approach to handle complex schemas:
 {
   "name": "ecoLabel",
   "type": "text",
-  "required": true  // ⚠️ Problem!
+  "required": true // ⚠️ Problem!
 }
 ```
 
@@ -126,7 +126,7 @@ The sync script uses a two-phase approach to handle complex schemas:
 {
   "name": "ecoLabel",
   "type": "text",
-  "required": false  // ← Start here
+  "required": false // ← Start here
 }
 ```
 
@@ -137,7 +137,7 @@ The sync script uses a two-phase approach to handle complex schemas:
 {
   "name": "category",
   "type": "relation",
-  "cascadeDelete": true  // was false
+  "cascadeDelete": true // was false
 }
 ```
 
@@ -171,7 +171,7 @@ The sync script uses a two-phase approach to handle complex schemas:
 {
   "name": "email",
   "type": "email",
-  "pattern": "^[a-z0-9._%+-]+@company\\.com$"  // New strict pattern
+  "pattern": "^[a-z0-9._%+-]+@company\\.com$" // New strict pattern
 }
 ```
 
@@ -220,7 +220,7 @@ The sync script uses a two-phase approach to handle complex schemas:
 {
   "name": "status",
   "type": "select",
-  "values": ["active", "inactive", "pending", "archived"]  // Added "archived"
+  "values": ["active", "inactive", "pending", "archived"] // Added "archived"
 }
 ```
 
@@ -230,17 +230,17 @@ The sync script uses a two-phase approach to handle complex schemas:
 
 ### Common Field Types
 
-| Type | Use Case | Required Attributes | Example |
-|------|----------|-------------------|---------|
-| `text` | Short strings | `max`, `min`, `pattern` | Product names |
-| `json` | Multilingual content | `maxSize` | Translations |
-| `number` | Numeric values | `min`, `max`, `onlyInt` | Prices, quantities |
-| `bool` | True/false | - | In stock flag |
-| `email` | Email addresses | `onlyDomains`, `exceptDomains` | User emails |
-| `select` | Fixed options | `values`, `maxSelect` | Unit types |
-| `file` | File uploads | `maxSize`, `mimeTypes`, `maxSelect` | Product images |
-| `relation` | Foreign keys | `collectionId`, `cascadeDelete` | Category links |
-| `autodate` | Timestamps | `onCreate`, `onUpdate` | created, updated |
+| Type       | Use Case             | Required Attributes                 | Example            |
+| ---------- | -------------------- | ----------------------------------- | ------------------ |
+| `text`     | Short strings        | `max`, `min`, `pattern`             | Product names      |
+| `json`     | Multilingual content | `maxSize`                           | Translations       |
+| `number`   | Numeric values       | `min`, `max`, `onlyInt`             | Prices, quantities |
+| `bool`     | True/false           | -                                   | In stock flag      |
+| `email`    | Email addresses      | `onlyDomains`, `exceptDomains`      | User emails        |
+| `select`   | Fixed options        | `values`, `maxSelect`               | Unit types         |
+| `file`     | File uploads         | `maxSize`, `mimeTypes`, `maxSelect` | Product images     |
+| `relation` | Foreign keys         | `collectionId`, `cascadeDelete`     | Category links     |
+| `autodate` | Timestamps           | `onCreate`, `onUpdate`              | created, updated   |
 
 ### Safe Field Modifications
 

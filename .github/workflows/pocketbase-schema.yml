@@ -16,6 +16,7 @@ on:
         options:
           - sync
           - export
+          - fix-ids
 
 jobs:
   sync-schema:
@@ -66,6 +67,40 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add apps/eco-store/pocketbase/pb_schema.json
           git diff --quiet && git diff --staged --quiet || git commit -m "chore: update PocketBase schema [skip ci]"
+
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+
+  fix-schema-ids:
+    if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'fix-ids'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Fix Collection IDs
+        run: node apps/eco-store/scripts/fix-collection-ids.js
+        env:
+          POCKETBASE_STAGING_ADMIN_EMAIL: ${{ secrets.POCKETBASE_STAGING_ADMIN_EMAIL }}
+          POCKETBASE_STAGING_ADMIN_PASSWORD: ${{ secrets.POCKETBASE_STAGING_ADMIN_PASSWORD }}
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add apps/eco-store/pocketbase/pb_schema.json
+          git diff --quiet && git diff --staged --quiet || git commit -m "chore: fix PocketBase collection IDs [skip ci]"
 
       - name: Push changes
         uses: ad-m/github-push-action@master
