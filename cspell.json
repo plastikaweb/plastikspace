@@ -2,7 +2,13 @@
   "version": "0.2",
   "language": "ca, es, en",
   "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
-  "ignorePaths": ["node_modules/**/*", "dist/**/*", "apps/llecoop-firebase/.emulators/**/*"],
+  "ignorePaths": [
+    "node_modules/**/*",
+    "dist/**/*",
+    "apps/llecoop-firebase/.emulators/**/*",
+    "apps/eco-store/**",
+    "apps/eco-store/scripts/**"
+  ],
   "dictionaryDefinitions": [],
   "words": [
     "Ahsan",
@@ -59,7 +65,6 @@
     "simondotm",
     "Stackblitz",
     "tailwindcss",
-    "tcqkp",
     "thollander",
     "tuesday",
     "typescale",
