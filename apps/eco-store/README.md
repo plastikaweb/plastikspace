@@ -48,6 +48,16 @@ The platform facilitates the management of a consumer cooperative with different
 
 - **Start**: `yarn eco-store:pocketbase:run`
 - **Stop**: `yarn eco-store:pocketbase:stop`
+- **Export Schema**: `yarn pb:export`
+
+📖 **[PocketBase Schema Management Guide](./POCKETBASE_SCHEMA_MANAGEMENT.md)** - Best practices for managing schema changes
+
+**Related Resources:**
+
+- [Schema File](./pocketbase/pb_schema.json)
+- [Sync Script](./scripts/sync-pocketbase-schema.js)
+- [Export Script](./scripts/export-pocketbase-schema.js)
+- [GitHub Workflow](../../.github/workflows/pocketbase-schema.yml)
 
 ### Testing & Quality
 
