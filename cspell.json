@@ -6,7 +6,7 @@
     "node_modules/**/*",
     "dist/**/*",
     "apps/llecoop-firebase/.emulators/**/*",
-    "apps/eco-store/**",
+    "apps/eco-store/pocketbase/**",
     "apps/eco-store/scripts/**"
   ],
   "dictionaryDefinitions": [],
