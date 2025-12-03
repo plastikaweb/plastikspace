@@ -77,7 +77,7 @@ issues.js
 mvp_github_issues.md
 
 # pocketbase files
-apps/**/pocketbase/**
+apps/eco-store/pocketbase
 !apps/eco-store/pocketbase/pb_schema.json
 apps/eco-store/.env
 
