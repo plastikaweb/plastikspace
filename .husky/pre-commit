@@ -24,10 +24,10 @@ if [ $EXPORT_EXIT_CODE -ne 0 ]; then
   exit $EXPORT_EXIT_CODE
 fi
 
-# 7. Add the exported schema to the commit
-git add apps/eco-store/pocketbase/pb_schema.json
-
 yarn branch:lint \
   && yarn nx format:write \
   && yarn nx affected:lint \
   && markdownlint *.md
+
+# 7. Add all changes to the commit
+git add -A

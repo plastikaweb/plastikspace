@@ -77,12 +77,10 @@ issues.js
 mvp_github_issues.md
 
 # pocketbase files
-**/pocketbase/pocketbase
-**/pocketbase/pb_data/
-**/pocketbase/.env.local
-**/pocketbase/.env
+apps/**/pocketbase/**
+!apps/eco-store/pocketbase/pb_schema.json
 apps/eco-store/.env
-**/pocketbase/*.md
+
 
 # local helpers
 /helpers

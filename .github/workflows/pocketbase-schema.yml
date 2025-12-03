@@ -5,9 +5,8 @@ on:
     branches: [develop]
     paths:
       - 'apps/eco-store/pocketbase/**'
-  pull_request:
-    paths:
-      - 'apps/eco-store/pocketbase/**'
+      - 'apps/eco-store/scripts/**'
+
   workflow_dispatch:
     inputs:
       action:
