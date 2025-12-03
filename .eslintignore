@@ -1,2 +1,3 @@
 node_modules
 **/pocketbase/**
+apps/eco-store/scripts/*

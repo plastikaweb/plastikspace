@@ -11,8 +11,6 @@ const __dirname = path.dirname(__filename);
 // Load environment variables from .env file
 dotenv.config({ path: path.join(__dirname, '..', '.env') });
 
-console.log(process.env);
-
 // Read environment from arguments or use 'staging' by default
 const ENV_NAME = process.env.POCKETBASE_ENV || 'staging';
 const POCKETBASE_URL = getPocketBaseUrl(ENV_NAME);
@@ -26,8 +24,6 @@ let ADMIN_EMAIL, ADMIN_PASSWORD;
 if (ENV_NAME === 'development') {
   ADMIN_EMAIL = process.env.POCKETBASE_DEV_ADMIN_EMAIL;
   ADMIN_PASSWORD = process.env.POCKETBASE_DEV_ADMIN_PASSWORD;
-
-  console.log(`Development credentials: ${ADMIN_EMAIL} / ${ADMIN_PASSWORD}`);
 
   if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
     console.error(
