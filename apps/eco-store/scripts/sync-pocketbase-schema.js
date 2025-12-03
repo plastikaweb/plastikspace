@@ -77,50 +77,67 @@ async function syncSchema() {
     let skipped = 0;
     let errors = 0;
 
-    for (const collection of schema) {
-      // Skip system collections
-      if (collection.system) {
-        console.log(`⏭️  Skipping system collection: ${collection.name}`);
-        skipped++;
+    // Filter out system collections
+    const collectionsToSync = schema.filter(col => !col.system);
+    const systemCollections = schema.filter(col => col.system);
+
+    console.log(`⏭️  Skipping ${systemCollections.length} system collections`);
+    skipped += systemCollections.length;
+
+    // First pass: Create missing collections with minimal schema (no relations)
+    console.log('🔄 First pass: Creating missing collections...');
+    for (const collection of collectionsToSync) {
+      const existing = existingMap.get(collection.name);
+      if (!existing) {
+        try {
+          // Filter out relation fields for the first pass to avoid "missing collection" errors
+          const minimalFields = collection.fields.filter(field => field.type !== 'relation');
+
+          await pb.collections.create({
+            id: collection.id,
+            name: collection.name,
+            type: collection.type,
+            fields: minimalFields,
+            // Skip rules and indexes in first pass
+          });
+          console.log(`🆕 Created (minimal): ${collection.name}`);
+          // Update map so second pass knows it exists
+          existingMap.set(collection.name, { id: collection.id, name: collection.name });
+        } catch (error) {
+          console.error(`❌ Error creating ${collection.name} (first pass):`, error.message);
+          if (error.response) {
+            console.error('   Response:', JSON.stringify(error.response, null, 2));
+          }
+          errors++;
+        }
+      }
+    }
+
+    // Second pass: Update all collections with full schema (including relations and rules)
+    console.log('🔄 Second pass: Updating collections with full schema...');
+    for (const collection of collectionsToSync) {
+      const existing = existingMap.get(collection.name);
+
+      if (!existing) {
+        console.error(`❌ Error: Collection ${collection.name} should exist by now but doesn't.`);
         continue;
       }
 
-      const existing = existingMap.get(collection.name);
-
       try {
-        if (existing) {
-          // update existing collection
-          await pb.collections.update(existing.id, {
-            fields: collection.fields,
-            indexes: collection.indexes,
-            listRule: collection.listRule,
-            viewRule: collection.viewRule,
-            createRule: collection.createRule,
-            updateRule: collection.updateRule,
-            deleteRule: collection.deleteRule,
-            options: collection.options,
-          });
-          console.log(`✅ Updated: ${collection.name}`);
-          updated++;
-        } else {
-          // create new collection
-          await pb.collections.create({
-            name: collection.name,
-            type: collection.type,
-            fields: collection.fields,
-            indexes: collection.indexes,
-            listRule: collection.listRule,
-            viewRule: collection.viewRule,
-            createRule: collection.createRule,
-            updateRule: collection.updateRule,
-            deleteRule: collection.deleteRule,
-            options: collection.options,
-          });
-          console.log(`🆕 Created: ${collection.name}`);
-          created++;
-        }
+        await pb.collections.update(existing.id, {
+          fields: collection.fields,
+          indexes: collection.indexes,
+          listRule: collection.listRule,
+          viewRule: collection.viewRule,
+          createRule: collection.createRule,
+          updateRule: collection.updateRule,
+          deleteRule: collection.deleteRule,
+          options: collection.options,
+        });
+        console.log(`✅ Updated (full): ${collection.name}`);
+        updated++;
       } catch (error) {
-        console.error(`❌ Error processing ${collection.name}:`, error.message);
+        console.error(`❌ Error updating ${collection.name} (second pass):`, error.message);
         if (error.response) {
           console.error('   Response:', JSON.stringify(error.response, null, 2));
         }
