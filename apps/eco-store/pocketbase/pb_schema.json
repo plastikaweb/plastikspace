@@ -652,7 +652,7 @@
     "deleteRule": "id = @request.auth.id"
   },
   {
-    "id": "pbc_3283744169",
+    "id": "pbc_3411954233",
     "name": "product_categories",
     "type": "base",
     "system": false,
