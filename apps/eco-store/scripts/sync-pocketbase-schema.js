@@ -91,7 +91,7 @@ async function syncSchema() {
         if (existing) {
           // update existing collection
           await pb.collections.update(existing.id, {
-            schema: collection.schema,
+            fields: collection.fields,
             indexes: collection.indexes,
             listRule: collection.listRule,
             viewRule: collection.viewRule,
@@ -107,7 +107,7 @@ async function syncSchema() {
           await pb.collections.create({
             name: collection.name,
             type: collection.type,
-            schema: collection.schema,
+            fields: collection.fields,
             indexes: collection.indexes,
             listRule: collection.listRule,
             viewRule: collection.viewRule,
