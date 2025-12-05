@@ -4,6 +4,7 @@
   - [Description](#description)
   - [Entities](#entities)
     - [Base Entity](#base-entity)
+    - [PocketBase Base Entity](#pocketbase-base-entity)
     - [Form Configuration](#form-configuration)
     - [View Configuration](#view-configuration)
       - [Example Usage of ViewConfig](#example-usage-of-viewconfig)
@@ -23,6 +24,24 @@ This library provides foundational structures and configurations for managing en
   - `name`: Optional name of the entity.
   - `createdAt`: Timestamp of when the entity was created.
   - `updatedAt`: Timestamp of when the entity was last updated.
+
+### PocketBase Base Entity
+
+- **File**: `base-pocketbase-entity.ts`
+- **Description**: Provides foundational PocketBase entity types and utilities for applications using PocketBase as a backend.
+- **Types**:
+  - `BasePocketBaseEntity`: Core entity with PocketBase fields (`id`, `collectionId`, `collectionName`, `created`, `updated`, `name`, `normalizedName`)
+  - `BasePocketBaseEntitySimple`: Simplified version without `normalizedName`
+  - `BasePocketBaseEntityWithClientRef`: Extends base entity with `client` property for multi-tenant scenarios
+  - `BasePocketBaseEntityPagination`: Pagination parameters (`page`, `perPage`)
+  - `BasePocketBaseEntitySort`: Sorting configuration (`sort`, `direction`)
+  - `BasePocketBaseEntityFilter`: Generic filter type
+
+**Related Libraries**:
+
+- [`@plastik/core/api-pocketbase`](../util/api-pocketbase/README.md) - PocketBase CRUD services
+- [`@plastik/shared/signal-state/data-access-pocketbase`](../../shared/signal-state/data-access-pocketbase/README.md) - PocketBase Signal Store features
+- [`@plastik/shared/pagination/util`](../../shared/pagination/util/README.md) - Uses `BasePocketBaseEntityPagination`
 
 ### Form Configuration
 

@@ -1,15 +1,36 @@
+import { IdType } from '@plastik/core/entities';
 import {
-  BasePocketBaseEntitySort,
-  BasePocketBaseEntityPagination,
+  BasePocketBaseEntity,
   BasePocketBaseEntityFilter,
-} from '@plastik/eco-store/entities';
+  BasePocketBaseEntityPagination,
+  BasePocketBaseEntitySort,
+} from '@plastik/core/entities';
 
 export interface PocketBaseListParams {
+  /**
+   * Optional parameter object passed to the request usually used for filtering by entity property - value.
+   */
   [key: string]: string | number | boolean | undefined;
+  /**
+   * Optional page number for pagination.
+   */
   page?: number;
+  /**
+   * Optional number of items per page for pagination.
+   */
   perPage?: number;
-  sort?: string;
-  filter?: string;
+  /**
+   * Optional sort field for ordering the list.
+   */
+  sort?: BasePocketBaseEntitySort['sort'];
+  /**
+   * Optional sort direction for ordering the list.
+   */
+  direction?: BasePocketBaseEntitySort['direction'];
+  /**
+   * Optional text filter string for querying the list.
+   */
+  text?: string;
 }
 
 export interface PocketBaseGetListState {
@@ -18,9 +39,13 @@ export interface PocketBaseGetListState {
   sort: BasePocketBaseEntitySort;
   pagination: BasePocketBaseEntityPagination;
   filter: BasePocketBaseEntityFilter;
+  text: string;
+  paginationSizeOptions: number[];
 }
 
-export const initialGetListState = (): PocketBaseGetListState => ({
+export const initialGetListState = (
+  customInitialState: Partial<PocketBaseGetListState> = {}
+): PocketBaseGetListState => ({
   initiallyLoaded: false,
   count: 0,
   sort: {
@@ -32,4 +57,11 @@ export const initialGetListState = (): PocketBaseGetListState => ({
     perPage: 10,
   },
   filter: {},
+  text: '',
+  paginationSizeOptions: [20, 50, 75],
+  ...customInitialState,
 });
+
+export interface PocketbaseGetOne<T extends BasePocketBaseEntity> {
+  selectedItemId: IdType<T> | null;
+}

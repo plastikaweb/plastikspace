@@ -1,6 +1,6 @@
 import { InjectionToken } from '@angular/core';
 import { IdType } from '@plastik/core/entities';
-import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
+import { BasePocketBaseEntity } from '@plastik/core/entities';
 import { RecordOptions } from 'pocketbase';
 
 export interface PocketBaseListStore<T extends BasePocketBaseEntity = BasePocketBaseEntity> {

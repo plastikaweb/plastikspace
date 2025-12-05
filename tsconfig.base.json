@@ -192,7 +192,11 @@
       ],
       "@plastik/signal-state/http": ["libs/shared/signal-state/data-access-http/src/index.ts"],
       "@plastik/core/api-base": ["libs/core/util/api-base/src/index.ts"],
-      "@plastik/eco-store/product-card": ["libs/eco-store/shared/product-card/src/index.ts"]
+      "@plastik/eco-store/product-card": ["libs/eco-store/shared/product-card/src/index.ts"],
+      "ui": ["shared/pagination/src/index.ts"],
+      "@plastik/shared/pagination/ui": ["libs/shared/pagination/ui/src/index.ts"],
+      "@plastik/shared/pagination/util": ["libs/shared/pagination/util/src/index.ts"],
+      "@plastik/core/paginator": ["libs/core/paginator/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

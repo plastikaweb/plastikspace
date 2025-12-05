@@ -11,6 +11,16 @@
     "view-cart": "Ver carrito",
     "profile": "Perfil"
   },
+  "paginator": {
+    "first-page": "Primera página",
+    "items-per-page": "Elementos por página",
+    "last-page": "Última página",
+    "next-page": "Página siguiente",
+    "no-items": "{{length}} elementos",
+    "previous-page": "Página anterior",
+    "range": "{{start}} - {{end}} de {{total}}",
+    "range-label": "de"
+  },
   "product-categories": {
     "all": "Todas las categorías",
     "filter": {

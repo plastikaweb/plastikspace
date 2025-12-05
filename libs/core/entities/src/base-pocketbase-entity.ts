@@ -1,4 +1,4 @@
-import { BaseEntity } from '@plastik/core/entities';
+import { BaseEntity } from './base-entity';
 import { ListOptions } from 'pocketbase';
 
 export type BasePocketBaseEntity = Pick<BaseEntity<string>, 'name' | 'normalizedName'> & {
@@ -18,6 +18,8 @@ export interface BasePocketBaseEntityWithClientRef extends BasePocketBaseEntity 
   client: string;
 }
 
-export type BasePocketBaseEntityPagination = Pick<ListOptions, 'page' | 'perPage'>;
-export type BasePocketBaseEntitySort = Pick<ListOptions, 'sort'> & { direction?: 'asc' | 'desc' };
-export type BasePocketBaseEntityFilter = Record<string, string | null | boolean>;
+export type BasePocketBaseEntityPagination = Required<Pick<ListOptions, 'page' | 'perPage'>>;
+export type BasePocketBaseEntitySort = Required<
+  Pick<ListOptions, 'sort'> & { direction: 'asc' | 'desc' }
+>;
+export type BasePocketBaseEntityFilter = Required<Record<string, string | null | boolean>>;

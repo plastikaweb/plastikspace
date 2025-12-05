@@ -1,5 +1,5 @@
 import { LocalizedFields } from '@plastik/core/entities';
-import { BasePocketBaseEntityWithClientRef } from './base-pocketbase-entity';
+import { BasePocketBaseEntityWithClientRef } from '@plastik/core/entities';
 import { ProductCategory } from './productCategory';
 
 export type ProductUnitType =

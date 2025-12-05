@@ -2,7 +2,7 @@ import {
   BasePocketBaseEntityFilter,
   BasePocketBaseEntityPagination,
   BasePocketBaseEntitySort,
-} from '@plastik/eco-store/entities';
+} from '@plastik/core/entities';
 import { PocketBaseGetListState } from './pocketbase-store.types';
 
 interface NormalizedPocketBaseParams {

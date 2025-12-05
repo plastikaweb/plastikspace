@@ -6,6 +6,7 @@ import {
   SignalStoreFeature,
   type,
   withComputed,
+  withHooks,
   withMethods,
   withProps,
   withState,
@@ -14,12 +15,17 @@ import { EntityState, setAllEntities, setEntity, withEntities } from '@ngrx/sign
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { DataGet, DataGetList } from '@plastik/core/api-base';
 import { IdType } from '@plastik/core/entities';
-import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
+import { BasePocketBaseEntity } from '@plastik/core/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { ClientResponseError, ListResult } from 'pocketbase';
-import { debounceTime, distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
-import { normalizePocketBaseParams } from './pocketbase-query-params.util';
-import { initialGetListState, PocketBaseListParams } from './pocketbase-store.types';
+import { debounceTime, pipe, switchMap, tap } from 'rxjs';
+import {
+  initialGetListState,
+  PocketBaseGetListState,
+  PocketbaseGetOne,
+  PocketBaseListParams,
+} from './pocketbase-store.types';
+import { withPocketBaseParamsFeature } from './stores/with-pocketbase-params.store';
 
 /**
  * Store feature for list operations with PocketBase.
@@ -29,15 +35,27 @@ import { initialGetListState, PocketBaseListParams } from './pocketbase-store.ty
  * @param {object} root0 - Configuration object.
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
+ * @param root0.customInitialState
  * @returns {SignalStoreFeature} A signal store feature with list operations.
  */
 export function withPocketBaseListFeature<
   T extends BasePocketBaseEntity,
-  S extends DataGetList<T, ListResult<T>, PocketBaseListParams>,
->({ featureName, dataServiceType }: { featureName: string; dataServiceType: Type<S> }) {
+  S extends DataGetList<T, ListResult<T>>,
+>({
+  featureName,
+  dataServiceType,
+  customInitialState = {},
+}: {
+  featureName: string;
+  dataServiceType: Type<S>;
+  customInitialState?: Partial<PocketBaseGetListState>;
+}) {
+  const defaultState = initialGetListState(customInitialState);
+
   return signalStoreFeature(
     withDevtools(featureName),
-    withState(initialGetListState()),
+    withState<PocketBaseGetListState>(defaultState),
+    withPocketBaseParamsFeature({ featureName, customInitialState }),
     withEntities<T>(),
     withProps(() => ({
       _apiService: inject(dataServiceType),
@@ -46,15 +64,20 @@ export function withPocketBaseListFeature<
     withComputed(({ pagination, sort, filter }) => ({
       formattedParams: computed(() => {
         const s = sort();
-        const p = pagination();
-        const f = filter();
         return {
-          ...p,
           sort: s.direction === 'desc' ? `-${s.sort}` : s.sort,
-          ...f,
+          ...pagination(),
+          ...filter(),
+        };
+      }),
+      getPagination: computed<{ page: number; perPage: number }>(() => {
+        return {
+          page: ((pagination().page ?? defaultState.pagination.page) || 1) - 1,
+          perPage: pagination().perPage ?? defaultState.pagination.perPage ?? 20,
         };
       }),
     })),
+
     withMethods(store => {
       const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
         store._storeNotificationService.show({
@@ -66,23 +89,11 @@ export function withPocketBaseListFeature<
       };
 
       return {
-        setParams: (rawParams?: Record<string, unknown>) => {
-          const normalized = normalizePocketBaseParams(rawParams, initialGetListState());
-          updateState(store, `[${featureName}] set params`, {
-            pagination: normalized.pagination,
-            filter: normalized.filter,
-            sort: normalized.sort,
-          });
-        },
-
-        getList: rxMethod<void>(
+        getList: rxMethod<ReturnType<typeof store.formattedParams>>(
           pipe(
             debounceTime(300),
-            distinctUntilChanged(),
             tap(() => updateState(store, `[${featureName}] getList`)),
-            switchMap(() => {
-              const params = store.formattedParams();
-
+            switchMap(params => {
               return store._apiService.getList(params).pipe(
                 tapResponse<ListResult<T>, ClientResponseError>({
                   next: result => {
@@ -107,6 +118,12 @@ export function withPocketBaseListFeature<
           )
         ),
       };
+    }),
+
+    withHooks({
+      onInit: store => {
+        store.getList(store.formattedParams);
+      },
     })
   );
 }
@@ -132,7 +149,7 @@ export function withPocketBaseGetOneFeature<
       }>(),
       state: type<EntityState<T>>(),
     },
-    withState({ selectedItemId: null as IdType<T> | null }),
+    withState<PocketbaseGetOne<T>>({ selectedItemId: null as IdType<T> | null }),
     withMethods(store => {
       const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
         store._storeNotificationService.show({

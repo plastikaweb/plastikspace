@@ -113,6 +113,7 @@ Foundation libraries used across applications.
 - [**environments**](libs/core/util/environments/README.md): Environment configuration helpers.
 - [**assets**](libs/core/util/assets/README.md): Asset management.
 - [**cypress-commands**](libs/core/util/cypress-commands/README.md): Custom Cypress commands.
+- [**paginator**](libs/core/paginator/README.md): Material Paginator internationalization service.
 
 #### UI and Layout
 
@@ -146,6 +147,8 @@ Reusable features and UI components.
 - [**activity**](libs/shared/activity/ui/README.md)
 - [**img-container**](libs/shared/img-container/ui/README.md)
 - [**mat-theme-toggle**](libs/shared/mat-theme-toggle/README.md)
+- [**pagination-ui**](libs/shared/pagination/ui/README.md)
+- [**pagination-util**](libs/shared/pagination/util/README.md)
 
 #### Utilities
 

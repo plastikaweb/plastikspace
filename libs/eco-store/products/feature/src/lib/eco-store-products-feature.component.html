@@ -34,4 +34,12 @@
         (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
     }
   </div>
+
+  <plastik-pagination
+    class="mt-6"
+    plastikPocketbasePaginationNavigation
+    [pageSize]="store.getPagination().perPage"
+    [pageIndex]="store.getPagination().page"
+    [pageSizeOptions]="store.paginationSizeOptions()"
+    [count]="store.count()" />
 </div>
