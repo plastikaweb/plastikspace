@@ -89,3 +89,17 @@
     -webkit-appearance: none;
   }
 }
+
+@layer components {
+  @include mat.select-overrides(
+    (
+      trigger-text-size: 0.8rem,
+    )
+  );
+
+  @include mat.option-overrides(
+    (
+      label-text-size: 0.8rem,
+    )
+  );
+}

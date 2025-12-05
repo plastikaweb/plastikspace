@@ -11,6 +11,7 @@ import {
 } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { withPocketBaseGet } from '@plastik/signal-state/pocketbase';
+
 import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 
 export const ecoStoreProductsStore = signalStore(
@@ -18,7 +19,14 @@ export const ecoStoreProductsStore = signalStore(
   withPocketBaseGet<EcoStoreProduct, EcoStoreProductsApiService>({
     featureName: 'products',
     dataServiceType: EcoStoreProductsApiService,
+    customInitialState: {
+      pagination: {
+        page: 1,
+        perPage: 20,
+      },
+    },
   }),
+
   withComputed(({ entities }) => {
     const categoriesStore = inject(ecoStoreProductCategoriesStore);
     const translateService = inject(TranslateService);

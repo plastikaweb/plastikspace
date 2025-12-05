@@ -1,4 +1,19 @@
+#!/usr/bin/env sh
 export NX_CLI_SET=classic
 export PAGER=cat
+export CI=true
 
-yarn nx affected:test && yarn nx affected:build
+echo "🏃 Running affected tests..."
+if ! yarn nx affected --target=test --parallel --max-parallel=3 --cache; then
+  echo "❌ Tests failed! Push aborted."
+  exit 1
+fi
+
+echo "🏗️  Running affected build..."
+# Build production configuration to ensure it's valid
+if ! yarn nx affected --target=build --configuration=production --parallel --max-parallel=3; then
+  echo "❌ Build failed! Push aborted."
+  exit 1
+fi
+
+echo "✅ All checks passed. Pushing..."

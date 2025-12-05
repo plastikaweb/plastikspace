@@ -11,6 +11,16 @@
     "view-cart": "Veure cistella",
     "profile": "Perfil"
   },
+  "paginator": {
+    "first-page": "Primera pàgina",
+    "items-per-page": "Elements per pàgina",
+    "last-page": "Última pàgina",
+    "next-page": "Pàgina següent",
+    "no-items": "{{length}} elements",
+    "previous-page": "Pàgina anterior",
+    "range": "{{start}} - {{end}} de {{total}}",
+    "range-label": "de"
+  },
   "product-categories": {
     "all": "Totes les categories",
     "filter": {

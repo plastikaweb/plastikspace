@@ -1,9 +1,9 @@
 import { Type } from '@angular/core';
-import { signalStoreFeature, SignalStoreFeature, withHooks } from '@ngrx/signals';
+import { signalStoreFeature, SignalStoreFeature } from '@ngrx/signals';
 import { DataGetList } from '@plastik/core/api-base';
-import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
+import { BasePocketBaseEntity } from '@plastik/core/entities';
 import { ListResult } from 'pocketbase';
-import { PocketBaseListParams } from '../pocketbase-store.types';
+import { PocketBaseGetListState } from '../pocketbase-store.types';
 import { withPocketBaseListFeature } from '../pocketbase.features';
 
 /**
@@ -14,18 +14,22 @@ import { withPocketBaseListFeature } from '../pocketbase.features';
  * @param {object} root0 - Configuration object.
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
+ * @param root0.customInitialState
  * @returns {SignalStoreFeature} A signal store feature with list operations.
  */
 export function withPocketBaseGetList<
   T extends BasePocketBaseEntity,
-  S extends DataGetList<T, ListResult<T>, PocketBaseListParams>,
->({ featureName, dataServiceType }: { featureName: string; dataServiceType: Type<S> }) {
+  S extends DataGetList<T, ListResult<T>>,
+>({
+  featureName,
+  dataServiceType,
+  customInitialState = {},
+}: {
+  featureName: string;
+  dataServiceType: Type<S>;
+  customInitialState?: Partial<PocketBaseGetListState>;
+}) {
   return signalStoreFeature(
-    withPocketBaseListFeature<T, S>({ featureName, dataServiceType }),
-    withHooks({
-      onInit: store => {
-        store.getList();
-      },
-    })
+    withPocketBaseListFeature<T, S>({ featureName, dataServiceType, customInitialState })
   );
 }

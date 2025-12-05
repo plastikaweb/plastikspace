@@ -1,3 +1,5 @@
+@use '@angular/material' as mat;
+
 :host {
   --min-col-width: 200px;
   --product-gap: 1rem;
@@ -6,5 +8,34 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
     gap: var(--product-gap);
+  }
+
+  plastik-pagination {
+    @include mat.paginator-overrides(
+      (
+        container-background-color: transparent,
+      )
+    );
+
+    // Custom styles for pagination appearance
+    ::ng-deep {
+      .mat-mdc-paginator-container {
+        justify-content: center;
+
+        .mat-mdc-paginator-page-size {
+          .mat-mdc-form-field {
+            .mat-mdc-text-field-wrapper {
+              border: 1px solid var(--neutral-100);
+              transition: all 0.2s ease-in-out;
+
+              &:hover {
+                border-color: var(--neutral-400);
+                background-color: var(--neutral-50);
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

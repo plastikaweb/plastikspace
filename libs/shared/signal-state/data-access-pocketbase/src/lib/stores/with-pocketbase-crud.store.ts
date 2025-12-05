@@ -1,15 +1,15 @@
 import { updateState } from '@angular-architects/ngrx-toolkit';
 import { Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { signalStoreFeature, SignalStoreFeature, withHooks, withMethods } from '@ngrx/signals';
+import { signalStoreFeature, SignalStoreFeature, withMethods } from '@ngrx/signals';
 import { addEntity, removeEntity, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { DataCrud } from '@plastik/core/api-base';
 import { IdType } from '@plastik/core/entities';
-import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
+import { BasePocketBaseEntity } from '@plastik/core/entities';
 import { ClientResponseError, ListResult, RecordOptions } from 'pocketbase';
 import { pipe, switchMap, tap } from 'rxjs';
-import { PocketBaseListParams } from '../pocketbase-store.types';
+import { PocketBaseGetListState, PocketBaseListParams } from '../pocketbase-store.types';
 import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocketbase.features';
 
 /**
@@ -25,9 +25,17 @@ import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocke
 export function withPocketBaseCrud<
   T extends BasePocketBaseEntity,
   S extends DataCrud<T, ListResult<T>, PocketBaseListParams>,
->({ featureName, dataServiceType }: { featureName: string; dataServiceType: Type<S> }) {
+>({
+  featureName,
+  dataServiceType,
+  customInitialState,
+}: {
+  featureName: string;
+  dataServiceType: Type<S>;
+  customInitialState?: Partial<PocketBaseGetListState>;
+}) {
   return signalStoreFeature(
-    withPocketBaseListFeature<T, S>({ featureName, dataServiceType }),
+    withPocketBaseListFeature<T, S>({ featureName, dataServiceType, customInitialState }),
     withPocketBaseGetOneFeature<T, S>({ featureName }),
     withMethods(store => {
       const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
@@ -118,11 +126,6 @@ export function withPocketBaseCrud<
           )
         ),
       };
-    }),
-    withHooks({
-      onInit: store => {
-        store.getList();
-      },
     })
   );
 }

@@ -1,6 +1,6 @@
 import { inject, Injector, runInInjectionContext } from '@angular/core';
 import { BaseDataService } from '@plastik/core/api-base';
-import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
+import { BasePocketBaseEntity } from '@plastik/core/entities';
 import { ClientResponseError } from 'pocketbase';
 import { Observable } from 'rxjs';
 import { PocketBaseCrudService } from './pocketbase-crud.service';

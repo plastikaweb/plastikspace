@@ -1,9 +1,9 @@
 import { Type } from '@angular/core';
-import { signalStoreFeature, SignalStoreFeature, withHooks } from '@ngrx/signals';
+import { signalStoreFeature, SignalStoreFeature, type } from '@ngrx/signals';
 import { DataGet } from '@plastik/core/api-base';
-import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
+import { BasePocketBaseEntity } from '@plastik/core/entities';
 import { ListResult } from 'pocketbase';
-import { PocketBaseListParams } from '../pocketbase-store.types';
+import { PocketBaseGetListState, PocketBaseListParams } from '../pocketbase-store.types';
 import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocketbase.features';
 
 /**
@@ -14,19 +14,28 @@ import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocke
  * @param {object} root0 - Configuration object.
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
+ * @param {Partial<PocketBaseGetListState>} root0.customInitialState - Optional custom initial state.
  * @returns {SignalStoreFeature} A signal store feature with list and single item operations.
  */
 export function withPocketBaseGet<
   T extends BasePocketBaseEntity,
   S extends DataGet<T, ListResult<T>, PocketBaseListParams>,
->({ featureName, dataServiceType }: { featureName: string; dataServiceType: Type<S> }) {
+>({
+  featureName,
+  dataServiceType,
+  customInitialState,
+}: {
+  featureName: string;
+  dataServiceType: Type<S>;
+  customInitialState: Partial<PocketBaseGetListState>;
+}) {
   return signalStoreFeature(
-    withPocketBaseListFeature<T, S>({ featureName, dataServiceType }),
-    withPocketBaseGetOneFeature<T, S>({ featureName }),
-    withHooks({
-      onInit: store => {
-        store.getList();
-      },
-    })
+    withPocketBaseListFeature<T, S>({
+      featureName,
+      dataServiceType,
+      customInitialState,
+    }),
+
+    withPocketBaseGetOneFeature<T, S>({ featureName })
   );
 }

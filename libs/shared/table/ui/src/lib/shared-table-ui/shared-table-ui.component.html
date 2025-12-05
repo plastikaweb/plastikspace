@@ -258,7 +258,9 @@
                 </button>
               } @else if (!action.value?.visible(element)) {
                 <!-- TODO: #447 find a better way to handle the height of the cell when it has no buttons --->
-                <button type="button" mat-icon-button class="invisible">&nbsp;</button>
+                <button type="button" mat-icon-button class="invisible" aria-hidden="true">
+                  &nbsp;
+                </button>
               }
             }
           </mat-cell>

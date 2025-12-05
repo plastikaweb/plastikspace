@@ -1,4 +1,4 @@
-import { BasePocketBaseEntity } from '@plastik/eco-store/entities';
+import { BasePocketBaseEntity } from '@plastik/core/entities';
 import PocketBase, {
   ClientResponseError,
   ListResult,

@@ -1,7 +1,9 @@
 import { DEFAULT_CURRENCY_CODE, ErrorHandler, importProvidersFrom } from '@angular/core';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
+import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl } from '@angular/material/paginator';
 import { Route, TitleStrategy } from '@angular/router';
 
+import { MatPaginatorIntlService } from '@plastik/core/paginator';
 import { PrefixTitleService } from '@plastik/core/router-state';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
@@ -16,8 +18,20 @@ export const appRoutes: Route[] = [
         useValue: { fontSet: 'material-symbols-outlined' },
       },
       {
+        provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
+        useValue: {
+          pageSize: 20,
+          pageSizeOptions: [20, 50, 100],
+          showFirstLastButtons: false,
+        },
+      },
+      {
         provide: ErrorHandler,
         useClass: ErrorHandlerService,
+      },
+      {
+        provide: MatPaginatorIntl,
+        useClass: MatPaginatorIntlService,
       },
       {
         provide: TitleStrategy,
