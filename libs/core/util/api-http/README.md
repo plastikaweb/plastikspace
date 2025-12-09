@@ -9,11 +9,13 @@
     - [Option 4: Full get service](#option-4-full-get-service)
   - [Usage in Components/Stores](#usage-in-componentsstores)
   - [🏗️ Architecture](#️-architecture)
-  - [� Configuration](#-configuration)
+  - [🔧 Configuration](#-configuration)
     - [Environment Setup](#environment-setup)
+    - [Providers](#providers)
     - [Custom URL Segment](#custom-url-segment)
     - [Custom Response Mapping](#custom-response-mapping)
     - [Custom Error Handling](#custom-error-handling)
+  - [🧠 Caching](#-caching)
 
 **HTTP/REST API utilities** for building type-safe data services.
 
@@ -105,7 +107,7 @@ export class ProductHttpService extends HttpGetService<Product> {
 
 ## Usage in Components/Stores
 
-```typescript
+````typescript
 @Component({ ... })
 export class ProductListComponent {
   private productService = inject(ProductHttpService);
@@ -134,8 +136,6 @@ export class ProductListComponent {
     this.productService.delete(id).subscribe();
   }
 }
-```
-
 ## 🏗️ Architecture
 
 ```mermaid
@@ -169,8 +169,27 @@ Your environment must include the base API URL:
 
 ```typescript
 // environment.ts
-export const environment = {
+import { EnvironmentWithApiUrl } from '@plastik/core/environments';
+
+export const environment: EnvironmentWithApiUrl = {
+  production: false,
+  name: 'my-app',
+  environment: 'development',
   baseApiUrl: 'https://api.example.com/v1',
+};
+```
+
+### Providers
+
+Provide the environment using the helper from `@plastik/core/environments`:
+
+```typescript
+import { ApplicationConfig } from '@angular/core';
+import { provideWithApiEnv } from '@plastik/core/environments';
+import { environment } from '../environments/environment';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideWithApiEnv(environment)],
 };
 ```
 
@@ -226,3 +245,20 @@ this.productService.getList().pipe(
   })
 );
 ```
+
+## 🧠 Caching
+
+- `getList` caches using `share({ connector: () => new ReplaySubject(1), resetOnComplete: () => timer(cacheTime) })`.
+- Default `cacheTime` comes from `BaseDataService` (1 dia).
+- Override `cacheTime` in your service when you need a different window:
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class ProductHttpService extends HttpCrudService<Product> {
+  protected override resourceUrlSegment() {
+    return 'products';
+  }
+  protected override cacheTime = 1000 * 60 * 5; // 5 minuts
+}
+```
+````

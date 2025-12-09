@@ -14,8 +14,8 @@ export abstract class PocketBaseGetAllService<T extends BasePocketBaseEntity = B
   implements DataGetList<T, ListResult<T>, RecordListOptions>
 {
   /**
-   * @param { PARAMS } params The list parameters.
-   * @returns { Observable<RESULT> } The list of records.
+   * @param { RecordListOptions } params The list parameters.
+   * @returns { Observable<ListResult<T>> } The list of records.
    * @description Get a list of records.
    */
   getList(params: RecordListOptions = {}): Observable<ListResult<T>> {
@@ -23,7 +23,7 @@ export abstract class PocketBaseGetAllService<T extends BasePocketBaseEntity = B
   }
 
   /**
-   * @param { PARAMS } params The full list parameters.
+   * @param { RecordFullListOptions } params The full list parameters.
    * @returns { Observable<T[]> } The full list of records.
    * @description Get all records (max 500 by default).
    */

@@ -1,11 +1,11 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { ENVIRONMENT, EnvironmentWithApiUrl } from '@plastik/core/environments';
+import { Injectable } from '@angular/core';
+import { Environment } from '@plastik/core/environments';
 import { Observable, throwError } from 'rxjs';
 
 @Injectable()
 export abstract class BaseDataService {
-  protected readonly environment = inject(ENVIRONMENT) as EnvironmentWithApiUrl;
+  abstract environment: Environment;
 
   /**
    * Cache time by default (1 day). Children can override it.

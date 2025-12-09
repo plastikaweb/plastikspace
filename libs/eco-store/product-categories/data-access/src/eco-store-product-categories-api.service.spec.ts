@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import { EcoStoreProductCategoriesApiService } from './eco-store-product-categories-api.service';
 
 describe('EcoStoreProductCategoriesApiService', () => {
@@ -7,7 +7,7 @@ describe('EcoStoreProductCategoriesApiService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideEnvironmentMock()],
+      providers: [provideEnvironmentPocketBaseTranslationMock()],
     });
     service = TestBed.inject(EcoStoreProductCategoriesApiService);
   });

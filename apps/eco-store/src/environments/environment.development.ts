@@ -1,6 +1,6 @@
-import { EcoStoreEnvironment } from '@plastik/eco-store/entities';
+import { EnvironmentPocketBaseWithTranslations } from '@plastik/core/environments';
 
-export const environment: EcoStoreEnvironment = {
+export const environment: EnvironmentPocketBaseWithTranslations = {
   production: false,
   name: 'eco-store',
   baseApiUrl: 'http://127.0.0.1:8090/',

@@ -5,6 +5,7 @@
 @use 'tailwindcss';
 @use 'core_input_material';
 @use 'core_button_material';
+@use 'loading';
 
 @layer base {
   html {

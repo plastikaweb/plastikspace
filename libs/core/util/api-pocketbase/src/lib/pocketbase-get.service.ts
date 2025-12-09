@@ -1,9 +1,8 @@
-import { BasePocketBaseEntity } from '@plastik/core/entities';
+import { DataGet } from '@plastik/core/api-base';
+import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { ListResult, RecordFullListOptions, RecordListOptions, RecordOptions } from 'pocketbase';
 import { Observable } from 'rxjs';
 import { PocketBaseBaseService } from './pocketbase-base.service';
-import { DataGet } from '@plastik/core/api-base';
-import { IdType } from '@plastik/core/entities';
 
 /**
  * @description Abstract class to inherit from on creating a feature PocketBase service for getting all records.
@@ -15,8 +14,8 @@ export abstract class PocketBaseGetService<T extends BasePocketBaseEntity = Base
   implements DataGet<T, ListResult<T>, RecordListOptions>
 {
   /**
-   * @param { PARAMS } params The list parameters.
-   * @returns { Observable<RESULT> } The list of records.
+   * @param { RecordListOptions } params The list parameters.
+   * @returns { Observable<ListResult<T>> } The list of records.
    * @description Get a list of records.
    */
   getList(params: RecordListOptions = {}): Observable<ListResult<T>> {
@@ -24,7 +23,7 @@ export abstract class PocketBaseGetService<T extends BasePocketBaseEntity = Base
   }
 
   /**
-   * @param { PARAMS } params The full list parameters.
+   * @param { RecordFullListOptions } params The full list parameters.
    * @returns { Observable<T[]> } The full list of records.
    * @description Get all records (max 500 by default).
    */

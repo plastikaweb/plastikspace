@@ -1,5 +1,7 @@
+import { inject } from '@angular/core';
+import { BaseDataService, DataCrud } from '@plastik/core/api-base';
 import { BasePocketBaseEntity } from '@plastik/core/entities';
-import PocketBase, {
+import {
   ClientResponseError,
   ListResult,
   RecordFullListOptions,
@@ -7,7 +9,7 @@ import PocketBase, {
   RecordOptions,
 } from 'pocketbase';
 import { catchError, from, map, Observable, shareReplay } from 'rxjs';
-import { BaseDataService, DataCrud } from '@plastik/core/api-base';
+import { POCKETBASE_INSTANCE } from './pocketbase.token';
 
 /**
  * @description Abstract base class for PocketBase services with common functionality.
@@ -22,25 +24,7 @@ export abstract class PocketBaseCrudService<
   extends BaseDataService
   implements DataCrud<T, ListResult<T>, PARAMS, Partial<T>, RecordOptions>
 {
-  readonly #pb: PocketBase;
-
-  /**
-   * @description Cache time in milliseconds
-   */
-  protected override cacheTime = 1000 * 60 * 5; // 5 minutes default
-
-  constructor() {
-    super();
-    this.#pb = new PocketBase(this.getPocketBaseUrlFromEnvironment());
-  }
-
-  /**
-   * @description Gets the PocketBase URL from the environment. Override if your environment uses a different property name.
-   * @returns {string} The PocketBase URL.
-   */
-  protected getPocketBaseUrlFromEnvironment(): string {
-    return this.environment.baseApiUrl;
-  }
+  readonly #pb = inject(POCKETBASE_INSTANCE);
 
   /**
    * @description Implement this method in child classes to have the collection name.

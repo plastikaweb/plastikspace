@@ -11,12 +11,13 @@
   - [🏗️ Architecture](#️-architecture)
   - [🔧 Configuration](#-configuration)
     - [Environment Setup](#environment-setup)
+    - [Providers](#providers)
     - [Collection Name](#collection-name)
     - [Custom Response Mapping](#custom-response-mapping)
     - [Custom Error Handling](#custom-error-handling)
   - [📚 Available Operations](#-available-operations)
     - [Get All (with Pagination)](#get-all-with-pagination)
-    - [Get One](#get-one)
+    - [Get One / First By Filter](#get-one--first-by-filter)
     - [Create](#create)
     - [Update](#update)
     - [Delete](#delete)
@@ -26,6 +27,7 @@
     - [File Uploads](#file-uploads)
   - [🔗 Related Libraries](#-related-libraries)
   - [📖 PocketBase Filter Syntax](#-pocketbase-filter-syntax)
+  - [🧠 Caching](#-caching)
 
 **PocketBase API utilities** for building type-safe data services with PocketBase backend.
 
@@ -181,12 +183,41 @@ graph TD
 
 ### Environment Setup
 
-The service automatically injects the PocketBase client. Make sure `environment.baseApiUrl` is defined in your environment files.
+Use an environment that includes the PocketBase URL:
 
 ```typescript
 // environment.ts
-export const environment = {
+import { EnvironmentPocketBase } from '@plastik/core/environments';
+
+export const environment: EnvironmentPocketBase = {
+  production: false,
+  name: 'eco-store',
+  environment: 'development',
   baseApiUrl: 'https://pocketbase.example.com',
+  client: 'eco-store',
+  languages: ['en', 'ca'],
+  defaultLanguage: 'en',
+};
+```
+
+### Providers
+
+Register the environment and the PocketBase client in your application providers:
+
+```typescript
+import { ApplicationConfig } from '@angular/core';
+import {
+  POCKETBASE_INSTANCE,
+  pocketBaseFactory,
+  providePocketBaseEnv,
+} from '@plastik/core/api-pocketbase';
+import { environment } from '../environments/environment';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    providePocketBaseEnv(environment),
+    { provide: POCKETBASE_INSTANCE, useFactory: pocketBaseFactory },
+  ],
 };
 ```
 
@@ -250,40 +281,23 @@ getList(params?: {
 }): Observable<ListResult<T>>
 ```
 
-**Example:**
-
-```typescript
-// Get active products, sorted by price
-this.productService.getList({
-  filter: 'active=true && price>0',
-  sort: '-price',
-  perPage: 50,
-});
-```
-
-### Get One
+### Get One / First By Filter
 
 ```typescript
 getOne(id: string, options?: RecordOptions): Observable<T>
-```
-
-**Example:**
-
-```typescript
-// Get product with category relation expanded
-this.productService.getOne('xyz123', { expand: 'category' });
+getFirstListItem(filter: string, options?: RecordOptions): Observable<T>
 ```
 
 ### Create
 
 ```typescript
-create(data: Partial<T>): Observable<T>
+create(data: Partial<T>, options?: RecordOptions): Observable<T>
 ```
 
 ### Update
 
 ```typescript
-update(id: string, data: Partial<T>): Observable<T>
+update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T>
 ```
 
 ### Delete
@@ -354,6 +368,7 @@ create(data: Partial<Product>, file?: File) {
 
 - **`@plastik/core/api-base`** - Base interfaces and contracts
 - **`@plastik/signal-state/pocketbase`** - NgRx Signal Store integration for PocketBase
+- **`@plastik/core/environments`** - Environment tokens and provider helpers
 
 ## 📖 PocketBase Filter Syntax
 
@@ -380,3 +395,19 @@ filter: 'category.name = "Electronics"';
 ```
 
 [Full PocketBase filter documentation](https://pocketbase.io/docs/api-rules-and-filters/)
+
+## 🧠 Caching
+
+- All read operations (`getList`, `getFullList`, `getOne`, `getFirstListItem`) are cached using `shareReplay`.
+- Default cache window is `5 minutes` via `cacheTime`.
+- Override `cacheTime` in your service when you need a different window:
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class ProductPocketBaseService extends PocketBaseCrudService<Product> {
+  protected override collectionName() {
+    return 'products';
+  }
+  protected override cacheTime = 1000 * 60 * 1; // 1 minute
+}
+```

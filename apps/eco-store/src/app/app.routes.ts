@@ -1,5 +1,4 @@
 import { DEFAULT_CURRENCY_CODE, ErrorHandler, importProvidersFrom } from '@angular/core';
-import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl } from '@angular/material/paginator';
 import { Route, TitleStrategy } from '@angular/router';
 
@@ -14,28 +13,8 @@ export const appRoutes: Route[] = [
     loadComponent: () => import('./layout/layout.component'),
     providers: [
       {
-        provide: MAT_ICON_DEFAULT_OPTIONS,
-        useValue: { fontSet: 'material-symbols-outlined' },
-      },
-      {
-        provide: MAT_PAGINATOR_DEFAULT_OPTIONS,
-        useValue: {
-          pageSize: 20,
-          pageSizeOptions: [20, 50, 100],
-          showFirstLastButtons: false,
-        },
-      },
-      {
-        provide: ErrorHandler,
-        useClass: ErrorHandlerService,
-      },
-      {
         provide: MatPaginatorIntl,
         useClass: MatPaginatorIntlService,
-      },
-      {
-        provide: TitleStrategy,
-        useClass: PrefixTitleService,
       },
       {
         provide: DEFAULT_CURRENCY_CODE,

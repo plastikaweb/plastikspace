@@ -1,9 +1,9 @@
-import { IdType } from '@plastik/core/entities';
 import {
   BasePocketBaseEntity,
   BasePocketBaseEntityFilter,
   BasePocketBaseEntityPagination,
   BasePocketBaseEntitySort,
+  IdType,
 } from '@plastik/core/entities';
 
 export interface PocketBaseListParams {
@@ -58,7 +58,7 @@ export const initialGetListState = (
   },
   filter: {},
   text: '',
-  paginationSizeOptions: [20, 50, 75],
+  paginationSizeOptions: [10, 20, 50, 75],
   ...customInitialState,
 });
 

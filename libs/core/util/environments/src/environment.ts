@@ -9,6 +9,19 @@ export interface Environment {
   readonly environment: EnvironmentName;
 }
 
-export interface EnvironmentWithApiUrl extends Environment {
+export type EnvironmentWithApiUrl = Environment & {
   readonly baseApiUrl: string;
-}
+};
+
+export type EnvironmentWithTranslations = Environment & {
+  languages: string[];
+  defaultLanguage: string;
+};
+
+export type EnvironmentPocketBase = EnvironmentWithApiUrl & {
+  client: string;
+  collectionNames?: Record<string, string>;
+};
+
+export type EnvironmentPocketBaseWithTranslations = EnvironmentPocketBase &
+  EnvironmentWithTranslations;
