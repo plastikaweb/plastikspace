@@ -19,12 +19,12 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
+import { PrefixTitleService } from '@plastik/core/router-state';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
+import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
-import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
-import { PrefixTitleService } from '@plastik/core/router-state';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),

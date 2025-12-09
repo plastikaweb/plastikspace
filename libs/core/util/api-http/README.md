@@ -8,14 +8,6 @@
     - [Option 3: Get one service](#option-3-get-one-service)
     - [Option 4: Full get service](#option-4-full-get-service)
   - [Usage in Components/Stores](#usage-in-componentsstores)
-  - [🏗️ Architecture](#️-architecture)
-  - [🔧 Configuration](#-configuration)
-    - [Environment Setup](#environment-setup)
-    - [Providers](#providers)
-    - [Custom URL Segment](#custom-url-segment)
-    - [Custom Response Mapping](#custom-response-mapping)
-    - [Custom Error Handling](#custom-error-handling)
-  - [🧠 Caching](#-caching)
 
 **HTTP/REST API utilities** for building type-safe data services.
 

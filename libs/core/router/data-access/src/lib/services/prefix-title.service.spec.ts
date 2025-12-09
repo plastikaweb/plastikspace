@@ -2,7 +2,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot } from '@angular/router';
-import { provideEnvironmentWithApiMock } from '@plastik/core/environments';
+import { provideEnvironmentMock } from '@plastik/core/environments';
 
 import { PrefixTitleService } from './prefix-title.service';
 
@@ -15,7 +15,7 @@ describe('PrefixTitleService', () => {
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
-        provideEnvironmentWithApiMock(),
+        provideEnvironmentMock(),
         PrefixTitleService,
         Title,
         {

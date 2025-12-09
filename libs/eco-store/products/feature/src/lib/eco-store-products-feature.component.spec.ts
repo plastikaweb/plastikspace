@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import EcoStoreProductsFeature from './eco-store-products-feature.component';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
+import EcoStoreProductsFeature from './eco-store-products-feature.component';
 
 describe('EcoStoreProductsFeature', () => {
   let component: EcoStoreProductsFeature;

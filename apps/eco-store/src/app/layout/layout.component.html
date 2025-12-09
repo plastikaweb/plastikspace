@@ -18,7 +18,7 @@
         (activate)="onSidenavActivate()"
         (deactivate)="onSidenavDeactivate()"></router-outlet>
     </mat-sidenav>
-    <mat-sidenav-content class="p-6">
+    <mat-sidenav-content #sidenavContent class="p-6">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

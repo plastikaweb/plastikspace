@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
+set -e
 export NX_CLI_SET=classic
 export PAGER=cat
-export CI=true
 
 echo "🏃 Running affected tests..."
 if ! yarn nx affected --target=test --parallel --max-parallel=3 --cache; then
