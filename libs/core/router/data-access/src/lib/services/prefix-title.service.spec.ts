@@ -15,8 +15,8 @@ describe('PrefixTitleService', () => {
     TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
-        PrefixTitleService,
         provideEnvironmentMock(),
+        PrefixTitleService,
         Title,
         {
           provide: RouterStateSnapshot,

@@ -3,6 +3,7 @@ import { inject, Injector, runInInjectionContext } from '@angular/core';
 import { Params } from '@angular/router';
 import { BaseDataService } from '@plastik/core/api-base';
 import { BaseEntity } from '@plastik/core/entities';
+import { ENVIRONMENT_WITH_API } from '@plastik/core/environments';
 import { HttpCrudService } from './http-crud.service';
 /**
  * @description Abstract class to inherit from on creating a feature api service.
@@ -16,6 +17,7 @@ import { HttpCrudService } from './http-crud.service';
  * **E** refers to the environment type extension with the API URL property.
  */
 export abstract class HttpBaseService extends BaseDataService {
+  override readonly environment = inject(ENVIRONMENT_WITH_API);
   readonly httpClient = inject(HttpClient);
   readonly apiUrl: string;
   private readonly injector = inject(Injector);
@@ -75,9 +77,11 @@ export abstract class HttpBaseService extends BaseDataService {
       this.mapListResponse(data) as TListResult;
 
     const mapItemResponse = (data: unknown): T => this.mapItemResponse(data) as T;
+    const env = this.environment;
 
     return runInInjectionContext(this.injector, () => {
       const ServiceClass = class extends HttpCrudService<T, TListResult, PARAMS> {
+        override readonly environment = env;
         protected override resourceUrlSegment(): string {
           return resourceUrlSegment;
         }

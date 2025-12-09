@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
-import { ENVIRONMENT } from '@plastik/core/environments';
-import { EcoStoreEnvironment } from '@plastik/eco-store/entities';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
+import { activityStore } from '@plastik/shared/activity/data-access';
+import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SharedActivityUiOverlayComponent, TranslateModule],
   selector: 'eco-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -16,7 +17,8 @@ import { EcoStoreEnvironment } from '@plastik/eco-store/entities';
 })
 export class AppComponent {
   readonly #translate = inject(TranslateService);
-  readonly #environment = inject(ENVIRONMENT) as EcoStoreEnvironment;
+  readonly #environment = inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
+  protected readonly activityStore = inject(activityStore);
 
   constructor() {
     this.#translate.addLangs(this.#environment.languages);

@@ -5,7 +5,7 @@ import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentWithApiMock } from '@plastik/core/environments';
 import { NasaImagesSearchFacade } from '@plastik/nasa-images/search/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
 import { PageEventConfig } from '@plastik/shared/table/entities';
@@ -22,7 +22,7 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
       imports: [NasaImagesSearchFeatureComponent],
       providers: [
         provideZonelessChangeDetection(),
-        provideEnvironmentMock(),
+        provideEnvironmentWithApiMock(),
         provideHttpClientTesting(),
         provideMockStore(),
         {

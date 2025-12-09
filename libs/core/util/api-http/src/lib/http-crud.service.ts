@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { Params } from '@angular/router';
 import { BaseDataService, DataCrud } from '@plastik/core/api-base';
 import { BaseEntity, IdType } from '@plastik/core/entities';
+import { ENVIRONMENT_WITH_API } from '@plastik/core/environments';
 import { catchError, map, Observable, ReplaySubject, share, timer } from 'rxjs';
 
 /**
@@ -20,6 +21,7 @@ export abstract class HttpCrudService<
   extends BaseDataService
   implements DataCrud<T, TListResult, PARAMS, Partial<T>>
 {
+  override readonly environment = inject(ENVIRONMENT_WITH_API);
   readonly httpClient = inject(HttpClient);
   readonly apiUrl: string;
 

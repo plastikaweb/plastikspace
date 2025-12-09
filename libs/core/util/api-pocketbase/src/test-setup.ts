@@ -1,4 +1,6 @@
-import { TestBed } from '@angular/core/testing';
-import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
+import { setupZoneTestEnv } from 'jest-preset-angular/setup-env/zone';
 
-TestBed.initTestEnvironment([BrowserTestingModule], platformBrowserTesting());
+setupZoneTestEnv({
+  errorOnUnknownElements: true,
+  errorOnUnknownProperties: true,
+});

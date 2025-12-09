@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import { ENVIRONMENT } from '@plastik/core/environments';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
@@ -10,20 +10,7 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AppComponent],
-      providers: [
-        {
-          provide: ENVIRONMENT,
-          useValue: {
-            production: false,
-            name: 'test',
-            baseApiUrl: 'http://localhost',
-            languages: ['en', 'es'],
-            defaultLanguage: 'en',
-            client: 'test-client',
-          },
-        },
-        provideTranslateService(),
-      ],
+      providers: [provideEnvironmentPocketBaseTranslationMock(), provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(AppComponent);

@@ -2,9 +2,8 @@ import { computed, inject } from '@angular/core';
 import { signalStore, withComputed } from '@ngrx/signals';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
-import { ENVIRONMENT } from '@plastik/core/environments';
+import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import {
-  EcoStoreEnvironment,
   EcoStoreProduct,
   EcoStoreProductWithCategoryName,
   ProductCategory,
@@ -20,6 +19,7 @@ export const ecoStoreProductsStore = signalStore(
     featureName: 'products',
     dataServiceType: EcoStoreProductsApiService,
     customInitialState: {
+      paginationSizeOptions: [20, 50, 75],
       pagination: {
         page: 1,
         perPage: 20,
@@ -30,7 +30,7 @@ export const ecoStoreProductsStore = signalStore(
   withComputed(({ entities }) => {
     const categoriesStore = inject(ecoStoreProductCategoriesStore);
     const translateService = inject(TranslateService);
-    const environment = inject(ENVIRONMENT) as EcoStoreEnvironment;
+    const environment = inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
 
     return {
       productsWithCategoryName: computed<EcoStoreProductWithCategoryName[]>(() => {

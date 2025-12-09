@@ -10,7 +10,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DataGetList } from '@plastik/core/api-base';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentWithApiMock } from '@plastik/core/environments';
 import {
   getMockedRouterNavigation,
   selectRouteDataName,
@@ -63,7 +63,7 @@ describe('NasaImagesEffects', () => {
             },
           ],
         }),
-        provideEnvironmentMock(),
+        provideEnvironmentWithApiMock(),
         {
           provide: NASA_IMAGES_DATA_LIST_TOKEN,
           useValue: {

@@ -1,4 +1,4 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withReset } from '@angular-architects/ngrx-toolkit';
 import { signalStore, withMethods, withState } from '@ngrx/signals';
 
 export interface ActivityState {
@@ -11,6 +11,7 @@ export const activityStore = signalStore(
   withState<ActivityState>({
     isActive: false,
   }),
+  withReset(),
   withMethods(store => ({
     setActivity(isActive: boolean) {
       updateState(store, `[activity] ${isActive ? 'on' : 'off'}`, { isActive });
