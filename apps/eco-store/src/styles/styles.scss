@@ -69,6 +69,10 @@
     text-wrap: balance;
   }
 
+  button {
+    pointer-events: auto;
+  }
+
   *::-webkit-scrollbar {
     width: 0.8rem;
   }
