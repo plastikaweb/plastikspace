@@ -1,5 +1,4 @@
-import { LocalizedFields } from '@plastik/core/entities';
-import { BasePocketBaseEntityWithClientRef } from '@plastik/core/entities';
+import { BasePocketBaseEntityWithClientRef, LocalizedFields } from '@plastik/core/entities';
 import { ProductCategory } from './productCategory';
 
 export type ProductUnitType =
@@ -51,6 +50,7 @@ export interface EcoStoreProductFilter {
 }
 
 export type EcoStoreProductWithCategoryName = EcoStoreProduct & {
+  name: string; // * Localized product name is processed by store
   categoryName: string;
   categoryColor: string;
 };

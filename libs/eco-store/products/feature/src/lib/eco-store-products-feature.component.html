@@ -30,6 +30,7 @@
     @for (item of store.productsWithCategoryName(); track item.id; let i = $index) {
       <eco-store-product-card
         [product]="item"
+        [isFirst]="i < 1"
         (addToCart)="addToCart($event)"
         (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
     }

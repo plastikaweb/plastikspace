@@ -5,7 +5,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChip, MatChipsModule } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
-import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { EcoStoreProduct, EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { EcoStoreProductCardQuantityControlComponent } from './eco-store-product-card-quantity-control.component';
 
 @Component({
@@ -19,6 +20,7 @@ import { EcoStoreProductCardQuantityControlComponent } from './eco-store-product
     MatChip,
     DecimalPipe,
     EcoStoreProductCardQuantityControlComponent,
+    SharedImgContainerComponent,
   ],
   templateUrl: './eco-store-product-card.component.html',
   styleUrl: './eco-store-product-card.component.scss',
@@ -26,10 +28,15 @@ import { EcoStoreProductCardQuantityControlComponent } from './eco-store-product
 })
 export class EcoStoreProductCardComponent {
   product = input.required<EcoStoreProductWithCategoryName>();
+  isFirst = input.required<boolean>();
   quantity = signal(0); // TODO: This should come from the parent component as an input
 
   addToCart = output<{ id: EcoStoreProductWithCategoryName['id']; quantity: number }>();
   toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();
+
+  getPocketBaseUrl(product: EcoStoreProduct): string {
+    return `${product.collectionId}/${product.id}/${product.images?.[0]}`;
+  }
 
   onQuantityChange(newQuantity: number) {
     this.quantity.set(newQuantity); // TODO: This should come from the parent component

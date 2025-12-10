@@ -15,7 +15,7 @@ export type ImageKitLoaderConfig = ImageLoaderConfig & {
  * @returns { string } Returns the image URL.
  */
 export function imageKitLoader(imageKitEndpoint: string, originalEndpoint: string) {
-  return ({ src, loaderParams }: ImageLoaderConfig): string => {
+  return ({ src, loaderParams }: ImageKitLoaderConfig): string => {
     try {
       if (!src) throw new Error('src is required');
       if (!loaderParams) throw new Error('loaderParams is required');

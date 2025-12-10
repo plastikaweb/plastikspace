@@ -25,7 +25,7 @@ This component simplifies the implementation of optimized images while providing
 | `height`   | `number`  | The height of the image in pixels. If not provided, defaults to width | `width value` |
 | `quality`  | `number`  | Image quality parameter (1-100)                                       | `80`          |
 | `title`    | `string`  | Image title/alt text for accessibility                                | `undefined`   |
-| `lcpImage` | `boolean` | Whether this image is a Largest Contentful Paint element              | `false`       |
+| `lcpImage` | `boolean` | Whether this image is a Largest Contentfull Paint element             | `false`       |
 
 ## How to use
 

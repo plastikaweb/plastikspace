@@ -23,14 +23,14 @@
 } @else {
   @if (lcpImage()) {
     <img
-      class="object-cover rounded-lg w-full max-h-[120px] my-sub"
+      class="object-cover rounded-lg w-full max-h-auto my-sub"
       priority
       fill
       [ngSrc]="src() || ''"
       [alt]="title()" />
   } @else {
     <img
-      class="object-cover rounded-lg w-full max-h-[120px] my-sub"
+      class="object-cover rounded-lg w-full max-h-auto my-sub"
       fill
       [ngSrc]="src() || ''"
       [alt]="title()" />
