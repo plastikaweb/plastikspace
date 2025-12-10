@@ -18754,7 +18754,7 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
   static \u0275fac = function SharedImgContainerComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedImgContainerComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-shared-img-container"]], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 4, vars: 3, consts: [["priority", "", 1, "object-cover", "rounded-lg", "my-sub", 3, "ngSrc", "width", "height", "alt", "loaderParams"], [1, "object-cover", "rounded-lg", "my-sub", 3, "ngSrc", "width", "height", "alt", "loaderParams"], ["priority", "", "fill", "", 1, "object-cover", "rounded-lg", "w-full", "max-h-[120px]", "my-sub", 3, "ngSrc", "alt"], ["fill", "", 1, "object-cover", "rounded-lg", "w-full", "max-h-[120px]", "my-sub", 3, "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-shared-img-container"]], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 4, vars: 3, consts: [["priority", "", 1, "object-cover", "rounded-lg", "my-sub", 3, "ngSrc", "width", "height", "alt", "loaderParams"], [1, "object-cover", "rounded-lg", "my-sub", 3, "ngSrc", "width", "height", "alt", "loaderParams"], ["priority", "", "fill", "", 1, "object-cover", "rounded-lg", "w-full", "max-h-auto", "my-sub", 3, "ngSrc", "alt"], ["fill", "", 1, "object-cover", "rounded-lg", "w-full", "max-h-auto", "my-sub", 3, "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275declareLet(0)(1);
       \u0275\u0275conditionalCreate(2, SharedImgContainerComponent_Conditional_2_Template, 2, 1)(3, SharedImgContainerComponent_Conditional_3_Template, 2, 1);
@@ -18798,14 +18798,14 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
 } @else {
   @if (lcpImage()) {
     <img
-      class="object-cover rounded-lg w-full max-h-[120px] my-sub"
+      class="object-cover rounded-lg w-full max-h-auto my-sub"
       priority
       fill
       [ngSrc]="src() || ''"
       [alt]="title()" />
   } @else {
     <img
-      class="object-cover rounded-lg w-full max-h-[120px] my-sub"
+      class="object-cover rounded-lg w-full max-h-auto my-sub"
       fill
       [ngSrc]="src() || ''"
       [alt]="title()" />
@@ -19165,4 +19165,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-HHUR7BUI.js.map
+//# sourceMappingURL=src-CJGPBK2G.js.map

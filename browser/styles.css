@@ -966,9 +966,6 @@ html {
   .h-screen {
     height: 100vh;
   }
-  .max-h-\[120px\] {
-    max-height: 120px;
-  }
   .max-h-\[400px\] {
     max-height: 400px;
   }
