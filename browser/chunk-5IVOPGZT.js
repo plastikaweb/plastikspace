@@ -1,12 +1,14 @@
 import {
   Actions,
-  ENVIRONMENT,
+  BaseDataService,
+  ENVIRONMENT_WITH_API,
   NasaImagesFacade,
   NavigationFilterService,
   SelectionModel,
   UniqueSelectionDispatcher,
   activityStore,
   concatLatestFrom,
+  createDataGetListServiceToken,
   createEffect,
   ofType,
   routerActions,
@@ -16,7 +18,7 @@ import {
   withDevtools,
   withMethods,
   withState
-} from "./chunk-ZCQMN6GR.js";
+} from "./chunk-DWWLWMBP.js";
 import {
   Store,
   createActionGroup,
@@ -57,7 +59,6 @@ import {
 } from "./chunk-GIDPJBNA.js";
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpParams
 } from "./chunk-VHNOS6IU.js";
 import {
@@ -191,7 +192,6 @@ import {
   take,
   takeUntil,
   tap,
-  throwError,
   timer,
   untracked,
   viewChild,
@@ -854,53 +854,9 @@ var NasaImagesSearchFacade = class _NasaImagesSearchFacade extends NasaImagesFac
   }], null, null);
 })();
 
-// libs/core/util/api-base/src/lib/base-data.service.ts
-var BaseDataService = class _BaseDataService {
-  environment = inject(ENVIRONMENT);
-  /**
-   * Cache time by default (1 day). Children can override it.
-   */
-  cacheTime = 1e3 * 60 * 60 * 24;
-  /**
-   * @description Generic error handler for HTTP and custom backends.
-   * @param { unknown } error The error object.
-   * @returns { Observable<never> } An observable that throws the formatted error.
-   */
-  handleError(error) {
-    let message = "An error occurred";
-    let code = 500;
-    let data = null;
-    if (error instanceof HttpErrorResponse) {
-      message = (error.error?.message ?? error.message) || message;
-      code = error.status ?? code;
-      data = error.error ?? null;
-    } else if (typeof error === "object" && error !== null) {
-      const maybe = error;
-      const dataMessage = maybe.data?.message;
-      message = (typeof dataMessage === "string" ? dataMessage : typeof maybe.message === "string" ? maybe.message : void 0) ?? message;
-      code = typeof maybe.status === "number" ? maybe.status : code;
-      data = "data" in maybe ? maybe.data : data;
-    }
-    return throwError(() => ({ message, code, data, originalError: error }));
-  }
-  static \u0275fac = function BaseDataService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _BaseDataService)();
-  };
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _BaseDataService, factory: _BaseDataService.\u0275fac });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(BaseDataService, [{
-    type: Injectable
-  }], null, null);
-})();
-
-// libs/core/util/api-base/src/lib/data-get.ts
-function createDataGetListServiceToken(description = "DATA_GET_LIST_SERVICE") {
-  return new InjectionToken(description);
-}
-
 // libs/core/util/api-http/src/lib/http-crud.service.ts
 var HttpCrudService = class extends BaseDataService {
+  environment = inject(ENVIRONMENT_WITH_API);
   httpClient = inject(HttpClient);
   apiUrl;
   constructor() {
@@ -1000,6 +956,7 @@ var HttpCrudService = class extends BaseDataService {
 
 // libs/core/util/api-http/src/lib/http-base.service.ts
 var HttpBaseService = class extends BaseDataService {
+  environment = inject(ENVIRONMENT_WITH_API);
   httpClient = inject(HttpClient);
   apiUrl;
   injector = inject(Injector);
@@ -1041,8 +998,10 @@ var HttpBaseService = class extends BaseDataService {
     const resourceUrlSegment = this.resourceUrlSegment();
     const mapListResponse = (data) => this.mapListResponse(data);
     const mapItemResponse = (data) => this.mapItemResponse(data);
+    const env = this.environment;
     return runInInjectionContext(this.injector, () => {
       const ServiceClass = class extends HttpCrudService {
+        environment = env;
         resourceUrlSegment() {
           return resourceUrlSegment;
         }
@@ -20713,4 +20672,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-ABDJF73C.js.map
+//# sourceMappingURL=chunk-5IVOPGZT.js.map

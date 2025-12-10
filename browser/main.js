@@ -16,12 +16,11 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-ABDJF73C.js";
+} from "./chunk-5IVOPGZT.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
   CustomRouterSerializer,
-  ENVIRONMENT,
   EffectsModule,
   LayoutFacade,
   NavigationActionTiming,
@@ -32,8 +31,9 @@ import {
   VIEW_CONFIG,
   activityStore,
   provideRouterStore,
+  provideWithApiEnv,
   routerReducers
-} from "./chunk-ZCQMN6GR.js";
+} from "./chunk-DWWLWMBP.js";
 import {
   ActionsSubject,
   INIT,
@@ -5681,23 +5681,23 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
   static \u0275fac = function SharedActivityUiOverlayComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedActivityUiOverlayComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedActivityUiOverlayComponent, selectors: [["plastik-shared-activity-ui-overlay"]], ngContentSelectors: _c06, decls: 2, vars: 0, consts: [[1, "z-50", "absolute", "[", "flex", "items-center", "justify-center", "]", "[", "w-full", "h-full", "]", "bg-white/40"]], template: function SharedActivityUiOverlayComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedActivityUiOverlayComponent, selectors: [["plastik-shared-activity-ui-overlay"]], ngContentSelectors: _c06, decls: 2, vars: 0, consts: [[1, "inset-0", "flex", "items-center", "justify-center", "w-screen", "h-screen"]], template: function SharedActivityUiOverlayComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef();
       \u0275\u0275domElementStart(0, "div", 0);
       \u0275\u0275projection(1);
       \u0275\u0275domElementEnd();
     }
-  }, encapsulation: 2 });
+  }, encapsulation: 2, changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedActivityUiOverlayComponent, [{
     type: Component,
-    args: [{ selector: "plastik-shared-activity-ui-overlay", template: '<div class="z-50 absolute [ flex items-center justify-center ] [ w-full h-full ] bg-white/40">\n  <ng-content></ng-content>\n</div>\n' }]
+    args: [{ selector: "plastik-shared-activity-ui-overlay", changeDetection: ChangeDetectionStrategy.OnPush, template: '<div class="inset-0 flex items-center justify-center w-screen h-screen">\n  <ng-content />\n</div>\n' }]
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedActivityUiOverlayComponent, { className: "SharedActivityUiOverlayComponent", filePath: "libs/shared/activity/ui/src/lib/shared-activity-ui-overlay/shared-activity-ui-overlay.component.ts", lineNumber: 7 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedActivityUiOverlayComponent, { className: "SharedActivityUiOverlayComponent", filePath: "libs/shared/activity/ui/src/lib/shared-activity-ui-overlay/shared-activity-ui-overlay.component.ts", lineNumber: 8 });
 })();
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
@@ -7312,11 +7312,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-HD5RJCDZ.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-HHUR7BUI.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-MNI6PPV7.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-5VI54HUK.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -7406,10 +7406,7 @@ var appConfig = {
       navigationActionTiming: NavigationActionTiming.PreActivation,
       routerState: RouterState.Minimal
     }),
-    {
-      provide: ENVIRONMENT,
-      useValue: environment
-    },
+    provideWithApiEnv(environment),
     {
       provide: TitleStrategy,
       useClass: PrefixTitleService
