@@ -7,7 +7,8 @@
     - [1. Available Features](#1-available-features)
     - [2. Create a Store Feature](#2-create-a-store-feature)
     - [3. Use in a Component](#3-use-in-a-component)
-    - [4. Entity Selectors](#4-entity-selectors)
+    - [4. Available Store Methods](#4-available-store-methods)
+    - [5. Entity Selectors](#5-entity-selectors)
   - [🔧 Configuration](#-configuration)
   - [💡 Advanced Usage](#-advanced-usage)
   - [🔗 Related Libraries](#-related-libraries)
@@ -53,24 +54,30 @@ graph TD
 
 Choose the feature that fits your needs:
 
-- **`withPocketBaseGetList`**: Read-only list operations.
-- **`withPocketBaseGet`**: List operations + Get One (Read-only).
+- **`withPocketBaseGet`**: Read-only list operations with pagination, filtering, and sorting.
+- **`withPocketBaseGetList`**: Read-only list operations (alias for withPocketBaseGet).
 - **`withPocketBaseCrud`**: Full CRUD operations (List, GetOne, Create, Update, Delete).
+- **`withPocketBaseGetOneFeature`**: Single item retrieval and selection state.
 
 ### 2. Create a Store Feature
 
 ```typescript
 // product-store.feature.ts
-import { signalStore, type } from '@ngrx/signals';
-import { withPocketBaseCrud } from '@plastik/shared/signal-state/data-access-pocketbase';
+import { signalStore } from '@ngrx/signals';
+import { withPocketBaseGet } from '@plastik/shared/signal-state/data-access-pocketbase';
 import { ProductPocketBaseService } from '@plastik/core/api-pocketbase';
 import { Product } from './product.model';
 
 export const ProductStore = signalStore(
   { providedIn: 'root' },
-  withPocketBaseCrud<Product, ProductPocketBaseService>({
+  withPocketBaseGet<Product, ProductPocketBaseService>({
     featureName: 'product',
     dataServiceType: ProductPocketBaseService,
+    customInitialState: {
+      paginationSizeOptions: [20, 50, 75],
+      pagination: { page: 1, perPage: 20 },
+      filter: { category: null },
+    },
   })
 );
 ```
@@ -96,11 +103,11 @@ export class ProductListComponent {
   }
 
   filterProducts(category: string) {
-    this.store.setParams({ filter: { category } });
+    this.store.setFilter({ category });
   }
 
   changePage(page: number) {
-    this.store.setParams({ pagination: { page, perPage: 10 } });
+    this.store.setPagination({ page, perPage: 10 });
   }
 
   selectProduct(id: string) {
@@ -109,7 +116,17 @@ export class ProductListComponent {
 }
 ```
 
-### 4. Entity Selectors
+### 4. Available Store Methods
+
+The store provides the following methods:
+
+- **`getList()`** - Load list with current parameters (auto-called on init)
+- **`setFilter(filter)`** - Update filter parameters and reload list
+- **`setPagination(pagination)`** - Update pagination and reload list
+- **`setSort(sort)`** - Update sorting and reload list
+- **`getOne(id)`** - Load single item (when using Get/Crud features)
+
+### 5. Entity Selectors
 
 The store uses `withEntities` which provides:
 
@@ -127,9 +144,11 @@ The store uses `withEntities` which provides:
 
 ## 💡 Advanced Usage
 
-- **Composability**: You can mix these features with your own custom store features.
-- **Custom Actions**: The `rxMethod`s (`getList`, `getOne`, etc.) are exposed and can be triggered manually or reactively.
-- **State Updates**: `setParams` allows partial updates to pagination, sort, or filter state, triggering a reload of the list.
+- **Custom Initial State**: Provide custom pagination, filter, or sort defaults via `customInitialState`.
+- **Composability**: Mix these features with your own custom store features using `withComputed`, `withMethods`, etc.
+- **Debounced Requests**: List operations are automatically debounced (300ms) to avoid excessive API calls.
+- **Error Handling**: Built-in error notifications via the notification store.
+- **DevTools Integration**: All state changes are tracked in Redux DevTools with feature names.
 
 ## 🔗 Related Libraries
 

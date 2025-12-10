@@ -6,4 +6,20 @@
       outlined-container-color: var(--white),
     )
   );
+
+  mat-list-item.active {
+    --mat-list-list-item-container-color: var(--primary-100);
+    --mat-list-list-item-label-text-color: var(--primary-900);
+    --mat-list-list-item-hover-label-text-color: var(--primary-900);
+    --mat-list-list-item-focus-label-text-color: var(--primary-900);
+  }
+
+  mat-list-item.active:hover {
+    --mat-list-list-item-container-color: var(--primary-50);
+  }
+
+  mat-list-item.active:focus-visible,
+  mat-list-item.active:active {
+    --mat-list-list-item-container-color: var(--primary-200);
+  }
 }

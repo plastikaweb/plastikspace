@@ -8,3 +8,6 @@ export * from './lib/stores/with-pocketbase-get.store';
 
 // Resolvers
 export * from './lib/resolvers/pocketbase-get.resolver';
+
+// Types
+export * from './lib/pocketbase-store.types';

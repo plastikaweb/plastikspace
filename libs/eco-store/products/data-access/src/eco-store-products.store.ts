@@ -1,7 +1,7 @@
 import { computed, inject } from '@angular/core';
 import { signalStore, withComputed } from '@ngrx/signals';
 import { TranslateService } from '@ngx-translate/core';
-import { LocalizedFields } from '@plastik/core/entities';
+import { IdType, LocalizedFields } from '@plastik/core/entities';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import {
   EcoStoreProduct,
@@ -9,13 +9,17 @@ import {
   ProductCategory,
 } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
-import { withPocketBaseGet } from '@plastik/signal-state/pocketbase';
+import { PocketBaseGetListState, withPocketBaseGet } from '@plastik/signal-state/pocketbase';
 
 import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 
+export interface ProductesPocketBaseGetListState extends PocketBaseGetListState {
+  filter: { category: IdType<ProductCategory> | null };
+}
+
 export const ecoStoreProductsStore = signalStore(
   { providedIn: 'root' },
-  withPocketBaseGet<EcoStoreProduct, EcoStoreProductsApiService>({
+  withPocketBaseGet<EcoStoreProduct, EcoStoreProductsApiService, ProductesPocketBaseGetListState>({
     featureName: 'products',
     dataServiceType: EcoStoreProductsApiService,
     customInitialState: {
@@ -23,6 +27,9 @@ export const ecoStoreProductsStore = signalStore(
       pagination: {
         page: 1,
         perPage: 20,
+      },
+      filter: {
+        category: null,
       },
     },
   }),

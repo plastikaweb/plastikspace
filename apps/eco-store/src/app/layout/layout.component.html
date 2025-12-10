@@ -1,10 +1,10 @@
-<div class="grid grid-rows-[auto_1fr_auto] h-screen max-w-[1600px] mx-auto">
+<div class="grid grid-rows-[auto_1fr_auto] h-screen max-w-[2100px] mx-auto">
   <eco-header [formConfig]="searchFormConfig" (submitEvent)="onSearchSubmit($event)">
     <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
     <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
   </eco-header>
 
-  <mat-sidenav-container class="h-full overflow-auto">
+  <mat-sidenav-container class="h-full overflow-auto mx-sm">
     <mat-sidenav
       #sidenav
       mode="side"

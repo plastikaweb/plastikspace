@@ -31,7 +31,7 @@
     "add": "Afegir"
   },
   "products": {
-    "all": "Productes",
+    "all": "Tots els productes",
     "add": "Afegir",
     "total": "productes trobats",
     "favorite": "Afegir {{value}} a favorits",

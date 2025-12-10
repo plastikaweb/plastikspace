@@ -1,16 +1,15 @@
-import { DEFAULT_CURRENCY_CODE, ErrorHandler, importProvidersFrom } from '@angular/core';
-import { MAT_PAGINATOR_DEFAULT_OPTIONS, MatPaginatorIntl } from '@angular/material/paginator';
-import { Route, TitleStrategy } from '@angular/router';
+import { DEFAULT_CURRENCY_CODE, importProvidersFrom, inject } from '@angular/core';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { ActivatedRouteSnapshot, Route } from '@angular/router';
 
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
-import { PrefixTitleService } from '@plastik/core/router-state';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
-import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
+import { EcoStoreCategoryRouteTitleService } from './eco-store-category-route-title.service';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    loadComponent: () => import('./layout/layout.component'),
+    loadComponent: () => import('../layout/layout.component'),
     providers: [
       {
         provide: MatPaginatorIntl,
@@ -24,23 +23,21 @@ export const appRoutes: Route[] = [
     ],
     children: [
       {
-        path: 'botiga',
-        loadChildren: () =>
-          import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
-      },
-      {
         path: 'botiga/:category',
+        title: (route: ActivatedRouteSnapshot) =>
+          inject(EcoStoreCategoryRouteTitleService).resolve(route),
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },
       {
         path: 'botiga',
-        redirectTo: 'botiga/',
-        pathMatch: 'full',
+        title: 'products.all',
+        loadChildren: () =>
+          import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },
       {
         path: '**',
-        redirectTo: 'botiga/',
+        redirectTo: 'botiga',
         pathMatch: 'full',
       },
     ],

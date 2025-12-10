@@ -31,14 +31,14 @@
     class="flex absolute inset-0 z-10 flex-col justify-center items-center rounded-lg opacity-0 transition-all duration-150 bg-gray-10"
     style="pointer-events: none"
     [ngClass]="{ 'opacity-100': isDragOver() }">
-    <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">upload</mat-icon>
+    <mat-icon class="w-20 h-20 text-[75px] p-0 m-0">upload</mat-icon>
     <span class="text-sm text-center text-balance">Suelta la imagen aquí</span>
   </div>
 
   <!-- image load button and drag and drop instructions -->
   @if (!value() && !isLoading()) {
     <div class="flex flex-col justify-center items-center p-0 m-0 w-full h-full bg-gray-10">
-      <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">upload</mat-icon>
+      <mat-icon class="w-20 h-20 text-[75px] p-0 m-0">upload</mat-icon>
       <span class="text-sm text-center text-balance">Arrastra una imatge</span>
       <span class="text-sm text-center text-balance">o</span>
       <button

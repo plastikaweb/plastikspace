@@ -252,4 +252,7 @@
   --spacing-lg: var(--eco-space-lg);
   --spacing-xl: var(--eco-space-xl);
   --spacing-2xl: var(--eco-space-2xl);
+
+  /* focus ring */
+  --focus-ring-color: var(--secondary-300);
 }

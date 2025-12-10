@@ -4,6 +4,10 @@
     "outDir": "../../dist/out-tsc",
     "types": []
   },
-  "include": ["src/**/*.ts", "../../libs/eco-store/feature/formly/src/app.search-form.config.ts"],
+  "include": [
+    "src/**/*.ts",
+    "../../libs/eco-store/feature/formly/src/app.search-form.config.ts",
+    "src/app/routing/eco-store-category-route-title.service.ts"
+  ],
   "exclude": ["jest.config.ts", "src/test-setup.ts", "src/**/*.test.ts", "src/**/*.spec.ts"]
 }

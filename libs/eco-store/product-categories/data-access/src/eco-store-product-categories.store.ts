@@ -3,6 +3,8 @@ import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
+import { TranslateService } from '@ngx-translate/core';
+import { LocalizedFields } from '@plastik/core/entities';
 import { pipe, switchMap, tap } from 'rxjs';
 
 import { ProductCategory, ProductCategoryGroup } from '@plastik/eco-store/entities';
@@ -51,6 +53,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
   withMethods(store => {
     const apiService = inject(EcoStoreProductCategoriesApiService);
     const notification = inject(notificationStore);
+    const translateService = inject(TranslateService);
 
     const showErrorNotification = (error: ClientResponseError): void => {
       notification.show({
@@ -59,6 +62,23 @@ export const ecoStoreProductCategoriesStore = signalStore(
         action: 'notification.close-short',
         duration: 5000,
       });
+    };
+
+    const getLocalizedCategoryName = (category: ProductCategory): string => {
+      const name: string | LocalizedFields<string> | undefined = category.name;
+      if (!name) {
+        return translateService.instant('products.all');
+      }
+      if (typeof name === 'string') {
+        return name;
+      }
+      const currentLang: string = translateService.getCurrentLang();
+      const localizedName: string | undefined =
+        name[currentLang as keyof LocalizedFields<string>] ?? name['ca'];
+      if (!localizedName) {
+        return translateService.instant('products.all');
+      }
+      return localizedName;
     };
 
     return {
@@ -80,6 +100,30 @@ export const ecoStoreProductCategoriesStore = signalStore(
           )
         )
       ),
+
+      findCategoryBySlug(slug: string | null): ProductCategory | undefined {
+        return store.categories().find((item: ProductCategory) => item.normalizedName === slug);
+      },
+
+      getLocalizedCategoryName(category: ProductCategory): string {
+        return getLocalizedCategoryName(category);
+      },
+    };
+  }),
+  withMethods(store => {
+    const translateService = inject(TranslateService);
+
+    return {
+      getCategoryTitleBySlug(slug: string | null, defaultText: string): string {
+        if (!slug) {
+          return translateService.instant(defaultText);
+        }
+        const category = store.findCategoryBySlug(slug);
+        if (!category) {
+          return translateService.instant(defaultText);
+        }
+        return store.getLocalizedCategoryName(category);
+      },
     };
   }),
   withHooks({

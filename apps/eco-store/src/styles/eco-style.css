@@ -1,96 +1,85 @@
-/* ECO STORE THEME - MATERIAL 3 OVERRIDE
-   Base Color: #4B5F36 (Olive Green)
-   Background: #F9F9F5 (Warm Beige)
-
-   NOTE: We have forced light colors (Beige/Green) even in dark mode
-   to maintain consistency with product images (white backgrounds).
-*/
-
+/* Note: Color palettes are generated from primary: #1b8c4a */
 html {
   /* COLOR SYSTEM VARIABLES */
-  /* Force 'light' so the browser doesn't try to darken native controls */
   color-scheme: light;
 
-  /* PRIMARY PALETTE (Corporate Green)
-     Primary: #4B5F36
-     Container: #E9EDDE (Soft color for inactive buttons)
-  */
-  /* In all light-dark() functions, both values are now equal or very similar
-     to prevent dark mode from breaking the design. */
-  --mat-sys-primary: light-dark(#4b5f36, #4b5f36);
-  --mat-sys-on-primary: light-dark(#ffffff, #ffffff);
-  --mat-sys-primary-container: light-dark(#e9edde, #e9edde);
-  --mat-sys-on-primary-container: light-dark(#131f0d, #131f0d);
-  --mat-sys-inverse-primary: light-dark(#aecb9a, #aecb9a);
-  --mat-sys-primary-fixed: light-dark(#e9edde, #e9edde);
-  --mat-sys-primary-fixed-dim: light-dark(#aecb9a, #aecb9a);
-  --mat-sys-on-primary-fixed: light-dark(#131f0d, #131f0d);
-  --mat-sys-on-primary-fixed-variant: light-dark(#4b5f36, #4b5f36);
+  /* Primary palette variables */
+  --mat-sys-primary: light-dark(#1b8c4a, #6dd9a5);
+  --mat-sys-on-primary: light-dark(#ffffff, #003e20);
+  --mat-sys-primary-container: light-dark(#aeeecf, #005b31);
+  --mat-sys-on-primary-container: light-dark(#042a16, #aeeecf);
+  --mat-sys-inverse-primary: light-dark(#6dd9a5, #1b8c4a);
+  --mat-sys-primary-fixed: light-dark(#aeeecf, #aeeecf);
+  --mat-sys-primary-fixed-dim: light-dark(#6dd9a5, #6dd9a5);
+  --mat-sys-on-primary-fixed: light-dark(#042a16, #042a16);
+  --mat-sys-on-primary-fixed-variant: light-dark(#0d5e32, #0d5e32);
 
-  /* SECONDARY PALETTE (Earth tones/Soft brown) */
-  --mat-sys-secondary: light-dark(#6d5e4d, #6d5e4d);
-  --mat-sys-on-secondary: light-dark(#ffffff, #ffffff);
-  --mat-sys-secondary-container: light-dark(#f2e8de, #f2e8de);
-  --mat-sys-on-secondary-container: light-dark(#261f17, #261f17);
-  --mat-sys-secondary-fixed: light-dark(#f2e8de, #f2e8de);
-  --mat-sys-secondary-fixed-dim: light-dark(#d9c4b0, #d9c4b0);
-  --mat-sys-on-secondary-fixed: light-dark(#261f17, #261f17);
-  --mat-sys-on-secondary-fixed-variant: light-dark(#544739, #544739);
+  /* Secondary palette variables */
+  --mat-sys-secondary: light-dark(#3d7e5f, #96d7b8);
+  --mat-sys-on-secondary: light-dark(#ffffff, #0d291d);
+  --mat-sys-secondary-container: light-dark(#cfeadd, #254f3a);
+  --mat-sys-on-secondary-container: light-dark(#0a2117, #cfeadd);
+  --mat-sys-secondary-fixed: light-dark(#cfeadd, #cfeadd);
+  --mat-sys-secondary-fixed-dim: light-dark(#96d7b8, #96d7b8);
+  --mat-sys-on-secondary-fixed: light-dark(#0a2117, #0a2117);
+  --mat-sys-on-secondary-fixed-variant: light-dark(#254f3a, #254f3a);
 
-  /* TERTIARY PALETTE (Red/Orange - Trash bin) */
-  --mat-sys-tertiary: light-dark(#b9382c, #b9382c);
-  --mat-sys-on-tertiary: light-dark(#ffffff, #ffffff);
-  --mat-sys-tertiary-container: light-dark(#ffdad6, #ffdad6);
-  --mat-sys-on-tertiary-container: light-dark(#410002, #410002);
-  --mat-sys-tertiary-fixed: light-dark(#ffdad6, #ffdad6);
-  --mat-sys-tertiary-fixed-dim: light-dark(#ffb4ab, #ffb4ab);
-  --mat-sys-on-tertiary-fixed: light-dark(#410002, #410002);
-  --mat-sys-on-tertiary-fixed-variant: light-dark(#93000a, #93000a);
+  /* Tertiary palette variables */
+  --mat-sys-tertiary: light-dark(#f1962b, #ffb867);
+  --mat-sys-on-tertiary: light-dark(#ffffff, #4a2500);
+  --mat-sys-tertiary-container: light-dark(#ffe3c2, #663600);
+  --mat-sys-on-tertiary-container: light-dark(#341400, #ffe3c2);
+  --mat-sys-tertiary-fixed: light-dark(#ffe3c2, #ffe3c2);
+  --mat-sys-tertiary-fixed-dim: light-dark(#ffb867, #ffb867);
+  --mat-sys-on-tertiary-fixed: light-dark(#341400, #341400);
+  --mat-sys-on-tertiary-fixed-variant: light-dark(#663600, #663600);
 
-  /* NEUTRAL & BACKGROUND (Crucial: Always Beige/White) */
-  --mat-sys-background: light-dark(#f9f9f5, #f9f9f5); /* Always Beige */
-  --mat-sys-on-background: light-dark(#1c1c1c, #1c1c1c); /* Text always dark */
+  /* Neutral palette variables */
+  --mat-sys-background: light-dark(#f5f8f4, #121513);
+  --mat-sys-on-background: light-dark(#212620, #dce1dc);
+  --mat-sys-surface: light-dark(#f9fcf7, #121513);
+  --mat-sys-surface-dim: light-dark(#e1e5e0, #121513);
+  --mat-sys-surface-bright: light-dark(#ffffff, #333835);
+  --mat-sys-surface-container-low: light-dark(#f2f6f1, #191d1b);
+  --mat-sys-surface-container-lowest: light-dark(#ffffff, #0c100e);
+  --mat-sys-surface-container: light-dark(#ecf1eb, #1e2220);
+  --mat-sys-surface-container-high: light-dark(#e6ebe5, #282d2a);
+  --mat-sys-surface-container-highest: light-dark(#dfe4de, #323734);
+  --mat-sys-on-surface: light-dark(#212620, #dfe4de);
+  --mat-sys-shadow: light-dark(#000000, #000000);
+  --mat-sys-scrim: light-dark(#000000, #000000);
+  --mat-sys-surface-tint: light-dark(#1b8c4a, #6dd9a5);
+  --mat-sys-inverse-surface: light-dark(#323734, #dfe4de);
+  --mat-sys-inverse-on-surface: light-dark(#f1f5f1, #212620);
+  --mat-sys-outline: light-dark(#6f7a72, #88948d);
+  --mat-sys-outline-variant: light-dark(#bdc9c0, #3f4a43);
+  --mat-sys-neutral10: light-dark(
+    #212620,
+    #212620
+  ); /* Variable used for the form field native select option text color */
 
-  --mat-sys-surface: light-dark(#ffffff, #ffffff); /* Cards always white */
-  --mat-sys-surface-dim: light-dark(#efefe9, #efefe9);
-  --mat-sys-surface-bright: light-dark(#fcfcfa, #fcfcfa);
+  /* Error palette variables */
+  --mat-sys-error: light-dark(#ba1a1a, #ffb4ab);
+  --mat-sys-on-error: light-dark(#ffffff, #690005);
+  --mat-sys-error-container: light-dark(#ffdad6, #93000a);
+  --mat-sys-on-error-container: light-dark(#410002, #ffdad6);
 
-  --mat-sys-surface-container-lowest: light-dark(#ffffff, #ffffff);
-  --mat-sys-surface-container-low: light-dark(#f3f5ef, #f3f5ef);
-  --mat-sys-surface-container: light-dark(#edede7, #edede7);
-  --mat-sys-surface-container-high: light-dark(#e7e9e3, #e7e9e3);
-  --mat-sys-surface-container-highest: light-dark(#e1e3de, #e1e3de);
+  /* Neutral variant palette variables */
+  --mat-sys-surface-variant: light-dark(#d9e5e0, #3e4946);
+  --mat-sys-on-surface-variant: light-dark(#3e4946, #bdc9c5);
+  --mat-sys-neutral-variant20: light-dark(
+    #283330,
+    #283330
+  ); /* Variable used for the sidenav scrim (container background shadow when opened) */
 
-  --mat-sys-on-surface: light-dark(#1c1c1c, #1c1c1c);
-  --mat-sys-surface-tint: light-dark(#4b5f36, #4b5f36);
+  /* TYPOGRAPHY SYSTEM VARIABLES */
 
-  /* Outline */
-  --mat-sys-outline: light-dark(#767d74, #767d74);
-  --mat-sys-outline-variant: light-dark(#c6c9c2, #c6c9c2);
-
-  /* Error palette */
-  --mat-sys-error: light-dark(#ba1a1a, #ba1a1a);
-  --mat-sys-on-error: light-dark(#ffffff, #ffffff);
-  --mat-sys-error-container: light-dark(#ffdad6, #ffdad6);
-  --mat-sys-on-error-container: light-dark(#410002, #410002);
-
-  /* SHAPE SYSTEM (More organic/round) */
-  --mat-sys-corner-extra-large: 32px;
-  --mat-sys-corner-extra-large-top: 32px 32px 0 0;
-
-  --mat-sys-corner-large: 24px;
-  --mat-sys-corner-large-end: 0 24px 24px 0;
-  --mat-sys-corner-large-start: 24px 0 0 24px;
-  --mat-sys-corner-large-top: 24px 24px 0 0;
-
-  --mat-sys-corner-medium: 16px;
-  --mat-sys-corner-small: 12px;
-  --mat-sys-corner-extra-small: 8px;
-  --mat-sys-corner-full: 9999px;
-
-  /* TYPOGRAPHY */
-  --mat-sys-brand-font-family: 'Manrope', sans-serif;
-  --mat-sys-plain-font-family: 'Manrope', sans-serif;
+  /* Typography variables. Only used in the different typescale system variables. */
+  --mat-sys-brand-font-family: 'Manrope'; /* The font-family to use for brand text. */
+  --mat-sys-plain-font-family: 'Manrope'; /* The font-family to use for plain text. */
+  --mat-sys-bold-font-weight: 700; /* The font-weight to use for bold text. */
+  --mat-sys-medium-font-weight: 500; /* The font-weight to use for medium text. */
+  --mat-sys-regular-font-weight: 400; /* The font-weight to use for regular text. */
 
   /* Typescale variables. */
   /* Warning: Risk of reduced fidelity from using the composite typography tokens (ex. --mat-sys-body-large) since
@@ -261,6 +250,20 @@ html {
   --mat-sys-level5:
     0px 7px 8px -4px var(--mat-sys-umbra-color), 0px 12px 17px 2px var(--mat-sys-penumbra-color),
     0px 5px 22px 4px var(--mat-sys-ambient-color);
+
+  /* SHAPE SYSTEM VARIABLES */
+  --mat-sys-corner-extra-large: 28px;
+  --mat-sys-corner-extra-large-top: 28px 28px 0 0;
+  --mat-sys-corner-extra-small: 4px;
+  --mat-sys-corner-extra-small-top: 4px 4px 0 0;
+  --mat-sys-corner-full: 9999px;
+  --mat-sys-corner-large: 16px;
+  --mat-sys-corner-large-end: 0 16px 16px 0;
+  --mat-sys-corner-large-start: 16px 0 0 16px;
+  --mat-sys-corner-large-top: 16px 16px 0 0;
+  --mat-sys-corner-medium: 12px;
+  --mat-sys-corner-none: 0;
+  --mat-sys-corner-small: 8px;
 
   /* STATE SYSTEM VARIABLES */
   --mat-sys-dragged-state-layer-opacity: 0.16;
