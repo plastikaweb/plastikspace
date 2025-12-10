@@ -12,20 +12,51 @@ This library provides data access functionality for eco-store product categories
 
 ## Features
 
-- GET operations for product categories
-- Filtering and searching capabilities
-- Type-safe API interactions
+- Signal-based state management with NgRx Signals
+- Reactive store for product categories with localization
+- Category grouping by parent groups
+- Automatic category loading on initialization
+- Localized category names with fallback support
+- Category search by slug/normalized name
+- Total product count aggregation
+- Error handling with notifications
 
 ## Usage
 
-Import the store and use its methods to interact with product categories:
+Import the store and use its reactive signals:
 
 ```typescript
-import { ProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
+import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 
-const store = new ProductCategoriesStore();
-const categories = await store.getAll();
+const store = inject(ecoStoreProductCategoriesStore);
+
+// Access reactive signals
+const categories = store.categories();
+const groupedCategories = store.groupedCategories();
+const totalProducts = store.totalProducts();
+const isLoading = store.isLoading();
+
+// Load all categories
+store.getFullList();
+
+// Find category by slug
+const category = store.findCategoryBySlug('electronics');
+
+// Get localized category name
+const localizedName = store.getLocalizedCategoryName(category);
+
+// Get category title by slug with fallback
+const title = store.getCategoryTitleBySlug('electronics', 'products.all');
 ```
+
+### Available Store Methods
+
+- `getFullList()` - Load all product categories from API
+- `findCategoryBySlug(slug)` - Find category by normalized name
+- `getLocalizedCategoryName(category)` - Get category name in current language
+- `getCategoryTitleBySlug(slug, defaultText)` - Get localized title with fallback
+- `groupedCategories` - Computed signal with categories grouped by parent
+- `totalProducts` - Computed signal with total product count across all categories
 
 ## Running unit tests
 

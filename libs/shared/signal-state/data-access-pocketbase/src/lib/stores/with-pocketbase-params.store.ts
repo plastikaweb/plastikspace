@@ -1,5 +1,5 @@
 import { updateState } from '@angular-architects/ngrx-toolkit';
-import { signalStoreFeature, type, withMethods } from '@ngrx/signals';
+import { signalStoreFeature, SignalStoreFeature, type, withMethods } from '@ngrx/signals';
 import {
   BasePocketBaseEntityFilter,
   BasePocketBaseEntityPagination,
@@ -101,11 +101,10 @@ const normalizePocketBaseParams = (
 
 /**
  * @description Signal store feature for PocketBase list operations with pagination, sorting, and filtering.
- * @param root0
- * @param root0.featureName
- * @param root0.customInitialState
- * @param root0.pagination
- * @param root0.previousState
+ * @param { object } root0 Configuration object.
+ * @param { string } root0.featureName The name of the feature for DevTools and logging.
+ * @param { Partial<PocketBaseGetListState> } root0.customInitialState Custom initial state overrides for pagination, sort and filter.
+ * @returns { SignalStoreFeature } Signal store feature.
  */
 export function withPocketBaseParamsFeature({
   featureName,

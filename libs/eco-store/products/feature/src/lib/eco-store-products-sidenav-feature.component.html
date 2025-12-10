@@ -4,7 +4,11 @@
   <mat-card-content class="overflow-y-auto">
     <mat-nav-list role="list" class="pt-0!">
       <!-- All Categories Option -->
-      <mat-list-item role="listitem" routerLink="/store">
+      <mat-list-item
+        role="listitem"
+        routerLink="/botiga"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">
         <div class="flex items-center gap-2 w-full">
           <mat-icon class="text-gray-400 scale-90">apps</mat-icon>
           <span matListItemTitle class="text-sm font-semibold text-gray-900">{{
@@ -21,17 +25,18 @@
         </div>
 
         @for (category of group.categories; track category.id) {
-          <mat-list-item role="listitem" [routerLink]="['/store', category.normalizedName]">
+          <mat-list-item
+            role="listitem"
+            routerLinkActive="active"
+            [routerLink]="['/', 'botiga', category.normalizedName]">
             <div class="flex items-center gap-2 w-full">
               <mat-icon class="scale-90" [style.color]="category.color">{{
                 category.icon
               }}</mat-icon>
-              <span matListItemTitle class="text-sm text-gray-600 truncate flex-1">{{
+              <span matListItemTitle class="text-sm truncate flex-1">{{
                 getCategoryName(category)
               }}</span>
-              <span matListItemLine class="text-xs text-gray-400 ml-2"
-                >({{ category.productCount }})</span
-              >
+              <span matListItemLine class="text-xs ml-2">({{ category.productCount }})</span>
             </div>
           </mat-list-item>
         }

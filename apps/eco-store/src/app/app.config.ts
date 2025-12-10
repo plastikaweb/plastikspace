@@ -24,7 +24,8 @@ import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categ
 import { pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { environment } from '../environments/environment';
-import { appRoutes } from './app.routes';
+import { appRoutes } from './routing/app.routes';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),

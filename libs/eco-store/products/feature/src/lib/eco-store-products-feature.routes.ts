@@ -1,15 +1,11 @@
 import { Route } from '@angular/router';
 
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
-import {
-  POCKETBASE_GET_STORE_TOKEN,
-  pocketBaseListResolver,
-} from '@plastik/signal-state/pocketbase';
-
+import { POCKETBASE_GET_STORE_TOKEN } from '@plastik/signal-state/pocketbase';
+import { ecoStoreProductsResolver } from './eco-store-products-feature.resolver';
 export const ecoStoreProductsFeatureRoutes: Route[] = [
   {
     path: '',
-    title: 'store.list',
     providers: [
       {
         provide: POCKETBASE_GET_STORE_TOKEN,
@@ -17,7 +13,7 @@ export const ecoStoreProductsFeatureRoutes: Route[] = [
       },
     ],
     resolve: {
-      productListLoaded: pocketBaseListResolver,
+      products: ecoStoreProductsResolver,
     },
     children: [
       {

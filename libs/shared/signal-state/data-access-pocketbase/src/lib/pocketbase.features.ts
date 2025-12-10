@@ -14,8 +14,7 @@ import {
 import { EntityState, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { DataGet, DataGetList } from '@plastik/core/api-base';
-import { IdType } from '@plastik/core/entities';
-import { BasePocketBaseEntity } from '@plastik/core/entities';
+import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { ClientResponseError, ListResult } from 'pocketbase';
 import { debounceTime, pipe, switchMap, tap } from 'rxjs';
@@ -32,11 +31,11 @@ import { withPocketBaseParamsFeature } from './stores/with-pocketbase-params.sto
  * Use this when you only need to display a list of items.
  * @template T - The entity type.
  * @template S - The service type.
- * @param {object} root0 - Configuration object.
- * @param {string} root0.featureName - The name of the feature for DevTools.
- * @param {Type<S>} root0.dataServiceType - The service type for data operations.
- * @param root0.customInitialState
- * @returns {SignalStoreFeature} A signal store feature with list operations.
+ * @param { object } root0 - Configuration object.
+ * @param { string } root0.featureName - The name of the feature for DevTools.
+ * @param { Type<S> } root0.dataServiceType - The service type for data operations.
+ * @param { Partial<PocketBaseGetListState> } root0.customInitialState - The initial custom state.
+ * @returns { SignalStoreFeature } A signal store feature with list operations.
  */
 export function withPocketBaseListFeature<
   T extends BasePocketBaseEntity,

@@ -1,5 +1,5 @@
 import { Type } from '@angular/core';
-import { signalStoreFeature, SignalStoreFeature, type } from '@ngrx/signals';
+import { signalStoreFeature, SignalStoreFeature } from '@ngrx/signals';
 import { DataGet } from '@plastik/core/api-base';
 import { BasePocketBaseEntity } from '@plastik/core/entities';
 import { ListResult } from 'pocketbase';
@@ -20,6 +20,7 @@ import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocke
 export function withPocketBaseGet<
   T extends BasePocketBaseEntity,
   S extends DataGet<T, ListResult<T>, PocketBaseListParams>,
+  STATE extends PocketBaseGetListState = PocketBaseGetListState,
 >({
   featureName,
   dataServiceType,
@@ -27,7 +28,7 @@ export function withPocketBaseGet<
 }: {
   featureName: string;
   dataServiceType: Type<S>;
-  customInitialState: Partial<PocketBaseGetListState>;
+  customInitialState: Partial<STATE>;
 }) {
   return signalStoreFeature(
     withPocketBaseListFeature<T, S>({

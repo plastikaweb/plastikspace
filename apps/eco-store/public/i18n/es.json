@@ -31,7 +31,7 @@
     "add": "Agregar"
   },
   "products": {
-    "all": "Productos",
+    "all": "Todos los productos",
     "add": "Agregar",
     "total": "productos",
     "favorite": "Agregar {{value}} a favoritos",

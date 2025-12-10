@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@use 'eco-store-theme';
+@use 'eco-style';
 @use 'color-palette';
 @use 'tailwind-theme';
 @use 'tailwindcss';
@@ -73,18 +73,9 @@
     pointer-events: auto;
   }
 
-  *::-webkit-scrollbar {
-    width: 0.8rem;
-  }
-
-  *::-webkit-scrollbar-track {
-    background-color: var(--color-neutral-50);
-    border-radius: 5px;
-  }
-
-  *::-webkit-scrollbar-thumb {
-    background-color: var(--color-primary-200);
-    border-radius: 5px;
+  :focus-visible {
+    outline: 2px dotted var(--focus-ring-color) !important ;
+    outline-offset: -5px !important;
   }
 }
 

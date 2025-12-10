@@ -1,11 +1,10 @@
-import { InjectionToken } from '@angular/core';
-import { Provider } from '@angular/core';
+import { InjectionToken, Provider } from '@angular/core';
 
 import {
   Environment,
   EnvironmentPocketBase,
-  EnvironmentWithApiUrl,
   EnvironmentPocketBaseWithTranslations,
+  EnvironmentWithApiUrl,
 } from './environment';
 
 export const ENVIRONMENT: InjectionToken<Environment> = new InjectionToken('ENVIRONMENT');
@@ -18,33 +17,48 @@ export const POCKETBASE_ENVIRONMENT: InjectionToken<EnvironmentPocketBase> = new
 export const POCKETBASE_WITH_TRANSLATION_ENVIRONMENT: InjectionToken<EnvironmentPocketBaseWithTranslations> =
   new InjectionToken('POCKETBASE_WITH_TRANSLATION_ENVIRONMENT');
 
-export function provideWithApiEnv(envValue: EnvironmentWithApiUrl): Provider[] {
+/**
+ * @description A provider ready to use EnvironmentWithApiUrl.
+ * @param { EnvironmentWithApiUrl } env The environment definition.
+ * @returns { Provider[] } The providers array.
+ */
+export function provideWithApiEnv(env: EnvironmentWithApiUrl): Provider[] {
   return [
     {
       provide: ENVIRONMENT_WITH_API,
-      useValue: envValue,
+      useValue: env,
     },
     { provide: ENVIRONMENT, useExisting: ENVIRONMENT_WITH_API },
   ];
 }
 
-export function providePocketBaseEnv(envValue: EnvironmentPocketBase): Provider[] {
+/**
+ * @description A provider ready to use EnvironmentPocketBase.
+ * @param { EnvironmentPocketBase } env The environment definition.
+ * @returns { Provider[] } The providers array.
+ */
+export function providePocketBaseEnv(env: EnvironmentPocketBase): Provider[] {
   return [
     {
       provide: POCKETBASE_ENVIRONMENT,
-      useValue: envValue,
+      useValue: env,
     },
     { provide: ENVIRONMENT, useExisting: POCKETBASE_ENVIRONMENT },
   ];
 }
 
+/**
+ * @description A provider ready to use EnvironmentPocketBaseWithTranslations.
+ * @param { EnvironmentPocketBaseWithTranslations } env The environment definition.
+ * @returns { Provider[] } The providers array.
+ */
 export function providePocketBaseWithTranslationsEnv(
-  envValue: EnvironmentPocketBaseWithTranslations
+  env: EnvironmentPocketBaseWithTranslations
 ): Provider[] {
   return [
     {
       provide: POCKETBASE_WITH_TRANSLATION_ENVIRONMENT,
-      useValue: envValue,
+      useValue: env,
     },
     { provide: ENVIRONMENT, useExisting: POCKETBASE_WITH_TRANSLATION_ENVIRONMENT },
     { provide: ENVIRONMENT_WITH_API, useExisting: POCKETBASE_WITH_TRANSLATION_ENVIRONMENT },

@@ -9,11 +9,8 @@
     )
   );
 
-  mat-sidenav {
-    ::ng-deep .mat-drawer-inner-container {
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
+  mat-sidenav,
+  mat-sidenav-content {
+    scrollbar-color: var(--primary-400) var(--primary-100);
   }
 }
