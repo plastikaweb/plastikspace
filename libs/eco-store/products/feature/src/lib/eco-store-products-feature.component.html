@@ -26,11 +26,12 @@
   </header>
 
   <!-- Products Grid -->
+  <!-- first 7 items in high screens are marked for LCP -->
   <div class="products-grid">
     @for (item of store.productsWithCategoryName(); track item.id; let i = $index) {
       <eco-store-product-card
         [product]="item"
-        [isFirst]="i < 1"
+        [isFirst]="i < 8"
         (addToCart)="addToCart($event)"
         (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
     }
