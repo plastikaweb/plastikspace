@@ -3,13 +3,13 @@ import { signalStoreFeature, SignalStoreFeature, type, withMethods } from '@ngrx
 import {
   BasePocketBaseEntityFilter,
   BasePocketBaseEntityPagination,
-  BasePocketBaseEntitySort,
+  SortConfig,
 } from '@plastik/core/entities';
 import { initialGetListState, PocketBaseGetListState } from '../pocketbase-store.types';
 
 interface NormalizedPocketBaseParams {
   pagination: BasePocketBaseEntityPagination;
-  sort: BasePocketBaseEntitySort;
+  sort: SortConfig;
   filter: BasePocketBaseEntityFilter;
 }
 
@@ -69,15 +69,15 @@ const normalizePocketBaseParams = (
   rawParams: Record<string, unknown> | undefined,
   defaultState: PocketBaseGetListState
 ): NormalizedPocketBaseParams => {
-  const { page, perPage, sort, direction, ...rest } = rawParams ?? {};
+  const { page, perPage, active, direction, ...rest } = rawParams ?? {};
 
   const pagination: BasePocketBaseEntityPagination = {
     page: parseNumber(page) ?? defaultState.pagination.page,
     perPage: parseNumber(perPage) ?? defaultState.pagination.perPage,
   };
 
-  const sorting: BasePocketBaseEntitySort = {
-    sort: typeof sort === 'string' && sort.length > 0 ? sort : defaultState.sort.sort,
+  const sorting: SortConfig = {
+    active: typeof active === 'string' && active.length > 0 ? active : defaultState.sort.active,
     direction: parseDirection(direction) ?? defaultState.sort.direction,
   };
 
@@ -86,7 +86,10 @@ const normalizePocketBaseParams = (
       if (value === undefined) {
         return acc;
       }
-      acc[key] = normalizeFilterValue(value);
+      const normalizedValue = normalizeFilterValue(value);
+      if (normalizedValue !== null) {
+        acc[key] = normalizedValue;
+      }
       return acc;
     },
     {}

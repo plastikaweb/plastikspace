@@ -51,10 +51,10 @@ export const exampleFeatureRoutes: Route[] = [
 >
 > ```typescript
 > export interface StoreFeatureToken {
->   sorting: Signal<TableSorting>;
+>   sorting: Signal<SortConfig>;
 >   count: Signal<number>;
 >   entities: Signal<any[]>;
->   setSorting: (sorting: TableSorting) => void;
+>   setSorting: (sorting: SortConfig) => void;
 > }
 > ```
 >

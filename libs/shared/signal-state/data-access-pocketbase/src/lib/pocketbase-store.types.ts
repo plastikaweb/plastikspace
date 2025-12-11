@@ -2,9 +2,9 @@ import {
   BasePocketBaseEntity,
   BasePocketBaseEntityFilter,
   BasePocketBaseEntityPagination,
-  BasePocketBaseEntitySort,
   IdType,
-  PocketBaseSortOptions,
+  SortConfig,
+  SortMenuOptions,
 } from '@plastik/core/entities';
 
 export interface PocketBaseListParams {
@@ -23,11 +23,11 @@ export interface PocketBaseListParams {
   /**
    * Optional sort field for ordering the list.
    */
-  sort?: BasePocketBaseEntitySort['sort'];
+  sort?: SortConfig['active'];
   /**
    * Optional sort direction for ordering the list.
    */
-  direction?: BasePocketBaseEntitySort['direction'];
+  direction?: SortConfig['direction'];
   /**
    * Optional text filter string for querying the list.
    */
@@ -37,12 +37,12 @@ export interface PocketBaseListParams {
 export interface PocketBaseGetListState {
   initiallyLoaded: boolean;
   count: number;
-  sort: BasePocketBaseEntitySort;
+  sort: SortConfig;
   pagination: BasePocketBaseEntityPagination;
   filter: BasePocketBaseEntityFilter;
   text: string;
   paginationSizeOptions: number[];
-  sortOptions: PocketBaseSortOptions;
+  sortOptions: SortMenuOptions;
 }
 
 export const initialGetListState = (
@@ -51,7 +51,7 @@ export const initialGetListState = (
   initiallyLoaded: false,
   count: 0,
   sort: {
-    sort: 'updated',
+    active: 'updated',
     direction: 'desc',
   },
   pagination: {
@@ -62,7 +62,10 @@ export const initialGetListState = (
   text: '',
   paginationSizeOptions: [10, 20, 50, 75],
   sortOptions: {
-    updated: ['asc', 'desc'],
+    updated: [
+      { direction: 'desc', icon: 'auto_awesome' },
+      { direction: 'asc', icon: 'history' },
+    ],
   },
   ...customInitialState,
 });

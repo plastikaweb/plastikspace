@@ -12,8 +12,9 @@ import {
   StoreOrderListFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { SortConfig } from '@plastik/core/entities';
 import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
 import { LlecoopOrderListFeatureListTableConfig } from './order-list-feature-list-table/order-list-feature-list-table.config';
 import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
@@ -87,7 +88,7 @@ export class LlecoopOrderListFeatureListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',

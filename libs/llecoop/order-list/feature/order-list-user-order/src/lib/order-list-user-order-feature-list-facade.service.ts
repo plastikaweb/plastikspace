@@ -3,7 +3,7 @@ import { filter, take } from 'rxjs';
 import { computed, inject, Injectable, Signal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
-import { FormConfig } from '@plastik/core/entities';
+import { FormConfig, SortConfig } from '@plastik/core/entities';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopOrderProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
@@ -11,7 +11,7 @@ import {
   StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
 import { getLlecoopOrderListUserOrderFeatureListSearchFormConfig } from './order-list-user-order-feature-list-search-form.config';
 import { LlecoopOrderListUserOrderFeatureListTableConfig } from './order-list-user-order-feature-list-table.config';
@@ -72,7 +72,7 @@ export class LlecoopOrderListUserOrderFeatureListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',

@@ -3,11 +3,11 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { SortConfig } from '@plastik/core/entities';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { llecoopUserStore, StoreUserFilter } from '@plastik/llecoop/user/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { TableSorting } from '@plastik/shared/table/entities';
 import { FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
@@ -44,7 +44,7 @@ export class LlecoopUserListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',

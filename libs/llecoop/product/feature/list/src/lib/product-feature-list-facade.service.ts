@@ -7,8 +7,9 @@ import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { llecoopProductStore, StoreProductFilter } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { SortConfig } from '@plastik/core/entities';
 import { LlecoopProductSearchFeatureFormConfig } from './product-feature-search-form.config';
 import { LlecoopProductSearchFeatureTableConfig } from './product-feature-table.config';
 
@@ -43,7 +44,7 @@ export class LlecoopProductListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',

@@ -9,7 +9,11 @@ import {
   ProductCategory,
 } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
-import { PocketBaseGetListState, withPocketBaseGet } from '@plastik/signal-state/pocketbase';
+import {
+  initialGetListState,
+  PocketBaseGetListState,
+  withPocketBaseGet,
+} from '@plastik/signal-state/pocketbase';
 
 import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 
@@ -32,8 +36,11 @@ export const ecoStoreProductsStore = signalStore(
         category: null,
       },
       sortOptions: {
-        updated: ['asc', 'desc'],
-        priceWithIva: ['asc', 'desc'],
+        ...initialGetListState().sortOptions,
+        priceWithIva: [
+          { direction: 'desc', icon: 'arrow_downward' },
+          { direction: 'asc', icon: 'arrow_upward' },
+        ],
       },
     },
   }),
