@@ -33,9 +33,7 @@
   <mat-card-content class="flex grow flex-col space-y-2 p-4">
     <!-- Category with Color -->
     <div class="flex items-center gap-2">
-      <div
-        class="h-1.5 w-1.5 rounded-full"
-        [style.background-color]="product().categoryColor"></div>
+      <div class="h-2 w-2 rounded-full" [style.background-color]="product().categoryColor"></div>
       <div
         class="text-[11px] font-bold uppercase tracking-wider"
         [style.color]="product().categoryColor">
@@ -59,7 +57,7 @@
     </div>
 
     <!-- Price per unit badge -->
-    <mat-chip class="product-">
+    <mat-chip>
       <mat-icon matChipAvatar>info</mat-icon>
       {{ 'products.unit.' + product().unitType | translate: { value: product().unitBase } }}
     </mat-chip>

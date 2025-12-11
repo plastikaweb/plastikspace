@@ -31,6 +31,10 @@ export const ecoStoreProductsStore = signalStore(
       filter: {
         category: null,
       },
+      sortOptions: {
+        updated: ['asc', 'desc'],
+        priceWithIva: ['asc', 'desc'],
+      },
     },
   }),
 

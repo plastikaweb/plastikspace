@@ -36,10 +36,12 @@
     "total": "productos",
     "favorite": "Agregar {{value}} a favoritos",
     "filter": {
-      "categories": {
-        "title": "Categorías",
-        "all": "Todas las categorías"
-      }
+      "sort": "Ordenar",
+      "sort.relevance": "Más valorados",
+      "sort.priceWithIva-asc": "Precio ascendente",
+      "sort.priceWithIva-desc": "Precio descendente",
+      "sort.updated-asc": "Más antiguos",
+      "sort.updated-desc": "Más recientes"
     },
     "unit-type": {
       "unit": "Unidad",

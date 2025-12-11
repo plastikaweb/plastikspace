@@ -1,28 +1,18 @@
 <div class="p-6 md:p-10">
   <!-- Header Section -->
-  <header class="mb-8 flex flex-col gap-4 md:flex-row items-center justify-start">
-    <h2 class="text-3xl font-bold text-gray-900 tracking-tight">
-      {{ pageTitle() }}
-    </h2>
-    <span class="text-lg font-medium text-gray-400">({{ store.count() }})</span>
+  <header class="mb-8 flex flex-col gap-4 md:flex-row items-center justify-between">
+    <div class="flex items-center justify-between w-full">
+      <h2 class="text-3xl font-bold text-primary-700 tracking-tight flex items-center gap-sm">
+        <span>{{ pageTitle() }}</span>
+        <span class="text-lg font-medium text-gray-400">({{ store.count() }})</span>
+      </h2>
 
-    <!-- <div class="flex flex-wrap items-center gap-3">
-      <div class="relative">
-        <button
-          mat-stroked-button
-          [matMenuTriggerFor]="sortMenu">
-          <div class="flex items-center gap-2">
-            <span class="font-medium">{{ 'products.filter.sort' | translate }}</span>
-            <mat-icon class="text-gray-400 icon-sm">expand_more</mat-icon>
-          </div>
-        </button>
-        <mat-menu #sortMenu="matMenu" class="!rounded-lg !mt-2">
-          <button mat-menu-item>{{ 'products.filter.sort.relevance' | translate }}</button>
-          <button mat-menu-item>{{ 'products.filter.sort.price-asc' | translate }}</button>
-          <button mat-menu-item>{{ 'products.filter.sort.price-desc' | translate }}</button>
-        </mat-menu>
-      </div>
-    </div> -->
+      <plastik-sort-selector
+        [options]="store.sortOptions()"
+        [currentSort]="store.sort()"
+        [translationPrefix]="'products.filter.sort'"
+        (sortChange)="sortProducts($event)"></plastik-sort-selector>
+    </div>
   </header>
 
   <!-- Products Grid -->
