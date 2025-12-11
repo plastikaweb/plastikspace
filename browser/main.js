@@ -7312,7 +7312,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-CJGPBK2G.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-F6NSAWPC.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",

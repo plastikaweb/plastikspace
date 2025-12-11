@@ -910,6 +910,10 @@ html {
     width: 15rem;
     height: 15rem;
   }
+  .size-\[18px\]\! {
+    width: 18px !important;
+    height: 18px !important;
+  }
   .size-\[20px\] {
     width: 20px;
     height: 20px;
@@ -1609,6 +1613,9 @@ html {
   }
   .text-\[15rem\] {
     font-size: 15rem;
+  }
+  .text-\[18px\]\! {
+    font-size: 18px !important;
   }
   .text-\[20px\] {
     font-size: 20px;
