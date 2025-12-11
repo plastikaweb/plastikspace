@@ -120,11 +120,11 @@ export class ProductListComponent {
 
 The store provides the following methods:
 
-- **`getList()`** - Load list with current parameters (auto-called on init)
-- **`setFilter(filter)`** - Update filter parameters and reload list
-- **`setPagination(pagination)`** - Update pagination and reload list
-- **`setSort(sort)`** - Update sorting and reload list
-- **`getOne(id)`** - Load single item (when using Get/Crud features)
+- **`getList()`** - Load list with current parameters (auto-called on init).
+- **`setFilter(filter)`** - Update filter parameters and reload list.
+- **`setPagination(pagination)`** - Update pagination and reload list.
+- **`setSort(sort)`** - Update sorting and reload list.
+- **`getOne(id)`** - Load single item (when using Get/Crud features).
 
 ### 5. Entity Selectors
 

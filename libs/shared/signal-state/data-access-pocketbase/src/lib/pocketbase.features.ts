@@ -64,7 +64,7 @@ export function withPocketBaseListFeature<
       formattedParams: computed(() => {
         const s = sort();
         return {
-          sort: s.direction === 'desc' ? `-${s.sort}` : s.sort,
+          sort: s.direction === 'desc' ? `-${s.active}` : s.active,
           ...pagination(),
           ...filter(),
         };

@@ -2,7 +2,7 @@
   <span
     >{{ 'products.filter.sort' | translate }}:
     {{
-      `${translationPrefix()}.${currentSort().sort}-${currentSort().direction}` | translate
+      `${translationPrefix()}.${currentSort().active}-${currentSort().direction}` | translate
     }}</span
   >
   <mat-icon>expand_more</mat-icon>
@@ -10,12 +10,16 @@
 
 <mat-menu #sortMenu="matMenu" class="sort-selector">
   @for (option of options() | keyvalue; track option.key) {
-    @for (direction of option.value; track direction) {
+    @for (value of option.value; track value) {
       <button
         mat-menu-item
-        [class.active]="currentSort().sort === option.key && currentSort().direction === direction"
-        (click)="onSortChange({ sort: option.key, direction })">
-        {{ `${translationPrefix()}.${option.key}-${direction}` | translate }}
+        class="flex items-center gap-1"
+        [class.active]="
+          currentSort().active === option.key && currentSort().direction === value.direction
+        "
+        (click)="onSortChange({ active: option.key, direction: value.direction })">
+        {{ `${translationPrefix()}.${option.key}-${value.direction}` | translate }}
+        <mat-icon class="size-[18px]! text-[18px]!">{{ value.icon }}</mat-icon>
       </button>
     }
   }

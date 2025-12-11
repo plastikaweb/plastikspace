@@ -1,7 +1,7 @@
 import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import { BasePocketBaseEntitySort, PocketBaseSortOptions } from '@plastik/core/entities';
+import { SortConfig, SortMenuOptions } from '@plastik/core/entities';
 import { SortSelectorComponent } from './sort-selector.component';
 
 describe('SortSelectorComponent', () => {
@@ -19,11 +19,17 @@ describe('SortSelectorComponent', () => {
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
 
-    const options: PocketBaseSortOptions = {
-      name: ['asc', 'desc'],
-      created: ['asc', 'desc'],
+    const options: SortMenuOptions = {
+      name: [
+        { direction: 'asc', icon: 'arrow_upward' },
+        { direction: 'desc', icon: 'arrow_downward' },
+      ],
+      created: [
+        { direction: 'asc', icon: 'arrow_upward' },
+        { direction: 'desc', icon: 'arrow_downward' },
+      ],
     };
-    const current: BasePocketBaseEntitySort = { sort: 'name', direction: 'asc' } as const;
+    const current: SortConfig = { active: 'name', direction: 'asc' } as const;
 
     componentRef.setInput('options', options);
     componentRef.setInput('currentSort', current);
@@ -45,11 +51,11 @@ describe('SortSelectorComponent', () => {
   });
 
   it('should emit sortChange on manual change', () => {
-    const emitted: BasePocketBaseEntitySort[] = [];
+    const emitted: SortConfig[] = [];
     const sub = component.sortChange.subscribe(v => emitted.push(v));
 
-    component.onSortChange({ sort: 'name', direction: 'desc' });
-    expect(emitted[0]).toEqual({ sort: 'name', direction: 'desc' });
+    component.onSortChange({ active: 'name', direction: 'desc' });
+    expect(emitted[0]).toEqual({ active: 'name', direction: 'desc' });
 
     sub.unsubscribe();
   });

@@ -3,10 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import {
-  BasePocketBaseEntitySort,
-  EcoStoreProductWithCategoryName,
-} from '@plastik/eco-store/entities';
+import { EcoStoreProductWithCategoryName, SortConfig } from '@plastik/eco-store/entities';
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
@@ -55,7 +52,7 @@ export default class EcoStoreProductsFeatureComponent {
     console.log(id);
   }
 
-  sortProducts(sort: BasePocketBaseEntitySort) {
+  sortProducts(sort: SortConfig) {
     this.#router.navigate([], {
       queryParams: { ...sort, page: 0 },
       queryParamsHandling: 'merge',

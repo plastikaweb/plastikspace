@@ -11,8 +11,9 @@ import {
   StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { SortConfig } from '@plastik/core/entities';
 import { getLlecoopUserOrderSearchFeatureFormConfig } from './user-order-feature-search-form.config';
 import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-table.config';
 
@@ -83,7 +84,7 @@ export class LlecoopUserOrderListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',
