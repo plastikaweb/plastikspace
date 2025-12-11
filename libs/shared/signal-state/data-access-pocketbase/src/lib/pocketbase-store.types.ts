@@ -4,6 +4,7 @@ import {
   BasePocketBaseEntityPagination,
   BasePocketBaseEntitySort,
   IdType,
+  PocketBaseSortOptions,
 } from '@plastik/core/entities';
 
 export interface PocketBaseListParams {
@@ -41,6 +42,7 @@ export interface PocketBaseGetListState {
   filter: BasePocketBaseEntityFilter;
   text: string;
   paginationSizeOptions: number[];
+  sortOptions: PocketBaseSortOptions;
 }
 
 export const initialGetListState = (
@@ -59,6 +61,9 @@ export const initialGetListState = (
   filter: {},
   text: '',
   paginationSizeOptions: [10, 20, 50, 75],
+  sortOptions: {
+    updated: ['asc', 'desc'],
+  },
   ...customInitialState,
 });
 

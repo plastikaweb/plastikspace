@@ -1,0 +1,22 @@
+<button mat-button class="flex items-center gap-1" [matMenuTriggerFor]="sortMenu">
+  <span
+    >{{ 'products.filter.sort' | translate }}:
+    {{
+      `${translationPrefix()}.${currentSort().sort}-${currentSort().direction}` | translate
+    }}</span
+  >
+  <mat-icon>expand_more</mat-icon>
+</button>
+
+<mat-menu #sortMenu="matMenu" class="sort-selector">
+  @for (option of options() | keyvalue; track option.key) {
+    @for (direction of option.value; track direction) {
+      <button
+        mat-menu-item
+        [class.active]="currentSort().sort === option.key && currentSort().direction === direction"
+        (click)="onSortChange({ sort: option.key, direction })">
+        {{ `${translationPrefix()}.${option.key}-${direction}` | translate }}
+      </button>
+    }
+  }
+</mat-menu>

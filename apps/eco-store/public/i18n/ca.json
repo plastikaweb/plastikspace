@@ -38,8 +38,10 @@
     "filter": {
       "sort": "Ordenar",
       "sort.relevance": "Més valorats",
-      "sort.price-asc": "Preu ascendent",
-      "sort.price-desc": "Preu descendent"
+      "sort.priceWithIva-asc": "Preu ascendent",
+      "sort.priceWithIva-desc": "Preu descendent",
+      "sort.updated-asc": "Més antics",
+      "sort.updated-desc": "Més recents"
     },
     "unit-type": {
       "unit": "Unitat",

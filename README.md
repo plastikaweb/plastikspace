@@ -149,6 +149,7 @@ Reusable features and UI components.
 - [**mat-theme-toggle**](libs/shared/mat-theme-toggle/README.md)
 - [**pagination-ui**](libs/shared/pagination/ui/README.md)
 - [**pagination-util**](libs/shared/pagination/util/README.md)
+- [**sort-selector**](libs/shared/sort-selector/README.md)
 
 #### Utilities
 

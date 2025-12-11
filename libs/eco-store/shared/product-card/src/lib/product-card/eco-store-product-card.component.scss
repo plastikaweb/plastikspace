@@ -53,13 +53,13 @@
 
   @include mat.chips-overrides(
     (
-      outline-color: var(--primary-50),
-      label-text-color: var(--neutral-400),
-      hover-state-layer-opacity: 0,
-      with-icon-icon-color: var(--neutral-400),
+      outline-color: var(--secondary-200),
+      label-text-color: var(--secondary-500),
+      hover-state-layer-opacity: 0.1,
+      with-icon-icon-color: var(--secondary-500),
       label-text-size: 0.75rem,
     )
   );
 
-  --mat-chip-elevated-container-color: var(--primary-100);
+  --mat-chip-elevated-container-color: var(--secondary-50);
 }
