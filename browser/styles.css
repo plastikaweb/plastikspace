@@ -798,9 +798,6 @@ html {
   .my-tiny {
     margin-block: var(--spacing-tiny);
   }
-  .\!mt-2 {
-    margin-top: calc(var(--spacing) * 2) !important;
-  }
   .mt-0 {
     margin-top: var(--spacing-0);
   }
@@ -933,8 +930,8 @@ html {
     width: var(--spacing-sub);
     height: var(--spacing-sub);
   }
-  .h-1\.5 {
-    height: calc(var(--spacing) * 1.5);
+  .h-2 {
+    height: calc(var(--spacing) * 2);
   }
   .h-14 {
     height: calc(var(--spacing) * 14);
@@ -978,8 +975,8 @@ html {
   .min-h-screen {
     min-height: 100vh;
   }
-  .w-1\.5 {
-    width: calc(var(--spacing) * 1.5);
+  .w-2 {
+    width: calc(var(--spacing) * 2);
   }
   .w-5\/6 {
     width: calc(5/6 * 100%);
@@ -1274,9 +1271,6 @@ html {
   .gap-2 {
     gap: calc(var(--spacing) * 2);
   }
-  .gap-3 {
-    gap: calc(var(--spacing) * 3);
-  }
   .gap-4 {
     gap: calc(var(--spacing) * 4);
   }
@@ -1335,9 +1329,6 @@ html {
   }
   .overflow-y-hidden {
     overflow-y: hidden;
-  }
-  .\!rounded-lg {
-    border-radius: var(--radius-lg) !important;
   }
   .rounded {
     border-radius: 0.25rem;
