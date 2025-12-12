@@ -63,8 +63,8 @@ export const initialGetListState = (
   paginationSizeOptions: [10, 20, 50, 75],
   sortOptions: {
     updated: [
-      { direction: 'desc', icon: 'auto_awesome' },
-      { direction: 'asc', icon: 'history' },
+      { id: 1, direction: 'desc', icon: 'auto_awesome' },
+      { id: 2, direction: 'asc', icon: 'history' },
     ],
   },
   ...customInitialState,

@@ -1,35 +1,32 @@
 # Llecoop Firebase
 
-## Firebase configuration and hosting for Llecoop
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
 
----
+- [Description](#description)
+- [Configuration](#configuration)
+- [Development Commands](#development-commands)
+- [Next Steps](#next-steps)
 
-- [Llecoop Firebase](#llecoop-firebase)
-  - [Firebase configuration and hosting for Llecoop](#firebase-configuration-and-hosting-for-llecoop)
-  - [📂 Generated Files](#-generated-files)
-    - [Application Files](#application-files)
-    - [Workspace Root Files](#workspace-root-files)
-  - [🛠️ Commands](#️-commands)
-  - [🔗 Dependencies](#-dependencies)
-  - [🚀 Next Steps](#-next-steps)
+## Description
 
----
+**Llecoop Firebase** manages the Firebase configuration, rules, and hosting for the Llecoop application. It utilizes `nx-firebase` for seamless integration within the Nx workspace.
 
-## 📂 Generated Files
+## Configuration
 
 ### Application Files
 
-- `database.rules.json`: Default Firebase Realtime Database Rules
-- `firestore.indexes.json`: Default Firebase Firestore Database Rules
-- `storage.rules`: Default Firebase Storage Rules
-- `public/index.ts`: Default Firebase hosting site
+- `database.rules.json`: Default Firebase Realtime Database Rules.
+- `firestore.indexes.json`: Default Firebase Firestore Database Rules.
+- `storage.rules`: Default Firebase Storage Rules.
+- `public/index.ts`: Default Firebase hosting site.
 
 ### Workspace Root Files
 
-- `firebase.json`: Firebase CLI Configuration
-- `.firebaserc`: Firebase CLI Deployment Targets
+- `firebase.json`: Firebase CLI Configuration.
+- `.firebaserc`: Firebase CLI Deployment Targets.
 
-## 🛠️ Commands
+## Development Commands
 
 - **Deploy**: `nx run llecoop-firebase:deploy`
 - **Serve (Emulator)**: `nx run llecoop-firebase:serve`
@@ -37,15 +34,7 @@
 - **Test Functions**: `nx run llecoop-firebase:test`
 - **Lint Functions**: `nx run llecoop-firebase:lint`
 
-## 🔗 Dependencies
-
-Nx-Firebase adds the following to your workspace:
-
-- `firebase-tools`
-- `firebase-admin`
-- `firebase-functions`
-
-## 🚀 Next Steps
+## Next Steps
 
 1. **Authenticate**: `firebase login`
 2. **Add Target**: `firebase use --add`

@@ -1,14 +1,16 @@
-# auth-register-feature
+# @plastik/shared/auth/register/feature
 
-- [auth-register-feature](#auth-register-feature)
-  - [Description](#description)
-  - [Components](#components)
-  - [Routes](#routes)
-  - [Running unit tests](#running-unit-tests)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [Description](#description)
+- [Components](#components)
+- [Routes](#routes)
+- [Running unit tests](#running-unit-tests)
 
 ## Description
 
-This library is responsible for handling all the register feature logic.
+This library is responsible for handling all the **register feature logic**.
 
 ## Components
 

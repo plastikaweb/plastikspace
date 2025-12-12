@@ -1,98 +1,66 @@
-# core-table-with-filtering
+# @plastik/core/table-with-filtering
 
-- [core-table-with-filtering](#core-table-with-filtering)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/core/table-with-filtering](#plastikcoretable-with-filtering)
   - [Description](#description)
-  - [How to use](#how-to-use)
-  - [Running unit tests](#running-unit-tests)
+  - [Usage](#usage)
+    - [Route Setup](#route-setup)
+    - [Tokens](#tokens)
 
 ## Description
 
-A core feature component that displays a table with filtering capabilities.
+A **Core Feature Component** that displays a table with advanced filtering capabilities. It orchestrates the interaction between a filtering form and a data table, powered by a specific Store.
 
-## How to use
+## Usage
 
-1. Load the `TableWithFilteringComponent` in a route.
-2. Set providers for `FIREBASE_STORE_TOKEN`, `TABLE_WITH_FILTERING_FACADE`, `TABLE_TOKEN`, and `FORM_TOKEN` to be used in the feature route with the `TableWithFilteringComponent`.
+### Route Setup
+
+Load the `TableWithFilteringComponent` in your route configuration and provide the necessary implementation tokens:
 
 ```typescript
-import { FIREBASE_STORE_TOKEN } from '@plastik/core/entities';
-import { TABLE_WITH_FILTERING_FACADE, TableWithFilteringComponent } from '@plastik/core/list-view';
+import { Route } from '@angular/router';
+import { TableWithFilteringComponent, TABLE_WITH_FILTERING_FACADE } from '@plastik/core/list-view';
+import { FIREBASE_STORE_TOKEN, FORM_TOKEN } from '@plastik/core/entities';
 import { TABLE_TOKEN } from '@plastik/shared/table/entities';
-import { FORM_TOKEN } from '@plastik/core/entities';
 
 export const exampleFeatureRoutes: Route[] = [
   {
     path: '',
-    title: 'Example title',
+    title: 'Example Feature',
     component: TableWithFilteringComponent,
     providers: [
+      // 1. Store Token (manages data state)
       {
         provide: FIREBASE_STORE_TOKEN,
         useExisting: ExampleStore,
       },
+      // 2. Facade Token (connects view to data)
       {
         provide: TABLE_WITH_FILTERING_FACADE,
         useExisting: ExampleListFacadeService,
       },
+      // 3. Table Configuration (columns, structure)
       {
         provide: TABLE_TOKEN,
-        useExisting: ExampleSearchFeatureTableConfig,
+        useExisting: ExampleTableConfigService,
       },
+      // 4. Form Configuration (filters)
       {
         provide: FORM_TOKEN,
-        useValue: getExampleSearchFeatureFormConfig(),
+        useValue: getExampleSearchFormConfig(),
       },
     ],
   },
 ];
 ```
 
-> The `FIREBASE_STORE_TOKEN` is a token that provides a `StoreFeatureToken` object to configure the store.
->
-> ```typescript
-> export interface StoreFeatureToken {
->   sorting: Signal<SortConfig>;
->   count: Signal<number>;
->   entities: Signal<any[]>;
->   setSorting: (sorting: SortConfig) => void;
-> }
-> ```
->
-> The `TABLE_WITH_FILTERING_FACADE` is a facade service that implements the `TableWithFilteringFacade` interface:
->
-> ```typescript
-> export interface TableWithFilteringFacade<T extends BaseEntity> {
->   tableDefinition: Signal<TableControlStructure<T>>;
->   tableData: Signal<T[]>;
->   count: Signal<number>;
->   viewName: string;
-> }
-> ```
->
-> The `TABLE_TOKEN` is a token that provides a `TableStructureConfig` object to configure the table structure.
->
-> ```typescript
-> export interface TableStructureConfig<T> {
->   getTableDefinition(
->     overwrite?: ({ key: string } & Record<string, string>) | null,
->     tableControlStructureMerge?: Partial<TableDefinition<T>>
->   ): TableDefinition<T>;
-> }
-> ```
->
-> The `FORM_TOKEN` is a token that provides a `FormConfig` object to configure the form structure.
->
-> ```typescript
-> export interface FormConfig<T> {
->   getConfig: (editMode?: boolean, extra?: unknown) => FormlyFieldConfig[];
->   getExtraActions?: (model: T, editMode?: boolean) => ExtraFormAction<T>[];
->   executeAction?: (extraFormAction: ExtraFormAction<T>, element$: Observable<T>) => void;
->   getExtraSubmitActions?: (editMode: boolean) => ExtraSubmitFormAction<T>[];
->   getSubmitFormConfig?: (editMode?: boolean) => SubmitFormConfig;
->   getFormFullWidth?: boolean;
-> }
-> ```
+### Tokens
 
-## Running unit tests
-
-Run `nx test core-table-with-filtering` to execute the unit tests.
+| Token                         | Interface                     | Purpose                                                          |
+| :---------------------------- | :---------------------------- | :--------------------------------------------------------------- |
+| `FIREBASE_STORE_TOKEN`        | `StoreFeatureToken`           | Configures the underlying data store (sorting, count, entities). |
+| `TABLE_WITH_FILTERING_FACADE` | `TableWithFilteringFacade<T>` | Facade service exposing table data and structure signals.        |
+| `TABLE_TOKEN`                 | `TableStructureConfig<T>`     | Defines the table columns and behavior.                          |
+| `FORM_TOKEN`                  | `FormConfig<T>`               | Defines the Formly configuration for the filter form.            |

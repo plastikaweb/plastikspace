@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  position: relative;
+
+  .image-error {
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-200),
+      )
+    );
+  }
+}

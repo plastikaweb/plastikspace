@@ -7,10 +7,11 @@ export type SortConfig = {
   direction: Sorting['direction'];
 };
 
-export type SortMenuOptions = Record<
-  Sorting['active'],
-  {
-    direction: Sorting['direction'];
-    icon: string;
-  }[]
->;
+export type SortMenuItem = {
+  id: number;
+  direction: Sorting['direction'];
+  icon?: string;
+  description?: string;
+};
+
+export type SortMenuOptions = Record<Sorting['active'], SortMenuItem[]>;

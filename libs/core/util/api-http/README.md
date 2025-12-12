@@ -1,29 +1,35 @@
-# api-http
+# @plastik/core/api-http
 
-- [api-http](#api-http)
-  - [📦 What's Inside](#-whats-inside)
-  - [🎯 Quick Start](#-quick-start)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/core/api-http](#plastikcoreapi-http)
+  - [Description](#description)
+  - [Features](#features)
+  - [Quick Start](#quick-start)
     - [Option 1: Full CRUD Service](#option-1-full-crud-service)
-    - [Option 2: Get all service](#option-2-get-all-service)
-    - [Option 3: Get one service](#option-3-get-one-service)
-    - [Option 4: Full get service](#option-4-full-get-service)
-  - [Usage in Components/Stores](#usage-in-componentsstores)
+    - [Option 2: Read-Only Services](#option-2-read-only-services)
+  - [Usage](#usage)
+  - [Architecture](#architecture)
+  - [Configuration](#configuration)
+    - [Environment Setup](#environment-setup)
+    - [Providers](#providers)
+    - [Custom URL Segment](#custom-url-segment)
+    - [Custom Response Mapping](#custom-response-mapping)
+  - [Caching](#caching)
 
-**HTTP/REST API utilities** for building type-safe data services.
+## Description
 
-## 📦 What's Inside
+**HTTP REST API Implementation** using Angular's HttpClient. It implements the standard ApiBase contract for RESTful services, providing consistent error handling.
 
-Base classes that implement common HTTP CRUD operations using a **composition pattern**:
+## Features
 
-- **`HttpCrudService`** - Complete CRUD implementation (recommended for full CRUD)
-- **`HttpBaseService`** - Base class with HTTP client, URL configuration, and factory method
-- **`HttpGetAllService`** - GET list with filtering, pagination, sorting
-- **`HttpGetOneService`** - GET single item by ID
-- **`HttpGetService`** - GET list and get one
+- **Composition Pattern**: Individual operation services delegate to a core CRUD service.
+- **Type Safety**: Fully typed requests and responses.
+- **Flexibility**: Base classes for List-only, Get-only, or Full CRUD operations.
+- **Consistency**: Centralized error handling and response mapping.
 
-All individual services delegate to `HttpCrudService` internally, ensuring consistent behavior and a single source of truth.
-
-## 🎯 Quick Start
+## Quick Start
 
 ### Option 1: Full CRUD Service
 
@@ -43,63 +49,15 @@ export class ProductHttpService extends HttpCrudService<Product> {
 }
 ```
 
-### Option 2: Get all service
+### Option 2: Read-Only Services
 
-Use `HttpGetAllService` when you need to get a list of data:
+- **Get All**: Extend `HttpGetAllService<T>`
+- **Get One**: Extend `HttpGetOneService<T>`
+- **Get Both**: Extend `HttpGetService<T>`
 
-```typescript
-// product-http.service.ts
-import { Injectable } from '@angular/core';
-import { HttpGetAllService } from '@plastik/core/api-http';
-import { Product } from './product.model';
-
-@Injectable({ providedIn: 'root' })
-export class ProductHttpService extends HttpGetAllService<Product> {
-  protected override resourceUrlSegment() {
-    return 'products';
-  }
-}
-```
-
-### Option 3: Get one service
-
-Use `HttpGetOneService` when you need to get a single item by ID:
+## Usage
 
 ```typescript
-// product-http.service.ts
-import { Injectable } from '@angular/core';
-import { HttpGetOneService } from '@plastik/core/api-http';
-import { Product } from './product.model';
-
-@Injectable({ providedIn: 'root' })
-export class ProductHttpService extends HttpGetOneService<Product> {
-  protected override resourceUrlSegment() {
-    return 'products';
-  }
-}
-```
-
-### Option 4: Full get service
-
-Use `HttpGetService` when you need all get operations:
-
-```typescript
-// product-http.service.ts
-import { Injectable } from '@angular/core';
-import { HttpGetService } from '@plastik/core/api-http';
-import { Product } from './product.model';
-
-@Injectable({ providedIn: 'root' })
-export class ProductHttpService extends HttpGetService<Product> {
-  protected override resourceUrlSegment() {
-    return 'products';
-  }
-}
-```
-
-## Usage in Components/Stores
-
-````typescript
 @Component({ ... })
 export class ProductListComponent {
   private productService = inject(ProductHttpService);
@@ -128,7 +86,9 @@ export class ProductListComponent {
     this.productService.delete(id).subscribe();
   }
 }
-## 🏗️ Architecture
+```
+
+## Architecture
 
 ```mermaid
 graph TD
@@ -153,7 +113,7 @@ graph TD
 - Consistent behavior across all operations
 - Shared response mapping and error handling
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Setup
 
@@ -197,60 +157,10 @@ protected override resourceUrlSegment() {
 
 ### Custom Response Mapping
 
-Override mapping methods in `HttpBaseService` to transform API responses:
+Override mapping methods in `HttpBaseService` to transform API responses.
 
-```typescript
-@Injectable({ providedIn: 'root' })
-export class ProductHttpService extends HttpCrudService<Product> {
-  protected override resourceUrlSegment() {
-    return 'products';
-  }
-
-  // Map list responses
-  protected override mapListResponse(data: unknown): Product[] {
-    const response = data as { items: Product[] };
-    return response.items;
-  }
-
-  // Map individual item responses
-  protected override mapItemResponse(data: unknown): Product {
-    const item = data as Product;
-    return {
-      ...item,
-      // Transform data as needed
-      price: Number(item.price),
-    };
-  }
-}
-```
-
-### Custom Error Handling
-
-Inherited from `BaseDataService`:
-
-```typescript
-this.productService.getList().pipe(
-  catchError(error => {
-    // Errors are already formatted by BaseDataService.handleError()
-    console.error('Failed to load products:', error);
-    return of([]);
-  })
-);
-```
-
-## 🧠 Caching
+## Caching
 
 - `getList` caches using `share({ connector: () => new ReplaySubject(1), resetOnComplete: () => timer(cacheTime) })`.
-- Default `cacheTime` comes from `BaseDataService` (1 dia).
-- Override `cacheTime` in your service when you need a different window:
-
-```typescript
-@Injectable({ providedIn: 'root' })
-export class ProductHttpService extends HttpCrudService<Product> {
-  protected override resourceUrlSegment() {
-    return 'products';
-  }
-  protected override cacheTime = 1000 * 60 * 5; // 5 minuts
-}
-```
-````
+- Default `cacheTime` comes from `BaseDataService` (1 day).
+- Override `cacheTime` in your service when you need a different window.

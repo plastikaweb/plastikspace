@@ -27,6 +27,6 @@ export const ecoStoreProductsFeatureRoutes: Route[] = [
         loadComponent: () => import('./eco-store-products-sidenav-feature.component'),
       },
     ],
-    runGuardsAndResolvers: 'always',
+    runGuardsAndResolvers: 'paramsOrQueryParamsChange',
   },
 ];

@@ -1,28 +1,33 @@
-# User Order Cart Data Access Library
+# @plastik/llecoop/user-order/cart/data-access
 
-## Table of Contents
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![NgRx Signals](https://img.shields.io/badge/ngrx%20signals-%23270341.svg?style=for-the-badge&logo=ngrx&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
 
-- [Overview](#overview)
-- [Key Components](#key-components)
-  - [UserOrderCartStore](#userordercartstore)
-  - [LlecoopUserOrderFireService](#llecoopuserorderfireservice)
-- [Features](#features)
-- [Running unit tests](#running-unit-tests)
+- [@plastik/llecoop/user-order/cart/data-access](#plastikllecoopuser-ordercartdata-access)
+  - [Overview](#overview)
+  - [Key Components](#key-components)
+    - [UserOrderCartStore](#userordercartstore)
+    - [LlecoopUserOrderFireService](#llecoopuserorderfireservice)
+  - [Features](#features)
+  - [Running unit tests](#running-unit-tests)
 
 ## Overview
 
-This library provides data access functionality for managing user shopping carts in the LleCoop application. It handles cart state management, persistence, and Firebase integration, allowing users to add products to their cart and submit orders.
+This library provides **data access functionality for managing user shopping carts** in the **Llecoop** application.
+It handles cart state management, persistence, and Firebase integration, allowing users to add products to their cart and submit orders.
 
 ## Key Components
 
 ### UserOrderCartStore
 
-A Signal-based state management store that handles the cart's state, including:
+A Signal-based **state management store** that handles the cart's state, including:
 
-- Managing the cart items (adding, removing, updating)
-- Calculating total prices
-- Persisting cart data (localStorage and Firebase sync)
-- Loading previously saved cart data
+- Managing the cart items (adding, removing, updating).
+- Calculating total prices.
+- Persisting cart data (localStorage and Firebase sync).
+- Loading previously saved cart data.
 
 ```typescript
 // Example of using the cart store
@@ -40,9 +45,9 @@ const totalPrice = llecoopUserOrderCartStore.getCartTotalPrice();
 
 A Firebase service extending `EntityFireService` that handles:
 
-- Retrieving user orders from Firestore
-- Filtering and sorting orders
-- Creating and updating orders in Firestore
+- Retrieving user orders from Firestore.
+- Filtering and sorting orders.
+- Creating and updating orders in Firestore.
 
 ```typescript
 // Example of using the fire service
@@ -59,10 +64,10 @@ this.userOrderFireService.getAll(pagination, sorting, filter).subscribe(orders =
 
 ## Features
 
-- **Offline Support**: Cart data is persisted in localStorage when offline
-- **User-specific Carts**: Cart data is associated with user IDs
-- **Order Management**: Convert cart to orders and manage their lifecycle
-- **Reactive Design**: Built with Angular's Signal-based architecture
+- **Offline Support**: Cart data is persisted in localStorage when offline.
+- **User-specific Carts**: Cart data is associated with user IDs.
+- **Order Management**: Convert cart to orders and manage their lifecycle.
+- **Reactive Design**: Built with Angular's Signal-based architecture.
 
 ## Running unit tests
 

@@ -11,21 +11,14 @@
   </button>
 
   <!-- Image -->
-  @let image = product().images?.[0];
   <div class="relative isolate mb-4 aspect-square w-full">
     <div class="flex h-full w-full items-center justify-center">
-      @if (image) {
-        <plastik-shared-img-container
-          class="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
-          [src]="getPocketBaseUrl(product())"
-          [title]="product().name"
-          [dimensions]="{ width: 300, height: 300 }"
-          [lcpImage]="isFirst()" />
-      } @else {
-        <div class="flex h-full w-full items-center justify-center text-gray-300">
-          <mat-icon class="scale-200">image_not_supported</mat-icon>
-        </div>
-      }
+      <plastik-shared-img-container
+        class="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
+        [src]="getPocketBaseUrl(product())"
+        [title]="product().name"
+        [dimensions]="{ width: 300, height: 300 }"
+        [lcpImage]="isFirst()" />
     </div>
   </div>
 

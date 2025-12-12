@@ -1,31 +1,18 @@
 # Llecoop Triggers
 
-## Firebase Cloud Functions for Llecoop automation
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
 
----
+- [Description](#description)
+- [Features](#features)
+- [Setup & Deployment](#setup--deployment)
+- [Generated Files](#generated-files)
 
-- [Llecoop Triggers](#llecoop-triggers)
-  - [Firebase Cloud Functions for Llecoop automation](#firebase-cloud-functions-for-llecoop-automation)
-  - [🚀 Deployment](#-deployment)
-  - [⚡ Available Triggers](#-available-triggers)
-    - [📂 Category](#-category)
-    - [📦 Product](#-product)
-    - [👥 User](#-user)
-    - [🛒 Order List](#-order-list)
-    - [🛍️ User Order](#️-user-order)
-  - [📂 Generated Files](#-generated-files)
-  - [🛠️ Setup](#️-setup)
+## Description
 
----
+**Llecoop Triggers** contains the Firebase Cloud Functions responsible for automation and server-side logic in the Llecoop ecosystem. It handles events from Firestore, Auth, and scheduled tasks.
 
-## 🚀 Deployment
-
-- **Build**: `yarn llecoop:firebase:functions:build`
-- **Deploy (Staging)**: `yarn llecoop:firebase:functions:deploy:staging`
-- **Deploy (Prod)**: `yarn llecoop:firebase:functions:deploy:production`
-- **Deploy All**: `yarn llecoop:deploy:functions`
-
-## ⚡ Available Triggers
+## Features
 
 ### 📂 Category
 
@@ -61,14 +48,23 @@
 - **`onCancelOrderListCancelRelatedUserOrdersStatus`**: Cascades cancellation to user orders.
 - **`onDeleteOrderListDeleteRelatedUserOrders`**: Cascades deletion to user orders.
 
-## 📂 Generated Files
+## Setup & Deployment
 
-- `src/main.ts`: Entry point.
-- `firebase.json`: Configuration.
-- `.firebaserc`: Deployment targets.
-
-## 🛠️ Setup
+### Setup
 
 1. Install CLI: `npm install -g firebase-tools`
 2. Login: `firebase login`
 3. Add Target: `firebase use --add`
+
+### Deployment
+
+- **Build**: `yarn llecoop:firebase:functions:build`
+- **Deploy (Staging)**: `yarn llecoop:firebase:functions:deploy:staging`
+- **Deploy (Prod)**: `yarn llecoop:firebase:functions:deploy:production`
+- **Deploy All**: `yarn llecoop:deploy:functions`
+
+## Generated Files
+
+- `src/main.ts`: Entry point.
+- `firebase.json`: Configuration.
+- `.firebaserc`: Deployment targets.

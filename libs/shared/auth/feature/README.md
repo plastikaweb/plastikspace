@@ -1,6 +1,9 @@
-# auth-feature
+# @plastik/shared/auth/feature
 
-- [auth-feature](#auth-feature)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/shared/auth/feature](#plastiksharedauthfeature)
   - [Description](#description)
   - [Components](#components)
   - [Service Tokens](#service-tokens)
@@ -8,7 +11,7 @@
 
 ## Description
 
-The `auth-feature` library provides authentication features for the application. It includes components, services, and utilities to serve as a UI layer for authentication-related functionalities.
+The `auth-feature` library provides authentication features for the application. It includes components, services, and utilities to serve as a **UI layer** for authentication-related functionalities.
 
 ## Components
 

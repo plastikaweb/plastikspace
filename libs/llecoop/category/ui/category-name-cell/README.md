@@ -1,6 +1,9 @@
-# ui-category-name-cell
+# @plastik/llecoop/category/ui/category-name-cell
 
-- [ui-category-name-cell](#ui-category-name-cell)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/llecoop/category/ui/category-name-cell](#plastikllecoopcategoryuicategory-name-cell)
   - [Description](#description)
   - [Dependencies](#dependencies)
   - [Inputs](#inputs)
@@ -9,34 +12,34 @@
 
 ## Description
 
-A component that displays category information in a cell format, typically used in category tables.
+A component that displays **category information in a cell format**, typically used in category tables.
 It shows the category name and additional details in a structured and responsive layout.
 
 The component accepts a `LlecoopCategory` object and renders its properties in a structured format.
 
 ## Dependencies
 
-- NgClass
-- NgStyle
-- RouterLink
+- `NgClass`
+- `NgStyle`
+- `RouterLink`
 
 ## Inputs
 
 | Name        | Type              | Description                                       | Default   |
-| ----------- | ----------------- | ------------------------------------------------- | --------- |
+| :---------- | :---------------- | :------------------------------------------------ | :-------- |
 | `category`  | `LlecoopCategory` | Category object containing name and other details | undefined |
 | `withLink`  | `boolean`         | Whether to use RouterLink                         | `false`   |
 | `nameStyle` | `string`          | CSS style for the category name                   | `''`      |
 
 ## How to use
 
-- Import the `UiCategoryNameCellComponent` in your parent standalone component or module.
+Import the `UiCategoryNameCellComponent` in your parent standalone component or module.
 
 ```typescript
 // component ts
 export class CategoryListComponent {
   category: LlecoopCategory = {
-    id: 1,
+    id: '1',
     name: 'Vegetables',
     description: 'Fresh and organic',
     color: '#00ff00',
@@ -52,4 +55,4 @@ export class CategoryListComponent {
 
 ## Running unit tests
 
-Run `nx test ui-category-name-cell` to execute the unit tests.
+Run `nx test llecoop-category-ui-category-name-cell` to execute the unit tests.

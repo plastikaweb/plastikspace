@@ -1,8 +1,8 @@
 export default {
   displayName: 'eco-store-products-feature',
-  preset: '../../../../jest.preset.js',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/eco-store/products/feature',
+  coverageDirectory: '../../../../../coverage/libs/eco-store/products/feature/list',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

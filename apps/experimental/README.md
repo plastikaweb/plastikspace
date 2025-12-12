@@ -1,22 +1,17 @@
 # Experimental
 
-## A playground for testing new features and experiments
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 
----
+- [Description](#description)
+- [Development Commands](#development-commands)
+- [Architecture & Libraries](#architecture--libraries)
 
-- [Experimental](#experimental)
-  - [A playground for testing new features and experiments](#a-playground-for-testing-new-features-and-experiments)
-  - [📝 Description](#-description)
-  - [🛠️ Running Commands](#️-running-commands)
-  - [📚 Available Libraries](#-available-libraries)
-
----
-
-## 📝 Description
+## Description
 
 Main application entry point for **Experimental**, a sandbox application used to test new technologies, libraries, and architectural patterns before implementing them in production apps.
 
-## 🛠️ Running Commands
+## Development Commands
 
 - **Serve**: `yarn experimental:serve`
 - **Lint**: `yarn experimental:lint`
@@ -24,6 +19,6 @@ Main application entry point for **Experimental**, a sandbox application used to
 - **E2E**: `yarn experimental:e2e`
 - **Build**: `yarn experimental:build`
 
-## 📚 Available Libraries
+## Architecture & Libraries
 
 _Currently, there are no specific libraries dedicated solely to this application._

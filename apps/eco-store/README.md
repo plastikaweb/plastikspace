@@ -1,92 +1,75 @@
 # Eco-Store
 
-## An online cooperative store for sustainable and local products
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![PocketBase](https://img.shields.io/badge/pocketbase-%23b8dbe4.svg?style=for-the-badge&logo=Pocketbase&logoColor=black)
 
 - [Eco-Store](#eco-store)
-  - [An online cooperative store for sustainable and local products](#an-online-cooperative-store-for-sustainable-and-local-products)
-  - [📝 Description](#-description)
-  - [🛠️ Running Commands](#️-running-commands)
-    - [Development](#development)
-    - [With PocketBase (Local)](#with-pocketbase-local)
-    - [PocketBase Management](#pocketbase-management)
-    - [Testing \& Quality](#testing--quality)
-    - [Build \& Deploy](#build--deploy)
-    - [Accessibility](#accessibility)
-  - [📚 Available Libraries](#-available-libraries)
-    - [🧩 Entities](#-entities)
+  - [Description](#description)
+  - [Features](#features)
+  - [Quick Start](#quick-start)
+  - [Development Commands](#development-commands)
+    - [🛠️ General](#️-general)
+    - [🗄️ Backend (PocketBase)](#️-backend-pocketbase)
+    - [🧪 Quality \& Testing](#-quality--testing)
+  - [Architecture \& Libraries](#architecture--libraries)
     - [📦 Products](#-products)
-    - [🚀 Features](#-features)
+    - [🚀 Core Features](#-core-features)
 
----
+## Description
 
-## 📝 Description
+**Eco-Store** is a modern consumer cooperative platform designed to facilitate sustainable and local shopping. It enables a community-driven commerce model with role-based access control and member management.
 
-**Eco-Store** enables members to purchase ecological and local products sustainably.
-The platform facilitates the management of a consumer cooperative with different user levels and functionalities adapted to cooperative needs.
+Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **PocketBase**.
 
-**Tech Stack:**
+## Features
 
-- **Frontend**: Angular 20+ (Signals, Standalone Components, Control Flow)
-- **Backend**: PocketBase
-- **State Management**: NgRx Signal Store
+- **Product Catalog**: Browse and filter sustainable products using a responsive grid.
+- **Member Management**: Manage cooperative members and roles.
+- **Reactive State**: Powered by NgRx Signal Store for efficient state management.
+- **Backend Integration**: Seamless integration with PocketBase for real-time data and authentication.
+- **Robust Testing**: Comprehensive unit and E2E testing suites.
 
-## 🛠️ Running Commands
+## Quick Start
 
-### Development
+1. **Install Dependencies**: `yarn install`
+2. **Start PocketBase**: `yarn eco-store:pocketbase:run`
+3. **Run Application**: `yarn eco-store:serve`
+
+## Development Commands
+
+### 🛠️ General
 
 - **Serve (Dev)**: `yarn eco-store:serve`
-- **Serve (Staging)**: `yarn eco-store:serve:staging`
-- **Serve (Prod)**: `yarn eco-store:serve:prod`
-
-### With PocketBase (Local)
-
-- **Dev**: `yarn eco-store:local`
-- **Staging**: `yarn eco-store:local:staging`
-- **Prod**: `yarn eco-store:local:prod`
-
-### PocketBase Management
-
-- **Start**: `yarn eco-store:pocketbase:run`
-- **Stop**: `yarn eco-store:pocketbase:stop`
-- **Export Schema**: `yarn pb:export`
-
-📖 **[PocketBase Schema Management Guide](./POCKETBASE_SCHEMA_MANAGEMENT.md)** - Best practices for managing schema changes
-
-**Related Resources:**
-
-- [Schema File](./pocketbase/pb_schema.json)
-- [Sync Script](./scripts/sync-pocketbase-schema.js)
-- [Export Script](./scripts/export-pocketbase-schema.js)
-- [GitHub Workflow](../../.github/workflows/pocketbase-schema.yml)
-
-### Testing & Quality
-
-- **Lint**: `yarn eco-store:lint`
-- **Test**: `yarn eco-store:test`
-- **E2E**: `yarn eco-store:e2e`
-- **E2E (Local)**: `yarn eco-store:e2e:local`
-
-### Build & Deploy
-
 - **Build**: `yarn eco-store:build`
-- **Build (GitHub)**: `yarn eco-store:build:github`
-- **HTTP Server**: `yarn eco-store:http-server`
+- **Test**: `yarn eco-store:test`
+- **Lint**: `yarn eco-store:lint`
 
-### Accessibility
+### 🗄️ Backend (PocketBase)
 
-- **A11y Check**: `yarn eco-store:a11y`
+- **Start Local Server**: `yarn eco-store:pocketbase:run`
+- **Sync Schema**: `yarn eco-store:local` (Run app with local PB)
+- **Schema Guide**: [PocketBase Schema Management](./POCKETBASE_SCHEMA_MANAGEMENT.md)
 
-## 📚 Available Libraries
+### 🧪 Quality & Testing
 
-### 🧩 Entities
+- **E2E Tests**: `yarn eco-store:e2e`
+- **Accessibility Check**: `yarn eco-store:a11y`
 
-- [**eco-store-entities**](../../libs/eco-store/entities/README.md)
+## Architecture & Libraries
 
 ### 📦 Products
 
-- [**products-data-access**](../../libs/eco-store/products/data-access/README.md)
-- [**product-categories-data-access**](../../libs/eco-store/product-categories/data-access/README.md)
+- [**Feature List**](../../libs/eco-store/products/feature/list/README.md): Main product browsing interface.
+- [**Data Access**](../../libs/eco-store/products/data-access/README.md): Product state and API services.
+- [**Categories**](../../libs/eco-store/product-categories/data-access/README.md): Category management.
+- [**Product Card**](../../libs/eco-store/shared/product-card/README.md): Shared product card component.
 
-### 🚀 Features
+### 🚀 Core Features
 
-- [**feature-formly**](../../libs/eco-store/feature/formly/README.md)
+- [**Formly Integration**](../../libs/eco-store/feature/formly/README.md): Dynamic form generation.
+- [**Entities**](../../libs/eco-store/entities/README.md): Shared domain models.
+
+---
+
+> Part of the [**Plastikspace**](../../README.md) monorepo.

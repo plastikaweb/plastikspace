@@ -1,16 +1,23 @@
 # @plastik/core/paginator
 
-- [@plastik/core/paginator](#plastikcorepaginator)
-  - [Description](#description)
-  - [Usage](#usage)
-    - [Application Setup](#application-setup)
-    - [Required Translations](#required-translations)
-  - [Features](#features)
-  - [Useful links](#useful-links)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [Description](#description)
+- [Features](#features)
+- [Usage](#usage)
+- [Resources](#resources)
 
 ## Description
 
-This library provides the `MatPaginatorIntlService` which extends Angular Material's `MatPaginatorIntl` to offer translated paginator labels using `@ngx-translate`.
+The **Core Paginator** library provides the `MatPaginatorIntlService` which extends Angular Material's `MatPaginatorIntl` to offer translated paginator labels using `@ngx-translate`.
+
+## Features
+
+- ✅ Automatic translation of all paginator labels.
+- ✅ Dynamic updates when language changes.
+- ✅ Support for custom languages via ngx-translate.
+- ✅ Automatic subscription management with `takeUntilDestroyed`.
 
 ## Usage
 
@@ -54,14 +61,7 @@ The service expects the following translation keys in your i18n files:
 }
 ```
 
-## Features
-
-- ✅ Automatic translation of all paginator labels
-- ✅ Dynamic updates when language changes
-- ✅ Support for custom languages via ngx-translate
-- ✅ Automatic subscription management with `takeUntilDestroyed`
-
-## Useful links
+## Resources
 
 - [Angular Material Paginator](https://material.angular.io/components/paginator/overview)
 - [ngx-translate](https://github.com/ngx-translate/core)

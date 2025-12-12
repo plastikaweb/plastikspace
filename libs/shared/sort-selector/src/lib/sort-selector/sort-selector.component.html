@@ -9,7 +9,7 @@
 </button>
 
 <mat-menu #sortMenu="matMenu" class="sort-selector">
-  @for (option of options() | keyvalue; track option.key) {
+  @for (option of options() | keyvalue: orderBy(); track option.key) {
     @for (value of option.value; track value) {
       <button
         mat-menu-item

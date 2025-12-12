@@ -38,8 +38,8 @@ export const ecoStoreProductsStore = signalStore(
       sortOptions: {
         ...initialGetListState().sortOptions,
         priceWithIva: [
-          { direction: 'desc', icon: 'arrow_downward' },
-          { direction: 'asc', icon: 'arrow_upward' },
+          { id: 3, direction: 'desc', icon: 'arrow_downward' },
+          { id: 4, direction: 'asc', icon: 'arrow_upward' },
         ],
       },
     },

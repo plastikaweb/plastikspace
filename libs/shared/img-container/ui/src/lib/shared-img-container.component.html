@@ -1,38 +1,43 @@
 @let width = dimensions()?.width;
 @let height = dimensions()?.height;
+@let src = this.src();
 
-@if (width && height) {
-  @if (lcpImage()) {
-    <img
-      class="object-cover rounded-lg my-sub"
-      priority
-      [ngSrc]="src() || ''"
-      [width]="width"
-      [height]="height"
-      [alt]="title()"
-      [loaderParams]="{ width, height, quality: quality() }" />
-  } @else {
-    <img
-      class="object-cover rounded-lg my-sub"
-      [ngSrc]="src() || ''"
-      [width]="width"
-      [height]="height"
-      [alt]="title()"
-      [loaderParams]="{ width, height, quality: quality() }" />
+<div class="absolute inset-0 flex items-center justify-center bg-transparent rounded-lg">
+  @if (isLoading()) {
+    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-tertiary-600"></div>
   }
-} @else {
-  @if (lcpImage()) {
+
+  @if (hasError()) {
+    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">
+      <mat-icon class="scale-200">image_not_supported</mat-icon>
+    </div>
+  }
+</div>
+
+@if (src) {
+  @if (width && height) {
     <img
-      class="object-cover rounded-lg w-full max-h-auto my-sub"
-      priority
-      fill
-      [ngSrc]="src() || ''"
-      [alt]="title()" />
+      class="object-cover my-sub transition-opacity duration-300"
+      [class.opacity-0]="isLoading()"
+      [class.opacity-100]="!isLoading() && !hasError()"
+      [priority]="lcpImage()"
+      [ngSrc]="src"
+      [width]="width"
+      [height]="height"
+      [alt]="title()"
+      [loaderParams]="{ width, height, quality: quality() }"
+      (load)="onImageLoad()"
+      (error)="onImageError()" />
   } @else {
     <img
-      class="object-cover rounded-lg w-full max-h-auto my-sub"
       fill
-      [ngSrc]="src() || ''"
-      [alt]="title()" />
+      class="object-cover w-full max-h-auto my-sub transition-opacity duration-300"
+      [class.opacity-0]="isLoading()"
+      [class.opacity-100]="!isLoading() && !hasError()"
+      [priority]="lcpImage()"
+      [ngSrc]="src"
+      [alt]="title()"
+      (load)="onImageLoad()"
+      (error)="onImageError()" />
   }
 }

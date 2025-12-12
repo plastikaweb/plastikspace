@@ -1,80 +1,81 @@
-# pagination-ui
+# @plastik/shared/pagination/ui
 
-- [pagination-ui](#pagination-ui)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![Material](https://img.shields.io/badge/Material-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/shared/pagination/ui](#plastiksharedpaginationui)
   - [Description](#description)
   - [Features](#features)
+  - [Installation](#installation)
   - [Usage](#usage)
-  - [Customizing pageChange behavior with directives](#customizing-pagechange-behavior-with-directives)
-  - [API](#api)
-    - [Inputs](#inputs)
-    - [Outputs](#outputs)
-  - [Styling](#styling)
-  - [Useful links](#useful-links)
+    - [Basic Usage](#basic-usage)
+    - [Advanced Usage with Directives](#advanced-usage-with-directives)
+  - [API Reference](#api-reference)
+    - [`PaginationComponent`](#paginationcomponent)
+  - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-A reusable Angular pagination component built with Material Design and signals.
+The **Pagination UI** library provides a reusable, accessible, and theme-aware pagination component. Built with Angular Signals and Angular Material, it offers a robust solution for handling large datasets.
 
 ## Features
 
-- Standalone component (`PaginationComponent`) using Angular signals for internal state.
-- Supports custom page size options, current page index, and total length.
-- Emits a `pageChange` output (`PageEvent`) that can be consumed by a `PaginationNavigationDirective`.
-- Fully typed, OnPush change detection, and no template‑driven forms.
-- Designed to be theme‑aware and easily styled.
+- **Signal-Based**: Uses Angular Signals for internal state management.
+- **Material Design**: Seamless integration with Angular Material theming.
+- **Extensible**: Supports custom navigation directives for automatic URL or backend synchronization.
+- **Type Safe**: Fully typed inputs and outputs.
+- **OnPush**: Optimized for performance with `OnPush` change detection.
+
+## Installation
+
+This library is part of the shared UI scope. Import `PaginationComponent` directly into your standalone components.
 
 ## Usage
 
+### Basic Usage
+
+Handle page changes manually in your component or store.
+
 ```html
 <plastik-pagination
-  [pageSize]="store.getPagination().perPage"
-  [pageIndex]="store.getPagination().page"
-  [pageSizeOptions]="store.paginationSizeOptions()"
-  (pageChange)="store.setPagination($event)"></plastik-pagination>
+  [pageSize]="10"
+  [pageIndex]="0"
+  [pageSizeOptions]="[5, 10, 25]"
+  (pageChange)="onPageChange($event)">
+</plastik-pagination>
 ```
 
-## Customizing pageChange behavior with directives
+### Advanced Usage with Directives
 
-The `PaginationComponent` emits a `pageChange` event. By default you can handle it directly in the template (as shown above).
-
-If you want to centralize navigation logic—e.g., synchronize pagination with URL query parameters or a backend like PocketBase—you can attach a **standalone directive** to the same element:
+Use the `pocketbasePaginationNavigation` directive to automatically sync state with URL query parameters and PocketBase.
 
 ```html
 <plastik-pagination
-  [pageSize]="store.getPagination().perPage"
-  [pageIndex]="store.getPagination().page"
-  [pageSizeOptions]="store.paginationSizeOptions()"
+  [pageSize]="store.perPage()"
+  [pageIndex]="store.page()"
+  [pageSizeOptions]="[10, 20, 50]"
   pocketbasePaginationNavigation
   [queryParamsHandling]="'merge'">
 </plastik-pagination>
 ```
 
-- `pocketbasePaginationNavigation` extends `PaginationNavigationDirective<BasePocketBaseEntityPagination>` and implements `getPaginationParams` to produce the correct query‑params shape for PocketBase.
-- The directive also exposes an optional `queryParamsHandling` input (default `'merge'`) to control how existing query parameters are merged.
-- Because the directive handles the `pageChange` subscription internally, you no longer need to bind `(pageChange)` in the template.
+## API Reference
 
-You can create your own directive by extending `PaginationNavigationDirective<P>` and providing a custom `getPaginationParams` implementation.
+### `PaginationComponent`
 
-## API
+**Selector:** `<plastik-pagination>`
 
-### Inputs
+| Input             | Type       | Required | Description                                    |
+| :---------------- | :--------- | :------- | :--------------------------------------------- |
+| `pageSize`        | `number`   | Yes      | Number of items per page.                      |
+| `pageIndex`       | `number`   | Yes      | Current page index (0-based).                  |
+| `pageSizeOptions` | `number[]` | No       | Array of page size options (e.g., `[10, 20]`). |
 
-| Input             | Type       | Description                         |
-| ----------------- | ---------- | ----------------------------------- |
-| `pageSize`        | `number`   | Items per page (required).          |
-| `pageIndex`       | `number`   | Zero‑based page index (required).   |
-| `pageSizeOptions` | `number[]` | Options for the page‑size selector. |
+| Output       | Type        | Description                                   |
+| :----------- | :---------- | :-------------------------------------------- |
+| `pageChange` | `PageEvent` | Emitted when page index or page size changes. |
 
-### Outputs
+## Running unit tests
 
-| Output       | Type        | Description                                      |
-| ------------ | ----------- | ------------------------------------------------ |
-| `pageChange` | `PageEvent` | Emitted when the user changes page or page size. |
-
-## Styling
-
-The component uses Angular Material theming. You can customize colours via the standard Material theme variables or add custom CSS classes.
-
-## Useful links
-
-- [Angular Material Pagination](https://material.angular.io/components/paginator/overview)
+Run `nx test shared-pagination-ui` to execute the unit tests.

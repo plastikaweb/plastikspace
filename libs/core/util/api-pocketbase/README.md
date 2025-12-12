@@ -1,158 +1,41 @@
-# api-pocketbase
+# @plastik/core/api-pocketbase
 
-- [api-pocketbase](#api-pocketbase)
-  - [📦 What's Inside](#-whats-inside)
-  - [🎯 Quick Start](#-quick-start)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![PocketBase](https://img.shields.io/badge/pocketbase-%23b8dbe4.svg?style=for-the-badge&logo=Pocketbase&logoColor=black)
+
+- [@plastik/core/api-pocketbase](#plastikcoreapi-pocketbase)
+  - [Description](#description)
+  - [Features](#features)
+  - [Architecture](#architecture)
+  - [Installation](#installation)
+  - [Usage](#usage)
     - [Option 1: Full CRUD Service](#option-1-full-crud-service)
-    - [Option 2: Get all service](#option-2-get-all-service)
-    - [Option 3: Get one service](#option-3-get-one-service)
-    - [Option 4: Full get service](#option-4-full-get-service)
-  - [Usage in Components/Stores](#usage-in-componentsstores)
-  - [🏗️ Architecture](#️-architecture)
-  - [🔧 Configuration](#-configuration)
+    - [Option 2: Read-Only Services](#option-2-read-only-services)
+    - [Option 3: Component Usage](#option-3-component-usage)
+  - [Configuration](#configuration)
     - [Environment Setup](#environment-setup)
     - [Providers](#providers)
-    - [Collection Name](#collection-name)
-    - [Custom Response Mapping](#custom-response-mapping)
-    - [Custom Error Handling](#custom-error-handling)
-  - [📚 Available Operations](#-available-operations)
+  - [Available Operations](#available-operations)
     - [Get All (with Pagination)](#get-all-with-pagination)
-    - [Get One / First By Filter](#get-one--first-by-filter)
-    - [Create](#create)
-    - [Update](#update)
-    - [Delete](#delete)
-  - [💡 Advanced Usage](#-advanced-usage)
-    - [Custom Methods](#custom-methods)
-    - [Realtime Subscriptions](#realtime-subscriptions)
-    - [File Uploads](#file-uploads)
-  - [🔗 Related Libraries](#-related-libraries)
-  - [📖 PocketBase Filter Syntax](#-pocketbase-filter-syntax)
-  - [🧠 Caching](#-caching)
+    - [CRUD Operations](#crud-operations)
+  - [PocketBase Filter Syntax](#pocketbase-filter-syntax)
+  - [Caching](#caching)
 
-**PocketBase API utilities** for building type-safe data services with PocketBase backend.
+## Description
 
-## 📦 What's Inside
+The **PocketBase API Utilities** library provides a robust, type-safe foundation for building data services with a PocketBase backend.
+It implements a set of base classes and utilities to streamline CRUD operations, ensuring consistency and reducing boilerplate.
 
-Base classes that implement PocketBase CRUD operations using a **composition pattern**:
+## Features
 
-- **`PocketBaseCrudService`** - Complete CRUD implementation (recommended for full CRUD)
-- **`PocketBaseBaseService`** - Base class with PocketBase client configuration
-- **`PocketBaseGetAllService`** - List with filtering, pagination, sorting
-- **`PocketBaseGetOneService`** - Get single record by ID
-- **`PocketBaseGetService`** - Get list and get one
+- **Composition Pattern**: Flexible service architecture using delegation.
+- **Type Safety**: Generic interfaces for fully typed requests and responses.
+- **Automated Caching**: Built-in `shareReplay` caching for read operations.
+- **Error Handling**: Centralized error management via `BaseDataService`.
+- **Realtime**: Support for PocketBase realtime subscriptions.
 
-All individual services delegate to `PocketBaseCrudService` internally, ensuring consistent behavior and a single source of truth.
-
-## 🎯 Quick Start
-
-### Option 1: Full CRUD Service
-
-Use `PocketBaseCrudService` when you need all CRUD operations:
-
-```typescript
-// product-pocketbase.service.ts
-import { Injectable } from '@angular/core';
-import { PocketBaseCrudService } from '@plastik/core/api-pocketbase';
-import { Product } from './product.model';
-
-@Injectable({ providedIn: 'root' })
-export class ProductPocketBaseService extends PocketBaseCrudService<Product> {
-  protected override collectionName() {
-    return 'products';
-  }
-}
-```
-
-### Option 2: Get all service
-
-Use `PocketBaseGetAllService` when you need to get a list of data:
-
-```typescript
-// product-pocketbase.service.ts
-import { Injectable } from '@angular/core';
-import { PocketBaseGetAllService } from '@plastik/core/api-pocketbase';
-import { Product } from './product.model';
-
-@Injectable({ providedIn: 'root' })
-export class ProductPocketBaseService extends PocketBaseGetAllService<Product> {
-  protected override collectionName() {
-    return 'products';
-  }
-}
-```
-
-### Option 3: Get one service
-
-Use `PocketBaseGetOneService` when you need to get a single item by ID:
-
-```typescript
-// product-pocketbase.service.ts
-import { Injectable } from '@angular/core';
-import { PocketBaseGetOneService } from '@plastik/core/api-pocketbase';
-import { Product } from './product.model';
-
-@Injectable({ providedIn: 'root' })
-export class ProductPocketBaseService extends PocketBaseGetOneService<Product> {
-  protected override collectionName() {
-    return 'products';
-  }
-}
-```
-
-### Option 4: Full get service
-
-Use `PocketBaseGetService` when you need all get operations (List + One):
-
-```typescript
-// product-pocketbase.service.ts
-import { Injectable } from '@angular/core';
-import { PocketBaseGetService } from '@plastik/core/api-pocketbase';
-import { Product } from './product.model';
-
-@Injectable({ providedIn: 'root' })
-export class ProductPocketBaseService extends PocketBaseGetService<Product> {
-  protected override collectionName() {
-    return 'products';
-  }
-}
-```
-
-## Usage in Components/Stores
-
-```typescript
-@Component({ ... })
-export class ProductListComponent {
-  private productService = inject(ProductPocketBaseService);
-
-  // Get paginated list with filter
-  products$ = this.productService.getList({
-    page: 1,
-    perPage: 20,
-    filter: 'category="electronics"',
-    sort: '-created'
-  });
-
-  // Get single item
-  product$ = this.productService.getOne('RECORD_ID');
-
-  // Create new item
-  createProduct(data: Partial<Product>) {
-    this.productService.create({ name: 'New Product', price: 99.99 }).subscribe();
-  }
-
-  // Update
-  updateProduct(id: string, data: Partial<Product>) {
-    this.productService.update(id, data).subscribe();
-  }
-
-  // Delete
-  deleteProduct(id: string) {
-    this.productService.delete(id).subscribe();
-  }
-}
-```
-
-## 🏗️ Architecture
+## Architecture
 
 ```mermaid
 graph TD
@@ -179,7 +62,54 @@ graph TD
 - Consistent behavior across all operations
 - Shared response mapping and error handling
 
-## 🔧 Configuration
+## Installation
+
+This library is part of the core utilities. It should be imported into your data access libraries.
+
+## Usage
+
+### Option 1: Full CRUD Service
+
+Use `PocketBaseCrudService` when you need all CRUD operations:
+
+```typescript
+// product-pocketbase.service.ts
+import { Injectable } from '@angular/core';
+import { PocketBaseCrudService } from '@plastik/core/api-pocketbase';
+import { Product } from './product.model';
+
+@Injectable({ providedIn: 'root' })
+export class ProductPocketBaseService extends PocketBaseCrudService<Product> {
+  protected override collectionName() {
+    return 'products';
+  }
+}
+```
+
+### Option 2: Read-Only Services
+
+- **Get All**: Extend `PocketBaseGetAllService<T>`
+- **Get One**: Extend `PocketBaseGetOneService<T>`
+- **Get Both**: Extend `PocketBaseGetService<T>`
+
+### Option 3: Component Usage
+
+```typescript
+@Component({ ... })
+export class ProductListComponent {
+  private productService = inject(ProductPocketBaseService);
+
+  // Get paginated list with filter
+  products$ = this.productService.getList({
+    page: 1,
+    perPage: 20,
+    filter: 'category="electronics"',
+    sort: '-created'
+  });
+}
+```
+
+## Configuration
 
 ### Environment Setup
 
@@ -221,193 +151,44 @@ export const appConfig: ApplicationConfig = {
 };
 ```
 
-### Collection Name
-
-Override `collectionName()` to define your PocketBase collection:
-
-```typescript
-protected override collectionName() {
-  return 'products';
-}
-```
-
-### Custom Response Mapping
-
-Override mapping methods in `PocketBaseCrudService` (or your service) to transform API responses:
-
-```typescript
-@Injectable({ providedIn: 'root' })
-export class ProductPocketBaseService extends PocketBaseCrudService<Product> {
-  protected override collectionName() {
-    return 'products';
-  }
-
-  // Map individual item responses
-  protected override mapResponse(data: Product): Product {
-    return {
-      ...data,
-      // Transform data as needed
-      price: Number(data.price),
-    };
-  }
-}
-```
-
-### Custom Error Handling
-
-Inherited from `BaseDataService`:
-
-```typescript
-this.productService.getList().pipe(
-  catchError(error => {
-    // Errors are already formatted by BaseDataService.handleError()
-    console.error('Failed to load products:', error);
-    return of([]);
-  })
-);
-```
-
-## 📚 Available Operations
+## Available Operations
 
 ### Get All (with Pagination)
 
 ```typescript
 getList(params?: {
-  page?: number;
-  perPage?: number;
-  filter?: string;  // PocketBase filter syntax
-  sort?: string;    // e.g., '-created,name'
-  expand?: string;  // Relations to expand
+  page?: number;     // Page number
+  perPage?: number;  // Items per page
+  filter?: string;   // PocketBase filter syntax
+  sort?: string;     // e.g., '-created,name'
+  expand?: string;   // Relations to expand
 }): Observable<ListResult<T>>
 ```
 
-### Get One / First By Filter
+### CRUD Operations
 
-```typescript
-getOne(id: string, options?: RecordOptions): Observable<T>
-getFirstListItem(filter: string, options?: RecordOptions): Observable<T>
-```
+- **Get One**: `getOne(id: string, options?: RecordOptions)`
+- **Create**: `create(data: Partial<T>, options?: RecordOptions)`
+- **Update**: `update(id: string, data: Partial<T>, options?: RecordOptions)`
+- **Delete**: `delete(id: string)`
 
-### Create
-
-```typescript
-create(data: Partial<T>, options?: RecordOptions): Observable<T>
-```
-
-### Update
-
-```typescript
-update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T>
-```
-
-### Delete
-
-```typescript
-delete(id: string): Observable<boolean>
-```
-
-## 💡 Advanced Usage
-
-### Custom Methods
-
-Add domain-specific methods to your service:
-
-```typescript
-@Injectable({ providedIn: 'root' })
-export class ProductPocketBaseService extends PocketBaseCrudService<Product> {
-  protected override collectionName() {
-    return 'products';
-  }
-
-  getByCategory(categoryId: string) {
-    return this.getList({
-      filter: `category="${categoryId}"`,
-      sort: 'name',
-    });
-  }
-
-  getFeatured() {
-    return this.getList({
-      filter: 'featured=true',
-      sort: '-created',
-      perPage: 10,
-    });
-  }
-}
-```
-
-### Realtime Subscriptions
-
-PocketBase supports realtime updates.
-
-```typescript
-// Subscribe to changes
-this.pb.collection('products').subscribe('*', e => {
-  console.log(e.action); // create, update, delete
-  console.log(e.record); // the changed record
-});
-```
-
-### File Uploads
-
-```typescript
-create(data: Partial<Product>, file?: File) {
-  const formData = new FormData();
-  if (file) {
-    formData.append('image', file);
-  }
-  Object.entries(data).forEach(([key, value]) => {
-    formData.append(key, value as string | Blob);
-  });
-
-  return from(this.pb.collection(this.collectionName()).create(formData));
-}
-```
-
-## 🔗 Related Libraries
-
-- **`@plastik/core/api-base`** - Base interfaces and contracts
-- **`@plastik/signal-state/pocketbase`** - NgRx Signal Store integration for PocketBase
-- **`@plastik/core/environments`** - Environment tokens and provider helpers
-
-## 📖 PocketBase Filter Syntax
+## PocketBase Filter Syntax
 
 Common filter examples:
 
 ```typescript
-// Exact match
-filter: 'status="active"';
-
-// Comparison
-filter: 'price > 100';
-
-// Multiple conditions
-filter: 'active=true && price > 0';
-
-// Text search
-filter: 'name ~ "phone"';
-
-// Date comparison
-filter: 'created >= "2024-01-01"';
-
-// Relations
-filter: 'category.name = "Electronics"';
+filter: 'active=true && price > 0'; // Multiple conditions
+filter: 'name ~ "phone"'; // Text search
+filter: 'created >= "2024-01-01"'; // Date comparison
 ```
 
 [Full PocketBase filter documentation](https://pocketbase.io/docs/api-rules-and-filters/)
 
-## 🧠 Caching
+## Caching
 
-- All read operations (`getList`, `getFullList`, `getOne`, `getFirstListItem`) are cached using `shareReplay`.
-- Default cache window is `5 minutes` via `cacheTime`.
-- Override `cacheTime` in your service when you need a different window:
+- Reads are cached for **5 minutes** by default using `shareReplay`.
+- Override `cacheTime` in your service to customize duration.
 
 ```typescript
-@Injectable({ providedIn: 'root' })
-export class ProductPocketBaseService extends PocketBaseCrudService<Product> {
-  protected override collectionName() {
-    return 'products';
-  }
-  protected override cacheTime = 1000 * 60 * 1; // 1 minute
-}
+protected override cacheTime = 1000 * 60 * 1; // 1 minute
 ```

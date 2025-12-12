@@ -180,7 +180,7 @@
       "@plastik/eco-store/products/data-access": [
         "libs/eco-store/products/data-access/src/index.ts"
       ],
-      "@plastik/eco-store/products": ["libs/eco-store/products/feature/src/index.ts"],
+      "@plastik/eco-store/products": ["libs/eco-store/products/feature/list/src/index.ts"],
       "@plastik/core/api-pocketbase": ["libs/core/util/api-pocketbase/src/index.ts"],
       "@plastik/core/api-firebase": ["libs/core/util/api-firebase/src/index.ts"],
       "@plastik/core/api-http": ["libs/core/util/api-http/src/index.ts"],

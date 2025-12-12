@@ -12,11 +12,8 @@
       fixedTopGap="100"
       fixedBottomGap="85"
       position="start"
-      [opened]="isSidenavOpen()">
-      <router-outlet
-        name="sidenav"
-        (activate)="onSidenavActivate()"
-        (deactivate)="onSidenavDeactivate()"></router-outlet>
+      [opened]="true">
+      <router-outlet name="sidenav"></router-outlet>
     </mat-sidenav>
     <mat-sidenav-content #sidenavContent class="p-6">
       <router-outlet></router-outlet>
