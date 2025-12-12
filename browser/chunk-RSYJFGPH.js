@@ -3659,7 +3659,8 @@ export {
   CustomRouterSerializer,
   selectRouteQueryParams,
   NavigationFilterService,
+  TranslateModule,
   PrefixTitleService,
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-DWWLWMBP.js.map
+//# sourceMappingURL=chunk-RSYJFGPH.js.map

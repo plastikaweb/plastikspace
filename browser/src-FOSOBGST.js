@@ -49,12 +49,13 @@ import {
   isEmpty,
   isNil,
   selectNasaImagesFeature
-} from "./chunk-5IVOPGZT.js";
+} from "./chunk-FDDBG7C5.js";
 import {
+  TranslateModule,
   _DisposeViewRepeaterStrategy,
   provideEffects,
   selectRouteQueryParams
-} from "./chunk-DWWLWMBP.js";
+} from "./chunk-RSYJFGPH.js";
 import {
   LetDirective,
   PushPipe,
@@ -18687,62 +18688,73 @@ function getNasaImagesSearchFeatureFormConfig() {
 
 // libs/shared/img-container/ui/src/lib/shared-img-container.component.ts
 var _c09 = (a0, a1, a2) => ({ width: a0, height: a1, quality: a2 });
-function SharedImgContainerComponent_Conditional_2_Conditional_0_Template(rf, ctx) {
+function SharedImgContainerComponent_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 0);
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    const width_r2 = \u0275\u0275readContextLet(0);
-    const height_r3 = \u0275\u0275readContextLet(1);
-    \u0275\u0275property("ngSrc", ctx_r0.src() || "")("width", width_r2)("height", height_r3)("alt", ctx_r0.title())("loaderParams", \u0275\u0275pureFunction3(5, _c09, width_r2, height_r3, ctx_r0.quality()));
+    \u0275\u0275element(0, "div", 1);
   }
 }
-function SharedImgContainerComponent_Conditional_2_Conditional_1_Template(rf, ctx) {
+function SharedImgContainerComponent_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 1);
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    const width_r2 = \u0275\u0275readContextLet(0);
-    const height_r3 = \u0275\u0275readContextLet(1);
-    \u0275\u0275property("ngSrc", ctx_r0.src() || "")("width", width_r2)("height", height_r3)("alt", ctx_r0.title())("loaderParams", \u0275\u0275pureFunction3(5, _c09, width_r2, height_r3, ctx_r0.quality()));
+    \u0275\u0275elementStart(0, "div", 2)(1, "mat-icon", 3);
+    \u0275\u0275text(2, "image_not_supported");
+    \u0275\u0275elementEnd()();
   }
 }
-function SharedImgContainerComponent_Conditional_2_Template(rf, ctx) {
+function SharedImgContainerComponent_Conditional_6_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, SharedImgContainerComponent_Conditional_2_Conditional_0_Template, 1, 9, "img", 0)(1, SharedImgContainerComponent_Conditional_2_Conditional_1_Template, 1, 9, "img", 1);
+    const _r1 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "img", 6);
+    \u0275\u0275listener("load", function SharedImgContainerComponent_Conditional_6_Conditional_0_Template_img_load_0_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.onImageLoad());
+    })("error", function SharedImgContainerComponent_Conditional_6_Conditional_0_Template_img_error_0_listener() {
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.onImageError());
+    });
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275conditional(ctx_r0.lcpImage() ? 0 : 1);
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    const width_r3 = \u0275\u0275readContextLet(0);
+    const height_r4 = \u0275\u0275readContextLet(1);
+    const src_r5 = \u0275\u0275readContextLet(2);
+    \u0275\u0275classProp("opacity-0", ctx_r1.isLoading())("opacity-100", !ctx_r1.isLoading() && !ctx_r1.hasError());
+    \u0275\u0275property("priority", ctx_r1.lcpImage())("ngSrc", src_r5)("width", width_r3)("height", height_r4)("alt", ctx_r1.title())("loaderParams", \u0275\u0275pureFunction3(10, _c09, width_r3, height_r4, ctx_r1.quality()));
   }
 }
-function SharedImgContainerComponent_Conditional_3_Conditional_0_Template(rf, ctx) {
+function SharedImgContainerComponent_Conditional_6_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 2);
+    const _r6 = \u0275\u0275getCurrentView();
+    \u0275\u0275elementStart(0, "img", 7);
+    \u0275\u0275listener("load", function SharedImgContainerComponent_Conditional_6_Conditional_1_Template_img_load_0_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.onImageLoad());
+    })("error", function SharedImgContainerComponent_Conditional_6_Conditional_1_Template_img_error_0_listener() {
+      \u0275\u0275restoreView(_r6);
+      const ctx_r1 = \u0275\u0275nextContext(2);
+      return \u0275\u0275resetView(ctx_r1.onImageError());
+    });
+    \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngSrc", ctx_r0.src() || "")("alt", ctx_r0.title());
+    const ctx_r1 = \u0275\u0275nextContext(2);
+    const src_r5 = \u0275\u0275readContextLet(2);
+    \u0275\u0275classProp("opacity-0", ctx_r1.isLoading())("opacity-100", !ctx_r1.isLoading() && !ctx_r1.hasError());
+    \u0275\u0275property("priority", ctx_r1.lcpImage())("ngSrc", src_r5)("alt", ctx_r1.title());
   }
 }
-function SharedImgContainerComponent_Conditional_3_Conditional_1_Template(rf, ctx) {
+function SharedImgContainerComponent_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 3);
+    \u0275\u0275conditionalCreate(0, SharedImgContainerComponent_Conditional_6_Conditional_0_Template, 1, 14, "img", 4)(1, SharedImgContainerComponent_Conditional_6_Conditional_1_Template, 1, 7, "img", 5);
   }
   if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngSrc", ctx_r0.src() || "")("alt", ctx_r0.title());
-  }
-}
-function SharedImgContainerComponent_Conditional_3_Template(rf, ctx) {
-  if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, SharedImgContainerComponent_Conditional_3_Conditional_0_Template, 1, 2, "img", 2)(1, SharedImgContainerComponent_Conditional_3_Conditional_1_Template, 1, 2, "img", 3);
-  }
-  if (rf & 2) {
-    const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275conditional(ctx_r0.lcpImage() ? 0 : 1);
+    \u0275\u0275nextContext();
+    const width_r3 = \u0275\u0275readContextLet(0);
+    const height_r4 = \u0275\u0275readContextLet(1);
+    \u0275\u0275conditional(width_r3 && height_r4 ? 0 : 1);
   }
 }
 var SharedImgContainerComponent = class _SharedImgContainerComponent {
@@ -18751,71 +18763,56 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
   dimensions = input(...ngDevMode ? [void 0, { debugName: "dimensions" }] : []);
   quality = input(80, ...ngDevMode ? [{ debugName: "quality" }] : []);
   lcpImage = input(false, ...ngDevMode ? [{ debugName: "lcpImage" }] : []);
+  loaded = signal(false, ...ngDevMode ? [{ debugName: "loaded" }] : []);
+  error = signal(false, ...ngDevMode ? [{ debugName: "error" }] : []);
+  isLoading = computed(() => !!this.src() && !this.loaded() && !this.error(), ...ngDevMode ? [{ debugName: "isLoading" }] : []);
+  hasError = computed(() => this.error() || !this.src(), ...ngDevMode ? [{ debugName: "hasError" }] : []);
+  onImageLoad() {
+    this.loaded.set(true);
+  }
+  onImageError() {
+    this.error.set(true);
+    this.loaded.set(false);
+  }
   static \u0275fac = function SharedImgContainerComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedImgContainerComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-shared-img-container"]], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 4, vars: 3, consts: [["priority", "", 1, "object-cover", "rounded-lg", "my-sub", 3, "ngSrc", "width", "height", "alt", "loaderParams"], [1, "object-cover", "rounded-lg", "my-sub", 3, "ngSrc", "width", "height", "alt", "loaderParams"], ["priority", "", "fill", "", 1, "object-cover", "rounded-lg", "w-full", "max-h-auto", "my-sub", 3, "ngSrc", "alt"], ["fill", "", 1, "object-cover", "rounded-lg", "w-full", "max-h-auto", "my-sub", 3, "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-shared-img-container"]], hostAttrs: [1, "relative", "block"], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 7, vars: 6, consts: [[1, "absolute", "inset-0", "flex", "items-center", "justify-center", "bg-transparent", "rounded-lg"], [1, "animate-spin", "rounded-full", "h-8", "w-8", "border-b-2", "border-tertiary-600"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [1, "object-cover", "my-sub", "transition-opacity", "duration-300", 3, "opacity-0", "opacity-100", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "object-cover", "w-full", "max-h-auto", "my-sub", "transition-opacity", "duration-300", 3, "opacity-0", "opacity-100", "priority", "ngSrc", "alt"], [1, "object-cover", "my-sub", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "object-cover", "w-full", "max-h-auto", "my-sub", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
     if (rf & 1) {
-      \u0275\u0275declareLet(0)(1);
-      \u0275\u0275conditionalCreate(2, SharedImgContainerComponent_Conditional_2_Template, 2, 1)(3, SharedImgContainerComponent_Conditional_3_Template, 2, 1);
+      \u0275\u0275declareLet(0)(1)(2);
+      \u0275\u0275elementStart(3, "div", 0);
+      \u0275\u0275conditionalCreate(4, SharedImgContainerComponent_Conditional_4_Template, 1, 0, "div", 1);
+      \u0275\u0275conditionalCreate(5, SharedImgContainerComponent_Conditional_5_Template, 3, 0, "div", 2);
+      \u0275\u0275elementEnd();
+      \u0275\u0275conditionalCreate(6, SharedImgContainerComponent_Conditional_6_Template, 2, 1);
     }
     if (rf & 2) {
       let tmp_0_0;
       let tmp_1_0;
-      const width_r4 = \u0275\u0275storeLet((tmp_0_0 = ctx.dimensions()) == null ? null : tmp_0_0.width);
+      \u0275\u0275storeLet((tmp_0_0 = ctx.dimensions()) == null ? null : tmp_0_0.width);
       \u0275\u0275advance();
-      const height_r5 = \u0275\u0275storeLet((tmp_1_0 = ctx.dimensions()) == null ? null : tmp_1_0.height);
+      \u0275\u0275storeLet((tmp_1_0 = ctx.dimensions()) == null ? null : tmp_1_0.height);
       \u0275\u0275advance();
-      \u0275\u0275conditional(width_r4 && height_r5 ? 2 : 3);
+      const src_r7 = \u0275\u0275storeLet(ctx.src());
+      \u0275\u0275advance(2);
+      \u0275\u0275conditional(ctx.isLoading() ? 4 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(ctx.hasError() ? 5 : -1);
+      \u0275\u0275advance();
+      \u0275\u0275conditional(src_r7 ? 6 : -1);
     }
-  }, dependencies: [NgOptimizedImage], encapsulation: 2, changeDetection: 0 });
+  }, dependencies: [NgOptimizedImage, MatIcon, TranslateModule], styles: ["\n\n[_nghost-%COMP%] {\n  display: block;\n  position: relative;\n}\n[_nghost-%COMP%]   .image-error[_ngcontent-%COMP%] {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */"], changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedImgContainerComponent, [{
     type: Component,
-    args: [{ selector: "plastik-shared-img-container", imports: [NgOptimizedImage], changeDetection: ChangeDetectionStrategy.OnPush, template: `@let width = dimensions()?.width;
-@let height = dimensions()?.height;
-
-@if (width && height) {
-  @if (lcpImage()) {
-    <img
-      class="object-cover rounded-lg my-sub"
-      priority
-      [ngSrc]="src() || ''"
-      [width]="width"
-      [height]="height"
-      [alt]="title()"
-      [loaderParams]="{ width, height, quality: quality() }" />
-  } @else {
-    <img
-      class="object-cover rounded-lg my-sub"
-      [ngSrc]="src() || ''"
-      [width]="width"
-      [height]="height"
-      [alt]="title()"
-      [loaderParams]="{ width, height, quality: quality() }" />
-  }
-} @else {
-  @if (lcpImage()) {
-    <img
-      class="object-cover rounded-lg w-full max-h-auto my-sub"
-      priority
-      fill
-      [ngSrc]="src() || ''"
-      [alt]="title()" />
-  } @else {
-    <img
-      class="object-cover rounded-lg w-full max-h-auto my-sub"
-      fill
-      [ngSrc]="src() || ''"
-      [alt]="title()" />
-  }
-}
-` }]
+    args: [{ selector: "plastik-shared-img-container", imports: [NgOptimizedImage, MatIcon, TranslateModule], host: {
+      class: "relative block"
+    }, changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div class="absolute inset-0 flex items-center justify-center bg-transparent rounded-lg">\n  @if (isLoading()) {\n    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-tertiary-600"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    <img\n      class="object-cover my-sub transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="lcpImage()"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ width, height, quality: quality() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  } @else {\n    <img\n      fill\n      class="object-cover w-full max-h-auto my-sub transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="lcpImage()"\n      [ngSrc]="src"\n      [alt]="title()"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  }\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host {\n  display: block;\n  position: relative;\n}\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
   }], null, { src: [{ type: Input, args: [{ isSignal: true, alias: "src", required: true }] }], title: [{ type: Input, args: [{ isSignal: true, alias: "title", required: true }] }], dimensions: [{ type: Input, args: [{ isSignal: true, alias: "dimensions", required: false }] }], quality: [{ type: Input, args: [{ isSignal: true, alias: "quality", required: false }] }], lcpImage: [{ type: Input, args: [{ isSignal: true, alias: "lcpImage", required: false }] }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedImgContainerComponent, { className: "SharedImgContainerComponent", filePath: "libs/shared/img-container/ui/src/lib/shared-img-container.component.ts", lineNumber: 12 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedImgContainerComponent, { className: "SharedImgContainerComponent", filePath: "libs/shared/img-container/ui/src/lib/shared-img-container.component.ts", lineNumber: 18 });
 })();
 
 // libs/nasa-images/search/feature/src/lib/nasa-images-search-feature/nasa-images-search-feature-table.config.ts
@@ -19165,4 +19162,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-F6NSAWPC.js.map
+//# sourceMappingURL=src-FOSOBGST.js.map
