@@ -1,18 +1,20 @@
-# storage-data-access
+# @plastik/shared/storage/data-access
 
-- [storage-data-access](#storage-data-access)
-  - [Description](#description)
-  - [Services](#services)
-    - [Implementation](#implementation)
-    - [FirebaseStorageService](#firebasestorageservice)
-  - [Utils](#utils)
-    - [ImageKitLoader](#imagekitloader)
-    - [PocketBase Storage Loader](#pocketbase-storage-loader)
-  - [Running unit tests](#running-unit-tests)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [Description](#description)
+- [Services](#services)
+  - [Implementation](#implementation)
+  - [FirebaseStorageService](#firebasestorageservice)
+- [Utils](#utils)
+  - [ImageKitLoader](#imagekitloader)
+  - [PocketBase Storage Loader](#pocketbase-storage-loader)
+- [Running unit tests](#running-unit-tests)
 
 ## Description
 
-A shared Angular library for handling storage operations (such as file upload and retrieval) using several Storage services.
+A shared Angular library for handling **storage operations** (such as file upload and retrieval) using several Storage services.
 
 ## Services
 
@@ -22,7 +24,7 @@ All the upload services implement the [`StorageServiceType` interface and extend
 
 ### FirebaseStorageService
 
-A service for handling storage operations using Firebase Storage.
+A service for handling storage operations using **Firebase Storage**.
 
 Import the service in your Angular application:
 
@@ -151,4 +153,4 @@ import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
 
 ## Running unit tests
 
-Run `nx test storage-data-access` to execute the unit tests.
+Run `nx test shared-storage-data-access` to execute the unit tests.

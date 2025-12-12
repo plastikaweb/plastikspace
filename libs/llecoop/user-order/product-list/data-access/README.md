@@ -1,18 +1,23 @@
-# user-order-product-list-data-access
+# @plastik/llecoop/user-order/product-list/data-access
 
-## Table of Contents
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![NgRx Signals](https://img.shields.io/badge/ngrx%20signals-%23270341.svg?style=for-the-badge&logo=ngrx&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
 
-- [Overview](#overview)
-- [Key Components](#key-components)
-  - [LlecoopUserOrderProductFireService](#llecoopuserorderproductfireservice)
-  - [llecoopUserOrderProductStore](#llecoopuserorderproductstore)
-- [Features](#features)
-- [Usage](#usage)
-- [Running unit tests](#running-unit-tests)
+- [@plastik/llecoop/user-order/product-list/data-access](#plastikllecoopuser-orderproduct-listdata-access)
+  - [Overview](#overview)
+  - [Key Components](#key-components)
+    - [LlecoopUserOrderProductFireService](#llecoopuserorderproductfireservice)
+    - [llecoopUserOrderProductStore](#llecoopuserorderproductstore)
+  - [Features](#features)
+  - [Usage](#usage)
+  - [Running unit tests](#running-unit-tests)
 
 ## Overview
 
-This library provides data access functionality for managing product listings in the LleCoop user ordering system. It handles product data retrieval, filtering, sorting, and pagination through Firebase integration, enabling users to browse and select available products.
+This library provides **data access functionality for managing product listings** in the **Llecoop** user ordering system.
+It handles product data retrieval, filtering, sorting, and pagination through Firebase integration, enabling users to browse and select available products.
 
 ## Key Components
 
@@ -20,11 +25,11 @@ This library provides data access functionality for managing product listings in
 
 A Firebase service extending `EntityFireService` that handles:
 
-- Retrieving available products from Firestore with filtering and pagination
-- Searching products by name with text normalization and case-insensitive matching
-- Filtering products by category
-- Counting total available products matching filters
-- Ensuring only available products are shown (`isAvailable: true`)
+- Retrieving available products from Firestore with filtering and pagination.
+- Searching products by name with text normalization and case-insensitive matching.
+- Filtering products by category.
+- Counting total available products matching filters.
+- Ensuring only available products are shown (`isAvailable: true`).
 
 ```typescript
 // Example of using the fire service
@@ -43,10 +48,10 @@ this.productFireService.getAll(pagination, sorting, filter).subscribe(products =
 
 A Signal-based state management store that handles the product list state, including:
 
-- Managing product filtering (text search and category filtering)
-- Pagination state management
-- Sorting configuration
-- Integration with the Firebase service
+- Managing product filtering (text search and category filtering).
+- Pagination state management.
+- Sorting configuration.
+- Integration with the Firebase service.
 
 ```typescript
 // Example of using the product store
@@ -65,12 +70,12 @@ const loading = llecoopUserOrderProductStore.loading();
 
 ## Features
 
-- **Product Search**: Text-based searching with normalization for accents and special characters
-- **Category Filtering**: Filter products by specific categories
-- **Pagination Support**: Built-in pagination for handling large product catalogs
-- **Sorting Options**: Configure product sorting (e.g., by name, price, update date)
-- **Available Products Only**: Automatically filters out unavailable products
-- **Reactive Design**: Built with Angular's Signal-based architecture
+- **Product Search**: Text-based searching with normalization for accents and special characters.
+- **Category Filtering**: Filter products by specific categories.
+- **Pagination Support**: Built-in pagination for handling large product catalogs.
+- **Sorting Options**: Configure product sorting (e.g., by name, price, update date).
+- **Available Products Only**: Automatically filters out unavailable products.
+- **Reactive Design**: Built with Angular's Signal-based architecture.
 
 ## Usage
 

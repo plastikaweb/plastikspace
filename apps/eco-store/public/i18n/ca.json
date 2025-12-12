@@ -11,6 +11,9 @@
     "view-cart": "Veure cistella",
     "profile": "Perfil"
   },
+  "error": {
+    "image": "Hi ha hagut un error al carregar la imatge"
+  },
   "paginator": {
     "first-page": "Primera pàgina",
     "items-per-page": "Elements per pàgina",

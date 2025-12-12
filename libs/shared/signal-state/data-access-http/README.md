@@ -9,6 +9,7 @@
     - [Option 3: Full CRUD (`withHttpCrud`)](#option-3-full-crud-withhttpcrud)
   - [🔧 Configuration](#-configuration)
   - [💡 Advanced Usage](#-advanced-usage)
+    - [Method Behavior](#method-behavior)
     - [Automatic Entity Management](#automatic-entity-management)
     - [Entity Selectors (from `withEntities`)](#entity-selectors-from-withentities)
     - [State Properties](#state-properties)

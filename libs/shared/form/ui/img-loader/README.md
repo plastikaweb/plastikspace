@@ -1,49 +1,43 @@
-# input-img-loader
+# @plastik/shared/form/ui/img-loader
 
-## Table of Contents
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 
-- [input-img-loader](#input-img-loader)
-  - [Table of Contents](#table-of-contents)
+- [@plastik/shared/form/ui/img-loader](#plastiksharedformuiimg-loader)
   - [Description](#description)
   - [Usage](#usage)
-    - [HTML Element](#html-element)
     - [Module Setup](#module-setup)
     - [Formly Configuration](#formly-configuration)
-    - [Basic Example](#basic-example)
   - [API Reference](#api-reference)
     - [Props Interface](#props-interface)
   - [Troubleshooting](#troubleshooting)
-    - [Common Issues](#common-issues)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-A Formly-compatible image loader component for Angular forms.
+A **Formly-compatible image loader component** for Angular forms.
 It allows users to upload images, displays upload progress, validates minimum dimensions and maximum file size, and supports previewing images from a URL or CDN.
-Designed for seamless integration into reactive forms and custom upload logic.
 
 ## Usage
 
-### HTML Element
-
-`<plastik-input-img-loader>`
-
 ### Module Setup
 
-To use the `input-img-loader` type, import the following modules in your feature module:
+Import the module in your feature module:
 
-- `ImgLoaderFormlyModule`
-- [SharedFormFeatureModule](../../feature/README.md)
+```typescript
+import { ImgLoaderFormlyModule } from '@plastik/shared/form/ui/img-loader';
+
+@NgModule({
+  imports: [ImgLoaderFormlyModule],
+})
+export class FeatureModule {}
+```
 
 ### Formly Configuration
 
-The component type name is: `input-img-loader`
-
-### Basic Example
+The component type name is: `input-img-loader`.
 
 ```typescript
-import { FormlyFieldConfig } from '@ngx-formly/core';
-
 const fields: FormlyFieldConfig[] = [
   {
     key: 'image',
@@ -54,8 +48,9 @@ const fields: FormlyFieldConfig[] = [
       maxSize: 2 * 1024 * 1024, // 2MB
       minHeight: 600,
       minWidth: 600,
+      // Your upload logic here
       upload: async (file: File | null) => {
-        // Your upload logic here
+        console.log('Uploading...', file);
       },
       fileUrl: 'https://cdn.domain.com/image.jpg',
       title: 'Upload product image',
@@ -70,9 +65,9 @@ const fields: FormlyFieldConfig[] = [
 ### Props Interface
 
 | Name         | Type                                                             | Default         | Description                                                        |
-| ------------ | ---------------------------------------------------------------- | --------------- | ------------------------------------------------------------------ |
+| :----------- | :--------------------------------------------------------------- | :-------------- | :----------------------------------------------------------------- |
 | `upload`     | `(file: File \| null, folder?: string) => Promise<void> \| void` |                 | Function called on file selection. Handles upload logic. Required. |
-| `progress`   | `number`                                                         | `0`             | Upload progress.(0-100).                                           |
+| `progress`   | `number`                                                         | `0`             | Upload progress (0-100).                                           |
 | `fileUrl`    | `string \| null`                                                 | `null`          | URL of the image used as the input value.                          |
 | `title`      | `string`                                                         | `''`            | Title or label for the upload button.                              |
 | `folder`     | `string`                                                         | `''`            | Folder or path for uploads (passed to `upload` function).          |
@@ -80,11 +75,9 @@ const fields: FormlyFieldConfig[] = [
 | `minHeight`  | `number`                                                         | `1024`          | Minimum image height in pixels.                                    |
 | `minWidth`   | `number`                                                         | `1024`          | Minimum image width in pixels.                                     |
 | `dimensions` | `ImageDimensions`                                                | `undefined`     | Dimensions of the image.                                           |
-| `lcpImage`   | `boolean`                                                        | `false`         | Whether this image is a Largest Contentful Paint element.          |
+| `lcpImage`   | `boolean`                                                        | `false`         | Whether this image is a Largest Contentfull Paint (LCP) element.   |
 
 ## Troubleshooting
-
-### Common Issues
 
 - **Image not uploading:** Ensure the `upload` prop is provided and handles the file upload correctly.
 - **Validation errors:** Check that the uploaded image meets the minimum size and dimension requirements.
@@ -92,4 +85,4 @@ const fields: FormlyFieldConfig[] = [
 
 ## Running unit tests
 
-Run `nx test input-img-loader` to execute the unit tests.
+Run `nx test shared-form-ui-img-loader` to execute the unit tests.

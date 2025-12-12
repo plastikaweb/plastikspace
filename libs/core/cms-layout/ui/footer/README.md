@@ -1,35 +1,34 @@
-# core-cms-layout-ui-footer
+# @plastik/core/cms-layout/ui/footer
 
-- [core-cms-layout-ui-footer](#core-cms-layout-ui-footer)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/core/cms-layout/ui/footer](#plastikcorecms-layoutuifooter)
   - [Description](#description)
-  - [Content projection](#content-projection)
-  - [How to use](#how-to-use)
-  - [Running unit tests](#running-unit-tests)
+  - [Content Projection](#content-projection)
+  - [Usage](#usage)
+  - [Running Unit Tests](#running-unit-tests)
 
 ## Description
 
-A core basic footer with content configuration options.
+A **Core Footer Component** with content projection support.
 
-## Content projection
+## Content Projection
 
-| Selector    | Description                 |
-| ----------- | --------------------------- |
-| `[content]` | The contents of the footer. |
+| Selector    | Description                     |
+| :---------- | :------------------------------ |
+| `[content]` | The main content of the footer. |
 
-## How to use
+## Usage
 
-- Import the `CoreCmsLayoutUiFooterComponent` in your root component app.
-
-- Insert the component in your template using content projection for content.
+Import `CoreCmsLayoutUiFooterComponent` and project your content:
 
 ```html
-<!-- component template -->
-
 <plastik-core-cms-layout-ui-footer>
-  <div content>&copy; 2022 My Company</div>
+  <div content>&copy; 2024 My Company. All rights reserved.</div>
 </plastik-core-cms-layout-ui-footer>
 ```
 
-## Running unit tests
+## Running Unit Tests
 
 Run `nx test core-cms-layout-ui-footer` to execute the unit tests.

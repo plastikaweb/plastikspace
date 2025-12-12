@@ -1,12 +1,5 @@
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  inject,
-  signal,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, DestroyRef, inject, viewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
@@ -38,7 +31,6 @@ import { MenuComponent } from './menu/menu.component';
  */
 export default class LayoutComponent {
   protected readonly searchFormConfig = appSearchFormConfig();
-  protected readonly isSidenavOpen = signal(false);
   private readonly sidenavContent = viewChild<MatSidenavContent>('sidenavContent');
   readonly #destroyRef = inject(DestroyRef);
 
@@ -58,13 +50,5 @@ export default class LayoutComponent {
   protected onSearchSubmit(event: { query: string }): void {
     // eslint-disable-next-line no-console
     console.log(event);
-  }
-
-  protected onSidenavActivate(): void {
-    this.isSidenavOpen.set(true);
-  }
-
-  protected onSidenavDeactivate(): void {
-    this.isSidenavOpen.set(false);
   }
 }

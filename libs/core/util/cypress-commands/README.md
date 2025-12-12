@@ -1,34 +1,37 @@
-# core-util-cypress-commands
+# @plastik/core/cypress-commands
 
-- [core-util-cypress-commands](#core-util-cypress-commands)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Cypress](https://img.shields.io/badge/cypress-17202C?style=for-the-badge&logo=cypress&logoColor=white)
+
+- [@plastik/core/cypress-commands](#plastikcorecypress-commands)
   - [Description](#description)
   - [Commands](#commands)
     - [Selectors](#selectors)
-      - [getEl](#getel)
+      - [`getEl`](#getel)
     - [Material](#material)
-      - [setMatInput](#setmatinput)
-      - [setMatDatePicker](#setmatdatepicker)
-  - [Useful links](#useful-links)
+      - [`setMatInput`](#setmatinput)
+      - [`setMatDatePicker`](#setmatdatepicker)
+  - [Resources](#resources)
 
 ## Description
 
-A collection of global core cypress commands to use anywhere.
+A collection of **global Core Cypress commands** to use anywhere in the workspace. It enforces best practices for selectors and interacting with Angular Material components.
 
 ## Commands
 
 ### Selectors
 
-#### getEl
+#### `getEl`
 
-Cypress HTML selectors should be agnostic to changes, style classes, or tag names.
+Cypress HTML selectors should be agnostic to changes, style classes, or tag names. We use the `data-test` attribute to ensure stability.
 
-So to prevent any possible unwanted change on any cypress selectors, we use specific test selectors with the attribute name of `data-test`:
+**HTML:**
 
 ```html
 <header data-test="layout-header"></header>
 ```
 
-Use to get a specific cypress element by its attribute like this:
+**Test:**
 
 ```typescript
 const header = () => cy.getEl('layout-header');
@@ -48,9 +51,9 @@ describe('layout', () => {
 
 ### Material
 
-We are using [Material CDK Component Test Harnesses](https://material.angular.io/cdk/test-harnesses/overview) in order to set values for Angular Material Components or control their behavior.
+Uses [Material CDK Component Test Harnesses](https://material.angular.io/cdk/test-harnesses/overview) to robustly interact with Angular Material components.
 
-#### setMatInput
+#### `setMatInput`
 
 Sets a value for a Material Input Component.
 
@@ -62,7 +65,7 @@ import { getAllHarnesses } from '@jscutlery/cypress-harness';
 cy.setMatInput(getAllHarnesses(MatInputHarness), 'test@test.com', 1);
 ```
 
-#### setMatDatePicker
+#### `setMatDatePicker`
 
 Sets a value for a Material Datepicker Component.
 
@@ -74,7 +77,7 @@ import { getAllHarnesses } from '@jscutlery/cypress-harness';
 cy.setMatDatePicker(getAllHarnesses(MatDatepickerInputHarness), '2021', 0);
 ```
 
-## Useful links
+## Resources
 
 - [Material CDK Component Test Harnesses](https://material.angular.io/cdk/test-harnesses/overview)
 - [Cypress Harness](https://github.com/jscutlery/devkit/tree/main/packages/cypress-harness)

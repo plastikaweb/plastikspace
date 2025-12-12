@@ -1,28 +1,32 @@
-# llecoop-shared-data-access
+# @plastik/llecoop/shared/data-access
 
-- [llecoop-shared-data-access](#llecoop-shared-data-access)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+
+- [@plastik/llecoop/shared/data-access](#plastikllecoopshareddata-access)
   - [Description](#description)
-    - [LlecoopSharedCategoryFireService](#llecoopsharedcategoryfireservice)
-      - [Features](#features)
-      - [Usage Example](#usage-example)
-      - [Running unit tests](#running-unit-tests)
+  - [LlecoopSharedCategoryFireService](#llecoopsharedcategoryfireservice)
+    - [Features](#features)
+    - [Usage Example](#usage-example)
+  - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-This library provides data access services for shared functionality across the LleCoop application.
+This library provides **data access services** for shared functionality across the **Llecoop** application.
 
-### LlecoopSharedCategoryFireService
+## LlecoopSharedCategoryFireService
 
-It offers methods to retrieve category data from Firestore and format it for use in form select components.
+It offers methods to retrieve category data from **Firestore** and format it for use in form select components.
 
-#### Features
+### Features
 
-- Retrieves category data from Firestore
-- Observable-based API
-- Formatted select options for forms
-- Used for optional filtering
+- Retrieves category data from Firestore.
+- Observable-based API.
+- Formatted select options for forms.
+- Used for optional filtering.
 
-#### Usage Example
+### Usage Example
 
 ```typescript
 import { inject } from '@angular/core';
@@ -67,6 +71,6 @@ export class ProductFormComponent {
 }
 ```
 
-#### Running unit tests
+## Running unit tests
 
 Run `nx test llecoop-shared-data-access` to execute the unit tests.

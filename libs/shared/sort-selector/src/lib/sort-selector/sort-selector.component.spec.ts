@@ -21,12 +21,12 @@ describe('SortSelectorComponent', () => {
 
     const options: SortMenuOptions = {
       name: [
-        { direction: 'asc', icon: 'arrow_upward' },
-        { direction: 'desc', icon: 'arrow_downward' },
+        { id: 1, direction: 'asc', icon: 'arrow_upward' },
+        { id: 2, direction: 'desc', icon: 'arrow_downward' },
       ],
       created: [
-        { direction: 'asc', icon: 'arrow_upward' },
-        { direction: 'desc', icon: 'arrow_downward' },
+        { id: 3, direction: 'asc', icon: 'arrow_upward' },
+        { id: 4, direction: 'desc', icon: 'arrow_downward' },
       ],
     };
     const current: SortConfig = { active: 'name', direction: 'asc' } as const;

@@ -1,17 +1,20 @@
-# Eco-store entities
+# @plastik/eco-store/entities
 
-- [Eco-store entities](#eco-store-entities)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+- [@plastik/eco-store/entities](#plastikeco-storeentities)
   - [Description](#description)
-  - [📦 Exports](#-exports)
+  - [Exports](#exports)
     - [Domain Entities](#domain-entities)
     - [Configuration](#configuration)
-  - [🔗 Related Libraries](#-related-libraries)
+  - [Related Libraries](#related-libraries)
 
 ## Description
 
-This library contains the eco-store specific entities and type definitions. It re-exports all PocketBase base types from `@plastik/core/entities` for convenience.
+This library contains the **eco-store specific entities and type definitions**. It re-exports all PocketBase base types from `@plastik/core/entities` for convenience.
 
-## 📦 Exports
+## Exports
 
 ### Domain Entities
 
@@ -22,12 +25,8 @@ This library contains the eco-store specific entities and type definitions. It r
 
 - **`EnvironmentConfiguration`**: Environment configuration types for eco-store
 
-## 🔗 Related Libraries
+## Related Libraries
 
 - [`@plastik/core/entities`](../../core/entities/README.md) - Contains `BasePocketBaseEntity` and related types
-- [`@plastik/core/api-pocketbase`](../../core/util/api-pocketbase/README.md) - PocketBase CRUD services
+- [`@plastik/core/util/api-pocketbase`](../../core/util/api-pocketbase/README.md) - PocketBase CRUD services
 - [`@plastik/shared/signal-state/data-access-pocketbase`](../../shared/signal-state/data-access-pocketbase/README.md) - PocketBase Signal Store features
-
----
-
-Generated with [Nx](https://nx.dev).

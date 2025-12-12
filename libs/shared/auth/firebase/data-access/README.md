@@ -1,6 +1,10 @@
-# auth-firebase-data-access
+# @plastik/shared/auth/firebase/data-access
 
-- [auth-firebase-data-access](#auth-firebase-data-access)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+
+- [@plastik/shared/auth/firebase/data-access](#plastiksharedauthfirebasedata-access)
   - [Description](#description)
   - [Services](#services)
   - [Guards](#guards)
@@ -8,25 +12,25 @@
 
 ## Description
 
-This library is responsible for handling all the data access logic for the firebase authentication.
+This library is responsible for handling all the data access logic for the **Firebase Authentication**.
 
 ## Services
 
-- `FirebaseAuthService`: This service is responsible for handling all the authentication logic.
-  - `login`: This method is responsible for logging in the user with email and password.
-  - `register`: This method is responsible for registering the user with email and password.
-  - `logout`: This method is responsible for logging out the user.
-  - `sendVerification`: This method is responsible for sending a verification email.
-  - `requestPassword`: This method is responsible for sending a password reset email.
-  - `handleAuthStateChanged`: This method is responsible for handling the auth state changes.
-  - `resetAuth`: This method is responsible for resetting the authentication state.
+- **`FirebaseAuthService`**: Handles all authentication logic.
+  - `login`: Logs in the user with email and password.
+  - `register`: Registers the user with email and password.
+  - `logout`: Logs out the user.
+  - `sendVerification`: Sends a verification email.
+  - `requestPassword`: Sends a password reset email.
+  - `handleAuthStateChanged`: Handles auth state changes.
+  - `resetAuth`: Resets the authentication state.
 
 ## Guards
 
-- `isAdminGuard`: This guard is responsible for checking if the user is an admin.
-- `isLoggedGuard`: This guard is responsible for checking if the user is logged in.
-- `isNotLoggedGuard`: This guard is responsible for checking if the user is not logged in.
+- **`isAdminGuard`**: Checks if the user is an admin.
+- **`isLoggedGuard`**: Checks if the user is logged in.
+- **`isNotLoggedGuard`**: Checks if the user is not logged in.
 
 ## Running unit tests
 
-Run `nx test auth-firebase-data-access` to execute the unit tests.
+Run `nx test shared-auth-firebase-data-access` to execute the unit tests.

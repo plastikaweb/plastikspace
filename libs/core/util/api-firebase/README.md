@@ -1,54 +1,36 @@
-# api-firebase
+# @plastik/core/api-firebase
 
-- [api-firebase](#api-firebase)
-  - [📚 Overview](#-overview)
-  - [🏗️ Architecture](#️-architecture)
-    - [Core Components](#core-components)
-  - [🚀 Usage](#-usage)
-    - [1. Create Your Entity Service](#1-create-your-entity-service)
-    - [2. Implement Filter Conditions](#2-implement-filter-conditions)
-    - [3. Use in Your Application](#3-use-in-your-application)
-  - [🔧 Advanced Usage](#-advanced-usage)
-    - [Custom Type Conversion](#custom-type-conversion)
-    - [Error Handling](#error-handling)
-  - [📦 Exports](#-exports)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
 
-This library provides **Firebase Firestore CRUD utilities** for the application.
-It contains base classes and types that implement common Firebase operations with pagination, sorting, and filtering.
+- [Description](#description)
+- [Architecture](#architecture)
+- [Usage](#usage)
+- [Advanced Usage](#advanced-usage)
+- [Exports](#exports)
 
-## 📚 Overview
+## Description
 
-`api-firebase` centralizes all Firebase/Firestore-related logic, providing:
+**api-firebase** provides **Firebase Firestore CRUD utilities** for the application. It contains base classes and types that implement common Firebase operations with pagination, sorting, and filtering.
 
-- **`EntityFireService`**: A complete abstract base class with CRUD operations
-- **`FirebaseServiceType`**: The interface/contract for Firebase services
-- **Type definitions**: `FirebaseCrudPagination`, `FirebaseCrudFilter`
+**Key Benefits:**
 
-**Note**: This library contains only Firebase/Firestore-specific types. State management types (like `FirebaseCrudState`) belong to `libs/shared/signal-state/data-access-firebase`.
+- Centralized Firebase/Firestore logic.
+- Complete abstract base class (`EntityFireService`) with CRUD.
+- Standardized type definitions.
 
-This library follows the same philosophy as `api-base`: it defines _what_ and _how_ Firebase services work, allowing you to extend and customize for specific entities.
+> **Note**: This library contains only Firebase/Firestore-specific types. State management types belong to `libs/shared/signal-state/data-access-firebase`.
 
-## 🏗️ Architecture
+## Architecture
 
 ### Core Components
 
-1. **`EntityFireService<T>`** - Abstract base class that implements:
-   - `getList()` - Paginated, sorted, and filtered list retrieval
-   - `getOne()` - Single item retrieval by ID
-   - `create()` - Create new documents and return the complete entity with ID
-   - `update()` - Update existing documents
-   - `delete()` - Delete documents
-   - `getCount()` - Count documents matching a filter
-   - Connection management with `activeConnection` signal
-   - Automatic error handling for permission errors
+1. **`EntityFireService<T>`**: Abstract base class implementing `getList`, `getOne`, `create`, `update`, `delete`, `getCount`.
+2. **`FirebaseServiceType<T>`**: Interface defining the contract.
+3. **Type Definitions**: `FirebaseCrudPagination<T>`, `FirebaseCrudFilter`.
 
-2. **`FirebaseServiceType<T>`** - Abstract interface defining the contract
-
-3. **Type Definitions**:
-   - `FirebaseCrudPagination<T>` - Pagination configuration with cursor tracking
-   - `FirebaseCrudFilter` - Filter criteria type
-
-## 🚀 Usage
+## Usage
 
 ### 1. Create Your Entity Service
 
@@ -119,40 +101,17 @@ export class ProductComponent implements OnInit {
 }
 ```
 
-## 🔧 Advanced Usage
+## Advanced Usage
 
 ### Custom Type Conversion
 
-Override `firebaseAssignTypes()` to customize how your entity is converted to/from Firestore:
-
-```typescript
-protected override firebaseAssignTypes() {
-  return {
-    toFirestore(doc: Product): DocumentData {
-      return {
-        ...doc,
-        normalizedName: latinize(doc.name).toLowerCase(),
-        price: Number(doc.price), // Ensure number type
-        createdAt: doc.createdAt ?? serverTimestamp(),
-        updatedAt: serverTimestamp(),
-      };
-    },
-    fromFirestore(snapshot: QueryDocumentSnapshot): Product {
-      const data = snapshot.data() as Product;
-      return {
-        ...data,
-        price: Number(data.price), // Ensure number type
-      };
-    },
-  };
-}
-```
+Override `firebaseAssignTypes()` to customize how your entity is converted to/from Firestore.
 
 ### Error Handling
 
-`EntityFireService` automatically handles Firebase permission errors by returning default values instead of throwing. You can customize this behavior by overriding `handlePermissionError()`.
+`EntityFireService` automatically handles Firebase permission errors. Override `handlePermissionError()` to customize.
 
-## 📦 Exports
+## Exports
 
 ```typescript
 // Main exports

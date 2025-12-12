@@ -1,6 +1,9 @@
-# auth-login-feature
+# @plastik/shared/auth/login/feature
 
-- [auth-login-feature](#auth-login-feature)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/shared/auth/login/feature](#plastiksharedauthloginfeature)
   - [Description](#description)
   - [Components](#components)
   - [Routes](#routes)
@@ -8,7 +11,7 @@
 
 ## Description
 
-This library is responsible for handling all the login feature logic.
+This library is responsible for handling all the **login feature logic**.
 
 ## Components
 

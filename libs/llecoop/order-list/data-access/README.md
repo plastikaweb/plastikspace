@@ -1,6 +1,10 @@
-# llecoop-order-list
+# @plastik/llecoop/order-list/data-access
 
-- [llecoop-order-list](#llecoop-order-list)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![NgRx Signals](https://img.shields.io/badge/ngrx%20signals-%23270341.svg?style=for-the-badge&logo=ngrx&logoColor=white)
+
+- [@plastik/llecoop/order-list/data-access](#plastikllecooporder-listdata-access)
   - [Description](#description)
   - [API](#api)
     - [LlecoopOrderListStore](#llecooporderliststore)
@@ -10,7 +14,7 @@
 
 ## Description
 
-This library is part of the Llecoop order management system. It provides functionalities to access and manipulate user order lists.
+This library is part of the **Llecoop order management system**. It provides functionalities to **access and manipulate user order lists**.
 
 ## API
 

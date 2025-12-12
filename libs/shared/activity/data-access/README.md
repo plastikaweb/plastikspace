@@ -1,13 +1,16 @@
-# shared-activity-data-access
+# @plastik/shared/activity/data-access
 
-- [shared-activity-data-access](#shared-activity-data-access)
-  - [Description](#description)
-  - [How to use](#how-to-use)
-  - [Running unit tests](#running-unit-tests)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![NgRx Signals](https://img.shields.io/badge/ngrx%20signals-%23270341.svg?style=for-the-badge&logo=ngrx&logoColor=white)
+
+- [Description](#description)
+- [How to use](#how-to-use)
+- [Running unit tests](#running-unit-tests)
 
 ## Description
 
-This library contains the data access layer for the activity feature. It uses NgRx Signals for efficient and straightforward state management.
+This library contains the **data access layer for the activity feature**. It uses **NgRx Signals** for efficient and straightforward state management.
 
 ## How to use
 

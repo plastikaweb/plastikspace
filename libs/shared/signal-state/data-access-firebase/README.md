@@ -7,7 +7,7 @@
     - [1. Create a Store Feature](#1-create-a-store-feature)
     - [2. Use in a Component](#2-use-in-a-component)
   - [🔧 Configuration](#-configuration)
-  - [� Related Libraries](#-related-libraries)
+  - [🔗 Related Libraries](#-related-libraries)
 
 ## 📚 Overview
 

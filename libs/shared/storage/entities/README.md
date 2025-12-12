@@ -1,11 +1,13 @@
-# shared-storage-entities
+# @plastik/shared/storage/entities
 
-- [shared-storage-entities](#shared-storage-entities)
-  - [Description](#description)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+- [Description](#description)
 
 ## Description
 
-A shared Angular library for defining the entities of storage operations (such as file upload and retrieval).
+A shared Angular library for defining the **entities of storage operations** (such as file upload and retrieval).
 
 All the upload services must implement the [`StorageServiceType` interface](../entities/README.md).
 

@@ -34,8 +34,9 @@ export class EcoStoreProductCardComponent {
   addToCart = output<{ id: EcoStoreProductWithCategoryName['id']; quantity: number }>();
   toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();
 
-  getPocketBaseUrl(product: EcoStoreProduct): string {
-    return `${product.collectionId}/${product.id}/${product.images?.[0]}`;
+  getPocketBaseUrl(product: EcoStoreProduct): string | null {
+    const image = product.images?.[0];
+    return image ? `${product.collectionId}/${product.id}/${image}` : null;
   }
 
   onQuantityChange(newQuantity: number) {

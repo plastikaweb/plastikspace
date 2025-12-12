@@ -1,16 +1,18 @@
-# Shared Testing Library
+# @plastik/shared/testing
 
-- [Shared Testing Library](#shared-testing-library)
-  - [Description](#description)
-  - [Features](#features)
-  - [Basic Usage](#basic-usage)
-  - [API Documentation](#api-documentation)
-    - [`angularFireAuthMock`](#angularfireauthmock)
-    - [`angularFireStorageMock`](#angularfirestoragemock)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Jest](https://img.shields.io/badge/jest-%23C21325.svg?style=for-the-badge&logo=jest&logoColor=white)
+
+- [Description](#description)
+- [Features](#features)
+- [Basic Usage](#basic-usage)
+- [API Documentation](#api-documentation)
+  - [`angularFireAuthMock`](#angularfireauthmock)
+  - [`angularFireStorageMock`](#angularfirestoragemock)
 
 ## Description
 
-This library provides shared testing utilities for Angular components and services in our Nx monorepo, with Jest as the test runner.
+This library provides **shared testing utilities** for Angular components and services in our Nx monorepo, with Jest as the test runner.
 
 ## Features
 

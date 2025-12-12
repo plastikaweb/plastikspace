@@ -1,6 +1,11 @@
-# llecoop-profile-data-access
+# @plastik/llecoop/profile/data-access
 
-- [llecoop-profile-data-access](#llecoop-profile-data-access)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![NgRx Signals](https://img.shields.io/badge/ngrx%20signals-%23270341.svg?style=for-the-badge&logo=ngrx&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+
+- [@plastik/llecoop/profile/data-access](#plastikllecoopprofiledata-access)
   - [Description](#description)
   - [Services](#services)
     - [`LlecoopProfileFireService`](#llecoopprofilefireservice)
@@ -10,7 +15,7 @@
 
 ## Description
 
-This library manages user profile data for the Llecoop application, including fetching, updating, and state management. It interacts with Firebase for data persistence and authentication.
+This library manages **user profile data** for the **Llecoop** application, including fetching, updating, and state management. It interacts with Firebase for data persistence and authentication.
 
 ## Services
 
@@ -41,7 +46,7 @@ This service is responsible for direct interactions with the Firestore database 
 
 ### `llecoopProfileStore`
 
-This is a signal-based NgRx store that manages the state of the user's profile within the application.
+This is a **signal-based NgRx store** that manages the state of the user's profile within the application.
 
 **Path:** `libs/llecoop/profile/data-access/src/profile.store.ts`
 

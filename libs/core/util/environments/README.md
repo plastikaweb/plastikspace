@@ -1,16 +1,18 @@
-# core-util-environments
+# @plastik/core/environments
 
-- [core-util-environments](#core-util-environments)
-  - [📚 Overview](#-overview)
-  - [🔧 Interfaces](#-interfaces)
-  - [⚙️ Tokens & Providers](#️-tokens--providers)
-  - [🚀 Usage Examples](#-usage-examples)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 
-## 📚 Overview
+- [Description](#description)
+- [Interfaces](#interfaces)
+- [Tokens & Providers](#tokens--providers)
+- [Usage Examples](#usage-examples)
 
-Utilities to define and provide application environments across libraries using Angular DI tokens. Supports base environments, HTTP API URLs, and PocketBase setups with translations.
+## Description
 
-## 🔧 Interfaces
+**Environments Utility** provides tools to define and provide application environments across libraries using Angular DI tokens. It supports base environments, HTTP API URLs, and PocketBase setups with translations.
+
+## Interfaces
 
 ```typescript
 export type EnvironmentName = 'development' | 'staging' | 'production' | 'test';
@@ -39,7 +41,7 @@ export type EnvironmentPocketBaseWithTranslations = EnvironmentPocketBase &
   EnvironmentWithTranslations;
 ```
 
-## ⚙️ Tokens & Providers
+## Tokens & Providers
 
 ```typescript
 import {
@@ -53,12 +55,12 @@ import {
 } from '@plastik/core/environments';
 ```
 
-- `ENVIRONMENT`: base environment token
-- `ENVIRONMENT_WITH_API`: environment with `baseApiUrl`
-- `POCKETBASE_ENVIRONMENT`: PocketBase environment
-- `POCKETBASE_WITH_TRANSLATION_ENVIRONMENT`: PocketBase with translations
+- `ENVIRONMENT`: base environment token.
+- `ENVIRONMENT_WITH_API`: environment with `baseApiUrl`.
+- `POCKETBASE_ENVIRONMENT`: PocketBase environment.
+- `POCKETBASE_WITH_TRANSLATION_ENVIRONMENT`: PocketBase with translations.
 
-Provider helpers:
+**Provider helpers:**
 
 ```typescript
 provideWithApiEnv(env: EnvironmentWithApiUrl)
@@ -66,7 +68,7 @@ providePocketBaseEnv(env: EnvironmentPocketBase)
 providePocketBaseWithTranslationsEnv(env: EnvironmentPocketBaseWithTranslations)
 ```
 
-## 🚀 Usage Examples
+## Usage Examples
 
 ### 1) HTTP API environment
 
