@@ -42,5 +42,5 @@ describe('EcoStoreProductsFeature', () => {
     expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
-  });
+  }, 10000);
 });

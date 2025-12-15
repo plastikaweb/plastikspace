@@ -1,4 +1,4 @@
-import { NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
@@ -7,7 +7,7 @@ export type ImageDimensions = { width: number; height: number } | undefined;
 
 @Component({
   selector: 'plastik-shared-img-container',
-  imports: [NgOptimizedImage, MatIcon, TranslateModule],
+  imports: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet],
   templateUrl: './shared-img-container.component.html',
   styleUrl: './shared-img-container.component.scss',
   host: {

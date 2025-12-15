@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@use 'two-theme';
+@use 'one-theme';
 @use 'color-palette';
 @use 'tailwind-theme';
 @use 'tailwindcss';
@@ -95,6 +95,7 @@
 }
 
 @layer components {
+  //** SELECT **//
   @include mat.select-overrides(
     (
       trigger-text-size: 0.8rem,
@@ -106,9 +107,25 @@
       label-text-size: 0.8rem,
     )
   );
+
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
+      .mat-mdc-option-multiple
+    ) {
+    --mat-option-selected-state-layer-color: var(--secondary-100) !important;
+    --mat-option-selected-state-label-text-color: var(--secondary-900) !important;
+    --mat-option-selected-state-icon-color: var(--secondary-900) !important;
+  }
+
+  //** MENU **//
+  .mat-mdc-menu-item.active {
+    --mat-menu-item-label-text-color: var(--secondary-900);
+    --mat-menu-item-icon-color: var(--secondary-900);
+    background-color: var(--secondary-100) !important;
+  }
 }
 
 @layer utilities {
+  //** CONTENT CONTAINER - MAX WIDTH **//
   .content-container {
     margin-left: auto;
     margin-right: auto;

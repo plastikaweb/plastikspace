@@ -14,10 +14,11 @@
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.codeActionsOnSave": {
-      "source.organizeImports": "always",
-      "source.fixAll.eslint": "always"
-    }
+      "editor.formatOnSave": true,
+      "editor.codeActionsOnSave": {
+        "source.organizeImports": "never",
+        "source.fixAll.eslint": "never"
+      }
   },
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
