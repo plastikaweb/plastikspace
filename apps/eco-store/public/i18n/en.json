@@ -25,6 +25,9 @@
     "view-cart": "View cart",
     "profile": "Profile"
   },
+  "error": {
+    "image": "This image could not be loaded"
+  },
   "paginator": {
     "first-page": "First page",
     "items-per-page": "Items per page",
@@ -73,10 +76,10 @@
       "unit": "Price per unit",
       "weight": "Price per kg",
       "volume": "Price per L",
-      "unitWithFixedWeight": "The unit weighs {{value}} kg",
-      "unitWithFixedVolume": "The unit occupies {{value}} L",
-      "unitWithVariableWeight": "Final price according to weight",
-      "unitWithVariableVolume": "Final price according to volume"
+      "unitWithFixedWeight": "It weighs {{value}} kg",
+      "unitWithFixedVolume": "It occupies {{value}} L",
+      "unitWithVariableWeight": "Variable weight",
+      "unitWithVariableVolume": "Variable volume"
     },
     "unit-abbreviation": {
       "unit": "unit",

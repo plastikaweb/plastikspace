@@ -65,6 +65,10 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 - [**Categories**](../../libs/eco-store/product-categories/data-access/README.md): Category management.
 - [**Product Card**](../../libs/eco-store/shared/product-card/README.md): Shared product card component.
 
+### 🧰 Shared Utils
+
+- [**Utils**](../../libs/eco-store/shared/utils/README.md): Unit formatting and shared helpers.
+
 ### 🚀 Core Features
 
 - [**Formly Integration**](../../libs/eco-store/feature/formly/README.md): Dynamic form generation.

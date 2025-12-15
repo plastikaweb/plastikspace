@@ -2,12 +2,12 @@ import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { MatChip, MatChipsModule } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProduct, EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { EcoStoreProductCardQuantityControlComponent } from './eco-store-product-card-quantity-control.component';
+import { EcoStoreUnitChipComponent } from './eco-store-unit-chip.component';
 
 @Component({
   selector: 'eco-store-product-card',
@@ -15,11 +15,10 @@ import { EcoStoreProductCardQuantityControlComponent } from './eco-store-product
     TranslateModule,
     MatCardModule,
     MatButtonModule,
-    MatChipsModule,
     MatIcon,
-    MatChip,
     DecimalPipe,
     EcoStoreProductCardQuantityControlComponent,
+    EcoStoreUnitChipComponent,
     SharedImgContainerComponent,
   ],
   templateUrl: './eco-store-product-card.component.html',

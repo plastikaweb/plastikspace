@@ -42,24 +42,20 @@
     </h3>
 
     <!-- Price -->
+    @let unitType = product().unitType;
+    @let unitBase = product().unitBase;
     <div class="space-y-1">
       <div class="mt-1 flex items-baseline gap-1">
         <span class="text-[clamp(1.5rem,4vw,2rem)] font-extrabold text-gray-900"
           >{{ product().priceWithIva | number: '1.2-2' }} €</span
         >
         <span class="text-sm font-medium text-gray-500"
-          >/ {{ 'products.unit-type.' + product().unitType | translate }}</span
+          >/ {{ 'products.unit-type.' + unitType | translate }}</span
         >
       </div>
 
       <!-- Price per unit badge -->
-      <mat-chip
-        [attr.aria-label]="
-          `products.unit.${product().unitType}` | translate: { value: product().unitBase }
-        ">
-        <mat-icon matChipAvatar aria-hidden="true">info</mat-icon>
-        {{ 'products.unit.' + product().unitType | translate: { value: product().unitBase } }}
-      </mat-chip>
+      <eco-store-unit-chip [unitType]="unitType" [unitBase]="unitBase" />
     </div>
   </mat-card-content>
 

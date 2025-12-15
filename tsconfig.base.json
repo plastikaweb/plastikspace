@@ -197,7 +197,8 @@
       "@plastik/shared/pagination/ui": ["libs/shared/pagination/ui/src/index.ts"],
       "@plastik/shared/pagination/util": ["libs/shared/pagination/util/src/index.ts"],
       "@plastik/core/paginator": ["libs/core/paginator/src/index.ts"],
-      "@plastik/shared/sort-selector": ["libs/shared/sort-selector/src/index.ts"]
+      "@plastik/shared/sort-selector": ["libs/shared/sort-selector/src/index.ts"],
+      "@plastik/eco-store/shared/utils": ["libs/eco-store/shared/utils/src/index.ts"]
     }
   },
   "angularCompilerOptions": {
