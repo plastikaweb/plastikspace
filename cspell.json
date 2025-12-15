@@ -1,12 +1,7 @@
 {
   "version": "0.2",
   "language": "ca, es, en",
-  "dictionaries": [
-    "cpp",
-    "csharp",
-    "dotnet",
-    "typescript"
-  ],
+  "dictionaries": ["cpp", "csharp", "dotnet", "typescript"],
   "ignorePaths": [
     "node_modules/**/*",
     "dist/**/*",
