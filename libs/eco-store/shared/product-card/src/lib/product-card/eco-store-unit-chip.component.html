@@ -1,0 +1,7 @@
+@let humanizedUnit = unitBase() | humanizeUnit: unitType();
+@let finalLabel =
+  label() || (`products.unit.${unitType()}` | translate: { value: humanizedUnit || unitBase() });
+<mat-chip [attr.aria-label]="finalLabel">
+  <mat-icon matChipAvatar aria-hidden="true">{{ iconName() }}</mat-icon>
+  {{ finalLabel }}
+</mat-chip>

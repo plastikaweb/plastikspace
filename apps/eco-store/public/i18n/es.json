@@ -25,6 +25,9 @@
     "view-cart": "Ver carrito",
     "profile": "Perfil"
   },
+  "error": {
+    "image": "Ha habido un error al cargar la imagen"
+  },
   "paginator": {
     "first-page": "Primera página",
     "items-per-page": "Elementos por página",
@@ -73,10 +76,10 @@
       "unit": "Precio por unidad",
       "weight": "Precio por kg",
       "volume": "Precio por L",
-      "unitWithFixedWeight": "La unidad pesa {{value}} kg",
-      "unitWithFixedVolume": "La unidad ocupa {{value}} L",
-      "unitWithVariableWeight": "Precio final según peso",
-      "unitWithVariableVolume": "Precio final según volumen"
+      "unitWithFixedWeight": "Pesa {{value}} kg",
+      "unitWithFixedVolume": "Ocupa {{value}} L",
+      "unitWithVariableWeight": "Peso variable",
+      "unitWithVariableVolume": "Volumen variable"
     },
     "unit-abbreviation": {
       "unit": "ud.",

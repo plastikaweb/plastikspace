@@ -76,10 +76,10 @@
       "unit": "Preu per unitat",
       "weight": "Preu per kg",
       "volume": "Preu per L",
-      "unitWithFixedWeight": "La unitat pesa {{value}} kg",
-      "unitWithFixedVolume": "La unitat ocupa {{value}} L",
-      "unitWithVariableWeight": "Preu final segons pes",
-      "unitWithVariableVolume": "Preu final segons volum"
+      "unitWithFixedWeight": "Pesa {{value}}",
+      "unitWithFixedVolume": "Ocupa {{value}}",
+      "unitWithVariableWeight": "Pes variable",
+      "unitWithVariableVolume": "Volum variable"
     },
     "unit-abbreviation": {
       "unit": "un.",
