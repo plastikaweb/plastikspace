@@ -1,7 +1,21 @@
 {
   "store-title": "Tienda Eco",
+  "page-title": "Tienda Eco - Productos ecológicos y sostenibles",
   "loading": "Cargando datos...",
   "loading-data": "Cargando datos...",
+  "a11y": {
+    "skip-to-content": "Saltar al contenido principal",
+    "loading": "Cargando datos",
+    "main-navigation": "Navegación principal",
+    "user-actions": "Acciones del usuario",
+    "categories-navigation": "Navegación de categorías",
+    "product-categories": "Categorías de productos",
+    "product-quantity": "Cantidad de {{value}}",
+    "product-list": "Lista de productos",
+    "sort-products": "Ordenar productos",
+    "products-count": "{{count}} productos",
+    "category-icon": "{{category}} icono"
+  },
   "menu": {
     "home": "Inicio",
     "store": "Tienda",
@@ -33,6 +47,9 @@
   "products": {
     "all": "Todos los productos",
     "add": "Agregar",
+    "remove": "Eliminar",
+    "decrement": "Disminuir",
+    "increment": "Aumentar",
     "total": "productos",
     "favorite": "Agregar {{value}} a favoritos",
     "filter": {

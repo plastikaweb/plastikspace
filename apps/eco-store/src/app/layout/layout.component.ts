@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, DestroyRef, inject, viewChild } fro
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { appSearchFormConfig } from '@plastik/eco-store/formly';
 import { filter } from 'rxjs';
 import { FooterComponent } from './footer/footer.component';
@@ -20,6 +21,7 @@ import { MenuComponent } from './menu/menu.component';
     FooterComponent,
     MenuComponent,
     MatSidenav,
+    TranslateModule,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

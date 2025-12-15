@@ -1,13 +1,15 @@
 <mat-card
   class="product-card group relative flex h-full w-full flex-col justify-between overflow-hidden transition-all ring-1! ring-neutral-100! duration-200 hover:ring-neutral-200! hover:shadow-2xl!"
-  appearance="raised">
+  appearance="raised"
+  role="article"
+  [attr.aria-label]="product().name">
   <!-- Favorite Button -->
   <button
     matIconButton
     class="favorite-button absolute! top-3 right-3 z-100!"
     [aria-label]="'products.favorite' | translate: { value: product().name }"
     (click)="toggleFavorite.emit(product().id)">
-    <mat-icon>favorite</mat-icon>
+    <mat-icon aria-hidden="true">favorite</mat-icon>
   </button>
 
   <!-- Image -->
@@ -40,20 +42,25 @@
     </h3>
 
     <!-- Price -->
-    <div class="mt-1 flex items-baseline gap-1">
-      <span class="text-2xl font-extrabold text-gray-900"
-        >{{ product().priceWithIva | number: '1.2-2' }} €</span
-      >
-      <span class="text-sm font-medium text-gray-400"
-        >/ {{ 'products.unit-type.' + product().unitType | translate }}</span
-      >
-    </div>
+    <div class="space-y-1">
+      <div class="mt-1 flex items-baseline gap-1">
+        <span class="text-[clamp(1.5rem,4vw,2rem)] font-extrabold text-gray-900"
+          >{{ product().priceWithIva | number: '1.2-2' }} €</span
+        >
+        <span class="text-sm font-medium text-gray-500"
+          >/ {{ 'products.unit-type.' + product().unitType | translate }}</span
+        >
+      </div>
 
-    <!-- Price per unit badge -->
-    <mat-chip>
-      <mat-icon matChipAvatar>info</mat-icon>
-      {{ 'products.unit.' + product().unitType | translate: { value: product().unitBase } }}
-    </mat-chip>
+      <!-- Price per unit badge -->
+      <mat-chip
+        [attr.aria-label]="
+          `products.unit.${product().unitType}` | translate: { value: product().unitBase }
+        ">
+        <mat-icon matChipAvatar aria-hidden="true">info</mat-icon>
+        {{ 'products.unit.' + product().unitType | translate: { value: product().unitBase } }}
+      </mat-chip>
+    </div>
   </mat-card-content>
 
   <!-- Action Button Section -->

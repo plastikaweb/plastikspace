@@ -4,59 +4,62 @@
     type="button"
     class="add-button drop-shadow-none! group-hover:border! group-hover:border-primary-400! group-hover:drop-shadow-sm! transition-all w-full flex items-center justify-center gap-1"
     (click)="increment()">
-    <mat-icon class="scale-120">shopping_basket</mat-icon>
+    <mat-icon class="scale-120" aria-hidden="true">shopping_basket</mat-icon>
     <span>{{ 'products.add' | translate }}</span>
   </button>
 } @else {
   <div
-    class="flex h-14 w-full items-center justify-between rounded-full border border-gray-300 bg-white py-1 pl-1 pr-1 shadow-sm">
+    class="flex h-14 w-full items-center justify-between rounded-full border border-white bg-primary-50 py-1 pl-1 pr-1 shadow-sm"
+    role="group"
+    [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }">
     <button
       matIconButton
       type="button"
       [attr.aria-label]="
-        (quantity() <= minLimit() ? 'products.remove' : 'products.decrement') | translate
+        (quantity() <= minLimit() ? 'products.remove' : 'products.decrement')
+          | translate: { value: product().name }
       "
       [class]="quantity() <= minLimit() ? 'remove-button' : 'decrement-button'"
       (click)="decrement()">
       @if (quantity() <= minLimit()) {
-        <mat-icon>delete_outline</mat-icon>
+        <mat-icon aria-hidden="true">delete_outline</mat-icon>
       } @else {
-        <mat-icon>remove</mat-icon>
+        <mat-icon aria-hidden="true">remove</mat-icon>
       }
     </button>
 
-    <div
+    <label
       class="flex flex-1 items-baseline justify-center not-first-of-type:cursor-text"
-      tabindex="0"
-      (click)="$event.stopPropagation()"
-      (keydown.enter)="$event.stopPropagation()"
-      (keydown.space)="$event.stopPropagation()">
+      [attr.for]="'qty-' + product().id">
       <input
         #qtyInput
         matInput
         readonly
         type="number"
         class="w-fit font-bold text-center no-spinners border-none focus:outline-none cursor-default"
+        [id]="'qty-' + product().id"
         [value]="quantity()"
         [step]="step()"
         [min]="minLimit()"
         [max]="maxLimit()"
+        [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }"
         (change)="onManualInput($event)"
         (keydown.enter)="qtyInput.blur()" />
-      <span class="text-gray-500 text-md">{{
+      <span class="text-gray-500 text-md" aria-hidden="true">{{
         `products.unit-abbreviation.${product().unitType}` | translate
       }}</span>
-    </div>
+    </label>
 
     <button
       matIconButton
       type="button"
       class="increment-button"
       [disabled]="quantity() >= maxLimit()"
-      [attr.aria-label]="'products.increment' | translate"
+      [attr.aria-label]="`${('products.increment' | translate)} ${product().name}`"
+      [attr.aria-disabled]="quantity() >= maxLimit()"
       [class.opacity-50]="quantity() >= maxLimit()"
       (click)="increment()">
-      <mat-icon>add</mat-icon>
+      <mat-icon aria-hidden="true">add</mat-icon>
     </button>
   </div>
 }

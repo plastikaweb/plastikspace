@@ -3,12 +3,12 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListItem, MatNavList } from '@angular/material/list';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
 import { ProductCategory, ProductCategoryGroup } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
-import { map, startWith } from 'rxjs';
+import { filter, map, startWith } from 'rxjs';
 
 @Component({
   selector: 'eco-store-products-sidenav-feature',
@@ -26,10 +26,20 @@ import { map, startWith } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class EcoStoreProductsSidenavFeatureComponent {
+  readonly router = inject(Router);
   readonly translateService = inject(TranslateService);
   readonly categoriesStore = inject(ecoStoreProductCategoriesStore);
   groupedCategories = this.categoriesStore.groupedCategories;
   totalProducts = this.categoriesStore.totalProducts;
+
+  protected readonly currentUrl = toSignal(
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(event => (event as NavigationEnd).urlAfterRedirects),
+      startWith(this.router.url)
+    ),
+    { initialValue: this.router.url }
+  );
 
   //TODO:  add all translations in template in a pipe
   protected readonly lang = toSignal(

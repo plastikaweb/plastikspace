@@ -1,7 +1,7 @@
 @theme {
   /* ============================================
      COLOR SYSTEM
-     Source: eco-store-theme.css
+     Source: fresh-theme.css
      ============================================ */
 
   /* Primary color scale - Tailwind style */
@@ -81,7 +81,7 @@
 
   /* ============================================
      TYPOGRAPHY SYSTEM
-     Font: eco-store-theme.css
+     Source: fresh-theme.css
      ============================================ */
 
   /* Font families - Tailwind 4 syntax */
@@ -182,11 +182,10 @@
 
   /* ============================================
      ELEVATION SYSTEM
-     Fuente: eco-store-theme.css
+     Source: fresh-theme.css
      ============================================ */
 
   --shadow-0: var(--mat-sys-level0);
-  --shadow-01: var(--mat-sys-level01);
   --shadow-1: var(--mat-sys-level1);
   --shadow-2: var(--mat-sys-level2);
   --shadow-3: var(--mat-sys-level3);
@@ -200,7 +199,7 @@
 
   /* ============================================
      SHAPE SYSTEM (Border Radius)
-     Source: eco-store-theme.css
+     Source: fresh-theme.css
      ============================================ */
 
   --radius-none: var(--mat-sys-corner-none);
@@ -218,7 +217,7 @@
 
   /* ============================================
      STATE SYSTEM (Opacity)
-     Fuente: eco-store-theme.css
+     Source: fresh-theme.css
      ============================================ */
 
   --opacity-hover: var(--mat-sys-hover-state-layer-opacity);
@@ -240,6 +239,7 @@
   --breakpoint-sm: 600px;
   --breakpoint-md: 960px;
   --breakpoint-lg: 1280px;
+  --breakpoint-2lg: 1800px;
   --breakpoint-xl: 1920px;
 
   /* ============================================
@@ -254,5 +254,8 @@
   --spacing-2xl: var(--eco-space-2xl);
 
   /* focus ring */
-  --focus-ring-color: var(--secondary-300);
+  --focus-ring-color: var(--secondary-800);
+
+  /* content max width */
+  --content-max-width: 1750px;
 }

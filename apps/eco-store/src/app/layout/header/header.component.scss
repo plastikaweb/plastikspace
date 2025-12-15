@@ -1,17 +1,23 @@
 @use '@angular/material' as mat;
 
 :host {
-  @include mat.toolbar-overrides(
-    (
-      standard-height: 70px,
-      mobile-height: 60px,
-      container-background-color: var(--transparent),
-    )
-  );
+  mat-toolbar {
+    pointer-events: auto; /* Reactivem els clics a la barra */
+    margin: 0 auto;
 
-  .header-icon {
-    height: 36px;
-    width: 36px;
-    font-size: 36px;
+    @include mat.toolbar-overrides(
+      (
+        standard-height: 70px,
+        mobile-height: 60px,
+        title-text-weight: var(--font-weight-bold),
+        title-text-tracking: 0.01rem,
+      )
+    );
+
+    .header-icon {
+      height: 36px;
+      width: 36px;
+      font-size: 36px;
+    }
   }
 }

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ca">
   <head>
     <meta charset="utf-8" />
     <base href="/" />
@@ -22,7 +22,7 @@
       href="/styles.css"
       onload="this.onload=null;this.rel='stylesheet'" />
 
-    <title>eco-store</title>
+    <title>Botiga Eco - Productes ecològics i sostenibles</title>
 
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -31,19 +31,27 @@
 
   <body
     class="mat-typography bg-primary-50 md:bg-linear-to-b/oklch md:from-primary-50 md:from-20% md:to-secondary-50 h-screen w-screen overflow-hidden">
-    <eco-root role="application">
+    <eco-root>
       <div
-        class="flex absolute top-0 right-0 bottom-0 left-0 justify-center items-center pointer-events-none">
+        class="flex absolute top-0 right-0 bottom-0 left-0 justify-center items-center pointer-events-none"
+        role="status"
+        aria-live="polite"
+        id="loading-container">
         <div class="flex flex-col items-center justify-center gap-6 p-12">
           <!-- Main container -->
           <div class="relative flex items-center justify-center w-24 h-24">
             <!-- Ripples -->
-            <div class="absolute inset-0 bg-primary-900 rounded-full opacity-20 ping-slow"></div>
             <div
-              class="absolute inset-0 bg-primary-900 rounded-full opacity-30 animate-pulse"></div>
+              class="absolute inset-0 bg-primary-900 rounded-full opacity-20 ping-slow"
+              aria-hidden="true"></div>
+            <div
+              class="absolute inset-0 bg-primary-900 rounded-full opacity-30 animate-pulse"
+              aria-hidden="true"></div>
 
             <!-- Icon container -->
-            <div class="p-5 rounded-full bg-primary-100 shadow-lg backdrop-blur-sm">
+            <div
+              class="p-5 rounded-full bg-primary-100 shadow-lg backdrop-blur-sm"
+              aria-hidden="true">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="32"
@@ -68,7 +76,8 @@
           <!-- Loading text -->
           <span
             id="static-loading-text"
-            class="text-primary-900 font-bold tracking-[0.2em] text-xs uppercase animate-pulse">
+            class="text-primary-900 font-bold tracking-[0.2em] text-xs uppercase animate-pulse"
+            aria-live="polite">
           </span>
         </div>
       </div>
@@ -83,11 +92,16 @@
 
           const browserLang = navigator.language.split('-')[0];
           const lang = browserLang || 'en';
-          const el = document.getElementById('static-loading-text');
+          const text = document.getElementById('static-loading-text');
+          const container = document.getElementById('loading-container');
           const translation = translations[lang];
 
-          if (el && translation) {
-            el.innerText = translation;
+          if (text && translation) {
+            text.innerText = translation;
+          }
+
+          if (container && translation) {
+            container.setAttribute('aria-label', translation);
           }
         })();
       </script>

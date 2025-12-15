@@ -1,46 +1,53 @@
-<mat-card
-  appearance="outlined"
-  class="border! border-gray-200! max-h-[calc(100vh-200px)] h-fit overflow-hidden pr-1 py-4">
+<mat-card appearance="outlined" class="max-h-[calc(100vh-200px)] h-fit overflow-hidden pr-1">
   <mat-card-content class="overflow-y-auto">
-    <mat-nav-list role="list" class="pt-0!">
-      <!-- All Categories Option -->
-      <mat-list-item
-        role="listitem"
-        routerLink="/botiga"
-        routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: true }">
-        <div class="flex items-center gap-2 w-full">
-          <mat-icon class="text-gray-400 scale-90">apps</mat-icon>
-          <span matListItemTitle class="text-sm font-semibold text-gray-900">{{
-            'product-categories.all' | translate
-          }}</span>
-          <span matListItemLine class="text-xs text-gray-400 ml-2">({{ totalProducts() }})</span>
-        </div>
-      </mat-list-item>
+    <nav [attr.aria-label]="'a11y.product-categories' | translate">
+      <mat-nav-list role="list" class="pt-0!">
+        <!-- All Categories Option -->
+        <mat-list-item
+          role="listitem"
+          routerLink="/botiga"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [attr.aria-current]="this.currentUrl() === '/botiga' ? 'page' : null">
+          <div class="flex items-center gap-2 w-full">
+            <mat-icon aria-hidden="true" class="text-neutral-700 scale-90">apps</mat-icon>
+            <span matListItemTitle class="text-sm font-semibold text-neutral-700">{{
+              'products.all' | translate
+            }}</span>
+            <span matListItemLine class="text-xs text-neutral-700 ml-2"
+              >({{ totalProducts() }})</span
+            >
+          </div>
+        </mat-list-item>
 
-      <!-- Grouped Categories -->
-      @for (group of groupedCategories(); track group.group.id) {
-        <div class="mt-4 mb-1 px-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest">
-          {{ getGroupName(group.group) }}
-        </div>
+        <!-- Grouped Categories -->
+        @for (group of groupedCategories(); track group.group.id) {
+          <div
+            class="mt-4 mb-1 px-4 text-[11px] font-bold text-tertiary-600 uppercase tracking-widest">
+            {{ getGroupName(group.group) }}
+          </div>
 
-        @for (category of group.categories; track category.id) {
-          <mat-list-item
-            role="listitem"
-            routerLinkActive="active"
-            [routerLink]="['/', 'botiga', category.normalizedName]">
-            <div class="flex items-center gap-2 w-full">
-              <mat-icon class="scale-90" [style.color]="category.color">{{
-                category.icon
-              }}</mat-icon>
-              <span matListItemTitle class="text-sm truncate flex-1">{{
-                getCategoryName(category)
-              }}</span>
-              <span matListItemLine class="text-xs ml-2">({{ category.productCount }})</span>
-            </div>
-          </mat-list-item>
+          @for (category of group.categories; track category.id) {
+            <mat-list-item
+              role="listitem"
+              routerLinkActive="active"
+              [routerLink]="['/', 'botiga', category.normalizedName]"
+              [attr.aria-current]="
+                this.currentUrl().startsWith(`/botiga/${category.normalizedName}`) ? 'page' : null
+              ">
+              <div class="flex items-center gap-2 w-full">
+                <mat-icon aria-hidden="true" class="scale-90" [style.color]="category.color">{{
+                  category.icon
+                }}</mat-icon>
+                <span matListItemTitle class="text-sm truncate flex-1">{{
+                  getCategoryName(category)
+                }}</span>
+                <span matListItemLine class="text-xs ml-2">({{ category.productCount }})</span>
+              </div>
+            </mat-list-item>
+          }
         }
-      }
-    </mat-nav-list>
+      </mat-nav-list>
+    </nav>
   </mat-card-content>
 </mat-card>

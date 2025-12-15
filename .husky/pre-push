@@ -16,4 +16,25 @@ if ! yarn nx affected --target=build --configuration=production --parallel --max
   exit 1
 fi
 
+CHANGED_FILES=$(git diff --name-only @{upstream}...HEAD 2>/dev/null || git diff --name-only HEAD~1...HEAD)
+if echo "$CHANGED_FILES" | grep -Eq '^(apps/eco-store/|libs/eco-store/)'; then
+  echo "🏁 Running eco-store:a11y..."
+  if ! yarn eco-store:a11y; then
+    echo "❌ eco-store:a11y failed! Push aborted."
+    exit 1
+  fi
+else
+  echo "ℹ️ Skipping eco-store:a11y (no eco-store changes)"
+fi
+
+if echo "$CHANGED_FILES" | grep -Eq '^(apps/nasa-images/|libs/nasa-images/)'; then
+  echo "🏁 Running nasa-images:a11y..."
+  if ! yarn nasa-images:a11y; then
+    echo "❌ nasa-images:a11y failed! Push aborted."
+    exit 1
+  fi
+else
+  echo "ℹ️ Skipping nasa-images:a11y (no nasa-images changes)"
+fi
+
 echo "✅ All checks passed. Pushing..."

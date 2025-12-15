@@ -8,6 +8,7 @@
     @include mat.card-overrides(
       (
         elevated-container-elevation: var(--mat-sys-level01),
+        elevated-container-shape: var(--mat-sys-corner-small),
       )
     );
 

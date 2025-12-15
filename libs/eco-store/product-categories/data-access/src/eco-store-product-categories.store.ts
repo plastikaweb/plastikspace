@@ -114,15 +114,24 @@ export const ecoStoreProductCategoriesStore = signalStore(
     const translateService = inject(TranslateService);
 
     return {
-      getCategoryTitleBySlug(slug: string | null, defaultText: string): string {
-        if (!slug) {
-          return translateService.instant(defaultText);
-        }
+      getCategoryBySlug(
+        slug: string | null,
+        defaultText: string
+      ): Pick<ProductCategory, 'icon'> & {
+        name: string;
+      } {
         const category = store.findCategoryBySlug(slug);
-        if (!category) {
-          return translateService.instant(defaultText);
+
+        if (!slug || !category) {
+          return {
+            name: translateService.instant(defaultText),
+            icon: 'apps',
+          };
         }
-        return store.getLocalizedCategoryName(category);
+        return {
+          name: store.getLocalizedCategoryName(category),
+          icon: category.icon,
+        };
       },
     };
   }),

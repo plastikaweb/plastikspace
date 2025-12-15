@@ -6,6 +6,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import LayoutComponent from './layout.component';
 import { MenuComponent } from './menu/menu.component';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -30,5 +31,11 @@ describe('LayoutComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
   });
 });
