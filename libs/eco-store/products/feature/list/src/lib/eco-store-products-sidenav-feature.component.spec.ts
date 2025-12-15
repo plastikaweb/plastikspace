@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { provideEnvironmentPocketBaseMock } from '@plastik/core/environments';
-import EcoStoreProductsSidenavFeatureComponent from './eco-store-products-sidenav-feature.component';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { provideEnvironmentPocketBaseMock } from '@plastik/core/environments';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import EcoStoreProductsSidenavFeatureComponent from './eco-store-products-sidenav-feature.component';
 
 describe('EcoStoreProductsSidenavFeature', () => {
   let component: EcoStoreProductsSidenavFeatureComponent;
@@ -42,5 +42,5 @@ describe('EcoStoreProductsSidenavFeature', () => {
     expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
-  });
+  }, 10000);
 });

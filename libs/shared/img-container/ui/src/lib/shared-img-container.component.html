@@ -16,11 +16,25 @@
 
 @if (src) {
   @if (width && height) {
+    @if (lcpImage()) {
+      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>
+    } @else {
+      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>
+    }
+  } @else {
+    @if (lcpImage()) {
+      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>
+    } @else {
+      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>
+    }
+  }
+
+  <ng-template #fixedImage let-priority="priority">
     <img
       class="object-cover my-sub transition-opacity duration-300"
       [class.opacity-0]="isLoading()"
       [class.opacity-100]="!isLoading() && !hasError()"
-      [priority]="lcpImage()"
+      [priority]="priority"
       [ngSrc]="src"
       [width]="width"
       [height]="height"
@@ -28,16 +42,18 @@
       [loaderParams]="{ width, height, quality: quality() }"
       (load)="onImageLoad()"
       (error)="onImageError()" />
-  } @else {
+  </ng-template>
+
+  <ng-template #fillImage let-priority="priority">
     <img
       fill
       class="object-cover w-full max-h-auto my-sub transition-opacity duration-300"
       [class.opacity-0]="isLoading()"
       [class.opacity-100]="!isLoading() && !hasError()"
-      [priority]="lcpImage()"
+      [priority]="priority"
       [ngSrc]="src"
       [alt]="title()"
       (load)="onImageLoad()"
       (error)="onImageError()" />
-  }
+  </ng-template>
 }
