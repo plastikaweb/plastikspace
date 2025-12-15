@@ -116,7 +116,7 @@
     padding-right: var(--spacing-md);
     width: 100%;
 
-    @media (min-width: theme('screens.2lg')) {
+    @media (min-width: theme('screens.2xl')) {
       max-width: var(--content-max-width, 1750px);
     }
   }
