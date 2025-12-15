@@ -3,6 +3,8 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import EcoStoreProductsFeature from './eco-store-products-feature.component';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 describe('EcoStoreProductsFeature', () => {
   let component: EcoStoreProductsFeature;
@@ -15,6 +17,15 @@ describe('EcoStoreProductsFeature', () => {
         provideTranslateService(),
         provideEnvironmentPocketBaseTranslationMock(),
         provideRouter([]),
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: {
+            collection: () => ({
+              getList: () => Promise.resolve({ items: [], totalItems: 0 }),
+              getFullList: () => Promise.resolve([]),
+            }),
+          },
+        },
       ],
     }).compileComponents();
 
@@ -25,5 +36,11 @@ describe('EcoStoreProductsFeature', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
   });
 });

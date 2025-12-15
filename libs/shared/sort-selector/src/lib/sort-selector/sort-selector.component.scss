@@ -1,9 +1,9 @@
 ::ng-deep .sort-selector {
   .mat-mdc-menu-item {
     &.active {
-      --mat-menu-item-label-text-color: var(--color-primary-700);
-      --mat-menu-item-icon-color: var(--color-primary-700);
-      background-color: var(--secondary-200);
+      --mat-menu-item-label-text-color: var(--secondary-700);
+      --mat-menu-item-icon-color: var(--secondary-700);
+      background-color: var(--secondary-100);
     }
   }
 }

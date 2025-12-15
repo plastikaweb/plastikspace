@@ -272,50 +272,12 @@ html {
   --mat-sys-pressed-state-layer-opacity: 0.12;
 }
 
-/* Additional custom properties for eco theme enhancements */
+/* Spacing scale for organic layouts - used by tailwind-theme.css */
 html {
-  /* Accent colors for special elements */
-  --eco-accent-earth: #8b6f47;
-  --eco-accent-leaf: #7cb342;
-  --eco-accent-sun: #ffb84d;
-  --eco-accent-water: #4fc3f7;
-
-  /* Organic gradient combinations */
-  --eco-gradient-nature: linear-gradient(
-    135deg,
-    var(--mat-sys-primary) 0%,
-    var(--mat-sys-tertiary) 100%
-  );
-  --eco-gradient-sunrise: linear-gradient(
-    135deg,
-    var(--mat-sys-secondary) 0%,
-    var(--mat-sys-primary) 100%
-  );
-  --eco-gradient-earth: linear-gradient(
-    135deg,
-    var(--eco-accent-earth) 0%,
-    var(--mat-sys-primary) 100%
-  );
-
-  /* Spacing scale for organic layouts */
   --eco-space-xs: 0.25rem;
   --eco-space-sm: 0.5rem;
   --eco-space-md: 1rem;
   --eco-space-lg: 1.5rem;
   --eco-space-xl: 2rem;
   --eco-space-2xl: 3rem;
-
-  /* Transition timing for natural animations */
-  --eco-transition-quick: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --eco-transition-smooth: 250ms cubic-bezier(0.4, 0, 0.2, 1);
-  --eco-transition-gentle: 350ms cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Optional: Dark mode optimizations for eco theme */
-@media (prefers-color-scheme: dark) {
-  html {
-    /* Warmer dark mode for organic feel */
-    --mat-sys-background: #121311;
-    --mat-sys-surface: #1a1a18;
-  }
 }

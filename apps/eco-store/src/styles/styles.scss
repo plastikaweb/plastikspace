@@ -1,5 +1,5 @@
 @use '@angular/material' as mat;
-@use 'fresh-theme';
+@use 'two-theme';
 @use 'color-palette';
 @use 'tailwind-theme';
 @use 'tailwindcss';
@@ -17,6 +17,12 @@
     font-weight: var(--font-weight-regular);
     font-variation-settings: 'wdth' 100;
     font-variant-numeric: tabular-nums;
+
+    scroll-padding-top: 120px;
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
   }
 
   *,
@@ -25,37 +31,51 @@
     box-sizing: border-box;
   }
 
-  body {
-    color: var(--color-on-background);
+  /* Focus ring -> https://css-tip.com/universal-focus/ */
+  html:after {
+    content: '';
+    position: fixed;
+    position-anchor: --focus;
+    inset: anchor(inside, 0);
+    outline: 2px solid var(--error-500);
+    outline-offset: 3px;
+    border-radius: 2px;
+    pointer-events: none;
+    transition: 0.3s;
+    z-index: 1000;
   }
 
-  h1,
-  .h1 {
+  *:focus-visible {
+    outline: none;
+    anchor-name: --focus;
+  }
+
+  body {
+    color: var(--color-on-background);
+    scrollbar-color: var(--primary-200) var(--tertiary-100);
+  }
+
+  h1 {
     font-size: var(--font-size-2xl);
   }
 
-  h2,
-  .h2 {
+  h2 {
     font-size: var(--font-size-xl);
   }
 
-  h3,
-  .h3 {
+  h3 {
     font-size: var(--font-size-lg);
   }
 
-  h4,
-  .h4 {
+  h4 {
     font-size: var(--font-size-md);
   }
 
-  h5,
-  .h5 {
+  h5 {
     font-size: var(--font-size-sm);
   }
 
-  h6,
-  .h6 {
+  h6 {
     font-size: var(--font-size-xs);
   }
 
@@ -72,18 +92,6 @@
   button {
     pointer-events: auto;
   }
-
-  :focus-visible {
-    outline: 2px dotted var(--focus-ring-color) !important ;
-    outline-offset: -5px !important;
-  }
-}
-
-@layer utilities {
-  .no-spinners::-webkit-outer-spin-button,
-  .no-spinners::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
 }
 
 @layer components {
@@ -98,4 +106,18 @@
       label-text-size: 0.8rem,
     )
   );
+}
+
+@layer utilities {
+  .content-container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+    width: 100%;
+
+    @media (min-width: theme('screens.2lg')) {
+      max-width: var(--content-max-width, 1750px);
+    }
+  }
 }

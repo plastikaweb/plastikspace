@@ -1,6 +1,6 @@
 <mat-form-field class="w-full" subscriptSizing="dynamic" floatLabel="always">
   <mat-label class="sr-only">{{ props.label }}</mat-label>
-  <mat-icon matPreffix class="mr-2">search</mat-icon>
+  <mat-icon matPrefix class="mr-2" aria-hidden="true">search</mat-icon>
   <input
     matInput
     type="text"
@@ -22,7 +22,7 @@
       [attr.aria-label]="'form.search' | translate"
       [disabled]="isDisabled()"
       (click)="triggerSearch($event)">
-      <mat-icon>search</mat-icon>
+      <mat-icon aria-hidden="true">search</mat-icon>
     </button>
   }
   @if (props.resetSearch && formControl.value) {
@@ -34,7 +34,7 @@
       [attr.aria-label]="'form.clear' | translate"
       [disabled]="isDisabled()"
       (click)="resetSearch()">
-      <mat-icon>clear</mat-icon>
+      <mat-icon aria-hidden="true">clear</mat-icon>
     </button>
   }
 </mat-form-field>

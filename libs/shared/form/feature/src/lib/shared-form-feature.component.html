@@ -12,6 +12,10 @@
     [model]="model()"
     (modelChange)="onModelChange($event)"></formly-form>
 
+  @if (!config().submitAvailable) {
+    <button type="submit" class="sr-only">{{ config().label || 'Submit' }}</button>
+  }
+
   <!-- buttons -->
   @if (config().submitAvailable) {
     <button

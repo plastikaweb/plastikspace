@@ -2,10 +2,10 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { SharedFormFeatureComponent } from '@plastik/shared/form';
-import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'eco-header',

@@ -1,9 +1,11 @@
-<mat-toolbar class="py-2">
-  <div
-    class="flex gap-4 w-full md:gap-12 rounded-full shadow-sm shadow-primary-300 px-4 py-2 flex-row items-center bg-linear-to-r from-primary-100 via-white to-primary-100">
-    <a routerLink="/" class="flex items-center gap-2 font-semibold tracking-wide text-primary-500">
-      <mat-icon class="header-icon">eco</mat-icon>
-      <span>{{ 'store-title' | translate }}</span>
+<mat-toolbar class="shadow-sm" role="banner">
+  <div class="mx-auto content-container flex gap-4 md:gap-12 flex-row items-center">
+    <a
+      routerLink="/"
+      class="flex items-center gap-2 font-semibold tracking-wide text-primary-500"
+      [attr.aria-label]="'store-title' | translate">
+      <mat-icon class="header-icon" aria-hidden="true">eco</mat-icon>
+      <h1>{{ 'store-title' | translate }}</h1>
     </a>
 
     <div class="flex h-full items-center">

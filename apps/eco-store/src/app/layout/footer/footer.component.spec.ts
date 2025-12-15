@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FooterComponent } from './footer.component';
+import { axe, toHaveNoViolations } from 'jest-axe';
 
 describe('FooterComponent', () => {
   let component: FooterComponent;
@@ -17,5 +18,11 @@ describe('FooterComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have no accessibility violations', async () => {
+    expect.extend(toHaveNoViolations);
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
   });
 });

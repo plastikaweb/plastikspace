@@ -1,7 +1,21 @@
 {
   "store-title": "Botiga Eco",
+  "page-title": "Botiga Eco - Productes ecològics i sostenibles",
   "loading": "Carregant dades...",
   "loading-data": "Carregant dades...",
+  "a11y": {
+    "skip-to-content": "Saltar al contingut principal",
+    "loading": "Carregant dades",
+    "main-navigation": "Navegació principal",
+    "user-actions": "Accions de l'usuari",
+    "categories-navigation": "Navegació de categories",
+    "product-categories": "Categories de productes",
+    "product-quantity": "Quantitat de {{value}}",
+    "product-list": "Llista de productes",
+    "sort-products": "Ordenar productes",
+    "products-count": "{{count}} productes",
+    "category-icon": "Icona de la categoria {{category}}"
+  },
   "menu": {
     "home": "Inici",
     "store": "Botiga",
@@ -36,6 +50,9 @@
   "products": {
     "all": "Tots els productes",
     "add": "Afegir",
+    "remove": "Eliminar",
+    "decrement": "Disminuir",
+    "increment": "Augmentar",
     "total": "productes trobats",
     "favorite": "Afegir {{value}} a favorits",
     "filter": {

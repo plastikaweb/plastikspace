@@ -1,0 +1,95 @@
+{
+  "store-title": "Eco Store",
+  "page-title": "Eco Store - Ecological and sustainable products",
+  "loading": "Loading data...",
+  "loading-data": "Loading data...",
+  "a11y": {
+    "skip-to-content": "Skip to main content",
+    "loading": "Loading data",
+    "main-navigation": "Main navigation",
+    "user-actions": "User actions",
+    "categories-navigation": "Categories navigation",
+    "product-categories": "Product categories",
+    "product-quantity": "Quantity of {{value}}",
+    "product-list": "Product list",
+    "sort-products": "Sort products",
+    "products-count": "{{count}} products",
+    "category-icon": "{{category}} icon"
+  },
+  "menu": {
+    "home": "Home",
+    "store": "Store",
+    "about": "About Us",
+    "contact": "Contact",
+    "view-favorites": "View favorites",
+    "view-cart": "View cart",
+    "profile": "Profile"
+  },
+  "paginator": {
+    "first-page": "First page",
+    "items-per-page": "Items per page",
+    "last-page": "Last page",
+    "next-page": "Next page",
+    "no-items": "{{length}} items",
+    "previous-page": "Previous page",
+    "range": "{{start}} - {{end}} of {{total}}",
+    "range-label": "of"
+  },
+  "product-categories": {
+    "all": "All categories",
+    "filter": {
+      "sort": "Sort",
+      "ecologic": "Ecological",
+      "total": "products"
+    },
+    "add": "Add"
+  },
+  "products": {
+    "all": "All products",
+    "add": "Add",
+    "remove": "Remove",
+    "decrement": "Decrease",
+    "increment": "Increase",
+    "total": "products found",
+    "favorite": "Add {{value}} to favorites",
+    "filter": {
+      "sort": "Sort",
+      "sort.relevance": "Most rated",
+      "sort.priceWithIva-asc": "Price ascending",
+      "sort.priceWithIva-desc": "Price descending",
+      "sort.updated-asc": "Oldest",
+      "sort.updated-desc": "Most recent"
+    },
+    "unit-type": {
+      "unit": "Unit",
+      "weight": "Weight",
+      "volume": "Volume",
+      "unitWithFixedWeight": "Unit",
+      "unitWithFixedVolume": "Unit",
+      "unitWithVariableWeight": "Kg",
+      "unitWithVariableVolume": "L"
+    },
+    "unit": {
+      "unit": "Price per unit",
+      "weight": "Price per kg",
+      "volume": "Price per L",
+      "unitWithFixedWeight": "The unit weighs {{value}} kg",
+      "unitWithFixedVolume": "The unit occupies {{value}} L",
+      "unitWithVariableWeight": "Final price according to weight",
+      "unitWithVariableVolume": "Final price according to volume"
+    },
+    "unit-abbreviation": {
+      "unit": "unit",
+      "weight": "kg",
+      "volume": "L",
+      "unitWithFixedWeight": "unit",
+      "unitWithFixedVolume": "unit",
+      "unitWithVariableWeight": "kg",
+      "unitWithVariableVolume": "L"
+    }
+  },
+  "search": {
+    "placeholder": "Search products or categories",
+    "label": "Search products or categories"
+  }
+}

@@ -1,4 +1,4 @@
-name: Nasa Images pa11y
+name: Eco Store pa11y
 
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
@@ -14,7 +14,6 @@ on:
 permissions:
   actions: read
   contents: read
-  pull-requests: write
 
 jobs:
   pa11y:
@@ -28,25 +27,16 @@ jobs:
         run: yarn install --immutable --network-timeout 1000000
 
       - name: Build
-        run: yarn nasa-images:build
+        run: yarn eco-store:build
 
       - name: Run pa11y-ci
-        run: yarn nasa-images:a11y
+        run: yarn eco-store:a11y
 
       - name: Read pa11y_output file.
         id: pa11y_output
         uses: juliangruber/read-file-action@v1
         with:
-          path: ./apps/nasa-images/.pa11y-report.json
-
-      - name: Comment on pull request.
-        if: github.event_name == 'pull_request'
-        uses: thollander/actions-comment-pull-request@v2.5.0
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: '<details><summary>Pa11y testing results</summary>
-            ${{ steps.pa11y_output.outputs.content }}
-            </details>'
+          path: ./apps/eco-store/.pa11y-report.json
 
       - name: Check for pa11y failures.
         if: contains(steps.pa11y_output.outputs.content, 'errno 2')

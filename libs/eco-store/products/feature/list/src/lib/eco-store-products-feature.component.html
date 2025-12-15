@@ -1,23 +1,24 @@
-<div class="p-6 md:p-10">
+<div class="px-4 py-8" role="region">
   <!-- Header Section -->
-  <header class="mb-8 flex flex-col gap-4 md:flex-row items-center justify-between">
-    <div class="flex items-center justify-between w-full">
-      <h2 class="text-3xl font-bold text-primary-700 tracking-tight flex items-center gap-sm">
-        <span>{{ pageTitle() }}</span>
-        <span class="text-lg font-medium text-gray-400">({{ store.count() }})</span>
-      </h2>
+  <div class="flex items-center justify-between w-full mb-8">
+    <h2 class="text-3xl font-bold text-tertiary-700 tracking-tight flex items-center gap-md">
+      <mat-icon class="scale-150!" aria-hidden="true">
+        {{ category()?.icon }}
+      </mat-icon>
+      <span>{{ category()?.name }}</span>
+      <span class="text-lg font-medium text-gray-400">({{ store.count() }})</span>
+    </h2>
 
-      <plastik-sort-selector
-        [options]="store.sortOptions()"
-        [currentSort]="store.sort()"
-        [translationPrefix]="'products.filter.sort'"
-        (sortChange)="sortProducts($event)"></plastik-sort-selector>
-    </div>
-  </header>
+    <plastik-sort-selector
+      [options]="store.sortOptions()"
+      [currentSort]="store.sort()"
+      [translationPrefix]="'products.filter.sort'"
+      (sortChange)="sortProducts($event)"></plastik-sort-selector>
+  </div>
 
   <!-- Products Grid -->
   <!-- first 7 items in high screens are marked for LCP -->
-  <div class="products-grid">
+  <section class="products-grid" [attr.aria-label]="'a11y.product-list' | translate">
     @for (item of store.productsWithCategoryName(); track item.id; let i = $index) {
       <eco-store-product-card
         [product]="item"
@@ -25,7 +26,7 @@
         (addToCart)="addToCart($event)"
         (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
     }
-  </div>
+  </section>
 
   <plastik-pagination
     class="mt-6"

@@ -38,6 +38,8 @@ export function appSearchFormConfig(): FormConfig<{ query: string }> {
     getSubmitFormConfig: () => ({
       submitAvailable: false,
       disableOnSubmit: false,
+      label: 'search.submit',
+      buttonStyle: 'sr-only',
     }),
   };
 }
