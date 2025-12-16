@@ -14,11 +14,11 @@
   },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-      "editor.formatOnSave": true,
-      "editor.codeActionsOnSave": {
-        "source.organizeImports": "never",
-        "source.fixAll.eslint": "never"
-      }
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "never",
+      "source.fixAll.eslint": "never"
+    }
   },
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -46,6 +46,7 @@
   "angular.enable-strict-mode-prompt": false,
   "nxConsole.nxWorkspacePath": "./",
   "nxConsole.enableCodeLens": true,
+  "nxConsole.enableTaskExecutionDryRunOnChange": false,
   "nxConsole.projectViewingStyle": "automatic",
   "angular-schematics.schematicsDefaultOptions": {
     "angular-*": {
@@ -64,7 +65,7 @@
     "cache": true,
     "cacheLocation": ".eslintcache"
   },
-  "eslint.run": "onType",
+  "eslint.run": "onSave",
   "markdownlint.configFile": "./.markdownlint.json",
   "markdownlint.lintWorkspaceGlobs": [
     "**/*.md",
@@ -94,5 +95,13 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit",
     "source.fixAll.eslint": "explicit"
+  },
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/tmp/**": true,
+    "**/.nx/cache/**": true
   }
 }

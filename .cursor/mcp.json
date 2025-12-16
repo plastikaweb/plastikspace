@@ -3,6 +3,10 @@
     "nx-mcp": {
       "url": "http://localhost:9497/sse"
     },
+    "angular-cli": {
+      "command": "npx",
+      "args": ["-y", "@angular/cli", "mcp"]
+    },
     "console-ninja": {
       "command": "node",
       "args": ["~/.console-ninja/mcp/"]

@@ -12,8 +12,9 @@ export class PocketbasePaginationNavigationDirective extends PaginationNavigatio
   pageSize = input.required<number>();
 
   // Optional input for queryParamsHandling with query-params-handling alias
-  override queryParamsHandling = input<QueryParamsHandling>('merge', {
+  override queryParamsHandling = input<QueryParamsHandling, QueryParamsHandling | ''>('merge', {
     alias: 'plastikPocketbasePaginationNavigation',
+    transform: (value: QueryParamsHandling | '') => (value === '' ? 'merge' : value),
   });
 
   // Mandatory implementation.

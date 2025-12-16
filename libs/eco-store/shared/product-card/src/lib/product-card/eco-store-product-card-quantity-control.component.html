@@ -9,7 +9,7 @@
   </button>
 } @else {
   <div
-    class="flex h-14 w-full items-center justify-between rounded-full border border-white bg-primary-50 py-1 pl-1 pr-1 shadow-sm"
+    class="flex h-14 w-full items-center justify-between border border-primary-200 rounded-2xl bg-primary-50 py-1 pl-1 pr-1"
     role="group"
     [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }">
     <button
@@ -36,7 +36,7 @@
         matInput
         readonly
         type="number"
-        class="w-fit font-bold text-center no-spinners border-none focus:outline-none cursor-default"
+        class="w-fit font-bold text-neutral-700 text-end no-spinners border-none focus:outline-none cursor-default"
         [id]="'qty-' + product().id"
         [value]="quantity()"
         [step]="step()"
@@ -45,7 +45,7 @@
         [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }"
         (change)="onManualInput($event)"
         (keydown.enter)="qtyInput.blur()" />
-      <span class="text-gray-500 text-md" aria-hidden="true">{{
+      <span class="text-neutral-600 text-md" aria-hidden="true">{{
         `products.unit-abbreviation.${product().unitType}` | translate
       }}</span>
     </label>

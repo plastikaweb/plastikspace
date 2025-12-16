@@ -13,6 +13,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
       [showFirstLastButtons]="showFirstLastButtons()"
       (page)="pageChange.emit($event)" />
   `,
+  styleUrl: './pagination.component.scss',
   host: {
     class: 'block',
   },
