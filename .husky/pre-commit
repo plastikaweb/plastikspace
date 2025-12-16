@@ -27,7 +27,7 @@ fi
 
 # Run checks
 if yarn branch:lint \
-  && yarn nx format:write \
+  && yarn nx format:write --uncommitted \
   && yarn nx affected --target=lint --parallel --max-parallel=3 --cache \
   && markdownlint *.md; then
 
