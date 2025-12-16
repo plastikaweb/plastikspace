@@ -29,6 +29,7 @@
 
           @for (category of group.categories; track category.id) {
             <mat-list-item
+              class="my-1"
               role="listitem"
               routerLinkActive="active"
               [routerLink]="['/', 'botiga', category.normalizedName]"

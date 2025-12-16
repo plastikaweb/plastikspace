@@ -23,6 +23,7 @@ node_modules
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/mcp.json
 
 # misc
 /.sass-cache
@@ -66,15 +67,8 @@ ui-debug.log
 firebase-export*
 .secret.local
 
-# windsurf rules
-.windsurfrules
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
-
-# local utils
-
+# github utils
 issues.js
-mvp_github_issues.md
 
 # pocketbase files
 apps/eco-store/pocketbase

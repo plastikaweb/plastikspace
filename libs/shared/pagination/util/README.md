@@ -138,9 +138,10 @@ Then use it in your template:
 
 #### Inputs
 
-| Input      | Type     | Required | Description                                   |
-| ---------- | -------- | -------- | --------------------------------------------- |
-| `pageSize` | `number` | Yes      | Current page size (used for change detection) |
+| Input                 | Type                  | Required | Description                                                                                                                               |
+| --------------------- | --------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `pageSize`            | `number`              | Yes      | Current page size (used for change detection)                                                                                             |
+| `queryParamsHandling` | `QueryParamsHandling` | No       | Handling of query parameters updates. Defaults to `'merge'`. Can be used as a boolean attribute (empty string) to enable default merging. |
 
 #### Return Type
 

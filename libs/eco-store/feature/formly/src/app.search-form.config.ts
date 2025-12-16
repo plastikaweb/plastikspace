@@ -7,7 +7,7 @@ import { FormConfig } from '@plastik/core/entities';
 export function appSearchFormConfig(): FormConfig<{ query: string }> {
   const searchConfig = [
     {
-      fieldGroupClassName: 'w-full rounded-input--lg',
+      fieldGroupClassName: 'w-full input--eco',
       fieldGroup: [
         {
           key: 'query',
