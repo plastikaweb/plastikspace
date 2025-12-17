@@ -199,7 +199,8 @@
       "@plastik/core/paginator": ["libs/core/paginator/src/index.ts"],
       "@plastik/shared/sort-selector": ["libs/shared/sort-selector/src/index.ts"],
       "@plastik/eco-store/shared/utils": ["libs/eco-store/shared/utils/src/index.ts"],
-      "@plastik/eco-store/shared/tokens": ["libs/eco-store/shared/tokens/src/index.ts"]
+      "@plastik/eco-store/shared/tokens": ["libs/eco-store/shared/tokens/src/index.ts"],
+      "@plastik/eco-store/product": ["libs/eco-store/products/feature/detail/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

@@ -52,5 +52,6 @@ export interface EcoStoreProductFilter {
 export type EcoStoreProductWithCategoryName = EcoStoreProduct & {
   name: string; // * Localized product name is processed by store
   categoryName: string;
+  categorySlug: string;
   categoryColor: string;
 };

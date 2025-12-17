@@ -32,6 +32,7 @@ describe('EcoStoreProductCardComponent', () => {
     updated: new Date('2023-01-01'),
     categoryName: 'Test Category',
     categoryColor: '#000000',
+    categorySlug: 'test-category',
   };
 
   beforeEach(async () => {

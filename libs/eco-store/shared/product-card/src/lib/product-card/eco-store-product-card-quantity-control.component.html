@@ -3,7 +3,7 @@
     matButton="filled"
     type="button"
     class="add-button drop-shadow-none! group-hover:border! group-hover:border-primary-400! group-hover:drop-shadow-sm! transition-all w-full flex items-center justify-center gap-1"
-    (click)="increment()">
+    (click)="onIncrementClick($event)">
     <mat-icon class="scale-120" aria-hidden="true">shopping_basket</mat-icon>
     <span>{{ 'products.add' | translate }}</span>
   </button>
@@ -20,7 +20,7 @@
           | translate: { value: product().name }
       "
       [class]="quantity() <= minLimit() ? 'remove-button' : 'decrement-button'"
-      (click)="decrement()">
+      (click)="onDecrementClick($event)">
       @if (quantity() <= minLimit()) {
         <mat-icon aria-hidden="true">delete_outline</mat-icon>
       } @else {
@@ -58,7 +58,7 @@
       [attr.aria-label]="`${('products.increment' | translate)} ${product().name}`"
       [attr.aria-disabled]="quantity() >= maxLimit()"
       [class.opacity-50]="quantity() >= maxLimit()"
-      (click)="increment()">
+      (click)="onIncrementClick($event)">
       <mat-icon aria-hidden="true">add</mat-icon>
     </button>
   </div>

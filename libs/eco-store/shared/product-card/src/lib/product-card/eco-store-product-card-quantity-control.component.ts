@@ -47,12 +47,26 @@ export class EcoStoreProductCardQuantityControlComponent {
     this.validateAndSet(next);
   }
 
+  onIncrementClick(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    this.increment();
+  }
+
   increment() {
     if (this.quantity() === 0 && this.minLimit() > 0) {
       this.validateAndSet(this.minLimit());
       return;
     }
     this.updateQuantity(this.step());
+  }
+
+  onDecrementClick(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    this.decrement();
   }
 
   decrement() {
@@ -67,6 +81,9 @@ export class EcoStoreProductCardQuantityControlComponent {
   }
 
   onManualInput(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
     const inputElement = event.target as HTMLInputElement;
     const value = parseFloat(inputElement.value);
 

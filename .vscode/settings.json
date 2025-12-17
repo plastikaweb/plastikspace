@@ -103,5 +103,15 @@
     "**/dist/**": true,
     "**/tmp/**": true,
     "**/.nx/cache/**": true
-  }
+  },
+  "jest.disabledWorkspaceFolders": [
+    "node_modules",
+    "dist",
+    "tmp",
+    ".nx/cache",
+    "vendor",
+    "pocketbase",
+    "coverage"
+  ],
+  "jest.runMode": "on-demand"
 }

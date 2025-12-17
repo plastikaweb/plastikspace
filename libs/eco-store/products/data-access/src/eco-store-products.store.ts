@@ -1,5 +1,9 @@
+import { updateState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
-import { signalStore, withComputed } from '@ngrx/signals';
+import { tapResponse } from '@ngrx/operators';
+import { signalStore, withComputed, withMethods } from '@ngrx/signals';
+import { setEntity } from '@ngrx/signals/entities';
+import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { IdType, LocalizedFields } from '@plastik/core/entities';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
@@ -14,6 +18,8 @@ import {
   PocketBaseGetListState,
   withPocketBaseGet,
 } from '@plastik/signal-state/pocketbase';
+import { ClientResponseError } from 'pocketbase';
+import { firstValueFrom, pipe, switchMap, tap } from 'rxjs';
 
 import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 
@@ -26,6 +32,7 @@ export const ecoStoreProductsStore = signalStore(
   withPocketBaseGet<EcoStoreProduct, EcoStoreProductsApiService, ProductesPocketBaseGetListState>({
     featureName: 'products',
     dataServiceType: EcoStoreProductsApiService,
+    autoLoad: false,
     customInitialState: {
       paginationSizeOptions: [20, 50, 75],
       pagination: {
@@ -77,10 +84,42 @@ export const ecoStoreProductsStore = signalStore(
             ...product,
             name: productName,
             categoryName,
+            categorySlug: category?.normalizedName || '',
             categoryColor: category?.color || '',
           };
         });
       }),
     };
-  })
+  }),
+  withMethods(store => ({
+    setSelectedFromSlug(slug: EcoStoreProductWithCategoryName['categorySlug']): boolean {
+      const product = store.entities().find(p => p.normalizedName === slug);
+      if (product) {
+        updateState(store, '[products] setSelectedFromSlug', { selectedItemId: product.id });
+        return true;
+      }
+      return false;
+    },
+
+    async loadProductBySlug(
+      slug: EcoStoreProductWithCategoryName['categorySlug']
+    ): Promise<EcoStoreProduct> {
+      const product = await firstValueFrom(store._apiService.getOneBySlug(slug));
+
+      if (!product) {
+        throw new Error('Product not found');
+      }
+
+      updateState(
+        store,
+        '[products] loadProductBySlug',
+        setEntity(product, {
+          selectId: (entity: EcoStoreProduct) => entity.id || '',
+        }),
+        { selectedItemId: product.id }
+      );
+
+      return product;
+    },
+  }))
 );

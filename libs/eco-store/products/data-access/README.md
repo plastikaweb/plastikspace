@@ -26,6 +26,8 @@ This library provides **data access functionality for eco-store products**.
 - Type-safe API interactions with PocketBase.
 - Computed signals for derived state (products with category names).
 - Automatic localization support.
+- **Lazy loading** support with `autoLoad: false` for detail-first navigation.
+- **Slug-based product selection** with `setSelectedFromSlug` and `loadProductBySlug`.
 
 ## Usage
 
@@ -41,13 +43,13 @@ const store = inject(ecoStoreProductsStore);
 // Access reactive signals
 const products = store.entities();
 const productsWithCategories = store.productsWithCategoryName();
-const isLoading = store.isLoading();
+const selectedProduct = store.entityMap()[store.selectedItemId()];
+
+// Enable list loading (required when autoLoad: false)
+store.enableListLoading();
 
 // Filter products by category
-store.setFilter({ category: 'category-id' });
-
-// Load products
-store.loadEntities();
+store.setParams({ category: 'category-id' });
 ```
 
 ### API Service Usage
@@ -63,10 +65,20 @@ const products = await service.getList({ page: 1, perPage: 20 });
 
 ### Available Store Methods
 
-- `loadEntities()`: Load products with current pagination and filters.
-- `setFilter(filter)`: Update product filters (category-based).
-- `setPagination(pagination)`: Update pagination settings.
-- `productsWithCategoryName`: Computed signal with localized category names.
+**List Operations:**
+
+- `enableListLoading(enabled?)`: Enable/disable reactive list loading.
+- `setParams(params)`: Update all parameters and trigger list reload.
+- `getList()`: Manually trigger list loading.
+
+**Single Item Operations:**
+
+- `setSelectedFromSlug(slug)`: Select a product by its normalized name (slug). Returns `true` if found.
+- `loadProductBySlug(slug)`: Async method to fetch a product by slug and set it as selected.
+
+**Computed Signals:**
+
+- `productsWithCategoryName`: Products with localized category names.
 
 ## Running unit tests
 

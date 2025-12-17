@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PocketBaseGetService } from '@plastik/core/api-pocketbase';
-import { EcoStoreProduct } from '@plastik/eco-store/entities';
+import { EcoStoreProduct, EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { PocketBaseListParams } from '@plastik/signal-state/pocketbase';
-import { ListResult, RecordListOptions } from 'pocketbase';
-import { Observable } from 'rxjs';
+import { ListResult, RecordListOptions, RecordOptions } from 'pocketbase';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -42,5 +42,20 @@ export class EcoStoreProductsApiService extends PocketBaseGetService<EcoStorePro
     };
 
     return super.getList(options);
+  }
+
+  /**
+   * @description Get a product by its normalized name (slug).
+   * @param { string } slug The normalized name of the product.
+   * @returns { Observable<EcoStoreProduct | null> } The product or null if not found.
+   */
+  getOneBySlug(
+    slug: EcoStoreProductWithCategoryName['categorySlug']
+  ): Observable<EcoStoreProduct | null> {
+    return super
+      .getFullList({
+        filter: `normalizedName = "${slug}"`,
+      })
+      .pipe(map(products => products[0] || null));
   }
 }

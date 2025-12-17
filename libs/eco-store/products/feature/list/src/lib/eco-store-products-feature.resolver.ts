@@ -1,4 +1,4 @@
-// eco-store-products.guard.ts
+// eco-store-products.resolver.ts
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
@@ -12,9 +12,11 @@ export const ecoStoreProductsResolver: ResolveFn<boolean> = (route: ActivatedRou
   const categorySlug = route.paramMap.get('category') ?? null;
   const categoryObj = categoriesStore.findCategoryBySlug(categorySlug);
 
+  productStore.enableListLoading();
   productStore.setParams({
     ...queryParams,
     category: categoryObj?.id ?? null,
   });
+
   return Promise.resolve(true);
 };

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
@@ -51,11 +50,14 @@ export default class EcoStoreProductsFeatureComponent {
   });
 
   addToCart({ id, quantity }: { id: EcoStoreProductWithCategoryName['id']; quantity: number }) {
-    console.log(id, quantity);
+    // TODO: Implement add to cart functionality
+    void id;
+    void quantity;
   }
 
   toggleFavorite(id: EcoStoreProductWithCategoryName['id']) {
-    console.log(id);
+    // TODO: Implement toggle favorite functionality
+    void id;
   }
 
   sortProducts(sort: SortConfig) {

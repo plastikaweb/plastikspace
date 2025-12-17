@@ -2,13 +2,15 @@
   class="product-card group relative flex h-full w-full flex-col justify-between overflow-hidden transition-all ring-1! ring-neutral-100! duration-200 hover:ring-neutral-200! hover:shadow-2xl!"
   appearance="raised"
   role="article"
+  [routerLink]="['/botiga', product().categorySlug, product().normalizedName]"
   [attr.aria-label]="product().name">
   <!-- Favorite Button -->
   <button
     matIconButton
+    type="button"
     class="favorite-button absolute! top-3 right-3 z-100!"
     [aria-label]="'products.favorite' | translate: { value: product().name }"
-    (click)="toggleFavorite.emit(product().id)">
+    (click)="onToggleFavorite($event)">
     <mat-icon aria-hidden="true">favorite</mat-icon>
   </button>
 

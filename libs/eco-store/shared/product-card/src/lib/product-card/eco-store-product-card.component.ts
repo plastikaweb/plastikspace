@@ -8,6 +8,7 @@ import { EcoStoreProduct, EcoStoreProductWithCategoryName } from '@plastik/eco-s
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { EcoStoreProductCardQuantityControlComponent } from './eco-store-product-card-quantity-control.component';
 import { EcoStoreUnitChipComponent } from './eco-store-unit-chip.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'eco-store-product-card',
@@ -20,9 +21,13 @@ import { EcoStoreUnitChipComponent } from './eco-store-unit-chip.component';
     EcoStoreProductCardQuantityControlComponent,
     EcoStoreUnitChipComponent,
     SharedImgContainerComponent,
+    RouterLink,
   ],
   templateUrl: './eco-store-product-card.component.html',
   styleUrl: './eco-store-product-card.component.scss',
+  host: {
+    class: 'cursor-pointer',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreProductCardComponent {
@@ -32,6 +37,10 @@ export class EcoStoreProductCardComponent {
 
   addToCart = output<{ id: EcoStoreProductWithCategoryName['id']; quantity: number }>();
   toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();
+  getProduct = output<{
+    category: EcoStoreProductWithCategoryName['category'];
+    id: EcoStoreProductWithCategoryName['id'];
+  }>();
 
   getPocketBaseUrl(product: EcoStoreProduct): string | null {
     const image = product.images?.[0];
@@ -41,5 +50,12 @@ export class EcoStoreProductCardComponent {
   onQuantityChange(newQuantity: number) {
     this.quantity.set(newQuantity); // TODO: This should come from the parent component
     this.addToCart.emit({ id: this.product().id, quantity: newQuantity });
+  }
+
+  onToggleFavorite(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    this.toggleFavorite.emit(this.product().id);
   }
 }

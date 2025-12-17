@@ -27,6 +27,7 @@ Part of the [**Eco-Store**](../../../../../apps/eco-store/README.md) application
 - **Performance**: Uses `OnPush` change detection and Angular Signals for optimal rendering performance.
 - **Pagination**: Built-in support for paginated data fetching.
 - **Modern Architecture**: Built using Angular Standalone Components.
+- **Lazy Loading**: Uses `enableListLoading()` in resolver for efficient data fetching.
 
 ## Installation
 

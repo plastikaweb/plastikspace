@@ -126,7 +126,7 @@ export function withPocketBaseParamsFeature({
         setParams: (rawParams?: Record<string, unknown>) => {
           const normalized = normalizePocketBaseParams(rawParams, defaultState);
 
-          updateState(store, `[${featureName}] set params`, {
+          updateState(store, `[${featureName}] ${JSON.stringify(normalized)} set params`, {
             pagination: normalized.pagination,
             filter: normalized.filter,
             sort: normalized.sort,

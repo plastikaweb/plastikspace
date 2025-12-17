@@ -31,6 +31,7 @@ This component displays product information including an image, name, price, and
 - Add to cart button with ripple effect.
 - Responsive design with hover animations.
 - Uses Angular's `OnPush` change detection for optimal performance.
+- **Navigation-safe interactions**: Click events on interactive elements (favorite button, quantity controls) are properly isolated to prevent triggering the card's `routerLink`.
 
 ## Installation
 

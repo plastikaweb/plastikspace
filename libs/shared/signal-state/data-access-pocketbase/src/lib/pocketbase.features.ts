@@ -17,7 +17,7 @@ import { DataGet, DataGetList } from '@plastik/core/api-base';
 import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { ClientResponseError, ListResult } from 'pocketbase';
-import { debounceTime, pipe, switchMap, tap } from 'rxjs';
+import { debounceTime, filter, pipe, switchMap, tap } from 'rxjs';
 import {
   initialGetListState,
   PocketBaseGetListState,
@@ -44,16 +44,21 @@ export function withPocketBaseListFeature<
   featureName,
   dataServiceType,
   customInitialState = {},
+  autoLoad = true,
 }: {
   featureName: string;
   dataServiceType: Type<S>;
   customInitialState?: Partial<PocketBaseGetListState>;
+  autoLoad?: boolean;
 }) {
   const defaultState = initialGetListState(customInitialState);
 
   return signalStoreFeature(
     withDevtools(featureName),
-    withState<PocketBaseGetListState>(defaultState),
+    withState<PocketBaseGetListState>({
+      ...defaultState,
+      listLoadingEnabled: autoLoad,
+    }),
     withPocketBaseParamsFeature({ featureName, customInitialState }),
     withEntities<T>(),
     withProps(() => ({
@@ -88,8 +93,12 @@ export function withPocketBaseListFeature<
       };
 
       return {
+        enableListLoading: (listLoadingEnabled = true) => {
+          updateState(store, `[${featureName}] enableListLoading`, { listLoadingEnabled });
+        },
         getList: rxMethod<ReturnType<typeof store.formattedParams>>(
           pipe(
+            filter(() => store.listLoadingEnabled()),
             debounceTime(300),
             tap(() => updateState(store, `[${featureName}] getList`)),
             switchMap(params => {
@@ -103,7 +112,6 @@ export function withPocketBaseListFeature<
                         selectId: entity => entity.id || '',
                       }),
                       {
-                        initiallyLoaded: true,
                         count: result.totalItems,
                       }
                     );
@@ -121,6 +129,7 @@ export function withPocketBaseListFeature<
 
     withHooks({
       onInit: store => {
+        // Always subscribe to maintain reactivity - the filter will control execution
         store.getList(store.formattedParams);
       },
     })
