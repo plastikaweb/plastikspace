@@ -1,6 +1,6 @@
 @use '@angular/material' as mat;
 
-:host ::ng-deep {
+:host {
   display: block;
 
   .mat-drawer-container {
@@ -21,4 +21,10 @@
     transition: opacity 200ms ease-out;
     opacity: 0;
   }
+
+  @include mat.icon-overrides(
+    (
+      color: var(--primary-700),
+    )
+  );
 }

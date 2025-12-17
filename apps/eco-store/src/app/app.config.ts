@@ -25,6 +25,7 @@ import { pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-acc
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { environment } from '../environments/environment';
 import { appRoutes } from './routing/app.routes';
+import { ALL_PRODUCTS_ICON } from '@plastik/eco-store/shared/tokens';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -54,6 +55,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       pocketBaseActivityInterceptor();
       inject(ecoStoreProductCategoriesStore);
+      inject(ALL_PRODUCTS_ICON);
     }),
     {
       provide: ErrorHandler,

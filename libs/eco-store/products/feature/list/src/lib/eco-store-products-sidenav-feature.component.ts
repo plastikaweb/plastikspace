@@ -8,6 +8,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
 import { ProductCategory, ProductCategoryGroup } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
+import { ALL_PRODUCTS_ICON } from '@plastik/eco-store/shared/tokens';
 import { filter, map, startWith } from 'rxjs';
 
 @Component({
@@ -29,6 +30,7 @@ export default class EcoStoreProductsSidenavFeatureComponent {
   readonly router = inject(Router);
   readonly translateService = inject(TranslateService);
   readonly categoriesStore = inject(ecoStoreProductCategoriesStore);
+  readonly defaultCategoryIcon = inject(ALL_PRODUCTS_ICON);
   groupedCategories = this.categoriesStore.groupedCategories;
   totalProducts = this.categoriesStore.totalProducts;
 
