@@ -11,6 +11,7 @@ import { ProductCategory, ProductCategoryGroup } from '@plastik/eco-store/entiti
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
 import { ClientResponseError } from 'pocketbase';
+import { ALL_PRODUCTS_ICON } from '@plastik/eco-store/shared/tokens';
 import { EcoStoreProductCategoriesApiService } from './eco-store-product-categories-api.service';
 
 export interface ProductCategoriesState {
@@ -112,6 +113,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
   }),
   withMethods(store => {
     const translateService = inject(TranslateService);
+    const defaultIcon = inject(ALL_PRODUCTS_ICON);
 
     return {
       getCategoryBySlug(
@@ -125,7 +127,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
         if (!slug || !category) {
           return {
             name: translateService.instant(defaultText),
-            icon: 'apps',
+            icon: defaultIcon,
           };
         }
         return {

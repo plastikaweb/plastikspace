@@ -68,6 +68,7 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 ### 🧰 Shared Utils
 
 - [**Utils**](../../libs/eco-store/shared/utils/README.md): Unit formatting and shared helpers.
+- [**Tokens**](../../libs/eco-store/shared/tokens/README.md): Angular DI tokens for shared configuration.
 
 ### 🚀 Core Features
 

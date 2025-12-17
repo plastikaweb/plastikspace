@@ -7,10 +7,17 @@
           role="listitem"
           routerLink="/botiga"
           routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLinkActiveOptions]="{
+            paths: 'exact',
+            queryParams: 'ignored',
+            matrixParams: 'ignored',
+            fragment: 'ignored',
+          }"
           [attr.aria-current]="this.currentUrl() === '/botiga' ? 'page' : null">
           <div class="flex items-center gap-2 w-full">
-            <mat-icon aria-hidden="true" class="text-neutral-700 scale-90">apps</mat-icon>
+            <mat-icon aria-hidden="true" class="text-neutral-700 scale-90">{{
+              defaultCategoryIcon
+            }}</mat-icon>
             <span matListItemTitle class="text-sm font-semibold text-neutral-700">{{
               'products.all' | translate
             }}</span>

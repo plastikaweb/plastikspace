@@ -3,23 +3,22 @@ set -e
 export NX_CLI_SET=classic
 export PAGER=cat
 
-# 1. Stop any existing instance to avoid port conflicts
-yarn eco-store:pocketbase:stop
+# 1. Start PocketBase in the background for schema export (using subshell to preserve cwd)
+(cd apps/eco-store/pocketbase && ./pocketbase serve > /dev/null 2>&1) &
+PB_PID=$!
 
-# 2. Start PocketBase in the background (silence output to verify it doesn't hold the shell)
-yarn eco-store:pocketbase:run > /dev/null 2>&1 &
-
-# 3. Wait a few seconds for it to initialize
+# 2. Wait a few seconds for it to initialize
 sleep 3
 
-# 4. Run the export
+# 3. Run the export
 yarn pb:export
 EXPORT_EXIT_CODE=$?
 
-# 5. Kill the background PocketBase instance properly
-yarn eco-store:pocketbase:stop
+# 4. Kill ONLY the background PocketBase instance we started (not the dev server!)
+kill $PB_PID 2>/dev/null || true
+wait $PB_PID 2>/dev/null || true
 
-# 6. Check if export failed
+# 5. Check if export failed
 if [ $EXPORT_EXIT_CODE -ne 0 ]; then
   echo "❌ PocketBase schema export failed!"
   exit $EXPORT_EXIT_CODE
@@ -31,7 +30,7 @@ if yarn branch:lint \
   && yarn nx affected --target=lint --parallel --max-parallel=3 --cache \
   && markdownlint *.md; then
 
-  # 7. Add all changes to the commit (only if checks pass)
+  # 6. Add all changes to the commit (only if checks pass)
   git add -A
 else
   echo "❌ Checks failed! Commit aborted."

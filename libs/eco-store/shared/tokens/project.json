@@ -1,0 +1,13 @@
+{
+  "name": "shared-eco-store-tokens",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "eco-store/shared/tokens/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["scope:eco-store", "type:util"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
