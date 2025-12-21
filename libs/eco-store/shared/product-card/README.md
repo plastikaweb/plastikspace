@@ -1,116 +1,87 @@
-# @plastik/eco-store/product-card
+# @plastik/eco-store/shared/product-card
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
-![Angular Material](https://img.shields.io/badge/angular_material-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
+![Material](https://img.shields.io/badge/material_ui-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
 
-- [@plastik/eco-store/product-card](#plastikeco-storeproduct-card)
+- [@plastik/eco-store/shared/product-card](#plastikeco-storesharedproduct-card)
   - [Description](#description)
-  - [Features](#features)
   - [Installation](#installation)
   - [Usage](#usage)
-  - [Component](#component)
-    - [ProductCard](#productcard)
+    - [EcoStoreProductCardComponent](#ecostoreproductcardcomponent)
       - [Inputs](#inputs)
       - [Outputs](#outputs)
-      - [Example](#example)
+    - [EcoStoreProductCardQuantityControlComponent](#ecostoreproductcardquantitycontrolcomponent)
+      - [Inputs](#inputs-1)
+      - [Outputs](#outputs-1)
+  - [Feature Integration](#feature-integration)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-A reusable **product card component** for the Eco Store application, built with Angular Signals and Material UI.
-This component displays product information including an image, name, price, and interactive elements like a favorite button and add to cart functionality.
-
-## Features
-
-- Displays product image with fallback content when no image is available.
-- Shows product name, price, and unit type.
-- Displays category with a colored indicator.
-- Shows price per unit for products with unit types like kg or liters.
-- Interactive favorite button with hover effects.
-- Add to cart button with ripple effect.
-- Responsive design with hover animations.
-- Uses Angular's `OnPush` change detection for optimal performance.
-- **Navigation-safe interactions**: Click events on interactive elements (favorite button, quantity controls) are properly isolated to prevent triggering the card's `routerLink`.
+A collection of components for displaying products in a grid or list view within the Eco Store application. It integrates several shared components for a consistent UI.
 
 ## Installation
 
-This library is part of the `@plastik/eco-store` scope. To use it in your application:
-
-1. Ensure the library is built in your Nx workspace.
-2. Import the `ProductCard` component in your module or standalone component.
-
-```typescript
-import { ProductCard } from '@plastik/eco-store/product-card';
+```ts
+import {
+  EcoStoreProductCardComponent,
+  EcoStoreProductCardQuantityControlComponent,
+} from '@plastik/eco-store/shared/product-card';
 ```
 
 ## Usage
 
-Import the `ProductCard` component and use it in your templates:
+### EcoStoreProductCardComponent
 
-```typescript
-import { Component } from '@angular/core';
-import { ProductCard } from '@plastik/eco-store/product-card';
-import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+The main component that displays a product card with its image, name, price, and actions.
 
-@Component({
-  selector: 'app-product-list',
-  standalone: true,
-  imports: [ProductCard],
-  template: `
-    <eco-store-product-card
-      [product]="product"
-      (addToCart)="onAddToCart($event)"
-      (toggleFavorite)="onToggleFavorite($event)">
-    </eco-store-product-card>
-  `,
-})
-export class ProductListComponent {
-  product: EcoStoreProductWithCategoryName = {
-    /* ... */
-  };
-
-  onAddToCart(event: { id: string; quantity: number }) {
-    // Handle add to cart
-  }
-
-  onToggleFavorite(productId: string) {
-    // Handle favorite toggle
-  }
-}
-```
-
-## Component
-
-### ProductCard
-
-A standalone component that displays a product card with image, details, and interactive controls.
-
-**Selector:** `<eco-store-product-card>`
+Selector: `eco-store-product-card`
 
 #### Inputs
 
-| Name      | Type                              | Required | Description                                                  |
-| :-------- | :-------------------------------- | :------- | :----------------------------------------------------------- |
-| `product` | `EcoStoreProductWithCategoryName` | Yes      | The product data to display, including category information. |
+| Input            | Type                                      | Default | Description                                                         |
+| ---------------- | ----------------------------------------- | ------- | ------------------------------------------------------------------- |
+| `product`        | `EcoStoreProductWithCategoryName \| null` | `null`  | The product data to display.                                        |
+| `isFirst`        | `boolean`                                 | `false` | Whether it is the first item in a list (useful for prioritization). |
+| `minimalVersion` | `boolean`                                 | `false` | Whether to show a simplified version of the card.                   |
 
 #### Outputs
 
-| Name             | Type                               | Description                                                                             |
-| :--------------- | :--------------------------------- | :-------------------------------------------------------------------------------------- |
-| `addToCart`      | `{ id: string; quantity: number }` | Emitted when the "Add to Cart" button is clicked. Contains the product ID and quantity. |
-| `toggleFavorite` | `string`                           | Emitted when the favorite button is clicked. Contains the product ID.                   |
+| Output           | Type                               | Description                                                  |
+| ---------------- | ---------------------------------- | ------------------------------------------------------------ |
+| `addToCart`      | `{ id: string; quantity: number }` | Emitted when quantity changes or "Add to Cart" is triggered. |
+| `toggleFavorite` | `string`                           | Emitted when the favorite button is clicked.                 |
+| `getProduct`     | `{ category: string; id: string }` | Emitted to go to the product detail.                         |
 
-#### Example
+### EcoStoreProductCardQuantityControlComponent
 
-```html
-<eco-store-product-card
-  [product]="product"
-  (addToCart)="onAddToCart($event)"
-  (toggleFavorite)="onToggleFavorite($event)">
-</eco-store-product-card>
-```
+A specialized component for managing product quantities, supporting both units and variable weights.
+
+Selector: `eco-store-product-card-quantity-control`
+
+#### Inputs
+
+| Input         | Type                          | Default      | Description                   |
+| ------------- | ----------------------------- | ------------ | ----------------------------- |
+| `quantity`    | `number`                      | `0`          | Current quantity value.       |
+| `unitType`    | `EcoStoreProduct['unitType']` | **Required** | Type of unit for the product. |
+| `minQuantity` | `number`                      | `0`          | Minimum allowed quantity.     |
+
+#### Outputs
+
+| Output           | Type     | Description                           |
+| ---------------- | -------- | ------------------------------------- |
+| `quantityChange` | `number` | Emitted when the quantity is updated. |
+
+## Feature Integration
+
+The `EcoStoreProductCardComponent` integrates the following shared libraries:
+
+- `EcoStoreProductCategoryLabelComponent` from `@plastik/eco-store/shared/product-category-label`
+- `EcoStoreProductPriceComponent` from `@plastik/eco-store/shared/product-price`
+- `EcoStoreSharedFavoriteButtonComponent` from `@plastik/eco-store/shared/favorite-button`
 
 ## Running unit tests
 
-Run `nx test eco-store-shared-product-card` to execute the unit tests via [Jest](https://jestjs.io/).
+Run `nx test eco-store-shared-product-card` to execute the unit tests via Jest.

@@ -1,12 +1,20 @@
 import { NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, input, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  input,
+  signal,
+  untracked,
+} from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 
 export type ImageDimensions = { width: number; height: number } | undefined;
 
 @Component({
-  selector: 'plastik-shared-img-container',
+  selector: 'plastik-img-container',
   imports: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet],
   templateUrl: './shared-img-container.component.html',
   styleUrl: './shared-img-container.component.scss',
@@ -27,6 +35,16 @@ export class SharedImgContainerComponent {
 
   readonly isLoading = computed(() => !!this.src() && !this.loaded() && !this.error());
   readonly hasError = computed(() => this.error() || !this.src());
+
+  constructor() {
+    effect(() => {
+      this.src();
+      untracked(() => {
+        this.loaded.set(false);
+        this.error.set(false);
+      });
+    });
+  }
 
   onImageLoad(): void {
     this.loaded.set(true);

@@ -254,7 +254,4 @@
 
   /* focus ring */
   --focus-ring-color: var(--secondary-800);
-
-  /* content max width */
-  --content-max-width: 1750px;
 }

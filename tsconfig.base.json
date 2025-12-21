@@ -200,7 +200,16 @@
       "@plastik/shared/sort-selector": ["libs/shared/sort-selector/src/index.ts"],
       "@plastik/eco-store/shared/utils": ["libs/eco-store/shared/utils/src/index.ts"],
       "@plastik/eco-store/shared/tokens": ["libs/eco-store/shared/tokens/src/index.ts"],
-      "@plastik/eco-store/product": ["libs/eco-store/products/feature/detail/src/index.ts"]
+      "@plastik/eco-store/product": ["libs/eco-store/products/feature/detail/src/index.ts"],
+      "@plastik/eco-store/shared/product-category-label": [
+        "libs/eco-store/shared/product-category-label/src/index.ts"
+      ],
+      "@plastik/eco-store/shared/product-price": [
+        "libs/eco-store/shared/product-price/src/index.ts"
+      ],
+      "@plastik/eco-store/shared/favorite-button": [
+        "libs/eco-store/shared/favorite-button/src/index.ts"
+      ]
     }
   },
   "angularCompilerOptions": {

@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -16,12 +15,13 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { SubmitFormConfig } from '@plastik/core/entities';
 import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
 
 @Component({
   selector: 'plastik-shared-form-feature',
-  imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, NgClass],
+  imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, TranslateModule],
   templateUrl: './shared-form-feature.component.html',
   styleUrl: './shared-form-feature.component.scss',
   host: {
@@ -40,8 +40,6 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   temporaryChangeEvent = output<T>();
   pendingChangesEvent = output<boolean>();
 
-  readonly #submitted = signal(false);
-
   protected readonly config = linkedSignal({
     source: this.submitConfig,
     computation: (newConfig: SubmitFormConfig | null) => {
@@ -53,6 +51,10 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
       };
     },
   });
+
+  protected readonly submitLabel = signal('Cercar');
+
+  readonly #submitted = signal(false);
   readonly #newModel = signal<T | null>(null);
 
   protected form = new FormGroup({});

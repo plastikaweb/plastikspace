@@ -11,6 +11,7 @@ import {
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import { PaginationComponent } from '@plastik/shared/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/shared/pagination/util';
 import { SortSelectorComponent } from '@plastik/shared/sort-selector';
@@ -32,7 +33,8 @@ import { distinctUntilChanged, map } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class EcoStoreProductsFeatureComponent {
-  store = inject(ecoStoreProductsStore);
+  protected productsStore = inject(ecoStoreProductsStore);
+  protected activityStore = inject(activityStore);
   readonly #route = inject(ActivatedRoute);
   readonly #router = inject(Router);
   readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);

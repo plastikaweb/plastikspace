@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { SharedFormFeatureComponent } from '@plastik/shared/form';
 
@@ -14,7 +14,7 @@ import { SharedFormFeatureComponent } from '@plastik/shared/form';
     MatIcon,
     MatButtonModule,
     RouterLink,
-    TranslatePipe,
+    TranslateModule,
     SharedFormFeatureComponent,
   ],
   templateUrl: './header.component.html',

@@ -1,71 +1,65 @@
+@let productData = product()!;
+
 <mat-card
-  class="product-card group relative flex h-full w-full flex-col justify-between overflow-hidden transition-all ring-1! ring-neutral-100! duration-200 hover:ring-neutral-200! hover:shadow-2xl!"
-  appearance="raised"
+  appearance="outlined"
   role="article"
-  [routerLink]="['/botiga', product().categorySlug, product().normalizedName]"
-  [attr.aria-label]="product().name">
-  <!-- Favorite Button -->
-  <button
-    matIconButton
-    type="button"
-    class="favorite-button absolute! top-3 right-3 z-100!"
-    [aria-label]="'products.favorite' | translate: { value: product().name }"
-    (click)="onToggleFavorite($event)">
-    <mat-icon aria-hidden="true">favorite</mat-icon>
-  </button>
+  class="product-card group relative flex h-full w-full flex-col justify-between overflow-hidden transition-all ring-1! ring-neutral-100! duration-200 hover:ring-neutral-200! hover:shadow-2xl!"
+  [class.pointer-events-none]="!productData.stock"
+  [routerLink]="
+    productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
+  "
+  [attr.aria-label]="productData ? productData.name : 'Loading item'">
+  @if (productData) {
+    <!-- Favorite Button -->
+    @if (!minimalVersion()) {
+      <eco-store-shared-favorite-button
+        class="absolute! top-3 right-3 z-100!"
+        [isFavorite]="false"
+        [ariaLabel]="'products.favorite' | translate: { value: productData.name }"
+        (toggleFavorite)="onToggleFavorite($event)" />
+    }
 
-  <!-- Image -->
-  <div class="relative isolate mb-4 aspect-square w-full">
-    <div class="flex h-full w-full items-center justify-center">
-      <plastik-shared-img-container
-        class="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
-        [src]="getPocketBaseUrl(product())"
-        [title]="product().name"
-        [dimensions]="{ width: 300, height: 300 }"
-        [lcpImage]="isFirst()" />
-    </div>
-  </div>
-
-  <!-- Content Section -->
-  <mat-card-content class="flex grow flex-col space-y-2 p-4">
-    <!-- Category with Color -->
-    <div class="flex items-center gap-2">
-      <div class="h-2 w-2 rounded-full" [style.background-color]="product().categoryColor"></div>
-      <div
-        class="text-[11px] font-bold uppercase tracking-wider"
-        [style.color]="product().categoryColor">
-        {{ product().categoryName }}
+    <!-- Image -->
+    <div class="relative isolate mb-4 aspect-square w-full">
+      <div class="flex h-full w-full items-center justify-center">
+        <plastik-img-container
+          class="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
+          [src]="productData | pocketBaseImageUrl: productData.images?.[0]"
+          [title]="productData.name"
+          [dimensions]="{ width: 300, height: 300 }"
+          [lcpImage]="isFirst()" />
       </div>
     </div>
 
-    <!-- Title -->
-    <h3 class="min-h-9 text-lg font-bold leading-tight text-gray-900 line-clamp-2">
-      {{ product().name }}
-    </h3>
+    <!-- Content Section -->
+    <mat-card-content class="flex grow flex-col space-y-2 p-4">
+      <!-- Category -->
+      <eco-store-product-category-label
+        size="sm"
+        [name]="productData.categoryName"
+        [color]="productData.categoryColor" />
 
-    <!-- Price -->
-    @let unitType = product().unitType;
-    @let unitBase = product().unitBase;
-    <div class="space-y-1">
-      <div class="mt-1 flex items-baseline gap-1">
-        <span class="text-[clamp(1.5rem,4vw,2rem)] font-extrabold text-gray-900"
-          >{{ product().priceWithIva | number: '1.2-2' }} €</span
-        >
-        <span class="text-sm font-medium text-gray-500"
-          >/ {{ 'products.unit-type.' + unitType | translate }}</span
-        >
-      </div>
+      <!-- Title -->
+      <h3 class="min-h-9 text-lg font-bold leading-tight text-gray-900 line-clamp-2">
+        {{ productData.name }}
+      </h3>
 
-      <!-- Price per unit badge -->
-      <eco-store-unit-chip [unitType]="unitType" [unitBase]="unitBase" />
-    </div>
-  </mat-card-content>
+      <!-- Price -->
+      <eco-store-product-price
+        size="md"
+        [price]="productData.priceWithIva"
+        [unitType]="productData.unitType"
+        [unitBase]="productData.unitBase" />
+    </mat-card-content>
 
-  <!-- Action Button Section -->
-  <mat-card-actions class="mt-5">
-    <eco-store-product-card-quantity-control
-      [product]="product()"
-      [quantity]="quantity()"
-      (quantityChange)="onQuantityChange($event)"></eco-store-product-card-quantity-control>
-  </mat-card-actions>
+    <!-- Action Button Section -->
+    @if (!minimalVersion()) {
+      <mat-card-actions class="mt-5">
+        <eco-store-product-card-quantity-control
+          [product]="productData"
+          [quantity]="quantity()"
+          (quantityChange)="onQuantityChange($event)"></eco-store-product-card-quantity-control>
+      </mat-card-actions>
+    }
+  }
 </mat-card>

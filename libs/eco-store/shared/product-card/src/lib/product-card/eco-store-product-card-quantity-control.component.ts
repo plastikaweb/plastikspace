@@ -17,11 +17,12 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 })
 export class EcoStoreProductCardQuantityControlComponent {
   product = input.required<EcoStoreProductWithCategoryName>();
-
   quantity = input<number>(0);
   quantityChange = output<number>();
+  mode = input<'card' | 'detail'>('card');
+  addToCart = output<number>();
 
-  protected readonly isInCart = computed(() => this.quantity() > 0);
+  protected readonly isInCart = computed(() => this.quantity() > 0 || this.mode() === 'detail');
 
   protected readonly step = computed(() => {
     const type = this.product().unitType;
@@ -73,6 +74,8 @@ export class EcoStoreProductCardQuantityControlComponent {
     const current = this.quantity();
 
     if (current <= this.minLimit()) {
+      if (this.mode() === 'detail') return;
+
       this.quantityChange.emit(0);
       return;
     }

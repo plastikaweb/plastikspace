@@ -1,0 +1,21 @@
+{
+  "name": "eco-store-shared-product-category-label",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/shared/product-category-label/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["type:ui", "scope:eco-store"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/eco-store/shared/product-category-label/jest.config.ts",
+        "tsConfig": "libs/eco-store/shared/product-category-label/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

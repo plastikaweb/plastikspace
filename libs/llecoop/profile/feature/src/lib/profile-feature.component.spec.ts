@@ -1,7 +1,7 @@
 import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DETAIL_ITEM_VIEW_FACADE } from '@plastik/core/detail-edit-view';
-
+import { provideTranslateService } from '@ngx-translate/core';
 import { ProfileFeatureComponent } from './profile-feature.component';
 
 describe('ProfileFeatureComponent', () => {
@@ -13,6 +13,7 @@ describe('ProfileFeatureComponent', () => {
       imports: [ProfileFeatureComponent],
       providers: [
         provideZonelessChangeDetection(),
+        provideTranslateService(),
         {
           provide: DETAIL_ITEM_VIEW_FACADE,
           useValue: {

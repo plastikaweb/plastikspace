@@ -29,6 +29,7 @@ export interface EcoStoreProduct extends BasePocketBaseEntityWithClientRef {
   maxQuantity: number;
   rating?: ProductRating;
   reviewCount?: number;
+  features?: LocalizedFields[] | string[];
 }
 
 export type CreateEcoStoreProduct = Omit<
@@ -51,6 +52,8 @@ export interface EcoStoreProductFilter {
 
 export type EcoStoreProductWithCategoryName = EcoStoreProduct & {
   name: string; // * Localized product name is processed by store
+  description: string; // * Localized product description is processed by store
+  features: string[]; // * Localized product features are processed by store
   categoryName: string;
   categorySlug: string;
   categoryColor: string;

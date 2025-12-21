@@ -33,6 +33,7 @@ describe('EcoStoreProductCardComponent', () => {
     categoryName: 'Test Category',
     categoryColor: '#000000',
     categorySlug: 'test-category',
+    features: [],
   };
 
   beforeEach(async () => {
@@ -54,6 +55,7 @@ describe('EcoStoreProductCardComponent', () => {
 
   it('should have no accessibility violations', async () => {
     expect.extend(toHaveNoViolations);
+    await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

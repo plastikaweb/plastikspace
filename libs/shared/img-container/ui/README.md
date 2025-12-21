@@ -47,12 +47,12 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container/ui';
   imports: [SharedImgContainerComponent],
   template: `
     <div class="user-avatar">
-      <plastik-shared-img-container
+      <plastik-img-container
         [src]="userImageUrl"
         [width]="150"
         [height]="150"
         [title]="'User Profile Picture'"
-        [quality]="90"></plastik-shared-img-container>
+        [quality]="90"></plastik-img-container>
     </div>
   `,
 })
@@ -65,15 +65,13 @@ export class UserProfileComponent {
 
 ### `SharedImgContainerComponent`
 
-**Selector:** `<plastik-shared-img-container>`
+**Selector:** `<plastik-img-container>`
 
 | Input        | Type                                | Default     | Description                                                           |
 | :----------- | :---------------------------------- | :---------- | :-------------------------------------------------------------------- |
 | `src`        | `string \| null`                    | Required    | The source URL of the image.                                          |
 | `title`      | `string`                            | Required    | Alt text/Title for accessibility and SEO.                             |
 | `dimensions` | `{ width: number; height: number }` | `undefined` | Optional object to set width and height together.                     |
-| `width`      | `number`                            | `undefined` | Width of the image in pixels (if not using `dimensions`).             |
-| `height`     | `number`                            | `undefined` | Height of the image in pixels (if not using `dimensions`).            |
 | `quality`    | `number`                            | `80`        | Image compression quality (1-100).                                    |
 | `lcpImage`   | `boolean`                           | `false`     | Set to `true` if this image is the Largest Contentfull Paint element. |
 

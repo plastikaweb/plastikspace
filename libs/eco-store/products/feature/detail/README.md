@@ -10,82 +10,44 @@
   - [Architecture](#architecture)
   - [Usage](#usage)
     - [Route Configuration](#route-configuration)
-    - [Resolver](#resolver)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-The **Eco Store Product Detail Feature** library provides the product detail page functionality for the Eco Store application.
-It handles loading individual products by their URL slug and displays detailed product information.
-
-Part of the [**Eco-Store**](../../../../../../../apps/eco-store/README.md) application.
+The **Eco Store Product Detail Feature** provides the comprehensive product detail page for the Eco-Store application.
+It handles loading individual products via route resolvers and offers a rich UI with pricing, quantity management, and related products.
 
 ## Features
 
-- **Slug-based product loading**: Products are loaded by their normalized name (URL-friendly slug).
-- **Smart caching**: First checks if the product is already in the store, avoiding unnecessary API calls.
-- **Lazy loading support**: Disables list loading when viewing details to prevent unnecessary data fetching.
-- **Error handling**: Redirects to home page if product is not found.
-- **Resolver-based data loading**: Ensures product data is available before component renders.
+- **Slug-based product loading**: Efficiently loads products using URL slugs.
+- **Smart caching**: Integrates with `ecoStoreProductsStore` to reuse already loaded data.
+- **Rich Product Information**: Displays product tags (ECO, Novetat, Oferta), rating, and stock availability.
+- **Interactive Components**:
+  - **Quantity Control**: Precise control over purchase quantity, respecting `minQuantity` and step logic.
+  - **Favorite Button**: Glass-effect button for toggling favorites.
+  - **Category Label**: Branded category display with color-coded dot.
+  - **Pricing**: Detailed pricing with unit-based information.
+- **Image Gallery**: Support for main product image and thumbnail navigation.
+- **Related Products**: Displays similar products from the same category.
+- **Responsive Layout**: Optimized for both mobile and desktop experiences.
 
 ## Architecture
 
-The feature uses a resolver that:
+The feature uses `EcoStoreProductFeatureComponent` which is a standalone component using Angular Signals for state management and `OnPush` change detection for performance.
 
-1. Disables list loading (`enableListLoading(false)`)
-2. Checks if product exists in store (`setSelectedFromSlug`)
-3. If not found, fetches from API (`loadProductBySlug`)
-4. Redirects to home if product doesn't exist
-
-```mermaid
-sequenceDiagram
-    participant Router
-    participant Resolver
-    participant Store
-    participant API
-    participant Component
-
-    Router->>Resolver: Navigate to /botiga/:category/:slug
-    Resolver->>Store: enableListLoading(false)
-    Resolver->>Store: setSelectedFromSlug(slug)
-
-    alt Product in store
-        Store-->>Resolver: true
-    else Product not in store
-        Store-->>Resolver: false
-        Resolver->>Store: loadProductBySlug(slug)
-        Store->>API: Fetch product
-        API-->>Store: Product data
-    end
-
-    Resolver-->>Router: Resolved
-    Router->>Component: Load component
-    Component->>Store: Read selected product
-```
+It uses a resolver (`ecoStoreProductResolver`) for pre-fetching product data and managing global store state (disabling list loading while on the detail page).
 
 ## Usage
 
 ### Route Configuration
 
-The feature is typically used as a lazy-loaded route:
-
 ```typescript
 {
   path: ':category/:slug',
-  loadChildren: () => import('@plastik/eco-store/products/feature/detail')
-    .then(m => m.ecoStoreProductFeatureRoutes),
+  loadComponent: () => import('@plastik/eco-store/products/feature/detail'),
 }
 ```
 
-### Resolver
-
-The resolver (`ecoStoreProductResolver`) handles:
-
-- Extracting `slug` from route parameters
-- Disabling list loading for efficiency
-- Loading product from store or API
-- Redirecting on errors
-
 ## Running unit tests
 
-Run `nx test eco-store-product-feature` to execute the unit tests via [Jest](https://jestjs.io/).
+Run `nx test eco-store-product-feature` to execute the unit tests via Jest.

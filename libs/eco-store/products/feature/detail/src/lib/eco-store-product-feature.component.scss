@@ -1,0 +1,50 @@
+@use '@angular/material' as mat;
+
+:host {
+  --min-col-width: 200px;
+  --product-gap: 1.5rem;
+
+  .rating-stars {
+    @include mat.icon-overrides(
+      (
+        color: #bd5828,
+      )
+    );
+  }
+
+  .metadata-icon {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-600),
+      )
+    );
+  }
+
+  .tech-info-icon {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-600),
+      )
+    );
+  }
+
+  .tech-info-title {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-600),
+      )
+    );
+  }
+
+  @include mat.chips-overrides(
+    (
+      outline-color: var(--white),
+    )
+  );
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
+    gap: var(--product-gap);
+  }
+}

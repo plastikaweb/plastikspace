@@ -9,7 +9,7 @@ import { IdType, LocalizedFields } from '@plastik/core/entities';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import {
   EcoStoreProduct,
-  EcoStoreProductWithCategoryName,
+  EcoStoreProductWithCategoryName as EcoStoreProductWithTranslatedText,
   ProductCategory,
 } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
@@ -58,7 +58,7 @@ export const ecoStoreProductsStore = signalStore(
     const environment = inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
 
     return {
-      productsWithCategoryName: computed<EcoStoreProductWithCategoryName[]>(() => {
+      productsWithTranslatedText: computed<EcoStoreProductWithTranslatedText[]>(() => {
         const products = entities();
         const categories = categoriesStore.categories();
         const currentLang = translateService.getCurrentLang() || environment.defaultLanguage;
@@ -80,9 +80,30 @@ export const ecoStoreProductsStore = signalStore(
             productName = product.name;
           }
 
+          let productDescription = '';
+          if (product.description && typeof product.description === 'object') {
+            const descriptionObj = product.description as LocalizedFields<string>;
+            productDescription = descriptionObj[currentLang] || '';
+          } else if (typeof product.description === 'string') {
+            productDescription = product.description;
+          }
+
+          let productFeatures: string[] = [];
+          if (product.features) {
+            const featuresObj = product.features as LocalizedFields[];
+            productFeatures = featuresObj.map(feature => {
+              if (typeof feature === 'object') {
+                return feature[currentLang] || '';
+              }
+              return feature;
+            });
+          }
+
           return {
             ...product,
             name: productName,
+            description: productDescription,
+            features: productFeatures,
             categoryName,
             categorySlug: category?.normalizedName || '',
             categoryColor: category?.color || '',
@@ -92,7 +113,7 @@ export const ecoStoreProductsStore = signalStore(
     };
   }),
   withMethods(store => ({
-    setSelectedFromSlug(slug: EcoStoreProductWithCategoryName['categorySlug']): boolean {
+    setSelectedFromSlug(slug: EcoStoreProductWithTranslatedText['categorySlug']): boolean {
       const product = store.entities().find(p => p.normalizedName === slug);
       if (product) {
         updateState(store, '[products] setSelectedFromSlug', { selectedItemId: product.id });
@@ -102,7 +123,7 @@ export const ecoStoreProductsStore = signalStore(
     },
 
     async loadProductBySlug(
-      slug: EcoStoreProductWithCategoryName['categorySlug']
+      slug: EcoStoreProductWithTranslatedText['categorySlug']
     ): Promise<EcoStoreProduct> {
       const product = await firstValueFrom(store._apiService.getOneBySlug(slug));
 
