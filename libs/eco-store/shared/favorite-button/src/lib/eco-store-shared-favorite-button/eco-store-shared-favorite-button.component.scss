@@ -49,7 +49,8 @@
     &.is-favorite {
       @include mat.icon-button-overrides(
         (
-          icon-color: #f43f5e, // text-rose-500 (more intense)
+          icon-color: #f43f5e,
+          // text-rose-500 (more intense)
         )
       );
 
@@ -69,7 +70,7 @@
       &:not(.is-favorite) {
         @include mat.icon-overrides(
           (
-            color: #f43f5e, // text-rose-500
+            color: #f43f5e,
           )
         );
       }

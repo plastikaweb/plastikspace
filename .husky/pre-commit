@@ -26,8 +26,8 @@ fi
 
 # Run checks
 if yarn branch:lint \
-  && yarn nx format:write --uncommitted \
   && yarn nx affected --target=lint --parallel --max-parallel=3 --cache \
+  && yarn nx format:write --uncommitted \
   && markdownlint *.md; then
 
   # 6. Add all changes to the commit (only if checks pass)
