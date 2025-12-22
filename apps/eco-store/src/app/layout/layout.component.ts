@@ -1,11 +1,25 @@
-import { NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, DestroyRef, inject, viewChild } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  input,
+  signal,
+  viewChild,
+} from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { appSearchFormConfig } from '@plastik/eco-store/formly';
-import { filter } from 'rxjs';
+import { filter, map } from 'rxjs';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';
@@ -33,13 +47,13 @@ import { MenuComponent } from './menu/menu.component';
  */
 export default class LayoutComponent {
   protected readonly searchFormConfig = appSearchFormConfig();
+  protected readonly isSidenavOpen = signal(false);
   private readonly sidenavContent = viewChild<MatSidenavContent>('sidenavContent');
   readonly #destroyRef = inject(DestroyRef);
-
-  private readonly router: Router = inject(Router);
+  readonly #router: Router = inject(Router);
 
   constructor() {
-    this.router.events
+    this.#router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
         takeUntilDestroyed(this.#destroyRef)

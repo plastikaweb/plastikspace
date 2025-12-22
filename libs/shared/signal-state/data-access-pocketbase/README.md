@@ -59,6 +59,10 @@ Choose the feature that fits your needs:
 - **`withPocketBaseCrud`**: Full CRUD operations (List, GetOne, Create, Update, Delete).
 - **`withPocketBaseGetOneFeature`**: Single item retrieval and selection state.
 
+> [!TIP]
+> Use `autoLoad: false` to prevent automatic list loading on store initialization.
+> This is useful for detail-first navigation patterns where you want to load the list only when needed.
+
 ### 2. Create a Store Feature
 
 ```typescript
@@ -73,6 +77,7 @@ export const ProductStore = signalStore(
   withPocketBaseGet<Product, ProductPocketBaseService>({
     featureName: 'product',
     dataServiceType: ProductPocketBaseService,
+    autoLoad: false, // Disable auto-loading on init
     customInitialState: {
       paginationSizeOptions: [20, 50, 75],
       pagination: { page: 1, perPage: 20 },
@@ -120,11 +125,17 @@ export class ProductListComponent {
 
 The store provides the following methods:
 
-- **`getList()`** - Load list with current parameters (auto-called on init).
+- **`getList()`** - Load list with current parameters (auto-called on init if `autoLoad: true`).
+- **`enableListLoading(enabled?)`** - Enable/disable reactive list loading. Required before `setParams` if `autoLoad: false`.
+- **`setParams(params)`** - Update all parameters (pagination, filter, sort) at once.
 - **`setFilter(filter)`** - Update filter parameters and reload list.
 - **`setPagination(pagination)`** - Update pagination and reload list.
 - **`setSort(sort)`** - Update sorting and reload list.
 - **`getOne(id)`** - Load single item (when using Get/Crud features).
+
+> [!IMPORTANT]
+> When using `autoLoad: false`, you must call `enableListLoading()` before `setParams()`
+> to enable reactive list loading. This is typically done in a route resolver.
 
 ### 5. Entity Selectors
 
@@ -145,6 +156,7 @@ The store uses `withEntities` which provides:
 ## 💡 Advanced Usage
 
 - **Custom Initial State**: Provide custom pagination, filter, or sort defaults via `customInitialState`.
+- **Lazy Loading**: Use `autoLoad: false` + `enableListLoading()` for detail-first navigation patterns.
 - **Composability**: Mix these features with your own custom store features using `withComputed`, `withMethods`, etc.
 - **Debounced Requests**: List operations are automatically debounced (300ms) to avoid excessive API calls.
 - **Error Handling**: Built-in error notifications via the notification store.

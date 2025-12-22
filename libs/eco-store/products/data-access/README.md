@@ -7,67 +7,60 @@
 - [@plastik/eco-store/products/data-access](#plastikeco-storeproductsdata-access)
   - [Description](#description)
   - [Features](#features)
+  - [Installation](#installation)
   - [Usage](#usage)
     - [Store Usage](#store-usage)
-    - [API Service Usage](#api-service-usage)
-    - [Available Store Methods](#available-store-methods)
+    - [SignalStore Features](#signalstore-features)
+  - [Integration](#integration)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-This library provides **data access functionality for eco-store products**.
+This library provides the state management and API integration for products in the Eco Store application. It leverages NgRx Signals for a reactive and performant data layer.
 
 ## Features
 
-- **Signal-based state management** with NgRx Signals.
-- Reactive product store with pagination and filtering.
-- Category-based product filtering.
-- Localized product and category names.
-- Type-safe API interactions with PocketBase.
-- Computed signals for derived state (products with category names).
-- Automatic localization support.
+- **Store-based State Management**: Uses `ecoStoreProductsStore` (NgRx SignalStore) for managing product lists, pagination, filtering, and selection.
+- **PocketBase Integration**: Built-in support for PocketBase CRUD operations via `withPocketBaseGet`.
+- **Enhanced Data Transformation**:
+  - **Localization**: Automatically translates `name`, `description`, and `features` based on the current application language.
+  - **Category Mapping**: Enriches products with localized category names, slugs, and colors by integrating with `ecoStoreProductCategoriesStore`.
+- **Slug-based Operations**: Supports selecting and loading products directly by their URL slugs.
+- **Smart Data Access**: Provides computed signals for transformed data, ensuring UI components receive ready-to-display objects.
+
+## Installation
+
+```ts
+import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+```
 
 ## Usage
 
 ### Store Usage
 
-Import the store and use its reactive signals:
-
 ```typescript
-import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
-
 const store = inject(ecoStoreProductsStore);
 
-// Access reactive signals
-const products = store.entities();
-const productsWithCategories = store.productsWithCategoryName();
-const isLoading = store.isLoading();
-
-// Filter products by category
-store.setFilter({ category: 'category-id' });
-
-// Load products
-store.loadEntities();
+// Access reactive signals with translated text and category info
+const products = store.productsWithTranslatedText();
 ```
 
-### API Service Usage
+### SignalStore Features
 
-Import the service for direct API interactions:
+The store includes several custom features and computed signals:
 
-```typescript
-import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
+- **`productsWithTranslatedText`**: (Computed) Returns a list of products where all localized fields are resolved for the current language, and category information is attached.
+- **`setSelectedFromSlug(slug)`**: (Method) Selects a product from the current list based on its slug.
+- **`loadProductBySlug(slug)`**: (Method) Fetches a product from the API by its slug and sets it as the selected item.
 
-const service = inject(EcoStoreProductsApiService);
-const products = await service.getList({ page: 1, perPage: 20 });
-```
+## Integration
 
-### Available Store Methods
+The store relies on the following environments and services:
 
-- `loadEntities()`: Load products with current pagination and filters.
-- `setFilter(filter)`: Update product filters (category-based).
-- `setPagination(pagination)`: Update pagination settings.
-- `productsWithCategoryName`: Computed signal with localized category names.
+- `POCKETBASE_WITH_TRANSLATION_ENVIRONMENT`: For default language and API configuration.
+- `TranslateService`: For reactive language switching.
+- `ecoStoreProductCategoriesStore`: For category data lookup.
 
 ## Running unit tests
 
-Run `nx test eco-store-products-data-access` to execute the unit tests.
+Run `nx test eco-store-products-data-access` to execute the unit tests via Jest.

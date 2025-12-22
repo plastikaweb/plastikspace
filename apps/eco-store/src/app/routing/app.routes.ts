@@ -32,6 +32,13 @@ export const appRoutes: Route[] = [
     ],
     children: [
       {
+        path: 'botiga/:category/:slug',
+        title: (route: ActivatedRouteSnapshot) =>
+          inject(EcoStoreCategoryRouteTitleService).resolve(route),
+        loadChildren: () =>
+          import('@plastik/eco-store/product').then(m => m.ecoStoreProductFeatureRoutes),
+      },
+      {
         path: 'botiga/:category',
         title: (route: ActivatedRouteSnapshot) =>
           inject(EcoStoreCategoryRouteTitleService).resolve(route),

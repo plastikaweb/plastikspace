@@ -102,6 +102,41 @@
     "**/node_modules/**": true,
     "**/dist/**": true,
     "**/tmp/**": true,
-    "**/.nx/cache/**": true
-  }
+    "**/.nx/cache/**": true,
+    "**/.angular/**": true,
+    "**/.firebase/**": true,
+    "**/.gemini/**": true,
+    "**/coverage/**": true,
+    "**/pocketbase/pb_data/**": true
+  },
+  "search.exclude": {
+    "**/node_modules/**": true,
+    "**/dist/**": true,
+    "**/tmp/**": true,
+    "**/.nx/cache/**": true,
+    "**/.angular/**": true,
+    "**/.firebase/**": true,
+    "**/.gemini/**": true,
+    "**/coverage/**": true,
+    "**/pocketbase/pb_data/**": true
+  },
+  "jest.disabledWorkspaceFolders": [
+    "node_modules",
+    "dist",
+    "tmp",
+    ".nx/cache",
+    "vendor",
+    "pocketbase",
+    "coverage"
+  ],
+  "jest.runMode": "on-demand",
+  "githubIssues.alwaysPromptForNewIssueRepo": true,
+  "githubPullRequests.remotes": ["origin", "upstream", ""],
+  "githubPullRequests.showPullRequestNumberInTree": true,
+  "githubIssues.queries": [
+    {
+      "label": "Botiga Eco (Projecte)",
+      "query": "repo:plastikaweb/plastikspace is:open project:plastikaweb/5"
+    }
+  ]
 }

@@ -3,63 +3,83 @@
     matButton="filled"
     type="button"
     class="add-button drop-shadow-none! group-hover:border! group-hover:border-primary-400! group-hover:drop-shadow-sm! transition-all w-full flex items-center justify-center gap-1"
-    (click)="increment()">
+    (click)="onIncrementClick($event)">
     <mat-icon class="scale-120" aria-hidden="true">shopping_basket</mat-icon>
     <span>{{ 'products.add' | translate }}</span>
   </button>
 } @else {
-  <div
-    class="flex h-14 w-full items-center justify-between border border-primary-200 rounded-2xl bg-primary-50 py-1 pl-1 pr-1"
-    role="group"
-    [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }">
-    <button
-      matIconButton
-      type="button"
-      [attr.aria-label]="
-        (quantity() <= minLimit() ? 'products.remove' : 'products.decrement')
-          | translate: { value: product().name }
-      "
-      [class]="quantity() <= minLimit() ? 'remove-button' : 'decrement-button'"
-      (click)="decrement()">
-      @if (quantity() <= minLimit()) {
-        <mat-icon aria-hidden="true">delete_outline</mat-icon>
-      } @else {
-        <mat-icon aria-hidden="true">remove</mat-icon>
-      }
-    </button>
+  <div class="w-full flex items-center" [class.gap-4]="mode() === 'detail'">
+    <div
+      class="flex h-14 items-center justify-between border border-primary-200 rounded-2xl py-1 pl-1 pr-1 transition-all"
+      role="group"
+      [class.bg-primary-50]="mode() !== 'detail'"
+      [class.bg-white]="mode() === 'detail'"
+      [class.w-full]="mode() === 'card'"
+      [class.w-auto]="mode() === 'detail'"
+      [class.sm:w-48]="mode() === 'detail'"
+      [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }">
+      <button
+        matIconButton
+        type="button"
+        [disabled]="mode() === 'detail' && quantity() <= minLimit()"
+        [attr.aria-label]="
+          (quantity() <= minLimit() && mode() === 'card' ? 'products.remove' : 'products.decrement')
+            | translate: { value: product().name }
+        "
+        [class]="
+          quantity() <= minLimit() && mode() === 'card' ? 'remove-button' : 'decrement-button'
+        "
+        (click)="onDecrementClick($event)">
+        @if (quantity() <= minLimit() && mode() === 'card') {
+          <mat-icon aria-hidden="true">delete_outline</mat-icon>
+        } @else {
+          <mat-icon aria-hidden="true">remove</mat-icon>
+        }
+      </button>
 
-    <label
-      class="flex flex-1 items-baseline justify-center not-first-of-type:cursor-text"
-      [attr.for]="'qty-' + product().id">
-      <input
-        #qtyInput
-        matInput
-        readonly
-        type="number"
-        class="w-fit font-bold text-neutral-700 text-end no-spinners border-none focus:outline-none cursor-default"
-        [id]="'qty-' + product().id"
-        [value]="quantity()"
-        [step]="step()"
-        [min]="minLimit()"
-        [max]="maxLimit()"
-        [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }"
-        (change)="onManualInput($event)"
-        (keydown.enter)="qtyInput.blur()" />
-      <span class="text-neutral-600 text-md" aria-hidden="true">{{
-        `products.unit-abbreviation.${product().unitType}` | translate
-      }}</span>
-    </label>
+      <label
+        class="flex flex-2 items-baseline justify-center not-first-of-type:cursor-text"
+        [attr.for]="'qty-' + product().id">
+        <input
+          #qtyInput
+          matInput
+          readonly
+          type="number"
+          class="w-fit font-bold text-neutral-700 text-end no-spinners border-none focus:outline-none cursor-default"
+          [id]="'qty-' + product().id"
+          [value]="quantity()"
+          [step]="step()"
+          [min]="minLimit()"
+          [max]="maxLimit()"
+          [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }"
+          (change)="onManualInput($event)"
+          (keydown.enter)="qtyInput.blur()" />
+        <span class="text-neutral-600 text-md" aria-hidden="true">{{
+          `products.unit-abbreviation.${product().unitType}` | translate
+        }}</span>
+      </label>
 
-    <button
-      matIconButton
-      type="button"
-      class="increment-button"
-      [disabled]="quantity() >= maxLimit()"
-      [attr.aria-label]="`${('products.increment' | translate)} ${product().name}`"
-      [attr.aria-disabled]="quantity() >= maxLimit()"
-      [class.opacity-50]="quantity() >= maxLimit()"
-      (click)="increment()">
-      <mat-icon aria-hidden="true">add</mat-icon>
-    </button>
+      <button
+        matIconButton
+        type="button"
+        class="increment-button"
+        [disabled]="quantity() >= maxLimit()"
+        [attr.aria-label]="`${('products.increment' | translate)} ${product().name}`"
+        [attr.aria-disabled]="quantity() >= maxLimit()"
+        [class.opacity-50]="quantity() >= maxLimit()"
+        (click)="onIncrementClick($event)">
+        <mat-icon aria-hidden="true">add</mat-icon>
+      </button>
+    </div>
+
+    @if (mode() === 'detail') {
+      <button
+        matButton="filled"
+        class="add-button detail-button grow flex items-center justify-center gap-1 uppercase tracking-wide transition-all"
+        (click)="addToCart.emit(quantity())">
+        <mat-icon class="scale-125">shopping_cart</mat-icon>
+        Afegir al cabàs
+      </button>
+    }
   </div>
 }

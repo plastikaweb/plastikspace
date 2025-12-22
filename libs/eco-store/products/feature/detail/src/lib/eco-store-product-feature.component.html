@@ -1,0 +1,271 @@
+@let productData = product();
+
+@if (productData) {
+  <div class="px-4 py-8 detail-container">
+    <!-- Breadcrumbs -->
+    <nav
+      class="flex items-center gap-2 mb-8 text-gray-500 text-sm overflow-x-auto whitespace-nowrap pb-2">
+      <button
+        mat-icon-button
+        type="button"
+        aria-label="Tornar"
+        class="shrink-0"
+        [routerLink]="['/botiga', productData.categorySlug]">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <a
+        class="hover:text-tertiary-700 transition-colors px-2 py-1 rounded hover:bg-gray-50"
+        [routerLink]="['/']"
+        >Inici</a
+      >
+      <mat-icon class="scale-75!">chevron_right</mat-icon>
+      <a
+        class="hover:text-tertiary-700 transition-colors px-2 py-1 rounded hover:bg-gray-50"
+        [routerLink]="['/botiga', productData.categorySlug]">
+        {{ productData.categoryName }}
+      </a>
+      <mat-icon class="scale-75!">chevron_right</mat-icon>
+      <span class="text-tertiary-700 font-medium px-2">{{ productData.name }}</span>
+    </nav>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <!-- Media Section (Left) -->
+      <section class="space-y-6">
+        <div
+          class="relative group aspect-square rounded-3xl overflow-hidden border border-gray-100 shadow-sm">
+          <!-- Badges Overlay -->
+          <div class="absolute top-6 left-6 z-10 max-w-[calc(100%-3rem)]">
+            <mat-chip-set class="flex flex-wrap gap-2" role="list">
+              @for (tag of productTags; track tag.label) {
+                <mat-chip role="listitem" [class]="'shadow-sm ' + tag.class" [disableRipple]="true">
+                  @if (tag.icon) {
+                    <mat-icon matChipAvatar>{{ tag.icon }}</mat-icon>
+                  }
+                  <span class="font-bold tracking-wider uppercase text-xs">{{ tag.label }}</span>
+                </mat-chip>
+              }
+            </mat-chip-set>
+          </div>
+
+          <plastik-img-container
+            class="w-full h-full"
+            [src]="
+              productData
+                | pocketBaseImageUrl
+                  : productData.images?.[activeThumbnailIndex()] || productData.images?.[0] || ''
+            "
+            [title]="productData.name || ''"
+            [lcpImage]="true"
+            [dimensions]="mainImageDimensions" />
+
+          <!-- Favorite Button -->
+        </div>
+
+        <!-- Thumbnail Gallery -->
+        @if (productData.images && productData.images.length > 1) {
+          <div class="flex gap-3 overflow-x-auto pb-4 scrollbar-hide">
+            @for (img of productData.images; track img; let i = $index) {
+              <button
+                type="button"
+                class="relative w-[100px] aspect-square rounded-2xl overflow-hidden border-2 border-transparent transition-all shrink-0 cursor-pointer hover:border-tertiary-200"
+                [class.border-tertiary-400!]="activeThumbnailIndex() === i"
+                [class.opacity-100]="activeThumbnailIndex() === i"
+                [class.opacity-60]="activeThumbnailIndex() !== i"
+                (click)="activeThumbnailIndex.set(i)">
+                <plastik-img-container
+                  class="w-full h-full"
+                  [src]="productData | pocketBaseImageUrl: img"
+                  [title]="`${productData?.name || ''} thumbnail ${i}`"
+                  [dimensions]="thumbnailDimensions"
+                  [lcpImage]="false" />
+              </button>
+            }
+          </div>
+        }
+      </section>
+
+      <!-- Information Section (Right) -->
+      <section class="flex flex-col h-full pl-0 lg:pl-4">
+        <!-- Category Label & Tags -->
+        <div class="mb-4 flex flex-wrap items-center justify-between gap-4">
+          <eco-store-product-category-label
+            size="lg"
+            [name]="productData.categoryName"
+            [color]="productData.categoryColor" />
+        </div>
+
+        <!-- Title -->
+        <div class="flex items-center gap-4 mb-2">
+          <h2 class="text-4xl lg:text-5xl font-extrabold text-tertiary-900 leading-tight">
+            {{ productData.name }}
+          </h2>
+          <eco-store-shared-favorite-button
+            class="shrink-0"
+            size="md"
+            [isFavorite]="isFavorite()"
+            [ariaLabel]="isFavorite() ? 'Treure de preferits' : 'Afegir a preferits'"
+            (toggleFavorite)="toggleFavorite()" />
+        </div>
+
+        <!-- Rating -->
+        <div class="flex items-center gap-3 mb-8">
+          <div class="flex rating-stars">
+            @for (star of [1, 2, 3, 4, 5]; track star) {
+              <mat-icon class="scale-90!">star</mat-icon>
+            }
+          </div>
+          <a
+            href="#"
+            class="text-gray-400 text-sm border-b border-gray-400 hover:text-tertiary-700 transition-colors"
+            (click)="$event.preventDefault()">
+            {{ rating.score }} ({{ rating.count }} valoracions)
+          </a>
+        </div>
+
+        <!-- Price Section -->
+        <div class="bg-[#fcfbf9] rounded-3xl p-8 mb-8 border border-[#f0eee6]">
+          <eco-store-product-price
+            size="detail"
+            [price]="productData.priceWithIva"
+            [unitType]="productData.unitType"
+            [unitBase]="productData.unitBase" />
+
+          <!-- Metadata (Origin & Producer) -->
+          <div class="flex flex-col gap-3 mb-8 mt-2">
+            @if (productData.origin) {
+              <div class="flex items-center gap-3 text-tertiary-900">
+                <mat-icon class="metadata-icon">public</mat-icon>
+                <span class="text-base"
+                  ><span class="font-normal text-gray-500">Origen:</span>
+                  <span class="font-bold ml-1">{{ productData.origin }}</span></span
+                >
+              </div>
+            }
+            @if (productData.provider) {
+              <div class="flex items-center gap-3 text-tertiary-900">
+                <mat-icon class="metadata-icon">storefront</mat-icon>
+                <span class="text-base"
+                  ><span class="font-normal text-gray-500">Productor:</span>
+                  <a
+                    href="#"
+                    class="font-bold ml-1 underline decoration-1 underline-offset-2 hover:text-primary-700"
+                    >{{ productData.provider }}</a
+                  ></span
+                >
+              </div>
+            }
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-col sm:flex-row items-stretch gap-4 mb-4">
+            <!-- Quantity (Shared Component) -->
+            <div class="w-full">
+              <eco-store-product-card-quantity-control
+                mode="detail"
+                [product]="productData"
+                [quantity]="quantity()"
+                (quantityChange)="onQuantityChange($event)"
+                (addToCart)="addToCart($event)" />
+            </div>
+          </div>
+
+          <!-- Availability Badge -->
+          <div
+            class="flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[#e9f2e4] text-[#4d6600]">
+            <mat-icon class="scale-90!">{{ stockStatus().icon }}</mat-icon>
+            <span class="text-sm font-bold">{{ stockStatus().message }}</span>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="prose prose-lg text-gray-500 mb-12 max-w-none leading-relaxed">
+          <p class="whitespace-pre-wrap">{{ productData.description }}</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Technical Information Section (Full-width) -->
+    @if (productData.features && productData.features.length > 0) {
+      <section class="mt-8 mb-16">
+        <div class="bg-gray-50 rounded-2xl p-8 border border-gray-100">
+          <h3 class="font-bold text-tertiary-900 mb-4 flex items-center gap-2">
+            <mat-icon>info</mat-icon> Detalls i Especificacions
+          </h3>
+
+          <ul class="flex flex-col lg:flex-row! gap-4 flex-wrap">
+            @for (feature of productData.features; track feature) {
+              <li
+                class="flex items-center justify-start gap-2 bg-white px-4 py-2 rounded-lg border border-gray-100 shadow-sm">
+                <div class="w-2 h-2 rounded-full bg-primary-400"></div>
+                <span class="text-neutral-600 font-medium">{{ feature }}</span>
+              </li>
+            }
+          </ul>
+        </div>
+      </section>
+    }
+
+    <!-- Opinions Section Placeholder -->
+    <section class="mt-24 pt-12 border-t border-gray-100">
+      <div class="flex items-center justify-between mb-12">
+        <h2 class="text-3xl font-bold text-tertiary-900 flex items-center gap-4">
+          Opinions
+          <span class="px-4 py-1 bg-gray-100 text-gray-500 rounded-full text-lg font-bold">{{
+            rating.count
+          }}</span>
+        </h2>
+        <button
+          mat-stroked-button
+          color="primary"
+          class="rounded-xl! py-6! px-6! transition-colors hover:bg-primary-50">
+          <mat-icon class="mr-2">edit</mat-icon>
+          Escriure una opinió
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Placeholder Review Cards -->
+        @for (i of [1, 2, 3]; track i) {
+          <div
+            class="p-6 bg-white rounded-3xl border border-gray-100 shadow-sm transition-all hover:shadow-md">
+            <div class="flex items-center gap-4 mb-4">
+              <div
+                class="w-12 h-12 rounded-full bg-tertiary-100 flex items-center justify-center text-tertiary-700 font-bold text-xl">
+                {{ 'U' }}
+              </div>
+              <div>
+                <div class="font-bold text-tertiary-900">Usuari eco-conscient</div>
+                <div class="text-xs text-gray-400">Fa 2 dies</div>
+              </div>
+            </div>
+            <div class="flex text-[#bd5828] mb-4">
+              <mat-icon class="scale-75!">star</mat-icon>
+              <mat-icon class="scale-75!">star</mat-icon>
+              <mat-icon class="scale-75!">star</mat-icon>
+              <mat-icon class="scale-75!">star</mat-icon>
+              <mat-icon class="scale-75!">star</mat-icon>
+            </div>
+            <p class="text-sm text-gray-600 line-clamp-3 leading-relaxed">
+              Molt bon producte, es nota la qualitat dels ingredients. L'envasament és impecable i
+              el gust realment es nota que és ecològic.
+            </p>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Related Products Section -->
+    <section class="mt-16 pt-12 border-t border-gray-100">
+      <h2 class="text-3xl font-bold text-tertiary-900 mb-8">També et podria agradar</h2>
+
+      <div class="products-grid">
+        @for (relatedProduct of relatedProducts(); track relatedProduct.id) {
+          <eco-store-product-card
+            [product]="relatedProduct"
+            [minimalVersion]="true"
+            [isFirst]="false" />
+        }
+      </div>
+    </section>
+  </div>
+}

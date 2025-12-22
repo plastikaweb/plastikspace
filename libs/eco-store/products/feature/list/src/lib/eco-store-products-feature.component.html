@@ -6,33 +6,40 @@
         {{ category()?.icon }}
       </mat-icon>
       <span>{{ category()?.name }}</span>
-      <span class="text-lg font-medium text-gray-400">({{ store.count() }})</span>
+      <span class="text-lg font-medium text-gray-400">({{ productsStore.count() }})</span>
     </h2>
 
     <plastik-sort-selector
-      [options]="store.sortOptions()"
-      [currentSort]="store.sort()"
+      [options]="productsStore.sortOptions()"
+      [currentSort]="productsStore.sort()"
       [translationPrefix]="'products.filter.sort'"
       (sortChange)="sortProducts($event)"></plastik-sort-selector>
   </div>
 
   <!-- Products Grid -->
-  <!-- first 7 items in high screens are marked for LCP -->
   <section class="products-grid" [attr.aria-label]="'a11y.product-list' | translate">
-    @for (item of store.productsWithCategoryName(); track item.id; let i = $index) {
-      <eco-store-product-card
-        [product]="item"
-        [isFirst]="i < 7"
-        (addToCart)="addToCart($event)"
-        (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
+    @if (activityStore.isActive()) {
+      @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+        <eco-store-product-card />
+      }
+    } @else {
+      @for (item of productsStore.productsWithTranslatedText(); track item.id; let i = $index) {
+        <eco-store-product-card
+          [product]="item"
+          [isFirst]="i < 6"
+          (addToCart)="addToCart($event)"
+          (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
+      }
     }
   </section>
 
-  <plastik-pagination
-    class="mt-6"
-    plastikPocketbasePaginationNavigation
-    [pageSize]="store.getPagination().perPage"
-    [pageIndex]="store.getPagination().page"
-    [pageSizeOptions]="store.paginationSizeOptions()"
-    [count]="store.count()" />
+  @if (!activityStore.isActive()) {
+    <plastik-pagination
+      class="mt-6"
+      plastikPocketbasePaginationNavigation
+      [pageSize]="productsStore.getPagination().perPage"
+      [pageIndex]="productsStore.getPagination().page"
+      [pageSizeOptions]="productsStore.paginationSizeOptions()"
+      [count]="productsStore.count()" />
+  }
 </div>

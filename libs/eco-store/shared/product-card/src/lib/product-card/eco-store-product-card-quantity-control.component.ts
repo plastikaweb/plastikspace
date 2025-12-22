@@ -17,11 +17,12 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 })
 export class EcoStoreProductCardQuantityControlComponent {
   product = input.required<EcoStoreProductWithCategoryName>();
-
   quantity = input<number>(0);
   quantityChange = output<number>();
+  mode = input<'card' | 'detail'>('card');
+  addToCart = output<number>();
 
-  protected readonly isInCart = computed(() => this.quantity() > 0);
+  protected readonly isInCart = computed(() => this.quantity() > 0 || this.mode() === 'detail');
 
   protected readonly step = computed(() => {
     const type = this.product().unitType;
@@ -47,6 +48,13 @@ export class EcoStoreProductCardQuantityControlComponent {
     this.validateAndSet(next);
   }
 
+  onIncrementClick(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    this.increment();
+  }
+
   increment() {
     if (this.quantity() === 0 && this.minLimit() > 0) {
       this.validateAndSet(this.minLimit());
@@ -55,10 +63,19 @@ export class EcoStoreProductCardQuantityControlComponent {
     this.updateQuantity(this.step());
   }
 
+  onDecrementClick(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    this.decrement();
+  }
+
   decrement() {
     const current = this.quantity();
 
     if (current <= this.minLimit()) {
+      if (this.mode() === 'detail') return;
+
       this.quantityChange.emit(0);
       return;
     }
@@ -67,6 +84,9 @@ export class EcoStoreProductCardQuantityControlComponent {
   }
 
   onManualInput(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
     const inputElement = event.target as HTMLInputElement;
     const value = parseFloat(inputElement.value);
 

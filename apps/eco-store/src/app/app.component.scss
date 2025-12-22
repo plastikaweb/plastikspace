@@ -3,10 +3,6 @@
 :host {
   display: block;
 
-  .mat-drawer-container {
-    background-color: var(--transparent);
-  }
-
   .fade-in {
     @starting-style {
       opacity: 0;

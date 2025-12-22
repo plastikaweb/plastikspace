@@ -20,6 +20,7 @@ import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocke
  * @param {object} root0 - Configuration object.
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
+ * @param root0.customInitialState
  * @returns {SignalStoreFeature} A signal store feature with CRUD operations.
  */
 export function withPocketBaseCrud<

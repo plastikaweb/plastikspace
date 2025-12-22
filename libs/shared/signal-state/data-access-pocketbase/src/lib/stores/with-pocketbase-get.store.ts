@@ -15,6 +15,7 @@ import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocke
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
  * @param {Partial<PocketBaseGetListState>} root0.customInitialState - Optional custom initial state.
+ * @param {boolean} root0.autoLoad - Whether to automatically load list on init (default: true).
  * @returns {SignalStoreFeature} A signal store feature with list and single item operations.
  */
 export function withPocketBaseGet<
@@ -25,16 +26,19 @@ export function withPocketBaseGet<
   featureName,
   dataServiceType,
   customInitialState,
+  autoLoad = true,
 }: {
   featureName: string;
   dataServiceType: Type<S>;
   customInitialState: Partial<STATE>;
+  autoLoad?: boolean;
 }) {
   return signalStoreFeature(
     withPocketBaseListFeature<T, S>({
       featureName,
       dataServiceType,
       customInitialState,
+      autoLoad,
     }),
 
     withPocketBaseGetOneFeature<T, S>({ featureName })

@@ -93,6 +93,7 @@
   },
   "search": {
     "placeholder": "Buscar productos o categorías",
-    "label": "Buscar productos o categorías"
+    "label": "Buscar productos o categorías",
+    "submit": "Buscar"
   }
 }

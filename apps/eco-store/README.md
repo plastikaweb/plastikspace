@@ -14,6 +14,7 @@
     - [🧪 Quality \& Testing](#-quality--testing)
   - [Architecture \& Libraries](#architecture--libraries)
     - [📦 Products](#-products)
+    - [🧰 Shared Utils](#-shared-utils)
     - [🚀 Core Features](#-core-features)
 
 ## Description
@@ -60,10 +61,13 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 
 ### 📦 Products
 
+- [**Feature Detail**](../../libs/eco-store/products/feature/detail/README.md): Product detail view.
 - [**Feature List**](../../libs/eco-store/products/feature/list/README.md): Main product browsing interface.
 - [**Data Access**](../../libs/eco-store/products/data-access/README.md): Product state and API services.
 - [**Categories**](../../libs/eco-store/product-categories/data-access/README.md): Category management.
 - [**Product Card**](../../libs/eco-store/shared/product-card/README.md): Shared product card component.
+- [**Product Price**](../../libs/eco-store/shared/product-price/README.md): Price display and unit components.
+- [**Category Label**](../../libs/eco-store/shared/product-category-label/README.md): Category badge component.
 
 ### 🧰 Shared Utils
 

@@ -1,3 +1,4 @@
+@use 'sass:map';
 @use '@angular/material' as mat;
 
 :host {
@@ -5,7 +6,19 @@
     (
       container-background-color: var(--transparent),
       container-shape: 0,
-      container-width: 285px,
+      container-width: 320px,
     )
   );
+
+  .mat-drawer-container {
+    background-color: var(--transparent);
+  }
+
+  .mat-drawer-transition .mat-drawer-content {
+    transition-duration: 10ms !important;
+  }
+
+  .mat-drawer {
+    transition-duration: 10ms !important;
+  }
 }

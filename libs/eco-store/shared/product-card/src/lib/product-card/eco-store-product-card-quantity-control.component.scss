@@ -16,6 +16,30 @@
         )
       );
 
+      &.detail-button {
+        @include mat.button-overrides(
+          (
+            filled-container-color: var(--primary-600),
+            filled-label-text-color: var(--primary-50),
+          )
+        );
+
+        &:hover {
+          @include mat.button-overrides(
+            (
+              filled-container-color: var(--primary-500),
+              filled-label-text-color: var(--primary-50),
+            )
+          );
+        }
+
+        @include mat.icon-overrides(
+          (
+            color: var(--primary-50),
+          )
+        );
+      }
+
       &:hover {
         @include mat.button-overrides(
           (
@@ -38,6 +62,13 @@
     &.remove-button {
       background-color: var(--primary-100);
       color: var(--primary-500);
+
+      // Explicitly set icon color to current color to avoid external overrides
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-500),
+        )
+      );
     }
 
     &.increment-button:hover,
@@ -71,12 +102,11 @@
 
     &[disabled] {
       background-color: var(--neutral-100) !important;
-      color: var(--neutral-700) !important;
+      color: var(--neutral-200) !important;
 
-      @include mat.icon-button-overrides(
+      @include mat.icon-overrides(
         (
-          icon-color: var(--neutral-700),
-          state-layer-color: var(--neutral-700),
+          color: var(--gray-200),
         )
       );
     }
