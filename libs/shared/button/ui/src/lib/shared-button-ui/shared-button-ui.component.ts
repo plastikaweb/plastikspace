@@ -1,9 +1,9 @@
 import { NgClass, NgTemplateOutlet } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { PushPipe } from '@ngrx/component';
 import { Action } from '@ngrx/store';
-import { ButtonConfig, buttonHasALinkGuard } from '@plastik/shared/button';
+import { ButtonConfig, ButtonConfigWithAction, buttonHasALinkGuard } from '@plastik/shared/button';
 import { ReturnAsObservablePipe } from '@plastik/shared/return-as-observable';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
@@ -25,16 +25,27 @@ export class SharedButtonUiComponent {
    * @description A configuration object that passes a button configuration to build the button.
    * @param {ButtonConfig} config
    */
-  @Input() config!: ButtonConfig;
+  config = input.required<ButtonConfig>();
+
+  /**
+   * @description Computed signal that returns the link from config if it's a link type button
+   */
+  linkHref = computed(() => {
+    const cfg = this.config();
+    return buttonHasALinkGuard(cfg) ? cfg.link : undefined;
+  });
 
   /**
    * @description Emits the attached button action on button click.
    */
-  @Output() sendAction: EventEmitter<() => Action> = new EventEmitter();
+  sendAction = output<() => Action>();
 
   onClick(): void {
-    if (!buttonHasALinkGuard(this.config)) {
-      this.sendAction.emit(this.config.doAction);
+    if (!buttonHasALinkGuard(this.config())) {
+      const action = (this.config() as ButtonConfigWithAction).doAction?.();
+      if (action) {
+        this.sendAction.emit(() => action);
+      }
     }
   }
 }
