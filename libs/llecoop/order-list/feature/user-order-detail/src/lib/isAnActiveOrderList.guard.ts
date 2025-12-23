@@ -16,8 +16,8 @@ export const isAnActiveOrderListGuard: CanActivateFn = () => {
   const currentUserOrder = toObservable(userOrderStore.currentUserOrder);
   const currentOrderList = toObservable(orderListStore.currentOrderList);
 
-  return combineLatest([currentUserOrder, currentOrderList]).pipe(
-    map(([currentUserOrder, currentOrderList]) => {
+  return combineLatest({ currentUserOrder, currentOrderList }).pipe(
+    map(({ currentUserOrder, currentOrderList }) => {
       if (!currentUserOrder && !!currentOrderList) {
         return true;
       }

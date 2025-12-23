@@ -5,8 +5,7 @@ import { Observable } from 'rxjs';
 // DATA GET LIST //
 
 /**
- * Contract for a service that retrieves collections of items.
- * Use this when you only need to fetch lists of data.
+ * @description Contract for a service that retrieves collections of items. Use this when you only need to fetch lists of data.
  * @template T - Entity type returned by the service.
  * @template TList - Payload type returned by the list endpoint.
  * @template PARAMS - Optional parameter object passed to the request.
@@ -46,13 +45,12 @@ export interface DataGetList<T extends BaseEntity, TList, PARAMS = Record<string
 }
 
 /**
- * Creates an injection token for a data list service.
- * Use this when you only need to fetch lists of data.
- * @param description
+ * @description Creates an injection token for a data list service. Use this when you only need to fetch lists of data.
+ * @param {string} description - Token description for debugging purposes.
+ * @returns {InjectionToken<DataGetList<T, TList, PARAMS>>} An injection token for the service.
  * @template T - Entity type returned by the service.
  * @template TList - Payload type returned by the list endpoint.
  * @template PARAMS - Optional parameter object passed to the request.
- * @returns {InjectionToken} An injection token for the service.
  * @example
  * ```typescript
  * const PRODUCT_LIST_SERVICE = createDataGetListServiceToken<Product, ProductList, Partial<ProductSearchParams>>(
@@ -77,8 +75,7 @@ export function createDataGetListServiceToken<
 // DATA GET ONE //
 
 /**
- * Contract for retrieving a single entity by identifier.
- * Use this when you only need to fetch individual items.
+ * @description Contract for retrieving a single entity by identifier. Use this when you only need to fetch individual items.
  * @template T - Entity type returned by the service.
  * @example
  * ```typescript
@@ -95,11 +92,10 @@ export interface DataGetOne<T extends BaseEntity> {
 }
 
 /**
- * Creates an injection token for a data get service (single item only).
- * Use this when you only need to fetch individual items.
- * @param description
+ * @description Creates an injection token for a data get service (single item only). Use this when you only need to fetch individual items.
+ * @param {string} description - Token description for debugging purposes.
+ * @returns {InjectionToken<DataGetOne<T>>} An injection token for the service.
  * @template T - Entity type returned by the service.
- * @returns {InjectionToken} An injection token for the service.
  * @example
  * ```typescript
  * const PRODUCT_GET_SERVICE = createDataGetOneServiceToken<Product>(
@@ -122,9 +118,7 @@ export function createDataGetOneServiceToken<T extends BaseEntity>(
 // DATA GET LIST + ONE //
 
 /**
- * Contract for a service that retrieves both collections and individual items.
- * Use this when you need both list and detail fetching capabilities.
- * Combines DataGetList and DataGetOne interfaces.
+ * @description Contract for a service that retrieves both collections and individual items. Use this when you need both list and detail fetching capabilities. Combines DataGetList and DataGetOne interfaces.
  * @template T - Entity type returned by the service.
  * @template TList - Payload type returned by the list endpoint.
  * @template PARAMS - Optional parameter object passed to the list request.
@@ -146,13 +140,12 @@ export interface DataGet<T extends BaseEntity, TList, PARAMS = Record<string, un
   extends DataGetList<T, TList, PARAMS>, DataGetOne<T> {}
 
 /**
- * Creates an injection token for a data get service with list capabilities.
- * Use this when you need both list and detail fetching (combines DataGetList + DataGetOne).
- * @param description
+ * @description Creates an injection token for a data get service with list capabilities. Use this when you need both list and detail fetching (combines DataGetList + DataGetOne).
+ * @param {string} description - Token description for debugging purposes.
+ * @returns {InjectionToken<DataGet<T, TList, PARAMS>>} An injection token for the service.
  * @template T - Entity type returned by the service.
  * @template TList - Payload type returned by the list endpoint.
  * @template PARAMS - Optional parameter object passed to the list request.
- * @returns {InjectionToken} An injection token for the service.
  * @example
  * ```typescript
  * const PRODUCT_SERVICE = createDataGetServiceToken<Product, Product[], ProductSearchParams>(

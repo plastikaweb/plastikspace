@@ -14,7 +14,7 @@ import { withPocketBaseListFeature } from '../pocketbase.features';
  * @param {object} root0 - Configuration object.
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
- * @param root0.customInitialState
+ * @param {Partial<PocketBaseGetListState>} root0.customInitialState - Optional custom initial state for the store.
  * @returns {SignalStoreFeature} A signal store feature with list operations.
  */
 export function withPocketBaseGetList<

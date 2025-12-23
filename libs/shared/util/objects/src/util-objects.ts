@@ -2,7 +2,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
  * @description Check if an array or object are empty.
- * @param {any} obj Object parameter passed.
+ * @param {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +12,7 @@ export function isEmpty(obj: any): boolean {
 
 /**
  * @description Check if passed parameter is a string.
- * @param {any} obj Object parameter passed.
+ * @param {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,7 +31,7 @@ export function isNil(value: unknown): boolean {
 
 /**
  * @description Check if passed parameter is an object.
- * @param  {any} obj Object parameter passed.
+ * @param  {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,7 +63,7 @@ export function getQueryParams(
 
 /**
  * @description Given an URL or a name/value pairs object it returns an object with name/value pairs of all the query params available.
- * @param {any} params A list of query params.
+ * @param {string | Record<string, unknown>} params A list of query params.
  * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
  * @returns {Record<string, unknown>}.
  */

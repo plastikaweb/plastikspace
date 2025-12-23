@@ -30,11 +30,11 @@ describe('EcoStoreProductCategoryLabelComponent', () => {
     fixture.componentRef.setInput('size', 'lg');
     fixture.detectChanges();
     expect(component.containerClass()).toContain('gap-3');
-    expect(component.dotSizeClass()).toContain('h-3 w-3');
+    expect(component.dotClass()).toContain('h-3 w-3');
 
     fixture.componentRef.setInput('size', 'sm');
     fixture.detectChanges();
     expect(component.containerClass()).toContain('gap-2');
-    expect(component.dotSizeClass()).toContain('h-2 w-2');
+    expect(component.dotClass()).toContain('h-2 w-2');
   });
 });

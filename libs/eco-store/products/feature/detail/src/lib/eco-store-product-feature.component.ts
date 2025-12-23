@@ -142,15 +142,17 @@ export default class EcoStoreProductFeatureComponent {
     return combined.slice(0, 6);
   });
 
-  toggleFavorite() {
+  toggleFavorite(): void {
     this.isFavorite.update(v => !v);
   }
 
-  onQuantityChange(newQuantity: number) {
+  onQuantityChange(newQuantity: number): void {
     this.quantity.set(newQuantity);
   }
 
-  addToCart(_quantity: number) {
+  addToCart(_quantity: number): void {
+    // eslint-disable-next-line no-console
+    console.log(_quantity);
     // TODO: Connect to cart store/service when available
   }
 }

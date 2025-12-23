@@ -87,15 +87,14 @@ export interface DataCrud<
 }
 
 /**
- * Creates an injection token for a full CRUD data service.
- * Use this when you need complete create, read, update, delete functionality.
- * @param description
+ * @description Creates an injection token for a full CRUD data service. Use this when you need complete create, read, update, delete functionality.
+ * @param {string} description - Token description for debugging purposes.
+ * @returns {InjectionToken<DataCrud<T, TList, PARAMS, DATA, OPTIONS>>} An injection token for the CRUD service.
  * @template T - Entity type returned by the service (with ID).
  * @template TList - Payload type returned by the list endpoint.
  * @template PARAMS - Optional parameter object passed to the list request.
- * @template DATA - Payload structure for create/update operations (deprecated, use DATA instead).
- * @template OPTIONS - Optional write configuration passed to requests.
  * @template DATA - Input type for create/update operations (defaults to Omit<T, 'id'>).
+ * @template OPTIONS - Optional write configuration passed to requests.
  * @example Basic usage
  * ```typescript
  * interface ProductList {

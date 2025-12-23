@@ -19,7 +19,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { getVisibleNavigationList } from '@plastik/core/entities';
-import { ENVIRONMENT, ENVIRONMENT_WITH_API, provideWithApiEnv } from '@plastik/core/environments';
+import { provideWithApiEnv } from '@plastik/core/environments';
 import {
   CustomRouterSerializer,
   PrefixTitleService,

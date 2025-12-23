@@ -13,14 +13,13 @@ import { PocketBaseGetListState, PocketBaseListParams } from '../pocketbase-stor
 import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocketbase.features';
 
 /**
- * Store feature for full CRUD operations with PocketBase.
- * Use this when you need complete create, read, update, delete functionality.
+ * @description Store feature for full CRUD operations with PocketBase. Use this when you need complete create, read, update, delete functionality.
  * @template T - The entity type.
  * @template S - The service type.
  * @param {object} root0 - Configuration object.
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
- * @param root0.customInitialState
+ * @param {Partial<PocketBaseGetListState>} root0.customInitialState - Custom initial state for the store.
  * @returns {SignalStoreFeature} A signal store feature with CRUD operations.
  */
 export function withPocketBaseCrud<

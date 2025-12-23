@@ -1,4 +1,3 @@
-import { CommonModule, NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 
 export type ProductCategoryLabelSize = 'sm' | 'md' | 'lg';
@@ -6,17 +5,11 @@ export type ProductCategoryLabelSize = 'sm' | 'md' | 'lg';
 @Component({
   selector: 'eco-store-product-category-label',
   standalone: true,
-  imports: [NgClass],
+  imports: [],
   template: `
-    <div class="flex items-center" [ngClass]="containerClass()">
-      <div
-        class="rounded-full shrink-0"
-        [ngClass]="dotSizeClass()"
-        [style.background-color]="color()"></div>
-      <div
-        class="font-bold uppercase tracking-wider"
-        [ngClass]="textSizeClass()"
-        [style.color]="color()">
+    <div [class]="containerClass()">
+      <div [class]="dotClass()" [style.background-color]="color()"></div>
+      <div [class]="textClass()" [style.color]="color()">
         {{ name() }}
       </div>
     </div>
@@ -36,38 +29,19 @@ export class EcoStoreProductCategoryLabelComponent {
   size = input<ProductCategoryLabelSize>('sm');
 
   containerClass = computed(() => {
-    switch (this.size()) {
-      case 'lg':
-        return 'gap-3';
-      case 'md':
-        return 'gap-2.5';
-      case 'sm':
-      default:
-        return 'gap-2';
-    }
+    const sizeGap = this.size() === 'lg' ? 'gap-3' : this.size() === 'md' ? 'gap-2.5' : 'gap-2';
+    return `flex items-center ${sizeGap}`;
   });
 
-  dotSizeClass = computed(() => {
-    switch (this.size()) {
-      case 'lg':
-        return 'h-3 w-3';
-      case 'md':
-        return 'h-2.5 w-2.5';
-      case 'sm':
-      default:
-        return 'h-2 w-2';
-    }
+  dotClass = computed(() => {
+    const size =
+      this.size() === 'lg' ? 'h-3 w-3' : this.size() === 'md' ? 'h-2.5 w-2.5' : 'h-2 w-2';
+    return `rounded-full shrink-0 ${size}`;
   });
 
-  textSizeClass = computed(() => {
-    switch (this.size()) {
-      case 'lg':
-        return 'text-sm';
-      case 'md':
-        return 'text-[12px]';
-      case 'sm':
-      default:
-        return 'text-[11px]';
-    }
+  textClass = computed(() => {
+    const size =
+      this.size() === 'lg' ? 'text-sm' : this.size() === 'md' ? 'text-[12px]' : 'text-[11px]';
+    return `font-bold uppercase tracking-wider ${size}`;
   });
 }
