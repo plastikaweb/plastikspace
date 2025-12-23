@@ -13,9 +13,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListFeatureListTotalDetailTableConfig
-  implements TableStructureConfig<LlecoopOrderProductTotal>
-{
+export class LlecoopOrderListFeatureListTotalDetailTableConfig implements TableStructureConfig<LlecoopOrderProductTotal> {
   readonly #store = inject(llecoopOrderListStore);
   readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
   readonly #productUnitSuffixPipe = inject(LlecoopProductUnitSuffixPipe);

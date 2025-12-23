@@ -9,9 +9,7 @@ import { categoryFeatureDetailFormConfig } from './category-feature-detail-form.
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopCategoryDetailFacadeService
-  implements DetailItemViewFacade<LlecoopProductCategory>
-{
+export class LlecoopCategoryDetailFacadeService implements DetailItemViewFacade<LlecoopProductCategory> {
   readonly #store = inject(llecoopCategoryStore);
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0];
   model = this.#store.selectedItem;

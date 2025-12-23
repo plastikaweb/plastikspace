@@ -13,19 +13,16 @@ import { FirebaseCrudPagination } from './firebase.types';
  * All operations are controlled by the activeConnection signal.
  * @template T - Type of the entity, must extend BaseEntity.
  */
-export abstract class FirebaseServiceType<T extends BaseEntity>
-  implements
-    DataCrud<
-      T,
-      T[],
-      {
-        pagination: FirebaseCrudPagination<T>;
-        sorting: TableSortingConfig;
-        filter: Record<string, string | null | boolean>;
-      },
-      Partial<T>
-    >
-{
+export abstract class FirebaseServiceType<T extends BaseEntity> implements DataCrud<
+  T,
+  T[],
+  {
+    pagination: FirebaseCrudPagination<T>;
+    sorting: TableSortingConfig;
+    filter: Record<string, string | null | boolean>;
+  },
+  Partial<T>
+> {
   /**
    * Signal that indicates if the connection to Firestore is active.
    * When false, all operations will return empty results and the collection reference will be cleared.

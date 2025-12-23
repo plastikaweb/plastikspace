@@ -143,8 +143,7 @@ export function createDataGetOneServiceToken<T extends BaseEntity>(
  * ```
  */
 export interface DataGet<T extends BaseEntity, TList, PARAMS = Record<string, unknown>>
-  extends DataGetList<T, TList, PARAMS>,
-    DataGetOne<T> {}
+  extends DataGetList<T, TList, PARAMS>, DataGetOne<T> {}
 
 /**
  * Creates an injection token for a data get service with list capabilities.

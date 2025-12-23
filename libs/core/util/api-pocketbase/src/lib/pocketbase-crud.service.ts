@@ -18,9 +18,9 @@ import { POCKETBASE_INSTANCE } from './pocketbase.token';
  * @template PARAMS - The type of parameters for list operations (RecordListOptions or RecordFullListOptions)
  */
 export abstract class PocketBaseCrudService<
-    T extends BasePocketBaseEntity = BasePocketBaseEntity,
-    PARAMS extends RecordListOptions | RecordFullListOptions = RecordListOptions,
-  >
+  T extends BasePocketBaseEntity = BasePocketBaseEntity,
+  PARAMS extends RecordListOptions | RecordFullListOptions = RecordListOptions,
+>
   extends BaseDataService
   implements DataCrud<T, ListResult<T>, PARAMS, Partial<T>, RecordOptions>
 {

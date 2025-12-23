@@ -22,9 +22,10 @@ import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListFeatureListFacadeService
-  implements TableWithFilteringFacade<LlecoopOrder, StoreOrderListFilter>
-{
+export class LlecoopOrderListFeatureListFacadeService implements TableWithFilteringFacade<
+  LlecoopOrder,
+  StoreOrderListFilter
+> {
   orderListTotalDetailTableConfig = inject(LlecoopOrderListFeatureListTotalDetailTableConfig);
   totalTableDefinition = this.orderListTotalDetailTableConfig.getTableDefinition();
 

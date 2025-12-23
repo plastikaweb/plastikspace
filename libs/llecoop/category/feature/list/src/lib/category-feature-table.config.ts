@@ -14,9 +14,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopCategorySearchFeatureTableConfig
-  implements TableStructureConfig<LlecoopProductCategory>
-{
+export class LlecoopCategorySearchFeatureTableConfig implements TableStructureConfig<LlecoopProductCategory> {
   readonly #store = inject(llecoopCategoryStore);
 
   readonly #name: TableColumnFormatting<
