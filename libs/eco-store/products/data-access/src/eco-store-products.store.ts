@@ -1,9 +1,7 @@
 import { updateState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
-import { tapResponse } from '@ngrx/operators';
 import { signalStore, withComputed, withMethods } from '@ngrx/signals';
 import { setEntity } from '@ngrx/signals/entities';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { IdType, LocalizedFields } from '@plastik/core/entities';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
@@ -18,8 +16,7 @@ import {
   PocketBaseGetListState,
   withPocketBaseGet,
 } from '@plastik/signal-state/pocketbase';
-import { ClientResponseError } from 'pocketbase';
-import { firstValueFrom, pipe, switchMap, tap } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 

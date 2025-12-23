@@ -40,7 +40,7 @@ describe('PocketBaseCrudService', () => {
   };
 
   const mockPb = {
-    collection: (name: string) => ({
+    collection: () => ({
       getList: (page: number, perPage: number, _opts: unknown) =>
         Promise.resolve({
           page,
@@ -49,16 +49,15 @@ describe('PocketBaseCrudService', () => {
           totalItems: 1,
           totalPages: 1,
         }),
-      getFullList: (_opts: unknown) => Promise.resolve([baseEntity]),
-      getOne: (_id: string, _opts?: unknown) => Promise.resolve(baseEntity),
-      getFirstListItem: (_filter: string, _opts?: unknown) => Promise.resolve(baseEntity),
-      create: (data: Partial<TestEntity>, _opts?: unknown) =>
-        Promise.resolve({ ...baseEntity, ...data }),
-      update: (_id: string, data: Partial<TestEntity>, _opts?: unknown) =>
+      getFullList: () => Promise.resolve([baseEntity]),
+      getOne: (_id: string) => Promise.resolve(baseEntity),
+      getFirstListItem: (_filter: string) => Promise.resolve(baseEntity),
+      create: (data: Partial<TestEntity>) => Promise.resolve({ ...baseEntity, ...data }),
+      update: (_id: string, data: Partial<TestEntity>) =>
         Promise.resolve({ ...baseEntity, ...data }),
       delete: (_id: string) => Promise.resolve({}),
     }),
-  } as unknown as { collection: (name: string) => any };
+  } as unknown as { collection: () => unknown };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -68,7 +67,7 @@ describe('PocketBaseCrudService', () => {
     service = TestBed.runInInjectionContext(() => new TestPocketBaseCrudService());
   });
 
-  it('getList retorna ListResult amb elements mapejats', async () => {
+  it('getList returns ListResult with mapped elements', async () => {
     const result = await firstValueFrom(service.getList({ page: 2, perPage: 10 }));
     expect(result.page).toBe(2);
     expect(result.perPage).toBe(10);
@@ -76,37 +75,37 @@ describe('PocketBaseCrudService', () => {
     expect(result.items[0].normalizedName).toBe('foo');
   });
 
-  it('getFullList retorna elements mapejats', async () => {
+  it('getFullList returns mapped elements', async () => {
     const items = await firstValueFrom(service.getFullList());
     expect(items.length).toBe(1);
     expect(items[0].normalizedName).toBe('foo');
   });
 
-  it('getOne retorna element mapejat', async () => {
+  it('getOne returns mapped element', async () => {
     const item = await firstValueFrom(service.getOne('1'));
     expect(item.id).toBe('1');
     expect(item.normalizedName).toBe('foo');
   });
 
-  it('getFirstListItem retorna primer element mapejat', async () => {
+  it('getFirstListItem returns mapped element', async () => {
     const item = await firstValueFrom(service.getFirstListItem('name = "Foo"'));
     expect(item.name).toBe('Foo');
     expect(item.normalizedName).toBe('foo');
   });
 
-  it('create retorna element creat mapejat', async () => {
+  it('create returns mapped element', async () => {
     const item = await firstValueFrom(service.create({ extra: 'bar' }));
     expect(item.extra).toBe('bar');
     expect(item.normalizedName).toBe('foo');
   });
 
-  it('update retorna element actualitzat mapejat', async () => {
+  it('update returns mapped element', async () => {
     const item = await firstValueFrom(service.update('1', { name: 'Baz' }));
     expect(item.name).toBe('Baz');
     expect(item.normalizedName).toBe('baz');
   });
 
-  it('delete retorna true', async () => {
+  it('delete returns true', async () => {
     const result = await firstValueFrom(service.delete('1'));
     expect(result).toBe(true);
   });

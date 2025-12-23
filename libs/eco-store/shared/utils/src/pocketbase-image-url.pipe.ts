@@ -11,10 +11,10 @@ export interface PocketBaseImageSource {
 })
 export class PocketBaseImageUrlPipe implements PipeTransform {
   /**
-   * Transforms a product (or source with collectionId and id) and an image filename into a PocketBase URL fragment.
-   * @param source An object containing collectionId and id.
-   * @param image The filename of the image.
-   * @returns The formatted URL fragment: `collectionId/id/image` or null if image is missing.
+   * @description Transforms a product (or source with collectionId and id) and an image filename into a PocketBase URL fragment.
+   * @param {PocketBaseImageSource | null | undefined} source An object containing collectionId and id.
+   * @param {string | null | undefined} image The filename of the image.
+   * @returns {string | null} The formatted URL fragment: `collectionId/id/image` or null if image is missing.
    */
   transform(
     source: PocketBaseImageSource | null | undefined,
@@ -25,10 +25,10 @@ export class PocketBaseImageUrlPipe implements PipeTransform {
 }
 
 /**
- * Returns the PocketBase image URL fragment for a given source and image filename.
- * @param source An object containing collectionId and id.
- * @param image The filename of the image.
- * @returns The formatted URL fragment: `collectionId/id/image` or null if image is missing.
+ * @description Returns the PocketBase image URL fragment for a given source and image filename.
+ * @param {PocketBaseImageSource | null | undefined} source An object containing collectionId and id.
+ * @param {string | null | undefined} image The filename of the image.
+ * @returns {string | null} The formatted URL fragment: `collectionId/id/image` or null if image is missing.
  */
 export function getPocketBaseImageUrl(
   source: PocketBaseImageSource | null | undefined,
