@@ -49,13 +49,13 @@ import {
   isEmpty,
   isNil,
   selectNasaImagesFeature
-} from "./chunk-W2LTOOU4.js";
+} from "./chunk-BTZLTBRN.js";
 import {
   TranslateModule,
   _DisposeViewRepeaterStrategy,
   provideEffects,
   selectRouteQueryParams
-} from "./chunk-WMJIGVAW.js";
+} from "./chunk-FOZMDWVL.js";
 import {
   LetDirective,
   PushPipe,
@@ -15313,7 +15313,7 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
    * @template T - The type of the attributes.
    * @param { string } value The value to format.
    * @param { PropertyFormattingConf } param The control configuration to format the object property value.
-   * @param { Function } param.execute  The function to execute to format the value.
+   * @param { (value: string, element?: T, index?: number, extras?: unknown) => FormattingOutput } param.execute  The function to execute to format the value.
    * @param { T } element The whole item object where the formatting property belongs.
    * @param { number } index The index of the object i a list (f.e. a table).
    * @param { T } extraConfig Extra configuration object to format values when defining `execute` method blueprint.
@@ -15367,7 +15367,7 @@ var DataFormatFactoryService = class _DataFormatFactoryService {
    * @description Factory to get the correct formatted value from item property with a custom formatting option.
    * @param { unknown } item  The object to extract value from.
    * @param { PropertyFormatting } param The control configuration to format the object property value.
-   * @param { string | Function } param.key The property of the object which value is going to be formatted.
+   * @param { string | ((item: T) => unknown) } param.key The property of the object which value is going to be formatted or a function to compute it.
    * @param { PropertyFormattingConf } param.formatting The formatting configuration for a concrete property object.
    * @param {number } index Index to custom formatters (f.e. a table indexing)
    * @param {unknown } extraConfig Extra configuration object to format values specially when using custom formatters.
@@ -17608,4 +17608,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-YUMC3WZK.js.map
+//# sourceMappingURL=src-J3DYNOEP.js.map

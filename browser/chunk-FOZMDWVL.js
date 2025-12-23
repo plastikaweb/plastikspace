@@ -1956,6 +1956,7 @@ var NavigationService = class _NavigationService {
   /**
    * @description Navigate to a concrete URL with params and extras if needed.
    * @param { NavigationProps } navigationProps The navigation configuration properties.
+   * @returns {Promise<boolean>} A promise that resolves to true if navigation succeeds.
    */
   navigate({ path, extras }) {
     return this.#router.navigate(path, {
@@ -1967,6 +1968,7 @@ var NavigationService = class _NavigationService {
    * @description Go back to previous URL.
    * @param {string} backBaseUrl The default back URL. Use it when we have no navigation history.
    * @param {RegExp} regex An instruction to accomplish when we want to redirect to an specific previous URL that must satisfy the regex pattern.
+   * @returns {Promise<void>} A promise that resolves when the navigation is complete.
    */
   async back(backBaseUrl, regex) {
     if (this.#history.length && regex) {
@@ -3628,4 +3630,4 @@ export {
   PrefixTitleService,
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-WMJIGVAW.js.map
+//# sourceMappingURL=chunk-FOZMDWVL.js.map
