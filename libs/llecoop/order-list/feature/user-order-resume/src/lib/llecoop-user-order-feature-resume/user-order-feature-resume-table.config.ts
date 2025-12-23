@@ -15,9 +15,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserOrderResumeTableConfig
-  implements TableStructureConfig<LlecoopOrderProduct>
-{
+export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<LlecoopOrderProduct> {
   readonly #sanitizer = inject(DomSanitizer);
   readonly #store = inject(llecoopUserOrderStore);
   readonly #productBaseUnitTextPipe = inject(LlecoopProductBaseUnitTextPipe);

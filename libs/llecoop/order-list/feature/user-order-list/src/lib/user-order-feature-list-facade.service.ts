@@ -20,9 +20,10 @@ import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-t
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserOrderListFacadeService
-  implements TableWithFilteringFacade<LlecoopUserOrder, StoreUserOrderFilter>
-{
+export class LlecoopUserOrderListFacadeService implements TableWithFilteringFacade<
+  LlecoopUserOrder,
+  StoreUserOrderFilter
+> {
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);

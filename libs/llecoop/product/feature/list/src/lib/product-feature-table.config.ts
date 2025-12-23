@@ -15,9 +15,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopProductSearchFeatureTableConfig
-  implements TableStructureConfig<LlecoopProduct>
-{
+export class LlecoopProductSearchFeatureTableConfig implements TableStructureConfig<LlecoopProduct> {
   readonly #store = inject(llecoopProductStore);
 
   readonly #image: TableColumnFormatting<LlecoopProduct, 'COMPONENT', SharedImgContainerComponent> =

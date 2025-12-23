@@ -95,9 +95,9 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   styleUrl: './shared-table-ui.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
-  implements OnInit
-{
+export class SharedTableUiComponent<
+  T extends BaseEntity & { [key: string]: unknown },
+> implements OnInit {
   protected dataFormatFactoryService = inject(DataFormatFactoryService);
   /**
    * Data that will populate the table.

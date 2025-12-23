@@ -9,13 +9,15 @@ export interface PocketBaseListStore<T extends BasePocketBaseEntity = BasePocket
   getList(): void;
 }
 
-export interface PocketBaseGetStore<T extends BasePocketBaseEntity = BasePocketBaseEntity>
-  extends PocketBaseListStore<T> {
+export interface PocketBaseGetStore<
+  T extends BasePocketBaseEntity = BasePocketBaseEntity,
+> extends PocketBaseListStore<T> {
   getOne(id: IdType<T>): void;
 }
 
-export interface PocketBaseCrudStore<T extends BasePocketBaseEntity = BasePocketBaseEntity>
-  extends PocketBaseGetStore<T> {
+export interface PocketBaseCrudStore<
+  T extends BasePocketBaseEntity = BasePocketBaseEntity,
+> extends PocketBaseGetStore<T> {
   create(payload: { data: Partial<T>; options?: RecordOptions }): void;
   update(payload: { id: IdType<T>; data: Partial<T>; options?: RecordOptions }): void;
   delete(id: IdType<T>): void;

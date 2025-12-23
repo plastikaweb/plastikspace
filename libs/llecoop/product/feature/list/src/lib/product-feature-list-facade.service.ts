@@ -16,9 +16,10 @@ import { LlecoopProductSearchFeatureTableConfig } from './product-feature-table.
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopProductListFacadeService
-  implements TableWithFilteringFacade<LlecoopProduct, StoreProductFilter>
-{
+export class LlecoopProductListFacadeService implements TableWithFilteringFacade<
+  LlecoopProduct,
+  StoreProductFilter
+> {
   readonly #productStore = inject(llecoopProductStore);
   readonly #table = inject(LlecoopProductSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);

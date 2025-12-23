@@ -14,10 +14,10 @@ import { catchError, map, Observable, ReplaySubject, share, timer } from 'rxjs';
  * @template PARAMS - The parameters type for the API call (extends Params)
  */
 export abstract class HttpCrudService<
-    T extends BaseEntity,
-    TListResult = T[],
-    PARAMS extends Params = Params,
-  >
+  T extends BaseEntity,
+  TListResult = T[],
+  PARAMS extends Params = Params,
+>
   extends BaseDataService
   implements DataCrud<T, TListResult, PARAMS, Partial<T>>
 {

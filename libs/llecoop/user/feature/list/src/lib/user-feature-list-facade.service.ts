@@ -16,9 +16,10 @@ import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserListFacadeService
-  implements TableWithFilteringFacade<LlecoopUser, StoreUserFilter>
-{
+export class LlecoopUserListFacadeService implements TableWithFilteringFacade<
+  LlecoopUser,
+  StoreUserFilter
+> {
   readonly #store = inject(llecoopUserStore);
   readonly #table = inject(LlecoopUserSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);

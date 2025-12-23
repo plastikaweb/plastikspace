@@ -20,9 +20,10 @@ import { OrderListUserOrderResumeFormConfig } from './order-list-user-order-resu
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListUserOrderFeatureListFacadeService
-  implements TableWithFilteringFacade<LlecoopUserOrder, StoreUserOrderFilter>
-{
+export class LlecoopOrderListUserOrderFeatureListFacadeService implements TableWithFilteringFacade<
+  LlecoopUserOrder,
+  StoreUserOrderFilter
+> {
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #table = inject(LlecoopOrderListUserOrderFeatureListTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
