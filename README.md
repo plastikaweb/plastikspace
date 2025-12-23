@@ -85,15 +85,14 @@ Common Nx commands:
 
 ## 📱 Applications
 
-| Application                                             | Description                      |
-| :------------------------------------------------------ | :------------------------------- |
-| [**nasa-images**](apps/nasa-images/README.md)           | NASA Image Gallery               |
-| [**experimental**](apps/experimental/README.md)         | Experimental features playground |
-| [**llecoop**](apps/llecoop/README.md)                   | Llecoop main application         |
-| [**llecoop-firebase**](apps/llecoop-firebase/README.md) | Firebase functions for Llecoop   |
-| [**llecoop-triggers**](apps/llecoop-triggers/README.md) | Triggers for Llecoop             |
-| [**plastikaweb**](apps/plastikaweb/README.md)           | Personal website                 |
-| [**eco-store**](apps/eco-store/README.md)               | E-commerce demo                  |
+| Application                                             | Description                    |
+| :------------------------------------------------------ | :----------------------------- |
+| [**nasa-images**](apps/nasa-images/README.md)           | NASA Image Gallery             |
+| [**llecoop**](apps/llecoop/README.md)                   | Llecoop main application       |
+| [**llecoop-firebase**](apps/llecoop-firebase/README.md) | Firebase functions for Llecoop |
+| [**llecoop-triggers**](apps/llecoop-triggers/README.md) | Triggers for Llecoop           |
+| [**plastikaweb**](apps/plastikaweb/README.md)           | Personal website               |
+| [**eco-store**](apps/eco-store/README.md)               | E-commerce demo                |
 
 ## 📚 Libraries
 
