@@ -19,23 +19,19 @@ describe('HexToRgbaPipe', () => {
 
   describe('invalid inputs', () => {
     it('should throw error if hex is shorter than 6 characters', () => {
-      expect(() => pipe.transform('#FF000', 0.5)).toThrowError('Invalid hex color format');
+      expect(() => pipe.transform('#FF000', 0.5)).toThrow('Invalid hex color format');
     });
 
     it('should throw error if hex contains non-hexadecimal characters', () => {
-      expect(() => pipe.transform('#ZZRRGB', 0.5)).toThrowError('Invalid hex color format');
+      expect(() => pipe.transform('#ZZRRGB', 0.5)).toThrow('Invalid hex color format');
     });
 
     it('should throw error if alpha is greater than 1', () => {
-      expect(() => pipe.transform('#FF0000', 2)).toThrowError(
-        'Alpha value must be between 0 and 1'
-      );
+      expect(() => pipe.transform('#FF0000', 2)).toThrow('Alpha value must be between 0 and 1');
     });
 
     it('should throw error if alpha is less than 0', () => {
-      expect(() => pipe.transform('#FF0000', -0.5)).toThrowError(
-        'Alpha value must be between 0 and 1'
-      );
+      expect(() => pipe.transform('#FF0000', -0.5)).toThrow('Alpha value must be between 0 and 1');
     });
   });
 });
