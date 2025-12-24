@@ -1,4 +1,40 @@
-.main-menu button.active {
-  background-color: var(--mat-sys-primary);
-  color: var(--mat-sys-on-primary);
+@use '@angular/material' as mat;
+
+:host {
+  .main-menu button.active {
+    background-color: var(--mat-sys-primary);
+    color: var(--mat-sys-on-primary);
+  }
+}
+
+.bump {
+  animation: bump 200ms ease-out;
+}
+
+@keyframes bump {
+  0% {
+    transform: scale(1);
+    filter: saturate(1);
+    border-width: 1px;
+  }
+  10% {
+    transform: scale(0.95);
+    filter: saturate(1.5);
+    border-width: 2px;
+  }
+  30% {
+    transform: scale(1.05);
+    filter: saturate(5);
+    border-width: 2px;
+  }
+  50% {
+    transform: scale(1.1);
+    filter: saturate(10);
+    border-width: 1px;
+  }
+  100% {
+    transform: scale(1);
+    filter: saturate(1);
+    border-width: 1px;
+  }
 }

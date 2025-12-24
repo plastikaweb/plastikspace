@@ -45,9 +45,8 @@ describe('ecoStoreCartStore', () => {
     const store = setup();
     store.addToCart(mockProduct, 2);
 
-    expect(store.items().length).toBe(1);
     expect(store.items()[0]).toEqual({ id: '1', product: mockProduct, quantity: 2 });
-    expect(store.itemsCount()).toBe(2);
+    expect(store.itemsCount()).toBe(1);
     expect(store.totalAmount()).toBe(20);
   });
 
@@ -61,9 +60,9 @@ describe('ecoStoreCartStore', () => {
     // Code says: _setItem(product, quantity). setEntity({ ... quantity })
     // So it SETS the quantity.
 
-    expect(store.items().length).toBe(1);
     expect(store.items()[0].quantity).toBe(3);
-    expect(store.itemsCount()).toBe(3);
+    expect(store.itemsCount()).toBe(1);
+    expect(store.totalAmount()).toBe(30);
   });
 
   it('should remove item if quantity is <= 0', () => {
@@ -71,7 +70,7 @@ describe('ecoStoreCartStore', () => {
     store.addToCart(mockProduct, 1);
     store.addToCart(mockProduct, 0);
 
-    expect(store.items().length).toBe(0);
+    expect(store.itemsCount()).toBe(0);
     expect(store.isEmpty()).toBe(true);
   });
 
@@ -80,7 +79,7 @@ describe('ecoStoreCartStore', () => {
     store.addToCart(mockProduct, 1);
     store.clearCart();
 
-    expect(store.items().length).toBe(0);
+    expect(store.itemsCount()).toBe(0);
   });
 
   it('should get item count via signal', () => {

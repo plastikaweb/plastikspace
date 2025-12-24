@@ -44,8 +44,14 @@
         </button>
       </li>
       <li>
-        <button matIconButton type="button" [aria-label]="'menu.view-cart' | translate">
+        <button
+          matButton="outlined"
+          type="button"
+          [aria-label]="'menu.view-cart' | translate"
+          [matBadge]="cartStore.itemsCount()"
+          [class.bump]="bumpAnimation()">
           <mat-icon aria-hidden="true">shopping_cart</mat-icon>
+          <span>{{ cartStore.totalAmount() | currency }}</span>
         </button>
       </li>
       <li>

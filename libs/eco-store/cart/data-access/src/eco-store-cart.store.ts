@@ -20,9 +20,9 @@ export const ecoStoreCartStore = signalStore(
   }),
 
   withComputed(({ entities, entityMap }) => ({
-    itemsCount: computed(() => entities().reduce((acc, item) => acc + item.quantity, 0)),
+    itemsCount: computed(() => entities().length),
     totalAmount: computed(() =>
-      entities().reduce((acc, item) => acc + item.quantity * item.product.price, 0)
+      entities().reduce((acc, item) => acc + item.quantity * item.product.priceWithIva, 0)
     ),
     isEmpty: computed(() => entities().length === 0),
     itemsDictionary: computed(() => entityMap()),
