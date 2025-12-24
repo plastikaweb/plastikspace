@@ -1,85 +1,74 @@
 import { computed } from '@angular/core';
-import { signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { signalStore, withComputed, withMethods } from '@ngrx/signals';
 import { updateState, withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
-import type { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { type EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { removeAllEntities, removeEntity, setEntity, withEntities } from '@ngrx/signals/entities';
 
 export interface CartItem {
+  id: string;
   product: EcoStoreProductWithCategoryName;
   quantity: number;
 }
 
-interface CartState {
-  items: CartItem[];
-}
-
-const initialState: CartState = {
-  items: [],
-};
-
 export const ecoStoreCartStore = signalStore(
   { providedIn: 'root' },
   withDevtools('cart'),
-  withState(initialState),
+  withEntities<CartItem>(),
   withStorageSync({
     key: 'eco_cart_v1',
     autoSync: true,
   }),
 
-  withComputed(({ items }) => ({
-    itemsCount: computed(() => items().reduce((acc, item) => acc + item.quantity, 0)),
+  withComputed(({ entities, entityMap }) => ({
+    itemsCount: computed(() => entities().reduce((acc, item) => acc + item.quantity, 0)),
     totalAmount: computed(() =>
-      items().reduce((acc, item) => acc + item.quantity * item.product.price, 0)
+      entities().reduce((acc, item) => acc + item.quantity * item.product.price, 0)
     ),
-    isEmpty: computed(() => items().length === 0),
+    isEmpty: computed(() => entities().length === 0),
+    itemsDictionary: computed(() => entityMap()),
+    items: computed(() => entities()),
   })),
   withMethods(store => {
-    const _addItem = (product: EcoStoreProductWithCategoryName, quantity: number) => {
-      updateState(store, `[cart] addItem ${product.id}`, {
-        items: [...store.items(), { product, quantity }],
-      });
+    const _setItem = (product: EcoStoreProductWithCategoryName, quantity: number) => {
+      updateState(
+        store,
+        `add item ${product.id}`,
+        setEntity({ id: product.id, product, quantity })
+      );
     };
 
-    const _updateItem = (productId: string, quantity: number) => {
-      updateState(store, `[cart] updateItem ${productId}`, {
-        items: store
-          .items()
-          .map(item => (item.product.id === productId ? { ...item, quantity } : item)),
-      });
-    };
-
-    const _removeItem = (productId: string) => {
-      updateState(store, `[cart] removeItem ${productId}`, {
-        items: store.items().filter(item => item.product.id !== productId),
-      });
+    const _removeItem = (productId: EcoStoreProductWithCategoryName['id']) => {
+      updateState(store, `[cart] remove item ${productId}`, removeEntity(productId));
     };
 
     return {
-      addToCart: (product: EcoStoreProductWithCategoryName, quantity = 1) => {
-        const existingItem = store.items().find(item => item.product.id === product.id);
+      getItemCount(productId: EcoStoreProductWithCategoryName['id']) {
+        return computed(() => {
+          return store.entityMap()[productId]?.quantity ?? 0;
+        });
+      },
+
+      addToCart(product: EcoStoreProductWithCategoryName, quantity = 1) {
+        const productId = product.id;
+        const existingItem = store.entityMap()[productId];
 
         if (quantity <= 0) {
-          if (existingItem) _removeItem(product.id);
+          if (existingItem) {
+            _removeItem(productId);
+          }
           return;
         }
 
-        if (existingItem) {
-          _updateItem(product.id, quantity);
-        } else {
-          _addItem(product, quantity);
-        }
+        _setItem(product, quantity);
       },
 
-      removeFromCart: (productId: string) => _removeItem(productId),
-
-      updateQuantity: (productId: string, quantity: number) => {
-        if (quantity <= 0) {
-          _removeItem(productId);
-          return;
-        }
-        _updateItem(productId, quantity);
+      removeFromCart(productId: EcoStoreProductWithCategoryName['id']) {
+        _removeItem(productId);
       },
 
-      clearCart: () => updateState(store, '[cart] clearCart', { items: [] }),
+      clearCart() {
+        updateState(store, '[cart] clear cart', removeAllEntities());
+      },
     };
   })
 );

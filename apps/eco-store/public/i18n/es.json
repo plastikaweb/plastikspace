@@ -50,6 +50,7 @@
   "products": {
     "all": "Todos los productos",
     "add": "Agregar",
+    "add-long": "Agregar al carrito",
     "remove": "Eliminar",
     "decrement": "Disminuir",
     "increment": "Aumentar",
@@ -62,6 +63,12 @@
       "sort.priceWithIva-desc": "Precio descendente",
       "sort.updated-asc": "Más antiguos",
       "sort.updated-desc": "Más recientes"
+    },
+    "modified": {
+      "title": "Producto modificado",
+      "description": "Has modificado la cantidad del producto pero no lo has agregado al carrito",
+      "cancel": "Volver al producto",
+      "leave": "No quiero agregarlo"
     },
     "unit-type": {
       "unit": "Unidad",

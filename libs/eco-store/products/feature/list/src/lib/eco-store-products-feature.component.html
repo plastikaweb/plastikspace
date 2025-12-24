@@ -26,6 +26,7 @@
       @for (item of productsStore.productsWithTranslatedText(); track item.id; let i = $index) {
         <eco-store-product-card
           [product]="item"
+          [quantity]="cartStore.getItemCount(item.id)()"
           [isFirst]="i < 6"
           (addToCart)="addToCart($event)"
           (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>

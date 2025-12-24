@@ -50,6 +50,7 @@
   "products": {
     "all": "Tots els productes",
     "add": "Afegir",
+    "add-long": "Afegir al cabàs",
     "remove": "Eliminar",
     "decrement": "Disminuir",
     "increment": "Augmentar",
@@ -62,6 +63,12 @@
       "sort.priceWithIva-desc": "Preu descendent",
       "sort.updated-asc": "Més antics",
       "sort.updated-desc": "Més recents"
+    },
+    "modified": {
+      "title": "Producte modificat",
+      "description": "Has modificat la quantitat del producte però no l'has afegit a la cistella",
+      "cancel": "Tornar al producte",
+      "leave": "No vull afegir-lo"
     },
     "unit-type": {
       "unit": "Unitat",

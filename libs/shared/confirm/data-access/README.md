@@ -21,10 +21,10 @@ This method returns an observable that emits a boolean value. If the user clicks
   private confirmService = inject(SharedConfirmDialogService);
 
   this.confirmService.confirm({
-    title: 'Delete',
-    message: 'Are you sure you want to delete this item?',
-    ko: 'Cancel',
-    ok: 'Delete',
+    title: 'confirm.delete.title',
+    message: 'confirm.delete.message',
+    ko: 'confirm.delete.cancel',
+    ok: 'confirm.delete.ok',
   })
   .pipe(take(1), filter(Boolean))
   .subscribe((result) => {

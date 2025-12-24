@@ -28,7 +28,6 @@ It uses **NgRx Signals** for reactive state management and **ngrx-toolkit** for 
   - `isEmpty`: Boolean check for cart status.
 - **Smart Cart Operations**:
   - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0.
-  - `updateQuantity`: Updates existing item quantities.
   - `removeFromCart`: Removes items by ID.
 
 ## Installation
@@ -76,8 +75,8 @@ The store exposes the following signals and methods:
 - **Methods**:
   - `addToCart(product, quantity?)`: Add or update item.
   - `removeFromCart(productId)`: Remove item.
-  - `updateQuantity(productId, quantity)`: Set specific quantity.
   - `clearCart()`: Empty the cart.
+  - `getItemCount(productId)`: Returns a computed signal with the quantity of the product.
 
 ## Running unit tests
 

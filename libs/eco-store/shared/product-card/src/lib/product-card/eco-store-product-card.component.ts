@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { TranslateModule } from '@ngx-translate/core';
@@ -36,7 +36,7 @@ export class EcoStoreProductCardComponent {
   product = input<EcoStoreProductWithCategoryName | null>(null);
   isFirst = input<boolean>(false);
   minimalVersion = input<boolean>(false);
-  quantity = signal(0); // TODO: This should come from the parent component as an input
+  quantity = input<number>(0);
 
   addToCart = output<{ product: EcoStoreProductWithCategoryName; quantity: number }>();
   toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();
@@ -48,7 +48,6 @@ export class EcoStoreProductCardComponent {
   onQuantityChange(quantity: number) {
     const product = this.product();
     if (product) {
-      this.quantity.set(quantity); // TODO: This should come from the parent component
       this.addToCart.emit({ product, quantity });
     }
   }

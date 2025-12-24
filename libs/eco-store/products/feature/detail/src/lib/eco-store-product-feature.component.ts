@@ -5,6 +5,7 @@ import {
   inject,
   signal,
   effect,
+  linkedSignal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -22,6 +23,7 @@ import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/shared/product-price';
 import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/shared/product-category-label';
 import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/shared/favorite-button';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 
 @Component({
   selector: 'eco-eco-store-product-feature',
@@ -46,6 +48,29 @@ import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/shared
 })
 export default class EcoStoreProductFeatureComponent {
   readonly #productsStore = inject(ecoStoreProductsStore);
+  readonly #cartStore = inject(ecoStoreCartStore);
+  readonly pendingChanges = computed(() => {
+    const product = this.product();
+    if (!product) return false;
+
+    const currentQty = this.quantity();
+    const storedQty = this.storeQuantity();
+
+    // If item is in cart, compare with stored quantity
+    if (storedQty > 0) {
+      return currentQty !== storedQty;
+    }
+
+    // If not in cart, compare with default initial quantity
+    const defaultQty =
+      product.minQuantity > 0
+        ? product.minQuantity
+        : product.unitType === 'unit' || product.unitType.startsWith('unitWithFixed')
+          ? 1
+          : 0.1;
+
+    return currentQty !== defaultQty;
+  });
 
   readonly product = computed(() => {
     const selectedId = this.#productsStore.selectedItemId();
@@ -54,22 +79,29 @@ export default class EcoStoreProductFeatureComponent {
     return this.#productsStore.productsWithTranslatedText().find(p => p.id === selectedId) || null;
   });
 
-  readonly quantity = signal(1);
+  readonly storeQuantity = computed(() => {
+    const product = this.product();
+    return product ? this.#cartStore.getItemCount(product.id)() : 0;
+  });
+
+  readonly isInCart = computed(() => this.storeQuantity() > 0);
+
+  readonly quantity = linkedSignal(() => {
+    const product = this.product();
+    if (!product) return 0;
+
+    const cartCount = this.storeQuantity();
+    if (cartCount) return cartCount;
+
+    return product.minQuantity > 0
+      ? product.minQuantity
+      : product.unitType === 'unit' || product.unitType.startsWith('unitWithFixed')
+        ? 1
+        : 0.1;
+  });
+
   readonly isFavorite = signal(false);
   readonly activeThumbnailIndex = signal(0);
-
-  readonly #effect = effect(() => {
-    const product = this.product();
-    if (product) {
-      this.quantity.set(
-        product.minQuantity > 0
-          ? product.minQuantity
-          : product.unitType === 'unit' || product.unitType.startsWith('unitWithFixed')
-            ? 1
-            : 0.1
-      );
-    }
-  });
 
   // Mocked data as requested for missing fields
   readonly productTags = [
@@ -146,13 +178,11 @@ export default class EcoStoreProductFeatureComponent {
     this.isFavorite.update(v => !v);
   }
 
-  onQuantityChange(newQuantity: number): void {
-    this.quantity.set(newQuantity);
+  updateQuantity(quantity: number): void {
+    this.quantity.set(quantity);
   }
 
-  addToCart(_quantity: number): void {
-    // eslint-disable-next-line no-console
-    console.log(_quantity);
-    // TODO: Connect to cart store/service when available
+  addToCart(quantity: number): void {
+    this.#cartStore.addToCart(this.product()!, quantity);
   }
 }
