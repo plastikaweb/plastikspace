@@ -11,9 +11,10 @@ import {
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { activityStore } from '@plastik/shared/activity/data-access';
-import { PaginationComponent } from '@plastik/shared/pagination/ui';
-import { PocketbasePaginationNavigationDirective } from '@plastik/shared/pagination/util';
+import { PaginationComponent } from '@plastik/pagination/ui';
+import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
 import { SortSelectorComponent } from '@plastik/shared/sort-selector';
 import { distinctUntilChanged, map } from 'rxjs';
 
@@ -35,6 +36,7 @@ import { distinctUntilChanged, map } from 'rxjs';
 export default class EcoStoreProductsFeatureComponent {
   protected productsStore = inject(ecoStoreProductsStore);
   protected activityStore = inject(activityStore);
+  readonly #cartStore = inject(ecoStoreCartStore);
   readonly #route = inject(ActivatedRoute);
   readonly #router = inject(Router);
   readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);
@@ -51,10 +53,8 @@ export default class EcoStoreProductsFeatureComponent {
     return this.#categoriesStore.getCategoryBySlug(slug, 'products.all');
   });
 
-  addToCart({ id, quantity }: { id: EcoStoreProductWithCategoryName['id']; quantity: number }) {
-    // TODO: Implement add to cart functionality
-    void id;
-    void quantity;
+  addToCart({ product, quantity }: { product: EcoStoreProductWithCategoryName; quantity: number }) {
+    this.#cartStore.addToCart(product, quantity);
   }
 
   toggleFavorite(id: EcoStoreProductWithCategoryName['id']) {

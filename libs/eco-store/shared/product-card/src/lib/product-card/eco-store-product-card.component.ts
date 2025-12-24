@@ -38,18 +38,18 @@ export class EcoStoreProductCardComponent {
   minimalVersion = input<boolean>(false);
   quantity = signal(0); // TODO: This should come from the parent component as an input
 
-  addToCart = output<{ id: EcoStoreProductWithCategoryName['id']; quantity: number }>();
+  addToCart = output<{ product: EcoStoreProductWithCategoryName; quantity: number }>();
   toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();
   getProduct = output<{
     category: EcoStoreProductWithCategoryName['category'];
     id: EcoStoreProductWithCategoryName['id'];
   }>();
 
-  onQuantityChange(newQuantity: number) {
+  onQuantityChange(quantity: number) {
     const product = this.product();
     if (product) {
-      this.quantity.set(newQuantity); // TODO: This should come from the parent component
-      this.addToCart.emit({ id: product.id, quantity: newQuantity });
+      this.quantity.set(quantity); // TODO: This should come from the parent component
+      this.addToCart.emit({ product, quantity });
     }
   }
 

@@ -1,10 +1,8 @@
 import { inject, Directive, input } from '@angular/core';
 import { Router, type QueryParamsHandling } from '@angular/router';
 import { PageEvent } from '@angular/material/paginator';
-import { PaginationComponent } from '@plastik/shared/pagination/ui';
+import { PaginationComponent } from '@plastik/pagination/ui';
 import { outputToObservable, takeUntilDestroyed } from '@angular/core/rxjs-interop';
-// P extends object to ensure compatibility with queryParams
-// Configurable handling of existing query parameters
 
 @Directive()
 export abstract class PaginationNavigationDirective<P extends object> {
