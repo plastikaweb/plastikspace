@@ -1,4 +1,4 @@
-import { DecimalPipe } from '@angular/common';
+import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProduct } from '@plastik/eco-store/entities';
@@ -8,12 +8,12 @@ export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
 
 @Component({
   selector: 'eco-store-product-price',
-  imports: [TranslateModule, DecimalPipe, EcoStoreUnitChipComponent],
+  imports: [TranslateModule, CurrencyPipe, EcoStoreUnitChipComponent],
   template: `
     <div [class]="containerClass()">
       <div [class]="contentClass()">
         <div [class]="priceContainerClass()">
-          <span [class]="priceClass()">{{ price() | number: '1.2-2' }}€</span>
+          <span [class]="priceClass()">{{ price() | currency }}</span>
           <span [class]="unityTypeClass()"
             >/ {{ 'products.unit-type.' + unitType() | translate }}</span
           >

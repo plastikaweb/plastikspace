@@ -1,8 +1,12 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { registerLocaleData } from '@angular/common';
+import localeCa from '@angular/common/locales/ca';
+import localeEs from '@angular/common/locales/es';
+
 import {
   ApplicationConfig,
   ErrorHandler,
   inject,
+  LOCALE_ID,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
@@ -26,6 +30,10 @@ import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { environment } from '../environments/environment';
 import { appRoutes } from './routing/app.routes';
 import { ALL_PRODUCTS_ICON } from '@plastik/eco-store/shared/tokens';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+registerLocaleData(localeCa);
+registerLocaleData(localeEs);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -35,6 +43,7 @@ export const appConfig: ApplicationConfig = {
       provide: MAT_ICON_DEFAULT_OPTIONS,
       useValue: { fontSet: 'material-symbols-outlined' },
     },
+    { provide: LOCALE_ID, useValue: 'ca' },
     provideRouter(
       appRoutes,
       withViewTransitions(),
