@@ -37,6 +37,17 @@ The feature uses `EcoStoreProductFeatureComponent` which is a standalone compone
 
 It uses a resolver (`ecoStoreProductResolver`) for pre-fetching product data and managing global store state (disabling list loading while on the detail page).
 
+### CanDeactivate Guard
+
+The feature implements a `CanDeactivate` guard (`ecoStoreProductCanDeactivateGuard`) to prevent navigating away if there are unsaved changes to the product quantity.
+It checks the `pendingChanges` signal of the component and triggers a confirmation dialog if needed.
+
+```typescript
+export interface EcoStoreProductCanDeactivateComponent {
+  pendingChanges: Signal<boolean> | (() => boolean);
+}
+```
+
 ## Usage
 
 ### Route Configuration

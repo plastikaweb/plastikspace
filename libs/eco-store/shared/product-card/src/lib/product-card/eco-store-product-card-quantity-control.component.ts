@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input,
+  linkedSignal,
+  output,
+  untracked,
+} from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
@@ -16,13 +24,26 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreProductCardQuantityControlComponent {
-  product = input.required<EcoStoreProductWithCategoryName>();
-  quantity = input<number>(0);
-  quantityChange = output<number>();
-  mode = input<'card' | 'detail'>('card');
-  addToCart = output<number>();
+  readonly product = input.required<EcoStoreProductWithCategoryName>();
+  readonly quantity = input<number>(0);
+  readonly mode = input<'card' | 'detail'>('card');
+  readonly isInCart = input<boolean>(false);
 
-  protected readonly isInCart = computed(() => this.quantity() > 0 || this.mode() === 'detail');
+  readonly quantityChange = output<number>();
+  readonly addToCart = output<number>();
+
+  protected readonly individualButton = computed(
+    () => this.quantity() > 0 || this.mode() === 'detail'
+  );
+
+  protected readonly initialQuantity = linkedSignal({
+    source: this.product,
+    computation: () => untracked(() => this.quantity()),
+  });
+
+  protected readonly isQuantityModified = computed(
+    () => this.quantity() !== this.initialQuantity() || !this.isInCart()
+  );
 
   protected readonly step = computed(() => {
     const type = this.product().unitType;
@@ -49,9 +70,7 @@ export class EcoStoreProductCardQuantityControlComponent {
   }
 
   onIncrementClick(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
+    this.stopEvent(event);
     this.increment();
   }
 
@@ -64,9 +83,7 @@ export class EcoStoreProductCardQuantityControlComponent {
   }
 
   onDecrementClick(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
+    this.stopEvent(event);
     this.decrement();
   }
 
@@ -84,9 +101,7 @@ export class EcoStoreProductCardQuantityControlComponent {
   }
 
   onManualInput(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-    event.stopImmediatePropagation();
+    this.stopEvent(event);
     const inputElement = event.target as HTMLInputElement;
     const value = parseFloat(inputElement.value);
 
@@ -102,6 +117,11 @@ export class EcoStoreProductCardQuantityControlComponent {
     }
   }
 
+  onAddToCart(): void {
+    this.addToCart.emit(this.quantity());
+    this.initialQuantity.set(this.quantity());
+  }
+
   private validateAndSet(value: number) {
     let finalValue = value;
 
@@ -114,10 +134,15 @@ export class EcoStoreProductCardQuantityControlComponent {
     }
 
     this.quantityChange.emit(this.round(finalValue));
-    // No cal emetre manualment, el model() ho fa sol.
   }
 
   private round(value: number): number {
     return Math.round(value * 100) / 100;
+  }
+
+  private stopEvent(event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
   }
 }

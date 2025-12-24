@@ -41,7 +41,7 @@ describe('PocketBaseCrudService', () => {
 
   const mockPb = {
     collection: () => ({
-      getList: (page: number, perPage: number, _opts: unknown) =>
+      getList: (page: number, perPage: number) =>
         Promise.resolve({
           page,
           perPage,
@@ -50,12 +50,11 @@ describe('PocketBaseCrudService', () => {
           totalPages: 1,
         }),
       getFullList: () => Promise.resolve([baseEntity]),
-      getOne: (_id: string) => Promise.resolve(baseEntity),
-      getFirstListItem: (_filter: string) => Promise.resolve(baseEntity),
+      getOne: () => Promise.resolve(baseEntity),
+      getFirstListItem: () => Promise.resolve(baseEntity),
       create: (data: Partial<TestEntity>) => Promise.resolve({ ...baseEntity, ...data }),
-      update: (_id: string, data: Partial<TestEntity>) =>
-        Promise.resolve({ ...baseEntity, ...data }),
-      delete: (_id: string) => Promise.resolve({}),
+      update: (_: string, data: Partial<TestEntity>) => Promise.resolve({ ...baseEntity, ...data }),
+      delete: () => Promise.resolve({}),
     }),
   } as unknown as { collection: () => unknown };
 

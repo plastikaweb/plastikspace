@@ -163,8 +163,9 @@
               <eco-store-product-card-quantity-control
                 mode="detail"
                 [product]="productData"
+                [isInCart]="isInCart()"
                 [quantity]="quantity()"
-                (quantityChange)="onQuantityChange($event)"
+                (quantityChange)="updateQuantity($event)"
                 (addToCart)="addToCart($event)" />
             </div>
           </div>

@@ -1,4 +1,4 @@
-@if (!isInCart()) {
+@if (!individualButton()) {
   <button
     matButton="filled"
     type="button"
@@ -76,9 +76,10 @@
       <button
         matButton="filled"
         class="add-button detail-button grow flex items-center justify-center gap-1 uppercase tracking-wide transition-all"
-        (click)="addToCart.emit(quantity())">
+        [disabled]="!isQuantityModified()"
+        (click)="onAddToCart()">
         <mat-icon class="scale-125">shopping_cart</mat-icon>
-        Afegir al cabàs
+        {{ 'products.add-long' | translate }}
       </button>
     }
   </div>

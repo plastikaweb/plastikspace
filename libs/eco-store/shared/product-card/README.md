@@ -45,6 +45,7 @@ Selector: `eco-store-product-card`
 | `product`        | `EcoStoreProductWithCategoryName \| null` | `null`  | The product data to display.                                        |
 | `isFirst`        | `boolean`                                 | `false` | Whether it is the first item in a list (useful for prioritization). |
 | `minimalVersion` | `boolean`                                 | `false` | Whether to show a simplified version of the card.                   |
+| `quantity`       | `number`                                  | `0`     | The quantity formatted from the cart.                               |
 
 #### Outputs
 
@@ -67,12 +68,15 @@ Selector: `eco-store-product-card-quantity-control`
 | `quantity`    | `number`                      | `0`          | Current quantity value.       |
 | `unitType`    | `EcoStoreProduct['unitType']` | **Required** | Type of unit for the product. |
 | `minQuantity` | `number`                      | `0`          | Minimum allowed quantity.     |
+| `mode`        | `'card' \| 'detail'`          | `'card'`     | Display mode for the control. |
+| `isInCart`    | `boolean`                     | `false`      | Whether the item is in cart.  |
 
 #### Outputs
 
-| Output           | Type     | Description                           |
-| ---------------- | -------- | ------------------------------------- |
-| `quantityChange` | `number` | Emitted when the quantity is updated. |
+| Output           | Type     | Description                                |
+| ---------------- | -------- | ------------------------------------------ |
+| `quantityChange` | `number` | Emitted when the quantity is updated.      |
+| `addToCart`      | `number` | Emitted when the "Add to Cart" is clicked. |
 
 ## Feature Integration
 

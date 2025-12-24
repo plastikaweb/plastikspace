@@ -1,4 +1,4 @@
-name: Deploy Eco Store Staging to Cloudflare
+name: Eco Store deploy staging
 
 on:
   workflow_run:
