@@ -9,14 +9,16 @@
       <ng-content select="[primaryMenu]" />
     </div>
 
-    @let getFormConfig = formConfig().getConfig();
-    @let getSubmitFormConfig = formConfig().getSubmitFormConfig?.() || {};
+    @defer (when formConfig()) {
+      @let getFormConfig = formConfig()!.getConfig();
+      @let getSubmitFormConfig = formConfig()!.getSubmitFormConfig?.() || {};
 
-    <plastik-shared-form-feature
-      [fields]="getFormConfig"
-      [model]="{ query: '' }"
-      [submitConfig]="getSubmitFormConfig"
-      (changeEvent)="onSubmit($event)"></plastik-shared-form-feature>
+      <plastik-shared-form-feature
+        [fields]="getFormConfig"
+        [model]="{ query: '' }"
+        [submitConfig]="getSubmitFormConfig"
+        (changeEvent)="onSubmit($event)"></plastik-shared-form-feature>
+    }
 
     <ng-content select="[secondaryMenu]" />
   </div>

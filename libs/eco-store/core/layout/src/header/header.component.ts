@@ -22,7 +22,7 @@ import { SharedFormFeatureComponent } from '@plastik/shared/form';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  readonly formConfig = input.required<FormConfig<{ query: string }>>();
+  readonly formConfig = input<FormConfig<{ query: string }>>();
   readonly submitEvent = output<{ query: string }>();
 
   protected onSubmit(event: { query: string }): void {

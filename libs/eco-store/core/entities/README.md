@@ -27,6 +27,6 @@ This library contains the **eco-store specific entities and type definitions**. 
 
 ## Related Libraries
 
-- [`@plastik/core/entities`](../../core/entities/README.md) - Contains `BasePocketBaseEntity` and related types
-- [`@plastik/core/util/api-pocketbase`](../../core/util/api-pocketbase/README.md) - PocketBase CRUD services
-- [`@plastik/shared/signal-state/data-access-pocketbase`](../../shared/signal-state/data-access-pocketbase/README.md) - PocketBase Signal Store features
+- [`@plastik/core/entities`](../../../core/entities/README.md) - Contains `BasePocketBaseEntity` and related types
+- [`@plastik/core/util/api-pocketbase`](../../../core/util/api-pocketbase/README.md) - PocketBase CRUD services
+- [`@plastik/shared/signal-state/data-access-pocketbase`](../../../shared/signal-state/data-access-pocketbase/README.md) - PocketBase Signal Store features
