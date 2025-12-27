@@ -1,8 +1,8 @@
 import { computed } from '@angular/core';
 import { signalStore, withComputed, withMethods } from '@ngrx/signals';
 import { updateState, withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
-import { type EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { removeAllEntities, removeEntity, setEntity, withEntities } from '@ngrx/signals/entities';
+import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 
 export interface CartItem {
   id: string;

@@ -167,7 +167,9 @@ export default class EcoStoreProductFeatureComponent {
     );
 
     // If not enough in same category, add other products
-    const otherProducts = allProducts.filter(p => p.id !== currentProduct.id);
+    const otherProducts = allProducts.filter(
+      p => p.id !== currentProduct.id && p.categorySlug !== currentProduct.categorySlug
+    );
     const combined = [...sameCategory, ...otherProducts];
 
     // Return first 6 unique products

@@ -35,7 +35,7 @@
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/list-view": ["libs/core/table-with-filtering/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
-      "@plastik/eco-store/entities": ["libs/eco-store/entities/src/index.ts"],
+      "@plastik/eco-store/entities": ["libs/eco-store/core/entities/src/index.ts"],
       "@plastik/llecoop/category-name-cell": [
         "libs/llecoop/category/ui/category-name-cell/src/index.ts"
       ],
@@ -208,7 +208,8 @@
       "@plastik/eco-store/shared/favorite-button": [
         "libs/eco-store/shared/favorite-button/src/index.ts"
       ],
-      "@plastik/eco-store/cart/data-access": ["libs/eco-store/cart/data-access/src/index.ts"]
+      "@plastik/eco-store/cart/data-access": ["libs/eco-store/cart/data-access/src/index.ts"],
+      "@plastik/eco-store/layout": ["libs/eco-store/core/layout/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

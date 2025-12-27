@@ -7,15 +7,17 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
+import { FormConfig } from '@plastik/core/entities';
+
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { appSearchFormConfig } from '@plastik/eco-store/formly';
 import { filter } from 'rxjs';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';
+import { appSearchFormConfig } from '@plastik/eco-store/formly';
 
 @Component({
   selector: 'eco-layout',
@@ -39,7 +41,7 @@ import { MenuComponent } from './menu/menu.component';
  * Handles header, footer, sidenav and main content area.
  */
 export default class LayoutComponent {
-  protected readonly searchFormConfig = appSearchFormConfig();
+  protected searchFormConfig = appSearchFormConfig();
   protected readonly isSidenavOpen = signal(false);
   private readonly sidenavContent = viewChild<MatSidenavContent>('sidenavContent');
   readonly #destroyRef = inject(DestroyRef);

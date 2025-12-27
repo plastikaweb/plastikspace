@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { PocketBaseGetService } from '@plastik/core/api-pocketbase';
-import { EcoStoreProduct, EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { PocketBaseListParams } from '@plastik/signal-state/pocketbase';
-import { ListResult, RecordListOptions, RecordOptions } from 'pocketbase';
+import { ListResult, RecordListOptions } from 'pocketbase';
 import { map, Observable } from 'rxjs';
+import { EcoStoreProduct, EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 
 @Injectable({
   providedIn: 'root',
