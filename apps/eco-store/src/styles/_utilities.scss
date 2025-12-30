@@ -1,14 +1,26 @@
 @layer utilities {
-  //** CONTENT CONTAINER - MAX WIDTH **//
-  .content-container {
+  .content-container,
+  .detail-container,
+  .cart-container {
     margin-left: auto;
     margin-right: auto;
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
     width: 100%;
+  }
 
+  //** CONTENT CONTAINER - MAX WIDTH **//
+  .content-container {
     @media (min-width: theme('screens.2xl')) {
       max-width: var(--content-grid-max-width);
+    }
+  }
+
+  //** DETAIL CONTAINER - MAX WIDTH **//
+  .detail-container,
+  .cart-container {
+    @media (min-width: theme('screens.2xl')) {
+      max-width: var(--content-detail-max-width);
     }
   }
 }

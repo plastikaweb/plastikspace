@@ -22,17 +22,32 @@ export const ecoStoreCartStore = signalStore(
   withComputed(({ entities, entityMap }) => ({
     itemsCount: computed(() => entities().length),
     totalAmount: computed(() =>
+      entities().reduce((acc, item) => acc + item.quantity * item.product.price, 0)
+    ),
+    totalAmountWithIva: computed(() =>
       entities().reduce((acc, item) => acc + item.quantity * item.product.priceWithIva, 0)
     ),
     isEmpty: computed(() => entities().length === 0),
     itemsDictionary: computed(() => entityMap()),
     items: computed(() => entities()),
+    itemsGroupedByCategory: computed(() => {
+      return Object.groupBy(entities(), (item: CartItem) => item.product.categoryName);
+    }),
   })),
+
+  withComputed(({ totalAmount, totalAmountWithIva }) => ({
+    totalAmountIva: computed(() => totalAmountWithIva() - totalAmount()),
+  })),
+
   withMethods(store => {
-    const _setItem = (product: EcoStoreProductWithCategoryName, quantity: number) => {
+    const _setItem = (
+      product: EcoStoreProductWithCategoryName,
+      quantity: number,
+      isUpdate = false
+    ) => {
       updateState(
         store,
-        `add item ${product.id}`,
+        isUpdate ? `cart.update.${product.id}` : `cart.add.${product.id}`,
         setEntity({ id: product.id, product, quantity })
       );
     };
@@ -59,7 +74,7 @@ export const ecoStoreCartStore = signalStore(
           return;
         }
 
-        _setItem(product, quantity);
+        _setItem(product, quantity, !!existingItem);
       },
 
       removeFromCart(productId: EcoStoreProductWithCategoryName['id']) {

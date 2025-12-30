@@ -1,0 +1,14 @@
+<div class="min-h-screen px-4 py-4 cart-container">
+  <mat-stepper
+    [selectedIndex]="selectedStepIndex()"
+    [linear]="true"
+    (selectionChange)="onStepChange($event)">
+    @for (step of steps; track step.route; let i = $index) {
+      <mat-step [label]="step.label | translate" [completed]="i < selectedStepIndex()">
+        <ng-template matStepLabel>{{ step.label | translate }}</ng-template>
+      </mat-step>
+    }
+  </mat-stepper>
+
+  <router-outlet />
+</div>

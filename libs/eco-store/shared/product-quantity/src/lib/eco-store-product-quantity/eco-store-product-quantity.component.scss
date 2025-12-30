@@ -1,10 +1,97 @@
 @use '@angular/material' as mat;
 
 :host {
+  // Size variations
+  &.quantity-sm {
+    .quantity-controls {
+      height: 2.8rem;
+    }
+
+    button {
+      &.add-button {
+        @include mat.button-overrides(
+          (
+            filled-label-text-size: 0.75rem,
+            filled-container-height: 2rem,
+          )
+        );
+      }
+
+      @include mat.icon-button-overrides(
+        (
+          icon-size: 24px,
+          state-layer-size: 36px,
+        )
+      );
+    }
+
+    input {
+      font-size: 0.85rem;
+    }
+  }
+
+  &.quantity-md {
+    .quantity-controls {
+      height: 3.5rem;
+    }
+
+    button {
+      &.add-button {
+        @include mat.button-overrides(
+          (
+            filled-label-text-size: 0.875rem,
+            filled-container-height: 2.2rem,
+          )
+        );
+      }
+
+      @include mat.icon-button-overrides(
+        (
+          icon-size: 24px,
+          state-layer-size: 36px,
+        )
+      );
+    }
+
+    input {
+      font-size: 1rem;
+    }
+  }
+
+  &.quantity-lg {
+    .quantity-controls {
+      height: 4rem; // 64px
+    }
+
+    button {
+      &.add-button {
+        @include mat.button-overrides(
+          (
+            filled-label-text-size: 1.125rem,
+            filled-container-height: 4rem,
+          )
+        );
+      }
+
+      @include mat.icon-button-overrides(
+        (
+          icon-size: 28px,
+          state-layer-size: 48px,
+        )
+      );
+    }
+
+    input {
+      font-size: 1.25rem;
+    }
+  }
+
+  // Default styles (fallback/md base)
   button {
     transition: all 0.1s ease-in-out;
 
     &.add-button {
+      // Default MD overrides
       @include mat.button-overrides(
         (
           filled-label-text-size: 1rem,

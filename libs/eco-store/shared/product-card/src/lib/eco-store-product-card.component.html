@@ -55,10 +55,10 @@
     <!-- Action Button Section -->
     @if (!minimalVersion()) {
       <mat-card-actions class="mt-5">
-        <eco-store-product-card-quantity-control
+        <eco-store-product-quantity-control
           [product]="productData"
           [quantity]="quantity()"
-          (quantityChange)="onQuantityChange($event)"></eco-store-product-card-quantity-control>
+          (quantityChange)="onQuantityChange($event)"></eco-store-product-quantity-control>
       </mat-card-actions>
     }
   }

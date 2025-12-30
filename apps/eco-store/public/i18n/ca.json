@@ -98,6 +98,22 @@
       "unitWithVariableVolume": "L"
     }
   },
+  "cart": {
+    "steps": {
+      "summary": "Resum de la cistella",
+      "shipping": "Enviament",
+      "payment": "Pagament",
+      "confirmation": "Confirmació"
+    },
+    "summary": {
+      "items-count": "{{value}} productes",
+      "resume": "Resum",
+      "subtotal": "Subtotal",
+      "taxes": "Impostos (IVA)",
+      "total": "Total",
+      "go-to-shipping": "Ves a Enviament"
+    }
+  },
   "search": {
     "placeholder": "Buscar productes o categories",
     "label": "Buscar productes o categories",

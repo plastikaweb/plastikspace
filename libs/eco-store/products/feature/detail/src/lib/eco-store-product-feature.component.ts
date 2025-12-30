@@ -15,14 +15,14 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import {
-  EcoStoreProductCardQuantityControlComponent,
+  EcoStoreProductQuantityControlComponent,
   EcoStoreProductCardComponent,
 } from '@plastik/eco-store/product-card';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
-import { EcoStoreProductPriceComponent } from '@plastik/eco-store/shared/product-price';
-import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/shared/product-category-label';
-import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/shared/favorite-button';
+import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
+import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/product-category-label';
+import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 
 @Component({
@@ -34,7 +34,7 @@ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
     MatChipsModule,
     MatTooltipModule,
     RouterLink,
-    EcoStoreProductCardQuantityControlComponent,
+    EcoStoreProductQuantityControlComponent,
     EcoStoreProductCardComponent,
     EcoStoreProductPriceComponent,
     SharedImgContainerComponent,

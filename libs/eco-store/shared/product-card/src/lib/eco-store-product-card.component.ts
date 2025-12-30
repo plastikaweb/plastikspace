@@ -4,12 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { EcoStoreProductCardQuantityControlComponent } from './eco-store-product-card-quantity-control.component';
+import { EcoStoreProductQuantityControlComponent } from './components/eco-store-product-quantity-control/eco-store-product-quantity-control.component';
 import { RouterLink } from '@angular/router';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
-import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/shared/product-category-label';
-import { EcoStoreProductPriceComponent } from '@plastik/eco-store/shared/product-price';
-import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/shared/favorite-button';
+import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/product-category-label';
+import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
+import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
 
 @Component({
   selector: 'eco-store-product-card',
@@ -17,7 +17,7 @@ import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/shared
     TranslateModule,
     MatCardModule,
     MatButtonModule,
-    EcoStoreProductCardQuantityControlComponent,
+    EcoStoreProductQuantityControlComponent,
     EcoStoreProductPriceComponent,
     SharedImgContainerComponent,
     RouterLink,

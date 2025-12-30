@@ -7,7 +7,6 @@ import {
   signal,
   viewChild,
 } from '@angular/core';
-import { FormConfig } from '@plastik/core/entities';
 
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
@@ -36,10 +35,6 @@ import { appSearchFormConfig } from '@plastik/eco-store/formly';
   styleUrl: './layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-/**
- * Main layout component for eco-store.
- * Handles header, footer, sidenav and main content area.
- */
 export default class LayoutComponent {
   protected searchFormConfig = appSearchFormConfig();
   protected readonly isSidenavOpen = signal(false);

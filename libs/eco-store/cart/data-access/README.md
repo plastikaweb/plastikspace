@@ -24,7 +24,7 @@ It uses **NgRx Signals** for reactive state management and **ngrx-toolkit** for 
 - **Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`.
 - **Computed Totals**: Automatically calculates and updates derived state:
   - `itemsCount`: Total number of items in the cart.
-  - `totalAmount`: Total price of all items.
+  - `totalAmountWithIva`: Total price of all items.
   - `isEmpty`: Boolean check for cart status.
 - **Smart Cart Operations**:
   - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0.
@@ -50,7 +50,7 @@ export class CartComponent {
   // Access signals
   items = this.cartStore.items;
   count = this.cartStore.itemsCount;
-  total = this.cartStore.totalAmount;
+  total = this.cartStore.totalAmountWithIva;
 
   addItem(product: EcoStoreProductWithCategoryName) {
     this.cartStore.addToCart(product, 1);
@@ -70,8 +70,10 @@ The store exposes the following signals and methods:
   - `items()`: Array of `CartItem` objects.
 - **Computed Signals**:
   - `itemsCount()`: Total quantity of all products.
-  - `totalAmount()`: Total cost (sum of price \* quantity).
+  - `totalAmountWithIva()`: Total cost (sum of price \* quantity).
   - `isEmpty()`: True if the cart has no items.
+  - `itemsGroupedByCategory()`: Returns an object where keys are category names and values are arrays of `CartItem` objects.
+  - `totalAmountIva()`: Total tax amount (totalAmountWithIva - totalAmount).
 - **Methods**:
   - `addToCart(product, quantity?)`: Add or update item.
   - `removeFromCart(productId)`: Remove item.

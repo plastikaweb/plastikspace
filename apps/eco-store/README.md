@@ -67,8 +67,10 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 - [**Cart**](../../libs/eco-store/cart/data-access/README.md): Shopping cart state management.
 - [**Categories**](../../libs/eco-store/product-categories/data-access/README.md): Category management.
 - [**Product Card**](../../libs/eco-store/shared/product-card/README.md): Shared product card component.
+- [**Product Quantity**](../../libs/eco-store/shared/product-quantity/README.md): Quantity control with smart validation.
 - [**Product Price**](../../libs/eco-store/shared/product-price/README.md): Price display and unit components.
 - [**Category Label**](../../libs/eco-store/shared/product-category-label/README.md): Category badge component.
+- [**Favorite Button**](../../libs/eco-store/shared/favorite-button/README.md): Product favorite toggle component.
 
 ### 🧰 Shared Utils
 

@@ -19,6 +19,7 @@ This library provides the core layout shell for the Eco Store application. It or
 - **Performance Optimized**:
   - **Eager Header**: The header shell renders immediately to prevent layout shifts.
   - **Lazy Search**: Advanced search configuration uses dynamic imports to reduce initial bundle size.
+  - **Cart Animation**: The cart icon animates when the total amount changes.
   - **Isolated Providers**: Exposes `layoutRoutes` to bundle layout-specific dependencies (like `EcoStoreFormlyModule` configurations) separately from the main application entry point.
 
 ## Architecture

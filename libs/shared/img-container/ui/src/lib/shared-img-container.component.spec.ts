@@ -13,7 +13,6 @@ describe('SharedImgContainerComponent', () => {
     await TestBed.configureTestingModule({
       providers: [
         provideZonelessChangeDetection(),
-
         {
           provide: IMAGE_LOADER,
           useFactory: () => (src: string) => `https://test.io/${src}`,

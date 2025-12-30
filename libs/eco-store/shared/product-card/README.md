@@ -11,7 +11,7 @@
     - [EcoStoreProductCardComponent](#ecostoreproductcardcomponent)
       - [Inputs](#inputs)
       - [Outputs](#outputs)
-    - [EcoStoreProductCardQuantityControlComponent](#ecostoreproductcardquantitycontrolcomponent)
+    - [EcoStoreProductQuantityControlComponent](#ecostoreproductquantitycontrolcomponent)
       - [Inputs](#inputs-1)
       - [Outputs](#outputs-1)
   - [Feature Integration](#feature-integration)
@@ -26,7 +26,7 @@ A collection of components for displaying products in a grid or list view within
 ```ts
 import {
   EcoStoreProductCardComponent,
-  EcoStoreProductCardQuantityControlComponent,
+  EcoStoreProductQuantityControlComponent,
 } from '@plastik/eco-store/shared/product-card';
 ```
 
@@ -49,17 +49,17 @@ Selector: `eco-store-product-card`
 
 #### Outputs
 
-| Output           | Type                               | Description                                                  |
-| ---------------- | ---------------------------------- | ------------------------------------------------------------ |
-| `addToCart`      | `{ id: string; quantity: number }` | Emitted when quantity changes or "Add to Cart" is triggered. |
-| `toggleFavorite` | `string`                           | Emitted when the favorite button is clicked.                 |
-| `getProduct`     | `{ category: string; id: string }` | Emitted to go to the product detail.                         |
+| Output           | Type                                                             | Description                                                  |
+| ---------------- | ---------------------------------------------------------------- | ------------------------------------------------------------ |
+| `addToCart`      | `{ product: EcoStoreProductWithCategoryName; quantity: number }` | Emitted when quantity changes or "Add to Cart" is triggered. |
+| `toggleFavorite` | `string`                                                         | Emitted when the favorite button is clicked.                 |
+| `getProduct`     | `{ category: string; id: string }`                               | Emitted to go to the product detail.                         |
 
-### EcoStoreProductCardQuantityControlComponent
+### EcoStoreProductQuantityControlComponent
 
 A specialized component for managing product quantities, supporting both units and variable weights.
 
-Selector: `eco-store-product-card-quantity-control`
+Selector: `eco-store-product-quantity-control`
 
 #### Inputs
 

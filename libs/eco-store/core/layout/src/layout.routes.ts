@@ -39,6 +39,11 @@ export const layoutRoutes: Route[] = [
     ],
     children: [
       {
+        path: 'cistella',
+        title: 'cart.title',
+        loadChildren: () => import('@plastik/eco-store/cart').then(m => m.ecoStoreCartRoutes),
+      },
+      {
         path: 'botiga/:category/:slug',
         title: (route: ActivatedRouteSnapshot) =>
           inject(EcoStoreCategoryRouteTitleService).resolve(route),
