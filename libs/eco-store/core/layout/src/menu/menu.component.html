@@ -4,32 +4,32 @@
     [attr.aria-label]="'a11y.main-navigation' | translate">
     <ul class="flex flex-row justify-start items-center gap-4">
       <li class="flex items-center">
-        <a
+        <button
           matButton
           routerLink="/"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           [attr.aria-current]="this.currentUrl() === '/' ? 'page' : null">
           {{ 'menu.home' | translate }}
-        </a>
+        </button>
       </li>
       <li class="flex items-center">
-        <a
+        <button
           matButton
           routerLink="/botiga"
           routerLinkActive="active"
           [attr.aria-current]="this.currentUrl().startsWith('/botiga') ? 'page' : null">
           {{ 'menu.store' | translate }}
-        </a>
+        </button>
       </li>
       <li class="flex items-center">
-        <a
+        <button
           matButton
           routerLink="/about-us"
           routerLinkActive="active"
           [attr.aria-current]="this.currentUrl().startsWith('/about-us') ? 'page' : null">
           {{ 'menu.about' | translate }}
-        </a>
+        </button>
       </li>
     </ul>
   </nav>
@@ -47,11 +47,12 @@
         <button
           matButton="outlined"
           type="button"
+          routerLink="/cistella"
           [aria-label]="'menu.view-cart' | translate"
           [matBadge]="cartStore.itemsCount()"
           [class.bump]="bumpAnimation()">
           <mat-icon aria-hidden="true">shopping_cart</mat-icon>
-          <span>{{ cartStore.totalAmount() | currency }}</span>
+          <span>{{ cartStore.totalAmountWithIva() | currency }}</span>
         </button>
       </li>
       <li>

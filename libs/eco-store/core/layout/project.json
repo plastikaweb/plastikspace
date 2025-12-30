@@ -1,5 +1,5 @@
 {
-  "name": "EcoStoreLayout",
+  "name": "eco-store-layout",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/eco-store/core/layout/src",
   "prefix": "eco",

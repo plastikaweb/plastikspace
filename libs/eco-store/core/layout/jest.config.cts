@@ -1,5 +1,5 @@
 module.exports = {
-  displayName: 'EcoStoreLayout',
+  displayName: 'eco-store-layout',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/eco-store/core/layout',

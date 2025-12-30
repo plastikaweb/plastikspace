@@ -10,7 +10,7 @@
 } @else {
   <div class="w-full flex items-center" [class.gap-4]="mode() === 'detail'">
     <div
-      class="flex h-14 items-center justify-between border border-primary-200 rounded-2xl py-1 pl-1 pr-1 transition-all"
+      class="quantity-controls flex items-center justify-between border border-primary-200 rounded-2xl py-1 pl-1 pr-1 transition-all"
       role="group"
       [class.bg-primary-50]="mode() !== 'detail'"
       [class.bg-white]="mode() === 'detail'"
@@ -21,7 +21,7 @@
       <button
         matIconButton
         type="button"
-        [disabled]="mode() === 'detail' && quantity() <= minLimit()"
+        [disabled]="(mode() === 'detail' || mode() === 'summary') && quantity() <= minLimit()"
         [attr.aria-label]="
           (quantity() <= minLimit() && mode() === 'card' ? 'products.remove' : 'products.decrement')
             | translate: { value: product().name }

@@ -1,12 +1,12 @@
 <div class="px-4 py-8" role="region">
   <!-- Header Section -->
   <div class="flex items-center justify-between w-full mb-8">
-    <h2 class="text-3xl font-bold text-tertiary-700 tracking-tight flex items-center gap-md">
+    <h2 class="text-3xl font-bold text-neutral-800 tracking-tight flex items-center gap-md">
       <mat-icon class="scale-150!" aria-hidden="true">
         {{ category()?.icon }}
       </mat-icon>
       <span>{{ category()?.name }}</span>
-      <span class="text-lg font-medium text-gray-400">({{ productsStore.count() }})</span>
+      <span class="text-lg font-medium text-neutral-400">({{ productsStore.count() }})</span>
     </h2>
 
     <plastik-sort-selector

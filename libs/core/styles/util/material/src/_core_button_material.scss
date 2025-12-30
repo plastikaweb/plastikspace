@@ -1,8 +1,17 @@
 :root {
-  .mdc-button,
-  .mdc-icon-button,
-  .mdc-list-item::before {
-    transition: all 1 s;
+  .mat-mdc-button-base,
+  .mat-mdc-list-item::before {
+    transition: all 0.1s ease-in-out !important;
+  }
+
+  // Fix for vertical alignment in Angular Material Icon Buttons
+  // This resolves issues where Tailwind resets or other styles interfere with icon centering
+  .mat-mdc-icon-button .mdc-button__label,
+  .mat-mdc-icon-button .mat-icon {
+    line-height: 1 !important; // Ensure no extra height from text line-height
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
   // .mdc-button:hover,

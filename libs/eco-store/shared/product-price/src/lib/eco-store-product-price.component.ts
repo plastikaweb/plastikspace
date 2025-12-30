@@ -18,10 +18,12 @@ export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
             >/ {{ 'products.unit-type.' + unitType() | translate }}</span
           >
         </div>
-        <eco-store-unit-chip
-          [unitType]="unitType()"
-          [unitBase]="unitBase()"
-          [class]="chipClass()" />
+        @if (unitChipVisible()) {
+          <eco-store-unit-chip
+            [unitType]="unitType()"
+            [unitBase]="unitBase()"
+            [class]="chipClass()" />
+        }
       </div>
     </div>
   `,
@@ -32,6 +34,7 @@ export class EcoStoreProductPriceComponent {
   unitType = input.required<EcoStoreProduct['unitType']>();
   unitBase = input.required<EcoStoreProduct['unitBase']>();
   size = input<ProductPriceSize>('md');
+  unitChipVisible = input<boolean>(true);
 
   protected containerClass() {
     const base = 'flex';
@@ -46,8 +49,8 @@ export class EcoStoreProductPriceComponent {
 
   protected unityTypeClass() {
     return this.size() === 'detail'
-      ? 'text-lg font-medium text-gray-500'
-      : 'text-sm font-medium text-gray-500';
+      ? 'text-lg font-medium text-primary-500'
+      : 'text-sm font-normal text-primary-500';
   }
 
   protected priceContainerClass() {
@@ -60,12 +63,12 @@ export class EcoStoreProductPriceComponent {
       case 'detail':
         return 'text-5xl font-black text-primary-600';
       case 'lg':
-        return 'text-3xl font-extrabold text-gray-900';
+        return 'text-3xl font-extrabold text-primary-600';
       case 'sm':
-        return 'text-xl font-bold text-gray-900';
+        return 'text-[clamp(.85rem,3vw,1.2rem)] font-bold text-primary-600';
       case 'md':
       default:
-        return 'text-[clamp(1.5rem,4vw,2rem)] font-extrabold text-gray-900';
+        return 'text-[clamp(1.5rem,4vw,2rem)] font-extrabold text-primary-600';
     }
   }
 

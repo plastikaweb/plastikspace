@@ -101,7 +101,18 @@
       "unitTestRunner": "jest"
     },
     "@nx/angular:component": {
-      "style": "scss"
+      "style": "scss",
+      "type": "component",
+      "changeDetection": "OnPush"
+    },
+    "@nx/angular:service": {
+      "type": "service"
+    },
+    "@nx/angular:directive": {
+      "type": "directive"
+    },
+    "@nx/angular:pipe": {
+      "type": "pipe"
     }
   },
   "defaultProject": "llecoop",

@@ -15,7 +15,7 @@ import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
 import { activityStore } from '@plastik/shared/activity/data-access';
-import { SortSelectorComponent } from '@plastik/shared/sort-selector';
+import { SortSelectorComponent } from '@plastik/sort-selector';
 import { distinctUntilChanged, map } from 'rxjs';
 
 @Component({

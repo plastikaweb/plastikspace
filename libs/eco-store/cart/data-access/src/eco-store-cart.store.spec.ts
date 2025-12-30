@@ -47,7 +47,7 @@ describe('ecoStoreCartStore', () => {
 
     expect(store.items()[0]).toEqual({ id: '1', product: mockProduct, quantity: 2 });
     expect(store.itemsCount()).toBe(1);
-    expect(store.totalAmount()).toBe(20);
+    expect(store.totalAmountWithIva()).toBe(20);
   });
 
   it('should update item quantity in cart', () => {
@@ -62,7 +62,7 @@ describe('ecoStoreCartStore', () => {
 
     expect(store.items()[0].quantity).toBe(3);
     expect(store.itemsCount()).toBe(1);
-    expect(store.totalAmount()).toBe(30);
+    expect(store.totalAmountWithIva()).toBe(30);
   });
 
   it('should remove item if quantity is <= 0', () => {

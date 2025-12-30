@@ -9,7 +9,10 @@
   - [Installation](#installation)
   - [Usage](#usage)
     - [EcoStoreProductPriceComponent](#ecostoreproductpricecomponent)
+      - [Inputs](#inputs)
+      - [Example](#example)
     - [EcoStoreUnitChipComponent](#ecostoreunitchipcomponent)
+      - [Inputs](#inputs-1)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -35,12 +38,13 @@ Displays the product price with formatting, currency symbol, and unit type. It a
 
 #### Inputs
 
-| Input      | Type                               | Default      | Description                                                |
-| ---------- | ---------------------------------- | ------------ | ---------------------------------------------------------- |
-| `price`    | `number`                           | **Required** | The product price with IVA included.                       |
-| `unitType` | `EcoStoreProduct['unitType']`      | **Required** | The type of unit for translation (e.g., 'weight', 'unit'). |
-| `unitBase` | `EcoStoreProduct['unitBase']`      | **Required** | The base unit string for the chip (e.g., 'kg', 'unitat').  |
-| `size`     | `'sm' \| 'md' \| 'lg' \| 'detail'` | `'md'`       | The visual size of the price display.                      |
+| Input             | Type                               | Default      | Description                                                |
+| ----------------- | ---------------------------------- | ------------ | ---------------------------------------------------------- |
+| `price`           | `number`                           | **Required** | The product price with IVA included.                       |
+| `unitType`        | `EcoStoreProduct['unitType']`      | **Required** | The type of unit for translation (e.g., 'weight', 'unit'). |
+| `unitBase`        | `EcoStoreProduct['unitBase']`      | **Required** | The base unit string for the chip (e.g., 'kg', 'unitat').  |
+| `size`            | `'sm' \| 'md' \| 'lg' \| 'detail'` | `'md'`       | The visual size of the price display.                      |
+| `unitChipVisible` | `boolean`                          | `true`       | Whether to show the unit chip component.                   |
 
 #### Example
 

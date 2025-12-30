@@ -8,25 +8,29 @@ import {
   untracked,
 } from '@angular/core';
 import { MatButton, MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
+import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 
 @Component({
-  selector: 'eco-store-product-card-quantity-control',
+  selector: 'eco-store-product-quantity',
   imports: [TranslateModule, MatIcon, MatButton, MatIconButton, MatInput],
-  templateUrl: './eco-store-product-card-quantity-control.component.html',
-  styleUrl: './eco-store-product-card-quantity-control.component.scss',
+  templateUrl: './eco-store-product-quantity.component.html',
+  styleUrl: './eco-store-product-quantity.component.scss',
   host: {
     class: 'block w-full',
+    '[class.quantity-sm]': 'size() === "sm"',
+    '[class.quantity-md]': 'size() === "md"',
+    '[class.quantity-lg]': 'size() === "lg"',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EcoStoreProductCardQuantityControlComponent {
+export class EcoStoreProductQuantityComponent {
   readonly product = input.required<EcoStoreProductWithCategoryName>();
   readonly quantity = input<number>(0);
-  readonly mode = input<'card' | 'detail'>('card');
+  readonly mode = input<'card' | 'detail' | 'summary'>('card');
+  readonly size = input<'sm' | 'md' | 'lg'>('md');
   readonly isInCart = input<boolean>(false);
 
   readonly quantityChange = output<number>();

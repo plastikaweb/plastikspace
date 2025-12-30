@@ -4,6 +4,7 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { EcoStoreProductCardComponent } from './eco-store-product-card.component';
+import { IMAGE_LOADER } from '@angular/common';
 
 describe('EcoStoreProductCardComponent', () => {
   let component: EcoStoreProductCardComponent;
@@ -39,7 +40,14 @@ describe('EcoStoreProductCardComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [EcoStoreProductCardComponent],
-      providers: [provideTranslateService(), provideRouter([])],
+      providers: [
+        provideTranslateService(),
+        provideRouter([]),
+        {
+          provide: IMAGE_LOADER,
+          useFactory: () => (src: string) => `https://test.io/${src}`,
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EcoStoreProductCardComponent);

@@ -117,7 +117,7 @@ erDiagram
         string id PK
         string userId FK
         string status
-        number totalAmount
+        number totalAmountWithIva
         number totalIva
         string deliveryType
         datetime orderDate
@@ -141,7 +141,7 @@ erDiagram
         string id PK
         string userId FK
         array items
-        number totalAmount
+        number totalAmountWithIva
         datetime created
         datetime updated
     }
@@ -297,7 +297,7 @@ export const selectedProductSignal = signal<Product | null>(null);
 export const isLoadingSignal = signal<boolean>(false);
 
 // Cart state
-export const cartSignal = signal<Cart>({ items: [], totalAmount: 0 });
+export const cartSignal = signal<Cart>({ items: [], totalAmountWithIva: 0 });
 
 // User state
 export const currentUserSignal = signal<User | null>(null);
@@ -352,7 +352,7 @@ class EmailService {
       context: {
         userName: user.name,
         orderId: order.id,
-        totalAmount: order.totalAmount,
+        totalAmountWithIva: order.totalAmountWithIva,
         items: order.items,
       },
     };
