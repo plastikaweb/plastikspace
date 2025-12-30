@@ -596,7 +596,7 @@
         "hidden": false,
         "id": "file376926767",
         "maxSelect": 1,
-        "maxSize": 0,
+        "maxSize": 2621440,
         "mimeTypes": [
           "image/jpeg",
           "image/png",
@@ -609,16 +609,33 @@
         "protected": false,
         "required": false,
         "system": false,
-        "thumbs": null,
+        "thumbs": [
+          "50x50",
+          "100x100",
+          "200x200"
+        ],
         "type": "file"
+      },
+      {
+        "cascadeDelete": false,
+        "collectionId": "pbc_2442875294",
+        "hidden": false,
+        "id": "relation3343123541",
+        "maxSelect": 1,
+        "minSelect": 0,
+        "name": "client",
+        "presentable": false,
+        "required": true,
+        "system": false,
+        "type": "relation"
       },
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "text3927763390",
+        "id": "text73334810",
         "max": 0,
-        "min": 0,
-        "name": "clientId",
+        "min": 2,
+        "name": "normalizedName",
         "pattern": "",
         "presentable": false,
         "primaryKey": false,

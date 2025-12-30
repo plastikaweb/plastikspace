@@ -7,6 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import LayoutComponent from './layout.component';
 import { MenuComponent } from './menu/menu.component';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -21,7 +22,22 @@ describe('LayoutComponent', () => {
         MenuComponent,
         EcoStoreFormlyModule,
       ],
-      providers: [provideRouter([]), provideTranslateService()],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: {
+            collection: jest.fn().mockReturnThis(),
+            authWithPassword: jest.fn(),
+            authStore: {
+              clear: jest.fn(),
+              isValid: false,
+              record: null,
+            },
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(LayoutComponent);

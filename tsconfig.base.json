@@ -207,7 +207,12 @@
       "@plastik/eco-store/cart/data-access": ["libs/eco-store/cart/data-access/src/index.ts"],
       "@plastik/eco-store/layout": ["libs/eco-store/core/layout/src/index.ts"],
       "@plastik/eco-store/cart": ["libs/eco-store/cart/feature/src/index.ts"],
-      "@plastik/eco-store/product-quantity": ["libs/eco-store/shared/product-quantity/src/index.ts"]
+      "@plastik/eco-store/product-quantity": [
+        "libs/eco-store/shared/product-quantity/src/index.ts"
+      ],
+      "@plastik/auth/pocketbase/data-access": [
+        "libs/shared/auth/pocketbase/data-access/src/index.ts"
+      ]
     }
   },
   "angularCompilerOptions": {

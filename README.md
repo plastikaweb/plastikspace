@@ -134,6 +134,7 @@ Reusable features and UI components.
 
 - [**auth-feature**](libs/shared/auth/feature/README.md)
 - [**auth-firebase**](libs/shared/auth/firebase/data-access/README.md)
+- [**auth-pocketbase**](libs/shared/auth/pocketbase/data-access/README.md)
 - [**login**](libs/shared/auth/login/feature/README.md)
 - [**register**](libs/shared/auth/register/feature/README.md)
 
