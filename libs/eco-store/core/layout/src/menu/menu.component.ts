@@ -16,6 +16,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { filter, map, startWith } from 'rxjs';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { CurrencyPipe } from '@angular/common';
+import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 
 @Component({
   selector: 'eco-menu',
@@ -37,6 +38,7 @@ import { CurrencyPipe } from '@angular/common';
 export class MenuComponent {
   readonly router = inject(Router);
   readonly cartStore = inject(ecoStoreCartStore);
+  readonly profileStore = inject(pocketBaseUserProfileStore);
   readonly primaryMenu = viewChild.required<TemplateRef<unknown>>('primaryMenu');
   readonly secondaryMenu = viewChild.required<TemplateRef<unknown>>('secondaryMenu');
 
@@ -60,6 +62,14 @@ export class MenuComponent {
           clearTimeout(timer);
         }, 300);
       }
+    });
+  }
+
+  login() {
+    // TODO: Get email and password from form. Anyway, this is not where it should be done. This is for profileStore testing purposes.
+    this.profileStore.login({
+      email: '',
+      password: '',
     });
   }
 }

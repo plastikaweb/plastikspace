@@ -3,6 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { MenuComponent } from './menu.component';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -11,7 +12,22 @@ describe('MenuComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MenuComponent],
-      providers: [provideRouter([]), provideTranslateService()],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: {
+            collection: jest.fn().mockReturnThis(),
+            authWithPassword: jest.fn(),
+            authStore: {
+              clear: jest.fn(),
+              isValid: false,
+              record: null,
+            },
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(MenuComponent);

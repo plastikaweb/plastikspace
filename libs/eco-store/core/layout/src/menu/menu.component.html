@@ -56,7 +56,11 @@
         </button>
       </li>
       <li>
-        <button matIconButton type="button" [aria-label]="'menu.profile' | translate">
+        <button
+          matIconButton
+          type="button"
+          [aria-label]="'menu.profile' | translate"
+          (click)="login()">
           <mat-icon aria-hidden="true">account_circle</mat-icon>
         </button>
       </li>
