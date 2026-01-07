@@ -25,6 +25,8 @@ import {
   withComponentInputBinding,
   withViewTransitions,
 } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import { PrefixTitleService } from '@plastik/core/router-state';
@@ -73,6 +75,14 @@ export const appConfig = {
       return functions;
     }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
+    provideTranslateService({
+      loader: provideTranslateHttpLoader({
+        prefix: '/i18n/',
+        suffix: '.json',
+      }),
+      fallbackLang: 'ca',
+      lang: 'ca',
+    }),
     provideFormlyConfig(),
     provideAppInitializer(() => {
       const liveAnnouncer = inject(LiveAnnouncer);

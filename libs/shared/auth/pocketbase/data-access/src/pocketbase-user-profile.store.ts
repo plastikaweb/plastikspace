@@ -55,7 +55,7 @@ export const pocketBaseUserProfileStore = signalStore(
     },
 
     checkAuth(): void {
-      if (authService.isValid && authService.authModel) {
+      if (authService.loggedIn()) {
         updateState(store, `[profile] user is logged in`, {
           user: authService.authModel as PocketBaseUser,
           isAuthenticated: true,

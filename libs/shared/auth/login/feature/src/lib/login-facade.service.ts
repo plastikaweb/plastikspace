@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { AUTH_SERVICE, AuthFormFacade } from '@plastik/auth';
+import { AuthFormFacade } from '@plastik/auth/entities';
 import { FORM_TOKEN, FormConfig } from '@plastik/core/entities';
+import { AUTH_SERVICE } from '@plastik/auth/entities';
 
 export interface LoginData {
   email: string;

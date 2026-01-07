@@ -13,6 +13,7 @@ import {
   User,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { AuthFacade } from '@plastik/auth/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import {
   NotificationConfigService,
@@ -22,7 +23,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class FirebaseAuthService {
+export class FirebaseAuthService implements AuthFacade {
   readonly #auth = inject(Auth);
   readonly #router = inject(Router);
   readonly #notificationService = inject(NotificationConfigService);

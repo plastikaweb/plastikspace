@@ -1,10 +1,10 @@
-# @plastik/shared/auth/firebase/data-access
+# @plastik/auth/firebase/data-access
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
 
-- [@plastik/shared/auth/firebase/data-access](#plastiksharedauthfirebasedata-access)
+- [@plastik/auth/firebase/data-access](#plastikauthfirebasedata-access)
   - [Description](#description)
   - [Services](#services)
   - [Guards](#guards)
@@ -12,18 +12,16 @@
 
 ## Description
 
-This library is responsible for handling all the data access logic for the **Firebase Authentication**.
+This library provides the **Firebase implementation** of the authentication logic. It implements the `AuthFacade` contract defined in [`@plastik/shared/auth/feature`](../../feature/README.md).
 
 ## Services
 
-- **`FirebaseAuthService`**: Handles all authentication logic.
+- **`FirebaseAuthService`**: Implements `AuthFacade`. Includes logic for:
   - `login`: Logs in the user with email and password.
   - `register`: Registers the user with email and password.
   - `logout`: Logs out the user.
   - `sendVerification`: Sends a verification email.
   - `requestPassword`: Sends a password reset email.
-  - `handleAuthStateChanged`: Handles auth state changes.
-  - `resetAuth`: Resets the authentication state.
 
 ## Guards
 
@@ -33,4 +31,4 @@ This library is responsible for handling all the data access logic for the **Fir
 
 ## Running unit tests
 
-Run `nx test shared-auth-firebase-data-access` to execute the unit tests.
+Run `nx test auth-firebase-data-access` to execute the unit tests.

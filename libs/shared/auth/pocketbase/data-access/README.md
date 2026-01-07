@@ -5,16 +5,14 @@
 ![PocketBase](https://img.shields.io/badge/PocketBase-%23b8dbe4.svg?style=for-the-badge&logo=PocketBase&logoColor=black)
 
 - [@plastik/auth/pocketbase/data-access](#plastikauthpocketbasedata-access)
-  - [Description](#description)
   - [Services](#services)
   - [Store](#store)
+    - [**`pocketBaseUserProfileStore`**](#pocketbaseuserprofilestore)
+      - [State Signals](#state-signals)
+      - [Methods](#methods)
   - [Running unit tests](#running-unit-tests)
 
-## Description
-
-Shared authentication library for PocketBase-based applications. It provides a lightweight service wrapper and an NgRx Signal Store for managing user authentication state.
-
-It follows the same architectural patterns as the existing Firebase auth (`@plastik/shared/auth/firebase/data-access`).
+This library provides the **PocketBase implementation** of the authentication logic. It implements the `AuthFacade` contract defined in [`@plastik/auth/util`](../../util/README.md).
 
 **Key Features:**
 
@@ -24,10 +22,11 @@ It follows the same architectural patterns as the existing Firebase auth (`@plas
 
 ## Services
 
-- **`PocketBaseAuthService`**: Lightweight wrapper around the PocketBase JS SDK for authentication operations.
+- **`PocketBaseAuthService`**: Implements `AuthFacade`. Lightweight wrapper around the PocketBase JS SDK for authentication operations.
   - `login`: Authenticates a user with email and password.
   - `logout`: Clears the authentication state.
-  - `isValid`: (getter) Checks if the current token is valid.
+  - `register`: Registers a new user.
+  - `requestPassword`: Sends a password reset email.
   - `authModel`: (getter) Gets the currently authenticated user.
 
 ## Store

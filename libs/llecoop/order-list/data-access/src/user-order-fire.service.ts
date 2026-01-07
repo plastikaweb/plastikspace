@@ -12,7 +12,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { EntityId } from '@ngrx/signals/entities';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { FirebaseAuthService } from '@plastik/auth/util/util/firebase/data-access';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
 import { TableSortingConfig } from '@plastik/shared/table/entities';

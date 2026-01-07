@@ -1,26 +1,28 @@
-# @plastik/shared/auth/register/feature
+# @plastik/auth/register
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 
-- [Description](#description)
-- [Components](#components)
-- [Routes](#routes)
-- [Running unit tests](#running-unit-tests)
+- [@plastik/auth/register](#plastikauthregister)
+  - [Description](#description)
+  - [Services](#services)
+  - [Routes](#routes)
+  - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-This library is responsible for handling all the **register feature logic**.
+This library handles the **register feature logic**. It provides a concrete implementation of the [`AuthFormFacade`](../../util/README.md) for the registration process.
 
-## Components
+## Services
 
-- `AuthFeatureComponent`: This component is the main container for the register feature.
+- **`RegisterFacadeService`**: Implements `AuthFormFacade`. Manages the registration form state and submission, interacting with the configured `AUTH_SERVICE`.
 
 ## Routes
 
-- `authRegisterFeatureRoutes`: This route is responsible for displaying the register component.
-  It uses by default the `FirebaseAuthService` to handle the authentication and the `RegisterFacadeService` to handle the register UI and behavior.
-  It uses by default the `getRegisterFormConfig()` to get the register form config.
+- **`authRegisterFeatureRoutes`**: Routes configuration for the registration flow. It uses the `AuthFeatureComponent` from [`@plastik/auth/util`](../../util/README.md) and provides the necessary tokens:
+  - `AUTH_SERVICE`: [`FirebaseAuthService`](../../firebase/data-access/README.md)
+  - `AUTH_FORM_FACADE`: `RegisterFacadeService`
+  - `FORM_TOKEN`: `registerFormConfig`
 
 ## Running unit tests
 

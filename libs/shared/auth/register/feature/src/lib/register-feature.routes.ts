@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
-import { AUTH_FORM_FACADE, AUTH_SERVICE, AuthFeatureComponent } from '@plastik/auth';
+import { AUTH_FORM_FACADE, AUTH_SERVICE } from '@plastik/auth/entities';
+import { AuthFeatureComponent } from '@plastik/auth/feature';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { RegisterFacadeService } from './register-facade.service';

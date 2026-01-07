@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'auth-feature',
+  displayName: 'plastik-shared-auth-feature',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/auth/feature',
