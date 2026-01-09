@@ -22,7 +22,8 @@ export const appRoutes: Routes = [
       nameLink: 'https://www.llevat.org',
     },
     canActivate: [isNotLoggedGuard],
-    loadChildren: () => import('@plastik/auth/login').then(routes => routes.authLoginFeatureRoutes),
+    loadChildren: () =>
+      import('@plastik/auth/login').then(routes => routes.firebaseAuthLoginFeatureRoutes),
   },
   {
     path: 'registre',

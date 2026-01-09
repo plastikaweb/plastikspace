@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.button-overrides(
+    (
+      filled-disabled-container-color: var(--primary-300),
+    )
+  );
+
+  --mat-button-filled-disabled-label-text-color: var(--primary-50);
+}

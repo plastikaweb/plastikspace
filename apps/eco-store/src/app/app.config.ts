@@ -6,6 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import {
   ApplicationConfig,
   ErrorHandler,
+  LOCALE_ID,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
@@ -54,6 +55,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       pocketBaseActivityInterceptor();
     }),
+    { provide: LOCALE_ID, useValue: 'ca' },
     {
       provide: ErrorHandler,
       useClass: ErrorHandlerService,

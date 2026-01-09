@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
 import { AuthFeatureComponent } from './auth-feature.component';
-import { AUTH_FORM_FACADE } from './auth-form-facade.type';
+import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
 
 xdescribe('AuthFeatureComponent', () => {
   let component: AuthFeatureComponent;

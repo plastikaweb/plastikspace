@@ -207,3 +207,39 @@ export function transformToString(value: unknown): string {
 export function collectionToArray<T>(collection: Record<string, T>): T[] {
   return Object.keys(collection).map((key: string) => collection[key]);
 }
+
+/**
+ * @description Creates a deep clone of the provided value.
+ * @param {T} obj The value to clone.
+ * @example
+ * deepClone({ a: 1, b: 2 });
+ * // { a: 1, b: 2 }
+ * @returns {T} A deep copy of the input.
+ */
+export function deepClone<T>(obj: T): T {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  if (obj instanceof Date) {
+    return new Date(obj.getTime()) as T;
+  }
+
+  if (obj instanceof RegExp) {
+    return new RegExp(obj) as T;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => deepClone(item)) as T;
+  }
+
+  if (typeof obj === 'object') {
+    const cloned = {} as T;
+    Object.keys(obj).forEach(key => {
+      (cloned as Record<string, unknown>)[key] = deepClone((obj as Record<string, unknown>)[key]);
+    });
+    return cloned;
+  }
+
+  return obj;
+}

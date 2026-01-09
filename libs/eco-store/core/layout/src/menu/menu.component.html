@@ -4,32 +4,32 @@
     [attr.aria-label]="'a11y.main-navigation' | translate">
     <ul class="flex flex-row justify-start items-center gap-4">
       <li class="flex items-center">
-        <button
-          matButton
+        <a
+          mat-button
           routerLink="/"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: true }"
           [attr.aria-current]="this.currentUrl() === '/' ? 'page' : null">
           {{ 'menu.home' | translate }}
-        </button>
+        </a>
       </li>
       <li class="flex items-center">
-        <button
-          matButton
+        <a
+          mat-button
           routerLink="/botiga"
           routerLinkActive="active"
           [attr.aria-current]="this.currentUrl().startsWith('/botiga') ? 'page' : null">
           {{ 'menu.store' | translate }}
-        </button>
+        </a>
       </li>
       <li class="flex items-center">
-        <button
-          matButton
+        <a
+          mat-button
           routerLink="/about-us"
           routerLinkActive="active"
           [attr.aria-current]="this.currentUrl().startsWith('/about-us') ? 'page' : null">
           {{ 'menu.about' | translate }}
-        </button>
+        </a>
       </li>
     </ul>
   </nav>

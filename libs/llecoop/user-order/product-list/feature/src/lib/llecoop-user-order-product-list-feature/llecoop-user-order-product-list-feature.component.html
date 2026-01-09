@@ -25,7 +25,7 @@
       @for (product of facade.products() | withCartQuantity; track product['id']; let i = $index) {
         <plastik-ui-user-order-product-card
           [product]="product"
-          [index]="i"
+          [lcpImage]="i < 6"
           (addToCart)="facade.addToCart($event)"
           (viewDetails)="facade.viewDetails($event)" />
       }

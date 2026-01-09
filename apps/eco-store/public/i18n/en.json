@@ -25,6 +25,31 @@
     "view-cart": "View cart",
     "profile": "Profile"
   },
+  "auth": {
+    "login": {
+      "email": "Email",
+      "password": "Password",
+      "title": "Eco Store",
+      "subtitle": "Cooperative Community",
+      "remember-me": "Remember me",
+      "recover-access": "Forgot password?",
+      "new-user-question": "Member registration",
+      "create-account": "Create account",
+      "submit": "Login",
+      "terms-privacy": "By continuing, you agree to our Terms and Privacy Policy."
+    },
+    "error": {
+      "login": "Check your credentials"
+    }
+  },
+  "form": {
+    "error": {
+      "email": "The email format is incorrect",
+      "required": "This field is required",
+      "minLength": "This field must have at least {{value}} characters",
+      "maxLength": "This field must have more than {{value}} characters"
+    }
+  },
   "error": {
     "image": "This image could not be loaded"
   },
@@ -50,6 +75,7 @@
   "products": {
     "all": "All products",
     "add": "Add",
+    "add-long": "Add to cart",
     "remove": "Remove",
     "decrement": "Decrease",
     "increment": "Increase",
@@ -62,6 +88,12 @@
       "sort.priceWithIva-desc": "Price descending",
       "sort.updated-asc": "Oldest",
       "sort.updated-desc": "Most recent"
+    },
+    "modified": {
+      "title": "Product modified",
+      "description": "You modified the product quantity but didn't add it to the cart",
+      "cancel": "Back to product",
+      "leave": "Don't add it"
     },
     "unit-type": {
       "unit": "Unit",
@@ -91,8 +123,25 @@
       "unitWithVariableVolume": "L"
     }
   },
+  "cart": {
+    "steps": {
+      "summary": "Cart summary",
+      "shipping": "Shipping",
+      "payment": "Payment",
+      "confirmation": "Confirmation"
+    },
+    "summary": {
+      "items-count": "{{value}} products",
+      "resume": "Summary",
+      "subtotal": "Subtotal",
+      "taxes": "Taxes (VAT)",
+      "total": "Total",
+      "go-to-shipping": "Go to Shipping"
+    }
+  },
   "search": {
     "placeholder": "Search products or categories",
-    "label": "Search products or categories"
+    "label": "Search products or categories",
+    "submit": "Search"
   }
 }

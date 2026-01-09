@@ -6,34 +6,59 @@
 - [@plastik/shared/auth/feature](#plastiksharedauthfeature)
   - [Description](#description)
   - [Components](#components)
-  - [Service Tokens](#service-tokens)
+  - [Service Tokens and Interfaces](#service-tokens-and-interfaces)
+    - [AuthFacade](#authfacade)
+    - [AuthFormFacade](#authformfacade)
   - [Usage](#usage)
 
 ## Description
 
-The `auth-feature` library provides authentication features for the application. It includes components, services, and utilities to serve as a **UI layer** for authentication-related functionalities.
+The `shared-auth-feature` library serves as the core "contracts" and common UI layer for the authentication system.
+It centralizes the interfaces and injection tokens that define how authentication services and form facades should behave, ensuring consistency across different authentication providers (e.g., Firebase, PocketBase).
 
 ## Components
 
-- **AuthFeatureComponent**: The main container component for the authentication feature.
+- **AuthFeatureComponent**: A generic container component for authentication forms. It orchestrates the display of the form and its associated links (like "Forgot Password" or "Register").
 
-## Service Tokens
+## Service Tokens and Interfaces
 
-- **AUTH_SERVICE**: The authentication service used to manage authentication.
-- **AUTH_FORM_FACADE**: A service to pass the form structure and behavior.
+### AuthFacade
 
-  ```typescript
-  export interface AuthFormFacade {
-    formStructure?: Signal<FormlyFieldConfig[]>;
-    onSubmit(search: object): void;
-    extraLinks?: Signal<{ label: string; route: string }[]>;
-  }
-  ```
+Defines the contract for an authentication service.
+
+```typescript
+export interface AuthFacade {
+  loggedIn: Signal<boolean>;
+  login(email: string, password: string): Observable<unknown> | Promise<unknown>;
+  logout(): Observable<void> | Promise<void> | void;
+  register?: (
+    email: string,
+    password: string,
+    name: string
+  ) => Observable<unknown> | Promise<unknown>;
+  requestPassword?: (email: string) => Observable<unknown> | Promise<unknown>;
+}
+
+export const AUTH_SERVICE = new InjectionToken<AuthFacade>('AUTH_SERVICE');
+```
+
+### AuthFormFacade
+
+Defines the contract for a component or service that manages the logic for a specific authentication form (Login, Register, etc.).
+
+```typescript
+export interface AuthFormFacade<T> {
+  formConfig: FormConfig<T>;
+  extraLinks?: Signal<{ label: string; route: string }[]>;
+  onSubmit(data: T): void;
+}
+
+export const AUTH_FORM_FACADE = new InjectionToken<AuthFormFacade<unknown>>('AUTH_FORM_FACADE');
+```
 
 ## Usage
 
-- Create a `Route` in your application's routing configuration and associate it with the `AuthFeatureComponent`.
-- Provide the `AUTH_SERVICE`, `AUTH_FORM_FACADE`, and `FORM_TOKEN` tokens with the appropriate services and configuration.
+Feature libraries like `@plastik/auth/login` or `@plastik/auth/register` utilize these tokens to provide concrete implementations.
 
 ```typescript
 export const authLoginFeatureRoutes: Route[] = [
@@ -41,18 +66,9 @@ export const authLoginFeatureRoutes: Route[] = [
     path: '',
     component: AuthFeatureComponent,
     providers: [
-      {
-        provide: AUTH_SERVICE,
-        useClass: FirebaseAuthService,
-      },
-      {
-        provide: AUTH_FORM_FACADE,
-        useClass: LoginFacadeService,
-      },
-      {
-        provide: FORM_TOKEN,
-        useValue: getLoginFormConfig(),
-      },
+      { provide: AUTH_SERVICE, useClass: FirebaseAuthService },
+      { provide: AUTH_FORM_FACADE, useClass: LoginFacadeService },
+      { provide: FORM_TOKEN, useFactory: loginFormConfig },
     ],
   },
 ];

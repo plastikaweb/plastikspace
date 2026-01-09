@@ -40,7 +40,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 })
 export class UiUserOrderProductCardComponent {
   product = input.required<LlecoopProductWithQuantity>();
-  index = input<number>(0);
+  lcpImage = input<boolean>(false);
 
   totalPrice = computed(() => this.product()?.priceWithIva * this.product().quantity || 0);
 

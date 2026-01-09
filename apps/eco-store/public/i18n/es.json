@@ -25,6 +25,31 @@
     "view-cart": "Ver carrito",
     "profile": "Perfil"
   },
+  "auth": {
+    "login": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "title": "Tienda Eco",
+      "subtitle": "Comunidad Cooperativa",
+      "remember-me": "Recordar sesión",
+      "recover-access": "¿Has olvidado la contraseña?",
+      "new-user-question": "Registro de socios",
+      "create-account": "Crear cuenta",
+      "submit": "Iniciar sesión",
+      "terms-privacy": "Al continuar, aceptas nuestros Términos y Política de Privacidad."
+    },
+    "error": {
+      "login": "Revisa tus credenciales"
+    }
+  },
+  "form": {
+    "error": {
+      "email": "El formato del correo electrónico no es correcto",
+      "required": "El campo es obligatorio",
+      "minLength": "El campo debe tener al menos {{value}} caracteres",
+      "maxLength": "El campo debe tener más de {{value}} caracteres"
+    }
+  },
   "error": {
     "image": "Ha habido un error al cargar la imagen"
   },
@@ -96,6 +121,22 @@
       "unitWithFixedVolume": "ud.",
       "unitWithVariableWeight": "kg",
       "unitWithVariableVolume": "L"
+    }
+  },
+  "cart": {
+    "steps": {
+      "summary": "Resumen de la cesta",
+      "shipping": "Envío",
+      "payment": "Pago",
+      "confirmation": "Confirmación"
+    },
+    "summary": {
+      "items-count": "{{value}} productos",
+      "resume": "Resumen",
+      "subtotal": "Subtotal",
+      "taxes": "Impuestos (IVA)",
+      "total": "Total",
+      "go-to-shipping": "Ir a Envío"
     }
   },
   "search": {

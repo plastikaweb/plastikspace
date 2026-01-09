@@ -17,7 +17,6 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@plastik/auth": ["libs/shared/auth/feature/src/index.ts"],
       "@plastik/auth/firebase/data-access": ["libs/shared/auth/firebase/data-access/src/index.ts"],
       "@plastik/auth/login": ["libs/shared/auth/login/feature/src/index.ts"],
       "@plastik/auth/register": ["libs/shared/auth/register/feature/src/index.ts"],
@@ -212,7 +211,10 @@
       ],
       "@plastik/auth/pocketbase/data-access": [
         "libs/shared/auth/pocketbase/data-access/src/index.ts"
-      ]
+      ],
+      "@plastik/auth/feature": ["libs/shared/auth/feature/src/index.ts"],
+      "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
+      "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

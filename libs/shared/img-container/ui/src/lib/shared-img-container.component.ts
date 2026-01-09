@@ -19,7 +19,7 @@ export type ImageDimensions = { width: number; height: number } | undefined;
   templateUrl: './shared-img-container.component.html',
   styleUrl: './shared-img-container.component.scss',
   host: {
-    class: 'relative block',
+    class: 'relative block h-full w-full',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

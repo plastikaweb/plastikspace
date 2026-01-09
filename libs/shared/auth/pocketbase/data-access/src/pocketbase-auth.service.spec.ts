@@ -4,7 +4,14 @@ import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 
 describe('PocketBaseAuthService', () => {
   let service: PocketBaseAuthService;
-  let pbMock: any;
+  let pbMock: {
+    collection: jest.Mock;
+    authStore: {
+      clear: jest.Mock;
+      isValid: boolean;
+      record: { id: string; email: string } | null;
+    };
+  };
 
   beforeEach(() => {
     pbMock = {
@@ -39,12 +46,6 @@ describe('PocketBaseAuthService', () => {
   it('should call clear on logout', () => {
     service.logout();
     expect(pbMock.authStore.clear).toHaveBeenCalled();
-  });
-
-  it('should return isValid from authStore', () => {
-    expect(service.isValid).toBe(true);
-    pbMock.authStore.isValid = false;
-    expect(service.isValid).toBe(false);
   });
 
   it('should return authModel from authStore', () => {

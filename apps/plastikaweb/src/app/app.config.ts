@@ -4,6 +4,7 @@ import { HttpLink } from 'apollo-angular/http';
 import { provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, inject, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { InMemoryCache } from '@apollo/client/core';
 import { ENVIRONMENT } from '@plastik/core/environments';
 
@@ -15,6 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideZonelessChangeDetection(),
     provideRouter(appRoutes),
     provideHttpClient(),
+    provideTranslateService(),
     {
       provide: ENVIRONMENT,
       useValue: environment,

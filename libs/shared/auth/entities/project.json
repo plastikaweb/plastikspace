@@ -1,0 +1,13 @@
+{
+  "name": "shared-auth-entities",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/auth/entities/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["type:entity", "scope:shared"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

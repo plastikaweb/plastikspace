@@ -1,0 +1,37 @@
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatIconModule } from '@angular/material/icon';
+import { Router, RouterLink } from '@angular/router';
+import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
+import { SharedFormFeatureModule } from '@plastik/shared/form';
+import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/password';
+import { TranslateModule } from '@ngx-translate/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+
+@Component({
+  selector: 'eco-eco-store-auth-login',
+  imports: [
+    SharedFormFeatureModule,
+    PasswordWithVisibilityFormlyModule,
+    MatCardModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    TranslateModule,
+    RouterLink,
+  ],
+  providers: [
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' },
+    },
+  ],
+  templateUrl: './eco-store-auth-login.component.html',
+  styleUrl: './eco-store-auth-login.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class EcoStoreAuthLoginComponent {
+  protected readonly facade = inject(AUTH_FORM_FACADE);
+}

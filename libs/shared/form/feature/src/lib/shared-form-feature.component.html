@@ -1,16 +1,18 @@
 <form
+  class="flex flex-col w-full gap-1 mt"
   novalidate
-  class="flex flex-col w-full gap-sub"
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
   <!-- form -->
   <formly-form
     class="form-container"
-    [form]="form"
-    [options]="options"
     [fields]="fields()"
-    [model]="model()"
-    (modelChange)="onModelChange($event)"></formly-form>
+    [form]="form"
+    [model]="mutableModel()"
+    [options]="options"
+    (modelChange)="onModelChange($event)" />
+
+  <ng-content select=".extra-links" />
 
   <button
     mat-flat-button
@@ -23,8 +25,4 @@
     [attr.aria-label]="(config().label | translate) || 'Submit'">
     {{ (config().label | translate) || 'Submit' }}
   </button>
-
-  <div class="flex justify-center p-0 text-base shared-form--extraLinks-container">
-    <ng-content select=".extraLinks"></ng-content>
-  </div>
 </form>

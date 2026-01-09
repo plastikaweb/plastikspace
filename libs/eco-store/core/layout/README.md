@@ -26,7 +26,7 @@ This library provides the core layout shell for the Eco Store application. It or
 
 The layout is composed of:
 
-- **Header**: Contains the logo, search bar (lazy loaded), and user menu.
+- **Header**: Contains the logo, search bar (lazy loaded), and user menu with authentication state (Login/Profile).
 - **Sidenav**: Collapsible navigation menu for categories and account links.
 - **Content**: The main `router-outlet` for feature modules.
 - **Footer**: Application footer.

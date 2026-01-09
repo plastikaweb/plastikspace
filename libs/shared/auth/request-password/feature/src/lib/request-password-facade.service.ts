@@ -1,5 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { AUTH_SERVICE, AuthFormFacade } from '@plastik/auth';
+import { AUTH_SERVICE, AuthFormFacade } from '@plastik/auth/entities';
 
 import { requestPasswordFormConfig } from './request-password-form.config';
 

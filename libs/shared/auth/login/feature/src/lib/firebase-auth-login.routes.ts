@@ -1,11 +1,12 @@
 import { Route } from '@angular/router';
-import { AUTH_FORM_FACADE, AUTH_SERVICE, AuthFeatureComponent } from '@plastik/auth';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
+import { AuthFeatureComponent } from '@plastik/auth/feature';
+import { AUTH_SERVICE, AUTH_FORM_FACADE } from '@plastik/auth/entities';
 import { LoginFacadeService } from './login-facade.service';
 import { loginFormConfig } from './login-form.config';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 
-export const authLoginFeatureRoutes: Route[] = [
+export const firebaseAuthLoginFeatureRoutes: Route[] = [
   {
     path: '',
     component: AuthFeatureComponent,

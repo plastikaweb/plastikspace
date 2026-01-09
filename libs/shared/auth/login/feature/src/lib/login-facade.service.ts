@@ -1,11 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { AUTH_SERVICE, AuthFormFacade } from '@plastik/auth';
+import { AuthFormFacade, LoginData } from '@plastik/auth/entities';
 import { FORM_TOKEN, FormConfig } from '@plastik/core/entities';
-
-export interface LoginData {
-  email: string;
-  password: string;
-}
+import { AUTH_SERVICE } from '@plastik/auth/entities';
 
 @Injectable({
   providedIn: 'root',
@@ -14,9 +10,10 @@ export class LoginFacadeService implements AuthFormFacade<LoginData> {
   authService = inject(AUTH_SERVICE);
   formConfig = inject(FORM_TOKEN) as FormConfig<LoginData>;
   extraLinks = signal([
-    { label: 'Registre per sòcies', route: '/registre' },
-    { label: 'Has oblidat la contrasenya?', route: '/peticio-clau' },
+    { label: 'auth.register.label', route: '/registre' },
+    { label: 'auth.request-password.label', route: '/peticio-clau' },
   ]);
+
   async onSubmit({ email, password }: LoginData): Promise<void> {
     await this.authService.login(email, password);
   }

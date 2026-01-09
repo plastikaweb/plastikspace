@@ -75,6 +75,15 @@
   );
 }
 
+.input--eco-md {
+  @include input.material-input-rounded(
+    20px,
+    var(--app-main-border-radius),
+    1px,
+    var(--primary-600)
+  );
+}
+
 .cdk-overlay-pane > .mat-mdc-select-panel {
   border-radius: var(--app-main-border-radius) !important;
 }

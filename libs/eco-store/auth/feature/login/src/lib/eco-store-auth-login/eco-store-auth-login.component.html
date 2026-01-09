@@ -1,0 +1,57 @@
+<div class="relative flex items-center justify-center min-h-screen bg-neutral-50 p-4">
+  <mat-card
+    appearance="raised"
+    class="max-w-[425px] border-2! border-white! w-full bg-linear-to-br from-primary-100 to-primary-200 text-primary-800 shadow-lg!">
+    <mat-card-header class="flex flex-col items-center gap-4 mb-4 pt-8 pb-4">
+      <div class="bg-white p-4 rounded-full text-primary mb-2 shadow-md">
+        <mat-icon class="scale-150">eco</mat-icon>
+      </div>
+      <mat-card-title class="text-center font-bold tracking-tight m-0">
+        {{ 'auth.login.title' | translate }}
+      </mat-card-title>
+      <mat-card-subtitle class="text-center text-title-small font-medium">
+        {{ 'auth.login.subtitle' | translate }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content class="bg-white/75 backdrop-blur py-6!">
+      <plastik-shared-form-feature
+        [fields]="facade.formConfig.getConfig()"
+        [submitConfig]="facade.formConfig.getSubmitFormConfig?.() ?? null"
+        (changeEvent)="facade.onSubmit($event)">
+        <div class="extra-links flex items-center justify-center my-4">
+          <a
+            matButton
+            class="text-secondary! text-sm! font-medium! normal-case!"
+            routerLink="/recuperar-contrasenya">
+            {{ 'auth.login.recover-access' | translate }}
+            <mat-icon aria-hidden="true" iconPositionEnd class="scale-90 align-middle ml-1"
+              >passkey</mat-icon
+            >
+          </a>
+        </div>
+      </plastik-shared-form-feature>
+
+      <div class="my-4 py-2 border-t border-primary-100 flex items-center justify-center gap-2">
+        <span class="text-sm text-neutral-500">{{
+          'auth.login.new-user-question' | translate
+        }}</span>
+        <a
+          matButton
+          class="text-primary! text-sm! font-bold! normal-case! px-2! min-w-0!"
+          routerLink="/activar-compte">
+          {{ 'auth.login.create-account' | translate }}
+          <mat-icon aria-hidden="true" iconPositionEnd class="scale-90 align-middle ml-1"
+            >verified_user</mat-icon
+          >
+        </a>
+      </div>
+    </mat-card-content>
+
+    <mat-card-footer class="p-4 text-center border-t border-primary-200">
+      <p class="text-xs text-neutral-500">
+        {{ 'auth.login.terms-privacy' | translate }}
+      </p>
+    </mat-card-footer>
+  </mat-card>
+</div>

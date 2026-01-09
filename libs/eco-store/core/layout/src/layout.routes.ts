@@ -19,11 +19,6 @@ export const layoutRoutes: Route[] = [
     component: LayoutComponent,
     providers: [
       {
-        provide: MAT_ICON_DEFAULT_OPTIONS,
-        useValue: { fontSet: 'material-symbols-outlined' },
-      },
-      { provide: LOCALE_ID, useValue: 'ca' },
-      {
         provide: DEFAULT_CURRENCY_CODE,
         useValue: 'EUR',
       },
@@ -34,6 +29,10 @@ export const layoutRoutes: Route[] = [
       {
         provide: MatPaginatorIntl,
         useClass: MatPaginatorIntlService,
+      },
+      {
+        provide: MAT_ICON_DEFAULT_OPTIONS,
+        useValue: { fontSet: 'material-symbols-outlined' },
       },
       importProvidersFrom(EcoStoreFormlyModule),
     ],

@@ -160,6 +160,15 @@ interface SubmitFormConfig {
    * @default "Submit"
    */
   label?: string;
+  /**
+   * Button type.
+   * @default "normal"
+   */
+  type?: 'icon' | 'normal';
+  /**
+   * Icon name for the button (if type is 'icon').
+   */
+  icon?: string;
 
   /**
    * Whether the button is disabled.
