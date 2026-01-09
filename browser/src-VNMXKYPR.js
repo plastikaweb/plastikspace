@@ -49,13 +49,13 @@ import {
   isEmpty,
   isNil,
   selectNasaImagesFeature
-} from "./chunk-BTZLTBRN.js";
+} from "./chunk-QJQEB6ES.js";
 import {
   TranslateModule,
   _DisposeViewRepeaterStrategy,
   provideEffects,
   selectRouteQueryParams
-} from "./chunk-FOZMDWVL.js";
+} from "./chunk-HNX4MRCG.js";
 import {
   LetDirective,
   PushPipe,
@@ -17223,7 +17223,7 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
   static \u0275fac = function SharedImgContainerComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedImgContainerComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-img-container"]], hostAttrs: [1, "relative", "block"], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 7, vars: 6, consts: [["fixedImage", ""], ["fillImage", ""], [1, "absolute", "inset-0", "flex", "items-center", "justify-center", "bg-transparent", "rounded-lg"], [1, "animate-spin", "rounded-full", "h-8", "w-8", "border-b-2", "border-tertiary-600"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "object-cover", "my-sub", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "object-cover", "w-full", "max-h-auto", "my-sub", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-img-container"]], hostAttrs: [1, "relative", "block", "h-full", "w-full"], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 7, vars: 6, consts: [["fixedImage", ""], ["fillImage", ""], [1, "absolute", "inset-0", "flex", "items-center", "justify-center", "bg-transparent", "rounded-lg"], [1, "animate-spin", "rounded-full", "h-8", "w-8", "border-b-2", "border-tertiary-600"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "object-cover", "my-sub", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "object-cover", "w-full", "max-h-auto", "my-sub", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275declareLet(0)(1)(2);
       \u0275\u0275elementStart(3, "div", 2);
@@ -17253,7 +17253,7 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedImgContainerComponent, [{
     type: Component,
     args: [{ selector: "plastik-img-container", imports: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet], host: {
-      class: "relative block"
+      class: "relative block h-full w-full"
     }, changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div class="absolute inset-0 flex items-center justify-center bg-transparent rounded-lg">\n  @if (isLoading()) {\n    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-tertiary-600"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>\n    }\n  } @else {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>\n    }\n  }\n\n  <ng-template #fixedImage let-priority="priority">\n    <img\n      class="object-cover my-sub transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ width, height, quality: quality() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n\n  <ng-template #fillImage let-priority="priority">\n    <img\n      fill\n      class="object-cover w-full max-h-auto my-sub transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [alt]="title()"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host {\n  display: block;\n  position: relative;\n}\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
   }], () => [], { src: [{ type: Input, args: [{ isSignal: true, alias: "src", required: true }] }], title: [{ type: Input, args: [{ isSignal: true, alias: "title", required: true }] }], dimensions: [{ type: Input, args: [{ isSignal: true, alias: "dimensions", required: false }] }], quality: [{ type: Input, args: [{ isSignal: true, alias: "quality", required: false }] }], lcpImage: [{ type: Input, args: [{ isSignal: true, alias: "lcpImage", required: false }] }] });
 })();
@@ -17608,4 +17608,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-J3DYNOEP.js.map
+//# sourceMappingURL=src-VNMXKYPR.js.map

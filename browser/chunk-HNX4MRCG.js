@@ -1941,139 +1941,6 @@ var LayoutFacade = class _LayoutFacade {
   }], null, null);
 })();
 
-// libs/core/router/data-access/src/lib/services/navigation.service.ts
-var NavigationService = class _NavigationService {
-  #router = inject(Router);
-  #location = inject(Location);
-  #history = [];
-  constructor() {
-    this.#router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
-        this.#history = [event.urlAfterRedirects, ...this.#history];
-      }
-    });
-  }
-  /**
-   * @description Navigate to a concrete URL with params and extras if needed.
-   * @param { NavigationProps } navigationProps The navigation configuration properties.
-   * @returns {Promise<boolean>} A promise that resolves to true if navigation succeeds.
-   */
-  navigate({ path, extras }) {
-    return this.#router.navigate(path, {
-      queryParams: extras?.queryParams,
-      fragment: extras?.fragment
-    });
-  }
-  /**
-   * @description Go back to previous URL.
-   * @param {string} backBaseUrl The default back URL. Use it when we have no navigation history.
-   * @param {RegExp} regex An instruction to accomplish when we want to redirect to an specific previous URL that must satisfy the regex pattern.
-   * @returns {Promise<void>} A promise that resolves when the navigation is complete.
-   */
-  async back(backBaseUrl, regex) {
-    if (this.#history.length && regex) {
-      this.#history.shift();
-      for (const url of this.#history) {
-        if (regex.test(url)) {
-          await this.#router.navigateByUrl(url);
-          return;
-        }
-      }
-    }
-    if (backBaseUrl) {
-      await this.#router.navigateByUrl(backBaseUrl || "/");
-    } else {
-      this.#location.back();
-    }
-  }
-  static \u0275fac = function NavigationService_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _NavigationService)();
-  };
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _NavigationService, factory: _NavigationService.\u0275fac, providedIn: "root" });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(NavigationService, [{
-    type: Injectable,
-    args: [{
-      providedIn: "root"
-    }]
-  }], () => [], null);
-})();
-
-// libs/core/router/data-access/src/lib/+state/actions/router-state.actions.ts
-var routerActions = createActionGroup({
-  source: "Router",
-  events: {
-    Go: props(),
-    Back: props(),
-    Forward: emptyProps()
-  }
-});
-
-// libs/core/router/data-access/src/lib/+state/effects/router-state.effects.ts
-var RouterStateEffects = class _RouterStateEffects {
-  #actions$ = inject(Actions);
-  #location = inject(Location);
-  #navigationService = inject(NavigationService);
-  #zone = inject(NgZone);
-  navigate$ = createEffect(() => {
-    return this.#actions$.pipe(ofType(routerActions.go), tap((action) => this.#navigationService.navigate(action)));
-  }, { dispatch: false });
-  navigateBack$ = createEffect(() => {
-    return this.#actions$.pipe(ofType(routerActions.back), tap(({ url, regex }) => this.#navigationService.back(url, regex)));
-  }, { dispatch: false });
-  navigateForward$ = createEffect(() => {
-    return this.#actions$.pipe(ofType(routerActions.forward), tap(() => this.#location.forward()));
-  }, { dispatch: false });
-  scrollToTop$ = createEffect(() => {
-    return this.#actions$.pipe(ofType(ROUTER_NAVIGATION), tap(() => {
-      this.#zone.runOutsideAngular(() => {
-        const mainElement = document.getElementById("mainContent");
-        mainElement?.scrollTo(0, 0);
-      });
-    }));
-  }, { dispatch: false });
-  static \u0275fac = function RouterStateEffects_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _RouterStateEffects)();
-  };
-  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _RouterStateEffects, factory: _RouterStateEffects.\u0275fac });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(RouterStateEffects, [{
-    type: Injectable
-  }], null, null);
-})();
-
-// libs/core/router/data-access/src/lib/router-state.ts
-var ROUTER_STATE_FEATURE_KEY = new InjectionToken("ROUTER_STATE_FEATURE_KEY");
-var injector = Injector.create({
-  providers: [{ provide: ROUTER_STATE_FEATURE_KEY, useValue: "router" }]
-});
-var routerKey = injector.get(ROUTER_STATE_FEATURE_KEY);
-
-// libs/core/router/data-access/src/lib/+state/reducer/router-state.reducer.ts
-var routerReducers = {
-  [routerKey]: routerReducer
-};
-var CustomRouterSerializer = class {
-  serialize(routerState) {
-    let route = routerState.root;
-    const params = {};
-    while (route.firstChild) {
-      route = route.firstChild;
-      Object.keys(route.params).forEach((key) => params[key] = route.params?.[key]);
-    }
-    const { url, root: { queryParams } } = routerState;
-    const { data } = route;
-    return {
-      url,
-      params,
-      queryParams,
-      data
-    };
-  }
-};
-
 // node_modules/@ngx-translate/core/fesm2022/ngx-translate-core.mjs
 var MissingTranslationHandler = class {
 };
@@ -3163,6 +3030,14 @@ function provideMissingTranslationHandler(handler) {
     useClass: handler
   };
 }
+function provideTranslateService(config = {}) {
+  return defaultProviders(__spreadValues({
+    compiler: provideTranslateCompiler(TranslateNoOpCompiler),
+    parser: provideTranslateParser(TranslateDefaultParser),
+    loader: provideTranslateLoader(TranslateNoOpLoader),
+    missingTranslationHandler: provideMissingTranslationHandler(DefaultMissingTranslationHandler)
+  }, config), true);
+}
 function defaultProviders(config = {}, provideStore) {
   const providers = [];
   if (config.loader) {
@@ -3245,6 +3120,139 @@ var TranslateModule = class _TranslateModule {
     }]
   }], null, null);
 })();
+
+// libs/core/router/data-access/src/lib/services/navigation.service.ts
+var NavigationService = class _NavigationService {
+  #router = inject(Router);
+  #location = inject(Location);
+  #history = [];
+  constructor() {
+    this.#router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.#history = [event.urlAfterRedirects, ...this.#history];
+      }
+    });
+  }
+  /**
+   * @description Navigate to a concrete URL with params and extras if needed.
+   * @param { NavigationProps } navigationProps The navigation configuration properties.
+   * @returns {Promise<boolean>} A promise that resolves to true if navigation succeeds.
+   */
+  navigate({ path, extras }) {
+    return this.#router.navigate(path, {
+      queryParams: extras?.queryParams,
+      fragment: extras?.fragment
+    });
+  }
+  /**
+   * @description Go back to previous URL.
+   * @param {string} backBaseUrl The default back URL. Use it when we have no navigation history.
+   * @param {RegExp} regex An instruction to accomplish when we want to redirect to an specific previous URL that must satisfy the regex pattern.
+   * @returns {Promise<void>} A promise that resolves when the navigation is complete.
+   */
+  async back(backBaseUrl, regex) {
+    if (this.#history.length && regex) {
+      this.#history.shift();
+      for (const url of this.#history) {
+        if (regex.test(url)) {
+          await this.#router.navigateByUrl(url);
+          return;
+        }
+      }
+    }
+    if (backBaseUrl) {
+      await this.#router.navigateByUrl(backBaseUrl || "/");
+    } else {
+      this.#location.back();
+    }
+  }
+  static \u0275fac = function NavigationService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _NavigationService)();
+  };
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _NavigationService, factory: _NavigationService.\u0275fac, providedIn: "root" });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(NavigationService, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], () => [], null);
+})();
+
+// libs/core/router/data-access/src/lib/+state/actions/router-state.actions.ts
+var routerActions = createActionGroup({
+  source: "Router",
+  events: {
+    Go: props(),
+    Back: props(),
+    Forward: emptyProps()
+  }
+});
+
+// libs/core/router/data-access/src/lib/+state/effects/router-state.effects.ts
+var RouterStateEffects = class _RouterStateEffects {
+  #actions$ = inject(Actions);
+  #location = inject(Location);
+  #navigationService = inject(NavigationService);
+  #zone = inject(NgZone);
+  navigate$ = createEffect(() => {
+    return this.#actions$.pipe(ofType(routerActions.go), tap((action) => this.#navigationService.navigate(action)));
+  }, { dispatch: false });
+  navigateBack$ = createEffect(() => {
+    return this.#actions$.pipe(ofType(routerActions.back), tap(({ url, regex }) => this.#navigationService.back(url, regex)));
+  }, { dispatch: false });
+  navigateForward$ = createEffect(() => {
+    return this.#actions$.pipe(ofType(routerActions.forward), tap(() => this.#location.forward()));
+  }, { dispatch: false });
+  scrollToTop$ = createEffect(() => {
+    return this.#actions$.pipe(ofType(ROUTER_NAVIGATION), tap(() => {
+      this.#zone.runOutsideAngular(() => {
+        const mainElement = document.getElementById("mainContent");
+        mainElement?.scrollTo(0, 0);
+      });
+    }));
+  }, { dispatch: false });
+  static \u0275fac = function RouterStateEffects_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _RouterStateEffects)();
+  };
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _RouterStateEffects, factory: _RouterStateEffects.\u0275fac });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(RouterStateEffects, [{
+    type: Injectable
+  }], null, null);
+})();
+
+// libs/core/router/data-access/src/lib/router-state.ts
+var ROUTER_STATE_FEATURE_KEY = new InjectionToken("ROUTER_STATE_FEATURE_KEY");
+var injector = Injector.create({
+  providers: [{ provide: ROUTER_STATE_FEATURE_KEY, useValue: "router" }]
+});
+var routerKey = injector.get(ROUTER_STATE_FEATURE_KEY);
+
+// libs/core/router/data-access/src/lib/+state/reducer/router-state.reducer.ts
+var routerReducers = {
+  [routerKey]: routerReducer
+};
+var CustomRouterSerializer = class {
+  serialize(routerState) {
+    let route = routerState.root;
+    const params = {};
+    while (route.firstChild) {
+      route = route.firstChild;
+      Object.keys(route.params).forEach((key) => params[key] = route.params?.[key]);
+    }
+    const { url, root: { queryParams } } = routerState;
+    const { data } = route;
+    return {
+      url,
+      params,
+      queryParams,
+      data
+    };
+  }
+};
 
 // libs/core/router/data-access/src/lib/services/prefix-title.service.ts
 var PrefixTitleService = class _PrefixTitleService extends TitleStrategy {
@@ -3619,15 +3627,16 @@ export {
   RouterState,
   provideRouterStore,
   CoreCmsLayoutDataAccessModule,
+  TranslatePipe,
+  provideTranslateService,
+  TranslateModule,
   routerActions,
   RouterStateEffects,
   routerReducers,
   CustomRouterSerializer,
   selectRouteQueryParams,
   NavigationFilterService,
-  TranslatePipe,
-  TranslateModule,
   PrefixTitleService,
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-FOZMDWVL.js.map
+//# sourceMappingURL=chunk-HNX4MRCG.js.map

@@ -20,7 +20,7 @@ import {
   withDevtools,
   withMethods,
   withState
-} from "./chunk-FOZMDWVL.js";
+} from "./chunk-HNX4MRCG.js";
 import {
   Store,
   createActionGroup,
@@ -10203,18 +10203,54 @@ function registerValidatorsMessageExtension() {
   };
 }
 
+// libs/shared/util/objects/src/util-objects.ts
+function isEmpty(obj) {
+  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+}
+function isNil2(value) {
+  return value === void 0 || value === null;
+}
+function collectionToArray(collection) {
+  return Object.keys(collection).map((key) => collection[key]);
+}
+function deepClone(obj) {
+  if (obj === null || typeof obj !== "object") {
+    return obj;
+  }
+  if (obj instanceof Date) {
+    return new Date(obj.getTime());
+  }
+  if (obj instanceof RegExp) {
+    return new RegExp(obj);
+  }
+  if (Array.isArray(obj)) {
+    return obj.map((item) => deepClone(item));
+  }
+  if (typeof obj === "object") {
+    const cloned = {};
+    Object.keys(obj).forEach((key) => {
+      cloned[key] = deepClone(obj[key]);
+    });
+    return cloned;
+  }
+  return obj;
+}
+
 // libs/shared/form/feature/src/lib/shared-form-feature.component.ts
-var _c03 = [[["", 8, "extralinks"]]];
-var _c13 = [".extraLinks"];
+var _c03 = [[["", 8, "extra-links"]]];
+var _c13 = [".extra-links"];
 var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   fields = input.required(...ngDevMode ? [{ debugName: "fields" }] : []);
   model = input(null, ...ngDevMode ? [{ debugName: "model" }] : []);
   submitConfig = input(null, ...ngDevMode ? [{ debugName: "submitConfig" }] : []);
   autoFocus = input(false, ...ngDevMode ? [{ debugName: "autoFocus" }] : []);
   disableForm = input(false, ...ngDevMode ? [{ debugName: "disableForm" }] : []);
+  resetForm = input(false, ...ngDevMode ? [{ debugName: "resetForm" }] : []);
   changeEvent = output();
   temporaryChangeEvent = output();
   pendingChangesEvent = output();
+  validChange = output();
+  #submitted = signal(false, ...ngDevMode ? [{ debugName: "#submitted" }] : []);
   config = linkedSignal(__spreadProps(__spreadValues({}, ngDevMode ? { debugName: "config" } : {}), {
     source: this.submitConfig,
     computation: (newConfig) => {
@@ -10225,68 +10261,96 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
       }, newConfig);
     }
   }));
-  submitLabel = signal("Cercar", ...ngDevMode ? [{ debugName: "submitLabel" }] : []);
-  #submitted = signal(false, ...ngDevMode ? [{ debugName: "#submitted" }] : []);
-  #newModel = signal(null, ...ngDevMode ? [{ debugName: "#newModel" }] : []);
+  // Clone incoming model to avoid mutating a readonly object provided by callers (e.g., store/state)
+  mutableModel = linkedSignal(__spreadProps(__spreadValues({}, ngDevMode ? { debugName: "mutableModel" } : {}), {
+    source: this.model,
+    computation: (m) => m ? deepClone(m) : m
+  }));
   form = new FormGroup({});
   options = {};
   #elementRef = inject(ElementRef);
   #formDisableToken = inject(FORM_DISABLE_TOKEN);
   #firstInput = signal(null, ...ngDevMode ? [{ debugName: "#firstInput" }] : []);
-  #focusedInput = signal(null, ...ngDevMode ? [{ debugName: "#focusedInput" }] : []);
+  #statusChangesSubscription;
+  resetFormEffect = effect(() => {
+    if (this.resetForm()) {
+      this.#resetFormStatus();
+    }
+  }, ...ngDevMode ? [{ debugName: "resetFormEffect" }] : []);
   constructor() {
-    effect(() => {
-      if (this.autoFocus() && this.#firstInput() instanceof HTMLInputElement) {
-        this.#firstInput()?.focus();
-      }
-    });
     effect(() => {
       if (this.#formDisableToken() || this.disableForm()) {
         this.form.disable({ emitEvent: false });
       } else {
         this.form.enable({ emitEvent: false });
+        setTimeout(() => {
+          if (this.autoFocus() && this.#firstInput()) {
+            this.#firstInput()?.focus();
+            this.#resetFormStatus();
+          }
+        }, 0);
       }
     });
   }
   ngAfterViewInit() {
-    this.form.markAsUntouched();
-    this.form.markAsPristine();
+    this.#resetFormStatus();
     this.#submitted.set(false);
-    this.#newModel.set(this.model());
     this.#firstInput.set(this.#elementRef.nativeElement.querySelector('input:not([type="hidden"]):not([readonly])'));
+    this.validChange.emit(this.form.valid);
+    this.#statusChangesSubscription = this.form.statusChanges.subscribe(() => {
+      this.validChange.emit(this.form.valid);
+    });
   }
   onSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.emitChange();
+    this.emitChange(this.form.value);
+  }
+  ngOnDestroy() {
+    this.#statusChangesSubscription?.unsubscribe();
   }
   onModelChange(model) {
-    if (this.#submitted())
+    if (this.#submitted()) {
       return;
-    this.#newModel.set(model);
+    }
     this.pendingChangesEvent.emit(this.form.dirty);
-    if (!this.config().submitAvailable)
-      this.emitChange();
-    if (this.config().emitOnChange)
+    if (!this.config().submitAvailable) {
+      this.emitChange(model ?? this.form.value);
+    }
+    if (this.config().emitOnChange) {
       this.temporaryChangeEvent.emit(model);
+    }
   }
-  emitChange() {
+  submitDisabled() {
+    return this.form.invalid || !this.config().enabledByDefault && this.form.untouched;
+  }
+  emitChange(model) {
     if (this.form.valid) {
       if (this.config().disableOnSubmit) {
         this.form.disable({ emitEvent: false });
         this.#submitted.set(true);
       }
-      this.form.markAsPristine();
-      this.form.markAsUntouched();
       this.pendingChangesEvent.emit(false);
-      this.changeEvent.emit(this.#newModel());
+      this.changeEvent.emit(model ?? this.form.value);
       this.#submitted.set(false);
+      this.#resetFormStatus();
+    }
+  }
+  #resetFormStatus() {
+    this.form.markAsUntouched();
+    this.form.markAsPristine();
+    if (this.form.disabled) {
+      this.form.enable();
+    }
+    if (this.config().resetOnSubmit) {
+      this.mutableModel.set(null);
+      this.form.reset({});
     }
   }
   static \u0275fac = function SharedFormFeatureComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedFormFeatureComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedFormFeatureComponent, selectors: [["plastik-shared-form-feature"]], hostAttrs: [1, "w-full"], inputs: { fields: [1, "fields"], model: [1, "model"], submitConfig: [1, "submitConfig"], autoFocus: [1, "autoFocus"], disableForm: [1, "disableForm"] }, outputs: { changeEvent: "changeEvent", temporaryChangeEvent: "temporaryChangeEvent", pendingChangesEvent: "pendingChangesEvent" }, ngContentSelectors: _c13, decls: 8, vars: 16, consts: [["novalidate", "", 1, "flex", "flex-col", "w-full", "gap-sub", 3, "ngSubmit", "formGroup"], [1, "form-container", 3, "modelChange", "form", "options", "fields", "model"], ["mat-flat-button", "", "type", "submit", "data-test", "submit-button", "title", "Submit", 3, "disabled"], [1, "flex", "justify-center", "p-0", "text-base", "shared-form--extraLinks-container"]], template: function SharedFormFeatureComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedFormFeatureComponent, selectors: [["plastik-shared-form-feature"]], hostAttrs: [1, "w-full"], inputs: { fields: [1, "fields"], model: [1, "model"], submitConfig: [1, "submitConfig"], autoFocus: [1, "autoFocus"], disableForm: [1, "disableForm"], resetForm: [1, "resetForm"] }, outputs: { changeEvent: "changeEvent", temporaryChangeEvent: "temporaryChangeEvent", pendingChangesEvent: "pendingChangesEvent", validChange: "validChange" }, ngContentSelectors: _c13, decls: 7, vars: 16, consts: [["novalidate", "", 1, "flex", "flex-col", "w-full", "gap-1", "mt", 3, "ngSubmit", "formGroup"], [1, "form-container", 3, "modelChange", "fields", "form", "model", "options"], ["mat-flat-button", "", "type", "submit", "data-test", "submit-button", "title", "Submit", 3, "disabled"]], template: function SharedFormFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c03);
       \u0275\u0275elementStart(0, "form", 0);
@@ -10298,26 +10362,24 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
         return ctx.onModelChange($event);
       });
       \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(2, "button", 2);
-      \u0275\u0275pipe(3, "translate");
-      \u0275\u0275text(4);
-      \u0275\u0275pipe(5, "translate");
-      \u0275\u0275elementEnd();
-      \u0275\u0275elementStart(6, "div", 3);
-      \u0275\u0275projection(7);
+      \u0275\u0275projection(2);
+      \u0275\u0275elementStart(3, "button", 2);
+      \u0275\u0275pipe(4, "translate");
+      \u0275\u0275text(5);
+      \u0275\u0275pipe(6, "translate");
       \u0275\u0275elementEnd()();
     }
     if (rf & 2) {
       \u0275\u0275property("formGroup", ctx.form);
       \u0275\u0275advance();
-      \u0275\u0275property("form", ctx.form)("options", ctx.options)("fields", ctx.fields())("model", ctx.model());
-      \u0275\u0275advance();
+      \u0275\u0275property("fields", ctx.fields())("form", ctx.form)("model", ctx.mutableModel())("options", ctx.options);
+      \u0275\u0275advance(2);
       \u0275\u0275classMap("w-full sm:w-auto " + (ctx.config().buttonStyle || ""));
       \u0275\u0275classProp("sr-only!", !ctx.config().submitAvailable);
       \u0275\u0275property("disabled", !ctx.form.valid);
-      \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(3, 12, ctx.config().label) || "Submit");
+      \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(4, 12, ctx.config().label) || "Submit");
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(5, 14, ctx.config().label) || "Submit", " ");
+      \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(6, 14, ctx.config().label) || "Submit", " ");
     }
   }, dependencies: [ReactiveFormsModule, \u0275NgNoValidate, NgControlStatusGroup, FormGroupDirective, FormlyModule, LegacyFormlyForm, MatButtonModule, MatButton, MatIconModule, TranslateModule, TranslatePipe], styles: ["\n\n.shared-form--extraLinks-container[_ngcontent-%COMP%]     > .extraLinks {\n  font-size: 13px;\n  gap: var(--sub);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-direction: column;\n}\n/*# sourceMappingURL=shared-form-feature.component.css.map */"], changeDetection: 0 });
 };
@@ -10327,18 +10389,20 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     args: [{ selector: "plastik-shared-form-feature", imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, TranslateModule], host: {
       class: "w-full"
     }, changeDetection: ChangeDetectionStrategy.OnPush, template: `<form
+  class="flex flex-col w-full gap-1 mt"
   novalidate
-  class="flex flex-col w-full gap-sub"
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
   <!-- form -->
   <formly-form
     class="form-container"
-    [form]="form"
-    [options]="options"
     [fields]="fields()"
-    [model]="model()"
-    (modelChange)="onModelChange($event)"></formly-form>
+    [form]="form"
+    [model]="mutableModel()"
+    [options]="options"
+    (modelChange)="onModelChange($event)" />
+
+  <ng-content select=".extra-links" />
 
   <button
     mat-flat-button
@@ -10351,16 +10415,12 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     [attr.aria-label]="(config().label | translate) || 'Submit'">
     {{ (config().label | translate) || 'Submit' }}
   </button>
-
-  <div class="flex justify-center p-0 text-base shared-form--extraLinks-container">
-    <ng-content select=".extraLinks"></ng-content>
-  </div>
 </form>
 `, styles: ["/* libs/shared/form/feature/src/lib/shared-form-feature.component.scss */\n.shared-form--extraLinks-container ::ng-deep > .extraLinks {\n  font-size: 13px;\n  gap: var(--sub);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-direction: column;\n}\n/*# sourceMappingURL=shared-form-feature.component.css.map */\n"] }]
-  }], () => [], { fields: [{ type: Input, args: [{ isSignal: true, alias: "fields", required: true }] }], model: [{ type: Input, args: [{ isSignal: true, alias: "model", required: false }] }], submitConfig: [{ type: Input, args: [{ isSignal: true, alias: "submitConfig", required: false }] }], autoFocus: [{ type: Input, args: [{ isSignal: true, alias: "autoFocus", required: false }] }], disableForm: [{ type: Input, args: [{ isSignal: true, alias: "disableForm", required: false }] }], changeEvent: [{ type: Output, args: ["changeEvent"] }], temporaryChangeEvent: [{ type: Output, args: ["temporaryChangeEvent"] }], pendingChangesEvent: [{ type: Output, args: ["pendingChangesEvent"] }] });
+  }], () => [], { fields: [{ type: Input, args: [{ isSignal: true, alias: "fields", required: true }] }], model: [{ type: Input, args: [{ isSignal: true, alias: "model", required: false }] }], submitConfig: [{ type: Input, args: [{ isSignal: true, alias: "submitConfig", required: false }] }], autoFocus: [{ type: Input, args: [{ isSignal: true, alias: "autoFocus", required: false }] }], disableForm: [{ type: Input, args: [{ isSignal: true, alias: "disableForm", required: false }] }], resetForm: [{ type: Input, args: [{ isSignal: true, alias: "resetForm", required: false }] }], changeEvent: [{ type: Output, args: ["changeEvent"] }], temporaryChangeEvent: [{ type: Output, args: ["temporaryChangeEvent"] }], pendingChangesEvent: [{ type: Output, args: ["pendingChangesEvent"] }], validChange: [{ type: Output, args: ["validChange"] }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedFormFeatureComponent, { className: "SharedFormFeatureComponent", filePath: "libs/shared/form/feature/src/lib/shared-form-feature.component.ts", lineNumber: 32 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedFormFeatureComponent, { className: "SharedFormFeatureComponent", filePath: "libs/shared/form/feature/src/lib/shared-form-feature.component.ts", lineNumber: 35 });
 })();
 
 // node_modules/@angular/cdk/fesm2022/observers-private.mjs
@@ -17741,17 +17801,6 @@ function provideFormlyConfig2() {
   ]);
 }
 
-// libs/shared/util/objects/src/util-objects.ts
-function isEmpty(obj) {
-  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
-}
-function isNil2(value) {
-  return value === void 0 || value === null;
-}
-function collectionToArray(collection) {
-  return Object.keys(collection).map((key) => collection[key]);
-}
-
 export {
   NG_VALUE_ACCESSOR,
   DefaultValueAccessor,
@@ -17818,4 +17867,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-BTZLTBRN.js.map
+//# sourceMappingURL=chunk-QJQEB6ES.js.map
