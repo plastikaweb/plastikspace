@@ -8,14 +8,12 @@ export interface UserProfileState {
   user: PocketBaseUser | null;
   isAuthenticated: boolean;
   isLoading: boolean;
-  error: string | null;
 }
 
 const initialState: UserProfileState = {
   user: null,
   isAuthenticated: false,
   isLoading: false,
-  error: null,
 };
 
 export const pocketBaseUserProfileStore = signalStore(
@@ -25,7 +23,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
   withMethods((store, authService = inject(PocketBaseAuthService)) => ({
     async login(credentials: { email: string; password: string }): Promise<void> {
-      updateState(store, `[profile] login in process`, { isLoading: true, error: null });
+      updateState(store, `[profile] login in process`, { isLoading: true });
 
       try {
         const authData = await authService.login(credentials.email, credentials.password);
@@ -34,18 +32,11 @@ export const pocketBaseUserProfileStore = signalStore(
           user: authData.record as PocketBaseUser,
           isAuthenticated: true,
           isLoading: false,
-          error: null,
         });
       } catch (error) {
-        const errorMessage =
-          error instanceof Error ? error.message : 'Authentication failed. Please try again.';
+        const errorMessage = error instanceof Error ? error.message : 'auth.error.login';
 
-        updateState(store, `[profile] login error`, {
-          user: null,
-          isAuthenticated: false,
-          isLoading: false,
-          error: errorMessage,
-        });
+        throw new Error(errorMessage);
       }
     },
 

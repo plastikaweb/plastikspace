@@ -66,10 +66,8 @@ export class MenuComponent {
   }
 
   login() {
-    // TODO: Get email and password from form. Anyway, this is not where it should be done. This is for profileStore testing purposes.
-    this.profileStore.login({
-      email: '',
-      password: '',
-    });
+    if (!this.profileStore.isAuthenticated()) {
+      this.router.navigate(['/accedir']);
+    }
   }
 }

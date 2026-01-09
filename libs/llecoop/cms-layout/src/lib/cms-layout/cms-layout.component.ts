@@ -12,7 +12,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { FirebaseAuthService } from '@plastik/auth/util/util/firebase/data-access';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';

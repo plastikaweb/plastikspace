@@ -11,7 +11,7 @@
 
 ## Description
 
-This library handles the **login feature logic**. It provides a concrete implementation of the [`AuthFormFacade`](../../util/README.md) for the login process.
+This library handles the **login feature logic**. It provides a concrete implementation of the [`AuthFormFacade`](../../feature/README.md) for the login process.
 
 ## Services
 
@@ -19,7 +19,7 @@ This library handles the **login feature logic**. It provides a concrete impleme
 
 ## Routes
 
-- **`firebaseAuthLoginFeatureRoutes`**: Routes configuration for the Firebase login flow. It uses the `AuthFeatureComponent` from [`@plastik/auth/util`](../../util/README.md) and provides the necessary tokens:
+- **`firebaseAuthLoginFeatureRoutes`**: Routes configuration for the Firebase login flow. It uses the `AuthFeatureComponent` from [`@plastik/shared/auth/feature`](../../feature/README.md) and provides the necessary tokens:
   - `AUTH_SERVICE`: [`FirebaseAuthService`](../../firebase/data-access/README.md)
   - `AUTH_FORM_FACADE`: `LoginFacadeService`
   - `FORM_TOKEN`: `loginFormConfig`

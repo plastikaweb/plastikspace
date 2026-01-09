@@ -9,7 +9,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { FirebaseAuthService } from '@plastik/auth/util/util/firebase/data-access';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import { map, pipe } from 'rxjs';
 

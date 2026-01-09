@@ -10,9 +10,10 @@
     - [**`pocketBaseUserProfileStore`**](#pocketbaseuserprofilestore)
       - [State Signals](#state-signals)
       - [Methods](#methods)
+  - [Guards](#guards)
   - [Running unit tests](#running-unit-tests)
 
-This library provides the **PocketBase implementation** of the authentication logic. It implements the `AuthFacade` contract defined in [`@plastik/auth/util`](../../util/README.md).
+This library provides the **PocketBase implementation** of the authentication logic. It implements the `AuthFacade` contract defined in [`@plastik/shared/auth/feature`](../../feature/README.md).
 
 **Key Features:**
 
@@ -47,6 +48,11 @@ An NgRx Signal Store for reactive authentication state management.
 - `login(credentials)`: Authenticate with email/password.
 - `logout()`: Clear authentication and reset state.
 - `checkAuth()`: Check and restore session from localStorage (auto-called on init).
+
+## Guards
+
+- **`pocketBaseIsLoggedGuard`**: Route guard that allows access only to authenticated users. Redirects to login if unauthorized.
+- **`pocketBaseIsNotLoggedGuard`**: Route guard that allows access only to **unauthenticated** users (guests). Redirects to home if already logged in.
 
 ## Running unit tests
 

@@ -14,7 +14,7 @@ import {
   withState,
 } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { FirebaseAuthService } from '@plastik/auth/util/util/firebase/data-access';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { StoreNotificationService } from '@plastik/signal-state/firebase';

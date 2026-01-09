@@ -4,6 +4,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { InputPasswordWithVisibilityTypeComponent } from './input-password-with-visibility-type.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('InputPasswordWithVisibilityTypeComponent', () => {
   let component: InputPasswordWithVisibilityTypeComponent;
@@ -14,6 +15,7 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
       providers: [provideZonelessChangeDetection()],
       imports: [
         ReactiveFormsModule,
+        TranslateModule.forRoot(),
         FormlyModule.forRoot({
           types: [
             {

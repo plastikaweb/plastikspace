@@ -21,7 +21,7 @@ import {
 } from '@ngrx/signals';
 import { EntityId, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-import { FirebaseAuthService } from '@plastik/auth/util/util/firebase/data-access';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { BaseEntity, IdType } from '@plastik/core/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { areObjectEntriesEqual } from '@plastik/shared/objects';

@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -21,6 +21,7 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
     MatCardModule,
     CurrencyPipe,
     TranslatePipe,
+    RouterLink,
     KeyValuePipe,
     PocketBaseImageUrlPipe,
     SharedImgContainerComponent,
@@ -32,13 +33,7 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartSummaryComponent {
-  readonly #router = inject(Router);
-  readonly #route = inject(ActivatedRoute);
   readonly cartStore = inject(ecoStoreCartStore);
-
-  nextStep() {
-    this.#router.navigate(['../shipping'], { relativeTo: this.#route });
-  }
 
   onQuantityChange(event: number, product: EcoStoreProductWithCategoryName) {
     this.cartStore.addToCart(product, event);

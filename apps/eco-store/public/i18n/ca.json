@@ -25,6 +25,31 @@
     "view-cart": "Veure cistella",
     "profile": "Perfil"
   },
+  "auth": {
+    "login": {
+      "email": "Correu electrònic",
+      "password": "Contrasenya",
+      "title": "Botiga Eco",
+      "subtitle": "Comunitat Cooperativa",
+      "remember-me": "Recorda'm",
+      "recover-access": "Has oblidat la contrasenya?",
+      "new-user-question": "Registre de socis",
+      "create-account": "Crear compte",
+      "submit": "Iniciar sessió",
+      "terms-privacy": "En continuar, acceptes els nostres Termes i Política de Privadesa."
+    },
+    "error": {
+      "login": "Revisa les teves credencials"
+    }
+  },
+  "form": {
+    "error": {
+      "email": "El format del correu electrònic no és correcte",
+      "required": "El camp és obligatori",
+      "minLength": "El camp ha de tenir almenys {{value}} caràcters",
+      "maxLength": "El camp ha de tenir més de {{value}} caràcters"
+    }
+  },
   "error": {
     "image": "Hi ha hagut un error al carregar la imatge"
   },
