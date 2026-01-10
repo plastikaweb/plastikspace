@@ -22,8 +22,10 @@
     "about": "Quiénes Somos",
     "contact": "Contacto",
     "view-favorites": "Ver favoritos",
-    "view-cart": "Ver carrito",
-    "profile": "Perfil"
+    "view-cart": "Ir al carrito de compra, {{ productCount }} productos, precio total: {{ productPrice }}",
+    "profile": "Perfil de {{ name }}",
+    "login": "Acceder",
+    "logout": "Cerrar sesión"
   },
   "auth": {
     "login": {

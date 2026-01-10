@@ -1,8 +1,10 @@
-import { inject } from '@angular/core';
-import { signalStore, withHooks, withMethods, withState } from '@ngrx/signals';
+import { computed, inject } from '@angular/core';
+import { signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
 import { PocketBaseUser } from '@plastik/core/entities';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { RecordModel } from 'pocketbase';
 
 export interface UserProfileState {
   user: PocketBaseUser | null;
@@ -20,6 +22,16 @@ export const pocketBaseUserProfileStore = signalStore(
   { providedIn: 'root' },
   withDevtools('user-profile'),
   withState<UserProfileState>(initialState),
+
+  withComputed(store => ({
+    userInitials: computed(() =>
+      store
+        .user()
+        ?.name?.split(' ')
+        .map(name => name.charAt(0))
+        .join('')
+    ),
+  })),
 
   withMethods((store, authService = inject(PocketBaseAuthService)) => ({
     async login(credentials: { email: string; password: string }): Promise<void> {

@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   effect,
   inject,
   signal,
@@ -12,11 +13,13 @@ import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatBadge } from '@angular/material/badge';
 import { MatIcon } from '@angular/material/icon';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, map, startWith } from 'rxjs';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, NgTemplateOutlet } from '@angular/common';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 
 @Component({
   selector: 'eco-menu',
@@ -30,6 +33,9 @@ import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access
     MatBadge,
     TranslatePipe,
     CurrencyPipe,
+    SharedImgContainerComponent,
+    PocketBaseImageUrlPipe,
+    NgTemplateOutlet,
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
