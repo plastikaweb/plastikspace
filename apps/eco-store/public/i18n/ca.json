@@ -22,8 +22,10 @@
     "about": "Qui Som",
     "contact": "Contacte",
     "view-favorites": "Veure favorits",
-    "view-cart": "Veure cistella",
-    "profile": "Perfil"
+    "view-cart": "Anar a la cistella de compra, {{ productCount }} productes, preu total: {{ productPrice }}",
+    "profile": "Perfil de {{ name }}",
+    "login": "Accedir",
+    "logout": "Tancar sessió"
   },
   "auth": {
     "login": {

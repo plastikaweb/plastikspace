@@ -40,6 +40,8 @@ An NgRx Signal Store for reactive authentication state management.
 
 - `user()` - `Signal<PocketBaseUser | null>`: Currently authenticated user.
 - `isAuthenticated()` - `Signal<boolean>`: Authentication status.
+- `userInitials()` - `Signal<string | undefined>`: Initials of the authenticated user (max 2 characters).
+- `avatarUrl()` - `Signal<string | null>`: URL of the user's avatar.
 - `isLoading()` - `Signal<boolean>`: Loading state during operations.
 - `error()` - `Signal<string | null>`: Last error message.
 
