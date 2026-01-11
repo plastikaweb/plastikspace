@@ -645,6 +645,21 @@
       },
       {
         "hidden": false,
+        "id": "select1466534506",
+        "maxSelect": 1,
+        "name": "role",
+        "presentable": false,
+        "required": true,
+        "system": false,
+        "type": "select",
+        "values": [
+          "PARTNER",
+          "GLOBAL_ADMIN",
+          "CLIENT_ADMIN"
+        ]
+      },
+      {
+        "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
         "onCreate": true,

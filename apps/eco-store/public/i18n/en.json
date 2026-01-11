@@ -23,7 +23,12 @@
     "contact": "Contact",
     "view-favorites": "View favorites",
     "view-cart": "View cart",
-    "profile": "Profile"
+    "profile": "Profile of {{ name }}",
+    "profile_page": "View profile",
+    "hello": "Hello {{ name }}",
+    "login": "Login",
+    "logout": "Logout",
+    "orders": "Orders"
   },
   "auth": {
     "login": {
@@ -40,6 +45,13 @@
     },
     "error": {
       "login": "Check your credentials"
+    }
+  },
+  "users": {
+    "role": {
+      "PARTNER": "Cooperative Partner",
+      "GLOBAL_ADMIN": "Super Admin",
+      "CLIENT_ADMIN": "Admin"
     }
   },
   "form": {

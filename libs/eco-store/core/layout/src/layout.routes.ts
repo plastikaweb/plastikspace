@@ -1,5 +1,5 @@
 import { IMAGE_LOADER } from '@angular/common';
-import { DEFAULT_CURRENCY_CODE, importProvidersFrom, inject, LOCALE_ID } from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, importProvidersFrom, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Route } from '@angular/router';
 
 import { EnvironmentPocketBase, POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';

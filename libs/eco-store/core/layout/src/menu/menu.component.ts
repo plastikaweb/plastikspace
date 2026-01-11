@@ -12,14 +12,15 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatBadge } from '@angular/material/badge';
 import { MatIcon } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatDivider } from '@angular/material/divider';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { filter, map, startWith } from 'rxjs';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import { CurrencyPipe, NgTemplateOutlet } from '@angular/common';
+import { CurrencyPipe } from '@angular/common';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 
 @Component({
   selector: 'eco-menu',
@@ -33,9 +34,9 @@ import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
     MatBadge,
     TranslatePipe,
     CurrencyPipe,
-    SharedImgContainerComponent,
-    PocketBaseImageUrlPipe,
-    NgTemplateOutlet,
+    MatMenuModule,
+    MatDivider,
+    UserAvatarComponent,
   ],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
@@ -57,6 +58,20 @@ export class MenuComponent {
     { initialValue: this.router.url }
   );
 
+  protected readonly roleIcon = computed(() => {
+    const role = this.profileStore.user()?.role;
+    switch (role) {
+      case 'PARTNER':
+        return 'verified';
+      case 'GLOBAL_ADMIN':
+        return 'admin_panel_settings';
+      case 'CLIENT_ADMIN':
+        return 'manage_accounts';
+      default:
+        return '';
+    }
+  });
+
   protected readonly bumpAnimation = signal(false);
 
   constructor() {
@@ -72,6 +87,13 @@ export class MenuComponent {
   }
 
   login() {
+    if (!this.profileStore.isAuthenticated()) {
+      this.router.navigate(['/accedir']);
+    }
+  }
+
+  logout() {
+    this.profileStore.logout();
     if (!this.profileStore.isAuthenticated()) {
       this.router.navigate(['/accedir']);
     }
