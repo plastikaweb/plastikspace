@@ -31,6 +31,7 @@ export const pocketBaseUserProfileStore = signalStore(
         .map(name => name.charAt(0))
         .join('')
     ),
+    userFirstName: computed(() => store.user()?.name?.split(' ')[0] || ''),
   })),
 
   withMethods((store, authService = inject(PocketBaseAuthService)) => ({

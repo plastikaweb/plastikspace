@@ -64,14 +64,21 @@
         </button>
       </li>
       <li>
-        @if (profileStore.isAuthenticated()) {
-          @let user = profileStore.user();
-
-          @if (user?.avatar) {
-            <ng-container *ngTemplateOutlet="avatarMenu; context: { $implicit: user }" />
-          } @else {
-            <ng-container *ngTemplateOutlet="initialsMenu; context: { $implicit: user }" />
-          }
+        @let user = profileStore.user();
+        @if (user) {
+          <button
+            mat-button
+            class="user-pill"
+            type="button"
+            [matMenuTriggerFor]="userMenu"
+            [aria-label]="'menu.profile' | translate: { name: user?.name }">
+            <div class="flex items-center gap-2">
+              <eco-user-avatar [user]="user" [initials]="profileStore.userInitials()" />
+              <span class="font-medium">{{
+                'menu.hello' | translate: { name: profileStore.userFirstName() }
+              }}</span>
+            </div>
+          </button>
         } @else {
           <button
             matIconButton
@@ -86,25 +93,41 @@
   </nav>
 </ng-template>
 
-<ng-template #avatarMenu let-user>
-  <button
-    matIconButton
-    type="button"
-    [aria-label]="'menu.profile' | translate: { name: user?.name }">
-    <plastik-img-container
-      class="w-6 h-6 rounded-full object-cover overflow-hidden"
-      [src]="user | pocketBaseImageUrl: user.avatar"
-      [title]="user?.name || 'Avatar'"
-      [dimensions]="{ width: 24, height: 24 }" />
-  </button>
-</ng-template>
+<mat-menu #userMenu="matMenu" xPosition="before" class="user-menu-panel">
+  @let user = profileStore.user();
 
-<ng-template #initialsMenu let-user>
-  <button
-    matIconButton
-    class="bg-primary-50!"
-    type="button"
-    [aria-label]="'menu.profile' | translate: { name: user?.name }">
-    <span class="text-sm block m-0 font-bold">{{ profileStore.userInitials() }}</span>
-  </button>
-</ng-template>
+  @if (user) {
+    <div class="px-4 py-3 flex flex-col gap-1 outline-none">
+      <div class="flex items-center gap-3">
+        <eco-user-avatar
+          avatarClass="size-12"
+          initialsClass="size-10 bg-primary-50 text-base"
+          [initials]="profileStore.userInitials()"
+          [user]="user" />
+        <div class="flex flex-col">
+          <span class="font-bold text-base leading-none">{{ user?.name }}</span>
+          <div class="flex items-center gap-1 mt-1 text-gray-500">
+            @if (roleIcon()) {
+              <mat-icon class="w-4 h-4 text-[16px] leading-none">{{ roleIcon() }}</mat-icon>
+            }
+            <span class="text-xs">{{ `users.role.${user?.role}` | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-divider />
+    <a mat-menu-item routerLink="/perfil">
+      <mat-icon>person</mat-icon>
+      <span>{{ 'menu.profile_page' | translate }}</span>
+    </a>
+    <a mat-menu-item routerLink="/orders">
+      <mat-icon>receipt_long</mat-icon>
+      <span>{{ 'menu.orders' | translate }}</span>
+    </a>
+    <mat-divider />
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>{{ 'menu.logout' | translate }}</span>
+    </button>
+  }
+</mat-menu>

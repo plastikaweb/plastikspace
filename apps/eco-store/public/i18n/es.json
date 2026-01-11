@@ -24,8 +24,11 @@
     "view-favorites": "Ver favoritos",
     "view-cart": "Ir al carrito de compra, {{ productCount }} productos, precio total: {{ productPrice }}",
     "profile": "Perfil de {{ name }}",
+    "profile_page": "Ver perfil",
+    "hello": "Hola {{ name }}",
     "login": "Acceder",
-    "logout": "Cerrar sesión"
+    "logout": "Cerrar sesión",
+    "orders": "Pedidos"
   },
   "auth": {
     "login": {
@@ -42,6 +45,13 @@
     },
     "error": {
       "login": "Revisa tus credenciales"
+    }
+  },
+  "users": {
+    "role": {
+      "PARTNER": "Socio Cooperativa",
+      "GLOBAL_ADMIN": "Super Administrador",
+      "CLIENT_ADMIN": "Administrador"
     }
   },
   "form": {

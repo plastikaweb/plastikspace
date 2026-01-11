@@ -24,8 +24,11 @@
     "view-favorites": "Veure favorits",
     "view-cart": "Anar a la cistella de compra, {{ productCount }} productes, preu total: {{ productPrice }}",
     "profile": "Perfil de {{ name }}",
+    "profile_page": "Veure perfil",
+    "hello": "Hola {{ name }}",
     "login": "Accedir",
-    "logout": "Tancar sessió"
+    "logout": "Tancar sessió",
+    "orders": "Comandes"
   },
   "auth": {
     "login": {
@@ -42,6 +45,13 @@
     },
     "error": {
       "login": "Revisa les teves credencials"
+    }
+  },
+  "users": {
+    "role": {
+      "PARTNER": "Soci Cooperativa",
+      "GLOBAL_ADMIN": "Súper Administrador",
+      "CLIENT_ADMIN": "Administrador"
     }
   },
   "form": {
