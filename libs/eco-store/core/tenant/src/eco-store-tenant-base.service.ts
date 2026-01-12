@@ -29,17 +29,7 @@ export abstract class EcoStoreTenantBaseService {
         .collection('tenants')
         .getFirstListItem(`normalizedName="${slug}"`);
 
-      const currentTenant: EcoStoreTenant = {
-        id: record.id,
-        name: record['name'],
-        normalizedName: record['normalizedName'],
-        email: record['email'],
-        phone: record['phone'],
-        address: record['address'],
-        languages: record['languages'] || [],
-      };
-
-      this.tenant.set(currentTenant);
+      this.tenant.set(record as EcoStoreTenant);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(`❌ Tenant '${slug}' not found.`, error);

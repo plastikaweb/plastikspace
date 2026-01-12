@@ -6,6 +6,9 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { SharedFormFeatureComponent } from '@plastik/shared/form';
+import { EcoStoreTenant } from '@plastik/eco-store/entities';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 
 @Component({
   selector: 'eco-header',
@@ -16,6 +19,8 @@ import { SharedFormFeatureComponent } from '@plastik/shared/form';
     RouterLink,
     TranslateModule,
     SharedFormFeatureComponent,
+    SharedImgContainerComponent,
+    PocketBaseImageUrlPipe,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -23,6 +28,7 @@ import { SharedFormFeatureComponent } from '@plastik/shared/form';
 })
 export class HeaderComponent {
   readonly formConfig = input<FormConfig<{ query: string }>>();
+  readonly tenant = input<EcoStoreTenant | null>();
   readonly submitEvent = output<{ query: string }>();
 
   protected onSubmit(event: { query: string }): void {

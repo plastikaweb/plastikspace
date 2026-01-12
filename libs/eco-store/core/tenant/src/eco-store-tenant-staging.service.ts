@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class EcoStoreTenantStagingService extends EcoStoreTenantBaseService {
   private readonly STORAGE_KEY = 'staging_tenant_key';
 

@@ -1265,6 +1265,31 @@
       },
       {
         "hidden": false,
+        "id": "file3834550803",
+        "maxSelect": 1,
+        "maxSize": 2621440,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp",
+          "image/bmp",
+          "image/avif",
+          "image/bpg"
+        ],
+        "name": "logo",
+        "presentable": false,
+        "protected": false,
+        "required": false,
+        "system": false,
+        "thumbs": [
+          "40x40",
+          "150x150",
+          "300x300"
+        ],
+        "type": "file"
+      },
+      {
+        "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
         "onCreate": true,

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class EcoStoreTenantService extends EcoStoreTenantBaseService {
   protected resolveSlug(): string | null {
     const hostname = this.document.location.hostname;
