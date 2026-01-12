@@ -7,6 +7,7 @@ import {
   ApplicationConfig,
   ErrorHandler,
   LOCALE_ID,
+  inject,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
@@ -27,6 +28,7 @@ import { pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-acc
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
+import { EcoStoreTenantBaseService, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 
 registerLocaleData(localeCa);
 registerLocaleData(localeEs);
@@ -52,8 +54,10 @@ export const appConfig: ApplicationConfig = {
       fallbackLang: environment.defaultLanguage,
       lang: environment.defaultLanguage,
     }),
+    provideEcoStoreTenant,
     provideAppInitializer(() => {
       pocketBaseActivityInterceptor();
+      inject(EcoStoreTenantBaseService).loadTenant();
     }),
     { provide: LOCALE_ID, useValue: 'ca' },
     {

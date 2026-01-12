@@ -1,4 +1,4 @@
-import { BasePocketBaseEntityWithClientRef, LocalizedFields } from '@plastik/core/entities';
+import { BasePocketBaseEntityWithTenantRef, LocalizedFields } from '@plastik/core/entities';
 import { ProductCategory } from './productCategory';
 
 export type ProductUnitType =
@@ -12,7 +12,7 @@ export type ProductUnitType =
 
 export type ProductRating = number;
 
-export interface EcoStoreProduct extends BasePocketBaseEntityWithClientRef {
+export interface EcoStoreProduct extends BasePocketBaseEntityWithTenantRef {
   description?: LocalizedFields | string;
   inStock: boolean;
   stock: number;

@@ -84,6 +84,7 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 - [**Formly Integration**](../../libs/eco-store/feature/formly/README.md): Dynamic form generation.
 - [**Layout**](../../libs/eco-store/core/layout/README.md): Main application shell and navigation structure.
 - [**Entities**](../../libs/eco-store/core/entities/README.md): Shared domain models.
+- [**Tenant**](../../libs/eco-store/core/tenant/README.md): Multi-tenancy resolution and configuration.
 
 ---
 

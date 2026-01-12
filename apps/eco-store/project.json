@@ -90,7 +90,10 @@
       "continuous": true,
       "executor": "@angular/build:dev-server",
       "options": {
-        "port": 4444
+        "port": 4200,
+        "host": "0.0.0.0",
+        "allowedHosts": true,
+        "buildTarget": "eco-store:build"
       },
       "configurations": {
         "production": {
@@ -127,7 +130,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "eco-store:build",
-        "port": 4444,
+        "port": 4200,
         "staticFilePath": "dist/apps/eco-store/browser",
         "spa": true
       }

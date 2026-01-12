@@ -3,8 +3,6 @@ import { signalStore, withComputed, withHooks, withMethods, withState } from '@n
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
 import { PocketBaseUser } from '@plastik/core/entities';
-import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
-import { RecordModel } from 'pocketbase';
 
 export interface UserProfileState {
   user: PocketBaseUser | null;

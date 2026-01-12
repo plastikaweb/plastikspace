@@ -12,6 +12,6 @@ export default defineConfig({
       ciWebServerCommand: 'yarn nx run eco-store:serve-static',
       ciBaseUrl: 'http://localhost:4200',
     }),
-    baseUrl: 'http://localhost:4444',
+    baseUrl: 'http://localhost:4200',
   },
 });

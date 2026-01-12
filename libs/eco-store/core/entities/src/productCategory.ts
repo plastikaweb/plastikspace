@@ -1,12 +1,12 @@
 import { LocalizedFields } from '@plastik/core/entities';
 import {
   BasePocketBaseEntitySimple,
-  BasePocketBaseEntityWithClientRef,
+  BasePocketBaseEntityWithTenantRef,
 } from '@plastik/core/entities';
 
 export type ProductCategoryGroup = BasePocketBaseEntitySimple;
 
-export interface ProductCategory extends BasePocketBaseEntityWithClientRef {
+export interface ProductCategory extends BasePocketBaseEntityWithTenantRef {
   color: string;
   description?: LocalizedFields | string;
   productCount: number;
