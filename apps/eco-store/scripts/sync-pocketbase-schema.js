@@ -68,11 +68,44 @@ async function syncSchema() {
     console.log(`⏭️  Skipping ${systemCollections.length} system collections`);
     skipped += systemCollections.length;
 
-    // --- FIRST PASS: CREATE ---
-    console.log('🔄 First pass: Creating missing collections...');
+    // Map by ID for rename detection
+    const existingMapById = new Map(existingCollections.map(col => [col.id, col]));
+
+    // --- FIRST PASS: CREATE OR RENAME ---
+    console.log('🔄 First pass: Creating missing collections (and handling renames)...');
     for (const collection of collectionsToSync) {
-      const existing = existingMap.get(collection.name);
-      if (!existing) {
+      const existingByName = existingMap.get(collection.name);
+
+      if (!existingByName) {
+        // Check if it exists by ID (Renamed collection)
+        const existingById = existingMapById.get(collection.id);
+
+        if (existingById) {
+          console.log(
+            `⚠️ Detected rename: ${existingById.name} -> ${collection.name} (ID: ${collection.id})`
+          );
+          try {
+            await pb.collections.update(existingById.id, { name: collection.name });
+            console.log(`✅ Renamed collection: ${existingById.name} -> ${collection.name}`);
+
+            // Update maps to reflect the change for the next pass
+            const updatedCol = await pb.collections.getOne(collection.id);
+            existingMap.set(collection.name, updatedCol);
+            existingMapById.set(collection.id, updatedCol);
+            // Remove old name from map if desired, though strictly not required for next pass lookup
+            existingMap.delete(existingById.name);
+
+            continue; // Skip creation, proceed to update in next pass
+          } catch (error) {
+            console.error(
+              `❌ Error renaming ${existingById.name} to ${collection.name}:`,
+              error.message
+            );
+            errors++;
+          }
+        }
+
+        // Create if not found by Name OR ID
         try {
           const minimalFields = collection.fields.filter(field => field.type !== 'relation');
 
@@ -87,6 +120,9 @@ async function syncSchema() {
           created++;
         } catch (error) {
           console.error(`❌ Error creating ${collection.name} (first pass):`, error.message);
+          if (error.response?.data) {
+            console.error('   Details:', JSON.stringify(error.response.data, null, 2));
+          }
           errors++;
         }
       }
