@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
-import { PocketBaseGetService } from '@plastik/core/api-pocketbase';
 import { PocketBaseListParams } from '@plastik/signal-state/pocketbase';
 import { ListResult, RecordListOptions } from 'pocketbase';
 import { map, Observable } from 'rxjs';
 import { EcoStoreProduct, EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { EcoStoreGetService } from '@plastik/eco-store/api';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EcoStoreProductsApiService extends PocketBaseGetService<EcoStoreProduct> {
+export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProduct> {
   protected override collectionName(): string {
     return 'products';
   }
@@ -20,7 +20,6 @@ export class EcoStoreProductsApiService extends PocketBaseGetService<EcoStorePro
    */
   override getList(params: PocketBaseListParams = {}): Observable<ListResult<EcoStoreProduct>> {
     const { page, perPage, sort, ...rest } = params;
-
     const { category } = rest as {
       category?: string;
     };
@@ -31,8 +30,10 @@ export class EcoStoreProductsApiService extends PocketBaseGetService<EcoStorePro
       filterParts.push(`category = "${category}"`);
     }
 
-    const filter: string | undefined =
-      filterParts.length > 0 ? filterParts.join(' && ') : undefined;
+    const filter =
+      filterParts.length > 0
+        ? `${this.tenantFilter} && ${filterParts.join(' && ')}`
+        : this.tenantFilter;
 
     const options: RecordListOptions = {
       page,
@@ -52,10 +53,16 @@ export class EcoStoreProductsApiService extends PocketBaseGetService<EcoStorePro
   getOneBySlug(
     slug: EcoStoreProductWithCategoryName['categorySlug']
   ): Observable<EcoStoreProduct | null> {
+    const filter = `normalizedName = "${slug}" && ${this.tenantFilter}`;
+
     return super
       .getFullList({
-        filter: `normalizedName = "${slug}"`,
+        filter,
       })
       .pipe(map(products => products[0] || null));
+  }
+
+  get tenantFilter(): string {
+    return `tenant = "${this.tenantService.tenant()?.id}"`;
   }
 }

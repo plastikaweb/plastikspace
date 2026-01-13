@@ -8,6 +8,8 @@ import LayoutComponent from './layout.component';
 import { MenuComponent } from './menu/menu.component';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { signal } from '@angular/core';
+import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -35,6 +37,12 @@ describe('LayoutComponent', () => {
               isValid: false,
               record: null,
             },
+          },
+        },
+        {
+          provide: EcoStoreTenantBaseService,
+          useValue: {
+            tenant: signal(null),
           },
         },
       ],

@@ -3,12 +3,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { SortConfig } from '@plastik/core/entities';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import {
-  EcoStoreProductWithCategoryName,
-  ProductCategory,
-  SortConfig,
-} from '@plastik/eco-store/entities';
+import { EcoStoreProductWithCategoryName, ProductCategory } from '@plastik/eco-store/entities';
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';

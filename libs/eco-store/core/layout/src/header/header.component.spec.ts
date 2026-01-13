@@ -3,6 +3,8 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
+import { signal } from '@angular/core';
+import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { HeaderComponent } from './header.component';
 
@@ -34,7 +36,16 @@ describe('HeaderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HeaderComponent, EcoStoreFormlyModule],
-      providers: [provideRouter([]), provideTranslateService()],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
+        {
+          provide: EcoStoreTenantBaseService,
+          useValue: {
+            tenant: signal(null),
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);

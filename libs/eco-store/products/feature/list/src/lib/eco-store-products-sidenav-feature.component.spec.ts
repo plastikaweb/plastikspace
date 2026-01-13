@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
+import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
@@ -24,6 +26,12 @@ describe('EcoStoreProductsSidenavFeature', () => {
               getList: () => Promise.resolve({ items: [], totalItems: 0 }),
               getFullList: () => Promise.resolve([]),
             }),
+          },
+        },
+        {
+          provide: EcoStoreTenantBaseService,
+          useValue: {
+            tenant: signal(null),
           },
         },
       ],

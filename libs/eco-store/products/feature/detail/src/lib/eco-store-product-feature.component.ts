@@ -4,7 +4,6 @@ import {
   computed,
   inject,
   signal,
-  effect,
   linkedSignal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';

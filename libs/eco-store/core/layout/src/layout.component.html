@@ -1,5 +1,9 @@
 <div class="grid grid-rows-[auto_1fr_auto] h-screen w-screen mx-auto">
-  <eco-header class="z-1000" [formConfig]="searchFormConfig" (submitEvent)="onSearchSubmit($event)">
+  <eco-header
+    class="z-1000"
+    [formConfig]="searchFormConfig"
+    [tenant]="tenantService.tenant()"
+    (submitEvent)="onSearchSubmit($event)">
     <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
     <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
   </eco-header>

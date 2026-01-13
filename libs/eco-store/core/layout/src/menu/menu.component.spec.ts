@@ -4,6 +4,8 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { MenuComponent } from './menu.component';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { signal } from '@angular/core';
+import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -25,6 +27,12 @@ describe('MenuComponent', () => {
               isValid: false,
               record: null,
             },
+          },
+        },
+        {
+          provide: EcoStoreTenantBaseService,
+          useValue: {
+            tenant: signal(null),
           },
         },
       ],

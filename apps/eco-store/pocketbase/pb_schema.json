@@ -623,7 +623,7 @@
         "id": "relation3343123541",
         "maxSelect": 1,
         "minSelect": 0,
-        "name": "client",
+        "name": "tenant",
         "presentable": false,
         "required": true,
         "system": false,
@@ -776,9 +776,9 @@
         "id": "relation3343123541",
         "maxSelect": 1,
         "minSelect": 0,
-        "name": "client",
+        "name": "tenant",
         "presentable": false,
-        "required": true,
+        "required": false,
         "system": false,
         "type": "relation"
       },
@@ -835,9 +835,9 @@
     ],
     "listRule": "",
     "viewRule": "",
-    "createRule": "@request.auth.record.clientId = client",
-    "updateRule": "@request.auth.record.clientId = client",
-    "deleteRule": "@request.auth.record.clientId = client"
+    "createRule": "@request.auth.record.tenantId = tenant",
+    "updateRule": "@request.auth.record.tenantId = tenant",
+    "deleteRule": "@request.auth.record.tenantId = tenant"
   },
   {
     "id": "pbc_4092854851",
@@ -1075,7 +1075,7 @@
         "id": "relation3343123541",
         "maxSelect": 1,
         "minSelect": 0,
-        "name": "client",
+        "name": "tenant",
         "presentable": false,
         "required": false,
         "system": false,
@@ -1157,13 +1157,13 @@
     ],
     "listRule": "",
     "viewRule": "",
-    "createRule": "@request.auth.record.clientId = @request.body.client\n",
-    "updateRule": "@request.auth.record.clientId = client",
-    "deleteRule": "@request.auth.record.clientId = client"
+    "createRule": "@request.auth.record.tenantId = @request.body.tenant\n",
+    "updateRule": "@request.auth.record.tenantId = tenant",
+    "deleteRule": "@request.auth.record.tenantId = tenant"
   },
   {
     "id": "pbc_2442875294",
-    "name": "clients",
+    "name": "tenants",
     "type": "base",
     "system": false,
     "fields": [
@@ -1235,6 +1235,69 @@
         "type": "text"
       },
       {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text73334810",
+        "max": 0,
+        "min": 0,
+        "name": "normalizedName",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "select2698072953",
+        "maxSelect": 3,
+        "name": "languages",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "select",
+        "values": [
+          "ca",
+          "es",
+          "en"
+        ]
+      },
+      {
+        "hidden": false,
+        "id": "file3834550803",
+        "maxSelect": 1,
+        "maxSize": 2621440,
+        "mimeTypes": [
+          "image/png",
+          "image/jpeg",
+          "image/webp",
+          "image/bmp",
+          "image/avif",
+          "image/bpg"
+        ],
+        "name": "logo",
+        "presentable": false,
+        "protected": false,
+        "required": false,
+        "system": false,
+        "thumbs": [
+          "40x40",
+          "150x150",
+          "300x300"
+        ],
+        "type": "file"
+      },
+      {
+        "hidden": false,
+        "id": "bool1260321794",
+        "name": "active",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "bool"
+      },
+      {
         "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
@@ -1256,8 +1319,8 @@
       }
     ],
     "indexes": [],
-    "listRule": null,
-    "viewRule": null,
+    "listRule": "",
+    "viewRule": "",
     "createRule": null,
     "updateRule": null,
     "deleteRule": null
