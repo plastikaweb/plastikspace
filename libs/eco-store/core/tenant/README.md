@@ -21,6 +21,8 @@ It uses a strategy pattern to resolve the tenant ID, which is then used to filte
 ### Services
 
 - **`EcoStoreTenantBaseService`**: Abstract base class defining the contract for tenant resolution.
+  - It handles **fetching the tenant** from the backend (PocketBase).
+  - It **validates** that the tenant is `active`. If a tenant is found but is inactive (`active: false`), the service **throws an error**, preventing the application from initializing.
 - **`EcoStoreTenantService`**: Standard implementation that resolves the tenant slug from the **URL subdomain**
   (e.g., `tenant-name.eco-store.com` -> `tenant-name`).
 - **`EcoStoreTenantStagingService`**: Implementation for **staging environments**
@@ -28,5 +30,5 @@ It uses a strategy pattern to resolve the tenant ID, which is then used to filte
 
 ### Factory
 
-- **`provideEcoStoreTenant`**: An `APP_INITIALIZER` provider factory that dynamically injects the correct `EcoStoreTenantBaseService`
-  implementation based on the current `ENVIRONMENT` configuration (production vs staging).
+- **`provideEcoStoreTenant`**: A provider configuration that dynamically injects the correct `EcoStoreTenantBaseService`
+  implementation based on the current `ENVIRONMENT` configuration (production vs staging). The service is then typically used within an `APP_INITIALIZER` to load the tenant before app startup.

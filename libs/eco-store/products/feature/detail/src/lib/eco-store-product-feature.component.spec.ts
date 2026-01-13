@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
+import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
@@ -25,6 +27,12 @@ describe('EcoStoreProductFeatureComponent', () => {
               getFullList: () => Promise.resolve([]),
               getOne: () => Promise.resolve({}),
             }),
+          },
+        },
+        {
+          provide: EcoStoreTenantBaseService,
+          useValue: {
+            tenant: signal(null),
           },
         },
       ],

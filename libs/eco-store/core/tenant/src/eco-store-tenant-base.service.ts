@@ -25,14 +25,18 @@ export abstract class EcoStoreTenantBaseService {
     }
 
     try {
-      const record = await this.pb
+      const tenant = (await this.pb
         .collection('tenants')
-        .getFirstListItem(`normalizedName="${slug}"`);
+        .getFirstListItem(`normalizedName="${slug}"`)) as EcoStoreTenant;
 
-      this.tenant.set(record as EcoStoreTenant);
+      if (!tenant.active) {
+        throw new Error('Tenant is inactive');
+      }
+
+      this.tenant.set(tenant);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.error(`❌ Tenant '${slug}' not found.`, error);
+      console.error(`❌ Tenant '${slug}' not found or inactive.`, error);
     }
   }
 }

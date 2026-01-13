@@ -1290,6 +1290,15 @@
       },
       {
         "hidden": false,
+        "id": "bool1260321794",
+        "name": "active",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "bool"
+      },
+      {
+        "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
         "onCreate": true,

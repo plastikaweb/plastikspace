@@ -215,7 +215,8 @@
       "@plastik/auth/feature": ["libs/shared/auth/feature/src/index.ts"],
       "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
       "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"],
-      "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"]
+      "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"],
+      "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

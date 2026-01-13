@@ -85,6 +85,7 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 - [**Layout**](../../libs/eco-store/core/layout/README.md): Main application shell and navigation structure.
 - [**Entities**](../../libs/eco-store/core/entities/README.md): Shared domain models.
 - [**Tenant**](../../libs/eco-store/core/tenant/README.md): Multi-tenancy resolution and configuration.
+- [**Core API**](../../libs/eco-store/core/api/data-access/README.md): Base abstract services for tenant-aware API interactions.
 
 ---
 

@@ -3,6 +3,7 @@ import { signalStore, withComputed, withHooks, withMethods, withState } from '@n
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
 import { PocketBaseUser } from '@plastik/core/entities';
+import { LoginData } from '@plastik/auth/entities';
 
 export interface UserProfileState {
   user: PocketBaseUser | null;
@@ -33,7 +34,7 @@ export const pocketBaseUserProfileStore = signalStore(
   })),
 
   withMethods((store, authService = inject(PocketBaseAuthService)) => ({
-    async login(credentials: { email: string; password: string }): Promise<void> {
+    async login(credentials: LoginData): Promise<void> {
       updateState(store, `[profile] login in process`, { isLoading: true });
 
       try {
