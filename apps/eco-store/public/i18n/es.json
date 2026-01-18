@@ -148,7 +148,40 @@
       "subtotal": "Subtotal",
       "taxes": "Impuestos (IVA)",
       "total": "Total",
-      "go-to-shipping": "Ir a Envío"
+      "go-to-shipping": "Ir a Envío",
+      "title": "Resumen del pedido",
+      "items-count-suffix": "artículos en la cesta",
+      "shipping": "Envío",
+      "including-vat": "IVA incluido",
+      "free-shipping-promo": "¡Añade 5,00€ más para envío GRATIS!",
+      "go-to-payment": "Continuar al Pago"
+    },
+    "shipping": {
+      "method": {
+        "title": "Método de envío",
+        "subtitle": "Elige cómo quieres recibir tu pedido.",
+        "pickup": {
+          "title": "Recogida (Pickup)",
+          "description": "Gratis - Listo en 2h"
+        },
+        "delivery": {
+          "title": "Envío (Delivery)",
+          "description": "Desde 5,00€ - 24/48h"
+        }
+      },
+      "address": {
+        "title": "Dirección de envío",
+        "edit": "Editar",
+        "add": "Añadir nueva dirección"
+      },
+      "slot": {
+        "title": "Franja de entrega",
+        "date": "Seleccionar fecha",
+        "time": "Franja horaria"
+      }
+    },
+    "product": {
+      "quantity-label": "Cant:"
     }
   },
   "search": {

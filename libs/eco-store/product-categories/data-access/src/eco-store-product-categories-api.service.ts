@@ -13,7 +13,7 @@ export class EcoStoreProductCategoriesApiService extends EcoStoreGetAllService<P
   }
 
   override getFullList(params: RecordFullListOptions = {}): Observable<ProductCategory[]> {
-    const filter = this.tenantFilter;
+    const filter = this.filter;
 
     return super.getFullList({
       ...params,
@@ -23,7 +23,7 @@ export class EcoStoreProductCategoriesApiService extends EcoStoreGetAllService<P
     });
   }
 
-  get tenantFilter(): string {
+  get filter(): string {
     return `tenant = "" || tenant = "${this.tenantService.tenant()?.id}"`;
   }
 }

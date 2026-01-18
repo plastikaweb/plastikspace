@@ -9,5 +9,5 @@ export abstract class EcoStoreGetAllService<
 > extends PocketBaseGetAllService<T> {
   protected tenantService = inject(EcoStoreTenantBaseService);
 
-  abstract get tenantFilter(): string;
+  abstract get filter(): string;
 }

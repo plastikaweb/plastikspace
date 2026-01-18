@@ -21,7 +21,6 @@ export class EcoStoreCartComponent {
   readonly steps = [
     { label: 'cart.steps.summary', route: 'resum' },
     { label: 'cart.steps.shipping', route: 'enviament' },
-    { label: 'cart.steps.payment', route: 'pagament' },
     { label: 'cart.steps.confirmation', route: 'confirmacio' },
   ];
 

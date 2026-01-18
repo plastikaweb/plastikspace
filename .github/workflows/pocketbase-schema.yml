@@ -39,6 +39,20 @@ jobs:
           POCKETBASE_STAGING_ADMIN_EMAIL: ${{ secrets.POCKETBASE_STAGING_ADMIN_EMAIL }}
           POCKETBASE_STAGING_ADMIN_PASSWORD: ${{ secrets.POCKETBASE_STAGING_ADMIN_PASSWORD }}
 
+      - name: Deploy Hooks to PocketBase via SFTP
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
+        with:
+          server: ${{ secrets.POCKETBASE_STAGING_SFTP_HOST }}
+          username: ${{ secrets.POCKETBASE_STAGING_SFTP_USERNAME }}
+          password: ${{ secrets.POCKETBASE_STAGING_SFTP_PASSWORD }}
+          # ssh_private_key is marked required in the action definition but ignored if password is used.
+          # We provide an empty string to satisfy the validator.
+          ssh_private_key: ''
+          local_path: './apps/eco-store/pocketbase/pb_hooks'
+          remote_path: '/pb_hooks'
+          sftp_only: true
+          delete_remote_files: true
+
   export-schema:
     if: github.event_name == 'workflow_dispatch' && github.event.inputs.action == 'export'
     runs-on: ubuntu-latest

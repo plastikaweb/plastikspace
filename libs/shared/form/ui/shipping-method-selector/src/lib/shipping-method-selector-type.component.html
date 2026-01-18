@@ -1,0 +1,41 @@
+@if (props.label) {
+  <mat-label id="shipping-method-selector">{{ props.label }}</mat-label>
+}
+
+<mat-radio-group
+  aria-label="Shipping method selector"
+  class="grid grid-cols-1 md:grid-cols-2 gap-4"
+  [formControl]="formControl"
+  [formlyAttributes]="field">
+  @for (shippingMethodOption of props.shippingMethodOptions; track shippingMethodOption.type) {
+    @let theme = shippingMethodOption.theme || 'neutral';
+    @let isSelected = formControl.value === shippingMethodOption.type;
+
+    <mat-card
+      tabindex="0"
+      appearance="raised"
+      [class]="getCardStyles(theme, isSelected)"
+      (click)="formControl.setValue(shippingMethodOption.type)"
+      (keydown.enter)="formControl.setValue(shippingMethodOption.type)">
+      <mat-card-header class="text-center">
+        <mat-card-title class="mb-2!">{{
+          `cart.shipping.method.${shippingMethodOption.type}.title` | translate
+        }}</mat-card-title>
+        <mat-card-subtitle>{{
+          shippingMethodOption.subtitle ||
+            `cart.shipping.method.${shippingMethodOption.type}.description` | translate
+        }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-icon class="scale-125">{{ shippingMethodOption.icon }}</mat-icon>
+      </mat-card-content>
+      <mat-radio-button [value]="shippingMethodOption.type"></mat-radio-button>
+
+      @if (isSelected) {
+        <div class="absolute top-4 right-4">
+          <mat-icon class="scale-110">check_circle</mat-icon>
+        </div>
+      }
+    </mat-card>
+  }
+</mat-radio-group>

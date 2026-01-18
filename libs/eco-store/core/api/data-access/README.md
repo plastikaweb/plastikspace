@@ -19,7 +19,7 @@ It abstracts common patterns for fetching data while automatically handling tena
 ## Features
 
 - **Tenant Injection**: Automatically provides access to `EcoStoreTenantBaseService` via `this.tenantService`.
-- **Enforced Filtering**: Requires implementation of `tenantFilter` to ensure developers consider multi-tenancy in all API calls.
+- **Enforced Filtering**: Requires implementation of `filter` to ensure developers consider multi-tenancy in all API calls.
 - **PocketBase Integration**: Built on top of `@plastik/core/api-pocketbase` to provide standard CRUD operations.
 - **Type Safety**: Strongly typed generics for entities ensuring type safety across the application.
 
@@ -38,7 +38,7 @@ export class MyEntityApiService extends EcoStoreGetAllService<MyEntity> {
     return 'my_collection';
   }
 
-  get tenantFilter(): string {
+  get filter(): string {
     return `tenant = "${this.tenantService.tenant()?.id}"`;
   }
 }
@@ -57,7 +57,7 @@ export class MyEntityApiService extends EcoStoreGetService<MyEntity> {
     return 'my_collection';
   }
 
-  get tenantFilter(): string {
+  get filter(): string {
     return `tenant = "${this.tenantService.tenant()?.id}"`;
   }
 }

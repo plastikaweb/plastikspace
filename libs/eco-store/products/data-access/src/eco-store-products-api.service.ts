@@ -31,9 +31,7 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
     }
 
     const filter =
-      filterParts.length > 0
-        ? `${this.tenantFilter} && ${filterParts.join(' && ')}`
-        : this.tenantFilter;
+      filterParts.length > 0 ? `${this.filter} && ${filterParts.join(' && ')}` : this.filter;
 
     const options: RecordListOptions = {
       page,
@@ -53,7 +51,7 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
   getOneBySlug(
     slug: EcoStoreProductWithCategoryName['categorySlug']
   ): Observable<EcoStoreProduct | null> {
-    const filter = `normalizedName = "${slug}" && ${this.tenantFilter}`;
+    const filter = `normalizedName = "${slug}" && ${this.filter}`;
 
     return super
       .getFullList({
@@ -62,7 +60,7 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
       .pipe(map(products => products[0] || null));
   }
 
-  get tenantFilter(): string {
+  get filter(): string {
     return `tenant = "${this.tenantService.tenant()?.id}"`;
   }
 }

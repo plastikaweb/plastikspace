@@ -71,8 +71,9 @@ firebase-export*
 issues.js
 
 # pocketbase files
-apps/eco-store/pocketbase
+apps/eco-store/pocketbase/*
 !apps/eco-store/pocketbase/pb_schema.json
+!apps/eco-store/pocketbase/pb_hooks
 apps/eco-store/.env
 
 

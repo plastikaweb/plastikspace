@@ -31,7 +31,11 @@
   }
   @if (addon.type === 'icon') {
     <!-- Decorative Icon -->
-    <mat-icon [attr.aria-hidden]="addon.ariaHidden">{{ addon.icon }}</mat-icon>
+    <mat-icon
+      [attr.aria-hidden]="addon.ariaHidden || true"
+      [ngClass]="[addon.classes || '', direction === 'left' ? 'ml-2' : 'mr-2']">
+      {{ addon.icon }}
+    </mat-icon>
   }
 </ng-template>
 

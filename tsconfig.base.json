@@ -4,12 +4,12 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2024", "esnext", "dom"],
+    "lib": ["es2015", "esnext", "dom"],
     "types": ["node", "jest", "@types/jest"],
     "resolveJsonModule": true,
     "skipLibCheck": true,
@@ -146,6 +146,13 @@
       ],
       "@plastik/shared/form/util": ["libs/shared/form/util/src/index.ts"],
       "@plastik/shared/form/year-picker": ["libs/shared/form/ui/year-picker/src/index.ts"],
+      "@plastik/shared/form/shipping-method-selector": [
+        "libs/shared/form/ui/shipping-method-selector/src/index.ts"
+      ],
+      "@plastik/shared/form/address-selector": [
+        "libs/shared/form/ui/address-selector/src/index.ts"
+      ],
+      "@plastik/shared/form/custom-label": ["libs/shared/form/ui/custom-label/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/hex-to-rgba": ["libs/shared/util/hex-to-rgba/src/index.ts"],
       "@plastik/shared/img-container": ["libs/shared/img-container/ui/src/index.ts"],
@@ -216,12 +223,26 @@
       "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
       "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"],
       "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"],
-      "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"]
+      "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"],
+      "@plastik/shared/pocketbase-user-addresses": [
+        "libs/shared/pocketbase-user-addresses/data-access/src/index.ts"
+      ]
     }
   },
   "angularCompilerOptions": {
     "strictTemplates": true,
     "fullTemplateTypeCheck": true
   },
-  "exclude": ["node_modules", "tmp", "cypress", "./cypress.config.ts", "**/*.cy.tsx"]
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "cypress",
+    "./cypress.config.ts",
+    "**/*.cy.tsx",
+    "dist",
+    "coverage",
+    ".angular",
+    ".nx",
+    "**/*.log"
+  ]
 }

@@ -1,0 +1,144 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  .shipping-method-card {
+    &:hover {
+      @include mat.card-overrides(
+        (
+          elevated-container-elevation: var(--mat-sys-level2),
+        )
+      );
+    }
+
+    &.selected {
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--primary-200),
+        )
+      );
+    }
+
+    &.theme-primary {
+      color: var(--primary-900);
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--primary-50),
+          subtitle-text-color: var(--primary-900),
+        )
+      );
+
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-500),
+        )
+      );
+
+      &.selected {
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--primary-100),
+          )
+        );
+      }
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--primary-500),
+          selected-icon-color: var(--primary-500),
+        )
+      );
+    }
+
+    &.theme-secondary {
+      color: var(--secondary-900);
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--secondary-50),
+          subtitle-text-color: var(--secondary-900),
+        )
+      );
+      @include mat.icon-overrides(
+        (
+          color: var(--secondary-500),
+        )
+      );
+
+      &.selected {
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--secondary-100),
+          )
+        );
+      }
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--secondary-500),
+          selected-icon-color: var(--secondary-500),
+        )
+      );
+    }
+
+    &.theme-tertiary {
+      color: var(--tertiary-900);
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--tertiary-50),
+          subtitle-text-color: var(--tertiary-900),
+        )
+      );
+      @include mat.icon-overrides(
+        (
+          color: var(--tertiary-500),
+        )
+      );
+
+      &.selected {
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--tertiary-100),
+          )
+        );
+      }
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--tertiary-500),
+          selected-icon-color: var(--tertiary-500),
+        )
+      );
+    }
+
+    &.theme-neutral {
+      color: var(--neutral-900);
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--neutral-50),
+          subtitle-text-color: var(--neutral-900),
+        )
+      );
+      @include mat.icon-overrides(
+        (
+          color: var(--neutral-500),
+        )
+      );
+
+      &.selected {
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--neutral-100),
+          )
+        );
+      }
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--neutral-500),
+          selected-icon-color: var(--neutral-500),
+        )
+      );
+    }
+  }
+}

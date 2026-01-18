@@ -15,7 +15,6 @@ export function appSearchFormConfig(): FormConfig<{ query: string }> {
           props: {
             label: 'search.label',
             placeholder: 'search.placeholder',
-            className: 'w-full',
             noButton: true,
             resetSearch: true,
             translate: true,

@@ -1,0 +1,17 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--transparent),
+    )
+  );
+
+  @include mat.icon-overrides(
+    (
+      color: var(--white),
+    )
+  );
+}

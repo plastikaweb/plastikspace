@@ -67,7 +67,7 @@
       "!{projectRoot}/**/*.cy.[jt]s?(x)",
       "!{projectRoot}/cypress.config.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/.cursorrules", "{workspaceRoot}/.cursor/rules/*.mdc"]
   },
   "cli": {
     "packageManager": "yarn"
@@ -96,13 +96,17 @@
       "style": "scss",
       "unitTestRunner": "jest"
     },
-    "@nx/angular:library": {
-      "linter": "eslint",
-      "unitTestRunner": "jest"
-    },
     "@nx/angular:component": {
       "style": "scss",
       "type": "component",
+      "changeDetection": "OnPush",
+      "standalone": true,
+      "displayBlock": true
+    },
+    "@nx/angular:library": {
+      "linter": "eslint",
+      "unitTestRunner": "jest",
+      "standalone": true,
       "changeDetection": "OnPush"
     },
     "@nx/angular:service": {

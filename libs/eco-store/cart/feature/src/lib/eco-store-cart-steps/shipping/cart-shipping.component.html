@@ -1,0 +1,82 @@
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 py-8">
+  <!-- Left Column: Shipping Details -->
+  <div class="lg:col-span-2 space-y-10">
+    <section>
+      <h2 class="text-2xl font-bold text-neutral-900 mb-2">
+        {{ 'cart.steps.shipping.title' | translate }}
+      </h2>
+
+      <plastik-shared-form-feature
+        [fields]="formConfig.getConfig()"
+        [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
+        [model]="{}"
+        (changeEvent)="onShippingMethodChange($event)">
+      </plastik-shared-form-feature>
+    </section>
+
+    <!-- Shipping Address Section -->
+    <!-- <button mat-stroked-button class="w-full py-6 rounded-xl border-dashed border-neutral-300 text-neutral-600 bg-neutral-50 hover:bg-neutral-100 flex items-center justify-start px-6 gap-2">
+      <mat-icon>add</mat-icon>
+      Add New Address
+   </button> -->
+  </div>
+
+  <!-- Right Column: Order Summary -->
+  <div class="lg:col-span-1 space-y-6 sticky top-4 self-start">
+    <eco-cart-order-summary
+      [subtotal]="cartStore.totalAmount()"
+      [taxes]="cartStore.totalAmountIva()"
+      [shipping]="5"
+      [total]="cartStore.totalAmountWithIva()"
+      [actionButtonText]="'cart.summary.go-to-payment'"
+      [actionRoute]="['../confirmacio']">
+      <div extra-content>
+        <div class="space-y-4 mb-6">
+          @for (item of cartStore.items(); track item.id) {
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-lg bg-neutral-100 overflow-hidden shrink-0">
+                <plastik-img-container
+                  class="w-12 h-12 object-cover"
+                  [dimensions]="{ width: 100, height: 100 }"
+                  [src]="item.product | pocketBaseImageUrl: item.product.images?.[0]"
+                  [title]="item.product.name">
+                </plastik-img-container>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-bold text-neutral-900 truncate">{{ item.product.name }}</p>
+                <p class="text-xs text-neutral-500">
+                  {{ 'cart.product.quantity-label' | translate }}
+                  {{
+                    `${item.quantity} ${
+                      ('products.unit-abbreviation.' + item.product.unitType | translate)
+                    }`
+                  }}
+                </p>
+              </div>
+              <div class="font-bold text-neutral-900 text-sm">
+                {{
+                  item.product.priceWithIva * item.quantity | currency: 'EUR' : 'symbol' : '1.2-2'
+                }}
+              </div>
+            </div>
+          }
+        </div>
+
+        <hr class="border-neutral-100 my-4" />
+
+        <div
+          class="bg-amber-50 border border-amber-100 rounded-lg p-3 flex items-center gap-2 mb-6">
+          <mat-icon class="text-amber-600 text-sm h-5 w-5">local_offer</mat-icon>
+          <span class="text-xs text-amber-800 font-medium">{{
+            'cart.summary.free-shipping-promo' | translate
+          }}</span>
+        </div>
+      </div>
+    </eco-cart-order-summary>
+
+    <div class="flex justify-center gap-4 mt-6 text-neutral-300">
+      <mat-icon>lock</mat-icon>
+      <mat-icon>credit_card</mat-icon>
+    </div>
+  </div>
+</div>

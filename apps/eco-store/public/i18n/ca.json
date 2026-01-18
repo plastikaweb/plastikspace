@@ -3,6 +3,20 @@
   "page-title": "Botiga Eco - Productes ecològics i sostenibles",
   "loading": "Carregant dades...",
   "loading-data": "Carregant dades...",
+  "weekdays": {
+    "sunday": "Diumenge",
+    "monday": "Dilluns",
+    "tuesday": "Dimarts",
+    "wednesday": "Dimecres",
+    "thursday": "Dijous",
+    "friday": "Divendres",
+    "saturday": "Dissabte"
+  },
+  "shared": {
+    "address": {
+      "default": "Adreça per defecte"
+    }
+  },
   "a11y": {
     "skip-to-content": "Saltar al contingut principal",
     "loading": "Carregant dades",
@@ -138,9 +152,18 @@
   "cart": {
     "steps": {
       "summary": "Resum de la cistella",
-      "shipping": "Enviament",
-      "payment": "Pagament",
-      "confirmation": "Confirmació"
+      "shipping": {
+        "title": "Enviament",
+        "subtitle": "Tria com vols rebre la teva comanda."
+      },
+      "payment": {
+        "title": "Pagament",
+        "subtitle": "Tria com vols pagar la teva comanda."
+      },
+      "confirmation": {
+        "title": "Confirmació",
+        "subtitle": "Tria com vols rebre la teva comanda."
+      }
     },
     "summary": {
       "items-count": "{{value}} productes",
@@ -148,7 +171,47 @@
       "subtotal": "Subtotal",
       "taxes": "Impostos (IVA)",
       "total": "Total",
-      "go-to-shipping": "Ves a Enviament"
+      "go-to-shipping": "Ves a Enviament",
+      "title": "Resum de la comanda",
+      "items-count-suffix": "elements a la cistella",
+      "shipping": "Enviament",
+      "including-vat": "IVA inclòs",
+      "free-shipping-promo": "Afegeix 5,00€ més per a enviament GRATUÏT!",
+      "go-to-payment": "Continuar al Pagament"
+    },
+    "shipping": {
+      "method": {
+        "pickup": {
+          "title": "Recollida a la botiga.",
+          "description": "Passa per la botiga i recull la teva comanda."
+        },
+        "delivery": {
+          "title": "Enviament a domicili.",
+          "description": "Ens porta la teva comanda a la teva adreça."
+        }
+      },
+      "weekdays-labels": {
+        "sunday": "Proper iumenge",
+        "monday": "Proper Dilluns",
+        "tuesday": "Proper Dimarts",
+        "wednesday": "Proper Dimecres",
+        "thursday": "Proper Dijous",
+        "friday": "Proper Divendres",
+        "saturday": "Proper Dissabte"
+      },
+      "address": {
+        "title": "Tria on vols rebre la teva comanda.",
+        "edit": "Editar",
+        "add": "Afegir nova adreça"
+      },
+      "slot": {
+        "title": "Tria quan vols rebre la teva comanda.",
+        "date": "Seleccionar dia",
+        "time": "Franja horària"
+      }
+    },
+    "product": {
+      "quantity-label": "Qt:"
     }
   },
   "search": {
