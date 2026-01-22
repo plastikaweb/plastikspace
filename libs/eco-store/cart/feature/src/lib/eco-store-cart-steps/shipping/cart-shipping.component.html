@@ -10,7 +10,8 @@
         [fields]="formConfig.getConfig()"
         [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
         [model]="{}"
-        (temporaryChangeEvent)="onShippingMethodChange($event)">
+        (temporaryChangeEvent)="onShippingMethodChange($event)"
+        (validChange)="onFormValidChange($event)">
       </plastik-shared-form-feature>
     </section>
 
@@ -30,7 +31,8 @@
       [deliveryType]="cartStore.shippingMethod() ?? 'pickup'"
       [total]="cartStore.totalAmountWithShipping()"
       [actionButtonText]="'cart.summary.go-to-payment'"
-      [actionRoute]="['../confirmacio']">
+      [actionRoute]="['../confirmacio']"
+      [submitAvailable]="formValid()">
       <div extra-content>
         <div class="space-y-4 my-6 bg-tertiary-100 p-4 rounded-lg border border-tertiary-200">
           @for (item of cartStore.items(); track item.id) {

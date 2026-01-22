@@ -16,6 +16,7 @@ import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartOrderSummaryComponent {
+  submitAvailable = input<boolean>(true);
   subtotal = input.required<number>();
   taxes = input.required<number>();
   total = input.required<number>();

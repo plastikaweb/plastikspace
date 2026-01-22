@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -49,10 +49,15 @@ export class CartShippingComponent {
   readonly cartStore = inject(ecoStoreCartStore);
   readonly userProfileStore = inject(pocketBaseUserProfileStore);
   readonly tenantService = inject(EcoStoreTenantBaseService);
+  readonly formValid = signal(false);
   readonly formConfig = getCartShippingFormConfig();
 
   onShippingMethodChange(event: Partial<EcoStoreCartState>): void {
     this.cartStore.updateLogistics(event);
+  }
+
+  onFormValidChange(isValid: boolean): void {
+    this.formValid.set(isValid);
   }
 
   getDeliveryOffer(): number {
