@@ -11,7 +11,7 @@ import { filter, tap } from 'rxjs';
 
 /**
  * @description Form configuration for the cart shipping step.
- * @returns {FormConfig<CartShippingData>} FormConfig object.
+ * @returns {FormConfig<EcoStoreCartState>} FormConfig object.
  */
 export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
   const tenantService = inject(EcoStoreTenantBaseService);
@@ -249,6 +249,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
     getSubmitFormConfig: () => ({
       visible: false,
       submitAvailable: false,
+      emitOnChange: true,
     }),
   };
 }

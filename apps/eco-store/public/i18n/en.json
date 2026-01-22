@@ -178,7 +178,7 @@
       "items-count-suffix": "items in cart",
       "shipping": "Shipping",
       "including-vat": "Including VAT",
-      "free-shipping-promo": "Add €5.00 more for FREE shipping!",
+      "free-shipping-promo": "Add {{value}} more for FREE shipping!",
       "go-to-payment": "Continue to Payment"
     },
     "shipping": {

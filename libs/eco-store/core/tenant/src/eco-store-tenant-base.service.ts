@@ -113,4 +113,23 @@ export abstract class EcoStoreTenantBaseService {
     }
     return 0;
   }
+
+  getTenantDeliveryPriceForFreeShipping(
+    type: EcoStoreTenantLogisticsDeliveryType,
+    amount: number
+  ): number {
+    const deliveryOption = this.getTenantDeliveryOption(type);
+    const tiers = deliveryOption?.tiers;
+
+    if (tiers && tiers.length > 0) {
+      const freeTier = tiers.find(tier => tier.cost === 0);
+
+      if (freeTier) {
+        const remaining = freeTier.min - amount;
+        return remaining > 0 ? remaining : 0;
+      }
+    }
+
+    return 0;
+  }
 }

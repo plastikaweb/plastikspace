@@ -10,7 +10,7 @@
         [fields]="formConfig.getConfig()"
         [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
         [model]="{}"
-        (changeEvent)="onShippingMethodChange($event)">
+        (temporaryChangeEvent)="onShippingMethodChange($event)">
       </plastik-shared-form-feature>
     </section>
 
@@ -65,19 +65,19 @@
 
         <hr class="border-neutral-100 my-4" />
 
-        <div
-          class="bg-amber-50 border border-amber-100 rounded-lg p-3 flex items-center gap-2 mb-6">
-          <mat-icon class="text-amber-600 text-sm h-5 w-5">local_offer</mat-icon>
-          <span class="text-xs text-amber-800 font-medium">{{
-            'cart.summary.free-shipping-promo' | translate
-          }}</span>
-        </div>
+        @let offer = getDeliveryOffer();
+
+        @if (offer > 0) {
+          <div
+            class="cart-shipping__free-shipping-promo bg-primary-100 border border-primary-200 rounded-lg p-3 flex items-center gap-2 mb-6">
+            <mat-icon>local_offer</mat-icon>
+            <span class="text-xs text-primary-800 font-medium">{{
+              'cart.summary.free-shipping-promo'
+                | translate: { value: offer | currency: 'EUR' : 'symbol' : '1.2-2' }
+            }}</span>
+          </div>
+        }
       </div>
     </eco-cart-order-summary>
-
-    <div class="flex justify-center gap-4 mt-6 text-neutral-300">
-      <mat-icon>lock</mat-icon>
-      <mat-icon>credit_card</mat-icon>
-    </div>
   </div>
 </div>

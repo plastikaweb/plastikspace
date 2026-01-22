@@ -178,7 +178,7 @@
       "items-count-suffix": "artículos en la cesta",
       "shipping": "Envío",
       "including-vat": "IVA incluido",
-      "free-shipping-promo": "¡Añade 5,00€ más para envío GRATIS!",
+      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!",
       "go-to-payment": "Continuar al Pago"
     },
     "shipping": {
