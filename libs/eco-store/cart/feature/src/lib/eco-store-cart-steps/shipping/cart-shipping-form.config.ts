@@ -2,31 +2,22 @@ import { inject } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { FormConfig, FormSelectOption, UserContact } from '@plastik/core/entities';
-import {
-  EcoStoreTenantLogisticsDeliveryType,
-  SlotDays,
-  TimeRange,
-} from '@plastik/eco-store/entities';
+import { FormConfig, FormSelectOption } from '@plastik/core/entities';
+import { EcoStoreCartState, ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities';
 import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 import { ShippingMethodOption } from '@plastik/shared/form/shipping-method-selector';
 import { filter, tap } from 'rxjs';
-
-export interface CartShippingData {
-  shippingMethod: EcoStoreTenantLogisticsDeliveryType;
-  shippingAddress?: UserContact;
-  shippingDay: SlotDays | null;
-  shippingTime: TimeRange | null;
-}
 
 /**
  * @description Form configuration for the cart shipping step.
  * @returns {FormConfig<CartShippingData>} FormConfig object.
  */
-export function getCartShippingFormConfig(): FormConfig<CartShippingData> {
+export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
   const tenantService = inject(EcoStoreTenantBaseService);
   const userProfileStore = inject(pocketBaseUserProfileStore);
   const translateService = inject(TranslateService);
+  const cartStore = inject(ecoStoreCartStore);
   const currentLang = translateService.getCurrentLang();
   const logisticsConfig = tenantService.tenant()?.logisticsConfig;
 
@@ -76,6 +67,7 @@ export function getCartShippingFormConfig(): FormConfig<CartShippingData> {
           defaultValue: 'pickup',
           props: {
             translate: true,
+            required: true,
             shippingMethodOptions,
           },
         },
@@ -91,6 +83,7 @@ export function getCartShippingFormConfig(): FormConfig<CartShippingData> {
           type: 'address-selector',
           props: {
             translate: true,
+            required: true,
           },
           hooks: {
             onInit: (formly: FormlyFieldConfig) => {
@@ -129,6 +122,7 @@ export function getCartShippingFormConfig(): FormConfig<CartShippingData> {
                   props: {
                     label: 'cart.shipping.slot.date',
                     translate: true,
+                    required: true,
                     options: [],
                     addonRight: {
                       icon: 'calendar_month',
@@ -175,6 +169,7 @@ export function getCartShippingFormConfig(): FormConfig<CartShippingData> {
                   props: {
                     label: 'cart.shipping.slot.time',
                     translate: true,
+                    required: true,
                     options: [],
                     addonRight: {
                       icon: 'access_time',
@@ -216,6 +211,34 @@ export function getCartShippingFormConfig(): FormConfig<CartShippingData> {
               ],
             },
           ],
+        },
+        {
+          key: 'shippingAmount',
+          type: 'hidden',
+          hooks: {
+            onInit: (formly: FormlyFieldConfig) => {
+              const updateShippingAmount = () => {
+                const shippingMethod = formly.model?.shippingMethod;
+                const totalAmount = cartStore.totalAmount() || 0;
+                if (shippingMethod) {
+                  const shippingAmount = tenantService.getTenantDeliveryOptionCost(
+                    shippingMethod,
+                    totalAmount
+                  );
+                  formly.formControl?.setValue(shippingAmount);
+                  formly.formControl?.updateValueAndValidity();
+                }
+              };
+
+              updateShippingAmount();
+
+              // Subscribe to changes on both fields
+              return formly.options?.fieldChanges?.pipe(
+                filter(e => e.type === 'valueChanges' && e.field?.key === 'shippingMethod'),
+                tap(() => updateShippingAmount())
+              );
+            },
+          },
         },
       ],
     },

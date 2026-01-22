@@ -17,6 +17,7 @@
 
 This library manages the shopping cart state for the [**Eco Store application**](../../../../apps/eco-store/README.md).
 It uses **NgRx Signals** for reactive state management and **ngrx-toolkit** for automatic synchronization with local storage.
+In addition to the cart line items, it also stores **shipping configuration** such as address, delivery method, slot day/time and shipping amount.
 
 ## Features
 
@@ -24,11 +25,16 @@ It uses **NgRx Signals** for reactive state management and **ngrx-toolkit** for 
 - **Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`.
 - **Computed Totals**: Automatically calculates and updates derived state:
   - `itemsCount`: Total number of items in the cart.
-  - `totalAmountWithIva`: Total price of all items.
+  - `totalAmount`: Net total (without IVA).
+  - `totalAmountWithIva`: Total price of all items including IVA.
+  - `totalAmountIva`: Total IVA (difference between `totalAmountWithIva` and `totalAmount`).
+  - `totalAmountWithShipping`: Grand total including shipping amount.
   - `isEmpty`: Boolean check for cart status.
 - **Smart Cart Operations**:
   - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0.
   - `removeFromCart`: Removes items by ID.
+  - `clearCart`: Clears all items from the cart.
+  - `updateLogistics`: Updates shipping-related state (address, method, day, time and shipping amount).
 
 ## Installation
 

@@ -9,7 +9,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreCartState, ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
@@ -51,8 +51,7 @@ export class CartShippingComponent {
   readonly tenantService = inject(EcoStoreTenantBaseService);
   readonly formConfig = getCartShippingFormConfig();
 
-  onShippingMethodChange(event: unknown): void {
-    // eslint-disable-next-line no-console
-    console.log('Shipping method changed:', event);
+  onShippingMethodChange(event: Partial<EcoStoreCartState>): void {
+    this.cartStore.updateLogistics(event);
   }
 }

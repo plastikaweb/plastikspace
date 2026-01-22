@@ -8,6 +8,7 @@ import {
   EcoStoreTenantLogisticsDeliveryType,
   SlotDays,
 } from '@plastik/eco-store/entities';
+import { isNil } from '@plastik/shared/objects';
 
 /**
  * Abstract base service for tenant resolution.
@@ -96,5 +97,20 @@ export abstract class EcoStoreTenantBaseService {
       label: slot,
       value: slot,
     }));
+  }
+
+  getTenantDeliveryOptionCost(type: EcoStoreTenantLogisticsDeliveryType, amount: number): number {
+    const deliveryOption = this.getTenantDeliveryOption(type);
+    const cost = deliveryOption?.cost;
+    const tiers = deliveryOption?.tiers;
+
+    if (!isNil(cost) && !tiers) {
+      return cost || 0;
+    }
+    if (tiers) {
+      const applicableTier = tiers.find(tier => amount >= tier.min);
+      return applicableTier?.cost || 0;
+    }
+    return 0;
   }
 }

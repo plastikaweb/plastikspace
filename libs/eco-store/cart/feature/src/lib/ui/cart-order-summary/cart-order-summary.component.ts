@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslatePipe } from '@ngx-translate/core';
 import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities';
 
 @Component({
   selector: 'eco-cart-order-summary',
@@ -21,4 +22,5 @@ export class CartOrderSummaryComponent {
   shipping = input<number>(0);
   actionButtonText = input<string>('');
   actionRoute = input<string[]>();
+  deliveryType = input<EcoStoreTenantLogisticsDeliveryType>();
 }

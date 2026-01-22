@@ -166,6 +166,8 @@
       }
     },
     "summary": {
+      "pickup": "Recollida a la botiga",
+      "delivery": "Enviament a domicili",
       "items-count": "{{value}} productes",
       "resume": "Resum",
       "subtotal": "Subtotal",
@@ -191,7 +193,7 @@
         }
       },
       "weekdays-labels": {
-        "sunday": "Proper iumenge",
+        "sunday": "Proper Diumenge",
         "monday": "Proper Dilluns",
         "tuesday": "Proper Dimarts",
         "wednesday": "Proper Dimecres",

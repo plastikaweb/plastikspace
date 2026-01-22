@@ -13,6 +13,10 @@ export type TimePoint = string;
 export type TimeRange = string;
 
 export type EcoStoreTenantLogisticsDeliveryType = 'pickup' | 'delivery';
+export interface EcoStoreTenantLogisticsDeliveryTier {
+  min: number;
+  cost: number;
+}
 
 export interface EcoStoreTenantLogisticsDeliveryOption {
   type: EcoStoreTenantLogisticsDeliveryType;
@@ -21,6 +25,7 @@ export interface EcoStoreTenantLogisticsDeliveryOption {
   addressOverride?: string; // if set, this address will be used instead of the tenant address
   instructions?: string | LocalizedFields<string> | null; // instructions for the delivery/pickup
   slots?: Record<SlotDays, TimeRange[]>; // the available day - time slots for delivery/pickup
+  tiers?: EcoStoreTenantLogisticsDeliveryTier[];
 }
 
 export interface EcoStoreTenantLogistics {

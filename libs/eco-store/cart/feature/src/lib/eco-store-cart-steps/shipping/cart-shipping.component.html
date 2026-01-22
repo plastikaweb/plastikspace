@@ -26,18 +26,19 @@
     <eco-cart-order-summary
       [subtotal]="cartStore.totalAmount()"
       [taxes]="cartStore.totalAmountIva()"
-      [shipping]="5"
-      [total]="cartStore.totalAmountWithIva()"
+      [shipping]="cartStore.shippingAmount()"
+      [deliveryType]="cartStore.shippingMethod() ?? 'pickup'"
+      [total]="cartStore.totalAmountWithShipping()"
       [actionButtonText]="'cart.summary.go-to-payment'"
       [actionRoute]="['../confirmacio']">
       <div extra-content>
-        <div class="space-y-4 mb-6">
+        <div class="space-y-4 my-6 bg-tertiary-100 p-4 rounded-lg border border-tertiary-200">
           @for (item of cartStore.items(); track item.id) {
             <div class="flex items-center gap-4">
-              <div class="w-12 h-12 rounded-lg bg-neutral-100 overflow-hidden shrink-0">
+              <div class="w-10 h-10 rounded-lg bg-white overflow-hidden shrink-0">
                 <plastik-img-container
-                  class="w-12 h-12 object-cover"
-                  [dimensions]="{ width: 100, height: 100 }"
+                  class="w-10 h-10 object-cover"
+                  [dimensions]="{ width: 40, height: 40 }"
                   [src]="item.product | pocketBaseImageUrl: item.product.images?.[0]"
                   [title]="item.product.name">
                 </plastik-img-container>

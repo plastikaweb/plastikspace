@@ -20,7 +20,8 @@ This library contains the **eco-store specific entities and type definitions**. 
 
 - **`Product`**: Product entity types and interfaces
 - **`ProductCategory`**: Product category entity types and interfaces
-- **`EcoStoreTenant`**: Tenant entity for multi-tenancy settings (branding, contacts, etc)
+- **`EcoStoreTenant`**: Tenant entity for multi-tenancy settings (branding, contacts, etc) and
+  logistics configuration (delivery options, slots, tiers and related types).
 
 ### Configuration
 

@@ -3,6 +3,20 @@
   "page-title": "Eco Store - Ecological and sustainable products",
   "loading": "Loading data...",
   "loading-data": "Loading data...",
+  "weekdays": {
+    "sunday": "Sunday",
+    "monday": "Monday",
+    "tuesday": "Tuesday",
+    "wednesday": "Wednesday",
+    "thursday": "Thursday",
+    "friday": "Friday",
+    "saturday": "Saturday"
+  },
+  "shared": {
+    "address": {
+      "default": "Default address"
+    }
+  },
   "a11y": {
     "skip-to-content": "Skip to main content",
     "loading": "Loading data",
@@ -22,7 +36,7 @@
     "about": "About Us",
     "contact": "Contact",
     "view-favorites": "View favorites",
-    "view-cart": "View cart",
+    "view-cart": "Go to shopping cart, {{ productCount }} products, total price: {{ productPrice }}",
     "profile": "Profile of {{ name }}",
     "profile_page": "View profile",
     "hello": "Hello {{ name }}",
@@ -138,11 +152,22 @@
   "cart": {
     "steps": {
       "summary": "Cart summary",
-      "shipping": "Shipping",
-      "payment": "Payment",
-      "confirmation": "Confirmation"
+      "shipping": {
+        "title": "Shipping",
+        "subtitle": "Choose how you would like to receive your order."
+      },
+      "payment": {
+        "title": "Payment",
+        "subtitle": "Choose how you would like to pay your order."
+      },
+      "confirmation": {
+        "title": "Confirmation",
+        "subtitle": "Choose how you would like to receive your order."
+      }
     },
     "summary": {
+      "pickup": "Store pickup",
+      "delivery": "Home delivery",
       "items-count": "{{value}} products",
       "resume": "Summary",
       "subtotal": "Subtotal",
@@ -158,24 +183,31 @@
     },
     "shipping": {
       "method": {
-        "title": "Shipping Method",
-        "subtitle": "Choose how you would like to receive your order.",
         "pickup": {
-          "title": "Pickup",
-          "description": "Free - Ready in 2h"
+          "title": "Store pickup.",
+          "description": "Come to the store and pick up your order."
         },
         "delivery": {
-          "title": "Delivery",
-          "description": "From €5.00 - 24/48h"
+          "title": "Home delivery.",
+          "description": "We bring your order to your address."
         }
       },
+      "weekdays-labels": {
+        "sunday": "Next Sunday",
+        "monday": "Next Monday",
+        "tuesday": "Next Tuesday",
+        "wednesday": "Next Wednesday",
+        "thursday": "Next Thursday",
+        "friday": "Next Friday",
+        "saturday": "Next Saturday"
+      },
       "address": {
-        "title": "Shipping Address",
+        "title": "Choose where you would like to receive your order.",
         "edit": "Edit",
         "add": "Add New Address"
       },
       "slot": {
-        "title": "Delivery Slot",
+        "title": "Choose when you would like to receive your order.",
         "date": "Select Date",
         "time": "Time Window"
       }
