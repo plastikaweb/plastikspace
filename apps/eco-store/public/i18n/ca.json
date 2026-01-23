@@ -151,7 +151,10 @@
   },
   "cart": {
     "steps": {
-      "summary": "Resum de la cistella",
+      "summary": {
+        "title": "Resum de la cistella",
+        "subtitle": "Revisa els productes que has afegit a la teva comanda."
+      },
       "shipping": {
         "title": "Enviament",
         "subtitle": "Tria com vols rebre la teva comanda."

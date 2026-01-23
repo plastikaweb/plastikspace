@@ -31,16 +31,21 @@
 
       @include mat.icon-overrides(
         (
-          color: var(--primary-500),
+          color: var(--primary-400),
         )
       );
 
       &.selected {
+        border: 2px solid var(--primary-400) !important;
         @include mat.card-overrides(
           (
             elevated-container-color: var(--primary-100),
           )
         );
+
+        .shipping-method-icon {
+          background-color: var(--primary-600);
+        }
       }
 
       @include mat.radio-overrides(
@@ -49,6 +54,15 @@
           selected-icon-color: var(--primary-500),
         )
       );
+
+      .shipping-method-icon {
+        background-color: var(--primary-400);
+        @include mat.icon-overrides(
+          (
+            color: var(--primary-50),
+          )
+        );
+      }
     }
 
     &.theme-secondary {
@@ -61,16 +75,20 @@
       );
       @include mat.icon-overrides(
         (
-          color: var(--secondary-500),
+          color: var(--secondary-400),
         )
       );
 
       &.selected {
+        border: 2px solid var(--secondary-400) !important;
         @include mat.card-overrides(
           (
             elevated-container-color: var(--secondary-100),
           )
         );
+        .shipping-method-icon {
+          background-color: var(--secondary-600);
+        }
       }
 
       @include mat.radio-overrides(
@@ -79,6 +97,15 @@
           selected-icon-color: var(--secondary-500),
         )
       );
+
+      .shipping-method-icon {
+        background-color: var(--secondary-400);
+        @include mat.icon-overrides(
+          (
+            color: var(--secondary-50),
+          )
+        );
+      }
     }
 
     &.theme-tertiary {
@@ -91,16 +118,20 @@
       );
       @include mat.icon-overrides(
         (
-          color: var(--tertiary-500),
+          color: var(--tertiary-400),
         )
       );
 
       &.selected {
+        border: 2px solid var(--tertiary-400) !important;
         @include mat.card-overrides(
           (
             elevated-container-color: var(--tertiary-100),
           )
         );
+        .shipping-method-icon {
+          background-color: var(--tertiary-600);
+        }
       }
 
       @include mat.radio-overrides(
@@ -109,6 +140,15 @@
           selected-icon-color: var(--tertiary-500),
         )
       );
+
+      .shipping-method-icon {
+        background-color: var(--tertiary-400);
+        @include mat.icon-overrides(
+          (
+            color: var(--tertiary-50),
+          )
+        );
+      }
     }
 
     &.theme-neutral {
@@ -121,16 +161,20 @@
       );
       @include mat.icon-overrides(
         (
-          color: var(--neutral-500),
+          color: var(--neutral-400),
         )
       );
 
       &.selected {
+        border: 2px solid var(--neutral-400) !important;
         @include mat.card-overrides(
           (
             elevated-container-color: var(--neutral-100),
           )
         );
+        .shipping-method-icon {
+          background-color: var(--neutral-600);
+        }
       }
 
       @include mat.radio-overrides(
@@ -139,6 +183,15 @@
           selected-icon-color: var(--neutral-500),
         )
       );
+
+      .shipping-method-icon {
+        background-color: var(--neutral-400);
+        @include mat.icon-overrides(
+          (
+            color: var(--neutral-50),
+          )
+        );
+      }
     }
   }
 }

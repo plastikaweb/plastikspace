@@ -17,7 +17,9 @@
 ## Description
 
 A **Formly-compatible address selector component** for Angular forms.
-It displays a list of saved user addresses with the ability to select one as the active address, and supports editing functionality through optional callbacks.
+It displays a list of saved user addresses with the ability to select one as the active address and supports editing functionality through optional callbacks.
+
+This component is used by the Eco Store cart shipping step and has been adjusted for improved presentation and accessibility. Address items are presented using a compact layout with optional country information and visual affordances (icons and spacing). The component is designed to work with Formly and the form model: selected address values are part of the form model so downstream logic (shipping calculation, validation) can rely on them.
 
 ## Usage
 
@@ -38,13 +40,18 @@ export class FeatureModule {}
 
 The component type name is: `address-selector`.
 
+Example usage with Formly:
+
 ```typescript
 const fields: FormlyFieldConfig[] = [
   {
     key: 'shippingAddress',
     type: 'address-selector',
     props: {
+      translate: true,
+      required: true,
       label: 'Shipping Address',
+      // addresses: an array of UserContact objects (see API Reference)
       addresses: userAddresses,
       editable: true,
       onEdit: address => {
@@ -55,6 +62,12 @@ const fields: FormlyFieldConfig[] = [
   },
 ];
 ```
+
+Notes:
+
+- The address item view supports an optional `country` field; if present it will be shown after city/zip.
+- Presentation uses a compact grid and an optional icon per address; adjust CSS utility classes if you need different spacing or visual emphasis.
+- The component integrates with the Formly form model: selection updates the model and participates in validation/submission flows.
 
 ## API Reference
 
@@ -80,6 +93,12 @@ const fields: FormlyFieldConfig[] = [
 | `country`  | `string`  | Country name.                        |
 | `phone`    | `string`  | Phone number.                        |
 | `default`  | `boolean` | Whether this is the default address. |
+
+## Notes
+
+- Visual / behavior changes: recent updates improved spacing and layout for address items and made the address details render in a two-column compact layout. If your automated tests rely on exact DOM structure, update selectors to target the semantic data (e.g. value/key) rather than fragile layout-specific classes.
+- Form integration: the component exposes and consumes form model values; hidden or auxiliary fields used in shipping calculations should be persisted in the form model so downstream logic (shipping cost calculation, validation) works reliably.
+- If you rely on a visible native control (radio/checkbox) in tests, prefer selecting by the option value or adjust tests to account for the visual-only card selection (the underlying interactive control may be visually hidden for styling reasons).
 
 ## Running unit tests
 

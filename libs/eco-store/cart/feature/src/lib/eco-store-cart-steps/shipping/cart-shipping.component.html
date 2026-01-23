@@ -34,39 +34,6 @@
       [actionRoute]="['../confirmacio']"
       [submitAvailable]="formValid()">
       <div extra-content>
-        <div class="space-y-4 my-6 bg-tertiary-100 p-4 rounded-lg border border-tertiary-200">
-          @for (item of cartStore.items(); track item.id) {
-            <div class="flex items-center gap-4">
-              <div class="w-10 h-10 rounded-lg bg-white overflow-hidden shrink-0">
-                <plastik-img-container
-                  class="w-10 h-10 object-cover"
-                  [dimensions]="{ width: 40, height: 40 }"
-                  [src]="item.product | pocketBaseImageUrl: item.product.images?.[0]"
-                  [title]="item.product.name">
-                </plastik-img-container>
-              </div>
-              <div class="flex-1 min-w-0">
-                <p class="text-sm font-bold text-neutral-900 truncate">{{ item.product.name }}</p>
-                <p class="text-xs text-neutral-500">
-                  {{ 'cart.product.quantity-label' | translate }}
-                  {{
-                    `${item.quantity} ${
-                      ('products.unit-abbreviation.' + item.product.unitType | translate)
-                    }`
-                  }}
-                </p>
-              </div>
-              <div class="font-bold text-neutral-900 text-sm">
-                {{
-                  item.product.priceWithIva * item.quantity | currency: 'EUR' : 'symbol' : '1.2-2'
-                }}
-              </div>
-            </div>
-          }
-        </div>
-
-        <hr class="border-neutral-100 my-4" />
-
         @let offer = getDeliveryOffer();
 
         @if (offer > 0) {

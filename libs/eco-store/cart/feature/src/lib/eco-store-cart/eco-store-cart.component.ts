@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, inject, signal, effect } from '@angular/core';
-import { MatStepperModule } from '@angular/material/stepper';
-import { TranslatePipe } from '@ngx-translate/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs/operators';
 import { StepperSelectionEvent } from '@angular/cdk/stepper';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatStepperModule } from '@angular/material/stepper';
+import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { filter, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'eco-eco-store-cart',
@@ -24,43 +24,31 @@ export class EcoStoreCartComponent {
     { label: 'cart.steps.confirmation', route: 'confirmacio' },
   ];
 
-  selectedStepIndex = signal(0);
-
-  constructor() {
-    effect(() => {
-      // Sync URL with stepper if needed, or rely on Router events.
-      // But simpler is to let Router be the source of truth.
-    });
-
-    // Simple sync: watch router events to update selected index
-    this.#router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntilDestroyed()
-      )
-      .subscribe(() => {
-        this.#updateStepFromUrl();
-      });
-
-    // Initial sync
-    this.#updateStepFromUrl();
-  }
+  readonly selectedStepIndex = toSignal(
+    this.#router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      startWith(null),
+      map(() => this.#getStepIndexFromUrl())
+    ),
+    { initialValue: 0 }
+  );
 
   onStepChange(event: StepperSelectionEvent): void {
-    const step = this.steps[event.selectedIndex];
-    if (step) {
-      this.#router.navigate([step.route], { relativeTo: this.#route });
+    const targetStep = this.steps[event.selectedIndex];
+    const currentIndex = this.#getStepIndexFromUrl();
+
+    // We only navigate if the index is different to avoid loops.
+    if (event.selectedIndex !== currentIndex && targetStep) {
+      this.#router.navigate([targetStep.route], { relativeTo: this.#route });
     }
   }
 
-  #updateStepFromUrl(): void {
+  #getStepIndexFromUrl(): number {
     const childRoute = this.#route.snapshot.firstChild;
-    if (childRoute && childRoute.url.length > 0) {
-      const path = childRoute.url[0].path;
-      const index = this.steps.findIndex(s => s.route === path);
-      if (index !== -1) {
-        this.selectedStepIndex.set(index);
-      }
-    }
+    if (!childRoute) return 0;
+
+    const path = childRoute.url[0]?.path;
+    const index = this.steps.findIndex(s => s.route === path);
+    return index !== -1 ? index : 0;
   }
 }

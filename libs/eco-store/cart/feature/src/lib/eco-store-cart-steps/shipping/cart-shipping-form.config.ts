@@ -6,6 +6,7 @@ import { FormConfig, FormSelectOption } from '@plastik/core/entities';
 import { EcoStoreCartState, ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities';
 import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+
 import { ShippingMethodOption } from '@plastik/shared/form/shipping-method-selector';
 import { filter, tap } from 'rxjs';
 
@@ -214,7 +215,6 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
         },
         {
           key: 'shippingAmount',
-          type: 'hidden',
           hooks: {
             onInit: (formly: FormlyFieldConfig) => {
               const updateShippingAmount = () => {

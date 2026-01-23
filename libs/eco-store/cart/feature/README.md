@@ -35,6 +35,40 @@ The cart feature uses a routed stepper pattern where:
 - **Child Routes**: Each step is a separate route that loads its component lazily.
 - **URL Sync**: The stepper automatically updates when the URL changes and vice versa.
 
+## Implementation notes
+
+This section provides a few developer-focused notes and examples for common integration points.
+
+- Hidden / model-only form fields
+
+  Some values used during checkout (for example, `shippingAmount`) are stored in the form model but are not intended to be visible controls. To keep compatibility with Formly and avoid runtime errors caused by unregistered custom types, implement such fields using the built-in `input` type and set `props.type = 'hidden'`.
+
+  Example Formly field configuration:
+
+```plastikspace/libs/eco-store/cart/feature/README.md#L1-200
+{
+  key: 'shippingAmount',
+  type: 'input',
+  props: { type: 'hidden' },
+  hooks: {
+    onInit: (formly) => {
+      // compute and set shipping amount on init or when related fields change
+      formly.formControl?.setValue(computedShippingAmount);
+    }
+  }
+}
+```
+
+- Stepper / router synchronization
+
+  The cart shell (`EcoStoreCartComponent`) derives the selected step index from router events. Before navigating to a step as a response to a user action, the component compares the currently-derived index with the target index and only navigates when they differ. This prevents navigation loops and reduces unnecessary router calls.
+
+- Formly UI components used by the cart
+
+  The shared Formly UI components used in the shipping step (such as `address-selector` and `shipping-method-selector`) render card-based controls. For styling reasons the native radio input may be visually hidden; automated tests should select options by semantic values or data attributes rather than relying on a visible radio element.
+
+If you need, I can add short code examples showing how to select options in tests or how to compute shipping amount based on tenant configuration.
+
 ## Installation
 
 This library is part of the `@plastik/eco-store` scope. Import the routes in your application routing configuration.
@@ -59,8 +93,7 @@ export const routes: Route[] = [
 
 1. **Summary** (`/carret/resum`): View cart items, adjust quantities, remove items.
 2. **Shipping** (`/carret/enviament`): Enter shipping address and delivery preferences.
-3. **Payment** (`/carret/pagament`): Select payment method and enter payment details.
-4. **Confirmation** (`/carret/confirmacio`): Review order and confirm purchase.
+3. **Confirmation** (`/carret/confirmacio`): Review order and confirm purchase.
 
 ## Running unit tests
 

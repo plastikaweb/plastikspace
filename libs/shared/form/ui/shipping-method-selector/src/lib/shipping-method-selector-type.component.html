@@ -17,7 +17,12 @@
       [class]="getCardStyles(theme, isSelected)"
       (click)="formControl.setValue(shippingMethodOption.type)"
       (keydown.enter)="formControl.setValue(shippingMethodOption.type)">
-      <mat-card-header class="text-center">
+      <mat-card-header class="text-center flex flex-col-reverse items-center gap-2">
+        <div
+          class="shipping-method-icon inline-flex items-center justify-center rounded-full w-12 h-12">
+          <mat-icon>{{ shippingMethodOption.icon }}</mat-icon>
+        </div>
+
         <mat-card-title class="mb-2!">{{
           `cart.shipping.method.${shippingMethodOption.type}.title` | translate
         }}</mat-card-title>
@@ -26,10 +31,7 @@
             `cart.shipping.method.${shippingMethodOption.type}.description` | translate
         }}</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content>
-        <mat-icon class="scale-125">{{ shippingMethodOption.icon }}</mat-icon>
-      </mat-card-content>
-      <mat-radio-button [value]="shippingMethodOption.type"></mat-radio-button>
+      <mat-radio-button class="hidden" [value]="shippingMethodOption.type"></mat-radio-button>
 
       @if (isSelected) {
         <div class="absolute top-4 right-4">
