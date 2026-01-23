@@ -33,18 +33,13 @@
       [actionButtonText]="'cart.summary.go-to-payment'"
       [actionRoute]="['../confirmacio']"
       [submitAvailable]="formValid()">
-      <div extra-content>
-        @let offer = getDeliveryOffer();
-
-        @if (offer > 0) {
-          <div
-            class="cart-shipping__free-shipping-promo bg-primary-100 border border-primary-200 rounded-lg p-3 flex items-center gap-2 mb-6">
-            <mat-icon>local_offer</mat-icon>
-            <span class="text-xs text-primary-800 font-medium">{{
-              'cart.summary.free-shipping-promo'
-                | translate: { value: offer | currency: 'EUR' : 'symbol' : '1.2-2' }
-            }}</span>
-          </div>
+      <div extra-shipping-content>
+        @if (cartStore.shippingMethod() === 'delivery') {
+          <eco-cart-order-price-slots
+            class="my-6 px-2"
+            [cartTotal]="cartStore.totalAmountWithIva()"
+            [tiers]="tenantService.getTenantDeliveryPriceTiers()">
+          </eco-cart-order-price-slots>
         }
       </div>
     </eco-cart-order-summary>

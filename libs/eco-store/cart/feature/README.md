@@ -89,6 +89,56 @@ export const routes: Route[] = [
 ];
 ```
 
+### Components
+
+#### CartOrderPriceSlotsComponent
+
+The `CartOrderPriceSlotsComponent` is a presentational component that displays a progress bar and shipping cost information based on a set of pricing tiers. It shows the user how much they need to add to their cart to reach the next shipping tier or to get free shipping.
+
+**Inputs:**
+
+- `tiers: EcoStoreTenantLogisticsDeliveryTier[]` (required): An array of shipping tiers. Each tier object must have a `min` (the minimum cart total for that tier) and a `cost` (the shipping cost for that tier).
+- `cartTotal: number` (required): The current total of the shopping cart.
+
+**Example Usage:**
+
+```html
+<eco-cart-order-price-slots
+  [tiers]="tenant.logisticsConfig.options[0].tiers"
+  [cartTotal]="cart.total">
+</eco-cart-order-price-slots>
+```
+
+#### CartOrderSummaryComponent
+
+The `CartOrderSummaryComponent` is a presentational component that displays a summary of the order, including the total cost, shipping cost, and tax.
+
+**Inputs:**
+
+- `submitAvailable: boolean`: Indicates whether the order can be submitted.
+- `subtotal: number` (required): The current shopping cart subtotal.
+- `taxes: number` (required): The current tax.
+- `total: number` (required): The current shopping cart total (subtotal + taxes).
+- `shipping: number`: The shipping cost.
+- `actionButtonText: string`: The button label.
+- `actionRoute: string[]`: The route to redirect on clicking the action button.
+- `deliveryType: EcoStoreTenantLogisticsDeliveryType`: The delivery type for the order.
+
+**Example Usage:**
+
+```html
+<eco-cart-order-summary
+  submitAvailable="true"
+  subtotal="300"
+  total="340"
+  taxes="40"
+  shipping="5"
+  actionButtonText="submit"
+  actionRoute="['home']"
+  deliveryType="delivery">
+</eco-cart-order-summary>
+```
+
 ## Cart Steps
 
 1. **Summary** (`/carret/resum`): View cart items, adjust quantities, remove items.

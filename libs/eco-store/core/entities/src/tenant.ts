@@ -25,7 +25,7 @@ export interface EcoStoreTenantLogisticsDeliveryOption {
   addressOverride?: string; // if set, this address will be used instead of the tenant address
   instructions?: string | LocalizedFields<string> | null; // instructions for the delivery/pickup
   slots?: Record<SlotDays, TimeRange[]>; // the available day - time slots for delivery/pickup
-  tiers?: EcoStoreTenantLogisticsDeliveryTier[];
+  tiers?: EcoStoreTenantLogisticsDeliveryTier[]; // the available tiers for delivery/pickup
 }
 
 export interface EcoStoreTenantLogistics {

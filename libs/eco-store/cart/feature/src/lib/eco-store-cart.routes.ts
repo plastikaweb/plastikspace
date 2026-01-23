@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
-import { EcoStoreCartComponent } from './eco-store-cart/eco-store-cart.component';
 import { pocketBaseIsLoggedGuard } from '@plastik/auth/pocketbase/data-access';
 import { cartShippingResolver } from './eco-store-cart-steps/shipping/cart-shipping.resolver';
+import { EcoStoreCartComponent } from './eco-store-cart/eco-store-cart.component';
 
 export const ecoStoreCartRoutes: Route[] = [
   {

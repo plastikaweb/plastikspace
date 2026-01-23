@@ -182,6 +182,11 @@
       "go-to-payment": "Continuar al Pago"
     },
     "shipping": {
+      "free-shipping-achieved": "¡Has conseguido envío gratuito!",
+      "remaining-for-free": "¡Faltan {{amount}} más para envío GRATIS!",
+      "free": "GRATIS",
+      "cart-cost": "Carrito",
+      "shipping-cost": "Envío",
       "method": {
         "pickup": {
           "title": "Recogida en la tienda.",

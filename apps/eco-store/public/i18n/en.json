@@ -182,6 +182,11 @@
       "go-to-payment": "Continue to Payment"
     },
     "shipping": {
+      "free-shipping-achieved": "You have achieved free shipping!",
+      "remaining-for-free": "Add {{amount}} more for FREE shipping!",
+      "free": "FREE",
+      "cart-cost": "Cart",
+      "shipping-cost": "Shipping",
       "method": {
         "pickup": {
           "title": "Store pickup.",

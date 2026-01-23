@@ -1,0 +1,67 @@
+<div class="flex flex-col gap-4 bg-transparent">
+  <div class="w-full grid grid-cols-12 grid-rows-2 gap-1">
+    <!-- cart cost -->
+    <p class="text-primary-500 text-xs font-bold col-span-2">
+      {{ 'cart.shipping.cart-cost' | translate }}
+    </p>
+    <div class="relative w-full col-span-10">
+      @for (tier of sortedTiersAsc(); track tier.min) {
+        <p
+          [class]="
+            `tier-label absolute text-neutral-500 text-xs ${isCurrentTier(tier.min) ? 'active' : ''}`
+          "
+          [style.left]="(tier.min / (maxTier()?.min || 1)) * 100 + '%'">
+          {{ tier.min | currency: 'EUR' : 'symbol' : '1.0-0' }}
+        </p>
+      }
+    </div>
+
+    <div class="col-span-2"></div>
+
+    <!-- progress -->
+    <mat-progress-bar
+      mode="determinate"
+      class="col-span-10 h-4!"
+      [aria-label]="`Shipping tier progress for ${progress()}%`"
+      [value]="progress()"></mat-progress-bar>
+
+    <!-- shipping cost -->
+    <p class="text-primary-500 text-xs font-bold col-span-2">
+      {{ 'cart.shipping.shipping-cost' | translate }}
+    </p>
+    <div class="relative w-full col-span-10">
+      @for (tier of sortedTiersAsc(); track tier.min) {
+        <p
+          [class]="
+            `tier-label absolute text-neutral-500 text-xs ${isCurrentTier(tier.min) ? 'active' : ''}`
+          "
+          [style.left]="(tier.min / (maxTier()?.min || 1)) * 100 + '%'">
+          @if (tier.cost > 0) {
+            {{ tier.cost | currency: 'EUR' : 'symbol' : '1.0-0' }}
+          } @else {
+            {{ 'cart.shipping.free' | translate }}
+          }
+        </p>
+      }
+    </div>
+  </div>
+
+  <div
+    [class]="
+      `cart-order-price-slots__shipping font-semibold text-xs flex items-center gap-2 p-2 rounded-xl border ${
+        isFree() ? 'free' : 'not-free'
+      }`
+    ">
+    @if (isFree()) {
+      <mat-icon>check_circle</mat-icon>
+      <span>{{ 'cart.shipping.free-shipping-achieved' | translate }}</span>
+    } @else {
+      <mat-icon>info</mat-icon>
+      <span
+        >{{
+          'cart.shipping.remaining-for-free' | translate: { amount: remainingForFree() | currency }
+        }}
+      </span>
+    }
+  </div>
+</div>

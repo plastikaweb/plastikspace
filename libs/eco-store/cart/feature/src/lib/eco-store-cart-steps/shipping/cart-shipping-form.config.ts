@@ -33,6 +33,10 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           : option.instructions[currentLang]
         : undefined,
       theme: option.type === 'pickup' ? 'primary' : 'secondary',
+      cost:
+        option.tiers?.find(tier => cartStore.totalAmountWithIva() >= tier.min)?.min ??
+        option.cost ??
+        0,
     })) || [];
 
   const tenantAddresses = [tenantService.getTenantAddress()];
@@ -219,7 +223,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
             onInit: (formly: FormlyFieldConfig) => {
               const updateShippingAmount = () => {
                 const shippingMethod = formly.model?.shippingMethod;
-                const totalAmount = cartStore.totalAmount() || 0;
+                const totalAmount = cartStore.totalAmountWithIva() || 0;
                 if (shippingMethod) {
                   const shippingAmount = tenantService.getTenantDeliveryOptionCost(
                     shippingMethod,

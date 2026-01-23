@@ -72,6 +72,19 @@
     --mat-menu-item-icon-color: var(--secondary-900);
     background-color: var(--secondary-100) !important;
   }
+
+  //** PROGRESS BAR **//
+  @include mat.progress-bar-overrides(
+    (
+      track-shape: 5rem,
+      track-height: 0.5rem,
+      active-indicator-height: 0.5rem,
+    )
+  );
+
+  .mdc-linear-progress__bar-inner {
+    border-radius: 10rem !important;
+  }
 }
 
 //** INPUT **//

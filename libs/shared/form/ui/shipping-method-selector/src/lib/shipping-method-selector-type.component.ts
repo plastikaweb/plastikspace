@@ -5,6 +5,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 
+import { CurrencyPipe } from '@angular/common';
+import { MatChipsModule } from '@angular/material/chips';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
 import {
@@ -22,6 +24,8 @@ import {
     FormlyModule,
     ReactiveFormsModule,
     MatInputModule,
+    CurrencyPipe,
+    MatChipsModule,
   ],
   templateUrl: './shipping-method-selector-type.component.html',
   styleUrl: './shipping-method-selector-type.component.scss',

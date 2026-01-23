@@ -132,4 +132,9 @@ export abstract class EcoStoreTenantBaseService {
 
     return 0;
   }
+
+  getTenantDeliveryPriceTiers() {
+    const deliveryOption = this.getTenantDeliveryOption('delivery');
+    return deliveryOption?.tiers || [];
+  }
 }

@@ -185,6 +185,13 @@
       "go-to-payment": "Continuar al Pagament"
     },
     "shipping": {
+      "free-shipping-achieved": "Has aconseguit enviament gratuït!",
+      "remaining-for-free": "Et falten {{amount}} per a gaudir d'un enviament GRATUÏT!",
+      "free": "GRÀTIS",
+      "free-always": "Recollida GRATIS",
+      "free-from": "Enviaments GRÀTIS des de {{amount}}",
+      "cart-cost": "Cistella",
+      "shipping-cost": "Enviament",
       "method": {
         "pickup": {
           "title": "Recollida a la botiga.",

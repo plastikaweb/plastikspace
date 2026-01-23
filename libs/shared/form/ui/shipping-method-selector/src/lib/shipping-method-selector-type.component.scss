@@ -22,6 +22,17 @@
 
     &.theme-primary {
       color: var(--primary-900);
+
+      .mat-mdc-chip {
+        background-color: var(--primary-100);
+        @include mat.chips-overrides(
+          (
+            outline-color: var(--primary-200),
+            label-text-color: var(--primary-900),
+          )
+        );
+      }
+
       @include mat.card-overrides(
         (
           elevated-container-color: var(--primary-50),
@@ -67,6 +78,17 @@
 
     &.theme-secondary {
       color: var(--secondary-900);
+
+      .mat-mdc-chip {
+        background-color: var(--secondary-100);
+        @include mat.chips-overrides(
+          (
+            outline-color: var(--secondary-200),
+            label-text-color: var(--secondary-900),
+          )
+        );
+      }
+
       @include mat.card-overrides(
         (
           elevated-container-color: var(--secondary-50),
@@ -86,6 +108,7 @@
             elevated-container-color: var(--secondary-100),
           )
         );
+
         .shipping-method-icon {
           background-color: var(--secondary-600);
         }
@@ -110,6 +133,17 @@
 
     &.theme-tertiary {
       color: var(--tertiary-900);
+
+      .mat-mdc-chip {
+        background-color: var(--tertiary-100);
+        @include mat.chips-overrides(
+          (
+            outline-color: var(--tertiary-200),
+            label-text-color: var(--tertiary-900),
+          )
+        );
+      }
+
       @include mat.card-overrides(
         (
           elevated-container-color: var(--tertiary-50),
@@ -129,6 +163,7 @@
             elevated-container-color: var(--tertiary-100),
           )
         );
+
         .shipping-method-icon {
           background-color: var(--tertiary-600);
         }
@@ -153,6 +188,17 @@
 
     &.theme-neutral {
       color: var(--neutral-900);
+
+      .mat-mdc-chip {
+        background-color: var(--neutral-100);
+        @include mat.chips-overrides(
+          (
+            outline-color: var(--neutral-200),
+            label-text-color: var(--neutral-900),
+          )
+        );
+      }
+
       @include mat.card-overrides(
         (
           elevated-container-color: var(--neutral-50),
@@ -172,6 +218,7 @@
             elevated-container-color: var(--neutral-100),
           )
         );
+
         .shipping-method-icon {
           background-color: var(--neutral-600);
         }

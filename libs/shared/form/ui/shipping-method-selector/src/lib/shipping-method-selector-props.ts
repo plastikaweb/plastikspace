@@ -6,6 +6,7 @@ export interface ShippingMethodOption {
   title: string;
   subtitle?: string;
   theme?: 'primary' | 'secondary' | 'tertiary' | 'neutral';
+  cost?: number;
 }
 
 export interface ShippingMethodSelectorProps extends FormlyFieldProps {

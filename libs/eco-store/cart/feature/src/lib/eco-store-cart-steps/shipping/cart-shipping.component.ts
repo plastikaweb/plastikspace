@@ -1,4 +1,3 @@
-import { CurrencyPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -16,6 +15,7 @@ import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { AddressSelectorFormlyModule } from '@plastik/shared/form/address-selector';
 import { CustomLabelFormlyModule } from '@plastik/shared/form/custom-label';
 import { ShippingMethodSelectorFormlyModule } from '@plastik/shared/form/shipping-method-selector';
+import { CartOrderPriceSlotsComponent } from '../../ui/cart-order-price-slots/cart-order-price-slots.component';
 import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
 import { getCartShippingFormConfig } from './cart-shipping-form.config';
 
@@ -35,8 +35,8 @@ import { getCartShippingFormConfig } from './cart-shipping-form.config';
     CustomLabelFormlyModule,
     AddressSelectorFormlyModule,
     CartOrderSummaryComponent,
+    CartOrderPriceSlotsComponent,
     TranslatePipe,
-    CurrencyPipe,
   ],
   templateUrl: './cart-shipping.component.html',
   styleUrl: './cart-shipping.component.scss',

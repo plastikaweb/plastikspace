@@ -10,6 +10,7 @@
   @for (shippingMethodOption of props.shippingMethodOptions; track shippingMethodOption.type) {
     @let theme = shippingMethodOption.theme || 'neutral';
     @let isSelected = formControl.value === shippingMethodOption.type;
+    @let cost = shippingMethodOption.cost ?? 0;
 
     <mat-card
       tabindex="0"
@@ -18,18 +19,24 @@
       (click)="formControl.setValue(shippingMethodOption.type)"
       (keydown.enter)="formControl.setValue(shippingMethodOption.type)">
       <mat-card-header class="text-center flex flex-col-reverse items-center gap-2">
+        <mat-card-title class="mb-2!">{{
+          `cart.shipping.method.${shippingMethodOption.type}.title` | translate
+        }}</mat-card-title>
+
+        <mat-card-subtitle>
+          <mat-chip role="listitem" [disableRipple]="true">
+            <span>{{
+              cost === 0
+                ? ('cart.shipping.free-always' | translate)
+                : ('cart.shipping.free-from'
+                  | translate: { amount: cost | currency: 'EUR' : 'symbol' : '1.0-0' })
+            }}</span>
+          </mat-chip>
+        </mat-card-subtitle>
         <div
           class="shipping-method-icon inline-flex items-center justify-center rounded-full w-12 h-12">
           <mat-icon>{{ shippingMethodOption.icon }}</mat-icon>
         </div>
-
-        <mat-card-title class="mb-2!">{{
-          `cart.shipping.method.${shippingMethodOption.type}.title` | translate
-        }}</mat-card-title>
-        <mat-card-subtitle>{{
-          shippingMethodOption.subtitle ||
-            `cart.shipping.method.${shippingMethodOption.type}.description` | translate
-        }}</mat-card-subtitle>
       </mat-card-header>
       <mat-radio-button class="hidden" [value]="shippingMethodOption.type"></mat-radio-button>
 
