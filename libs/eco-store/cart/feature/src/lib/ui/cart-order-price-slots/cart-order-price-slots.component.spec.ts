@@ -1,22 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EcoStoreCartComponent } from './eco-store-cart.component';
+import { CartOrderPriceSlotsComponent } from './cart-order-price-slots.component';
 import { provideTranslateService } from '@ngx-translate/core';
-import { provideRouter } from '@angular/router';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
-describe('EcoStoreCartComponent', () => {
-  let component: EcoStoreCartComponent;
-  let fixture: ComponentFixture<EcoStoreCartComponent>;
+describe('CartOrderPriceSlotsComponent', () => {
+  let component: CartOrderPriceSlotsComponent;
+  let fixture: ComponentFixture<CartOrderPriceSlotsComponent>;
 
   beforeEach(async () => {
     expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
-      imports: [EcoStoreCartComponent],
-      providers: [provideRouter([]), provideTranslateService()],
+      providers: [provideTranslateService()],
+      imports: [CartOrderPriceSlotsComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EcoStoreCartComponent);
+    fixture = TestBed.createComponent(CartOrderPriceSlotsComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('tiers', []);
+    fixture.componentRef.setInput('cartTotal', 0);
     fixture.detectChanges();
   });
 

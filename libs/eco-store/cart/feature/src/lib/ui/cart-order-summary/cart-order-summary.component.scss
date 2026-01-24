@@ -9,9 +9,11 @@
     )
   );
 
-  @include mat.icon-overrides(
-    (
-      color: var(--white),
-    )
-  );
+  .mat-mdc-card-header {
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-800),
+      )
+    );
+  }
 }

@@ -8,9 +8,13 @@
   - [Description](#description)
   - [Features](#features)
   - [Architecture](#architecture)
+  - [Implementation notes](#implementation-notes)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Route Configuration](#route-configuration)
+    - [Components](#components)
+      - [CartOrderPriceSlotsComponent](#cartorderpriceslotscomponent)
+      - [CartOrderSummaryComponent](#cartordersummarycomponent)
   - [Cart Steps](#cart-steps)
   - [Running unit tests](#running-unit-tests)
 
@@ -39,33 +43,62 @@ The cart feature uses a routed stepper pattern where:
 
 This section provides a few developer-focused notes and examples for common integration points.
 
-- Hidden / model-only form fields
+Example Formly field configuration:
 
-  Some values used during checkout (for example, `shippingAmount`) are stored in the form model but are not intended to be visible controls. To keep compatibility with Formly and avoid runtime errors caused by unregistered custom types, implement such fields using the built-in `input` type and set `props.type = 'hidden'`.
-
-  Example Formly field configuration:
-
-```plastikspace/libs/eco-store/cart/feature/README.md#L1-200
+```typescript
 {
-  key: 'shippingAmount',
+  key: 'amount',
   type: 'input',
   props: { type: 'hidden' },
   hooks: {
-    onInit: (formly) => {
+    onInit: (field) => {
       // compute and set shipping amount on init or when related fields change
-      formly.formControl?.setValue(computedShippingAmount);
+      field.formControl?.setValue(computedShippingAmount);
     }
   }
 }
 ```
 
+- Shipping form field naming
+
+  The shipping form uses simplified field names for better code organization:
+  - `method`: Shipping delivery method ('pickup' or 'delivery')
+  - `address`: Shipping address selection
+  - `day`: Delivery day selection
+  - `time`: Delivery time slot selection
+  - `amount`: Computed shipping cost
+
+- Custom Label Hooks Pattern
+
+  Custom label sections use a declarative hook pattern where validation and dynamic label updates are defined as separate hook functions with their own linked field keys.
+  This allows independent logic reuse across multiple sections.
+
+  Example:
+
+```typescript
+type HookFunction = {
+  fn: (field: FormlyFieldConfig, linkedFieldKeys: string[]) => void;
+  linkedFieldKeys: string[];
+};
+
+setCustomLabel('method', 'cart.shipping.method.title', 'counter_1', [
+  {
+    fn: checkCustomLabelValidation,
+    linkedFieldKeys: ['method'],
+  },
+]);
+```
+
 - Stepper / router synchronization
 
-  The cart shell (`EcoStoreCartComponent`) derives the selected step index from router events. Before navigating to a step as a response to a user action, the component compares the currently-derived index with the target index and only navigates when they differ. This prevents navigation loops and reduces unnecessary router calls.
+  The cart shell (`EcoStoreCartComponent`) derives the selected step index from router events.
+  Before navigating to a step as a response to a user action, the component compares the currently-derived index with the target index and only navigates when they differ.
+  This prevents navigation loops and reduces unnecessary router calls.
 
 - Formly UI components used by the cart
 
-  The shared Formly UI components used in the shipping step (such as `address-selector` and `shipping-method-selector`) render card-based controls. For styling reasons the native radio input may be visually hidden; automated tests should select options by semantic values or data attributes rather than relying on a visible radio element.
+  The shared Formly UI components used in the shipping step (such as `address-selector` and `shipping-method-selector`) render card-based controls.
+  For styling reasons the native radio input may be visually hidden; automated tests should select options by semantic values or data attributes rather than relying on a visible radio element.
 
 If you need, I can add short code examples showing how to select options in tests or how to compute shipping amount based on tenant configuration.
 
@@ -93,7 +126,8 @@ export const routes: Route[] = [
 
 #### CartOrderPriceSlotsComponent
 
-The `CartOrderPriceSlotsComponent` is a presentational component that displays a progress bar and shipping cost information based on a set of pricing tiers. It shows the user how much they need to add to their cart to reach the next shipping tier or to get free shipping.
+The `CartOrderPriceSlotsComponent` is a presentational component that displays a progress bar and shipping cost information based on a set of pricing tiers.
+It shows the user how much they need to add to their cart to reach the next shipping tier or to get free shipping.
 
 **Inputs:**
 
@@ -105,7 +139,7 @@ The `CartOrderPriceSlotsComponent` is a presentational component that displays a
 ```html
 <eco-cart-order-price-slots
   [tiers]="tenant.logisticsConfig.options[0].tiers"
-  [cartTotal]="cart.total">
+  [cartTotal]="cartStore.totalAmountWithIva()">
 </eco-cart-order-price-slots>
 ```
 
@@ -141,9 +175,9 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 
 ## Cart Steps
 
-1. **Summary** (`/carret/resum`): View cart items, adjust quantities, remove items.
-2. **Shipping** (`/carret/enviament`): Enter shipping address and delivery preferences.
-3. **Confirmation** (`/carret/confirmacio`): Review order and confirm purchase.
+1. **Summary** (`/cistella/resum`): View cart items, adjust quantities, remove items.
+2. **Shipping** (`/cistella/enviament`): Enter shipping address and delivery preferences.
+3. **Confirmation** (`/cistella/confirmacio`): Review order and confirm purchase.
 
 ## Running unit tests
 

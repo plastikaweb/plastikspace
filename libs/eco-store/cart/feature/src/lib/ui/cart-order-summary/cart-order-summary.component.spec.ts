@@ -1,22 +1,25 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EcoStoreCartComponent } from './eco-store-cart.component';
+import { CartOrderSummaryComponent } from './cart-order-summary.component';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideRouter } from '@angular/router';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
-describe('EcoStoreCartComponent', () => {
-  let component: EcoStoreCartComponent;
-  let fixture: ComponentFixture<EcoStoreCartComponent>;
+describe('CartOrderSummaryComponent', () => {
+  let component: CartOrderSummaryComponent;
+  let fixture: ComponentFixture<CartOrderSummaryComponent>;
 
   beforeEach(async () => {
     expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
-      imports: [EcoStoreCartComponent],
       providers: [provideRouter([]), provideTranslateService()],
+      imports: [CartOrderSummaryComponent],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(EcoStoreCartComponent);
+    fixture = TestBed.createComponent(CartOrderSummaryComponent);
     component = fixture.componentInstance;
+    fixture.componentRef.setInput('subtotal', 100);
+    fixture.componentRef.setInput('taxes', 21);
+    fixture.componentRef.setInput('total', 121);
     fixture.detectChanges();
   });
 

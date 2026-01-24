@@ -1,11 +1,12 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { MenuComponent } from './menu.component';
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
-import { signal } from '@angular/core';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { axe, toHaveNoViolations } from 'jest-axe';
+import { MenuComponent } from './menu.component';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -17,6 +18,7 @@ describe('MenuComponent', () => {
       providers: [
         provideRouter([]),
         provideTranslateService(),
+        ...provideEnvironmentPocketBaseTranslationMock(),
         {
           provide: POCKETBASE_INSTANCE,
           useValue: {

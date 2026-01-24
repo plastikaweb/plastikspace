@@ -58,7 +58,7 @@ export class CartShippingComponent {
   }
 
   getDeliveryOffer(): number {
-    const type = this.cartStore.shippingMethod() ?? 'pickup';
+    const type = this.cartStore.method() ?? 'pickup';
     const amount = this.cartStore.totalAmount();
     const offer = this.tenantService.getTenantDeliveryPriceForFreeShipping(type, amount);
     return offer > 0 ? offer : 0;

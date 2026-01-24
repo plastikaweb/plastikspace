@@ -22,10 +22,10 @@
 
   .mat-mdc-button-disabled {
     background-color: var(--neutral-100) !important;
-    color: var(--neutral-400) !important;
+    color: var(--neutral-500) !important;
     @include mat.icon-overrides(
       (
-        color: var(--neutral-400),
+        color: var(--neutral-500),
       )
     );
   }

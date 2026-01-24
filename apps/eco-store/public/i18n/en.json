@@ -154,7 +154,7 @@
       "summary": "Cart summary",
       "shipping": {
         "title": "Shipping",
-        "subtitle": "Choose how you would like to receive your order."
+        "subtitle": "Choose if you would like to receive or pick up your order."
       },
       "payment": {
         "title": "Payment",

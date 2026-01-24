@@ -34,7 +34,7 @@ In addition to the cart line items, it also stores **shipping configuration** su
   - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0.
   - `removeFromCart`: Removes items by ID.
   - `clearCart`: Clears all items from the cart.
-  - `updateLogistics`: Updates shipping-related state (address, method, day, time and shipping amount).
+  - `updateLogistics`: Updates shipping-related state (method, address, day, time and amount).
 
 ## Installation
 

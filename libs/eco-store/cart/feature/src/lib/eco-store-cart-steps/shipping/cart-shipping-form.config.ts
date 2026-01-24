@@ -7,6 +7,7 @@ import { EcoStoreCartState, ecoStoreCartStore } from '@plastik/eco-store/cart/da
 import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities';
 import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 
+import { AbstractControl } from '@angular/forms';
 import { ShippingMethodOption } from '@plastik/shared/form/shipping-method-selector';
 import { filter, tap } from 'rxjs';
 
@@ -42,44 +43,63 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
   const tenantAddresses = [tenantService.getTenantAddress()];
   const userAddresses = userProfileStore.getUserContacts();
 
+  const checkCustomLabelValidation = (field: FormlyFieldConfig, linkedFieldKeys: string[] = []) => {
+    const controls = linkedFieldKeys.map((key: string) =>
+      field.form?.get(key)
+    ) as AbstractControl[];
+    const isValid = controls.every(control => control?.valid);
+    const isTouched = controls.every(control => control?.touched);
+    if (field?.props) {
+      field.props['isValid'] = isValid ? 'valid' : isTouched ? 'error' : 'untouched';
+    }
+  };
+
+  const setCustomLabelValue = (field: FormlyFieldConfig): void => {
+    const method = field.model?.method ?? 'pickup';
+    if (field.props) {
+      field.props['label'] =
+        method === 'pickup'
+          ? `cart.shipping.${field.props['key']}.pickup.title`
+          : `cart.shipping.${field.props['key']}.delivery.title`;
+    }
+  };
+
+  type HookFunction = {
+    fn: (field: FormlyFieldConfig, linkedFieldKeys: string[]) => void;
+    linkedFieldKeys: string[];
+  };
+
   const setCustomLabel = (
+    key: string,
     label: string,
     icon: string,
-    description: string,
-    linkedFieldKeys: string[],
+    hooks: HookFunction[] = [],
     isValid: 'valid' | 'error' | 'untouched' = 'untouched'
   ) => {
+    // Collect all unique linkedFieldKeys from all hooks
+    const allLinkedFieldKeys = Array.from(new Set(hooks.flatMap(h => h.linkedFieldKeys)));
+
     return {
       type: 'custom-label',
       className: 'flex flew-row items-start text-primary-600 mt-4',
       props: {
+        key,
         label,
         icon,
-        description,
         containerClasses: 'p-2',
         iconClasses: 'scale-125',
         checkValidation: true,
         isValid,
       },
       hooks: {
-        onInit: (formly: FormlyFieldConfig) => {
-          const checkValidation = (field: FormlyFieldConfig) => {
-            const controls = linkedFieldKeys.map(key => field.form?.get(key));
-            const isValid = controls.every(control => control?.valid);
-            const isTouched = controls.every(control => control?.touched);
-            if (formly.props) {
-              formly.props['isValid'] = isValid ? 'valid' : isTouched ? 'error' : 'untouched';
-            }
-          };
+        onInit: (field: FormlyFieldConfig) => {
+          hooks.forEach(({ fn, linkedFieldKeys }) => fn(field, linkedFieldKeys));
 
-          checkValidation(formly);
-
-          return formly.options?.fieldChanges?.pipe(
+          return field.options?.fieldChanges?.pipe(
             filter(
-              ({ type, field }) =>
-                type === 'valueChanges' && linkedFieldKeys.includes(field?.key as string)
+              e => e.type === 'valueChanges' && allLinkedFieldKeys.includes(e.field?.key as string)
             ),
-            tap(({ field }) => checkValidation(field))
+            tap(() => hooks.forEach(({ fn, linkedFieldKeys }) => fn(field, linkedFieldKeys)))
           );
         },
       },
@@ -91,17 +111,17 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
       fieldGroupClassName: 'flex flex-col gap-6',
       fieldGroup: [
         {
-          ...setCustomLabel(
-            'cart.steps.shipping.subtitle',
-            'counter_1',
-            'cart.steps.shipping.subtitle',
-            ['shippingMethod']
-          ),
+          ...setCustomLabel('method', 'cart.shipping.method.title', 'counter_1', [
+            {
+              fn: checkCustomLabelValidation,
+              linkedFieldKeys: ['method'],
+            },
+          ]),
         },
         {
-          key: 'shippingMethod',
+          key: 'method',
           type: 'shipping-method-selector',
-          defaultValue: cartStore.shippingMethod() ?? 'pickup',
+          defaultValue: cartStore.method() ?? 'pickup',
           props: {
             translate: true,
             required: true,
@@ -109,47 +129,54 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           },
         },
         {
-          ...setCustomLabel(
-            'cart.shipping.address.title',
-            'counter_2',
-            'cart.shipping.address.description',
-            ['shippingAddress']
-          ),
+          ...setCustomLabel('address', '', 'counter_2', [
+            {
+              fn: checkCustomLabelValidation,
+              linkedFieldKeys: ['address'],
+            },
+            {
+              fn: setCustomLabelValue,
+              linkedFieldKeys: ['method'],
+            },
+          ]),
         },
         {
-          key: 'shippingAddress',
+          key: 'address',
           type: 'address-selector',
-          defaultValue: cartStore.shippingAddress() ?? null,
+          defaultValue: cartStore.address() ?? null,
           props: {
             translate: true,
             required: true,
           },
           hooks: {
-            onInit: (formly: FormlyFieldConfig) => {
-              const method = formly.model?.shippingMethod ?? 'pickup';
-              if (formly.props) {
-                formly.props['addresses'] = method === 'pickup' ? tenantAddresses : userAddresses;
+            onInit: (field: FormlyFieldConfig) => {
+              const method = field.model?.method ?? 'pickup';
+              if (field.props) {
+                field.props['addresses'] = method === 'pickup' ? tenantAddresses : userAddresses;
               }
-              return formly.options?.fieldChanges?.pipe(
-                filter(e => e.type === 'valueChanges' && e.field?.key === 'shippingMethod'),
+              return field.options?.fieldChanges?.pipe(
+                filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
                 tap(({ value }) => {
-                  if (formly.props) {
-                    formly.props['addresses'] =
-                      value === 'pickup' ? tenantAddresses : userAddresses;
+                  if (field.props) {
+                    field.props['addresses'] = value === 'pickup' ? tenantAddresses : userAddresses;
                   }
-                  formly.formControl?.setValue(null);
+                  field.formControl?.setValue(null);
                 })
               );
             },
           },
         },
         {
-          ...setCustomLabel(
-            'cart.shipping.slot.title',
-            'counter_3',
-            'cart.shipping.slot.description',
-            ['shippingDay', 'shippingTime']
-          ),
+          ...setCustomLabel('slot', 'cart.shipping.slot.title', 'counter_3', [
+            {
+              fn: checkCustomLabelValidation,
+              linkedFieldKeys: ['day', 'time'],
+            },
+            {
+              fn: setCustomLabelValue,
+              linkedFieldKeys: ['method'],
+            },
+          ]),
         },
         {
           fieldGroup: [
@@ -157,9 +184,9 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
               fieldGroupClassName: 'grid grid-cols-1 md:grid-cols-2 gap-4',
               fieldGroup: [
                 {
-                  key: 'shippingDay',
+                  key: 'day',
                   type: 'select',
-                  defaultValue: cartStore.shippingDay() ?? null,
+                  defaultValue: cartStore.day() ?? null,
                   props: {
                     label: 'cart.shipping.slot.date',
                     translate: true,
@@ -172,15 +199,14 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                     },
                   },
                   expressionProperties: {
-                    'props.disabled': '!model.shippingMethod || !model.shippingAddress',
+                    'props.disabled': '!model.method || !model.address',
                   },
                   hooks: {
-                    onInit: (formly: FormlyFieldConfig) => {
+                    onInit: (field: FormlyFieldConfig) => {
                       const getTranslatedOptions = (
-                        shippingMethod: EcoStoreTenantLogisticsDeliveryType
+                        method: EcoStoreTenantLogisticsDeliveryType
                       ): FormSelectOption[] => {
-                        const options =
-                          tenantService.getTenantDeliveryOptionSlotsDays(shippingMethod);
+                        const options = tenantService.getTenantDeliveryOptionSlotsDays(method);
                         return options.map(option => ({
                           ...option,
                           label: translateService.instant(
@@ -189,25 +215,25 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                         }));
                       };
 
-                      if (formly.props && formly.model?.shippingMethod) {
-                        formly.props['options'] = getTranslatedOptions(formly.model.shippingMethod);
+                      if (field.props && field.model?.method) {
+                        field.props['options'] = getTranslatedOptions(field.model.method);
                       }
-                      return formly.options?.fieldChanges?.pipe(
-                        filter(e => e.type === 'valueChanges' && e.field?.key === 'shippingMethod'),
+                      return field.options?.fieldChanges?.pipe(
+                        filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
                         tap(({ value }) => {
-                          if (formly.props) {
-                            formly.props['options'] = getTranslatedOptions(value);
+                          if (field.props) {
+                            field.props['options'] = getTranslatedOptions(value);
                           }
-                          formly.formControl?.setValue(null);
+                          field.formControl?.setValue(null);
                         })
                       );
                     },
                   },
                 },
                 {
-                  key: 'shippingTime',
+                  key: 'time',
                   type: 'select',
-                  defaultValue: cartStore.shippingTime() ?? null,
+                  defaultValue: cartStore.time() ?? null,
                   props: {
                     label: 'cart.shipping.slot.time',
                     translate: true,
@@ -220,31 +246,27 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                     },
                   },
                   expressions: {
-                    'props.disabled': '!model.shippingDay',
+                    'props.disabled': '!model.day',
                   },
                   hooks: {
-                    onInit: (formly: FormlyFieldConfig) => {
-                      if (
-                        formly.props &&
-                        formly.model?.shippingMethod &&
-                        formly.model?.shippingDay
-                      ) {
-                        formly.props['options'] = tenantService.getTenantDeliveryOptionSlotsTimes(
-                          formly.model.shippingMethod,
-                          formly.model.shippingDay
+                    onInit: (field: FormlyFieldConfig) => {
+                      if (field.props && field.model?.method && field.model?.day) {
+                        field.props['options'] = tenantService.getTenantDeliveryOptionSlotsTimes(
+                          field.model.method,
+                          field.model.day
                         );
                       }
-                      return formly.options?.fieldChanges?.pipe(
-                        filter(e => e.type === 'valueChanges' && e.field?.key === 'shippingDay'),
+                      return field.options?.fieldChanges?.pipe(
+                        filter(e => e.type === 'valueChanges' && e.field?.key === 'day'),
                         tap(({ value }) => {
-                          if (formly.props) {
-                            formly.props['options'] =
+                          if (field.props) {
+                            field.props['options'] =
                               tenantService.getTenantDeliveryOptionSlotsTimes(
-                                formly.model.shippingMethod,
+                                field.model.method,
                                 value
                               );
                           }
-                          formly.formControl?.setValue(null);
+                          field.formControl?.setValue(null);
                         })
                       );
                     },
@@ -255,27 +277,27 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           ],
         },
         {
-          key: 'shippingAmount',
+          key: 'amount',
           hooks: {
-            onInit: (formly: FormlyFieldConfig) => {
+            onInit: (field: FormlyFieldConfig) => {
               const updateShippingAmount = () => {
-                const shippingMethod = formly.model?.shippingMethod;
+                const shippingMethod = field.model?.method;
                 const totalAmount = cartStore.totalAmountWithIva() || 0;
                 if (shippingMethod) {
                   const shippingAmount = tenantService.getTenantDeliveryOptionCost(
                     shippingMethod,
                     totalAmount
                   );
-                  formly.formControl?.setValue(shippingAmount);
-                  formly.formControl?.updateValueAndValidity();
+                  field.formControl?.setValue(shippingAmount);
+                  field.formControl?.updateValueAndValidity();
                 }
               };
 
               updateShippingAmount();
 
               // Subscribe to changes on both fields
-              return formly.options?.fieldChanges?.pipe(
-                filter(e => e.type === 'valueChanges' && e.field?.key === 'shippingMethod'),
+              return field.options?.fieldChanges?.pipe(
+                filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
                 tap(() => updateShippingAmount())
               );
             },

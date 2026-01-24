@@ -17,19 +17,19 @@ export interface CartItem {
 }
 
 export interface EcoStoreCartState {
-  shippingAddress: UserContact | null;
-  shippingMethod: EcoStoreTenantLogisticsDeliveryType | null;
-  shippingDay: SlotDays | null;
-  shippingTime: TimeRange | null;
-  shippingAmount: number;
+  address: UserContact | null;
+  method: EcoStoreTenantLogisticsDeliveryType | null;
+  day: SlotDays | null;
+  time: TimeRange | null;
+  amount: number;
 }
 
 const initialState: EcoStoreCartState = {
-  shippingMethod: null,
-  shippingAddress: null,
-  shippingDay: null,
-  shippingTime: null,
-  shippingAmount: 0,
+  method: null,
+  address: null,
+  day: null,
+  time: null,
+  amount: 0,
 };
 
 export const ecoStoreCartStore = signalStore(
@@ -58,9 +58,9 @@ export const ecoStoreCartStore = signalStore(
     }),
   })),
 
-  withComputed(({ totalAmount, totalAmountWithIva, shippingAmount }) => ({
+  withComputed(({ totalAmount, totalAmountWithIva, amount }) => ({
     totalAmountIva: computed(() => totalAmountWithIva() - totalAmount()),
-    totalAmountWithShipping: computed(() => totalAmountWithIva() + shippingAmount()),
+    totalAmountWithShipping: computed(() => totalAmountWithIva() + amount()),
   })),
 
   withMethods(store => {

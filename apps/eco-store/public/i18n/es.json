@@ -154,7 +154,7 @@
       "summary": "Resumen de la cesta",
       "shipping": {
         "title": "Envío",
-        "subtitle": "Elige cómo quieres recibir tu pedido."
+        "subtitle": "Elige si quieres recibir o recoger tu pedido."
       },
       "payment": {
         "title": "Pago",

@@ -27,12 +27,6 @@
     );
   }
 
-  @include mat.icon-overrides(
-    (
-      color: var(--tertiary-800),
-    )
-  );
-
   .next-step {
     @include mat.icon-overrides(
       (

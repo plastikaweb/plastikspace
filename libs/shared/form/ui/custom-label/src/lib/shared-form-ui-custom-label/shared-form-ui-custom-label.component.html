@@ -1,9 +1,9 @@
 <div [class]="setContainerClasses()">
   <div class="flex justify-between items-center gap-2">
-    @if (props.icon && props.description) {
+    @if (props.icon) {
       <mat-icon
         [class]="'text-4xl size-4 cursor-pointer mx-2 overflow-visible ' + props.iconClasses"
-        [attr.aria-label]="props.description | translate">
+        [attr.aria-label]="props.description ?? props.label | translate">
         {{ props.icon }}
       </mat-icon>
     }

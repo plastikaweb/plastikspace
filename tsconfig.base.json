@@ -211,6 +211,9 @@
       "@plastik/eco-store/product-price": ["libs/eco-store/shared/product-price/src/index.ts"],
       "@plastik/eco-store/favorite-button": ["libs/eco-store/shared/favorite-button/src/index.ts"],
       "@plastik/eco-store/cart/data-access": ["libs/eco-store/cart/data-access/src/index.ts"],
+      "@plastik/eco-store/cart/data-access/testing": [
+        "libs/eco-store/cart/data-access/src/eco-store-cart.store-mock.ts"
+      ],
       "@plastik/eco-store/layout": ["libs/eco-store/core/layout/src/index.ts"],
       "@plastik/eco-store/cart": ["libs/eco-store/cart/feature/src/index.ts"],
       "@plastik/eco-store/product-quantity": [

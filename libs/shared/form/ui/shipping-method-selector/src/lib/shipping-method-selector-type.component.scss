@@ -3,6 +3,12 @@
 :host {
   display: block;
 
+  .mat-mdc-radio-group {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
+  }
+
   .shipping-method-card {
     &:hover {
       @include mat.card-overrides(

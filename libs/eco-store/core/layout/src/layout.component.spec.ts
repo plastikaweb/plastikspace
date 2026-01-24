@@ -1,15 +1,16 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
+import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import LayoutComponent from './layout.component';
 import { MenuComponent } from './menu/menu.component';
-import { axe, toHaveNoViolations } from 'jest-axe';
-import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
-import { signal } from '@angular/core';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 
 describe('LayoutComponent', () => {
   let component: LayoutComponent;
@@ -27,6 +28,7 @@ describe('LayoutComponent', () => {
       providers: [
         provideRouter([]),
         provideTranslateService(),
+        ...provideEnvironmentPocketBaseTranslationMock(),
         {
           provide: POCKETBASE_INSTANCE,
           useValue: {

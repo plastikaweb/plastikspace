@@ -14,7 +14,8 @@
   "urls": [
     "http://localhost:8080/botiga",
     "http://localhost:8080/botiga?perPage=75&page=0&active=priceWithIva&direction=desc",
-    "http://localhost:8080/cistella",
-    "http://localhost:8080/botiga/fruita-i-verdura/peres-conferencia"
+    "http://localhost:8080/botiga/fruita-i-verdura/peres-conferencia",
+    "http://localhost:8080/cistella/resum",
+    "http://localhost:8080/cistella/enviament"
   ]
 }

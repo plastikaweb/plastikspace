@@ -27,14 +27,14 @@
     <eco-cart-order-summary
       [subtotal]="cartStore.totalAmount()"
       [taxes]="cartStore.totalAmountIva()"
-      [shipping]="cartStore.shippingAmount()"
-      [deliveryType]="cartStore.shippingMethod() ?? 'pickup'"
+      [shipping]="cartStore.amount()"
+      [deliveryType]="cartStore.method() ?? 'pickup'"
       [total]="cartStore.totalAmountWithShipping()"
       [actionButtonText]="'cart.shipping.go-to-confirmation'"
       [actionRoute]="['../confirmacio']"
       [submitAvailable]="formValid()">
       <div extra-shipping-content>
-        @if (cartStore.shippingMethod() === 'delivery') {
+        @if (cartStore.method() === 'delivery') {
           <eco-cart-order-price-slots
             class="my-6 px-2"
             [cartTotal]="cartStore.totalAmountWithIva()"

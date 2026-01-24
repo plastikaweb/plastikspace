@@ -157,7 +157,7 @@
       },
       "shipping": {
         "title": "Enviament",
-        "subtitle": "Tria com vols rebre la teva comanda."
+        "subtitle": "Tria si vols rebre o recollir la teva comanda."
       },
       "payment": {
         "title": "Pagament",
@@ -193,13 +193,14 @@
       "shipping-cost": "Enviament",
       "go-to-confirmation": "Continuar al resum de la comanda",
       "method": {
+        "title": "Tria si vols rebre o recollir la teva comanda.",
         "pickup": {
           "title": "Recollida a la botiga.",
           "description": "Passa per la botiga i recull la teva comanda."
         },
         "delivery": {
           "title": "Enviament a domicili.",
-          "description": "Ens porta la teva comanda a la teva adreça."
+          "description": "Et portarem la teva comanda a la teva adreça."
         }
       },
       "weekdays-labels": {
@@ -212,12 +213,27 @@
         "saturday": "Proper Dissabte"
       },
       "address": {
-        "title": "Tria on vols rebre la teva comanda.",
+        "title": "Tria on vols rebre o recollir la teva comanda.",
+        "pickup": {
+          "title": "Tria on vols recollir la teva comanda.",
+          "description": "Passa per la botiga i recull la teva comanda."
+        },
+        "delivery": {
+          "title": "Tria on vols rebre la teva comanda.",
+          "description": "Et portarem la teva comanda a la teva adreça."
+        },
         "edit": "Editar",
         "add": "Afegir nova adreça"
       },
       "slot": {
-        "title": "Tria quan vols rebre la teva comanda.",
+        "pickup": {
+          "title": "Tria quan vols recollir la teva comanda.",
+          "description": "Passa per la botiga i recull la teva comanda."
+        },
+        "delivery": {
+          "title": "Tria quan vols rebre la teva comanda.",
+          "description": "Et portarem la teva comanda a la teva adreça."
+        },
         "date": "Seleccionar dia",
         "time": "Franja horària"
       }
