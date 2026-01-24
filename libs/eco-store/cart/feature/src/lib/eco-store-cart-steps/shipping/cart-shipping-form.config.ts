@@ -101,7 +101,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
         {
           key: 'shippingMethod',
           type: 'shipping-method-selector',
-          defaultValue: 'pickup',
+          defaultValue: cartStore.shippingMethod() ?? 'pickup',
           props: {
             translate: true,
             required: true,
@@ -119,6 +119,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
         {
           key: 'shippingAddress',
           type: 'address-selector',
+          defaultValue: cartStore.shippingAddress() ?? null,
           props: {
             translate: true,
             required: true,
@@ -158,6 +159,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                 {
                   key: 'shippingDay',
                   type: 'select',
+                  defaultValue: cartStore.shippingDay() ?? null,
                   props: {
                     label: 'cart.shipping.slot.date',
                     translate: true,
@@ -205,6 +207,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                 {
                   key: 'shippingTime',
                   type: 'select',
+                  defaultValue: cartStore.shippingTime() ?? null,
                   props: {
                     label: 'cart.shipping.slot.time',
                     translate: true,
