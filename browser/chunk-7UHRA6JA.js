@@ -20,7 +20,7 @@ import {
   withDevtools,
   withMethods,
   withState
-} from "./chunk-HNX4MRCG.js";
+} from "./chunk-A2TJ3HOG.js";
 import {
   Store,
   createActionGroup,
@@ -9812,8 +9812,9 @@ function addonsExtension(field) {
 var _c02 = ["matPrefix"];
 var _c12 = ["matSuffix"];
 var _c22 = (a0) => ({ cursor: a0 });
-var _c3 = (a0, a1) => ({ $implicit: a0, direction: "left", clickHandler: a1 });
-var _c4 = (a0, a1) => ({ $implicit: a0, direction: "right", clickHandler: a1 });
+var _c3 = (a0, a1) => [a0, a1];
+var _c4 = (a0, a1) => ({ $implicit: a0, direction: "left", clickHandler: a1 });
+var _c5 = (a0, a1) => ({ $implicit: a0, direction: "right", clickHandler: a1 });
 function FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r1 = \u0275\u0275getCurrentView();
@@ -9873,15 +9874,18 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_2_Template(rf, c
 }
 function FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-icon");
+    \u0275\u0275elementStart(0, "mat-icon", 6);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const addon_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275attribute("aria-hidden", addon_r3.ariaHidden);
+    const ctx_r4 = \u0275\u0275nextContext();
+    const addon_r3 = ctx_r4.$implicit;
+    const direction_r6 = ctx_r4.$implicit;
+    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(3, _c3, addon_r3.classes || "", direction_r6 === "left" ? "ml-2" : "mr-2"));
+    \u0275\u0275attribute("aria-hidden", addon_r3.ariaHidden || true);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(addon_r3.icon);
+    \u0275\u0275textInterpolate1(" ", addon_r3.icon, " ");
   }
 }
 function FormlyAddonsWrapperComponent_ng_template_0_Template(rf, ctx) {
@@ -9889,7 +9893,7 @@ function FormlyAddonsWrapperComponent_ng_template_0_Template(rf, ctx) {
     \u0275\u0275conditionalCreate(0, FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template, 3, 7, "button", 4);
     \u0275\u0275conditionalCreate(1, FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template, 3, 7, "button", 5);
     \u0275\u0275conditionalCreate(2, FormlyAddonsWrapperComponent_ng_template_0_Conditional_2_Template, 2, 2, "span", 6);
-    \u0275\u0275conditionalCreate(3, FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template, 2, 2, "mat-icon");
+    \u0275\u0275conditionalCreate(3, FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template, 2, 6, "mat-icon", 6);
   }
   if (rf & 2) {
     const addon_r3 = ctx.$implicit;
@@ -9914,7 +9918,7 @@ function FormlyAddonsWrapperComponent_ng_template_2_Conditional_0_Template(rf, c
   if (rf & 2) {
     const ctx_r6 = \u0275\u0275nextContext(2);
     const addonTemplate_r8 = \u0275\u0275reference(1);
-    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c3, ctx_r6.props["addonLeft"], ctx_r6.addonLeftClick.bind(ctx_r6)));
+    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c4, ctx_r6.props["addonLeft"], ctx_r6.addonLeftClick.bind(ctx_r6)));
   }
 }
 function FormlyAddonsWrapperComponent_ng_template_2_Template(rf, ctx) {
@@ -9938,7 +9942,7 @@ function FormlyAddonsWrapperComponent_ng_template_6_Conditional_0_Template(rf, c
   if (rf & 2) {
     const ctx_r6 = \u0275\u0275nextContext(2);
     const addonTemplate_r8 = \u0275\u0275reference(1);
-    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c4, ctx_r6.props["addonRight"], ctx_r6.addonRightClick.bind(ctx_r6)));
+    \u0275\u0275property("ngTemplateOutlet", addonTemplate_r8)("ngTemplateOutletContext", \u0275\u0275pureFunction2(2, _c5, ctx_r6.props["addonRight"], ctx_r6.addonRightClick.bind(ctx_r6)));
   }
 }
 function FormlyAddonsWrapperComponent_ng_template_6_Template(rf, ctx) {
@@ -9957,11 +9961,11 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
     super();
     effect(() => {
       const prefix = this.matPrefix();
-      if (prefix) {
+      if (prefix && this.props["addonLeft"]) {
         this.props["prefix"] = prefix;
       }
       const suffix = this.matSuffix();
-      if (suffix) {
+      if (suffix && this.props["addonRight"]) {
         this.props["suffix"] = suffix;
       }
     });
@@ -10032,7 +10036,11 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
   }
   @if (addon.type === 'icon') {
     <!-- Decorative Icon -->
-    <mat-icon [attr.aria-hidden]="addon.ariaHidden">{{ addon.icon }}</mat-icon>
+    <mat-icon
+      [attr.aria-hidden]="addon.ariaHidden || true"
+      [ngClass]="[addon.classes || '', direction === 'left' ? 'ml-2' : 'mr-2']">
+      {{ addon.icon }}
+    </mat-icon>
   }
 </ng-template>
 
@@ -10517,7 +10525,7 @@ var _c14 = ["matFormFieldNotchedOutline", ""];
 var _c23 = ["*"];
 var _c32 = ["iconPrefixContainer"];
 var _c42 = ["textPrefixContainer"];
-var _c5 = ["iconSuffixContainer"];
+var _c52 = ["iconSuffixContainer"];
 var _c6 = ["textSuffixContainer"];
 var _c7 = ["textField"];
 var _c8 = ["*", [["mat-label"]], [["", "matPrefix", ""], ["", "matIconPrefix", ""]], [["", "matTextPrefix", ""]], [["", "matTextSuffix", ""]], [["", "matSuffix", ""], ["", "matIconSuffix", ""]], [["mat-error"], ["", "matError", ""]], [["mat-hint", 3, "align", "end"]], [["mat-hint", "align", "end"]]];
@@ -11565,8 +11573,8 @@ var MatFormField = class _MatFormField {
     },
     viewQuery: function MatFormField_Query(rf, ctx) {
       if (rf & 1) {
-        \u0275\u0275viewQuerySignal(ctx._iconPrefixContainerSignal, _c32, 5)(ctx._textPrefixContainerSignal, _c42, 5)(ctx._iconSuffixContainerSignal, _c5, 5)(ctx._textSuffixContainerSignal, _c6, 5);
-        \u0275\u0275viewQuery(_c7, 5)(_c32, 5)(_c42, 5)(_c5, 5)(_c6, 5)(MatFormFieldFloatingLabel, 5)(MatFormFieldNotchedOutline, 5)(MatFormFieldLineRipple, 5);
+        \u0275\u0275viewQuerySignal(ctx._iconPrefixContainerSignal, _c32, 5)(ctx._textPrefixContainerSignal, _c42, 5)(ctx._iconSuffixContainerSignal, _c52, 5)(ctx._textSuffixContainerSignal, _c6, 5);
+        \u0275\u0275viewQuery(_c7, 5)(_c32, 5)(_c42, 5)(_c52, 5)(_c6, 5)(MatFormFieldFloatingLabel, 5)(MatFormFieldNotchedOutline, 5)(MatFormFieldLineRipple, 5);
       }
       if (rf & 2) {
         \u0275\u0275queryAdvance(4);
@@ -11971,7 +11979,7 @@ function FormlyWrapperFormField_ng_template_12_Template(rf, ctx) {
 var _c24 = ["matPrefix"];
 var _c33 = ["matTextPrefix"];
 var _c43 = ["matSuffix"];
-var _c52 = ["matTextSuffix"];
+var _c53 = ["matTextSuffix"];
 var FormlyWrapperFormField = class _FormlyWrapperFormField extends FieldWrapper {
   constructor(renderer, elementRef, focusMonitor) {
     super();
@@ -12334,7 +12342,7 @@ var FieldType2 = class _FieldType extends FieldType {
       type: _FieldType,
       viewQuery: function FieldType_Query(rf, ctx) {
         if (rf & 1) {
-          \u0275\u0275viewQuery(_c24, 5)(_c33, 5)(_c43, 5)(_c52, 5)(MatFormFieldControl, 5);
+          \u0275\u0275viewQuery(_c24, 5)(_c33, 5)(_c43, 5)(_c53, 5)(MatFormFieldControl, 5);
         }
         if (rf & 2) {
           let _t;
@@ -17867,4 +17875,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-QJQEB6ES.js.map
+//# sourceMappingURL=chunk-7UHRA6JA.js.map
