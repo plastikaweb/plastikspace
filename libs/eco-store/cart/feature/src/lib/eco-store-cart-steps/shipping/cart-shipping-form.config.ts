@@ -42,7 +42,13 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
   const tenantAddresses = [tenantService.getTenantAddress()];
   const userAddresses = userProfileStore.getUserContacts();
 
-  const setCustomLabel = (label: string, icon: string, description: string) => {
+  const setCustomLabel = (
+    label: string,
+    icon: string,
+    description: string,
+    linkedFieldKeys: string[],
+    isValid: 'valid' | 'error' | 'untouched' = 'untouched'
+  ) => {
     return {
       type: 'custom-label',
       className: 'flex flew-row items-start text-primary-600 mt-4',
@@ -50,7 +56,32 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
         label,
         icon,
         description,
-        iconClasses: 'text-primary-600! fill-primary-600! scale-125',
+        containerClasses: 'p-2',
+        iconClasses: 'scale-125',
+        checkValidation: true,
+        isValid,
+      },
+      hooks: {
+        onInit: (formly: FormlyFieldConfig) => {
+          const checkValidation = (field: FormlyFieldConfig) => {
+            const controls = linkedFieldKeys.map(key => field.form?.get(key));
+            const isValid = controls.every(control => control?.valid);
+            const isTouched = controls.every(control => control?.touched);
+            if (formly.props) {
+              formly.props['isValid'] = isValid ? 'valid' : isTouched ? 'error' : 'untouched';
+            }
+          };
+
+          checkValidation(formly);
+
+          return formly.options?.fieldChanges?.pipe(
+            filter(
+              ({ type, field }) =>
+                type === 'valueChanges' && linkedFieldKeys.includes(field?.key as string)
+            ),
+            tap(({ field }) => checkValidation(field))
+          );
+        },
       },
     };
   };
@@ -63,7 +94,8 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           ...setCustomLabel(
             'cart.steps.shipping.subtitle',
             'counter_1',
-            'cart.steps.shipping.subtitle'
+            'cart.steps.shipping.subtitle',
+            ['shippingMethod']
           ),
         },
         {
@@ -80,7 +112,8 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           ...setCustomLabel(
             'cart.shipping.address.title',
             'counter_2',
-            'cart.shipping.address.description'
+            'cart.shipping.address.description',
+            ['shippingAddress']
           ),
         },
         {
@@ -113,7 +146,8 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           ...setCustomLabel(
             'cart.shipping.slot.title',
             'counter_3',
-            'cart.shipping.slot.description'
+            'cart.shipping.slot.description',
+            ['shippingDay', 'shippingTime']
           ),
         },
         {

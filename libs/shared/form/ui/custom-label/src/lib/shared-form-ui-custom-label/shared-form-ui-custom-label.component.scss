@@ -1,0 +1,48 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  width: 100%;
+
+  background-color: var(--neutral-100) / 60;
+  border: 1px solid var(--neutral-200);
+  color: var(--neutral-900);
+  border-radius: 1rem;
+  overflow: hidden;
+
+  .mat-icon {
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-900),
+      )
+    );
+  }
+
+  .valid-message {
+    background-color: var(--primary-200);
+    border-color: var(--primary-300);
+    color: var(--primary-800);
+
+    .mat-icon {
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-800),
+        )
+      );
+    }
+  }
+
+  .error-message {
+    background-color: var(--error-100);
+    border-color: var(--error-700);
+    color: var(--error-900);
+
+    .mat-icon {
+      @include mat.icon-overrides(
+        (
+          color: var(--error-900),
+        )
+      );
+    }
+  }
+}

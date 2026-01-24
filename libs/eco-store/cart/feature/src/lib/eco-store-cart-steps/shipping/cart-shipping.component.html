@@ -30,7 +30,7 @@
       [shipping]="cartStore.shippingAmount()"
       [deliveryType]="cartStore.shippingMethod() ?? 'pickup'"
       [total]="cartStore.totalAmountWithShipping()"
-      [actionButtonText]="'cart.summary.go-to-payment'"
+      [actionButtonText]="'cart.shipping.go-to-confirmation'"
       [actionRoute]="['../confirmacio']"
       [submitAvailable]="formValid()">
       <div extra-shipping-content>

@@ -1,19 +1,40 @@
 <div [class]="setContainerClasses()">
-  @if (props.icon && props.description) {
-    <mat-icon
-      [class]="'text-4xl size-4 cursor-pointer mx-2 overflow-visible ' + props.iconClasses"
-      [attr.aria-label]="props.description | translate">
-      {{ props.icon }}
-    </mat-icon>
-  }
+  <div class="flex justify-between items-center gap-2">
+    @if (props.icon && props.description) {
+      <mat-icon
+        [class]="'text-4xl size-4 cursor-pointer mx-2 overflow-visible ' + props.iconClasses"
+        [attr.aria-label]="props.description | translate">
+        {{ props.icon }}
+      </mat-icon>
+    }
 
-  @if (props.key) {
-    <label [attr.for]="props.key" [class]="props.labelClasses">{{ props.label | translate }}</label>
-  } @else {
-    <p [class]="props.labelClasses">{{ props.label | translate }}</p>
-  }
+    @if (props.key) {
+      <label [attr.for]="props.key" [class]="props.labelClasses">{{
+        props.label | translate
+      }}</label>
+    } @else {
+      <p [class]="props.labelClasses">{{ props.label | translate }}</p>
+    }
 
-  @if (props.value) {
-    <p [class]="props.labelClasses">{{ props.value }}</p>
+    @if (props.value) {
+      <p [class]="props.labelClasses">{{ props.value }}</p>
+    }
+  </div>
+
+  @if (props.checkValidation) {
+    <div [class]="`inline-flex items-center justify-center rounded-full w-8 h-8`">
+      <mat-icon
+        [attr.aria-label]="
+          props.isValid === 'valid'
+            ? ('state.valid' | translate)
+            : props.isValid === 'error'
+              ? ('state.invalid' | translate)
+              : ('state.pending' | translate)
+        "
+        >{{
+          props.isValid === 'valid' ? 'check_circle' : props.isValid === 'error' ? 'error' : 'pause'
+        }}</mat-icon
+      >
+    </div>
   }
 </div>

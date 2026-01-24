@@ -178,15 +178,17 @@
       "items-count-suffix": "items in cart",
       "shipping": "Shipping",
       "including-vat": "Including VAT",
-      "free-shipping-promo": "Add {{value}} more for FREE shipping!",
-      "go-to-payment": "Continue to Payment"
+      "free-shipping-promo": "Add {{value}} more for FREE shipping!"
     },
     "shipping": {
       "free-shipping-achieved": "You have achieved free shipping!",
       "remaining-for-free": "Add {{amount}} more for FREE shipping!",
       "free": "FREE",
+      "free-always": "FREE",
+      "free-from": "FREE from {{amount}}",
       "cart-cost": "Cart",
       "shipping-cost": "Shipping",
+      "go-to-confirmation": "Continue to Order Summary",
       "method": {
         "pickup": {
           "title": "Store pickup.",

@@ -173,20 +173,22 @@
       "subtotal": "Subtotal",
       "taxes": "Impuestos (IVA)",
       "total": "Total",
-      "go-to-shipping": "Ir a Envío",
+      "go-to-shipping": "Continuar a Envío",
       "title": "Resumen del pedido",
       "items-count-suffix": "artículos en la cesta",
       "shipping": "Envío",
       "including-vat": "IVA incluido",
-      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!",
-      "go-to-payment": "Continuar al Pago"
+      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!"
     },
     "shipping": {
       "free-shipping-achieved": "¡Has conseguido envío gratuito!",
       "remaining-for-free": "¡Faltan {{amount}} más para envío GRATIS!",
       "free": "GRATIS",
+      "free-always": "GRATIS",
+      "free-from": "GRATIS desde {{amount}}",
       "cart-cost": "Carrito",
       "shipping-cost": "Envío",
+      "go-to-confirmation": "Continuar al resumen del pedido",
       "method": {
         "pickup": {
           "title": "Recogida en la tienda.",

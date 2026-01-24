@@ -176,22 +176,22 @@
       "subtotal": "Subtotal",
       "taxes": "Impostos (IVA)",
       "total": "Total",
-      "go-to-shipping": "Ves a Enviament",
+      "go-to-shipping": "Continuar a l'enviament",
       "title": "Resum de la comanda",
       "items-count-suffix": "elements a la cistella",
       "shipping": "Enviament",
       "including-vat": "IVA inclòs",
-      "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!",
-      "go-to-payment": "Continuar al Pagament"
+      "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!"
     },
     "shipping": {
       "free-shipping-achieved": "Has aconseguit enviament gratuït!",
       "remaining-for-free": "Et falten {{amount}} per a gaudir d'un enviament GRATUÏT!",
       "free": "GRÀTIS",
-      "free-always": "Recollida GRATIS",
-      "free-from": "Enviaments GRÀTIS des de {{amount}}",
+      "free-always": "GRÀTIS",
+      "free-from": "GRÀTIS des de {{amount}}",
       "cart-cost": "Cistella",
       "shipping-cost": "Enviament",
+      "go-to-confirmation": "Continuar al resum de la comanda",
       "method": {
         "pickup": {
           "title": "Recollida a la botiga.",

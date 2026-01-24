@@ -14,6 +14,8 @@ interface CustomLabelProps extends FormlyFieldProps {
   labelClasses?: string;
   iconClasses?: string;
   value?: string;
+  checkValidation?: boolean;
+  isValid?: 'valid' | 'error' | 'untouched';
 }
 
 @Component({
@@ -25,12 +27,15 @@ interface CustomLabelProps extends FormlyFieldProps {
 })
 export class SharedFormUiCustomLabelComponent extends FieldType<FieldTypeConfig<CustomLabelProps>> {
   setContainerClasses(): string {
-    let baseClasses = 'flex justify-start text-md text-on-surface-variant items-start';
+    let baseClasses = 'flex justify-between text-md items-center';
     if (this.props.iconPosition === 'right') {
       baseClasses += ' flex-row-reverse';
     }
     if (this.props.containerClasses) {
       baseClasses += ` ${this.props.containerClasses}`;
+    }
+    if (this.props.checkValidation) {
+      baseClasses += ` ${this.props.isValid === 'valid' ? 'valid-message' : this.props.isValid === 'error' ? 'error-message' : ''}`;
     }
     return baseClasses;
   }
