@@ -92,7 +92,20 @@
       }
     },
     {
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "env": {
+        "jest": true
+      },
+      "parserOptions": {
+        "project": null
+      },
+      "rules": {
+        "deprecation/deprecation": "off"
+      }
+    },
+    {
       "files": ["*.ts", "*.tsx"],
+      "excludedFiles": ["*.spec.ts", "*.spec.tsx"],
       "extends": ["plugin:@nx/typescript"],
       "rules": {
         "no-console": "error",
@@ -115,14 +128,8 @@
       }
     },
     {
-      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
-      "env": {
-        "jest": true
-      },
-      "rules": {}
-    },
-    {
       "files": ["*.ts", "*.tsx"],
+      "excludedFiles": ["*.spec.ts", "*.spec.tsx"],
       "rules": {
         "deprecation/deprecation": "warn"
       }

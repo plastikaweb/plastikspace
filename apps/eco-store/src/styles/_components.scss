@@ -20,6 +20,16 @@
     )
   );
 
+  .mat-mdc-button-disabled {
+    background-color: var(--neutral-100) !important;
+    color: var(--neutral-500) !important;
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-500),
+      )
+    );
+  }
+
   //** CARD **//
   @include mat.card-overrides(
     (
@@ -61,6 +71,19 @@
     --mat-menu-item-label-text-color: var(--secondary-900);
     --mat-menu-item-icon-color: var(--secondary-900);
     background-color: var(--secondary-100) !important;
+  }
+
+  //** PROGRESS BAR **//
+  @include mat.progress-bar-overrides(
+    (
+      track-shape: 5rem,
+      track-height: 0.5rem,
+      active-indicator-height: 0.5rem,
+    )
+  );
+
+  .mdc-linear-progress__bar-inner {
+    border-radius: 10rem !important;
   }
 }
 

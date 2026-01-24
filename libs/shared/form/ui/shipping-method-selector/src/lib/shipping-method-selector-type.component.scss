@@ -1,0 +1,250 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  .mat-mdc-radio-group {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
+  }
+
+  .shipping-method-card {
+    &:hover {
+      @include mat.card-overrides(
+        (
+          elevated-container-elevation: var(--mat-sys-level2),
+        )
+      );
+    }
+
+    &.selected {
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--primary-200),
+        )
+      );
+    }
+
+    &.theme-primary {
+      color: var(--primary-900);
+
+      .mat-mdc-chip {
+        background-color: var(--primary-100);
+        @include mat.chips-overrides(
+          (
+            outline-color: var(--primary-200),
+            label-text-color: var(--primary-900),
+          )
+        );
+      }
+
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--primary-50),
+          subtitle-text-color: var(--primary-900),
+        )
+      );
+
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-400),
+        )
+      );
+
+      &.selected {
+        border: 2px solid var(--primary-400) !important;
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--primary-100),
+          )
+        );
+
+        .shipping-method-icon {
+          background-color: var(--primary-600);
+        }
+      }
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--primary-500),
+          selected-icon-color: var(--primary-500),
+        )
+      );
+
+      .shipping-method-icon {
+        background-color: var(--primary-400);
+        @include mat.icon-overrides(
+          (
+            color: var(--primary-50),
+          )
+        );
+      }
+    }
+
+    &.theme-secondary {
+      color: var(--secondary-900);
+
+      .mat-mdc-chip {
+        background-color: var(--secondary-100);
+        @include mat.chips-overrides(
+          (
+            outline-color: var(--secondary-200),
+            label-text-color: var(--secondary-900),
+          )
+        );
+      }
+
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--secondary-50),
+          subtitle-text-color: var(--secondary-900),
+        )
+      );
+      @include mat.icon-overrides(
+        (
+          color: var(--secondary-400),
+        )
+      );
+
+      &.selected {
+        border: 2px solid var(--secondary-400) !important;
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--secondary-100),
+          )
+        );
+
+        .shipping-method-icon {
+          background-color: var(--secondary-600);
+        }
+      }
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--secondary-500),
+          selected-icon-color: var(--secondary-500),
+        )
+      );
+
+      .shipping-method-icon {
+        background-color: var(--secondary-400);
+        @include mat.icon-overrides(
+          (
+            color: var(--secondary-50),
+          )
+        );
+      }
+    }
+
+    &.theme-tertiary {
+      color: var(--tertiary-900);
+
+      .mat-mdc-chip {
+        background-color: var(--tertiary-100);
+        @include mat.chips-overrides(
+          (
+            outline-color: var(--tertiary-200),
+            label-text-color: var(--tertiary-900),
+          )
+        );
+      }
+
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--tertiary-50),
+          subtitle-text-color: var(--tertiary-900),
+        )
+      );
+      @include mat.icon-overrides(
+        (
+          color: var(--tertiary-400),
+        )
+      );
+
+      &.selected {
+        border: 2px solid var(--tertiary-400) !important;
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--tertiary-100),
+          )
+        );
+
+        .shipping-method-icon {
+          background-color: var(--tertiary-600);
+        }
+      }
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--tertiary-500),
+          selected-icon-color: var(--tertiary-500),
+        )
+      );
+
+      .shipping-method-icon {
+        background-color: var(--tertiary-400);
+        @include mat.icon-overrides(
+          (
+            color: var(--tertiary-50),
+          )
+        );
+      }
+    }
+
+    &.theme-neutral {
+      color: var(--neutral-900);
+
+      .mat-mdc-chip {
+        background-color: var(--neutral-100);
+        @include mat.chips-overrides(
+          (
+            outline-color: var(--neutral-200),
+            label-text-color: var(--neutral-900),
+          )
+        );
+      }
+
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--neutral-50),
+          subtitle-text-color: var(--neutral-900),
+        )
+      );
+      @include mat.icon-overrides(
+        (
+          color: var(--neutral-400),
+        )
+      );
+
+      &.selected {
+        border: 2px solid var(--neutral-400) !important;
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--neutral-100),
+          )
+        );
+
+        .shipping-method-icon {
+          background-color: var(--neutral-600);
+        }
+      }
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--neutral-500),
+          selected-icon-color: var(--neutral-500),
+        )
+      );
+
+      .shipping-method-icon {
+        background-color: var(--neutral-400);
+        @include mat.icon-overrides(
+          (
+            color: var(--neutral-50),
+          )
+        );
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+@if (props.label) {
+  <mat-label id="address-selector">{{ props.label }}</mat-label>
+}
+
+@if (props.addresses.length) {
+  <mat-radio-group
+    class="flex flex-col gap-4"
+    [formControl]="formControl"
+    [formlyAttributes]="field">
+    @for (address of props.addresses; track address.id) {
+      @let isSelected = formControl.value?.id === address.id;
+
+      <mat-card
+        tabindex="0"
+        appearance="raised"
+        class="address-card cursor-pointer transition-all"
+        [class.selected]="isSelected"
+        (click)="formControl.setValue(address)"
+        (keydown.enter)="formControl.setValue(address)">
+        <mat-card-content class="flex! flex-row items-center justify-start gap-4">
+          <mat-radio-button
+            class="hidden"
+            [value]="address"
+            [checked]="isSelected"
+            [id]="`address-${address.id}`"></mat-radio-button>
+
+          <div>
+            <h3 class="font-bold text-neutral-900 capitalize mb-2">
+              {{ address.name || address.fullName }}
+              @if (address.default) {
+                <span
+                  class="ml-2 text-xs bg-secondary-200 text-secondary-700 px-2 py-1 rounded-full"
+                  >{{ 'shared.address.default' | translate }}</span
+                >
+              }
+            </h3>
+            <div class="text-neutral-600 text-sm leading-relaxed grid gap-4 grid-cols-2">
+              <div class="flex items-center gap-2">
+                <mat-icon class="text-neutral-500! scale-90" aria-hidden="true">home</mat-icon>
+                <div>
+                  <p>{{ address.address }}</p>
+                  <p>
+                    {{ address.zip }} {{ address.city }}
+                    @if (address.country) {
+                      , {{ address.country }}
+                    }
+                  </p>
+                </div>
+              </div>
+              @if (address.phone) {
+                <div class="flex items-center gap-2">
+                  <mat-icon class="text-neutral-500! scale-90" aria-hidden="true">phone</mat-icon>
+                  <span class="mt-1 text-neutral-500">{{ address.phone }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          <!-- @if (isSelected) {
+            <div class="absolute top-4 right-4">
+              <mat-icon class="scale-110">check_circle</mat-icon>
+            </div>
+          } -->
+        </mat-card-content>
+
+        @if (props.editable) {
+          <button
+            mat-button
+            color="tertiary"
+            class="absolute top-4 right-4 underline"
+            (click)="onEdit(address, $event)">
+            Edit
+          </button>
+        }
+      </mat-card>
+    }
+  </mat-radio-group>
+}

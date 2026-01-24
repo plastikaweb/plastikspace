@@ -3,6 +3,20 @@
   "page-title": "Botiga Eco - Productes ecològics i sostenibles",
   "loading": "Carregant dades...",
   "loading-data": "Carregant dades...",
+  "weekdays": {
+    "sunday": "Diumenge",
+    "monday": "Dilluns",
+    "tuesday": "Dimarts",
+    "wednesday": "Dimecres",
+    "thursday": "Dijous",
+    "friday": "Divendres",
+    "saturday": "Dissabte"
+  },
+  "shared": {
+    "address": {
+      "default": "Adreça per defecte"
+    }
+  },
   "a11y": {
     "skip-to-content": "Saltar al contingut principal",
     "loading": "Carregant dades",
@@ -137,18 +151,95 @@
   },
   "cart": {
     "steps": {
-      "summary": "Resum de la cistella",
-      "shipping": "Enviament",
-      "payment": "Pagament",
-      "confirmation": "Confirmació"
+      "summary": {
+        "title": "Resum de la cistella",
+        "subtitle": "Revisa els productes que has afegit a la teva comanda."
+      },
+      "shipping": {
+        "title": "Enviament",
+        "subtitle": "Tria si vols rebre o recollir la teva comanda."
+      },
+      "payment": {
+        "title": "Pagament",
+        "subtitle": "Tria com vols pagar la teva comanda."
+      },
+      "confirmation": {
+        "title": "Confirmació",
+        "subtitle": "Tria com vols rebre la teva comanda."
+      }
     },
     "summary": {
+      "pickup": "Recollida a la botiga",
+      "delivery": "Enviament a domicili",
       "items-count": "{{value}} productes",
       "resume": "Resum",
       "subtotal": "Subtotal",
       "taxes": "Impostos (IVA)",
       "total": "Total",
-      "go-to-shipping": "Ves a Enviament"
+      "go-to-shipping": "Continuar a l'enviament",
+      "title": "Resum de la comanda",
+      "items-count-suffix": "elements a la cistella",
+      "shipping": "Enviament",
+      "including-vat": "IVA inclòs",
+      "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!"
+    },
+    "shipping": {
+      "free-shipping-achieved": "Has aconseguit enviament gratuït!",
+      "remaining-for-free": "Et falten {{amount}} per a gaudir d'un enviament GRATUÏT!",
+      "free": "GRÀTIS",
+      "free-always": "GRÀTIS",
+      "free-from": "GRÀTIS des de {{amount}}",
+      "cart-cost": "Cistella",
+      "shipping-cost": "Enviament",
+      "go-to-confirmation": "Continuar al resum de la comanda",
+      "method": {
+        "title": "Tria si vols rebre o recollir la teva comanda.",
+        "pickup": {
+          "title": "Recollida a la botiga.",
+          "description": "Passa per la botiga i recull la teva comanda."
+        },
+        "delivery": {
+          "title": "Enviament a domicili.",
+          "description": "Et portarem la teva comanda a la teva adreça."
+        }
+      },
+      "weekdays-labels": {
+        "sunday": "Proper Diumenge",
+        "monday": "Proper Dilluns",
+        "tuesday": "Proper Dimarts",
+        "wednesday": "Proper Dimecres",
+        "thursday": "Proper Dijous",
+        "friday": "Proper Divendres",
+        "saturday": "Proper Dissabte"
+      },
+      "address": {
+        "title": "Tria on vols rebre o recollir la teva comanda.",
+        "pickup": {
+          "title": "Tria on vols recollir la teva comanda.",
+          "description": "Passa per la botiga i recull la teva comanda."
+        },
+        "delivery": {
+          "title": "Tria on vols rebre la teva comanda.",
+          "description": "Et portarem la teva comanda a la teva adreça."
+        },
+        "edit": "Editar",
+        "add": "Afegir nova adreça"
+      },
+      "slot": {
+        "pickup": {
+          "title": "Tria quan vols recollir la teva comanda.",
+          "description": "Passa per la botiga i recull la teva comanda."
+        },
+        "delivery": {
+          "title": "Tria quan vols rebre la teva comanda.",
+          "description": "Et portarem la teva comanda a la teva adreça."
+        },
+        "date": "Seleccionar dia",
+        "time": "Franja horària"
+      }
+    },
+    "product": {
+      "quantity-label": "Qt:"
     }
   },
   "search": {

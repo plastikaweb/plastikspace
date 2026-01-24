@@ -1,0 +1,19 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--transparent),
+    )
+  );
+
+  .mat-mdc-card-header {
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-800),
+      )
+    );
+  }
+}

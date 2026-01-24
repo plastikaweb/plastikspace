@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+
+:host {
+  .cart-shipping__free-shipping-promo {
+    @include mat.icon-overrides(
+      (
+        color: var(--primary-600),
+      )
+    );
+  }
+}

@@ -6,8 +6,8 @@ import { provideHttpClient } from '@angular/common/http';
 import {
   ApplicationConfig,
   ErrorHandler,
-  LOCALE_ID,
   inject,
+  LOCALE_ID,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
@@ -24,11 +24,11 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
 import { PrefixTitleService } from '@plastik/core/router-state';
+import { EcoStoreTenantBaseService, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 import { pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
-import { EcoStoreTenantBaseService, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 
 registerLocaleData(localeCa);
 registerLocaleData(localeEs);
@@ -60,13 +60,7 @@ export const appConfig: ApplicationConfig = {
       inject(EcoStoreTenantBaseService).loadTenant();
     }),
     { provide: LOCALE_ID, useValue: 'ca' },
-    {
-      provide: ErrorHandler,
-      useClass: ErrorHandlerService,
-    },
-    {
-      provide: TitleStrategy,
-      useClass: PrefixTitleService,
-    },
+    { provide: ErrorHandler, useClass: ErrorHandlerService },
+    { provide: TitleStrategy, useClass: PrefixTitleService },
   ],
 };

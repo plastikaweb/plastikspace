@@ -5,3 +5,4 @@ export * from './id';
 export * from './view-config';
 export * from './sort';
 export * from './pocketbase-user';
+export * from './user-contact';

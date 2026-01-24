@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { Router, ActivatedRoute, RouterLink } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -11,6 +10,7 @@ import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
 import { EcoStoreProductQuantityComponent } from '@plastik/eco-store/product-quantity';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
 
 @Component({
   selector: 'eco-cart-summary',
@@ -21,12 +21,12 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
     MatCardModule,
     CurrencyPipe,
     TranslatePipe,
-    RouterLink,
     KeyValuePipe,
     PocketBaseImageUrlPipe,
     SharedImgContainerComponent,
     EcoStoreProductPriceComponent,
     EcoStoreProductQuantityComponent,
+    CartOrderSummaryComponent,
   ],
   templateUrl: './cart-summary.component.html',
   styleUrl: './cart-summary.component.scss',

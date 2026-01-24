@@ -3,6 +3,20 @@
   "page-title": "Tienda Eco - Productos ecológicos y sostenibles",
   "loading": "Cargando datos...",
   "loading-data": "Cargando datos...",
+  "weekdays": {
+    "sunday": "Domingo",
+    "monday": "Lunes",
+    "tuesday": "Martes",
+    "wednesday": "Miércoles",
+    "thursday": "Jueves",
+    "friday": "Viernes",
+    "saturday": "Sábado"
+  },
+  "shared": {
+    "address": {
+      "default": "Dirección por defecto"
+    }
+  },
   "a11y": {
     "skip-to-content": "Saltar al contenido principal",
     "loading": "Cargando datos",
@@ -138,17 +152,75 @@
   "cart": {
     "steps": {
       "summary": "Resumen de la cesta",
-      "shipping": "Envío",
-      "payment": "Pago",
-      "confirmation": "Confirmación"
+      "shipping": {
+        "title": "Envío",
+        "subtitle": "Elige si quieres recibir o recoger tu pedido."
+      },
+      "payment": {
+        "title": "Pago",
+        "subtitle": "Elige cómo quieres pagar tu pedido."
+      },
+      "confirmation": {
+        "title": "Confirmación",
+        "subtitle": "Elige cómo quieres recibir tu pedido."
+      }
     },
     "summary": {
+      "pickup": "Recogida en la tienda",
+      "delivery": "Envío a domicilio",
       "items-count": "{{value}} productos",
       "resume": "Resumen",
       "subtotal": "Subtotal",
       "taxes": "Impuestos (IVA)",
       "total": "Total",
-      "go-to-shipping": "Ir a Envío"
+      "go-to-shipping": "Continuar a Envío",
+      "title": "Resumen del pedido",
+      "items-count-suffix": "artículos en la cesta",
+      "shipping": "Envío",
+      "including-vat": "IVA incluido",
+      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!"
+    },
+    "shipping": {
+      "free-shipping-achieved": "¡Has conseguido envío gratuito!",
+      "remaining-for-free": "¡Faltan {{amount}} más para envío GRATIS!",
+      "free": "GRATIS",
+      "free-always": "GRATIS",
+      "free-from": "GRATIS desde {{amount}}",
+      "cart-cost": "Carrito",
+      "shipping-cost": "Envío",
+      "go-to-confirmation": "Continuar al resumen del pedido",
+      "method": {
+        "pickup": {
+          "title": "Recogida en la tienda.",
+          "description": "Pasa por la tienda y recoge tu pedido."
+        },
+        "delivery": {
+          "title": "Envío a domicilio.",
+          "description": "Te llevamos tu pedido a tu dirección."
+        }
+      },
+      "weekdays-labels": {
+        "sunday": "Próximo Domingo",
+        "monday": "Próximo Lunes",
+        "tuesday": "Próximo Martes",
+        "wednesday": "Próximo Miércoles",
+        "thursday": "Próximo Jueves",
+        "friday": "Próximo Viernes",
+        "saturday": "Próximo Sábado"
+      },
+      "address": {
+        "title": "Elige dónde quieres recibir tu pedido.",
+        "edit": "Editar",
+        "add": "Añadir nueva dirección"
+      },
+      "slot": {
+        "title": "Elige cuándo quieres recibir tu pedido.",
+        "date": "Seleccionar día",
+        "time": "Franja horaria"
+      }
+    },
+    "product": {
+      "quantity-label": "Cant:"
     }
   },
   "search": {

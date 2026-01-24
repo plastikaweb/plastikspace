@@ -1,0 +1,31 @@
+# --- Configurations from IDEs ---
+.trae/
+.windsurf/
+.claude/
+.gemini/
+.agent/
+.idea/
+.vscode/
+
+# --- Projects and caches specific ---
+.angular/
+.nx/
+.verdaccio/
+dist/
+coverage/
+documentation/
+tmp/
+.husky/
+node_modules/
+
+# --- Logs and local configuration files ---
+*.log
+firestore-debug.log
+.nvmrc
+.eslintcache
+
+# --- Output directories (very important in NX) ---
+dist/
+coverage/
+documentation/
+tmp/my-cache/

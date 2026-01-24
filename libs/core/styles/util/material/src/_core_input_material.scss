@@ -10,6 +10,12 @@
   }
 }
 
+.mdc-notched-outline__notch {
+  border-style: none;
+  border-width: 0;
+  border-color: transparent;
+}
+
 // A mixin to create a rounded input field with a specified height and radius.
 @mixin material-input-rounded(
   $height: 40px,
@@ -28,6 +34,12 @@
       filled-with-label-container-padding-bottom: 1rem,
       filled-label-display: if($hide-floating-label, none, block),
       filled-input-text-placeholder-color: var(--primary-700),
+      outlined-container-shape: $radius,
+      outlined-input-text-color: var(--primary-700),
+      outlined-input-text-placeholder-color: var(--primary-700),
+      outlined-label-text-color: var(--primary-700),
+      outlined-outline-width: 0,
+      outlined-focus-outline-width: 0,
     )
   );
 

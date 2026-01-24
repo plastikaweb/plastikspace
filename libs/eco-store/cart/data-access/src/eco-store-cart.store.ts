@@ -1,8 +1,14 @@
-import { computed } from '@angular/core';
-import { signalStore, withComputed, withMethods } from '@ngrx/signals';
 import { updateState, withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
+import { computed } from '@angular/core';
+import { signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { removeAllEntities, removeEntity, setEntity, withEntities } from '@ngrx/signals/entities';
-import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { UserContact } from '@plastik/core/entities';
+import {
+  EcoStoreProductWithCategoryName,
+  EcoStoreTenantLogisticsDeliveryType,
+  SlotDays,
+  TimeRange,
+} from '@plastik/eco-store/entities';
 
 export interface CartItem {
   id: string;
@@ -10,9 +16,26 @@ export interface CartItem {
   quantity: number;
 }
 
+export interface EcoStoreCartState {
+  address: UserContact | null;
+  method: EcoStoreTenantLogisticsDeliveryType | null;
+  day: SlotDays | null;
+  time: TimeRange | null;
+  amount: number;
+}
+
+const initialState: EcoStoreCartState = {
+  method: null,
+  address: null,
+  day: null,
+  time: null,
+  amount: 0,
+};
+
 export const ecoStoreCartStore = signalStore(
   { providedIn: 'root' },
   withDevtools('cart'),
+  withState<EcoStoreCartState>(initialState),
   withEntities<CartItem>(),
   withStorageSync({
     key: 'eco_cart_v1',
@@ -35,8 +58,9 @@ export const ecoStoreCartStore = signalStore(
     }),
   })),
 
-  withComputed(({ totalAmount, totalAmountWithIva }) => ({
+  withComputed(({ totalAmount, totalAmountWithIva, amount }) => ({
     totalAmountIva: computed(() => totalAmountWithIva() - totalAmount()),
+    totalAmountWithShipping: computed(() => totalAmountWithIva() + amount()),
   })),
 
   withMethods(store => {
@@ -83,6 +107,13 @@ export const ecoStoreCartStore = signalStore(
 
       clearCart() {
         updateState(store, '[cart] clear cart', removeAllEntities());
+      },
+
+      updateLogistics(logistics: Partial<EcoStoreCartState>) {
+        updateState(store, '[Cart] Update Logistics', state => ({
+          ...state,
+          ...logistics,
+        }));
       },
     };
   })

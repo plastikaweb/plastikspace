@@ -8,9 +8,13 @@
   - [Description](#description)
   - [Features](#features)
   - [Architecture](#architecture)
+  - [Implementation notes](#implementation-notes)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Route Configuration](#route-configuration)
+    - [Components](#components)
+      - [CartOrderPriceSlotsComponent](#cartorderpriceslotscomponent)
+      - [CartOrderSummaryComponent](#cartordersummarycomponent)
   - [Cart Steps](#cart-steps)
   - [Running unit tests](#running-unit-tests)
 
@@ -35,6 +39,69 @@ The cart feature uses a routed stepper pattern where:
 - **Child Routes**: Each step is a separate route that loads its component lazily.
 - **URL Sync**: The stepper automatically updates when the URL changes and vice versa.
 
+## Implementation notes
+
+This section provides a few developer-focused notes and examples for common integration points.
+
+Example Formly field configuration:
+
+```typescript
+{
+  key: 'amount',
+  type: 'input',
+  props: { type: 'hidden' },
+  hooks: {
+    onInit: (field) => {
+      // compute and set shipping amount on init or when related fields change
+      field.formControl?.setValue(computedShippingAmount);
+    }
+  }
+}
+```
+
+- Shipping form field naming
+
+  The shipping form uses simplified field names for better code organization:
+  - `method`: Shipping delivery method ('pickup' or 'delivery')
+  - `address`: Shipping address selection
+  - `day`: Delivery day selection
+  - `time`: Delivery time slot selection
+  - `amount`: Computed shipping cost
+
+- Custom Label Hooks Pattern
+
+  Custom label sections use a declarative hook pattern where validation and dynamic label updates are defined as separate hook functions with their own linked field keys.
+  This allows independent logic reuse across multiple sections.
+
+  Example:
+
+```typescript
+type HookFunction = {
+  fn: (field: FormlyFieldConfig, linkedFieldKeys: string[]) => void;
+  linkedFieldKeys: string[];
+};
+
+setCustomLabel('method', 'cart.shipping.method.title', 'counter_1', [
+  {
+    fn: checkCustomLabelValidation,
+    linkedFieldKeys: ['method'],
+  },
+]);
+```
+
+- Stepper / router synchronization
+
+  The cart shell (`EcoStoreCartComponent`) derives the selected step index from router events.
+  Before navigating to a step as a response to a user action, the component compares the currently-derived index with the target index and only navigates when they differ.
+  This prevents navigation loops and reduces unnecessary router calls.
+
+- Formly UI components used by the cart
+
+  The shared Formly UI components used in the shipping step (such as `address-selector` and `shipping-method-selector`) render card-based controls.
+  For styling reasons the native radio input may be visually hidden; automated tests should select options by semantic values or data attributes rather than relying on a visible radio element.
+
+If you need, I can add short code examples showing how to select options in tests or how to compute shipping amount based on tenant configuration.
+
 ## Installation
 
 This library is part of the `@plastik/eco-store` scope. Import the routes in your application routing configuration.
@@ -55,12 +122,62 @@ export const routes: Route[] = [
 ];
 ```
 
+### Components
+
+#### CartOrderPriceSlotsComponent
+
+The `CartOrderPriceSlotsComponent` is a presentational component that displays a progress bar and shipping cost information based on a set of pricing tiers.
+It shows the user how much they need to add to their cart to reach the next shipping tier or to get free shipping.
+
+**Inputs:**
+
+- `tiers: EcoStoreTenantLogisticsDeliveryTier[]` (required): An array of shipping tiers. Each tier object must have a `min` (the minimum cart total for that tier) and a `cost` (the shipping cost for that tier).
+- `cartTotal: number` (required): The current total of the shopping cart.
+
+**Example Usage:**
+
+```html
+<eco-cart-order-price-slots
+  [tiers]="tenant.logisticsConfig.options[0].tiers"
+  [cartTotal]="cartStore.totalAmountWithIva()">
+</eco-cart-order-price-slots>
+```
+
+#### CartOrderSummaryComponent
+
+The `CartOrderSummaryComponent` is a presentational component that displays a summary of the order, including the total cost, shipping cost, and tax.
+
+**Inputs:**
+
+- `submitAvailable: boolean`: Indicates whether the order can be submitted.
+- `subtotal: number` (required): The current shopping cart subtotal.
+- `taxes: number` (required): The current tax.
+- `total: number` (required): The current shopping cart total (subtotal + taxes).
+- `shipping: number`: The shipping cost.
+- `actionButtonText: string`: The button label.
+- `actionRoute: string[]`: The route to redirect on clicking the action button.
+- `deliveryType: EcoStoreTenantLogisticsDeliveryType`: The delivery type for the order.
+
+**Example Usage:**
+
+```html
+<eco-cart-order-summary
+  submitAvailable="true"
+  subtotal="300"
+  total="340"
+  taxes="40"
+  shipping="5"
+  actionButtonText="submit"
+  actionRoute="['home']"
+  deliveryType="delivery">
+</eco-cart-order-summary>
+```
+
 ## Cart Steps
 
-1. **Summary** (`/carret/resum`): View cart items, adjust quantities, remove items.
-2. **Shipping** (`/carret/enviament`): Enter shipping address and delivery preferences.
-3. **Payment** (`/carret/pagament`): Select payment method and enter payment details.
-4. **Confirmation** (`/carret/confirmacio`): Review order and confirm purchase.
+1. **Summary** (`/cistella/resum`): View cart items, adjust quantities, remove items.
+2. **Shipping** (`/cistella/enviament`): Enter shipping address and delivery preferences.
+3. **Confirmation** (`/cistella/confirmacio`): Review order and confirm purchase.
 
 ## Running unit tests
 

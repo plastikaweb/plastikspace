@@ -119,12 +119,6 @@
             )
           );
         }
-
-        @include mat.icon-overrides(
-          (
-            color: var(--primary-50),
-          )
-        );
       }
 
       &:hover {
@@ -190,12 +184,6 @@
     &[disabled] {
       background-color: var(--neutral-100) !important;
       color: var(--neutral-200) !important;
-
-      @include mat.icon-overrides(
-        (
-          color: var(--neutral-200),
-        )
-      );
     }
 
     mat-icon {

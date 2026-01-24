@@ -30,12 +30,6 @@
             )
           );
         }
-
-        @include mat.icon-overrides(
-          (
-            color: var(--primary-50),
-          )
-        );
       }
 
       &:hover {
@@ -96,17 +90,6 @@
 
     &:active:not([disabled]) {
       transform: scale(0.95);
-    }
-
-    &[disabled] {
-      background-color: var(--neutral-100) !important;
-      color: var(--neutral-200) !important;
-
-      @include mat.icon-overrides(
-        (
-          color: var(--neutral-200),
-        )
-      );
     }
 
     mat-icon {

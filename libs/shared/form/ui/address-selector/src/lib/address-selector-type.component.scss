@@ -1,0 +1,36 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  .address-card {
+    border-color: var(--neutral-200);
+
+    &:hover {
+      border-color: var(--primary-100);
+      @include mat.card-overrides(
+        (
+          elevated-container-elevation: var(--mat-sys-level2),
+        )
+      );
+    }
+
+    &.selected {
+      border: 2px solid var(--primary-400) !important;
+      background-color: var(--primary-100) !important;
+
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-400),
+        )
+      );
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--primary-400),
+          selected-icon-color: var(--primary-400),
+        )
+      );
+    }
+  }
+}
