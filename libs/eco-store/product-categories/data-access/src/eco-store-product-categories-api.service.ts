@@ -24,6 +24,6 @@ export class EcoStoreProductCategoriesApiService extends EcoStoreGetAllService<P
   }
 
   get filter(): string {
-    return `tenant = "" || tenant = "${this.tenantService.tenant()?.id}"`;
+    return `tenant = "" || tenant = "${this.tenantStore.tenant()?.id}"`;
   }
 }

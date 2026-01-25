@@ -5,7 +5,7 @@ import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access
 import { FormConfig, FormSelectOption } from '@plastik/core/entities';
 import { EcoStoreCartState, ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 
 import { AbstractControl } from '@angular/forms';
 import { ShippingMethodOption } from '@plastik/shared/form/shipping-method-selector';
@@ -16,12 +16,12 @@ import { filter, tap } from 'rxjs';
  * @returns {FormConfig<EcoStoreCartState>} FormConfig object.
  */
 export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
-  const tenantService = inject(EcoStoreTenantBaseService);
+  const tenantStore = inject(ecoStoreTenantStore);
   const userProfileStore = inject(pocketBaseUserProfileStore);
   const translateService = inject(TranslateService);
   const cartStore = inject(ecoStoreCartStore);
   const currentLang = translateService.getCurrentLang();
-  const logisticsConfig = tenantService.tenant()?.logisticsConfig;
+  const logisticsConfig = tenantStore.tenant()?.logisticsConfig;
 
   const shippingMethodOptions: ShippingMethodOption[] =
     logisticsConfig?.options.map(option => ({
@@ -40,7 +40,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
         0,
     })) || [];
 
-  const tenantAddresses = [tenantService.getTenantAddress()];
+  const tenantAddresses = [tenantStore.getTenantAddress()];
   const userAddresses = userProfileStore.getUserContacts();
 
   const checkCustomLabelValidation = (field: FormlyFieldConfig, linkedFieldKeys: string[] = []) => {
@@ -206,7 +206,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                       const getTranslatedOptions = (
                         method: EcoStoreTenantLogisticsDeliveryType
                       ): FormSelectOption[] => {
-                        const options = tenantService.getTenantDeliveryOptionSlotsDays(method);
+                        const options = tenantStore.getTenantDeliveryOptionSlotsDays(method);
                         return options.map(option => ({
                           ...option,
                           label: translateService.instant(
@@ -251,7 +251,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                   hooks: {
                     onInit: (field: FormlyFieldConfig) => {
                       if (field.props && field.model?.method && field.model?.day) {
-                        field.props['options'] = tenantService.getTenantDeliveryOptionSlotsTimes(
+                        field.props['options'] = tenantStore.getTenantDeliveryOptionSlotsTimes(
                           field.model.method,
                           field.model.day
                         );
@@ -260,11 +260,10 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                         filter(e => e.type === 'valueChanges' && e.field?.key === 'day'),
                         tap(({ value }) => {
                           if (field.props) {
-                            field.props['options'] =
-                              tenantService.getTenantDeliveryOptionSlotsTimes(
-                                field.model.method,
-                                value
-                              );
+                            field.props['options'] = tenantStore.getTenantDeliveryOptionSlotsTimes(
+                              field.model.method,
+                              value
+                            );
                           }
                           field.formControl?.setValue(null);
                         })
@@ -284,7 +283,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                 const shippingMethod = field.model?.method;
                 const totalAmount = cartStore.totalAmountWithIva() || 0;
                 if (shippingMethod) {
-                  const shippingAmount = tenantService.getTenantDeliveryOptionCost(
+                  const shippingAmount = tenantStore.getTenantDeliveryOptionCost(
                     shippingMethod,
                     totalAmount
                   );

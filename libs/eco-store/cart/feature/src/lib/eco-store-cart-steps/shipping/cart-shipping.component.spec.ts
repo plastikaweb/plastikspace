@@ -4,7 +4,8 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { ecoStoreCartStoreMock } from '@plastik/eco-store/cart/data-access/testing';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
 import { provideRouter } from '@angular/router';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { signal } from '@angular/core';
@@ -17,26 +18,6 @@ describe('CartShippingComponent', () => {
     getUserContacts: signal([]),
   };
 
-  const mockTenantService = {
-    tenant: signal({
-      logisticsConfig: {
-        options: [
-          {
-            type: 'pickup',
-            instructions: 'Pickup instructions',
-            cost: 0,
-            tiers: [],
-          },
-        ],
-      },
-    }),
-    getTenantAddress: jest.fn().mockReturnValue({}),
-    getTenantDeliveryOptionSlotsDays: jest.fn().mockReturnValue([]),
-    getTenantDeliveryOptionSlotsTimes: jest.fn().mockReturnValue([]),
-    getTenantDeliveryOptionCost: jest.fn().mockReturnValue(0),
-    getTenantDeliveryPriceForFreeShipping: jest.fn().mockReturnValue(0),
-  };
-
   beforeEach(async () => {
     expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
@@ -46,7 +27,7 @@ describe('CartShippingComponent', () => {
         provideTranslateService(),
         { provide: ecoStoreCartStore, useValue: ecoStoreCartStoreMock },
         { provide: pocketBaseUserProfileStore, useValue: mockUserProfileStore },
-        { provide: EcoStoreTenantBaseService, useValue: mockTenantService },
+        { provide: ecoStoreTenantStore, useValue: ecoStoreTenantStoreMock },
       ],
     }).compileComponents();
 

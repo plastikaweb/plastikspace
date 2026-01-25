@@ -4,7 +4,8 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { MenuComponent } from './menu.component';
 
@@ -32,10 +33,8 @@ describe('MenuComponent', () => {
           },
         },
         {
-          provide: EcoStoreTenantBaseService,
-          useValue: {
-            tenant: signal(null),
-          },
+          provide: ecoStoreTenantStore,
+          useValue: ecoStoreTenantStoreMock,
         },
       ],
     }).compileComponents();

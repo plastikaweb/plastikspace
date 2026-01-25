@@ -5,7 +5,8 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
@@ -42,10 +43,8 @@ describe('LayoutComponent', () => {
           },
         },
         {
-          provide: EcoStoreTenantBaseService,
-          useValue: {
-            tenant: signal(null),
-          },
+          provide: ecoStoreTenantStore,
+          useValue: ecoStoreTenantStoreMock,
         },
       ],
     }).compileComponents();

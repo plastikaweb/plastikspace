@@ -138,7 +138,7 @@ It shows the user how much they need to add to their cart to reach the next ship
 
 ```html
 <eco-cart-order-price-slots
-  [tiers]="tenant.logisticsConfig.options[0].tiers"
+  [tiers]="tenantStore.getTenantDeliveryPriceTiers()"
   [cartTotal]="cartStore.totalAmountWithIva()">
 </eco-cart-order-price-slots>
 ```

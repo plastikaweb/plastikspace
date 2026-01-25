@@ -212,7 +212,7 @@
       "@plastik/eco-store/favorite-button": ["libs/eco-store/shared/favorite-button/src/index.ts"],
       "@plastik/eco-store/cart/data-access": ["libs/eco-store/cart/data-access/src/index.ts"],
       "@plastik/eco-store/cart/data-access/testing": [
-        "libs/eco-store/cart/data-access/src/eco-store-cart.store-mock.ts"
+        "libs/eco-store/cart/data-access/src/eco-store-cart.store.mock.ts"
       ],
       "@plastik/eco-store/layout": ["libs/eco-store/core/layout/src/index.ts"],
       "@plastik/eco-store/cart": ["libs/eco-store/cart/feature/src/index.ts"],
@@ -226,6 +226,9 @@
       "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
       "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"],
       "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"],
+      "@plastik/eco-store/tenant/testing": [
+        "libs/eco-store/core/tenant/src/eco-store-tenant.store.mock.ts"
+      ],
       "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"],
       "@plastik/shared/pocketbase-user-addresses": [
         "libs/shared/pocketbase-user-addresses/data-access/src/index.ts"

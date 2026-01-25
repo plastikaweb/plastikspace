@@ -17,7 +17,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';
 import { appSearchFormConfig } from '@plastik/eco-store/formly';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 
 @Component({
   selector: 'eco-layout',
@@ -41,7 +41,7 @@ export default class LayoutComponent {
   protected readonly isSidenavOpen = signal(false);
   private readonly sidenavContent = viewChild<MatSidenavContent>('sidenavContent');
   readonly #destroyRef = inject(DestroyRef);
-  readonly tenantService = inject(EcoStoreTenantBaseService);
+  readonly tenantStore = inject(ecoStoreTenantStore);
   readonly #router: Router = inject(Router);
 
   constructor() {

@@ -9,7 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { EcoStoreCartState, ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 
 import { AddressSelectorFormlyModule } from '@plastik/shared/form/address-selector';
@@ -45,7 +45,7 @@ import { getCartShippingFormConfig } from './cart-shipping-form.config';
 export class CartShippingComponent {
   readonly cartStore = inject(ecoStoreCartStore);
   readonly userProfileStore = inject(pocketBaseUserProfileStore);
-  readonly tenantService = inject(EcoStoreTenantBaseService);
+  readonly tenantStore = inject(ecoStoreTenantStore);
   readonly formValid = signal(false);
   readonly formConfig = getCartShippingFormConfig();
 
@@ -60,7 +60,7 @@ export class CartShippingComponent {
   getDeliveryOffer(): number {
     const type = this.cartStore.method() ?? 'pickup';
     const amount = this.cartStore.totalAmount();
-    const offer = this.tenantService.getTenantDeliveryPriceForFreeShipping(type, amount);
+    const offer = this.tenantStore.getTenantDeliveryPriceForFreeShipping(type, amount);
     return offer > 0 ? offer : 0;
   }
 }
