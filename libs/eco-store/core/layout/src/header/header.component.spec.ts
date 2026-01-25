@@ -3,10 +3,10 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
-import { signal } from '@angular/core';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { HeaderComponent } from './header.component';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -40,10 +40,8 @@ describe('HeaderComponent', () => {
         provideRouter([]),
         provideTranslateService(),
         {
-          provide: EcoStoreTenantBaseService,
-          useValue: {
-            tenant: signal(null),
-          },
+          provide: ecoStoreTenantStore,
+          useValue: ecoStoreTenantStoreMock,
         },
       ],
     }).compileComponents();

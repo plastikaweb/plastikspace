@@ -14,11 +14,11 @@
 ## Description
 
 This library provides base abstract services for interacting with the backend (PocketBase) in a multi-tenant environment.
-It abstracts common patterns for fetching data while automatically handling tenant context resolution via `EcoStoreTenantBaseService`.
+It abstracts common patterns for fetching data while automatically handling tenant context resolution via `ecoStoreTenantStore`.
 
 ## Features
 
-- **Tenant Injection**: Automatically provides access to `EcoStoreTenantBaseService` via `this.tenantService`.
+- **Tenant Injection**: Automatically provides access to `ecoStoreTenantStore` via `this.tenantStore`.
 - **Enforced Filtering**: Requires implementation of `filter` to ensure developers consider multi-tenancy in all API calls.
 - **PocketBase Integration**: Built on top of `@plastik/core/api-pocketbase` to provide standard CRUD operations.
 - **Type Safety**: Strongly typed generics for entities ensuring type safety across the application.
@@ -39,7 +39,7 @@ export class MyEntityApiService extends EcoStoreGetAllService<MyEntity> {
   }
 
   get filter(): string {
-    return `tenant = "${this.tenantService.tenant()?.id}"`;
+    return `tenant = "${this.tenantStore.tenant()?.id}"`;
   }
 }
 ```
@@ -58,7 +58,7 @@ export class MyEntityApiService extends EcoStoreGetService<MyEntity> {
   }
 
   get filter(): string {
-    return `tenant = "${this.tenantService.tenant()?.id}"`;
+    return `tenant = "${this.tenantStore.tenant()?.id}"`;
   }
 }
 ```

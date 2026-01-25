@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { signal } from '@angular/core';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import EcoStoreProductFeatureComponent from './eco-store-product-feature.component';
@@ -30,10 +30,8 @@ describe('EcoStoreProductFeatureComponent', () => {
           },
         },
         {
-          provide: EcoStoreTenantBaseService,
-          useValue: {
-            tenant: signal(null),
-          },
+          provide: ecoStoreTenantStore,
+          useValue: ecoStoreTenantStoreMock,
         },
       ],
     }).compileComponents();

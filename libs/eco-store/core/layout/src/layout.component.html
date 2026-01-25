@@ -2,7 +2,7 @@
   <eco-header
     class="z-1000"
     [formConfig]="searchFormConfig"
-    [tenant]="tenantService.tenant()"
+    [tenant]="tenantStore.tenant()"
     (submitEvent)="onSearchSubmit($event)">
     <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
     <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />

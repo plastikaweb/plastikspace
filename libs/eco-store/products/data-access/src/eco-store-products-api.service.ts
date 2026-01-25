@@ -61,6 +61,6 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
   }
 
   get filter(): string {
-    return `tenant = "${this.tenantService.tenant()?.id}"`;
+    return `tenant = "${this.tenantStore.tenant()?.id}"`;
   }
 }

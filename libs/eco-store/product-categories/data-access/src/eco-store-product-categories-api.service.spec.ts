@@ -1,8 +1,7 @@
-import { signal } from '@angular/core';
-import { EcoStoreTenantBaseService } from '@plastik/eco-store/tenant';
-
 import { TestBed } from '@angular/core/testing';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
 import { EcoStoreProductCategoriesApiService } from './eco-store-product-categories-api.service';
 
 // ... existing imports
@@ -15,10 +14,8 @@ describe('EcoStoreProductCategoriesApiService', () => {
       providers: [
         provideEnvironmentPocketBaseTranslationMock(),
         {
-          provide: EcoStoreTenantBaseService,
-          useValue: {
-            tenant: signal(null),
-          },
+          provide: ecoStoreTenantStore,
+          useValue: ecoStoreTenantStoreMock,
         },
       ],
     });
