@@ -1,16 +1,6 @@
 import { Routes } from '@angular/router';
 import { isNotLoggedGuard } from '@plastik/auth/firebase/data-access';
 
-// const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
-
-// const redirectLoggedInAndVerifiedToHome = () => map((user: User) => {
-//   return !user.uid || !user.emailVerified ? ['login'] : ['']
-// });
-// const redirectLoggedOutOrNoVerifiedToLogin = () => map((user: User) => {
-//   console.log('user', user);
-//   return user?.uid && user?.emailVerified ? [''] : ['login']
-// });
-
 export const appRoutes: Routes = [
   {
     path: 'login',

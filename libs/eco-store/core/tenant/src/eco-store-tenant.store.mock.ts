@@ -13,9 +13,11 @@ export const ecoStoreTenantStoreMock = {
       ],
     },
   }),
-  getTenantAddress: jest.fn().mockReturnValue({}),
+  getTenantLegalAddress: jest.fn().mockReturnValue({}),
   getTenantDeliveryOptionSlotsDays: jest.fn().mockReturnValue([]),
   getTenantDeliveryOptionSlotsTimes: jest.fn().mockReturnValue([]),
   getTenantDeliveryOptionCost: jest.fn().mockReturnValue(0),
   getTenantDeliveryPriceForFreeShipping: jest.fn().mockReturnValue(0),
+  getTenantDeliveryPriceTiers: jest.fn().mockReturnValue([]),
+  getTenantAddressesContacts: jest.fn().mockReturnValue([]),
 };

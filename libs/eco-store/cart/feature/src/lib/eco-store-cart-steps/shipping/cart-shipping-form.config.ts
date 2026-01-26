@@ -34,13 +34,10 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           : option.instructions[currentLang]
         : undefined,
       theme: option.type === 'pickup' ? 'primary' : 'secondary',
-      cost:
-        option.tiers?.find(tier => cartStore.totalAmountWithIva() >= tier.min)?.min ??
-        option.cost ??
-        0,
+      cost: option.tiers?.find(tier => tier.cost === 0)?.min ?? option.cost ?? 0,
     })) || [];
 
-  const tenantAddresses = [tenantStore.getTenantAddress()];
+  const tenantAddresses = tenantStore.getTenantAddressesContacts();
   const userAddresses = userProfileStore.getUserContacts();
 
   const checkCustomLabelValidation = (field: FormlyFieldConfig, linkedFieldKeys: string[] = []) => {
@@ -161,6 +158,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                     field.props['addresses'] = value === 'pickup' ? tenantAddresses : userAddresses;
                   }
                   field.formControl?.setValue(null);
+                  field.formControl?.updateValueAndValidity();
                 })
               );
             },
@@ -203,10 +201,16 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                   },
                   hooks: {
                     onInit: (field: FormlyFieldConfig) => {
+                      const { method, address } = field.model;
+
                       const getTranslatedOptions = (
-                        method: EcoStoreTenantLogisticsDeliveryType
+                        method: EcoStoreTenantLogisticsDeliveryType,
+                        addressId: string | null = null
                       ): FormSelectOption[] => {
-                        const options = tenantStore.getTenantDeliveryOptionSlotsDays(method);
+                        const options = tenantStore.getTenantDeliveryOptionSlotsDays(
+                          method,
+                          addressId
+                        );
                         return options.map(option => ({
                           ...option,
                           label: translateService.instant(
@@ -215,16 +219,22 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                         }));
                       };
 
-                      if (field.props && field.model?.method) {
-                        field.props['options'] = getTranslatedOptions(field.model.method);
+                      if (field.props && method && address) {
+                        field.props['options'] = getTranslatedOptions(method, address.id);
                       }
                       return field.options?.fieldChanges?.pipe(
-                        filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
-                        tap(({ value }) => {
-                          if (field.props) {
-                            field.props['options'] = getTranslatedOptions(value);
+                        filter(
+                          e =>
+                            e.type === 'valueChanges' &&
+                            (e.field?.key === 'address' || e.field?.key === 'method')
+                        ),
+                        tap(e => {
+                          const { method, address } = e.field.model;
+                          if (field.props && method && address?.id) {
+                            field.props['options'] = getTranslatedOptions(method, address.id);
                           }
                           field.formControl?.setValue(null);
+                          field.formControl?.updateValueAndValidity();
                         })
                       );
                     },
@@ -250,22 +260,28 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
                   },
                   hooks: {
                     onInit: (field: FormlyFieldConfig) => {
-                      if (field.props && field.model?.method && field.model?.day) {
+                      const { method, address, day } = field.model;
+                      if (field.props && method && address?.id && day) {
                         field.props['options'] = tenantStore.getTenantDeliveryOptionSlotsTimes(
-                          field.model.method,
-                          field.model.day
+                          method,
+                          day,
+                          address.id
                         );
                       }
                       return field.options?.fieldChanges?.pipe(
                         filter(e => e.type === 'valueChanges' && e.field?.key === 'day'),
+                        tap(() => {
+                          field.formControl?.setValue(null);
+                          field.formControl?.updateValueAndValidity();
+                        }),
                         tap(({ value }) => {
                           if (field.props) {
                             field.props['options'] = tenantStore.getTenantDeliveryOptionSlotsTimes(
                               field.model.method,
-                              value
+                              value,
+                              field.model.address?.id
                             );
                           }
-                          field.formControl?.setValue(null);
                         })
                       );
                     },

@@ -100,6 +100,14 @@ setCustomLabel('method', 'cart.shipping.method.title', 'counter_1', [
   The shared Formly UI components used in the shipping step (such as `address-selector` and `shipping-method-selector`) render card-based controls.
   For styling reasons the native radio input may be visually hidden; automated tests should select options by semantic values or data attributes rather than relying on a visible radio element.
 
+- Tenant address integration
+
+  The shipping form integrates with the tenant store to provide pickup location addresses.
+  When the shipping method is set to 'pickup', the address selector displays tenant addresses
+  (from `tenantStore.getTenantAddressesContacts()`). For delivery, it shows user addresses.
+  The selected pickup address ID is used to retrieve location-specific time slots via
+  `getTenantDeliveryOptionSlotsDays()` and `getTenantDeliveryOptionSlotsTimes()`.
+
 If you need, I can add short code examples showing how to select options in tests or how to compute shipping amount based on tenant configuration.
 
 ## Installation

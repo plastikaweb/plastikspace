@@ -56,8 +56,6 @@ export const llecoopUserOrderCartStore = signalStore(
           );
           return;
         }
-
-        // console.log('Datos del carrito sincronizados con Firestore para el usuario:', userId);
       },
 
       loadPersistedCart: () => {

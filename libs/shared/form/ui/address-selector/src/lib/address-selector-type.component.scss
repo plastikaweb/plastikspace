@@ -33,4 +33,12 @@
       );
     }
   }
+
+  .address-default {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-400),
+      )
+    );
+  }
 }

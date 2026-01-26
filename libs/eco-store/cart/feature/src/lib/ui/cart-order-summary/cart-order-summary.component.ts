@@ -23,5 +23,5 @@ export class CartOrderSummaryComponent {
   shipping = input<number>(0);
   actionButtonText = input<string>('');
   actionRoute = input<string[]>();
-  deliveryType = input<EcoStoreTenantLogisticsDeliveryType>();
+  deliveryType = input<EcoStoreTenantLogisticsDeliveryType>('pickup');
 }
