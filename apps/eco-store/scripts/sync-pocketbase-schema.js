@@ -109,13 +109,46 @@ async function syncSchema() {
         try {
           const minimalFields = collection.fields.filter(field => field.type !== 'relation');
 
-          // Try to force ID, but server might generate a new one
-          await pb.collections.create({
+          const createData = {
             id: collection.id,
             name: collection.name,
             type: collection.type,
-            fields: minimalFields,
-          });
+          };
+
+          // For views, we MUST include viewQuery and ALL fields in the first pass
+          if (collection.type === 'view') {
+            createData.viewQuery = collection.viewQuery;
+            createData.fields = collection.fields;
+          } else {
+            createData.fields = minimalFields;
+          }
+
+          // For auth collections, include auth-specific top-level fields
+          if (collection.type === 'auth') {
+            const authFields = [
+              'authRule',
+              'manageRule',
+              'authAlert',
+              'oauth2',
+              'passwordAuth',
+              'mfa',
+              'otp',
+              'authToken',
+              'passwordResetToken',
+              'emailChangeToken',
+              'verificationToken',
+              'fileToken',
+              'verificationTemplate',
+              'resetPasswordTemplate',
+              'confirmEmailChangeTemplate',
+            ];
+            authFields.forEach(key => {
+              if (collection[key] !== undefined) createData[key] = collection[key];
+            });
+          }
+
+          // Try to force ID, but server might generate a new one
+          await pb.collections.create(createData);
           console.log(`🆕 Created (minimal): ${collection.name}`);
           created++;
         } catch (error) {
@@ -183,7 +216,7 @@ async function syncSchema() {
           });
         }
 
-        await pb.collections.update(existing.id, {
+        const updateData = {
           fields: collectionData.fields,
           indexes: collectionData.indexes,
           listRule: collectionData.listRule,
@@ -192,7 +225,32 @@ async function syncSchema() {
           updateRule: collectionData.updateRule,
           deleteRule: collectionData.deleteRule,
           options: collectionData.options,
+          viewQuery: collectionData.viewQuery,
+        };
+
+        // Add auth-specific top-level fields
+        const authFields = [
+          'authRule',
+          'manageRule',
+          'authAlert',
+          'oauth2',
+          'passwordAuth',
+          'mfa',
+          'otp',
+          'authToken',
+          'passwordResetToken',
+          'emailChangeToken',
+          'verificationToken',
+          'fileToken',
+          'verificationTemplate',
+          'resetPasswordTemplate',
+          'confirmEmailChangeTemplate',
+        ];
+        authFields.forEach(key => {
+          if (collectionData[key] !== undefined) updateData[key] = collectionData[key];
         });
+
+        await pb.collections.update(existing.id, updateData);
         console.log(`✅ Updated (full): ${collection.name}`);
         updated++;
       } catch (error) {
