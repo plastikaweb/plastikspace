@@ -19,6 +19,4 @@ export type PocketBaseUserAddress = Pick<
 > &
   UserContact & {
     user: PocketBaseUser['id'];
-    default: boolean;
-    fullName?: string;
   };

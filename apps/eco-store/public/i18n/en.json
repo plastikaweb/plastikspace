@@ -190,6 +190,7 @@
       "shipping-cost": "Shipping",
       "go-to-confirmation": "Continue to Order Summary",
       "method": {
+        "title": "Choose if you would like to receive or pick up your order.",
         "pickup": {
           "title": "Store pickup.",
           "description": "Come to the store and pick up your order."

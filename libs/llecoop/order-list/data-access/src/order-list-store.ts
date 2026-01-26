@@ -308,7 +308,6 @@ export const llecoopOrderListStore = signalStore(
   })),
   withHooks({
     onInit(store) {
-      console.log('onInit');
       store.getAvailableProducts();
       // let previousSelectedItemUserFilter = store.selectedItemUserFilter();
       // let previousSelectedItemUserSorting = store.selectedItemUserSorting();

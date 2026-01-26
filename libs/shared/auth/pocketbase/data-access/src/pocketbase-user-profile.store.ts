@@ -1,6 +1,13 @@
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
-import { signalStore, withComputed, withHooks, withMethods, withState } from '@ngrx/signals';
+import {
+  signalStore,
+  withComputed,
+  withHooks,
+  withMethods,
+  withProps,
+  withState,
+} from '@ngrx/signals';
 import { LoginData } from '@plastik/auth/entities';
 import { PocketBaseUser, PocketBaseUserAddress, UserContact } from '@plastik/core/entities';
 import { PocketBaseUserAddressService } from '@plastik/shared/pocketbase-user-addresses';
@@ -27,7 +34,10 @@ export const pocketBaseUserProfileStore = signalStore(
   { providedIn: 'root' },
   withDevtools('user-profile'),
   withState<UserProfileState>(initialState),
-
+  withProps(() => ({
+    _userAddressService: inject(PocketBaseUserAddressService),
+    _authService: inject(PocketBaseAuthService),
+  })),
   withComputed(store => ({
     userInitials: computed(() =>
       store
@@ -58,73 +68,67 @@ export const pocketBaseUserProfileStore = signalStore(
           .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[]
     ),
   })),
-  withMethods(
-    (
-      store,
-      authService = inject(PocketBaseAuthService),
-      userAddressService = inject(PocketBaseUserAddressService)
-    ) => ({
-      async login(credentials: LoginData): Promise<void> {
-        updateState(store, `[profile] login in process`, { isLoading: true });
+  withMethods(store => ({
+    async login(credentials: LoginData): Promise<void> {
+      updateState(store, `[profile] login in process`, { isLoading: true });
 
-        try {
-          const authData = await authService.login(credentials.email, credentials.password);
+      try {
+        const authData = await store._authService.login(credentials.email, credentials.password);
 
-          updateState(store, `[profile] login success`, {
-            user: authData.record as PocketBaseUser,
-            isAuthenticated: true,
-            isLoading: false,
-          });
-        } catch (error) {
-          const errorMessage = error instanceof Error ? error.message : 'auth.error.login';
+        updateState(store, `[profile] login success`, {
+          user: authData.record as PocketBaseUser,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+      } catch (error) {
+        const errorMessage = error instanceof Error ? error.message : 'auth.error.login';
+        updateState(store, `[profile] login failed ${errorMessage}`, { isLoading: false });
+        throw new Error(errorMessage);
+      }
+    },
 
-          throw new Error(errorMessage);
-        }
-      },
+    logout(): void {
+      store._authService.logout();
+      updateState(store, `[profile] logout`, initialState);
+    },
 
-      logout(): void {
-        authService.logout();
-        updateState(store, `[profile] logout`, initialState);
-      },
+    checkAuth(): void {
+      if (store._authService.loggedIn()) {
+        updateState(store, `[profile] user is logged in`, {
+          user: store._authService.authModel as PocketBaseUser,
+          isAuthenticated: true,
+        });
+      } else {
+        updateState(store, `[profile] user is not logged in`, {
+          user: null,
+          isAuthenticated: false,
+        });
+      }
+    },
 
-      checkAuth(): void {
-        if (authService.loggedIn()) {
-          updateState(store, `[profile] user is logged in`, {
-            user: authService.authModel as PocketBaseUser,
-            isAuthenticated: true,
-          });
-        } else {
-          updateState(store, `[profile] user is not logged in`, {
-            user: null,
-            isAuthenticated: false,
-          });
-        }
-      },
+    async getUserAddresses(): Promise<void> {
+      try {
+        updateState(store, `[profile] loading user addresses`, { isLoading: true });
 
-      async getUserAddresses(): Promise<void> {
-        try {
-          updateState(store, `[profile] loading user addresses`, { isLoading: true });
+        const addresses = await lastValueFrom(
+          store._userAddressService.getFullList({
+            filter: `user = "${store.user()?.id}"`,
+          })
+        );
 
-          const addresses = await lastValueFrom(
-            userAddressService.getFullList({
-              filter: `user = "${store.user()?.id}"`,
-            })
-          );
-
-          updateState(store, `[profile] user addresses loaded`, {
-            addresses: addresses || [],
-            addressesLoaded: true,
-            isLoading: false,
-          });
-        } catch (error) {
-          updateState(store, `[profile] user addresses load failed ${error}`, {
-            addressesLoaded: false,
-            isLoading: false,
-          });
-        }
-      },
-    })
-  ),
+        updateState(store, `[profile] user addresses loaded`, {
+          addresses: addresses || [],
+          addressesLoaded: true,
+          isLoading: false,
+        });
+      } catch (error) {
+        updateState(store, `[profile] user addresses load failed ${error}`, {
+          addressesLoaded: false,
+          isLoading: false,
+        });
+      }
+    },
+  })),
 
   withHooks({
     /**

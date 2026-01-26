@@ -45,5 +45,14 @@ export type EcoStoreTenant = BasePocketBaseEntity &
     languages: string[];
     themeConfig?: unknown;
     logisticsConfig: EcoStoreTenantLogistics;
-    active: boolean;
+    active?: boolean;
+  };
+
+export type EcoStoreTenantAddress = Pick<
+  BasePocketBaseEntity,
+  'id' | 'collectionId' | 'collectionName' | 'created' | 'updated'
+> &
+  UserContact & {
+    tenant: EcoStoreTenant['id'];
+    slots: Record<SlotDays, TimeRange[]>;
   };

@@ -13,4 +13,6 @@ export type UserContact = Omit<
   country: string | undefined;
   phone: string | undefined;
   default?: boolean;
+  active?: boolean;
+  instructions?: string;
 };

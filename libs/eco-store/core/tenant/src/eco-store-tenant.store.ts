@@ -1,20 +1,25 @@
-import { computed, inject } from '@angular/core';
+import { computed, inject, Signal } from '@angular/core';
 import { signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import {
   EcoStoreTenant,
+  EcoStoreTenantAddress,
   EcoStoreTenantLogisticsDeliveryOption,
   EcoStoreTenantLogisticsDeliveryType,
   SlotDays,
+  TimeRange,
 } from '@plastik/eco-store/entities';
 import { FormSelectOption, UserContact } from '@plastik/core/entities';
 import { isNil } from '@plastik/shared/objects';
 import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
+import { EcoStoreTenantAddressService } from './eco-store-tenant-address.service';
+import { lastValueFrom } from 'rxjs';
 
 export interface EcoStoreTenantState {
   tenant: EcoStoreTenant | null;
   loaded: boolean;
-  addresses: UserContact[];
+  addresses: EcoStoreTenantAddress[];
+  addressesLoaded: boolean;
 }
 
 export const ecoStoreTenantStore = signalStore(
@@ -24,15 +29,17 @@ export const ecoStoreTenantStore = signalStore(
     tenant: null,
     loaded: false,
     addresses: [],
+    addressesLoaded: false,
   }),
   withProps(() => ({
+    _tenantAddressService: inject(EcoStoreTenantAddressService),
     _tenantService: inject(EcoStoreTenantBaseService),
   })),
-  withComputed(({ tenant }) => ({
-    getTenantAddress: computed(() => {
-      const currentTenant = tenant();
+  withComputed(store => ({
+    getTenantLegalAddress: computed(() => {
+      const currentTenant = store.tenant();
       if (!currentTenant) {
-        return {} as UserContact;
+        return {} as EcoStoreTenantAddress;
       }
 
       const { id, name, address, city, zip, province, country, phone } = currentTenant;
@@ -47,6 +54,23 @@ export const ecoStoreTenantStore = signalStore(
         phone,
       };
     }),
+    getTenantAddressesContacts: computed(
+      () =>
+        store
+          .addresses()
+          .map(address => ({
+            id: address.id,
+            name: address.name,
+            address: address.address,
+            zip: address.zip,
+            city: address.city,
+            province: address.province,
+            country: address.country,
+            phone: address.phone,
+            default: address.default,
+          }))
+          .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[]
+    ),
   })),
   withMethods(store => ({
     async getTenant() {
@@ -66,6 +90,30 @@ export const ecoStoreTenantStore = signalStore(
         });
       }
     },
+
+    async getTenantAddresses(): Promise<void> {
+      try {
+        updateState(store, `[tenant] loading addresses`, { addressesLoaded: false });
+
+        const addresses = await lastValueFrom(
+          store._tenantAddressService.getFullList({
+            filter: `tenant = "${store.tenant()?.id}" && active = true`,
+          })
+        );
+
+        updateState(store, `[tenant] addresses loaded`, {
+          addresses: addresses || [],
+          addressesLoaded: true,
+          loaded: true,
+        });
+      } catch (error) {
+        updateState(store, `[tenant] addresses load failed ${error}`, {
+          addressesLoaded: false,
+          loaded: false,
+        });
+      }
+    },
+
     getTenantDeliveryOption(
       type: EcoStoreTenantLogisticsDeliveryType
     ): EcoStoreTenantLogisticsDeliveryOption | null {
@@ -76,31 +124,47 @@ export const ecoStoreTenantStore = signalStore(
       return tenant.logisticsConfig?.options?.find(option => option.type === type) || null;
     },
 
+    _getDeliverySlotsRecord(): Record<SlotDays, TimeRange[]> | null {
+      return this.getTenantDeliveryOption('delivery')?.slots || null;
+    },
+
+    _getPickupSlotsRecord(addressId: string | null): Record<SlotDays, TimeRange[]> | null {
+      return store.addresses().find(address => address.id === addressId)?.slots || null;
+    },
+
     getTenantDeliveryOptionSlotsDays(
-      type: EcoStoreTenantLogisticsDeliveryType
+      type: EcoStoreTenantLogisticsDeliveryType,
+      addressId: string | null = null
     ): FormSelectOption[] {
-      const slots = this.getTenantDeliveryOption(type)?.slots;
-      if (!slots) {
-        return [];
-      }
-      return Object.keys(slots).map(day => ({
-        label: day,
-        value: day,
-      }));
+      const slots =
+        type === 'delivery'
+          ? this._getDeliverySlotsRecord()
+          : this._getPickupSlotsRecord(addressId);
+
+      return slots
+        ? Object.keys(slots).map(day => ({
+            label: day,
+            value: day,
+          }))
+        : [];
     },
 
     getTenantDeliveryOptionSlotsTimes(
       type: EcoStoreTenantLogisticsDeliveryType,
-      day: SlotDays
+      day: SlotDays,
+      addressId: string | null = null
     ): FormSelectOption[] {
-      const slots = this.getTenantDeliveryOption(type)?.slots?.[day];
-      if (!slots) {
-        return [];
-      }
-      return slots.map(slot => ({
-        label: slot,
-        value: slot,
-      }));
+      const slots =
+        type === 'delivery'
+          ? this._getDeliverySlotsRecord()
+          : this._getPickupSlotsRecord(addressId);
+
+      return slots?.[day]
+        ? slots[day].map(slot => ({
+            label: slot,
+            value: slot,
+          }))
+        : [];
     },
 
     getTenantDeliveryOptionCost(type: EcoStoreTenantLogisticsDeliveryType, amount: number): number {

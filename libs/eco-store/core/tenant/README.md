@@ -22,7 +22,15 @@ It uses a strategy pattern to resolve the tenant ID, which is then used to filte
 
 - **`ecoStoreTenantStore`**: A signal store that manages the tenant state and provides derived configuration.
   - It handles **fetching the tenant** from the `EcoStoreTenantBaseService`.
-  - It provides **selectors and helpers** for tenant data, such as `getTenantAddress`, `getTenantDeliveryOptionSlotsDays`, or tiered pricing calculation.
+  - It manages **tenant-specific addresses** via `getTenantAddresses()`, which loads addresses from `EcoStoreTenantAddressService`.
+  - It provides **computed selectors**:
+    - `getTenantLegalAddress`: Returns the tenant's legal/registered address.
+    - `getTenantAddressesContacts`: Returns tenant addresses formatted as `UserContact[]`, sorted with default address first.
+  - It provides **helper methods** for logistics configuration:
+    - `getTenantDeliveryOptionSlotsDays()` and `getTenantDeliveryOptionSlotsTimes()`: Support both delivery and pickup slots (pickup requires `addressId`).
+    - `getTenantDeliveryOptionCost()`: Calculates shipping cost based on tiered pricing.
+    - `getTenantDeliveryPriceTiers()`: Returns delivery price tiers for progress indicators.
+    - `getTenantDeliveryPriceForFreeShipping()`: Calculates remaining amount for free shipping.
 - **`EcoStoreTenantBaseService`**: Abstract base class defining the contract for tenant resolution.
   - It provides the core logic for **resolving the tenant slug** and loading it from the backend.
 - **`EcoStoreTenantService`**: Standard implementation that resolves the tenant slug from the **URL subdomain**
