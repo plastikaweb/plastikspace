@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
-import { ProductCategory } from '@plastik/eco-store/entities';
+import { ProductCategory, ProductCategoryStats } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 
 @Injectable({
@@ -22,14 +22,14 @@ export class EcoStoreCategoryRouteTitleService {
     if (!categorySlug) {
       return 'products.category';
     }
-    const categories: ProductCategory[] = this.#categoriesStore.categories();
-    const category: ProductCategory | undefined = categories.find(
-      (item: ProductCategory) => item.normalizedName === categorySlug
+    const stats: ProductCategoryStats[] = this.#categoriesStore.stats();
+    const category: ProductCategoryStats | undefined = stats.find(
+      (item: ProductCategoryStats) => item.normalizedName === categorySlug
     );
-    if (!category || !category.name) {
+    if (!category || !category.normalizedName) {
       return 'products.category';
     }
-    const name: string | LocalizedFields<string> = category.name;
+    const name: string | LocalizedFields<string> = category.normalizedName;
     if (typeof name === 'string') {
       return name;
     }

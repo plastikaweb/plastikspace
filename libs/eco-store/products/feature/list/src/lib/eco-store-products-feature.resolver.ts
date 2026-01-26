@@ -25,7 +25,7 @@ export const ecoStoreProductsResolver: ResolveFn<boolean> = (route: ActivatedRou
       productStore.enableListLoading();
       productStore.setParams({
         ...queryParams,
-        category: categoryObj?.id ?? null,
+        category: categoryObj?.category ?? null,
       });
     }),
     map(() => true)

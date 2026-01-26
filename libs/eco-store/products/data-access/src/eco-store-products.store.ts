@@ -9,6 +9,7 @@ import {
   EcoStoreProduct,
   EcoStoreProductWithCategoryName as EcoStoreProductWithTranslatedText,
   ProductCategory,
+  ProductCategoryStats,
 } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import {
@@ -57,11 +58,13 @@ export const ecoStoreProductsStore = signalStore(
     return {
       productsWithTranslatedText: computed<EcoStoreProductWithTranslatedText[]>(() => {
         const products = entities();
-        const categories = categoriesStore.categories();
+        const categories = categoriesStore.stats();
         const currentLang = translateService.getCurrentLang() || environment.defaultLanguage;
 
         return products.map(product => {
-          const category = categories.find(cat => cat.id === product.category) as ProductCategory;
+          const category = categories.find(
+            cat => cat.category === product.category
+          ) as ProductCategoryStats;
 
           let categoryName = '';
           if (category && category.name && typeof category.name === 'object') {

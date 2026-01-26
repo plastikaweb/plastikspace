@@ -17,13 +17,13 @@ This library provides **data access functionality for eco-store product categori
 
 ## Features
 
-- **Signal-based state management** with NgRx Signals.
-- Reactive store for product categories with localization.
-- Category grouping by parent groups.
-- Automatic category loading on initialization.
+- Signal-based state management with NgRx Signals.
+- Reactive store for product categories using stats collection.
+- Category grouping by parent group names.
+- Automatic category stats loading on initialization.
 - Localized category names with fallback support.
-- Category search by slug/normalized name.
-- Total product count aggregation.
+- Category lookup by slug/normalized name.
+- Total product count aggregation from stats.
 - Error handling with notifications.
 
 ## Usage
@@ -36,13 +36,12 @@ import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categ
 const store = inject(ecoStoreProductCategoriesStore);
 
 // Access reactive signals
-const categories = store.categories();
+const stats = store.stats();
 const groupedCategories = store.groupedCategories();
 const totalProducts = store.totalProducts();
-const isLoading = store.isLoading();
 
-// Load all categories
-store.getFullList();
+// Load category stats
+store.getStats();
 
 // Find category by slug
 const category = store.findCategoryBySlug('electronics');
@@ -50,17 +49,17 @@ const category = store.findCategoryBySlug('electronics');
 // Get localized category name
 const localizedName = store.getLocalizedCategoryName(category);
 
-// Get category title by slug with fallback
-const title = store.getCategoryTitleBySlug('electronics', 'products.all');
+// Get category by slug with fallback icon and name
+const categoryData = store.getCategoryBySlug('electronics', 'products.all');
 ```
 
 ### Available Store Methods
 
-- `getFullList()`: Load all product categories from API.
-- `findCategoryBySlug(slug)`: Find category by normalized name.
-- `getLocalizedCategoryName(category)`: Get category name in current language.
-- `getCategoryTitleBySlug(slug, defaultText)`: Get localized title with fallback.
-- `groupedCategories`: Computed signal with categories grouped by parent.
+- `getStats()`: Load product category statistics from API.
+- `findCategoryBySlug(slug)`: Find a category stat by its normalized name.
+- `getLocalizedCategoryName(category)`: Get localized category name from a category object.
+- `getCategoryBySlug(slug, defaultText)`: Get localized name and icon for a category by slug, with fallbacks.
+- `groupedCategories`: Computed signal with categories grouped by parent group name.
 - `totalProducts`: Computed signal with total product count across all categories.
 
 ## Running unit tests

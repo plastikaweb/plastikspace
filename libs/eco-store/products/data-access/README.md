@@ -24,7 +24,7 @@ This library provides the state management and API integration for products in t
 - **PocketBase Integration**: Built-in support for PocketBase CRUD operations via [`EcoStoreGetService`](../../core/api/data-access/README.md), ensuring all requests are scoped to the current tenant.
 - **Enhanced Data Transformation**:
   - **Localization**: Automatically translates `name`, `description`, and `features` based on the current application language.
-  - **Category Mapping**: Enriches products with localized category names, slugs, and colors by integrating with `ecoStoreProductCategoriesStore`.
+  - **Category Mapping**: Enriches products with localized category names, slugs, and colors by integrating with `ecoStoreProductCategoriesStore` (using the stats collection).
 - **Slug-based Operations**: Supports selecting and loading products directly by their URL slugs.
 - **Smart Data Access**: Provides computed signals for transformed data, ensuring UI components receive ready-to-display objects.
 
