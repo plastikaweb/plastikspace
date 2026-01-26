@@ -80,6 +80,23 @@ async function exportSchema() {
       updateRule: col.updateRule,
       deleteRule: col.deleteRule,
       options: col.options,
+      // PB v0.23+ top-level fields
+      viewQuery: col.viewQuery,
+      authRule: col.authRule,
+      manageRule: col.manageRule,
+      authAlert: col.authAlert,
+      oauth2: col.oauth2,
+      passwordAuth: col.passwordAuth,
+      mfa: col.mfa,
+      otp: col.otp,
+      authToken: col.authToken,
+      passwordResetToken: col.passwordResetToken,
+      emailChangeToken: col.emailChangeToken,
+      verificationToken: col.verificationToken,
+      fileToken: col.fileToken,
+      verificationTemplate: col.verificationTemplate,
+      resetPasswordTemplate: col.resetPasswordTemplate,
+      confirmEmailChangeTemplate: col.confirmEmailChangeTemplate,
     }));
 
     // save schema
