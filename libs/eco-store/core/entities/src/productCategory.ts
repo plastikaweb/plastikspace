@@ -9,7 +9,6 @@ export type ProductCategoryGroup = BasePocketBaseEntitySimple;
 export interface ProductCategory extends BasePocketBaseEntityWithTenantRef {
   color: string;
   description?: LocalizedFields | string;
-  productCount: number;
   icon?: string;
   expand?: {
     group: ProductCategoryGroup;
@@ -18,11 +17,11 @@ export interface ProductCategory extends BasePocketBaseEntityWithTenantRef {
 
 /**
  * @description Type for creating a new ProductCategory.
- * Excludes id, created, updated, and productCount as they are set by the system.
+ * Excludes id, created, updated as they are set by the system.
  */
 export type CreateProductCategory = Omit<
   ProductCategory,
-  'id' | 'created' | 'updated' | 'normalizedName' | 'productCount'
+  'id' | 'created' | 'updated' | 'normalizedName'
 >;
 
 /**
@@ -31,7 +30,7 @@ export type CreateProductCategory = Omit<
  * Excludes system-managed fields.
  */
 export type UpdateProductCategory = Partial<
-  Omit<ProductCategory, 'id' | 'created' | 'updated' | 'normalizedName' | 'client' | 'productCount'>
+  Omit<ProductCategory, 'id' | 'created' | 'updated' | 'normalizedName' | 'client'>
 > & {
   id: string; // we make id required for identification
 };
@@ -43,4 +42,12 @@ export interface ProductCategoryFilters {
   client?: string;
   name?: string;
   search?: string;
+}
+
+export interface ProductCategoryStats extends BasePocketBaseEntityWithTenantRef {
+  category: ProductCategory['id'];
+  totalProducts: number;
+  color: string;
+  groupName: LocalizedFields | string;
+  icon?: string;
 }
