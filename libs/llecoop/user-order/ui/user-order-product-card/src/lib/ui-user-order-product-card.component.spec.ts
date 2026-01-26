@@ -73,7 +73,6 @@ describe('UiUserOrderProductCardComponent', () => {
     componentRef = fixture.componentRef;
 
     componentRef.setInput('product', mockProduct);
-    componentRef.setInput('index', 1);
     fixture.detectChanges();
   });
 
