@@ -4,6 +4,7 @@ const scopes =
     ? Object.keys(base.compilerOptions.paths)
         .map(path => path.split('@plastik/')[1])
         .filter(Boolean)
+        .sort()
     : [];
 
 module.exports = {

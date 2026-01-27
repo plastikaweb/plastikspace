@@ -147,19 +147,40 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           },
           hooks: {
             onInit: (field: FormlyFieldConfig) => {
-              const method = field.model?.method ?? 'pickup';
+              const getAddressesForMethod = (method: 'pickup' | 'delivery') =>
+                method === 'pickup' ? tenantAddresses : userAddresses;
+
+              const setDefaultAddress = (
+                method: 'pickup' | 'delivery',
+                shouldPreserveValue = true
+              ) => {
+                const addresses = getAddressesForMethod(method);
+                const defaultAddress = addresses.find(address => address.default);
+                const shouldSetValue = shouldPreserveValue ? !field.formControl?.value : true;
+
+                if (defaultAddress && shouldSetValue) {
+                  field.formControl?.setValue(defaultAddress);
+                  field.formControl?.updateValueAndValidity();
+                }
+              };
+
+              const updateAddresses = (method: 'pickup' | 'delivery') => {
+                if (field.props) {
+                  field.props['addresses'] = getAddressesForMethod(method);
+                }
+                setDefaultAddress(method, false);
+              };
+
+              // Initialize with current method
+              const currentMethod = field.model?.method ?? 'pickup';
               if (field.props) {
-                field.props['addresses'] = method === 'pickup' ? tenantAddresses : userAddresses;
+                field.props['addresses'] = getAddressesForMethod(currentMethod);
               }
+              setDefaultAddress(currentMethod);
+
               return field.options?.fieldChanges?.pipe(
                 filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
-                tap(({ value }) => {
-                  if (field.props) {
-                    field.props['addresses'] = value === 'pickup' ? tenantAddresses : userAddresses;
-                  }
-                  field.formControl?.setValue(null);
-                  field.formControl?.updateValueAndValidity();
-                })
+                tap(({ value }) => updateAddresses(value))
               );
             },
           },
