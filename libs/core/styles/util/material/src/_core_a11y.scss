@@ -1,0 +1,94 @@
+@use '@angular/material' as mat;
+
+//********* FOCUS *********/
+
+/**
+ * Global focus styles for keyboard navigation.
+ *
+ * See documentation/accessibility.md#focus for usage and customization.
+ */
+
+:root {
+  --focus-ring-color: rgb(191, 37, 186);
+  --focus-ring-width: 2px;
+}
+
+@layer base {
+  :focus {
+    outline: none !important;
+  }
+
+  .cdk-keyboard-focused,
+  a:focus-visible,
+  button:focus-visible,
+  .mat-mdc-button:focus-visible,
+  .mat-mdc-unelevated-button:focus-visible,
+  .mat-mdc-raised-button:focus-visible,
+  .make-it-focusable:focus-visible {
+    anchor-name: --focus-element !important;
+    outline: none !important;
+  }
+
+  body.is-keyboard-active {
+    &::after {
+      content: '';
+      position: fixed;
+      position-anchor: --focus-element;
+      inset: anchor(inside, 0);
+      outline: var(--focus-ring-width) solid var(--focus-ring-color);
+      outline-offset: var(--focus-ring-width);
+      border-radius: var(--radius-sm, 4px);
+      pointer-events: none;
+      z-index: 9999;
+      display: block;
+
+      transition:
+        opacity 0.1s,
+        inset 0.1s;
+    }
+
+    &:has([disabled]:focus),
+    &:has([readonly]:focus),
+    &:has(.mat-form-field-disabled :focus),
+    &:has(.mat-mdc-form-field :focus[readonly]) {
+      &::after {
+        display: none !important;
+        content: none !important;
+      }
+    }
+
+    mat-form-field {
+      /* Només si NO està deshabilitat ni és readonly apliquem l'àncora a la caixa */
+      &:not(.mat-form-field-disabled):not(:has([readonly])) {
+        &:has(:focus-visible),
+        &.cdk-keyboard-focused {
+          anchor-name: none !important;
+
+          .mat-mdc-text-field-wrapper {
+            anchor-name: --focus-element !important;
+          }
+        }
+      }
+    }
+
+    .mat-mdc-list-item:focus-visible {
+      --mat-list-list-item-container-color: var(--secondary-100);
+      anchor-name: --focus-element !important;
+    }
+  }
+}
+
+body.is-keyboard-active {
+  [disabled],
+    [readonly],
+    .mat-form-field-disabled,
+    .mat-form-field-disabled *,
+    /* Bloqueig per a qualsevol input que sigui readonly encara que no tingui disabled */
+    input[readonly],
+    textarea[readonly],
+    [tabindex="-1"],
+    [tabindex="-1"] *,
+    *:not(:focus-visible):not(.cdk-keyboard-focused):not(:has(:focus-visible)) {
+    anchor-name: none !important;
+  }
+}

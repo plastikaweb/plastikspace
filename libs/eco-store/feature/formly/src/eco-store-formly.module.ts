@@ -26,6 +26,7 @@ import { TranslateService } from '@ngx-translate/core';
           {
             name: 'input-search',
             component: InputSearchTypeComponent,
+            wrappers: ['addons'],
           },
         ],
         extensions: [{ name: 'addons', extension: { onPopulate: addonsExtension } }],

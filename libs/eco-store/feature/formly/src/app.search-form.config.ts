@@ -7,7 +7,7 @@ import { FormConfig } from '@plastik/core/entities';
 export function appSearchFormConfig(): FormConfig<{ query: string }> {
   const searchConfig = [
     {
-      fieldGroupClassName: 'w-full input--eco',
+      fieldGroupClassName: 'input--eco',
       fieldGroup: [
         {
           key: 'query',
@@ -19,10 +19,10 @@ export function appSearchFormConfig(): FormConfig<{ query: string }> {
             resetSearch: true,
             translate: true,
             maxLength: 17,
+            buttonEnabledIfValue: true,
             attributes: {
               autocomplete: 'off',
             },
-            buttonEnabledIfValue: true,
           },
           modelOptions: {
             updateOn: 'change' as const,
@@ -38,7 +38,7 @@ export function appSearchFormConfig(): FormConfig<{ query: string }> {
       submitAvailable: false,
       disableOnSubmit: false,
       label: 'search.submit',
-      buttonStyle: 'sr-only',
+      buttonStyle: 'hidden!',
     }),
   };
 }

@@ -26,25 +26,6 @@
     box-sizing: border-box;
   }
 
-  /* Focus ring -> https://css-tip.com/universal-focus/ */
-  html:after {
-    content: '';
-    position: fixed;
-    position-anchor: --focus;
-    inset: anchor(inside, 0);
-    outline: 2px solid var(--error-500);
-    outline-offset: 3px;
-    border-radius: 2px;
-    pointer-events: none;
-    transition: 0.3s;
-    z-index: 1000;
-  }
-
-  *:focus-visible {
-    outline: none;
-    anchor-name: --focus;
-  }
-
   body {
     color: var(--color-on-background);
     scrollbar-color: var(--primary-200) var(--tertiary-100);
@@ -87,4 +68,9 @@
   button {
     pointer-events: auto;
   }
+}
+
+:root {
+  --focus-ring-color: rgb(37, 76, 191);
+  --focus-ring-width: 2px;
 }

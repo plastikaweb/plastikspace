@@ -144,7 +144,6 @@
       background-color: var(--primary-100);
       color: var(--primary-500);
 
-      // Explicitly set icon color to current color to avoid external overrides
       @include mat.icon-overrides(
         (
           color: var(--primary-500),

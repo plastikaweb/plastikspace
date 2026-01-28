@@ -2,7 +2,7 @@
 
 :host {
   mat-toolbar {
-    pointer-events: auto; /* Reactivem els clics a la barra */
+    pointer-events: auto;
     margin: 0 auto;
 
     @include mat.toolbar-overrides(

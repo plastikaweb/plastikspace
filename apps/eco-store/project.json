@@ -37,7 +37,7 @@
         ],
         "styles": ["apps/eco-store/src/styles/styles.scss"],
         "stylePreprocessorOptions": {
-          "includePaths": ["libs/core/styles/util/material/src"]
+          "includePaths": ["libs/core/styles/util/material/src", "apps/eco-store/src/styles"]
         },
         "scripts": []
       },
@@ -93,6 +93,7 @@
         "port": 4200,
         "host": "0.0.0.0",
         "allowedHosts": true,
+        "liveReload": true,
         "buildTarget": "eco-store:build"
       },
       "configurations": {

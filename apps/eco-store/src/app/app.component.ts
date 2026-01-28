@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, DOCUMENT, inject } from '@angular/core';
+import { A11yModule, FocusMonitor } from '@angular/cdk/a11y';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DOCUMENT,
+  inject,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
@@ -9,7 +17,13 @@ import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SkipLinkComponent } from '@plastik/shared/skip-link';
 
 @Component({
-  imports: [RouterOutlet, SharedActivityUiOverlayComponent, TranslateModule, SkipLinkComponent],
+  imports: [
+    RouterOutlet,
+    SharedActivityUiOverlayComponent,
+    TranslateModule,
+    SkipLinkComponent,
+    A11yModule,
+  ],
   selector: 'eco-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -18,11 +32,13 @@ import { SkipLinkComponent } from '@plastik/shared/skip-link';
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   readonly #translate = inject(TranslateService);
   readonly #environment = inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
   protected readonly activityStore = inject(activityStore);
   readonly #document = inject(DOCUMENT);
+  readonly #focusMonitor = inject(FocusMonitor);
+  readonly #renderer = inject(Renderer2);
 
   readonly matIconRegistry = inject(MatIconRegistry);
   readonly domSanitizer = inject(DomSanitizer);
@@ -31,6 +47,16 @@ export class AppComponent {
     this.#translate.addLangs(this.#environment.languages);
     this.addPreconnectLink();
     this.addSvgIcon();
+  }
+
+  ngOnInit(): void {
+    this.#focusMonitor.monitor(this.#document.body, true).subscribe(origin => {
+      if (origin === 'keyboard') {
+        this.#renderer.addClass(this.#document.body, 'is-keyboard-active');
+      } else {
+        this.#renderer.removeClass(this.#document.body, 'is-keyboard-active');
+      }
+    });
   }
 
   private addPreconnectLink(): void {
