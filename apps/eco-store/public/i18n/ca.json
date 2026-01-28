@@ -24,7 +24,7 @@
     "user-actions": "Accions de l'usuari",
     "categories-navigation": "Navegació de categories",
     "product-categories": "Categories de productes",
-    "product-quantity": "Quantitat de {{value}}",
+    "product-quantity": "Quantitat de {{product}} - {{quantity}}",
     "product-list": "Llista de productes",
     "sort-products": "Ordenar productes",
     "products-count": "{{count}} productes",

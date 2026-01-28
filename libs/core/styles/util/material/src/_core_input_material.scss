@@ -62,19 +62,6 @@
       border-color: var(--primary-800);
       box-shadow: -1px 1px 1px 0px rgba(0, 0, 0, 0.08);
     }
-
-    &:focus-within,
-    &:focus-visible {
-      @include mat.form-field-overrides(
-        (
-          filled-container-color: var(--primary-50),
-          filled-input-text-placeholder-color: var(--primary-800),
-        )
-      );
-      border-color: var(--primary-800);
-      border-width: 1px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-    }
   }
 
   .mat-mdc-form-field-flex {

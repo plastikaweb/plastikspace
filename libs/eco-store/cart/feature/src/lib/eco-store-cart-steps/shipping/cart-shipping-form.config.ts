@@ -349,6 +349,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
       visible: false,
       submitAvailable: false,
       emitOnChange: true,
+      buttonStyle: 'hidden!',
     }),
   };
 }

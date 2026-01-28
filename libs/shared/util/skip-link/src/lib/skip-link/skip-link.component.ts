@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'plastik-skip-link',
   templateUrl: './skip-link.component.html',
+  styleUrl: './skip-link.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkipLinkComponent {

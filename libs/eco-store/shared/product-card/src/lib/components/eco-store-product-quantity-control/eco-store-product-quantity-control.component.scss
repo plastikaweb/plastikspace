@@ -14,6 +14,14 @@
         )
       );
 
+      &:not(:disabled) {
+        @include mat.icon-overrides(
+          (
+            color: var(--primary-50),
+          )
+        );
+      }
+
       &.detail-button {
         @include mat.button-overrides(
           (

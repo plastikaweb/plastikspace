@@ -24,7 +24,7 @@
     "user-actions": "User actions",
     "categories-navigation": "Categories navigation",
     "product-categories": "Product categories",
-    "product-quantity": "Quantity of {{value}}",
+    "product-quantity": "Quantity of {{product}} - {{quantity}}",
     "product-list": "Product list",
     "sort-products": "Sort products",
     "products-count": "{{count}} products",

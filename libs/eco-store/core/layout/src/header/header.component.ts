@@ -5,10 +5,10 @@ import { MatToolbar } from '@angular/material/toolbar';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
-import { SharedFormFeatureComponent } from '@plastik/shared/form';
 import { EcoStoreTenant } from '@plastik/eco-store/entities';
-import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { SharedFormFeatureComponent } from '@plastik/shared/form';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 @Component({
   selector: 'eco-header',

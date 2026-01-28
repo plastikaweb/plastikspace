@@ -10,16 +10,5 @@
         elevated-container-elevation: var(--mat-sys-level01),
       )
     );
-
-    &:hover,
-    &:focus,
-    &:active {
-      @include mat.card-overrides(
-        (
-          elevated-container-color: var(--primary-50),
-          elevated-container-elevation: var(--mat-sys-level2),
-        )
-      );
-    }
   }
 }

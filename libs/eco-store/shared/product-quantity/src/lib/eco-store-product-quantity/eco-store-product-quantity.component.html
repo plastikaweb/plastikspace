@@ -37,27 +37,35 @@
         }
       </button>
 
-      <label
-        class="flex flex-2 items-baseline justify-center not-first-of-type:cursor-text"
-        [attr.for]="'qty-' + product().id">
+      <div class="flex items-baseline justify-center not-first-of-type:cursor-text">
+        <label class="sr-only" [attr.for]="'qty-' + product().id">
+          {{
+            'a11y.product-quantity' | translate: { product: product().name, quantity: quantity() }
+          }}
+        </label>
+
         <input
           #qtyInput
           matInput
+          disabled
           readonly
+          tabindex="-1"
           type="number"
-          class="w-fit font-bold text-neutral-700 text-end no-spinners border-none focus:outline-none cursor-default"
+          class="w-fit font-bold text-neutral-700 text-end no-spinners border-none pointer-events-none cursor-default"
           [id]="'qty-' + product().id"
           [value]="quantity()"
           [step]="step()"
           [min]="minLimit()"
           [max]="maxLimit()"
-          [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }"
+          [attr.aria-label]="
+            'a11y.product-quantity' | translate: { product: product().name, quantity: quantity() }
+          "
           (change)="onManualInput($event)"
           (keydown.enter)="qtyInput.blur()" />
         <span class="text-neutral-600 text-md" aria-hidden="true">{{
           `products.unit-abbreviation.${product().unitType}` | translate
         }}</span>
-      </label>
+      </div>
 
       <button
         matIconButton
@@ -78,7 +86,7 @@
         class="add-button detail-button grow flex items-center justify-center gap-1 uppercase tracking-wide transition-all"
         [disabled]="!isQuantityModified()"
         (click)="onAddToCart()">
-        <mat-icon class="scale-125">shopping_cart</mat-icon>
+        <mat-icon class="scale-125" aria-hidden="true">shopping_cart</mat-icon>
         {{ 'products.add-long' | translate }}
       </button>
     }
