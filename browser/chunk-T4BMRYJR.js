@@ -543,10 +543,10 @@ var DevtoolsSyncer = class _DevtoolsSyncer {
     }, {});
     this.#currentState = __spreadValues(__spreadValues({}, this.#currentState), mappedChangedStatePerName);
     const names = Array.from(currentActionNames);
-    const type = names.length ? names.join(", ") : "Store Update";
+    const type2 = names.length ? names.join(", ") : "Store Update";
     currentActionNames.clear();
     this.#connection.send({
-      type
+      type: type2
     }, this.#currentState);
   }
   getNextId() {
@@ -658,10 +658,7 @@ var DevtoolsSyncer = class _DevtoolsSyncer {
 })();
 var renameDevtoolsMethodName = "___renameDevtoolsName";
 var uniqueDevtoolsId = "___uniqueDevtoolsId";
-var EXISTING_NAMES = new InjectionToken("Array contain existing names for the signal stores", {
-  factory: () => [],
-  providedIn: "root"
-});
+var DEVTOOL_FEATURE_NAMES = Symbol("DEVTOOL_PROP");
 function withDevtools(name2, ...features) {
   return signalStoreFeature(withMethods(() => {
     const syncer = inject(DevtoolsSyncer);
@@ -672,18 +669,19 @@ function withDevtools(name2, ...features) {
       },
       [uniqueDevtoolsId]: () => id
     };
-  }), withHooks((store) => {
+  }), withProps(() => ({
+    [DEVTOOL_FEATURE_NAMES]: features.filter(Boolean).map((f) => f.name)
+  })), withHooks((store) => {
     const syncer = inject(DevtoolsSyncer);
     const id = String(store[uniqueDevtoolsId]());
     return {
       onInit() {
-        const id2 = String(store[uniqueDevtoolsId]());
         const finalOptions = {
           indexNames: !features.some((f) => f.indexNames === false),
           map: features.find((f) => f.map)?.map ?? ((state) => state),
           tracker: inject(features.find((f) => f.tracker)?.tracker || DefaultTracker)
         };
-        syncer.addStore(id2, name2, store, finalOptions);
+        syncer.addStore(id, name2, store, finalOptions);
       },
       onDestroy() {
         syncer.removeStore(id);
@@ -1728,11 +1726,11 @@ var StoreRouterConnectingService = class _StoreRouterConnectingService {
       routerState
     });
   }
-  dispatchRouterAction(type, payload) {
+  dispatchRouterAction(type2, payload) {
     this.trigger = RouterTrigger.ROUTER;
     try {
       this.store.dispatch({
-        type,
+        type: type2,
         payload: __spreadProps(__spreadValues({
           routerState: this.routerState
         }, payload), {
@@ -3639,4 +3637,4 @@ export {
   PrefixTitleService,
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-A2TJ3HOG.js.map
+//# sourceMappingURL=chunk-T4BMRYJR.js.map
