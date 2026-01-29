@@ -3,7 +3,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { LlecoopUserOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
 import { llecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
 
-import { LlecoopUserOrderResumeTableConfig } from './llecoop-user-order-feature-resume/user-order-feature-resume-table.config';
+import { LlecoopUserOrderResumeTableConfig } from './user-order-feature-resume-table.config';
 
 @Injectable({
   providedIn: 'root',

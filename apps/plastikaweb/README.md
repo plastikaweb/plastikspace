@@ -1,7 +1,7 @@
 # Plastikaweb
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
-![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![Astro](https://img.shields.io/badge/astro-%232C2025.svg?style=for-the-badge&logo=astro&logoColor=white)
 
 - [Plastikaweb](#plastikaweb)
   - [Description](#description)
@@ -15,11 +15,11 @@
 ## Description
 
 **Plastikaweb** is the main entry point for my personal portfolio. It showcases my professional skills, technologies,
-and projects, serving as a demonstration of modern web development techniques using Angular and Nx.
+and projects, serving as a demonstration of modern web development techniques using Astro and Nx.
 
 ## Features
 
-- **Skills Showcase**: A dynamic page displaying professional skills and technologies.
+- **Skills Showcase**: A dynamic page displaying professional skills and technologies fetched via GraphQL.
 - **Portfolio**: Overview of projects and achievements.
 
 ## Quick Start

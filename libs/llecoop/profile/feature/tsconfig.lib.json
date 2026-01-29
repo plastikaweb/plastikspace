@@ -7,5 +7,13 @@
     "inlineSources": true
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../../cms-layout/src/lib/cms-layout/profile-feature.resolver.ts"]
+  "include": ["src/**/*.ts", "../../cms-layout/src/lib/cms-layout/profile-feature.resolver.ts"],
+  "references": [
+    {
+      "path": "../../../core/can-deactivate-guard/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../shared/form/util/tsconfig.lib.json"
+    }
+  ]
 }

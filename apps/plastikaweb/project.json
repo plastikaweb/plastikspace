@@ -2,79 +2,66 @@
   "name": "plastikaweb",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "plastik",
   "sourceRoot": "apps/plastikaweb/src",
   "tags": ["scope:plastikaweb", "type:app"],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
-      "outputs": ["{options.outputPath}"],
-      "options": {
-        "outputPath": "dist/apps/plastikaweb",
-        "index": "apps/plastikaweb/src/index.html",
-        "browser": "apps/plastikaweb/src/main.ts",
-        "polyfills": [],
-        "tsConfig": "apps/plastikaweb/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "apps/plastikaweb/public"
-          }
-        ],
-        "styles": ["apps/plastikaweb/src/styles.scss"],
-        "scripts": []
-      },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
-            }
-          ],
-          "outputHashing": "all"
-        },
-        "development": {
-          "optimization": false,
-          "extractLicenses": false,
-          "sourceMap": true,
-          "fileReplacements": [
-            {
-              "replace": "apps/plastikaweb/src/environments/environment.ts",
-              "with": "apps/plastikaweb/src/environments/environment.development.ts"
-            }
-          ]
+      "executor": "@geekvetica/nx-astro:build",
+      "options": {},
+      "inputs": [
+        "production",
+        "^production",
+        "{projectRoot}/package.json",
+        {
+          "externalDependencies": ["astro"]
         }
-      },
-      "defaultConfiguration": "production"
+      ],
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "cache": true,
+      "dependsOn": ["^build"]
     },
-    "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+    "dev": {
+      "executor": "@geekvetica/nx-astro:dev",
       "options": {
         "port": 4202
       },
-      "configurations": {
-        "production": {
-          "buildTarget": "plastikaweb:build:production"
-        },
-        "development": {
-          "buildTarget": "plastikaweb:build:development"
-        }
-      },
-      "defaultConfiguration": "development",
-      "continuous": true
+      "cache": false
     },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
+    "preview": {
+      "executor": "@geekvetica/nx-astro:preview",
       "options": {
-        "buildTarget": "plastikaweb:build"
+        "port": 4202
+      },
+      "cache": false,
+      "dependsOn": ["build"]
+    },
+    "check": {
+      "executor": "@geekvetica/nx-astro:check",
+      "options": {},
+      "inputs": [
+        "default",
+        "^production",
+        {
+          "externalDependencies": ["astro", "typescript"]
+        }
+      ],
+      "cache": true,
+      "dependsOn": ["sync"]
+    },
+    "sync": {
+      "executor": "@geekvetica/nx-astro:sync",
+      "options": {},
+      "inputs": [
+        "{projectRoot}/src/content/**/*",
+        {
+          "externalDependencies": ["astro"]
+        }
+      ],
+      "outputs": [],
+      "cache": true,
+      "metadata": {
+        "technologies": ["astro"],
+        "description": "Generate TypeScript types for Astro Content Collections and modules (via astro sync)"
       }
     },
     "lint": {
@@ -86,15 +73,6 @@
       "options": {
         "jestConfig": "apps/plastikaweb/jest.config.ts",
         "tsConfig": "apps/plastikaweb/tsconfig.spec.json"
-      }
-    },
-    "serve-static": {
-      "executor": "@nx/web:file-server",
-      "options": {
-        "buildTarget": "plastikaweb:build",
-        "port": 4202,
-        "staticFilePath": "dist/apps/plastikaweb/browser",
-        "spa": true
       }
     }
   }

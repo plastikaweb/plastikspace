@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: model_decision
+description: Use when working over a Nx Monorepo
 ---
 
 ---

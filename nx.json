@@ -93,7 +93,7 @@
     "@nx/angular:directive": { "type": "directive" },
     "@nx/angular:pipe": { "type": "pipe" }
   },
-  "defaultProject": "llecoop",
+  "defaultProject": "eco-store",
   "cacheDirectory": "./tmp/my-cache",
   "defaultBase": "develop",
   "nxCloudAccessToken": "",

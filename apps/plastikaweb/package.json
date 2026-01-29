@@ -1,0 +1,13 @@
+{
+  "name": "plastikaweb",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@astrojs/node": "^9.0.0",
+    "astro": "^5.16.16"
+  },
+  "devDependencies": {
+    "jest-transform-stub": "^2.0.0"
+  }
+}

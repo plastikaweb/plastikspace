@@ -7,5 +7,10 @@
     "inlineSources": true
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    {
+      "path": "../../../../core/can-deactivate-guard/tsconfig.lib.json"
+    }
+  ]
 }

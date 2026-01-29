@@ -1,0 +1,66 @@
+---
+interface Props {
+  skills: Array<{
+    id: string;
+    title: string;
+    excerpt: string;
+    skillsData?: {
+      skillMainUrl?: string;
+    };
+  }>;
+}
+
+const { skills } = Astro.props;
+---
+
+<ul class="skills-list">
+  {skills.map((skill) => (
+    <li class="skill-item">
+      <h3>{skill.title}</h3>
+      {skill.excerpt && <p>{skill.excerpt}</p>}
+      {skill.skillsData?.skillMainUrl && (
+        <a href={skill.skillsData.skillMainUrl} target="_blank" rel="noopener noreferrer">
+          Learn more
+        </a>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  .skills-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .skill-item {
+    padding: 1rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    background-color: #f9fafb;
+  }
+
+  .skill-item h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.125rem;
+  }
+
+  .skill-item p {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .skill-item a {
+    color: #3b82f6;
+    text-decoration: none;
+    font-size: 0.875rem;
+  }
+
+  .skill-item a:hover {
+    text-decoration: underline;
+  }
+</style>

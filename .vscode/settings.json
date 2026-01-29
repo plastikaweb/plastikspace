@@ -129,5 +129,11 @@
   },
   "[scss]": {
     "editor.defaultFormatter": "vscode.css-language-features"
-  }
+  },
+  "workbench.fontAliasing": "antialiased",
+  "terminal.integrated.lineHeight": 0,
+  "terminal.integrated.letterSpacing": 1,
+  "terminal.integrated.smoothScrolling": false,
+  "terminal.integrated.tabs.defaultColor": "terminal.ansiMagenta",
+  "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, 'Courier New', monospace"
 }

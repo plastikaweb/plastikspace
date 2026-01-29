@@ -5,17 +5,15 @@ export default {
   coverageDirectory: '../../coverage/apps/plastikaweb',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
-      'jest-preset-angular',
+      'ts-jest',
       {
         tsconfig: '<rootDir>/tsconfig.spec.json',
         stringifyContentPathRegex: '\\.(html|svg)$',
       },
     ],
+    '^.+\\.astro$': 'jest-transform-stub',
   },
   transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
-  snapshotSerializers: [
-    'jest-preset-angular/build/serializers/no-ng-attributes',
-    'jest-preset-angular/build/serializers/ng-snapshot',
-    'jest-preset-angular/build/serializers/html-comment',
-  ],
+  snapshotSerializers: [],
+  moduleFileExtensions: ['ts', 'mjs', 'js', 'html', 'astro'],
 };

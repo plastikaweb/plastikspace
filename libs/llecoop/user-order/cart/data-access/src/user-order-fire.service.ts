@@ -11,10 +11,7 @@ import {
 } from '@angular/fire/firestore';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
-import {
-  EntityFireService,
-  StoreFirebaseCrudPagination,
-} from '@plastik/shared/signal-state-data-access';
+import { EntityFireService, FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 import { StoreUserOrderFilter } from './user-order-cart.store';
 
@@ -24,8 +21,8 @@ import { StoreUserOrderFilter } from './user-order-cart.store';
 export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOrder> {
   protected readonly path = 'order';
 
-  override getAll(
-    pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>,
+  getAll(
+    pagination: FirebaseCrudPagination<LlecoopUserOrder>,
     sorting: TableSortingConfig,
     filter: StoreUserOrderFilter
   ): Observable<LlecoopUserOrder[]> {
@@ -76,7 +73,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
       ...super.firebaseAssignTypes(),
       toFirestore: (doc: LlecoopUserOrder): DocumentData => ({
         ...doc,
-        normalizedName: latinize(doc.name).toLowerCase(),
+        normalizedName: latinize(doc.name as string).toLowerCase(),
         createdAt: doc.createdAt ?? Timestamp.now(),
         updatedAt: Timestamp.now(),
       }),

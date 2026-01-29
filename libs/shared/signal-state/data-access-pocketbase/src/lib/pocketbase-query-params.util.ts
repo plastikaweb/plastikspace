@@ -1,13 +1,10 @@
-import {
-  BasePocketBaseEntityFilter,
-  BasePocketBaseEntityPagination,
-  BasePocketBaseEntitySort,
-} from '@plastik/core/entities';
+import { BasePocketBaseEntityFilter, SortConfig } from '@plastik/core/entities';
 import { PocketBaseGetListState } from './pocketbase-store.types';
+import { BasePocketBaseEntityPagination } from '@plastik/core/entities';
 
 interface NormalizedPocketBaseParams {
   pagination: BasePocketBaseEntityPagination;
-  sort: BasePocketBaseEntitySort;
+  sort: SortConfig;
   filter: BasePocketBaseEntityFilter;
 }
 
@@ -85,8 +82,8 @@ export const normalizePocketBaseParams = (
     perPage: parseNumber(perPage) ?? defaultState.pagination.perPage,
   };
 
-  const sorting: BasePocketBaseEntitySort = {
-    sort: typeof sort === 'string' && sort.length > 0 ? sort : defaultState.sort.sort,
+  const sorting: SortConfig = {
+    active: typeof sort === 'string' && sort.length > 0 ? sort : defaultState.sort.active,
     direction: parseDirection(direction) ?? defaultState.sort.direction,
   };
 

@@ -1,14 +1,15 @@
+/// <reference types="cypress" />
+
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
-import { ChainableHarness } from '@jscutlery/cypress-harness/src/lib/internals';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
-      setMatInput(inputs: ChainableHarness<MatInputHarness[]>, text: string, index?: number): void;
+      setMatInput(inputs: Chainable<MatInputHarness[]>, text: string, index?: number): void;
       setMatDatePicker(
-        datePickers: ChainableHarness<MatDatepickerInputHarness[]>,
+        datePickers: Chainable<MatDatepickerInputHarness[]>,
         date: string,
         index?: number
       ): void;
@@ -37,3 +38,5 @@ Cypress.Commands.add('setMatDatePicker', (datePickers, date, index = 0) => {
     await picker.closeCalendar();
   });
 });
+
+export {};

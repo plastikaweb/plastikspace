@@ -6,10 +6,8 @@
     "declaration": false,
     "moduleResolution": "bundler",
     "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "module": "esnext",
-    "lib": ["es2015", "esnext", "dom"],
+    "target": "es2024",
+    "lib": ["es2024", "esnext", "dom"],
     "types": ["node", "jest", "@types/jest"],
     "resolveJsonModule": true,
     "skipLibCheck": true,
@@ -17,10 +15,19 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
+      "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
+      "@plastik/auth/feature": ["libs/shared/auth/feature/src/index.ts"],
       "@plastik/auth/firebase/data-access": ["libs/shared/auth/firebase/data-access/src/index.ts"],
       "@plastik/auth/login": ["libs/shared/auth/login/feature/src/index.ts"],
+      "@plastik/auth/pocketbase/data-access": [
+        "libs/shared/auth/pocketbase/data-access/src/index.ts"
+      ],
       "@plastik/auth/register": ["libs/shared/auth/register/feature/src/index.ts"],
       "@plastik/auth/request-password": ["libs/shared/auth/request-password/feature/src/index.ts"],
+      "@plastik/core/api-base": ["libs/core/util/api-base/src/index.ts"],
+      "@plastik/core/api-firebase": ["libs/core/util/api-firebase/src/index.ts"],
+      "@plastik/core/api-http": ["libs/core/util/api-http/src/index.ts"],
+      "@plastik/core/api-pocketbase": ["libs/core/util/api-pocketbase/src/index.ts"],
       "@plastik/core/can-deactivate": ["libs/core/can-deactivate-guard/src/index.ts"],
       "@plastik/core/cms-layout": ["libs/core/cms-layout/feature/src/index.ts"],
       "@plastik/core/cms-layout/data-access": ["libs/core/cms-layout/data-access/src/index.ts"],
@@ -33,8 +40,41 @@
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
       "@plastik/core/list-view": ["libs/core/table-with-filtering/src/index.ts"],
+      "@plastik/core/paginator": ["libs/core/paginator/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
+      "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"],
+      "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"],
+      "@plastik/eco-store/cart": ["libs/eco-store/cart/feature/src/index.ts"],
+      "@plastik/eco-store/cart/data-access": ["libs/eco-store/cart/data-access/src/index.ts"],
+      "@plastik/eco-store/cart/data-access/testing": [
+        "libs/eco-store/cart/data-access/src/eco-store-cart.store.mock.ts"
+      ],
       "@plastik/eco-store/entities": ["libs/eco-store/core/entities/src/index.ts"],
+      "@plastik/eco-store/favorite-button": ["libs/eco-store/shared/favorite-button/src/index.ts"],
+      "@plastik/eco-store/formly": ["libs/eco-store/feature/formly/src/index.ts"],
+      "@plastik/eco-store/layout": ["libs/eco-store/core/layout/src/index.ts"],
+      "@plastik/eco-store/product": ["libs/eco-store/products/feature/detail/src/index.ts"],
+      "@plastik/eco-store/product-card": ["libs/eco-store/shared/product-card/src/index.ts"],
+      "@plastik/eco-store/product-categories/data-access": [
+        "libs/eco-store/product-categories/data-access/src/index.ts"
+      ],
+      "@plastik/eco-store/product-category-label": [
+        "libs/eco-store/shared/product-category-label/src/index.ts"
+      ],
+      "@plastik/eco-store/product-price": ["libs/eco-store/shared/product-price/src/index.ts"],
+      "@plastik/eco-store/product-quantity": [
+        "libs/eco-store/shared/product-quantity/src/index.ts"
+      ],
+      "@plastik/eco-store/products": ["libs/eco-store/products/feature/list/src/index.ts"],
+      "@plastik/eco-store/products/data-access": [
+        "libs/eco-store/products/data-access/src/index.ts"
+      ],
+      "@plastik/eco-store/shared/tokens": ["libs/eco-store/shared/tokens/src/index.ts"],
+      "@plastik/eco-store/shared/utils": ["libs/eco-store/shared/utils/src/index.ts"],
+      "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"],
+      "@plastik/eco-store/tenant/testing": [
+        "libs/eco-store/core/tenant/src/eco-store-tenant.store.mock.ts"
+      ],
       "@plastik/llecoop/category-name-cell": [
         "libs/llecoop/category/ui/category-name-cell/src/index.ts"
       ],
@@ -120,6 +160,8 @@
       "@plastik/nasa-images/search/ui/no-results": [
         "libs/nasa-images/search/ui/no-results/src/index.ts"
       ],
+      "@plastik/pagination/ui": ["libs/shared/pagination/ui/src/index.ts"],
+      "@plastik/pagination/util": ["libs/shared/pagination/util/src/index.ts"],
       "@plastik/plastikaweb/graphql-models": ["libs/plastikaweb/graphql-models/src/index.ts"],
       "@plastik/plastikaweb/skills": ["libs/plastikaweb/skills/feature/src/index.ts"],
       "@plastik/plastikaweb/skills/data-access": [
@@ -134,25 +176,26 @@
       "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
       "@plastik/shared/entities": ["libs/shared/util/entities/src/index.ts"],
       "@plastik/shared/form": ["libs/shared/form/feature/src/index.ts"],
+      "@plastik/shared/form/address-selector": [
+        "libs/shared/form/ui/address-selector/src/index.ts"
+      ],
       "@plastik/shared/form/color-picker": ["libs/shared/form/ui/input-color-picker/src/index.ts"],
+      "@plastik/shared/form/custom-label": ["libs/shared/form/ui/custom-label/src/index.ts"],
       "@plastik/shared/form/img-loader": ["libs/shared/form/ui/img-loader/src/index.ts"],
+      "@plastik/shared/form/input-search": ["libs/shared/form/ui/input-search/src/index.ts"],
       "@plastik/shared/form/password": [
         "libs/shared/form/ui/input-password-with-visibility/src/index.ts"
       ],
       "@plastik/shared/form/search": ["libs/shared/form/ui/input-search-util/src/index.ts"],
+      "@plastik/shared/form/shipping-method-selector": [
+        "libs/shared/form/ui/shipping-method-selector/src/index.ts"
+      ],
       "@plastik/shared/form/table": ["libs/shared/form/ui/table/src/index.ts"],
       "@plastik/shared/form/textarea-with-counter": [
         "libs/shared/form/ui/textarea-with-counter/src/index.ts"
       ],
       "@plastik/shared/form/util": ["libs/shared/form/util/src/index.ts"],
       "@plastik/shared/form/year-picker": ["libs/shared/form/ui/year-picker/src/index.ts"],
-      "@plastik/shared/form/shipping-method-selector": [
-        "libs/shared/form/ui/shipping-method-selector/src/index.ts"
-      ],
-      "@plastik/shared/form/address-selector": [
-        "libs/shared/form/ui/address-selector/src/index.ts"
-      ],
-      "@plastik/shared/form/custom-label": ["libs/shared/form/ui/custom-label/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/hex-to-rgba": ["libs/shared/util/hex-to-rgba/src/index.ts"],
       "@plastik/shared/img-container": ["libs/shared/img-container/ui/src/index.ts"],
@@ -166,6 +209,9 @@
         "libs/shared/notification/ui/mat-snackbar/src/index.ts"
       ],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
+      "@plastik/shared/pocketbase-user-addresses": [
+        "libs/shared/pocketbase-user-addresses/data-access/src/index.ts"
+      ],
       "@plastik/shared/return-as-observable": [
         "libs/shared/util/return-as-observable-pipe/src/index.ts"
       ],
@@ -173,66 +219,18 @@
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"],
       "@plastik/shared/testing": ["libs/shared/testing/index.ts"],
-      "@plastik/storage/data-access": ["libs/shared/storage/data-access/src/index.ts"],
-      "@plastik/storage/entities": ["libs/shared/storage/entities/src/index.ts"],
-      "@plastik/storage/feature": ["libs/shared/storage/feature/src/index.ts"],
-      "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"],
-      "@plastik/shared/form/input-search": ["libs/shared/form/ui/input-search/src/index.ts"],
-      "@plastik/eco-store/product-categories/data-access": [
-        "libs/eco-store/product-categories/data-access/src/index.ts"
-      ],
-      "@plastik/eco-store/formly": ["libs/eco-store/feature/formly/src/index.ts"],
-      "@plastik/eco-store/products/data-access": [
-        "libs/eco-store/products/data-access/src/index.ts"
-      ],
-      "@plastik/eco-store/products": ["libs/eco-store/products/feature/list/src/index.ts"],
-      "@plastik/core/api-pocketbase": ["libs/core/util/api-pocketbase/src/index.ts"],
-      "@plastik/core/api-firebase": ["libs/core/util/api-firebase/src/index.ts"],
-      "@plastik/core/api-http": ["libs/core/util/api-http/src/index.ts"],
-      "@plastik/signal-state/pocketbase": [
-        "libs/shared/signal-state/data-access-pocketbase/src/index.ts"
-      ],
       "@plastik/signal-state/firebase": [
         "libs/shared/signal-state/data-access-firebase/src/index.ts"
       ],
       "@plastik/signal-state/http": ["libs/shared/signal-state/data-access-http/src/index.ts"],
-      "@plastik/core/api-base": ["libs/core/util/api-base/src/index.ts"],
-      "@plastik/eco-store/product-card": ["libs/eco-store/shared/product-card/src/index.ts"],
-      "@plastik/pagination/ui": ["libs/shared/pagination/ui/src/index.ts"],
-      "@plastik/pagination/util": ["libs/shared/pagination/util/src/index.ts"],
-      "@plastik/core/paginator": ["libs/core/paginator/src/index.ts"],
+      "@plastik/signal-state/pocketbase": [
+        "libs/shared/signal-state/data-access-pocketbase/src/index.ts"
+      ],
       "@plastik/sort-selector": ["libs/shared/sort-selector/src/index.ts"],
-      "@plastik/eco-store/shared/utils": ["libs/eco-store/shared/utils/src/index.ts"],
-      "@plastik/eco-store/shared/tokens": ["libs/eco-store/shared/tokens/src/index.ts"],
-      "@plastik/eco-store/product": ["libs/eco-store/products/feature/detail/src/index.ts"],
-      "@plastik/eco-store/product-category-label": [
-        "libs/eco-store/shared/product-category-label/src/index.ts"
-      ],
-      "@plastik/eco-store/product-price": ["libs/eco-store/shared/product-price/src/index.ts"],
-      "@plastik/eco-store/favorite-button": ["libs/eco-store/shared/favorite-button/src/index.ts"],
-      "@plastik/eco-store/cart/data-access": ["libs/eco-store/cart/data-access/src/index.ts"],
-      "@plastik/eco-store/cart/data-access/testing": [
-        "libs/eco-store/cart/data-access/src/eco-store-cart.store.mock.ts"
-      ],
-      "@plastik/eco-store/layout": ["libs/eco-store/core/layout/src/index.ts"],
-      "@plastik/eco-store/cart": ["libs/eco-store/cart/feature/src/index.ts"],
-      "@plastik/eco-store/product-quantity": [
-        "libs/eco-store/shared/product-quantity/src/index.ts"
-      ],
-      "@plastik/auth/pocketbase/data-access": [
-        "libs/shared/auth/pocketbase/data-access/src/index.ts"
-      ],
-      "@plastik/auth/feature": ["libs/shared/auth/feature/src/index.ts"],
-      "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
-      "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"],
-      "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"],
-      "@plastik/eco-store/tenant/testing": [
-        "libs/eco-store/core/tenant/src/eco-store-tenant.store.mock.ts"
-      ],
-      "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"],
-      "@plastik/shared/pocketbase-user-addresses": [
-        "libs/shared/pocketbase-user-addresses/data-access/src/index.ts"
-      ]
+      "@plastik/storage/data-access": ["libs/shared/storage/data-access/src/index.ts"],
+      "@plastik/storage/entities": ["libs/shared/storage/entities/src/index.ts"],
+      "@plastik/storage/feature": ["libs/shared/storage/feature/src/index.ts"],
+      "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"]
     }
   },
   "angularCompilerOptions": {
@@ -249,6 +247,8 @@
     "coverage",
     ".angular",
     ".nx",
-    "**/*.log"
+    "**/*.log",
+    ".astro",
+    "**/*.astro"
   ]
 }

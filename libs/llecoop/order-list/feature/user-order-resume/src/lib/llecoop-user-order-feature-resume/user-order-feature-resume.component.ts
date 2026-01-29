@@ -7,7 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 
-import { LlecoopUserOrderResumeFacadeService } from '../user-order-resume-facade.service';
+import { LlecoopUserOrderResumeFacadeService } from './user-order-resume-facade.service';
 
 @Component({
   selector: 'plastik-llecoop-user-order-feature-resume',

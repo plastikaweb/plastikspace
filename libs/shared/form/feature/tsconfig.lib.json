@@ -10,5 +10,10 @@
     "../**/*.ts",
     "../../../core/entities/src/**/*.ts",
     "../../core/entities/index.ts"
+  ],
+  "references": [
+    {
+      "path": "../util/tsconfig.lib.json"
+    }
   ]
 }

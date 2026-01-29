@@ -5,7 +5,7 @@ import { provideMockStore } from '@ngrx/store/testing';
 import { SafeFormattedPipe } from '@plastik/shared/formatters';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 
-import { LlecoopUserOrderResumeFacadeService } from '../user-order-resume-facade.service';
+import { LlecoopUserOrderResumeFacadeService } from './user-order-resume-facade.service';
 import { LlecoopUserOrderFeatureResumeComponent } from './user-order-feature-resume.component';
 
 describe('LlecoopUserOrderFeatureResumeComponent', () => {

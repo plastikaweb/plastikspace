@@ -13,6 +13,11 @@ import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import { map, pipe } from 'rxjs';
 
+export interface StoreUserOrderFilter {
+  [key: string]: unknown;
+  text?: string;
+}
+
 export const initState = {
   cart: [] as LlecoopProductWithQuantity[],
 };
