@@ -10,5 +10,37 @@
     "../../libs/eco-store/feature/formly/src/app.search-form.config.ts",
     "../../libs/eco-store/core/layout/src/eco-store-category-route-title.service.ts"
   ],
-  "exclude": ["jest.config.ts", "src/test-setup.ts", "src/**/*.test.ts", "src/**/*.spec.ts"]
+  "exclude": ["jest.config.ts", "src/test-setup.ts", "src/**/*.test.ts", "src/**/*.spec.ts"],
+  "references": [
+    {
+      "path": "../../libs/eco-store/core/layout"
+    },
+    {
+      "path": "../../libs/eco-store/auth/feature/login"
+    },
+    {
+      "path": "../../libs/shared/notification/data-access"
+    },
+    {
+      "path": "../../libs/eco-store/core/tenant"
+    },
+    {
+      "path": "../../libs/core/router/data-access"
+    },
+    {
+      "path": "../../libs/core/util/api-pocketbase"
+    },
+    {
+      "path": "../../libs/shared/util/skip-link"
+    },
+    {
+      "path": "../../libs/shared/activity/ui"
+    },
+    {
+      "path": "../../libs/shared/activity/data-access"
+    },
+    {
+      "path": "../../libs/core/util/environments"
+    }
+  ]
 }
