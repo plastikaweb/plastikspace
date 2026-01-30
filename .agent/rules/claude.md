@@ -1,5 +1,6 @@
 ---
-trigger: always_on
+trigger: model_decision
+description: Use when working with Typescript, Angular or an Angular app inside a Nx Monorepo
 ---
 
 # Claude AI

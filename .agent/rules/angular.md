@@ -1,8 +1,6 @@
 ---
-trigger: always_on
-context: true
-priority: high
-scope: project
+trigger: model_decision
+description: Use when the code is Angular or an angular app inside a Nx Monorepo
 ---
 
 # Description
