@@ -40,6 +40,4 @@ jobs:
           npx nx-cloud record -- nx affected --target=lint --exclude=llecoop-firebase --parallel=3
           npx nx-cloud record -- nx affected --target=test --exclude=llecoop-firebase --parallel=3
           npx nx-cloud record -- nx affected --target=build --exclude=llecoop-firebase --parallel=3
-
-          - run: npx nx fix-ci
         if: always()
