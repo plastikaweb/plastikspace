@@ -193,7 +193,6 @@
       "shipping-cost": "Enviament",
       "go-to-confirmation": "Continuar al resum de la comanda",
       "method": {
-        "title": "Tria si vols rebre o recollir la teva comanda.",
         "pickup": {
           "title": "Recollida a la botiga.",
           "description": "Passa per la botiga i recull la teva comanda."
@@ -201,6 +200,10 @@
         "delivery": {
           "title": "Enviament a domicili.",
           "description": "Et portarem la teva comanda a la teva adreça."
+        },
+        "all": {
+          "title": "Recollida a la botiga o Enviament a domicili.",
+          "description": "Tria si vols rebre o recollir la teva comanda."
         }
       },
       "weekdays-labels": {

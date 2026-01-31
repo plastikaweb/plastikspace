@@ -190,7 +190,6 @@
       "shipping-cost": "Shipping",
       "go-to-confirmation": "Continue to Order Summary",
       "method": {
-        "title": "Choose if you would like to receive or pick up your order.",
         "pickup": {
           "title": "Store pickup.",
           "description": "Come to the store and pick up your order."
@@ -198,6 +197,10 @@
         "delivery": {
           "title": "Home delivery.",
           "description": "We bring your order to your address."
+        },
+        "all": {
+          "title": "Choose if you would like to receive or pick up your order.",
+          "description": "Choose if you would like to receive or pick up your order."
         }
       },
       "weekdays-labels": {

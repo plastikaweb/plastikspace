@@ -23,8 +23,11 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
   const currentLang = translateService.getCurrentLang();
   const logisticsConfig = tenantStore.tenant()?.logisticsConfig;
 
-  const shippingMethodOptions: ShippingMethodOption[] =
-    logisticsConfig?.options.map(option => ({
+  const availableShippingMethods = logisticsConfig?.options.filter(option => option.enabled);
+  const availableShippingMethodsTypes = availableShippingMethods?.map(option => option.type);
+
+  const availableShippingMethodOptionsConfig: ShippingMethodOption[] =
+    availableShippingMethods?.map(option => ({
       type: option.type,
       icon: option.type === 'pickup' ? 'store' : 'local_shipping',
       title: `cart.steps.shipping.method.${option.type}.title`,
@@ -66,9 +69,27 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
     linkedFieldKeys: string[];
   };
 
+  const getShippingLabel = (field: string): string => {
+    const hasDelivery = availableShippingMethodsTypes?.includes('delivery');
+    const hasPickup = availableShippingMethodsTypes?.includes('pickup');
+
+    if (!hasDelivery && hasPickup) {
+      return `cart.shipping.${field}.pickup.description`;
+    }
+
+    if (hasDelivery && !hasPickup) {
+      return `cart.shipping.${field}.delivery.description`;
+    }
+
+    if (hasDelivery && hasPickup) {
+      return `cart.shipping.${field}.all.description`;
+    }
+
+    return `cart.shipping.${field}.all.description`;
+  };
+
   const setCustomLabel = (
     key: string,
-    label: string,
     icon: string,
     hooks: HookFunction[] = [],
     isValid: 'valid' | 'error' | 'untouched' = 'untouched'
@@ -81,7 +102,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
       className: 'flex flew-row items-start text-primary-600 mt-4',
       props: {
         key,
-        label,
+        label: getShippingLabel(key),
         icon,
         containerClasses: 'p-2',
         iconClasses: 'scale-125',
@@ -90,13 +111,17 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
       },
       hooks: {
         onInit: (field: FormlyFieldConfig) => {
-          hooks.forEach(({ fn, linkedFieldKeys }) => fn(field, linkedFieldKeys));
+          const hookFunction = () => {
+            hooks.forEach(({ fn, linkedFieldKeys }) => fn(field, linkedFieldKeys));
+          };
+
+          hookFunction();
 
           return field.options?.fieldChanges?.pipe(
             filter(
               e => e.type === 'valueChanges' && allLinkedFieldKeys.includes(e.field?.key as string)
             ),
-            tap(() => hooks.forEach(({ fn, linkedFieldKeys }) => fn(field, linkedFieldKeys)))
+            tap(() => hookFunction())
           );
         },
       },
@@ -108,7 +133,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
       fieldGroupClassName: 'flex flex-col gap-6',
       fieldGroup: [
         {
-          ...setCustomLabel('method', 'cart.shipping.method.title', 'counter_1', [
+          ...setCustomLabel('method', 'counter_1', [
             {
               fn: checkCustomLabelValidation,
               linkedFieldKeys: ['method'],
@@ -122,11 +147,11 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           props: {
             translate: true,
             required: true,
-            shippingMethodOptions,
+            shippingMethodOptions: availableShippingMethodOptionsConfig,
           },
         },
         {
-          ...setCustomLabel('address', '', 'counter_2', [
+          ...setCustomLabel('address', 'counter_2', [
             {
               fn: checkCustomLabelValidation,
               linkedFieldKeys: ['address'],
@@ -186,7 +211,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
           },
         },
         {
-          ...setCustomLabel('slot', 'cart.shipping.slot.title', 'counter_3', [
+          ...setCustomLabel('slot', 'counter_3', [
             {
               fn: checkCustomLabelValidation,
               linkedFieldKeys: ['day', 'time'],
