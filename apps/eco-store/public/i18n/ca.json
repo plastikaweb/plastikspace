@@ -239,7 +239,8 @@
         },
         "date": "Seleccionar dia",
         "time": "Franja horària"
-      }
+      },
+      "come-to-store": "Passa per la botiga i recull la teva comanda."
     },
     "product": {
       "quantity-label": "Qt:"

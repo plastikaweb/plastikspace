@@ -25,14 +25,14 @@
 
 <div class="core-cms-container">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
-    <div start class="flex gap-0 items-center sm:gap-sm">
+    <div start class="sm:gap-sm flex items-center gap-0">
       @defer (when sidenavPosition === 'start') {
         <ng-container [ngTemplateOutlet]="toggleSidenavButtonTpl"></ng-container>
       }
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerTitle }}</span>
         <a
-          class="flex justify-between content-center items-center hover:no-underline gap-sub"
+          class="gap-sub flex content-center items-center justify-between hover:no-underline"
           [routerLink]="['/']"
           [attr.title]="headerTitle">
           <ng-container [ngTemplateOutlet]="h1Tpl"></ng-container>
@@ -43,7 +43,7 @@
       }
     </div>
 
-    <div end class="flex items-center gap-tiny lg:gap-sm">
+    <div end class="gap-tiny lg:gap-sm flex items-center">
       @if (headerWidgetsConfig && headerWidgetsPosition === 'end') {
         <ng-container #widgetsContainer></ng-container>
       }
@@ -90,7 +90,7 @@
 
   @defer (when !hideFooter()) {
     <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-      <div content class="flex flex-row justify-center items-center text-sm gap-tiny">
+      <div content class="gap-tiny flex flex-row items-center justify-center text-sm">
         {{ currentDate | date: 'yyyy' }}
         <a
           aria-label="visit www.plastikaweb.com page"
@@ -115,14 +115,14 @@
 <ng-template #headerMenuTpl>
   <button
     mat-button
-    class="flex gap-tiny"
+    class="gap-tiny flex"
     [attr.aria-label]="headerMenu?.label()"
     [matMenuTriggerFor]="menu">
     <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
-    <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
+    <mat-icon class="m-0 size-[30px] p-0 text-[30px]">account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="px-sub">
-    <span class="block border-b-2 sm:hidden w-fit text-balance p-tiny border-b-gray-10">{{
+    <span class="p-tiny border-b-gray-10 block w-fit border-b-2 text-balance sm:hidden">{{
       headerMenu?.label()
     }}</span>
 
@@ -143,7 +143,7 @@
 </ng-template>
 
 <ng-template #h1Tpl>
-  <div class="flex justify-center items-center gap-sub">
+  <div class="gap-sub flex items-center justify-center">
     @if (headerConfig.mainIcon; as icon) {
       <svg-icon
         [src]="icon.iconPath"

@@ -2,7 +2,7 @@
 
 <mat-card
   role="article"
-  class="product-card make-it-focusable group relative flex h-full w-full flex-col justify-between overflow-hidden transition-all ring-1! ring-neutral-100! duration-200 hover:ring-neutral-200! hover:shadow-2xl!"
+  class="product-card make-it-focusable group relative flex h-full w-full flex-col justify-between overflow-hidden ring-1! ring-neutral-100! transition-all duration-200 hover:shadow-2xl! hover:ring-neutral-200!"
   [class.pointer-events-none]="!productData.stock"
   [routerLink]="
     productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
@@ -39,7 +39,7 @@
         [color]="productData.categoryColor" />
 
       <!-- Title -->
-      <h3 class="min-h-9 text-lg font-bold leading-tight text-gray-900 line-clamp-2">
+      <h3 class="line-clamp-2 min-h-9 text-lg leading-tight font-bold text-gray-900">
         {{ productData.name }}
       </h3>
 

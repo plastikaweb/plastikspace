@@ -1,16 +1,20 @@
 <mat-toolbar class="shadow-sm" role="banner">
-  <div class="mx-auto content-container flex gap-4 md:gap-12 flex-row items-center">
-    <button matButton routerLink="/" type="button" class="w-[250px] p-0! m-0! h-auto">
+  <div class="content-container mx-auto flex flex-row items-center gap-4 md:gap-12">
+    <button matButton routerLink="/" type="button" class="m-0! h-auto w-[250px] p-0!">
       <h1
-        class="truncate flex items-center gap-2 max-w-[250px] font-semibold tracking-wide text-primary-500">
+        class="text-primary-500 flex max-w-[250px] items-center gap-2 truncate font-semibold tracking-wide">
         @if (tenant()?.logo) {
           <plastik-img-container
-            class="object-cover w-10 h-10"
+            class="h-10 w-10 object-cover"
             [src]="tenant() | pocketBaseImageUrl: tenant()?.logo"
             [title]="tenant()?.name || 'Botiga Eco'"
             [dimensions]="{ width: 40, height: 40 }"></plastik-img-container>
         } @else {
-          <mat-icon class="header-icon" aria-hidden="true">eco_logo</mat-icon>
+          <mat-icon
+            class="header-icon"
+            [attr.aria-label]="(tenant()?.name || 'Botiga Eco') + ' logo'"
+            >eco_logo</mat-icon
+          >
         }
 
         <span class="hidden md:block">{{ tenant()?.name || 'Botiga Eco' }}</span>

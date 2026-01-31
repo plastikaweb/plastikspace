@@ -278,6 +278,7 @@ The module includes several custom form types located in `libs/shared/form/ui`:
 - [`shipping-method-selector`](../ui/shipping-method-selector/README.md) - Card-based shipping method selector.
 - [`address-selector`](../ui/address-selector/README.md) - Addresses selector with checkbox.
 - ['custom-label'](../ui/custom-label/README.md) - A custom section label with text, icon and description.
+- [`text`](../ui/text/README.md) - Static text input.
 
 ## Troubleshooting
 

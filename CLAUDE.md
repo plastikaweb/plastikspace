@@ -120,7 +120,7 @@ yarn cz                              # Interactive commit with Commitizen
 | **llecoop-firebase** | Firebase Functions | -          | Cloud functions for Llecoop                  |
 | **llecoop-triggers** | Firebase Functions | -          | Event triggers for Llecoop                   |
 | **eco-store**        | Angular 21         | PocketBase | E-commerce demo                              |
-| **plastikaweb**      | Astro 5            | GraphQL    | Personal portfolio (migrating from Angular)  |
+| **plastikaweb**      | Angular 21         | GraphQL    | Personal portfolio (static site)             |
 
 Each app has a corresponding `-e2e` project for Cypress testing.
 
@@ -167,14 +167,17 @@ Libraries are organized by **scope** (domain) and **type** (layer):
 
 The following dependency rules are enforced via `.eslintrc.json`:
 
-```bash
-Apps → can depend on: features, ui, util, data-access, entities (from core/shared)
-Features → can depend on: ui, util, data-access, entities, other features
-UI → can depend on: entities, util, other UI
-Data-access → can depend on: util, entities, other data-access
-Utils → can depend on: util, entities only
-Entities → can depend on: entities, util only
-```
+> Apps → can depend on: features, ui, util, data-access, entities (from core/shared)
+>
+> Features → can depend on: ui, util, data-access, entities, other features
+>
+> UI → can depend on: entities, util, other UI
+>
+> Data-access → can depend on: util, entities, other data-access
+>
+> Utils → can depend on: util, entities only
+>
+> Entities → can depend on: entities, util only
 
 **Scope constraints**:
 
@@ -192,6 +195,15 @@ Entities → can depend on: entities, util only
 yarn <app-name>:test                 # Run tests for app
 yarn test:all                        # All tests with coverage
 nx test <lib-name>                   # Test specific library
+
+# Run single test file
+nx test <project-name> --testFile=<file-name>
+
+# Run tests matching a pattern
+nx test <project-name> --testNamePattern="<pattern>"
+
+# Run tests in watch mode
+nx test <project-name> --watch
 ```
 
 - Preset: `@nx/jest/preset`
@@ -290,6 +302,21 @@ Main module/component files must contain the full path in the filename:
 
 - Library: `libs/booking/feature-destination`
 - Main file: `booking-feature-destination.component.ts`
+
+### Generating Libraries
+
+Generate new libraries following the naming conventions and tagging strategy:
+
+```bash
+# Generate a new library following conventions
+nx g @nx/angular:lib <name> --directory=<scope>/<type> --tags=scope:<scope>,type:<type>
+
+# Example: Generate a feature library for eco-store
+nx g @nx/angular:lib checkout --directory=eco-store/feature --tags=scope:eco-store,type:feature
+
+# Example: Generate a shared UI component
+nx g @nx/angular:lib button --directory=shared/ui --tags=scope:shared,type:ui
+```
 
 ## State Management
 
@@ -449,13 +476,10 @@ All implement common interfaces from `libs/core/util/api-base`.
 
 Custom Signal Store features in `libs/shared/signal-state/` provide reusable patterns for each backend type.
 
-## Current Development
+### Form Management
 
-**Active Branch**: `chore/832-astro-plastikaweb` - Migrating plastikaweb from Angular to Astro
-
-Recent focus areas:
-
-- Astro static site generation
-- Focus management improvements
-- E-commerce enhancements
-- PocketBase schema management
+- Use **@ngx-formly** for dynamic form generation
+- Form configurations live in `*.config.ts` files alongside components
+- Use Material UI types from `@ngx-formly/material`
+- Form configs define fields declaratively with validators, expressions, and hooks
+- Example: `cart-shipping-form.config.ts` defines form structure for shipping forms

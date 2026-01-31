@@ -1,5 +1,5 @@
 @import 'tailwindcss';
 @import 'tailwind-theme.css';
 
-@source "../../apps/nasa-images/src/**/*.{html,ts}";
-@source "../../libs/**/*.{html,ts}";
+@source '../../apps/nasa-images/src/**/*.{html,ts}';
+@source '../../libs/**/*.{html,ts}';

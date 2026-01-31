@@ -1,8 +1,8 @@
 <ng-template #primaryMenu>
   <nav
-    class="flex h-full items-center main-menu"
+    class="main-menu flex h-full items-center"
     [attr.aria-label]="'a11y.main-navigation' | translate">
-    <ul class="flex flex-row justify-start items-center gap-4">
+    <ul class="flex flex-row items-center justify-start gap-4">
       <li class="flex items-center">
         <a
           mat-button
@@ -97,7 +97,7 @@
   @let user = profileStore.user();
 
   @if (user) {
-    <div class="px-4 py-3 flex flex-col gap-1 outline-none">
+    <div class="flex flex-col gap-1 px-4 py-3 outline-none">
       <div class="flex items-center gap-3">
         <eco-user-avatar
           avatarClass="size-12"
@@ -105,10 +105,10 @@
           [initials]="profileStore.userInitials()"
           [user]="user" />
         <div class="flex flex-col">
-          <span class="font-bold text-base leading-none">{{ user?.name }}</span>
-          <div class="flex items-center gap-1 mt-1 text-gray-500">
+          <span class="text-base leading-none font-bold">{{ user?.name }}</span>
+          <div class="mt-1 flex items-center gap-1 text-gray-500">
             @if (roleIcon()) {
-              <mat-icon class="w-4 h-4 text-[16px] leading-none">{{ roleIcon() }}</mat-icon>
+              <mat-icon class="h-4 w-4 text-[16px] leading-none">{{ roleIcon() }}</mat-icon>
             }
             <span class="text-xs">{{ `users.role.${user?.role}` | translate }}</span>
           </div>

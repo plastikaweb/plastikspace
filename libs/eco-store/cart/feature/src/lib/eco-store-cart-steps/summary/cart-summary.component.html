@@ -1,20 +1,20 @@
 <div class="px-4 py-0">
-  <h2 class="text-3xl flex items-center font-bold text-neutral-800 gap-2 mb-8">
+  <h2 class="mb-8 flex items-center gap-2 text-3xl font-bold text-neutral-800">
     <span>{{ 'cart.steps.summary.title' | translate }}</span>
-    <span class="text-neutral-500 font-normal text-base"
+    <span class="text-base font-normal text-neutral-500"
       >({{ 'cart.summary.items-count' | translate: { value: cartStore.itemsCount() } }})</span
     >
   </h2>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
     <!-- Left Column: Cart List -->
-    <div class="cart-summary-card lg:col-span-2 space-y-4 mb-8">
+    <div class="cart-summary-card mb-8 space-y-4 lg:col-span-2">
       <mat-card appearance="outlined" class="overflow-hidden">
         <!-- Categories and Items -->
         <mat-card-content>
           @for (group of cartStore.itemsGroupedByCategory() | keyvalue; track group.key) {
             <div class="mb-4 px-4 py-2">
-              <span class="text-xs font-bold text-tertiary-500 uppercase tracking-wider">{{
+              <span class="text-tertiary-500 text-xs font-bold tracking-wider uppercase">{{
                 group.key
               }}</span>
             </div>
@@ -22,15 +22,15 @@
             @for (item of group.value; track item.id) {
               <mat-card
                 appearance="outlined"
-                class="cart-item-card grid! grid-cols-[2fr_1fr] items-center my-4! gap-4! shadow-sm">
-                <mat-card-content class="flex-row items-center gap-4 px-4 pb-4! pt-4! inline-flex!">
+                class="cart-item-card my-4! grid! grid-cols-[2fr_1fr] items-center gap-4! shadow-sm">
+                <mat-card-content class="inline-flex! flex-row items-center gap-4 px-4 pt-4! pb-4!">
                   <plastik-img-container
-                    class="rounded-lg overflow-hidden"
+                    class="overflow-hidden rounded-lg"
                     [src]="item.product | pocketBaseImageUrl: item.product.images?.[0]"
                     [title]="item.product.name"
                     [dimensions]="{ width: 100, height: 100 }" />
                   <div class="flex flex-col gap-2">
-                    <h3 class="font-bold text-lg text-neutral-900">{{ item.product.name }}</h3>
+                    <h3 class="text-lg font-bold text-neutral-900">{{ item.product.name }}</h3>
                     <div class="gap-0">
                       <eco-store-product-price
                         size="sm"
@@ -38,14 +38,14 @@
                         [unitType]="item.product.unitType"
                         [unitBase]="item.product.unitBase"
                         [unitChipVisible]="false" />
-                      <p class="text-neutral-600 font-normal text-xs">
+                      <p class="text-xs font-normal text-neutral-600">
                         IVA {{ item.product.iva }}%
                       </p>
                     </div>
                   </div>
                 </mat-card-content>
 
-                <mat-card-actions class="flex flex-row pb-4! pr-4! justify-end items-center">
+                <mat-card-actions class="flex flex-row items-center justify-end pr-4! pb-4!">
                   <eco-store-product-quantity
                     class="min-w-48"
                     size="sm"
@@ -55,13 +55,13 @@
                     (quantityChange)="
                       onQuantityChange($event, item.product)
                     "></eco-store-product-quantity>
-                  <p class="font-bold text-2xl text-primary-600 text-center min-w-28 w-28">
+                  <p class="text-primary-600 w-28 min-w-28 text-center text-2xl font-bold">
                     {{
                       item.product.priceWithIva * item.quantity
                         | currency: 'EUR' : 'symbol' : '1.2-2'
                     }}
                   </p>
-                  <div class="w-px h-8 bg-neutral-200 mr-2"></div>
+                  <div class="mr-2 h-8 w-px bg-neutral-200"></div>
                   <button
                     matIconButton
                     type="button"
@@ -78,7 +78,7 @@
       </mat-card>
     </div>
 
-    <div class="lg:col-span-1 space-y-6 sticky top-4 self-start">
+    <div class="sticky top-4 space-y-6 self-start lg:col-span-1">
       <eco-cart-order-summary
         [subtotal]="cartStore.totalAmount()"
         [taxes]="cartStore.totalAmountIva()"

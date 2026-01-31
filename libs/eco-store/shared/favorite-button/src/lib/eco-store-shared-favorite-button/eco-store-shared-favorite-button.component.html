@@ -1,7 +1,7 @@
 <button
   mat-icon-button
   type="button"
-  [class]="'favorite-button backdrop-blur-3xl bg-primary-100/50! size-' + size()"
+  [class]="'favorite-button bg-primary-100/50! size- backdrop-blur-3xl' + size()"
   [class.is-favorite]="isFavorite()"
   [attr.aria-label]="ariaLabel()"
   (click)="onToggle($event)">

@@ -25,12 +25,12 @@
             [id]="`address-${address.id}`"></mat-radio-button>
 
           <div>
-            <h3 class="font-bold text-neutral-900 capitalize mb-2">
+            <h3 class="mb-2 font-bold text-neutral-900 capitalize">
               {{ address.name || address.fullName }}
             </h3>
-            <div class="text-neutral-600 text-sm leading-relaxed grid gap-4 grid-cols-2">
+            <div class="grid grid-cols-2 gap-4 text-sm leading-relaxed text-neutral-600">
               <div class="flex items-center gap-2">
-                <mat-icon class="text-neutral-500! scale-90" aria-hidden="true"
+                <mat-icon class="scale-90 text-neutral-500!" aria-hidden="true"
                   >location_on</mat-icon
                 >
                 <div>
@@ -45,7 +45,7 @@
               </div>
               @if (address.phone) {
                 <div class="flex items-center gap-2">
-                  <mat-icon class="text-neutral-500! scale-90" aria-hidden="true">phone</mat-icon>
+                  <mat-icon class="scale-90 text-neutral-500!" aria-hidden="true">phone</mat-icon>
                   <span class="mt-1 text-neutral-500">{{ address.phone }}</span>
                 </div>
               }
@@ -54,7 +54,7 @@
 
           @if (address.default) {
             <div
-              class="address-default absolute border border-tertiary-200 top-4 right-4 p-2 text-xs bg-tertiary-100 text-tertiary-800 font-bold rounded-xl flex gap-2 flex-row justify-center items-center">
+              class="address-default border-tertiary-200 bg-tertiary-100 text-tertiary-800 absolute top-4 right-4 flex flex-row items-center justify-center gap-2 rounded-xl border p-2 text-xs font-bold">
               <mat-icon class="icon-xs">star</mat-icon>
               <span>{{ 'shared.address.default' | translate }}</span>
             </div>

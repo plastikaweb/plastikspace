@@ -1,4 +1,4 @@
-<div class="grid grid-rows-[auto_1fr_auto] h-screen w-screen mx-auto">
+<div class="mx-auto grid h-screen w-screen grid-rows-[auto_1fr_auto]">
   <eco-header
     class="z-1000"
     [formConfig]="searchFormConfig"
@@ -8,7 +8,7 @@
     <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
   </eco-header>
 
-  <mat-sidenav-container class="h-full w-full content-container overflow-auto mx-auto">
+  <mat-sidenav-container class="content-container mx-auto h-full w-full overflow-auto">
     <mat-sidenav
       #sidenav
       mode="side"

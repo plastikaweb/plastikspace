@@ -21,6 +21,7 @@ export interface EcoStoreCartState {
   method: EcoStoreTenantLogisticsDeliveryType | null;
   day: SlotDays | null;
   time: TimeRange | null;
+  noDayAndTime: boolean;
   amount: number;
 }
 
@@ -29,6 +30,7 @@ const initialState: EcoStoreCartState = {
   address: null,
   day: null,
   time: null,
+  noDayAndTime: false,
   amount: 0,
 };
 

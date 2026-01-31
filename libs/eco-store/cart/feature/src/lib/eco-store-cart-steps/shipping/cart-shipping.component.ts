@@ -15,9 +15,10 @@ import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { AddressSelectorFormlyModule } from '@plastik/shared/form/address-selector';
 import { CustomLabelFormlyModule } from '@plastik/shared/form/custom-label';
 import { ShippingMethodSelectorFormlyModule } from '@plastik/shared/form/shipping-method-selector';
+import { TextFormlyModule } from '@plastik/shared/form/text';
 import { CartOrderPriceSlotsComponent } from '../../ui/cart-order-price-slots/cart-order-price-slots.component';
 import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
-import { getCartShippingFormConfig } from './cart-shipping-form.config';
+import { getCartShippingFormConfig } from './form/cart-shipping-form.config';
 
 @Component({
   selector: 'eco-cart-shipping',
@@ -32,6 +33,7 @@ import { getCartShippingFormConfig } from './cart-shipping-form.config';
     MatNativeDateModule,
     SharedFormFeatureModule,
     ShippingMethodSelectorFormlyModule,
+    TextFormlyModule,
     CustomLabelFormlyModule,
     AddressSelectorFormlyModule,
     CartOrderSummaryComponent,

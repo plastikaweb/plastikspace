@@ -5,7 +5,7 @@
       @let icon = getIcon(item.key);
       @let label = getStatusLabel(item.key);
 
-      <li class="flex justify-start items-start border-none gap-tiny" [ngClass]="class">
+      <li class="gap-tiny flex items-start justify-start border-none" [ngClass]="class">
         <mat-icon class="size-[20px] text-[20px]" [attr.aria-label]="label">{{ icon }}</mat-icon>
         <span>{{ label }}</span>
         <span class="font-bold">{{ item.value }}</span>

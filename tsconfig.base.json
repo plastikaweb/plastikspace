@@ -153,6 +153,7 @@
         "libs/shared/form/ui/address-selector/src/index.ts"
       ],
       "@plastik/shared/form/custom-label": ["libs/shared/form/ui/custom-label/src/index.ts"],
+      "@plastik/shared/form/text": ["libs/shared/form/ui/text/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
       "@plastik/shared/hex-to-rgba": ["libs/shared/util/hex-to-rgba/src/index.ts"],
       "@plastik/shared/img-container": ["libs/shared/img-container/ui/src/index.ts"],

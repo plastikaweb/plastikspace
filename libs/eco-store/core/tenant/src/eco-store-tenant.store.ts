@@ -1,7 +1,8 @@
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
-import { FormSelectOption, UserContact } from '@plastik/core/entities';
+import { isString, TranslateService } from '@ngx-translate/core';
+import { FormSelectOption, LocalizedFields, UserContact } from '@plastik/core/entities';
 import {
   EcoStoreTenant,
   EcoStoreTenantAddress,
@@ -34,6 +35,7 @@ export const ecoStoreTenantStore = signalStore(
   withProps(() => ({
     _tenantAddressService: inject(EcoStoreTenantAddressService),
     _tenantService: inject(EcoStoreTenantBaseService),
+    _translateService: inject(TranslateService),
   })),
   withComputed(store => ({
     getTenantLegalAddress: computed(() => {
@@ -211,6 +213,104 @@ export const ecoStoreTenantStore = signalStore(
     getTenantDeliveryPriceTiers() {
       const deliveryOption = this.getTenantDeliveryOption('delivery');
       return deliveryOption?.tiers || [];
+    },
+
+    getTenantDeliveryInstructions(
+      type: EcoStoreTenantLogisticsDeliveryType = 'pickup',
+      addressId: string | null = null
+    ) {
+      const tenant = store.tenant();
+      if (!tenant) return '';
+
+      const currentLanguage = store._translateService.getCurrentLang();
+      const translateInstructions = (instructions: string | LocalizedFields<string>) =>
+        isString(instructions)
+          ? instructions
+          : store._translateService.instant(instructions[currentLanguage] || '');
+
+      if (type === 'pickup') {
+        const address = store.addresses().find(address => address.id === addressId);
+        const addressInstructions = address?.instructions || '';
+        const tenantInstructions =
+          tenant.logisticsConfig?.options?.find(option => option.type === type)?.instructions || '';
+
+        return addressInstructions
+          ? translateInstructions(addressInstructions)
+          : tenantInstructions
+            ? translateInstructions(tenantInstructions)
+            : '';
+      }
+
+      if (type === 'delivery') {
+        const instructions =
+          tenant.logisticsConfig?.options?.find(option => option.type === 'delivery')
+            ?.instructions || '';
+
+        return instructions ? translateInstructions(instructions) : '';
+      }
+    },
+    getTiersOrInstructions(
+      type: EcoStoreTenantLogisticsDeliveryType = 'pickup',
+      addressId: string | null = null
+    ) {
+      const tenant = store.tenant();
+      if (!tenant) return null;
+
+      const deliveryOption = tenant.logisticsConfig?.options?.find(option => option.type === type);
+      if (!deliveryOption?.enabled) return null;
+
+      if (type === 'delivery') {
+        // Check if tiers exist in tenant
+        if (deliveryOption?.slots && Object.keys(deliveryOption.slots).length > 0) {
+          return {
+            slots: deliveryOption.slots,
+            type: 'slots',
+          };
+        }
+        if (deliveryOption.instructions) {
+          return {
+            instructions: this.getTenantDeliveryInstructions(type, addressId),
+            type: 'instructions',
+          };
+        }
+        return null;
+      }
+
+      if (type === 'pickup') {
+        const address = store.addresses().find(address => address.id === addressId);
+
+        if (address?.slots && Object.keys(address.slots).length > 0) {
+          return {
+            slots: address.slots,
+            type: 'slots',
+          };
+        }
+
+        if (deliveryOption?.slots && Object.keys(deliveryOption.slots).length > 0) {
+          return {
+            slots: deliveryOption.slots,
+            type: 'slots',
+          };
+        }
+
+        if (address?.instructions) {
+          return {
+            instructions: this.getTenantDeliveryInstructions(type, addressId),
+            type: 'instructions',
+          };
+        }
+
+        if (deliveryOption.instructions) {
+          return {
+            instructions: this.getTenantDeliveryInstructions(type, addressId),
+            type: 'instructions',
+          };
+        }
+
+        return null;
+      }
+
+      return null;
     },
   }))
 );

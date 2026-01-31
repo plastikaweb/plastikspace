@@ -30,6 +30,18 @@
   },
   "zoomed_padding": true,
   "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "includeLanguages": {
+          "html": "html",
+          "javascript": "javascript",
+          "typescript": "typescript",
+          "css": "css"
+        },
+        "emmetCompletions": true,
+        "suggestions": true
+      }
+    },
     "angular-language-server": {
       "initialization_options": {
         "typescript": {
@@ -45,6 +57,33 @@
             "includePackageJsonAutoImports": "on",
             "importModuleSpecifier": "project-relative"
           }
+        }
+      }
+    }
+  },
+  "languages": {
+    "CSS": {
+      "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."]
+    },
+    "TypeScript": {
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.ts": true
+      }
+    },
+
+    "HTML": {
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
         }
       }
     }

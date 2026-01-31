@@ -1,5 +1,5 @@
 @if (routeInfo$ | ngrxPush; as info) {
-  <h2 class="flex items-center gap-sm h3" data-test="page-title">
+  <h2 class="gap-sm h3 flex items-center" data-test="page-title">
     <mat-icon> {{ info?.icon }} </mat-icon> <span>{{ info?.title }}</span>
   </h2>
 }

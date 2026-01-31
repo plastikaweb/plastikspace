@@ -1,3 +1,4 @@
+import { LocalizedFields } from './base-entity';
 import { BasePocketBaseEntity } from './base-pocketbase-entity';
 
 export type UserContact = Omit<
@@ -14,5 +15,5 @@ export type UserContact = Omit<
   phone: string | undefined;
   default?: boolean;
   active?: boolean;
-  instructions?: string;
+  instructions?: string | LocalizedFields<string>;
 };
