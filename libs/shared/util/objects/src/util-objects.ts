@@ -201,8 +201,9 @@ export function transformToString(value: unknown): string {
 
 /**
  * @description Returns an array based on passed collection.
- * @param {Record} collection The passed collection as parameter.
- * @returns {Array}.
+ * @template T
+ * @param {Record<string, T>} collection The passed collection as parameter.
+ * @returns {T[]}.
  */
 export function collectionToArray<T>(collection: Record<string, T>): T[] {
   return Object.keys(collection).map((key: string) => collection[key]);
@@ -210,6 +211,7 @@ export function collectionToArray<T>(collection: Record<string, T>): T[] {
 
 /**
  * @description Creates a deep clone of the provided value.
+ * @template T
  * @param {T} obj The value to clone.
  * @example
  * deepClone({ a: 1, b: 2 });

@@ -1,6 +1,7 @@
-import { computed, inject, Signal } from '@angular/core';
-import { signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { computed, inject } from '@angular/core';
+import { signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
+import { FormSelectOption, UserContact } from '@plastik/core/entities';
 import {
   EcoStoreTenant,
   EcoStoreTenantAddress,
@@ -9,11 +10,10 @@ import {
   SlotDays,
   TimeRange,
 } from '@plastik/eco-store/entities';
-import { FormSelectOption, UserContact } from '@plastik/core/entities';
 import { isNil } from '@plastik/shared/objects';
-import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
-import { EcoStoreTenantAddressService } from './eco-store-tenant-address.service';
 import { lastValueFrom } from 'rxjs';
+import { EcoStoreTenantAddressService } from './eco-store-tenant-address.service';
+import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
 
 export interface EcoStoreTenantState {
   tenant: EcoStoreTenant | null;
