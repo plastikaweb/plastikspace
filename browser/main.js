@@ -1,14 +1,14 @@
 import {
   AngularSvgIconModule,
   SvgIconComponent
-} from "./chunk-7HZGGGF5.js";
+} from "./chunk-FRABLIEU.js";
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from "./chunk-AALHCYS6.js";
+} from "./chunk-5UHYYTGL.js";
 import {
   MatToolbar,
   MatToolbarModule
-} from "./chunk-XHFCFCAY.js";
+} from "./chunk-26UBSJTZ.js";
 import {
   MatPseudoCheckboxModule,
   NASA_IMAGES_PROVIDERS,
@@ -16,7 +16,7 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-YGND55GK.js";
+} from "./chunk-ZPWDNAVJ.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
@@ -34,7 +34,7 @@ import {
   provideTranslateService,
   provideWithApiEnv,
   routerReducers
-} from "./chunk-T4BMRYJR.js";
+} from "./chunk-4C7MFCXB.js";
 import {
   ActionsSubject,
   INIT,
@@ -47,14 +47,14 @@ import {
   StoreModule,
   UPDATE,
   provideStore
-} from "./chunk-VLGQMMV7.js";
+} from "./chunk-W45ZI74R.js";
 import {
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
   TitleStrategy,
   provideRouter
-} from "./chunk-NSNDETWC.js";
+} from "./chunk-KVF6T647.js";
 import {
   CdkScrollable,
   CdkScrollableModule,
@@ -65,13 +65,13 @@ import {
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-SWMH7WVD.js";
+} from "./chunk-UV5KDLAJ.js";
 import {
   DomPortalOutlet,
   MatIcon,
   MatIconModule,
   TemplatePortal
-} from "./chunk-52EVXHU4.js";
+} from "./chunk-K3GV3W34.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatButton,
@@ -79,7 +79,7 @@ import {
   MatRippleModule,
   RippleRenderer,
   coerceBooleanProperty
-} from "./chunk-SI5SAITD.js";
+} from "./chunk-5MMTBOXC.js";
 import {
   A,
   A11yModule,
@@ -106,34 +106,32 @@ import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   toSignal
-} from "./chunk-JX3SAYKN.js";
+} from "./chunk-M6447WXU.js";
 import {
-  bootstrapApplication
-} from "./chunk-FJFC5NFO.js";
-import {
+  bootstrapApplication,
   provideHttpClient
-} from "./chunk-5SAVPFTE.js";
-import "./chunk-ZOQPNNP2.js";
+} from "./chunk-UQ7BNS5D.js";
+import "./chunk-XV33ABI2.js";
 import {
   BidiModule,
   Directionality,
   _getEventTarget,
   _getFocusedElementPierceShadowDom,
   _getShadowRoot
-} from "./chunk-JTXBNKQF.js";
-import "./chunk-IJ744RUE.js";
+} from "./chunk-SJ44HZSU.js";
+import "./chunk-OZQPDCUS.js";
 import {
   _CdkPrivateStyleLoader,
   coerceNumberProperty
-} from "./chunk-ALQG256E.js";
+} from "./chunk-7E77KQQ3.js";
 import {
   Platform
-} from "./chunk-N4HDBQOD.js";
+} from "./chunk-MMY5FTVS.js";
 import {
   DatePipe,
   NgTemplateOutlet,
   PRECONNECT_CHECK_BLOCKLIST
-} from "./chunk-VRBGLXTO.js";
+} from "./chunk-BUMCWPHS.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -174,7 +172,6 @@ import {
   debounceTime,
   filter,
   forwardRef,
-  fromEvent,
   importProvidersFrom,
   inject,
   input,
@@ -265,7 +262,7 @@ import {
   ɵɵtextInterpolate1,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-KX7SLPUE.js";
+} from "./chunk-4MKI7HWZ.js";
 
 // node_modules/@angular/material/fesm2022/divider.mjs
 var MatDivider = class _MatDivider {
@@ -1638,7 +1635,7 @@ var MatSelectionList = class _MatSelectionList extends MatListBase {
   _keyManager;
   _listenerCleanups;
   _destroyed = new Subject();
-  _isDestroyed;
+  _isDestroyed = false;
   _onChange = (_) => {
   };
   _items;
@@ -1667,7 +1664,7 @@ var MatSelectionList = class _MatSelectionList extends MatListBase {
   }
   _hideSingleSelectionIndicator = this._defaultOptions?.hideSingleSelectionIndicator ?? false;
   selectedOptions = new SelectionModel(this._multiple);
-  _value;
+  _value = null;
   _onTouched = () => {
   };
   _changeDetectorRef = inject(ChangeDetectorRef);
@@ -2334,7 +2331,7 @@ var MatMenu = class _MatMenu {
   templateRef;
   items;
   lazyContent;
-  overlapTrigger;
+  overlapTrigger = false;
   hasBackdrop;
   set panelClass(classes) {
     const previousPanelClass = this._previousPanelClass;
@@ -2748,7 +2745,7 @@ var MatMenuTriggerBase = class _MatMenuTriggerBase {
     }
     this._menuItemInstance?._setTriggersSubmenu(this._triggersSubmenu());
   }
-  _menuInternal;
+  _menuInternal = null;
   constructor(_canHaveBackdrop) {
     this._canHaveBackdrop = _canHaveBackdrop;
     const parentMenu = inject(MAT_MENU_PANEL, {
@@ -2781,6 +2778,9 @@ var MatMenuTriggerBase = class _MatMenuTriggerBase {
     this._menu?.close.emit();
   }
   _openMenu(autoFocus) {
+    if (this._triggerIsAriaDisabled()) {
+      return;
+    }
     const menu = this._menu;
     if (this._menuOpen || !menu) {
       return;
@@ -2960,6 +2960,9 @@ var MatMenuTriggerBase = class _MatMenuTriggerBase {
   }
   _ownsMenu(menu) {
     return PANELS_TO_TRIGGERS.get(menu) === this;
+  }
+  _triggerIsAriaDisabled() {
+    return booleanAttribute(this._element.nativeElement.getAttribute("aria-disabled"));
   }
   static \u0275fac = function MatMenuTriggerBase_Factory(__ngFactoryType__) {
     \u0275\u0275invalidFactory();
@@ -3521,8 +3524,8 @@ var MatDrawer = class _MatDrawer {
   _focusTrap = null;
   _elementFocusedBeforeDrawerWasOpened = null;
   _eventCleanups;
-  _isAttached;
-  _anchor;
+  _isAttached = false;
+  _anchor = null;
   get position() {
     return this._position;
   }
@@ -3580,7 +3583,7 @@ var MatDrawer = class _MatDrawer {
   _opened = signal(false, ...ngDevMode ? [{
     debugName: "_opened"
   }] : []);
-  _openedVia;
+  _openedVia = null;
   _animationStarted = new Subject();
   _animationEnd = new Subject();
   openedChange = new EventEmitter(true);
@@ -3605,16 +3608,18 @@ var MatDrawer = class _MatDrawer {
         this._restoreFocus(this._openedVia || "program");
       }
     });
-    this._ngZone.runOutsideAngular(() => {
+    this._eventCleanups = this._ngZone.runOutsideAngular(() => {
+      const renderer = this._renderer;
       const element = this._elementRef.nativeElement;
-      fromEvent(element, "keydown").pipe(filter((event) => {
-        return event.keyCode === ESCAPE && !this.disableClose && !hasModifierKey(event);
-      }), takeUntil(this._destroyed)).subscribe((event) => this._ngZone.run(() => {
-        this.close();
-        event.stopPropagation();
-        event.preventDefault();
-      }));
-      this._eventCleanups = [this._renderer.listen(element, "transitionrun", this._handleTransitionEvent), this._renderer.listen(element, "transitionend", this._handleTransitionEvent), this._renderer.listen(element, "transitioncancel", this._handleTransitionEvent)];
+      return [renderer.listen(element, "keydown", (event) => {
+        if (event.keyCode === ESCAPE && !this.disableClose && !hasModifierKey(event)) {
+          this._ngZone.run(() => {
+            this.close();
+            event.stopPropagation();
+            event.preventDefault();
+          });
+        }
+      }), renderer.listen(element, "transitionrun", this._handleTransitionEvent), renderer.listen(element, "transitionend", this._handleTransitionEvent), renderer.listen(element, "transitioncancel", this._handleTransitionEvent)];
     });
     this._animationEnd.subscribe(() => {
       this.openedChange.emit(this.opened);
@@ -3755,7 +3760,7 @@ var MatDrawer = class _MatDrawer {
   }
   _updateFocusTrapState() {
     if (this._focusTrap) {
-      this._focusTrap.enabled = !!this._container?.hasBackdrop && this.opened;
+      this._focusTrap.enabled = this.opened && !!this._container?._isShowingBackdrop();
     }
   }
   _updatePositionInParent(newPosition) {
@@ -3942,12 +3947,12 @@ var MatDrawerContainer = class _MatDrawerContainer {
   set hasBackdrop(value) {
     this._backdropOverride = value == null ? null : coerceBooleanProperty(value);
   }
-  _backdropOverride;
+  _backdropOverride = null;
   backdropClick = new EventEmitter();
-  _start;
-  _end;
-  _left;
-  _right;
+  _start = null;
+  _end = null;
+  _left = null;
+  _right = null;
   _destroyed = new Subject();
   _doCheckSubject = new Subject();
   _contentMargins = {
@@ -4934,9 +4939,9 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-QF4ERULP.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-BMMQHIU2.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
-var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-JF3YEGS2.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
+var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-OVB2LGE5.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
 var _c24 = () => ({ exact: false });
 var _forTrack0 = ($index, $item) => $item.id;
@@ -5386,7 +5391,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-QF4ERULP.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-JF3YEGS2.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-BMMQHIU2.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-OVB2LGE5.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -6556,11 +6561,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-IDIAWLN5.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-PKYOA32W.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-RL4PLKI6.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-3UV7SC3N.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6576,7 +6581,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-XYILQCRX.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-TENMGYZ4.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           config: {
             type: "link",

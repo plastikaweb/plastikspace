@@ -2288,6 +2288,10 @@ html {
   .underline-offset-2 {
     text-underline-offset: 2px;
   }
+  .antialiased {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
   .opacity-0 {
     opacity: 0%;
   }
