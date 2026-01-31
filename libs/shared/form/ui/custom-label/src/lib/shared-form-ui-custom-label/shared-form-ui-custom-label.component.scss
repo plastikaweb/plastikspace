@@ -45,4 +45,18 @@
       );
     }
   }
+
+  .pending-message {
+    background-color: var(--neutral-100);
+    border-color: var(--neutral-200);
+    color: var(--neutral-700);
+
+    .mat-icon {
+      @include mat.icon-overrides(
+        (
+          color: var(--neutral-700),
+        )
+      );
+    }
+  }
 }

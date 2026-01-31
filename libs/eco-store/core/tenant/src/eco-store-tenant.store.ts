@@ -10,7 +10,7 @@ import {
   SlotDays,
   TimeRange,
 } from '@plastik/eco-store/entities';
-import { isNil } from '@plastik/shared/objects';
+import { isEmpty, isNil } from '@plastik/shared/objects';
 import { lastValueFrom } from 'rxjs';
 import { EcoStoreTenantAddressService } from './eco-store-tenant-address.service';
 import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
@@ -129,7 +129,14 @@ export const ecoStoreTenantStore = signalStore(
     },
 
     _getPickupSlotsRecord(addressId: string | null): Record<SlotDays, TimeRange[]> | null {
-      return store.addresses().find(address => address.id === addressId)?.slots || null;
+      let addressSlots = store.addresses().find(address => address.id === addressId)?.slots || null;
+
+      if (isEmpty(addressSlots) || isNil(addressSlots)) {
+        addressSlots =
+          store.tenant()?.logisticsConfig?.options?.find(option => option.type === 'pickup')
+            ?.slots || null;
+      }
+      return addressSlots;
     },
 
     getTenantDeliveryOptionSlotsDays(
