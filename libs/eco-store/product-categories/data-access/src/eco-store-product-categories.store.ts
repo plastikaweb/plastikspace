@@ -21,10 +21,10 @@ import {
 } from '@plastik/eco-store/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 
-import { ClientResponseError } from 'pocketbase';
 import { ALL_PRODUCTS_ICON } from '@plastik/eco-store/shared/tokens';
-import { EcoStoreProductCategoriesStatsService } from './eco-store-product-categories-stats.service';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { ClientResponseError } from 'pocketbase';
+import { EcoStoreProductCategoriesStatsService } from './eco-store-product-categories-stats.service';
 
 export interface ProductCategoriesState {
   stats: ProductCategoryStats[];
@@ -167,7 +167,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
   }),
   withHooks({
     onInit(store) {
-      if (!store.initiallyLoaded()) {
+      if (!store.initiallyLoaded() && store._tenantStore.loaded()) {
         store.getStats();
       }
     },

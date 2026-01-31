@@ -3,8 +3,8 @@ import {
   Component,
   computed,
   inject,
-  signal,
   linkedSignal,
+  signal,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
@@ -12,17 +12,17 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
-import {
-  EcoStoreProductQuantityControlComponent,
-  EcoStoreProductCardComponent,
-} from '@plastik/eco-store/product-card';
-import { SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
-import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
-import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/product-category-label';
-import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
+import {
+  EcoStoreProductCardComponent,
+  EcoStoreProductQuantityControlComponent,
+} from '@plastik/eco-store/product-card';
+import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/product-category-label';
+import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
+import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 @Component({
   selector: 'eco-eco-store-product-feature',
@@ -184,6 +184,8 @@ export default class EcoStoreProductFeatureComponent {
   }
 
   addToCart(quantity: number): void {
-    this.#cartStore.addToCart(this.product()!, quantity);
+    const product = this.product();
+    if (!product) return;
+    this.#cartStore.addToCart(product, quantity);
   }
 }

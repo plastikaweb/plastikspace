@@ -1,7 +1,9 @@
 import { signal } from '@angular/core';
 
 export const ecoStoreTenantStoreMock = {
+  loaded: signal(true),
   tenant: signal({
+    name: 'tenant',
     logisticsConfig: {
       options: [
         {

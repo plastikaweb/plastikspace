@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
-import { ProductCategory, ProductCategoryStats } from '@plastik/eco-store/entities';
+import { ProductCategoryStats } from '@plastik/eco-store/entities';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 
 @Injectable({

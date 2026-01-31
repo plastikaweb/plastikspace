@@ -210,6 +210,7 @@
     "angular-http-server": "^1.12.0",
     "baseline-browser-mapping": "^2.9.11",
     "branch-name-lint": "^3.0.1",
+    "chokidar-cli": "^3.0.0",
     "commitizen": "^4.3.0",
     "cspell": "^9.4.0",
     "cypress": "15.8.1",
