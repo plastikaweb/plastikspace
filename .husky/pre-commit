@@ -26,6 +26,7 @@ fi
 
 # Run checks
 if yarn branch:lint \
+  && yarn i18n:validate \
   && yarn nx affected --target=lint --parallel --max-parallel=3 --cache \
   && markdownlint *.md \
   && yarn nx format:write --all; then

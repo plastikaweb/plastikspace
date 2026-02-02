@@ -14,7 +14,7 @@
   },
   "shared": {
     "address": {
-      "default": "Dirección por defecto"
+      "default": "Dirección predeterminada"
     }
   },
   "a11y": {
@@ -151,10 +151,30 @@
   },
   "cart": {
     "steps": {
-      "summary": "Resumen de la cesta",
+      "summary": {
+        "title": "Resumen de la cesta",
+        "subtitle": "Revisa los detalles de tu pedido."
+      },
       "shipping": {
         "title": "Envío",
-        "subtitle": "Elige si quieres recibir o recoger tu pedido."
+        "subtitle": "Elige si quieres recibir o recoger tu pedido.",
+        "unavailable": {
+          "title": "Estamos preparando los últimos detalles",
+          "description": {
+            "part1": "Esta tienda eco está terminando de configurar sus",
+            "part2": "rutas de entrega",
+            "part3": "y franjas horarias para ofrecerte el mejor servicio posible."
+          },
+          "info": {
+            "title": "¿QUÉ PUEDES HACER AHORA?",
+            "item1": "Puedes seguir llenando tu carrito con tus productos preferidos.",
+            "item2": "Tu selección se guardará para cuando el checkout esté activo.",
+            "item3": "Puedes cerrar la sesión y volver más tarde sin perder tu selección."
+          },
+          "actions": {
+            "goToShop": "Volver a la tienda"
+          }
+        }
       },
       "payment": {
         "title": "Pago",
@@ -178,7 +198,8 @@
       "items-count-suffix": "artículos en la cesta",
       "shipping": "Envío",
       "including-vat": "IVA incluido",
-      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!"
+      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!",
+      "remove-item": "Eliminar producto"
     },
     "shipping": {
       "free-shipping-achieved": "¡Has conseguido envío gratuito!",
@@ -190,7 +211,6 @@
       "shipping-cost": "Envío",
       "go-to-confirmation": "Continuar al resumen del pedido",
       "method": {
-        "title": "Elige si quieres recibir tu pedido en casa o recogerlo en la tienda.",
         "pickup": {
           "title": "Recogida en la tienda.",
           "description": "Pasa por la tienda y recoge tu pedido."
@@ -198,6 +218,10 @@
         "delivery": {
           "title": "Envío a domicilio.",
           "description": "Te llevamos tu pedido a tu dirección."
+        },
+        "all": {
+          "title": "Elige si quieres recibir tu pedido en casa o recogerlo en la tienda.",
+          "description": "Elige si quieres recibir tu pedido en casa o recogerlo en la tienda."
         }
       },
       "weekdays-labels": {

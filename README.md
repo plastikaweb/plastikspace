@@ -82,6 +82,7 @@ Common Nx commands:
 - [📝 Git Commit Conventions](documentation/commit-conventions.md)
 - [🔄 Git Flow and CI/CD](documentation/git-flow.md)
 - [💅 CSS Styling](documentation/css-styles.md)
+- [🌐 Internationalization](documentation/i18n.md)
 
 ## 📱 Applications
 

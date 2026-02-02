@@ -1,8 +1,8 @@
 <div [class]="setContainerClasses()">
-  <div class="flex justify-between items-center gap-2">
+  <div class="flex items-center justify-between gap-2">
     @if (props.icon) {
       <mat-icon
-        [class]="'text-4xl size-4 cursor-pointer mx-2 overflow-visible ' + props.iconClasses"
+        [class]="'mx-2 size-4 cursor-pointer overflow-visible text-4xl ' + props.iconClasses"
         [attr.aria-label]="props.description ?? props.label | translate">
         {{ props.icon }}
       </mat-icon>
@@ -22,7 +22,7 @@
   </div>
 
   @if (props.checkValidation) {
-    <div [class]="`inline-flex items-center justify-center rounded-full w-8 h-8`">
+    <div [class]="`inline-flex h-8 w-8 items-center justify-center rounded-full`">
       <mat-icon
         [attr.aria-label]="
           props.isValid === 'valid'

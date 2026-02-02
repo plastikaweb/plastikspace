@@ -2,12 +2,12 @@
   #trigger="cdkOverlayOrigin"
   mat-button
   cdkOverlayOrigin
-  class="flex gap-tiny"
+  class="gap-tiny flex"
   [attr.aria-label]="'Cistell'"
   [matBadge]="userOrderCartStore.cart().length"
   (click)="isOpen = !isOpen">
   <span>{{ userOrderCartStore.getCartTotalPrice() | currency }}</span>
-  <mat-icon class="size-[30px] text-[30px] m-0 p-0">shopping_cart</mat-icon>
+  <mat-icon class="m-0 size-[30px] p-0 text-[30px]">shopping_cart</mat-icon>
 </button>
 
 <ng-template

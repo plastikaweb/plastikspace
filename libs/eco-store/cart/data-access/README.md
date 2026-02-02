@@ -1,16 +1,24 @@
-# @plastik/eco-store/cart/data-access
+# eco-store-cart-data-access
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 ![NgRx Signals](https://img.shields.io/badge/ngrx%20signals-%23270341.svg?style=for-the-badge&logo=ngrx&logoColor=white)
 
-- [@plastik/eco-store/cart/data-access](#plastikeco-storecartdata-access)
+## Table of Contents
+
+- [eco-store-cart-data-access](#eco-store-cart-data-access)
+  - [Table of Contents](#table-of-contents)
   - [Description](#description)
   - [Features](#features)
   - [Installation](#installation)
   - [Usage](#usage)
     - [Store Usage](#store-usage)
     - [SignalStore Features](#signalstore-features)
+      - [State Signals](#state-signals)
+      - [Computed Signals](#computed-signals)
+      - [Methods](#methods)
+  - [API Reference](#api-reference)
+    - [State Interface](#state-interface)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -21,20 +29,23 @@ In addition to the cart line items, it also stores **shipping configuration** su
 
 ## Features
 
-- **Reactive State**: Built with `signalStore` for performant, signal-based state management.
-- **Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`.
+- **Reactive State**: Built with `signalStore` for performant, signal-based state management
+- **Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`
 - **Computed Totals**: Automatically calculates and updates derived state:
-  - `itemsCount`: Total number of items in the cart.
-  - `totalAmount`: Net total (without IVA).
-  - `totalAmountWithIva`: Total price of all items including IVA.
-  - `totalAmountIva`: Total IVA (difference between `totalAmountWithIva` and `totalAmount`).
-  - `totalAmountWithShipping`: Grand total including shipping amount.
-  - `isEmpty`: Boolean check for cart status.
+  - `itemsCount`: Total number of items in the cart
+  - `totalAmount`: Net total (without IVA)
+  - `totalAmountWithIva`: Total price of all items including IVA
+  - `totalAmountIva`: Total IVA (difference between `totalAmountWithIva` and `totalAmount`)
+  - `totalAmountWithShipping`: Grand total including shipping amount
+  - `isEmpty`: Boolean check for cart status
+  - `itemsGroupedByCategory`: Returns items grouped by category name
+  - `itemsDictionary`: Returns entity map for quick lookups
 - **Smart Cart Operations**:
-  - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0.
-  - `removeFromCart`: Removes items by ID.
-  - `clearCart`: Clears all items from the cart.
-  - `updateLogistics`: Updates shipping-related state (method, address, day, time and amount).
+  - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0
+  - `removeFromCart`: Removes items by ID
+  - `clearCart`: Clears all items from the cart
+  - `updateLogistics`: Updates shipping-related state (method, address, day, time and amount)
+  - `getItemCount`: Returns a computed signal with the quantity of a specific product
 
 ## Installation
 
@@ -72,19 +83,55 @@ export class CartComponent {
 
 The store exposes the following signals and methods:
 
-- **State Signals**:
-  - `items()`: Array of `CartItem` objects.
-- **Computed Signals**:
-  - `itemsCount()`: Total quantity of all products.
-  - `totalAmountWithIva()`: Total cost (sum of price \* quantity).
-  - `isEmpty()`: True if the cart has no items.
-  - `itemsGroupedByCategory()`: Returns an object where keys are category names and values are arrays of `CartItem` objects.
-  - `totalAmountIva()`: Total tax amount (totalAmountWithIva - totalAmount).
-- **Methods**:
-  - `addToCart(product, quantity?)`: Add or update item.
-  - `removeFromCart(productId)`: Remove item.
-  - `clearCart()`: Empty the cart.
-  - `getItemCount(productId)`: Returns a computed signal with the quantity of the product.
+#### State Signals
+
+- `items()`: Array of `CartItem` objects
+- `address()`: Shipping address or null
+- `method()`: Delivery method or null
+- `day()`: Selected delivery day or null
+- `time()`: Selected delivery time or null
+- `noDayAndTime()`: Boolean flag for no time slot selection
+- `amount()`: Shipping amount
+
+#### Computed Signals
+
+- `itemsCount()`: Total quantity of all products
+- `totalAmount()`: Net total without IVA
+- `totalAmountWithIva()`: Total cost including IVA
+- `totalAmountIva()`: Total tax amount (totalAmountWithIva - totalAmount)
+- `totalAmountWithShipping()`: Grand total including shipping
+- `isEmpty()`: True if the cart has no items
+- `itemsGroupedByCategory()`: Returns an object where keys are category names and values are arrays of `CartItem` objects
+- `itemsDictionary()`: Returns entity map for quick product lookups
+
+#### Methods
+
+- `addToCart(product, quantity?)`: Add or update item
+- `removeFromCart(productId)`: Remove item
+- `clearCart()`: Empty the cart
+- `updateLogistics(logistics)`: Update shipping configuration
+- `getItemCount(productId)`: Returns a computed signal with the quantity of the product
+
+## API Reference
+
+### State Interface
+
+```typescript
+interface CartItem {
+  id: string;
+  product: EcoStoreProductWithCategoryName;
+  quantity: number;
+}
+
+interface EcoStoreCartState {
+  address: UserContact | null;
+  method: EcoStoreTenantLogisticsDeliveryType | null;
+  day: SlotDays | null;
+  time: TimeRange | null;
+  noDayAndTime: boolean;
+  amount: number;
+}
+```
 
 ## Running unit tests
 

@@ -153,11 +153,28 @@
     "steps": {
       "summary": {
         "title": "Resum de la cistella",
-        "subtitle": "Revisa els productes que has afegit a la teva comanda."
+        "subtitle": "Revisa els detalls de la teva comanda."
       },
       "shipping": {
         "title": "Enviament",
-        "subtitle": "Tria si vols rebre o recollir la teva comanda."
+        "subtitle": "Tria si vols rebre o recollir la teva comanda.",
+        "unavailable": {
+          "title": "Estem preparant els últims detalls",
+          "description": {
+            "part1": "Aquesta botiga eco està acabant de configurar les seves",
+            "part2": "rutes de lliurament",
+            "part3": "i franges horàries per oferir-te el millor servei possible."
+          },
+          "info": {
+            "title": "QUÈ POTS FER ARA?",
+            "item1": "Pots seguir omplint el teu cistell amb els teus productes preferits.",
+            "item2": "La teva selecció es guardarà per quan el checkout estigui actiu.",
+            "item3": "Pots tancar la sessió i tornar més tard sense perdre la tria."
+          },
+          "actions": {
+            "goToShop": "Tornar a la botiga"
+          }
+        }
       },
       "payment": {
         "title": "Pagament",
@@ -181,7 +198,8 @@
       "items-count-suffix": "elements a la cistella",
       "shipping": "Enviament",
       "including-vat": "IVA inclòs",
-      "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!"
+      "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!",
+      "remove-item": "Eliminar producte"
     },
     "shipping": {
       "free-shipping-achieved": "Has aconseguit enviament gratuït!",
@@ -193,7 +211,6 @@
       "shipping-cost": "Enviament",
       "go-to-confirmation": "Continuar al resum de la comanda",
       "method": {
-        "title": "Tria si vols rebre o recollir la teva comanda.",
         "pickup": {
           "title": "Recollida a la botiga.",
           "description": "Passa per la botiga i recull la teva comanda."
@@ -201,6 +218,10 @@
         "delivery": {
           "title": "Enviament a domicili.",
           "description": "Et portarem la teva comanda a la teva adreça."
+        },
+        "all": {
+          "title": "Recollida a la botiga o Enviament a domicili.",
+          "description": "Tria si vols rebre o recollir la teva comanda."
         }
       },
       "weekdays-labels": {
@@ -236,7 +257,8 @@
         },
         "date": "Seleccionar dia",
         "time": "Franja horària"
-      }
+      },
+      "come-to-store": "Passa per la botiga i recull la teva comanda."
     },
     "product": {
       "quantity-label": "Qt:"

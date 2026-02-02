@@ -1,7 +1,8 @@
 import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
-import { FormSelectOption, UserContact } from '@plastik/core/entities';
+import { isString, TranslateService } from '@ngx-translate/core';
+import { FormSelectOption, LocalizedFields, UserContact } from '@plastik/core/entities';
 import {
   EcoStoreTenant,
   EcoStoreTenantAddress,
@@ -10,7 +11,7 @@ import {
   SlotDays,
   TimeRange,
 } from '@plastik/eco-store/entities';
-import { isNil } from '@plastik/shared/objects';
+import { isEmpty, isNil } from '@plastik/shared/objects';
 import { lastValueFrom } from 'rxjs';
 import { EcoStoreTenantAddressService } from './eco-store-tenant-address.service';
 import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
@@ -34,6 +35,7 @@ export const ecoStoreTenantStore = signalStore(
   withProps(() => ({
     _tenantAddressService: inject(EcoStoreTenantAddressService),
     _tenantService: inject(EcoStoreTenantBaseService),
+    _translateService: inject(TranslateService),
   })),
   withComputed(store => ({
     getTenantLegalAddress: computed(() => {
@@ -71,6 +73,54 @@ export const ecoStoreTenantStore = signalStore(
           }))
           .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[]
     ),
+    /**
+     * Checks if shipping is fully available based on tenant configuration.
+     * Returns true if at least one enabled shipping method (pickup or delivery) is properly configured:
+     * - For pickup (if enabled): At least one tenant address with slots/instructions OR global pickup slots/instructions
+     * - For delivery (if enabled): Delivery must have slots configured (slots are required for delivery scheduling)
+     * Note: Tenant can have only pickup, only delivery, or both. Missing method is not an error.
+     */
+    isShippingAvailable: computed(() => {
+      const currentTenant = store.tenant();
+      if (!currentTenant?.logisticsConfig) return false;
+
+      const { options } = currentTenant.logisticsConfig;
+      if (!options || options.length === 0) return false;
+
+      const enabledOptions = options.filter(opt => opt.enabled);
+      if (enabledOptions.length === 0) return false;
+
+      const configuredMethods: boolean[] = [];
+
+      const pickupOption = options.find(opt => opt.type === 'pickup' && opt.enabled);
+      if (pickupOption) {
+        const addresses = store.addresses();
+        const hasGlobalPickupConfig =
+          (pickupOption.slots && Object.keys(pickupOption.slots).length > 0) ||
+          !!pickupOption.instructions;
+
+        const hasAddressConfig =
+          addresses?.some(address => {
+            const hasSlots = address.slots && Object.keys(address.slots).length > 0;
+            const hasInstructions = !!address.instructions;
+            return hasSlots || hasInstructions;
+          }) ?? false;
+
+        const isPickupConfigured = hasGlobalPickupConfig || hasAddressConfig;
+        configuredMethods.push(isPickupConfigured);
+      }
+
+      const deliveryOption = options.find(opt => opt.type === 'delivery' && opt.enabled);
+      if (deliveryOption) {
+        const isDeliveryConfigured =
+          deliveryOption.slots && Object.keys(deliveryOption.slots).length > 0;
+        if (isDeliveryConfigured) {
+          configuredMethods.push(isDeliveryConfigured);
+        }
+      }
+
+      return configuredMethods.some(configured => configured);
+    }),
   })),
   withMethods(store => ({
     async getTenant() {
@@ -129,7 +179,14 @@ export const ecoStoreTenantStore = signalStore(
     },
 
     _getPickupSlotsRecord(addressId: string | null): Record<SlotDays, TimeRange[]> | null {
-      return store.addresses().find(address => address.id === addressId)?.slots || null;
+      let addressSlots = store.addresses().find(address => address.id === addressId)?.slots || null;
+
+      if (isEmpty(addressSlots) || isNil(addressSlots)) {
+        addressSlots =
+          store.tenant()?.logisticsConfig?.options?.find(option => option.type === 'pickup')
+            ?.slots || null;
+      }
+      return addressSlots;
     },
 
     getTenantDeliveryOptionSlotsDays(
@@ -204,6 +261,146 @@ export const ecoStoreTenantStore = signalStore(
     getTenantDeliveryPriceTiers() {
       const deliveryOption = this.getTenantDeliveryOption('delivery');
       return deliveryOption?.tiers || [];
+    },
+
+    getTenantDeliveryInstructions(
+      type: EcoStoreTenantLogisticsDeliveryType = 'pickup',
+      addressId: string | null = null
+    ) {
+      const tenant = store.tenant();
+      if (!tenant) return '';
+
+      const currentLanguage = store._translateService.getCurrentLang();
+      const translateInstructions = (instructions: string | LocalizedFields<string>) =>
+        isString(instructions)
+          ? instructions
+          : store._translateService.instant(instructions[currentLanguage] || '');
+
+      if (type === 'pickup') {
+        const address = store.addresses().find(address => address.id === addressId);
+        const addressInstructions = address?.instructions || '';
+        const tenantInstructions =
+          tenant.logisticsConfig?.options?.find(option => option.type === type)?.instructions || '';
+
+        return addressInstructions
+          ? translateInstructions(addressInstructions)
+          : tenantInstructions
+            ? translateInstructions(tenantInstructions)
+            : '';
+      }
+
+      if (type === 'delivery') {
+        const instructions =
+          tenant.logisticsConfig?.options?.find(option => option.type === 'delivery')
+            ?.instructions || '';
+
+        return instructions ? translateInstructions(instructions) : '';
+      }
+    },
+    getTiersOrInstructions(
+      type: EcoStoreTenantLogisticsDeliveryType = 'pickup',
+      addressId: string | null = null
+    ) {
+      const tenant = store.tenant();
+      if (!tenant) return null;
+
+      const deliveryOption = tenant.logisticsConfig?.options?.find(option => option.type === type);
+      if (!deliveryOption?.enabled) return null;
+
+      if (type === 'delivery') {
+        // Check if tiers exist in tenant
+        if (deliveryOption?.slots && Object.keys(deliveryOption.slots).length > 0) {
+          return {
+            slots: deliveryOption.slots,
+            type: 'slots',
+          };
+        }
+        if (deliveryOption.instructions) {
+          return {
+            instructions: this.getTenantDeliveryInstructions(type, addressId),
+            type: 'instructions',
+          };
+        }
+        return null;
+      }
+
+      if (type === 'pickup') {
+        const address = store.addresses().find(address => address.id === addressId);
+
+        if (address?.slots && Object.keys(address.slots).length > 0) {
+          return {
+            slots: address.slots,
+            type: 'slots',
+          };
+        }
+
+        if (deliveryOption?.slots && Object.keys(deliveryOption.slots).length > 0) {
+          return {
+            slots: deliveryOption.slots,
+            type: 'slots',
+          };
+        }
+
+        if (address?.instructions) {
+          return {
+            instructions: this.getTenantDeliveryInstructions(type, addressId),
+            type: 'instructions',
+          };
+        }
+
+        if (deliveryOption.instructions) {
+          return {
+            instructions: this.getTenantDeliveryInstructions(type, addressId),
+            type: 'instructions',
+          };
+        }
+
+        return null;
+      }
+
+      return null;
+    },
+
+    /**
+     * Returns only fully configured shipping methods.
+     * Filters out enabled methods that lack proper configuration:
+     * - Pickup: Must have slots/instructions at tenant level OR in at least one address
+     * - Delivery: Must have slots configured (slots are required for delivery scheduling)
+     * @returns {EcoStoreTenantLogisticsDeliveryType[]} Array of available, fully configured shipping method types
+     */
+    getTenantAvailableShippingMethods(): EcoStoreTenantLogisticsDeliveryType[] {
+      const tenant = store.tenant();
+      if (!tenant?.logisticsConfig?.options) return [];
+
+      const availableMethods: EcoStoreTenantLogisticsDeliveryType[] = [];
+
+      const pickupOption = tenant.logisticsConfig.options.find(opt => opt.type === 'pickup');
+      if (pickupOption?.enabled) {
+        const hasGlobalPickupConfig =
+          (pickupOption.slots && Object.keys(pickupOption.slots).length > 0) ||
+          !!pickupOption.instructions;
+
+        const hasAddressConfig = store.addresses().some(address => {
+          const hasSlots = address.slots && Object.keys(address.slots).length > 0;
+          const hasInstructions = !!address.instructions;
+          return hasSlots || hasInstructions;
+        });
+
+        if (hasGlobalPickupConfig || hasAddressConfig) {
+          availableMethods.push('pickup');
+        }
+      }
+
+      const deliveryOption = tenant.logisticsConfig.options.find(opt => opt.type === 'delivery');
+      if (deliveryOption?.enabled) {
+        const hasDeliverySlots =
+          deliveryOption.slots && Object.keys(deliveryOption.slots).length > 0;
+        if (hasDeliverySlots) {
+          availableMethods.push('delivery');
+        }
+      }
+
+      return availableMethods;
     },
   }))
 );

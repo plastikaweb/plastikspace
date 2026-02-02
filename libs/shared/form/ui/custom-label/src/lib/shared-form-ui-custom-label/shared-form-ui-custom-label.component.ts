@@ -35,7 +35,7 @@ export class SharedFormUiCustomLabelComponent extends FieldType<FieldTypeConfig<
       baseClasses += ` ${this.props.containerClasses}`;
     }
     if (this.props.checkValidation) {
-      baseClasses += ` ${this.props.isValid === 'valid' ? 'valid-message' : this.props.isValid === 'error' ? 'error-message' : ''}`;
+      baseClasses += ` ${this.props.isValid === 'valid' ? 'valid-message' : this.props.isValid === 'error' ? 'error-message' : 'pending-message'}`;
     }
     return baseClasses;
   }

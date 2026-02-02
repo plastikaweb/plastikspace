@@ -11,14 +11,14 @@ import { NgClass } from '@angular/common';
   template: `
     @if (user().avatar) {
       <plastik-img-container
-        class="rounded-full object-cover overflow-hidden"
+        class="overflow-hidden rounded-full object-cover"
         [ngClass]="avatarClass()"
         [src]="user() | pocketBaseImageUrl: user().avatar"
         [title]="user().name || 'Avatar'"
         [dimensions]="{ width: 60, height: 60 }" />
     } @else {
       <span
-        class="flex items-center justify-center font-bold text-primary-700 bg-primary-50 rounded-full"
+        class="text-primary-700 bg-primary-50 flex items-center justify-center rounded-full font-bold"
         [ngClass]="initialsClass()">
         {{ initials() }}
       </span>

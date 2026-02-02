@@ -185,7 +185,51 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 
 1. **Summary** (`/cistella/resum`): View cart items, adjust quantities, remove items.
 2. **Shipping** (`/cistella/enviament`): Enter shipping address and delivery preferences.
+   - **Shipping Unavailable** (`/cistella/enviament/no-disponible`): Displayed when shipping is not configured for the store.
 3. **Confirmation** (`/cistella/confirmacio`): Review order and confirm purchase.
+
+### Shipping Unavailable Component
+
+The `ShippingUnavailableComponent` is displayed when the tenant's shipping configuration is incomplete or unavailable. It provides users with information about the situation and guidance on what they can do while waiting.
+
+**Features:**
+
+- Centered layout with a clean, informative design
+- Icon-based visual feedback using Material icons
+- Expandable information panel explaining available actions
+- Internationalized content in Catalan, Spanish, and English
+- Responsive design with proper spacing and typography
+
+**Guard Protection:**
+The component is protected by the `shippingUnavailableGuard` which checks if shipping is unavailable and redirects accordingly.
+
+**Translation Keys:**
+All text content is internationalized under the `cart.steps.shipping.unavailable` namespace:
+
+- `title`: Main heading text
+- `description.part1`, `part2`, `part3`: Description text split for formatting
+- `info.title`: Expandable section heading
+- `info.item1`, `item2`, `item3`: List of available actions
+- `actions.goToShop`: Button text to return to store
+
+**Styling:**
+
+- Uses Angular Material components (`mat-expansion-panel`, `mat-icon`, `mat-button`)
+- Tailwind utility classes for layout and spacing in the template
+- Material Design theming via SCSS mixins for consistent color application
+- Vertically centered in the available container space
+
+**Example Route Configuration:**
+
+```typescript
+{
+  path: 'no-disponible',
+  loadComponent: () =>
+    import('./eco-store-cart-steps/shipping/shipping-unavailable/shipping-unavailable.component')
+      .then(m => m.ShippingUnavailableComponent),
+  canActivate: [shippingUnavailableGuard],
+}
+```
 
 ## Running unit tests
 

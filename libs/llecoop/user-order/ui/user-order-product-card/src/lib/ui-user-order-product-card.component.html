@@ -3,11 +3,11 @@
 
 <mat-card
   appearance="outlined"
-  class="w-[350px] lg:max-w-[275px] overflow-hidden flex flex-col hover:cursor-pointer hover:shadow-md hover:scale-105 transition-all"
+  class="flex w-[350px] flex-col overflow-hidden transition-all hover:scale-105 hover:cursor-pointer hover:shadow-md lg:max-w-[275px]"
   [style.backgroundColor]="cardBackgroundColor"
   [style.borderColor]="cardBorderColor"
   (click)="onViewDetails()">
-  <div class="flex relative justify-center items-center bg-white">
+  <div class="relative flex items-center justify-center bg-white">
     @if (product().imgUrl; as imgUrl) {
       <plastik-img-container
         mat-
@@ -26,7 +26,7 @@
     }
   </mat-card-header>
   <mat-card-content>
-    <div class="mb-4 font-bold text-md">
+    <div class="text-md mb-4 font-bold">
       {{ product().priceWithIva | currency: 'EUR' }}
       <span class="text-sm"> / {{ product().unit | llecoopProductBaseUnitText }}</span>
     </div>
@@ -50,7 +50,7 @@
           [ngModel]="product().quantity"
           (ngModelChange)="onQuantityChange($event)"
           (click)="$event.stopPropagation()" />
-        <span matTextSuffix class="flex flex-row items-center gap-sub">
+        <span matTextSuffix class="gap-sub flex flex-row items-center">
           {{ product().unit | llecoopProductUnitSuffix }}
 
           <mat-chip class="w-[200px] md:w-[140px]">

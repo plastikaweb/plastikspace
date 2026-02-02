@@ -2,9 +2,9 @@
 @let height = dimensions()?.height;
 @let src = this.src();
 
-<div class="absolute inset-0 flex items-center justify-center bg-transparent rounded-lg">
+<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-transparent">
   @if (isLoading()) {
-    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-tertiary-600"></div>
+    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>
   }
 
   @if (hasError()) {
@@ -31,7 +31,7 @@
 
   <ng-template #fixedImage let-priority="priority">
     <img
-      class="object-cover my-sub transition-opacity duration-300"
+      class="my-sub object-cover transition-opacity duration-300"
       [class.opacity-0]="isLoading()"
       [class.opacity-100]="!isLoading() && !hasError()"
       [priority]="priority"
@@ -47,7 +47,7 @@
   <ng-template #fillImage let-priority="priority">
     <img
       fill
-      class="object-cover w-full max-h-auto my-sub transition-opacity duration-300"
+      class="max-h-auto my-sub w-full object-cover transition-opacity duration-300"
       [class.opacity-0]="isLoading()"
       [class.opacity-100]="!isLoading() && !hasError()"
       [priority]="priority"

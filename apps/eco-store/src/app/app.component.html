@@ -5,13 +5,13 @@
     animate.leave="fade-out">
     <div class="flex flex-col items-center justify-center gap-6 p-12">
       <!-- Main container -->
-      <div class="relative flex items-center justify-center w-24 h-24">
+      <div class="relative flex h-24 w-24 items-center justify-center">
         <!-- Ripples -->
-        <div class="absolute inset-0 bg-primary-900 rounded-full opacity-20 ping-slow"></div>
-        <div class="absolute inset-0 bg-primary-900 rounded-full opacity-30 animate-pulse"></div>
+        <div class="bg-primary-900 ping-slow absolute inset-0 rounded-full opacity-20"></div>
+        <div class="bg-primary-900 absolute inset-0 animate-pulse rounded-full opacity-30"></div>
 
         <!-- Icon container -->
-        <div class="p-5 rounded-full bg-primary-100 shadow-lg backdrop-blur-sm">
+        <div class="bg-primary-100 rounded-full p-5 shadow-lg backdrop-blur-sm">
           <svg
             width="32"
             height="32"
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Loading text -->
-      <span class="text-primary-900 font-bold tracking-[0.2em] text-xs uppercase animate-pulse">
+      <span class="text-primary-900 animate-pulse text-xs font-bold tracking-[0.2em] uppercase">
         {{ 'loading-data' | translate }}
       </span>
     </div>

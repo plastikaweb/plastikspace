@@ -1,5 +1,5 @@
 <div
-  class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-tiny">
+  class="border-gray-10 mb-tiny z-10 mt-0 grid w-full overflow-auto overflow-x-auto overflow-y-hidden border-t border-solid md:mt-4">
   @defer (prefetch when dataSource.data.length) {
     <mat-table
       class="table w-full"
@@ -40,11 +40,11 @@
               @case ('INPUT') {
                 @if (column.isEditableConfig?.(row); as editable) {
                   @let attributes = editable?.attributes;
-                  <div class="leading-6 my-sub" [ngClass]="column.cssClasses?.[1] || ''">
+                  <div class="my-sub leading-6" [ngClass]="column.cssClasses?.[1] || ''">
                     @if (isText(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
+                        class="editable inline"
                         [ngClass]="attributes?.styles || ''">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -66,7 +66,7 @@
                     @if (isNumber(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
+                        class="editable inline"
                         [ngClass]="attributes?.styles || ''">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -140,7 +140,7 @@
                     @if (isTextarea(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
+                        class="editable inline"
                         [ngClass]="attributes?.styles || ''">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -203,13 +203,13 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell
             *matHeaderCellDef
-            class="overflow-visible justify-center mat-cell-actions"
+            class="mat-cell-actions justify-center overflow-visible"
             [ngClass]="actionsColStyles() || ''">
             Accions
           </mat-header-cell>
           <mat-cell
             *matCellDef="let element"
-            class="overflow-visible mat-cell-actions py-sub"
+            class="mat-cell-actions py-sub overflow-visible"
             [ngClass]="actionsColStyles() || ''">
             @for (action of actions() | keyvalue | orderTableActionsElements; track action.key) {
               @if (action.key === 'EDIT' && action.value?.visible(element)) {
@@ -324,7 +324,7 @@
         <mat-row
           *matRowDef="let row; columns: ['expandedDetail']"
           sticky="true"
-          class="table-row height-0"></mat-row>
+          class="height-0 table-row"></mat-row>
       } @else {
         <!-- Row that will be used to display the regular data -->
         <mat-row
@@ -351,7 +351,7 @@
 @if (!noPagination()) {
   <mat-paginator
     #matPaginator
-    class="justify-end mt-md"
+    class="mt-md justify-end"
     [pageIndex]="pagination()?.pageIndex"
     [pageSize]="pagination()?.pageSize"
     [length]="resultsLength()"

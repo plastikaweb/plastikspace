@@ -37,6 +37,8 @@ jobs:
       # Run affected tasks excluding llecoop-firebase
       - name: Run Affected Tasks
         run: |
+          yarn i18n:validate
+          yarn markdownlint
           npx nx-cloud record -- nx affected --target=lint --exclude=llecoop-firebase --parallel=3
           npx nx-cloud record -- nx affected --target=test --exclude=llecoop-firebase --parallel=3
           npx nx-cloud record -- nx affected --target=build --exclude=llecoop-firebase --parallel=3

@@ -151,10 +151,30 @@
   },
   "cart": {
     "steps": {
-      "summary": "Cart summary",
+      "summary": {
+        "title": "Cart summary",
+        "subtitle": "Review the details of your order."
+      },
       "shipping": {
         "title": "Shipping",
-        "subtitle": "Choose if you would like to receive or pick up your order."
+        "subtitle": "Choose if you would like to receive or pick up your order.",
+        "unavailable": {
+          "title": "We're preparing the final details",
+          "description": {
+            "part1": "This eco store is finishing configuring its",
+            "part2": "delivery routes",
+            "part3": "and time slots to offer you the best possible service."
+          },
+          "info": {
+            "title": "WHAT CAN YOU DO NOW?",
+            "item1": "You can continue filling your cart with your favorite products.",
+            "item2": "Your selection will be saved for when checkout is active.",
+            "item3": "You can log out and come back later without losing your selection."
+          },
+          "actions": {
+            "goToShop": "Go back to shop"
+          }
+        }
       },
       "payment": {
         "title": "Payment",
@@ -178,7 +198,8 @@
       "items-count-suffix": "items in cart",
       "shipping": "Shipping",
       "including-vat": "Including VAT",
-      "free-shipping-promo": "Add {{value}} more for FREE shipping!"
+      "free-shipping-promo": "Add {{value}} more for FREE shipping!",
+      "remove-item": "Remove product"
     },
     "shipping": {
       "free-shipping-achieved": "You have achieved free shipping!",
@@ -190,7 +211,6 @@
       "shipping-cost": "Shipping",
       "go-to-confirmation": "Continue to Order Summary",
       "method": {
-        "title": "Choose if you would like to receive or pick up your order.",
         "pickup": {
           "title": "Store pickup.",
           "description": "Come to the store and pick up your order."
@@ -198,6 +218,10 @@
         "delivery": {
           "title": "Home delivery.",
           "description": "We bring your order to your address."
+        },
+        "all": {
+          "title": "Choose if you would like to receive or pick up your order.",
+          "description": "Choose if you would like to receive or pick up your order."
         }
       },
       "weekdays-labels": {

@@ -1,8 +1,8 @@
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 py-8">
+<div class="grid grid-cols-1 gap-8 py-8 lg:grid-cols-3">
   <!-- Left Column: Shipping Details -->
-  <div class="lg:col-span-2 space-y-10">
+  <div class="space-y-10 lg:col-span-2">
     <section>
-      <h2 class="text-2xl font-bold text-neutral-900 mb-2">
+      <h2 class="mb-2 text-2xl font-bold text-neutral-900">
         {{ 'cart.steps.shipping.title' | translate }}
       </h2>
 
@@ -23,7 +23,7 @@
   </div>
 
   <!-- Right Column: Order Summary -->
-  <div class="lg:col-span-1 space-y-6 sticky top-4 self-start">
+  <div class="sticky top-4 space-y-6 self-start lg:col-span-1">
     <eco-cart-order-summary
       [subtotal]="cartStore.totalAmount()"
       [taxes]="cartStore.totalAmountIva()"
