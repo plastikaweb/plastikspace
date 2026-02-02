@@ -16,37 +16,34 @@ import {
   FieldDependencies,
 } from './cart-shipping-form-fields';
 
-import {
-  EcoStoreTenantLogistics,
-  EcoStoreTenantLogisticsDeliveryTier,
-  EcoStoreTenantLogisticsDeliveryType,
-} from '@plastik/eco-store/entities';
-
 /**
- * Builds shipping method options from logistics configuration.
- * @param { EcoStoreTenantLogistics | undefined } logisticsConfig - Tenant logistics configuration object
+ * Builds shipping method options from tenant store, filtering only fully configured methods.
+ * @param { InstanceType<typeof ecoStoreTenantStore> } tenantStore - Tenant store instance
  * @returns { ShippingMethodOption[] } Array of shipping method options with icons, titles, and costs
  */
 function buildShippingMethodOptions(
-  logisticsConfig: EcoStoreTenantLogistics | undefined
+  tenantStore: InstanceType<typeof ecoStoreTenantStore>
 ): ShippingMethodOption[] {
-  const availableOptions =
-    logisticsConfig?.options?.filter((option: { enabled: boolean }) => option.enabled) || [];
+  const availableMethodTypes = tenantStore.getTenantAvailableShippingMethods();
+  const logisticsConfig = tenantStore.tenant()?.logisticsConfig;
 
-  return availableOptions.map(
-    (option: {
-      type: EcoStoreTenantLogisticsDeliveryType;
-      tiers?: EcoStoreTenantLogisticsDeliveryTier[];
-      cost?: number;
-    }) => ({
-      type: option.type,
-      icon: option.type === 'pickup' ? 'store' : 'local_shipping',
-      title: `cart.steps.shipping.method.${option.type}.title`,
-      theme: option.type === 'pickup' ? 'primary' : 'secondary',
-      cost:
-        option.tiers?.find((tier: { cost: number }) => tier.cost === 0)?.min ?? option.cost ?? 0,
+  if (!logisticsConfig?.options || availableMethodTypes.length === 0) return [];
+
+  return availableMethodTypes
+    .map(methodType => {
+      const option = logisticsConfig.options.find(opt => opt.type === methodType);
+      if (!option) return null;
+
+      return {
+        type: option.type,
+        icon: option.type === 'pickup' ? 'store' : 'local_shipping',
+        title: `cart.steps.shipping.method.${option.type}.title`,
+        theme: option.type === 'pickup' ? 'primary' : 'secondary',
+        cost:
+          option.tiers?.find((tier: { cost: number }) => tier.cost === 0)?.min ?? option.cost ?? 0,
+      };
     })
-  );
+    .filter(opt => opt !== null) as ShippingMethodOption[];
 }
 
 /**
@@ -60,11 +57,8 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
   const cartStore = inject(ecoStoreCartStore);
   const translateService = inject(TranslateService);
 
-  const logisticsConfig = tenantStore.tenant()?.logisticsConfig;
-  const availableShippingMethodOptions = buildShippingMethodOptions(logisticsConfig);
-  const availableMethodTypes = logisticsConfig?.options
-    ?.filter(option => option.enabled)
-    .map(option => option.type);
+  const availableShippingMethodOptions = buildShippingMethodOptions(tenantStore);
+  const availableMethodTypes = tenantStore.getTenantAvailableShippingMethods();
 
   const dependencies: FieldDependencies = {
     tenantStore,

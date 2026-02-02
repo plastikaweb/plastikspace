@@ -151,7 +151,10 @@
   },
   "cart": {
     "steps": {
-      "summary": "Cart summary",
+      "summary": {
+        "title": "Cart summary",
+        "subtitle": "Review the details of your order."
+      },
       "shipping": {
         "title": "Shipping",
         "subtitle": "Choose if you would like to receive or pick up your order."
@@ -178,7 +181,8 @@
       "items-count-suffix": "items in cart",
       "shipping": "Shipping",
       "including-vat": "Including VAT",
-      "free-shipping-promo": "Add {{value}} more for FREE shipping!"
+      "free-shipping-promo": "Add {{value}} more for FREE shipping!",
+      "remove-item": "Remove product"
     },
     "shipping": {
       "free-shipping-achieved": "You have achieved free shipping!",

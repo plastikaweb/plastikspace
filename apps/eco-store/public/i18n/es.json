@@ -14,7 +14,7 @@
   },
   "shared": {
     "address": {
-      "default": "Dirección por defecto"
+      "default": "Dirección predeterminada"
     }
   },
   "a11y": {
@@ -151,7 +151,10 @@
   },
   "cart": {
     "steps": {
-      "summary": "Resumen de la cesta",
+      "summary": {
+        "title": "Resumen de la cesta",
+        "subtitle": "Revisa los detalles de tu pedido."
+      },
       "shipping": {
         "title": "Envío",
         "subtitle": "Elige si quieres recibir o recoger tu pedido."
@@ -178,7 +181,8 @@
       "items-count-suffix": "artículos en la cesta",
       "shipping": "Envío",
       "including-vat": "IVA incluido",
-      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!"
+      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!",
+      "remove-item": "Eliminar producto"
     },
     "shipping": {
       "free-shipping-achieved": "¡Has conseguido envío gratuito!",

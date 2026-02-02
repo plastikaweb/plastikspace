@@ -5,6 +5,7 @@
     "esbenp.prettier-vscode",
     "firsttris.vscode-jest-runner",
     "dbaeumer.vscode-eslint",
-    "deque-systems.vscode-axe-linter"
+    "deque-systems.vscode-axe-linter",
+    "lokalise.i18n-ally"
   ]
 }

@@ -153,7 +153,7 @@
     "steps": {
       "summary": {
         "title": "Resum de la cistella",
-        "subtitle": "Revisa els productes que has afegit a la teva comanda."
+        "subtitle": "Revisa els detalls de la teva comanda."
       },
       "shipping": {
         "title": "Enviament",
@@ -181,7 +181,8 @@
       "items-count-suffix": "elements a la cistella",
       "shipping": "Enviament",
       "including-vat": "IVA inclòs",
-      "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!"
+      "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!",
+      "remove-item": "Eliminar producte"
     },
     "shipping": {
       "free-shipping-achieved": "Has aconseguit enviament gratuït!",

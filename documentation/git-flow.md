@@ -10,6 +10,7 @@
   - [Merge](#merge)
     - [Merge Github actions](#merge-github-actions)
     - [Staging deploy](#staging-deploy)
+  - [i18n Validation](#i18n-validation)
   - [Useful links](#useful-links)
 
 ## Description
@@ -117,6 +118,46 @@ The deploy used by `github pages` will vary depending of each included app confi
 Please, take a look inside each app README for further information:
 
 - [nasa-images](../apps/nasa-images/README.md);
+
+## i18n Validation
+
+Translation keys are validated automatically to ensure all keys used in templates and TypeScript are defined in source language files.
+
+### During Local Development
+
+Run validation before committing translation changes:
+
+```bash
+yarn i18n:validate    # Quick check (~2-5s)
+yarn i18n:test        # Full test suite (~5-15s)
+```
+
+### In CI/CD Pipeline
+
+**On every PR/commit** (fast validation):
+
+```yaml
+- name: Validate i18n keys
+  run: yarn i18n:validate
+```
+
+**On integration tests** (comprehensive validation):
+
+```yaml
+- name: Run i18n tests
+  run: yarn i18n:test
+  if: github.event_name == 'pull_request'
+```
+
+### Pre-commit Hook
+
+Add to `.husky/pre-commit` to prevent incomplete translations:
+
+```bash
+yarn i18n:validate
+```
+
+For more details, see [i18n documentation](./i18n.md).
 
 ## Useful links
 

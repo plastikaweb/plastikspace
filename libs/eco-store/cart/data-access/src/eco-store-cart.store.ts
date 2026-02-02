@@ -1,5 +1,5 @@
 import { updateState, withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
-import { computed } from '@angular/core';
+import { computed, inject } from '@angular/core';
 import { signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { removeAllEntities, removeEntity, setEntity, withEntities } from '@ngrx/signals/entities';
 import { UserContact } from '@plastik/core/entities';
@@ -9,6 +9,7 @@ import {
   SlotDays,
   TimeRange,
 } from '@plastik/eco-store/entities';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 
 export interface CartItem {
   id: string;
@@ -64,6 +65,14 @@ export const ecoStoreCartStore = signalStore(
     totalAmountIva: computed(() => totalAmountWithIva() - totalAmount()),
     totalAmountWithShipping: computed(() => totalAmountWithIva() + amount()),
   })),
+
+  withComputed(() => {
+    const tenantStore = inject(ecoStoreTenantStore);
+
+    return {
+      isShippingAvailable: computed(() => tenantStore.isShippingAvailable()),
+    };
+  }),
 
   withMethods(store => {
     const _setItem = (

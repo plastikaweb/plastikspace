@@ -7,10 +7,8 @@
   </h2>
 
   <div class="grid grid-cols-1 gap-8 lg:grid-cols-3">
-    <!-- Left Column: Cart List -->
     <div class="cart-summary-card mb-8 space-y-4 lg:col-span-2">
       <mat-card appearance="outlined" class="overflow-hidden">
-        <!-- Categories and Items -->
         <mat-card-content>
           @for (group of cartStore.itemsGroupedByCategory() | keyvalue; track group.key) {
             <div class="mb-4 px-4 py-2">

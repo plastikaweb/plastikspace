@@ -73,6 +73,54 @@ export const ecoStoreTenantStore = signalStore(
           }))
           .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[]
     ),
+    /**
+     * Checks if shipping is fully available based on tenant configuration.
+     * Returns true if at least one enabled shipping method (pickup or delivery) is properly configured:
+     * - For pickup (if enabled): At least one tenant address with slots/instructions OR global pickup slots/instructions
+     * - For delivery (if enabled): Delivery must have slots configured (slots are required for delivery scheduling)
+     * Note: Tenant can have only pickup, only delivery, or both. Missing method is not an error.
+     */
+    isShippingAvailable: computed(() => {
+      const currentTenant = store.tenant();
+      if (!currentTenant?.logisticsConfig) return false;
+
+      const { options } = currentTenant.logisticsConfig;
+      if (!options || options.length === 0) return false;
+
+      const enabledOptions = options.filter(opt => opt.enabled);
+      if (enabledOptions.length === 0) return false;
+
+      const configuredMethods: boolean[] = [];
+
+      const pickupOption = options.find(opt => opt.type === 'pickup' && opt.enabled);
+      if (pickupOption) {
+        const addresses = store.addresses();
+        const hasGlobalPickupConfig =
+          (pickupOption.slots && Object.keys(pickupOption.slots).length > 0) ||
+          !!pickupOption.instructions;
+
+        const hasAddressConfig =
+          addresses?.some(address => {
+            const hasSlots = address.slots && Object.keys(address.slots).length > 0;
+            const hasInstructions = !!address.instructions;
+            return hasSlots || hasInstructions;
+          }) ?? false;
+
+        const isPickupConfigured = hasGlobalPickupConfig || hasAddressConfig;
+        configuredMethods.push(isPickupConfigured);
+      }
+
+      const deliveryOption = options.find(opt => opt.type === 'delivery' && opt.enabled);
+      if (deliveryOption) {
+        const isDeliveryConfigured =
+          deliveryOption.slots && Object.keys(deliveryOption.slots).length > 0;
+        if (isDeliveryConfigured) {
+          configuredMethods.push(isDeliveryConfigured);
+        }
+      }
+
+      return configuredMethods.some(configured => configured);
+    }),
   })),
   withMethods(store => ({
     async getTenant() {
@@ -311,6 +359,48 @@ export const ecoStoreTenantStore = signalStore(
       }
 
       return null;
+    },
+
+    /**
+     * Returns only fully configured shipping methods.
+     * Filters out enabled methods that lack proper configuration:
+     * - Pickup: Must have slots/instructions at tenant level OR in at least one address
+     * - Delivery: Must have slots configured (slots are required for delivery scheduling)
+     * @returns {EcoStoreTenantLogisticsDeliveryType[]} Array of available, fully configured shipping method types
+     */
+    getTenantAvailableShippingMethods(): EcoStoreTenantLogisticsDeliveryType[] {
+      const tenant = store.tenant();
+      if (!tenant?.logisticsConfig?.options) return [];
+
+      const availableMethods: EcoStoreTenantLogisticsDeliveryType[] = [];
+
+      const pickupOption = tenant.logisticsConfig.options.find(opt => opt.type === 'pickup');
+      if (pickupOption?.enabled) {
+        const hasGlobalPickupConfig =
+          (pickupOption.slots && Object.keys(pickupOption.slots).length > 0) ||
+          !!pickupOption.instructions;
+
+        const hasAddressConfig = store.addresses().some(address => {
+          const hasSlots = address.slots && Object.keys(address.slots).length > 0;
+          const hasInstructions = !!address.instructions;
+          return hasSlots || hasInstructions;
+        });
+
+        if (hasGlobalPickupConfig || hasAddressConfig) {
+          availableMethods.push('pickup');
+        }
+      }
+
+      const deliveryOption = tenant.logisticsConfig.options.find(opt => opt.type === 'delivery');
+      if (deliveryOption?.enabled) {
+        const hasDeliverySlots =
+          deliveryOption.slots && Object.keys(deliveryOption.slots).length > 0;
+        if (hasDeliverySlots) {
+          availableMethods.push('delivery');
+        }
+      }
+
+      return availableMethods;
     },
   }))
 );

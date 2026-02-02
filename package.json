@@ -17,6 +17,8 @@
     "lint": "nx lint",
     "lint:all": "nx run-many --all --target=lint --parallel --max-parallel=3",
     "lint:ci": "nx affected --target=lint --base=remotes/origin/develop --head=HEAD --parallel",
+    "i18n:validate": "node tools/scripts/validate-i18n-keys.js",
+    "i18n:test": "bash tools/scripts/test-i18n-validation.sh",
     "e2e:all": "nx run-many --all --target=e2e --headed=false --watch=false",
     "e2e:ci": "nx affected --target=e2e --base=remotes/origin/develop --parallel --headed=false --watch=false",
     "affected:apps": "nx affected:apps",

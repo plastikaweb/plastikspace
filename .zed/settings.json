@@ -72,20 +72,20 @@
           "arguments": ["--stdin-filepath", "{buffer_path}"]
         }
       },
-
       "code_actions_on_format": {
         "source.organizeImports": true,
         "source.fixAll.ts": true
-      }
+      },
+      "language_servers": ["typescript-language-server", "vtsls", "angular-language-server", "..."]
     },
-
     "HTML": {
       "formatter": {
         "external": {
           "command": "prettier",
           "arguments": ["--stdin-filepath", "{buffer_path}"]
         }
-      }
+      },
+      "language_servers": ["angular-language-server", "vscode-html-language-server", "..."]
     }
   },
   "load_direnv": "shell_hook",
@@ -106,5 +106,14 @@
   "git": { "inline_blame": { "enabled": false } },
   "current_line_highlight": "all",
   "tab_size": 2,
-  "hard_tabs": true
+  "hard_tabs": true,
+  "linters": {
+    "eslint": {
+      "bin": {
+        "path": "eslint"
+      },
+      "settings": {}
+    }
+  },
+  "enable_language_server": true
 }
