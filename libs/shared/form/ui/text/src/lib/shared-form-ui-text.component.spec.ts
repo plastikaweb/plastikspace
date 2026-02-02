@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedFormUiTextTypeComponent } from './shared-form-ui-text/shared-form-ui-text.componentt';
+import { SharedFormUiTextTypeComponent } from './shared-form-ui-text.component';
 
 describe('SharedFormUiTextComponent', () => {
   let component: SharedFormUiTextTypeComponent;

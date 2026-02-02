@@ -157,7 +157,24 @@
       },
       "shipping": {
         "title": "Envío",
-        "subtitle": "Elige si quieres recibir o recoger tu pedido."
+        "subtitle": "Elige si quieres recibir o recoger tu pedido.",
+        "unavailable": {
+          "title": "Estamos preparando los últimos detalles",
+          "description": {
+            "part1": "Esta tienda eco está terminando de configurar sus",
+            "part2": "rutas de entrega",
+            "part3": "y franjas horarias para ofrecerte el mejor servicio posible."
+          },
+          "info": {
+            "title": "¿QUÉ PUEDES HACER AHORA?",
+            "item1": "Puedes seguir llenando tu carrito con tus productos preferidos.",
+            "item2": "Tu selección se guardará para cuando el checkout esté activo.",
+            "item3": "Puedes cerrar la sesión y volver más tarde sin perder tu selección."
+          },
+          "actions": {
+            "goToShop": "Volver a la tienda"
+          }
+        }
       },
       "payment": {
         "title": "Pago",

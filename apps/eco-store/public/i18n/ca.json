@@ -157,7 +157,24 @@
       },
       "shipping": {
         "title": "Enviament",
-        "subtitle": "Tria si vols rebre o recollir la teva comanda."
+        "subtitle": "Tria si vols rebre o recollir la teva comanda.",
+        "unavailable": {
+          "title": "Estem preparant els últims detalls",
+          "description": {
+            "part1": "Aquesta botiga eco està acabant de configurar les seves",
+            "part2": "rutes de lliurament",
+            "part3": "i franges horàries per oferir-te el millor servei possible."
+          },
+          "info": {
+            "title": "QUÈ POTS FER ARA?",
+            "item1": "Pots seguir omplint el teu cistell amb els teus productes preferits.",
+            "item2": "La teva selecció es guardarà per quan el checkout estigui actiu.",
+            "item3": "Pots tancar la sessió i tornar més tard sense perdre la tria."
+          },
+          "actions": {
+            "goToShop": "Tornar a la botiga"
+          }
+        }
       },
       "payment": {
         "title": "Pagament",

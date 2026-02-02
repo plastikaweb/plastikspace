@@ -2,6 +2,8 @@ import { Route } from '@angular/router';
 import { pocketBaseIsLoggedGuard } from '@plastik/auth/pocketbase/data-access';
 import { cartShippingResolver } from './eco-store-cart-steps/shipping/cart-shipping.resolver';
 import { EcoStoreCartComponent } from './eco-store-cart/eco-store-cart.component';
+import { shippingAvailableGuard } from './guards/shipping-available.guard';
+import { shippingUnavailableGuard } from './guards/shipping-unavailable.guard';
 
 export const ecoStoreCartRoutes: Route[] = [
   {
@@ -17,7 +19,7 @@ export const ecoStoreCartRoutes: Route[] = [
       },
       {
         path: 'enviament',
-        canActivate: [pocketBaseIsLoggedGuard],
+        canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard],
         resolve: { addresses: cartShippingResolver },
         loadComponent: () =>
           import('./eco-store-cart-steps/shipping/cart-shipping.component').then(
@@ -26,10 +28,18 @@ export const ecoStoreCartRoutes: Route[] = [
       },
       {
         path: 'confirmacio',
-        canActivate: [pocketBaseIsLoggedGuard],
+        canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard],
         loadComponent: () =>
           import('./eco-store-cart-steps/cart-confirmation.component').then(
             m => m.CartConfirmationComponent
+          ),
+      },
+      {
+        path: 'pendent',
+        canActivate: [shippingUnavailableGuard],
+        loadComponent: () =>
+          import('./eco-store-cart-steps/shipping/shipping-unavailable/shipping-unavailable.component').then(
+            m => m.ShippingUnavailableComponent
           ),
       },
       {

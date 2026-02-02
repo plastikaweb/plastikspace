@@ -16,6 +16,7 @@ import {
   provideRouter,
   TitleStrategy,
   withComponentInputBinding,
+  withExperimentalAutoCleanupInjectors,
   withRouterConfig,
   withViewTransitions,
 } from '@angular/router';
@@ -41,6 +42,7 @@ export const appConfig: ApplicationConfig = {
       appRoutes,
       withViewTransitions(),
       withComponentInputBinding(),
+      withExperimentalAutoCleanupInjectors(),
       withRouterConfig({ onSameUrlNavigation: 'reload' })
     ),
     providePocketBaseWithTranslationsEnv(environment),
