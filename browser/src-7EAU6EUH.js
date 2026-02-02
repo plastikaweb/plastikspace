@@ -49,7 +49,7 @@ import {
   isEmpty,
   isNil,
   selectNasaImagesFeature
-} from "./chunk-ZPWDNAVJ.js";
+} from "./chunk-GPLDXBEB.js";
 import {
   TranslateModule,
   _DisposeViewRepeaterStrategy,
@@ -1656,7 +1656,7 @@ var NasaImagesSearchUiNoResultsComponent = class _NasaImagesSearchUiNoResultsCom
   static \u0275fac = function NasaImagesSearchUiNoResultsComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _NasaImagesSearchUiNoResultsComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NasaImagesSearchUiNoResultsComponent, selectors: [["plastik-nasa-images-search-ui-no-results"]], ngContentSelectors: _c1, decls: 7, vars: 0, consts: [[1, "mx-auto", "mt-0", "w-5/6", "text-center", "mb-sm", "md:my-xl"], [1, "flex", "flex-col", "items-center"], ["aria-hidden", "true", 1, "text-[15rem]", "size-[15rem]"], ["data-test", "search-no-results-message", 1, "mt-md"]], template: function NasaImagesSearchUiNoResultsComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NasaImagesSearchUiNoResultsComponent, selectors: [["plastik-nasa-images-search-ui-no-results"]], ngContentSelectors: _c1, decls: 7, vars: 0, consts: [[1, "mb-sm", "md:my-xl", "mx-auto", "mt-0", "w-5/6", "text-center"], [1, "flex", "flex-col", "items-center"], ["aria-hidden", "true", 1, "size-[15rem]", "text-[15rem]"], ["data-test", "search-no-results-message", 1, "mt-md"]], template: function NasaImagesSearchUiNoResultsComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c02);
       \u0275\u0275elementStart(0, "div", 0)(1, "h3", 1)(2, "mat-icon", 2);
@@ -1673,7 +1673,7 @@ var NasaImagesSearchUiNoResultsComponent = class _NasaImagesSearchUiNoResultsCom
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(NasaImagesSearchUiNoResultsComponent, [{
     type: Component,
-    args: [{ selector: "plastik-nasa-images-search-ui-no-results", imports: [MatIconModule], template: '<div class="mx-auto mt-0 w-5/6 text-center mb-sm md:my-xl">\n  <h3 class="flex flex-col items-center">\n    <mat-icon aria-hidden="true" class="text-[15rem] size-[15rem]">\n      <ng-content select="[icon]"></ng-content>\n    </mat-icon>\n    <ng-content select="[title]"></ng-content>\n  </h3>\n  <div class="mt-md" data-test="search-no-results-message">\n    <ng-content select="[message]"></ng-content>\n  </div>\n</div>\n' }]
+    args: [{ selector: "plastik-nasa-images-search-ui-no-results", imports: [MatIconModule], template: '<div class="mb-sm md:my-xl mx-auto mt-0 w-5/6 text-center">\n  <h3 class="flex flex-col items-center">\n    <mat-icon aria-hidden="true" class="size-[15rem] text-[15rem]">\n      <ng-content select="[icon]"></ng-content>\n    </mat-icon>\n    <ng-content select="[title]"></ng-content>\n  </h3>\n  <div class="mt-md" data-test="search-no-results-message">\n    <ng-content select="[message]"></ng-content>\n  </div>\n</div>\n' }]
   }], null, null);
 })();
 (() => {
@@ -16622,7 +16622,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.matFormField = _t);
     }
-  }, inputs: { data: [1, "data"], columnProperties: [1, "columnProperties"], resultsLength: [1, "resultsLength"], pagination: [1, "pagination"], noPagination: [1, "noPagination"], paginationVisibility: [1, "paginationVisibility"], caption: [1, "caption"], sort: [1, "sort"], actions: [1, "actions"], filterCriteria: [1, "filterCriteria"], filterPredicate: [1, "filterPredicate"], extraRowStyles: [1, "extraRowStyles"], actionsColStyles: [1, "actionsColStyles"], rowHeight: [1, "rowHeight"], expandable: [1, "expandable"], expandedElementId: [1, "expandedElementId"], expandedDetailTpl: [1, "expandedDetailTpl"] }, outputs: { changePagination: "changePagination", changeSorting: "changeSorting", delete: "delete", getChangedData: "getChangedData" }, ngContentSelectors: _c23, decls: 6, vars: 2, consts: [["noResults", ""], ["matFormField", ""], ["matPaginator", ""], [1, "grid", "overflow-auto", "overflow-x-auto", "overflow-y-hidden", "z-10", "mt-0", "w-full", "border-t", "border-solid", "md:mt-4", "border-gray-10", "mb-tiny"], [1, "justify-end", "mt-md", 3, "pageIndex", "pageSize", "length"], ["matSort", "", "matSortDisableClear", "", "multiTemplateDataRows", "", 1, "table", "w-full", 3, "matSortChange", "dataSource", "matSortActive", "matSortDirection"], [3, "matColumnDef", "sticky"], ["matColumnDef", "actions"], [4, "matHeaderRowDef", "matHeaderRowDefSticky"], [3, "height", "ngClass"], [3, "sortActionDescription", "mat-sort-header", "disabled", "ngClass", 4, "matHeaderCellDef"], ["class", "py-sub", 3, "ngClass", 4, "matCellDef"], [3, "sortActionDescription", "mat-sort-header", "disabled", "ngClass"], [1, "py-sub", 3, "ngClass"], [3, "ngClass", "routerLink", "queryParams", "innerHTML"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc", "ngClass"], [3, "ngClass", "innerHTML"], [3, "click", "ngClass", "routerLink", "queryParams", "innerHTML"], [1, "leading-6", "my-sub", 3, "ngClass"], [1, "inline", "editable", 3, "ngClass"], [3, "value", "multiple"], [3, "value", "checked"], [3, "checked", "aria-label"], [3, "value"], ["matTextPrefix", ""], ["matInput", "", 3, "change", "value", "placeholder"], ["matTextSuffix", ""], ["matInput", "", "type", "number", 3, "change", "value", "placeholder"], [3, "selectionChange", "value", "multiple"], [3, "change", "value", "checked"], [3, "change", "checked", "aria-label"], [3, "change", "value"], ["matInput", "", "cdkTextareaAutosize", "", "cdkAutosizeMinRows", "1", "cdkAutosizeMaxRows", "4", "autocomplete", "off", 3, "change", "value", "placeholder", "rows"], [4, "ngComponentOutlet", "ngComponentOutletInputs"], ["class", "overflow-visible justify-center mat-cell-actions", 3, "ngClass", 4, "matHeaderCellDef"], ["class", "overflow-visible mat-cell-actions py-sub", 3, "ngClass", 4, "matCellDef"], [1, "overflow-visible", "justify-center", "mat-cell-actions", 3, "ngClass"], [1, "overflow-visible", "mat-cell-actions", "py-sub", 3, "ngClass"], ["type", "button", "mat-icon-button", "", 3, "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled", "routerLink"], ["type", "button", "mat-icon-button", "", "aria-hidden", "true", 1, "invisible"], ["type", "button", "mat-icon-button", "", 3, "click", "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled", "routerLink"], ["matColumnDef", "expand", "sticky", "true"], ["aria-label", "row", "class", "max-w-[70px]", "aria-hidden", "true", 4, "matHeaderCellDef"], ["class", "max-w-[70px]", 4, "matCellDef"], ["matColumnDef", "expandedDetail"], ["class", "justify-evenly border-b-0", 4, "matCellDef"], ["aria-label", "row", "aria-hidden", "true", 1, "max-w-[70px]"], [1, "invisible"], [1, "max-w-[70px]"], ["mat-icon-button", "", "aria-label", "expand row", 1, "-left-sub", 3, "click"], [1, "justify-evenly", "border-b-0"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["sticky", "true", "class", "expandable-row", 3, "expanded-row", "ngClass", "click", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", "class", "table-row height-0", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", 1, "expandable-row", 3, "click", "ngClass"], ["sticky", "true", 1, "table-row", "height-0"], [3, "height", "ngClass", 4, "matRowDef", "matRowDefColumns"], [3, "ngClass"], [1, "text-sm"], [1, "justify-end", "mt-md", 3, "page", "pageIndex", "pageSize", "length"]], template: function SharedTableUiComponent_Template(rf, ctx) {
+  }, inputs: { data: [1, "data"], columnProperties: [1, "columnProperties"], resultsLength: [1, "resultsLength"], pagination: [1, "pagination"], noPagination: [1, "noPagination"], paginationVisibility: [1, "paginationVisibility"], caption: [1, "caption"], sort: [1, "sort"], actions: [1, "actions"], filterCriteria: [1, "filterCriteria"], filterPredicate: [1, "filterPredicate"], extraRowStyles: [1, "extraRowStyles"], actionsColStyles: [1, "actionsColStyles"], rowHeight: [1, "rowHeight"], expandable: [1, "expandable"], expandedElementId: [1, "expandedElementId"], expandedDetailTpl: [1, "expandedDetailTpl"] }, outputs: { changePagination: "changePagination", changeSorting: "changeSorting", delete: "delete", getChangedData: "getChangedData" }, ngContentSelectors: _c23, decls: 6, vars: 2, consts: [["noResults", ""], ["matFormField", ""], ["matPaginator", ""], [1, "border-gray-10", "mb-tiny", "z-10", "mt-0", "grid", "w-full", "overflow-auto", "overflow-x-auto", "overflow-y-hidden", "border-t", "border-solid", "md:mt-4"], [1, "mt-md", "justify-end", 3, "pageIndex", "pageSize", "length"], ["matSort", "", "matSortDisableClear", "", "multiTemplateDataRows", "", 1, "table", "w-full", 3, "matSortChange", "dataSource", "matSortActive", "matSortDirection"], [3, "matColumnDef", "sticky"], ["matColumnDef", "actions"], [4, "matHeaderRowDef", "matHeaderRowDefSticky"], [3, "height", "ngClass"], [3, "sortActionDescription", "mat-sort-header", "disabled", "ngClass", 4, "matHeaderCellDef"], ["class", "py-sub", 3, "ngClass", 4, "matCellDef"], [3, "sortActionDescription", "mat-sort-header", "disabled", "ngClass"], [1, "py-sub", 3, "ngClass"], [3, "ngClass", "routerLink", "queryParams", "innerHTML"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc", "ngClass"], [3, "ngClass", "innerHTML"], [3, "click", "ngClass", "routerLink", "queryParams", "innerHTML"], [1, "my-sub", "leading-6", 3, "ngClass"], [1, "editable", "inline", 3, "ngClass"], [3, "value", "multiple"], [3, "value", "checked"], [3, "checked", "aria-label"], [3, "value"], ["matTextPrefix", ""], ["matInput", "", 3, "change", "value", "placeholder"], ["matTextSuffix", ""], ["matInput", "", "type", "number", 3, "change", "value", "placeholder"], [3, "selectionChange", "value", "multiple"], [3, "change", "value", "checked"], [3, "change", "checked", "aria-label"], [3, "change", "value"], ["matInput", "", "cdkTextareaAutosize", "", "cdkAutosizeMinRows", "1", "cdkAutosizeMaxRows", "4", "autocomplete", "off", 3, "change", "value", "placeholder", "rows"], [4, "ngComponentOutlet", "ngComponentOutletInputs"], ["class", "mat-cell-actions justify-center overflow-visible", 3, "ngClass", 4, "matHeaderCellDef"], ["class", "mat-cell-actions py-sub overflow-visible", 3, "ngClass", 4, "matCellDef"], [1, "mat-cell-actions", "justify-center", "overflow-visible", 3, "ngClass"], [1, "mat-cell-actions", "py-sub", "overflow-visible", 3, "ngClass"], ["type", "button", "mat-icon-button", "", 3, "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled", "routerLink"], ["type", "button", "mat-icon-button", "", "aria-hidden", "true", 1, "invisible"], ["type", "button", "mat-icon-button", "", 3, "click", "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled", "routerLink"], ["matColumnDef", "expand", "sticky", "true"], ["aria-label", "row", "class", "max-w-[70px]", "aria-hidden", "true", 4, "matHeaderCellDef"], ["class", "max-w-[70px]", 4, "matCellDef"], ["matColumnDef", "expandedDetail"], ["class", "justify-evenly border-b-0", 4, "matCellDef"], ["aria-label", "row", "aria-hidden", "true", 1, "max-w-[70px]"], [1, "invisible"], [1, "max-w-[70px]"], ["mat-icon-button", "", "aria-label", "expand row", 1, "-left-sub", 3, "click"], [1, "justify-evenly", "border-b-0"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["sticky", "true", "class", "expandable-row", 3, "expanded-row", "ngClass", "click", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", "class", "height-0 table-row", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", 1, "expandable-row", 3, "click", "ngClass"], ["sticky", "true", 1, "height-0", "table-row"], [3, "height", "ngClass", 4, "matRowDef", "matRowDefColumns"], [3, "ngClass"], [1, "text-sm"], [1, "mt-md", "justify-end", 3, "page", "pageIndex", "pageSize", "length"]], template: function SharedTableUiComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c17);
       \u0275\u0275elementStart(0, "div", 3);
@@ -16685,7 +16685,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
         OrderTableActionsElementsPipe,
         SafeFormattedPipe
       ], changeDetection: ChangeDetectionStrategy.OnPush, template: `<div
-  class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-tiny">
+  class="border-gray-10 mb-tiny z-10 mt-0 grid w-full overflow-auto overflow-x-auto overflow-y-hidden border-t border-solid md:mt-4">
   @defer (prefetch when dataSource.data.length) {
     <mat-table
       class="table w-full"
@@ -16726,11 +16726,11 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
               @case ('INPUT') {
                 @if (column.isEditableConfig?.(row); as editable) {
                   @let attributes = editable?.attributes;
-                  <div class="leading-6 my-sub" [ngClass]="column.cssClasses?.[1] || ''">
+                  <div class="my-sub leading-6" [ngClass]="column.cssClasses?.[1] || ''">
                     @if (isText(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
+                        class="editable inline"
                         [ngClass]="attributes?.styles || ''">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -16752,7 +16752,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
                     @if (isNumber(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
+                        class="editable inline"
                         [ngClass]="attributes?.styles || ''">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -16826,7 +16826,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
                     @if (isTextarea(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
+                        class="editable inline"
                         [ngClass]="attributes?.styles || ''">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
@@ -16889,13 +16889,13 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
         <ng-container matColumnDef="actions">
           <mat-header-cell
             *matHeaderCellDef
-            class="overflow-visible justify-center mat-cell-actions"
+            class="mat-cell-actions justify-center overflow-visible"
             [ngClass]="actionsColStyles() || ''">
             Accions
           </mat-header-cell>
           <mat-cell
             *matCellDef="let element"
-            class="overflow-visible mat-cell-actions py-sub"
+            class="mat-cell-actions py-sub overflow-visible"
             [ngClass]="actionsColStyles() || ''">
             @for (action of actions() | keyvalue | orderTableActionsElements; track action.key) {
               @if (action.key === 'EDIT' && action.value?.visible(element)) {
@@ -17010,7 +17010,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
         <mat-row
           *matRowDef="let row; columns: ['expandedDetail']"
           sticky="true"
-          class="table-row height-0"></mat-row>
+          class="height-0 table-row"></mat-row>
       } @else {
         <!-- Row that will be used to display the regular data -->
         <mat-row
@@ -17037,7 +17037,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
 @if (!noPagination()) {
   <mat-paginator
     #matPaginator
-    class="justify-end mt-md"
+    class="mt-md justify-end"
     [pageIndex]="pagination()?.pageIndex"
     [pageSize]="pagination()?.pageSize"
     [length]="resultsLength()"
@@ -17324,7 +17324,7 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
   static \u0275fac = function SharedImgContainerComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedImgContainerComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-img-container"]], hostAttrs: [1, "block"], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 7, vars: 6, consts: [["fixedImage", ""], ["fillImage", ""], [1, "absolute", "inset-0", "flex", "items-center", "justify-center", "bg-transparent", "rounded-lg"], [1, "animate-spin", "rounded-full", "h-8", "w-8", "border-b-2", "border-tertiary-600"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "object-cover", "my-sub", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "object-cover", "w-full", "max-h-auto", "my-sub", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-img-container"]], hostAttrs: [1, "block"], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 7, vars: 6, consts: [["fixedImage", ""], ["fillImage", ""], [1, "absolute", "inset-0", "flex", "items-center", "justify-center", "rounded-lg", "bg-transparent"], [1, "border-tertiary-600", "h-8", "w-8", "animate-spin", "rounded-full", "border-b-2"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "my-sub", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "max-h-auto", "my-sub", "w-full", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275declareLet(0)(1)(2);
       \u0275\u0275elementStart(3, "div", 2);
@@ -17355,7 +17355,7 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
     type: Component,
     args: [{ selector: "plastik-img-container", imports: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet], host: {
       class: "block"
-    }, changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div class="absolute inset-0 flex items-center justify-center bg-transparent rounded-lg">\n  @if (isLoading()) {\n    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-tertiary-600"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>\n    }\n  } @else {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>\n    }\n  }\n\n  <ng-template #fixedImage let-priority="priority">\n    <img\n      class="object-cover my-sub transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ width, height, quality: quality() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n\n  <ng-template #fillImage let-priority="priority">\n    <img\n      fill\n      class="object-cover w-full max-h-auto my-sub transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [alt]="title()"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host {\n  display: block;\n  position: relative;\n}\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
+    }, changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-transparent">\n  @if (isLoading()) {\n    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>\n    }\n  } @else {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>\n    }\n  }\n\n  <ng-template #fixedImage let-priority="priority">\n    <img\n      class="my-sub object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ width, height, quality: quality() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n\n  <ng-template #fillImage let-priority="priority">\n    <img\n      fill\n      class="max-h-auto my-sub w-full object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [alt]="title()"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host {\n  display: block;\n  position: relative;\n}\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
   }], () => [], { src: [{ type: Input, args: [{ isSignal: true, alias: "src", required: true }] }], title: [{ type: Input, args: [{ isSignal: true, alias: "title", required: true }] }], dimensions: [{ type: Input, args: [{ isSignal: true, alias: "dimensions", required: false }] }], quality: [{ type: Input, args: [{ isSignal: true, alias: "quality", required: false }] }], lcpImage: [{ type: Input, args: [{ isSignal: true, alias: "lcpImage", required: false }] }] });
 })();
 (() => {
@@ -17575,7 +17575,7 @@ var NasaImagesSearchFeatureComponent = class _NasaImagesSearchFeatureComponent {
   static \u0275fac = function NasaImagesSearchFeatureComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _NasaImagesSearchFeatureComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NasaImagesSearchFeatureComponent, selectors: [["plastik-nasa-images-search"]], decls: 8, vars: 16, consts: [["noValidSearch", ""], ["data-test", "page-title", 1, "flex", "items-center", "gap-sm", "h3"], [3, "changeEvent", "fields", "model"], [3, "data", "caption", "columnProperties", "resultsLength", "pagination", "changePagination", 4, "ngrxLet"], [3, "changePagination", "data", "caption", "columnProperties", "resultsLength", "pagination"], ["noResults", ""], ["icon", ""], ["title", ""], ["message", ""]], template: function NasaImagesSearchFeatureComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NasaImagesSearchFeatureComponent, selectors: [["plastik-nasa-images-search"]], decls: 8, vars: 16, consts: [["noValidSearch", ""], ["data-test", "page-title", 1, "gap-sm", "h3", "flex", "items-center"], [3, "changeEvent", "fields", "model"], [3, "data", "caption", "columnProperties", "resultsLength", "pagination", "changePagination", 4, "ngrxLet"], [3, "changePagination", "data", "caption", "columnProperties", "resultsLength", "pagination"], ["noResults", ""], ["icon", ""], ["title", ""], ["message", ""]], template: function NasaImagesSearchFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275conditionalCreate(0, NasaImagesSearchFeatureComponent_Conditional_0_Template, 5, 2, "h2", 1);
@@ -17626,7 +17626,7 @@ var NasaImagesSearchFeatureComponent = class _NasaImagesSearchFeatureComponent {
       YearPickerFormlyModule,
       NasaImagesSearchUiNoResultsComponent
     ], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (routeInfo$ | ngrxPush; as info) {
-  <h2 class="flex items-center gap-sm h3" data-test="page-title">
+  <h2 class="gap-sm h3 flex items-center" data-test="page-title">
     <mat-icon> {{ info?.icon }} </mat-icon> <span>{{ info?.title }}</span>
   </h2>
 }
@@ -17709,4 +17709,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-PKYOA32W.js.map
+//# sourceMappingURL=src-7EAU6EUH.js.map

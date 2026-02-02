@@ -10354,7 +10354,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   static \u0275fac = function SharedFormFeatureComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedFormFeatureComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedFormFeatureComponent, selectors: [["plastik-shared-form-feature"]], hostAttrs: [1, "w-full"], inputs: { fields: [1, "fields"], model: [1, "model"], submitConfig: [1, "submitConfig"], autoFocus: [1, "autoFocus"], disableForm: [1, "disableForm"], resetForm: [1, "resetForm"] }, outputs: { changeEvent: "changeEvent", temporaryChangeEvent: "temporaryChangeEvent", pendingChangesEvent: "pendingChangesEvent", validChange: "validChange" }, ngContentSelectors: _c13, decls: 7, vars: 16, consts: [["novalidate", "", 1, "flex", "flex-col", "w-full", "gap-1", "mt", 3, "ngSubmit", "formGroup"], [1, "form-container", 3, "modelChange", "fields", "form", "model", "options"], ["mat-flat-button", "", "type", "submit", "data-test", "submit-button", "title", "Submit", 3, "disabled"]], template: function SharedFormFeatureComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedFormFeatureComponent, selectors: [["plastik-shared-form-feature"]], hostAttrs: [1, "w-full"], inputs: { fields: [1, "fields"], model: [1, "model"], submitConfig: [1, "submitConfig"], autoFocus: [1, "autoFocus"], disableForm: [1, "disableForm"], resetForm: [1, "resetForm"] }, outputs: { changeEvent: "changeEvent", temporaryChangeEvent: "temporaryChangeEvent", pendingChangesEvent: "pendingChangesEvent", validChange: "validChange" }, ngContentSelectors: _c13, decls: 7, vars: 16, consts: [["novalidate", "", 1, "mt", "flex", "w-full", "flex-col", "gap-1", 3, "ngSubmit", "formGroup"], [1, "form-container", 3, "modelChange", "fields", "form", "model", "options"], ["mat-flat-button", "", "type", "submit", "data-test", "submit-button", "title", "Submit", 3, "disabled"]], template: function SharedFormFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c03);
       \u0275\u0275elementStart(0, "form", 0);
@@ -10393,7 +10393,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     args: [{ selector: "plastik-shared-form-feature", imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, TranslateModule], host: {
       class: "w-full"
     }, changeDetection: ChangeDetectionStrategy.OnPush, template: `<form
-  class="flex flex-col w-full gap-1 mt"
+  class="mt flex w-full flex-col gap-1"
   novalidate
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
@@ -17878,4 +17878,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-ZPWDNAVJ.js.map
+//# sourceMappingURL=chunk-GPLDXBEB.js.map

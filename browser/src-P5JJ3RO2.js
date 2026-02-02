@@ -95,7 +95,7 @@ var NotificationUiMatSnackbarComponent = class _NotificationUiMatSnackbarCompone
   static \u0275fac = function NotificationUiMatSnackbarComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _NotificationUiMatSnackbarComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NotificationUiMatSnackbarComponent, selectors: [["plastik-shared-notification-ui-mat-snackbar"]], decls: 5, vars: 3, consts: [[1, "flex", "flex-row", "justify-between", "items-center", "gap-sm"], ["matSnackBarLabel", "", 1, "flex", "flex-row", "justify-start", "items-center", "gap-sm"], ["aria-hidden", "true", 1, "basis-5", "md:basis-2"], [1, "text-balance", 3, "innerHTML"], ["mat-button", "", "matSnackBarAction", ""], ["mat-button", "", "matSnackBarAction", "", 3, "click"]], template: function NotificationUiMatSnackbarComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NotificationUiMatSnackbarComponent, selectors: [["plastik-shared-notification-ui-mat-snackbar"]], decls: 5, vars: 3, consts: [[1, "gap-sm", "flex", "flex-row", "items-center", "justify-between"], ["matSnackBarLabel", "", 1, "gap-sm", "flex", "flex-row", "items-center", "justify-start"], ["aria-hidden", "true", 1, "basis-5", "md:basis-2"], [1, "text-balance", 3, "innerHTML"], ["mat-button", "", "matSnackBarAction", ""], ["mat-button", "", "matSnackBarAction", "", 3, "click"]], template: function NotificationUiMatSnackbarComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 0)(1, "div", 1);
       \u0275\u0275conditionalCreate(2, NotificationUiMatSnackbarComponent_Conditional_2_Template, 2, 1, "mat-icon", 2);
@@ -119,7 +119,7 @@ var NotificationUiMatSnackbarComponent = class _NotificationUiMatSnackbarCompone
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(NotificationUiMatSnackbarComponent, [{
     type: Component,
-    args: [{ selector: "plastik-shared-notification-ui-mat-snackbar", imports: [MatIconModule], changeDetection: ChangeDetectionStrategy.OnPush, template: '<div class="flex flex-row justify-between items-center gap-sm">\n  <div class="flex flex-row justify-start items-center gap-sm" matSnackBarLabel>\n    @if (data.icon; as icon) {\n      <mat-icon aria-hidden="true" class="basis-5 md:basis-2">{{ icon }}</mat-icon>\n    }\n    <p class="text-balance" [innerHTML]="data.message"></p>\n  </div>\n  @if (data.action; as action) {\n    <button mat-button matSnackBarAction [attr.aria-label]="data.ariaLabel" (click)="dismiss()">\n      {{ action }}\n    </button>\n  }\n</div>\n' }]
+    args: [{ selector: "plastik-shared-notification-ui-mat-snackbar", imports: [MatIconModule], changeDetection: ChangeDetectionStrategy.OnPush, template: '<div class="gap-sm flex flex-row items-center justify-between">\n  <div class="gap-sm flex flex-row items-center justify-start" matSnackBarLabel>\n    @if (data.icon; as icon) {\n      <mat-icon aria-hidden="true" class="basis-5 md:basis-2">{{ icon }}</mat-icon>\n    }\n    <p class="text-balance" [innerHTML]="data.message"></p>\n  </div>\n  @if (data.action; as action) {\n    <button mat-button matSnackBarAction [attr.aria-label]="data.ariaLabel" (click)="dismiss()">\n      {{ action }}\n    </button>\n  }\n</div>\n' }]
   }], null, null);
 })();
 (() => {
@@ -193,4 +193,4 @@ var NotificationUiMatSnackbarDirective = class _NotificationUiMatSnackbarDirecti
 export {
   NotificationUiMatSnackbarDirective
 };
-//# sourceMappingURL=src-BMMQHIU2.js.map
+//# sourceMappingURL=src-P5JJ3RO2.js.map

@@ -16,7 +16,7 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-ZPWDNAVJ.js";
+} from "./chunk-GPLDXBEB.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
@@ -4918,7 +4918,7 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
   static \u0275fac = function SharedActivityUiOverlayComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedActivityUiOverlayComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedActivityUiOverlayComponent, selectors: [["plastik-shared-activity-ui-overlay"]], ngContentSelectors: _c06, decls: 2, vars: 0, consts: [[1, "inset-0", "flex", "items-center", "justify-center", "w-screen", "h-screen"]], template: function SharedActivityUiOverlayComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedActivityUiOverlayComponent, selectors: [["plastik-shared-activity-ui-overlay"]], ngContentSelectors: _c06, decls: 2, vars: 0, consts: [[1, "inset-0", "flex", "h-screen", "w-screen", "items-center", "justify-center"]], template: function SharedActivityUiOverlayComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef();
       \u0275\u0275domElementStart(0, "div", 0);
@@ -4930,7 +4930,7 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedActivityUiOverlayComponent, [{
     type: Component,
-    args: [{ selector: "plastik-shared-activity-ui-overlay", changeDetection: ChangeDetectionStrategy.OnPush, template: '<div class="inset-0 flex items-center justify-center w-screen h-screen">\n  <ng-content />\n</div>\n' }]
+    args: [{ selector: "plastik-shared-activity-ui-overlay", changeDetection: ChangeDetectionStrategy.OnPush, template: '<div class="inset-0 flex h-screen w-screen items-center justify-center">\n  <ng-content />\n</div>\n' }]
   }], null, null);
 })();
 (() => {
@@ -4939,9 +4939,9 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-BMMQHIU2.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-P5JJ3RO2.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
-var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-OVB2LGE5.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
+var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-VL6GG72Q.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
 var _c24 = () => ({ exact: false });
 var _forTrack0 = ($index, $item) => $item.id;
@@ -5282,7 +5282,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
     if (rf & 2) {
       \u0275\u0275queryAdvance();
     }
-  }, inputs: { hideFooter: [1, "hideFooter"] }, decls: 42, vars: 25, consts: [["headerMenuTpl", ""], ["h1Tpl", ""], ["toggleSidenavButtonTpl", ""], ["widgetsContainer", ""], ["menu", "matMenu"], [1, "core-cms-container"], ["data-test", "layout-header"], ["start", "", 1, "flex", "gap-0", "items-center", "sm:gap-sm"], ["data-test", "layout-title"], [1, "sr-only"], [1, "flex", "justify-between", "content-center", "items-center", "hover:no-underline", "gap-sub", 3, "routerLink"], [3, "ngTemplateOutlet"], ["end", "", 1, "flex", "items-center", "gap-tiny", "lg:gap-sm"], [3, "toggleSidenav", "position", "mode", "fixedInViewport", "sidenavOpened"], ["header", "", 3, "ngTemplateOutlet"], ["menu-items", "", "data-test", "sidenav-list"], [1, "spinner-container"], [1, "lds-ripple"], [3, "sendDismiss", "plastikSnackbar"], ["routerLinkActive", "bg-gray-10", "ariaCurrentWhenActive", "page", 1, "my-tiny", "h-xll", "hover:bg-gray-10", "focus:bg-gray-10", 3, "routerLink", "routerLinkActiveOptions"], ["matListItemIcon", ""], ["matListItemTitle", ""], ["data-test", "layout-footer"], ["content", "", 1, "flex", "flex-row", "justify-center", "items-center", "text-sm", "gap-tiny"], ["aria-label", "visit www.plastikaweb.com page", "href", "https://www.plastikaweb.com", "target", "_blank", 1, "underline", "underline-offset-2"], ["aria-label", "visitar www.llevat.org", "href", "https://www.llevat.org", "target", "_blank", 1, "underline", "underline-offset-2"], ["mat-button", "", 1, "flex", "gap-tiny", 3, "matMenuTriggerFor"], [1, "hidden", "sm:block"], [1, "size-[30px]", "text-[30px]", "m-0", "p-0"], [1, "px-sub"], [1, "block", "border-b-2", "sm:hidden", "w-fit", "text-balance", "p-tiny", "border-b-gray-10"], ["type", "button", "mat-menu-item", "", 3, "routerLink"], ["type", "button", "mat-menu-item", ""], ["type", "button", "mat-menu-item", "", 3, "click"], [1, "flex", "justify-center", "items-center", "gap-sub"], [3, "src", "svgClass", "svgAriaLabel"], ["mat-icon-button", "", "aria-label", "men\xFA lateral", "data-test", "toggle-sidenav-button", 1, "flex", "justify-center", "align-middle", 3, "click"], [1, "mat-18"]], template: function CoreCmsLayoutFeatureComponent_Template(rf, ctx) {
+  }, inputs: { hideFooter: [1, "hideFooter"] }, decls: 42, vars: 25, consts: [["headerMenuTpl", ""], ["h1Tpl", ""], ["toggleSidenavButtonTpl", ""], ["widgetsContainer", ""], ["menu", "matMenu"], [1, "core-cms-container"], ["data-test", "layout-header"], ["start", "", 1, "sm:gap-sm", "flex", "items-center", "gap-0"], ["data-test", "layout-title"], [1, "sr-only"], [1, "gap-sub", "flex", "content-center", "items-center", "justify-between", "hover:no-underline", 3, "routerLink"], [3, "ngTemplateOutlet"], ["end", "", 1, "gap-tiny", "lg:gap-sm", "flex", "items-center"], [3, "toggleSidenav", "position", "mode", "fixedInViewport", "sidenavOpened"], ["header", "", 3, "ngTemplateOutlet"], ["menu-items", "", "data-test", "sidenav-list"], [1, "spinner-container"], [1, "lds-ripple"], [3, "sendDismiss", "plastikSnackbar"], ["routerLinkActive", "bg-gray-10", "ariaCurrentWhenActive", "page", 1, "my-tiny", "h-xll", "hover:bg-gray-10", "focus:bg-gray-10", 3, "routerLink", "routerLinkActiveOptions"], ["matListItemIcon", ""], ["matListItemTitle", ""], ["data-test", "layout-footer"], ["content", "", 1, "gap-tiny", "flex", "flex-row", "items-center", "justify-center", "text-sm"], ["aria-label", "visit www.plastikaweb.com page", "href", "https://www.plastikaweb.com", "target", "_blank", 1, "underline", "underline-offset-2"], ["aria-label", "visitar www.llevat.org", "href", "https://www.llevat.org", "target", "_blank", 1, "underline", "underline-offset-2"], ["mat-button", "", 1, "gap-tiny", "flex", 3, "matMenuTriggerFor"], [1, "hidden", "sm:block"], [1, "m-0", "size-[30px]", "p-0", "text-[30px]"], [1, "px-sub"], [1, "p-tiny", "border-b-gray-10", "block", "w-fit", "border-b-2", "text-balance", "sm:hidden"], ["type", "button", "mat-menu-item", "", 3, "routerLink"], ["type", "button", "mat-menu-item", ""], ["type", "button", "mat-menu-item", "", 3, "click"], [1, "gap-sub", "flex", "items-center", "justify-center"], [3, "src", "svgClass", "svgAriaLabel"], ["mat-icon-button", "", "aria-label", "men\xFA lateral", "data-test", "toggle-sidenav-button", 1, "flex", "justify-center", "align-middle", 3, "click"], [1, "mat-18"]], template: function CoreCmsLayoutFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275declareLet(0);
@@ -5391,7 +5391,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-BMMQHIU2.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-OVB2LGE5.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-P5JJ3RO2.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-VL6GG72Q.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -5439,14 +5439,14 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
 
 <div class="core-cms-container">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
-    <div start class="flex gap-0 items-center sm:gap-sm">
+    <div start class="sm:gap-sm flex items-center gap-0">
       @defer (when sidenavPosition === 'start') {
         <ng-container [ngTemplateOutlet]="toggleSidenavButtonTpl"></ng-container>
       }
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerTitle }}</span>
         <a
-          class="flex justify-between content-center items-center hover:no-underline gap-sub"
+          class="gap-sub flex content-center items-center justify-between hover:no-underline"
           [routerLink]="['/']"
           [attr.title]="headerTitle">
           <ng-container [ngTemplateOutlet]="h1Tpl"></ng-container>
@@ -5457,7 +5457,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
       }
     </div>
 
-    <div end class="flex items-center gap-tiny lg:gap-sm">
+    <div end class="gap-tiny lg:gap-sm flex items-center">
       @if (headerWidgetsConfig && headerWidgetsPosition === 'end') {
         <ng-container #widgetsContainer></ng-container>
       }
@@ -5504,7 +5504,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
 
   @defer (when !hideFooter()) {
     <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-      <div content class="flex flex-row justify-center items-center text-sm gap-tiny">
+      <div content class="gap-tiny flex flex-row items-center justify-center text-sm">
         {{ currentDate | date: 'yyyy' }}
         <a
           aria-label="visit www.plastikaweb.com page"
@@ -5529,14 +5529,14 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
 <ng-template #headerMenuTpl>
   <button
     mat-button
-    class="flex gap-tiny"
+    class="gap-tiny flex"
     [attr.aria-label]="headerMenu?.label()"
     [matMenuTriggerFor]="menu">
     <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
-    <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
+    <mat-icon class="m-0 size-[30px] p-0 text-[30px]">account_circle</mat-icon>
   </button>
   <mat-menu #menu="matMenu" class="px-sub">
-    <span class="block border-b-2 sm:hidden w-fit text-balance p-tiny border-b-gray-10">{{
+    <span class="p-tiny border-b-gray-10 block w-fit border-b-2 text-balance sm:hidden">{{
       headerMenu?.label()
     }}</span>
 
@@ -5557,7 +5557,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
 </ng-template>
 
 <ng-template #h1Tpl>
-  <div class="flex justify-center items-center gap-sub">
+  <div class="gap-sub flex items-center justify-center">
     @if (headerConfig.mainIcon; as icon) {
       <svg-icon
         [src]="icon.iconPath"
@@ -6561,11 +6561,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-PKYOA32W.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-7EAU6EUH.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-3UV7SC3N.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-TALEZH62.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
