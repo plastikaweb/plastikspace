@@ -3,9 +3,17 @@ import {
   withDevtools,
   withImmutableState,
   withStorageSync,
+  withConditional,
 } from '@angular-architects/ngrx-toolkit';
-import { computed } from '@angular/core';
-import { signalStore, withComputed, withMethods, withProps } from '@ngrx/signals';
+import { computed, effect, inject } from '@angular/core';
+import {
+  patchState,
+  signalStore,
+  withComputed,
+  withHooks,
+  withMethods,
+  withProps,
+} from '@ngrx/signals';
 import { removeAllEntities, removeEntity, setEntity, withEntities } from '@ngrx/signals/entities';
 import { UserContact } from '@plastik/core/entities';
 import {
@@ -17,10 +25,8 @@ import {
   SlotDays,
   TimeRange,
 } from '@plastik/eco-store/entities';
-import { inject } from '@angular/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
-import { patchState } from '@ngrx/signals';
 import { firstValueFrom } from 'rxjs';
 
 export interface EcoStoreCartState {
@@ -72,14 +78,21 @@ export const ecoStoreCartStore = signalStore(
   withDevtools('cart'),
   withImmutableState<EcoStoreCartState>(initialState),
   withEntities<EcoStoreCartItem>(),
-  withStorageSync({
-    key: 'eco_cart_v1',
-    autoSync: true,
-  }),
   withProps(() => ({
     _userProfileStore: inject(pocketBaseUserProfileStore),
     _cartsService: inject(EcoStoreCartsApiService),
   })),
+  withConditional(
+    store => !store._userProfileStore.isAuthenticated(),
+    withStorageSync({
+      key: 'eco_cart_v1',
+      autoSync: true,
+    }),
+    withStorageSync({
+      key: 'eco_cart_v1',
+      autoSync: false,
+    })
+  ),
   withComputed(({ entities, entityMap }) => ({
     itemsCount: computed(() => entities().length),
     isEmpty: computed(() => entities().length === 0),
@@ -144,7 +157,7 @@ export const ecoStoreCartStore = signalStore(
           expiresAt: store.expiresAt(),
           orderCycle: store.orderCycle(),
           notes: store.notes(),
-          address: store.address()?.id || null,
+          address: store.address() || null,
           deliveryMethod: store.method() || 'pickup',
           day: store.day(),
           time: store.time(),
@@ -160,11 +173,7 @@ export const ecoStoreCartStore = signalStore(
         if (remoteCartId) {
           await firstValueFrom(store._cartsService.update(remoteCartId, cartData));
         } else {
-          // Try to find if user already has a cart in DB before creating?
-          // For now, let's assume we create if no remoteCartId
-          const newCart = await firstValueFrom(
-            store._cartsService.create(cartData as EcoStoreCart)
-          );
+          const newCart = await firstValueFrom(store._cartsService.create(cartData));
           patchState(store, { remoteCartId: newCart.id });
         }
       } catch (error) {
@@ -216,8 +225,6 @@ export const ecoStoreCartStore = signalStore(
         updateState(store, '[cart] clear cart', removeAllEntities());
         _recalculatePrices();
         if (store._userProfileStore.isAuthenticated()) {
-          // If we have a remote cart, we might want to delete it or just clear items
-          // For now, let's just clear items in the remote cart
           saveCartToRemote();
         }
       },
@@ -228,7 +235,6 @@ export const ecoStoreCartStore = signalStore(
           ...logistics,
         }));
 
-        // Recalculate if shipping changed
         if (logistics.shipping !== undefined) {
           _recalculatePrices();
         }
@@ -238,5 +244,17 @@ export const ecoStoreCartStore = signalStore(
         }
       },
     };
-  })
+  }),
+
+  withHooks(store => ({
+    onInit() {
+      effect(() => {
+        const isAuthenticated = store._userProfileStore.isAuthenticated();
+
+        if (isAuthenticated) {
+          // store.clearStorage();
+        }
+      });
+    },
+  }))
 );

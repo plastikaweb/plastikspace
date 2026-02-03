@@ -2742,9 +2742,9 @@
         "system": false,
         "type": "select",
         "values": [
-          "active",
-          "done",
-          "expired"
+          "ACTIVE",
+          "DONE",
+          "EXPIRED"
         ]
       },
       {
@@ -2770,20 +2770,6 @@
         "required": false,
         "system": false,
         "type": "relation"
-      },
-      {
-        "autogeneratePattern": "",
-        "hidden": false,
-        "id": "text223244161",
-        "max": 0,
-        "min": 0,
-        "name": "address",
-        "pattern": "",
-        "presentable": false,
-        "primaryKey": false,
-        "required": false,
-        "system": false,
-        "type": "text"
       },
       {
         "hidden": false,
@@ -2900,6 +2886,16 @@
       },
       {
         "hidden": false,
+        "id": "json223244161",
+        "maxSize": 0,
+        "name": "address",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "json"
+      },
+      {
+        "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
         "onCreate": true,
@@ -2920,11 +2916,11 @@
       }
     ],
     "indexes": [],
-    "listRule": null,
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null
+    "listRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "viewRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "createRule": "user = @request.auth.id && tenant = @request.auth.tenant",
+    "updateRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "deleteRule": "user = @request.auth.id && tenant = @request.auth.tenant"
   },
   {
     "id": "pbc_3870285815",

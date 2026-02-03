@@ -16,7 +16,7 @@ export interface EcoStoreCart extends BasePocketBaseEntityWithTenantRef {
   expiresAt: Date | null;
   orderCycle: string | null;
   notes: string | null;
-  address: string | null;
+  address: UserContact | null;
   deliveryMethod: EcoStoreTenantLogisticsDeliveryType;
   day: SlotDays | null;
   time: TimeRange | null;

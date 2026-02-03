@@ -24,13 +24,16 @@
 
 This library manages the shopping cart state for the [**Eco Store application**](../../../../apps/eco-store/README.md).
 It uses **NgRx Signals** for reactive state management and **ngrx-toolkit** for automatic synchronization with local storage.
-In addition to the cart line items, it also stores **shipping configuration** such as address, delivery method, slot day/time and shipping amount,
+It features **dynamic synchronization**: it automatically syncs with `localStorage` for guest users but disables persistence once the user is authenticated, prioritizing server-side sync with PocketBase.
+In addition to the cart line items, it also stores **shipping configuration** such as address (as a `UserContact`), delivery method, slot day/time and shipping amount,
 as well as **order lifecycle metadata** including status, expiration date, order cycle reference, and customer notes.
 
 ## Features
 
 - **Reactive State**: Built with `signalStore` for performant, signal-based state management
-- **Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`
+- **Dynamic Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`.
+  This is **dynamically enabled for guest users** and disabled after authentication to avoid session conflicts and prioritize PocketBase sync.
+
 - **Computed Properties**: Derived state is now managed as state properties that are automatically updated:
   - `subtotal`: Net total (without IVA)
   - `tax`: Total IVA
@@ -89,21 +92,21 @@ The store exposes the following signals and methods:
 #### State Signals
 
 - `items()`: Array of `CartItem` objects
-- `address()`: Shipping address or null
+- `address()`: Shipping address as `UserContact` or null
 - `method()`: Delivery method or null
 - `day()`: Selected delivery day or null
 - `time()`: Selected delivery time or null
 - `noDayAndTime()`: Boolean flag for no time slot selection
 - `shipping()`: Shipping cost amount
 - `status()`: Order status ('ACTIVE', 'DONE', or 'EXPIRED')
-- `expiredAt()`: Order expiration date or null
+- `expiresAt()`: Order expiration date or null
 - `orderCycle()`: Reference to the order cycle or null
 - `notes()`: Customer notes or null
 - `remoteCartId()`: ID of the cart in PocketBase
 - `isSyncing()`: Boolean for sync status
 - `subtotal()`: Calculated net total
 - `tax()`: Calculated total tax
-- `total()`: Calculated grand total including shipping
+- `total()`: Calculated grand total including tax and shipping
 
 #### Computed Signals
 
