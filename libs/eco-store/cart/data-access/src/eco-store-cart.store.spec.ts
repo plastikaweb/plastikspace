@@ -17,7 +17,7 @@ describe('ecoStoreCartStore', () => {
     priceWithIva: 10,
     iva: 0,
     unitBase: 1,
-    client: '',
+    tenant: '',
     maxQuantity: 300,
     minQuantity: 1,
     category: 'cat1',
@@ -47,7 +47,7 @@ describe('ecoStoreCartStore', () => {
 
     expect(store.items()[0]).toEqual({ id: '1', product: mockProduct, quantity: 2 });
     expect(store.itemsCount()).toBe(1);
-    expect(store.totalAmountWithIva()).toBe(20);
+    expect(store.subtotal() + store.tax()).toBe(20);
   });
 
   it('should update item quantity in cart', () => {
@@ -62,7 +62,7 @@ describe('ecoStoreCartStore', () => {
 
     expect(store.items()[0].quantity).toBe(3);
     expect(store.itemsCount()).toBe(1);
-    expect(store.totalAmountWithIva()).toBe(30);
+    expect(store.subtotal() + store.tax()).toBe(30);
   });
 
   it('should remove item if quantity is <= 0', () => {

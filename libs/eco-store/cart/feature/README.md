@@ -148,7 +148,7 @@ It shows the user how much they need to add to their cart to reach the next ship
 ```html
 <eco-cart-order-price-slots
   [tiers]="tenantStore.getTenantDeliveryPriceTiers()"
-  [cartTotal]="cartStore.totalAmountWithIva()">
+  [cartTotal]="cartStore.subtotal() + cartStore.tax()">
 </eco-cart-order-price-slots>
 ```
 
@@ -161,7 +161,7 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 - `submitAvailable: boolean`: Indicates whether the order can be submitted.
 - `subtotal: number` (required): The current shopping cart subtotal.
 - `taxes: number` (required): The current tax.
-- `total: number` (required): The current shopping cart total (subtotal + taxes).
+- `total: number` (required): The current shopping cart total (subtotal + taxes + shipping).
 - `shipping: number`: The shipping cost.
 - `actionButtonText: string`: The button label.
 - `actionRoute: string[]`: The route to redirect on clicking the action button.

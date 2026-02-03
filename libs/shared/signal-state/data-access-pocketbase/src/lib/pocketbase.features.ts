@@ -1,15 +1,13 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
   signalStoreFeature,
-  SignalStoreFeature,
   type,
   withComputed,
   withHooks,
   withMethods,
   withProps,
-  withState,
 } from '@ngrx/signals';
 import { EntityState, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -55,7 +53,7 @@ export function withPocketBaseListFeature<
 
   return signalStoreFeature(
     withDevtools(featureName),
-    withState<PocketBaseGetListState>({
+    withImmutableState<PocketBaseGetListState>({
       ...defaultState,
       listLoadingEnabled: autoLoad,
     }),
@@ -157,7 +155,7 @@ export function withPocketBaseGetOneFeature<
       }>(),
       state: type<EntityState<T>>(),
     },
-    withState<PocketbaseGetOne<T>>({ selectedItemId: null as IdType<T> | null }),
+    withImmutableState<PocketbaseGetOne<T>>({ selectedItemId: null as IdType<T> | null }),
     withMethods(store => {
       const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
         store._storeNotificationService.show({

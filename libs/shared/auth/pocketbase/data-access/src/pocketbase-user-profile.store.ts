@@ -1,13 +1,6 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
-import {
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withProps,
-  withState,
-} from '@ngrx/signals';
+import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { LoginData } from '@plastik/auth/entities';
 import { PocketBaseUser, PocketBaseUserAddress, UserContact } from '@plastik/core/entities';
 import { PocketBaseUserAddressService } from '@plastik/shared/pocketbase-user-addresses';
@@ -33,7 +26,7 @@ const initialState: UserProfileState = {
 export const pocketBaseUserProfileStore = signalStore(
   { providedIn: 'root' },
   withDevtools('user-profile'),
-  withState<UserProfileState>(initialState),
+  withImmutableState<UserProfileState>(initialState),
   withProps(() => ({
     _userAddressService: inject(PocketBaseUserAddressService),
     _authService: inject(PocketBaseAuthService),

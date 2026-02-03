@@ -76,7 +76,7 @@ export class MenuComponent {
 
   constructor() {
     effect(() => {
-      if (this.cartStore.totalAmountWithIva() > 0) {
+      if (this.cartStore.subtotal() + this.cartStore.tax() > 0) {
         this.bumpAnimation.set(true);
         const timer = setTimeout(() => {
           this.bumpAnimation.set(false);

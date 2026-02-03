@@ -78,9 +78,9 @@
 
     <div class="sticky top-4 space-y-6 self-start lg:col-span-1">
       <eco-cart-order-summary
-        [subtotal]="cartStore.totalAmount()"
-        [taxes]="cartStore.totalAmountIva()"
-        [total]="cartStore.totalAmountWithIva()"
+        [subtotal]="cartStore.subtotal()"
+        [taxes]="cartStore.tax()"
+        [total]="cartStore.subtotal() + cartStore.tax()"
         [actionButtonText]="'cart.summary.go-to-shipping'"
         [actionRoute]="['../enviament']">
       </eco-cart-order-summary>

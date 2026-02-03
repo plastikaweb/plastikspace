@@ -1,5 +1,10 @@
-import { updateState, withDevtools, withReset } from '@angular-architects/ngrx-toolkit';
-import { signalStore, withMethods, withState } from '@ngrx/signals';
+import {
+  updateState,
+  withDevtools,
+  withImmutableState,
+  withReset,
+} from '@angular-architects/ngrx-toolkit';
+import { signalStore, withMethods } from '@ngrx/signals';
 
 export interface ActivityState {
   isActive: boolean;
@@ -8,7 +13,7 @@ export interface ActivityState {
 export const activityStore = signalStore(
   { providedIn: 'root' },
   withDevtools('activity'),
-  withState<ActivityState>({
+  withImmutableState<ActivityState>({
     isActive: false,
   }),
   withReset(),

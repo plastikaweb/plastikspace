@@ -32,15 +32,18 @@ as well as **order lifecycle metadata** including status, expiration date, order
 
 - **Reactive State**: Built with `signalStore` for performant, signal-based state management
 - **Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`
-- **Computed Totals**: Automatically calculates and updates derived state:
+- **Computed Properties**: Derived state is now managed as state properties that are automatically updated:
+  - `subtotal`: Net total (without IVA)
+  - `tax`: Total IVA
+  - `total`: Grand total including IVA and shipping
+- **Computed Signals**: Reactive derivations remain for:
   - `itemsCount`: Total number of items in the cart
-  - `totalAmount`: Net total (without IVA)
-  - `totalAmountWithIva`: Total price of all items including IVA
-  - `totalAmountIva`: Total IVA (difference between `totalAmountWithIva` and `totalAmount`)
-  - `totalAmountWithShipping`: Grand total including shipping amount
   - `isEmpty`: Boolean check for cart status
   - `itemsGroupedByCategory`: Returns items grouped by category name
   - `itemsDictionary`: Returns entity map for quick lookups
+- **Server Sync Ready**: Includes state for background synchronization with PocketBase:
+  - `remoteCartId`: Reference to the persisted cart in the server
+  - `isSyncing`: Indicator of active synchronization process
 - **Smart Cart Operations**:
   - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0
   - `removeFromCart`: Removes items by ID
@@ -68,7 +71,7 @@ export class CartComponent {
   // Access signals
   items = this.cartStore.items;
   count = this.cartStore.itemsCount;
-  total = this.cartStore.totalAmountWithIva;
+  total = computed(() => this.cartStore.subtotal() + this.cartStore.tax());
 
   addItem(product: EcoStoreProductWithCategoryName) {
     this.cartStore.addToCart(product, 1);
@@ -97,14 +100,15 @@ The store exposes the following signals and methods:
 - `expiredAt()`: Order expiration date or null
 - `orderCycle()`: Reference to the order cycle or null
 - `notes()`: Customer notes or null
+- `remoteCartId()`: ID of the cart in PocketBase
+- `isSyncing()`: Boolean for sync status
+- `subtotal()`: Calculated net total
+- `tax()`: Calculated total tax
+- `total()`: Calculated grand total including shipping
 
 #### Computed Signals
 
 - `itemsCount()`: Total quantity of all products
-- `totalAmount()`: Net total without IVA
-- `totalAmountWithIva()`: Total cost including IVA
-- `totalAmountIva()`: Total tax amount (totalAmountWithIva - totalAmount)
-- `totalAmountWithShipping()`: Grand total including shipping
 - `isEmpty()`: True if the cart has no items
 - `itemsGroupedByCategory()`: Returns an object where keys are category names and values are arrays of `CartItem` objects
 - `itemsDictionary()`: Returns entity map for quick product lookups
@@ -139,6 +143,11 @@ interface EcoStoreCartState {
   expiredAt: Date | null;
   orderCycle: string | null;
   notes: string | null;
+  remoteCartId: string | null;
+  isSyncing: boolean;
+  subtotal: number;
+  tax: number;
+  total: number;
 }
 ```
 

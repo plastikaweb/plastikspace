@@ -54,13 +54,13 @@
               | translate
                 : {
                     productCount: cartStore.itemsCount(),
-                    productPrice: cartStore.totalAmountWithIva() | currency,
+                    productPrice: cartStore.subtotal() + cartStore.tax() | currency,
                   }
           "
           [matBadge]="cartStore.itemsCount()"
           [class.bump]="bumpAnimation()">
           <mat-icon aria-hidden="true">shopping_cart</mat-icon>
-          <span>{{ cartStore.totalAmountWithIva() | currency }}</span>
+          <span>{{ cartStore.subtotal() + cartStore.tax() | currency }}</span>
         </button>
       </li>
       <li>

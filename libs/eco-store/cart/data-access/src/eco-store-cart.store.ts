@@ -1,9 +1,15 @@
-import { updateState, withDevtools, withStorageSync } from '@angular-architects/ngrx-toolkit';
+import {
+  updateState,
+  withDevtools,
+  withImmutableState,
+  withStorageSync,
+} from '@angular-architects/ngrx-toolkit';
 import { computed } from '@angular/core';
-import { signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { signalStore, withComputed, withMethods } from '@ngrx/signals';
 import { removeAllEntities, removeEntity, setEntity, withEntities } from '@ngrx/signals/entities';
 import { UserContact } from '@plastik/core/entities';
 import {
+  EcoStoreCartStatus,
   EcoStoreProductWithCategoryName,
   EcoStoreTenantLogisticsDeliveryType,
   SlotDays,
@@ -23,10 +29,19 @@ export interface EcoStoreCartState {
   time: TimeRange | null;
   noDayAndTime: boolean;
   shipping: number;
-  status: 'ACTIVE' | 'DONE' | 'EXPIRED';
+  status: EcoStoreCartStatus;
   expiredAt: Date | null;
   orderCycle: string | null;
   notes: string | null;
+
+  // Sync fields
+  remoteCartId: string | null;
+  isSyncing: boolean;
+
+  // Calculated values (previously computed)
+  subtotal: number;
+  tax: number;
+  total: number;
 }
 
 const initialState: EcoStoreCartState = {
@@ -40,12 +55,21 @@ const initialState: EcoStoreCartState = {
   expiredAt: null,
   orderCycle: null,
   notes: null,
+
+  // Sync fields
+  remoteCartId: null,
+  isSyncing: false,
+
+  // Calculated values
+  subtotal: 0,
+  tax: 0,
+  total: 0,
 };
 
 export const ecoStoreCartStore = signalStore(
   { providedIn: 'root' },
   withDevtools('cart'),
-  withState<EcoStoreCartState>(initialState),
+  withImmutableState<EcoStoreCartState>(initialState),
   withEntities<CartItem>(),
   withStorageSync({
     key: 'eco_cart_v1',
@@ -54,12 +78,6 @@ export const ecoStoreCartStore = signalStore(
 
   withComputed(({ entities, entityMap }) => ({
     itemsCount: computed(() => entities().length),
-    totalAmount: computed(() =>
-      entities().reduce((acc, item) => acc + item.quantity * item.product.price, 0)
-    ),
-    totalAmountWithIva: computed(() =>
-      entities().reduce((acc, item) => acc + item.quantity * item.product.priceWithIva, 0)
-    ),
     isEmpty: computed(() => entities().length === 0),
     itemsDictionary: computed(() => entityMap()),
     items: computed(() => entities()),
@@ -68,12 +86,26 @@ export const ecoStoreCartStore = signalStore(
     }),
   })),
 
-  withComputed(({ totalAmount, totalAmountWithIva, shipping }) => ({
-    totalAmountIva: computed(() => totalAmountWithIva() - totalAmount()),
-    totalAmountWithShipping: computed(() => totalAmountWithIva() + shipping()),
-  })),
-
   withMethods(store => {
+    // Private helper to recalculate cart prices
+    const _recalculatePrices = () => {
+      const items = store.entities();
+      const subtotal = items.reduce((acc, item) => acc + item.quantity * item.product.price, 0);
+      const totalWithIva = items.reduce(
+        (acc, item) => acc + item.quantity * item.product.priceWithIva,
+        0
+      );
+      const tax = totalWithIva - subtotal;
+      const total = totalWithIva + store.shipping();
+
+      updateState(store, '[cart] recalculate prices', state => ({
+        ...state,
+        subtotal,
+        tax,
+        total,
+      }));
+    };
+
     const _setItem = (
       product: EcoStoreProductWithCategoryName,
       quantity: number,
@@ -105,18 +137,22 @@ export const ecoStoreCartStore = signalStore(
           if (existingItem) {
             _removeItem(productId);
           }
+          _recalculatePrices();
           return;
         }
 
         _setItem(product, quantity, !!existingItem);
+        _recalculatePrices();
       },
 
       removeFromCart(productId: EcoStoreProductWithCategoryName['id']) {
         _removeItem(productId);
+        _recalculatePrices();
       },
 
       clearCart() {
         updateState(store, '[cart] clear cart', removeAllEntities());
+        _recalculatePrices();
       },
 
       updateLogistics(logistics: Partial<EcoStoreCartState>) {
@@ -124,6 +160,11 @@ export const ecoStoreCartStore = signalStore(
           ...state,
           ...logistics,
         }));
+
+        // Recalculate if shipping changed
+        if (logistics.shipping !== undefined) {
+          _recalculatePrices();
+        }
       },
     };
   })

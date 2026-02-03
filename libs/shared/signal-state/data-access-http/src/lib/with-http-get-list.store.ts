@@ -1,4 +1,4 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
@@ -7,7 +7,6 @@ import {
   withHooks,
   withMethods,
   withProps,
-  withState,
   SignalStoreFeature,
 } from '@ngrx/signals';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
@@ -47,7 +46,7 @@ export function withHttpGetList<T extends BaseEntity, S extends DataGetList<T, H
 }) {
   return signalStoreFeature(
     withDevtools(featureName),
-    withState(initialState()),
+    withImmutableState(initialState()),
     withEntities<T>(),
     withProps(() => ({
       _apiService: inject(dataServiceType),
