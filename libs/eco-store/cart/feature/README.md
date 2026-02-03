@@ -16,6 +16,7 @@
       - [CartOrderPriceSlotsComponent](#cartorderpriceslotscomponent)
       - [CartOrderSummaryComponent](#cartordersummarycomponent)
   - [Cart Steps](#cart-steps)
+    - [Shipping Unavailable Component](#shipping-unavailable-component)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -47,7 +48,7 @@ Example Formly field configuration:
 
 ```typescript
 {
-  key: 'amount',
+  key: 'shipping',
   type: 'input',
   props: { type: 'hidden' },
   hooks: {
@@ -66,7 +67,7 @@ Example Formly field configuration:
   - `address`: Shipping address selection
   - `day`: Delivery day selection
   - `time`: Delivery time slot selection
-  - `amount`: Computed shipping cost
+  - `shipping`: Computed shipping cost
 
 - Custom Label Hooks Pattern
 
@@ -190,7 +191,8 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 
 ### Shipping Unavailable Component
 
-The `ShippingUnavailableComponent` is displayed when the tenant's shipping configuration is incomplete or unavailable. It provides users with information about the situation and guidance on what they can do while waiting.
+The `ShippingUnavailableComponent` is displayed when the tenant's shipping configuration is incomplete or unavailable.
+It provides users with information about the situation and guidance on what they can do while waiting.
 
 **Features:**
 

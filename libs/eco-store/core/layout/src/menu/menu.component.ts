@@ -65,7 +65,7 @@ export class MenuComponent {
         return 'verified';
       case 'GLOBAL_ADMIN':
         return 'admin_panel_settings';
-      case 'CLIENT_ADMIN':
+      case 'TENANT_ADMIN':
         return 'manage_accounts';
       default:
         return '';

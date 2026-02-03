@@ -22,7 +22,11 @@ export interface EcoStoreCartState {
   day: SlotDays | null;
   time: TimeRange | null;
   noDayAndTime: boolean;
-  amount: number;
+  shipping: number;
+  status: 'ACTIVE' | 'DONE' | 'EXPIRED';
+  expiredAt: Date | null;
+  orderCycle: string | null;
+  notes: string | null;
 }
 
 const initialState: EcoStoreCartState = {
@@ -31,7 +35,11 @@ const initialState: EcoStoreCartState = {
   day: null,
   time: null,
   noDayAndTime: false,
-  amount: 0,
+  shipping: 0,
+  status: 'ACTIVE',
+  expiredAt: null,
+  orderCycle: null,
+  notes: null,
 };
 
 export const ecoStoreCartStore = signalStore(
@@ -60,9 +68,9 @@ export const ecoStoreCartStore = signalStore(
     }),
   })),
 
-  withComputed(({ totalAmount, totalAmountWithIva, amount }) => ({
+  withComputed(({ totalAmount, totalAmountWithIva, shipping }) => ({
     totalAmountIva: computed(() => totalAmountWithIva() - totalAmount()),
-    totalAmountWithShipping: computed(() => totalAmountWithIva() + amount()),
+    totalAmountWithShipping: computed(() => totalAmountWithIva() + shipping()),
   })),
 
   withMethods(store => {

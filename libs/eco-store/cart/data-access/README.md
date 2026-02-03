@@ -25,7 +25,8 @@
 
 This library manages the shopping cart state for the [**Eco Store application**](../../../../apps/eco-store/README.md).
 It uses **NgRx Signals** for reactive state management and **ngrx-toolkit** for automatic synchronization with local storage.
-In addition to the cart line items, it also stores **shipping configuration** such as address, delivery method, slot day/time and shipping amount.
+In addition to the cart line items, it also stores **shipping configuration** such as address, delivery method, slot day/time and shipping amount,
+as well as **order lifecycle metadata** including status, expiration date, order cycle reference, and customer notes.
 
 ## Features
 
@@ -44,7 +45,7 @@ In addition to the cart line items, it also stores **shipping configuration** su
   - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0
   - `removeFromCart`: Removes items by ID
   - `clearCart`: Clears all items from the cart
-  - `updateLogistics`: Updates shipping-related state (method, address, day, time and amount)
+  - `updateLogistics`: Updates shipping-related state (method, address, day, time and shipping cost)
   - `getItemCount`: Returns a computed signal with the quantity of a specific product
 
 ## Installation
@@ -91,7 +92,11 @@ The store exposes the following signals and methods:
 - `day()`: Selected delivery day or null
 - `time()`: Selected delivery time or null
 - `noDayAndTime()`: Boolean flag for no time slot selection
-- `amount()`: Shipping amount
+- `shipping()`: Shipping cost amount
+- `status()`: Order status ('ACTIVE', 'DONE', or 'EXPIRED')
+- `expiredAt()`: Order expiration date or null
+- `orderCycle()`: Reference to the order cycle or null
+- `notes()`: Customer notes or null
 
 #### Computed Signals
 
@@ -129,7 +134,11 @@ interface EcoStoreCartState {
   day: SlotDays | null;
   time: TimeRange | null;
   noDayAndTime: boolean;
-  amount: number;
+  shipping: number;
+  status: 'ACTIVE' | 'DONE' | 'EXPIRED';
+  expiredAt: Date | null;
+  orderCycle: string | null;
+  notes: string | null;
 }
 ```
 

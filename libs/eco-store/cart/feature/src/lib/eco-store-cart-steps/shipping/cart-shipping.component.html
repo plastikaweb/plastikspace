@@ -27,7 +27,7 @@
     <eco-cart-order-summary
       [subtotal]="cartStore.totalAmount()"
       [taxes]="cartStore.totalAmountIva()"
-      [shipping]="cartStore.amount()"
+      [shipping]="cartStore.shipping()"
       [deliveryType]="cartStore.method() ?? 'pickup'"
       [total]="cartStore.totalAmountWithShipping()"
       [actionButtonText]="'cart.shipping.go-to-confirmation'"

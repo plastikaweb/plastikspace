@@ -394,7 +394,8 @@ export function createAmountField(deps: FieldDependencies): FormlyFieldConfig {
   const { tenantStore, cartStore } = deps;
 
   return {
-    key: 'amount',
+    key: 'shipping',
+    defaultValue: cartStore.shipping() ?? null,
     hooks: {
       onInit: (field: FormlyFieldConfig) => {
         const updateShippingAmount = () => {

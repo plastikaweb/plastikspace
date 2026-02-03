@@ -721,7 +721,7 @@
         "values": [
           "PARTNER",
           "GLOBAL_ADMIN",
-          "CLIENT_ADMIN"
+          "TENANT_ADMIN"
         ]
       },
       {
@@ -2185,6 +2185,19 @@
         "type": "text"
       },
       {
+        "cascadeDelete": false,
+        "collectionId": "pbc_3870285815",
+        "hidden": false,
+        "id": "relation1637069979",
+        "maxSelect": 1,
+        "minSelect": 0,
+        "name": "orderCycle",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "relation"
+      },
+      {
         "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
@@ -2210,11 +2223,11 @@
       "CREATE INDEX idx_orders_store_status_created ON orders (tenant, status, created DESC)",
       "CREATE INDEX `idx_orders_store_delivery` ON `orders` (\n  `tenant`,\n  `deliveryMethod`\n)"
     ],
-    "listRule": null,
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null
+    "listRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "viewRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "createRule": "@request.auth.id != \"\"",
+    "updateRule": "@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant",
+    "deleteRule": "(user = @request.auth.id) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)"
   },
   {
     "id": "pbc_2456927940",
@@ -2662,5 +2675,394 @@
     "updateRule": null,
     "deleteRule": null,
     "viewQuery": "SELECT \n    (ROW_NUMBER() OVER()) as id, \n    c.id as category,\n    c.name as name,\n    c.normalizedName as normalizedName,\n    c.color as color,\n    cg.name as groupName,\n  c.icon as icon,\n    p.tenant as tenant,\n    COUNT(p.id) as totalProducts\nFROM product_categories c\nLEFT JOIN category_groups cg ON cg.id = c.`group`\nLEFT JOIN products p ON p.category = c.id AND p.`inStock` = TRUE\nGROUP BY \n    c.id, \n    p.tenant, \n    cg.name, \n    c.name, \n    c.normalizedName, \n    c.color;"
+  },
+  {
+    "id": "pbc_2236019783",
+    "name": "carts",
+    "type": "base",
+    "system": false,
+    "fields": [
+      {
+        "autogeneratePattern": "[a-z0-9]{15}",
+        "hidden": false,
+        "id": "text3208210256",
+        "max": 15,
+        "min": 15,
+        "name": "id",
+        "pattern": "^[a-z0-9]+$",
+        "presentable": false,
+        "primaryKey": true,
+        "required": true,
+        "system": true,
+        "type": "text"
+      },
+      {
+        "cascadeDelete": false,
+        "collectionId": "_pb_users_auth_",
+        "hidden": false,
+        "id": "relation2375276105",
+        "maxSelect": 1,
+        "minSelect": 0,
+        "name": "user",
+        "presentable": false,
+        "required": true,
+        "system": false,
+        "type": "relation"
+      },
+      {
+        "cascadeDelete": false,
+        "collectionId": "pbc_2442875294",
+        "hidden": false,
+        "id": "relation1314505826",
+        "maxSelect": 1,
+        "minSelect": 0,
+        "name": "tenant",
+        "presentable": false,
+        "required": true,
+        "system": false,
+        "type": "relation"
+      },
+      {
+        "hidden": false,
+        "id": "json3776899405",
+        "maxSize": 0,
+        "name": "items",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "json"
+      },
+      {
+        "hidden": false,
+        "id": "select2063623452",
+        "maxSelect": 1,
+        "name": "status",
+        "presentable": false,
+        "required": true,
+        "system": false,
+        "type": "select",
+        "values": [
+          "active",
+          "done",
+          "expired"
+        ]
+      },
+      {
+        "hidden": false,
+        "id": "date730627375",
+        "max": "",
+        "min": "",
+        "name": "expiresAt",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "date"
+      },
+      {
+        "cascadeDelete": false,
+        "collectionId": "pbc_3870285815",
+        "hidden": false,
+        "id": "relation1637069979",
+        "maxSelect": 1,
+        "minSelect": 0,
+        "name": "orderCycle",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "relation"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text223244161",
+        "max": 0,
+        "min": 0,
+        "name": "address",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "select3284546904",
+        "maxSelect": 1,
+        "name": "deliveryMethod",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "select",
+        "values": [
+          "pickup",
+          "delivery"
+        ]
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text1727593735",
+        "max": 0,
+        "min": 0,
+        "name": "day",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "number405181692",
+        "max": null,
+        "min": null,
+        "name": "tax",
+        "onlyInt": false,
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "number"
+      },
+      {
+        "hidden": false,
+        "id": "number3097235076",
+        "max": null,
+        "min": null,
+        "name": "subtotal",
+        "onlyInt": false,
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "number"
+      },
+      {
+        "hidden": false,
+        "id": "number3402113753",
+        "max": null,
+        "min": null,
+        "name": "price",
+        "onlyInt": false,
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "number"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text18589324",
+        "max": 0,
+        "min": 0,
+        "name": "notes",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "number756815652",
+        "max": null,
+        "min": null,
+        "name": "shipping",
+        "onlyInt": false,
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "number"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text1872009285",
+        "max": 0,
+        "min": 0,
+        "name": "time",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "bool1142852108",
+        "name": "noDayAndTime",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "bool"
+      },
+      {
+        "hidden": false,
+        "id": "autodate2990389176",
+        "name": "created",
+        "onCreate": true,
+        "onUpdate": false,
+        "presentable": false,
+        "system": false,
+        "type": "autodate"
+      },
+      {
+        "hidden": false,
+        "id": "autodate3332085495",
+        "name": "updated",
+        "onCreate": true,
+        "onUpdate": true,
+        "presentable": false,
+        "system": false,
+        "type": "autodate"
+      }
+    ],
+    "indexes": [],
+    "listRule": null,
+    "viewRule": null,
+    "createRule": null,
+    "updateRule": null,
+    "deleteRule": null
+  },
+  {
+    "id": "pbc_3870285815",
+    "name": "order_cycles",
+    "type": "base",
+    "system": false,
+    "fields": [
+      {
+        "autogeneratePattern": "[a-z0-9]{15}",
+        "hidden": false,
+        "id": "text3208210256",
+        "max": 15,
+        "min": 15,
+        "name": "id",
+        "pattern": "^[a-z0-9]+$",
+        "presentable": false,
+        "primaryKey": true,
+        "required": true,
+        "system": true,
+        "type": "text"
+      },
+      {
+        "cascadeDelete": false,
+        "collectionId": "pbc_2442875294",
+        "hidden": false,
+        "id": "relation1314505826",
+        "maxSelect": 1,
+        "minSelect": 0,
+        "name": "tenant",
+        "presentable": false,
+        "required": true,
+        "system": false,
+        "type": "relation"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text1579384326",
+        "max": 0,
+        "min": 0,
+        "name": "name",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text1997877400",
+        "max": 0,
+        "min": 0,
+        "name": "code",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "date327219409",
+        "max": "",
+        "min": "",
+        "name": "startsAt",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "date"
+      },
+      {
+        "hidden": false,
+        "id": "date2466286426",
+        "max": "",
+        "min": "",
+        "name": "endsAt",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "date"
+      },
+      {
+        "hidden": false,
+        "id": "date953904837",
+        "max": "",
+        "min": "",
+        "name": "approxDelivery",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "date"
+      },
+      {
+        "hidden": false,
+        "id": "select2063623452",
+        "maxSelect": 1,
+        "name": "status",
+        "presentable": false,
+        "required": true,
+        "system": false,
+        "type": "select",
+        "values": [
+          "draft",
+          "open",
+          "processing",
+          "completed",
+          "closed"
+        ]
+      },
+      {
+        "hidden": false,
+        "id": "autodate2990389176",
+        "name": "created",
+        "onCreate": true,
+        "onUpdate": false,
+        "presentable": false,
+        "system": false,
+        "type": "autodate"
+      },
+      {
+        "hidden": false,
+        "id": "autodate3332085495",
+        "name": "updated",
+        "onCreate": true,
+        "onUpdate": true,
+        "presentable": false,
+        "system": false,
+        "type": "autodate"
+      }
+    ],
+    "indexes": [],
+    "listRule": "(status = \"open\" || status = \"processing\") || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "viewRule": "(status = \"open\" || status = \"processing\") || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "createRule": "(@request.auth.id != \"\" && @request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.id != \"\" && @request.auth.role = \"TENANT_ADMIN\" && @request.body.tenant = @request.auth.tenant)",
+    "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && @request.body.tenant = @request.auth.tenant)",
+    "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && @request.body.tenant = @request.auth.tenant)\n"
   }
 ]
