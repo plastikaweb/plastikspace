@@ -17,7 +17,7 @@
               }}</span>
             </div>
 
-            @for (item of group.value; track item.id) {
+            @for (item of group.value; track item.product.id) {
               <mat-card
                 appearance="outlined"
                 class="cart-item-card my-4! grid! grid-cols-[2fr_1fr] items-center gap-4! shadow-sm">

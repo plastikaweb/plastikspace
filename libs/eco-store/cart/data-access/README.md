@@ -19,7 +19,6 @@
       - [Methods](#methods)
   - [API Reference](#api-reference)
     - [State Interface](#state-interface)
-  - [Running unit tests](#running-unit-tests)
 
 ## Description
 
@@ -115,22 +114,24 @@ The store exposes the following signals and methods:
 
 #### Methods
 
-- `addToCart(product, quantity?)`: Add or update item
-- `removeFromCart(productId)`: Remove item
-- `clearCart()`: Empty the cart
-- `updateLogistics(logistics)`: Update shipping configuration
-- `getItemCount(productId)`: Returns a computed signal with the quantity of the product
+- `addToCart(product, quantity?)`: Add or update item. Uses `product.id` as the entity identifier.
+- `removeFromCart(productId)`: Remove item by product ID.
+- `clearCart()`: Empty the cart.
+- `updateLogistics(logistics)`: Update shipping configuration.
+- `getItemCount(productId)`: Returns a computed signal with the quantity of the product.
 
 ## API Reference
 
 ### State Interface
 
 ```typescript
-interface CartItem {
-  id: string;
-  product: EcoStoreProductWithCategoryName;
-  quantity: number;
-}
+import { EcoStoreCartItem } from '@plastik/eco-store/entities';
+
+// EcoStoreCartItem structure:
+// {
+//   product: EcoStoreProductWithCategoryName;
+//   quantity: number;
+// }
 
 interface EcoStoreCartState {
   address: UserContact | null;
@@ -151,6 +152,7 @@ interface EcoStoreCartState {
 }
 ```
 
+```bash
 ## Running unit tests
-
 Run `nx test eco-store-cart-data-access` to execute the unit tests via Jest.
+```

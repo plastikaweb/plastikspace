@@ -1,16 +1,16 @@
 import { signal } from '@angular/core';
-import type { CartItem } from './eco-store-cart.store';
+import { EcoStoreCartItem } from '@plastik/eco-store/entities';
 
 export const mockEcoStoreCartStore = {
-  entities: signal([] as CartItem[]),
+  entities: signal([] as EcoStoreCartItem[]),
   itemsCount: signal(0),
   subtotal: signal(100),
   tax: signal(21),
   total: signal(121),
   isEmpty: signal(true),
-  itemsDictionary: signal({} as Record<string, CartItem>),
-  items: signal([] as CartItem[]),
-  itemsGroupedByCategory: signal({} as Record<string, CartItem[] | undefined>),
+  itemsDictionary: signal({} as Record<string, EcoStoreCartItem>),
+  items: signal([] as EcoStoreCartItem[]),
+  itemsGroupedByCategory: signal({} as Record<string, EcoStoreCartItem[] | undefined>),
   shipping: signal(0),
   address: signal(null),
   day: signal(null),
@@ -18,7 +18,7 @@ export const mockEcoStoreCartStore = {
   method: signal(null),
   noDayAndTime: signal(false),
   status: signal('ACTIVE' as const),
-  expiredAt: signal(null),
+  expiresAt: signal(null),
   orderCycle: signal(null),
   notes: signal(null),
   remoteCartId: signal(null),

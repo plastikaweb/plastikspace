@@ -4,9 +4,14 @@ import { EcoStoreTenantLogisticsDeliveryType, SlotDays, TimeRange } from './tena
 
 export type EcoStoreCartStatus = 'ACTIVE' | 'DONE' | 'EXPIRED';
 
+export interface EcoStoreCartItem {
+  product: EcoStoreProductWithCategoryName;
+  quantity: number;
+}
+
 export interface EcoStoreCart extends BasePocketBaseEntityWithTenantRef {
   user: UserContact['id'];
-  items: EcoStoreProductWithCategoryName[];
+  items: EcoStoreCartItem[];
   status: EcoStoreCartStatus;
   expiresAt: Date | null;
   orderCycle: string | null;

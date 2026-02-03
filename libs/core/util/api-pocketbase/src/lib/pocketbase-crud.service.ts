@@ -10,6 +10,7 @@ import {
 } from 'pocketbase';
 import { catchError, from, map, Observable, shareReplay } from 'rxjs';
 import { POCKETBASE_INSTANCE } from './pocketbase.token';
+import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
 
 /**
  * @description Abstract base class for PocketBase services with common functionality.
@@ -25,6 +26,8 @@ export abstract class PocketBaseCrudService<
   implements DataCrud<T, ListResult<T>, PARAMS, Partial<T>, RecordOptions>
 {
   readonly #pb = inject(POCKETBASE_INSTANCE);
+
+  readonly environment = inject(POCKETBASE_ENVIRONMENT);
 
   /**
    * @description Implement this method in child classes to have the collection name.
