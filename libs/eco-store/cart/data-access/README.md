@@ -46,6 +46,8 @@ as well as **order lifecycle metadata** including status, expiration date, order
 - **Server Sync Ready**: Includes state for background synchronization with PocketBase:
   - `remoteCartId`: Reference to the persisted cart in the server
   - `isSyncing`: Indicator of active synchronization process
+- **Silent Synchronization**: Synchronization operations use specific headers (`remove-from-global-loading`) to run in the background without triggering global UI loading indicators.
+- **Atomic Updates**: Uses `patchState` and batch operations (`setAllEntities`) to ensure UI consistency and prevent flickering during cart merges.
 - **Smart Cart Operations**:
   - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0
   - `removeFromCart`: Removes items by ID

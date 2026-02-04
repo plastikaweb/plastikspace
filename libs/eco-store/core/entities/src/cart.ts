@@ -7,6 +7,8 @@ export type EcoStoreCartStatus = 'ACTIVE' | 'DONE' | 'EXPIRED';
 export interface EcoStoreCartItem {
   product: EcoStoreProductWithCategoryName;
   quantity: number;
+  hasPriceChanged?: boolean;
+  oldPriceWithIva?: number;
 }
 
 export interface EcoStoreCart extends BasePocketBaseEntityWithTenantRef {

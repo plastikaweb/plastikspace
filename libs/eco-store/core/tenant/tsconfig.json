@@ -2,6 +2,7 @@
   "extends": "../../../../tsconfig.base.json",
   "compilerOptions": {
     "isolatedModules": true,
+    "composite": true,
     "target": "es2022",
     "moduleResolution": "bundler",
     "strict": true,
@@ -10,7 +11,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "module": "preserve",
-    "lib": ["es2024", "dom"]
+    "lib": ["es2022", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

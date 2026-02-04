@@ -9,4 +9,8 @@ export class PocketBaseUserAddressService extends PocketBaseGetService<PocketBas
   protected collectionName(): string {
     return 'user_addresses';
   }
+
+  protected requestKey(): string {
+    return 'user_addresses';
+  }
 }

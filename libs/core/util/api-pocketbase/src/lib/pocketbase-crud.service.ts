@@ -63,13 +63,18 @@ export abstract class PocketBaseCrudService<
    * @description Get a list of records.
    */
   public getList(params?: PARAMS): Observable<ListResult<T>> {
+    const finalParams = {
+      ...params,
+      requestKey: params?.requestKey ?? `${this.collectionName()}_list`,
+    };
+
     return from(
       this.#pb
         .collection(this.collectionName())
         .getList<T>(
-          (params as RecordListOptions)?.page || 1,
-          (params as RecordListOptions)?.perPage || 50,
-          (params as Omit<RecordListOptions, 'page' | 'perPage'>) || {}
+          (finalParams as RecordListOptions)?.page || 1,
+          (finalParams as RecordListOptions)?.perPage || 50,
+          (finalParams as Omit<RecordListOptions, 'page' | 'perPage'>) || {}
         )
     ).pipe(
       map(data => this.mapListResponse(data)),
@@ -84,7 +89,12 @@ export abstract class PocketBaseCrudService<
    * @description Get all records (max 500 by default).
    */
   public getFullList(params?: RecordFullListOptions): Observable<T[]> {
-    return from(this.#pb.collection(this.collectionName()).getFullList<T>(params)).pipe(
+    const finalParams = {
+      ...params,
+      requestKey: params?.requestKey ?? `${this.collectionName()}_full_list`,
+    };
+
+    return from(this.#pb.collection(this.collectionName()).getFullList<T>(finalParams)).pipe(
       map(items => items.map(item => this.mapResponse(item))),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
       catchError(error => this.handleError<ClientResponseError>(error))
@@ -98,7 +108,12 @@ export abstract class PocketBaseCrudService<
    * @description Get a single record by ID.
    */
   public getOne(id: string, options?: RecordOptions): Observable<T> {
-    return from(this.#pb.collection(this.collectionName()).getOne<T>(id, options)).pipe(
+    const finalOptions = {
+      ...options,
+      requestKey: options?.requestKey ?? `${this.collectionName()}_${id}`,
+    };
+
+    return from(this.#pb.collection(this.collectionName()).getOne<T>(id, finalOptions)).pipe(
       map(data => this.mapResponse(data)),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
       catchError(error => this.handleError<ClientResponseError>(error))
@@ -112,8 +127,13 @@ export abstract class PocketBaseCrudService<
    * @description Get the first record matching the filter.
    */
   public getFirstListItem(filter: string, options?: RecordOptions): Observable<T> {
+    const finalOptions = {
+      ...options,
+      requestKey: options?.requestKey ?? `${this.collectionName()}_first_list_item`,
+    };
+
     return from(
-      this.#pb.collection(this.collectionName()).getFirstListItem<T>(filter, options)
+      this.#pb.collection(this.collectionName()).getFirstListItem<T>(filter, finalOptions)
     ).pipe(
       map(data => this.mapResponse(data)),
       shareReplay({ bufferSize: 1, refCount: true, windowTime: this.cacheTime }),
@@ -128,7 +148,12 @@ export abstract class PocketBaseCrudService<
    * @description Create a new record.
    */
   public create(data: Partial<T>, options?: RecordOptions): Observable<T> {
-    return from(this.#pb.collection(this.collectionName()).create<T>(data, options)).pipe(
+    const finalOptions = {
+      ...options,
+      requestKey: options?.requestKey ?? `${this.collectionName()}_create`,
+    };
+
+    return from(this.#pb.collection(this.collectionName()).create<T>(data, finalOptions)).pipe(
       map(response => this.mapResponse(response)),
       catchError(error => this.handleError<ClientResponseError>(error))
     );
@@ -142,7 +167,12 @@ export abstract class PocketBaseCrudService<
    * @description Update an existing record.
    */
   public update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T> {
-    return from(this.#pb.collection(this.collectionName()).update<T>(id, data, options)).pipe(
+    const finalOptions = {
+      ...options,
+      requestKey: options?.requestKey ?? `${this.collectionName()}_update_${id}`,
+    };
+
+    return from(this.#pb.collection(this.collectionName()).update<T>(id, data, finalOptions)).pipe(
       map(response => this.mapResponse(response)),
       catchError(error => this.handleError<ClientResponseError>(error))
     );
@@ -153,8 +183,13 @@ export abstract class PocketBaseCrudService<
    * @returns { Observable<boolean> } The deletion result.
    * @description Delete a record.
    */
-  public delete(id: string): Observable<boolean> {
-    return from(this.#pb.collection(this.collectionName()).delete(id)).pipe(
+  public delete(id: string, options?: RecordOptions): Observable<boolean> {
+    const finalOptions = {
+      ...options,
+      requestKey: options?.requestKey ?? `${this.collectionName()}_delete_${id}`,
+    };
+
+    return from(this.#pb.collection(this.collectionName()).delete(id, finalOptions)).pipe(
       map(() => true),
       catchError(error => this.handleError<ClientResponseError>(error))
     );

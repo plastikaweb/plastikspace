@@ -133,6 +133,9 @@ The store provides the following methods:
 - **`setSort(sort)`** - Update sorting and reload list.
 - **`getOne(id)`** - Load single item (when using Get/Crud features).
 
+> [!NOTE]
+> `getList` is now fully reactive to the `listLoadingEnabled` state, re-triggering fetches when enabled even if parameters remain unchanged.
+
 > [!IMPORTANT]
 > When using `autoLoad: false`, you must call `enableListLoading()` before `setParams()`
 > to enable reactive list loading. This is typically done in a route resolver.
@@ -145,7 +148,7 @@ The store uses `withEntities` which provides:
 - **`entityMap()`** - Dictionary of entities by ID.
 - **`ids()`** - Array of entity IDs.
 - **`count()`** - Total count from API.
-- **`initiallyLoaded()`** - Whether data has been loaded (initial load).
+- **`initiallyLoaded()`** - Signal indicating if the first data load has completed successfully. Useful for UI skeletons.
 - **`selectedItemId()`** - ID of the currently selected item (if using Get/Crud).
 
 ## 🔧 Configuration

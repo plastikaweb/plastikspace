@@ -2,6 +2,7 @@ import { updateState, withDevtools, withImmutableState } from '@angular-architec
 import { computed, inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
+  patchState,
   signalStoreFeature,
   type,
   withComputed,
@@ -94,23 +95,23 @@ export function withPocketBaseListFeature<
         enableListLoading: (listLoadingEnabled = true) => {
           updateState(store, `[${featureName}] enableListLoading`, { listLoadingEnabled });
         },
-        getList: rxMethod<ReturnType<typeof store.formattedParams>>(
+        getList: rxMethod<{ params: ReturnType<typeof store.formattedParams>; enabled: boolean }>(
           pipe(
-            filter(() => store.listLoadingEnabled()),
-            debounceTime(300),
+            filter(({ enabled }) => enabled),
+            debounceTime(store.apiRequestDebounceTime()),
             tap(() => updateState(store, `[${featureName}] getList`)),
-            switchMap(params => {
+            switchMap(({ params }) => {
               return store._apiService.getList(params).pipe(
                 tapResponse<ListResult<T>, ClientResponseError>({
                   next: result => {
-                    updateState(
+                    patchState(
                       store,
-                      `[${featureName}] getList success`,
                       setAllEntities(result.items, {
                         selectId: entity => entity.id || '',
                       }),
                       {
                         count: result.totalItems,
+                        initiallyLoaded: true,
                       }
                     );
                   },
@@ -127,8 +128,12 @@ export function withPocketBaseListFeature<
 
     withHooks({
       onInit: store => {
-        // Always subscribe to maintain reactivity - the filter will control execution
-        store.getList(store.formattedParams);
+        store.getList(
+          computed(() => ({
+            params: store.formattedParams(),
+            enabled: store.listLoadingEnabled(),
+          }))
+        );
       },
     })
   );
@@ -174,9 +179,8 @@ export function withPocketBaseGetOneFeature<
               return store._apiService.getOne(id).pipe(
                 tapResponse<T, ClientResponseError>({
                   next: item => {
-                    updateState(
+                    patchState(
                       store,
-                      `[${featureName}] getOne success`,
                       setEntity(item, {
                         selectId: entity => entity.id || '',
                       }),
