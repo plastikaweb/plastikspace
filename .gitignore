@@ -83,6 +83,7 @@ apps/eco-store/.env
 # agent antigravity notes
 /.agent/notes
 /.gemini
+build_results.txt
 
 # log files
 *.log

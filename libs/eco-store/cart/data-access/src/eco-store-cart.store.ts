@@ -352,7 +352,6 @@ export const ecoStoreCartStore = signalStore(
           setAllEntities(itemsToProcess, { selectId: i => i.product.id })
         );
       } catch (error) {
-        throw new Error('Error merging cart:', error);
         updateState(store, '[cart] merge error', state => ({ ...state, isSyncing: false }));
       } finally {
         store.clearStorage();

@@ -2,10 +2,11 @@
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 
-- [Description](#description)
-- [Usage](#usage)
-  - [Images and Icons](#images-and-icons)
-  - [Font Families](#font-families)
+- [@plastik/core/assets](#plastikcoreassets)
+  - [Description](#description)
+  - [Usage](#usage)
+    - [Images and Icons](#images-and-icons)
+    - [Font Families](#font-families)
 
 ## Description
 

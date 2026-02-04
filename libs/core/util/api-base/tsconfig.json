@@ -18,6 +18,12 @@
       "path": "./tsconfig.lib.json"
     },
     {
+      "path": "../../../shared/util/objects"
+    },
+    {
+      "path": "../environments"
+    },
+    {
       "path": "./tsconfig.spec.json"
     }
   ],

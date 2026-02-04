@@ -11,7 +11,7 @@ describe('EcoStoreProductCardComponent', () => {
   let fixture: ComponentFixture<EcoStoreProductCardComponent>;
 
   const mockProduct: EcoStoreProductWithCategoryName = {
-    client: 'client-1',
+    tenant: 'tenant-1',
     id: '1',
     name: 'Test Product',
     normalizedName: 'test-product',

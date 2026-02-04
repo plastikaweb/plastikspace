@@ -44,17 +44,6 @@
     "cacheLocation": ".eslintcache"
   },
   "eslint.run": "onSave",
-  "markdownlint.configFile": "./.markdownlint.json",
-  "markdownlint.lintWorkspaceGlobs": [
-    "**/*.md",
-    "!**/pocketbase/**/*.md",
-    "!**/*.code-search",
-    "!**/bower_components/**",
-    "!**/node_modules/**",
-    "!**/.git/**",
-    "!**/vendor/**"
-  ],
-  "markdownlint.run": "onSave",
   "css.customData": [".vscode/tailwind.json"],
   "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore",
@@ -137,5 +126,7 @@
   "terminal.integrated.tabs.defaultColor": "terminal.ansiMagenta",
   "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, 'Courier New', monospace",
   "i18n-ally.localesPaths": ["apps/eco-store/public/i18n"],
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "markdownlint.configFile": "./.markdownlint-cli2.yaml",
+  "markdownlint.run": "onSave"
 }

@@ -12,6 +12,7 @@
   - [API Reference](#api-reference)
     - [Props Interface](#props-interface)
     - [UserContact Interface](#usercontact-interface)
+  - [Notes](#notes)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -19,7 +20,9 @@
 A **Formly-compatible address selector component** for Angular forms.
 It displays a list of saved user addresses with the ability to select one as the active address and supports editing functionality through optional callbacks.
 
-This component is used by the Eco Store cart shipping step and has been adjusted for improved presentation and accessibility. Address items are presented using a compact layout with optional country information and visual affordances (icons and spacing). The component is designed to work with Formly and the form model: selected address values are part of the form model so downstream logic (shipping calculation, validation) can rely on them.
+This component is used by the Eco Store cart shipping step and has been adjusted for improved presentation and accessibility.
+Address items are presented using a compact layout with optional country information and visual affordances (icons and spacing).
+The component is designed to work with Formly and the form model: selected address values are part of the form model so downstream logic (shipping calculation, validation) can rely on them.
 
 ## Usage
 
@@ -96,9 +99,12 @@ Notes:
 
 ## Notes
 
-- Visual / behavior changes: recent updates improved spacing and layout for address items and made the address details render in a two-column compact layout. If your automated tests rely on exact DOM structure, update selectors to target the semantic data (e.g. value/key) rather than fragile layout-specific classes.
-- Form integration: the component exposes and consumes form model values; hidden or auxiliary fields used in shipping calculations should be persisted in the form model so downstream logic (shipping cost calculation, validation) works reliably.
-- If you rely on a visible native control (radio/checkbox) in tests, prefer selecting by the option value or adjust tests to account for the visual-only card selection (the underlying interactive control may be visually hidden for styling reasons).
+- Visual / behavior changes: recent updates improved spacing and layout for address items and made the address details render in a two-column compact layout.
+  If your automated tests rely on exact DOM structure, update selectors to target the semantic data (e.g. value/key) rather than fragile layout-specific classes.
+- Form integration: the component exposes and consumes form model values;
+  hidden or auxiliary fields used in shipping calculations should be persisted in the form model so downstream logic (shipping cost calculation, validation) works reliably.
+- If you rely on a visible native control (radio/checkbox) in tests, prefer selecting by the option value or adjust tests to account
+  for the visual-only card selection (the underlying interactive control may be visually hidden for styling reasons).
 
 ## Running unit tests
 

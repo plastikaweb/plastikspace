@@ -135,7 +135,6 @@ The store provides the following methods:
 
 > [!NOTE]
 > `getList` is now fully reactive to the `listLoadingEnabled` state, re-triggering fetches when enabled even if parameters remain unchanged.
-
 > [!IMPORTANT]
 > When using `autoLoad: false`, you must call `enableListLoading()` before `setParams()`
 > to enable reactive list loading. This is typically done in a route resolver.
