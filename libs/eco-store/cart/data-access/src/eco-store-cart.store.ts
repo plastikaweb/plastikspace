@@ -16,6 +16,7 @@ import {
 } from '@ngrx/signals/entities';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { UserContact } from '@plastik/core/entities';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import {
   EcoStoreCart,
   EcoStoreCartItem,
@@ -85,6 +86,7 @@ export const ecoStoreCartStore = signalStore(
     _userProfileStore: inject(pocketBaseUserProfileStore),
     _cartsService: inject(EcoStoreCartsApiService),
     _productsService: inject(EcoStoreProductsApiService),
+    _tenantStore: inject(ecoStoreTenantStore),
   })),
   withConditional(
     store => !store._userProfileStore.isAuthenticated(),
@@ -161,6 +163,8 @@ export const ecoStoreCartStore = signalStore(
     };
 
     const saveCartToRemote = async () => {
+      if (store.isSyncing() || !store._tenantStore.loaded()) return;
+
       const user = store._userProfileStore.user();
       if (!user) return;
 
@@ -200,7 +204,8 @@ export const ecoStoreCartStore = signalStore(
           }));
         }
       } catch (error) {
-        throw new Error(`Error saving cart to PocketBase: ${error}`);
+        // eslint-disable-next-line no-console
+        console.error(`Error saving cart to PocketBase: ${error}`);
       } finally {
         updateState(store, '[cart] save cart to remote', state => ({
           ...state,
@@ -212,13 +217,19 @@ export const ecoStoreCartStore = signalStore(
     const _loadAndMergeUserCart = async () => {
       if (store.isSyncing() || store.isSynced()) return;
 
-      const user = store._userProfileStore.user();
-      if (!user) return;
-
       updateState(store, '[cart] merge start', state => ({
         ...state,
         isSyncing: true,
       }));
+
+      const user = store._userProfileStore.user();
+      if (!user) {
+        updateState(store, '[cart] merge cancel - no user', state => ({
+          ...state,
+          isSyncing: false,
+        }));
+        return;
+      }
 
       try {
         // 1. Find remote cart (independent of the shop stream)
@@ -351,10 +362,10 @@ export const ecoStoreCartStore = signalStore(
           state => ({ ...state, ...statePayload }),
           setAllEntities(itemsToProcess, { selectId: i => i.product.id })
         );
+
+        store.clearStorage();
       } catch (error) {
         updateState(store, '[cart] merge error', state => ({ ...state, isSyncing: false }));
-      } finally {
-        store.clearStorage();
       }
     };
 
@@ -430,10 +441,11 @@ export const ecoStoreCartStore = signalStore(
       effect(() => {
         const isAuthenticated = store._userProfileStore.isAuthenticated();
         const isSynced = store.isSynced();
+        const isTenantLoaded = store._tenantStore.loaded();
         // Use untracked to prevent the merge from triggering the effect again
         const isSyncing = untracked(() => store.isSyncing());
 
-        if (isAuthenticated && !isSynced && !isSyncing) {
+        if (isAuthenticated && isTenantLoaded && !isSynced && !isSyncing) {
           store.loadAndMergeUserCart();
         } else if (!isAuthenticated && isSynced) {
           updateState(store, '[cart] reset sync state', s => ({

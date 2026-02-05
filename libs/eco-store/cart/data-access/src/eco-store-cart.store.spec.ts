@@ -9,6 +9,8 @@ import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-acc
 import { of } from 'rxjs';
 import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 
 describe('ecoStoreCartStore', () => {
   const setup = () => {
@@ -37,6 +39,10 @@ describe('ecoStoreCartStore', () => {
         {
           provide: EcoStoreProductsApiService,
           useValue: mockProductsService,
+        },
+        {
+          provide: ecoStoreTenantStore,
+          useValue: mockEcoStoreTenantStore,
         },
         {
           provide: POCKETBASE_ENVIRONMENT,
