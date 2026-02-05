@@ -53,7 +53,7 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            const glob = require('@actions/glob');
+            // 'glob' is already available in the context provided by actions/github-script
 
             const globber = await glob.create('coverage/**/coverage-summary.json');
             const files = await globber.glob();
