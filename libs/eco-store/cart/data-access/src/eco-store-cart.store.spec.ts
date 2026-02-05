@@ -1,11 +1,48 @@
 import { ecoStoreCartStore } from './eco-store-cart.store';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { TestBed } from '@angular/core/testing';
+import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
+import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
+import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
+import { of } from 'rxjs';
+import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
+import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
 
 describe('ecoStoreCartStore', () => {
   const setup = () => {
+    const mockCartsService = {
+      create: jest.fn().mockReturnValue(of({})),
+      update: jest.fn().mockReturnValue(of({})),
+      getFirstListItem: jest.fn().mockReturnValue(of(null)),
+    };
+
+    const mockProductsService = {
+      getFullList: jest.fn().mockReturnValue(of([])),
+    };
+
     TestBed.configureTestingModule({
-      providers: [ecoStoreCartStore],
+      providers: [
+        ecoStoreCartStore,
+        { provide: POCKETBASE_INSTANCE, useValue: mockPocketBase },
+        {
+          provide: pocketBaseUserProfileStore,
+          useValue: mockPocketBaseUserProfileStore,
+        },
+        {
+          provide: EcoStoreCartsApiService,
+          useValue: mockCartsService,
+        },
+        {
+          provide: EcoStoreProductsApiService,
+          useValue: mockProductsService,
+        },
+        {
+          provide: POCKETBASE_ENVIRONMENT,
+          useValue: { production: false, environment: 'test' },
+        },
+      ],
     });
     return TestBed.inject(ecoStoreCartStore);
   };
@@ -45,7 +82,9 @@ describe('ecoStoreCartStore', () => {
     const store = setup();
     store.addToCart(mockProduct, 2);
 
-    expect(store.items()[0]).toEqual({ id: '1', product: mockProduct, quantity: 2 });
+    const item = store.items()[0];
+    expect(item.quantity).toBe(2);
+    expect(item.product.id).toBe(mockProduct.id);
     expect(store.itemsCount()).toBe(1);
     expect(store.subtotal() + store.tax()).toBe(20);
   });

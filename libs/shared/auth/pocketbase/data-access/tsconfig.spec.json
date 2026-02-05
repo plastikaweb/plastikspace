@@ -2,16 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../../../dist/out-tsc",
-    "module": "esnext",
-    "target": "es2016",
+    "module": "preserve",
+    "moduleResolution": "bundler",
     "declaration": true,
-    "types": ["jest", "node"]
+    "types": ["jest", "node", "jest-preset-angular"]
   },
   "files": ["src/test-setup.ts"],
-  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    }
-  ]
+  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
 }

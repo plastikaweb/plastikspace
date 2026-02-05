@@ -11,6 +11,7 @@ import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price'
 import { EcoStoreProductQuantityComponent } from '@plastik/eco-store/product-quantity';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
+import { NewPriceWarningComponent } from '../../ui/new-price-warning/new-price-warning.component';
 
 @Component({
   selector: 'eco-cart-summary',
@@ -27,6 +28,7 @@ import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-orde
     EcoStoreProductPriceComponent,
     EcoStoreProductQuantityComponent,
     CartOrderSummaryComponent,
+    NewPriceWarningComponent,
   ],
   templateUrl: './cart-summary.component.html',
   styleUrl: './cart-summary.component.scss',

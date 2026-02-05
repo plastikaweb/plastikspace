@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  .icon-drop {
+    @include mat.icon-overrides(
+      (
+        color: var(--primary-500),
+      )
+    );
+  }
+
+  .icon-increase {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-500),
+      )
+    );
+  }
+}

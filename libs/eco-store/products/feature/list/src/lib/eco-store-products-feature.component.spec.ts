@@ -3,10 +3,11 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
+import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import EcoStoreProductsFeature from './eco-store-products-feature.component';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 
 describe('EcoStoreProductsFeature', () => {
   let component: EcoStoreProductsFeature;
@@ -21,16 +22,11 @@ describe('EcoStoreProductsFeature', () => {
         provideRouter([]),
         {
           provide: POCKETBASE_INSTANCE,
-          useValue: {
-            collection: () => ({
-              getList: () => Promise.resolve({ items: [], totalItems: 0 }),
-              getFullList: () => Promise.resolve([]),
-            }),
-          },
+          useValue: mockPocketBase,
         },
         {
           provide: ecoStoreTenantStore,
-          useValue: ecoStoreTenantStoreMock,
+          useValue: mockEcoStoreTenantStore,
         },
       ],
     }).compileComponents();

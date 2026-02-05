@@ -15,6 +15,7 @@
     - [Components](#components)
       - [CartOrderPriceSlotsComponent](#cartorderpriceslotscomponent)
       - [CartOrderSummaryComponent](#cartordersummarycomponent)
+      - [NewPriceWarningComponent](#newpricewarningcomponent)
   - [Cart Steps](#cart-steps)
     - [Shipping Unavailable Component](#shipping-unavailable-component)
   - [Running unit tests](#running-unit-tests)
@@ -181,6 +182,60 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
   deliveryType="delivery">
 </eco-cart-order-summary>
 ```
+
+#### NewPriceWarningComponent
+
+The `NewPriceWarningComponent` is a smart presentational component that displays price change notifications in the cart summary.
+It automatically adapts its styling and messaging based on whether the price has increased or decreased, providing clear visual feedback to users.
+
+**Features:**
+
+- **Smart Visual Differentiation**:
+  - Price drops use green/primary color scheme with `trending_down` icon
+  - Price increases use terracotta/tertiary color scheme with `trending_up` icon
+- **Accessibility-First Design**:
+  - Semantic HTML using `<aside>` element for complementary content
+  - ARIA roles (`status` for price drops, `alert` for increases)
+  - ARIA labels for screen reader announcements
+  - Color-independent indicators (icons + text)
+- **Responsive Layout**: Adapts from vertical to horizontal layout on larger screens
+- **Material Design + Tailwind**: Combines Material icons with Tailwind utility classes
+- **Internationalized**: Supports Catalan, Spanish, and English
+
+**Inputs:**
+
+- `currentPrice: number` (required): The current price of the product
+- `oldPrice: number` (required): The previous price of the product
+
+**Behavior:**
+
+The component uses a computed signal `isPriceDrop()` to determine the price direction:
+
+- When `currentPrice < oldPrice`: Shows success state (green) with "Price drop!" message
+- When `currentPrice >= oldPrice`: Shows warning state (terracotta) with "Price increase!" message
+
+**Translation Keys:**
+
+All text content is internationalized under the `cart.summary` namespace:
+
+- `price-drop`: Message displayed for price reductions
+- `price-increase`: Message displayed for price hikes
+- `old-price`: Label for the previous price
+
+**Example Usage:**
+
+```html
+<eco-new-price-warning [currentPrice]="item.product.priceWithIva" [oldPrice]="item.oldPriceWithIva">
+</eco-new-price-warning>
+```
+
+**Styling:**
+
+- Compact layout with minimal padding for reduced visual disruption
+- Uses CSS grid for consistent icon-text alignment
+- Custom Material icon size (18px × 18px)
+- Dynamic color classes bound to `isPriceDrop()` signal
+- Icon colors applied via Material mixins for theme consistency
 
 ## Cart Steps
 

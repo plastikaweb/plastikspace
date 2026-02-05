@@ -2,10 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CartShippingComponent } from './cart-shipping.component';
 import { provideTranslateService } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import { ecoStoreCartStoreMock } from '@plastik/eco-store/cart/data-access/testing';
+import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
+import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { provideRouter } from '@angular/router';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { signal } from '@angular/core';
@@ -16,6 +16,14 @@ describe('CartShippingComponent', () => {
 
   const mockUserProfileStore = {
     getUserContacts: signal([]),
+    loaded: signal(true),
+    user: signal({
+      id: '1',
+      name: 'user',
+      email: 'user@example.com',
+      role: 'user',
+      contacts: [],
+    }),
   };
 
   beforeEach(async () => {
@@ -25,9 +33,9 @@ describe('CartShippingComponent', () => {
       providers: [
         provideRouter([]),
         provideTranslateService(),
-        { provide: ecoStoreCartStore, useValue: ecoStoreCartStoreMock },
+        { provide: ecoStoreCartStore, useValue: mockEcoStoreCartStore },
         { provide: pocketBaseUserProfileStore, useValue: mockUserProfileStore },
-        { provide: ecoStoreTenantStore, useValue: ecoStoreTenantStoreMock },
+        { provide: ecoStoreTenantStore, useValue: mockEcoStoreTenantStore },
       ],
     }).compileComponents();
 

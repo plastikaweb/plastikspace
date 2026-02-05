@@ -1,11 +1,11 @@
-import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
+import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { MenuComponent } from './menu.component';
 
@@ -22,19 +22,11 @@ describe('MenuComponent', () => {
         ...provideEnvironmentPocketBaseTranslationMock(),
         {
           provide: POCKETBASE_INSTANCE,
-          useValue: {
-            collection: jest.fn().mockReturnThis(),
-            authWithPassword: jest.fn(),
-            authStore: {
-              clear: jest.fn(),
-              isValid: false,
-              record: null,
-            },
-          },
+          useValue: mockPocketBase,
         },
         {
           provide: ecoStoreTenantStore,
-          useValue: ecoStoreTenantStoreMock,
+          useValue: mockEcoStoreTenantStore,
         },
       ],
     }).compileComponents();

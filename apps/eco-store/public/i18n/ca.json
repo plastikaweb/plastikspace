@@ -199,7 +199,10 @@
       "shipping": "Enviament",
       "including-vat": "IVA inclòs",
       "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!",
-      "remove-item": "Eliminar producte"
+      "remove-item": "Eliminar producte",
+      "price-increase": "Pujada de preu!",
+      "old-price": "Preu anterior",
+      "price-drop": "Baixada de preu!"
     },
     "shipping": {
       "free-shipping-achieved": "Has aconseguit enviament gratuït!",

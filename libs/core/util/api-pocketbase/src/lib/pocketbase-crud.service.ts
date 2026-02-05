@@ -46,9 +46,9 @@ export abstract class PocketBaseCrudService<
   }
 
   /**
+   * @description Method to map list responses.
    * @param { ListResult<T> } data The list response data as it is.
    * @returns { ListResult<T> } The mapped list response.
-   * @description Method to map list responses.
    */
   protected mapListResponse(data: ListResult<T>): ListResult<T> {
     return {
@@ -58,9 +58,9 @@ export abstract class PocketBaseCrudService<
   }
 
   /**
+   * @description Get a list of records.
    * @param { PARAMS } params The list parameters.
    * @returns { Observable<ListResult<T>> } The list of records.
-   * @description Get a list of records.
    */
   public getList(params?: PARAMS): Observable<ListResult<T>> {
     const finalParams = {
@@ -84,9 +84,9 @@ export abstract class PocketBaseCrudService<
   }
 
   /**
+   * @description Get all records (max 500 by default).
    * @param { RecordFullListOptions } params The full list parameters.
    * @returns { Observable<T[]> } The full list of records.
-   * @description Get all records (max 500 by default).
    */
   public getFullList(params?: RecordFullListOptions): Observable<T[]> {
     const finalParams = {
@@ -102,10 +102,10 @@ export abstract class PocketBaseCrudService<
   }
 
   /**
+   * @description Get a single record by ID.
    * @param { string } id The record ID.
    * @param { RecordOptions } options The record options.
    * @returns { Observable<T> } The single record.
-   * @description Get a single record by ID.
    */
   public getOne(id: string, options?: RecordOptions): Observable<T> {
     const finalOptions = {
@@ -121,10 +121,10 @@ export abstract class PocketBaseCrudService<
   }
 
   /**
+   * @description Get the first record matching the filter.
    * @param { string } filter The filter.
    * @param { RecordOptions } options The record options.
    * @returns { Observable<T> } The first record matching the filter.
-   * @description Get the first record matching the filter.
    */
   public getFirstListItem(filter: string, options?: RecordOptions): Observable<T> {
     const finalOptions = {
@@ -142,10 +142,10 @@ export abstract class PocketBaseCrudService<
   }
 
   /**
+   * @description Create a new record.
    * @param { Partial<T> } data The record data.
    * @param { RecordOptions } options The record options.
    * @returns { Observable<T> } The created record.
-   * @description Create a new record.
    */
   public create(data: Partial<T>, options?: RecordOptions): Observable<T> {
     const finalOptions = {
@@ -160,11 +160,11 @@ export abstract class PocketBaseCrudService<
   }
 
   /**
+   * @description Update an existing record.
    * @param { string } id The record ID.
    * @param { Partial<T> } data The record data.
    * @param { RecordOptions } options The record options.
    * @returns { Observable<T> } The updated record.
-   * @description Update an existing record.
    */
   public update(id: string, data: Partial<T>, options?: RecordOptions): Observable<T> {
     const finalOptions = {
@@ -179,9 +179,10 @@ export abstract class PocketBaseCrudService<
   }
 
   /**
-   * @param { string } id The record ID.
-   * @returns { Observable<boolean> } The deletion result.
    * @description Delete a record.
+   * @param { string } id The record ID.
+   * @param { RecordOptions } options The record options.
+   * @returns { Observable<boolean> } The deletion result.
    */
   public delete(id: string, options?: RecordOptions): Observable<boolean> {
     const finalOptions = {
