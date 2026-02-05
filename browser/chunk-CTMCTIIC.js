@@ -18,9 +18,9 @@ import {
   signalStore,
   updateState,
   withDevtools,
-  withMethods,
-  withState
-} from "./chunk-4C7MFCXB.js";
+  withImmutableState,
+  withMethods
+} from "./chunk-3ZCOY5GZ.js";
 import {
   Store,
   createActionGroup,
@@ -266,7 +266,7 @@ import {
 } from "./chunk-4MKI7HWZ.js";
 
 // libs/shared/notification/data-access/src/lib/+state/notification.store.ts
-var notificationStore = signalStore({ providedIn: "root" }, withDevtools("notification"), withState({
+var notificationStore = signalStore({ providedIn: "root" }, withDevtools("notification"), withImmutableState({
   configuration: null,
   preserveOnRouteRequest: false
 }), withMethods((store) => ({
@@ -17878,4 +17878,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-GPLDXBEB.js.map
+//# sourceMappingURL=chunk-CTMCTIIC.js.map

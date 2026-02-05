@@ -16,7 +16,7 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-GPLDXBEB.js";
+} from "./chunk-CTMCTIIC.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
@@ -34,7 +34,7 @@ import {
   provideTranslateService,
   provideWithApiEnv,
   routerReducers
-} from "./chunk-4C7MFCXB.js";
+} from "./chunk-3ZCOY5GZ.js";
 import {
   ActionsSubject,
   INIT,
@@ -6561,11 +6561,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-7EAU6EUH.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-763RWNYA.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-TALEZH62.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-Y53EWJGN.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];

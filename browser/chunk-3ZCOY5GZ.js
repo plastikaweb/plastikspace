@@ -711,6 +711,47 @@ function withReset() {
     }
   })));
 }
+function deepFreeze(target, propertyNamesToBeFrozen, isRoot = true) {
+  const runPropertyNameCheck = propertyNamesToBeFrozen.length > 0;
+  for (const key of Reflect.ownKeys(target)) {
+    if (runPropertyNameCheck && !propertyNamesToBeFrozen.includes(key)) {
+      continue;
+    }
+    const propValue = target[key];
+    if (isRecordLike(propValue) && !Object.isFrozen(propValue)) {
+      Object.freeze(propValue);
+      deepFreeze(propValue, [], false);
+    } else if (isRoot) {
+      Object.defineProperty(target, key, {
+        value: propValue,
+        writable: false,
+        configurable: false
+      });
+    }
+  }
+}
+function isRecordLike(target) {
+  return typeof target === "object" && target !== null;
+}
+function isDevMode2() {
+  return isDevMode();
+}
+function withImmutableState(stateOrFactory, options) {
+  const immutableState = typeof stateOrFactory === "function" ? stateOrFactory() : stateOrFactory;
+  const stateKeys = Reflect.ownKeys(immutableState);
+  const applyFreezing = isDevMode2() || options?.enableInProduction === true;
+  return signalStoreFeature(withState(immutableState), withHooks((store) => ({
+    onInit() {
+      if (!applyFreezing) {
+        return;
+      }
+      deepFreeze(getState(store), stateKeys);
+      watchState(store, (state) => {
+        deepFreeze(state, stateKeys);
+      });
+    }
+  })));
+}
 var keyPath = "ngrxToolkitKeyPath";
 var dbName = "ngrxToolkitDb";
 var storeName = "ngrxToolkitStore";
@@ -891,7 +932,7 @@ var SessionStorageService = class _SessionStorageService {
 var emptyFeature = signalStoreFeature(withState({}));
 
 // libs/shared/activity/data-access/src/lib/+state/activity.store.ts
-var activityStore = signalStore({ providedIn: "root" }, withDevtools("activity"), withState({
+var activityStore = signalStore({ providedIn: "root" }, withDevtools("activity"), withImmutableState({
   isActive: false
 }), withReset(), withMethods((store) => ({
   setActivity(isActive) {
@@ -3601,9 +3642,9 @@ export {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   signalStore,
   withMethods,
-  withState,
   withDevtools,
   updateState,
+  withImmutableState,
   activityStore,
   BaseDataService,
   createDataGetListServiceToken,
@@ -3633,4 +3674,4 @@ export {
   PrefixTitleService,
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-4C7MFCXB.js.map
+//# sourceMappingURL=chunk-3ZCOY5GZ.js.map
