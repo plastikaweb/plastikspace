@@ -28,6 +28,10 @@ The layout is composed of:
 
 - **Header**: Contains the logo, search bar (lazy loaded), and user menu with enhanced authentication state (Login/Profile/Orders/Logout with Avatar or Initials).
 - **User Avatar**: Reusable component `UserAvatarComponent` that handles displaying user avatar or initials.
+- **Menu**: Navigation menu with role-based icons:
+  - `PARTNER`: verified icon
+  - `GLOBAL_ADMIN`: admin_panel_settings icon
+  - `TENANT_ADMIN`: manage_accounts icon
 - **Sidenav**: Collapsible navigation menu for categories and account links.
 - **Content**: The main `router-outlet` for feature modules.
 - **Footer**: Application footer.

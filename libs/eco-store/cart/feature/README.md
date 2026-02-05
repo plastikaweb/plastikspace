@@ -15,7 +15,9 @@
     - [Components](#components)
       - [CartOrderPriceSlotsComponent](#cartorderpriceslotscomponent)
       - [CartOrderSummaryComponent](#cartordersummarycomponent)
+      - [NewPriceWarningComponent](#newpricewarningcomponent)
   - [Cart Steps](#cart-steps)
+    - [Shipping Unavailable Component](#shipping-unavailable-component)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -47,7 +49,7 @@ Example Formly field configuration:
 
 ```typescript
 {
-  key: 'amount',
+  key: 'shipping',
   type: 'input',
   props: { type: 'hidden' },
   hooks: {
@@ -66,7 +68,7 @@ Example Formly field configuration:
   - `address`: Shipping address selection
   - `day`: Delivery day selection
   - `time`: Delivery time slot selection
-  - `amount`: Computed shipping cost
+  - `shipping`: Computed shipping cost
 
 - Custom Label Hooks Pattern
 
@@ -147,7 +149,7 @@ It shows the user how much they need to add to their cart to reach the next ship
 ```html
 <eco-cart-order-price-slots
   [tiers]="tenantStore.getTenantDeliveryPriceTiers()"
-  [cartTotal]="cartStore.totalAmountWithIva()">
+  [cartTotal]="cartStore.subtotal() + cartStore.tax()">
 </eco-cart-order-price-slots>
 ```
 
@@ -160,7 +162,7 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 - `submitAvailable: boolean`: Indicates whether the order can be submitted.
 - `subtotal: number` (required): The current shopping cart subtotal.
 - `taxes: number` (required): The current tax.
-- `total: number` (required): The current shopping cart total (subtotal + taxes).
+- `total: number` (required): The current shopping cart total (subtotal + taxes + shipping).
 - `shipping: number`: The shipping cost.
 - `actionButtonText: string`: The button label.
 - `actionRoute: string[]`: The route to redirect on clicking the action button.
@@ -181,6 +183,60 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 </eco-cart-order-summary>
 ```
 
+#### NewPriceWarningComponent
+
+The `NewPriceWarningComponent` is a smart presentational component that displays price change notifications in the cart summary.
+It automatically adapts its styling and messaging based on whether the price has increased or decreased, providing clear visual feedback to users.
+
+**Features:**
+
+- **Smart Visual Differentiation**:
+  - Price drops use green/primary color scheme with `trending_down` icon
+  - Price increases use terracotta/tertiary color scheme with `trending_up` icon
+- **Accessibility-First Design**:
+  - Semantic HTML using `<aside>` element for complementary content
+  - ARIA roles (`status` for price drops, `alert` for increases)
+  - ARIA labels for screen reader announcements
+  - Color-independent indicators (icons + text)
+- **Responsive Layout**: Adapts from vertical to horizontal layout on larger screens
+- **Material Design + Tailwind**: Combines Material icons with Tailwind utility classes
+- **Internationalized**: Supports Catalan, Spanish, and English
+
+**Inputs:**
+
+- `currentPrice: number` (required): The current price of the product
+- `oldPrice: number` (required): The previous price of the product
+
+**Behavior:**
+
+The component uses a computed signal `isPriceDrop()` to determine the price direction:
+
+- When `currentPrice < oldPrice`: Shows success state (green) with "Price drop!" message
+- When `currentPrice >= oldPrice`: Shows warning state (terracotta) with "Price increase!" message
+
+**Translation Keys:**
+
+All text content is internationalized under the `cart.summary` namespace:
+
+- `price-drop`: Message displayed for price reductions
+- `price-increase`: Message displayed for price hikes
+- `old-price`: Label for the previous price
+
+**Example Usage:**
+
+```html
+<eco-new-price-warning [currentPrice]="item.product.priceWithIva" [oldPrice]="item.oldPriceWithIva">
+</eco-new-price-warning>
+```
+
+**Styling:**
+
+- Compact layout with minimal padding for reduced visual disruption
+- Uses CSS grid for consistent icon-text alignment
+- Custom Material icon size (18px × 18px)
+- Dynamic color classes bound to `isPriceDrop()` signal
+- Icon colors applied via Material mixins for theme consistency
+
 ## Cart Steps
 
 1. **Summary** (`/cistella/resum`): View cart items, adjust quantities, remove items.
@@ -190,7 +246,8 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 
 ### Shipping Unavailable Component
 
-The `ShippingUnavailableComponent` is displayed when the tenant's shipping configuration is incomplete or unavailable. It provides users with information about the situation and guidance on what they can do while waiting.
+The `ShippingUnavailableComponent` is displayed when the tenant's shipping configuration is incomplete or unavailable.
+It provides users with information about the situation and guidance on what they can do while waiting.
 
 **Features:**
 

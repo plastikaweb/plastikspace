@@ -19,32 +19,40 @@
       - [Methods](#methods)
   - [API Reference](#api-reference)
     - [State Interface](#state-interface)
-  - [Running unit tests](#running-unit-tests)
 
 ## Description
 
 This library manages the shopping cart state for the [**Eco Store application**](../../../../apps/eco-store/README.md).
 It uses **NgRx Signals** for reactive state management and **ngrx-toolkit** for automatic synchronization with local storage.
-In addition to the cart line items, it also stores **shipping configuration** such as address, delivery method, slot day/time and shipping amount.
+It features **dynamic synchronization**: it automatically syncs with `localStorage` for guest users but disables persistence once the user is authenticated, prioritizing server-side sync with PocketBase.
+In addition to the cart line items, it also stores **shipping configuration** such as address (as a `UserContact`), delivery method, slot day/time and shipping amount,
+as well as **order lifecycle metadata** including status, expiration date, order cycle reference, and customer notes.
 
 ## Features
 
 - **Reactive State**: Built with `signalStore` for performant, signal-based state management
-- **Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`
-- **Computed Totals**: Automatically calculates and updates derived state:
+- **Dynamic Local Storage Persistence**: Automatically syncs cart state to `localStorage` under the key `eco_cart_v1` using `withStorageSync`.
+  This is **dynamically enabled for guest users** and disabled after authentication to avoid session conflicts and prioritize PocketBase sync.
+
+- **Computed Properties**: Derived state is now managed as state properties that are automatically updated:
+  - `subtotal`: Net total (without IVA)
+  - `tax`: Total IVA
+  - `total`: Grand total including IVA and shipping
+- **Computed Signals**: Reactive derivations remain for:
   - `itemsCount`: Total number of items in the cart
-  - `totalAmount`: Net total (without IVA)
-  - `totalAmountWithIva`: Total price of all items including IVA
-  - `totalAmountIva`: Total IVA (difference between `totalAmountWithIva` and `totalAmount`)
-  - `totalAmountWithShipping`: Grand total including shipping amount
   - `isEmpty`: Boolean check for cart status
   - `itemsGroupedByCategory`: Returns items grouped by category name
   - `itemsDictionary`: Returns entity map for quick lookups
+- **Server Sync Ready**: Includes state for background synchronization with PocketBase:
+  - `remoteCartId`: Reference to the persisted cart in the server
+  - `isSyncing`: Indicator of active synchronization process
+- **Silent Synchronization**: Synchronization operations use specific headers (`remove-from-global-loading`) to run in the background without triggering global UI loading indicators.
+- **Atomic Updates**: Uses `patchState` and batch operations (`setAllEntities`) to ensure UI consistency and prevent flickering during cart merges.
 - **Smart Cart Operations**:
   - `addToCart`: Adds new items or increments quantity if the item already exists. Handles removal if quantity becomes <= 0
   - `removeFromCart`: Removes items by ID
   - `clearCart`: Clears all items from the cart
-  - `updateLogistics`: Updates shipping-related state (method, address, day, time and amount)
+  - `updateLogistics`: Updates shipping-related state (method, address, day, time and shipping cost)
   - `getItemCount`: Returns a computed signal with the quantity of a specific product
 
 ## Installation
@@ -67,7 +75,7 @@ export class CartComponent {
   // Access signals
   items = this.cartStore.items;
   count = this.cartStore.itemsCount;
-  total = this.cartStore.totalAmountWithIva;
+  total = computed(() => this.cartStore.subtotal() + this.cartStore.tax());
 
   addItem(product: EcoStoreProductWithCategoryName) {
     this.cartStore.addToCart(product, 1);
@@ -86,42 +94,49 @@ The store exposes the following signals and methods:
 #### State Signals
 
 - `items()`: Array of `CartItem` objects
-- `address()`: Shipping address or null
+- `address()`: Shipping address as `UserContact` or null
 - `method()`: Delivery method or null
 - `day()`: Selected delivery day or null
 - `time()`: Selected delivery time or null
 - `noDayAndTime()`: Boolean flag for no time slot selection
-- `amount()`: Shipping amount
+- `shipping()`: Shipping cost amount
+- `status()`: Order status ('ACTIVE', 'DONE', or 'EXPIRED')
+- `expiresAt()`: Order expiration date or null
+- `orderCycle()`: Reference to the order cycle or null
+- `notes()`: Customer notes or null
+- `remoteCartId()`: ID of the cart in PocketBase
+- `isSyncing()`: Boolean for sync status
+- `subtotal()`: Calculated net total
+- `tax()`: Calculated total tax
+- `total()`: Calculated grand total including tax and shipping
 
 #### Computed Signals
 
 - `itemsCount()`: Total quantity of all products
-- `totalAmount()`: Net total without IVA
-- `totalAmountWithIva()`: Total cost including IVA
-- `totalAmountIva()`: Total tax amount (totalAmountWithIva - totalAmount)
-- `totalAmountWithShipping()`: Grand total including shipping
 - `isEmpty()`: True if the cart has no items
 - `itemsGroupedByCategory()`: Returns an object where keys are category names and values are arrays of `CartItem` objects
 - `itemsDictionary()`: Returns entity map for quick product lookups
 
 #### Methods
 
-- `addToCart(product, quantity?)`: Add or update item
-- `removeFromCart(productId)`: Remove item
-- `clearCart()`: Empty the cart
-- `updateLogistics(logistics)`: Update shipping configuration
-- `getItemCount(productId)`: Returns a computed signal with the quantity of the product
+- `addToCart(product, quantity?)`: Add or update item. Uses `product.id` as the entity identifier.
+- `removeFromCart(productId)`: Remove item by product ID.
+- `clearCart()`: Empty the cart.
+- `updateLogistics(logistics)`: Update shipping configuration.
+- `getItemCount(productId)`: Returns a computed signal with the quantity of the product.
 
 ## API Reference
 
 ### State Interface
 
 ```typescript
-interface CartItem {
-  id: string;
-  product: EcoStoreProductWithCategoryName;
-  quantity: number;
-}
+import { EcoStoreCartItem } from '@plastik/eco-store/entities';
+
+// EcoStoreCartItem structure:
+// {
+//   product: EcoStoreProductWithCategoryName;
+//   quantity: number;
+// }
 
 interface EcoStoreCartState {
   address: UserContact | null;
@@ -129,10 +144,20 @@ interface EcoStoreCartState {
   day: SlotDays | null;
   time: TimeRange | null;
   noDayAndTime: boolean;
-  amount: number;
+  shipping: number;
+  status: 'ACTIVE' | 'DONE' | 'EXPIRED';
+  expiredAt: Date | null;
+  orderCycle: string | null;
+  notes: string | null;
+  remoteCartId: string | null;
+  isSyncing: boolean;
+  subtotal: number;
+  tax: number;
+  total: number;
 }
 ```
 
+```bash
 ## Running unit tests
-
 Run `nx test eco-store-cart-data-access` to execute the unit tests via Jest.
+```

@@ -21,6 +21,7 @@
     - [CRUD Operations](#crud-operations)
   - [PocketBase Filter Syntax](#pocketbase-filter-syntax)
   - [Caching](#caching)
+  - [Request Cancellation](#request-cancellation)
 
 ## Description
 
@@ -162,6 +163,7 @@ getList(params?: {
   filter?: string;   // PocketBase filter syntax
   sort?: string;     // e.g., '-created,name'
   expand?: string;   // Relations to expand
+  requestKey?: string; // Custom key to prevent auto-cancellation
 }): Observable<ListResult<T>>
 ```
 
@@ -191,4 +193,36 @@ filter: 'created >= "2024-01-01"'; // Date comparison
 
 ```typescript
 protected override cacheTime = 1000 * 60 * 1; // 1 minute
+```
+
+## Request Cancellation
+
+- By default, the PocketBase SDK **auto-cancels** pending requests with the same `requestKey`.
+- This service automatically assigns a default `requestKey` to each operation to avoid conflicts between different types of calls:
+  - `getList`: `${collectionName}_list`
+  - `getFullList`: `${collectionName}_full_list`
+  - `getOne`: `${collectionName}_${id}`
+  - `create`: `${collectionName}_create`
+  - `update`: `${collectionName}_update_${id}`
+  - `delete`: `${collectionName}_delete_${id}`
+
+### Concurrent Requests Issue
+
+If you perform two identical requests simultaneously (e.g., calling `getList` from two different components or stores), the second call will cancel the first one because they share the same default `requestKey`.
+
+### Solution: Custom `requestKey`
+
+To run identical requests in parallel, provide a unique `requestKey` in the options:
+
+```typescript
+// Component A (Standard list)
+this.productService.getList({ sort: '-created' });
+// requestKey: 'products_list' (Default)
+
+// Component B (Specialized list needed in parallel)
+this.productService.getList({
+  sort: '-created',
+  requestKey: 'products_special_list', // Custom key
+});
+// Both requests will execute without cancelling each other
 ```

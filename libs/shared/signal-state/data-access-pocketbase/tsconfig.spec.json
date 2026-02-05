@@ -5,8 +5,14 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "types": ["jest", "node"],
-    "isolatedModules": true
+    "isolatedModules": true,
+    "declaration": true
   },
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ],
   "include": [
     "jest.config.ts",
     "jest.config.cts",

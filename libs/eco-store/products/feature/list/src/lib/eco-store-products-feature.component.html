@@ -1,46 +1,48 @@
-<div class="px-4 py-8" role="region">
-  <!-- Header Section -->
-  <div class="mb-8 flex w-full items-center justify-between">
-    <h2 class="gap-md flex items-center text-3xl font-bold tracking-tight text-neutral-800">
-      <mat-icon class="scale-150!" aria-hidden="true">
-        {{ category()?.icon }}
-      </mat-icon>
-      <span>{{ category()?.name }}</span>
-      <span class="text-lg font-medium text-neutral-400">({{ productsStore.count() }})</span>
-    </h2>
+@defer (when productsStore.initiallyLoaded()) {
+  <div class="px-4 py-8" role="region">
+    <!-- Header Section -->
+    <div class="mb-8 flex w-full items-center justify-between">
+      <h2 class="gap-md flex items-center text-3xl font-bold tracking-tight text-neutral-800">
+        <mat-icon class="scale-150!" aria-hidden="true">
+          {{ category()?.icon }}
+        </mat-icon>
+        <span>{{ category()?.name }}</span>
+        <span class="text-lg font-medium text-neutral-400">({{ productsStore.count() }})</span>
+      </h2>
 
-    <plastik-sort-selector
-      [options]="productsStore.sortOptions()"
-      [currentSort]="productsStore.sort()"
-      [translationPrefix]="'products.filter.sort'"
-      (sortChange)="sortProducts($event)"></plastik-sort-selector>
-  </div>
+      <plastik-sort-selector
+        [options]="productsStore.sortOptions()"
+        [currentSort]="productsStore.sort()"
+        [translationPrefix]="'products.filter.sort'"
+        (sortChange)="sortProducts($event)"></plastik-sort-selector>
+    </div>
 
-  <!-- Products Grid -->
-  <section class="products-grid" [attr.aria-label]="'a11y.product-list' | translate">
-    @if (activityStore.isActive()) {
-      @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-        <eco-store-product-card />
+    <!-- Products Grid -->
+    <section class="products-grid" [attr.aria-label]="'a11y.product-list' | translate">
+      @if (activityStore.isActive()) {
+        @for (i of [1, 2, 3, 4, 5, 6]; track i) {
+          <eco-store-product-card />
+        }
+      } @else {
+        @for (item of productsStore.productsWithTranslatedText(); track item.id; let i = $index) {
+          <eco-store-product-card
+            [product]="item"
+            [quantity]="cartStore.getItemCount(item.id)()"
+            [isFirst]="i < 6"
+            (addToCart)="addToCart($event)"
+            (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
+        }
       }
-    } @else {
-      @for (item of productsStore.productsWithTranslatedText(); track item.id; let i = $index) {
-        <eco-store-product-card
-          [product]="item"
-          [quantity]="cartStore.getItemCount(item.id)()"
-          [isFirst]="i < 6"
-          (addToCart)="addToCart($event)"
-          (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
-      }
+    </section>
+
+    @if (!activityStore.isActive()) {
+      <plastik-pagination
+        class="mt-6"
+        plastikPocketbasePaginationNavigation
+        [pageSize]="productsStore.getPagination().perPage"
+        [pageIndex]="productsStore.getPagination().page"
+        [pageSizeOptions]="productsStore.paginationSizeOptions()"
+        [count]="productsStore.count()" />
     }
-  </section>
-
-  @if (!activityStore.isActive()) {
-    <plastik-pagination
-      class="mt-6"
-      plastikPocketbasePaginationNavigation
-      [pageSize]="productsStore.getPagination().perPage"
-      [pageIndex]="productsStore.getPagination().page"
-      [pageSizeOptions]="productsStore.paginationSizeOptions()"
-      [count]="productsStore.count()" />
-  }
-</div>
+  </div>
+}

@@ -65,7 +65,7 @@ export class MenuComponent {
         return 'verified';
       case 'GLOBAL_ADMIN':
         return 'admin_panel_settings';
-      case 'CLIENT_ADMIN':
+      case 'TENANT_ADMIN':
         return 'manage_accounts';
       default:
         return '';
@@ -76,7 +76,7 @@ export class MenuComponent {
 
   constructor() {
     effect(() => {
-      if (this.cartStore.totalAmountWithIva() > 0) {
+      if (this.cartStore.subtotal() + this.cartStore.tax() > 0) {
         this.bumpAnimation.set(true);
         const timer = setTimeout(() => {
           this.bumpAnimation.set(false);

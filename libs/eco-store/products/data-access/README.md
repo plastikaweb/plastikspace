@@ -22,6 +22,7 @@ This library provides the state management and API integration for products in t
 
 - **Store-based State Management**: Uses `ecoStoreProductsStore` (NgRx SignalStore) for managing product lists, pagination, filtering, and selection.
 - **PocketBase Integration**: Built-in support for PocketBase CRUD operations via [`EcoStoreGetService`](../../core/api/data-access/README.md), ensuring all requests are scoped to the current tenant.
+  - **Concurrent Requests**: Uses specific `requestKey`s (`products_list`, `product_by_slug`) to prevent auto-cancellation when running in parallel with other stores (e.g. Cart).
 - **Enhanced Data Transformation**:
   - **Localization**: Automatically translates `name`, `description`, and `features` based on the current application language.
   - **Category Mapping**: Enriches products with localized category names, slugs, and colors by integrating with `ecoStoreProductCategoriesStore` (using the stats collection).

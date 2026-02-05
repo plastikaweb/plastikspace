@@ -1,14 +1,18 @@
 import { TestBed } from '@angular/core/testing';
 import { POCKETBASE_INSTANCE } from './pocketbase.token';
 import { PocketBaseCrudService } from './pocketbase-crud.service';
-import { EnvironmentPocketBaseWithTranslations } from '@plastik/core/environments';
+import {
+  EnvironmentPocketBaseWithTranslations,
+  POCKETBASE_ENVIRONMENT,
+} from '@plastik/core/environments';
 import { BasePocketBaseEntity } from '@plastik/core/entities';
 import { firstValueFrom } from 'rxjs';
+import { mockPocketBase } from './pocketbase.mock';
 
 type TestEntity = BasePocketBaseEntity & { extra?: string };
 
 class TestPocketBaseCrudService extends PocketBaseCrudService<TestEntity> {
-  environment: EnvironmentPocketBaseWithTranslations = {
+  override environment: EnvironmentPocketBaseWithTranslations = {
     production: false,
     name: 'test-app',
     environment: 'test',
@@ -29,6 +33,7 @@ class TestPocketBaseCrudService extends PocketBaseCrudService<TestEntity> {
 
 describe('PocketBaseCrudService', () => {
   let service: TestPocketBaseCrudService;
+
   const baseEntity: TestEntity = {
     id: '1',
     name: 'Foo',
@@ -39,28 +44,32 @@ describe('PocketBaseCrudService', () => {
     updated: new Date(),
   };
 
-  const mockPb = {
-    collection: () => ({
-      getList: (page: number, perPage: number) =>
+  beforeEach(() => {
+    mockPocketBase.collection.mockReturnValue({
+      getList: jest.fn().mockImplementation((page = 1, perPage = 30) =>
         Promise.resolve({
           page,
           perPage,
           items: [baseEntity],
           totalItems: 1,
           totalPages: 1,
-        }),
-      getFullList: () => Promise.resolve([baseEntity]),
-      getOne: () => Promise.resolve(baseEntity),
-      getFirstListItem: () => Promise.resolve(baseEntity),
-      create: (data: Partial<TestEntity>) => Promise.resolve({ ...baseEntity, ...data }),
-      update: (_: string, data: Partial<TestEntity>) => Promise.resolve({ ...baseEntity, ...data }),
-      delete: () => Promise.resolve({}),
-    }),
-  } as unknown as { collection: () => unknown };
+        })
+      ),
+      getFullList: jest.fn().mockResolvedValue([baseEntity]),
+      getOne: jest.fn().mockResolvedValue(baseEntity),
+      getFirstListItem: jest.fn().mockResolvedValue(baseEntity),
+      create: jest.fn().mockImplementation(data => Promise.resolve({ ...baseEntity, ...data })),
+      update: jest
+        .fn()
+        .mockImplementation((id, data) => Promise.resolve({ ...baseEntity, ...data })),
+      delete: jest.fn().mockResolvedValue(true),
+    });
 
-  beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [{ provide: POCKETBASE_INSTANCE, useValue: mockPb }],
+      providers: [
+        { provide: POCKETBASE_INSTANCE, useValue: mockPocketBase },
+        { provide: POCKETBASE_ENVIRONMENT, useValue: { production: false, environment: 'test' } },
+      ],
     });
 
     service = TestBed.runInInjectionContext(() => new TestPocketBaseCrudService());

@@ -6,5 +6,16 @@
     "types": ["node"]
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["jest.config.ts", "jest.config.cts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+  "exclude": ["jest.config.ts", "jest.config.cts", "src/**/*.spec.ts", "src/**/*.test.ts"],
+  "references": [
+    {
+      "path": "../../../../libs/core/util/api-base"
+    },
+    {
+      "path": "../../../../libs/core/entities"
+    },
+    {
+      "path": "../../notification/data-access"
+    }
+  ]
 }

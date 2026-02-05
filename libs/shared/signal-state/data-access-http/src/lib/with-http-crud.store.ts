@@ -1,4 +1,4 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
@@ -8,7 +8,6 @@ import {
   withHooks,
   withMethods,
   withProps,
-  withState,
 } from '@ngrx/signals';
 import {
   addEntity,
@@ -58,7 +57,7 @@ export function withHttpCrud<T extends BaseEntity, S extends DataCrud<T, HttpLis
 }) {
   return signalStoreFeature(
     withDevtools(featureName),
-    withState(initialState<T>()),
+    withImmutableState(initialState<T>()),
     withEntities<T>(),
     withProps(() => ({
       _apiService: inject(dataServiceType),

@@ -44,6 +44,7 @@ export interface PocketBaseGetListState {
   text: string;
   paginationSizeOptions: number[];
   sortOptions: SortMenuOptions;
+  apiRequestDebounceTime: number;
 }
 
 export const initialGetListState = (
@@ -69,6 +70,7 @@ export const initialGetListState = (
       { id: 2, direction: 'asc', icon: 'history' },
     ],
   },
+  apiRequestDebounceTime: 0,
   ...customInitialState,
 });
 

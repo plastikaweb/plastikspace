@@ -73,7 +73,8 @@ const fields: FormlyFieldConfig[] = [
 
 Notes:
 
-- The component is designed to present a card-like selectable UI for each option. The underlying `mat-radio-button` is hidden visually; selection is performed through the card interaction. If your tests or styles rely on the visible radio input, adapt them accordingly.
+- The component is designed to present a card-like selectable UI for each option.
+  The underlying `mat-radio-button` is hidden visually; selection is performed through the card interaction. If your tests or styles rely on the visible radio input, adapt them accordingly.
 - The visual icon is placed inside a container with the CSS class `shipping-method-icon` to allow theme-specific background and icon color overrides.
 
 ## API Reference
@@ -99,7 +100,8 @@ Notes:
 Notes:
 
 - The visual representation uses a circular icon container (`.shipping-method-icon`) to make the option more prominent. Use `iconBgColor` and `iconColor` to adjust visuals via utility classes.
-- The actual `mat-radio-button` input is visually hidden; selection is intended to be driven by the card click. If you depend on a visible radio input in automated tests or CSS selectors, update them to account for the hidden input or select by the option value instead.
+- The actual `mat-radio-button` input is visually hidden; selection is intended to be driven by the card click.
+  If you depend on a visible radio input in automated tests or CSS selectors, update them to account for the hidden input or select by the option value instead.
 
 ## Running unit tests
 

@@ -26,6 +26,12 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "../../../shared/util/objects"
+    },
+    {
+      "path": "../../core/entities"
     }
   ]
 }

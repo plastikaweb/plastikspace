@@ -1,6 +1,6 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
-import { signalStore, withComputed, withMethods, withProps, withState } from '@ngrx/signals';
+import { signalStore, withComputed, withMethods, withProps } from '@ngrx/signals';
 import { isString, TranslateService } from '@ngx-translate/core';
 import { FormSelectOption, LocalizedFields, UserContact } from '@plastik/core/entities';
 import {
@@ -26,7 +26,7 @@ export interface EcoStoreTenantState {
 export const ecoStoreTenantStore = signalStore(
   { providedIn: 'root' },
   withDevtools('tenant'),
-  withState<EcoStoreTenantState>({
+  withImmutableState<EcoStoreTenantState>({
     tenant: null,
     loaded: false,
     addresses: [],

@@ -1,14 +1,7 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import {
-  signalStore,
-  withComputed,
-  withHooks,
-  withMethods,
-  withProps,
-  withState,
-} from '@ngrx/signals';
+import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
@@ -39,7 +32,7 @@ const initialState: ProductCategoriesState = {
 export const ecoStoreProductCategoriesStore = signalStore(
   { providedIn: 'root' },
   withDevtools('productsCategories'),
-  withState<ProductCategoriesState>(initialState),
+  withImmutableState<ProductCategoriesState>(initialState),
   withProps(() => ({
     _statsService: inject(EcoStoreProductCategoriesStatsService),
     _notification: inject(notificationStore),

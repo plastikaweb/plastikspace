@@ -394,12 +394,13 @@ export function createAmountField(deps: FieldDependencies): FormlyFieldConfig {
   const { tenantStore, cartStore } = deps;
 
   return {
-    key: 'amount',
+    key: 'shipping',
+    defaultValue: cartStore.shipping() ?? null,
     hooks: {
       onInit: (field: FormlyFieldConfig) => {
         const updateShippingAmount = () => {
           const shippingMethod = field.model?.method;
-          const totalAmount = cartStore.totalAmountWithIva() || 0;
+          const totalAmount = cartStore.subtotal() + cartStore.tax() || 0;
           if (shippingMethod) {
             const shippingAmount = tenantStore.getTenantDeliveryOptionCost(
               shippingMethod,

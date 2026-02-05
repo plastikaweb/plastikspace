@@ -105,11 +105,18 @@ yarn plastikaweb:codegen             # Generate GraphQL types
 
 ### Git and Commits
 
-```bash
+```
 yarn husky-install                   # Setup git hooks
 yarn branch:lint                     # Validate branch names
 yarn cz                              # Interactive commit with Commitizen
 ```
+
+**Commitizen Integration**:
+
+- Uses `cz-customizable` with configuration in `.cz-config.js`
+- Automatically loads scopes from `tsconfig.base.json` path aliases
+- Commit format: `<type>(<scope>): <subject>` with optional issue number from branch name
+- Supports conventional commit types: feat, fix, docs, test, refactor, perf, style, build, ci, chore, revert
 
 ## Applications
 
@@ -187,6 +194,18 @@ The following dependency rules are enforced via `.eslintrc.json`:
 
 **No circular dependencies allowed**. These rules prevent architectural drift.
 
+### Code Quality Rules (ESLint)
+
+Beyond architectural boundaries, the following code quality rules are enforced:
+
+- `no-console` is an error (except in test files) - use proper logging or remove debug statements
+- **Private fields**: Must use ES6 private fields (`#fieldName`) instead of TypeScript `private` modifier
+- **Member ordering**: Enforced order - signature, field, constructor, method
+- **JSDoc**: Required for public APIs; must start with capital letter and end with period
+- **Deprecation warnings**: Enabled for non-test files to catch deprecated API usage
+- **NgRx**: Select style is enforced; recommended NgRx patterns required
+- **Accessibility**: Comprehensive a11y rules for templates (no-positive-tabindex, alt-text, label-has-associated-control, etc.)
+
 ## Testing
 
 ### Jest (Unit Tests)
@@ -196,14 +215,20 @@ yarn <app-name>:test                 # Run tests for app
 yarn test:all                        # All tests with coverage
 nx test <lib-name>                   # Test specific library
 
-# Run single test file
+# Run single test file (use relative path from project root)
 nx test <project-name> --testFile=<file-name>
+# Example: nx test eco-store --testFile=src/app/app.component.spec.ts
 
-# Run tests matching a pattern
+# Run tests matching a pattern (matches test name, not file name)
 nx test <project-name> --testNamePattern="<pattern>"
+# Example: nx test eco-store --testNamePattern="should create"
 
 # Run tests in watch mode
 nx test <project-name> --watch
+
+# Run test for a specific library (faster than running app tests)
+nx test <lib-name>
+# Example: nx test core-util-api-http
 ```
 
 - Preset: `@nx/jest/preset`
@@ -229,6 +254,17 @@ yarn <app-name>:a11y                 # Run accessibility tests
 
 - Configuration per app in `.pa11yci.json`
 - Serves built app via HTTP server, runs Pa11y checks
+
+### i18n Validation
+
+```bash
+yarn i18n:validate                   # Validate translation keys consistency
+yarn i18n:test                       # Run i18n validation tests
+```
+
+- Custom script in `tools/scripts/validate-i18n-keys.js`
+- Ensures translation keys are consistent across all language files
+- Part of code quality checks
 
 ## Angular & TypeScript Best Practices
 
@@ -318,6 +354,13 @@ nx g @nx/angular:lib checkout --directory=eco-store/feature --tags=scope:eco-sto
 nx g @nx/angular:lib button --directory=shared/ui --tags=scope:shared,type:ui
 ```
 
+**Default Generator Configuration** (from `nx.json`):
+
+- **Components**: Automatically use `OnPush` change detection, standalone architecture, SCSS styles, and `displayBlock: true`
+- **Libraries**: Standalone by default with Jest for unit testing
+- **Applications**: Jest for unit tests, Cypress for E2E, ESLint for linting, SCSS for styling
+- These defaults are pre-configured, so you don't need to specify these flags when generating
+
 ## State Management
 
 - **NgRx Signal Store** for modern reactive state management
@@ -349,10 +392,20 @@ See `documentation/css-styles.md` for detailed styling conventions.
 
 ### PocketBase (Eco-store)
 
-- Self-hosted backend
-- SQL-based storage
-- Local emulation: `yarn eco-store:local`
-- Schema management: `yarn pb:export`, `yarn pb:sync`
+- Self-hosted backend with SQL-based storage
+- Local emulation: `yarn eco-store:local` (starts PocketBase + app + SCSS watcher)
+- PocketBase runs on default port (usually 8090)
+- Admin UI: `http://localhost:8090/_/` (when PocketBase is running)
+
+**Schema Management Workflow**:
+
+1. Make changes in PocketBase Admin UI
+2. `yarn pb:export` - Export schema to `apps/eco-store/pocketbase/pb_schema.json`
+3. `yarn pb:diff` - Review schema changes in git
+4. `yarn pb:sync` - Sync schema across environments (if needed)
+5. Commit schema file with your changes
+
+Schema is version-controlled and should be committed with related code changes.
 
 ### GraphQL (Plastikaweb)
 
@@ -384,9 +437,14 @@ GitHub Actions workflows in `.github/workflows/`:
 ## Git Workflow
 
 - Main branch: `develop`
-- Feature branches: `feature/*`, `fix/*`, `chore/*`, `refactor/*`, `perf/*`
-- Commitizen for conventional commits
-- Branch name linting enforced via Husky
+- Feature branches: `<type>/<description>` or `<type>/<issue-number>-<description>`
+  - Allowed types: `feat`, `fix`, `docs`, `test`, `refactor`, `perf`, `style`, `build`, `ci`, `chore`, `revert`, `prod`
+  - Examples: `feat/user-authentication`, `fix/704-cart-persistent`, `refactor/state-management`
+  - Banned names: `wip`, `master`, `main`, `develop`, `staging`
+- Commitizen for conventional commits (use `yarn cz`)
+  - Format: `<type>(<scope>): <subject>`
+  - Issue numbers automatically appended from branch name
+- Branch name linting enforced via Husky (see `branchNameLint.json`)
 - Pre-commit hooks for linting and formatting
 
 See `documentation/git-flow.md` and `documentation/commit-conventions.md` for details.
@@ -404,12 +462,14 @@ Key documentation in `/documentation/`:
 
 ## Important Files
 
-- `nx.json` - Nx workspace configuration
+- `nx.json` - Nx workspace configuration (custom cache: `./tmp/my-cache`, default base: `develop`)
 - `tsconfig.base.json` - TypeScript config with 200+ path aliases
 - `.eslintrc.json` - Architectural boundary rules (critical for understanding constraints)
 - `jest.preset.js` - Jest configuration
 - `.mcp.json` - MCP server configuration (Nx CLI integration)
 - `decorate-angular-cli.js` - Nx CLI decoration for caching
+- `branchNameLint.json` - Branch naming rules enforced by Husky
+- `.cz-config.js` - Commitizen configuration with auto-generated scopes
 
 ## Tech Stack
 

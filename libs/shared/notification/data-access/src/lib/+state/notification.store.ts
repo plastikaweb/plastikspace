@@ -1,5 +1,5 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
-import { signalStore, withMethods, withState } from '@ngrx/signals';
+import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
+import { signalStore, withMethods } from '@ngrx/signals';
 import { Notification } from '@plastik/shared/notification/entities';
 
 export interface NotificationState {
@@ -10,7 +10,7 @@ export interface NotificationState {
 export const notificationStore = signalStore(
   { providedIn: 'root' },
   withDevtools('notification'),
-  withState<NotificationState>({
+  withImmutableState<NotificationState>({
     configuration: null,
     preserveOnRouteRequest: false,
   }),

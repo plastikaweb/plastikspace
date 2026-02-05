@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { CartSummaryComponent } from './cart-summary.component';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import { ecoStoreCartStoreMock } from '@plastik/eco-store/cart/data-access/testing';
+import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
 import { provideRouter } from '@angular/router';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import { signal } from '@angular/core';
 import { provideTranslateService } from '@ngx-translate/core';
 
 describe('CartSummaryComponent', () => {
@@ -18,7 +17,7 @@ describe('CartSummaryComponent', () => {
       providers: [
         provideRouter([]),
         provideTranslateService(),
-        { provide: ecoStoreCartStore, useValue: ecoStoreCartStoreMock },
+        { provide: ecoStoreCartStore, useValue: mockEcoStoreCartStore },
       ],
     }).compileComponents();
 

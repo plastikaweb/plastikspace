@@ -1,7 +1,7 @@
 import { BasePocketBaseEntityWithTenantRef, BasePocketBaseEntity } from './base-pocketbase-entity';
 import { UserContact } from './user-contact';
 
-export type PocketBaseUserRoles = 'PARTNER' | 'GLOBAL_ADMIN' | 'CLIENT_ADMIN';
+export type PocketBaseUserRoles = 'PARTNER' | 'GLOBAL_ADMIN' | 'TENANT_ADMIN';
 
 export type PocketBaseUser = BasePocketBaseEntityWithTenantRef & {
   name: string;

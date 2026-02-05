@@ -20,6 +20,7 @@ It abstracts common patterns for fetching data while automatically handling tena
 
 - **Tenant Injection**: Automatically provides access to `ecoStoreTenantStore` via `this.tenantStore`.
 - **Enforced Filtering**: Requires implementation of `filter` to ensure developers consider multi-tenancy in all API calls.
+- **Automatic Tenant Context for CRUD**: `EcoStoreCrudService` automatically injects the tenant ID into `create` and `update` payloads.
 - **PocketBase Integration**: Built on top of `@plastik/core/api-pocketbase` to provide standard CRUD operations.
 - **Type Safety**: Strongly typed generics for entities ensuring type safety across the application.
 
@@ -50,7 +51,7 @@ An abstract base service extending `PocketBaseGetService`. Use this for services
 
 **Example Implementation:**
 
-```typescript
+````typescript
 @Injectable({ providedIn: 'root' })
 export class MyEntityApiService extends EcoStoreGetService<MyEntity> {
   protected override collectionName(): string {
@@ -61,7 +62,25 @@ export class MyEntityApiService extends EcoStoreGetService<MyEntity> {
     return `tenant = "${this.tenantStore.tenant()?.id}"`;
   }
 }
-```
+### EcoStoreCrudService
+
+An abstract base service extending `PocketBaseCrudService`. It provides full CRUD capabilities and automatically handles tenant ID injection for `create` and `update` operations.
+
+**Example Implementation:**
+
+```typescript
+@Injectable({ providedIn: 'root' })
+export class MyEntityApiService extends EcoStoreCrudService<MyEntity> {
+  protected override collectionName(): string {
+    return 'my_collection';
+  }
+
+  // filter is still required for get/list operations
+  get filter(): string {
+    return `tenant = "${this.tenantStore.tenant()?.id}"`;
+  }
+}
+````
 
 ## Running unit tests
 

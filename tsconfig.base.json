@@ -188,6 +188,9 @@
       ],
       "@plastik/eco-store/products": ["libs/eco-store/products/feature/list/src/index.ts"],
       "@plastik/core/api-pocketbase": ["libs/core/util/api-pocketbase/src/index.ts"],
+      "@plastik/core/api-pocketbase/testing": [
+        "libs/core/util/api-pocketbase/src/lib/pocketbase.mock.ts"
+      ],
       "@plastik/core/api-firebase": ["libs/core/util/api-firebase/src/index.ts"],
       "@plastik/core/api-http": ["libs/core/util/api-http/src/index.ts"],
       "@plastik/signal-state/pocketbase": [
@@ -222,6 +225,9 @@
       ],
       "@plastik/auth/pocketbase/data-access": [
         "libs/shared/auth/pocketbase/data-access/src/index.ts"
+      ],
+      "@plastik/auth/pocketbase/data-access/testing": [
+        "libs/shared/auth/pocketbase/data-access/src/pocketbase-user-profile.store.mock.ts"
       ],
       "@plastik/auth/feature": ["libs/shared/auth/feature/src/index.ts"],
       "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],

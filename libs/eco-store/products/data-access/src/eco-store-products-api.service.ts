@@ -56,6 +56,7 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
     return super
       .getFullList({
         filter,
+        requestKey: 'product_by_slug',
       })
       .pipe(map(products => products[0] || null));
   }

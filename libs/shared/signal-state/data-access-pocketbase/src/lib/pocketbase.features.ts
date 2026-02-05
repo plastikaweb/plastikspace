@@ -1,15 +1,14 @@
-import { updateState, withDevtools } from '@angular-architects/ngrx-toolkit';
+import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
+  patchState,
   signalStoreFeature,
-  SignalStoreFeature,
   type,
   withComputed,
   withHooks,
   withMethods,
   withProps,
-  withState,
 } from '@ngrx/signals';
 import { EntityState, setAllEntities, setEntity, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -55,7 +54,7 @@ export function withPocketBaseListFeature<
 
   return signalStoreFeature(
     withDevtools(featureName),
-    withState<PocketBaseGetListState>({
+    withImmutableState<PocketBaseGetListState>({
       ...defaultState,
       listLoadingEnabled: autoLoad,
     }),
@@ -96,23 +95,23 @@ export function withPocketBaseListFeature<
         enableListLoading: (listLoadingEnabled = true) => {
           updateState(store, `[${featureName}] enableListLoading`, { listLoadingEnabled });
         },
-        getList: rxMethod<ReturnType<typeof store.formattedParams>>(
+        getList: rxMethod<{ params: ReturnType<typeof store.formattedParams>; enabled: boolean }>(
           pipe(
-            filter(() => store.listLoadingEnabled()),
-            debounceTime(300),
+            filter(({ enabled }) => enabled),
+            debounceTime(store.apiRequestDebounceTime()),
             tap(() => updateState(store, `[${featureName}] getList`)),
-            switchMap(params => {
+            switchMap(({ params }) => {
               return store._apiService.getList(params).pipe(
                 tapResponse<ListResult<T>, ClientResponseError>({
                   next: result => {
-                    updateState(
+                    patchState(
                       store,
-                      `[${featureName}] getList success`,
                       setAllEntities(result.items, {
                         selectId: entity => entity.id || '',
                       }),
                       {
                         count: result.totalItems,
+                        initiallyLoaded: true,
                       }
                     );
                   },
@@ -129,8 +128,12 @@ export function withPocketBaseListFeature<
 
     withHooks({
       onInit: store => {
-        // Always subscribe to maintain reactivity - the filter will control execution
-        store.getList(store.formattedParams);
+        store.getList(
+          computed(() => ({
+            params: store.formattedParams(),
+            enabled: store.listLoadingEnabled(),
+          }))
+        );
       },
     })
   );
@@ -157,7 +160,7 @@ export function withPocketBaseGetOneFeature<
       }>(),
       state: type<EntityState<T>>(),
     },
-    withState<PocketbaseGetOne<T>>({ selectedItemId: null as IdType<T> | null }),
+    withImmutableState<PocketbaseGetOne<T>>({ selectedItemId: null as IdType<T> | null }),
     withMethods(store => {
       const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
         store._storeNotificationService.show({
@@ -176,9 +179,8 @@ export function withPocketBaseGetOneFeature<
               return store._apiService.getOne(id).pipe(
                 tapResponse<T, ClientResponseError>({
                   next: item => {
-                    updateState(
+                    patchState(
                       store,
-                      `[${featureName}] getOne success`,
                       setEntity(item, {
                         selectId: entity => entity.id || '',
                       }),

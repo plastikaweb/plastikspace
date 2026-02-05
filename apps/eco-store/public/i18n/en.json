@@ -199,7 +199,10 @@
       "shipping": "Shipping",
       "including-vat": "Including VAT",
       "free-shipping-promo": "Add {{value}} more for FREE shipping!",
-      "remove-item": "Remove product"
+      "remove-item": "Remove product",
+      "old-price": "Previous price",
+      "price-drop": "Price drop!",
+      "price-increase": "Price increase!"
     },
     "shipping": {
       "free-shipping-achieved": "You have achieved free shipping!",

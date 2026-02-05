@@ -2,14 +2,17 @@
 
 ## Table of Contents
 
-- [Overview](#overview)
-- [Features](#features)
-- [Usage](#usage)
-- [Running unit tests](#running-unit-tests)
+- [ui-user-order-product-card](#ui-user-order-product-card)
+  - [Table of Contents](#table-of-contents)
+  - [Overview](#overview)
+    - [Features](#features)
+    - [Usage](#usage)
+  - [Running unit tests](#running-unit-tests)
 
 ## Overview
 
-This library provides a reusable Angular Material card component for displaying product information in the LleCoop user ordering system. The component is designed to show product details and allow users to add products to their shopping cart with specified quantities.
+This library provides a reusable Angular Material card component for displaying product information in the LleCoop user ordering system.
+The component is designed to show product details and allow users to add products to their shopping cart with specified quantities.
 
 ### Features
 
