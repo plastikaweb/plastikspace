@@ -17206,7 +17206,7 @@ markdownlint-cli@^0.47.0:
     smol-toml "~1.5.2"
     tinyglobby "~0.2.15"
 
-markdownlint@^0.40.0, markdownlint@~0.40.0:
+markdownlint@~0.40.0:
   version "0.40.0"
   resolved "https://registry.yarnpkg.com/markdownlint/-/markdownlint-0.40.0.tgz#1c6e29385f810f0b860f0af4866208e572bd8c59"
   integrity sha512-UKybllYNheWac61Ia7T6fzuQNDZimFIpCg2w6hHjgV1Qu0w1TV0LlSgryUGzM0bkKQCBhy2FDhEELB73Kb0kAg==
