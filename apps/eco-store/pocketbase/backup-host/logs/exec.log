@@ -1,0 +1,7 @@
+{"message":"[0.00ms] SELECT `tenants`.* FROM `tenants` ORDER BY `tenants`.`_rowid_` DESC LIMIT 40\n","stream":"stdout","time":"2026-01-27T07:46:01.952Z"}
+{"message":"[2.00ms] SELECT COUNT(DISTINCT `tenants`.`_rowid_`) FROM `tenants`\n","stream":"stdout","time":"2026-01-27T07:46:01.957Z"}
+{"message":"INFO GET /api/collections/pbc_2442875294/records?page=1&perPage=1&filter=&fields=id\nINFO GET /api/collections/pbc_2442875294/records?page=1&perPage=40&sort=-@rowid&skipTotal=1&filter=&expand=&fields=\n","stream":"stdout","time":"2026-01-27T07:46:01.961Z"}
+{"message":"Instance has been idle for 30000ms. Hibernating to conserve resources.","stream":"stdout","time":"2026-01-27T07:46:31.728Z"}
+{"message":"Stopping instance","stream":"stdout","time":"2026-01-27T07:46:31.735Z"}
+{"message":"Instance is shutting down.","stream":"stdout","time":"2026-01-27T07:46:31.739Z"}
+{"message":"Process exited with code 0","stream":"stdout","time":"2026-01-27T07:46:31.940Z"}
