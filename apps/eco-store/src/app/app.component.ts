@@ -10,7 +10,7 @@ import {
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
-import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
@@ -20,7 +20,7 @@ import { SkipLinkComponent } from '@plastik/shared/skip-link';
   imports: [
     RouterOutlet,
     SharedActivityUiOverlayComponent,
-    TranslateModule,
+    TranslatePipe,
     SkipLinkComponent,
     A11yModule,
   ],

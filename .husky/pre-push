@@ -4,7 +4,7 @@ export NX_CLI_SET=classic
 export PAGER=cat
 
 echo "🏃 Running affected tests..."
-if ! yarn nx affected --target=test --parallel --max-parallel=3 --cache; then
+if ! yarn nx affected --target=test --parallel --max-parallel=2 --cache; then
   echo "❌ Tests failed! Push aborted."
   exit 1
 fi

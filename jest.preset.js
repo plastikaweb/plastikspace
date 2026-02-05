@@ -13,7 +13,7 @@ module.exports = {
     ],
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
-  coverageReporters: ['html', 'lcov', 'text'],
+  coverageReporters: ['html', 'lcov', 'text', 'cobertura', 'json-summary'],
   coverageDirectory: '../../coverage',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
 };

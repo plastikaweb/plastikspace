@@ -25,7 +25,7 @@ function ensureSingleDefaultAddress(record, dao) {
             dao.saveRecord(other); // Save the change without triggering recursive hooks
         }
     } catch (err) {
-        // Log error in case of failure
+        // Log error in case of error
         console.log("Error resetting defaults: ", err);
     }
 }
