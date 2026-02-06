@@ -9,6 +9,7 @@
 <div align="center">
 
 [![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml)
+![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/plastikaweb/bd70c4cce17a0ad5e1af4a9f063ebdc7/raw/coverage-badge.json)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/plastikaweb/plastikspace)
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
