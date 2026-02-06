@@ -12,6 +12,7 @@
       - [6. Issues closed (optional)](#6-issues-closed-optional)
       - [6. Final confirmation](#6-final-confirmation)
       - [7. Checking format with commitlint](#7-checking-format-with-commitlint)
+  - [AI Agent Skill](#ai-agent-skill)
   - [Links](#links)
 
 ## Introduction
@@ -108,6 +109,10 @@ Commitizen will show us a summary of the commit message and ask for confirmation
 [Commitlint](https://github.com/conventional-changelog/commitlint) checks that the message of the commit complies with the default format.
 
 > **Tip:** In the same way any script added to a pre-commit hook or similar (linting, test ...), will be executed at this point.
+
+## AI Agent Skill
+
+For automated commit creation using AI agents, see the [commitizen skill](../.agent/skills/commitizen/SKILL.md).
 
 ## Links
 
