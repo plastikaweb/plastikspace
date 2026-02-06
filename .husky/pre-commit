@@ -34,6 +34,6 @@ if yarn branch:lint \
   # 6. Add all changes to the commit (only if checks pass)
   git add -A
 else
-  echo "❌ Checks failed! Commit aborted."
+  echo "❌ Checks failed! Commit aborted!"
   exit 1
 fi
