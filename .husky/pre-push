@@ -4,7 +4,7 @@ export NX_CLI_SET=classic
 export PAGER=cat
 
 echo "🏃 Running affected tests..."
-if ! yarn nx affected --target=test --parallel --max-parallel=3 --cache; then
+if ! yarn nx affected --target=test --parallel --max-parallel=2 --cache; then
   echo "❌ Tests failed! Push aborted."
   exit 1
 fi
@@ -19,8 +19,8 @@ fi
 
 CHANGED_FILES=$(git diff --name-only @{upstream}...HEAD 2>/dev/null || git diff --name-only HEAD~1...HEAD)
 if echo "$CHANGED_FILES" | grep -Eq '^(apps/eco-store/|libs/eco-store/)'; then
-  echo "🏁 Running eco-store:a11y..."
-  if ! yarn eco-store:a11y; then
+  echo "🏁 Running eco-store:a11y (using existing build)..."
+  if ! npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run; then
     echo "❌ eco-store:a11y failed! Push aborted."
     exit 1
   fi
@@ -29,8 +29,8 @@ else
 fi
 
 if echo "$CHANGED_FILES" | grep -Eq '^(apps/nasa-images/|libs/nasa-images/)'; then
-  echo "🏁 Running nasa-images:a11y..."
-  if ! yarn nasa-images:a11y; then
+  echo "🏁 Running nasa-images:a11y (using existing build)..."
+  if ! npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run; then
     echo "❌ nasa-images:a11y failed! Push aborted."
     exit 1
   fi
