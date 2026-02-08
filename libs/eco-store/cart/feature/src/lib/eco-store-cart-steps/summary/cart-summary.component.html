@@ -2,7 +2,7 @@
   <h2 class="mb-8 flex items-center gap-2 text-3xl font-bold text-neutral-800">
     <span>{{ 'cart.steps.summary.title' | translate }}</span>
     <span class="text-base font-normal text-neutral-500"
-      >({{ 'cart.summary.items-count' | translate: { value: cartStore.itemsCount() } }})</span
+      >({{ 'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() } }})</span
     >
   </h2>
 
@@ -71,7 +71,7 @@
                     matIconButton
                     type="button"
                     class="cart-delete-button transition-all"
-                    [aria-label]="'cart.summary.remove-item' | translate"
+                    [aria-label]="'cart.summary.removeItem' | translate"
                     (click)="onQuantityChange(0, item.product)">
                     <mat-icon aria-hidden="true">delete</mat-icon>
                   </button>
@@ -88,7 +88,7 @@
         [subtotal]="cartStore.subtotal()"
         [taxes]="cartStore.tax()"
         [total]="cartStore.subtotal() + cartStore.tax()"
-        [actionButtonText]="'cart.summary.go-to-shipping'"
+        [actionButtonText]="'cart.summary.goToShipping'"
         [actionRoute]="['../enviament']">
       </eco-cart-order-summary>
     </div>

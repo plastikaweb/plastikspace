@@ -73,3 +73,48 @@
   --black: #000000;
   --white: #ffffff;
 }
+
+:root {
+  --success: rgb(13, 196, 46);
+  --success-50: color-mix(in oklch, var(--success) 8%, white);
+  --success-100: color-mix(in oklch, var(--success) 15%, white);
+  --success-200: color-mix(in oklch, var(--success) 30%, white);
+  --success-300: color-mix(in oklch, var(--success) 50%, white);
+  --success-400: color-mix(in oklch, var(--success) 75%, white);
+  --success-500: var(--success);
+  --success-600: color-mix(in oklch, var(--success) 85%, black);
+  --success-700: color-mix(in oklch, var(--success) 70%, black);
+  --success-800: color-mix(in oklch, var(--success) 50%, black);
+  --success-900: color-mix(in oklch, var(--success) 30%, black);
+  --success-950: color-mix(in oklch, var(--success) 15%, black);
+}
+
+:root {
+  --info: rgb(13, 101, 196);
+  --info-50: color-mix(in oklch, var(--info) 8%, white);
+  --info-100: color-mix(in oklch, var(--info) 15%, white);
+  --info-200: color-mix(in oklch, var(--info) 30%, white);
+  --info-300: color-mix(in oklch, var(--info) 50%, white);
+  --info-400: color-mix(in oklch, var(--info) 75%, white);
+  --info-500: var(--info);
+  --info-600: color-mix(in oklch, var(--info) 85%, black);
+  --info-700: color-mix(in oklch, var(--info) 70%, black);
+  --info-800: color-mix(in oklch, var(--info) 50%, black);
+  --info-900: color-mix(in oklch, var(--info) 30%, black);
+  --info-950: color-mix(in oklch, var(--info) 15%, black);
+}
+
+:root {
+  --warning: rgb(212, 212, 39);
+  --warning-50: color-mix(in oklch, var(--warning) 8%, white);
+  --warning-100: color-mix(in oklch, var(--warning) 15%, white);
+  --warning-200: color-mix(in oklch, var(--warning) 30%, white);
+  --warning-300: color-mix(in oklch, var(--warning) 50%, white);
+  --warning-400: color-mix(in oklch, var(--warning) 75%, white);
+  --warning-500: var(--warning);
+  --warning-600: color-mix(in oklch, var(--warning) 85%, black);
+  --warning-700: color-mix(in oklch, var(--warning) 70%, black);
+  --warning-800: color-mix(in oklch, var(--warning) 50%, black);
+  --warning-900: color-mix(in oklch, var(--warning) 30%, black);
+  --warning-950: color-mix(in oklch, var(--warning) 15%, black);
+}

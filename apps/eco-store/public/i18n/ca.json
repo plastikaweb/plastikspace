@@ -1,48 +1,92 @@
 {
-  "store-title": "Botiga Eco",
-  "page-title": "Botiga Eco - Productes ecològics i sostenibles",
-  "loading": "Carregant dades...",
   "loading-data": "Carregant dades...",
-  "weekdays": {
-    "sunday": "Diumenge",
-    "monday": "Dilluns",
-    "tuesday": "Dimarts",
-    "wednesday": "Dimecres",
-    "thursday": "Dijous",
-    "friday": "Divendres",
-    "saturday": "Dissabte"
-  },
-  "shared": {
+  "common": {
+    "loading": "Carregant dades...",
+    "loadingData": "Carregant dades...",
+    "weekdays": {
+      "sunday": "Diumenge",
+      "monday": "Dilluns",
+      "tuesday": "Dimarts",
+      "wednesday": "Dimecres",
+      "thursday": "Dijous",
+      "friday": "Divendres",
+      "saturday": "Dissabte"
+    },
     "address": {
       "default": "Adreça per defecte"
+    },
+    "a11y": {
+      "skipToContent": "Saltar al contingut principal",
+      "loading": "Carregant dades",
+      "mainNavigation": "Navegació principal",
+      "userActions": "Accions de l'usuari",
+      "categoriesNavigation": "Navegació de categories",
+      "productCategories": "Categories de productes",
+      "productQuantity": "Quantitat de {{product}} - {{quantity}}",
+      "productList": "Llista de productes",
+      "sortProducts": "Ordenar productes",
+      "productsCount": "{{count}} productes",
+      "categoryIcon": "Icona de la categoria {{category}}"
+    },
+    "form": {
+      "error": {
+        "email": "El format del correu electrònic no és correcte",
+        "required": "El camp és obligatori",
+        "minLength": "El camp ha de tenir almenys {{value}} caràcters",
+        "maxLength": "El camp ha de tenir més de {{value}} caràcters"
+      }
+    },
+    "error": {
+      "image": "Hi ha hagut un error al carregar la imatge"
+    },
+    "paginator": {
+      "firstPage": "Primera pàgina",
+      "itemsPerPage": "Elements per pàgina",
+      "lastPage": "Última pàgina",
+      "nextPage": "Página següent",
+      "noItems": "{{length}} elements",
+      "previousPage": "Página anterior",
+      "range": "{{start}} - {{end}} de {{total}}",
+      "rangeLabel": "de"
+    },
+    "notification": {
+      "close": "Tancar"
     }
   },
-  "a11y": {
-    "skip-to-content": "Saltar al contingut principal",
-    "loading": "Carregant dades",
-    "main-navigation": "Navegació principal",
-    "user-actions": "Accions de l'usuari",
-    "categories-navigation": "Navegació de categories",
-    "product-categories": "Categories de productes",
-    "product-quantity": "Quantitat de {{product}} - {{quantity}}",
-    "product-list": "Llista de productes",
-    "sort-products": "Ordenar productes",
-    "products-count": "{{count}} productes",
-    "category-icon": "Icona de la categoria {{category}}"
-  },
-  "menu": {
-    "home": "Inici",
-    "store": "Botiga",
-    "about": "Qui Som",
-    "contact": "Contacte",
-    "view-favorites": "Veure favorits",
-    "view-cart": "Anar a la cistella de compra, {{ productCount }} productes, preu total: {{ productPrice }}",
-    "profile": "Perfil de {{ name }}",
-    "profile_page": "Veure perfil",
-    "hello": "Hola {{ name }}",
-    "login": "Accedir",
-    "logout": "Tancar sessió",
-    "orders": "Comandes"
+  "store": {
+    "title": "Botiga Eco",
+    "pageTitle": "Botiga Eco - Productes ecològics i sostenibles",
+    "status": {
+      "cancelled": "No disponible",
+      "closed": "Tancat",
+      "closedManually": "Tancat temporalment",
+      "opensIn": "Obre en",
+      "closingSoon": "La botiga tancarà aviat",
+      "open": "Obert",
+      "open24h": "Obert 24/7",
+      "openingSoon": "OBRE AVIAT",
+      "closedOpensAt": "Tancat. Obre el {{date}} a les {{time}}",
+      "closedMessage": "La botiga està tancada. No pots modificar la teva cistella."
+    },
+    "menu": {
+      "home": "Inici",
+      "store": "Botiga",
+      "about": "Qui Som",
+      "contact": "Contacte",
+      "viewFavorites": "Veure favorits",
+      "viewCart": "Anar a la cistella de compra, {{ productCount }} productes, preu total: {{ productPrice }}",
+      "profile": "Perfil de {{ name }}",
+      "profilePage": "Veure perfil",
+      "hello": "Hola {{ name }}",
+      "login": "Accedir",
+      "logout": "Tancar sessió",
+      "orders": "Comandes"
+    },
+    "search": {
+      "placeholder": "Buscar productes o categories",
+      "label": "Buscar productes o categories",
+      "submit": "Cercar"
+    }
   },
   "auth": {
     "login": {
@@ -50,12 +94,12 @@
       "password": "Contrasenya",
       "title": "Botiga Eco",
       "subtitle": "Comunitat Cooperativa",
-      "remember-me": "Recorda'm",
-      "recover-access": "Has oblidat la contrasenya?",
-      "new-user-question": "Registre de socis",
-      "create-account": "Crear compte",
+      "rememberMe": "Recorda'm",
+      "recoverAccess": "Has oblidat la contrasenya?",
+      "newUserQuestion": "Registre de socis",
+      "createAccount": "Crear compte",
       "submit": "Iniciar sessió",
-      "terms-privacy": "En continuar, acceptes els nostres Termes i Política de Privadesa."
+      "termsPrivacy": "En continuar, acceptes els nostres Termes i Política de Privadesa."
     },
     "error": {
       "login": "Revisa les teves credencials"
@@ -68,52 +112,36 @@
       "CLIENT_ADMIN": "Administrador"
     }
   },
-  "form": {
-    "error": {
-      "email": "El format del correu electrònic no és correcte",
-      "required": "El camp és obligatori",
-      "minLength": "El camp ha de tenir almenys {{value}} caràcters",
-      "maxLength": "El camp ha de tenir més de {{value}} caràcters"
-    }
-  },
-  "error": {
-    "image": "Hi ha hagut un error al carregar la imatge"
-  },
-  "paginator": {
-    "first-page": "Primera pàgina",
-    "items-per-page": "Elements per pàgina",
-    "last-page": "Última pàgina",
-    "next-page": "Pàgina següent",
-    "no-items": "{{length}} elements",
-    "previous-page": "Pàgina anterior",
-    "range": "{{start}} - {{end}} de {{total}}",
-    "range-label": "de"
-  },
-  "product-categories": {
-    "all": "Totes les categories",
-    "filter": {
-      "sort": "Ordenar",
-      "ecologic": "Ecològic",
-      "total": "productes"
-    },
-    "add": "Afegir"
-  },
   "products": {
+    "categories": {
+      "all": "Totes les categories",
+      "filter": {
+        "sort": "Ordenar",
+        "ecologic": "Ecològic",
+        "total": "productes",
+        "error": "Hi ha hagut un error al carregar les categories"
+      },
+      "add": "Afegir"
+    },
     "all": "Tots els productes",
     "add": "Afegir",
-    "add-long": "Afegir al cabàs",
+    "origin": "Origen",
+    "provider": "Productor",
+    "addLong": "Afegir al cabàs",
     "remove": "Eliminar",
     "decrement": "Disminuir",
     "increment": "Augmentar",
     "total": "productes trobats",
     "favorite": "Afegir {{value}} a favorits",
     "filter": {
-      "sort": "Ordenar",
-      "sort.relevance": "Més valorats",
-      "sort.priceWithIva-asc": "Preu ascendent",
-      "sort.priceWithIva-desc": "Preu descendent",
-      "sort.updated-asc": "Més antics",
-      "sort.updated-desc": "Més recents"
+      "sort": {
+        "label": "Ordenar",
+        "relevance": "Més valorats",
+        "priceWithIvaAsc": "Preu ascendent",
+        "priceWithIvaDesc": "Preu descendent",
+        "updatedAsc": "Més antics",
+        "updatedDesc": "Més recents"
+      }
     },
     "modified": {
       "title": "Producte modificat",
@@ -121,7 +149,7 @@
       "cancel": "Tornar al producte",
       "leave": "No vull afegir-lo"
     },
-    "unit-type": {
+    "unitType": {
       "unit": "Unitat",
       "weight": "Pes",
       "volume": "Volum",
@@ -139,7 +167,7 @@
       "unitWithVariableWeight": "Pes variable",
       "unitWithVariableVolume": "Volum variable"
     },
-    "unit-abbreviation": {
+    "unitAbbreviation": {
       "unit": "un.",
       "weight": "kg",
       "volume": "L",
@@ -188,31 +216,31 @@
     "summary": {
       "pickup": "Recollida a la botiga",
       "delivery": "Enviament a domicili",
-      "items-count": "{{value}} productes",
+      "itemsCount": "{{value}} productes",
       "resume": "Resum",
       "subtotal": "Subtotal",
       "taxes": "Impostos (IVA)",
       "total": "Total",
-      "go-to-shipping": "Continuar a l'enviament",
+      "goToShipping": "Continuar a l'enviament",
       "title": "Resum de la comanda",
-      "items-count-suffix": "elements a la cistella",
+      "itemsCountSuffix": "elements a la cistella",
       "shipping": "Enviament",
-      "including-vat": "IVA inclòs",
-      "free-shipping-promo": "Afegeix {{value}} més per a enviament GRATUÏT!",
-      "remove-item": "Eliminar producte",
-      "price-increase": "Pujada de preu!",
-      "old-price": "Preu anterior",
-      "price-drop": "Baixada de preu!"
+      "includingVat": "IVA inclòs",
+      "freeShippingPromo": "Afegeix {{value}} més per a enviament GRATUÏT!",
+      "removeItem": "Eliminar producte",
+      "priceIncrease": "Pujada de preu!",
+      "oldPrice": "Preu anterior",
+      "priceDrop": "Baixada de preu!"
     },
     "shipping": {
-      "free-shipping-achieved": "Has aconseguit enviament gratuït!",
-      "remaining-for-free": "Et falten {{amount}} per a gaudir d'un enviament GRATUÏT!",
+      "freeShippingAchieved": "Has aconseguit enviament gratuït!",
+      "remainingForFree": "Et falten {{amount}} per a gaudir d'un enviament GRATUÏT!",
       "free": "GRÀTIS",
-      "free-always": "GRÀTIS",
-      "free-from": "GRÀTIS des de {{amount}}",
-      "cart-cost": "Cistella",
-      "shipping-cost": "Enviament",
-      "go-to-confirmation": "Continuar al resum de la comanda",
+      "freeAlways": "GRÀTIS",
+      "freeFrom": "GRÀTIS des de {{amount}}",
+      "cartCost": "Cistella",
+      "shippingCost": "Enviament",
+      "goToConfirmation": "Continuar al resum de la comanda",
       "method": {
         "pickup": {
           "title": "Recollida a la botiga.",
@@ -227,7 +255,7 @@
           "description": "Tria si vols rebre o recollir la teva comanda."
         }
       },
-      "weekdays-labels": {
+      "weekdaysLabels": {
         "sunday": "Proper Diumenge",
         "monday": "Proper Dilluns",
         "tuesday": "Proper Dimarts",
@@ -261,15 +289,10 @@
         "date": "Seleccionar dia",
         "time": "Franja horària"
       },
-      "come-to-store": "Passa per la botiga i recull la teva comanda."
+      "comeToStore": "Passa per la botiga i recull la teva comanda."
     },
     "product": {
-      "quantity-label": "Qt:"
+      "quantityLabel": "Qt:"
     }
-  },
-  "search": {
-    "placeholder": "Buscar productes o categories",
-    "label": "Buscar productes o categories",
-    "submit": "Cercar"
   }
 }

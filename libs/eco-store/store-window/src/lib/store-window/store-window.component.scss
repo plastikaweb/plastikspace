@@ -1,0 +1,48 @@
+@use '@angular/material' as mat;
+
+:host {
+  .status-chip {
+    @include mat.chips-overrides(
+      (
+        container-shape-radius: 2rem,
+        outline-color: var(--tertiary-600),
+        with-icon-icon-color: var(--tertiary-600),
+        label-text-color: var(--tertiary-600),
+      )
+    );
+
+    &.open {
+      @include mat.chips-overrides(
+        (
+          elevated-container-color: var(--success-100),
+        )
+      );
+    }
+
+    &.soon {
+      @include mat.chips-overrides(
+        (
+          elevated-container-color: var(--warning-200),
+        )
+      );
+    }
+
+    &.closed {
+      @include mat.chips-overrides(
+        (
+          elevated-container-color: var(--tertiary-100),
+        )
+      );
+    }
+
+    &.mat-mdc-standard-chip {
+      width: max-content;
+      max-width: none;
+    }
+  }
+
+  plastik-countdown .chip-countdown {
+    color: var(--tertiary-600);
+    font-size: 12px;
+  }
+}

@@ -14,7 +14,7 @@
         <mat-icon>arrow_back</mat-icon>
       </button>
       <a class="hover:text-tertiary-700 rounded px-2 py-1 hover:bg-gray-50" [routerLink]="['/']">{{
-        'menu.home' | translate
+        'store.menu.home' | translate
       }}</a>
       <mat-icon class="scale-75!">chevron_right</mat-icon>
       <a
@@ -134,7 +134,9 @@
               <div class="text-tertiary-900 flex items-center gap-3">
                 <mat-icon class="metadata-icon">public</mat-icon>
                 <span class="text-base"
-                  ><span class="font-normal text-gray-500">Origen:</span>
+                  ><span class="font-normal text-gray-500"
+                    >{{ 'products.origin' | translate }}:</span
+                  >
                   <span class="ml-1 font-bold">{{ productData.origin }}</span></span
                 >
               </div>
@@ -143,7 +145,9 @@
               <div class="text-tertiary-900 flex items-center gap-3">
                 <mat-icon class="metadata-icon">storefront</mat-icon>
                 <span class="text-base"
-                  ><span class="font-normal text-gray-500">Productor:</span>
+                  ><span class="font-normal text-gray-500"
+                    >{{ 'products.provider' | translate }}:</span
+                  >
                   <a
                     href="#"
                     class="hover:text-primary-700 ml-1 font-bold underline decoration-1 underline-offset-2"

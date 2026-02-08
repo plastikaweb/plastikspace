@@ -1,9 +1,11 @@
 import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { signalStore, withComputed, withMethods, withProps } from '@ngrx/signals';
-import { isString, TranslateService } from '@ngx-translate/core';
-import { FormSelectOption, LocalizedFields, UserContact } from '@plastik/core/entities';
+import { TranslateService } from '@ngx-translate/core';
+import { FormSelectOption, LocalizedFields } from '@plastik/core/entities';
 import {
+  DAYS_MAP,
   EcoStoreTenant,
   EcoStoreTenantAddress,
   EcoStoreTenantLogisticsDeliveryOption,
@@ -12,9 +14,16 @@ import {
   TimeRange,
 } from '@plastik/eco-store/entities';
 import { isEmpty, isNil } from '@plastik/shared/objects';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { EcoStoreTenantAddressService } from './eco-store-tenant-address.service';
 import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
+import {
+  calculateStoreWindowStatus,
+  formatTenantAddresses,
+  getNextDateFromTime,
+  isShippingMethodConfigured,
+} from './eco-store-tenant.utils';
 
 export interface EcoStoreTenantState {
   tenant: EcoStoreTenant | null;
@@ -37,91 +46,114 @@ export const ecoStoreTenantStore = signalStore(
     _tenantService: inject(EcoStoreTenantBaseService),
     _translateService: inject(TranslateService),
   })),
-  withComputed(store => ({
-    getTenantLegalAddress: computed(() => {
-      const currentTenant = store.tenant();
-      if (!currentTenant) {
-        return {} as EcoStoreTenantAddress;
-      }
+  withComputed(store => {
+    const nowSignal = toSignal(timer(0, 60000).pipe(map(() => new Date())), {
+      initialValue: new Date(),
+    });
 
-      const { id, name, address, city, zip, province, country, phone } = currentTenant;
-      return {
-        id,
-        name,
-        address,
-        city,
-        zip,
-        province,
-        country,
-        phone,
-      };
-    }),
-    getTenantAddressesContacts: computed(
-      () =>
-        store
-          .addresses()
-          .map(address => ({
-            id: address.id,
-            name: address.name,
-            address: address.address,
-            zip: address.zip,
-            city: address.city,
-            province: address.province,
-            country: address.country,
-            phone: address.phone,
-            default: address.default,
-          }))
-          .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[]
-    ),
-    /**
-     * Checks if shipping is fully available based on tenant configuration.
-     * Returns true if at least one enabled shipping method (pickup or delivery) is properly configured:
-     * - For pickup (if enabled): At least one tenant address with slots/instructions OR global pickup slots/instructions
-     * - For delivery (if enabled): Delivery must have slots configured (slots are required for delivery scheduling)
-     * Note: Tenant can have only pickup, only delivery, or both. Missing method is not an error.
-     */
-    isShippingAvailable: computed(() => {
-      const currentTenant = store.tenant();
-      if (!currentTenant?.logisticsConfig) return false;
-
-      const { options } = currentTenant.logisticsConfig;
-      if (!options || options.length === 0) return false;
-
-      const enabledOptions = options.filter(opt => opt.enabled);
-      if (enabledOptions.length === 0) return false;
-
-      const configuredMethods: boolean[] = [];
-
-      const pickupOption = options.find(opt => opt.type === 'pickup' && opt.enabled);
-      if (pickupOption) {
-        const addresses = store.addresses();
-        const hasGlobalPickupConfig =
-          (pickupOption.slots && Object.keys(pickupOption.slots).length > 0) ||
-          !!pickupOption.instructions;
-
-        const hasAddressConfig =
-          addresses?.some(address => {
-            const hasSlots = address.slots && Object.keys(address.slots).length > 0;
-            const hasInstructions = !!address.instructions;
-            return hasSlots || hasInstructions;
-          }) ?? false;
-
-        const isPickupConfigured = hasGlobalPickupConfig || hasAddressConfig;
-        configuredMethods.push(isPickupConfigured);
-      }
-
-      const deliveryOption = options.find(opt => opt.type === 'delivery' && opt.enabled);
-      if (deliveryOption) {
-        const isDeliveryConfigured =
-          deliveryOption.slots && Object.keys(deliveryOption.slots).length > 0;
-        if (isDeliveryConfigured) {
-          configuredMethods.push(isDeliveryConfigured);
+    return {
+      closedReasonTranslated: computed(() => {
+        const currentTenant = store.tenant();
+        if (!currentTenant) {
+          return null;
         }
-      }
 
-      return configuredMethods.some(configured => configured);
-    }),
-  })),
+        const { closedReason, closed } = currentTenant;
+
+        if (!closed) {
+          return null;
+        }
+
+        const currentLanguage = store._translateService.getCurrentLang();
+        return closedReason?.[currentLanguage] || null;
+      }),
+
+      tenantLegalAddress: computed(() => {
+        const currentTenant = store.tenant();
+        if (!currentTenant) {
+          return {} as EcoStoreTenantAddress;
+        }
+
+        const { id, name, address, city, zip, province, country, phone } = currentTenant;
+        return {
+          id,
+          name,
+          address,
+          city,
+          zip,
+          province,
+          country,
+          phone,
+        };
+      }),
+
+      storeStatus: computed(() => {
+        const tenant = store.tenant();
+        const now = nowSignal();
+
+        return calculateStoreWindowStatus(
+          now,
+          !!tenant?.logisticsConfig?.orderWindow?.enabled,
+          tenant?.logisticsConfig?.orderWindow?.openDay,
+          tenant?.logisticsConfig?.orderWindow?.openTime,
+          tenant?.logisticsConfig?.orderWindow?.closeDay,
+          tenant?.logisticsConfig?.orderWindow?.closeTime,
+          tenant?.active,
+          tenant?.closed
+        );
+      }),
+
+      nextOpenDate: computed(() => {
+        const tenant = store.tenant();
+        const now = nowSignal();
+
+        if (!tenant?.logisticsConfig?.orderWindow?.enabled) {
+          return null;
+        }
+
+        const { openDay, openTime } = tenant.logisticsConfig.orderWindow;
+        if (!openDay || !openTime) return null;
+
+        return getNextDateFromTime(now, DAYS_MAP[openDay], openTime);
+      }),
+
+      isStoreOpen: computed(() => {
+        const tenant = store.tenant();
+        const now = nowSignal();
+
+        return (
+          calculateStoreWindowStatus(
+            now,
+            !!tenant?.logisticsConfig?.orderWindow?.enabled,
+            tenant?.logisticsConfig?.orderWindow?.openDay,
+            tenant?.logisticsConfig?.orderWindow?.openTime,
+            tenant?.logisticsConfig?.orderWindow?.closeDay,
+            tenant?.logisticsConfig?.orderWindow?.closeTime,
+            tenant?.active,
+            tenant?.closed
+          ) === 'OPEN'
+        );
+      }),
+
+      is24h: computed(() => !store.tenant()?.logisticsConfig?.orderWindow?.enabled),
+
+      tenantAddressesContacts: computed(() => formatTenantAddresses(store.addresses())),
+
+      /**
+       * Checks if shipping is fully available based on tenant configuration.
+       * Respects the 'closed' manual override flag on each delivery option.
+       */
+      isShippingAvailable: computed(() => {
+        const currentTenant = store.tenant();
+        const options = currentTenant?.logisticsConfig?.options;
+        if (!options) return false;
+
+        return ['pickup' as const, 'delivery' as const].some(type =>
+          isShippingMethodConfigured(type, options, store.addresses())
+        );
+      }),
+    };
+  }),
   withMethods(store => ({
     async getTenant() {
       updateState(store, `[tenant] get tenant in process`, { loaded: false });
@@ -168,10 +200,10 @@ export const ecoStoreTenantStore = signalStore(
       type: EcoStoreTenantLogisticsDeliveryType
     ): EcoStoreTenantLogisticsDeliveryOption | null {
       const tenant = store.tenant();
-      if (!tenant) {
-        return null;
-      }
-      return tenant.logisticsConfig?.options?.find(option => option.type === type) || null;
+      if (!tenant) return null;
+
+      const option = tenant.logisticsConfig?.options?.find(option => option.type === type);
+      return option?.enabled ? option : null;
     },
 
     _getDeliverySlotsRecord(): Record<SlotDays, TimeRange[]> | null {
@@ -179,12 +211,17 @@ export const ecoStoreTenantStore = signalStore(
     },
 
     _getPickupSlotsRecord(addressId: string | null): Record<SlotDays, TimeRange[]> | null {
+      const pickupOption = store
+        .tenant()
+        ?.logisticsConfig?.options?.find(
+          (option: EcoStoreTenantLogisticsDeliveryOption) => option.type === 'pickup'
+        );
+      if (!pickupOption?.enabled) return null;
+
       let addressSlots = store.addresses().find(address => address.id === addressId)?.slots || null;
 
       if (isEmpty(addressSlots) || isNil(addressSlots)) {
-        addressSlots =
-          store.tenant()?.logisticsConfig?.options?.find(option => option.type === 'pickup')
-            ?.slots || null;
+        addressSlots = pickupOption.slots || null;
       }
       return addressSlots;
     },
@@ -272,9 +309,11 @@ export const ecoStoreTenantStore = signalStore(
 
       const currentLanguage = store._translateService.getCurrentLang();
       const translateInstructions = (instructions: string | LocalizedFields<string>) =>
-        isString(instructions)
+        typeof instructions === 'string'
           ? instructions
-          : store._translateService.instant(instructions[currentLanguage] || '');
+          : store._translateService.instant(
+              (instructions as LocalizedFields<string>)[currentLanguage] || ''
+            );
 
       if (type === 'pickup') {
         const address = store.addresses().find(address => address.id === addressId);
@@ -370,37 +409,12 @@ export const ecoStoreTenantStore = signalStore(
      */
     getTenantAvailableShippingMethods(): EcoStoreTenantLogisticsDeliveryType[] {
       const tenant = store.tenant();
-      if (!tenant?.logisticsConfig?.options) return [];
+      const options = tenant?.logisticsConfig?.options;
+      if (!options) return [];
 
-      const availableMethods: EcoStoreTenantLogisticsDeliveryType[] = [];
-
-      const pickupOption = tenant.logisticsConfig.options.find(opt => opt.type === 'pickup');
-      if (pickupOption?.enabled) {
-        const hasGlobalPickupConfig =
-          (pickupOption.slots && Object.keys(pickupOption.slots).length > 0) ||
-          !!pickupOption.instructions;
-
-        const hasAddressConfig = store.addresses().some(address => {
-          const hasSlots = address.slots && Object.keys(address.slots).length > 0;
-          const hasInstructions = !!address.instructions;
-          return hasSlots || hasInstructions;
-        });
-
-        if (hasGlobalPickupConfig || hasAddressConfig) {
-          availableMethods.push('pickup');
-        }
-      }
-
-      const deliveryOption = tenant.logisticsConfig.options.find(opt => opt.type === 'delivery');
-      if (deliveryOption?.enabled) {
-        const hasDeliverySlots =
-          deliveryOption.slots && Object.keys(deliveryOption.slots).length > 0;
-        if (hasDeliverySlots) {
-          availableMethods.push('delivery');
-        }
-      }
-
-      return availableMethods;
+      return (['pickup', 'delivery'] as EcoStoreTenantLogisticsDeliveryType[]).filter(type =>
+        isShippingMethodConfigured(type, options, store.addresses())
+      );
     },
   }))
 );

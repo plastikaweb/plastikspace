@@ -232,6 +232,7 @@
       "@plastik/auth/feature": ["libs/shared/auth/feature/src/index.ts"],
       "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
       "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"],
+      "@plastik/eco-store/store-window": ["libs/eco-store/store-window/src/index.ts"],
       "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"],
       "@plastik/eco-store/tenant/testing": [
         "libs/eco-store/core/tenant/src/eco-store-tenant.store.mock.ts"
@@ -239,7 +240,9 @@
       "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"],
       "@plastik/shared/pocketbase-user-addresses": [
         "libs/shared/pocketbase-user-addresses/data-access/src/index.ts"
-      ]
+      ],
+      "@plastik/shared/countdown/util": ["libs/shared/countdown/util/src/index.ts"],
+      "@plastik/shared/countdown": ["libs/shared/countdown/ui/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

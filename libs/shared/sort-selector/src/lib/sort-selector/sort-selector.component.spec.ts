@@ -46,8 +46,8 @@ describe('SortSelectorComponent', () => {
     const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
     expect(button).toBeTruthy();
     const text = button.textContent || '';
-    expect(text).toContain('products.filter.sort');
-    expect(text).toContain('products.sort.name-asc');
+    expect(text).toContain('products.sort.label');
+    expect(text).toContain('products.sort.nameAsc');
   });
 
   it('should emit sortChange on manual change', () => {

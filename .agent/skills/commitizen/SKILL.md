@@ -224,3 +224,9 @@ When running commits from sandboxed environments (like Antigravity, Cursor, or s
 ```bash
 git add -A && git commit -m "<type>(<scope>): #<issue> <description>" -m "<body>"
 ```
+
+## Important Note
+
+DO NOT push the changes to the remote repository automatically. Ask the user first if he wants to push the changes to the remote repository.
+
+Maybe this branch will have several commits, and the user wants to push them all at once when the feature is complete.

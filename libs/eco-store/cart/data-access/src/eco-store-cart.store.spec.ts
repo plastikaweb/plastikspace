@@ -1,16 +1,18 @@
-import { ecoStoreCartStore } from './eco-store-cart.store';
-import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { TestBed } from '@angular/core/testing';
-import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
+import { TranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
-import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
-import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
-import { of } from 'rxjs';
-import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
+import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
+import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { of } from 'rxjs';
+import { ecoStoreCartStore } from './eco-store-cart.store';
+import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
 
 describe('ecoStoreCartStore', () => {
   const setup = () => {
@@ -47,6 +49,14 @@ describe('ecoStoreCartStore', () => {
         {
           provide: POCKETBASE_ENVIRONMENT,
           useValue: { production: false, environment: 'test' },
+        },
+        {
+          provide: TranslateService,
+          useValue: { instant: jest.fn() },
+        },
+        {
+          provide: LiveAnnouncer,
+          useValue: { announce: jest.fn() },
         },
       ],
     });

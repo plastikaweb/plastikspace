@@ -1,0 +1,21 @@
+@if (statusConfig(); as config) {
+  <div
+    class="inline-flex w-fit cursor-pointer items-center"
+    [matTooltip]="closedReason() || (config.label | translate)">
+    <mat-chip [class]="`status-chip ${config.class}`">
+      <mat-icon matChipAvatar>{{ config.icon }}</mat-icon>
+      <div class="flex items-center gap-2">
+        <span
+          class="border-tertiary-200 border-r pr-2 font-bold tracking-wide whitespace-nowrap uppercase"
+          >{{ config.label | translate }}</span
+        >
+        @if (config.countdownSegments?.length) {
+          <plastik-countdown
+            [segments]="config.countdownSegments || []"
+            [prefix]="config.countdownPrefix || ''"
+            [class]="config.class || ''"></plastik-countdown>
+        }
+      </div>
+    </mat-chip>
+  </div>
+}

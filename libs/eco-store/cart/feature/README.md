@@ -106,7 +106,7 @@ setCustomLabel('method', 'cart.shipping.method.title', 'counter_1', [
 
   The shipping form integrates with the tenant store to provide pickup location addresses.
   When the shipping method is set to 'pickup', the address selector displays tenant addresses
-  (from `tenantStore.getTenantAddressesContacts()`). For delivery, it shows user addresses.
+  (from `tenantStore.tenantAddressesContacts()`). For delivery, it shows user addresses.
   The selected pickup address ID is used to retrieve location-specific time slots via
   `getTenantDeliveryOptionSlotsDays()` and `getTenantDeliveryOptionSlotsTimes()`.
 

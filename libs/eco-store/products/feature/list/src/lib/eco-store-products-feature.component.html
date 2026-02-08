@@ -18,7 +18,7 @@
     </div>
 
     <!-- Products Grid -->
-    <section class="products-grid" [attr.aria-label]="'a11y.product-list' | translate">
+    <section class="products-grid" [attr.aria-label]="'common.a11y.productList' | translate">
       @if (activityStore.isActive()) {
         @for (i of [1, 2, 3, 4, 5, 6]; track i) {
           <eco-store-product-card />

@@ -1,48 +1,91 @@
 {
-  "store-title": "Tienda Eco",
-  "page-title": "Tienda Eco - Productos ecológicos y sostenibles",
-  "loading": "Cargando datos...",
   "loading-data": "Cargando datos...",
-  "weekdays": {
-    "sunday": "Domingo",
-    "monday": "Lunes",
-    "tuesday": "Martes",
-    "wednesday": "Miércoles",
-    "thursday": "Jueves",
-    "friday": "Viernes",
-    "saturday": "Sábado"
-  },
-  "shared": {
+  "common": {
+    "loading": "Cargando datos...",
+    "loadingData": "Cargando datos...",
+    "weekdays": {
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado"
+    },
     "address": {
       "default": "Dirección predeterminada"
+    },
+    "a11y": {
+      "skipToContent": "Saltar al contenido principal",
+      "loading": "Cargando datos",
+      "mainNavigation": "Navegación principal",
+      "userActions": "Accions del usuario",
+      "categoriesNavigation": "Navegación de categorías",
+      "productCategories": "Categorías de productos",
+      "productQuantity": "Cantidad de {{product}} - {{quantity}}",
+      "productList": "Lista de productos",
+      "sortProducts": "Ordenar productos",
+      "productsCount": "{{count}} productos",
+      "categoryIcon": "{{category}} icono"
+    },
+    "form": {
+      "error": {
+        "email": "El formato del correo electrónico no es correcto",
+        "required": "El campo es obligatorio",
+        "minLength": "El campo debe tener al menos {{value}} caracteres",
+        "maxLength": "El campo debe tener más de {{value}} caracteres"
+      }
+    },
+    "error": {
+      "image": "Ha habido un error al cargar la imagen"
+    },
+    "paginator": {
+      "firstPage": "Primera página",
+      "itemsPerPage": "Elementos por página",
+      "lastPage": "Última página",
+      "nextPage": "Página siguiente",
+      "noItems": "{{length}} elementos",
+      "previousPage": "Página anterior",
+      "range": "{{start}} - {{end}} de {{total}}",
+      "rangeLabel": "de"
+    },
+    "notification": {
+      "close": "Cerrar"
     }
   },
-  "a11y": {
-    "skip-to-content": "Saltar al contenido principal",
-    "loading": "Cargando datos",
-    "main-navigation": "Navegación principal",
-    "user-actions": "Acciones del usuario",
-    "categories-navigation": "Navegación de categorías",
-    "product-categories": "Categorías de productos",
-    "product-quantity": "Cantidad de {{product}} - {{quantity}}",
-    "product-list": "Lista de productos",
-    "sort-products": "Ordenar productos",
-    "products-count": "{{count}} productos",
-    "category-icon": "{{category}} icono"
-  },
-  "menu": {
-    "home": "Inicio",
-    "store": "Tienda",
-    "about": "Quiénes Somos",
-    "contact": "Contacto",
-    "view-favorites": "Ver favoritos",
-    "view-cart": "Ir al carrito de compra, {{ productCount }} productos, precio total: {{ productPrice }}",
-    "profile": "Perfil de {{ name }}",
-    "profile_page": "Ver perfil",
-    "hello": "Hola {{ name }}",
-    "login": "Acceder",
-    "logout": "Cerrar sesión",
-    "orders": "Pedidos"
+  "store": {
+    "title": "Tienda Eco",
+    "pageTitle": "Tienda Eco - Productos ecológicos y sostenibles",
+    "status": {
+      "cancelled": "No disponible",
+      "closed": "Cerrado",
+      "opensIn": "Abre en",
+      "closingSoon": "La tienda cerrará pronto",
+      "open": "Abierto",
+      "open24h": "Abierto 24/7",
+      "openingSoon": "ABRE PRONTO",
+      "closedOpensAt": "Cerrado. Abre el {{date}} a las {{time}}",
+      "closedMessage": "La tienda está cerrada. No puedes modificar tu carrito."
+    },
+    "menu": {
+      "home": "Inicio",
+      "store": "Tienda",
+      "about": "Quiénes Somos",
+      "contact": "Contacto",
+      "viewFavorites": "Ver favoritos",
+      "viewCart": "Ir al carrito de compra, {{ productCount }} productos, precio total: {{ productPrice }}",
+      "profile": "Perfil de {{ name }}",
+      "profilePage": "Ver perfil",
+      "hello": "Hola {{ name }}",
+      "login": "Acceder",
+      "logout": "Cerrar sesión",
+      "orders": "Pedidos"
+    },
+    "search": {
+      "placeholder": "Buscar productos o categorías",
+      "label": "Buscar productos o categorías",
+      "submit": "Buscar"
+    }
   },
   "auth": {
     "login": {
@@ -50,12 +93,12 @@
       "password": "Contraseña",
       "title": "Tienda Eco",
       "subtitle": "Comunidad Cooperativa",
-      "remember-me": "Recordar sesión",
-      "recover-access": "¿Has olvidado la contraseña?",
-      "new-user-question": "Registro de socios",
-      "create-account": "Crear cuenta",
+      "rememberMe": "Recordar sesión",
+      "recoverAccess": "¿Has olvidado la contraseña?",
+      "newUserQuestion": "Registro de socios",
+      "createAccount": "Crear cuenta",
       "submit": "Iniciar sesión",
-      "terms-privacy": "Al continuar, aceptas nuestros Términos y Política de Privacidad."
+      "termsPrivacy": "Al continuar, aceptas nuestros Términos y Política de Privacidad."
     },
     "error": {
       "login": "Revisa tus credenciales"
@@ -68,78 +111,62 @@
       "CLIENT_ADMIN": "Administrador"
     }
   },
-  "form": {
-    "error": {
-      "email": "El formato del correo electrónico no es correcto",
-      "required": "El campo es obligatorio",
-      "minLength": "El campo debe tener al menos {{value}} caracteres",
-      "maxLength": "El campo debe tener más de {{value}} caracteres"
-    }
-  },
-  "error": {
-    "image": "Ha habido un error al cargar la imagen"
-  },
-  "paginator": {
-    "first-page": "Primera página",
-    "items-per-page": "Elementos por página",
-    "last-page": "Última página",
-    "next-page": "Página siguiente",
-    "no-items": "{{length}} elementos",
-    "previous-page": "Página anterior",
-    "range": "{{start}} - {{end}} de {{total}}",
-    "range-label": "de"
-  },
-  "product-categories": {
-    "all": "Todas las categorías",
-    "filter": {
-      "sort": "Ordenar",
-      "ecologic": "Ecológico",
-      "total": "productos"
-    },
-    "add": "Agregar"
-  },
   "products": {
+    "categories": {
+      "all": "Todas las categorías",
+      "filter": {
+        "sort": "Ordenar",
+        "ecologic": "Ecológico",
+        "total": "productos",
+        "error": "Ha ocurrido un error al cargar las categorías"
+      },
+      "add": "Agregar"
+    },
     "all": "Todos los productos",
     "add": "Agregar",
-    "add-long": "Agregar al carrito",
+    "origin": "Origen",
+    "provider": "Productor",
+    "addLong": "Agregar al carrito",
     "remove": "Eliminar",
     "decrement": "Disminuir",
     "increment": "Aumentar",
     "total": "productos",
     "favorite": "Agregar {{value}} a favoritos",
     "filter": {
-      "sort": "Ordenar",
-      "sort.relevance": "Más valorados",
-      "sort.priceWithIva-asc": "Precio ascendente",
-      "sort.priceWithIva-desc": "Precio descendente",
-      "sort.updated-asc": "Más antiguos",
-      "sort.updated-desc": "Más recientes"
+      "sort": {
+        "label": "Ordenar",
+        "relevance": "Más valorados",
+        "priceWithIvaAsc": "Precio ascendente",
+        "priceWithIvaDesc": "Precio descendente",
+        "updatedAsc": "Más antiguos",
+        "updatedDesc": "Más recientes"
+      }
     },
     "modified": {
-      "title": "Producto modificado",
+      "title": "Producte modificado",
       "description": "Has modificado la cantidad del producto pero no lo has agregado al carrito",
       "cancel": "Volver al producto",
       "leave": "No quiero agregarlo"
     },
-    "unit-type": {
+    "unitType": {
       "unit": "Unidad",
       "weight": "Peso",
       "volume": "Volumen",
-      "unitWithFixedWeight": "Unidad",
       "unitWithFixedVolume": "Unidad",
+      "unitWithFixedWeight": "Unidad",
       "unitWithVariableWeight": "Kg",
       "unitWithVariableVolume": "L"
     },
     "unit": {
       "unit": "Precio por unidad",
       "weight": "Precio por kg",
-      "volume": "Precio por L",
+      "volume": "Precio per L",
       "unitWithFixedWeight": "Pesa {{value}} kg",
       "unitWithFixedVolume": "Ocupa {{value}} L",
       "unitWithVariableWeight": "Peso variable",
       "unitWithVariableVolume": "Volumen variable"
     },
-    "unit-abbreviation": {
+    "unitAbbreviation": {
       "unit": "ud.",
       "weight": "kg",
       "volume": "L",
@@ -188,31 +215,31 @@
     "summary": {
       "pickup": "Recogida en la tienda",
       "delivery": "Envío a domicilio",
-      "items-count": "{{value}} productos",
+      "itemsCount": "{{value}} productos",
       "resume": "Resumen",
       "subtotal": "Subtotal",
       "taxes": "Impuestos (IVA)",
       "total": "Total",
-      "go-to-shipping": "Continuar a Envío",
+      "goToShipping": "Continuar a Envío",
       "title": "Resumen del pedido",
-      "items-count-suffix": "artículos en la cesta",
+      "itemsCountSuffix": "artículos en la cesta",
       "shipping": "Envío",
-      "including-vat": "IVA incluido",
-      "free-shipping-promo": "¡Añade {{value}} más para envío GRATIS!",
-      "remove-item": "Eliminar producto",
-      "old-price": "Precio anterior",
-      "price-drop": "¡Bajada de precio!",
-      "price-increase": "¡Subida de precio!"
+      "includingVat": "IVA incluido",
+      "freeShippingPromo": "¡Añade {{value}} más para envío GRATIS!",
+      "removeItem": "Eliminar producto",
+      "oldPrice": "Precio anterior",
+      "priceDrop": "¡Bajada de precio!",
+      "priceIncrease": "¡Subida de precio!"
     },
     "shipping": {
-      "free-shipping-achieved": "¡Has conseguido envío gratuito!",
-      "remaining-for-free": "¡Faltan {{amount}} más para envío GRATIS!",
+      "freeShippingAchieved": "¡Has conseguido envío gratuito!",
+      "remainingForFree": "¡Faltan {{amount}} más para envío GRATIS!",
       "free": "GRATIS",
-      "free-always": "GRATIS",
-      "free-from": "GRATIS desde {{amount}}",
-      "cart-cost": "Carrito",
-      "shipping-cost": "Envío",
-      "go-to-confirmation": "Continuar al resumen del pedido",
+      "freeAlways": "GRATIS",
+      "freeFrom": "GRATIS desde {{amount}}",
+      "cartCost": "Carrito",
+      "shippingCost": "Envío",
+      "goToConfirmation": "Continuar al resumen del pedido",
       "method": {
         "pickup": {
           "title": "Recogida en la tienda.",
@@ -227,7 +254,7 @@
           "description": "Elige si quieres recibir tu pedido en casa o recogerlo en la tienda."
         }
       },
-      "weekdays-labels": {
+      "weekdaysLabels": {
         "sunday": "Próximo Domingo",
         "monday": "Próximo Lunes",
         "tuesday": "Próximo Martes",
@@ -248,12 +275,7 @@
       }
     },
     "product": {
-      "quantity-label": "Cant:"
+      "quantityLabel": "Cant:"
     }
-  },
-  "search": {
-    "placeholder": "Buscar productos o categorías",
-    "label": "Buscar productos o categorías",
-    "submit": "Buscar"
   }
 }

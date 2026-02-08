@@ -5,6 +5,7 @@ import {
   withImmutableState,
   withStorageSync,
 } from '@angular-architects/ngrx-toolkit';
+import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { computed, effect, inject, untracked } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import {
@@ -14,9 +15,9 @@ import {
   setEntity,
   withEntities,
 } from '@ngrx/signals/entities';
+import { TranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { UserContact } from '@plastik/core/entities';
-import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import {
   EcoStoreCart,
   EcoStoreCartItem,
@@ -28,6 +29,8 @@ import {
   TimeRange,
 } from '@plastik/eco-store/entities';
 import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { notificationStore } from '@plastik/shared/notification/data-access';
 import { catchError, firstValueFrom, take } from 'rxjs';
 import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
 
@@ -87,6 +90,9 @@ export const ecoStoreCartStore = signalStore(
     _cartsService: inject(EcoStoreCartsApiService),
     _productsService: inject(EcoStoreProductsApiService),
     _tenantStore: inject(ecoStoreTenantStore),
+    _notificationStore: inject(notificationStore),
+    _translateService: inject(TranslateService),
+    _liveAnnouncer: inject(LiveAnnouncer),
   })),
   withConditional(
     store => !store._userProfileStore.isAuthenticated(),
@@ -110,6 +116,24 @@ export const ecoStoreCartStore = signalStore(
   })),
 
   withMethods(store => {
+    const checkStoreStatus = (): boolean => {
+      const status = store._tenantStore.storeStatus();
+      if (status === 'CLOSED' || status === 'CLOSED_MANUALLY') {
+        const message = store._translateService.instant('store.status.closedMessage');
+
+        store._liveAnnouncer.announce(message, 'assertive', 5000);
+
+        store._notificationStore.show({
+          type: 'WARNING',
+          message,
+          action: 'common.notification.close',
+          duration: 5000,
+        });
+        return false;
+      }
+      return true;
+    };
+
     // Pure helper to calculate prices without modifying state directly (to be used within batch updates)
     const calculatePricesState = (items: EcoStoreCartItem[], currentShipping: number) => {
       const subtotal = items.reduce((acc, item) => acc + item.quantity * item.product.price, 0);
@@ -364,7 +388,7 @@ export const ecoStoreCartStore = signalStore(
         );
 
         store.clearStorage();
-      } catch (error) {
+      } catch (_) {
         updateState(store, '[cart] merge error', state => ({ ...state, isSyncing: false }));
       }
     };
@@ -377,6 +401,7 @@ export const ecoStoreCartStore = signalStore(
       },
 
       addToCart(product: EcoStoreProductWithCategoryName, quantity = 1) {
+        if (!checkStoreStatus()) return;
         const productId = product.id;
         const existingItem = store.entityMap()[productId];
 
@@ -400,6 +425,7 @@ export const ecoStoreCartStore = signalStore(
       },
 
       removeFromCart(productId: EcoStoreProductWithCategoryName['id']) {
+        if (!checkStoreStatus()) return;
         _removeItem(productId);
         _recalculatePrices();
         if (store._userProfileStore.isAuthenticated()) {
@@ -408,6 +434,7 @@ export const ecoStoreCartStore = signalStore(
       },
 
       clearCart() {
+        if (!checkStoreStatus()) return;
         updateState(store, '[cart] clear cart', removeAllEntities());
         _recalculatePrices();
         if (store._userProfileStore.isAuthenticated()) {

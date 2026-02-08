@@ -24,8 +24,8 @@ It uses a strategy pattern to resolve the tenant ID, which is then used to filte
   - It handles **fetching the tenant** from the `EcoStoreTenantBaseService`.
   - It manages **tenant-specific addresses** via `getTenantAddresses()`, which loads addresses from `EcoStoreTenantAddressService`.
   - It provides **computed selectors**:
-    - `getTenantLegalAddress`: Returns the tenant's legal/registered address.
-    - `getTenantAddressesContacts`: Returns tenant addresses formatted as `UserContact[]`, sorted with default address first.
+    - `tenantLegalAddress`: Returns the tenant's legal/registered address.
+    - `tenantAddressesContacts`: Returns tenant addresses formatted as `UserContact[]`, sorted with default address first.
   - It provides **helper methods** for logistics configuration:
     - `getTenantDeliveryOptionSlotsDays()` and `getTenantDeliveryOptionSlotsTimes()`: Support both delivery and pickup slots (pickup requires `addressId`).
     - `getTenantDeliveryOptionCost()`: Calculates shipping cost based on tiered pricing.

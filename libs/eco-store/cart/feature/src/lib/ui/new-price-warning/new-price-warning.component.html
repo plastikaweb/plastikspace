@@ -6,7 +6,7 @@
   [class.bg-tertiary-50]="!isPriceDrop()"
   [attr.role]="isPriceDrop() ? 'status' : 'alert'"
   [attr.aria-label]="
-    (isPriceDrop() ? 'cart.summary.price-drop' : 'cart.summary.price-increase') | translate
+    (isPriceDrop() ? 'cart.summary.priceDrop' : 'cart.summary.priceIncrease') | translate
   ">
   <mat-icon aria-hidden="true" [class]="isPriceDrop() ? 'icon-drop' : 'icon-increase'">
     {{ isPriceDrop() ? 'trending_down' : 'trending_up' }}
@@ -18,13 +18,13 @@
       [class.text-primary-900]="isPriceDrop()"
       [class.font-medium]="!isPriceDrop()"
       [class.text-tertiary-900]="!isPriceDrop()">
-      {{ (isPriceDrop() ? 'cart.summary.price-drop' : 'cart.summary.price-increase') | translate }}
+      {{ (isPriceDrop() ? 'cart.summary.priceDrop' : 'cart.summary.priceIncrease') | translate }}
     </strong>
     <p
       class="text-xs"
       [class.text-primary-800]="isPriceDrop()"
       [class.text-tertiary-800]="!isPriceDrop()">
-      {{ 'cart.summary.old-price' | translate }}
+      {{ 'cart.summary.oldPrice' | translate }}
       <span class="line-through opacity-70">{{ oldPrice() | currency: 'EUR' }}</span>
     </p>
   </div>

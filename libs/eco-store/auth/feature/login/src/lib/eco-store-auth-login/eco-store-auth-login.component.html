@@ -24,7 +24,7 @@
             matButton
             class="text-secondary! text-sm! font-medium! normal-case!"
             routerLink="/recuperar-contrasenya">
-            {{ 'auth.login.recover-access' | translate }}
+            {{ 'auth.login.recoverAccess' | translate }}
             <mat-icon aria-hidden="true" iconPositionEnd class="ml-1 scale-90 align-middle"
               >passkey</mat-icon
             >
@@ -33,14 +33,12 @@
       </plastik-shared-form-feature>
 
       <div class="border-primary-100 my-4 flex items-center justify-center gap-2 border-t py-2">
-        <span class="text-sm text-neutral-500">{{
-          'auth.login.new-user-question' | translate
-        }}</span>
+        <span class="text-sm text-neutral-500">{{ 'auth.login.newUserQuestion' | translate }}</span>
         <a
           matButton
           class="text-primary! min-w-0! px-2! text-sm! font-bold! normal-case!"
           routerLink="/activar-compte">
-          {{ 'auth.login.create-account' | translate }}
+          {{ 'auth.login.createAccount' | translate }}
           <mat-icon aria-hidden="true" iconPositionEnd class="ml-1 scale-90 align-middle"
             >verified_user</mat-icon
           >
@@ -50,7 +48,7 @@
 
     <mat-card-footer class="border-primary-200 border-t p-4 text-center">
       <p class="text-xs text-neutral-500">
-        {{ 'auth.login.terms-privacy' | translate }}
+        {{ 'auth.login.termsPrivacy' | translate }}
       </p>
     </mat-card-footer>
   </mat-card>

@@ -64,7 +64,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
     tenantStore,
     cartStore,
     translateService,
-    tenantAddresses: tenantStore.getTenantAddressesContacts(),
+    tenantAddresses: tenantStore.tenantAddressesContacts(),
     userAddresses: userProfileStore.getUserContacts(),
     availableMethodTypes,
   };

@@ -1,0 +1,15 @@
+<p [class]="`chip-countdown flex flex-row items-center ${class()}`">
+  @if (prefix()) {
+    {{ prefix() | translate }}
+  }
+  @for (segment of segments(); track $index) {
+    @if (segment === ':') {
+      <span
+        class="countdown-separator-test inline-block animate-[pulse_1s_ease-in-out_infinite] px-px font-bold"
+        >{{ segment }}</span
+      >
+    } @else {
+      {{ segment }}
+    }
+  }
+</p>

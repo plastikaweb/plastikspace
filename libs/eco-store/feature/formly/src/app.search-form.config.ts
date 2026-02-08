@@ -13,8 +13,8 @@ export function appSearchFormConfig(): FormConfig<{ query: string }> {
           key: 'query',
           type: 'input-search',
           props: {
-            label: 'search.label',
-            placeholder: 'search.placeholder',
+            label: 'store.search.label',
+            placeholder: 'store.search.placeholder',
             noButton: true,
             resetSearch: true,
             translate: true,
@@ -37,7 +37,7 @@ export function appSearchFormConfig(): FormConfig<{ query: string }> {
     getSubmitFormConfig: () => ({
       submitAvailable: false,
       disableOnSubmit: false,
-      label: 'search.submit',
+      label: 'store.search.submit',
       buttonStyle: 'hidden!',
     }),
   };

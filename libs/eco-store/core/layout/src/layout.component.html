@@ -3,6 +3,10 @@
     class="z-1000"
     [formConfig]="searchFormConfig"
     [tenant]="tenantStore.tenant()"
+    [storeStatus]="tenantStore.storeStatus()"
+    [nextOpenDate]="tenantStore.nextOpenDate()"
+    [is24h]="tenantStore.is24h()"
+    [closedReason]="tenantStore.closedReasonTranslated()"
     (submitEvent)="onSearchSubmit($event)">
     <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
     <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
