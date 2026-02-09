@@ -1,0 +1,31 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  .closed-container,
+  .closed_manually-container,
+  .cancelled-container {
+    background-color: var(--tertiary-100);
+    color: var(--tertiary-700);
+    border: 2px solid var(--tertiary-200);
+
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-700),
+      )
+    );
+  }
+
+  .opening_soon-container {
+    background-color: var(--warning-300);
+    color: var(--warning-700);
+    border: 2px solid var(--warning-200);
+
+    @include mat.icon-overrides(
+      (
+        color: var(--warning-700),
+      )
+    );
+  }
+}

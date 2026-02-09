@@ -58,6 +58,16 @@
     "pageTitle": "Botiga Eco - Productes ecològics i sostenibles",
     "status": {
       "cancelled": "No disponible",
+      "statusBanner": {
+        "closedTitle": "Botiga en mode consulta",
+        "openingSoonTitle": "Prepareu les cistelles!",
+        "openingSoonDescription": "Estem a punt d'obrir la finestra de comandes.",
+        "closedDescription": "Les comandes obren el dia {{ date }} a les {{ time }}",
+        "closedManuallyTitle": "Tancada temporalment",
+        "cancelledTitle": "Servei no disponible",
+        "cancelledDescription": "Aquesta botiga està desactivada actualment. Contacta amb suport per a més informació.",
+        "dismiss": "Tancar avís de botiga tancada"
+      },
       "closed": "Tancat",
       "closedManually": "Tancat temporalment",
       "opensIn": "Obre en",

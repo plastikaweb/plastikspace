@@ -58,6 +58,16 @@
     "pageTitle": "Eco Store - Ecological and sustainable products",
     "status": {
       "cancelled": "Not available",
+      "statusBanner": {
+        "closedTitle": "Store in browse mode",
+        "openingSoonTitle": "Get your baskets ready!",
+        "openingSoonDescription": "We are about to open the ordering window.",
+        "closedDescription": "Orders open on {{ date }} at {{ time }}",
+        "closedManuallyTitle": "Temporary closure",
+        "cancelledTitle": "Service suspended",
+        "cancelledDescription": "This store is currently disabled. Contact support for more information.",
+        "dismiss": "Close store closed notice"
+      },
       "closed": "The store is currently closed.",
       "opensIn": "Opens in",
       "closingSoon": "The store will close soon.",

@@ -72,6 +72,7 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 - [**Product Price**](../../libs/eco-store/shared/product-price/README.md): Price display and unit components.
 - [**Category Label**](../../libs/eco-store/shared/product-category-label/README.md): Category badge component.
 - [**Favorite Button**](../../libs/eco-store/shared/favorite-button/README.md): Product favorite toggle component.
+- [**Store Status Banner**](../../libs/eco-store/shared/store-status-banner/README.md): Store operational status and countdown banner.
 
 ### 🧰 Shared Utils
 

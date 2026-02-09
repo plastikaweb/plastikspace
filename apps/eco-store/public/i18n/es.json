@@ -58,6 +58,16 @@
     "pageTitle": "Tienda Eco - Productos ecológicos y sostenibles",
     "status": {
       "cancelled": "No disponible",
+      "statusBanner": {
+        "closedTitle": "Tienda en modo consulta",
+        "openingSoonTitle": "¡Preparad las cestas!",
+        "openingSoonDescription": "Estamos a punto de abrir la ventana de pedidos.",
+        "closedDescription": "Los pedidos abren el día {{ date }} a las {{ time }}",
+        "closedManuallyTitle": "Cierre temporal",
+        "cancelledTitle": "Servicio no disponible",
+        "cancelledDescription": "Esta tienda está desactivada actualmente. Contacta con soporte para más información.",
+        "dismiss": "Cerrar aviso de tienda cerrada"
+      },
       "closed": "Cerrado",
       "opensIn": "Abre en",
       "closingSoon": "La tienda cerrará pronto",
