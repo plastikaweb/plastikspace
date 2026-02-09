@@ -98,7 +98,17 @@ export function calculateStoreWindowStatus(
     isOpen = nowVal >= openVal || nowVal < closeVal;
   }
 
-  if (isOpen) return 'OPEN';
+  if (isOpen) {
+    const nextClose = getNextDateFromTime(now, DAYS_MAP[closeDay], closeTime);
+    const diffMs = differenceInMilliseconds(nextClose, now);
+    const oneHourMs = 60 * 60 * 1000;
+
+    if (diffMs > 0 && diffMs <= oneHourMs) {
+      return 'CLOSING_SOON';
+    }
+
+    return 'OPEN';
+  }
 
   const nextOpen = getNextDateFromTime(now, DAYS_MAP[openDay], openTime);
   const diffMs = differenceInMilliseconds(nextOpen, now);

@@ -52,6 +52,7 @@ export const ecoStoreTenantStore = signalStore(
     });
 
     return {
+      _now: nowSignal,
       closedReasonTranslated: computed(() => {
         const currentTenant = store.tenant();
         if (!currentTenant) {
@@ -87,73 +88,70 @@ export const ecoStoreTenantStore = signalStore(
         };
       }),
 
-      storeStatus: computed(() => {
-        const tenant = store.tenant();
-        const now = nowSignal();
-
-        return calculateStoreWindowStatus(
-          now,
-          !!tenant?.logisticsConfig?.orderWindow?.enabled,
-          tenant?.logisticsConfig?.orderWindow?.openDay,
-          tenant?.logisticsConfig?.orderWindow?.openTime,
-          tenant?.logisticsConfig?.orderWindow?.closeDay,
-          tenant?.logisticsConfig?.orderWindow?.closeTime,
-          tenant?.active,
-          tenant?.closed
-        );
-      }),
-
-      nextOpenDate: computed(() => {
-        const tenant = store.tenant();
-        const now = nowSignal();
-
-        if (!tenant?.logisticsConfig?.orderWindow?.enabled) {
-          return null;
-        }
-
-        const { openDay, openTime } = tenant.logisticsConfig.orderWindow;
-        if (!openDay || !openTime) return null;
-
-        return getNextDateFromTime(now, DAYS_MAP[openDay], openTime);
-      }),
-
-      isStoreOpen: computed(() => {
-        const tenant = store.tenant();
-        const now = nowSignal();
-
-        return (
-          calculateStoreWindowStatus(
-            now,
-            !!tenant?.logisticsConfig?.orderWindow?.enabled,
-            tenant?.logisticsConfig?.orderWindow?.openDay,
-            tenant?.logisticsConfig?.orderWindow?.openTime,
-            tenant?.logisticsConfig?.orderWindow?.closeDay,
-            tenant?.logisticsConfig?.orderWindow?.closeTime,
-            tenant?.active,
-            tenant?.closed
-          ) === 'OPEN'
-        );
-      }),
-
       is24h: computed(() => !store.tenant()?.logisticsConfig?.orderWindow?.enabled),
 
       tenantAddressesContacts: computed(() => formatTenantAddresses(store.addresses())),
-
-      /**
-       * Checks if shipping is fully available based on tenant configuration.
-       * Respects the 'closed' manual override flag on each delivery option.
-       */
-      isShippingAvailable: computed(() => {
-        const currentTenant = store.tenant();
-        const options = currentTenant?.logisticsConfig?.options;
-        if (!options) return false;
-
-        return ['pickup' as const, 'delivery' as const].some(type =>
-          isShippingMethodConfigured(type, options, store.addresses())
-        );
-      }),
     };
   }),
+  withComputed(store => ({
+    storeStatus: computed(() => {
+      const tenant = store.tenant();
+      const now = store._now();
+
+      return calculateStoreWindowStatus(
+        now,
+        !!tenant?.logisticsConfig?.orderWindow?.enabled,
+        tenant?.logisticsConfig?.orderWindow?.openDay,
+        tenant?.logisticsConfig?.orderWindow?.openTime,
+        tenant?.logisticsConfig?.orderWindow?.closeDay,
+        tenant?.logisticsConfig?.orderWindow?.closeTime,
+        tenant?.active,
+        tenant?.closed
+      );
+    }),
+  })),
+  withComputed(store => ({
+    nextOpenDate: computed(() => {
+      const tenant = store.tenant();
+      const now = store._now();
+      const status = store.storeStatus();
+
+      if (!tenant?.logisticsConfig?.orderWindow?.enabled) {
+        return null;
+      }
+
+      const { openDay, openTime, closeDay, closeTime } = tenant.logisticsConfig.orderWindow;
+
+      if (status === 'CLOSING_SOON') {
+        return closeDay && closeTime
+          ? getNextDateFromTime(now, DAYS_MAP[closeDay], closeTime)
+          : null;
+      }
+
+      if (!openDay || !openTime) return null;
+
+      return getNextDateFromTime(now, DAYS_MAP[openDay], openTime);
+    }),
+
+    isStoreOpen: computed(() => {
+      const status = store.storeStatus();
+      return status === 'OPEN' || status === 'CLOSING_SOON';
+    }),
+
+    /**
+     * Checks if shipping is fully available based on tenant configuration.
+     * Respects the 'closed' manual override flag on each delivery option.
+     */
+    isShippingAvailable: computed(() => {
+      const currentTenant = store.tenant();
+      const options = currentTenant?.logisticsConfig?.options;
+      if (!options) return false;
+
+      return ['pickup' as const, 'delivery' as const].some(type =>
+        isShippingMethodConfigured(type, options, store.addresses())
+      );
+    }),
+  })),
   withMethods(store => ({
     async getTenant() {
       updateState(store, `[tenant] get tenant in process`, { loaded: false });

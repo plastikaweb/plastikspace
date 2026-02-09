@@ -8,7 +8,7 @@
   .cancelled-container {
     background-color: var(--tertiary-100);
     color: var(--tertiary-700);
-    border: 2px solid var(--tertiary-200);
+    border: 2px solid var(--tertiary-700);
 
     @include mat.icon-overrides(
       (
@@ -17,10 +17,11 @@
     );
   }
 
-  .opening_soon-container {
-    background-color: var(--warning-300);
+  .opening_soon-container,
+  .closing_soon-container {
+    background-color: var(--warning-200);
     color: var(--warning-700);
-    border: 2px solid var(--warning-200);
+    border: 2px solid var(--warning-600);
 
     @include mat.icon-overrides(
       (

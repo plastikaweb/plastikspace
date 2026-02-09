@@ -15,8 +15,9 @@
 
 ## Description
 
-A specialized component for displaying the operational status of the store. It provides visual feedback to the user when the store is closed, opening soon, manually closed by the tenant, or cancelled by the superuser.
-It includes a countdown to the next opening date for scheduled closures.
+A specialized component for displaying the operational status of the store.
+It provides visual feedback to the user when the store is closed, opening soon, closing soon (urgency), manually closed by the tenant, or cancelled by the superuser.
+It includes a countdown to the next opening date for scheduled closures or closing time for active ordering windows.
 
 ## Installation
 
@@ -32,11 +33,11 @@ Selector: `eco-store-status-banner`
 
 #### Inputs
 
-| Input          | Type                         | Default  | Description                                                                                                        |
-| -------------- | ---------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------ |
-| `status`       | `EcoStoreTenantWindowStatus` | `'OPEN'` | The current operational status of the store (`OPEN`, `CLOSED`, `OPENING_SOON`, `CLOSED_MANUALLY`, `CANCELLED`).    |
-| `nextOpenDate` | `Date \| null`               | `null`   | The date when the store will open next. Used for the countdown calculation (only for `CLOSED` and `OPENING_SOON`). |
-| `closedReason` | `string \| null`             | `null`   | A description or translation key for the reason why the store is manually closed.                                  |
+| Input          | Type                         | Default  | Description                                                                                                                             |
+| -------------- | ---------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `status`       | `EcoStoreTenantWindowStatus` | `'OPEN'` | The current operational status of the store (`OPEN`, `CLOSED`, `OPENING_SOON`, `CLOSING_SOON`, `CLOSED_MANUALLY`, `CANCELLED`).         |
+| `nextOpenDate` | `Date \| null`               | `null`   | The date when the store will open or close next. Used for the countdown calculation (for `CLOSED`, `OPENING_SOON`, and `CLOSING_SOON`). |
+| `closedReason` | `string \| null`             | `null`   | A description or translation key for the reason why the store is manually closed.                                                       |
 
 #### Outputs
 

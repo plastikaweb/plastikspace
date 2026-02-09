@@ -32,6 +32,7 @@
         (tenantStore.storeStatus() === 'CLOSED' ||
           tenantStore.storeStatus() === 'CANCELLED' ||
           tenantStore.storeStatus() === 'OPENING_SOON' ||
+          tenantStore.storeStatus() === 'CLOSING_SOON' ||
           tenantStore.storeStatus() === 'CLOSED_MANUALLY') &&
         !isBannerDismissed()
       ) {

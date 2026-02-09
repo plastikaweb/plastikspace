@@ -43,6 +43,15 @@ export class StoreWindowComponent {
           .map(segment => segment.trim())
       : [];
 
+    if (status === 'CLOSING_SOON') {
+      return {
+        class: 'closing',
+        icon: 'schedule',
+        label: 'store.status.closingSoon',
+        countdownSegments: segments,
+      };
+    }
+
     if (status === 'OPENING_SOON') {
       return {
         class: 'soon',

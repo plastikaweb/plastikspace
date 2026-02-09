@@ -13,23 +13,24 @@
 
 ## Description
 
-A feature library containing the `StoreWindowComponent`, which displays the current status of an Eco Store (Open, Closed, Opening Soon) along with a countdown timer.
+A feature library containing the `StoreWindowComponent`, which displays the current status of an Eco Store (Open, Closed, Opening Soon, Closing Soon) along with a reactive countdown timer.
 
 ## Features
 
 - **Dynamic Status**: Visualizes store status with icons, colors, and labels.
-- **Countdown Integration**: Displays a countdown timer when the store is closed or opening soon.
+- **Closing Soon Urgency**: High-visibility state with a pulsing indicator to encourage last-minute orders.
+- **Countdown Integration**: Displays a countdown timer when the store is closed, opening soon, or closing soon.
 - **Material 3 Design**: Uses Angular Material Chips for a modern, accessible UI.
 - **Responsive**: Adapts to different screen sizes and layouts.
 
 ## Inputs
 
-| Name           | Type                         | Description                                       |
-| -------------- | ---------------------------- | ------------------------------------------------- |
-| `status`       | `EcoStoreTenantWindowStatus` | Current status of the store (OPEN, CLOSED, etc.). |
-| `nextOpenDate` | `Date \| null`               | The date and time when the store will open next.  |
-| `is24h`        | `boolean`                    | Whether the store is open 24 hours.               |
-| `closedReason` | `string \| null`             | Optional reason for why the store is closed.      |
+| Name           | Type                         | Description                                                      |
+| -------------- | ---------------------------- | ---------------------------------------------------------------- |
+| `status`       | `EcoStoreTenantWindowStatus` | Current status (OPEN, CLOSED, OPENING_SOON, CLOSING_SOON, etc.). |
+| `nextOpenDate` | `Date \| null`               | The date/time when the store will open or close next.            |
+| `is24h`        | `boolean`                    | Whether the store is open 24 hours.                              |
+| `closedReason` | `string \| null`             | Optional reason for why the store is closed.                     |
 
 ## How to use
 

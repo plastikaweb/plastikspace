@@ -27,6 +27,14 @@
       );
     }
 
+    &.closing {
+      @include mat.chips-overrides(
+        (
+          elevated-container-color: var(--warning-300),
+        )
+      );
+    }
+
     &.closed {
       @include mat.chips-overrides(
         (

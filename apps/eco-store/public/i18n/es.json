@@ -66,11 +66,13 @@
         "closedManuallyTitle": "Cierre temporal",
         "cancelledTitle": "Servicio no disponible",
         "cancelledDescription": "Esta tienda está desactivada actualmente. Contacta con soporte para más información.",
-        "dismiss": "Cerrar aviso de tienda cerrada"
+        "closingSoonTitle": "¡La tienda cerrará pronto!",
+        "closingSoonDescription": "Haz tu pedido antes de las {{time}}.",
+        "dismiss": "Cerrar aviso del estado de la tienda"
       },
       "closed": "Cerrado",
       "opensIn": "Abre en",
-      "closingSoon": "La tienda cerrará pronto",
+      "closingSoon": "CIERRA PRONTO",
       "open": "Abierto",
       "open24h": "Abierto 24/7",
       "openingSoon": "ABRE PRONTO",

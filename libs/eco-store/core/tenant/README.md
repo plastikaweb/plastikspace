@@ -24,6 +24,9 @@ It uses a strategy pattern to resolve the tenant ID, which is then used to filte
   - It handles **fetching the tenant** from the `EcoStoreTenantBaseService`.
   - It manages **tenant-specific addresses** via `getTenantAddresses()`, which loads addresses from `EcoStoreTenantAddressService`.
   - It provides **computed selectors**:
+    - `storeStatus`: Calculates the current window status (`OPEN`, `CLOSED`, `OPENING_SOON`, `CLOSING_SOON`, etc) using a minute-by-minute reactive timer.
+    - `nextOpenDate`: Returns the next opening date or the next closing date (when `CLOSING_SOON` is active) to support urgency countdowns.
+    - `isStoreOpen`: Returns `true` if the status is either `OPEN` or `CLOSING_SOON`.
     - `tenantLegalAddress`: Returns the tenant's legal/registered address.
     - `tenantAddressesContacts`: Returns tenant addresses formatted as `UserContact[]`, sorted with default address first.
   - It provides **helper methods** for logistics configuration:

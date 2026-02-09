@@ -80,5 +80,6 @@ export type EcoStoreTenantWindowStatus =
   | 'OPEN'
   | 'CLOSED'
   | 'OPENING_SOON'
+  | 'CLOSING_SOON'
   | 'CLOSED_MANUALLY'
   | 'CANCELLED';

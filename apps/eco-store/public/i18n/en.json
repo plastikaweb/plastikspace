@@ -66,11 +66,13 @@
         "closedManuallyTitle": "Temporary closure",
         "cancelledTitle": "Service suspended",
         "cancelledDescription": "This store is currently disabled. Contact support for more information.",
-        "dismiss": "Close store closed notice"
+        "closingSoonTitle": "Store closing soon!",
+        "closingSoonDescription": "Place your order before {{time}}.",
+        "dismiss": "Close store status notice"
       },
       "closed": "The store is currently closed.",
       "opensIn": "Opens in",
-      "closingSoon": "The store will close soon.",
+      "closingSoon": "CLOSING SOON",
       "open": "Open",
       "open24h": "Open 24/7",
       "openingSoon": "Opening soon!",
