@@ -4,6 +4,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { filter, map, startWith } from 'rxjs/operators';
 
 @Component({
@@ -17,6 +18,8 @@ import { filter, map, startWith } from 'rxjs/operators';
 export class EcoStoreCartComponent {
   readonly #router = inject(Router);
   readonly #route = inject(ActivatedRoute);
+  readonly #tenantStore = inject(ecoStoreTenantStore);
+  readonly isStoreOpen = this.#tenantStore.isStoreOpen;
 
   readonly steps = [
     { label: 'cart.steps.summary', route: 'resum' },
@@ -36,6 +39,10 @@ export class EcoStoreCartComponent {
   onStepChange(event: StepperSelectionEvent): void {
     const targetStep = this.steps[event.selectedIndex];
     const currentIndex = this.#getStepIndexFromUrl();
+
+    if (!this.isStoreOpen() && event.selectedIndex > 0) {
+      return;
+    }
 
     // We only navigate if the index is different to avoid loops.
     if (event.selectedIndex !== currentIndex && targetStep) {

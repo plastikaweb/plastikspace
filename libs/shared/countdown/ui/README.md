@@ -31,7 +31,13 @@ A reusable Angular component for displaying countdowns with a customizable prefi
 
 ## How to use
 
-Import the `SharedCountdownUiComponent` and use it in your template.
+Import the `SharedCountdownUiComponent` and use it in your component's `imports` array.
+
+```typescript
+import { SharedCountdownUiComponent } from '@plastik/shared/countdown';
+```
+
+Then use it in your template:
 
 ```html
 <plastik-countdown

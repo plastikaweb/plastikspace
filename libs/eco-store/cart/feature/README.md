@@ -258,7 +258,10 @@ It provides users with information about the situation and guidance on what they
 - Responsive design with proper spacing and typography
 
 **Guard Protection:**
-The component is protected by the `shippingUnavailableGuard` which checks if shipping is unavailable and redirects accordingly.
+
+- `shippingUnavailableGuard`: Checks if shipping is unavailable and redirects to the `no-disponible` route if the store has no valid shipping configuration.
+- `isStoreOpenGuard`: Ensures that users can only proceed with the checkout process (shipping and confirmation steps) when the store is currently open for orders.
+  If the store is closed, it redirects users back to the cart summary.
 
 **Translation Keys:**
 All text content is internationalized under the `cart.steps.shipping.unavailable` namespace:
@@ -279,6 +282,14 @@ All text content is internationalized under the `cart.steps.shipping.unavailable
 **Example Route Configuration:**
 
 ```typescript
+{
+  path: 'enviament',
+  canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard, isStoreOpenGuard],
+  resolve: { addresses: cartShippingResolver },
+  loadComponent: () =>
+    import('./eco-store-cart-steps/shipping/cart-shipping.component')
+      .then(m => m.CartShippingComponent),
+},
 {
   path: 'no-disponible',
   loadComponent: () =>

@@ -139,6 +139,8 @@
     "origin": "Origin",
     "provider": "Producer",
     "addLong": "Add to cart",
+    "storeClosed": "Store closed",
+
     "remove": "Remove",
     "decrement": "Decrease",
     "increment": "Increase",
@@ -241,7 +243,8 @@
       "removeItem": "Remove product",
       "oldPrice": "Previous price",
       "priceDrop": "Price drop!",
-      "priceIncrease": "Price increase!"
+      "priceIncrease": "Price increase!",
+      "checkoutDisabled": "Orders are disabled. The store opens on {{ date }} at {{ time }}."
     },
     "shipping": {
       "freeShippingAchieved": "You have achieved free shipping!",

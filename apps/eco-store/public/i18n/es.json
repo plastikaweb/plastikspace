@@ -139,6 +139,7 @@
     "origin": "Origen",
     "provider": "Productor",
     "addLong": "Agregar al carrito",
+    "storeClosed": "Tienda Cerrada",
     "remove": "Eliminar",
     "decrement": "Disminuir",
     "increment": "Aumentar",
@@ -241,7 +242,8 @@
       "removeItem": "Eliminar producto",
       "oldPrice": "Precio anterior",
       "priceDrop": "¡Bajada de precio!",
-      "priceIncrease": "¡Subida de precio!"
+      "priceIncrease": "¡Subida de precio!",
+      "checkoutDisabled": "Los pedidos están desactivados. La tienda abre el {{ date }} a las {{ time }}."
     },
     "shipping": {
       "freeShippingAchieved": "¡Has conseguido envío gratuito!",

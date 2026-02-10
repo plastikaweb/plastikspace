@@ -1,15 +1,16 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { CurrencyPipe, KeyValuePipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import { SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
 import { EcoStoreProductQuantityComponent } from '@plastik/eco-store/product-quantity';
-import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
 import { NewPriceWarningComponent } from '../../ui/new-price-warning/new-price-warning.component';
 
@@ -36,6 +37,7 @@ import { NewPriceWarningComponent } from '../../ui/new-price-warning/new-price-w
 })
 export class CartSummaryComponent {
   readonly cartStore = inject(ecoStoreCartStore);
+  readonly tenantStore = inject(ecoStoreTenantStore);
 
   onQuantityChange(event: number, product: EcoStoreProductWithCategoryName) {
     this.cartStore.addToCart(product, event);

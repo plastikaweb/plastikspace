@@ -88,6 +88,8 @@
         [subtotal]="cartStore.subtotal()"
         [taxes]="cartStore.tax()"
         [total]="cartStore.subtotal() + cartStore.tax()"
+        [isStoreOpen]="tenantStore.isStoreOpen()"
+        [nextOpenDate]="tenantStore.nextOpenDate()"
         [actionButtonText]="'cart.summary.goToShipping'"
         [actionRoute]="['../enviament']">
       </eco-cart-order-summary>

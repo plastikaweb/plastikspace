@@ -2,6 +2,7 @@ import { Route } from '@angular/router';
 import { pocketBaseIsLoggedGuard } from '@plastik/auth/pocketbase/data-access';
 import { cartShippingResolver } from './eco-store-cart-steps/shipping/cart-shipping.resolver';
 import { EcoStoreCartComponent } from './eco-store-cart/eco-store-cart.component';
+import { isStoreOpenGuard } from './guards/is-store-open.guard';
 import { shippingAvailableGuard } from './guards/shipping-available.guard';
 import { shippingUnavailableGuard } from './guards/shipping-unavailable.guard';
 
@@ -19,7 +20,7 @@ export const ecoStoreCartRoutes: Route[] = [
       },
       {
         path: 'enviament',
-        canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard],
+        canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard, isStoreOpenGuard],
         resolve: { addresses: cartShippingResolver },
         loadComponent: () =>
           import('./eco-store-cart-steps/shipping/cart-shipping.component').then(
@@ -28,9 +29,9 @@ export const ecoStoreCartRoutes: Route[] = [
       },
       {
         path: 'confirmacio',
-        canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard],
+        canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard, isStoreOpenGuard],
         loadComponent: () =>
-          import('./eco-store-cart-steps/cart-confirmation.component').then(
+          import('./eco-store-cart-steps/confirmation/cart-confirmation.component').then(
             m => m.CartConfirmationComponent
           ),
       },

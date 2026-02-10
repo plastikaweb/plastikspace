@@ -30,6 +30,8 @@
       [shipping]="cartStore.shipping()"
       [deliveryType]="cartStore.method() ?? 'pickup'"
       [total]="cartStore.total()"
+      [isStoreOpen]="tenantStore.isStoreOpen()"
+      [nextOpenDate]="tenantStore.nextOpenDate()"
       [actionButtonText]="'cart.shipping.goToConfirmation'"
       [actionRoute]="['../confirmacio']"
       [submitAvailable]="formValid()">

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented open/closed store logic and components ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 - Added "Closing Soon" state to store status with automated 1-hour threshold logic ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 - Implemented pulsing urgency indicator in store status chip ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
+- Added `isStoreOpenGuard` to prevent checkout when the store is closed ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 
 ---
 

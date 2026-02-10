@@ -140,6 +140,7 @@
     "origin": "Origen",
     "provider": "Productor",
     "addLong": "Afegir al cabàs",
+    "storeClosed": "Botiga Tancada",
     "remove": "Eliminar",
     "decrement": "Disminuir",
     "increment": "Augmentar",
@@ -242,7 +243,8 @@
       "removeItem": "Eliminar producte",
       "priceIncrease": "Pujada de preu!",
       "oldPrice": "Preu anterior",
-      "priceDrop": "Baixada de preu!"
+      "priceDrop": "Baixada de preu!",
+      "checkoutDisabled": "Les comandes estan desactivades. La botiga obre el {{ date }} a les {{ time }}."
     },
     "shipping": {
       "freeShippingAchieved": "Has aconseguit enviament gratuït!",
