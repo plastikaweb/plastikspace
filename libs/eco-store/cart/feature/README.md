@@ -106,7 +106,7 @@ setCustomLabel('method', 'cart.shipping.method.title', 'counter_1', [
 
   The shipping form integrates with the tenant store to provide pickup location addresses.
   When the shipping method is set to 'pickup', the address selector displays tenant addresses
-  (from `tenantStore.getTenantAddressesContacts()`). For delivery, it shows user addresses.
+  (from `tenantStore.tenantAddressesContacts()`). For delivery, it shows user addresses.
   The selected pickup address ID is used to retrieve location-specific time slots via
   `getTenantDeliveryOptionSlotsDays()` and `getTenantDeliveryOptionSlotsTimes()`.
 
@@ -164,9 +164,15 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 - `taxes: number` (required): The current tax.
 - `total: number` (required): The current shopping cart total (subtotal + taxes + shipping).
 - `shipping: number`: The shipping cost.
+- `nextOpenDate: Date | null`: The next scheduled opening date of the store.
 - `actionButtonText: string`: The button label.
 - `actionRoute: string[]`: The route to redirect on clicking the action button.
 - `deliveryType: EcoStoreTenantLogisticsDeliveryType`: The delivery type for the order.
+
+**Behavior:**
+
+When the store is closed (determined by the checkout flow logic), the component displays an informative banner with a `lock_clock` icon.
+If `nextOpenDate` is provided, it shows when the store will reopen; otherwise, it shows a generic "Orders are disabled" message.
 
 **Example Usage:**
 
@@ -177,6 +183,7 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
   total="340"
   taxes="40"
   shipping="5"
+  [nextOpenDate]="tenantStore.nextOpenDate()"
   actionButtonText="submit"
   actionRoute="['home']"
   deliveryType="delivery">
@@ -258,7 +265,10 @@ It provides users with information about the situation and guidance on what they
 - Responsive design with proper spacing and typography
 
 **Guard Protection:**
-The component is protected by the `shippingUnavailableGuard` which checks if shipping is unavailable and redirects accordingly.
+
+- `shippingUnavailableGuard`: Checks if shipping is unavailable and redirects to the `no-disponible` route if the store has no valid shipping configuration.
+- `isStoreOpenGuard`: Ensures that users can only proceed with the checkout process (shipping and confirmation steps) when the store is currently open for orders.
+  If the store is closed, it redirects users back to the cart summary.
 
 **Translation Keys:**
 All text content is internationalized under the `cart.steps.shipping.unavailable` namespace:
@@ -279,6 +289,14 @@ All text content is internationalized under the `cart.steps.shipping.unavailable
 **Example Route Configuration:**
 
 ```typescript
+{
+  path: 'enviament',
+  canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard, isStoreOpenGuard],
+  resolve: { addresses: cartShippingResolver },
+  loadComponent: () =>
+    import('./eco-store-cart-steps/shipping/cart-shipping.component')
+      .then(m => m.CartShippingComponent),
+},
 {
   path: 'no-disponible',
   loadComponent: () =>

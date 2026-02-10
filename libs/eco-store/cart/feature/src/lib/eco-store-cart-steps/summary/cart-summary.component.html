@@ -2,7 +2,7 @@
   <h2 class="mb-8 flex items-center gap-2 text-3xl font-bold text-neutral-800">
     <span>{{ 'cart.steps.summary.title' | translate }}</span>
     <span class="text-base font-normal text-neutral-500"
-      >({{ 'cart.summary.items-count' | translate: { value: cartStore.itemsCount() } }})</span
+      >({{ 'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() } }})</span
     >
   </h2>
 
@@ -51,30 +51,38 @@
                 </mat-card-content>
 
                 <mat-card-actions class="flex flex-row items-center justify-end pr-4! pb-4!">
-                  <eco-store-product-quantity
-                    class="min-w-48"
-                    size="sm"
-                    mode="summary"
-                    [product]="item.product"
-                    [quantity]="item.quantity"
-                    (quantityChange)="
-                      onQuantityChange($event, item.product)
-                    "></eco-store-product-quantity>
+                  @if (tenantStore.isStoreOpen()) {
+                    <eco-store-product-quantity
+                      class="min-w-48"
+                      size="sm"
+                      mode="summary"
+                      [product]="item.product"
+                      [quantity]="item.quantity"
+                      (quantityChange)="
+                        onQuantityChange($event, item.product)
+                      "></eco-store-product-quantity>
+                  } @else {
+                    <p class="min-w-48 text-right font-medium text-neutral-600">
+                      {{ 'cart.summary.quantityLabel' | translate }} {{ item.quantity }}
+                    </p>
+                  }
                   <p class="text-primary-600 w-28 min-w-28 text-center text-2xl font-bold">
                     {{
                       item.product.priceWithIva * item.quantity
                         | currency: 'EUR' : 'symbol' : '1.2-2'
                     }}
                   </p>
-                  <div class="mr-2 h-8 w-px bg-neutral-200"></div>
-                  <button
-                    matIconButton
-                    type="button"
-                    class="cart-delete-button transition-all"
-                    [aria-label]="'cart.summary.remove-item' | translate"
-                    (click)="onQuantityChange(0, item.product)">
-                    <mat-icon aria-hidden="true">delete</mat-icon>
-                  </button>
+
+                  @if (tenantStore.isStoreOpen()) {
+                    <button
+                      matIconButton
+                      type="button"
+                      class="cart-delete-button transition-all"
+                      [aria-label]="'cart.summary.removeItem' | translate"
+                      (click)="onQuantityChange(0, item.product)">
+                      <mat-icon aria-hidden="true">delete</mat-icon>
+                    </button>
+                  }
                 </mat-card-actions>
               </mat-card>
             }
@@ -88,7 +96,9 @@
         [subtotal]="cartStore.subtotal()"
         [taxes]="cartStore.tax()"
         [total]="cartStore.subtotal() + cartStore.tax()"
-        [actionButtonText]="'cart.summary.go-to-shipping'"
+        [isStoreOpen]="tenantStore.isStoreOpen()"
+        [nextOpenDate]="tenantStore.nextOpenDate()"
+        [actionButtonText]="'cart.summary.goToShipping'"
         [actionRoute]="['../enviament']">
       </eco-cart-order-summary>
     </div>

@@ -196,7 +196,7 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
       type: 'custom-label',
       className: 'flex flew-row items-start text-primary-600 mt-4',
       props: {
-        label: 'cart.shipping.come-to-store',
+        label: 'cart.shipping.comeToStore',
         icon: 'counter_3',
         containerClasses: 'p-2',
         iconClasses: 'scale-125',
@@ -271,7 +271,7 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig {
               const options = tenantStore.getTenantDeliveryOptionSlotsDays(method, addressId);
               return options.map((option: FormSelectOption) => ({
                 ...option,
-                label: translateService.instant(`cart.shipping.weekdays-labels.${option.label}`),
+                label: translateService.instant(`common.weekdays.${option.label}`),
               }));
             };
 

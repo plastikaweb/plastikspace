@@ -15,7 +15,7 @@ export type ProductPriceSize = 'sm' | 'md' | 'lg' | 'detail';
         <div [class]="priceContainerClass()">
           <span [class]="priceClass()">{{ price() | currency }}</span>
           <span [class]="unityTypeClass()"
-            >/ {{ 'products.unit-type.' + unitType() | translate }}</span
+            >/ {{ 'products.unitType.' + unitType() | translate }}</span
           >
         </div>
         @if (unitChipVisible()) {

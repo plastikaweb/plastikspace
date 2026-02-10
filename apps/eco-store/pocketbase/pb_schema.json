@@ -1515,6 +1515,25 @@
       },
       {
         "hidden": false,
+        "id": "bool80170468",
+        "name": "closed",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "bool"
+      },
+      {
+        "hidden": false,
+        "id": "json4247860789",
+        "maxSize": 0,
+        "name": "closedReason",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "json"
+      },
+      {
+        "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
         "onCreate": true,

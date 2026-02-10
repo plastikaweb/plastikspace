@@ -29,12 +29,14 @@ environments via GitHub Actions.
 
 | Collection           | Type | Required Fields                                  | Notes             |
 | -------------------- | ---- | ------------------------------------------------ | ----------------- |
-| `users`              | auth | email, password, clientId                        | Auth collection   |
+| `users`              | auth | email, password, tenant                          | Auth collection   |
 | `products`           | base | name, normalizedName, unitType, category         | Main products     |
-| `product_categories` | base | normalizedName, name, description, client, group | Categories        |
-| `clients`            | base | name, email                                      | Client management |
+| `product_categories` | base | normalizedName, name, description, tenant, group | Categories        |
+| `tenants`            | base | name, email, logisticsConfig                     | Tenant management |
+| `tenant_addresses`   | base | tenant, address, slots                           | Pickup locations  |
 | `languages`          | base | code                                             | i18n support      |
 | `category_groups`    | base | name                                             | Category grouping |
+| `orders`             | base | tenant, user, total, status                      | Order management  |
 
 ---
 
@@ -511,5 +513,5 @@ apps/eco-store/scripts/
 
 ---
 
-**Last Updated**: 2025-12-03
+**Last Updated**: 2026-02-10
 **Maintainer**: Eco-Store Development Team

@@ -20,7 +20,7 @@ fi
 CHANGED_FILES=$(git diff --name-only @{upstream}...HEAD 2>/dev/null || git diff --name-only HEAD~1...HEAD)
 if echo "$CHANGED_FILES" | grep -Eq '^(apps/eco-store/|libs/eco-store/)'; then
   echo "🏁 Running eco-store:a11y (using existing build)..."
-  if ! npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run; then
+  if ! yarn npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run; then
     echo "❌ eco-store:a11y failed! Push aborted."
     exit 1
   fi
@@ -30,7 +30,7 @@ fi
 
 if echo "$CHANGED_FILES" | grep -Eq '^(apps/nasa-images/|libs/nasa-images/)'; then
   echo "🏁 Running nasa-images:a11y (using existing build)..."
-  if ! npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run; then
+  if ! yarn npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run; then
     echo "❌ nasa-images:a11y failed! Push aborted."
     exit 1
   fi

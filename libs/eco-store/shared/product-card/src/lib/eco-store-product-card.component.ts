@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
-import { SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { EcoStoreProductQuantityControlComponent } from './components/eco-store-product-quantity-control/eco-store-product-quantity-control.component';
-import { RouterLink } from '@angular/router';
-import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
 import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/product-category-label';
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
-import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
+import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { EcoStoreProductQuantityControlComponent } from './components/eco-store-product-quantity-control/eco-store-product-quantity-control.component';
 
 @Component({
   selector: 'eco-store-product-card',
@@ -37,6 +37,7 @@ export class EcoStoreProductCardComponent {
   isFirst = input<boolean>(false);
   minimalVersion = input<boolean>(false);
   quantity = input<number>(0);
+  isOpen = input<boolean>(true);
 
   addToCart = output<{ product: EcoStoreProductWithCategoryName; quantity: number }>();
   toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();

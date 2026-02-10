@@ -51,9 +51,6 @@
     },
     {
       "path": "../../libs/shared/activity/ui"
-    },
-    {
-      "path": "../../libs/shared/activity/data-access"
     }
   ]
 }

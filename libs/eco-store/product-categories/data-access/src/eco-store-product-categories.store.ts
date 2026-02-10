@@ -75,8 +75,8 @@ export const ecoStoreProductCategoriesStore = signalStore(
     const showErrorNotification = (error: ClientResponseError): void => {
       store._notification.show({
         type: 'ERROR',
-        message: error.message ?? `product-categories.fullList.error`,
-        action: 'notification.close-short',
+        message: error.message ?? `products.categories.error`,
+        action: 'common.notification.close',
         duration: 5000,
       });
     };

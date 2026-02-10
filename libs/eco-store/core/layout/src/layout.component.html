@@ -1,8 +1,12 @@
-<div class="mx-auto grid h-screen w-screen grid-rows-[auto_1fr_auto]">
+<div class="mx-auto grid h-screen w-screen grid-rows-[auto_auto_1fr_auto]">
   <eco-header
     class="z-1000"
     [formConfig]="searchFormConfig"
     [tenant]="tenantStore.tenant()"
+    [storeStatus]="tenantStore.storeStatus()"
+    [nextOpenDate]="tenantStore.nextOpenDate()"
+    [is24h]="tenantStore.is24h()"
+    [closedReason]="tenantStore.closedReasonTranslated()"
     (submitEvent)="onSearchSubmit($event)">
     <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
     <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
@@ -24,6 +28,23 @@
         (deactivate)="isSidenavOpen.set(false)"></router-outlet>
     </mat-sidenav>
     <mat-sidenav-content #sidenavContent class="px-6" id="mainContent" role="main" tabindex="-1">
+      @if (
+        (tenantStore.storeStatus() === 'CLOSED' ||
+          tenantStore.storeStatus() === 'CANCELLED' ||
+          tenantStore.storeStatus() === 'OPENING_SOON' ||
+          tenantStore.storeStatus() === 'CLOSING_SOON' ||
+          tenantStore.storeStatus() === 'CLOSED_MANUALLY') &&
+        !isBannerDismissed()
+      ) {
+        <eco-store-status-banner
+          class="mt-8"
+          [status]="tenantStore.storeStatus()"
+          [nextOpenDate]="tenantStore.nextOpenDate()"
+          [closedReason]="tenantStore.closedReasonTranslated()"
+          (dismiss)="isBannerDismissed.set(true)">
+        </eco-store-status-banner>
+      }
+
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>

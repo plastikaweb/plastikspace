@@ -30,7 +30,9 @@
       [shipping]="cartStore.shipping()"
       [deliveryType]="cartStore.method() ?? 'pickup'"
       [total]="cartStore.total()"
-      [actionButtonText]="'cart.shipping.go-to-confirmation'"
+      [isStoreOpen]="tenantStore.isStoreOpen()"
+      [nextOpenDate]="tenantStore.nextOpenDate()"
+      [actionButtonText]="'cart.shipping.goToConfirmation'"
       [actionRoute]="['../confirmacio']"
       [submitAvailable]="formValid()">
       <div extra-shipping-content>

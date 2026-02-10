@@ -22,6 +22,7 @@ import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/produc
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 @Component({
@@ -48,6 +49,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 export default class EcoStoreProductFeatureComponent {
   readonly #productsStore = inject(ecoStoreProductsStore);
   readonly #cartStore = inject(ecoStoreCartStore);
+  readonly tenantsStore = inject(ecoStoreTenantStore);
   readonly pendingChanges = computed(() => {
     const product = this.product();
     if (!product) return false;

@@ -16,4 +16,12 @@
       )
     );
   }
+
+  .cart-order-summary-checkout-disabled {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-800),
+      )
+    );
+  }
 }

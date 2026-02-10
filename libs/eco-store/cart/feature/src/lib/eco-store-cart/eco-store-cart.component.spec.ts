@@ -1,8 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EcoStoreCartComponent } from './eco-store-cart.component';
-import { provideTranslateService } from '@ngx-translate/core';
 import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { axe, toHaveNoViolations } from 'jest-axe';
+import { EcoStoreCartComponent } from './eco-store-cart.component';
 
 describe('EcoStoreCartComponent', () => {
   let component: EcoStoreCartComponent;
@@ -12,7 +14,11 @@ describe('EcoStoreCartComponent', () => {
     expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       imports: [EcoStoreCartComponent],
-      providers: [provideRouter([]), provideTranslateService()],
+      providers: [
+        provideRouter([]),
+        provideTranslateService(),
+        { provide: ecoStoreTenantStore, useValue: mockEcoStoreTenantStore },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EcoStoreCartComponent);

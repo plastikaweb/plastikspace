@@ -60,8 +60,7 @@
   "files.autoSave": "onFocusChange",
   "workbench.colorTheme": "Atom One Dark",
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "always",
-    "source.fixAll.eslint": "always"
+    "source.organizeImports": "always"
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,
@@ -128,5 +127,13 @@
   "i18n-ally.localesPaths": ["apps/eco-store/public/i18n"],
   "i18n-ally.keystyle": "nested",
   "markdownlint.configFile": "./.markdownlint-cli2.yaml",
-  "markdownlint.run": "onSave"
+  "markdownlint.run": "onSave",
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.fontSize": 13,
+  "diffEditor.experimental.useTrueInlineView": false,
+  "debug.console.fontSize": 13,
+  "terminal.integrated.fontSize": 12,
+  "markdown.preview.fontSize": 13,
+  "i18n-ally.sourceLanguage": "ca"
 }

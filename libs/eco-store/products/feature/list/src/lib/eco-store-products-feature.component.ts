@@ -9,6 +9,7 @@ import { EcoStoreProductWithCategoryName, ProductCategory } from '@plastik/eco-s
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
 import { activityStore } from '@plastik/shared/activity/data-access';
@@ -34,6 +35,7 @@ export default class EcoStoreProductsFeatureComponent {
   protected productsStore = inject(ecoStoreProductsStore);
   protected activityStore = inject(activityStore);
   protected cartStore = inject(ecoStoreCartStore);
+  protected tenantStore = inject(ecoStoreTenantStore);
   readonly #route = inject(ActivatedRoute);
   readonly #router = inject(Router);
   readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);

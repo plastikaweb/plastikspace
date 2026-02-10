@@ -24,8 +24,13 @@ It uses a strategy pattern to resolve the tenant ID, which is then used to filte
   - It handles **fetching the tenant** from the `EcoStoreTenantBaseService`.
   - It manages **tenant-specific addresses** via `getTenantAddresses()`, which loads addresses from `EcoStoreTenantAddressService`.
   - It provides **computed selectors**:
-    - `getTenantLegalAddress`: Returns the tenant's legal/registered address.
-    - `getTenantAddressesContacts`: Returns tenant addresses formatted as `UserContact[]`, sorted with default address first.
+    - `storeStatus`: Calculates the current window status (`OPEN`, `CLOSED`, `OPENING_SOON`, `CLOSING_SOON`, etc) using a minute-by-minute reactive timer.
+    - `nextOpenDate`: Returns the next opening date or the next closing date (when `CLOSING_SOON` is active) to support urgency countdowns.
+    - `isStoreOpen`: Returns `true` if the status is either `OPEN` or `CLOSING_SOON`.
+    - `isShippingAvailable`: Checks if at least one shipping method (pickup or delivery) is fully configured and enabled.
+    - `getTenantAvailableShippingMethods`: Returns an array of fully configured and enabled shipping method types (`pickup`, `delivery`).
+    - `tenantLegalAddress`: Returns the tenant's legal/registered address.
+    - `tenantAddressesContacts`: Returns tenant addresses formatted as `UserContact[]`, sorted with default address first.
   - It provides **helper methods** for logistics configuration:
     - `getTenantDeliveryOptionSlotsDays()` and `getTenantDeliveryOptionSlotsTimes()`: Support both delivery and pickup slots (pickup requires `addressId`).
     - `getTenantDeliveryOptionCost()`: Calculates shipping cost based on tiered pricing.

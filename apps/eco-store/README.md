@@ -72,6 +72,7 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 - [**Product Price**](../../libs/eco-store/shared/product-price/README.md): Price display and unit components.
 - [**Category Label**](../../libs/eco-store/shared/product-category-label/README.md): Category badge component.
 - [**Favorite Button**](../../libs/eco-store/shared/favorite-button/README.md): Product favorite toggle component.
+- [**Store Status Banner**](../../libs/eco-store/shared/store-status-banner/README.md): Store operational status and countdown banner.
 
 ### 🧰 Shared Utils
 
@@ -86,6 +87,9 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 - [**Entities**](../../libs/eco-store/core/entities/README.md): Shared domain models.
 - [**Tenant**](../../libs/eco-store/core/tenant/README.md): Multi-tenancy resolution and configuration.
 - [**Core API**](../../libs/eco-store/core/api/data-access/README.md): Base abstract services for tenant-aware API interactions.
+- [**Store Window**](../../libs/eco-store/store-window/README.md): Store status and countdown feature.
+- [**Countdown UI**](../../libs/shared/countdown/ui/README.md): Shared countdown display component.
+- [**Countdown Utils**](../../libs/shared/countdown/util/README.md): Reactive countdown logic using Signals.
 
 ---
 

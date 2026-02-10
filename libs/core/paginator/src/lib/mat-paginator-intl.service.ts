@@ -20,15 +20,15 @@ export class MatPaginatorIntlService extends MatPaginatorIntl {
   }
 
   #updateLabels(): void {
-    this.itemsPerPageLabel = this.#translateService.instant('paginator.items-per-page');
-    this.nextPageLabel = this.#translateService.instant('paginator.next-page');
-    this.previousPageLabel = this.#translateService.instant('paginator.previous-page');
-    this.firstPageLabel = this.#translateService.instant('paginator.first-page');
-    this.lastPageLabel = this.#translateService.instant('paginator.last-page');
+    this.itemsPerPageLabel = this.#translateService.instant('common.paginator.itemsPerPage');
+    this.nextPageLabel = this.#translateService.instant('common.paginator.nextPage');
+    this.previousPageLabel = this.#translateService.instant('common.paginator.previousPage');
+    this.firstPageLabel = this.#translateService.instant('common.paginator.firstPage');
+    this.lastPageLabel = this.#translateService.instant('common.paginator.lastPage');
 
     this.getRangeLabel = (page: number, pageSize: number, length: number): string => {
       if (length === 0 || pageSize === 0) {
-        return this.#translateService.instant('paginator.no-items', { length });
+        return this.#translateService.instant('common.paginator.noItems', { length });
       }
 
       length = Math.max(length, 0);
@@ -36,7 +36,7 @@ export class MatPaginatorIntlService extends MatPaginatorIntl {
       const endIndex =
         startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
 
-      return this.#translateService.instant('paginator.range', {
+      return this.#translateService.instant('common.paginator.range', {
         start: startIndex + 1,
         end: endIndex,
         total: length,

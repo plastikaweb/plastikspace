@@ -207,6 +207,9 @@
       "@plastik/core/paginator": ["libs/core/paginator/src/index.ts"],
       "@plastik/sort-selector": ["libs/shared/sort-selector/src/index.ts"],
       "@plastik/eco-store/shared/utils": ["libs/eco-store/shared/utils/src/index.ts"],
+      "@plastik/eco-store/status-banner": [
+        "libs/eco-store/shared/store-status-banner/src/index.ts"
+      ],
       "@plastik/eco-store/shared/tokens": ["libs/eco-store/shared/tokens/src/index.ts"],
       "@plastik/eco-store/product": ["libs/eco-store/products/feature/detail/src/index.ts"],
       "@plastik/eco-store/product-category-label": [
@@ -232,6 +235,7 @@
       "@plastik/auth/feature": ["libs/shared/auth/feature/src/index.ts"],
       "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
       "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"],
+      "@plastik/eco-store/store-window": ["libs/eco-store/store-window/src/index.ts"],
       "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"],
       "@plastik/eco-store/tenant/testing": [
         "libs/eco-store/core/tenant/src/eco-store-tenant.store.mock.ts"
@@ -239,7 +243,9 @@
       "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"],
       "@plastik/shared/pocketbase-user-addresses": [
         "libs/shared/pocketbase-user-addresses/data-access/src/index.ts"
-      ]
+      ],
+      "@plastik/shared/countdown/util": ["libs/shared/countdown/util/src/index.ts"],
+      "@plastik/shared/countdown": ["libs/shared/countdown/ui/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

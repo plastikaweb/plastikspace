@@ -1,8 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthFormFacade, LoginData } from '@plastik/auth/entities';
-import { FORM_TOKEN, FormConfig } from '@plastik/core/entities';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
+import { FORM_TOKEN, FormConfig } from '@plastik/core/entities';
 
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 
@@ -15,8 +15,8 @@ export class EcoStoreAuthLoginFacadeService implements AuthFormFacade<LoginData>
   readonly #tenantStore = inject(ecoStoreTenantStore);
   formConfig = inject(FORM_TOKEN) as FormConfig<LoginData>;
   extraLinks = signal([
-    { label: 'auth.register.label', route: '/registre' },
-    { label: 'auth.request-password.label', route: '/peticio-clau' },
+    { label: 'auth.register.title', route: '/registre' },
+    { label: 'auth.recover.title', route: '/peticio-clau' },
   ]);
 
   async onSubmit(credentials: LoginData): Promise<void> {

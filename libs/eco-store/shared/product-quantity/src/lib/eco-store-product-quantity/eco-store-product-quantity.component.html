@@ -17,7 +17,7 @@
       [class.w-full]="mode() === 'card'"
       [class.w-auto]="mode() === 'detail'"
       [class.sm:w-48]="mode() === 'detail'"
-      [attr.aria-label]="'a11y.product-quantity' | translate: { value: product().name }">
+      [attr.aria-label]="'common.a11y.productQuantity' | translate: { value: product().name }">
       <button
         matIconButton
         type="button"
@@ -40,7 +40,8 @@
       <div class="flex items-baseline justify-center not-first-of-type:cursor-text">
         <label class="sr-only" [attr.for]="'qty-' + product().id">
           {{
-            'a11y.product-quantity' | translate: { product: product().name, quantity: quantity() }
+            'common.a11y.productQuantity'
+              | translate: { product: product().name, quantity: quantity() }
           }}
         </label>
 
@@ -58,12 +59,13 @@
           [min]="minLimit()"
           [max]="maxLimit()"
           [attr.aria-label]="
-            'a11y.product-quantity' | translate: { product: product().name, quantity: quantity() }
+            'common.a11y.productQuantity'
+              | translate: { product: product().name, quantity: quantity() }
           "
           (change)="onManualInput($event)"
           (keydown.enter)="qtyInput.blur()" />
         <span class="text-md text-neutral-600" aria-hidden="true">{{
-          `products.unit-abbreviation.${product().unitType}` | translate
+          `products.unitAbbreviation.${product().unitType}` | translate
         }}</span>
       </div>
 
@@ -87,7 +89,7 @@
         [disabled]="!isQuantityModified()"
         (click)="onAddToCart()">
         <mat-icon class="scale-125" aria-hidden="true">shopping_cart</mat-icon>
-        {{ 'products.add-long' | translate }}
+        {{ 'products.addLong' | translate }}
       </button>
     }
   </div>

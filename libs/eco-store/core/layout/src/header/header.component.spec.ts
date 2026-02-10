@@ -3,10 +3,11 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
-import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { CountdownService } from '@plastik/shared/countdown/util';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import { HeaderComponent } from './header.component';
-import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 
 describe('HeaderComponent', () => {
   let component: HeaderComponent;
@@ -41,7 +42,17 @@ describe('HeaderComponent', () => {
         provideTranslateService(),
         {
           provide: ecoStoreTenantStore,
-          useValue: ecoStoreTenantStoreMock,
+          useValue: mockEcoStoreTenantStore,
+        },
+        {
+          provide: CountdownService,
+          useValue: {
+            createCountdown: jest.fn().mockReturnValue({
+              data: jest.fn(),
+              text: jest.fn().mockReturnValue(''),
+              isExpired: jest.fn(),
+            }),
+          },
         },
       ],
     }).compileComponents();
