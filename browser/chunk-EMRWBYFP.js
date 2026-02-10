@@ -18,7 +18,7 @@ import {
   on,
   props,
   select
-} from "./chunk-W45ZI74R.js";
+} from "./chunk-XOOKMJCX.js";
 import {
   NavigationCancel,
   NavigationEnd,
@@ -30,7 +30,10 @@ import {
 } from "./chunk-KVF6T647.js";
 import {
   _ViewRepeaterOperation
-} from "./chunk-K3GV3W34.js";
+} from "./chunk-TUQX2VCN.js";
+import {
+  takeUntilDestroyed
+} from "./chunk-RHICAVNE.js";
 import {
   HttpErrorResponse,
   Title
@@ -3160,9 +3163,10 @@ var TranslateModule = class _TranslateModule {
 var NavigationService = class _NavigationService {
   #router = inject(Router);
   #location = inject(Location);
+  #destroyRef = inject(DestroyRef);
   #history = [];
   constructor() {
-    this.#router.events.subscribe((event) => {
+    this.#router.events.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.#history = [event.urlAfterRedirects, ...this.#history];
       }
@@ -3674,4 +3678,4 @@ export {
   PrefixTitleService,
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-3ZCOY5GZ.js.map
+//# sourceMappingURL=chunk-EMRWBYFP.js.map

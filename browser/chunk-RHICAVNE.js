@@ -2362,6 +2362,23 @@ var ConfigurableFocusTrapFactory = class _ConfigurableFocusTrapFactory {
 })();
 
 // node_modules/@angular/core/fesm2022/rxjs-interop.mjs
+function takeUntilDestroyed(destroyRef) {
+  if (!destroyRef) {
+    ngDevMode && assertInInjectionContext(takeUntilDestroyed);
+    destroyRef = inject(DestroyRef);
+  }
+  const destroyed$ = new Observable((subscriber) => {
+    if (destroyRef.destroyed) {
+      subscriber.next();
+      return;
+    }
+    const unregisterFn = destroyRef.onDestroy(subscriber.next.bind(subscriber));
+    return unregisterFn;
+  });
+  return (source) => {
+    return source.pipe(takeUntil(destroyed$));
+  };
+}
 function toSignal(source, options) {
   typeof ngDevMode !== "undefined" && ngDevMode && assertNotInReactiveContext(toSignal, "Invoking `toSignal` causes new subscriptions every time. Consider moving `toSignal` outside of the reactive context and read the signal value where needed.");
   const requiresCleanup = !options?.manualCleanup;
@@ -2551,6 +2568,7 @@ export {
   _getAnimationsState,
   _animationsDisabled,
   _StructuralStylesLoader,
+  takeUntilDestroyed,
   toSignal
 };
 /*! Bundled license information:
@@ -2562,4 +2580,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-M6447WXU.js.map
+//# sourceMappingURL=chunk-RHICAVNE.js.map

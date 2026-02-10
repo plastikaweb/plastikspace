@@ -4,19 +4,18 @@ import {
 } from "./chunk-FRABLIEU.js";
 import {
   PushPipe
-} from "./chunk-W45ZI74R.js";
+} from "./chunk-XOOKMJCX.js";
 import {
   MatButton,
   MatButtonModule
-} from "./chunk-5MMTBOXC.js";
-import "./chunk-M6447WXU.js";
+} from "./chunk-3JCSOKQC.js";
+import "./chunk-RHICAVNE.js";
 import "./chunk-UQ7BNS5D.js";
 import "./chunk-XV33ABI2.js";
 import "./chunk-SJ44HZSU.js";
 import "./chunk-7E77KQQ3.js";
 import "./chunk-MMY5FTVS.js";
 import {
-  NgClass,
   NgTemplateOutlet
 } from "./chunk-BUMCWPHS.js";
 import {
@@ -34,6 +33,7 @@ import {
   ɵsetClassDebugInfo,
   ɵɵadvance,
   ɵɵattribute,
+  ɵɵclassMap,
   ɵɵconditional,
   ɵɵconditionalCreate,
   ɵɵdefineComponent,
@@ -50,7 +50,6 @@ import {
   ɵɵpipe,
   ɵɵpipeBind1,
   ɵɵproperty,
-  ɵɵpureFunction0,
   ɵɵreference,
   ɵɵrepeater,
   ɵɵrepeaterCreate,
@@ -94,7 +93,6 @@ var ReturnAsObservablePipe = class _ReturnAsObservablePipe {
 })();
 
 // libs/shared/button/ui/src/lib/shared-button-ui/shared-button-ui.component.ts
-var _c0 = () => ({});
 function SharedButtonUiComponent_Conditional_0_ng_container_1_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainer(0);
@@ -115,7 +113,8 @@ function SharedButtonUiComponent_Conditional_0_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
     const content_r3 = \u0275\u0275reference(3);
-    \u0275\u0275property("ngClass", ctx_r1.config().classes || \u0275\u0275pureFunction0(5, _c0))("disabled", ctx_r1.config().disabled);
+    \u0275\u0275classMap(`button--rounded ${ctx_r1.config().classes || ""}`);
+    \u0275\u0275property("disabled", ctx_r1.config().disabled);
     \u0275\u0275attribute("aria-label", ctx_r1.config().ariaLabel)("data-test", ctx_r1.config().dataTestId);
     \u0275\u0275advance();
     \u0275\u0275property("ngTemplateOutlet", content_r3);
@@ -221,7 +220,7 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
   static \u0275fac = function SharedButtonUiComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedButtonUiComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedButtonUiComponent, selectors: [["plastik-shared-button"]], inputs: { config: [1, "config"] }, outputs: { sendAction: "sendAction" }, decls: 4, vars: 2, consts: [["content", ""], ["mat-button", "", 1, "button--rounded", 3, "ngClass", "disabled"], ["target", "_blank", 1, "block", 3, "href"], ["mat-button", "", 1, "button--rounded", 3, "click", "ngClass", "disabled"], [4, "ngTemplateOutlet"], [3, "src", "svgClass"]], template: function SharedButtonUiComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedButtonUiComponent, selectors: [["plastik-shared-button"]], inputs: { config: [1, "config"] }, outputs: { sendAction: "sendAction" }, decls: 4, vars: 2, consts: [["content", ""], ["mat-button", "", 3, "class", "disabled"], ["target", "_blank", 1, "block", 3, "href"], ["mat-button", "", 3, "click", "disabled"], [4, "ngTemplateOutlet"], [3, "src", "svgClass"]], template: function SharedButtonUiComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275conditionalCreate(0, SharedButtonUiComponent_Conditional_0_Template, 2, 6, "button", 1);
       \u0275\u0275conditionalCreate(1, SharedButtonUiComponent_Conditional_1_Template, 2, 4, "a", 2);
@@ -233,7 +232,6 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
       \u0275\u0275conditional(ctx.config().type === "link" ? 1 : -1);
     }
   }, dependencies: [
-    NgClass,
     NgTemplateOutlet,
     MatButtonModule,
     MatButton,
@@ -247,7 +245,6 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedButtonUiComponent, [{
     type: Component,
     args: [{ selector: "plastik-shared-button", imports: [
-      NgClass,
       NgTemplateOutlet,
       PushPipe,
       MatButtonModule,
@@ -256,8 +253,7 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
     ], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (config().type === 'button') {
   <button
     mat-button
-    class="button--rounded"
-    [ngClass]="config().classes || {}"
+    [class]="\`button--rounded \${config().classes || ''}\`"
     [disabled]="config().disabled"
     [attr.aria-label]="config().ariaLabel"
     [attr.data-test]="config().dataTestId"
@@ -293,9 +289,9 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
   }], null, { config: [{ type: Input, args: [{ isSignal: true, alias: "config", required: true }] }], sendAction: [{ type: Output, args: ["sendAction"] }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedButtonUiComponent, { className: "SharedButtonUiComponent", filePath: "libs/shared/button/ui/src/lib/shared-button-ui/shared-button-ui.component.ts", lineNumber: 23 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedButtonUiComponent, { className: "SharedButtonUiComponent", filePath: "libs/shared/button/ui/src/lib/shared-button-ui/shared-button-ui.component.ts", lineNumber: 22 });
 })();
 export {
   SharedButtonUiComponent
 };
-//# sourceMappingURL=src-TENMGYZ4.js.map
+//# sourceMappingURL=src-K3DSZ6LJ.js.map

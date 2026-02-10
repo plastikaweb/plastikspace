@@ -4,7 +4,7 @@ import {
 } from "./chunk-FRABLIEU.js";
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from "./chunk-5UHYYTGL.js";
+} from "./chunk-FGYZG72O.js";
 import {
   MatToolbar,
   MatToolbarModule
@@ -16,7 +16,7 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-CTMCTIIC.js";
+} from "./chunk-3534QGDC.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
@@ -34,7 +34,7 @@ import {
   provideTranslateService,
   provideWithApiEnv,
   routerReducers
-} from "./chunk-3ZCOY5GZ.js";
+} from "./chunk-EMRWBYFP.js";
 import {
   ActionsSubject,
   INIT,
@@ -47,7 +47,7 @@ import {
   StoreModule,
   UPDATE,
   provideStore
-} from "./chunk-W45ZI74R.js";
+} from "./chunk-XOOKMJCX.js";
 import {
   RouterLink,
   RouterLinkActive,
@@ -65,13 +65,13 @@ import {
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-UV5KDLAJ.js";
+} from "./chunk-GCZQ35XA.js";
 import {
   DomPortalOutlet,
   MatIcon,
   MatIconModule,
   TemplatePortal
-} from "./chunk-K3GV3W34.js";
+} from "./chunk-TUQX2VCN.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatButton,
@@ -79,7 +79,7 @@ import {
   MatRippleModule,
   RippleRenderer,
   coerceBooleanProperty
-} from "./chunk-5MMTBOXC.js";
+} from "./chunk-3JCSOKQC.js";
 import {
   A,
   A11yModule,
@@ -106,7 +106,7 @@ import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   toSignal
-} from "./chunk-M6447WXU.js";
+} from "./chunk-RHICAVNE.js";
 import {
   bootstrapApplication,
   provideHttpClient
@@ -183,6 +183,7 @@ import {
   numberAttribute,
   observeOn,
   of,
+  output,
   provideAppInitializer,
   provideZonelessChangeDetection,
   queueScheduler,
@@ -4560,11 +4561,11 @@ var _c05 = [[["", "header", ""]], [["", "menu-items", ""]], [["", "footer", ""]]
 var _c15 = ["[header]", "[menu-items]", "[footer]"];
 var CoreCmsLayoutUiSidenavComponent = class _CoreCmsLayoutUiSidenavComponent {
   #zone = inject(NgZone);
-  position = "start";
-  mode = "over";
-  fixedInViewport = false;
-  sidenavOpened = true;
-  toggleSidenav = new EventEmitter();
+  position = input("start", ...ngDevMode ? [{ debugName: "position" }] : []);
+  mode = input("over", ...ngDevMode ? [{ debugName: "mode" }] : []);
+  fixedInViewport = input(false, ...ngDevMode ? [{ debugName: "fixedInViewport" }] : []);
+  sidenavOpened = input(true, ...ngDevMode ? [{ debugName: "sidenavOpened" }] : []);
+  toggleSidenav = output();
   onToggleSidenav(opened) {
     this.#zone.run(() => {
       this.toggleSidenav.emit(opened);
@@ -4573,7 +4574,7 @@ var CoreCmsLayoutUiSidenavComponent = class _CoreCmsLayoutUiSidenavComponent {
   static \u0275fac = function CoreCmsLayoutUiSidenavComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CoreCmsLayoutUiSidenavComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CoreCmsLayoutUiSidenavComponent, selectors: [["plastik-core-cms-layout-ui-sidenav"]], inputs: { position: "position", mode: "mode", fixedInViewport: "fixedInViewport", sidenavOpened: "sidenavOpened" }, outputs: { toggleSidenav: "toggleSidenav" }, ngContentSelectors: _c15, decls: 8, vars: 4, consts: [[3, "backdropClick"], ["data-test", "sidenav", 1, "p-md", 3, "keydown.escape", "mode", "fixedInViewport", "position", "opened"], [1, "mt-sm"], ["role", "main", "tabindex", "-1", "id", "mainContent", 1, "p-sub", "sm:p-sm", "lg:p-md", "xl:p-lg", "motion-safe:scroll-smooth"]], template: function CoreCmsLayoutUiSidenavComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CoreCmsLayoutUiSidenavComponent, selectors: [["plastik-core-cms-layout-ui-sidenav"]], inputs: { position: [1, "position"], mode: [1, "mode"], fixedInViewport: [1, "fixedInViewport"], sidenavOpened: [1, "sidenavOpened"] }, outputs: { toggleSidenav: "toggleSidenav" }, ngContentSelectors: _c15, decls: 8, vars: 4, consts: [[1, "block", "h-full", 3, "backdropClick"], ["data-test", "sidenav", 1, "p-md", 3, "keydown.escape", "mode", "fixedInViewport", "position", "opened"], [1, "mt-sm"], ["role", "main", "tabindex", "-1", "id", "mainContent", 1, "p-sub", "sm:p-sm", "lg:p-md", "xl:p-lg", "motion-safe:scroll-smooth"]], template: function CoreCmsLayoutUiSidenavComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c05);
       \u0275\u0275elementStart(0, "mat-sidenav-container", 0);
@@ -4595,28 +4596,18 @@ var CoreCmsLayoutUiSidenavComponent = class _CoreCmsLayoutUiSidenavComponent {
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275property("mode", ctx.mode)("fixedInViewport", ctx.fixedInViewport)("position", ctx.position)("opened", ctx.sidenavOpened);
+      \u0275\u0275property("mode", ctx.mode())("fixedInViewport", ctx.fixedInViewport())("position", ctx.position())("opened", ctx.sidenavOpened());
     }
   }, dependencies: [RouterOutlet, MatSidenavModule, MatSidenav, MatSidenavContainer, MatSidenavContent, MatListModule, MatDivider], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CoreCmsLayoutUiSidenavComponent, [{
     type: Component,
-    args: [{ selector: "plastik-core-cms-layout-ui-sidenav", imports: [RouterOutlet, MatSidenavModule, MatListModule], changeDetection: ChangeDetectionStrategy.OnPush, template: '<mat-sidenav-container (backdropClick)="onToggleSidenav(false)">\n  <mat-sidenav\n    class="p-md"\n    data-test="sidenav"\n    [mode]="mode"\n    [fixedInViewport]="fixedInViewport"\n    [position]="position"\n    [opened]="sidenavOpened"\n    (keydown.escape)="onToggleSidenav(false)">\n    <ng-content select="[header]"></ng-content>\n    <mat-divider class="mt-sm"></mat-divider>\n    <ng-content select="[menu-items]"></ng-content>\n    <ng-content select="[footer]"></ng-content>\n  </mat-sidenav>\n\n  <mat-sidenav-content\n    role="main"\n    tabindex="-1"\n    id="mainContent"\n    class="p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth">\n    <router-outlet></router-outlet>\n  </mat-sidenav-content>\n</mat-sidenav-container>\n' }]
-  }], null, { position: [{
-    type: Input
-  }], mode: [{
-    type: Input
-  }], fixedInViewport: [{
-    type: Input
-  }], sidenavOpened: [{
-    type: Input
-  }], toggleSidenav: [{
-    type: Output
-  }] });
+    args: [{ selector: "plastik-core-cms-layout-ui-sidenav", imports: [RouterOutlet, MatSidenavModule, MatListModule], changeDetection: ChangeDetectionStrategy.OnPush, template: '<mat-sidenav-container class="block h-full" (backdropClick)="onToggleSidenav(false)">\n  <mat-sidenav\n    class="p-md"\n    data-test="sidenav"\n    [mode]="mode()"\n    [fixedInViewport]="fixedInViewport()"\n    [position]="position()"\n    [opened]="sidenavOpened()"\n    (keydown.escape)="onToggleSidenav(false)">\n    <ng-content select="[header]"></ng-content>\n    <mat-divider class="mt-sm"></mat-divider>\n    <ng-content select="[menu-items]"></ng-content>\n    <ng-content select="[footer]"></ng-content>\n  </mat-sidenav>\n\n  <mat-sidenav-content\n    role="main"\n    tabindex="-1"\n    id="mainContent"\n    class="p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth">\n    <router-outlet></router-outlet>\n  </mat-sidenav-content>\n</mat-sidenav-container>\n' }]
+  }], null, { position: [{ type: Input, args: [{ isSignal: true, alias: "position", required: false }] }], mode: [{ type: Input, args: [{ isSignal: true, alias: "mode", required: false }] }], fixedInViewport: [{ type: Input, args: [{ isSignal: true, alias: "fixedInViewport", required: false }] }], sidenavOpened: [{ type: Input, args: [{ isSignal: true, alias: "sidenavOpened", required: false }] }], toggleSidenav: [{ type: Output, args: ["toggleSidenav"] }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CoreCmsLayoutUiSidenavComponent, { className: "CoreCmsLayoutUiSidenavComponent", filePath: "libs/core/cms-layout/ui/sidenav/src/lib/core-cms-layout-ui-sidenav/core-cms-layout-ui-sidenav.component.ts", lineNumber: 21 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CoreCmsLayoutUiSidenavComponent, { className: "CoreCmsLayoutUiSidenavComponent", filePath: "libs/core/cms-layout/ui/sidenav/src/lib/core-cms-layout-ui-sidenav/core-cms-layout-ui-sidenav.component.ts", lineNumber: 13 });
 })();
 
 // node_modules/@angular/material/fesm2022/progress-bar.mjs
@@ -4877,16 +4868,16 @@ function SharedActivityUiLinearComponent_Conditional_1_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r0 = \u0275\u0275nextContext();
-    \u0275\u0275property("mode", ctx_r0.mode);
+    \u0275\u0275property("mode", ctx_r0.mode());
   }
 }
 var SharedActivityUiLinearComponent = class _SharedActivityUiLinearComponent {
-  active = false;
-  mode = "indeterminate";
+  active = input(false, ...ngDevMode ? [{ debugName: "active" }] : []);
+  mode = input("indeterminate", ...ngDevMode ? [{ debugName: "mode" }] : []);
   static \u0275fac = function SharedActivityUiLinearComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedActivityUiLinearComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedActivityUiLinearComponent, selectors: [["plastik-shared-activity-ui-linear"]], inputs: { active: "active", mode: "mode" }, decls: 2, vars: 1, consts: [[1, "motion-reduce:hidden"], [3, "mode"]], template: function SharedActivityUiLinearComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedActivityUiLinearComponent, selectors: [["plastik-shared-activity-ui-linear"]], inputs: { active: [1, "active"], mode: [1, "mode"] }, decls: 2, vars: 1, consts: [[1, "motion-reduce:hidden"], [3, "mode"]], template: function SharedActivityUiLinearComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "div", 0);
       \u0275\u0275conditionalCreate(1, SharedActivityUiLinearComponent_Conditional_1_Template, 1, 1, "mat-progress-bar", 1);
@@ -4894,19 +4885,15 @@ var SharedActivityUiLinearComponent = class _SharedActivityUiLinearComponent {
     }
     if (rf & 2) {
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.active ? 1 : -1);
+      \u0275\u0275conditional(ctx.active() ? 1 : -1);
     }
   }, dependencies: [MatProgressBarModule, MatProgressBar], styles: ["\n\n.mat-mdc-progress-bar[_ngcontent-%COMP%] {\n  --mat-progress-bar-track-color: var( --plastik-mdc-linear-progress-track-color, rgb(183, 183, 183) ) !important;\n  --mat-progress-bar-track-height: var( --plastik-mdc-linear-progress-track-height, 4px ) !important;\n  --mat-progress-bar-active-indicator-height: var( --plastik-mdc-linear-progress-active-indicator-height, 4px ) !important;\n  --mat-progress-bar-active-indicator-color: var( --plastik-mdc-linear-progress-active-indicator-color, rgb(11, 17, 62) ) !important;\n}\n/*# sourceMappingURL=shared-activity-ui-linear.component.css.map */"], changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedActivityUiLinearComponent, [{
     type: Component,
-    args: [{ selector: "plastik-shared-activity-ui-linear", imports: [MatProgressBarModule], changeDetection: ChangeDetectionStrategy.OnPush, template: '<div class="motion-reduce:hidden">\n  @if (active) {\n    <mat-progress-bar [mode]="mode"></mat-progress-bar>\n  }\n</div>\n', styles: ["/* angular:styles/component:scss;f497cd2da16458b76df4e6c4344e21a312d44ebf22811b02571655c89add9cb1;/home/runner/work/plastikspace/plastikspace/libs/shared/activity/ui/src/lib/shared-activity-ui-linear/shared-activity-ui-linear.component.ts */\n.mat-mdc-progress-bar {\n  --mat-progress-bar-track-color: var( --plastik-mdc-linear-progress-track-color, rgb(183, 183, 183) ) !important;\n  --mat-progress-bar-track-height: var( --plastik-mdc-linear-progress-track-height, 4px ) !important;\n  --mat-progress-bar-active-indicator-height: var( --plastik-mdc-linear-progress-active-indicator-height, 4px ) !important;\n  --mat-progress-bar-active-indicator-color: var( --plastik-mdc-linear-progress-active-indicator-color, rgb(11, 17, 62) ) !important;\n}\n/*# sourceMappingURL=shared-activity-ui-linear.component.css.map */\n"] }]
-  }], null, { active: [{
-    type: Input
-  }], mode: [{
-    type: Input
-  }] });
+    args: [{ selector: "plastik-shared-activity-ui-linear", imports: [MatProgressBarModule], changeDetection: ChangeDetectionStrategy.OnPush, template: '<div class="motion-reduce:hidden">\n  @if (active()) {\n    <mat-progress-bar [mode]="mode()"></mat-progress-bar>\n  }\n</div>\n', styles: ["/* angular:styles/component:scss;f497cd2da16458b76df4e6c4344e21a312d44ebf22811b02571655c89add9cb1;/home/runner/work/plastikspace/plastikspace/libs/shared/activity/ui/src/lib/shared-activity-ui-linear/shared-activity-ui-linear.component.ts */\n.mat-mdc-progress-bar {\n  --mat-progress-bar-track-color: var( --plastik-mdc-linear-progress-track-color, rgb(183, 183, 183) ) !important;\n  --mat-progress-bar-track-height: var( --plastik-mdc-linear-progress-track-height, 4px ) !important;\n  --mat-progress-bar-active-indicator-height: var( --plastik-mdc-linear-progress-active-indicator-height, 4px ) !important;\n  --mat-progress-bar-active-indicator-color: var( --plastik-mdc-linear-progress-active-indicator-color, rgb(11, 17, 62) ) !important;\n}\n/*# sourceMappingURL=shared-activity-ui-linear.component.css.map */\n"] }]
+  }], null, { active: [{ type: Input, args: [{ isSignal: true, alias: "active", required: false }] }], mode: [{ type: Input, args: [{ isSignal: true, alias: "mode", required: false }] }] });
 })();
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedActivityUiLinearComponent, { className: "SharedActivityUiLinearComponent", filePath: "libs/shared/activity/ui/src/lib/shared-activity-ui-linear/shared-activity-ui-linear.component.ts", lineNumber: 33 });
@@ -4939,7 +4926,7 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-P5JJ3RO2.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-STT7PEU4.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
 var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-VL6GG72Q.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
@@ -5226,18 +5213,14 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   headerConfig = this.#layoutFacade.headerConfig;
   headerWidgetsConfig = this.headerConfig?.widgetsConfig;
   ngOnInit() {
-    this.#breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Medium]).pipe(
-      takeUntil(this.#destroyed$),
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      map((handset) => handset.matches)
-    ).subscribe((matches) => {
+    this.#breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Medium]).pipe(takeUntil(this.#destroyed$), map((handset) => handset.matches)).subscribe((matches) => {
       if (matches)
         this.onToggleSidenav(!matches);
       this.onSetIsMobile(matches);
     });
   }
   ngAfterViewInit() {
-    this.#zone.runOutsideAngular(() => this.createWidgets());
+    this.#zone.runOutsideAngular(() => this.#createWidgets());
   }
   ngOnDestroy() {
     this.#destroyed$.next();
@@ -5255,7 +5238,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   onSetIsMobile(isMobile) {
     this.#zone.runOutsideAngular(() => this.#layoutFacade.setIsMobile(isMobile));
   }
-  createWidgets() {
+  #createWidgets() {
     if (!this.headerWidgetsConfig)
       return;
     const container = this.widgetsContainer();
@@ -5391,7 +5374,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-P5JJ3RO2.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-VL6GG72Q.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-STT7PEU4.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-VL6GG72Q.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -6561,11 +6544,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-YLXNRLOX.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-JGYUFTYX.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-Y53EWJGN.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-PB3TUSGU.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6581,7 +6564,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-TENMGYZ4.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-K3DSZ6LJ.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           config: {
             type: "link",

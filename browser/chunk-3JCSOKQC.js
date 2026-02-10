@@ -4,7 +4,7 @@ import {
   _animationsDisabled,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
-} from "./chunk-M6447WXU.js";
+} from "./chunk-RHICAVNE.js";
 import {
   BidiModule,
   _getEventTarget,
@@ -1319,4 +1319,4 @@ export {
   MatButton,
   MatButtonModule
 };
-//# sourceMappingURL=chunk-5MMTBOXC.js.map
+//# sourceMappingURL=chunk-3JCSOKQC.js.map

@@ -20,7 +20,7 @@ import {
   withDevtools,
   withImmutableState,
   withMethods
-} from "./chunk-3ZCOY5GZ.js";
+} from "./chunk-EMRWBYFP.js";
 import {
   Store,
   createActionGroup,
@@ -31,7 +31,7 @@ import {
   on,
   props,
   select
-} from "./chunk-W45ZI74R.js";
+} from "./chunk-XOOKMJCX.js";
 import {
   CdkConnectedOverlay,
   CdkOverlayOrigin,
@@ -40,11 +40,11 @@ import {
   OverlayModule,
   ViewportRuler,
   createRepositionScrollStrategy
-} from "./chunk-UV5KDLAJ.js";
+} from "./chunk-GCZQ35XA.js";
 import {
   MatIcon,
   MatIconModule
-} from "./chunk-K3GV3W34.js";
+} from "./chunk-TUQX2VCN.js";
 import {
   MatButton,
   MatButtonModule,
@@ -52,7 +52,7 @@ import {
   MatRipple,
   MatRippleModule,
   coerceBooleanProperty
-} from "./chunk-5MMTBOXC.js";
+} from "./chunk-3JCSOKQC.js";
 import {
   A,
   ActiveDescendantKeyManager,
@@ -73,7 +73,7 @@ import {
   addAriaReferencedId,
   hasModifierKey,
   removeAriaReferencedId
-} from "./chunk-M6447WXU.js";
+} from "./chunk-RHICAVNE.js";
 import {
   DomSanitizer,
   HttpClient,
@@ -965,7 +965,7 @@ var HttpBaseService = class extends BaseDataService {
   environment = inject(ENVIRONMENT_WITH_API);
   httpClient = inject(HttpClient);
   apiUrl;
-  injector = inject(Injector);
+  #injector = inject(Injector);
   constructor() {
     super();
     this.apiUrl = `${this.getApiUrlFromEnvironment()}/${this.resourceUrlSegment()}`;
@@ -1005,7 +1005,7 @@ var HttpBaseService = class extends BaseDataService {
     const mapListResponse = (data) => this.mapListResponse(data);
     const mapItemResponse = (data) => this.mapItemResponse(data);
     const env = this.environment;
-    return runInInjectionContext(this.injector, () => {
+    return runInInjectionContext(this.#injector, () => {
       const ServiceClass = class extends HttpCrudService {
         environment = env;
         resourceUrlSegment() {
@@ -9826,7 +9826,8 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template(rf, c
   }
   if (rf & 2) {
     const addon_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("ngClass", addon_r3.classes)("ngStyle", \u0275\u0275pureFunction1(5, _c22, addon_r3.onClick ? "pointer" : "inherit"));
+    \u0275\u0275classMap(addon_r3.classes);
+    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction1(6, _c22, addon_r3.onClick ? "pointer" : "inherit"));
     \u0275\u0275attribute("aria-label", addon_r3["aria"] || "")("tabindex", !addon_r3["onClick"] ? "-1" : "0");
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(addon_r3.text);
@@ -9847,7 +9848,8 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template(rf, c
   }
   if (rf & 2) {
     const addon_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("ngClass", addon_r3.classes)("ngStyle", \u0275\u0275pureFunction1(5, _c22, addon_r3.onClick ? "pointer" : "inherit"));
+    \u0275\u0275classMap(addon_r3.classes);
+    \u0275\u0275property("ngStyle", \u0275\u0275pureFunction1(6, _c22, addon_r3.onClick ? "pointer" : "inherit"));
     \u0275\u0275attribute("aria-label", addon_r3["aria"] || "")("tabindex", !addon_r3["onClick"] ? "-1" : "0");
     \u0275\u0275advance(2);
     \u0275\u0275textInterpolate(addon_r3.icon);
@@ -9855,7 +9857,7 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template(rf, c
 }
 function FormlyAddonsWrapperComponent_ng_template_0_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 6);
+    \u0275\u0275elementStart(0, "span");
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -9863,14 +9865,14 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_2_Template(rf, c
     const ctx_r4 = \u0275\u0275nextContext();
     const addon_r3 = ctx_r4.$implicit;
     const direction_r6 = ctx_r4.$implicit;
-    \u0275\u0275property("ngClass", direction_r6 === "left" ? "ml-2" : "mr-2");
+    \u0275\u0275classMap(direction_r6 === "left" ? "ml-2" : "mr-2");
     \u0275\u0275advance();
     \u0275\u0275textInterpolate(addon_r3.text);
   }
 }
 function FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-icon", 6);
+    \u0275\u0275elementStart(0, "mat-icon");
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -9878,7 +9880,7 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template(rf, c
     const ctx_r4 = \u0275\u0275nextContext();
     const addon_r3 = ctx_r4.$implicit;
     const direction_r6 = ctx_r4.$implicit;
-    \u0275\u0275property("ngClass", \u0275\u0275pureFunction2(3, _c3, addon_r3.classes || "", direction_r6 === "left" ? "ml-2" : "mr-2"));
+    \u0275\u0275classMap(\u0275\u0275pureFunction2(4, _c3, addon_r3.classes || "", direction_r6 === "left" ? "ml-2" : "mr-2"));
     \u0275\u0275attribute("aria-hidden", addon_r3.ariaHidden || true);
     \u0275\u0275advance();
     \u0275\u0275textInterpolate1(" ", addon_r3.icon, " ");
@@ -9886,10 +9888,10 @@ function FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template(rf, c
 }
 function FormlyAddonsWrapperComponent_ng_template_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template, 3, 7, "button", 4);
-    \u0275\u0275conditionalCreate(1, FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template, 3, 7, "button", 5);
-    \u0275\u0275conditionalCreate(2, FormlyAddonsWrapperComponent_ng_template_0_Conditional_2_Template, 2, 2, "span", 6);
-    \u0275\u0275conditionalCreate(3, FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template, 2, 6, "mat-icon", 6);
+    \u0275\u0275conditionalCreate(0, FormlyAddonsWrapperComponent_ng_template_0_Conditional_0_Template, 3, 8, "button", 4);
+    \u0275\u0275conditionalCreate(1, FormlyAddonsWrapperComponent_ng_template_0_Conditional_1_Template, 3, 8, "button", 5);
+    \u0275\u0275conditionalCreate(2, FormlyAddonsWrapperComponent_ng_template_0_Conditional_2_Template, 2, 3, "span", 6);
+    \u0275\u0275conditionalCreate(3, FormlyAddonsWrapperComponent_ng_template_0_Conditional_3_Template, 2, 7, "mat-icon", 6);
   }
   if (rf & 2) {
     const addon_r3 = ctx.$implicit;
@@ -9988,18 +9990,18 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
     if (rf & 2) {
       \u0275\u0275queryAdvance(2);
     }
-  }, features: [\u0275\u0275InheritDefinitionFeature], decls: 8, vars: 0, consts: [["addonTemplate", ""], ["matPrefix", ""], ["fieldComponent", ""], ["matSuffix", ""], ["mat-button", "", "type", "button", 3, "ngClass", "ngStyle"], ["mat-icon-button", "", "type", "button", 3, "ngClass", "ngStyle"], [3, "ngClass"], ["mat-button", "", "type", "button", 3, "click", "ngClass", "ngStyle"], ["mat-icon-button", "", "type", "button", 3, "click", "ngClass", "ngStyle"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]], template: function FormlyAddonsWrapperComponent_Template(rf, ctx) {
+  }, features: [\u0275\u0275InheritDefinitionFeature], decls: 8, vars: 0, consts: [["addonTemplate", ""], ["matPrefix", ""], ["fieldComponent", ""], ["matSuffix", ""], ["mat-button", "", "type", "button", 3, "class", "ngStyle"], ["mat-icon-button", "", "type", "button", 3, "class", "ngStyle"], [3, "class"], ["mat-button", "", "type", "button", 3, "click", "ngStyle"], ["mat-icon-button", "", "type", "button", 3, "click", "ngStyle"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]], template: function FormlyAddonsWrapperComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, FormlyAddonsWrapperComponent_ng_template_0_Template, 4, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(2, FormlyAddonsWrapperComponent_ng_template_2_Template, 1, 1, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
       \u0275\u0275elementContainer(4, null, 2);
       \u0275\u0275template(6, FormlyAddonsWrapperComponent_ng_template_6_Template, 1, 1, "ng-template", null, 3, \u0275\u0275templateRefExtractor);
     }
-  }, dependencies: [MatIconModule, MatIcon, MatButtonModule, MatButton, MatIconButton, NgStyle, NgClass, NgTemplateOutlet], styles: ["/* libs/shared/form/util/src/addons-wrapper/formly-addons-wrapper.component.scss */\n.mat-mdc-form-field .mdc-notched-outline__notch {\n  border-right-width: 0;\n  border-right-color: transparent;\n}\n/*# sourceMappingURL=formly-addons-wrapper.component.css.map */\n"], encapsulation: 2, changeDetection: 0 });
+  }, dependencies: [MatIconModule, MatIcon, MatButtonModule, MatButton, MatIconButton, NgStyle, NgTemplateOutlet], styles: ["/* libs/shared/form/util/src/addons-wrapper/formly-addons-wrapper.component.scss */\n.mat-mdc-form-field .mdc-notched-outline__notch {\n  border-right-width: 0;\n  border-right-color: transparent;\n}\n/*# sourceMappingURL=formly-addons-wrapper.component.css.map */\n"], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(FormlyAddonsWrapperComponent, [{
     type: Component,
-    args: [{ selector: "plastik-formly-addons-wrapper", imports: [MatIconModule, MatButtonModule, NgStyle, NgClass, NgTemplateOutlet], encapsulation: ViewEncapsulation.None, changeDetection: ChangeDetectionStrategy.OnPush, template: `<ng-template #addonTemplate let-addon let-clickHandler="clickHandler" let-direction>
+    args: [{ selector: "plastik-formly-addons-wrapper", imports: [MatIconModule, MatButtonModule, NgStyle, NgTemplateOutlet], encapsulation: ViewEncapsulation.None, changeDetection: ChangeDetectionStrategy.OnPush, template: `<ng-template #addonTemplate let-addon let-clickHandler="clickHandler" let-direction>
   @if (addon.type === 'button' && addon.text) {
     <!-- Text button -->
     <button
@@ -10007,7 +10009,7 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
       type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
-      [ngClass]="addon.classes"
+      [class]="addon.classes"
       [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
       (click)="clickHandler($event)">
       <span>{{ addon.text }}</span>
@@ -10020,7 +10022,7 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
       type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
-      [ngClass]="addon.classes"
+      [class]="addon.classes"
       [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
       (click)="clickHandler($event)">
       <mat-icon>{{ addon.icon }}</mat-icon>
@@ -10028,13 +10030,13 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
   }
   @if (addon.type === 'text') {
     <!-- Decorative Text -->
-    <span [ngClass]="direction === 'left' ? 'ml-2' : 'mr-2'">{{ addon.text }}</span>
+    <span [class]="direction === 'left' ? 'ml-2' : 'mr-2'">{{ addon.text }}</span>
   }
   @if (addon.type === 'icon') {
     <!-- Decorative Icon -->
     <mat-icon
       [attr.aria-hidden]="addon.ariaHidden || true"
-      [ngClass]="[addon.classes || '', direction === 'left' ? 'ml-2' : 'mr-2']">
+      [class]="[addon.classes || '', direction === 'left' ? 'ml-2' : 'mr-2']">
       {{ addon.icon }}
     </mat-icon>
   }
@@ -10209,7 +10211,9 @@ function registerValidatorsMessageExtension() {
 
 // libs/shared/util/objects/src/util-objects.ts
 function isEmpty(obj) {
-  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+  if (obj === null || obj === void 0)
+    return true;
+  return [Object, Array].includes(obj.constructor) && !Object.entries(obj).length;
 }
 function isNil2(value) {
   return value === void 0 || value === null;
@@ -10308,7 +10312,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   onSubmit(event) {
     event.preventDefault();
     event.stopPropagation();
-    this.emitChange(this.form.value);
+    this.#emitChange(this.form.value);
   }
   ngOnDestroy() {
     this.#statusChangesSubscription?.unsubscribe();
@@ -10319,7 +10323,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     }
     this.pendingChangesEvent.emit(this.form.dirty);
     if (!this.config().submitAvailable) {
-      this.emitChange(model ?? this.form.value);
+      this.#emitChange(model ?? this.form.value);
     }
     if (this.config().emitOnChange) {
       this.temporaryChangeEvent.emit(model);
@@ -10328,7 +10332,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   submitDisabled() {
     return this.form.invalid || !this.config().enabledByDefault && this.form.untouched;
   }
-  emitChange(model) {
+  #emitChange(model) {
     if (this.form.valid) {
       if (this.config().disableOnSubmit) {
         this.form.disable({ emitEvent: false });
@@ -17878,4 +17882,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-CTMCTIIC.js.map
+//# sourceMappingURL=chunk-3534QGDC.js.map

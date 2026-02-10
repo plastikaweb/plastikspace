@@ -3175,8 +3175,7 @@ html {
     --mat-toolbar-container-background-color: var(--mat-sys-primary);
   }
   html {
-    --mat-sidenav-container-background-color: orange;
-    --mat-sidenav-container-text-color: red;
+    --mat-sidenav-container-background-color: var(--mat-sys-secondary-container);
   }
 }
 @property --tw-border-spacing-x { syntax: "<length>"; inherits: false; initial-value: 0; }

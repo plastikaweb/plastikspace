@@ -49,20 +49,20 @@ import {
   isEmpty,
   isNil,
   selectNasaImagesFeature
-} from "./chunk-CTMCTIIC.js";
+} from "./chunk-3534QGDC.js";
 import {
   TranslateModule,
   _DisposeViewRepeaterStrategy,
   provideEffects,
   selectRouteQueryParams
-} from "./chunk-3ZCOY5GZ.js";
+} from "./chunk-EMRWBYFP.js";
 import {
   LetDirective,
   PushPipe,
   Store,
   provideState,
   select
-} from "./chunk-W45ZI74R.js";
+} from "./chunk-XOOKMJCX.js";
 import "./chunk-KVF6T647.js";
 import {
   CDK_VIRTUAL_SCROLL_VIEWPORT,
@@ -78,7 +78,7 @@ import {
   createGlobalPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-UV5KDLAJ.js";
+} from "./chunk-GCZQ35XA.js";
 import {
   CdkPortalOutlet,
   ComponentPortal,
@@ -90,7 +90,7 @@ import {
   _RecycleViewRepeaterStrategy,
   _ViewRepeaterOperation,
   isDataSource
-} from "./chunk-K3GV3W34.js";
+} from "./chunk-TUQX2VCN.js";
 import {
   MatButton,
   MatButtonModule,
@@ -98,7 +98,7 @@ import {
   MatRipple,
   coerceBooleanProperty,
   coerceStringArray
-} from "./chunk-5MMTBOXC.js";
+} from "./chunk-3JCSOKQC.js";
 import {
   A11yModule,
   AriaDescriber,
@@ -125,7 +125,7 @@ import {
   _animationsDisabled,
   hasModifierKey,
   toSignal
-} from "./chunk-M6447WXU.js";
+} from "./chunk-RHICAVNE.js";
 import {
   DomSanitizer
 } from "./chunk-UQ7BNS5D.js";
@@ -10910,21 +10910,23 @@ var YEAR_MODE_FORMATS = {
   }
 };
 var YearPickerComponent = class _YearPickerComponent {
-  touchUi = false;
-  label;
+  touchUi = input(false, ...ngDevMode ? [{ debugName: "touchUi" }] : []);
+  label = input(...ngDevMode ? [void 0, { debugName: "label" }] : []);
   formControl = new FormControl();
   disabled = false;
-  onChanged;
-  onTouched;
+  #onChanged = () => {
+  };
+  #onTouched = () => {
+  };
   writeValue(year) {
     if (year)
       this.formControl.setValue(year, { emitEvent: false });
   }
   registerOnChange(fn) {
-    this.onChanged = fn;
+    this.#onChanged = fn;
   }
   registerOnTouched(fn) {
-    this.onTouched = fn;
+    this.#onTouched = fn;
   }
   setDisabledState(isDisabled) {
     this.disabled = isDisabled;
@@ -10934,8 +10936,8 @@ var YearPickerComponent = class _YearPickerComponent {
       return;
     datepicker.close();
     this.formControl.setValue(date, { emitEvent: false });
-    this.onChanged(date.getFullYear());
-    this.onTouched();
+    this.#onChanged(date.getFullYear());
+    this.#onTouched();
   }
   onOpenPicker(picker) {
     if (!picker.opened && !this.disabled)
@@ -10944,7 +10946,7 @@ var YearPickerComponent = class _YearPickerComponent {
   static \u0275fac = function YearPickerComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _YearPickerComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _YearPickerComponent, selectors: [["plastik-year-picker"]], inputs: { touchUi: "touchUi", label: "label" }, features: [\u0275\u0275ProvidersFeature([
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _YearPickerComponent, selectors: [["plastik-year-picker"]], inputs: { touchUi: [1, "touchUi"], label: [1, "label"] }, features: [\u0275\u0275ProvidersFeature([
     { provide: MAT_DATE_LOCALE, useValue: enUS },
     provideDateFnsAdapter(YEAR_MODE_FORMATS),
     {
@@ -10989,13 +10991,13 @@ var YearPickerComponent = class _YearPickerComponent {
     if (rf & 2) {
       const picker_r2 = \u0275\u0275reference(6);
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate(ctx.label);
+      \u0275\u0275textInterpolate(ctx.label());
       \u0275\u0275advance();
       \u0275\u0275property("formControl", ctx.formControl)("matDatepicker", picker_r2);
       \u0275\u0275advance();
       \u0275\u0275property("disabled", ctx.disabled)("for", picker_r2);
       \u0275\u0275advance();
-      \u0275\u0275property("touchUi", ctx.touchUi);
+      \u0275\u0275property("touchUi", ctx.touchUi());
     }
   }, dependencies: [
     FormsModule,
@@ -11036,12 +11038,8 @@ var YearPickerComponent = class _YearPickerComponent {
         useExisting: forwardRef(() => YearPickerComponent),
         multi: true
       }
-    ], encapsulation: ViewEncapsulation.None, changeDetection: ChangeDetectionStrategy.OnPush, template: '<mat-form-field\n  ><mat-label>{{ label }}</mat-label>\n  <input\n    matInput\n    readonly\n    placeholder="YYYY"\n    [formControl]="formControl"\n    [matDatepicker]="picker"\n    (focus)="onOpenPicker(picker)"\n    (click)="onOpenPicker(picker)"\n    (keydown.arrowdown)="onOpenPicker(picker)"\n    (keydown.enter)="onOpenPicker(picker)" />\n  <mat-datepicker-toggle matIconSuffix [disabled]="disabled" [for]="picker"></mat-datepicker-toggle>\n  <mat-datepicker\n    #picker\n    startView="multi-year"\n    panelClass="shared-year-picker"\n    [touchUi]="touchUi"\n    (yearSelected)="onYearSelected($event, picker)">\n  </mat-datepicker>\n</mat-form-field>\n', styles: ["/* libs/shared/form/ui/year-picker/src/lib/year-picker.component.scss */\nplastik-shared-form-ui-year-picker {\n  display: flex;\n}\n.shared-year-picker .mat-calendar-period-button {\n  pointer-events: none;\n}\n.shared-year-picker .mat-calendar-arrow {\n  display: none;\n}\n/*# sourceMappingURL=year-picker.component.css.map */\n"] }]
-  }], null, { touchUi: [{
-    type: Input
-  }], label: [{
-    type: Input
-  }] });
+    ], encapsulation: ViewEncapsulation.None, changeDetection: ChangeDetectionStrategy.OnPush, template: '<mat-form-field\n  ><mat-label>{{ label() }}</mat-label>\n  <input\n    matInput\n    readonly\n    placeholder="YYYY"\n    [formControl]="formControl"\n    [matDatepicker]="picker"\n    (focus)="onOpenPicker(picker)"\n    (click)="onOpenPicker(picker)"\n    (keydown.arrowdown)="onOpenPicker(picker)"\n    (keydown.enter)="onOpenPicker(picker)" />\n  <mat-datepicker-toggle matIconSuffix [disabled]="disabled" [for]="picker"></mat-datepicker-toggle>\n  <mat-datepicker\n    #picker\n    startView="multi-year"\n    panelClass="shared-year-picker"\n    [touchUi]="touchUi()"\n    (yearSelected)="onYearSelected($event, picker)">\n  </mat-datepicker>\n</mat-form-field>\n', styles: ["/* libs/shared/form/ui/year-picker/src/lib/year-picker.component.scss */\nplastik-shared-form-ui-year-picker {\n  display: flex;\n}\n.shared-year-picker .mat-calendar-period-button {\n  pointer-events: none;\n}\n.shared-year-picker .mat-calendar-arrow {\n  display: none;\n}\n/*# sourceMappingURL=year-picker.component.css.map */\n"] }]
+  }], null, { touchUi: [{ type: Input, args: [{ isSignal: true, alias: "touchUi", required: false }] }], label: [{ type: Input, args: [{ isSignal: true, alias: "label", required: false }] }] });
 })();
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(YearPickerComponent, { className: "YearPickerComponent", filePath: "libs/shared/form/ui/year-picker/src/lib/year-picker.component.ts", lineNumber: 62 });
@@ -15488,16 +15486,12 @@ var DataFormatFactoryService = class _DataFormatFactoryService {
 
 // libs/shared/util/formatters/src/lib/safe-formatted-cell.pipe.ts
 var SafeFormattedPipe = class _SafeFormattedPipe {
-  dataFormatService;
-  // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(dataFormatService) {
-    this.dataFormatService = dataFormatService;
-  }
+  #dataFormatService = inject(DataFormatFactoryService);
   transform(row, column, index2, extraConfig) {
-    return this.dataFormatService.getFormattedValue(row, column, index2, extraConfig);
+    return this.#dataFormatService.getFormattedValue(row, column, index2, extraConfig);
   }
   static \u0275fac = function SafeFormattedPipe_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _SafeFormattedPipe)(\u0275\u0275directiveInject(DataFormatFactoryService, 16));
+    return new (__ngFactoryType__ || _SafeFormattedPipe)();
   };
   static \u0275pipe = /* @__PURE__ */ \u0275\u0275definePipe({ name: "safeFormatted", type: _SafeFormattedPipe, pure: true });
 };
@@ -15507,7 +15501,7 @@ var SafeFormattedPipe = class _SafeFormattedPipe {
     args: [{
       name: "safeFormatted"
     }]
-  }], () => [{ type: DataFormatFactoryService }], null);
+  }], null, null);
 })();
 
 // libs/shared/util/formatters/src/lib/shared-util-formatters.module.ts
@@ -15574,7 +15568,7 @@ var TABLE_TOKEN = new InjectionToken("TABLE_TOKEN");
 var _c08 = ["matFormField"];
 var _c17 = [[["", "noResults", ""]], [["", "noValidSearch", ""]], [["", "noResults", ""]], [["", "noValidSearch", ""]]];
 var _c23 = ["[noResults]", "[noValidSearch]", "[noResults]", "[noValidSearch]"];
-var SharedTableUiComponent_Defer_3_DepsFn = () => [import("./router-TPSFPNN7.js").then((m) => m.RouterLink), import("./common-6F6FR7MH.js").then((m) => m.NgClass), import("./common-6F6FR7MH.js").then((m) => m.NgComponentOutlet), import("./common-6F6FR7MH.js").then((m) => m.NgTemplateOutlet), import("./text-field-JPY6IONJ.js").then((m) => m.CdkTextareaAutosize), MatTable, MatHeaderCellDef, MatHeaderRowDef, MatColumnDef, MatCellDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatSort, MatSortHeader, MatTooltip, MatIcon, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatInput, MatSelect, MatOption, MatCheckbox, MatRadioGroup, MatRadioButton, MatSlideToggle, import("./common-6F6FR7MH.js").then((m) => m.NgOptimizedImage), import("./common-6F6FR7MH.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-4IKQWIGL.js").then((m) => m.OrderTableActionsElementsPipe), SafeFormattedPipe];
+var SharedTableUiComponent_Defer_3_DepsFn = () => [import("./router-TPSFPNN7.js").then((m) => m.RouterLink), import("./common-6F6FR7MH.js").then((m) => m.NgComponentOutlet), import("./common-6F6FR7MH.js").then((m) => m.NgTemplateOutlet), import("./text-field-JPY6IONJ.js").then((m) => m.CdkTextareaAutosize), MatTable, MatHeaderCellDef, MatHeaderRowDef, MatColumnDef, MatCellDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatSort, MatSortHeader, MatTooltip, MatIcon, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatInput, MatSelect, MatOption, MatCheckbox, MatRadioGroup, MatRadioButton, MatSlideToggle, import("./common-6F6FR7MH.js").then((m) => m.NgOptimizedImage), import("./common-6F6FR7MH.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-4IKQWIGL.js").then((m) => m.OrderTableActionsElementsPipe), SafeFormattedPipe];
 var _c32 = (a0) => [a0];
 var _c42 = (a0, a1) => ({ element: a0, isExpanded: a1 });
 var _c52 = () => ["expandedDetail"];
@@ -15588,7 +15582,8 @@ function SharedTableUiComponent_Defer_1_For_2_mat_header_cell_1_Template(rf, ctx
   }
   if (rf & 2) {
     const column_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("sortActionDescription", column_r3.sorting ? `Ordenar per ${column_r3.title}` : "")("mat-sort-header", column_r3.sorting || "")("disabled", !column_r3.sorting)("ngClass", (column_r3.cssClasses == null ? null : column_r3.cssClasses[0]) || "");
+    \u0275\u0275classMap((column_r3.cssClasses == null ? null : column_r3.cssClasses[0]) || "");
+    \u0275\u0275property("sortActionDescription", column_r3.sorting ? `Ordenar per ${column_r3.title}` : "")("mat-sort-header", column_r3.sorting || "")("disabled", !column_r3.sorting);
     \u0275\u0275advance();
     \u0275\u0275textInterpolate1(" ", column_r3.title, " ");
   }
@@ -15596,7 +15591,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_header_cell_1_Template(rf, ctx
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r4 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "a", 17);
+    \u0275\u0275elementStart(0, "a", 16);
     \u0275\u0275pipe(1, "safeFormatted");
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_1_Template_a_click_0_listener($event) {
       \u0275\u0275restoreView(_r4);
@@ -15609,12 +15604,13 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_1_Template(rf, ctx
     const row_r6 = ctx_r4.$implicit;
     const i_r7 = ctx_r4.dataIndex;
     const column_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("ngClass", (column_r3.cssClasses == null ? null : column_r3.cssClasses[1]) || "")("routerLink", column_r3.link ? column_r3.link(row_r6) : null)("queryParams", column_r3.queryParams ? column_r3.queryParams(row_r6) : null)("innerHTML", \u0275\u0275pipeBind3(1, 4, row_r6, column_r3, i_r7 + 1), \u0275\u0275sanitizeHtml);
+    \u0275\u0275classMap((column_r3.cssClasses == null ? null : column_r3.cssClasses[1]) || "");
+    \u0275\u0275property("routerLink", column_r3.link ? column_r3.link(row_r6) : null)("queryParams", column_r3.queryParams ? column_r3.queryParams(row_r6) : null)("innerHTML", \u0275\u0275pipeBind3(1, 5, row_r6, column_r3, i_r7 + 1), \u0275\u0275sanitizeHtml);
   }
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 24);
+    \u0275\u0275elementStart(0, "span", 22);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -15627,7 +15623,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 26);
+    \u0275\u0275elementStart(0, "span", 24);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -15641,9 +15637,9 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r8 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-form-field", 19, 1);
-    \u0275\u0275conditionalCreate(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Conditional_2_Template, 2, 1, "span", 24);
-    \u0275\u0275elementStart(3, "input", 25);
+    \u0275\u0275elementStart(0, "mat-form-field", null, 1);
+    \u0275\u0275conditionalCreate(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Conditional_2_Template, 2, 1, "span", 22);
+    \u0275\u0275elementStart(3, "input", 23);
     \u0275\u0275listener("change", function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Template_input_change_3_listener($event) {
       \u0275\u0275restoreView(_r8);
       const editable_r10 = \u0275\u0275nextContext();
@@ -15652,7 +15648,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
       return \u0275\u0275resetView(ctx_r1.onInputChange($event, row_r6, editable_r10));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Conditional_4_Template, 2, 1, "span", 26);
+    \u0275\u0275conditionalCreate(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Conditional_4_Template, 2, 1, "span", 24);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -15660,7 +15656,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
     const attributes_r9 = \u0275\u0275readContextLet(0);
     const row_r6 = \u0275\u0275nextContext(2).$implicit;
     const column_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("ngClass", (attributes_r9 == null ? null : attributes_r9.styles) || "");
+    \u0275\u0275classMap("editable inline " + ((attributes_r9 == null ? null : attributes_r9.styles) || ""));
     \u0275\u0275advance(2);
     \u0275\u0275conditional((attributes_r9 == null ? null : attributes_r9.prefix) ? 2 : -1);
     \u0275\u0275advance();
@@ -15672,7 +15668,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 24);
+    \u0275\u0275elementStart(0, "span", 22);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -15685,7 +15681,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 26);
+    \u0275\u0275elementStart(0, "span", 24);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -15699,9 +15695,9 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     const _r11 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-form-field", 19, 1);
-    \u0275\u0275conditionalCreate(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Conditional_2_Template, 2, 1, "span", 24);
-    \u0275\u0275elementStart(3, "input", 27);
+    \u0275\u0275elementStart(0, "mat-form-field", null, 1);
+    \u0275\u0275conditionalCreate(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Conditional_2_Template, 2, 1, "span", 22);
+    \u0275\u0275elementStart(3, "input", 25);
     \u0275\u0275listener("change", function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Template_input_change_3_listener($event) {
       \u0275\u0275restoreView(_r11);
       const editable_r10 = \u0275\u0275nextContext();
@@ -15710,7 +15706,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
       return \u0275\u0275resetView(ctx_r1.onInputChange($event, row_r6, editable_r10));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Conditional_4_Template, 2, 1, "span", 26);
+    \u0275\u0275conditionalCreate(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Conditional_4_Template, 2, 1, "span", 24);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -15718,7 +15714,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
     const attributes_r9 = \u0275\u0275readContextLet(0);
     const row_r6 = \u0275\u0275nextContext(2).$implicit;
     const column_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("ngClass", (attributes_r9 == null ? null : attributes_r9.styles) || "");
+    \u0275\u0275classMap("editable inline " + ((attributes_r9 == null ? null : attributes_r9.styles) || ""));
     \u0275\u0275advance(2);
     \u0275\u0275conditional((attributes_r9 == null ? null : attributes_r9.prefix) ? 2 : -1);
     \u0275\u0275advance();
@@ -15730,7 +15726,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_4_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-option", 23);
+    \u0275\u0275elementStart(0, "mat-option", 21);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -15744,7 +15740,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
     const _r12 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-select", 28);
+    \u0275\u0275elementStart(0, "mat-select", 26);
     \u0275\u0275listener("selectionChange", function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_4_Template_mat_select_selectionChange_0_listener($event) {
       \u0275\u0275restoreView(_r12);
       const editable_r10 = \u0275\u0275nextContext();
@@ -15752,7 +15748,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
       const ctx_r1 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r1.onInputChange($event, row_r6, editable_r10));
     });
-    \u0275\u0275repeaterCreate(1, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_4_For_2_Template, 2, 2, "mat-option", 23, _forTrack12);
+    \u0275\u0275repeaterCreate(1, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_4_For_2_Template, 2, 2, "mat-option", 21, _forTrack12);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -15768,7 +15764,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
     const _r14 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-checkbox", 29);
+    \u0275\u0275elementStart(0, "mat-checkbox", 27);
     \u0275\u0275listener("change", function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_5_Template_mat_checkbox_change_0_listener($event) {
       \u0275\u0275restoreView(_r14);
       const editable_r10 = \u0275\u0275nextContext();
@@ -15789,7 +15785,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
     const _r15 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-slide-toggle", 30);
+    \u0275\u0275elementStart(0, "mat-slide-toggle", 28);
     \u0275\u0275listener("change", function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_6_Template_mat_slide_toggle_change_0_listener($event) {
       \u0275\u0275restoreView(_r15);
       const editable_r10 = \u0275\u0275nextContext();
@@ -15809,7 +15805,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_7_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-radio-button", 23);
+    \u0275\u0275elementStart(0, "mat-radio-button", 21);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -15823,7 +15819,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
     const _r16 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-radio-group", 31);
+    \u0275\u0275elementStart(0, "mat-radio-group", 29);
     \u0275\u0275listener("change", function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_7_Template_mat_radio_group_change_0_listener($event) {
       \u0275\u0275restoreView(_r16);
       const editable_r10 = \u0275\u0275nextContext();
@@ -15831,7 +15827,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
       const ctx_r1 = \u0275\u0275nextContext(3);
       return \u0275\u0275resetView(ctx_r1.onInputChange($event, row_r6, editable_r10));
     });
-    \u0275\u0275repeaterCreate(1, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_7_For_2_Template, 2, 2, "mat-radio-button", 23, _forTrack12);
+    \u0275\u0275repeaterCreate(1, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_7_For_2_Template, 2, 2, "mat-radio-button", 21, _forTrack12);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -15846,7 +15842,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 24);
+    \u0275\u0275elementStart(0, "span", 22);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -15859,7 +15855,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "span", 26);
+    \u0275\u0275elementStart(0, "span", 24);
     \u0275\u0275text(1);
     \u0275\u0275elementEnd();
   }
@@ -15873,9 +15869,9 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Template(rf, ctx) {
   if (rf & 1) {
     const _r18 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-form-field", 19, 1);
-    \u0275\u0275conditionalCreate(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Conditional_2_Template, 2, 1, "span", 24);
-    \u0275\u0275elementStart(3, "textarea", 32);
+    \u0275\u0275elementStart(0, "mat-form-field", null, 1);
+    \u0275\u0275conditionalCreate(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Conditional_2_Template, 2, 1, "span", 22);
+    \u0275\u0275elementStart(3, "textarea", 30);
     \u0275\u0275listener("change", function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Template_textarea_change_3_listener($event) {
       \u0275\u0275restoreView(_r18);
       const editable_r10 = \u0275\u0275nextContext();
@@ -15884,7 +15880,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
       return \u0275\u0275resetView(ctx_r1.onInputChange($event, row_r6, editable_r10));
     });
     \u0275\u0275elementEnd();
-    \u0275\u0275conditionalCreate(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Conditional_4_Template, 2, 1, "span", 26);
+    \u0275\u0275conditionalCreate(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Conditional_4_Template, 2, 1, "span", 24);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -15892,7 +15888,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
     const attributes_r9 = \u0275\u0275readContextLet(0);
     const row_r6 = \u0275\u0275nextContext(2).$implicit;
     const column_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("ngClass", (attributes_r9 == null ? null : attributes_r9.styles) || "");
+    \u0275\u0275classMap("editable inline " + ((attributes_r9 == null ? null : attributes_r9.styles) || ""));
     \u0275\u0275advance(2);
     \u0275\u0275conditional((attributes_r9 == null ? null : attributes_r9.prefix) ? 2 : -1);
     \u0275\u0275advance();
@@ -15905,14 +15901,14 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Co
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275declareLet(0);
-    \u0275\u0275elementStart(1, "div", 18);
-    \u0275\u0275conditionalCreate(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Template, 5, 6, "mat-form-field", 19);
-    \u0275\u0275conditionalCreate(3, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Template, 5, 9, "mat-form-field", 19);
-    \u0275\u0275conditionalCreate(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_4_Template, 3, 3, "mat-select", 20);
-    \u0275\u0275conditionalCreate(5, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_5_Template, 1, 3, "mat-checkbox", 21);
-    \u0275\u0275conditionalCreate(6, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_6_Template, 1, 2, "mat-slide-toggle", 22);
-    \u0275\u0275conditionalCreate(7, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_7_Template, 3, 2, "mat-radio-group", 23);
-    \u0275\u0275conditionalCreate(8, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Template, 5, 7, "mat-form-field", 19);
+    \u0275\u0275elementStart(1, "div");
+    \u0275\u0275conditionalCreate(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_2_Template, 5, 7, "mat-form-field", 17);
+    \u0275\u0275conditionalCreate(3, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_3_Template, 5, 10, "mat-form-field", 17);
+    \u0275\u0275conditionalCreate(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_4_Template, 3, 3, "mat-select", 18);
+    \u0275\u0275conditionalCreate(5, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_5_Template, 1, 3, "mat-checkbox", 19);
+    \u0275\u0275conditionalCreate(6, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_6_Template, 1, 2, "mat-slide-toggle", 20);
+    \u0275\u0275conditionalCreate(7, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_7_Template, 3, 2, "mat-radio-group", 21);
+    \u0275\u0275conditionalCreate(8, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Conditional_8_Template, 5, 8, "mat-form-field", 17);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
@@ -15921,7 +15917,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Te
     const ctx_r1 = \u0275\u0275nextContext(2);
     \u0275\u0275storeLet(editable_r10 == null ? null : editable_r10.attributes);
     \u0275\u0275advance();
-    \u0275\u0275property("ngClass", (column_r3.cssClasses == null ? null : column_r3.cssClasses[1]) || "");
+    \u0275\u0275classMap("my-sub leading-6 " + ((column_r3.cssClasses == null ? null : column_r3.cssClasses[1]) || ""));
     \u0275\u0275advance();
     \u0275\u0275conditional(ctx_r1.isText(editable_r10) ? 2 : -1);
     \u0275\u0275advance();
@@ -15940,7 +15936,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Te
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Template, 9, 9, "div", 18);
+    \u0275\u0275conditionalCreate(0, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Conditional_0_Template, 9, 10, "div", 17);
   }
   if (rf & 2) {
     let tmp_16_0;
@@ -15951,12 +15947,13 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Template(rf, ctx
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_3_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "img", 15);
+    \u0275\u0275element(0, "img", 31);
   }
   if (rf & 2) {
     const row_r6 = \u0275\u0275nextContext().$implicit;
     const column_r3 = \u0275\u0275nextContext().$implicit;
-    \u0275\u0275property("alt", row_r6.name || "")("ngSrc", row_r6[column_r3.key] || "")("ngClass", (column_r3.cssClasses == null ? null : column_r3.cssClasses[1]) || "");
+    \u0275\u0275classMap((column_r3.cssClasses == null ? null : column_r3.cssClasses[1]) || "");
+    \u0275\u0275property("alt", row_r6.name || "")("ngSrc", row_r6[column_r3.key] || "");
   }
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_4_Conditional_2_ng_container_0_Template(rf, ctx) {
@@ -15966,7 +15963,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_4_Conditional_2_ng
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_4_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_4_Conditional_2_ng_container_0_Template, 1, 0, "ng-container", 33);
+    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_4_Conditional_2_ng_container_0_Template, 1, 0, "ng-container", 32);
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
@@ -15993,7 +15990,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_4_Template(rf, ctx
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "div", 16);
+    \u0275\u0275element(0, "div", 33);
     \u0275\u0275pipe(1, "safeFormatted");
   }
   if (rf & 2) {
@@ -16002,20 +15999,21 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_5_Template(rf, ctx
     const i_r7 = ctx_r4.dataIndex;
     const column_r3 = \u0275\u0275nextContext().$implicit;
     const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", (column_r3.cssClasses == null ? null : column_r3.cssClasses[1]) || "")("innerHTML", \u0275\u0275pipeBind4(1, 2, row_r6, column_r3, i_r7 + 1, ctx_r1.pagination()), \u0275\u0275sanitizeHtml);
+    \u0275\u0275classMap((column_r3.cssClasses == null ? null : column_r3.cssClasses[1]) || "");
+    \u0275\u0275property("innerHTML", \u0275\u0275pipeBind4(1, 3, row_r6, column_r3, i_r7 + 1, ctx_r1.pagination()), \u0275\u0275sanitizeHtml);
   }
 }
 function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-cell", 13);
-    \u0275\u0275conditionalCreate(1, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_1_Template, 2, 8, "a", 14)(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Template, 1, 1)(3, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_3_Template, 1, 3, "img", 15)(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_4_Template, 3, 6)(5, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_5_Template, 2, 7, "div", 16);
+    \u0275\u0275elementStart(0, "mat-cell");
+    \u0275\u0275conditionalCreate(1, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_1_Template, 2, 9, "a", 13)(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_2_Template, 1, 1)(3, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_3_Template, 1, 4, "img", 14)(4, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_4_Template, 3, 6)(5, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Case_5_Template, 2, 8, "div", 15);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     let tmp_16_0;
     const column_r3 = \u0275\u0275nextContext().$implicit;
     const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275property("ngClass", ctx_r1.setCellNgClass(column_r3));
+    \u0275\u0275classMap(`py-sub ${ctx_r1.setCellNgClass(column_r3)}`);
     \u0275\u0275advance();
     \u0275\u0275conditional((tmp_16_0 = column_r3.formatting.type) === "LINK" ? 1 : tmp_16_0 === "INPUT" ? 2 : tmp_16_0 === "IMAGE" ? 3 : tmp_16_0 === "COMPONENT" ? 4 : 5);
   }
@@ -16023,7 +16021,7 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Template(rf, ctx) {
 function SharedTableUiComponent_Defer_1_For_2_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainerStart(0, 6);
-    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_For_2_mat_header_cell_1_Template, 2, 5, "mat-header-cell", 10)(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Template, 6, 2, "mat-cell", 11);
+    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_For_2_mat_header_cell_1_Template, 2, 6, "mat-header-cell", 10)(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Template, 6, 3, "mat-cell", 11);
     \u0275\u0275elementContainerEnd();
   }
   if (rf & 2) {
@@ -16040,19 +16038,19 @@ function SharedTableUiComponent_Defer_1_ForEmpty_3_Template(rf, ctx) {
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_header_cell_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-header-cell", 36);
+    \u0275\u0275elementStart(0, "mat-header-cell");
     \u0275\u0275text(1, " Accions ");
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("ngClass", ctx_r1.actionsColStyles() || "");
+    \u0275\u0275classMap("mat-cell-actions justify-center overflow-visible " + (ctx_r1.actionsColStyles() || ""));
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r21 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 42);
+    \u0275\u0275elementStart(0, "button", 39);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_0_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r21);
       return \u0275\u0275resetView($event.stopPropagation());
@@ -16071,7 +16069,7 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Condition
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r24 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 43);
+    \u0275\u0275elementStart(0, "button", 40);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_1_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r24);
       const action_r22 = \u0275\u0275nextContext().$implicit;
@@ -16094,7 +16092,7 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Condition
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r25 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 43);
+    \u0275\u0275elementStart(0, "button", 40);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_2_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r25);
       const element_r23 = \u0275\u0275nextContext(2).$implicit;
@@ -16116,7 +16114,7 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Condition
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     const _r26 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 44);
+    \u0275\u0275elementStart(0, "button", 41);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_3_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r26);
       const action_r22 = \u0275\u0275nextContext().$implicit;
@@ -16139,14 +16137,14 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Condition
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "button", 41);
+    \u0275\u0275elementStart(0, "button", 38);
     \u0275\u0275text(1, " \xA0 ");
     \u0275\u0275elementEnd();
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_0_Template, 3, 6, "button", 38)(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_1_Template, 3, 3, "button", 39)(2, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_2_Template, 3, 3, "button", 39)(3, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_3_Template, 3, 5, "button", 40)(4, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_4_Template, 2, 0, "button", 41);
+    \u0275\u0275conditionalCreate(0, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_0_Template, 3, 6, "button", 35)(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_1_Template, 3, 3, "button", 36)(2, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_2_Template, 3, 3, "button", 36)(3, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_3_Template, 3, 5, "button", 37)(4, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_4_Template, 2, 0, "button", 38);
   }
   if (rf & 2) {
     const action_r22 = ctx.$implicit;
@@ -16156,7 +16154,7 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Template(
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-cell", 37);
+    \u0275\u0275elementStart(0, "mat-cell");
     \u0275\u0275repeaterCreate(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Template, 5, 1, null, null, _forTrack02);
     \u0275\u0275pipe(3, "keyvalue");
     \u0275\u0275pipe(4, "orderTableActionsElements");
@@ -16164,21 +16162,21 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_Template(rf, ct
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275property("ngClass", ctx_r1.actionsColStyles() || "");
+    \u0275\u0275classMap("mat-cell-actions py-sub overflow-visible " + (ctx_r1.actionsColStyles() || ""));
     \u0275\u0275advance();
-    \u0275\u0275repeater(\u0275\u0275pipeBind1(4, 3, \u0275\u0275pipeBind1(3, 1, ctx_r1.actions())));
+    \u0275\u0275repeater(\u0275\u0275pipeBind1(4, 4, \u0275\u0275pipeBind1(3, 2, ctx_r1.actions())));
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainerStart(0, 7);
-    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_header_cell_1_Template, 2, 1, "mat-header-cell", 34)(2, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_Template, 5, 5, "mat-cell", 35);
+    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_header_cell_1_Template, 2, 2, "mat-header-cell", 34)(2, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_Template, 5, 6, "mat-cell", 11);
     \u0275\u0275elementContainerEnd();
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_5_mat_header_cell_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-header-cell", 50)(1, "span", 51);
+    \u0275\u0275elementStart(0, "mat-header-cell", 47)(1, "span", 48);
     \u0275\u0275text(2, "expand");
     \u0275\u0275elementEnd()();
   }
@@ -16200,7 +16198,7 @@ function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Conditional_3_T
 function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r27 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-cell", 52)(1, "button", 53);
+    \u0275\u0275elementStart(0, "mat-cell", 49)(1, "button", 50);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Template_button_click_1_listener($event) {
       const element_r28 = \u0275\u0275restoreView(_r27).$implicit;
       const ctx_r1 = \u0275\u0275nextContext(3);
@@ -16225,7 +16223,7 @@ function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_n
 }
 function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_ng_container_0_Template, 1, 0, "ng-container", 55);
+    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_ng_container_0_Template, 1, 0, "ng-container", 52);
   }
   if (rf & 2) {
     let tmp_7_0;
@@ -16236,7 +16234,7 @@ function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_T
 }
 function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-cell", 54);
+    \u0275\u0275elementStart(0, "mat-cell", 51);
     \u0275\u0275conditionalCreate(1, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_Template, 1, 5, "ng-container");
     \u0275\u0275elementEnd();
   }
@@ -16251,11 +16249,11 @@ function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Template(rf, ct
 }
 function SharedTableUiComponent_Defer_1_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementContainerStart(0, 45);
-    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_Conditional_5_mat_header_cell_1_Template, 3, 0, "mat-header-cell", 46)(2, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Template, 4, 1, "mat-cell", 47);
+    \u0275\u0275elementContainerStart(0, 42);
+    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_Conditional_5_mat_header_cell_1_Template, 3, 0, "mat-header-cell", 43)(2, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Template, 4, 1, "mat-cell", 44);
     \u0275\u0275elementContainerEnd();
-    \u0275\u0275elementContainerStart(3, 48);
-    \u0275\u0275template(4, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Template, 2, 2, "mat-cell", 49);
+    \u0275\u0275elementContainerStart(3, 45);
+    \u0275\u0275template(4, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Template, 2, 2, "mat-cell", 46);
     \u0275\u0275elementContainerEnd();
   }
 }
@@ -16267,7 +16265,7 @@ function SharedTableUiComponent_Defer_1_mat_header_row_6_Template(rf, ctx) {
 function SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r30 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-row", 58);
+    \u0275\u0275elementStart(0, "mat-row", 55);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template_mat_row_click_0_listener($event) {
       const row_r31 = \u0275\u0275restoreView(_r30).$implicit;
       const ctx_r1 = \u0275\u0275nextContext(3);
@@ -16281,18 +16279,18 @@ function SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template(rf, ctx
     let tmp_6_0;
     const row_r31 = ctx.$implicit;
     const ctx_r1 = \u0275\u0275nextContext(3);
-    \u0275\u0275classProp("expanded-row", ((tmp_5_0 = ctx_r1.expandedElement()) == null ? null : tmp_5_0.id) === row_r31.id);
-    \u0275\u0275property("ngClass", ((tmp_6_0 = ctx_r1.extraRowStyles()) == null ? null : tmp_6_0(row_r31)) || "");
+    \u0275\u0275classMap("expandable-row " + (((tmp_5_0 = ctx_r1.extraRowStyles()) == null ? null : tmp_5_0(row_r31)) || ""));
+    \u0275\u0275classProp("expanded-row", ((tmp_6_0 = ctx_r1.expandedElement()) == null ? null : tmp_6_0.id) === row_r31.id);
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_7_mat_row_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "mat-row", 59);
+    \u0275\u0275element(0, "mat-row", 56);
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template, 1, 3, "mat-row", 56)(1, SharedTableUiComponent_Defer_1_Conditional_7_mat_row_1_Template, 1, 0, "mat-row", 57);
+    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template, 1, 4, "mat-row", 53)(1, SharedTableUiComponent_Defer_1_Conditional_7_mat_row_1_Template, 1, 0, "mat-row", 54);
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
@@ -16303,19 +16301,19 @@ function SharedTableUiComponent_Defer_1_Conditional_7_Template(rf, ctx) {
 }
 function SharedTableUiComponent_Defer_1_Conditional_8_mat_row_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "mat-row", 61);
+    \u0275\u0275element(0, "mat-row");
   }
   if (rf & 2) {
-    let tmp_6_0;
+    let tmp_5_0;
     const row_r32 = ctx.$implicit;
     const ctx_r1 = \u0275\u0275nextContext(3);
+    \u0275\u0275classMap(((tmp_5_0 = ctx_r1.extraRowStyles()) == null ? null : tmp_5_0(row_r32)) || "");
     \u0275\u0275styleProp("height", ctx_r1.rowHeight());
-    \u0275\u0275property("ngClass", ((tmp_6_0 = ctx_r1.extraRowStyles()) == null ? null : tmp_6_0(row_r32)) || "");
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_8_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_8_mat_row_0_Template, 1, 3, "mat-row", 60);
+    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_8_mat_row_0_Template, 1, 4, "mat-row", 57);
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
@@ -16374,7 +16372,7 @@ function SharedTableUiComponent_Defer_1_Template(rf, ctx) {
 }
 function SharedTableUiComponent_DeferPlaceholder_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 62);
+    \u0275\u0275elementStart(0, "p", 58);
     \u0275\u0275text(1, "loading data...");
     \u0275\u0275elementEnd();
   }
@@ -16382,7 +16380,7 @@ function SharedTableUiComponent_DeferPlaceholder_2_Template(rf, ctx) {
 function SharedTableUiComponent_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
     const _r33 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-paginator", 63, 2);
+    \u0275\u0275elementStart(0, "mat-paginator", 59, 2);
     \u0275\u0275listener("page", function SharedTableUiComponent_Conditional_5_Template_mat_paginator_page_0_listener($event) {
       \u0275\u0275restoreView(_r33);
       const ctx_r1 = \u0275\u0275nextContext();
@@ -16581,7 +16579,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.matFormField = _t);
     }
-  }, inputs: { data: [1, "data"], columnProperties: [1, "columnProperties"], resultsLength: [1, "resultsLength"], pagination: [1, "pagination"], noPagination: [1, "noPagination"], paginationVisibility: [1, "paginationVisibility"], caption: [1, "caption"], sort: [1, "sort"], actions: [1, "actions"], filterCriteria: [1, "filterCriteria"], filterPredicate: [1, "filterPredicate"], extraRowStyles: [1, "extraRowStyles"], actionsColStyles: [1, "actionsColStyles"], rowHeight: [1, "rowHeight"], expandable: [1, "expandable"], expandedElementId: [1, "expandedElementId"], expandedDetailTpl: [1, "expandedDetailTpl"] }, outputs: { changePagination: "changePagination", changeSorting: "changeSorting", delete: "delete", getChangedData: "getChangedData" }, ngContentSelectors: _c23, decls: 6, vars: 2, consts: [["noResults", ""], ["matFormField", ""], ["matPaginator", ""], [1, "border-gray-10", "mb-tiny", "z-10", "mt-0", "grid", "w-full", "overflow-auto", "overflow-x-auto", "overflow-y-hidden", "border-t", "border-solid", "md:mt-4"], [1, "mt-md", "justify-end", 3, "pageIndex", "pageSize", "length"], ["matSort", "", "matSortDisableClear", "", "multiTemplateDataRows", "", 1, "table", "w-full", 3, "matSortChange", "dataSource", "matSortActive", "matSortDirection"], [3, "matColumnDef", "sticky"], ["matColumnDef", "actions"], [4, "matHeaderRowDef", "matHeaderRowDefSticky"], [3, "height", "ngClass"], [3, "sortActionDescription", "mat-sort-header", "disabled", "ngClass", 4, "matHeaderCellDef"], ["class", "py-sub", 3, "ngClass", 4, "matCellDef"], [3, "sortActionDescription", "mat-sort-header", "disabled", "ngClass"], [1, "py-sub", 3, "ngClass"], [3, "ngClass", "routerLink", "queryParams", "innerHTML"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc", "ngClass"], [3, "ngClass", "innerHTML"], [3, "click", "ngClass", "routerLink", "queryParams", "innerHTML"], [1, "my-sub", "leading-6", 3, "ngClass"], [1, "editable", "inline", 3, "ngClass"], [3, "value", "multiple"], [3, "value", "checked"], [3, "checked", "aria-label"], [3, "value"], ["matTextPrefix", ""], ["matInput", "", 3, "change", "value", "placeholder"], ["matTextSuffix", ""], ["matInput", "", "type", "number", 3, "change", "value", "placeholder"], [3, "selectionChange", "value", "multiple"], [3, "change", "value", "checked"], [3, "change", "checked", "aria-label"], [3, "change", "value"], ["matInput", "", "cdkTextareaAutosize", "", "cdkAutosizeMinRows", "1", "cdkAutosizeMaxRows", "4", "autocomplete", "off", 3, "change", "value", "placeholder", "rows"], [4, "ngComponentOutlet", "ngComponentOutletInputs"], ["class", "mat-cell-actions justify-center overflow-visible", 3, "ngClass", 4, "matHeaderCellDef"], ["class", "mat-cell-actions py-sub overflow-visible", 3, "ngClass", 4, "matCellDef"], [1, "mat-cell-actions", "justify-center", "overflow-visible", 3, "ngClass"], [1, "mat-cell-actions", "py-sub", "overflow-visible", 3, "ngClass"], ["type", "button", "mat-icon-button", "", 3, "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled", "routerLink"], ["type", "button", "mat-icon-button", "", "aria-hidden", "true", 1, "invisible"], ["type", "button", "mat-icon-button", "", 3, "click", "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled", "routerLink"], ["matColumnDef", "expand", "sticky", "true"], ["aria-label", "row", "class", "max-w-[70px]", "aria-hidden", "true", 4, "matHeaderCellDef"], ["class", "max-w-[70px]", 4, "matCellDef"], ["matColumnDef", "expandedDetail"], ["class", "justify-evenly border-b-0", 4, "matCellDef"], ["aria-label", "row", "aria-hidden", "true", 1, "max-w-[70px]"], [1, "invisible"], [1, "max-w-[70px]"], ["mat-icon-button", "", "aria-label", "expand row", 1, "-left-sub", 3, "click"], [1, "justify-evenly", "border-b-0"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["sticky", "true", "class", "expandable-row", 3, "expanded-row", "ngClass", "click", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", "class", "height-0 table-row", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", 1, "expandable-row", 3, "click", "ngClass"], ["sticky", "true", 1, "height-0", "table-row"], [3, "height", "ngClass", 4, "matRowDef", "matRowDefColumns"], [3, "ngClass"], [1, "text-sm"], [1, "mt-md", "justify-end", 3, "page", "pageIndex", "pageSize", "length"]], template: function SharedTableUiComponent_Template(rf, ctx) {
+  }, inputs: { data: [1, "data"], columnProperties: [1, "columnProperties"], resultsLength: [1, "resultsLength"], pagination: [1, "pagination"], noPagination: [1, "noPagination"], paginationVisibility: [1, "paginationVisibility"], caption: [1, "caption"], sort: [1, "sort"], actions: [1, "actions"], filterCriteria: [1, "filterCriteria"], filterPredicate: [1, "filterPredicate"], extraRowStyles: [1, "extraRowStyles"], actionsColStyles: [1, "actionsColStyles"], rowHeight: [1, "rowHeight"], expandable: [1, "expandable"], expandedElementId: [1, "expandedElementId"], expandedDetailTpl: [1, "expandedDetailTpl"] }, outputs: { changePagination: "changePagination", changeSorting: "changeSorting", delete: "delete", getChangedData: "getChangedData" }, ngContentSelectors: _c23, decls: 6, vars: 2, consts: [["noResults", ""], ["matFormField", ""], ["matPaginator", ""], [1, "border-gray-10", "mb-tiny", "z-10", "mt-0", "grid", "w-full", "overflow-auto", "overflow-x-auto", "overflow-y-hidden", "border-t", "border-solid", "md:mt-4"], [1, "mt-md", "justify-end", 3, "pageIndex", "pageSize", "length"], ["matSort", "", "matSortDisableClear", "", "multiTemplateDataRows", "", 1, "table", "w-full", 3, "matSortChange", "dataSource", "matSortActive", "matSortDirection"], [3, "matColumnDef", "sticky"], ["matColumnDef", "actions"], [4, "matHeaderRowDef", "matHeaderRowDefSticky"], [3, "height", "class"], [3, "sortActionDescription", "mat-sort-header", "disabled", "class", 4, "matHeaderCellDef"], [3, "class", 4, "matCellDef"], [3, "sortActionDescription", "mat-sort-header", "disabled"], [3, "class", "routerLink", "queryParams", "innerHTML"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc", "class"], [3, "class", "innerHTML"], [3, "click", "routerLink", "queryParams", "innerHTML"], [3, "class"], [3, "value", "multiple"], [3, "value", "checked"], [3, "checked", "aria-label"], [3, "value"], ["matTextPrefix", ""], ["matInput", "", 3, "change", "value", "placeholder"], ["matTextSuffix", ""], ["matInput", "", "type", "number", 3, "change", "value", "placeholder"], [3, "selectionChange", "value", "multiple"], [3, "change", "value", "checked"], [3, "change", "checked", "aria-label"], [3, "change", "value"], ["matInput", "", "cdkTextareaAutosize", "", "cdkAutosizeMinRows", "1", "cdkAutosizeMaxRows", "4", "autocomplete", "off", 3, "change", "value", "placeholder", "rows"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc"], [4, "ngComponentOutlet", "ngComponentOutletInputs"], [3, "innerHTML"], [3, "class", 4, "matHeaderCellDef"], ["type", "button", "mat-icon-button", "", 3, "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled", "routerLink"], ["type", "button", "mat-icon-button", "", "aria-hidden", "true", 1, "invisible"], ["type", "button", "mat-icon-button", "", 3, "click", "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled", "routerLink"], ["matColumnDef", "expand", "sticky", "true"], ["aria-label", "row", "class", "max-w-[70px]", "aria-hidden", "true", 4, "matHeaderCellDef"], ["class", "max-w-[70px]", 4, "matCellDef"], ["matColumnDef", "expandedDetail"], ["class", "justify-evenly border-b-0", 4, "matCellDef"], ["aria-label", "row", "aria-hidden", "true", 1, "max-w-[70px]"], [1, "invisible"], [1, "max-w-[70px]"], ["mat-icon-button", "", "aria-label", "expand row", 1, "-left-sub", 3, "click"], [1, "justify-evenly", "border-b-0"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["sticky", "true", 3, "class", "expanded-row", "click", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", "class", "height-0 table-row", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", 3, "click"], ["sticky", "true", 1, "height-0", "table-row"], [3, "height", "class", 4, "matRowDef", "matRowDefColumns"], [1, "text-sm"], [1, "mt-md", "justify-end", 3, "page", "pageIndex", "pageSize", "length"]], template: function SharedTableUiComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c17);
       \u0275\u0275elementStart(0, "div", 3);
@@ -16616,13 +16614,12 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
   ], styles: ["\n\n  mat-table .mat-mdc-row {\n  min-height: var(--plastik-mdc-table-row-min-height, auto);\n  max-height: var(--plastik-mdc-table-row-max-height, auto);\n}\n  mat-table .mat-mdc-row li {\n  margin: 0;\n  padding: 0;\n}\n  mat-table .mat-mdc-row.marked-ok {\n  background-color: var(--plastik-mdc-table-row-marked-ok-bg-color, #a1e380) !important;\n}\n  mat-table .mat-mdc-row.marked-ko {\n  background-color: var(--plastik-mdc-table-row-marked-ko-bg-color, #f8c8c8) !important;\n}\n  mat-table .mat-mdc-row.marked-changed {\n  background-color: var(--plastik-mdc-table-row-marked-changed-bg-color, #e8bf79) !important;\n}\n  mat-table .mat-mdc-row.expanded-row > .mat-mdc-cell {\n  background-color: var(--plastik-mdc-nested-container-bg-color);\n  border-bottom-width: 0px;\n}\n  mat-table .mat-mdc-row.expanded-row + .mat-mdc-row > .mat-mdc-cell {\n  border-bottom-width: 1px !important;\n  background-color: var(--plastik-mdc-nested-container-bg-color);\n}\n  mat-table .mat-mdc-cell {\n  --mat-form-field-container-height: 45px;\n  --mat-form-field-container-text-size: var(--mat-sys-body-medium-size);\n}\n  mat-table .mat-mdc-cell .mat-mdc-form-field-infix {\n  width: auto;\n}\n  mat-table .mat-mdc-cell.mat-cell-link a {\n  cursor: pointer;\n}\n  mat-table .mat-mdc-cell li {\n  margin: 0;\n  padding: 0;\n}\n  mat-table .mat-mdc-cell .mdc-text-field--no-label .mat-mdc-form-field-infix {\n  padding: 0.5rem 0 0;\n}\n  mat-table .mat-mdc-cell .mat-mdc-form-field-subscript-wrapper {\n  display: none;\n}\n  mat-table mat-table {\n  --mat-table-background-color: var(--plastik-mdc-nested-data-bg-color);\n}\n  mat-table mat-table .mdc-data-table__row:not(:last-child) .mat-mdc-cell {\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n  border-bottom-color: var(--mat-table-row-item-outline-color);\n}\n  .mat-mdc-paginator.paginator--hide .mat-paginator-range-label {\n  display: none;\n}\n  .mat-mdc-paginator.paginator--hide-range-buttons .mat-mdc-paginator-range-actions > button {\n  display: none;\n}\n/*# sourceMappingURL=shared-table-ui.component.css.map */"], changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(SharedTableUiComponent, () => [import("./router-TPSFPNN7.js").then((m) => m.RouterLink), import("./common-6F6FR7MH.js").then((m) => m.NgClass), import("./common-6F6FR7MH.js").then((m) => m.NgComponentOutlet), import("./common-6F6FR7MH.js").then((m) => m.NgTemplateOutlet), import("./text-field-JPY6IONJ.js").then((m) => m.CdkTextareaAutosize), import("./common-6F6FR7MH.js").then((m) => m.NgOptimizedImage), import("./common-6F6FR7MH.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-4IKQWIGL.js").then((m) => m.OrderTableActionsElementsPipe)], (RouterLink, NgClass2, NgComponentOutlet, NgTemplateOutlet2, CdkTextareaAutosize, NgOptimizedImage2, KeyValuePipe, OrderTableActionsElementsPipe) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(SharedTableUiComponent, () => [import("./router-TPSFPNN7.js").then((m) => m.RouterLink), import("./common-6F6FR7MH.js").then((m) => m.NgComponentOutlet), import("./common-6F6FR7MH.js").then((m) => m.NgTemplateOutlet), import("./text-field-JPY6IONJ.js").then((m) => m.CdkTextareaAutosize), import("./common-6F6FR7MH.js").then((m) => m.NgOptimizedImage), import("./common-6F6FR7MH.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-4IKQWIGL.js").then((m) => m.OrderTableActionsElementsPipe)], (RouterLink, NgComponentOutlet, NgTemplateOutlet2, CdkTextareaAutosize, NgOptimizedImage2, KeyValuePipe, OrderTableActionsElementsPipe) => {
     setClassMetadata(SharedTableUiComponent, [{
       type: Component,
       args: [{ selector: "plastik-shared-table", imports: [
         RouterLink,
         KeyValuePipe,
-        NgClass2,
         NgComponentOutlet,
         NgTemplateOutlet2,
         CdkTableModule,
@@ -16664,18 +16661,17 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
             [sortActionDescription]="column.sorting ? \`Ordenar per \${column.title}\` : ''"
             [mat-sort-header]="column.sorting || ''"
             [disabled]="!column.sorting"
-            [ngClass]="column.cssClasses?.[0] || ''">
+            [class]="column.cssClasses?.[0] || ''">
             {{ column.title }}
           </mat-header-cell>
 
           <mat-cell
             *matCellDef="let row; let i = dataIndex"
-            class="py-sub"
-            [ngClass]="setCellNgClass(column)">
+            [class]="\`py-sub \${setCellNgClass(column)}\`">
             @switch (column.formatting.type) {
               @case ('LINK') {
                 <a
-                  [ngClass]="column.cssClasses?.[1] || ''"
+                  [class]="column.cssClasses?.[1] || ''"
                   [routerLink]="column.link ? column.link(row) : null"
                   [queryParams]="column.queryParams ? column.queryParams(row) : null"
                   [innerHTML]="row | safeFormatted: column : i + 1"
@@ -16685,12 +16681,11 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
               @case ('INPUT') {
                 @if (column.isEditableConfig?.(row); as editable) {
                   @let attributes = editable?.attributes;
-                  <div class="my-sub leading-6" [ngClass]="column.cssClasses?.[1] || ''">
+                  <div [class]="'my-sub leading-6 ' + (column.cssClasses?.[1] || '')">
                     @if (isText(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="editable inline"
-                        [ngClass]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -16711,8 +16706,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
                     @if (isNumber(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="editable inline"
-                        [ngClass]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -16785,8 +16779,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
                     @if (isTextarea(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="editable inline"
-                        [ngClass]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -16820,7 +16813,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
                   placeholder="https://placehold.co/200"
                   [alt]="row.name || ''"
                   [ngSrc]="row[column.key] || ''"
-                  [ngClass]="column.cssClasses?.[1] || ''" />
+                  [class]="column.cssClasses?.[1] || ''" />
               }
 
               @case ('COMPONENT') {
@@ -16833,7 +16826,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
 
               @default {
                 <div
-                  [ngClass]="column.cssClasses?.[1] || ''"
+                  [class]="column.cssClasses?.[1] || ''"
                   [innerHTML]="row | safeFormatted: column : i + 1 : pagination()"></div>
               }
             }
@@ -16848,14 +16841,14 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
         <ng-container matColumnDef="actions">
           <mat-header-cell
             *matHeaderCellDef
-            class="mat-cell-actions justify-center overflow-visible"
-            [ngClass]="actionsColStyles() || ''">
+            [class]="
+              'mat-cell-actions justify-center overflow-visible ' + (actionsColStyles() || '')
+            ">
             Accions
           </mat-header-cell>
           <mat-cell
             *matCellDef="let element"
-            class="mat-cell-actions py-sub overflow-visible"
-            [ngClass]="actionsColStyles() || ''">
+            [class]="'mat-cell-actions py-sub overflow-visible ' + (actionsColStyles() || '')">
             @for (action of actions() | keyvalue | orderTableActionsElements; track action.key) {
               @if (action.key === 'EDIT' && action.value?.visible(element)) {
                 <button
@@ -16960,9 +16953,8 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
         <mat-row
           *matRowDef="let row; columns: columnsToDisplay()"
           sticky="true"
-          class="expandable-row"
+          [class]="'expandable-row ' + (extraRowStyles()?.(row) || '')"
           [class.expanded-row]="expandedElement()?.id === row.id"
-          [ngClass]="extraRowStyles()?.(row) || ''"
           (click)="
             $event.stopPropagation(); expandedElement.set(expandedElement() === row ? null : row)
           "></mat-row>
@@ -16975,7 +16967,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
         <mat-row
           *matRowDef="let row; columns: columnsToDisplay()"
           [style.height]="rowHeight()"
-          [ngClass]="extraRowStyles()?.(row) || ''"></mat-row>
+          [class]="extraRowStyles()?.(row) || ''"></mat-row>
       }
     </mat-table>
 
@@ -17011,7 +17003,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
   });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedTableUiComponent, { className: "SharedTableUiComponent", filePath: "libs/shared/table/ui/src/lib/shared-table-ui/shared-table-ui.component.ts", lineNumber: 98 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedTableUiComponent, { className: "SharedTableUiComponent", filePath: "libs/shared/table/ui/src/lib/shared-table-ui/shared-table-ui.component.ts", lineNumber: 96 });
 })();
 
 // libs/shared/form/ui/input-search-util/src/input-search-util.ts
@@ -17260,30 +17252,30 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
   dimensions = input(...ngDevMode ? [void 0, { debugName: "dimensions" }] : []);
   quality = input(80, ...ngDevMode ? [{ debugName: "quality" }] : []);
   lcpImage = input(false, ...ngDevMode ? [{ debugName: "lcpImage" }] : []);
-  loaded = signal(false, ...ngDevMode ? [{ debugName: "loaded" }] : []);
-  error = signal(false, ...ngDevMode ? [{ debugName: "error" }] : []);
-  isLoading = computed(() => !!this.src() && !this.loaded() && !this.error(), ...ngDevMode ? [{ debugName: "isLoading" }] : []);
-  hasError = computed(() => this.error() || !this.src(), ...ngDevMode ? [{ debugName: "hasError" }] : []);
+  #loaded = signal(false, ...ngDevMode ? [{ debugName: "#loaded" }] : []);
+  #error = signal(false, ...ngDevMode ? [{ debugName: "#error" }] : []);
+  isLoading = computed(() => !!this.src() && !this.#loaded() && !this.#error(), ...ngDevMode ? [{ debugName: "isLoading" }] : []);
+  hasError = computed(() => this.#error() || !this.src(), ...ngDevMode ? [{ debugName: "hasError" }] : []);
   constructor() {
     effect(() => {
       this.src();
       untracked(() => {
-        this.loaded.set(false);
-        this.error.set(false);
+        this.#loaded.set(false);
+        this.#error.set(false);
       });
     });
   }
   onImageLoad() {
-    this.loaded.set(true);
+    this.#loaded.set(true);
   }
   onImageError() {
-    this.error.set(true);
-    this.loaded.set(false);
+    this.#error.set(true);
+    this.#loaded.set(false);
   }
   static \u0275fac = function SharedImgContainerComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedImgContainerComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-img-container"]], hostAttrs: [1, "block"], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 7, vars: 6, consts: [["fixedImage", ""], ["fillImage", ""], [1, "absolute", "inset-0", "flex", "items-center", "justify-center", "rounded-lg", "bg-transparent"], [1, "border-tertiary-600", "h-8", "w-8", "animate-spin", "rounded-full", "border-b-2"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "my-sub", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "max-h-auto", "my-sub", "w-full", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-img-container"]], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 7, vars: 6, consts: [["fixedImage", ""], ["fillImage", ""], [1, "absolute", "inset-0", "flex", "items-center", "justify-center", "rounded-lg", "bg-transparent"], [1, "border-tertiary-600", "h-8", "w-8", "animate-spin", "rounded-full", "border-b-2"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "my-sub", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "max-h-auto", "my-sub", "w-full", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275declareLet(0)(1)(2);
       \u0275\u0275elementStart(3, "div", 2);
@@ -17307,18 +17299,16 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
       \u0275\u0275advance();
       \u0275\u0275conditional(src_r11 ? 6 : -1);
     }
-  }, dependencies: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet], styles: ["\n\n[_nghost-%COMP%] {\n  display: block;\n  position: relative;\n}\n[_nghost-%COMP%]   .image-error[_ngcontent-%COMP%] {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */"], changeDetection: 0 });
+  }, dependencies: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet], styles: ["\n\n[_nghost-%COMP%] {\n  display: block;\n}\n[_nghost-%COMP%]   .image-error[_ngcontent-%COMP%] {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */"], changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedImgContainerComponent, [{
     type: Component,
-    args: [{ selector: "plastik-img-container", imports: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet], host: {
-      class: "block"
-    }, changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-transparent">\n  @if (isLoading()) {\n    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>\n    }\n  } @else {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>\n    }\n  }\n\n  <ng-template #fixedImage let-priority="priority">\n    <img\n      class="my-sub object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ width, height, quality: quality() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n\n  <ng-template #fillImage let-priority="priority">\n    <img\n      fill\n      class="max-h-auto my-sub w-full object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [alt]="title()"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host {\n  display: block;\n  position: relative;\n}\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
+    args: [{ selector: "plastik-img-container", imports: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet], changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-transparent">\n  @if (isLoading()) {\n    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>\n    }\n  } @else {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>\n    }\n  }\n\n  <ng-template #fixedImage let-priority="priority">\n    <img\n      class="my-sub object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ width, height, quality: quality() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n\n  <ng-template #fillImage let-priority="priority">\n    <img\n      fill\n      class="max-h-auto my-sub w-full object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [alt]="title()"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host {\n  display: block;\n}\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
   }], () => [], { src: [{ type: Input, args: [{ isSignal: true, alias: "src", required: true }] }], title: [{ type: Input, args: [{ isSignal: true, alias: "title", required: true }] }], dimensions: [{ type: Input, args: [{ isSignal: true, alias: "dimensions", required: false }] }], quality: [{ type: Input, args: [{ isSignal: true, alias: "quality", required: false }] }], lcpImage: [{ type: Input, args: [{ isSignal: true, alias: "lcpImage", required: false }] }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedImgContainerComponent, { className: "SharedImgContainerComponent", filePath: "libs/shared/img-container/ui/src/lib/shared-img-container.component.ts", lineNumber: 26 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedImgContainerComponent, { className: "SharedImgContainerComponent", filePath: "libs/shared/img-container/ui/src/lib/shared-img-container.component.ts", lineNumber: 23 });
 })();
 
 // libs/nasa-images/search/feature/src/lib/nasa-images-search-feature/nasa-images-search-feature-table.config.ts
@@ -17444,7 +17434,7 @@ var _c19 = () => ({});
 var _c25 = (a0, a1) => ({ data: a0, isActiveSearch: a1 });
 function NasaImagesSearchFeatureComponent_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "h2", 1)(1, "mat-icon");
+    \u0275\u0275elementStart(0, "h2", 1)(1, "mat-icon", 4);
     \u0275\u0275text(2);
     \u0275\u0275elementEnd();
     \u0275\u0275elementStart(3, "span");
@@ -17461,26 +17451,26 @@ function NasaImagesSearchFeatureComponent_Conditional_0_Template(rf, ctx) {
 }
 function NasaImagesSearchFeatureComponent_plastik_shared_table_7_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "plastik-nasa-images-search-ui-no-results", 5)(1, "span", 6);
+    \u0275\u0275elementStart(0, "plastik-nasa-images-search-ui-no-results", 6)(1, "span", 7);
     \u0275\u0275text(2, " search_off ");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "span", 7);
+    \u0275\u0275elementStart(3, "span", 8);
     \u0275\u0275text(4, "No results found");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "span", 8);
+    \u0275\u0275elementStart(5, "span", 9);
     \u0275\u0275text(6, "We can't find any item matching your search.");
     \u0275\u0275elementEnd()();
   }
 }
 function NasaImagesSearchFeatureComponent_plastik_shared_table_7_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "plastik-nasa-images-search-ui-no-results", 0)(1, "span", 6);
+    \u0275\u0275elementStart(0, "plastik-nasa-images-search-ui-no-results", 0)(1, "span", 7);
     \u0275\u0275text(2, " search_on ");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(3, "span", 7);
+    \u0275\u0275elementStart(3, "span", 8);
     \u0275\u0275text(4, "NASA images search");
     \u0275\u0275elementEnd();
-    \u0275\u0275elementStart(5, "span", 8);
+    \u0275\u0275elementStart(5, "span", 9);
     \u0275\u0275text(6, "Use the filter to find related NASA pictures.");
     \u0275\u0275element(7, "br");
     \u0275\u0275text(8, "You must provide a valid matching string.");
@@ -17492,13 +17482,13 @@ function NasaImagesSearchFeatureComponent_plastik_shared_table_7_ng_template_3_T
 function NasaImagesSearchFeatureComponent_plastik_shared_table_7_Template(rf, ctx) {
   if (rf & 1) {
     const _r3 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "plastik-shared-table", 4);
+    \u0275\u0275elementStart(0, "plastik-shared-table", 5);
     \u0275\u0275listener("changePagination", function NasaImagesSearchFeatureComponent_plastik_shared_table_7_Template_plastik_shared_table_changePagination_0_listener($event) {
       \u0275\u0275restoreView(_r3);
       const ctx_r3 = \u0275\u0275nextContext();
       return \u0275\u0275resetView(ctx_r3.onChangePagination($event));
     });
-    \u0275\u0275conditionalCreate(1, NasaImagesSearchFeatureComponent_plastik_shared_table_7_Conditional_1_Template, 7, 0, "plastik-nasa-images-search-ui-no-results", 5);
+    \u0275\u0275conditionalCreate(1, NasaImagesSearchFeatureComponent_plastik_shared_table_7_Conditional_1_Template, 7, 0, "plastik-nasa-images-search-ui-no-results", 6);
     \u0275\u0275conditionalCreate(2, NasaImagesSearchFeatureComponent_plastik_shared_table_7_Conditional_2_Template, 9, 0, "plastik-nasa-images-search-ui-no-results", 0);
     \u0275\u0275template(3, NasaImagesSearchFeatureComponent_plastik_shared_table_7_ng_template_3_Template, 0, 0, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
     \u0275\u0275elementEnd();
@@ -17534,7 +17524,7 @@ var NasaImagesSearchFeatureComponent = class _NasaImagesSearchFeatureComponent {
   static \u0275fac = function NasaImagesSearchFeatureComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _NasaImagesSearchFeatureComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NasaImagesSearchFeatureComponent, selectors: [["plastik-nasa-images-search"]], decls: 8, vars: 16, consts: [["noValidSearch", ""], ["data-test", "page-title", 1, "gap-sm", "h3", "flex", "items-center"], [3, "changeEvent", "fields", "model"], [3, "data", "caption", "columnProperties", "resultsLength", "pagination", "changePagination", 4, "ngrxLet"], [3, "changePagination", "data", "caption", "columnProperties", "resultsLength", "pagination"], ["noResults", ""], ["icon", ""], ["title", ""], ["message", ""]], template: function NasaImagesSearchFeatureComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _NasaImagesSearchFeatureComponent, selectors: [["plastik-nasa-images-search"]], decls: 8, vars: 16, consts: [["noValidSearch", ""], ["data-test", "page-title", 1, "gap-sm", "h3", "mb-4", "flex", "items-center"], [3, "changeEvent", "fields", "model"], [3, "data", "caption", "columnProperties", "resultsLength", "pagination", "changePagination", 4, "ngrxLet"], [1, "scale-150"], [3, "changePagination", "data", "caption", "columnProperties", "resultsLength", "pagination"], ["noResults", ""], ["icon", ""], ["title", ""], ["message", ""]], template: function NasaImagesSearchFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275conditionalCreate(0, NasaImagesSearchFeatureComponent_Conditional_0_Template, 5, 2, "h2", 1);
@@ -17585,8 +17575,8 @@ var NasaImagesSearchFeatureComponent = class _NasaImagesSearchFeatureComponent {
       YearPickerFormlyModule,
       NasaImagesSearchUiNoResultsComponent
     ], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (routeInfo$ | ngrxPush; as info) {
-  <h2 class="gap-sm h3 flex items-center" data-test="page-title">
-    <mat-icon> {{ info?.icon }} </mat-icon> <span>{{ info?.title }}</span>
+  <h2 class="gap-sm h3 mb-4 flex items-center" data-test="page-title">
+    <mat-icon class="scale-150"> {{ info?.icon }} </mat-icon> <span>{{ info?.title }}</span>
   </h2>
 }
 
@@ -17668,4 +17658,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-YLXNRLOX.js.map
+//# sourceMappingURL=src-JGYUFTYX.js.map
