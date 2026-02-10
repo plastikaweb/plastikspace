@@ -141,6 +141,7 @@
     "provider": "Productor",
     "addLong": "Afegir al cabàs",
     "storeClosed": "Botiga Tancada",
+    "goToDetail": "Veure detall",
     "remove": "Eliminar",
     "decrement": "Disminuir",
     "increment": "Augmentar",
@@ -244,7 +245,9 @@
       "priceIncrease": "Pujada de preu!",
       "oldPrice": "Preu anterior",
       "priceDrop": "Baixada de preu!",
-      "checkoutDisabled": "Les comandes estan desactivades. La botiga obre el {{ date }} a les {{ time }}."
+      "checkoutDisabled": "Les comandes estan desactivades.",
+      "checkoutDisabledInDate": "Les comandes estan desactivades. La botiga obre el {{ date }} a les {{ time }}.",
+      "quantityLabel": "Qt:"
     },
     "shipping": {
       "freeShippingAchieved": "Has aconseguit enviament gratuït!",
@@ -304,9 +307,6 @@
         "time": "Franja horària"
       },
       "comeToStore": "Passa per la botiga i recull la teva comanda."
-    },
-    "product": {
-      "quantityLabel": "Qt:"
     }
   }
 }

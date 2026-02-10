@@ -140,6 +140,7 @@
     "provider": "Productor",
     "addLong": "Agregar al carrito",
     "storeClosed": "Tienda Cerrada",
+    "goToDetail": "Ver detalle",
     "remove": "Eliminar",
     "decrement": "Disminuir",
     "increment": "Aumentar",
@@ -156,7 +157,7 @@
       }
     },
     "modified": {
-      "title": "Producte modificado",
+      "title": "Producto modificado",
       "description": "Has modificado la cantidad del producto pero no lo has agregado al carrito",
       "cancel": "Volver al producto",
       "leave": "No quiero agregarlo"
@@ -243,7 +244,9 @@
       "oldPrice": "Precio anterior",
       "priceDrop": "¡Bajada de precio!",
       "priceIncrease": "¡Subida de precio!",
-      "checkoutDisabled": "Los pedidos están desactivados. La tienda abre el {{ date }} a las {{ time }}."
+      "checkoutDisabledInDate": "Los pedidos están desactivados. La tienda abre el {{ date }} a las {{ time }}.",
+      "checkoutDisabled": "Los pedidos están desactivados.",
+      "quantityLabel": "Cant:"
     },
     "shipping": {
       "freeShippingAchieved": "¡Has conseguido envío gratuito!",

@@ -164,9 +164,15 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
 - `taxes: number` (required): The current tax.
 - `total: number` (required): The current shopping cart total (subtotal + taxes + shipping).
 - `shipping: number`: The shipping cost.
+- `nextOpenDate: Date | null`: The next scheduled opening date of the store.
 - `actionButtonText: string`: The button label.
 - `actionRoute: string[]`: The route to redirect on clicking the action button.
 - `deliveryType: EcoStoreTenantLogisticsDeliveryType`: The delivery type for the order.
+
+**Behavior:**
+
+When the store is closed (determined by the checkout flow logic), the component displays an informative banner with a `lock_clock` icon.
+If `nextOpenDate` is provided, it shows when the store will reopen; otherwise, it shows a generic "Orders are disabled" message.
 
 **Example Usage:**
 
@@ -177,6 +183,7 @@ The `CartOrderSummaryComponent` is a presentational component that displays a su
   total="340"
   taxes="40"
   shipping="5"
+  [nextOpenDate]="tenantStore.nextOpenDate()"
   actionButtonText="submit"
   actionRoute="['home']"
   deliveryType="delivery">

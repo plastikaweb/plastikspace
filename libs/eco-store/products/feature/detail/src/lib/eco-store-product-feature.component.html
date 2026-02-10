@@ -159,25 +159,27 @@
           </div>
 
           <!-- Action Buttons -->
-          <div class="mb-4 flex flex-col items-stretch gap-4 sm:flex-row">
-            <!-- Quantity (Shared Component) -->
-            <div class="w-full">
-              <eco-store-product-quantity-control
-                mode="detail"
-                [product]="productData"
-                [isInCart]="isInCart()"
-                [quantity]="quantity()"
-                (quantityChange)="updateQuantity($event)"
-                (addToCart)="addToCart($event)" />
+          @if (tenantsStore.isStoreOpen()) {
+            <div class="mb-4 flex flex-col items-stretch gap-4 sm:flex-row">
+              <!-- Quantity (Shared Component) -->
+              <div class="w-full">
+                <eco-store-product-quantity-control
+                  mode="detail"
+                  [product]="productData"
+                  [isInCart]="isInCart()"
+                  [quantity]="quantity()"
+                  (quantityChange)="updateQuantity($event)"
+                  (addToCart)="addToCart($event)" />
+              </div>
             </div>
-          </div>
 
-          <!-- Availability Badge -->
-          <div
-            class="flex items-center justify-center gap-2 rounded-xl bg-[#e9f2e4] px-4 py-2 text-[#4d6600]">
-            <mat-icon class="scale-90!">{{ stockStatus().icon }}</mat-icon>
-            <span class="text-sm font-bold">{{ stockStatus().message }}</span>
-          </div>
+            <!-- Availability Badge -->
+            <div
+              class="flex items-center justify-center gap-2 rounded-xl bg-[#e9f2e4] px-4 py-2 text-[#4d6600]">
+              <mat-icon class="scale-90!">{{ stockStatus().icon }}</mat-icon>
+              <span class="text-sm font-bold">{{ stockStatus().message }}</span>
+            </div>
+          }
         </div>
 
         <!-- Description -->

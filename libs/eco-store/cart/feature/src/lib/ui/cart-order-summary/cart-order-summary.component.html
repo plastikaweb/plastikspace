@@ -57,14 +57,18 @@
           class="cart-order-summary-checkout-disabled bg-tertiary-100 text-tertiary-800 ring-tertiary-200 mt-4 flex w-full items-center justify-center gap-3 rounded-xl p-4 ring-1">
           <mat-icon>lock_clock</mat-icon>
           <p class="text-sm font-medium">
-            {{
-              'cart.summary.checkoutDisabled'
-                | translate
-                  : {
-                      date: nextOpenDate() | date: 'EEEE',
-                      time: nextOpenDate() | date: 'HH:mm',
-                    }
-            }}
+            @if (!nextOpenDate()) {
+              {{ 'cart.summary.checkoutDisabled' | translate }}
+            } @else {
+              {{
+                'cart.summary.checkoutDisabledInDate'
+                  | translate
+                    : {
+                        date: nextOpenDate() | date: 'EEEE',
+                        time: nextOpenDate() | date: 'HH:mm',
+                      }
+              }}
+            }
           </p>
         </div>
       }

@@ -26,9 +26,6 @@
       "path": "../../libs/shared/form/feature"
     },
     {
-      "path": "../../libs/shared/activity/data-access"
-    },
-    {
       "path": "../../libs/nasa-images/search/data-access"
     },
     {

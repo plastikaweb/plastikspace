@@ -140,7 +140,7 @@
     "provider": "Producer",
     "addLong": "Add to cart",
     "storeClosed": "Store closed",
-
+    "goToDetail": "View detail",
     "remove": "Remove",
     "decrement": "Decrease",
     "increment": "Increase",
@@ -244,7 +244,9 @@
       "oldPrice": "Previous price",
       "priceDrop": "Price drop!",
       "priceIncrease": "Price increase!",
-      "checkoutDisabled": "Orders are disabled. The store opens on {{ date }} at {{ time }}."
+      "checkoutDisabled": "Orders are disabled.",
+      "checkoutDisabledInDate": "Orders are disabled. The store opens on {{ date }} at {{ time }}.",
+      "quantityLabel": "Qt:"
     },
     "shipping": {
       "freeShippingAchieved": "You have achieved free shipping!",

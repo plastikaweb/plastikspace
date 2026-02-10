@@ -54,10 +54,21 @@
     <!-- Action Button Section -->
     @if (!minimalVersion()) {
       <mat-card-actions class="mt-5">
-        <eco-store-product-quantity-control
-          [product]="productData"
-          [quantity]="quantity()"
-          (quantityChange)="onQuantityChange($event)"></eco-store-product-quantity-control>
+        @if (isOpen()) {
+          <eco-store-product-quantity-control
+            [product]="productData"
+            [quantity]="quantity()"
+            (quantityChange)="onQuantityChange($event)"></eco-store-product-quantity-control>
+        } @else {
+          <button
+            matButton="filled"
+            class="w-full"
+            [routerLink]="
+              productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
+            ">
+            {{ 'products.goToDetail' | translate }}
+          </button>
+        }
       </mat-card-actions>
     }
   }

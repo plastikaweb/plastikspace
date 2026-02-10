@@ -51,30 +51,38 @@
                 </mat-card-content>
 
                 <mat-card-actions class="flex flex-row items-center justify-end pr-4! pb-4!">
-                  <eco-store-product-quantity
-                    class="min-w-48"
-                    size="sm"
-                    mode="summary"
-                    [product]="item.product"
-                    [quantity]="item.quantity"
-                    (quantityChange)="
-                      onQuantityChange($event, item.product)
-                    "></eco-store-product-quantity>
+                  @if (tenantStore.isStoreOpen()) {
+                    <eco-store-product-quantity
+                      class="min-w-48"
+                      size="sm"
+                      mode="summary"
+                      [product]="item.product"
+                      [quantity]="item.quantity"
+                      (quantityChange)="
+                        onQuantityChange($event, item.product)
+                      "></eco-store-product-quantity>
+                  } @else {
+                    <p class="min-w-48 text-right font-medium text-neutral-600">
+                      {{ 'cart.summary.quantityLabel' | translate }} {{ item.quantity }}
+                    </p>
+                  }
                   <p class="text-primary-600 w-28 min-w-28 text-center text-2xl font-bold">
                     {{
                       item.product.priceWithIva * item.quantity
                         | currency: 'EUR' : 'symbol' : '1.2-2'
                     }}
                   </p>
-                  <div class="mr-2 h-8 w-px bg-neutral-200"></div>
-                  <button
-                    matIconButton
-                    type="button"
-                    class="cart-delete-button transition-all"
-                    [aria-label]="'cart.summary.removeItem' | translate"
-                    (click)="onQuantityChange(0, item.product)">
-                    <mat-icon aria-hidden="true">delete</mat-icon>
-                  </button>
+
+                  @if (tenantStore.isStoreOpen()) {
+                    <button
+                      matIconButton
+                      type="button"
+                      class="cart-delete-button transition-all"
+                      [aria-label]="'cart.summary.removeItem' | translate"
+                      (click)="onQuantityChange(0, item.product)">
+                      <mat-icon aria-hidden="true">delete</mat-icon>
+                    </button>
+                  }
                 </mat-card-actions>
               </mat-card>
             }

@@ -23,6 +23,7 @@ It handles loading individual products via route resolvers and offers a rich UI 
 - **Smart caching**: Integrates with `ecoStoreProductsStore` to reuse already loaded data.
 - **Rich Product Information**: Displays product tags (ECO, Novetat, Oferta), rating, and stock availability.
 - **Interactive Components**:
+  - **Store Window Status Awareness**: Automatically disables quantity controls and hides availability badges when the store is closed, respecting the `ecoStoreTenantStore` status.
   - **Quantity Control**: Precise control over purchase quantity, respecting `minQuantity` and step logic.
   - **Favorite Button**: Glass-effect button for toggling favorites.
   - **Category Label**: Branded category display with color-coded dot.

@@ -40,12 +40,13 @@ Selector: `eco-store-product-card`
 
 #### Inputs
 
-| Input            | Type                                      | Default | Description                                                         |
-| ---------------- | ----------------------------------------- | ------- | ------------------------------------------------------------------- |
-| `product`        | `EcoStoreProductWithCategoryName \| null` | `null`  | The product data to display.                                        |
-| `isFirst`        | `boolean`                                 | `false` | Whether it is the first item in a list (useful for prioritization). |
-| `minimalVersion` | `boolean`                                 | `false` | Whether to show a simplified version of the card.                   |
-| `quantity`       | `number`                                  | `0`     | The quantity formatted from the cart.                               |
+| Input            | Type                                      | Default | Description                                                                                               |
+| ---------------- | ----------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------- |
+| `product`        | `EcoStoreProductWithCategoryName \| null` | `null`  | The product data to display.                                                                              |
+| `isFirst`        | `boolean`                                 | `false` | Whether it is the first item in a list (useful for prioritization).                                       |
+| `minimalVersion` | `boolean`                                 | `false` | Whether to show a simplified version of the card.                                                         |
+| `quantity`       | `number`                                  | `0`     | The quantity formatted from the cart.                                                                     |
+| `isOpen`         | `boolean`                                 | `true`  | Whether the store is open for orders. If false, hides quantity controls and shows a "View detail" button. |
 
 #### Outputs
 

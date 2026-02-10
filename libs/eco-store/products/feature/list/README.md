@@ -26,6 +26,7 @@ Part of the [**Eco-Store**](../../../../../apps/eco-store/README.md) application
 - **State Management**: Integrates with [NgRx Signal Store](https://ngrx.io/) for reactive state management.
 - **Performance**: Uses `OnPush` change detection and Angular Signals for optimal rendering performance.
 - **Pagination**: Built-in support for paginated data fetching.
+- **Store Status Awareness**: Integrates with `ecoStoreTenantStore` to pass the `isOpen` status to product cards, disabling purchase actions when the store is closed.
 - **Modern Architecture**: Built using Angular Standalone Components.
 - **Lazy Loading**: Uses `enableListLoading()` in resolver for efficient data fetching.
 - **UX Optimization**: Implements `@defer` blocks tied to the store's `initiallyLoaded` signal to prevent empty states and flickering during initial data fetch.

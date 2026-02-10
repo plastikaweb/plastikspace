@@ -29,6 +29,7 @@
             [product]="item"
             [quantity]="cartStore.getItemCount(item.id)()"
             [isFirst]="i < 6"
+            [isOpen]="tenantStore.isStoreOpen()"
             (addToCart)="addToCart($event)"
             (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
         }
