@@ -7,7 +7,6 @@ export interface PocketBaseImageSource {
 
 @Pipe({
   name: 'pocketBaseImageUrl',
-  standalone: true,
 })
 export class PocketBaseImageUrlPipe implements PipeTransform {
   /**

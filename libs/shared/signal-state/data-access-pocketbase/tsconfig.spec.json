@@ -2,11 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
-    "module": "preserve",
-    "moduleResolution": "bundler",
-    "types": ["jest", "node"],
-    "isolatedModules": true,
-    "declaration": true
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    "incremental": true
   },
   "references": [
     {

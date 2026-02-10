@@ -227,9 +227,8 @@ export const ecoStoreCartStore = signalStore(
             remoteCartId: newCart.id,
           }));
         }
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(`Error saving cart to PocketBase: ${error}`);
+      } catch {
+        // Silent catch
       } finally {
         updateState(store, '[cart] save cart to remote', state => ({
           ...state,
@@ -388,7 +387,7 @@ export const ecoStoreCartStore = signalStore(
         );
 
         store.clearStorage();
-      } catch (_) {
+      } catch {
         updateState(store, '[cart] merge error', state => ({ ...state, isSyncing: false }));
       }
     };

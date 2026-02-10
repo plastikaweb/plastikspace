@@ -23,9 +23,8 @@ export function pocketBaseStorageLoader(baseUrl: string) {
         params = `?thumb=${height}x${width}`;
       }
       return `${baseUrl}api/files/${src}${params}`;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('[PocketBase Loader] Error:', error);
+    } catch {
+      // console.error('[PocketBase Loader] Error:', error);
       return '';
     }
   };

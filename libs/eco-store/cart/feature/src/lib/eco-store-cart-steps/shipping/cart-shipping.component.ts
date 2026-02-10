@@ -22,7 +22,6 @@ import { getCartShippingFormConfig } from './form/cart-shipping-form.config';
 
 @Component({
   selector: 'eco-cart-shipping',
-  standalone: true,
   imports: [
     MatRadioModule,
     MatIconModule,

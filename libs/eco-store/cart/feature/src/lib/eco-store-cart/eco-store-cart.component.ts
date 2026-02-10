@@ -9,7 +9,6 @@ import { filter, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'eco-eco-store-cart',
-  standalone: true,
   imports: [MatStepperModule, TranslatePipe, RouterOutlet],
   templateUrl: './eco-store-cart.component.html',
   styleUrl: './eco-store-cart.component.scss',

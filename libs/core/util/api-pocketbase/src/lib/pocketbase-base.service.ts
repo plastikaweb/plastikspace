@@ -15,8 +15,7 @@ export abstract class PocketBaseBaseService<
   T extends BasePocketBaseEntity = BasePocketBaseEntity,
 > extends BaseDataService {
   override readonly environment = inject(POCKETBASE_ENVIRONMENT);
-  private readonly injector = inject(Injector);
-
+  readonly #injector = inject(Injector);
   /**
    * @description Implement this method in child classes to have the collection name.
    * @returns {string} The collection name.
@@ -31,7 +30,7 @@ export abstract class PocketBaseBaseService<
   protected createPocketCrudService(): PocketBaseCrudService<T> {
     const collectionName = this.collectionName();
     const env = this.environment;
-    return runInInjectionContext(this.injector, () => {
+    return runInInjectionContext(this.#injector, () => {
       return new (class extends PocketBaseCrudService<T> {
         override readonly environment = env;
         protected override collectionName(): string {

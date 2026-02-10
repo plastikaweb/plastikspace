@@ -4,7 +4,6 @@ import { ProductUnitType } from '@plastik/eco-store/entities';
 
 @Pipe({
   name: 'humanizeUnit',
-  standalone: true,
 })
 export class HumanizeUnitPipe implements PipeTransform {
   translate = inject(TranslateService);

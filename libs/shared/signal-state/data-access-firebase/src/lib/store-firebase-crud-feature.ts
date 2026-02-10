@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { filter, pipe, switchMap, tap } from 'rxjs';
 
 import {
@@ -205,8 +204,7 @@ export function withFirebaseCrud<
               return store._dataService.getCount({ filter }).pipe(
                 tapResponse({
                   next: count => updateState(store, `[${featureName}] set count`, { count }),
-                  error: error => {
-                    console.error(error);
+                  error: () => {
                     store._storeNotificationService.create(
                       `No s'ha pogut obtenir el total de elements de tipus '${featureName}'`,
                       'ERROR'
@@ -259,8 +257,7 @@ export function withFirebaseCrud<
                         }
                       );
                     },
-                    error: error => {
-                      console.error(error);
+                    error: () => {
                       store._storeNotificationService.create(
                         `No s'ha pogut carregar els elements de tipus '${featureName}'`,
                         'ERROR'
@@ -298,8 +295,7 @@ export function withFirebaseCrud<
                       }
                     );
                   },
-                  error: error => {
-                    console.error(error);
+                  error: () => {
                     store._storeNotificationService.create(
                       `No s'ha pogut carregar l'element de tipus '${featureName}' amb id ${id}`,
                       'ERROR'
@@ -337,8 +333,7 @@ export function withFirebaseCrud<
                       });
                     }
                   },
-                  error: error => {
-                    console.error(error);
+                  error: () => {
                     store._storeNotificationService.create(
                       item.name
                         ? `No s'ha pogut crear "${item.name}"`
@@ -380,8 +375,7 @@ export function withFirebaseCrud<
                       });
                     }
                   },
-                  error: error => {
-                    console.error(error);
+                  error: () => {
                     store._storeNotificationService.create(
                       item.name
                         ? `No s'ha pogut actualitzar "${item.name}"`
@@ -413,8 +407,7 @@ export function withFirebaseCrud<
                       });
                     }
                   },
-                  error: error => {
-                    console.error(error);
+                  error: () => {
                     store._storeNotificationService.create(
                       `No s'ha pogut eliminar el element`,
                       'ERROR'
@@ -445,8 +438,8 @@ export function withFirebaseCrud<
               }),
               initState
             );
-          } catch (error) {
-            console.error(`${featureName} destroy error`, error);
+          } catch {
+            // console.error(`${featureName} destroy error`, error);
           }
         },
       };
@@ -473,7 +466,6 @@ export function withFirebaseCrud<
             currentSorting[0] === previousSorting[0] && currentSorting[1] === previousSorting[1];
           const isFilterEqual = areObjectEntriesEqual(currentFilter, previousFilter);
 
-          console.log('store', featureName);
           if (
             store._activeConnection() &&
             (store._public() || (store._adminOnly() && isAdmin()) || !store._adminOnly()) &&

@@ -1,5 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-/* eslint-disable no-console */
+
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { FirebaseError } from '@angular/fire/app';
 import {
@@ -48,17 +48,11 @@ export class FirebaseAuthService implements AuthFacade {
    * @returns {Promise<void>} A promise that resolves when the email has been updated.
    */
   async updateEmail(): Promise<void> {
-    try {
-      const user = this.currentUser();
-      if (!user) {
-        throw new Error('No hi ha usuari autenticat');
-      }
-      await this.handleAuthStateChanged(user);
-    } catch (error) {
-      console.error('Error al actualitzar el email:', error);
-
-      throw error;
+    const user = this.currentUser();
+    if (!user) {
+      throw new Error('No hi ha usuari autenticat');
     }
+    await this.handleAuthStateChanged(user);
   }
 
   /**
@@ -103,10 +97,7 @@ export class FirebaseAuthService implements AuthFacade {
       await this.#router.navigate(['']);
       this.#liveAnnouncer.announce('Sessió iniciada', 'assertive', 100);
     } catch (error: unknown) {
-      console.error(error);
-      if ((error as Error).message?.includes('BLOCKING_FUNCTION_ERROR_RESPONSE')) {
-        console.error('BLOCKING_FUNCTION_ERROR_RESPONSE');
-      }
+      // console.error(error);
 
       const firebaseError = error as FirebaseError;
 
@@ -151,7 +142,7 @@ export class FirebaseAuthService implements AuthFacade {
       await this.logout();
       this.sendVerification(credentials.user);
     } catch (error: unknown) {
-      console.error(error);
+      // console.error(error);
 
       const firebaseError = error as FirebaseError;
 
@@ -191,8 +182,8 @@ export class FirebaseAuthService implements AuthFacade {
       await this.resetAuth();
       await this.#router.navigate(['login']);
       this.#liveAnnouncer.announce('Sessió tancada', 'assertive', 100);
-    } catch (error: unknown) {
-      console.error('Error during logout:', error);
+    } catch {
+      // console.error('Error during logout:', error);
 
       this.#notificationStore.show(
         this.#notificationService.getInstance({
@@ -232,7 +223,7 @@ export class FirebaseAuthService implements AuthFacade {
         })
       );
     } catch (error: unknown) {
-      console.error('Error sending verification email:', error);
+      // console.error('Error sending verification email:', error);
 
       this.#notificationStore.show(
         this.#notificationService.getInstance({
@@ -274,7 +265,7 @@ export class FirebaseAuthService implements AuthFacade {
         })
       );
     } catch (error: unknown) {
-      console.error(error);
+      // console.error(error);
 
       this.#notificationStore.show(
         this.#notificationService.getInstance({
@@ -307,10 +298,10 @@ export class FirebaseAuthService implements AuthFacade {
           await currentUser.reload();
         }
       } else {
-        console.log('state after resetAuth: User not found');
+        // console.log('state after resetAuth: User not found');
       }
-    } catch (error) {
-      console.warn('Error al limpiar el estado de autenticación:', error);
+    } catch {
+      // console.warn('Error al limpiar el estado de autenticación:', error);
     }
   }
 }

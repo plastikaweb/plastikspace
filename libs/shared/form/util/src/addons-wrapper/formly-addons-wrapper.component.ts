@@ -1,4 +1,4 @@
-import { NgClass, NgStyle, NgTemplateOutlet } from '@angular/common';
+import { NgStyle, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,7 +15,7 @@ import { FieldWrapper } from '@ngx-formly/core';
   selector: 'plastik-formly-addons-wrapper',
   templateUrl: './formly-addons-wrapper.component.html',
   styleUrls: ['./formly-addons-wrapper.component.scss'],
-  imports: [MatIconModule, MatButtonModule, NgStyle, NgClass, NgTemplateOutlet],
+  imports: [MatIconModule, MatButtonModule, NgStyle, NgTemplateOutlet],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

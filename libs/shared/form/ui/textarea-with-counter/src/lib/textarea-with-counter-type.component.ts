@@ -1,5 +1,4 @@
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,7 +21,6 @@ import { FieldType } from '@ngx-formly/material/form-field';
     ReactiveFormsModule,
     MatInputModule,
     FormlyModule,
-    NgClass,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

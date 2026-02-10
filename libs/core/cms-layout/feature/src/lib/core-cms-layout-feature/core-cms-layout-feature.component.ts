@@ -1,7 +1,7 @@
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { map, Subject, takeUntil } from 'rxjs';
 
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
@@ -79,8 +79,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
       .observe([Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Medium])
       .pipe(
         takeUntil(this.#destroyed$),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        map((handset: any) => handset.matches)
+        map((handset: BreakpointState) => handset.matches)
       )
       .subscribe((matches: boolean) => {
         if (matches) this.onToggleSidenav(!matches);
@@ -89,7 +88,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.#zone.runOutsideAngular(() => this.createWidgets());
+    this.#zone.runOutsideAngular(() => this.#createWidgets());
   }
 
   ngOnDestroy(): void {
@@ -113,7 +112,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
     this.#zone.runOutsideAngular(() => this.#layoutFacade.setIsMobile(isMobile));
   }
 
-  private createWidgets(): void {
+  #createWidgets(): void {
     if (!this.headerWidgetsConfig) return;
 
     const container = this.widgetsContainer();

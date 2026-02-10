@@ -20,7 +20,7 @@ export abstract class HttpBaseService extends BaseDataService {
   override readonly environment = inject(ENVIRONMENT_WITH_API);
   readonly httpClient = inject(HttpClient);
   readonly apiUrl: string;
-  private readonly injector = inject(Injector);
+  readonly #injector = inject(Injector);
 
   constructor() {
     super();
@@ -79,7 +79,7 @@ export abstract class HttpBaseService extends BaseDataService {
     const mapItemResponse = (data: unknown): T => this.mapItemResponse(data) as T;
     const env = this.environment;
 
-    return runInInjectionContext(this.injector, () => {
+    return runInInjectionContext(this.#injector, () => {
       const ServiceClass = class extends HttpCrudService<T, TListResult, PARAMS> {
         override readonly environment = env;
         protected override resourceUrlSegment(): string {

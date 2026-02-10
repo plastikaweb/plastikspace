@@ -17,7 +17,6 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 @Component({
   selector: 'plastik-ui-user-order-product-card',
-  standalone: true,
   imports: [
     MatCardModule,
     MatButtonModule,

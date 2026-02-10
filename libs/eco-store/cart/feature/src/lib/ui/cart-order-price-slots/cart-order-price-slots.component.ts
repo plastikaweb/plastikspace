@@ -7,7 +7,6 @@ import { EcoStoreTenantLogisticsDeliveryTier } from '@plastik/eco-store/entities
 
 @Component({
   selector: 'eco-cart-order-price-slots',
-  standalone: true,
   imports: [CurrencyPipe, MatProgressBarModule, TranslateModule, MatIcon],
   templateUrl: './cart-order-price-slots.component.html',
   styleUrl: './cart-order-price-slots.component.scss',

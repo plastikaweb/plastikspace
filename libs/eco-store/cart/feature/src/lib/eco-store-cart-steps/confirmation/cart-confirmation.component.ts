@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'eco-cart-confirmation',
-  standalone: true,
   imports: [CommonModule],
   template: '<p>Cart Confirmation Works!</p>',
   styles: [],

@@ -5,7 +5,8 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "isolatedModules": true,
-    "declaration": true
+    "declaration": true,
+    "composite": true
   },
   "references": [
     {

@@ -32,9 +32,8 @@ export function imageKitLoader(imageKitEndpoint: string, originalEndpoint: strin
       const search = url.search;
 
       return `${imageKitEndpoint}${path}${search}&${transform}`;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error('[ImageKitLoader] Error:', error);
+    } catch {
+      // console.error('[ImageKitLoader] Error:', error);
       return '';
     }
   };

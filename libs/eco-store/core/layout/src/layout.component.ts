@@ -46,22 +46,21 @@ export default class LayoutComponent {
   protected readonly isSidenavOpen = signal(false);
   protected readonly isBannerDismissed = signal(false);
   private readonly sidenavContent = viewChild<MatSidenavContent>('sidenavContent');
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly router = inject(Router);
+  readonly #destroyRef = inject(DestroyRef);
+  readonly #router = inject(Router);
 
   constructor() {
-    this.router.events
+    this.#router.events
       .pipe(
         filter(event => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(() => {
         this.sidenavContent()?.scrollTo({ top: 0, behavior: 'smooth' });
       });
   }
 
-  protected onSearchSubmit(event: { query: string }): void {
-    // eslint-disable-next-line no-console
-    console.log(event);
+  protected onSearchSubmit(): void {
+    // console.log(_event);
   }
 }

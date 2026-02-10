@@ -8,7 +8,7 @@ import { objectMocked } from './services/formatting.mock';
 
 describe('SafeFormattedCellPipe', () => {
   let pipe: SafeFormattedPipe<typeof objectMocked>;
-  let service: DataFormatFactoryService<typeof objectMocked>;
+  let service: jest.Mocked<DataFormatFactoryService<typeof objectMocked>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -23,8 +23,10 @@ describe('SafeFormattedCellPipe', () => {
       ],
     }).compileComponents();
 
-    service = TestBed.inject(DataFormatFactoryService<typeof objectMocked>);
-    pipe = new SafeFormattedPipe<typeof objectMocked>(service);
+    service = TestBed.inject(DataFormatFactoryService) as jest.Mocked<
+      DataFormatFactoryService<typeof objectMocked>
+    >;
+    pipe = TestBed.runInInjectionContext(() => new SafeFormattedPipe<typeof objectMocked>());
   });
 
   it('create an instance', () => {
@@ -42,7 +44,7 @@ describe('SafeFormattedCellPipe', () => {
       },
     };
 
-    (service.getFormattedValue as jest.Mock).mockReturnValue(expectedResult);
+    service.getFormattedValue.mockReturnValue(expectedResult);
 
     const result = pipe.transform(objectMocked, mockParams);
 

@@ -42,13 +42,13 @@ export type InputSearchProps = FieldTypeConfig['props'] & {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSearchProps>> {
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly formValue = signal<string>('');
-  private readonly formStatus = signal<string>('VALID');
+  readonly #destroyRef = inject(DestroyRef);
+  readonly #formValue = signal<string>('');
+  readonly #formStatus = signal<string>('VALID');
 
   protected readonly isDisabled = computed(() => {
-    const hasValue = !!this.formValue();
-    const isInvalid = this.formStatus() === 'INVALID';
+    const hasValue = !!this.#formValue();
+    const isInvalid = this.#formStatus() === 'INVALID';
     const buttonEnabledIfValue = this.props['buttonEnabledIfValue'];
 
     if (buttonEnabledIfValue) {
@@ -63,17 +63,19 @@ export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSea
 
     afterNextRender(() => {
       if (this.formControl) {
-        this.formValue.set(this.formControl.value);
-        this.formStatus.set(this.formControl.status);
+        this.#formValue.set(this.formControl.value);
+        this.#formStatus.set(this.formControl.status);
 
-        this.formControl.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(value => {
-          this.formValue.set(value);
-        });
+        this.formControl.valueChanges
+          .pipe(takeUntilDestroyed(this.#destroyRef))
+          .subscribe(value => {
+            this.#formValue.set(value);
+          });
 
         this.formControl.statusChanges
-          .pipe(takeUntilDestroyed(this.destroyRef))
+          .pipe(takeUntilDestroyed(this.#destroyRef))
           .subscribe(status => {
-            this.formStatus.set(status);
+            this.#formStatus.set(status);
           });
       }
     });

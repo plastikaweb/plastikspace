@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  NgZone,
-  Output,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, input, NgZone, output } from '@angular/core';
 import { MatListModule } from '@angular/material/list';
 import { MatDrawerMode, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterOutlet } from '@angular/router';
@@ -21,11 +13,11 @@ import { LayoutPosition } from '@plastik/shared/entities';
 export class CoreCmsLayoutUiSidenavComponent {
   readonly #zone = inject(NgZone);
 
-  @Input() position: LayoutPosition = 'start';
-  @Input() mode: MatDrawerMode = 'over';
-  @Input() fixedInViewport = false;
-  @Input() sidenavOpened = true;
-  @Output() toggleSidenav: EventEmitter<boolean> = new EventEmitter<boolean>();
+  position = input<LayoutPosition>('start');
+  mode = input<MatDrawerMode>('over');
+  fixedInViewport = input(false);
+  sidenavOpened = input(true);
+  toggleSidenav = output<boolean | undefined>();
 
   onToggleSidenav(opened?: boolean): void {
     this.#zone.run(() => {

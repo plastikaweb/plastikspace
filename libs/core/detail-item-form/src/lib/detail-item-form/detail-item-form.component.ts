@@ -1,4 +1,4 @@
-import { NgClass, TitleCasePipe } from '@angular/common';
+import { TitleCasePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -18,7 +18,6 @@ import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
     MatButtonModule,
     TitleCasePipe,
     RouterLink,
-    NgClass,
     TableFormlyModule,
     SharedFormFeatureModule,
     ColorPickerFormlyModule,

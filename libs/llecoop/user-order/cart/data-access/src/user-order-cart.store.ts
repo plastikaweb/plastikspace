@@ -68,9 +68,8 @@ export const llecoopUserOrderCartStore = signalStore(
             updateState(store, `[user-order-cart] load persisted cart`, {
               cart: parsedCart,
             });
-          } catch (error) {
-            // eslint-disable-next-line no-console
-            console.error('Error al cargar el carrito desde localStorage:', error);
+          } catch {
+            // console.error('Error al cargar el carrito desde localStorage:', error);
           }
         }
       },

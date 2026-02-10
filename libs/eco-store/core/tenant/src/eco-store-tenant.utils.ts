@@ -10,8 +10,10 @@ import {
 import { addDays, addWeeks, differenceInMilliseconds, getDay, isBefore, set } from 'date-fns';
 
 /**
- * Calculates minutes from the start of the week (Monday 00:00).
- * Sunday is mapped to the end of the week (indexed as 6).
+ * @description Calculates minutes from the start of the week (Monday 00:00).
+ * @param { number } day - The day of the week (0-6, where 0 is Sunday).
+ * @param { string } time - The time in HH:MM format.
+ * @returns { number } The number of minutes from the start of the week.
  */
 export function getMinutesFromStartOfWeek(day: number, time: string): number {
   const [hours, minutes] = time.split(':').map(Number);
@@ -22,7 +24,11 @@ export function getMinutesFromStartOfWeek(day: number, time: string): number {
 }
 
 /**
- * Gets the next occurrence of a specific day and time.
+ * @description Gets the next occurrence of a specific day and time.
+ * @param { Date } currentDate - The current date.
+ * @param { number } targetDay - The target day of the week (0-6, where 0 is Sunday).
+ * @param { string } targetTime - The target time in HH:MM format.
+ * @returns { Date } The next occurrence of the target day and time.
  */
 export function getNextDateFromTime(
   currentDate: Date,
@@ -48,7 +54,9 @@ export function getNextDateFromTime(
 }
 
 /**
- * Formats tenant addresses into a standardized UserContact list.
+ * @description Formats tenant addresses into a standardized UserContact list.
+ * @param { EcoStoreTenantAddress[] } addresses - The tenant addresses to format.
+ * @returns { UserContact[] } The formatted tenant addresses.
  */
 export function formatTenantAddresses(addresses: EcoStoreTenantAddress[]): UserContact[] {
   return addresses
@@ -67,7 +75,16 @@ export function formatTenantAddresses(addresses: EcoStoreTenantAddress[]): UserC
 }
 
 /**
- * Determines the store window status based on opening/closing times.
+ * @description Determines the store window status based on opening/closing times.
+ * @param { Date } now - The current date and time.
+ * @param { boolean } orderWindowEnabled - Whether the order window is enabled.
+ * @param { SlotDays } openDay - The day the store opens.
+ * @param { string } openTime - The time the store opens.
+ * @param { SlotDays } closeDay - The day the store closes.
+ * @param { string } closeTime - The time the store closes.
+ * @param { boolean } active - Whether the store is active.
+ * @param { boolean } closed - Whether the store is closed.
+ * @returns { EcoStoreTenantWindowStatus } The store window status.
  */
 export function calculateStoreWindowStatus(
   now: Date,
@@ -122,7 +139,11 @@ export function calculateStoreWindowStatus(
 }
 
 /**
- * Checks if a specific shipping method is fully configured and not manually closed.
+ * @description Checks if a specific shipping method is fully configured and not manually closed.
+ * @param { EcoStoreTenantLogisticsDeliveryType } type - The type of shipping method.
+ * @param { EcoStoreTenantLogisticsDeliveryOption[] } options - The shipping method options.
+ * @param { EcoStoreTenantAddress[] } addresses - The tenant addresses.
+ * @returns { boolean } True if the shipping method is fully configured and not manually closed, false otherwise.
  */
 export function isShippingMethodConfigured(
   type: EcoStoreTenantLogisticsDeliveryType,
