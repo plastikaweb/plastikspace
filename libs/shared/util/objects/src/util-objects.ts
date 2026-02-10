@@ -5,9 +5,12 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
  * @param {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isEmpty(obj: any): boolean {
-  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+export function isEmpty(obj: unknown): boolean {
+  if (obj === null || obj === undefined) return true;
+  return (
+    ([Object, Array] as unknown[]).includes((obj as object).constructor) &&
+    !Object.entries(obj as object).length
+  );
 }
 
 /**
@@ -15,8 +18,7 @@ export function isEmpty(obj: any): boolean {
  * @param {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isString(obj: any): obj is string {
+export function isString(obj: unknown): obj is string {
   return typeof obj === 'string';
 }
 
@@ -34,8 +36,7 @@ export function isNil(value: unknown): boolean {
  * @param  {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isObject(obj: any): boolean {
+export function isObject(obj: unknown): boolean {
   return obj instanceof Object && obj.constructor === Object;
 }
 
@@ -67,8 +68,10 @@ export function getQueryParams(
  * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
  * @returns {Record<string, unknown>}.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getQueryParams(params: any, defaultParams = {}): Record<string, unknown> {
+export function getQueryParams(
+  params: string | Record<string, unknown>,
+  defaultParams = {}
+): Record<string, unknown> {
   if (isString(params)) {
     return { ...defaultParams, ...formatURLQueryParams(params) };
   } else if (isObject(params)) {

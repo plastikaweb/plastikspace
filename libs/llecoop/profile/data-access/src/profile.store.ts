@@ -106,8 +106,8 @@ export const llecoopProfileStore = signalStore(
         store._profileService.setActiveConnection(false);
 
         updateState(store, `[profile] reset store`, initState);
-      } catch (error) {
-        console.error('Profile destroy error', error);
+      } catch {
+        // Silent error
       }
     },
   })),

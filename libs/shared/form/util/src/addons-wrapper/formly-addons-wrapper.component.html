@@ -6,7 +6,7 @@
       type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
-      [ngClass]="addon.classes"
+      [class]="addon.classes"
       [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
       (click)="clickHandler($event)">
       <span>{{ addon.text }}</span>
@@ -19,7 +19,7 @@
       type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
-      [ngClass]="addon.classes"
+      [class]="addon.classes"
       [ngStyle]="{ cursor: addon.onClick ? 'pointer' : 'inherit' }"
       (click)="clickHandler($event)">
       <mat-icon>{{ addon.icon }}</mat-icon>
@@ -27,13 +27,13 @@
   }
   @if (addon.type === 'text') {
     <!-- Decorative Text -->
-    <span [ngClass]="direction === 'left' ? 'ml-2' : 'mr-2'">{{ addon.text }}</span>
+    <span [class]="direction === 'left' ? 'ml-2' : 'mr-2'">{{ addon.text }}</span>
   }
   @if (addon.type === 'icon') {
     <!-- Decorative Icon -->
     <mat-icon
       [attr.aria-hidden]="addon.ariaHidden || true"
-      [ngClass]="[addon.classes || '', direction === 'left' ? 'ml-2' : 'mr-2']">
+      [class]="[addon.classes || '', direction === 'left' ? 'ml-2' : 'mr-2']">
       {{ addon.icon }}
     </mat-icon>
   }

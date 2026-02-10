@@ -18,7 +18,6 @@ import { distinctUntilChanged, map } from 'rxjs';
 
 @Component({
   selector: 'eco-store-products-feature',
-  standalone: true,
   imports: [
     TranslateModule,
     EcoStoreProductCardComponent,

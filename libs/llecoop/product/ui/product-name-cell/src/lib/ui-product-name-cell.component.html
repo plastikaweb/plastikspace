@@ -1,5 +1,5 @@
 <div class="mb-tiny">
-  <a [ngClass]="nameStyle()" [routerLink]="[product().id]">
+  <a [class]="nameStyle()" [routerLink]="[product().id]">
     {{ product().name }}
   </a>
   @if (product().info) {

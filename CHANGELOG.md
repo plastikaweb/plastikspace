@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - Open Closed Store
+## [Unreleased] - Open Closed Store & Angular Style Fixes
 
 ### Added
 
@@ -13,6 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added "Closing Soon" state to store status with automated 1-hour threshold logic ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 - Implemented pulsing urgency indicator in store status chip ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 - Added `isStoreOpenGuard` to prevent checkout when the store is closed ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
+
+### Changed
+
+- Improved Angular style and cleaned up tsconfig configurations across multiple libraries ([#859](https://github.com/plastikaweb/plastikspace/issues/859))
+- Fixed duplicate template attributes and unused variables ([#859](https://github.com/plastikaweb/plastikspace/issues/859))
+- Enhanced Signal Store features and utility pipes ([#859](https://github.com/plastikaweb/plastikspace/issues/859))
 
 ---
 

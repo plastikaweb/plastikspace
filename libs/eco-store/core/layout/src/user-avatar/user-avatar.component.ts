@@ -2,24 +2,23 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { PocketBaseUser } from '@plastik/core/entities';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'eco-user-avatar',
-  standalone: true,
-  imports: [SharedImgContainerComponent, PocketBaseImageUrlPipe, NgClass],
+  imports: [SharedImgContainerComponent, PocketBaseImageUrlPipe],
   template: `
     @if (user().avatar) {
       <plastik-img-container
-        class="overflow-hidden rounded-full object-cover"
-        [ngClass]="avatarClass()"
+        [class]="'overflow-hidden rounded-full object-cover ' + avatarClass()"
         [src]="user() | pocketBaseImageUrl: user().avatar"
         [title]="user().name || 'Avatar'"
         [dimensions]="{ width: 60, height: 60 }" />
     } @else {
       <span
-        class="text-primary-700 bg-primary-50 flex items-center justify-center rounded-full font-bold"
-        [ngClass]="initialsClass()">
+        [class]="
+          'text-primary-700 bg-primary-50 flex items-center justify-center rounded-full font-bold ' +
+          initialsClass()
+        ">
         {{ initials() }}
       </span>
     }

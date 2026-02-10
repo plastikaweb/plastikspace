@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { BaseEntity } from '@plastik/core/entities';
 
 import { PropertyFormatting } from './formatting';
@@ -15,8 +15,7 @@ import { DataFormatFactoryService } from './services';
   name: 'safeFormatted',
 })
 export class SafeFormattedPipe<T extends BaseEntity> implements PipeTransform {
-  // eslint-disable-next-line @angular-eslint/prefer-inject
-  constructor(private readonly dataFormatService: DataFormatFactoryService<T>) {}
+  readonly #dataFormatService = inject(DataFormatFactoryService<T>);
 
   transform(
     row: T extends BaseEntity ? T : never,
@@ -24,6 +23,6 @@ export class SafeFormattedPipe<T extends BaseEntity> implements PipeTransform {
     index?: number,
     extraConfig?: unknown
   ) {
-    return this.dataFormatService.getFormattedValue(row, column, index, extraConfig);
+    return this.#dataFormatService.getFormattedValue(row, column, index, extraConfig);
   }
 }

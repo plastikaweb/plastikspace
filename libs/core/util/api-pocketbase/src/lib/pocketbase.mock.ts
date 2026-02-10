@@ -20,6 +20,6 @@ export const mockPocketBase = {
   authStore: {
     clear: jest.fn(),
     isValid: true,
-    record: { id: '123', email: 'test@test.com' } as any,
+    record: { id: '123', email: 'test@test.com' } as Record<string, unknown>,
   },
 };

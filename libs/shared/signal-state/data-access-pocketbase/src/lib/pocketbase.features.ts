@@ -4,6 +4,7 @@ import { tapResponse } from '@ngrx/operators';
 import {
   patchState,
   signalStoreFeature,
+  SignalStoreFeature,
   type,
   withComputed,
   withHooks,
@@ -26,7 +27,7 @@ import {
 import { withPocketBaseParamsFeature } from './stores/with-pocketbase-params.store';
 
 /**
- * Store feature for list operations with PocketBase.
+ * @description Store feature for list operations with PocketBase.
  * Use this when you only need to display a list of items.
  * @template T - The entity type.
  * @template S - The service type.
@@ -140,7 +141,7 @@ export function withPocketBaseListFeature<
 }
 
 /**
- * Store feature for single item operations with PocketBase.
+ * @description Store feature for single item operations with PocketBase.
  * Use this when you only need to display a single item.
  * @template T - The entity type.
  * @template S - The service type.

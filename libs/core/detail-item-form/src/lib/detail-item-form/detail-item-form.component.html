@@ -30,8 +30,7 @@
           }
           @if (action.type === 'text') {
             <div
-              class="gap-tiny flex w-full items-center justify-center sm:w-auto"
-              [ngClass]="action.styles">
+              [class]="`gap-tiny flex w-full items-center justify-center sm:w-auto ${action.styles}`">
               <mat-icon>{{ action.icon }}</mat-icon>
               {{ action.text }}
             </div>
@@ -48,8 +47,7 @@
 
   @defer {
     <plastik-shared-form-feature
-      class="block w-full"
-      [ngClass]="{ '@xxl:w-1/2 @lg:w-10/12': !getFormFieldFullWidth }"
+      [class]="`block w-full ${!getFormFieldFullWidth ? '@xxl:w-1/2 @lg:w-10/12' : ''}`"
       [fields]="getFormConfig"
       [model]="facade.model?.() || {}"
       [submitConfig]="getSubmitFormConfig?.() || {}"

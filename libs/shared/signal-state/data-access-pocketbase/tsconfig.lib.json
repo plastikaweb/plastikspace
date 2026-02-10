@@ -2,8 +2,10 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
+    "composite": true,
     "declaration": true,
-    "types": ["node"]
+    "declarationMap": true,
+    "incremental": true
   },
   "include": ["src/**/*.ts"],
   "exclude": ["jest.config.ts", "jest.config.cts", "src/**/*.spec.ts", "src/**/*.test.ts"],
@@ -15,7 +17,7 @@
       "path": "../../../../libs/core/entities"
     },
     {
-      "path": "../../notification/data-access"
+      "path": "../../../notification/data-access"
     }
   ]
 }

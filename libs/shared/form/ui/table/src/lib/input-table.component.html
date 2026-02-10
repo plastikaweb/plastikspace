@@ -12,6 +12,6 @@
   [actions]="tableActions()"
   [extraRowStyles]="tableExtraRowStyles()"
   [noPagination]="tableNoPagination()"
-  [ngClass]="disabled() ? 'pointer-events-none opacity-70' : ''"
+  [class]="`${disabled() ? 'pointer-events-none opacity-70' : ''}`"
   (getChangedData)="onGetChangedData($event)">
 </plastik-shared-table>

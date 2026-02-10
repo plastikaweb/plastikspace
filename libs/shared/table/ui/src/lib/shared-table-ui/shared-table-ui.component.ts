@@ -3,7 +3,6 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   KeyValuePipe,
-  NgClass,
   NgComponentOutlet,
   NgOptimizedImage,
   NgTemplateOutlet,
@@ -69,7 +68,6 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   imports: [
     RouterLink,
     KeyValuePipe,
-    NgClass,
     NgComponentOutlet,
     NgTemplateOutlet,
     CdkTableModule,

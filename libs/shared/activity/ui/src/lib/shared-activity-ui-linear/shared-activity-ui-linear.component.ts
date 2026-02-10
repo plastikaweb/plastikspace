@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
 
 @Component({
@@ -31,6 +31,6 @@ import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progres
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedActivityUiLinearComponent {
-  @Input() active = false;
-  @Input() mode: ProgressBarMode = 'indeterminate';
+  active = input(false);
+  mode = input<ProgressBarMode>('indeterminate');
 }

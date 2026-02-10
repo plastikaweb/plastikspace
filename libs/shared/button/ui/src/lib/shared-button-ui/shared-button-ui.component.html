@@ -1,8 +1,7 @@
 @if (config().type === 'button') {
   <button
     mat-button
-    class="button--rounded"
-    [ngClass]="config().classes || {}"
+    [class]="`button--rounded ${config().classes || ''}`"
     [disabled]="config().disabled"
     [attr.aria-label]="config().ariaLabel"
     [attr.data-test]="config().dataTestId"

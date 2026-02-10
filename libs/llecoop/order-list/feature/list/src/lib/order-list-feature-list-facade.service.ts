@@ -58,9 +58,9 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
             'Iniciar nova comanda',
             this.#sanitizer.bypassSecurityTrustHtml(
               `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
-                <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.getNewOrderName()}</p>
-                <p class="font-extrabold">Oberta fins el ${format(this.getNewOrderDate(), 'dd/MM/yyyy')}
-                a les ${format(this.getNewOrderDate(), 'HH:mm')}</span> hores.</p>
+                <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.#getNewOrderName()}</p>
+                <p class="font-extrabold">Oberta fins el ${format(this.#getNewOrderDate(), 'dd/MM/yyyy')}
+                a les ${format(this.#getNewOrderDate(), 'HH:mm')}</span> hores.</p>
               </div>
               `
             ),
@@ -70,7 +70,7 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
           .pipe(
             take(1),
             filter(Boolean),
-            tap(() => this.#store.create({ item: this.createOrderList() })),
+            tap(() => this.#store.create({ item: this.#createOrderList() })),
             tap(() => this.#store.clearAvailableProducts())
           )
           .subscribe();
@@ -117,7 +117,7 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
     }
   }
 
-  private getNewOrderName(): YearWeek {
+  #getNewOrderName(): YearWeek {
     const now = new Date();
     const year = getYear(now);
     const week = getWeek(now, { weekStartsOn: 1 }); // La semana empieza en lunes
@@ -125,13 +125,13 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
     return `${year.toString().padStart(4, '0')}-${week.toString().padStart(2, '0')}` as YearWeek;
   }
 
-  private getNewOrderDate(): Date {
+  #getNewOrderDate(): Date {
     const now = new Date();
     const nextMonday = addDays(now, (8 - now.getDay()) % 7 || 7);
     return setHours(setMinutes(nextMonday, 0), 12);
   }
 
-  private createOrderList(): Omit<LlecoopOrder, 'id'> {
+  #createOrderList(): Omit<LlecoopOrder, 'id'> {
     const availableProducts = this.#store
       .availableProducts()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -144,9 +144,9 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
       }));
 
     return {
-      name: this.getNewOrderName(),
-      normalizedName: this.getNewOrderName().toLowerCase(),
-      endTime: this.getNewOrderDate(),
+      name: this.#getNewOrderName(),
+      normalizedName: this.#getNewOrderName().toLowerCase(),
+      endTime: this.#getNewOrderDate(),
       status: 'progress',
       availableProducts,
       orderCount: 0,

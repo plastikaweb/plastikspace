@@ -5,7 +5,8 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "declaration": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "composite": true
   },
   "files": ["src/test-setup.ts"],
   "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"],

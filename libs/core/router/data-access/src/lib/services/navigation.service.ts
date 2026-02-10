@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { inject, Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { NavigationProps } from '../navigation';
@@ -10,10 +11,11 @@ import { NavigationProps } from '../navigation';
 export class NavigationService {
   readonly #router = inject(Router);
   readonly #location = inject(Location);
+  readonly #destroyRef = inject(DestroyRef);
   #history: string[] = [];
 
   constructor() {
-    this.#router.events.subscribe(event => {
+    this.#router.events.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.#history = [event.urlAfterRedirects, ...this.#history];
       }

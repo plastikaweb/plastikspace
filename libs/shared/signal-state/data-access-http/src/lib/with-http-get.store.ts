@@ -32,7 +32,7 @@ const initialState = <T extends BaseEntity>(): HttpGetState<T> => ({
  * @param {object} root0 - Configuration object.
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
- * @returns {SignalStoreFeature} A signal store feature with list and single item operations.
+ * @returns {import('@ngrx/signals').SignalStoreFeature} A signal store feature with list and single item operations.
  */
 export function withHttpGet<T extends BaseEntity, S extends DataGet<T, HttpListResult<T>>>({
   featureName,

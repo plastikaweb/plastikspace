@@ -122,7 +122,6 @@
   "terminal.integrated.lineHeight": 0,
   "terminal.integrated.letterSpacing": 1,
   "terminal.integrated.smoothScrolling": false,
-  "terminal.integrated.tabs.defaultColor": "terminal.ansiMagenta",
   "editor.fontFamily": "JetBrains Mono, Menlo, Monaco, 'Courier New', monospace",
   "i18n-ally.localesPaths": ["apps/eco-store/public/i18n"],
   "i18n-ally.keystyle": "nested",

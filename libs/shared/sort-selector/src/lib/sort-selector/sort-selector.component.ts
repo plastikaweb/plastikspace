@@ -12,7 +12,7 @@ type SortSelectorKeyValueFn = (
 ) => number;
 @Component({
   selector: 'plastik-sort-selector',
-  standalone: true,
+
   imports: [MatButtonModule, MatMenuModule, MatIconModule, TranslateModule, KeyValuePipe],
   templateUrl: './sort-selector.component.html',
   styleUrls: ['./sort-selector.component.scss'],

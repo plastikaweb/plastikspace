@@ -14,7 +14,6 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 @Component({
   selector: 'plastik-user-order-mini-cart',
-  standalone: true,
   imports: [
     DecimalPipe,
     MatListModule,

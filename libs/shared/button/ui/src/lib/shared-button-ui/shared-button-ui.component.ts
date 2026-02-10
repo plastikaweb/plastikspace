@@ -1,4 +1,4 @@
-import { NgClass, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { PushPipe } from '@ngrx/component';
@@ -10,7 +10,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 @Component({
   selector: 'plastik-shared-button',
   imports: [
-    NgClass,
     NgTemplateOutlet,
     PushPipe,
     MatButtonModule,

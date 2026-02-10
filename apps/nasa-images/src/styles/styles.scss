@@ -110,8 +110,7 @@
 
   @include mat.sidenav-overrides(
     (
-      container-background-color: orange,
-      container-text-color: red,
+      container-background-color: var(--mat-sys-secondary-container),
     )
   );
 }

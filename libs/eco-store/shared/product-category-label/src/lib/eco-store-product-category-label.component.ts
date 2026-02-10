@@ -4,7 +4,6 @@ export type ProductCategoryLabelSize = 'sm' | 'md' | 'lg';
 
 @Component({
   selector: 'eco-store-product-category-label',
-  standalone: true,
   imports: [],
   template: `
     <div [class]="containerClass()">

@@ -8,9 +8,9 @@ export type HookFunction = {
 };
 
 /**
- * Checks validation status of linked form controls and updates custom label validation state.
- * @param field - Formly field configuration
- * @param linkedFieldKeys - Array of field keys to check validation against
+ * @description Checks validation status of linked form controls and updates custom label validation state.
+ * @param {FormlyFieldConfig} field - Formly field configuration
+ * @param {string[]} linkedFieldKeys - Array of field keys to check validation against
  */
 export function checkCustomLabelValidation(
   field: FormlyFieldConfig,
@@ -25,8 +25,8 @@ export function checkCustomLabelValidation(
 }
 
 /**
- * Updates custom label value based on shipping method (pickup/delivery).
- * @param field - Formly field configuration
+ * @description Updates custom label value based on shipping method (pickup/delivery).
+ * @param {FormlyFieldConfig} field - Formly field configuration
  */
 export function setCustomLabelValue(field: FormlyFieldConfig): void {
   const method = field.model?.method ?? 'pickup';
@@ -39,10 +39,10 @@ export function setCustomLabelValue(field: FormlyFieldConfig): void {
 }
 
 /**
- * Generates shipping label based on available shipping methods.
- * @param field - Field name for label generation
- * @param availableMethodTypes - Array of available shipping method types
- * @returns Translated label key for the shipping field
+ * @description Generates shipping label based on available shipping methods.
+ * @param {string} field - Field name for label generation
+ * @param {string[] | undefined} availableMethodTypes - Array of available shipping method types
+ * @returns {string} Translated label key for the shipping field
  */
 export function getShippingLabel(
   field: string,
@@ -63,13 +63,13 @@ export function getShippingLabel(
 }
 
 /**
- * Creates a custom label field configuration with validation hooks.
- * @param key - Field key identifier
- * @param icon - Material icon name
- * @param availableMethodTypes - Array of available shipping method types
- * @param hooks - Array of hook functions to execute
- * @param isValid - Initial validation state
- * @returns Partial Formly field configuration for custom label
+ * @description Creates a custom label field configuration with validation hooks.
+ * @param {string} key - Field key identifier
+ * @param {string} icon - Material icon name
+ * @param {string[] | undefined} availableMethodTypes - Array of available shipping method types
+ * @param {HookFunction[]} hooks - Array of hook functions to execute
+ * @param {'valid' | 'error' | 'untouched'} isValid - Initial validation state
+ * @returns {Partial<FormlyFieldConfig>} Partial Formly field configuration for custom label
  */
 export function createCustomLabel(
   key: string,
@@ -112,10 +112,10 @@ export function createCustomLabel(
 }
 
 /**
- * Checks if slots should be hidden based on tiers/instructions configuration.
- * @param field - Formly field configuration
- * @param getTiersOrInstructions - Function to retrieve tiers or instructions configuration
- * @returns True if slots should be hidden, false otherwise
+ * @description Checks if slots should be hidden based on tiers/instructions configuration.
+ * @param {FormlyFieldConfig} field - Formly field configuration
+ * @param {(method?: unknown, addressId?: string | null) => { type: string } | null} getTiersOrInstructions - Function to retrieve tiers or instructions configuration
+ * @returns {boolean} True if slots should be hidden, false otherwise
  */
 export function shouldHideSlots(
   field: FormlyFieldConfig,
@@ -132,10 +132,10 @@ export function shouldHideSlots(
 }
 
 /**
- * Gets instructions text from tiers/instructions configuration.
- * @param field - Formly field configuration
- * @param getTiersOrInstructions - Function to retrieve tiers or instructions configuration
- * @returns Instructions text or empty string
+ * @description Gets instructions text from tiers/instructions configuration.
+ * @param {FormlyFieldConfig} field - Formly field configuration
+ * @param {(method?: unknown, addressId?: string | null) => { type: string; instructions?: string } | null} getTiersOrInstructions - Function to retrieve tiers or instructions configuration
+ * @returns {string} Instructions text or empty string
  */
 export function getInstructionsText(
   field: FormlyFieldConfig,

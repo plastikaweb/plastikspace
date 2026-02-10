@@ -19,18 +19,17 @@
             [sortActionDescription]="column.sorting ? `Ordenar per ${column.title}` : ''"
             [mat-sort-header]="column.sorting || ''"
             [disabled]="!column.sorting"
-            [ngClass]="column.cssClasses?.[0] || ''">
+            [class]="column.cssClasses?.[0] || ''">
             {{ column.title }}
           </mat-header-cell>
 
           <mat-cell
             *matCellDef="let row; let i = dataIndex"
-            class="py-sub"
-            [ngClass]="setCellNgClass(column)">
+            [class]="`py-sub ${setCellNgClass(column)}`">
             @switch (column.formatting.type) {
               @case ('LINK') {
                 <a
-                  [ngClass]="column.cssClasses?.[1] || ''"
+                  [class]="column.cssClasses?.[1] || ''"
                   [routerLink]="column.link ? column.link(row) : null"
                   [queryParams]="column.queryParams ? column.queryParams(row) : null"
                   [innerHTML]="row | safeFormatted: column : i + 1"
@@ -40,12 +39,11 @@
               @case ('INPUT') {
                 @if (column.isEditableConfig?.(row); as editable) {
                   @let attributes = editable?.attributes;
-                  <div class="my-sub leading-6" [ngClass]="column.cssClasses?.[1] || ''">
+                  <div [class]="'my-sub leading-6 ' + (column.cssClasses?.[1] || '')">
                     @if (isText(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="editable inline"
-                        [ngClass]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -66,8 +64,7 @@
                     @if (isNumber(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="editable inline"
-                        [ngClass]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -140,8 +137,7 @@
                     @if (isTextarea(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="editable inline"
-                        [ngClass]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -175,7 +171,7 @@
                   placeholder="https://placehold.co/200"
                   [alt]="row.name || ''"
                   [ngSrc]="row[column.key] || ''"
-                  [ngClass]="column.cssClasses?.[1] || ''" />
+                  [class]="column.cssClasses?.[1] || ''" />
               }
 
               @case ('COMPONENT') {
@@ -188,7 +184,7 @@
 
               @default {
                 <div
-                  [ngClass]="column.cssClasses?.[1] || ''"
+                  [class]="column.cssClasses?.[1] || ''"
                   [innerHTML]="row | safeFormatted: column : i + 1 : pagination()"></div>
               }
             }
@@ -203,14 +199,14 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell
             *matHeaderCellDef
-            class="mat-cell-actions justify-center overflow-visible"
-            [ngClass]="actionsColStyles() || ''">
+            [class]="
+              'mat-cell-actions justify-center overflow-visible ' + (actionsColStyles() || '')
+            ">
             Accions
           </mat-header-cell>
           <mat-cell
             *matCellDef="let element"
-            class="mat-cell-actions py-sub overflow-visible"
-            [ngClass]="actionsColStyles() || ''">
+            [class]="'mat-cell-actions py-sub overflow-visible ' + (actionsColStyles() || '')">
             @for (action of actions() | keyvalue | orderTableActionsElements; track action.key) {
               @if (action.key === 'EDIT' && action.value?.visible(element)) {
                 <button
@@ -315,9 +311,8 @@
         <mat-row
           *matRowDef="let row; columns: columnsToDisplay()"
           sticky="true"
-          class="expandable-row"
+          [class]="'expandable-row ' + (extraRowStyles()?.(row) || '')"
           [class.expanded-row]="expandedElement()?.id === row.id"
-          [ngClass]="extraRowStyles()?.(row) || ''"
           (click)="
             $event.stopPropagation(); expandedElement.set(expandedElement() === row ? null : row)
           "></mat-row>
@@ -330,7 +325,7 @@
         <mat-row
           *matRowDef="let row; columns: columnsToDisplay()"
           [style.height]="rowHeight()"
-          [ngClass]="extraRowStyles()?.(row) || ''"></mat-row>
+          [class]="extraRowStyles()?.(row) || ''"></mat-row>
       }
     </mat-table>
 

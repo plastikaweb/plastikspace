@@ -109,7 +109,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
   onSubmit(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    this.emitChange(this.form.value as T);
+    this.#emitChange(this.form.value as T);
   }
 
   ngOnDestroy(): void {
@@ -123,7 +123,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
 
     this.pendingChangesEvent.emit(this.form.dirty);
     if (!this.config().submitAvailable) {
-      this.emitChange(model ?? (this.form.value as T));
+      this.#emitChange(model ?? (this.form.value as T));
     }
 
     if (this.config().emitOnChange) {
@@ -135,7 +135,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
     return this.form.invalid || (!this.config().enabledByDefault && this.form.untouched);
   }
 
-  private emitChange(model?: T): void {
+  #emitChange(model?: T): void {
     if (this.form.valid) {
       if (this.config().disableOnSubmit) {
         this.form.disable({ emitEvent: false });

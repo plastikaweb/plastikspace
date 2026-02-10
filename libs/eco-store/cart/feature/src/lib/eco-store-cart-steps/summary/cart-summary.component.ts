@@ -16,7 +16,6 @@ import { NewPriceWarningComponent } from '../../ui/new-price-warning/new-price-w
 
 @Component({
   selector: 'eco-cart-summary',
-  standalone: true,
   imports: [
     MatButtonModule,
     MatIconModule,
