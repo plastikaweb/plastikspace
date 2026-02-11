@@ -52,18 +52,43 @@ This project follows a **Domain-Driven Design (DDD)** approach within an Nx work
 ```mermaid
 graph TD
     subgraph Applications
-        Apps[Apps: eco-store, llecoop, nasa-images, etc.]
+        direction LR
+        EcoStore[eco-store]
+        Llecoop[llecoop]
+        NasaImages[nasa-images]
+        PlastikaWeb[plastikaweb]
     end
 
     subgraph Libraries
-        direction TB
-        Shared[Shared: UI, Signal State, Auth, Utils]
-        Core[Core: API Base, Layout, CMS, Env]
+        subgraph AppSpecific [App Specific Libs]
+            EcoLib[libs/eco-store/*]
+            LlecoopLib[libs/llecoop/*]
+            NasaLib[libs/nasa-images/*]
+            PlastikaLib[libs/plastikaweb/*]
+        end
+
+        subgraph SharedLib [Shared Libs]
+            UI[UI Components]
+            Auth[Authentication]
+            State[Signal State]
+            Utils[Utilities]
+        end
+
+        subgraph CoreLib [Core Libs]
+            API[API Base]
+            Layout[CMS & Layout]
+            Infra[Infrastructure]
+        end
     end
 
-    Apps --> Shared
-    Apps --> Core
-    Shared --> Core
+    EcoStore --> EcoLib
+    Llecoop --> LlecoopLib
+    NasaImages --> NasaLib
+    PlastikaWeb --> PlastikaLib
+
+    AppSpecific --> SharedLib
+    AppSpecific --> CoreLib
+    SharedLib --> CoreLib
 ```
 
 For more details, see the [🏛️ NX Architecture Guide](documentation/nx-architecture.md).
@@ -140,26 +165,71 @@ Some apps require a backend to be running. These commands start both:
 
 ---
 
-## 📚 Libraries Portfolio
+## 📚 Libraries
 
-<details>
-<summary><b>🧩 Core Libraries</b> (Fundamental Infrastructure)</summary>
+### 🧩 Core
 
-- **API & Data**: `api-base`, `api-http`, `api-firebase`, `api-pocketbase`
-- **Infrastructure**: `environments`, `assets`, `cypress-commands`, `paginator`
-- **Layout**: `cms-layout`, `ng-entry-html`, `styles` (Tailwind Presets)
+Foundation libraries used across applications.
 
-</details>
+#### API and Data Access
 
-<details>
-<summary><b>🔄 Shared Libraries</b> (Reusable Features)</summary>
+- [**api-base**](libs/core/util/api-base/README.md): Base interfaces and types for API services.
+- [**api-http**](libs/core/util/api-http/README.md): Generic HTTP CRUD services.
+- [**api-firebase**](libs/core/util/api-firebase/README.md): Generic Firebase CRUD services.
+- [**api-pocketbase**](libs/core/util/api-pocketbase/README.md): Generic PocketBase CRUD services.
 
-- **Signal State**: `data-access-http`, `data-access-firebase`, `data-access-pocketbase`
-- **Auth**: `auth-feature`, `auth-firebase`, `auth-pocketbase`, `login`, `register`
-- **UI Components**: `button`, `table`, `form` (Formly), `notification`, `mat-theme-toggle`
-- **Utils**: `storage`, `testing`, `countdown`, `objects`
+#### Utilities
 
-</details>
+- [**environments**](libs/core/util/environments/README.md): Environment configuration helpers.
+- [**assets**](libs/core/util/assets/README.md): Asset management.
+- [**cypress-commands**](libs/core/util/cypress-commands/README.md): Custom Cypress commands.
+- [**paginator**](libs/core/paginator/README.md): Material Paginator internationalization service.
+
+#### UI and Layout
+
+- [**cms-layout**](libs/core/cms-layout/feature/README.md): CMS layout features.
+- [**ng-entry-html**](libs/core/ng-entry-html/util/README.md): HTML entry utilities.
+- [**styles**](libs/core/styles/util/tailwind-preset/README.md): Core styles and presets.
+
+### 🔄 Shared
+
+Reusable features and UI components.
+
+#### Signal State (NgRx Signal Store)
+
+- [**data-access-http**](libs/shared/signal-state/data-access-http/README.md): Signal Store features for HTTP.
+- [**data-access-firebase**](libs/shared/signal-state/data-access-firebase/README.md): Signal Store features for Firebase.
+- [**data-access-pocketbase**](libs/shared/signal-state/data-access-pocketbase/README.md): Signal Store features for PocketBase.
+
+#### Auth
+
+- [**auth-feature**](libs/shared/auth/feature/README.md)
+- [**auth-entities**](libs/shared/auth/entities/README.md)
+- [**auth-firebase**](libs/shared/auth/firebase/data-access/README.md)
+- [**auth-pocketbase**](libs/shared/auth/pocketbase/data-access/README.md)
+- [**login**](libs/shared/auth/login/feature/README.md)
+- [**register**](libs/shared/auth/register/feature/README.md)
+- [**request-password**](libs/shared/auth/request-password/feature/README.md)
+
+#### UI Components
+
+- [**button**](libs/shared/button/ui/README.md)
+- [**table**](libs/shared/table/ui/README.md)
+- [**form**](libs/shared/form/feature/README.md)
+- [**notification**](libs/shared/notification/data-access/README.md)
+- [**activity**](libs/shared/activity/ui/README.md)
+- [**img-container**](libs/shared/img-container/ui/README.md)
+- [**mat-theme-toggle**](libs/shared/mat-theme-toggle/README.md)
+- [**pagination-ui**](libs/shared/pagination/ui/README.md)
+- [**pagination-util**](libs/shared/pagination/util/README.md)
+- [**sort-selector**](libs/shared/sort-selector/README.md)
+
+#### Utilities
+
+- [**storage**](libs/shared/storage/data-access/README.md)
+- [**testing**](libs/shared/testing/README.md)
+- [**util**](libs/shared/util/objects/README.md)
+- [**countdown**](libs/shared/countdown/util/README.md)
 
 ---
 

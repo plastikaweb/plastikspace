@@ -4,6 +4,9 @@ export const mockEcoStoreTenantStore = {
   loaded: signal(true),
   tenant: signal({
     name: 'tenant',
+    id: 'tenant',
+    slogan: 'slogan',
+    logo: 'logo',
     logisticsConfig: {
       options: [
         {
