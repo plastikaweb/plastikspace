@@ -4,8 +4,13 @@
   @include mat.button-overrides(
     (
       filled-disabled-container-color: var(--primary-300),
+      filled-disabled-label-text-color: var(--primary-50),
     )
   );
 
-  --mat-button-filled-disabled-label-text-color: var(--primary-50);
+  @include mat.icon-overrides(
+    (
+      color: var(--primary-500),
+    )
+  );
 }

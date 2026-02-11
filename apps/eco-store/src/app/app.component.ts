@@ -1,17 +1,12 @@
 import { A11yModule, FocusMonitor } from '@angular/cdk/a11y';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DOCUMENT,
-  inject,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { ChangeDetectionStrategy, Component, inject, OnInit, Renderer2 } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
+import { EcoStoreLayoutService } from '@plastik/eco-store/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SkipLinkComponent } from '@plastik/shared/skip-link';
@@ -39,6 +34,7 @@ export class AppComponent implements OnInit {
   readonly #document = inject(DOCUMENT);
   readonly #focusMonitor = inject(FocusMonitor);
   readonly #renderer = inject(Renderer2);
+  readonly #layoutService = inject(EcoStoreLayoutService);
 
   readonly matIconRegistry = inject(MatIconRegistry);
   readonly domSanitizer = inject(DomSanitizer);

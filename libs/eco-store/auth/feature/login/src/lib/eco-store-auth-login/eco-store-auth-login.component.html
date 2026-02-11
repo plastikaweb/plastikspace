@@ -1,16 +1,38 @@
-<div class="relative flex min-h-screen items-center justify-center bg-neutral-50 p-4">
+<div class="relative flex min-h-screen items-center justify-center bg-neutral-50 p-8">
+  @let tenant = tenantStore.tenant;
+  @let tenantName = tenant()?.name;
+  @let tenantLogo = tenant()?.logo;
+
   <mat-card
     appearance="raised"
-    class="from-primary-100 to-primary-200 text-primary-800 w-full max-w-[425px] border-2! border-white! bg-linear-to-br shadow-lg!">
+    class="from-primary-100 to-primary-200 text-primary-600 w-full max-w-[425px] border-2! border-white! bg-linear-to-br shadow-lg!">
     <mat-card-header class="mb-4 flex flex-col items-center gap-4 pt-8 pb-4">
-      <div class="text-primary mb-2 rounded-full bg-white p-4 shadow-md">
-        <mat-icon class="scale-150">eco</mat-icon>
-      </div>
-      <mat-card-title class="m-0 text-center font-bold tracking-tight">
-        {{ 'auth.login.title' | translate }}
+      @if (tenantLogo) {
+        <div class="bg-primary-50 h-20 w-20 rounded-full border-2 border-white p-4 shadow-sm">
+          <plastik-img-container
+            class="sepia-50"
+            [src]="tenant() | pocketBaseImageUrl: tenantLogo"
+            [title]="tenantName || 'Botiga Eco'"
+            [dimensions]="{ width: 60, height: 60 }"></plastik-img-container>
+        </div>
+      } @else {
+        <div class="text-primary mb-2 rounded-full bg-white p-4 shadow-md">
+          <mat-icon [attr.aria-label]="(tenantName || 'Botiga Eco') + ' logo'">eco_logo</mat-icon>
+        </div>
+      }
+      <mat-card-title class="m-0 text-center font-bold! tracking-wide!">
+        @if (tenantName) {
+          {{ tenantName }}
+        } @else {
+          {{ 'auth.login.title' | translate }}
+        }
       </mat-card-title>
       <mat-card-subtitle class="text-title-small text-center font-medium">
-        {{ 'auth.login.subtitle' | translate }}
+        @if (tenant()?.slogan) {
+          {{ tenant()?.slogan }}
+        } @else {
+          {{ 'auth.login.subtitle' | translate }}
+        }
       </mat-card-subtitle>
     </mat-card-header>
 
@@ -19,14 +41,14 @@
         [fields]="facade.formConfig.getConfig()"
         [submitConfig]="facade.formConfig.getSubmitFormConfig?.() ?? null"
         (changeEvent)="facade.onSubmit($event)">
-        <div class="extra-links my-4 flex items-center justify-center">
+        <div class="extra-links mb-4 flex items-center justify-center">
           <a
             matButton
             class="text-secondary! text-sm! font-medium! normal-case!"
             routerLink="/recuperar-contrasenya">
             {{ 'auth.login.recoverAccess' | translate }}
-            <mat-icon aria-hidden="true" iconPositionEnd class="ml-1 scale-90 align-middle"
-              >passkey</mat-icon
+            <mat-icon aria-hidden="true" iconPositionEnd class="ml-1 scale-130 align-middle"
+              >lock_reset</mat-icon
             >
           </a>
         </div>
@@ -39,15 +61,15 @@
           class="text-primary! min-w-0! px-2! text-sm! font-bold! normal-case!"
           routerLink="/activar-compte">
           {{ 'auth.login.createAccount' | translate }}
-          <mat-icon aria-hidden="true" iconPositionEnd class="ml-1 scale-90 align-middle"
-            >verified_user</mat-icon
+          <mat-icon aria-hidden="true" iconPositionEnd class="ml-1 scale-130 align-middle"
+            >how_to_reg</mat-icon
           >
         </a>
       </div>
     </mat-card-content>
 
     <mat-card-footer class="border-primary-200 border-t p-4 text-center">
-      <p class="text-xs text-neutral-500">
+      <p class="text-xs text-neutral-800">
         {{ 'auth.login.termsPrivacy' | translate }}
       </p>
     </mat-card-footer>

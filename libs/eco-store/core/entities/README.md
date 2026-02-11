@@ -7,7 +7,7 @@
   - [Description](#description)
   - [Exports](#exports)
     - [Domain Entities](#domain-entities)
-    - [Configuration](#configuration)
+    - [Configuration \& Services](#configuration--services)
   - [Related Libraries](#related-libraries)
 
 ## Description
@@ -24,9 +24,10 @@ This library contains the **eco-store specific entities and type definitions**. 
 - **`EcoStoreTenant`**: Tenant entity for multi-tenancy settings (branding, contacts, etc) and
   logistics configuration (delivery options, slots, tiers and related types).
 
-### Configuration
+### Configuration & Services
 
 - **`EnvironmentConfiguration`**: Environment configuration types for eco-store
+- **`EcoStoreLayoutService`**: Service to dynamically manage global layout properties (like `body` overflow) based on route data.
 
 ## Related Libraries
 

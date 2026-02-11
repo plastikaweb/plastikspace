@@ -24,6 +24,7 @@ It integrates with the shared authentication infrastructure and provides a user-
 - **Authentication Guards**: Integrated with `pocketBaseIsNotLoggedGuard` to prevent access if already logged in.
 - **Material Design**: Built with Angular Material components (`MatCard`, `MatButton`, etc.).
 - **Internationalization**: Supports translation via `@ngx-translate/core`.
+- **Tenant Branding**: Dynamically displays the tenant's logo, name, and slogan.
 
 ## Installation
 

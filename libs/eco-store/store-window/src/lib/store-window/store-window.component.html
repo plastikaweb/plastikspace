@@ -6,7 +6,7 @@
       <mat-icon matChipAvatar>{{ config.icon }}</mat-icon>
       <div class="flex items-center gap-2">
         <span
-          class="border-tertiary-200 flex items-center border-r pr-2 font-bold tracking-wide whitespace-nowrap uppercase">
+          [class]="`flex items-center font-bold tracking-wide whitespace-nowrap uppercase ${config.countdownSegments?.length ? 'border-tertiary-200 border-r pr-2' : ''}`">
           @if (config.class === 'closing') {
             <span
               class="bg-warning-600 mr-2 inline-block h-[12px] w-[12px] animate-pulse rounded-full"></span>
