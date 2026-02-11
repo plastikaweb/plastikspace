@@ -23,12 +23,25 @@
                 class="cart-item-card my-4! grid! grid-cols-[2fr_1fr] items-center gap-4! shadow-sm">
                 <mat-card-content class="inline-flex! flex-row items-center gap-4 px-4 pt-4! pb-4!">
                   <plastik-img-container
-                    class="overflow-hidden rounded-lg"
+                    class="hover:border-primary-500 cursor-pointer overflow-hidden rounded-lg transition-all duration-100 hover:contrast-120"
                     [src]="item.product | pocketBaseImageUrl: item.product.images?.[0]"
                     [title]="item.product.name"
-                    [dimensions]="{ width: 100, height: 100 }" />
+                    [dimensions]="{ width: 100, height: 100 }"
+                    [routerLink]="[
+                      '/botiga',
+                      item.product.categorySlug,
+                      item.product.normalizedName,
+                    ]" />
                   <div class="flex flex-col gap-2">
-                    <h3 class="text-lg font-bold text-neutral-900">{{ item.product.name }}</h3>
+                    <a
+                      class="text-primary-900 hover:text-primary-600 text-lg font-bold"
+                      [routerLink]="[
+                        '/botiga',
+                        item.product.categorySlug,
+                        item.product.normalizedName,
+                      ]">
+                      {{ item.product.name }}
+                    </a>
 
                     @if (item.hasPriceChanged && item.oldPriceWithIva) {
                       <eco-new-price-warning
