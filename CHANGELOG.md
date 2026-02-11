@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented pulsing urgency indicator in store status chip ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 - Added `isStoreOpenGuard` to prevent checkout when the store is closed ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 - Added product detail links to cart summary items ([#857](https://github.com/plastikaweb/plastikspace/issues/857))
+- Added `GEMINI.md` guidance for AI agents and refined project documentation ([#866](https://github.com/plastikaweb/plastikspace/issues/866))
 
 ### Changed
 
