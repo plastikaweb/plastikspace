@@ -1446,6 +1446,12 @@ html {
     --tw-scale-z: 125%;
     scale: var(--tw-scale-x) var(--tw-scale-y);
   }
+  .scale-130 {
+    --tw-scale-x: 130%;
+    --tw-scale-y: 130%;
+    --tw-scale-z: 130%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+  }
   .scale-150 {
     --tw-scale-x: 150%;
     --tw-scale-y: 150%;
@@ -1792,6 +1798,9 @@ html {
   }
   .border-transparent {
     border-color: transparent;
+  }
+  .border-white {
+    border-color: var(--color-white);
   }
   .border-white\! {
     border-color: var(--color-white) !important;
@@ -2215,6 +2224,10 @@ html {
     --tw-tracking: var(--tracking-wide);
     letter-spacing: var(--tracking-wide);
   }
+  .tracking-wide\! {
+    --tw-tracking: var(--tracking-wide) !important;
+    letter-spacing: var(--tracking-wide) !important;
+  }
   .tracking-wider {
     --tw-tracking: var(--tracking-wider);
     letter-spacing: var(--tracking-wider);
@@ -2477,6 +2490,10 @@ html {
     --tw-drop-shadow: !important;
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,) !important;
   }
+  .sepia-50 {
+    --tw-sepia: sepia(50%);
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
   .filter {
     filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
   }
@@ -2524,6 +2541,10 @@ html {
     transition-property: opacity;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .duration-100 {
+    --tw-duration: 100ms;
+    transition-duration: 100ms;
   }
   .duration-150 {
     --tw-duration: 150ms;
@@ -2647,6 +2668,12 @@ html {
   @media (hover: hover) {
     .hover\:ring-neutral-200\!:hover {
       --tw-ring-color: var(--color-neutral-200) !important;
+    }
+  }
+  @media (hover: hover) {
+    .hover\:contrast-120:hover {
+      --tw-contrast: contrast(120%);
+      filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
     }
   }
   .focus\:not-sr-only:focus {
