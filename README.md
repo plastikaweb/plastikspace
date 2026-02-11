@@ -52,43 +52,23 @@ This project follows a **Domain-Driven Design (DDD)** approach within an Nx work
 ```mermaid
 graph TD
     subgraph Applications
-        direction LR
-        EcoStore[eco-store]
-        Llecoop[llecoop]
-        NasaImages[nasa-images]
-        PlastikaWeb[plastikaweb]
+        Apps[Any Application]
     end
 
     subgraph Libraries
-        subgraph AppSpecific [App Specific Libs]
-            EcoLib[libs/eco-store/*]
-            LlecoopLib[libs/llecoop/*]
-            NasaLib[libs/nasa-images/*]
-            PlastikaLib[libs/plastikaweb/*]
-        end
-
-        subgraph SharedLib [Shared Libs]
-            UI[UI Components]
-            Auth[Authentication]
-            State[Signal State]
-            Utils[Utilities]
-        end
-
-        subgraph CoreLib [Core Libs]
-            API[API Base]
-            Layout[CMS & Layout]
-            Infra[Infrastructure]
-        end
+        direction TB
+        AppSpecific[App Specific Libs]
+        Shared[Shared Libs]
+        Core[Core Libs]
     end
 
-    EcoStore --> EcoLib
-    Llecoop --> LlecoopLib
-    NasaImages --> NasaLib
-    PlastikaWeb --> PlastikaLib
+    Apps --> AppSpecific
+    Apps --> Shared
+    Apps --> Core
 
-    AppSpecific --> SharedLib
-    AppSpecific --> CoreLib
-    SharedLib --> CoreLib
+    AppSpecific --> Shared
+    AppSpecific --> Core
+    Shared --> Core
 ```
 
 For more details, see the [🏛️ NX Architecture Guide](documentation/nx-architecture.md).
@@ -117,6 +97,8 @@ For more details, see the [🏛️ NX Architecture Guide](documentation/nx-archi
    ```bash
    yarn install:local
    ```
+
+```bash
 
 ---
 
@@ -241,3 +223,4 @@ Reusable features and UI components.
 
 > 📧 [info@plastikaweb.com](mailto:info@plastikaweb.com)
 > 🌐 [www.plastikaweb.com](https://www.plastikaweb.com)
+```
