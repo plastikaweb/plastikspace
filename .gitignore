@@ -10,7 +10,6 @@
 node_modules
 
 # IDEs and editors
-/.idea
 .project
 .classpath
 .c9/
@@ -81,9 +80,7 @@ apps/eco-store/.env
 # local helpers
 /helpers
 
-# agent antigravity notes
-/.agent/notes
-/.gemini
+# autogenerate files
 build_results.txt
 
 # log files
