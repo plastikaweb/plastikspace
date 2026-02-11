@@ -5,7 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased] - Agent Documentation, Cart Links & Store Logic
+## [Unreleased] - Agent Documentation
+
+### Added
+
+- Added `GEMINI.md` guidance for AI agents and refined project documentation ([#866](https://github.com/plastikaweb/plastikspace/issues/866))
+
+---
+
+## [2026-02-11] - Open Closed Store & Styling
 
 ### Added
 
@@ -14,7 +22,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implemented pulsing urgency indicator in store status chip ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 - Added `isStoreOpenGuard` to prevent checkout when the store is closed ([#814](https://github.com/plastikaweb/plastikspace/issues/814))
 - Added product detail links to cart summary items ([#857](https://github.com/plastikaweb/plastikspace/issues/857))
-- Added `GEMINI.md` guidance for AI agents and refined project documentation ([#866](https://github.com/plastikaweb/plastikspace/issues/866))
 
 ### Changed
 
