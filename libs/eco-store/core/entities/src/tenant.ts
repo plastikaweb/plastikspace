@@ -52,6 +52,7 @@ export interface EcoStoreTenantLogistics {
 export type EcoStoreTenant = BasePocketBaseEntity &
   UserContact & {
     logo?: string;
+    slogan?: string;
     languages: string[];
     themeConfig?: unknown;
     logisticsConfig: EcoStoreTenantLogistics;

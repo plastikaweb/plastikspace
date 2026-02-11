@@ -225,8 +225,9 @@ When running commits from sandboxed environments (like Antigravity, Cursor, or s
 git add -A && git commit -m "<type>(<scope>): #<issue> <description>" -m "<body>"
 ```
 
-## Important Note
+## Important Notes
 
-DO NOT push the changes to the remote repository automatically. Ask the user first if he wants to push the changes to the remote repository.
+- DO NOT push the changes to the remote repository automatically. Ask the user first if he wants to push the changes to the remote repository.
+  Maybe this branch will have several commits, and the user wants to push them all at once when the feature is complete.
 
-Maybe this branch will have several commits, and the user wants to push them all at once when the feature is complete.
+- When passing precommit and prepush hooks, if they fail, don't create a new commit with the fixes, use `git commit --amend` instead.

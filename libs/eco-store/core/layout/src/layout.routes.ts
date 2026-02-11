@@ -5,14 +5,12 @@ import { ActivatedRouteSnapshot, Route } from '@angular/router';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { EnvironmentPocketBase, POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
+import { getEnvironment } from '@plastik/core/environments';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import { EcoStoreCategoryRouteTitleService } from './eco-store-category-route-title.service';
 import LayoutComponent from './layout.component';
-
-const getEnvironment = (): EnvironmentPocketBase => inject(POCKETBASE_ENVIRONMENT);
 
 export const layoutRoutes: Route[] = [
   {

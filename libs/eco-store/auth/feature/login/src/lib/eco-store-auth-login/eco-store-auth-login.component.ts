@@ -6,8 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
+import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/password';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 @Component({
   selector: 'eco-eco-store-auth-login',
@@ -20,6 +23,8 @@ import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/passwor
     MatIconModule,
     TranslateModule,
     RouterLink,
+    SharedImgContainerComponent,
+    PocketBaseImageUrlPipe,
   ],
   templateUrl: './eco-store-auth-login.component.html',
   styleUrl: './eco-store-auth-login.component.scss',
@@ -27,4 +32,5 @@ import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/passwor
 })
 export class EcoStoreAuthLoginComponent {
   protected readonly facade = inject(AUTH_FORM_FACADE);
+  protected readonly tenantStore = inject(ecoStoreTenantStore);
 }

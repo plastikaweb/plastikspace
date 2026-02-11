@@ -10,6 +10,7 @@
   - [Installation](#installation)
   - [Usage](#usage)
     - [HumanizeUnitPipe](#humanizeunitpipe)
+    - [PocketBaseImageUrlPipe](#pocketbaseimageurlpipe)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -43,7 +44,6 @@ import { ProductUnitType } from '@plastik/eco-store/entities';
 
 @Component({
   selector: 'demo-humanize-unit',
-  standalone: true,
   imports: [HumanizeUnitPipe],
   template: `
     <!-- Outputs '500 g' when locale uses non-breaking space -->
@@ -63,6 +63,28 @@ The pipe accepts:
 
 - `value: number | null | undefined`
 - `unitType: ProductUnitType` (`'weight' | 'volume' | 'unit' | 'unitWithFixedWeight' | 'unitWithVariableWeight' | 'unitWithFixedVolume' | 'unitWithVariableVolume'`)
+
+### PocketBaseImageUrlPipe
+
+Transforms a source object (containing `id` and `collectionId`) and an image filename into a PocketBase URL fragment.
+
+```ts
+import { Component, signal } from '@angular/core';
+import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+
+@Component({
+  selector: 'demo-image-url',
+  imports: [PocketBaseImageUrlPipe],
+  template: `
+    <!-- Outputs 'collectionId/id/filename' -->
+    <img [src]="source() | pocketBaseImageUrl: image()" />
+  `,
+})
+export class DemoImageUrlComponent {
+  source = signal({ id: '123', collectionId: 'abc' });
+  image = signal('photo.jpg');
+}
+```
 
 ## Running unit tests
 

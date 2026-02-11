@@ -1533,6 +1533,20 @@
         "type": "json"
       },
       {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text2559011017",
+        "max": 30,
+        "min": 0,
+        "name": "slogan",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
         "hidden": false,
         "id": "autodate2990389176",
         "name": "created",

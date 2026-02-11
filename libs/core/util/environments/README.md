@@ -59,6 +59,7 @@ import {
 - `ENVIRONMENT_WITH_API`: environment with `baseApiUrl`.
 - `POCKETBASE_ENVIRONMENT`: PocketBase environment.
 - `POCKETBASE_WITH_TRANSLATION_ENVIRONMENT`: PocketBase with translations.
+- `getEnvironment`: A helper function to inject the `POCKETBASE_ENVIRONMENT` token.
 
 **Provider helpers:**
 
