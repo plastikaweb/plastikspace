@@ -18,6 +18,9 @@ export type ImageDimensions = { width: number; height: number } | undefined;
   imports: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet],
   templateUrl: './shared-img-container.component.html',
   styleUrl: './shared-img-container.component.scss',
+  host: {
+    class: 'relative block',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedImgContainerComponent {

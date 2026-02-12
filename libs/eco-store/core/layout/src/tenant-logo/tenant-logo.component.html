@@ -1,0 +1,15 @@
+@if (tenant()?.logo) {
+  <plastik-img-container
+    class="relative block h-8 w-8 shrink-0"
+    [src]="tenant() | pocketBaseImageUrl: tenant()?.logo"
+    [title]="tenant()?.name || 'store.title' | translate"
+    [dimensions]="{ height: 32, width: 32 }"></plastik-img-container>
+} @else {
+  <mat-icon [attr.aria-label]="(tenant()?.name || 'store.title' | translate) + ' logo'"
+    >eco_logo</mat-icon
+  >
+}
+
+<span [class]="`${nameClass()} text-primary-500 font-semibold tracking-wide`">
+  {{ tenant()?.name || 'store.title' | translate }}
+</span>

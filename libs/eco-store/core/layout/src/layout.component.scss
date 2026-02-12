@@ -1,24 +1,23 @@
-@use 'sass:map';
 @use '@angular/material' as mat;
+@use 'core_tailwind_theme';
 
 :host {
   @include mat.sidenav-overrides(
     (
-      container-background-color: var(--transparent),
       container-shape: 0,
-      container-width: 320px,
+      container-width: 100dvw,
     )
   );
 
+  @media (min-width: theme(--breakpoint-sm)) {
+    @include mat.sidenav-overrides(
+      (
+        container-width: 20rem,
+      )
+    );
+  }
+
   .mat-drawer-container {
-    background-color: var(--transparent);
-  }
-
-  .mat-drawer-transition .mat-drawer-content {
-    transition-duration: 10ms !important;
-  }
-
-  .mat-drawer {
-    transition-duration: 10ms !important;
+    background-color: var(--mat-sys-background);
   }
 }

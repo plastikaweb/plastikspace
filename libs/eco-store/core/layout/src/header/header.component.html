@@ -1,25 +1,25 @@
-<mat-toolbar class="shadow-sm" role="banner">
+<mat-toolbar
+  class="border-b border-neutral-200 shadow-md backdrop-blur-sm backdrop-saturate-150"
+  role="banner">
   <div class="content-container mx-auto flex flex-row items-center gap-4 md:gap-12">
-    <button matButton routerLink="/" type="button" class="m-0! h-auto w-[250px] p-0!">
-      <h1
-        class="text-primary-500 flex max-w-[250px] items-center gap-2 truncate font-semibold tracking-wide">
-        @if (tenant()?.logo) {
-          <plastik-img-container
-            class="h-10 w-10 object-cover"
-            [src]="tenant() | pocketBaseImageUrl: tenant()?.logo"
-            [title]="tenant()?.name || 'Botiga Eco'"
-            [dimensions]="{ width: 40, height: 40 }"></plastik-img-container>
+    @if (isMobile() && hasSidenav()) {
+      <button
+        mat-icon-button
+        class="flex justify-center align-middle"
+        data-test="toggle-sidenav-button"
+        [attr.aria-label]="
+          (sideNavOpen() ? 'common.a11y.closeSidenav' : 'common.a11y.openSidenav') | translate
+        "
+        (click)="toggleSidenav.emit()">
+        @if (!sideNavOpen()) {
+          <mat-icon>menu</mat-icon>
         } @else {
-          <mat-icon
-            class="header-icon"
-            [attr.aria-label]="(tenant()?.name || 'Botiga Eco') + ' logo'"
-            >eco_logo</mat-icon
-          >
+          <mat-icon>close</mat-icon>
         }
+      </button>
+    }
 
-        <span class="hidden md:block">{{ tenant()?.name || 'Botiga Eco' }}</span>
-      </h1>
-    </button>
+    <eco-tenant-link showName="responsive" [tenant]="tenant()" />
 
     @if (storeStatus() !== 'OPEN') {
       <eco-store-store-window
@@ -41,7 +41,7 @@
         [fields]="getFormConfig"
         [model]="{ query: '' }"
         [submitConfig]="getSubmitFormConfig"
-        (changeEvent)="onSubmit($event)"></plastik-shared-form-feature>
+        (changeEvent)="submitEvent.emit($event)"></plastik-shared-form-feature>
     }
 
     <ng-content select="[secondaryMenu]" />

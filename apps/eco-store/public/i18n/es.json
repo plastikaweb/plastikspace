@@ -26,7 +26,10 @@
       "productList": "Lista de productos",
       "sortProducts": "Ordenar productos",
       "productsCount": "{{count}} productos",
-      "categoryIcon": "{{category}} icono"
+      "categoryIcon": "{{category}} icono",
+      "closeSidenav": "Cerrar menú lateral",
+      "openSidenav": "Abrir menú lateral",
+      "ecoIcon": "Icono ecológico"
     },
     "form": {
       "error": {
@@ -71,6 +74,7 @@
         "dismiss": "Cerrar aviso del estado de la tienda"
       },
       "closed": "Cerrado",
+      "closedManually": "Cerrado temporalmente",
       "opensIn": "Abre en",
       "closingSoon": "CIERRA PRONTO",
       "open": "Abierto",

@@ -1,55 +1,68 @@
-<div class="mx-auto grid h-screen w-screen grid-rows-[auto_auto_1fr_auto]">
+<div class="mx-auto flex h-screen w-screen flex-col">
   <eco-header
-    class="z-1000"
     [formConfig]="searchFormConfig"
     [tenant]="tenantStore.tenant()"
     [storeStatus]="tenantStore.storeStatus()"
     [nextOpenDate]="tenantStore.nextOpenDate()"
     [is24h]="tenantStore.is24h()"
     [closedReason]="tenantStore.closedReasonTranslated()"
+    [sideNavOpen]="isSidenavOpen()"
+    [isMobile]="isMobile()"
+    [hasSidenav]="hasSidenav()"
+    (toggleSidenav)="isSidenavOpen.set(!isSidenavOpen())"
     (submitEvent)="onSearchSubmit()">
     <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
     <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
   </eco-header>
 
-  <mat-sidenav-container class="content-container mx-auto h-full w-full overflow-auto">
+  <mat-sidenav-container class="content-container w-full flex-1 bg-transparent">
     <mat-sidenav
       #sidenav
-      mode="side"
-      fixedInViewport="true"
-      fixedTopGap="100"
-      fixedBottomGap="85"
       position="start"
-      class="eco-sidenav"
-      [opened]="isSidenavOpen()">
-      <router-outlet
-        name="sidenav"
-        (activate)="isSidenavOpen.set(true)"
-        (deactivate)="isSidenavOpen.set(false)"></router-outlet>
-    </mat-sidenav>
-    <mat-sidenav-content #sidenavContent class="px-6" id="mainContent" role="main" tabindex="-1">
-      @if (
-        (tenantStore.storeStatus() === 'CLOSED' ||
-          tenantStore.storeStatus() === 'CANCELLED' ||
-          tenantStore.storeStatus() === 'OPENING_SOON' ||
-          tenantStore.storeStatus() === 'CLOSING_SOON' ||
-          tenantStore.storeStatus() === 'CLOSED_MANUALLY') &&
-        !isBannerDismissed()
-      ) {
-        <eco-store-status-banner
-          class="mt-8"
-          [status]="tenantStore.storeStatus()"
-          [nextOpenDate]="tenantStore.nextOpenDate()"
-          [closedReason]="tenantStore.closedReasonTranslated()"
-          (dismiss)="isBannerDismissed.set(true)">
-        </eco-store-status-banner>
+      fixedInViewport="true"
+      [mode]="isMobile() ? 'over' : 'side'"
+      [fixedTopGap]="isMobile() ? 0 : 70"
+      [fixedBottomGap]="isMobile() ? 0 : 100"
+      [opened]="isSidenavOpen()"
+      (keydown.escape)="isSidenavOpen.set(false)"
+      (closedStart)="isSidenavOpen.set(false)">
+      @if (isMobile()) {
+        <div class="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+          <eco-tenant-logo showName="always" [tenant]="tenantStore.tenant()" />
+          <button
+            mat-icon-button
+            [attr.aria-label]="'common.a11y.closeSidenav' | translate"
+            (click)="isSidenavOpen.set(false)">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
       }
 
-      <router-outlet></router-outlet>
+      <div class="h-full overflow-y-auto">
+        <router-outlet
+          name="sidenav"
+          (activate)="hasSidenav.set(true); !isMobile() && isSidenavOpen.set(true)"
+          (deactivate)="hasSidenav.set(false); isSidenavOpen.set(false)"></router-outlet>
+      </div>
+    </mat-sidenav>
+
+    <mat-sidenav-content #sidenavContent class="flex flex-col px-4 pb-10 md:px-8" tabindex="-1">
+      <main id="mainContent" role="main" class="flex-1">
+        @if (shouldShowBanner() && !isBannerDismissed()) {
+          <eco-store-status-banner
+            class="mt-8"
+            [status]="tenantStore.storeStatus()"
+            [nextOpenDate]="tenantStore.nextOpenDate()"
+            [closedReason]="tenantStore.closedReasonTranslated()"
+            (dismiss)="isBannerDismissed.set(true)">
+          </eco-store-status-banner>
+        }
+
+        <router-outlet></router-outlet>
+      </main>
+      <eco-footer [tenant]="tenantStore.tenant()" />
     </mat-sidenav-content>
   </mat-sidenav-container>
-
-  <eco-footer></eco-footer>
 </div>
 
 <eco-menu #menu />

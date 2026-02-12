@@ -26,7 +26,10 @@
       "productList": "Product list",
       "sortProducts": "Sort products",
       "productsCount": "{{count}} products",
-      "categoryIcon": "{{category}} icon"
+      "categoryIcon": "{{category}} icon",
+      "closeSidenav": "Close side menu",
+      "openSidenav": "Open side menu",
+      "ecoIcon": "Eco icon"
     },
     "form": {
       "error": {
@@ -70,7 +73,8 @@
         "closingSoonDescription": "Place your order before {{time}}.",
         "dismiss": "Close store status notice"
       },
-      "closed": "The store is currently closed.",
+      "closed": "Closed",
+      "closedManually": "Temporarily closed",
       "opensIn": "Opens in",
       "closingSoon": "CLOSING SOON",
       "open": "Open",

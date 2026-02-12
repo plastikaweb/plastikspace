@@ -1,16 +1,16 @@
 @use '@angular/material' as mat;
 
 :host {
-  mat-toolbar {
-    pointer-events: auto;
-    margin: 0 auto;
+  display: block;
 
+  mat-toolbar {
     @include mat.toolbar-overrides(
       (
-        standard-height: 70px,
+        standard-height: 64px,
         mobile-height: 60px,
         title-text-weight: var(--font-weight-bold),
         title-text-tracking: 0.01rem,
+        container-background-color: color-mix(in srgb, var(--mat-sys-surface), transparent 50%),
       )
     );
 

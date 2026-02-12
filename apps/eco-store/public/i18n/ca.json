@@ -26,7 +26,10 @@
       "productList": "Llista de productes",
       "sortProducts": "Ordenar productes",
       "productsCount": "{{count}} productes",
-      "categoryIcon": "Icona de la categoria {{category}}"
+      "categoryIcon": "Icona de la categoria {{category}}",
+      "closeSidenav": "Tancar menú lateral",
+      "openSidenav": "Obrir menú lateral",
+      "ecoIcon": "Icona ecològica"
     },
     "form": {
       "error": {

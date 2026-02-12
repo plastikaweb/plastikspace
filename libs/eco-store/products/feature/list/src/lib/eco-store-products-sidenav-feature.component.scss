@@ -13,11 +13,9 @@
 
   @include mat.card-overrides(
     (
-      outlined-container-color: var(--transparent),
+      filled-container-color: var(--transparent),
     )
   );
-
-  --mat-card-outlined-outline-color: var(--secondary-200);
 
   mat-list-item {
     &:hover {

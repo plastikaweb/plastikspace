@@ -48,14 +48,23 @@
   "css.lint.unknownAtRules": "ignore",
   "scss.lint.unknownAtRules": "ignore",
   "less.lint.unknownAtRules": "ignore",
-  "files.associations": {
-    "*.css": "tailwindcss"
-  },
   "editor.quickSuggestions": {
     "strings": "on"
   },
   "tailwindCSS.emmetCompletions": true,
   "tailwindCSS.rootFontSize": 15,
+  "tailwindCSS.experimental.configFile": "libs/core/styles/util/tailwind4/src/_core_tailwind_theme.css",
+  "tailwindCSS.includeLanguages": {
+    "scss": "tailwindcss",
+    "less": "tailwindcss",
+    "css": "tailwindcss",
+    "sass": "tailwindcss",
+    "html": "tailwindcss"
+  },
+  "files.associations": {
+    "*.css": "tailwindcss",
+    "*.scss": "tailwindcss"
+  },
   "editor.codeActions.triggerOnFocusChange": false,
   "files.autoSave": "onFocusChange",
   "workbench.colorTheme": "Atom One Dark",
