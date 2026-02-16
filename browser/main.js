@@ -1,14 +1,14 @@
 import {
   AngularSvgIconModule,
   SvgIconComponent
-} from "./chunk-FRABLIEU.js";
+} from "./chunk-P545RKH4.js";
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from "./chunk-FGYZG72O.js";
+} from "./chunk-Y3V57UGF.js";
 import {
   MatToolbar,
   MatToolbarModule
-} from "./chunk-26UBSJTZ.js";
+} from "./chunk-RCTXCUU4.js";
 import {
   MatPseudoCheckboxModule,
   NASA_IMAGES_PROVIDERS,
@@ -16,13 +16,14 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-XXL7FP24.js";
+} from "./chunk-SXY4RORF.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
   CustomRouterSerializer,
   EffectsModule,
   LayoutFacade,
+  LayoutObserverService,
   NavigationActionTiming,
   PrefixTitleService,
   RouterState,
@@ -34,7 +35,7 @@ import {
   provideTranslateService,
   provideWithApiEnv,
   routerReducers
-} from "./chunk-6Z45LGVL.js";
+} from "./chunk-HYKGKAIS.js";
 import {
   ActionsSubject,
   INIT,
@@ -47,14 +48,14 @@ import {
   StoreModule,
   UPDATE,
   provideStore
-} from "./chunk-XOOKMJCX.js";
+} from "./chunk-A5LLDKTZ.js";
 import {
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
   TitleStrategy,
   provideRouter
-} from "./chunk-KVF6T647.js";
+} from "./chunk-64SJRYJT.js";
 import {
   CdkScrollable,
   CdkScrollableModule,
@@ -65,13 +66,13 @@ import {
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-GCZQ35XA.js";
+} from "./chunk-B7MF2X4C.js";
 import {
   DomPortalOutlet,
   MatIcon,
   MatIconModule,
   TemplatePortal
-} from "./chunk-TUQX2VCN.js";
+} from "./chunk-QQMF52DB.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatButton,
@@ -79,12 +80,10 @@ import {
   MatRippleModule,
   RippleRenderer,
   coerceBooleanProperty
-} from "./chunk-3JCSOKQC.js";
+} from "./chunk-FV4ZM6S7.js";
 import {
   A,
   A11yModule,
-  BreakpointObserver,
-  Breakpoints,
   CdkObserveContent,
   DOWN_ARROW,
   ENTER,
@@ -106,32 +105,32 @@ import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   toSignal
-} from "./chunk-RHICAVNE.js";
+} from "./chunk-FMSLWC4K.js";
 import {
   bootstrapApplication,
   provideHttpClient
-} from "./chunk-UQ7BNS5D.js";
-import "./chunk-XV33ABI2.js";
+} from "./chunk-AA3SJFJE.js";
+import "./chunk-FBGCESXU.js";
 import {
   BidiModule,
   Directionality,
   _getEventTarget,
   _getFocusedElementPierceShadowDom,
   _getShadowRoot
-} from "./chunk-SJ44HZSU.js";
-import "./chunk-OZQPDCUS.js";
+} from "./chunk-GEDR34G3.js";
+import "./chunk-NQSX5WFJ.js";
 import {
   _CdkPrivateStyleLoader,
   coerceNumberProperty
-} from "./chunk-7E77KQQ3.js";
+} from "./chunk-F6YMFCSH.js";
 import {
   Platform
-} from "./chunk-MMY5FTVS.js";
+} from "./chunk-YGYYLDXB.js";
 import {
   DatePipe,
   NgTemplateOutlet,
   PRECONNECT_CHECK_BLOCKLIST
-} from "./chunk-BUMCWPHS.js";
+} from "./chunk-HEE5E7PX.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -263,7 +262,7 @@ import {
   ɵɵtextInterpolate1,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-4MKI7HWZ.js";
+} from "./chunk-SIDG4XUF.js";
 
 // node_modules/@angular/material/fesm2022/divider.mjs
 var MatDivider = class _MatDivider {
@@ -4926,9 +4925,9 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-STT7PEU4.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-Y7CMLT6A.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
-var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-VL6GG72Q.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
+var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-O63Q4ZI6.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
 var _c24 = () => ({ exact: false });
 var _forTrack0 = ($index, $item) => $item.id;
@@ -5200,7 +5199,7 @@ function CoreCmsLayoutFeatureComponent_ng_template_40_Template(rf, ctx) {
 var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   #layoutFacade = inject(LayoutFacade);
   #destroyed$ = new Subject();
-  #breakpointObserver = inject(BreakpointObserver);
+  #layoutObserverService = inject(LayoutObserverService);
   #zone = inject(NgZone);
   notificationStore = inject(notificationStore);
   hideFooter = input(false, ...ngDevMode ? [{ debugName: "hideFooter" }] : []);
@@ -5213,7 +5212,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   headerConfig = this.#layoutFacade.headerConfig;
   headerWidgetsConfig = this.headerConfig?.widgetsConfig;
   ngOnInit() {
-    this.#breakpointObserver.observe([Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Medium]).pipe(takeUntil(this.#destroyed$), map((handset) => handset.matches)).subscribe((matches) => {
+    this.#layoutObserverService.getMatches().pipe(takeUntil(this.#destroyed$)).subscribe((matches) => {
       if (matches)
         this.onToggleSidenav(!matches);
       this.onSetIsMobile(matches);
@@ -5238,21 +5237,21 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   onSetIsMobile(isMobile) {
     this.#zone.runOutsideAngular(() => this.#layoutFacade.setIsMobile(isMobile));
   }
-  #createWidgets() {
+  async #createWidgets() {
     if (!this.headerWidgetsConfig)
       return;
     const container = this.widgetsContainer();
     if (container) {
       container.clear();
-      this.headerWidgetsConfig?.widgets?.forEach(async (widget) => {
+      for (const widget of this.headerWidgetsConfig.widgets || []) {
         const component = await widget.component();
         const componentRef = container.createComponent(component);
         if (widget.inputs) {
-          Object.keys(widget.inputs ?? {}).map((key) => {
-            componentRef?.setInput(key, widget.inputs?.[key]);
+          Object.entries(widget.inputs).forEach(([key, value]) => {
+            componentRef?.setInput(key, value);
           });
         }
-      });
+      }
     }
   }
   static \u0275fac = function CoreCmsLayoutFeatureComponent_Factory(__ngFactoryType__) {
@@ -5374,7 +5373,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-STT7PEU4.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-VL6GG72Q.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-Y7CMLT6A.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-O63Q4ZI6.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -5572,7 +5571,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CoreCmsLayoutFeatureComponent, { className: "CoreCmsLayoutFeatureComponent", filePath: "libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts", lineNumber: 57 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(CoreCmsLayoutFeatureComponent, { className: "CoreCmsLayoutFeatureComponent", filePath: "libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts", lineNumber: 56 });
 })();
 
 // apps/nasa-images/src/app/app.component.ts
@@ -5584,16 +5583,16 @@ var AppComponent = class _AppComponent {
     if (rf & 1) {
       \u0275\u0275element(0, "plastik-core-cms-layout-feature");
     }
-  }, dependencies: [CoreCmsLayoutFeatureComponent], encapsulation: 2 });
+  }, dependencies: [CoreCmsLayoutFeatureComponent], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(AppComponent, [{
     type: Component,
-    args: [{ selector: "plastik-root", imports: [CoreCmsLayoutFeatureComponent], template: "<plastik-core-cms-layout-feature></plastik-core-cms-layout-feature>\n" }]
+    args: [{ selector: "plastik-root", imports: [CoreCmsLayoutFeatureComponent], changeDetection: ChangeDetectionStrategy.OnPush, template: "<plastik-core-cms-layout-feature></plastik-core-cms-layout-feature>\n" }]
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AppComponent, { className: "AppComponent", filePath: "apps/nasa-images/src/app/app.component.ts", lineNumber: 9 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(AppComponent, { className: "AppComponent", filePath: "apps/nasa-images/src/app/app.component.ts", lineNumber: 10 });
 })();
 
 // node_modules/@ngrx/store-devtools/fesm2022/ngrx-store-devtools.mjs
@@ -6544,11 +6543,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-LN4GFY7N.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-UKOMN7P3.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-RIDAKTAW.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-3ZE5HDVI.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6564,7 +6563,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-K3DSZ6LJ.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-H4OZGWF5.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           config: {
             type: "link",

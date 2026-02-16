@@ -1,6 +1,6 @@
 import {
   HttpClient
-} from "./chunk-UQ7BNS5D.js";
+} from "./chunk-AA3SJFJE.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -31,7 +31,7 @@ import {
   ɵɵinject,
   ɵɵprojection,
   ɵɵprojectionDef
-} from "./chunk-4MKI7HWZ.js";
+} from "./chunk-SIDG4XUF.js";
 
 // node_modules/angular-svg-icon/fesm2022/angular-svg-icon.mjs
 var _c0 = ["*"];
@@ -458,4 +458,4 @@ export {
   SvgIconComponent,
   AngularSvgIconModule
 };
-//# sourceMappingURL=chunk-FRABLIEU.js.map
+//# sourceMappingURL=chunk-P545RKH4.js.map

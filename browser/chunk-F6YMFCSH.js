@@ -8,7 +8,7 @@ import {
   inject,
   setClassMetadata,
   ɵɵdefineInjectable
-} from "./chunk-4MKI7HWZ.js";
+} from "./chunk-SIDG4XUF.js";
 
 // node_modules/@angular/cdk/fesm2022/_element-chunk.mjs
 function coerceNumberProperty(value, fallbackValue = 0) {
@@ -75,4 +75,4 @@ export {
   coerceElement,
   _CdkPrivateStyleLoader
 };
-//# sourceMappingURL=chunk-7E77KQQ3.js.map
+//# sourceMappingURL=chunk-F6YMFCSH.js.map

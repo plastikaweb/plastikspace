@@ -1,18 +1,18 @@
 import {
   NasaImagesFacade,
   UniqueSelectionDispatcher
-} from "./chunk-6Z45LGVL.js";
+} from "./chunk-HYKGKAIS.js";
 import {
   PushPipe
-} from "./chunk-XOOKMJCX.js";
-import "./chunk-KVF6T647.js";
+} from "./chunk-A5LLDKTZ.js";
+import "./chunk-64SJRYJT.js";
 import {
   CdkPortalOutlet,
   MatIcon,
   MatIconModule,
   PortalModule,
   TemplatePortal
-} from "./chunk-TUQX2VCN.js";
+} from "./chunk-QQMF52DB.js";
 import {
   ENTER,
   FocusKeyManager,
@@ -22,18 +22,18 @@ import {
   _StructuralStylesLoader,
   _animationsDisabled,
   hasModifierKey
-} from "./chunk-RHICAVNE.js";
+} from "./chunk-FMSLWC4K.js";
 import {
   HttpClient
-} from "./chunk-UQ7BNS5D.js";
+} from "./chunk-AA3SJFJE.js";
 import {
   BidiModule
-} from "./chunk-SJ44HZSU.js";
+} from "./chunk-GEDR34G3.js";
 import {
   _CdkPrivateStyleLoader
-} from "./chunk-7E77KQQ3.js";
-import "./chunk-MMY5FTVS.js";
-import "./chunk-BUMCWPHS.js";
+} from "./chunk-F6YMFCSH.js";
+import "./chunk-YGYYLDXB.js";
+import "./chunk-HEE5E7PX.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -110,7 +110,7 @@ import {
   ɵɵtextInterpolate,
   ɵɵtextInterpolate1,
   ɵɵviewQuery
-} from "./chunk-4MKI7HWZ.js";
+} from "./chunk-SIDG4XUF.js";
 
 // node_modules/@angular/cdk/fesm2022/accordion.mjs
 var CDK_ACCORDION = new InjectionToken("CdkAccordion");
@@ -1088,16 +1088,16 @@ var NasaImagesFaqsFeatureComponent = class _NasaImagesFaqsFeatureComponent {
       \u0275\u0275advance(4);
       \u0275\u0275repeater(\u0275\u0275pipeBind1(6, 3, ctx.faqs$));
     }
-  }, dependencies: [MatExpansionModule, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatIconModule, MatIcon, PushPipe], styles: ["\n\n[_nghost-%COMP%]     .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-header .mat-content {\n  display: flex;\n}\n[_nghost-%COMP%]     .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-header .mat-content .mat-expansion-panel-header-title {\n  flex-grow: 3;\n}\n[_nghost-%COMP%]     .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-body .highlight {\n  font-weight: bold;\n}\n/*# sourceMappingURL=nasa-images-faqs-feature.component.css.map */"] });
+  }, dependencies: [MatExpansionModule, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatExpansionPanelDescription, MatIconModule, MatIcon, PushPipe], styles: ["\n\n[_nghost-%COMP%]     .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-header .mat-content {\n  display: flex;\n}\n[_nghost-%COMP%]     .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-header .mat-content .mat-expansion-panel-header-title {\n  flex-grow: 3;\n}\n[_nghost-%COMP%]     .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-body .highlight {\n  font-weight: bold;\n}\n/*# sourceMappingURL=nasa-images-faqs-feature.component.css.map */"], changeDetection: 0 });
 };
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(NasaImagesFaqsFeatureComponent, [{
     type: Component,
-    args: [{ selector: "plastik-nasa-images-faqs-feature", imports: [MatExpansionModule, MatIconModule, PushPipe], template: '@if (routeInfo$ | ngrxPush; as info) {\n  <h2 class="gap-sm h3 mb-4 flex items-center" data-test="page-title">\n    <mat-icon class="scale-150"> {{ info.icon }} </mat-icon> <span>{{ info.title }}</span>\n  </h2>\n}\n\n<section class="faqs-wrapper">\n  <mat-accordion class="mx-xl my-md">\n    @for (faq of faqs$ | ngrxPush; track $index) {\n      <mat-expansion-panel data-test="faq-item">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            <p class="h5" data-test="faq-question">{{ faq.question }}</p>\n          </mat-panel-title>\n          <mat-panel-description></mat-panel-description>\n        </mat-expansion-panel-header>\n        <div data-test="faq-answer" [innerHTML]="faq.answer"></div>\n      </mat-expansion-panel>\n    }\n  </mat-accordion>\n</section>\n', styles: ["/* libs/nasa-images/faqs/feature/src/lib/nasa-images-faqs-feature/nasa-images-faqs-feature.component.scss */\n:host ::ng-deep .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-header .mat-content {\n  display: flex;\n}\n:host ::ng-deep .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-header .mat-content .mat-expansion-panel-header-title {\n  flex-grow: 3;\n}\n:host ::ng-deep .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-body .highlight {\n  font-weight: bold;\n}\n/*# sourceMappingURL=nasa-images-faqs-feature.component.css.map */\n"] }]
+    args: [{ selector: "plastik-nasa-images-faqs-feature", imports: [MatExpansionModule, MatIconModule, PushPipe], changeDetection: ChangeDetectionStrategy.OnPush, template: '@if (routeInfo$ | ngrxPush; as info) {\n  <h2 class="gap-sm h3 mb-4 flex items-center" data-test="page-title">\n    <mat-icon class="scale-150"> {{ info.icon }} </mat-icon> <span>{{ info.title }}</span>\n  </h2>\n}\n\n<section class="faqs-wrapper">\n  <mat-accordion class="mx-xl my-md">\n    @for (faq of faqs$ | ngrxPush; track $index) {\n      <mat-expansion-panel data-test="faq-item">\n        <mat-expansion-panel-header>\n          <mat-panel-title>\n            <p class="h5" data-test="faq-question">{{ faq.question }}</p>\n          </mat-panel-title>\n          <mat-panel-description></mat-panel-description>\n        </mat-expansion-panel-header>\n        <div data-test="faq-answer" [innerHTML]="faq.answer"></div>\n      </mat-expansion-panel>\n    }\n  </mat-accordion>\n</section>\n', styles: ["/* libs/nasa-images/faqs/feature/src/lib/nasa-images-faqs-feature/nasa-images-faqs-feature.component.scss */\n:host ::ng-deep .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-header .mat-content {\n  display: flex;\n}\n:host ::ng-deep .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-header .mat-content .mat-expansion-panel-header-title {\n  flex-grow: 3;\n}\n:host ::ng-deep .faqs-wrapper .mat-expansion-panel .mat-expansion-panel-body .highlight {\n  font-weight: bold;\n}\n/*# sourceMappingURL=nasa-images-faqs-feature.component.css.map */\n"] }]
   }], null, null);
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(NasaImagesFaqsFeatureComponent, { className: "NasaImagesFaqsFeatureComponent", filePath: "libs/nasa-images/faqs/feature/src/lib/nasa-images-faqs-feature/nasa-images-faqs-feature.component.ts", lineNumber: 15 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(NasaImagesFaqsFeatureComponent, { className: "NasaImagesFaqsFeatureComponent", filePath: "libs/nasa-images/faqs/feature/src/lib/nasa-images-faqs-feature/nasa-images-faqs-feature.component.ts", lineNumber: 16 });
 })();
 
 // libs/nasa-images/faqs/feature/src/lib/nasa-images-faqs-feature.routes.ts
@@ -1114,4 +1114,4 @@ export {
   NasaImagesFaqsFeatureComponent,
   nasaImagesFaqsFeatureRoutes
 };
-//# sourceMappingURL=src-RIDAKTAW.js.map
+//# sourceMappingURL=src-3ZE5HDVI.js.map

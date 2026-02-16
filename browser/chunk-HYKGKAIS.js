@@ -18,7 +18,7 @@ import {
   on,
   props,
   select
-} from "./chunk-XOOKMJCX.js";
+} from "./chunk-A5LLDKTZ.js";
 import {
   NavigationCancel,
   NavigationEnd,
@@ -27,21 +27,23 @@ import {
   Router,
   RoutesRecognized,
   TitleStrategy
-} from "./chunk-KVF6T647.js";
+} from "./chunk-64SJRYJT.js";
 import {
   _ViewRepeaterOperation
-} from "./chunk-TUQX2VCN.js";
+} from "./chunk-QQMF52DB.js";
 import {
+  BreakpointObserver,
+  Breakpoints,
   takeUntilDestroyed
-} from "./chunk-RHICAVNE.js";
+} from "./chunk-FMSLWC4K.js";
 import {
   HttpErrorResponse,
   Title
-} from "./chunk-UQ7BNS5D.js";
+} from "./chunk-AA3SJFJE.js";
 import {
   Location,
   isPlatformBrowser
-} from "./chunk-BUMCWPHS.js";
+} from "./chunk-HEE5E7PX.js";
 import {
   ChangeDetectorRef,
   DestroyRef,
@@ -104,7 +106,7 @@ import {
   ɵɵdefinePipe,
   ɵɵgetInheritedFactory,
   ɵɵinject
-} from "./chunk-4MKI7HWZ.js";
+} from "./chunk-SIDG4XUF.js";
 
 // libs/core/cms-layout/entities/src/core-cms-layout-header-config.ts
 var CORE_CMS_LAYOUT_HEADER_CONFIG = new InjectionToken("CORE_CMS_LAYOUT_HEADER_CONFIG");
@@ -1979,6 +1981,26 @@ var LayoutFacade = class _LayoutFacade {
   }], null, null);
 })();
 
+// libs/core/cms-layout/data-access/src/lib/services/layout-observer.service.ts
+var LayoutObserverService = class _LayoutObserverService {
+  #breakpointObserver = inject(BreakpointObserver);
+  getMatches(breakpoints = [Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Medium]) {
+    return this.#breakpointObserver.observe(breakpoints).pipe(map((state) => state.matches), shareReplay(1));
+  }
+  static \u0275fac = function LayoutObserverService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _LayoutObserverService)();
+  };
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _LayoutObserverService, factory: _LayoutObserverService.\u0275fac, providedIn: "root" });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(LayoutObserverService, [{
+    type: Injectable,
+    args: [{
+      providedIn: "root"
+    }]
+  }], null, null);
+})();
+
 // node_modules/@ngx-translate/core/fesm2022/ngx-translate-core.mjs
 var MissingTranslationHandler = class {
 };
@@ -3666,6 +3688,7 @@ export {
   RouterState,
   provideRouterStore,
   CoreCmsLayoutDataAccessModule,
+  LayoutObserverService,
   TranslatePipe,
   provideTranslateService,
   TranslateModule,
@@ -3678,4 +3701,4 @@ export {
   PrefixTitleService,
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-6Z45LGVL.js.map
+//# sourceMappingURL=chunk-HYKGKAIS.js.map
