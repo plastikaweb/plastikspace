@@ -9,20 +9,21 @@ import {
   viewChild,
 } from '@angular/core';
 
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Breakpoints } from '@angular/cdk/layout';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { filter, map } from 'rxjs';
+import { filter } from 'rxjs';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';
 import { MobileNavComponent } from './mobile-nav/mobile-nav.component';
 import { TenantLogoComponent } from './tenant-logo/tenant-logo.component';
 
+import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { appSearchFormConfig } from '@plastik/eco-store/formly';
 import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
@@ -56,9 +57,7 @@ export default class LayoutComponent {
   protected readonly hasSidenav = signal(false);
   protected readonly isBannerDismissed = signal(false);
   protected readonly isMobile = toSignal(
-    inject(BreakpointObserver)
-      .observe([Breakpoints.XSmall, Breakpoints.Small]) // XSmall: 0-599.98px, Small: 600-959.98px
-      .pipe(map(result => result.matches))
+    inject(LayoutObserverService).getMatches([Breakpoints.XSmall, Breakpoints.Small])
   );
   private readonly sidenavContent = viewChild<MatSidenavContent>('sidenavContent');
   readonly #destroyRef = inject(DestroyRef);

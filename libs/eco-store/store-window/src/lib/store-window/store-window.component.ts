@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
@@ -18,6 +18,7 @@ import { CountdownService } from '@plastik/shared/countdown/util';
   ],
   templateUrl: './store-window.component.html',
   styleUrl: './store-window.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreWindowComponent {
   readonly #countdownService = inject(CountdownService);
