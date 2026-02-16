@@ -2,7 +2,7 @@
 
 <mat-card
   role="article"
-  class="product-card make-it-focusable group relative flex h-full w-full flex-col justify-between overflow-hidden ring-1! ring-neutral-100! transition-all duration-200 hover:shadow-2xl! hover:ring-neutral-200!"
+  class="product-card make-it-focusable group inset-shadow-lg! hover:inset-shadow-2xl! hover:ring-primary-200! relative flex h-full w-full flex-col justify-between overflow-hidden shadow-md transition-all duration-200 hover:translate-y-[-4px] hover:shadow-xl! hover:ring-1!"
   [class.pointer-events-none]="!productData.stock"
   [routerLink]="
     productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
@@ -25,7 +25,7 @@
           class="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
           [src]="productData | pocketBaseImageUrl: productData.images?.[0]"
           [title]="productData.name"
-          [dimensions]="{ width: 300, height: 300 }"
+          [dimensions]="{ width: 350, height: 350 }"
           [lcpImage]="isFirst()" />
       </div>
     </div>

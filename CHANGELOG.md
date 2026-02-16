@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - Eco Store Layout Refactoring
+
+### Added
+
+- Added mobile navigation and user menu components ([#873](https://github.com/plastikaweb/plastikspace/issues/873))
+
+### Changed
+
+- Refactored layout architecture and updated shared libraries ([#873](https://github.com/plastikaweb/plastikspace/issues/873))
+
+---
+
 ## [Unreleased] - Agent Documentation
 
 ### Added

@@ -1,10 +1,17 @@
 @use '@angular/material' as mat;
 
-:host {
-  .main-menu button.active {
-    background-color: var(--mat-sys-primary);
-    color: var(--mat-sys-on-primary);
-  }
+.active-menu-item {
+  @include mat.toolbar-overrides(
+    (
+      container-text-color: var(--primary-600),
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      text-label-text-weight: 800,
+    )
+  );
 }
 
 .cart-button {

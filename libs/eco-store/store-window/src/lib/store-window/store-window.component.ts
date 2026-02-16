@@ -25,6 +25,7 @@ export class StoreWindowComponent {
   readonly status = input<EcoStoreTenantWindowStatus>();
   readonly nextOpenDate = input<Date | null>();
   readonly is24h = input<boolean>();
+  readonly isMobile = input<boolean>();
   readonly closedReason = input<string | null>();
 
   readonly #countdown = this.#countdownService.createCountdown(() => this.nextOpenDate() || null);

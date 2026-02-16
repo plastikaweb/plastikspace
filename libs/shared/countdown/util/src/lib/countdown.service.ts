@@ -6,7 +6,6 @@ import { Countdown, CountdownConfig, CountdownData } from './countdown.model';
 /**
  * Shared countdown service that provides reactive countdown signals.
  * Can be used across different apps and components.
- *
  * @example
  * ```typescript
  * export class MyComponent {
@@ -24,28 +23,73 @@ export class CountdownService {
   private readonly destroyRef = inject(DestroyRef);
   private readonly injector = inject(Injector);
 
+  // Cache to store shared countdowns by target date
+  private readonly countdownCache = new Map<string, Countdown>();
+
   private readonly separator = signal<string>(':');
 
   /**
-   * Creates a reactive countdown to a target date.
-   *
-   * @param targetDateFn - Function that returns the target Date or null
-   * @param config - Optional configuration
-   * @param separator - Separator for time parts
-   * @returns Object with countdown signals
+   * @description Creates a reactive countdown to a target date.
+   * @param {() => Date | null} targetDateFn - Function that returns the target Date or null.
+   * @param {CountdownConfig} config - Optional configuration.
+   * @param {string} separator - Separator for time parts.
+   * @param {Injector} injector - Optional injector to tie the countdown lifecycle to a component.
+   * @returns {Countdown} Object with countdown signals.
    */
   createCountdown(
     targetDateFn: () => Date | null,
     config: CountdownConfig = {},
-    separator = ':'
+    separator = ':',
+    injector?: Injector
   ): Countdown {
     const intervalMs = config.intervalMs ?? 1000;
-    const now = signal(new Date());
+    const targetInjector = injector ?? this.injector;
+    const targetDestroyRef = targetInjector.get(DestroyRef);
+
     this.separator.set(separator);
 
     const targetDateSignal = computed(() => targetDateFn());
 
-    toObservable(targetDateSignal, { injector: this.injector })
+    // Create a cache key based on the target date and interval
+    const cacheKey = computed(() => {
+      const targetDate = targetDateSignal();
+      return targetDate ? `${targetDate.getTime()}-${intervalMs}` : 'null';
+    });
+
+    // Check if we already have a countdown for this target date
+    let countdown = this.countdownCache.get(cacheKey());
+
+    if (!countdown) {
+      // Create new countdown if not cached
+      countdown = this.createCountdownInternal(
+        targetDateSignal,
+        intervalMs,
+        targetInjector,
+        targetDestroyRef
+      );
+      this.countdownCache.set(cacheKey(), countdown);
+    }
+
+    return countdown;
+  }
+
+  /**
+   * @description Internal method to create a new countdown instance.
+   * @param {() => Date | null} targetDateSignal - Signal that returns the target Date or null.
+   * @param {number} intervalMs - Interval in milliseconds.
+   * @param {Injector} targetInjector - Injector to tie the countdown lifecycle to a component.
+   * @param {DestroyRef} targetDestroyRef - DestroyRef to tie the countdown lifecycle to a component.
+   * @returns {Countdown} Countdown object with signals.
+   */
+  private createCountdownInternal(
+    targetDateSignal: () => Date | null,
+    intervalMs: number,
+    targetInjector: Injector,
+    targetDestroyRef: DestroyRef
+  ): Countdown {
+    const now = signal(new Date());
+
+    toObservable(computed(targetDateSignal), { injector: targetInjector })
       .pipe(
         switchMap(targetDate => {
           if (!targetDate || targetDate.getTime() <= new Date().getTime()) {
@@ -55,7 +99,7 @@ export class CountdownService {
             takeWhile(() => targetDate.getTime() > new Date().getTime(), true)
           );
         }),
-        takeUntilDestroyed(this.destroyRef)
+        takeUntilDestroyed(targetDestroyRef)
       )
       .subscribe(tick => {
         if (tick !== null) {
@@ -90,10 +134,9 @@ export class CountdownService {
   }
 
   /**
-   * Calculates countdown from milliseconds difference.
-   *
-   * @param diffMs - Difference in milliseconds
-   * @returns Countdown data object
+   * @description Calculates countdown from milliseconds difference.
+   * @param {number} diffMs - Difference in milliseconds.
+   * @returns {CountdownData} Countdown data object.
    */
   calculateCountdown(diffMs: number): CountdownData {
     const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
@@ -105,10 +148,9 @@ export class CountdownService {
   }
 
   /**
-   * Format countdown to compact text (e.g., "2d 5h 30m 45s").
-   *
-   * @param countdown - Countdown data object
-   * @returns Formatted string
+   * @description Format countdown to compact text (e.g., "2d 5h 30m 45s").
+   * @param {CountdownData} countdown - Countdown data object.
+   * @returns {string} Formatted string.
    */
   formatCountdown(countdown: CountdownData): string {
     const parts: string[] = [];

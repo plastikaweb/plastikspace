@@ -9,8 +9,9 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "module": "preserve",
-    "lib": ["es2024", "dom"]
+    "lib": ["es2024", "dom"],
+    "declaration": true,
+    "composite": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

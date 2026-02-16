@@ -16,14 +16,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { appSearchFormConfig } from '@plastik/eco-store/formly';
-import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
-import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { filter, map } from 'rxjs';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';
+import { MobileNavComponent } from './mobile-nav/mobile-nav.component';
 import { TenantLogoComponent } from './tenant-logo/tenant-logo.component';
+
+import { appSearchFormConfig } from '@plastik/eco-store/formly';
+import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 
 @Component({
   selector: 'eco-layout',
@@ -41,6 +43,7 @@ import { TenantLogoComponent } from './tenant-logo/tenant-logo.component';
     MatIconModule,
     MatButtonModule,
     TenantLogoComponent,
+    MobileNavComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

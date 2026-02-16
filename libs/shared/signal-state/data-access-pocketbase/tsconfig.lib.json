@@ -17,7 +17,7 @@
       "path": "../../../../libs/core/entities"
     },
     {
-      "path": "../../../notification/data-access"
+      "path": "../../../shared/notification/data-access"
     }
   ]
 }

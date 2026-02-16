@@ -23,7 +23,7 @@ import { SkipLinkComponent } from '@plastik/shared/skip-link';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
   host: {
-    class: 'w-full h-lvh block',
+    class: 'w-full h-screen h-lvh block',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -1,27 +1,17 @@
 <div class="mx-auto flex h-screen w-screen flex-col">
-  <eco-header
-    [formConfig]="searchFormConfig"
-    [tenant]="tenantStore.tenant()"
-    [storeStatus]="tenantStore.storeStatus()"
-    [nextOpenDate]="tenantStore.nextOpenDate()"
-    [is24h]="tenantStore.is24h()"
-    [closedReason]="tenantStore.closedReasonTranslated()"
-    [sideNavOpen]="isSidenavOpen()"
-    [isMobile]="isMobile()"
-    [hasSidenav]="hasSidenav()"
-    (toggleSidenav)="isSidenavOpen.set(!isSidenavOpen())"
-    (submitEvent)="onSearchSubmit()">
-    <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
-    <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
-  </eco-header>
+  @if (!isMobile() || !isSidenavOpen()) {
+    <ng-container *ngTemplateOutlet="headerContent"></ng-container>
+  }
 
-  <mat-sidenav-container class="content-container w-full flex-1 bg-transparent">
+  <mat-sidenav-container
+    class="content-container w-full flex-1 bg-transparent"
+    [class.z-10]="isMobile()">
     <mat-sidenav
       #sidenav
       position="start"
       fixedInViewport="true"
       [mode]="isMobile() ? 'over' : 'side'"
-      [fixedTopGap]="isMobile() ? 0 : 70"
+      [fixedTopGap]="isMobile() ? 0 : 85"
       [fixedBottomGap]="isMobile() ? 0 : 100"
       [opened]="isSidenavOpen()"
       (keydown.escape)="isSidenavOpen.set(false)"
@@ -46,8 +36,11 @@
       </div>
     </mat-sidenav>
 
-    <mat-sidenav-content #sidenavContent class="flex flex-col px-4 pb-10 md:px-8" tabindex="-1">
-      <main id="mainContent" role="main" class="flex-1">
+    <mat-sidenav-content #sidenavContent class="flex-colpb-10 flex" tabindex="-1">
+      @if (isMobile() && isSidenavOpen()) {
+        <ng-container *ngTemplateOutlet="headerContent"></ng-container>
+      }
+      <main id="mainContent" role="main" class="mt-20 flex-1 px-4">
         @if (shouldShowBanner() && !isBannerDismissed()) {
           <eco-store-status-banner
             class="mt-8"
@@ -61,8 +54,29 @@
         <router-outlet></router-outlet>
       </main>
       <eco-footer [tenant]="tenantStore.tenant()" />
+
+      <eco-mobile-nav />
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>
 
 <eco-menu #menu />
+
+<ng-template #headerContent>
+  <eco-header
+    class="fixed z-10 block w-full border-b border-neutral-200 shadow-md backdrop-blur-md backdrop-saturate-150"
+    [formConfig]="searchFormConfig"
+    [tenant]="tenantStore.tenant()"
+    [storeStatus]="tenantStore.storeStatus()"
+    [nextOpenDate]="tenantStore.nextOpenDate()"
+    [is24h]="tenantStore.is24h()"
+    [closedReason]="tenantStore.closedReasonTranslated()"
+    [sideNavOpen]="isSidenavOpen()"
+    [isMobile]="isMobile()"
+    [hasSidenav]="hasSidenav()"
+    (toggleSidenav)="isSidenavOpen.set(!isSidenavOpen())"
+    (submitEvent)="onSearchSubmit()">
+    <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
+    <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
+  </eco-header>
+</ng-template>

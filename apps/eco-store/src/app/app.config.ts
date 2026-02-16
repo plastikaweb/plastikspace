@@ -57,9 +57,9 @@ export const appConfig: ApplicationConfig = {
       lang: environment.defaultLanguage,
     }),
     provideEcoStoreTenant,
-    provideAppInitializer(() => {
+    provideAppInitializer(async () => {
       pocketBaseActivityInterceptor();
-      inject(ecoStoreTenantStore).getTenant();
+      await inject(ecoStoreTenantStore).getTenant();
     }),
     { provide: LOCALE_ID, useValue: 'ca' },
     { provide: ErrorHandler, useClass: ErrorHandlerService },

@@ -9,7 +9,7 @@ import { TenantLogoComponent } from '../tenant-logo/tenant-logo.component';
   imports: [MatButtonModule, RouterLink, TenantLogoComponent],
   template: `
     <button matButton routerLink="/" type="button" (click)="linkClicked.emit()">
-      <eco-tenant-logo [tenant]="tenant()" />
+      <eco-tenant-logo showName="responsive" [tenant]="tenant()" />
     </button>
   `,
   styleUrl: './tenant-link.component.scss',

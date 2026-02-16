@@ -50,7 +50,7 @@ describe('TenantLogoComponent', () => {
     fixture.detectChanges();
     const nameSpan = fixture.nativeElement.querySelector('span');
     expect(nameSpan.classList).toContain('hidden');
-    expect(nameSpan.classList).toContain('md:block');
+    expect(nameSpan.classList).toContain('sm:block');
   });
 
   it('should show name always if showName is set to always', () => {

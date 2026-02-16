@@ -19,6 +19,6 @@ export class TenantLogoComponent {
   readonly showName = input<'always' | 'responsive'>('responsive');
 
   protected readonly nameClass = computed(() =>
-    this.showName() === 'always' ? '' : 'hidden md:block'
+    this.showName() === 'always' ? '' : 'hidden sm:block'
   );
 }

@@ -6,7 +6,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { EcoStoreTenant, EcoStoreTenantWindowStatus } from '@plastik/eco-store/entities';
 import { StoreWindowComponent } from '@plastik/eco-store/store-window';
-import { SharedFormFeatureComponent } from '@plastik/shared/form';
+// import { SharedFormFeatureComponent } from '@plastik/shared/form';
 import { EcoTenantLinkComponent } from '../tenant-link/tenant-link.component';
 
 @Component({
@@ -16,7 +16,7 @@ import { EcoTenantLinkComponent } from '../tenant-link/tenant-link.component';
     MatIcon,
     MatButtonModule,
     TranslateModule,
-    SharedFormFeatureComponent,
+    // SharedFormFeatureComponent,
     StoreWindowComponent,
     EcoTenantLinkComponent,
   ],
@@ -29,6 +29,7 @@ export class HeaderComponent {
   readonly tenant = input<EcoStoreTenant | null>();
   readonly storeStatus = input<EcoStoreTenantWindowStatus | undefined>();
   readonly nextOpenDate = input<Date | null | undefined>();
+  readonly countdownSegments = input<string[]>([]);
   readonly is24h = input<boolean | undefined>();
   readonly closedReason = input<string | null | undefined>();
   readonly sideNavOpen = input<boolean>();
