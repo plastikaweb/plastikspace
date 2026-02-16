@@ -1,6 +1,8 @@
 {
   "compilerOptions": {
-    "target": "ES2022"
+    "target": "ES2022",
+    "composite": true,
+    "declaration": true
   },
   "extends": "../../../../tsconfig.base.json",
   "files": [],

@@ -4,6 +4,13 @@
       "type": "stdio",
       "command": "npx",
       "args": ["nx", "mcp"]
+    },
+    "pocketbase": {
+      "command": "sh",
+      "args": [
+        "-c",
+        "npx -y dotenv-cli -e apps/eco-store/.env -- sh -c 'export POCKETBASE_URL=\"http://127.0.0.1:8090\" && export POCKETBASE_EMAIL=\"$POCKETBASE_DEV_ADMIN_EMAIL\" && export POCKETBASE_PASSWORD=\"$POCKETBASE_DEV_ADMIN_PASSWORD\" && npx -y @fadlee/pocketbase-mcp'"
+      ]
     }
   }
 }

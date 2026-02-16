@@ -279,8 +279,10 @@
 
   --breakpoint-xs: 599.98px;
   --breakpoint-sm: 600px;
+  --breakpoint-800: 800px;
   --breakpoint-md: 960px;
   --breakpoint-lg: 1280px;
+  --breakpoint-2xl: 1536px;
   --breakpoint-xl: 1920px;
 
   /* ============================================

@@ -171,7 +171,9 @@ Foundation libraries used across applications.
 
 - [**cms-layout**](libs/core/cms-layout/feature/README.md): CMS layout features.
 - [**ng-entry-html**](libs/core/ng-entry-html/util/README.md): HTML entry utilities.
-- [**styles**](libs/core/styles/util/tailwind-preset/README.md): Core styles and presets.
+- [**styles-preset**](libs/core/styles/util/tailwind-preset/README.md): Core styles and presets.
+- [**styles-tailwind4**](libs/core/styles/util/tailwind4/README.md): Global CSS variables for TailwindCSS v4.
+- [**styles-material**](libs/core/styles/util/material/README.md): Global CSS adjustments for Angular Material.
 
 ### 🔄 Shared
 

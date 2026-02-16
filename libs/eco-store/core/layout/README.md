@@ -45,7 +45,8 @@ Example usage in route definition:
 
 The layout is composed of:
 
-- **Header**: Contains the logo, search bar (lazy loaded), and user menu with enhanced authentication state (Login/Profile/Orders/Logout with Avatar or Initials).
+- **Header**: Contains the Logo/Title (via `TenantLogoComponent` and `TenantLinkComponent`), search bar (lazy loaded), and the Store Window status.
+- **Tenant Logo/Link**: Reusable components for consistent branding and home navigation.
 - **User Avatar**: Reusable component `UserAvatarComponent` that handles displaying user avatar or initials.
 - **Menu**: Navigation menu with role-based icons:
   - `PARTNER`: verified icon

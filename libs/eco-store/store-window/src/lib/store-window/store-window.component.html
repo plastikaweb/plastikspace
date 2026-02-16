@@ -5,6 +5,7 @@
     <mat-chip [class]="`status-chip ${config.class}`">
       <mat-icon matChipAvatar>{{ config.icon }}</mat-icon>
       <div class="flex items-center gap-2">
+        <!-- @if (!isMobile()) { -->
         <span
           [class]="`flex items-center font-bold tracking-wide whitespace-nowrap uppercase ${config.countdownSegments?.length ? 'border-tertiary-200 border-r pr-2' : ''}`">
           @if (config.class === 'closing') {
@@ -13,6 +14,8 @@
           }
           {{ config.label | translate }}
         </span>
+        <!-- } -->
+
         @if (config.countdownSegments?.length) {
           <plastik-countdown
             [segments]="config.countdownSegments || []"

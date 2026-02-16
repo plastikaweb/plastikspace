@@ -37,7 +37,11 @@
         ],
         "styles": ["apps/eco-store/src/styles/styles.scss"],
         "stylePreprocessorOptions": {
-          "includePaths": ["libs/core/styles/util/material/src", "apps/eco-store/src/styles"]
+          "includePaths": [
+            "libs/core/styles/util/material/src",
+            "libs/core/styles/util/tailwind4/src",
+            "apps/eco-store/src/styles"
+          ]
         },
         "scripts": []
       },

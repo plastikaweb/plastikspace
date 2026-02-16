@@ -1,0 +1,52 @@
+<nav
+  class="mobile-nav inset-shadow-xl! ring-primary-100 ring-offset-primary-50 z-100 flex items-center justify-between gap-0! p-2! shadow-md! ring-1 ring-offset-2 backdrop-blur-lg backdrop-saturate-150 sm:gap-8!">
+  <!-- Home -->
+
+  <eco-mobile-nav-item
+    routerLink="/"
+    [label]="'store.menu.home' | translate"
+    [routerLinkActiveOptions]="{
+      exact: true,
+    }">
+    <mat-icon>home</mat-icon>
+  </eco-mobile-nav-item>
+
+  <eco-mobile-nav-item routerLink="/botiga" [label]="'store.menu.store' | translate">
+    <mat-icon>storefront</mat-icon>
+  </eco-mobile-nav-item>
+
+  <eco-mobile-nav-item routerLink="/cistella" [label]="'store.menu.cart' | translate">
+    <mat-icon
+      matBadgeColor="warn"
+      aria-hidden="false"
+      [attr.aria-label]="'store.menu.cart' | translate"
+      [matBadge]="cartStore.itemsCount()"
+      [matBadgeHidden]="cartStore.isEmpty()"
+      >shopping_cart</mat-icon
+    >
+  </eco-mobile-nav-item>
+
+  <eco-mobile-nav-item routerLink="/favorits" [label]="'store.menu.viewFavorites' | translate">
+    <mat-icon>favorite</mat-icon>
+  </eco-mobile-nav-item>
+
+  <!-- User Account -->
+  @if (!userProfileStore.isAuthenticated()) {
+    <eco-mobile-nav-item routerLink="/accedir" [label]="'store.menu.login' | translate">
+      <mat-icon>account_circle</mat-icon>
+    </eco-mobile-nav-item>
+  } @else {
+    <eco-mobile-nav-item
+      #menuTrigger="matMenuTrigger"
+      [active]="menuTrigger.menuOpen"
+      [matMenuTriggerFor]="userMenuComponent.menu()"
+      [label]="userProfileStore.userFirstName()">
+      <eco-user-avatar
+        avatarClass="size-8 ring-1 ring-neutral-200"
+        [user]="userProfileStore.user()!"
+        [initials]="userProfileStore.userInitials()" />
+    </eco-mobile-nav-item>
+  }
+</nav>
+
+<eco-user-menu #userMenuComponent (logoutEvent)="userProfileStore.logout()" />

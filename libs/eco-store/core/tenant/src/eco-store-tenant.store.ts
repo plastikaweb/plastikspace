@@ -13,6 +13,7 @@ import {
   SlotDays,
   TimeRange,
 } from '@plastik/eco-store/entities';
+import { CountdownService } from '@plastik/shared/countdown/util';
 import { isEmpty, isNil } from '@plastik/shared/objects';
 import { lastValueFrom, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -45,9 +46,10 @@ export const ecoStoreTenantStore = signalStore(
     _tenantAddressService: inject(EcoStoreTenantAddressService),
     _tenantService: inject(EcoStoreTenantBaseService),
     _translateService: inject(TranslateService),
+    _countdownService: inject(CountdownService),
   })),
   withComputed(store => {
-    const nowSignal = toSignal(timer(0, 60000).pipe(map(() => new Date())), {
+    const nowSignal = toSignal(timer(0, 1000).pipe(map(() => new Date())), {
       initialValue: new Date(),
     });
 
@@ -137,7 +139,24 @@ export const ecoStoreTenantStore = signalStore(
       const status = store.storeStatus();
       return status === 'OPEN' || status === 'CLOSING_SOON';
     }),
-
+  })),
+  withComputed(store => ({
+    _nextOpenCountdown: computed(() => {
+      return store._countdownService.createCountdown(() => store.nextOpenDate());
+    }),
+  })),
+  withComputed(store => ({
+    nextOpenCountdownSegments: computed(() => {
+      const text = store._nextOpenCountdown().text();
+      return text
+        ? text
+            .split(/(:)/)
+            .filter(Boolean)
+            .map(segment => segment.trim())
+        : [];
+    }),
+  })),
+  withComputed(store => ({
     /**
      * Checks if shipping is fully available based on tenant configuration.
      * Respects the 'closed' manual override flag on each delivery option.

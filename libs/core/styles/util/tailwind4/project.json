@@ -1,0 +1,8 @@
+{
+  "name": "core-styles-util-tailwind4",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/styles/util/tailwind4/src",
+  "targets": {},
+  "tags": []
+}

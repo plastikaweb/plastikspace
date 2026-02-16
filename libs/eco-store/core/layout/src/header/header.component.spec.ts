@@ -59,6 +59,7 @@ describe('HeaderComponent', () => {
 
     fixture = TestBed.createComponent(HeaderComponent);
     fixture.componentRef.setInput('formConfig', mockFormConfig);
+    fixture.componentRef.setInput('tenant', mockEcoStoreTenantStore.tenant());
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

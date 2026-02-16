@@ -8,9 +8,11 @@
   .cancelled-container {
     background-color: var(--tertiary-100);
     color: var(--tertiary-700);
-    border: 2px solid var(--tertiary-200);
     border-radius: 100vw;
-
+    border: 1px solid var(--tertiary-200);
+    box-shadow:
+      inset 0 2px 1px rgba(255, 255, 255, 0.5),
+      /* top glow */ 0 2px 4px rgba(0, 0, 0, 0.12);
     @include mat.icon-overrides(
       (
         color: var(--tertiary-700),
@@ -18,12 +20,16 @@
     );
   }
 
+  .open-container,
   .opening_soon-container,
   .closing_soon-container {
     background-color: var(--warning-200);
     color: var(--warning-700);
-    border: 2px solid var(--warning-400);
     border-radius: 100vw;
+    border: 1px solid var(--warning-300);
+    box-shadow:
+      inset 0 2px 1px rgba(255, 255, 255, 0.5),
+      /* top glow */ 0 2px 4px rgba(0, 0, 0, 0.12);
     @include mat.icon-overrides(
       (
         color: var(--warning-700),

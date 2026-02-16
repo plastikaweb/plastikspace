@@ -3,30 +3,29 @@
     class="main-menu flex h-full items-center"
     [attr.aria-label]="'common.a11y.mainNavigation' | translate">
     <ul class="flex flex-row items-center justify-start gap-4">
-      <li class="flex items-center">
+      <li
+        class="flex items-center"
+        routerLinkActive="active-menu-item"
+        [routerLinkActiveOptions]="{ exact: true }">
         <a
           mat-button
           routerLink="/"
-          routerLinkActive="active"
-          [routerLinkActiveOptions]="{ exact: true }"
           [attr.aria-current]="this.currentUrl() === '/' ? 'page' : null">
           {{ 'store.menu.home' | translate }}
         </a>
       </li>
-      <li class="flex items-center">
+      <li class="flex items-center" routerLinkActive="active-menu-item">
         <a
           mat-button
           routerLink="/botiga"
-          routerLinkActive="active"
           [attr.aria-current]="this.currentUrl().startsWith('/botiga') ? 'page' : null">
           {{ 'store.menu.store' | translate }}
         </a>
       </li>
-      <li class="flex items-center">
+      <li class="flex items-center" routerLinkActive="active-menu-item">
         <a
           mat-button
           routerLink="/about-us"
-          routerLinkActive="active"
           [attr.aria-current]="this.currentUrl().startsWith('/about-us') ? 'page' : null">
           {{ 'store.menu.about' | translate }}
         </a>
@@ -39,30 +38,16 @@
   <nav [attr.aria-label]="'common.a11y.userActions' | translate">
     <ul class="flex flex-row items-center gap-4">
       <li>
-        <button matIconButton type="button" [aria-label]="'store.menu.viewFavorites' | translate">
+        <button
+          matIconButton
+          type="button"
+          routerLink="/favorits"
+          [aria-label]="'store.menu.viewFavorites' | translate"
+          [matTooltip]="'store.menu.viewFavorites' | translate">
           <mat-icon aria-hidden="true">favorite</mat-icon>
         </button>
       </li>
-      <li>
-        <button
-          matButton="filled"
-          type="button"
-          routerLink="/cistella"
-          class="cart-button"
-          [aria-label]="
-            'store.menu.viewCart'
-              | translate
-                : {
-                    productCount: cartStore.itemsCount(),
-                    productPrice: cartStore.subtotal() + cartStore.tax() | currency,
-                  }
-          "
-          [matBadge]="cartStore.itemsCount()"
-          [class.bump]="bumpAnimation()">
-          <mat-icon aria-hidden="true">shopping_cart</mat-icon>
-          <span>{{ cartStore.subtotal() + cartStore.tax() | currency }}</span>
-        </button>
-      </li>
+
       <li>
         @let user = profileStore.user();
         @if (user) {
@@ -70,11 +55,11 @@
             mat-button
             class="user-pill"
             type="button"
-            [matMenuTriggerFor]="userMenu"
+            [matMenuTriggerFor]="userMenuComponent.menu()"
             [aria-label]="'store.menu.profile' | translate: { name: user?.name }">
             <div class="flex items-center gap-2">
               <eco-user-avatar [user]="user" [initials]="profileStore.userInitials()" />
-              <span class="font-medium">{{
+              <span class="hidden font-medium sm:inline-block">{{
                 'store.menu.hello' | translate: { name: profileStore.userFirstName() }
               }}</span>
             </div>
@@ -84,50 +69,46 @@
             matIconButton
             type="button"
             [aria-label]="'store.menu.login' | translate"
+            [matTooltip]="'store.menu.login' | translate"
             (click)="login()">
             <mat-icon aria-hidden="true">account_circle</mat-icon>
           </button>
         }
       </li>
+
+      <li>
+        <button
+          matButton="filled"
+          type="button"
+          routerLink="/cistella"
+          class="cart-button flex items-center gap-2"
+          [routerLinkActive]="'active'"
+          [aria-label]="
+            'store.menu.viewCart'
+              | translate
+                : {
+                    productCount: cartStore.itemsCount(),
+                    productPrice: cartStore.subtotal() + cartStore.tax() | currency,
+                  }
+          "
+          [matBadge]="cartStore.itemsCount()"
+          [matTooltip]="
+            'store.menu.viewCart'
+              | translate
+                : {
+                    productCount: cartStore.itemsCount(),
+                    productPrice: cartStore.subtotal() + cartStore.tax() | currency,
+                  }
+          "
+          [class.bump]="bumpAnimation()">
+          <mat-icon class="m-0!" aria-hidden="true">shopping_cart</mat-icon>
+          <span class="hidden sm:block!">{{
+            cartStore.subtotal() + cartStore.tax() | currency
+          }}</span>
+        </button>
+      </li>
     </ul>
   </nav>
 </ng-template>
 
-<mat-menu #userMenu="matMenu" xPosition="before" class="user-menu-panel">
-  @let user = profileStore.user();
-
-  @if (user) {
-    <div class="flex flex-col gap-1 px-4 py-3 outline-none">
-      <div class="flex items-center gap-3">
-        <eco-user-avatar
-          avatarClass="size-12"
-          initialsClass="size-10 bg-primary-50 text-base"
-          [initials]="profileStore.userInitials()"
-          [user]="user" />
-        <div class="flex flex-col">
-          <span class="text-base leading-none font-bold">{{ user?.name }}</span>
-          <div class="mt-1 flex items-center gap-1 text-gray-500">
-            @if (roleIcon()) {
-              <mat-icon class="h-4 w-4 text-[16px] leading-none">{{ roleIcon() }}</mat-icon>
-            }
-            <span class="text-xs">{{ `auth.role.${user?.role}` | translate }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <mat-divider />
-    <a mat-menu-item routerLink="/perfil">
-      <mat-icon>person</mat-icon>
-      <span>{{ 'store.menu.profilePage' | translate }}</span>
-    </a>
-    <a mat-menu-item routerLink="/orders">
-      <mat-icon>receipt_long</mat-icon>
-      <span>{{ 'store.menu.orders' | translate }}</span>
-    </a>
-    <mat-divider />
-    <button mat-menu-item (click)="logout()">
-      <mat-icon>logout</mat-icon>
-      <span>{{ 'store.menu.logout' | translate }}</span>
-    </button>
-  }
-</mat-menu>
+<eco-user-menu #userMenuComponent (logoutEvent)="logout()" />

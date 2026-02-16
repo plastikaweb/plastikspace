@@ -1,3 +1,4 @@
+import { CurrencyPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,18 +10,18 @@ import {
   viewChild,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatBadge } from '@angular/material/badge';
+import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatDivider } from '@angular/material/divider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
-import { filter, map, startWith } from 'rxjs';
-import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import { CurrencyPipe } from '@angular/common';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { filter, map, startWith } from 'rxjs';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { UserMenuComponent } from '../user-menu/user-menu.component';
 
 @Component({
   selector: 'eco-menu',
@@ -35,9 +36,11 @@ import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
     TranslatePipe,
     CurrencyPipe,
     MatMenuModule,
-    MatDivider,
+    MatTooltipModule,
     UserAvatarComponent,
+    UserMenuComponent,
   ],
+
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -48,6 +51,7 @@ export class MenuComponent {
   readonly profileStore = inject(pocketBaseUserProfileStore);
   readonly primaryMenu = viewChild.required<TemplateRef<unknown>>('primaryMenu');
   readonly secondaryMenu = viewChild.required<TemplateRef<unknown>>('secondaryMenu');
+  readonly userMenuComponent = viewChild.required<UserMenuComponent>('userMenuComponent');
 
   protected readonly currentUrl = toSignal(
     this.router.events.pipe(
