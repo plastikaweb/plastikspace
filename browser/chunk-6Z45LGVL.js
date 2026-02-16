@@ -935,7 +935,7 @@ var SessionStorageService = class _SessionStorageService {
 var emptyFeature = signalStoreFeature(withState({}));
 
 // libs/shared/activity/data-access/src/lib/+state/activity.store.ts
-var activityStore = signalStore({ providedIn: "root" }, withDevtools("activity"), withImmutableState({
+var activityStore = signalStore({ providedIn: "root" }, withImmutableState({
   isActive: false
 }), withReset(), withMethods((store) => ({
   setActivity(isActive) {
@@ -3678,4 +3678,4 @@ export {
   PrefixTitleService,
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-Z4WSTSDS.js.map
+//# sourceMappingURL=chunk-6Z45LGVL.js.map
