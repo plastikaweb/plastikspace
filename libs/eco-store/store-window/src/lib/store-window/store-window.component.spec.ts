@@ -19,7 +19,7 @@ describe('StoreWindowComponent', () => {
         MatChipsModule,
         MatIconModule,
         MatTooltipModule,
-        MockPipe(TranslatePipe, (v) => v),
+        MockPipe(TranslatePipe, v => v),
         SharedCountdownUiComponent,
       ],
       providers: [
