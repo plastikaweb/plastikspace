@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { PushPipe } from '@ngrx/component';
@@ -11,6 +11,7 @@ import { NasaImagesFaqsService } from '../nasa-images-faqs.service';
   imports: [MatExpansionModule, MatIconModule, PushPipe],
   templateUrl: './nasa-images-faqs-feature.component.html',
   styleUrl: './nasa-images-faqs-feature.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NasaImagesFaqsFeatureComponent {
   routeInfo$ = inject(NasaImagesFacade).routeInfo$;
