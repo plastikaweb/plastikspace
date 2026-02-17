@@ -37,7 +37,7 @@
         }
       </button>
 
-      <div class="flex items-baseline justify-center not-first-of-type:cursor-text">
+      <div class="flex items-baseline justify-center gap-1 not-first-of-type:cursor-text">
         <label class="sr-only" [attr.for]="'qty-' + product().id">
           {{
             'common.a11y.productQuantity'
@@ -86,7 +86,8 @@
         [disabled]="!isQuantityModified()"
         (click)="onAddToCart()">
         <mat-icon class="scale-125">shopping_cart</mat-icon>
-        {{ 'products.addLong' | translate }}
+        <span class="hidden sm:block">{{ 'products.addLong' | translate }}</span>
+        <span class="block sm:hidden">{{ 'products.add' | translate }}</span>
       </button>
     }
   </div>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EcoStoreTenant } from '@plastik/eco-store/entities';
@@ -16,9 +16,4 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 })
 export class TenantLogoComponent {
   readonly tenant = input<EcoStoreTenant | null>();
-  readonly showName = input<'always' | 'responsive'>('responsive');
-
-  protected readonly nameClass = computed(() =>
-    this.showName() === 'always' ? '' : 'hidden sm:block'
-  );
 }

@@ -7,8 +7,8 @@
         (
           filled-label-text-size: 1rem,
           filled-label-text-weight: bold,
-          filled-container-color: var(--primary-100),
-          filled-label-text-color: var(--primary-500),
+          filled-container-color: var(--primary-600),
+          filled-label-text-color: var(--primary-50),
           filled-pressed-state-layer-opacity: 0.1,
           filled-container-height: calc(var(--spacing) * 14),
         )
@@ -63,7 +63,6 @@
       background-color: var(--primary-100);
       color: var(--primary-500);
 
-      // Explicitly set icon color to current color to avoid external overrides
       @include mat.icon-overrides(
         (
           color: var(--primary-500),

@@ -4,7 +4,7 @@
   <div class="detail-container px-4 py-8">
     <!-- Breadcrumbs -->
     <nav
-      class="mb-8 flex items-center gap-2 overflow-x-auto pb-2 text-sm whitespace-nowrap text-gray-500">
+      class="mb-8 flex items-center gap-0 overflow-x-auto pb-2 text-sm whitespace-nowrap text-gray-500 sm:gap-2!">
       <button
         mat-icon-button
         type="button"
@@ -26,13 +26,13 @@
       <span class="text-tertiary-700 px-2 font-medium">{{ productData.name }}</span>
     </nav>
 
-    <div class="grid grid-cols-1 gap-12 md:grid-cols-2">
+    <div class="grid grid-cols-1 items-start gap-12 md:grid-cols-2">
       <!-- Media Section (Left) -->
-      <section class="space-y-6">
+      <section class="media-layout">
         <div
-          class="group relative aspect-square overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
+          class="media-main group relative h-fit min-w-0 overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
           <!-- Badges Overlay -->
-          <div class="absolute top-6 left-6 z-10 max-w-[calc(100%-3rem)]">
+          <div class="absolute top-6 left-6 z-10">
             <mat-chip-set class="flex flex-wrap gap-2" role="list">
               @for (tag of productTags; track tag.label) {
                 <mat-chip role="listitem" [class]="'shadow-sm ' + tag.class" [disableRipple]="true">
@@ -46,7 +46,6 @@
           </div>
 
           <plastik-img-container
-            class="h-full w-full"
             [src]="
               productData
                 | pocketBaseImageUrl
@@ -54,32 +53,28 @@
             "
             [title]="productData.name || ''"
             [lcpImage]="true"
-            [dimensions]="mainImageDimensions" />
-
-          <!-- Favorite Button -->
+            [dimensions]="{ width: 800, height: 800 }" />
         </div>
 
         <!-- Thumbnail Gallery -->
-        @if (productData.images && productData.images.length > 1) {
-          <div class="scrollbar-hide flex gap-3 overflow-x-auto pb-4">
-            @for (img of productData.images; track img; let i = $index) {
-              <button
-                type="button"
-                class="hover:border-tertiary-200 relative aspect-square w-[100px] shrink-0 cursor-pointer overflow-hidden rounded-2xl border-2 border-transparent transition-all"
-                [class.border-tertiary-400!]="activeThumbnailIndex() === i"
-                [class.opacity-100]="activeThumbnailIndex() === i"
-                [class.opacity-60]="activeThumbnailIndex() !== i"
-                (click)="activeThumbnailIndex.set(i)">
-                <plastik-img-container
-                  class="h-full w-full"
-                  [src]="productData | pocketBaseImageUrl: img"
-                  [title]="`${productData?.name || ''} thumbnail ${i}`"
-                  [dimensions]="thumbnailDimensions"
-                  [lcpImage]="false" />
-              </button>
-            }
-          </div>
-        }
+        <div class="media-thumbnails scrollbar-hide overflow-x-auto p-2">
+          @for (img of productData.images; track img; let i = $index) {
+            <button
+              type="button"
+              class="hover:border-primary-300 border-primary-50 relative aspect-square h-[85px] w-[85px] shrink-0 cursor-pointer overflow-hidden rounded-full border-2 transition-all"
+              [class.border-primary-400!]="activeThumbnailIndex() === i"
+              [class.opacity-100]="activeThumbnailIndex() === i"
+              [class.opacity-70]="activeThumbnailIndex() !== i"
+              (click)="activeThumbnailIndex.set(i)">
+              <plastik-img-container
+                class="overflow-hidden transition-all duration-200 hover:scale-105 hover:contrast-120"
+                [src]="productData | pocketBaseImageUrl: img"
+                [title]="`${productData?.name || ''} thumbnail ${i}`"
+                [dimensions]="thumbnailDimensions()"
+                [lcpImage]="false" />
+            </button>
+          }
+        </div>
       </section>
 
       <!-- Information Section (Right) -->
@@ -93,8 +88,9 @@
         </div>
 
         <!-- Title -->
-        <div class="mb-2 flex items-center gap-4">
-          <h2 class="text-tertiary-900 text-4xl leading-tight font-extrabold lg:text-5xl">
+        <div class="mb-8 flex items-center gap-4">
+          <h2
+            class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
             {{ productData.name }}
           </h2>
           <eco-store-shared-favorite-button
@@ -169,7 +165,7 @@
                   [isInCart]="isInCart()"
                   [quantity]="quantity()"
                   (quantityChange)="updateQuantity($event)"
-                  (addToCart)="addToCart($event)" />
+                  (addToCart)="addToCart({ quantity: $event, product: productData })" />
               </div>
             </div>
 
@@ -211,9 +207,10 @@
     }
 
     <!-- Opinions Section Placeholder -->
-    <section class="mt-24 border-t border-gray-100 pt-12">
-      <div class="mb-12 flex items-center justify-between">
-        <h2 class="text-tertiary-900 flex items-center gap-4 text-3xl font-bold">
+    <section class="mt-8 mb-8 border-t border-gray-100 pt-8 sm:mt-12 sm:pt-12">
+      <div class="mb-4 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
+        <h2
+          class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
           Opinions
           <span class="rounded-full bg-gray-100 px-4 py-1 text-lg font-bold text-gray-500">{{
             rating.count
@@ -228,7 +225,7 @@
         </button>
       </div>
 
-      <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
         <!-- Placeholder Review Cards -->
         @for (i of [1, 2, 3]; track i) {
           <div
@@ -260,15 +257,20 @@
     </section>
 
     <!-- Related Products Section -->
-    <section class="mt-16 border-t border-gray-100 pt-12">
-      <h2 class="text-tertiary-900 mb-8 text-3xl font-bold">També et podria agradar</h2>
+    <section class="sm:mt8 mt-8 mb-8 border-t border-gray-100 pt-4 sm:pt-12">
+      <h2
+        class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
+        També et podria agradar
+      </h2>
 
-      <div class="products-grid">
+      <div class="products-grid mt-4 sm:mt-8">
         @for (relatedProduct of relatedProducts(); track relatedProduct.id) {
           <eco-store-product-card
             [product]="relatedProduct"
-            [minimalVersion]="true"
-            [isFirst]="false" />
+            [isFirst]="false"
+            [quantity]="cartStore.getItemCount(relatedProduct.id)()"
+            (addToCart)="addToCart($event)"
+            (toggleFavorite)="toggleFavorite()" />
         }
       </div>
     </section>

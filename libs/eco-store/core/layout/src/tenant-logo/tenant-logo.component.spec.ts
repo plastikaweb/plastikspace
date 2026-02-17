@@ -44,20 +44,4 @@ describe('TenantLogoComponent', () => {
     const nameSpan = fixture.nativeElement.querySelector('span');
     expect(nameSpan.textContent).toContain(mockTenant.name);
   });
-
-  it('should use responsive class by default', () => {
-    fixture.componentRef.setInput('tenant', mockTenant);
-    fixture.detectChanges();
-    const nameSpan = fixture.nativeElement.querySelector('span');
-    expect(nameSpan.classList).toContain('hidden');
-    expect(nameSpan.classList).toContain('sm:block');
-  });
-
-  it('should show name always if showName is set to always', () => {
-    fixture.componentRef.setInput('tenant', mockTenant);
-    fixture.componentRef.setInput('showName', 'always');
-    fixture.detectChanges();
-    const nameSpan = fixture.nativeElement.querySelector('span');
-    expect(nameSpan.classList).not.toContain('hidden');
-  });
 });

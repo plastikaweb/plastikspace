@@ -1,3 +1,4 @@
+import { Breakpoints } from '@angular/cdk/layout';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,13 +7,16 @@ import {
   linkedSignal,
   signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
 import {
   EcoStoreProductCardComponent,
@@ -24,6 +28,7 @@ import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { map } from 'rxjs';
 
 @Component({
   selector: 'eco-eco-store-product-feature',
@@ -48,9 +53,9 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 })
 export default class EcoStoreProductFeatureComponent {
   readonly #productsStore = inject(ecoStoreProductsStore);
-  readonly #cartStore = inject(ecoStoreCartStore);
-  readonly tenantsStore = inject(ecoStoreTenantStore);
-  readonly pendingChanges = computed(() => {
+  protected readonly cartStore = inject(ecoStoreCartStore);
+  protected readonly tenantsStore = inject(ecoStoreTenantStore);
+  protected readonly pendingChanges = computed(() => {
     const product = this.product();
     if (!product) return false;
 
@@ -82,7 +87,7 @@ export default class EcoStoreProductFeatureComponent {
 
   readonly storeQuantity = computed(() => {
     const product = this.product();
-    return product ? this.#cartStore.getItemCount(product.id)() : 0;
+    return product ? this.cartStore.getItemCount(product.id)() : 0;
   });
 
   readonly isInCart = computed(() => this.storeQuantity() > 0);
@@ -127,8 +132,16 @@ export default class EcoStoreProductFeatureComponent {
     count: 124,
   };
 
-  readonly mainImageDimensions = { width: 700, height: 700 };
-  readonly thumbnailDimensions = { width: 150, height: 150 };
+  readonly #layoutObserver = inject(LayoutObserverService);
+
+  readonly thumbnailDimensions = toSignal(
+    this.#layoutObserver
+      .getMatches([Breakpoints.Small])
+      .pipe(
+        map(isTablet => (isTablet ? { width: 200, height: 200 } : { width: 100, height: 100 }))
+      ),
+    { initialValue: { width: 100, height: 100 } }
+  );
 
   // Stock status with visual feedback (mocked for now)
   readonly stockStatus = computed(() => {
@@ -185,9 +198,13 @@ export default class EcoStoreProductFeatureComponent {
     this.quantity.set(quantity);
   }
 
-  addToCart(quantity: number): void {
-    const product = this.product();
-    if (!product) return;
-    this.#cartStore.addToCart(product, quantity);
+  addToCart({
+    quantity,
+    product,
+  }: {
+    quantity: number;
+    product: EcoStoreProductWithCategoryName;
+  }): void {
+    this.cartStore.addToCart(product, quantity);
   }
 }
