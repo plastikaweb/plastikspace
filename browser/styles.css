@@ -1156,6 +1156,9 @@ html {
   .min-h-14 {
     min-height: calc(var(--spacing) * 14);
   }
+  .min-h-\[calc\(100dvh-126px\)\] {
+    min-height: calc(100dvh - 126px);
+  }
   .min-h-screen {
     min-height: 100vh;
   }
@@ -2076,6 +2079,9 @@ html {
   .pb-4\! {
     padding-bottom: calc(var(--spacing) * 4) !important;
   }
+  .pb-26 {
+    padding-bottom: calc(var(--spacing) * 26);
+  }
   .pb-sub {
     padding-bottom: var(--spacing-sub);
   }
@@ -2819,6 +2825,11 @@ html {
     }
   }
   @media (width >= 40rem) {
+    .sm\:justify-start {
+      justify-content: flex-start;
+    }
+  }
+  @media (width >= 40rem) {
     .sm\:gap-2 {
       gap: calc(var(--spacing) * 2);
     }
@@ -2841,6 +2852,12 @@ html {
   @media (width >= 40rem) {
     .sm\:p-sm {
       padding: var(--spacing-sm);
+    }
+  }
+  @media (width >= 40rem) {
+    .sm\:text-3xl {
+      font-size: var(--text-3xl);
+      line-height: var(--tw-leading, var(--text-3xl--line-height));
     }
   }
   @media (width >= 48rem) {
@@ -2947,6 +2964,11 @@ html {
   @media (width >= 48rem) {
     .md\:pt-0\! {
       padding-top: var(--spacing-0) !important;
+    }
+  }
+  @media (width >= 48rem) {
+    .md\:pb-0 {
+      padding-bottom: var(--spacing-0);
     }
   }
   @media (width >= 48rem) {
