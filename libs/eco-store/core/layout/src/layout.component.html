@@ -36,11 +36,14 @@
       </div>
     </mat-sidenav>
 
-    <mat-sidenav-content #sidenavContent class="flex-colpb-10 flex" tabindex="-1">
+    <mat-sidenav-content #sidenavContent class="flex flex-col" tabindex="-1">
       @if (isMobile() && isSidenavOpen()) {
         <ng-container *ngTemplateOutlet="headerContent"></ng-container>
       }
-      <main id="mainContent" role="main" class="mt-20 flex-1 px-4">
+      <main
+        id="mainContent"
+        role="main"
+        class="mt-20 min-h-[calc(100dvh-126px)] flex-1 px-2 sm:px-6">
         @if (shouldShowBanner() && !isBannerDismissed()) {
           <eco-store-status-banner
             class="mt-8"
@@ -54,7 +57,6 @@
         <router-outlet></router-outlet>
       </main>
       <eco-footer [tenant]="tenantStore.tenant()" />
-
       <eco-mobile-nav />
     </mat-sidenav-content>
   </mat-sidenav-container>

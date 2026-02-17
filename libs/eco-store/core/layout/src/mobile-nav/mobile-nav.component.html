@@ -19,6 +19,7 @@
     <mat-icon
       matBadgeColor="warn"
       aria-hidden="false"
+      [class.bump]="bumpAnimation()"
       [attr.aria-label]="'store.menu.cart' | translate"
       [matBadge]="cartStore.itemsCount()"
       [matBadgeHidden]="cartStore.isEmpty()"

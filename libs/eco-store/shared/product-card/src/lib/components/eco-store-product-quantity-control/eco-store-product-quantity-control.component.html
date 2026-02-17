@@ -8,7 +8,7 @@
     <span>{{ 'products.add' | translate }}</span>
   </button>
 } @else {
-  <div class="flex w-full items-center" [class.gap-4]="mode() === 'detail'">
+  <div class="flex w-full flex-col items-center sm:flex-row" [class.gap-4]="mode() === 'detail'">
     <div
       class="border-primary-200 flex h-14 items-center justify-between rounded-2xl border py-1 pr-1 pl-1"
       role="group"
@@ -37,7 +37,7 @@
         }
       </button>
 
-      <div class="flex items-baseline justify-center not-first-of-type:cursor-text">
+      <div class="flex items-baseline justify-center gap-1 not-first-of-type:cursor-text">
         <label class="sr-only" [attr.for]="'qty-' + product().id">
           {{
             'common.a11y.productQuantity'

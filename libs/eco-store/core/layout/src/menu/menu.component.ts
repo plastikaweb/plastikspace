@@ -3,9 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
-  signal,
   TemplateRef,
   viewChild,
 } from '@angular/core';
@@ -22,6 +20,7 @@ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { filter, map, startWith } from 'rxjs';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 import { UserMenuComponent } from '../user-menu/user-menu.component';
+import { useCartBumpAnimation } from '../utils/cart-bump-animation.util';
 
 @Component({
   selector: 'eco-menu',
@@ -76,19 +75,10 @@ export class MenuComponent {
     }
   });
 
-  protected readonly bumpAnimation = signal(false);
+  protected readonly bumpAnimation = useCartBumpAnimation(this.cartStore);
 
-  constructor() {
-    effect(() => {
-      if (this.cartStore.subtotal() + this.cartStore.tax() > 0) {
-        this.bumpAnimation.set(true);
-        const timer = setTimeout(() => {
-          this.bumpAnimation.set(false);
-          clearTimeout(timer);
-        }, 300);
-      }
-    });
-  }
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  constructor() {}
 
   login() {
     if (!this.profileStore.isAuthenticated()) {

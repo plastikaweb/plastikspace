@@ -13,6 +13,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
 import {
   EcoStoreProductCardComponent,
@@ -48,9 +49,9 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 })
 export default class EcoStoreProductFeatureComponent {
   readonly #productsStore = inject(ecoStoreProductsStore);
-  readonly #cartStore = inject(ecoStoreCartStore);
-  readonly tenantsStore = inject(ecoStoreTenantStore);
-  readonly pendingChanges = computed(() => {
+  protected readonly cartStore = inject(ecoStoreCartStore);
+  protected readonly tenantsStore = inject(ecoStoreTenantStore);
+  protected readonly pendingChanges = computed(() => {
     const product = this.product();
     if (!product) return false;
 
@@ -82,7 +83,7 @@ export default class EcoStoreProductFeatureComponent {
 
   readonly storeQuantity = computed(() => {
     const product = this.product();
-    return product ? this.#cartStore.getItemCount(product.id)() : 0;
+    return product ? this.cartStore.getItemCount(product.id)() : 0;
   });
 
   readonly isInCart = computed(() => this.storeQuantity() > 0);
@@ -185,9 +186,13 @@ export default class EcoStoreProductFeatureComponent {
     this.quantity.set(quantity);
   }
 
-  addToCart(quantity: number): void {
-    const product = this.product();
-    if (!product) return;
-    this.#cartStore.addToCart(product, quantity);
+  addToCart({
+    quantity,
+    product,
+  }: {
+    quantity: number;
+    product: EcoStoreProductWithCategoryName;
+  }): void {
+    this.cartStore.addToCart(product, quantity);
   }
 }

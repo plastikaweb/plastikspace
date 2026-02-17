@@ -85,3 +85,6 @@ build_results.txt
 
 # log files
 *.log
+
+# test output
+test_output*.txt
