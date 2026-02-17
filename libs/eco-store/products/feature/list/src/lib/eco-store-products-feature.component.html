@@ -1,16 +1,20 @@
 @defer (when productsStore.initiallyLoaded()) {
   <div class="px-4 py-8" role="region">
     <!-- Header Section -->
-    <div class="mb-8 flex w-full items-center justify-between">
-      <h2 class="gap-md flex items-center text-3xl font-bold tracking-tight text-neutral-800">
+    <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row">
+      <div class="flex items-center justify-center gap-4 sm:justify-start">
         <mat-icon class="scale-150!" aria-hidden="true">
           {{ category()?.icon }}
         </mat-icon>
-        <span>{{ category()?.name }}</span>
-        <span class="text-lg font-medium text-neutral-400">({{ productsStore.count() }})</span>
-      </h2>
+        <h2
+          class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
+          {{ category()?.name }}
+        </h2>
+        <span class="text-md font-medium text-neutral-400">({{ productsStore.count() }})</span>
+      </div>
 
       <plastik-sort-selector
+        class="self-end"
         [options]="productsStore.sortOptions()"
         [currentSort]="productsStore.sort()"
         [translationPrefix]="'products.filter.sort'"
