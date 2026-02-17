@@ -1,4 +1,4 @@
-<footer class="backdrop-sepi w-full border-t border-neutral-200" role="contentinfo">
+<footer class="backdrop-sepi w-full border-t border-neutral-200 pb-26 md:pb-0" role="contentinfo">
   <mat-toolbar>
     <div class="content-container mx-auto flex flex-row items-center justify-center gap-2 md:gap-4">
       <span>{{ tenant()?.name || ('store.title' | translate) }}</span>
@@ -15,6 +15,12 @@
       }
       <span>www.plastikaweb.com</span>
       <span>2026</span>
+
+      <!-- <nav class="flex items-center justify-between gap-4">
+        <a routerLink="/legal/privacy">Privacy Policy</a>
+        <a routerLink="/legal/terms">Terms of Use</a>
+        <a routerLink="/legal/cookies">Cookie Policy</a>
+      </nav> -->
     </div>
   </mat-toolbar>
 </footer>

@@ -18,7 +18,7 @@ Add structured changelog entries before pushing a feature branch to remote.
 Each release section should include an **issue number** if available, **date** and a **brief title** describing the main focus:
 
 ```markdown
-## [Unreleased] - <Brief Title>
+## [YYYY-MM-DD] - <Brief Title>
 
 ### Added
 
@@ -29,14 +29,6 @@ Each release section should include an **issue number** if available, **date** a
 ### Fixed
 
 ### Removed
-
----
-
-## [YYYY-MM-DD] - <Brief Title>
-
-### Added
-
-- <Description> ([#<issue>](https://github.com/plastikaweb/plastikspace/pull/<issue>))
 ```
 
 > **Note**: Use horizontal rules (`---`) to separate release sections for better readability.
