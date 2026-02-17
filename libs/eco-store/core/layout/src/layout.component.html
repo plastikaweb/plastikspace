@@ -40,7 +40,10 @@
       @if (isMobile() && isSidenavOpen()) {
         <ng-container *ngTemplateOutlet="headerContent"></ng-container>
       }
-      <main id="mainContent" role="main" class="mt-20 min-h-[calc(100dvh-126px)] flex-1 px-4">
+      <main
+        id="mainContent"
+        role="main"
+        class="mt-20 min-h-[calc(100dvh-126px)] flex-1 px-2 sm:px-4">
         @if (shouldShowBanner() && !isBannerDismissed()) {
           <eco-store-status-banner
             class="mt-8"

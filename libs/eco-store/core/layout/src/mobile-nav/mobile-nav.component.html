@@ -17,8 +17,8 @@
 
   <eco-mobile-nav-item routerLink="/cistella" [label]="'store.menu.cart' | translate">
     <mat-icon
-      matBadgeColor="warn"
       aria-hidden="false"
+      [class.bump]="bumpAnimation()"
       [attr.aria-label]="'store.menu.cart' | translate"
       [matBadge]="cartStore.itemsCount()"
       [matBadgeHidden]="cartStore.isEmpty()"

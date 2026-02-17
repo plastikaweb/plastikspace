@@ -61,12 +61,13 @@ export class EcoStoreProductPriceComponent {
   protected priceClass() {
     switch (this.size()) {
       case 'detail':
-        return 'text-5xl font-black text-primary-600';
+        return 'text-[clamp(2rem,4vw,3rem)] font-bold text-primary-600';
       case 'lg':
-        return 'text-3xl font-extrabold text-primary-600';
+        return 'text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary-600';
       case 'sm':
-        return 'text-[clamp(.85rem,3vw,1.2rem)] font-bold text-primary-600';
+        return 'text-[clamp(1rem,3vw,1.5rem)] font-bold text-primary-600';
       case 'md':
+        return 'text-[clamp(1.2rem,3vw,1.7rem)] font-bold text-primary-600';
       default:
         return 'text-[clamp(1.5rem,4vw,2rem)] font-extrabold text-primary-600';
     }

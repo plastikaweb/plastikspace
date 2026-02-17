@@ -9,6 +9,7 @@ import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
 import { UserMenuComponent } from '../user-menu/user-menu.component';
+import { useCartBumpAnimation } from '../utils/cart-bump-animation.util';
 import { MobileNavItemComponent } from './mobile-nav-item.component';
 
 @Component({
@@ -36,4 +37,5 @@ export class MobileNavComponent {
   protected readonly userProfileStore = inject(pocketBaseUserProfileStore);
   protected readonly cartStore = inject(ecoStoreCartStore);
   readonly userMenuComponent = viewChild.required<UserMenuComponent>('userMenuComponent');
+  protected readonly bumpAnimation = useCartBumpAnimation(this.cartStore);
 }
