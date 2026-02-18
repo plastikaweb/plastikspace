@@ -1,9 +1,11 @@
-import { StepperSelectionEvent } from '@angular/cdk/stepper';
+import { Breakpoints } from '@angular/cdk/layout';
+import { StepperOrientation, StepperSelectionEvent } from '@angular/cdk/stepper';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatStepperModule } from '@angular/material/stepper';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { filter, map, startWith } from 'rxjs/operators';
 
@@ -33,6 +35,16 @@ export class EcoStoreCartComponent {
       map(() => this.#getStepIndexFromUrl())
     ),
     { initialValue: 0 }
+  );
+
+  protected readonly stepperOrientation = toSignal(
+    inject(LayoutObserverService)
+      .getMatches([Breakpoints.XSmall, Breakpoints.Small])
+      .pipe(
+        map(matches => (matches ? 'vertical' : 'horizontal') as StepperOrientation),
+        startWith('horizontal' as StepperOrientation)
+      ),
+    { initialValue: 'horizontal' as StepperOrientation }
   );
 
   onStepChange(event: StepperSelectionEvent): void {

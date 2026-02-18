@@ -197,6 +197,7 @@
   },
   "cart": {
     "steps": {
+      "title": "Passos de la comanda",
       "summary": {
         "title": "Resum de la cistella",
         "subtitle": "Revisa els detalls de la teva comanda."

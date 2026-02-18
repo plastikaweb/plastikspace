@@ -41,13 +41,17 @@
     </section>
 
     @if (!activityStore.isActive()) {
-      <plastik-pagination
-        class="mt-6"
-        plastikPocketbasePaginationNavigation
-        [pageSize]="productsStore.getPagination().perPage"
-        [pageIndex]="productsStore.getPagination().page"
-        [pageSizeOptions]="productsStore.paginationSizeOptions()"
-        [count]="productsStore.count()" />
+      @defer (on viewport; prefetch on idle) {
+        <plastik-pagination
+          class="mt-6"
+          plastikPocketbasePaginationNavigation
+          [pageSize]="productsStore.getPagination().perPage"
+          [pageIndex]="productsStore.getPagination().page"
+          [pageSizeOptions]="productsStore.paginationSizeOptions()"
+          [count]="productsStore.count()" />
+      } @placeholder {
+        <div class="mt-6 h-12 w-full animate-pulse bg-neutral-50"></div>
+      }
     }
   </div>
 }

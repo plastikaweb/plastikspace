@@ -197,6 +197,7 @@
   },
   "cart": {
     "steps": {
+      "title": "Order steps",
       "summary": {
         "title": "Cart summary",
         "subtitle": "Review the details of your order."

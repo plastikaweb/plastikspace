@@ -1,7 +1,9 @@
-<div class="cart-container min-h-screen px-4 py-4">
+<div class="cart-container min-h-screen p-0! md:p-4">
   <mat-stepper
     linear
-    aria-label="Checkout steps"
+    labelPosition="bottom"
+    [orientation]="stepperOrientation()"
+    [attr.aria-label]="'cart.steps.title' | translate"
     [selectedIndex]="selectedStepIndex()"
     (selectionChange)="onStepChange($event)">
     @for (step of steps; track step.route; let i = $index) {
