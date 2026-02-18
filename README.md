@@ -98,8 +98,6 @@ For more details, see the [🏛️ NX Architecture Guide](documentation/nx-archi
    yarn install:local
    ```
 
-```bash
-
 ---
 
 ## 🔧 Development Commands
@@ -225,4 +223,3 @@ Reusable features and UI components.
 
 > 📧 [info@plastikaweb.com](mailto:info@plastikaweb.com)
 > 🌐 [www.plastikaweb.com](https://www.plastikaweb.com)
-```

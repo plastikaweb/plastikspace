@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-18] - README Links & JSDoc Warnings
+
+### Fixed
+
+- Fixed broken links in `eco-store` README ([#892](https://github.com/plastikaweb/plastikspace/issues/892))
+- Resolved JSDoc warnings in core entities and layout utilities ([#892](https://github.com/plastikaweb/plastikspace/issues/892))
+- Enabled TypeScript project references for `pagination` UI library ([#892](https://github.com/plastikaweb/plastikspace/issues/892))
+
+---
+
 ## [2026-02-18] - Test Coverage & Accessibility
 
 ### Added

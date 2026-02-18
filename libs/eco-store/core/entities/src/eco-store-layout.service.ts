@@ -42,11 +42,11 @@ export class EcoStoreLayoutService {
 
   /**
    * Traverse up the route tree to find data for a specific key.
-   * @param route The activated route snapshot.
-   * @param key The data key to search for.
-   * @returns The value associated with the key or null if not found.
+   * @param {ActivatedRouteSnapshot | null} route The activated route snapshot.
+   * @param {string} key The data key to search for.
+   * @returns {unknown} The value associated with the key or null if not found.
    */
-  #getRouteData(route: ActivatedRouteSnapshot | null, key: string): any {
+  #getRouteData(route: ActivatedRouteSnapshot | null, key: string): unknown {
     while (route) {
       if (route.data && route.data[key] !== undefined) {
         return route.data[key];
