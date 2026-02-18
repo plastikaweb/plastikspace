@@ -121,7 +121,5 @@
   },
   "defaultProject": "llecoop",
   "cacheDirectory": "./tmp/my-cache",
-  "defaultBase": "develop",
-  "nxCloudAccessToken": "",
-  "nxCloudId": "697ca354c3cf06f1eea9b5a7"
+  "defaultBase": "develop"
 }
