@@ -86,5 +86,7 @@ build_results.txt
 # log files
 *.log
 
-# test output
+# test and lint output files
 test_output*.txt
+lint_output*.txt
+

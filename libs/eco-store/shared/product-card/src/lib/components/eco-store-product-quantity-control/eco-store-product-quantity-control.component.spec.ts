@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { axe } from 'jest-axe';
 import { EcoStoreProductQuantityControlComponent } from './eco-store-product-quantity-control.component';
-import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { provideTranslateService } from '@ngx-translate/core';
 
@@ -24,7 +24,6 @@ describe('EcoStoreProductQuantityControlComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });
