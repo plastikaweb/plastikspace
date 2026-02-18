@@ -1,6 +1,16 @@
-import { effect, Signal, signal } from '@angular/core';
+import { effect, Signal, signal, WritableSignal } from '@angular/core';
 
-export function useCartBumpAnimation(cartStore: { subtotal: Signal<number>; tax: Signal<number> }) {
+/**
+ * @description Hook to trigger a bump animation on the cart when the total changes.
+ * @param {subtotal: Signal<number>; tax: Signal<number>} cartStore - Cart store with subtotal and tax signals.
+ * @param {Signal<number>} cartStore.subtotal - Cart subtotal.
+ * @param {Signal<number>} cartStore.tax - Cart tax.
+ * @returns {WritableSignal<boolean>} - Signal that triggers the bump animation.
+ */
+export function useCartBumpAnimation(cartStore: {
+  subtotal: Signal<number>;
+  tax: Signal<number>;
+}): WritableSignal<boolean> {
   const bumpAnimation = signal(false);
 
   effect(() => {

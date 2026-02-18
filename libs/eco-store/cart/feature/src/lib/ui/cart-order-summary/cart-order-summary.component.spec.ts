@@ -1,15 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CartOrderSummaryComponent } from './cart-order-summary.component';
-import { provideTranslateService } from '@ngx-translate/core';
 import { provideRouter } from '@angular/router';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { provideTranslateService } from '@ngx-translate/core';
+import { axe } from 'jest-axe';
+import { CartOrderSummaryComponent } from './cart-order-summary.component';
 
 describe('CartOrderSummaryComponent', () => {
   let component: CartOrderSummaryComponent;
   let fixture: ComponentFixture<CartOrderSummaryComponent>;
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       providers: [provideRouter([]), provideTranslateService()],
       imports: [CartOrderSummaryComponent],

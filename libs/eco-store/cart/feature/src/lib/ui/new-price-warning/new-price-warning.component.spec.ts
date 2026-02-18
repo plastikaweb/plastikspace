@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NewPriceWarningComponent } from './new-price-warning.component';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'jest-axe';
+import { NewPriceWarningComponent } from './new-price-warning.component';
 
 describe('NewPriceWarningComponent', () => {
   let component: NewPriceWarningComponent;
   let fixture: ComponentFixture<NewPriceWarningComponent>;
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       providers: [provideTranslateService()],
       imports: [NewPriceWarningComponent],
