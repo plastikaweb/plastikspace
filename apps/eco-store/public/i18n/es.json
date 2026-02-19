@@ -196,13 +196,14 @@
     }
   },
   "cart": {
+    "title": "Pasos del pedido",
     "steps": {
       "summary": {
-        "title": "Resumen de la cesta",
+        "title": "Carrito",
         "subtitle": "Revisa los detalles de tu pedido."
       },
       "shipping": {
-        "title": "Envío",
+        "title": "Entrega",
         "subtitle": "Elige si quieres recibir o recoger tu pedido.",
         "unavailable": {
           "title": "Estamos preparando los últimos detalles",

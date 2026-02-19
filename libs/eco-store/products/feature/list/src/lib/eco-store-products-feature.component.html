@@ -2,7 +2,7 @@
   <div class="px-4 py-8" role="region">
     <!-- Header Section -->
     <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row">
-      <div class="flex items-center justify-center gap-4 sm:justify-start">
+      <div class="ustify-start flex items-center gap-4">
         <mat-icon class="scale-150!" aria-hidden="true">
           {{ category()?.icon }}
         </mat-icon>
@@ -41,13 +41,17 @@
     </section>
 
     @if (!activityStore.isActive()) {
-      <plastik-pagination
-        class="mt-6"
-        plastikPocketbasePaginationNavigation
-        [pageSize]="productsStore.getPagination().perPage"
-        [pageIndex]="productsStore.getPagination().page"
-        [pageSizeOptions]="productsStore.paginationSizeOptions()"
-        [count]="productsStore.count()" />
+      @defer (on viewport; prefetch on idle) {
+        <plastik-pagination
+          class="mt-6"
+          plastikPocketbasePaginationNavigation
+          [pageSize]="productsStore.getPagination().perPage"
+          [pageIndex]="productsStore.getPagination().page"
+          [pageSizeOptions]="productsStore.paginationSizeOptions()"
+          [count]="productsStore.count()" />
+      } @placeholder {
+        <div class="mt-6 h-12 w-full animate-pulse bg-neutral-50"></div>
+      }
     }
   </div>
 }

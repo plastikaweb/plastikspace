@@ -7,18 +7,14 @@
     padding-left: var(--spacing-md);
     padding-right: var(--spacing-md);
     width: 100%;
+
+    @media (min-width: theme(--breakpoint-md)) {
+      padding-left: var(--spacing-lg);
+      padding-right: var(--spacing-lg);
+    }
   }
 
   /** CONTENT CONTAINER - MAX WIDTH **/
-  .content-container {
-    max-width: var(--content-grid-max-width);
-
-    /** CONTENT CONTAINER - PADDING **/
-    @media (max-width: theme(--breakpoint-md)) {
-      padding-left: 0;
-      padding-right: 0;
-    }
-  }
 
   /** DETAIL CONTAINER - MAX WIDTH **/
   .detail-container,

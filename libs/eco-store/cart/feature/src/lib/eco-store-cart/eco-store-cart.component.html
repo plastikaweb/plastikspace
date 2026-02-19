@@ -1,13 +1,12 @@
-<div class="cart-container min-h-screen px-4 py-4">
+<div class="cart-container">
   <mat-stepper
     linear
-    aria-label="Checkout steps"
+    labelPosition="bottom"
+    [attr.aria-label]="'cart.steps.title' | translate"
     [selectedIndex]="selectedStepIndex()"
     (selectionChange)="onStepChange($event)">
     @for (step of steps; track step.route; let i = $index) {
-      <mat-step>
-        <ng-template matStepLabel>{{ `${step.label}.title` | translate }}</ng-template>
-      </mat-step>
+      <mat-step [label]="`${step.label}.title` | translate" [state]="step.state"> </mat-step>
     }
   </mat-stepper>
 

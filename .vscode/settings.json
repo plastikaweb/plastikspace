@@ -1,5 +1,5 @@
 {
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "vscode.html-language-features",
   "diffEditor.wordWrap": "inherit",
   "workbench.editor.wrapTabs": false,
   "html.format.wrapAttributes": "force-expand-multiline",
@@ -143,5 +143,6 @@
   "debug.console.fontSize": 13,
   "terminal.integrated.fontSize": 12,
   "markdown.preview.fontSize": 13,
-  "i18n-ally.sourceLanguage": "ca"
+  "i18n-ally.sourceLanguage": "ca",
+  "tailwindcss-intellisense.trace.server": "verbose"
 }

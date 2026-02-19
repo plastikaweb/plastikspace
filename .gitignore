@@ -90,3 +90,5 @@ build_results.txt
 test_output*.txt
 lint_output*.txt
 
+# sketches and working images
+/sketches

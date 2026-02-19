@@ -26,12 +26,14 @@ The **Cart Feature** library provides the complete shopping cart checkout flow f
 
 ## Features
 
-- **Multi-Step Checkout**: Four-step process (Summary, Shipping, Payment, Confirmation).
+- **Multi-Step Checkout**: Three-step process (Summary, Shipping, Confirmation).
 - **Route-Based Navigation**: Each step has its own route for direct access and browser history support.
 - **Linear Stepper**: Guides users through the checkout process in sequence.
 - **Lazy-Loaded Steps**: Each step component is lazy-loaded for optimal performance.
 - **Cart Summary**: Displays cart items grouped by category with quantity controls.
 - **Material Design**: Uses Angular Material components for a consistent UI.
+- **Custom Stepper Icons**: Each step displays a unique Material icon (`shopping_cart`, `box`, `thumb_up`) via `STEPPER_GLOBAL_OPTIONS`.
+- **Container Queries**: Cart item cards use CSS container queries (`@container` / `@xl`) for fine-grained responsive layout within the cart summary.
 
 ## Architecture
 
@@ -96,6 +98,11 @@ setCustomLabel('method', 'cart.shipping.method.title', 'counter_1', [
   The cart shell (`EcoStoreCartComponent`) derives the selected step index from router events.
   Before navigating to a step as a response to a user action, the component compares the currently-derived index with the target index and only navigates when they differ.
   This prevents navigation loops and reduces unnecessary router calls.
+
+- Custom stepper icons
+
+  Default numeric step indicators are disabled via `STEPPER_GLOBAL_OPTIONS` (`displayDefaultIndicatorType: false`).
+  Each step defines a `state` property (`shopping_cart`, `box`, `thumb_up`) that is rendered as the step's Material icon.
 
 - Formly UI components used by the cart
 
@@ -246,8 +253,8 @@ All text content is internationalized under the `cart.summary` namespace:
 
 ## Cart Steps
 
-1. **Summary** (`/cistella/resum`): View cart items, adjust quantities, remove items.
-2. **Shipping** (`/cistella/enviament`): Enter shipping address and delivery preferences.
+1. **Summary** (`/cistella/resum`): View cart items grouped by category, adjust quantities, remove items. Uses a `md:grid-cols-3` responsive grid layout with an order summary sidebar.
+2. **Shipping** (`/cistella/enviament`): Enter shipping address and delivery preferences. Layout switches to a `md:grid-cols-3` grid at the `md` breakpoint.
    - **Shipping Unavailable** (`/cistella/enviament/no-disponible`): Displayed when shipping is not configured for the store.
 3. **Confirmation** (`/cistella/confirmacio`): Review order and confirm purchase.
 
