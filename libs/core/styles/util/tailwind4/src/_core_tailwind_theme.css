@@ -277,22 +277,32 @@
      XLarge: 1920px+
      ============================================ */
 
-  --breakpoint-xs: 599.98px;
+  /* Material Small: 600px+ (Tablets portrait, Large Phones) */
   --breakpoint-sm: 600px;
-  --breakpoint-800: 800px;
+
+  /* Custom Tablet: 800px+ (iPad Portrait, specific layout adjustments) */
+  --breakpoint-tablet: 800px;
+
+  /* Material Medium: 960px+ (Landscape Tablets, Small Laptops) */
   --breakpoint-md: 960px;
+
+  /* Material Large: 1280px+ (Desktops) */
   --breakpoint-lg: 1280px;
-  --breakpoint-2xl: 1536px;
-  --breakpoint-xl: 1920px;
+
+  /* Standard Tailwind 2XL: 1536px+ (Large Desktops - Bridge gap) */
+  --breakpoint-xl: 1536px;
+
+  /* Material XLarge: 1920px+ (Extra Large Screens) */
+  --breakpoint-2xl: 1920px;
 
   /* ============================================
      SPACING SYSTEM
      ============================================ */
 
-  --spacing-xs: var(--eco-space-xs);
-  --spacing-sm: var(--eco-space-sm);
-  --spacing-md: var(--eco-space-md);
-  --spacing-lg: var(--eco-space-lg);
-  --spacing-xl: var(--eco-space-xl);
-  --spacing-2xl: var(--eco-space-2xl);
+  --spacing-xs: var(--space-xs);
+  --spacing-sm: var(--space-sm);
+  --spacing-md: var(--space-md);
+  --spacing-lg: var(--space-lg);
+  --spacing-xl: var(--space-xl);
+  --spacing-2xl: var(--space-2xl);
 }

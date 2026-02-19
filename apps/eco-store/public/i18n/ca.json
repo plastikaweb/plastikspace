@@ -199,11 +199,11 @@
     "steps": {
       "title": "Passos de la comanda",
       "summary": {
-        "title": "Resum de la cistella",
+        "title": "Cistella",
         "subtitle": "Revisa els detalls de la teva comanda."
       },
       "shipping": {
-        "title": "Enviament",
+        "title": "Lliurament",
         "subtitle": "Tria si vols rebre o recollir la teva comanda.",
         "unavailable": {
           "title": "Estem preparant els últims detalls",

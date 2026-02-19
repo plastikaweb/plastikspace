@@ -1,5 +1,9 @@
 import { Breakpoints } from '@angular/cdk/layout';
-import { StepperOrientation, StepperSelectionEvent } from '@angular/cdk/stepper';
+import {
+  STEPPER_GLOBAL_OPTIONS,
+  StepperOrientation,
+  StepperSelectionEvent,
+} from '@angular/cdk/stepper';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatStepperModule } from '@angular/material/stepper';
@@ -12,6 +16,12 @@ import { filter, map, startWith } from 'rxjs/operators';
 @Component({
   selector: 'eco-eco-store-cart',
   imports: [MatStepperModule, TranslatePipe, RouterOutlet],
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { displayDefaultIndicatorType: false },
+    },
+  ],
   templateUrl: './eco-store-cart.component.html',
   styleUrl: './eco-store-cart.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -23,9 +33,9 @@ export class EcoStoreCartComponent {
   readonly isStoreOpen = this.#tenantStore.isStoreOpen;
 
   readonly steps = [
-    { label: 'cart.steps.summary', route: 'resum' },
-    { label: 'cart.steps.shipping', route: 'enviament' },
-    { label: 'cart.steps.confirmation', route: 'confirmacio' },
+    { label: 'cart.steps.summary', route: 'resum', state: 'shopping_cart' },
+    { label: 'cart.steps.shipping', route: 'enviament', state: 'box' },
+    { label: 'cart.steps.confirmation', route: 'confirmacio', state: 'thumb_up' },
   ];
 
   readonly selectedStepIndex = toSignal(

@@ -199,11 +199,11 @@
     "steps": {
       "title": "Order steps",
       "summary": {
-        "title": "Cart summary",
+        "title": "Cart",
         "subtitle": "Review the details of your order."
       },
       "shipping": {
-        "title": "Shipping",
+        "title": "Delivery",
         "subtitle": "Choose if you would like to receive or pick up your order.",
         "unavailable": {
           "title": "We're preparing the final details",

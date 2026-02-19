@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use 'core_tailwind_theme';
 
 :host {
   @include mat.card-overrides(
@@ -7,30 +8,12 @@
     )
   );
 
-  .cart-summary-card {
-    @include mat.card-overrides(
-      (
-        outlined-container-color: var(--transparent),
-        filled-container-shape: none,
-        outlined-outline-width: 0,
-      )
-    );
-  }
-
   .cart-item-card {
     @include mat.card-overrides(
       (
         outlined-container-color: var(--white),
         outlined-outline-width: 1px,
-        outlined-outline-color: var(--neutral-200),
-      )
-    );
-  }
-
-  .next-step {
-    @include mat.icon-overrides(
-      (
-        color: var(--tertiary-50),
+        outlined-outline-color: var(--primary-200),
       )
     );
   }

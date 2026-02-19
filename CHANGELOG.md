@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-19] - Responsive Design Improvements
+
+### Added
+
+- Added custom Material stepper icons per cart step (`shopping_cart`, `box`, `thumb_up`) via `STEPPER_GLOBAL_OPTIONS` ([#874](https://github.com/plastikaweb/plastikspace/issues/874))
+- Added CSS container queries (`@container` / `@xl`) for responsive cart item card layout ([#874](https://github.com/plastikaweb/plastikspace/issues/874))
+
+### Changed
+
+- Refactored core Tailwind breakpoint system to align with Angular Material breakpoints and added descriptive comments ([#874](https://github.com/plastikaweb/plastikspace/issues/874))
+- Restructured cart summary and shipping layouts using CSS Grid (`md:grid-cols-3`) ([#874](https://github.com/plastikaweb/plastikspace/issues/874))
+- Renamed spacing CSS variables from `eco-space-*` to `space-*` ([#874](https://github.com/plastikaweb/plastikspace/issues/874))
+- Updated theme CSS variables across all five eco-store themes ([#874](https://github.com/plastikaweb/plastikspace/issues/874))
+
+---
+
 ## [2026-02-18] - README Links & JSDoc Warnings
 
 ### Fixed
