@@ -1,9 +1,9 @@
 import {
   MatToolbar,
   MatToolbarModule
-} from "./chunk-K2FXOA5T.js";
+} from "./chunk-OBW7JWJO.js";
 import "./chunk-F3C6PLLK.js";
-import "./chunk-TH7QSK7I.js";
+import "./chunk-ZB54XNYH.js";
 import "./chunk-TVRJ3NXG.js";
 import "./chunk-CXCM2DO7.js";
 import {
@@ -46,4 +46,4 @@ var CoreCmsLayoutUiFooterComponent = class _CoreCmsLayoutUiFooterComponent {
 export {
   CoreCmsLayoutUiFooterComponent
 };
-//# sourceMappingURL=src-GWU3UUBE.js.map
+//# sourceMappingURL=src-NW3M4Q5W.js.map

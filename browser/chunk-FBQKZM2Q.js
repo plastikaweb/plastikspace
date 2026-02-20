@@ -10,20 +10,6 @@ import {
   ɵɵdefineInjectable
 } from "./chunk-AIW5K7IK.js";
 
-// node_modules/@angular/cdk/fesm2022/_element-chunk.mjs
-function coerceNumberProperty(value, fallbackValue = 0) {
-  if (_isNumberValue(value)) {
-    return Number(value);
-  }
-  return arguments.length === 2 ? fallbackValue : 0;
-}
-function _isNumberValue(value) {
-  return !isNaN(parseFloat(value)) && !isNaN(Number(value));
-}
-function coerceElement(elementOrRef) {
-  return elementOrRef instanceof ElementRef ? elementOrRef.nativeElement : elementOrRef;
-}
-
 // node_modules/@angular/cdk/fesm2022/_style-loader-chunk.mjs
 var appsWithLoaders = /* @__PURE__ */ new WeakMap();
 var _CdkPrivateStyleLoader = class __CdkPrivateStyleLoader {
@@ -69,10 +55,24 @@ var _CdkPrivateStyleLoader = class __CdkPrivateStyleLoader {
   }], null, null);
 })();
 
+// node_modules/@angular/cdk/fesm2022/_element-chunk.mjs
+function coerceNumberProperty(value, fallbackValue = 0) {
+  if (_isNumberValue(value)) {
+    return Number(value);
+  }
+  return arguments.length === 2 ? fallbackValue : 0;
+}
+function _isNumberValue(value) {
+  return !isNaN(parseFloat(value)) && !isNaN(Number(value));
+}
+function coerceElement(elementOrRef) {
+  return elementOrRef instanceof ElementRef ? elementOrRef.nativeElement : elementOrRef;
+}
+
 export {
+  _CdkPrivateStyleLoader,
   coerceNumberProperty,
   _isNumberValue,
-  coerceElement,
-  _CdkPrivateStyleLoader
+  coerceElement
 };
-//# sourceMappingURL=chunk-SSAA74HP.js.map
+//# sourceMappingURL=chunk-FBQKZM2Q.js.map

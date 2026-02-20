@@ -6,12 +6,12 @@ import {
   _getFocusedElementPierceShadowDom,
   _getShadowRoot,
   normalizePassiveListenerOptions
-} from "./chunk-TH7QSK7I.js";
+} from "./chunk-ZB54XNYH.js";
 import {
   _CdkPrivateStyleLoader,
   coerceElement,
   coerceNumberProperty
-} from "./chunk-SSAA74HP.js";
+} from "./chunk-FBQKZM2Q.js";
 import {
   Platform
 } from "./chunk-TVRJ3NXG.js";
@@ -2528,6 +2528,9 @@ var _StructuralStylesLoader = class __StructuralStylesLoader {
 })();
 
 export {
+  _VisuallyHiddenLoader,
+  trustedHTMLFromString,
+  coerceArray,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   BACKSPACE,
@@ -2545,9 +2548,6 @@ export {
   A,
   FocusMonitor,
   CdkMonitorFocus,
-  _VisuallyHiddenLoader,
-  trustedHTMLFromString,
-  coerceArray,
   MediaMatcher,
   BreakpointObserver,
   CdkObserveContent,
@@ -2580,4 +2580,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-QPG3BLZK.js.map
+//# sourceMappingURL=chunk-IDN3KW3Y.js.map

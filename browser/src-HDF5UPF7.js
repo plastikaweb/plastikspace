@@ -49,20 +49,20 @@ import {
   isEmpty,
   isNil,
   selectNasaImagesFeature
-} from "./chunk-RUR7ST2Z.js";
+} from "./chunk-DG2RK7NC.js";
 import {
   TranslateModule,
   _DisposeViewRepeaterStrategy,
   provideEffects,
   selectRouteQueryParams
-} from "./chunk-MLSR6425.js";
+} from "./chunk-44BDADD6.js";
 import {
   LetDirective,
   PushPipe,
   Store,
   provideState,
   select
-} from "./chunk-AL26SZCX.js";
+} from "./chunk-UQUD653M.js";
 import "./chunk-W6MSIYPH.js";
 import {
   CDK_VIRTUAL_SCROLL_VIEWPORT,
@@ -78,7 +78,7 @@ import {
   createGlobalPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-WNSLARY5.js";
+} from "./chunk-RJ2VJ42I.js";
 import {
   CdkPortalOutlet,
   ComponentPortal,
@@ -90,7 +90,7 @@ import {
   _RecycleViewRepeaterStrategy,
   _ViewRepeaterOperation,
   isDataSource
-} from "./chunk-AKF5VCSH.js";
+} from "./chunk-NPF35WXZ.js";
 import {
   MatButton,
   MatButtonModule,
@@ -98,7 +98,7 @@ import {
   MatRipple,
   coerceBooleanProperty,
   coerceStringArray
-} from "./chunk-CGROVVHV.js";
+} from "./chunk-SOHV2DKC.js";
 import {
   A11yModule,
   AriaDescriber,
@@ -125,7 +125,7 @@ import {
   _animationsDisabled,
   hasModifierKey,
   toSignal
-} from "./chunk-QPG3BLZK.js";
+} from "./chunk-IDN3KW3Y.js";
 import {
   DomSanitizer
 } from "./chunk-Q5JRN3QT.js";
@@ -134,13 +134,13 @@ import {
   BidiModule,
   Directionality,
   _getFocusedElementPierceShadowDom
-} from "./chunk-TH7QSK7I.js";
-import "./chunk-EQO64OLK.js";
+} from "./chunk-ZB54XNYH.js";
+import "./chunk-XRYUEZ3V.js";
 import {
   _CdkPrivateStyleLoader,
   _isNumberValue,
   coerceNumberProperty
-} from "./chunk-SSAA74HP.js";
+} from "./chunk-FBQKZM2Q.js";
 import {
   Platform
 } from "./chunk-TVRJ3NXG.js";
@@ -15567,7 +15567,7 @@ var TABLE_TOKEN = new InjectionToken("TABLE_TOKEN");
 var _c08 = ["matFormField"];
 var _c17 = [[["", "noResults", ""]], [["", "noValidSearch", ""]], [["", "noResults", ""]], [["", "noValidSearch", ""]]];
 var _c23 = ["[noResults]", "[noValidSearch]", "[noResults]", "[noValidSearch]"];
-var SharedTableUiComponent_Defer_3_DepsFn = () => [import("./router-WWY7TRCM.js").then((m) => m.RouterLink), import("./common-6LMWLMHE.js").then((m) => m.NgComponentOutlet), import("./common-6LMWLMHE.js").then((m) => m.NgTemplateOutlet), import("./text-field-F43UFRE4.js").then((m) => m.CdkTextareaAutosize), MatTable, MatHeaderCellDef, MatHeaderRowDef, MatColumnDef, MatCellDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatSort, MatSortHeader, MatTooltip, MatIcon, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatInput, MatSelect, MatOption, MatCheckbox, MatRadioGroup, MatRadioButton, MatSlideToggle, import("./common-6LMWLMHE.js").then((m) => m.NgOptimizedImage), import("./common-6LMWLMHE.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-WKQXUFKN.js").then((m) => m.OrderTableActionsElementsPipe), SafeFormattedPipe];
+var SharedTableUiComponent_Defer_3_DepsFn = () => [import("./router-WWY7TRCM.js").then((m) => m.RouterLink), import("./common-6LMWLMHE.js").then((m) => m.NgComponentOutlet), import("./common-6LMWLMHE.js").then((m) => m.NgTemplateOutlet), import("./text-field-FTTVDTJS.js").then((m) => m.CdkTextareaAutosize), MatTable, MatHeaderCellDef, MatHeaderRowDef, MatColumnDef, MatCellDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatSort, MatSortHeader, MatTooltip, MatIcon, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatInput, MatSelect, MatOption, MatCheckbox, MatRadioGroup, MatRadioButton, MatSlideToggle, import("./common-6LMWLMHE.js").then((m) => m.NgOptimizedImage), import("./common-6LMWLMHE.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-WKQXUFKN.js").then((m) => m.OrderTableActionsElementsPipe), SafeFormattedPipe];
 var _c32 = (a0) => [a0];
 var _c42 = (a0, a1) => ({ element: a0, isExpanded: a1 });
 var _c52 = () => ["expandedDetail"];
@@ -16613,7 +16613,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
   ], styles: ["\n\n  mat-table .mat-mdc-row {\n  min-height: var(--plastik-mdc-table-row-min-height, auto);\n  max-height: var(--plastik-mdc-table-row-max-height, auto);\n}\n  mat-table .mat-mdc-row li {\n  margin: 0;\n  padding: 0;\n}\n  mat-table .mat-mdc-row.marked-ok {\n  background-color: var(--plastik-mdc-table-row-marked-ok-bg-color, #a1e380) !important;\n}\n  mat-table .mat-mdc-row.marked-ko {\n  background-color: var(--plastik-mdc-table-row-marked-ko-bg-color, #f8c8c8) !important;\n}\n  mat-table .mat-mdc-row.marked-changed {\n  background-color: var(--plastik-mdc-table-row-marked-changed-bg-color, #e8bf79) !important;\n}\n  mat-table .mat-mdc-row.expanded-row > .mat-mdc-cell {\n  background-color: var(--plastik-mdc-nested-container-bg-color);\n  border-bottom-width: 0px;\n}\n  mat-table .mat-mdc-row.expanded-row + .mat-mdc-row > .mat-mdc-cell {\n  border-bottom-width: 1px !important;\n  background-color: var(--plastik-mdc-nested-container-bg-color);\n}\n  mat-table .mat-mdc-cell {\n  --mat-form-field-container-height: 45px;\n  --mat-form-field-container-text-size: var(--mat-sys-body-medium-size);\n}\n  mat-table .mat-mdc-cell .mat-mdc-form-field-infix {\n  width: auto;\n}\n  mat-table .mat-mdc-cell.mat-cell-link a {\n  cursor: pointer;\n}\n  mat-table .mat-mdc-cell li {\n  margin: 0;\n  padding: 0;\n}\n  mat-table .mat-mdc-cell .mdc-text-field--no-label .mat-mdc-form-field-infix {\n  padding: 0.5rem 0 0;\n}\n  mat-table .mat-mdc-cell .mat-mdc-form-field-subscript-wrapper {\n  display: none;\n}\n  mat-table mat-table {\n  --mat-table-background-color: var(--plastik-mdc-nested-data-bg-color);\n}\n  mat-table mat-table .mdc-data-table__row:not(:last-child) .mat-mdc-cell {\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n  border-bottom-color: var(--mat-table-row-item-outline-color);\n}\n  .mat-mdc-paginator.paginator--hide .mat-paginator-range-label {\n  display: none;\n}\n  .mat-mdc-paginator.paginator--hide-range-buttons .mat-mdc-paginator-range-actions > button {\n  display: none;\n}\n/*# sourceMappingURL=shared-table-ui.component.css.map */"], changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(SharedTableUiComponent, () => [import("./router-WWY7TRCM.js").then((m) => m.RouterLink), import("./common-6LMWLMHE.js").then((m) => m.NgComponentOutlet), import("./common-6LMWLMHE.js").then((m) => m.NgTemplateOutlet), import("./text-field-F43UFRE4.js").then((m) => m.CdkTextareaAutosize), import("./common-6LMWLMHE.js").then((m) => m.NgOptimizedImage), import("./common-6LMWLMHE.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-WKQXUFKN.js").then((m) => m.OrderTableActionsElementsPipe)], (RouterLink, NgComponentOutlet, NgTemplateOutlet2, CdkTextareaAutosize, NgOptimizedImage2, KeyValuePipe, OrderTableActionsElementsPipe) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(SharedTableUiComponent, () => [import("./router-WWY7TRCM.js").then((m) => m.RouterLink), import("./common-6LMWLMHE.js").then((m) => m.NgComponentOutlet), import("./common-6LMWLMHE.js").then((m) => m.NgTemplateOutlet), import("./text-field-FTTVDTJS.js").then((m) => m.CdkTextareaAutosize), import("./common-6LMWLMHE.js").then((m) => m.NgOptimizedImage), import("./common-6LMWLMHE.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-WKQXUFKN.js").then((m) => m.OrderTableActionsElementsPipe)], (RouterLink, NgComponentOutlet, NgTemplateOutlet2, CdkTextareaAutosize, NgOptimizedImage2, KeyValuePipe, OrderTableActionsElementsPipe) => {
     setClassMetadata(SharedTableUiComponent, [{
       type: Component,
       args: [{ selector: "plastik-shared-table", imports: [
@@ -17662,4 +17662,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-SHLBAEYV.js.map
+//# sourceMappingURL=src-HDF5UPF7.js.map

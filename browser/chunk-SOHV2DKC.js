@@ -4,16 +4,16 @@ import {
   _animationsDisabled,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
-} from "./chunk-QPG3BLZK.js";
+} from "./chunk-IDN3KW3Y.js";
 import {
   BidiModule,
   _getEventTarget,
   normalizePassiveListenerOptions
-} from "./chunk-TH7QSK7I.js";
+} from "./chunk-ZB54XNYH.js";
 import {
   _CdkPrivateStyleLoader,
   coerceElement
-} from "./chunk-SSAA74HP.js";
+} from "./chunk-FBQKZM2Q.js";
 import {
   Platform
 } from "./chunk-TVRJ3NXG.js";
@@ -1314,9 +1314,9 @@ export {
   RippleRenderer,
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatRipple,
-  MatIconButton,
   MatRippleModule,
+  MatIconButton,
   MatButton,
   MatButtonModule
 };
-//# sourceMappingURL=chunk-CGROVVHV.js.map
+//# sourceMappingURL=chunk-SOHV2DKC.js.map
