@@ -278,7 +278,7 @@
             <eco-store-product-card
               [product]="relatedProduct"
               [isFirst]="false"
-              [quantity]="cartStore.getItemCount(relatedProduct.id)()"
+              [quantity]="cartStore.entityMap()[relatedProduct.id]?.quantity || 0"
               (addToCart)="addToCart($event)"
               (toggleFavorite)="toggleFavorite()" />
           }

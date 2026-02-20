@@ -2,14 +2,12 @@
 @use 'core_input_material' as input;
 
 @layer components {
-  //** LIST **//
   @include mat.list-overrides(
     (
       active-indicator-shape: var(--app-main-border-radius),
     )
   );
 
-  //** BUTTON **//
   @include mat.button-overrides(
     (
       filled-container-shape: var(--app-main-border-radius),
@@ -30,14 +28,12 @@
     );
   }
 
-  //** CARD **//
   @include mat.card-overrides(
     (
       elevated-container-shape: var(--app-main-border-radius),
     )
   );
 
-  //** SELECT **//
   @include mat.select-overrides(
     (
       trigger-text-size: 0.8rem,
@@ -58,7 +54,6 @@
     --mat-option-selected-state-icon-color: var(--secondary-900) !important;
   }
 
-  //** MENU **//
   @include mat.menu-overrides(
     (
       container-shape: var(--app-main-border-radius),
@@ -73,7 +68,6 @@
     background-color: var(--secondary-100) !important;
   }
 
-  //** PROGRESS BAR **//
   @include mat.progress-bar-overrides(
     (
       track-shape: 5rem,
@@ -87,8 +81,6 @@
   }
 }
 
-//** INPUT **//
-// Should be outside layer for higher priority
 .input--eco {
   @include input.material-input-rounded(
     40px,

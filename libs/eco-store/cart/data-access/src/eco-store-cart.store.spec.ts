@@ -1,4 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { computed } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
@@ -141,10 +142,10 @@ describe('ecoStoreCartStore', () => {
     const store = setup();
     store.addToCart(mockProduct, 5);
 
-    const countSignal = store.getItemCount('1');
+    const countSignal = computed(() => store.entityMap()['1']?.quantity ?? 0);
     expect(countSignal()).toBe(5);
 
-    const countSignalEmpty = store.getItemCount('2');
+    const countSignalEmpty = computed(() => store.entityMap()['2']?.quantity ?? 0);
     expect(countSignalEmpty()).toBe(0);
   });
 });

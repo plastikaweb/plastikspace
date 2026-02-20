@@ -31,7 +31,7 @@
         @for (item of productsStore.productsWithTranslatedText(); track item.id; let i = $index) {
           <eco-store-product-card
             [product]="item"
-            [quantity]="cartStore.getItemCount(item.id)()"
+            [quantity]="cartStore.entityMap()[item.id]?.quantity || 0"
             [isFirst]="i < 6"
             [isOpen]="tenantStore.isStoreOpen()"
             (addToCart)="addToCart($event)"

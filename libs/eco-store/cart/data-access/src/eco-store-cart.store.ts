@@ -393,12 +393,6 @@ export const ecoStoreCartStore = signalStore(
     };
 
     return {
-      getItemCount(productId: EcoStoreProductWithCategoryName['id']) {
-        return computed(() => {
-          return store.entityMap()[productId]?.quantity ?? 0;
-        });
-      },
-
       addToCart(product: EcoStoreProductWithCategoryName, quantity = 1) {
         if (!checkStoreStatus()) return;
         const productId = product.id;

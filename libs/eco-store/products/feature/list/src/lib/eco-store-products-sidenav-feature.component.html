@@ -28,10 +28,10 @@
         </mat-list-item>
 
         <!-- Grouped Categories -->
-        @for (group of groupedCategories(); track group.group.id) {
+        @for (group of groupedCategoriesWithNames(); track group.group.id) {
           <div
             class="text-tertiary-600 mt-4 mb-1 px-4 text-[11px] font-bold tracking-widest uppercase">
-            {{ getGroupName(group.group) }}
+            {{ group.translatedGroupName }}
           </div>
 
           @for (category of group.categories; track category.id) {
@@ -48,7 +48,7 @@
                   category.icon
                 }}</mat-icon>
                 <span matListItemTitle class="flex-1 truncate text-sm">{{
-                  getCategoryName(category)
+                  category.translatedName
                 }}</span>
                 <span matListItemLine class="ml-2 text-xs">({{ category.productCount }})</span>
               </div>

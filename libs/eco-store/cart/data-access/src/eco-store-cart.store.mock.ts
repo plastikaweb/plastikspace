@@ -27,5 +27,4 @@ export const mockEcoStoreCartStore = {
   removeFromCart: jest.fn(),
   clearCart: jest.fn(),
   updateLogistics: jest.fn(),
-  getItemCount: jest.fn(),
 };

@@ -9,5 +9,13 @@
   "bracketSpacing": true,
   "bracketSameLine": true,
   "proseWrap": "preserve",
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular"
+      }
+    }
+  ]
 }

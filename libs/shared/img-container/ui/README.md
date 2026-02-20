@@ -67,13 +67,15 @@ export class UserProfileComponent {
 
 **Selector:** `<plastik-img-container>`
 
-| Input        | Type                                | Default     | Description                                                           |
-| :----------- | :---------------------------------- | :---------- | :-------------------------------------------------------------------- |
-| `src`        | `string \| null`                    | Required    | The source URL of the image.                                          |
-| `title`      | `string`                            | Required    | Alt text/Title for accessibility and SEO.                             |
-| `dimensions` | `{ width: number; height: number }` | `undefined` | Optional object to set width and height together.                     |
-| `quality`    | `number`                            | `80`        | Image compression quality (1-100).                                    |
-| `lcpImage`   | `boolean`                           | `false`     | Set to `true` if this image is the Largest Contentfull Paint element. |
+| Input        | Type                                | Default                           | Description                                                           |
+| :----------- | :---------------------------------- | :-------------------------------- | :-------------------------------------------------------------------- |
+| `src`        | `string \| null`                    | Required                          | The source URL of the image.                                          |
+| `title`      | `string`                            | Required                          | Alt text/Title for accessibility and SEO.                             |
+| `dimensions` | `{ width: number; height: number }` | `undefined`                       | Optional object to set width and height together.                     |
+| `quality`    | `number`                            | `80`                              | Image compression quality (1-100).                                    |
+| `lcpImage`   | `boolean`                           | `false`                           | Set to `true` if this image is the Largest Contentfull Paint element. |
+| `sizes`      | `string`                            | `'(max-width: 639px) 100vw, ...'` | Native `sizes` attribute for responsive images.                       |
+| `thumbSizes` | `number[]`                          | `[100, 300, 500, 750, 1600]`      | Array of available thumbnail width sizes to generate `srcset`.        |
 
 ## Running unit tests
 
