@@ -1,13 +1,13 @@
 import {
   isPlatformBrowser
-} from "./chunk-HEE5E7PX.js";
+} from "./chunk-CXCM2DO7.js";
 import {
   Injectable,
   PLATFORM_ID,
   inject,
   setClassMetadata,
   ɵɵdefineInjectable
-} from "./chunk-SIDG4XUF.js";
+} from "./chunk-AIW5K7IK.js";
 
 // node_modules/@angular/cdk/fesm2022/_platform-chunk.mjs
 var hasV8BreakIterator;
@@ -50,4 +50,4 @@ var Platform = class _Platform {
 export {
   Platform
 };
-//# sourceMappingURL=chunk-YGYYLDXB.js.map
+//# sourceMappingURL=chunk-TVRJ3NXG.js.map

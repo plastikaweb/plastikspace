@@ -16,7 +16,7 @@ import {
   ɵɵdefineInjectable,
   ɵɵdefineInjector,
   ɵɵdefineNgModule
-} from "./chunk-SIDG4XUF.js";
+} from "./chunk-AIW5K7IK.js";
 
 // node_modules/@angular/cdk/fesm2022/_shadow-dom-chunk.mjs
 var shadowDomIsSupported;
@@ -228,4 +228,4 @@ export {
   Directionality,
   BidiModule
 };
-//# sourceMappingURL=chunk-GEDR34G3.js.map
+//# sourceMappingURL=chunk-TH7QSK7I.js.map

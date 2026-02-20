@@ -65,7 +65,6 @@
   --text-3xl--line-height: calc(2.25 / 1.875);
   --text-4xl: 2.25rem;
   --text-4xl--line-height: calc(2.5 / 2.25);
-  --font-weight-light: 300;
   --font-weight-normal: 400;
   --font-weight-medium: 500;
   --font-weight-semibold: 600;
@@ -2236,10 +2235,6 @@ html {
     --tw-font-weight: var(--font-weight-extrabold);
     font-weight: var(--font-weight-extrabold);
   }
-  .font-light {
-    --tw-font-weight: var(--font-weight-light);
-    font-weight: var(--font-weight-light);
-  }
   .font-medium {
     --tw-font-weight: var(--font-weight-medium);
     font-weight: var(--font-weight-medium);
@@ -2309,9 +2304,6 @@ html {
   }
   .text-error {
     color: var(--color-error);
-  }
-  .text-gray-80 {
-    color: var(--color-gray-80);
   }
   .text-gray-400 {
     color: var(--color-gray-400);

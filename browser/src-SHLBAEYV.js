@@ -49,21 +49,21 @@ import {
   isEmpty,
   isNil,
   selectNasaImagesFeature
-} from "./chunk-SXY4RORF.js";
+} from "./chunk-RUR7ST2Z.js";
 import {
   TranslateModule,
   _DisposeViewRepeaterStrategy,
   provideEffects,
   selectRouteQueryParams
-} from "./chunk-HYKGKAIS.js";
+} from "./chunk-MLSR6425.js";
 import {
   LetDirective,
   PushPipe,
   Store,
   provideState,
   select
-} from "./chunk-A5LLDKTZ.js";
-import "./chunk-64SJRYJT.js";
+} from "./chunk-AL26SZCX.js";
+import "./chunk-W6MSIYPH.js";
 import {
   CDK_VIRTUAL_SCROLL_VIEWPORT,
   CdkScrollableModule,
@@ -78,7 +78,7 @@ import {
   createGlobalPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-B7MF2X4C.js";
+} from "./chunk-WNSLARY5.js";
 import {
   CdkPortalOutlet,
   ComponentPortal,
@@ -90,7 +90,7 @@ import {
   _RecycleViewRepeaterStrategy,
   _ViewRepeaterOperation,
   isDataSource
-} from "./chunk-QQMF52DB.js";
+} from "./chunk-AKF5VCSH.js";
 import {
   MatButton,
   MatButtonModule,
@@ -98,7 +98,7 @@ import {
   MatRipple,
   coerceBooleanProperty,
   coerceStringArray
-} from "./chunk-FV4ZM6S7.js";
+} from "./chunk-CGROVVHV.js";
 import {
   A11yModule,
   AriaDescriber,
@@ -125,25 +125,25 @@ import {
   _animationsDisabled,
   hasModifierKey,
   toSignal
-} from "./chunk-FMSLWC4K.js";
+} from "./chunk-QPG3BLZK.js";
 import {
   DomSanitizer
-} from "./chunk-AA3SJFJE.js";
-import "./chunk-FBGCESXU.js";
+} from "./chunk-Q5JRN3QT.js";
+import "./chunk-F3C6PLLK.js";
 import {
   BidiModule,
   Directionality,
   _getFocusedElementPierceShadowDom
-} from "./chunk-GEDR34G3.js";
-import "./chunk-NQSX5WFJ.js";
+} from "./chunk-TH7QSK7I.js";
+import "./chunk-EQO64OLK.js";
 import {
   _CdkPrivateStyleLoader,
   _isNumberValue,
   coerceNumberProperty
-} from "./chunk-F6YMFCSH.js";
+} from "./chunk-SSAA74HP.js";
 import {
   Platform
-} from "./chunk-YGYYLDXB.js";
+} from "./chunk-TVRJ3NXG.js";
 import {
   DatePipe,
   NgClass,
@@ -155,7 +155,7 @@ import {
   formatDate,
   formatNumber,
   formatPercent
-} from "./chunk-HEE5E7PX.js";
+} from "./chunk-CXCM2DO7.js";
 import {
   BehaviorSubject,
   ChangeDetectionStrategy,
@@ -272,7 +272,6 @@ import {
   ɵɵpureFunction0,
   ɵɵpureFunction1,
   ɵɵpureFunction2,
-  ɵɵpureFunction3,
   ɵɵqueryAdvance,
   ɵɵqueryRefresh,
   ɵɵreadContextLet,
@@ -296,7 +295,7 @@ import {
   ɵɵtwoWayProperty,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-SIDG4XUF.js";
+} from "./chunk-AIW5K7IK.js";
 
 // node_modules/@angular/material/fesm2022/_tooltip-chunk.mjs
 var _c0 = ["tooltip"];
@@ -15568,7 +15567,7 @@ var TABLE_TOKEN = new InjectionToken("TABLE_TOKEN");
 var _c08 = ["matFormField"];
 var _c17 = [[["", "noResults", ""]], [["", "noValidSearch", ""]], [["", "noResults", ""]], [["", "noValidSearch", ""]]];
 var _c23 = ["[noResults]", "[noValidSearch]", "[noResults]", "[noValidSearch]"];
-var SharedTableUiComponent_Defer_3_DepsFn = () => [import("./router-3F4X722J.js").then((m) => m.RouterLink), import("./common-255FNZNP.js").then((m) => m.NgComponentOutlet), import("./common-255FNZNP.js").then((m) => m.NgTemplateOutlet), import("./text-field-Q6PPJX3M.js").then((m) => m.CdkTextareaAutosize), MatTable, MatHeaderCellDef, MatHeaderRowDef, MatColumnDef, MatCellDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatSort, MatSortHeader, MatTooltip, MatIcon, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatInput, MatSelect, MatOption, MatCheckbox, MatRadioGroup, MatRadioButton, MatSlideToggle, import("./common-255FNZNP.js").then((m) => m.NgOptimizedImage), import("./common-255FNZNP.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-ALDR2N3J.js").then((m) => m.OrderTableActionsElementsPipe), SafeFormattedPipe];
+var SharedTableUiComponent_Defer_3_DepsFn = () => [import("./router-WWY7TRCM.js").then((m) => m.RouterLink), import("./common-6LMWLMHE.js").then((m) => m.NgComponentOutlet), import("./common-6LMWLMHE.js").then((m) => m.NgTemplateOutlet), import("./text-field-F43UFRE4.js").then((m) => m.CdkTextareaAutosize), MatTable, MatHeaderCellDef, MatHeaderRowDef, MatColumnDef, MatCellDef, MatRowDef, MatHeaderCell, MatCell, MatHeaderRow, MatRow, MatSort, MatSortHeader, MatTooltip, MatIcon, MatIconButton, MatFormField, MatPrefix, MatSuffix, MatInput, MatSelect, MatOption, MatCheckbox, MatRadioGroup, MatRadioButton, MatSlideToggle, import("./common-6LMWLMHE.js").then((m) => m.NgOptimizedImage), import("./common-6LMWLMHE.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-WKQXUFKN.js").then((m) => m.OrderTableActionsElementsPipe), SafeFormattedPipe];
 var _c32 = (a0) => [a0];
 var _c42 = (a0, a1) => ({ element: a0, isExpanded: a1 });
 var _c52 = () => ["expandedDetail"];
@@ -16614,7 +16613,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
   ], styles: ["\n\n  mat-table .mat-mdc-row {\n  min-height: var(--plastik-mdc-table-row-min-height, auto);\n  max-height: var(--plastik-mdc-table-row-max-height, auto);\n}\n  mat-table .mat-mdc-row li {\n  margin: 0;\n  padding: 0;\n}\n  mat-table .mat-mdc-row.marked-ok {\n  background-color: var(--plastik-mdc-table-row-marked-ok-bg-color, #a1e380) !important;\n}\n  mat-table .mat-mdc-row.marked-ko {\n  background-color: var(--plastik-mdc-table-row-marked-ko-bg-color, #f8c8c8) !important;\n}\n  mat-table .mat-mdc-row.marked-changed {\n  background-color: var(--plastik-mdc-table-row-marked-changed-bg-color, #e8bf79) !important;\n}\n  mat-table .mat-mdc-row.expanded-row > .mat-mdc-cell {\n  background-color: var(--plastik-mdc-nested-container-bg-color);\n  border-bottom-width: 0px;\n}\n  mat-table .mat-mdc-row.expanded-row + .mat-mdc-row > .mat-mdc-cell {\n  border-bottom-width: 1px !important;\n  background-color: var(--plastik-mdc-nested-container-bg-color);\n}\n  mat-table .mat-mdc-cell {\n  --mat-form-field-container-height: 45px;\n  --mat-form-field-container-text-size: var(--mat-sys-body-medium-size);\n}\n  mat-table .mat-mdc-cell .mat-mdc-form-field-infix {\n  width: auto;\n}\n  mat-table .mat-mdc-cell.mat-cell-link a {\n  cursor: pointer;\n}\n  mat-table .mat-mdc-cell li {\n  margin: 0;\n  padding: 0;\n}\n  mat-table .mat-mdc-cell .mdc-text-field--no-label .mat-mdc-form-field-infix {\n  padding: 0.5rem 0 0;\n}\n  mat-table .mat-mdc-cell .mat-mdc-form-field-subscript-wrapper {\n  display: none;\n}\n  mat-table mat-table {\n  --mat-table-background-color: var(--plastik-mdc-nested-data-bg-color);\n}\n  mat-table mat-table .mdc-data-table__row:not(:last-child) .mat-mdc-cell {\n  border-bottom-width: 1px;\n  border-bottom-style: solid;\n  border-bottom-color: var(--mat-table-row-item-outline-color);\n}\n  .mat-mdc-paginator.paginator--hide .mat-paginator-range-label {\n  display: none;\n}\n  .mat-mdc-paginator.paginator--hide-range-buttons .mat-mdc-paginator-range-actions > button {\n  display: none;\n}\n/*# sourceMappingURL=shared-table-ui.component.css.map */"], changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(SharedTableUiComponent, () => [import("./router-3F4X722J.js").then((m) => m.RouterLink), import("./common-255FNZNP.js").then((m) => m.NgComponentOutlet), import("./common-255FNZNP.js").then((m) => m.NgTemplateOutlet), import("./text-field-Q6PPJX3M.js").then((m) => m.CdkTextareaAutosize), import("./common-255FNZNP.js").then((m) => m.NgOptimizedImage), import("./common-255FNZNP.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-ALDR2N3J.js").then((m) => m.OrderTableActionsElementsPipe)], (RouterLink, NgComponentOutlet, NgTemplateOutlet2, CdkTextareaAutosize, NgOptimizedImage2, KeyValuePipe, OrderTableActionsElementsPipe) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(SharedTableUiComponent, () => [import("./router-WWY7TRCM.js").then((m) => m.RouterLink), import("./common-6LMWLMHE.js").then((m) => m.NgComponentOutlet), import("./common-6LMWLMHE.js").then((m) => m.NgTemplateOutlet), import("./text-field-F43UFRE4.js").then((m) => m.CdkTextareaAutosize), import("./common-6LMWLMHE.js").then((m) => m.NgOptimizedImage), import("./common-6LMWLMHE.js").then((m) => m.KeyValuePipe), import("./order-table-actions-elements.pipe-WKQXUFKN.js").then((m) => m.OrderTableActionsElementsPipe)], (RouterLink, NgComponentOutlet, NgTemplateOutlet2, CdkTextareaAutosize, NgOptimizedImage2, KeyValuePipe, OrderTableActionsElementsPipe) => {
     setClassMetadata(SharedTableUiComponent, [{
       type: Component,
       args: [{ selector: "plastik-shared-table", imports: [
@@ -17095,7 +17094,7 @@ function getNasaImagesSearchFeatureFormConfig() {
 // libs/shared/img-container/ui/src/lib/shared-img-container.component.ts
 var _c09 = () => ({ priority: true });
 var _c18 = () => ({ priority: false });
-var _c24 = (a0, a1, a2) => ({ width: a0, height: a1, quality: a2 });
+var _c24 = (a0, a1) => ({ quality: a0, availableThumbs: a1 });
 function SharedImgContainerComponent_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275element(0, "div", 3);
@@ -17208,7 +17207,7 @@ function SharedImgContainerComponent_Conditional_6_ng_template_2_Template(rf, ct
     const height_r7 = \u0275\u0275readContextLet(1);
     const src_r8 = \u0275\u0275readContextLet(2);
     \u0275\u0275classProp("opacity-0", ctx_r1.isLoading())("opacity-100", !ctx_r1.isLoading() && !ctx_r1.hasError());
-    \u0275\u0275property("priority", priority_r5)("ngSrc", src_r8)("width", width_r6)("height", height_r7)("alt", ctx_r1.title())("loaderParams", \u0275\u0275pureFunction3(10, _c24, width_r6, height_r7, ctx_r1.quality()));
+    \u0275\u0275property("priority", priority_r5)("ngSrc", src_r8)("width", width_r6)("height", height_r7)("alt", ctx_r1.title())("loaderParams", \u0275\u0275pureFunction2(10, _c24, ctx_r1.quality(), ctx_r1.thumbSizes()));
   }
 }
 function SharedImgContainerComponent_Conditional_6_ng_template_4_Template(rf, ctx) {
@@ -17231,13 +17230,13 @@ function SharedImgContainerComponent_Conditional_6_ng_template_4_Template(rf, ct
     const ctx_r1 = \u0275\u0275nextContext(2);
     const src_r8 = \u0275\u0275readContextLet(2);
     \u0275\u0275classProp("opacity-0", ctx_r1.isLoading())("opacity-100", !ctx_r1.isLoading() && !ctx_r1.hasError());
-    \u0275\u0275property("priority", priority_r10)("ngSrc", src_r8)("alt", ctx_r1.title());
+    \u0275\u0275property("priority", priority_r10)("ngSrc", src_r8)("alt", ctx_r1.title())("sizes", ctx_r1.sizes())("ngSrcset", ctx_r1.computedSrcset())("loaderParams", \u0275\u0275pureFunction2(10, _c24, ctx_r1.quality(), ctx_r1.thumbSizes()));
   }
 }
 function SharedImgContainerComponent_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275conditionalCreate(0, SharedImgContainerComponent_Conditional_6_Conditional_0_Template, 2, 1)(1, SharedImgContainerComponent_Conditional_6_Conditional_1_Template, 2, 1);
-    \u0275\u0275template(2, SharedImgContainerComponent_Conditional_6_ng_template_2_Template, 1, 14, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(4, SharedImgContainerComponent_Conditional_6_ng_template_4_Template, 1, 7, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
+    \u0275\u0275template(2, SharedImgContainerComponent_Conditional_6_ng_template_2_Template, 1, 13, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(4, SharedImgContainerComponent_Conditional_6_ng_template_4_Template, 1, 13, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
@@ -17252,6 +17251,9 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
   dimensions = input(...ngDevMode ? [void 0, { debugName: "dimensions" }] : []);
   quality = input(80, ...ngDevMode ? [{ debugName: "quality" }] : []);
   lcpImage = input(false, ...ngDevMode ? [{ debugName: "lcpImage" }] : []);
+  sizes = input("(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px", ...ngDevMode ? [{ debugName: "sizes" }] : []);
+  thumbSizes = input([100, 300, 500, 750, 1600], ...ngDevMode ? [{ debugName: "thumbSizes" }] : []);
+  computedSrcset = computed(() => this.thumbSizes().map((s) => `${s}w`).join(", "), ...ngDevMode ? [{ debugName: "computedSrcset" }] : []);
   #loaded = signal(false, ...ngDevMode ? [{ debugName: "#loaded" }] : []);
   #error = signal(false, ...ngDevMode ? [{ debugName: "#error" }] : []);
   isLoading = computed(() => !!this.src() && !this.#loaded() && !this.#error(), ...ngDevMode ? [{ debugName: "isLoading" }] : []);
@@ -17275,7 +17277,7 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
   static \u0275fac = function SharedImgContainerComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedImgContainerComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-img-container"]], hostAttrs: [1, "relative", "block"], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"] }, decls: 7, vars: 6, consts: [["fixedImage", ""], ["fillImage", ""], [1, "absolute", "inset-0", "flex", "items-center", "justify-center", "rounded-lg", "bg-transparent"], [1, "border-tertiary-600", "h-8", "w-8", "animate-spin", "rounded-full", "border-b-2"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "my-sub", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "max-h-auto", "my-sub", "w-full", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedImgContainerComponent, selectors: [["plastik-img-container"]], hostAttrs: [1, "relative", "block"], inputs: { src: [1, "src"], title: [1, "title"], dimensions: [1, "dimensions"], quality: [1, "quality"], lcpImage: [1, "lcpImage"], sizes: [1, "sizes"], thumbSizes: [1, "thumbSizes"] }, decls: 7, vars: 6, consts: [["fixedImage", ""], ["fillImage", ""], [1, "absolute", "inset-0", "flex", "items-center", "justify-center", "rounded-lg", "bg-transparent"], [1, "border-tertiary-600", "h-8", "w-8", "animate-spin", "rounded-full", "border-b-2"], [1, "image-error", "flex", "h-full", "w-full", "items-center", "justify-center", "bg-neutral-50"], [1, "scale-200"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], [1, "my-sub", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "width", "height", "alt", "loaderParams"], ["fill", "", 1, "max-h-auto", "my-sub", "w-full", "object-cover", "transition-opacity", "duration-300", 3, "load", "error", "priority", "ngSrc", "alt", "sizes", "ngSrcset", "loaderParams"]], template: function SharedImgContainerComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275declareLet(0)(1)(2);
       \u0275\u0275elementStart(3, "div", 2);
@@ -17306,8 +17308,8 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
     type: Component,
     args: [{ selector: "plastik-img-container", imports: [NgOptimizedImage, MatIcon, TranslateModule, NgTemplateOutlet], host: {
       class: "relative block"
-    }, changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-transparent">\n  @if (isLoading()) {\n    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>\n    }\n  } @else {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>\n    }\n  }\n\n  <ng-template #fixedImage let-priority="priority">\n    <img\n      class="my-sub object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ width, height, quality: quality() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n\n  <ng-template #fillImage let-priority="priority">\n    <img\n      fill\n      class="max-h-auto my-sub w-full object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [alt]="title()"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
-  }], () => [], { src: [{ type: Input, args: [{ isSignal: true, alias: "src", required: true }] }], title: [{ type: Input, args: [{ isSignal: true, alias: "title", required: true }] }], dimensions: [{ type: Input, args: [{ isSignal: true, alias: "dimensions", required: false }] }], quality: [{ type: Input, args: [{ isSignal: true, alias: "quality", required: false }] }], lcpImage: [{ type: Input, args: [{ isSignal: true, alias: "lcpImage", required: false }] }] });
+    }, changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div class="absolute inset-0 flex items-center justify-center rounded-lg bg-transparent">\n  @if (isLoading()) {\n    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>\n    }\n  } @else {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>\n    }\n  }\n\n  <ng-template #fixedImage let-priority="priority">\n    <img\n      class="my-sub object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n\n  <ng-template #fillImage let-priority="priority">\n    <img\n      fill\n      class="max-h-auto my-sub w-full object-cover transition-opacity duration-300"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [alt]="title()"\n      [sizes]="sizes()"\n      [ngSrcset]="computedSrcset()"\n      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
+  }], () => [], { src: [{ type: Input, args: [{ isSignal: true, alias: "src", required: true }] }], title: [{ type: Input, args: [{ isSignal: true, alias: "title", required: true }] }], dimensions: [{ type: Input, args: [{ isSignal: true, alias: "dimensions", required: false }] }], quality: [{ type: Input, args: [{ isSignal: true, alias: "quality", required: false }] }], lcpImage: [{ type: Input, args: [{ isSignal: true, alias: "lcpImage", required: false }] }], sizes: [{ type: Input, args: [{ isSignal: true, alias: "sizes", required: false }] }], thumbSizes: [{ type: Input, args: [{ isSignal: true, alias: "thumbSizes", required: false }] }] });
 })();
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedImgContainerComponent, { className: "SharedImgContainerComponent", filePath: "libs/shared/img-container/ui/src/lib/shared-img-container.component.ts", lineNumber: 26 });
@@ -17660,4 +17662,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-UKOMN7P3.js.map
+//# sourceMappingURL=src-SHLBAEYV.js.map
