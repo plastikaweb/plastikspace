@@ -29,6 +29,16 @@ export class SharedImgContainerComponent {
   dimensions = input<ImageDimensions>();
   quality = input<number>(80);
   lcpImage = input<boolean>(false);
+  sizes = input<string>(
+    '(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px'
+  );
+  thumbSizes = input<number[]>([100, 300, 500, 750, 1600]);
+
+  readonly computedSrcset = computed(() =>
+    this.thumbSizes()
+      .map(s => `${s}w`)
+      .join(', ')
+  );
 
   readonly #loaded = signal(false);
   readonly #error = signal(false);

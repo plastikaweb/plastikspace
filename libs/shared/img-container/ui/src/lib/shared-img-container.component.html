@@ -39,7 +39,7 @@
       [width]="width"
       [height]="height"
       [alt]="title()"
-      [loaderParams]="{ width, height, quality: quality() }"
+      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"
       (load)="onImageLoad()"
       (error)="onImageError()" />
   </ng-template>
@@ -53,6 +53,9 @@
       [priority]="priority"
       [ngSrc]="src"
       [alt]="title()"
+      [sizes]="sizes()"
+      [ngSrcset]="computedSrcset()"
+      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"
       (load)="onImageLoad()"
       (error)="onImageError()" />
   </ng-template>

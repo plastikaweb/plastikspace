@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
-import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { ImageDimensions, SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { axe } from 'jest-axe';
 import { UserAvatarComponent } from './user-avatar.component';
 
@@ -13,9 +13,10 @@ import { UserAvatarComponent } from './user-avatar.component';
 })
 /* eslint-enable @angular-eslint/component-selector */
 class MockSharedImgContainerComponent {
-  @Input() src: any;
-  @Input() title: any;
-  @Input() dimensions: any;
+  src = input<string | null>(null);
+  title = input<string>('');
+  dimensions = input<ImageDimensions>();
+  thumbSizes = input<number[]>([100, 300, 500, 750, 1600]);
 }
 
 describe('UserAvatarComponent', () => {

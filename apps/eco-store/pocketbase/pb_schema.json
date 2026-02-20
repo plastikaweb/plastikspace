@@ -1115,7 +1115,7 @@
       {
         "hidden": false,
         "id": "file3760176746",
-        "maxSelect": 6,
+        "maxSelect": 4,
         "maxSize": 5242880,
         "mimeTypes": [
           "image/png",
@@ -1129,9 +1129,11 @@
         "required": false,
         "system": false,
         "thumbs": [
-          "150x150",
+          "100x100",
           "300x300",
-          "700x700"
+          "500x500",
+          "750x750",
+          "1600x1600"
         ],
         "type": "file"
       },
@@ -1418,9 +1420,8 @@
         "required": false,
         "system": false,
         "thumbs": [
-          "40x40",
-          "150x150",
-          "300x300"
+          "60x60",
+          "200x200"
         ],
         "type": "file"
       },

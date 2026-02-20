@@ -12,7 +12,8 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
         [class]="'overflow-hidden rounded-full object-cover ' + avatarClass()"
         [src]="user() | pocketBaseImageUrl: user().avatar"
         [title]="user().name || 'Avatar'"
-        [dimensions]="{ width: 60, height: 60 }" />
+        [dimensions]="{ width: 60, height: 60 }"
+        [thumbSizes]="[50, 100, 200]" />
     } @else {
       <span
         [class]="

@@ -1,25 +1,9 @@
-@keyframes breathing {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.15);
-  }
-}
-
-/* Animació d'ona expansiva lenta */
 @keyframes ping-slow {
   75%,
   100% {
     transform: scale(2);
     opacity: 0;
   }
-}
-
-/* Classes d'utilitat per aplicar les animacions */
-.breathing {
-  animation: breathing 3s ease-in-out infinite;
 }
 
 .ping-slow {

@@ -39,8 +39,7 @@
         "stylePreprocessorOptions": {
           "includePaths": [
             "libs/core/styles/util/material/src",
-            "libs/core/styles/util/tailwind4/src",
-            "apps/eco-store/src/styles"
+            "libs/core/styles/util/tailwind4/src"
           ]
         },
         "scripts": []

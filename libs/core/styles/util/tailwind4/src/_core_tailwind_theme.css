@@ -1,7 +1,7 @@
-@theme {
+@theme inline {
   /* ============================================
      COLOR SYSTEM
-     Source: fresh-theme.css
+     References palette variables defined in each app's theme file
      ============================================ */
 
   /* Primary color scale - Tailwind style */
@@ -123,7 +123,7 @@
 
   /* ============================================
      TYPOGRAPHY SYSTEM
-     Source: fresh-theme.css
+     Source: Material theme
      ============================================ */
 
   /* Font families - Tailwind 4 syntax */
@@ -224,7 +224,7 @@
 
   /* ============================================
      ELEVATION SYSTEM
-     Source: fresh-theme.css
+     Source: Material theme
      ============================================ */
 
   --shadow-0: var(--mat-sys-level0);
@@ -241,7 +241,7 @@
 
   /* ============================================
      SHAPE SYSTEM (Border Radius)
-     Source: fresh-theme.css
+     Source: Material theme
      ============================================ */
 
   --radius-none: var(--mat-sys-corner-none);
@@ -259,7 +259,7 @@
 
   /* ============================================
      STATE SYSTEM (Opacity)
-     Source: fresh-theme.css
+     Source: Material theme
      ============================================ */
 
   --opacity-hover: var(--mat-sys-hover-state-layer-opacity);

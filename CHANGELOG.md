@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-20] - Performance Improvements
+
+### Changed
+
+- Replaced inline function calls in templates with computed signals to reduce per-render recalculations ([#895](https://github.com/plastikaweb/plastikspace/issues/895))
+- Consolidated CSS color palette into theme files, eliminating redundant `color-palette.css` ([#895](https://github.com/plastikaweb/plastikspace/issues/895))
+- Refactored cart store and `img-container` component for better performance ([#895](https://github.com/plastikaweb/plastikspace/issues/895))
+- Improved PocketBase storage loader efficiency ([#895](https://github.com/plastikaweb/plastikspace/issues/895))
+
+---
+
 ## [2026-02-19] - Responsive Design Improvements
 
 ### Added

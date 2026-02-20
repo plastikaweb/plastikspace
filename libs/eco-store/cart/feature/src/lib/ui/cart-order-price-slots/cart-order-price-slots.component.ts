@@ -33,6 +33,8 @@ export class CartOrderPriceSlotsComponent {
     return this.sortedTiersDesc().find(tier => total >= tier.min);
   });
 
+  activeTierMin = computed(() => this.currentTier()?.min);
+
   isFree = computed(() => this.currentTier()?.cost === 0);
 
   maxTier = computed(() => {
@@ -56,9 +58,4 @@ export class CartOrderPriceSlotsComponent {
     }
     return progress;
   });
-
-  isCurrentTier = (tierMin: number): boolean => {
-    const tier = this.currentTier();
-    return tier?.min === tierMin;
-  };
 }

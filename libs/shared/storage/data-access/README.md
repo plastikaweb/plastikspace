@@ -130,7 +130,7 @@ The loader will transform the image path into a PocketBase URL with thumbnail pa
 #### Parameters
 
 - **baseUrl**: Your PocketBase instance URL (e.g., `https://your-pocketbase-url.com`)
-- **loaderParams**: Object containing `width` and `height` for thumbnail generation
+- **loaderParams**: Object containing `width`, `height`, `quality`, and `availableThumbs` for thumbnail generation. `availableThumbs` allows passing a specific array of thumbnail sizes matching the PocketBase schema.
 
 #### Error Handling
 

@@ -53,6 +53,13 @@
   },
   "tailwindCSS.emmetCompletions": true,
   "tailwindCSS.rootFontSize": 15,
+  "tailwindCSS.files.exclude": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/.hg/**",
+    "**/.svn/**",
+    "**/documentation/**"
+  ],
   "tailwindCSS.experimental.configFile": "libs/core/styles/util/tailwind4/src/_core_tailwind_theme.css",
   "tailwindCSS.includeLanguages": {
     "scss": "tailwindcss",
@@ -61,10 +68,7 @@
     "sass": "tailwindcss",
     "html": "tailwindcss"
   },
-  "files.associations": {
-    "*.css": "tailwindcss",
-    "*.scss": "tailwindcss"
-  },
+  "files.associations": {},
   "editor.codeActions.triggerOnFocusChange": false,
   "files.autoSave": "onFocusChange",
   "workbench.colorTheme": "Atom One Dark",
@@ -144,5 +148,17 @@
   "terminal.integrated.fontSize": 12,
   "markdown.preview.fontSize": 13,
   "i18n-ally.sourceLanguage": "ca",
-  "tailwindcss-intellisense.trace.server": "verbose"
+  "terminal.integrated.profiles.osx": {
+    "zsh": {
+      "path": "/bin/zsh",
+      "args": ["-l"]
+    }
+  },
+  "tailwindcss-intellisense.trace.server": "verbose",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features"
+  }
 }

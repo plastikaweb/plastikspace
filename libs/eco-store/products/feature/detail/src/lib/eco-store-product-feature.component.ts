@@ -87,7 +87,7 @@ export default class EcoStoreProductFeatureComponent {
 
   readonly storeQuantity = computed(() => {
     const product = this.product();
-    return product ? this.cartStore.getItemCount(product.id)() : 0;
+    return product ? this.cartStore.entityMap()[product.id]?.quantity || 0 : 0;
   });
 
   readonly isInCart = computed(() => this.storeQuantity() > 0);

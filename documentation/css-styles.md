@@ -3,7 +3,13 @@
 - [CS Styling](#cs-styling)
   - [Description](#description)
   - [TailwindCSS configuration](#tailwindcss-configuration)
+    - [Option A: Tailwind CSS v4 (Modern Apps - e.g. eco-store)](#option-a-tailwind-css-v4-modern-apps---eg-eco-store)
+    - [Option B: Tailwind CSS v3 (Legacy Apps)](#option-b-tailwind-css-v3-legacy-apps)
+    - [General Tailwind Best Practices](#general-tailwind-best-practices)
   - [Material configuration](#material-configuration)
+    - [1. Create an m3 theme](#1-create-an-m3-theme)
+    - [2. Configure your application theme variables](#2-configure-your-application-theme-variables)
+    - [3. Apply the theme in your `styles.scss`](#3-apply-the-theme-in-your-stylesscss)
   - [Customize Angular Material Components: CSS custom properties](#customize-angular-material-components-css-custom-properties)
     - [Bad practices to avoid](#bad-practices-to-avoid)
   - [Useful Links](#useful-links)
@@ -20,104 +26,103 @@ This repo uses:
 
 ## TailwindCSS configuration
 
-For any project that you want to use tailwindcss:
+Since the monorepo contains multiple applications, there are currently two ways Tailwind CSS is configured, depending on the version used by the specific app.
 
-- A base [tailwind.config.js](../libs/core/styles/util/tailwind-preset/src/lib/tailwind.config.js) file already exists as a core util lib.
-- Each application should provide the CSS variables that exists in that app in its app `apps/my-app/src/styles/_theme.scss` file.
-- Each application should [inject the shared styles](../libs/core/styles/util/tailwind-preset/README.md).
-- Each application should [inject the global material adjustments styles](../libs/core/styles/util/material/README.md).
+### Option A: Tailwind CSS v4 (Modern Apps - e.g. eco-store)
 
-A simple app example could be like this:
+Newer applications use **Tailwind CSS v4** which relies entirely on CSS variables and native `@import` statements without a `tailwind.config.js`.
+
+- A base [Tailwind CSS theme file](../libs/core/styles/util/tailwind4/src/_core_tailwind_theme.css) already exists as a core util lib. This file maps Tailwind's core variables to our custom properties.
+Please refer to its [documentation](../libs/core/styles/util/tailwind4/README.md) for IDE intellisense instructions.
+
+- Each application must provide its own CSS variable definitions in a theme file (e.g., `apps/my-app/src/styles/my-app-theme.css`).
+
+A simple app theme example looks like this:
 
 ```css
-/* apps/my-app/src/styles/_theme_.scss */
+/* apps/my-app/src/styles/my-app-theme.css */
 
 :root {
-  /* Colors */
-  // To have a consistent color palette, use the same color names and variants for the same colors defined for material in `_palette.scss`.
-  --primary-100: #b6cbdf;
-  --primary-500: #0b5394;
-  --primary-700: #084281;
-  --accent-100: #fef6ed;
-  --accent-600: #f5ab63;
-  --accent-800: #f2994e;
+  /* Define the full 50-950 scale for each palette (Primary, Secondary, Tertiary, Error, etc.) */
+  --primary-50: #eef3ec;
+  --primary-100: #dfe8dc;
+  /* ... */
+  --primary-500: #356a1f;
+  /* ... */
+  --primary-950: #000200;
 
-  --primary: var(--primary-500);
-  --primary-light: var(--primary-100);
-  --primary-dark: var(--primary-700);
-  --secondary-light: var(--accent-100);
-  --secondary: var(--accent-600);
-  --secondary-dark: var(--accent-800);
+  /* State colors and basic values */
+  --transparent: transparent;
+  --black: #000000;
+  --white: #ffffff;
+}
 
-  /* State colors */
-  --plastik-error-notification-box-color: var(--secondary-dark);
-  --plastik-info-notification-box-color: var(--primary-light);
-  --plastik-warning-notification-box-color: var(--secondary-light);
-  --plastik-success-notification-box-colors: var(--primary)
+html {
+  /* Define mode-aware variables using light-dark() */
+  color-scheme: light;
+  --mat-sys-primary: light-dark(#356a1f, #9ad67d);
 
-  /* Spacing */
-  --spacing-tiny: 0.25rem;
-  --spacing-sub: 0.5rem;
-  --spacing-sm: 1rem;
-  --spacing-md: 1.5rem;
-  --spacing-lg: 2rem;
-  --spacing-xl: 3rem;
-  --spacing-xxl: 6rem;
-
-  /* Font Size */
-  --font-size-tiny: 0.7rem;
-  --font-size-sm: 0.85rem;
-  --font-size-base: 1rem;
-  --font-size-md: 1.4rem;
-  --font-size-lg: 1.8rem;
-  --font-size-xl: 2.2rem;
-  --font-size-xxl: 2.6rem;
+  /* Organic spacing */
+  --space-xs: 0.25rem;
+  --space-md: 1rem;
 }
 ```
 
-Import it in the main styles.scss app file.
+Import it in the main styles file, along with the core tailwind setup:
+
+```scss
+/* apps/my-app/src/styles/styles.scss */
+
+@use 'tailwindcss';
+/* Import the core Tailwind theme map */
+@use 'core_tailwind_theme';
+/* Import your app's custom theme variables */
+@use 'my-app-theme';
+
+@use 'base';
+@use 'components';
+@use 'utilities';
+```
+
+### Option B: Tailwind CSS v3 (Legacy Apps)
+
+Older applications still use **Tailwind CSS v3** which relies on the `tailwind.config.js` and PostCSS setup.
+
+- A base [tailwind.config.js](../libs/core/styles/util/tailwind-preset/src/lib/tailwind.config.js) file already exists as a core util lib.
+- Each application should [inject the shared styles](../libs/core/styles/util/tailwind-preset/README.md).
+- Each application should define its theme using SCSS maps or standard CSS variables in `apps/my-app/src/styles/_theme.scss`.
 
 ```css
+/* apps/my-app/src/styles/_theme_.scss */
+:root {
+  --primary-500: #0b5394;
+  --primary: var(--primary-500);
+}
+```
+
+Import it in the main styles.scss app file:
+
+```text
 /* apps/my-app/src/styles/styles.scss */
 
 /* Main app theme variables */
 @use 'theme';
-/* Material global CSS adjustments */
-@use 'core_styles_util_material';
-/* Add any other specific scss files */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer base {
-  html {
-    font-size: 14px;
-    @apply box-border;
-  }
-
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-  }
-
-  body {
-    @apply text-gray-80 font-light font-poppins;
-  }
-
- /* add any other base styles related to this app */
-}
 ```
 
-After that you can use tailwind normally both on global style files and component-based style sheets.
+### General Tailwind Best Practices
+
+Regardless of the version used, after configuration, you can use standard tailwind classes (`bg-primary-500`, `text-secondary`, `p-md`) normally both on global style files and component-based style sheets.
 
 > tailwindcss classes take preference over other libraries.
 
 If you are repeating styling (applying the same list of tailwindCSS classes to an element more than once) be [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself).
 
 - Maybe that is a symptom that you have to refactor a specific angular component and break it into small pieces.
-- As a final solution extract it to a custom class using @apply to use tailwindCSS classes. To name these classes use [BEM](https://www.freecodecamp.org/news/css-naming-conventions-that-will-save-you-hours-of-debugging-35cea737d849/).
+- As a final solution, extract it to a custom class using `@apply` to combine tailwindCSS classes. To name these classes use [BEM](https://www.freecodecamp.org/news/css-naming-conventions-that-will-save-you-hours-of-debugging-35cea737d849/).
 
 ```css
 .header__logo {
@@ -143,28 +148,16 @@ yarn nx generate @angular/material:m3Theme
 
 > Follow the prompts to select your primary color palette. Select at least the primary color, use CSS instead of SCSS and select the route of the theme file (e.g. `apps/my-app/src/styles/themes/my-apptheme.css`).
 
-### 2. Configure your application theme while creating a `_theme.scss` file in your app's styles directory and use the Material Theming system variables to define your tailwindcss variables
+### 2. Configure your application theme variables
+
+Create a `_theme.scss` or `_theme.css` file in your app's styles directory and use the Material Theming system variables to define your tailwindcss or custom application colors.
 
 ```scss
    --primary: var(--mat-sys-primary);
-   --primary-light: var(--mat-sys-primary-container);
-   --primary-lighter: var(--mat-sys-primary-fixed);
    --primary-dark: var(--mat-sys-on-primary);
-   --primary-darker: var(--mat-sys-on-primary-container);
    --secondary: var(--mat-sys-secondary);
-   --secondary-light: var(--mat-sys-secondary-container);
-   --secondary-lighter: var(--mat-sys-secondary-fixed);
-   --secondary-dark: var(--mat-sys-on-secondary);
-   --secondary-darker: var(--mat-sys-on-secondary-container);
-
+   /* ... */
    --warn: var(--mat-sys-error);
-   --warn-70: var(--mat-sys-error-container);
-   --warn-90: var(--mat-sys-on-error-container);
-   --warn-25: var(--mat-sys-on-error);
-   --warn-10: var(--mat-sys-error-container);
-   --white: #ffffff;
-   --black: #000000;
-
 ```
 
 ### 3. Apply the theme in your `styles.scss`
@@ -172,34 +165,20 @@ yarn nx generate @angular/material:m3Theme
 > [Angular Material Theming](https://material.angular.io/guide/theming)
 
 ```scss
-   @use '@angular/material' as mat;
-   @use 'themes/my-theme';
-   @use 'theme';
-   @use 'core_styles_util_material';
+/* apps/my-app/src/styles/styles.scss */
 
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@use '@angular/material' as mat;
+/* Import core specific material configurations */
+@use 'core_input_material';
+@use 'core_button_material';
 
-  @layer base {
-    html {
-    // ... all the base styles
-    }
-  }
+/* For v4 Tailwind */
+@use 'tailwindcss';
 
-  @layer components {
-    // ... all the components styles
-    // for example:
-    @include mat.button-overrides(
-    (
-      filled-focus-state-layer-opacity: 0.2,
-    )
-  );
-  }
-
-  @layer utilities {
-    // ... all the utilities styles if any
-  }
+/* For base SCSS structures */
+@use 'base';
+@use 'components';
+@use 'utilities';
 ```
 
 ## Customize Angular Material Components: CSS custom properties
