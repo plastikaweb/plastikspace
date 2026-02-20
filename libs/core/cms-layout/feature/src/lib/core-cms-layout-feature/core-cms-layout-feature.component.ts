@@ -14,10 +14,8 @@ import {
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { MatButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
@@ -25,6 +23,7 @@ import { LayoutFacade, LayoutObserverService } from '@plastik/core/cms-layout/da
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
+import { CoreCmsLayoutUiUserMenuComponent } from '@plastik/core/cms-layout/user-menu';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
@@ -41,12 +40,11 @@ import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification
     MatListModule,
     MatIconModule,
     MatListModule,
-    MatButton,
-    MatMenuModule,
     AngularSvgIconModule,
     CoreCmsLayoutUiFooterComponent,
     CoreCmsLayoutUiHeaderComponent,
     CoreCmsLayoutUiSidenavComponent,
+    CoreCmsLayoutUiUserMenuComponent,
     SharedActivityUiOverlayComponent,
     NotificationUiMatSnackbarDirective,
   ],
