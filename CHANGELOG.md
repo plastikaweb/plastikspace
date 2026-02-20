@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-20] - API & Firebase Optimizations
+
+### Changed
+
+- Replaced `getFullList` with `getList(1)` in `getOneBySlug` query to reduce PocketBase API overhead ([#900](https://github.com/plastikaweb/plastikspace/issues/900))
+- Replaced quadratic product aggregation logic with a `Map`-based approach in `onChangeUserOrderUpdateOrderListTotal` Firebase trigger, achieving ~29x speedup
+
+---
+
+## [2026-02-20] - Core User Menu Extraction
+
+### Changed
+
+- Extracted header user menu template into a reusable `CoreCmsLayoutUiUserMenuComponent` with signal-based inputs
+
+---
+
+## [2026-02-20] - Test Infrastructure
+
+### Changed
+
+- Added `IntersectionObserver` mock to `test-setup.ts` across all eco-store libs and app to fix CI failures in Jest
+
+---
+
+## [2026-02-20] - Fix Product Grid Reload on Quantity Change
+
+### Fixed
+
+- Restored `getItemCount()` per-product computed signal in cart store to prevent the entire products grid from re-rendering on each quantity control click ([#901](https://github.com/plastikaweb/plastikspace/issues/901))
+
+---
+
 ## [2026-02-20] - Performance Improvements
 
 ### Changed
