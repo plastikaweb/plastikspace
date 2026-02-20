@@ -37,7 +37,7 @@ ${type}/${issue-number}-${short-description}
 
 [optional body]
 
-[optional footer: ISSUES CLOSED: #<issue>]
+[optional footer: CLOSED: #<issue>]
 ```
 
 ### Step 1: Determine Type
@@ -100,10 +100,10 @@ To know if the commit closes an issue, in the case we have an issue number, use 
 If the commit closes an issue:
 
 ```
-ISSUES CLOSED: #<issue-number>
+CLOSED: #<issue-number>
 ```
 
-Multiple issues: `ISSUES CLOSED: #31, #34`
+Multiple issues: `CLOSED: #31, #34`
 
 ### Step 7: Add Changelog Entry (prompt)
 
@@ -172,7 +172,7 @@ git add <files>
 Construct the commit message following the structure above:
 
 ```bash
-git commit -m "<type>(<scope>): #<issue> <description>" -m "<body>" -m "ISSUES CLOSED: #<issue>"
+git commit -m "<type>(<scope>): #<issue> <description>" -m "<body>" -m "CLOSED: #<issue>"
 ```
 
 For simple commits without body:
@@ -189,7 +189,7 @@ git commit -m "<type>(<scope>): #<issue> <description>"
 ```bash
 git commit -m "feat(shared-button): #54 add notifications toggle button" \
   -m "Allow users to toggle particular notifications by app section." \
-  -m "ISSUES CLOSED: #54"
+  -m "CLOSED: #54"
 ```
 
 ## Validation
