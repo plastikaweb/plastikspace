@@ -36,19 +36,21 @@ describe('EcoStoreProductsApiService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should use getList with limit 1 instead of getFullList for performance when getting one by slug', (done) => {
+  it('should use getList with limit 1 instead of getFullList for performance when getting one by slug', done => {
     const slug = 'test-slug';
     service.getOneBySlug(slug).subscribe(() => {
       // Expect getFullList NOT to be called
       expect(mockCrudService.getFullList).not.toHaveBeenCalled();
 
       // Expect getList to be called with correct params
-      expect(mockCrudService.getList).toHaveBeenCalledWith(expect.objectContaining({
-        page: 1,
-        perPage: 1,
-        filter: expect.stringContaining(`normalizedName = "${slug}"`),
-        requestKey: 'product_by_slug',
-      }));
+      expect(mockCrudService.getList).toHaveBeenCalledWith(
+        expect.objectContaining({
+          page: 1,
+          perPage: 1,
+          filter: expect.stringContaining(`normalizedName = "${slug}"`),
+          requestKey: 'product_by_slug',
+        })
+      );
       done();
     });
   });
