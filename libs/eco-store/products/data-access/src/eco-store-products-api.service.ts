@@ -54,11 +54,13 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
     const filter = `normalizedName = "${slug}" && ${this.filter}`;
 
     return super
-      .getFullList({
+      .getList({
+        page: 1,
+        perPage: 1,
         filter,
         requestKey: 'product_by_slug',
       })
-      .pipe(map(products => products[0] || null));
+      .pipe(map(result => result.items[0] || null));
   }
 
   get filter(): string {
