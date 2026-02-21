@@ -48,7 +48,7 @@ Select from `.cz-config.js` types:
 | ---------- | ----- | -------------------------------------------------------------------- |
 | `feat`     | ✨    | A new feature                                                        |
 | `fix`      | 🐞    | A bug fix                                                            |
-| `docs`     | 📗    | Documentation only changes                                           |
+| `docs`     | 📗    | Documentation only changes (not CHANGELOG.md changes)                |
 | `test`     | 🧪    | Adding missing tests or correcting existing tests                    |
 | `refactor` | 🛠    | A code change that neither fixes a bug nor adds a feature            |
 | `perf`     | 🏆    | A code change that improves performance                              |

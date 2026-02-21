@@ -6,35 +6,34 @@
   <mat-sidenav-container
     class="content-container w-full flex-1 bg-transparent"
     [class.z-10]="isMobile()">
-    <mat-sidenav
-      #sidenav
-      position="start"
-      fixedInViewport="true"
-      [mode]="isMobile() ? 'over' : 'side'"
-      [fixedTopGap]="isMobile() ? 0 : 85"
-      [fixedBottomGap]="isMobile() ? 0 : 100"
-      [opened]="isSidenavOpen()"
-      (keydown.escape)="isSidenavOpen.set(false)"
-      (closedStart)="isSidenavOpen.set(false)">
-      @if (isMobile()) {
-        <div class="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
-          <eco-tenant-logo showName="always" [tenant]="tenantStore.tenant()" />
-          <button
-            mat-icon-button
-            [attr.aria-label]="'common.a11y.closeSidenav' | translate"
-            (click)="isSidenavOpen.set(false)">
-            <mat-icon>close</mat-icon>
-          </button>
-        </div>
-      }
+    @if (hasSidenav()) {
+      <mat-sidenav
+        #sidenav
+        position="start"
+        fixedInViewport="true"
+        [mode]="isMobile() ? 'over' : 'side'"
+        [fixedTopGap]="isMobile() ? 0 : 85"
+        [fixedBottomGap]="isMobile() ? 0 : 100"
+        [opened]="isSidenavOpen()"
+        (keydown.escape)="isSidenavOpen.set(false)"
+        (closedStart)="isSidenavOpen.set(false)">
+        @if (isMobile()) {
+          <div class="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+            <eco-tenant-logo showName="always" [tenant]="tenantStore.tenant()" />
+            <button
+              mat-icon-button
+              [attr.aria-label]="'common.a11y.closeSidenav' | translate"
+              (click)="isSidenavOpen.set(false)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
 
-      <div class="h-full overflow-y-auto">
-        <router-outlet
-          name="sidenav"
-          (activate)="hasSidenav.set(true); !isMobile() && isSidenavOpen.set(true)"
-          (deactivate)="hasSidenav.set(false); isSidenavOpen.set(false)"></router-outlet>
-      </div>
-    </mat-sidenav>
+        <div class="h-full overflow-y-auto">
+          <router-outlet name="sidenav"></router-outlet>
+        </div>
+      </mat-sidenav>
+    }
 
     <mat-sidenav-content #sidenavContent class="flex flex-col" tabindex="-1">
       @if (isMobile() && isSidenavOpen()) {
@@ -44,6 +43,7 @@
         id="mainContent"
         role="main"
         class="mt-20 mb-10 min-h-[calc(100dvh-126px)] flex-1 px-2 sm:px-4">
+        <h3>open: {{ hasSidenav() }}</h3>
         @if (shouldShowBanner() && !isBannerDismissed()) {
           <eco-store-status-banner
             class="mt-8"

@@ -9,7 +9,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   template: `
     @if (user().avatar) {
       <plastik-img-container
-        [class]="'overflow-hidden rounded-full object-cover ' + avatarClass()"
+        [class]="'block overflow-hidden rounded-full object-cover ' + avatarClass()"
         [src]="user() | pocketBaseImageUrl: user().avatar"
         [title]="user().name || 'Avatar'"
         [dimensions]="{ width: 60, height: 60 }"

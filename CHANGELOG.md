@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-21] - Layout Shifts Fixes
+
+### Fixed
+
+- Implemented router data binding for sidenav positioning to prevent layout shifts ([#904](https://github.com/plastikaweb/plastikspace/issues/904))
+- Added explicit width and height attributes to prevent image shifts and related lint errors ([#904](https://github.com/plastikaweb/plastikspace/issues/904))
+
+---
+
 ## [2026-02-20] - API & Firebase Optimizations
 
 ### Changed
