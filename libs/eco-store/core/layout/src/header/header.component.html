@@ -22,12 +22,14 @@
       <eco-tenant-link [tenant]="tenant()" />
 
       @if (storeStatus() !== 'OPEN') {
-        <eco-store-store-window
-          [status]="storeStatus()"
-          [nextOpenDate]="nextOpenDate()"
-          [is24h]="is24h()"
-          [isMobile]="isMobile()"
-          [closedReason]="closedReason()" />
+        @defer (when storeStatus() !== 'OPEN') {
+          <eco-store-store-window
+            [status]="storeStatus()"
+            [nextOpenDate]="nextOpenDate()"
+            [is24h]="is24h()"
+            [isMobile]="isMobile()"
+            [closedReason]="closedReason()" />
+        }
       }
 
       <div class="hidden h-full items-center md:flex">

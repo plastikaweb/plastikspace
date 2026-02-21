@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-21] - Service Worker & Workspace Fixes
+
+### Changed
+
+- Enabled Angular Service Worker for local testing by using `!isDevMode()` instead of environment-based check ([86c8ck3rv](https://app.clickup.com/t/86c8ck3rv))
+
+### Fixed
+
+- Resolved VS Code `package.json` schema loading warning by enabling absolute schema downloads in `settings.json` ([86c8ck3rv](https://app.clickup.com/t/86c8ck3rv))
+
+---
+
 ## [2026-02-21] - Tenant Logo A11y & Commitizen Rules
 
 ### Fixed

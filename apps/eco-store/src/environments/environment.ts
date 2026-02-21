@@ -3,7 +3,7 @@ import { EnvironmentPocketBaseWithTranslations } from '@plastik/core/environment
 export const environment: EnvironmentPocketBaseWithTranslations = {
   production: true,
   name: 'eco-store',
-  baseApiUrl: 'http://37.59.113.217:8090/',
+  baseApiUrl: 'https://eco-botiga.pockethost.io/',
   // cspell:disable-next-line
   client: 'tcqkp8j1h6uzext',
   environment: 'production',

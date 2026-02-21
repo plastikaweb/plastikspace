@@ -134,6 +134,7 @@
     "@angular/platform-browser": "21.1.2",
     "@angular/platform-browser-dynamic": "21.1.2",
     "@angular/router": "21.1.2",
+    "@angular/service-worker": "^21.1.5",
     "@apollo/client": "^3.13.6",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",

@@ -52,10 +52,11 @@
         @let user = profileStore.user();
         @if (user) {
           <button
+            #profileButton
             mat-button
             class="user-pill"
             type="button"
-            [matMenuTriggerFor]="userMenuComponent.menu()"
+            [matMenuTriggerFor]="userMenuComponent()?.menu() ?? null"
             [aria-label]="'store.menu.profile' | translate: { name: user?.name }">
             <div class="flex items-center gap-2">
               <eco-user-avatar [user]="user" [initials]="profileStore.userInitials()" />
@@ -64,6 +65,12 @@
               }}</span>
             </div>
           </button>
+
+          @defer (on hover(profileButton), interaction(profileButton); prefetch on idle) {
+            <eco-user-menu #userMenuComponent (logoutEvent)="logout()" />
+          } @placeholder {
+            <div class="hidden"></div>
+          }
         } @else {
           <button
             matIconButton
@@ -110,5 +117,3 @@
     </ul>
   </nav>
 </ng-template>
-
-<eco-user-menu #userMenuComponent (logoutEvent)="logout()" />

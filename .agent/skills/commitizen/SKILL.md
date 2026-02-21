@@ -22,7 +22,7 @@ Before creating a commit, verify:
 If on `develop` branch, create a feature branch first:
 
 ```
-${type}/${issue-number}-${short-description}
+${type}/${task-number}-${short-description}
 ```
 
 **Valid prefixes** (from `branchNameLint.json`):
@@ -33,11 +33,11 @@ ${type}/${issue-number}-${short-description}
 ## Commit Message Structure
 
 ```
-<type>(<scope>): #<issue> <description>
+<type>(<scope>): #<clickup-task> <description>
 
 [optional body]
 
-[optional footer: CLOSED: #<issue>]
+[optional footer: CLOSED: #<clickup-task>]
 ```
 
 ### Step 1: Determine Type
@@ -67,11 +67,11 @@ Choose from:
 - **Custom scope**: Any descriptive name (e.g., `header`, `api`, `husky`)
 - **Scope overrides for `test` type**: `e2e`, `unit`
 
-### Step 3: Get Issue Number
+### Step 3: Get ClickUp Task Number
 
-Extract from the **branch name**. Branch `feat/42-add-login` → issue `#42`
+Extract from the **branch name**. Branch `feat/ecf32242-add-login` → clickup task `#ecf32242`
 
-If unable to determine from branch, **ask the user** if there is one and what is it or not. We can make commits without issue number, but it is not recommended.
+If unable to determine from branch, **ask the user** if there is one and what is it or not. We can make commits without a task number, if the user explicitly asks for it, but it is not recommended.
 
 ### Step 4: Write Description (subject)
 
@@ -95,19 +95,23 @@ If unable to determine from branch, **ask the user** if there is one and what is
 
 ### Step 6: Add Footer (optional)
 
-To know if the commit closes an issue, in the case we have an issue number, use the one from step 3. One issue can have multiple commits.
+To know if the commit closes a clickup task, in the case we have a task number (from clickup), use the one from step 3. One task can have multiple commits.
 
-If the commit closes an issue:
+If the commit closes a task:
 
+```bash
+CLOSED: #<task-number>
 ```
-CLOSED: #<issue-number>
-```
 
-Multiple issues: `CLOSED: #31, #34`
+If the commit closes multiple tasks:
+
+```bash
+CLOSED: #<task-number-1>, #<task-number-2>
+```
 
 ### Step 7: Add Changelog Entry (prompt)
 
-After completing the commit message, **ask the user** if this change should be added to the changelog.
+After completing the commit message, the change should be added to the changelog.
 
 **Auto-suggest based on type**:
 
@@ -124,20 +128,20 @@ After completing the commit message, **ask the user** if this change should be a
 | `style`    | ❌ Skip    | -       |
 | `build`    | ❌ Skip    | -       |
 
-**If user confirms**, add entry to `CHANGELOG.md` under `## [Unreleased]` in the appropriate section:
+Add entry to `CHANGELOG.md` under `## [YYYY-MM-DD] - <Current Feature Title>` in the appropriate section:
 
 ```markdown
-## [Unreleased] - <Current Feature Title>
+## [YYYY-MM-DD] - <Current Feature Title>
 
 ### Added|Changed|Fixed
 
-- <Description in past tense> ([#<issue>](https://github.com/plastikaweb/plastikspace/issues/<issue>))
+- <Description in past tense> ([#<task>](https://github.com/plastikaweb/plastikspace/issues/<task>))
 ```
 
 **Entry format**:
 
 - Convert imperative description to **past tense** (e.g., "add button" → "Added button")
-- Include issue link if available
+- Include clickup task link if available
 - Create the section if it doesn't exist
 
 ## Workflow Execution
@@ -172,24 +176,24 @@ git add <files>
 Construct the commit message following the structure above:
 
 ```bash
-git commit -m "<type>(<scope>): #<issue> <description>" -m "<body>" -m "CLOSED: #<issue>"
+git commit -m "<type>(<scope>): #<clickup-task> <description>" -m "<body>" -m "CLOSED: #<clickup-task>"
 ```
 
 For simple commits without body:
 
 ```bash
-git commit -m "<type>(<scope>): #<issue> <description>"
+git commit -m "<type>(<scope>): #<clickup-task> <description>"
 ```
 
 ## Example Commit Flow
 
-**Branch**: `feat/54-notification-button`
+**Branch**: `feat/ecf32242-add-notification-button`
 **Changes**: Added notification button to shared UI library
 
 ```bash
-git commit -m "feat(shared-button): #54 add notifications toggle button" \
+git commit -m "feat(shared-button): #ecf32242 add notifications toggle button" \
   -m "Allow users to toggle particular notifications by app section." \
-  -m "CLOSED: #54"
+  -m "CLOSED: #ecf32242"
 ```
 
 ## Validation

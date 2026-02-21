@@ -1,5 +1,6 @@
 {
   "editor.defaultFormatter": "vscode.html-language-features",
+  "json.schemaDownload.enable": true,
   "diffEditor.wordWrap": "inherit",
   "workbench.editor.wrapTabs": false,
   "html.format.wrapAttributes": "force-expand-multiline",
