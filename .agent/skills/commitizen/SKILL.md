@@ -231,3 +231,7 @@ git add -A && git commit -m "<type>(<scope>): #<issue> <description>" -m "<body>
   Maybe this branch will have several commits, and the user wants to push them all at once when the feature is complete.
 
 - When passing precommit and prepush hooks, if they fail, don't create a new commit with the fixes, use `git commit --amend` instead.
+
+- Be smart. If you have passed all the precommit checks once, but the branch:lint check fails, do not pass again all the precommit hooks, as you are not changing any code.
+
+- Changes to the CHANGELOG.md file should be commit --amend. A commit for a feature branch should have all the changes, including the changelog entry.
