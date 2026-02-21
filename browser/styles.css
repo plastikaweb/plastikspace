@@ -2323,9 +2323,6 @@ html {
   .text-info {
     color: var(--color-info);
   }
-  .text-neutral-400 {
-    color: var(--color-neutral-400);
-  }
   .text-neutral-500 {
     color: var(--color-neutral-500);
   }
