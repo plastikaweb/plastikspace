@@ -1,11 +1,7 @@
 @use '@angular/material' as mat;
 
 :host {
-  display: block;
-
   .mat-mdc-radio-group {
-    display: grid;
-    gap: 1rem;
     grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
   }
 

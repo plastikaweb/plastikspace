@@ -7,7 +7,6 @@ import {
   ApplicationConfig,
   ErrorHandler,
   inject,
-  isDevMode,
   LOCALE_ID,
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
@@ -67,7 +66,7 @@ export const appConfig: ApplicationConfig = {
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     { provide: TitleStrategy, useClass: PrefixTitleService },
     provideServiceWorker('ngsw-worker.js', {
-      enabled: !isDevMode(),
+      enabled: environment.environment === 'production' || environment.environment === 'staging',
       registrationStrategy: 'registerImmediately',
     }),
   ],

@@ -8,7 +8,7 @@ export type ProductCategoryLabelSize = 'sm' | 'md' | 'lg';
   template: `
     <div [class]="containerClass()">
       <div [class]="dotClass()" [style.background-color]="color()"></div>
-      <div [class]="textClass()" [style.color]="color()">
+      <div [class]="textClass()">
         {{ name() }}
       </div>
     </div>
@@ -41,6 +41,6 @@ export class EcoStoreProductCategoryLabelComponent {
   textClass = computed(() => {
     const size =
       this.size() === 'lg' ? 'text-sm' : this.size() === 'md' ? 'text-[12px]' : 'text-[11px]';
-    return `font-bold uppercase tracking-wider ${size}`;
+    return `font-bold uppercase tracking-wider text-neutral-600 ${size}`;
   });
 }
