@@ -50,7 +50,7 @@ export class MenuComponent {
   readonly profileStore = inject(pocketBaseUserProfileStore);
   readonly primaryMenu = viewChild.required<TemplateRef<unknown>>('primaryMenu');
   readonly secondaryMenu = viewChild.required<TemplateRef<unknown>>('secondaryMenu');
-  readonly userMenuComponent = viewChild.required<UserMenuComponent>('userMenuComponent');
+  readonly userMenuComponent = viewChild<UserMenuComponent>('userMenuComponent');
 
   protected readonly currentUrl = toSignal(
     this.router.events.pipe(
