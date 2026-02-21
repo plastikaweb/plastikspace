@@ -43,12 +43,14 @@ export const layoutRoutes: Route[] = [
       {
         path: 'cistella',
         title: 'cart.title',
+        data: { hasSidenav: false },
         loadChildren: () => import('@plastik/eco-store/cart').then(m => m.ecoStoreCartRoutes),
       },
       {
         path: 'botiga/:category/:slug',
         title: (route: ActivatedRouteSnapshot) =>
           inject(EcoStoreCategoryRouteTitleService).resolve(route),
+        data: { hasSidenav: false },
         loadChildren: () =>
           import('@plastik/eco-store/product').then(m => m.ecoStoreProductFeatureRoutes),
       },
@@ -56,12 +58,14 @@ export const layoutRoutes: Route[] = [
         path: 'botiga/:category',
         title: (route: ActivatedRouteSnapshot) =>
           inject(EcoStoreCategoryRouteTitleService).resolve(route),
+        data: { hasSidenav: true },
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },
       {
         path: 'botiga',
         title: 'products.all',
+        data: { hasSidenav: true },
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },

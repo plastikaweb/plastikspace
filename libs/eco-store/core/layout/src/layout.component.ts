@@ -3,8 +3,8 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
-  effect,
   inject,
+  linkedSignal,
   signal,
   viewChild,
 } from '@angular/core';
@@ -14,9 +14,15 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
-import { NavigationEnd, Router, RouterModule } from '@angular/router';
+import {
+  ActivatedRoute,
+  ActivationEnd,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { filter } from 'rxjs';
+import { filter, map } from 'rxjs';
 import { FooterComponent } from './footer/footer.component';
 import { HeaderComponent } from './header/header.component';
 import { MenuComponent } from './menu/menu.component';
@@ -53,15 +59,27 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 export default class LayoutComponent {
   protected readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly searchFormConfig = appSearchFormConfig();
-  protected readonly isSidenavOpen = signal(false);
-  protected readonly hasSidenav = signal(false);
   protected readonly isBannerDismissed = signal(false);
   protected readonly isMobile = toSignal(
     inject(LayoutObserverService).getMatches([Breakpoints.XSmall, Breakpoints.Small])
   );
   private readonly sidenavContent = viewChild<MatSidenavContent>('sidenavContent');
+  readonly #activatedRoute = inject(ActivatedRoute);
+
   readonly #destroyRef = inject(DestroyRef);
   readonly #router = inject(Router);
+
+  readonly hasSidenav = toSignal(
+    this.#router.events.pipe(
+      filter((event): event is ActivationEnd => event instanceof ActivationEnd),
+      map(() => this.#getSidenavDataFromActiveRoute())
+    ),
+    { initialValue: this.#getSidenavDataFromActiveRoute() }
+  );
+
+  protected readonly isSidenavOpen = linkedSignal(() =>
+    this.isMobile() ? false : (this.hasSidenav() ?? false)
+  );
 
   constructor() {
     this.#router.events
@@ -75,23 +93,20 @@ export default class LayoutComponent {
         }
         this.sidenavContent()?.scrollTo({ top: 0, behavior: 'smooth' });
       });
+  }
 
-    effect(() => {
-      if (this.isMobile()) {
-        this.isSidenavOpen.set(false);
-      } else {
-        this.isSidenavOpen.set(this.hasSidenav());
-      }
-    });
+  #getSidenavDataFromActiveRoute(): boolean {
+    let route = this.#activatedRoute;
+    while (route.firstChild) {
+      route = route.firstChild;
+    }
+    return Boolean(route.snapshot?.data['hasSidenav']);
   }
 
   protected shouldShowBanner(): boolean {
-    return (
-      this.tenantStore.storeStatus() === 'CLOSED' ||
-      this.tenantStore.storeStatus() === 'CANCELLED' ||
-      this.tenantStore.storeStatus() === 'OPENING_SOON' ||
-      this.tenantStore.storeStatus() === 'CLOSING_SOON' ||
-      this.tenantStore.storeStatus() === 'CLOSED_MANUALLY'
+    const status = this.tenantStore.storeStatus();
+    return ['CLOSED', 'CANCELLED', 'OPENING_SOON', 'CLOSING_SOON', 'CLOSED_MANUALLY'].includes(
+      status as string
     );
   }
 

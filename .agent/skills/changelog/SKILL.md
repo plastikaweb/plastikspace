@@ -66,7 +66,7 @@ Each release section should include an **issue number** if available, **date** a
 ### Step 3: Insert Entry
 
 1. Open `CHANGELOG.md`
-2. Add entry under `## [Unreleased]` in the appropriate section
+2. Add entry under `## [YYYY-MM-DD]` in the appropriate section
 3. Create section if it doesn't exist
 
 ## When to Add Entries
@@ -79,7 +79,7 @@ Each release section should include an **issue number** if available, **date** a
 When using the **commitizen skill** (`yarn cz` or agent-assisted commits), changelog entries are prompted automatically:
 
 1. After creating a commit with `feat`, `fix`, or `perf` type, the agent will ask if a changelog entry should be added
-2. If confirmed, the entry is added to `[Unreleased]` section
+2. If confirmed, the entry is added to `[YYYY-MM-DD]` section
 3. Description is converted from imperative to past tense
 
 See [commitizen/SKILL.md](../commitizen/SKILL.md) for the full commit workflow.
