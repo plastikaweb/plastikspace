@@ -29,6 +29,9 @@ import {
   ],
   templateUrl: './shipping-method-selector-type.component.html',
   styleUrl: './shipping-method-selector-type.component.scss',
+  host: {
+    class: 'block',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ShippingMethodSelectorTypeComponent extends FieldType<
