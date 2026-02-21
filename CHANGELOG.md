@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-21] - Tenant Logo A11y & Commitizen Rules
+
+### Fixed
+
+- Replaced redundant `aria-label` with `aria-hidden` and cleared `title` on tenant logo to improve accessibility screen reader behavior ([#906](https://github.com/plastikaweb/plastikspace/issues/906))
+- Updated commitizen skill instructions regarding hook behaviors and changelog single-commit rules
+
+---
+
 ## [2026-02-21] - Layout Shifts Fixes
 
 ### Fixed
