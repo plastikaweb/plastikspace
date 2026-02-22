@@ -3,7 +3,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
-import { filter, map, take, tap } from 'rxjs';
+import { filter, map, switchMap, take, tap } from 'rxjs';
 
 export const ecoStoreProductsResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot) => {
   const productStore = inject(ecoStoreProductsStore);
@@ -24,6 +24,7 @@ export const ecoStoreProductsResolver: ResolveFn<boolean> = (route: ActivatedRou
         category: categoryObj?.category ?? null,
       });
     }),
+    switchMap(() => toObservable(productStore.initiallyLoaded).pipe(filter(Boolean), take(1))),
     map(() => true)
   );
 };

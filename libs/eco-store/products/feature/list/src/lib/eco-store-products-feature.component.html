@@ -1,4 +1,4 @@
-@defer (when productsStore.initiallyLoaded()) {
+@if (productsStore.initiallyLoaded()) {
   <div class="px-4 py-8" role="region">
     <!-- Header Section -->
     <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row">
