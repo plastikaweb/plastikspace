@@ -111,7 +111,7 @@ CLOSED: #<task-number-1>, #<task-number-2>
 
 ### Step 7: Add Changelog Entry (prompt)
 
-After completing the commit message, the change should be added to the changelog.
+After completing the commit message, the change should be added to the changelog. This is not optional, unless the user explicitly asks for it.
 
 **Auto-suggest based on type**:
 

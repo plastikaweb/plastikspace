@@ -10,6 +10,7 @@
     "apps/eco-store/scripts/**"
   ],
   "dictionaryDefinitions": [],
+  "ignoreRegExpList": ["86[a-z0-9]{7}"],
   "words": [
     "áéíóú",
     "Ahsan",
@@ -23,11 +24,9 @@
     "classpath",
     "claude",
     "cloudflare",
-    "cnjg",
     "Codeium",
     "commitlint",
     "confirmacio",
-    "ctctm",
     "cursorrules",
     "Datepicker",
     "Deschryver",
@@ -102,7 +101,9 @@
     "wght",
     "windsurfrules",
     "wlixcc",
-    "xdescribe"
+    "xdescribe",
+    "Trae",
+    "llevat"
   ],
   "ignoreWords": [],
   "import": []
