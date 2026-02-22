@@ -13,6 +13,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2026-02-22] - App Loading Fix
+
+### Fixed
+
+- Resolved an issue where the application would hang on a blank screen during initial load by removing a redundant wait for `initiallyLoaded` in the products resolver ([86c8cu7rd](https://app.clickup.com/t/86c8cu7rd))
+
+---
+
 ## [2026-02-22] - Layout Performance
 
 ### Changed
