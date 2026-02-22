@@ -5,7 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-22] - cspell add clickup tasks ids to ignoreRegExpList
+
+### Changed
+
+- Added clickup tasks ids to ignoreRegExpList in cspell.json
+
+---
+
 ## [2026-02-22] - Layout Performance
+
+### Changed
+
+- Replaced `@defer` with `@if` in product list and updated route resolver to wait for data, ensuring LCP images are rendered during SSR and immediately discoverable ([86c8ctf0x](https://app.clickup.com/t/86c8ctf0x))
 
 ### Fixed
 

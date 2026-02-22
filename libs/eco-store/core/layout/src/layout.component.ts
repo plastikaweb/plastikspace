@@ -1,10 +1,11 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
   inject,
   linkedSignal,
+  PLATFORM_ID,
   signal,
   viewChild,
 } from '@angular/core';
@@ -57,6 +58,7 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class LayoutComponent {
+  protected readonly platformId = inject(PLATFORM_ID);
   protected readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly searchFormConfig = appSearchFormConfig();
   protected readonly isBannerDismissed = signal(false);
@@ -91,10 +93,12 @@ export default class LayoutComponent {
         if (this.isMobile()) {
           this.isSidenavOpen.set(false);
         }
-        // Delay scroll to avoid synchronous forced reflows during view transitions / router navigation
-        setTimeout(() => {
-          this.sidenavContent()?.scrollTo({ top: 0, behavior: 'smooth' });
-        });
+        if (isPlatformBrowser(this.platformId)) {
+          // Delay scroll to avoid synchronous forced reflows during view transitions / router navigation
+          setTimeout(() => {
+            this.sidenavContent()?.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
       });
   }
 
