@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-22] - Product Grid & Layout Optimization
+
+### Changed
+
+- Improved LCP by marking critical above-the-fold images (tenant logo and user avatar) for priority loading ([86c8cvpwh](https://app.clickup.com/t/86c8cvpwh))
+- Renamed core layout components (Header, Footer, Menu, etc.) for better naming consistency across the codebase ([86c8cvpwh](https://app.clickup.com/t/86c8cvpwh))
+
+### Fixed
+
+- Resolved resolver hang during SSR by providing the necessary `Injector` context to `toObservable` calls ([86c8cvpwh](https://app.clickup.com/t/86c8cvpwh))
+- Optimized product data fetching by removing `debounceTime` from the base PocketBase store, ensuring immediate response to parameter changes ([86c8cvpwh](https://app.clickup.com/t/86c8cvpwh))
+- Fixed data stale issues by ensuring `initiallyLoaded` is correctly reset to `false` when store parameters change ([86c8cvpwh](https://app.clickup.com/t/86c8cvpwh))
+
+---
+
 ## [2026-02-22] - Render-Blocking Optimizations
 
 ### Changed

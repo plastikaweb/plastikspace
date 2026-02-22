@@ -18,8 +18,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { filter, map, startWith } from 'rxjs';
-import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
-import { UserMenuComponent } from '../user-menu/user-menu.component';
+import { EcoUserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { EcoUserMenuComponent } from '../user-menu/user-menu.component';
 import { useCartBumpAnimation } from '../utils/cart-bump-animation.util';
 
 @Component({
@@ -36,21 +36,21 @@ import { useCartBumpAnimation } from '../utils/cart-bump-animation.util';
     CurrencyPipe,
     MatMenuModule,
     MatTooltipModule,
-    UserAvatarComponent,
-    UserMenuComponent,
+    EcoUserAvatarComponent,
+    EcoUserMenuComponent,
   ],
 
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MenuComponent {
+export class EcoMenuComponent {
   readonly router = inject(Router);
   readonly cartStore = inject(ecoStoreCartStore);
   readonly profileStore = inject(pocketBaseUserProfileStore);
   readonly primaryMenu = viewChild.required<TemplateRef<unknown>>('primaryMenu');
   readonly secondaryMenu = viewChild.required<TemplateRef<unknown>>('secondaryMenu');
-  readonly userMenuComponent = viewChild<UserMenuComponent>('userMenuComponent');
+  readonly userMenuComponent = viewChild<EcoUserMenuComponent>('userMenuComponent');
 
   protected readonly currentUrl = toSignal(
     this.router.events.pipe(

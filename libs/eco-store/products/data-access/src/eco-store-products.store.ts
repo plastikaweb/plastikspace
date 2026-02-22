@@ -47,7 +47,7 @@ export const ecoStoreProductsStore = signalStore(
           { id: 4, direction: 'asc', icon: 'arrow_upward' },
         ],
       },
-      apiRequestDebounceTime: 200,
+      apiRequestDebounceTime: 0,
     },
   }),
 

@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { ImageDimensions, SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { axe } from 'jest-axe';
-import { UserAvatarComponent } from './user-avatar.component';
+import { EcoUserAvatarComponent } from './user-avatar.component';
 
 /* eslint-disable @angular-eslint/component-selector */
 @Component({
@@ -17,23 +17,24 @@ class MockSharedImgContainerComponent {
   title = input<string>('');
   dimensions = input<ImageDimensions>();
   thumbSizes = input<number[]>([100, 300, 500, 750, 1600]);
+  lcpImage = input<boolean>(false);
 }
 
-describe('UserAvatarComponent', () => {
-  let component: UserAvatarComponent;
-  let fixture: ComponentFixture<UserAvatarComponent>;
+describe('EcoUserAvatarComponent', () => {
+  let component: EcoUserAvatarComponent;
+  let fixture: ComponentFixture<EcoUserAvatarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserAvatarComponent, PocketBaseImageUrlPipe],
+      imports: [EcoUserAvatarComponent, PocketBaseImageUrlPipe],
     })
-      .overrideComponent(UserAvatarComponent, {
+      .overrideComponent(EcoUserAvatarComponent, {
         remove: { imports: [SharedImgContainerComponent] },
         add: { imports: [MockSharedImgContainerComponent] },
       })
       .compileComponents();
 
-    fixture = TestBed.createComponent(UserAvatarComponent);
+    fixture = TestBed.createComponent(EcoUserAvatarComponent);
     component = fixture.componentInstance;
   });
 

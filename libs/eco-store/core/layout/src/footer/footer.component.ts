@@ -21,6 +21,6 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   styleUrl: './footer.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FooterComponent {
+export class EcoFooterComponent {
   readonly tenant = input<EcoStoreTenant | null>();
 }

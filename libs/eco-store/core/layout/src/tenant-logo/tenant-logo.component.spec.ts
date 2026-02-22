@@ -1,22 +1,22 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
-import { TenantLogoComponent } from './tenant-logo.component';
+import { EcoTenantLogoComponent } from './tenant-logo.component';
 
 const mockTenant = mockEcoStoreTenantStore.tenant();
 const mockTenantNoLogo = { ...mockTenant, logo: undefined };
 
 describe('TenantLogoComponent', () => {
-  let component: TenantLogoComponent;
-  let fixture: ComponentFixture<TenantLogoComponent>;
+  let component: EcoTenantLogoComponent;
+  let fixture: ComponentFixture<EcoTenantLogoComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TenantLogoComponent],
+      imports: [EcoTenantLogoComponent],
       providers: [provideTranslateService()],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(TenantLogoComponent);
+    fixture = TestBed.createComponent(EcoTenantLogoComponent);
     component = fixture.componentInstance;
   });
 

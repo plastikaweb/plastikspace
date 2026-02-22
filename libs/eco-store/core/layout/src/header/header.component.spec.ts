@@ -7,11 +7,11 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { CountdownService } from '@plastik/shared/countdown/util';
 import { axe } from 'jest-axe';
-import { HeaderComponent } from './header.component';
+import { EcoHeaderComponent } from './header.component';
 
 describe('HeaderComponent', () => {
-  let component: HeaderComponent;
-  let fixture: ComponentFixture<HeaderComponent>;
+  let component: EcoHeaderComponent;
+  let fixture: ComponentFixture<EcoHeaderComponent>;
 
   const mockFormConfig: FormConfig<{ query: string }> = {
     getConfig: () => [
@@ -36,7 +36,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent, EcoStoreFormlyModule],
+      imports: [EcoHeaderComponent, EcoStoreFormlyModule],
       providers: [
         provideRouter([]),
         provideTranslateService(),
@@ -57,7 +57,7 @@ describe('HeaderComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HeaderComponent);
+    fixture = TestBed.createComponent(EcoHeaderComponent);
     fixture.componentRef.setInput('formConfig', mockFormConfig);
     fixture.componentRef.setInput('tenant', mockEcoStoreTenantStore.tenant());
     component = fixture.componentInstance;

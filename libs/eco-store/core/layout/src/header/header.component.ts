@@ -24,7 +24,7 @@ import { EcoTenantLinkComponent } from '../tenant-link/tenant-link.component';
   styleUrl: './header.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
+export class EcoHeaderComponent {
   readonly formConfig = input<FormConfig<{ query: string }>>();
   readonly tenant = input<EcoStoreTenant | null>();
   readonly storeStatus = input<EcoStoreTenantWindowStatus | undefined>();

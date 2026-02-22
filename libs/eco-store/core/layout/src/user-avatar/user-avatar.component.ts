@@ -13,7 +13,8 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
         [src]="user() | pocketBaseImageUrl: user().avatar"
         [title]="user().name || 'Avatar'"
         [dimensions]="{ width: 60, height: 60 }"
-        [thumbSizes]="[50, 100, 200]" />
+        [thumbSizes]="[50, 100, 200]"
+        [lcpImage]="true" />
     } @else {
       <span
         [class]="
@@ -26,7 +27,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserAvatarComponent {
+export class EcoUserAvatarComponent {
   readonly user = input.required<PocketBaseUser>();
   readonly initials = input<string | undefined>();
   readonly avatarClass = input<string>('size-6');

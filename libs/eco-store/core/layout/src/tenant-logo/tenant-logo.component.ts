@@ -14,6 +14,6 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TenantLogoComponent {
+export class EcoTenantLogoComponent {
   readonly tenant = input<EcoStoreTenant | null>();
 }
