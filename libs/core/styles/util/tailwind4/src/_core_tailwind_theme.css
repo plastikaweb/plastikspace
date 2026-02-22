@@ -299,10 +299,13 @@
      SPACING SYSTEM
      ============================================ */
 
+  --spacing-tiny: var(--space-tiny);
+  --spacing-sub: var(--space-sub);
   --spacing-xs: var(--space-xs);
   --spacing-sm: var(--space-sm);
   --spacing-md: var(--space-md);
   --spacing-lg: var(--space-lg);
   --spacing-xl: var(--space-xl);
   --spacing-2xl: var(--space-2xl);
+  --spacing-xxl: var(--space-xxl);
 }

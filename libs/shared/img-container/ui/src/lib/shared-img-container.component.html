@@ -47,7 +47,7 @@
   <ng-template #fillImage let-priority="priority">
     <img
       fill
-      class="max-h-auto my-sub w-full object-cover transition-opacity duration-300"
+      class="my-sub w-full object-cover transition-opacity duration-300"
       [class.opacity-0]="isLoading()"
       [class.opacity-100]="!isLoading() && !hasError()"
       [priority]="priority"

@@ -12,7 +12,7 @@ import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { EcoUserAvatarComponent } from '../user-avatar/user-avatar.component';
 
 @Component({
   selector: 'eco-user-menu',
@@ -22,13 +22,13 @@ import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
     MatIconModule,
     RouterLink,
     TranslateModule,
-    UserAvatarComponent,
+    EcoUserAvatarComponent,
   ],
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UserMenuComponent {
+export class EcoUserMenuComponent {
   protected readonly profileStore = inject(pocketBaseUserProfileStore);
 
   logoutEvent = output<void>();

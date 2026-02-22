@@ -10,12 +10,12 @@ import { MatPaginatorIntlService } from '@plastik/core/paginator';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import { EcoStoreCategoryRouteTitleService } from './eco-store-category-route-title.service';
-import LayoutComponent from './layout.component';
+import EcoLayoutComponent from './layout.component';
 
 export const layoutRoutes: Route[] = [
   {
     path: '',
-    component: LayoutComponent,
+    component: EcoLayoutComponent,
     providers: [
       {
         provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,

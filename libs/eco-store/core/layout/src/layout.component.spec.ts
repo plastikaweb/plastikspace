@@ -11,22 +11,22 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { CountdownService } from '@plastik/shared/countdown/util';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import { FooterComponent } from './footer/footer.component';
-import { HeaderComponent } from './header/header.component';
-import LayoutComponent from './layout.component';
-import { MenuComponent } from './menu/menu.component';
+import { EcoFooterComponent } from './footer/footer.component';
+import { EcoHeaderComponent } from './header/header.component';
+import EcoLayoutComponent from './layout.component';
+import { EcoMenuComponent } from './menu/menu.component';
 
 describe('LayoutComponent', () => {
-  let component: LayoutComponent;
-  let fixture: ComponentFixture<LayoutComponent>;
+  let component: EcoLayoutComponent;
+  let fixture: ComponentFixture<EcoLayoutComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        LayoutComponent,
-        HeaderComponent,
-        FooterComponent,
-        MenuComponent,
+        EcoLayoutComponent,
+        EcoHeaderComponent,
+        EcoFooterComponent,
+        EcoMenuComponent,
         EcoStoreFormlyModule,
       ],
       providers: [
@@ -58,7 +58,7 @@ describe('LayoutComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LayoutComponent);
+    fixture = TestBed.createComponent(EcoLayoutComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

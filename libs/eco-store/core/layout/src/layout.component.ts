@@ -24,11 +24,11 @@ import {
 } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { filter, map } from 'rxjs';
-import { FooterComponent } from './footer/footer.component';
-import { HeaderComponent } from './header/header.component';
-import { MenuComponent } from './menu/menu.component';
-import { MobileNavComponent } from './mobile-nav/mobile-nav.component';
-import { TenantLogoComponent } from './tenant-logo/tenant-logo.component';
+import { EcoFooterComponent } from './footer/footer.component';
+import { EcoHeaderComponent } from './header/header.component';
+import { EcoMenuComponent } from './menu/menu.component';
+import { EcoMobileNavComponent } from './mobile-nav/mobile-nav.component';
+import { EcoTenantLogoComponent } from './tenant-logo/tenant-logo.component';
 
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { appSearchFormConfig } from '@plastik/eco-store/formly';
@@ -36,28 +36,27 @@ import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 
 @Component({
-  selector: 'eco-layout',
   imports: [
     NgTemplateOutlet,
     RouterModule,
     MatSidenavContainer,
     MatSidenavContent,
-    HeaderComponent,
-    FooterComponent,
-    MenuComponent,
+    EcoHeaderComponent,
+    EcoFooterComponent,
+    EcoMenuComponent,
     MatSidenav,
     TranslateModule,
     StoreStatusBannerComponent,
     MatIconModule,
     MatButtonModule,
-    TenantLogoComponent,
-    MobileNavComponent,
+    EcoTenantLogoComponent,
+    EcoMobileNavComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export default class LayoutComponent {
+export default class EcoLayoutComponent {
   protected readonly platformId = inject(PLATFORM_ID);
   protected readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly searchFormConfig = appSearchFormConfig();

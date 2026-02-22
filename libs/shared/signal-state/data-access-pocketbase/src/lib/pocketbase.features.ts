@@ -17,7 +17,7 @@ import { DataGet, DataGetList } from '@plastik/core/api-base';
 import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { ClientResponseError, ListResult } from 'pocketbase';
-import { debounceTime, filter, pipe, switchMap, tap } from 'rxjs';
+import { filter, pipe, switchMap, tap } from 'rxjs';
 import {
   initialGetListState,
   PocketBaseGetListState,
@@ -99,8 +99,9 @@ export function withPocketBaseListFeature<
         getList: rxMethod<{ params: ReturnType<typeof store.formattedParams>; enabled: boolean }>(
           pipe(
             filter(({ enabled }) => enabled),
-            debounceTime(store.apiRequestDebounceTime()),
-            tap(() => updateState(store, `[${featureName}] getList`)),
+            tap(() => {
+              updateState(store, `[${featureName}] getList`);
+            }),
             switchMap(({ params }) => {
               return store._apiService.getList(params).pipe(
                 tapResponse<ListResult<T>, ClientResponseError>({

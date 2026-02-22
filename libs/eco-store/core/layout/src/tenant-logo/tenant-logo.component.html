@@ -4,7 +4,8 @@
     [src]="tenant() | pocketBaseImageUrl: tenant()?.logo"
     [title]="''"
     [dimensions]="{ height: 32, width: 32 }"
-    [thumbSizes]="[60, 200]"></plastik-img-container>
+    [thumbSizes]="[60, 200]"
+    [lcpImage]="true"></plastik-img-container>
 } @else {
   <mat-icon aria-hidden="true">eco_logo</mat-icon>
 }

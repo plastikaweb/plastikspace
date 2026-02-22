@@ -2,20 +2,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
-import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { axe, toHaveNoViolations } from 'jest-axe';
-import { MenuComponent } from './menu.component';
+import { EcoMenuComponent } from './menu.component';
 
 describe('MenuComponent', () => {
-  let component: MenuComponent;
-  let fixture: ComponentFixture<MenuComponent>;
+  let component: EcoMenuComponent;
+  let fixture: ComponentFixture<EcoMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MenuComponent],
+      imports: [EcoMenuComponent],
       providers: [
         provideRouter([]),
         provideTranslateService(),
@@ -31,7 +31,7 @@ describe('MenuComponent', () => {
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MenuComponent);
+    fixture = TestBed.createComponent(EcoMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

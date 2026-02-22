@@ -579,10 +579,13 @@ html {
 
 /* Spacing scale for organic layouts - used by tailwind-theme.css */
 html {
+  --space-tiny: 0.0625rem;
+  --space-sub: 0.125rem;
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
   --space-lg: 1.5rem;
   --space-xl: 2rem;
   --space-2xl: 3rem;
+  --space-xxl: 4rem;
 }
