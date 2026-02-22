@@ -91,7 +91,10 @@ export default class LayoutComponent {
         if (this.isMobile()) {
           this.isSidenavOpen.set(false);
         }
-        this.sidenavContent()?.scrollTo({ top: 0, behavior: 'smooth' });
+        // Delay scroll to avoid synchronous forced reflows during view transitions / router navigation
+        setTimeout(() => {
+          this.sidenavContent()?.scrollTo({ top: 0, behavior: 'smooth' });
+        });
       });
   }
 

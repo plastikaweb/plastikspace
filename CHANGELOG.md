@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-22] - Layout Performance
+
+### Fixed
+
+- Prevented synchronous forced reflows during page load by disabling `mat-sidenav` autofocus and `mat-stepper` animations ([86c8cte5c](https://app.clickup.com/t/86c8cte5c))
+
+---
+
+## [2026-02-22] - CI Workflows
+
+### Changed
+
+- Disconnected `pa11y` CI workflows for `eco-store` and `nasa-images` temporarily due to limited Nx Cloud credits ([#912](https://github.com/plastikaweb/plastikspace/pull/912))
+
+---
+
 ## [2026-02-22] - Font Display Performance
 
 ### Changed
