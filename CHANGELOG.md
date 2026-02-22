@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-22] - Render-Blocking Optimizations
+
+### Changed
+
+- Optimized Google Fonts loading by adding `preconnect`/`dns-prefetch` hints and using a non-blocking `preload` pattern in `index.html` ([86c8cuxwv](https://app.clickup.com/t/86c8cuxwv))
+- Enabled build optimizations and output hashing for the `staging` environment in `project.json` to reduce render-blocking CSS impact ([86c8cuxwv](https://app.clickup.com/t/86c8cuxwv))
+
+---
+
 ## [2026-02-22] - cspell add clickup tasks ids to ignoreRegExpList
 
 ### Changed
