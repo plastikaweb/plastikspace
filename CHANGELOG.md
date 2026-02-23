@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added smooth CSS view transitions in products grid and detail ([86c8d3n0y](https://app.clickup.com/t/86c8d3n0y))
 
+### Changed
+
+- Replaced `transition: all` with explicit properties to prevent non-composited animations and layout shifts ([86c8dmjp4](https://app.clickup.com/t/86c8dmjp4))
+
 ## [2026-02-22] - Product Grid & Layout Optimization
 
 ### Changed

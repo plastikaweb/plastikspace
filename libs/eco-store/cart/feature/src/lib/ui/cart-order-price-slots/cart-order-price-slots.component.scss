@@ -13,7 +13,7 @@
   // Tier Visualization Styles
   .tier-label {
     transform: translateX(-50%);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
 
     &:first-of-type {
       transform: translateX(0);
@@ -45,7 +45,7 @@
   // Shipping Cost Labels
   .shipping-cost-label {
     transform: translateX(-50%);
-    transition: all 0.3s ease;
+    transition: transform 0.3s ease;
     color: var(--neutral-700);
 
     &:first-of-type {
@@ -59,7 +59,11 @@
 
   // Shipping Status Box
   .cart-order-price-slots__shipping {
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition:
+      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
     &.free {
@@ -95,7 +99,9 @@
     }
 
     mat-icon {
-      transition: all 0.3s ease;
+      transition:
+        color 0.3s ease,
+        transform 0.3s ease;
     }
 
     &:hover {

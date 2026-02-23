@@ -1,7 +1,11 @@
 :root {
   .mat-mdc-button-base,
   .mat-mdc-list-item::before {
-    transition: all 0.1s ease-in-out !important;
+    transition:
+      background-color 0.1s ease-in-out,
+      opacity 0.1s ease-in-out,
+      transform 0.1s ease-in-out,
+      box-shadow 0.1s ease-in-out !important;
   }
 
   .mat-mdc-icon-button {
