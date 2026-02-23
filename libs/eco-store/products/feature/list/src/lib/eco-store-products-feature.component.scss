@@ -7,4 +7,13 @@
     grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
     gap: var(--product-gap);
   }
+
+  .eco-store-product-card-skeleton {
+    background-color: var(--neutral-50);
+    border: 1px solid var(--neutral-200);
+    height: 200px;
+    width: 100%;
+    animation: pulse 1.5s infinite;
+    border-radius: var(--app-main-border-radius);
+  }
 }

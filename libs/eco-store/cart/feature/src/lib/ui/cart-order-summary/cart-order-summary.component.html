@@ -4,21 +4,21 @@
     <mat-icon>receipt</mat-icon>
   </mat-card-header>
 
-  <mat-card-content class="my-4 space-y-4 p-6">
-    <div class="flex justify-between text-neutral-600">
+  <mat-card-content class="my-4 p-6">
+    <div class="mt-4 flex justify-between text-neutral-600">
       <span>{{ 'cart.summary.subtotal' | translate }}</span>
       <span class="font-medium text-gray-900">{{
         subtotal() | currency: 'EUR' : 'symbol' : '1.2-2'
       }}</span>
     </div>
-    <div class="flex justify-between text-neutral-600">
+    <div class="mt-4 flex justify-between text-neutral-600">
       <span>{{ 'cart.summary.taxes' | translate }}</span>
       <span class="font-medium text-gray-900">{{
         taxes() | currency: 'EUR' : 'symbol' : '1.2-2'
       }}</span>
     </div>
 
-    <div class="flex justify-between text-neutral-600">
+    <div class="mt-4 flex justify-between text-neutral-600">
       <span>{{ `cart.summary.${deliveryType()}` | translate }}</span>
       <span class="font-medium text-gray-900">{{
         shipping() | currency: 'EUR' : 'symbol' : '1.2-2'
@@ -27,9 +27,9 @@
 
     <ng-content select="[extra-shipping-content]"></ng-content>
 
-    <hr class="border-neutral-200" />
+    <hr class="mt-4 border-neutral-200" />
 
-    <div class="my-4 flex items-center justify-between">
+    <div class="mt-4 flex items-center justify-between">
       <span class="text-lg font-bold text-gray-900">{{ 'cart.summary.total' | translate }}</span>
       <span class="text-3xl font-bold text-[#8B4513]">{{
         total() | currency: 'EUR' : 'symbol' : '1.2-2'

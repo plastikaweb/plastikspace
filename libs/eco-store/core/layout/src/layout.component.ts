@@ -101,6 +101,10 @@ export default class EcoLayoutComponent {
       });
   }
 
+  protected dismissBanner(): void {
+    this.isBannerDismissed.set(true);
+  }
+
   #getSidenavDataFromActiveRoute(): boolean {
     let route = this.#activatedRoute;
     while (route.firstChild) {

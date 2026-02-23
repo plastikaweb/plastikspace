@@ -61,7 +61,6 @@
   .cart-order-price-slots__shipping {
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    animation: slideIn 0.3s ease-out;
 
     &.free {
       background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
@@ -102,41 +101,6 @@
     &:hover {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
       transform: translateY(-1px);
-    }
-  }
-
-  // Animations
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes pulse {
-    0%,
-    100% {
-      transform: scale(1);
-    }
-
-    50% {
-      transform: scale(1.1);
-    }
-  }
-
-  @keyframes slide {
-    0%,
-    100% {
-      transform: translateX(0);
-    }
-
-    50% {
-      transform: translateX(2px);
     }
   }
 }

@@ -20,4 +20,12 @@
   .mat-drawer-container {
     background-color: var(--mat-sys-background);
   }
+
+  .mat-drawer-transition .mat-drawer {
+    transition: none !important;
+  }
+
+  .mat-drawer-transition .mat-drawer-content {
+    transition: none !important;
+  }
 }

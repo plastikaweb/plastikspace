@@ -60,6 +60,10 @@ export interface EcoStoreProductCanDeactivateComponent {
 }
 ```
 
+## View Transitions
+
+This module incorporates smooth CSS view transitions to provide a seamless and visually appealing user experience during interactions and navigation.
+
 ## Running unit tests
 
 Run `nx test eco-store-product-feature` to execute the unit tests via Jest.

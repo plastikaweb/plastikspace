@@ -10,6 +10,7 @@
   - [Usage](#usage)
   - [API Reference](#api-reference)
     - [`SharedImgContainerComponent`](#sharedimgcontainercomponent)
+  - [View Transitions](#view-transitions)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -76,6 +77,10 @@ export class UserProfileComponent {
 | `lcpImage`   | `boolean`                           | `false`                           | Set to `true` if this image is the Largest Contentfull Paint element. |
 | `sizes`      | `string`                            | `'(max-width: 639px) 100vw, ...'` | Native `sizes` attribute for responsive images.                       |
 | `thumbSizes` | `number[]`                          | `[100, 300, 500, 750, 1600]`      | Array of available thumbnail width sizes to generate `srcset`.        |
+
+## View Transitions
+
+This module incorporates smooth CSS view transitions to provide a seamless and visually appealing user experience during interactions and navigation.
 
 ## Running unit tests
 

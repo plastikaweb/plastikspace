@@ -55,6 +55,10 @@ Selector: `eco-store-status-banner`
   (dismiss)="onDismissBanner()" />
 ```
 
+## View Transitions
+
+This module incorporates smooth CSS view transitions to provide a seamless and visually appealing user experience during interactions and navigation.
+
 ## Running unit tests
 
 Run `nx test eco-store-shared-store-status-banner` to execute the unit tests via Jest.

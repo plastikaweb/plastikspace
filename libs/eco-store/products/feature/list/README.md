@@ -71,6 +71,10 @@ The component relies on the injected Store for its data and does not require inp
 | :---- | :--- | :-------------------------------------------------------- |
 | N/A   | -    | This is a smart container request its own data via Store. |
 
+## View Transitions
+
+This module incorporates smooth CSS view transitions to provide a seamless and visually appealing user experience during interactions and navigation.
+
 ## Running unit tests
 
 Run `nx test eco-store-products-feature` to execute the unit tests via [Jest](https://jestjs.io/).
