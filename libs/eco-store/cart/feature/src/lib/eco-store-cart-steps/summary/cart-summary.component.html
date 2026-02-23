@@ -12,7 +12,7 @@
 
     <div class="cart-summary-card @container mb-8">
       @for (group of cartStore.itemsGroupedByCategory() | keyvalue; track group.key) {
-        <div class="mb-4 px-4 py-2">
+        <div animate.enter="fade-in" animate.leave="fade-out" class="mb-4 px-4 py-2">
           <span class="text-tertiary-500 text-xs font-bold tracking-wider uppercase">{{
             group.key
           }}</span>
@@ -21,10 +21,13 @@
         @for (item of group.value; track item.product.id; let i = $index) {
           <mat-card
             appearance="outlined"
+            animate.enter="fade-in"
+            animate.leave="fade-out"
             class="cart-item-card my-4! flex items-start! justify-between gap-0! shadow-sm @xl:flex-row! @xl:items-center! @xl:gap-4!">
             <mat-card-content class="inline-flex! flex-row items-center! justify-start! gap-4 p-4!">
               <plastik-img-container
                 class="hover:border-primary-500 cursor-pointer overflow-hidden rounded-lg transition-all duration-100 hover:contrast-120"
+                [style.view-transition-name]="`product-image-${item.product.id}`"
                 [src]="item.product | pocketBaseImageUrl: item.product.images?.[0]"
                 [title]="item.product.name"
                 [lcpImage]="i === 0"

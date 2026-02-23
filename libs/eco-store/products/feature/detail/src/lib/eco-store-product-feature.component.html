@@ -29,8 +29,7 @@
     <div class="grid grid-cols-1 items-start gap-12 md:grid-cols-2">
       <!-- Media Section (Left) -->
       <section class="media-layout">
-        <div
-          class="media-main group relative h-fit min-w-0 overflow-hidden rounded-3xl border border-gray-100 shadow-sm">
+        <div class="media-main group relative h-fit min-w-0">
           <!-- Badges Overlay -->
           <div class="absolute top-6 left-6 z-10">
             <mat-chip-set class="flex flex-wrap gap-2" role="list">
@@ -46,6 +45,9 @@
           </div>
 
           <plastik-img-container
+            class="overflow-hidden rounded-3xl"
+            [style.view-transition-name]="`product-image-${productData.id}`"
+            [style.view-transition-class]="'product-image-transition'"
             [src]="
               productData
                 | pocketBaseImageUrl
@@ -90,7 +92,8 @@
         <!-- Title -->
         <div class="mb-8 flex items-center gap-4">
           <h2
-            class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
+            class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl"
+            [style.view-transition-name]="`product-name-${productData.id}`">
             {{ productData.name }}
           </h2>
           <eco-store-shared-favorite-button

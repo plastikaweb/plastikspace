@@ -9,6 +9,7 @@
   - [Route Data Configuration](#route-data-configuration)
   - [Architecture](#architecture)
   - [Usage](#usage)
+  - [View Transitions](#view-transitions)
 
 ## Description
 
@@ -71,3 +72,7 @@ export const appRoutes: Route[] = [
   },
 ];
 ```
+
+## View Transitions
+
+This module incorporates smooth CSS view transitions to provide a seamless and visually appealing user experience during interactions and navigation.

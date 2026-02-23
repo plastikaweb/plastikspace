@@ -18,6 +18,7 @@
       - [NewPriceWarningComponent](#newpricewarningcomponent)
   - [Cart Steps](#cart-steps)
     - [Shipping Unavailable Component](#shipping-unavailable-component)
+  - [View Transitions](#view-transitions)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -312,6 +313,10 @@ All text content is internationalized under the `cart.steps.shipping.unavailable
   canActivate: [shippingUnavailableGuard],
 }
 ```
+
+## View Transitions
+
+This module incorporates smooth CSS view transitions to provide a seamless and visually appealing user experience during interactions and navigation.
 
 ## Running unit tests
 

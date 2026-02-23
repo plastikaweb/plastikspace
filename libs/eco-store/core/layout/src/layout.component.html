@@ -45,17 +45,21 @@
         role="main"
         class="mt-20 mb-10 min-h-[calc(100dvh-126px)] flex-1 px-2 sm:px-4">
         @if (shouldShowBanner() && !isBannerDismissed()) {
-          @defer (when shouldShowBanner() && !isBannerDismissed()) {
-            <eco-store-status-banner
-              class="mt-8"
-              [status]="tenantStore.storeStatus()"
-              [nextOpenDate]="tenantStore.nextOpenDate()"
-              [closedReason]="tenantStore.closedReasonTranslated()"
-              (dismiss)="isBannerDismissed.set(true)">
-            </eco-store-status-banner>
-          } @placeholder {
-            <div class="h-20 w-full"></div>
-          }
+          <div animate.leave="banner-anim-leave" class="grid overflow-hidden">
+            <div class="min-h-0" animate.leave="slide-out">
+              @defer (when shouldShowBanner() && !isBannerDismissed()) {
+                <eco-store-status-banner
+                  class="relative mt-8 pb-4"
+                  [status]="tenantStore.storeStatus()"
+                  [nextOpenDate]="tenantStore.nextOpenDate()"
+                  [closedReason]="tenantStore.closedReasonTranslated()"
+                  (dismiss)="dismissBanner()">
+                </eco-store-status-banner>
+              } @placeholder {
+                <div class="h-20 w-full"></div>
+              }
+            </div>
+          </div>
         }
 
         <router-outlet></router-outlet>

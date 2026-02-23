@@ -15,6 +15,7 @@
       - [Inputs](#inputs-1)
       - [Outputs](#outputs-1)
   - [Feature Integration](#feature-integration)
+  - [View Transitions](#view-transitions)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -86,6 +87,10 @@ The `EcoStoreProductCardComponent` integrates the following shared libraries:
 - `EcoStoreProductCategoryLabelComponent` from `@plastik/eco-store/shared/product-category-label`
 - `EcoStoreProductPriceComponent` from `@plastik/eco-store/shared/product-price`
 - `EcoStoreSharedFavoriteButtonComponent` from `@plastik/eco-store/shared/favorite-button`
+
+## View Transitions
+
+This module incorporates smooth CSS view transitions to provide a seamless and visually appealing user experience during interactions and navigation.
 
 ## Running unit tests
 

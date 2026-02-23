@@ -22,8 +22,10 @@
     <div class="relative isolate mb-4 aspect-square w-full">
       <div class="flex h-full w-full items-center justify-center">
         <plastik-img-container
-          class="h-full w-full object-cover transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
+          class="h-full w-full rounded-lg transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
           sizes="(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px"
+          [style.view-transition-name]="`product-image-${productData.id}`"
+          [style.view-transition-class]="'product-image-transition'"
           [src]="productData | pocketBaseImageUrl: productData.images?.[0]"
           [title]="productData.name"
           [lcpImage]="isFirst()" />

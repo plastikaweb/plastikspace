@@ -35,19 +35,23 @@
       [actionButtonText]="'cart.shipping.goToConfirmation'"
       [actionRoute]="['../confirmacio']"
       [submitAvailable]="formValid()">
-      <div extra-shipping-content>
-        @if (cartStore.method() === 'delivery') {
-          @defer (on viewport) {
-            <eco-cart-order-price-slots
-              class="my-6 px-2"
-              [cartTotal]="cartStore.subtotal() + cartStore.tax()"
-              [tiers]="tenantStore.getTenantDeliveryPriceTiers()">
-            </eco-cart-order-price-slots>
-          } @placeholder {
-            <div class="my-6 h-24 w-full animate-pulse bg-neutral-50 px-2"></div>
-          }
-        }
-      </div>
+      @if (cartStore.method() === 'delivery') {
+        <div extra-shipping-content class="overflow-hidden">
+          <div class="min-h-0">
+            <div class="py-6">
+              @defer (on viewport) {
+                <eco-cart-order-price-slots
+                  class="block px-2"
+                  [cartTotal]="cartStore.subtotal() + cartStore.tax()"
+                  [tiers]="tenantStore.getTenantDeliveryPriceTiers()">
+                </eco-cart-order-price-slots>
+              } @placeholder {
+                <div class="h-24 w-full animate-pulse bg-neutral-50 px-2"></div>
+              }
+            </div>
+          </div>
+        </div>
+      }
     </eco-cart-order-summary>
   </div>
 </div>
