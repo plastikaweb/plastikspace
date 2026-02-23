@@ -882,9 +882,6 @@ html {
   .my-4\! {
     margin-block: calc(var(--spacing) * 4) !important;
   }
-  .my-6 {
-    margin-block: calc(var(--spacing) * 6);
-  }
   .my-8 {
     margin-block: calc(var(--spacing) * 8);
   }
@@ -1176,6 +1173,9 @@ html {
   .max-h-\[400px\] {
     max-height: 400px;
   }
+  .min-h-0 {
+    min-height: var(--spacing-0);
+  }
   .min-h-9 {
     min-height: calc(var(--spacing) * 9);
   }
@@ -1421,6 +1421,9 @@ html {
   }
   .flex-auto {
     flex: auto;
+  }
+  .flex-shrink-0 {
+    flex-shrink: 0;
   }
   .shrink-0 {
     flex-shrink: 0;
@@ -1683,11 +1686,6 @@ html {
     --tw-space-y-reverse: 0;
     margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
     margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
-  }
-  :where(.space-y-4 > :not(:last-child)) {
-    --tw-space-y-reverse: 0;
-    margin-block-start: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));
-    margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
   }
   :where(.space-y-6 > :not(:last-child)) {
     --tw-space-y-reverse: 0;
