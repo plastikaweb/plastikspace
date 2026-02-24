@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-24] - Tenant Info Fix & TSConfig Alignment
+
+### Fixed
+
+- Resolved an issue where tenant information was missing on web reload in staging by ensuring session storage is checked when the query parameter is absent ([86c8e10eu](https://app.clickup.com/t/86c8e10eu))
+- Fixed TypeScript compilation and IDE errors by aligning `composite` settings across countdown and entity libraries and adding missing project references ([86c8e10eu](https://app.clickup.com/t/86c8e10eu))
+
+### Changed
+
+- Updated Material Symbols icon names in `index.html` ([86c8e10eu](https://app.clickup.com/t/86c8e10eu))
+
+---
+
 ## [2026-02-24] - Performance Improvements
 
 ### Added

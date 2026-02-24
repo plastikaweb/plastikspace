@@ -16,5 +16,19 @@
     "jest.config.ts",
     "jest.config.cts",
     "src/test-setup.ts"
+  ],
+  "references": [
+    {
+      "path": "../../../../libs/shared/countdown/util"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects"
+    },
+    {
+      "path": "../entities"
+    },
+    {
+      "path": "../../../../libs/core/entities"
+    }
   ]
 }

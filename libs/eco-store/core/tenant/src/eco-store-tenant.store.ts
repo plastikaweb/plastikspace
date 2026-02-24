@@ -1,7 +1,7 @@
 import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
-import { computed, inject } from '@angular/core';
+import { computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { signalStore, withComputed, withMethods, withProps } from '@ngrx/signals';
+import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { TranslateService } from '@ngx-translate/core';
 import { FormSelectOption, LocalizedFields } from '@plastik/core/entities';
 import {
@@ -433,5 +433,18 @@ export const ecoStoreTenantStore = signalStore(
         isShippingMethodConfigured(type, options, store.addresses())
       );
     },
-  }))
+  })),
+  withHooks({
+    onInit(store) {
+      effect(() => {
+        const tenant = store._tenantService.tenant();
+        if (tenant) {
+          updateState(store, '[tenant] service signal updated', {
+            tenant,
+            loaded: true,
+          });
+        }
+      });
+    },
+  })
 );
