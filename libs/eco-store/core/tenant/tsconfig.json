@@ -27,6 +27,18 @@
     },
     {
       "path": "./tsconfig.spec.json"
+    },
+    {
+      "path": "../../../../libs/shared/countdown/util"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects"
+    },
+    {
+      "path": "../entities"
+    },
+    {
+      "path": "../../../../libs/core/entities"
     }
   ]
 }

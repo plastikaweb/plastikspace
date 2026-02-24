@@ -15,5 +15,19 @@
     "src/**/*.spec.ts",
     "src/**/*.store.mock.ts",
     "src/**/*.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../../../../libs/shared/countdown/util"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects"
+    },
+    {
+      "path": "../entities"
+    },
+    {
+      "path": "../../../../libs/core/entities"
+    }
   ]
 }

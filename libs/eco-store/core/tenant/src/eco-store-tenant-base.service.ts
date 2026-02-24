@@ -58,7 +58,6 @@ export abstract class EcoStoreTenantBaseService {
       if (!tenant.active) {
         throw new Error('Tenant is inactive');
       }
-
       this.tenant.set(tenant);
       if (isPlatformBrowser(this.platformId)) {
         localStorage.setItem(cacheKey, JSON.stringify(tenant));
