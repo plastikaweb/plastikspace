@@ -10431,6 +10431,24 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedFormFeatureComponent, { className: "SharedFormFeatureComponent", filePath: "libs/shared/form/feature/src/lib/shared-form-feature.component.ts", lineNumber: 35 });
 })();
 
+// libs/shared/form/feature/src/lib/shared-form-feature.module.ts
+var SharedFormFeatureModule = class _SharedFormFeatureModule {
+  static \u0275fac = function SharedFormFeatureModule_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _SharedFormFeatureModule)();
+  };
+  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({ type: _SharedFormFeatureModule });
+  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({ imports: [SharedFormFeatureComponent, FormlyModule] });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedFormFeatureModule, [{
+    type: NgModule,
+    args: [{
+      imports: [SharedFormFeatureComponent, FormlyModule],
+      exports: [SharedFormFeatureComponent]
+    }]
+  }], null, null);
+})();
+
 // node_modules/@angular/cdk/fesm2022/observers-private.mjs
 var loopLimitExceededErrorHandler = (e) => {
   if (e instanceof ErrorEvent && e.message === "ResizeObserver loop limit exceeded") {
@@ -17776,24 +17794,6 @@ var FormlyMaterialModule = class _FormlyMaterialModule {
   }], null, null);
 })();
 
-// libs/shared/form/feature/src/lib/shared-form-feature.module.ts
-var SharedFormFeatureModule = class _SharedFormFeatureModule {
-  static \u0275fac = function SharedFormFeatureModule_Factory(__ngFactoryType__) {
-    return new (__ngFactoryType__ || _SharedFormFeatureModule)();
-  };
-  static \u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({ type: _SharedFormFeatureModule });
-  static \u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({ imports: [SharedFormFeatureComponent, FormlyMaterialModule, FormlyModule] });
-};
-(() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(SharedFormFeatureModule, [{
-    type: NgModule,
-    args: [{
-      imports: [SharedFormFeatureComponent, FormlyMaterialModule, FormlyModule],
-      exports: [SharedFormFeatureComponent]
-    }]
-  }], null, null);
-})();
-
 // libs/shared/form/feature/src/lib/shared-form-feature.providers.ts
 function provideFormlyConfig2() {
   return makeEnvironmentProviders([
@@ -17842,6 +17842,7 @@ export {
   LegacyFormlyAttributes,
   FormlyModule,
   SharedFormFeatureComponent,
+  SharedFormFeatureModule,
   MatLabel,
   MatPrefix,
   MatSuffix,
@@ -17870,7 +17871,6 @@ export {
   MAT_DATE_LOCALE,
   DateAdapter,
   MAT_DATE_FORMATS,
-  SharedFormFeatureModule,
   provideFormlyConfig2 as provideFormlyConfig
 };
 /*! Bundled license information:
@@ -17882,4 +17882,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-DG2RK7NC.js.map
+//# sourceMappingURL=chunk-WSREVYAK.js.map

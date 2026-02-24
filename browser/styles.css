@@ -1452,6 +1452,12 @@ html {
     --tw-scale-z: 75% !important;
     scale: var(--tw-scale-x) var(--tw-scale-y) !important;
   }
+  .scale-80\! {
+    --tw-scale-x: 80% !important;
+    --tw-scale-y: 80% !important;
+    --tw-scale-z: 80% !important;
+    scale: var(--tw-scale-x) var(--tw-scale-y) !important;
+  }
   .scale-90 {
     --tw-scale-x: 90%;
     --tw-scale-y: 90%;
@@ -1637,6 +1643,9 @@ html {
   }
   .gap-1 {
     gap: calc(var(--spacing) * 1);
+  }
+  .gap-1\.5 {
+    gap: calc(var(--spacing) * 1.5);
   }
   .gap-2 {
     gap: calc(var(--spacing) * 2);
@@ -1910,6 +1919,9 @@ html {
   }
   .bg-neutral-50 {
     background-color: var(--color-neutral-50);
+  }
+  .bg-neutral-100 {
+    background-color: var(--color-neutral-100);
   }
   .bg-neutral-400 {
     background-color: var(--color-neutral-400);
