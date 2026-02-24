@@ -52,11 +52,13 @@
     "libpeerconnection",
     "llecoop",
     "Llecoop",
+    "llevat",
     "Matheu",
     "Menlo",
     "Netanel",
     "ngrx",
     "ngsw",
+    "nosniff",
     "nrwl",
     "oklch",
     "packagr",
@@ -90,6 +92,7 @@
     "theming",
     "thollander",
     "thursday",
+    "Trae",
     "tuesday",
     "typescale",
     "uzext",
@@ -101,9 +104,7 @@
     "wght",
     "windsurfrules",
     "wlixcc",
-    "xdescribe",
-    "Trae",
-    "llevat"
+    "xdescribe"
   ],
   "ignoreWords": [],
   "import": []
