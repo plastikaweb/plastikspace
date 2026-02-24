@@ -43,7 +43,7 @@ jobs:
           echo "Changed files between $PREV_SHA and $TARGET_SHA:" || true
           cat changed_files.txt || true
 
-          if grep -E '^(apps/eco-store/|libs/eco-store/|libs/shared/|libs/core/)' changed_files.txt > /dev/null; then
+          if grep -E '^(.github/workflows/eco-store-deploy-staging.yml|apps/eco-store/|libs/eco-store/|libs/shared/|libs/core/)' changed_files.txt > /dev/null; then
             echo "Changes detected in app related paths."
             echo "has_changes=true" >> "$GITHUB_OUTPUT"
           else
@@ -80,7 +80,7 @@ jobs:
             Referrer-Policy: strict-origin-when-cross-origin
             Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
             Permissions-Policy: camera=(), microphone=(), geolocation=()
-            Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://eco-botiga.pockethost.io; connect-src 'self' https://eco-botiga.pockethost.io; frame-ancestors 'none'; upgrade-insecure-requests;
+            Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://eco-botiga.pockethost.io; connect-src 'self' https://eco-botiga.pockethost.io https://fonts.gstatic.com https://fonts.googleapis.com; frame-ancestors 'none'; upgrade-insecure-requests;
           EOF
 
       - name: Deploy to Cloudflare Pages
