@@ -13,7 +13,7 @@ export const appRoutes: Routes = [
     },
     canActivate: [isNotLoggedGuard],
     loadChildren: () =>
-      import('@plastik/auth/login').then(routes => routes.firebaseAuthLoginFeatureRoutes),
+      import('@plastik/auth/login/firebase').then(routes => routes.firebaseAuthLoginFeatureRoutes),
   },
   {
     path: 'registre',

@@ -93,3 +93,6 @@ lint_output*.txt
 
 # sketches and working images
 /sketches
+
+#nx graph
+graph.json

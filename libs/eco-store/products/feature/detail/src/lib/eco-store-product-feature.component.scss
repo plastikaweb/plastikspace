@@ -37,12 +37,6 @@
     );
   }
 
-  @include mat.chips-overrides(
-    (
-      outline-color: var(--white),
-    )
-  );
-
   .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));

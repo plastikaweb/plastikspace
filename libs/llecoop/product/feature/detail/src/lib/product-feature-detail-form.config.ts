@@ -12,7 +12,7 @@ import {
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
 import { LlecoopSharedCategoryFireService } from '@plastik/llecoop/shared/data-access';
 import { InputImgLoaderProps } from '@plastik/shared/form/img-loader';
-import { FirebaseStorageService } from '@plastik/storage/data-access';
+import { FirebaseStorageService } from '@plastik/storage/data-access/firebase';
 
 function setStockProps(
   formlyProps: FormlyFieldConfig['props'],

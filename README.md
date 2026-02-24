@@ -205,6 +205,7 @@ Reusable features and UI components.
 - [**pagination-ui**](libs/shared/pagination/ui/README.md)
 - [**pagination-util**](libs/shared/pagination/util/README.md)
 - [**sort-selector**](libs/shared/sort-selector/README.md)
+- [**shared-chip**](libs/shared/chip/ui/README.md)
 
 #### Utilities
 

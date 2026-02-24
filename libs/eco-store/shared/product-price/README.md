@@ -17,7 +17,7 @@
 
 ## Description
 
-Reusable components for displaying product prices and unit information within the Eco Store application. It handles currency formatting and unit chip visualization.
+Reusable components for displaying product prices and unit information within the Eco Store application. It handles currency formatting and unit chip visualization using the shared chip component.
 
 ## Installation
 
@@ -60,7 +60,7 @@ Displays the product price with formatting, currency symbol, and unit type. It a
 
 Selector: `eco-store-unit-chip`
 
-Displays a small badge with the base unit of the product.
+Displays a small badge with the base unit of the product. It leverages `SharedChipComponent` (`<plastik-shared-chip>`) for consistent styling.
 
 #### Inputs
 

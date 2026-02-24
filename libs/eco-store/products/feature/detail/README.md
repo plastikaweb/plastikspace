@@ -8,8 +8,10 @@
   - [Description](#description)
   - [Features](#features)
   - [Architecture](#architecture)
+    - [CanDeactivate Guard](#candeactivate-guard)
   - [Usage](#usage)
     - [Route Configuration](#route-configuration)
+  - [View Transitions](#view-transitions)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -21,7 +23,7 @@ It handles loading individual products via route resolvers and offers a rich UI 
 
 - **Slug-based product loading**: Efficiently loads products using URL slugs.
 - **Smart caching**: Integrates with `ecoStoreProductsStore` to reuse already loaded data.
-- **Rich Product Information**: Displays product tags (ECO, Novetat, Oferta), rating, and stock availability.
+- **Rich Product Information**: Displays product tags (ECO, Novetat, Oferta) using the standard `SharedChipComponent` for consistency and semantic coloring. It also shows rating and stock availability.
 - **Interactive Components**:
   - **Store Window Status Awareness**: Automatically disables quantity controls and hides availability badges when the store is closed, respecting the `ecoStoreTenantStore` status.
   - **Quantity Control**: Precise control over purchase quantity, respecting `minQuantity` and step logic.

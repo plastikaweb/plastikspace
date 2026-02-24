@@ -21,11 +21,23 @@
     background-color: var(--mat-sys-background);
   }
 
-  .mat-drawer-transition .mat-drawer {
-    transition: none !important;
+  .mat-drawer.mat-drawer-over {
+    transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    visibility: visible !important;
   }
 
-  .mat-drawer-transition .mat-drawer-content {
-    transition: none !important;
+  /* Disable transitions on desktop to prevent "jump" when content loads */
+  @media (min-width: theme(--breakpoint-md)) {
+    .mat-drawer {
+      transition: none !important;
+    }
+
+    .mat-drawer-transition .mat-drawer {
+      transition: none !important;
+    }
+
+    .mat-drawer-transition .mat-drawer-content {
+      transition: none !important;
+    }
   }
 }

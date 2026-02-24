@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
@@ -27,6 +26,7 @@ import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price'
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { SharedChipComponent } from '@plastik/shared/chip/ui';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { map } from 'rxjs';
 
@@ -36,7 +36,7 @@ import { map } from 'rxjs';
     TranslateModule,
     MatIconModule,
     MatButtonModule,
-    MatChipsModule,
+    SharedChipComponent,
     MatTooltipModule,
     RouterLink,
     EcoStoreProductQuantityControlComponent,

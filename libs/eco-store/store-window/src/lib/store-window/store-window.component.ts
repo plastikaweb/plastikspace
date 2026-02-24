@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EcoStoreTenantWindowStatus } from '@plastik/eco-store/entities';
+import { SharedChipComponent } from '@plastik/shared/chip/ui';
 import { SharedCountdownUiComponent } from '@plastik/shared/countdown';
 import { CountdownService } from '@plastik/shared/countdown/util';
 
@@ -12,7 +12,7 @@ import { CountdownService } from '@plastik/shared/countdown/util';
   imports: [
     MatIconModule,
     MatTooltipModule,
-    MatChipsModule,
+    SharedChipComponent,
     TranslatePipe,
     SharedCountdownUiComponent,
   ],
@@ -48,6 +48,7 @@ export class StoreWindowComponent {
     if (status === 'CLOSING_SOON') {
       return {
         class: 'closing',
+        type: 'warning' as const,
         icon: 'schedule',
         label: 'store.status.closingSoon',
         countdownSegments: segments,
@@ -57,6 +58,7 @@ export class StoreWindowComponent {
     if (status === 'OPENING_SOON') {
       return {
         class: 'soon',
+        type: 'warning' as const,
         icon: 'schedule',
         label: 'store.status.openingSoon',
         countdownSegments: segments,
@@ -66,6 +68,7 @@ export class StoreWindowComponent {
     if (status === 'CLOSED_MANUALLY') {
       return {
         class: 'closed',
+        type: 'tertiary' as const,
         icon: 'lock_clock',
         label: 'store.status.closedManually',
       };
@@ -74,6 +77,7 @@ export class StoreWindowComponent {
     if (status === 'CLOSED') {
       return {
         class: 'closed',
+        type: 'tertiary' as const,
         icon: 'lock_clock',
         label: 'store.status.closed',
         countdownSegments: segments,
@@ -84,6 +88,7 @@ export class StoreWindowComponent {
     if (status === 'CANCELLED') {
       return {
         class: 'closed',
+        type: 'tertiary' as const,
         icon: 'block',
         label: 'store.status.cancelled',
       };
@@ -92,6 +97,7 @@ export class StoreWindowComponent {
     if (is24h) {
       return {
         class: 'open',
+        type: 'success' as const,
         icon: 'local_convenience_store',
         label: 'store.status.open24h',
       };
@@ -100,6 +106,7 @@ export class StoreWindowComponent {
     if (status === 'OPEN') {
       return {
         class: 'open',
+        type: 'success' as const,
         icon: 'store_front',
         label: 'store.status.open',
       };
