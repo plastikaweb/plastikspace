@@ -2,7 +2,7 @@ import { registerLocaleData } from '@angular/common';
 import localeCa from '@angular/common/locales/ca';
 import localeEs from '@angular/common/locales/es';
 
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import {
   ApplicationConfig,
   ErrorHandler,
@@ -47,7 +47,7 @@ export const appConfig: ApplicationConfig = {
       withRouterConfig({ onSameUrlNavigation: 'reload' })
     ),
     providePocketBaseWithTranslationsEnv(environment),
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     { provide: POCKETBASE_INSTANCE, useFactory: pocketBaseFactory },
     provideTranslateService({
       loader: provideTranslateHttpLoader({

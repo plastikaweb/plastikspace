@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-24] - Performance Improvements
+
+### Added
+
+- Implemented browser-side tenant caching in localStorage to improve FCP ([86c8dt3qn](https://app.clickup.com/t/86c8dt3qn))
+
+### Changed
+
+- Optimized initial load by inlining critical CSS, sub setting Material Symbols font, and adding WebP image support ([86c8dt3qn](https://app.clickup.com/t/86c8dt3qn))
+- Refactored shipping method selector styles to use SCSS `@each` for theme-based classes ([86c8dt3qn](https://app.clickup.com/t/86c8dt3qn))
+
 ## [2026-02-23] - Smooth Transitions
 
 ### Added

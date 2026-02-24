@@ -28,12 +28,6 @@
     );
   }
 
-  @include mat.card-overrides(
-    (
-      elevated-container-shape: var(--app-main-border-radius),
-    )
-  );
-
   @include mat.select-overrides(
     (
       trigger-text-size: 0.8rem,

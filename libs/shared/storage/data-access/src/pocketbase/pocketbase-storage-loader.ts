@@ -45,7 +45,11 @@ export function pocketBaseStorageLoader(baseUrl: string) {
         params = `?thumb=${loaderParams.width}x${loaderParams.height}`;
       }
 
-      return `${baseUrl}api/files/${src}${params}`;
+      // Add format=webp and quality if supported by PocketBase
+      const format = '&format=webp';
+      const quality = loaderParams?.quality ? `&quality=${loaderParams.quality}` : '';
+
+      return `${baseUrl}api/files/${src}${params}${format}${quality}`;
     } catch {
       // console.error('[PocketBase Loader] Error:', error);
       return '';
