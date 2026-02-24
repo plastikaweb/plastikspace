@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { computed, inject, signal } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { computed, inject, PLATFORM_ID, signal } from '@angular/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { EcoStoreTenant } from '@plastik/eco-store/entities';
 
@@ -9,6 +9,7 @@ import { EcoStoreTenant } from '@plastik/eco-store/entities';
 export abstract class EcoStoreTenantBaseService {
   protected document = inject(DOCUMENT);
   protected pb = inject(POCKETBASE_INSTANCE);
+  protected platformId = inject(PLATFORM_ID);
 
   readonly tenant = signal<EcoStoreTenant | null>(null);
   readonly isTenantLoaded = computed(() => !!this.tenant());
@@ -24,6 +25,31 @@ export abstract class EcoStoreTenantBaseService {
       return;
     }
 
+    const cacheKey = `eco-store-tenant-${slug}`;
+    let cachedData: string | null = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      cachedData = localStorage.getItem(cacheKey);
+    }
+
+    if (cachedData) {
+      try {
+        const tenant = JSON.parse(cachedData) as EcoStoreTenant;
+        this.tenant.set(tenant);
+        // Refresh in background without awaiting
+        this.fetchTenant(slug, cacheKey);
+        return;
+      } catch {
+        if (isPlatformBrowser(this.platformId)) {
+          localStorage.removeItem(cacheKey);
+        }
+      }
+    }
+
+    await this.fetchTenant(slug, cacheKey);
+  }
+
+  private async fetchTenant(slug: string, cacheKey: string): Promise<void> {
     try {
       const tenant = (await this.pb
         .collection('tenants')
@@ -34,8 +60,13 @@ export abstract class EcoStoreTenantBaseService {
       }
 
       this.tenant.set(tenant);
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem(cacheKey, JSON.stringify(tenant));
+      }
     } catch (error) {
-      throw new Error(`❌ Tenant '${slug}' not found or inactive: ${error}`);
+      if (!this.tenant()) {
+        throw new Error(`❌ Tenant '${slug}' not found or inactive: ${error}`);
+      }
     }
   }
 }

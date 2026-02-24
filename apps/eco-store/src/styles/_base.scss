@@ -1,10 +1,23 @@
 @layer base {
+  @font-face {
+    font-family: 'Manrope Fallback';
+    src:
+      local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'),
+      local('sans-serif');
+    size-adjust: 102.5%;
+    ascent-override: 93.3%;
+    descent-override: 26.6%;
+    line-gap-override: 0%;
+    font-display: swap;
+  }
+
   html {
     font-size: 15px;
     font-optical-sizing: auto;
     font-style: normal;
     font-synthesis: none;
-    font-family: var(--font-sans);
+    font-family: var(--mat-sys-brand-font-family, 'Manrope'), 'Manrope Fallback', var(--font-sans);
+
     font-weight: var(--font-weight-regular);
     font-variation-settings: 'wdth' 100;
     font-variant-numeric: tabular-nums;
@@ -86,6 +99,30 @@
 
   button {
     pointer-events: auto;
+  }
+
+  img {
+    height: auto;
+    max-width: 100%;
+    aspect-ratio: attr(width) / attr(height);
+    content-visibility: auto;
+  }
+
+  .mat-icon,
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: transparent;
+    font-size: 24px;
+  }
+
+  .mat-icon[role='img'] {
+    color: inherit;
   }
 }
 

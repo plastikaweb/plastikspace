@@ -14,7 +14,14 @@
         "index": "apps/eco-store/src/index.html",
         "browser": "apps/eco-store/src/main.ts",
         "polyfills": [],
-        "optimization": true,
+        "optimization": {
+          "scripts": true,
+          "styles": {
+            "minify": true,
+            "inlineCritical": true
+          },
+          "fonts": true
+        },
         "sourceMap": {
           "scripts": true,
           "styles": true,
@@ -35,7 +42,14 @@
             "input": "libs/core/util/assets/src"
           }
         ],
-        "styles": ["apps/eco-store/src/styles/styles.scss"],
+        "styles": [
+          "apps/eco-store/public/fonts/manrope/manrope.css",
+          {
+            "input": "apps/eco-store/src/styles/styles.scss",
+            "inject": true,
+            "bundleName": "styles"
+          }
+        ],
         "stylePreprocessorOptions": {
           "includePaths": [
             "libs/core/styles/util/material/src",
@@ -55,18 +69,32 @@
             },
             {
               "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
+              "maximumWarning": "5kb",
               "maximumError": "6kb"
             }
           ],
           "outputHashing": "all",
-          "optimization": true,
+          "optimization": {
+            "scripts": true,
+            "styles": {
+              "minify": true,
+              "inlineCritical": true
+            },
+            "fonts": true
+          },
           "extractLicenses": true,
           "sourceMap": false
         },
         "staging": {
           "serviceWorker": "apps/eco-store/ngsw-config.json",
-          "optimization": true,
+          "optimization": {
+            "scripts": true,
+            "styles": {
+              "minify": true,
+              "inlineCritical": true
+            },
+            "fonts": true
+          },
           "outputHashing": "all",
           "extractLicenses": false,
           "sourceMap": true,
