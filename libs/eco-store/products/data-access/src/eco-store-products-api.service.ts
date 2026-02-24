@@ -20,14 +20,17 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
    */
   override getList(params: PocketBaseListParams = {}): Observable<ListResult<EcoStoreProduct>> {
     const { page, perPage, sort, ...rest } = params;
-    const { category } = rest as {
+    const { category, categorySlug } = rest as {
       category?: string;
+      categorySlug?: string;
     };
 
     const filterParts: string[] = [];
 
     if (category) {
       filterParts.push(`category = "${category}"`);
+    } else if (categorySlug) {
+      filterParts.push(`category.normalizedName = "${categorySlug}"`);
     }
 
     const filter =
