@@ -32,16 +32,15 @@
         <div class="media-main group relative h-fit min-w-0">
           <!-- Badges Overlay -->
           <div class="absolute top-6 left-6 z-10">
-            <mat-chip-set class="flex flex-wrap gap-2" role="list">
+            <div class="flex flex-wrap gap-2" role="list">
               @for (tag of productTags; track tag.label) {
-                <mat-chip role="listitem" [class]="'shadow-sm ' + tag.class" [disableRipple]="true">
-                  @if (tag.icon) {
-                    <mat-icon matChipAvatar>{{ tag.icon }}</mat-icon>
-                  }
-                  <span class="text-xs font-bold tracking-wider uppercase">{{ tag.label }}</span>
-                </mat-chip>
+                <plastik-shared-chip
+                  role="listitem"
+                  [customClass]="'shadow-sm ' + tag.class"
+                  [icon]="tag.icon"
+                  [label]="tag.label" />
               }
-            </mat-chip-set>
+            </div>
           </div>
 
           <plastik-img-container

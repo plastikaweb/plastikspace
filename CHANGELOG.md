@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-24] - Shared Chip Component Refactoring & Bundle Audit
+
+### Added
+
+- Created a reusable `SharedChipComponent` in `@plastik/shared/chip/ui` to standardize semantic badges across the application ([86c8ec5zd](https://app.clickup.com/t/86c8ec5zd))
+  - Features: Semantic types (primary, success, warning, error, neutral, tertiary), icon support (MatIcon), built-in accessibility (role="status"), and performance optimization (Angular Signals, OnPush).
+
+### Changed
+
+- Refactored product cards, price display, detail view (ECO, NOVETAT, OFERTA tags), and store status window to use the new shared chip component, ensuring consistent styling and better maintenance ([86c8ec5zd](https://app.clickup.com/t/86c8ec5zd))
+- Updated README documentation for all affected libraries to reflect the new shared chip integration ([86c8ec5zd](https://app.clickup.com/t/86c8ec5zd))
+
+### Performance
+
+- Optimized initial bundle size by ensuring `MatChipsModule` remains excluded from the initial payload ([86c8ec5zd](https://app.clickup.com/t/86c8ec5zd))
+- Conducted a bundle audit identifying heavy dependencies for future lazy-loading optimizations:
+  - `@angular/material/datepicker` (~192kB)
+  - `@firebase/auth` (~438kB)
+  - `@angular/material/chips` & `list` (~220kB total)
+
+---
+
 ## [2026-02-24] - LCP & Security Optimizations
 
 ### Changed

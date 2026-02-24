@@ -20,7 +20,7 @@ A feature library containing the `StoreWindowComponent`, which displays the curr
 - **Dynamic Status**: Visualizes store status with icons, colors, and labels.
 - **Closing Soon Urgency**: High-visibility state with a pulsing indicator to encourage last-minute orders.
 - **Countdown Integration**: Displays a countdown timer when the store is closed, opening soon, or closing soon.
-- **Material 3 Design**: Uses Angular Material Chips for a modern, accessible UI.
+- **Shared Chip Integration**: Uses `SharedChipComponent` (`<plastik-shared-chip>`) from `@plastik/shared/chip/ui` for a modern, accessible, and semantically colored UI.
 - **Responsive**: Adapts to different screen sizes and layouts.
 
 ## Inputs

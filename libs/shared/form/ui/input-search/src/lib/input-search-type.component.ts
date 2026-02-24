@@ -13,7 +13,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { FieldTypeConfig, FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material';
+import { FieldType } from '@ngx-formly/material/form-field';
 import { TranslatePipe } from '@ngx-translate/core';
 
 export type InputSearchProps = FieldTypeConfig['props'] & {

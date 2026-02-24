@@ -1,15 +1,14 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatIcon } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProduct } from '@plastik/eco-store/entities';
 import { HumanizeUnitPipe } from '@plastik/eco-store/shared/utils';
+import { SharedChipComponent } from '@plastik/shared/chip/ui';
 
 type UnitIconName = 'balance' | 'water_drop' | 'package_2';
 
 @Component({
   selector: 'eco-store-unit-chip',
-  imports: [MatChipsModule, MatIcon, TranslateModule, HumanizeUnitPipe],
+  imports: [SharedChipComponent, TranslateModule, HumanizeUnitPipe],
   templateUrl: './eco-store-unit-chip.component.html',
   styleUrl: './eco-store-unit-chip.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -8,6 +8,7 @@ import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
+import { SharedChipComponent } from '@plastik/shared/chip/ui';
 import { AddressSelectorProps } from './address-selector-props';
 
 @Component({
@@ -21,6 +22,7 @@ import { AddressSelectorProps } from './address-selector-props';
     MatInputModule,
     TranslateModule,
     MatCardModule,
+    SharedChipComponent,
   ],
   templateUrl: './address-selector-type.component.html',
   styleUrl: './address-selector-type.component.scss',

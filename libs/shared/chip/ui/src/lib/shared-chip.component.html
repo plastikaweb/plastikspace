@@ -1,0 +1,14 @@
+<span [class]="computedClass()" [attr.role]="role()" [attr.aria-label]="ariaLabel() || label()">
+  @if (icon()) {
+    <!-- Accessibility: decorative icons are hidden from screen readers -->
+    <mat-icon class="text-md! scale-80!" aria-hidden="true">
+      {{ icon() }}
+    </mat-icon>
+  }
+
+  @if (label()) {
+    {{ label() }}
+  }
+
+  <ng-content></ng-content>
+</span>

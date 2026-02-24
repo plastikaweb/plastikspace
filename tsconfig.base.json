@@ -19,6 +19,9 @@
     "paths": {
       "@plastik/auth/firebase/data-access": ["libs/shared/auth/firebase/data-access/src/index.ts"],
       "@plastik/auth/login": ["libs/shared/auth/login/feature/src/index.ts"],
+      "@plastik/auth/login/firebase": [
+        "libs/shared/auth/login/feature/src/lib/firebase-auth-login.routes.ts"
+      ],
       "@plastik/auth/register": ["libs/shared/auth/register/feature/src/index.ts"],
       "@plastik/auth/request-password": ["libs/shared/auth/request-password/feature/src/index.ts"],
       "@plastik/core/can-deactivate": ["libs/core/can-deactivate-guard/src/index.ts"],
@@ -176,6 +179,9 @@
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"],
       "@plastik/shared/testing": ["libs/shared/testing/index.ts"],
       "@plastik/storage/data-access": ["libs/shared/storage/data-access/src/index.ts"],
+      "@plastik/storage/data-access/firebase": [
+        "libs/shared/storage/data-access/src/firebase/firebase-storage.service.ts"
+      ],
       "@plastik/storage/entities": ["libs/shared/storage/entities/src/index.ts"],
       "@plastik/storage/feature": ["libs/shared/storage/feature/src/index.ts"],
       "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"],
@@ -246,7 +252,8 @@
         "libs/shared/pocketbase-user-addresses/data-access/src/index.ts"
       ],
       "@plastik/shared/countdown/util": ["libs/shared/countdown/util/src/index.ts"],
-      "@plastik/shared/countdown": ["libs/shared/countdown/ui/src/index.ts"]
+      "@plastik/shared/countdown": ["libs/shared/countdown/ui/src/index.ts"],
+      "@plastik/shared/chip/ui": ["libs/shared/chip/ui/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

@@ -21,7 +21,7 @@ A **Formly-compatible address selector component** for Angular forms.
 It displays a list of saved user addresses with the ability to select one as the active address and supports editing functionality through optional callbacks.
 
 This component is used by the Eco Store cart shipping step and has been adjusted for improved presentation and accessibility.
-Address items are presented using a compact layout with optional country information and visual affordances (icons and spacing).
+Address items are presented using a compact layout with optional country information and visual affordances, including the `SharedChipComponent` (`<plastik-shared-chip>`) to indicate the default address.
 The component is designed to work with Formly and the form model: selected address values are part of the form model so downstream logic (shipping calculation, validation) can rely on them.
 
 ## Usage

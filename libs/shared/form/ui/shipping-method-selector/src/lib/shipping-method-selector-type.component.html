@@ -24,14 +24,16 @@
         }}</mat-card-title>
 
         <mat-card-subtitle>
-          <mat-chip role="listitem" [disableRipple]="true">
-            <span>{{
+          <span
+            class="bg-tertiary-100 text-tertiary-900 inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+            role="status">
+            {{
               cost === 0
                 ? ('cart.shipping.free-always' | translate)
                 : ('cart.shipping.free-from'
                   | translate: { amount: cost | currency: 'EUR' : 'symbol' : '1.0-0' })
-            }}</span>
-          </mat-chip>
+            }}
+          </span>
         </mat-card-subtitle>
         <div
           class="shipping-method-icon inline-flex h-12 w-12 items-center justify-center rounded-full">

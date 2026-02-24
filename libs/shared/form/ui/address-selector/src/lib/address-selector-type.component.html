@@ -53,11 +53,11 @@
           </div>
 
           @if (address.default) {
-            <div
-              class="address-default border-tertiary-200 bg-tertiary-100 text-tertiary-800 absolute top-4 right-4 flex flex-row items-center justify-center gap-2 rounded-xl border p-2 text-xs font-bold">
-              <mat-icon class="icon-xs">star</mat-icon>
-              <span>{{ 'shared.address.default' | translate }}</span>
-            </div>
+            <plastik-shared-chip
+              icon="star"
+              class="absolute top-4 right-4"
+              type="tertiary"
+              [label]="'common.address.default' | translate"></plastik-shared-chip>
           }
           <!-- @if (isSelected) {
             <div class="absolute top-4 right-4">
