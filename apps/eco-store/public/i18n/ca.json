@@ -264,6 +264,7 @@
       "shippingCost": "Enviament",
       "goToConfirmation": "Continuar al resum de la comanda",
       "method": {
+        "title": "Mètode de lliurament",
         "pickup": {
           "title": "Recollida a la botiga.",
           "description": "Passa per la botiga i recull la teva comanda."

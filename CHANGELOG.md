@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-25] - Checkout Shipping View Responsive
+
+### Changed
+
+- Refactored checkout shipping view and shipping method selector for improved responsiveness and layout stability ([86c8cjggp](https://app.clickup.com/t/86c8cjggp))
+- Converted custom label component to use CSS Grid for better alignment and responsive behavior ([86c8cjggp](https://app.clickup.com/t/86c8cjggp))
+- Fixed multiple emissions and redundant state updates in cart shipping feature ([86c8cjggp](https://app.clickup.com/t/86c8cjggp))
+
+---
+
 ## [2026-02-25] - Tenant Subdomain Resolution Fix
 
 ### Fixed

@@ -68,23 +68,21 @@
 
             <mat-card-actions
               class="grid! grid-cols-[1fr_1fr_40px]! grid-rows-1! items-center! justify-center! gap-4! self-stretch p-4! @xl:grid-cols-[1fr_40px]! @xl:grid-rows-2!">
-              <div
-                class="col-start-2! row-start-1! justify-self-end! @xl:col-start-1! @xl:row-start-2!">
-                @if (tenantStore.isStoreOpen()) {
-                  <eco-store-product-quantity
-                    size="sm"
-                    mode="summary"
-                    [product]="item.product"
-                    [quantity]="item.quantity"
-                    (quantityChange)="
-                      onQuantityChange($event, item.product)
-                    "></eco-store-product-quantity>
-                } @else {
-                  <p class="min-w-48 text-center font-medium text-neutral-600">
-                    {{ 'cart.summary.quantityLabel' | translate }} {{ item.quantity }}
-                  </p>
-                }
-              </div>
+              @if (tenantStore.isStoreOpen()) {
+                <eco-store-product-quantity
+                  class="col-start-2! row-start-1! justify-self-end! @xl:col-start-1! @xl:row-start-2!"
+                  size="sm"
+                  mode="summary"
+                  [product]="item.product"
+                  [quantity]="item.quantity"
+                  (quantityChange)="
+                    onQuantityChange($event, item.product)
+                  "></eco-store-product-quantity>
+              } @else {
+                <p class="min-w-48 text-center font-medium text-neutral-600">
+                  {{ 'cart.summary.quantityLabel' | translate }} {{ item.quantity }}
+                </p>
+              }
               <p
                 class="col-start-1! row-start-1! justify-self-start! text-2xl font-bold @xl:col-span-1! @xl:col-start-2! @xl:row-start-1! @xl:justify-self-end!">
                 {{

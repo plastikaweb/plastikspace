@@ -49,7 +49,7 @@ export class SharedChipComponent {
     const typeClasses: Record<SharedChipType, string> = {
       primary: 'bg-primary-100 text-primary-900 border-primary-200',
       success: 'bg-success-100 text-success-900 border-success-200',
-      warning: 'bg-warning-100 text-warning-900 border-warning-200',
+      warning: 'bg-warning-200 text-warning-900 border-warning-500',
       error: 'bg-error-100 text-error-900 border-error-200',
       neutral: 'bg-neutral-100 text-neutral-900 border-neutral-200',
       tertiary: 'bg-tertiary-100 text-tertiary-900 border-tertiary-200',

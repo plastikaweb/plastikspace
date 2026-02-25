@@ -6,7 +6,11 @@
   }
 
   .shipping-method-card {
+    border: 1px solid var(--neutral-50) !important;
+
     &:hover {
+      border-color: var(--neutral-100) !important;
+
       @include mat.card-overrides(
         (
           elevated-container-elevation: var(--mat-sys-level2),

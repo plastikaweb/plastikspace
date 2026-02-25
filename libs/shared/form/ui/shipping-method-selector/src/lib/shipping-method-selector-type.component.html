@@ -3,8 +3,8 @@
 }
 
 <mat-radio-group
-  aria-label="Shipping method selector"
-  class="grid gap-4"
+  class="grid grid-cols-1! gap-4 md:grid-cols-2!"
+  [attr.aria-label]="'cart.shipping.method.title' | translate"
   [formControl]="formControl"
   [formlyAttributes]="field">
   @for (shippingMethodOption of props.shippingMethodOptions; track shippingMethodOption.type) {
@@ -16,6 +16,7 @@
       tabindex="0"
       appearance="raised"
       [class]="getCardStyles(theme, isSelected)"
+      [attr.aria-label]="'cart.shipping.method.' + shippingMethodOption.type + '.title' | translate"
       (click)="formControl.setValue(shippingMethodOption.type)"
       (keydown.enter)="formControl.setValue(shippingMethodOption.type)">
       <mat-card-header class="flex flex-col-reverse items-center gap-2 text-center">
@@ -29,14 +30,14 @@
             role="status">
             {{
               cost === 0
-                ? ('cart.shipping.free-always' | translate)
-                : ('cart.shipping.free-from'
+                ? ('cart.shipping.freeAlways' | translate)
+                : ('cart.shipping.freeFrom'
                   | translate: { amount: cost | currency: 'EUR' : 'symbol' : '1.0-0' })
             }}
           </span>
         </mat-card-subtitle>
         <div
-          class="shipping-method-icon inline-flex h-12 w-12 items-center justify-center rounded-full">
+          class="shipping-method-icon inline-flex h-10 w-10 items-center justify-center rounded-full md:h-12 md:w-12">
           <mat-icon>{{ shippingMethodOption.icon }}</mat-icon>
         </div>
       </mat-card-header>

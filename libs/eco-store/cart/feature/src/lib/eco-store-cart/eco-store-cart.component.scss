@@ -4,18 +4,18 @@
   mat-stepper {
     @include mat.icon-overrides(
       (
-        color: var(--tertiary-50),
+        color: var(--white),
       )
     );
     @include mat.stepper-overrides(
       (
         container-color: var(--transparent),
-        header-icon-background-color: var(--tertiary-300),
-        header-edit-state-icon-background-color: var(--tertiary-400),
-        header-done-state-icon-background-color: var(--tertiary-500),
-        header-icon-foreground-color: var(--tertiary-50),
-        header-selected-state-icon-foreground-color: var(--tertiary-50),
-        line-color: var(--tertiary-300),
+        header-icon-background-color: var(--secondary-300),
+        header-edit-state-icon-background-color: var(--secondary-400),
+        header-done-state-icon-background-color: var(--primary-600),
+        header-icon-foreground-color: var(--white),
+        header-selected-state-icon-foreground-color: var(--white),
+        line-color: var(--secondary-300),
         header-label-text-size: var(--font-size-base),
       )
     );

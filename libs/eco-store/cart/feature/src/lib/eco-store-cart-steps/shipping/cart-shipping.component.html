@@ -1,19 +1,19 @@
 <div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
-  <!-- Left Column: Shipping Details -->
-  <div class="space-y-10 md:col-span-2!">
-    <section>
+  <div class="col-span-1! space-y-10 md:col-span-2!">
+    <div class="flex items-center gap-4">
+      <mat-icon class="scale-150!" aria-hidden="true"> box </mat-icon>
       <h2 class="mb-2 text-2xl font-bold text-neutral-900">
         {{ 'cart.steps.shipping.title' | translate }}
       </h2>
+    </div>
 
-      <plastik-shared-form-feature
-        [fields]="formConfig.getConfig()"
-        [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
-        [model]="{}"
-        (temporaryChangeEvent)="onShippingMethodChange($event)"
-        (validChange)="onFormValidChange($event)">
-      </plastik-shared-form-feature>
-    </section>
+    <plastik-shared-form-feature
+      [fields]="formConfig.getConfig()"
+      [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
+      [model]="{}"
+      (temporaryChangeEvent)="onChange($event)"
+      (validChange)="onFormValidChange($event)">
+    </plastik-shared-form-feature>
 
     <!-- Shipping Address Section -->
     <!-- <button mat-stroked-button class="w-full py-6 rounded-xl border-dashed border-neutral-300 text-neutral-600 bg-neutral-50 hover:bg-neutral-100 flex items-center justify-start px-6 gap-2">
@@ -23,7 +23,7 @@
   </div>
 
   <!-- Right Column: Order Summary -->
-  <div class="sticky top-4 space-y-6 md:col-span-1!">
+  <div class="sticky top-16 space-y-6 self-start md:col-span-1!">
     <eco-cart-order-summary
       [subtotal]="cartStore.subtotal()"
       [taxes]="cartStore.tax()"

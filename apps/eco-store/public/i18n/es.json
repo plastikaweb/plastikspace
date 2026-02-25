@@ -264,6 +264,7 @@
       "shippingCost": "Envío",
       "goToConfirmation": "Continuar al resumen del pedido",
       "method": {
+        "title": "Método de entrega",
         "pickup": {
           "title": "Recogida en la tienda.",
           "description": "Pasa por la tienda y recoge tu pedido."

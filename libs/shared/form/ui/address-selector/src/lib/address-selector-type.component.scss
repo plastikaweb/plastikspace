@@ -4,10 +4,10 @@
   display: block;
 
   .address-card {
-    border-color: var(--neutral-200);
+    border: 1px solid var(--neutral-50) !important;
 
     &:hover {
-      border-color: var(--primary-100);
+      border-color: var(--neutral-100) !important;
       @include mat.card-overrides(
         (
           elevated-container-elevation: var(--mat-sys-level2),

@@ -207,8 +207,8 @@ export const ecoStoreCartStore = signalStore(
           notes: store.notes(),
           address: store.address() || null,
           deliveryMethod: store.method() || 'pickup',
-          day: store.day(),
-          time: store.time(),
+          day: store.day() || null,
+          time: store.time() || null,
           noDayAndTime: store.noDayAndTime(),
           shipping: store.shipping(),
           tax: store.tax(),
@@ -442,10 +442,13 @@ export const ecoStoreCartStore = signalStore(
       },
 
       updateLogistics(logistics: Partial<EcoStoreCartState>) {
-        updateState(store, '[Cart] Update Logistics', state => ({
-          ...state,
-          ...logistics,
-        }));
+        updateState(store, '[Cart] Update Logistics', state => {
+          const update = {
+            ...state,
+            ...logistics,
+          };
+          return update;
+        });
 
         if (logistics.shipping !== undefined) {
           _recalculatePrices();

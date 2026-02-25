@@ -2,7 +2,9 @@
   <div class="flex items-center justify-between gap-2">
     @if (props.icon) {
       <mat-icon
-        [class]="'mx-2 size-4 cursor-pointer overflow-visible text-4xl ' + props.iconClasses"
+        [class]="
+          'mx-2 size-4 flex-shrink-0 cursor-pointer overflow-visible text-4xl ' + props.iconClasses
+        "
         [attr.aria-label]="props.description ?? props.label | translate">
         {{ props.icon }}
       </mat-icon>
