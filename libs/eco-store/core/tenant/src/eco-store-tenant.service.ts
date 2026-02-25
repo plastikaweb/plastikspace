@@ -5,13 +5,10 @@ import { EcoStoreTenantBaseService } from './eco-store-tenant-base.service';
 export class EcoStoreTenantService extends EcoStoreTenantBaseService {
   protected resolveSlug(): string | null {
     const hostname = this.document.location.hostname;
-
+    const SKIP_PREFIXES = ['www', 'admin'];
     const parts = hostname.split('.');
 
-    if (parts[0] !== 'www' && parts[0] !== 'admin') {
-      return parts[0];
-    }
-
-    return null;
+    const slug = SKIP_PREFIXES.includes(parts[0]) ? parts[1] : parts[0];
+    return slug ?? null;
   }
 }
