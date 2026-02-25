@@ -46,7 +46,7 @@ export class CartShippingComponent {
   readonly formValid = signal(false);
   readonly formConfig = getCartShippingFormConfig();
 
-  onShippingMethodChange(event: Partial<EcoStoreCartState>): void {
+  onChange(event: Partial<EcoStoreCartState>): void {
     this.cartStore.updateLogistics(event);
   }
 

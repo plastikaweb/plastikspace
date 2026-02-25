@@ -36,10 +36,6 @@ export class ShippingMethodSelectorTypeComponent extends FieldType<
   FieldTypeConfig<ShippingMethodSelectorProps>
 > {
   protected getCardStyles(theme: ShippingMethodOption['theme'], isSelected: boolean): string {
-    return `shipping-method-card make-it-focusable cursor-pointer relative flex flex-col gap-4 items-center justify-center p-6 transition-all ${isSelected ? 'selected' : ''} ${theme ? `theme-${theme}` : ''}`;
-  }
-
-  protected getIconStyles(theme: ShippingMethodOption['theme']): string {
-    return `inline-flex items-center justify-center rounded-full theme-${theme} w-12 h-12`;
+    return `shipping-method-card make-it-focusable cursor-pointer relative flex flex-col gap-4 items-center justify-center p-2 md:p-6 transition-all ${isSelected ? 'selected' : ''} ${theme ? `theme-${theme}` : ''}`;
   }
 }

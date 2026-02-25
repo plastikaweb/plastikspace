@@ -4,7 +4,8 @@
 
 @if (props.addresses.length) {
   <mat-radio-group
-    class="flex flex-col gap-4"
+    class="grid grid-cols-1! gap-4 md:grid-cols-2!"
+    [attr.aria-label]="'cart.shipping.address.title' | translate"
     [formControl]="formControl"
     [formlyAttributes]="field">
     @for (address of props.addresses; track address.id) {
@@ -15,20 +16,23 @@
         appearance="raised"
         class="address-card make-it-focusable cursor-pointer transition-all"
         [class.selected]="isSelected"
+        [attr.aria-label]="address.name"
         (click)="formControl.setValue(address)"
         (keydown.enter)="formControl.setValue(address)">
         <mat-card-content class="flex! flex-row items-center justify-start gap-4">
           <mat-radio-button
             class="hidden"
+            [aria-label]="address.name"
             [value]="address"
             [checked]="isSelected"
             [id]="`address-${address.id}`"></mat-radio-button>
 
           <div>
-            <h3 class="mb-2 font-bold text-neutral-900 capitalize">
+            <h3 class="mb-2 text-lg font-bold text-neutral-900 capitalize">
               {{ address.name || address.fullName }}
             </h3>
-            <div class="grid grid-cols-2 gap-4 text-sm leading-relaxed text-neutral-600">
+            <div
+              class="grid grid-cols-1 gap-4 text-sm leading-relaxed text-neutral-600 md:grid-cols-2">
               <div class="flex items-center gap-2">
                 <mat-icon class="scale-90 text-neutral-500!" aria-hidden="true"
                   >location_on</mat-icon
@@ -72,7 +76,7 @@
             color="tertiary"
             class="absolute top-4 right-4 underline"
             (click)="onEdit(address, $event)">
-            Edit
+            {{ 'cart.shipping.address.edit' | translate }}
           </button>
         }
       </mat-card>

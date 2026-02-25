@@ -264,6 +264,7 @@
       "shippingCost": "Shipping",
       "goToConfirmation": "Continue to Order Summary",
       "method": {
+        "title": "Delivery method",
         "pickup": {
           "title": "Store pickup.",
           "description": "Come to the store and pick up your order."
