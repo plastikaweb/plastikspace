@@ -1122,6 +1122,9 @@ html {
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
+  .h-10 {
+    height: calc(var(--spacing) * 10);
+  }
   .h-12 {
     height: calc(var(--spacing) * 12);
   }
@@ -1209,6 +1212,9 @@ html {
   .w-8 {
     width: calc(var(--spacing) * 8);
   }
+  .w-10 {
+    width: calc(var(--spacing) * 10);
+  }
   .w-12 {
     width: calc(var(--spacing) * 12);
   }
@@ -1220,6 +1226,9 @@ html {
   }
   .w-40 {
     width: calc(var(--spacing) * 40);
+  }
+  .w-74 {
+    width: calc(var(--spacing) * 74);
   }
   .w-\[12px\] {
     width: 12px;
@@ -1548,8 +1557,8 @@ html {
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
-  .grid-cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .grid-cols-1\! {
+    grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
   }
   .grid-cols-12 {
     grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -2977,8 +2986,18 @@ html {
     }
   }
   @media (width >= 48rem) {
+    .md\:h-12 {
+      height: calc(var(--spacing) * 12);
+    }
+  }
+  @media (width >= 48rem) {
     .md\:w-1\/2 {
       width: calc(1/2 * 100%);
+    }
+  }
+  @media (width >= 48rem) {
+    .md\:w-12 {
+      width: calc(var(--spacing) * 12);
     }
   }
   @media (width >= 48rem) {
@@ -2999,6 +3018,11 @@ html {
   @media (width >= 48rem) {
     .md\:grid-cols-2 {
       grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (width >= 48rem) {
+    .md\:grid-cols-2\! {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
   }
   @media (width >= 48rem) {
@@ -3055,6 +3079,11 @@ html {
   @media (width >= 48rem) {
     .md\:from-20\% {
       --tw-gradient-from-position: 20%;
+    }
+  }
+  @media (width >= 48rem) {
+    .md\:p-6 {
+      padding: calc(var(--spacing) * 6);
     }
   }
   @media (width >= 48rem) {
