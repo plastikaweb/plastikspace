@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-25] - Tenant Subdomain Resolution Fix
+
+### Fixed
+
+- Simplified tenant slug resolution in `EcoStoreTenantService` to correctly handle `www.` and `admin.` prefixes on staging subdomains (e.g., `el-llevat.9botiga.top`) ([86c8cjggg](https://app.clickup.com/t/86c8cjggg))
+
+---
+
 ## [2026-02-24] - Shared Chip Component Refactoring & Bundle Audit
 
 ### Added

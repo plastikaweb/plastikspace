@@ -40,10 +40,8 @@ It uses a strategy pattern to resolve the tenant ID, which is then used to filte
   - It provides the core logic for **resolving the tenant slug** and loading it from the backend.
 - **`EcoStoreTenantService`**: Standard implementation that resolves the tenant slug from the **URL subdomain**
   (e.g., `tenant-name.eco-store.com` -> `tenant-name`).
-- **`EcoStoreTenantStagingService`**: Implementation for **staging environments**
-  (e.g., `staging.eco-store.com?tenant=tenant-name` or specific testing rules).
 
 ### Factory
 
-- **`provideEcoStoreTenant`**: A provider configuration that dynamically injects the correct `EcoStoreTenantBaseService`
-  implementation based on the current `ENVIRONMENT` configuration (production vs staging). The service is then typically used within an `APP_INITIALIZER` to load the tenant before app startup.
+- **`provideEcoStoreTenant`**: A provider configuration that dynamically injects the correct `EcoStoreTenantBaseService` implementation.
+  The service is then typically used within an `APP_INITIALIZER` to load the tenant before app startup.

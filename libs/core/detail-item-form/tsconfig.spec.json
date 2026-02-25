@@ -4,7 +4,8 @@
     "outDir": "../../../dist/out-tsc",
     "module": "preserve",
     "target": "es2016",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "isolatedModules": true
   },
   "files": ["src/test-setup.ts"],
   "include": [
