@@ -41,7 +41,10 @@
           <mat-icon>{{ shippingMethodOption.icon }}</mat-icon>
         </div>
       </mat-card-header>
-      <mat-radio-button class="hidden" [value]="shippingMethodOption.type"></mat-radio-button>
+      <mat-radio-button
+        class="hidden"
+        [aria-label]="shippingMethodOption.title"
+        [value]="shippingMethodOption.type"></mat-radio-button>
 
       <!-- @if (isSelected) {
         <div class="absolute top-4 right-4">

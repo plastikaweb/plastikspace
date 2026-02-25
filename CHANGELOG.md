@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Refactored checkout shipping view and shipping method selector for improved responsiveness and layout stability ([86c8cjggp](https://app.clickup.com/t/86c8cjggp))
 - Converted custom label component to use CSS Grid for better alignment and responsive behavior ([86c8cjggp](https://app.clickup.com/t/86c8cjggp))
 - Fixed multiple emissions and redundant state updates in cart shipping feature ([86c8cjggp](https://app.clickup.com/t/86c8cjggp))
+- Added unit tests and improved accessibility for address and shipping selector components ([86c8cjggp](https://app.clickup.com/t/86c8cjggp))
 
 ---
 
