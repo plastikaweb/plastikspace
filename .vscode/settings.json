@@ -59,7 +59,9 @@
     "**/node_modules/**",
     "**/.hg/**",
     "**/.svn/**",
-    "**/documentation/**"
+    "**/documentation/**",
+    "**/dist/**",
+    "**/.angular/**"
   ],
   "tailwindCSS.experimental.configFile": "libs/core/styles/util/tailwind4/src/_core_tailwind_theme.css",
   "tailwindCSS.includeLanguages": {

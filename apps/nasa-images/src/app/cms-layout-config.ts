@@ -14,7 +14,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
         id: 1,
         component: () => import('@plastik/shared/button/ui').then(c => c.SharedButtonUiComponent),
         inputs: {
-          config: {
+          buttonConfig: {
             type: 'link',
             link: 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
             ariaLabel: 'plastikspace -> apps -> nasa-images readme',

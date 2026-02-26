@@ -32,6 +32,7 @@
         "aot": true,
         "tsConfig": "apps/eco-store/tsconfig.app.json",
         "inlineStyleLanguage": "css",
+        "crossOrigin": "anonymous",
         "assets": [
           {
             "glob": "**/*",

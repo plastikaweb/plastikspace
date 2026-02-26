@@ -127,11 +127,11 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
           linkedFieldKeys: ['method'],
         },
       ]),
-      expressionProperties: {
-        hide: model => {
+      expressions: {
+        hide: (field: FormlyFieldConfig) => {
           const config = tenantStore.getTiersOrInstructions(
-            model.method ?? 'pickup',
-            model.address?.id
+            field.model.method ?? 'pickup',
+            field.model.address?.id
           );
           return config?.type !== 'slots';
         },
@@ -148,11 +148,11 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
         checkValidation: true,
         isValid: 'valid',
       },
-      expressionProperties: {
-        hide: model => {
+      expressions: {
+        hide: (field: FormlyFieldConfig) => {
           const tiersOrInstructions = tenantStore.getTiersOrInstructions(
-            model.method ?? 'pickup',
-            model.address?.id
+            field.model.method ?? 'pickup',
+            field.model.address?.id
           );
           if (!tiersOrInstructions) return false;
           return tiersOrInstructions.type === 'slots';
@@ -173,11 +173,11 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
   return [
     {
       fieldGroupClassName: 'grid grid-cols-1 md:grid-cols-2 gap-4',
-      expressionProperties: {
-        hide: model => {
+      expressions: {
+        hide: (field: FormlyFieldConfig) => {
           const config = deps.tenantStore.getTiersOrInstructions(
-            model.method ?? 'pickup',
-            model.address?.id
+            field.model.method ?? 'pickup',
+            field.model.address?.id
           );
           return config?.type !== 'slots';
         },
@@ -197,8 +197,9 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
               classes: 'text-primary-600! fill-primary-600!',
             },
           },
-          expressionProperties: {
-            'props.disabled': '!model.method || !model.address',
+          expressions: {
+            'props.disabled': (field: FormlyFieldConfig) =>
+              !field.model?.method || !field.model?.address,
           },
           hooks: {
             onInit: (field: FormlyFieldConfig) => {
@@ -248,7 +249,7 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
             },
           },
           expressions: {
-            'props.disabled': '!model.day',
+            'props.disabled': (field: FormlyFieldConfig) => !field.model?.day,
           },
           hooks: {
             onInit: (field: FormlyFieldConfig) => {
@@ -292,17 +293,17 @@ export function createInstructionsField(deps: FieldDependencies): FormlyFieldCon
   return [
     {
       type: 'text',
-      expressionProperties: {
-        hide: model => {
+      expressions: {
+        hide: (field: FormlyFieldConfig) => {
           const config = tenantStore.getTiersOrInstructions(
-            model.method ?? 'pickup',
-            model.address?.id
+            field.model.method ?? 'pickup',
+            field.model.address?.id
           );
           return config?.type !== 'instructions';
         },
-        'props.text': model => {
-          const method = model.method ?? 'pickup';
-          const addressId = model.address?.id;
+        'props.text': (field: FormlyFieldConfig) => {
+          const method = field.model.method ?? 'pickup';
+          const addressId = field.model.address?.id;
           const tiersOrInstructions = tenantStore.getTiersOrInstructions(
             method as 'pickup' | 'delivery',
             addressId

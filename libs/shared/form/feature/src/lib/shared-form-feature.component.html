@@ -1,5 +1,5 @@
 <form
-  class="mt flex w-full flex-col gap-1"
+  class="mt-4 flex w-full flex-col gap-1"
   novalidate
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
@@ -19,10 +19,10 @@
     type="submit"
     data-test="submit-button"
     title="Submit"
-    [class]="'w-full sm:w-auto ' + (config().buttonStyle || '')"
-    [class.sr-only!]="!config().submitAvailable"
+    [class]="`w-full sm:w-auto ${formSubmitConfig().buttonStyle}`"
+    [class.sr-only]="!formSubmitConfig().submitAvailable"
     [disabled]="!form.valid"
-    [attr.aria-label]="(config().label | translate) || 'Submit'">
-    {{ (config().label | translate) || 'Submit' }}
+    [attr.aria-label]="(formSubmitConfig().label | translate) || 'Submit'">
+    {{ (formSubmitConfig().label | translate) || 'Submit' }}
   </button>
 </form>
