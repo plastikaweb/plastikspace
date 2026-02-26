@@ -38,4 +38,9 @@ export class ShippingMethodSelectorTypeComponent extends FieldType<
   protected getCardStyles(theme: ShippingMethodOption['theme'], isSelected: boolean): string {
     return `shipping-method-card make-it-focusable cursor-pointer relative flex flex-col gap-4 items-center justify-center p-2 md:p-6 transition-all ${isSelected ? 'selected' : ''} ${theme ? `theme-${theme}` : ''}`;
   }
+
+  protected onSelect(value: ShippingMethodOption['type']): void {
+    this.formControl.setValue(value);
+    this.formControl.updateValueAndValidity();
+  }
 }

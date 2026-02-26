@@ -15,6 +15,9 @@
   }
 
   /** CONTENT CONTAINER - MAX WIDTH **/
+  .content-container {
+    max-width: var(--content-grid-max-width);
+  }
 
   /** DETAIL CONTAINER - MAX WIDTH **/
   .detail-container,

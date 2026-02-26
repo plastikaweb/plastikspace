@@ -26,13 +26,20 @@ import { AddressSelectorProps } from './address-selector-props';
   ],
   templateUrl: './address-selector-type.component.html',
   styleUrl: './address-selector-type.component.scss',
+  host: {
+    class: 'block',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AddressSelectorTypeComponent extends FieldType<FieldTypeConfig<AddressSelectorProps>> {
-  onEdit(address: AddressSelectorProps['addresses'][number], event: Event): void {
+  protected onEdit(address: AddressSelectorProps['addresses'][number], event: Event): void {
     event.stopPropagation();
     if (this.props.onEdit) {
       this.props.onEdit(address);
     }
+  }
+
+  protected onChange(address: AddressSelectorProps['addresses'][number]) {
+    this.formControl.patchValue(address);
   }
 }

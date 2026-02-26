@@ -4,7 +4,7 @@
 
 @if (props.addresses.length) {
   <mat-radio-group
-    class="grid grid-cols-1! gap-4 md:grid-cols-2!"
+    class="address-selector-radio-group"
     [attr.aria-label]="'cart.shipping.address.title' | translate"
     [formControl]="formControl"
     [formlyAttributes]="field">
@@ -17,8 +17,8 @@
         class="address-card make-it-focusable cursor-pointer transition-all"
         [class.selected]="isSelected"
         [attr.aria-label]="address.name"
-        (click)="formControl.setValue(address)"
-        (keydown.enter)="formControl.setValue(address)">
+        (click)="onChange(address)"
+        (keydown.enter)="onChange(address)">
         <mat-card-content class="flex! flex-row items-center justify-start gap-4">
           <mat-radio-button
             class="hidden"
@@ -63,22 +63,17 @@
               type="tertiary"
               [label]="'common.address.default' | translate"></plastik-shared-chip>
           }
-          <!-- @if (isSelected) {
-            <div class="absolute top-4 right-4">
-              <mat-icon class="scale-110">check_circle</mat-icon>
-            </div>
-          } -->
+          @if (props.editable) {
+            <button
+              mat-button
+              type="button"
+              color="tertiary"
+              class="absolute top-4 right-4 underline"
+              (click)="onEdit(address, $event)">
+              {{ 'cart.shipping.address.edit' | translate }}
+            </button>
+          }
         </mat-card-content>
-
-        @if (props.editable) {
-          <button
-            mat-button
-            color="tertiary"
-            class="absolute top-4 right-4 underline"
-            (click)="onEdit(address, $event)">
-            {{ 'cart.shipping.address.edit' | translate }}
-          </button>
-        }
       </mat-card>
     }
   </mat-radio-group>

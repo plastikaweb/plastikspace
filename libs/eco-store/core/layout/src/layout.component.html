@@ -3,7 +3,7 @@
     <ng-container *ngTemplateOutlet="headerContent"></ng-container>
   }
 
-  <mat-sidenav-container class="w-full flex-1 bg-transparent" [class.z-10]="isMobile()">
+  <mat-sidenav-container class="content-container flex-1 bg-transparent" [class.z-10]="isMobile()">
     @if (hasSidenav()) {
       <mat-sidenav
         #sidenav

@@ -98,7 +98,13 @@ export function createAddressField(deps: FieldDependencies): FormlyFieldConfig[]
 
               const defaultAddress = newAddresses.find(a => a.default) || newAddresses[0] || null;
 
-              field.formControl?.setValue(defaultAddress);
+              if (defaultAddress) {
+                field.model.address = defaultAddress;
+                field.model.day = null;
+                field.model.time = null;
+              } else {
+                field.model.address = null;
+              }
             })
           );
         },

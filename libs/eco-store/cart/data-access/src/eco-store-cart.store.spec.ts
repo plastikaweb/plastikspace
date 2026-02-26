@@ -147,4 +147,44 @@ describe('ecoStoreCartStore', () => {
     const countSignalEmpty = store.getItemCount('2');
     expect(countSignalEmpty()).toBe(0);
   });
+
+  it('should update logistics and reset day/time when address changes', () => {
+    const store = setup();
+    const mockAddress1 = { id: 'addr1', name: 'Address 1' } as any;
+    const mockAddress2 = { id: 'addr2', name: 'Address 2' } as any;
+
+    // Update address
+    store.updateLogistics({ address: mockAddress1 });
+    // Update day
+    store.updateLogistics({ day: 'monday' as any });
+    // Update time
+    store.updateLogistics({ time: '08:00' as any });
+
+    expect(store.address()?.id).toBe('addr1');
+    expect(store.day()).toBe('monday');
+    expect(store.time()).toBe('08:00');
+
+    // Change address
+    store.updateLogistics({ address: mockAddress2 });
+
+    expect(store.address()?.id).toBe('addr2');
+    expect(store.day()).toBeNull();
+    expect(store.time()).toBeNull();
+  });
+
+  it('should reset time when day changes', () => {
+    const store = setup();
+
+    store.updateLogistics({ day: 'monday' as any });
+    store.updateLogistics({ time: '08:00' as any });
+
+    expect(store.day()).toBe('monday');
+    expect(store.time()).toBe('08:00');
+
+    // Change day
+    store.updateLogistics({ day: 'tuesday' as any });
+
+    expect(store.day()).toBe('tuesday');
+    expect(store.time()).toBeNull();
+  });
 });

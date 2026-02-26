@@ -462,16 +462,15 @@ export const ecoStoreCartStore = signalStore(
             return newState;
           }
 
-          // Si només canvia l'adreça manualment l'usuari
           if (logistics.address && logistics.address.id !== state.address?.id) {
             newState.day = null;
             newState.time = null;
             return newState;
           }
 
-          // Si només canvia el dia
           if (logistics.day && logistics.day !== state.day) {
             newState.time = null;
+            return newState;
           }
 
           return newState;

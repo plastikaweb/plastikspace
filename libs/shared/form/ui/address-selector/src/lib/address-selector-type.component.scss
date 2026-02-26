@@ -1,7 +1,11 @@
 @use '@angular/material' as mat;
 
 :host {
-  display: block;
+  .address-selector-radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+    gap: 1rem;
+  }
 
   .address-card {
     border: 1px solid var(--neutral-50) !important;
