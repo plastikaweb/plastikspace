@@ -16,7 +16,6 @@ export const mockEcoStoreCartStore = {
   day: signal(null),
   time: signal(null),
   method: signal(null),
-  noDayAndTime: signal(false),
   status: signal('ACTIVE' as const),
   expiresAt: signal(null),
   orderCycle: signal(null),

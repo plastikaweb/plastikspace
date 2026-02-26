@@ -12,7 +12,10 @@
     </div>
   </div>
   <div class="flex items-center gap-2">
-    @if (status() === 'CLOSED' || status() === 'OPENING_SOON' || status() === 'CLOSING_SOON') {
+    @if (
+      (status() === 'CLOSED' || status() === 'OPENING_SOON' || status() === 'CLOSING_SOON') &&
+      segments().length > 0
+    ) {
       <plastik-countdown
         class="ml-2 text-sm font-bold"
         [segments]="segments()"

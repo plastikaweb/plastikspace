@@ -22,7 +22,6 @@ export interface EcoStoreCart extends BasePocketBaseEntityWithTenantRef {
   deliveryMethod: EcoStoreTenantLogisticsDeliveryType;
   day: SlotDays | null;
   time: TimeRange | null;
-  noDayAndTime: boolean;
   shipping: number;
   tax: number;
   subtotal: number;

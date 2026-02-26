@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-26] - Shipping Logic Refactoring
+
+### Changed
+
+- Refactored shipping logic in cart and tenant stores to simplify logistics state and improve code organization ([86c8f9zu0](https://app.clickup.com/t/86c8f9zu0))
+- Updated Formly field configurations to use prioritized tenant logistics settings ([86c8f9zu0](https://app.clickup.com/t/86c8f9zu0))
+- Simplified logistics state in cart store by removing redundant properties ([86c8f9zu0](https://app.clickup.com/t/86c8f9zu0))
+- Improved `getTiersOrInstructions` logic in tenant store to prioritize address-specific configurations ([86c8f9zu0](https://app.clickup.com/t/86c8f9zu0))
+
+---
+
 ## [2026-02-25] - Checkout Shipping View Responsive
 
 ### Changed

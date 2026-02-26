@@ -1,8 +1,9 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
+import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { FormSelectOption } from '@plastik/core/entities';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
-import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities';
+import { EcoStoreTenantLogisticsDeliveryType, SlotDays } from '@plastik/eco-store/entities';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { ShippingMethodOption } from '@plastik/shared/form/shipping-method-selector';
 import { filter, tap } from 'rxjs';
@@ -16,8 +17,7 @@ export interface FieldDependencies {
   tenantStore: InstanceType<typeof ecoStoreTenantStore>;
   cartStore: InstanceType<typeof ecoStoreCartStore>;
   translateService: TranslateService;
-  tenantAddresses: Array<{ default?: boolean; id: string }>;
-  userAddresses: Array<{ default?: boolean; id: string }>;
+  userProfileStore: InstanceType<typeof pocketBaseUserProfileStore>;
   availableMethodTypes: string[] | undefined;
 }
 
@@ -25,13 +25,11 @@ export interface FieldDependencies {
  * Creates shipping method selector field.
  * @param { ShippingMethodOption[] } availableShippingMethodOptions - Array of available shipping method options
  * @param { string[] | undefined } availableMethodTypes - Array of available method type strings
- * @param { string } defaultValue - Default value for the method field
  * @returns { FormlyFieldConfig[] } Array of Formly field configurations for method selection
  */
 export function createMethodField(
   availableShippingMethodOptions: ShippingMethodOption[],
-  availableMethodTypes: string[] | undefined,
-  defaultValue: string
+  availableMethodTypes: string[] | undefined
 ): FormlyFieldConfig[] {
   return [
     createCustomLabel('method', 'counter_1', availableMethodTypes, [
@@ -43,7 +41,6 @@ export function createMethodField(
     {
       key: 'method',
       type: 'shipping-method-selector',
-      defaultValue,
       props: {
         translate: true,
         required: true,
@@ -56,14 +53,10 @@ export function createMethodField(
 /**
  * Creates address selector field with dynamic address list based on method.
  * @param { FieldDependencies } deps - Field dependencies object
- * @param { unknown } defaultValue - Default value for the address field
  * @returns { FormlyFieldConfig[] } Array of Formly field configurations for address selection
  */
-export function createAddressField(
-  deps: FieldDependencies,
-  defaultValue: unknown
-): FormlyFieldConfig[] {
-  const { tenantAddresses, userAddresses, availableMethodTypes, tenantStore, cartStore } = deps;
+export function createAddressField(deps: FieldDependencies): FormlyFieldConfig[] {
+  const { tenantStore, userProfileStore, availableMethodTypes } = deps;
 
   return [
     createCustomLabel('address', 'counter_2', availableMethodTypes, [
@@ -79,78 +72,33 @@ export function createAddressField(
     {
       key: 'address',
       type: 'address-selector',
-      defaultValue,
       props: {
         translate: true,
         required: true,
       },
       hooks: {
         onInit: (field: FormlyFieldConfig) => {
-          const getAddressesForMethod = (method: 'pickup' | 'delivery') =>
-            method === 'pickup' ? tenantAddresses : userAddresses;
-
-          const setDefaultAddress = (method: 'pickup' | 'delivery', shouldPreserveValue = true) => {
-            const addresses = getAddressesForMethod(method);
-            const defaultAddress = addresses.find(address => address.default);
-            const shouldSetValue = shouldPreserveValue ? !field.formControl?.value : true;
-
-            if (defaultAddress && shouldSetValue) {
-              field.formControl?.setValue(defaultAddress);
-              field.formControl?.updateValueAndValidity();
-            }
-          };
-
-          const updateAddresses = (method: 'pickup' | 'delivery') => {
+          const tenantAddresses = tenantStore.tenantAddressesContacts();
+          const userAddresses = userProfileStore.getUserContacts();
+          const getAddressesForMethod = (method: EcoStoreTenantLogisticsDeliveryType) => {
+            const addresses = method === 'pickup' ? tenantAddresses : userAddresses;
             if (field.props) {
-              field.props['addresses'] = getAddressesForMethod(method);
-            }
-            setDefaultAddress(method, false);
-          };
-
-          const currentMethod = field.model?.method ?? 'pickup';
-          if (field.props) {
-            field.props['addresses'] = getAddressesForMethod(currentMethod);
-          }
-          setDefaultAddress(currentMethod);
-
-          // Function to handle slot/instruction mode changes
-          const handleSlotModeChange = () => {
-            const method = field.model?.method;
-            const addressId = field.model?.address?.id;
-            if (!method) return;
-
-            const tiersOrInstructions = tenantStore.getTiersOrInstructions(method, addressId);
-            const hasSlots = tiersOrInstructions?.type === 'slots';
-
-            if (!hasSlots) {
-              // Instructions mode: reset day/time and set noDayAndTime to true
-              cartStore.updateLogistics({
-                day: null,
-                time: null,
-                noDayAndTime: true,
-              });
-            } else {
-              // Slots mode: set noDayAndTime to false
-              cartStore.updateLogistics({
-                noDayAndTime: false,
-              });
+              field.props['addresses'] = addresses;
             }
           };
 
-          // Handle initial state
-          handleSlotModeChange();
+          getAddressesForMethod(field.model.method);
 
           return field.options?.fieldChanges?.pipe(
-            filter(
-              e =>
-                e.type === 'valueChanges' &&
-                (e.field?.key === 'method' || e.field?.key === 'address')
-            ),
-            tap(({ value, field: changedField }) => {
-              if (changedField?.key === 'method') {
-                updateAddresses(value);
-              }
-              handleSlotModeChange();
+            filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
+            tap(() => {
+              const method = field.model.method as EcoStoreTenantLogisticsDeliveryType;
+              const newAddresses = method === 'pickup' ? tenantAddresses : userAddresses;
+              getAddressesForMethod(method);
+
+              const defaultAddress = newAddresses.find(a => a.default) || newAddresses[0] || null;
+
+              field.formControl?.setValue(defaultAddress);
             })
           );
         },
@@ -180,15 +128,12 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
         },
       ]),
       expressionProperties: {
-        hide: (model: unknown) => {
-          const method = (model as { method?: string })?.method ?? 'pickup';
-          const addressId = (model as { address?: { id: string } })?.address?.id;
-          const tiersOrInstructions = tenantStore.getTiersOrInstructions(
-            method as 'pickup' | 'delivery',
-            addressId
+        hide: model => {
+          const config = tenantStore.getTiersOrInstructions(
+            model.method ?? 'pickup',
+            model.address?.id
           );
-          if (!tiersOrInstructions) return true;
-          return tiersOrInstructions.type !== 'slots';
+          return config?.type !== 'slots';
         },
       },
     },
@@ -204,12 +149,10 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
         isValid: 'valid',
       },
       expressionProperties: {
-        hide: (model: unknown) => {
-          const method = (model as { method?: string })?.method ?? 'pickup';
-          const addressId = (model as { address?: { id: string } })?.address?.id;
+        hide: model => {
           const tiersOrInstructions = tenantStore.getTiersOrInstructions(
-            method as 'pickup' | 'delivery',
-            addressId
+            model.method ?? 'pickup',
+            model.address?.id
           );
           if (!tiersOrInstructions) return false;
           return tiersOrInstructions.type === 'slots';
@@ -224,127 +167,118 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
  * @param { FieldDependencies } deps - Field dependencies object
  * @returns { FormlyFieldConfig } Formly field configuration for slot selection
  */
-export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig {
+export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
   const { tenantStore, cartStore, translateService } = deps;
 
-  return {
-    fieldGroupClassName: 'grid grid-cols-1 md:grid-cols-2 gap-4',
-    expressionProperties: {
-      hide: (model: unknown) => {
-        const method = (model as { method?: string })?.method ?? 'pickup';
-        const addressId = (model as { address?: { id: string } })?.address?.id;
-        const tiersOrInstructions = tenantStore.getTiersOrInstructions(
-          method as 'pickup' | 'delivery',
-          addressId
-        );
-        if (!tiersOrInstructions) return true;
-        return tiersOrInstructions.type !== 'slots';
-      },
-    },
-    fieldGroup: [
-      {
-        key: 'day',
-        type: 'select',
-        defaultValue: cartStore.day() ?? null,
-        props: {
-          label: 'cart.shipping.slot.date',
-          translate: true,
-          required: true,
-          options: [],
-          addonRight: {
-            icon: 'calendar_month',
-            type: 'icon',
-            classes: 'text-primary-600! fill-primary-600!',
-          },
-        },
-        expressionProperties: {
-          'props.disabled': '!model.method || !model.address',
-        },
-        hooks: {
-          onInit: (field: FormlyFieldConfig) => {
-            const { method, address } = field.model;
-
-            const getTranslatedOptions = (
-              method: EcoStoreTenantLogisticsDeliveryType,
-              addressId: string | null = null
-            ): FormSelectOption[] => {
-              const options = tenantStore.getTenantDeliveryOptionSlotsDays(method, addressId);
-              return options.map((option: FormSelectOption) => ({
-                ...option,
-                label: translateService.instant(`common.weekdays.${option.label}`),
-              }));
-            };
-
-            if (field.props && method && address) {
-              field.props['options'] = getTranslatedOptions(method, address.id);
-            }
-            return field.options?.fieldChanges?.pipe(
-              filter(
-                e =>
-                  e.type === 'valueChanges' &&
-                  (e.field?.key === 'address' || e.field?.key === 'method')
-              ),
-              tap(e => {
-                const { method, address } = e.field.model;
-                if (field.props && method && address?.id) {
-                  field.props['options'] = getTranslatedOptions(method, address.id);
-                }
-                field.formControl?.setValue(null);
-                field.formControl?.updateValueAndValidity();
-              })
-            );
-          },
+  return [
+    {
+      fieldGroupClassName: 'grid grid-cols-1 md:grid-cols-2 gap-4',
+      expressionProperties: {
+        hide: model => {
+          const config = deps.tenantStore.getTiersOrInstructions(
+            model.method ?? 'pickup',
+            model.address?.id
+          );
+          return config?.type !== 'slots';
         },
       },
-      {
-        key: 'time',
-        type: 'select',
-        defaultValue: cartStore.time() ?? null,
-        props: {
-          label: 'cart.shipping.slot.time',
-          translate: true,
-          required: true,
-          options: [],
-          addonRight: {
-            icon: 'access_time',
-            type: 'icon',
-            classes: 'text-primary-600! fill-primary-600!',
+      fieldGroup: [
+        {
+          key: 'day',
+          type: 'select',
+          props: {
+            label: 'cart.shipping.slot.date',
+            translate: true,
+            required: true,
+            options: [],
+            addonRight: {
+              icon: 'calendar_month',
+              type: 'icon',
+              classes: 'text-primary-600! fill-primary-600!',
+            },
           },
-        },
-        expressions: {
-          'props.disabled': '!model.day',
-        },
-        hooks: {
-          onInit: (field: FormlyFieldConfig) => {
-            const { method, address, day } = field.model;
-            if (field.props && method && address?.id && day) {
-              field.props['options'] = tenantStore.getTenantDeliveryOptionSlotsTimes(
-                method,
-                day,
-                address.id
-              );
-            }
-            return field.options?.fieldChanges?.pipe(
-              filter(e => e.type === 'valueChanges' && e.field?.key === 'day'),
-              tap(() => {
-                field.formControl?.setValue(null);
-                field.formControl?.updateValueAndValidity();
-              }),
-              tap(({ value }) => {
-                if (field.props) {
-                  field.props['options'] = tenantStore.getTenantDeliveryOptionSlotsTimes(
-                    field.model.method,
-                    value,
-                    field.model.address?.id
+          expressionProperties: {
+            'props.disabled': '!model.method || !model.address',
+          },
+          hooks: {
+            onInit: (field: FormlyFieldConfig) => {
+              const getTranslatedOptions = (
+                method: EcoStoreTenantLogisticsDeliveryType,
+                addressId: string | null = null
+              ): FormSelectOption[] => {
+                const options = tenantStore.getTenantDeliveryOptionSlotsDays(method, addressId);
+                return options.map((option: FormSelectOption) => ({
+                  ...option,
+                  label: translateService.instant(`common.weekdays.${option.label}`),
+                }));
+              };
+
+              const updateOptions = (model: unknown) => {
+                const { method, address } = model as { method?: string; address?: { id: string } };
+                if (field.props && method && address) {
+                  field.props['options'] = getTranslatedOptions(
+                    method as EcoStoreTenantLogisticsDeliveryType,
+                    address.id
                   );
                 }
-              })
-            );
+              };
+
+              updateOptions(field.model);
+
+              return field.options?.fieldChanges?.pipe(
+                filter(e => e.type === 'valueChanges' && e.field?.key === 'address'),
+                tap(() => updateOptions(field.model))
+              );
+            },
           },
         },
-      },
-    ],
-  };
+        {
+          key: 'time',
+          type: 'select',
+          defaultValue: cartStore.time() ?? null,
+          props: {
+            label: 'cart.shipping.slot.time',
+            translate: true,
+            required: true,
+            options: [],
+            addonRight: {
+              icon: 'access_time',
+              type: 'icon',
+              classes: 'text-primary-600! fill-primary-600!',
+            },
+          },
+          expressions: {
+            'props.disabled': '!model.day',
+          },
+          hooks: {
+            onInit: (field: FormlyFieldConfig) => {
+              const updateOptions = (model: unknown) => {
+                const { method, address, day } = model as {
+                  method?: string;
+                  address?: { id: string };
+                  day?: SlotDays;
+                };
+                if (field.props && method && address && day) {
+                  field.props['options'] = tenantStore.getTenantDeliveryOptionSlotsTimes(
+                    method as EcoStoreTenantLogisticsDeliveryType,
+                    day,
+                    address.id
+                  );
+                }
+              };
+
+              updateOptions(field.model);
+
+              return field.options?.fieldChanges?.pipe(
+                filter(e => e.type === 'valueChanges' && e.field?.key === 'day'),
+                tap(({ value }) => updateOptions({ ...field.model, day: value }))
+              );
+            },
+          },
+        },
+      ],
+    },
+  ];
 }
 
 /**
@@ -352,72 +286,34 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig {
  * @param { FieldDependencies } deps - Field dependencies object
  * @returns { FormlyFieldConfig } Formly field configuration for instructions display
  */
-export function createInstructionsField(deps: FieldDependencies): FormlyFieldConfig {
+export function createInstructionsField(deps: FieldDependencies): FormlyFieldConfig[] {
   const { tenantStore } = deps;
 
-  return {
-    type: 'text',
-    expressionProperties: {
-      hide: (model: unknown) => {
-        const method = (model as { method?: string })?.method ?? 'pickup';
-        const addressId = (model as { address?: { id: string } })?.address?.id;
-        const tiersOrInstructions = tenantStore.getTiersOrInstructions(
-          method as 'pickup' | 'delivery',
-          addressId
-        );
-        if (!tiersOrInstructions) return false;
-        return tiersOrInstructions.type === 'slots';
+  return [
+    {
+      type: 'text',
+      expressionProperties: {
+        hide: model => {
+          const config = tenantStore.getTiersOrInstructions(
+            model.method ?? 'pickup',
+            model.address?.id
+          );
+          return config?.type !== 'instructions';
+        },
+        'props.text': model => {
+          const method = model.method ?? 'pickup';
+          const addressId = model.address?.id;
+          const tiersOrInstructions = tenantStore.getTiersOrInstructions(
+            method as 'pickup' | 'delivery',
+            addressId
+          );
+          return tiersOrInstructions?.instructions || '';
+        },
       },
-      'props.text': (model: unknown) => {
-        const method = (model as { method?: string })?.method ?? 'pickup';
-        const addressId = (model as { address?: { id: string } })?.address?.id;
-        const tiersOrInstructions = tenantStore.getTiersOrInstructions(
-          method as 'pickup' | 'delivery',
-          addressId
-        );
-        return tiersOrInstructions?.instructions || '';
-      },
-    },
-    props: {
-      text: '',
-      icon: 'info',
-    },
-  };
-}
-
-/**
- * Creates hidden amount field that updates based on method.
- * @param { FieldDependencies } deps - Field dependencies object
- * @returns { FormlyFieldConfig } Formly field configuration for amount calculation
- */
-export function createAmountField(deps: FieldDependencies): FormlyFieldConfig {
-  const { tenantStore, cartStore } = deps;
-
-  return {
-    key: 'shipping',
-    defaultValue: cartStore.shipping() ?? null,
-    hooks: {
-      onInit: (field: FormlyFieldConfig) => {
-        const updateShippingAmount = () => {
-          const shippingMethod = field.model?.method;
-          const totalAmount = cartStore.subtotal() + cartStore.tax() || 0;
-          if (shippingMethod) {
-            const shippingAmount = tenantStore.getTenantDeliveryOptionCost(
-              shippingMethod,
-              totalAmount
-            );
-            field.formControl?.setValue(shippingAmount);
-            field.formControl?.updateValueAndValidity();
-          }
-        };
-
-        updateShippingAmount();
-
-        return field.options?.fieldChanges?.pipe(
-          filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
-          tap(() => updateShippingAmount())
-        );
+      props: {
+        text: '',
+        icon: 'info',
       },
     },
-  };
+  ];
 }

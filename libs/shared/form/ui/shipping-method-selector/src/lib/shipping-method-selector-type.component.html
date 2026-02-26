@@ -16,7 +16,7 @@
       tabindex="0"
       appearance="raised"
       [class]="getCardStyles(theme, isSelected)"
-      [attr.aria-label]="'cart.shipping.method.' + shippingMethodOption.type + '.title' | translate"
+      [attr.aria-label]="`cart.shipping.method.${shippingMethodOption.type}.title` | translate"
       (click)="formControl.setValue(shippingMethodOption.type)"
       (keydown.enter)="formControl.setValue(shippingMethodOption.type)">
       <mat-card-header class="flex flex-col-reverse items-center gap-2 text-center">

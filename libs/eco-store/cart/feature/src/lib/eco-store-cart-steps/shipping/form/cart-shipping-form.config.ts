@@ -8,7 +8,6 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { ShippingMethodOption } from '@plastik/shared/form/shipping-method-selector';
 import {
   createAddressField,
-  createAmountField,
   createInstructionsField,
   createMethodField,
   createSlotFields,
@@ -64,8 +63,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
     tenantStore,
     cartStore,
     translateService,
-    tenantAddresses: tenantStore.tenantAddressesContacts(),
-    userAddresses: userProfileStore.getUserContacts(),
+    userProfileStore,
     availableMethodTypes,
   };
 
@@ -73,16 +71,11 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
     {
       fieldGroupClassName: 'flex flex-col gap-6',
       fieldGroup: [
-        ...createMethodField(
-          availableShippingMethodOptions,
-          availableMethodTypes,
-          cartStore.method() ?? 'pickup'
-        ),
-        ...createAddressField(dependencies, cartStore.address() ?? null),
+        ...createMethodField(availableShippingMethodOptions, availableMethodTypes),
+        ...createAddressField(dependencies),
         ...createSlotLabelFields(dependencies),
-        createSlotFields(dependencies),
-        createInstructionsField(dependencies),
-        createAmountField(dependencies),
+        ...createSlotFields(dependencies),
+        ...createInstructionsField(dependencies),
       ],
     },
   ];

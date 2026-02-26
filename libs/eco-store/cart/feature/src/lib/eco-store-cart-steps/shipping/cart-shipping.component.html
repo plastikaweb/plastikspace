@@ -10,7 +10,7 @@
     <plastik-shared-form-feature
       [fields]="formConfig.getConfig()"
       [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
-      [model]="{}"
+      [model]="model()"
       (temporaryChangeEvent)="onChange($event)"
       (validChange)="onFormValidChange($event)">
     </plastik-shared-form-feature>

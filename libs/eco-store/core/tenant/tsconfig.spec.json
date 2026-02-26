@@ -18,16 +18,16 @@
   ],
   "references": [
     {
-      "path": "../../../../libs/shared/countdown/util"
+      "path": "../../../../libs/shared/countdown/util/tsconfig.json"
     },
     {
-      "path": "../../../../libs/shared/util/objects"
+      "path": "../../../../libs/shared/util/objects/tsconfig.json"
     },
     {
-      "path": "../entities"
+      "path": "../entities/tsconfig.json"
     },
     {
-      "path": "../../../../libs/core/entities"
+      "path": "../../../../libs/core/entities/tsconfig.json"
     }
   ]
 }
