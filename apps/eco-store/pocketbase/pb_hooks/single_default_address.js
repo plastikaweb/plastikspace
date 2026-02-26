@@ -1,7 +1,7 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 // Auxiliary function to ensure that only one address can be set as default per user
-function ensureSingleDefaultAddress(record, dao) {
+function ensureSingleDefaultAddress(record) {
     // 1. If the address being saved is not "default", do nothing.
     if (!record.getBool('default')) {
         return;
@@ -13,7 +13,7 @@ function ensureSingleDefaultAddress(record, dao) {
     // 2. Search for all other addresses of this user that are 'default'
     // Exclude the one we are touching now (id != currentId)
     try {
-        const otherDefaults = dao.findRecordsByFilter(
+        const otherDefaults = $app.findRecordsByFilter(
             "user_addresses",
             `user = {:user} && default = true && id != {:id}`,
             { user: userId, id: currentId }
@@ -22,7 +22,7 @@ function ensureSingleDefaultAddress(record, dao) {
         // 3. Loop through the other defaults and set them to false
         for (const other of otherDefaults) {
             other.set('default', false);
-            dao.saveRecord(other); // Save the change without triggering recursive hooks
+            $app.save(other); // Save the change without triggering recursive hooks
         }
     } catch (err) {
         // Log error in case of failure
@@ -31,11 +31,13 @@ function ensureSingleDefaultAddress(record, dao) {
 }
 
 // Hook before creating an address
-onRecordBeforeCreateRequest((e) => {
-    ensureSingleDefaultAddress(e.record, $app.dao());
+onRecordCreateRequest((e) => {
+    ensureSingleDefaultAddress(e.record);
+    return e.next();
 }, "user_addresses");
 
 // Hook before updating an address
-onRecordBeforeUpdateRequest((e) => {
-    ensureSingleDefaultAddress(e.record, $app.dao());
+onRecordUpdateRequest((e) => {
+    ensureSingleDefaultAddress(e.record);
+    return e.next();
 }, "user_addresses");

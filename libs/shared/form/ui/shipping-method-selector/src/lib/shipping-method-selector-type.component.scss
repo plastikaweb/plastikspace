@@ -1,8 +1,10 @@
 @use '@angular/material' as mat;
 
 :host {
-  .mat-mdc-radio-group {
-    grid-template-columns: repeat(auto-fit, minmax(min(100px, 100%), 1fr));
+  .shipping-method-radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+    gap: 1rem;
   }
 
   .shipping-method-card {

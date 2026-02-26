@@ -3051,11 +3051,11 @@
         "system": false,
         "type": "select",
         "values": [
-          "draft",
-          "open",
-          "processing",
-          "completed",
-          "closed"
+          "OPEN",
+          "PROCESSING",
+          "COMPLETED",
+          "CLOSED",
+          "DRAFT"
         ]
       },
       {

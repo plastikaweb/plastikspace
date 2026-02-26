@@ -21,7 +21,7 @@
 
 **Eco-Store** is a modern consumer cooperative platform designed to facilitate sustainable and local shopping. It enables a community-driven commerce model with role-based access control and member management.
 
-Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **PocketBase**.
+Built with **Angular 21+** (Signals, Standalone Components, Control Flow) and **PocketBase**.
 
 ## Features
 
@@ -50,7 +50,7 @@ Built with **Angular 19+** (Signals, Standalone Components, Control Flow) and **
 
 - **Start Local Server**: `yarn eco-store:pocketbase:run`
 - **Sync Schema**: `yarn eco-store:local` (Run app with local PB)
-- **Schema Guide**: [PocketBase Schema Management](./POCKETBASE_SCHEMA_MANAGEMENT.md)
+- **Management Guide**: [PocketBase Management](./POCKETBASE.md)
 
 ### 🧪 Quality & Testing
 

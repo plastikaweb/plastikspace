@@ -11,13 +11,14 @@
       (
         container-color: var(--transparent),
         header-icon-background-color: var(--secondary-300),
-        header-edit-state-icon-background-color: var(--secondary-400),
-        header-done-state-icon-background-color: var(--primary-600),
+        header-edit-state-icon-background-color: var(--tertiary-500),
+        header-done-state-icon-background-color: var(--primary-500),
         header-icon-foreground-color: var(--white),
-        header-selected-state-icon-foreground-color: var(--white),
         line-color: var(--secondary-300),
         header-label-text-size: var(--font-size-base),
       )
     );
+
+    --mat-stepper-header-selected-state-label-text-color: var(--primary-500);
   }
 }
