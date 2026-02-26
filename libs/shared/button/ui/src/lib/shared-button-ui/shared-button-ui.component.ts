@@ -24,13 +24,13 @@ export class SharedButtonUiComponent {
    * @description A configuration object that passes a button configuration to build the button.
    * @param {ButtonConfig} config
    */
-  config = input.required<ButtonConfig>();
+  buttonConfig = input.required<ButtonConfig>();
 
   /**
    * @description Computed signal that returns the link from config if it's a link type button
    */
   linkHref = computed(() => {
-    const cfg = this.config();
+    const cfg = this.buttonConfig();
     return buttonHasALinkGuard(cfg) ? cfg.link : undefined;
   });
 
@@ -40,8 +40,8 @@ export class SharedButtonUiComponent {
   sendAction = output<() => Action>();
 
   onClick(): void {
-    if (!buttonHasALinkGuard(this.config())) {
-      const action = (this.config() as ButtonConfigWithAction).doAction?.();
+    if (!buttonHasALinkGuard(this.buttonConfig())) {
+      const action = (this.buttonConfig() as ButtonConfigWithAction).doAction?.();
       if (action) {
         this.sendAction.emit(() => action);
       }

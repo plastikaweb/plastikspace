@@ -47,7 +47,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
 
   readonly #submitted = signal(false);
 
-  protected readonly config = linkedSignal({
+  protected readonly formSubmitConfig = linkedSignal({
     source: this.submitConfig,
     computation: (newConfig: SubmitFormConfig | null) => {
       return {
@@ -122,22 +122,22 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
     }
 
     this.pendingChangesEvent.emit(this.form.dirty);
-    if (!this.config().submitAvailable) {
+    if (!this.formSubmitConfig().submitAvailable) {
       this.#emitChange(model ?? (this.form.value as T));
     }
 
-    if (this.config().emitOnChange) {
+    if (this.formSubmitConfig().emitOnChange) {
       this.temporaryChangeEvent.emit(model);
     }
   }
 
   protected submitDisabled(): boolean {
-    return this.form.invalid || (!this.config().enabledByDefault && this.form.untouched);
+    return this.form.invalid || (!this.formSubmitConfig().enabledByDefault && this.form.untouched);
   }
 
   #emitChange(model?: T): void {
     if (this.form.valid) {
-      if (this.config().disableOnSubmit) {
+      if (this.formSubmitConfig().disableOnSubmit) {
         this.form.disable({ emitEvent: false });
         this.#submitted.set(true);
       }
@@ -156,7 +156,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
     if (this.form.disabled) {
       this.form.enable();
     }
-    if (this.config().resetOnSubmit) {
+    if (this.formSubmitConfig().resetOnSubmit) {
       this.mutableModel.set(null);
       this.form.reset({});
     }

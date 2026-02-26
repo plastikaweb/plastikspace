@@ -99,7 +99,7 @@ export function userOrderFeatureDetailFormConfig(): FormConfig<LlecoopUserOrder>
                 },
               },
               expressions: {
-                hide: 'model.deliveryType === "pickup"',
+                hide: ({ model }: FormlyFieldConfig) => model.deliveryType === 'pickup',
               },
               hooks: {
                 onInit: ({ formControl }: FormlyFieldConfig) =>

@@ -19,7 +19,7 @@ describe('SharedButtonUiComponent', () => {
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedButtonUiComponent);
-    fixture.componentRef.setInput('config', buttonMock);
+    fixture.componentRef.setInput('buttonConfig', buttonMock);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
