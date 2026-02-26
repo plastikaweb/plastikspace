@@ -57,7 +57,6 @@ module.exports = {
   allowTicketNumber: true,
   isTicketNumberRequired: false,
   ticketNumberPrefix: '#',
-  ticketNumberRegExp: '\\d{1,5}',
   appendIssueFromBranchName: true,
   allowBreakingChanges: ['feat', 'fix'],
   subjectLimit: 100,

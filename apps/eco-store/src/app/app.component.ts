@@ -59,6 +59,7 @@ export class AppComponent implements OnInit {
     const link = this.#document.createElement('link');
     link.rel = 'preconnect';
     link.href = this.#environment.baseApiUrl;
+    link.setAttribute('crossorigin', '');
     this.#document.head.appendChild(link);
   }
 

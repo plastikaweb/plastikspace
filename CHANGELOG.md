@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Simplified logistics state in cart store by removing redundant properties ([86c8f9zu0](https://app.clickup.com/t/86c8f9zu0))
 - Improved `getTiersOrInstructions` logic in tenant store to prioritize address-specific configurations ([86c8f9zu0](https://app.clickup.com/t/86c8f9zu0))
 
+### Added
+
+- Added crossorigin attribute to API preconnect link ([#86c8fpm3n](https://app.clickup.com/t/86c8fpm3n))
+
 ---
 
 ## [2026-02-25] - Checkout Shipping View Responsive
