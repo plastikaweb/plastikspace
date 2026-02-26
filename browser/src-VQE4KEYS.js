@@ -113,9 +113,9 @@ function SharedButtonUiComponent_Conditional_0_Template(rf, ctx) {
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
     const content_r3 = \u0275\u0275reference(3);
-    \u0275\u0275classMap(`button--rounded ${ctx_r1.config().classes || ""}`);
-    \u0275\u0275property("disabled", ctx_r1.config().disabled);
-    \u0275\u0275attribute("aria-label", ctx_r1.config().ariaLabel)("data-test", ctx_r1.config().dataTestId);
+    \u0275\u0275classMap(`button--rounded ${ctx_r1.buttonConfig().classes || ""}`);
+    \u0275\u0275property("disabled", ctx_r1.buttonConfig().disabled);
+    \u0275\u0275attribute("aria-label", ctx_r1.buttonConfig().ariaLabel)("data-test", ctx_r1.buttonConfig().dataTestId);
     \u0275\u0275advance();
     \u0275\u0275property("ngTemplateOutlet", content_r3);
   }
@@ -137,7 +137,7 @@ function SharedButtonUiComponent_Conditional_1_Template(rf, ctx) {
     const ctx_r1 = \u0275\u0275nextContext();
     const content_r3 = \u0275\u0275reference(3);
     \u0275\u0275property("href", ctx_r1.linkHref(), \u0275\u0275sanitizeUrl);
-    \u0275\u0275attribute("aria-label", ctx_r1.config().ariaLabel)("data-test", ctx_r1.config().dataTestId);
+    \u0275\u0275attribute("aria-label", ctx_r1.buttonConfig().ariaLabel)("data-test", ctx_r1.buttonConfig().dataTestId);
     \u0275\u0275advance();
     \u0275\u0275property("ngTemplateOutlet", content_r3);
   }
@@ -189,7 +189,7 @@ function SharedButtonUiComponent_ng_template_2_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275repeater(ctx_r1.config().elements);
+    \u0275\u0275repeater(ctx_r1.buttonConfig().elements);
   }
 }
 var SharedButtonUiComponent = class _SharedButtonUiComponent {
@@ -197,12 +197,12 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
    * @description A configuration object that passes a button configuration to build the button.
    * @param {ButtonConfig} config
    */
-  config = input.required(...ngDevMode ? [{ debugName: "config" }] : []);
+  buttonConfig = input.required(...ngDevMode ? [{ debugName: "buttonConfig" }] : []);
   /**
    * @description Computed signal that returns the link from config if it's a link type button
    */
   linkHref = computed(() => {
-    const cfg = this.config();
+    const cfg = this.buttonConfig();
     return buttonHasALinkGuard(cfg) ? cfg.link : void 0;
   }, ...ngDevMode ? [{ debugName: "linkHref" }] : []);
   /**
@@ -210,8 +210,8 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
    */
   sendAction = output();
   onClick() {
-    if (!buttonHasALinkGuard(this.config())) {
-      const action = this.config().doAction?.();
+    if (!buttonHasALinkGuard(this.buttonConfig())) {
+      const action = this.buttonConfig().doAction?.();
       if (action) {
         this.sendAction.emit(() => action);
       }
@@ -220,16 +220,16 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
   static \u0275fac = function SharedButtonUiComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedButtonUiComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedButtonUiComponent, selectors: [["plastik-shared-button"]], inputs: { config: [1, "config"] }, outputs: { sendAction: "sendAction" }, decls: 4, vars: 2, consts: [["content", ""], ["mat-button", "", 3, "class", "disabled"], ["target", "_blank", 1, "block", 3, "href"], ["mat-button", "", 3, "click", "disabled"], [4, "ngTemplateOutlet"], [3, "src", "svgClass"]], template: function SharedButtonUiComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedButtonUiComponent, selectors: [["plastik-shared-button"]], inputs: { buttonConfig: [1, "buttonConfig"] }, outputs: { sendAction: "sendAction" }, decls: 4, vars: 2, consts: [["content", ""], ["mat-button", "", 3, "class", "disabled"], ["target", "_blank", 1, "block", 3, "href"], ["mat-button", "", 3, "click", "disabled"], [4, "ngTemplateOutlet"], [3, "src", "svgClass"]], template: function SharedButtonUiComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275conditionalCreate(0, SharedButtonUiComponent_Conditional_0_Template, 2, 6, "button", 1);
       \u0275\u0275conditionalCreate(1, SharedButtonUiComponent_Conditional_1_Template, 2, 4, "a", 2);
       \u0275\u0275template(2, SharedButtonUiComponent_ng_template_2_Template, 2, 0, "ng-template", null, 0, \u0275\u0275templateRefExtractor);
     }
     if (rf & 2) {
-      \u0275\u0275conditional(ctx.config().type === "button" ? 0 : -1);
+      \u0275\u0275conditional(ctx.buttonConfig().type === "button" ? 0 : -1);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.config().type === "link" ? 1 : -1);
+      \u0275\u0275conditional(ctx.buttonConfig().type === "link" ? 1 : -1);
     }
   }, dependencies: [
     NgTemplateOutlet,
@@ -250,31 +250,31 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
       MatButtonModule,
       AngularSvgIconModule,
       ReturnAsObservablePipe
-    ], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (config().type === 'button') {
+    ], changeDetection: ChangeDetectionStrategy.OnPush, template: `@if (buttonConfig().type === 'button') {
   <button
     mat-button
-    [class]="\`button--rounded \${config().classes || ''}\`"
-    [disabled]="config().disabled"
-    [attr.aria-label]="config().ariaLabel"
-    [attr.data-test]="config().dataTestId"
+    [class]="\`button--rounded \${buttonConfig().classes || ''}\`"
+    [disabled]="buttonConfig().disabled"
+    [attr.aria-label]="buttonConfig().ariaLabel"
+    [attr.data-test]="buttonConfig().dataTestId"
     (click)="onClick()">
     <ng-container *ngTemplateOutlet="content"></ng-container>
   </button>
 }
 
-@if (config().type === 'link') {
+@if (buttonConfig().type === 'link') {
   <a
     class="block"
     target="_blank"
-    [attr.aria-label]="config().ariaLabel"
+    [attr.aria-label]="buttonConfig().ariaLabel"
     [href]="linkHref()"
-    [attr.data-test]="config().dataTestId">
+    [attr.data-test]="buttonConfig().dataTestId">
     <ng-container *ngTemplateOutlet="content">button content</ng-container>
   </a>
 }
 
 <ng-template #content>
-  @for (element of config().elements; track $index) {
+  @for (element of buttonConfig().elements; track $index) {
     @if (element.type === 'text') {
       <span>{{ element.content | returnAsObservable | ngrxPush }}</span>
     }
@@ -286,7 +286,7 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
   }
 </ng-template>
 ` }]
-  }], null, { config: [{ type: Input, args: [{ isSignal: true, alias: "config", required: true }] }], sendAction: [{ type: Output, args: ["sendAction"] }] });
+  }], null, { buttonConfig: [{ type: Input, args: [{ isSignal: true, alias: "buttonConfig", required: true }] }], sendAction: [{ type: Output, args: ["sendAction"] }] });
 })();
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedButtonUiComponent, { className: "SharedButtonUiComponent", filePath: "libs/shared/button/ui/src/lib/shared-button-ui/shared-button-ui.component.ts", lineNumber: 22 });
@@ -294,4 +294,4 @@ var SharedButtonUiComponent = class _SharedButtonUiComponent {
 export {
   SharedButtonUiComponent
 };
-//# sourceMappingURL=src-WMDQUVAQ.js.map
+//# sourceMappingURL=src-VQE4KEYS.js.map

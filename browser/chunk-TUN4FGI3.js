@@ -10259,7 +10259,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   pendingChangesEvent = output();
   validChange = output();
   #submitted = signal(false, ...ngDevMode ? [{ debugName: "#submitted" }] : []);
-  config = linkedSignal(__spreadProps(__spreadValues({}, ngDevMode ? { debugName: "config" } : {}), {
+  formSubmitConfig = linkedSignal(__spreadProps(__spreadValues({}, ngDevMode ? { debugName: "formSubmitConfig" } : {}), {
     source: this.submitConfig,
     computation: (newConfig) => {
       return __spreadValues({
@@ -10322,19 +10322,19 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
       return;
     }
     this.pendingChangesEvent.emit(this.form.dirty);
-    if (!this.config().submitAvailable) {
+    if (!this.formSubmitConfig().submitAvailable) {
       this.#emitChange(model ?? this.form.value);
     }
-    if (this.config().emitOnChange) {
+    if (this.formSubmitConfig().emitOnChange) {
       this.temporaryChangeEvent.emit(model);
     }
   }
   submitDisabled() {
-    return this.form.invalid || !this.config().enabledByDefault && this.form.untouched;
+    return this.form.invalid || !this.formSubmitConfig().enabledByDefault && this.form.untouched;
   }
   #emitChange(model) {
     if (this.form.valid) {
-      if (this.config().disableOnSubmit) {
+      if (this.formSubmitConfig().disableOnSubmit) {
         this.form.disable({ emitEvent: false });
         this.#submitted.set(true);
       }
@@ -10350,7 +10350,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     if (this.form.disabled) {
       this.form.enable();
     }
-    if (this.config().resetOnSubmit) {
+    if (this.formSubmitConfig().resetOnSubmit) {
       this.mutableModel.set(null);
       this.form.reset({});
     }
@@ -10358,7 +10358,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   static \u0275fac = function SharedFormFeatureComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedFormFeatureComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedFormFeatureComponent, selectors: [["plastik-shared-form-feature"]], hostAttrs: [1, "w-full"], inputs: { fields: [1, "fields"], model: [1, "model"], submitConfig: [1, "submitConfig"], autoFocus: [1, "autoFocus"], disableForm: [1, "disableForm"], resetForm: [1, "resetForm"] }, outputs: { changeEvent: "changeEvent", temporaryChangeEvent: "temporaryChangeEvent", pendingChangesEvent: "pendingChangesEvent", validChange: "validChange" }, ngContentSelectors: _c13, decls: 7, vars: 16, consts: [["novalidate", "", 1, "mt", "flex", "w-full", "flex-col", "gap-1", 3, "ngSubmit", "formGroup"], [1, "form-container", 3, "modelChange", "fields", "form", "model", "options"], ["mat-flat-button", "", "type", "submit", "data-test", "submit-button", "title", "Submit", 3, "disabled"]], template: function SharedFormFeatureComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedFormFeatureComponent, selectors: [["plastik-shared-form-feature"]], hostAttrs: [1, "w-full"], inputs: { fields: [1, "fields"], model: [1, "model"], submitConfig: [1, "submitConfig"], autoFocus: [1, "autoFocus"], disableForm: [1, "disableForm"], resetForm: [1, "resetForm"] }, outputs: { changeEvent: "changeEvent", temporaryChangeEvent: "temporaryChangeEvent", pendingChangesEvent: "pendingChangesEvent", validChange: "validChange" }, ngContentSelectors: _c13, decls: 7, vars: 16, consts: [["novalidate", "", 1, "mt-4", "flex", "w-full", "flex-col", "gap-1", 3, "ngSubmit", "formGroup"], [1, "form-container", 3, "modelChange", "fields", "form", "model", "options"], ["mat-flat-button", "", "type", "submit", "data-test", "submit-button", "title", "Submit", 3, "disabled"]], template: function SharedFormFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c03);
       \u0275\u0275elementStart(0, "form", 0);
@@ -10382,12 +10382,12 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
       \u0275\u0275advance();
       \u0275\u0275property("fields", ctx.fields())("form", ctx.form)("model", ctx.mutableModel())("options", ctx.options);
       \u0275\u0275advance(2);
-      \u0275\u0275classMap("w-full sm:w-auto " + (ctx.config().buttonStyle || ""));
-      \u0275\u0275classProp("sr-only!", !ctx.config().submitAvailable);
+      \u0275\u0275classMap(`w-full sm:w-auto ${ctx.formSubmitConfig().buttonStyle}`);
+      \u0275\u0275classProp("sr-only", !ctx.formSubmitConfig().submitAvailable);
       \u0275\u0275property("disabled", !ctx.form.valid);
-      \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(4, 12, ctx.config().label) || "Submit");
+      \u0275\u0275attribute("aria-label", \u0275\u0275pipeBind1(4, 12, ctx.formSubmitConfig().label) || "Submit");
       \u0275\u0275advance(2);
-      \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(6, 14, ctx.config().label) || "Submit", " ");
+      \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind1(6, 14, ctx.formSubmitConfig().label) || "Submit", " ");
     }
   }, dependencies: [ReactiveFormsModule, \u0275NgNoValidate, NgControlStatusGroup, FormGroupDirective, FormlyModule, LegacyFormlyForm, MatButtonModule, MatButton, MatIconModule, TranslateModule, TranslatePipe], styles: ["\n\n.shared-form--extraLinks-container[_ngcontent-%COMP%]     > .extraLinks {\n  font-size: 13px;\n  gap: var(--sub);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-direction: column;\n}\n/*# sourceMappingURL=shared-form-feature.component.css.map */"], changeDetection: 0 });
 };
@@ -10397,7 +10397,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     args: [{ selector: "plastik-shared-form-feature", imports: [ReactiveFormsModule, FormlyModule, MatButtonModule, MatIconModule, TranslateModule], host: {
       class: "w-full"
     }, changeDetection: ChangeDetectionStrategy.OnPush, template: `<form
-  class="mt flex w-full flex-col gap-1"
+  class="mt-4 flex w-full flex-col gap-1"
   novalidate
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
@@ -10417,11 +10417,11 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     type="submit"
     data-test="submit-button"
     title="Submit"
-    [class]="'w-full sm:w-auto ' + (config().buttonStyle || '')"
-    [class.sr-only!]="!config().submitAvailable"
+    [class]="\`w-full sm:w-auto \${formSubmitConfig().buttonStyle}\`"
+    [class.sr-only]="!formSubmitConfig().submitAvailable"
     [disabled]="!form.valid"
-    [attr.aria-label]="(config().label | translate) || 'Submit'">
-    {{ (config().label | translate) || 'Submit' }}
+    [attr.aria-label]="(formSubmitConfig().label | translate) || 'Submit'">
+    {{ (formSubmitConfig().label | translate) || 'Submit' }}
   </button>
 </form>
 `, styles: ["/* libs/shared/form/feature/src/lib/shared-form-feature.component.scss */\n.shared-form--extraLinks-container ::ng-deep > .extraLinks {\n  font-size: 13px;\n  gap: var(--sub);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-direction: column;\n}\n/*# sourceMappingURL=shared-form-feature.component.css.map */\n"] }]
@@ -17882,4 +17882,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-WSREVYAK.js.map
+//# sourceMappingURL=chunk-TUN4FGI3.js.map

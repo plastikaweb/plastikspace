@@ -16,7 +16,7 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-WSREVYAK.js";
+} from "./chunk-TUN4FGI3.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
@@ -6537,7 +6537,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-RDPQMHOU.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-2ENP3DOW.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
@@ -6557,9 +6557,9 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-WMDQUVAQ.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-VQE4KEYS.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
-          config: {
+          buttonConfig: {
             type: "link",
             link: "https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md",
             ariaLabel: "plastikspace -> apps -> nasa-images readme",
