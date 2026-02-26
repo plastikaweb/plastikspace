@@ -31,6 +31,6 @@ export const mockEcoStoreTenantStore = {
   getTenantDeliveryPriceForFreeShipping: jest.fn().mockReturnValue(0),
   getTenantDeliveryPriceTiers: jest.fn().mockReturnValue([]),
   getTenantAvailableShippingMethods: jest.fn().mockReturnValue([]),
-  getTiersOrInstructions: jest.fn().mockReturnValue([]),
+  getTiersOrInstructions: jest.fn().mockReturnValue(null),
   closedReasonTranslated: signal(null),
 };

@@ -363,57 +363,37 @@ export const ecoStoreTenantStore = signalStore(
       const deliveryOption = tenant.logisticsConfig?.options?.find(option => option.type === type);
       if (!deliveryOption?.enabled) return null;
 
-      if (type === 'delivery') {
-        // Check if tiers exist in tenant
-        if (deliveryOption?.slots && Object.keys(deliveryOption.slots).length > 0) {
-          return {
-            slots: deliveryOption.slots,
-            type: 'slots',
-          };
+      // 1. Max priority: address specific configuration (only Pickup)
+      if (type === 'pickup' && addressId) {
+        const address = store.addresses().find(a => a.id === addressId);
+
+        if (address) {
+          if (address.slots && Object.keys(address.slots).length > 0) {
+            return { type: 'slots', slots: address.slots };
+          }
+          // Ara mirem les instruccions de l'adreça ABANS de mirar els slots globals
+          if (address.instructions) {
+            return {
+              type: 'instructions',
+              instructions: this.getTenantDeliveryInstructions(type, addressId),
+            };
+          }
         }
-        if (deliveryOption.instructions) {
-          return {
-            instructions: this.getTenantDeliveryInstructions(type, addressId),
-            type: 'instructions',
-          };
-        }
-        return null;
       }
 
-      if (type === 'pickup') {
-        const address = store.addresses().find(address => address.id === addressId);
-
-        if (address?.slots && Object.keys(address.slots).length > 0) {
-          return {
-            slots: address.slots,
-            type: 'slots',
-          };
-        }
-
-        if (deliveryOption?.slots && Object.keys(deliveryOption.slots).length > 0) {
-          return {
-            slots: deliveryOption.slots,
-            type: 'slots',
-          };
-        }
-
-        if (address?.instructions) {
-          return {
-            instructions: this.getTenantDeliveryInstructions(type, addressId),
-            type: 'instructions',
-          };
-        }
-
-        if (deliveryOption.instructions) {
-          return {
-            instructions: this.getTenantDeliveryInstructions(type, addressId),
-            type: 'instructions',
-          };
-        }
-
-        return null;
+      // 2. Fallback: Global configuration (applicable to Delivery and Pickup without own configuration)
+      if (deliveryOption.slots && Object.keys(deliveryOption.slots).length > 0) {
+        return { type: 'slots', slots: deliveryOption.slots };
       }
 
+      if (deliveryOption.instructions) {
+        return {
+          type: 'instructions',
+          instructions: this.getTenantDeliveryInstructions(type, addressId),
+        };
+      }
+
+      // 3. If nothing is configured
       return null;
     },
 

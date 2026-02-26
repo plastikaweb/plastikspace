@@ -98,7 +98,6 @@ The store exposes the following signals and methods:
 - `method()`: Delivery method or null
 - `day()`: Selected delivery day or null
 - `time()`: Selected delivery time or null
-- `noDayAndTime()`: Boolean flag for no time slot selection
 - `shipping()`: Shipping cost amount
 - `status()`: Order status ('ACTIVE', 'DONE', or 'EXPIRED')
 - `expiresAt()`: Order expiration date or null
@@ -143,7 +142,6 @@ interface EcoStoreCartState {
   method: EcoStoreTenantLogisticsDeliveryType | null;
   day: SlotDays | null;
   time: TimeRange | null;
-  noDayAndTime: boolean;
   shipping: number;
   status: 'ACTIVE' | 'DONE' | 'EXPIRED';
   expiredAt: Date | null;

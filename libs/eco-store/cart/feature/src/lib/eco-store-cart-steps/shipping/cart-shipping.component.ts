@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -40,11 +40,20 @@ import { getCartShippingFormConfig } from './form/cart-shipping-form.config';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartShippingComponent {
-  readonly cartStore = inject(ecoStoreCartStore);
-  readonly userProfileStore = inject(pocketBaseUserProfileStore);
-  readonly tenantStore = inject(ecoStoreTenantStore);
-  readonly formValid = signal(false);
-  readonly formConfig = getCartShippingFormConfig();
+  protected readonly cartStore = inject(ecoStoreCartStore);
+  protected readonly userProfileStore = inject(pocketBaseUserProfileStore);
+  protected readonly tenantStore = inject(ecoStoreTenantStore);
+  protected readonly formValid = signal(false);
+  protected readonly formConfig = getCartShippingFormConfig();
+
+  protected readonly model = computed(() => {
+    return {
+      method: this.cartStore.method(),
+      address: this.cartStore.address(),
+      day: this.cartStore.day(),
+      time: this.cartStore.time(),
+    } as Partial<EcoStoreCartState>;
+  });
 
   onChange(event: Partial<EcoStoreCartState>): void {
     this.cartStore.updateLogistics(event);

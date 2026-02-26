@@ -24,6 +24,9 @@
   "references": [
     {
       "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "../../../../libs/core/entities/tsconfig.json"
     }
   ]
 }

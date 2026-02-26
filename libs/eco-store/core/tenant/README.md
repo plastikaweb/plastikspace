@@ -36,6 +36,7 @@ It uses a strategy pattern to resolve the tenant ID, which is then used to filte
     - `getTenantDeliveryOptionCost()`: Calculates shipping cost based on tiered pricing.
     - `getTenantDeliveryPriceTiers()`: Returns delivery price tiers for progress indicators.
     - `getTenantDeliveryPriceForFreeShipping()`: Calculates remaining amount for free shipping.
+    - `getTiersOrInstructions()`: Returns the applicable logistics configuration (slots or instructions) for a given method and address.
 - **`EcoStoreTenantBaseService`**: Abstract base class defining the contract for tenant resolution.
   - It provides the core logic for **resolving the tenant slug** and loading it from the backend.
 - **`EcoStoreTenantService`**: Standard implementation that resolves the tenant slug from the **URL subdomain**

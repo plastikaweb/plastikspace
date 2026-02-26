@@ -39,7 +39,6 @@ export interface EcoStoreCartState {
   method: EcoStoreTenantLogisticsDeliveryType | null;
   day: SlotDays | null;
   time: TimeRange | null;
-  noDayAndTime: boolean;
   shipping: number;
   status: EcoStoreCartStatus;
   expiresAt: Date | null;
@@ -62,7 +61,6 @@ const initialState: EcoStoreCartState = {
   address: null,
   day: null,
   time: null,
-  noDayAndTime: false,
   shipping: 0,
   status: 'ACTIVE',
   expiresAt: null,
@@ -155,7 +153,20 @@ export const ecoStoreCartStore = signalStore(
         subtotal,
         tax,
         total,
+        shipping: _calculateShipping(),
       }));
+    };
+
+    const _calculateShipping = () => {
+      const { method, subtotal, tax } = store;
+      const currentMethod = method();
+      const totalAmount = subtotal() + tax() || 0;
+      let shipping = 0;
+      if (currentMethod) {
+        shipping = store._tenantStore.getTenantDeliveryOptionCost(currentMethod, totalAmount);
+      }
+
+      return shipping;
     };
 
     const _setItem = (
@@ -209,7 +220,6 @@ export const ecoStoreCartStore = signalStore(
           deliveryMethod: store.method() || 'pickup',
           day: store.day() || null,
           time: store.time() || null,
-          noDayAndTime: store.noDayAndTime(),
           shipping: store.shipping(),
           tax: store.tax(),
           subtotal: store.subtotal(),
@@ -372,7 +382,6 @@ export const ecoStoreCartStore = signalStore(
             method: remoteCart.deliveryMethod,
             day: remoteCart.day,
             time: remoteCart.time,
-            noDayAndTime: remoteCart.noDayAndTime,
             status: remoteCart.status,
             notes: remoteCart.notes,
           });
@@ -442,17 +451,33 @@ export const ecoStoreCartStore = signalStore(
       },
 
       updateLogistics(logistics: Partial<EcoStoreCartState>) {
+        if (!checkStoreStatus()) return;
+
         updateState(store, '[Cart] Update Logistics', state => {
-          const update = {
-            ...state,
-            ...logistics,
-          };
-          return update;
+          const newState = { ...state, ...logistics };
+
+          if (logistics.method && logistics.method !== state.method) {
+            newState.day = null;
+            newState.time = null;
+            return newState;
+          }
+
+          // Si només canvia l'adreça manualment l'usuari
+          if (logistics.address && logistics.address.id !== state.address?.id) {
+            newState.day = null;
+            newState.time = null;
+            return newState;
+          }
+
+          // Si només canvia el dia
+          if (logistics.day && logistics.day !== state.day) {
+            newState.time = null;
+          }
+
+          return newState;
         });
 
-        if (logistics.shipping !== undefined) {
-          _recalculatePrices();
-        }
+        _recalculatePrices();
 
         if (store._userProfileStore.isAuthenticated()) {
           saveCartToRemote();
