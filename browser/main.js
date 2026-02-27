@@ -6537,7 +6537,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-2ENP3DOW.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-OJ6SLYE5.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
