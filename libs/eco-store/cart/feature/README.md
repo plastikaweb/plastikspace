@@ -15,6 +15,7 @@
     - [Components](#components)
       - [CartOrderPriceSlotsComponent](#cartorderpriceslotscomponent)
       - [CartOrderSummaryComponent](#cartordersummarycomponent)
+      - [CartProductCardComponent](#cartproductcardcomponent)
       - [NewPriceWarningComponent](#newpricewarningcomponent)
   - [Cart Steps](#cart-steps)
     - [Shipping Unavailable Component](#shipping-unavailable-component)
@@ -196,6 +197,37 @@ If `nextOpenDate` is provided, it shows when the store will reopen; otherwise, i
   actionRoute="['home']"
   deliveryType="delivery">
 </eco-cart-order-summary>
+```
+
+#### CartProductCardComponent
+
+The `CartProductCardComponent` is a presentational component that renders a single product card within the cart.
+It is used in both the cart summary and confirmation steps, supporting both editable and read-only modes.
+
+**Inputs:**
+
+- `item: EcoStoreCartItem` (required): The cart item containing product details and quantity.
+- `isLcpImage: boolean` (optional): Whether the image is the LCP image for performance optimization.
+- `editable: boolean` (optional): If true, displays quantity controls and a delete button.
+
+**Outputs:**
+
+- `quantityChange: { quantity: number; product: EcoStoreProductWithCategoryName }`: Emitted when the user changes the product quantity or deletes the item.
+
+**Behavior:**
+
+- In **editable mode**, it provides full interaction for updating cart contents.
+- In **read-only mode**, it displays a compact summary of the item, including unit types and pluralized counts.
+- Displays a `NewPriceWarningComponent` if the product price has changed since it was added to the cart.
+
+**Example Usage:**
+
+```html
+<eco-cart-product-card
+  [item]="item"
+  [editable]="isStoreOpen()"
+  (quantityChange)="onQuantityChange($event)">
+</eco-cart-product-card>
 ```
 
 #### NewPriceWarningComponent

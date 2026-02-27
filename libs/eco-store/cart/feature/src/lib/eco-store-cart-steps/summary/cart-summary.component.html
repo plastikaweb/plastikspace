@@ -12,97 +12,22 @@
 
     <div class="cart-summary-card @container mb-8">
       @for (group of cartStore.itemsGroupedByCategory() | keyvalue; track group.key) {
-        <div animate.enter="fade-in" animate.leave="fade-out" class="mb-4 px-4 py-2">
-          <span class="text-tertiary-500 text-xs font-bold tracking-wider uppercase">{{
-            group.key
-          }}</span>
+        <div animate.enter="fade-in" animate.leave="fade-out" class="px-4 py-2">
+          <span
+            class="text-tertiary-500 mb-2 text-sm leading-10 font-bold tracking-wider uppercase"
+            >{{ group.key }}</span
+          >
+          <div class="flex flex-col gap-2">
+            @for (item of group.value; track item.product.id; let i = $index) {
+              <eco-cart-product-card
+                [item]="item"
+                [isLcpImage]="i === 0"
+                [editable]="tenantStore.isStoreOpen()"
+                (quantityChange)="onQuantityChange($event)">
+              </eco-cart-product-card>
+            }
+          </div>
         </div>
-
-        @for (item of group.value; track item.product.id; let i = $index) {
-          <mat-card
-            appearance="outlined"
-            animate.enter="fade-in"
-            animate.leave="fade-out"
-            class="cart-item-card my-4! flex items-start! justify-between gap-0! shadow-sm @xl:flex-row! @xl:items-center! @xl:gap-4!">
-            <mat-card-content class="inline-flex! flex-row items-center! justify-start! gap-4 p-4!">
-              <plastik-img-container
-                class="hover:border-primary-500 cursor-pointer overflow-hidden rounded-lg transition-all duration-100 hover:contrast-120"
-                [style.view-transition-name]="`product-image-${item.product.id}`"
-                [src]="item.product | pocketBaseImageUrl: item.product.images?.[0]"
-                [title]="item.product.name"
-                [lcpImage]="i === 0"
-                [dimensions]="{ width: 100, height: 100 }"
-                [routerLink]="[
-                  '/botiga',
-                  item.product.categorySlug,
-                  item.product.normalizedName,
-                ]" />
-              <div class="flex flex-col gap-2">
-                <a
-                  class="text-primary-900 hover:text-primary-600 text-lg font-bold"
-                  [routerLink]="[
-                    '/botiga',
-                    item.product.categorySlug,
-                    item.product.normalizedName,
-                  ]">
-                  {{ item.product.name }}
-                </a>
-
-                @if (item.hasPriceChanged && item.oldPriceWithIva) {
-                  <eco-new-price-warning
-                    [currentPrice]="item.product.priceWithIva"
-                    [oldPrice]="item.oldPriceWithIva!"></eco-new-price-warning>
-                }
-
-                <div class="gap-0">
-                  <eco-store-product-price
-                    size="sm"
-                    [price]="item.product.priceWithIva"
-                    [unitType]="item.product.unitType"
-                    [unitBase]="item.product.unitBase"
-                    [unitChipVisible]="false" />
-                  <p class="text-xs font-normal text-neutral-600">IVA {{ item.product.iva }}%</p>
-                </div>
-              </div>
-            </mat-card-content>
-
-            <mat-card-actions
-              class="grid! grid-cols-[1fr_1fr_40px]! grid-rows-1! items-center! justify-center! gap-4! self-stretch p-4! @xl:grid-cols-[1fr_40px]! @xl:grid-rows-2!">
-              @if (tenantStore.isStoreOpen()) {
-                <eco-store-product-quantity
-                  class="col-start-2! row-start-1! justify-self-end! @xl:col-start-1! @xl:row-start-2!"
-                  size="sm"
-                  mode="summary"
-                  [product]="item.product"
-                  [quantity]="item.quantity"
-                  (quantityChange)="
-                    onQuantityChange($event, item.product)
-                  "></eco-store-product-quantity>
-              } @else {
-                <p class="min-w-48 text-center font-medium text-neutral-600">
-                  {{ 'cart.summary.quantityLabel' | translate }} {{ item.quantity }}
-                </p>
-              }
-              <p
-                class="col-start-1! row-start-1! justify-self-start! text-2xl font-bold @xl:col-span-1! @xl:col-start-2! @xl:row-start-1! @xl:justify-self-end!">
-                {{
-                  item.product.priceWithIva * item.quantity | currency: 'EUR' : 'symbol' : '1.2-2'
-                }}
-              </p>
-
-              @if (tenantStore.isStoreOpen()) {
-                <button
-                  matIconButton
-                  type="button"
-                  class="cart-delete-button col-start-3! row-start-1! transition-all @xl:col-start-2! @xl:row-start-2!"
-                  [aria-label]="'cart.summary.removeItem' | translate"
-                  (click)="onQuantityChange(0, item.product)">
-                  <mat-icon aria-hidden="true">delete</mat-icon>
-                </button>
-              }
-            </mat-card-actions>
-          </mat-card>
-        }
       }
     </div>
   </div>

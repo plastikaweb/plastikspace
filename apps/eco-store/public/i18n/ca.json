@@ -37,7 +37,8 @@
         "required": "El camp és obligatori",
         "minLength": "El camp ha de tenir almenys {{value}} caràcters",
         "maxLength": "El camp ha de tenir més de {{value}} caràcters"
-      }
+      },
+      "charactersCount": "{count, plural, one {caràcter} other {caràcters}}"
     },
     "error": {
       "image": "Hi ha hagut un error al carregar la imatge"
@@ -176,6 +177,15 @@
       "unitWithVariableWeight": "Kg",
       "unitWithVariableVolume": "L"
     },
+    "unitTypeCount": {
+      "unit": "{count, plural, one {unitat} other {unitats}}",
+      "weight": "{count, plural, one {kg} other {kg}}",
+      "volume": "{count, plural, one {L} other {L}}",
+      "unitWithFixedVolume": "{count, plural, one {unitat} other {unitats}}",
+      "unitWithFixedWeight": "{count, plural, one {unitat} other {unitats}}",
+      "unitWithVariableWeight": "{count, plural, one {kg} other {kg}}",
+      "unitWithVariableVolume": "{count, plural, one {L} other {L}}"
+    },
     "unit": {
       "unit": "Preu per unitat",
       "weight": "Preu per kg",
@@ -313,6 +323,22 @@
         "time": "Franja horària"
       },
       "comeToStore": "Passa per la botiga i recull la teva comanda."
+    },
+    "confirmation": {
+      "title": "Confirma la teva comanda",
+      "productsInCart": "Productes al cistell",
+      "deliverySummary": "Resum de lliurament",
+      "deliveryMethod": "Tipus",
+      "deliveryTimeSlot": "Horari previst",
+      "deliveryAddress": "Adreça",
+      "modify": "Modificar",
+      "notes": "Notes per a la preparació o lliurament (Opcional)",
+      "notesPlaceholder": "Ex: si tinc algun problema te trucaré abans.",
+      "paymentNotice": "informació sobre el pagament",
+      "paymentNoticeDescription": "Com que treballem amb productes frescos de pes variable, el preu final pot variar lleugerament. El pagament es realitzarà en el moment de lliurament o recollida al preu exacte.",
+      "confirmOrder": "Confirmar Comanda",
+      "modifyCart": "Modificar cistella",
+      "modifyDelivery": "Modificar lliurament"
     }
   }
 }

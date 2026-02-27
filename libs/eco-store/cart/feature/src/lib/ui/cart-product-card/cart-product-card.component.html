@@ -1,0 +1,88 @@
+@let product = item().product;
+@let oldPriceWithIva = item().oldPriceWithIva;
+
+<mat-card
+  appearance="outlined"
+  animate.enter="fade-in"
+  animate.leave="fade-out"
+  [class]="
+    editable()
+      ? 'cart-item-card flex items-start! justify-between gap-0! @xl:flex-row! @xl:items-center! @xl:gap-4!'
+      : 'cart-item-card flex flex-row! items-center! justify-between gap-0!'
+  ">
+  <mat-card-content class="inline-flex! flex-row items-center! justify-start! gap-4 p-4!">
+    <plastik-img-container
+      class="hover:border-primary-500 cursor-pointer overflow-hidden rounded-lg transition-all duration-100 hover:contrast-120"
+      [style.view-transition-name]="`product-image-${product.id}`"
+      [src]="product | pocketBaseImageUrl: product.images?.[0]"
+      [title]="product.name"
+      [lcpImage]="isLcpImage()"
+      [dimensions]="{ width: 100, height: 100 }"
+      [routerLink]="['/botiga', product.categorySlug, product.normalizedName]" />
+    <div class="flex flex-col gap-2">
+      <a
+        class="text-primary-900 hover:text-primary-600 text-lg font-bold"
+        [routerLink]="['/botiga', product.categorySlug, product.normalizedName]">
+        {{ product.name }}
+      </a>
+
+      @if (item().hasPriceChanged && oldPriceWithIva) {
+        <eco-new-price-warning
+          [currentPrice]="product.priceWithIva"
+          [oldPrice]="oldPriceWithIva"></eco-new-price-warning>
+      }
+
+      @if (editable()) {
+        <div class="gap-0">
+          <eco-store-product-price
+            size="sm"
+            [price]="product.priceWithIva"
+            [unitType]="product.unitType"
+            [unitBase]="product.unitBase"
+            [unitChipVisible]="false" />
+          <p class="text-xs font-normal text-neutral-600">IVA {{ product.iva }}%</p>
+        </div>
+      } @else {
+        <p class="text-sm font-medium text-neutral-600">
+          {{ item().quantity }}
+          {{ 'products.unitTypeCount.' + product.unitType | translate: { count: item().quantity } }}
+        </p>
+      }
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions
+    [class]="
+      editable()
+        ? 'grid! grid-cols-[1fr_1fr_40px]! grid-rows-1! items-center! justify-center! gap-4! self-stretch p-4! @xl:grid-cols-[1fr_40px]! @xl:grid-rows-2!'
+        : 'flex! items-center! justify-end! p-4!'
+    ">
+    @if (editable()) {
+      <eco-store-product-quantity
+        class="col-start-2! row-start-1! justify-self-end! @xl:col-start-1! @xl:row-start-2!"
+        size="sm"
+        mode="summary"
+        [product]="product"
+        [quantity]="item().quantity"
+        (quantityChange)="
+          quantityChange.emit({ quantity: $event, product })
+        "></eco-store-product-quantity>
+      <p
+        class="col-start-1! row-start-1! justify-self-start! text-2xl font-bold @xl:col-span-1! @xl:col-start-2! @xl:row-start-1! @xl:justify-self-end!">
+        {{ product.priceWithIva * item().quantity | currency: 'EUR' : 'symbol' : '1.2-2' }}
+      </p>
+      <button
+        matIconButton
+        type="button"
+        class="cart-delete-button col-start-3! row-start-1! transition-all @xl:col-start-2! @xl:row-start-2!"
+        [aria-label]="'cart.summary.removeItem' | translate"
+        (click)="quantityChange.emit({ quantity: 0, product })">
+        <mat-icon aria-hidden="true">delete</mat-icon>
+      </button>
+    } @else {
+      <p class="text-2xl font-bold whitespace-nowrap">
+        {{ product.priceWithIva * item().quantity | currency: 'EUR' : 'symbol' : '1.2-2' }}
+      </p>
+    }
+  </mat-card-actions>
+</mat-card>

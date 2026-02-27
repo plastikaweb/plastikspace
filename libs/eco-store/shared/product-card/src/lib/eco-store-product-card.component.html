@@ -1,8 +1,9 @@
 @let productData = product()!;
 
 <mat-card
+  appearance="outlined"
   role="article"
-  class="product-card make-it-focusable group inset-shadow-lg! hover:inset-shadow-2xl! hover:ring-primary-200! relative flex h-full w-full flex-col justify-between overflow-hidden shadow-md transition-all duration-200 hover:translate-y-[-4px] hover:shadow-xl! hover:ring-1!"
+  class="product-card make-it-focusable group hover:inset-shadow-2xl! hover:ring-primary-200! relative flex h-full w-full flex-col justify-between overflow-hidden transition-all duration-200 hover:translate-y-[-4px] hover:shadow-xl! hover:ring-1!"
   [class.pointer-events-none]="!productData.stock"
   [routerLink]="
     productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null

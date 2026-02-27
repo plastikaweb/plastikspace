@@ -1,11 +1,51 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
+import { TranslatePipe } from '@ngx-translate/core';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { SharedFormFeatureModule } from '@plastik/shared/form';
+import { TextAreaWithCounterFormlyModule } from '@plastik/shared/form/textarea-with-counter';
+import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
+import { CartProductCardComponent } from '../../ui/cart-product-card/cart-product-card.component';
+import {
+  CartConfirmationFormModel,
+  getCartConfirmationFormConfig,
+} from './form/cart-confirmation-form.config';
 
 @Component({
   selector: 'eco-cart-confirmation',
-  imports: [CommonModule],
-  template: '<p>Cart Confirmation Works!</p>',
-  styles: [],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterLink,
+    TranslatePipe,
+    SharedFormFeatureModule,
+    TextAreaWithCounterFormlyModule,
+    CartOrderSummaryComponent,
+    CartProductCardComponent,
+  ],
+  templateUrl: './cart-confirmation.component.html',
+  styleUrl: './cart-confirmation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CartConfirmationComponent {}
+export class CartConfirmationComponent {
+  readonly cartStore = inject(ecoStoreCartStore);
+  readonly tenantStore = inject(ecoStoreTenantStore);
+  readonly formConfig = getCartConfirmationFormConfig();
+
+  readonly model = computed<CartConfirmationFormModel>(() => ({
+    notes: this.cartStore.notes() ?? '',
+  }));
+
+  onChange(event: CartConfirmationFormModel): void {
+    this.cartStore.updateLogistics({ notes: event.notes || null });
+  }
+
+  confirmOrder(): void {
+    // TODO: Implement order submission via cart store or service
+  }
+}

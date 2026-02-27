@@ -37,7 +37,8 @@
         "required": "This field is required",
         "minLength": "This field must have at least {{value}} characters",
         "maxLength": "This field must have more than {{value}} characters"
-      }
+      },
+      "charactersCount": "{count, plural, one {character} other {characters}}"
     },
     "error": {
       "image": "This image could not be loaded"
@@ -176,6 +177,15 @@
       "unitWithVariableWeight": "Kg",
       "unitWithVariableVolume": "L"
     },
+    "unitTypeCount": {
+      "unit": "{count, plural, one {unit} other {units}}",
+      "weight": "{count, plural, one {kg} other {kg}}",
+      "volume": "{count, plural, one {L} other {L}}",
+      "unitWithFixedVolume": "{count, plural, one {unit} other {units}}",
+      "unitWithFixedWeight": "{count, plural, one {unit} other {units}}",
+      "unitWithVariableWeight": "{count, plural, one {kg} other {kg}}",
+      "unitWithVariableVolume": "{count, plural, one {L} other {L}}"
+    },
     "unit": {
       "unit": "Price per unit",
       "weight": "Price per kg",
@@ -300,6 +310,22 @@
     },
     "product": {
       "quantityLabel": "Qty:"
+    },
+    "confirmation": {
+      "title": "Confirm your order",
+      "productsInCart": "Products in cart",
+      "deliverySummary": "Delivery summary",
+      "deliveryMethod": "Type",
+      "deliveryTimeSlot": "Scheduled time",
+      "deliveryAddress": "Address",
+      "modify": "Modify",
+      "notes": "Notes for preparation or delivery (Optional)",
+      "notesPlaceholder": "E.g.: If I have any problem I'll call you before.",
+      "paymentNotice": "Information about payment",
+      "paymentNoticeDescription": "Since we work with fresh produce with variable weight, the final price may vary slightly. Payment will be processed at the time of delivery or pickup at the exact price.",
+      "confirmOrder": "Confirm Order",
+      "modifyCart": "Modify cart",
+      "modifyDelivery": "Modify delivery"
     }
   }
 }
