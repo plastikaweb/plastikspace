@@ -5,6 +5,41 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-26] - Confirmation Checkout View
+
+### Added
+
+- Implemented the confirmation checkout step and view ([86c8cjgmk](https://app.clickup.com/t/86c8cjgmk))
+
+### Changed
+
+- Enhanced product cards and checkout layout with improved hover states, shadows, and backdrop blur effects
+- Implemented ICU pluralization support for character counts in translation files
+- Improved form validation UX by triggering on blur for checkout notes
+
+---
+
+## [2026-02-26] - Tailwind Collision Fix
+
+### Fixed
+
+- Fixed collision naming with tailwind ([86c8fq7wh](https://app.clickup.com/t/86c8fq7wh))
+
+---
+
+## [2026-02-26] - Dependencies Update
+
+### Changed
+
+- Bumped the npm_and_yarn group across 1 directory with 2 updates
+- Bumped basic-ftp in the npm_and_yarn group across 1 directory
+
+### Added
+
+- Added `ngx-translate-messageformat-compiler` and `@messageformat/core` for ICU message support
+
+---
+
 ## [2026-02-26] - Shipping Logic Refactoring
 
 ### Changed

@@ -1,24 +1,44 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
-import { toHaveNoViolations } from 'jest-axe';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { axe, toHaveNoViolations } from 'jest-axe';
 import { CartConfirmationComponent } from './cart-confirmation.component';
-import { axe } from 'jest-axe';
 
 describe('CartConfirmationComponent', () => {
   let component: CartConfirmationComponent;
   let fixture: ComponentFixture<CartConfirmationComponent>;
+  let cartStoreMock: any;
 
   beforeEach(async () => {
     expect.extend(toHaveNoViolations);
+    cartStoreMock = {
+      ...mockEcoStoreCartStore,
+      notes: signal('initial notes'),
+      method: signal('delivery'),
+      day: signal('monday'),
+      time: signal('10:00 - 12:00'),
+      address: signal({ address: 'Street 1', zip: '12345', city: 'City' }),
+      subtotal: signal(100),
+      tax: signal(21),
+      shipping: signal(5),
+      total: signal(126),
+      items: signal([]),
+      itemsGroupedByCategory: signal({} as any),
+      updateLogistics: jest.fn(),
+    };
+
     await TestBed.configureTestingModule({
       imports: [CartConfirmationComponent],
       providers: [
         provideRouter([]),
         provideTranslateService(),
-        { provide: ecoStoreCartStore, useValue: mockEcoStoreCartStore },
+        { provide: ecoStoreCartStore, useValue: cartStoreMock },
+        { provide: ecoStoreTenantStore, useValue: mockEcoStoreTenantStore },
       ],
     }).compileComponents();
 
@@ -34,5 +54,28 @@ describe('CartConfirmationComponent', () => {
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
+  });
+
+  it('should update cart store when notes change', () => {
+    component.onChange({ notes: 'new notes' });
+    expect(cartStoreMock.updateLogistics).toHaveBeenCalledWith({ notes: 'new notes' });
+  });
+
+  it('should render the order summary', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('eco-cart-order-summary')).toBeTruthy();
+  });
+
+  it('should render product cards for cart items', () => {
+    cartStoreMock.items.set([
+      {
+        product: { id: '1', name: 'P1', price: 10, priceWithIva: 12.1, iva: 21 },
+        quantity: 1,
+      },
+    ]);
+    fixture.detectChanges();
+
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('eco-cart-product-card')).toBeTruthy();
   });
 });

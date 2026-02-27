@@ -3,7 +3,7 @@
     <ng-container *ngTemplateOutlet="headerContent"></ng-container>
   }
 
-  <mat-sidenav-container class="content-container flex-1 bg-transparent" [class.z-10]="isMobile()">
+  <mat-sidenav-container class="content-container flex-1" [class.z-10]="isMobile()">
     @if (hasSidenav()) {
       <mat-sidenav
         #sidenav
@@ -41,7 +41,7 @@
       <main
         id="mainContent"
         role="main"
-        class="mt-20 mb-10 min-h-[calc(100dvh-126px)] flex-1 px-2 sm:px-4">
+        class="mt-20 mb-0 min-h-[calc(100dvh-126px)] flex-1 overflow-y-auto border-b border-neutral-200 px-2 sm:px-4">
         @if (shouldShowBanner() && !isBannerDismissed()) {
           <div animate.leave="banner-anim-leave" class="grid overflow-hidden">
             <div class="min-h-0" animate.leave="slide-out">
@@ -66,7 +66,7 @@
       @defer (on viewport; prefetch on idle) {
         <eco-footer [tenant]="tenantStore.tenant()" />
       } @placeholder {
-        <div class="h-20 w-full animate-pulse bg-neutral-50"></div>
+        <div class="h-30 w-full animate-pulse bg-neutral-50"></div>
       }
 
       @defer (when isMobile()) {

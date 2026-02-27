@@ -7,37 +7,4 @@
       outlined-container-color: var(--transparent),
     )
   );
-
-  .cart-item-card {
-    @include mat.card-overrides(
-      (
-        outlined-container-color: var(--white),
-        outlined-outline-width: 1px,
-        outlined-outline-color: var(--primary-200),
-      )
-    );
-  }
-
-  .cart-delete-button {
-    background-color: var(--white);
-    color: var(--error-500);
-
-    @include mat.icon-overrides(
-      (
-        color: var(--error-500),
-      )
-    );
-
-    &:hover {
-      @include mat.icon-button-overrides(
-        (
-          icon-color: var(--error-500),
-          state-layer-color: var(--error-500),
-        )
-      );
-
-      background-color: var(--error-200);
-      color: var(--error-500);
-    }
-  }
 }

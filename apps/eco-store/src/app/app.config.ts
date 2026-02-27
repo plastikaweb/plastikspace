@@ -21,7 +21,7 @@ import {
   withViewTransitions,
 } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
-import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateCompiler, provideTranslateService } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
@@ -29,6 +29,7 @@ import { PrefixTitleService } from '@plastik/core/router-state';
 import { ecoStoreTenantStore, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 import { pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
+import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 
@@ -54,6 +55,7 @@ export const appConfig: ApplicationConfig = {
         prefix: '/i18n/',
         suffix: '.json',
       }),
+      compiler: provideTranslateCompiler(TranslateMessageFormatCompiler),
       fallbackLang: environment.defaultLanguage,
       lang: environment.defaultLanguage,
     }),

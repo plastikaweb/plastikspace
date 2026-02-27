@@ -10,5 +10,9 @@
         elevated-container-elevation: var(--mat-sys-level01),
       )
     );
+
+    box-shadow:
+      inset 0 2px 1px rgba(255, 255, 255, 0.777),
+      /* top glow */ 0 2px 4px rgba(0, 0, 0, 0.12) !important;
   }
 }

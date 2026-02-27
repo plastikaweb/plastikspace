@@ -1,0 +1,146 @@
+<div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
+  <div class="col-span-1! space-y-10 md:col-span-2!">
+    <div class="flex items-center gap-4">
+      <mat-icon class="scale-150!" aria-hidden="true"> order_approve </mat-icon>
+      <h2 class="gap-md flex items-center text-2xl font-bold tracking-tight sm:text-3xl">
+        {{ 'cart.confirmation.title' | translate }}
+      </h2>
+    </div>
+
+    <!-- Products in Cart -->
+    <section aria-labelledby="confirmation-products-title">
+      <div class="flex items-center justify-between">
+        <h3
+          id="confirmation-products-title"
+          class="text-base font-bold tracking-wider text-neutral-600 uppercase">
+          {{ 'cart.confirmation.productsInCart' | translate }}
+        </h3>
+        <a
+          matButton="text"
+          class="text-primary-600 inline-flex items-center text-sm font-medium"
+          [routerLink]="['../resum']">
+          <mat-icon class="scale-75!" aria-hidden="true">arrow_back</mat-icon>
+          {{ 'cart.confirmation.modifyCart' | translate }}
+        </a>
+      </div>
+
+      <div class="mt-2 flex flex-col gap-2">
+        @for (item of cartStore.items(); track item.product.id; let i = $index) {
+          <eco-cart-product-card
+            [item]="item"
+            [isLcpImage]="i === 0"
+            [editable]="false"></eco-cart-product-card>
+        }
+      </div>
+    </section>
+
+    <!-- Delivery Summary -->
+
+    <section aria-labelledby="confirmation-delivery-title">
+      <div class="flex items-center justify-between">
+        <h3
+          id="confirmation-delivery-title"
+          class="text-base font-bold tracking-wider text-neutral-600 uppercase">
+          {{ 'cart.confirmation.deliverySummary' | translate }}
+        </h3>
+        <a
+          matButton="text"
+          class="text-primary-600 inline-flex items-center text-sm font-medium"
+          [routerLink]="['../enviament']">
+          <mat-icon class="scale-75!" aria-hidden="true">arrow_back</mat-icon>
+          {{ 'cart.confirmation.modifyDelivery' | translate }}
+        </a>
+      </div>
+
+      <mat-card appearance="outlined" class="confirmation-delivery-card mt-2 p-6">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div>
+            <span class="text-xs font-bold tracking-wider text-neutral-400 uppercase">
+              {{ 'cart.confirmation.deliveryMethod' | translate }}
+            </span>
+            <p class="mt-1 font-medium text-neutral-800">
+              {{ 'cart.summary.' + cartStore.method() | translate }}
+            </p>
+          </div>
+
+          @if (cartStore.day() || cartStore.time()) {
+            <div>
+              <span class="text-xs font-bold tracking-wider text-neutral-400 uppercase">
+                {{ 'cart.confirmation.deliveryTimeSlot' | translate }}
+              </span>
+              <p class="mt-1 font-medium text-neutral-800">
+                @if (cartStore.day()) {
+                  {{ 'cart.shipping.weekdaysLabels.' + cartStore.day() | translate }}
+                }
+                @if (cartStore.time(); as time) {
+                  {{ time }}
+                }
+              </p>
+            </div>
+          }
+        </div>
+
+        @if (cartStore.address(); as address) {
+          <div class="mt-4">
+            <span class="text-xs font-bold tracking-wider text-neutral-400 uppercase">
+              {{ 'cart.confirmation.deliveryAddress' | translate }}
+            </span>
+            <div class="mt-1 flex items-start gap-2">
+              <mat-icon class="text-neutral-400" aria-hidden="true">place</mat-icon>
+              <div>
+                <p class="font-medium text-neutral-800">{{ address.address }}</p>
+                <p class="text-sm text-neutral-500">{{ address.zip }} {{ address.city }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      </mat-card>
+    </section>
+
+    <!-- Notes -->
+    <section aria-labelledby="confirmation-notes-title">
+      <label
+        id="confirmation-notes-title"
+        for="confirmation-notes"
+        class="mb-2 block text-sm font-medium text-neutral-700">
+        {{ 'cart.confirmation.notes' | translate }}
+      </label>
+      <plastik-shared-form-feature
+        [fields]="formConfig.getConfig()"
+        [model]="model()"
+        [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
+        (temporaryChangeEvent)="onChange($event)">
+      </plastik-shared-form-feature>
+    </section>
+
+    <!-- Payment Notice -->
+    <section
+      class="confirmation-info border-info-200 bg-info-50 flex items-center gap-3 rounded-xl border p-4"
+      aria-labelledby="payment-notice-title">
+      <mat-icon class="text-primary-600 shrink-0" aria-hidden="true">info</mat-icon>
+      <div>
+        <p id="payment-notice-title" class="text-sm font-bold text-neutral-800">
+          {{ 'cart.confirmation.paymentNotice' | translate }}
+        </p>
+        <p class="mt-1 text-sm text-neutral-600">
+          {{ 'cart.confirmation.paymentNoticeDescription' | translate }}
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Right Column: Order Summary (Sticky) -->
+  <div class="sticky top-16 space-y-6 self-start md:col-span-1!">
+    <eco-cart-order-summary
+      [subtotal]="cartStore.subtotal()"
+      [taxes]="cartStore.tax()"
+      [shipping]="cartStore.shipping()"
+      [deliveryType]="cartStore.method() ?? 'pickup'"
+      [total]="cartStore.total()"
+      [isStoreOpen]="tenantStore.isStoreOpen()"
+      [nextOpenDate]="tenantStore.nextOpenDate()"
+      [actionButtonText]="'cart.confirmation.confirmOrder'"
+      [actionRoute]="[]">
+    </eco-cart-order-summary>
+  </div>
+</div>

@@ -14,6 +14,7 @@
     [minLength]="props.minLength"
     [cdkAutosizeMaxRows]="to['maxRows']"></textarea>
   <mat-hint [class]="`text-sm ${ta.value.length >= ta.maxLength ? 'text-error' : ''}`"
-    >{{ ta.value.length }} / {{ props.maxLength }} caràcters</mat-hint
+    >{{ ta.value.length }} / {{ props.maxLength }}
+    {{ 'common.form.charactersCount' | translate: { count: props.maxLength } }}</mat-hint
   >
 </mat-form-field>

@@ -37,7 +37,8 @@
         "required": "El campo es obligatorio",
         "minLength": "El campo debe tener al menos {{value}} caracteres",
         "maxLength": "El campo debe tener más de {{value}} caracteres"
-      }
+      },
+      "charactersCount": "{count, plural, one {carácter} other {caracteres}}"
     },
     "error": {
       "image": "Ha habido un error al cargar la imagen"
@@ -176,6 +177,15 @@
       "unitWithVariableWeight": "Kg",
       "unitWithVariableVolume": "L"
     },
+    "unitTypeCount": {
+      "unit": "{count, plural, one {unidad} other {unidades}}",
+      "weight": "{count, plural, one {kg} other {kg}}",
+      "volume": "{count, plural, one {L} other {L}}",
+      "unitWithFixedVolume": "{count, plural, one {unidad} other {unidades}}",
+      "unitWithFixedWeight": "{count, plural, one {unidad} other {unidades}}",
+      "unitWithVariableWeight": "{count, plural, one {kg} other {kg}}",
+      "unitWithVariableVolume": "{count, plural, one {L} other {L}}"
+    },
     "unit": {
       "unit": "Precio por unidad",
       "weight": "Precio por kg",
@@ -300,6 +310,22 @@
     },
     "product": {
       "quantityLabel": "Cant:"
+    },
+    "confirmation": {
+      "title": "Confirma tu pedido",
+      "productsInCart": "Productos en el carrito",
+      "deliverySummary": "Resumen de entrega",
+      "deliveryMethod": "Tipo",
+      "deliveryTimeSlot": "Horario previsto",
+      "deliveryAddress": "Dirección",
+      "modify": "Modificar",
+      "notes": "Notas para la preparación o entrega (Opcional)",
+      "notesPlaceholder": "Ej: Si tengo algún problema te llamo antes.",
+      "paymentNotice": "Información sobre el pago",
+      "paymentNoticeDescription": "Como trabajamos con productos frescos de peso variable, el precio final puede variar ligeramente. El pago se realizará en el momento de la entrega o recogida al precio exacto.",
+      "confirmOrder": "Confirmar Pedido",
+      "modifyCart": "Modificar carrito",
+      "modifyDelivery": "Modificar entrega"
     }
   }
 }

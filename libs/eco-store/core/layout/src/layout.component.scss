@@ -6,19 +6,21 @@
     (
       container-shape: 0,
       container-width: 100dvw,
+      container-background-color: var(--tertiary-100),
     )
   );
 
-  @media (min-width: theme(--breakpoint-sm)) {
+  @media (min-width: theme(--breakpoint-md)) {
     @include mat.sidenav-overrides(
       (
         container-width: 20rem,
+        container-background-color: var(--transparent),
       )
     );
   }
 
   .mat-drawer-container {
-    background-color: var(--mat-sys-background);
+    background: var(--transparent);
   }
 
   .mat-drawer.mat-drawer-over {
