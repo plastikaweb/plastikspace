@@ -45,7 +45,11 @@
 
           <plastik-img-container
             class="overflow-hidden rounded-3xl"
-            [style.view-transition-name]="`product-image-${productData.id}`"
+            [style.view-transition-name]="
+              viewTransitionService.activeId() === productData.id
+                ? 'product-image-' + productData.id
+                : 'none'
+            "
             [style.view-transition-class]="'product-image-transition'"
             [src]="
               productData

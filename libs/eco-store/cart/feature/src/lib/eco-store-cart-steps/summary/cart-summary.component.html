@@ -23,6 +23,8 @@
                 [item]="item"
                 [isLcpImage]="i === 0"
                 [editable]="tenantStore.isStoreOpen()"
+                [isActiveForTransition]="viewTransitionService.activeId() === item.product.id"
+                (pointerdown)="viewTransitionService.setActiveId(item.product.id)"
                 (quantityChange)="onQuantityChange($event)">
               </eco-cart-product-card>
             }

@@ -42,7 +42,15 @@ export const appConfig: ApplicationConfig = {
     provideBrowserGlobalErrorListeners(),
     provideRouter(
       appRoutes,
-      withViewTransitions(),
+      withViewTransitions({
+        skipInitialTransition: true,
+        onViewTransitionCreated: ({ transition }) => {
+          document.documentElement.classList.add('is-transitioning');
+          transition.finished.finally(() => {
+            document.documentElement.classList.remove('is-transitioning');
+          });
+        },
+      }),
       withComponentInputBinding(),
       withExperimentalAutoCleanupInjectors(),
       withRouterConfig({ onSameUrlNavigation: 'reload' })

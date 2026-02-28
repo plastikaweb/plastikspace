@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-28] - View Transitions Service
+
+### Added
+
+- Added ViewTransitionsService and ViewportTransitionNameDirective within a new library (`shared-util-view-transition`) to support view transitions and prevent broken animations ([86c8h2kjj](https://app.clickup.com/t/86c8h2kjj))
+
+### Changed
+
+- Updated products grid, detail view, and custom cards in `eco-store` to use `ViewTransitionsService` for smooth transitions between listing and product details ([86c8h2kjj](https://app.clickup.com/t/86c8h2kjj))
+
+---
+
 ## [2026-02-28] - ngx-translate evaluate errors
 
 ### Fixed
