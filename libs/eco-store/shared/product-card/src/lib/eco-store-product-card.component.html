@@ -58,10 +58,10 @@
     @if (!minimalVersion()) {
       <mat-card-actions class="mt-5">
         @if (isOpen()) {
-          <eco-store-product-quantity-control
+          <eco-store-product-quantity
             [product]="productData"
             [quantity]="quantity()"
-            (quantityChange)="onQuantityChange($event)"></eco-store-product-quantity-control>
+            (quantityChange)="onQuantityChange($event)" />
         } @else {
           <button
             matButton="filled"

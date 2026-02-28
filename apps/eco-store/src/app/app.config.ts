@@ -29,7 +29,7 @@ import { PrefixTitleService } from '@plastik/core/router-state';
 import { ecoStoreTenantStore, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 import { pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
-import { TranslateMessageFormatCompiler } from 'ngx-translate-messageformat-compiler';
+import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 
@@ -55,7 +55,7 @@ export const appConfig: ApplicationConfig = {
         prefix: '/i18n/',
         suffix: '.json',
       }),
-      compiler: provideTranslateCompiler(TranslateMessageFormatCompiler),
+      compiler: provideTranslateCompiler(TranslateFormatJsCompiler),
       fallbackLang: environment.defaultLanguage,
       lang: environment.defaultLanguage,
     }),

@@ -22,11 +22,11 @@
       "userActions": "User actions",
       "categoriesNavigation": "Categories navigation",
       "productCategories": "Product categories",
-      "productQuantity": "Quantity of {{product}} - {{quantity}}",
+      "productQuantity": "Quantity of {product} - {quantity}",
       "productList": "Product list",
       "sortProducts": "Sort products",
-      "productsCount": "{{count}} products",
-      "categoryIcon": "{{category}} icon",
+      "productsCount": "{count} products",
+      "categoryIcon": "{category} icon",
       "closeSidenav": "Close side menu",
       "openSidenav": "Open side menu",
       "ecoIcon": "Eco icon"
@@ -35,8 +35,8 @@
       "error": {
         "email": "The email format is incorrect",
         "required": "This field is required",
-        "minLength": "This field must have at least {{value}} characters",
-        "maxLength": "This field must have more than {{value}} characters"
+        "minLength": "This field must have at least {value} characters",
+        "maxLength": "This field must have more than {value} characters"
       },
       "charactersCount": "{count, plural, one {character} other {characters}}"
     },
@@ -48,9 +48,9 @@
       "itemsPerPage": "Items per page",
       "lastPage": "Last page",
       "nextPage": "Next page",
-      "noItems": "{{length}} items",
+      "noItems": "{length} items",
       "previousPage": "Previous page",
-      "range": "{{start}} - {{end}} of {{total}}",
+      "range": "{start} - {end} of {total}",
       "rangeLabel": "of"
     },
     "notification": {
@@ -66,12 +66,12 @@
         "closedTitle": "Store in browse mode",
         "openingSoonTitle": "Get your baskets ready!",
         "openingSoonDescription": "We are about to open the ordering window.",
-        "closedDescription": "Orders open on {{ date }} at {{ time }}",
+        "closedDescription": "Orders open on {date} at {time}",
         "closedManuallyTitle": "Temporary closure",
         "cancelledTitle": "Service suspended",
         "cancelledDescription": "This store is currently disabled. Contact support for more information.",
         "closingSoonTitle": "Store closing soon!",
-        "closingSoonDescription": "Place your order before {{time}}.",
+        "closingSoonDescription": "Place your order before {time}.",
         "dismiss": "Close store status notice"
       },
       "closed": "Closed",
@@ -81,7 +81,7 @@
       "open": "Open",
       "open24h": "Open 24/7",
       "openingSoon": "Opening soon!",
-      "closedOpensAt": "Closed. Opens {{date}} at {{time}}",
+      "closedOpensAt": "Closed. Opens {date} at {time}",
       "closedMessage": "The store is closed. You cannot modify your cart."
     },
     "menu": {
@@ -90,11 +90,11 @@
       "about": "About Us",
       "contact": "Contact",
       "viewFavorites": "Favorites",
-      "viewCart": "Go to shopping cart, {{ productCount }} products, total price: {{ productPrice }}",
+      "viewCart": "Go to shopping cart, {productCount} products, total price: {productPrice}",
       "cart": "Cart",
-      "profile": "Profile of {{ name }}",
+      "profile": "Profile of {name}",
       "profilePage": "View profile",
-      "hello": "Hello {{ name }}",
+      "hello": "Hello {name}",
       "login": "Login",
       "logout": "Logout",
       "orders": "Orders"
@@ -151,7 +151,7 @@
     "decrement": "Decrease",
     "increment": "Increase",
     "total": "products found",
-    "favorite": "Add {{value}} to favorites",
+    "favorite": "Add {value} to favorites",
     "filter": {
       "sort": {
         "label": "Sort",
@@ -164,9 +164,9 @@
     },
     "modified": {
       "title": "Product modified",
-      "description": "You modified the product quantity but didn't add it to the cart",
+      "description": "You modified the product quantity but didn''t add it to the cart",
       "cancel": "Back to product",
-      "leave": "Don't add it"
+      "leave": "Don''t add it"
     },
     "unitType": {
       "unit": "Unit",
@@ -190,8 +190,8 @@
       "unit": "Price per unit",
       "weight": "Price per kg",
       "volume": "Price per L",
-      "unitWithFixedWeight": "It weighs {{value}} kg",
-      "unitWithFixedVolume": "It occupies {{value}} L",
+      "unitWithFixedWeight": "It weighs {value} kg",
+      "unitWithFixedVolume": "It occupies {value} L",
       "unitWithVariableWeight": "Variable weight",
       "unitWithVariableVolume": "Variable volume"
     },
@@ -216,7 +216,7 @@
         "title": "Delivery",
         "subtitle": "Choose if you would like to receive or pick up your order.",
         "unavailable": {
-          "title": "We're preparing the final details",
+          "title": "We''re preparing the final details",
           "description": {
             "part1": "This eco store is finishing configuring its",
             "part2": "delivery routes",
@@ -245,7 +245,7 @@
     "summary": {
       "pickup": "Store pickup",
       "delivery": "Home delivery",
-      "itemsCount": "{{value}} products",
+      "itemsCount": "{value} products",
       "resume": "Summary",
       "subtotal": "Subtotal",
       "taxes": "Taxes (VAT)",
@@ -255,21 +255,21 @@
       "itemsCountSuffix": "items in cart",
       "shipping": "Shipping",
       "includingVat": "Including VAT",
-      "freeShippingPromo": "Add {{value}} more for FREE shipping!",
+      "freeShippingPromo": "Add {value} more for FREE shipping!",
       "removeItem": "Remove product",
       "oldPrice": "Previous price",
       "priceDrop": "Price drop!",
       "priceIncrease": "Price increase!",
       "checkoutDisabled": "Orders are disabled.",
-      "checkoutDisabledInDate": "Orders are disabled. The store opens on {{ date }} at {{ time }}.",
+      "checkoutDisabledInDate": "Orders are disabled. The store opens on {date} at {time}.",
       "quantityLabel": "Qt:"
     },
     "shipping": {
       "freeShippingAchieved": "You have achieved free shipping!",
-      "remainingForFree": "Add {{amount}} more for FREE shipping!",
+      "remainingForFree": "Add {amount} more for FREE shipping!",
       "free": "FREE",
       "freeAlways": "FREE",
-      "freeFrom": "FREE from {{amount}}",
+      "freeFrom": "FREE from {amount}",
       "cartCost": "Cart",
       "shippingCost": "Shipping",
       "goToConfirmation": "Continue to Order Summary",
@@ -320,7 +320,7 @@
       "deliveryAddress": "Address",
       "modify": "Modify",
       "notes": "Notes for preparation or delivery (Optional)",
-      "notesPlaceholder": "E.g.: If I have any problem I'll call you before.",
+      "notesPlaceholder": "E.g.: If I have any problem I''ll call you before.",
       "paymentNotice": "Information about payment",
       "paymentNoticeDescription": "Since we work with fresh produce with variable weight, the final price may vary slightly. Payment will be processed at the time of delivery or pickup at the exact price.",
       "confirmOrder": "Confirm Order",

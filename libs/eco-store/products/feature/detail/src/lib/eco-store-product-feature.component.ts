@@ -17,12 +17,10 @@ import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
-import {
-  EcoStoreProductCardComponent,
-  EcoStoreProductQuantityControlComponent,
-} from '@plastik/eco-store/product-card';
+import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/product-category-label';
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
+import { EcoStoreProductQuantityComponent } from '@plastik/eco-store/product-quantity';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
@@ -39,7 +37,7 @@ import { map } from 'rxjs';
     SharedChipComponent,
     MatTooltipModule,
     RouterLink,
-    EcoStoreProductQuantityControlComponent,
+    EcoStoreProductQuantityComponent,
     EcoStoreProductCardComponent,
     EcoStoreProductPriceComponent,
     SharedImgContainerComponent,

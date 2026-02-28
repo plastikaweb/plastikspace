@@ -11,9 +11,6 @@
     - [EcoStoreProductCardComponent](#ecostoreproductcardcomponent)
       - [Inputs](#inputs)
       - [Outputs](#outputs)
-    - [EcoStoreProductQuantityControlComponent](#ecostoreproductquantitycontrolcomponent)
-      - [Inputs](#inputs-1)
-      - [Outputs](#outputs-1)
   - [Feature Integration](#feature-integration)
   - [View Transitions](#view-transitions)
   - [Running unit tests](#running-unit-tests)
@@ -25,10 +22,7 @@ A collection of components for displaying products in a grid or list view within
 ## Installation
 
 ```ts
-import {
-  EcoStoreProductCardComponent,
-  EcoStoreProductQuantityControlComponent,
-} from '@plastik/eco-store/shared/product-card';
+import { EcoStoreProductCardComponent } from '@plastik/eco-store/shared/product-card';
 ```
 
 ## Usage
@@ -56,29 +50,6 @@ Selector: `eco-store-product-card`
 | `addToCart`      | `{ product: EcoStoreProductWithCategoryName; quantity: number }` | Emitted when quantity changes or "Add to Cart" is triggered. |
 | `toggleFavorite` | `string`                                                         | Emitted when the favorite button is clicked.                 |
 | `getProduct`     | `{ category: string; id: string }`                               | Emitted to go to the product detail.                         |
-
-### EcoStoreProductQuantityControlComponent
-
-A specialized component for managing product quantities, supporting both units and variable weights.
-
-Selector: `eco-store-product-quantity-control`
-
-#### Inputs
-
-| Input         | Type                          | Default      | Description                   |
-| ------------- | ----------------------------- | ------------ | ----------------------------- |
-| `quantity`    | `number`                      | `0`          | Current quantity value.       |
-| `unitType`    | `EcoStoreProduct['unitType']` | **Required** | Type of unit for the product. |
-| `minQuantity` | `number`                      | `0`          | Minimum allowed quantity.     |
-| `mode`        | `'card' \| 'detail'`          | `'card'`     | Display mode for the control. |
-| `isInCart`    | `boolean`                     | `false`      | Whether the item is in cart.  |
-
-#### Outputs
-
-| Output           | Type     | Description                                |
-| ---------------- | -------- | ------------------------------------------ |
-| `quantityChange` | `number` | Emitted when the quantity is updated.      |
-| `addToCart`      | `number` | Emitted when the "Add to Cart" is clicked. |
 
 ## Feature Integration
 

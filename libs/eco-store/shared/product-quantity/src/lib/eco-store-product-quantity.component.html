@@ -17,7 +17,9 @@
       [class.w-full]="mode() === 'card'"
       [class.w-auto]="mode() === 'detail'"
       [class.sm:w-48]="mode() === 'detail'"
-      [attr.aria-label]="'common.a11y.productQuantity' | translate: { value: product().name }">
+      [attr.aria-label]="
+        'common.a11y.productQuantity' | translate: { product: product().name, quantity: quantity() }
+      ">
       <button
         matIconButton
         type="button"
@@ -37,7 +39,7 @@
         }
       </button>
 
-      <div class="flex items-baseline justify-center not-first-of-type:cursor-text">
+      <div class="flex items-baseline justify-center gap-1 not-first-of-type:cursor-text">
         <label class="sr-only" [attr.for]="'qty-' + product().id">
           {{
             'common.a11y.productQuantity'
@@ -52,7 +54,7 @@
           readonly
           tabindex="-1"
           type="number"
-          class="no-spinners pointer-events-none w-fit cursor-default border-none text-end font-bold text-neutral-700"
+          class="no-spinners w-fit cursor-default border-none text-end font-bold text-neutral-700 focus:outline-none"
           [id]="'qty-' + product().id"
           [value]="quantity()"
           [step]="step()"
@@ -85,11 +87,12 @@
     @if (mode() === 'detail') {
       <button
         matButton="filled"
-        class="add-button detail-button flex grow items-center justify-center gap-1 tracking-wide uppercase transition-all"
+        class="add-button detail-button flex grow items-center justify-center gap-1 tracking-wide uppercase"
         [disabled]="!isQuantityModified()"
         (click)="onAddToCart()">
-        <mat-icon class="scale-125" aria-hidden="true">shopping_cart</mat-icon>
-        {{ 'products.addLong' | translate }}
+        <mat-icon class="scale-125">shopping_cart</mat-icon>
+        <span class="hidden sm:block">{{ 'products.addLong' | translate }}</span>
+        <span class="block sm:hidden">{{ 'products.add' | translate }}</span>
       </button>
     }
   </div>

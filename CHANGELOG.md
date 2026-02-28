@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-02-28] - ngx-translate evaluate errors
+
+### Fixed
+
+- Resolved ngx-translate evaluate errors, updated HTML evaluation for csp, and refactored product quantity controls ([86c8h2gjm](https://app.clickup.com/t/86c8h2gjm))
+
+---
+
 ## [2026-02-26] - Confirmation Checkout View
 
 ### Added

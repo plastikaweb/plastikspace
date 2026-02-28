@@ -82,6 +82,7 @@ jobs:
             Permissions-Policy: camera=(), microphone=(), geolocation=()
             Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://eco-botiga.pockethost.io; connect-src 'self' https://eco-botiga.pockethost.io https://fonts.gstatic.com https://fonts.googleapis.com; frame-ancestors 'none'; upgrade-insecure-requests;
           EOF
+          echo "/* /index.html 200" > ./dist/apps/eco-store/browser/_redirects
 
       - name: Deploy to Cloudflare Pages
         if: steps.changes.outputs.has_changes == 'true'
