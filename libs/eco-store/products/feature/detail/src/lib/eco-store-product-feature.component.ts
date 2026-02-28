@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
   inject,
   linkedSignal,
   signal,
@@ -26,6 +27,7 @@ import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedChipComponent } from '@plastik/shared/chip/ui';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { ViewTransitionService } from '@plastik/shared/util/view-transition';
 import { map } from 'rxjs';
 
 @Component({
@@ -53,6 +55,15 @@ export default class EcoStoreProductFeatureComponent {
   readonly #productsStore = inject(ecoStoreProductsStore);
   protected readonly cartStore = inject(ecoStoreCartStore);
   protected readonly tenantsStore = inject(ecoStoreTenantStore);
+  protected readonly viewTransitionService = inject(ViewTransitionService);
+
+  protected readonly syncTransitionId = effect(() => {
+    const id = this.product()?.id;
+    if (id) {
+      this.viewTransitionService.setActiveId(id);
+    }
+  });
+
   protected readonly pendingChanges = computed(() => {
     const product = this.product();
     if (!product) return false;

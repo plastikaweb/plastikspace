@@ -8,6 +8,7 @@ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { TextAreaWithCounterFormlyModule } from '@plastik/shared/form/textarea-with-counter';
+import { ViewTransitionService } from '@plastik/shared/util/view-transition';
 import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
 import { CartProductCardComponent } from '../../ui/cart-product-card/cart-product-card.component';
 import {
@@ -33,19 +34,20 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartConfirmationComponent {
-  readonly cartStore = inject(ecoStoreCartStore);
-  readonly tenantStore = inject(ecoStoreTenantStore);
-  readonly formConfig = getCartConfirmationFormConfig();
+  protected readonly cartStore = inject(ecoStoreCartStore);
+  protected readonly tenantStore = inject(ecoStoreTenantStore);
+  protected readonly formConfig = getCartConfirmationFormConfig();
+  protected readonly viewTransitionService = inject(ViewTransitionService);
 
-  readonly model = computed<CartConfirmationFormModel>(() => ({
+  protected readonly model = computed<CartConfirmationFormModel>(() => ({
     notes: this.cartStore.notes() ?? '',
   }));
 
-  onChange(event: CartConfirmationFormModel): void {
+  protected onChange(event: CartConfirmationFormModel): void {
     this.cartStore.updateLogistics({ notes: event.notes || null });
   }
 
-  confirmOrder(): void {
+  protected confirmOrder(): void {
     // TODO: Implement order submission via cart store or service
   }
 }

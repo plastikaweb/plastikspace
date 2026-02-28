@@ -213,6 +213,7 @@ Reusable features and UI components.
 - [**testing**](libs/shared/testing/README.md)
 - [**util**](libs/shared/util/objects/README.md)
 - [**countdown**](libs/shared/countdown/util/README.md)
+- [**view-transition**](libs/shared/util/view-transition/README.md)
 
 ---
 

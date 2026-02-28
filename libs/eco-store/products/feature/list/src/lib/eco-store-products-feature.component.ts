@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -13,6 +13,7 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
 import { activityStore } from '@plastik/shared/activity/data-access';
+import { ViewTransitionService } from '@plastik/shared/util/view-transition';
 import { SortSelectorComponent } from '@plastik/sort-selector';
 import { distinctUntilChanged, map } from 'rxjs';
 
@@ -35,6 +36,7 @@ export default class EcoStoreProductsFeatureComponent {
   protected activityStore = inject(activityStore);
   protected cartStore = inject(ecoStoreCartStore);
   protected tenantStore = inject(ecoStoreTenantStore);
+  protected viewTransitionService = inject(ViewTransitionService);
   readonly #route = inject(ActivatedRoute);
   readonly #router = inject(Router);
   readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);

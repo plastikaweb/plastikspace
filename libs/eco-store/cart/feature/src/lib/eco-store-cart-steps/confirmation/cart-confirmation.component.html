@@ -29,7 +29,11 @@
           <eco-cart-product-card
             [item]="item"
             [isLcpImage]="i === 0"
-            [editable]="false"></eco-cart-product-card>
+            [editable]="false"
+            [isActiveForTransition]="viewTransitionService.activeId() === item.product.id"
+            (pointerdown)="
+              viewTransitionService.setActiveId(item.product.id)
+            "></eco-cart-product-card>
         }
       </div>
     </section>
