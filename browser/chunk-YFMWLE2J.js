@@ -3101,6 +3101,9 @@ function linkedSignalSetFn(node, newValue) {
 }
 function linkedSignalUpdateFn(node, updater) {
   producerUpdateValueVersion(node);
+  if (node.value === ERRORED) {
+    throw node.error;
+  }
   signalUpdateFn(node, updater);
   producerMarkClean(node);
 }
@@ -3262,7 +3265,7 @@ var Version = class {
     this.patch = parts.slice(2).join(".");
   }
 };
-var VERSION = /* @__PURE__ */ new Version("21.1.2");
+var VERSION = /* @__PURE__ */ new Version("21.1.6");
 var DOC_PAGE_BASE_URL = (() => {
   const full = VERSION.full;
   const isPreRelease = full.includes("-next") || full.includes("-rc") || full === "0.0.0-PLACEHOLDER";
@@ -3777,9 +3780,9 @@ function throwInvalidProviderError(ngModuleType, providers, provider) {
     throw new Error(`Invalid provider for the NgModule '${stringify(ngModuleType)}' - only instances of Provider and Type are allowed, got: [${providerDetail.join(", ")}]`);
   } else if (isEnvironmentProviders(provider)) {
     if (provider.\u0275fromNgModule) {
-      throw new RuntimeError(207, `Invalid providers from 'importProvidersFrom' present in a non-environment injector. 'importProvidersFrom' can't be used for component providers.`);
+      throw new RuntimeError(-207, `Invalid providers from 'importProvidersFrom' present in a non-environment injector. 'importProvidersFrom' can't be used for component providers.`);
     } else {
-      throw new RuntimeError(207, `Invalid providers present in a non-environment injector. 'EnvironmentProviders' can't be used for component providers.`);
+      throw new RuntimeError(-207, `Invalid providers present in a non-environment injector. 'EnvironmentProviders' can't be used for component providers.`);
     }
   } else {
     throw new Error("Invalid provider");
@@ -4551,17 +4554,17 @@ function injectableDefOrInjectorDefFactory(token) {
     return factory;
   }
   if (token instanceof InjectionToken) {
-    throw new RuntimeError(204, ngDevMode && `Token ${stringify(token)} is missing a \u0275prov definition.`);
+    throw new RuntimeError(-204, ngDevMode && `Token ${stringify(token)} is missing a \u0275prov definition.`);
   }
   if (token instanceof Function) {
     return getUndecoratedInjectableFactory(token);
   }
-  throw new RuntimeError(204, ngDevMode && "unreachable");
+  throw new RuntimeError(-204, ngDevMode && "unreachable");
 }
 function getUndecoratedInjectableFactory(token) {
   const paramLength = token.length;
   if (paramLength > 0) {
-    throw new RuntimeError(204, ngDevMode && `Can't resolve all parameters for ${stringify(token)}: (${newArray(paramLength, "?").join(", ")}).`);
+    throw new RuntimeError(-204, ngDevMode && `Can't resolve all parameters for ${stringify(token)}: (${newArray(paramLength, "?").join(", ")}).`);
   }
   const inheritedInjectableDef = getInheritedInjectableDef(token);
   if (inheritedInjectableDef !== null) {
@@ -4609,7 +4612,7 @@ function providerToFactory(provider, ngModuleType, providers) {
 }
 function assertNotDestroyed(injector) {
   if (injector.destroyed) {
-    throw new RuntimeError(205, ngDevMode && "Injector has already been destroyed.");
+    throw new RuntimeError(-205, ngDevMode && "Injector has already been destroyed.");
   }
 }
 function makeRecord(factory, value, multi = false) {
@@ -7299,7 +7302,7 @@ function reflectDependency(dep) {
         meta.token = param.token;
       } else if (param instanceof Attribute) {
         if (param.attributeName === void 0) {
-          throw new RuntimeError(204, ngDevMode && `Attribute name must be defined.`);
+          throw new RuntimeError(-204, ngDevMode && `Attribute name must be defined.`);
         }
         meta.attribute = param.attributeName;
       } else {
@@ -9861,6 +9864,16 @@ function queueEnterAnimations(injector, enterAnimations) {
     addToAnimationQueue(injector, nodeAnimations.animateFns);
   }
 }
+function removeAnimationsFromQueue(injector, animationFns) {
+  const animationQueue = injector.get(ANIMATION_QUEUE);
+  if (Array.isArray(animationFns)) {
+    for (const animateFn of animationFns) {
+      animationQueue.queue.delete(animateFn);
+    }
+  } else {
+    animationQueue.queue.delete(animationFns);
+  }
+}
 function maybeQueueEnterAnimation(parentLView, parent, tNode, injector) {
   const enterAnimations = parentLView?.[ANIMATIONS]?.enter;
   if (parent !== null && enterAnimations && enterAnimations.has(tNode.index)) {
@@ -9995,6 +10008,9 @@ function cleanUpView(tView, lView) {
 }
 function runLeaveAnimationsWithCallback(lView, tNode, injector, callback) {
   const animations = lView?.[ANIMATIONS];
+  if (animations?.enter?.has(tNode.index)) {
+    removeAnimationsFromQueue(injector, animations.enter.get(tNode.index).animateFns);
+  }
   if (animations == null || animations.leave == void 0 || !animations.leave.has(tNode.index)) return callback(false);
   if (lView) allLeavingAnimations.add(lView[ID]);
   addToAnimationQueue(injector, () => {
@@ -12042,10 +12058,10 @@ function verifyStandaloneImport(depType, importingType) {
   }
 }
 var DepsTracker = class {
-  ownerNgModule = /* @__PURE__ */ new Map();
+  ownerNgModule = /* @__PURE__ */ new WeakMap();
   ngModulesWithSomeUnresolvedDecls = /* @__PURE__ */ new Set();
-  ngModulesScopeCache = /* @__PURE__ */ new Map();
-  standaloneComponentsScopeCache = /* @__PURE__ */ new Map();
+  ngModulesScopeCache = /* @__PURE__ */ new WeakMap();
+  standaloneComponentsScopeCache = /* @__PURE__ */ new WeakMap();
   resolveNgModulesDecls() {
     if (this.ngModulesWithSomeUnresolvedDecls.size === 0) {
       return;
@@ -12923,7 +12939,7 @@ var ComponentFactory2 = class extends ComponentFactory$1 {
   }
 };
 function createRootTView(rootSelectorOrNode, componentDef, componentBindings, directives) {
-  const tAttributes = rootSelectorOrNode ? ["ng-version", "21.1.2"] : extractAttrsAndClassesFromSelector(componentDef.selectors[0]);
+  const tAttributes = rootSelectorOrNode ? ["ng-version", "21.1.6"] : extractAttrsAndClassesFromSelector(componentDef.selectors[0]);
   let creationBindings = null;
   let updateBindings = null;
   let varsToAllocate = 0;
@@ -17413,16 +17429,16 @@ function \u0275\u0275animateEnter(value) {
   }
   const tNode = getCurrentTNode();
   cancelLeavingNodes(tNode, lView);
-  addAnimationToLView(getLViewEnterAnimations(lView), tNode, () => runEnterAnimation(lView, tNode, value));
+  const ngZone = lView[INJECTOR].get(NgZone);
+  addAnimationToLView(getLViewEnterAnimations(lView), tNode, () => runEnterAnimation(lView, tNode, value, ngZone));
   initializeAnimationQueueScheduler(lView[INJECTOR]);
   queueEnterAnimations(lView[INJECTOR], getLViewEnterAnimations(lView));
   return \u0275\u0275animateEnter;
 }
-function runEnterAnimation(lView, tNode, value) {
+function runEnterAnimation(lView, tNode, value, ngZone) {
   const nativeElement = getNativeByTNode(tNode, lView);
   ngDevMode && assertElementNodes(nativeElement, "animate.enter");
   const renderer = lView[RENDERER];
-  const ngZone = lView[INJECTOR].get(NgZone);
   const activeClasses = getClassListFromValue(value);
   const cleanupFns = [];
   const handleEnterAnimationStart = (event) => {
@@ -17507,11 +17523,12 @@ function \u0275\u0275animateLeave(value) {
   }
   const tNode = getCurrentTNode();
   cancelLeavingNodes(tNode, lView);
-  addAnimationToLView(getLViewLeaveAnimations(lView), tNode, () => runLeaveAnimations(lView, tNode, value));
+  const ngZone = lView[INJECTOR].get(NgZone);
+  addAnimationToLView(getLViewLeaveAnimations(lView), tNode, () => runLeaveAnimations(lView, tNode, value, ngZone));
   initializeAnimationQueueScheduler(lView[INJECTOR]);
   return \u0275\u0275animateLeave;
 }
-function runLeaveAnimations(lView, tNode, value) {
+function runLeaveAnimations(lView, tNode, value, ngZone) {
   const {
     promise,
     resolve
@@ -17519,7 +17536,6 @@ function runLeaveAnimations(lView, tNode, value) {
   const nativeElement = getNativeByTNode(tNode, lView);
   ngDevMode && assertElementNodes(nativeElement, "animate.leave");
   const renderer = lView[RENDERER];
-  const ngZone = lView[INJECTOR].get(NgZone);
   allLeavingAnimations.add(lView[ID]);
   (getLViewLeaveAnimations(lView).get(tNode.index).resolvers ??= []).push(resolve);
   const activeClasses = getClassListFromValue(value);
@@ -17581,11 +17597,13 @@ function \u0275\u0275animateLeaveListener(value) {
   const tNode = getCurrentTNode();
   cancelLeavingNodes(tNode, lView);
   allLeavingAnimations.add(lView[ID]);
-  addAnimationToLView(getLViewLeaveAnimations(lView), tNode, () => runLeaveAnimationFunction(lView, tNode, value));
+  const ngZone = lView[INJECTOR].get(NgZone);
+  const maxAnimationTimeout = lView[INJECTOR].get(MAX_ANIMATION_TIMEOUT);
+  addAnimationToLView(getLViewLeaveAnimations(lView), tNode, () => runLeaveAnimationFunction(lView, tNode, value, ngZone, maxAnimationTimeout));
   initializeAnimationQueueScheduler(lView[INJECTOR]);
   return \u0275\u0275animateLeaveListener;
 }
-function runLeaveAnimationFunction(lView, tNode, value) {
+function runLeaveAnimationFunction(lView, tNode, value, ngZone, maxAnimationTimeout) {
   const {
     promise,
     resolve
@@ -17595,8 +17613,6 @@ function runLeaveAnimationFunction(lView, tNode, value) {
   const cleanupFns = [];
   const renderer = lView[RENDERER];
   const animationsDisabled = areAnimationsDisabled(lView);
-  const ngZone = lView[INJECTOR].get(NgZone);
-  const maxAnimationTimeout = lView[INJECTOR].get(MAX_ANIMATION_TIMEOUT);
   (getLViewLeaveAnimations(lView).get(tNode.index).resolvers ??= []).push(resolve);
   const resolvers = getLViewLeaveAnimations(lView).get(tNode.index)?.resolvers;
   if (animationsDisabled) {
@@ -19725,8 +19741,19 @@ function walkIcuTree(ast, tView, tIcu, lView, sharedUpdateOpCodes, create, remov
               } else {
                 ngDevMode && console.warn(`WARNING: ignoring unsafe attribute value ${lowerAttrName} on element ${tagName} (see ${XSS_SECURITY_URL})`);
               }
+            } else if (VALID_ATTRS[lowerAttrName]) {
+              if (URI_ATTRS[lowerAttrName]) {
+                if (typeof ngDevMode !== "undefined" && ngDevMode) {
+                  console.warn(`WARNING: ignoring unsafe attribute ${lowerAttrName} on element ${tagName} (see ${XSS_SECURITY_URL})`);
+                }
+                addCreateAttribute(create, newIndex, attr.name, "unsafe:blocked");
+              } else {
+                addCreateAttribute(create, newIndex, attr.name, attr.value);
+              }
             } else {
-              addCreateAttribute(create, newIndex, attr);
+              if (typeof ngDevMode !== "undefined" && ngDevMode) {
+                console.warn(`WARNING: ignoring unknown attribute name ${lowerAttrName} on element ${tagName} (see ${XSS_SECURITY_URL})`);
+              }
             }
           }
           const elementNode = {
@@ -19790,8 +19817,8 @@ function addCreateNodeAndAppend(create, marker, text, appendToParentIdx, createA
   }
   create.push(text, createAtIdx, icuCreateOpCode(0, appendToParentIdx, createAtIdx));
 }
-function addCreateAttribute(create, newIndex, attr) {
-  create.push(newIndex << 1 | 1, attr.name, attr.value);
+function addCreateAttribute(create, newIndex, attrName, attrValue) {
+  create.push(newIndex << 1 | 1, attrName, attrValue);
 }
 var ROOT_TEMPLATE_ID = 0;
 var PP_MULTI_VALUE_PLACEHOLDERS_REGEXP = /\[(�.+?�?)\]/;
@@ -23736,8 +23763,6 @@ function createViewRef(tNode, lView, isPipe2) {
   return null;
 }
 var DefaultIterableDifferFactory = class {
-  constructor() {
-  }
   supports(obj) {
     return isListLikeIterable(obj);
   }
@@ -24192,8 +24217,6 @@ function getPreviousIndex(item, addRemoveOffset, moveOffsets) {
   return previousIndex + addRemoveOffset + moveOffset;
 }
 var DefaultKeyValueDifferFactory = class {
-  constructor() {
-  }
   supports(obj) {
     return obj instanceof Map || isJsObject(obj);
   }
@@ -24211,7 +24234,6 @@ var DefaultKeyValueDiffer = class {
   _additionsHead = null;
   _additionsTail = null;
   _removalsHead = null;
-  _removalsTail = null;
   get isDirty() {
     return this._additionsHead !== null || this._changesHead !== null || this._removalsHead !== null;
   }
@@ -24252,8 +24274,6 @@ var DefaultKeyValueDiffer = class {
       throw new RuntimeError(900, ngDevMode && `Error trying to diff '${stringify(map2)}'. Only maps and objects are allowed`);
     }
     return this.check(map2) ? this : null;
-  }
-  onDestroy() {
   }
   check(map2) {
     this._reset();
@@ -25051,9 +25071,9 @@ export {
 @angular/core/fesm2022/_resource-chunk.mjs:
 @angular/core/fesm2022/core.mjs:
   (**
-   * @license Angular v21.1.2
+   * @license Angular v21.1.6
    * (c) 2010-2026 Google LLC. https://angular.dev/
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-AIW5K7IK.js.map
+//# sourceMappingURL=chunk-YFMWLE2J.js.map

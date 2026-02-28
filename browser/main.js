@@ -1,14 +1,14 @@
 import {
   AngularSvgIconModule,
   SvgIconComponent
-} from "./chunk-J4ZYWXOX.js";
+} from "./chunk-HH7K6GVO.js";
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from "./chunk-R5C65E4E.js";
+} from "./chunk-FQIMVZAC.js";
 import {
   MatToolbar,
   MatToolbarModule
-} from "./chunk-OBW7JWJO.js";
+} from "./chunk-YPBQFNIG.js";
 import {
   MatPseudoCheckboxModule,
   NASA_IMAGES_PROVIDERS,
@@ -16,7 +16,7 @@ import {
   collectionToArray,
   notificationStore,
   provideFormlyConfig
-} from "./chunk-TUN4FGI3.js";
+} from "./chunk-VXGBXRP5.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CoreCmsLayoutDataAccessModule,
@@ -35,7 +35,7 @@ import {
   provideTranslateService,
   provideWithApiEnv,
   routerReducers
-} from "./chunk-44BDADD6.js";
+} from "./chunk-XU7AQLPE.js";
 import {
   ActionsSubject,
   INIT,
@@ -48,14 +48,14 @@ import {
   StoreModule,
   UPDATE,
   provideStore
-} from "./chunk-UQUD653M.js";
+} from "./chunk-HUC4WPV5.js";
 import {
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
   TitleStrategy,
   provideRouter
-} from "./chunk-W6MSIYPH.js";
+} from "./chunk-ISSXUVWI.js";
 import {
   CdkScrollable,
   CdkScrollableModule,
@@ -66,13 +66,13 @@ import {
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-RJ2VJ42I.js";
+} from "./chunk-O3DVGKXI.js";
 import {
   DomPortalOutlet,
   MatIcon,
   MatIconModule,
   TemplatePortal
-} from "./chunk-NPF35WXZ.js";
+} from "./chunk-7JBZFCTW.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatButton,
@@ -80,7 +80,7 @@ import {
   MatRippleModule,
   RippleRenderer,
   coerceBooleanProperty
-} from "./chunk-SOHV2DKC.js";
+} from "./chunk-EQOFS2KK.js";
 import {
   A,
   A11yModule,
@@ -105,32 +105,32 @@ import {
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader,
   toSignal
-} from "./chunk-IDN3KW3Y.js";
+} from "./chunk-KLGXD5MZ.js";
 import {
   bootstrapApplication,
   provideHttpClient
-} from "./chunk-Q5JRN3QT.js";
-import "./chunk-F3C6PLLK.js";
+} from "./chunk-JKUMLMO2.js";
+import "./chunk-55JSM42S.js";
 import {
   BidiModule,
   Directionality,
   _getEventTarget,
   _getFocusedElementPierceShadowDom,
   _getShadowRoot
-} from "./chunk-ZB54XNYH.js";
-import "./chunk-XRYUEZ3V.js";
+} from "./chunk-IG3Y344Z.js";
+import "./chunk-JA3APNBO.js";
 import {
   _CdkPrivateStyleLoader,
   coerceNumberProperty
-} from "./chunk-FBQKZM2Q.js";
+} from "./chunk-IIDP56ND.js";
 import {
   Platform
-} from "./chunk-TVRJ3NXG.js";
+} from "./chunk-GNEWUXOI.js";
 import {
   DatePipe,
   NgTemplateOutlet,
   PRECONNECT_CHECK_BLOCKLIST
-} from "./chunk-CXCM2DO7.js";
+} from "./chunk-O54KXUAM.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -262,7 +262,7 @@ import {
   ɵɵtextInterpolate1,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-AIW5K7IK.js";
+} from "./chunk-YFMWLE2J.js";
 
 // node_modules/@angular/material/fesm2022/divider.mjs
 var MatDivider = class _MatDivider {
@@ -5026,9 +5026,9 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-5AF7H3AL.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-5WZG6QWT.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
-var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-NW3M4Q5W.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
+var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-ZOAX2VMU.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
 var _c24 = () => ({ exact: false });
 var _forTrack02 = ($index, $item) => $item.id;
@@ -5397,7 +5397,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-5AF7H3AL.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-NW3M4Q5W.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-5WZG6QWT.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-ZOAX2VMU.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -6537,11 +6537,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-OJ6SLYE5.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-32UOV2F7.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-PAB2BJN4.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-XQ3DS7ML.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6557,7 +6557,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-VQE4KEYS.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-Y7V22DCZ.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: "link",

@@ -7,7 +7,7 @@ import {
   getDOM,
   parseCookieValue,
   setRootDomAdapter
-} from "./chunk-CXCM2DO7.js";
+} from "./chunk-O54KXUAM.js";
 import {
   APP_ID,
   ApplicationModule,
@@ -78,7 +78,7 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-AIW5K7IK.js";
+} from "./chunk-YFMWLE2J.js";
 
 // node_modules/@angular/platform-browser/fesm2022/_dom_renderer-chunk.mjs
 var EventManagerPlugin = class {
@@ -3731,4 +3731,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-Q5JRN3QT.js.map
+//# sourceMappingURL=chunk-JKUMLMO2.js.map

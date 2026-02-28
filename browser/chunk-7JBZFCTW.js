@@ -1,13 +1,13 @@
 import {
   trustedHTMLFromString
-} from "./chunk-IDN3KW3Y.js";
+} from "./chunk-KLGXD5MZ.js";
 import {
   DomSanitizer,
   HttpClient
-} from "./chunk-Q5JRN3QT.js";
+} from "./chunk-JKUMLMO2.js";
 import {
   BidiModule
-} from "./chunk-ZB54XNYH.js";
+} from "./chunk-IG3Y344Z.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -59,7 +59,7 @@ import {
   ɵɵinject,
   ɵɵprojection,
   ɵɵprojectionDef
-} from "./chunk-AIW5K7IK.js";
+} from "./chunk-YFMWLE2J.js";
 
 // node_modules/@angular/material/fesm2022/_icon-registry-chunk.mjs
 function getMatIconNameNotFoundError(iconName) {
@@ -1240,4 +1240,4 @@ export {
   CdkPortalOutlet,
   PortalModule
 };
-//# sourceMappingURL=chunk-NPF35WXZ.js.map
+//# sourceMappingURL=chunk-7JBZFCTW.js.map

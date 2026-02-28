@@ -8,7 +8,7 @@ import {
   inject,
   setClassMetadata,
   ɵɵdefineInjectable
-} from "./chunk-AIW5K7IK.js";
+} from "./chunk-YFMWLE2J.js";
 
 // node_modules/@angular/cdk/fesm2022/_style-loader-chunk.mjs
 var appsWithLoaders = /* @__PURE__ */ new WeakMap();
@@ -75,4 +75,4 @@ export {
   _isNumberValue,
   coerceElement
 };
-//# sourceMappingURL=chunk-FBQKZM2Q.js.map
+//# sourceMappingURL=chunk-IIDP56ND.js.map
