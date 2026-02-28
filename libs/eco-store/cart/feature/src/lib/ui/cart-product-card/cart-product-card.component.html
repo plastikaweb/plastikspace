@@ -64,9 +64,7 @@
         mode="summary"
         [product]="product"
         [quantity]="item().quantity"
-        (quantityChange)="
-          quantityChange.emit({ quantity: $event, product })
-        "></eco-store-product-quantity>
+        (quantityChange)="quantityChange.emit({ quantity: $event, product })" />
       <p
         class="col-start-1! row-start-1! justify-self-start! text-2xl font-bold @xl:col-span-1! @xl:col-start-2! @xl:row-start-1! @xl:justify-self-end!">
         {{ product.priceWithIva * item().quantity | currency: 'EUR' : 'symbol' : '1.2-2' }}

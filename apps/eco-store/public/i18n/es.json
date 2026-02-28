@@ -22,11 +22,11 @@
       "userActions": "Accions del usuario",
       "categoriesNavigation": "Navegación de categorías",
       "productCategories": "Categorías de productos",
-      "productQuantity": "Cantidad de {{product}} - {{quantity}}",
+      "productQuantity": "Cantidad de {product} - {quantity}",
       "productList": "Lista de productos",
       "sortProducts": "Ordenar productos",
-      "productsCount": "{{count}} productos",
-      "categoryIcon": "{{category}} icono",
+      "productsCount": "{count} productos",
+      "categoryIcon": "{category} icono",
       "closeSidenav": "Cerrar menú lateral",
       "openSidenav": "Abrir menú lateral",
       "ecoIcon": "Icono ecológico"
@@ -35,8 +35,8 @@
       "error": {
         "email": "El formato del correo electrónico no es correcto",
         "required": "El campo es obligatorio",
-        "minLength": "El campo debe tener al menos {{value}} caracteres",
-        "maxLength": "El campo debe tener más de {{value}} caracteres"
+        "minLength": "El campo debe tener al menos {value} caracteres",
+        "maxLength": "El campo debe tener más de {value} caracteres"
       },
       "charactersCount": "{count, plural, one {carácter} other {caracteres}}"
     },
@@ -48,9 +48,9 @@
       "itemsPerPage": "Elementos por página",
       "lastPage": "Última página",
       "nextPage": "Página siguiente",
-      "noItems": "{{length}} elementos",
+      "noItems": "{length} elementos",
       "previousPage": "Página anterior",
-      "range": "{{start}} - {{end}} de {{total}}",
+      "range": "{start} - {end} de {total}",
       "rangeLabel": "de"
     },
     "notification": {
@@ -66,12 +66,12 @@
         "closedTitle": "Tienda en modo consulta",
         "openingSoonTitle": "¡Preparad las cestas!",
         "openingSoonDescription": "Estamos a punto de abrir la ventana de pedidos.",
-        "closedDescription": "Los pedidos abren el día {{ date }} a las {{ time }}",
+        "closedDescription": "Los pedidos abren el día {date} a las {time}",
         "closedManuallyTitle": "Cierre temporal",
         "cancelledTitle": "Servicio no disponible",
         "cancelledDescription": "Esta tienda está desactivada actualmente. Contacta con soporte para más información.",
         "closingSoonTitle": "¡La tienda cerrará pronto!",
-        "closingSoonDescription": "Haz tu pedido antes de las {{time}}.",
+        "closingSoonDescription": "Haz tu pedido antes de las {time}.",
         "dismiss": "Cerrar aviso del estado de la tienda"
       },
       "closed": "Cerrado",
@@ -81,7 +81,7 @@
       "open": "Abierto",
       "open24h": "Abierto 24/7",
       "openingSoon": "ABRE PRONTO",
-      "closedOpensAt": "Cerrado. Abre el {{date}} a las {{time}}",
+      "closedOpensAt": "Cerrado. Abre el {date} a las {time}",
       "closedMessage": "La tienda está cerrada. No puedes modificar tu carrito."
     },
     "menu": {
@@ -90,11 +90,11 @@
       "about": "Quiénes Somos",
       "contact": "Contacto",
       "viewFavorites": "Favoritos",
-      "viewCart": "Ir al carrito de compra, {{ productCount }} productos, precio total: {{ productPrice }}",
+      "viewCart": "Ir al carrito de compra, {productCount} productos, precio total: {productPrice}",
       "cart": "Carrito",
-      "profile": "Perfil de {{ name }}",
+      "profile": "Perfil de {name}",
       "profilePage": "Ver perfil",
-      "hello": "Hola {{ name }}",
+      "hello": "Hola {name}",
       "login": "Acceder",
       "logout": "Cerrar sesión",
       "orders": "Pedidos"
@@ -151,7 +151,7 @@
     "decrement": "Disminuir",
     "increment": "Aumentar",
     "total": "productos",
-    "favorite": "Agregar {{value}} a favoritos",
+    "favorite": "Agregar {value} a favoritos",
     "filter": {
       "sort": {
         "label": "Ordenar",
@@ -190,8 +190,8 @@
       "unit": "Precio por unidad",
       "weight": "Precio por kg",
       "volume": "Precio per L",
-      "unitWithFixedWeight": "Pesa {{value}} kg",
-      "unitWithFixedVolume": "Ocupa {{value}} L",
+      "unitWithFixedWeight": "Pesa {value} kg",
+      "unitWithFixedVolume": "Ocupa {value} L",
       "unitWithVariableWeight": "Peso variable",
       "unitWithVariableVolume": "Volumen variable"
     },
@@ -245,7 +245,7 @@
     "summary": {
       "pickup": "Recogida en la tienda",
       "delivery": "Envío a domicilio",
-      "itemsCount": "{{value}} productos",
+      "itemsCount": "{value} productos",
       "resume": "Resumen",
       "subtotal": "Subtotal",
       "taxes": "Impuestos (IVA)",
@@ -255,21 +255,21 @@
       "itemsCountSuffix": "artículos en la cesta",
       "shipping": "Envío",
       "includingVat": "IVA incluido",
-      "freeShippingPromo": "¡Añade {{value}} más para envío GRATIS!",
+      "freeShippingPromo": "¡Añade {value} más para envío GRATIS!",
       "removeItem": "Eliminar producto",
       "oldPrice": "Precio anterior",
       "priceDrop": "¡Bajada de precio!",
       "priceIncrease": "¡Subida de precio!",
-      "checkoutDisabledInDate": "Los pedidos están desactivados. La tienda abre el {{ date }} a las {{ time }}.",
+      "checkoutDisabledInDate": "Los pedidos están desactivados. La tienda abre el {date} a las {time}.",
       "checkoutDisabled": "Los pedidos están desactivados.",
       "quantityLabel": "Cant:"
     },
     "shipping": {
       "freeShippingAchieved": "¡Has conseguido envío gratuito!",
-      "remainingForFree": "¡Faltan {{amount}} más para envío GRATIS!",
+      "remainingForFree": "¡Faltan {amount} más para envío GRATIS!",
       "free": "GRATIS",
       "freeAlways": "GRATIS",
-      "freeFrom": "GRATIS desde {{amount}}",
+      "freeFrom": "GRATIS desde {amount}",
       "cartCost": "Carrito",
       "shippingCost": "Envío",
       "goToConfirmation": "Continuar al resumen del pedido",

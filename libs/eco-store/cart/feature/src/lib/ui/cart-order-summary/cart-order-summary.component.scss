@@ -26,10 +26,12 @@
   }
 
   button {
-    @include mat.icon-overrides(
-      (
-        color: var(--tertiary-50),
-      )
-    );
+    &:not(:disabled) {
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-50),
+        )
+      );
+    }
   }
 }

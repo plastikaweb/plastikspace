@@ -7,9 +7,9 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
 import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/product-category-label';
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
+import { EcoStoreProductQuantityComponent } from '@plastik/eco-store/product-quantity';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { EcoStoreProductQuantityControlComponent } from './components/eco-store-product-quantity-control/eco-store-product-quantity-control.component';
 
 @Component({
   selector: 'eco-store-product-card',
@@ -17,7 +17,7 @@ import { EcoStoreProductQuantityControlComponent } from './components/eco-store-
     TranslateModule,
     MatCardModule,
     MatButtonModule,
-    EcoStoreProductQuantityControlComponent,
+    EcoStoreProductQuantityComponent,
     EcoStoreProductPriceComponent,
     SharedImgContainerComponent,
     RouterLink,
