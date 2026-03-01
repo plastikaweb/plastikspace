@@ -22,9 +22,9 @@ export function pocketBaseActivityInterceptor() {
 
   pb.send = async function <T = unknown>(path: string, params?: SendOptions): Promise<T> {
     const headers = params?.headers || {};
-    const skipLoading = headers['remove-from-global-loading'];
+    const requireGlobalLoading = headers['require-global-loading'] === 'true';
 
-    if (skipLoading) {
+    if (!requireGlobalLoading) {
       return originalSend.call(pb, path, params as SendOptions) as Promise<T>;
     }
 

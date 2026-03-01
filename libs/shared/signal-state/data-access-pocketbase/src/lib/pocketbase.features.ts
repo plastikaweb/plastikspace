@@ -2,7 +2,6 @@ import { updateState, withDevtools, withImmutableState } from '@angular-architec
 import { computed, inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
-  patchState,
   signalStoreFeature,
   SignalStoreFeature,
   type,
@@ -45,7 +44,6 @@ export function withPocketBaseListFeature<
   featureName,
   dataServiceType,
   customInitialState = {},
-  autoLoad = true,
 }: {
   featureName: string;
   dataServiceType: Type<S>;
@@ -99,25 +97,32 @@ export function withPocketBaseListFeature<
               return areObjectEntriesEqual(prev.params, curr.params);
             }),
             tap(() => {
-              updateState(store, `[${featureName}] getList`);
+              updateState(store, `[${featureName}] getList`, { isLoading: true, error: null });
             }),
             switchMap(({ params }) => {
               return store._apiService.getList(params).pipe(
                 tapResponse<ListResult<T>, ClientResponseError>({
                   next: result => {
-                    patchState(
+                    updateState(
                       store,
+                      `[${featureName}] getList success`,
                       setAllEntities(result.items, {
                         selectId: entity => entity.id || '',
                       }),
                       {
                         count: result.totalItems,
                         initiallyLoaded: true,
+                        isLoading: false,
                       }
                     );
                   },
                   error: error => {
-                    showNotification('ERROR', error.message ?? `${featureName}.list.error`);
+                    const message = error.message ?? `${featureName}.list.error`;
+                    updateState(store, `[${featureName}] getList error`, {
+                      isLoading: false,
+                      error: message,
+                    });
+                    showNotification('ERROR', message);
                   },
                 })
               );
@@ -179,8 +184,9 @@ export function withPocketBaseGetOneFeature<
               return store._apiService.getOne(id).pipe(
                 tapResponse<T, ClientResponseError>({
                   next: item => {
-                    patchState(
+                    updateState(
                       store,
+                      `[${featureName}] getOne success`,
                       setEntity(item, {
                         selectId: entity => entity.id || '',
                       }),

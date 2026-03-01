@@ -5,19 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "composite": true,
     "types": []
   },
   "exclude": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts"],
-  "include": ["src/**/*.ts"],
-  "references": [
-    {
-      "path": "../../../../libs/shared/countdown/util"
-    }
-  ],
-  "angularCompilerOptions": {
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true,
-    "enableResourceInlining": true
-  }
+  "include": ["src/**/*.ts"]
 }

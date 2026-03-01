@@ -34,7 +34,7 @@
             {{ group.translatedGroupName }}
           </div>
 
-          @for (category of group.categories; track category.id) {
+          @for (category of group.categories; track category.category) {
             <mat-list-item
               class="my-1"
               role="listitem"

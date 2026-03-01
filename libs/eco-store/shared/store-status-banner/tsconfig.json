@@ -26,9 +26,6 @@
     },
     {
       "path": "./tsconfig.spec.json"
-    },
-    {
-      "path": "../../../../libs/shared/countdown/util"
     }
   ]
 }

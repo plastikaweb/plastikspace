@@ -4,35 +4,32 @@
   <div class="detail-container px-4 py-8">
     <!-- Breadcrumbs -->
     <nav
-      class="mb-8 flex items-center gap-0 overflow-x-auto pb-2 text-sm whitespace-nowrap text-gray-500 sm:gap-2!">
-      <button
-        mat-icon-button
-        type="button"
-        aria-label="Tornar"
-        class="shrink-0"
-        [routerLink]="backLink()"
-        [queryParams]="listQueryParams()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-      <a class="hover:text-tertiary-700 rounded px-2 py-1 hover:bg-gray-50" [routerLink]="['/']">{{
-        'store.menu.home' | translate
-      }}</a>
-      <mat-icon class="scale-75!">chevron_right</mat-icon>
-      <a
-        class="hover:text-tertiary-700 rounded px-2 py-1 transition-colors hover:bg-gray-50"
-        [routerLink]="['/botiga']"
-        [queryParams]="listQueryParams()">
-        {{ 'store.menu.store' | translate }}
-      </a>
-      <mat-icon class="scale-75!">chevron_right</mat-icon>
-      <a
-        class="hover:text-tertiary-700 rounded px-2 py-1 transition-colors hover:bg-gray-50"
-        [routerLink]="['/botiga', productData.categorySlug]"
-        [queryParams]="listQueryParams()">
-        {{ productData.categoryName }}
-      </a>
-      <mat-icon class="scale-75!">chevron_right</mat-icon>
-      <span class="text-tertiary-700 px-2 font-medium">{{ productData.name }}</span>
+      class="font-plain mb-4 flex w-full items-center overflow-x-auto py-3 text-xs [scrollbar-width:none] md:py-4 md:text-sm [&::-webkit-scrollbar]:hidden">
+      <ol class="flex w-max items-center pe-4 whitespace-nowrap">
+        <li class="flex items-center">
+          <a
+            class="hover:text-primary-900 hover:bg-primary-100/70 flex items-center gap-2 rounded-lg py-1.5 text-neutral-600 transition-all duration-200 outline-none"
+            [routerLink]="['/botiga']"
+            [queryParams]="listQueryParams()">
+            <mat-icon class="hidden! scale-75! sm:block!">storefront</mat-icon>
+            {{ 'store.menu.store' | translate }}
+          </a>
+        </li>
+        <li class="flex items-center">
+          <mat-icon class="scale-75!">chevron_right</mat-icon>
+          <a
+            class="hover:text-primary-900 hover:bg-primary-100/70 flex items-center gap-2 rounded-lg py-1.5 text-neutral-600 transition-all duration-200 outline-none"
+            [routerLink]="['/botiga', productData.categorySlug]"
+            [queryParams]="listQueryParams()">
+            <mat-icon class="hidden! scale-75! sm:block!">{{ productData.categoryIcon }}</mat-icon>
+            {{ productData.categoryName }}
+          </a>
+        </li>
+        <li class="flex items-center">
+          <mat-icon class="scale-75!">chevron_right</mat-icon>
+          <span class="text-tertiary-700 px-2 font-medium">{{ productData.name }}</span>
+        </li>
+      </ol>
     </nav>
 
     <div class="grid grid-cols-1 items-start gap-12 md:grid-cols-2">

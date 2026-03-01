@@ -2,7 +2,10 @@
 @let height = dimensions()?.height;
 @let src = this.src();
 
-<div class="absolute inset-0 flex items-center justify-center bg-transparent">
+<div
+  class="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
+  [class.bg-neutral-100]="isLoading()"
+  [class.breathing]="isLoading()">
   @if (isLoading()) {
     <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>
   }

@@ -23,9 +23,21 @@
 
     <!-- Products Grid -->
     <section class="products-grid" [attr.aria-label]="'common.a11y.productList' | translate">
-      @if (activityStore.isActive()) {
-        @for (i of [1, 2, 3, 4, 5, 6]; track i) {
-          <div class="eco-store-product-card-skeleton"></div>
+      @if (productsStore.isLoading()) {
+        @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
+          <div
+            class="breathing bg-surface-container-low flex h-full flex-col overflow-hidden rounded-[16px] p-4 shadow-sm">
+            <!-- Image block -->
+            <div class="mb-4 aspect-square w-full rounded-[12px] bg-neutral-200"></div>
+            <!-- Title lines -->
+            <div class="mb-2 h-4 w-3/4 rounded bg-neutral-200"></div>
+            <div class="mb-4 h-4 w-1/2 rounded bg-neutral-200"></div>
+            <!-- Price and button -->
+            <div class="mt-auto flex items-center justify-between">
+              <div class="h-6 w-16 rounded bg-neutral-200"></div>
+              <div class="h-10 w-10 rounded-full bg-neutral-200"></div>
+            </div>
+          </div>
         }
       } @else {
         @for (item of productsStore.productsWithTranslatedText(); track item.id; let i = $index) {
@@ -34,7 +46,6 @@
             [quantity]="cartStore.getItemCount(item.id)()"
             [isFirst]="i < 6"
             [isOpen]="tenantStore.isStoreOpen()"
-            [isActiveForTransition]="viewTransitionService.activeId() === item.id"
             (pointerdown)="viewTransitionService.setActiveId(item.id)"
             (addToCart)="addToCart($event)"
             (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
@@ -42,7 +53,7 @@
       }
     </section>
 
-    @if (!activityStore.isActive()) {
+    @if (!productsStore.isLoading()) {
       @defer (on viewport; prefetch on idle) {
         <plastik-pagination
           class="mt-6"
@@ -52,7 +63,7 @@
           [pageSizeOptions]="productsStore.paginationSizeOptions()"
           [count]="productsStore.count()" />
       } @placeholder {
-        <div class="mt-6 h-12 w-full animate-pulse bg-neutral-50"></div>
+        <div class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
       }
     }
   </div>
