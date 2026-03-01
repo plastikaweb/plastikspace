@@ -35,7 +35,6 @@ export class CartProductCardComponent {
   item = input.required<EcoStoreCartItem>();
   isLcpImage = input(false);
   editable = input<boolean>();
-  isActiveForTransition = input<boolean>(false);
 
   quantityChange = output<{ quantity: number; product: EcoStoreProductWithCategoryName }>();
 }

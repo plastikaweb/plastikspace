@@ -38,7 +38,6 @@ export class EcoStoreProductCardComponent {
   minimalVersion = input<boolean>(false);
   quantity = input<number>(0);
   isOpen = input<boolean>(true);
-  isActiveForTransition = input<boolean>(false);
 
   addToCart = output<{ product: EcoStoreProductWithCategoryName; quantity: number }>();
   toggleFavorite = output<EcoStoreProductWithCategoryName['id']>();

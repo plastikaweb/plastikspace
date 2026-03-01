@@ -57,4 +57,5 @@ export type EcoStoreProductWithCategoryName = EcoStoreProduct & {
   categoryName: string;
   categorySlug: string;
   categoryColor: string;
+  categoryIcon?: string;
 };

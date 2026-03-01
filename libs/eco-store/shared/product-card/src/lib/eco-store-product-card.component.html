@@ -25,10 +25,6 @@
         <plastik-img-container
           class="h-full w-full rounded-lg transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
           sizes="(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px"
-          [style.view-transition-name]="
-            isActiveForTransition() ? 'product-image-' + productData.id : 'none'
-          "
-          [style.view-transition-class]="'product-image-transition'"
           [src]="productData | pocketBaseImageUrl: productData.images?.[0]"
           [title]="productData.name"
           [lcpImage]="isFirst()" />

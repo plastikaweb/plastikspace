@@ -30,7 +30,6 @@
             [item]="item"
             [isLcpImage]="i === 0"
             [editable]="false"
-            [isActiveForTransition]="viewTransitionService.activeId() === item.product.id"
             (pointerdown)="
               viewTransitionService.setActiveId(item.product.id)
             "></eco-cart-product-card>

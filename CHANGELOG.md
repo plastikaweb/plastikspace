@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-01] - Store Status Banner & Loading State Enhancements
+
+### Added
+
+- Added local `isLoading` and `error` state management to products and categories signal stores, replacing global activity loaders. ([#86c8hbc26](https://app.clickup.com/t/86c8hbc26))
+- Implemented skeleton loading UI pattern in the products grid. ([#86c8hbc26](https://app.clickup.com/t/86c8hbc26))
+
+### Changed
+
+- Made the `store-status-banner`'s countdown and top-bar tenant logo natively responsive. ([#86c8hbc26](https://app.clickup.com/t/86c8hbc26))
+- Cleaned up redundant `isActiveForTransition` view transition bindings across product cards. ([#86c8hbc26](https://app.clickup.com/t/86c8hbc26))
+- Refactored `shared-img-container` to compute and apply CSS `aspect-ratio` automatically. ([#86c8hbc26](https://app.clickup.com/t/86c8hbc26))
+- Restructured product detail breadcrumbs to include the category's icon. ([#86c8hbc26](https://app.clickup.com/t/86c8hbc26))
+- Inverted PocketBase interceptor logic to use explicit `require-global-loading`. ([#86c8hbc26](https://app.clickup.com/t/86c8hbc26))
+
+### Fixed
+
+- Fixed typescript composite build errors by removing `composite: true` and external references from `products/data-access` and `shared/store-status-banner` tsconfig files. ([#86c8hbc26](https://app.clickup.com/t/86c8hbc26))
+
+---
+
 ## [2026-03-01] - PocketBase Loading Params Fix
 
 ### Fixed

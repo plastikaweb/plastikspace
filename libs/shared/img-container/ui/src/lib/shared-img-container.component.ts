@@ -19,7 +19,10 @@ export type ImageDimensions = { width: number; height: number } | undefined;
   templateUrl: './shared-img-container.component.html',
   styleUrl: './shared-img-container.component.scss',
   host: {
-    class: 'relative block',
+    class: 'relative block overflow-hidden',
+    '[style.aspect-ratio]': 'aspectRatio()',
+    '[style.width.px]': 'width()',
+    '[style.height.px]': 'height()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -33,6 +36,25 @@ export class SharedImgContainerComponent {
     '(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px'
   );
   thumbSizes = input<number[]>([100, 300, 500, 750, 1600]);
+
+  readonly aspectRatio = computed(() => {
+    const dims = this.dimensions();
+    if (dims?.width && dims?.height) {
+      return `${dims.width} / ${dims.height}`;
+    }
+    return 'auto';
+  });
+
+  readonly width = computed(() => {
+    // Only set explicit width if it's fixed (not fill)
+    // In fill mode we usually want it to take container space,
+    // but aspect-ratio will handle the height.
+    return undefined;
+  });
+
+  readonly height = computed(() => {
+    return undefined;
+  });
 
   readonly computedSrcset = computed(() =>
     this.thumbSizes()

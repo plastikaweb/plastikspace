@@ -108,6 +108,7 @@ export const ecoStoreProductsStore = signalStore(
             categoryName,
             categorySlug: category?.normalizedName || '',
             categoryColor: category?.color || '',
+            categoryIcon: category?.icon || '',
           };
         });
       }),

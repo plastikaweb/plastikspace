@@ -9,19 +9,21 @@
       <span class="truncate text-sm text-ellipsis whitespace-nowrap">{{
         description().key | translate: description().params
       }}</span>
+
+      @if (
+        (status() === 'CLOSED' || status() === 'OPENING_SOON' || status() === 'CLOSING_SOON') &&
+        segments().length > 0
+      ) {
+        <div class="block sm:hidden">
+          <ng-container [ngTemplateOutlet]="countdownTemplate"></ng-container>
+        </div>
+      }
     </div>
   </div>
   <div class="flex items-center gap-2">
-    @if (
-      (status() === 'CLOSED' || status() === 'OPENING_SOON' || status() === 'CLOSING_SOON') &&
-      segments().length > 0
-    ) {
-      <plastik-countdown
-        class="ml-2 text-sm font-bold"
-        [segments]="segments()"
-        [prefix]="status() === 'CLOSING_SOON' ? '' : 'store.status.opensIn'">
-      </plastik-countdown>
-    }
+    <div class="hidden sm:block">
+      <ng-container [ngTemplateOutlet]="countdownTemplate"></ng-container>
+    </div>
     <button
       matIconButton
       [attr.aria-label]="'store.status.statusBanner.dismiss' | translate"
@@ -30,3 +32,16 @@
     </button>
   </div>
 </div>
+
+<ng-template #countdownTemplate>
+  @if (
+    (status() === 'CLOSED' || status() === 'OPENING_SOON' || status() === 'CLOSING_SOON') &&
+    segments().length > 0
+  ) {
+    <plastik-countdown
+      class="text-sm font-bold"
+      [segments]="segments()"
+      [prefix]="status() === 'CLOSING_SOON' ? '' : 'store.status.opensIn'">
+    </plastik-countdown>
+  }
+</ng-template>

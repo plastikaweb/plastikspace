@@ -1,7 +1,8 @@
 import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
-import { computed, inject } from '@angular/core';
+import { computed, effect, inject, untracked } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
+import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
@@ -20,26 +21,30 @@ import { ClientResponseError } from 'pocketbase';
 import { EcoStoreProductCategoriesStatsService } from './eco-store-product-categories-stats.service';
 
 export interface ProductCategoriesState {
-  stats: ProductCategoryStats[];
   initiallyLoaded: boolean;
+  isLoading: boolean;
+  error: string | null;
 }
 
 const initialState: ProductCategoriesState = {
-  stats: [],
   initiallyLoaded: false,
+  isLoading: false,
+  error: null,
 };
 
 export const ecoStoreProductCategoriesStore = signalStore(
   { providedIn: 'root' },
   withDevtools('productsCategories'),
   withImmutableState<ProductCategoriesState>(initialState),
+  withEntities<ProductCategoryStats>(),
   withProps(() => ({
     _statsService: inject(EcoStoreProductCategoriesStatsService),
     _notification: inject(notificationStore),
     _translateService: inject(TranslateService),
     _tenantStore: inject(ecoStoreTenantStore),
   })),
-  withComputed(({ stats, _translateService }) => ({
+  withComputed(({ entities, _translateService }) => ({
+    stats: entities,
     groupedCategories: computed(() => {
       const lang = _translateService.getCurrentLang();
       const groups = new Map<
@@ -50,7 +55,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
         }
       >();
 
-      stats().forEach(stat => {
+      entities().forEach(stat => {
         const groupName =
           typeof stat.groupName === 'string' ? stat.groupName : stat.groupName[lang];
         if (!groups.has(groupName)) {
@@ -68,7 +73,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
       return Array.from(groups.values());
     }),
     totalProducts: computed(() => {
-      return stats().reduce((acc, stat) => acc + stat.totalProducts, 0);
+      return entities().reduce((acc, stat) => acc + stat.totalProducts, 0);
     }),
   })),
   withMethods(store => {
@@ -81,7 +86,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
       });
     };
 
-    const getLocalizedCategoryName = (category: ProductCategory): string => {
+    const getLocalizedCategoryName = (category: ProductCategory | ProductCategoryStats): string => {
       const name: string | LocalizedFields<string> | undefined = category.name;
       if (!name) {
         return store._translateService.instant('products.all');
@@ -101,7 +106,9 @@ export const ecoStoreProductCategoriesStore = signalStore(
     return {
       getStats: rxMethod<void>(
         pipe(
-          tap(() => updateState(store, '[product-categories] getStats')),
+          tap(() =>
+            updateState(store, '[product-categories] getStats', { isLoading: true, error: null })
+          ),
           switchMap(() =>
             store._statsService
               .getFullList({
@@ -111,12 +118,26 @@ export const ecoStoreProductCategoriesStore = signalStore(
               .pipe(
                 tapResponse<ProductCategoryStats[], ClientResponseError>({
                   next: stats => {
-                    updateState(store, '[product-categories] getStats success', {
-                      stats,
-                      initiallyLoaded: true,
-                    });
+                    updateState(
+                      store,
+                      '[product-categories] getStats success',
+                      setAllEntities(stats, {
+                        selectId: (entity: ProductCategoryStats) => entity.category,
+                      }),
+                      {
+                        initiallyLoaded: true,
+                        isLoading: false,
+                      }
+                    );
                   },
-                  error: error => showErrorNotification(error),
+                  error: error => {
+                    const message = error.message ?? `products.categories.error`;
+                    updateState(store, '[product-categories] getStats error', {
+                      isLoading: false,
+                      error: message,
+                    });
+                    showErrorNotification(error);
+                  },
                 })
               )
           )
@@ -124,10 +145,10 @@ export const ecoStoreProductCategoriesStore = signalStore(
       ),
 
       findCategoryBySlug(slug: string | null): ProductCategoryStats | undefined {
-        return store.stats().find(item => item.normalizedName === slug);
+        return store.entities().find(item => item.normalizedName === slug);
       },
 
-      getLocalizedCategoryName(category: ProductCategory): string {
+      getLocalizedCategoryName(category: ProductCategory | ProductCategoryStats): string {
         return getLocalizedCategoryName(category);
       },
     };
@@ -160,9 +181,13 @@ export const ecoStoreProductCategoriesStore = signalStore(
   }),
   withHooks({
     onInit(store) {
-      if (!store.initiallyLoaded() && store._tenantStore.loaded()) {
-        store.getStats();
-      }
+      effect(() => {
+        const tenantLoaded = store._tenantStore.loaded();
+        const initiallyLoaded = store.initiallyLoaded();
+        if (tenantLoaded && !initiallyLoaded) {
+          untracked(() => store.getStats());
+        }
+      });
     },
   })
 );

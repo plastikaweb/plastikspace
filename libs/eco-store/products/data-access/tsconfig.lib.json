@@ -5,9 +5,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "composite": true,
     "types": []
   },
   "exclude": ["src/**/*.spec.ts", "src/test-setup.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts", "../feature/src/lib/eco-store-category-route-title.service.ts"]
+  "include": ["src/**/*.ts"]
 }
