@@ -126,7 +126,6 @@ export class ProductListComponent {
 The store provides the following methods:
 
 - **`getList()`** - Load list with current parameters (auto-called on init if `autoLoad: true`).
-- **`enableListLoading(enabled?)`** - Enable/disable reactive list loading. Required before `setParams` if `autoLoad: false`.
 - **`setParams(params)`** - Update all parameters (pagination, filter, sort) at once.
 - **`setFilter(filter)`** - Update filter parameters and reload list.
 - **`setPagination(pagination)`** - Update pagination and reload list.
@@ -134,10 +133,7 @@ The store provides the following methods:
 - **`getOne(id)`** - Load single item (when using Get/Crud features).
 
 > [!NOTE]
-> `getList` is now fully reactive to the `listLoadingEnabled` state, re-triggering fetches when enabled even if parameters remain unchanged.
-> [!IMPORTANT]
-> When using `autoLoad: false`, you must call `enableListLoading()` before `setParams()`
-> to enable reactive list loading. This is typically done in a route resolver.
+> `getList` is reactive to param changes. Use `setParams` to trigger fetches safely as it will now discard redundant calls.
 
 ### 5. Entity Selectors
 
@@ -158,7 +154,7 @@ The store uses `withEntities` which provides:
 ## 💡 Advanced Usage
 
 - **Custom Initial State**: Provide custom pagination, filter, or sort defaults via `customInitialState`.
-- **Lazy Loading**: Use `autoLoad: false` + `enableListLoading()` for detail-first navigation patterns.
+- **Lazy Loading**: Use `autoLoad: false` for detail-first navigation patterns.
 - **Composability**: Mix these features with your own custom store features using `withComputed`, `withMethods`, etc.
 - **Debounced Requests**: List operations are automatically debounced (300ms) to avoid excessive API calls.
 - **Error Handling**: Built-in error notifications via the notification store.

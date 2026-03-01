@@ -36,7 +36,6 @@ export interface PocketBaseListParams {
 
 export interface PocketBaseGetListState {
   initiallyLoaded: boolean;
-  listLoadingEnabled: boolean;
   count: number;
   sort: SortConfig;
   pagination: BasePocketBaseEntityPagination;
@@ -51,7 +50,6 @@ export const initialGetListState = (
   customInitialState: Partial<PocketBaseGetListState> = {}
 ): PocketBaseGetListState => ({
   initiallyLoaded: false,
-  listLoadingEnabled: true,
   count: 0,
   sort: {
     active: 'updated',

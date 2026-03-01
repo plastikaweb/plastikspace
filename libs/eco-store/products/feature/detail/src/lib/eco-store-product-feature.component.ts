@@ -57,6 +57,28 @@ export default class EcoStoreProductFeatureComponent {
   protected readonly tenantsStore = inject(ecoStoreTenantStore);
   protected readonly viewTransitionService = inject(ViewTransitionService);
 
+  readonly listQueryParams = computed(() => {
+    const sort = this.#productsStore.sort();
+    const pagination = this.#productsStore.pagination();
+
+    return {
+      active: sort.active,
+      direction: sort.direction,
+      page: pagination.page,
+      perPage: pagination.perPage,
+    };
+  });
+
+  readonly backLink = computed(() => {
+    const filter = this.#productsStore.filter();
+    const categorySlug = (filter['categorySlug'] as string) || null;
+
+    if (categorySlug) {
+      return ['/botiga', categorySlug];
+    }
+    return ['/botiga'];
+  });
+
   protected readonly syncTransitionId = effect(() => {
     const id = this.product()?.id;
     if (id) {

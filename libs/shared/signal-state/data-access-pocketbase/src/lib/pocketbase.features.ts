@@ -16,8 +16,9 @@ import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { DataGet, DataGetList } from '@plastik/core/api-base';
 import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { notificationStore } from '@plastik/shared/notification/data-access';
+import { areObjectEntriesEqual } from '@plastik/shared/objects';
 import { ClientResponseError, ListResult } from 'pocketbase';
-import { filter, pipe, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
 import {
   initialGetListState,
   PocketBaseGetListState,
@@ -57,7 +58,6 @@ export function withPocketBaseListFeature<
     withDevtools(featureName),
     withImmutableState<PocketBaseGetListState>({
       ...defaultState,
-      listLoadingEnabled: autoLoad,
     }),
     withPocketBaseParamsFeature({ featureName, customInitialState }),
     withEntities<T>(),
@@ -93,12 +93,11 @@ export function withPocketBaseListFeature<
       };
 
       return {
-        enableListLoading: (listLoadingEnabled = true) => {
-          updateState(store, `[${featureName}] enableListLoading`, { listLoadingEnabled });
-        },
-        getList: rxMethod<{ params: ReturnType<typeof store.formattedParams>; enabled: boolean }>(
+        getList: rxMethod<{ params: ReturnType<typeof store.formattedParams> }>(
           pipe(
-            filter(({ enabled }) => enabled),
+            distinctUntilChanged((prev, curr) => {
+              return areObjectEntriesEqual(prev.params, curr.params);
+            }),
             tap(() => {
               updateState(store, `[${featureName}] getList`);
             }),
@@ -133,7 +132,6 @@ export function withPocketBaseListFeature<
         store.getList(
           computed(() => ({
             params: store.formattedParams(),
-            enabled: store.listLoadingEnabled(),
           }))
         );
       },

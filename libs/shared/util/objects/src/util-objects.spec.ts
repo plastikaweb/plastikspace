@@ -152,6 +152,40 @@ describe('Object Util', () => {
       const result = areObjectEntriesEqual({ key: 'test' }, { key: 'test' });
       expect(result).toEqual(true);
     });
+
+    it('should return true for same object reference', () => {
+      const obj = { a: 1 };
+      expect(areObjectEntriesEqual(obj, obj)).toBe(true);
+    });
+
+    it('should return true for objects with same entries in different order', () => {
+      expect(areObjectEntriesEqual({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
+    });
+
+    it('should return false for objects with different entry values', () => {
+      expect(areObjectEntriesEqual({ a: 1 }, { a: 2 })).toBe(false);
+    });
+
+    it('should return false for objects with different number of entries', () => {
+      expect(areObjectEntriesEqual({ a: 1 }, { a: 1, b: 2 })).toBe(false);
+    });
+
+    it('should return false for objects with different keys', () => {
+      expect(areObjectEntriesEqual({ a: 1 }, { b: 1 })).toBe(false);
+    });
+
+    it('should return false if one is null', () => {
+      expect(areObjectEntriesEqual({ a: 1 }, null as any)).toBe(false);
+    });
+
+    it('should return true if both are null', () => {
+      expect(areObjectEntriesEqual(null as any, null as any)).toBe(true);
+    });
+
+    it('should handle different types that stringify the same but are not equal', () => {
+      // My new implementation uses === so this should be false
+      expect(areObjectEntriesEqual({ a: 1 }, { a: '1' } as any)).toBe(false);
+    });
   });
 
   describe('transformStringToBooleanProperties method', () => {

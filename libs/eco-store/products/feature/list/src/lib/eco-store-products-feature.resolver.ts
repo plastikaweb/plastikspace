@@ -12,12 +12,13 @@ export const ecoStoreProductsResolver: ResolveFn<boolean> = (route: ActivatedRou
   const queryParams = route.queryParams;
 
   const categorySlug = route.paramMap.get('category') ?? null;
+  const categoryObj = categoriesStore.findCategoryBySlug(categorySlug);
 
-  // Start products loading immediately in parallel with categories
-  productStore.enableListLoading();
+  // Start products loading immediately
   productStore.setParams({
     ...queryParams,
     categorySlug,
+    ...(categoryObj ? { category: categoryObj.category } : {}),
   });
 
   return combineLatest([
@@ -26,14 +27,15 @@ export const ecoStoreProductsResolver: ResolveFn<boolean> = (route: ActivatedRou
   ]).pipe(
     take(1),
     tap(() => {
-      // Once categories are loaded, ensure the internal category filter is correctly mapped to ID
-      // This is important for consistency in the store state
-      const categoryObj = categoriesStore.findCategoryBySlug(categorySlug);
-      if (categoryObj) {
-        productStore.setParams({
-          ...queryParams,
-          category: categoryObj.category,
-        });
+      // If we didn't have the category object before, try to set it now
+      if (!categoryObj) {
+        const categoryObjAfterLoad = categoriesStore.findCategoryBySlug(categorySlug);
+        if (categoryObjAfterLoad) {
+          productStore.setParams({
+            ...queryParams,
+            category: categoryObjAfterLoad.category,
+          });
+        }
       }
     }),
     map(() => true)
