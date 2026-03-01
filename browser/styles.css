@@ -907,6 +907,9 @@ html {
   .mt-20 {
     margin-top: calc(var(--spacing) * 20);
   }
+  .mt-auto {
+    margin-top: auto;
+  }
   .mt-md {
     margin-top: var(--spacing-md);
   }
@@ -1108,6 +1111,9 @@ html {
   .h-5 {
     height: calc(var(--spacing) * 5);
   }
+  .h-6 {
+    height: calc(var(--spacing) * 6);
+  }
   .h-8 {
     height: calc(var(--spacing) * 8);
   }
@@ -1180,6 +1186,9 @@ html {
   .min-h-screen {
     min-height: 100vh;
   }
+  .w-1\/2 {
+    width: calc(1/2 * 100%);
+  }
   .w-2 {
     width: calc(var(--spacing) * 2);
   }
@@ -1188,6 +1197,9 @@ html {
   }
   .w-3 {
     width: calc(var(--spacing) * 3);
+  }
+  .w-3\/4 {
+    width: calc(3/4 * 100%);
   }
   .w-4 {
     width: calc(var(--spacing) * 4);
@@ -1206,6 +1218,9 @@ html {
   }
   .w-12 {
     width: calc(var(--spacing) * 12);
+  }
+  .w-16 {
+    width: calc(var(--spacing) * 16);
   }
   .w-20 {
     width: calc(var(--spacing) * 20);
@@ -1269,6 +1284,9 @@ html {
   }
   .w-full {
     width: var(--spacing-full);
+  }
+  .w-max {
+    width: max-content;
   }
   .w-screen {
     width: 100vw;
@@ -1761,6 +1779,12 @@ html {
   .rounded-3xl {
     border-radius: var(--radius-3xl);
   }
+  .rounded-\[12px\] {
+    border-radius: 12px;
+  }
+  .rounded-\[16px\] {
+    border-radius: 16px;
+  }
   .rounded-full {
     border-radius: calc(infinity * 1px);
   }
@@ -1921,6 +1945,9 @@ html {
   .bg-neutral-100 {
     background-color: var(--color-neutral-100);
   }
+  .bg-neutral-200 {
+    background-color: var(--color-neutral-200);
+  }
   .bg-neutral-400 {
     background-color: var(--color-neutral-400);
   }
@@ -2053,6 +2080,9 @@ html {
   .py-1 {
     padding-block: calc(var(--spacing) * 1);
   }
+  .py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5);
+  }
   .py-2 {
     padding-block: calc(var(--spacing) * 2);
   }
@@ -2083,6 +2113,9 @@ html {
   .py-tiny {
     padding-block: var(--spacing-tiny);
   }
+  .pe-4 {
+    padding-inline-end: calc(var(--spacing) * 4);
+  }
   .pe-md {
     padding-inline-end: var(--spacing-md);
   }
@@ -2100,9 +2133,6 @@ html {
   }
   .pr-2 {
     padding-right: calc(var(--spacing) * 2);
-  }
-  .pb-2 {
-    padding-bottom: calc(var(--spacing) * 2);
   }
   .pb-4 {
     padding-bottom: calc(var(--spacing) * 4);
@@ -2659,6 +2689,9 @@ html {
     --tw-outline-style: none;
     outline-style: none;
   }
+  .\[scrollbar-width\:none\] {
+    scrollbar-width: none;
+  }
   .not-first-of-type\:cursor-text:not(*:first-of-type) {
     cursor: text;
   }
@@ -2711,11 +2744,6 @@ html {
   @media (hover: hover) {
     .hover\:bg-gray-10:hover {
       background-color: var(--color-gray-10);
-    }
-  }
-  @media (hover: hover) {
-    .hover\:bg-gray-50:hover {
-      background-color: var(--color-gray-50);
     }
   }
   @media (hover: hover) {
@@ -2898,11 +2926,6 @@ html {
     }
   }
   @media (width >= 40rem) {
-    .sm\:gap-2\! {
-      gap: calc(var(--spacing) * 2) !important;
-    }
-  }
-  @media (width >= 40rem) {
     .sm\:gap-4 {
       gap: calc(var(--spacing) * 4);
     }
@@ -3080,6 +3103,11 @@ html {
     }
   }
   @media (width >= 48rem) {
+    .md\:py-4 {
+      padding-block: calc(var(--spacing) * 4);
+    }
+  }
+  @media (width >= 48rem) {
     .md\:pt-0\! {
       padding-top: var(--spacing-0) !important;
     }
@@ -3087,6 +3115,12 @@ html {
   @media (width >= 48rem) {
     .md\:text-left {
       text-align: left;
+    }
+  }
+  @media (width >= 48rem) {
+    .md\:text-sm {
+      font-size: var(--text-sm);
+      line-height: var(--tw-leading, var(--text-sm--line-height));
     }
   }
   @media (width >= 64rem) {
@@ -3373,6 +3407,9 @@ html {
     .\@5xl\:min-w-\[130px\] {
       min-width: 130px;
     }
+  }
+  .\[\&\:\:-webkit-scrollbar\]\:hidden::-webkit-scrollbar {
+    display: none;
   }
 }
 @layer base {
