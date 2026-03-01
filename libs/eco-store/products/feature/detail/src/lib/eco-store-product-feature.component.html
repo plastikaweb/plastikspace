@@ -10,7 +10,8 @@
         type="button"
         aria-label="Tornar"
         class="shrink-0"
-        [routerLink]="['/botiga', productData.categorySlug]">
+        [routerLink]="backLink()"
+        [queryParams]="listQueryParams()">
         <mat-icon>arrow_back</mat-icon>
       </button>
       <a class="hover:text-tertiary-700 rounded px-2 py-1 hover:bg-gray-50" [routerLink]="['/']">{{
@@ -19,7 +20,15 @@
       <mat-icon class="scale-75!">chevron_right</mat-icon>
       <a
         class="hover:text-tertiary-700 rounded px-2 py-1 transition-colors hover:bg-gray-50"
-        [routerLink]="['/botiga', productData.categorySlug]">
+        [routerLink]="['/botiga']"
+        [queryParams]="listQueryParams()">
+        {{ 'store.menu.store' | translate }}
+      </a>
+      <mat-icon class="scale-75!">chevron_right</mat-icon>
+      <a
+        class="hover:text-tertiary-700 rounded px-2 py-1 transition-colors hover:bg-gray-50"
+        [routerLink]="['/botiga', productData.categorySlug]"
+        [queryParams]="listQueryParams()">
         {{ productData.categoryName }}
       </a>
       <mat-icon class="scale-75!">chevron_right</mat-icon>

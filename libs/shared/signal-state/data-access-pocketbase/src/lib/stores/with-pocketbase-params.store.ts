@@ -5,6 +5,7 @@ import {
   BasePocketBaseEntityPagination,
   SortConfig,
 } from '@plastik/core/entities';
+import { areObjectEntriesEqual } from '@plastik/shared/objects';
 import { initialGetListState, PocketBaseGetListState } from '../pocketbase-store.types';
 
 interface NormalizedPocketBaseParams {
@@ -125,6 +126,14 @@ export function withPocketBaseParamsFeature({
       return {
         setParams: (rawParams?: Record<string, unknown>) => {
           const normalized = normalizePocketBaseParams(rawParams, defaultState);
+
+          if (
+            areObjectEntriesEqual(store.pagination(), normalized.pagination) &&
+            areObjectEntriesEqual(store.sort(), normalized.sort) &&
+            areObjectEntriesEqual(store.filter(), normalized.filter)
+          ) {
+            return;
+          }
 
           updateState(store, `[${featureName}] ${JSON.stringify(normalized)} set params`, {
             pagination: normalized.pagination,

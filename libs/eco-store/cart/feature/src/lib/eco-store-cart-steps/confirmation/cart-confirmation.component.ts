@@ -43,11 +43,11 @@ export class CartConfirmationComponent {
     notes: this.cartStore.notes() ?? '',
   }));
 
-  protected onChange(event: CartConfirmationFormModel): void {
+  onChange(event: CartConfirmationFormModel): void {
     this.cartStore.updateLogistics({ notes: event.notes || null });
   }
 
-  protected confirmOrder(): void {
+  confirmOrder(): void {
     // TODO: Implement order submission via cart store or service
   }
 }

@@ -139,7 +139,7 @@ export function setEmptyStringPropertiesToNull(
  * @returns {boolean}.
  */
 export function areObjectEntriesEqual(prev: object, curr: object): boolean {
-  if (!prev && !curr) {
+  if (prev === curr) {
     return true;
   }
 
@@ -147,7 +147,16 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
     return false;
   }
 
-  return Object.entries(prev).toString() === Object.entries(curr).toString();
+  const prevKeys = Object.keys(prev);
+  const currKeys = Object.keys(curr);
+
+  if (prevKeys.length !== currKeys.length) {
+    return false;
+  }
+
+  return prevKeys.every(
+    key => (prev as Record<string, unknown>)[key] === (curr as Record<string, unknown>)[key]
+  );
 }
 
 /**
