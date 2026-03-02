@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-02] - NASA Images Performance & Defer Loading
+
+### Added
+
+- Implemented `@defer` blocks in NASA images search and FAQs features to optimize initial load and improve performance. ([#86c8ftb3j](https://app.clickup.com/t/86c8ftb3j))
+- Exported `layout.effects` and `layout.feature` from `core-cms-layout` data-access. ([#86c8ftb3j](https://app.clickup.com/t/86c8ftb3j))
+
+### Changed
+
+- Updated NASA images search routes to include `provideFormlyConfig()` and `NASA_IMAGES_PROVIDERS` for better configuration management. ([#86c8ftb3j](https://app.clickup.com/t/86c8ftb3j))
+- Refined NASA images search table configuration with explicit thumbnail dimensions. ([#86c8ftb3j](https://app.clickup.com/t/86c8ftb3j))
+- Optimized bundle size by replacing `AngularSvgIconModule` with `SvgIconComponent` in `CoreCmsLayoutFeatureComponent`. ([#86c8ftb3j](https://app.clickup.com/t/86c8ftb3j))
+- Reduced `maximumError` bundle size threshold for `nasa-images` application. ([#86c8ftb3j](https://app.clickup.com/t/86c8ftb3j))
+
+---
+
 ## [2026-03-01] - Stitch Agent Skills
 
 ### Added

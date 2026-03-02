@@ -1,4 +1,4 @@
-import { AngularSvgIconModule } from 'angular-svg-icon';
+import { SvgIconComponent } from 'angular-svg-icon';
 import { Subject, takeUntil } from 'rxjs';
 
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
@@ -40,7 +40,7 @@ import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification
     MatListModule,
     MatIconModule,
     MatListModule,
-    AngularSvgIconModule,
+    SvgIconComponent,
     CoreCmsLayoutUiFooterComponent,
     CoreCmsLayoutUiHeaderComponent,
     CoreCmsLayoutUiSidenavComponent,

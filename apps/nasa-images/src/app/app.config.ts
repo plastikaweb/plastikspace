@@ -1,23 +1,20 @@
-import { AngularSvgIconModule } from 'angular-svg-icon';
+import { provideAngularSvgIcon } from 'angular-svg-icon';
 
-import { A11yModule } from '@angular/cdk/a11y';
 import { PRECONNECT_CHECK_BLOCKLIST } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
-import {
-  ApplicationConfig,
-  importProvidersFrom,
-  isDevMode,
-  provideAppInitializer,
-  provideZonelessChangeDetection,
-} from '@angular/core';
+import { ApplicationConfig, isDevMode, provideZonelessChangeDetection } from '@angular/core';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { provideRouter, TitleStrategy } from '@angular/router';
-import { EffectsModule } from '@ngrx/effects';
+import { provideEffects } from '@ngrx/effects';
 import { NavigationActionTiming, provideRouterStore, RouterState } from '@ngrx/router-store';
+import { provideState, provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideTranslateService } from '@ngx-translate/core';
-import { provideStore, StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { CoreCmsLayoutDataAccessModule, VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import {
+  LayoutEffects,
+  selectLayoutFeature,
+  VIEW_CONFIG,
+} from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { getVisibleNavigationList } from '@plastik/core/entities';
 import { provideWithApiEnv } from '@plastik/core/environments';
@@ -27,10 +24,6 @@ import {
   routerReducers,
   RouterStateEffects,
 } from '@plastik/core/router-state';
-import { NASA_IMAGES_PROVIDERS } from '@plastik/nasa-images/search/data-access';
-import { activityStore } from '@plastik/shared/activity/data-access';
-import { provideFormlyConfig } from '@plastik/shared/form';
-import { notificationStore } from '@plastik/shared/notification/data-access';
 
 import { environment } from '../environments/environment';
 import { routes } from './app.routing';
@@ -42,46 +35,22 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideRouter(routes),
     provideTranslateService(),
-    provideFormlyConfig(),
-    provideAppInitializer(() => {
-      if (typeof window === 'undefined') {
-        return;
-      }
-
-      // Rebind RAF APIs to `window` so zoneless schedulers (NgRx Component) avoid "Illegal invocation".
-      const boundRaf = window.requestAnimationFrame.bind(
-        window
-      ) as typeof window.requestAnimationFrame;
-      const boundCancelRaf = window.cancelAnimationFrame.bind(
-        window
-      ) as typeof window.cancelAnimationFrame;
-
-      window.requestAnimationFrame = boundRaf;
-      window.cancelAnimationFrame = boundCancelRaf;
+    provideStore(routerReducers, {
+      runtimeChecks: {
+        strictActionImmutability: true,
+        strictStateImmutability: true,
+      },
     }),
-    provideStore(),
-    importProvidersFrom(
-      A11yModule,
-      AngularSvgIconModule.forRoot(),
-      StoreModule.forRoot(routerReducers, {
-        runtimeChecks: {
-          strictActionImmutability: true,
-          strictStateImmutability: true,
-        },
-      }),
-      EffectsModule.forRoot([RouterStateEffects]),
-      isDevMode()
-        ? StoreDevtoolsModule.instrument({
-            name: environment.name,
-            maxAge: 25,
-            connectInZone: true,
-          })
-        : [],
-      CoreCmsLayoutDataAccessModule,
-      notificationStore,
-      activityStore
-    ),
-    ...NASA_IMAGES_PROVIDERS,
+    provideEffects([RouterStateEffects, LayoutEffects]),
+    provideState(selectLayoutFeature),
+    provideAngularSvgIcon(),
+    isDevMode()
+      ? provideStoreDevtools({
+          name: environment.name,
+          maxAge: 25,
+          connectInZone: true,
+        })
+      : [],
     provideRouterStore({
       serializer: CustomRouterSerializer,
       navigationActionTiming: NavigationActionTiming.PreActivation,
