@@ -1,13 +1,11 @@
-import { updateState } from '@angular-architects/ngrx-toolkit';
-import { Type } from '@angular/core';
-import { tapResponse } from '@ngrx/operators';
+import { updateState, withDevtools, withDevToolsStub } from '@angular-architects/ngrx-toolkit';
+import { isDevMode, Type } from '@angular/core';
 import { signalStoreFeature, SignalStoreFeature, withMethods } from '@ngrx/signals';
 import { addEntity, removeEntity, updateEntity } from '@ngrx/signals/entities';
-import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { DataCrud } from '@plastik/core/api-base';
 import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { ClientResponseError, ListResult, RecordOptions } from 'pocketbase';
-import { pipe, switchMap, tap } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { PocketBaseGetListState, PocketBaseListParams } from '../pocketbase-store.types';
 import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocketbase.features';
 
@@ -34,8 +32,14 @@ export function withPocketBaseCrud<
   customInitialState?: Partial<PocketBaseGetListState>;
 }) {
   return signalStoreFeature(
-    withPocketBaseListFeature<T, S>({ featureName, dataServiceType, customInitialState }),
+    isDevMode() ? withDevtools(featureName) : withDevToolsStub(featureName),
+    withPocketBaseListFeature<T, S>({
+      featureName,
+      dataServiceType,
+      customInitialState,
+    }),
     withPocketBaseGetOneFeature<T, S>({ featureName }),
+
     withMethods(store => {
       const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
         store._storeNotificationService.show({
@@ -47,83 +51,86 @@ export function withPocketBaseCrud<
       };
 
       return {
-        create: rxMethod<{ data: Partial<T>; options?: RecordOptions }>(
-          pipe(
-            tap(() => updateState(store, `[${featureName}] create`)),
-            switchMap(({ data, options }) => {
-              return store._apiService.create(data, options).pipe(
-                tapResponse<T, ClientResponseError>({
-                  next: createdItem => {
-                    updateState(
-                      store,
-                      `[${featureName}] create success`,
-                      addEntity(createdItem, {
-                        selectId: entity => entity.id || '',
-                      }),
-                      {
-                        count: store.count() + 1,
-                      }
-                    );
-                    showNotification('SUCCESS', `${featureName}.create.success`);
-                  },
-                  error: error => {
-                    showNotification('ERROR', error.message ?? `${featureName}.create.error`);
-                  },
-                })
-              );
-            })
-          )
-        ),
+        /**
+         * @description Create a new record in PocketBase and update the local entity store.
+         * @param {Partial<T>} data - The record data.
+         * @param {RecordOptions} options - Optional PocketBase record options.
+         * @returns {Promise<T>} The created record.
+         */
+        async create(data: Partial<T>, options?: RecordOptions): Promise<T> {
+          updateState(store, `[${featureName}] create`);
+          try {
+            const createdItem = await firstValueFrom(store._apiService.create(data, options));
+            updateState(
+              store,
+              `[${featureName}] create success`,
+              addEntity(createdItem, {
+                selectId: entity => entity.id || '',
+              }),
+              {
+                count: store.count() + 1,
+              }
+            );
+            showNotification('SUCCESS', `${featureName}.create.success`);
+            return createdItem;
+          } catch (error) {
+            const message = (error as ClientResponseError).message ?? `${featureName}.create.error`;
+            showNotification('ERROR', message);
+            throw error;
+          }
+        },
 
-        update: rxMethod<{ id: IdType<T>; data: Partial<T>; options?: RecordOptions }>(
-          pipe(
-            tap(() => updateState(store, `[${featureName}] update`)),
-            switchMap(({ id, data, options }) => {
-              return store._apiService.update(id, data, options).pipe(
-                tapResponse<T | void, ClientResponseError>({
-                  next: updatedItem => {
-                    if (updatedItem) {
-                      updateState(
-                        store,
-                        `[${featureName}] update success`,
-                        updateEntity({
-                          id: updatedItem.id || id,
-                          changes: updatedItem,
-                        })
-                      );
-                    }
-                    showNotification('SUCCESS', `${featureName}.update.success`);
-                  },
-                  error: error => {
-                    showNotification('ERROR', error.message ?? `${featureName}.update.error`);
-                  },
+        /**
+         * @description Update an existing record in PocketBase and update the local entity store.
+         * @param {IdType<T>} id - The record ID.
+         * @param {Partial<T>} data - The record data.
+         * @param {RecordOptions} options - Optional PocketBase record options.
+         * @returns {Promise<T>} The updated record.
+         */
+        async update(id: IdType<T>, data: Partial<T>, options?: RecordOptions): Promise<T> {
+          updateState(store, `[${featureName}] update`);
+          try {
+            const updatedItem = await firstValueFrom(store._apiService.update(id, data, options));
+            if (updatedItem) {
+              updateState(
+                store,
+                `[${featureName}] update success`,
+                updateEntity({
+                  id: updatedItem.id || id,
+                  changes: updatedItem,
                 })
               );
-            })
-          )
-        ),
+            }
+            showNotification('SUCCESS', `${featureName}.update.success`);
+            return updatedItem as T;
+          } catch (error) {
+            const message = (error as ClientResponseError).message ?? `${featureName}.update.error`;
+            showNotification('ERROR', message);
+            throw error;
+          }
+        },
 
-        delete: rxMethod<IdType<T>>(
-          pipe(
-            tap(() => updateState(store, `[${featureName}] delete`)),
-            switchMap(id => {
-              return store._apiService.delete(id).pipe(
-                tapResponse<unknown, ClientResponseError>({
-                  next: () => {
-                    updateState(store, `[${featureName}] delete success`, removeEntity(id), {
-                      count: Math.max(0, store.count() - 1),
-                      selectedItemId: store.selectedItemId() === id ? null : store.selectedItemId(),
-                    });
-                    showNotification('SUCCESS', `${featureName}.delete.success`);
-                  },
-                  error: error => {
-                    showNotification('ERROR', error.message ?? `${featureName}.delete.error`);
-                  },
-                })
-              );
-            })
-          )
-        ),
+        /**
+         * @description Delete a record from PocketBase and remove it from the local entity store.
+         * @param {IdType<T>} id - The record ID.
+         * @returns {Promise<boolean>} True if the record was deleted successfully.
+         */
+        async delete(id: IdType<T>): Promise<boolean> {
+          updateState(store, `[${featureName}] delete`);
+          try {
+            await firstValueFrom(store._apiService.delete(id));
+            updateState(store, `[${featureName}] delete success`, removeEntity(id), {
+              count: Math.max(0, store.count() - 1),
+              selectedItemId: store.selectedItemId() === id ? null : store.selectedItemId(),
+            });
+            showNotification('SUCCESS', `${featureName}.delete.success`);
+            return true;
+          } catch (error) {
+            const message = (error as ClientResponseError).message ?? `${featureName}.delete.error`;
+            showNotification('ERROR', message);
+            throw error;
+          }
+        },
       };
     })
   );

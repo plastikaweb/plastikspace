@@ -255,7 +255,8 @@
       "@plastik/shared/countdown/util": ["libs/shared/countdown/util/src/index.ts"],
       "@plastik/shared/countdown": ["libs/shared/countdown/ui/src/index.ts"],
       "@plastik/shared/chip/ui": ["libs/shared/chip/ui/src/index.ts"],
-      "@plastik/shared/util/view-transition": ["libs/shared/util/view-transition/src/index.ts"]
+      "@plastik/shared/util/view-transition": ["libs/shared/util/view-transition/src/index.ts"],
+      "@plastik/eco-store/orders/data-access": ["libs/eco-store/orders/data-access/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

@@ -1,4 +1,5 @@
-import { Type } from '@angular/core';
+import { withDevtools, withDevToolsStub } from '@angular-architects/ngrx-toolkit';
+import { isDevMode, Type } from '@angular/core';
 import { signalStoreFeature, SignalStoreFeature } from '@ngrx/signals';
 import { DataGet } from '@plastik/core/api-base';
 import { BasePocketBaseEntity } from '@plastik/core/entities';
@@ -34,6 +35,7 @@ export function withPocketBaseGet<
   autoLoad?: boolean;
 }) {
   return signalStoreFeature(
+    isDevMode() ? withDevtools(featureName) : withDevToolsStub(featureName),
     withPocketBaseListFeature<T, S>({
       featureName,
       dataServiceType,

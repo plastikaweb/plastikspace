@@ -28,7 +28,7 @@ The **Cart Feature** library provides the complete shopping cart checkout flow f
 
 ## Features
 
-- **Multi-Step Checkout**: Three-step process (Summary, Shipping, Confirmation).
+- **Multi-Step Checkout**: Four-step process (Summary, Shipping, Confirmation, Finish).
 - **Route-Based Navigation**: Each step has its own route for direct access and browser history support.
 - **Linear Stepper**: Guides users through the checkout process in sequence.
 - **Lazy-Loaded Steps**: Each step component is lazy-loaded for optimal performance.
@@ -290,6 +290,7 @@ All text content is internationalized under the `cart.summary` namespace:
 2. **Shipping** (`/cistella/enviament`): Enter shipping address and delivery preferences. Layout switches to a `md:grid-cols-3` grid at the `md` breakpoint.
    - **Shipping Unavailable** (`/cistella/enviament/no-disponible`): Displayed when shipping is not configured for the store.
 3. **Confirmation** (`/cistella/confirmacio`): Review order and confirm purchase.
+4. **Finish** (`/cistella/:id`): Order confirmation page displayed after successful checkout. The `:id` parameter contains the created order ID.
 
 ### Shipping Unavailable Component
 

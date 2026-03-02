@@ -15,9 +15,9 @@ export type BasePocketBaseEntitySimple = Omit<BasePocketBaseEntity, 'normalizedN
 /**
  * @description A base entity that needs a client reference to segment data by client.
  */
-export interface BasePocketBaseEntityWithTenantRef extends BasePocketBaseEntity {
+export type BasePocketBaseEntityWithTenantRef = BasePocketBaseEntity & {
   tenant: string;
-}
+};
 
 export type BasePocketBaseEntityPagination = Required<Pick<ListOptions, 'page' | 'perPage'>>;
 

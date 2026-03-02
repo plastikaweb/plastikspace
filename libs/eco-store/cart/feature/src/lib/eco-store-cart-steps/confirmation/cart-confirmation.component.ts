@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { TextAreaWithCounterFormlyModule } from '@plastik/shared/form/textarea-with-counter';
@@ -15,7 +16,6 @@ import {
   CartConfirmationFormModel,
   getCartConfirmationFormConfig,
 } from './form/cart-confirmation-form.config';
-
 @Component({
   selector: 'eco-cart-confirmation',
   imports: [
@@ -38,6 +38,7 @@ export class CartConfirmationComponent {
   protected readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly formConfig = getCartConfirmationFormConfig();
   protected readonly viewTransitionService = inject(ViewTransitionService);
+  readonly #ordersStore = inject(ecoStoreOrdersStore);
 
   protected readonly model = computed<CartConfirmationFormModel>(() => ({
     notes: this.cartStore.notes() ?? '',
@@ -47,7 +48,7 @@ export class CartConfirmationComponent {
     this.cartStore.updateLogistics({ notes: event.notes || null });
   }
 
-  confirmOrder(): void {
-    // TODO: Implement order submission via cart store or service
+  onConfirmOrder(): void {
+    this.#ordersStore.createOrder();
   }
 }

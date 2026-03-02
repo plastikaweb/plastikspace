@@ -33,7 +33,7 @@
       [isStoreOpen]="tenantStore.isStoreOpen()"
       [nextOpenDate]="tenantStore.nextOpenDate()"
       [actionButtonText]="'cart.shipping.goToConfirmation'"
-      [actionRoute]="['../confirmacio']"
+      [actionRoute]="['./cistella/confirmacio']"
       [submitAvailable]="formValid()">
       @if (cartStore.method() === 'delivery') {
         <div extra-shipping-content class="overflow-hidden">
