@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["libs/nasa-images/data-access/src/nasa-images.facade.ts"],
+  "sourcesContent": ["import { inject, Injectable } from '@angular/core';\nimport { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';\nimport { RouterFacade } from '@plastik/core/router-state';\nimport { map } from 'rxjs';\n\n@Injectable({\n  providedIn: 'root',\n})\nexport class NasaImagesFacade extends RouterFacade {\n  sidenavConfig = inject(VIEW_CONFIG);\n  routeInfo$ = this.routeName$.pipe(\n    map(name => this.sidenavConfig()?.find(routeData => routeData.name === name))\n  );\n}\n"],
+  "mappings": ";;;;;;;;;;;;;;AAQM,IAAO,mBAAP,MAAO,0BAAyB,aAAY;EAChD,gBAAgB,OAAO,WAAW;EAClC,aAAa,KAAK,WAAW,KAC3B,IAAI,UAAQ,KAAK,cAAa,GAAI,KAAK,eAAa,UAAU,SAAS,IAAI,CAAC,CAAC;;;;0HAHpE,iBAAgB,IAAA,qBAAhB,iBAAgB;IAAA;EAAA,GAAA;4EAAhB,mBAAgB,SAAhB,kBAAgB,WAAA,YAFf,OAAM,CAAA;;;sEAEP,kBAAgB,CAAA;UAH5B;WAAW;MACV,YAAY;KACb;;;",
+  "names": []
+}
