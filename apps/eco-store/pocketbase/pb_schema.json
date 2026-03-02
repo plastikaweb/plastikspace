@@ -2110,13 +2110,12 @@
         "system": false,
         "type": "select",
         "values": [
-          "pending",
-          "confirmed",
-          "preparing",
-          "ready",
-          "shipped",
-          "completed",
-          "cancelled"
+          "PENDING",
+          "CONFIRMED",
+          "PREPARING",
+          "READY",
+          "DELIVERED",
+          "CANCELLED"
         ]
       },
       {
@@ -2129,10 +2128,10 @@
         "system": false,
         "type": "select",
         "values": [
-          "unpaid",
-          "paid",
-          "refunded",
-          "failed"
+          "UNPAID",
+          "PAID",
+          "REFUNDED",
+          "FAILED"
         ]
       },
       {
@@ -2151,13 +2150,36 @@
       },
       {
         "hidden": false,
-        "id": "json2106779901",
-        "maxSize": 0,
-        "name": "deliverySlot",
+        "id": "select4192847301",
+        "maxSelect": 1,
+        "name": "day",
         "presentable": false,
-        "required": true,
+        "required": false,
         "system": false,
-        "type": "json"
+        "type": "select",
+        "values": [
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+          "sunday"
+        ]
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text7293045182",
+        "max": 0,
+        "min": 0,
+        "name": "time",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
       },
       {
         "hidden": false,
@@ -2174,7 +2196,7 @@
         "id": "number2308571902",
         "max": null,
         "min": 0,
-        "name": "cost",
+        "name": "total",
         "onlyInt": false,
         "presentable": false,
         "required": false,
@@ -2187,18 +2209,6 @@
         "max": null,
         "min": null,
         "name": "subtotal",
-        "onlyInt": false,
-        "presentable": false,
-        "required": false,
-        "system": false,
-        "type": "number"
-      },
-      {
-        "hidden": false,
-        "id": "number163230955",
-        "max": null,
-        "min": null,
-        "name": "price",
         "onlyInt": false,
         "presentable": false,
         "required": false,
@@ -2231,6 +2241,40 @@
         "required": false,
         "system": false,
         "type": "relation"
+      },
+      {
+        "hidden": false,
+        "id": "number756815652",
+        "max": null,
+        "min": null,
+        "name": "shipping",
+        "onlyInt": false,
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "number"
+      },
+      {
+        "hidden": false,
+        "id": "number2390866550",
+        "max": 100,
+        "min": 0,
+        "name": "tax",
+        "onlyInt": false,
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "number"
+      },
+      {
+        "hidden": false,
+        "id": "json3776899405",
+        "maxSize": 0,
+        "name": "items",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "json"
       },
       {
         "hidden": false,

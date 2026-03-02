@@ -107,10 +107,4 @@
       container-background-color: var(--mat-sys-primary),
     )
   );
-
-  @include mat.sidenav-overrides(
-    (
-      container-background-color: var(--mat-sys-secondary-container),
-    )
-  );
 }
