@@ -1004,16 +1004,6 @@
         "type": "json"
       },
       {
-        "hidden": false,
-        "id": "json1843675174",
-        "maxSize": 0,
-        "name": "description",
-        "presentable": false,
-        "required": false,
-        "system": false,
-        "type": "json"
-      },
-      {
         "autogeneratePattern": "",
         "hidden": false,
         "id": "text73334810",
@@ -1264,6 +1254,16 @@
         "required": false,
         "system": false,
         "type": "relation"
+      },
+      {
+        "hidden": false,
+        "id": "json1843675174",
+        "maxSize": 0,
+        "name": "description",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "json"
       },
       {
         "hidden": false,

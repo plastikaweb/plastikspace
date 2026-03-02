@@ -1,5 +1,25 @@
 {
   "extends": "./tsconfig.json",
+  "references": [
+    {
+      "path": "../../../shared/signal-state/data-access-pocketbase"
+    },
+    {
+      "path": "../../../core/entities"
+    },
+    {
+      "path": "../../../core/util/environments"
+    },
+    {
+      "path": "../../core/entities"
+    },
+    {
+      "path": "../../core/api/data-access"
+    },
+    {
+      "path": "../../product-categories/data-access"
+    }
+  ],
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
     "declaration": true,

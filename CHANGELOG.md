@@ -13,6 +13,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `tsconfig.base.json` with correct path mappings and project configurations.
 - Fixed `isDevMode` implementation in `PocketBaseTenantStore` for proper conditional DevTools integration.
 
+### Fixed
+
+- Fixed `EcoStoreProduct` and `ProductCategory` type inconsistencies with base PocketBase entities.
+- Configured project references in `products-data-access` library `tsconfig` to align with the composite build architecture.
+
 ---
 
 ## [2026-03-02] - NASA Images Performance & Defer Loading
