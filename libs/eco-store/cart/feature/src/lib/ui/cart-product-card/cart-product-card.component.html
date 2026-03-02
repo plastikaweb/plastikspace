@@ -12,7 +12,7 @@
   ">
   <mat-card-content class="inline-flex! flex-row items-center! justify-start! gap-4 p-4!">
     <plastik-img-container
-      class="hover:border-primary-500 cursor-pointer overflow-hidden rounded-lg transition-all duration-100 hover:contrast-120"
+      class="hover:border-primary-500 min-w-[100px] cursor-pointer overflow-hidden rounded-lg transition-all duration-100 hover:contrast-120"
       [src]="product | pocketBaseImageUrl: product.images?.[0]"
       [title]="product.name"
       [lcpImage]="isLcpImage()"

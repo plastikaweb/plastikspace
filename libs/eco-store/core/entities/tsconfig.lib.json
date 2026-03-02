@@ -8,6 +8,17 @@
     "composite": true,
     "types": []
   },
-  "exclude": ["src/**/*.spec.ts", "jest.config.ts", "src/**/*.test.ts"],
-  "include": ["src/**/*.ts"]
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/test-setup.ts"
+  ],
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../../../core/entities"
+    }
+  ]
 }

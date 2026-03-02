@@ -1,5 +1,7 @@
 {
   "loading-data": "Carregant dades...",
+  "goToPreviousPage": "Tornar a la pàgina anterior",
+  "goToNextPage": "Anar a la pàgina següent",
   "common": {
     "loading": "Carregant dades...",
     "loadingData": "Carregant dades...",

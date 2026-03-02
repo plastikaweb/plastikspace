@@ -31,7 +31,7 @@ import { EcoMobileNavComponent } from './mobile-nav/mobile-nav.component';
 import { EcoTenantLogoComponent } from './tenant-logo/tenant-logo.component';
 
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
-import { appSearchFormConfig } from '@plastik/eco-store/formly';
+import { appSearchFormConfig } from './app.search-form.config';
 import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 

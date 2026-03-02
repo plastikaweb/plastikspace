@@ -1,5 +1,10 @@
-import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
-import { computed, inject, Type } from '@angular/core';
+import {
+  updateState,
+  withDevtools,
+  withDevToolsStub,
+  withImmutableState,
+} from '@angular-architects/ngrx-toolkit';
+import { computed, inject, isDevMode, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
   signalStoreFeature,
@@ -53,7 +58,7 @@ export function withPocketBaseListFeature<
   const defaultState = initialGetListState(customInitialState);
 
   return signalStoreFeature(
-    withDevtools(featureName),
+    isDevMode() ? withDevtools(featureName) : withDevToolsStub(featureName),
     withImmutableState<PocketBaseGetListState>({
       ...defaultState,
     }),
@@ -165,6 +170,7 @@ export function withPocketBaseGetOneFeature<
       }>(),
       state: type<EntityState<T>>(),
     },
+    isDevMode() ? withDevtools(featureName) : withDevToolsStub(featureName),
     withImmutableState<PocketbaseGetOne<T>>({ selectedItemId: null as IdType<T> | null }),
     withMethods(store => {
       const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {

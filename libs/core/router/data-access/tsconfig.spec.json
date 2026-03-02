@@ -2,9 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
-    "module": "preserve",
-    "moduleResolution": "bundler",
-    "isolatedModules": true
+    "module": "esnext",
+    "target": "es2016",
+    "types": ["jest", "node"]
   },
   "files": ["src/test-setup.ts"],
   "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts", "**/*.ts"]

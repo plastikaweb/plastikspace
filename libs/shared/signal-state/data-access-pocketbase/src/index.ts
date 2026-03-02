@@ -1,6 +1,9 @@
 // Tokens
 export * from './lib/pocketbase-store-token';
 
+// Features
+export * from './lib/pocketbase.features';
+
 // Simplified stores
 export * from './lib/stores/with-pocketbase-crud.store';
 export * from './lib/stores/with-pocketbase-get-list.store';

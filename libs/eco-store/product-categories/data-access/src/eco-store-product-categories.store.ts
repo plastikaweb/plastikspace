@@ -1,5 +1,10 @@
-import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
-import { computed, effect, inject, untracked } from '@angular/core';
+import {
+  updateState,
+  withDevtools,
+  withDevToolsStub,
+  withImmutableState,
+} from '@angular-architects/ngrx-toolkit';
+import { computed, effect, inject, isDevMode, untracked } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
@@ -34,7 +39,7 @@ const initialState: ProductCategoriesState = {
 
 export const ecoStoreProductCategoriesStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('productsCategories'),
+  isDevMode() ? withDevtools('productsCategories') : withDevToolsStub('productsCategories'),
   withImmutableState<ProductCategoriesState>(initialState),
   withEntities<ProductCategoryStats>(),
   withProps(() => ({

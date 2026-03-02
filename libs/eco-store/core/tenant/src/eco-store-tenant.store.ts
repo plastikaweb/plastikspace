@@ -1,5 +1,10 @@
-import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
-import { computed, effect, inject } from '@angular/core';
+import {
+  updateState,
+  withDevtools,
+  withDevToolsStub,
+  withImmutableState,
+} from '@angular-architects/ngrx-toolkit';
+import { computed, effect, inject, isDevMode } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { TranslateService } from '@ngx-translate/core';
@@ -33,15 +38,17 @@ export interface EcoStoreTenantState {
   addressesLoaded: boolean;
 }
 
+const initialState: EcoStoreTenantState = {
+  tenant: null,
+  loaded: false,
+  addresses: [],
+  addressesLoaded: false,
+};
+
 export const ecoStoreTenantStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('tenant'),
-  withImmutableState<EcoStoreTenantState>({
-    tenant: null,
-    loaded: false,
-    addresses: [],
-    addressesLoaded: false,
-  }),
+  isDevMode() ? withDevtools('tenant') : withDevToolsStub('tenant'),
+  withImmutableState<EcoStoreTenantState>(initialState),
   withProps(() => ({
     _tenantAddressService: inject(EcoStoreTenantAddressService),
     _tenantService: inject(EcoStoreTenantBaseService),

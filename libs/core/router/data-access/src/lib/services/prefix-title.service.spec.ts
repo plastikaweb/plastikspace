@@ -2,7 +2,7 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot } from '@angular/router';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentMock } from '@plastik/core/environments/testing';
 
 import { PrefixTitleService } from './prefix-title.service';
 

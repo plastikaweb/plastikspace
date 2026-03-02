@@ -7,12 +7,22 @@
       class="font-plain mb-4 flex w-full items-center overflow-x-auto py-3 text-xs [scrollbar-width:none] md:py-4 md:text-sm [&::-webkit-scrollbar]:hidden">
       <ol class="flex w-max items-center pe-4 whitespace-nowrap">
         <li class="flex items-center">
+          <button
+            class="hover:text-primary-900! hover:bg-primary-100/70! flex shrink-0 items-center gap-2 rounded-lg py-1.5 text-neutral-600! transition-all duration-200"
+            matIconButton
+            type="button"
+            [attr.aria-label]="'goToPreviousPage' | translate"
+            (click)="returnToPreviousPage()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+        </li>
+        <li class="flex items-center">
           <a
             class="hover:text-primary-900 hover:bg-primary-100/70 flex items-center gap-2 rounded-lg py-1.5 text-neutral-600 transition-all duration-200 outline-none"
             [routerLink]="['/botiga']"
             [queryParams]="listQueryParams()">
             <mat-icon class="hidden! scale-75! sm:block!">storefront</mat-icon>
-            {{ 'store.menu.store' | translate }}
+            <span class="px-2">{{ 'store.menu.store' | translate }}</span>
           </a>
         </li>
         <li class="flex items-center">
@@ -22,7 +32,7 @@
             [routerLink]="['/botiga', productData.categorySlug]"
             [queryParams]="listQueryParams()">
             <mat-icon class="hidden! scale-75! sm:block!">{{ productData.categoryIcon }}</mat-icon>
-            {{ productData.categoryName }}
+            <span class="px-2">{{ productData.categoryName }}</span>
           </a>
         </li>
         <li class="flex items-center">

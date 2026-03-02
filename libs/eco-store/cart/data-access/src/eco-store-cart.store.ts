@@ -2,11 +2,12 @@ import {
   updateState,
   withConditional,
   withDevtools,
+  withDevToolsStub,
   withImmutableState,
   withStorageSync,
 } from '@angular-architects/ngrx-toolkit';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { computed, effect, inject, untracked } from '@angular/core';
+import { computed, effect, inject, isDevMode, untracked } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import {
   removeAllEntities,
@@ -80,7 +81,7 @@ const initialState: EcoStoreCartState = {
 
 export const ecoStoreCartStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('cart'),
+  isDevMode() ? withDevtools('cart') : withDevToolsStub('cart'),
   withImmutableState<EcoStoreCartState>(initialState),
   withEntities<EcoStoreCartItem>(),
   withProps(() => ({

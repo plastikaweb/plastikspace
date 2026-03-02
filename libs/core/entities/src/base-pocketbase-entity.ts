@@ -1,5 +1,5 @@
 import { ListOptions } from 'pocketbase';
-import { BaseEntity } from './base-entity';
+import { BaseEntity, LocalizedFields } from './base-entity';
 
 export type BasePocketBaseEntity = Pick<BaseEntity<string>, 'name' | 'normalizedName'> & {
   readonly id: string;
@@ -7,6 +7,7 @@ export type BasePocketBaseEntity = Pick<BaseEntity<string>, 'name' | 'normalized
   readonly collectionName: string;
   created: Date;
   updated: Date;
+  description?: LocalizedFields<string>;
 };
 
 export type BasePocketBaseEntitySimple = Omit<BasePocketBaseEntity, 'normalizedName'>;

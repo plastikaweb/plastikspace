@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-02] - Signal Store Refactoring & Type Cleanup
+
+### Changed
+
+- Refactored signal stores across `eco-store` and `shared` libraries to improve type safety and remove unnecessary type assertions.
+- Updated `tsconfig.base.json` with correct path mappings and project configurations.
+- Fixed `isDevMode` implementation in `PocketBaseTenantStore` for proper conditional DevTools integration.
+
+---
+
 ## [2026-03-02] - NASA Images Performance & Defer Loading
 
 ### Added

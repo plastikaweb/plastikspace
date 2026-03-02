@@ -1,5 +1,7 @@
 {
   "loading-data": "Loading data...",
+  "goToPreviousPage": "Go to previous page",
+  "goToNextPage": "Go to next page",
   "common": {
     "loading": "Loading data...",
     "loadingData": "Loading data...",
