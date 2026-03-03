@@ -5,15 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2026-03-03] - Order Confirmation Emails & PB Hooks
+## [2026-03-03] - Jules PR Analysis, Order Confirmation & Testing Fixes
 
 ### Added
 
+- Added Jules PR analysis workflow for automated code review in modern Angular 21 projects. ([#86c8kbgu3](https://app.clickup.com/t/86c8kbgu3))
+- Implemented `EcoStoreOrder` confirmation feature with dedicated lazy-loaded feature library, UI component, and routing. ([#86c8cjgmf](https://app.clickup.com/t/86c8cjgmf))
 - Added order confirmation email using a translated template inside the `on_create_order` PocketBase hook. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
 - Added `language` field to `EcoStoreOrder` entity to determine the language for the confirmation email. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
 
 ### Fixed
 
+- Fixed environment mock import paths and standalone spec configurations across multiple test suites.
 - Fixed `$app` to `e.app` and `id` to `getId()` calls in PocketBase hooks. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
 - Fixed PB hooks documentation to properly reference `on_create_order.pb.js`. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
 
