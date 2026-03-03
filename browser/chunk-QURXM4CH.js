@@ -1357,6 +1357,7 @@ var GlitchTrackerService = class _GlitchTrackerService {
     }]
   }], null, null);
 })();
+var GLITCH_TRACKING_FEATURE = "GLITCH_TRACKING_FEATURE";
 var REDUX_DEVTOOLS_CONFIG = new InjectionToken("ReduxDevtoolsConfig");
 var DefaultTracker = class _DefaultTracker {
   #stores = signal({}, ...ngDevMode ? [{
@@ -1627,6 +1628,9 @@ function updateState(stateSource, action, ...updaters) {
   currentActionNames.add(action);
   return patchState(stateSource, ...updaters);
 }
+var withDevToolsStub = () => signalStoreFeature(withProps(() => ({
+  [DEVTOOL_FEATURE_NAMES]: [GLITCH_TRACKING_FEATURE]
+})));
 function withReset() {
   return signalStoreFeature(withProps(() => ({
     _resetState: {
@@ -3430,6 +3434,7 @@ export {
   withMethods,
   withDevtools,
   updateState,
+  withDevToolsStub,
   withImmutableState,
   activityStore,
   BaseDataService,
@@ -3461,4 +3466,4 @@ export {
   NavigationFilterService,
   PrefixTitleService
 };
-//# sourceMappingURL=chunk-46CVDJIM.js.map
+//# sourceMappingURL=chunk-QURXM4CH.js.map

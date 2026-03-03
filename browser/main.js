@@ -1,6 +1,6 @@
 import {
   notificationStore
-} from "./chunk-H73O7RFB.js";
+} from "./chunk-W4GCOO7U.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -18,7 +18,7 @@ import {
   provideWithApiEnv,
   routerReducers,
   selectLayoutFeature
-} from "./chunk-46CVDJIM.js";
+} from "./chunk-QURXM4CH.js";
 import {
   SvgIconComponent,
   provideAngularSvgIcon
@@ -6543,11 +6543,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-WCYMXMI7.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-YDL3UWYO.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-AL23QMZG.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-IXEZG2OK.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];

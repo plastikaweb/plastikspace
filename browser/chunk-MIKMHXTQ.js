@@ -1,7 +1,7 @@
 import {
   RouterFacade,
   VIEW_CONFIG
-} from "./chunk-46CVDJIM.js";
+} from "./chunk-QURXM4CH.js";
 import {
   Injectable,
   inject,
@@ -35,4 +35,4 @@ var NasaImagesFacade = class _NasaImagesFacade extends RouterFacade {
 export {
   NasaImagesFacade
 };
-//# sourceMappingURL=chunk-624KDOKU.js.map
+//# sourceMappingURL=chunk-MIKMHXTQ.js.map

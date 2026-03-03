@@ -1,10 +1,11 @@
 import {
   signalStore,
   updateState,
+  withDevToolsStub,
   withDevtools,
   withImmutableState,
   withMethods
-} from "./chunk-46CVDJIM.js";
+} from "./chunk-QURXM4CH.js";
 import {
   Injectable,
   InjectionToken,
@@ -13,15 +14,17 @@ import {
   __spreadProps,
   __spreadValues,
   inject,
+  isDevMode,
   setClassMetadata,
   ɵɵdefineInjectable
 } from "./chunk-SF6CW7SJ.js";
 
 // libs/shared/notification/data-access/src/lib/+state/notification.store.ts
-var notificationStore = signalStore({ providedIn: "root" }, withDevtools("notification"), withImmutableState({
+var initialState = {
   configuration: null,
   preserveOnRouteRequest: false
-}), withMethods((store) => ({
+};
+var notificationStore = signalStore({ providedIn: "root" }, isDevMode() ? withDevtools("notification") : withDevToolsStub("notification"), withImmutableState(initialState), withMethods((store) => ({
   show: (configuration, preserveOnRouteRequest) => {
     updateState(store, `[notification] show`, {
       configuration,
@@ -136,4 +139,4 @@ export {
   notificationStore,
   NotificationConfigService
 };
-//# sourceMappingURL=chunk-H73O7RFB.js.map
+//# sourceMappingURL=chunk-W4GCOO7U.js.map
