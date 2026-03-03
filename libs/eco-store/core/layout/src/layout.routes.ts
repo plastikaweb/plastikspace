@@ -41,6 +41,13 @@ export const layoutRoutes: Route[] = [
     ],
     children: [
       {
+        path: 'comanda/:id',
+        title: 'cart.finish.title',
+        data: { hasSidenav: false },
+        loadComponent: () =>
+          import('@plastik/eco-store/orders/feature').then(m => m.OrderConfirmationComponent),
+      },
+      {
         path: 'cistella',
         title: 'cart.title',
         data: { hasSidenav: false },

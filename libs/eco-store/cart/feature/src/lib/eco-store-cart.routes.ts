@@ -44,13 +44,6 @@ export const ecoStoreCartRoutes: Route[] = [
           ),
       },
       {
-        path: ':id',
-        loadComponent: () =>
-          import('./eco-store-cart-steps/finish/cart-finish.component').then(
-            m => m.CartFinishComponent
-          ),
-      },
-      {
         path: '',
         redirectTo: 'resum',
         pathMatch: 'full',

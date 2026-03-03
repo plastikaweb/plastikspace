@@ -341,6 +341,16 @@
       "confirmOrder": "Confirmar Comanda",
       "modifyCart": "Modificar cistella",
       "modifyDelivery": "Modificar lliurament"
+    },
+    "finish": {
+      "title": "Gràcies per la teva comanda!",
+      "orderNumber": "Comanda Número:",
+      "emailNotice": "La teva comanda s''ha processat correctament. T''hem enviat un resum al teu correu electrònic:",
+      "modifyReminder": "Si t''has deixat res, no pateixis: pots fer canvis des del teu perfil mentre el període de comandes estigui obert.",
+      "ordersHistory": "Historial de comandes",
+      "backToStore": "Tornar a la botiga",
+      "ecoBadgeAlt": "Segell de producte local i de proximitat",
+      "orderReadyNotification": "En breu prepararem el teu cistell. Et notificarem quan estigui llest amb el pes exacte i el preu definitiu."
     }
   }
 }

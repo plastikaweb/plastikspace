@@ -1,0 +1,13 @@
+{
+  "name": "eco-store-orders-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/orders/feature/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["scope:eco-store", "type:feature"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

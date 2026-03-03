@@ -44,12 +44,6 @@ export const appConfig: ApplicationConfig = {
       appRoutes,
       withViewTransitions({
         skipInitialTransition: true,
-        onViewTransitionCreated: ({ transition }) => {
-          document.documentElement.classList.add('is-transitioning');
-          transition.finished.finally(() => {
-            document.documentElement.classList.remove('is-transitioning');
-          });
-        },
       }),
       withComponentInputBinding(),
       withExperimentalAutoCleanupInjectors(),

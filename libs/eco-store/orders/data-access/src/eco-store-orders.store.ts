@@ -37,7 +37,7 @@ export const ecoStoreOrdersStore = signalStore(
         const data = cartStore.toOrder();
         const newOrder = await store.create(data);
         cartStore.resetCartAfterCheckout();
-        await router.navigate(['/cistella', newOrder.id]);
+        await router.navigate(['/comanda', newOrder.id]);
       },
     };
   })

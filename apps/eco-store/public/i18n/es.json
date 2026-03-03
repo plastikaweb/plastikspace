@@ -328,6 +328,16 @@
       "confirmOrder": "Confirmar Pedido",
       "modifyCart": "Modificar carrito",
       "modifyDelivery": "Modificar entrega"
+    },
+    "finish": {
+      "title": "¡Gracias por tu pedido!",
+      "orderNumber": "Pedido Número:",
+      "emailNotice": "Tu pedido se ha procesado correctamente. Te hemos enviado un resumen a tu correo electrónico:",
+      "orderReadyNotification": "En breve prepararemos tu cesta. Te notificaremos cuando esté lista con el peso exacto y el precio definitivo.",
+      "modifyReminder": "Si te has olvidado algo, no te preocupes: puedes hacer cambios desde tu perfil mientras el período de pedidos esté abierto.",
+      "ordersHistory": "Historial de pedidos",
+      "backToStore": "Volver a la tienda",
+      "ecoBadgeAlt": "Sello de producto local y de proximidad"
     }
   }
 }

@@ -90,6 +90,7 @@ export function withPocketBaseListFeature<
       };
 
       return {
+        getItemById: (id: IdType<T>) => store.entityMap()[id],
         getList: rxMethod<{ params: ReturnType<typeof store.formattedParams> }>(
           pipe(
             distinctUntilChanged((prev, curr) => {

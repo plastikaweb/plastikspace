@@ -328,6 +328,16 @@
       "confirmOrder": "Confirm Order",
       "modifyCart": "Modify cart",
       "modifyDelivery": "Modify delivery"
+    },
+    "finish": {
+      "title": "Thank you for your order!",
+      "orderNumber": "Order Number:",
+      "emailNotice": "Your order has been processed successfully. We have sent a summary to your email:",
+      "orderReadyNotification": "We are preparing your basket. We will notify you when it is ready with the exact weight and final price.",
+      "modifyReminder": "If you forgot anything, don''t worry: you can make changes from your profile while the ordering period is open.",
+      "ordersHistory": "Order history",
+      "backToStore": "Back to store",
+      "ecoBadgeAlt": "Local and proximity product seal"
     }
   }
 }
