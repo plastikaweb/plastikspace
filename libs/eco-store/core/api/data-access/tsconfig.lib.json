@@ -5,6 +5,7 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
+    "composite": true,
     "types": []
   },
   "include": ["src/**/*.ts"],
@@ -14,5 +15,13 @@
     "jest.config.ts",
     "jest.config.cts",
     "src/test-setup.ts"
+  ],
+  "references": [
+    {
+      "path": "../../../../core/util/api-pocketbase"
+    },
+    {
+      "path": "../../tenant"
+    }
   ]
 }

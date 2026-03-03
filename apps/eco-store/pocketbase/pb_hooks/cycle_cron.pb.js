@@ -101,7 +101,7 @@ cronAdd("order_cycle_init", "59 23 * * 0", () => {
                     const existing = $app.findFirstRecordByFilter(
                         "order_cycles",
                         "tenant = {:tenant} && code = {:code}",
-                        { tenant: tenant.id, code: cycleCode }
+                        { tenant: tenant.getId(), code: cycleCode }
                     );
 
                     if (existing) {
@@ -112,7 +112,7 @@ cronAdd("order_cycle_init", "59 23 * * 0", () => {
                     // findFirstRecordByFilter throws an error if no record is found, we can ignore this
                 }
 
-                newCycle.set("tenant", tenant.id);
+                newCycle.set("tenant", tenant.getId());
                 newCycle.set("name", cycleName);
                 newCycle.set("code", cycleCode);
                 newCycle.set("startsAt", startsAt.toISOString());
@@ -146,14 +146,14 @@ cronAdd("order_cycle_status_watcher", "*/15 * * * *", () => {
         );
 
         for (let cycle of expiredCycles) {
-            console.log(`Closing cycle '${cycle.get("name")}' (ID: ${cycle.id}) for tenant ${cycle.get("tenant")}`);
+            console.log(`Closing cycle '${cycle.get("name")}' (ID: ${cycle.getId()}) for tenant ${cycle.get("tenant")}`);
 
             cycle.set("status", "processing");
 
             try {
                 $app.save(cycle);
             } catch (saveErr) {
-                console.error(`Failed to update cycle ${cycle.id}:`, saveErr);
+                console.error(`Failed to update cycle ${cycle.getId()}:`, saveErr);
             }
         }
     } catch (err) {

@@ -15,6 +15,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
+import { NavigationService } from '@plastik/core/router-state';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
@@ -29,7 +30,6 @@ import { SharedChipComponent } from '@plastik/shared/chip/ui';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import { ViewTransitionService } from '@plastik/shared/util/view-transition';
 import { map } from 'rxjs';
-
 @Component({
   selector: 'eco-eco-store-product-feature',
   imports: [
@@ -56,6 +56,7 @@ export default class EcoStoreProductFeatureComponent {
   protected readonly cartStore = inject(ecoStoreCartStore);
   protected readonly tenantsStore = inject(ecoStoreTenantStore);
   protected readonly viewTransitionService = inject(ViewTransitionService);
+  protected readonly navigationService = inject(NavigationService);
 
   readonly listQueryParams = computed(() => {
     const sort = this.#productsStore.sort();
@@ -67,16 +68,6 @@ export default class EcoStoreProductFeatureComponent {
       page: pagination.page,
       perPage: pagination.perPage,
     };
-  });
-
-  readonly backLink = computed(() => {
-    const filter = this.#productsStore.filter();
-    const categorySlug = (filter['categorySlug'] as string) || null;
-
-    if (categorySlug) {
-      return ['/botiga', categorySlug];
-    }
-    return ['/botiga'];
   });
 
   protected readonly syncTransitionId = effect(() => {
@@ -237,5 +228,9 @@ export default class EcoStoreProductFeatureComponent {
     product: EcoStoreProductWithCategoryName;
   }): void {
     this.cartStore.addToCart(product, quantity);
+  }
+
+  protected returnToPreviousPage() {
+    this.navigationService.back();
   }
 }

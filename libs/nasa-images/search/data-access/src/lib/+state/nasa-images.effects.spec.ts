@@ -10,7 +10,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { Action } from '@ngrx/store';
 import { MockStore, provideMockStore } from '@ngrx/store/testing';
 import { DataGetList } from '@plastik/core/api-base';
-import { provideEnvironmentWithApiMock } from '@plastik/core/environments';
+import { provideEnvironmentWithApiMock } from '@plastik/core/environments/testing';
 import {
   getMockedRouterNavigation,
   selectRouteDataName,

@@ -1,14 +1,13 @@
-import { LocalizedFields } from '@plastik/core/entities';
 import {
   BasePocketBaseEntitySimple,
   BasePocketBaseEntityWithTenantRef,
+  LocalizedFields,
 } from '@plastik/core/entities';
 
 export type ProductCategoryGroup = BasePocketBaseEntitySimple;
 
 export interface ProductCategory extends BasePocketBaseEntityWithTenantRef {
   color: string;
-  description?: LocalizedFields | string;
   icon?: string;
   expand?: {
     group: ProductCategoryGroup;
@@ -48,6 +47,6 @@ export interface ProductCategoryStats extends BasePocketBaseEntityWithTenantRef 
   category: ProductCategory['id'];
   totalProducts: number;
   color: string;
-  groupName: LocalizedFields | string;
+  groupName: LocalizedFields;
   icon?: string;
 }

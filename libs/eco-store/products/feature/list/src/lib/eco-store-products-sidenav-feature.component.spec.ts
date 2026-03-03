@@ -2,12 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
-import { provideEnvironmentPocketBaseMock } from '@plastik/core/environments';
+import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
+import { provideEnvironmentPocketBaseMock } from '@plastik/core/environments/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { axe, toHaveNoViolations } from 'jest-axe';
 import EcoStoreProductsSidenavFeatureComponent from './eco-store-products-sidenav-feature.component';
-import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 
 describe('EcoStoreProductsSidenavFeature', () => {
   let component: EcoStoreProductsSidenavFeatureComponent;

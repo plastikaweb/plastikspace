@@ -1,5 +1,5 @@
 import { ListOptions } from 'pocketbase';
-import { BaseEntity } from './base-entity';
+import { BaseEntity, LocalizedFields } from './base-entity';
 
 export type BasePocketBaseEntity = Pick<BaseEntity<string>, 'name' | 'normalizedName'> & {
   readonly id: string;
@@ -7,6 +7,7 @@ export type BasePocketBaseEntity = Pick<BaseEntity<string>, 'name' | 'normalized
   readonly collectionName: string;
   created: Date;
   updated: Date;
+  description?: LocalizedFields<string>;
 };
 
 export type BasePocketBaseEntitySimple = Omit<BasePocketBaseEntity, 'normalizedName'>;
@@ -14,9 +15,9 @@ export type BasePocketBaseEntitySimple = Omit<BasePocketBaseEntity, 'normalizedN
 /**
  * @description A base entity that needs a client reference to segment data by client.
  */
-export interface BasePocketBaseEntityWithTenantRef extends BasePocketBaseEntity {
+export type BasePocketBaseEntityWithTenantRef = BasePocketBaseEntity & {
   tenant: string;
-}
+};
 
 export type BasePocketBaseEntityPagination = Required<Pick<ListOptions, 'page' | 'perPage'>>;
 

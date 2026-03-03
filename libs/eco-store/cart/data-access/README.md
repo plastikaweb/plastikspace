@@ -46,6 +46,7 @@ as well as **order lifecycle metadata** including status, expiration date, order
 - **Server Sync Ready**: Includes state for background synchronization with PocketBase:
   - `remoteCartId`: Reference to the persisted cart in the server
   - `isSyncing`: Indicator of active synchronization process
+  - `isSynced`: Whether the cart has been synced with the remote
 - **Silent Synchronization**: Synchronization operations use specific headers (`remove-from-global-loading`) to run in the background without triggering global UI loading indicators.
 - **Atomic Updates**: Uses `patchState` and batch operations (`setAllEntities`) to ensure UI consistency and prevent flickering during cart merges.
 - **Smart Cart Operations**:
@@ -105,6 +106,7 @@ The store exposes the following signals and methods:
 - `notes()`: Customer notes or null
 - `remoteCartId()`: ID of the cart in PocketBase
 - `isSyncing()`: Boolean for sync status
+- `isSynced()`: Whether the cart has been synced with the remote
 - `subtotal()`: Calculated net total
 - `tax()`: Calculated total tax
 - `total()`: Calculated grand total including tax and shipping
@@ -123,6 +125,9 @@ The store exposes the following signals and methods:
 - `clearCart()`: Empty the cart.
 - `updateLogistics(logistics)`: Update shipping configuration.
 - `getItemCount(productId)`: Returns a computed signal with the quantity of the product.
+- `toOrder()`: Converts the current cart state to a `NewEcoStoreOrder` object for checkout.
+- `resetCartAfterCheckout()`: Resets the cart to its initial state while keeping `isSynced: true` to prevent unnecessary re-syncing.
+- `loadAndMergeUserCart()`: Loads the remote cart from PocketBase and merges it with the local cart (called automatically via effect on login).
 
 ## API Reference
 
@@ -143,12 +148,13 @@ interface EcoStoreCartState {
   day: SlotDays | null;
   time: TimeRange | null;
   shipping: number;
-  status: 'ACTIVE' | 'DONE' | 'EXPIRED';
-  expiredAt: Date | null;
+  status: EcoStoreCartStatus;
+  expiresAt: Date | null;
   orderCycle: string | null;
   notes: string | null;
   remoteCartId: string | null;
   isSyncing: boolean;
+  isSynced: boolean;
   subtotal: number;
   tax: number;
   total: number;

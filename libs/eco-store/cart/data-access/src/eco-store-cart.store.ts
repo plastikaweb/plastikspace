@@ -2,11 +2,12 @@ import {
   updateState,
   withConditional,
   withDevtools,
+  withDevToolsStub,
   withImmutableState,
   withStorageSync,
 } from '@angular-architects/ngrx-toolkit';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { computed, effect, inject, untracked } from '@angular/core';
+import { computed, effect, inject, isDevMode, untracked } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import {
   removeAllEntities,
@@ -25,13 +26,16 @@ import {
   EcoStoreProduct,
   EcoStoreProductWithCategoryName,
   EcoStoreTenantLogisticsDeliveryType,
+  generateOrderNumber,
+  NewEcoStoreOrder,
   SlotDays,
   TimeRange,
+  toOrderItemSnapshot,
 } from '@plastik/eco-store/entities';
 import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { notificationStore } from '@plastik/shared/notification/data-access';
-import { catchError, firstValueFrom, take } from 'rxjs';
+import { catchError, firstValueFrom, of, take } from 'rxjs';
 import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
 
 export interface EcoStoreCartState {
@@ -80,7 +84,7 @@ const initialState: EcoStoreCartState = {
 
 export const ecoStoreCartStore = signalStore(
   { providedIn: 'root' },
-  withDevtools('cart'),
+  isDevMode() ? withDevtools('cart') : withDevToolsStub('cart'),
   withImmutableState<EcoStoreCartState>(initialState),
   withEntities<EcoStoreCartItem>(),
   withProps(() => ({
@@ -275,9 +279,7 @@ export const ecoStoreCartStore = signalStore(
             })
             .pipe(
               take(1),
-              catchError(err => {
-                throw new Error(`Error getting remote cart: ${err}` as string);
-              })
+              catchError(() => of(null))
             )
         );
 
@@ -366,7 +368,7 @@ export const ecoStoreCartStore = signalStore(
         );
         const shipping = remoteCart ? remoteCart.shipping : store.shipping();
 
-        const statePayload: Partial<EcoStoreCartState> = {
+        let statePayload: Partial<EcoStoreCartState> = {
           isSyncing: false,
           isSynced: true,
           remoteCartId: finalRemoteId,
@@ -377,14 +379,15 @@ export const ecoStoreCartStore = signalStore(
         };
 
         if (remoteCart) {
-          Object.assign(statePayload, {
+          statePayload = {
+            ...statePayload,
             address: remoteCart.address,
             method: remoteCart.deliveryMethod,
             day: remoteCart.day,
             time: remoteCart.time,
             status: remoteCart.status,
             notes: remoteCart.notes,
-          });
+          };
         }
 
         // Update the entire state at once to avoid flicker
@@ -453,7 +456,7 @@ export const ecoStoreCartStore = signalStore(
       updateLogistics(logistics: Partial<EcoStoreCartState>) {
         if (!checkStoreStatus()) return;
 
-        updateState(store, '[Cart] Update Logistics', state => {
+        updateState(store, '[cart] update logistics', state => {
           const newState = { ...state, ...logistics };
 
           if (logistics.method && logistics.method !== state.method) {
@@ -485,6 +488,45 @@ export const ecoStoreCartStore = signalStore(
 
       loadAndMergeUserCart() {
         _loadAndMergeUserCart();
+      },
+
+      toOrder(): NewEcoStoreOrder {
+        const user = store._userProfileStore.user();
+        const address = store.address();
+        const method = store.method();
+        const items = store.items();
+
+        if (!user || !address || !method || !items.length) {
+          throw new Error('Cannot create order: missing required checkout data');
+        }
+
+        return {
+          orderNumber: generateOrderNumber(),
+          user: user.id,
+          items: items.map(toOrderItemSnapshot),
+          status: 'PENDING',
+          paymentStatus: 'UNPAID',
+          address,
+          deliveryMethod: method,
+          day: store.day(),
+          time: store.time(),
+          notes: store.notes() ?? '',
+          orderCycle: store.orderCycle() || undefined,
+          language: store._translateService.getCurrentLang() || 'ca',
+          shipping: store.shipping(),
+          subtotal: store.subtotal(),
+          tax: store.tax(),
+          total: store.total(),
+        };
+      },
+
+      resetCartAfterCheckout() {
+        updateState(
+          store,
+          '[cart] reset after checkout',
+          state => ({ ...state, ...initialState, isSynced: true }),
+          removeAllEntities()
+        );
       },
     };
   }),

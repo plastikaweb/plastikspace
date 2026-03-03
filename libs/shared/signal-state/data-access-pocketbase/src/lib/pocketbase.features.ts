@@ -1,4 +1,4 @@
-import { updateState, withDevtools, withImmutableState } from '@angular-architects/ngrx-toolkit';
+import { updateState, withImmutableState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
@@ -53,7 +53,6 @@ export function withPocketBaseListFeature<
   const defaultState = initialGetListState(customInitialState);
 
   return signalStoreFeature(
-    withDevtools(featureName),
     withImmutableState<PocketBaseGetListState>({
       ...defaultState,
     }),
@@ -91,6 +90,7 @@ export function withPocketBaseListFeature<
       };
 
       return {
+        getItemById: (id: IdType<T>) => store.entityMap()[id],
         getList: rxMethod<{ params: ReturnType<typeof store.formattedParams> }>(
           pipe(
             distinctUntilChanged((prev, curr) => {

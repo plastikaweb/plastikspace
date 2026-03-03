@@ -1,10 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-import { ecoStoreTenantStoreMock } from '@plastik/eco-store/tenant/testing';
+import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { EcoStoreProductCategoriesApiService } from './eco-store-product-categories-api.service';
-
-// ... existing imports
 
 describe('EcoStoreProductCategoriesApiService', () => {
   let service: EcoStoreProductCategoriesApiService;
@@ -15,7 +13,7 @@ describe('EcoStoreProductCategoriesApiService', () => {
         provideEnvironmentPocketBaseTranslationMock(),
         {
           provide: ecoStoreTenantStore,
-          useValue: ecoStoreTenantStoreMock,
+          useValue: mockEcoStoreTenantStore,
         },
       ],
     });

@@ -5,4 +5,5 @@ export * from './lib/+state/router.facade';
 export * from './lib/+state/selectors/router-state.selectors';
 export * from './lib/mocks/router.mock';
 export * from './lib/services/navigation-filter.service';
+export * from './lib/services/navigation.service';
 export * from './lib/services/prefix-title.service';

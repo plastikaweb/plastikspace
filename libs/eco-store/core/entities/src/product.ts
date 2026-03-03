@@ -13,7 +13,6 @@ export type ProductUnitType =
 export type ProductRating = number;
 
 export interface EcoStoreProduct extends BasePocketBaseEntityWithTenantRef {
-  description?: LocalizedFields | string;
   inStock: boolean;
   stock: number;
   origin?: string;
@@ -50,7 +49,10 @@ export interface EcoStoreProductFilter {
   search?: string;
 }
 
-export type EcoStoreProductWithCategoryName = EcoStoreProduct & {
+export type EcoStoreProductWithCategoryName = Omit<
+  EcoStoreProduct,
+  'name' | 'description' | 'features'
+> & {
   name: string; // * Localized product name is processed by store
   description: string; // * Localized product description is processed by store
   features: string[]; // * Localized product features are processed by store

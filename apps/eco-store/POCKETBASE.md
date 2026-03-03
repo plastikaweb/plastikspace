@@ -55,9 +55,10 @@ Server-side logic is implemented as standard PocketBase JavaScript hooks.
 
 ### Hooks
 
-#### [order_cycle.pb.js](./pocketbase/pb_hooks/order_cycle.pb.js)
+#### [on_create_order.pb.js](./pocketbase/pb_hooks/on_create_order.pb.js)
 
-Automatically identifies the `open` order cycle for a tenant and links new orders to it.
+Automatically identifies the `open` order cycle for a tenant and links new orders to it. It also prevents duplicate orders if the order window is configured, deletes the user's cart upon order confirmation,
+and sends an order confirmation email to the user in their preferred language.
 
 #### [single_default_address.js](./pocketbase/pb_hooks/single_default_address.js)
 

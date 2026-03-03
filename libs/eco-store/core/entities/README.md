@@ -23,6 +23,8 @@ This library contains the **eco-store specific entities and type definitions**. 
 - **`ProductCategoryStats`**: Product category statistics, including product counts and grouping info
 - **`EcoStoreTenant`**: Tenant entity for multi-tenancy settings (branding, contacts, etc) and
   logistics configuration (delivery options, slots, tiers and related types).
+- **`EcoStoreOrder`**: Order entity with items, shipping, payment status, and lifecycle metadata.
+  Includes `NewEcoStoreOrder` (for creation) and helper functions (`generateOrderNumber`, `toOrderItemSnapshot`).
 
 ### Configuration & Services
 

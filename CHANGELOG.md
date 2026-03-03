@@ -5,6 +5,45 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-03] - Order Confirmation Emails & PB Hooks
+
+### Added
+
+- Added order confirmation email using a translated template inside the `on_create_order` PocketBase hook. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Added `language` field to `EcoStoreOrder` entity to determine the language for the confirmation email. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+
+### Fixed
+
+- Fixed `$app` to `e.app` and `id` to `getId()` calls in PocketBase hooks. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Fixed PB hooks documentation to properly reference `on_create_order.pb.js`. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+
+---
+
+## [2026-03-02] - Signal Store Refactoring & Type Cleanup
+
+### Added
+
+- Created `eco-store-orders-data-access` library with `EcoStoreOrder` entity, API service, and Signal Store. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Added `createOrder()` method to orders store orchestrating checkout flow (order creation, cart reset, navigation). ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Added `CartFinishComponent` and `/cistella/:id` route for post-checkout confirmation page. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Added `toOrder()` and `resetCartAfterCheckout()` methods to the cart store. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+
+### Changed
+
+- Refactored `withPocketBaseCrud` CRUD mutations (`create`, `update`, `delete`) from `rxMethod` to plain `async` methods returning `Promise<T>`. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Refactored signal stores across `eco-store` and `shared` libraries to improve type safety and remove unnecessary type assertions.
+- Updated `tsconfig.base.json` with correct path mappings and project configurations.
+- Fixed `isDevMode` implementation in `PocketBaseTenantStore` for proper conditional DevTools integration.
+
+### Fixed
+
+- Fixed `EcoStoreProduct` and `ProductCategory` type inconsistencies with base PocketBase entities.
+- Configured project references in `products-data-access` library `tsconfig` to align with the composite build architecture.
+- Fixed cart re-sync error after checkout by keeping `isSynced: true` in `resetCartAfterCheckout()`. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Made remote cart lookup in `_loadAndMergeUserCart` gracefully handle missing carts (returns `null` instead of throwing). ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+
+---
+
 ## [2026-03-02] - NASA Images Performance & Defer Loading
 
 ### Added
