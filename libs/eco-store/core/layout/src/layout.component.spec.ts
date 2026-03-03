@@ -5,7 +5,7 @@ import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access
 import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
-import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';

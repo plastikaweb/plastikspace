@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import EcoStoreProductsFeature from './eco-store-products-feature.component';

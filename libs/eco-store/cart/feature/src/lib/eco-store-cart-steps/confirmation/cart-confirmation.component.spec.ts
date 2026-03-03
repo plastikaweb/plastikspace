@@ -2,8 +2,10 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
+import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { axe, toHaveNoViolations } from 'jest-axe';
@@ -13,6 +15,7 @@ describe('CartConfirmationComponent', () => {
   let component: CartConfirmationComponent;
   let fixture: ComponentFixture<CartConfirmationComponent>;
   let cartStoreMock: any;
+  let ordersStoreMock: any;
 
   beforeEach(async () => {
     expect.extend(toHaveNoViolations);
@@ -32,12 +35,18 @@ describe('CartConfirmationComponent', () => {
       updateLogistics: jest.fn(),
     };
 
+    ordersStoreMock = {
+      createOrder: jest.fn(),
+    };
+
     await TestBed.configureTestingModule({
       imports: [CartConfirmationComponent],
       providers: [
         provideRouter([]),
+        provideEnvironmentPocketBaseTranslationMock(),
         provideTranslateService(),
         { provide: ecoStoreCartStore, useValue: cartStoreMock },
+        { provide: ecoStoreOrdersStore, useValue: ordersStoreMock },
         { provide: ecoStoreTenantStore, useValue: mockEcoStoreTenantStore },
       ],
     }).compileComponents();
