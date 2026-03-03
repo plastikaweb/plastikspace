@@ -368,7 +368,7 @@ export const ecoStoreCartStore = signalStore(
         );
         const shipping = remoteCart ? remoteCart.shipping : store.shipping();
 
-        const statePayload: Partial<EcoStoreCartState> = {
+        let statePayload: Partial<EcoStoreCartState> = {
           isSyncing: false,
           isSynced: true,
           remoteCartId: finalRemoteId,
@@ -379,14 +379,15 @@ export const ecoStoreCartStore = signalStore(
         };
 
         if (remoteCart) {
-          Object.assign(statePayload, {
+          statePayload = {
+            ...statePayload,
             address: remoteCart.address,
             method: remoteCart.deliveryMethod,
             day: remoteCart.day,
             time: remoteCart.time,
             status: remoteCart.status,
             notes: remoteCart.notes,
-          });
+          };
         }
 
         // Update the entire state at once to avoid flicker
@@ -493,25 +494,25 @@ export const ecoStoreCartStore = signalStore(
         const user = store._userProfileStore.user();
         const address = store.address();
         const method = store.method();
-        const day = store.day();
-        const time = store.time();
+        const items = store.items();
 
-        if (!user || !address || !method || !day || !time) {
+        if (!user || !address || !method || !items.length) {
           throw new Error('Cannot create order: missing required checkout data');
         }
 
         return {
           orderNumber: generateOrderNumber(),
           user: user.id,
-          items: store.items().map(toOrderItemSnapshot),
+          items: items.map(toOrderItemSnapshot),
           status: 'PENDING',
           paymentStatus: 'UNPAID',
           address,
           deliveryMethod: method,
-          day,
-          time,
-          orderCycle: store.orderCycle() ?? '',
+          day: store.day(),
+          time: store.time(),
           notes: store.notes() ?? '',
+          orderCycle: store.orderCycle() || undefined,
+          language: store._translateService.getCurrentLang() || 'ca',
           shipping: store.shipping(),
           subtotal: store.subtotal(),
           tax: store.tax(),

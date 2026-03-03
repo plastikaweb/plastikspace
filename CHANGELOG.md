@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-03] - Order Confirmation Emails & PB Hooks
+
+### Added
+
+- Added order confirmation email using a translated template inside the `on_create_order` PocketBase hook. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Added `language` field to `EcoStoreOrder` entity to determine the language for the confirmation email. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+
+### Fixed
+
+- Fixed `$app` to `e.app` and `id` to `getId()` calls in PocketBase hooks. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+- Fixed PB hooks documentation to properly reference `on_create_order.pb.js`. ([#86c8hgazq](https://app.clickup.com/t/86c8hgazq))
+
+---
+
 ## [2026-03-02] - Signal Store Refactoring & Type Cleanup
 
 ### Added

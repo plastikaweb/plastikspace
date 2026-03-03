@@ -2287,6 +2287,20 @@
         "type": "json"
       },
       {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text3571151285",
+        "max": 0,
+        "min": 0,
+        "name": "language",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
         "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
@@ -2469,7 +2483,7 @@
         "maxSize": 0,
         "name": "slots",
         "presentable": false,
-        "required": true,
+        "required": false,
         "system": false,
         "type": "json"
       },

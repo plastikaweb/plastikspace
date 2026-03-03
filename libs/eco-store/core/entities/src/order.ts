@@ -36,12 +36,12 @@ export type EcoStoreOrder = BasePocketBaseEntityWithTenantRef & {
   status: EcoStoreOrderStatus;
   paymentStatus: EcoStorePaymentStatus;
   deliveryMethod: EcoStoreTenantLogisticsDeliveryType;
-  day: SlotDays;
-  time: TimeRange;
+  day: SlotDays | null;
+  time: TimeRange | null;
   address: UserContact;
   notes: string;
-  orderCycle: string;
-
+  orderCycle?: string;
+  language: string;
   subtotal: number;
   tax: number;
   shipping: number;
