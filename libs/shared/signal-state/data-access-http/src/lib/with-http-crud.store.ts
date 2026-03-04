@@ -25,14 +25,12 @@ import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
 import { HttpListResult } from './http-store.types';
 
 export interface HttpCrudState<T extends BaseEntity> {
-  initiallyLoaded: boolean;
   count: number;
   error: string | null;
   selectedItemId: IdType<T> | null;
 }
 
 const initialState = <T extends BaseEntity>(): HttpCrudState<T> => ({
-  initiallyLoaded: false,
   count: 0,
   error: null,
   selectedItemId: null,
@@ -91,7 +89,6 @@ export function withHttpCrud<T extends BaseEntity, S extends DataCrud<T, HttpLis
                         selectId: entity => entity.id || '',
                       }),
                       {
-                        initiallyLoaded: true,
                         count: result.total,
                       }
                     );

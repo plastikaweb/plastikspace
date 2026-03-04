@@ -109,6 +109,7 @@
   },
   "auth": {
     "login": {
+      "loading": "Iniciando sesión...",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "title": "Tienda Eco",
@@ -330,6 +331,7 @@
       "modifyDelivery": "Modificar entrega"
     },
     "finish": {
+      "creatingOrder": "Generando pedido... un momento por favor",
       "title": "¡Gracias por tu pedido!",
       "orderNumber": "Pedido Número:",
       "emailNotice": "Tu pedido se ha procesado correctamente. Te hemos enviado un resumen a tu correo electrónico:",

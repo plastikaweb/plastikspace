@@ -46,6 +46,11 @@ export class CartShippingComponent {
   protected readonly formValid = signal(false);
   protected readonly formConfig = getCartShippingFormConfig();
 
+  protected readonly skeletonItems = computed(() => {
+    const count = this.cartStore.itemsCount();
+    return Array(count > 0 ? count : 3).fill(0);
+  });
+
   protected readonly model = computed(() => {
     return {
       method: this.cartStore.method(),

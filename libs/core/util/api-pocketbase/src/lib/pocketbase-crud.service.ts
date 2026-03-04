@@ -1,16 +1,17 @@
 import { inject } from '@angular/core';
 import { BaseDataService, DataCrud } from '@plastik/core/api-base';
 import { BasePocketBaseEntity } from '@plastik/core/entities';
+import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
 import {
   ClientResponseError,
   ListResult,
   RecordFullListOptions,
   RecordListOptions,
   RecordOptions,
+  SendOptions,
 } from 'pocketbase';
 import { catchError, from, map, Observable, shareReplay } from 'rxjs';
 import { POCKETBASE_INSTANCE } from './pocketbase.token';
-import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
 
 /**
  * @description Abstract base class for PocketBase services with common functionality.
@@ -66,6 +67,7 @@ export abstract class PocketBaseCrudService<
     const finalParams = {
       ...params,
       requestKey: params?.requestKey ?? `${this.collectionName()}_list`,
+      headers: this.addExtraHeaders(params?.headers),
     };
 
     return from(
@@ -92,6 +94,7 @@ export abstract class PocketBaseCrudService<
     const finalParams = {
       ...params,
       requestKey: params?.requestKey ?? `${this.collectionName()}_full_list`,
+      headers: this.addExtraHeaders(params?.headers),
     };
 
     return from(this.#pb.collection(this.collectionName()).getFullList<T>(finalParams)).pipe(
@@ -111,6 +114,7 @@ export abstract class PocketBaseCrudService<
     const finalOptions = {
       ...options,
       requestKey: options?.requestKey ?? `${this.collectionName()}_${id}`,
+      headers: this.addExtraHeaders(options?.headers),
     };
 
     return from(this.#pb.collection(this.collectionName()).getOne<T>(id, finalOptions)).pipe(
@@ -130,6 +134,7 @@ export abstract class PocketBaseCrudService<
     const finalOptions = {
       ...options,
       requestKey: options?.requestKey ?? `${this.collectionName()}_first_list_item`,
+      headers: this.addExtraHeaders(options?.headers),
     };
 
     return from(
@@ -151,6 +156,7 @@ export abstract class PocketBaseCrudService<
     const finalOptions = {
       ...options,
       requestKey: options?.requestKey ?? `${this.collectionName()}_create`,
+      headers: this.addExtraHeaders(options?.headers),
     };
 
     return from(this.#pb.collection(this.collectionName()).create<T>(data, finalOptions)).pipe(
@@ -170,6 +176,7 @@ export abstract class PocketBaseCrudService<
     const finalOptions = {
       ...options,
       requestKey: options?.requestKey ?? `${this.collectionName()}_update_${id}`,
+      headers: this.addExtraHeaders(options?.headers),
     };
 
     return from(this.#pb.collection(this.collectionName()).update<T>(id, data, finalOptions)).pipe(
@@ -188,11 +195,22 @@ export abstract class PocketBaseCrudService<
     const finalOptions = {
       ...options,
       requestKey: options?.requestKey ?? `${this.collectionName()}_delete_${id}`,
+      headers: this.addExtraHeaders(options?.headers),
     };
 
     return from(this.#pb.collection(this.collectionName()).delete(id, finalOptions)).pipe(
       map(() => true),
       catchError(error => this.handleError<ClientResponseError>(error))
     );
+  }
+
+  protected addExtraHeaders(headers: SendOptions['headers'] = {}): SendOptions['headers'] {
+    if (!this.extraHeaders) {
+      return headers;
+    }
+    return {
+      ...this.extraHeaders,
+      ...headers,
+    };
   }
 }

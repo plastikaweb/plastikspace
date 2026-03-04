@@ -1,7 +1,7 @@
 {
   "name": "auth-pocketbase-data-access",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/auth/pocketbase/src",
+  "sourceRoot": "libs/shared/auth/pocketbase/data-access/src",
   "prefix": "lib",
   "projectType": "library",
   "tags": ["type:data-access", "scope:shared"],

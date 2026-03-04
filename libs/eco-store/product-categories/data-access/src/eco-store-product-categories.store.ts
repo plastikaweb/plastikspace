@@ -26,13 +26,11 @@ import { ClientResponseError } from 'pocketbase';
 import { EcoStoreProductCategoriesStatsService } from './eco-store-product-categories-stats.service';
 
 export interface ProductCategoriesState {
-  initiallyLoaded: boolean;
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: ProductCategoriesState = {
-  initiallyLoaded: false,
   isLoading: false,
   error: null,
 };
@@ -130,7 +128,6 @@ export const ecoStoreProductCategoriesStore = signalStore(
                         selectId: (entity: ProductCategoryStats) => entity.category,
                       }),
                       {
-                        initiallyLoaded: true,
                         isLoading: false,
                       }
                     );
@@ -188,8 +185,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
     onInit(store) {
       effect(() => {
         const tenantLoaded = store._tenantStore.loaded();
-        const initiallyLoaded = store.initiallyLoaded();
-        if (tenantLoaded && !initiallyLoaded) {
+        if (tenantLoaded) {
           untracked(() => store.getStats());
         }
       });

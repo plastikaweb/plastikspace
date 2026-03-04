@@ -275,7 +275,7 @@ export const ecoStoreCartStore = signalStore(
             .getFirstListItem(`user = "${user.id}"`, {
               sort: '-updated',
               requestKey: 'cart_sync_find',
-              headers: { 'remove-from-global-loading': 'true' },
+              headers: { 'require-global-loading': 'true' },
             })
             .pipe(
               take(1),

@@ -351,6 +351,12 @@ All text content is internationalized under the `cart.steps.shipping.unavailable
 
 This module incorporates smooth CSS view transitions to provide a seamless and visually appealing user experience during interactions and navigation.
 
+## Loading Strategy
+
+The cart confirmation step uses **Strategy 5** from the [Eco Store Loading Strategies](../../../../apps/eco-store/LOADING_STRATEGIES.md):
+the `isSyncing` and `isSynced` signals from `ecoStoreCartStore` drive inline skeleton loaders and opacity effects
+without triggering the global overlay, preserving a smooth UX during background cart merges.
+
 ## Running unit tests
 
 Run `nx test eco-store-cart-feature` to execute the unit tests via Jest.

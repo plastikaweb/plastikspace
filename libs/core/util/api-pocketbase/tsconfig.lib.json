@@ -13,5 +13,19 @@
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
     "src/**/*.mock.ts"
+  ],
+  "references": [
+    {
+      "path": "../api-base/tsconfig.lib.json"
+    },
+    {
+      "path": "../../entities/tsconfig.lib.json"
+    },
+    {
+      "path": "../environments/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects/tsconfig.lib.json"
+    }
   ]
 }

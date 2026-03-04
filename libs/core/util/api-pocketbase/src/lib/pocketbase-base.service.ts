@@ -16,6 +16,8 @@ export abstract class PocketBaseBaseService<
 > extends BaseDataService {
   override readonly environment = inject(POCKETBASE_ENVIRONMENT);
   readonly #injector = inject(Injector);
+  protected override extraHeaders: Record<string, string> = {};
+
   /**
    * @description Implement this method in child classes to have the collection name.
    * @returns {string} The collection name.
@@ -30,9 +32,11 @@ export abstract class PocketBaseBaseService<
   protected createPocketCrudService(): PocketBaseCrudService<T> {
     const collectionName = this.collectionName();
     const env = this.environment;
+    const headers = this.extraHeaders;
     return runInInjectionContext(this.#injector, () => {
       return new (class extends PocketBaseCrudService<T> {
         override readonly environment = env;
+        protected override extraHeaders = headers;
         protected override collectionName(): string {
           return collectionName;
         }

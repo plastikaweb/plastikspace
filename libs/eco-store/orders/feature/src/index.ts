@@ -1,1 +1,1 @@
-export { OrderConfirmationComponent } from './lib/order-confirmation/order-confirmation.component';
+export { ecoStoreOrderConfirmationRoutes } from './lib/order-confirmation/eco-store-order-confirmation.routes';

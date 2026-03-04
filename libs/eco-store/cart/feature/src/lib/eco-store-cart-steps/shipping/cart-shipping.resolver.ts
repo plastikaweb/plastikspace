@@ -15,10 +15,9 @@ export const cartShippingResolver: ResolveFn<boolean> = () => {
   cartStore.loadAndMergeUserCart();
   const userAddressesLoaded = toObservable(userProfileStore.addressesLoaded);
   const tenantAddressesLoaded = toObservable(tenantStore.addressesLoaded);
-  const cartLoaded = toObservable(cartStore.isSynced);
 
-  return combineLatest([userAddressesLoaded, tenantAddressesLoaded, cartLoaded]).pipe(
-    filter(([userLoaded, tenantLoaded, cartLoaded]) => userLoaded && tenantLoaded && cartLoaded),
+  return combineLatest([userAddressesLoaded, tenantAddressesLoaded]).pipe(
+    filter(([userLoaded, tenantLoaded]) => userLoaded && tenantLoaded),
     map(() => true),
     first()
   );

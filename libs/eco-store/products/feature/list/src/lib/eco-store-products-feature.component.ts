@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +8,10 @@ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName, ProductCategory } from '@plastik/eco-store/entities';
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
-import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+import {
+  ecoStoreProductsStore,
+  ProductsPocketBaseFilter,
+} from '@plastik/eco-store/products/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
@@ -40,6 +43,27 @@ export default class EcoStoreProductsFeatureComponent {
   readonly #route = inject(ActivatedRoute);
   readonly #router = inject(Router);
   readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);
+
+  protected readonly skeletonItems = linkedSignal({
+    source: () => ({
+      isLoading: this.productsStore.isLoading(),
+      perPage: this.productsStore.getPagination().perPage,
+      category: (this.productsStore.filter() as ProductsPocketBaseFilter).category,
+      entities: this.#categoriesStore.entities(),
+      totalProducts: this.#categoriesStore.totalProducts(),
+    }),
+    computation: s => {
+      if (s.isLoading) {
+        const selectedCategoryCount = s.category
+          ? s.entities.find(c => c.category === s.category)?.totalProducts || 0
+          : s.totalProducts;
+
+        const count = selectedCategoryCount || s.perPage;
+        return Array(Math.min(count, s.perPage)).fill(0);
+      }
+      return [];
+    },
+  });
 
   readonly categorySlug = toSignal<string | null>(
     this.#route.paramMap.pipe(

@@ -161,7 +161,14 @@ interface EcoStoreCartState {
 }
 ```
 
-```bash
+## Loading Strategy
+
+The cart data-access layer uses **Strategy 5** — a pair of dedicated `isSyncing` / `isSynced` state signals
+that manage the remote sync lifecycle **without interfering with the global loading overlay**.
+Sync HTTP requests deliberately omit the `require-global-loading` header.
+
+See [Eco Store Loading Strategies](../../../../apps/eco-store/LOADING_STRATEGIES.md) for a full overview.
+
 ## Running unit tests
+
 Run `nx test eco-store-cart-data-access` to execute the unit tests via Jest.
-```

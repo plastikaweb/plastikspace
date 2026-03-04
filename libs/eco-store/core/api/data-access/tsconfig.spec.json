@@ -8,5 +8,13 @@
     "moduleResolution": "node10"
   },
   "files": ["src/test-setup.ts"],
-  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
+  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"],
+  "references": [
+    {
+      "path": "../../../../core/util/api-pocketbase"
+    },
+    {
+      "path": "../../tenant"
+    }
+  ]
 }

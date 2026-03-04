@@ -12,13 +12,11 @@ import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
 import { HttpListResult } from './http-store.types';
 
 export interface HttpGetState<T extends BaseEntity> {
-  initiallyLoaded: boolean;
   count: number;
   selectedItemId: IdType<T> | null;
 }
 
 const initialState = <T extends BaseEntity>(): HttpGetState<T> => ({
-  initiallyLoaded: false,
   count: 0,
   selectedItemId: null,
 });
@@ -77,7 +75,6 @@ export function withHttpGet<T extends BaseEntity, S extends DataGet<T, HttpListR
                         selectId: entity => entity.id || '',
                       }),
                       {
-                        initiallyLoaded: true,
                         count: result.total,
                       }
                     );

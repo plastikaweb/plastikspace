@@ -3,7 +3,7 @@ import { computed, inject } from '@angular/core';
 import { signalStore, withComputed, withMethods } from '@ngrx/signals';
 import { setEntity } from '@ngrx/signals/entities';
 import { TranslateService } from '@ngx-translate/core';
-import { IdType, LocalizedFields } from '@plastik/core/entities';
+import { BasePocketBaseEntityFilter, IdType, LocalizedFields } from '@plastik/core/entities';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import {
   EcoStoreProduct,
@@ -21,24 +21,30 @@ import { firstValueFrom } from 'rxjs';
 
 import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 
-export interface ProductesPocketBaseGetListState extends PocketBaseGetListState {
-  filter: { category: IdType<ProductCategory> | null };
+export interface ProductsPocketBaseFilter extends BasePocketBaseEntityFilter {
+  category: IdType<ProductCategory> | null;
+  categorySlug: string | null;
+}
+
+export interface ProductsPocketBaseGetListState extends PocketBaseGetListState {
+  filter: ProductsPocketBaseFilter;
 }
 
 export const ecoStoreProductsStore = signalStore(
   { providedIn: 'root' },
-  withPocketBaseGet<EcoStoreProduct, EcoStoreProductsApiService, ProductesPocketBaseGetListState>({
+  withPocketBaseGet<EcoStoreProduct, EcoStoreProductsApiService, ProductsPocketBaseGetListState>({
     featureName: 'products',
     dataServiceType: EcoStoreProductsApiService,
     autoLoad: false,
     customInitialState: {
-      paginationSizeOptions: [20, 50, 75],
+      paginationSizeOptions: [10, 20, 40],
       pagination: {
         page: 1,
-        perPage: 20,
+        perPage: 10,
       },
       filter: {
         category: null,
+        categorySlug: null,
       },
       sortOptions: {
         ...initialGetListState().sortOptions,

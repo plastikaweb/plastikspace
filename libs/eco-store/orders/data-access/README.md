@@ -12,6 +12,7 @@
   - [API Reference](#api-reference)
     - [Store Methods](#store-methods)
     - [Inherited CRUD Methods](#inherited-crud-methods)
+  - [Loading Strategy](#loading-strategy)
   - [Related Libraries](#related-libraries)
   - [Running unit tests](#running-unit-tests)
 
@@ -28,6 +29,7 @@ including a specialized `createOrder()` method that orchestrates the full checko
 - **Full CRUD**: Inherits list, getOne, create, update, and delete from `withPocketBaseCrud`.
 - **Checkout Flow**: The `createOrder()` method converts the current cart to an order, resets the cart, and navigates to the order confirmation page.
 - **PocketBase Integration**: Uses `EcoStoreOrdersApiService` to communicate with the `orders` collection.
+- **Explicit Loading State**: The `createOrder()` method manually drives the global `activityStore` with a checkout-specific i18n message key.
 - **DevTools**: All state changes are tracked in Redux DevTools under the `orders` feature name.
 
 ## Installation
@@ -45,7 +47,7 @@ export class CheckoutComponent {
 
   async onConfirmOrder() {
     await this.ordersStore.createOrder();
-    // Cart is cleared and navigation to /cistella/:id happens automatically
+    // Cart is cleared and navigation to /comanda/:id happens automatically
   }
 }
 ```
@@ -54,7 +56,8 @@ export class CheckoutComponent {
 
 ### Store Methods
 
-- **`createOrder()`** - Converts the current cart state to an `EcoStoreOrder`, creates it in PocketBase, resets the cart, and navigates to `/cistella/:id`.
+- **`createOrder()`** - Converts the current cart state to an `EcoStoreOrder`, creates it in PocketBase, resets the cart, and navigates to `/comanda/:id`.
+  The entire operation is wrapped with `activityStore.setActivity(true, 'cart.finish.creatingOrder')` / `setActivity(false)` to display a labeled global overlay loader.
 
 ### Inherited CRUD Methods
 
@@ -66,11 +69,22 @@ From `withPocketBaseCrud`:
 - **`getList()`** - Load paginated list (auto-called on init).
 - **`getOne(id)`** - Load a single order by ID.
 
+## Loading Strategy
+
+`createOrder()` uses the **Explicit activityStore** strategy.
+It manually calls `activityStore.setActivity(true, 'cart.finish.creatingOrder')` before the async chain and `setActivity(false)` in a `finally` block once the checkout flow completes (or fails).
+This ensures the global overlay is shown with the correct i18n message for the entire duration of the checkout operation.
+
+> [!NOTE]
+> For a complete description of all loading strategies available in Eco Store, see
+> [LOADING_STRATEGIES.md](../../../../apps/eco-store/LOADING_STRATEGIES.md).
+
 ## Related Libraries
 
 - [`@plastik/eco-store/cart/data-access`](../../cart/data-access/README.md) - Cart state management and `toOrder()` conversion
 - [`@plastik/eco-store/entities`](../../core/entities/README.md) - `EcoStoreOrder` and `NewEcoStoreOrder` interfaces
 - [`@plastik/shared/signal-state/data-access-pocketbase`](../../../shared/signal-state/data-access-pocketbase/README.md) - PocketBase Signal Store features
+- [`@plastik/shared/activity/data-access`](../../../shared/activity/data-access/README.md) - Global activity/loading state
 
 ## Running unit tests
 

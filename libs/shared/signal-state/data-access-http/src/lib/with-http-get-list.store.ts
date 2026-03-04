@@ -4,10 +4,10 @@ import { inject, Type } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
 import {
   signalStoreFeature,
+  SignalStoreFeature,
   withHooks,
   withMethods,
   withProps,
-  SignalStoreFeature,
 } from '@ngrx/signals';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
@@ -18,12 +18,10 @@ import { debounceTime, distinctUntilChanged, pipe, switchMap } from 'rxjs';
 import { HttpListResult } from './http-store.types';
 
 export interface HttpGetListState {
-  initiallyLoaded: boolean;
   count: number;
 }
 
 const initialState = (): HttpGetListState => ({
-  initiallyLoaded: false,
   count: 0,
 });
 
@@ -80,7 +78,6 @@ export function withHttpGetList<T extends BaseEntity, S extends DataGetList<T, H
                         selectId: entity => entity.id || '',
                       }),
                       {
-                        initiallyLoaded: true,
                         count: result.total,
                       }
                     );

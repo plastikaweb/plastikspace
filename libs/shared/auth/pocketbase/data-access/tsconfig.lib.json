@@ -1,5 +1,19 @@
 {
   "extends": "./tsconfig.json",
+  "references": [
+    {
+      "path": "../../../pocketbase-user-addresses/data-access"
+    },
+    {
+      "path": "../../entities"
+    },
+    {
+      "path": "../../../../core/util/api-pocketbase"
+    },
+    {
+      "path": "../../../../core/entities"
+    }
+  ],
   "compilerOptions": {
     "outDir": "../../../../../dist/out-tsc",
     "declaration": true,

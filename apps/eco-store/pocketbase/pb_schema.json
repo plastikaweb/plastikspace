@@ -2287,17 +2287,18 @@
         "type": "json"
       },
       {
-        "cascadeDelete": false,
-        "collectionId": "pbc_3304764897",
+        "autogeneratePattern": "",
         "hidden": false,
-        "id": "relation3571151285",
-        "maxSelect": 1,
-        "minSelect": 0,
+        "id": "text3571151285",
+        "max": 0,
+        "min": 0,
         "name": "language",
+        "pattern": "",
         "presentable": false,
+        "primaryKey": false,
         "required": false,
         "system": false,
-        "type": "relation"
+        "type": "text"
       },
       {
         "hidden": false,
