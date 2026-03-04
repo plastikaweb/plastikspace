@@ -1873,16 +1873,25 @@ var SessionStorageService = class _SessionStorageService {
 var emptyFeature = signalStoreFeature(withState({}));
 
 // libs/shared/activity/data-access/src/lib/+state/activity.store.ts
-var activityStore = signalStore({ providedIn: "root" }, withImmutableState({
-  isActive: false
-}), withReset(), withMethods((store) => ({
-  setActivity(isActive) {
-    updateState(store, `[activity] ${isActive ? "on" : "off"}`, { isActive });
+var initialState2 = {
+  isActive: false,
+  message: "loading-data"
+};
+var activityStore = signalStore({ providedIn: "root" }, isDevMode() ? withDevtools("activity") : withDevToolsStub("activity"), withImmutableState(initialState2), withReset(), withMethods((store) => ({
+  setActivity(isActive, message) {
+    updateState(store, `[activity] ${isActive ? "on" : "off"} ${message}`, {
+      isActive,
+      message: message ?? initialState2.message
+    });
   }
 })));
 
 // libs/core/util/api-base/src/lib/base-data.service.ts
 var BaseDataService = class _BaseDataService {
+  /**
+   * Extra headers to be added to the request.
+   */
+  extraHeaders = {};
   /**
    * Cache time by default (1 day). Children can override it.
    */
@@ -3466,4 +3475,4 @@ export {
   NavigationFilterService,
   PrefixTitleService
 };
-//# sourceMappingURL=chunk-QURXM4CH.js.map
+//# sourceMappingURL=chunk-FF7XJPD3.js.map
