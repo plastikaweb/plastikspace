@@ -111,7 +111,6 @@ export function withPocketBaseListFeature<
                       }),
                       {
                         count: result.totalItems,
-                        initiallyLoaded: true,
                         isLoading: false,
                       }
                     );

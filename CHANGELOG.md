@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-04] - API Loading State Review & Documentation
+
+### Added
+
+- Added `LOADING_STRATEGIES.md` at `apps/eco-store` documenting all five loading-state strategies
+  ([#86c8jmwp4](https://app.clickup.com/t/86c8jmwp4))
+- Added missing unit tests for `ecoStoreOrdersStore` covering `createOrder()` orchestration, loading-state lifecycle, cart conversion, and post-checkout navigation ([#86c8jmwp4](https://app.clickup.com/t/86c8jmwp4))
+- Added missing unit tests for `pocketBaseActivityInterceptor` covering opt-in header behaviour, debounce, and silent-request passthrough ([#86c8jmwp4](https://app.clickup.com/t/86c8jmwp4))
+
+### Changed
+
+- Updated `shared/activity/data-access` README to document the `pocketBaseActivityInterceptor`,
+  the opt-in `require-global-loading` header pattern, `setActivity()` manual control, and correct testing ([#86c8jmwp4](https://app.clickup.com/t/86c8jmwp4))
+- Updated `eco-store/orders/data-access` README to document the explicit `activityStore` loading strategy used in `createOrder()` and link to the central loading-strategies document ([#86c8jmwp4](https://app.clickup.com/t/86c8jmwp4))
+- Updated `eco-store/cart/data-access` and `eco-store/cart/feature` READMEs with loading strategy notes linking to the central document ([#86c8jmwp4](https://app.clickup.com/t/86c8jmwp4))
+- Updated `apps/eco-store` README with a link to the new architecture documentation section ([#86c8jmwp4](https://app.clickup.com/t/86c8jmwp4))
+
+---
+
 ## [2026-03-03] - Jules PR Analysis, Order Confirmation & Testing Fixes
 
 ### Added

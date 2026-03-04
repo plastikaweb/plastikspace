@@ -7,51 +7,66 @@
       </h2>
     </div>
 
-    <plastik-shared-form-feature
-      [fields]="formConfig.getConfig()"
-      [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
-      [model]="model()"
-      (temporaryChangeEvent)="onChange($event)"
-      (validChange)="onFormValidChange($event)">
-    </plastik-shared-form-feature>
-
-    <!-- Shipping Address Section -->
-    <!-- <button mat-stroked-button class="w-full py-6 rounded-xl border-dashed border-neutral-300 text-neutral-600 bg-neutral-50 hover:bg-neutral-100 flex items-center justify-start px-6 gap-2">
-      <mat-icon>add</mat-icon>
-      Add New Address
-   </button> -->
+    @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+      <div class="space-y-6">
+        <div class="h-32 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+        <div class="h-48 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+      </div>
+    } @else {
+      <div
+        class="transition-all duration-300"
+        [class.pointer-events-none]="cartStore.isSyncing()"
+        [class.opacity-60]="cartStore.isSyncing()">
+        <plastik-shared-form-feature
+          [fields]="formConfig.getConfig()"
+          [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
+          [model]="model()"
+          (temporaryChangeEvent)="onChange($event)"
+          (validChange)="onFormValidChange($event)">
+        </plastik-shared-form-feature>
+      </div>
+    }
   </div>
 
   <!-- Right Column: Order Summary -->
   <div class="sticky top-16 space-y-6 self-start md:col-span-1!">
-    <eco-cart-order-summary
-      [subtotal]="cartStore.subtotal()"
-      [taxes]="cartStore.tax()"
-      [shipping]="cartStore.shipping()"
-      [deliveryType]="cartStore.method() ?? 'pickup'"
-      [total]="cartStore.total()"
-      [isStoreOpen]="tenantStore.isStoreOpen()"
-      [nextOpenDate]="tenantStore.nextOpenDate()"
-      [actionButtonText]="'cart.shipping.goToConfirmation'"
-      [actionRoute]="['./cistella/confirmacio']"
-      [submitAvailable]="formValid()">
-      @if (cartStore.method() === 'delivery') {
-        <div extra-shipping-content class="overflow-hidden">
-          <div class="min-h-0">
-            <div class="py-6">
-              @defer (on viewport) {
-                <eco-cart-order-price-slots
-                  class="block px-2"
-                  [cartTotal]="cartStore.subtotal() + cartStore.tax()"
-                  [tiers]="tenantStore.getTenantDeliveryPriceTiers()">
-                </eco-cart-order-price-slots>
-              } @placeholder {
-                <div class="h-24 w-full animate-pulse bg-neutral-50 px-2"></div>
-              }
+    @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+      <div class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
+    } @else {
+      <div
+        class="transition-all duration-300"
+        [class.pointer-events-none]="cartStore.isSyncing()"
+        [class.opacity-60]="cartStore.isSyncing()">
+        <eco-cart-order-summary
+          [subtotal]="cartStore.subtotal()"
+          [taxes]="cartStore.tax()"
+          [shipping]="cartStore.shipping()"
+          [deliveryType]="cartStore.method() ?? 'pickup'"
+          [total]="cartStore.total()"
+          [isStoreOpen]="tenantStore.isStoreOpen()"
+          [nextOpenDate]="tenantStore.nextOpenDate()"
+          [actionButtonText]="'cart.shipping.goToConfirmation'"
+          [actionRoute]="['./cistella/confirmacio']"
+          [submitAvailable]="formValid()">
+          @if (cartStore.method() === 'delivery') {
+            <div extra-shipping-content class="overflow-hidden">
+              <div class="min-h-0">
+                <div class="py-6">
+                  @defer (on viewport) {
+                    <eco-cart-order-price-slots
+                      class="block px-2"
+                      [cartTotal]="cartStore.subtotal() + cartStore.tax()"
+                      [tiers]="tenantStore.getTenantDeliveryPriceTiers()">
+                    </eco-cart-order-price-slots>
+                  } @placeholder {
+                    <div class="h-24 w-full animate-pulse bg-neutral-50 px-2"></div>
+                  }
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      }
-    </eco-cart-order-summary>
+          }
+        </eco-cart-order-summary>
+      </div>
+    }
   </div>
 </div>

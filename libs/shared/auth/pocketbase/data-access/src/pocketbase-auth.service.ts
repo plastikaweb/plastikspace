@@ -1,7 +1,7 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { RecordAuthResponse, type AuthModel } from 'pocketbase';
-import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { AuthFacade } from '@plastik/auth/entities';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { RecordAuthResponse, type AuthModel } from 'pocketbase';
 
 @Injectable({
   providedIn: 'root',

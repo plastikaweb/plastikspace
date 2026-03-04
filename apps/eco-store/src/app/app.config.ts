@@ -27,7 +27,7 @@ import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocket
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
 import { PrefixTitleService } from '@plastik/core/router-state';
 import { ecoStoreTenantStore, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
-import { pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
+import { activityStore, pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
 import { environment } from '../environments/environment';
@@ -63,6 +63,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEcoStoreTenant,
     provideAppInitializer(async () => {
+      inject(activityStore).setActivity(true);
       pocketBaseActivityInterceptor();
       await inject(ecoStoreTenantStore).getTenant();
     }),

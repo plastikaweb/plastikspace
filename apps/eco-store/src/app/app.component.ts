@@ -6,7 +6,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
-import { EcoStoreLayoutService } from '@plastik/eco-store/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { SkipLinkComponent } from '@plastik/shared/skip-link';
@@ -34,7 +33,6 @@ export class AppComponent implements OnInit {
   readonly #document = inject(DOCUMENT);
   readonly #focusMonitor = inject(FocusMonitor);
   readonly #renderer = inject(Renderer2);
-  readonly #layoutService = inject(EcoStoreLayoutService);
 
   readonly matIconRegistry = inject(MatIconRegistry);
   readonly domSanitizer = inject(DomSanitizer);
@@ -53,6 +51,7 @@ export class AppComponent implements OnInit {
         this.#renderer.removeClass(this.#document.body, 'is-keyboard-active');
       }
     });
+    this.activityStore.setActivity(false);
   }
 
   private addPreconnectLink(): void {

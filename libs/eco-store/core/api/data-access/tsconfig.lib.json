@@ -18,10 +18,10 @@
   ],
   "references": [
     {
-      "path": "../../../../core/util/api-pocketbase"
+      "path": "../../../../core/util/api-pocketbase/tsconfig.lib.json"
     },
     {
-      "path": "../../tenant"
+      "path": "../../tenant/tsconfig.lib.json"
     }
   ]
 }

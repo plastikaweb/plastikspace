@@ -139,7 +139,6 @@ export function withPocketBaseParamsFeature({
             pagination: normalized.pagination,
             filter: normalized.filter,
             sort: normalized.sort,
-            initiallyLoaded: false,
           });
         },
       };

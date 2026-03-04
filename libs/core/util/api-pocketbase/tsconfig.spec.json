@@ -13,5 +13,19 @@
     "src/**/*.test.ts",
     "src/**/*.spec.ts",
     "src/**/*.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../api-base"
+    },
+    {
+      "path": "../../entities"
+    },
+    {
+      "path": "../environments"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects"
+    }
   ]
 }

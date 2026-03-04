@@ -8,6 +8,11 @@ export abstract class BaseDataService {
   abstract environment: Environment;
 
   /**
+   * Extra headers to be added to the request.
+   */
+  protected extraHeaders: Record<string, string> = {};
+
+  /**
    * Cache time by default (1 day). Children can override it.
    */
   protected cacheTime = 1000 * 60 * 60 * 24;

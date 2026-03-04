@@ -16,6 +16,7 @@
     - [📦 Products](#-products)
     - [🧰 Shared Utils](#-shared-utils)
     - [🚀 Core Features](#-core-features)
+  - [📖 Architecture Documentation](#-architecture-documentation)
 
 ## Description
 
@@ -92,6 +93,12 @@ Built with **Angular 21+** (Signals, Standalone Components, Control Flow) and **
 - [**Store Window**](../../libs/eco-store/store-window/README.md): Store status and countdown feature.
 - [**Countdown UI**](../../libs/shared/countdown/ui/README.md): Shared countdown display component.
 - [**Countdown Utils**](../../libs/shared/countdown/util/README.md): Reactive countdown logic using Signals.
+
+---
+
+## 📖 Architecture Documentation
+
+- [**Loading Strategies**](./LOADING_STRATEGIES.md): Describes all loading/activity patterns used across the app (bootstrap, opt-in interceptor, `isLoading` signal, explicit store calls, cart sync).
 
 ---
 

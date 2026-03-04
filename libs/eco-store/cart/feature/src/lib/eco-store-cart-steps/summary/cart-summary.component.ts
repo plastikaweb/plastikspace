@@ -1,5 +1,5 @@
 import { KeyValuePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +30,11 @@ export class CartSummaryComponent {
   readonly cartStore = inject(ecoStoreCartStore);
   readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly viewTransitionService = inject(ViewTransitionService);
+
+  protected readonly skeletonItems = computed(() => {
+    const count = this.cartStore.itemsCount();
+    return Array(count > 0 ? count : 3).fill(0);
+  });
 
   onQuantityChange(event: { quantity: number; product: EcoStoreProductWithCategoryName }) {
     this.cartStore.addToCart(event.product, event.quantity);

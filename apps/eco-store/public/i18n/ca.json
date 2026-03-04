@@ -109,6 +109,7 @@
   },
   "auth": {
     "login": {
+      "loading": "Iniciant sessió...",
       "email": "Correu electrònic",
       "password": "Contrasenya",
       "title": "Botiga Eco",
@@ -343,6 +344,7 @@
       "modifyDelivery": "Modificar lliurament"
     },
     "finish": {
+      "creatingOrder": "Generant comanda... un moment si us plau",
       "title": "Gràcies per la teva comanda!",
       "orderNumber": "Comanda Número:",
       "emailNotice": "La teva comanda s''ha processat correctament. T''hem enviat un resum al teu correu electrònic:",

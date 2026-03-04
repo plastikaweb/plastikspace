@@ -35,7 +35,6 @@ export interface PocketBaseListParams {
 }
 
 export interface PocketBaseGetListState {
-  initiallyLoaded: boolean;
   isLoading: boolean;
   error: string | null;
   count: number;
@@ -51,7 +50,6 @@ export interface PocketBaseGetListState {
 export const initialGetListState = (
   customInitialState: Partial<PocketBaseGetListState> = {}
 ): PocketBaseGetListState => ({
-  initiallyLoaded: false,
   isLoading: false,
   error: null,
   count: 0,

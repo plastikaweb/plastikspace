@@ -15,5 +15,43 @@
     "src/**/*.spec.ts",
     "src/**/*.d.ts",
     "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../../../core/entities"
+    },
+    {
+      "path": "../../core/entities"
+    },
+    {
+      "path": "../../../../libs/shared/notification/data-access"
+    },
+    {
+      "path": "../../shared/tokens"
+    },
+    {
+      "path": "../../core/tenant"
+    },
+    {
+      "path": "../../../core/util/api-pocketbase"
+    },
+    {
+      "path": "../../core/api/data-access"
+    },
+    {
+      "path": "../../../core/util/environments"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects"
+    },
+    {
+      "path": "../../../../libs/shared/countdown/util"
+    },
+    {
+      "path": "../../../../libs/shared/notification/entities"
+    },
+    {
+      "path": "../../../core/util/api-base"
+    }
   ]
 }

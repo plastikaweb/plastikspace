@@ -40,6 +40,11 @@ export class CartConfirmationComponent {
   protected readonly viewTransitionService = inject(ViewTransitionService);
   readonly #ordersStore = inject(ecoStoreOrdersStore);
 
+  protected readonly skeletonItems = computed(() => {
+    const count = this.cartStore.itemsCount();
+    return Array(count > 0 ? count : 3).fill(0);
+  });
+
   protected readonly model = computed<CartConfirmationFormModel>(() => ({
     notes: this.cartStore.notes() ?? '',
   }));

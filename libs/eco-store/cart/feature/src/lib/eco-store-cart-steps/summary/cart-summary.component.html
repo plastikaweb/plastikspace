@@ -1,5 +1,8 @@
 <div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
-  <div class="col-span-1! space-y-10 md:col-span-2!">
+  <div
+    class="col-span-1! space-y-10 md:col-span-2!"
+    [class.pointer-events-none]="cartStore.isSyncing()"
+    [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
     <div class="flex items-center gap-4">
       <mat-icon class="scale-150!" aria-hidden="true"> shopping_cart </mat-icon>
       <h2 class="gap-md flex items-center text-2xl font-bold tracking-tight sm:text-3xl">
@@ -10,38 +13,63 @@
       >
     </div>
 
-    <div class="cart-summary-card @container mb-8">
-      @for (group of cartStore.itemsGroupedByCategory() | keyvalue; track group.key) {
-        <div animate.enter="fade-in" animate.leave="fade-out" class="px-4 py-2">
-          <span
-            class="text-tertiary-500 mb-2 text-sm leading-10 font-bold tracking-wider uppercase"
-            >{{ group.key }}</span
-          >
-          <div class="flex flex-col gap-2">
-            @for (item of group.value; track item.product.id; let i = $index) {
-              <eco-cart-product-card
-                [item]="item"
-                [isLcpImage]="i === 0"
-                [editable]="tenantStore.isStoreOpen()"
-                (pointerdown)="viewTransitionService.setActiveId(item.product.id)"
-                (quantityChange)="onQuantityChange($event)">
-              </eco-cart-product-card>
-            }
+    <div
+      class="cart-summary-card @container mb-8 transition-all duration-300"
+      [class.pointer-events-none]="cartStore.isSyncing()"
+      [class.opacity-60]="cartStore.isSyncing()">
+      @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+        <!-- Initial Sync Skeletons (Matches item count from local storage) -->
+        <div class="space-y-8 px-4 py-2">
+          <div>
+            <div class="mb-4 h-4 w-24 animate-pulse rounded bg-neutral-200"></div>
+            <div class="flex flex-col gap-4">
+              @for (item of skeletonItems(); track $index) {
+                <div class="flex h-[134px] w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+              }
+            </div>
           </div>
         </div>
+      } @else {
+        <!-- Stable Real UI (Visible during quantity updates) -->
+        @for (group of cartStore.itemsGroupedByCategory() | keyvalue; track group.key) {
+          <div animate.enter="fade-in" animate.leave="fade-out" class="px-4 py-2">
+            <span
+              class="text-tertiary-500 mb-2 text-sm leading-10 font-bold tracking-wider uppercase"
+              >{{ group.key }}</span
+            >
+            <div class="flex flex-col gap-2">
+              @for (item of group.value; track item.product.id; let i = $index) {
+                <eco-cart-product-card
+                  [item]="item"
+                  [isLcpImage]="i === 0"
+                  [editable]="tenantStore.isStoreOpen()"
+                  (pointerdown)="viewTransitionService.setActiveId(item.product.id)"
+                  (quantityChange)="onQuantityChange($event)">
+                </eco-cart-product-card>
+              }
+            </div>
+          </div>
+        }
       }
     </div>
   </div>
 
-  <div class="sticky top-16 space-y-6 self-start md:col-span-1">
-    <eco-cart-order-summary
-      [subtotal]="cartStore.subtotal()"
-      [taxes]="cartStore.tax()"
-      [total]="cartStore.subtotal() + cartStore.tax()"
-      [isStoreOpen]="tenantStore.isStoreOpen()"
-      [nextOpenDate]="tenantStore.nextOpenDate()"
-      [actionButtonText]="'cart.summary.goToShipping'"
-      [actionRoute]="['./cistella/enviament']">
-    </eco-cart-order-summary>
+  <div
+    class="sticky top-16 space-y-6 self-start md:col-span-1"
+    [class.pointer-events-none]="cartStore.isSyncing()"
+    [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
+    @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+      <div class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
+    } @else {
+      <eco-cart-order-summary
+        [subtotal]="cartStore.subtotal()"
+        [taxes]="cartStore.tax()"
+        [total]="cartStore.subtotal() + cartStore.tax()"
+        [isStoreOpen]="tenantStore.isStoreOpen()"
+        [nextOpenDate]="tenantStore.nextOpenDate()"
+        [actionButtonText]="'cart.summary.goToShipping'"
+        [actionRoute]="['./cistella/enviament']">
+      </eco-cart-order-summary>
+    }
   </div>
 </div>

@@ -20,6 +20,8 @@ export class OrderConfirmationComponent {
   readonly #userProfileStore = inject(pocketBaseUserProfileStore);
   readonly orderId = this.#route.snapshot.paramMap.get('id') ?? '';
 
+  protected readonly isLoading = this.#ordersStore.isLoading;
+
   readonly #order = computed(() => this.#ordersStore.getItemById(this.orderId));
 
   protected readonly orderNumber = computed(() => this.#order()?.orderNumber ?? '');

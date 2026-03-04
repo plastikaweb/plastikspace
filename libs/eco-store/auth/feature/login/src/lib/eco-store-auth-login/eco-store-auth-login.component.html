@@ -5,7 +5,9 @@
 
   <mat-card
     appearance="raised"
-    class="from-primary-100 to-primary-200 text-primary-600 w-full max-w-[425px] border-2! border-white! bg-linear-to-br shadow-lg!">
+    class="from-primary-100 to-primary-200 text-primary-600 w-full max-w-[425px] border-2! border-white! bg-linear-to-br shadow-lg!"
+    [class.pointer-events-none]="profileStore.isLoading()"
+    [class.opacity-60]="profileStore.isLoading()">
     <mat-card-header class="mb-4 flex flex-col items-center gap-4 pt-8 pb-4">
       @if (tenantLogo) {
         <div class="bg-primary-50 h-20 w-20 rounded-full border-2 border-white p-4 shadow-sm">

@@ -5,13 +5,9 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "isolatedModules": true,
-    "declaration": true
+    "declaration": true,
+    "types": ["jest", "node"]
   },
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    }
-  ],
   "files": ["src/test-setup.ts"],
   "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"]
 }
