@@ -1,33 +1,33 @@
-# core-styles-util-tailwind-preset
+# @plastik/core/styles/util/tailwind-preset
 
-- [core-styles-util-tailwind-preset](#core-styles-util-tailwind-preset)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/tailwindcss-0F172A?style=for-the-badge&logo=tailwindcss)
+
+- [@plastik/core/styles/util/tailwind-preset](#plastikcorestylesutiltailwind-preset)
   - [Description](#description)
-  - [How to use](#how-to-use)
-  - [Useful links](#useful-links)
+  - [Usage](#usage)
+  - [Resources](#resources)
 
 ## Description
 
-A base tailwind CSS preset to import into apps and libraries tailwind configurations.
+A **Shared Tailwind CSS Preset** to ensure consistent design tokens (colors, spacing, breakpoints) across all applications and libraries in the workspace.
 
-## How to use
+## Usage
 
-Import the tailwind.config preset file and add it to the presets array in tailwind config files.
+Import the preset in your `tailwind.config.js` and add it to the `presets` array:
 
 ```javascript
-
-...
 const sharedTailwindConfig = require('../../libs/core/styles/util/tailwind-preset/src/lib/tailwind.config');
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   presets: [sharedTailwindConfig],
   content: [
-    // ...
-  ]
+    // ... paths to your components
+  ],
 };
-
 ```
 
-## Useful links
+## Resources
 
 - [Set up Tailwind CSS with Angular in an Nx workspace](https://leosvel.dev/blog/set-up-tailwind-css-with-angular-in-an-nx-workspace)

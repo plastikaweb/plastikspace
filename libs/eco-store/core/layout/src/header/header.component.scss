@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  mat-toolbar {
+    @include mat.toolbar-overrides(
+      (
+        standard-height: 64px,
+        mobile-height: 64px,
+        title-text-weight: var(--font-weight-bold),
+        title-text-tracking: 0.01rem,
+        container-background-color: var(--translucid-bg),
+      )
+    );
+  }
+
+  .header-icon {
+    height: 36px;
+    width: 36px;
+    font-size: 36px;
+  }
+}

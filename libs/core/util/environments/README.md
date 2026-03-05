@@ -1,63 +1,133 @@
-# core-util-environments
+# @plastik/core/environments
 
-A tiny library that provides a global `ENVIRONMENT` token service to share current app environment configuration across libraries.
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 
-## How to use
+- [Description](#description)
+- [Interfaces](#interfaces)
+- [Tokens & Providers](#tokens--providers)
+- [Usage Examples](#usage-examples)
 
-- Use `Environment` interface to type your app environments
+## Description
+
+**Environments Utility** provides tools to define and provide application environments across libraries using Angular DI tokens. It supports base environments, HTTP API URLs, and PocketBase setups with translations.
+
+## Interfaces
 
 ```typescript
+export type EnvironmentName = 'development' | 'staging' | 'production' | 'test';
+
 export interface Environment {
-  production: boolean;
-  name: string;
-  apiUrl: string;
+  readonly production: boolean;
+  readonly name: string;
+  readonly environment: EnvironmentName;
 }
+
+export type EnvironmentWithApiUrl = Environment & {
+  readonly baseApiUrl: string;
+};
+
+export type EnvironmentWithTranslations = Environment & {
+  languages: string[];
+  defaultLanguage: string;
+};
+
+export type EnvironmentPocketBase = EnvironmentWithApiUrl & {
+  client: string;
+  collectionNames?: Record<string, string>;
+};
+
+export type EnvironmentPocketBaseWithTranslations = EnvironmentPocketBase &
+  EnvironmentWithTranslations;
 ```
 
-- Mark your environments to use the interface and pass the authentication provider configuration type as a generic argument.
+## Tokens & Providers
 
 ```typescript
-// apps/my-app/src/environments/environment.ts
-import { Environment } from '@plastik/core/environments';
+import {
+  ENVIRONMENT,
+  ENVIRONMENT_WITH_API,
+  POCKETBASE_ENVIRONMENT,
+  POCKETBASE_WITH_TRANSLATION_ENVIRONMENT,
+  provideWithApiEnv,
+  providePocketBaseEnv,
+  providePocketBaseWithTranslationsEnv,
+} from '@plastik/core/environments';
+```
 
-export const environment: Environment = {
+- `ENVIRONMENT`: base environment token.
+- `ENVIRONMENT_WITH_API`: environment with `baseApiUrl`.
+- `POCKETBASE_ENVIRONMENT`: PocketBase environment.
+- `POCKETBASE_WITH_TRANSLATION_ENVIRONMENT`: PocketBase with translations.
+- `getEnvironment`: A helper function to inject the `POCKETBASE_ENVIRONMENT` token.
+
+**Provider helpers:**
+
+```typescript
+provideWithApiEnv(env: EnvironmentWithApiUrl)
+providePocketBaseEnv(env: EnvironmentPocketBase)
+providePocketBaseWithTranslationsEnv(env: EnvironmentPocketBaseWithTranslations)
+```
+
+## Usage Examples
+
+### 1) HTTP API environment
+
+```typescript
+// environments/environment.ts
+import { EnvironmentWithApiUrl } from '@plastik/core/environments';
+
+export const environment: EnvironmentWithApiUrl = {
   production: false,
   name: 'my-app',
-  apiUrl: `https://api/my-app`,
+  environment: 'development',
+  baseApiUrl: 'https://api.example.com/v1',
+};
+
+// app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { provideWithApiEnv } from '@plastik/core/environments';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideWithApiEnv(environment)],
 };
 ```
 
-- Provide the `ENVIRONMENT` token value in you app
+### 2) PocketBase environment with translations
 
 ```typescript
-// apps/my-app/src/app/app.module.ts
-import { ENVIRONMENT } from '@plastik/core/environments';
-import { environment } from '../environments/environment';
+// environments/environment.ts
+import { EnvironmentPocketBaseWithTranslations } from '@plastik/core/environments';
 
-@NgModule({
-  providers: [
-    {
-      provide: ENVIRONMENT,
-      useValue: environment,
-    },
-  ],
-})
-export class AppModule {}
+export const environment: EnvironmentPocketBaseWithTranslations = {
+  production: false,
+  name: 'eco-store',
+  environment: 'development',
+  baseApiUrl: 'https://pocketbase.example.com',
+  client: 'eco-store',
+  languages: ['en', 'ca'],
+  defaultLanguage: 'en',
+};
+
+// app.config.ts
+import { ApplicationConfig } from '@angular/core';
+import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
+
+export const appConfig: ApplicationConfig = {
+  providers: [providePocketBaseWithTranslationsEnv(environment)],
+};
 ```
 
-- Use it with DI where needed
+### 3) Injecting the environment in a library service
 
 ```typescript
-// A library service that needs access to app environment values.
-export class MyService {
-  readonly #env = inject(ENVIRONMENT);
+import { inject } from '@angular/core';
+import { ENVIRONMENT } from '@plastik/core/environments';
 
-  constructor() {
-    console.log(this.#env.name);
+export class MyService {
+  readonly env = inject(ENVIRONMENT);
+  log() {
+    console.log(this.env.name, this.env.environment);
   }
 }
 ```
-
-## Running unit tests
-
-Run `nx test core-util-environments` to execute the unit tests.

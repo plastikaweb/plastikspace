@@ -1,0 +1,58 @@
+@if (cart().length === 0) {
+  <div class="py-8 text-center text-gray-500">El teu cistell està buit</div>
+} @else {
+  <mat-list class="max-h-[400px] overflow-y-auto">
+    @for (item of cart(); track item.id; let i = $index; let last = $last) {
+      <mat-list-item lines="2">
+        <mat-icon
+          matListItemIcon
+          aria-hidden="true"
+          class="border-gray-80 mr-sub h-[60px] w-[60px] rounded border"
+          ><plastik-img-container
+            [title]="item.name"
+            [src]="item.imgUrl || ''"
+            [dimensions]="{ width: 60, height: 60 }"
+            [quality]="80"
+        /></mat-icon>
+        <p matListItemTitle class="font-bold capitalize">{{ item.name }}</p>
+
+        <div matListItemLine class="flex flex-row items-center justify-between">
+          <mat-form-field class="mr-sub lg:-ml-sm max-w-[80px] min-w-[50px]">
+            <input
+              matInput
+              type="number"
+              min="0"
+              [step]="item.unit | llecoopProductUnitStep"
+              [ngModel]="item.quantity"
+              (ngModelChange)="onQuantityChange(item, $event)" />
+            <span matTextSuffix class="gap-tiny flex flex-row items-center">
+              {{ item.unit | llecoopProductUnitSuffix }}
+            </span>
+          </mat-form-field>
+          <div class="text-right">
+            <div class="font-semibold text-gray-800">
+              {{ item.priceWithIva * item.quantity | number: '1.2-2' }} €
+            </div>
+          </div>
+          <button mat-icon-button aria-label="Eliminar producte" (click)="removeItemFromCart(item)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </mat-list-item>
+      @if (!last) {
+        <mat-divider></mat-divider>
+      }
+    }
+  </mat-list>
+
+  <div
+    class="my-sub p-sub border-secondary flex items-center justify-between border-t text-base font-bold">
+    <span>Total:</span>
+    <span>{{ total() }} €</span>
+  </div>
+
+  <button class="w-full" mat-button>
+    <mat-icon>shopping_cart</mat-icon>
+    Anar al Cistell
+  </button>
+}

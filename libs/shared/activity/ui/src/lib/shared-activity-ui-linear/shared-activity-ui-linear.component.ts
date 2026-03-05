@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progress-bar';
 
 @Component({
@@ -9,19 +9,19 @@ import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progres
     `
       /* ----- ProgressBar https://material.angular.io/components/progress-bar ----- */
       .mat-mdc-progress-bar {
-        --mdc-linear-progress-track-color: var(
+        --mat-progress-bar-track-color: var(
           --plastik-mdc-linear-progress-track-color,
           rgb(183, 183, 183)
         ) !important;
-        --mdc-linear-progress-track-height: var(
+        --mat-progress-bar-track-height: var(
           --plastik-mdc-linear-progress-track-height,
           4px
         ) !important;
-        --mdc-linear-progress-active-indicator-height: var(
+        --mat-progress-bar-active-indicator-height: var(
           --plastik-mdc-linear-progress-active-indicator-height,
           4px
         ) !important;
-        --mdc-linear-progress-active-indicator-color: var(
+        --mat-progress-bar-active-indicator-color: var(
           --plastik-mdc-linear-progress-active-indicator-color,
           rgb(11, 17, 62)
         ) !important;
@@ -31,6 +31,6 @@ import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progres
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedActivityUiLinearComponent {
-  @Input() active = false;
-  @Input() mode: ProgressBarMode = 'indeterminate';
+  active = input(false);
+  mode = input<ProgressBarMode>('indeterminate');
 }

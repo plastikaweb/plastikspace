@@ -1,83 +1,70 @@
-# llecoop-triggers
+# Llecoop Triggers
 
-- [llecoop-triggers](#llecoop-triggers)
-  - [Deploy Llecoop Functions to Firebase Cloud Functions](#deploy-llecoop-functions-to-firebase-cloud-functions)
-  - [Generated Application Files](#generated-application-files)
-  - [Generated Workspace Root Files](#generated-workspace-root-files)
-  - [Generated modules](#generated-modules)
-  - [Next Steps](#next-steps)
-  - [Available triggers](#available-triggers)
-    - [Category](#category)
-    - [Product](#product)
-    - [User](#user)
-    - [Order List](#order-list)
-    - [User Order](#user-order)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
 
-## Deploy Llecoop Functions to Firebase Cloud Functions
+- [Description](#description)
+- [Features](#features)
+- [Setup & Deployment](#setup--deployment)
+- [Generated Files](#generated-files)
 
-- `yarn llecoop:firebase:functions:build` - Build Firebase Functions for deployment.
-- `yarn llecoop:firebase:functions:deploy:staging` - Deploy Firebase Functions to staging.
-- `yarn llecoop:firebase:functions:deploy:production` - Deploy Firebase Functions to production.
-- `yarn llecoop:deploy:functions` - Build and Deploy Firebase Functions to staging and production.
+## Description
 
-## Generated Application Files
+**Llecoop Triggers** contains the Firebase Cloud Functions responsible for automation and server-side logic in the Llecoop ecosystem. It handles events from Firestore, Auth, and scheduled tasks.
 
-- `src/main.ts` - Default Firebase Functions entry point.
+## Features
 
-## Generated Workspace Root Files
+### 📂 Category
 
-- `firebase.json` - Firebase CLI Configuration for this project.
-- `.firebaserc` - Default Firebase CLI Deployment Targets Configuration.
-- `firebase.json` - Intentionally Empty Firebase CLI Configuration (only needed to allow Firebase CLI to run in your workspace).
+- **`onDeleteCategoryUpdateProductCategory`**: Updates related products when a category is deleted.
+- **`onUpdateCategoryUpdateProductCategory`**: Updates related products when a category is updated.
 
-## Generated modules
+### 📦 Product
 
-Nx-Firebase will add `firebase-admin` and `firebase-functions` to your workspace `package.json` at the `'latest'` version. You may wish to set these to a specific version.
+- **`onCreateProductCategoryUpdateCategoryProductCount`**: Increments category product count on product creation.
+- **`onDeleteProductUpdateCategoryProductCount`**: Decrements category product count on product deletion.
+- **`onUpdateProductCategoryUpdateCategoryProductCount`**: Updates counts when a product's category changes.
 
-## Next Steps
+### 👥 User
 
-- `npm install -g firebase-tools` - Install the [Firebase CLI](https://firebase.google.com/docs/cli).
-- `firebase login` - Authenticate the Firebase CLI.
-- `firebase use --add` - Add your Firebase Project as a target to `.firebaserc`.
-- You do not need to `npm install` in the app project directory, but can still add and run custom npm scripts to the app `package.json` if you wish.
+- **`onRequestRegisterUserBlockIfUserIsNotWhiteListed`**: Security check for user registration.
+- **`onLoginUserUpdateVerifiedEmailProperty`**: Syncs email verification status on login.
+- **`setUserAdminClaim`**: Manages admin privileges.
+- **`onCreateWhiteListedUserCheckIfUserAlreadyExists`**: Prevents duplicate user creation.
+- **`onDeleteUserDeleteUserFromAuth`**: Syncs Firestore user deletion with Auth.
+- **`onUpdateUserUpdateAuth`**: Syncs user profile changes (name, photo, phone, email) to Auth.
 
-See the plugin [README](https://github.com/simondotm/nx-firebase/blob/main/README.md) for more information.
+### 🛒 Order List
 
-## Available triggers
+- **`onOrderListTimeFinishUpdateOrderListState`**: Auto-closes order lists based on time.
+- **`onUserOrderCreatedUpdateOrderListUserOrdersCount`**: Updates total order count.
+- **`onUserOrderDeletedUpdateOrderListUserOrdersCount`**: Updates total order count.
+- **`onUserOrderStatusUpdateUpdateOrderListUserOrdersStatus`**: Aggregates user order statuses.
 
-### Category
+### 🛍️ User Order
 
-- `onDeleteCategoryUpdateProductCategory`: When a category is deleted, it updates the related products category to null.
-- `onUpdateCategoryUpdateProductCategory`: When a category is updated, it updates the related products.
+- **`onCreateUserOrderCheckIfAnUserOrderExists`**: Prevents duplicate orders for the same list.
+- **`onChangeUserOrderUpdateOrderListTotal`**: Recalculates order list totals.
+- **`onCancelOrderListCancelRelatedUserOrdersStatus`**: Cascades cancellation to user orders.
+- **`onDeleteOrderListDeleteRelatedUserOrders`**: Cascades deletion to user orders.
 
-### Product
+## Setup & Deployment
 
-- `onCreateProductCategoryUpdateCategoryProductCount`: Updates category product count when a new product is created.
-- `onDeleteProductUpdateCategoryProductCount`: Updates category product count when a product is deleted.
-- `onUpdateProductCategoryUpdateCategoryProductCount`: Updates category product count when product category changes.
+### Setup
 
-### User
+1. Install CLI: `npm install -g firebase-tools`
+2. Login: `firebase login`
+3. Add Target: `firebase use --add`
 
-- `onRequestRegisterUserBlockIfUserIsNotWhiteListed`: Blocks registration if user email is not whitelisted.
-- `onLoginUserUpdateVerifiedEmailProperty`: Updates email verification status on user login.
-- `setUserAdminClaim`: Sets admin claim for a user and updates Firestore document.
-- `onCreateWhiteListedUserCheckIfUserAlreadyExists`: Validates new user creation against existing Auth users.
-- `onDeleteUserDeleteUserFromAuth`: Removes user from Firebase Auth when Firestore document is deleted.
-- `onUpdateUserUpdateAuth`: Updates Firebase Auth user data when Firestore document changes.
-  - Updates basic info (name, photo, phone).
-  - Handles email changes with verification.
-  - Formats phone numbers to E.164 standard.
+### Deployment
 
-### Order List
+- **Build**: `yarn llecoop:firebase:functions:build`
+- **Deploy (Staging)**: `yarn llecoop:firebase:functions:deploy:staging`
+- **Deploy (Prod)**: `yarn llecoop:firebase:functions:deploy:production`
+- **Deploy All**: `yarn llecoop:deploy:functions`
 
-- `onOrderListTimeFinishUpdateOrderListState`: Updates order list state based on finish time.
-- `onUserOrderCreatedUpdateOrderListUserOrdersCount`: Updates order list user orders count when a new order is created.
-- `onUserOrderDeletedUpdateOrderListUserOrdersCount`: Updates order list user orders count when an order is deleted.
-- `onUserOrderStatusUpdateUpdateOrderListUserOrdersStatus`: Updates order list user orders status when an order status changes.
+## Generated Files
 
-### User Order
-
-- `onCreateUserOrderCheckIfAnUserOrderExists`: Validates if a user order already exists before creation.
-- `onChangeUserOrderUpdateOrderListTotal`: Updates order list totals when an order changes.
-- `onCancelOrderListCancelRelatedUserOrdersStatus`: When an order list is canceled, it updates the related user orders status.
-- `onDeleteOrderListDeleteRelatedUserOrders`: When an order list is deleted, it deletes all related user orders.
+- `src/main.ts`: Entry point.
+- `firebase.json`: Configuration.
+- `.firebaserc`: Deployment targets.

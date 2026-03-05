@@ -5,13 +5,13 @@
 
 @defer {
   <div
-    class="flex flex-col flex-wrap justify-center items-center gap-tiny md:flex-row md:justify-between">
-    <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
-      <mat-icon class="text-[40px] size-[40px]">{{ viewConfig?.icon }}</mat-icon>
+    class="gap-tiny flex flex-col flex-wrap items-center justify-center md:flex-row md:justify-between">
+    <h2 class="h4 gap-sub flex content-center items-center">
+      <mat-icon class="size-[40px] text-[40px]">{{ viewConfig?.icon }}</mat-icon>
       <span>{{ viewConfig?.title | titlecase }}</span>
     </h2>
 
-    <div class="flex flex-col items-center sm:flex-row sm:justify-end gap-tiny">
+    <div class="gap-tiny flex flex-col items-center sm:flex-row sm:justify-end">
       <button type="button" mat-stroked-button [routerLink]="['/comandes', 'totes']">
         <mat-icon>arrow_back</mat-icon> Tornar al llistat
       </button>
@@ -19,10 +19,10 @@
   </div>
 }
 
-<div class="flex flex-col justify-between gap-md pt-lg">
+<div class="gap-md pt-lg flex flex-col justify-between">
   @defer {
     <section
-      class="rounded-lg shadow-sm p-md mb-md"
+      class="p-md mb-md rounded-lg shadow-sm"
       [attr.aria-label]="'Resum de la comanda ' + order?.name">
       <article>
         <h3 class="text-md text-balance">
@@ -37,20 +37,20 @@
           </plastik-ui-order-status-chip>
         }
         <dl class="space-y-2">
-          <div class="flex items-center gap-tiny">
+          <div class="gap-tiny flex items-center">
             <dt>Id:</dt>
             <dd>{{ order?.id }}</dd>
           </div>
-          <div class="flex items-center gap-tiny">
+          <div class="gap-tiny flex items-center">
             <dt>Nom:</dt>
             <dd>{{ order?.name }}</dd>
           </div>
-          <div class="flex items-center gap-tiny">
+          <div class="gap-tiny flex items-center">
             <dt>Usuari:</dt>
             <dd>{{ order?.userName }}</dd>
           </div>
           @if (order?.address) {
-            <div class="flex items-center gap-tiny">
+            <div class="gap-tiny flex items-center">
               <dt>Adreça:</dt>
               <dd>
                 <address class="not-italic">
@@ -59,7 +59,7 @@
               </dd>
             </div>
           }
-          <div class="flex items-center gap-tiny">
+          <div class="gap-tiny flex items-center">
             <dt>Email:</dt>
             <dd>
               {{ order?.userEmail }}
@@ -82,18 +82,18 @@
 
   @defer {
     <section
-      class="flex flex-col self-end rounded-lg shadow-sm p-sm min-w-third gap-tiny"
+      class="p-sm min-w-third gap-tiny flex flex-col self-end rounded-lg shadow-sm"
       aria-label="Total de la compra">
-      <dl class="divide-y divide-secondary-dark">
-        <div class="flex flex-row justify-between items-center p-tiny">
+      <dl class="divide-secondary-dark divide-y">
+        <div class="p-tiny flex flex-row items-center justify-between">
           <dt class="text-md">Total productes</dt>
           <dd class="font-medium">{{ order?.totalPrice | currency }}</dd>
         </div>
-        <div class="flex flex-row justify-between items-center p-tiny">
+        <div class="p-tiny flex flex-row items-center justify-between">
           <dt class="text-md">Transport</dt>
           <dd class="font-medium">{{ order?.deliveryPrice | currency }}</dd>
         </div>
-        <div class="flex flex-row justify-between items-center p-tiny">
+        <div class="p-tiny flex flex-row items-center justify-between">
           <dt class="text-lg font-semibold">Total</dt>
           <dd class="text-lg font-bold">{{ order?.totalPrice | currency }}</dd>
         </div>

@@ -1,0 +1,74 @@
+<div class="px-4 py-8" role="region">
+  <!-- Header Section -->
+  <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row">
+    <div class="ustify-start flex items-center gap-4">
+      <mat-icon
+        class="scale-150!"
+        [attr.aria-label]="'common.a11y.categoryIcon' | translate: { category: category()?.name }">
+        {{ category()?.icon }}
+      </mat-icon>
+      <h2
+        class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl"
+        [attr.aria-label]="category()?.name">
+        {{ category()?.name }}
+      </h2>
+      <span class="text-md font-medium text-neutral-500"
+        >({{ 'common.a11y.productsCount' | translate: { count: productsStore.count() } }})</span
+      >
+    </div>
+
+    <plastik-sort-selector
+      class="self-end"
+      [options]="productsStore.sortOptions()"
+      [currentSort]="productsStore.sort()"
+      [translationPrefix]="'products.filter.sort'"
+      (sortChange)="sortProducts($event)"></plastik-sort-selector>
+  </div>
+
+  <!-- Products Grid -->
+  <section class="products-grid" [attr.aria-label]="'common.a11y.productList' | translate">
+    @if (productsStore.isLoading()) {
+      @for (i of skeletonItems(); track $index) {
+        <div
+          aria-hidden="true"
+          class="flex h-full animate-pulse flex-col overflow-hidden rounded-[16px] border border-neutral-200 bg-neutral-50 p-2 shadow-sm">
+          <!-- Image block -->
+          <div class="mb-4 aspect-square w-full rounded-xl bg-neutral-200"></div>
+          <!-- Title lines -->
+          <div class="mb-2 h-4 w-2/5 rounded bg-neutral-200"></div>
+          <div class="mb-2 h-4 w-3/4 rounded bg-neutral-200"></div>
+          <div class="mb-6 h-4 w-1/2 rounded bg-neutral-200"></div>
+          <!-- Price and button -->
+          <div class="mb-4 h-8 w-5/6 rounded-xl bg-neutral-200"></div>
+          <div class="mb-6 h-7 w-4/6 rounded-xl bg-neutral-200"></div>
+          <div class="h-12 w-full rounded-xl bg-neutral-200"></div>
+        </div>
+      }
+    } @else {
+      @for (item of productsStore.productsWithTranslatedText(); track item.id; let i = $index) {
+        <eco-store-product-card
+          [product]="item"
+          [quantity]="cartStore.getItemCount(item.id)()"
+          [isFirst]="i < 6"
+          [isOpen]="tenantStore.isStoreOpen()"
+          (pointerdown)="viewTransitionService.setActiveId(item.id)"
+          (addToCart)="addToCart($event)"
+          (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
+      }
+    }
+  </section>
+
+  @if (!productsStore.isLoading()) {
+    @defer (on viewport; prefetch on idle) {
+      <plastik-pagination
+        class="mt-6"
+        plastikPocketbasePaginationNavigation
+        [pageSize]="productsStore.getPagination().perPage"
+        [pageIndex]="productsStore.getPagination().page"
+        [pageSizeOptions]="productsStore.paginationSizeOptions()"
+        [count]="productsStore.count()" />
+    } @placeholder {
+      <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
+    }
+  }
+</div>

@@ -1,4 +1,3 @@
-[Title](../../tvav-monorepo/documentation/styling.md)
 # Git Flow and CI/CD
 
 - [Git Flow and CI/CD](#git-flow-and-cicd)
@@ -11,6 +10,7 @@
   - [Merge](#merge)
     - [Merge Github actions](#merge-github-actions)
     - [Staging deploy](#staging-deploy)
+  - [i18n Validation](#i18n-validation)
   - [Useful links](#useful-links)
 
 ## Description
@@ -47,7 +47,7 @@ A guide to show the right implementation of issues and `git branching model`, an
 
 ## Issues creation
 
-Each new feature should be based on an existing `github issue`.  
+Each new feature should be based on an existing `github issue`.
 By default we are using `github projects` to manage the whole repository work.
 
 >[plastikspace project](https://github.com/users/plastikaweb/projects/2)
@@ -55,7 +55,7 @@ By default we are using `github projects` to manage the whole repository work.
 Each issue should have:
 
 - A concise and clear title written in imperative (Imperative mood in English).
-  > "Add a dynamic title to header"  
+  > "Add a dynamic title to header"
   > "Fix h2 sizes for mobile in Contact view"
 - A description when needed, with any help, screen image, external useful links, steps to reproduce a bug, etc.
 - Assignees: the person who is responsible for the development of the issue. This assignment is normally produced when the status of the issue changes to `Todo`.
@@ -90,11 +90,11 @@ The assigned developer creates a new PR based on the pushed branch and:
 On any PR creation:
 
 - **CI**:  this action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
-  > You can see the `CI` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml).
+  - You can see the `CI` actions status in the [CI](./git-flow.md#ci) section.
 
 - **`a11y {app-name}`**: this action is fired to execute accessibility test using `pa11y-cy` runner.
-  * > You can see the `a11y nasa-images` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/pa11y.yml).  
-  > You can see a local app a11y configuration [here](./accessibility.md#pa11y-ci-accessibility-test-runner)
+  - You can see the `a11y nasa-images` actions status in the [a11y](./accessibility.md#pa11y-ci-accessibility-test-runner) section.
+  - You can see a local app a11y configuration in the [accessibility-test-runner](./accessibility.md#pa11y-ci-accessibility-test-runner) section.
 
 ## Merge
 
@@ -105,22 +105,59 @@ Once the PR is approved, it can be merged into `develop branch` by its author.  
 On any merge to `develop branch`:
 
 - **CI**:  this action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
-  > You can see the `CI` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml).
+  - You can see the `CI` actions status in the [CI](./git-flow.md#ci) section.
 
 - **`a11y {app-name}`**: this action is fired to execute accessibility test using `pa11y-cy` runner.
-  > You can see the `a11y for nasa-images app` action status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/pa11y.yml).  
-  > You can see a local app a11y configuration [here](./accessibility.md#pa11y-ci-accessibility-test-runner)
+  - You can see the `a11y for nasa-images app` action status in the [a11y](./accessibility.md#pa11y-ci-accessibility-test-runner) section.
 
 - **Deploy**: Once all `CI` and `a11y` related actions are passed successfully, a `Deploy Staging` workflow is fired, to build and deploy to github pages the app(s).
 
-  > You can see the `Deploy Staging` actions status [here](https://github.com/plastikaweb/plastikspace/actions/workflows/cd-dev.yml).
-
 ### Staging deploy
 
-The deploy used by `github pages` will vary depending of each included app configuration.  
+The deploy used by `github pages` will vary depending of each included app configuration.
 Please, take a look inside each app README for further information:
 
 - [nasa-images](../apps/nasa-images/README.md);
+
+## i18n Validation
+
+Translation keys are validated automatically to ensure all keys used in templates and TypeScript are defined in source language files.
+
+### During Local Development
+
+Run validation before committing translation changes:
+
+```bash
+yarn i18n:validate    # Quick check (~2-5s)
+yarn i18n:test        # Full test suite (~5-15s)
+```
+
+### In CI/CD Pipeline
+
+**On every PR/commit** (fast validation):
+
+```yaml
+- name: Validate i18n keys
+  run: yarn i18n:validate
+```
+
+**On integration tests** (comprehensive validation):
+
+```yaml
+- name: Run i18n tests
+  run: yarn i18n:test
+  if: github.event_name == 'pull_request'
+```
+
+### Pre-commit Hook
+
+Add to `.husky/pre-commit` to prevent incomplete translations:
+
+```bash
+yarn i18n:validate
+```
+
+For more details, see [i18n documentation](./i18n.md).
 
 ## Useful links
 

@@ -1,23 +1,20 @@
-import { signalStore } from '@ngrx/signals';
+import { signalStore, withState } from '@ngrx/signals';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
-import {
-  initStoreFirebaseCrudState,
-  StoreFirebaseCrudFilter,
-  StoreFirebaseCrudState,
-  withFirebaseCrud,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import {
+  FirebaseCrudFilter,
+  FirebaseCrudState,
+  initStoreFirebaseCrudState,
+  withFirebaseCrud,
+} from '@plastik/signal-state/firebase';
 
 import { LlecoopCategoryFireService } from './category-fire.service';
 
-export type StoreCategoryFilter = StoreFirebaseCrudFilter & { text: string };
+export type CategoryFilter = FirebaseCrudFilter & { text: string };
 
-export type UserOrderListStoreCrudState = StoreFirebaseCrudState<
-  LlecoopProductCategory,
-  StoreCategoryFilter
->;
+export type CategoryStoreCrudState = FirebaseCrudState<LlecoopProductCategory, CategoryFilter>;
 
-export const initState: StoreFirebaseCrudState<LlecoopProductCategory, StoreCategoryFilter> = {
+export const categoryMainInitState: CategoryStoreCrudState = {
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
@@ -33,14 +30,15 @@ export const initState: StoreFirebaseCrudState<LlecoopProductCategory, StoreCate
 
 export const llecoopCategoryStore = signalStore(
   { providedIn: 'root' },
+  withState<CategoryStoreCrudState>(categoryMainInitState),
   withFirebaseCrud<
     LlecoopProductCategory,
     LlecoopCategoryFireService,
-    StoreCategoryFilter,
-    UserOrderListStoreCrudState
+    CategoryFilter,
+    CategoryStoreCrudState
   >({
     featureName: 'category',
     dataServiceType: LlecoopCategoryFireService,
-    initState,
+    initState: categoryMainInitState,
   })
 );

@@ -3,15 +3,15 @@
 @let tableDefinition = facade.tableDefinition;
 @let viewExtraActions = facade.viewExtraActions?.() || [];
 
-<div class="flex flex-row flex-wrap justify-center items-center gap-sm sm:justify-between">
+<div class="gap-sm flex flex-row flex-wrap items-center justify-center sm:justify-between">
   @defer {
-    <h2 class="flex content-center items-center h4 gap-sub text-primary-dark">
-      <mat-icon class="text-[40px] size-[40px]">{{ viewConfig?.icon }}</mat-icon>
+    <h2 class="h4 gap-sub flex content-center items-center">
+      <mat-icon class="size-[40px] text-[40px]">{{ viewConfig?.icon }}</mat-icon>
       <span>{{ viewConfig?.title | titlecase }}</span>
     </h2>
 
     @if (viewExtraActions.length) {
-      <div class="flex flex-row justify-center items-center gap-sm">
+      <div class="gap-sm flex flex-row items-center justify-center">
         @for (action of viewExtraActions; track action) {
           <button
             type="button"
@@ -39,7 +39,7 @@
 
 @defer {
   <plastik-shared-form-feature
-    class="flex flex-row justify-between content-center items-end mb-4 filters-box"
+    class="filters-box mb-4 flex flex-row content-center items-end justify-between"
     [fields]="facade.filterFormConfig || []"
     [model]="facade.filterCriteria?.() || {}"
     [submitConfig]="{ submitAvailable: false, disableOnSubmit: false }"

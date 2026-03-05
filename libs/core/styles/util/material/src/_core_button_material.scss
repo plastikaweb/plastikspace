@@ -1,0 +1,38 @@
+:root {
+  .mat-mdc-button-base,
+  .mat-mdc-list-item::before {
+    transition:
+      background-color 0.1s ease-in-out,
+      opacity 0.1s ease-in-out,
+      transform 0.1s ease-in-out,
+      box-shadow 0.1s ease-in-out !important;
+  }
+
+  .mat-mdc-icon-button {
+    line-height: normal;
+  }
+
+  // Fix for vertical alignment in Angular Material Icon Buttons
+  // This resolves issues where Tailwind resets or other styles interfere with icon centering
+  .mat-mdc-icon-button .mdc-button__label,
+  .mat-mdc-icon-button .mat-icon {
+    line-height: 1 !important; // Ensure no extra height from text line-height
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  // .mdc-button:hover,
+  // .mdc-icon-button:hover {
+  //   background-color: var(--mat-sys-primary-container);
+  //   color: var(--mat-sys-on-primary-container);
+  // }
+
+  // .mdc-button:focus,
+  // .mdc-icon-button:focus,
+  // .mdc-button:active,
+  // .mdc-icon-button:active {
+  //   background-color: var(--mat-sys-primary);
+  //   color: var(--mat-sys-on-primary);
+  // }
+}

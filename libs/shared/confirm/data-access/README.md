@@ -1,11 +1,16 @@
-# shared-confirm-data-access
+# @plastik/shared/confirm/data-access
 
-- [shared-confirm-data-access](#shared-confirm-data-access)
-  - [How to use](#how-to-use)
-  - [Useful Links](#useful-links)
-  - [Running unit tests](#running-unit-tests)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular Material](https://img.shields.io/badge/angular_material-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
 
-This is a simple confirm dialog component that can be used to confirm an action. The most usual use case is to confirm a delete action.
+- [Description](#description)
+- [How to use](#how-to-use)
+- [Running unit tests](#running-unit-tests)
+- [Resources](#resources)
+
+## Description
+
+This is a simple **confirm dialog component** that can be used to confirm an action. The most usual use case is to confirm a delete action.
 
 ## How to use
 
@@ -16,10 +21,10 @@ This method returns an observable that emits a boolean value. If the user clicks
   private confirmService = inject(SharedConfirmDialogService);
 
   this.confirmService.confirm({
-    title: 'Delete',
-    message: 'Are you sure you want to delete this item?',
-    ko: 'Cancel',
-    ok: 'Delete',
+    title: 'confirm.delete.title',
+    message: 'confirm.delete.message',
+    ko: 'confirm.delete.cancel',
+    ok: 'confirm.delete.ok',
   })
   .pipe(take(1), filter(Boolean))
   .subscribe((result) => {
@@ -29,10 +34,10 @@ This method returns an observable that emits a boolean value. If the user clicks
   });
 ```
 
-## Useful Links
-
-- [Angular Material Dialog](https://material.angular.io/components/dialog/overview)
-
 ## Running unit tests
 
 Run `nx test shared-confirm-data-access` to execute the unit tests.
+
+## Resources
+
+- [Angular Material Dialog](https://material.angular.io/components/dialog/overview)

@@ -1,5 +1,5 @@
 <div
-  class="flex overflow-hidden relative justify-center items-center rounded-lg border-2 border-dashed outline-none text-primary-dark border-gray-40"
+  class="border-gray-40 relative flex items-center justify-center overflow-hidden rounded-lg border-2 border-dashed outline-none"
   tabindex="0"
   [style.height.px]="imgHeight()"
   [style.width.px]="imgWidth()"
@@ -10,10 +10,9 @@
   (drop)="onDrop($event)">
   <!-- loading indicator -->
   <div
-    class="flex absolute inset-0 z-20 flex-col justify-center items-center w-full h-full rounded-lg opacity-0 transition-all duration-150 pointer-events-none bg-gray-10"
-    [ngClass]="{ 'opacity-100': isLoading() }">
+    class="`bg-gray-10 ${isLoading() ? 'opacity-100' : ''}` pointer-events-none absolute inset-0 z-20 flex h-full w-full flex-col items-center justify-center rounded-lg opacity-0 transition-all duration-150">
     <output
-      class="absolute z-20 w-full text-sm font-bold text-center text-white"
+      class="absolute z-20 w-full text-center text-sm font-bold text-white"
       [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"
       [attr.aria-live]="'polite'"
       >{{ progress() || 0 }}%</output
@@ -23,24 +22,23 @@
       mode="determinate"
       [value]="progress() || 0"
       [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"></mat-progress-spinner>
-    <div class="absolute w-full h-full bg-black opacity-80"></div>
+    <div class="absolute h-full w-full bg-black opacity-80"></div>
   </div>
 
   <!-- on drag and drop indicator -->
   <div
-    class="flex absolute inset-0 z-10 flex-col justify-center items-center rounded-lg opacity-0 transition-all duration-150 bg-gray-10"
-    style="pointer-events: none"
-    [ngClass]="{ 'opacity-100': isDragOver() }">
-    <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">upload</mat-icon>
-    <span class="text-sm text-center text-balance">Suelta la imagen aquí</span>
+    class="`bg-gray-10 ${isDragOver() ? 'opacity-100' : ''}` absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg opacity-0 transition-all duration-150"
+    style="pointer-events: none">
+    <mat-icon class="m-0 h-20 w-20 p-0 text-[75px]">upload</mat-icon>
+    <span class="text-center text-sm text-balance">Suelta la imagen aquí</span>
   </div>
 
   <!-- image load button and drag and drop instructions -->
   @if (!value() && !isLoading()) {
-    <div class="flex flex-col justify-center items-center p-0 m-0 w-full h-full bg-gray-10">
-      <mat-icon class="w-[75px] h-[75px] text-[75px] p-0 m-0">upload</mat-icon>
-      <span class="text-sm text-center text-balance">Arrastra una imatge</span>
-      <span class="text-sm text-center text-balance">o</span>
+    <div class="bg-gray-10 m-0 flex h-full w-full flex-col items-center justify-center p-0">
+      <mat-icon class="m-0 h-20 w-20 p-0 text-[75px]">upload</mat-icon>
+      <span class="text-center text-sm text-balance">Arrastra una imatge</span>
+      <span class="text-center text-sm text-balance">o</span>
       <button
         type="button"
         mat-button
@@ -56,18 +54,18 @@
 
   <!-- image preview -->
   @if (value() && cdnUrl() && !isLoading()) {
-    <plastik-shared-img-container
+    <plastik-img-container
       class="absolute top-0 right-0 bottom-0 left-0 rounded-lg"
       [src]="cdnUrl() || ''"
       [dimensions]="dimensions()"
       [title]="title() || ''"
       [lcpImage]="lcpImage()">
-    </plastik-shared-img-container>
+    </plastik-img-container>
     <div
-      class="flex absolute right-0 bottom-0 left-0 justify-between items-center py-0 rounded-b-lg text-primary-dark bg-white/90 px-sub"
+      class="px-sub absolute right-0 bottom-0 left-0 flex items-center justify-between rounded-b-lg bg-white/90 py-0"
       tabindex="0"
       (focus)="firstActionBtn?.focus()">
-      <p class="flex-grow text-sm font-bold truncate">{{ title() || '' }}</p>
+      <p class="grow truncate text-sm font-bold">{{ title() || '' }}</p>
       <div class="flex items-center">
         <button
           #firstActionBtn

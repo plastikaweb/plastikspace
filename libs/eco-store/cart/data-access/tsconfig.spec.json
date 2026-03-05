@@ -1,0 +1,39 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "module": "esnext",
+    "target": "es2016",
+    "types": ["jest", "node"],
+    "moduleResolution": "bundler",
+    "isolatedModules": true
+  },
+  "files": ["src/test-setup.ts"],
+  "include": [
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.d.ts",
+    "src/**/*.ts"
+  ],
+  "references": [
+    {
+      "path": "../../../shared/auth/pocketbase/data-access"
+    },
+    {
+      "path": "../../../core/entities"
+    },
+    {
+      "path": "../../core/entities"
+    },
+    {
+      "path": "../../products/data-access"
+    },
+    {
+      "path": "../../core/tenant"
+    },
+    {
+      "path": "../../../shared/notification/data-access"
+    }
+  ]
+}

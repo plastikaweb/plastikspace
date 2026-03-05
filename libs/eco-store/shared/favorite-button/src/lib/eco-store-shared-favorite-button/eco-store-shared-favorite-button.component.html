@@ -1,0 +1,11 @@
+<button
+  mat-icon-button
+  type="button"
+  [class]="'favorite-button bg-primary-100/50! size- backdrop-blur-3xl' + size()"
+  [class.is-favorite]="isFavorite()"
+  [attr.aria-label]="ariaLabel()"
+  (click)="onToggle($event)">
+  <mat-icon>
+    {{ isFavorite() ? 'favorite' : 'favorite_border' }}
+  </mat-icon>
+</button>

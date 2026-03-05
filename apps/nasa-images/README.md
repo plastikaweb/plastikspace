@@ -1,63 +1,63 @@
-# Nasa Images
+# NASA Images
 
-- [Nasa Images](#nasa-images)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [NASA Images](#nasa-images)
   - [Description](#description)
-  - [Running commands](#running-commands)
-  - [Deploys](#deploys)
-  - [Available libraries](#available-libraries)
-    - [Shared](#shared)
-    - [Search view](#search-view)
-    - [FAQs view](#faqs-view)
-  - [Useful links](#useful-links)
+  - [Features](#features)
+  - [Quick Start](#quick-start)
+  - [Development Commands](#development-commands)
+  - [Architecture \& Libraries](#architecture--libraries)
+    - [🔄 Shared](#-shared)
+    - [🔍 Search View](#-search-view)
+    - [❓ FAQs View](#-faqs-view)
+  - [Resources](#resources)
 
 ## Description
 
-Main application entry point for Nasa Images, an application to search NASA images using `images-api.nasa.gov` API.
+**NASA Images** is an application that allows users to search and view images from the NASA Image and Video Library. It serves as a demonstration of consuming external APIs and displaying rich media content.
 
-See the [NASA Image library analysis wiki](https://github.com/plastikaweb/plastikspace/wiki/nasa-image-library-project) for documentation on analysis and requirements.
+> 📘 **Documentation**: See the [NASA Image library analysis wiki](https://github.com/plastikaweb/plastikspace/wiki/nasa-image-library-project) for detailed analysis and requirements.
 
-It has 2 main views:
+## Features
 
-> nasa images search
-> Search page
->
-> nasa images faqs
-> FAQs page
+- **Image Search**: Search the NASA archives using keywords.
+- **Media Viewer**: View high-quality images and specific details.
+- **FAQs**: Application information and common questions.
 
-## Running commands
+## Quick Start
 
-- Serve: Run `yarn nasa-images:serve`.
-- LInt: Run `yarn nasa-images:lint`.
-- Test: Run `yarn nasa-images:test`.
-- E2E: Run `yarn nasa-images:e2e`.
-- Build: Run `yarn nasa-images:build`.
+1. **Install Dependencies**: `yarn install`
+2. **Serve Application**: `yarn nasa-images:serve`
 
-## Deploys
+## Development Commands
 
-A `staging` deployment can be found at [Nasa Images staging](https://www.nasa-images-staging.plastikaweb.com).
+- **Serve**: `yarn nasa-images:serve`
+- **Lint**: `yarn nasa-images:lint`
+- **Test**: `yarn nasa-images:test`
+- **E2E**: `yarn nasa-images:e2e`
+- **Build**: `yarn nasa-images:build`
 
-## Available libraries
+## Architecture & Libraries
 
-This is a list of all the related only to nasa-images app.
+### 🔄 Shared
 
-### Shared
+- [**data-access**](../../libs/nasa-images/data-access/README.md)
 
-- [nasa-images-data-access](../../libs/nasa-images/data-access/README.md)
+### 🔍 Search View
 
-### Search view
+- [**search-feature**](../../libs/nasa-images/search/feature/README.md)
+- [**search-data-access**](../../libs/nasa-images/search/data-access/README.md)
+- [**search-entities**](../../libs/nasa-images/search/entities/README.md)
+- [**search-ui-no-results**](../../libs/nasa-images/search/ui/no-results/README.md)
 
-- [nasa-images-search-entities](../../libs/nasa-images/search/entities/README.md)
-- [nasa-images-search-data-access](../../libs/nasa-images/search/data-access/README.md)
-- [nasa-images-search-feature](../../libs/nasa-images/search/feature/README.md)
-- [nasa-images-search-ui-no-results](../../libs/nasa-images/search/ui/no-results/README.md)
+### ❓ FAQs View
 
-### FAQs view
+- [**faqs-feature**](../../libs/nasa-images/faqs/feature/README.md)
 
-- [nasa-images-faqs-feature](../../libs/nasa-images/faqs/feature/README.md)
+## Resources
 
-## Useful links
-
-- [NASA Images library analysis](https://github.com/plastikaweb/plastikspace/wiki/nasa-image-library-project)
-- [NASA Images repository folder](https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images)
-- [Nasa Images staging](https://nasa-images-staging.plastikaweb.com)
-- [NASA Images API](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf)
+- [NASA Images API Docs](https://images.nasa.gov/docs/images.nasa.gov_api_docs.pdf)
+- [Repository Folder](https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images)
+- [Staging Deploy](https://www.nasa-images-staging.plastikaweb.com)

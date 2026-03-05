@@ -1,10 +1,10 @@
 import { Timestamp } from '@angular/fire/firestore';
-import { EntityId } from '@ngrx/signals/entities';
+export type LocalizedFields<T extends string = string> = Record<T, string>;
 
-export type BaseEntity = {
-  readonly id?: EntityId;
-  name: string;
-  normalizedName: string;
-  createdAt?: Timestamp;
-  updatedAt?: Timestamp;
+export type BaseEntity<T extends string = string> = {
+  readonly id: string | number;
+  name: string | LocalizedFields<T>;
+  normalizedName?: string;
+  createdAt?: Date | Timestamp | string;
+  updatedAt?: Date | Timestamp | string;
 } & Record<string, unknown>;

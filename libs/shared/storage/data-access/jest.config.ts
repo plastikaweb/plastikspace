@@ -3,6 +3,10 @@ export default {
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../coverage/libs/shared/storage/data-access',
+  moduleNameMapper: {
+    '^@plastik/shared/testing$': '<rootDir>/../../../../libs/shared/testing/index.ts',
+    '^@plastik/storage/entities$': '<rootDir>/../entities/src/index.ts',
+  },
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

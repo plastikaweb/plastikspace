@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { FormlyMaterialModule } from '@ngx-formly/material';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { BytesToSizePipe } from '@plastik/shared/bytes-to-size';
 
@@ -15,7 +14,6 @@ import { InputImgLoaderComponent } from './input-img-loader.component';
   templateUrl: './input-img-loader-type.component.html',
   imports: [
     ReactiveFormsModule,
-    FormlyMaterialModule,
     MatInputModule,
     FormlyModule,
     InputImgLoaderComponent,

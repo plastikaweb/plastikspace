@@ -1,15 +1,15 @@
 import { CdkTextareaAutosize, TextFieldModule } from '@angular/cdk/text-field';
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   Injector,
-  ViewChild,
   afterNextRender,
   inject,
+  viewChild,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
+import { TranslatePipe } from '@ngx-translate/core';
 import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 
@@ -22,7 +22,7 @@ import { FieldType } from '@ngx-formly/material/form-field';
     ReactiveFormsModule,
     MatInputModule,
     FormlyModule,
-    NgClass,
+    TranslatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -34,12 +34,12 @@ import { FieldType } from '@ngx-formly/material/form-field';
 export class TextareaWithCounterTypeComponent extends FieldType<FieldTypeConfig> {
   readonly #injector = inject(Injector);
 
-  @ViewChild('autosize') autosize!: CdkTextareaAutosize;
+  autosize = viewChild<CdkTextareaAutosize>('autosize');
 
   triggerResize() {
     afterNextRender(
       () => {
-        this.autosize.resizeToFitContent(true);
+        this.autosize()?.resizeToFitContent(true);
       },
       {
         injector: this.#injector,

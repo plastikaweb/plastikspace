@@ -1,10 +1,56 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": []
+    "outDir": "../../dist/out-tsc"
   },
   "files": ["src/main.ts"],
   "include": ["src/**/*.d.ts"],
-  "exclude": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts"]
+  "exclude": ["jest.config.ts", "src/test-setup.ts", "src/**/*.test.ts", "src/**/*.spec.ts"],
+  "references": [
+    {
+      "path": "../../libs/llecoop/entities"
+    },
+    {
+      "path": "../../libs/core/entities"
+    },
+    {
+      "path": "../../libs/llecoop/cms-layout"
+    },
+    {
+      "path": "../../libs/shared/auth/request-password/feature"
+    },
+    {
+      "path": "../../libs/shared/auth/register/feature"
+    },
+    {
+      "path": "../../libs/shared/auth/login/feature"
+    },
+    {
+      "path": "../../libs/shared/auth/firebase/data-access"
+    },
+    {
+      "path": "../../libs/shared/form/util/tsconfig.lib.json"
+    },
+    {
+      "path": "../../libs/shared/form/feature"
+    },
+    {
+      "path": "../../libs/core/router/data-access"
+    },
+    {
+      "path": "../../libs/core/util/environments"
+    },
+    {
+      "path": "../../libs/core/cms-layout/data-access"
+    },
+    {
+      "path": "../../libs/shared/notification/ui/mat-snackbar"
+    },
+    {
+      "path": "../../libs/shared/notification/data-access"
+    },
+    {
+      "path": "../../libs/shared/activity/ui"
+    }
+  ]
 }

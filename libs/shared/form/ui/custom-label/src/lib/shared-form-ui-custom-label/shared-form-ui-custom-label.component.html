@@ -1,0 +1,42 @@
+<div [class]="setContainerClasses()">
+  <div class="flex items-center justify-between gap-2">
+    @if (props.icon) {
+      <mat-icon
+        [class]="
+          'mx-2 size-4 flex-shrink-0 cursor-pointer overflow-visible text-4xl ' + props.iconClasses
+        "
+        [attr.aria-label]="props.description ?? props.label | translate">
+        {{ props.icon }}
+      </mat-icon>
+    }
+
+    @if (props.key) {
+      <label [attr.for]="props.key" [class]="props.labelClasses">{{
+        props.label | translate
+      }}</label>
+    } @else {
+      <p [class]="props.labelClasses">{{ props.label | translate }}</p>
+    }
+
+    @if (props.value) {
+      <p [class]="props.labelClasses">{{ props.value }}</p>
+    }
+  </div>
+
+  @if (props.checkValidation) {
+    <div [class]="`inline-flex h-8 w-8 items-center justify-center rounded-full`">
+      <mat-icon
+        [attr.aria-label]="
+          props.isValid === 'valid'
+            ? ('state.valid' | translate)
+            : props.isValid === 'error'
+              ? ('state.invalid' | translate)
+              : ('state.pending' | translate)
+        "
+        >{{
+          props.isValid === 'valid' ? 'check_circle' : props.isValid === 'error' ? 'error' : 'pause'
+        }}</mat-icon
+      >
+    </div>
+  }
+</div>

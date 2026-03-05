@@ -1,8 +1,8 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentWithApiMock } from '@plastik/core/environments/testing';
 
 import { NasaImagesApiService } from './nasa-images-api.service';
 import {
@@ -17,8 +17,8 @@ describe('NasaImagesApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
-        provideEnvironmentMock(),
+        provideZonelessChangeDetection(),
+        provideEnvironmentWithApiMock(),
         provideHttpClient(),
         provideHttpClientTesting(),
         NasaImagesApiService,

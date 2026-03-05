@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 
@@ -17,7 +17,7 @@ describe('RouterState selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideMockStore({ initialState }), provideExperimentalZonelessChangeDetection()],
+      providers: [provideMockStore({ initialState }), provideZonelessChangeDetection()],
     });
   });
 

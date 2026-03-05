@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.form-field-overrides(
+    (
+      container-height: 40px,
+      subscript-text-line-height: 0,
+      outlined-outline-width: 70px,
+      filled-container-color: transparent,
+    )
+  );
+
+  @include mat.chips-overrides(
+    (
+      label-text-color: var(--mat-sys-primary),
+      outline-color: var(--mat-sys-outline),
+    )
+  );
+}
+
+/* Using ::ng-deep to target Angular Material's internal elements */
+:host ::ng-deep {
+  .mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper {
+    display: none !important;
+  }
+}

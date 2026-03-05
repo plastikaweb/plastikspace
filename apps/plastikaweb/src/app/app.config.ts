@@ -2,13 +2,9 @@ import { provideApollo } from 'apollo-angular';
 import { HttpLink } from 'apollo-angular/http';
 
 import { provideHttpClient } from '@angular/common/http';
-import {
-  ApplicationConfig,
-  inject,
-  provideExperimentalZonelessChangeDetection,
-} from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { ApplicationConfig, inject, provideZonelessChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
 import { InMemoryCache } from '@apollo/client/core';
 import { ENVIRONMENT } from '@plastik/core/environments';
 
@@ -17,10 +13,10 @@ import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
-    provideAnimationsAsync(),
+    provideZonelessChangeDetection(),
     provideRouter(appRoutes),
     provideHttpClient(),
+    provideTranslateService(),
     {
       provide: ENVIRONMENT,
       useValue: environment,
@@ -29,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       const httpLink = inject(HttpLink);
 
       return {
-        link: httpLink.create({ uri: environment.apiUrl }),
+        link: httpLink.create({ uri: environment.baseApiUrl }),
         cache: new InMemoryCache(),
         defaultOptions: {
           watch: {

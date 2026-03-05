@@ -1,8 +1,8 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { provideTranslateService } from '@ngx-translate/core';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { TextareaWithCounterTypeComponent } from './textarea-with-counter-type.component';
@@ -13,9 +13,8 @@ describe('TextareaWithCounterTypeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection(), provideTranslateService()],
       imports: [
-        NoopAnimationsModule,
         ReactiveFormsModule,
         MatInputModule,
         FormlyModule.forRoot({

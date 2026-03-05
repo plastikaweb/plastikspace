@@ -1,19 +1,65 @@
-@if (!dimensions()) {
-  <img
-    fill
-    class="object-cover rounded-lg"
-    [ngSrc]="src() || ''"
-    [priority]="lcpImage()"
-    [alt]="title()" />
-} @else {
-  @let width = dimensions()?.width;
-  @let height = dimensions()?.height;
-  <img
-    class="object-cover rounded-lg"
-    [ngSrc]="src() || ''"
-    [width]="width"
-    [height]="height"
-    [priority]="lcpImage()"
-    [alt]="title()"
-    [loaderParams]="{ width, height, quality: quality() }" />
+@let width = dimensions()?.width;
+@let height = dimensions()?.height;
+@let src = this.src();
+
+<div
+  class="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
+  [class.bg-neutral-100]="isLoading()"
+  [class.breathing]="isLoading()">
+  @if (isLoading()) {
+    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>
+  }
+
+  @if (hasError()) {
+    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">
+      <mat-icon class="scale-200">image_not_supported</mat-icon>
+    </div>
+  }
+</div>
+
+@if (src) {
+  @if (width && height) {
+    @if (lcpImage()) {
+      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>
+    } @else {
+      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>
+    }
+  } @else {
+    @if (lcpImage()) {
+      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>
+    } @else {
+      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>
+    }
+  }
+
+  <ng-template #fixedImage let-priority="priority">
+    <img
+      class="object-cover transition-opacity duration-200"
+      [class.opacity-0]="isLoading()"
+      [class.opacity-100]="!isLoading() && !hasError()"
+      [priority]="priority"
+      [ngSrc]="src"
+      [width]="width"
+      [height]="height"
+      [alt]="title()"
+      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"
+      (load)="onImageLoad()"
+      (error)="onImageError()" />
+  </ng-template>
+
+  <ng-template #fillImage let-priority="priority">
+    <img
+      fill
+      class="h-full w-full object-cover transition-opacity duration-200"
+      [class.opacity-0]="isLoading()"
+      [class.opacity-100]="!isLoading() && !hasError()"
+      [priority]="priority"
+      [ngSrc]="src"
+      [alt]="title()"
+      [sizes]="sizes()"
+      [ngSrcset]="computedSrcset()"
+      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"
+      (load)="onImageLoad()"
+      (error)="onImageError()" />
+  </ng-template>
 }

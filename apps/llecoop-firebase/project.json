@@ -7,6 +7,7 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
+      "cache": true,
       "options": {
         "command": "echo Build succeeded."
       }
@@ -19,16 +20,16 @@
     },
     "lint": {
       "executor": "nx:run-commands",
+      "cache": true,
       "options": {
-        "command": "nx run-many --targets=lint --projects=tag:firebase:dep:llecoop-firebase --parallel=100",
-        "cache": true
+        "command": "nx run-many --targets=lint --projects=tag:firebase:dep:llecoop-firebase --parallel=100"
       }
     },
     "test": {
       "executor": "nx:run-commands",
+      "cache": true,
       "options": {
-        "command": "nx run-many --targets=test --projects=tag:firebase:dep:llecoop-firebase --parallel=100",
-        "cache": true
+        "command": "nx run-many --targets=test --projects=tag:firebase:dep:llecoop-firebase --parallel=100"
       }
     },
     "firebase": {

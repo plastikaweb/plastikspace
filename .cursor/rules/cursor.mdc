@@ -1,0 +1,14 @@
+---
+description: Angular Best Practices (Signals, Standalone, Performance)
+alwaysApply: true
+---
+
+# Angular & TS Rules
+
+- **Strict TS**: Use strict typing. Avoid `any`; use `unknown` if unsure.
+- **Architecture**: Standalone components only (default). Use `ChangeDetectionStrategy.OnPush`.
+- **Signals**: Use `signals` for state. Use `input()`, `output()`, and `computed()` instead of decorators. Use `update/set`, NOT `mutate`.
+- **Templates**: Use native control flow (`@if`, `@for`). Use `async` pipe. Use `NgOptimizedImage` (except base64).
+- **DI**: Use `inject()` instead of constructor injection. Services: `providedIn: 'root'`.
+- **Prohibited**: NO `NgModules`, NO `@HostBinding/@HostListener` (use `host` object), NO `ngClass/ngStyle` (use `[class]/[style]` bindings).
+- **Performance**: Focused components, lazy loading for routes.

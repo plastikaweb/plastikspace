@@ -1,0 +1,33 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "module": "preserve",
+    "target": "es2016",
+    "types": ["jest", "node"],
+    "moduleResolution": "bundler",
+    "isolatedModules": true
+  },
+  "files": ["src/test-setup.ts"],
+  "include": [
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.store.mock.ts",
+    "src/**/*.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../../../../libs/shared/countdown/util/tsconfig.json"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects/tsconfig.json"
+    },
+    {
+      "path": "../entities/tsconfig.json"
+    },
+    {
+      "path": "../../../../libs/core/entities/tsconfig.json"
+    }
+  ]
+}

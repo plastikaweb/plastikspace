@@ -1,0 +1,161 @@
+@layer base {
+  /* ==========================================================================
+     UTILITY ANIMATIONS (FADE, BUMP, SLIDE)
+     ========================================================================== */
+
+  /* "Bump" animation for elements like the cart icon */
+  .bump {
+    animation: bump 300ms ease-out;
+  }
+
+  @keyframes bump {
+    0% {
+      transform: scale(1);
+      filter: saturate(1);
+    }
+
+    10% {
+      transform: scale(0.9);
+      filter: saturate(1.5);
+    }
+
+    30% {
+      transform: scale(1.2);
+      filter: saturate(2);
+    }
+
+    70% {
+      transform: scale(1.1);
+      filter: saturate(3);
+    }
+
+    100% {
+      transform: scale(1);
+      filter: saturate(1);
+    }
+  }
+
+  /* Transparency animations */
+  .fade-in {
+    animation: fade-in 100ms ease-out;
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  .fade-out {
+    animation: fade-out 100ms ease-in;
+  }
+
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+
+    to {
+      opacity: 0;
+    }
+  }
+
+  /* Displacement animations */
+  .slide-in {
+    animation: slide-in 200ms ease-out;
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translateY(-100px);
+    }
+
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .slide-out {
+    animation: slide-out 200ms ease-in;
+  }
+
+  @keyframes slide-out {
+    from {
+      transform: translateY(0);
+    }
+
+    to {
+      transform: translateY(-100px);
+    }
+  }
+
+  /* ==========================================================================
+     STRUCTURAL AND LAYOUT ANIMATIONS
+     ========================================================================== */
+
+  /* Animation for closing banners with grid collapse */
+  .banner-anim-leave {
+    animation: grid-collapse 200ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+
+  @keyframes grid-collapse {
+    from {
+      grid-template-rows: 1fr;
+    }
+
+    to {
+      grid-template-rows: 0fr;
+    }
+  }
+
+  /* ==========================================================================
+     SPECIFIC COMPONENT ANIMATIONS
+     ========================================================================== */
+
+  /* Pulse animation (used in loading indicators or active states) */
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.1);
+    }
+  }
+
+  /* Subtle horizontal slide animation */
+  @keyframes slide {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    50% {
+      transform: translateX(2px);
+    }
+  }
+
+  /* ==========================================================================
+     VIEW TRANSITIONS (VIEW TRANSITIONS API)
+     ========================================================================== */
+
+  /* Transition for product images between list and detail views */
+  ::view-transition-group(.product-image-transition) {
+    overflow: hidden;
+    border-radius: var(--app-main-border-radius);
+  }
+
+  /* Prevent distortions if aspect ratio changes during transition */
+  ::view-transition-old(.product-image-transition),
+  ::view-transition-new(.product-image-transition) {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+}

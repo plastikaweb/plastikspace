@@ -1,0 +1,80 @@
+@if (props.label) {
+  <mat-label id="address-selector">{{ props.label }}</mat-label>
+}
+
+@if (props.addresses.length) {
+  <mat-radio-group
+    class="address-selector-radio-group"
+    [attr.aria-label]="'cart.shipping.address.title' | translate"
+    [formControl]="formControl"
+    [formlyAttributes]="field">
+    @for (address of props.addresses; track address.id) {
+      @let isSelected = formControl.value?.id === address.id;
+
+      <mat-card
+        tabindex="0"
+        appearance="raised"
+        class="address-card make-it-focusable cursor-pointer transition-all"
+        [class.selected]="isSelected"
+        [attr.aria-label]="address.name"
+        (click)="onChange(address)"
+        (keydown.enter)="onChange(address)">
+        <mat-card-content class="flex! flex-row items-center justify-start gap-4">
+          <mat-radio-button
+            class="hidden"
+            [aria-label]="address.name"
+            [value]="address"
+            [checked]="isSelected"
+            [id]="`address-${address.id}`"></mat-radio-button>
+
+          <div>
+            <h3 class="mb-2 text-lg font-bold text-neutral-900 capitalize">
+              {{ address.name || address.fullName }}
+            </h3>
+            <div
+              class="grid grid-cols-1 gap-4 text-sm leading-relaxed text-neutral-600 md:grid-cols-2">
+              <div class="flex items-center gap-2">
+                <mat-icon class="scale-90 text-neutral-500!" aria-hidden="true"
+                  >location_on</mat-icon
+                >
+                <div>
+                  <p>{{ address.address }}</p>
+                  <p>
+                    {{ address.zip }} {{ address.city }}
+                    @if (address.country) {
+                      , {{ address.country }}
+                    }
+                  </p>
+                </div>
+              </div>
+              @if (address.phone) {
+                <div class="flex items-center gap-2">
+                  <mat-icon class="scale-90 text-neutral-500!" aria-hidden="true">phone</mat-icon>
+                  <span class="mt-1 text-neutral-500">{{ address.phone }}</span>
+                </div>
+              }
+            </div>
+          </div>
+
+          @if (address.default) {
+            <plastik-shared-chip
+              icon="star"
+              class="absolute top-4 right-4"
+              type="tertiary"
+              [label]="'common.address.default' | translate"></plastik-shared-chip>
+          }
+          @if (props.editable) {
+            <button
+              mat-button
+              type="button"
+              color="tertiary"
+              class="absolute top-4 right-4 underline"
+              (click)="onEdit(address, $event)">
+              {{ 'cart.shipping.address.edit' | translate }}
+            </button>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  </mat-radio-group>
+}

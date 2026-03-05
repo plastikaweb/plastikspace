@@ -1,0 +1,21 @@
+{
+  "defaults": {
+    "timeout": 120000,
+    "concurrency": 1,
+    "standard": "WCAG2AA",
+    "viewport": {
+      "width": 320,
+      "height": 480
+    },
+    "reporters": ["cli", ["json", { "fileName": "./apps/eco-store/.pa11y-report.json" }]],
+    "ignore": ["notice", "warning"],
+    "chromeLaunchConfig": { "args": ["--no-sandbox"] }
+  },
+  "urls": [
+    "http://localhost:8080/botiga",
+    "http://localhost:8080/botiga?perPage=75&page=0&active=priceWithIva&direction=desc",
+    "http://localhost:8080/botiga/fruita-i-verdura/peres-conferencia",
+    "http://localhost:8080/cistella/resum",
+    "http://localhost:8080/cistella/enviament"
+  ]
+}

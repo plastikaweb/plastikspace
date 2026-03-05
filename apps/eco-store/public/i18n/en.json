@@ -1,0 +1,375 @@
+{
+  "common": {
+    "loading": "Loading data...",
+    "close": "Close",
+    "edit": "Edit",
+    "add": "Add",
+    "remove": "Remove",
+    "cancel": "Cancel",
+    "submit": "Submit",
+    "save": "Save",
+    "navigation": {
+      "previous": "Go to previous page",
+      "next": "Go to next page",
+      "backToStore": "Back to store"
+    },
+    "weekdays": {
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday",
+      "saturday": "Saturday"
+    },
+    "address": {
+      "default": "Default address"
+    },
+    "form": {
+      "error": {
+        "email": "The email format is incorrect",
+        "required": "This field is required",
+        "minLength": "This field must have at least {value} characters",
+        "maxLength": "This field must have more than {value} characters"
+      },
+      "charactersCount": "{count, plural, one {character} other {characters}}"
+    },
+    "a11y": {
+      "skipToContent": "Skip to main content",
+      "loading": "Loading data",
+      "mainNavigation": "Main navigation",
+      "userActions": "User actions",
+      "categoriesNavigation": "Categories navigation",
+      "productCategories": "Product categories",
+      "productQuantity": "Quantity of {product} - {quantity}",
+      "productList": "Product list",
+      "sortProducts": "Sort products",
+      "productsCount": "{count} products",
+      "categoryIcon": "{category} icon",
+      "closeSidenav": "Close side menu",
+      "openSidenav": "Open side menu",
+      "ecoIcon": "Eco icon"
+    },
+    "paginator": {
+      "firstPage": "First page",
+      "itemsPerPage": "Items per page",
+      "lastPage": "Last page",
+      "nextPage": "Next page",
+      "noItems": "{length} items",
+      "previousPage": "Previous page",
+      "range": "{start} - {end} of {total}",
+      "rangeLabel": "of"
+    },
+    "error": {
+      "image": "This image could not be loaded"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Login",
+      "subtitle": "Cooperative Community",
+      "loading": "Logging in...",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember me",
+      "recoverAccess": "Forgot password?",
+      "newUserQuestion": "Member registration",
+      "createAccount": "If you are a member, you can register here",
+      "submit": "Login",
+      "termsPrivacy": "By continuing, you agree to our Terms and Privacy Policy."
+    },
+    "error": {
+      "login": "Check your credentials"
+    },
+    "roles": {
+      "PARTNER": "Cooperative Partner",
+      "GLOBAL_ADMIN": "Super Admin",
+      "CLIENT_ADMIN": "Admin"
+    }
+  },
+  "store": {
+    "title": "Eco Store",
+    "pageTitle": "Eco Store - Ecological and sustainable products",
+    "search": {
+      "placeholder": "Search products or categories",
+      "label": "Search products or categories",
+      "submit": "Search"
+    },
+    "status": {
+      "open": "Open",
+      "open24h": "Open 24/7",
+      "closed": "Closed",
+      "closedManually": "Temporarily closed",
+      "openingSoon": "OPENING SOON",
+      "closingSoon": "CLOSING SOON",
+      "opensIn": "Opens in",
+      "cancelled": "Not available",
+      "closedOpensAt": "Closed. Opens {date} at {time}",
+      "closedMessage": "The store is closed. You cannot modify your cart.",
+      "statusBanner": {
+        "closedTitle": "Store in browse mode",
+        "closedDescription": "Orders open on {date} at {time}",
+        "openingSoonTitle": "Get your baskets ready!",
+        "openingSoonDescription": "We are about to open the ordering window.",
+        "closingSoonTitle": "Store closing soon!",
+        "closingSoonDescription": "Place your order before {time}.",
+        "closedManuallyTitle": "Temporary closure",
+        "cancelledTitle": "Service suspended",
+        "cancelledDescription": "This store is currently disabled. Contact support for more information.",
+        "dismiss": "Close store status notice"
+      }
+    },
+    "menu": {
+      "home": "Home",
+      "store": "Store",
+      "about": "About Us",
+      "contact": "Contact",
+      "cart": "Cart",
+      "favorites": "Favorites",
+      "orders": "Orders",
+      "login": "Login",
+      "logout": "Logout",
+      "profile": "Profile of {name}",
+      "profilePage": "View profile",
+      "hello": "Hello {name}",
+      "viewCart": "Go to shopping cart, {productCount} products, total price: {productPrice}",
+      "viewFavorites": "Go to favorites"
+    }
+  },
+  "products": {
+    "all": "All products",
+    "total": "products found",
+    "origin": "Origin",
+    "provider": "Producer",
+    "technicalInfo": "Details and Specifications",
+    "opinions": {
+      "title": "Opinions",
+      "write": "Write a review",
+      "user": "Eco-conscious user",
+      "date": "2 days ago",
+      "placeholder": "Great product, ingredients quality is noticeable. Packaging is impeccable and the taste really shows it is ecological."
+    },
+    "goToDetail": "View detail",
+    "favorite": "Add {value} to favorites",
+    "related": "You might also like",
+    "storeClosed": "Store closed",
+    "categories": {
+      "all": "All categories",
+      "error": "An error occurred while loading categories"
+    },
+    "filter": {
+      "sort": {
+        "label": "Sort",
+        "relevance": "Most rated",
+        "priceWithIvaAsc": "Price ascending",
+        "priceWithIvaDesc": "Price descending",
+        "updatedAsc": "Oldest",
+        "updatedDesc": "Most recent"
+      },
+      "ecologic": "Ecological"
+    },
+    "quantity": {
+      "label": "Qt:",
+      "add": "Add",
+      "addLong": "Add to cart",
+      "remove": "Remove",
+      "decrement": "Decrease",
+      "increment": "Increase",
+      "modified": {
+        "title": "Product modified",
+        "description": "You modified the product quantity but didn''t add it to the cart",
+        "cancel": "Back to product",
+        "leave": "Don''t add it"
+      }
+    },
+    "unit": {
+      "price": {
+        "unit": "Price per unit",
+        "weight": "Price per kg",
+        "volume": "Price per L"
+      },
+      "measure": {
+        "unit": "Price per unit",
+        "weight": "It weighs {value} kg",
+        "volume": "It occupies {value} L",
+        "unitWithFixedWeight": "It weighs {value} kg",
+        "unitWithFixedVolume": "It occupies {value} L",
+        "unitWithVariableWeight": "Variable weight",
+        "unitWithVariableVolume": "Variable volume"
+      },
+      "type": {
+        "unit": "Unit",
+        "weight": "Weight",
+        "volume": "Volume",
+        "unitWithFixedWeight": "Unit",
+        "unitWithFixedVolume": "Unit",
+        "unitWithVariableWeight": "Kg",
+        "unitWithVariableVolume": "L"
+      },
+      "count": {
+        "unit": "{count, plural, one {unit} other {units}}",
+        "weight": "{count, plural, one {kg} other {kg}}",
+        "volume": "{count, plural, one {L} other {L}}",
+        "unitWithFixedWeight": "{count, plural, one {unit} other {units}}",
+        "unitWithFixedVolume": "{count, plural, one {unit} other {units}}",
+        "unitWithVariableWeight": "{count, plural, one {kg} other {kg}}",
+        "unitWithVariableVolume": "{count, plural, one {L} other {L}}"
+      },
+      "abbr": {
+        "unit": "unit",
+        "weight": "kg",
+        "volume": "L",
+        "unitWithFixedWeight": "unit",
+        "unitWithFixedVolume": "unit",
+        "unitWithVariableWeight": "kg",
+        "unitWithVariableVolume": "L"
+      }
+    }
+  },
+  "cart": {
+    "steps": {
+      "title": "Order steps",
+      "summary": {
+        "title": "Cart",
+        "subtitle": "Review the details of your order."
+      },
+      "shipping": {
+        "title": "Delivery",
+        "subtitle": "Choose if you would like to receive or pick up your order.",
+        "unavailable": {
+          "title": "We''re preparing the final details",
+          "description": {
+            "part1": "This eco store is finishing configuring its",
+            "part2": "delivery routes",
+            "part3": "and time slots to offer you the best possible service."
+          },
+          "info": {
+            "title": "WHAT CAN YOU DO NOW?",
+            "item1": "You can continue filling your cart with your favorite products.",
+            "item2": "Your selection will be saved for when checkout is active.",
+            "item3": "You can log out and come back later without losing your selection."
+          },
+          "actions": {
+            "goToShop": "Go back to shop"
+          }
+        }
+      },
+      "payment": {
+        "title": "Payment",
+        "subtitle": "Choose how you would like to pay your order."
+      },
+      "confirmation": {
+        "title": "Confirmation",
+        "subtitle": "Choose how you would like to receive your order."
+      }
+    },
+    "summary": {
+      "headTitle": "Order - cart",
+      "title": "Order Summary",
+      "resume": "Summary",
+      "subtotal": "Subtotal",
+      "taxes": "Taxes (VAT)",
+      "total": "Total",
+      "includingVat": "Including VAT",
+      "itemsCount": "{value} products",
+      "itemsCountSuffix": "items in cart",
+      "shipping": "Shipping",
+      "pickup": "Store pickup",
+      "delivery": "Home delivery",
+      "goToShipping": "Go to Shipping",
+      "freeShippingPromo": "Add {value} more for FREE shipping!",
+      "priceIncrease": "Price increase!",
+      "priceDrop": "Price drop!",
+      "oldPrice": "Previous price",
+      "checkoutDisabled": "Orders are disabled.",
+      "checkoutDisabledInDate": "Orders are disabled. The store opens on {date} at {time}.",
+      "removeItem": "Remove item from cart"
+    },
+    "shipping": {
+      "headTitle": "Order - delivery",
+      "cost": "Shipping",
+      "cartCost": "Cart",
+      "free": "FREE",
+      "freeAlways": "FREE",
+      "freeFrom": "FREE from {amount}",
+      "freeAchieved": "You have achieved free shipping!",
+      "remainingForFree": "Add {amount} more for FREE shipping!",
+      "goToConfirmation": "Continue to Order Summary",
+      "method": {
+        "title": "Delivery method",
+        "pickup": {
+          "title": "Store pickup.",
+          "description": "Come to the store and pick up your order."
+        },
+        "delivery": {
+          "title": "Home delivery.",
+          "description": "We bring your order to your address."
+        },
+        "all": {
+          "title": "Choose if you would like to receive or pick up your order.",
+          "description": "Choose if you would like to receive or pick up your order."
+        }
+      },
+      "address": {
+        "title": "Choose where you would like to receive your order.",
+        "pickup": {
+          "title": "Choose where you would like to pick up your order.",
+          "description": "Come to the store and pick up your order."
+        },
+        "delivery": {
+          "title": "Choose where you would like to receive your order.",
+          "description": "We bring your order to your address."
+        }
+      },
+      "slot": {
+        "pickup": {
+          "title": "Choose when you would like to pick up your order.",
+          "description": "Come to the store and pick up your order."
+        },
+        "delivery": {
+          "title": "Choose when you would like to receive your order.",
+          "description": "We bring your order to your address."
+        },
+        "date": "Select Date",
+        "time": "Time Window"
+      },
+      "weekdaysLabels": {
+        "sunday": "Next Sunday",
+        "monday": "Next Monday",
+        "tuesday": "Next Tuesday",
+        "wednesday": "Next Wednesday",
+        "thursday": "Next Thursday",
+        "friday": "Next Friday",
+        "saturday": "Next Saturday"
+      }
+    },
+    "confirmation": {
+      "headTitle": "Order - confirmation",
+      "title": "Confirm your order",
+      "productsInCart": "Products in cart",
+      "deliverySummary": "Delivery summary",
+      "deliveryMethod": "Type",
+      "deliveryTimeSlot": "Scheduled time",
+      "deliveryAddress": "Address",
+      "modifyCart": "Modify cart",
+      "modifyDelivery": "Modify delivery",
+      "notes": "Notes for preparation or delivery (Optional)",
+      "notesPlaceholder": "E.g.: If I have any problem I''ll call you before.",
+      "paymentNotice": "Information about payment",
+      "paymentNoticeDescription": "Since we work with fresh produce with variable weight, the final price may vary slightly. Payment will be processed at the time of delivery or pickup at the exact price.",
+      "confirmOrder": "Confirm Order"
+    },
+    "finish": {
+      "headTitle": "Order - finished",
+      "title": "Thank you for your order!",
+      "creatingOrder": "Generating order... please wait a moment",
+      "orderNumber": "Order Number:",
+      "emailNotice": "Your order has been processed successfully. We have sent a summary to your email:",
+      "orderReadyNotification": "We are preparing your basket. We will notify you when it is ready with the exact weight and final price.",
+      "modifyReminder": "If you forgot anything, don''t worry: you can make changes from your profile while the ordering period is open.",
+      "ordersHistory": "Order history",
+      "backToStore": "Back to store",
+      "ecoBadgeAlt": "Local and proximity product seal"
+    }
+  }
+}

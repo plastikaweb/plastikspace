@@ -1,37 +1,28 @@
 import { filter, pipe, switchMap, tap } from 'rxjs';
 
-import { updateState } from '@angular-architects/ngrx-toolkit';
-import { computed } from '@angular/core';
 import { tapResponse } from '@ngrx/operators';
-import { signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
+import { signalStore, withMethods } from '@ngrx/signals';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopUser } from '@plastik/llecoop/entities';
-import {
-  initStoreFirebaseCrudState,
-  StoreFirebaseCrudFilter,
-  StoreFirebaseCrudState,
-  withFirebaseCrud,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import {
+  FirebaseCrudFilter,
+  FirebaseCrudState,
+  initStoreFirebaseCrudState,
+  withFirebaseCrud,
+} from '@plastik/signal-state/firebase';
 
 import { LlecoopUserFireService } from './user-fire.service';
 
-export type StoreUserFilter = StoreFirebaseCrudFilter & {
+export type StoreUserFilter = FirebaseCrudFilter & {
   name: string;
   email: string;
   role: 'all' | 'admin' | 'user';
 };
 
-export type UserStoreFirebaseCrudState = StoreFirebaseCrudState<LlecoopUser, StoreUserFilter> & {
-  loggedUser: LlecoopUser | null;
-};
+export type UserStoreFirebaseCrudState = FirebaseCrudState<LlecoopUser, StoreUserFilter>;
 
-type SpecificUserStoreFirebaseCrudState = Omit<
-  UserStoreFirebaseCrudState,
-  keyof StoreFirebaseCrudState<LlecoopUser, StoreUserFilter>
->;
-
-export const userMainInitState: StoreFirebaseCrudState<LlecoopUser, StoreUserFilter> = {
+export const initState: FirebaseCrudState<LlecoopUser, StoreUserFilter> = {
   ...initStoreFirebaseCrudState(),
   filter: {
     name: '',
@@ -51,26 +42,18 @@ export const userMainInitState: StoreFirebaseCrudState<LlecoopUser, StoreUserFil
   },
 };
 
-const specificInitState: SpecificUserStoreFirebaseCrudState = {
-  loggedUser: null,
-};
-
 export const llecoopUserStore = signalStore(
   { providedIn: 'root' },
   withFirebaseCrud<
     LlecoopUser,
     LlecoopUserFireService,
     StoreUserFilter,
-    StoreFirebaseCrudState<LlecoopUser, StoreUserFilter>
+    FirebaseCrudState<LlecoopUser, StoreUserFilter>
   >({
     featureName: 'user',
     dataServiceType: LlecoopUserFireService,
-    initState: { ...userMainInitState, ...specificInitState },
+    initState,
   }),
-  withState<SpecificUserStoreFirebaseCrudState>(specificInitState),
-  withComputed(({ loggedUser }) => ({
-    getUserName: computed(() => loggedUser()?.name || loggedUser()?.email || 'user'),
-  })),
   withMethods(store => {
     return {
       setAdmin: rxMethod<Pick<LlecoopUser, 'id'>>(
@@ -95,23 +78,6 @@ export const llecoopUserStore = signalStore(
                   ),
               }),
               tap(() => store._activityStore.setActivity(false))
-            );
-          })
-        )
-      ),
-      getLoggedUser: rxMethod<void>(
-        pipe(
-          filter(() => !!store._activeConnection()),
-          switchMap(() => {
-            return store._dataService.getLoggedUser().pipe(
-              tapResponse({
-                next: loggedUser => updateState(store, `[user] get logged user`, { loggedUser }),
-                error: error =>
-                  store._storeNotificationService.create(
-                    `No s'ha pogut carregar l'usuari: ${error}`,
-                    'ERROR'
-                  ),
-              })
             );
           })
         )

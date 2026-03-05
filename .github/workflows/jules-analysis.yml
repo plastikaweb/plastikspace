@@ -1,0 +1,54 @@
+name: Jules PR Analysis
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  analyze-code:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Invoke Jules agent for review
+        uses: google-labs-code/jules-action@main
+
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          jules_api_key: ${{ secrets.JULES_API_KEY }}
+          prompt: |
+            You are a Senior Frontend Architect and strict code reviewer for "Plastikspace", a modern Nx monorepo using Angular 21.
+            Your goal is to ensure the highest code quality, performance, and adherence to the project's specific conventions.
+
+            ### Project Core Standards:
+            - **Angular 21**: Must use Standalone components (do NOT use `standalone: true`).
+            - **Reactivity**: Mandatory use of Signals API (`signal`, `computed`, `input`, `output`, `resource`). Avoid Observables/Subjects for component state.
+            - **Change Detection**: Must always use `ChangeDetectionStrategy.OnPush`.
+            - **Modern Template Syntax**: Mandatory use of `@if`, `@for`, and `@switch`. NO `*ngIf` or `*ngFor`.
+            - **Private Fields**: Use ES6 private fields (`#fieldName`) instead of the `private` keyword. This is strictly enforced.
+            - **Styling**: Tailwind CSS 4.0 only. Prefer utility classes. Use `[class.name]="condition"` instead of `ngClass`.
+            - **Component Host**: Use the `host` object in `@Component` for bindings/listeners. NO `@HostBinding` or `@HostListener`.
+            - **JSDoc**: All complex logic must have JSDoc. Descriptions must start with a capital letter and end with a period.
+            - **Architecture**: Enforce DDD boundaries. Ensure proper library types (`feature`, `data-access`, `ui`, `util`, `entity`) and dependency rules.
+            - **Clean Code**: No `console.log`, use `private readonly` for injected dependencies (if not using `#`).
+
+            Please analyze in detail the changes introduced in Pull Request #${{ github.event.pull_request.number }}.
+
+            🚨 **Critical Issues & Logic Bugs**: Direct errors, architectural violations, or missing private field (#) usage.
+            💡 **Angular & Signal Patterns**: Improvements for better Signal usage or modern Angular APIs.
+            📝 **Documentation & JSDoc**: Missing or malformed JSDoc.
+            🎨 **Styling & UI/UX**: Tailwind 4 Best practices, CSS optimizations, and UX consistency.
+            ♿ **Accessibility (A11y)**: Missing semantic HTML, ARIA labels, or focus management.
+            🚀 **Performance**: Rendering inefficiencies or unnecessary computations.
+
+            Provide direct, technical, and actionable feedback. If a change is perfect, state it briefly.
+
+            🚨 EXECUTABLE INSTRUCTION:
+            Once you have generated your final review report, you MUST post it as a comment directly on this Pull Request.
+            Use the GitHub CLI to do this. The environment is already configured with GH_TOKEN.
+            Run the following command in your terminal:
+            gh pr comment ${{ github.event.pull_request.number }} --body "your_formatted_markdown_report_here"

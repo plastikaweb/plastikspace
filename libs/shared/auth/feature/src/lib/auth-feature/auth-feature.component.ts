@@ -6,7 +6,7 @@ import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/password';
 import { MatThemeToggleComponent } from '@plastik/shared/mat-theme-toggle';
 
-import { AUTH_FORM_FACADE } from './auth-form-facade.type';
+import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
 
 @Component({
   selector: 'plastik-auth-feature',

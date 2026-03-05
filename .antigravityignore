@@ -1,0 +1,45 @@
+# Dependencies (Very important, they are heavy)
+node_modules/
+bower_components/
+vendor/
+
+# Build and distribution folders
+dist/
+build/
+coverage/
+out/
+.next/
+
+# Log files
+*.log
+logs/
+tmp/
+.temp/
+
+# Editor files
+.vscode/
+.idea/
+
+.DS_Store
+Thumbs.db
+
+# Multimedia (The AI cannot "read" binaries easily)
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.svg
+*.mp4
+*.pdf
+
+# Data files
+*.json.lock
+package-lock.json
+yarn.lock
+*.csv
+*.sql
+
+.nx/
+.angular/
+.idea/
+.trae/

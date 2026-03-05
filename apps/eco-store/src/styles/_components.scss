@@ -1,0 +1,98 @@
+@use '@angular/material' as mat;
+@use 'core_input_material' as input;
+
+@layer components {
+  @include mat.list-overrides(
+    (
+      active-indicator-shape: var(--app-main-border-radius),
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-shape: var(--app-main-border-radius),
+      outlined-container-shape: var(--app-main-border-radius),
+      protected-container-shape: var(--app-main-border-radius),
+      text-container-shape: var(--app-main-border-radius),
+      tonal-container-shape: var(--app-main-border-radius),
+    )
+  );
+
+  .mat-mdc-button-disabled {
+    background-color: var(--neutral-100);
+    color: var(--neutral-500);
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-500),
+      )
+    );
+  }
+
+  @include mat.select-overrides(
+    (
+      trigger-text-size: 0.8rem,
+    )
+  );
+
+  @include mat.option-overrides(
+    (
+      label-text-size: 0.8rem,
+    )
+  );
+
+  .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
+      .mat-mdc-option-multiple
+    ) {
+    --mat-option-selected-state-layer-color: var(--secondary-100) !important;
+    --mat-option-selected-state-label-text-color: var(--secondary-900) !important;
+    --mat-option-selected-state-icon-color: var(--secondary-900) !important;
+  }
+
+  @include mat.menu-overrides(
+    (
+      container-shape: var(--app-main-border-radius),
+      divider-color: var(--neutral-200),
+      container-elevation-shadow: var(--mat-sys-level2),
+    )
+  );
+
+  .mat-mdc-menu-item.active {
+    --mat-menu-item-label-text-color: var(--secondary-900);
+    --mat-menu-item-icon-color: var(--secondary-900);
+    background-color: var(--secondary-100) !important;
+  }
+
+  @include mat.progress-bar-overrides(
+    (
+      track-shape: 5rem,
+      track-height: 0.5rem,
+      active-indicator-height: 0.5rem,
+    )
+  );
+
+  .mdc-linear-progress__bar-inner {
+    border-radius: 10rem !important;
+  }
+}
+
+.input--eco {
+  @include input.material-input-rounded(
+    40px,
+    var(--app-main-border-radius),
+    1px,
+    var(--primary-600)
+  );
+}
+
+.input--eco-md {
+  @include input.material-input-rounded(
+    20px,
+    var(--app-main-border-radius),
+    1px,
+    var(--primary-600)
+  );
+}
+
+.cdk-overlay-pane > .mat-mdc-select-panel {
+  border-radius: var(--app-main-border-radius) !important;
+}

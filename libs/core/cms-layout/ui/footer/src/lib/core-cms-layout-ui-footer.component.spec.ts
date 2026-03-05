@@ -1,6 +1,6 @@
 import { axe, toHaveNoViolations } from 'jest-axe';
 
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CoreCmsLayoutUiFooterComponent } from './core-cms-layout-ui-footer.component';
@@ -12,7 +12,7 @@ describe('CoreCmsLayoutUiFooterComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [CoreCmsLayoutUiFooterComponent],
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
     fixture = TestBed.createComponent(CoreCmsLayoutUiFooterComponent);
     component = fixture.componentInstance;

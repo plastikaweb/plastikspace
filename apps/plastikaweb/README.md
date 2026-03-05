@@ -1,46 +1,50 @@
 # Plastikaweb
 
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
 - [Plastikaweb](#plastikaweb)
   - [Description](#description)
-  - [Running commands](#running-commands)
-  - [Deploys](#deploys)
-  - [Available libraries](#available-libraries)
-    - [Skills](#skills)
-  - [Useful links](#useful-links)
+  - [Features](#features)
+  - [Quick Start](#quick-start)
+  - [Development Commands](#development-commands)
+  - [Architecture \& Libraries](#architecture--libraries)
+    - [🧠 Skills](#-skills)
+  - [Resources](#resources)
 
 ## Description
 
-Main application entry point for Plastikaweb, a personal portfolio and skills showcase using Angular with Nx monorepo structure.
-This application serves as a demonstration of modern web development techniques and best practices.
+**Plastikaweb** is the main entry point for my personal portfolio. It showcases my professional skills, technologies,
+and projects, serving as a demonstration of modern web development techniques using Angular and Nx.
 
-The application features:
+## Features
 
-> Skills showcase
-> A page displaying professional skills and technologies
+- **Skills Showcase**: A dynamic page displaying professional skills and technologies.
+- **Portfolio**: Overview of projects and achievements.
 
-## Running commands
+## Quick Start
 
-- Serve: Run `yarn plastikaweb:serve`.
-- Lint: Run `yarn plastikaweb:lint`.
-- Test: Run `yarn plastikaweb:test`.
-- E2E: Run `yarn plastikaweb:e2e`.
-- Build: Run `yarn plastikaweb:build`.
+1. **Install Dependencies**: `yarn install`
+2. **Serve Application**: `yarn plastikaweb:serve`
 
-## Deploys
+## Development Commands
 
-A deployment can be found at [Plastikaweb](https://www.plastikaweb.com).
+- **Serve**: `yarn plastikaweb:serve`
+- **Lint**: `yarn plastikaweb:lint`
+- **Test**: `yarn plastikaweb:test`
+- **E2E**: `yarn plastikaweb:e2e`
+- **Build**: `yarn plastikaweb:build`
 
-## Available libraries
+## Architecture & Libraries
 
-This is a list of all the libraries related only to the plastikaweb app.
+### 🧠 Skills
 
-### Skills
+- [**skills-feature**](../../libs/plastikaweb/skills/feature/README.md)
+- [**skills-data-access**](../../libs/plastikaweb/skills/data-access/README.md)
+- [**graphql-models**](../../libs/plastikaweb/graphql-models/README.md)
 
-- [plastikaweb-skills-feature](../../libs/plastikaweb/skills/feature/README.md)
-- [plastikaweb-skills-data-access](../../libs/plastikaweb/skills/data-access/README.md)
+## Resources
 
-## Useful links
-
-- [Plastikaweb website](https://www.plastikaweb.com)
-- [Plastikaweb repository folder](https://github.com/plastikaweb/plastikspace/tree/develop/apps/plastikaweb)
+- [Production Site](https://www.plastikaweb.com)
+- [Repository Folder](https://github.com/plastikaweb/plastikspace/tree/develop/apps/plastikaweb)
 - [LinkedIn Profile](https://www.linkedin.com/in/plastikaweb)

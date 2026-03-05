@@ -1,0 +1,31 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "declaration": true,
+    "types": ["node"],
+    "composite": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.mock.ts"
+  ],
+  "references": [
+    {
+      "path": "../api-base/tsconfig.lib.json"
+    },
+    {
+      "path": "../../entities/tsconfig.lib.json"
+    },
+    {
+      "path": "../environments/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects/tsconfig.lib.json"
+    }
+  ]
+}

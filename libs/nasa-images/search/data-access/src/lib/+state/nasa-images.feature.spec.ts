@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Action } from '@ngrx/store';
 import { NasaImage } from '@plastik/nasa-images/search/entities';
@@ -75,7 +75,7 @@ describe('NasaImages Selectors', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     });
     state = {
       [name]: nasaMediaAdapter.setAll(

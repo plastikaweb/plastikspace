@@ -28,6 +28,11 @@
       "files": ["*.html"],
       "extends": ["plugin:@nx/angular-template"],
       "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx", "cypress/**/*.js"],
+      "parser": "espree",
+      "rules": {}
     }
   ]
 }

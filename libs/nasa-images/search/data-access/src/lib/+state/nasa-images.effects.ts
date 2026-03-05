@@ -17,13 +17,13 @@ import {
   notificationStore,
 } from '@plastik/shared/notification/data-access';
 
-import { NasaImagesApiService } from '../nasa-images-api.service';
+import { NASA_IMAGES_DATA_LIST_TOKEN } from '../nasa-images.tokens';
 import { nasaImagesAPIActions, nasaImagesPageActions } from './nasa-images.actions';
 
 @Injectable()
 export class NasaImagesEffects {
   readonly #actions$ = inject(Actions);
-  readonly #apiService = inject(NasaImagesApiService);
+  readonly #apiService = inject(NASA_IMAGES_DATA_LIST_TOKEN);
   readonly #navigationFilter = inject(NavigationFilterService);
   readonly #notificationService = inject(NotificationConfigService);
   readonly #store = inject(Store);

@@ -1,0 +1,40 @@
+{
+  "extends": "./tsconfig.json",
+  "references": [
+    {
+      "path": "../../../shared/auth/pocketbase/data-access"
+    },
+    {
+      "path": "../../../core/entities"
+    },
+    {
+      "path": "../../core/entities"
+    },
+    {
+      "path": "../../products/data-access"
+    },
+    {
+      "path": "../../core/tenant"
+    },
+    {
+      "path": "../../../shared/notification/data-access"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "composite": true,
+    "types": []
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "src/**/*.store.mock.ts",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/test-setup.ts"
+  ]
+}

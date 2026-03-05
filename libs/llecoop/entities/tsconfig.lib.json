@@ -2,11 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../dist/out-tsc",
+    "composite": true,
     "declaration": true,
     "declarationMap": true,
-    "inlineSources": true,
-    "types": []
+    "inlineSources": true
   },
-  "exclude": ["src/**/*.spec.ts", "jest.config.ts", "src/**/*.test.ts"],
+  "exclude": [],
   "include": ["src/**/*.ts"]
 }

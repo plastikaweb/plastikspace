@@ -1,0 +1,38 @@
+<mat-menu #userMenu="matMenu" xPosition="before" class="user-menu-panel">
+  @let user = profileStore.user();
+
+  @if (user) {
+    <div class="flex flex-col gap-1 px-4 py-3 outline-none">
+      <div class="flex items-center gap-3">
+        <eco-user-avatar
+          avatarClass="size-12"
+          initialsClass="size-10 bg-primary-50 text-base"
+          [initials]="profileStore.userInitials()"
+          [user]="user" />
+        <div class="flex flex-col">
+          <span class="text-base leading-none font-bold">{{ user?.name }}</span>
+          <div class="mt-1 flex items-center gap-1 text-gray-500">
+            @if (roleIcon()) {
+              <mat-icon class="h-4 w-4 text-[16px] leading-none">{{ roleIcon() }}</mat-icon>
+            }
+            <span class="text-xs">{{ `users.role.${user?.role}` | translate }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <mat-divider />
+    <a mat-menu-item routerLink="/perfil">
+      <mat-icon>person</mat-icon>
+      <span>{{ 'store.menu.profilePage' | translate }}</span>
+    </a>
+    <a mat-menu-item routerLink="/orders">
+      <mat-icon>receipt_long</mat-icon>
+      <span>{{ 'store.menu.orders' | translate }}</span>
+    </a>
+    <mat-divider />
+    <button mat-menu-item (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      <span>{{ 'store.menu.logout' | translate }}</span>
+    </button>
+  }
+</mat-menu>

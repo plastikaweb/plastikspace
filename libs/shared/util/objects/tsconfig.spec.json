@@ -1,9 +1,20 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../../../dist/out-tsc",
-    "module": "commonjs"
+    "isolatedModules": true,
+    "target": "es2022",
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "module": "preserve"
   },
   "files": ["src/test-setup.ts"],
-  "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"]
+  "include": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts", "**/*.d.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    }
+  ]
 }

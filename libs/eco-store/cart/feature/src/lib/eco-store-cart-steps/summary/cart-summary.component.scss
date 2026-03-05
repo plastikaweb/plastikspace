@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+@use 'core_tailwind_theme';
+
+:host {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--transparent),
+    )
+  );
+}

@@ -2,12 +2,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { axe, toHaveNoViolations } from 'jest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
@@ -23,14 +22,13 @@ describe('CoreCmsLayoutFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [
         CoreCmsLayoutFeatureComponent,
-        NoopAnimationsModule,
         AngularSvgIconModule.forRoot(),
         MatSidenavModule,
         MatIconModule,
         MatListModule,
       ],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideHttpClient(),
         provideRouter([]),
         provideMockStore({}),

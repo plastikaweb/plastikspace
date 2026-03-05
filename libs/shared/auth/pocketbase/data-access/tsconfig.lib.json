@@ -1,0 +1,33 @@
+{
+  "extends": "./tsconfig.json",
+  "references": [
+    {
+      "path": "../../../pocketbase-user-addresses/data-access"
+    },
+    {
+      "path": "../../entities"
+    },
+    {
+      "path": "../../../../core/util/api-pocketbase"
+    },
+    {
+      "path": "../../../../core/entities"
+    }
+  ],
+  "compilerOptions": {
+    "outDir": "../../../../../dist/out-tsc",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "composite": true
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "jest.config.ts",
+    "jest.config.cts",
+    "src/**/*.mock.ts",
+    "src/test-setup.ts"
+  ]
+}

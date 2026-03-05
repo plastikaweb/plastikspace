@@ -1,0 +1,22 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "inlineSources": true,
+    "declaration": true,
+    "composite": true
+  },
+  "exclude": ["src/test-setup.ts", "src/**/*.spec.ts", "jest.config.ts", "src/**/*.test.ts"],
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../environments/tsconfig.lib.json"
+    },
+    {
+      "path": "../../entities/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects/tsconfig.lib.json"
+    }
+  ]
+}

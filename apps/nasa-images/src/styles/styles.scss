@@ -1,17 +1,16 @@
 @use '@angular/material' as mat;
-@use 'material';
-@use 'theme';
-@use 'core_styles_util_material';
+@use 'font-family';
 @use 'loading';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@use 'themes/nasa-theme';
+@use 'theme';
+@use 'tailwind-theme';
+@use 'tailwindcss';
 
 @layer base {
   html {
     font-size: 14px;
-    @apply box-border;
+    font-family: var(--sans-serif);
+    box-sizing: border-box;
   }
 
   *,
@@ -21,8 +20,7 @@
   }
 
   body {
-    font-family: var(--sans-serif);
-    overflow: hidden;
+    overflow: auto;
   }
 
   h1,
@@ -56,28 +54,13 @@
   }
 
   ul {
-    @apply list-disc list-inside;
+    list-style: disc;
+    list-style-position: inside;
   }
 
   li {
-    @apply ml-sub mb-sub;
-  }
-
-  a {
-    @apply text-secondary-dark;
-    &:hover {
-      @apply underline underline-offset-2;
-    }
-  }
-
-  mat-toolbar {
-    @include mat.toolbar-overrides(
-      (
-        container-background-color: var(--primary-700),
-        container-text-color: var(--white),
-        standard-height: 70px,
-      )
-    );
+    margin-left: var(--sub);
+    margin-bottom: var(--sub);
   }
 
   plastik-shared-activity-ui-overlay .overlay-container {
@@ -114,4 +97,14 @@
       }
     }
   }
+}
+
+@layer components {
+  @include mat.toolbar-overrides(
+    (
+      standard-height: 70px,
+      container-text-color: var(--mat-sys-on-primary),
+      container-background-color: var(--mat-sys-primary),
+    )
+  );
 }

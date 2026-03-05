@@ -1,0 +1,21 @@
+{
+  "name": "pagination-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/pagination/util/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:ui"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/shared/pagination/util/jest.config.ts",
+        "tsConfig": "libs/shared/pagination/util/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

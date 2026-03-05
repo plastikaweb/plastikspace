@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ca">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Botiga Eco - Productes ecològics i sostenibles</title>
+
+    <base href="/" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_circle,add,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,balance,bento,box,calendar_month,check,check_circle,chevron_right,cleaning_services,clear,close,cookie,counter_1,counter_2,counter_3,delete,delete_outline,done,eco,eco_logo,edit,egg,expand_more,favorite,gps_fixed,grain,history,home,hourglass_top,how_to_reg,image,image_not_supported,info,keyboard_arrow_down,keyboard_arrow_up,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,manage_accounts,menu,nature,nutrition,order_approve,package_2,pause,payments,person,phone,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,upload,verified,visibility,visibility_off,water_drop" />
+
+    <style>
+      @keyframes ping-slow {
+        75%,
+        100% {
+          transform: scale(2);
+          opacity: 0;
+        }
+      }
+      @keyframes pulse {
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .ping-slow {
+        animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+      }
+      .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      #loading-container {
+        background-color: oklch(0.985 0.001 106.423); /* bg-tertiary-50 approximate */
+        color: oklch(0.267 0.054 135.053); /* text-primary-900 approximate */
+      }
+    </style>
+  </head>
+
+  <body
+    class="mat-typography bg-tertiary-50 from-primary-50 to-tertiary-100 h-screen w-screen overflow-y-hidden md:bg-linear-to-b/oklch md:from-20%">
+    <eco-root>
+      <div
+        class="pointer-events-none absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center"
+        role="status"
+        aria-live="polite"
+        aria-label="CARREGANT DADES..."
+        id="loading-container">
+        <div class="flex flex-col items-center justify-center gap-6 p-12">
+          <!-- Main container -->
+          <div class="relative flex h-24 w-24 items-center justify-center">
+            <!-- Ripples -->
+            <div
+              class="bg-primary-900 ping-slow absolute inset-0 rounded-full opacity-20"
+              aria-hidden="true"></div>
+            <div
+              class="bg-primary-900 absolute inset-0 animate-pulse rounded-full opacity-30"
+              aria-hidden="true"></div>
+
+            <!-- Icon container -->
+            <div
+              class="bg-primary-100 rounded-full p-5 shadow-lg backdrop-blur-sm"
+              aria-hidden="true">
+              <svg
+                width="32"
+                height="32"
+                fill="none"
+                stroke="none"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-miterlimit="10"
+                class="text-primary-500 fill-primary-500"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24">
+                <path
+                  d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
+              </svg>
+            </div>
+          </div>
+
+          <!-- Loading text -->
+          <span
+            id="static-loading-text"
+            class="text-primary-900 animate-pulse text-xs font-bold tracking-[0.2em] uppercase"
+            aria-live="polite">
+          </span>
+        </div>
+      </div>
+
+      <script>
+        (function () {
+          const translations = {
+            ca: 'CARREGANT DADES...',
+            es: 'CARGANDO DATOS...',
+            en: 'LOADING DATA...',
+          };
+
+          const browserLang = navigator.language.split('-')[0];
+          const lang = browserLang || 'en';
+          const text = document.getElementById('static-loading-text');
+          const container = document.getElementById('loading-container');
+          const translation = translations[lang];
+
+          if (text && translation) {
+            text.innerText = translation;
+          }
+
+          if (container && translation) {
+            container.setAttribute('aria-label', translation);
+          }
+        })();
+      </script>
+    </eco-root>
+  </body>
+</html>

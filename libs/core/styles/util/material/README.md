@@ -1,37 +1,80 @@
-# core-styles-util-material
+# @plastik/core/styles/util/material
 
-A collection of global CSS styles adjustments for Angular Material components.
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular Material](https://img.shields.io/badge/angular_material-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
 
-## How to use
+- [@plastik/core/styles/util/material](#plastikcorestylesutilmaterial)
+  - [Description](#description)
+  - [Usage](#usage)
+    - [Setup](#setup)
+    - [Mixins \& Utilities](#mixins--utilities)
+      - [Rounded Input Mixin](#rounded-input-mixin)
+  - [Running Unit Tests](#running-unit-tests)
 
-- Add the path `"libs/core/styles/util/material/src"` to the entry point of the styles in your app project.json.
+## Description
 
-```json
-{
-  "targets": {
-    "build": {
-      // other configuration properties...
+A collection of **global CSS adjustments and mixins** for Angular Material components, enforcing a consistent look and feel (e.g., rounded inputs) across the workspace.
 
-      // main app styles CSS entry point
-      "styles": ["apps/my-app/src/styles/styles.scss"],
+## Usage
 
-      // Sass base path for imports: see https://angular.io/guide/workspace-config#style-preprocessor-options
-      "stylePreprocessorOptions": {
-        "includePaths": ["libs/core/styles/util/material/src"]
-      }
-    }
-  }
+### Setup
+
+1. **Project Config**: Add the library path to `stylePreprocessorOptions` in `project.json`:
+
+   ```json
+   "stylePreprocessorOptions": {
+     "includePaths": ["libs/core/styles/util/material/src"]
+   }
+   ```
+
+2. **Global Import**: Import the base styles in your app's `styles.scss`:
+
+   ```scss
+   @use 'core_styles_util_material';
+   ```
+
+### Mixins & Utilities
+
+You can import specific component styles using the `@use` syntax:
+
+```scss
+@use 'core_input_material';
+```
+
+#### Rounded Input Mixin
+
+Normalizes `mat-form-field` with a compact, rounded appearance.
+
+**Signature:**
+
+`material-input-rounded($height: 40px, $radius: 22px, $padding-inline: ..., $hide-floating-label: true)`
+
+**Example:**
+
+```scss
+.search-input {
+  @use 'core_input_material';
+  @include core_input_material.material-input-rounded(40px, 22px);
 }
 ```
 
-- Import the base scss file in your app /styles/styles.scss file.
-
-```css
-/* apps/my-app/src/styles/styles.scss */
-
-@use 'core_styles_util_material';
+```html
+<div class="search-input">
+  <mat-form-field appearance="fill">
+    <!-- ... -->
+  </mat-form-field>
+</div>
 ```
 
-## Running unit tests
+**Formly Integration:**
+
+```typescript
+{
+  fieldGroupClassName: 'rounded-input--md', // pre-defined utility class
+  fieldGroup: [ ... ]
+}
+```
+
+## Running Unit Tests
 
 Run `nx test core-styles-util-material` to execute the unit tests.

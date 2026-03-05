@@ -1,7 +1,6 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { YearPickerTypeComponent } from './year-picker-type.component';
@@ -12,9 +11,8 @@ describe('YearPickerTypeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
       imports: [
-        NoopAnimationsModule,
         ReactiveFormsModule,
         FormlyModule.forRoot({
           types: [

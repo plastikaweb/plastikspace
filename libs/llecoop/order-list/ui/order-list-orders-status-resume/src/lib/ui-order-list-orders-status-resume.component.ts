@@ -1,11 +1,11 @@
-import { KeyValue, KeyValuePipe, NgClass } from '@angular/common';
+import { KeyValue, KeyValuePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { LlecoopOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
 
 @Component({
   selector: 'plastik-ui-order-list-orders-status-resume',
-  imports: [KeyValuePipe, NgClass, MatIconModule],
+  imports: [KeyValuePipe, MatIconModule],
   templateUrl: './ui-order-list-orders-status-resume.component.html',
   styleUrls: ['./ui-order-list-orders-status-resume.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,

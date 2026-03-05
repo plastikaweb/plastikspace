@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  @include mat.button-overrides(
+    (
+      text-label-text-size: var(--mat-sys-display-small),
+    )
+  );
+}

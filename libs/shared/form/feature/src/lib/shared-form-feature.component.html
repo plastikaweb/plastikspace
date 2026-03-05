@@ -1,31 +1,28 @@
 <form
+  class="mt-4 flex w-full flex-col gap-1"
   novalidate
-  class="flex flex-col w-full gap-sub mt-sm"
   [formGroup]="form"
   (ngSubmit)="onSubmit($event)">
   <!-- form -->
   <formly-form
     class="form-container"
-    [form]="form"
-    [options]="options"
     [fields]="fields()"
-    [model]="model()"
-    (modelChange)="onModelChange($event)"></formly-form>
+    [form]="form"
+    [model]="mutableModel()"
+    [options]="options"
+    (modelChange)="onModelChange($event)" />
 
-  <!-- buttons -->
-  @if (config().submitAvailable) {
-    <button
-      mat-flat-button
-      type="submit"
-      class="w-full sm:w-auto"
-      data-test="submit-button"
-      [ngClass]="config().buttonStyle || ''"
-      [disabled]="!form.valid">
-      {{ config().label || 'Submit' }}
-    </button>
-  }
+  <ng-content select=".extra-links" />
 
-  <div class="flex justify-center p-0 text-base shared-form--extraLinks-container">
-    <ng-content select=".extraLinks"></ng-content>
-  </div>
+  <button
+    mat-flat-button
+    type="submit"
+    data-test="submit-button"
+    title="Submit"
+    [class]="`w-full sm:w-auto ${formSubmitConfig().buttonStyle}`"
+    [class.sr-only]="!formSubmitConfig().submitAvailable"
+    [disabled]="!form.valid"
+    [attr.aria-label]="(formSubmitConfig().label | translate) || 'Submit'">
+    {{ (formSubmitConfig().label | translate) || 'Submit' }}
+  </button>
 </form>

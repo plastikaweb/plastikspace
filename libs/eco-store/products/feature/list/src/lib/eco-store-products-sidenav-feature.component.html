@@ -1,0 +1,61 @@
+<mat-card appearance="filled" class="overflow-hidden pt-4 pb-4 md:pt-0!">
+  <mat-card-content class="overflow-y-auto">
+    <nav [attr.aria-label]="'common.a11y.productCategories' | translate">
+      <mat-nav-list role="list">
+        <!-- All Categories Option -->
+        <mat-list-item
+          role="listitem"
+          routerLink="/botiga"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{
+            paths: 'exact',
+            queryParams: 'ignored',
+            matrixParams: 'ignored',
+            fragment: 'ignored',
+          }"
+          [attr.aria-current]="this.currentUrl() === '/botiga' ? 'page' : null">
+          <div class="flex w-full items-center gap-2">
+            <mat-icon aria-hidden="true" class="scale-90 text-neutral-700">{{
+              defaultCategoryIcon
+            }}</mat-icon>
+            <span matListItemTitle class="text-sm font-semibold text-neutral-700">{{
+              'products.all' | translate
+            }}</span>
+            <span matListItemLine class="ml-2 text-xs text-neutral-700"
+              >({{ totalProducts() }})</span
+            >
+          </div>
+        </mat-list-item>
+
+        <!-- Grouped Categories -->
+        @for (group of groupedCategoriesWithNames(); track group.group.id) {
+          <div
+            class="text-tertiary-600 mt-4 mb-1 px-4 text-[11px] font-bold tracking-widest uppercase">
+            {{ group.translatedGroupName }}
+          </div>
+
+          @for (category of group.categories; track category.category) {
+            <mat-list-item
+              class="my-1"
+              role="listitem"
+              routerLinkActive="active"
+              [routerLink]="['/', 'botiga', category.normalizedName]"
+              [attr.aria-current]="
+                this.currentUrl().startsWith(`/botiga/${category.normalizedName}`) ? 'page' : null
+              ">
+              <div class="flex w-full items-center gap-2">
+                <mat-icon aria-hidden="true" class="scale-90" [style.color]="category.color">{{
+                  category.icon
+                }}</mat-icon>
+                <span matListItemTitle class="flex-1 truncate text-sm">{{
+                  category.translatedName
+                }}</span>
+                <span matListItemLine class="ml-2 text-xs">({{ category.productCount }})</span>
+              </div>
+            </mat-list-item>
+          }
+        }
+      </mat-nav-list>
+    </nav>
+  </mat-card-content>
+</mat-card>

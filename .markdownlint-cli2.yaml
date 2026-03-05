@@ -1,0 +1,44 @@
+globs:
+  - '**/*.md'
+config:
+  no-trailing-spaces: false
+  no-multiple-blanks: false
+  MD001: true
+  MD013: { line_length: 210 }
+  MD024: { siblings_only: true }
+  MD033: { allowed_elements: ['div', 'p', 'img', 'details', 'summary', 'b'] }
+
+# Fix any fixable errors
+fix: true
+
+# Ignore files referenced by .gitignore (only valid at root)
+gitignore: true
+
+ignores:
+  - node_modules
+  - .git
+  - .claude/CLAUDE.md
+  - CLAUDE.md
+  - .agent/**
+  - .agents/**
+  - .angular/**
+  - .cursor/**
+  - .firebase/**
+  - .gemini/**
+  - .gemini/antigravity/**
+  - .husky/**
+  - .github/**/*.md
+  - .idea/**
+  - .nx/**
+  - .trae/**
+  - .verdaccio/**
+  - .vscode/**
+  - .windsurf/**
+  - .yarn/**
+  - .claude/**
+  - .zed/**
+  - .dist/**
+  - tmp/**
+
+# Disable inline config comments
+noInlineConfig: true

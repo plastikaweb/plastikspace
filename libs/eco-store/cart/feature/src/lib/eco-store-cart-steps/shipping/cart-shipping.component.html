@@ -1,0 +1,76 @@
+<div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
+  <div class="col-span-1! space-y-10 md:col-span-2!">
+    <div class="flex items-center gap-4">
+      <mat-icon class="scale-150!" [attr.aria-label]="'cart.steps.shipping.title' | translate">
+        box
+      </mat-icon>
+      <h2 class="mb-2 text-2xl font-bold text-neutral-900">
+        {{ 'cart.steps.shipping.title' | translate }}
+      </h2>
+    </div>
+
+    @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+      <div class="space-y-6" aria-hidden="true">
+        <div class="h-32 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+        <div class="h-48 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+      </div>
+    } @else {
+      <div
+        class="transition-all duration-300"
+        [class.pointer-events-none]="cartStore.isSyncing()"
+        [class.opacity-60]="cartStore.isSyncing()">
+        <plastik-shared-form-feature
+          [fields]="formConfig.getConfig()"
+          [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
+          [model]="model()"
+          (temporaryChangeEvent)="onChange($event)"
+          (validChange)="onFormValidChange($event)">
+        </plastik-shared-form-feature>
+      </div>
+    }
+  </div>
+
+  <!-- Right Column: Order Summary -->
+  <div class="sticky top-16 space-y-6 self-start md:col-span-1!">
+    @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
+    } @else {
+      <div
+        class="transition-all duration-300"
+        [class.pointer-events-none]="cartStore.isSyncing()"
+        [class.opacity-60]="cartStore.isSyncing()">
+        <eco-cart-order-summary
+          [subtotal]="cartStore.subtotal()"
+          [taxes]="cartStore.tax()"
+          [shipping]="cartStore.shipping()"
+          [deliveryType]="cartStore.method() ?? 'pickup'"
+          [total]="cartStore.total()"
+          [isStoreOpen]="tenantStore.isStoreOpen()"
+          [nextOpenDate]="tenantStore.nextOpenDate()"
+          [actionButtonText]="'cart.shipping.goToConfirmation'"
+          [actionRoute]="['./cistella/confirmacio']"
+          [submitAvailable]="formValid()">
+          @if (cartStore.method() === 'delivery') {
+            <div extra-shipping-content class="overflow-hidden">
+              <div class="min-h-0">
+                <div class="py-6">
+                  @defer (on viewport) {
+                    <eco-cart-order-price-slots
+                      class="block px-2"
+                      [cartTotal]="cartStore.subtotal() + cartStore.tax()"
+                      [tiers]="tenantStore.getTenantDeliveryPriceTiers()">
+                    </eco-cart-order-price-slots>
+                  } @placeholder {
+                    <div
+                      aria-hidden="true"
+                      class="h-24 w-full animate-pulse bg-neutral-50 px-2"></div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </eco-cart-order-summary>
+      </div>
+    }
+  </div>
+</div>

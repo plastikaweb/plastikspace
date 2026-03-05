@@ -1,5 +1,5 @@
 <mat-form-field
-  ><mat-label>{{ label }}</mat-label>
+  ><mat-label>{{ label() }}</mat-label>
   <input
     matInput
     readonly
@@ -15,7 +15,7 @@
     #picker
     startView="multi-year"
     panelClass="shared-year-picker"
-    [touchUi]="touchUi"
+    [touchUi]="touchUi()"
     (yearSelected)="onYearSelected($event, picker)">
   </mat-datepicker>
 </mat-form-field>

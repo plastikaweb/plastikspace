@@ -17,7 +17,6 @@ type NasaImagesTestCase = {
 
 const noResultsMessage = () => cy.getEl('search-no-results-message');
 const submitBtn = () => cy.getEl('submit-button');
-const document = () => cy.get('body');
 
 describe('nasa-images search page', () => {
   beforeEach(() => {
@@ -177,7 +176,6 @@ describe('nasa-images search page', () => {
           });
         });
 
-        document().click();
         submitBtn().should('not.be.disabled');
         submitBtn().click({ force: true });
         // api response

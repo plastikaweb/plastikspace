@@ -4,12 +4,12 @@
 /dist
 /tmp
 /out-tsc
+/.tmp
 
 # dependencies
 node_modules
 
 # IDEs and editors
-/.idea
 .project
 .classpath
 .c9/
@@ -23,6 +23,8 @@ node_modules
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+!.vscode/mcp.json
+!.vscode/css-data.json
 
 # misc
 /.sass-cache
@@ -66,5 +68,31 @@ ui-debug.log
 firebase-export*
 .secret.local
 
-# windsurf rules
-.windsurfrules
+# github utils
+issues.js
+
+# pocketbase files
+apps/eco-store/pocketbase/*
+!apps/eco-store/pocketbase/pb_schema.json
+!apps/eco-store/pocketbase/pb_hooks
+apps/eco-store/.env
+
+
+# local helpers
+/helpers
+
+# autogenerate files
+build_results.txt
+
+# log files
+*.log
+
+# test and lint output files
+test_output*.txt
+lint_output*.txt
+
+# sketches and working images
+/sketches
+
+#nx graph
+graph.json

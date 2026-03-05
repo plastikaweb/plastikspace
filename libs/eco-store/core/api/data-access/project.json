@@ -1,0 +1,21 @@
+{
+  "name": "eco-store-api-data-access",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/core/api/data-access/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["type:data-access", "scope:eco-store"],
+  "targets": {
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/eco-store/core/api/data-access/jest.config.cts",
+        "tsConfig": "libs/eco-store/core/api/data-access/tsconfig.spec.json"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

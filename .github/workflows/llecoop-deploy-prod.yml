@@ -19,9 +19,10 @@ jobs:
           node-version: '20'
 
       - name: Install dependencies
-        run: |
-          yarn install --immutable --network-timeout 1000000
-          yarn nx build llecoop --prod --skip-nx-cache
+        run: yarn install --immutable --network-timeout 1000000
+
+      - name: Build application
+        run: yarn nx build llecoop --prod --skip-nx-cache
 
       - name: Set up FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5

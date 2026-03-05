@@ -1,10 +1,50 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "../../dist/out-tsc",
-    "types": []
+    "outDir": "../../dist/out-tsc"
   },
   "files": ["src/main.ts"],
   "include": ["src/**/*.d.ts"],
-  "exclude": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts"]
+  "exclude": ["jest.config.ts", "**/*.test.ts", "**/*.spec.ts"],
+  "references": [
+    {
+      "path": "../../libs/shared/button/ui"
+    },
+    {
+      "path": "../../libs/nasa-images/search/entities"
+    },
+    {
+      "path": "../../libs/nasa-images/faqs/feature"
+    },
+    {
+      "path": "../../libs/nasa-images/search/feature"
+    },
+    {
+      "path": "../../libs/shared/notification/data-access"
+    },
+    {
+      "path": "../../libs/shared/form/feature"
+    },
+    {
+      "path": "../../libs/nasa-images/search/data-access"
+    },
+    {
+      "path": "../../libs/core/router/data-access"
+    },
+    {
+      "path": "../../libs/core/util/environments"
+    },
+    {
+      "path": "../../libs/core/entities"
+    },
+    {
+      "path": "../../libs/core/cms-layout/feature"
+    },
+    {
+      "path": "../../libs/core/cms-layout/entities"
+    },
+    {
+      "path": "../../libs/core/cms-layout/data-access"
+    }
+  ]
 }

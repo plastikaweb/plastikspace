@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "isolatedModules": true,
+    "declaration": true,
+    "composite": true
+  },
+  "files": ["src/test-setup.ts"],
+  "include": ["jest.config.ts", "src/**/*.test.ts", "src/**/*.spec.ts", "src/**/*.d.ts"],
+  "references": [
+    {
+      "path": "../environments"
+    },
+    {
+      "path": "../../entities"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects"
+    }
+  ]
+}

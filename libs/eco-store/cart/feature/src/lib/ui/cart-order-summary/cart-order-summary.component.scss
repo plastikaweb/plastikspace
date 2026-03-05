@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--transparent),
+    )
+  );
+
+  .mat-mdc-card-header {
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-800),
+      )
+    );
+  }
+
+  .cart-order-summary-checkout-disabled {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-800),
+      )
+    );
+  }
+
+  button {
+    &:not(:disabled) {
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-50),
+        )
+      );
+    }
+  }
+}

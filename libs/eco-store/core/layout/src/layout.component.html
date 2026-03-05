@@ -1,0 +1,98 @@
+<div class="mx-auto flex h-screen w-screen flex-col">
+  @if (!isMobile() || !isSidenavOpen()) {
+    <ng-container *ngTemplateOutlet="headerContent"></ng-container>
+  }
+
+  <mat-sidenav-container class="content-container flex-1" [class.z-10]="isMobile()">
+    @if (hasSidenav()) {
+      <mat-sidenav
+        #sidenav
+        position="start"
+        fixedInViewport="true"
+        [autoFocus]="false"
+        [mode]="isMobile() ? 'over' : 'side'"
+        [fixedTopGap]="isMobile() ? 0 : 85"
+        [fixedBottomGap]="isMobile() ? 0 : 100"
+        [opened]="isSidenavOpen()"
+        (keydown.escape)="isSidenavOpen.set(false)"
+        (closedStart)="isSidenavOpen.set(false)">
+        @if (isMobile()) {
+          <div class="flex items-center justify-between border-b border-neutral-200 px-4 py-3">
+            <eco-tenant-logo showName="always" [tenant]="tenantStore.tenant()" />
+            <button
+              mat-icon-button
+              [attr.aria-label]="'common.a11y.closeSidenav' | translate"
+              (click)="isSidenavOpen.set(false)">
+              <mat-icon>close</mat-icon>
+            </button>
+          </div>
+        }
+
+        <div class="h-full overflow-y-auto">
+          <router-outlet name="sidenav"></router-outlet>
+        </div>
+      </mat-sidenav>
+    }
+
+    <mat-sidenav-content #sidenavContent class="flex flex-col" tabindex="-1">
+      @if (isMobile() && isSidenavOpen()) {
+        <ng-container *ngTemplateOutlet="headerContent"></ng-container>
+      }
+      <main
+        id="mainContent"
+        role="main"
+        class="mt-20 mb-0 min-h-[calc(100dvh-126px)] flex-1 overflow-y-auto border-b border-neutral-200 px-2 sm:px-4">
+        @if (shouldShowBanner() && !isBannerDismissed()) {
+          <div animate.leave="banner-anim-leave" class="grid overflow-hidden">
+            <div class="min-h-0" animate.leave="slide-out">
+              @defer (when shouldShowBanner() && !isBannerDismissed()) {
+                <eco-store-status-banner
+                  class="relative mt-8 pb-4"
+                  [status]="tenantStore.storeStatus()"
+                  [nextOpenDate]="tenantStore.nextOpenDate()"
+                  [closedReason]="tenantStore.closedReasonTranslated()"
+                  (dismiss)="dismissBanner()">
+                </eco-store-status-banner>
+              } @placeholder {
+                <div class="h-20 w-full"></div>
+              }
+            </div>
+          </div>
+        }
+
+        <router-outlet></router-outlet>
+      </main>
+
+      @defer (on viewport; prefetch on idle) {
+        <eco-footer [tenant]="tenantStore.tenant()" />
+      } @placeholder {
+        <div aria-hidden="true" class="h-30 w-full animate-pulse bg-neutral-50"></div>
+      }
+
+      @defer (when isMobile()) {
+        <eco-mobile-nav />
+      }
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<eco-menu #menu />
+
+<ng-template #headerContent>
+  <eco-header
+    class="fixed z-10 block w-full border-b border-neutral-200 shadow-md backdrop-blur-md backdrop-saturate-150"
+    [formConfig]="searchFormConfig"
+    [tenant]="tenantStore.tenant()"
+    [storeStatus]="tenantStore.storeStatus()"
+    [nextOpenDate]="tenantStore.nextOpenDate()"
+    [is24h]="tenantStore.is24h()"
+    [closedReason]="tenantStore.closedReasonTranslated()"
+    [sideNavOpen]="isSidenavOpen()"
+    [isMobile]="isMobile()"
+    [hasSidenav]="hasSidenav()"
+    (toggleSidenav)="isSidenavOpen.set(!isSidenavOpen())"
+    (submitEvent)="onSearchSubmit()">
+    <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
+    <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
+  </eco-header>
+</ng-template>

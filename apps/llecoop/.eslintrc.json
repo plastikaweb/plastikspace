@@ -38,6 +38,12 @@
       "rules": {
         "@angular-eslint/template/no-call-expression": "off"
       }
+    },
+    {
+      "files": ["tailwind.config.js"],
+      "parserOptions": {
+        "project": null
+      }
     }
   ]
 }

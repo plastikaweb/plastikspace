@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100%;
+  width: 100%;
+  padding: 1rem;
+
+  @include mat.icon-overrides(
+    (
+      color: var(--primary-500),
+    )
+  );
+
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--primary-100),
+      outlined-outline-color: var(--primary-200),
+    )
+  );
+}

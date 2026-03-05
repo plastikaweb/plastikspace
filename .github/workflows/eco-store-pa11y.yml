@@ -1,0 +1,45 @@
+name: Eco Store pa11y
+
+env:
+  YARN_IMMUTABLE: true
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches:
+      - develop
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  pa11y:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install
+        run: yarn install --immutable --network-timeout 1000000
+
+      - name: Build
+        run: yarn eco-store:build
+
+      - name: Run pa11y-ci
+        run: yarn eco-store:a11y
+
+      - name: Read pa11y_output file.
+        id: pa11y_output
+        uses: juliangruber/read-file-action@v1
+        with:
+          path: ./apps/eco-store/.pa11y-report.json
+
+      - name: Check for pa11y failures.
+        if: contains(steps.pa11y_output.outputs.content, 'errno 2')
+        run: |
+          echo "::error::The site is failing accessibility tests. Please review the report for details."
+          exit 1

@@ -14,6 +14,12 @@
     - [ARIA](#aria)
     - [Reduced motion](#reduced-motion)
     - [Focus](#focus)
+      - [How it works](#how-it-works)
+      - [How `is-keyboard-active` is set on `body`](#how-is-keyboard-active-is-set-on-body)
+      - [Focus ring customization](#focus-ring-customization)
+      - [Which elements get the focus ring](#which-elements-get-the-focus-ring)
+      - [How to make an element focusable](#how-to-make-an-element-focusable)
+      - [Tabindex guidelines](#tabindex-guidelines)
     - [Colors](#colors)
     - [Skip Link](#skip-link)
     - [Angular Material / CDK](#angular-material--cdk)
@@ -26,7 +32,7 @@
 
 ## Analysis
 
-A todo list of accessibility actions and related information can be found [here](https://github.com/plastikaweb/plastikspace/wiki/Accessibility).
+A todo list of accessibility actions and related information can be found in the [Accessibility](https://github.com/plastikaweb/plastikspace/wiki/Accessibility) wiki page.
 
 ## Review list
 
@@ -99,14 +105,94 @@ A todo list of accessibility actions and related information can be found [here]
 
 ### Focus
 
-- Use `outline` to highlight focused elements.
+- The focus ring is handled globally by the app a11y styles (instead of defining ad-hoc `:focus-visible` rules per feature).
+- In your app, the global focus styles are included in `apps/<app>/src/styles/styles.scss` via:
 
-```css
-:focus-visible {
-  outline: 2px solid rgb(191, 9, 9) !important;
-  outline-offset: -2px !important;
+```scss
+@use 'core_a11y';
+```
+
+- The focus system lives in `libs/core/styles/util/material/src/_core_a11y.scss`.
+
+#### How it works
+
+- Focus is only visually emphasized when the user is navigating with the keyboard.
+- When the page is in keyboard navigation mode, `body` has the class `is-keyboard-active`.
+- The focused element is “marked” using `anchor-name: --focus-element` (CSS Anchor Positioning), and a fixed `body::after` draws a single focus ring around that anchor.
+- The focus ring styling can be customized via CSS variables.
+
+#### How `is-keyboard-active` is set on `body`
+
+- In your app, `AppComponent` must use Angular CDK `FocusMonitor` to detect the focus origin and toggles the class on `document.body`.
+- When the focus origin is `keyboard`, `body` gets `is-keyboard-active`. For any other origin (mouse/touch/program), the class is removed.
+
+```ts
+ngOnInit(): void {
+  this.#focusMonitor.monitor(this.#document.body, true).subscribe(origin => {
+    if (origin === 'keyboard') {
+      this.#renderer.addClass(this.#document.body, 'is-keyboard-active');
+      return;
+    }
+    this.#renderer.removeClass(this.#document.body, 'is-keyboard-active');
+  });
 }
 ```
+
+> **Note**: The `FocusMonitor` is provided by Angular CDK and should be injected in your `AppComponent`.
+
+#### Focus ring customization
+
+- `--focus-ring-color` and `--focus-ring-width` are the design tokens used by the global focus ring.
+- Defaults are defined in `libs/core/styles/util/material/src/_core_a11y.scss` under `:root`.
+- You can override them at app level (e.g. in `apps/<app>/src/styles/styles.scss` or a theme file) to match the brand colors.
+
+```css
+:root {
+  --focus-ring-color: rgb(191, 37, 186);
+  --focus-ring-width: 2px;
+}
+```
+
+#### Which elements get the focus ring
+
+- Native interactive elements, e.g. `a:focus-visible`, `button:focus-visible`.
+- Angular CDK keyboard focus class: `.cdk-keyboard-focused`.
+- Angular Material buttons: `.mat-mdc-button:focus-visible` (and variants).
+- Custom elements that opt-in with the class `.make-it-focusable:focus-visible`.
+
+#### How to make an element focusable
+
+- Prefer semantic elements first:
+
+```html
+<button type="button">Action</button>
+<a href="/path">Go</a>
+```
+
+- If you must use a non-interactive element (e.g. `div`, `span`, `mat-card`), you must:
+  - Make it focusable with `tabindex="0"`.
+  - Give it an appropriate `role`.
+  - Provide keyboard interaction (at least Enter/Space) in addition to click.
+  - Optionally add `.make-it-focusable` to ensure it participates in the global focus styling.
+
+```html
+<div
+  class="make-it-focusable"
+  tabindex="0"
+  role="button"
+  (click)="onAction()"
+  (keydown.enter)="onAction()"
+  (keydown.space)="onAction()"
+>
+  Action
+</div>
+```
+
+#### Tabindex guidelines
+
+- To intentionally remove an element from the tab order, use `tabindex="-1"`.
+- To make an element focusable, use `tabindex="0"`.
+- Do not use positive `tabindex` values.
 
 ### Colors
 
@@ -219,7 +305,7 @@ In `package.json` you must add a script to run the test runner:
 "my-app:a11y:run": "pa11y-ci --config ./apps/my-app/.pa11yci.json",
 ```
 
-This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`. You can see an example [here](./git-flow.md#pull-request-github-actions).
+This script (`my-app:a11y`) can be used with `husky hooks` and `github actions CI`. You can see an example in the [git-flow](./git-flow.md#pull-request-github-actions) section.
 
 ### jest axe
 

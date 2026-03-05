@@ -9,9 +9,7 @@ import { categoryFeatureDetailFormConfig } from './category-feature-detail-form.
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopCategoryDetailFacadeService
-  implements DetailItemViewFacade<LlecoopProductCategory>
-{
+export class LlecoopCategoryDetailFacadeService implements DetailItemViewFacade<LlecoopProductCategory> {
   readonly #store = inject(llecoopCategoryStore);
   readonly #view = inject(VIEW_CONFIG)().filter(item => item.name === 'category')[0];
   model = this.#store.selectedItem;
@@ -21,9 +19,13 @@ export class LlecoopCategoryDetailFacadeService
     title: this.model()?.name || 'Nova categoria',
   }));
 
-  formConfig = categoryFeatureDetailFormConfig();
+  formConfig = categoryFeatureDetailFormConfig(!this.model()?.id);
 
   onSubmit(item: Partial<LlecoopProductCategory>): void {
-    this.model()?.id ? this.#store.update({ item }) : this.#store.create({ item });
+    if (this.model()?.id) {
+      this.#store.update({ item });
+    } else {
+      this.#store.create({ item });
+    }
   }
 }

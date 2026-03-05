@@ -1,0 +1,93 @@
+<div class="flex items-center justify-center px-4 py-8 md:py-16">
+  @if (isLoading()) {
+    <div
+      aria-hidden="true"
+      class="finish-card w-full max-w-3xl animate-pulse space-y-8 px-6 py-4 md:px-12 md:py-8">
+      <div class="mx-auto h-24 w-24 rounded-full bg-neutral-200"></div>
+      <div class="mx-auto h-10 w-3/4 rounded bg-neutral-200"></div>
+      <div class="mx-auto h-6 w-1/2 rounded bg-neutral-200"></div>
+      <div class="mx-auto h-48 w-48 rounded-full border-4 border-neutral-100 bg-neutral-50"></div>
+      <div class="space-y-4">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="h-6 w-full rounded bg-neutral-100"></div>
+        }
+      </div>
+      <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
+        <div class="h-12 w-full rounded-xl bg-neutral-200 sm:w-40"></div>
+        <div class="h-12 w-full rounded-xl bg-neutral-200 sm:w-40"></div>
+      </div>
+    </div>
+  } @else {
+    <mat-card appearance="outlined" class="finish-card max-w-3xl px-6 py-4 md:px-12 md:py-8">
+      <mat-card-content>
+        <div class="flex justify-center">
+          <div class="bg-primary-500 flex items-center justify-center rounded-full p-4">
+            <mat-icon class="white-icon scale-200" aria-hidden="true">check</mat-icon>
+          </div>
+        </div>
+
+        <!-- Thank You Title -->
+        <h2
+          class="mt-6 text-center text-2xl font-bold tracking-tight text-neutral-800 md:text-3xl lg:mt-10">
+          {{ 'cart.finish.title' | translate }}
+        </h2>
+
+        <!-- Order Number -->
+        @if (orderNumber(); as orderNum) {
+          <p class="mt-2 text-center text-base text-neutral-600">
+            {{ 'cart.finish.orderNumber' | translate }}
+            <strong class="text-neutral-800">{{ orderNum }}</strong>
+          </p>
+        }
+
+        <!-- Eco Badge -->
+        <div
+          class="border-primary-500 mx-auto my-6 flex h-46 w-46 justify-center overflow-hidden rounded-full border-5 bg-transparent mix-blend-darken shadow-lg">
+          <img
+            src="/img/producte-local.png"
+            class="relative -top-2 h-47 w-47 rounded-full bg-transparent object-cover mix-blend-darken"
+            [attr.alt]="'cart.finish.ecoBadgeAlt' | translate" />
+        </div>
+
+        <ul class="mx-auto mt-8 flex list-none flex-col gap-5 p-0">
+          <li class="flex items-start gap-3 text-left">
+            <mat-icon class="text-primary-600 mt-0.5 shrink-0" aria-hidden="true"
+              >check_circle</mat-icon
+            >
+            <span class="text-body-large text-neutral-800">
+              {{ 'cart.finish.emailNotice' | translate }} <strong>{{ userEmail() }}</strong>
+            </span>
+          </li>
+
+          <li class="flex items-start gap-3 text-left">
+            <mat-icon class="text-primary-600 mt-0.5 shrink-0" aria-hidden="true"
+              >schedule</mat-icon
+            >
+            <span class="text-body-medium text-neutral-700">
+              {{ 'cart.finish.orderReadyNotification' | translate }}
+            </span>
+          </li>
+
+          <li class="flex items-start gap-3 text-left">
+            <mat-icon class="text-primary-600 mt-0.5 shrink-0" aria-hidden="true">info</mat-icon>
+            <span class="text-body-medium font-bold text-neutral-900">
+              {{ 'cart.finish.modifyReminder' | translate }}
+            </span>
+          </li>
+        </ul>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <a matButton="outlined" routerLink="/perfil/comandes">
+            <mat-icon aria-hidden="true">list_alt</mat-icon>
+            {{ 'cart.finish.ordersHistory' | translate }}
+          </a>
+          <a matButton="filled" routerLink="/botiga">
+            <mat-icon class="white-icon" aria-hidden="true">storefront</mat-icon>
+            {{ 'cart.finish.backToStore' | translate }}
+          </a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

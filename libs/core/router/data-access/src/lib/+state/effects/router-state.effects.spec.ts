@@ -1,6 +1,6 @@
 import { Observable, of } from 'rxjs';
 
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { EffectsMetadata, getEffectsMetadata } from '@ngrx/effects';
@@ -22,7 +22,7 @@ describe('RouterState Effects', () => {
         provideRouter([]),
         provideMockStore(),
         provideMockActions(() => actions$),
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
       ],
     });
 

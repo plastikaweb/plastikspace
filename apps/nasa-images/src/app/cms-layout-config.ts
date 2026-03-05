@@ -12,9 +12,9 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import('@plastik/shared/button').then(c => c.SharedButtonUiComponent),
+        component: () => import('@plastik/shared/button/ui').then(c => c.SharedButtonUiComponent),
         inputs: {
-          config: {
+          buttonConfig: {
             type: 'link',
             link: 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
             ariaLabel: 'plastikspace -> apps -> nasa-images readme',
@@ -22,7 +22,7 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
             elements: [
               {
                 type: 'icon',
-                content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-white' },
+                content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-primary' },
               },
             ],
             doAction: () =>

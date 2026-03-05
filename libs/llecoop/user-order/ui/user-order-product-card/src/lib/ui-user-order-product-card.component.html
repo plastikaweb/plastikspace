@@ -1,0 +1,67 @@
+@let cardBackgroundColor = product().category?.color || '#000000' | hexToRgba: 0.15;
+@let cardBorderColor = product().category?.color || '#000000' | hexToRgba: 1;
+
+<mat-card
+  appearance="outlined"
+  class="flex w-[350px] flex-col overflow-hidden transition-all hover:scale-105 hover:cursor-pointer hover:shadow-md lg:max-w-[275px]"
+  [style.backgroundColor]="cardBackgroundColor"
+  [style.borderColor]="cardBorderColor"
+  (click)="onViewDetails()">
+  <div class="relative flex items-center justify-center bg-white">
+    @if (product().imgUrl; as imgUrl) {
+      <plastik-img-container
+        mat-
+        card-image
+        [src]="imgUrl"
+        [title]="product().name"
+        [dimensions]="{ width: 250, height: 250 }"
+        [quality]="80"
+        [lcpImage]="lcpImage()" />
+    }
+  </div>
+  <mat-card-header>
+    <mat-card-title>{{ product().name | titlecase }}</mat-card-title>
+    @if (product().category?.name; as categoryName) {
+      <mat-card-subtitle>{{ categoryName | titlecase }}</mat-card-subtitle>
+    }
+  </mat-card-header>
+  <mat-card-content>
+    <div class="text-md mb-4 font-bold">
+      {{ product().priceWithIva | currency: 'EUR' }}
+      <span class="text-sm"> / {{ product().unit | llecoopProductBaseUnitText }}</span>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    @if (product().quantity === 0) {
+      <button
+        mat-flat-button
+        class="w-full"
+        (click)="onQuantityChange('1'); $event.stopPropagation()">
+        <mat-icon>add</mat-icon>
+        Afegir
+      </button>
+    } @else {
+      <mat-form-field class="w-full">
+        <input
+          matInput
+          type="number"
+          min="0"
+          [step]="product().unit | llecoopProductUnitStep"
+          [ngModel]="product().quantity"
+          (ngModelChange)="onQuantityChange($event)"
+          (click)="$event.stopPropagation()" />
+        <span matTextSuffix class="gap-sub flex flex-row items-center">
+          {{ product().unit | llecoopProductUnitSuffix }}
+
+          <mat-chip class="w-[200px] md:w-[140px]">
+            Total: {{ totalPrice() | currency: 'EUR' }}
+
+            <button matChipRemove (click)="onQuantityChange('0')">
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+        </span>
+      </mat-form-field>
+    }
+  </mat-card-actions>
+</mat-card>

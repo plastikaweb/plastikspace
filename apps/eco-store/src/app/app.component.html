@@ -1,0 +1,50 @@
+@if (activityStore.isActive()) {
+  <plastik-shared-activity-ui-overlay
+    class="fixed z-9999 bg-gray-50/20 shadow-sm/50 backdrop-blur-[2px]"
+    animate.enter="fade-in"
+    animate.leave="fade-out">
+    <div class="flex flex-col items-center justify-center gap-6 p-12">
+      <!-- Main container -->
+      <div class="relative flex h-24 w-24 items-center justify-center">
+        <!-- Ripples -->
+        <div
+          aria-hidden="true"
+          class="bg-primary-900 ping-slow absolute inset-0 rounded-full opacity-20"></div>
+        <div
+          aria-hidden="true"
+          class="bg-primary-900 absolute inset-0 animate-pulse rounded-full opacity-30"></div>
+
+        <!-- Icon container -->
+        <div class="bg-primary-100 rounded-full p-5 shadow-lg backdrop-blur-sm">
+          <svg
+            width="32"
+            height="32"
+            fill="none"
+            stroke="none"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-miterlimit="10"
+            class="text-primary-500 fill-primary-500 breathing"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24">
+            <path
+              d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
+          </svg>
+        </div>
+      </div>
+
+      <!-- Loading text -->
+      <p
+        class="text-primary-900 animate-pulse rounded-full bg-neutral-100 px-4 py-2 text-xs font-bold tracking-[0.2em] uppercase">
+        {{ activityStore.message() | translate }}
+      </p>
+    </div>
+  </plastik-shared-activity-ui-overlay>
+}
+
+@defer {
+  <plastik-skip-link></plastik-skip-link>
+}
+
+<router-outlet />

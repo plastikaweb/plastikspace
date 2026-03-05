@@ -42,9 +42,8 @@ export class FirebaseStorageService extends StorageService implements StorageSer
       const snapshot = await task;
       this.fileUrl.set(await getDownloadURL(snapshot.ref));
       this.progress.set(0);
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
+    } catch {
+      // console.error(error);
       this.progress.set(0);
     }
   }

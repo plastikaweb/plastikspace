@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { BaseEntity } from '@plastik/core/entities';
 
@@ -10,7 +10,7 @@ describe('InputTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
       imports: [InputTableComponent],
     }).compileComponents();
 

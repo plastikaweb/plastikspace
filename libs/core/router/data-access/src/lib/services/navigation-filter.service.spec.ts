@@ -1,6 +1,6 @@
 import { of, Subscription } from 'rxjs';
 
-import { Component, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { ROUTER_NAVIGATION } from '@ngrx/router-store';
@@ -19,7 +19,7 @@ describe('NavigationFilterService', () => {
     TestBed.configureTestingModule({
       imports: [RootComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideMockStore({
           selectors: [{ selector: selectRouteDataName, value: 'valid' }],
         }),

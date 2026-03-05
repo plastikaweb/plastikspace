@@ -52,7 +52,10 @@
               "maximumError": "5kb"
             }
           ],
-          "outputHashing": "all"
+          "outputHashing": "all",
+          "optimization": true,
+          "extractLicenses": true,
+          "sourceMap": false
         },
         "development": {
           "optimization": false,
@@ -93,7 +96,8 @@
           "buildTarget": "llecoop:build:staging"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "development",
+      "continuous": true
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
@@ -108,7 +112,8 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/llecoop"],
       "options": {
-        "jestConfig": "apps/llecoop/jest.config.ts"
+        "jestConfig": "apps/llecoop/jest.config.ts",
+        "tsConfig": "apps/llecoop/tsconfig.spec.json"
       }
     },
     "serve-static": {

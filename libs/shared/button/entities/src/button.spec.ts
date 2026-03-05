@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { buttonHasALinkGuard } from './button';
@@ -7,7 +7,7 @@ import { buttonAsLinkMock, buttonMock } from './button.mock';
 describe('Button Entities', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     });
   });
 

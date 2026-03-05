@@ -1,11 +1,11 @@
-<mat-sidenav-container (backdropClick)="onToggleSidenav(false)">
+<mat-sidenav-container class="block h-full" (backdropClick)="onToggleSidenav(false)">
   <mat-sidenav
     class="p-md"
     data-test="sidenav"
-    [mode]="mode"
-    [fixedInViewport]="fixedInViewport"
-    [position]="position"
-    [opened]="sidenavOpened"
+    [mode]="mode()"
+    [fixedInViewport]="fixedInViewport()"
+    [position]="position()"
+    [opened]="sidenavOpened()"
     (keydown.escape)="onToggleSidenav(false)">
     <ng-content select="[header]"></ng-content>
     <mat-divider class="mt-sm"></mat-divider>
@@ -17,7 +17,7 @@
     role="main"
     tabindex="-1"
     id="mainContent"
-    class="bg-white p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth">
+    class="p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,76 @@
+@let productData = product()!;
+
+<mat-card
+  appearance="outlined"
+  role="article"
+  class="product-card make-it-focusable group hover:inset-shadow-2xl! hover:ring-primary-200! relative flex h-full w-full flex-col justify-between overflow-hidden transition-all duration-200 hover:translate-y-[-4px] hover:shadow-xl! hover:ring-1!"
+  [class.pointer-events-none]="!productData.stock"
+  [routerLink]="
+    productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
+  "
+  [attr.aria-label]="productData ? productData.name : ('common.loading' | translate)">
+  @if (productData) {
+    <!-- Favorite Button -->
+    @if (!minimalVersion()) {
+      <eco-store-shared-favorite-button
+        class="absolute! top-3 right-3 z-100!"
+        [isFavorite]="false"
+        [ariaLabel]="'products.favorite' | translate: { value: productData.name }"
+        (toggleFavorite)="onToggleFavorite($event)" />
+    }
+
+    <!-- Image -->
+    <div class="relative isolate mb-4 aspect-square w-full">
+      <div class="flex h-full w-full items-center justify-center">
+        <plastik-img-container
+          class="h-full w-full rounded-lg transition-all duration-300 group-hover:scale-105 group-hover:contrast-110"
+          sizes="(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px"
+          [src]="productData | pocketBaseImageUrl: productData.images?.[0]"
+          [title]="productData.name"
+          [lcpImage]="isFirst()" />
+      </div>
+    </div>
+
+    <!-- Content Section -->
+    <mat-card-content class="flex grow flex-col space-y-2 p-4">
+      <!-- Category -->
+      <eco-store-product-category-label
+        size="sm"
+        [name]="productData.categoryName"
+        [color]="productData.categoryColor" />
+
+      <!-- Title -->
+      <h3 class="line-clamp-2 min-h-9 text-lg leading-tight font-bold text-gray-900">
+        {{ productData.name }}
+      </h3>
+
+      <!-- Price -->
+      <eco-store-product-price
+        size="md"
+        [price]="productData.priceWithIva"
+        [unitType]="productData.unitType"
+        [unitBase]="productData.unitBase" />
+    </mat-card-content>
+
+    <!-- Action Button Section -->
+    @if (!minimalVersion()) {
+      <mat-card-actions class="mt-5">
+        @if (isOpen()) {
+          <eco-store-product-quantity
+            [product]="productData"
+            [quantity]="quantity()"
+            (quantityChange)="onQuantityChange($event)" />
+        } @else {
+          <button
+            matButton="filled"
+            class="w-full"
+            [routerLink]="
+              productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
+            ">
+            {{ 'products.goToDetail' | translate }}
+          </button>
+        }
+      </mat-card-actions>
+    }
+  }
+</mat-card>

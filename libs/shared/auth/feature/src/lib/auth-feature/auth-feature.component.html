@@ -1,21 +1,21 @@
 <main class="flex flex-col">
   @defer {
-    <plastik-mat-theme-toggle class="absolute z-10 top-md right-md"></plastik-mat-theme-toggle>
+    <plastik-mat-theme-toggle class="top-md right-md absolute z-10"></plastik-mat-theme-toggle>
   }
 
-  <div class="flex justify-center items-center min-h-screen contain-layout p-sub">
+  <div class="p-sub flex min-h-screen items-center justify-center contain-layout">
     @let formConfig = facade.formConfig;
 
     <mat-card
       appearance="raised"
-      class="flex items-center justify-center align-middle shadow-md min-w-[425px] max-w-[425px]">
+      class="flex max-w-[425px] min-w-[425px] items-center justify-center align-middle shadow-md">
       @defer {
         <mat-card-header>
-          <mat-card-title class="flex justify-center align-middle gap-sub">
+          <mat-card-title class="gap-sub flex justify-center align-middle">
             @if (logo() && title()) {
               <img
                 loading="lazy"
-                class="w-[32px] h-[32px] object-contain"
+                class="h-[32px] w-[32px] object-contain"
                 [attr.alt]="title() || ''"
                 [src]="logo()" />
             }
@@ -25,7 +25,7 @@
           </mat-card-title>
         </mat-card-header>
 
-        <mat-card-content class="w-full my-sm">
+        <mat-card-content class="my-sm w-full">
           <plastik-shared-form-feature
             [fields]="formConfig.getConfig() || []"
             [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
@@ -39,7 +39,7 @@
         </mat-card-content>
 
         <mat-card-footer
-          class="w-full text-center border-t-2 text-[12px] text-balance bg-gray-70 text-white py-sub border-spacing-sm border-t-primary-light">
+          class="bg-gray-70 py-sub border-spacing-sm border-t-secondary w-full border-t-2 text-center text-[12px] text-balance text-white">
           <a
             class="hover:text-gray-10 hover:decoration-gray-10"
             target="_self"

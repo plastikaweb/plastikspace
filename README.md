@@ -1,193 +1,227 @@
 # Plastikspace
 
 <div align="center">
-  <img width="15%" height="15%" src="./documentation/img/plastikaweb.png" alt="plastikaweb">
-  <p>A personal multi-repository to do tests and experiments with Nx and Angular. </p>
+  <img width="100" src="./documentation/img/plastikaweb.png" alt="plastikaweb">
 </div>
 
+## Modern Angular Experimentation Lab
+
+### A personal multi-repository to explore Nx, Angular 21, and cutting-edge web technologies
+
+<div align="center">
+
 [![Deploy Staging](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml/badge.svg)](https://github.com/plastikaweb/plastikspace/actions/workflows/ci.yml)
+![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/plastikaweb/bd70c4cce17a0ad5e1af4a9f063ebdc7/raw/coverage-badge.json)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/plastikaweb/plastikspace)
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
-![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+![Angular 21](https://img.shields.io/badge/angular-21-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![TailwindCSS 4](https://img.shields.io/badge/tailwindcss-4-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Signals](https://img.shields.io/badge/NgRx-Signals-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-a08021?style=for-the-badge&logo=firebase&logoColor=ffcd34)
+![PocketBase](https://img.shields.io/badge/pocketbase-%23b8dbe4.svg?style=for-the-badge&logo=Pocketbase&logoColor=black)
+![Apollo-GraphQL](https://img.shields.io/badge/-ApolloGraphQL-311C87?style=for-the-badge&logo=apollo-graphql)
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
 [![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
+![Accessibility](https://img.shields.io/badge/Accessibility-%230170EA.svg?style=for-the-badge&logo=Accessibility&logoColor=white)
 
-[![built with Codeium](https://codeium.com/badges/main)](https://codeium.com)
+</div>
 
-## Install repo locally
+---
 
-> Please make sure you have [rimraf](https://www.npmjs.com/package/rimraf) package installed globally.
+## 🚀 Tech Stack Highlights
 
-```bash
-  npm install -g rimraf
+- **Framework:** [Angular 21](https://angular.io/) (Standalone Components, Signals, Hydration)
+- **Monorepo Tooling:** [Nx](https://nx.dev/) (Project Graph, Distributed Task Execution)
+- **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
+- **State Management:** [NgRx Signal Store](https://ngrx.io/guide/signals/signal-store)
+- **Backend Integrations:**
+  - **Firebase:** Real-time DB, Auth, and Cloud Functions (llecoop)
+  - **PocketBase:** Lightweight Go backend (eco-store)
+  - **GraphQL:** Apollo Client integration (plastikaweb)
+- **Quality Assurance:** Jest, Cypress, Pa11y (Accessibility), ESLint
+
+---
+
+## 🏗️ Architecture
+
+This project follows a **Domain-Driven Design (DDD)** approach within an Nx workspace.
+
+```mermaid
+graph TD
+    subgraph Applications
+        Apps[Any Application]
+    end
+
+    subgraph Libraries
+        direction TB
+        AppSpecific[App Specific Libs]
+        Shared[Shared Libs]
+        Core[Core Libs]
+    end
+
+    Apps --> AppSpecific
+    Apps --> Shared
+    Apps --> Core
+
+    AppSpecific --> Shared
+    AppSpecific --> Core
+    Shared --> Core
 ```
 
-- clone repo: `git clone git@github.com:plastikaweb/plastikspace.git`.
-- run `yarn install:local`.
-- **to serve it locally in development run `yarn <apn-name>:serve`**.
+For more details, see the [🏛️ NX Architecture Guide](documentation/nx-architecture.md).
 
-## Commands & generators
+---
 
-Some of the more usual generators and scripts:
+## 📥 Getting Started
 
-- Run `ng g @nx/angular:app my-app` to generate an application.
-- Run `ng g @nx/angular:lib my-lib` to generate a library.
-- Run `ng serve my-app` for a dev server. Navigate to localhost:xxxx. The app will automatically reload if you change any of the source files.
-- Run `ng g component my-component --project=my-app` to generate a new component.
-- Run `ng build my-app` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-- Run `yarn test` to execute the unit tests via [Jest](https://jestjs.io).
-- Run `yarn affected:test` to execute the unit tests affected by a change.
-- Run `yarn dep-graph` to see a diagram of the dependencies of your projects.
+### Prerequisites
 
-To see a full list of available scripts see **package.json file > scripts**.
+- **Node.js**: v22 (see `.nvmrc`)
+- **Yarn**: v4+
+- **rimraf**: `npm install -g rimraf` (required for clean scripts)
 
-> It is strongly recommended to use [Nx Console for VSCode](https://marketplace.visualstudio.com/items?itemName=nrwl.angular-console) in order to run Nx generators.
-> ![Nx Console for VSCode](documentation/img/nx-console-screenshot.png)
+### Installation
 
-## Workflow configuration and conventions
+1. **Clone the repo**
 
-- [NX architecture](documentation/nx-architecture.md)
-- [Code style](documentation/code-style.md)
-- [Accessibility](documentation/accessibility.md)
-- [Git commit conventions](documentation/commit-conventions.md)
-- [Git Flow and CI/CD](documentation/git-flow.md)
-- [CSS Styling](documentation/css-styles.md)
+   ```bash
+   git clone git@github.com:plastikaweb/plastikspace.git
+   cd plastikspace
+   ```
 
-## Available applications
+2. **Full Environment Setup**
 
-- [nasa-images](apps/nasa-images/README.md)
-- [experimental](apps/experimental/README.md)
-- [llecoop](apps/llecoop/README.md)
-- [llecoop-firebase](apps/llecoop-firebase/README.md)
-- [llecoop-triggers](apps/llecoop-triggers/README.md)
-- [plastikaweb](apps/plastikaweb/README.md)
+   ```bash
+   yarn install:local
+   ```
 
-## Available libraries
+---
 
-This is a list of all the global shared libraries. It is very likely that other libraries exist but are related to a single project, so they are listed in the concrete project domain.
+## 🔧 Development Commands
 
-### Core
+### Running Applications (Full Local Environment)
 
-- [core-util-environments](libs/core/util/environments/README.md)
-- [core-util-assets](libs/core/util/assets/README.md)
-- [core-util-api](libs/core/util/api/README.md)
-- [core-util-cypress-commands](libs/core/util/cypress-commands/README.md)
-- [core-styles-util-tailwind-preset](libs/core/styles/util/tailwind-preset/README.md)
-- [core-styles-util-material](libs/core/styles/util/material/README.md)
-- [core-ng-entry-html-util](libs/core/ng-entry-html/util/README.md)
-- [core-router-data-access](libs/core/router/data-access//README.md)
-- [core-entities](libs/core/entities/README.md)
-- [core-can-deactivate-guard](libs/core/can-deactivate-guard/README.md)
+Some apps require a backend to be running. These commands start both:
 
-#### CMS-layout
+| Command                  | Description                                          |
+| :----------------------- | :--------------------------------------------------- |
+| `yarn eco-store:local`   | Starts **PocketBase** + **eco-store** frontend       |
+| `yarn llecoop:local`     | Starts **Firebase Emulators** + **llecoop** frontend |
+| `yarn nasa-images:serve` | Starts the NASA image gallery                        |
+| `yarn plastikaweb:serve` | Starts the personal website                          |
 
-- [core-cms-layout-feature](libs/core/cms-layout/feature/README.md)
-- [core-cms-layout-data-access](libs/core/cms-layout/data-access/README.md)
-- [core-cms-layout-entities](libs/core/cms-layout/entities/README.md)
+### Common Nx Tasks
 
-### Shared
+- **Test Everything**: `yarn test:all`
+- **Lint Everything**: `yarn lint:all`
+- **Visualize Workspace**: `yarn dep-graph`
+- **Affected Changes**: `nx affected:test`
+
+---
+
+## 📘 Documentation & Standards
+
+| Resource                                               | Description                                  |
+| :----------------------------------------------------- | :------------------------------------------- |
+| [🎨 Code Style](documentation/code-style.md)           | ESLint, Prettier, and Angular best practices |
+| [📝 Commit Guide](documentation/commit-conventions.md) | Conventional Commits & Commitizen usage      |
+| [♿ Accessibility](documentation/accessibility.md)     | WCAG compliance and Pa11y testing            |
+| [🌐 I18n Guide](documentation/i18n.md)                 | ngx-translate and multi-language support     |
+| [💅 CSS Styling](documentation/css-styles.md)          | Tailwind 4 configuration and presets         |
+
+---
+
+## 📱 Applications Overview
+
+| Application                                   | Stack                | Description                         |
+| :-------------------------------------------- | :------------------- | :---------------------------------- |
+| [**eco-store**](apps/eco-store/README.md)     | PocketBase, Signals  | Modern e-commerce showcase.         |
+| [**llecoop**](apps/llecoop/README.md)         | Firebase, NgRx       | Collaborative shopping application. |
+| [**nasa-images**](apps/nasa-images/README.md) | Public API, Material | NASA imagery explorer.              |
+| [**plastikaweb**](apps/plastikaweb/README.md) | GraphQL, Apollo      | Personal portfolio & blog.          |
+
+---
+
+## 📚 Libraries
+
+### 🧩 Core
+
+Foundation libraries used across applications.
+
+#### API and Data Access
+
+- [**api-base**](libs/core/util/api-base/README.md): Base interfaces and types for API services.
+- [**api-http**](libs/core/util/api-http/README.md): Generic HTTP CRUD services.
+- [**api-firebase**](libs/core/util/api-firebase/README.md): Generic Firebase CRUD services.
+- [**api-pocketbase**](libs/core/util/api-pocketbase/README.md): Generic PocketBase CRUD services.
+
+#### Utilities
+
+- [**environments**](libs/core/util/environments/README.md): Environment configuration helpers.
+- [**assets**](libs/core/util/assets/README.md): Asset management.
+- [**cypress-commands**](libs/core/util/cypress-commands/README.md): Custom Cypress commands.
+- [**paginator**](libs/core/paginator/README.md): Material Paginator internationalization service.
+
+#### UI and Layout
+
+- [**cms-layout**](libs/core/cms-layout/feature/README.md): CMS layout features.
+- [**ng-entry-html**](libs/core/ng-entry-html/util/README.md): HTML entry utilities.
+- [**styles-preset**](libs/core/styles/util/tailwind-preset/README.md): Core styles and presets.
+- [**styles-tailwind4**](libs/core/styles/util/tailwind4/README.md): Global CSS variables for TailwindCSS v4.
+- [**styles-material**](libs/core/styles/util/material/README.md): Global CSS adjustments for Angular Material.
+
+### 🔄 Shared
+
+Reusable features and UI components.
+
+#### Signal State (NgRx Signal Store)
+
+- [**data-access-http**](libs/shared/signal-state/data-access-http/README.md): Signal Store features for HTTP.
+- [**data-access-firebase**](libs/shared/signal-state/data-access-firebase/README.md): Signal Store features for Firebase.
+- [**data-access-pocketbase**](libs/shared/signal-state/data-access-pocketbase/README.md): Signal Store features for PocketBase.
 
 #### Auth
 
-- [shared-auth-feature](libs/shared/auth/feature/README.md)
-- [shared-auth-firebase-data-access](libs/shared/auth/firebase/data-access/README.md)
-- [shared-auth-login-feature](libs/shared/auth/login/feature/README.md)
-- [shared-auth-register-feature](libs/shared/auth/register/feature/README.md)
-- [shared-auth-request-password-feature](libs/shared/auth/request-password/feature/README.md)
+- [**auth-feature**](libs/shared/auth/feature/README.md)
+- [**auth-entities**](libs/shared/auth/entities/README.md)
+- [**auth-firebase**](libs/shared/auth/firebase/data-access/README.md)
+- [**auth-pocketbase**](libs/shared/auth/pocketbase/data-access/README.md)
+- [**login**](libs/shared/auth/login/feature/README.md)
+- [**register**](libs/shared/auth/register/feature/README.md)
+- [**request-password**](libs/shared/auth/request-password/feature/README.md)
 
-#### Notification
+#### UI Components
 
-- [shared-notification-entities](libs/shared/notification/entities/README.md)
-- [shared-notification-data-access](libs/shared/notification/data-access/README.md)
-- [shared-notification-ui-mat-snackbar](libs/shared/notification/ui/mat-snackbar/README.md)
+- [**button**](libs/shared/button/ui/README.md)
+- [**table**](libs/shared/table/ui/README.md)
+- [**form**](libs/shared/form/feature/README.md)
+- [**notification**](libs/shared/notification/data-access/README.md)
+- [**activity**](libs/shared/activity/ui/README.md)
+- [**img-container**](libs/shared/img-container/ui/README.md)
+- [**mat-theme-toggle**](libs/shared/mat-theme-toggle/README.md)
+- [**pagination-ui**](libs/shared/pagination/ui/README.md)
+- [**pagination-util**](libs/shared/pagination/util/README.md)
+- [**sort-selector**](libs/shared/sort-selector/README.md)
+- [**shared-chip**](libs/shared/chip/ui/README.md)
 
-#### Button
+#### Utilities
 
-- [shared-button-entities](libs/shared/button/entities/README.md)
-- [shared-button-ui](libs/shared/button/ui/README.md)
+- [**storage**](libs/shared/storage/data-access/README.md)
+- [**testing**](libs/shared/testing/README.md)
+- [**util**](libs/shared/util/objects/README.md)
+- [**countdown**](libs/shared/countdown/util/README.md)
+- [**view-transition**](libs/shared/util/view-transition/README.md)
 
-#### Table
+---
 
-- [shared-table-entities](libs/shared/table/entities/README.md)
-- [shared-table-ui](libs/shared/table/ui/README.md)
+## 📬 Contact
 
-#### Form
+### Carlos Matheu Armengol
 
-- [shared-form-feature](libs/shared/form/feature/README.md)
-
-#### Img Container
-
-- [shared-img-container-ui](libs/shared/img-container/ui/README.md)
-
-#### Mat Theme Toggle
-
-- [shared-mat-theme-toggle](libs/shared/mat-theme-toggle/README.md)
-
-#### Testing
-
-- [shared-testing](libs/shared/testing/README.md)
-
-#### Signal State
-
-- [shared-signal-state-data-access](libs/shared/signal-state/data-access/README.md)
-
-#### Storage
-
-- [shared-storage-entities](libs/shared/storage/entities/README.md)
-- [shared-storage-data-access](libs/shared/storage/data-access/README.md)
-
-##### UI
-
-- [shared-form-ui-year-picker/shared-form-ui-year-picker-type](libs/shared/form/ui/year-picker/README.md)
-- [shared-textarea-with-counter](libs/shared/form/ui/textarea-with-counter/README.md)
-- [shared-input-color-picker](libs/shared/form/ui/input-color-picker/README.md)
-- [shared-input-password-with-visibility](libs/shared/form/ui/input-password-with-visibility/README.md)
-- [shared-input-table](libs/shared/form/ui/table/README.md)
-- [shared-input-search-util](libs/shared/form/ui/input-search-util/README.md)
-
-##### Util
-
-- [shared-form-util](libs/shared/form/util/README.md)
-- [skip-link](libs/shared/skip-link/skip-link-util/README.md)
-
-#### Activity
-
-- [shared-activity-ui](libs/shared/activity/ui/README.md)
-- [shared-activity-data-access](libs/shared/activity/data-access/README.md)
-
-#### Confirm
-
-- [shared-confirm](libs/shared/confirm/data-access/README.md)
-
-#### Layouts
-
-- [table-with-filtering](libs/core/table-with-filtering/README.md)
-- [detail-item-form](libs/core/detail-item-form/README.md)
-
-#### Util
-
-- [shared-util-entities](libs/shared/util/entities/README.md)
-- [shared-util-objects](libs/shared/util/objects/README.md)
-- [shared-util-return-as-observable-pipe](libs/shared/util/return-as-observable-pipe/README.md)
-- [shared-util-formatters](libs/shared/util/formatters/README.md)
-- [shared-util-dynamic-bg-color](libs/shared/util/dynamic-bg-color/README.md)
-- [shared-util-latinize](libs/shared/util/latinize/README.md)
-- [shared-util-bytes-to-size](libs/shared/util/bytes-to-size/README.md)
-
-## Contact
-
-Carlos Matheu Armengol
-
-![Freelancer](https://img.shields.io/badge/Freelancer-29B2FE?style=for-the-badge&logo=Freelancer&logoColor=white)
 [![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/plastikaweb)
-[![Stackblitz](https://img.shields.io/badge/Stackblitz-fff?style=for-the-badge&logo=Stackblitz&logoColor=1389FD)](https://stackblitz.com/@plastikaweb)
 
-> [info@plastikaweb.org](mailto:<info@plastikaweb.com>) > [www.plastikaweb.com](https://www.plastikaweb.com)
-
-## Useful links
-
-- [Nx Angular Documentation](https://nx.dev/angular)
+> 📧 [info@plastikaweb.com](mailto:info@plastikaweb.com)
+> 🌐 [www.plastikaweb.com](https://www.plastikaweb.com)

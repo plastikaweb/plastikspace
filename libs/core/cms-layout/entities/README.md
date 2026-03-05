@@ -1,5 +1,10 @@
-# Core CMS Layout entities
+# @plastik/core/cms-layout/entities
+
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+
+- [Description](#description)
 
 ## Description
 
-A collection of core entity and model types to be used where needed across all apps and libs.
+**CMS Layout Entities** provides the shared domain models, interfaces, and types required by the CMS layout libraries.

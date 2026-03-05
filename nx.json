@@ -40,6 +40,16 @@
     },
     "e2e-ci--**/*": {
       "dependsOn": ["^build"]
+    },
+    "@angular/build:application": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "@nx/js:tsc": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "namedInputs": {
@@ -57,7 +67,7 @@
       "!{projectRoot}/**/*.cy.[jt]s?(x)",
       "!{projectRoot}/cypress.config.[jt]s"
     ],
-    "sharedGlobals": []
+    "sharedGlobals": ["{workspaceRoot}/.cursorrules", "{workspaceRoot}/.cursor/rules/*.mdc"]
   },
   "cli": {
     "packageManager": "yarn"
@@ -86,17 +96,30 @@
       "style": "scss",
       "unitTestRunner": "jest"
     },
+    "@nx/angular:component": {
+      "style": "scss",
+      "type": "component",
+      "changeDetection": "OnPush",
+      "standalone": true,
+      "displayBlock": true
+    },
     "@nx/angular:library": {
       "linter": "eslint",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "jest",
+      "standalone": true,
+      "changeDetection": "OnPush"
     },
-    "@nx/angular:component": {
-      "style": "css"
+    "@nx/angular:service": {
+      "type": "service"
+    },
+    "@nx/angular:directive": {
+      "type": "directive"
+    },
+    "@nx/angular:pipe": {
+      "type": "pipe"
     }
   },
-  "defaultProject": "nasa-images",
+  "defaultProject": "llecoop",
   "cacheDirectory": "./tmp/my-cache",
-  "defaultBase": "develop",
-  "nxCloudId": "67d591d53c1965bb73bc7673",
-  "nxCloudUrl": ""
+  "defaultBase": "develop"
 }

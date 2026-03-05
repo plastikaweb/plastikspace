@@ -1,8 +1,8 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { computed, inject, Signal } from '@angular/core';
-import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { ViewConfig } from '@plastik/core/entities';
 import { LlecoopViews } from '@plastik/llecoop/entities';
+import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 
 export function viewConfig(): Signal<ViewConfig<LlecoopViews>[]> {
   const firebaseAuthService = inject(FirebaseAuthService);

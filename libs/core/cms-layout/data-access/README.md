@@ -1,32 +1,105 @@
-# core-cms-layout-data-access
+# @plastik/core/cms-layout/data-access
 
-- [core-cms-layout-data-access](#core-cms-layout-data-access)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![NgRx](https://img.shields.io/badge/ngrx-%23270341.svg?style=for-the-badge&logo=ngrx&logoColor=white)
+
+- [@plastik/core/cms-layout/data-access](#plastikcorecms-layoutdata-access)
   - [Description](#description)
-  - [State](#state)
-    - [How to use](#how-to-use)
-  - [Token services](#token-services)
-    - [CORE_CMS_LAYOUT_HEADER_CONFIG](#core_cms_layout_header_config)
-    - [VIEW_CONFIG](#view_config)
-  - [Running unit tests](#running-unit-tests)
+  - [State Management](#state-management)
+    - [`LayoutFacade`](#layoutfacade)
+  - [Services](#services)
+    - [`LayoutObserverService`](#layoutobserverservice)
+  - [Tokens](#tokens)
+    - [`CORE_CMS_LAYOUT_HEADER_CONFIG`](#core_cms_layout_header_config)
+    - [`VIEW_CONFIG`](#view_config)
+  - [Usage](#usage)
+    - [1. Import Module](#1-import-module)
+    - [2. Use Facade](#2-use-facade)
+  - [Running Unit Tests](#running-unit-tests)
 
 ## Description
 
-A library with state segment and facade service to manage CMS layout properties and some global service tokens to add init configuration to cms-layout libraries.
+Manages **CMS Layout State** (e.g., sidenav status, mobile detection) and provides configuration tokens for layout features.
 
-## State
+## State Management
+
+### `LayoutFacade`
+
+The main entry point for interacting with the CMS layout state. It abstracts the underlying NgRx store and provides properties and methods to control the layout.
+
+**Properties:**
+
+- `sidenavOpened$`: Observable emitting the current open state of the sidenav.
+- `isMobile$`: Observable emitting whether the current view is considered mobile.
+- `headerConfig`: The injected header configuration.
+- `sidenavConfig`: The injected sidenav view configuration.
+- `isActive`: Signal indicating if there is background activity (loading).
+
+**Methods:**
+
+- `toggleSidenav(opened?: boolean)`: Toggles the sidenav state or sets it to a specific value.
+- `setIsMobile(isMobile: boolean)`: Updates the mobile state in the store.
+- `dispatchAction(action: () => Action)`: Dispatches a generic NgRx action.
+
+![Layout State Diagram](layout-state.png)
+
+## Services
+
+### `LayoutObserverService`
+
+A utility service that wraps Angular CDK's `BreakpointObserver` to simplify responsive layout detection.
 
 ```typescript
-export interface State {
-  isMobile: boolean;
-  sidenavOpened: boolean;
+@Injectable({ providedIn: 'root' })
+export class LayoutObserverService {
+  /**
+   * Returns an observable that emits true if the current viewport matches the provided breakpoints.
+   * Default breakpoints: Handset, Tablet, Medium.
+   */
+  getMatches(breakpoints?: string[]): Observable<boolean>;
 }
 ```
 
-![layout state](layout-state.png)
+## Tokens
 
-### How to use
+### `CORE_CMS_LAYOUT_HEADER_CONFIG`
 
-- Import `CoreCmsLayoutDataAccessModule` into parent module or standalone component.
+Injects header configuration (title, icon, buttons, user menu, widgets).
+
+```typescript
+export interface CoreCmsLayoutHeaderConfig {
+  showToggleMenuButton: boolean;
+  sidenavPosition?: LayoutPosition;
+  title: string;
+  extendedTitle?: string;
+  mainIcon?: SvgIconConfig;
+  widgetsConfig?: {
+    position: LayoutPosition;
+    widgets: CoreCmsLayoutHeaderWidget[];
+  };
+  userMenuConfig?: {
+    label?: Signal<string>;
+    position: LayoutPosition;
+    config: HeaderMenuConfig<string>[];
+  };
+}
+
+export const CORE_CMS_LAYOUT_HEADER_CONFIG = new InjectionToken<CoreCmsLayoutHeaderConfig>(
+  'CORE_CMS_LAYOUT_HEADER_CONFIG'
+);
+```
+
+### `VIEW_CONFIG`
+
+Injects the sidenav menu configuration.
+
+```typescript
+export const VIEW_CONFIG = new InjectionToken<ViewConfig<unknown>[]>('VIEW_CONFIG');
+```
+
+## Usage
+
+### 1. Import Module
 
 ```typescript
 import { CoreCmsLayoutDataAccessModule } from '@plastik/core/cms-layout/data-access';
@@ -37,64 +110,23 @@ import { CoreCmsLayoutDataAccessModule } from '@plastik/core/cms-layout/data-acc
 export class ParentModule {}
 ```
 
-- Inject `LayoutFacade` in any smart component to manage @ngrx subscription selectors and actions dispatching related with layout state.
+### 2. Use Facade
+
+Inject `LayoutFacade` to interact with the state:
 
 ```typescript
-import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
-
-@Component({
-  selector: 'layout-feature',
-
-  templateUrl: './layout-feature.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-})
+@Component({ ... })
 export class FeatureComponent {
-  readonly #facade = inject(LayoutFacade);
+  private facade = inject(LayoutFacade);
   sidenavOpened$ = this.facade.sidenavOpened$;
   isMobile$ = this.facade.isMobile$;
 
-  onToggleSidenav(opened?: boolean): void {
-    this.#facade.toggleSidenav(opened);
-  }
-
-  onSetIsMobile(isMobile: boolean): void {
-    this.#facade.setIsMobile(isMobile);
-  }
-
-  onDispatchAction(action: () => Action): void {
-    this.#facade.dispatchAction(action);
+  toggleSidenav(opened?: boolean) {
+    this.facade.toggleSidenav(opened);
   }
 }
 ```
 
-## Token services
-
-### CORE_CMS_LAYOUT_HEADER_CONFIG
-
-Use this to inject header configuration on bootstrapping app.
-
-> See [core-cms-layout-feature: How to use](../feature/README.md#How-to-use) for a practical example.
-
-```typescript
-export interface CoreCmsLayoutHeaderConfig {
-  showToggleMenuButton: boolean;
-  mainTitle: string;
-  mainIcon?: SvgIconConfig;
-}
-
-export const CORE_CMS_LAYOUT_HEADER_CONFIG = new InjectionToken<CoreCmsLayoutHeaderConfig>(
-  'CORE_CMS_LAYOUT_HEADER_CONFIG'
-);
-```
-
-### VIEW_CONFIG
-
-Use this to inject sidenav menu configuration on bootstrapping app.
-
-```typescript
-export const VIEW_CONFIG = new InjectionToken<ViewConfig<unknown>[]>('VIEW_CONFIG');
-```
-
-## Running unit tests
+## Running Unit Tests
 
 Run `nx test core-cms-layout-data-access` to execute the unit tests.

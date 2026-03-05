@@ -4,13 +4,12 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
+    "moduleResolution": "bundler",
     "experimentalDecorators": true,
     "importHelpers": true,
     "target": "es2015",
     "module": "esnext",
-    "lib": ["es2020", "dom"],
+    "lib": ["es2015", "esnext", "dom"],
     "types": ["node", "jest", "@types/jest"],
     "resolveJsonModule": true,
     "skipLibCheck": true,
@@ -18,12 +17,13 @@
     "esModuleInterop": true,
     "baseUrl": ".",
     "paths": {
-      "@plastik/auth": ["libs/shared/auth/feature/src/index.ts"],
       "@plastik/auth/firebase/data-access": ["libs/shared/auth/firebase/data-access/src/index.ts"],
       "@plastik/auth/login": ["libs/shared/auth/login/feature/src/index.ts"],
+      "@plastik/auth/login/firebase": [
+        "libs/shared/auth/login/feature/src/lib/firebase-auth-login.routes.ts"
+      ],
       "@plastik/auth/register": ["libs/shared/auth/register/feature/src/index.ts"],
       "@plastik/auth/request-password": ["libs/shared/auth/request-password/feature/src/index.ts"],
-      "@plastik/core/api": ["libs/core/util/api/src/index.ts"],
       "@plastik/core/can-deactivate": ["libs/core/can-deactivate-guard/src/index.ts"],
       "@plastik/core/cms-layout": ["libs/core/cms-layout/feature/src/index.ts"],
       "@plastik/core/cms-layout/data-access": ["libs/core/cms-layout/data-access/src/index.ts"],
@@ -31,12 +31,15 @@
       "@plastik/core/cms-layout/footer": ["libs/core/cms-layout/ui/footer/src/index.ts"],
       "@plastik/core/cms-layout/header": ["libs/core/cms-layout/ui/header/src/index.ts"],
       "@plastik/core/cms-layout/sidenav": ["libs/core/cms-layout/ui/sidenav/src/index.ts"],
+      "@plastik/core/cms-layout/user-menu": ["libs/core/cms-layout/ui/user-menu/src/index.ts"],
       "@plastik/core/cypress-commands": ["libs/core/util/cypress-commands/src/index.ts"],
       "@plastik/core/detail-edit-view": ["libs/core/detail-item-form/src/index.ts"],
       "@plastik/core/entities": ["libs/core/entities/src/index.ts"],
       "@plastik/core/environments": ["libs/core/util/environments/src/index.ts"],
+      "@plastik/core/environments/testing": ["libs/core/util/environments/src/environment.mock.ts"],
       "@plastik/core/list-view": ["libs/core/table-with-filtering/src/index.ts"],
       "@plastik/core/router-state": ["libs/core/router/data-access/src/index.ts"],
+      "@plastik/eco-store/entities": ["libs/eco-store/core/entities/src/index.ts"],
       "@plastik/llecoop/category-name-cell": [
         "libs/llecoop/category/ui/category-name-cell/src/index.ts"
       ],
@@ -66,15 +69,44 @@
       "@plastik/llecoop/product/data-access": ["libs/llecoop/product/data-access/src/index.ts"],
       "@plastik/llecoop/product/detail": ["libs/llecoop/product/feature/detail/src/index.ts"],
       "@plastik/llecoop/product/list": ["libs/llecoop/product/feature/list/src/index.ts"],
+      "@plastik/llecoop/product/product-base-unit-text": [
+        "libs/llecoop/product/util/product-base-unit-text/src/index.ts"
+      ],
+      "@plastik/llecoop/product/product-unit-step": [
+        "libs/llecoop/product/util/product-unit-step/src/index.ts"
+      ],
+      "@plastik/llecoop/product/product-unit-suffix": [
+        "libs/llecoop/product/util/product-unit-suffix/src/index.ts"
+      ],
       "@plastik/llecoop/profile": ["libs/llecoop/profile/feature/src/index.ts"],
+      "@plastik/llecoop/profile/data-access": ["libs/llecoop/profile/data-access/src/index.ts"],
+      "@plastik/llecoop/shared/data-access": ["libs/llecoop/shared/data-access/src/index.ts"],
       "@plastik/llecoop/user-order-card": [
         "libs/llecoop/order-list/ui/user-order-card-detail/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order-cart-preview": [
+        "libs/llecoop/user-order/cart/feature/cart-preview/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order-cart/data-access": [
+        "libs/llecoop/user-order/cart/data-access/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order-product-list/data-access": [
+        "libs/llecoop/user-order/product-list/data-access/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order-product-list/feature": [
+        "libs/llecoop/user-order/product-list/feature/src/index.ts"
       ],
       "@plastik/llecoop/user-order/detail": [
         "libs/llecoop/order-list/feature/user-order-detail/src/index.ts"
       ],
       "@plastik/llecoop/user-order/list": [
         "libs/llecoop/order-list/feature/user-order-list/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order/mini-cart": [
+        "libs/llecoop/user-order/cart/ui/mini-cart/src/index.ts"
+      ],
+      "@plastik/llecoop/user-order/product-card": [
+        "libs/llecoop/user-order/ui/user-order-product-card/src/index.ts"
       ],
       "@plastik/llecoop/user-order/resume": [
         "libs/llecoop/order-list/feature/user-order-resume/src/index.ts"
@@ -100,7 +132,8 @@
       ],
       "@plastik/shared/activity/data-access": ["libs/shared/activity/data-access/src/index.ts"],
       "@plastik/shared/activity/ui": ["libs/shared/activity/ui/src/index.ts"],
-      "@plastik/shared/button": ["libs/shared/button/index.ts"],
+      "@plastik/shared/button": ["libs/shared/button/entities/src/index.ts"],
+      "@plastik/shared/button/ui": ["libs/shared/button/ui/src/index.ts"],
       "@plastik/shared/bytes-to-size": ["libs/shared/util/bytes-to-size/src/index.ts"],
       "@plastik/shared/confirm": ["libs/shared/confirm/data-access/src/index.ts"],
       "@plastik/shared/dynamic-bg-color": ["libs/shared/util/dynamic-bg-color/src/index.ts"],
@@ -118,7 +151,16 @@
       ],
       "@plastik/shared/form/util": ["libs/shared/form/util/src/index.ts"],
       "@plastik/shared/form/year-picker": ["libs/shared/form/ui/year-picker/src/index.ts"],
+      "@plastik/shared/form/shipping-method-selector": [
+        "libs/shared/form/ui/shipping-method-selector/src/index.ts"
+      ],
+      "@plastik/shared/form/address-selector": [
+        "libs/shared/form/ui/address-selector/src/index.ts"
+      ],
+      "@plastik/shared/form/custom-label": ["libs/shared/form/ui/custom-label/src/index.ts"],
+      "@plastik/shared/form/text": ["libs/shared/form/ui/text/src/index.ts"],
       "@plastik/shared/formatters": ["libs/shared/util/formatters/src/index.ts"],
+      "@plastik/shared/hex-to-rgba": ["libs/shared/util/hex-to-rgba/src/index.ts"],
       "@plastik/shared/img-container": ["libs/shared/img-container/ui/src/index.ts"],
       "@plastik/shared/latinize": ["libs/shared/util/latinize/src/index.ts"],
       "@plastik/shared/mat-theme-toggle": ["libs/shared/mat-theme-toggle/src/index.ts"],
@@ -133,21 +175,111 @@
       "@plastik/shared/return-as-observable": [
         "libs/shared/util/return-as-observable-pipe/src/index.ts"
       ],
-      "@plastik/shared/signal-state-data-access": [
-        "libs/shared/signal-state/data-access/src/index.ts"
-      ],
       "@plastik/shared/skip-link": ["libs/shared/util/skip-link/src/index.ts"],
       "@plastik/shared/table/entities": ["libs/shared/table/entities/src/index.ts"],
       "@plastik/shared/table/ui": ["libs/shared/table/ui/src/index.ts"],
       "@plastik/shared/testing": ["libs/shared/testing/index.ts"],
       "@plastik/storage/data-access": ["libs/shared/storage/data-access/src/index.ts"],
+      "@plastik/storage/data-access/firebase": [
+        "libs/shared/storage/data-access/src/firebase/firebase-storage.service.ts"
+      ],
       "@plastik/storage/entities": ["libs/shared/storage/entities/src/index.ts"],
-      "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"]
+      "@plastik/storage/feature": ["libs/shared/storage/feature/src/index.ts"],
+      "ui-order-status-chip": ["libs/llecoop/order-list/ui/order-status-chip/src/index.ts"],
+      "@plastik/shared/form/input-search": ["libs/shared/form/ui/input-search/src/index.ts"],
+      "@plastik/eco-store/product-categories/data-access": [
+        "libs/eco-store/product-categories/data-access/src/index.ts"
+      ],
+      "@plastik/eco-store/product-categories/data-access/testing": [
+        "libs/eco-store/product-categories/data-access/src/eco-store-product-categories.store.mock.ts"
+      ],
+      "@plastik/eco-store/formly": ["libs/eco-store/feature/formly/src/index.ts"],
+      "@plastik/eco-store/products/data-access": [
+        "libs/eco-store/products/data-access/src/index.ts"
+      ],
+      "@plastik/eco-store/products/data-access/testing": [
+        "libs/eco-store/products/data-access/src/eco-store-products.store.mock.ts"
+      ],
+      "@plastik/eco-store/products": ["libs/eco-store/products/feature/list/src/index.ts"],
+      "@plastik/core/api-pocketbase": ["libs/core/util/api-pocketbase/src/index.ts"],
+      "@plastik/core/api-pocketbase/testing": [
+        "libs/core/util/api-pocketbase/src/lib/pocketbase.mock.ts"
+      ],
+      "@plastik/core/api-firebase": ["libs/core/util/api-firebase/src/index.ts"],
+      "@plastik/core/api-http": ["libs/core/util/api-http/src/index.ts"],
+      "@plastik/signal-state/pocketbase": [
+        "libs/shared/signal-state/data-access-pocketbase/src/index.ts"
+      ],
+      "@plastik/signal-state/firebase": [
+        "libs/shared/signal-state/data-access-firebase/src/index.ts"
+      ],
+      "@plastik/signal-state/http": ["libs/shared/signal-state/data-access-http/src/index.ts"],
+      "@plastik/core/api-base": ["libs/core/util/api-base/src/index.ts"],
+      "@plastik/eco-store/product-card": ["libs/eco-store/shared/product-card/src/index.ts"],
+      "@plastik/pagination/ui": ["libs/shared/pagination/ui/src/index.ts"],
+      "@plastik/pagination/util": ["libs/shared/pagination/util/src/index.ts"],
+      "@plastik/core/paginator": ["libs/core/paginator/src/index.ts"],
+      "@plastik/sort-selector": ["libs/shared/sort-selector/src/index.ts"],
+      "@plastik/eco-store/shared/utils": ["libs/eco-store/shared/utils/src/index.ts"],
+      "@plastik/eco-store/status-banner": [
+        "libs/eco-store/shared/store-status-banner/src/index.ts"
+      ],
+      "@plastik/eco-store/shared/tokens": ["libs/eco-store/shared/tokens/src/index.ts"],
+      "@plastik/eco-store/product": ["libs/eco-store/products/feature/detail/src/index.ts"],
+      "@plastik/eco-store/product-category-label": [
+        "libs/eco-store/shared/product-category-label/src/index.ts"
+      ],
+      "@plastik/eco-store/product-price": ["libs/eco-store/shared/product-price/src/index.ts"],
+      "@plastik/eco-store/favorite-button": ["libs/eco-store/shared/favorite-button/src/index.ts"],
+      "@plastik/eco-store/cart/data-access": ["libs/eco-store/cart/data-access/src/index.ts"],
+      "@plastik/eco-store/cart/data-access/testing": [
+        "libs/eco-store/cart/data-access/src/eco-store-cart.store.mock.ts"
+      ],
+      "@plastik/eco-store/layout": ["libs/eco-store/core/layout/src/index.ts"],
+      "@plastik/eco-store/cart": ["libs/eco-store/cart/feature/src/index.ts"],
+      "@plastik/eco-store/product-quantity": [
+        "libs/eco-store/shared/product-quantity/src/index.ts"
+      ],
+      "@plastik/auth/pocketbase/data-access": [
+        "libs/shared/auth/pocketbase/data-access/src/index.ts"
+      ],
+      "@plastik/auth/pocketbase/data-access/testing": [
+        "libs/shared/auth/pocketbase/data-access/src/pocketbase-user-profile.store.mock.ts"
+      ],
+      "@plastik/auth/feature": ["libs/shared/auth/feature/src/index.ts"],
+      "@plastik/auth/entities": ["libs/shared/auth/entities/src/index.ts"],
+      "@plastik/eco-store/auth/login": ["libs/eco-store/auth/feature/login/src/index.ts"],
+      "@plastik/eco-store/store-window": ["libs/eco-store/store-window/src/index.ts"],
+      "@plastik/eco-store/tenant": ["libs/eco-store/core/tenant/src/index.ts"],
+      "@plastik/eco-store/tenant/testing": [
+        "libs/eco-store/core/tenant/src/eco-store-tenant.store.mock.ts"
+      ],
+      "@plastik/eco-store/api": ["libs/eco-store/core/api/data-access/src/index.ts"],
+      "@plastik/shared/pocketbase-user-addresses": [
+        "libs/shared/pocketbase-user-addresses/data-access/src/index.ts"
+      ],
+      "@plastik/shared/countdown/util": ["libs/shared/countdown/util/src/index.ts"],
+      "@plastik/shared/countdown": ["libs/shared/countdown/ui/src/index.ts"],
+      "@plastik/shared/chip/ui": ["libs/shared/chip/ui/src/index.ts"],
+      "@plastik/shared/util/view-transition": ["libs/shared/util/view-transition/src/index.ts"],
+      "@plastik/eco-store/orders/data-access": ["libs/eco-store/orders/data-access/src/index.ts"],
+      "@plastik/eco-store/orders/feature": ["libs/eco-store/orders/feature/src/index.ts"],
+      "@plastik/eco-store/core/router-state": ["libs/eco-store/core/router/src/index.ts"]
     }
   },
   "angularCompilerOptions": {
-    "strictTemplates": true,
-    "fullTemplateTypeCheck": true
+    "strictTemplates": true
   },
-  "exclude": ["node_modules", "tmp", "cypress", "./cypress.config.ts", "**/*.cy.tsx"]
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "cypress",
+    "./cypress.config.ts",
+    "**/*.cy.tsx",
+    "dist",
+    "coverage",
+    ".angular",
+    ".nx",
+    "**/*.log"
+  ]
 }

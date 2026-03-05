@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
@@ -13,7 +13,7 @@ describe('InputTableTypeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
       imports: [
         ReactiveFormsModule,
         FormlyModule.forRoot({

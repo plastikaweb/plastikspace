@@ -3,7 +3,7 @@
   "ignorePatterns": ["**/*"],
   "plugins": ["@nx", "deprecation", "jsdoc", "@angular-eslint"],
   "parserOptions": {
-    "project": ["./tsconfig.base.json"]
+    "project": ["./tsconfig.base.json", "./tsconfig.eslint.json"]
   },
   "overrides": [
     {
@@ -20,6 +20,18 @@
                 "onlyDependOnLibsWithTags": ["*"]
               },
               {
+                "sourceTag": "type:app",
+                "onlyDependOnLibsWithTags": [
+                  "type:feature",
+                  "type:ui",
+                  "type:util",
+                  "type:data-access",
+                  "type:entity",
+                  "scope:core",
+                  "scope:shared"
+                ]
+              },
+              {
                 "sourceTag": "scope:core",
                 "onlyDependOnLibsWithTags": [
                   "scope:core",
@@ -30,15 +42,11 @@
               },
               {
                 "sourceTag": "scope:shared",
-                "onlyDependOnLibsWithTags": ["scope:shared", "type:entity"]
+                "onlyDependOnLibsWithTags": ["scope:shared", "type:entity", "type:util"]
               },
               {
                 "sourceTag": "scope:nasa-images",
                 "onlyDependOnLibsWithTags": ["scope:nasa-images", "scope:core", "scope:shared"]
-              },
-              {
-                "sourceTag": "scope:experimental",
-                "onlyDependOnLibsWithTags": ["scope:experimental", "scope:core", "scope:shared"]
               },
               {
                 "sourceTag": "scope:llecoop",
@@ -47,6 +55,10 @@
               {
                 "sourceTag": "scope:plastikaweb",
                 "onlyDependOnLibsWithTags": ["scope:plastikaweb", "scope:core", "scope:shared"]
+              },
+              {
+                "sourceTag": "scope:eco-store",
+                "onlyDependOnLibsWithTags": ["scope:eco-store", "scope:core", "scope:shared"]
               },
               {
                 "sourceTag": "type:feature",
@@ -80,12 +92,24 @@
       }
     },
     {
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "env": {
+        "jest": true
+      },
+      "parserOptions": {
+        "project": null
+      },
+      "rules": {
+        "deprecation/deprecation": "off"
+      }
+    },
+    {
       "files": ["*.ts", "*.tsx"],
+      "excludedFiles": ["*.spec.ts", "*.spec.tsx"],
       "extends": ["plugin:@nx/typescript"],
       "rules": {
         "no-console": "error",
         "@typescript-eslint/prefer-readonly": "error",
-        "@typescript-eslint/no-extra-semi": "error",
         "no-extra-semi": "off"
       }
     },
@@ -100,19 +124,12 @@
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/javascript"],
       "rules": {
-        "@typescript-eslint/no-extra-semi": "error",
         "no-extra-semi": "off"
       }
     },
     {
-      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
-      "env": {
-        "jest": true
-      },
-      "rules": {}
-    },
-    {
       "files": ["*.ts", "*.tsx"],
+      "excludedFiles": ["*.spec.ts", "*.spec.tsx"],
       "rules": {
         "deprecation/deprecation": "warn"
       }
@@ -192,6 +209,11 @@
         "@angular-eslint/template/no-interpolation-in-attributes": "error",
         "@angular-eslint/template/no-negated-async": "error"
       }
+    },
+    {
+      "files": ["*.json", "*.jsonc"],
+      "parser": "jsonc-eslint-parser",
+      "rules": {}
     }
   ]
 }

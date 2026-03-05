@@ -1,0 +1,77 @@
+<mat-card class="overflow-hidden" appearance="outlined">
+  <mat-card-header class="flex flex-row-reverse items-center justify-end gap-2 bg-white p-4!">
+    <mat-card-title>{{ 'cart.summary.resume' | translate }}</mat-card-title>
+    <mat-icon>receipt</mat-icon>
+  </mat-card-header>
+
+  <mat-card-content class="my-4 p-6">
+    <div class="mt-4 flex justify-between text-neutral-600">
+      <span>{{ 'cart.summary.subtotal' | translate }}</span>
+      <span class="font-medium text-gray-900">{{
+        subtotal() | currency: 'EUR' : 'symbol' : '1.2-2'
+      }}</span>
+    </div>
+    <div class="mt-4 flex justify-between text-neutral-600">
+      <span>{{ 'cart.summary.taxes' | translate }}</span>
+      <span class="font-medium text-gray-900">{{
+        taxes() | currency: 'EUR' : 'symbol' : '1.2-2'
+      }}</span>
+    </div>
+
+    <div class="mt-4 flex justify-between text-neutral-600">
+      <span>{{ `cart.summary.${deliveryType()}` | translate }}</span>
+      <span class="font-medium text-gray-900">{{
+        shipping() | currency: 'EUR' : 'symbol' : '1.2-2'
+      }}</span>
+    </div>
+
+    <ng-content select="[extra-shipping-content]"></ng-content>
+
+    <hr class="mt-4 border-neutral-200" />
+
+    <div class="mt-4 flex items-center justify-between">
+      <span class="text-lg font-bold text-gray-900">{{ 'cart.summary.total' | translate }}</span>
+      <span class="text-3xl font-bold text-[#8B4513]">{{
+        total() | currency: 'EUR' : 'symbol' : '1.2-2'
+      }}</span>
+    </div>
+
+    <!-- Projection for extra content like Promo codes -->
+    <ng-content select="[extra-content]"></ng-content>
+  </mat-card-content>
+
+  <mat-card-footer class="flex flex-col items-center p-4">
+    @if (actionButtonText()) {
+      <button
+        matButton="filled"
+        type="button"
+        class="w-full"
+        [disabled]="!submitAvailable() || !isStoreOpen()"
+        (click)="handleAction()">
+        <span>{{ actionButtonText() | translate }}</span>
+        <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+      </button>
+    }
+
+    @if (!isStoreOpen()) {
+      <div
+        class="cart-order-summary-checkout-disabled bg-tertiary-100 text-tertiary-800 ring-tertiary-200 mt-4 flex w-full items-center justify-center gap-3 rounded-xl p-4 ring-1">
+        <mat-icon>lock_clock</mat-icon>
+        <p class="text-sm font-medium">
+          @if (!nextOpenDate()) {
+            {{ 'cart.summary.checkoutDisabled' | translate }}
+          } @else {
+            {{
+              'cart.summary.checkoutDisabledInDate'
+                | translate
+                  : {
+                      date: nextOpenDate() | date: 'EEEE',
+                      time: nextOpenDate() | date: 'HH:mm',
+                    }
+            }}
+          }
+        </p>
+      </div>
+    }
+  </mat-card-footer>
+</mat-card>

@@ -1,10 +1,20 @@
-import '@plastik/shared/testing';
-
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Storage } from '@angular/fire/storage';
+import { of } from 'rxjs';
 
 import { FirebaseStorageService } from './firebase-storage.service';
+
+jest.mock('@angular/fire/storage', () => ({
+  ...jest.requireActual('@angular/fire/storage'),
+  ref: jest.fn(() => ({ fullPath: 'test-folder/test.txt' })),
+  uploadBytesResumable: jest.fn(() =>
+    Promise.resolve({ ref: { fullPath: 'test-folder/test.txt' } })
+  ),
+  percentage: jest.fn(() => of({ progress: 100 })),
+  getDownloadURL: jest.fn(() => Promise.resolve('https://test-url.com/test.txt')),
+  listAll: jest.fn(() => Promise.resolve({ items: [{ fullPath: 'test-folder/test.txt' }] })),
+}));
 
 describe('FirebaseStorageService', () => {
   let service: FirebaseStorageService;
@@ -12,11 +22,11 @@ describe('FirebaseStorageService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         FirebaseStorageService,
         {
           provide: Storage,
-          useValue: jest.fn(),
+          useValue: {},
         },
       ],
     });
