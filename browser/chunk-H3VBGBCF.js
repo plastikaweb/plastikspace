@@ -3329,50 +3329,67 @@ var CustomRouterSerializer = class {
 
 // libs/core/router/data-access/src/lib/services/prefix-title.service.ts
 var PrefixTitleService = class _PrefixTitleService extends TitleStrategy {
-  #title = inject(Title);
-  #environment = inject(ENVIRONMENT);
-  #translateService = inject(TranslateService, { optional: true });
+  title = inject(Title);
+  environment = inject(ENVIRONMENT);
+  translateService = inject(TranslateService, { optional: true });
+  titleSignal = signal(void 0, ...ngDevMode ? [{ debugName: "titleSignal" }] : []);
+  constructor() {
+    super();
+    effect(() => {
+      const fullTitle = this.computeFullTitle();
+      this.title.setTitle(fullTitle);
+    });
+  }
   /**
    * @description Update page title with the environment app name.
    * @param {RouterStateSnapshot} snapshot The state of the router at a moment in time.
    */
   updateTitle(snapshot) {
     const builtTitle = this.buildTitle(snapshot);
-    const translatedTitle = this.#getTranslatedTitle(builtTitle);
-    const fullTitle = this.#getPrefixedTitle(translatedTitle);
-    this.#title.setTitle(fullTitle);
+    if (isObservable(builtTitle)) {
+      builtTitle.pipe(take(1)).subscribe((t2) => this.titleSignal.set(t2));
+    } else if (builtTitle instanceof Promise) {
+      builtTitle.then((t2) => this.titleSignal.set(t2));
+    } else {
+      this.titleSignal.set(builtTitle);
+    }
+  }
+  /**
+   * @description Compute the full title based on the current title signal.
+   * @returns {string} The final title string.
+   */
+  computeFullTitle() {
+    const translatedTitle = this.getTranslatedTitle(this.titleSignal());
+    return this.getPrefixedTitle(translatedTitle);
   }
   /**
    * @description Resolve the title using TranslateService when available.
    * @param {string | undefined} title The raw route title.
    * @returns {string | undefined} The translated or original title.
    */
-  #getTranslatedTitle(title) {
+  getTranslatedTitle(title) {
     if (!title) {
       return void 0;
     }
-    if (!this.#translateService) {
+    if (!this.translateService) {
       return title;
     }
-    return this.#translateService.instant(title);
+    return this.translateService.instant(title);
   }
   /**
    * @description Prefix the title with the environment application name.
    * @param {string | undefined} title The (possibly translated) title.
    * @returns {string} The final title to set in the browser.
    */
-  #getPrefixedTitle(title) {
+  getPrefixedTitle(title) {
     if (!title) {
-      return `${this.#environment.name}`;
+      return `${this.environment.name}`;
     }
-    return `${this.#environment.name} - ${title}`;
+    return `${this.environment.name} - ${title}`;
   }
-  static \u0275fac = /* @__PURE__ */ (() => {
-    let \u0275PrefixTitleService_BaseFactory;
-    return function PrefixTitleService_Factory(__ngFactoryType__) {
-      return (\u0275PrefixTitleService_BaseFactory || (\u0275PrefixTitleService_BaseFactory = \u0275\u0275getInheritedFactory(_PrefixTitleService)))(__ngFactoryType__ || _PrefixTitleService);
-    };
-  })();
+  static \u0275fac = function PrefixTitleService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _PrefixTitleService)();
+  };
   static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _PrefixTitleService, factory: _PrefixTitleService.\u0275fac, providedIn: "root" });
 };
 (() => {
@@ -3381,7 +3398,7 @@ var PrefixTitleService = class _PrefixTitleService extends TitleStrategy {
     args: [{
       providedIn: "root"
     }]
-  }], null, null);
+  }], () => [], null);
 })();
 
 // libs/core/router/data-access/src/lib/+state/selectors/router-state.selectors.ts
@@ -3475,4 +3492,4 @@ export {
   NavigationFilterService,
   PrefixTitleService
 };
-//# sourceMappingURL=chunk-FF7XJPD3.js.map
+//# sourceMappingURL=chunk-H3VBGBCF.js.map
