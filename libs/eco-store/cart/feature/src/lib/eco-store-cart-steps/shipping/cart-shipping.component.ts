@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  linkedSignal,
+  signal,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -46,9 +53,22 @@ export class CartShippingComponent {
   protected readonly formValid = signal(false);
   protected readonly formConfig = getCartShippingFormConfig();
 
-  protected readonly skeletonItems = computed(() => {
-    const count = this.cartStore.itemsCount();
-    return Array(count > 0 ? count : 3).fill(0);
+  /**
+   * Computes skeleton items for the cart shipping based on the number of items in the cart or a default count during initial sync.
+   */
+  protected readonly skeletonItems = linkedSignal({
+    source: () => ({
+      isSyncing: this.cartStore.isSyncing(),
+      isSynced: this.cartStore.isSynced(),
+      count: this.cartStore.itemsCount(),
+    }),
+    computation: s => {
+      if (s.isSyncing && !s.isSynced) {
+        const count = s.count > 0 ? s.count : 3;
+        return Array(count).fill(0);
+      }
+      return [];
+    },
   });
 
   protected readonly model = computed(() => {

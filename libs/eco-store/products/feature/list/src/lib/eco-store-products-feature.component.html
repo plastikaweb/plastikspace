@@ -25,6 +25,7 @@
     @if (productsStore.isLoading()) {
       @for (i of skeletonItems(); track $index) {
         <div
+          aria-hidden="true"
           class="flex h-full animate-pulse flex-col overflow-hidden rounded-[16px] border border-neutral-200 bg-neutral-50 p-2 shadow-sm">
           <!-- Image block -->
           <div class="mb-4 aspect-square w-full rounded-xl bg-neutral-200"></div>
@@ -62,7 +63,7 @@
         [pageSizeOptions]="productsStore.paginationSizeOptions()"
         [count]="productsStore.count()" />
     } @placeholder {
-      <div class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
+      <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
     }
   }
 </div>

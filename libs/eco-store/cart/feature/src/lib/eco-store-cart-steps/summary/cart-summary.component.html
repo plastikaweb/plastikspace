@@ -19,7 +19,7 @@
       [class.opacity-60]="cartStore.isSyncing()">
       @if (cartStore.isSyncing() && !cartStore.isSynced()) {
         <!-- Initial Sync Skeletons (Matches item count from local storage) -->
-        <div class="space-y-8 px-4 py-2">
+        <div class="space-y-8 px-4 py-2" aria-hidden="true">
           <div>
             <div class="mb-4 h-4 w-24 animate-pulse rounded bg-neutral-200"></div>
             <div class="flex flex-col gap-4">
@@ -59,7 +59,7 @@
     [class.pointer-events-none]="cartStore.isSyncing()"
     [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
-      <div class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
+      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
     } @else {
       <eco-cart-order-summary
         [subtotal]="cartStore.subtotal()"

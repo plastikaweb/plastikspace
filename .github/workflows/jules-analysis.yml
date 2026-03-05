@@ -35,7 +35,7 @@ jobs:
             - **Architecture**: Enforce DDD boundaries. Ensure proper library types (`feature`, `data-access`, `ui`, `util`, `entity`) and dependency rules.
             - **Clean Code**: No `console.log`, use `private readonly` for injected dependencies (if not using `#`).
 
-            Analyze the PR changes in detail and provide a report with the following structure:
+            Please analyze in detail the changes introduced in Pull Request #${{ github.event.pull_request.number }}.
 
             🚨 **Critical Issues & Logic Bugs**: Direct errors, architectural violations, or missing private field (#) usage.
             💡 **Angular & Signal Patterns**: Improvements for better Signal usage or modern Angular APIs.
@@ -45,3 +45,8 @@ jobs:
             🚀 **Performance**: Rendering inefficiencies or unnecessary computations.
 
             Provide direct, technical, and actionable feedback. If a change is perfect, state it briefly.
+
+            🚨 EXECUTABLE INSTRUCTION:
+            Once you have generated your final review report, you MUST post it as a comment directly on this Pull Request.
+            Use the GitHub CLI to do this. Run the following command in your terminal:
+            gh pr comment ${{ github.event.pull_request.number }} --body "your_formatted_markdown_report_here"

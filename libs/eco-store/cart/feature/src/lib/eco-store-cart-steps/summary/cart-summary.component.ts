@@ -1,5 +1,5 @@
 import { KeyValuePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,9 +31,22 @@ export class CartSummaryComponent {
   readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly viewTransitionService = inject(ViewTransitionService);
 
-  protected readonly skeletonItems = computed(() => {
-    const count = this.cartStore.itemsCount();
-    return Array(count > 0 ? count : 3).fill(0);
+  /**
+   * Computes skeleton items for the cart summary based on the number of items in the cart or a default count during initial sync.
+   */
+  protected readonly skeletonItems = linkedSignal({
+    source: () => ({
+      isSyncing: this.cartStore.isSyncing(),
+      isSynced: this.cartStore.isSynced(),
+      count: this.cartStore.itemsCount(),
+    }),
+    computation: s => {
+      if (s.isSyncing && !s.isSynced) {
+        const count = s.count > 0 ? s.count : 0;
+        return Array(count).fill(0);
+      }
+      return [];
+    },
   });
 
   onQuantityChange(event: { quantity: number; product: EcoStoreProductWithCategoryName }) {

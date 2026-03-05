@@ -44,6 +44,7 @@ export default class EcoStoreProductsFeatureComponent {
   readonly #router = inject(Router);
   readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);
 
+  /** Computes the array length for skeleton loaders based on the current active category total or default pagination size. */
   protected readonly skeletonItems = linkedSignal({
     source: () => ({
       isLoading: this.productsStore.isLoading(),

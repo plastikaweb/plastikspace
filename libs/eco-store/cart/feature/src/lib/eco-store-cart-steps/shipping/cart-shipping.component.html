@@ -8,7 +8,7 @@
     </div>
 
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
-      <div class="space-y-6">
+      <div class="space-y-6" aria-hidden="true">
         <div class="h-32 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
         <div class="h-48 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
       </div>
@@ -31,7 +31,7 @@
   <!-- Right Column: Order Summary -->
   <div class="sticky top-16 space-y-6 self-start md:col-span-1!">
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
-      <div class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
+      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
     } @else {
       <div
         class="transition-all duration-300"
@@ -59,7 +59,9 @@
                       [tiers]="tenantStore.getTenantDeliveryPriceTiers()">
                     </eco-cart-order-price-slots>
                   } @placeholder {
-                    <div class="h-24 w-full animate-pulse bg-neutral-50 px-2"></div>
+                    <div
+                      aria-hidden="true"
+                      class="h-24 w-full animate-pulse bg-neutral-50 px-2"></div>
                   }
                 </div>
               </div>

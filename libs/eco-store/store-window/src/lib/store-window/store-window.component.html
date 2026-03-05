@@ -8,6 +8,7 @@
           [class]="`flex items-center font-bold tracking-wide whitespace-nowrap uppercase ${config.countdownSegments?.length ? 'border-tertiary-200 border-r pr-2' : ''}`">
           @if (config.class === 'closing') {
             <span
+              aria-hidden="true"
               class="bg-warning-600 mr-2 inline-block h-[12px] w-[12px] animate-pulse rounded-full"></span>
           }
           {{ config.label | translate }}
