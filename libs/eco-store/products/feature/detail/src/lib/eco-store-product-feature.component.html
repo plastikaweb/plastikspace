@@ -210,7 +210,7 @@
           </div>
 
           <!-- Action Buttons -->
-          @if (tenantsStore.isStoreOpen()) {
+          @if (tenantStore.isStoreOpen()) {
             <div class="mb-4 flex flex-col items-stretch gap-4 sm:flex-row">
               <!-- Quantity (Shared Component) -->
               <div class="w-full">
@@ -348,7 +348,7 @@
     <section class="sm:mt8 mt-8 mb-8 border-t border-gray-100 pt-4 sm:pt-12">
       <h2
         class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
-        També et podria agradar
+        {{ 'products.related' | translate }}
       </h2>
 
       <div class="products-grid mt-4 sm:mt-8">
@@ -356,6 +356,7 @@
           <eco-store-product-card
             [product]="relatedProduct"
             [isFirst]="false"
+            [isOpen]="tenantStore.isStoreOpen()"
             [quantity]="cartStore.entityMap()[relatedProduct.id]?.quantity || 0"
             (addToCart)="addToCart($event)"
             (toggleFavorite)="toggleFavorite()" />

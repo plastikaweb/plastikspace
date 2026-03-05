@@ -155,6 +155,7 @@
     "increment": "Aumentar",
     "total": "productos",
     "favorite": "Agregar {value} a favoritos",
+    "related": "También te podría interesar",
     "filter": {
       "sort": {
         "label": "Ordenar",

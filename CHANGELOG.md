@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved accessibility by adding `aria-hidden="true"` to all skeleton loaders and decorative pulse animations across the application ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
 - Added JSDoc documentation to complex `skeletonItems` computation logic in `EcoStoreProductsFeatureComponent` ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
 - Verified and confirmed correct `protected` field usage and routing configurations based on Jules automated PR analysis ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
+- Aligned `tenantStore` naming consistency and implemented internationalization for "Related Products" in product detail view ([#86c8hghhu](https://app.clickup.com/t/86c8hghhu))
+- Propagated store open state to related product cards in product detail feature ([#86c8hghhu](https://app.clickup.com/t/86c8hghhu))
 
 ---
 

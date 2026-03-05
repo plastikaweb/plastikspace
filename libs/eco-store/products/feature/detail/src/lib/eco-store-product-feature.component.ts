@@ -54,7 +54,7 @@ import { map } from 'rxjs';
 export default class EcoStoreProductFeatureComponent {
   readonly #productsStore = inject(ecoStoreProductsStore);
   protected readonly cartStore = inject(ecoStoreCartStore);
-  protected readonly tenantsStore = inject(ecoStoreTenantStore);
+  protected readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly viewTransitionService = inject(ViewTransitionService);
   protected readonly navigationService = inject(NavigationService);
 

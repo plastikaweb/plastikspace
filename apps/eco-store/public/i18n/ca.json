@@ -155,6 +155,7 @@
     "increment": "Augmentar",
     "total": "productes trobats",
     "favorite": "Afegir {value} a favorits",
+    "related": "També et podria agradar",
     "filter": {
       "sort": {
         "label": "Ordenar",
