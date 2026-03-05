@@ -4,8 +4,10 @@
     "outDir": "../../../../dist/out-tsc",
     "module": "preserve",
     "target": "es2016",
+    "types": ["jest", "node"],
     "moduleResolution": "bundler",
-    "isolatedModules": true
+    "isolatedModules": true,
+    "declaration": true
   },
   "files": ["src/test-setup.ts"],
   "include": [

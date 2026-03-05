@@ -39,6 +39,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
 - Updated `tsconfig.base.json` with path mapping for `@plastik/eco-store/core/router-state`
   ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Optimized history iteration in `NavigationService` by replacing `for...of` with `Array.prototype.find()`
+  ([#949](https://github.com/plastikaweb/plastikspace/pull/949))
+- Refactored `eco-store-products` store dependencies to strictly use ES6 private fields
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+
+### Fixed
+
+- Fixed Jules analysis workflow by injecting the GitHub token to authenticate the `gh` CLI for PR comments.
+- Fixed `ExpressionChangedAfterItHasBeenCheckedError` in `shared-util-dynamic-bg-color` unit test by adjusting the initialization order.
+- Fixed missing project references and compiler paths in `eco-store/core/router` and `shared/util/dynamic-bg-color` `tsconfig.spec.json` files.
+- Fixed unit tests and tsconfig configurations for `shared-product-price` library
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
 
 ---
 

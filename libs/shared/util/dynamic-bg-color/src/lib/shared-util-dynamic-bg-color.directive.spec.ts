@@ -1,17 +1,17 @@
 // Create a simple test component to host the directive for testing
-import { Component, DebugElement } from '@angular/core';
+import { Component, DebugElement, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
 import { SharedUtilDynamicBgColorDirective } from './shared-util-dynamic-bg-color.directive';
 
 @Component({
-  template: `<h1 plastikDynamicBgColor [color]="color">{{ title }}</h1> `,
+  template: `<h1 plastikDynamicBgColor [color]="color()">{{ title }}</h1> `,
   imports: [SharedUtilDynamicBgColorDirective],
 })
 class TestComponent {
   title = 'Test';
-  color = 'orange';
+  color = signal('orange');
 }
 
 describe('SharedUtilDynamicBgColorDirective', () => {
@@ -42,13 +42,10 @@ describe('SharedUtilDynamicBgColorDirective', () => {
     expect(element.nativeElement.style.backgroundColor).toBe('');
   });
 
-  /*
-  // TODO: Fix failing test - NG0100: ExpressionChangedAfterItHasBeenCheckedError
-  // The input signal update triggers a check issue in the test environment.
   it('should update color input dynamically', () => {
     fixture.detectChanges(); // Initial render with orange
     const component = fixture.componentInstance;
-    component.color = 'blue';
+    component.color.set('blue');
     fixture.detectChanges(); // Update binding
 
     element.triggerEventHandler('mouseenter', null);
@@ -56,5 +53,4 @@ describe('SharedUtilDynamicBgColorDirective', () => {
 
     expect(element.nativeElement.style.backgroundColor).toBe('blue');
   });
-  */
 });

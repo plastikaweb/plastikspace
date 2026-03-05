@@ -49,6 +49,7 @@ jobs:
 
             🚨 EXECUTABLE INSTRUCTION:
             Once you have generated your final review report, you MUST post it as a comment directly on this Pull Request.
-            Use the GitHub CLI to do this. The environment is already configured with GH_TOKEN.
-            Run the following command in your terminal:
+            Use the GitHub CLI to do this. You need to authenticate first.
+            Run the following commands in your terminal:
+            echo "${{ secrets.GITHUB_TOKEN }}" | gh auth login --with-token
             gh pr comment ${{ github.event.pull_request.number }} --body "your_formatted_markdown_report_here"
