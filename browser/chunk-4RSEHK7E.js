@@ -3226,11 +3226,10 @@ var NavigationService = class _NavigationService {
   async back(backBaseUrl, regex) {
     if (this.#history.length && regex) {
       this.#history.shift();
-      for (const url of this.#history) {
-        if (regex.test(url)) {
-          await this.#router.navigateByUrl(url);
-          return;
-        }
+      const url = this.#history.find((url2) => regex.test(url2));
+      if (url !== void 0) {
+        await this.#router.navigateByUrl(url);
+        return;
       }
     }
     if (backBaseUrl) {
@@ -3492,4 +3491,4 @@ export {
   NavigationFilterService,
   PrefixTitleService
 };
-//# sourceMappingURL=chunk-H3VBGBCF.js.map
+//# sourceMappingURL=chunk-4RSEHK7E.js.map
