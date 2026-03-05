@@ -1,5 +1,5 @@
 import { provideZonelessChangeDetection } from '@angular/core';
-import { TestBed } from '@angular/core/testing';
+import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { Title } from '@angular/platform-browser';
 import { RouterStateSnapshot } from '@angular/router';
 import { provideEnvironmentMock } from '@plastik/core/environments/testing';
@@ -35,9 +35,10 @@ describe('PrefixTitleService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return a route title based on environment name and route snapshot title', () => {
+  it('should return a route title based on environment name and route snapshot title', async () => {
     jest.spyOn(service, 'buildTitle').mockImplementation(() => 'section');
     service.updateTitle(routerStateSnapshot);
+    TestBed.flushEffects();
     expect(titleService.getTitle()).toBe(`my-app - section`);
   });
 });

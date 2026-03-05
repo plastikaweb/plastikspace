@@ -1,10 +1,18 @@
 {
-  "loading-data": "Carregant dades...",
-  "goToPreviousPage": "Tornar a la pàgina anterior",
-  "goToNextPage": "Anar a la pàgina següent",
   "common": {
     "loading": "Carregant dades...",
-    "loadingData": "Carregant dades...",
+    "close": "Tancar",
+    "edit": "Editar",
+    "add": "Afegir",
+    "remove": "Eliminar",
+    "cancel": "Cancel·lar",
+    "submit": "Enviar",
+    "save": "Guardar",
+    "navigation": {
+      "previous": "Tornar a la pàgina anterior",
+      "next": "Anar a la pàgina següent",
+      "backToStore": "Tornar a la botiga"
+    },
     "weekdays": {
       "sunday": "Diumenge",
       "monday": "Dilluns",
@@ -16,6 +24,15 @@
     },
     "address": {
       "default": "Adreça per defecte"
+    },
+    "form": {
+      "error": {
+        "email": "El format del correu electrònic no és correcte",
+        "required": "El camp és obligatori",
+        "minLength": "El camp ha de tenir almenys {value} caràcters",
+        "maxLength": "El camp ha de tenir més de {value} caràcters"
+      },
+      "charactersCount": "{count, plural, one {caràcter} other {caràcters}}"
     },
     "a11y": {
       "skipToContent": "Saltar al contingut principal",
@@ -33,18 +50,6 @@
       "openSidenav": "Obrir menú lateral",
       "ecoIcon": "Icona ecològica"
     },
-    "form": {
-      "error": {
-        "email": "El format del correu electrònic no és correcte",
-        "required": "El camp és obligatori",
-        "minLength": "El camp ha de tenir almenys {value} caràcters",
-        "maxLength": "El camp ha de tenir més de {value} caràcters"
-      },
-      "charactersCount": "{count, plural, one {caràcter} other {caràcters}}"
-    },
-    "error": {
-      "image": "Hi ha hagut un error al carregar la imatge"
-    },
     "paginator": {
       "firstPage": "Primera pàgina",
       "itemsPerPage": "Elements per pàgina",
@@ -55,65 +60,17 @@
       "range": "{start} - {end} de {total}",
       "rangeLabel": "de"
     },
-    "notification": {
-      "close": "Tancar"
-    }
-  },
-  "store": {
-    "title": "Botiga Eco",
-    "pageTitle": "Botiga Eco - Productes ecològics i sostenibles",
-    "status": {
-      "cancelled": "No disponible",
-      "statusBanner": {
-        "closedTitle": "Botiga en mode consulta",
-        "openingSoonTitle": "Prepareu les cistelles!",
-        "openingSoonDescription": "Estem a punt d''obrir la finestra de comandes.",
-        "closedDescription": "Les comandes obren el dia {date} a les {time}",
-        "closedManuallyTitle": "Tancat temporalment",
-        "cancelledTitle": "Servei no disponible",
-        "cancelledDescription": "Aquesta botiga està desactivada actualment. Contacta amb suport per a més informació.",
-        "closingSoonTitle": "La botiga tancarà aviat!",
-        "closingSoonDescription": "Fes la teva comanda abans de les {time}.",
-        "dismiss": "Tancar avís de l''estat de la botiga"
-      },
-      "closed": "Tancat",
-      "closedManually": "Tancat temporalment",
-      "opensIn": "Obre en",
-      "closingSoon": "TANCA AVIAT",
-      "open": "Obert",
-      "open24h": "Obert 24/7",
-      "openingSoon": "OBRE AVIAT",
-      "closedOpensAt": "Tancat. Obre el {date} a les {time}",
-      "closedMessage": "La botiga està tancada. No pots modificar la teva cistella."
-    },
-    "menu": {
-      "home": "Inici",
-      "store": "Botiga",
-      "about": "Qui Som",
-      "contact": "Contacte",
-      "viewFavorites": "Favorits",
-      "viewCart": "Anar a la cistella de compra, {productCount} productes, preu total: {productPrice}",
-      "cart": "Cistella",
-      "profile": "Perfil de {name}",
-      "profilePage": "Veure perfil",
-      "hello": "Hola {name}",
-      "login": "Accedir",
-      "logout": "Tancar sessió",
-      "orders": "Comandes"
-    },
-    "search": {
-      "placeholder": "Buscar productes o categories",
-      "label": "Buscar productes o categories",
-      "submit": "Cercar"
+    "error": {
+      "image": "Hi ha hagut un error al carregar la imatge"
     }
   },
   "auth": {
     "login": {
+      "title": "Inici de sessió",
+      "subtitle": "Comunitat Cooperativa",
       "loading": "Iniciant sessió...",
       "email": "Correu electrònic",
       "password": "Contrasenya",
-      "title": "Botiga Eco",
-      "subtitle": "Comunitat Cooperativa",
       "rememberMe": "Recorda''m",
       "recoverAccess": "Has oblidat la contrasenya?",
       "newUserQuestion": "Si ets soci, pots registrar-te aquí",
@@ -123,39 +80,83 @@
     },
     "error": {
       "login": "Revisa les teves credencials"
-    }
-  },
-  "users": {
-    "role": {
+    },
+    "roles": {
       "PARTNER": "Soci Cooperativa",
       "GLOBAL_ADMIN": "Súper Administrador",
       "CLIENT_ADMIN": "Administrador"
     }
   },
-  "products": {
-    "categories": {
-      "all": "Totes les categories",
-      "filter": {
-        "sort": "Ordenar",
-        "ecologic": "Ecològic",
-        "total": "productes",
-        "error": "Hi ha hagut un error al carregar les categories"
-      },
-      "add": "Afegir"
+  "store": {
+    "title": "Botiga Eco",
+    "pageTitle": "Botiga Eco - Productes ecològics i sostenibles",
+    "search": {
+      "placeholder": "Buscar productes o categories",
+      "label": "Buscar productes o categories",
+      "submit": "Cercar"
     },
+    "status": {
+      "open": "Obert",
+      "open24h": "Obert 24/7",
+      "closed": "Tancat",
+      "closedManually": "Tancat temporalment",
+      "openingSoon": "OBRE AVIAT",
+      "closingSoon": "TANCA AVIAT",
+      "opensIn": "Obre en",
+      "cancelled": "No disponible",
+      "closedOpensAt": "Tancat. Obre el {date} a les {time}",
+      "closedMessage": "La botiga està tancada. No pots modificar la teva cistella.",
+      "statusBanner": {
+        "closedTitle": "Botiga en mode consulta",
+        "closedDescription": "Les comandes obren el dia {date} a les {time}",
+        "openingSoonTitle": "Prepareu les cistelles!",
+        "openingSoonDescription": "Estem a punt d''obrir la finestra de comandes.",
+        "closingSoonTitle": "La botiga tancarà aviat!",
+        "closingSoonDescription": "Fes la teva comanda abans de les {time}.",
+        "closedManuallyTitle": "Tancat temporalment",
+        "cancelledTitle": "Servei no disponible",
+        "cancelledDescription": "Aquesta botiga està desactivada actualment. Contacta amb suport per a més informació.",
+        "dismiss": "Tancar avís de l''estat de la botiga"
+      }
+    },
+    "menu": {
+      "home": "Inici",
+      "store": "Botiga",
+      "about": "Qui Som",
+      "contact": "Contacte",
+      "cart": "Cistella",
+      "favorites": "Favorits",
+      "orders": "Comandes",
+      "login": "Accedir",
+      "logout": "Tancar sessió",
+      "profile": "Perfil de {name}",
+      "profilePage": "Veure perfil",
+      "hello": "Hola {name}",
+      "viewCart": "Anar a la cistella de compra, {productCount} productes, preu total: {productPrice}",
+      "viewFavorites": "Anar als favorits"
+    }
+  },
+  "products": {
     "all": "Tots els productes",
-    "add": "Afegir",
+    "total": "productes trobats",
     "origin": "Origen",
     "provider": "Productor",
-    "addLong": "Afegir al cabàs",
-    "storeClosed": "Botiga Tancada",
+    "technicalInfo": "Detalls i Especificacions",
+    "opinions": {
+      "title": "Opinions",
+      "write": "Escriure una opinió",
+      "user": "Usuari eco-conscient",
+      "date": "Fa 2 dies",
+      "placeholder": "Molt bon producte, es nota la qualitat dels ingredients. L''envasament és impecable i el gust realment es nota que és ecològic."
+    },
     "goToDetail": "Veure detall",
-    "remove": "Eliminar",
-    "decrement": "Disminuir",
-    "increment": "Augmentar",
-    "total": "productes trobats",
     "favorite": "Afegir {value} a favorits",
     "related": "També et podria agradar",
+    "storeClosed": "Botiga Tancada",
+    "categories": {
+      "all": "Totes les categories",
+      "error": "Hi ha hagut un error al carregar les categories"
+    },
     "filter": {
       "sort": {
         "label": "Ordenar",
@@ -164,49 +165,65 @@
         "priceWithIvaDesc": "Preu descendent",
         "updatedAsc": "Més antics",
         "updatedDesc": "Més recents"
+      },
+      "ecologic": "Ecològic"
+    },
+    "quantity": {
+      "label": "Qt:",
+      "add": "Afegir",
+      "addLong": "Afegir al cabàs",
+      "remove": "Eliminar",
+      "decrement": "Disminuir",
+      "increment": "Augmentar",
+      "modified": {
+        "title": "Producte modificat",
+        "description": "Has modificat la quantitat del producte però no l''has afegit a la cistella",
+        "cancel": "Tornar al producte",
+        "leave": "No vull afegir-lo"
       }
     },
-    "modified": {
-      "title": "Producte modificat",
-      "description": "Has modificat la quantitat del producte però no l''has afegit a la cistella",
-      "cancel": "Tornar al producte",
-      "leave": "No vull afegir-lo"
-    },
-    "unitType": {
-      "unit": "Unitat",
-      "weight": "Pes",
-      "volume": "Volum",
-      "unitWithFixedVolume": "Unitat",
-      "unitWithFixedWeight": "Unitat",
-      "unitWithVariableWeight": "Kg",
-      "unitWithVariableVolume": "L"
-    },
-    "unitTypeCount": {
-      "unit": "{count, plural, one {unitat} other {unitats}}",
-      "weight": "{count, plural, one {kg} other {kg}}",
-      "volume": "{count, plural, one {L} other {L}}",
-      "unitWithFixedVolume": "{count, plural, one {unitat} other {unitats}}",
-      "unitWithFixedWeight": "{count, plural, one {unitat} other {unitats}}",
-      "unitWithVariableWeight": "{count, plural, one {kg} other {kg}}",
-      "unitWithVariableVolume": "{count, plural, one {L} other {L}}"
-    },
     "unit": {
-      "unit": "Preu per unitat",
-      "weight": "Preu per kg",
-      "volume": "Preu per L",
-      "unitWithFixedWeight": "Pesa {value}",
-      "unitWithFixedVolume": "Ocupa {value}",
-      "unitWithVariableWeight": "Pes variable",
-      "unitWithVariableVolume": "Volum variable"
-    },
-    "unitAbbreviation": {
-      "unit": "un.",
-      "weight": "kg",
-      "volume": "L",
-      "unitWithFixedWeight": "un.",
-      "unitWithFixedVolume": "un.",
-      "unitWithVariableWeight": "kg",
-      "unitWithVariableVolume": "L"
+      "price": {
+        "unit": "Preu per unitat",
+        "weight": "Preu per kg",
+        "volume": "Preu per L"
+      },
+      "measure": {
+        "unit": "Preu per unitat",
+        "weight": "Pesa {value}",
+        "volume": "Ocupa {value}",
+        "unitWithFixedWeight": "Pesa {value}",
+        "unitWithFixedVolume": "Ocupa {value}",
+        "unitWithVariableWeight": "Pes variable",
+        "unitWithVariableVolume": "Volum variable"
+      },
+      "type": {
+        "unit": "Unitat",
+        "weight": "Pes",
+        "volume": "Volum",
+        "unitWithFixedWeight": "Unitat",
+        "unitWithFixedVolume": "Unitat",
+        "unitWithVariableWeight": "Kg",
+        "unitWithVariableVolume": "L"
+      },
+      "count": {
+        "unit": "{count, plural, one {unitat} other {unitats}}",
+        "weight": "{count, plural, one {kg} other {kg}}",
+        "volume": "{count, plural, one {L} other {L}}",
+        "unitWithFixedWeight": "{count, plural, one {unitat} other {unitats}}",
+        "unitWithFixedVolume": "{count, plural, one {unitat} other {unitats}}",
+        "unitWithVariableWeight": "{count, plural, one {kg} other {kg}}",
+        "unitWithVariableVolume": "{count, plural, one {L} other {L}}"
+      },
+      "abbr": {
+        "unit": "un.",
+        "weight": "kg",
+        "volume": "L",
+        "unitWithFixedWeight": "un.",
+        "unitWithFixedVolume": "un.",
+        "unitWithVariableWeight": "kg",
+        "unitWithVariableVolume": "L"
+      }
     }
   },
   "cart": {
@@ -247,35 +264,36 @@
       }
     },
     "summary": {
-      "pickup": "Recollida a la botiga",
-      "delivery": "Enviament a domicili",
-      "itemsCount": "{value} productes",
+      "headTitle": "Comanda - cistella",
+      "title": "Resum de la comanda",
       "resume": "Resum",
       "subtotal": "Subtotal",
       "taxes": "Impostos (IVA)",
       "total": "Total",
-      "goToShipping": "Continuar a l''enviament",
-      "title": "Resum de la comanda",
+      "includingVat": "IVA inclòs",
+      "itemsCount": "{value} productes",
       "itemsCountSuffix": "elements a la cistella",
       "shipping": "Enviament",
-      "includingVat": "IVA inclòs",
+      "pickup": "Recollida a la botiga",
+      "delivery": "Enviament a domicili",
+      "goToShipping": "Continuar a l''enviament",
       "freeShippingPromo": "Afegeix {value} més per a enviament GRATUÏT!",
-      "removeItem": "Eliminar producte",
       "priceIncrease": "Pujada de preu!",
-      "oldPrice": "Preu anterior",
       "priceDrop": "Baixada de preu!",
+      "oldPrice": "Preu anterior",
       "checkoutDisabled": "Les comandes estan desactivades.",
       "checkoutDisabledInDate": "Les comandes estan desactivades. La botiga obre el {date} a les {time}.",
-      "quantityLabel": "Qt:"
+      "removeItem": "Eliminar element de la cistella"
     },
     "shipping": {
-      "freeShippingAchieved": "Has aconseguit enviament gratuït!",
-      "remainingForFree": "Et falten {amount} per a gaudir d''un enviament GRATUÏT!",
+      "headTitle": "Comanda - lliurament",
+      "cost": "Enviament",
+      "cartCost": "Cistella",
       "free": "GRÀTIS",
       "freeAlways": "GRÀTIS",
       "freeFrom": "GRÀTIS des de {amount}",
-      "cartCost": "Cistella",
-      "shippingCost": "Enviament",
+      "freeAchieved": "Has aconseguit enviament gratuït!",
+      "remainingForFree": "Et falten {amount} per a gaudir d''un enviament GRATUÏT!",
       "goToConfirmation": "Continuar al resum de la comanda",
       "method": {
         "title": "Mètode de lliurament",
@@ -292,15 +310,6 @@
           "description": "Tria si vols rebre o recollir la teva comanda."
         }
       },
-      "weekdaysLabels": {
-        "sunday": "Proper Diumenge",
-        "monday": "Proper Dilluns",
-        "tuesday": "Proper Dimarts",
-        "wednesday": "Proper Dimecres",
-        "thursday": "Proper Dijous",
-        "friday": "Proper Divendres",
-        "saturday": "Proper Dissabte"
-      },
       "address": {
         "title": "Tria on vols rebre o recollir la teva comanda.",
         "pickup": {
@@ -310,9 +319,7 @@
         "delivery": {
           "title": "Tria on vols rebre la teva comanda.",
           "description": "Et portarem la teva comanda a la teva adreça."
-        },
-        "edit": "Editar",
-        "add": "Afegir nova adreça"
+        }
       },
       "slot": {
         "pickup": {
@@ -326,34 +333,43 @@
         "date": "Seleccionar dia",
         "time": "Franja horària"
       },
-      "comeToStore": "Passa per la botiga i recull la teva comanda."
+      "weekdaysLabels": {
+        "sunday": "Proper Diumenge",
+        "monday": "Proper Dilluns",
+        "tuesday": "Proper Dimarts",
+        "wednesday": "Proper Dimecres",
+        "thursday": "Proper Dijous",
+        "friday": "Proper Divendres",
+        "saturday": "Proper Dissabte"
+      }
     },
     "confirmation": {
+      "headTitle": "Comanda - confirmació",
       "title": "Confirma la teva comanda",
       "productsInCart": "Productes al cistell",
       "deliverySummary": "Resum de lliurament",
       "deliveryMethod": "Tipus",
       "deliveryTimeSlot": "Horari previst",
       "deliveryAddress": "Adreça",
-      "modify": "Modificar",
+      "modifyCart": "Modificar cistella",
+      "modifyDelivery": "Modificar lliurament",
       "notes": "Notes per a la preparació o lliurament (Opcional)",
       "notesPlaceholder": "Ex: si tinc algun problema te trucaré abans.",
       "paymentNotice": "informació sobre el pagament",
       "paymentNoticeDescription": "Com que treballem amb productes frescos de pes variable, el preu final pot variar lleugerament. El pagament es realitzarà en el moment de lliurament o recollida al preu exacte.",
-      "confirmOrder": "Confirmar Comanda",
-      "modifyCart": "Modificar cistella",
-      "modifyDelivery": "Modificar lliurament"
+      "confirmOrder": "Confirmar Comanda"
     },
     "finish": {
-      "creatingOrder": "Generant comanda... un moment si us plau",
+      "headTitle": "Comanda - finalitzada",
       "title": "Gràcies per la teva comanda!",
+      "creatingOrder": "Generant comanda... un moment si us plau",
       "orderNumber": "Comanda Número:",
       "emailNotice": "La teva comanda s''ha processat correctament. T''hem enviat un resum al teu correu electrònic:",
+      "orderReadyNotification": "En breu prepararem el teu cistell. Et notificarem quan estigui llest amb el pes exacte i el preu definitiu.",
       "modifyReminder": "Si t''has deixat res, no pateixis: pots fer canvis des del teu perfil mentre el període de comandes estigui obert.",
       "ordersHistory": "Historial de comandes",
       "backToStore": "Tornar a la botiga",
-      "ecoBadgeAlt": "Segell de producte local i de proximitat",
-      "orderReadyNotification": "En breu prepararem el teu cistell. Et notificarem quan estigui llest amb el pes exacte i el preu definitiu."
+      "ecoBadgeAlt": "Segell de producte local i de proximitat"
     }
   }
 }

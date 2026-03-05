@@ -13,6 +13,8 @@ export const ecoStoreCartRoutes: Route[] = [
     children: [
       {
         path: 'resum',
+        title: 'cart.summary.headTitle',
+        canActivate: [pocketBaseIsLoggedGuard],
         loadComponent: () =>
           import('./eco-store-cart-steps/summary/cart-summary.component').then(
             m => m.CartSummaryComponent
@@ -20,6 +22,7 @@ export const ecoStoreCartRoutes: Route[] = [
       },
       {
         path: 'enviament',
+        title: 'cart.shipping.headTitle',
         canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard, isStoreOpenGuard],
         resolve: { addresses: cartShippingResolver },
         loadComponent: () =>
@@ -29,6 +32,7 @@ export const ecoStoreCartRoutes: Route[] = [
       },
       {
         path: 'confirmacio',
+        title: 'cart.confirmation.headTitle',
         canActivate: [pocketBaseIsLoggedGuard, shippingAvailableGuard, isStoreOpenGuard],
         loadComponent: () =>
           import('./eco-store-cart-steps/confirmation/cart-confirmation.component').then(
@@ -37,6 +41,7 @@ export const ecoStoreCartRoutes: Route[] = [
       },
       {
         path: 'pendent',
+        title: 'cart.shipping.unavailable.headTitle',
         canActivate: [shippingUnavailableGuard],
         loadComponent: () =>
           import('./eco-store-cart-steps/shipping/shipping-unavailable/shipping-unavailable.component').then(

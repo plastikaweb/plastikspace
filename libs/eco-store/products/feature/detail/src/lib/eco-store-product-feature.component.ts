@@ -53,10 +53,13 @@ import { map } from 'rxjs';
 })
 export default class EcoStoreProductFeatureComponent {
   readonly #productsStore = inject(ecoStoreProductsStore);
-  protected readonly cartStore = inject(ecoStoreCartStore);
-  protected readonly tenantStore = inject(ecoStoreTenantStore);
+  readonly #cartStore = inject(ecoStoreCartStore);
+  readonly #tenantStore = inject(ecoStoreTenantStore);
   protected readonly viewTransitionService = inject(ViewTransitionService);
   protected readonly navigationService = inject(NavigationService);
+
+  protected readonly isStoreOpen = this.#tenantStore.isStoreOpen;
+  protected readonly cartEntityMap = this.#cartStore.entityMap;
 
   readonly listQueryParams = computed(() => {
     const sort = this.#productsStore.sort();
@@ -109,7 +112,7 @@ export default class EcoStoreProductFeatureComponent {
 
   readonly storeQuantity = computed(() => {
     const product = this.product();
-    return product ? this.cartStore.entityMap()[product.id]?.quantity || 0 : 0;
+    return product ? this.#cartStore.entityMap()[product.id]?.quantity || 0 : 0;
   });
 
   readonly isInCart = computed(() => this.storeQuantity() > 0);
@@ -227,7 +230,7 @@ export default class EcoStoreProductFeatureComponent {
     quantity: number;
     product: EcoStoreProductWithCategoryName;
   }): void {
-    this.cartStore.addToCart(product, quantity);
+    this.#cartStore.addToCart(product, quantity);
   }
 
   protected returnToPreviousPage() {

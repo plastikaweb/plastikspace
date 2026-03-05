@@ -12,7 +12,7 @@ describe('EcoStoreUnitChipComponent', () => {
     }).compileComponents();
 
     const translate = TestBed.inject(TranslateService);
-    translate.setTranslation('en', { 'products.unit.weight': '{{value}}' });
+    translate.setTranslation('en', { 'products.unit.measure.weight': '{{value}}' });
     translate.use('en');
 
     fixture = TestBed.createComponent(EcoStoreUnitChipComponent);

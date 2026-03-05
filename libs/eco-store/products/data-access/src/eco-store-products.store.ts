@@ -118,6 +118,40 @@ export const ecoStoreProductsStore = signalStore(
           };
         });
       }),
+
+      findProductBySlug: computed(() => (slug: string | null) => {
+        if (!slug) {
+          return undefined;
+        }
+
+        const product = entities().find(p => p.normalizedName === slug);
+        if (!product) {
+          return undefined;
+        }
+
+        const categories = categoriesStore.stats();
+        const currentLang = translateService.getCurrentLang() || environment.defaultLanguage;
+        const category = categories.find(
+          cat => cat.category === product.category
+        ) as ProductCategoryStats;
+
+        let productName = '';
+        if (product.name && typeof product.name === 'object') {
+          const nameObj = product.name as LocalizedFields<string>;
+          productName = nameObj[currentLang] || '';
+        } else if (typeof product.name === 'string') {
+          productName = product.name;
+        }
+
+        return {
+          ...product,
+          name: productName,
+          categoryName: category?.name
+            ? (category.name as LocalizedFields<string>)[currentLang] || ''
+            : '',
+          categorySlug: category?.normalizedName || '',
+        };
+      }),
     };
   }),
   withMethods(store => ({

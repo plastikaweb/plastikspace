@@ -7,7 +7,7 @@
         class="hover:text-primary-900! hover:bg-primary-100/70! flex shrink-0 items-center gap-2 rounded-lg py-1.5 text-neutral-600! transition-all duration-200"
         matIconButton
         type="button"
-        [attr.aria-label]="'goToPreviousPage' | translate"
+        [attr.aria-label]="'common.navigation.previous' | translate"
         (click)="returnToPreviousPage()">
         <mat-icon>arrow_back</mat-icon>
       </button>
@@ -210,7 +210,7 @@
           </div>
 
           <!-- Action Buttons -->
-          @if (tenantStore.isStoreOpen()) {
+          @if (isStoreOpen()) {
             <div class="mb-4 flex flex-col items-stretch gap-4 sm:flex-row">
               <!-- Quantity (Shared Component) -->
               <div class="w-full">
@@ -265,7 +265,7 @@
         @defer (on viewport; prefetch on idle) {
           <div class="rounded-2xl border border-gray-100 bg-gray-50 p-8">
             <h3 class="text-tertiary-900 mb-4 flex items-center gap-2 font-bold">
-              <mat-icon>info</mat-icon> Detalls i Especificacions
+              <mat-icon>info</mat-icon> {{ 'products.technicalInfo' | translate }}
             </h3>
 
             <ul class="flex flex-col flex-wrap gap-4 lg:flex-row!">
@@ -295,7 +295,7 @@
       <div class="mb-4 flex flex-col gap-4 sm:mb-8 sm:flex-row sm:items-center sm:justify-between">
         <h2
           class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
-          Opinions
+          {{ 'products.opinions.title' | translate }}
           <span class="rounded-full bg-gray-100 px-4 py-1 text-lg font-bold text-gray-500">{{
             rating.count
           }}</span>
@@ -305,7 +305,7 @@
           color="primary"
           class="hover:bg-primary-50 rounded-xl! px-6! py-6! transition-colors">
           <mat-icon class="mr-2">edit</mat-icon>
-          Escriure una opinió
+          {{ 'products.opinions.write' | translate }}
         </button>
       </div>
 
@@ -320,8 +320,10 @@
                 {{ 'U' }}
               </div>
               <div>
-                <div class="text-tertiary-900 font-bold">Usuari eco-conscient</div>
-                <div class="text-xs text-gray-400">Fa 2 dies</div>
+                <div class="text-tertiary-900 font-bold">
+                  {{ 'products.opinions.user' | translate }}
+                </div>
+                <div class="text-xs text-gray-400">{{ 'products.opinions.date' | translate }}</div>
               </div>
             </div>
             <div class="mb-4 flex text-[#bd5828]">
@@ -332,8 +334,7 @@
               <mat-icon class="scale-75!">star</mat-icon>
             </div>
             <p class="line-clamp-3 text-sm leading-relaxed text-gray-600">
-              Molt bon producte, es nota la qualitat dels ingredients. L'envasament és impecable i
-              el gust realment es nota que és ecològic.
+              {{ 'products.opinions.placeholder' | translate }}
             </p>
           </div>
         }
@@ -356,8 +357,8 @@
           <eco-store-product-card
             [product]="relatedProduct"
             [isFirst]="false"
-            [isOpen]="tenantStore.isStoreOpen()"
-            [quantity]="cartStore.entityMap()[relatedProduct.id]?.quantity || 0"
+            [isOpen]="isStoreOpen()"
+            [quantity]="cartEntityMap()[relatedProduct.id]?.quantity || 0"
             (addToCart)="addToCart($event)"
             (toggleFavorite)="toggleFavorite()" />
         }

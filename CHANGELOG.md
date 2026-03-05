@@ -5,16 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2026-03-05] - Jules Report Refactor & Accessibility
+## [2026-03-05] - Router State, i18n & Accessibility Improvements
+
+### Added
+
+- Created `eco-store-router-data-access` library (`@plastik/eco-store/core/router-state`) with `EcoStorePrefixTitleService`,
+  `EcoStoreCategoryRouteTitleService`, and `EcoStoreCategoryProductTitleService` for reactive, signal-based page title resolution
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Added `findProductBySlug` computed signal factory to `ecoStoreProductsStore` for signal-based product title lookup
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Added mock store factories for `ecoStoreProductsStore` and `ecoStoreProductCategoriesStore` accessible via `/testing` sub-paths
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Added `title: 'auth.login.title'` i18n key to the login route for translated browser tab titles
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Added `title` resolver to the order confirmation route using `EcoStoreCategoryRouteTitleService`
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Integrated `EcoStorePrefixTitleService` as the `TitleStrategy` in `eco-store` application configuration
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Updated Catalan, Spanish, and English i18n JSON files with missing translation keys
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
 
 ### Changed
 
-- Refactored `skeletonItems` logic to use `linkedSignal` across all cart feature steps (summary, shipping, confirmation) for better synchronization with store state ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
-- Improved accessibility by adding `aria-hidden="true"` to all skeleton loaders and decorative pulse animations across the application ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
-- Added JSDoc documentation to complex `skeletonItems` computation logic in `EcoStoreProductsFeatureComponent` ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
-- Verified and confirmed correct `protected` field usage and routing configurations based on Jules automated PR analysis ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
-- Aligned `tenantStore` naming consistency and implemented internationalization for "Related Products" in product detail view ([#86c8hghhu](https://app.clickup.com/t/86c8hghhu))
-- Propagated store open state to related product cards in product detail feature ([#86c8hghhu](https://app.clickup.com/t/86c8hghhu))
+- Refactored core `PrefixTitleService` to be Signal-based and reactive using Angular `effect()`, replacing the previous subscription approach
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Refactored `skeletonItems` logic to use `linkedSignal` across all cart feature steps (shipping, confirmation) for better synchronization with store state
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Improved accessibility by adding `aria-hidden="true"` to skeleton loaders and decorative pulse animations across cart and product components
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Added JSDoc documentation to complex `skeletonItems` computation logic in `EcoStoreProductsFeatureComponent`
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Moved `EcoStoreCategoryRouteTitleService` from `eco-store/core/layout` into the new `eco-store/core/router` library
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
+- Updated `tsconfig.base.json` with path mapping for `@plastik/eco-store/core/router-state`
+  ([#86c8hgkev](https://app.clickup.com/t/86c8hgkev))
 
 ---
 

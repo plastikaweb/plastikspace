@@ -90,6 +90,7 @@ Built with **Angular 21+** (Signals, Standalone Components, Control Flow) and **
 - [**Entities**](../../libs/eco-store/core/entities/README.md): Shared domain models.
 - [**Tenant**](../../libs/eco-store/core/tenant/README.md): Multi-tenancy resolution and configuration.
 - [**Core API**](../../libs/eco-store/core/api/data-access/README.md): Base abstract services for tenant-aware API interactions.
+- [**Router State**](../../libs/eco-store/core/router/README.md): Reactive, signal-based page title resolution with tenant prefix and category/product lookup.
 - [**Store Window**](../../libs/eco-store/store-window/README.md): Store status and countdown feature.
 - [**Countdown UI**](../../libs/shared/countdown/ui/README.md): Shared countdown display component.
 - [**Countdown Utils**](../../libs/shared/countdown/util/README.md): Reactive countdown logic using Signals.

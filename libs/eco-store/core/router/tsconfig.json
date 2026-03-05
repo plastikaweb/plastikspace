@@ -3,21 +3,18 @@
   "compilerOptions": {
     "isolatedModules": true,
     "target": "es2022",
-    "moduleResolution": "bundler",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "lib": ["es2024", "dom"],
-    "declaration": true,
-    "composite": true
+    "moduleResolution": "bundler",
+    "module": "preserve"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "typeCheckHostBindings": true,
     "strictTemplates": true
   },
   "files": [],
