@@ -210,7 +210,7 @@
           </div>
 
           <!-- Action Buttons -->
-          @if (tenantStore.isStoreOpen()) {
+          @if (isStoreOpen()) {
             <div class="mb-4 flex flex-col items-stretch gap-4 sm:flex-row">
               <!-- Quantity (Shared Component) -->
               <div class="w-full">
@@ -357,8 +357,8 @@
           <eco-store-product-card
             [product]="relatedProduct"
             [isFirst]="false"
-            [isOpen]="tenantStore.isStoreOpen()"
-            [quantity]="cartStore.entityMap()[relatedProduct.id]?.quantity || 0"
+            [isOpen]="isStoreOpen()"
+            [quantity]="cartEntityMap()[relatedProduct.id]?.quantity || 0"
             (addToCart)="addToCart($event)"
             (toggleFavorite)="toggleFavorite()" />
         }

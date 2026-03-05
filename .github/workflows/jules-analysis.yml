@@ -17,6 +17,7 @@ jobs:
 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           jules_api_key: ${{ secrets.JULES_API_KEY }}
           prompt: |
@@ -48,5 +49,6 @@ jobs:
 
             🚨 EXECUTABLE INSTRUCTION:
             Once you have generated your final review report, you MUST post it as a comment directly on this Pull Request.
-            Use the GitHub CLI to do this. Run the following command in your terminal:
+            Use the GitHub CLI to do this. The environment is already configured with GH_TOKEN.
+            Run the following command in your terminal:
             gh pr comment ${{ github.event.pull_request.number }} --body "your_formatted_markdown_report_here"
