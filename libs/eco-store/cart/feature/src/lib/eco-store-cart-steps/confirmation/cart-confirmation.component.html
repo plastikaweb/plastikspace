@@ -30,7 +30,9 @@
       <div class="mt-2 flex flex-col gap-2">
         @if (cartStore.isSyncing() && !cartStore.isSynced()) {
           @for (item of skeletonItems(); track $index) {
-            <div class="flex h-[134px] w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+            <div
+              aria-hidden="true"
+              class="flex h-[134px] w-full animate-pulse rounded-2xl bg-neutral-100"></div>
           }
         } @else {
           @for (item of cartStore.items(); track item.product.id; let i = $index) {
@@ -65,7 +67,9 @@
       </div>
 
       @if (cartStore.isSyncing() && !cartStore.isSynced()) {
-        <div class="mt-2 h-32 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+        <div
+          aria-hidden="true"
+          class="mt-2 h-32 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
       } @else {
         <mat-card appearance="outlined" class="confirmation-delivery-card mt-2 p-6">
           <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">

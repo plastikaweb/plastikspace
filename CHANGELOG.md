@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-05] - Jules Report Refactor & Accessibility
+
+### Changed
+
+- Refactored `skeletonItems` logic to use `linkedSignal` across all cart feature steps (summary, shipping, confirmation) for better synchronization with store state ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
+- Improved accessibility by adding `aria-hidden="true"` to all skeleton loaders and decorative pulse animations across the application ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
+- Added JSDoc documentation to complex `skeletonItems` computation logic in `EcoStoreProductsFeatureComponent` ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
+- Verified and confirmed correct `protected` field usage and routing configurations based on Jules automated PR analysis ([#86c8md6c8](https://app.clickup.com/t/86c8md6c8))
+
+---
+
 ## [2026-03-04] - API Loading State Review & Documentation
 
 ### Added
