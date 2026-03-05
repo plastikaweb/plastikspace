@@ -155,6 +155,7 @@
     "increment": "Increase",
     "total": "products found",
     "favorite": "Add {value} to favorites",
+    "related": "You might also like",
     "filter": {
       "sort": {
         "label": "Sort",
