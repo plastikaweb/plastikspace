@@ -42,11 +42,10 @@ export class NavigationService {
   async back(backBaseUrl?: string, regex?: RegExp): Promise<void> {
     if (this.#history.length && regex) {
       this.#history.shift();
-      for (const url of this.#history) {
-        if (regex.test(url)) {
-          await this.#router.navigateByUrl(url);
-          return;
-        }
+      const url = this.#history.find(url => regex.test(url));
+      if (url !== undefined) {
+        await this.#router.navigateByUrl(url);
+        return;
       }
     }
 
