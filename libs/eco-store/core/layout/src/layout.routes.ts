@@ -7,9 +7,9 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getEnvironment } from '@plastik/core/environments';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
+import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
-import { EcoStoreCategoryRouteTitleService } from './eco-store-category-route-title.service';
 import EcoLayoutComponent from './layout.component';
 
 export const layoutRoutes: Route[] = [
@@ -42,14 +42,12 @@ export const layoutRoutes: Route[] = [
     children: [
       {
         path: 'comanda',
-        title: 'cart.finish.title',
         data: { hasSidenav: false },
         loadChildren: () =>
           import('@plastik/eco-store/orders/feature').then(m => m.ecoStoreOrderConfirmationRoutes),
       },
       {
         path: 'cistella',
-        title: 'cart.title',
         data: { hasSidenav: false },
         loadChildren: () => import('@plastik/eco-store/cart').then(m => m.ecoStoreCartRoutes),
       },

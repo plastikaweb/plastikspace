@@ -12,6 +12,7 @@
     - [Store Usage](#store-usage)
     - [SignalStore Features](#signalstore-features)
   - [Integration](#integration)
+  - [Testing](#testing)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -51,6 +52,8 @@ const products = store.productsWithTranslatedText();
 The store includes several custom features and computed signals:
 
 - **`productsWithTranslatedText`**: (Computed) Returns a list of products where all localized fields are resolved for the current language, and category information is attached.
+- **`findProductBySlug`**: (Computed factory) Returns a function `(slug: string) => product | undefined` that looks up a single product
+  by its normalized slug in the current language. Used by `EcoStorePrefixTitleService` for reactive page title resolution.
 - **`setSelectedFromSlug(slug)`**: (Method) Selects a product from the current list based on its slug.
 - **`loadProductBySlug(slug)`**: (Method) Fetches a product from the API by its slug and sets it as the selected item.
 
@@ -61,6 +64,19 @@ The store relies on the following environments and services:
 - `POCKETBASE_WITH_TRANSLATION_ENVIRONMENT`: For default language and API configuration.
 - `TranslateService`: For reactive language switching.
 - `ecoStoreProductCategoriesStore`: For category data lookup.
+
+## Testing
+
+A mock store is exported for use in unit tests from `@plastik/eco-store/products/data-access/testing`:
+
+```typescript
+import { mockEcoStoreProductsStore } from '@plastik/eco-store/products/data-access/testing';
+
+// Provide in TestBed:
+{ provide: ecoStoreProductsStore, useValue: mockEcoStoreProductsStore }
+```
+
+The mock exposes `entities`, `isLoading`, `error` signals and the `findProductBySlug` jest mock.
 
 ## Running unit tests
 

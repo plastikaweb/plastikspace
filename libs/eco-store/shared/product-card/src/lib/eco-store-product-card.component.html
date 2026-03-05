@@ -8,7 +8,7 @@
   [routerLink]="
     productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
   "
-  [attr.aria-label]="productData ? productData.name : 'Loading item'">
+  [attr.aria-label]="productData ? productData.name : ('common.loading' | translate)">
   @if (productData) {
     <!-- Favorite Button -->
     @if (!minimalVersion()) {

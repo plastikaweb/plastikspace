@@ -5,7 +5,7 @@
     class="add-button group-hover:border-primary-400! flex w-full items-center justify-center gap-1 drop-shadow-none! transition-all group-hover:border! group-hover:drop-shadow-sm!"
     (click)="onIncrementClick($event)">
     <mat-icon class="scale-120" aria-hidden="true">shopping_basket</mat-icon>
-    <span>{{ 'products.add' | translate }}</span>
+    <span>{{ 'products.quantity.add' | translate }}</span>
   </button>
 } @else {
   <div class="flex w-full items-center" [class.gap-4]="mode() === 'detail'">
@@ -25,8 +25,10 @@
         type="button"
         [disabled]="(mode() === 'detail' || mode() === 'summary') && quantity() <= minLimit()"
         [attr.aria-label]="
-          (quantity() <= minLimit() && mode() === 'card' ? 'products.remove' : 'products.decrement')
-            | translate: { value: product().name }
+          (quantity() <= minLimit() && mode() === 'card'
+            ? 'products.quantity.remove'
+            : 'products.quantity.decrement'
+          ) | translate: { value: product().name }
         "
         [class]="
           quantity() <= minLimit() && mode() === 'card' ? 'remove-button' : 'decrement-button'
@@ -67,7 +69,7 @@
           (change)="onManualInput($event)"
           (keydown.enter)="qtyInput.blur()" />
         <span class="text-md text-neutral-600" aria-hidden="true">{{
-          `products.unitAbbreviation.${product().unitType}` | translate
+          `products.unit.abbr.${product().unitType}` | translate
         }}</span>
       </div>
 
@@ -76,7 +78,7 @@
         type="button"
         class="increment-button"
         [disabled]="quantity() >= maxLimit()"
-        [attr.aria-label]="`${('products.increment' | translate)} ${product().name}`"
+        [attr.aria-label]="`${('products.quantity.increment' | translate)} ${product().name}`"
         [attr.aria-disabled]="quantity() >= maxLimit()"
         [class.opacity-50]="quantity() >= maxLimit()"
         (click)="onIncrementClick($event)">
@@ -91,8 +93,8 @@
         [disabled]="!isQuantityModified()"
         (click)="onAddToCart()">
         <mat-icon class="scale-125">shopping_cart</mat-icon>
-        <span class="hidden sm:block">{{ 'products.addLong' | translate }}</span>
-        <span class="block sm:hidden">{{ 'products.add' | translate }}</span>
+        <span class="hidden sm:block">{{ 'products.quantity.addLong' | translate }}</span>
+        <span class="block sm:hidden">{{ 'products.quantity.add' | translate }}</span>
       </button>
     }
   </div>

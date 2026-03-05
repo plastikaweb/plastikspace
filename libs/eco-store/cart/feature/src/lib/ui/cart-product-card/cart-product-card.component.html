@@ -44,7 +44,7 @@
       } @else {
         <p class="text-sm font-medium text-neutral-600">
           {{ item().quantity }}
-          {{ 'products.unitTypeCount.' + product.unitType | translate: { count: item().quantity } }}
+          {{ 'products.unit.count.' + product.unitType | translate: { count: item().quantity } }}
         </p>
       }
     </div>

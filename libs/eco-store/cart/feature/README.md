@@ -36,6 +36,8 @@ The **Cart Feature** library provides the complete shopping cart checkout flow f
 - **Material Design**: Uses Angular Material components for a consistent UI.
 - **Custom Stepper Icons**: Each step displays a unique Material icon (`shopping_cart`, `box`, `thumb_up`) via `STEPPER_GLOBAL_OPTIONS`.
 - **Container Queries**: Cart item cards use CSS container queries (`@container` / `@xl`) for fine-grained responsive layout within the cart summary.
+- **Skeleton Loaders**: Shipping and confirmation steps use `linkedSignal` to derive `skeletonItems` from cart store state,
+  ensuring skeleton items are always in sync with actual cart content during loading and background sync.
 
 ## Architecture
 

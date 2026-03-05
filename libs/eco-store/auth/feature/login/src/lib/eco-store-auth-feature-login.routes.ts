@@ -17,6 +17,7 @@ import { EcoStoreAuthLoginFacadeService } from './eco-store-auth-login/eco-store
 export const ecoStoreAuthLoginRoutes: Route[] = [
   {
     path: '',
+    title: 'auth.login.title',
     component: EcoStoreAuthLoginComponent,
     canActivate: [pocketBaseIsNotLoggedGuard],
     providers: [

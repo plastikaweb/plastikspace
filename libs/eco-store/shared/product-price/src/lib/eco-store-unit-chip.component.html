@@ -1,6 +1,7 @@
 @let humanizedUnit = unitBase() | humanizeUnit: unitType();
 @let finalLabel =
-  label() || (`products.unit.${unitType()}` | translate: { value: humanizedUnit || unitBase() });
+  label() ||
+  (`products.unit.measure.${unitType()}` | translate: { value: humanizedUnit || unitBase() });
 
 <plastik-shared-chip
   type="tertiary"

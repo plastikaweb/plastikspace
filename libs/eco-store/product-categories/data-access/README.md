@@ -9,6 +9,7 @@
   - [Features](#features)
   - [Usage](#usage)
     - [Available Store Methods](#available-store-methods)
+  - [Testing](#testing)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -61,6 +62,20 @@ const categoryData = store.getCategoryBySlug('electronics', 'products.all');
 - `getCategoryBySlug(slug, defaultText)`: Get localized name and icon for a category by slug, with fallbacks.
 - `groupedCategories`: Computed signal with categories grouped by parent group name.
 - `totalProducts`: Computed signal with total product count across all categories.
+
+## Testing
+
+A mock store is exported for use in unit tests from `@plastik/eco-store/product-categories/data-access/testing`:
+
+```typescript
+import { mockEcoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access/testing';
+
+// Provide in TestBed:
+{ provide: ecoStoreProductCategoriesStore, useValue: mockEcoStoreProductCategoriesStore }
+```
+
+The mock exposes `entities`, `stats`, `isLoading`, `error` signals and the `findCategoryBySlug`
+and `getLocalizedCategoryName` jest mocks.
 
 ## Running unit tests
 

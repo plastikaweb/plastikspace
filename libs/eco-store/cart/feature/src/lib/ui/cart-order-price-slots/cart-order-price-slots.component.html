@@ -25,7 +25,7 @@
 
     <!-- shipping cost -->
     <p class="text-primary-500 col-span-2 text-xs font-bold">
-      {{ 'cart.shipping.shippingCost' | translate }}
+      {{ 'cart.shipping.cost' | translate }}
     </p>
     <div class="relative col-span-10 w-full">
       @for (tier of sortedTiersAsc(); track tier.min) {
@@ -48,7 +48,7 @@
     }`">
     @if (isFree()) {
       <mat-icon>check_circle</mat-icon>
-      <span>{{ 'cart.shipping.freeShippingAchieved' | translate }}</span>
+      <span>{{ 'cart.shipping.freeAchieved' | translate }}</span>
     } @else {
       <mat-icon class="flex-shrink-0">info</mat-icon>
       <span
