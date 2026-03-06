@@ -71,7 +71,9 @@
     "sass": "tailwindcss",
     "html": "tailwindcss"
   },
-  "files.associations": {},
+  "files.associations": {
+    "*.webmanifest": "json"
+  },
   "editor.codeActions.triggerOnFocusChange": false,
   "files.autoSave": "onFocusChange",
   "workbench.colorTheme": "Atom One Dark",
