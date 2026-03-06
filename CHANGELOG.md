@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Updated Jules analysis workflow with explicit GH_TOKEN export instructions for the GitHub CLI.
 - Fixed old iOS Safari and Chrome loading issue by forcing esbuild to transpile static blocks ([#86c8mf42g](https://app.clickup.com/t/86c8mf42g))
 
 ---
