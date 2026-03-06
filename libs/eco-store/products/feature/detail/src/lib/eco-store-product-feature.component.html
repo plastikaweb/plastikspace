@@ -4,7 +4,7 @@
   <ol class="flex w-max items-center pe-4 whitespace-nowrap">
     <li class="flex items-center">
       <button
-        class="hover:text-primary-900! hover:bg-primary-100/70! flex shrink-0 items-center gap-2 rounded-lg py-1.5 text-neutral-600! transition-all duration-200"
+        class="hover:text-primary-900! hover:bg-primary-100/70! flex shrink-0 items-center gap-2 rounded-lg py-1.5 text-neutral-600! duration-100"
         matIconButton
         type="button"
         [attr.aria-label]="'common.navigation.previous' | translate"
@@ -14,7 +14,7 @@
     </li>
     <li class="flex items-center">
       <a
-        class="hover:text-primary-900 hover:bg-primary-100/70 flex items-center gap-2 rounded-lg py-1.5 text-neutral-600 transition-all duration-200 outline-none"
+        class="hover:text-primary-900 hover:bg-primary-100/70 flex items-center gap-2 rounded-lg py-1.5 text-neutral-600 transition-all duration-100 outline-none"
         [routerLink]="['/botiga']"
         [queryParams]="listQueryParams()">
         <mat-icon class="hidden! scale-75! sm:block!">storefront</mat-icon>
@@ -25,7 +25,7 @@
       <mat-icon class="scale-75!">chevron_right</mat-icon>
       @if (product()) {
         <a
-          class="hover:text-primary-900 hover:bg-primary-100/70 flex items-center gap-2 rounded-lg py-1.5 text-neutral-600 transition-all duration-200 outline-none"
+          class="hover:text-primary-900 hover:bg-primary-100/70 flex items-center gap-2 rounded-lg py-1.5 text-neutral-600 transition-all duration-100 outline-none"
           [routerLink]="['/botiga', product()?.categorySlug]"
           [queryParams]="listQueryParams()">
           <mat-icon class="hidden! scale-75! sm:block!">{{ product()?.categoryIcon }}</mat-icon>
@@ -60,7 +60,7 @@
                   role="listitem"
                   [customClass]="'shadow-sm ' + tag.class"
                   [icon]="tag.icon"
-                  [label]="tag.label" />
+                  [label]="tag.label | translate" />
               }
             </div>
           </div>
@@ -100,7 +100,7 @@
               [class.opacity-70]="activeThumbnailIndex() !== i"
               (click)="activeThumbnailIndex.set(i)">
               <plastik-img-container
-                class="overflow-hidden transition-all duration-200 hover:scale-105 hover:contrast-120"
+                class="overflow-hidden transition-all duration-100 hover:scale-105 hover:contrast-120"
                 [src]="product() | pocketBaseImageUrl: img"
                 [title]="`${product()?.name || ''} thumbnail ${i}`"
                 [dimensions]="thumbnailDimensions()"
@@ -143,7 +143,11 @@
             class="shrink-0"
             size="md"
             [isFavorite]="isFavorite()"
-            [ariaLabel]="isFavorite() ? 'Treure de preferits' : 'Afegir a preferits'"
+            [ariaLabel]="
+              isFavorite()
+                ? ('products.favoriteRemove' | translate)
+                : ('products.favoriteAdd' | translate)
+            "
             (toggleFavorite)="toggleFavorite()" />
         } @else {
           <div aria-hidden="true" class="h-10 w-3/4 animate-pulse rounded bg-neutral-200"></div>
@@ -163,7 +167,7 @@
             href="#"
             class="hover:text-tertiary-700 border-b border-gray-400 text-sm text-gray-400 transition-colors"
             (click)="$event.preventDefault()">
-            {{ rating.score }} ({{ rating.count }} valoracions)
+            {{ rating.score }} {{ 'products.opinions.count' | translate: { count: rating.count } }}
           </a>
         } @else {
           <div aria-hidden="true" class="h-5 w-48 animate-pulse rounded bg-neutral-200"></div>
@@ -228,7 +232,9 @@
             <div
               class="flex items-center justify-center gap-2 rounded-xl bg-[#e9f2e4] px-4 py-2 text-[#4d6600]">
               <mat-icon class="scale-90!">{{ stockStatus().icon }}</mat-icon>
-              <span class="text-sm font-bold">{{ stockStatus().message }}</span>
+              <span class="text-sm font-bold">{{
+                stockStatus().key | translate: stockStatus().params
+              }}</span>
             </div>
           }
         } @else {

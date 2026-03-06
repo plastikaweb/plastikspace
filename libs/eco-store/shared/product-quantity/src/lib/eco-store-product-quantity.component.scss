@@ -7,8 +7,6 @@
         (
           filled-label-text-size: 1rem,
           filled-label-text-weight: bold,
-          filled-container-color: var(--primary-600),
-          filled-label-text-color: var(--primary-50),
           filled-pressed-state-layer-opacity: 0.1,
           filled-container-height: calc(var(--spacing) * 14),
         )
@@ -18,33 +16,6 @@
         @include mat.icon-overrides(
           (
             color: var(--primary-50),
-          )
-        );
-      }
-
-      &.detail-button {
-        @include mat.button-overrides(
-          (
-            filled-container-color: var(--primary-600),
-            filled-label-text-color: var(--primary-50),
-          )
-        );
-
-        &:hover {
-          @include mat.button-overrides(
-            (
-              filled-container-color: var(--primary-500),
-              filled-label-text-color: var(--primary-50),
-            )
-          );
-        }
-      }
-
-      &:hover {
-        @include mat.button-overrides(
-          (
-            filled-container-color: var(--primary-50),
-            filled-label-text-color: var(--primary-600),
           )
         );
       }
@@ -74,16 +45,21 @@
     &.decrement-button:hover {
       @include mat.icon-button-overrides(
         (
-          icon-color: var(--primary-600),
-          state-layer-color: var(--primary-600),
+          icon-color: var(--primary-500),
+          state-layer-color: var(--primary-500),
         )
       );
 
-      background-color: var(--primary-200);
-      color: var(--primary-600);
+      background-color: var(--primary-100);
+      color: var(--primary-500);
     }
 
     &.remove-button:hover {
+      @include mat.icon-overrides(
+        (
+          color: var(--error-500),
+        )
+      );
       @include mat.icon-button-overrides(
         (
           icon-color: var(--error-500),
@@ -91,7 +67,7 @@
         )
       );
 
-      background-color: var(--error-200);
+      background-color: var(--error-100);
       color: var(--error-500);
     }
 

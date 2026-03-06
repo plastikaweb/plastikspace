@@ -15,21 +15,6 @@
 }
 
 .cart-button {
-  @include mat.button-overrides(
-    (
-      filled-container-color: var(--primary-500),
-    )
-  );
-
-  &:focus,
-  &:hover {
-    @include mat.button-overrides(
-      (
-        filled-container-color: var(--primary-600),
-      )
-    );
-  }
-
   @include mat.icon-overrides(
     (
       color: var(--primary-50),

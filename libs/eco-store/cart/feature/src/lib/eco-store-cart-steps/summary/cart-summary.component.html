@@ -14,7 +14,7 @@
     </div>
 
     <div
-      class="cart-summary-card @container mb-8 transition-all duration-300"
+      class="cart-summary-card @container mb-8 transition-all duration-100"
       [class.pointer-events-none]="cartStore.isSyncing()"
       [class.opacity-60]="cartStore.isSyncing()">
       @if (cartStore.isSyncing() && !cartStore.isSynced()) {

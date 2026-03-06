@@ -147,12 +147,25 @@
       "write": "Write a review",
       "user": "Eco-conscious user",
       "date": "2 days ago",
-      "placeholder": "Great product, ingredients quality is noticeable. Packaging is impeccable and the taste really shows it is ecological."
+      "placeholder": "Great product, ingredients quality is noticeable. Packaging is impeccable and the taste really shows it is ecological.",
+      "count": "({count} reviews)"
     },
     "goToDetail": "View detail",
     "favorite": "Add {value} to favorites",
+    "favoriteAdd": "Add to favorites",
+    "favoriteRemove": "Remove from favorites",
     "related": "You might also like",
     "storeClosed": "Store closed",
+    "stock": {
+      "out": "Out of stock",
+      "low": "Few units ({stock} available)",
+      "available": "Available (24/48h delivery)"
+    },
+    "tag": {
+      "eco": "ECO",
+      "new": "NEW",
+      "offer": "OFFER"
+    },
     "categories": {
       "all": "All categories",
       "error": "An error occurred while loading categories"
@@ -174,13 +187,13 @@
       "addLong": "Add to cart",
       "remove": "Remove",
       "decrement": "Decrease",
-      "increment": "Increase",
-      "modified": {
-        "title": "Product modified",
-        "description": "You modified the product quantity but didn''t add it to the cart",
-        "cancel": "Back to product",
-        "leave": "Don''t add it"
-      }
+      "increment": "Increase"
+    },
+    "modified": {
+      "title": "Product modified",
+      "description": "You modified the product quantity but didn''t add it to the cart",
+      "cancel": "Back to product",
+      "leave": "Don''t add it"
     },
     "unit": {
       "price": {

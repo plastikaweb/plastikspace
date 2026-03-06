@@ -1,38 +1,54 @@
-:root {
-  .mat-mdc-button-base,
-  .mat-mdc-list-item::before {
-    transition:
-      background-color 0.1s ease-in-out,
-      opacity 0.1s ease-in-out,
-      transform 0.1s ease-in-out,
-      box-shadow 0.1s ease-in-out !important;
-  }
+/* 1. BASE ELEMENTS: We animate the background and shadows (ideal for manual .active state changes) */
+.mat-mdc-button-base,
+.mat-mdc-list-item,
+.mat-mdc-menu-item,
+.mat-step-header,
+.mat-mdc-card {
+  transition:
+    background-color 0.1s ease-out,
+    border-color 0.1s ease-out,
+    box-shadow 0.1s ease-out !important;
+}
 
-  .mat-mdc-icon-button {
-    line-height: normal;
-  }
+/* 2. STATE CAPES (HOVER/FOCUS): MDC uses ::before for the highlighting.
+      We animate only opacity and color to have a smooth hover.
+      We don't touch 'transform', so the native ripple (click) remains intact. */
+.mat-mdc-button-base::before,
+.mat-mdc-button-persistent-ripple::before,
+.mdc-button__ripple::before,
+.mdc-icon-button__ripple::before,
+.mat-mdc-list-item::before,
+.mat-mdc-list-item-interactive::before,
+.mat-mdc-menu-item::before,
+.mat-mdc-menu-ripple::before {
+  transition:
+    opacity 0.1s ease-out,
+    background-color 0.1s ease-out !important;
+}
+
+/* 3. TEXT & ICONS: We animate the color change inside */
+.mat-mdc-button-base .mdc-button__label,
+.mat-mdc-button-base .mat-icon,
+.mat-mdc-list-item-unscoped-content,
+.mat-mdc-list-item-title,
+.mat-mdc-menu-item-text,
+.mat-mdc-menu-item .mat-icon,
+.mat-mdc-list-item .mat-icon,
+svg {
+  transition:
+    color 0.1s ease-out,
+    fill 0.1s ease-out !important;
+}
+
+.mat-mdc-icon-button {
+  line-height: normal;
 
   // Fix for vertical alignment in Angular Material Icon Buttons
-  // This resolves issues where Tailwind resets or other styles interfere with icon centering
-  .mat-mdc-icon-button .mdc-button__label,
-  .mat-mdc-icon-button .mat-icon {
-    line-height: 1 !important; // Ensure no extra height from text line-height
+  .mdc-button__label,
+  .mat-icon {
+    line-height: 1 !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
   }
-
-  // .mdc-button:hover,
-  // .mdc-icon-button:hover {
-  //   background-color: var(--mat-sys-primary-container);
-  //   color: var(--mat-sys-on-primary-container);
-  // }
-
-  // .mdc-button:focus,
-  // .mdc-icon-button:focus,
-  // .mdc-button:active,
-  // .mdc-icon-button:active {
-  //   background-color: var(--mat-sys-primary);
-  //   color: var(--mat-sys-on-primary);
-  // }
 }

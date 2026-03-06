@@ -16,7 +16,7 @@
       </div>
     } @else {
       <div
-        class="transition-all duration-300"
+        class="transition-all duration-100"
         [class.pointer-events-none]="cartStore.isSyncing()"
         [class.opacity-60]="cartStore.isSyncing()">
         <plastik-shared-form-feature
@@ -36,7 +36,7 @@
       <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
     } @else {
       <div
-        class="transition-all duration-300"
+        class="transition-all duration-100"
         [class.pointer-events-none]="cartStore.isSyncing()"
         [class.opacity-60]="cartStore.isSyncing()">
         <eco-cart-order-summary

@@ -56,10 +56,13 @@
     )
   );
 
-  .mat-mdc-menu-item.active {
-    --mat-menu-item-label-text-color: var(--secondary-900);
-    --mat-menu-item-icon-color: var(--secondary-900);
-    background-color: var(--secondary-100) !important;
+  .mat-mdc-list-item.active {
+    background-color: var(--secondary-100);
+
+    --mat-list-list-item-label-text-color: var(--secondary-900);
+    --mat-list-list-item-leading-icon-color: var(--secondary-900);
+
+    --mat-list-list-item-hover-state-layer-color: var(--secondary-900);
   }
 
   @include mat.progress-bar-overrides(
