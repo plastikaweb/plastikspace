@@ -10,7 +10,7 @@
   (drop)="onDrop($event)">
   <!-- loading indicator -->
   <div
-    class="`bg-gray-10 ${isLoading() ? 'opacity-100' : ''}` pointer-events-none absolute inset-0 z-20 flex h-full w-full flex-col items-center justify-center rounded-lg opacity-0 transition-all duration-150">
+    class="`bg-gray-10 ${isLoading() ? 'opacity-100' : ''}` pointer-events-none absolute inset-0 z-20 flex h-full w-full flex-col items-center justify-center rounded-lg opacity-0 transition-all duration-100">
     <output
       class="absolute z-20 w-full text-center text-sm font-bold text-white"
       [attr.aria-label]="`Progress de pujada ${progress() || 0}%`"
@@ -27,7 +27,7 @@
 
   <!-- on drag and drop indicator -->
   <div
-    class="`bg-gray-10 ${isDragOver() ? 'opacity-100' : ''}` absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg opacity-0 transition-all duration-150"
+    class="`bg-gray-10 ${isDragOver() ? 'opacity-100' : ''}` absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg opacity-0 transition-all duration-100"
     style="pointer-events: none">
     <mat-icon class="m-0 h-20 w-20 p-0 text-[75px]">upload</mat-icon>
     <span class="text-center text-sm text-balance">Suelta la imagen aquí</span>

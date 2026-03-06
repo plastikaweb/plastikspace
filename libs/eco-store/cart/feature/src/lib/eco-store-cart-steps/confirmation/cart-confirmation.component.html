@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
   <div
-    class="col-span-1! space-y-10 transition-all duration-300 md:col-span-2!"
+    class="col-span-1! space-y-10 transition-all duration-100 md:col-span-2!"
     [class.pointer-events-none]="cartStore.isSyncing()"
     [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
     <div class="flex items-center gap-4">
@@ -154,7 +154,7 @@
   <!-- Right Column: Order Summary (Sticky) -->
   <div class="sticky top-16 space-y-6 self-start md:col-span-1!">
     <div
-      class="transition-all duration-300"
+      class="transition-all duration-100"
       [class.pointer-events-none]="cartStore.isSyncing()"
       [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
       <eco-cart-order-summary

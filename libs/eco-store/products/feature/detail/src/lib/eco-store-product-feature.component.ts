@@ -136,13 +136,13 @@ export default class EcoStoreProductFeatureComponent {
 
   // Mocked data as requested for missing fields
   readonly productTags = [
-    { label: 'ECO', class: 'bg-green-100/60!', icon: 'eco' },
+    { label: 'products.tag.eco', class: 'bg-green-100/60!', icon: 'eco' },
     {
-      label: 'NOVETAT',
+      label: 'products.tag.new',
       class: 'bg-blue-100/60!',
       icon: 'auto_awesome',
     },
-    { label: 'OFERTA', class: 'bg-red-100/60!', icon: 'local_offer' },
+    { label: 'products.tag.offer', class: 'bg-red-100/60!', icon: 'local_offer' },
   ];
 
   readonly isVariableWeight = computed(() => {
@@ -175,19 +175,20 @@ export default class EcoStoreProductFeatureComponent {
     if (stock === 0) {
       return {
         status: 'out' as const,
-        message: 'Esgotat',
+        key: 'products.stock.out',
         icon: 'cancel',
       };
     } else if (stock < 10) {
       return {
         status: 'low' as const,
-        message: `Poques unitats (${stock} disponibles)`,
+        key: 'products.stock.low',
+        params: { stock },
         icon: 'warning',
       };
     } else {
       return {
         status: 'available' as const,
-        message: `Disponible (Entrega 24/48h)`,
+        key: 'products.stock.available',
         icon: 'check_circle',
       };
     }

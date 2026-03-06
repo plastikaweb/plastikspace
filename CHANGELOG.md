@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-06] - Themes and UI Adjustments
+
+### Added
+
+- Added honey and test themes for eco-store ([#86c8mnyxt](https://github.com/plastikaweb/plastikspace/issues/86c8mnyxt))
+
+### Changed
+
+- Refined product quantity and cart component material overrides ([#86c8mnyxt](https://github.com/plastikaweb/plastikspace/issues/86c8mnyxt))
+- Updated transition durations and hover states for buttons across UI components ([#86c8mnyxt](https://github.com/plastikaweb/plastikspace/issues/86c8mnyxt))
+
+---
+
 ## [2026-03-05] - Router State, i18n & Accessibility Improvements
 
 ### Added

@@ -147,12 +147,25 @@
       "write": "Escriure una opinió",
       "user": "Usuari eco-conscient",
       "date": "Fa 2 dies",
-      "placeholder": "Molt bon producte, es nota la qualitat dels ingredients. L''envasament és impecable i el gust realment es nota que és ecològic."
+      "placeholder": "Molt bon producte, es nota la qualitat dels ingredients. L''envasament és impecable i el gust realment es nota que és ecològic.",
+      "count": "({count} valoracions)"
     },
     "goToDetail": "Veure detall",
     "favorite": "Afegir {value} a favorits",
+    "favoriteAdd": "Afegir a preferits",
+    "favoriteRemove": "Treure de preferits",
     "related": "També et podria agradar",
     "storeClosed": "Botiga Tancada",
+    "stock": {
+      "out": "Esgotat",
+      "low": "Poques unitats ({stock} disponibles)",
+      "available": "Disponible (Entrega 24/48h)"
+    },
+    "tag": {
+      "eco": "ECO",
+      "new": "NOVETAT",
+      "offer": "OFERTA"
+    },
     "categories": {
       "all": "Totes les categories",
       "error": "Hi ha hagut un error al carregar les categories"
@@ -174,13 +187,13 @@
       "addLong": "Afegir al cabàs",
       "remove": "Eliminar",
       "decrement": "Disminuir",
-      "increment": "Augmentar",
-      "modified": {
-        "title": "Producte modificat",
-        "description": "Has modificat la quantitat del producte però no l''has afegit a la cistella",
-        "cancel": "Tornar al producte",
-        "leave": "No vull afegir-lo"
-      }
+      "increment": "Augmentar"
+    },
+    "modified": {
+      "title": "Producte modificat",
+      "description": "Has modificat la quantitat del producte però no l''has afegit a la cistella",
+      "cancel": "Tornar al producte",
+      "leave": "No vull afegir-lo"
     },
     "unit": {
       "price": {
@@ -365,7 +378,7 @@
       "creatingOrder": "Generant comanda... un moment si us plau",
       "orderNumber": "Comanda Número:",
       "emailNotice": "La teva comanda s''ha processat correctament. T''hem enviat un resum al teu correu electrònic:",
-      "orderReadyNotification": "En breu prepararem el teu cistell. Et notificarem quan estigui llest amb el pes exacte i el preu definitiu.",
+      "orderReadyNotification": "En breve prepararem el teu cistell. Et notificarem quan estigui llest amb el pes exacte i el preu definitiu.",
       "modifyReminder": "Si t''has deixat res, no pateixis: pots fer canvis des del teu perfil mentre el període de comandes estigui obert.",
       "ordersHistory": "Historial de comandes",
       "backToStore": "Tornar a la botiga",

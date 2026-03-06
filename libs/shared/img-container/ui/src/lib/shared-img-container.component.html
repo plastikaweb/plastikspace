@@ -3,7 +3,7 @@
 @let src = this.src();
 
 <div
-  class="absolute inset-0 flex items-center justify-center transition-opacity duration-300"
+  class="absolute inset-0 flex items-center justify-center transition-opacity duration-100"
   [class.bg-neutral-100]="isLoading()"
   [class.breathing]="isLoading()">
   @if (isLoading()) {
@@ -34,7 +34,7 @@
 
   <ng-template #fixedImage let-priority="priority">
     <img
-      class="object-cover transition-opacity duration-200"
+      class="object-cover transition-opacity duration-100"
       [class.opacity-0]="isLoading()"
       [class.opacity-100]="!isLoading() && !hasError()"
       [priority]="priority"
@@ -50,7 +50,7 @@
   <ng-template #fillImage let-priority="priority">
     <img
       fill
-      class="h-full w-full object-cover transition-opacity duration-200"
+      class="h-full w-full object-cover transition-opacity duration-100"
       [class.opacity-0]="isLoading()"
       [class.opacity-100]="!isLoading() && !hasError()"
       [priority]="priority"

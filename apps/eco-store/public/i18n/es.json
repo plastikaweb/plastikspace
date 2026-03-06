@@ -147,12 +147,25 @@
       "write": "Escribir una opinión",
       "user": "Usuario eco-consciente",
       "date": "Hace 2 días",
-      "placeholder": "Muy buen producto, se nota la calidad de los ingredientes. El envasado es impecable y el sabor realmente se nota que es ecológico."
+      "placeholder": "Muy buen producto, se nota la calidad de los ingredientes. El envasado es impecable y el sabor realmente se nota que es ecológico.",
+      "count": "({count} valoraciones)"
     },
     "goToDetail": "Ver detalle",
     "favorite": "Agregar {value} a favoritos",
+    "favoriteAdd": "Añadir a favoritos",
+    "favoriteRemove": "Quitar de favoritos",
     "related": "También te podría interesar",
     "storeClosed": "Tienda Cerrada",
+    "stock": {
+      "out": "Agotado",
+      "low": "Pocas unidades ({stock} disponibles)",
+      "available": "Disponible (Entrega 24/48h)"
+    },
+    "tag": {
+      "eco": "ECO",
+      "new": "NOVEDAD",
+      "offer": "OFERTA"
+    },
     "categories": {
       "all": "Todas las categorías",
       "error": "Ha ocurrido un error al cargar las categorías"
@@ -174,13 +187,13 @@
       "addLong": "Agregar al carrito",
       "remove": "Eliminar",
       "decrement": "Disminuir",
-      "increment": "Aumentar",
-      "modified": {
-        "title": "Producto modificado",
-        "description": "Has modificado la cantidad del producto pero no lo has agregado al carrito",
-        "cancel": "Volver al producto",
-        "leave": "No quiero agregarlo"
-      }
+      "increment": "Aumentar"
+    },
+    "modified": {
+      "title": "Producto modificado",
+      "description": "Has modificado la cantidad del producto pero no lo has agregado al carrito",
+      "cancel": "Volver al producto",
+      "leave": "No quiero agregarlo"
     },
     "unit": {
       "price": {
@@ -350,7 +363,7 @@
       "deliverySummary": "Resumen de entrega",
       "deliveryMethod": "Tipo",
       "deliveryTimeSlot": "Horario previsto",
-      "deliveryAddress": "Dirección",
+      "deliveryAddress": "Address",
       "modifyCart": "Modificar carrito",
       "modifyDelivery": "Modificar entrega",
       "notes": "Notas para la preparación o entrega (Opcional)",
