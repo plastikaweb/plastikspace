@@ -9,12 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Added honey and test themes for eco-store ([#86c8mnyxt](https://github.com/plastikaweb/plastikspace/issues/86c8mnyxt))
+- Added honey and test themes for eco-store ([#86c8mnyxt](https://app.clickup.com/t/86c8mnyxt))
 
 ### Changed
 
-- Refined product quantity and cart component material overrides ([#86c8mnyxt](https://github.com/plastikaweb/plastikspace/issues/86c8mnyxt))
-- Updated transition durations and hover states for buttons across UI components ([#86c8mnyxt](https://github.com/plastikaweb/plastikspace/issues/86c8mnyxt))
+- Refined product quantity and cart component material overrides ([#86c8mnyxt](https://app.clickup.com/t/86c8mnyxt))
+- Updated transition durations and hover states for buttons across UI components ([#86c8mnyxt](https://app.clickup.com/t/86c8mnyxt))
+
+### Fixed
+
+- Fixed old iOS Safari and Chrome loading issue by forcing esbuild to transpile static blocks ([#86c8mf42g](https://app.clickup.com/t/86c8mf42g))
 
 ---
 
