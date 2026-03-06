@@ -211,7 +211,7 @@
       }
     },
     {
-      "files": ["*.json", "*.jsonc"],
+      "files": ["*.json", "*.jsonc", "*.webmanifest"],
       "parser": "jsonc-eslint-parser",
       "rules": {}
     }

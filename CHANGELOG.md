@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2026-03-06] - Themes and UI Adjustments
+## [2026-03-06] - Themes, UI & PWA Standardization
 
 ### Added
 
 - Added honey and test themes for eco-store ([#86c8mnyxt](https://app.clickup.com/t/86c8mnyxt))
+- Standardized PWA manifest and updated brand icons for eco-store ([#86c8mhjye](https://app.clickup.com/t/86c8mhjye))
+  - Moved and renamed `site.webmanifest` to `public/manifest.webmanifest`.
+  - Updated icons to use new brand primary green `#356a1f`.
+  - Added JSON schema and VS Code file associations for better manifest linting.
 
 ### Changed
 
