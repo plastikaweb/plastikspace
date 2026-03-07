@@ -13,7 +13,7 @@ This file provides comprehensive guidance to the Gemini CLI agent for working wi
 - **Styling:** [Tailwind CSS 4](https://tailwindcss.com/) & Angular Material (M3).
 - **State Management:** [NgRx Signal Store](https://ngrx.io/guide/signals/signal-store).
 - **Backends:** Firebase (llecoop), PocketBase (eco-store), GraphQL/Apollo (plastikaweb).
-- **Quality:** Jest, Cypress, Pa11y, ESLint.
+- **Quality:** Vitest, Cypress, Pa11y, ESLint.
 
 ---
 
@@ -60,7 +60,7 @@ The repository follows **Domain-Driven Design (DDD)** principles and strict modu
 | `yarn <app>:serve`     | Start app in development mode              |
 | `yarn eco-store:local` | Start **PocketBase** + **eco-store**       |
 | `yarn llecoop:local`   | Start **Firebase Emulators** + **llecoop** |
-| `yarn test:all`        | Run all unit tests (Jest)                  |
+| `yarn test:all`        | Run all unit tests (Vitest)                |
 | `yarn lint:all`        | Run all linters (ESLint)                   |
 | `yarn format:write`    | Format code with Prettier                  |
 | `yarn dep-graph`       | Visualize project dependencies             |
@@ -123,7 +123,7 @@ The repository follows **Domain-Driven Design (DDD)** principles and strict modu
 ## ♿ Accessibility (A11y)
 
 - **Standards:** Target WCAG compliance.
-- **Testing:** Use `jest-axe` for unit tests and `pa11y-ci` for E2E.
+- **Testing:** Use `vitest-axe` for unit tests and `pa11y-ci` for E2E.
 - **Semantic HTML:** Always use semantic landmarks (`<main>`, `<header>`, etc.).
 - **Alt Text:** Mandatory for images (use `alt=""` for decorative ones).
 - **Focus Management:** Handled globally via `is-keyboard-active` on `body`.

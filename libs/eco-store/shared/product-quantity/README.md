@@ -91,4 +91,4 @@ Selector: `eco-store-product-quantity`
 
 ## Running unit tests
 
-Run `nx test eco-store-shared-product-quantity` to execute the unit tests via Jest.
+Run `nx test eco-store-shared-product-quantity` to execute the unit tests via Vitest.

@@ -21,7 +21,7 @@ describe('EcoStoreAuthLoginComponent', () => {
       getSubmitFormConfig: () => ({}),
     },
     extraLinks: signal([]),
-    onSubmit: jest.fn(),
+    onSubmit: vi.fn(),
   };
 
   beforeEach(async () => {

@@ -1,6 +1,6 @@
 {
   "extends": ["../../../../../.eslintrc.json", "../../../../../apps/llecoop/.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", "**/vitest.config.*.timestamp*"],
   "overrides": [
     {
       "files": ["*.ts"],

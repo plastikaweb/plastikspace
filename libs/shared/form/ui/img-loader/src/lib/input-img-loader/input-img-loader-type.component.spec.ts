@@ -2,7 +2,7 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldTypeConfig } from '@ngx-formly/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { InputImgLoaderProps } from './input-img-loader-props';
 import { InputImgLoaderTypeComponent } from './input-img-loader-type.component';
 
@@ -47,9 +47,8 @@ describe('InputImgLoaderTypeComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

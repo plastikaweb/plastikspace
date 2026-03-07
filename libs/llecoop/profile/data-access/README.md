@@ -105,4 +105,4 @@ This library provides a reactive and robust way to manage user profile informati
 
 ## Running unit tests
 
-Run `nx test llecoop-profile-data-access` to execute the unit tests via [Jest](https://jestjs.io).
+Run `nx test llecoop-profile-data-access` to execute the unit tests via [Vitest](https://vitest.dev).

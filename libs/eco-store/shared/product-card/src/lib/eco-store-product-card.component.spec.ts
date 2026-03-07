@@ -1,10 +1,10 @@
+import { IMAGE_LOADER } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { EcoStoreProductCardComponent } from './eco-store-product-card.component';
-import { IMAGE_LOADER } from '@angular/common';
 
 describe('EcoStoreProductCardComponent', () => {
   let component: EcoStoreProductCardComponent;
@@ -62,9 +62,8 @@ describe('EcoStoreProductCardComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

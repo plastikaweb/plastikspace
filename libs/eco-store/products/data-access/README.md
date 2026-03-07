@@ -80,4 +80,4 @@ The mock exposes `entities`, `isLoading`, `error` signals and the `findProductBy
 
 ## Running unit tests
 
-Run `nx test eco-store-products-data-access` to execute the unit tests via Jest.
+Run `nx test eco-store-products-data-access` to execute the unit tests via Vitest.

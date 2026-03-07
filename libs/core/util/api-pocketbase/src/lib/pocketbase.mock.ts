@@ -1,24 +1,23 @@
-/// <reference types="jest" />
 export const mockPocketBase = {
-  collection: jest.fn().mockReturnValue({
-    getList: jest.fn().mockResolvedValue({
+  collection: vi.fn().mockReturnValue({
+    getList: vi.fn().mockResolvedValue({
       items: [],
       totalItems: 0,
     }),
-    getFullList: jest.fn().mockResolvedValue([]),
-    getOne: jest.fn().mockResolvedValue({}),
-    getFirstListItem: jest.fn().mockResolvedValue({}),
-    create: jest.fn().mockResolvedValue({}),
-    update: jest.fn().mockResolvedValue({}),
-    delete: jest.fn().mockResolvedValue(true),
-    authWithPassword: jest.fn().mockResolvedValue({
+    getFullList: vi.fn().mockResolvedValue([]),
+    getOne: vi.fn().mockResolvedValue({}),
+    getFirstListItem: vi.fn().mockResolvedValue({}),
+    create: vi.fn().mockResolvedValue({}),
+    update: vi.fn().mockResolvedValue({}),
+    delete: vi.fn().mockResolvedValue(true),
+    authWithPassword: vi.fn().mockResolvedValue({
       record: { id: '123', email: 'test@test.com' },
       token: 'test-token',
     }),
-    requestPasswordReset: jest.fn().mockResolvedValue(true),
+    requestPasswordReset: vi.fn().mockResolvedValue(true),
   }),
   authStore: {
-    clear: jest.fn(),
+    clear: vi.fn(),
     isValid: true,
     record: { id: '123', email: 'test@test.com' } as Record<string, unknown>,
   },

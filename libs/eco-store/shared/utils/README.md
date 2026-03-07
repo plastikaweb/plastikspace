@@ -88,4 +88,4 @@ export class DemoImageUrlComponent {
 
 ## Running unit tests
 
-Run `nx test eco-store-shared-utils` to execute the unit tests via Jest.
+Run `nx test eco-store-shared-utils` to execute the unit tests via Vitest.

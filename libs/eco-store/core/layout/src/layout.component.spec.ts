@@ -10,7 +10,7 @@ import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { CountdownService } from '@plastik/shared/countdown/util';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { EcoFooterComponent } from './footer/footer.component';
 import { EcoHeaderComponent } from './header/header.component';
 import EcoLayoutComponent from './layout.component';
@@ -48,10 +48,10 @@ describe('LayoutComponent', () => {
         {
           provide: CountdownService,
           useValue: {
-            createCountdown: jest.fn().mockReturnValue({
-              data: jest.fn(),
-              text: jest.fn().mockReturnValue(''),
-              isExpired: jest.fn(),
+            createCountdown: vi.fn().mockReturnValue({
+              data: vi.fn(),
+              text: vi.fn().mockReturnValue(''),
+              isExpired: vi.fn(),
             }),
           },
         },
@@ -68,8 +68,7 @@ describe('LayoutComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   }, 30000);
 });

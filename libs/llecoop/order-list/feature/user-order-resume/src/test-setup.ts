@@ -1,3 +1,4 @@
+import "@angular/compiler";
 // eslint-disable-next-line @nx/enforce-module-boundaries
 import '@plastik/shared/testing';
 

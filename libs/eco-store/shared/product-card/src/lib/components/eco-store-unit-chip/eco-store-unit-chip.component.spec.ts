@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { EcoStoreUnitChipComponent } from './eco-store-unit-chip.component';
 
 describe('EcoStoreUnitChipComponent', () => {
@@ -51,7 +51,7 @@ describe('EcoStoreUnitChipComponent', () => {
       fixture.componentRef.setInput('label', 'Test Label');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
-      expect(results).toHaveNoViolations();
+      expect(results.violations).toEqual([]);
     });
 
     it('should have no violations with weight type', async () => {
@@ -60,7 +60,7 @@ describe('EcoStoreUnitChipComponent', () => {
       fixture.componentRef.setInput('label', 'Test Label');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
-      expect(results).toHaveNoViolations();
+      expect(results.violations).toEqual([]);
     });
   });
 });

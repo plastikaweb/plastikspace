@@ -1,4 +1,3 @@
-/// <reference types="jest" />
 import { signal } from '@angular/core';
 
 export const mockPocketBaseUserProfileStore = {
@@ -10,8 +9,8 @@ export const mockPocketBaseUserProfileStore = {
   userInitials: signal(''),
   userFirstName: signal(''),
   getUserContacts: signal([]),
-  login: jest.fn(),
-  logout: jest.fn(),
-  checkAuth: jest.fn(),
-  getUserAddresses: jest.fn(),
+  login: vi.fn(),
+  logout: vi.fn(),
+  checkAuth: vi.fn(),
+  getUserAddresses: vi.fn(),
 };

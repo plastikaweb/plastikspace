@@ -114,14 +114,6 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/nasa-images"],
-      "options": {
-        "jestConfig": "apps/nasa-images/jest.config.ts",
-        "tsConfig": "apps/nasa-images/tsconfig.spec.json"
-      }
-    },
     "serve-static": {
       "continuous": true,
       "executor": "@nx/web:file-server",
@@ -130,6 +122,13 @@
         "port": 4202,
         "staticFilePath": "dist/apps/nasa-images/browser",
         "spa": true
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../coverage/apps/nasa-images"
       }
     }
   }

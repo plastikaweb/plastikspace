@@ -3,7 +3,7 @@ import { of } from 'rxjs';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { GetSkillsGQL, SkillNode } from '@plastik/plastikaweb/graphql-models';
+import { GetSkillsGQL } from '@plastik/plastikaweb/graphql-models';
 
 import { PlastikawebSkillsService } from './plastikaweb-skills.service';
 
@@ -20,7 +20,7 @@ describe('PlastikawebSkillsService', () => {
     getSkillsGQLMock = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       document: {} as any,
-      watch: jest.fn().mockReturnValue({
+      watch: vi.fn().mockReturnValue({
         valueChanges: of({
           data: { skills: { nodes: mockSkills } },
           loading: false,

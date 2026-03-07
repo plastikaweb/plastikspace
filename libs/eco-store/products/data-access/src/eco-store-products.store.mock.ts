@@ -11,7 +11,7 @@ export const mockEcoStoreProductsStore = {
   ]),
   isLoading: signal(false),
   error: signal(null),
-  findProductBySlug: jest.fn().mockImplementation(() => (slug: string) => {
+  findProductBySlug: vi.fn().mockImplementation(() => (slug: string) => {
     const product = mockEcoStoreProductsStore.entities().find(p => p.normalizedName === slug);
     if (!product) return undefined;
     return {

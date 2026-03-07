@@ -1,13 +1,14 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { firstValueFrom, of } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LayoutObserverService } from './layout-observer.service';
 
 describe('LayoutObserverService', () => {
   let service: LayoutObserverService;
   const breakpointObserverMock = {
-    observe: jest.fn().mockReturnValue(of({ matches: true })),
+    observe: vi.fn().mockReturnValue(of({ matches: true })),
   };
 
   beforeEach(() => {
@@ -24,15 +25,13 @@ describe('LayoutObserverService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should return handset Matches based on BreakpointObserver', done => {
-    service.getMatches().subscribe((matches: boolean) => {
-      expect(matches).toBe(true);
-      expect(breakpointObserverMock.observe).toHaveBeenCalledWith([
-        Breakpoints.Handset,
-        Breakpoints.Tablet,
-        Breakpoints.Medium,
-      ]);
-      done();
-    });
+  it('should return handset Matches based on BreakpointObserver', async () => {
+    const matches = await firstValueFrom(service.getMatches());
+    expect(matches).toBe(true);
+    expect(breakpointObserverMock.observe).toHaveBeenCalledWith([
+      Breakpoints.Handset,
+      Breakpoints.Tablet,
+      Breakpoints.Medium,
+    ]);
   });
 });

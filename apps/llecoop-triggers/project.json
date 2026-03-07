@@ -35,20 +35,19 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "apps/llecoop-triggers/jest.config.ts",
-        "tsConfig": "apps/llecoop-triggers/tsconfig.spec.json"
-      }
-    },
     "deploy": {
       "executor": "nx:run-commands",
       "options": {
         "command": "nx run llecoop-firebase:deploy --only functions:llecoop-triggers"
       },
       "dependsOn": ["build"]
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../coverage/apps/llecoop-triggers"
+      }
     }
   }
 }

@@ -31,7 +31,7 @@ describe('EcoTenantLinkComponent', () => {
   });
 
   it('should emit linkClicked when button is clicked', () => {
-    const emitSpy = jest.spyOn(component.linkClicked, 'emit');
+    const emitSpy = vi.spyOn(component.linkClicked, 'emit');
     fixture.detectChanges();
     const button = fixture.nativeElement.querySelector('button');
     button.click();

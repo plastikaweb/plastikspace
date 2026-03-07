@@ -8,7 +8,7 @@ describe('HumanizeUnitPipe', () => {
 
   beforeEach(() => {
     translateServiceMock = {
-      getCurrentLang: jest.fn().mockReturnValue('en-US'),
+      getCurrentLang: vi.fn().mockReturnValue('en-US'),
     };
 
     TestBed.configureTestingModule({
@@ -48,7 +48,7 @@ describe('HumanizeUnitPipe', () => {
   });
 
   it('should use locale formatting', () => {
-    (translateServiceMock.getCurrentLang as jest.Mock).mockReturnValue('de-DE');
+    (translateServiceMock.getCurrentLang as vi.Mock).mockReturnValue('de-DE');
     // In German, decimal separator is comma
     // Assuming environment supports Intl.NumberFormat with 'de-DE' correctly
     // 1.5 -> 1,5

@@ -65,4 +65,4 @@ This module incorporates smooth CSS view transitions to provide a seamless and v
 
 ## Running unit tests
 
-Run `nx test eco-store-shared-product-card` to execute the unit tests via Jest.
+Run `nx test eco-store-shared-product-card` to execute the unit tests via Vitest.

@@ -16,10 +16,10 @@ describe('LlecoopCategoryFireService', () => {
         {
           provide: LlecoopCategoryFireService,
           useValue: {
-            getAll: jest.fn(),
-            create: jest.fn(),
-            update: jest.fn(),
-            delete: jest.fn(),
+            getAll: vi.fn(),
+            create: vi.fn(),
+            update: vi.fn(),
+            delete: vi.fn(),
           },
         },
       ],

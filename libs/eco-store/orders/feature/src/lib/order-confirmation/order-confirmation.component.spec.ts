@@ -3,7 +3,8 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 import { OrderConfirmationComponent } from './order-confirmation.component';
 
 describe('OrderConfirmationComponent', () => {
@@ -11,7 +12,6 @@ describe('OrderConfirmationComponent', () => {
   let fixture: ComponentFixture<OrderConfirmationComponent>;
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       imports: [OrderConfirmationComponent],
       providers: [
@@ -27,6 +27,7 @@ describe('OrderConfirmationComponent', () => {
           provide: ecoStoreOrdersStore,
           useValue: {
             getItemById: () => ({ orderNumber: 'ECO-123' }),
+            isLoading: () => false,
           },
         },
       ],
@@ -43,6 +44,6 @@ describe('OrderConfirmationComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

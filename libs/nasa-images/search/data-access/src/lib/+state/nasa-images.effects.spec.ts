@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { cold, hot } from 'jasmine-marbles';
 import { Observable, of, throwError } from 'rxjs';
@@ -67,7 +68,7 @@ describe('NasaImagesEffects', () => {
         {
           provide: NASA_IMAGES_DATA_LIST_TOKEN,
           useValue: {
-            getList: jest.fn(),
+            getList: vi.fn(),
           },
         },
       ],
@@ -132,7 +133,7 @@ describe('NasaImagesEffects', () => {
   describe('load$', () => {
     const action = nasaImagesPageActions.load({ params: { q: 'pluto', media_type: 'image' } });
     it('should work on success', () => {
-      jest.spyOn(dataService, 'getList').mockImplementation(() => of({ items, count }));
+      vi.spyOn(dataService, 'getList').mockImplementation(() => of({ items, count }));
       actions = hot('-a-|', { a: action });
       const expected = hot('-a-|', { a: nasaImagesAPIActions.loadSuccess({ items, count }) });
 
@@ -140,9 +141,9 @@ describe('NasaImagesEffects', () => {
     });
 
     it('should work on failure', () => {
-      jest
-        .spyOn(dataService, 'getList')
-        .mockImplementation(() => throwError(() => ({ reason: ERROR_MSG })));
+      vi.spyOn(dataService, 'getList').mockImplementation(() =>
+        throwError(() => ({ reason: ERROR_MSG }))
+      );
       actions = hot('-a-#', { a: action });
       const expected = cold('-b-#', { b: nasaImagesAPIActions.loadFailure({ error: ERROR_MSG }) });
 
@@ -163,7 +164,7 @@ describe('NasaImagesEffects', () => {
       actions = hot('-a-|', { a: action });
       // Mock para verificar que se llama a setActivity
       const mockAction = { type: '[Activity] Set Activity True' };
-      jest.spyOn(activityStoreInstance, 'setActivity').mockImplementation(() => mockAction);
+      vi.spyOn(activityStoreInstance, 'setActivity').mockImplementation(() => mockAction);
       const expected = hot('-a-|', { a: mockAction });
 
       expect(effects.activeOn$).toBeObservable(expected);
@@ -192,7 +193,7 @@ describe('NasaImagesEffects', () => {
       actions = hot('-a-|', { a: action });
       // Mock para verificar que se llama a setActivity
       const mockAction = { type: '[Activity] Set Activity False' };
-      jest.spyOn(activityStoreInstance, 'setActivity').mockReturnValue(mockAction);
+      vi.spyOn(activityStoreInstance, 'setActivity').mockReturnValue(mockAction);
       const expected = hot('-a-|', { a: mockAction });
 
       expect(effects.activeOff$).toBeObservable(expected);
