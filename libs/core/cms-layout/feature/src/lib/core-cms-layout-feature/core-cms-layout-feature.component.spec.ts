@@ -1,5 +1,6 @@
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
+import 'vitest-axe/extend-expect';
 
 import { provideHttpClient } from '@angular/common/http';
 import { provideZonelessChangeDetection, signal } from '@angular/core';
@@ -35,9 +36,9 @@ describe('CoreCmsLayoutFeatureComponent', () => {
         {
           provide: LayoutFacade,
           useValue: {
-            toggleSidenav: jest.fn(),
-            setIsMobile: jest.fn(),
-            dispatchAction: jest.fn(),
+            toggleSidenav: vi.fn(),
+            setIsMobile: vi.fn(),
+            dispatchAction: vi.fn(),
             sidenavConfig: signal([]),
             sidenavOpened$: signal(false),
             isMobile$: signal(false),
@@ -83,7 +84,6 @@ describe('CoreCmsLayoutFeatureComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

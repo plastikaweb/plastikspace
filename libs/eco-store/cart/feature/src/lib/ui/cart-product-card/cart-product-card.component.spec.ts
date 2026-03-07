@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { EcoStoreCartItem } from '@plastik/eco-store/entities';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { CartProductCardComponent } from './cart-product-card.component';
 
 describe('CartProductCardComponent', () => {
@@ -29,7 +29,6 @@ describe('CartProductCardComponent', () => {
   };
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       imports: [CartProductCardComponent],
       providers: [provideRouter([]), provideTranslateService()],
@@ -74,7 +73,7 @@ describe('CartProductCardComponent', () => {
   });
 
   it('should emit quantityChange when quantity is updated', () => {
-    const spy = jest.spyOn(component.quantityChange, 'emit');
+    const spy = vi.spyOn(component.quantityChange, 'emit');
     fixture.componentRef.setInput('editable', true);
     fixture.detectChanges();
 
@@ -87,7 +86,7 @@ describe('CartProductCardComponent', () => {
   });
 
   it('should emit quantityChange with 0 when delete button is clicked', () => {
-    const spy = jest.spyOn(component.quantityChange, 'emit');
+    const spy = vi.spyOn(component.quantityChange, 'emit');
     fixture.componentRef.setInput('editable', true);
     fixture.detectChanges();
 

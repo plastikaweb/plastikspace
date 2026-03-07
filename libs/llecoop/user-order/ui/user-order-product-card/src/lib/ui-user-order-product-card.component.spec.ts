@@ -94,7 +94,7 @@ describe('UiUserOrderProductCardComponent', () => {
   });
 
   it('should emit viewDetails event when card is clicked', () => {
-    const viewDetailsSpy = jest.spyOn(component.viewDetails, 'emit');
+    const viewDetailsSpy = vi.spyOn(component.viewDetails, 'emit');
 
     const card = fixture.debugElement.query(By.css('mat-card'));
     card.triggerEventHandler('click', null);
@@ -115,7 +115,7 @@ describe('UiUserOrderProductCardComponent', () => {
     componentRef.setInput('product', mockProduct);
     fixture.detectChanges();
 
-    const addToCartSpy = jest.spyOn(component.addToCart, 'emit');
+    const addToCartSpy = vi.spyOn(component.addToCart, 'emit');
 
     const addButton = fixture.debugElement.query(By.css('button'));
     addButton.triggerEventHandler('click', {
@@ -152,7 +152,7 @@ describe('UiUserOrderProductCardComponent', () => {
     componentRef.setInput('product', { ...mockProduct, quantity: 2 });
     fixture.detectChanges();
 
-    const addToCartSpy = jest.spyOn(component.addToCart, 'emit');
+    const addToCartSpy = vi.spyOn(component.addToCart, 'emit');
 
     const removeButton = fixture.debugElement.query(By.css('button[matChipRemove]'));
     removeButton.triggerEventHandler('click', {

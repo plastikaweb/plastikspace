@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-07] - Vitest Migration & Systemic Fixes
+
+### Changed
+
+- Migrated workspace-wide testing from Jest to Vitest ([#86c8nmpfz](https://app.clickup.com/t/86c8nmpfz))
+  - Patched 130+ `vite.config.mts` files with `ssr.noExternal` for Firebase and Apollo.
+  - Updated `tsconfig.base.json` and `nx.json` to standardize on Vitest.
+  - Refactored `done()` callbacks and fixed `IntersectionObserver` mocks in unit tests.
+
+### Fixed
+
+- Resolved "Cannot find type definition" errors by removing legacy Jest types ([#86c8nmpfz](https://app.clickup.com/t/86c8nmpfz))
+- Fixed assertion type mismatches in `eco-store` spec files by adding explicit Vitest imports ([#86c8nmpfz](https://app.clickup.com/t/86c8nmpfz))
+
+---
+
 ## [2026-03-06] - Themes, UI & PWA Standardization
 
 ### Added

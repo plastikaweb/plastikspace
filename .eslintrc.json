@@ -7,7 +7,7 @@
   },
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "files": ["*.ts", "*.tsx", "*.js", "*.jsx", "*.mts", "*.cts"],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -92,7 +92,7 @@
       }
     },
     {
-      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx"],
+      "files": ["*.spec.ts", "*.spec.tsx", "*.spec.js", "*.spec.jsx", "*.spec.mts", "*.spec.cts"],
       "env": {
         "jest": true
       },
@@ -104,8 +104,8 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "excludedFiles": ["*.spec.ts", "*.spec.tsx"],
+      "files": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+      "excludedFiles": ["*.spec.ts", "*.spec.tsx", "*.spec.mts", "*.spec.cts"],
       "extends": ["plugin:@nx/typescript"],
       "rules": {
         "no-console": "error",
@@ -114,7 +114,7 @@
       }
     },
     {
-      "files": ["*.ts"],
+      "files": ["*.ts", "*.mts", "*.cts"],
       "extends": ["plugin:ngrx/recommended"],
       "rules": {
         "ngrx/select-style": "error"
@@ -128,14 +128,14 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
-      "excludedFiles": ["*.spec.ts", "*.spec.tsx"],
+      "files": ["*.ts", "*.tsx", "*.mts", "*.cts"],
+      "excludedFiles": ["*.spec.ts", "*.spec.tsx", "*.spec.mts", "*.spec.cts"],
       "rules": {
         "deprecation/deprecation": "warn"
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": ["*.ts", "*.tsx", "*.mts", "*.cts"],
       "parser": "@typescript-eslint/parser",
       "plugins": ["@typescript-eslint"],
       "rules": {
@@ -155,7 +155,7 @@
       }
     },
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": ["*.ts", "*.tsx", "*.mts", "*.cts"],
       "extends": ["plugin:jsdoc/recommended"],
       "rules": {
         "jsdoc/match-description": [

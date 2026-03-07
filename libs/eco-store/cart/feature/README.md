@@ -361,4 +361,4 @@ without triggering the global overlay, preserving a smooth UX during background 
 
 ## Running unit tests
 
-Run `nx test eco-store-cart-feature` to execute the unit tests via Jest.
+Run `nx test eco-store-cart-feature` to execute the unit tests via Vitest.

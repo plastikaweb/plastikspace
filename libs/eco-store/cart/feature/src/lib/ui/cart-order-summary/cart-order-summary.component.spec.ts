@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { CartOrderSummaryComponent } from './cart-order-summary.component';
 
 describe('CartOrderSummaryComponent', () => {

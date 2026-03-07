@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { EcoStoreUnitChipComponent } from './eco-store-unit-chip.component';
 
 describe('EcoStoreUnitChipComponent', () => {

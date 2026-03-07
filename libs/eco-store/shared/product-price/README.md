@@ -71,4 +71,4 @@ Displays a small badge with the base unit of the product. It leverages `SharedCh
 
 ## Running unit tests
 
-Run `nx test eco-store-shared-product-price` to execute the unit tests via Jest.
+Run `nx test eco-store-shared-product-price` to execute the unit tests via Vitest.

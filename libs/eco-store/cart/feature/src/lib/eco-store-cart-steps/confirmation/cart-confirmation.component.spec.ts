@@ -8,7 +8,7 @@ import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testi
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { CartConfirmationComponent } from './cart-confirmation.component';
 
 describe('CartConfirmationComponent', () => {
@@ -18,7 +18,6 @@ describe('CartConfirmationComponent', () => {
   let ordersStoreMock: any;
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     cartStoreMock = {
       ...mockEcoStoreCartStore,
       notes: signal('initial notes'),
@@ -32,11 +31,11 @@ describe('CartConfirmationComponent', () => {
       total: signal(126),
       items: signal([]),
       itemsGroupedByCategory: signal({} as any),
-      updateLogistics: jest.fn(),
+      updateLogistics: vi.fn(),
     };
 
     ordersStoreMock = {
-      createOrder: jest.fn(),
+      createOrder: vi.fn(),
     };
 
     await TestBed.configureTestingModule({

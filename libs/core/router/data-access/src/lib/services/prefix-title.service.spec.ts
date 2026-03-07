@@ -21,7 +21,7 @@ describe('PrefixTitleService', () => {
         {
           provide: RouterStateSnapshot,
           useValue: {
-            toString: jest.fn(),
+            toString: vi.fn(),
           },
         },
       ],
@@ -36,7 +36,7 @@ describe('PrefixTitleService', () => {
   });
 
   it('should return a route title based on environment name and route snapshot title', async () => {
-    jest.spyOn(service, 'buildTitle').mockImplementation(() => 'section');
+    vi.spyOn(service, 'buildTitle').mockImplementation(() => 'section');
     service.updateTitle(routerStateSnapshot);
     TestBed.flushEffects();
     expect(titleService.getTitle()).toBe(`my-app - section`);

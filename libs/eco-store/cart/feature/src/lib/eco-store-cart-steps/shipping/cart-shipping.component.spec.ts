@@ -1,14 +1,14 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CartShippingComponent } from './cart-shipping.component';
+import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
+import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
-import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
-import { provideRouter } from '@angular/router';
-import { axe, toHaveNoViolations } from 'jest-axe';
-import { signal } from '@angular/core';
+import { axe } from 'vitest-axe';
+import { CartShippingComponent } from './cart-shipping.component';
 
 describe('CartShippingComponent', () => {
   let component: CartShippingComponent;
@@ -27,7 +27,6 @@ describe('CartShippingComponent', () => {
   };
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       imports: [CartShippingComponent],
       providers: [

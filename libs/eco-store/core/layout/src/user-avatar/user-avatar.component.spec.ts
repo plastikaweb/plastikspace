@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { ImageDimensions, SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { EcoUserAvatarComponent } from './user-avatar.component';
 
 /* eslint-disable @angular-eslint/component-selector */

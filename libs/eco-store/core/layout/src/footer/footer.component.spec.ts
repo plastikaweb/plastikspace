@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { EcoFooterComponent } from './footer.component';
 
 describe('FooterComponent', () => {
@@ -25,7 +25,6 @@ describe('FooterComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

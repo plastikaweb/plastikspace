@@ -27,6 +27,9 @@
     },
     {
       "path": "../../../../libs/core/entities/tsconfig.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
     }
   ]
 }

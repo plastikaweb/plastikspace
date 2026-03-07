@@ -23,7 +23,7 @@
 ![Apollo-GraphQL](https://img.shields.io/badge/-ApolloGraphQL-311C87?style=for-the-badge&logo=apollo-graphql)
 
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?style=for-the-badge)](http://commitizen.github.io/cz-cli/)
-[![tested with jest](https://img.shields.io/badge/tested_with-jest-99424f.svg?style=for-the-badge)](https://github.com/facebook/jest)
+[![tested with vitest](https://img.shields.io/badge/tested_with-vitest-729b1b.svg?style=for-the-badge)](https://vitest.dev/)
 ![GitHub Actions](https://img.shields.io/badge/github%20actions-%232671E5.svg?style=for-the-badge&logo=githubactions&logoColor=white)
 ![Accessibility](https://img.shields.io/badge/Accessibility-%230170EA.svg?style=for-the-badge&logo=Accessibility&logoColor=white)
 
@@ -41,7 +41,7 @@
   - **Firebase:** Real-time DB, Auth, and Cloud Functions (llecoop)
   - **PocketBase:** Lightweight Go backend (eco-store)
   - **GraphQL:** Apollo Client integration (plastikaweb)
-- **Quality Assurance:** Jest, Cypress, Pa11y (Accessibility), ESLint
+- **Quality Assurance:** Vitest, Cypress, Pa11y (Accessibility), ESLint
 
 ---
 

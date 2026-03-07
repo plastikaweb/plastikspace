@@ -1,4 +1,4 @@
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 
 import { Component, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -39,7 +39,6 @@ describe('NasaImagesSearchUiNoResultsComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

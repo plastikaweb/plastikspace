@@ -171,4 +171,4 @@ See [Eco Store Loading Strategies](../../../../apps/eco-store/LOADING_STRATEGIES
 
 ## Running unit tests
 
-Run `nx test eco-store-cart-data-access` to execute the unit tests via Jest.
+Run `nx test eco-store-cart-data-access` to execute the unit tests via Vitest.
