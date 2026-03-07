@@ -19,10 +19,10 @@ export const mockEcoStoreProductCategoriesStore = {
   ]),
   isLoading: signal(false),
   error: signal(null),
-  findCategoryBySlug: jest.fn().mockImplementation((slug: string) => {
+  findCategoryBySlug: vi.fn().mockImplementation((slug: string) => {
     return mockEcoStoreProductCategoriesStore.entities().find(item => item.normalizedName === slug);
   }),
-  getLocalizedCategoryName: jest.fn().mockImplementation(category => {
+  getLocalizedCategoryName: vi.fn().mockImplementation(category => {
     return category.name['ca'];
   }),
 };

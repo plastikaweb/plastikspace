@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FieldTypeConfig } from '@ngx-formly/core';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { ShippingMethodSelectorProps } from './shipping-method-selector-props';
 import { ShippingMethodSelectorTypeComponent } from './shipping-method-selector-type.component';
 
@@ -84,9 +84,8 @@ describe('ShippingMethodSelectorTypeComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

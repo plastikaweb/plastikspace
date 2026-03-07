@@ -55,4 +55,4 @@ Selector: `eco-store-shared-favorite-button`
 
 ## Running unit tests
 
-Run `nx test eco-store-shared-favorite-button` to execute the unit tests via Jest.
+Run `nx test eco-store-shared-favorite-button` to execute the unit tests via Vitest.

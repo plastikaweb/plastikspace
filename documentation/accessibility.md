@@ -312,7 +312,7 @@ This script (`my-app:a11y`) can be used with `husky hooks` and `github actions C
 We should also add unit testing for any UI type component using the [jest-axe](https://github.com/nickcolley/jest-axe#readme) library.
 
 ```typescript
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'jest-axe';
 // other imports...
 
 describe('MyComponent', () => {

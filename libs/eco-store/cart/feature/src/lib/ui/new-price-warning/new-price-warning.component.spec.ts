@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { NewPriceWarningComponent } from './new-price-warning.component';
 
 describe('NewPriceWarningComponent', () => {
@@ -26,6 +26,6 @@ describe('NewPriceWarningComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

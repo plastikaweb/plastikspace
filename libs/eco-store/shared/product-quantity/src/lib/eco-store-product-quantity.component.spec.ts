@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { EcoStoreProductQuantityComponent } from './eco-store-product-quantity.component';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
+import { EcoStoreProductQuantityComponent } from './eco-store-product-quantity.component';
 
 describe('EcoStoreProductQuantityComponent', () => {
   let component: EcoStoreProductQuantityComponent;
@@ -23,8 +24,7 @@ describe('EcoStoreProductQuantityComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

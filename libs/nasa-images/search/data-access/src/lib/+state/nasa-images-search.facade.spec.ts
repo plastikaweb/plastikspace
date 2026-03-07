@@ -38,7 +38,7 @@ describe('NasaImagesSearchFacade', () => {
     facade = TestBed.inject(NasaImagesSearchFacade);
     store = TestBed.inject(Store);
 
-    jest.spyOn(store, 'dispatch');
+    vi.spyOn(store, 'dispatch');
   });
 
   it('should be created', () => {

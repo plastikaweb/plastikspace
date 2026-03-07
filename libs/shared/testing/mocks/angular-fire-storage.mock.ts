@@ -1,17 +1,13 @@
-export const angularFireStorageMock = jest.mock('@angular/fire/storage', () => ({
-  getDownloadURL: jest.fn().mockResolvedValue('mocked-url'),
-  listAll: jest.fn().mockResolvedValue({ items: [], prefixes: [] }),
-  percentage: jest.fn().mockReturnValue({ percentage: 0 }),
-  ref: jest.fn().mockReturnValue({
-    getDownloadURL: jest.fn().mockResolvedValue('mocked-url'),
-    put: jest.fn().mockResolvedValue({}),
-  }),
-  Storage: jest.fn(),
-  uploadBytesResumable: jest.fn().mockReturnValue({
-    on: jest.fn((_, next) => {
-      next({ bytesTransferred: 50, totalBytes: 100 });
-      next({ bytesTransferred: 100, totalBytes: 100 });
-    }),
-    snapshot: { bytesTransferred: 0, totalBytes: 100 },
-  }),
-}));
+import { of } from 'rxjs';
+import { vi } from 'vitest';
+
+vi.mock('@angular/fire/storage', () => {
+  return {
+    Storage: vi.fn(), // Mock the Storage class
+    ref: vi.fn(),
+    uploadBytes: vi.fn(),
+    getDownloadURL: vi.fn(() => of('http://mock-url.com')),
+  };
+});
+
+export const angularFireStorageMock = {};

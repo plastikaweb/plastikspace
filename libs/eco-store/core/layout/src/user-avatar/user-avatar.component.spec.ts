@@ -2,7 +2,7 @@ import { Component, input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
 import { ImageDimensions, SharedImgContainerComponent } from '@plastik/shared/img-container';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { EcoUserAvatarComponent } from './user-avatar.component';
 
 /* eslint-disable @angular-eslint/component-selector */
@@ -70,7 +70,7 @@ describe('EcoUserAvatarComponent', () => {
       fixture.componentRef.setInput('initials', 'JD');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
-      expect(results).toHaveNoViolations();
+      expect(results.violations).toEqual([]);
     });
 
     it('should have no violations with image avatar', async () => {
@@ -81,7 +81,7 @@ describe('EcoUserAvatarComponent', () => {
       });
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
-      expect(results).toHaveNoViolations();
+      expect(results.violations).toEqual([]);
     });
   });
 });

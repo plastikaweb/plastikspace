@@ -50,6 +50,13 @@
       "cache": true,
       "dependsOn": ["^build"],
       "inputs": ["production", "^production"]
+    },
+    "@nx/vitest:test": {
+      "cache": true,
+      "inputs": ["default", "^production"],
+      "options": {
+        "passWithNoTests": true
+      }
     }
   },
   "namedInputs": {
@@ -94,7 +101,7 @@
       "e2eTestRunner": "cypress",
       "linter": "eslint",
       "style": "scss",
-      "unitTestRunner": "jest"
+      "unitTestRunner": "vitest"
     },
     "@nx/angular:component": {
       "style": "scss",
@@ -105,7 +112,7 @@
     },
     "@nx/angular:library": {
       "linter": "eslint",
-      "unitTestRunner": "jest",
+      "unitTestRunner": "vitest",
       "standalone": true,
       "changeDetection": "OnPush"
     },
@@ -121,5 +128,6 @@
   },
   "defaultProject": "llecoop",
   "cacheDirectory": "./tmp/my-cache",
-  "defaultBase": "develop"
+  "defaultBase": "develop",
+  "nxCloudId": "697ca354c3cf06f1eea9b5a7"
 }

@@ -5,7 +5,8 @@ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 import { CartSummaryComponent } from './cart-summary.component';
 
 describe('CartSummaryComponent', () => {
@@ -13,7 +14,6 @@ describe('CartSummaryComponent', () => {
   let fixture: ComponentFixture<CartSummaryComponent>;
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       imports: [CartSummaryComponent],
       providers: [
@@ -35,6 +35,6 @@ describe('CartSummaryComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

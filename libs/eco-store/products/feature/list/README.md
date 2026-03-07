@@ -77,4 +77,4 @@ This module incorporates smooth CSS view transitions to provide a seamless and v
 
 ## Running unit tests
 
-Run `nx test eco-store-products-feature` to execute the unit tests via [Jest](https://jestjs.io/).
+Run `nx test eco-store-products-feature` to execute the unit tests via [Vitest](https://vitest.dev/).

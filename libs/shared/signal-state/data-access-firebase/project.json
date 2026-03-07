@@ -6,10 +6,10 @@
   "tags": ["type:data-access", "scope:shared"],
   "targets": {
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "jestConfig": "libs/shared/signal-state/data-access-firebase/jest.config.ts"
+        "reportsDirectory": "../../../../coverage/libs/shared/signal-state/data-access-firebase"
       }
     }
   }

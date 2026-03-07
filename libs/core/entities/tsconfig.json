@@ -21,6 +21,9 @@
     },
     {
       "path": "../../shared/util/objects"
+    },
+    {
+      "path": "./tsconfig.spec.json"
     }
   ],
   "extends": "../../../tsconfig.base.json",

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { ShippingUnavailableComponent } from './shipping-unavailable.component';
 
 describe('ShippingUnavailableComponent', () => {
@@ -26,6 +26,6 @@ describe('ShippingUnavailableComponent', () => {
   it('should have no accessibility violations', async () => {
     fixture.detectChanges();
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

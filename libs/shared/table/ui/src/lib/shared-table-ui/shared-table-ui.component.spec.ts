@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { PageEventConfig } from '@plastik/shared/table/entities';
+import { beforeEach, describe, expect, it } from 'vitest';
 
-import { ComponentRef } from '@angular/core';
+import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
 import { BaseEntity } from '@plastik/core/entities';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { SharedTableUiComponent } from './shared-table-ui.component';
-import { provideZonelessChangeDetection } from '@angular/core';
 
 describe('SharedTableUiComponent', () => {
   let component: SharedTableUiComponent<BaseEntity>;
@@ -15,16 +16,18 @@ describe('SharedTableUiComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedTableUiComponent],
-      providers: [provideZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection(), provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedTableUiComponent);
     component = fixture.componentInstance;
     componentRef = fixture.componentRef;
     componentRef.setInput('data', [{ id: 1, name: 'test' }]);
-    componentRef.setInput('columnProperties', [{ property: 'name' }]);
+    componentRef.setInput('columnProperties', [
+      { key: 'name', title: 'Name', formatting: { type: 'TEXT' } },
+    ]);
     componentRef.setInput('resultsLength', 1);
-    componentRef.setInput('pagination', {});
+    componentRef.setInput('pagination', { pageSize: 5 });
     componentRef.setInput('noPagination', false);
     componentRef.setInput('paginationVisibility', {});
     componentRef.setInput('pageSizeOptions', [10, 25]);
@@ -41,11 +44,11 @@ describe('SharedTableUiComponent', () => {
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  xit('should emit changePagination Event', () => {
+  it('should emit changePagination Event', () => {
     let data;
     const pagination: PageEventConfig = {
       previousPageIndex: 0,
@@ -57,9 +60,8 @@ describe('SharedTableUiComponent', () => {
     expect(data).toEqual(pagination);
   });
 
-  xit('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
+  it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

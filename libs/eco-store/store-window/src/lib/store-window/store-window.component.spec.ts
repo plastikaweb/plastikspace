@@ -2,10 +2,11 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { TranslatePipe } from '@ngx-translate/core';
+import { provideTranslateService, TranslatePipe } from '@ngx-translate/core';
 import { SharedCountdownUiComponent } from '@plastik/shared/countdown';
 import { CountdownService } from '@plastik/shared/countdown/util';
 import { MockPipe } from 'ng-mocks';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { StoreWindowComponent } from './store-window.component';
 
 describe('StoreWindowComponent', () => {
@@ -23,6 +24,7 @@ describe('StoreWindowComponent', () => {
         SharedCountdownUiComponent,
       ],
       providers: [
+        provideTranslateService(),
         {
           provide: CountdownService,
           useValue: {

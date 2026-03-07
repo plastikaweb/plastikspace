@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { CartOrderSummaryComponent } from './cart-order-summary.component';
 
 describe('CartOrderSummaryComponent', () => {
@@ -28,6 +28,6 @@ describe('CartOrderSummaryComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

@@ -2,19 +2,23 @@ import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Storage } from '@angular/fire/storage';
 import { of } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { FirebaseStorageService } from './firebase-storage.service';
 
-jest.mock('@angular/fire/storage', () => ({
-  ...jest.requireActual('@angular/fire/storage'),
-  ref: jest.fn(() => ({ fullPath: 'test-folder/test.txt' })),
-  uploadBytesResumable: jest.fn(() =>
-    Promise.resolve({ ref: { fullPath: 'test-folder/test.txt' } })
-  ),
-  percentage: jest.fn(() => of({ progress: 100 })),
-  getDownloadURL: jest.fn(() => Promise.resolve('https://test-url.com/test.txt')),
-  listAll: jest.fn(() => Promise.resolve({ items: [{ fullPath: 'test-folder/test.txt' }] })),
-}));
+vi.mock('@angular/fire/storage', async importOriginal => {
+  const actual = await importOriginal<typeof import('@angular/fire/storage')>();
+  return {
+    ...actual,
+    ref: vi.fn(() => ({ fullPath: 'test-folder/test.txt' })),
+    uploadBytesResumable: vi.fn(() =>
+      Promise.resolve({ ref: { fullPath: 'test-folder/test.txt' } })
+    ),
+    percentage: vi.fn(() => of({ progress: 100 })),
+    getDownloadURL: vi.fn(() => Promise.resolve('https://test-url.com/test.txt')),
+    listAll: vi.fn(() => Promise.resolve({ items: [{ fullPath: 'test-folder/test.txt' }] })),
+  };
+});
 
 describe('FirebaseStorageService', () => {
   let service: FirebaseStorageService;

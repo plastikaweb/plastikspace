@@ -6,10 +6,10 @@
   "tags": ["scope:core", "type:util"],
   "targets": {
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "jestConfig": "libs/core/util/api-firebase/jest.config.ts"
+        "reportsDirectory": "../../../../coverage/libs/core/util/api-firebase"
       }
     }
   }

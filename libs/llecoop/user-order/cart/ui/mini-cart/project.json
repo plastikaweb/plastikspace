@@ -6,16 +6,15 @@
   "projectType": "library",
   "tags": ["type:ui", "scope:llecoop"],
   "targets": {
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "libs/llecoop/user-order/cart/ui/mini-cart/jest.config.ts",
-        "tsConfig": "libs/llecoop/user-order/cart/ui/mini-cart/tsconfig.spec.json"
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../../../../coverage/libs/llecoop/user-order/cart/ui/mini-cart"
+      }
     }
   }
 }

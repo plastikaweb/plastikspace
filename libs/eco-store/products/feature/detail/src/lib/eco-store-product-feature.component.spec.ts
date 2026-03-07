@@ -1,13 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
+import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
-import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import EcoStoreProductFeatureComponent from './eco-store-product-feature.component';
-import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 
 describe('EcoStoreProductFeatureComponent', () => {
   let component: EcoStoreProductFeatureComponent;
@@ -41,8 +41,7 @@ describe('EcoStoreProductFeatureComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   }, 10000);
 });

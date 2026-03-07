@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FieldTypeConfig } from '@ngx-formly/core';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { AddressSelectorProps } from './address-selector-props';
 import { AddressSelectorTypeComponent } from './address-selector-type.component';
 
@@ -65,7 +65,7 @@ describe('AddressSelectorTypeComponent', () => {
   });
 
   it('should call onEdit when edit button is clicked', () => {
-    const onEditSpy = jest.fn();
+    const onEditSpy = vi.fn();
     component.field = {
       ...component.field,
       props: {
@@ -85,9 +85,8 @@ describe('AddressSelectorTypeComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     await fixture.whenStable();
     const results = await axe(fixture.nativeElement);
-    expect(results).toHaveNoViolations();
+    expect(results.violations).toEqual([]);
   });
 });

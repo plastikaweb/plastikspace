@@ -2,7 +2,7 @@ import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TranslateModule } from '@ngx-translate/core';
 import { CountdownService } from '@plastik/shared/countdown/util';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { StoreStatusBannerComponent } from './store-status-banner.component';
 
 describe('StoreStatusBannerComponent', () => {
@@ -10,7 +10,7 @@ describe('StoreStatusBannerComponent', () => {
   let fixture: ComponentFixture<StoreStatusBannerComponent>;
 
   const mockCountdownService = {
-    createCountdown: jest.fn().mockReturnValue({
+    createCountdown: vi.fn().mockReturnValue({
       text: signal('00:00:00'),
     }),
   };
@@ -68,14 +68,14 @@ describe('StoreStatusBannerComponent', () => {
       fixture.componentRef.setInput('status', 'OPENING_SOON');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
-      expect(results).toHaveNoViolations();
+      expect(results.violations).toEqual([]);
     });
 
     it('should have no violations with CLOSED status', async () => {
       fixture.componentRef.setInput('status', 'CLOSED');
       fixture.detectChanges();
       const results = await axe(fixture.nativeElement);
-      expect(results).toHaveNoViolations();
+      expect(results.violations).toEqual([]);
     });
   });
 });
