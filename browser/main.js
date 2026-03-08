@@ -1,6 +1,6 @@
 import {
   notificationStore
-} from "./chunk-AVU5SLDV.js";
+} from "./chunk-ZJXG6BZJ.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -18,11 +18,11 @@ import {
   provideWithApiEnv,
   routerReducers,
   selectLayoutFeature
-} from "./chunk-4RSEHK7E.js";
+} from "./chunk-LNCGLYCJ.js";
 import {
   SvgIconComponent,
   provideAngularSvgIcon
-} from "./chunk-GEG7A5AD.js";
+} from "./chunk-27EWN2IS.js";
 import {
   ActionsSubject,
   INIT,
@@ -35,32 +35,32 @@ import {
   UPDATE,
   provideState,
   provideStore
-} from "./chunk-Q4CZETAG.js";
+} from "./chunk-OKB37QHH.js";
 import {
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
   TitleStrategy,
   provideRouter
-} from "./chunk-5E7VCNPS.js";
+} from "./chunk-7P64PQX7.js";
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from "./chunk-HZ4I2FUQ.js";
+} from "./chunk-S35GAMON.js";
 import {
   toSignal
-} from "./chunk-YVHVP23N.js";
+} from "./chunk-VZXRJ47F.js";
 import {
   MatToolbar,
   MatToolbarModule
-} from "./chunk-MAE4MEQQ.js";
+} from "./chunk-A7UCKEWA.js";
 import {
   MatPseudoCheckboxModule,
   NG_VALUE_ACCESSOR,
   collectionToArray
-} from "./chunk-UYPNEB6O.js";
+} from "./chunk-PATTRSRX.js";
 import {
   SelectionModel
-} from "./chunk-BVVCMUTQ.js";
+} from "./chunk-OFNDAWR2.js";
 import {
   CdkScrollable,
   CdkScrollableModule,
@@ -71,15 +71,15 @@ import {
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-KZ2FU2KN.js";
+} from "./chunk-U73RIP2J.js";
 import {
   DomPortalOutlet,
   TemplatePortal
-} from "./chunk-T3PEO7QT.js";
+} from "./chunk-VF2D6VDJ.js";
 import {
   MatIcon,
   MatIconModule
-} from "./chunk-KBBME3FM.js";
+} from "./chunk-E53OQMM6.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatButton,
@@ -87,7 +87,7 @@ import {
   MatRippleModule,
   RippleRenderer,
   coerceBooleanProperty
-} from "./chunk-CHNEJW2E.js";
+} from "./chunk-CLHAON7L.js";
 import {
   A,
   CdkObserveContent,
@@ -110,13 +110,13 @@ import {
   hasModifierKey,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
-} from "./chunk-AII2B2DK.js";
-import "./chunk-FVGDPSDA.js";
+} from "./chunk-2NA4PHRB.js";
+import "./chunk-CF3TMLAM.js";
 import {
   bootstrapApplication,
   provideHttpClient
-} from "./chunk-KG4ZTJVB.js";
-import "./chunk-JCNQYKEC.js";
+} from "./chunk-7X22NOTY.js";
+import "./chunk-KBRZIECL.js";
 import {
   _getEventTarget,
   _getFocusedElementPierceShadowDom,
@@ -125,21 +125,21 @@ import {
 import {
   BidiModule,
   Directionality
-} from "./chunk-IR4FHEGZ.js";
+} from "./chunk-AZCQQA2S.js";
 import {
   coerceNumberProperty
-} from "./chunk-2MXCXTVM.js";
+} from "./chunk-JYC222S7.js";
 import {
   _CdkPrivateStyleLoader
-} from "./chunk-HK4FYR2A.js";
+} from "./chunk-GKQ4FJLQ.js";
 import {
   Platform
-} from "./chunk-JNBL7SND.js";
+} from "./chunk-CGEOGME2.js";
 import {
   DatePipe,
   NgTemplateOutlet,
   PRECONNECT_CHECK_BLOCKLIST
-} from "./chunk-Z42NTOHH.js";
+} from "./chunk-A7BY5NXF.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -269,7 +269,7 @@ import {
   ɵɵtextInterpolate1,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-SF6CW7SJ.js";
+} from "./chunk-2OB7EGFP.js";
 
 // node_modules/@angular/material/fesm2022/divider.mjs
 var MatDivider = class _MatDivider {
@@ -5033,9 +5033,9 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-MDVL274O.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-MHXDSFHQ.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
-var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-LZ6Q5UXF.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
+var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-7A753UNU.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
 var _c24 = () => ({ exact: false });
 var _forTrack02 = ($index, $item) => $item.id;
@@ -5403,7 +5403,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-MDVL274O.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-LZ6Q5UXF.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-MHXDSFHQ.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-7A753UNU.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -5832,22 +5832,19 @@ function injectZoneConfig(connectInZone) {
     connectInZone
   };
 }
-var DevtoolsDispatcher = class _DevtoolsDispatcher extends ActionsSubject {
-  static {
-    this.\u0275fac = /* @__PURE__ */ (() => {
-      let \u0275DevtoolsDispatcher_BaseFactory;
-      return function DevtoolsDispatcher_Factory(__ngFactoryType__) {
-        return (\u0275DevtoolsDispatcher_BaseFactory || (\u0275DevtoolsDispatcher_BaseFactory = \u0275\u0275getInheritedFactory(_DevtoolsDispatcher)))(__ngFactoryType__ || _DevtoolsDispatcher);
-      };
-    })();
-  }
-  static {
-    this.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-      token: _DevtoolsDispatcher,
-      factory: _DevtoolsDispatcher.\u0275fac
-    });
-  }
+var _DevtoolsDispatcher = class _DevtoolsDispatcher extends ActionsSubject {
 };
+_DevtoolsDispatcher.\u0275fac = /* @__PURE__ */ (() => {
+  let \u0275DevtoolsDispatcher_BaseFactory;
+  return function DevtoolsDispatcher_Factory(__ngFactoryType__) {
+    return (\u0275DevtoolsDispatcher_BaseFactory || (\u0275DevtoolsDispatcher_BaseFactory = \u0275\u0275getInheritedFactory(_DevtoolsDispatcher)))(__ngFactoryType__ || _DevtoolsDispatcher);
+  };
+})();
+_DevtoolsDispatcher.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
+  token: _DevtoolsDispatcher,
+  factory: _DevtoolsDispatcher.\u0275fac
+});
+var DevtoolsDispatcher = _DevtoolsDispatcher;
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(DevtoolsDispatcher, [{
     type: Injectable
@@ -5860,7 +5857,7 @@ var ExtensionActionTypes = {
   ACTION: "ACTION"
 };
 var REDUX_DEVTOOLS_EXTENSION = new InjectionToken("@ngrx/store-devtools Redux Devtools Extension");
-var DevtoolsExtension = class _DevtoolsExtension {
+var _DevtoolsExtension = class _DevtoolsExtension {
   constructor(devtoolsExtension, config, dispatcher) {
     this.config = config;
     this.dispatcher = dispatcher;
@@ -5959,18 +5956,15 @@ var DevtoolsExtension = class _DevtoolsExtension {
       console.warn("@ngrx/store-devtools: something went wrong inside the redux devtools", err);
     }
   }
-  static {
-    this.\u0275fac = function DevtoolsExtension_Factory(__ngFactoryType__) {
-      return new (__ngFactoryType__ || _DevtoolsExtension)(\u0275\u0275inject(REDUX_DEVTOOLS_EXTENSION), \u0275\u0275inject(STORE_DEVTOOLS_CONFIG), \u0275\u0275inject(DevtoolsDispatcher));
-    };
-  }
-  static {
-    this.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-      token: _DevtoolsExtension,
-      factory: _DevtoolsExtension.\u0275fac
-    });
-  }
 };
+_DevtoolsExtension.\u0275fac = function DevtoolsExtension_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || _DevtoolsExtension)(\u0275\u0275inject(REDUX_DEVTOOLS_EXTENSION), \u0275\u0275inject(STORE_DEVTOOLS_CONFIG), \u0275\u0275inject(DevtoolsDispatcher));
+};
+_DevtoolsExtension.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
+  token: _DevtoolsExtension,
+  factory: _DevtoolsExtension.\u0275fac
+});
+var DevtoolsExtension = _DevtoolsExtension;
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(DevtoolsExtension, [{
     type: Injectable
@@ -6297,7 +6291,7 @@ function liftReducerWith(initialCommittedState, initialLiftedState, errorHandler
     };
   };
 }
-var StoreDevtools = class _StoreDevtools {
+var _StoreDevtools = class _StoreDevtools {
   constructor(dispatcher, actions$, reducers$, extension, scannedActions, errorHandler, initialState, config) {
     const liftedInitialState = liftInitialState(initialState, config.monitor);
     const liftReducer = liftReducerWith(initialState, liftedInitialState, errorHandler, config.monitor, config);
@@ -6405,18 +6399,15 @@ var StoreDevtools = class _StoreDevtools {
   pauseRecording(status) {
     this.dispatch(new PauseRecording(status));
   }
-  static {
-    this.\u0275fac = function StoreDevtools_Factory(__ngFactoryType__) {
-      return new (__ngFactoryType__ || _StoreDevtools)(\u0275\u0275inject(DevtoolsDispatcher), \u0275\u0275inject(ActionsSubject), \u0275\u0275inject(ReducerObservable), \u0275\u0275inject(DevtoolsExtension), \u0275\u0275inject(ScannedActionsSubject), \u0275\u0275inject(ErrorHandler), \u0275\u0275inject(INITIAL_STATE), \u0275\u0275inject(STORE_DEVTOOLS_CONFIG));
-    };
-  }
-  static {
-    this.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
-      token: _StoreDevtools,
-      factory: _StoreDevtools.\u0275fac
-    });
-  }
 };
+_StoreDevtools.\u0275fac = function StoreDevtools_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || _StoreDevtools)(\u0275\u0275inject(DevtoolsDispatcher), \u0275\u0275inject(ActionsSubject), \u0275\u0275inject(ReducerObservable), \u0275\u0275inject(DevtoolsExtension), \u0275\u0275inject(ScannedActionsSubject), \u0275\u0275inject(ErrorHandler), \u0275\u0275inject(INITIAL_STATE), \u0275\u0275inject(STORE_DEVTOOLS_CONFIG));
+};
+_StoreDevtools.\u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({
+  token: _StoreDevtools,
+  factory: _StoreDevtools.\u0275fac
+});
+var StoreDevtools = _StoreDevtools;
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(StoreDevtools, [{
     type: Injectable
@@ -6495,27 +6486,22 @@ function provideStoreDevtools(options = {}) {
     useExisting: DevtoolsDispatcher
   }]);
 }
-var StoreDevtoolsModule = class _StoreDevtoolsModule {
+var _StoreDevtoolsModule = class _StoreDevtoolsModule {
   static instrument(options = {}) {
     return {
       ngModule: _StoreDevtoolsModule,
       providers: [provideStoreDevtools(options)]
     };
   }
-  static {
-    this.\u0275fac = function StoreDevtoolsModule_Factory(__ngFactoryType__) {
-      return new (__ngFactoryType__ || _StoreDevtoolsModule)();
-    };
-  }
-  static {
-    this.\u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
-      type: _StoreDevtoolsModule
-    });
-  }
-  static {
-    this.\u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({});
-  }
 };
+_StoreDevtoolsModule.\u0275fac = function StoreDevtoolsModule_Factory(__ngFactoryType__) {
+  return new (__ngFactoryType__ || _StoreDevtoolsModule)();
+};
+_StoreDevtoolsModule.\u0275mod = /* @__PURE__ */ \u0275\u0275defineNgModule({
+  type: _StoreDevtoolsModule
+});
+_StoreDevtoolsModule.\u0275inj = /* @__PURE__ */ \u0275\u0275defineInjector({});
+var StoreDevtoolsModule = _StoreDevtoolsModule;
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(StoreDevtoolsModule, [{
     type: NgModule,
@@ -6543,11 +6529,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-SXFMGHDS.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-BWRCVCFA.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-X33K4EXY.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-OMZNSNWV.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6563,7 +6549,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-PURWXEOX.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-GYGHYVBH.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: "link",
