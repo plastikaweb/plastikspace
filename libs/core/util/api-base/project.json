@@ -6,16 +6,15 @@
   "prefix": "plastik",
   "tags": ["scope:core", "type:util"],
   "targets": {
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
-      "options": {
-        "jestConfig": "libs/core/util/api-base/jest.config.ts",
-        "tsConfig": "libs/core/util/api-base/tsconfig.spec.json"
-      }
-    },
     "lint": {
       "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../../coverage/libs/core/util/api-base"
+      }
     }
   }
 }

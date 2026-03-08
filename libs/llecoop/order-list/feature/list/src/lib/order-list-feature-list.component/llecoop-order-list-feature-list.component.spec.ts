@@ -1,3 +1,4 @@
+import { provideTranslateService } from '@ngx-translate/core';
 /* eslint-disable no-console */
 import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -16,6 +17,7 @@ describe('LlecoopOrderListFeatureListComponent', () => {
       imports: [LlecoopOrderListFeatureListComponent],
       providers: [
         provideZonelessChangeDetection(),
+        provideTranslateService(),
         {
           provide: LlecoopOrderListFeatureListFacadeService,
           useValue: {

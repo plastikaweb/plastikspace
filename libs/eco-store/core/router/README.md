@@ -131,4 +131,4 @@ Mock providers are available from the `/testing` sub-path exports of related sto
 
 ## Running unit tests
 
-Run `nx test eco-store-router-data-access` to execute the unit tests via Jest.
+Run `nx test eco-store-router-data-access` to execute the unit tests via Vitest.

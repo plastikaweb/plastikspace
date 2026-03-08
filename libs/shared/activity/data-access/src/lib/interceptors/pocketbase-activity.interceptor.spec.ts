@@ -4,14 +4,14 @@ import { activityStore } from '../+state/activity.store';
 import { pocketBaseActivityInterceptor } from './pocketbase-activity.interceptor';
 
 describe('pocketBaseActivityInterceptor', () => {
-  let setActivityMock: jest.Mock;
-  let mockPbSend: jest.Mock;
-  let mockPb: { send: jest.Mock };
-  let mockActivityStore: { setActivity: jest.Mock };
+  let setActivityMock: vi.Mock;
+  let mockPbSend: vi.Mock;
+  let mockPb: { send: vi.Mock };
+  let mockActivityStore: { setActivity: vi.Mock };
 
   const setup = () => {
-    setActivityMock = jest.fn();
-    mockPbSend = jest.fn().mockResolvedValue({ data: 'response' });
+    setActivityMock = vi.fn();
+    mockPbSend = vi.fn().mockResolvedValue({ data: 'response' });
     mockPb = { send: mockPbSend };
     mockActivityStore = { setActivity: setActivityMock };
 
@@ -26,13 +26,13 @@ describe('pocketBaseActivityInterceptor', () => {
   };
 
   beforeEach(() => {
-    jest.useFakeTimers();
+    vi.useFakeTimers();
     setup();
   });
 
   afterEach(() => {
-    jest.useRealTimers();
-    jest.clearAllMocks();
+    vi.useRealTimers();
+    vi.clearAllMocks();
   });
 
   it('should patch the pb.send method', () => {
@@ -42,7 +42,7 @@ describe('pocketBaseActivityInterceptor', () => {
   it('should NOT set activity for requests without require-global-loading header', async () => {
     await mockPb.send('/test', { headers: {} });
 
-    jest.runAllTimers();
+    vi.runAllTimers();
 
     expect(setActivityMock).not.toHaveBeenCalled();
   });
@@ -50,7 +50,7 @@ describe('pocketBaseActivityInterceptor', () => {
   it('should NOT set activity when require-global-loading header is not "true"', async () => {
     await mockPb.send('/test', { headers: { 'require-global-loading': 'false' } });
 
-    jest.runAllTimers();
+    vi.runAllTimers();
 
     expect(setActivityMock).not.toHaveBeenCalled();
   });
@@ -58,7 +58,7 @@ describe('pocketBaseActivityInterceptor', () => {
   it('should set activity to true for requests with require-global-loading: true', async () => {
     const promise = mockPb.send('/test', { headers: { 'require-global-loading': 'true' } });
 
-    jest.advanceTimersByTime(200);
+    vi.advanceTimersByTime(200);
 
     await promise;
     expect(setActivityMock).toHaveBeenCalledWith(true);
@@ -67,7 +67,7 @@ describe('pocketBaseActivityInterceptor', () => {
   it('should set activity to false after request completes', async () => {
     await mockPb.send('/test', { headers: { 'require-global-loading': 'true' } });
 
-    jest.runAllTimers();
+    vi.runAllTimers();
 
     expect(setActivityMock).toHaveBeenLastCalledWith(false);
   });

@@ -36,7 +36,7 @@ describe('PaginationComponent', () => {
   });
 
   it('should emit pageChange event', () => {
-    const emitSpy = jest.spyOn(component.pageChange, 'emit');
+    const emitSpy = vi.spyOn(component.pageChange, 'emit');
     const paginatorDe = fixture.debugElement.query(By.css('mat-paginator'));
 
     const pageEvent: PageEvent = {

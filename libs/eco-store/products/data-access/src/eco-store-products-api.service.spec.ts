@@ -23,13 +23,13 @@ describe('EcoStoreProductsApiService', () => {
     service = TestBed.inject(EcoStoreProductsApiService);
 
     mockCrudService = {
-      getFullList: jest.fn().mockReturnValue(of([])),
-      getList: jest.fn().mockReturnValue(of({ items: [], totalItems: 0 })),
-      getOne: jest.fn().mockReturnValue(of(null)),
+      getFullList: vi.fn().mockReturnValue(of([])),
+      getList: vi.fn().mockReturnValue(of({ items: [], totalItems: 0 })),
+      getOne: vi.fn().mockReturnValue(of(null)),
     };
 
     // Spy on the protected method createPocketCrudService
-    jest.spyOn(service as any, 'createPocketCrudService').mockReturnValue(mockCrudService);
+    vi.spyOn(service as any, 'createPocketCrudService').mockReturnValue(mockCrudService);
   });
 
   it('should be created', () => {

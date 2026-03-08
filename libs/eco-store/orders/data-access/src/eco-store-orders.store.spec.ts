@@ -49,28 +49,28 @@ describe('ecoStoreOrdersStore', () => {
   };
 
   const mockCartStoreValue = {
-    toOrder: jest.fn().mockReturnValue({
+    toOrder: vi.fn().mockReturnValue({
       orderNumber: 'ECO-001',
       user: 'user-1',
       items: [],
     }),
-    resetCartAfterCheckout: jest.fn(),
+    resetCartAfterCheckout: vi.fn(),
     isSyncing: signal(false),
     isSynced: signal(false),
   };
 
   const mockActivityStoreValue = {
-    setActivity: jest.fn(),
+    setActivity: vi.fn(),
     isActive: signal(false),
     message: signal('loading-data'),
   };
 
   const mockNotificationStore = {
-    show: jest.fn(),
+    show: vi.fn(),
   };
 
   const mockOrdersApiService = {
-    getList: jest.fn().mockReturnValue(
+    getList: vi.fn().mockReturnValue(
       of({
         items: [],
         totalItems: 0,
@@ -79,10 +79,10 @@ describe('ecoStoreOrdersStore', () => {
         perPage: 10,
       })
     ),
-    create: jest.fn().mockReturnValue(of(mockOrder)),
-    update: jest.fn().mockReturnValue(of(mockOrder)),
-    delete: jest.fn().mockReturnValue(of(true)),
-    getOne: jest.fn().mockReturnValue(of(mockOrder)),
+    create: vi.fn().mockReturnValue(of(mockOrder)),
+    update: vi.fn().mockReturnValue(of(mockOrder)),
+    delete: vi.fn().mockReturnValue(of(true)),
+    getOne: vi.fn().mockReturnValue(of(mockOrder)),
   };
 
   const setup = () => {
@@ -92,7 +92,7 @@ describe('ecoStoreOrdersStore', () => {
         ecoStoreOrdersStore,
         {
           provide: POCKETBASE_INSTANCE,
-          useValue: { autoCancellation: jest.fn(), send: jest.fn() },
+          useValue: { autoCancellation: vi.fn(), send: vi.fn() },
         },
         { provide: ecoStoreCartStore, useValue: mockCartStoreValue },
         { provide: activityStore, useValue: mockActivityStoreValue },
@@ -104,7 +104,7 @@ describe('ecoStoreOrdersStore', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should be created', () => {
@@ -124,7 +124,7 @@ describe('ecoStoreOrdersStore', () => {
     beforeEach(() => {
       store = setup();
       router = TestBed.inject(Router);
-      jest.spyOn(router, 'navigate').mockResolvedValue(true);
+      vi.spyOn(router, 'navigate').mockResolvedValue(true);
     });
 
     it('should set activity loading state to true before creating an order', async () => {
@@ -156,7 +156,7 @@ describe('ecoStoreOrdersStore', () => {
     });
 
     it('should navigate to the order confirmation page with the new order ID', async () => {
-      const navigateSpy = jest.spyOn(router, 'navigate');
+      const navigateSpy = vi.spyOn(router, 'navigate');
       await store.createOrder();
       expect(navigateSpy).toHaveBeenCalledWith(['/comanda', mockOrder.id]);
     });

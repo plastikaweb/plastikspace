@@ -1,14 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CartOrderPriceSlotsComponent } from './cart-order-price-slots.component';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
+import { CartOrderPriceSlotsComponent } from './cart-order-price-slots.component';
 
 describe('CartOrderPriceSlotsComponent', () => {
   let component: CartOrderPriceSlotsComponent;
   let fixture: ComponentFixture<CartOrderPriceSlotsComponent>;
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       providers: [provideTranslateService()],
       imports: [CartOrderPriceSlotsComponent],

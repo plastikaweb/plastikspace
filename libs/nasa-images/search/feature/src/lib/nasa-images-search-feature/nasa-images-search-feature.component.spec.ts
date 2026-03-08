@@ -1,5 +1,6 @@
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { of } from 'rxjs';
+import { describe, expect, it, vi } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
@@ -12,7 +13,7 @@ import { PageEventConfig } from '@plastik/shared/table/entities';
 
 import { NasaImagesSearchFeatureComponent } from './nasa-images-search-feature.component';
 
-xdescribe('NasaImagesSearchFeatureComponent', () => {
+describe.skip('NasaImagesSearchFeatureComponent', () => {
   let component: NasaImagesSearchFeatureComponent;
   let fixture: ComponentFixture<NasaImagesSearchFeatureComponent>;
   let facade: NasaImagesSearchFacade;
@@ -28,8 +29,8 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
         {
           provide: NasaImagesSearchFacade,
           useValue: {
-            search: jest.fn(),
-            changePagination: jest.fn(),
+            search: vi.fn(),
+            changePagination: vi.fn(),
             images$: of([
               {
                 description: '',
@@ -97,7 +98,6 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

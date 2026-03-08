@@ -46,13 +46,3 @@ jobs:
             🚀 **Performance**: Rendering inefficiencies or unnecessary computations.
 
             Provide direct, technical, and actionable feedback. If a change is perfect, state it briefly.
-
-            🚨 EXECUTABLE INSTRUCTION:
-            Once you have generated your final review report, you MUST post it as a comment directly on this Pull Request.
-            Use the GitHub CLI to do this. I have provided the authentication token below:
-
-            export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
-
-            Run the following commands in your terminal:
-            export GH_TOKEN=${{ secrets.GITHUB_TOKEN }}
-            gh pr comment ${{ github.event.pull_request.number }} --body "your_formatted_markdown_report_here"

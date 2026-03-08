@@ -1,6 +1,6 @@
 @if (statusConfig(); as config) {
   <div
-    class="inline-flex w-fit cursor-pointer items-center"
+    [class]="'status-chip inline-flex w-fit cursor-pointer items-center ' + (config.class || '')"
     [matTooltip]="closedReason() || (config.label | translate)">
     <plastik-shared-chip [type]="config.type || 'neutral'" [icon]="config.icon">
       <div class="flex items-center gap-2">

@@ -17,7 +17,7 @@ describe('CartPreviewComponent', () => {
         {
           provide: Auth,
           useValue: {
-            onAuthStateChanged: jest.fn(),
+            onAuthStateChanged: vi.fn(),
             currentUser: null,
           },
         },

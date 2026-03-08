@@ -22,8 +22,8 @@ export const mockEcoStoreCartStore = {
   notes: signal(null),
   remoteCartId: signal(null),
   isSyncing: signal(false),
-  addToCart: jest.fn(),
-  removeFromCart: jest.fn(),
-  clearCart: jest.fn(),
-  updateLogistics: jest.fn(),
+  addToCart: vi.fn(),
+  removeFromCart: vi.fn(),
+  clearCart: vi.fn(),
+  updateLogistics: vi.fn(),
 };

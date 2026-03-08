@@ -17,13 +17,13 @@ import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
 describe('ecoStoreCartStore', () => {
   const setup = () => {
     const mockCartsService = {
-      create: jest.fn().mockReturnValue(of({})),
-      update: jest.fn().mockReturnValue(of({})),
-      getFirstListItem: jest.fn().mockReturnValue(of(null)),
+      create: vi.fn().mockReturnValue(of({})),
+      update: vi.fn().mockReturnValue(of({})),
+      getFirstListItem: vi.fn().mockReturnValue(of(null)),
     };
 
     const mockProductsService = {
-      getFullList: jest.fn().mockReturnValue(of([])),
+      getFullList: vi.fn().mockReturnValue(of([])),
     };
 
     TestBed.configureTestingModule({
@@ -52,11 +52,11 @@ describe('ecoStoreCartStore', () => {
         },
         {
           provide: TranslateService,
-          useValue: { instant: jest.fn() },
+          useValue: { instant: vi.fn() },
         },
         {
           provide: LiveAnnouncer,
-          useValue: { announce: jest.fn() },
+          useValue: { announce: vi.fn() },
         },
       ],
     });

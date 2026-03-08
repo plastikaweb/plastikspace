@@ -208,7 +208,7 @@ Beyond architectural boundaries, the following code quality rules are enforced:
 
 ## Testing
 
-### Jest (Unit Tests)
+### Vitest (Unit Tests)
 
 ```bash
 yarn <app-name>:test                 # Run tests for app
@@ -357,8 +357,8 @@ nx g @nx/angular:lib button --directory=shared/ui --tags=scope:shared,type:ui
 **Default Generator Configuration** (from `nx.json`):
 
 - **Components**: Automatically use `OnPush` change detection, standalone architecture, SCSS styles, and `displayBlock: true`
-- **Libraries**: Standalone by default with Jest for unit testing
-- **Applications**: Jest for unit tests, Cypress for E2E, ESLint for linting, SCSS for styling
+- **Libraries**: Standalone by default with Vitest for unit testing
+- **Applications**: Vitest for unit tests, Cypress for E2E, ESLint for linting, SCSS for styling
 - These defaults are pre-configured, so you don't need to specify these flags when generating
 
 ## State Management
@@ -506,10 +506,10 @@ Key documentation in `/documentation/`:
 
 **Testing**:
 
-- Jest 30.2.0 + jest-preset-angular 16.0.0
+- Vitest 4.0.18 + @analogjs/vitest-angular 2.1.2
 - Cypress 15.8.1
 - Pa11y CI 4.0.1
-- jest-axe 10.0.0
+- vitest-axe 0.1.0
 
 **i18n**:
 

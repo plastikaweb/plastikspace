@@ -46,7 +46,7 @@ describe('PocketBaseCrudService', () => {
 
   beforeEach(() => {
     mockPocketBase.collection.mockReturnValue({
-      getList: jest.fn().mockImplementation((page = 1, perPage = 30) =>
+      getList: vi.fn().mockImplementation((page = 1, perPage = 30) =>
         Promise.resolve({
           page,
           perPage,
@@ -55,14 +55,14 @@ describe('PocketBaseCrudService', () => {
           totalPages: 1,
         })
       ),
-      getFullList: jest.fn().mockResolvedValue([baseEntity]),
-      getOne: jest.fn().mockResolvedValue(baseEntity),
-      getFirstListItem: jest.fn().mockResolvedValue(baseEntity),
-      create: jest.fn().mockImplementation(data => Promise.resolve({ ...baseEntity, ...data })),
+      getFullList: vi.fn().mockResolvedValue([baseEntity]),
+      getOne: vi.fn().mockResolvedValue(baseEntity),
+      getFirstListItem: vi.fn().mockResolvedValue(baseEntity),
+      create: vi.fn().mockImplementation(data => Promise.resolve({ ...baseEntity, ...data })),
       update: jest
         .fn()
         .mockImplementation((id, data) => Promise.resolve({ ...baseEntity, ...data })),
-      delete: jest.fn().mockResolvedValue(true),
+      delete: vi.fn().mockResolvedValue(true),
     });
 
     TestBed.configureTestingModule({

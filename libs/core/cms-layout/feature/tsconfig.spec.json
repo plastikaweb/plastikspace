@@ -2,18 +2,29 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
-    "module": "preserve",
-    "moduleResolution": "bundler",
-    "isolatedModules": true
+    "types": [
+      "vitest/globals",
+      "vitest/importMeta",
+      "vite/client",
+      "node",
+      "vitest",
+      "vitest-axe/extend-expect"
+    ]
   },
   "include": [
-    "jest.config.ts",
-    "src/**/*.ts",
-    "../data-access/src/**/*.ts",
-    "../ui/footer/src/**/*.ts",
-    "../ui/header/src/**/*.ts",
-    "../ui/sidenav/src/**/*.ts",
-    "../../../shared/notification/**/src/**/*.ts",
-    "../../../shared/activity/ui/src/**/*.ts"
-  ]
+    "vite.config.ts",
+    "vite.config.mts",
+    "vitest.config.ts",
+    "vitest.config.mts",
+    "src/**/*.test.ts",
+    "src/**/*.spec.ts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.js",
+    "src/**/*.spec.js",
+    "src/**/*.test.jsx",
+    "src/**/*.spec.jsx",
+    "src/**/*.d.ts"
+  ],
+  "files": ["src/test-setup.ts", "../../../../libs/shared/testing/vitest-matchers.d.ts"]
 }

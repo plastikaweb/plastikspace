@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
-import { axe } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { NewPriceWarningComponent } from './new-price-warning.component';
 
 describe('NewPriceWarningComponent', () => {

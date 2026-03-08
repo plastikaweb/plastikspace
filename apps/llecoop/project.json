@@ -108,19 +108,18 @@
     "lint": {
       "executor": "@nx/eslint:lint"
     },
-    "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/llecoop"],
-      "options": {
-        "jestConfig": "apps/llecoop/jest.config.ts",
-        "tsConfig": "apps/llecoop/tsconfig.spec.json"
-      }
-    },
     "serve-static": {
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "llecoop:build",
         "port": 4201
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../coverage/apps/llecoop"
       }
     }
   }

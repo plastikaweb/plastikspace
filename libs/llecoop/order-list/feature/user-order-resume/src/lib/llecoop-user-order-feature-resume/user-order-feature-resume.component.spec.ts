@@ -2,6 +2,7 @@ import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 import { SafeFormattedPipe } from '@plastik/shared/formatters';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
 
@@ -19,6 +20,7 @@ describe('LlecoopUserOrderFeatureResumeComponent', () => {
         provideZonelessChangeDetection(),
         provideRouter([]),
         provideMockStore(),
+        provideTranslateService(),
         {
           provide: LlecoopUserOrderResumeFacadeService,
           useValue: {

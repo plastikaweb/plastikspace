@@ -3,7 +3,7 @@ import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 import { EcoStoreCartComponent } from './eco-store-cart.component';
 
 describe('EcoStoreCartComponent', () => {
@@ -11,7 +11,6 @@ describe('EcoStoreCartComponent', () => {
   let fixture: ComponentFixture<EcoStoreCartComponent>;
 
   beforeEach(async () => {
-    expect.extend(toHaveNoViolations);
     await TestBed.configureTestingModule({
       imports: [EcoStoreCartComponent],
       providers: [

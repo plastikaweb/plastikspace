@@ -5,8 +5,8 @@ on:
     branches:
       - develop
 
-# env:
-#   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
 # Needed for nx-set-shas when run on the main branch
 permissions:
@@ -34,16 +34,16 @@ jobs:
       - uses: nrwl/nx-set-shas@v4
 
       # Format check
-      - run: npx nx format:check --all
+      - run: npx nx-cloud record -- nx format:check --all
 
       # Run affected tasks excluding llecoop-firebase
       - name: Run Affected Tasks
         run: |
           yarn i18n:validate
           yarn markdownlint
-          npx nx affected --target=lint --exclude=llecoop-firebase --parallel=3
-          npx nx affected --target=test --exclude=llecoop-firebase --parallel=3 --code-coverage
-          npx nx affected --target=build --exclude=llecoop-firebase --parallel=3
+          npx nx-cloud record -- nx affected --target=lint --exclude=llecoop-firebase --parallel=3
+          npx nx-cloud record -- nx affected --target=test --exclude=llecoop-firebase --parallel=3 --code-coverage
+          npx nx-cloud record -- nx affected --target=build --exclude=llecoop-firebase --parallel=3
         if: always()
 
       - name: Report Coverage

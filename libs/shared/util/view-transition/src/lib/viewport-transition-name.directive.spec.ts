@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 import { ViewportTransitionNameDirective } from './viewport-transition-name.directive';
 
 @Component({
@@ -11,19 +12,21 @@ class TestComponent {}
 
 describe('ViewportTransitionNameDirective', () => {
   let fixture: ComponentFixture<TestComponent>;
-  let intersectionObserverMock: jest.Mock;
-  let observeMock: jest.Mock;
-  let disconnectMock: jest.Mock;
+  let intersectionObserverMock: Mock;
+  let observeMock: Mock;
+  let disconnectMock: Mock;
 
   beforeEach(() => {
-    observeMock = jest.fn();
-    disconnectMock = jest.fn();
+    observeMock = vi.fn();
+    disconnectMock = vi.fn();
 
-    intersectionObserverMock = jest.fn(callback => ({
-      observe: observeMock,
-      disconnect: disconnectMock,
-      unobserve: jest.fn(),
-    })) as unknown as jest.Mock;
+    intersectionObserverMock = vi.fn(function (callback) {
+      return {
+        observe: observeMock,
+        disconnect: disconnectMock,
+        unobserve: vi.fn(),
+      };
+    }) as unknown as Mock;
 
     window.IntersectionObserver = intersectionObserverMock as any;
 
@@ -36,7 +39,7 @@ describe('ViewportTransitionNameDirective', () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it('should create an instance and initialize IntersectionObserver', () => {

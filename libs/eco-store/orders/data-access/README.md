@@ -88,4 +88,4 @@ This ensures the global overlay is shown with the correct i18n message for the e
 
 ## Running unit tests
 
-Run `nx test eco-store-orders-data-access` to execute the unit tests via Jest.
+Run `nx test eco-store-orders-data-access` to execute the unit tests via Vitest.

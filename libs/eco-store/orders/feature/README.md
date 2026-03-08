@@ -72,4 +72,4 @@ export const routes: Route[] = [
 
 ## Running unit tests
 
-Run `nx test eco-store-orders-feature` to execute the unit tests via Jest.
+Run `nx test eco-store-orders-feature` to execute the unit tests via Vitest.

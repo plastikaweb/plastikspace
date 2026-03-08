@@ -32,7 +32,7 @@ describe('LayoutFacade', () => {
 
       store = TestBed.inject(Store);
       facade = TestBed.inject(LayoutFacade);
-      jest.spyOn(store, 'dispatch');
+      vi.spyOn(store, 'dispatch');
     });
 
     it('should be created', () => {
