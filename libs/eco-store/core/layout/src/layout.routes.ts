@@ -37,7 +37,7 @@ export const layoutRoutes: Route[] = [
         path: 'comanda',
         data: { hasSidenav: false },
         loadChildren: () =>
-          import('@plastik/eco-store/orders/feature').then(m => m.ecoStoreOrderConfirmationRoutes),
+          import('@plastik/eco-store/orders/created').then(m => m.ecoStoreOrderConfirmationRoutes),
       },
       {
         path: 'cistella',

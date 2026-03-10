@@ -66,13 +66,16 @@ export type NewEcoStoreOrder = Omit<
 >;
 
 /**
- * Generates a human-readable order number with date prefix and random suffix.
- * @returns {string} A formatted order number string in the format `YYMMDD-XXXX`.
+ * @description Generates a human-readable order number with tenant name, timestamp and random suffix.
+ * @param {string} tenantNormalizedName - The tenant normalized name.
+ * @returns {string} A formatted order number string in the format `ORD-TENANT-TIMESTAMP-XXX.
  */
-export const generateOrderNumber = (): string => {
-  const date = new Date().toISOString().slice(2, 10).replace(/-/g, '');
-  const random = Math.random().toString(36).substring(2, 6).toUpperCase();
-  return `${date}-${random}`;
+export const generateOrderNumber = (tenantNormalizedName: string): string => {
+  const timestamp = Date.now();
+  const random = Math.floor(Math.random() * 1000)
+    .toString()
+    .padStart(3, '0');
+  return `ORD-${tenantNormalizedName.toUpperCase()}-${timestamp}-${random}`;
 };
 
 /**

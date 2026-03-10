@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-10] - AI Agent Readiness & Modernization
+
+### Added
+
+- Created a comprehensive set of agent skills for **Cursor**, **Gemini**, and **OpenCode** IDEs, focusing on **Nx workspace management**, **CI monitoring**, and **automated dependency linking** ([#86c8r2534](https://app.clickup.com/t/86c8r2534)).
+- Added `AGENTS.md` to track and summarize the integration of agentic infrastructure.
+- Added `opencode.json` configuration for the **OpenCode** IDE integration.
+- Added pocketbase best practices skills.
+- Added a new internal path mapping for `@plastik/eco-store/orders/created` in `tsconfig.base.json`.
+
+### Changed
+
+- Standardized `generateOrderNumber` helper to include the normalized tenant name for better traceability ([#86c8r2534](https://app.clickup.com/t/86c8r2534)).
+- Improved `activityStore.setActivity` method with a default message fallback.
+- Restructured `eco-store-order-confirmation` feature into a new library `libs/eco-store/orders/feature/created` to follow modern naming conventions.
+- Formatted `tsconfig.base.json` for better readability and structure.
+
+### Fixed
+
+- Resolved redundant configuration in `cspell.json`.
+- Updated `.mcp.json` by removing legacy project-specific configurations.
+
+---
+
 ## [2026-03-10] - Hot Toast Notification
 
 ### Added

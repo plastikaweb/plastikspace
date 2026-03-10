@@ -499,6 +499,7 @@ export const ecoStoreCartStore = signalStore(
 
       toOrder(): NewEcoStoreOrder {
         const user = store._userProfileStore.user();
+        const tenant = store._tenantStore.tenant();
         const address = store.address();
         const method = store.method();
         const items = store.items();
@@ -508,7 +509,7 @@ export const ecoStoreCartStore = signalStore(
         }
 
         return {
-          orderNumber: generateOrderNumber(),
+          orderNumber: generateOrderNumber(tenant?.normalizedName ?? ''),
           user: user.id,
           items: items.map(toOrderItemSnapshot),
           status: 'PENDING',

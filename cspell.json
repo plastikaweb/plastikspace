@@ -13,6 +13,7 @@
   "ignoreRegExpList": ["86[a-z0-9]{7}"],
   "words": [
     "áéíóú",
+    "agentic",
     "Ahsan",
     "analogjs",
     "anthropics",
@@ -21,6 +22,7 @@
     "arrowdown",
     "Ayaz",
     "Benvigut",
+    "Buildability",
     "cipe",
     "classpath",
     "claude",

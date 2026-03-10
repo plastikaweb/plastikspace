@@ -38,6 +38,8 @@ ignores:
   - .claude/**
   - .zed/**
   - .dist/**
+  - .opencode/**
+  - .codex/**
   - tmp/**
 
 # Disable inline config comments
