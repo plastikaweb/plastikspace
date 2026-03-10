@@ -62,41 +62,6 @@ import {
   ɵɵlistener
 } from "./chunk-2OB7EGFP.js";
 
-// libs/shared/util/objects/src/util-objects.ts
-function isEmpty(obj) {
-  if (obj === null || obj === void 0)
-    return true;
-  return [Object, Array].includes(obj.constructor) && !Object.entries(obj).length;
-}
-function isNil(value) {
-  return value === void 0 || value === null;
-}
-function collectionToArray(collection) {
-  return Object.keys(collection).map((key) => collection[key]);
-}
-function deepClone(obj) {
-  if (obj === null || typeof obj !== "object") {
-    return obj;
-  }
-  if (obj instanceof Date) {
-    return new Date(obj.getTime());
-  }
-  if (obj instanceof RegExp) {
-    return new RegExp(obj);
-  }
-  if (Array.isArray(obj)) {
-    return obj.map((item) => deepClone(item));
-  }
-  if (typeof obj === "object") {
-    const cloned = {};
-    Object.keys(obj).forEach((key) => {
-      cloned[key] = deepClone(obj[key]);
-    });
-    return cloned;
-  }
-  return obj;
-}
-
 // node_modules/@angular/forms/fesm2022/forms.mjs
 var BaseControlValueAccessor = class _BaseControlValueAccessor {
   _renderer;
@@ -4893,11 +4858,7 @@ export {
   FormsModule,
   ReactiveFormsModule,
   MatPseudoCheckbox,
-  MatPseudoCheckboxModule,
-  isEmpty,
-  isNil,
-  collectionToArray,
-  deepClone
+  MatPseudoCheckboxModule
 };
 /*! Bundled license information:
 
@@ -4908,4 +4869,4 @@ export {
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-PATTRSRX.js.map
+//# sourceMappingURL=chunk-XUGZDF2N.js.map

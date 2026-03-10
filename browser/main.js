@@ -1,6 +1,6 @@
 import {
   notificationStore
-} from "./chunk-ZJXG6BZJ.js";
+} from "./chunk-6JEJ2J4N.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -55,9 +55,8 @@ import {
 } from "./chunk-A7UCKEWA.js";
 import {
   MatPseudoCheckboxModule,
-  NG_VALUE_ACCESSOR,
-  collectionToArray
-} from "./chunk-PATTRSRX.js";
+  NG_VALUE_ACCESSOR
+} from "./chunk-XUGZDF2N.js";
 import {
   SelectionModel
 } from "./chunk-OFNDAWR2.js";
@@ -5062,7 +5061,7 @@ function CoreCmsLayoutFeatureComponent_Defer_7_Template(rf, ctx) {
   }
   if (rf & 2) {
     const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("plastikSnackbar", ctx_r2.notificationStore.configuration());
+    \u0275\u0275property("plastikSnackbar", ctx_r2.notificationStore.configuration()[0]);
   }
 }
 function CoreCmsLayoutFeatureComponent_Defer_13_Template(rf, ctx) {
@@ -5444,7 +5443,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
 
 @defer (when notificationStore.configuration()) {
   <div
-    [plastikSnackbar]="notificationStore.configuration()"
+    [plastikSnackbar]="notificationStore.configuration()[0]"
     (sendDismiss)="notificationStore.dismiss()"></div>
 }
 
@@ -6513,6 +6512,9 @@ var StoreDevtoolsModule = _StoreDevtoolsModule;
 var FORM_TOKEN = new InjectionToken("FORM_TOKEN");
 
 // libs/core/entities/src/view-config.ts
+function collectionToArray(collection) {
+  return Object.keys(collection).map((key) => collection[key]);
+}
 function getVisibleNavigationList(viewsConfig) {
   return signal(collectionToArray(viewsConfig).filter((viewConfig2) => viewConfig2.includedInNavigation));
 }
@@ -6529,7 +6531,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-BWRCVCFA.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-2MAND4AI.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",

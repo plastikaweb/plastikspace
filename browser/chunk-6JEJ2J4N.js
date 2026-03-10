@@ -7,6 +7,9 @@ import {
   withMethods
 } from "./chunk-LNCGLYCJ.js";
 import {
+  LiveAnnouncer
+} from "./chunk-2NA4PHRB.js";
+import {
   Injectable,
   InjectionToken,
   Injector,
@@ -21,21 +24,18 @@ import {
 
 // libs/shared/notification/data-access/src/lib/+state/notification.store.ts
 var initialState = {
-  configuration: null,
+  configuration: [],
   preserveOnRouteRequest: false
 };
 var notificationStore = signalStore({ providedIn: "root" }, isDevMode() ? withDevtools("notification") : withDevToolsStub("notification"), withImmutableState(initialState), withMethods((store) => ({
   show: (configuration, preserveOnRouteRequest) => {
     updateState(store, `[notification] show`, {
-      configuration,
+      configuration: [...store.configuration(), configuration],
       preserveOnRouteRequest: preserveOnRouteRequest ?? false
     });
   },
   dismiss: () => {
-    updateState(store, `[notification] dismiss`, {
-      configuration: null,
-      preserveOnRouteRequest: false
-    });
+    updateState(store, `[notification] dismiss`, initialState);
   }
 })));
 
@@ -43,10 +43,9 @@ var notificationStore = signalStore({ providedIn: "root" }, isDevMode() ? withDe
 var defaultNotification = {
   ["ERROR"]: {
     type: "ERROR",
-    icon: "cancel",
+    icon: "error",
     action: "close",
-    ariaLabel: "Close error notification",
-    duration: void 0
+    duration: 5e3
   },
   ["WARNING"]: {
     type: "WARNING",
@@ -61,13 +60,14 @@ var defaultNotification = {
   ["SUCCESS"]: {
     type: "SUCCESS",
     icon: "check",
-    duration: 5e3
+    duration: 3e3
   }
 };
 var NOTIFICATION_TYPES_CONFIG = new InjectionToken("notification", {
   providedIn: "root",
   factory: () => defaultNotification
 });
+var NOTIFICATION_POSITION = new InjectionToken("notificationPosition");
 
 // libs/shared/notification/data-access/src/lib/services/notification-config.service.ts
 var NotificationConfigService = class _NotificationConfigService {
@@ -135,8 +135,29 @@ var ErrorHandlerService = class _ErrorHandlerService {
   }], null, null);
 })();
 
+// libs/shared/notification/data-access/src/lib/services/store-notification.service.ts
+var StoreNotificationService = class _StoreNotificationService {
+  #notificationService = inject(NotificationConfigService);
+  #notificationStore = inject(notificationStore);
+  #liveAnnouncer = inject(LiveAnnouncer);
+  create(message, type, parameters, preserve = true) {
+    this.#notificationStore.show(this.#notificationService.getInstance({ message, type, parameters }), preserve);
+    this.#liveAnnouncer.announce(message, "assertive", 1e3);
+  }
+  static \u0275fac = function StoreNotificationService_Factory(__ngFactoryType__) {
+    return new (__ngFactoryType__ || _StoreNotificationService)();
+  };
+  static \u0275prov = /* @__PURE__ */ \u0275\u0275defineInjectable({ token: _StoreNotificationService, factory: _StoreNotificationService.\u0275fac, providedIn: "root" });
+};
+(() => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(StoreNotificationService, [{
+    type: Injectable,
+    args: [{ providedIn: "root" }]
+  }], null, null);
+})();
+
 export {
   notificationStore,
   NotificationConfigService
 };
-//# sourceMappingURL=chunk-ZJXG6BZJ.js.map
+//# sourceMappingURL=chunk-6JEJ2J4N.js.map

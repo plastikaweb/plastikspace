@@ -7,7 +7,7 @@ import {
   NgControl,
   NgForm,
   Validators
-} from "./chunk-PATTRSRX.js";
+} from "./chunk-XUGZDF2N.js";
 import {
   SelectionModel,
   UniqueSelectionDispatcher
@@ -4714,6 +4714,38 @@ var MatPaginatorModule = class _MatPaginatorModule {
   }], null, null);
 })();
 
+// libs/shared/util/objects/src/util-objects.ts
+function isEmpty(obj) {
+  if (obj === null || obj === void 0)
+    return true;
+  return [Object, Array].includes(obj.constructor) && !Object.entries(obj).length;
+}
+function isNil(value) {
+  return value === void 0 || value === null;
+}
+function deepClone(obj) {
+  if (obj === null || typeof obj !== "object") {
+    return obj;
+  }
+  if (obj instanceof Date) {
+    return new Date(obj.getTime());
+  }
+  if (obj instanceof RegExp) {
+    return new RegExp(obj);
+  }
+  if (Array.isArray(obj)) {
+    return obj.map((item) => deepClone(item));
+  }
+  if (typeof obj === "object") {
+    const cloned = {};
+    Object.keys(obj).forEach((key) => {
+      cloned[key] = deepClone(obj[key]);
+    });
+    return cloned;
+  }
+  return obj;
+}
+
 // node_modules/@angular/material/fesm2022/_input-value-accessor-chunk.mjs
 var MAT_INPUT_VALUE_ACCESSOR = new InjectionToken("MAT_INPUT_VALUE_ACCESSOR");
 
@@ -6578,6 +6610,9 @@ export {
   MAT_PAGINATOR_DEFAULT_OPTIONS,
   MatPaginator,
   MatPaginatorModule,
+  isEmpty,
+  isNil,
+  deepClone,
   MAT_INPUT_VALUE_ACCESSOR,
   MatInput,
   MatInputModule,
@@ -6599,4 +6634,4 @@ export {
   isDynamicComponentTypeGuard,
   DEFAULT_TABLE_CONFIG
 };
-//# sourceMappingURL=chunk-CUC2MZM6.js.map
+//# sourceMappingURL=chunk-LUCTTFUW.js.map

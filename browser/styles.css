@@ -1124,6 +1124,9 @@ html {
     width: var(--spacing-sub);
     height: var(--spacing-sub);
   }
+  .h-1 {
+    height: calc(var(--spacing) * 1);
+  }
   .h-2 {
     height: calc(var(--spacing) * 2);
   }
@@ -1288,6 +1291,9 @@ html {
   }
   .w-12 {
     width: calc(var(--spacing) * 12);
+  }
+  .w-14 {
+    width: calc(var(--spacing) * 14);
   }
   .w-20 {
     width: calc(var(--spacing) * 20);
@@ -1549,6 +1555,13 @@ html {
   .-translate-x-1\/2 {
     --tw-translate-x: calc(calc(1/2 * 100%) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .translate-y-0 {
+    --tw-translate-y: var(--spacing-0);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .translate-none {
+    translate: none;
   }
   .scale-0 {
     --tw-scale-x: 0%;
@@ -2460,6 +2473,10 @@ html {
     --tw-leading: calc(var(--spacing) * 6);
     line-height: calc(var(--spacing) * 6);
   }
+  .leading-7 {
+    --tw-leading: calc(var(--spacing) * 7);
+    line-height: calc(var(--spacing) * 7);
+  }
   .leading-10 {
     --tw-leading: calc(var(--spacing) * 10);
     line-height: calc(var(--spacing) * 10);
@@ -2707,6 +2724,9 @@ html {
   }
   .opacity-80 {
     opacity: 80%;
+  }
+  .opacity-90 {
+    opacity: 90%;
   }
   .opacity-100 {
     opacity: 100%;
@@ -2972,8 +2992,8 @@ html {
     }
   }
   @media (hover: hover) {
-    .hover\:translate-y-\[-4px\]:hover {
-      --tw-translate-y: -4px;
+    .hover\:-translate-y-1:hover {
+      --tw-translate-y: calc(var(--spacing) * -1);
       translate: var(--tw-translate-x) var(--tw-translate-y);
     }
   }
