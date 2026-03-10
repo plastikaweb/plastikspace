@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { describe, expect, it } from 'vitest';
 import { axe } from 'vitest-axe';
 import { EcoStoreProductCardComponent } from './eco-store-product-card.component';
 

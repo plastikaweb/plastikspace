@@ -240,6 +240,8 @@
     }
   },
   "cart": {
+    "productAdded": "{name} - afegit",
+    "productRemoved": "{name} - eliminat",
     "steps": {
       "title": "Passos de la comanda",
       "summary": {

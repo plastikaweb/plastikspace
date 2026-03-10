@@ -11,6 +11,7 @@ import { loginFormConfig } from '@plastik/auth/login';
 import { pocketBaseIsNotLoggedGuard } from '@plastik/auth/pocketbase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { getEnvironment } from '@plastik/core/environments';
+import { NOTIFICATION_POSITION } from '@plastik/shared/notification/entities';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import { EcoStoreAuthLoginFacadeService } from './eco-store-auth-login/eco-store-auth-login-facade.service';
 
@@ -21,6 +22,13 @@ export const ecoStoreAuthLoginRoutes: Route[] = [
     component: EcoStoreAuthLoginComponent,
     canActivate: [pocketBaseIsNotLoggedGuard],
     providers: [
+      {
+        provide: NOTIFICATION_POSITION,
+        useValue: {
+          verticalPosition: 'top',
+          horizontalPosition: 'right',
+        },
+      },
       {
         provide: IMAGE_LOADER,
         useFactory: () => pocketBaseStorageLoader(getEnvironment().baseApiUrl),

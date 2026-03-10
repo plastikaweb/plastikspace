@@ -5,6 +5,7 @@ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { describe, expect, it } from 'vitest';
 import { axe } from 'vitest-axe';
 import { CartSummaryComponent } from './cart-summary.component';
 

@@ -6,6 +6,7 @@ import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { provideEnvironmentPocketBaseMock } from '@plastik/core/environments/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { describe, expect, it } from 'vitest';
 import { axe } from 'vitest-axe';
 import EcoStoreProductsSidenavFeatureComponent from './eco-store-products-sidenav-feature.component';
 

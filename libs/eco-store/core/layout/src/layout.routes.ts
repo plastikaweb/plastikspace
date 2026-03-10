@@ -1,15 +1,12 @@
-import { IMAGE_LOADER } from '@angular/common';
 import { DEFAULT_CURRENCY_CODE, importProvidersFrom, inject } from '@angular/core';
 import { ActivatedRouteSnapshot, Route } from '@angular/router';
 
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
-import { getEnvironment } from '@plastik/core/environments';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
 import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
-import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import EcoLayoutComponent from './layout.component';
 
 export const layoutRoutes: Route[] = [
@@ -24,10 +21,6 @@ export const layoutRoutes: Route[] = [
       {
         provide: DEFAULT_CURRENCY_CODE,
         useValue: 'EUR',
-      },
-      {
-        provide: IMAGE_LOADER,
-        useFactory: () => pocketBaseStorageLoader(getEnvironment().baseApiUrl),
       },
       {
         provide: MatPaginatorIntl,

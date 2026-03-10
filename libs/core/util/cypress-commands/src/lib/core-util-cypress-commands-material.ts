@@ -1,5 +1,3 @@
-/// <reference types="cypress" />
-
 import { MatDatepickerInputHarness } from '@angular/material/datepicker/testing';
 import { MatInputHarness } from '@angular/material/input/testing';
 

@@ -199,6 +199,7 @@ Reusable features and UI components.
 - [**table**](libs/shared/table/ui/README.md)
 - [**form**](libs/shared/form/feature/README.md)
 - [**notification**](libs/shared/notification/data-access/README.md)
+- [**notification-ui-hot-toast**](libs/shared/notification/ui/hot-toast/README.md)
 - [**activity**](libs/shared/activity/ui/README.md)
 - [**img-container**](libs/shared/img-container/ui/README.md)
 - [**mat-theme-toggle**](libs/shared/mat-theme-toggle/README.md)

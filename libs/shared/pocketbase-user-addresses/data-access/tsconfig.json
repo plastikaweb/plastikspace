@@ -10,6 +10,7 @@
     "noFallthroughCasesInSwitch": true,
     "inlineSources": true,
     "composite": true,
+    "declaration": true,
     "types": []
   },
   "files": [],

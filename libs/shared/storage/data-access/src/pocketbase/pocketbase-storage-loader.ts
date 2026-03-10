@@ -39,17 +39,25 @@ export function pocketBaseStorageLoader(baseUrl: string) {
           availableThumbs[availableThumbs.length - 1];
 
         // PocketBase format is WxH, we use the same value for both to match square thumbs in schema
-        params = `?thumb=${bestThumb}x${bestThumb}`;
+        params = `thumb=${bestThumb}x${bestThumb}`;
       } else if (loaderParams?.height && loaderParams?.width) {
         // Fallback for explicitly typed old dimensions format if used directly
-        params = `?thumb=${loaderParams.width}x${loaderParams.height}`;
+        params = `thumb=${loaderParams.width}x${loaderParams.height}`;
       }
 
       // Add format=webp and quality if supported by PocketBase
-      const format = '&format=webp';
-      const quality = loaderParams?.quality ? `&quality=${loaderParams.quality}` : '';
+      const queryParams: string[] = [];
+      if (params) {
+        queryParams.push(params);
+      }
+      queryParams.push('format=webp');
+      if (loaderParams?.quality) {
+        queryParams.push(`quality=${loaderParams.quality}`);
+      }
 
-      return `${baseUrl}api/files/${src}${params}${format}${quality}`;
+      const queryString = queryParams.length > 0 ? `?${queryParams.join('&')}` : '';
+
+      return `${baseUrl}api/files/${src}${queryString}`;
     } catch {
       // console.error('[PocketBase Loader] Error:', error);
       return '';

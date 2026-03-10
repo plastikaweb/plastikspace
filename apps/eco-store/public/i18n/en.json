@@ -240,6 +240,8 @@
     }
   },
   "cart": {
+    "productAdded": "{name} - added",
+    "productRemoved": "{name} - removed",
     "steps": {
       "title": "Order steps",
       "summary": {

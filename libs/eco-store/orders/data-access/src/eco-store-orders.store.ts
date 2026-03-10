@@ -41,9 +41,9 @@ export const ecoStoreOrdersStore = signalStore(
       async createOrder() {
         store._activityStore.setActivity(true, 'cart.finish.creatingOrder');
         const data = store._cartStore.toOrder();
-        const newOrder = await store.create(data);
+        const newOrder = await store.create(data, {}, { success: false, error: true });
         store._cartStore.resetCartAfterCheckout();
-        await store._router.navigate(['/comanda', newOrder.id]);
+        await store._router.navigate(['/comanda', newOrder?.id]);
         store._activityStore.setActivity(false);
       },
     };

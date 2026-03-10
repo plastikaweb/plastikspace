@@ -1,0 +1,39 @@
+<ng-template #toastTemplate let-toastRef>
+  <div
+    class="flex items-center justify-center gap-2 text-sm leading-7"
+    role="alert"
+    aria-live="polite">
+    @if (mergedNotification()?.icon) {
+      <mat-icon class="icon-wrapper">{{ mergedNotification()?.icon }}</mat-icon>
+    }
+
+    <div class="flex items-center gap-2">
+      @if (mergedNotification()?.message) {
+        <div class="truncate font-bold">
+          {{ mergedNotification()?.message | translate: mergedNotification()?.parameters }}
+        </div>
+      }
+
+      @if (mergedNotification()?.name) {
+        <div class="truncate text-sm opacity-90">
+          {{ mergedNotification()?.name }}
+        </div>
+      }
+
+      @if (notificationImage()) {
+        <plastik-img-container
+          class="h-14 w-14 overflow-hidden rounded-lg object-cover shadow-sm"
+          [src]="notificationImage()"
+          [title]="notificationName()"
+          [dimensions]="{ width: 150, height: 150 }">
+        </plastik-img-container>
+      }
+    </div>
+
+    @if (mergedNotification()?.duration) {
+      <div
+        class="shrink-line-animation absolute right-0 bottom-0 left-0 h-1 rounded"
+        [style.--shrink-line-animation-duration]="mergedNotification()?.duration + 'ms'"></div>
+    }
+  </div>
+</ng-template>

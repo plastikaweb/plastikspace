@@ -10,7 +10,7 @@
 
 @defer (when !!notificationStore.configuration()) {
   <div
-    [plastikSnackbar]="notificationStore.configuration()"
+    [plastikSnackbar]="notificationStore.configuration()[0]"
     (sendDismiss)="notificationStore.dismiss()"></div>
 }
 

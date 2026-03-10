@@ -80,6 +80,23 @@ export class FeatureComponent {
 }
 ```
 
+### Store Notification Service
+
+Inject `StoreNotificationService` for a simpler way to trigger notifications with accessibility support (LiveAnnouncer).
+
+```typescript
+import { StoreNotificationService } from './lib/services/store-notification.service';
+
+@Component({ ... })
+export class MyComponent {
+  private readonly notificationService = inject(StoreNotificationService);
+
+  onSuccess() {
+    this.notificationService.create('Success message!', 'SUCCESS');
+  }
+}
+```
+
 ## Error Handler
 
 Add `ErrorHandlerService` to `app.config.ts` to automatically catch errors and show notifications.

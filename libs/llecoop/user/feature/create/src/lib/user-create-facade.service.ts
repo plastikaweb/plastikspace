@@ -3,8 +3,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { DetailItemViewFacade } from '@plastik/core/detail-edit-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
-import { StoreNotificationService } from '@plastik/signal-state/firebase';
-
+import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { userFeatureCreateFormConfig } from './user-feature-create-form.config';
 
 @Injectable({

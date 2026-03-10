@@ -10,7 +10,8 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "module": "preserve",
-    "composite": true
+    "composite": true,
+    "declaration": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

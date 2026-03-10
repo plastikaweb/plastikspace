@@ -1,6 +1,6 @@
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
-import 'vitest-axe/extend-expect';
 
 import { provideHttpClient } from '@angular/common/http';
 import { provideZonelessChangeDetection, signal } from '@angular/core';

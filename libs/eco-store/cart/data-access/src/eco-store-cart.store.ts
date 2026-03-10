@@ -33,8 +33,9 @@ import {
   toOrderItemSnapshot,
 } from '@plastik/eco-store/entities';
 import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
+import { getPocketBaseImageUrl } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-import { notificationStore } from '@plastik/shared/notification/data-access';
+import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { catchError, firstValueFrom, of, take } from 'rxjs';
 import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
 
@@ -92,7 +93,7 @@ export const ecoStoreCartStore = signalStore(
     _cartsService: inject(EcoStoreCartsApiService),
     _productsService: inject(EcoStoreProductsApiService),
     _tenantStore: inject(ecoStoreTenantStore),
-    _notificationStore: inject(notificationStore),
+    _notificationService: inject(StoreNotificationService),
     _translateService: inject(TranslateService),
     _liveAnnouncer: inject(LiveAnnouncer),
   })),
@@ -122,15 +123,8 @@ export const ecoStoreCartStore = signalStore(
       const status = store._tenantStore.storeStatus();
       if (status === 'CLOSED' || status === 'CLOSED_MANUALLY') {
         const message = store._translateService.instant('store.status.closedMessage');
+        store._notificationService.create(message, 'ERROR');
 
-        store._liveAnnouncer.announce(message, 'assertive', 5000);
-
-        store._notificationStore.show({
-          type: 'WARNING',
-          message,
-          action: 'common.notification.close',
-          duration: 5000,
-        });
         return false;
       }
       return true;
@@ -188,10 +182,23 @@ export const ecoStoreCartStore = signalStore(
           }
         )
       );
+      store._notificationService.create('cart.productAdded', 'SUCCESS', {
+        name: product.name,
+        image: getPocketBaseImageUrl(product, product.images?.[0]),
+      });
     };
 
     const _removeItem = (productId: EcoStoreProductWithCategoryName['id']) => {
+      const name = store.entityMap()[productId]?.product.name;
+      const image = getPocketBaseImageUrl(
+        store.entityMap()[productId]?.product,
+        store.entityMap()[productId]?.product.images?.[0]
+      );
       updateState(store, `[cart] remove item ${productId}`, removeEntity(productId));
+      store._notificationService.create('cart.productRemoved', 'SUCCESS', {
+        name,
+        image,
+      });
     };
 
     const _stripUIProps = (items: EcoStoreCartItem[]) => {
