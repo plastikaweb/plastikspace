@@ -14,7 +14,7 @@ import { EntityState, setAllEntities, setEntity, withEntities } from '@ngrx/sign
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { DataGet, DataGetList } from '@plastik/core/api-base';
 import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
-import { notificationStore } from '@plastik/shared/notification/data-access';
+import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { areObjectEntriesEqual } from '@plastik/shared/objects';
 import { ClientResponseError, ListResult } from 'pocketbase';
 import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
@@ -60,7 +60,7 @@ export function withPocketBaseListFeature<
     withEntities<T>(),
     withProps(() => ({
       _apiService: inject(dataServiceType),
-      _storeNotificationService: inject(notificationStore),
+      _notificationService: inject(StoreNotificationService),
     })),
     withComputed(({ pagination, sort, filter }) => ({
       formattedParams: computed(() => {
@@ -80,15 +80,6 @@ export function withPocketBaseListFeature<
     })),
 
     withMethods(store => {
-      const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
-        store._storeNotificationService.show({
-          type,
-          message,
-          action: 'notification.close-short',
-          duration: 5000,
-        });
-      };
-
       return {
         getItemById: (id: IdType<T>) => store.entityMap()[id],
         getList: rxMethod<{ params: ReturnType<typeof store.formattedParams> }>(
@@ -121,7 +112,7 @@ export function withPocketBaseListFeature<
                       isLoading: false,
                       error: message,
                     });
-                    showNotification('ERROR', message);
+                    store._notificationService.create(message, 'ERROR');
                   },
                 })
               );
@@ -160,21 +151,12 @@ export function withPocketBaseGetOneFeature<
     {
       props: type<{
         _apiService: S;
-        _storeNotificationService: InstanceType<typeof notificationStore>;
+        _notificationService: StoreNotificationService;
       }>(),
       state: type<EntityState<T>>(),
     },
     withImmutableState<PocketbaseGetOne<T>>({ selectedItemId: null as IdType<T> | null }),
     withMethods(store => {
-      const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
-        store._storeNotificationService.show({
-          type,
-          message,
-          action: 'notification.close-short',
-          duration: 5000,
-        });
-      };
-
       return {
         getOne: rxMethod<IdType<T>>(
           pipe(
@@ -195,7 +177,10 @@ export function withPocketBaseGetOneFeature<
                     );
                   },
                   error: error => {
-                    showNotification('ERROR', error.message ?? `${featureName}.getOne.error`);
+                    store._notificationService.create(
+                      error.message ?? `${featureName}.getOne.error`,
+                      'ERROR'
+                    );
                   },
                 })
               );

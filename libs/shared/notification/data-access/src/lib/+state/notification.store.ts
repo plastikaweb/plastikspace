@@ -9,12 +9,12 @@ import { signalStore, withMethods } from '@ngrx/signals';
 import { Notification } from '@plastik/shared/notification/entities';
 
 export interface NotificationState {
-  configuration: Notification | null;
+  configuration: Notification[];
   preserveOnRouteRequest: boolean;
 }
 
 const initialState: NotificationState = {
-  configuration: null,
+  configuration: [],
   preserveOnRouteRequest: false,
 };
 
@@ -25,15 +25,12 @@ export const notificationStore = signalStore(
   withMethods(store => ({
     show: (configuration: Notification, preserveOnRouteRequest?: boolean) => {
       updateState(store, `[notification] show`, {
-        configuration,
+        configuration: [...store.configuration(), configuration],
         preserveOnRouteRequest: preserveOnRouteRequest ?? false,
       });
     },
     dismiss: () => {
-      updateState(store, `[notification] dismiss`, {
-        configuration: null,
-        preserveOnRouteRequest: false,
-      });
+      updateState(store, `[notification] dismiss`, initialState);
     },
   }))
 );

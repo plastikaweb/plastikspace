@@ -8,12 +8,15 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
+import { notificationStore } from '@plastik/shared/notification/data-access';
+import { SharedNotificationUiHotToastComponent } from '@plastik/shared/notification/ui/hot-toast';
 import { SkipLinkComponent } from '@plastik/shared/skip-link';
 
 @Component({
   imports: [
     RouterOutlet,
     SharedActivityUiOverlayComponent,
+    SharedNotificationUiHotToastComponent,
     TranslateModule,
     SkipLinkComponent,
     A11yModule,
@@ -30,6 +33,7 @@ export class AppComponent implements OnInit {
   readonly #translate = inject(TranslateService);
   readonly #environment = inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
   protected readonly activityStore = inject(activityStore);
+  protected readonly notificationStore = inject(notificationStore);
   readonly #document = inject(DOCUMENT);
   readonly #focusMonitor = inject(FocusMonitor);
   readonly #renderer = inject(Renderer2);

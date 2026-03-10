@@ -41,23 +41,19 @@ export function withPocketBaseCrud<
     withPocketBaseGetOneFeature<T, S>({ featureName }),
 
     withMethods(store => {
-      const showNotification = (type: 'SUCCESS' | 'ERROR', message: string): void => {
-        store._storeNotificationService.show({
-          type,
-          message,
-          action: 'notification.close-short',
-          duration: 5000,
-        });
-      };
-
       return {
         /**
          * @description Create a new record in PocketBase and update the local entity store.
          * @param {Partial<T>} data - The record data.
          * @param {RecordOptions} options - Optional PocketBase record options.
+         * @param { {success: boolean, error: boolean } } showNotification - Whether to show notifications.
          * @returns {Promise<T>} The created record.
          */
-        async create(data: Partial<T>, options?: RecordOptions): Promise<T> {
+        async create(
+          data: Partial<T>,
+          options?: RecordOptions,
+          showNotification = { success: true, error: true }
+        ): Promise<T | void> {
           updateState(store, `[${featureName}] create`);
           try {
             const createdItem = await firstValueFrom(store._apiService.create(data, options));
@@ -71,12 +67,15 @@ export function withPocketBaseCrud<
                 count: store.count() + 1,
               }
             );
-            showNotification('SUCCESS', `${featureName}.create.success`);
+            if (showNotification.success) {
+              store._notificationService.create(`${featureName}.create.success`, 'SUCCESS');
+            }
             return createdItem;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.create.error`;
-            showNotification('ERROR', message);
-            throw error;
+            if (showNotification.error) {
+              store._notificationService.create(message, 'ERROR');
+            }
           }
         },
 
@@ -85,9 +84,15 @@ export function withPocketBaseCrud<
          * @param {IdType<T>} id - The record ID.
          * @param {Partial<T>} data - The record data.
          * @param {RecordOptions} options - Optional PocketBase record options.
+         * @param { {success: boolean, error: boolean } } showNotification - Whether to show notifications.
          * @returns {Promise<T>} The updated record.
          */
-        async update(id: IdType<T>, data: Partial<T>, options?: RecordOptions): Promise<T> {
+        async update(
+          id: IdType<T>,
+          data: Partial<T>,
+          options?: RecordOptions,
+          showNotification = { success: true, error: true }
+        ): Promise<T | void> {
           updateState(store, `[${featureName}] update`);
           try {
             const updatedItem = await firstValueFrom(store._apiService.update(id, data, options));
@@ -101,21 +106,28 @@ export function withPocketBaseCrud<
                 })
               );
             }
-            showNotification('SUCCESS', `${featureName}.update.success`);
+            if (showNotification.success) {
+              store._notificationService.create(`${featureName}.update.success`, 'SUCCESS');
+            }
             return updatedItem as T;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.update.error`;
-            showNotification('ERROR', message);
-            throw error;
+            if (showNotification.error) {
+              store._notificationService.create(message, 'ERROR');
+            }
           }
         },
 
         /**
          * @description Delete a record from PocketBase and remove it from the local entity store.
          * @param {IdType<T>} id - The record ID.
+         * @param { {success: boolean, error: boolean } } showNotification - Whether to show notifications.
          * @returns {Promise<boolean>} True if the record was deleted successfully.
          */
-        async delete(id: IdType<T>): Promise<boolean> {
+        async delete(
+          id: IdType<T>,
+          showNotification = { success: true, error: true }
+        ): Promise<boolean> {
           updateState(store, `[${featureName}] delete`);
           try {
             await firstValueFrom(store._apiService.delete(id));
@@ -123,12 +135,16 @@ export function withPocketBaseCrud<
               count: Math.max(0, store.count() - 1),
               selectedItemId: store.selectedItemId() === id ? null : store.selectedItemId(),
             });
-            showNotification('SUCCESS', `${featureName}.delete.success`);
+            if (showNotification.success) {
+              store._notificationService.create(`${featureName}.delete.success`, 'SUCCESS');
+            }
             return true;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.delete.error`;
-            showNotification('ERROR', message);
-            throw error;
+            if (showNotification.error) {
+              store._notificationService.create(message, 'ERROR');
+            }
+            return false;
           }
         },
       };

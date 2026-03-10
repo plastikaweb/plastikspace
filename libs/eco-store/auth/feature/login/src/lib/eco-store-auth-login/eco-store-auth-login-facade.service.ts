@@ -32,7 +32,7 @@ export class EcoStoreAuthLoginFacadeService implements AuthFormFacade<LoginData>
     const tenantId = this.#tenantStore.tenant()?.id;
     const user = this.#profileStore.user();
 
-    if (tenantId && user?.tenant !== tenantId) {
+    if (tenantId && user && user?.tenant !== tenantId) {
       this.#profileStore.logout();
       throw new Error('User does not belong to this tenant');
     }

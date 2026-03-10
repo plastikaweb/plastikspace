@@ -5256,6 +5256,13 @@
     "@emnapi/runtime" "^1.7.1"
     "@tybys/wasm-util" "^0.10.1"
 
+"@ngneat/overview@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@ngneat/overview/-/overview-7.0.0.tgz#9325a826f0e92571b9c9e99a22bece2ead8421fd"
+  integrity sha512-nWSyoWHYGTyE6miNQ1AV2Or9yB+JcEwfQlCPhigq39HUd/Y40J28dAslIN2FCpAONBu2hm4XpYMb+Ya1DUgR2g==
+  dependencies:
+    tslib "^2.0.0"
+
 "@ngrx/component@^21.0.1":
   version "21.0.1"
   resolved "https://registry.yarnpkg.com/@ngrx/component/-/component-21.0.1.tgz#2c773d1ccb85ff4753fe863e709571bb9a3ec194"
@@ -5356,6 +5363,13 @@
   version "17.0.0"
   resolved "https://registry.yarnpkg.com/@ngx-translate/http-loader/-/http-loader-17.0.0.tgz#6ab727e780189a9a5e80059c758dc95de93608ea"
   integrity sha512-hgS8sa0ARjH9ll3PhkLTufeVXNI2DNR2uFKDhBgq13siUXzzVr/a31M6zgecrtwbA34iaBV01hsTMbMS8V7iIw==
+  dependencies:
+    tslib "^2.3.0"
+
+"@ngxpert/hot-toast@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/@ngxpert/hot-toast/-/hot-toast-6.1.0.tgz#397b9146a73a097aba3890e01ebfecb2f02d3ac8"
+  integrity sha512-eD0kYsoi7/lkdxnHuBfdAM0NeInMAjWQHHJgKlkInGn60tmcGjFGWow7l/ZPOdZEjKq4ARhDsA7yDrXMG4J+UQ==
   dependencies:
     tslib "^2.3.0"
 

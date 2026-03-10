@@ -171,6 +171,9 @@
       "@plastik/shared/notification/ui/mat-snackbar": [
         "libs/shared/notification/ui/mat-snackbar/src/index.ts"
       ],
+      "@plastik/shared/notification/ui/hot-toast": [
+        "libs/shared/notification/ui/hot-toast/src/index.ts"
+      ],
       "@plastik/shared/objects": ["libs/shared/util/objects/src/index.ts"],
       "@plastik/shared/return-as-observable": [
         "libs/shared/util/return-as-observable-pipe/src/index.ts"

@@ -1,6 +1,14 @@
 import { signal, Signal } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
-import { collectionToArray } from '@plastik/shared/objects';
+
+/**
+ * @description Converts a record to an array.
+ * @param {Record<string, T>} collection The record to convert
+ * @returns {T[]} An array of the record's values
+ */
+function collectionToArray<T>(collection: Record<string, T>): T[] {
+  return Object.keys(collection).map((key: string) => collection[key]);
+}
 
 /**
  * @description A shape for a concrete UI view.

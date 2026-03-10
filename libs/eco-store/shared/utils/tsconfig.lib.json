@@ -1,10 +1,16 @@
 {
   "extends": "./tsconfig.json",
+  "references": [
+    {
+      "path": "../../core/entities"
+    }
+  ],
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
+    "composite": true,
     "types": []
   },
   "exclude": [

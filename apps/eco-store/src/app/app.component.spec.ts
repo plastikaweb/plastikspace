@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
+import { describe, expect, it } from 'vitest';
 import { axe } from 'vitest-axe';
 import { AppComponent } from './app.component';
 

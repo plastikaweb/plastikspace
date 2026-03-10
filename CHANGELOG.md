@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-10] - Hot Toast Notification
+
+### Added
+
+- Added hot toast shared library (`shared/notification/ui/hot-toast`) and applied it to the `eco-store` app ([#86c8cjgk7](https://app.clickup.com/t/86c8cjgk7))
+  - Integrated `SharedNotificationUiHotToastComponent` into `AppComponent`.
+  - Added notification configuration to `notificationStore`.
+  - Added `productAdded` and `productRemoved` i18n keys for cart notifications.
+  - Added path mapping for `@plastik/shared/notification/ui/hot-toast` in `tsconfig.base.json`.
+
+### Changed
+
+- Updated `README.md` with the new hot toast shared library.
+- Standardized Vitest setup files and naming conventions (`setup-vitest.d.ts`) across multiple shared libraries.
+- Aligned `tsconfig.lib.json` and `tsconfig.spec.json` configurations for better project consistency.
+
+### Fixed
+
+- Fixed `$schema` path in `shared-notification-entities` project configuration.
+- Improved `pocketBaseStorageLoader` query parameter handling for better URL generation.
+
+---
+
 ## [2026-03-07] - Vitest Migration & Systemic Fixes
 
 ### Changed

@@ -1,7 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { describe, expect, it } from 'vitest';
 import { axe } from 'vitest-axe';
+import 'vitest-axe/extend-expect';
 import { EcoFooterComponent } from './footer.component';
 
 describe('FooterComponent', () => {

@@ -43,6 +43,13 @@
   </plastik-shared-activity-ui-overlay>
 }
 
+@let notification = notificationStore.configuration();
+@defer (when notification) {
+  @for (item of notification; track item) {
+    <plastik-shared-notification-ui-hot-toast [notification]="item" />
+  }
+}
+
 @defer {
   <plastik-skip-link></plastik-skip-link>
 }

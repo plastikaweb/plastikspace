@@ -18,6 +18,9 @@
     },
     {
       "path": "../../../shared/notification/data-access"
+    },
+    {
+      "path": "../../shared/utils"
     }
   ],
   "compilerOptions": {

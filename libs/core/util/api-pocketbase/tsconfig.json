@@ -11,7 +11,8 @@
     "noPropertyAccessFromIndexSignature": true,
     "moduleResolution": "bundler",
     "lib": ["dom", "es2022"],
-    "composite": true
+    "composite": true,
+    "declaration": true
   },
   "files": [],
   "include": [],

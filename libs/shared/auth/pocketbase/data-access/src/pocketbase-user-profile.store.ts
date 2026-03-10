@@ -8,6 +8,7 @@ import { computed, inject, isDevMode } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { LoginData } from '@plastik/auth/entities';
 import { PocketBaseUser, PocketBaseUserAddress, UserContact } from '@plastik/core/entities';
+import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { PocketBaseUserAddressService } from '@plastik/shared/pocketbase-user-addresses';
 import { lastValueFrom } from 'rxjs';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
@@ -35,6 +36,7 @@ export const pocketBaseUserProfileStore = signalStore(
   withProps(() => ({
     _userAddressService: inject(PocketBaseUserAddressService),
     _authService: inject(PocketBaseAuthService),
+    _notificationService: inject(StoreNotificationService),
   })),
   withComputed(store => ({
     userInitials: computed(() =>
@@ -79,9 +81,8 @@ export const pocketBaseUserProfileStore = signalStore(
           isLoading: false,
         });
       } catch (error) {
-        const errorMessage = error instanceof Error ? error.message : 'auth.error.login';
-        updateState(store, `[profile] login failed ${errorMessage}`, { isLoading: false });
-        throw new Error(errorMessage);
+        updateState(store, `[profile] login failed ${error}`, { isLoading: false });
+        store._notificationService.create('auth.error.login', 'ERROR');
       }
     },
 
@@ -124,6 +125,7 @@ export const pocketBaseUserProfileStore = signalStore(
           addressesLoaded: false,
           isLoading: false,
         });
+        store._notificationService.create('auth.error.userAddresses', 'ERROR');
       }
     },
   })),

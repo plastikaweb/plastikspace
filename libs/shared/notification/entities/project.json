@@ -1,6 +1,6 @@
 {
   "name": "shared-notification-entities",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/shared/notification/entities/src",
   "prefix": "plastik",

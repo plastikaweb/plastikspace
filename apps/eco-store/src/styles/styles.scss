@@ -10,3 +10,6 @@
 @use 'animations';
 @use 'components';
 @use 'utilities';
+
+@use '@ngxpert/hot-toast/src/styles/styles.scss';
+@use 'notification-ui-hot-toast';

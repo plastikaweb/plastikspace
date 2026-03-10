@@ -26,13 +26,13 @@ import { activityStore } from '@plastik/shared/activity/data-access';
 import { areObjectEntriesEqual } from '@plastik/shared/objects';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 
+import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { FirebaseServiceType } from './firebase-service.type';
 import {
   FirebaseCrudFilter,
   FirebaseCrudPagination,
   FirebaseCrudState,
 } from './store-firebase-crud';
-import { StoreNotificationService } from './store-notification.service';
 
 export type StoreFirebaseCrudFeature<
   T extends BaseEntity,
