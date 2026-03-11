@@ -30,6 +30,9 @@
   "references": [
     {
       "path": "../../../core/entities"
+    },
+    {
+      "path": "../../../shared/util/entities"
     }
   ]
 }

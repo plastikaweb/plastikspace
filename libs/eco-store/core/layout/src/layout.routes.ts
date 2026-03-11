@@ -34,10 +34,22 @@ export const layoutRoutes: Route[] = [
     ],
     children: [
       {
-        path: 'comanda',
+        path: 'comandes',
         data: { hasSidenav: false },
-        loadChildren: () =>
-          import('@plastik/eco-store/orders/feature').then(m => m.ecoStoreOrderConfirmationRoutes),
+        children: [
+          {
+            path: 'nova',
+            loadChildren: () =>
+              import('@plastik/eco-store/orders/created').then(
+                m => m.ecoStoreOrderConfirmationRoutes
+              ),
+          },
+          {
+            path: '',
+            loadChildren: () =>
+              import('@plastik/eco-store/orders/list').then(m => m.ecoStoreOrdersListRoutes),
+          },
+        ],
       },
       {
         path: 'cistella',
@@ -67,6 +79,7 @@ export const layoutRoutes: Route[] = [
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },
+
       {
         path: '**',
         redirectTo: 'botiga',

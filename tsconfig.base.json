@@ -266,8 +266,9 @@
       "@plastik/shared/chip/ui": ["libs/shared/chip/ui/src/index.ts"],
       "@plastik/shared/util/view-transition": ["libs/shared/util/view-transition/src/index.ts"],
       "@plastik/eco-store/orders/data-access": ["libs/eco-store/orders/data-access/src/index.ts"],
-      "@plastik/eco-store/orders/feature": ["libs/eco-store/orders/feature/src/index.ts"],
-      "@plastik/eco-store/core/router-state": ["libs/eco-store/core/router/src/index.ts"]
+      "@plastik/eco-store/core/router-state": ["libs/eco-store/core/router/src/index.ts"],
+      "@plastik/eco-store/orders/created": ["libs/eco-store/orders/feature/created/src/index.ts"],
+      "@plastik/eco-store/orders/list": ["libs/eco-store/orders/feature/list/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

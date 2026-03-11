@@ -49,6 +49,7 @@ export default class EcoStoreProductsFeatureComponent {
     source: () => ({
       isLoading: this.productsStore.isLoading(),
       perPage: this.productsStore.getPagination().perPage,
+      page: this.productsStore.getPagination().page,
       category: (this.productsStore.filter() as ProductsPocketBaseFilter).category,
       entities: this.#categoriesStore.entities(),
       totalProducts: this.#categoriesStore.totalProducts(),
@@ -59,8 +60,9 @@ export default class EcoStoreProductsFeatureComponent {
           ? s.entities.find(c => c.category === s.category)?.totalProducts || 0
           : s.totalProducts;
 
-        const count = selectedCategoryCount || s.perPage;
-        return Array(Math.min(count, s.perPage)).fill(0);
+        const remaining = selectedCategoryCount - s.page * s.perPage;
+        const count = Math.max(0, Math.min(s.perPage, remaining));
+        return Array(count).fill(0);
       }
       return [];
     },

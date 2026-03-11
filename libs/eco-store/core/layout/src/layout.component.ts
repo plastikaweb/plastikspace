@@ -30,10 +30,11 @@ import { EcoMenuComponent } from './menu/menu.component';
 import { EcoMobileNavComponent } from './mobile-nav/mobile-nav.component';
 import { EcoTenantLogoComponent } from './tenant-logo/tenant-logo.component';
 
+import { MatDivider } from '@angular/material/divider';
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
-import { appSearchFormConfig } from './app.search-form.config';
 import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { appSearchFormConfig } from './app.search-form.config';
 
 @Component({
   imports: [
@@ -51,6 +52,7 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
     MatButtonModule,
     EcoTenantLogoComponent,
     EcoMobileNavComponent,
+    MatDivider,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

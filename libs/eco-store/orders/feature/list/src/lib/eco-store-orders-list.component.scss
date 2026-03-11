@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  --min-col-width: 600px;
+  --order-gap: 1.5rem;
+
+  .orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
+    gap: var(--order-gap);
+
+    &:has(.empty-state) {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+    }
+  }
+
+  .empty-icon {
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-50),
+      )
+    );
+  }
+
+  button {
+    @include mat.icon-overrides(
+      (
+        color: var(--white),
+      )
+    );
+  }
+}

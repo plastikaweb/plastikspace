@@ -24,7 +24,7 @@ export const activityStore = signalStore(
   withImmutableState<ActivityState>(initialState),
   withReset(),
   withMethods(store => ({
-    setActivity(isActive: boolean, message?: string) {
+    setActivity(isActive: boolean, message = initialState.message) {
       updateState(store, `[activity] ${isActive ? 'on' : 'off'} ${message}`, {
         isActive,
         message: message ?? initialState.message,

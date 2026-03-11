@@ -80,11 +80,6 @@
     },
     "error": {
       "login": "Check your credentials"
-    },
-    "roles": {
-      "PARTNER": "Cooperative Partner",
-      "GLOBAL_ADMIN": "Super Admin",
-      "CLIENT_ADMIN": "Admin"
     }
   },
   "store": {
@@ -385,6 +380,42 @@
       "ordersHistory": "Order history",
       "backToStore": "Back to store",
       "ecoBadgeAlt": "Local and proximity product seal"
+    }
+  },
+  "orders": {
+    "list": {
+      "title": "My orders",
+      "description": "Manage and view your sustainable purchase history.",
+      "loading": "Loading orders",
+      "list": "List of orders",
+      "empty": "You don't have any orders yet.",
+      "emptyDescription": "It looks like you haven't made any purchases yet. Discover our ecological and local products!",
+      "goToStore": "Go to store"
+    },
+    "card": {
+      "label": "Order",
+      "items": "{count, plural, one {# product} other {# products}}",
+      "deliveryMethod": "Delivery method",
+      "viewDetail": "View detail"
+    },
+    "deliveryMethod": {
+      "delivery": "Home delivery",
+      "pickup": "Store pickup"
+    },
+    "status": {
+      "delivered": "Delivered",
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "preparing": "Preparing",
+      "ready": "Ready",
+      "cancelled": "Cancelled"
+    }
+  },
+  "users": {
+    "role": {
+      "PARTNER": "Cooperative Partner",
+      "GLOBAL_ADMIN": "Super Admin",
+      "TENANT_ADMIN": "Admin"
     }
   }
 }

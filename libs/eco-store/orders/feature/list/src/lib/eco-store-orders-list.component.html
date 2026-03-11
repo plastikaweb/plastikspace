@@ -1,0 +1,95 @@
+<div class="flex flex-1 flex-col px-4 py-8">
+  <!-- Page header -->
+  <div class="mb-8 flex flex-col justify-between gap-4" role="group">
+    <div class="flex items-center justify-start gap-4">
+      <mat-icon class="scale-150!" aria-hidden="true">receipt_long</mat-icon>
+      <div class="flex flex-col gap-1">
+        <h2
+          class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
+          {{ 'orders.list.title' | translate }}
+        </h2>
+      </div>
+    </div>
+    <p class="mt-1 text-base text-neutral-600">
+      {{ 'orders.list.description' | translate }}
+    </p>
+  </div>
+
+  @let orders = ordersStore.entities();
+
+  <section class="orders-grid" [attr.aria-label]="'orders.list.list' | translate">
+    @if (ordersStore.isLoading()) {
+      @for (i of skeletonItems(); track $index) {
+        <div
+          aria-hidden="true"
+          class="skeleton-card animate-pulse rounded-xl border border-neutral-200 bg-white p-6">
+          <div class="flex justify-between">
+            <div class="flex flex-col gap-2">
+              <div class="h-3 w-16 rounded bg-neutral-200"></div>
+              <div class="h-6 w-48 rounded bg-neutral-200"></div>
+              <div class="h-4 w-32 rounded bg-neutral-100"></div>
+            </div>
+            <div class="flex flex-col items-end gap-2">
+              <div class="h-6 w-20 rounded bg-neutral-200"></div>
+              <div class="h-4 w-16 rounded bg-neutral-100"></div>
+            </div>
+          </div>
+          <div class="my-4 h-px bg-neutral-100"></div>
+          <div class="flex justify-between">
+            <div class="flex items-center gap-3">
+              <div class="h-6 w-6 rounded bg-neutral-200"></div>
+              <div class="flex flex-col gap-1">
+                <div class="h-4 w-32 rounded bg-neutral-200"></div>
+                <div class="h-3 w-40 rounded bg-neutral-100"></div>
+              </div>
+            </div>
+            <div class="h-10 w-28 rounded-full bg-neutral-200"></div>
+          </div>
+        </div>
+      }
+    } @else {
+      <!-- Empty state -->
+      @if (orders.length === 0) {
+        <div class="empty-state flex flex-1 flex-col items-center justify-center gap-8 text-center">
+          <div class="flex items-center justify-center rounded-full bg-neutral-400 p-10">
+            <mat-icon class="empty-icon scale-300" aria-hidden="true"
+              >sentiment_very_dissatisfied</mat-icon
+            >
+          </div>
+
+          <div class="flex flex-col items-center justify-center gap-1">
+            <h3 class="text-xl font-bold text-neutral-500">
+              {{ 'orders.list.empty' | translate }}
+            </h3>
+            <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
+              {{ 'orders.list.emptyDescription' | translate }}
+            </p>
+          </div>
+          <button matButton="filled" type="button" routerLink="/botiga">
+            <mat-icon aria-hidden="true">storefront</mat-icon>
+            <span>{{ 'orders.list.goToStore' | translate }}</span>
+          </button>
+        </div>
+      } @else {
+        <!-- Order list -->
+        @for (order of orders; track order.id) {
+          <eco-order-card [order]="order" />
+        }
+      }
+    }
+  </section>
+
+  @if (!ordersStore.isLoading() && orders.length > 0) {
+    @defer (on viewport; prefetch on idle) {
+      <plastik-pagination
+        class="mt-6"
+        plastikPocketbasePaginationNavigation
+        [pageSize]="ordersStore.getPagination().perPage"
+        [pageIndex]="ordersStore.getPagination().page"
+        [pageSizeOptions]="ordersStore.paginationSizeOptions()"
+        [count]="ordersStore.count()" />
+    } @placeholder {
+      <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
+    }
+  }
+</div>

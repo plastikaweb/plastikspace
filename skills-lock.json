@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "skills": {
+    "pocketbase-best-practices": {
+      "source": "greendesertsnow/pocketbase-skills",
+      "sourceType": "github",
+      "computedHash": "4df4b383b3df7a1e18f964b6330d43743a7305d94f6f00c0ad51742ccec83666"
+    }
+  }
+}
