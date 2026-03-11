@@ -41,7 +41,7 @@
       <main
         id="mainContent"
         role="main"
-        class="mt-20 mb-0 min-h-[calc(100dvh-126px)] flex-1 overflow-y-auto border-b border-neutral-200 px-2 sm:px-4">
+        class="mt-20 mb-0 flex min-h-[calc(100dvh-76px)] flex-1 flex-col overflow-y-auto px-4 sm:px-8">
         @if (shouldShowBanner() && !isBannerDismissed()) {
           <div animate.leave="banner-anim-leave" class="grid overflow-hidden">
             <div class="min-h-0" animate.leave="slide-out">
@@ -61,13 +61,17 @@
         }
 
         <router-outlet></router-outlet>
-      </main>
 
-      @defer (on viewport; prefetch on idle) {
-        <eco-footer [tenant]="tenantStore.tenant()" />
-      } @placeholder {
-        <div aria-hidden="true" class="h-30 w-full animate-pulse bg-neutral-50"></div>
-      }
+        <div class="mt-auto mb-24 md:mb-0">
+          <mat-divider></mat-divider>
+
+          @defer (on viewport; prefetch on idle) {
+            <eco-footer [tenant]="tenantStore.tenant()" />
+          } @placeholder {
+            <div aria-hidden="true" class="h-30 w-full animate-pulse bg-neutral-50"></div>
+          }
+        </div>
+      </main>
 
       @defer (when isMobile()) {
         <eco-mobile-nav />

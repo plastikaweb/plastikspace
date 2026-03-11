@@ -5,6 +5,43 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-11] - Orders List UI, i18n & Accessibility Fixes
+
+### Added
+
+- Improved empty state for the orders list with an icon, description, and "Go to Store" call-to-action button.
+- Added missing translation keys (`emptyDescription`, `goToStore`) for the orders list across English, Spanish, and Catalan.
+- Synchronized translation files to ensure consistency across all supported languages.
+
+### Changed
+
+- Refined vertical centering for the empty state in `EcoStoreOrdersListComponent` using flexbox and updated CSS.
+- Updated `EcoStoreOrdersListComponent` to include `RouterLink` for navigation to the store.
+- Fixed accessibility issue by replacing `<header>` with `<div>` in `EcoStoreOrdersListComponent` to avoid landmark nesting violations.
+- Updated README for `libs/eco-store/orders/feature/list` to include the "Empty State" feature.
+- Standardized the README title and description for `libs/eco-store/orders/feature/created` library.
+
+### Fixed
+
+- Fixed unit tests for `EcoStoreOrdersListComponent` and `OrderCardComponent` by providing necessary router context and improving translation mocks.
+- Resolved typo in HTML tag closing in `EcoStoreOrdersListComponent`.
+
+## [2026-03-11] - Orders List, i18n & Documentation
+
+### Added
+
+- Created README documentation for `libs/eco-store/orders/feature/list` and `libs/eco-store/orders/feature/detail` features.
+- Implemented comprehensive unit tests with accessibility checks (Axe) for:
+  - `SharedChipComponent` in `@plastik/shared/chip/ui`.
+  - `OrderCardComponent` in `@plastik/eco-store/orders/feature/list`.
+  - `EcoStoreOrdersListComponent` in `@plastik/eco-store/orders/feature/list`.
+- Added missing translation keys for orders (`list.list`, `deliveryMethod`) across English, Catalan, and Spanish i18n files.
+
+### Changed
+
+- Updated main `README.md` and `apps/eco-store/README.md` with links to the new order feature libraries.
+- Standardized unit test patterns for signal-based components and accessibility validation.
+
 ## [2026-03-10] - AI Agent Readiness & Modernization
 
 ### Added

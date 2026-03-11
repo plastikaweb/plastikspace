@@ -80,11 +80,6 @@
     },
     "error": {
       "login": "Revisa tus credenciales"
-    },
-    "roles": {
-      "PARTNER": "Socio Cooperativa",
-      "GLOBAL_ADMIN": "Super Administrador",
-      "CLIENT_ADMIN": "Administrador"
     }
   },
   "store": {
@@ -385,6 +380,42 @@
       "ordersHistory": "Historial de pedidos",
       "backToStore": "Volver a la tienda",
       "ecoBadgeAlt": "Sello de producto local y de proximitat"
+    }
+  },
+  "orders": {
+    "list": {
+      "title": "Mis pedidos",
+      "description": "Gestiona y consulta el historial de tus compras sostenibles.",
+      "loading": "Cargando pedidos",
+      "list": "Lista de pedidos",
+      "empty": "Aún no tienes ningún pedido.",
+      "emptyDescription": "Parece que aún no has realizado ninguna compra. ¡Descubre nuestros productos ecológicos y de proximidad!",
+      "goToStore": "Ir a la tienda"
+    },
+    "card": {
+      "label": "Pedido",
+      "items": "{count, plural, one {# producto} other {# productos}}",
+      "deliveryMethod": "Método de entrega",
+      "viewDetail": "Ver detalle"
+    },
+    "deliveryMethod": {
+      "delivery": "Envío a domicilio",
+      "pickup": "Recogida en la tienda"
+    },
+    "status": {
+      "delivered": "Entregado",
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "preparing": "Preparando",
+      "ready": "Preparado",
+      "cancelled": "Cancelado"
+    }
+  },
+  "users": {
+    "role": {
+      "PARTNER": "Socio Cooperativa",
+      "GLOBAL_ADMIN": "Super Administrador",
+      "TENANT_ADMIN": "Administrador"
     }
   }
 }

@@ -158,7 +158,7 @@ describe('ecoStoreOrdersStore', () => {
     it('should navigate to the order confirmation page with the new order ID', async () => {
       const navigateSpy = vi.spyOn(router, 'navigate');
       await store.createOrder();
-      expect(navigateSpy).toHaveBeenCalledWith(['/comanda', mockOrder.id]);
+      expect(navigateSpy).toHaveBeenCalledWith(['/comandes', 'nova', mockOrder.id]);
     });
   });
 });

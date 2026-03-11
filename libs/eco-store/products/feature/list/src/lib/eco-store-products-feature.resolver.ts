@@ -3,9 +3,11 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
-import { filter, map, take } from 'rxjs';
+import { filter, map, Observable, take } from 'rxjs';
 
-export const ecoStoreProductsResolver: ResolveFn<boolean> = (route: ActivatedRouteSnapshot) => {
+export const ecoStoreProductsResolver: ResolveFn<Observable<boolean>> = (
+  route: ActivatedRouteSnapshot
+) => {
   const productStore = inject(ecoStoreProductsStore);
   const categoriesStore = inject(ecoStoreProductCategoriesStore);
   const queryParams = route.queryParams;

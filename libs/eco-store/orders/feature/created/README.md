@@ -1,10 +1,10 @@
-# @plastik/eco-store/orders/feature
+# @plastik/eco-store/orders/feature/created
 
 ![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
 ![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
 ![Material](https://img.shields.io/badge/material_ui-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
 
-- [@plastik/eco-store/orders/feature](#plastikeco-storeordersfeature)
+- [@plastik/eco-store/orders/feature/created](#plastikeco-storeordersfeaturecreated)
   - [Description](#description)
   - [Components](#components)
     - [OrderConfirmationComponent](#orderconfirmationcomponent)
@@ -15,7 +15,10 @@
 
 ## Description
 
-The **Orders Feature** library provides components and views related to the user's orders in the Eco Store application. Currently, it includes the order confirmation view which is displayed after a successful checkout.
+The **Eco Store Orders Created Feature** library provides the order confirmation view which is displayed after a successful checkout.
+It notifies the user that their order has been placed and provides details about the next steps.
+
+Part of the [**Eco-Store**](../../../../../apps/eco-store/README.md) application.
 
 ## Components
 

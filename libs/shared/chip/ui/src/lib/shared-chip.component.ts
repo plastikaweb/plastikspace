@@ -1,8 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-
-export type SharedChipType = 'primary' | 'success' | 'warning' | 'error' | 'neutral' | 'tertiary';
+import { SharedChipType } from '@plastik/shared/entities';
 
 @Component({
   selector: 'plastik-shared-chip',

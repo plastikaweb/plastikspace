@@ -80,11 +80,6 @@
     },
     "error": {
       "login": "Revisa les teves credencials"
-    },
-    "roles": {
-      "PARTNER": "Soci Cooperativa",
-      "GLOBAL_ADMIN": "Súper Administrador",
-      "CLIENT_ADMIN": "Administrador"
     }
   },
   "store": {
@@ -385,6 +380,42 @@
       "ordersHistory": "Historial de comandes",
       "backToStore": "Tornar a la botiga",
       "ecoBadgeAlt": "Segell de producte local i de proximitat"
+    }
+  },
+  "orders": {
+    "list": {
+      "title": "Les meves comandes",
+      "description": "Gestiona i consulta l'historial de les teves compres sostenibles.",
+      "loading": "Carregant comandes",
+      "list": "Llista de comandes",
+      "empty": "Encara no tens cap comanda.",
+      "emptyDescription": "Sembla que encara no has fet cap compra. Descobreix els nostres productes ecològics i de proximitat!",
+      "goToStore": "Anar a la botiga"
+    },
+    "card": {
+      "label": "Comanda",
+      "items": "{count, plural, one {# producte} other {# productes}}",
+      "deliveryMethod": "Mètode d'entrega",
+      "viewDetail": "Veure detall"
+    },
+    "deliveryMethod": {
+      "delivery": "Enviament a domicili",
+      "pickup": "Recollida a la botiga"
+    },
+    "status": {
+      "delivered": "Entregat",
+      "pending": "Pendent",
+      "confirmed": "Confirmat",
+      "preparing": "Preparant",
+      "ready": "Preparat",
+      "cancelled": "Cancel·lada"
+    }
+  },
+  "users": {
+    "role": {
+      "PARTNER": "Soci Cooperativa",
+      "GLOBAL_ADMIN": "Súper Administrador",
+      "TENANT_ADMIN": "Administrador"
     }
   }
 }

@@ -23,6 +23,10 @@ export const ecoStoreOrdersStore = signalStore(
         page: 1,
         perPage: 10,
       },
+      sort: {
+        active: 'created',
+        direction: 'desc',
+      },
       sortOptions: {
         ...initialGetListState().sortOptions,
       },
@@ -43,7 +47,7 @@ export const ecoStoreOrdersStore = signalStore(
         const data = store._cartStore.toOrder();
         const newOrder = await store.create(data, {}, { success: false, error: true });
         store._cartStore.resetCartAfterCheckout();
-        await store._router.navigate(['/comanda', newOrder?.id]);
+        await store._router.navigate(['/comandes', 'nova', newOrder?.id]);
         store._activityStore.setActivity(false);
       },
     };

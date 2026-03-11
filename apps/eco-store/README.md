@@ -68,7 +68,9 @@ Built with **Angular 21+** (Signals, Standalone Components, Control Flow) and **
 - [**Cart Data Access**](../../libs/eco-store/cart/data-access/README.md): Shopping cart state management.
 - [**Cart Feature**](../../libs/eco-store/cart/feature/README.md): Multi-step checkout flow.
 - [**Orders Data Access**](../../libs/eco-store/orders/data-access/README.md): Order CRUD and checkout orchestration.
-- [**Orders Feature**](../../libs/eco-store/orders/feature/README.md): Order confirmation and views.
+- [**Orders List Feature**](../../libs/eco-store/orders/feature/list/README.md): Order history and management.
+- [**Order Detail Feature**](../../libs/eco-store/orders/feature/detail/README.md): Detailed order view.
+- [**Order Created Feature**](../../libs/eco-store/orders/feature/created/README.md): Order confirmation page.
 - [**Categories**](../../libs/eco-store/product-categories/data-access/README.md): Category management.
 - [**Product Card**](../../libs/eco-store/shared/product-card/README.md): Shared product card component.
 - [**Product Quantity**](../../libs/eco-store/shared/product-quantity/README.md): Quantity control with smart validation.
