@@ -1851,7 +1851,7 @@ var initialState2 = {
   message: "loading-data"
 };
 var activityStore = signalStore({ providedIn: "root" }, isDevMode() ? withDevtools("activity") : withDevToolsStub("activity"), withImmutableState(initialState2), withReset(), withMethods((store) => ({
-  setActivity(isActive, message) {
+  setActivity(isActive, message = initialState2.message) {
     updateState(store, `[activity] ${isActive ? "on" : "off"} ${message}`, {
       isActive,
       message: message ?? initialState2.message
@@ -3464,4 +3464,4 @@ export {
   NavigationFilterService,
   PrefixTitleService
 };
-//# sourceMappingURL=chunk-LNCGLYCJ.js.map
+//# sourceMappingURL=chunk-ELFJ3I4S.js.map
