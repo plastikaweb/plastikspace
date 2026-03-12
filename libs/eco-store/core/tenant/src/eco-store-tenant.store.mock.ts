@@ -33,4 +33,5 @@ export const mockEcoStoreTenantStore = {
   getTenantAvailableShippingMethods: vi.fn().mockReturnValue([]),
   getTiersOrInstructions: vi.fn().mockReturnValue(null),
   closedReasonTranslated: signal(null),
+  tenantDescriptionTranslated: signal(null),
 };

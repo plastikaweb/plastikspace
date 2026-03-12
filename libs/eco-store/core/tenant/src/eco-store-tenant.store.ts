@@ -100,6 +100,15 @@ export const ecoStoreTenantStore = signalStore(
       is24h: computed(() => !store.tenant()?.logisticsConfig?.orderWindow?.enabled),
 
       tenantAddressesContacts: computed(() => formatTenantAddresses(store.addresses())),
+      tenantDescriptionTranslated: computed(() => {
+        const currentTenant = store.tenant();
+        if (!currentTenant) {
+          return null;
+        }
+
+        const currentLanguage = store._translateService.getCurrentLang();
+        return currentTenant.description?.[currentLanguage] || null;
+      }),
     };
   }),
   withComputed(store => ({

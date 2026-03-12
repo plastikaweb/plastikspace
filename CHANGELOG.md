@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-12] - Performance, SEO and Deployment Optimizations
+
+### Added
+
+- Implemented early `preconnect` and `dns-prefetch` for Google Fonts and API backend to improve FCP ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
+- Added asynchronous loading for Material Symbols stylesheet using `preload` pattern to avoid render-blocking ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
+- Added dynamic meta description in `AppComponent` based on translated tenant description for better SEO ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
+- Introduced `build-cf` target and `add-cfasync.js` script to bypass Cloudflare Rocket Loader for application scripts ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
+
+### Changed
+
+- Updated `LOADING_STRATEGIES.md` with documentation on `index.html` performance optimizations ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
+- Refined `ecoStoreTenantStore` to include `tenantDescriptionTranslated` computed signal ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
+- Optimized `cspell.json` and staging deployment workflow ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
+
+### Fixed
+
+- Added unit tests for `AppComponent` ensuring correct preconnect injection and SVG icon registration ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
+
+---
+
 ## [2026-03-12] - Checkout improvements and PocketBase verification
 
 ### Added
