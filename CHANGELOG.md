@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Resolved order creation flow issues to prevent cart reset on failure ([#86c8tkjx7](https://app.clickup.com/t/86c8tkjx7))
+- Improved `on_create_order` PocketBase hook with better tax calculation and robust item name handling ([#86c8tkjx7](https://app.clickup.com/t/86c8tkjx7))
 - Added unit tests for `AppComponent` ensuring correct preconnect injection and SVG icon registration ([#86c8cjggm](https://app.clickup.com/t/86c8cjggm))
 
 ---

@@ -160,5 +160,16 @@ describe('ecoStoreOrdersStore', () => {
       await store.createOrder();
       expect(navigateSpy).toHaveBeenCalledWith(['/comandes', 'nova', mockOrder.id]);
     });
+
+    it('should not reset cart or navigate if order creation fails', async () => {
+      mockOrdersApiService.create.mockReturnValue(of(undefined));
+      const navigateSpy = vi.spyOn(router, 'navigate');
+
+      await store.createOrder();
+
+      expect(mockCartStoreValue.resetCartAfterCheckout).not.toHaveBeenCalled();
+      expect(navigateSpy).not.toHaveBeenCalled();
+      expect(mockActivityStoreValue.setActivity).toHaveBeenLastCalledWith(false);
+    });
   });
 });
