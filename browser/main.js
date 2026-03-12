@@ -1,6 +1,6 @@
 import {
   notificationStore
-} from "./chunk-5MBLPQEG.js";
+} from "./chunk-W5NQN2WH.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -6531,7 +6531,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-UEB7EEYE.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-7ENPIVIJ.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",

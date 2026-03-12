@@ -4,7 +4,7 @@ import {
 import {
   NotificationConfigService,
   notificationStore
-} from "./chunk-5MBLPQEG.js";
+} from "./chunk-W5NQN2WH.js";
 import {
   Actions,
   BaseDataService,
@@ -17512,8 +17512,9 @@ function SharedImgContainerComponent_Conditional_6_ng_template_2_Template(rf, ct
     const width_r6 = \u0275\u0275readContextLet(0);
     const height_r7 = \u0275\u0275readContextLet(1);
     const src_r8 = \u0275\u0275readContextLet(2);
-    \u0275\u0275classProp("opacity-0", ctx_r1.isLoading())("opacity-100", !ctx_r1.isLoading() && !ctx_r1.hasError());
-    \u0275\u0275property("priority", priority_r5)("ngSrc", src_r8)("width", width_r6)("height", height_r7)("alt", ctx_r1.title())("loaderParams", \u0275\u0275pureFunction2(10, _c25, ctx_r1.quality(), ctx_r1.thumbSizes()));
+    \u0275\u0275classProp("opacity-0", ctx_r1.isLoading() && !ctx_r1.lcpImage())("opacity-100", !ctx_r1.isLoading() && !ctx_r1.hasError() || ctx_r1.lcpImage());
+    \u0275\u0275property("priority", priority_r5)("ngSrc", src_r8)("width", width_r6)("height", height_r7)("alt", ctx_r1.title())("loaderParams", \u0275\u0275pureFunction2(11, _c25, ctx_r1.quality(), ctx_r1.thumbSizes()));
+    \u0275\u0275attribute("fetchpriority", priority_r5 ? "high" : null);
   }
 }
 function SharedImgContainerComponent_Conditional_6_ng_template_4_Template(rf, ctx) {
@@ -17536,13 +17537,14 @@ function SharedImgContainerComponent_Conditional_6_ng_template_4_Template(rf, ct
     const ctx_r1 = \u0275\u0275nextContext(2);
     const src_r8 = \u0275\u0275readContextLet(2);
     \u0275\u0275classProp("opacity-0", ctx_r1.isLoading())("opacity-100", !ctx_r1.isLoading() && !ctx_r1.hasError());
-    \u0275\u0275property("priority", priority_r10)("ngSrc", src_r8)("alt", ctx_r1.title())("sizes", ctx_r1.sizes())("ngSrcset", ctx_r1.computedSrcset())("loaderParams", \u0275\u0275pureFunction2(10, _c25, ctx_r1.quality(), ctx_r1.thumbSizes()));
+    \u0275\u0275property("priority", priority_r10)("ngSrc", src_r8)("alt", ctx_r1.title())("sizes", ctx_r1.sizes())("ngSrcset", ctx_r1.computedSrcset())("loaderParams", \u0275\u0275pureFunction2(11, _c25, ctx_r1.quality(), ctx_r1.thumbSizes()));
+    \u0275\u0275attribute("fetchpriority", priority_r10 ? "high" : null);
   }
 }
 function SharedImgContainerComponent_Conditional_6_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275conditionalCreate(0, SharedImgContainerComponent_Conditional_6_Conditional_0_Template, 2, 1)(1, SharedImgContainerComponent_Conditional_6_Conditional_1_Template, 2, 1);
-    \u0275\u0275template(2, SharedImgContainerComponent_Conditional_6_ng_template_2_Template, 1, 13, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(4, SharedImgContainerComponent_Conditional_6_ng_template_4_Template, 1, 13, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
+    \u0275\u0275template(2, SharedImgContainerComponent_Conditional_6_ng_template_2_Template, 1, 14, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(4, SharedImgContainerComponent_Conditional_6_ng_template_4_Template, 1, 14, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
@@ -17636,7 +17638,74 @@ var SharedImgContainerComponent = class _SharedImgContainerComponent {
       "[style.aspect-ratio]": "aspectRatio()",
       "[style.width.px]": "width()",
       "[style.height.px]": "height()"
-    }, changeDetection: ChangeDetectionStrategy.OnPush, template: '@let width = dimensions()?.width;\n@let height = dimensions()?.height;\n@let src = this.src();\n\n<div\n  class="absolute inset-0 flex items-center justify-center transition-opacity duration-100"\n  [class.bg-neutral-100]="isLoading()"\n  [class.breathing]="isLoading()">\n  @if (isLoading()) {\n    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>\n  }\n\n  @if (hasError()) {\n    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">\n      <mat-icon class="scale-200">image_not_supported</mat-icon>\n    </div>\n  }\n</div>\n\n@if (src) {\n  @if (width && height) {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>\n    }\n  } @else {\n    @if (lcpImage()) {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>\n    } @else {\n      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>\n    }\n  }\n\n  <ng-template #fixedImage let-priority="priority">\n    <img\n      class="object-cover transition-opacity duration-100"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [width]="width"\n      [height]="height"\n      [alt]="title()"\n      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n\n  <ng-template #fillImage let-priority="priority">\n    <img\n      fill\n      class="h-full w-full object-cover transition-opacity duration-100"\n      [class.opacity-0]="isLoading()"\n      [class.opacity-100]="!isLoading() && !hasError()"\n      [priority]="priority"\n      [ngSrc]="src"\n      [alt]="title()"\n      [sizes]="sizes()"\n      [ngSrcset]="computedSrcset()"\n      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"\n      (load)="onImageLoad()"\n      (error)="onImageError()" />\n  </ng-template>\n}\n', styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
+    }, changeDetection: ChangeDetectionStrategy.OnPush, template: `@let width = dimensions()?.width;
+@let height = dimensions()?.height;
+@let src = this.src();
+
+<div
+  class="absolute inset-0 flex items-center justify-center transition-opacity duration-100"
+  [class.bg-neutral-100]="isLoading()"
+  [class.breathing]="isLoading()">
+  @if (isLoading()) {
+    <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>
+  }
+
+  @if (hasError()) {
+    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">
+      <mat-icon class="scale-200">image_not_supported</mat-icon>
+    </div>
+  }
+</div>
+
+@if (src) {
+  @if (width && height) {
+    @if (lcpImage()) {
+      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>
+    } @else {
+      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>
+    }
+  } @else {
+    @if (lcpImage()) {
+      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>
+    } @else {
+      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>
+    }
+  }
+
+  <ng-template #fixedImage let-priority="priority">
+    <img
+      class="object-cover transition-opacity duration-100"
+      [class.opacity-0]="isLoading() && !lcpImage()"
+      [class.opacity-100]="(!isLoading() && !hasError()) || lcpImage()"
+      [priority]="priority"
+      [attr.fetchpriority]="priority ? 'high' : null"
+      [ngSrc]="src"
+      [width]="width"
+      [height]="height"
+      [alt]="title()"
+      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"
+      (load)="onImageLoad()"
+      (error)="onImageError()" />
+  </ng-template>
+
+  <ng-template #fillImage let-priority="priority">
+    <img
+      fill
+      class="h-full w-full object-cover transition-opacity duration-100"
+      [class.opacity-0]="isLoading()"
+      [class.opacity-100]="!isLoading() && !hasError()"
+      [priority]="priority"
+      [attr.fetchpriority]="priority ? 'high' : null"
+      [ngSrc]="src"
+      [alt]="title()"
+      [sizes]="sizes()"
+      [ngSrcset]="computedSrcset()"
+      [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"
+      (load)="onImageLoad()"
+      (error)="onImageError()" />
+  </ng-template>
+}
+`, styles: ["/* libs/shared/img-container/ui/src/lib/shared-img-container.component.scss */\n:host .image-error {\n  --mat-icon-color: var(--neutral-200);\n}\n/*# sourceMappingURL=shared-img-container.component.css.map */\n"] }]
   }], () => [], { src: [{ type: Input, args: [{ isSignal: true, alias: "src", required: true }] }], title: [{ type: Input, args: [{ isSignal: true, alias: "title", required: true }] }], dimensions: [{ type: Input, args: [{ isSignal: true, alias: "dimensions", required: false }] }], quality: [{ type: Input, args: [{ isSignal: true, alias: "quality", required: false }] }], lcpImage: [{ type: Input, args: [{ isSignal: true, alias: "lcpImage", required: false }] }], sizes: [{ type: Input, args: [{ isSignal: true, alias: "sizes", required: false }] }], thumbSizes: [{ type: Input, args: [{ isSignal: true, alias: "thumbSizes", required: false }] }] });
 })();
 (() => {
@@ -18026,4 +18095,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-UEB7EEYE.js.map
+//# sourceMappingURL=src-7ENPIVIJ.js.map

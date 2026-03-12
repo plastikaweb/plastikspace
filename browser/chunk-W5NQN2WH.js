@@ -55,12 +55,13 @@ var defaultNotification = {
   ["INFO"]: {
     type: "INFO",
     icon: "info",
-    duration: 5e3
+    duration: 3e3
   },
   ["SUCCESS"]: {
     type: "SUCCESS",
     icon: "check",
-    duration: 3e3
+    action: "close",
+    duration: 2e3
   }
 };
 var NOTIFICATION_TYPES_CONFIG = new InjectionToken("notification", {
@@ -160,4 +161,4 @@ export {
   notificationStore,
   NotificationConfigService
 };
-//# sourceMappingURL=chunk-5MBLPQEG.js.map
+//# sourceMappingURL=chunk-W5NQN2WH.js.map
