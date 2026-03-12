@@ -121,6 +121,24 @@
       },
       "defaultConfiguration": "production"
     },
+
+    "build-cf": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": ["nx run eco-store:build:production", "node tools/scripts/add-cfasync.js"]
+      },
+      "configurations": {
+        "staging": {
+          "commands": ["nx run eco-store:build:staging", "node tools/scripts/add-cfasync.js"]
+        },
+        "production": {
+          "commands": ["nx run eco-store:build:production", "node tools/scripts/add-cfasync.js"]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",

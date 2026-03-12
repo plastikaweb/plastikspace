@@ -2,6 +2,7 @@
 
 - [Eco-Store Loading Strategies](#eco-store-loading-strategies)
   - [Overview](#overview)
+  - [Performance Optimizations (index.html)](#performance-optimizations-indexhtml)
   - [Strategy 1 — Bootstrap Initializer (Global Overlay)](#strategy-1--bootstrap-initializer-global-overlay)
   - [Strategy 2 — Opt-in PocketBase Interceptor (Per-Request)](#strategy-2--opt-in-pocketbase-interceptor-per-request)
   - [Strategy 3 — Signal Store `isLoading` Signal (Per-List-Reload)](#strategy-3--signal-store-isloading-signal-per-list-reload)
@@ -24,6 +25,16 @@ The app has **three complementary strategies** for loading states:
 | **3. Signal Store `isLoading`**       | `isLoading` state signal in `withPocketBaseListFeature` | `withPocketBaseCrud` / `withPocketBaseListFeature` | Per-list-reload        |
 | **4. Explicit `activityStore` calls** | `activityStore.setActivity(true/false, message?)`       | Any store method                                   | Multi-step async flows |
 | **5. In-component cart sync state**   | `cartStore.isSyncing()` signal                          | `ecoStoreCartStore`                                | Cart sync UX           |
+
+---
+
+## Performance Optimizations (index.html)
+
+To ensure a smooth initial loading experience and minimize the impact of external assets on the critical path, the following optimizations are applied in `index.html`:
+
+1. **Early Preconnect & DNS-Prefetch**: Critical origins like Google Fonts and the API backend are pre-connected at the very top of the `<head>`.
+2. **Asynchronous Material Symbols**: The Material Symbols stylesheet is loaded using a `preload` pattern to avoid blocking the initial render of the app's splash screen.
+3. **Critical CSS Inlining**: Essential styles for the bootstrap loader are inlined in the document to prevent a Flash of Unstyled Content (FOUC).
 
 ---
 

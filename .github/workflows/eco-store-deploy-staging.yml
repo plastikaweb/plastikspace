@@ -68,7 +68,7 @@ jobs:
 
       - name: Build application
         if: steps.changes.outputs.has_changes == 'true'
-        run: yarn nx build eco-store --configuration=staging --skip-nx-cache
+        run: yarn nx build-cf eco-store --configuration=staging --skip-nx-cache
 
       - name: Generate Security Headers
         if: steps.changes.outputs.has_changes == 'true'
