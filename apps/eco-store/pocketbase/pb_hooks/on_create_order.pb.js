@@ -63,20 +63,37 @@ onRecordCreateRequest((e) => {
         }
 
         let subtotal = 0;
+        let totalTax = 0;
+        let totalWithIva = 0;
         const verifiedItems = [];
 
         for (const item of items) {
-            const productId = item.id;
+            const productId = item.productId;
             if (!productId) {
                 throw new BadRequestError("Missing product ID in order items.");
             }
 
-            // Fetch the product from database to get the real price
+            // Fetch the product from database to get verified data
             const product = e.app.findRecordById("products", productId);
             
             // Basic stock check
             if (!product.getBool("inStock")) {
                 throw new BadRequestError(`Product "${product.getString("name")}" is out of stock.`);
+            }
+
+            // Get product localized name (JSON object)
+            const productNameRaw = product.getString("name");
+            const productName = JSON.parse(productNameRaw || "{}");
+            
+            // Fetch the category to get its localized name
+            const categoryId = product.get("category");
+            let categoryName = {};
+            try {
+                const category = e.app.findRecordById("product_categories", categoryId);
+                const categoryNameRaw = category.getString("name");
+                categoryName = JSON.parse(categoryNameRaw || "{}");
+            } catch (catErr) {
+                console.warn(`Could not fetch category ${categoryId} for product ${productId}`);
             }
 
             const dbPrice = product.getFloat("price");
@@ -89,14 +106,20 @@ onRecordCreateRequest((e) => {
             }
 
             const lineTotal = dbPriceWithIva * quantity;
-            subtotal += lineTotal;
+            const lineSubtotal = dbPrice * quantity;
+            const lineTax = lineTotal - lineSubtotal;
+
+            subtotal += lineSubtotal;
+            totalTax += lineTax;
+            totalWithIva += lineTotal;
 
             // Update item with verified data from DB
             verifiedItems.push({
                 ...item,
-                price: dbPrice,
-                iva: dbIva,
-                priceWithIva: dbPriceWithIva,
+                name: productName,
+                categoryName: categoryName,
+                lockedPrice: dbPriceWithIva,
+                taxRate: dbIva,
                 lineTotal: lineTotal
             });
         }
@@ -110,20 +133,21 @@ onRecordCreateRequest((e) => {
         if (order.get("deliveryMethod") === "delivery") {
             shipping = Number(shippingConfig.cost || 0);
             // Optional: Free shipping threshold
-            if (shippingConfig.freeThreshold && subtotal >= shippingConfig.freeThreshold) {
+            if (shippingConfig.freeThreshold && totalWithIva >= shippingConfig.freeThreshold) {
                 shipping = 0;
             }
         }
 
-        const total = subtotal + shipping;
+        const total = totalWithIva + shipping;
 
         // Override order values with calculated ones
         order.set("subtotal", subtotal);
+        order.set("tax", totalTax);
         order.set("shipping", shipping);
         order.set("total", total);
         order.set("items", JSON.stringify(verifiedItems));
 
-        console.log(`Order totals verified: subtotal=${subtotal}, shipping=${shipping}, total=${total}`);
+        console.log(`Order totals verified: subtotal=${subtotal}, tax=${totalTax}, shipping=${shipping}, total=${total}`);
     } catch (err) {
         if (err instanceof BadRequestError) throw err;
         console.error("Error verifying prices: ", err);
@@ -284,7 +308,15 @@ onRecordAfterCreateSuccess((e) => {
         if (userEmail) {
             // 1. Build items table rows
             let itemsHtml = items.map(item => {
-                const name = item.name || t.product;
+                let name = t.product;
+                if (item.name) {
+                    if (typeof item.name === 'object') {
+                        name = item.name[lang] || item.name['ca'] || Object.values(item.name)[0];
+                    } else {
+                        name = item.name;
+                    }
+                }
+                
                 const qty = item.requestedQuantity || 0;
                 const lineTotal = Number(item.lineTotal || 0).toFixed(2);
                 const unitType = (item.unitType || '').toLowerCase();

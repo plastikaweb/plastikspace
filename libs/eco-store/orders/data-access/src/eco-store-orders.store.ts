@@ -44,11 +44,17 @@ export const ecoStoreOrdersStore = signalStore(
     return {
       async createOrder() {
         store._activityStore.setActivity(true, 'cart.finish.creatingOrder');
-        const data = store._cartStore.toOrder();
-        const newOrder = await store.create(data, {}, { success: false, error: true });
-        store._cartStore.resetCartAfterCheckout();
-        await store._router.navigate(['/comandes', 'nova', newOrder?.id]);
-        store._activityStore.setActivity(false);
+        try {
+          const data = store._cartStore.toOrder();
+          const newOrder = await store.create(data, {}, { success: false, error: true });
+
+          if (newOrder) {
+            store._cartStore.resetCartAfterCheckout();
+            await store._router.navigate(['/comandes', 'nova', newOrder.id]);
+          }
+        } finally {
+          store._activityStore.setActivity(false);
+        }
       },
     };
   })
