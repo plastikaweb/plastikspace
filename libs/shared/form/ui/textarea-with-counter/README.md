@@ -60,6 +60,12 @@ const formly: FormlyFieldConfig = {
 ```typescript
 interface TextareaWithCounterProps extends FormlyFieldProps {
   /**
+   * Label for the textarea
+   * @default ""
+   */
+  label?: string;
+
+  /**
    * Number of visible text rows
    * @default 3
    */

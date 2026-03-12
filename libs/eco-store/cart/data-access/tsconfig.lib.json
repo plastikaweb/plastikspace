@@ -21,6 +21,9 @@
     },
     {
       "path": "../../shared/utils"
+    },
+    {
+      "path": "../../core/api/data-access"
     }
   ],
   "compilerOptions": {

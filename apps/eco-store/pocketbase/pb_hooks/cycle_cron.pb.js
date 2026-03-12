@@ -1,10 +1,36 @@
 // This cron runs every Sunday at 23:59 to generate the cycles for the following week
 cronAdd("order_cycle_init", "59 23 * * 0", () => {
 
+    // Helper to get a Date object representing "now" in a specific timezone
+    const getNowInTimezone = (tz = 'Europe/Madrid') => {
+        try {
+            const now = new Date();
+            const formatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: tz,
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: 'numeric',
+                second: 'numeric',
+                hour12: false
+            });
+            const parts = formatter.formatToParts(now);
+            const d = {};
+            parts.forEach(p => d[p.type] = p.value);
+            // Construct a date object that "looks like" the local time but is technically in system time
+            // This is useful for getDay(), getHours() etc.
+            return new Date(d.year, d.month - 1, d.day, d.hour, d.minute, d.second);
+        } catch (e) {
+            console.warn(`Timezone ${tz} not supported or Intl missing, falling back to system time.`);
+            return new Date();
+        }
+    };
+
     // Helper function to get the next date and time from a day of the week
-    const getNextDayOfWeek = (referenceDate, dayName, timeStr) => {
+    const getNextDayOfWeek = (tz, dayName, timeStr) => {
         const DAYS_MAP = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
-        const date = new Date(referenceDate);
+        const date = getNowInTimezone(tz);
         const currentDay = date.getDay();
         const targetDay = DAYS_MAP[dayName.toLowerCase()] !== undefined ? DAYS_MAP[dayName.toLowerCase()] : 1;
 
@@ -24,7 +50,9 @@ cronAdd("order_cycle_init", "59 23 * * 0", () => {
             date.setHours(0, 0, 0, 0);
         }
 
-        return date;
+        // Now we need to convert this "local" date back to a real UTC Date object for storage
+        // We do this by creating a string and letting the engine parse it with the timezone
+        return new Date(date.toLocaleString('en-US', { timeZone: tz }));
     };
 
     // Helper function to get the week number
@@ -45,11 +73,11 @@ cronAdd("order_cycle_init", "59 23 * * 0", () => {
             $dbx.exp("active = {:active} AND closed = {:closed}", { active: true, closed: false })
         );
 
-        console.log("Tenants: ", tenants);
-
-        const now = new Date();
+        console.log("Tenants found: ", tenants.length);
 
         for (let tenant of tenants) {
+            const tz = tenant.getString("timezone") || 'Europe/Madrid';
+            
             // Get the raw JSON string from the database to ensure we can parse it as a pure JS object
             let logisticsRaw = tenant.getString("logisticsConfig");
             let logistics = {};
@@ -62,7 +90,7 @@ cronAdd("order_cycle_init", "59 23 * * 0", () => {
             }
 
             const orderWindow = logistics?.orderWindow;
-            console.log(`Processing tenant: ${tenant.get("name")}, Order window enabled: ${!!orderWindow?.enabled}`);
+            console.log(`Processing tenant: ${tenant.get("name")} (${tz}), Order window enabled: ${!!orderWindow?.enabled}`);
 
             // 2. If orderWindow.enabled is true, calculate exact dates and create the cycle
             if (orderWindow && orderWindow.enabled) {
@@ -71,9 +99,9 @@ cronAdd("order_cycle_init", "59 23 * * 0", () => {
                 const closeDay = orderWindow.closeDay || 'thursday';
                 const closeTime = orderWindow.closeTime || '23:59';
 
-                // Calculate exact dates starting from today
-                const startsAt = getNextDayOfWeek(now, openDay, openTime);
-                let endsAt = getNextDayOfWeek(now, closeDay, closeTime);
+                // Calculate exact dates starting from today in the tenant's timezone
+                const startsAt = getNextDayOfWeek(tz, openDay, openTime);
+                let endsAt = getNextDayOfWeek(tz, closeDay, closeTime);
 
                 // If the closing day is numerically before the opening day (e.g., opens Thursday, closes Monday),
                 // it means the closing jumps to the next natural week. So we add 7 days.
@@ -139,16 +167,16 @@ cronAdd("order_cycle_status_watcher", "*/15 * * * *", () => {
     try {
         const now = new Date().toISOString();
 
-        // 1. Find all 'open' cycles that have already ended
+        // 1. Find all 'OPEN' cycles that have already ended
         const expiredCycles = $app.findAllRecords(
             "order_cycles",
-            $dbx.exp("status = 'open' AND endsAt <= {:now}", { now: now })
+            $dbx.exp("status = 'OPEN' AND endsAt <= {:now}", { now: now })
         );
 
         for (let cycle of expiredCycles) {
             console.log(`Closing cycle '${cycle.get("name")}' (ID: ${cycle.getId()}) for tenant ${cycle.get("tenant")}`);
 
-            cycle.set("status", "processing");
+            cycle.set("status", "PROCESSING");
 
             try {
                 $app.save(cycle);

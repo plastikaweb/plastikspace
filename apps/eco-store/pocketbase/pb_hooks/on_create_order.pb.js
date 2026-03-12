@@ -53,6 +53,83 @@ onRecordCreateRequest((e) => {
         console.error("Error checking for duplicates: ", err);
     }
 
+    // --- C. VERIFY PRICES AND CALCULATE TOTALS ---
+    try {
+        const itemsRaw = order.getString("items");
+        let items = JSON.parse(itemsRaw || "[]");
+        
+        if (items.length === 0) {
+            throw new BadRequestError("Order must contain at least one item.");
+        }
+
+        let subtotal = 0;
+        const verifiedItems = [];
+
+        for (const item of items) {
+            const productId = item.id;
+            if (!productId) {
+                throw new BadRequestError("Missing product ID in order items.");
+            }
+
+            // Fetch the product from database to get the real price
+            const product = e.app.findRecordById("products", productId);
+            
+            // Basic stock check
+            if (!product.getBool("inStock")) {
+                throw new BadRequestError(`Product "${product.getString("name")}" is out of stock.`);
+            }
+
+            const dbPrice = product.getFloat("price");
+            const dbIva = product.getFloat("iva");
+            const dbPriceWithIva = product.getFloat("priceWithIva");
+            
+            const quantity = Number(item.requestedQuantity || 0);
+            if (quantity <= 0) {
+                throw new BadRequestError(`Invalid quantity for product "${product.getString("name")}".`);
+            }
+
+            const lineTotal = dbPriceWithIva * quantity;
+            subtotal += lineTotal;
+
+            // Update item with verified data from DB
+            verifiedItems.push({
+                ...item,
+                price: dbPrice,
+                iva: dbIva,
+                priceWithIva: dbPriceWithIva,
+                lineTotal: lineTotal
+            });
+        }
+
+        // Get tenant to check for shipping costs
+        const tenant = e.app.findRecordById("tenants", tenantId);
+        const logisticsConfig = tenant.get("logisticsConfig") || {};
+        const shippingConfig = logisticsConfig.shipping || {};
+        
+        let shipping = 0;
+        if (order.get("deliveryMethod") === "delivery") {
+            shipping = Number(shippingConfig.cost || 0);
+            // Optional: Free shipping threshold
+            if (shippingConfig.freeThreshold && subtotal >= shippingConfig.freeThreshold) {
+                shipping = 0;
+            }
+        }
+
+        const total = subtotal + shipping;
+
+        // Override order values with calculated ones
+        order.set("subtotal", subtotal);
+        order.set("shipping", shipping);
+        order.set("total", total);
+        order.set("items", JSON.stringify(verifiedItems));
+
+        console.log(`Order totals verified: subtotal=${subtotal}, shipping=${shipping}, total=${total}`);
+    } catch (err) {
+        if (err instanceof BadRequestError) throw err;
+        console.error("Error verifying prices: ", err);
+        throw new BadRequestError("Failed to verify order prices. Please try again.");
+    }
+
     return e.next();
 }, "orders");
 
@@ -223,12 +300,29 @@ onRecordAfterCreateSuccess((e) => {
             }).join('');
 
             // 2. Helper to calculate formatted date for the delivery day
-            const getFormattedDeliveryDate = (dayName) => {
+            const getFormattedDeliveryDate = (dayName, tz = 'Europe/Madrid') => {
                 const DAYS_MAP = { sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6 };
                 const targetDay = DAYS_MAP[dayName.toLowerCase()];
                 if (targetDay === undefined) return dayName;
 
-                const date = new Date();
+                // Get "now" in the specified timezone
+                let date;
+                try {
+                    const now = new Date();
+                    const formatter = new Intl.DateTimeFormat('en-US', {
+                        timeZone: tz,
+                        year: 'numeric',
+                        month: 'numeric',
+                        day: 'numeric'
+                    });
+                    const parts = formatter.formatToParts(now);
+                    const d = {};
+                    parts.forEach(p => d[p.type] = p.value);
+                    date = new Date(d.year, d.month - 1, d.day);
+                } catch (e) {
+                    date = new Date();
+                }
+
                 const currentDay = date.getDay();
                 let daysUntilTarget = targetDay - currentDay;
                 if (daysUntilTarget < 0) daysUntilTarget += 7;
@@ -246,7 +340,8 @@ onRecordAfterCreateSuccess((e) => {
             const deliveryMethodRaw = order.get("deliveryMethod");
             const deliveryMethod = deliveryMethodRaw === "delivery" ? t.delivery : t.pickup;
             const deliveryDayRaw = order.get("day");
-            const deliveryDate = deliveryDayRaw ? getFormattedDeliveryDate(deliveryDayRaw) : "-";
+            const tenantTz = tenant.getString("timezone") || 'Europe/Madrid';
+            const deliveryDate = deliveryDayRaw ? getFormattedDeliveryDate(deliveryDayRaw, tenantTz) : "-";
             const deliveryTime = order.get("time") || "-";
             
             // 3. Destructure and format address nicely

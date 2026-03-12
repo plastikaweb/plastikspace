@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-12] - Checkout improvements and PocketBase verification
+
+### Added
+
+- Added server-side price verification and total calculation for orders in PocketBase ([#86c8t0h3e](https://app.clickup.com/t/86c8t0h3e))
+- Added timezone-aware scheduling for order cycles in PocketBase ([#86c8t0h3e](https://app.clickup.com/t/86c8t0h3e))
+
+### Changed
+
+- Refactored cart items grouping for better template performance ([#86c8t0h3e](https://app.clickup.com/t/86c8t0h3e))
+- Optimized notification durations and actions ([#86c8t0h3e](https://app.clickup.com/t/86c8t0h3e))
+
+### Fixed
+
+- Fixed optional label support in textarea components ([#86c8t0h3e](https://app.clickup.com/t/86c8t0h3e))
+- Fixed optional toast ID handling in notification service ([#86c8t0h3e](https://app.clickup.com/t/86c8t0h3e))
+
+---
+
 ## [2026-03-11] - Orders List UI, i18n & Accessibility Fixes
 
 ### Added

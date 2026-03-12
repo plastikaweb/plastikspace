@@ -1,3 +1,4 @@
+import '@angular/compiler';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
@@ -11,6 +12,7 @@ import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-acc
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { of } from 'rxjs';
+import { describe, expect, it, vi } from 'vitest';
 import { ecoStoreCartStore } from './eco-store-cart.store';
 import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
 
@@ -186,5 +188,25 @@ describe('ecoStoreCartStore', () => {
 
     expect(store.day()).toBe('tuesday');
     expect(store.time()).toBeNull();
+  });
+
+  it('should group items by category', () => {
+    const store = setup();
+    const product2: EcoStoreProductWithCategoryName = {
+      ...mockProduct,
+      id: '2',
+      category: 'cat2',
+      categoryName: 'Category 2',
+    };
+
+    store.addToCart(mockProduct, 1);
+    store.addToCart(product2, 1);
+
+    const grouped = store.itemsGroupedByCategory();
+    expect(grouped.length).toBe(2);
+    expect(grouped[0].category).toBe('Category 1');
+    expect(grouped[0].items[0].product.id).toBe('1');
+    expect(grouped[1].category).toBe('Category 2');
+    expect(grouped[1].items[0].product.id).toBe('2');
   });
 });

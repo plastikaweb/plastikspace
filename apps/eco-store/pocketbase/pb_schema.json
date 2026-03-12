@@ -763,13 +763,13 @@
       "CREATE UNIQUE INDEX `idx_tokenKey__pb_users_auth_` ON `users` (`tokenKey`)",
       "CREATE UNIQUE INDEX `idx_email__pb_users_auth_` ON `users` (`email`) WHERE `email` != ''"
     ],
-    "listRule": "id = @request.auth.id",
-    "viewRule": "id = @request.auth.id",
+    "listRule": "(id = @request.auth.id) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
+    "viewRule": "(id = @request.auth.id) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
     "createRule": "",
-    "updateRule": "id = @request.auth.id",
-    "deleteRule": "id = @request.auth.id",
+    "updateRule": "(id = @request.auth.id) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
+    "deleteRule": "(id = @request.auth.id) || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
     "authRule": "",
-    "manageRule": null,
+    "manageRule": "(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (@request.auth.role = \"GLOBAL_ADMIN\")",
     "authAlert": {
       "enabled": true,
       "emailTemplate": {
@@ -965,13 +965,14 @@
       }
     ],
     "indexes": [
-      "CREATE UNIQUE INDEX `idx_jJcNH78j9b` ON `product_categories` (`normalizedName`)"
+      "CREATE UNIQUE INDEX `idx_jJcNH78j9b` ON `product_categories` (`normalizedName`)",
+      "CREATE INDEX `idx_product_categories_tenant` ON `product_categories` (`tenant`)"
     ],
-    "listRule": "",
-    "viewRule": "",
-    "createRule": "@request.auth.record.tenantId = tenant",
-    "updateRule": "@request.auth.record.tenantId = tenant",
-    "deleteRule": "@request.auth.record.tenantId = tenant"
+    "listRule": "tenant = null || tenant = @request.auth.tenant || @request.auth.role = \"GLOBAL_ADMIN\"",
+    "viewRule": "tenant = null || tenant = @request.auth.tenant || @request.auth.role = \"GLOBAL_ADMIN\"",
+    "createRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && @request.body.tenant = @request.auth.tenant && @request.body.tenant != null)",
+    "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && tenant != null)",
+    "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && tenant != null)"
   },
   {
     "id": "pbc_4092854851",
@@ -1292,13 +1293,14 @@
       "CREATE INDEX `idx_pcuqdsjzwH` ON `products` (`inStock`)",
       "CREATE INDEX `idx_pe3oncnQUn` ON `products` (\n  `inStock`,\n  `category`\n)",
       "CREATE INDEX `idx_fvmRWqAszA` ON `products` (`updated`)",
-      "CREATE INDEX `idx_2hW78iTVPU` ON `products` (`normalizedName`)"
+      "CREATE INDEX `idx_2hW78iTVPU` ON `products` (`normalizedName`)",
+      "CREATE INDEX `idx_products_tenant` ON `products` (`tenant`)"
     ],
     "listRule": "",
     "viewRule": "",
-    "createRule": "@request.auth.record.tenantId = @request.body.tenant\n",
-    "updateRule": "@request.auth.record.tenantId = tenant",
-    "deleteRule": "@request.auth.record.tenantId = tenant"
+    "createRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && @request.auth.tenant = @request.body.tenant)",
+    "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)"
   },
   {
     "id": "pbc_2442875294",
@@ -1504,6 +1506,20 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
+        "id": "text_timezone",
+        "max": 50,
+        "min": 0,
+        "name": "timezone",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
         "id": "text2772351208",
         "max": 0,
         "min": 0,
@@ -1579,12 +1595,15 @@
         "type": "autodate"
       }
     ],
-    "indexes": [],
+    "indexes": [
+      "CREATE INDEX `idx_tenants_active` ON `tenants` (`active`)",
+      "CREATE INDEX `idx_tenants_closed` ON `tenants` (`closed`)"
+    ],
     "listRule": "",
     "viewRule": "",
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null
+    "createRule": "(@request.auth.role = \"GLOBAL_ADMIN\")",
+    "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && id = @request.auth.tenant)",
+    "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\")"
   },
   {
     "id": "pbc_3304764897",
@@ -1679,8 +1698,8 @@
     "indexes": [
       "CREATE UNIQUE INDEX `idx_UvWnDvVydE` ON `languages` (`code`)"
     ],
-    "listRule": null,
-    "viewRule": null,
+    "listRule": "",
+    "viewRule": "",
     "createRule": null,
     "updateRule": null,
     "deleteRule": null
@@ -1739,9 +1758,9 @@
     "indexes": [],
     "listRule": "",
     "viewRule": "",
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null
+    "createRule": "@request.auth.role = \"GLOBAL_ADMIN\"",
+    "updateRule": "@request.auth.role = \"GLOBAL_ADMIN\"",
+    "deleteRule": "@request.auth.role = \"GLOBAL_ADMIN\""
   },
   {
     "id": "pbc_1219621782",
@@ -1852,12 +1871,14 @@
         "type": "autodate"
       }
     ],
-    "indexes": [],
-    "listRule": null,
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null
+    "indexes": [
+      "CREATE INDEX `idx_tags_client` ON `tags` (`client`)"
+    ],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && @request.body.client = @request.auth.tenant)",
+    "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && client = @request.auth.tenant)",
+    "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && client = @request.auth.tenant)"
   },
   {
     "id": "pbc_1220644197",
@@ -2043,12 +2064,15 @@
         "type": "autodate"
       }
     ],
-    "indexes": [],
-    "listRule": "user = @request.auth.id",
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null
+    "indexes": [
+      "CREATE INDEX idx_user_addresses_user ON user_addresses (user)",
+      "CREATE INDEX idx_user_addresses_active ON user_addresses (active)"
+    ],
+    "listRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && user.tenant = @request.auth.tenant)",
+    "viewRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && user.tenant = @request.auth.tenant)",
+    "createRule": "user = @request.auth.id",
+    "updateRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && user.tenant = @request.auth.tenant)",
+    "deleteRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && user.tenant = @request.auth.tenant)"
   },
   {
     "id": "pbc_3527180448",
@@ -2328,9 +2352,9 @@
     ],
     "listRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
     "viewRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
-    "createRule": "@request.auth.id != \"\"",
-    "updateRule": "@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant",
-    "deleteRule": "(user = @request.auth.id) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)"
+    "createRule": "@request.auth.id != \"\" && user = @request.auth.id",
+    "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (user = @request.auth.id && status = \"PENDING\")",
+    "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (user = @request.auth.id && status = \"PENDING\")"
   },
   {
     "id": "pbc_1381829198",
@@ -2518,12 +2542,14 @@
         "type": "autodate"
       }
     ],
-    "indexes": [],
-    "listRule": "tenant.id = @request.auth.tenant",
-    "viewRule": null,
-    "createRule": null,
-    "updateRule": null,
-    "deleteRule": null
+    "indexes": [
+      "CREATE INDEX `idx_tenant_addresses_tenant` ON `tenant_addresses` (`tenant`)"
+    ],
+    "listRule": "",
+    "viewRule": "",
+    "createRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && @request.body.tenant = @request.auth.tenant)",
+    "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)"
   },
   {
     "id": "pbc_316426720",
@@ -2560,7 +2586,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_1GMs",
+        "id": "_clone_KC92",
         "maxSize": 0,
         "name": "name",
         "presentable": false,
@@ -2571,7 +2597,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_xGWr",
+        "id": "_clone_idCi",
         "max": 0,
         "min": 0,
         "name": "normalizedName",
@@ -2585,7 +2611,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_8UH3",
+        "id": "_clone_6Iw8",
         "max": 0,
         "min": 0,
         "name": "color",
@@ -2598,7 +2624,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_sEXm",
+        "id": "_clone_XFY5",
         "maxSize": 0,
         "name": "groupName",
         "presentable": false,
@@ -2609,7 +2635,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_pB9k",
+        "id": "_clone_ftS3",
         "max": 0,
         "min": 0,
         "name": "icon",
@@ -2624,7 +2650,7 @@
         "cascadeDelete": false,
         "collectionId": "pbc_2442875294",
         "hidden": false,
-        "id": "_clone_h43P",
+        "id": "_clone_aVM0",
         "maxSelect": 1,
         "minSelect": 0,
         "name": "tenant",
@@ -2648,7 +2674,7 @@
     ],
     "indexes": [],
     "listRule": "",
-    "viewRule": null,
+    "viewRule": "",
     "createRule": null,
     "updateRule": null,
     "deleteRule": null,
@@ -2884,12 +2910,16 @@
         "type": "autodate"
       }
     ],
-    "indexes": [],
-    "listRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
-    "viewRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "indexes": [
+      "CREATE INDEX idx_carts_user ON carts (user)",
+      "CREATE INDEX idx_carts_tenant ON carts (tenant)",
+      "CREATE INDEX idx_carts_status ON carts (status)"
+    ],
+    "listRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || \n(@request.auth.role = \"GLOBAL_ADMIN\")",
+    "viewRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || \n(@request.auth.role = \"GLOBAL_ADMIN\")",
     "createRule": "user = @request.auth.id && tenant = @request.auth.tenant",
-    "updateRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
-    "deleteRule": "user = @request.auth.id && tenant = @request.auth.tenant"
+    "updateRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || \n(@request.auth.role = \"GLOBAL_ADMIN\")",
+    "deleteRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || \n(@request.auth.role = \"GLOBAL_ADMIN\")"
   },
   {
     "id": "pbc_3870285815",
@@ -3023,9 +3053,13 @@
         "type": "autodate"
       }
     ],
-    "indexes": [],
-    "listRule": "(status = \"open\" || status = \"processing\") || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
-    "viewRule": "(status = \"open\" || status = \"processing\") || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "indexes": [
+      "CREATE INDEX `idx_order_cycles_tenant_status` ON `order_cycles` (`tenant`, `status`)",
+      "CREATE UNIQUE INDEX `idx_order_cycles_code` ON `order_cycles` (`code`)",
+      "CREATE INDEX `idx_order_cycles_endsAt` ON `order_cycles` (`endsAt`)"
+    ],
+    "listRule": "(status = \"OPEN\" || status = \"PROCESSING\") || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
+    "viewRule": "(status = \"OPEN\" || status = \"PROCESSING\") || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
     "createRule": "(@request.auth.id != \"\" && @request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.id != \"\" && @request.auth.role = \"TENANT_ADMIN\" && @request.body.tenant = @request.auth.tenant)",
     "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && @request.body.tenant = @request.auth.tenant)",
     "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant && @request.body.tenant = @request.auth.tenant)\n"

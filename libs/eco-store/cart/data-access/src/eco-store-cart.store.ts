@@ -113,8 +113,15 @@ export const ecoStoreCartStore = signalStore(
     isEmpty: computed(() => entities().length === 0),
     itemsDictionary: computed(() => entityMap()),
     items: computed(() => entities()),
-    itemsGroupedByCategory: computed(() => {
-      return Object.groupBy(entities(), (item: EcoStoreCartItem) => item.product.categoryName);
+    itemsGroupedByCategory: computed((): { category: string; items: EcoStoreCartItem[] }[] => {
+      const grouped = Object.groupBy(
+        entities(),
+        (item: EcoStoreCartItem) => item.product.categoryName
+      );
+      return Object.entries(grouped).map(([category, items]) => ({
+        category,
+        items: items as EcoStoreCartItem[],
+      }));
     }),
   })),
 

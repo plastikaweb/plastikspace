@@ -10,7 +10,7 @@ export const mockEcoStoreCartStore = {
   isEmpty: signal(true),
   itemsDictionary: signal({} as Record<string, EcoStoreCartItem>),
   items: signal([] as EcoStoreCartItem[]),
-  itemsGroupedByCategory: signal({} as Record<string, EcoStoreCartItem[] | undefined>),
+  itemsGroupedByCategory: signal([] as { category: string; items: EcoStoreCartItem[] }[]),
   shipping: signal(0),
   address: signal(null),
   day: signal(null),

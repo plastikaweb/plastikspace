@@ -115,7 +115,7 @@ The store exposes the following signals and methods:
 
 - `itemsCount()`: Total quantity of all products
 - `isEmpty()`: True if the cart has no items
-- `itemsGroupedByCategory()`: Returns an object where keys are category names and values are arrays of `CartItem` objects
+- `itemsGroupedByCategory()`: Returns an array of objects where each object contains a `category` name and an `items` array of `CartItem` objects.
 - `itemsDictionary()`: Returns entity map for quick product lookups
 
 #### Methods
