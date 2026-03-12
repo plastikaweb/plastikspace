@@ -11,6 +11,41 @@
       "vitest-axe/extend-expect"
     ]
   },
+  "references": [
+    {
+      "path": "./tsconfig.lib.json"
+    },
+    {
+      "path": "../../../shared/auth/pocketbase/data-access"
+    },
+    {
+      "path": "../../../core/entities"
+    },
+    {
+      "path": "../../core/entities"
+    },
+    {
+      "path": "../../products/data-access"
+    },
+    {
+      "path": "../../core/tenant"
+    },
+    {
+      "path": "../../../shared/notification/data-access"
+    },
+    {
+      "path": "../../shared/utils"
+    },
+    {
+      "path": "../../core/api/data-access"
+    },
+    {
+      "path": "../../../core/util/api-pocketbase"
+    },
+    {
+      "path": "../../../core/util/environments"
+    }
+  ],
   "include": [
     "vite.config.ts",
     "vite.config.mts",
@@ -24,6 +59,7 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
+    "src/**/*.store.mock.ts",
     "src/**/*.d.ts"
   ],
   "files": ["src/test-setup.ts"]

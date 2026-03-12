@@ -1,4 +1,3 @@
-import { KeyValuePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -18,7 +17,6 @@ import { CartProductCardComponent } from '../../ui/cart-product-card/cart-produc
     MatIconModule,
     MatCardModule,
     TranslatePipe,
-    KeyValuePipe,
     CartOrderSummaryComponent,
     CartProductCardComponent,
   ],

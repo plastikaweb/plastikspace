@@ -1,5 +1,15 @@
 # Eco-Store Loading Strategies
 
+- [Eco-Store Loading Strategies](#eco-store-loading-strategies)
+  - [Overview](#overview)
+  - [Strategy 1 — Bootstrap Initializer (Global Overlay)](#strategy-1--bootstrap-initializer-global-overlay)
+  - [Strategy 2 — Opt-in PocketBase Interceptor (Per-Request)](#strategy-2--opt-in-pocketbase-interceptor-per-request)
+  - [Strategy 3 — Signal Store `isLoading` Signal (Per-List-Reload)](#strategy-3--signal-store-isloading-signal-per-list-reload)
+  - [Strategy 4 — Explicit `activityStore` Calls (Multi-Step Async Flows)](#strategy-4--explicit-activitystore-calls-multi-step-async-flows)
+  - [Strategy 5 — Cart Sync State (`isSyncing` / `isSynced`)](#strategy-5--cart-sync-state-issyncing--issynced)
+  - [Decision Guide](#decision-guide)
+  - [Related Libraries](#related-libraries)
+
 This document describes the loading (activity/progress) strategies used across the Eco Store application and its libraries.
 All strategies ultimately control the shared `activityStore`, which drives the global overlay loader rendered by `SharedActivityUiOverlayComponent` in `AppComponent`.
 

@@ -17,12 +17,13 @@ export const defaultNotification: NotificationTypesConfig = {
   ['INFO']: {
     type: 'INFO',
     icon: 'info',
-    duration: 5000,
+    duration: 3000,
   },
   ['SUCCESS']: {
     type: 'SUCCESS',
     icon: 'check',
-    duration: 3000,
+    action: 'close',
+    duration: 2000,
   },
 };
 

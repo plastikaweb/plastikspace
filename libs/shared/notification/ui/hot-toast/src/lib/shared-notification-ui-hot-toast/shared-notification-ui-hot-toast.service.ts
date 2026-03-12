@@ -45,12 +45,15 @@ export class SharedNotificationUiHotToastService {
     }
 
     const configuration: ToastOptions<void> = {
-      id: name,
       duration: duration || 5000,
       position,
       className: `type-${type.toLowerCase()}`,
       dismissible: !!action,
     };
+
+    if (name) {
+      configuration.id = name;
+    }
 
     if (containerClass) {
       configuration.className += ` ${containerClass}`;

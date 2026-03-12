@@ -1,5 +1,7 @@
 <mat-form-field class="w-full">
-  <mat-label>{{ props.label }}</mat-label>
+  @if (props.label) {
+    <mat-label>{{ props.label }}</mat-label>
+  }
   <textarea
     #ta
     #autosize="cdkTextareaAutosize"
