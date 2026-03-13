@@ -1388,6 +1388,12 @@ html {
   .w-full {
     width: var(--spacing-full);
   }
+  .w-full\! {
+    width: 100% !important;
+  }
+  .w-full\! {
+    width: var(--spacing-full) !important;
+  }
   .w-max {
     width: max-content;
   }
