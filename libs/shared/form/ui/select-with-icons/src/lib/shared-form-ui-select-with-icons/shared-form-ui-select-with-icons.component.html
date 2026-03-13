@@ -1,0 +1,22 @@
+<mat-form-field appearance="outline" class="w-full">
+  <mat-label>{{ props.label }}</mat-label>
+  <mat-select panelClass="select-with-icons-panel" class="flex!" [formControl]="formControl">
+    <mat-select-trigger>
+      @if (selectedOption(); as selected) {
+        <div [class]="`flex items-center gap-2 select-type-${selected.type}`">
+          <mat-icon>{{ selected.icon }}</mat-icon>
+          <span class="text-sm! font-bold">{{ selected.label }}</span>
+        </div>
+      }
+    </mat-select-trigger>
+
+    @for (option of props.options; track option.value) {
+      <mat-option [value]="option.value" [class]="`select-type-${option.type}`">
+        <div class="flex items-center gap-2">
+          <mat-icon>{{ option.icon }}</mat-icon>
+          <span>{{ option.label }}</span>
+        </div>
+      </mat-option>
+    }
+  </mat-select>
+</mat-form-field>

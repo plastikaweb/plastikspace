@@ -20,10 +20,11 @@ Part of the [**Eco-Store**](../../../../../apps/eco-store/README.md) application
 
 - **Order History Grid**: Displays a list of user orders with essential information at a glance.
 - **Detailed Order Cards**: Individual cards for each order showing status, date, items count, and delivery method.
+- **Order Filtering**: Allows users to filter their order history by status (Pending, Confirmed, etc.).
 - **State Management**: Integrates with `EcoStoreOrdersStore` for reactive data fetching and pagination.
 - **Pagination**: Support for navigating through order history.
 - **Dynamic Status & Icons**: Visual cues for order status (Pending, Confirmed, Ready, etc.) and delivery methods.
-- **Empty State**: User-friendly empty state with a call to action when no orders are found.
+- **Empty State**: User-friendly empty state with a call to action when no orders are found, including status-specific messages.
 - **Modern Architecture**: Built with Angular 21 (Signals, Standalone Components, and logical control flow).
 
 ## Running unit tests

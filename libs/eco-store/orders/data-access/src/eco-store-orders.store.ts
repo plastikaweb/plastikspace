@@ -27,6 +27,9 @@ export const ecoStoreOrdersStore = signalStore(
         active: 'created',
         direction: 'desc',
       },
+      filter: {
+        status: null,
+      },
       sortOptions: {
         ...initialGetListState().sortOptions,
       },

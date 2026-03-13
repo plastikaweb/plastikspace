@@ -8,42 +8,49 @@ import { EcoStoreCartItem } from './cart';
 import { ProductUnitType } from './product';
 import { EcoStoreTenantLogisticsDeliveryType, SlotDays, TimeRange } from './tenant';
 
-export type EcoStoreOrderStatus =
-  | 'PENDING'
-  | 'CONFIRMED'
-  | 'PREPARING'
-  | 'READY'
-  | 'DELIVERED'
-  | 'CANCELLED';
+export const ORDER_STATUSES = [
+  'PENDING',
+  'CONFIRMED',
+  'PREPARING',
+  'READY',
+  'DELIVERED',
+  'CANCELLED',
+] as const;
+
+export type EcoStoreOrderStatus = (typeof ORDER_STATUSES)[number];
+
+/** Single source of truth for all per-status metadata. */
+const ORDER_STATUS_CONFIG: Record<EcoStoreOrderStatus, { type: SharedChipType; icon: string }> = {
+  PENDING: { type: 'warning', icon: 'clock_loader_10' },
+  CONFIRMED: { type: 'warning', icon: 'thumb_up' },
+  PREPARING: { type: 'warning', icon: 'pending' },
+  READY: { type: 'warning', icon: 'box' },
+  DELIVERED: { type: 'success', icon: 'check_circle' },
+  CANCELLED: { type: 'error', icon: 'error' },
+} as const;
+
+/** Maps order status to a Material icon name. */
+export const ORDER_STATUS_ICON_MAP = Object.fromEntries(
+  ORDER_STATUSES.map(status => [status, ORDER_STATUS_CONFIG[status].icon])
+) as Record<EcoStoreOrderStatus, string>;
+
+/** Status options for select fields (label derives from convention). */
+export const ORDER_STATUS_OPTIONS = ORDER_STATUSES.map(status => ({
+  value: status,
+  label: `orders.status.${status.toLowerCase()}`,
+  icon: ORDER_STATUS_CONFIG[status].icon,
+  type: ORDER_STATUS_CONFIG[status].type,
+}));
 
 /** Maps order status to translation keys. */
-export const ORDER_STATUS_LABEL_MAP: Record<EcoStoreOrderStatus, string> = {
-  DELIVERED: 'orders.status.delivered',
-  PENDING: 'orders.status.pending',
-  CONFIRMED: 'orders.status.confirmed',
-  PREPARING: 'orders.status.preparing',
-  READY: 'orders.status.ready',
-  CANCELLED: 'orders.status.cancelled',
-} as const;
+export const ORDER_STATUS_LABEL_MAP = Object.fromEntries(
+  ORDER_STATUSES.map(status => [status, `orders.status.${status.toLowerCase()}`])
+) as Record<EcoStoreOrderStatus, string>;
 
 /** Maps order status to a semantic chip type. */
-export const ORDER_STATUS_TYPE_MAP: Record<EcoStoreOrderStatus, SharedChipType> = {
-  DELIVERED: 'success',
-  PENDING: 'warning',
-  CONFIRMED: 'warning',
-  PREPARING: 'warning',
-  READY: 'warning',
-  CANCELLED: 'error',
-} as const;
-
-export const ORDER_STATUS_ICON_MAP: Record<EcoStoreOrderStatus, string> = {
-  DELIVERED: 'check_circle',
-  PENDING: 'clock_loader_10',
-  CONFIRMED: 'pending',
-  PREPARING: 'pending',
-  READY: 'box',
-  CANCELLED: 'error',
-} as const;
+export const ORDER_STATUS_TYPE_MAP = Object.fromEntries(
+  ORDER_STATUSES.map(status => [status, ORDER_STATUS_CONFIG[status].type])
+) as Record<EcoStoreOrderStatus, SharedChipType>;
 
 /** Maps delivery method to an icon name. */
 export const ORDER_DELIVERY_ICON_MAP: Record<EcoStoreTenantLogisticsDeliveryType, string> = {
