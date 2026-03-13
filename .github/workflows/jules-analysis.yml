@@ -13,37 +13,65 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-
     steps:
-      - name: Invoke Jules agent for review
-        uses: google-labs-code/jules-action@main
+      - uses: actions/checkout@v5
         with:
-          jules_api_key: ${{ secrets.JULES_API_KEY }}
-          include_last_commit: false
-          include_commit_log: false
-          prompt: |
-            You are a Senior Frontend Architect and strict code reviewer for "Plastikspace", a modern Nx monorepo using Angular 21.
-            Your goal is to ensure the highest code quality, performance, and adherence to the project's specific conventions.
+          fetch-depth: 30
 
-            ### Project Core Standards:
-            - **Angular 21**: Must use Standalone components (do NOT use `standalone: true`).
-            - **Reactivity**: Mandatory use of Signals API (`signal`, `computed`, `input`, `output`, `resource`). Avoid Observables/Subjects for component state.
-            - **Change Detection**: Must always use `ChangeDetectionStrategy.OnPush`.
-            - **Modern Template Syntax**: Mandatory use of `@if`, `@for`, and `@switch`. NO `*ngIf` or `*ngFor`.
-            - **Private Fields**: Use ES6 private fields (`#fieldName`) instead of the `private` keyword. This is strictly enforced.
-            - **Styling**: Tailwind CSS 4.0 only. Prefer utility classes. Use `[class.name]="condition"` instead of `ngClass`.
-            - **Component Host**: Use the `host` object in `@Component` for bindings/listeners. NO `@HostBinding` or `@HostListener`.
-            - **JSDoc**: All complex logic must have JSDoc. Descriptions must start with a capital letter and end with a period.
-            - **Architecture**: Enforce DDD boundaries. Ensure proper library types (`feature`, `data-access`, `ui`, `util`, `entity`) and dependency rules.
-            - **Clean Code**: No `console.log`, use `private readonly` for injected dependencies (if not using `#`).
+      - name: Create prompt file
+        shell: bash
+        run: |
+          cat << 'EOF' > prompt.txt
+          You are a Senior Frontend Architect and strict code reviewer for "Plastikspace", a modern Nx monorepo using Angular 21.
+          Your goal is to ensure the highest code quality, performance, and adherence to the project's specific conventions.
 
-            Please analyze in detail the changes introduced in Pull Request #${{ github.event.pull_request.number }}.
+          ### Project Core Standards:
+          - **Angular 21**: Must use Standalone components (do NOT use `standalone: true`).
+          - **Reactivity**: Mandatory use of Signals API (`signal`, `computed`, `input`, `output`, `resource`). Avoid Observables/Subjects for component state.
+          - **Change Detection**: Must always use `ChangeDetectionStrategy.OnPush`.
+          - **Modern Template Syntax**: Mandatory use of `@if`, `@for`, and `@switch`. NO `*ngIf` or `*ngFor`.
+          - **Private Fields**: Use ES6 private fields (`#fieldName`) instead of the `private` keyword. This is strictly enforced.
+          - **Styling**: Tailwind CSS 4.0 only. Prefer utility classes. Use `[class.name]="condition"` instead of `ngClass`.
+          - **Component Host**: Use the `host` object in `@Component` for bindings/listeners. NO `@HostBinding` or `@HostListener`.
+          - **JSDoc**: All complex logic must have JSDoc. Descriptions must start with a capital letter and end with a period.
+          - **Architecture**: Enforce DDD boundaries. Ensure proper library types (`feature`, `data-access`, `ui`, `util`, `entity`) and dependency rules.
+          - **Clean Code**: No `console.log`, use `private readonly` for injected dependencies (if not using `#`).
 
-            🚨 **Critical Issues & Logic Bugs**: Direct errors, architectural violations, or missing private field (#) usage.
-            💡 **Angular & Signal Patterns**: Improvements for better Signal usage or modern Angular APIs.
-            📝 **Documentation & JSDoc**: Missing or malformed JSDoc.
-            🎨 **Styling & UI/UX**: Tailwind 4 Best practices, CSS optimizations, and UX consistency.
-            ♿ **Accessibility (A11y)**: Missing semantic HTML, ARIA labels, or focus management.
-            🚀 **Performance**: Rendering inefficiencies or unnecessary computations.
+          Please analyze in detail the changes introduced in Pull Request #${{ github.event.pull_request.number }}.
 
-            Provide direct, technical, and actionable feedback. If a change is perfect, state it briefly.
+          🚨 **Critical Issues & Logic Bugs**: Direct errors, architectural violations, or missing private field (#) usage.
+          💡 **Angular & Signal Patterns**: Improvements for better Signal usage or modern Angular APIs.
+          📝 **Documentation & JSDoc**: Missing or malformed JSDoc.
+          🎨 **Styling & UI/UX**: Tailwind 4 Best practices, CSS optimizations, and UX consistency.
+          ♿ **Accessibility (A11y)**: Missing semantic HTML, ARIA labels, or focus management.
+          🚀 **Performance**: Rendering inefficiencies or unnecessary computations.
+
+          Provide direct, technical, and actionable feedback. If a change is perfect, state it briefly.
+          EOF
+
+      - name: Assemble Jules payload
+        shell: bash
+        run: |
+          jq -n --rawfile jules_prompt prompt.txt \
+                --arg starting_branch "main" \
+                --arg repo_full_name "${{ github.repository }}" \
+                '{
+                  "prompt": $jules_prompt,
+                  "sourceContext": {
+                    "source": "sources/github/\($repo_full_name)",
+                    "githubRepoContext": {
+                      "startingBranch": $starting_branch
+                    }
+                  },
+                  "requirePlanApproval": false,
+                  "automationMode": "AUTO_CREATE_PR"
+                }' > jules_payload.json
+
+      - name: Invoke Jules Agent
+        shell: bash
+        run: |
+          curl 'https://jules.googleapis.com/v1alpha/sessions' \
+            -X POST \
+            -H "Content-Type: application/json" \
+            -H "X-Goog-Api-Key: ${{ secrets.JULES_API_KEY }}" \
+            -d @jules_payload.json
