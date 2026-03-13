@@ -16,6 +16,8 @@ Before creating a commit, verify:
 3. **Configuration files exist**:
    - `.cz-config.js` - commitizen types and scopes
    - `branchNameLint.json` - branch naming prefixes
+4. **You have the clickup task number** - if not, ask the user for it
+5. **Are there any spec or README md files affected by the changes?** - if yes, update them, following the same styles and structure as the existing files.
 
 ## Branch Naming Convention
 
@@ -121,8 +123,9 @@ After completing the commit message, the change should be added to the changelog
 | `fix`      | ✅ Yes     | Fixed   |
 | `perf`     | ✅ Yes     | Changed |
 | `refactor` | ⚠️ Ask     | Changed |
-| `docs`     | ❌ Skip    | -       |
-| `test`     | ❌ Skip    | -       |
+| `docs`     | ✅ Yes     | Changed |
+| `test`     | ✅ Yes     | Changed |
+| `revert`   | ✅ Yes     | Changed |
 | `ci`       | ❌ Skip    | -       |
 | `chore`    | ❌ Skip    | -       |
 | `style`    | ❌ Skip    | -       |
