@@ -23,6 +23,7 @@ export default defineConfig(() => ({
       reportsDirectory:
         '../../../../../coverage/libs/llecoop/order-list/feature/order-list-user-order',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

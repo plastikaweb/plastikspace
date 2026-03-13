@@ -23,6 +23,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../coverage/apps/nasa-images-e2e',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

@@ -21,6 +21,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../../coverage/libs/shared/form/ui/img-loader',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

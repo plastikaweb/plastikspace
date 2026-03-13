@@ -3,7 +3,11 @@
   <mat-select panelClass="select-with-icons-panel" class="flex!" [formControl]="formControl">
     <mat-select-trigger>
       @if (selectedOption(); as selected) {
-        <div [class]="`flex items-center gap-2 select-type-${selected.type}`">
+        <div
+          class="flex items-center gap-2"
+          [class.select-type-warning]="selected.type === 'warning'"
+          [class.select-type-success]="selected.type === 'success'"
+          [class.select-type-error]="selected.type === 'error'">
           <mat-icon>{{ selected.icon }}</mat-icon>
           <span class="text-sm! font-bold">{{ selected.label }}</span>
         </div>
@@ -11,7 +15,11 @@
     </mat-select-trigger>
 
     @for (option of props.options; track option.value) {
-      <mat-option [value]="option.value" [class]="`select-type-${option.type}`">
+      <mat-option
+        [value]="option.value"
+        [class.select-type-warning]="option.type === 'warning'"
+        [class.select-type-success]="option.type === 'success'"
+        [class.select-type-error]="option.type === 'error'">
         <div class="flex items-center gap-2">
           <mat-icon>{{ option.icon }}</mat-icon>
           <span>{{ option.label }}</span>

@@ -21,6 +21,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../../coverage/libs/llecoop/product/util/product-base-unit-text',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

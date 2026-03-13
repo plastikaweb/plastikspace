@@ -23,6 +23,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../../coverage/libs/shared/form/ui/select-with-icons',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 }));

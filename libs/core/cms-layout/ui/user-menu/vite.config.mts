@@ -21,6 +21,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../../coverage/libs/core/cms-layout/ui/user-menu',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

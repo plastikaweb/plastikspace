@@ -21,6 +21,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../../coverage/libs/shared/form/ui/input-search',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

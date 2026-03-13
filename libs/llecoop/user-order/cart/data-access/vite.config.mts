@@ -21,6 +21,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../../coverage/libs/llecoop/user-order/cart/data-access',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

@@ -30,6 +30,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../coverage/libs/llecoop/cms-layout',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

@@ -9,14 +9,13 @@ import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities
 
 @Component({
   selector: 'eco-cart-order-summary',
-  standalone: true,
   imports: [CurrencyPipe, DatePipe, MatCardModule, MatButtonModule, MatIconModule, TranslateModule],
   templateUrl: './cart-order-summary.component.html',
   styleUrl: './cart-order-summary.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartOrderSummaryComponent {
-  private readonly router = inject(Router);
+  readonly #router = inject(Router);
   submitAvailable = input<boolean>(true);
   subtotal = input.required<number>();
   taxes = input.required<number>();
@@ -33,7 +32,7 @@ export class CartOrderSummaryComponent {
     const route = this.actionRoute();
 
     if (route) {
-      this.router.navigate(route);
+      this.#router.navigate(route);
     } else {
       this.actionClick.emit();
     }
