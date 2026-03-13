@@ -22,6 +22,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../coverage/libs/eco-store/shared/product-card',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

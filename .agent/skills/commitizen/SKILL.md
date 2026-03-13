@@ -126,10 +126,10 @@ After completing the commit message, the change should be added to the changelog
 | `docs`     | ✅ Yes     | Changed |
 | `test`     | ✅ Yes     | Changed |
 | `revert`   | ✅ Yes     | Changed |
-| `ci`       | ❌ Skip    | -       |
-| `chore`    | ❌ Skip    | -       |
-| `style`    | ❌ Skip    | -       |
-| `build`    | ❌ Skip    | -       |
+| `ci`       | ✅ Yes     | Changed |
+| `chore`    | ⚠️ Ask     | Changed |
+| `style`    | ⚠️ Ask     | Changed |
+| `build`    | ⚠️ Ask     | Changed |
 
 Add entry to `CHANGELOG.md` under `## [YYYY-MM-DD] - <Current Feature Title>` in the appropriate section:
 

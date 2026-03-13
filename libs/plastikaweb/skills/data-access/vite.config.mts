@@ -20,6 +20,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../coverage/libs/plastikaweb/skills/data-access',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
   ssr: {

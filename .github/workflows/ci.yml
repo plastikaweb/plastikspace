@@ -7,6 +7,7 @@ on:
 
 env:
   NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 # Needed for nx-set-shas when run on the main branch
 permissions:
@@ -19,12 +20,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
-          node-version: 20
+          node-version: 22
           cache: 'yarn'
 
       # Start Nx Cloud without distribution for simpler setup
@@ -42,14 +43,14 @@ jobs:
           yarn i18n:validate
           yarn markdownlint
           npx nx-cloud record -- nx affected --target=lint --exclude=llecoop-firebase --parallel=3
-          npx nx-cloud record -- nx affected --target=test --exclude=llecoop-firebase --parallel=3 --code-coverage
+          npx nx-cloud record -- nx affected --target=test --exclude=llecoop-firebase --parallel=3 --coverage
           npx nx-cloud record -- nx affected --target=build --exclude=llecoop-firebase --parallel=3
         if: always()
 
       - name: Report Coverage
         id: coverage
         if: always()
-        uses: actions/github-script@v7
+        uses: actions/github-script@v8
         with:
           script: |
             const fs = require('fs');

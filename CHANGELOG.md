@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated `withPocketBaseListFeature` to correctly format complex filters ([#86c8r2ajj](https://app.clickup.com/t/86c8r2ajj))
 - Refactored `EcoStoreOrderStatus` to use centralized status configuration ([#86c8r2ajj](https://app.clickup.com/t/86c8r2ajj))
 
+### Fixed
+
+- Fixed test coverage summary reporting for CI badges ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
+- Corrected CI workflow test flag from `--code-coverage` to `--coverage` ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
+
 ## [2026-03-12] - Performance, SEO and Deployment Optimizations
 
 ### Added

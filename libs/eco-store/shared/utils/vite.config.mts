@@ -21,6 +21,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../coverage/libs/eco-store/shared/utils',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

@@ -22,6 +22,7 @@ export default defineConfig(() => ({
       reportsDirectory:
         '../../../../../coverage/libs/shared/form/ui/input-password-with-visibility',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

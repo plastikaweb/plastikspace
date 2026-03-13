@@ -16,7 +16,7 @@ export const mockEcoStoreProductsStore = {
     if (!product) return undefined;
     return {
       ...product,
-      name: (product.name as any)['ca'],
+      name: product.name['ca'],
     };
   }),
 };

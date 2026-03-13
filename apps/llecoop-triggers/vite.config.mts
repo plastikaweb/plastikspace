@@ -23,6 +23,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../coverage/apps/llecoop-triggers',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

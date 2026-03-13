@@ -7,7 +7,8 @@
     <div class="relative col-span-10 w-full">
       @for (tier of sortedTiersAsc(); track tier.min) {
         <p
-          [class]="`tier-label absolute text-xs text-neutral-500 ${activeTierMin() === tier.min ? 'active' : ''}`"
+          class="tier-label absolute text-xs text-neutral-500"
+          [class.active]="activeTierMin() === tier.min"
           [style.left]="(tier.min / (maxTier()?.min || 1)) * 100 + '%'">
           {{ tier.min | currency: 'EUR' : 'symbol' : '1.0-0' }}
         </p>
@@ -30,7 +31,8 @@
     <div class="relative col-span-10 w-full">
       @for (tier of sortedTiersAsc(); track tier.min) {
         <p
-          [class]="`tier-label absolute text-xs text-neutral-500 ${activeTierMin() === tier.min ? 'active' : ''}`"
+          class="tier-label absolute text-xs text-neutral-500"
+          [class.active]="activeTierMin() === tier.min"
           [style.left]="(tier.min / (maxTier()?.min || 1)) * 100 + '%'">
           @if (tier.cost > 0) {
             {{ tier.cost | currency: 'EUR' : 'symbol' : '1.0-0' }}
@@ -43,9 +45,9 @@
   </div>
 
   <div
-    [class]="`cart-order-price-slots__shipping flex items-center gap-2 rounded-xl border p-2 text-xs font-semibold ${
-      isFree() ? 'free' : 'not-free'
-    }`">
+    class="cart-order-price-slots__shipping flex items-center gap-2 rounded-xl border p-2 text-xs font-semibold"
+    [class.free]="isFree()"
+    [class.not-free]="!isFree()">
     @if (isFree()) {
       <mat-icon>check_circle</mat-icon>
       <span>{{ 'cart.shipping.freeAchieved' | translate }}</span>

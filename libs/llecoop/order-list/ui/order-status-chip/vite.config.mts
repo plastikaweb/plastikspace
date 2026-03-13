@@ -21,6 +21,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../../coverage/libs/llecoop/order-list/ui/order-status-chip',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 

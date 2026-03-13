@@ -21,6 +21,7 @@ export default defineConfig(() => ({
     coverage: {
       reportsDirectory: '../../../../coverage/libs/shared/signal-state/data-access-pocketbase',
       provider: 'v8' as const,
+      reporter: ['text', 'json-summary'],
     },
   },
 
