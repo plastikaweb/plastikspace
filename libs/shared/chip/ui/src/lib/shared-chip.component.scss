@@ -1,3 +1,53 @@
+@use '@angular/material' as mat;
+
 :host {
   display: inline-block;
+
+  .chip-primary {
+    @include mat.icon-overrides(
+      (
+        color: var(--primary-800),
+      )
+    );
+  }
+
+  .chip-success {
+    @include mat.icon-overrides(
+      (
+        color: var(--success-800),
+      )
+    );
+  }
+
+  .chip-warning {
+    @include mat.icon-overrides(
+      (
+        color: var(--warning-800),
+      )
+    );
+  }
+
+  .chip-error {
+    @include mat.icon-overrides(
+      (
+        color: var(--error-800),
+      )
+    );
+  }
+
+  .chip-neutral {
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-800),
+      )
+    );
+  }
+
+  .chip-tertiary {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-800),
+      )
+    );
+  }
 }

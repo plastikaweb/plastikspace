@@ -17,6 +17,15 @@
 
   @let orders = ordersStore.entities();
 
+  <mat-card appearance="outlined" class="mb-6 px-4 py-2">
+    <plastik-shared-form-feature
+      [fields]="formConfig.getConfig()"
+      [model]="model()"
+      [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
+      (temporaryChangeEvent)="onChange($event)">
+    </plastik-shared-form-feature>
+  </mat-card>
+
   <section class="orders-grid" [attr.aria-label]="'orders.list.list' | translate">
     @if (ordersStore.isLoading()) {
       @for (i of skeletonItems(); track $index) {
@@ -58,12 +67,25 @@
           </div>
 
           <div class="flex flex-col items-center justify-center gap-1">
-            <h3 class="text-xl font-bold text-neutral-500">
-              {{ 'orders.list.empty' | translate }}
-            </h3>
-            <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
-              {{ 'orders.list.emptyDescription' | translate }}
-            </p>
+            @let status = model().status;
+            @if (status) {
+              <h3 class="text-xl font-bold text-neutral-500">
+                {{
+                  'orders.list.emptyWithStatus'
+                    | translate: { status: (orderStatusLabelMap[status] | translate) }
+                }}
+              </h3>
+              <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
+                {{ 'orders.list.emptyDescriptionWithStatus' | translate }}
+              </p>
+            } @else {
+              <h3 class="text-xl font-bold text-neutral-500">
+                {{ 'orders.list.empty' | translate }}
+              </h3>
+              <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
+                {{ 'orders.list.emptyDescription' | translate }}
+              </p>
+            }
           </div>
           <button matButton="filled" type="button" routerLink="/botiga">
             <mat-icon aria-hidden="true">storefront</mat-icon>

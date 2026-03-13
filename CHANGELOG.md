@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-13] - Order Filtering and Shared UI Components
+
+### Added
+
+- Implemented order filtering by status in the user's order list ([#86c8r2ajj](https://app.clickup.com/t/86c8r2ajj))
+- Created a new `select-with-icons` shared UI component with status-aware styling ([#86c8r2ajj](https://app.clickup.com/t/86c8r2ajj))
+- Added localized status labels and status-specific empty state messages for orders ([#86c8r2ajj](https://app.clickup.com/t/86c8r2ajj))
+
+### Changed
+
+- Updated `withPocketBaseListFeature` to correctly format complex filters ([#86c8r2ajj](https://app.clickup.com/t/86c8r2ajj))
+- Refactored `EcoStoreOrderStatus` to use centralized status configuration ([#86c8r2ajj](https://app.clickup.com/t/86c8r2ajj))
+
 ## [2026-03-12] - Performance, SEO and Deployment Optimizations
 
 ### Added

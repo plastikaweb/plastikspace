@@ -14,11 +14,13 @@ describe('EcoStoreOrdersListComponent', () => {
     isLoading: signal(false),
     entities: signal([]),
     count: signal(0),
+    filter: signal({ status: null }),
     getPagination: () => ({ page: 1, perPage: 10 }),
     paginationSizeOptions: signal([10, 20]),
   };
 
   beforeEach(async () => {
+    mockOrdersStore.filter.set({ status: null });
     await TestBed.configureTestingModule({
       imports: [EcoStoreOrdersListComponent, TranslateModule.forRoot()],
       providers: [provideRouter([]), { provide: ecoStoreOrdersStore, useValue: mockOrdersStore }],
@@ -47,5 +49,22 @@ describe('EcoStoreOrdersListComponent', () => {
 
     const goToStoreBtn = fixture.nativeElement.querySelector('button[routerLink="/botiga"]');
     expect(goToStoreBtn).toBeTruthy();
+  });
+
+  it('should display the filter form', () => {
+    const filterForm = fixture.nativeElement.querySelector('plastik-shared-form-feature');
+    expect(filterForm).toBeTruthy();
+  });
+
+  it('should display status-specific empty state when filter is applied', () => {
+    // Mock the model with a status filter
+    mockOrdersStore.filter.set({ status: 'PENDING' });
+    fixture.detectChanges();
+
+    const emptyTitle = fixture.nativeElement.querySelector('h3');
+    expect(emptyTitle.textContent).toContain('orders.list.emptyWithStatus');
+
+    const emptyDesc = fixture.nativeElement.querySelector('p.max-w-3xl');
+    expect(emptyDesc.textContent).toContain('orders.list.emptyDescriptionWithStatus');
   });
 });

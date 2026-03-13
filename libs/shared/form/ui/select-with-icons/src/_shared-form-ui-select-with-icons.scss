@@ -1,0 +1,56 @@
+@use '@angular/material' as mat;
+
+.select-with-icons-panel {
+  --mat-option-label-text-weight: 800;
+}
+
+.select-type-warning {
+  --mat-option-focus-state-layer-color: var(--warning-50);
+  --mat-option-label-text-color: var(--warning-800);
+  --mat-select-enabled-trigger-text-color: var(--warning-800);
+  color: var(--warning-800) !important;
+
+  .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+    --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--warning-800) !important;
+  }
+
+  @include mat.icon-overrides(
+    (
+      color: var(--warning-800),
+    )
+  );
+}
+
+.select-type-success {
+  --mat-option-focus-state-layer-color: var(--success-50);
+  --mat-option-label-text-color: var(--success-800);
+  --mat-select-enabled-trigger-text-color: var(--success-800);
+  color: var(--success-800) !important;
+
+  .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+    --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--success-800) !important;
+  }
+
+  @include mat.icon-overrides(
+    (
+      color: var(--success-800),
+    )
+  );
+}
+
+.select-type-error {
+  --mat-option-focus-state-layer-color: var(--error-50);
+  --mat-option-label-text-color: var(--error-800);
+  --mat-select-enabled-trigger-text-color: var(--error-800);
+  color: var(--error-800) !important;
+
+  .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+    --mat-pseudo-checkbox-minimal-selected-checkmark-color: var(--error-800) !important;
+  }
+
+  @include mat.icon-overrides(
+    (
+      color: var(--error-800),
+    )
+  );
+}

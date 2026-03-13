@@ -54,7 +54,8 @@
           "includePaths": [
             "libs/core/styles/util/material/src",
             "libs/core/styles/util/tailwind4/src",
-            "libs/shared/notification/ui/hot-toast/src"
+            "libs/shared/notification/ui/hot-toast/src",
+            "libs/shared/form/ui/select-with-icons/src"
           ]
         },
         "scripts": []

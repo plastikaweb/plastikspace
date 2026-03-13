@@ -389,7 +389,9 @@
       "loading": "Cargando pedidos",
       "list": "Lista de pedidos",
       "empty": "Aún no tienes ningún pedido.",
+      "emptyWithStatus": "No tienes ningún pedido con el estado {status}.",
       "emptyDescription": "Parece que aún no has realizado ninguna compra. ¡Descubre nuestros productos ecológicos y de proximidad!",
+      "emptyDescriptionWithStatus": "Prueba a cambiar los filtros.",
       "goToStore": "Ir a la tienda"
     },
     "card": {

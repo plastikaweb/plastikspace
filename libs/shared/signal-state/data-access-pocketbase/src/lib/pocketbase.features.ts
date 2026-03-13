@@ -65,10 +65,14 @@ export function withPocketBaseListFeature<
     withComputed(({ pagination, sort, filter }) => ({
       formattedParams: computed(() => {
         const s = sort();
+        const filterEntries = Object.entries(filter())
+          .filter(([, value]) => value != null && value !== '')
+          .map(([key, value]) => `${key}='${value}'`);
+
         return {
           sort: s.direction === 'desc' ? `-${s.active}` : s.active,
           ...pagination(),
-          ...filter(),
+          ...(filterEntries.length > 0 ? { filter: filterEntries.join(' && ') } : {}),
         };
       }),
       getPagination: computed<{ page: number; perPage: number }>(() => {

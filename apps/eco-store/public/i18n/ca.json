@@ -389,7 +389,9 @@
       "loading": "Carregant comandes",
       "list": "Llista de comandes",
       "empty": "Encara no tens cap comanda.",
+      "emptyWithStatus": "No tens cap comanda amb l'estat {status}.",
       "emptyDescription": "Sembla que encara no has fet cap compra. Descobreix els nostres productes ecològics i de proximitat!",
+      "emptyDescriptionWithStatus": "Prova a canviar els filtres.",
       "goToStore": "Anar a la botiga"
     },
     "card": {
@@ -403,12 +405,16 @@
       "pickup": "Recollida a la botiga"
     },
     "status": {
-      "delivered": "Entregat",
-      "pending": "Pendent",
-      "confirmed": "Confirmat",
-      "preparing": "Preparant",
-      "ready": "Preparat",
-      "cancelled": "Cancel·lada"
+      "delivered": "REBUT",
+      "cancelled": "CANCEL·LADA",
+      "pending": "PENDENT",
+      "confirmed": "CONFIRMAT",
+      "preparing": "PREPARANT",
+      "ready": "PREPARAT"
+    },
+    "filter": {
+      "all": "TOTES",
+      "status": "Estat de la comanda"
     }
   },
   "users": {
