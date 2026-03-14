@@ -42,11 +42,12 @@
 
         <!-- Eco Badge -->
         <div
-          class="border-primary-500 mx-auto my-6 flex h-46 w-46 justify-center overflow-hidden rounded-full border-5 bg-transparent mix-blend-darken shadow-lg">
-          <img
-            src="/img/producte-local.png"
-            class="relative -top-2 h-47 w-47 rounded-full bg-transparent object-cover mix-blend-darken"
-            [attr.alt]="'cart.finish.ecoBadgeAlt' | translate" />
+          class="order-confirmation-eco-badge border-secondary-500 mx-auto my-6 flex h-32 w-32 justify-center overflow-hidden rounded-full border-2 bg-transparent mix-blend-darken">
+          <plastik-img-container
+            src="local/img/producte-local.png"
+            class="relative h-32 w-32 rounded-full bg-transparent object-cover mix-blend-darken"
+            [dimensions]="{ width: 120, height: 120 }"
+            [title]="'cart.finish.ecoBadgeAlt' | translate" />
         </div>
 
         <ul class="mx-auto mt-8 flex list-none flex-col gap-5 p-0">

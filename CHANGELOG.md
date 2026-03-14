@@ -5,12 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2026-03-14] - CI Coverage Reporting Fix
+## [2026-03-14] - CI Fixes and UI Image Optimization
 
 ### Changed
 
 - Improved CI coverage reporting logic with better debug logging and more robust calculation ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
 - Enabled coverage badge updates for pushes to the main branch ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
+- Synchronized Angular package versions to 21.1.2 to resolve compiler mismatch in CI ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
+- Optimized image loading in order views using `SharedImgContainerComponent` ([#86c8uj73e](https://app.clickup.com/t/86c8uj73e))
+- Exposed local assets under `local/img` via `project.json` and updated storage loader to support path bypass ([#86c8uj73e](https://app.clickup.com/t/86c8uj73e))
+
+### Fixed
+
+- Resolved missing i18n keys for orders empty state illustration ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
+- Corrected attribute order for `NgOptimizedImage` compliance ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
+- Reverted GitHub Actions to stable versions for better reliability ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
 
 ## [2026-03-13] - Order Filtering and Shared UI Components
 

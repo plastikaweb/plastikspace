@@ -60,13 +60,12 @@
       <!-- Empty state -->
       @if (orders.length === 0) {
         <div class="empty-state flex flex-1 flex-col items-center justify-center gap-8 text-center">
-          <img
-            class="object-contain"
-            width="300"
-            height="300"
-            priority
-            [ngSrc]="'/img/no-results-2.png'"
-            [alt]="'orders.list.emptyImage' | translate" />
+          <plastik-img-container
+            class="object-contain mix-blend-darken"
+            [dimensions]="{ width: 300, height: 369 }"
+            [lcpImage]="true"
+            [src]="'local/img/no-results.png'"
+            [title]="'orders.list.emptyImage' | translate" />
 
           <div class="flex flex-col items-center justify-center gap-1">
             @let status = model().status;

@@ -1,4 +1,3 @@
-import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -14,6 +13,7 @@ import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { SelectWithIconsFormlyModule } from '@plastik/shared/form/select-with-icons';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import {
   EcoStoreOrdersFilterData,
   ecoStoreOrdersFilterFormConfig,
@@ -36,7 +36,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     TranslatePipe,
     SharedFormFeatureModule,
     SelectWithIconsFormlyModule,
-    NgOptimizedImage,
+    SharedImgContainerComponent,
   ],
   templateUrl: './eco-store-orders-list.component.html',
   styleUrl: './eco-store-orders-list.component.scss',

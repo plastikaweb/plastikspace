@@ -6,10 +6,18 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 
 @Component({
   selector: 'eco-order-confirmation',
-  imports: [MatButtonModule, MatCardModule, MatIconModule, RouterLink, TranslatePipe],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    RouterLink,
+    TranslatePipe,
+    SharedImgContainerComponent,
+  ],
   templateUrl: './order-confirmation.component.html',
   styleUrl: './order-confirmation.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
