@@ -39,6 +39,12 @@ import { OrderCardComponent } from './order-card/order-card.component';
   ],
   templateUrl: './eco-store-orders-list.component.html',
   styleUrl: './eco-store-orders-list.component.scss',
+  host: {
+    role: 'main',
+    class: 'flex flex-1 flex-col px-4 py-8',
+    '[attr.aria-busy]': 'ordersStore.isLoading()',
+    '[attr.inert]': 'ordersStore.isLoading()',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class EcoStoreOrdersListComponent {

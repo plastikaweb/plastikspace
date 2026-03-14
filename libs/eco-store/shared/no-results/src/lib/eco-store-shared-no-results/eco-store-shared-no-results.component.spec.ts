@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
   imports: [EcoStoreSharedNoResultsComponent],
   template: `
     <eco-store-shared-no-results imgTitle="test title">
-      <div title>Test Title</div>
-      <div description>Test Description</div>
+      <div no-results-title>Test Title</div>
+      <div no-results-description>Test Description</div>
     </eco-store-shared-no-results>
   `,
 })

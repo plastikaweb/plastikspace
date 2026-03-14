@@ -23,7 +23,6 @@ export class CartOrderSummaryComponent {
   shipping = input<number>(0);
   actionButtonText = input<string>('');
   actionRoute = input<string[]>();
-  productsCount = input<number>(0);
   actionClick = output<void>();
   deliveryType = input<EcoStoreTenantLogisticsDeliveryType>('pickup');
   isStoreOpen = input<boolean>(true);

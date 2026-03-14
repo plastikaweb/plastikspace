@@ -32,6 +32,7 @@ export class SharedImgContainerComponent {
   dimensions = input<ImageDimensions>();
   quality = input<number>(80);
   lcpImage = input<boolean>(false);
+  imgClass = input<string>('object-cover');
   sizes = input<string>(
     '(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px'
   );

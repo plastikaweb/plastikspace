@@ -46,7 +46,7 @@
         matButton="filled"
         type="button"
         class="w-full"
-        [disabled]="!submitAvailable() || !isStoreOpen() || productsCount() === 0"
+        [disabled]="!submitAvailable()"
         (click)="handleAction()">
         <span>{{ actionButtonText() | translate }}</span>
         <mat-icon iconPositionEnd>arrow_forward</mat-icon>

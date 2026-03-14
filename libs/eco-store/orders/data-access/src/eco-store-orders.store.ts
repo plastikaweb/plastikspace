@@ -13,6 +13,10 @@ import { EcoStoreOrdersApiService } from './eco-store-orders-api.service';
 
 export type OrdersPocketBaseCrudState = DataCrud<EcoStoreOrder, ListResult<EcoStoreOrder>>;
 
+/**
+ * Filter configuration for orders list.
+ * Extends the base PocketBase entity filter with an optional status.
+ */
 export interface OrdersPocketBaseFilter extends BasePocketBaseEntityFilter {
   status: string | null;
 }

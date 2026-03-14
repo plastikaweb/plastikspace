@@ -13,11 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Enhanced accessibility in orders list by implementing semantic landmarks (`<main>`), list structures (`<ul>`, `<li>`), and establish proper heading hierarchy ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
-- Improved loading state announcements with `aria-live` regions and `aria-busy` indicators ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Enhanced accessibility in orders and products lists by implementing semantic landmarks (`<main>`, `role="region"`), list structures (`<ul>`, `<li>`), and establish proper heading hierarchy ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Improved `CartOrderSummaryComponent` by centralizing submission availability logic, simplifying inputs, and enhancing disabled state handling ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Improved loading state announcements with `aria-live` regions, `aria-busy` indicators, and `inert` attribute application ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
 - Enhanced order cards with detailed ARIA labels and `role="article"` for better screen reader support ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
 - Updated translation files (en, es, ca) with comprehensive accessibility and empty state keys ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
-- Refactored cart and orders empty states to use the new shared component with correct content projection ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Refactored cart and orders empty states to use the new shared component with correct content projection and improved "Go to Store" action styling ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
 - Implemented dynamic preconnect links in `AppComponent` for both API and application origins to optimize image delivery and resolve `NgOptimizedImage` warnings ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
 - Updated unit tests with automated accessibility checks using `vitest-axe` and more robust element selectors ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
 - Improved CI coverage reporting logic with better debug logging and more robust calculation ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
@@ -26,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Optimized image loading in order views using `SharedImgContainerComponent` ([#86c8uj73e](https://app.clickup.com/t/86c8uj73e))
 - Exposed local assets under `local/img` via `project.json` and updated storage loader to support path bypass ([#86c8uj73e](https://app.clickup.com/t/86c8uj73e))
 - Improved product list loading experience with UI indicators and refined pagination logic ([#86c8ujubv](https://app.clickup.com/t/86c8ujubv))
+- Applied `inert` attribute to orders and products lists during loading to prevent keyboard interaction and improve accessibility
+- Implemented safer array-based filter concatenation in `EcoStoreProductsApiService` to prevent syntax errors with empty values
+- Refactored `EcoStoreProductsFeatureComponent` and `EcoStoreOrdersListComponent` to ensure injected dependencies are `protected readonly`, use host bindings for accessibility, and added missing JSDoc documentation
+- Enhanced `pocketBaseStorageLoader` JSDoc to document absolute and local path bypass logic
 
 ### Fixed
 

@@ -45,6 +45,7 @@ jobs:
           npx nx-cloud record -- nx affected --target=lint --exclude=llecoop-firebase --parallel=3
           npx nx-cloud record -- nx affected --target=test --exclude=llecoop-firebase --parallel=3 --coverage
           npx nx-cloud record -- nx affected --target=build --exclude=llecoop-firebase --parallel=3
+          npx nx fix-ci
         if: always()
 
       - name: Report Coverage
