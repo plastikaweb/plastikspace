@@ -61,6 +61,7 @@ export const ecoStoreProductsStore = signalStore(
     const environment = inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
 
     return {
+      /** List of products with their name, description and features translated into the current language. */
       productsWithTranslatedText: computed<EcoStoreProductWithTranslatedText[]>(() => {
         const products = entities();
         const categories = categoriesStore.stats();
@@ -117,6 +118,10 @@ export const ecoStoreProductsStore = signalStore(
         });
       }),
 
+      /**
+       * Factory function to find a product by its slug and return it with translated metadata.
+       * @returns { (slug: string | null) => EcoStoreProductWithTranslatedText | undefined }
+       */
       findProductBySlug: computed(() => (slug: string | null) => {
         if (!slug) {
           return undefined;
@@ -153,6 +158,11 @@ export const ecoStoreProductsStore = signalStore(
     };
   }),
   withMethods(store => ({
+    /**
+     * Sets the selected product ID based on its normalized name (slug).
+     * @param { string } slug The slug of the product.
+     * @returns { boolean } True if the product was found and selected.
+     */
     setSelectedFromSlug(slug: EcoStoreProductWithTranslatedText['categorySlug']): boolean {
       const product = store.entities().find(p => p.normalizedName === slug);
       if (product) {
@@ -162,6 +172,11 @@ export const ecoStoreProductsStore = signalStore(
       return false;
     },
 
+    /**
+     * Loads a single product by its slug from the API and sets it as selected.
+     * @param { string } slug The slug of the product.
+     * @returns { Promise<EcoStoreProduct> } The loaded product.
+     */
     async loadProductBySlug(
       slug: EcoStoreProductWithTranslatedText['categorySlug']
     ): Promise<EcoStoreProduct> {

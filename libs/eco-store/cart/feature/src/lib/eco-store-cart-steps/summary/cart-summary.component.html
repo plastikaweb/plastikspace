@@ -52,14 +52,14 @@
         } @empty {
           <eco-store-shared-no-results
             class="empty-state my-6"
-            [imgTitle]="'cart.summary.noResults.title' | translate">
-            <div title>
+            [imgTitle]="'orders.list.emptyImage' | translate">
+            <div no-results-title>
               {{ 'cart.summary.noResults.title' | translate }}
             </div>
-            <div description>
+            <div no-results-description>
               {{ 'cart.summary.noResults.description' | translate }}
             </div>
-            <button action matButton="filled" type="button" routerLink="/botiga">
+            <button matButton="filled" no-results-action type="button" routerLink="/botiga">
               <mat-icon aria-hidden="true">storefront</mat-icon>
               <span>{{ 'orders.list.goToStore' | translate }}</span>
             </button>
@@ -80,7 +80,7 @@
         [subtotal]="cartStore.subtotal()"
         [taxes]="cartStore.tax()"
         [total]="cartStore.subtotal() + cartStore.tax()"
-        [productsCount]="cartStore.itemsCount()"
+        [submitAvailable]="tenantStore.isStoreOpen() && cartStore.itemsCount() > 0"
         [isStoreOpen]="tenantStore.isStoreOpen()"
         [nextOpenDate]="tenantStore.nextOpenDate()"
         [actionButtonText]="'cart.summary.goToShipping'"

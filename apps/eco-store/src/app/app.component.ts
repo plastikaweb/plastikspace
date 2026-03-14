@@ -53,8 +53,8 @@ export class AppComponent implements OnInit {
 
   constructor() {
     this.#translate.addLangs(this.#environment.languages);
-    this.addPreconnectLink();
-    this.addSvgIcon();
+    this.#addPreconnectLink();
+    this.#addSvgIcon();
 
     effect(() => {
       const description = this.#tenantStore.tenantDescriptionTranslated();
@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
     this.activityStore.setActivity(false);
   }
 
-  private addPreconnectLink(): void {
+  #addPreconnectLink(): void {
     const apiLink = this.#document.createElement('link');
     apiLink.rel = 'preconnect';
     apiLink.href = this.#environment.baseApiUrl;
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
     this.#document.head.appendChild(appLink);
   }
 
-  private addSvgIcon(): void {
+  #addSvgIcon(): void {
     this.matIconRegistry.addSvgIconLiteral(
       'eco_logo',
       this.domSanitizer.bypassSecurityTrustHtml(`

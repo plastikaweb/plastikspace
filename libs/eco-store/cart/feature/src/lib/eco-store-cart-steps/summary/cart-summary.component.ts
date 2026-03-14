@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angul
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
@@ -18,6 +19,7 @@ import { CartProductCardComponent } from '../../ui/cart-product-card/cart-produc
     MatIconModule,
     MatCardModule,
     TranslatePipe,
+    RouterLink,
     CartOrderSummaryComponent,
     CartProductCardComponent,
     EcoStoreSharedNoResultsComponent,

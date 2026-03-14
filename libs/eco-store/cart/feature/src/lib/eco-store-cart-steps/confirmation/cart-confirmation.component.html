@@ -163,8 +163,9 @@
         [shipping]="cartStore.shipping()"
         [deliveryType]="cartStore.method() ?? 'pickup'"
         [total]="cartStore.total()"
-        [isStoreOpen]="tenantStore.isStoreOpen()"
+        [submitAvailable]="tenantStore.isStoreOpen() && cartStore.itemsCount() > 0"
         [nextOpenDate]="tenantStore.nextOpenDate()"
+        [isStoreOpen]="tenantStore.isStoreOpen()"
         [actionButtonText]="'cart.confirmation.confirmOrder'"
         (actionClick)="onConfirmOrder()">
       </eco-cart-order-summary>

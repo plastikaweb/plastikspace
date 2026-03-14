@@ -24,10 +24,10 @@ It features a centered illustration, a title, a description, and an optional act
 ## Usage
 
 ```html
-<eco-store-shared-no-results [imgTitle]="'orders.list.empty' | translate">
-  <div title>{{ 'orders.list.empty' | translate }}</div>
-  <div description>{{ 'orders.list.emptyDescription' | translate }}</div>
-  <button action mat-stroked-button routerLink="/botiga">
+<eco-store-shared-no-results [imgTitle]="'orders.list.emptyImage' | translate">
+  <div no-results-title>{{ 'orders.list.empty' | translate }}</div>
+  <div no-results-description>{{ 'orders.list.emptyDescription' | translate }}</div>
+  <button no-results-action mat-stroked-button routerLink="/botiga">
     {{ 'orders.list.goToStore' | translate }}
   </button>
 </eco-store-shared-no-results>

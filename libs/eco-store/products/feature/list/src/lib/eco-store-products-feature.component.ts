@@ -32,14 +32,20 @@ import { distinctUntilChanged, map } from 'rxjs';
   ],
   templateUrl: './eco-store-products-feature.component.html',
   styleUrl: './eco-store-products-feature.component.scss',
+  host: {
+    role: 'region',
+    class: 'flex flex-1 flex-col px-4 py-8',
+    '[attr.aria-busy]': 'productsStore.isLoading()',
+    '[attr.inert]': 'productsStore.isLoading()',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class EcoStoreProductsFeatureComponent {
-  protected productsStore = inject(ecoStoreProductsStore);
-  protected activityStore = inject(activityStore);
-  protected cartStore = inject(ecoStoreCartStore);
-  protected tenantStore = inject(ecoStoreTenantStore);
-  protected viewTransitionService = inject(ViewTransitionService);
+  protected readonly productsStore = inject(ecoStoreProductsStore);
+  protected readonly activityStore = inject(activityStore);
+  protected readonly cartStore = inject(ecoStoreCartStore);
+  protected readonly tenantStore = inject(ecoStoreTenantStore);
+  protected readonly viewTransitionService = inject(ViewTransitionService);
   readonly #route = inject(ActivatedRoute);
   readonly #router = inject(Router);
   readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);
@@ -68,6 +74,7 @@ export default class EcoStoreProductsFeatureComponent {
     },
   });
 
+  /** The current category slug derived from route parameters. */
   readonly categorySlug = toSignal<string | null>(
     this.#route.paramMap.pipe(
       map(params => params.get('category')),
@@ -75,20 +82,33 @@ export default class EcoStoreProductsFeatureComponent {
     )
   );
 
+  /** The current category information including translated name and icon. */
   readonly category = computed<(Pick<ProductCategory, 'icon'> & { name: string }) | null>(() => {
     const slug = this.categorySlug() ?? null;
     return this.#categoriesStore.getCategoryBySlug(slug, 'products.all');
   });
 
+  /**
+   * Adds a product to the cart with the specified quantity.
+   * @param { object } params The product and quantity to add.
+   */
   addToCart({ product, quantity }: { product: EcoStoreProductWithCategoryName; quantity: number }) {
     this.cartStore.addToCart(product, quantity);
   }
 
+  /**
+   * Toggles the favorite status of a product.
+   * @param { string } id The ID of the product.
+   */
   toggleFavorite(id: EcoStoreProductWithCategoryName['id']) {
     // TODO: Implement toggle favorite functionality
     void id;
   }
 
+  /**
+   * Navigates to the product list with updated sorting parameters.
+   * @param { SortConfig } sort The new sort configuration.
+   */
   sortProducts(sort: SortConfig) {
     this.#router.navigate([], {
       queryParams: { ...sort, page: 0 },

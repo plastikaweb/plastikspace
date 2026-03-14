@@ -45,11 +45,13 @@
           [shipping]="cartStore.shipping()"
           [deliveryType]="cartStore.method() ?? 'pickup'"
           [total]="cartStore.total()"
-          [isStoreOpen]="tenantStore.isStoreOpen()"
           [nextOpenDate]="tenantStore.nextOpenDate()"
           [actionButtonText]="'cart.shipping.goToConfirmation'"
           [actionRoute]="['./cistella/confirmacio']"
-          [submitAvailable]="formValid()">
+          [isStoreOpen]="tenantStore.isStoreOpen()"
+          [submitAvailable]="
+            formValid() && tenantStore.isStoreOpen() && cartStore.itemsCount() > 0
+          ">
           @if (cartStore.method() === 'delivery') {
             <div extra-shipping-content class="overflow-hidden">
               <div class="min-h-0">

@@ -21,7 +21,7 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
   override getList(params: PocketBaseListParams = {}): Observable<ListResult<EcoStoreProduct>> {
     const { page, perPage, sort, filter: filterObj } = params;
 
-    const filter = filterObj ? `${this.filter} && ${filterObj}` : this.filter;
+    const filter = [this.filter, filterObj].filter(Boolean).join(' && ');
 
     const options: RecordListOptions = {
       page,

@@ -10,9 +10,11 @@ export type PocketBaseImageLoaderConfig = ImageLoaderConfig & {
   };
 };
 /**
- * @description A custom image loader for pocketBase.
- * @param { string } baseUrl The pocketbase storage base url.
- * @returns { string } Returns the image url with thumbnail parameters.
+ * @description A custom image loader for PocketBase.
+ * Returns the source directly if it is an absolute URL, a local path, or starts with a slash.
+ * Otherwise, it returns the image URL with optimized thumbnail and format parameters.
+ * @param { string } baseUrl The PocketBase storage base URL.
+ * @returns { string } Returns the optimized image URL.
  */
 export function pocketBaseStorageLoader(baseUrl: string) {
   return ({
