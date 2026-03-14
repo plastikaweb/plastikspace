@@ -29,7 +29,7 @@ Part of the [**Eco-Store**](../../../../../apps/eco-store/README.md) application
 - **Store Status Awareness**: Integrates with `ecoStoreTenantStore` to pass the `isOpen` status to product cards, disabling purchase actions when the store is closed.
 - **Modern Architecture**: Built using Angular Standalone Components.
 - **Lazy Loading**: Uses `enableListLoading()` in resolver for efficient data fetching.
-- **UX Optimization**: Implements `@defer` blocks tied to the store's `initiallyLoaded` signal to prevent empty states and flickering during initial data fetch.
+- **UX Optimization**: Implements skeleton loading patterns with `@if` blocks tied to the store's `isLoading` signal for a seamless data fetching experience.
 
 ## Installation
 

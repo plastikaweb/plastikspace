@@ -19,6 +19,8 @@
 
     <plastik-sort-selector
       class="self-end"
+      [class.pointer-events-none]="productsStore.isLoading()"
+      [class.opacity-60]="productsStore.isLoading()"
       [options]="productsStore.sortOptions()"
       [currentSort]="productsStore.sort()"
       [translationPrefix]="'products.filter.sort'"

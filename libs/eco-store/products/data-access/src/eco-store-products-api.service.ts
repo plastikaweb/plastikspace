@@ -19,22 +19,9 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
    * @returns { Observable<ListResult<EcoStoreProduct>> } The filtered list of products.
    */
   override getList(params: PocketBaseListParams = {}): Observable<ListResult<EcoStoreProduct>> {
-    const { page, perPage, sort, ...rest } = params;
-    const { category, categorySlug } = rest as {
-      category?: string;
-      categorySlug?: string;
-    };
+    const { page, perPage, sort, filter: filterObj } = params;
 
-    const filterParts: string[] = [];
-
-    if (category) {
-      filterParts.push(`category = "${category}"`);
-    } else if (categorySlug) {
-      filterParts.push(`category.normalizedName = "${categorySlug}"`);
-    }
-
-    const filter =
-      filterParts.length > 0 ? `${this.filter} && ${filterParts.join(' && ')}` : this.filter;
+    const filter = filterObj ? `${this.filter} && ${filterObj}` : this.filter;
 
     const options: RecordListOptions = {
       page,
