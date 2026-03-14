@@ -1,4 +1,4 @@
-<div class="flex flex-1 flex-col px-4 py-8">
+<main class="flex flex-1 flex-col px-4 py-8" [attr.aria-busy]="ordersStore.isLoading()">
   <!-- Page header -->
   <div class="mb-8 flex flex-col justify-between gap-4" role="group">
     <div class="flex items-center justify-start gap-4">
@@ -15,22 +15,34 @@
     </p>
   </div>
 
+  <!-- Live region for announcing loading and data updates -->
+  <div class="sr-only" aria-live="polite">
+    @if (ordersStore.isLoading()) {
+      {{ 'orders.list.loading' | translate }}
+    } @else {
+      {{ 'orders.list.loadedCount' | translate: { count: ordersStore.count() } }}
+    }
+  </div>
+
   @let orders = ordersStore.entities();
 
-  <mat-card
-    appearance="outlined"
-    class="mb-6 px-4 py-2"
-    [class.pointer-events-none]="ordersStore.isLoading()"
-    [class.opacity-60]="ordersStore.isLoading()">
-    <plastik-shared-form-feature
-      [fields]="formConfig.getConfig()"
-      [model]="model()"
-      [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
-      (temporaryChangeEvent)="onChange($event)">
-    </plastik-shared-form-feature>
-  </mat-card>
+  <section [attr.aria-labelledby]="'filter-title'">
+    <h3 id="filter-title" class="sr-only">{{ 'orders.list.filterTitle' | translate }}</h3>
+    <mat-card
+      appearance="outlined"
+      class="mb-6 px-4 py-2"
+      [class.pointer-events-none]="ordersStore.isLoading()"
+      [class.opacity-60]="ordersStore.isLoading()">
+      <plastik-shared-form-feature
+        [fields]="formConfig.getConfig()"
+        [model]="model()"
+        [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
+        (temporaryChangeEvent)="onChange($event)">
+      </plastik-shared-form-feature>
+    </mat-card>
+  </section>
 
-  <section class="orders-grid" [attr.aria-label]="'orders.list.list' | translate">
+  <section class="orders-grid" [attr.aria-labelledby]="'orders-list-title'">
     @if (ordersStore.isLoading()) {
       @for (i of skeletonItems(); track $index) {
         <div
@@ -63,40 +75,42 @@
     } @else {
       <!-- Empty state -->
       @if (orders.length === 0) {
-        <div class="empty-state flex flex-1 flex-col items-center justify-center gap-8 text-center">
-          <plastik-img-container
-            class="object-contain mix-blend-darken"
-            [dimensions]="{ width: 300, height: 369 }"
-            [lcpImage]="true"
-            [src]="'local/img/no-results.png'"
-            [title]="'orders.list.emptyImage' | translate" />
+        @let status = model().status;
+        @if (status) {
+          <eco-store-shared-no-results
+            class="empty-state my-6"
+            [imgTitle]="
+              status
+                ? ('orders.list.emptyWithStatus'
+                  | translate: { status: (orderStatusLabelMap[status] | translate) })
+                : ('orders.list.empty' | translate)
+            ">
+            <div title>
+              {{
+                'orders.list.emptyWithStatus'
+                  | translate: { status: (orderStatusLabelMap[status] | translate) }
+              }}
+            </div>
 
-          <div class="flex flex-col items-center justify-center gap-1">
-            @let status = model().status;
-            @if (status) {
-              <h3 class="text-xl font-bold text-neutral-500">
-                {{
-                  'orders.list.emptyWithStatus'
-                    | translate: { status: (orderStatusLabelMap[status] | translate) }
-                }}
-              </h3>
-              <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
-                {{ 'orders.list.emptyDescriptionWithStatus' | translate }}
-              </p>
-            } @else {
-              <h3 class="text-xl font-bold text-neutral-500">
-                {{ 'orders.list.empty' | translate }}
-              </h3>
-              <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
-                {{ 'orders.list.emptyDescription' | translate }}
-              </p>
-            }
-          </div>
-          <button matButton="filled" type="button" routerLink="/botiga">
-            <mat-icon aria-hidden="true">storefront</mat-icon>
-            <span>{{ 'orders.list.goToStore' | translate }}</span>
-          </button>
-        </div>
+            <div description>
+              {{ 'orders.list.emptyDescriptionWithStatus' | translate }}
+            </div>
+          </eco-store-shared-no-results>
+        } @else {
+          <eco-store-shared-no-results
+            class="empty-state"
+            [imgTitle]="'orders.list.empty' | translate">
+            <div title>
+              {{ 'orders.list.empty' | translate }}
+            </div>
+            <div description>
+              {{ 'orders.list.emptyDescription' | translate }}
+            </div>
+            <button action mat-stroked-button routerLink="/botiga">
+              {{ 'orders.list.goToStore' | translate }}
+            </button>
+          </eco-store-shared-no-results>
+        }
       } @else {
         <!-- Order list -->
         @for (order of orders; track order.id) {
@@ -107,16 +121,18 @@
   </section>
 
   @if (!ordersStore.isLoading() && orders.length > 0) {
-    @defer (on viewport; prefetch on idle) {
-      <plastik-pagination
-        class="mt-6"
-        plastikPocketbasePaginationNavigation
-        [pageSize]="ordersStore.getPagination().perPage"
-        [pageIndex]="ordersStore.getPagination().page"
-        [pageSizeOptions]="ordersStore.paginationSizeOptions()"
-        [count]="ordersStore.count()" />
-    } @placeholder {
-      <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
-    }
+    <nav [attr.aria-label]="'orders.list.pagination' | translate">
+      @defer (on viewport; prefetch on idle) {
+        <plastik-pagination
+          class="mt-6"
+          plastikPocketbasePaginationNavigation
+          [pageSize]="ordersStore.getPagination().perPage"
+          [pageIndex]="ordersStore.getPagination().page"
+          [pageSizeOptions]="ordersStore.paginationSizeOptions()"
+          [count]="ordersStore.count()" />
+      } @placeholder {
+        <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
+      }
+    </nav>
   }
-</div>
+</main>

@@ -293,7 +293,11 @@
       "oldPrice": "Previous price",
       "checkoutDisabled": "Orders are disabled.",
       "checkoutDisabledInDate": "Orders are disabled. The store opens on {date} at {time}.",
-      "removeItem": "Remove item from cart"
+      "removeItem": "Remove item from cart",
+      "noResults": {
+        "title": "Your cart is empty",
+        "description": "Start filling it with your favorite products!"
+      }
     },
     "shipping": {
       "headTitle": "Order - delivery",
@@ -387,19 +391,29 @@
       "title": "My orders",
       "description": "Manage and view your sustainable purchase history.",
       "loading": "Loading orders",
+      "loadedCount": "{count, plural, =0 {No orders found} one {Showing 1 order} other {Showing # orders}}",
+      "filterTitle": "Filter orders",
       "list": "List of orders",
       "empty": "You don't have any orders yet.",
       "emptyWithStatus": "You don't have any orders with the status {status}.",
       "emptyImage": "Empty state illustration",
       "emptyDescription": "It looks like you haven't made any purchases yet. Discover our ecological and local products!",
       "emptyDescriptionWithStatus": "Try changing your filters.",
-      "goToStore": "Go to store"
+      "goToStore": "Go to store",
+      "pagination": "Orders pagination"
     },
     "card": {
       "label": "Order",
+      "orderNumber": "Order number",
+      "status": "Status",
+      "date": "Date",
+      "pricingInfo": "Price information",
+      "total": "Total",
+      "itemsList": "Included products",
       "items": "{count, plural, one {# product} other {# products}}",
       "deliveryMethod": "Delivery method",
-      "viewDetail": "View detail"
+      "viewDetail": "View detail",
+      "viewDetailOf": "View details for order #{orderNumber}"
     },
     "deliveryMethod": {
       "delivery": "Home delivery",

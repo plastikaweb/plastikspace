@@ -42,19 +42,21 @@ describe('AppComponent', () => {
     const document = TestBed.inject(DOCUMENT);
     const env = TestBed.inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
 
-    // Initial check: if it was already added by a previous test or run, remove it
-    const existing = Array.from(
-      document.head.querySelectorAll(`link[rel="preconnect"][href="${env.baseApiUrl}"]`)
-    );
-    existing.forEach(el => el.remove());
+    // Initial check: if they were already added by a previous test or run, remove them
+    Array.from(document.head.querySelectorAll('link[rel="preconnect"]')).forEach(el => el.remove());
 
     setup();
 
     const preconnectLinks = Array.from(document.head.querySelectorAll('link[rel="preconnect"]'));
-    const preconnectExists = preconnectLinks.some(
+    const apiPreconnectExists = preconnectLinks.some(
       link => link.getAttribute('href') === env.baseApiUrl
     );
-    expect(preconnectExists).toBeTruthy();
+    const appPreconnectExists = preconnectLinks.some(
+      link => link.getAttribute('href') === document.location.origin
+    );
+
+    expect(apiPreconnectExists).toBeTruthy();
+    expect(appPreconnectExists).toBeTruthy();
   });
 
   it('should register eco_logo SVG icon', () => {

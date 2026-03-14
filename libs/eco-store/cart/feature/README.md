@@ -20,6 +20,7 @@
   - [Cart Steps](#cart-steps)
     - [Shipping Unavailable Component](#shipping-unavailable-component)
   - [View Transitions](#view-transitions)
+  - [Loading Strategy](#loading-strategy)
   - [Running unit tests](#running-unit-tests)
 
 ## Description

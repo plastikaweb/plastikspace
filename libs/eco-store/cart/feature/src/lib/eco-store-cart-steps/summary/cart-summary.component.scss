@@ -7,4 +7,12 @@
       outlined-container-color: var(--transparent),
     )
   );
+
+  button {
+    @include mat.icon-overrides(
+      (
+        color: var(--white),
+      )
+    );
+  }
 }

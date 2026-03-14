@@ -5,10 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [2026-03-14] - CI Fixes and UI Image Optimization
+## [2026-03-14] - CI Fixes, UI Image Optimization and Accessibility Enhancements
+
+### Added
+
+- Implemented reusable `EcoStoreSharedNoResultsComponent` for consistent empty states across the application ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
 
 ### Changed
 
+- Enhanced accessibility in orders list by implementing semantic landmarks (`<main>`), list structures (`<ul>`, `<li>`), and establish proper heading hierarchy ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Improved loading state announcements with `aria-live` regions and `aria-busy` indicators ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Enhanced order cards with detailed ARIA labels and `role="article"` for better screen reader support ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Updated translation files (en, es, ca) with comprehensive accessibility and empty state keys ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Refactored cart and orders empty states to use the new shared component with correct content projection ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Implemented dynamic preconnect links in `AppComponent` for both API and application origins to optimize image delivery and resolve `NgOptimizedImage` warnings ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+- Updated unit tests with automated accessibility checks using `vitest-axe` and more robust element selectors ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
 - Improved CI coverage reporting logic with better debug logging and more robust calculation ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
 - Enabled coverage badge updates for pushes to the main branch ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
 - Synchronized Angular package versions to 21.1.2 to resolve compiler mismatch in CI ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))

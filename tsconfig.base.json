@@ -271,7 +271,8 @@
       "@plastik/eco-store/orders/list": ["libs/eco-store/orders/feature/list/src/index.ts"],
       "@plastik/shared/form/select-with-icons": [
         "libs/shared/form/ui/select-with-icons/src/index.ts"
-      ]
+      ],
+      "@plastik/eco-store/no-results": ["libs/eco-store/shared/no-results/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

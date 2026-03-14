@@ -14,8 +14,6 @@
 The **Eco Store Orders List Feature** library provides the order history and list functionality for the Eco Store application.
 It allows users to view their past orders, their status, total price, and delivery details.
 
-Part of the [**Eco-Store**](../../../../../apps/eco-store/README.md) application.
-
 ## Features
 
 - **Order History Grid**: Displays a list of user orders with essential information at a glance.

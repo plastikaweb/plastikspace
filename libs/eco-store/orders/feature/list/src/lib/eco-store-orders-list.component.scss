@@ -19,14 +19,6 @@
     }
   }
 
-  .empty-icon {
-    @include mat.icon-overrides(
-      (
-        color: var(--neutral-50),
-      )
-    );
-  }
-
   button {
     @include mat.icon-overrides(
       (

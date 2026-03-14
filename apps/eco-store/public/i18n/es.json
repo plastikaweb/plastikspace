@@ -293,7 +293,11 @@
       "oldPrice": "Precio anterior",
       "checkoutDisabled": "Los pedidos están desactivados.",
       "checkoutDisabledInDate": "Los pedidos están desactivados. La tienda abre el {date} a las {time}.",
-      "removeItem": "Eliminar artículo de la cesta"
+      "removeItem": "Eliminar artículo de la cesta",
+      "noResults": {
+        "title": "Tu cesta está vacía",
+        "description": "¡Empieza a llenarla con tus productos preferidos!"
+      }
     },
     "shipping": {
       "headTitle": "Pedido - entrega",
@@ -387,19 +391,29 @@
       "title": "Mis pedidos",
       "description": "Gestiona y consulta el historial de tus compras sostenibles.",
       "loading": "Cargando pedidos",
+      "loadedCount": "{count, plural, =0 {No se han encontrado pedidos} one {Mostrando 1 pedido} other {Mostrando # pedidos}}",
+      "filterTitle": "Filtrar pedidos",
       "list": "Lista de pedidos",
       "empty": "Aún no tienes ningún pedido.",
       "emptyWithStatus": "No tienes ningún pedido con el estado {status}.",
       "emptyImage": "Ilustración de estado vacío",
       "emptyDescription": "Parece que aún no has realizado ninguna compra. ¡Descubre nuestros productos ecológicos y de proximidad!",
       "emptyDescriptionWithStatus": "Prueba a cambiar los filtros.",
-      "goToStore": "Ir a la tienda"
+      "goToStore": "Ir a la tienda",
+      "pagination": "Paginación de pedidos"
     },
     "card": {
       "label": "Pedido",
+      "orderNumber": "Número de pedido",
+      "status": "Estado",
+      "date": "Fecha",
+      "pricingInfo": "Información de precio",
+      "total": "Total",
+      "itemsList": "Productos incluidos",
       "items": "{count, plural, one {# producto} other {# productos}}",
       "deliveryMethod": "Método de entrega",
-      "viewDetail": "Ver detalle"
+      "viewDetail": "Ver detalle",
+      "viewDetailOf": "Ver detalles del pedido #{orderNumber}"
     },
     "deliveryMethod": {
       "delivery": "Envío a domicilio",

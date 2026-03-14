@@ -293,7 +293,11 @@
       "oldPrice": "Preu anterior",
       "checkoutDisabled": "Les comandes estan desactivades.",
       "checkoutDisabledInDate": "Les comandes estan desactivades. La botiga obre el {date} a les {time}.",
-      "removeItem": "Eliminar element de la cistella"
+      "removeItem": "Eliminar element de la cistella",
+      "noResults": {
+        "title": "La teva cistella està buida",
+        "description": "Comença a omplir-la amb els teus productes preferits!"
+      }
     },
     "shipping": {
       "headTitle": "Comanda - lliurament",
@@ -387,19 +391,29 @@
       "title": "Les meves comandes",
       "description": "Gestiona i consulta l'historial de les teves compres sostenibles.",
       "loading": "Carregant comandes",
+      "loadedCount": "{count, plural, =0 {No s'han trobat comandes} one {Mostrant 1 comanda} other {Mostrant # comandes}}",
+      "filterTitle": "Filtrar comandes",
       "list": "Llista de comandes",
       "empty": "Encara no tens cap comanda.",
       "emptyWithStatus": "No tens cap comanda amb l'estat {status}.",
       "emptyImage": "Il·lustració d'estat buit",
       "emptyDescription": "Sembla que encara no has fet cap compra. Descobreix els nostres productes ecològics i de proximitat!",
       "emptyDescriptionWithStatus": "Prova a canviar els filtres.",
-      "goToStore": "Anar a la botiga"
+      "goToStore": "Anar a la botiga",
+      "pagination": "Paginació de comandes"
     },
     "card": {
       "label": "Comanda",
+      "orderNumber": "Número de comanda",
+      "status": "Estat",
+      "date": "Data",
+      "pricingInfo": "Informació de preu",
+      "total": "Total",
+      "itemsList": "Productes inclosos",
       "items": "{count, plural, one {# producte} other {# productes}}",
       "deliveryMethod": "Mètode d'entrega",
-      "viewDetail": "Veure detall"
+      "viewDetail": "Veure detall",
+      "viewDetailOf": "Veure detalls de la comanda #{orderNumber}"
     },
     "deliveryMethod": {
       "delivery": "Enviament a domicili",

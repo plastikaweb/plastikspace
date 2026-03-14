@@ -80,7 +80,7 @@ jobs:
               try {
                 const content = JSON.parse(fs.readFileSync(file, 'utf8'));
                 const total = content.total;
-                
+
                 if (!total) {
                   console.log(`Skipping ${file}: no total coverage data found.`);
                   continue;
@@ -148,7 +148,7 @@ jobs:
             }
 
       - name: Update Coverage Badge
-        if: (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main') && github.event_name == 'push' && steps.coverage.outputs.total_coverage != '0'
+        if: (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main') && github.event_name == 'push'
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_TOKEN }}

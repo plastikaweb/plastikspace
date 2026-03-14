@@ -1,10 +1,10 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { axe } from 'vitest-axe';
 import EcoStoreOrdersListComponent from './eco-store-orders-list.component';
-import { signal } from '@angular/core';
-import { provideRouter } from '@angular/router';
 
 describe('EcoStoreOrdersListComponent', () => {
   let component: EcoStoreOrdersListComponent;
@@ -14,13 +14,17 @@ describe('EcoStoreOrdersListComponent', () => {
     isLoading: signal(false),
     entities: signal([]),
     count: signal(0),
-    filter: signal({ status: null }),
+    filter: signal({ status: null as string | null }),
     getPagination: () => ({ page: 1, perPage: 10 }),
     paginationSizeOptions: signal([10, 20]),
   };
 
   beforeEach(async () => {
     mockOrdersStore.filter.set({ status: null });
+    mockOrdersStore.isLoading.set(false);
+    mockOrdersStore.entities.set([]);
+    mockOrdersStore.count.set(0);
+
     await TestBed.configureTestingModule({
       imports: [EcoStoreOrdersListComponent, TranslateModule.forRoot()],
       providers: [provideRouter([]), { provide: ecoStoreOrdersStore, useValue: mockOrdersStore }],
@@ -41,10 +45,12 @@ describe('EcoStoreOrdersListComponent', () => {
   });
 
   it('should display empty state when no orders', () => {
-    const emptyTitle = fixture.nativeElement.querySelector('h3');
+    const emptyTitle = fixture.nativeElement.querySelector('.empty-state [title], .empty-state h3');
     expect(emptyTitle.textContent).toContain('orders.list.empty');
 
-    const emptyDesc = fixture.nativeElement.querySelector('p.max-w-3xl');
+    const emptyDesc = fixture.nativeElement.querySelector(
+      '.empty-state [description], .empty-state p.max-w-3xl'
+    );
     expect(emptyDesc.textContent).toContain('orders.list.emptyDescription');
 
     const goToStoreBtn = fixture.nativeElement.querySelector('button[routerLink="/botiga"]');
@@ -61,10 +67,12 @@ describe('EcoStoreOrdersListComponent', () => {
     mockOrdersStore.filter.set({ status: 'PENDING' });
     fixture.detectChanges();
 
-    const emptyTitle = fixture.nativeElement.querySelector('h3');
+    const emptyTitle = fixture.nativeElement.querySelector('.empty-state [title], .empty-state h3');
     expect(emptyTitle.textContent).toContain('orders.list.emptyWithStatus');
 
-    const emptyDesc = fixture.nativeElement.querySelector('p.max-w-3xl');
+    const emptyDesc = fixture.nativeElement.querySelector(
+      '.empty-state [description], .empty-state p.max-w-3xl'
+    );
     expect(emptyDesc.textContent).toContain('orders.list.emptyDescriptionWithStatus');
   });
 });
