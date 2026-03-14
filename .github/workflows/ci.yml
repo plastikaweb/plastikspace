@@ -55,13 +55,14 @@ jobs:
           script: |
             const fs = require('fs');
             const path = require('path');
-            // 'glob' is already available in the context provided by actions/github-script
 
             const globber = await glob.create('coverage/**/coverage-summary.json');
             const files = await globber.glob();
 
+            console.log(`Found ${files.length} coverage summary files.`);
+
             if (files.length === 0) {
-              console.log('No coverage summary files found.');
+              console.log('No coverage summary files found. Setting total_coverage to 0');
               core.setOutput('total_coverage', '0');
               return;
             }
@@ -76,41 +77,53 @@ jobs:
             markdown += '|---|---|---|---|---|\n';
 
             for (const file of files) {
-              const content = JSON.parse(fs.readFileSync(file, 'utf8'));
-              const total = content.total;
+              try {
+                const content = JSON.parse(fs.readFileSync(file, 'utf8'));
+                const total = content.total;
+                
+                if (!total) {
+                  console.log(`Skipping ${file}: no total coverage data found.`);
+                  continue;
+                }
 
-              const dir = path.dirname(file);
-              const relativePath = path.relative(process.cwd(), dir);
-              const projectName = relativePath.replace(/^coverage\//, '');
+                const dir = path.dirname(file);
+                const relativePath = path.relative(process.cwd(), dir);
+                const projectName = relativePath.replace(/^coverage\//, '');
 
-              const linesPct = total.lines.pct;
-              const stmtsPct = total.statements.pct;
-              const branchesPct = total.branches.pct;
-              const funcsPct = total.functions.pct;
+                const linesPct = total.lines.pct;
+                const stmtsPct = total.statements.pct;
+                const branchesPct = total.branches.pct;
+                const funcsPct = total.functions.pct;
 
-              markdown += `| ${projectName} | ${linesPct}% | ${stmtsPct}% | ${branchesPct}% | ${funcsPct}% |\n`;
+                markdown += `| ${projectName} | ${linesPct}% | ${stmtsPct}% | ${branchesPct}% | ${funcsPct}% |\n`;
 
-              totalLines.total += total.lines.total;
-              totalLines.covered += total.lines.covered;
-              totalStatements.total += total.statements.total;
-              totalStatements.covered += total.statements.covered;
-              totalFunctions.total += total.functions.total;
-              totalFunctions.covered += total.functions.covered;
-              totalBranches.total += total.branches.total;
-              totalBranches.covered += total.branches.covered;
+                totalLines.total += total.lines.total;
+                totalLines.covered += total.lines.covered;
+                totalStatements.total += total.statements.total;
+                totalStatements.covered += total.statements.covered;
+                totalFunctions.total += total.functions.total;
+                totalFunctions.covered += total.functions.covered;
+                totalBranches.total += total.branches.total;
+                totalBranches.covered += total.branches.covered;
+              } catch (err) {
+                console.error(`Error processing ${file}:`, err);
+              }
             }
 
-            const calcPct = (covered, total) => total === 0 ? 100 : ((covered / total) * 100).toFixed(2);
+            const calcPct = (covered, total) => total === 0 ? 0 : Number(((covered / total) * 100).toFixed(2));
 
-            markdown += `| **Total** | **${calcPct(totalLines.covered, totalLines.total)}%** | **${calcPct(totalStatements.covered, totalStatements.total)}%** | **${calcPct(totalBranches.covered, totalBranches.total)}%** | **${calcPct(totalFunctions.covered, totalFunctions.total)}%** |\n`;
+            const finalLinesPct = calcPct(totalLines.covered, totalLines.total);
+            const finalStmtsPct = calcPct(totalStatements.covered, totalStatements.total);
+            const finalBranchesPct = calcPct(totalBranches.covered, totalBranches.total);
+            const finalFuncsPct = calcPct(totalFunctions.covered, totalFunctions.total);
 
-            // Store total coverage for badge
-            const totalCoverage = calcPct(totalLines.covered, totalLines.total);
-            core.setOutput('total_coverage', totalCoverage);
+            markdown += `| **Total** | **${finalLinesPct}%** | **${finalStmtsPct}%** | **${finalBranchesPct}%** | **${finalFuncsPct}%** |\n`;
+
+            console.log(`Calculated Total Coverage: ${finalLinesPct}%`);
+            core.setOutput('total_coverage', finalLinesPct.toString());
 
             console.log(markdown);
 
-            // Only post PR comment on pull requests
             if (context.eventName === 'pull_request') {
               const { owner, repo } = context.repo;
               const issue_number = context.issue.number;
@@ -125,23 +138,17 @@ jobs:
 
               if (botComment) {
                 await github.rest.issues.updateComment({
-                  owner,
-                  repo,
-                  comment_id: botComment.id,
-                  body: markdown
+                  owner, repo, comment_id: botComment.id, body: markdown
                 });
               } else {
                 await github.rest.issues.createComment({
-                  owner,
-                  repo,
-                  issue_number,
-                  body: markdown
+                  owner, repo, issue_number, body: markdown
                 });
               }
             }
 
       - name: Update Coverage Badge
-        if: github.ref == 'refs/heads/develop' && github.event_name == 'push' && steps.coverage.outputs.total_coverage != '0'
+        if: (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main') && github.event_name == 'push' && steps.coverage.outputs.total_coverage != '0'
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_TOKEN }}
