@@ -1,6 +1,6 @@
 import {
   notificationStore
-} from "./chunk-W5NQN2WH.js";
+} from "./chunk-C5AUUJWT.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -18,11 +18,11 @@ import {
   provideWithApiEnv,
   routerReducers,
   selectLayoutFeature
-} from "./chunk-ELFJ3I4S.js";
+} from "./chunk-S2XVMQRF.js";
 import {
   SvgIconComponent,
   provideAngularSvgIcon
-} from "./chunk-27EWN2IS.js";
+} from "./chunk-JWATPOZI.js";
 import {
   ActionsSubject,
   INIT,
@@ -35,31 +35,31 @@ import {
   UPDATE,
   provideState,
   provideStore
-} from "./chunk-OKB37QHH.js";
+} from "./chunk-AE6YV6G4.js";
 import {
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
   TitleStrategy,
   provideRouter
-} from "./chunk-7P64PQX7.js";
+} from "./chunk-V7KUCULO.js";
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from "./chunk-S35GAMON.js";
+} from "./chunk-NOBEVBXQ.js";
 import {
   toSignal
-} from "./chunk-VZXRJ47F.js";
+} from "./chunk-QEPKCXPD.js";
 import {
   MatToolbar,
   MatToolbarModule
-} from "./chunk-A7UCKEWA.js";
+} from "./chunk-W7HOIKX4.js";
 import {
   MatPseudoCheckboxModule,
   NG_VALUE_ACCESSOR
-} from "./chunk-XUGZDF2N.js";
+} from "./chunk-4NRKW7G7.js";
 import {
   SelectionModel
-} from "./chunk-OFNDAWR2.js";
+} from "./chunk-SHBINNXZ.js";
 import {
   CdkScrollable,
   CdkScrollableModule,
@@ -70,15 +70,15 @@ import {
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-U73RIP2J.js";
+} from "./chunk-3WMR3MYO.js";
 import {
   DomPortalOutlet,
   TemplatePortal
-} from "./chunk-VF2D6VDJ.js";
+} from "./chunk-TDK6R3XO.js";
 import {
   MatIcon,
   MatIconModule
-} from "./chunk-E53OQMM6.js";
+} from "./chunk-HT2T3YJG.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatButton,
@@ -86,7 +86,7 @@ import {
   MatRippleModule,
   RippleRenderer,
   coerceBooleanProperty
-} from "./chunk-CLHAON7L.js";
+} from "./chunk-65UGGADT.js";
 import {
   A,
   CdkObserveContent,
@@ -109,13 +109,13 @@ import {
   hasModifierKey,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
-} from "./chunk-2NA4PHRB.js";
-import "./chunk-CF3TMLAM.js";
+} from "./chunk-NSCDD7ZS.js";
+import "./chunk-PCTCTKBW.js";
 import {
   bootstrapApplication,
   provideHttpClient
-} from "./chunk-7X22NOTY.js";
-import "./chunk-KBRZIECL.js";
+} from "./chunk-RKC3QLXD.js";
+import "./chunk-GUCN4P4K.js";
 import {
   _getEventTarget,
   _getFocusedElementPierceShadowDom,
@@ -124,21 +124,21 @@ import {
 import {
   BidiModule,
   Directionality
-} from "./chunk-AZCQQA2S.js";
+} from "./chunk-2UXRENTT.js";
 import {
   coerceNumberProperty
-} from "./chunk-JYC222S7.js";
+} from "./chunk-UI5OIRC6.js";
 import {
   _CdkPrivateStyleLoader
-} from "./chunk-GKQ4FJLQ.js";
+} from "./chunk-NIYKYC7M.js";
 import {
   Platform
-} from "./chunk-CGEOGME2.js";
+} from "./chunk-2YOML5SY.js";
 import {
   DatePipe,
   NgTemplateOutlet,
   PRECONNECT_CHECK_BLOCKLIST
-} from "./chunk-A7BY5NXF.js";
+} from "./chunk-ACXBZHNT.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -268,7 +268,7 @@ import {
   ɵɵtextInterpolate1,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-2OB7EGFP.js";
+} from "./chunk-DCCM2HE6.js";
 
 // node_modules/@angular/material/fesm2022/divider.mjs
 var MatDivider = class _MatDivider {
@@ -5032,9 +5032,9 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-MHXDSFHQ.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-YTOJ5UR2.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
-var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-7A753UNU.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
+var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-RA5D5AOQ.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
 var _c24 = () => ({ exact: false });
 var _forTrack02 = ($index, $item) => $item.id;
@@ -5402,7 +5402,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-MHXDSFHQ.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-7A753UNU.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-YTOJ5UR2.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-RA5D5AOQ.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -6531,11 +6531,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-7ENPIVIJ.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-N2CL3RFB.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-NGKHR54O.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-SAOD67MJ.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6551,7 +6551,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-GYGHYVBH.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-WU5Q6F6I.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: "link",
