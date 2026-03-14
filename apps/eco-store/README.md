@@ -28,6 +28,7 @@ Built with **Angular 21+** (Signals, Standalone Components, Control Flow) and **
 
 - **Product Catalog**: Browse and filter sustainable products using a responsive grid.
 - **Member Management**: Manage cooperative members and roles.
+- **Empty States**: Consistent and accessible "no results" messaging across the application.
 - **Reactive State**: Powered by NgRx Signal Store for efficient state management.
 - **Backend Integration**: Seamless integration with PocketBase for real-time data and authentication.
 - **Robust Testing**: Comprehensive unit and E2E testing suites.
@@ -78,6 +79,7 @@ Built with **Angular 21+** (Signals, Standalone Components, Control Flow) and **
 - [**Category Label**](../../libs/eco-store/shared/product-category-label/README.md): Category badge component.
 - [**Favorite Button**](../../libs/eco-store/shared/favorite-button/README.md): Product favorite toggle component.
 - [**Store Status Banner**](../../libs/eco-store/shared/store-status-banner/README.md): Store operational status and countdown banner.
+- [**No Results**](../../libs/eco-store/shared/no-results/README.md): No results component.
 
 ### 🧰 Shared Utils
 

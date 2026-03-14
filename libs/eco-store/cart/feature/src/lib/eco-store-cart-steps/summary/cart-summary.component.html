@@ -49,6 +49,21 @@
               }
             </div>
           </div>
+        } @empty {
+          <eco-store-shared-no-results
+            class="empty-state my-6"
+            [imgTitle]="'cart.summary.noResults.title' | translate">
+            <div title>
+              {{ 'cart.summary.noResults.title' | translate }}
+            </div>
+            <div description>
+              {{ 'cart.summary.noResults.description' | translate }}
+            </div>
+            <button action matButton="filled" type="button" routerLink="/botiga">
+              <mat-icon aria-hidden="true">storefront</mat-icon>
+              <span>{{ 'orders.list.goToStore' | translate }}</span>
+            </button>
+          </eco-store-shared-no-results>
         }
       }
     </div>
@@ -65,6 +80,7 @@
         [subtotal]="cartStore.subtotal()"
         [taxes]="cartStore.tax()"
         [total]="cartStore.subtotal() + cartStore.tax()"
+        [productsCount]="cartStore.itemsCount()"
         [isStoreOpen]="tenantStore.isStoreOpen()"
         [nextOpenDate]="tenantStore.nextOpenDate()"
         [actionButtonText]="'cart.summary.goToShipping'"

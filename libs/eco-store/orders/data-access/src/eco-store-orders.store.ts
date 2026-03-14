@@ -4,6 +4,7 @@ import { initialGetListState, withPocketBaseCrud } from '@plastik/signal-state/p
 
 import { Router } from '@angular/router';
 import { DataCrud } from '@plastik/core/api-base';
+import { BasePocketBaseEntityFilter } from '@plastik/core/entities';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreOrder } from '@plastik/eco-store/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
@@ -11,6 +12,10 @@ import { ListResult } from 'pocketbase';
 import { EcoStoreOrdersApiService } from './eco-store-orders-api.service';
 
 export type OrdersPocketBaseCrudState = DataCrud<EcoStoreOrder, ListResult<EcoStoreOrder>>;
+
+export interface OrdersPocketBaseFilter extends BasePocketBaseEntityFilter {
+  status: string | null;
+}
 
 export const ecoStoreOrdersStore = signalStore(
   { providedIn: 'root' },
@@ -29,7 +34,7 @@ export const ecoStoreOrdersStore = signalStore(
       },
       filter: {
         status: null,
-      },
+      } as OrdersPocketBaseFilter,
       sortOptions: {
         ...initialGetListState().sortOptions,
       },

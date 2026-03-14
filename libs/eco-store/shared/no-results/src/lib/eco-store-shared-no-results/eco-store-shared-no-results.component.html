@@ -1,0 +1,17 @@
+<div class="flex flex-1 flex-col items-center justify-center gap-8 text-center">
+  <plastik-img-container
+    class="object-contain mix-blend-darken"
+    [dimensions]="{ width: 300, height: 369 }"
+    [lcpImage]="true"
+    [src]="'local/img/no-results.png'"
+    [title]="imgTitle()" />
+  <div class="flex flex-col items-center justify-center gap-1">
+    <h3 class="text-xl font-bold text-neutral-500">
+      <ng-content select="[title]" />
+    </h3>
+    <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
+      <ng-content select="[description]" />
+    </p>
+  </div>
+  <ng-content select="[action]" />
+</div>

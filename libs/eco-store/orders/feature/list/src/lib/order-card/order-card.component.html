@@ -1,4 +1,4 @@
-<mat-card appearance="outlined" class="order-card">
+<mat-card appearance="outlined" class="order-card" role="article">
   <mat-card-content>
     <!-- Top section: order info + price -->
     <div class="mb-4 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
@@ -8,25 +8,47 @@
           {{ 'orders.card.label' | translate }}
         </span>
         <div class="flex flex-wrap items-center gap-2">
-          <span class="text-lg font-bold text-neutral-900">#{{ order().orderNumber }}</span>
+          <span
+            class="text-lg font-bold text-neutral-900"
+            [attr.aria-label]="
+              ('orders.card.orderNumber' | translate) + ': #' + order().orderNumber
+            ">
+            #{{ order().orderNumber }}
+          </span>
+          <!-- Status with hidden descriptive label for screen readers -->
           <plastik-shared-chip
             [label]="statusLabel() | translate"
             [type]="statusType()"
-            [icon]="statusIcon()" />
+            [icon]="statusIcon()"
+            [attr.aria-label]="
+              ('orders.card.status' | translate) + ': ' + (statusLabel() | translate)
+            " />
         </div>
 
-        <span class="text-sm text-neutral-500">
+        <span
+          class="text-sm text-neutral-500"
+          [attr.aria-label]="
+            ('orders.card.date' | translate) +
+            ': ' +
+            (order().created | date: 'dd MMMM yyyy' : '' : currentLanguage)
+          ">
           {{ order().created | date: "dd 'de' MMMM, yyyy" : '' : currentLanguage }}
         </span>
       </div>
 
       <!-- Right: total + article count -->
-      <div class="flex flex-col items-end gap-0.5">
+      <div
+        class="flex flex-col items-end gap-0.5"
+        role="group"
+        [attr.aria-label]="'orders.card.pricingInfo' | translate">
         <span
           class="text-lg font-bold"
           [class.line-through]="isCancelled()"
           [class.text-neutral-400]="isCancelled()"
-          [class.text-neutral-900]="!isCancelled()">
+          [class.text-neutral-900]="!isCancelled()"
+          [attr.aria-label]="
+            ('orders.card.total' | translate) + ': ' + (order().total | currency: 'EUR')
+          ">
           {{ order().total | currency: 'EUR' }}
         </span>
         <span class="text-sm text-neutral-500">
@@ -41,7 +63,11 @@
     <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
       <!-- Left: delivery method + item names -->
       <div class="flex flex-col gap-2">
-        <div class="flex items-center gap-3">
+        <div
+          class="flex items-center gap-3"
+          [attr.aria-label]="
+            ('orders.card.deliveryMethod' | translate) + ': ' + (deliveryLabel() | translate)
+          ">
           <mat-icon class="delivery-icon text-neutral-600" aria-hidden="true">
             {{ deliveryIcon() }}
           </mat-icon>
@@ -50,16 +76,24 @@
         </div>
         <div class="flex flex-wrap items-center gap-1">
           <mat-icon
+            aria-hidden="true"
             class="text-neutral-500!"
             style="font-size: 1.25rem; height: 1.25rem; width: 1.25rem"
             >grocery</mat-icon
           >
-          <p class="m-0 text-sm text-neutral-500">{{ itemNames() }}</p>
+          <p class="m-0 text-sm text-neutral-500">
+            {{ itemNames() }}
+          </p>
         </div>
       </div>
 
-      <!-- Right: detail button -->
-      <button matButton="outlined" class="detail-button shrink-0" (click)="viewDetail.emit()">
+      <button
+        mat-stroked-button
+        class="detail-button shrink-0"
+        [attr.aria-label]="
+          'orders.card.viewDetailOf' | translate: { orderNumber: order().orderNumber }
+        "
+        (click)="viewDetail.emit()">
         {{ 'orders.card.viewDetail' | translate }}
         <mat-icon iconPositionEnd aria-hidden="true">arrow_forward</mat-icon>
       </button>
