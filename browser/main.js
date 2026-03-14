@@ -1,6 +1,6 @@
 import {
   notificationStore
-} from "./chunk-C5AUUJWT.js";
+} from "./chunk-OJVHYAI2.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -18,11 +18,11 @@ import {
   provideWithApiEnv,
   routerReducers,
   selectLayoutFeature
-} from "./chunk-S2XVMQRF.js";
+} from "./chunk-RDCWMHA2.js";
 import {
   SvgIconComponent,
   provideAngularSvgIcon
-} from "./chunk-JWATPOZI.js";
+} from "./chunk-3ZSH6RRL.js";
 import {
   ActionsSubject,
   INIT,
@@ -35,31 +35,31 @@ import {
   UPDATE,
   provideState,
   provideStore
-} from "./chunk-AE6YV6G4.js";
+} from "./chunk-6BCRD4M4.js";
 import {
   RouterLink,
   RouterLinkActive,
   RouterOutlet,
   TitleStrategy,
   provideRouter
-} from "./chunk-V7KUCULO.js";
+} from "./chunk-GXLBDQE4.js";
 import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS
-} from "./chunk-NOBEVBXQ.js";
+} from "./chunk-UNM7GEAM.js";
 import {
   toSignal
-} from "./chunk-QEPKCXPD.js";
+} from "./chunk-UQLQKUAM.js";
 import {
   MatToolbar,
   MatToolbarModule
-} from "./chunk-W7HOIKX4.js";
+} from "./chunk-5FXSPNRK.js";
 import {
   MatPseudoCheckboxModule,
   NG_VALUE_ACCESSOR
-} from "./chunk-4NRKW7G7.js";
+} from "./chunk-ISIEHWOJ.js";
 import {
   SelectionModel
-} from "./chunk-SHBINNXZ.js";
+} from "./chunk-RKUIVBEJ.js";
 import {
   CdkScrollable,
   CdkScrollableModule,
@@ -70,15 +70,15 @@ import {
   createFlexibleConnectedPositionStrategy,
   createOverlayRef,
   createRepositionScrollStrategy
-} from "./chunk-3WMR3MYO.js";
+} from "./chunk-O2HBGYIZ.js";
 import {
   DomPortalOutlet,
   TemplatePortal
-} from "./chunk-TDK6R3XO.js";
+} from "./chunk-PQMARCSX.js";
 import {
   MatIcon,
   MatIconModule
-} from "./chunk-HT2T3YJG.js";
+} from "./chunk-FISKPURU.js";
 import {
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatButton,
@@ -86,7 +86,7 @@ import {
   MatRippleModule,
   RippleRenderer,
   coerceBooleanProperty
-} from "./chunk-65UGGADT.js";
+} from "./chunk-IUU7LH4O.js";
 import {
   A,
   CdkObserveContent,
@@ -109,13 +109,13 @@ import {
   hasModifierKey,
   isFakeMousedownFromScreenReader,
   isFakeTouchstartFromScreenReader
-} from "./chunk-NSCDD7ZS.js";
-import "./chunk-PCTCTKBW.js";
+} from "./chunk-YQAIJDSK.js";
+import "./chunk-AXITIRMB.js";
 import {
   bootstrapApplication,
   provideHttpClient
-} from "./chunk-RKC3QLXD.js";
-import "./chunk-GUCN4P4K.js";
+} from "./chunk-OWY5PAQP.js";
+import "./chunk-LSGJAAAU.js";
 import {
   _getEventTarget,
   _getFocusedElementPierceShadowDom,
@@ -124,21 +124,21 @@ import {
 import {
   BidiModule,
   Directionality
-} from "./chunk-2UXRENTT.js";
+} from "./chunk-26MSZY5E.js";
 import {
   coerceNumberProperty
-} from "./chunk-UI5OIRC6.js";
+} from "./chunk-SYOTMQYJ.js";
 import {
   _CdkPrivateStyleLoader
-} from "./chunk-NIYKYC7M.js";
+} from "./chunk-DGI5PKJ2.js";
 import {
   Platform
-} from "./chunk-2YOML5SY.js";
+} from "./chunk-4F7YCR2E.js";
 import {
   DatePipe,
   NgTemplateOutlet,
   PRECONNECT_CHECK_BLOCKLIST
-} from "./chunk-ACXBZHNT.js";
+} from "./chunk-4LIO4VKC.js";
 import {
   ApplicationRef,
   ChangeDetectionStrategy,
@@ -268,7 +268,7 @@ import {
   ɵɵtextInterpolate1,
   ɵɵviewQuery,
   ɵɵviewQuerySignal
-} from "./chunk-DCCM2HE6.js";
+} from "./chunk-WAATNY3Y.js";
 
 // node_modules/@angular/material/fesm2022/divider.mjs
 var MatDivider = class _MatDivider {
@@ -391,10 +391,10 @@ function MatListOption_ng_template_2_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275classProp("mdc-checkbox--disabled", ctx_r1.disabled);
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275classProp("mdc-checkbox--disabled", ctx_r0.disabled);
     \u0275\u0275advance();
-    \u0275\u0275property("checked", ctx_r1.selected)("disabled", ctx_r1.disabled);
+    \u0275\u0275property("checked", ctx_r0.selected)("disabled", ctx_r0.disabled);
   }
 }
 function MatListOption_ng_template_4_Template(rf, ctx) {
@@ -406,10 +406,10 @@ function MatListOption_ng_template_4_Template(rf, ctx) {
     \u0275\u0275elementEnd()();
   }
   if (rf & 2) {
-    const ctx_r1 = \u0275\u0275nextContext();
-    \u0275\u0275classProp("mdc-radio--disabled", ctx_r1.disabled);
+    const ctx_r0 = \u0275\u0275nextContext();
+    \u0275\u0275classProp("mdc-radio--disabled", ctx_r0.disabled);
     \u0275\u0275advance();
-    \u0275\u0275property("checked", ctx_r1.selected)("disabled", ctx_r1.disabled);
+    \u0275\u0275property("checked", ctx_r0.selected)("disabled", ctx_r0.disabled);
   }
 }
 function MatListOption_Conditional_6_ng_template_1_Template(rf, ctx) {
@@ -422,9 +422,9 @@ function MatListOption_Conditional_6_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const checkbox_r3 = \u0275\u0275reference(3);
+    const checkbox_r2 = \u0275\u0275reference(3);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", checkbox_r3);
+    \u0275\u0275property("ngTemplateOutlet", checkbox_r2);
   }
 }
 function MatListOption_Conditional_7_ng_template_1_Template(rf, ctx) {
@@ -437,9 +437,9 @@ function MatListOption_Conditional_7_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const radio_r4 = \u0275\u0275reference(5);
+    const radio_r3 = \u0275\u0275reference(5);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", radio_r4);
+    \u0275\u0275property("ngTemplateOutlet", radio_r3);
   }
 }
 function MatListOption_Conditional_8_ng_template_0_Template(rf, ctx) {
@@ -450,8 +450,8 @@ function MatListOption_Conditional_8_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const icons_r5 = \u0275\u0275reference(1);
-    \u0275\u0275property("ngTemplateOutlet", icons_r5);
+    const icons_r4 = \u0275\u0275reference(1);
+    \u0275\u0275property("ngTemplateOutlet", icons_r4);
   }
 }
 function MatListOption_Conditional_15_ng_template_1_Template(rf, ctx) {
@@ -464,9 +464,9 @@ function MatListOption_Conditional_15_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const checkbox_r3 = \u0275\u0275reference(3);
+    const checkbox_r2 = \u0275\u0275reference(3);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", checkbox_r3);
+    \u0275\u0275property("ngTemplateOutlet", checkbox_r2);
   }
 }
 function MatListOption_Conditional_16_ng_template_1_Template(rf, ctx) {
@@ -479,9 +479,9 @@ function MatListOption_Conditional_16_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const radio_r4 = \u0275\u0275reference(5);
+    const radio_r3 = \u0275\u0275reference(5);
     \u0275\u0275advance();
-    \u0275\u0275property("ngTemplateOutlet", radio_r4);
+    \u0275\u0275property("ngTemplateOutlet", radio_r3);
   }
 }
 function MatListOption_Conditional_17_ng_template_0_Template(rf, ctx) {
@@ -492,8 +492,8 @@ function MatListOption_Conditional_17_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const icons_r5 = \u0275\u0275reference(1);
-    \u0275\u0275property("ngTemplateOutlet", icons_r5);
+    const icons_r4 = \u0275\u0275reference(1);
+    \u0275\u0275property("ngTemplateOutlet", icons_r4);
   }
 }
 var LIST_OPTION = new InjectionToken("ListOption");
@@ -1068,7 +1068,6 @@ var MatListItem = class _MatListItem extends MatListItemBase {
     consts: [["unscopedContent", ""], [1, "mdc-list-item__content"], [1, "mat-mdc-list-item-unscoped-content", 3, "cdkObserveContent"], [1, "mat-focus-indicator"]],
     template: function MatListItem_Template(rf, ctx) {
       if (rf & 1) {
-        const _r1 = \u0275\u0275getCurrentView();
         \u0275\u0275projectionDef(_c4);
         \u0275\u0275projection(0);
         \u0275\u0275elementStart(1, "span", 1);
@@ -1076,8 +1075,7 @@ var MatListItem = class _MatListItem extends MatListItemBase {
         \u0275\u0275projection(3, 2);
         \u0275\u0275elementStart(4, "span", 2, 0);
         \u0275\u0275listener("cdkObserveContent", function MatListItem_Template_span_cdkObserveContent_4_listener() {
-          \u0275\u0275restoreView(_r1);
-          return \u0275\u0275resetView(ctx._updateItemLines(true));
+          return ctx._updateItemLines(true);
         });
         \u0275\u0275projection(6, 3);
         \u0275\u0275elementEnd()();
@@ -1344,7 +1342,6 @@ var MatListOption = class _MatListOption extends MatListItemBase {
     consts: [["icons", ""], ["checkbox", ""], ["radio", ""], ["unscopedContent", ""], [1, "mdc-list-item__start", "mat-mdc-list-option-checkbox-before"], [1, "mdc-list-item__start", "mat-mdc-list-option-radio-before"], [3, "ngTemplateOutlet"], [1, "mdc-list-item__content"], [1, "mat-mdc-list-item-unscoped-content", 3, "cdkObserveContent"], [1, "mdc-list-item__end"], [1, "mat-focus-indicator"], [1, "mdc-checkbox"], ["type", "checkbox", 1, "mdc-checkbox__native-control", 3, "checked", "disabled"], [1, "mdc-checkbox__background"], ["viewBox", "0 0 24 24", "aria-hidden", "true", 1, "mdc-checkbox__checkmark"], ["fill", "none", "d", "M1.73,12.91 8.1,19.28 22.79,4.59", 1, "mdc-checkbox__checkmark-path"], [1, "mdc-checkbox__mixedmark"], [1, "mdc-radio"], ["type", "radio", 1, "mdc-radio__native-control", 3, "checked", "disabled"], [1, "mdc-radio__background"], [1, "mdc-radio__outer-circle"], [1, "mdc-radio__inner-circle"]],
     template: function MatListOption_Template(rf, ctx) {
       if (rf & 1) {
-        const _r1 = \u0275\u0275getCurrentView();
         \u0275\u0275projectionDef(_c6);
         \u0275\u0275template(0, MatListOption_ng_template_0_Template, 1, 0, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(2, MatListOption_ng_template_2_Template, 6, 4, "ng-template", null, 1, \u0275\u0275templateRefExtractor)(4, MatListOption_ng_template_4_Template, 5, 4, "ng-template", null, 2, \u0275\u0275templateRefExtractor);
         \u0275\u0275conditionalCreate(6, MatListOption_Conditional_6_Template, 2, 1, "span", 4)(7, MatListOption_Conditional_7_Template, 2, 1, "span", 5);
@@ -1354,8 +1351,7 @@ var MatListOption = class _MatListOption extends MatListItemBase {
         \u0275\u0275projection(11, 1);
         \u0275\u0275elementStart(12, "span", 8, 3);
         \u0275\u0275listener("cdkObserveContent", function MatListOption_Template_span_cdkObserveContent_12_listener() {
-          \u0275\u0275restoreView(_r1);
-          return \u0275\u0275resetView(ctx._updateItemLines(true));
+          return ctx._updateItemLines(true);
         });
         \u0275\u0275projection(14, 2);
         \u0275\u0275elementEnd()();
@@ -3180,10 +3176,22 @@ var _c04 = [[["", "header", ""]], [["", "menu-items", ""]], [["", "footer", ""]]
 var _c14 = ["[header]", "[menu-items]", "[footer]"];
 var CoreCmsLayoutUiSidenavComponent = class _CoreCmsLayoutUiSidenavComponent {
   #zone = inject(NgZone);
-  position = input("start", ...ngDevMode ? [{ debugName: "position" }] : []);
-  mode = input("over", ...ngDevMode ? [{ debugName: "mode" }] : []);
-  fixedInViewport = input(false, ...ngDevMode ? [{ debugName: "fixedInViewport" }] : []);
-  sidenavOpened = input(true, ...ngDevMode ? [{ debugName: "sidenavOpened" }] : []);
+  position = input("start", ...ngDevMode ? [{ debugName: "position" }] : (
+    /* istanbul ignore next */
+    []
+  ));
+  mode = input("over", ...ngDevMode ? [{ debugName: "mode" }] : (
+    /* istanbul ignore next */
+    []
+  ));
+  fixedInViewport = input(false, ...ngDevMode ? [{ debugName: "fixedInViewport" }] : (
+    /* istanbul ignore next */
+    []
+  ));
+  sidenavOpened = input(true, ...ngDevMode ? [{ debugName: "sidenavOpened" }] : (
+    /* istanbul ignore next */
+    []
+  ));
   toggleSidenav = output();
   onToggleSidenav(opened) {
     this.#zone.run(() => {
@@ -4043,7 +4051,7 @@ var MatMenuTriggerBase = class _MatMenuTriggerBase {
     if (this._canHaveBackdrop) {
       overlayConfig.hasBackdrop = menu.hasBackdrop == null ? !this._triggersSubmenu() : menu.hasBackdrop;
     } else {
-      overlayConfig.hasBackdrop = false;
+      overlayConfig.hasBackdrop = menu.hasBackdrop ?? false;
     }
     if (!overlayRef.hasAttached()) {
       overlayRef.attach(this._getPortal(menu));
@@ -4670,7 +4678,10 @@ function CoreCmsLayoutUiUserMenuComponent_For_10_Template(rf, ctx) {
   }
 }
 var CoreCmsLayoutUiUserMenuComponent = class _CoreCmsLayoutUiUserMenuComponent {
-  userMenuConfig = input.required(...ngDevMode ? [{ debugName: "userMenuConfig" }] : []);
+  userMenuConfig = input.required(...ngDevMode ? [{ debugName: "userMenuConfig" }] : (
+    /* istanbul ignore next */
+    []
+  ));
   sendAction = output();
   onSendAction(action) {
     this.sendAction.emit(action);
@@ -4978,8 +4989,14 @@ function SharedActivityUiLinearComponent_Conditional_1_Template(rf, ctx) {
   }
 }
 var SharedActivityUiLinearComponent = class _SharedActivityUiLinearComponent {
-  active = input(false, ...ngDevMode ? [{ debugName: "active" }] : []);
-  mode = input("indeterminate", ...ngDevMode ? [{ debugName: "mode" }] : []);
+  active = input(false, ...ngDevMode ? [{ debugName: "active" }] : (
+    /* istanbul ignore next */
+    []
+  ));
+  mode = input("indeterminate", ...ngDevMode ? [{ debugName: "mode" }] : (
+    /* istanbul ignore next */
+    []
+  ));
   static \u0275fac = function SharedActivityUiLinearComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedActivityUiLinearComponent)();
   };
@@ -5032,9 +5049,9 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-YTOJ5UR2.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-JU3XKALA.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
-var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-RA5D5AOQ.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
+var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-MZDDUVEW.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
 var _c24 = () => ({ exact: false });
 var _forTrack02 = ($index, $item) => $item.id;
@@ -5050,18 +5067,18 @@ function CoreCmsLayoutFeatureComponent_Conditional_6_Template(rf, ctx) {
 }
 function CoreCmsLayoutFeatureComponent_Defer_7_Template(rf, ctx) {
   if (rf & 1) {
-    const _r2 = \u0275\u0275getCurrentView();
+    const _r1 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "div", 17);
     \u0275\u0275listener("sendDismiss", function CoreCmsLayoutFeatureComponent_Defer_7_Template_div_sendDismiss_0_listener() {
-      \u0275\u0275restoreView(_r2);
-      const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.notificationStore.dismiss());
+      \u0275\u0275restoreView(_r1);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.notificationStore.dismiss());
     });
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
-    \u0275\u0275property("plastikSnackbar", ctx_r2.notificationStore.configuration()[0]);
+    const ctx_r1 = \u0275\u0275nextContext();
+    \u0275\u0275property("plastikSnackbar", ctx_r1.notificationStore.configuration()[0]);
   }
 }
 function CoreCmsLayoutFeatureComponent_Defer_13_Template(rf, ctx) {
@@ -5070,8 +5087,8 @@ function CoreCmsLayoutFeatureComponent_Defer_13_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const toggleSidenavButtonTpl_r4 = \u0275\u0275reference(39);
-    \u0275\u0275property("ngTemplateOutlet", toggleSidenavButtonTpl_r4);
+    const toggleSidenavButtonTpl_r3 = \u0275\u0275reference(39);
+    \u0275\u0275property("ngTemplateOutlet", toggleSidenavButtonTpl_r3);
   }
 }
 function CoreCmsLayoutFeatureComponent_Conditional_21_Template(rf, ctx) {
@@ -5090,25 +5107,25 @@ function CoreCmsLayoutFeatureComponent_Defer_24_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const toggleSidenavButtonTpl_r4 = \u0275\u0275reference(39);
-    \u0275\u0275property("ngTemplateOutlet", toggleSidenavButtonTpl_r4);
+    const toggleSidenavButtonTpl_r3 = \u0275\u0275reference(39);
+    \u0275\u0275property("ngTemplateOutlet", toggleSidenavButtonTpl_r3);
   }
 }
 function CoreCmsLayoutFeatureComponent_Conditional_27_Template(rf, ctx) {
   if (rf & 1) {
-    const _r5 = \u0275\u0275getCurrentView();
+    const _r4 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "plastik-core-cms-layout-ui-user-menu", 18);
     \u0275\u0275listener("sendAction", function CoreCmsLayoutFeatureComponent_Conditional_27_Template_plastik_core_cms_layout_ui_user_menu_sendAction_0_listener($event) {
-      \u0275\u0275restoreView(_r5);
-      const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.onSendAction($event));
+      \u0275\u0275restoreView(_r4);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.onSendAction($event));
     });
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const headerMenu_r6 = \u0275\u0275readContextLet(4);
-    \u0275\u0275property("userMenuConfig", headerMenu_r6);
+    const headerMenu_r5 = \u0275\u0275readContextLet(4);
+    \u0275\u0275property("userMenuConfig", headerMenu_r5);
   }
 }
 function CoreCmsLayoutFeatureComponent_Conditional_29_Template(rf, ctx) {
@@ -5117,8 +5134,8 @@ function CoreCmsLayoutFeatureComponent_Conditional_29_Template(rf, ctx) {
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const h1Tpl_r7 = \u0275\u0275reference(37);
-    \u0275\u0275property("ngTemplateOutlet", h1Tpl_r7);
+    const h1Tpl_r6 = \u0275\u0275reference(37);
+    \u0275\u0275property("ngTemplateOutlet", h1Tpl_r6);
   }
 }
 function CoreCmsLayoutFeatureComponent_For_32_Conditional_5_Template(rf, ctx) {
@@ -5137,16 +5154,16 @@ function CoreCmsLayoutFeatureComponent_For_32_Template(rf, ctx) {
     \u0275\u0275conditionalCreate(5, CoreCmsLayoutFeatureComponent_For_32_Conditional_5_Template, 1, 0, "mat-divider");
   }
   if (rf & 2) {
-    const item_r8 = ctx.$implicit;
-    \u0275\u0275property("routerLink", item_r8 == null ? null : item_r8.route)("routerLinkActiveOptions", (item_r8 == null ? null : item_r8.routerLinkActiveOptionsExact) || \u0275\u0275pureFunction0(7, _c24));
+    const item_r7 = ctx.$implicit;
+    \u0275\u0275property("routerLink", item_r7 == null ? null : item_r7.route)("routerLinkActiveOptions", (item_r7 == null ? null : item_r7.routerLinkActiveOptionsExact) || \u0275\u0275pureFunction0(7, _c24));
     \u0275\u0275advance();
-    \u0275\u0275attribute("aria-hidden", false)("aria-label", item_r8.title);
+    \u0275\u0275attribute("aria-hidden", false)("aria-label", item_r7.title);
     \u0275\u0275advance();
-    \u0275\u0275textInterpolate(item_r8.icon);
+    \u0275\u0275textInterpolate(item_r7.icon);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(item_r8.title);
+    \u0275\u0275textInterpolate(item_r7.title);
     \u0275\u0275advance();
-    \u0275\u0275conditional(item_r8.divider ? 5 : -1);
+    \u0275\u0275conditional(item_r7.divider ? 5 : -1);
   }
 }
 function CoreCmsLayoutFeatureComponent_Defer_33_Template(rf, ctx) {
@@ -5163,9 +5180,9 @@ function CoreCmsLayoutFeatureComponent_Defer_33_Template(rf, ctx) {
     \u0275\u0275elementEnd()()();
   }
   if (rf & 2) {
-    const ctx_r2 = \u0275\u0275nextContext();
+    const ctx_r1 = \u0275\u0275nextContext();
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(3, 1, ctx_r2.currentDate, "yyyy"), " ");
+    \u0275\u0275textInterpolate1(" ", \u0275\u0275pipeBind2(3, 1, ctx_r1.currentDate, "yyyy"), " ");
   }
 }
 function CoreCmsLayoutFeatureComponent_ng_template_36_Conditional_1_Template(rf, ctx) {
@@ -5173,10 +5190,10 @@ function CoreCmsLayoutFeatureComponent_ng_template_36_Conditional_1_Template(rf,
     \u0275\u0275element(0, "svg-icon", 27);
   }
   if (rf & 2) {
-    const icon_r9 = ctx;
+    const icon_r8 = ctx;
     \u0275\u0275nextContext(2);
-    const headerTitle_r10 = \u0275\u0275readContextLet(5);
-    \u0275\u0275property("src", icon_r9.iconPath)("svgClass", icon_r9.svgClass)("svgAriaLabel", headerTitle_r10);
+    const headerTitle_r9 = \u0275\u0275readContextLet(5);
+    \u0275\u0275property("src", icon_r8.iconPath)("svgClass", icon_r8.svgClass)("svgAriaLabel", headerTitle_r9);
   }
 }
 function CoreCmsLayoutFeatureComponent_ng_template_36_Template(rf, ctx) {
@@ -5189,12 +5206,12 @@ function CoreCmsLayoutFeatureComponent_ng_template_36_Template(rf, ctx) {
   }
   if (rf & 2) {
     let tmp_9_0;
-    const ctx_r2 = \u0275\u0275nextContext();
-    const headerTitle_r10 = \u0275\u0275readContextLet(5);
+    const ctx_r1 = \u0275\u0275nextContext();
+    const headerTitle_r9 = \u0275\u0275readContextLet(5);
     \u0275\u0275advance();
-    \u0275\u0275conditional((tmp_9_0 = ctx_r2.headerConfig.mainIcon) ? 1 : -1, tmp_9_0);
+    \u0275\u0275conditional((tmp_9_0 = ctx_r1.headerConfig.mainIcon) ? 1 : -1, tmp_9_0);
     \u0275\u0275advance(2);
-    \u0275\u0275textInterpolate(ctx_r2.headerConfig.extendedTitle || headerTitle_r10);
+    \u0275\u0275textInterpolate(ctx_r1.headerConfig.extendedTitle || headerTitle_r9);
   }
 }
 function CoreCmsLayoutFeatureComponent_ng_template_38_Conditional_1_Template(rf, ctx) {
@@ -5213,21 +5230,21 @@ function CoreCmsLayoutFeatureComponent_ng_template_38_Conditional_2_Template(rf,
 }
 function CoreCmsLayoutFeatureComponent_ng_template_38_Template(rf, ctx) {
   if (rf & 1) {
-    const _r11 = \u0275\u0275getCurrentView();
+    const _r10 = \u0275\u0275getCurrentView();
     \u0275\u0275elementStart(0, "button", 29);
     \u0275\u0275listener("click", function CoreCmsLayoutFeatureComponent_ng_template_38_Template_button_click_0_listener() {
-      \u0275\u0275restoreView(_r11);
-      const ctx_r2 = \u0275\u0275nextContext();
-      return \u0275\u0275resetView(ctx_r2.onToggleSidenav());
+      \u0275\u0275restoreView(_r10);
+      const ctx_r1 = \u0275\u0275nextContext();
+      return \u0275\u0275resetView(ctx_r1.onToggleSidenav());
     });
     \u0275\u0275conditionalCreate(1, CoreCmsLayoutFeatureComponent_ng_template_38_Conditional_1_Template, 2, 0, "mat-icon", 30)(2, CoreCmsLayoutFeatureComponent_ng_template_38_Conditional_2_Template, 2, 0, "mat-icon", 30);
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
     \u0275\u0275nextContext();
-    const sidenavOpened_r12 = \u0275\u0275readContextLet(0);
+    const sidenavOpened_r11 = \u0275\u0275readContextLet(0);
     \u0275\u0275advance();
-    \u0275\u0275conditional(!sidenavOpened_r12 ? 1 : sidenavOpened_r12 ? 2 : -1);
+    \u0275\u0275conditional(!sidenavOpened_r11 ? 1 : sidenavOpened_r11 ? 2 : -1);
   }
 }
 var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
@@ -5236,8 +5253,14 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   #layoutObserverService = inject(LayoutObserverService);
   #zone = inject(NgZone);
   notificationStore = inject(notificationStore);
-  hideFooter = input(false, ...ngDevMode ? [{ debugName: "hideFooter" }] : []);
-  widgetsContainer = viewChild("widgetsContainer", __spreadProps(__spreadValues({}, ngDevMode ? { debugName: "widgetsContainer" } : {}), { read: ViewContainerRef }));
+  hideFooter = input(false, ...ngDevMode ? [{ debugName: "hideFooter" }] : (
+    /* istanbul ignore next */
+    []
+  ));
+  widgetsContainer = viewChild("widgetsContainer", __spreadProps(__spreadValues({}, ngDevMode ? { debugName: "widgetsContainer" } : (
+    /* istanbul ignore next */
+    {}
+  )), { read: ViewContainerRef }));
   currentDate = /* @__PURE__ */ new Date();
   sidenavOpened$ = this.#layoutFacade.sidenavOpened$;
   isMobile$ = this.#layoutFacade.isMobile$;
@@ -5300,7 +5323,6 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
     }
   }, inputs: { hideFooter: [1, "hideFooter"] }, decls: 40, vars: 25, consts: [["h1Tpl", ""], ["toggleSidenavButtonTpl", ""], ["widgetsContainer", ""], [1, "core-cms-container"], ["data-test", "layout-header"], ["start", "", 1, "sm:gap-sm", "flex", "items-center", "gap-0"], ["data-test", "layout-title"], [1, "sr-only"], [1, "gap-sub", "flex", "content-center", "items-center", "justify-between", "hover:no-underline", 3, "routerLink"], [3, "ngTemplateOutlet"], ["end", "", 1, "gap-tiny", "lg:gap-sm", "flex", "items-center"], [3, "userMenuConfig"], [3, "toggleSidenav", "position", "mode", "fixedInViewport", "sidenavOpened"], ["header", "", 3, "ngTemplateOutlet"], ["menu-items", "", "data-test", "sidenav-list"], [1, "spinner-container"], [1, "lds-ripple"], [3, "sendDismiss", "plastikSnackbar"], [3, "sendAction", "userMenuConfig"], ["routerLinkActive", "bg-gray-10", "ariaCurrentWhenActive", "page", 1, "my-tiny", "h-xll", "hover:bg-gray-10", "focus:bg-gray-10", 3, "routerLink", "routerLinkActiveOptions"], ["matListItemIcon", ""], ["matListItemTitle", ""], ["data-test", "layout-footer"], ["content", "", 1, "gap-tiny", "flex", "flex-row", "items-center", "justify-center", "text-sm"], ["aria-label", "visit www.plastikaweb.com page", "href", "https://www.plastikaweb.com", "target", "_blank", 1, "underline", "underline-offset-2"], ["aria-label", "visitar www.llevat.org", "href", "https://www.llevat.org", "target", "_blank", 1, "underline", "underline-offset-2"], [1, "gap-sub", "flex", "items-center", "justify-center"], [3, "src", "svgClass", "svgAriaLabel"], [1, "hidden", "sm:block"], ["mat-icon-button", "", "aria-label", "men\xFA lateral", "data-test", "toggle-sidenav-button", 1, "flex", "justify-center", "align-middle", 3, "click"], [1, "mat-18"]], template: function CoreCmsLayoutFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
-      const _r1 = \u0275\u0275getCurrentView();
       \u0275\u0275declareLet(0);
       \u0275\u0275pipe(1, "ngrxPush");
       \u0275\u0275declareLet(2);
@@ -5328,8 +5350,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
       \u0275\u0275elementEnd()();
       \u0275\u0275elementStart(28, "plastik-core-cms-layout-ui-sidenav", 12);
       \u0275\u0275listener("toggleSidenav", function CoreCmsLayoutFeatureComponent_Template_plastik_core_cms_layout_ui_sidenav_toggleSidenav_28_listener() {
-        \u0275\u0275restoreView(_r1);
-        return \u0275\u0275resetView(ctx.onToggleSidenav());
+        return ctx.onToggleSidenav();
       });
       \u0275\u0275conditionalCreate(29, CoreCmsLayoutFeatureComponent_Conditional_29_Template, 1, 1, "ng-container", 13);
       \u0275\u0275elementStart(30, "mat-nav-list", 14);
@@ -5341,40 +5362,40 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
       \u0275\u0275template(36, CoreCmsLayoutFeatureComponent_ng_template_36_Template, 4, 2, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(38, CoreCmsLayoutFeatureComponent_ng_template_38_Template, 3, 1, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
     }
     if (rf & 2) {
-      const h1Tpl_r7 = \u0275\u0275reference(37);
-      const sidenavOpened_r13 = \u0275\u0275storeLet(\u0275\u0275pipeBind1(1, 17, ctx.sidenavOpened$) || false);
-      const isMobile_r14 = \u0275\u0275pipeBind1(3, 20, ctx.isMobile$) || false;
+      const h1Tpl_r6 = \u0275\u0275reference(37);
+      const sidenavOpened_r12 = \u0275\u0275storeLet(\u0275\u0275pipeBind1(1, 17, ctx.sidenavOpened$) || false);
+      const isMobile_r13 = \u0275\u0275pipeBind1(3, 20, ctx.isMobile$) || false;
       \u0275\u0275advance(4);
-      const headerMenu_r15 = \u0275\u0275storeLet(ctx.headerConfig.userMenuConfig);
+      const headerMenu_r14 = \u0275\u0275storeLet(ctx.headerConfig.userMenuConfig);
       \u0275\u0275advance();
-      const headerTitle_r16 = \u0275\u0275storeLet(ctx.headerConfig.title);
-      const sidenavPosition_r17 = ctx.headerConfig.sidenavPosition || "start";
-      const headerWidgetsPosition_r18 = ctx.headerWidgetsConfig == null ? null : ctx.headerWidgetsConfig.position;
+      const headerTitle_r15 = \u0275\u0275storeLet(ctx.headerConfig.title);
+      const sidenavPosition_r16 = ctx.headerConfig.sidenavPosition || "start";
+      const headerWidgetsPosition_r17 = ctx.headerWidgetsConfig == null ? null : ctx.headerWidgetsConfig.position;
       \u0275\u0275advance();
       \u0275\u0275conditional(ctx.isActive() ? 6 : -1);
       \u0275\u0275advance(2);
       \u0275\u0275deferWhen(ctx.notificationStore.configuration());
       \u0275\u0275advance(6);
-      \u0275\u0275deferWhen(sidenavPosition_r17 === "start");
+      \u0275\u0275deferWhen(sidenavPosition_r16 === "start");
       \u0275\u0275advance(4);
-      \u0275\u0275textInterpolate(headerTitle_r16);
+      \u0275\u0275textInterpolate(headerTitle_r15);
       \u0275\u0275advance();
       \u0275\u0275property("routerLink", \u0275\u0275pureFunction0(24, _c16));
-      \u0275\u0275attribute("title", headerTitle_r16);
+      \u0275\u0275attribute("title", headerTitle_r15);
       \u0275\u0275advance();
-      \u0275\u0275property("ngTemplateOutlet", h1Tpl_r7);
+      \u0275\u0275property("ngTemplateOutlet", h1Tpl_r6);
       \u0275\u0275advance();
-      \u0275\u0275conditional(ctx.headerWidgetsConfig && headerWidgetsPosition_r18 === "start" ? 21 : -1);
+      \u0275\u0275conditional(ctx.headerWidgetsConfig && headerWidgetsPosition_r17 === "start" ? 21 : -1);
       \u0275\u0275advance(2);
-      \u0275\u0275conditional(ctx.headerWidgetsConfig && headerWidgetsPosition_r18 === "end" ? 23 : -1);
+      \u0275\u0275conditional(ctx.headerWidgetsConfig && headerWidgetsPosition_r17 === "end" ? 23 : -1);
       \u0275\u0275advance(2);
-      \u0275\u0275deferWhen(sidenavPosition_r17 === "end");
+      \u0275\u0275deferWhen(sidenavPosition_r16 === "end");
       \u0275\u0275advance(2);
-      \u0275\u0275conditional(headerMenu_r15 ? 27 : -1);
+      \u0275\u0275conditional(headerMenu_r14 ? 27 : -1);
       \u0275\u0275advance();
-      \u0275\u0275property("position", sidenavPosition_r17)("mode", isMobile_r14 ? "over" : "side")("fixedInViewport", isMobile_r14)("sidenavOpened", sidenavOpened_r13);
+      \u0275\u0275property("position", sidenavPosition_r16)("mode", isMobile_r13 ? "over" : "side")("fixedInViewport", isMobile_r13)("sidenavOpened", sidenavOpened_r12);
       \u0275\u0275advance();
-      \u0275\u0275conditional(isMobile_r14 && sidenavOpened_r13 ? 29 : -1);
+      \u0275\u0275conditional(isMobile_r13 && sidenavOpened_r12 ? 29 : -1);
       \u0275\u0275advance(2);
       \u0275\u0275repeater(ctx.sidenavConfig());
       \u0275\u0275advance(3);
@@ -5402,7 +5423,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-YTOJ5UR2.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-RA5D5AOQ.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-JU3XKALA.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-MZDDUVEW.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -6531,11 +6552,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-N2CL3RFB.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-IRDAQXX3.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-SAOD67MJ.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-7OJAPQMS.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6551,7 +6572,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-WU5Q6F6I.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-5GSY4YFH.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: "link",
