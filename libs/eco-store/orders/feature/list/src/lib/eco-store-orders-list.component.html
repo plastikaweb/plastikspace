@@ -60,11 +60,13 @@
       <!-- Empty state -->
       @if (orders.length === 0) {
         <div class="empty-state flex flex-1 flex-col items-center justify-center gap-8 text-center">
-          <div class="flex items-center justify-center rounded-full bg-neutral-400 p-10">
-            <mat-icon class="empty-icon scale-300" aria-hidden="true"
-              >sentiment_very_dissatisfied</mat-icon
-            >
-          </div>
+          <img
+            class="object-contain"
+            width="300"
+            height="300"
+            priority
+            [ngSrc]="'/img/no-results-2.png'"
+            [alt]="'orders.list.emptyImage' | translate" />
 
           <div class="flex flex-col items-center justify-center gap-1">
             @let status = model().status;
