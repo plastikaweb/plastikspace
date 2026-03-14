@@ -1,0 +1,930 @@
+From 100237fa7b2e7caf14c9e4aabe41a6a2389422d1 Mon Sep 17 00:00:00 2001
+From: Carlos Matheu <info@plastikaweb.com>
+Date: Sat, 14 Mar 2026 15:25:05 +0100
+Subject: [PATCH] refactor(eco-store): apply accessibility and performance
+ improvements
+
+- Implement standard list elements (<ul>, <li>) in grids.
+- Centralize submission logic in CartOrderSummaryComponent.
+- Use host property for accessibility attributes in features.
+- Implement safer filter concatenation in ProductsApiService.
+- Update CHANGELOG.md with recent enhancements.
+- Add imgClass support to SharedImgContainerComponent.
+- Refactor no-results component selectors.
+- Move component styles to hosts and use ES6 private fields.
+---
+ .github/workflows/ci.yml                      |   1 +
+ CHANGELOG.md                                  |  11 +-
+ apps/eco-store/src/app/app.component.ts       |   8 +-
+ libs/core/detail-item-form/vite.config.mts    |  11 +-
+ .../cart-confirmation.component.html          |   3 +-
+ .../shipping/cart-shipping.component.html     |   6 +-
+ .../summary/cart-summary.component.html       |  10 +-
+ .../summary/cart-summary.component.ts         |   2 +
+ .../cart-order-summary.component.html         |   2 +-
+ .../cart-order-summary.component.ts           |   1 -
+ .../data-access/src/eco-store-orders.store.ts |   4 +
+ .../lib/eco-store-orders-list.component.html  | 138 +++++++++---------
+ .../lib/eco-store-orders-list.component.ts    |   6 +
+ .../src/eco-store-products-api.service.ts     |   2 +-
+ .../src/eco-store-products.store.ts           |  15 ++
+ .../eco-store-products-feature.component.html | 105 ++++++-------
+ .../eco-store-products-feature.component.ts   |  30 +++-
+ libs/eco-store/shared/no-results/README.md    |   8 +-
+ ...eco-store-shared-no-results.component.html |  30 ++--
+ ...-store-shared-no-results.component.spec.ts |   4 +-
+ .../eco-store-shared-no-results.component.ts  |   8 +
+ .../category/feature/detail/vite.config.mts   |  11 +-
+ libs/llecoop/profile/feature/vite.config.mts  |  11 +-
+ .../ui/input-color-picker/vite.config.mts     |  11 +-
+ .../src/lib/shared-img-container.component.ts |   1 +
+ .../pocketbase/pocketbase-storage-loader.ts   |   8 +-
+ 26 files changed, 272 insertions(+), 175 deletions(-)
+
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index c9612b3e..c2c136a3 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -45,6 +45,7 @@ jobs:
+           npx nx-cloud record -- nx affected --target=lint --exclude=llecoop-firebase --parallel=3
+           npx nx-cloud record -- nx affected --target=test --exclude=llecoop-firebase --parallel=3 --coverage
+           npx nx-cloud record -- nx affected --target=build --exclude=llecoop-firebase --parallel=3
++          npx nx fix-ci
+         if: always()
+
+       - name: Report Coverage
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index 03aaa5c7..64e24cae 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -13,11 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
+
+ ### Changed
+
+-- Enhanced accessibility in orders list by implementing semantic landmarks (`<main>`), list structures (`<ul>`, `<li>`), and establish proper heading hierarchy ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+-- Improved loading state announcements with `aria-live` regions and `aria-busy` indicators ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
++- Enhanced accessibility in orders and products lists by implementing semantic landmarks (`<main>`, `role="region"`), list structures (`<ul>`, `<li>`), and establish proper heading hierarchy ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
++- Improved `CartOrderSummaryComponent` by centralizing submission availability logic, simplifying inputs, and enhancing disabled state handling ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
++- Improved loading state announcements with `aria-live` regions, `aria-busy` indicators, and `inert` attribute application ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+ - Enhanced order cards with detailed ARIA labels and `role="article"` for better screen reader support ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+ - Updated translation files (en, es, ca) with comprehensive accessibility and empty state keys ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+-- Refactored cart and orders empty states to use the new shared component with correct content projection ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
++- Refactored cart and orders empty states to use the new shared component with correct content projection and improved "Go to Store" action styling ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+ - Implemented dynamic preconnect links in `AppComponent` for both API and application origins to optimize image delivery and resolve `NgOptimizedImage` warnings ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+ - Updated unit tests with automated accessibility checks using `vitest-axe` and more robust element selectors ([#86c8ryj2q](https://app.clickup.com/t/86c8ryj2q))
+ - Improved CI coverage reporting logic with better debug logging and more robust calculation ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
+@@ -26,6 +27,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
+ - Optimized image loading in order views using `SharedImgContainerComponent` ([#86c8uj73e](https://app.clickup.com/t/86c8uj73e))
+ - Exposed local assets under `local/img` via `project.json` and updated storage loader to support path bypass ([#86c8uj73e](https://app.clickup.com/t/86c8uj73e))
+ - Improved product list loading experience with UI indicators and refined pagination logic ([#86c8ujubv](https://app.clickup.com/t/86c8ujubv))
++- Applied `inert` attribute to orders and products lists during loading to prevent keyboard interaction and improve accessibility
++- Implemented safer array-based filter concatenation in `EcoStoreProductsApiService` to prevent syntax errors with empty values
++- Refactored `EcoStoreProductsFeatureComponent` and `EcoStoreOrdersListComponent` to ensure injected dependencies are `protected readonly`, use host bindings for accessibility, and added missing JSDoc documentation
++- Enhanced `pocketBaseStorageLoader` JSDoc to document absolute and local path bypass logic
+
+ ### Fixed
+
+diff --git a/apps/eco-store/src/app/app.component.ts b/apps/eco-store/src/app/app.component.ts
+index a77fe620..8cfcb238 100644
+--- a/apps/eco-store/src/app/app.component.ts
++++ b/apps/eco-store/src/app/app.component.ts
+@@ -53,8 +53,8 @@ export class AppComponent implements OnInit {
+
+   constructor() {
+     this.#translate.addLangs(this.#environment.languages);
+-    this.addPreconnectLink();
+-    this.addSvgIcon();
++    this.#addPreconnectLink();
++    this.#addSvgIcon();
+
+     effect(() => {
+       const description = this.#tenantStore.tenantDescriptionTranslated();
+@@ -75,7 +75,7 @@ export class AppComponent implements OnInit {
+     this.activityStore.setActivity(false);
+   }
+
+-  private addPreconnectLink(): void {
++  #addPreconnectLink(): void {
+     const apiLink = this.#document.createElement('link');
+     apiLink.rel = 'preconnect';
+     apiLink.href = this.#environment.baseApiUrl;
+@@ -88,7 +88,7 @@ export class AppComponent implements OnInit {
+     this.#document.head.appendChild(appLink);
+   }
+
+-  private addSvgIcon(): void {
++  #addSvgIcon(): void {
+     this.matIconRegistry.addSvgIconLiteral(
+       'eco_logo',
+       this.domSanitizer.bypassSecurityTrustHtml(`
+diff --git a/libs/core/detail-item-form/vite.config.mts b/libs/core/detail-item-form/vite.config.mts
+index 2b658991..e33c62a9 100644
+--- a/libs/core/detail-item-form/vite.config.mts
++++ b/libs/core/detail-item-form/vite.config.mts
+@@ -5,7 +5,16 @@ import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+ export default defineConfig(() => ({
+   root: __dirname,
+   cacheDir: '../../../node_modules/.vite/libs/core/detail-item-form',
+-  plugins: [angular(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
++  plugins: [
++    angular().filter((p: any) => {
++      if (Array.isArray(p)) {
++        return true;
++      }
++      return p.name !== 'analogjs-router-optimization';
++    }),
++    nxViteTsPaths(),
++    nxCopyAssetsPlugin(['*.md']),
++  ],
+   // Uncomment this if you are using workers.
+   // worker: {
+   //   plugins: () => [ nxViteTsPaths() ],
+diff --git a/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/confirmation/cart-confirmation.component.html b/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/confirmation/cart-confirmation.component.html
+index 4b1126e0..955eaf13 100644
+--- a/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/confirmation/cart-confirmation.component.html
++++ b/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/confirmation/cart-confirmation.component.html
+@@ -163,8 +163,9 @@ <h2 class="gap-md flex items-center text-2xl font-bold tracking-tight sm:text-3x
+         [shipping]="cartStore.shipping()"
+         [deliveryType]="cartStore.method() ?? 'pickup'"
+         [total]="cartStore.total()"
+-        [isStoreOpen]="tenantStore.isStoreOpen()"
++        [submitAvailable]="tenantStore.isStoreOpen() && cartStore.itemsCount() > 0"
+         [nextOpenDate]="tenantStore.nextOpenDate()"
++        [isStoreOpen]="tenantStore.isStoreOpen()"
+         [actionButtonText]="'cart.confirmation.confirmOrder'"
+         (actionClick)="onConfirmOrder()">
+       </eco-cart-order-summary>
+diff --git a/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/shipping/cart-shipping.component.html b/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/shipping/cart-shipping.component.html
+index 819d3a45..e4a863a2 100644
+--- a/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/shipping/cart-shipping.component.html
++++ b/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/shipping/cart-shipping.component.html
+@@ -45,11 +45,13 @@ <h2 class="mb-2 text-2xl font-bold text-neutral-900">
+           [shipping]="cartStore.shipping()"
+           [deliveryType]="cartStore.method() ?? 'pickup'"
+           [total]="cartStore.total()"
+-          [isStoreOpen]="tenantStore.isStoreOpen()"
+           [nextOpenDate]="tenantStore.nextOpenDate()"
+           [actionButtonText]="'cart.shipping.goToConfirmation'"
+           [actionRoute]="['./cistella/confirmacio']"
+-          [submitAvailable]="formValid()">
++          [isStoreOpen]="tenantStore.isStoreOpen()"
++          [submitAvailable]="
++            formValid() && tenantStore.isStoreOpen() && cartStore.itemsCount() > 0
++          ">
+           @if (cartStore.method() === 'delivery') {
+             <div extra-shipping-content class="overflow-hidden">
+               <div class="min-h-0">
+diff --git a/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.html b/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.html
+index 2bd5ee3b..f407379b 100644
+--- a/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.html
++++ b/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.html
+@@ -52,14 +52,14 @@ <h2 class="gap-md flex items-center text-2xl font-bold tracking-tight sm:text-3x
+         } @empty {
+           <eco-store-shared-no-results
+             class="empty-state my-6"
+-            [imgTitle]="'cart.summary.noResults.title' | translate">
+-            <div title>
++            [imgTitle]="'orders.list.emptyImage' | translate">
++            <div no-results-title>
+               {{ 'cart.summary.noResults.title' | translate }}
+             </div>
+-            <div description>
++            <div no-results-description>
+               {{ 'cart.summary.noResults.description' | translate }}
+             </div>
+-            <button action matButton="filled" type="button" routerLink="/botiga">
++            <button matButton="filled" no-results-action type="button" routerLink="/botiga">
+               <mat-icon aria-hidden="true">storefront</mat-icon>
+               <span>{{ 'orders.list.goToStore' | translate }}</span>
+             </button>
+@@ -80,7 +80,7 @@ <h2 class="gap-md flex items-center text-2xl font-bold tracking-tight sm:text-3x
+         [subtotal]="cartStore.subtotal()"
+         [taxes]="cartStore.tax()"
+         [total]="cartStore.subtotal() + cartStore.tax()"
+-        [productsCount]="cartStore.itemsCount()"
++        [submitAvailable]="tenantStore.isStoreOpen() && cartStore.itemsCount() > 0"
+         [isStoreOpen]="tenantStore.isStoreOpen()"
+         [nextOpenDate]="tenantStore.nextOpenDate()"
+         [actionButtonText]="'cart.summary.goToShipping'"
+diff --git a/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.ts b/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.ts
+index 967caf16..739d048a 100644
+--- a/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.ts
++++ b/libs/eco-store/cart/feature/src/lib/eco-store-cart-steps/summary/cart-summary.component.ts
+@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, inject, linkedSignal } from '@angul
+ import { MatButtonModule } from '@angular/material/button';
+ import { MatCardModule } from '@angular/material/card';
+ import { MatIconModule } from '@angular/material/icon';
++import { RouterLink } from '@angular/router';
+ import { TranslatePipe } from '@ngx-translate/core';
+ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+@@ -18,6 +19,7 @@ import { CartProductCardComponent } from '../../ui/cart-product-card/cart-produc
+     MatIconModule,
+     MatCardModule,
+     TranslatePipe,
++    RouterLink,
+     CartOrderSummaryComponent,
+     CartProductCardComponent,
+     EcoStoreSharedNoResultsComponent,
+diff --git a/libs/eco-store/cart/feature/src/lib/ui/cart-order-summary/cart-order-summary.component.html b/libs/eco-store/cart/feature/src/lib/ui/cart-order-summary/cart-order-summary.component.html
+index b61ceeea..daf5f9c6 100644
+--- a/libs/eco-store/cart/feature/src/lib/ui/cart-order-summary/cart-order-summary.component.html
++++ b/libs/eco-store/cart/feature/src/lib/ui/cart-order-summary/cart-order-summary.component.html
+@@ -46,7 +46,7 @@
+         matButton="filled"
+         type="button"
+         class="w-full"
+-        [disabled]="!submitAvailable() || !isStoreOpen() || productsCount() === 0"
++        [disabled]="!submitAvailable()"
+         (click)="handleAction()">
+         <span>{{ actionButtonText() | translate }}</span>
+         <mat-icon iconPositionEnd>arrow_forward</mat-icon>
+diff --git a/libs/eco-store/cart/feature/src/lib/ui/cart-order-summary/cart-order-summary.component.ts b/libs/eco-store/cart/feature/src/lib/ui/cart-order-summary/cart-order-summary.component.ts
+index 328d6f57..d8c1166d 100644
+--- a/libs/eco-store/cart/feature/src/lib/ui/cart-order-summary/cart-order-summary.component.ts
++++ b/libs/eco-store/cart/feature/src/lib/ui/cart-order-summary/cart-order-summary.component.ts
+@@ -23,7 +23,6 @@ export class CartOrderSummaryComponent {
+   shipping = input<number>(0);
+   actionButtonText = input<string>('');
+   actionRoute = input<string[]>();
+-  productsCount = input<number>(0);
+   actionClick = output<void>();
+   deliveryType = input<EcoStoreTenantLogisticsDeliveryType>('pickup');
+   isStoreOpen = input<boolean>(true);
+diff --git a/libs/eco-store/orders/data-access/src/eco-store-orders.store.ts b/libs/eco-store/orders/data-access/src/eco-store-orders.store.ts
+index 20a8863d..0b8dc52d 100644
+--- a/libs/eco-store/orders/data-access/src/eco-store-orders.store.ts
++++ b/libs/eco-store/orders/data-access/src/eco-store-orders.store.ts
+@@ -13,6 +13,10 @@ import { EcoStoreOrdersApiService } from './eco-store-orders-api.service';
+
+ export type OrdersPocketBaseCrudState = DataCrud<EcoStoreOrder, ListResult<EcoStoreOrder>>;
+
++/**
++ * Filter configuration for orders list.
++ * Extends the base PocketBase entity filter with an optional status.
++ */
+ export interface OrdersPocketBaseFilter extends BasePocketBaseEntityFilter {
+   status: string | null;
+ }
+diff --git a/libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.html b/libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.html
+index 6ad71719..efd6c355 100644
+--- a/libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.html
++++ b/libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.html
+@@ -1,51 +1,50 @@
+-<main class="flex flex-1 flex-col px-4 py-8" [attr.aria-busy]="ordersStore.isLoading()">
+-  <!-- Page header -->
+-  <div class="mb-8 flex flex-col justify-between gap-4" role="group">
+-    <div class="flex items-center justify-start gap-4">
+-      <mat-icon class="scale-150!" aria-hidden="true">receipt_long</mat-icon>
+-      <div class="flex flex-col gap-1">
+-        <h2
+-          class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
+-          {{ 'orders.list.title' | translate }}
+-        </h2>
+-      </div>
++<div class="mb-8 flex flex-col justify-between gap-4" role="group">
++  <div class="flex items-center justify-start gap-4">
++    <mat-icon class="scale-150!" aria-hidden="true">receipt_long</mat-icon>
++    <div class="flex flex-col gap-1">
++      <h2
++        class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
++        {{ 'orders.list.title' | translate }}
++      </h2>
+     </div>
+-    <p class="mt-1 text-base text-neutral-600">
+-      {{ 'orders.list.description' | translate }}
+-    </p>
+   </div>
++  <p class="mt-1 text-base text-neutral-600">
++    {{ 'orders.list.description' | translate }}
++  </p>
++</div>
+
+-  <!-- Live region for announcing loading and data updates -->
+-  <div class="sr-only" aria-live="polite">
+-    @if (ordersStore.isLoading()) {
+-      {{ 'orders.list.loading' | translate }}
+-    } @else {
+-      {{ 'orders.list.loadedCount' | translate: { count: ordersStore.count() } }}
+-    }
+-  </div>
++<!-- Live region for announcing loading and data updates -->
++<div class="sr-only" aria-live="polite">
++  @if (ordersStore.isLoading()) {
++    {{ 'orders.list.loading' | translate }}
++  } @else {
++    {{ 'orders.list.loadedCount' | translate: { count: ordersStore.count() } }}
++  }
++</div>
+
+-  @let orders = ordersStore.entities();
++@let orders = ordersStore.entities();
+
+-  <section [attr.aria-labelledby]="'filter-title'">
+-    <h3 id="filter-title" class="sr-only">{{ 'orders.list.filterTitle' | translate }}</h3>
+-    <mat-card
+-      appearance="outlined"
+-      class="mb-6 px-4 py-2"
+-      [class.pointer-events-none]="ordersStore.isLoading()"
+-      [class.opacity-60]="ordersStore.isLoading()">
+-      <plastik-shared-form-feature
+-        [fields]="formConfig.getConfig()"
+-        [model]="model()"
+-        [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
+-        (temporaryChangeEvent)="onChange($event)">
+-      </plastik-shared-form-feature>
+-    </mat-card>
+-  </section>
++<section [attr.aria-labelledby]="'filter-title'">
++  <h3 id="filter-title" class="sr-only">{{ 'orders.list.filterTitle' | translate }}</h3>
++  <mat-card
++    appearance="outlined"
++    class="mb-6 px-4 py-2"
++    [class.pointer-events-none]="ordersStore.isLoading()"
++    [class.opacity-60]="ordersStore.isLoading()">
++    <plastik-shared-form-feature
++      [fields]="formConfig.getConfig()"
++      [model]="model()"
++      [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
++      (temporaryChangeEvent)="onChange($event)">
++    </plastik-shared-form-feature>
++  </mat-card>
++</section>
+
+-  <section class="orders-grid" [attr.aria-labelledby]="'orders-list-title'">
++<section [attr.aria-label]="'orders.list.title' | translate">
++  <ul class="orders-grid">
+     @if (ordersStore.isLoading()) {
+       @for (i of skeletonItems(); track $index) {
+-        <div
++        <li
+           aria-hidden="true"
+           class="skeleton-card animate-pulse rounded-xl border border-neutral-200 bg-white p-6">
+           <div class="flex justify-between">
+@@ -70,7 +69,7 @@ <h3 id="filter-title" class="sr-only">{{ 'orders.list.filterTitle' | translate }
+             </div>
+             <div class="h-10 w-28 rounded-full bg-neutral-200"></div>
+           </div>
+-        </div>
++        </li>
+       }
+     } @else {
+       <!-- Empty state -->
+@@ -79,34 +78,29 @@ <h3 id="filter-title" class="sr-only">{{ 'orders.list.filterTitle' | translate }
+         @if (status) {
+           <eco-store-shared-no-results
+             class="empty-state my-6"
+-            [imgTitle]="
+-              status
+-                ? ('orders.list.emptyWithStatus'
+-                  | translate: { status: (orderStatusLabelMap[status] | translate) })
+-                : ('orders.list.empty' | translate)
+-            ">
+-            <div title>
++            [imgTitle]="'orders.list.emptyImage' | translate">
++            <div no-results-title>
+               {{
+                 'orders.list.emptyWithStatus'
+                   | translate: { status: (orderStatusLabelMap[status] | translate) }
+               }}
+             </div>
+
+-            <div description>
++            <div no-results-description>
+               {{ 'orders.list.emptyDescriptionWithStatus' | translate }}
+             </div>
+           </eco-store-shared-no-results>
+         } @else {
+           <eco-store-shared-no-results
+             class="empty-state"
+-            [imgTitle]="'orders.list.empty' | translate">
+-            <div title>
++            [imgTitle]="'orders.list.emptyImage' | translate">
++            <div no-results-title>
+               {{ 'orders.list.empty' | translate }}
+             </div>
+-            <div description>
++            <div no-results-description>
+               {{ 'orders.list.emptyDescription' | translate }}
+             </div>
+-            <button action mat-stroked-button routerLink="/botiga">
++            <button no-results-action mat-stroked-button routerLink="/botiga">
+               {{ 'orders.list.goToStore' | translate }}
+             </button>
+           </eco-store-shared-no-results>
+@@ -114,25 +108,27 @@ <h3 id="filter-title" class="sr-only">{{ 'orders.list.filterTitle' | translate }
+       } @else {
+         <!-- Order list -->
+         @for (order of orders; track order.id) {
+-          <eco-order-card [order]="order" />
++          <li class="list-none">
++            <eco-order-card [order]="order" />
++          </li>
+         }
+       }
+     }
+-  </section>
++  </ul>
++</section>
+
+-  @if (!ordersStore.isLoading() && orders.length > 0) {
+-    <nav [attr.aria-label]="'orders.list.pagination' | translate">
+-      @defer (on viewport; prefetch on idle) {
+-        <plastik-pagination
+-          class="mt-6"
+-          plastikPocketbasePaginationNavigation
+-          [pageSize]="ordersStore.getPagination().perPage"
+-          [pageIndex]="ordersStore.getPagination().page"
+-          [pageSizeOptions]="ordersStore.paginationSizeOptions()"
+-          [count]="ordersStore.count()" />
+-      } @placeholder {
+-        <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
+-      }
+-    </nav>
+-  }
+-</main>
++@if (!ordersStore.isLoading() && orders.length > 0) {
++  <nav [attr.aria-label]="'orders.list.pagination' | translate">
++    @defer (on viewport; prefetch on idle) {
++      <plastik-pagination
++        class="mt-6"
++        plastikPocketbasePaginationNavigation
++        [pageSize]="ordersStore.getPagination().perPage"
++        [pageIndex]="ordersStore.getPagination().page"
++        [pageSizeOptions]="ordersStore.paginationSizeOptions()"
++        [count]="ordersStore.count()" />
++    } @placeholder {
++      <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
++    }
++  </nav>
++}
+diff --git a/libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.ts b/libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.ts
+index be1f39b2..3c24b3e8 100644
+--- a/libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.ts
++++ b/libs/eco-store/orders/feature/list/src/lib/eco-store-orders-list.component.ts
+@@ -39,6 +39,12 @@ import { OrderCardComponent } from './order-card/order-card.component';
+   ],
+   templateUrl: './eco-store-orders-list.component.html',
+   styleUrl: './eco-store-orders-list.component.scss',
++  host: {
++    role: 'main',
++    class: 'flex flex-1 flex-col px-4 py-8',
++    '[attr.aria-busy]': 'ordersStore.isLoading()',
++    '[attr.inert]': 'ordersStore.isLoading()',
++  },
+   changeDetection: ChangeDetectionStrategy.OnPush,
+ })
+ export default class EcoStoreOrdersListComponent {
+diff --git a/libs/eco-store/products/data-access/src/eco-store-products-api.service.ts b/libs/eco-store/products/data-access/src/eco-store-products-api.service.ts
+index 7821a0b6..cd9c9b6d 100644
+--- a/libs/eco-store/products/data-access/src/eco-store-products-api.service.ts
++++ b/libs/eco-store/products/data-access/src/eco-store-products-api.service.ts
+@@ -21,7 +21,7 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
+   override getList(params: PocketBaseListParams = {}): Observable<ListResult<EcoStoreProduct>> {
+     const { page, perPage, sort, filter: filterObj } = params;
+
+-    const filter = filterObj ? `${this.filter} && ${filterObj}` : this.filter;
++    const filter = [this.filter, filterObj].filter(Boolean).join(' && ');
+
+     const options: RecordListOptions = {
+       page,
+diff --git a/libs/eco-store/products/data-access/src/eco-store-products.store.ts b/libs/eco-store/products/data-access/src/eco-store-products.store.ts
+index 9d553033..fb398aea 100644
+--- a/libs/eco-store/products/data-access/src/eco-store-products.store.ts
++++ b/libs/eco-store/products/data-access/src/eco-store-products.store.ts
+@@ -61,6 +61,7 @@ export const ecoStoreProductsStore = signalStore(
+     const environment = inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
+
+     return {
++      /** List of products with their name, description and features translated into the current language. */
+       productsWithTranslatedText: computed<EcoStoreProductWithTranslatedText[]>(() => {
+         const products = entities();
+         const categories = categoriesStore.stats();
+@@ -117,6 +118,10 @@ export const ecoStoreProductsStore = signalStore(
+         });
+       }),
+
++      /**
++       * Factory function to find a product by its slug and return it with translated metadata.
++       * @returns { (slug: string | null) => EcoStoreProductWithTranslatedText | undefined }
++       */
+       findProductBySlug: computed(() => (slug: string | null) => {
+         if (!slug) {
+           return undefined;
+@@ -153,6 +158,11 @@ export const ecoStoreProductsStore = signalStore(
+     };
+   }),
+   withMethods(store => ({
++    /**
++     * Sets the selected product ID based on its normalized name (slug).
++     * @param { string } slug The slug of the product.
++     * @returns { boolean } True if the product was found and selected.
++     */
+     setSelectedFromSlug(slug: EcoStoreProductWithTranslatedText['categorySlug']): boolean {
+       const product = store.entities().find(p => p.normalizedName === slug);
+       if (product) {
+@@ -162,6 +172,11 @@ export const ecoStoreProductsStore = signalStore(
+       return false;
+     },
+
++    /**
++     * Loads a single product by its slug from the API and sets it as selected.
++     * @param { string } slug The slug of the product.
++     * @returns { Promise<EcoStoreProduct> } The loaded product.
++     */
+     async loadProductBySlug(
+       slug: EcoStoreProductWithTranslatedText['categorySlug']
+     ): Promise<EcoStoreProduct> {
+diff --git a/libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.html b/libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.html
+index 5c8189d4..d3000180 100644
+--- a/libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.html
++++ b/libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.html
+@@ -1,37 +1,36 @@
+-<div class="px-4 py-8" role="region">
+-  <!-- Header Section -->
+-  <div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row">
+-    <div class="flex items-center justify-start gap-4">
+-      <mat-icon
+-        class="scale-150!"
+-        [attr.aria-label]="'common.a11y.categoryIcon' | translate: { category: category()?.name }">
+-        {{ category()?.icon }}
+-      </mat-icon>
+-      <h2
+-        class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl"
+-        [attr.aria-label]="category()?.name">
+-        {{ category()?.name }}
+-      </h2>
+-      <span class="text-md font-medium text-neutral-500"
+-        >({{ 'common.a11y.productsCount' | translate: { count: productsStore.count() } }})</span
+-      >
+-    </div>
+-
+-    <plastik-sort-selector
+-      class="self-end"
+-      [class.pointer-events-none]="productsStore.isLoading()"
+-      [class.opacity-60]="productsStore.isLoading()"
+-      [options]="productsStore.sortOptions()"
+-      [currentSort]="productsStore.sort()"
+-      [translationPrefix]="'products.filter.sort'"
+-      (sortChange)="sortProducts($event)"></plastik-sort-selector>
++<div class="mb-8 flex flex-col justify-between gap-4 sm:flex-row">
++  <div class="flex items-center justify-start gap-4">
++    <mat-icon
++      class="scale-150!"
++      [attr.aria-label]="'common.a11y.categoryIcon' | translate: { category: category()?.name }">
++      {{ category()?.icon }}
++    </mat-icon>
++    <h2
++      class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl"
++      [attr.aria-label]="category()?.name">
++      {{ category()?.name }}
++    </h2>
++    <span class="text-md font-medium text-neutral-500"
++      >({{ 'common.a11y.productsCount' | translate: { count: productsStore.count() } }})</span
++    >
+   </div>
+
+-  <!-- Products Grid -->
+-  <section class="products-grid" [attr.aria-label]="'common.a11y.productList' | translate">
++  <plastik-sort-selector
++    class="self-end"
++    [class.pointer-events-none]="productsStore.isLoading()"
++    [class.opacity-60]="productsStore.isLoading()"
++    [options]="productsStore.sortOptions()"
++    [currentSort]="productsStore.sort()"
++    [translationPrefix]="'products.filter.sort'"
++    (sortChange)="sortProducts($event)"></plastik-sort-selector>
++</div>
++
++<!-- Products Grid -->
++<section [attr.aria-label]="'common.a11y.productList' | translate">
++  <ul class="products-grid">
+     @if (productsStore.isLoading()) {
+       @for (i of skeletonItems(); track $index) {
+-        <div
++        <li
+           aria-hidden="true"
+           class="flex h-full animate-pulse flex-col overflow-hidden rounded-[16px] border border-neutral-200 bg-neutral-50 p-2 shadow-sm">
+           <!-- Image block -->
+@@ -44,32 +43,34 @@
+           <div class="mb-4 h-8 w-5/6 rounded-xl bg-neutral-200"></div>
+           <div class="mb-6 h-7 w-4/6 rounded-xl bg-neutral-200"></div>
+           <div class="h-12 w-full rounded-xl bg-neutral-200"></div>
+-        </div>
++        </li>
+       }
+     } @else {
+       @for (item of productsStore.productsWithTranslatedText(); track item.id; let i = $index) {
+-        <eco-store-product-card
+-          [product]="item"
+-          [quantity]="cartStore.getItemCount(item.id)()"
+-          [isFirst]="i < 6"
+-          [isOpen]="tenantStore.isStoreOpen()"
+-          (addToCart)="addToCart($event)"
+-          (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
++        <li class="list-none">
++          <eco-store-product-card
++            [product]="item"
++            [quantity]="cartStore.getItemCount(item.id)()"
++            [isFirst]="i < 6"
++            [isOpen]="tenantStore.isStoreOpen()"
++            (addToCart)="addToCart($event)"
++            (toggleFavorite)="toggleFavorite($event)"></eco-store-product-card>
++        </li>
+       }
+     }
+-  </section>
++  </ul>
++</section>
+
+-  @if (!productsStore.isLoading()) {
+-    @defer (on viewport; prefetch on idle) {
+-      <plastik-pagination
+-        class="mt-6"
+-        plastikPocketbasePaginationNavigation
+-        [pageSize]="productsStore.getPagination().perPage"
+-        [pageIndex]="productsStore.getPagination().page"
+-        [pageSizeOptions]="productsStore.paginationSizeOptions()"
+-        [count]="productsStore.count()" />
+-    } @placeholder {
+-      <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
+-    }
++@if (!productsStore.isLoading()) {
++  @defer (on viewport; prefetch on idle) {
++    <plastik-pagination
++      class="mt-6"
++      plastikPocketbasePaginationNavigation
++      [pageSize]="productsStore.getPagination().perPage"
++      [pageIndex]="productsStore.getPagination().page"
++      [pageSizeOptions]="productsStore.paginationSizeOptions()"
++      [count]="productsStore.count()" />
++  } @placeholder {
++    <div aria-hidden="true" class="mt-6 h-12 w-full animate-pulse rounded bg-neutral-50"></div>
+   }
+-</div>
++}
+diff --git a/libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.ts b/libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.ts
+index aa0bbe18..d8b2c2a5 100644
+--- a/libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.ts
++++ b/libs/eco-store/products/feature/list/src/lib/eco-store-products-feature.component.ts
+@@ -32,14 +32,20 @@ import { distinctUntilChanged, map } from 'rxjs';
+   ],
+   templateUrl: './eco-store-products-feature.component.html',
+   styleUrl: './eco-store-products-feature.component.scss',
++  host: {
++    role: 'region',
++    class: 'flex flex-1 flex-col px-4 py-8',
++    '[attr.aria-busy]': 'productsStore.isLoading()',
++    '[attr.inert]': 'productsStore.isLoading()',
++  },
+   changeDetection: ChangeDetectionStrategy.OnPush,
+ })
+ export default class EcoStoreProductsFeatureComponent {
+-  protected productsStore = inject(ecoStoreProductsStore);
+-  protected activityStore = inject(activityStore);
+-  protected cartStore = inject(ecoStoreCartStore);
+-  protected tenantStore = inject(ecoStoreTenantStore);
+-  protected viewTransitionService = inject(ViewTransitionService);
++  protected readonly productsStore = inject(ecoStoreProductsStore);
++  protected readonly activityStore = inject(activityStore);
++  protected readonly cartStore = inject(ecoStoreCartStore);
++  protected readonly tenantStore = inject(ecoStoreTenantStore);
++  protected readonly viewTransitionService = inject(ViewTransitionService);
+   readonly #route = inject(ActivatedRoute);
+   readonly #router = inject(Router);
+   readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);
+@@ -68,6 +74,7 @@ export default class EcoStoreProductsFeatureComponent {
+     },
+   });
+
++  /** The current category slug derived from route parameters. */
+   readonly categorySlug = toSignal<string | null>(
+     this.#route.paramMap.pipe(
+       map(params => params.get('category')),
+@@ -75,20 +82,33 @@ export default class EcoStoreProductsFeatureComponent {
+     )
+   );
+
++  /** The current category information including translated name and icon. */
+   readonly category = computed<(Pick<ProductCategory, 'icon'> & { name: string }) | null>(() => {
+     const slug = this.categorySlug() ?? null;
+     return this.#categoriesStore.getCategoryBySlug(slug, 'products.all');
+   });
+
++  /**
++   * Adds a product to the cart with the specified quantity.
++   * @param { object } params The product and quantity to add.
++   */
+   addToCart({ product, quantity }: { product: EcoStoreProductWithCategoryName; quantity: number }) {
+     this.cartStore.addToCart(product, quantity);
+   }
+
++  /**
++   * Toggles the favorite status of a product.
++   * @param { string } id The ID of the product.
++   */
+   toggleFavorite(id: EcoStoreProductWithCategoryName['id']) {
+     // TODO: Implement toggle favorite functionality
+     void id;
+   }
+
++  /**
++   * Navigates to the product list with updated sorting parameters.
++   * @param { SortConfig } sort The new sort configuration.
++   */
+   sortProducts(sort: SortConfig) {
+     this.#router.navigate([], {
+       queryParams: { ...sort, page: 0 },
+diff --git a/libs/eco-store/shared/no-results/README.md b/libs/eco-store/shared/no-results/README.md
+index fb50f5e2..f2f18861 100644
+--- a/libs/eco-store/shared/no-results/README.md
++++ b/libs/eco-store/shared/no-results/README.md
+@@ -24,10 +24,10 @@ It features a centered illustration, a title, a description, and an optional act
+ ## Usage
+
+ ```html
+-<eco-store-shared-no-results [imgTitle]="'orders.list.empty' | translate">
+-  <div title>{{ 'orders.list.empty' | translate }}</div>
+-  <div description>{{ 'orders.list.emptyDescription' | translate }}</div>
+-  <button action mat-stroked-button routerLink="/botiga">
++<eco-store-shared-no-results [imgTitle]="'orders.list.emptyImage' | translate">
++  <div no-results-title>{{ 'orders.list.empty' | translate }}</div>
++  <div no-results-description>{{ 'orders.list.emptyDescription' | translate }}</div>
++  <button no-results-action mat-stroked-button routerLink="/botiga">
+     {{ 'orders.list.goToStore' | translate }}
+   </button>
+ </eco-store-shared-no-results>
+diff --git a/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.html b/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.html
+index 309055ea..49c0cc30 100644
+--- a/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.html
++++ b/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.html
+@@ -1,17 +1,15 @@
+-<div class="flex flex-1 flex-col items-center justify-center gap-8 text-center">
+-  <plastik-img-container
+-    class="object-contain mix-blend-darken"
+-    [dimensions]="{ width: 300, height: 369 }"
+-    [lcpImage]="true"
+-    [src]="'local/img/no-results.png'"
+-    [title]="imgTitle()" />
+-  <div class="flex flex-col items-center justify-center gap-1">
+-    <h3 class="text-xl font-bold text-neutral-500">
+-      <ng-content select="[title]" />
+-    </h3>
+-    <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
+-      <ng-content select="[description]" />
+-    </p>
+-  </div>
+-  <ng-content select="[action]" />
++<plastik-img-container
++  [imgClass]="'object-contain mix-blend-darken'"
++  [dimensions]="{ width: 300, height: 369 }"
++  [lcpImage]="true"
++  [src]="'local/img/no-results.png'"
++  [title]="imgTitle()" />
++<div class="flex flex-col items-center justify-center gap-1">
++  <h3 class="text-xl font-bold text-neutral-500">
++    <ng-content select="[no-results-title]" />
++  </h3>
++  <p class="max-w-3xl text-base text-neutral-500 md:max-w-3/5">
++    <ng-content select="[no-results-description]" />
++  </p>
+ </div>
++<ng-content select="[no-results-action]" />
+diff --git a/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.spec.ts b/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.spec.ts
+index e3022c8d..122c9762 100644
+--- a/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.spec.ts
++++ b/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.spec.ts
+@@ -8,8 +8,8 @@ import { Component } from '@angular/core';
+   imports: [EcoStoreSharedNoResultsComponent],
+   template: `
+     <eco-store-shared-no-results imgTitle="test title">
+-      <div title>Test Title</div>
+-      <div description>Test Description</div>
++      <div no-results-title>Test Title</div>
++      <div no-results-description>Test Description</div>
+     </eco-store-shared-no-results>
+   `,
+ })
+diff --git a/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.ts b/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.ts
+index 0b27cde9..8ed87a58 100644
+--- a/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.ts
++++ b/libs/eco-store/shared/no-results/src/lib/eco-store-shared-no-results/eco-store-shared-no-results.component.ts
+@@ -2,13 +2,21 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+ import { TranslateModule } from '@ngx-translate/core';
+ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+
++/**
++ * A reusable presentational component to display a consistent \"no results\" state.
++ * Features an illustration, a title, a description, and an optional action slot.
++ */
+ @Component({
+   selector: 'eco-store-shared-no-results',
+   imports: [SharedImgContainerComponent, TranslateModule],
+   templateUrl: './eco-store-shared-no-results.component.html',
+   styleUrl: './eco-store-shared-no-results.component.scss',
++  host: {
++    class: 'flex flex-1 flex-col items-center justify-center gap-8 text-center',
++  },
+   changeDetection: ChangeDetectionStrategy.OnPush,
+ })
+ export class EcoStoreSharedNoResultsComponent {
++  /** The descriptive text for the empty state illustration. Should be specific to the image content. */
+   imgTitle = input.required<string>();
+ }
+diff --git a/libs/llecoop/category/feature/detail/vite.config.mts b/libs/llecoop/category/feature/detail/vite.config.mts
+index 9f2d9ddc..0dd2f955 100644
+--- a/libs/llecoop/category/feature/detail/vite.config.mts
++++ b/libs/llecoop/category/feature/detail/vite.config.mts
+@@ -5,7 +5,16 @@ import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+ export default defineConfig(() => ({
+   root: __dirname,
+   cacheDir: '../../../../../node_modules/.vite/libs/llecoop/category/feature/detail',
+-  plugins: [angular(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
++  plugins: [
++    angular().filter((p: any) => {
++      if (Array.isArray(p)) {
++        return true;
++      }
++      return p.name !== 'analogjs-router-optimization';
++    }),
++    nxViteTsPaths(),
++    nxCopyAssetsPlugin(['*.md']),
++  ],
+   // Uncomment this if you are using workers.
+   // worker: {
+   //   plugins: () => [ nxViteTsPaths() ],
+diff --git a/libs/llecoop/profile/feature/vite.config.mts b/libs/llecoop/profile/feature/vite.config.mts
+index f3286973..1ba37759 100644
+--- a/libs/llecoop/profile/feature/vite.config.mts
++++ b/libs/llecoop/profile/feature/vite.config.mts
+@@ -5,7 +5,16 @@ import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+ export default defineConfig(() => ({
+   root: __dirname,
+   cacheDir: '../../../../node_modules/.vite/libs/llecoop/profile/feature',
+-  plugins: [angular(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
++  plugins: [
++    angular().filter((p: any) => {
++      if (Array.isArray(p)) {
++        return true;
++      }
++      return p.name !== 'analogjs-router-optimization';
++    }),
++    nxViteTsPaths(),
++    nxCopyAssetsPlugin(['*.md']),
++  ],
+   // Uncomment this if you are using workers.
+   // worker: {
+   //   plugins: () => [ nxViteTsPaths() ],
+diff --git a/libs/shared/form/ui/input-color-picker/vite.config.mts b/libs/shared/form/ui/input-color-picker/vite.config.mts
+index 0d78176b..fba42426 100644
+--- a/libs/shared/form/ui/input-color-picker/vite.config.mts
++++ b/libs/shared/form/ui/input-color-picker/vite.config.mts
+@@ -5,7 +5,16 @@ import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+ export default defineConfig(() => ({
+   root: __dirname,
+   cacheDir: '../../../../../node_modules/.vite/libs/shared/form/ui/input-color-picker',
+-  plugins: [angular(), nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
++  plugins: [
++    angular().filter((p: any) => {
++      if (Array.isArray(p)) {
++        return true;
++      }
++      return p.name !== 'analogjs-router-optimization';
++    }),
++    nxViteTsPaths(),
++    nxCopyAssetsPlugin(['*.md']),
++  ],
+   // Uncomment this if you are using workers.
+   // worker: {
+   //   plugins: () => [ nxViteTsPaths() ],
+diff --git a/libs/shared/img-container/ui/src/lib/shared-img-container.component.ts b/libs/shared/img-container/ui/src/lib/shared-img-container.component.ts
+index 5a685820..bad43576 100644
+--- a/libs/shared/img-container/ui/src/lib/shared-img-container.component.ts
++++ b/libs/shared/img-container/ui/src/lib/shared-img-container.component.ts
+@@ -32,6 +32,7 @@ export class SharedImgContainerComponent {
+   dimensions = input<ImageDimensions>();
+   quality = input<number>(80);
+   lcpImage = input<boolean>(false);
++  imgClass = input<string>('object-cover');
+   sizes = input<string>(
+     '(max-width: 639px) 100vw, (max-width: 767px) 50vw, (max-width: 1023px) 33vw, (max-width: 1279px) 25vw, 250px'
+   );
+diff --git a/libs/shared/storage/data-access/src/pocketbase/pocketbase-storage-loader.ts b/libs/shared/storage/data-access/src/pocketbase/pocketbase-storage-loader.ts
+index 7435573c..c5c6db77 100644
+--- a/libs/shared/storage/data-access/src/pocketbase/pocketbase-storage-loader.ts
++++ b/libs/shared/storage/data-access/src/pocketbase/pocketbase-storage-loader.ts
+@@ -10,9 +10,11 @@ export type PocketBaseImageLoaderConfig = ImageLoaderConfig & {
+   };
+ };
+ /**
+- * @description A custom image loader for pocketBase.
+- * @param { string } baseUrl The pocketbase storage base url.
+- * @returns { string } Returns the image url with thumbnail parameters.
++ * @description A custom image loader for PocketBase.
++ * Returns the source directly if it is an absolute URL, a local path, or starts with a slash.
++ * Otherwise, it returns the image URL with optimized thumbnail and format parameters.
++ * @param { string } baseUrl The PocketBase storage base URL.
++ * @returns { string } Returns the optimized image URL.
+  */
+ export function pocketBaseStorageLoader(baseUrl: string) {
+   return ({
