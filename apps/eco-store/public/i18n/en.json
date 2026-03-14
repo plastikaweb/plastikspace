@@ -390,6 +390,7 @@
       "list": "List of orders",
       "empty": "You don't have any orders yet.",
       "emptyWithStatus": "You don't have any orders with the status {status}.",
+      "emptyImage": "Empty state illustration",
       "emptyDescription": "It looks like you haven't made any purchases yet. Discover our ecological and local products!",
       "emptyDescriptionWithStatus": "Try changing your filters.",
       "goToStore": "Go to store"

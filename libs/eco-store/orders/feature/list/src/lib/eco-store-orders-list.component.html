@@ -60,11 +60,12 @@
       <!-- Empty state -->
       @if (orders.length === 0) {
         <div class="empty-state flex flex-1 flex-col items-center justify-center gap-8 text-center">
-          <div class="flex items-center justify-center rounded-full bg-neutral-400 p-10">
-            <mat-icon class="empty-icon scale-300" aria-hidden="true"
-              >sentiment_very_dissatisfied</mat-icon
-            >
-          </div>
+          <plastik-img-container
+            class="object-contain mix-blend-darken"
+            [dimensions]="{ width: 300, height: 369 }"
+            [lcpImage]="true"
+            [src]="'local/img/no-results.png'"
+            [title]="'orders.list.emptyImage' | translate" />
 
           <div class="flex flex-col items-center justify-center gap-1">
             @let status = model().status;

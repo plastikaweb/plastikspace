@@ -20,6 +20,10 @@ export function pocketBaseStorageLoader(baseUrl: string) {
     loaderParams,
     width,
   }: PocketBaseImageLoaderConfig & { width?: number }): string => {
+    if (src.startsWith('/') || src.startsWith('local/') || src.startsWith('http')) {
+      return src;
+    }
+
     try {
       if (!src) throw new Error('src is required');
 

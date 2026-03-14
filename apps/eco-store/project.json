@@ -36,6 +36,11 @@
         "assets": [
           {
             "glob": "**/*",
+            "input": "apps/eco-store/public/img",
+            "output": "local/img"
+          },
+          {
+            "glob": "**/*",
             "input": "apps/eco-store/public"
           },
           {

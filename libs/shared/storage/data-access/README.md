@@ -132,6 +132,16 @@ The loader will transform the image path into a PocketBase URL with thumbnail pa
 - **baseUrl**: Your PocketBase instance URL (e.g., `https://your-pocketbase-url.com`)
 - **loaderParams**: Object containing `width`, `height`, `quality`, and `availableThumbs` for thumbnail generation. `availableThumbs` allows passing a specific array of thumbnail sizes matching the PocketBase schema.
 
+#### Path Bypass
+
+The loader automatically bypasses technical processing and returns the source URL directly if it starts with:
+
+- `/` (absolute internal paths)
+- `local/` (aliased local assets)
+- `http` (external URLs)
+
+This is useful for static assets or images hosted outside of PocketBase storage.
+
 #### Error Handling
 
 The loader includes error handling and will log errors to the console while returning an empty string for invalid inputs.

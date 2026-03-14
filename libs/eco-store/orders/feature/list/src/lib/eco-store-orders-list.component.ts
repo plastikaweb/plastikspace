@@ -7,17 +7,18 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router, RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { ORDER_STATUS_LABEL_MAP } from '@plastik/eco-store/entities';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { SelectWithIconsFormlyModule } from '@plastik/shared/form/select-with-icons';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
 import {
   EcoStoreOrdersFilterData,
   ecoStoreOrdersFilterFormConfig,
 } from './eco-store-orders-filter-form.config';
 import { OrderCardComponent } from './order-card/order-card.component';
-import { ORDER_STATUS_LABEL_MAP } from '@plastik/eco-store/entities';
 
 @Component({
   selector: 'eco-store-orders-list',
@@ -35,6 +36,7 @@ import { ORDER_STATUS_LABEL_MAP } from '@plastik/eco-store/entities';
     TranslatePipe,
     SharedFormFeatureModule,
     SelectWithIconsFormlyModule,
+    SharedImgContainerComponent,
   ],
   templateUrl: './eco-store-orders-list.component.html',
   styleUrl: './eco-store-orders-list.component.scss',
