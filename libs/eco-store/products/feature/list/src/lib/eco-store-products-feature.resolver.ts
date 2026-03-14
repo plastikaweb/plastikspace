@@ -18,7 +18,6 @@ export const ecoStoreProductsResolver: ResolveFn<Observable<boolean>> = (
   // Start products loading immediately
   productStore.setParams({
     ...queryParams,
-    categorySlug,
     ...(categoryObj ? { category: categoryObj.category } : {}),
   });
 

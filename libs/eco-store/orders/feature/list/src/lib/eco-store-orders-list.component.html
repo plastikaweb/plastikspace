@@ -17,7 +17,11 @@
 
   @let orders = ordersStore.entities();
 
-  <mat-card appearance="outlined" class="mb-6 px-4 py-2">
+  <mat-card
+    appearance="outlined"
+    class="mb-6 px-4 py-2"
+    [class.pointer-events-none]="ordersStore.isLoading()"
+    [class.opacity-60]="ordersStore.isLoading()">
     <plastik-shared-form-feature
       [fields]="formConfig.getConfig()"
       [model]="model()"

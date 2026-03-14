@@ -23,7 +23,6 @@ import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 
 export interface ProductsPocketBaseFilter extends BasePocketBaseEntityFilter {
   category: IdType<ProductCategory> | null;
-  categorySlug: string | null;
 }
 
 export interface ProductsPocketBaseGetListState extends PocketBaseGetListState {
@@ -44,7 +43,6 @@ export const ecoStoreProductsStore = signalStore(
       },
       filter: {
         category: null,
-        categorySlug: null,
       },
       sortOptions: {
         ...initialGetListState().sortOptions,

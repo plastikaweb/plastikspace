@@ -14,12 +14,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Synchronized Angular package versions to 21.1.2 to resolve compiler mismatch in CI ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
 - Optimized image loading in order views using `SharedImgContainerComponent` ([#86c8uj73e](https://app.clickup.com/t/86c8uj73e))
 - Exposed local assets under `local/img` via `project.json` and updated storage loader to support path bypass ([#86c8uj73e](https://app.clickup.com/t/86c8uj73e))
+- Improved product list loading experience with UI indicators and refined pagination logic ([#86c8ujubv](https://app.clickup.com/t/86c8ujubv))
 
 ### Fixed
 
 - Resolved missing i18n keys for orders empty state illustration ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
 - Corrected attribute order for `NgOptimizedImage` compliance ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
 - Reverted GitHub Actions to stable versions for better reliability ([#86c8tqjma](https://app.clickup.com/t/86c8tqjma))
+- Resolved category routing issue by removing redundant slug from product list resolver ([#86c8ujubv](https://app.clickup.com/t/86c8ujubv))
 
 ## [2026-03-13] - Order Filtering and Shared UI Components
 
