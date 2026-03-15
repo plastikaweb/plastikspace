@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-15] - UI Polish, Accessibility Hardening and Impeccable Skills Application
+
+### Added
+
+- Implemented hover-triggered layered shadows and precision timing transitions for product cards to enhance visual feedback and depth ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+- Added mock data resilience (tags, ratings) for missing backend fields in product detail views to ensure a polished UI regardless of data availability ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+
+### Changed
+
+- Refactored `SharedImgContainerComponent` to use CSS `aspect-ratio` more efficiently by removing redundant explicit width/height signals and host bindings, improving layout flexibility ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+- Standardized `SharedImgContainerComponent` usage across the application, moving from individual dimensions to a unified `dimensions` object ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+- Improved accessibility in the orders list by ensuring the `inert` attribute is correctly toggled using a boolean-to-attribute mapping during loading states ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+- Refined cart confirmation layout by replacing Material cards with semantically lighter structures and optimizing spacing for better visual hierarchy ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+- Polished product detail view with improved spacing, better alignment of favorite buttons, and layout stability enhancements ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+- Updated `SharedImgContainerComponent` documentation and usage examples to reflect the new API and standalone-first patterns ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+
+### Fixed
+
+- Fixed binding issue with `inert` attribute that caused TypeScript errors in strict template checking ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+- Corrected inconsistent spacing and shadow application in product list and detail views ([#86c8uu1w3](https://app.clickup.com/t/86c8uu1w3))
+
 ## [2026-03-14] - CI Fixes, UI Image Optimization and Accessibility Enhancements
 
 ### Added

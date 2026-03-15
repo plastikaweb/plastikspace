@@ -36,7 +36,7 @@ import { distinctUntilChanged, map } from 'rxjs';
     role: 'region',
     class: 'flex flex-1 flex-col px-4 py-8',
     '[attr.aria-busy]': 'productsStore.isLoading()',
-    '[attr.inert]': 'productsStore.isLoading()',
+    '[attr.inert]': 'productsStore.isLoading() ? "" : null',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

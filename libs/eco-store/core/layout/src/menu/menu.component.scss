@@ -1,20 +1,54 @@
 @use '@angular/material' as mat;
 
 .active-menu-item {
-  @include mat.toolbar-overrides(
-    (
-      container-text-color: var(--primary-600),
-    )
-  );
-
   @include mat.button-overrides(
     (
       text-label-text-weight: 800,
+      text-label-text-color: var(--primary-600),
+      text-state-layer-color: var(--primary-100),
+    )
+  );
+
+  /* Polish: Add a subtle organic underline for the active link */
+  a::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 12px;
+    right: 12px;
+    height: 2px;
+    background-color: var(--primary-400);
+    border-radius: 99px;
+    opacity: 0.6;
+  }
+}
+
+.user-pill {
+  @include mat.button-overrides(
+    (
+      text-state-layer-color: var(--primary-100),
+    )
+  );
+}
+
+.favorite-icon-button {
+  @include mat.icon-button-overrides(
+    (
+      icon-color: var(--tertiary-500),
+      state-layer-color: var(--tertiary-100),
     )
   );
 }
 
 .cart-button {
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--primary-600),
+      filled-label-text-color: var(--primary-50),
+      filled-state-layer-color: var(--white),
+    )
+  );
+
   @include mat.icon-overrides(
     (
       color: var(--primary-50),
@@ -26,7 +60,7 @@
       container-size: 1.5rem,
       text-size: 0.85rem,
       line-height: 1.5rem,
-      text-color: var(--primary-50),
+      text-color: var(--white),
       background-color: var(--tertiary-500),
     )
   );

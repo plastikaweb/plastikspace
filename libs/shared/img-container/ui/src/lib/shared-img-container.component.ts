@@ -21,8 +21,6 @@ export type ImageDimensions = { width: number; height: number } | undefined;
   host: {
     class: 'relative block overflow-hidden',
     '[style.aspect-ratio]': 'aspectRatio()',
-    '[style.width.px]': 'width()',
-    '[style.height.px]': 'height()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -44,17 +42,6 @@ export class SharedImgContainerComponent {
       return `${dims.width} / ${dims.height}`;
     }
     return 'auto';
-  });
-
-  readonly width = computed(() => {
-    // Only set explicit width if it's fixed (not fill)
-    // In fill mode we usually want it to take container space,
-    // but aspect-ratio will handle the height.
-    return undefined;
-  });
-
-  readonly height = computed(() => {
-    return undefined;
   });
 
   readonly computedSrcset = computed(() =>

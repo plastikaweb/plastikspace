@@ -73,8 +73,8 @@
       "password": "Contrasenya",
       "rememberMe": "Recorda''m",
       "recoverAccess": "Has oblidat la contrasenya?",
-      "newUserQuestion": "Si ets soci, pots registrar-te aquí",
-      "createAccount": "Crear compte",
+      "newUserQuestion": "Encara no ets soci?",
+      "createAccount": "Si ets soci de la cooperativa, registra''t aquí",
       "submit": "Iniciar sessió",
       "termsPrivacy": "En continuar, acceptes els nostres Termes i Política de Privadesa."
     },
@@ -185,10 +185,10 @@
       "increment": "Augmentar"
     },
     "modified": {
-      "title": "Producte modificat",
-      "description": "Has modificat la quantitat del producte però no l''has afegit a la cistella",
-      "cancel": "Tornar al producte",
-      "leave": "No vull afegir-lo"
+      "title": "Canvis sense guardar",
+      "description": "Has canviat la quantitat però no l'has actualitzat al teu cistell. Vols quedar-te i guardar els canvis?",
+      "cancel": "Quedar-se i guardar",
+      "leave": "Sortir sense guardar"
     },
     "unit": {
       "price": {
@@ -247,17 +247,17 @@
         "title": "Lliurament",
         "subtitle": "Tria si vols rebre o recollir la teva comanda.",
         "unavailable": {
-          "title": "Estem preparant els últims detalls",
+          "title": "Gairebé llest! Estem ultimant els detalls",
           "description": {
-            "part1": "Aquesta botiga eco està acabant de configurar les seves",
+            "part1": "Estem acabant de configurar les nostres",
             "part2": "rutes de lliurament",
             "part3": "i franges horàries per oferir-te el millor servei possible."
           },
           "info": {
-            "title": "QUÈ POTS FER ARA?",
-            "item1": "Pots seguir omplint el teu cistell amb els teus productes preferits.",
-            "item2": "La teva selecció es guardarà per quan el checkout estigui actiu.",
-            "item3": "Pots tancar la sessió i tornar més tard sense perdre la tria."
+            "title": "QUÈ POTS FER MENTRESTANT?",
+            "item1": "Pots seguir afegint productes al teu cistell.",
+            "item2": "Guardarem la teva tria fins que el procés de pagament estigui actiu.",
+            "item3": "Pots tancar la sessió tranquil·lament; el teu cistell t'esperarà quan tornis."
           },
           "actions": {
             "goToShop": "Tornar a la botiga"
@@ -369,8 +369,8 @@
       "modifyDelivery": "Modificar lliurament",
       "notes": "Notes per a la preparació o lliurament (Opcional)",
       "notesPlaceholder": "Ex: si tinc algun problema te trucaré abans.",
-      "paymentNotice": "informació sobre el pagament",
-      "paymentNoticeDescription": "Com que treballem amb productes frescos de pes variable, el preu final pot variar lleugerament. El pagament es realitzarà en el moment de lliurament o recollida al preu exacte.",
+      "paymentNotice": "Sobre el pagament",
+      "paymentNoticeDescription": "Treballem amb productes frescos i locals on els pesos poden variar lleugerament. Pagareu el preu exacte basat en el pes final en el moment de lliurament o recollida.",
       "confirmOrder": "Confirmar Comanda"
     },
     "finish": {

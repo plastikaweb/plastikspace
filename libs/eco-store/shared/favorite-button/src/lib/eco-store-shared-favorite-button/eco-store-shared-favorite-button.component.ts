@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -19,9 +19,17 @@ export class EcoStoreSharedFavoriteButtonComponent {
   appearance = input<FavoriteButtonAppearance>('glass');
   toggleFavorite = output<Event>();
 
+  /** Signal to trigger the heart-beat animation. */
+  protected readonly isAnimating = signal(false);
+
   onToggle(event: Event) {
     event.preventDefault();
     event.stopPropagation();
+
+    // Trigger animation
+    this.isAnimating.set(true);
+    setTimeout(() => this.isAnimating.set(false), 450);
+
     this.toggleFavorite.emit(event);
   }
 }

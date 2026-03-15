@@ -43,7 +43,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     role: 'main',
     class: 'flex flex-1 flex-col px-4 py-8',
     '[attr.aria-busy]': 'ordersStore.isLoading()',
-    '[attr.inert]': 'ordersStore.isLoading()',
+    '[attr.inert]': 'ordersStore.isLoading() ? "" : null',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

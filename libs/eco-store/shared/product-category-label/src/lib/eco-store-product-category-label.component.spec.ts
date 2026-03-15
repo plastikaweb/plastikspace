@@ -29,12 +29,12 @@ describe('EcoStoreProductCategoryLabelComponent', () => {
   it('should apply the correct size classes', () => {
     fixture.componentRef.setInput('size', 'lg');
     fixture.detectChanges();
-    expect(component.containerClass()).toContain('gap-3');
+    expect(component.containerClass()).toContain('gap-xs');
     expect(component.dotClass()).toContain('h-3 w-3');
 
     fixture.componentRef.setInput('size', 'sm');
     fixture.detectChanges();
-    expect(component.containerClass()).toContain('gap-2');
-    expect(component.dotClass()).toContain('h-2 w-2');
+    expect(component.containerClass()).toContain('gap-tiny');
+    expect(component.dotClass()).toContain('h-1.5 w-1.5');
   });
 });

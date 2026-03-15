@@ -3,8 +3,12 @@
     class="col-span-1! space-y-10 md:col-span-2!"
     [class.pointer-events-none]="cartStore.isSyncing()"
     [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
-    <div class="flex items-center gap-4">
-      <mat-icon class="scale-150!" aria-hidden="true"> shopping_cart </mat-icon>
+    <div class="group flex cursor-default items-center gap-4">
+      <mat-icon
+        class="group-hover:hover-wiggle scale-150! transition-transform duration-300"
+        aria-hidden="true">
+        shopping_cart
+      </mat-icon>
       <h2 class="gap-md flex items-center text-2xl font-bold tracking-tight sm:text-3xl">
         {{ 'cart.steps.summary.title' | translate }}
       </h2>

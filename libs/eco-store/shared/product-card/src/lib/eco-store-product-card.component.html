@@ -4,16 +4,19 @@
   appearance="outlined"
   role="article"
   class="product-card make-it-focusable group hover:inset-shadow-2xl! hover:ring-primary-200! relative flex h-full w-full translate-y-0 translate-none flex-col justify-between overflow-hidden transition-all duration-100 hover:-translate-y-1 hover:shadow-xl! hover:ring-1!"
-  [class.pointer-events-none]="!productData.stock"
-  [routerLink]="
-    productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
-  "
-  [attr.aria-label]="productData ? productData.name : ('common.loading' | translate)">
+  [class.pointer-events-none]="!productData.stock">
   @if (productData) {
-    <!-- Favorite Button -->
+    <!-- Main link for SEO and native interaction -->
+    <a
+      class="absolute inset-0 z-10 outline-none"
+      [routerLink]="['/botiga', productData.categorySlug, productData.normalizedName]"
+      [attr.aria-label]="productData.name">
+    </a>
+
+    <!-- Favorite Button - Keep above the link -->
     @if (!minimalVersion()) {
       <eco-store-shared-favorite-button
-        class="absolute! top-3 right-3 z-100!"
+        class="absolute! top-3 right-3 z-20!"
         [isFavorite]="false"
         [ariaLabel]="'products.favorite' | translate: { value: productData.name }"
         (toggleFavorite)="onToggleFavorite($event)" />
@@ -52,9 +55,9 @@
         [unitBase]="productData.unitBase" />
     </mat-card-content>
 
-    <!-- Action Button Section -->
+    <!-- Action Button Section - Keep above the link -->
     @if (!minimalVersion()) {
-      <mat-card-actions class="mt-5">
+      <mat-card-actions class="relative z-20! mt-5">
         @if (isOpen()) {
           <eco-store-product-quantity
             [product]="productData"
@@ -64,9 +67,7 @@
           <button
             matButton="filled"
             class="w-full"
-            [routerLink]="
-              productData ? ['/botiga', productData.categorySlug, productData.normalizedName] : null
-            ">
+            [routerLink]="['/botiga', productData.categorySlug, productData.normalizedName]">
             {{ 'products.goToDetail' | translate }}
           </button>
         }

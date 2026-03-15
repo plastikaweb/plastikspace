@@ -44,14 +44,12 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container/ui';
 
 @Component({
   selector: 'app-user-profile',
-  standalone: true,
   imports: [SharedImgContainerComponent],
   template: `
     <div class="user-avatar">
       <plastik-img-container
         [src]="userImageUrl"
-        [width]="150"
-        [height]="150"
+        [dimensions]="{ width: 150, height: 150 }"
         [title]="'User Profile Picture'"
         [quality]="90"></plastik-img-container>
     </div>
@@ -72,11 +70,12 @@ export class UserProfileComponent {
 | :----------- | :---------------------------------- | :-------------------------------- | :-------------------------------------------------------------------- |
 | `src`        | `string \| null`                    | Required                          | The source URL of the image.                                          |
 | `title`      | `string`                            | Required                          | Alt text/Title for accessibility and SEO.                             |
-| `dimensions` | `{ width: number; height: number }` | `undefined`                       | Optional object to set width and height together.                     |
+| `dimensions` | `{ width: number; height: number }` | `undefined`                       | Object to set width and height together for aspect-ratio.             |
 | `quality`    | `number`                            | `80`                              | Image compression quality (1-100).                                    |
 | `lcpImage`   | `boolean`                           | `false`                           | Set to `true` if this image is the Largest Contentfull Paint element. |
+| `imgClass`   | `string`                            | `'object-cover'`                  | CSS classes to apply to the internal image element.                   |
 | `sizes`      | `string`                            | `'(max-width: 639px) 100vw, ...'` | Native `sizes` attribute for responsive images.                       |
-| `thumbSizes` | `number[]`                          | `[100, 300, 500, 750, 1600]`      | Array of available thumbnail width sizes to generate `srcset`.        |
+| `thumbSizes` | `number[]`                          | `[100, 300, 500, 750, 1600]`      | Array of width sizes to generate `srcset`.                            |
 
 ## View Transitions
 

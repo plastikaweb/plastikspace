@@ -552,3 +552,26 @@ Custom Signal Store features in `libs/shared/signal-state/` provide reusable pat
 - Use Material UI types from `@ngx-formly/material`
 - Form configs define fields declaratively with validators, expressions, and hooks
 - Example: `cart-shipping-form.config.ts` defines form structure for shipping forms
+
+## Design Context
+
+### Users
+
+Users and partners of local food cooperatives who want to browse proximity and ecological products, place orders, and consult their history.
+
+### Brand Personality
+
+**Nature, Lightness, Proximity.**
+The interface should evoke feelings of organic connection, kindness, and approachability.
+
+### Aesthetic Direction
+
+**Organic and Kind.**
+The visual tone should be soft, natural, and welcoming, avoiding harsh "tech" aesthetics or overly clinical minimalism.
+
+### Design Principles
+
+1.  **Earthy Elegance:** Use colors and spacing that feel natural, light, and unforced.
+2.  **Gentle Interactions:** Animations and micro-interactions should be smooth and subtle, not jarring or aggressive.
+3.  **Clear Typographic Hierarchy:** Ensure legibility to respect a diverse user base, prioritizing accessibility without sacrificing the "kind" aesthetic.
+4.  **Emphasize Proximity:** Design choices should reduce friction, making the process of ordering local food feel intuitive and neighborly.
