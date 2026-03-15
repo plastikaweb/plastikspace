@@ -73,8 +73,8 @@
       "password": "Password",
       "rememberMe": "Remember me",
       "recoverAccess": "Forgot password?",
-      "newUserQuestion": "Member registration",
-      "createAccount": "If you are a member, you can register here",
+      "newUserQuestion": "Not a member yet?",
+      "createAccount": "If you are a member of the cooperative, register here",
       "submit": "Login",
       "termsPrivacy": "By continuing, you agree to our Terms and Privacy Policy."
     },
@@ -185,10 +185,10 @@
       "increment": "Increase"
     },
     "modified": {
-      "title": "Product modified",
-      "description": "You modified the product quantity but didn''t add it to the cart",
-      "cancel": "Back to product",
-      "leave": "Don''t add it"
+      "title": "Unsaved changes",
+      "description": "You changed the quantity but didn't update your cart. Would you like to stay and save them?",
+      "cancel": "Stay and save",
+      "leave": "Leave without saving"
     },
     "unit": {
       "price": {
@@ -247,17 +247,17 @@
         "title": "Delivery",
         "subtitle": "Choose if you would like to receive or pick up your order.",
         "unavailable": {
-          "title": "We''re preparing the final details",
+          "title": "Almost ready! Finalizing delivery details",
           "description": {
-            "part1": "This eco store is finishing configuring its",
+            "part1": "We're currently setting up our",
             "part2": "delivery routes",
-            "part3": "and time slots to offer you the best possible service."
+            "part3": "and time slots to ensure you get the best service possible."
           },
           "info": {
-            "title": "WHAT CAN YOU DO NOW?",
-            "item1": "You can continue filling your cart with your favorite products.",
-            "item2": "Your selection will be saved for when checkout is active.",
-            "item3": "You can log out and come back later without losing your selection."
+            "title": "WHAT CAN YOU DO IN THE MEANTIME?",
+            "item1": "Feel free to continue adding items to your cart.",
+            "item2": "We'll save your selection until checkout is available.",
+            "item3": "You can safely log out; your basket will be waiting for you when you return."
           },
           "actions": {
             "goToShop": "Go back to shop"
@@ -369,8 +369,8 @@
       "modifyDelivery": "Modify delivery",
       "notes": "Notes for preparation or delivery (Optional)",
       "notesPlaceholder": "E.g.: If I have any problem I''ll call you before.",
-      "paymentNotice": "Information about payment",
-      "paymentNoticeDescription": "Since we work with fresh produce with variable weight, the final price may vary slightly. Payment will be processed at the time of delivery or pickup at the exact price.",
+      "paymentNotice": "About your payment",
+      "paymentNoticeDescription": "We work with fresh, local produce where weights can vary slightly. You'll pay the exact price based on final weight at the time of delivery or pickup.",
       "confirmOrder": "Confirm Order"
     },
     "finish": {

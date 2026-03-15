@@ -134,7 +134,8 @@ export default class EcoStoreProductFeatureComponent {
   readonly isFavorite = signal(false);
   readonly activeThumbnailIndex = signal(0);
 
-  // Mocked data as requested for missing fields
+  // Hardened mock data for missing backend fields.
+  // TODO: Replace with real data once available in EcoStoreProduct entity.
   readonly productTags = [
     { label: 'products.tag.eco', class: 'bg-green-100/60!', icon: 'eco' },
     {
@@ -152,6 +153,7 @@ export default class EcoStoreProductFeatureComponent {
     return type !== 'unit' && !type.startsWith('unitWithFixed');
   });
 
+  // Default rating for resilient UI display when data is missing
   readonly rating = {
     score: 4.8,
     count: 124,

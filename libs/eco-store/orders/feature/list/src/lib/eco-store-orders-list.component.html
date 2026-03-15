@@ -75,36 +75,38 @@
       <!-- Empty state -->
       @if (orders.length === 0) {
         @let status = model().status;
-        @if (status) {
-          <eco-store-shared-no-results
-            class="empty-state my-6"
-            [imgTitle]="'orders.list.emptyImage' | translate">
-            <div no-results-title>
-              {{
-                'orders.list.emptyWithStatus'
-                  | translate: { status: (orderStatusLabelMap[status] | translate) }
-              }}
-            </div>
+        <li class="list-none">
+          @if (status) {
+            <eco-store-shared-no-results
+              class="empty-state my-6"
+              [imgTitle]="'orders.list.emptyImage' | translate">
+              <div no-results-title>
+                {{
+                  'orders.list.emptyWithStatus'
+                    | translate: { status: (orderStatusLabelMap[status] | translate) }
+                }}
+              </div>
 
-            <div no-results-description>
-              {{ 'orders.list.emptyDescriptionWithStatus' | translate }}
-            </div>
-          </eco-store-shared-no-results>
-        } @else {
-          <eco-store-shared-no-results
-            class="empty-state"
-            [imgTitle]="'orders.list.emptyImage' | translate">
-            <div no-results-title>
-              {{ 'orders.list.empty' | translate }}
-            </div>
-            <div no-results-description>
-              {{ 'orders.list.emptyDescription' | translate }}
-            </div>
-            <button no-results-action mat-stroked-button routerLink="/botiga">
-              {{ 'orders.list.goToStore' | translate }}
-            </button>
-          </eco-store-shared-no-results>
-        }
+              <div no-results-description>
+                {{ 'orders.list.emptyDescriptionWithStatus' | translate }}
+              </div>
+            </eco-store-shared-no-results>
+          } @else {
+            <eco-store-shared-no-results
+              class="empty-state"
+              [imgTitle]="'orders.list.emptyImage' | translate">
+              <div no-results-title>
+                {{ 'orders.list.empty' | translate }}
+              </div>
+              <div no-results-description>
+                {{ 'orders.list.emptyDescription' | translate }}
+              </div>
+              <button no-results-action mat-stroked-button routerLink="/botiga">
+                {{ 'orders.list.goToStore' | translate }}
+              </button>
+            </eco-store-shared-no-results>
+          }
+        </li>
       } @else {
         <!-- Order list -->
         @for (order of orders; track order.id) {

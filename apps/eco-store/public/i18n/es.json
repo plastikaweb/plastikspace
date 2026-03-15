@@ -1,6 +1,6 @@
 {
   "common": {
-    "loading": "Cargando datos...",
+    "loading": "Cargando dades...",
     "close": "Cerrar",
     "edit": "Editar",
     "add": "Añadir",
@@ -38,7 +38,7 @@
       "skipToContent": "Saltar al contenido principal",
       "loading": "Cargando datos",
       "mainNavigation": "Navegación principal",
-      "userActions": "Accions del usuario",
+      "userActions": "Acciones del usuario",
       "categoriesNavigation": "Navegación de categorías",
       "productCategories": "Categorías de productos",
       "productQuantity": "Cantidad de {product} - {quantity}",
@@ -73,8 +73,8 @@
       "password": "Contraseña",
       "rememberMe": "Recordar sesión",
       "recoverAccess": "¿Has olvidado la contraseña?",
-      "newUserQuestion": "Registro de socios",
-      "createAccount": "Si eres socio, puedes crear un cuenta aquí",
+      "newUserQuestion": "¿Aún no eres socio?",
+      "createAccount": "Si eres socio de la cooperativa, regístrate aquí",
       "submit": "Iniciar sesión",
       "termsPrivacy": "Al continuar, aceptas nuestros Términos y Política de Privacidad."
     },
@@ -102,7 +102,7 @@
       "closedOpensAt": "Cerrado. Abre el {date} a las {time}",
       "closedMessage": "La tienda está cerrada. No puedes modificar tu carrito.",
       "statusBanner": {
-        "closedTitle": "Tienda en modo consulta",
+        "closedTitle": "Tienda en mode consulta",
         "closedDescription": "Los pedidos abren el día {date} a las {time}",
         "openingSoonTitle": "¡Preparad las cestas!",
         "openingSoonDescription": "Estamos a punto de abrir la ventana de pedidos.",
@@ -138,7 +138,7 @@
     "provider": "Productor",
     "technicalInfo": "Detalles y Especificaciones",
     "opinions": {
-      "title": "Opiniones",
+      "title": "Opinions",
       "write": "Escribir una opinión",
       "user": "Usuario eco-consciente",
       "date": "Hace 2 días",
@@ -185,10 +185,10 @@
       "increment": "Aumentar"
     },
     "modified": {
-      "title": "Producto modificado",
-      "description": "Has modificado la cantidad del producto pero no lo has agregado al carrito",
-      "cancel": "Volver al producto",
-      "leave": "No quiero agregarlo"
+      "title": "Cambios sin guardar",
+      "description": "Has cambiado la cantidad pero no la has actualizado en tu carrito. ¿Quieres quedarte y guardar los cambios?",
+      "cancel": "Quedarse y guardar",
+      "leave": "Salir sin guardar"
     },
     "unit": {
       "price": {
@@ -247,17 +247,17 @@
         "title": "Entrega",
         "subtitle": "Elige si quieres recibir o recoger tu pedido.",
         "unavailable": {
-          "title": "Estamos preparando los últimos detalles",
+          "title": "¡Casi listo! Estamos ultimando los detalles",
           "description": {
-            "part1": "Esta tienda eco está terminando de configurar sus",
+            "part1": "Estamos terminando de configurar nuestras",
             "part2": "rutas de entrega",
             "part3": "y franjas horarias para ofrecerte el mejor servicio posible."
           },
           "info": {
-            "title": "¿QUÉ PUEDES HACER AHORA?",
-            "item1": "Puedes seguir llenando tu carrito con tus productos preferidos.",
-            "item2": "Tu selección se guardará para cuando el checkout esté activo.",
-            "item3": "Puedes cerrar la sesión y volver más tarde sin perder tu selección."
+            "title": "¿QUÉ PUEDES HACER MIENTRAS TANTO?",
+            "item1": "Puedes seguir añadiendo productos a tu carrito.",
+            "item2": "Guardaremos tu selección hasta que el proceso de pago esté activo.",
+            "item3": "Puedes cerrar la sesión tranquilamente; tu cesta te esperará cuando vuelvas."
           },
           "actions": {
             "goToShop": "Volver a la tienda"
@@ -364,13 +364,13 @@
       "deliverySummary": "Resumen de entrega",
       "deliveryMethod": "Tipo",
       "deliveryTimeSlot": "Horario previsto",
-      "deliveryAddress": "Address",
+      "deliveryAddress": "Dirección",
       "modifyCart": "Modificar carrito",
       "modifyDelivery": "Modificar entrega",
       "notes": "Notas para la preparación o entrega (Opcional)",
       "notesPlaceholder": "Ej: Si tengo algún problema te llamo antes.",
-      "paymentNotice": "Información sobre el pago",
-      "paymentNoticeDescription": "Como trabajamos con productos frescos de peso variable, el precio final puede variar ligeramente. El pago se realizará en el momento de la entrega o recogida al precio exacto.",
+      "paymentNotice": "Sobre su pago",
+      "paymentNoticeDescription": "Trabajamos con productos frescos y locales donde los pesos pueden variar ligeramente. Pagará el precio exacto basado en el peso final en el momento de la entrega o recogida.",
       "confirmOrder": "Confirmar Pedido"
     },
     "finish": {
@@ -383,7 +383,7 @@
       "modifyReminder": "Si te has olvidado algo, no te preocupes: puedes hacer cambios desde tu perfil mientras el período de pedidos esté abierto.",
       "ordersHistory": "Historial de pedidos",
       "backToStore": "Volver a la tienda",
-      "ecoBadgeAlt": "Sello de producto local y de proximitat"
+      "ecoBadgeAlt": "Sello de producto local y de proximidad"
     }
   },
   "orders": {

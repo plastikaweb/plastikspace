@@ -48,28 +48,30 @@ export class EcoStoreProductPriceComponent {
   }
 
   protected unityTypeClass() {
+    // Polish: Use primary variant for secondary metadata
     return this.size() === 'detail'
-      ? 'text-lg font-medium text-primary-500'
-      : 'text-sm font-normal text-primary-500';
+      ? 'text-lg font-medium text-primary-400'
+      : 'text-sm font-normal text-primary-400';
   }
 
   protected priceContainerClass() {
     const base = 'flex items-baseline';
-    return this.size() === 'detail' ? `${base} gap-4 mb-4` : `${base} gap-1`;
+    return this.size() === 'detail' ? `${base} gap-4 mb-4` : `${base} gap-sub`;
   }
 
   protected priceClass() {
+    // Polish: Use system typography and color tokens
     switch (this.size()) {
       case 'detail':
-        return 'text-[clamp(2rem,4vw,3rem)] font-bold text-primary-600';
+        return 'text-display-medium font-bold text-primary-600!';
       case 'lg':
-        return 'text-[clamp(1.5rem,3vw,2rem)] font-bold text-primary-600';
+        return 'text-headline-large font-bold text-primary-600!';
       case 'sm':
-        return 'text-[clamp(1rem,3vw,1.5rem)] font-bold text-primary-600';
+        return 'text-title-medium font-bold text-primary-600!';
       case 'md':
-        return 'text-[clamp(1.2rem,3vw,1.7rem)] font-bold text-primary-600';
+        return 'text-headline-small font-bold text-primary-600!';
       default:
-        return 'text-[clamp(1.5rem,4vw,2rem)] font-extrabold text-primary-600';
+        return 'text-headline-medium font-extrabold text-primary-600!';
     }
   }
 

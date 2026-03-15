@@ -1,5 +1,3 @@
-@let width = dimensions()?.width;
-@let height = dimensions()?.height;
 @let src = this.src();
 
 <div
@@ -18,21 +16,35 @@
 </div>
 
 @if (src) {
-  @if (width && height) {
-    @if (lcpImage()) {
-      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: true }"></ng-container>
+  <!-- Polish: Use @for as a "key" to force re-render of NgOptimizedImage when dimensions change -->
+  @for (dim of [dimensions()]; track (dim?.width ?? 0) + '-' + (dim?.height ?? 0)) {
+    @let width = dim?.width;
+    @let height = dim?.height;
+
+    @if (width && height) {
+      @if (lcpImage()) {
+        <ng-container
+          *ngTemplateOutlet="
+            fixedImage;
+            context: { priority: true, w: width, h: height }
+          "></ng-container>
+      } @else {
+        <ng-container
+          *ngTemplateOutlet="
+            fixedImage;
+            context: { priority: false, w: width, h: height }
+          "></ng-container>
+      }
     } @else {
-      <ng-container *ngTemplateOutlet="fixedImage; context: { priority: false }"></ng-container>
-    }
-  } @else {
-    @if (lcpImage()) {
-      <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>
-    } @else {
-      <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>
+      @if (lcpImage()) {
+        <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>
+      } @else {
+        <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>
+      }
     }
   }
 
-  <ng-template #fixedImage let-priority="priority">
+  <ng-template #fixedImage let-priority="priority" let-w="w" let-h="h">
     <img
       class="object-cover transition-opacity duration-100"
       [class.opacity-0]="isLoading() && !lcpImage()"
@@ -40,8 +52,8 @@
       [priority]="priority"
       [attr.fetchpriority]="priority ? 'high' : null"
       [ngSrc]="src"
-      [width]="width"
-      [height]="height"
+      [width]="w"
+      [height]="h"
       [alt]="title()"
       [loaderParams]="{ quality: quality(), availableThumbs: thumbSizes() }"
       (load)="onImageLoad()"

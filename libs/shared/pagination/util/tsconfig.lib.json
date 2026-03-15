@@ -2,8 +2,11 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
+    "composite": true,
     "declaration": true,
-    "types": ["node"]
+    "declarationMap": true,
+    "inlineSources": true,
+    "types": []
   },
   "include": ["src/**/*.ts"],
   "exclude": [
@@ -21,12 +24,14 @@
     "src/**/*.spec.js",
     "src/**/*.test.jsx",
     "src/**/*.spec.jsx",
-    "src/test-setup.ts",
     "src/test-setup.ts"
   ],
   "references": [
     {
       "path": "../ui"
+    },
+    {
+      "path": "../../../core/entities"
     }
   ]
 }

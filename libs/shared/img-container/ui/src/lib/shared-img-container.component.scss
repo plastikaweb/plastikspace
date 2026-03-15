@@ -1,11 +1,23 @@
 @use '@angular/material' as mat;
 
 :host {
+  display: block;
+
+  img {
+    /* Polish: Use ease-out-quint for smoother image reveals and subtle scale */
+    transition:
+      opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+      filter 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
   .image-error {
     @include mat.icon-overrides(
       (
-        color: var(--neutral-200),
+        color: var(--neutral-400),
+        /* Polish: Better contrast for error icon */
       )
     );
+    background: linear-gradient(135deg, var(--neutral-50) 0%, var(--neutral-100) 100%);
   }
 }

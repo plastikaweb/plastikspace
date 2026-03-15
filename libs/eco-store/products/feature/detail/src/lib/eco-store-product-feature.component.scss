@@ -3,7 +3,7 @@
 
 :host {
   --min-col-width: 200px;
-  --product-gap: 1.5rem;
+  --product-gap: 2rem;
 
   .rating-stars {
     @include mat.icon-overrides(
@@ -16,19 +16,12 @@
   .metadata-icon {
     @include mat.icon-overrides(
       (
-        color: var(--tertiary-600),
+        color: var(--tertiary-500),
       )
     );
   }
 
-  .tech-info-icon {
-    @include mat.icon-overrides(
-      (
-        color: var(--tertiary-600),
-      )
-    );
-  }
-
+  .tech-info-icon,
   .tech-info-title {
     @include mat.icon-overrides(
       (
@@ -37,22 +30,31 @@
     );
   }
 
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
-    gap: var(--product-gap);
+  .prose {
+    line-height: 1.75;
+    color: var(--neutral-600);
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
   }
 
   /* Media Section Layout */
   .media-layout {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 0.5rem 1.25rem;
+    gap: 1.5rem;
+    /* Polish: More balanced gap */
 
     /* Tablet / Hybrid Layout (640px - 900px) */
     @media (min-width: theme(--breakpoint-sm)) and (max-width: theme(--breakpoint-md)) {
-      grid-template-columns: 100px 1fr;
+      grid-template-columns: 120px 1fr;
+      gap: 2rem;
     }
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
+    gap: var(--product-gap);
   }
 
   .media-main {
@@ -67,8 +69,9 @@
   .media-thumbnails {
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 1rem;
     order: 2;
+    padding: 0.5rem;
 
     /* Tablet / Hybrid Layout */
     @media (min-width: theme(--breakpoint-sm)) and (max-width: theme(--breakpoint-md)) {
@@ -77,9 +80,16 @@
     }
 
     > button {
+      /* Polish: Softer shadow for thumbnails */
       box-shadow:
-        inset 0 2px 1px rgba(255, 255, 255, 0.5),
-        /* top glow */ 0 2px 4px rgba(0, 0, 0, 0.12);
+        0 4px 6px -1px rgba(0, 0, 0, 0.05),
+        0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+
+      &:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      }
     }
   }
 }

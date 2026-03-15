@@ -1,11 +1,62 @@
+@use '@angular/material' as mat;
+
 :host {
   --min-col-width: 200px;
   --product-gap: 1.5rem;
+
+  /* Bolder: Hero Header Section */
+  .hero-header {
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--success-50) 100%);
+    border-radius: 2.5rem;
+    padding: 2rem 1.5rem;
+    margin-bottom: 3rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--primary-200);
+
+    /* Subtle organic pattern overlay */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      background-image: radial-gradient(var(--primary-500) 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .category-title {
+      font-size: clamp(1.5rem, 8vw, 2.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--primary-900);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .category-subtitle {
+      color: var(--primary-600);
+      font-weight: 500;
+      font-size: 1.1rem;
+    }
+  }
 
   .products-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
     gap: var(--product-gap);
+
+    /* Optimize rendering for off-screen items */
+    li {
+      content-visibility: auto;
+      contain-intrinsic-size: 400px;
+      /* Approximate height of a product card */
+    }
   }
 
   .eco-store-product-card-skeleton {

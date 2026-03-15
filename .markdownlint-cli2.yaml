@@ -37,6 +37,7 @@ ignores:
   - .yarn/**
   - .claude/**
   - .zed/**
+  - .zencoder/**
   - .dist/**
   - .opencode/**
   - .codex/**

@@ -22,6 +22,9 @@ import { EcoTenantLinkComponent } from '../tenant-link/tenant-link.component';
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  host: {
+    class: 'slide-in',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoHeaderComponent {
