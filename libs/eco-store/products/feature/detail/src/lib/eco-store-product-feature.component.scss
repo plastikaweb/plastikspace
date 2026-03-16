@@ -8,7 +8,7 @@
   .rating-stars {
     @include mat.icon-overrides(
       (
-        color: #bd5828,
+        color: var(--tertiary-600),
       )
     );
   }
@@ -16,7 +16,7 @@
   .metadata-icon {
     @include mat.icon-overrides(
       (
-        color: var(--tertiary-500),
+        color: var(--neutral-500),
       )
     );
   }
@@ -33,7 +33,7 @@
   .prose {
     line-height: 1.75;
     color: var(--neutral-600);
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     letter-spacing: -0.01em;
   }
 

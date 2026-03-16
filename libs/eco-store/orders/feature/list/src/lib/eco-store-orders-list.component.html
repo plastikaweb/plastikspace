@@ -1,17 +1,29 @@
-<div class="mb-8 flex flex-col justify-between gap-4" role="group">
-  <div class="flex items-center justify-start gap-4">
-    <mat-icon class="scale-150!" aria-hidden="true">receipt_long</mat-icon>
-    <div class="flex flex-col gap-1">
-      <h2
-        class="gap-md flex items-center text-2xl font-bold tracking-tight text-neutral-800 sm:text-3xl">
+<header role="presentation" class="hero-header reveal-up" style="--delay: 50ms">
+  <div
+    class="hero-content flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+    <div class="flex flex-col items-start gap-2">
+      <div class="category-subtitle flex items-center gap-2">
+        <mat-icon class="scale-90!" aria-hidden="true">receipt_long</mat-icon>
+        <span>
+          @if (ordersStore.isLoading()) {
+            {{ 'orders.list.loading' | translate }}
+          } @else {
+            {{ 'orders.list.loadedCount' | translate: { count: ordersStore.count() } }}
+          }
+        </span>
+      </div>
+      <h2 class="category-title font-bold">
         {{ 'orders.list.title' | translate }}
       </h2>
     </div>
   </div>
-  <p class="mt-1 text-base text-neutral-600">
+</header>
+
+@if (!ordersStore.isLoading()) {
+  <p class="mb-6 px-4 text-base text-neutral-600">
     {{ 'orders.list.description' | translate }}
   </p>
-</div>
+}
 
 <!-- Live region for announcing loading and data updates -->
 <div class="sr-only" aria-live="polite">

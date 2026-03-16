@@ -64,6 +64,10 @@ jobs:
           node-version: 22
           cache: 'yarn'
 
+      - name: Enable Corepack
+        if: steps.changes.outputs.has_changes == 'true'
+        run: corepack enable
+
       - name: Install dependencies
         if: steps.changes.outputs.has_changes == 'true'
         run: yarn install --immutable --network-timeout 1000000

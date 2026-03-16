@@ -6,6 +6,7 @@ on:
       - main
 
 env:
+  YARN_IMMUTABLE: true
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
@@ -20,6 +21,9 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '22'
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install dependencies
         run: yarn install --immutable --network-timeout 1000000

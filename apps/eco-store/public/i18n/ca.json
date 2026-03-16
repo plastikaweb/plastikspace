@@ -143,7 +143,7 @@
       "user": "Usuari eco-conscient",
       "date": "Fa 2 dies",
       "placeholder": "Molt bon producte, es nota la qualitat dels ingredients. L''envasament és impecable i el gust realment es nota que és ecològic.",
-      "count": "({count} valoracions)"
+      "count": "{count, plural, =0 {(sense valoracions)} one {(1 valoració)} other {(# valoracions)}}"
     },
     "goToDetail": "Veure detall",
     "favorite": "Afegir {value} a favorits",
@@ -247,14 +247,14 @@
         "title": "Lliurament",
         "subtitle": "Tria si vols rebre o recollir la teva comanda.",
         "unavailable": {
-          "title": "Gairebé llest! Estem ultimant els detalls",
+          "title": "Gairebé llest! Estem preparant l'enviament",
           "description": {
             "part1": "Estem acabant de configurar les nostres",
             "part2": "rutes de lliurament",
             "part3": "i franges horàries per oferir-te el millor servei possible."
           },
           "info": {
-            "title": "QUÈ POTS FER MENTRESTANT?",
+            "title": "Què pots fer mentrestant",
             "item1": "Pots seguir afegint productes al teu cistell.",
             "item2": "Guardarem la teva tria fins que el procés de pagament estigui actiu.",
             "item3": "Pots tancar la sessió tranquil·lament; el teu cistell t'esperarà quan tornis."
@@ -370,7 +370,7 @@
       "notes": "Notes per a la preparació o lliurament (Opcional)",
       "notesPlaceholder": "Ex: si tinc algun problema te trucaré abans.",
       "paymentNotice": "Sobre el pagament",
-      "paymentNoticeDescription": "Treballem amb productes frescos i locals on els pesos poden variar lleugerament. Pagareu el preu exacte basat en el pes final en el moment de lliurament o recollida.",
+      "paymentNoticeDescription": "Treballem amb productes frescos i locals on els pesos poden variar. Pagareu el preu exacte basat en el pes final en el moment de lliurament o recollida.",
       "confirmOrder": "Confirmar Comanda"
     },
     "finish": {

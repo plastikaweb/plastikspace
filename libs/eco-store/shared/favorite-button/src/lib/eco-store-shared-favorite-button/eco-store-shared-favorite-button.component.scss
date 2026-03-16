@@ -55,18 +55,17 @@
     &.is-favorite {
       @include mat.icon-button-overrides(
         (
-          icon-color: #f43f5e,
-          // text-rose-500 (more intense)
+          icon-color: var(--error-500),
         )
       );
 
       .mat-icon {
         transform: scale(1.1);
-        filter: drop-shadow(0 0 6px rgba(244, 63, 94, 0.4));
+        filter: drop-shadow(0 0 6px color-mix(in srgb, var(--error-500), transparent 60%));
       }
 
       &.appearance-glass {
-        background-color: rgba(255, 255, 255, 0.3);
+        background-color: color-mix(in srgb, var(--white), transparent 70%);
       }
     }
 
@@ -76,7 +75,7 @@
       &:not(.is-favorite) {
         @include mat.icon-overrides(
           (
-            color: #f43f5e,
+            color: var(--error-500),
           )
         );
       }

@@ -51,6 +51,7 @@ migrations.json
 pa11y-ci-report
 
 .yarn/*
+.yarn/install-state.gz
 
 # firebase
 **/firebase.ts

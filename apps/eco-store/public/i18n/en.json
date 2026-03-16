@@ -143,7 +143,7 @@
       "user": "Eco-conscious user",
       "date": "2 days ago",
       "placeholder": "Great product, ingredients quality is noticeable. Packaging is impeccable and the taste really shows it is ecological.",
-      "count": "({count} reviews)"
+      "count": "{count, plural, =0 {(no reviews)} one {(1 review)} other {(# reviews)}}"
     },
     "goToDetail": "View detail",
     "favorite": "Add {value} to favorites",
@@ -247,14 +247,14 @@
         "title": "Delivery",
         "subtitle": "Choose if you would like to receive or pick up your order.",
         "unavailable": {
-          "title": "Almost ready! Finalizing delivery details",
+          "title": "Almost ready! We're setting up delivery",
           "description": {
             "part1": "We're currently setting up our",
             "part2": "delivery routes",
             "part3": "and time slots to ensure you get the best service possible."
           },
           "info": {
-            "title": "WHAT CAN YOU DO IN THE MEANTIME?",
+            "title": "What to expect next",
             "item1": "Feel free to continue adding items to your cart.",
             "item2": "We'll save your selection until checkout is available.",
             "item3": "You can safely log out; your basket will be waiting for you when you return."
@@ -370,7 +370,7 @@
       "notes": "Notes for preparation or delivery (Optional)",
       "notesPlaceholder": "E.g.: If I have any problem I''ll call you before.",
       "paymentNotice": "About your payment",
-      "paymentNoticeDescription": "We work with fresh, local produce where weights can vary slightly. You'll pay the exact price based on final weight at the time of delivery or pickup.",
+      "paymentNoticeDescription": "We work with fresh, local produce where weights can vary. You'll be charged the exact price based on the final weight at delivery or pickup.",
       "confirmOrder": "Confirm Order"
     },
     "finish": {

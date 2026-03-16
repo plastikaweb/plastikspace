@@ -34,7 +34,6 @@ import { distinctUntilChanged, map } from 'rxjs';
   styleUrl: './eco-store-products-feature.component.scss',
   host: {
     role: 'region',
-    class: 'flex flex-1 flex-col px-4 py-8',
     '[attr.aria-busy]': 'productsStore.isLoading()',
     '[attr.inert]': 'productsStore.isLoading() ? "" : null',
   },

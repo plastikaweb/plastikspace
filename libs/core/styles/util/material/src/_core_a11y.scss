@@ -80,15 +80,15 @@
 
 body.is-keyboard-active {
   [disabled],
-    [readonly],
-    .mat-form-field-disabled,
-    .mat-form-field-disabled *,
-    /* Bloqueig per a qualsevol input que sigui readonly encara que no tingui disabled */
-    input[readonly],
-    textarea[readonly],
-    [tabindex="-1"],
-    [tabindex="-1"] *,
-    *:not(:focus-visible):not(.cdk-keyboard-focused):not(:has(:focus-visible)) {
+  [readonly],
+  .mat-form-field-disabled,
+  .mat-form-field-disabled *,
+  /* Block focus for input readonly even if it has disabled */
+  input[readonly],
+  textarea[readonly],
+  [tabindex="-1"],
+  [tabindex="-1"] *,
+  *:not(:focus-visible):not(.cdk-keyboard-focused):not(:has(:focus-visible)) {
     anchor-name: none !important;
   }
 }

@@ -143,7 +143,7 @@
       "user": "Usuario eco-consciente",
       "date": "Hace 2 días",
       "placeholder": "Muy buen producto, se nota la calidad de los ingredientes. El envasado es impecable y el sabor realmente se nota que es ecológico.",
-      "count": "({count} valoraciones)"
+      "count": "{count, plural, =0 {(sin valoraciones)} one {(1 valoración)} other {(# valoraciones)}}"
     },
     "goToDetail": "Ver detalle",
     "favorite": "Agregar {value} a favoritos",
@@ -247,14 +247,14 @@
         "title": "Entrega",
         "subtitle": "Elige si quieres recibir o recoger tu pedido.",
         "unavailable": {
-          "title": "¡Casi listo! Estamos ultimando los detalles",
+          "title": "¡Casi listo! Estamos preparando el envío",
           "description": {
             "part1": "Estamos terminando de configurar nuestras",
             "part2": "rutas de entrega",
             "part3": "y franjas horarias para ofrecerte el mejor servicio posible."
           },
           "info": {
-            "title": "¿QUÉ PUEDES HACER MIENTRAS TANTO?",
+            "title": "Qué puedes hacer mientras tanto",
             "item1": "Puedes seguir añadiendo productos a tu carrito.",
             "item2": "Guardaremos tu selección hasta que el proceso de pago esté activo.",
             "item3": "Puedes cerrar la sesión tranquilamente; tu cesta te esperará cuando vuelvas."
@@ -370,7 +370,7 @@
       "notes": "Notas para la preparación o entrega (Opcional)",
       "notesPlaceholder": "Ej: Si tengo algún problema te llamo antes.",
       "paymentNotice": "Sobre su pago",
-      "paymentNoticeDescription": "Trabajamos con productos frescos y locales donde los pesos pueden variar ligeramente. Pagará el precio exacto basado en el peso final en el momento de la entrega o recogida.",
+      "paymentNoticeDescription": "Trabajamos con productos frescos y locales donde los pesos pueden variar. Pagará el precio exacto basado en el peso final en el momento de la entrega o recogida.",
       "confirmOrder": "Confirmar Pedido"
     },
     "finish": {

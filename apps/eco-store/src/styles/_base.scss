@@ -1,3 +1,5 @@
+@use 'core_tailwind_theme';
+
 @layer base {
   @font-face {
     font-family: 'Manrope Fallback';
@@ -43,6 +45,62 @@
   body {
     color: var(--color-on-background);
     scrollbar-color: var(--primary-200) var(--tertiary-100);
+
+    --bg-image-1: url('/img/bg-leaf.png');
+    --bg-pos-1: 1rem 90vh;
+
+    --bg-image-2: url('/img/bg-strawberries.png');
+    --bg-pos-2: 85vw 10vh;
+
+    &.bg-comandes {
+      --bg-image-1: url('/img/bg-basket.png');
+      --bg-image-2: url('/img/bg-box.png');
+      --bg-pos-1: -2rem 85vh;
+      --bg-pos-2: 88vw 10vh;
+    }
+
+    &.bg-cistella {
+      --bg-image-1: url('/img/bg-shopping-bag.png');
+      --bg-image-2: url('/img/bg-wheat.png');
+      --bg-pos-1: 90vw 7vh;
+      --bg-pos-2: -5rem 90vh;
+    }
+  }
+
+  body::before,
+  body::after {
+    content: none;
+  }
+
+  @media (min-width: theme(--breakpoint-sm)) {
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-repeat: no-repeat;
+      background-size: 18rem;
+      background-blend-mode: multiply;
+      opacity: 0.1;
+      filter: sepia(1) brightness(2);
+      transition:
+        background-image 0.3s ease-in-out,
+        transform 0.3s ease-in-out;
+    }
+
+    /* bg image 1 */
+    body::before {
+      background-image: var(--bg-image-1);
+      background-position: var(--bg-pos-1);
+    }
+
+    /* bg image 2 */
+    body::after {
+      background-image: var(--bg-image-2);
+      background-position: var(--bg-pos-2);
+    }
   }
 
   h1 {
@@ -95,6 +153,7 @@
 
   p {
     text-wrap: balance;
+    line-height: 1.6;
   }
 
   button {
@@ -127,6 +186,6 @@
 }
 
 :root {
-  --focus-ring-color: rgb(37, 76, 191);
+  --focus-ring-color: var(--tertiary-600);
   --focus-ring-width: 2px;
 }

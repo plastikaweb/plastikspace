@@ -21,7 +21,7 @@ onRecordCreateRequest((e) => {
             { tenant: tenantId }
         );
 
-        currentCycleId = activeCycle.getId();
+        currentCycleId = activeCycle.id;
         order.set("orderCycle", currentCycleId);
         console.log(`Order automatically linked to cycle: ${currentCycleId}`);
     } catch (err) {

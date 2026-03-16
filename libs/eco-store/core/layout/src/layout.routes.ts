@@ -1,4 +1,9 @@
-import { DEFAULT_CURRENCY_CODE, importProvidersFrom, inject } from '@angular/core';
+import {
+  DEFAULT_CURRENCY_CODE,
+  importProvidersFrom,
+  inject,
+  provideEnvironmentInitializer,
+} from '@angular/core';
 import { ActivatedRouteSnapshot, Route } from '@angular/router';
 
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
@@ -6,7 +11,9 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
 import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
+import { EcoStoreLayoutService } from '@plastik/eco-store/entities';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
+import { BodyBackgroundService } from './body-background.service';
 import EcoLayoutComponent from './layout.component';
 
 export const layoutRoutes: Route[] = [
@@ -14,6 +21,10 @@ export const layoutRoutes: Route[] = [
     path: '',
     component: EcoLayoutComponent,
     providers: [
+      provideEnvironmentInitializer(() => {
+        inject(BodyBackgroundService);
+        inject(EcoStoreLayoutService);
+      }),
       {
         provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
         useValue: { appearance: 'outline' },
@@ -75,7 +86,7 @@ export const layoutRoutes: Route[] = [
       {
         path: 'botiga',
         title: 'products.all',
-        data: { hasSidenav: true },
+        data: { hasSidenav: true, bodyScrollable: true },
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },
