@@ -6,7 +6,6 @@ on:
       - main
 
 env:
-  YARN_IMMUTABLE: true
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
