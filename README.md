@@ -98,6 +98,8 @@ For more details, see the [🏛️ NX Architecture Guide](documentation/nx-archi
    yarn install:local
    ```
 
+   > 💡 **Note**: This command performs a full cleanup, installs all NPM dependencies, and **automatically downloads the required PocketBase binary** for the `eco-store` application.
+
 ---
 
 ## 🔧 Development Commands

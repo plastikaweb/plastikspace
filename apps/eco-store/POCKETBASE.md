@@ -20,11 +20,34 @@ PocketBase serves as the backend for the eco-store application. The schema and s
 
 ### Key Components
 
-1. **Schema**: Defined in `apps/eco-store/pocketbase/pb_schema.json`.
-2. **Hooks & Cron**: JavaScript logic located in `apps/eco-store/pocketbase/pb_hooks/`.
-3. **Sync Scripts**: Utilities in `apps/eco-store/scripts/` for environment synchronization.
+1. **Binary**: The PocketBase executable is automatically downloaded to `apps/eco-store/pocketbase/` via the `yarn pb:download` script (integrated into `install:local`).
+2. **Schema**: Defined in `apps/eco-store/pocketbase/pb_schema.json`.
+3. **Hooks & Cron**: JavaScript logic located in `apps/eco-store/pocketbase/pb_hooks/`.
+4. **Sync Scripts**: Utilities in `apps/eco-store/scripts/` for environment synchronization.
 
 ---
+
+## Installation & Setup
+
+When you first clone the repository or move to a new machine, the PocketBase binary will be missing (as it is git-ignored).
+
+### Automatic Installation (Recommended)
+
+Run the following command from the root:
+
+```bash
+yarn install:local
+```
+
+This will trigger `apps/eco-store/scripts/download-pocketbase.js` which detects your OS/Architecture and downloads the correct version.
+
+### Manual Download
+
+If you need to download it manually:
+
+```bash
+yarn pb:download
+```
 
 ## Schema Synchronization Workflow
 

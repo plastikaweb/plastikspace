@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Generated a suite of hand-drawn, whimsical assets using AI (Leaf, Strawberries, Basket, Box, Shopping Bag, Wheat) matching the "no-results" style.
 - Created `BodyBackgroundService` using Angular Signals to automatically manage `body` background classes based on the first URL segment.
 - Integrated `provideEnvironmentInitializer` in layout routes to decouple background management from UI components.
+- Installation script for PocketBase binary.
 
 ### Changed
 
@@ -29,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Resolved background image conflict with Tailwind gradients by moving decorative imagery to a `body::before` pseudo-element.
 - Fixed "fake" checkerboard transparency issues in generated assets by re-processing them with a custom white-to-alpha threshold script.
+- Fixed CI workflow to use correct versions and coverage reporting.
+- Updated README files to include installation instructions for PocketBase binary.
 
 ## [2026-03-14] - CI Fixes, UI Image Optimization and Accessibility Enhancements
 
