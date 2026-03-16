@@ -1,14 +1,22 @@
-<div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
-  <div class="col-span-1! space-y-10 md:col-span-2!">
-    <div class="flex items-center gap-4">
-      <mat-icon class="scale-150!" [attr.aria-label]="'cart.steps.shipping.title' | translate">
-        box
-      </mat-icon>
-      <h2 class="mb-2 text-2xl font-bold text-neutral-900">
+<header class="hero-header reveal-up" style="--delay: 50ms">
+  <div
+    class="hero-content flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+    <div class="flex flex-col items-start gap-2">
+      <div class="category-subtitle flex items-center gap-2">
+        <mat-icon class="scale-90!" aria-hidden="true">box</mat-icon>
+        <span>
+          {{ 'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() } }}
+        </span>
+      </div>
+      <h2 class="category-title font-bold">
         {{ 'cart.steps.shipping.title' | translate }}
       </h2>
     </div>
+  </div>
+</header>
 
+<div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
+  <div class="col-span-1! space-y-10 md:col-span-2!">
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
       <div class="space-y-6" aria-hidden="true">
         <div class="h-32 w-full animate-pulse rounded-2xl bg-neutral-100"></div>

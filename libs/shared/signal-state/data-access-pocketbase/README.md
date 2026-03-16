@@ -57,6 +57,7 @@ Choose the feature that fits your needs:
 - **`withPocketBaseGet`**: Read-only list operations with pagination, filtering, and sorting.
 - **`withPocketBaseGetList`**: Read-only list operations (alias for withPocketBaseGet).
 - **`withPocketBaseCrud`**: Full CRUD operations (List, GetOne, Create, Update, Delete).
+  Ensures newly created entities are automatically inserted into the entity list while maintaining the current sort order.
 - **`withPocketBaseGetOneFeature`**: Single item retrieval and selection state.
 
 > [!TIP]

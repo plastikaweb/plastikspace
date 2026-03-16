@@ -1,7 +1,7 @@
 import { updateState, withDevtools, withDevToolsStub } from '@angular-architects/ngrx-toolkit';
 import { isDevMode, Type } from '@angular/core';
 import { signalStoreFeature, SignalStoreFeature, withMethods } from '@ngrx/signals';
-import { addEntity, removeEntity, updateEntity } from '@ngrx/signals/entities';
+import { EntityState, removeEntity, updateEntity } from '@ngrx/signals/entities';
 import { DataCrud } from '@plastik/core/api-base';
 import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { ClientResponseError, ListResult, RecordOptions } from 'pocketbase';
@@ -57,16 +57,41 @@ export function withPocketBaseCrud<
           updateState(store, `[${featureName}] create`);
           try {
             const createdItem = await firstValueFrom(store._apiService.create(data, options));
+
             updateState(
               store,
               `[${featureName}] create success`,
-              addEntity(createdItem, {
-                selectId: entity => entity.id || '',
-              }),
-              {
-                count: store.count() + 1,
+              (state: EntityState<T> & PocketBaseGetListState) => {
+                const newEntityMap = {
+                  ...state.entityMap,
+                  [createdItem.id as string]: createdItem as T,
+                };
+                const newIds = [...state.ids, createdItem.id as string] as string[];
+
+                // Re-sort ids based on current sort config to maintain UI consistency
+                const { active, direction } = state.sort;
+                newIds.sort((a, b) => {
+                  const entityA = newEntityMap[a];
+                  const entityB = newEntityMap[b];
+                  if (!entityA || !entityB) return 0;
+
+                  const valA = (entityA as any)[active];
+                  const valB = (entityB as any)[active];
+
+                  if (valA < valB) return direction === 'asc' ? -1 : 1;
+                  if (valA > valB) return direction === 'asc' ? 1 : -1;
+                  return 0;
+                });
+
+                return {
+                  ...state,
+                  ids: newIds,
+                  entityMap: newEntityMap,
+                  count: state.count + 1,
+                };
               }
             );
+
             if (showNotification.success) {
               store._notificationService.create(`${featureName}.create.success`, 'SUCCESS');
             }

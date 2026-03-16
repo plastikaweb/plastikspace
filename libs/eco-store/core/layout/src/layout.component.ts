@@ -1,17 +1,16 @@
-import { isPlatformBrowser, NgTemplateOutlet } from '@angular/common';
+import { NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
+  effect,
   inject,
   linkedSignal,
   PLATFORM_ID,
   signal,
-  viewChild,
 } from '@angular/core';
 
 import { Breakpoints } from '@angular/cdk/layout';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
@@ -66,11 +65,13 @@ export default class EcoLayoutComponent {
   protected readonly isMobile = toSignal(
     inject(LayoutObserverService).getMatches([Breakpoints.XSmall, Breakpoints.Small])
   );
-  private readonly sidenavContent = viewChild<MatSidenavContent>('sidenavContent');
   readonly #activatedRoute = inject(ActivatedRoute);
 
-  readonly #destroyRef = inject(DestroyRef);
   readonly #router = inject(Router);
+
+  readonly #navigationTrigger = toSignal(
+    this.#router.events.pipe(filter(event => event instanceof NavigationEnd))
+  );
 
   readonly hasSidenav = toSignal(
     this.#router.events.pipe(
@@ -85,22 +86,13 @@ export default class EcoLayoutComponent {
   );
 
   constructor() {
-    this.#router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd),
-        takeUntilDestroyed(this.#destroyRef)
-      )
-      .subscribe(() => {
-        if (this.isMobile()) {
-          this.isSidenavOpen.set(false);
-        }
-        if (isPlatformBrowser(this.platformId)) {
-          // Delay scroll to avoid synchronous forced reflows during view transitions / router navigation
-          setTimeout(() => {
-            this.sidenavContent()?.scrollTo({ top: 0, behavior: 'smooth' });
-          });
-        }
-      });
+    effect(() => {
+      this.#navigationTrigger(); // Register dependency
+
+      if (this.isMobile()) {
+        this.isSidenavOpen.set(false);
+      }
+    });
   }
 
   protected dismissBanner(): void {

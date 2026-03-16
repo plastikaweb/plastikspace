@@ -161,6 +161,11 @@ describe('ecoStoreOrdersStore', () => {
       expect(navigateSpy).toHaveBeenCalledWith(['/comandes', 'nova', mockOrder.id]);
     });
 
+    it('should add the newly created order to the store entities', async () => {
+      await store.createOrder();
+      expect(store.entities()).toContainEqual(mockOrder);
+    });
+
     it('should not reset cart or navigate if order creation fails', async () => {
       mockOrdersApiService.create.mockReturnValue(of(undefined));
       const navigateSpy = vi.spyOn(router, 'navigate');

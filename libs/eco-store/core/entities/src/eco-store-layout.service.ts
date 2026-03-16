@@ -1,58 +1,100 @@
-import { DOCUMENT } from '@angular/common';
-import { effect, inject, Injectable, RendererFactory2 } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { effect, inject, Injectable, PLATFORM_ID, RendererFactory2 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 import { filter, map, startWith } from 'rxjs';
 
 /**
- * Service to manage global layout properties based on route data.
+ * Service to manage global layout properties and side-effects based on route data.
+ * Handles body overflow, scroll-to-top, and other global layout concerns.
  */
 @Injectable({ providedIn: 'root' })
 export class EcoStoreLayoutService {
-  readonly #router = inject(Router);
-  readonly #document = inject(DOCUMENT);
-  readonly #renderer = inject(RendererFactory2).createRenderer(null, null);
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly router = inject(Router);
+  private readonly document = inject(DOCUMENT);
+  private readonly renderer = inject(RendererFactory2).createRenderer(null, null);
 
+  /**
+   * Signal that tracks if the current route should allow body scrolling.
+   */
   readonly #bodyScrollable = toSignal(
-    this.#router.events.pipe(
-      filter(event => event instanceof NavigationEnd),
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd),
       map(() => {
-        let route = this.#router.routerState.root.snapshot;
+        let route = this.router.routerState.root.snapshot;
         while (route.firstChild) {
           route = route.firstChild;
         }
         return this.#getRouteData(route, 'bodyScrollable') ?? false;
       }),
       startWith(false)
+    ),
+    { initialValue: false }
+  );
+
+  /**
+   * Signal that triggers whenever a navigation starts.
+   */
+  readonly #navigationTrigger = toSignal(
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     )
   );
 
   constructor() {
-    effect(() => {
-      const scrollable = this.#bodyScrollable();
-      const body = this.#document.body;
-
-      if (scrollable) {
-        this.#renderer.removeClass(body, 'overflow-y-hidden');
-      } else {
-        this.#renderer.addClass(body, 'overflow-y-hidden');
-      }
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      this.#initLayoutEffects();
+    }
   }
 
+  #initLayoutEffects(): void {
+    // Effect 1: Handle Body Overflow
+    effect(() => {
+      const scrollable = this.#bodyScrollable();
+      const body = this.document.body;
+
+      if (scrollable) {
+        this.renderer.removeClass(body, 'overflow-y-hidden');
+      } else {
+        this.renderer.addClass(body, 'overflow-y-hidden');
+      }
+    });
+
+    // Effect 2: Handle Scroll to Top on Navigation
+    effect(() => {
+      const trigger = this.#navigationTrigger();
+
+      if (!trigger) return;
+
+      // We use a combination of requestAnimationFrame and a small timeout to ensure the scroll
+      // happens after the view has updated and potentially after a view transition has occurred.
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const content = this.document.querySelector('.mat-sidenav-content');
+
+          if (content) {
+            content.scrollTo({ top: 0, behavior: 'smooth' });
+          }
+          // Also handle window scroll for routes that allow it
+          this.document.defaultView?.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 0);
+      });
+    });
+  }
   /**
-   * Traverse up the route tree to find data for a specific key.
-   * @param {ActivatedRouteSnapshot | null} route The activated route snapshot.
-   * @param {string} key The data key to search for.
-   * @returns {unknown} The value associated with the key or null if not found.
+   * @description Traverse up the route tree to find data for a specific key.
+   * @param {ActivatedRouteSnapshot | null} route - The current route snapshot.
+   * @param {string} key - The key to look for in the route data.
+   * @returns {unknown} The value of the key if found, otherwise null.
    */
-  #getRouteData(route: ActivatedRouteSnapshot | null, key: string): unknown {
+  #getRouteData(route: ActivatedRouteSnapshot | null, key: string): boolean {
     while (route) {
       if (route.data && route.data[key] !== undefined) {
         return route.data[key];
       }
       route = route.parent;
     }
-    return null;
+    return false;
   }
 }

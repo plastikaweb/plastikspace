@@ -27,6 +27,7 @@ Built with **Angular 21+** (Signals, Standalone Components, Control Flow) and **
 ## Features
 
 - **Product Catalog**: Browse and filter sustainable products using a responsive grid.
+- **Contextual Backgrounds**: Hand-drawn whimsical background illustrations that automatically change based on the section (e.g., shopping bag for cart, basket for orders).
 - **Member Management**: Manage cooperative members and roles.
 - **Empty States**: Consistent and accessible "no results" messaging across the application.
 - **Reactive State**: Powered by NgRx Signal Store for efficient state management.

@@ -20,27 +20,16 @@
   @for (dim of [dimensions()]; track (dim?.width ?? 0) + '-' + (dim?.height ?? 0)) {
     @let width = dim?.width;
     @let height = dim?.height;
+    @let priority = lcpImage();
 
     @if (width && height) {
-      @if (lcpImage()) {
-        <ng-container
-          *ngTemplateOutlet="
-            fixedImage;
-            context: { priority: true, w: width, h: height }
-          "></ng-container>
-      } @else {
-        <ng-container
-          *ngTemplateOutlet="
-            fixedImage;
-            context: { priority: false, w: width, h: height }
-          "></ng-container>
-      }
+      <ng-container
+        [ngTemplateOutlet]="fixedImage"
+        [ngTemplateOutletContext]="{ priority, w: width, h: height }"></ng-container>
     } @else {
-      @if (lcpImage()) {
-        <ng-container *ngTemplateOutlet="fillImage; context: { priority: true }"></ng-container>
-      } @else {
-        <ng-container *ngTemplateOutlet="fillImage; context: { priority: false }"></ng-container>
-      }
+      <ng-container
+        [ngTemplateOutlet]="fillImage"
+        [ngTemplateOutletContext]="{ priority }"></ng-container>
     }
   }
 

@@ -28,13 +28,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Sync Schema to PocketBase
         run: node apps/eco-store/scripts/sync-pocketbase-schema.js
@@ -58,13 +61,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '22'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Export Schema from PocketBase
         run: node apps/eco-store/scripts/export-pocketbase-schema.js

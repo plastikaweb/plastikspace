@@ -1,7 +1,6 @@
 name: Nasa Images pa11y
 
 env:
-  YARN_IMMUTABLE: true
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 on:
@@ -24,6 +23,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Install
         run: yarn install --immutable --network-timeout 1000000
