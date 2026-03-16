@@ -75,8 +75,8 @@ export function withPocketBaseCrud<
                   const entityB = newEntityMap[b];
                   if (!entityA || !entityB) return 0;
 
-                  const valA = (entityA as any)[active];
-                  const valB = (entityB as any)[active];
+                  const valA = entityA[active as keyof T];
+                  const valB = entityB[active as keyof T];
 
                   if (valA < valB) return direction === 'asc' ? -1 : 1;
                   if (valA > valB) return direction === 'asc' ? 1 : -1;

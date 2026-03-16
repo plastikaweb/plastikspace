@@ -11,7 +11,7 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
 import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
-import { EcoStoreLayoutService } from '@plastik/eco-store/entities';
+import { EcoStoreLayoutService } from './eco-store-layout.service';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { BodyBackgroundService } from './body-background.service';
 import EcoLayoutComponent from './layout.component';

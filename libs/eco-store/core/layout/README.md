@@ -24,6 +24,7 @@ This library provides the core layout shell for the Eco Store application. It or
   - **Cart Animation**: The cart icon animates when the total amount changes.
   - **Isolated Providers**: Exposes `layoutRoutes` to bundle layout-specific dependencies (like `EcoStoreFormlyModule` configurations) separately from the main application entry point.
 - **Global Layout Management**: Uses `EcoStoreLayoutService` to dynamically manage global styles (like `body` overflow) and `BodyBackgroundService` to automatically manage decorative backgrounds.
+- **Smart Scrolling**: Automatically scrolls to the top of the content area or the window on navigation events using modern Angular `afterNextRender` hooks for optimal performance.
 
 ## Route Data Configuration
 
@@ -56,6 +57,7 @@ The layout is composed of:
 - **Sidenav**: Collapsible navigation menu for categories and account links.
 - **Content**: The main `router-outlet` for feature modules.
 - **Footer**: Application footer.
+- **EcoStoreLayoutService**: A reactive service that manages global layout properties and handles side effects like body overflow and scroll-to-top on navigation.
 - **BodyBackgroundService**: A reactive service using Angular Signals that listens to route changes and applies contextual classes to the `body` tag for background illustrations.
 
 ## Usage
