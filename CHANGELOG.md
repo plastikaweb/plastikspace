@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-16] - Refactoring, Performance, and Linux Support
+
+### Added
+
+- Added support for Linux systems in the PocketBase download script, including HTTP redirect handling and a fallback for extraction using `python3 -m zipfile` if `unzip` is missing.
+
+### Changed
+
+- Moved `EcoStoreLayoutService` from `@plastik/eco-store/entities` to `@plastik/eco-store/layout` to correctly align with DDD boundaries.
+- Refactored `EcoStoreLayoutService` and `BodyBackgroundService` to use strict ES6 private fields (`#`) for improved internal state management.
+- Improved `EcoStoreLayoutService` scrolling logic by replacing manual `requestAnimationFrame` and `setTimeout` with the modern Angular `afterNextRender` hook for more predictable execution timing.
+- Optimized `withPocketBaseCrud` store feature by replacing `any` casts with proper `keyof T` type checks in the sorting logic.
+- Updated documentation across `core/entities` and `core/layout` libraries to reflect architectural changes and new features.
+
+### Fixed
+
+- Fixed malformed JSDoc return type for `EcoStoreLayoutService.#getRouteData`.
+- Resolved potential NG0602 error in `EcoStoreLayoutService` by wrapping the render hook call in `untracked()`.
+
 ## [2026-03-16] - Contextual Backgrounds and UI Modernization
 
 ### Added

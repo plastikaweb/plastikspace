@@ -29,7 +29,6 @@ This library contains the **eco-store specific entities and type definitions**. 
 ### Configuration & Services
 
 - **`EnvironmentConfiguration`**: Environment configuration types for eco-store
-- **`EcoStoreLayoutService`**: Service to dynamically manage global layout properties (like `body` overflow) based on route data.
 
 ## Related Libraries
 

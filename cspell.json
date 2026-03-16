@@ -118,7 +118,8 @@
     "windsurfrules",
     "wlixcc",
     "xdescribe",
-    "zencoder"
+    "zencoder",
+    "zipfile"
   ],
   "ignoreWords": [],
   "import": []
