@@ -7,6 +7,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
+import { SortConfig } from '@plastik/core/entities';
 import { ORDER_STATUS_LABEL_MAP } from '@plastik/eco-store/entities';
 import { EcoStoreSharedNoResultsComponent } from '@plastik/eco-store/no-results';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
@@ -14,12 +15,12 @@ import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { SelectWithIconsFormlyModule } from '@plastik/shared/form/select-with-icons';
+import { SortSelectorComponent } from '@plastik/sort-selector';
 import {
   EcoStoreOrdersFilterData,
   ecoStoreOrdersFilterFormConfig,
 } from './eco-store-orders-filter-form.config';
 import { OrderCardComponent } from './order-card/order-card.component';
-
 @Component({
   selector: 'eco-store-orders-list',
   imports: [
@@ -36,6 +37,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     SharedFormFeatureModule,
     SelectWithIconsFormlyModule,
     EcoStoreSharedNoResultsComponent,
+    SortSelectorComponent,
   ],
   templateUrl: './eco-store-orders-list.component.html',
   styleUrl: './eco-store-orders-list.component.scss',
@@ -77,6 +79,13 @@ export default class EcoStoreOrdersListComponent {
   onChange(event: EcoStoreOrdersFilterData): void {
     this.#router.navigate([], {
       queryParams: { ...event, page: 0 },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  sort(sort: SortConfig) {
+    this.#router.navigate([], {
+      queryParams: { ...sort, page: 0 },
       queryParamsHandling: 'merge',
     });
   }

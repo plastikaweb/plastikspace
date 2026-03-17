@@ -16,6 +16,14 @@
         {{ 'orders.list.title' | translate }}
       </h2>
     </div>
+
+    <plastik-sort-selector
+      [class.pointer-events-none]="ordersStore.isLoading()"
+      [class.opacity-60]="ordersStore.isLoading()"
+      [options]="ordersStore.sortOptions()"
+      [currentSort]="ordersStore.sort()"
+      [translationPrefix]="'orders.filter.sort'"
+      (sortChange)="sort($event)"></plastik-sort-selector>
   </div>
 </header>
 

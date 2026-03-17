@@ -117,6 +117,11 @@ describe('ecoStoreOrdersStore', () => {
     expect(store.isLoading()).toBe(false);
   });
 
+  it('should have status in sortOptions', () => {
+    const store = setup();
+    expect(store.sortOptions()).toHaveProperty('status');
+  });
+
   describe('createOrder()', () => {
     let store: ReturnType<typeof setup>;
     let router: Router;

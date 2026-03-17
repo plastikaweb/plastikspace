@@ -10,6 +10,7 @@ type SortSelectorKeyValueFn = (
   a: KeyValue<string, SortMenuItem[]>,
   b: KeyValue<string, SortMenuItem[]>
 ) => number;
+
 @Component({
   selector: 'plastik-sort-selector',
 

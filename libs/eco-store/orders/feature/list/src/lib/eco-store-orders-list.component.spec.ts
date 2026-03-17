@@ -1,6 +1,6 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { axe } from 'vitest-axe';
@@ -15,6 +15,8 @@ describe('EcoStoreOrdersListComponent', () => {
     entities: signal([]),
     count: signal(0),
     filter: signal({ status: null as string | null }),
+    sort: signal({ active: 'created', direction: 'desc' }),
+    sortOptions: signal({}),
     getPagination: () => ({ page: 1, perPage: 10 }),
     paginationSizeOptions: signal([10, 20]),
   };
@@ -74,5 +76,18 @@ describe('EcoStoreOrdersListComponent', () => {
       '.empty-state [description], .empty-state p.max-w-3xl'
     );
     expect(emptyDesc.textContent).toContain('orders.list.emptyDescriptionWithStatus');
+  });
+
+  it('should navigate when sort is called', () => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate');
+    const sortConfig = { active: 'status', direction: 'asc' };
+
+    component.sort(sortConfig as any);
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      queryParams: { ...sortConfig, page: 0 },
+      queryParamsHandling: 'merge',
+    });
   });
 });

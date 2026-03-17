@@ -19,6 +19,7 @@ It allows users to view their past orders, their status, total price, and delive
 - **Order History Grid**: Displays a list of user orders with essential information at a glance.
 - **Detailed Order Cards**: Individual cards for each order showing status, date, items count, and delivery method.
 - **Order Filtering**: Allows users to filter their order history by status (Pending, Confirmed, etc.).
+- **Order Sorting**: Allows users to sort their order history by status and date.
 - **State Management**: Integrates with `EcoStoreOrdersStore` for reactive data fetching and pagination.
 - **Pagination**: Support for navigating through order history.
 - **Dynamic Status & Icons**: Visual cues for order status (Pending, Confirmed, Ready, etc.) and delivery methods.

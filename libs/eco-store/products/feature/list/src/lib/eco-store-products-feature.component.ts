@@ -108,7 +108,7 @@ export default class EcoStoreProductsFeatureComponent {
    * Navigates to the product list with updated sorting parameters.
    * @param { SortConfig } sort The new sort configuration.
    */
-  sortProducts(sort: SortConfig) {
+  sort(sort: SortConfig) {
     this.#router.navigate([], {
       queryParams: { ...sort, page: 0 },
       queryParamsHandling: 'merge',
