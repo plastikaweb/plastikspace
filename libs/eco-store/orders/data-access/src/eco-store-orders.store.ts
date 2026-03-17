@@ -32,15 +32,15 @@ export const ecoStoreOrdersStore = signalStore(
         page: 1,
         perPage: 10,
       },
-      sort: {
-        active: 'created',
-        direction: 'desc',
-      },
       filter: {
         status: null,
       } as OrdersPocketBaseFilter,
       sortOptions: {
         ...initialGetListState().sortOptions,
+        status: [
+          { id: 3, direction: 'desc', icon: 'arrow_downward' },
+          { id: 3, direction: 'asc', icon: 'arrow_upward' },
+        ],
       },
       apiRequestDebounceTime: 0,
       isLoading: false,

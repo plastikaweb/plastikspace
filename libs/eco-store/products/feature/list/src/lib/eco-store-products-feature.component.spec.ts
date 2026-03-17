@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { provideRouter, Router } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
@@ -44,4 +44,17 @@ describe('EcoStoreProductsFeature', () => {
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   }, 10000);
+
+  it('should navigate when sort is called', () => {
+    const router = TestBed.inject(Router);
+    const navigateSpy = vi.spyOn(router, 'navigate');
+    const sortConfig = { active: 'priceWithIva', direction: 'asc' };
+
+    component.sort(sortConfig as any);
+
+    expect(navigateSpy).toHaveBeenCalledWith([], {
+      queryParams: { ...sortConfig, page: 0 },
+      queryParamsHandling: 'merge',
+    });
+  });
 });

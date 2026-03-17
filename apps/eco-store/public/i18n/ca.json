@@ -429,7 +429,14 @@
     },
     "filter": {
       "all": "TOTES",
-      "status": "Estat de la comanda"
+      "status": "Estat de la comanda",
+      "sort": {
+        "label": "Ordenar",
+        "statusAsc": "Estat ascendent",
+        "statusDesc": "Estat descendent",
+        "updatedAsc": "Més antigues",
+        "updatedDesc": "Més recents"
+      }
     }
   },
   "users": {

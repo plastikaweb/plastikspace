@@ -426,6 +426,17 @@
       "preparing": "Preparando",
       "ready": "Preparado",
       "cancelled": "Cancelado"
+    },
+    "filter": {
+      "all": "TODAS",
+      "status": "Estado del pedido",
+      "sort": {
+        "label": "Ordenar",
+        "statusAsc": "Estado ascendente",
+        "statusDesc": "Estado descendente",
+        "updatedAsc": "Más antiguos",
+        "updatedDesc": "Más recientes"
+      }
     }
   },
   "users": {

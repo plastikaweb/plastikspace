@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-17] - Order Sorting and UI Consistency
+
+### Added
+
+- Implemented order sorting by status and update date in the user's order list ([#86c8r2ar3](https://app.clickup.com/t/86c8r2ar3))
+- Added localized sort labels for orders list across English, Spanish, and Catalan.
+
+### Changed
+
+- Updated `EcoStoreOrdersListComponent` to include the `SortSelectorComponent` and unified the sorting navigation logic ([#86c8r2ar3](https://app.clickup.com/t/86c8r2ar3))
+- Renamed `sortProducts` to `sort` in `EcoStoreProductsFeatureComponent` for better consistency across feature components.
+- Enhanced `EcoStoreOrdersStore` with dynamic sorting options for order status.
+- Updated README files for orders and products features to include sorting capabilities.
+
+### Fixed
+
+- Fixed unit tests for `EcoStoreOrdersListComponent` and `EcoStoreProductsFeatureComponent` by adding missing router context and sort method verification.
+- Fixed unit tests for `EcoStoreOrdersStore` to verify the presence of status sort options.
+
 ## [2026-03-16] - Refactoring, Performance, and Linux Support
 
 ### Added
