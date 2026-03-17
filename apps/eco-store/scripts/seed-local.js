@@ -15,8 +15,10 @@ const STAGING_ADMIN_EMAIL = process.env.POCKETBASE_STAGING_ADMIN_EMAIL;
 const STAGING_ADMIN_PASSWORD = process.env.POCKETBASE_STAGING_ADMIN_PASSWORD;
 
 if (!STAGING_URL) {
-  console.error('❌ Error: POCKETBASE_STAGING_URL not defined in environment.');
-  process.exit(1);
+  console.warn(
+    '⚠️  POCKETBASE_STAGING_URL not defined in environment. Skipping data seeding from staging.'
+  );
+  process.exit(0);
 }
 
 const pbLocal = new PocketBase(LOCAL_URL);

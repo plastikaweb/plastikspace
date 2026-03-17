@@ -55,7 +55,27 @@ async function populate() {
       env: { ...process.env, POCKETBASE_ENV: 'development' },
     });
 
-    console.info('✅ Local PocketBase populated successfully!');
+    // 5. Run seeding script (staging to local)
+    console.info('🌱 Running data seeding from staging...');
+    const SEED_SCRIPT = resolve(__dirname, 'seed-local.js');
+    try {
+      execSync(`node "${SEED_SCRIPT}"`, {
+        stdio: 'inherit',
+        env: { ...process.env },
+      });
+    } catch (e) {
+      console.warn('⚠️  Seeding from staging failed, continuing with local import...', e.message);
+    }
+
+    // 6. Run local data import (JSON files)
+    console.info('📦 Running local data import (JSON files)...');
+    const IMPORT_SCRIPT = resolve(__dirname, 'import-pocketbase-data.js');
+    execSync(`node "${IMPORT_SCRIPT}"`, {
+      stdio: 'inherit',
+      env: { ...process.env },
+    });
+
+    console.info('✅ Local PocketBase populated and imported successfully!');
   } catch (error) {
     console.error('❌ Population failed:', error.message);
     process.exit(1);
