@@ -11,19 +11,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Implemented manual `.env` file loader in `load-environment.js` to eliminate dependency on external `dotenv` package in script environments.
 - Created `seed-local.js` script to automate populating local PocketBase with data and images from staging environment.
+- Enhanced `import-pocketbase-data.js` with staging environment authentication to securely pull missing protected files.
+- Added a local `package.json` in `apps/eco-store/scripts/` with `"type": "module"` to resolve Node 22+ ESM deprecation warnings.
+- Created `setup-local.js` script in `tools/scripts/` to provide an intelligent, interactive installation workflow for new developers.
 
 ### Changed
 
 - Refactored CI workflow to suppress Node 22 deprecation warnings and improved task visibility by splitting lint, test, and build into separate steps.
-- Updated PocketBase scripts (`export-pocketbase-schema.js`, `sync-pocketbase-schema.js`, `migrate-data.js`) to use the internal environment loader.
+- Updated PocketBase scripts (`export-pocketbase-schema.js`, `sync-pocketbase-schema.js`, `migrate-data.js`, `import-pocketbase-data.js`, `seed-local.js`) to use the internal environment loader.
 - Enhanced `pb:populate` command to automatically seed local database from staging after schema synchronization.
+- Improved `populate-pocketbase.js` to execute the data seeding process internally while the temporary server is still active, resolving connection issues.
+- Updated `install:local` to use the new `setup-local.js` script, which avoids redundant binary downloads and interactively prompts for database population only when necessary.
 
 ### Fixed
 
 - Resolved CI failure where `nx fix-ci` was called on successful builds.
 - Fixed script execution errors in Linux environments caused by Yarn not resolving the `dotenv` package.
-- Fixed PocketBase authorization errors by switching to `pb.admins.authWithPassword()` for superuser authentication across all scripts.
-- Resolved PocketBase SDK deprecation warnings by replacing `pb.authStore.isAdmin` with `pb.authStore.isSuperuser`.
+- Fixed PocketBase authorization errors by switching to `pb.collection('_superusers').authWithPassword()` for superuser authentication across all scripts (aligned with SDK v0.23+).
+- Resolved PocketBase SDK deprecation warnings by replacing `pb.authStore.isAdmin` with `pb.authStore.isSuperuser` and `pb.admins` with superuser collection access.
+- Fixed credential reference errors in `import-pocketbase-data.js` and `seed-local.js`.
 - Enhanced `export-pocketbase-schema.js` to perform a full export, including collection records (JSON) and associated files/pictures.
 - Updated PocketBase version to `0.36.7` in the download script.
 - Fixed typos and improved logging in PocketBase synchronization and migration scripts.

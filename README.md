@@ -98,7 +98,8 @@ For more details, see the [🏛️ NX Architecture Guide](documentation/nx-archi
    yarn install:local
    ```
 
-   > 💡 **Note**: This command performs a full cleanup, installs all NPM dependencies, and **automatically downloads the required PocketBase binary** for the `eco-store` application.
+   > 💡 **Intelligent Setup**: This command is the recommended way to initialize the repository. It performs a full workspace cleanup, installs dependencies, and checks for the PocketBase binary.
+   > If no local database is detected, it will **interactively prompt** you to populate it with schema and data from staging.
 
 ---
 

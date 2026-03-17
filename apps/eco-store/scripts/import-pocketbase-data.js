@@ -10,23 +10,31 @@ const __dirname = path.dirname(__filename);
 // Load environment variables from .env if it exists
 loadDotEnv();
 
-// This script always targets DEVELOPMENT (local) for importing
-const ENV_NAME = 'development';
-const POCKETBASE_URL = getPocketBaseUrl(ENV_NAME);
+// Target environments
+const LOCAL_URL = process.env.POCKETBASE_LOCAL_URL || 'http://127.0.0.1:8090';
+const STAGING_URL = process.env.POCKETBASE_STAGING_URL;
 
-console.log(`🔧 Target Environment: ${ENV_NAME}`);
-console.log(`🌐 PocketBase URL: ${POCKETBASE_URL}`);
+console.log(`🔧 Target Environment: Local (${LOCAL_URL})`);
+if (STAGING_URL) {
+  console.log(`🌐 Source for missing files: Staging (${STAGING_URL})`);
+}
 
-const ADMIN_EMAIL = process.env.POCKETBASE_DEV_ADMIN_EMAIL;
-const ADMIN_PASSWORD = process.env.POCKETBASE_DEV_ADMIN_PASSWORD;
+const LOCAL_ADMIN_EMAIL = process.env.POCKETBASE_DEV_ADMIN_EMAIL;
+const LOCAL_ADMIN_PASSWORD = process.env.POCKETBASE_DEV_ADMIN_PASSWORD;
 
-if (!ADMIN_EMAIL || !ADMIN_PASSWORD) {
+const STAGING_ADMIN_EMAIL = process.env.POCKETBASE_STAGING_ADMIN_EMAIL;
+const STAGING_ADMIN_PASSWORD = process.env.POCKETBASE_STAGING_ADMIN_PASSWORD;
+
+if (!LOCAL_ADMIN_EMAIL || !LOCAL_ADMIN_PASSWORD) {
   console.error('❌ Error: Missing local PocketBase credentials in .env');
   process.exit(1);
 }
 
-const pb = new PocketBase(POCKETBASE_URL);
-pb.autoCancellation(false);
+const pbLocal = new PocketBase(LOCAL_URL);
+const pbStaging = STAGING_URL ? new PocketBase(STAGING_URL) : null;
+
+pbLocal.autoCancellation(false);
+if (pbStaging) pbStaging.autoCancellation(false);
 
 /**
  * Main import function
@@ -34,8 +42,25 @@ pb.autoCancellation(false);
 async function importAll() {
   try {
     console.log('🔐 Authenticating with local PocketBase...');
-    await pb.collection('_superusers').authWithPassword(ADMIN_EMAIL, ADMIN_PASSWORD);
-    console.log('✅ Authenticated successfully!');
+    await pbLocal
+      .collection('_superusers')
+      .authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
+    console.log('✅ Local authentication successful!');
+
+    if (pbStaging && STAGING_ADMIN_EMAIL && STAGING_ADMIN_PASSWORD) {
+      console.log('🔐 Authenticating with staging PocketBase (for file pulls)...');
+      try {
+        await pbStaging
+          .collection('_superusers')
+          .authWithPassword(STAGING_ADMIN_EMAIL, STAGING_ADMIN_PASSWORD);
+        console.log('✅ Staging authentication successful!');
+      } catch (e) {
+        console.warn(
+          '⚠️  Staging authentication failed. Protected files may not be pulled:',
+          e.message
+        );
+      }
+    }
 
     const dataDir = path.join(__dirname, '..', 'pocketbase', 'data');
     const storageDir = path.join(dataDir, 'storage');
@@ -46,7 +71,6 @@ async function importAll() {
     }
 
     // Define the order of import to respect relations
-    // (e.g. tenants before products)
     const collectionsToImport = [
       'tenants',
       'languages',
@@ -73,16 +97,22 @@ async function importAll() {
       console.log(`📦 Importing collection: ${colName}...`);
       const records = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-      // Get collection schema to identify file fields
-      const collection = await pb.collections.getOne(colName);
+      // Get collection schema to identify file fields and type
+      const collection = await pbLocal.collections.getOne(colName);
+
+      if (collection.type === 'view') {
+        console.log(`   ⏭️ Skipping ${colName} (view collection is read-only).`);
+        continue;
+      }
+
       const fileFields = collection.fields.filter(f => f.type === 'file');
 
       for (const record of records) {
         try {
-          // Check if record exists
+          // Check if record exists locally
           let exists = false;
           try {
-            await pb.collection(colName).getOne(record.id);
+            await pbLocal.collection(colName).getOne(record.id);
             exists = true;
           } catch {
             // Not found
@@ -103,37 +133,40 @@ async function importAll() {
 
           if (fileFields.length > 0) {
             for (const field of fileFields) {
-              const fileNames = record[field.name];
-              if (!fileNames) continue;
+              const fieldValue = record[field.name];
+              if (!fieldValue || (Array.isArray(fieldValue) && fieldValue.length === 0)) {
+                continue;
+              }
 
-              const nameList = Array.isArray(fileNames) ? fileNames : [fileNames];
+              const fileList = Array.isArray(fieldValue) ? fieldValue : [fieldValue];
               const recordLocalDir = path.join(storageDir, collection.id, record.id);
 
-              for (const name of nameList) {
-                const localFilePath = path.join(recordLocalDir, name);
+              for (const fileName of fileList) {
+                if (!fileName) continue;
+                const localFilePath = path.join(recordLocalDir, fileName);
+
                 if (fs.existsSync(localFilePath)) {
                   const blob = new Blob([fs.readFileSync(localFilePath)]);
-                  formData.append(field.name, blob, name);
+                  formData.append(field.name, blob, fileName);
                   hasFiles = true;
-                } else {
-                  console.warn(
-                    `   ⚠️ File missing locally: ${name}. Will try to download from staging...`
-                  );
-                  // OPTIONAL: Pull from staging if local is missing
-                  const stagingUrl = process.env.POCKETBASE_STAGING_URL;
-                  if (stagingUrl) {
-                    try {
-                      const remoteUrl = `${stagingUrl}/api/files/${collection.id}/${record.id}/${name}`;
-                      const response = await fetch(remoteUrl);
-                      if (response.ok) {
-                        const buffer = await response.arrayBuffer();
-                        formData.append(field.name, new Blob([buffer]), name);
-                        hasFiles = true;
-                        console.log(`      ✅ Successfully pulled ${name} from staging.`);
-                      }
-                    } catch (e) {
-                      console.error(`      ❌ Could not pull from staging: ${e.message}`);
+                } else if (pbStaging && pbStaging.authStore.isValid) {
+                  console.log(`      ⬇️ Missing locally, pulling ${fileName} from staging...`);
+                  try {
+                    // Use staging file token for protected files
+                    const fileUrl = pbStaging.files.getURL(record, fileName, {
+                      token: pbStaging.authStore.token,
+                    });
+                    const response = await fetch(fileUrl);
+                    if (response.ok) {
+                      const buffer = await response.arrayBuffer();
+                      formData.append(field.name, new Blob([buffer]), fileName);
+                      hasFiles = true;
+                      console.log(`         ✅ Successfully pulled ${fileName}.`);
+                    } else {
+                      console.error(`         ❌ Failed to pull ${fileName}: ${response.status}`);
                     }
+                  } catch (e) {
+                    console.error(`         ❌ Error pulling from staging: ${e.message}`);
                   }
                 }
               }
@@ -144,20 +177,20 @@ async function importAll() {
             // Add all other fields to formData
             for (const key in data) {
               if (fileFields.find(f => f.name === key)) continue;
-              const val = data[key];
-              if (Array.isArray(val) || (typeof val === 'object' && val !== null)) {
-                formData.append(key, JSON.stringify(val));
-              } else {
-                formData.append(key, val);
+              const value = data[key];
+              if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
+                formData.append(key, JSON.stringify(value));
+              } else if (value !== undefined && value !== null) {
+                formData.append(key, value);
               }
             }
             payload = formData;
           }
 
           if (exists) {
-            await pb.collection(colName).update(record.id, payload);
+            await pbLocal.collection(colName).update(record.id, payload);
           } else {
-            await pb.collection(colName).create(payload);
+            await pbLocal.collection(colName).create(payload);
           }
         } catch (err) {
           console.error(`   ❌ Failed to import record ${record.id} in ${colName}:`, err.message);

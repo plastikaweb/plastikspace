@@ -22,7 +22,11 @@
 
 ## PocketBase Workflow (eco-store)
 
-- **Local Setup:** Use `yarn pb:populate` to download the binary, sync the schema, and seed local data from staging.
+- **Initial Repository Setup:** Use `yarn install:local` as the first command after cloning.
+  It intelligently installs dependencies, downloads the PocketBase binary (if missing),
+  and prompts to populate the database only if no local data is found.
+- **Manual Population:** Use `yarn pb:populate` to download the binary, sync the schema,
+  and seed local data from staging in a single step.
 - **Seeding:** Use `yarn pb:seed` to specifically pull data and images from the staging environment to local.
 - **Exporting:** Use `yarn pb:export` to export the current local schema and data (JSON) for manual backups. Note: the `data/` folder is git-ignored to keep the repo lean.
 - **Environment:** Scripts use `apps/eco-store/scripts/load-environment.js` to manage credentials and URLs without external dependencies.
