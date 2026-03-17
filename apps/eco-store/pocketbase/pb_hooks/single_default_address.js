@@ -1,7 +1,7 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 // Auxiliary function to ensure that only one address can be set as default per user
-function ensureSingleDefaultAddress(record) {
+function ensureSingleDefaultAddress(record, app) {
     // 1. If the address being saved is not "default", do nothing.
     if (!record.getBool('default')) {
         return;
@@ -13,7 +13,7 @@ function ensureSingleDefaultAddress(record) {
     // 2. Search for all other addresses of this user that are 'default'
     // Exclude the one we are touching now (id != currentId)
     try {
-        const otherDefaults = $app.findRecordsByFilter(
+        const otherDefaults = app.findRecordsByFilter(
             "user_addresses",
             `user = {:user} && default = true && id != {:id}`,
             { user: userId, id: currentId }
@@ -22,7 +22,7 @@ function ensureSingleDefaultAddress(record) {
         // 3. Loop through the other defaults and set them to false
         for (const other of otherDefaults) {
             other.set('default', false);
-            $app.save(other); // Save the change without triggering recursive hooks
+            app.save(other); // Save the change without triggering recursive hooks
         }
     } catch (err) {
         // Log error in case of failure
@@ -32,12 +32,22 @@ function ensureSingleDefaultAddress(record) {
 
 // Hook before creating an address
 onRecordCreateRequest((e) => {
-    ensureSingleDefaultAddress(e.record);
+    // Skip hooks if bypass header is present (used during seeding/import)
+    if (e.httpContext && e.httpContext.request().header.get("x-bypass-hooks") === "true") {
+        return e.next();
+    }
+
+    ensureSingleDefaultAddress(e.record, e.app);
     return e.next();
 }, "user_addresses");
 
 // Hook before updating an address
 onRecordUpdateRequest((e) => {
-    ensureSingleDefaultAddress(e.record);
+    // Skip hooks if bypass header is present (used during seeding/import)
+    if (e.httpContext && e.httpContext.request().header.get("x-bypass-hooks") === "true") {
+        return e.next();
+    }
+
+    ensureSingleDefaultAddress(e.record, e.app);
     return e.next();
 }, "user_addresses");
