@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-17] - CI Workflow and PocketBase Script Stability
+
+### Added
+
+- Implemented manual `.env` file loader in `load-environment.js` to eliminate dependency on external `dotenv` package in script environments.
+
+### Changed
+
+- Refactored CI workflow to suppress Node 22 deprecation warnings and improved task visibility by splitting lint, test, and build into separate steps.
+- Updated PocketBase scripts (`export-pocketbase-schema.js`, `sync-pocketbase-schema.js`, `migrate-data.js`) to use the internal environment loader.
+
+### Fixed
+
+- Resolved CI failure where `nx fix-ci` was called on successful builds.
+- Fixed script execution errors in Linux environments caused by Yarn not resolving the `dotenv` package.
+
 ## [2026-03-17] - Order Sorting and UI Consistency
 
 ### Added

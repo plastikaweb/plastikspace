@@ -1,9 +1,8 @@
-import path from 'path';
 import PocketBase from 'pocketbase';
-import { fileURLToPath } from 'url';
+import { loadDotEnv } from './load-environment.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Load environment variables from .env if it exists
+loadDotEnv();
 
 // Constants
 const LOCAL_URL = process.env.POCKETBASE_LOCAL_URL;

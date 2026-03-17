@@ -1,15 +1,14 @@
-import PocketBase from 'pocketbase';
 import fs from 'fs';
 import path from 'path';
+import PocketBase from 'pocketbase';
 import { fileURLToPath } from 'url';
-import { getPocketBaseUrl } from './load-environment.js';
-import dotenv from 'dotenv';
+import { getPocketBaseUrl, loadDotEnv } from './load-environment.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load environment variables from .env if it exists
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+loadDotEnv();
 
 // Read environment from arguments or use 'staging' by default
 const ENV_NAME = process.env.POCKETBASE_ENV || 'development';
