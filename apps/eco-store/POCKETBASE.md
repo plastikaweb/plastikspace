@@ -20,16 +20,16 @@ PocketBase serves as the backend for the eco-store application. The schema and s
 
 ### Key Components
 
-1. **Binary**: The PocketBase executable is automatically downloaded to `apps/eco-store/pocketbase/` via the `yarn pb:download` script (integrated into `install:local`).
-2. **Schema**: Defined in `apps/eco-store/pocketbase/pb_schema.json`.
+1. **Binary**: The PocketBase executable is automatically downloaded and initialized via `yarn install:local`.
+2. **Schema**: Defined in `apps/eco-store/pocketbase/pb_schema.json`. Automatically synchronized to local and staging environments.
 3. **Hooks & Cron**: JavaScript logic located in `apps/eco-store/pocketbase/pb_hooks/`.
-4. **Sync Scripts**: Utilities in `apps/eco-store/scripts/` for environment synchronization.
+4. **Sync Scripts**: Utilities in `apps/eco-store/scripts/` for environment synchronization (`pb:populate`, `pb:export`, `pb:sync`).
 
 ---
 
 ## Installation & Setup
 
-When you first clone the repository or move to a new machine, the PocketBase binary will be missing (as it is git-ignored).
+When you first clone the repository or move to a new machine, the PocketBase binary and database will be missing.
 
 ### Automatic Installation (Recommended)
 
@@ -39,7 +39,10 @@ Run the following command from the root:
 yarn install:local
 ```
 
-This will trigger `apps/eco-store/scripts/download-pocketbase.js` which detects your OS/Architecture and downloads the correct version.
+This will trigger:
+
+1. `apps/eco-store/scripts/download-pocketbase.js`: Downloads the correct binary for your OS.
+2. `apps/eco-store/scripts/populate-pocketbase.js`: Initializes your local database with the superuser and schema from `pb_schema.json`.
 
 ### Manual Download
 
