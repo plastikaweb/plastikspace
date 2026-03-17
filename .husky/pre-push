@@ -1,1 +1,41 @@
-yarn branch:lint && yarn affected:test
+#!/usr/bin/env sh
+set -e
+export NX_CLI_SET=classic
+export PAGER=cat
+
+echo "🏃 Running affected tests..."
+if ! yarn nx affected --target=test --parallel --max-parallel=2 --cache; then
+  echo "❌ Tests failed! Push aborted."
+  exit 1
+fi
+
+echo "🏗️  Running affected build..."
+# Build production configuration to ensure it's valid
+# Reduced parallelization to avoid disk I/O bottleneck
+if ! yarn nx run-many --target=build --configuration=production --parallel --max-parallel=2; then
+  echo "❌ Build failed! Push aborted."
+  exit 1
+fi
+
+CHANGED_FILES=$(git diff --name-only @{upstream}...HEAD 2>/dev/null || git diff --name-only HEAD~1...HEAD)
+if echo "$CHANGED_FILES" | grep -Eq '^(apps/eco-store/|libs/eco-store/)'; then
+  echo "🏁 Running eco-store:a11y (using existing build)..."
+  if ! yarn npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run; then
+    echo "❌ eco-store:a11y failed! Push aborted."
+    exit 1
+  fi
+else
+  echo "ℹ️ Skipping eco-store:a11y (no eco-store changes)"
+fi
+
+if echo "$CHANGED_FILES" | grep -Eq '^(apps/nasa-images/|libs/nasa-images/)'; then
+  echo "🏁 Running nasa-images:a11y (using existing build)..."
+  if ! yarn npm-run-all --parallel --race nasa-images:http-server nasa-images:a11y:run; then
+    echo "❌ nasa-images:a11y failed! Push aborted."
+    exit 1
+  fi
+else
+  echo "ℹ️ Skipping nasa-images:a11y (no nasa-images changes)"
+fi
+
+echo "✅ All checks passed. Pushing..."

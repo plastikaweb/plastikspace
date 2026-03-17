@@ -1,0 +1,191 @@
+@use 'core_tailwind_theme';
+
+@layer base {
+  @font-face {
+    font-family: 'Manrope Fallback';
+    src:
+      local('Segoe UI'), local('Roboto'), local('Helvetica Neue'), local('Arial'),
+      local('sans-serif');
+    size-adjust: 102.5%;
+    ascent-override: 93.3%;
+    descent-override: 26.6%;
+    line-gap-override: 0%;
+    font-display: swap;
+  }
+
+  html {
+    font-size: 15px;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-synthesis: none;
+    font-family: var(--mat-sys-brand-font-family, 'Manrope'), 'Manrope Fallback', var(--font-sans);
+
+    font-weight: var(--font-weight-regular);
+    font-variation-settings: 'wdth' 100;
+    font-variant-numeric: tabular-nums;
+
+    --app-main-border-radius: var(--radius-large);
+    --content-grid-max-width: 1750px;
+    --content-detail-max-width: 1400px;
+    --translucid-bg: color-mix(in srgb, var(--mat-sys-surface), transparent 35%);
+
+    scroll-padding-top: 120px;
+
+    @media (prefers-reduced-motion: no-preference) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    color: var(--color-on-background);
+    scrollbar-color: var(--primary-200) var(--tertiary-100);
+
+    --bg-image-1: url('/img/bg-leaf.png');
+    --bg-pos-1: 1rem 90vh;
+
+    --bg-image-2: url('/img/bg-strawberries.png');
+    --bg-pos-2: 85vw 10vh;
+
+    &.bg-comandes {
+      --bg-image-1: url('/img/bg-basket.png');
+      --bg-image-2: url('/img/bg-box.png');
+      --bg-pos-1: -2rem 85vh;
+      --bg-pos-2: 88vw 10vh;
+    }
+
+    &.bg-cistella {
+      --bg-image-1: url('/img/bg-shopping-bag.png');
+      --bg-image-2: url('/img/bg-wheat.png');
+      --bg-pos-1: 90vw 7vh;
+      --bg-pos-2: -5rem 90vh;
+    }
+  }
+
+  body::before,
+  body::after {
+    content: none;
+  }
+
+  @media (min-width: theme(--breakpoint-sm)) {
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-repeat: no-repeat;
+      background-size: 18rem;
+      background-blend-mode: multiply;
+      opacity: 0.1;
+      filter: sepia(1) brightness(2);
+      transition:
+        background-image 0.3s ease-in-out,
+        transform 0.3s ease-in-out;
+    }
+
+    /* bg image 1 */
+    body::before {
+      background-image: var(--bg-image-1);
+      background-position: var(--bg-pos-1);
+    }
+
+    /* bg image 2 */
+    body::after {
+      background-image: var(--bg-image-2);
+      background-position: var(--bg-pos-2);
+    }
+  }
+
+  h1 {
+    font-size: var(--text-display-large);
+    line-height: var(--leading-display-large);
+    letter-spacing: var(--tracking-display-large);
+    font-weight: var(--font-weight-display-large);
+  }
+
+  h2 {
+    font-size: var(--text-headline-large);
+    line-height: var(--leading-headline-large);
+    letter-spacing: var(--tracking-headline-large);
+    font-weight: var(--font-weight-headline-large);
+  }
+
+  h3 {
+    font-size: var(--text-headline-medium);
+    line-height: var(--leading-headline-medium);
+    letter-spacing: var(--tracking-headline-medium);
+    font-weight: var(--font-weight-headline-medium);
+  }
+
+  h4 {
+    font-size: var(--text-headline-small);
+    line-height: var(--leading-headline-small);
+    letter-spacing: var(--tracking-headline-small);
+    font-weight: var(--font-weight-headline-small);
+  }
+
+  h5 {
+    font-size: var(--text-title-large);
+    line-height: var(--leading-title-large);
+    letter-spacing: var(--tracking-title-large);
+    font-weight: var(--font-weight-title-large);
+  }
+
+  h6 {
+    font-size: var(--text-title-medium);
+    line-height: var(--leading-title-medium);
+    letter-spacing: var(--tracking-title-medium);
+    font-weight: var(--font-weight-title-medium);
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  p {
+    text-wrap: balance;
+    line-height: 1.6;
+  }
+
+  button {
+    pointer-events: auto;
+  }
+
+  img {
+    height: auto;
+    max-width: 100%;
+    aspect-ratio: attr(width) / attr(height);
+    content-visibility: auto;
+  }
+
+  .mat-icon,
+  .material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    width: 24px;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    color: transparent;
+    font-size: 24px;
+  }
+
+  .mat-icon[role='img'] {
+    color: inherit;
+  }
+}
+
+:root {
+  --focus-ring-color: var(--tertiary-600);
+  --focus-ring-width: 2px;
+}

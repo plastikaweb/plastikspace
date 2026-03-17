@@ -1,0 +1,47 @@
+<div
+  [class]="`${status().toLowerCase()}-container flex min-h-14 items-center justify-between px-6 py-3`">
+  <div class="grid grid-cols-[auto_1fr] items-center gap-3 overflow-hidden">
+    <mat-icon>{{ icon() }}</mat-icon>
+    <div class="flex flex-col justify-center overflow-hidden">
+      <strong class="truncate text-sm font-bold text-ellipsis whitespace-nowrap"
+        >{{ title() | translate }}
+      </strong>
+      <span class="truncate text-sm text-ellipsis whitespace-nowrap">{{
+        description().key | translate: description().params
+      }}</span>
+
+      @if (
+        (status() === 'CLOSED' || status() === 'OPENING_SOON' || status() === 'CLOSING_SOON') &&
+        segments().length > 0
+      ) {
+        <div class="block sm:hidden">
+          <ng-container [ngTemplateOutlet]="countdownTemplate"></ng-container>
+        </div>
+      }
+    </div>
+  </div>
+  <div class="flex items-center gap-2">
+    <div class="hidden sm:block">
+      <ng-container [ngTemplateOutlet]="countdownTemplate"></ng-container>
+    </div>
+    <button
+      matIconButton
+      [attr.aria-label]="'store.status.statusBanner.dismiss' | translate"
+      (click)="dismiss.emit()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</div>
+
+<ng-template #countdownTemplate>
+  @if (
+    (status() === 'CLOSED' || status() === 'OPENING_SOON' || status() === 'CLOSING_SOON') &&
+    segments().length > 0
+  ) {
+    <plastik-countdown
+      class="text-sm font-bold"
+      [segments]="segments()"
+      [prefix]="status() === 'CLOSING_SOON' ? '' : 'store.status.opensIn'">
+    </plastik-countdown>
+  }
+</ng-template>

@@ -1,36 +1,36 @@
-import { axe, toHaveNoViolations } from 'jest-axe';
 import { of } from 'rxjs';
+import { describe, expect, it, vi } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideMockStore } from '@ngrx/store/testing';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentWithApiMock } from '@plastik/core/environments/testing';
 import { NasaImagesSearchFacade } from '@plastik/nasa-images/search/data-access';
 import { NasaImagesSearchApiParams } from '@plastik/nasa-images/search/entities';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
 import { NasaImagesSearchFeatureComponent } from './nasa-images-search-feature.component';
 
-xdescribe('NasaImagesSearchFeatureComponent', () => {
+describe.skip('NasaImagesSearchFeatureComponent', () => {
   let component: NasaImagesSearchFeatureComponent;
   let fixture: ComponentFixture<NasaImagesSearchFeatureComponent>;
   let facade: NasaImagesSearchFacade;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, NasaImagesSearchFeatureComponent],
+      imports: [NasaImagesSearchFeatureComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
-        provideEnvironmentMock(),
+        provideZonelessChangeDetection(),
+        provideEnvironmentWithApiMock(),
         provideHttpClientTesting(),
         provideMockStore(),
         {
           provide: NasaImagesSearchFacade,
           useValue: {
-            search: jest.fn(),
-            changePagination: jest.fn(),
+            search: vi.fn(),
+            changePagination: vi.fn(),
             images$: of([
               {
                 description: '',
@@ -98,7 +98,6 @@ xdescribe('NasaImagesSearchFeatureComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

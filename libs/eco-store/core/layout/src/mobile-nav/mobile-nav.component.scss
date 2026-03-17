@@ -1,0 +1,25 @@
+@use '@angular/material' as mat;
+
+:host {
+  .mobile-nav {
+    background-color: var(--translucid-bg);
+    border-radius: 100vw;
+  }
+
+  @include mat.badge-overrides(
+    (
+      text-color: var(--primary-50),
+      background-color: var(--tertiary-500),
+    )
+  );
+
+  eco-mobile-nav-item {
+    mat-icon {
+      font-variation-settings: 'FILL' var(--mobile-nav-icon-fill, 0);
+      color: var(--mobile-nav-icon-color, var(--neutral-500));
+      transition:
+        font-variation-settings 0.2s ease,
+        color 0.2s ease;
+    }
+  }
+}

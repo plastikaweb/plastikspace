@@ -160,6 +160,15 @@ interface SubmitFormConfig {
    * @default "Submit"
    */
   label?: string;
+  /**
+   * Button type.
+   * @default "normal"
+   */
+  type?: 'icon' | 'normal';
+  /**
+   * Icon name for the button (if type is 'icon').
+   */
+  icon?: string;
 
   /**
    * Whether the button is disabled.
@@ -266,6 +275,10 @@ The module includes several custom form types located in `libs/shared/form/ui`:
 - [`textarea-with-counter`](../ui/textarea-with-counter/README.md) - Textarea with character counter.
 - [`year-picker`](../ui/year-picker/README.md) - Year selection input.
 - [`input-img-loader`](../ui/img-loader/README.md) - Image loader with upload and preview.
+- [`shipping-method-selector`](../ui/shipping-method-selector/README.md) - Card-based shipping method selector.
+- [`address-selector`](../ui/address-selector/README.md) - Addresses selector with checkbox.
+- ['custom-label'](../ui/custom-label/README.md) - A custom section label with text, icon and description.
+- [`text`](../ui/text/README.md) - Static text input.
 
 ## Troubleshooting
 

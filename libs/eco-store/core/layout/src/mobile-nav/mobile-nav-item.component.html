@@ -1,0 +1,11 @@
+<a
+  matButton
+  class="py-7!"
+  routerLinkActive="active"
+  [routerLinkActiveOptions]="routerLinkActiveOptions()"
+  [routerLink]="routerLink()">
+  <div class="flex flex-col items-center justify-center">
+    <ng-content></ng-content>
+    {{ label() }}
+  </div>
+</a>

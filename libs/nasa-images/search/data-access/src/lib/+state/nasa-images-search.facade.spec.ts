@@ -1,10 +1,10 @@
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Store } from '@ngrx/store';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentWithApiMock } from '@plastik/core/environments/testing';
 import { routerActions, selectRouteQueryParams } from '@plastik/core/router-state';
 
 import { NasaImagesSearchFacade } from './nasa-images-search.facade';
@@ -16,7 +16,7 @@ describe('NasaImagesSearchFacade', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         NasaImagesSearchFacade,
         provideHttpClientTesting(),
         provideMockStore({
@@ -30,7 +30,7 @@ describe('NasaImagesSearchFacade', () => {
             },
           ],
         }),
-        provideEnvironmentMock(),
+        provideEnvironmentWithApiMock(),
         { provide: VIEW_CONFIG, useValue: signal([]) },
       ],
     });
@@ -38,7 +38,7 @@ describe('NasaImagesSearchFacade', () => {
     facade = TestBed.inject(NasaImagesSearchFacade);
     store = TestBed.inject(Store);
 
-    jest.spyOn(store, 'dispatch');
+    vi.spyOn(store, 'dispatch');
   });
 
   it('should be created', () => {

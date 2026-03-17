@@ -1,44 +1,45 @@
 @if (order(); as order) {
-  <div class="w-full mb-sm">
+  <div class="mb-sm w-full">
     <mat-card class="bg-white">
       <mat-card-header>
-        <mat-card-title class="flex gap-tiny">
-          <mat-icon class="text-secondary-dark">shopping_basket</mat-icon>
+        <mat-card-title class="gap-tiny flex">
+          <mat-icon>shopping_basket</mat-icon>
           <span>Comanda #{{ order.id }}</span>
         </mat-card-title>
       </mat-card-header>
 
       <mat-card-content>
-        <div class="flex flex-wrap gap-sm p-sm">
-          <div class="flex items-center gap-tiny">
+        <div class="gap-sm p-sm flex flex-wrap">
+          <div class="gap-tiny flex items-center">
             <mat-icon class="text-secondary">person</mat-icon>
             <span class="text-sm">{{ order.userName }}</span>
           </div>
 
-          <div class="flex items-center gap-tiny">
+          <div class="gap-tiny flex items-center">
             <mat-icon class="text-secondary">email</mat-icon>
             <span class="text-sm">{{ order.userEmail }}</span>
           </div>
 
           @if (order.phone) {
-            <div class="flex items-center gap-tiny">
+            <div class="gap-tiny flex items-center">
               <mat-icon class="text-secondary">phone</mat-icon>
               <span class="text-sm">{{ order.phone }}</span>
             </div>
           }
 
-          <div class="flex items-center gap-tiny">
+          <div class="gap-tiny flex items-center">
             <mat-icon class="text-secondary">{{
               order.deliveryType === 'pickup' ? 'store' : 'place'
             }}</mat-icon>
-            <span
-              class="text-sm"
-              >{{ order.deliveryType === 'pickup' ? 'Recollida a la seu de El Llevat' : `Entrega a
-            ${order.address}` }}</span
-            >
+            <span class="text-sm">{{
+              order.deliveryType === 'pickup'
+                ? 'Recollida a la seu de El Llevat'
+                : `Entrega a
+            ${order.address}`
+            }}</span>
           </div>
 
-          <div class="flex items-center gap-tiny">
+          <div class="gap-tiny flex items-center">
             <mat-icon class="text-secondary">schedule</mat-icon>
             <span
               class="text-sm"
@@ -46,9 +47,8 @@
           </div>
 
           @if (order.deliveryInfo) {
-            <div
-              class="flex items-center w-full text-white rounded gap-sub p-sub mt-sub bg-primary-dark">
-              <mat-icon class="text-primary-light">info</mat-icon>
+            <div class="gap-sub p-sub mt-sub flex w-full items-center rounded text-white">
+              <mat-icon>info</mat-icon>
               <span class="text-sm italic">{{ order.deliveryInfo }}</span>
             </div>
           }
@@ -56,7 +56,7 @@
 
         <div class="px-sub pb-sub">
           <plastik-shared-form-feature
-            class="flex flex-row justify-between content-center items-end"
+            class="flex flex-row content-center items-end justify-between"
             [fields]="fields()"
             [model]="order"
             [submitConfig]="submitConfig()"

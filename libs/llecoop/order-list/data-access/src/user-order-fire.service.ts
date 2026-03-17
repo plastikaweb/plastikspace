@@ -15,11 +15,8 @@ import { EntityId } from '@ngrx/signals/entities';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
-import {
-  EntityFireService,
-  StoreFirebaseCrudPagination,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import { EntityFireService, FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
 import { StoreUserOrderFilter } from './user-order-store';
 
@@ -47,11 +44,15 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     }
   }
 
-  override getAll(
-    pagination: StoreFirebaseCrudPagination<LlecoopUserOrder>,
-    sorting: TableSortingConfig,
-    filter: StoreUserOrderFilter
-  ): Observable<LlecoopUserOrder[]> {
+  override getList({
+    pagination,
+    sorting,
+    filter,
+  }: {
+    pagination: FirebaseCrudPagination<LlecoopUserOrder>;
+    sorting: TableSortingConfig;
+    filter: StoreUserOrderFilter;
+  }): Observable<LlecoopUserOrder[]> {
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const userId = this.#authService.currentUser()?.uid;
@@ -85,24 +86,28 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     });
   }
 
-  override getItem(id: EntityId): Observable<LlecoopUserOrder | null> {
+  override getOne(id: LlecoopUserOrder['id']): Observable<LlecoopUserOrder> {
     return runInInjectionContext(this.injectionContext, () => {
       try {
         const userId = this.#authService.currentUser()?.uid;
         if (!userId) {
-          return of(null);
+          return of({} as LlecoopUserOrder);
         }
 
         if (!this.firestoreOrderGroupCollection) {
-          return of(null);
+          return of({} as LlecoopUserOrder);
         }
 
         const q = query(this.firestoreOrderGroupCollection, where('userId', '==', userId));
 
         return collectionData(q, { idField: 'id' }).pipe(
           takeUntil(this.destroy$),
-          map(orders => (orders.find(order => order.id === id) as LlecoopUserOrder) || null),
-          catchError(error => this.handlePermissionError(error, null))
+          map(orders => {
+            const order = orders.find(o => o.id === id);
+            if (!order) throw new Error(`Order ${id} not found`);
+            return order as LlecoopUserOrder;
+          }),
+          catchError(error => this.handlePermissionError(error, {} as LlecoopUserOrder))
         );
       } catch (error) {
         return throwError(() => error);
@@ -110,24 +115,28 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     });
   }
 
-  override create(item: LlecoopUserOrder) {
-    this.setCollection(item);
+  override create(item: Partial<LlecoopUserOrder>) {
+    if ((item as LlecoopUserOrder).orderListId) {
+      this.setCollection(item as LlecoopUserOrder);
+    }
     return super.create(item);
   }
 
-  override update(item: LlecoopUserOrder) {
-    this.setCollection(item);
-    return super.update(item);
+  override update(id: EntityId, item: Partial<LlecoopUserOrder>) {
+    if ((item as LlecoopUserOrder).orderListId) {
+      this.setCollection(item as LlecoopUserOrder);
+    }
+    return super.update(id, item);
   }
 
-  override delete(item: LlecoopUserOrder) {
-    this.setCollection(item);
-    return super.delete(item);
+  override delete(id: EntityId) {
+    return super.delete(id);
   }
 
-  override getCount(filter: StoreUserOrderFilter): Observable<number> {
+  override getCount(params: { filter: StoreUserOrderFilter }): Observable<number> {
     return runInInjectionContext(this.injectionContext, () => {
       try {
+        const { filter } = params;
         const userId = this.#authService.currentUser()?.uid;
         const isAdmin = this.#authService.isAdmin();
         if (!userId) {
@@ -222,7 +231,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
         status: doc.status ?? 'waitingReview',
         userId,
         userEmail,
-        normalizedName: latinize(doc.name).toLowerCase(),
+        normalizedName: latinize(doc.name as string).toLowerCase(),
         createdAt: doc.createdAt ?? Timestamp.now(),
         updatedAt: Timestamp.now(),
       }),

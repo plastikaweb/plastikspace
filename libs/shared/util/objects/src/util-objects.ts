@@ -2,21 +2,23 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
  * @description Check if an array or object are empty.
- * @param {any} obj Object parameter passed.
+ * @param {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isEmpty(obj: any): boolean {
-  return [Object, Array].includes((obj || {}).constructor) && !Object.entries(obj || {}).length;
+export function isEmpty(obj: unknown): boolean {
+  if (obj === null || obj === undefined) return true;
+  return (
+    ([Object, Array] as unknown[]).includes((obj as object).constructor) &&
+    !Object.entries(obj as object).length
+  );
 }
 
 /**
  * @description Check if passed parameter is a string.
- * @param {any} obj Object parameter passed.
+ * @param {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isString(obj: any): obj is string {
+export function isString(obj: unknown): obj is string {
   return typeof obj === 'string';
 }
 
@@ -31,11 +33,10 @@ export function isNil(value: unknown): boolean {
 
 /**
  * @description Check if passed parameter is an object.
- * @param  {any} obj Object parameter passed.
+ * @param  {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function isObject(obj: any): boolean {
+export function isObject(obj: unknown): boolean {
   return obj instanceof Object && obj.constructor === Object;
 }
 
@@ -63,12 +64,14 @@ export function getQueryParams(
 
 /**
  * @description Given an URL or a name/value pairs object it returns an object with name/value pairs of all the query params available.
- * @param {any} params A list of query params.
+ * @param {string | Record<string, unknown>} params A list of query params.
  * @param  {Record<string, unknown>} defaultParams A list of default query parameters.
  * @returns {Record<string, unknown>}.
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getQueryParams(params: any, defaultParams = {}): Record<string, unknown> {
+export function getQueryParams(
+  params: string | Record<string, unknown>,
+  defaultParams = {}
+): Record<string, unknown> {
   if (isString(params)) {
     return { ...defaultParams, ...formatURLQueryParams(params) };
   } else if (isObject(params)) {
@@ -136,7 +139,7 @@ export function setEmptyStringPropertiesToNull(
  * @returns {boolean}.
  */
 export function areObjectEntriesEqual(prev: object, curr: object): boolean {
-  if (!prev && !curr) {
+  if (prev === curr) {
     return true;
   }
 
@@ -144,7 +147,16 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
     return false;
   }
 
-  return Object.entries(prev).toString() === Object.entries(curr).toString();
+  const prevKeys = Object.keys(prev);
+  const currKeys = Object.keys(curr);
+
+  if (prevKeys.length !== currKeys.length) {
+    return false;
+  }
+
+  return prevKeys.every(
+    key => (prev as Record<string, unknown>)[key] === (curr as Record<string, unknown>)[key]
+  );
 }
 
 /**
@@ -190,7 +202,9 @@ export function transformToString(value: unknown): string {
 
   try {
     result = JSON.stringify(value) ?? '';
-  } catch (_) {
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
     result = '';
   }
 
@@ -199,9 +213,47 @@ export function transformToString(value: unknown): string {
 
 /**
  * @description Returns an array based on passed collection.
- * @param {Record} collection The passed collection as parameter.
- * @returns {Array}.
+ * @template T
+ * @param {Record<string, T>} collection The passed collection as parameter.
+ * @returns {T[]}.
  */
 export function collectionToArray<T>(collection: Record<string, T>): T[] {
   return Object.keys(collection).map((key: string) => collection[key]);
+}
+
+/**
+ * @description Creates a deep clone of the provided value.
+ * @template T
+ * @param {T} obj The value to clone.
+ * @example
+ * deepClone({ a: 1, b: 2 });
+ * // { a: 1, b: 2 }
+ * @returns {T} A deep copy of the input.
+ */
+export function deepClone<T>(obj: T): T {
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
+
+  if (obj instanceof Date) {
+    return new Date(obj.getTime()) as T;
+  }
+
+  if (obj instanceof RegExp) {
+    return new RegExp(obj) as T;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => deepClone(item)) as T;
+  }
+
+  if (typeof obj === 'object') {
+    const cloned = {} as T;
+    Object.keys(obj).forEach(key => {
+      (cloned as Record<string, unknown>)[key] = deepClone((obj as Record<string, unknown>)[key]);
+    });
+    return cloned;
+  }
+
+  return obj;
 }

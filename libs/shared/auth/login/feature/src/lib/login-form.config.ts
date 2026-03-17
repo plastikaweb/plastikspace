@@ -1,48 +1,50 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { Validators } from '@angular/forms';
+import { LoginData } from '@plastik/auth/entities';
 import { FormConfig } from '@plastik/core/entities';
-
-import { LoginData } from './login-facade.service';
 
 export function loginFormConfig(): FormConfig<LoginData> {
   const formConfig = [
     {
-      key: 'email',
-      type: 'input',
-      props: {
-        type: 'email',
-        label: 'Adreça electrònica',
-        placeholder: 'Adreça electrònica',
-        required: true,
-        attributes: {
-          autocomplete: 'off',
+      fieldGroupClassName: 'flex flex-col gap-5',
+      fieldGroup: [
+        {
+          key: 'email',
+          type: 'input',
+          props: {
+            type: 'email',
+            label: 'auth.login.email',
+            placeholder: 'auth.login.email',
+            translate: true,
+            required: true,
+          },
+          validators: {
+            validation: [Validators.email],
+          },
         },
-      },
-      validators: {
-        validation: [Validators.email],
-      },
-    },
-    {
-      key: 'password',
-      type: 'password-with-visibility',
-      props: {
-        type: 'password',
-        label: 'Contrasenya',
-        placeholder: 'Contrasenya',
-        required: true,
-        minLength: 8,
-        maxLength: 25,
-        attributes: {
-          autocomplete: 'off',
+        {
+          key: 'password',
+          type: 'password-with-visibility',
+          props: {
+            type: 'password',
+            label: 'auth.login.password',
+            placeholder: 'auth.login.password',
+            translate: true,
+            required: true,
+            minLength: 8,
+            maxLength: 25,
+          },
         },
-      },
+      ],
     },
   ];
 
   return {
     getConfig: () => formConfig,
     getSubmitFormConfig: () => ({
-      label: 'Iniciar sessió',
+      type: 'button',
+      label: 'auth.login.submit',
+      icon: 'login',
       buttonStyle: 'w-full sm:w-full',
       disableOnSubmit: true,
     }),

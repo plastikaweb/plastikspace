@@ -1,0 +1,30 @@
+@let headerMenu = userMenuConfig();
+
+<button
+  mat-button
+  class="gap-tiny flex"
+  [attr.aria-label]="headerMenu?.label?.()"
+  [matMenuTriggerFor]="menu">
+  <span class="hidden sm:block">{{ headerMenu?.label?.() }}</span>
+  <mat-icon class="m-0 size-[30px] p-0 text-[30px]">account_circle</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu" class="px-sub">
+  <span class="p-tiny border-b-gray-10 block w-fit border-b-2 text-balance sm:hidden">{{
+    headerMenu?.label?.()
+  }}</span>
+
+  @for (item of headerMenu?.config; track item.id) {
+    @if (item && item.route) {
+      <button type="button" mat-menu-item [routerLink]="item.route">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.title }}</span>
+      </button>
+    } @else if (item && item.action) {
+      <button type="button" mat-menu-item (click)="onSendAction(item.action)">
+        <mat-icon>{{ item.icon }}</mat-icon>
+        <span>{{ item.title }}</span>
+      </button>
+    }
+  }
+</mat-menu>

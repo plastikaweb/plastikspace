@@ -1,49 +1,55 @@
 @if (routeInfo$ | ngrxPush; as info) {
-  <h2 class="flex items-center gap-sm h3" data-test="page-title">
-    <mat-icon> {{ info?.icon }} </mat-icon> <span>{{ info?.title }}</span>
-  </h2>
+  @defer {
+    <h2 class="gap-sm h3 mb-4 flex items-center" data-test="page-title">
+      <mat-icon class="scale-150"> {{ info?.icon }} </mat-icon> <span>{{ info?.title }}</span>
+    </h2>
+  }
 }
 
 <section>
   <!-- filtering -->
-  <plastik-shared-form-feature
-    [fields]="(formStructure$ | ngrxPush) || []"
-    [model]="(formModel$ | ngrxPush) || {}"
-    (changeEvent)="onChange($event)">
-  </plastik-shared-form-feature>
+  @defer {
+    <plastik-shared-form-feature
+      [fields]="(formStructure$ | ngrxPush) || []"
+      [model]="(formModel$ | ngrxPush) || {}"
+      (changeEvent)="onChange($event)">
+    </plastik-shared-form-feature>
+  }
 
-  @let table = tableDefinition();
   <!-- table -->
-  <plastik-shared-table
-    *ngrxLet="{
-      data: images$,
-      isActiveSearch: isActiveSearch$,
-    } as obs"
-    [data]="obs.data || []"
-    [caption]="table?.caption || ''"
-    [columnProperties]="table?.columnProperties() || []"
-    [resultsLength]="table?.count() || 0"
-    [pagination]="table?.pagination()"
-    (changePagination)="onChangePagination($event)">
-    @if (obs.isActiveSearch) {
-      <plastik-nasa-images-search-ui-no-results noResults>
-        <span icon> search_off </span>
-        <span title>No results found</span>
-        <span message>We can't find any item matching your search.</span>
-      </plastik-nasa-images-search-ui-no-results>
-    }
+  @defer {
+    @let table = tableDefinition();
+    <plastik-shared-table
+      *ngrxLet="{
+        data: images$,
+        isActiveSearch: isActiveSearch$,
+      } as obs"
+      [data]="obs.data || []"
+      [caption]="table?.caption || ''"
+      [columnProperties]="table?.columnProperties() || []"
+      [resultsLength]="table?.count() || 0"
+      [pagination]="table?.pagination()"
+      (changePagination)="onChangePagination($event)">
+      @if (obs.isActiveSearch) {
+        <plastik-nasa-images-search-ui-no-results noResults>
+          <span icon> search_off </span>
+          <span title>No results found</span>
+          <span message>We can't find any item matching your search.</span>
+        </plastik-nasa-images-search-ui-no-results>
+      }
 
-    @if (!obs.isActiveSearch) {
-      <plastik-nasa-images-search-ui-no-results noValidSearch>
-        <span icon> search_on </span>
-        <span title>NASA images search</span>
-        <span message
-          >Use the filter to find related NASA pictures.<br />You must provide a valid matching
-          string.</span
-        >
-      </plastik-nasa-images-search-ui-no-results>
-    }
+      @if (!obs.isActiveSearch) {
+        <plastik-nasa-images-search-ui-no-results noValidSearch>
+          <span icon> search_on </span>
+          <span title>NASA images search</span>
+          <span message
+            >Use the filter to find related NASA pictures.<br />You must provide a valid matching
+            string.</span
+          >
+        </plastik-nasa-images-search-ui-no-results>
+      }
 
-    <ng-template #noValidSearch> </ng-template>
-  </plastik-shared-table>
+      <ng-template #noValidSearch> </ng-template>
+    </plastik-shared-table>
+  }
 </section>

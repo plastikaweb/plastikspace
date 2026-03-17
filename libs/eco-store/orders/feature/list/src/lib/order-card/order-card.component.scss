@@ -1,0 +1,22 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  .detail-button {
+    @include mat.button-overrides(
+      (
+        outlined-label-text-color: var(--neutral-800),
+        outlined-outline-color: var(--neutral-300),
+      )
+    );
+  }
+
+  .delivery-icon {
+    @include mat.icon-overrides(
+      (
+        color: var(--neutral-600),
+      )
+    );
+  }
+}

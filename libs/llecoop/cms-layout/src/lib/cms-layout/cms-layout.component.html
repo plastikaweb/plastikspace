@@ -1,6 +1,6 @@
 @let headerTitle = headerConfig.title;
 @let extendedTitle = headerConfig.extendedTitle;
-@let headerMenu = headerConfig.menu;
+@let userMenuConfig = headerConfig.userMenuConfig;
 
 @defer {
   <plastik-skip-link></plastik-skip-link>
@@ -8,7 +8,7 @@
 
 <div class="core-cms-container">
   <plastik-core-cms-layout-ui-header data-test="layout-header">
-    <div start class="flex items-center gap-sub sm:gap-sm">
+    <div start class="gap-sub sm:gap-sm flex items-center">
       <button
         mat-icon-button
         aria-label="menú lateral"
@@ -25,10 +25,10 @@
       <h1 data-test="layout-title">
         <span class="sr-only">{{ headerTitle }}</span>
         <a
-          class="flex justify-between content-center items-center no-underline gap-sub"
+          class="gap-sub flex content-center items-center justify-between no-underline"
           [routerLink]="['/']"
           [attr.title]="headerTitle">
-          <div class="flex justify-center items-center gap-sub">
+          <div class="gap-sub flex items-center justify-center">
             @if (headerConfig.mainIcon; as icon) {
               <img
                 loading="lazy"
@@ -44,38 +44,43 @@
       </h1>
     </div>
 
-    <div end class="flex items-center gap-tiny">
-      @defer {
-        <plastik-llecoop-order-indicator></plastik-llecoop-order-indicator>
-      }
+    <div end class="gap-tiny flex items-center">
+      <plastik-cart-preview></plastik-cart-preview>
+      @if (userMenuConfig) {
+        <button
+          mat-button
+          class="gap-tiny flex"
+          [attr.aria-label]="userMenuConfig?.label()"
+          [matMenuTriggerFor]="menu">
+          <span class="hidden sm:block">{{ userMenuConfig?.label() }}</span>
+          <mat-icon class="m-0 size-[30px] p-0 text-[30px]">account_circle</mat-icon>
+        </button>
 
-      <button
-        mat-button
-        class="flex gap-tiny"
-        [attr.aria-label]="headerMenu?.label()"
-        [matMenuTriggerFor]="menu">
-        <span class="hidden sm:block">{{ headerMenu?.label() }}</span>
-        <mat-icon class="size-[30px] text-[30px] m-0 p-0">account_circle</mat-icon>
-      </button>
-      <mat-menu #menu="matMenu">
-        <span class="block border-b-2 sm:hidden w-fit text-balance p-tiny border-b-gray-10">{{
-          headerMenu?.label()
-        }}</span>
+        <mat-menu #menu="matMenu">
+          <span class="p-tiny border-b-gray-10 block w-fit border-b-2 text-balance sm:hidden">{{
+            userMenuConfig?.label()
+          }}</span>
 
-        @for (item of headerMenu?.config; track item.id) {
-          @if (item && item.route) {
-            <button type="button" mat-menu-item [routerLink]="item.route">
-              <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
-              <span>{{ item.title }}</span>
-            </button>
-          } @else if (item && item.action) {
-            <button type="button" mat-menu-item (click)="item.action()">
-              <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
-              <span>{{ item.title }}</span>
-            </button>
+          @for (item of userMenuConfig?.config; track item.id) {
+            @if (item && item.route) {
+              <button type="button" mat-menu-item [routerLink]="item.route">
+                <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+                <span>{{ item.title }}</span>
+              </button>
+            } @else if (item && item.action) {
+              <button type="button" mat-menu-item (click)="item.action()">
+                <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+                <span>{{ item.title }}</span>
+              </button>
+            }
           }
-        }
-      </mat-menu>
+        </mat-menu>
+      } @else {
+        <button mat-button class="gap-tiny flex" routerLink="/login" [attr.aria-label]="'Login'">
+          <span class="hidden sm:block">Login</span>
+          <mat-icon class="m-0 size-[30px] p-0 text-[30px]">login</mat-icon>
+        </button>
+      }
 
       <plastik-mat-theme-toggle></plastik-mat-theme-toggle>
     </div>
@@ -146,13 +151,13 @@
       role="main"
       tabindex="-1"
       id="mainContent"
-      class="p-sub sm:p-sm lg:p-md xl:p-lg motion-safe:scroll-smooth @container">
+      class="p-sub sm:p-sm lg:p-md xl:p-lg @container motion-safe:scroll-smooth">
       <router-outlet></router-outlet>
     </mat-sidenav-content>
   </mat-sidenav-container>
 
   <plastik-core-cms-layout-ui-footer data-test="layout-footer">
-    <div content class="flex flex-row justify-center items-center text-sm gap-tiny">
+    <div content class="gap-tiny flex flex-row items-center justify-center text-sm">
       © 2024-{{ currentDate | date: 'yyyy' }}
       <a
         aria-label="visit www.plastikaweb.com page"

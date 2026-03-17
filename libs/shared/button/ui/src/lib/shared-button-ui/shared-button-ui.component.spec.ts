@@ -1,8 +1,9 @@
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { buttonMock } from '@plastik/shared/button';
 
@@ -15,12 +16,12 @@ describe('SharedButtonUiComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedButtonUiComponent, AngularSvgIconModule.forRoot()],
-      providers: [provideExperimentalZonelessChangeDetection(), provideHttpClient()],
+      providers: [provideZonelessChangeDetection(), provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedButtonUiComponent);
+    fixture.componentRef.setInput('buttonConfig', buttonMock);
     component = fixture.componentInstance;
-    component.config = buttonMock;
     fixture.detectChanges();
   });
 
@@ -36,7 +37,6 @@ describe('SharedButtonUiComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

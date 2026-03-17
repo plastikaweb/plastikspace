@@ -1,0 +1,101 @@
+import {
+  DEFAULT_CURRENCY_CODE,
+  importProvidersFrom,
+  inject,
+  provideEnvironmentInitializer,
+} from '@angular/core';
+import { ActivatedRouteSnapshot, Route } from '@angular/router';
+
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatPaginatorIntlService } from '@plastik/core/paginator';
+import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
+import { EcoStoreLayoutService } from './eco-store-layout.service';
+import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
+import { BodyBackgroundService } from './body-background.service';
+import EcoLayoutComponent from './layout.component';
+
+export const layoutRoutes: Route[] = [
+  {
+    path: '',
+    component: EcoLayoutComponent,
+    providers: [
+      provideEnvironmentInitializer(() => {
+        inject(BodyBackgroundService);
+        inject(EcoStoreLayoutService);
+      }),
+      {
+        provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+        useValue: { appearance: 'outline' },
+      },
+      {
+        provide: DEFAULT_CURRENCY_CODE,
+        useValue: 'EUR',
+      },
+      {
+        provide: MatPaginatorIntl,
+        useClass: MatPaginatorIntlService,
+      },
+      {
+        provide: MAT_ICON_DEFAULT_OPTIONS,
+        useValue: { fontSet: 'material-symbols-outlined' },
+      },
+      importProvidersFrom(EcoStoreFormlyModule),
+    ],
+    children: [
+      {
+        path: 'comandes',
+        data: { hasSidenav: false },
+        children: [
+          {
+            path: 'nova',
+            loadChildren: () =>
+              import('@plastik/eco-store/orders/created').then(
+                m => m.ecoStoreOrderConfirmationRoutes
+              ),
+          },
+          {
+            path: '',
+            loadChildren: () =>
+              import('@plastik/eco-store/orders/list').then(m => m.ecoStoreOrdersListRoutes),
+          },
+        ],
+      },
+      {
+        path: 'cistella',
+        data: { hasSidenav: false },
+        loadChildren: () => import('@plastik/eco-store/cart').then(m => m.ecoStoreCartRoutes),
+      },
+      {
+        path: 'botiga/:category/:slug',
+        title: (route: ActivatedRouteSnapshot) =>
+          inject(EcoStoreCategoryRouteTitleService).resolve(route),
+        data: { hasSidenav: false },
+        loadChildren: () =>
+          import('@plastik/eco-store/product').then(m => m.ecoStoreProductFeatureRoutes),
+      },
+      {
+        path: 'botiga/:category',
+        title: (route: ActivatedRouteSnapshot) =>
+          inject(EcoStoreCategoryRouteTitleService).resolve(route),
+        data: { hasSidenav: true },
+        loadChildren: () =>
+          import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
+      },
+      {
+        path: 'botiga',
+        title: 'products.all',
+        data: { hasSidenav: true, bodyScrollable: true },
+        loadChildren: () =>
+          import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
+      },
+
+      {
+        path: '**',
+        redirectTo: 'botiga',
+        pathMatch: 'full',
+      },
+    ],
+  },
+];

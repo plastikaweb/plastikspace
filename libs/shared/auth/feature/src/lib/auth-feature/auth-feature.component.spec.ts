@@ -1,11 +1,12 @@
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
+import { provideTranslateService } from '@ngx-translate/core';
 
+import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
 import { AuthFeatureComponent } from './auth-feature.component';
-import { AUTH_FORM_FACADE } from './auth-form-facade.type';
 
-xdescribe('AuthFeatureComponent', () => {
+describe('AuthFeatureComponent', () => {
   let component: AuthFeatureComponent;
   let fixture: ComponentFixture<AuthFeatureComponent>;
 
@@ -13,8 +14,9 @@ xdescribe('AuthFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [AuthFeatureComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideMockStore(),
+        provideTranslateService(),
         {
           provide: AUTH_FORM_FACADE,
           useValue: {

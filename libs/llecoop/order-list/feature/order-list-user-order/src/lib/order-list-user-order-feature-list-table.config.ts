@@ -1,5 +1,4 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
@@ -17,10 +16,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListUserOrderFeatureListTableConfig
-  implements TableStructureConfig<LlecoopUserOrder>
-{
-  readonly #sanitizer = inject(DomSanitizer);
+export class LlecoopOrderListUserOrderFeatureListTableConfig implements TableStructureConfig<LlecoopUserOrder> {
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #userOrderUtilsService = inject(UserOrderUtilsService);
@@ -45,7 +41,7 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     link: () => ['/comandes', 'setmanals'],
     queryParams: (order?: LlecoopUserOrder) => ({
-      text: order?.name || '',
+      text: (order?.name as string) || '',
     }),
     formatting: {
       type: 'LINK',

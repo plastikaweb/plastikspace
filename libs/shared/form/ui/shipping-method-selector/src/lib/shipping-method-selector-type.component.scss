@@ -1,0 +1,96 @@
+@use '@angular/material' as mat;
+
+:host {
+  .shipping-method-radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+    gap: 1rem;
+  }
+
+  .shipping-method-card {
+    border: 1px solid var(--neutral-50) !important;
+    transition:
+      background-color 0.1s ease-in-out,
+      transform 0.1s ease-in-out;
+
+    &:hover {
+      border-color: var(--neutral-100) !important;
+
+      @include mat.card-overrides(
+        (
+          elevated-container-elevation: var(--mat-sys-level2),
+        )
+      );
+    }
+
+    &:active:not([disabled]) {
+      transform: scale(0.99);
+    }
+
+    &.selected {
+      @include mat.card-overrides(
+        (
+          elevated-container-color: var(--primary-200),
+        )
+      );
+    }
+
+    @each $theme in primary, secondary, tertiary, neutral {
+      &.theme-#{$theme} {
+        color: var(--#{$theme}-900);
+
+        .mat-mdc-chip {
+          background-color: var(--#{$theme}-100);
+          @include mat.chips-overrides(
+            (
+              outline-color: var(--#{$theme}-200),
+              label-text-color: var(--#{$theme}-900),
+            )
+          );
+        }
+
+        @include mat.card-overrides(
+          (
+            elevated-container-color: var(--#{$theme}-50),
+            subtitle-text-color: var(--#{$theme}-900),
+          )
+        );
+
+        @include mat.icon-overrides(
+          (
+            color: var(--#{$theme}-400),
+          )
+        );
+
+        &.selected {
+          border: 2px solid var(--#{$theme}-400) !important;
+          @include mat.card-overrides(
+            (
+              elevated-container-color: var(--#{$theme}-100),
+            )
+          );
+
+          .shipping-method-icon {
+            background-color: var(--#{$theme}-600);
+          }
+        }
+
+        @include mat.radio-overrides(
+          (
+            checked-ripple-color: var(--#{$theme}-500),
+            selected-icon-color: var(--#{$theme}-500),
+          )
+        );
+
+        .shipping-method-icon {
+          background-color: var(--#{$theme}-400);
+          @include mat.icon-overrides(
+            (
+              color: var(--#{$theme}-50),
+            )
+          );
+        }
+      }
+    }
+  }
+}

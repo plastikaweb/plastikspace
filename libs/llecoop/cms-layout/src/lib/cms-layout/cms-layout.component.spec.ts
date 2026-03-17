@@ -1,10 +1,12 @@
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import '@plastik/shared/testing';
+
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideMockStore } from '@ngrx/store/testing';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
@@ -16,7 +18,7 @@ import {
   MockedOrderListStore,
   MockedUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
-import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
+import { llecoopProfileStore } from '@plastik/llecoop/profile/data-access';
 
 import { CmsLayoutComponent } from './cms-layout.component';
 
@@ -26,9 +28,9 @@ describe('CmsLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, CmsLayoutComponent, AngularSvgIconModule.forRoot()],
+      imports: [CmsLayoutComponent, AngularSvgIconModule.forRoot()],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideRouter([]),
         provideMockStore({}),
         provideHttpClient(),
@@ -37,11 +39,17 @@ describe('CmsLayoutComponent', () => {
           provide: FirebaseAuthService,
           useValue: {
             currentUserEmail: signal('email'),
+            loggedIn: signal(true),
+            currentUser: signal({
+              email: 'email',
+              emailVerified: true,
+              uid: 'uid',
+            }),
           },
         },
         { provide: llecoopUserOrderStore, useValue: MockedUserOrderStore },
         { provide: llecoopOrderListStore, useValue: MockedOrderListStore },
-        { provide: llecoopUserStore, useValue: { getUserName: signal('user') } },
+        { provide: llecoopProfileStore, useValue: { getUserName: signal('user') } },
         {
           provide: VIEW_CONFIG,
           useValue: signal([
@@ -65,9 +73,7 @@ describe('CmsLayoutComponent', () => {
               position: 'end',
               widgets: [],
             },
-            position: 'end',
-            widgets: [],
-            menu: {
+            userMenuConfig: {
               label: signal('menu'),
               position: 'end',
               config: [],

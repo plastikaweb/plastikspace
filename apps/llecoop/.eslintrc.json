@@ -1,6 +1,6 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", "**/vitest.config.*.timestamp*"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -37,6 +37,12 @@
       ],
       "rules": {
         "@angular-eslint/template/no-call-expression": "off"
+      }
+    },
+    {
+      "files": ["tailwind.config.js"],
+      "parserOptions": {
+        "project": null
       }
     }
   ]

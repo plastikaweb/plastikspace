@@ -1,0 +1,10 @@
+@let humanizedUnit = unitBase() | humanizeUnit: unitType();
+@let finalLabel =
+  label() ||
+  (`products.unit.measure.${unitType()}` | translate: { value: humanizedUnit || unitBase() });
+
+<plastik-shared-chip
+  type="tertiary"
+  [icon]="iconName()"
+  [label]="finalLabel"
+  [ariaLabel]="finalLabel" />

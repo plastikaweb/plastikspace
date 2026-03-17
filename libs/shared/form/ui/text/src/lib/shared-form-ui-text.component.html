@@ -1,0 +1,8 @@
+<div [class]="props.containerClasses ?? ''">
+  <div class="flex items-center justify-start gap-2 text-neutral-500">
+    @if (props.icon) {
+      <mat-icon>{{ props.icon }}</mat-icon>
+    }
+    <span>{{ props.text }}</span>
+  </div>
+</div>

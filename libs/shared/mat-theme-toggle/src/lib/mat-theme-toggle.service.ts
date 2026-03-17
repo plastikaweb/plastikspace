@@ -1,6 +1,6 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { DOCUMENT } from '@angular/common';
-import { computed, effect, inject, Injectable, signal } from '@angular/core';
+
+import { computed, DOCUMENT, effect, inject, Injectable, signal } from '@angular/core';
 
 const THEMES = {
   light: {
@@ -20,7 +20,7 @@ const THEMES = {
   },
 } as const;
 
-export type MatThemeConfig = (typeof THEMES)[keyof typeof THEMES];
+export type MatThemeToggleConfig = (typeof THEMES)[keyof typeof THEMES];
 
 @Injectable()
 export class MatThemeToggleService {
@@ -34,7 +34,7 @@ export class MatThemeToggleService {
     this.#document.body.style.colorScheme = scheme;
   });
 
-  getThemes(): MatThemeConfig[] {
+  getThemes(): MatThemeToggleConfig[] {
     return Object.values(THEMES);
   }
 

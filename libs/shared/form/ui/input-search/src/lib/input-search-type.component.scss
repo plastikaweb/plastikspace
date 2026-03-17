@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+
+:host {
+  .reset-search-button {
+    @include mat.icon-button-overrides(
+      (
+        icon-size: 18px,
+        touch-target-size: 32px,
+        state-layer-size: 32px,
+      )
+    );
+  }
+
+  .mat-icon {
+    height: 18px;
+    width: 18px;
+    font-size: 18px;
+    transition: color 0.2s ease;
+    @include mat.icon-overrides(
+      (
+        color: var(--primary-600),
+      )
+    );
+  }
+
+  :hover .mat-icon {
+    @include mat.icon-overrides(
+      (
+        color: var(--primary-800),
+      )
+    );
+  }
+
+  :focus-within .mat-icon {
+    @include mat.icon-overrides(
+      (
+        color: var(--primary-800),
+      )
+    );
+  }
+
+  :focus-visible .mat-icon {
+    @include mat.icon-overrides(
+      (
+        color: var(--primary-800),
+      )
+    );
+  }
+}

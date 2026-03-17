@@ -2,16 +2,16 @@ import { map, Observable, of, tap } from 'rxjs';
 
 import { inject } from '@angular/core';
 import { ResolveFn } from '@angular/router';
-import { llecoopUserStore, userMainInitState } from '@plastik/llecoop/user/data-access';
+import { initState, llecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { PageEventConfig, TableSortingConfig } from '@plastik/shared/table/entities';
 
 export const userFeatureListResolver: ResolveFn<Observable<boolean>> = (
   route
 ): Observable<boolean> => {
   const userStore = inject(llecoopUserStore);
-  const { name, email, role } = userMainInitState.filter;
-  const [active, direction] = userMainInitState.sorting as TableSortingConfig;
-  const { pageIndex, pageSize } = userMainInitState.pagination;
+  const { name, email, role } = initState.filter;
+  const [active, direction] = initState.sorting as TableSortingConfig;
+  const { pageIndex, pageSize } = initState.pagination;
 
   // Obtener los query params directamente del route activado
   const queryParams = route.queryParams;

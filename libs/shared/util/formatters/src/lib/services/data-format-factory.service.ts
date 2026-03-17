@@ -26,7 +26,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
    * @description Factory to get the correct formatted value from item property with a custom formatting option.
    * @param { unknown } item  The object to extract value from.
    * @param { PropertyFormatting } param The control configuration to format the object property value.
-   * @param { string | Function } param.key The property of the object which value is going to be formatted.
+   * @param { string | ((item: T) => unknown) } param.key The property of the object which value is going to be formatted or a function to compute it.
    * @param { PropertyFormattingConf } param.formatting The formatting configuration for a concrete property object.
    * @param {number } index Index to custom formatters (f.e. a table indexing)
    * @param {unknown } extraConfig Extra configuration object to format values specially when using custom formatters.

@@ -24,16 +24,30 @@ export interface ExtraFormAction<T> {
 export type ExtraSubmitFormAction<T> = Omit<ExtraFormAction<T>, 'label' | 'classes'>;
 
 export interface SubmitFormConfig {
+  /** Control type. Defaults to 'button'. */
+  type?: 'button' | 'icon';
+  /** i18n key for the label (used by button type). */
   label?: string;
+  /** Material icon name (used by icon type). */
+  icon?: string;
+  /** Whether the submit control is disabled. */
   disabled?: boolean;
+  /** Whether it should be enabled by default. */
   enabledByDefault?: boolean;
+  /** Additional CSS classes for the button. */
   buttonStyle?: string;
+  /** Whether the form should be reset on submit. */
   resetOnSubmit?: boolean;
-  compareCommonKeysOnly?: boolean;
-  ignoredKeysWhileComparing?: string[];
+  /** Whether to emit on model change (not only on submit). */
   emitOnChange?: boolean;
+  /** Whether to disable submit while submitting. */
   disableOnSubmit?: boolean;
+  /** Whether the submit control is rendered. */
   submitAvailable?: boolean;
+  /** Whether to compare common keys only. */
+  compareCommonKeysOnly?: boolean;
+  /** Keys to ignore while comparing. */
+  ignoredKeysWhileComparing?: string[];
 }
 
 export interface FormSelectOption {

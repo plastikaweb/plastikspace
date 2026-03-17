@@ -15,6 +15,7 @@ import {
   FormattingComponentOutput,
   FormattingDateInput,
   FormattingExtras,
+  FormattingOutput,
   PropertyComponentFormattingConf,
   PropertyFormattingConf,
 } from '../formatting';
@@ -264,7 +265,7 @@ export class SharedUtilFormattersService {
    * @template T - The type of the attributes.
    * @param { string } value The value to format.
    * @param { PropertyFormattingConf } param The control configuration to format the object property value.
-   * @param { Function } param.execute  The function to execute to format the value.
+   * @param { (value: string, element?: T, index?: number, extras?: unknown) => FormattingOutput } param.execute  The function to execute to format the value.
    * @param { T } element The whole item object where the formatting property belongs.
    * @param { number } index The index of the object i a list (f.e. a table).
    * @param { T } extraConfig Extra configuration object to format values when defining `execute` method blueprint.

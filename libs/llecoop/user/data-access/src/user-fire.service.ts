@@ -1,6 +1,6 @@
-import { from, map, Observable, throwError } from 'rxjs';
+import { from, Observable } from 'rxjs';
 
-import { inject, Injectable, runInInjectionContext } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   DocumentData,
   limit,
@@ -15,13 +15,11 @@ import { EntityId } from '@ngrx/signals/entities';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
-import {
-  EntityFireService,
-  StoreFirebaseCrudPagination,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import { EntityFireService, FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
 import { StoreUserFilter } from './user-store';
+import { IdType } from '@plastik/core/entities';
 
 @Injectable({
   providedIn: 'root',
@@ -70,7 +68,7 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
   }
 
   protected override getPaginationConditions(
-    pagination: StoreFirebaseCrudPagination<LlecoopUser>,
+    pagination: FirebaseCrudPagination<LlecoopUser>,
     activeField: string
   ): QueryConstraint[] {
     const { pageSize, pageIndex, pageLastElements } = pagination;
@@ -96,8 +94,8 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
       toFirestore: (doc: LlecoopUser): DocumentData => {
         return {
           ...doc,
-          name: doc.name || doc.email,
-          normalizedName: latinize(doc.name || doc.email).toLowerCase(),
+          name: (doc.name as string) ?? doc.email,
+          normalizedName: latinize((doc.name as string) ?? doc.email).toLowerCase(),
           whiteListed: doc.whiteListed ?? true,
           registered: doc.registered ?? false,
           emailVerified: doc.emailVerified ?? false,
@@ -109,35 +107,13 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
     };
   }
 
-  override update(item: Partial<LlecoopUser>) {
+  override update(id: IdType<LlecoopUser>, item: Partial<LlecoopUser>) {
     this.#firebaseAuthService.updateEmail();
-    return super.update(item);
+    return super.update(id, item);
   }
 
   addAdminClaim(userId: EntityId): Observable<HttpsCallableResult<unknown>> {
     const callable = httpsCallable(this.#functions, 'setUserAdminClaim');
     return from(callable(userId));
-  }
-
-  getLoggedUser(): Observable<LlecoopUser> {
-    return runInInjectionContext(this.injectionContext, () => {
-      try {
-        const userId = this.#firebaseAuthService.currentUser()?.uid;
-
-        if (!userId) {
-          throw new Error('User not authenticated');
-        }
-        return this.getItem(userId).pipe(
-          map(user => {
-            if (!user) {
-              throw new Error('User not found');
-            }
-            return user;
-          })
-        );
-      } catch (error) {
-        return throwError(() => error);
-      }
-    });
   }
 }

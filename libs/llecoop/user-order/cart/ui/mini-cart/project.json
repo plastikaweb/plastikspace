@@ -1,0 +1,20 @@
+{
+  "name": "user-order-mini-cart",
+  "$schema": "../../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/llecoop/user-order/cart/ui/mini-cart/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["type:ui", "scope:llecoop"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../../../../coverage/libs/llecoop/user-order/cart/ui/mini-cart"
+      }
+    }
+  }
+}

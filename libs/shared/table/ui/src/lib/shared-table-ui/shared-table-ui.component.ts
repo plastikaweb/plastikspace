@@ -3,7 +3,6 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   KeyValuePipe,
-  NgClass,
   NgComponentOutlet,
   NgOptimizedImage,
   NgTemplateOutlet,
@@ -37,7 +36,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
-import { BaseEntity } from '@plastik/core/entities';
+import { BaseEntity, SortConfig } from '@plastik/core/entities';
 import {
   DataFormatFactoryService,
   FormattingTypes,
@@ -59,7 +58,6 @@ import {
   TableColumnFormatting,
   TableDefinition,
   TablePaginationVisibility,
-  TableSorting,
   TableSortingConfig,
 } from '@plastik/shared/table/entities';
 
@@ -70,7 +68,6 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   imports: [
     RouterLink,
     KeyValuePipe,
-    NgClass,
     NgComponentOutlet,
     NgTemplateOutlet,
     CdkTableModule,
@@ -96,9 +93,9 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   styleUrl: './shared-table-ui.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
-  implements OnInit
-{
+export class SharedTableUiComponent<
+  T extends BaseEntity & { [key: string]: unknown },
+> implements OnInit {
   protected dataFormatFactoryService = inject(DataFormatFactoryService);
   /**
    * Data that will populate the table.
@@ -173,7 +170,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   /**
    * An Output emitter to send table sorting changes.
    */
-  changeSorting = output<TableSorting>();
+  changeSorting = output<SortConfig>();
 
   /**
    * An Output emitter to send table delete action.
@@ -258,7 +255,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     });
   }
 
-  protected onChangeSorting({ active, direction }: TableSorting): void {
+  protected onChangeSorting({ active, direction }: SortConfig): void {
     this.changeSorting.emit({
       active,
       direction,

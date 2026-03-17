@@ -4,9 +4,8 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatRadioChange } from '@angular/material/radio';
 import { MatSelectChange } from '@angular/material/select';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
-import { MatSort } from '@angular/material/sort';
 import { EntityId } from '@ngrx/signals/entities';
-import { BaseEntity } from '@plastik/core/entities';
+import { BaseEntity, Sorting } from '@plastik/core/entities';
 import {
   FormattingComponentOutput,
   FormattingTypes,
@@ -375,17 +374,7 @@ export interface TableDefinition<OBJ extends BaseEntity> {
   getSelectedItemId?: Signal<EntityId | null>;
 }
 
-/**
- * @description Configuration type for sorting a table.
- * {active} is the current column id.
- * {direction} is the direction of the sorting, 'asc' | 'desc'.
- */
-export type TableSorting = Pick<MatSort, 'active' | 'direction'>;
-
-export type TableSortingConfig = [
-  active: TableSorting['active'],
-  direction: TableSorting['direction'],
-];
+export type TableSortingConfig = [active: Sorting['active'], direction: Sorting['direction']];
 
 /**
  * @description Configuration type for paginate a table.
@@ -404,8 +393,8 @@ export interface TablePaginationVisibility {
 }
 
 /**
- * @description The value to pass on dynamic table component as an @Output value.
- * Output property "changeSwitchEvent" fired on any switchCheckBox controller
+ * @description The value to pass on dynamic table component.
+Output property "changeSwitchEvent" fired on any switchCheckBox controller
  * that applies when any table row is using tableFormatting.BOOLEAN_WITH_CONTROL.
  */
 export interface TableSwitchEvent {

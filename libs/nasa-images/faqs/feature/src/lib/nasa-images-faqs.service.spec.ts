@@ -1,8 +1,10 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentWithApiMock } from '@plastik/core/environments/testing';
+import { firstValueFrom } from 'rxjs';
+import { describe, expect, it } from 'vitest';
 
 import { FAQ } from './faq';
 import { NasaImagesFaqsService } from './nasa-images-faqs.service';
@@ -14,10 +16,10 @@ describe('NasaImagesFaqsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideHttpClient(),
         provideHttpClientTesting(),
-        provideEnvironmentMock(),
+        provideEnvironmentWithApiMock(),
         NasaImagesFaqsService,
       ],
     });
@@ -29,20 +31,19 @@ describe('NasaImagesFaqsService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should have a method `getList` that handles the HTTP request that returns a list of FAQs', done => {
+  it('should have a method `getList` that handles the HTTP request that returns a list of FAQs', async () => {
     const faqs: FAQ[] = [
       { question: 'Q1', answer: 'A1' },
       { question: 'Q2', answer: 'A2' },
       { question: 'Q3', answer: 'A3' },
     ];
-    service.getList().subscribe(response => {
-      expect(response).toStrictEqual(faqs);
-      done();
-    });
+    const responsePromise = firstValueFrom(service.getList());
 
     const req = httpMock.expectOne({ method: 'GET', url: 'assets/json/faqs.json' });
 
     req.flush(faqs);
+    const response = await responsePromise;
+    expect(response).toStrictEqual(faqs);
     httpMock.verify();
   });
 });

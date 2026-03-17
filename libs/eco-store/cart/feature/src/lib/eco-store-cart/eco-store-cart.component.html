@@ -1,0 +1,15 @@
+<div class="cart-container">
+  <mat-stepper
+    linear
+    animationDuration="0ms"
+    labelPosition="bottom"
+    [attr.aria-label]="'cart.steps.title' | translate"
+    [selectedIndex]="selectedStepIndex()"
+    (selectionChange)="onStepChange($event)">
+    @for (step of steps; track step.route; let i = $index) {
+      <mat-step [label]="`${step.label}.title` | translate" [state]="step.state"> </mat-step>
+    }
+  </mat-stepper>
+
+  <router-outlet />
+</div>

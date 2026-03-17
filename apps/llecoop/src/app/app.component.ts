@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterOutlet } from '@angular/router';
 import { activityStore } from '@plastik/shared/activity/data-access';
@@ -15,6 +15,7 @@ import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification
     NotificationUiMatSnackbarDirective,
   ],
   templateUrl: './app.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
   protected readonly notificationStore = inject(notificationStore);

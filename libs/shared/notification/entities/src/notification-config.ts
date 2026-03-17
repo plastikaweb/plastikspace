@@ -1,14 +1,13 @@
 import { InjectionToken } from '@angular/core';
 
-import { NotificationTypesConfig } from './notification';
+import { Notification, NotificationTypesConfig } from './notification';
 
 export const defaultNotification: NotificationTypesConfig = {
   ['ERROR']: {
     type: 'ERROR',
-    icon: 'cancel',
+    icon: 'error',
     action: 'close',
-    ariaLabel: 'Close error notification',
-    duration: undefined,
+    duration: 5000,
   },
   ['WARNING']: {
     type: 'WARNING',
@@ -18,12 +17,13 @@ export const defaultNotification: NotificationTypesConfig = {
   ['INFO']: {
     type: 'INFO',
     icon: 'info',
-    duration: 5000,
+    duration: 3000,
   },
   ['SUCCESS']: {
     type: 'SUCCESS',
     icon: 'check',
-    duration: 5000,
+    action: 'close',
+    duration: 2000,
   },
 };
 
@@ -35,3 +35,9 @@ export const NOTIFICATION_TYPES_CONFIG = new InjectionToken<NotificationTypesCon
     factory: () => defaultNotification,
   }
 );
+
+/** Injection token with notification position. */
+export const NOTIFICATION_POSITION = new InjectionToken<{
+  verticalPosition: Notification['verticalPosition'];
+  horizontalPosition: Notification['horizontalPosition'];
+}>('notificationPosition');

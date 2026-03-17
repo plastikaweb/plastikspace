@@ -1,6 +1,9 @@
-# shared-mat-theme-toggle
+# @plastik/shared/mat-theme-toggle
 
-- [shared-mat-theme-toggle](#shared-mat-theme-toggle)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular Material](https://img.shields.io/badge/angular_material-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/shared/mat-theme-toggle](#plastiksharedmat-theme-toggle)
   - [Description](#description)
   - [Features](#features)
   - [Usage](#usage)
@@ -11,11 +14,11 @@
       - [Methods](#methods)
       - [Theme Configuration](#theme-configuration)
   - [Running unit tests](#running-unit-tests)
-  - [Useful links](#useful-links)
+  - [Resources](#resources)
 
 ## Description
 
-A reusable Angular Material theme toggle component that allows users to switch between light, dark, and system themes.
+A reusable **Angular Material theme toggle component** that allows users to switch between light, dark, and system themes.
 
 ## Features
 
@@ -69,6 +72,6 @@ Each theme has the following properties:
 
 Run `nx test shared-mat-theme-toggle` to execute the unit tests.
 
-## Useful links
+## Resources
 
 - [Angular Material - Supporting Light and Dark Mode](https://material.angular.io/guide/theming#supporting-light-and-dark-mode)

@@ -6,14 +6,21 @@ import { FormattingComponentOutput } from '@plastik/shared/formatters';
 import { TableColumnFormatting } from '@plastik/shared/table/entities';
 
 /**
+ * Type constraint for entities that have a category property
+ */
+type WithCategory = BaseEntity & {
+  category?: LlecoopProductCategory;
+};
+
+/**
  * @description Creates a table column formatting configuration for name category.
- * @template T - The type of the entity extending BaseEntity.
+ * @template T - The type of the entity extending BaseEntity with a category property.
  * @param {Partial<TableColumnFormatting<T, 'COMPONENT'>>} partialFormat - Partial formatting options to override the defaults.
  * @param {boolean} [withLink] - Whether to add a link to the name.
  * @param {string} [nameStyle] - The style to apply to the name.
  * @returns {TableColumnFormatting<T, 'COMPONENT'>} The table column formatting configuration.
  */
-export function categoryNameCell<T extends BaseEntity>(
+export function categoryNameCell<T extends WithCategory>(
   partialFormat: Partial<TableColumnFormatting<T, 'COMPONENT', UiCategoryNameCellComponent>> = {
     key: 'name',
     title: 'Categoria',

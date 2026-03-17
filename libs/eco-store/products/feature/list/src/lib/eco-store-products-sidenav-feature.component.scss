@@ -1,0 +1,37 @@
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.list-overrides(
+    (
+      list-item-one-line-container-height: 2.5rem,
+      list-item-two-line-container-height: 3rem,
+      list-item-three-line-container-height: 4rem,
+      list-item-hover-state-layer-opacity: 0.1,
+      list-item-hover-state-layer-color: var(--secondary-200),
+    )
+  );
+
+  @include mat.card-overrides(
+    (
+      filled-container-color: var(--transparent),
+    )
+  );
+
+  mat-list-item {
+    &:hover {
+      --mat-list-list-item-container-color: var(--secondary-100);
+      --mat-list-list-item-label-text-color: var(--secondary-900);
+    }
+
+    &.active {
+      --mat-list-list-item-container-color: var(--secondary-100);
+      --mat-list-list-item-label-text-color: var(--secondary-900);
+      --mat-list-list-item-hover-label-text-color: var(--secondary-900);
+      --mat-list-list-item-focus-label-text-color: var(--secondary-900);
+
+      &:hover {
+        --mat-list-list-item-container-color: var(--secondary-100);
+      }
+    }
+  }
+}

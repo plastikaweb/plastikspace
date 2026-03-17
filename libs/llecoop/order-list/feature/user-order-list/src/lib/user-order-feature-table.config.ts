@@ -16,9 +16,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserOrderSearchFeatureTableConfig
-  implements TableStructureConfig<LlecoopUserOrder>
-{
+export class LlecoopUserOrderSearchFeatureTableConfig implements TableStructureConfig<LlecoopUserOrder> {
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #userOrderUtilsService = inject(UserOrderUtilsService);

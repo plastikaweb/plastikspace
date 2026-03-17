@@ -1,0 +1,112 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  @include mat.progress-bar-overrides(
+    (
+      active-indicator-color: var(--primary-500),
+      track-color: var(--primary-200),
+    )
+  );
+
+  // Tier Visualization Styles
+  .tier-label {
+    transform: translateX(-50%);
+    transition: transform 0.3s ease;
+
+    &:first-of-type {
+      transform: translateX(0);
+    }
+
+    &:last-of-type {
+      transform: translateX(-105%);
+    }
+
+    &.active {
+      font-weight: bold;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 0.5rem;
+        padding: 0.125rem 0.25rem;
+        width: 150%;
+        height: 20px;
+        background-color: var(--neutral-100);
+        z-index: -1;
+      }
+    }
+  }
+
+  // Shipping Cost Labels
+  .shipping-cost-label {
+    transform: translateX(-50%);
+    transition: transform 0.3s ease;
+    color: var(--neutral-700);
+
+    &:first-of-type {
+      transform: translateX(0);
+    }
+
+    &:last-of-type {
+      transform: translateX(-100%);
+    }
+  }
+
+  // Shipping Status Box
+  .cart-order-price-slots__shipping {
+    transition:
+      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+    &.free {
+      background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
+      border-color: var(--primary-300);
+      color: var(--primary-700);
+
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-500),
+        )
+      );
+
+      mat-icon {
+        animation: pulse 2s ease-in-out infinite;
+      }
+    }
+
+    &.not-free {
+      background: linear-gradient(135deg, var(--error-50) 0%, var(--error-100) 100%);
+      border-color: var(--error-300);
+      color: var(--error-700);
+
+      @include mat.icon-overrides(
+        (
+          color: var(--error-500),
+        )
+      );
+
+      mat-icon {
+        animation: slide 1.5s ease-in-out infinite;
+      }
+    }
+
+    mat-icon {
+      transition:
+        color 0.3s ease,
+        transform 0.3s ease;
+    }
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+      transform: translateY(-1px);
+    }
+  }
+}

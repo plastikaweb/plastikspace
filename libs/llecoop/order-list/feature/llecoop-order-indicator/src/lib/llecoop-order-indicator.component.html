@@ -6,7 +6,7 @@
     [routerLink]="['./comandes/' + currentUserOrder()?.id]"
     [matBadge]="currentUserOrder()?.cart?.length || 0">
     <mat-icon matChipAvatar> shopping_cart </mat-icon>
-    <div class="flex flex-row justify-center items-center break-words gap-sub">
+    <div class="gap-sub flex flex-row items-center justify-center break-words">
       <span class="hidden md:flex"> #{{ currentUserOrder()?.name }} </span>
       <span class="hidden md:flex">|</span>
       <span class="text-balance">

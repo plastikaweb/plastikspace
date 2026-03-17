@@ -1,9 +1,10 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { InputPasswordWithVisibilityTypeComponent } from './input-password-with-visibility-type.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('InputPasswordWithVisibilityTypeComponent', () => {
   let component: InputPasswordWithVisibilityTypeComponent;
@@ -11,9 +12,10 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
       imports: [
         ReactiveFormsModule,
+        TranslateModule.forRoot(),
         FormlyModule.forRoot({
           types: [
             {

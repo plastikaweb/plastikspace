@@ -1,7 +1,8 @@
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideMockStore } from '@ngrx/store/testing';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
@@ -18,7 +19,7 @@ describe('NasaImagesFaqsFeatureComponent', () => {
     await TestBed.configureTestingModule({
       imports: [NasaImagesFaqsFeatureComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideMockStore(),
         provideHttpClient(),
         { provide: VIEW_CONFIG, useValue: signal([]) },
@@ -37,7 +38,6 @@ describe('NasaImagesFaqsFeatureComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

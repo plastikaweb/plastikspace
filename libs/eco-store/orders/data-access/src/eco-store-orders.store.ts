@@ -1,0 +1,73 @@
+import { inject } from '@angular/core';
+import { signalStore, withMethods, withProps } from '@ngrx/signals';
+import { initialGetListState, withPocketBaseCrud } from '@plastik/signal-state/pocketbase';
+
+import { Router } from '@angular/router';
+import { DataCrud } from '@plastik/core/api-base';
+import { BasePocketBaseEntityFilter } from '@plastik/core/entities';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreOrder } from '@plastik/eco-store/entities';
+import { activityStore } from '@plastik/shared/activity/data-access';
+import { ListResult } from 'pocketbase';
+import { EcoStoreOrdersApiService } from './eco-store-orders-api.service';
+
+export type OrdersPocketBaseCrudState = DataCrud<EcoStoreOrder, ListResult<EcoStoreOrder>>;
+
+/**
+ * Filter configuration for orders list.
+ * Extends the base PocketBase entity filter with an optional status.
+ */
+export interface OrdersPocketBaseFilter extends BasePocketBaseEntityFilter {
+  status: string | null;
+}
+
+export const ecoStoreOrdersStore = signalStore(
+  { providedIn: 'root' },
+  withPocketBaseCrud<EcoStoreOrder, OrdersPocketBaseCrudState>({
+    featureName: 'orders',
+    dataServiceType: EcoStoreOrdersApiService,
+    customInitialState: {
+      paginationSizeOptions: [10, 20, 40],
+      pagination: {
+        page: 1,
+        perPage: 10,
+      },
+      filter: {
+        status: null,
+      } as OrdersPocketBaseFilter,
+      sortOptions: {
+        ...initialGetListState().sortOptions,
+        status: [
+          { id: 3, direction: 'desc', icon: 'arrow_downward' },
+          { id: 3, direction: 'asc', icon: 'arrow_upward' },
+        ],
+      },
+      apiRequestDebounceTime: 0,
+      isLoading: false,
+    },
+  }),
+  withProps(() => ({
+    _cartStore: inject(ecoStoreCartStore),
+    _router: inject(Router),
+    _activityStore: inject(activityStore),
+  })),
+
+  withMethods(store => {
+    return {
+      async createOrder() {
+        store._activityStore.setActivity(true, 'cart.finish.creatingOrder');
+        try {
+          const data = store._cartStore.toOrder();
+          const newOrder = await store.create(data, {}, { success: false, error: true });
+
+          if (newOrder) {
+            store._cartStore.resetCartAfterCheckout();
+            await store._router.navigate(['/comandes', 'nova', newOrder.id]);
+          }
+        } finally {
+          store._activityStore.setActivity(false);
+        }
+      },
+    };
+  })
+);

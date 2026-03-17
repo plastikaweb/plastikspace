@@ -1,4 +1,7 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+// eslint-disable-next-line @nx/enforce-module-boundaries
+import '@plastik/shared/testing';
+
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { LlecoopProductFireService } from './product-fire.service';
@@ -9,14 +12,14 @@ describe('LlecoopProductFireService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           provide: LlecoopProductFireService,
           useValue: {
-            getAll: jest.fn(),
-            create: jest.fn(),
-            update: jest.fn(),
-            delete: jest.fn(),
+            getAll: vi.fn(),
+            create: vi.fn(),
+            update: vi.fn(),
+            delete: vi.fn(),
           },
         },
       ],

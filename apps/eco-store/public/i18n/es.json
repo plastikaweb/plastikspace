@@ -1,0 +1,449 @@
+{
+  "common": {
+    "loading": "Cargando dades...",
+    "close": "Cerrar",
+    "edit": "Editar",
+    "add": "Añadir",
+    "remove": "Eliminar",
+    "cancel": "Cancelar",
+    "submit": "Enviar",
+    "save": "Guardar",
+    "navigation": {
+      "previous": "Volver a la página anterior",
+      "next": "Ir a la página siguiente",
+      "backToStore": "Volver a la tienda"
+    },
+    "weekdays": {
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes",
+      "saturday": "Sábado"
+    },
+    "address": {
+      "default": "Dirección predeterminada"
+    },
+    "form": {
+      "error": {
+        "email": "El formato del correo electrónico no es correcto",
+        "required": "El campo es obligatorio",
+        "minLength": "El campo debe tener al menos {value} caracteres",
+        "maxLength": "El campo debe tener más de {value} caracteres"
+      },
+      "charactersCount": "{count, plural, one {carácter} other {caracteres}}"
+    },
+    "a11y": {
+      "skipToContent": "Saltar al contenido principal",
+      "loading": "Cargando datos",
+      "mainNavigation": "Navegación principal",
+      "userActions": "Acciones del usuario",
+      "categoriesNavigation": "Navegación de categorías",
+      "productCategories": "Categorías de productos",
+      "productQuantity": "Cantidad de {product} - {quantity}",
+      "productList": "Lista de productos",
+      "sortProducts": "Ordenar productos",
+      "productsCount": "{count} productos",
+      "categoryIcon": "{category} icono",
+      "closeSidenav": "Cerrar menú lateral",
+      "openSidenav": "Abrir menú lateral",
+      "ecoIcon": "Icono ecológico"
+    },
+    "paginator": {
+      "firstPage": "Primera página",
+      "itemsPerPage": "Elementos por página",
+      "lastPage": "Última página",
+      "nextPage": "Página siguiente",
+      "noItems": "{length} elementos",
+      "previousPage": "Página anterior",
+      "range": "{start} - {end} de {total}",
+      "rangeLabel": "de"
+    },
+    "error": {
+      "image": "Ha habido un error al cargar la imagen"
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Iniciar sesión",
+      "subtitle": "Comunidad Cooperativa",
+      "loading": "Iniciando sesión...",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "rememberMe": "Recordar sesión",
+      "recoverAccess": "¿Has olvidado la contraseña?",
+      "newUserQuestion": "¿Aún no eres socio?",
+      "createAccount": "Si eres socio de la cooperativa, regístrate aquí",
+      "submit": "Iniciar sesión",
+      "termsPrivacy": "Al continuar, aceptas nuestros Términos y Política de Privacidad."
+    },
+    "error": {
+      "login": "Revisa tus credenciales"
+    }
+  },
+  "store": {
+    "title": "Tienda Eco",
+    "pageTitle": "Tienda Eco - Productos ecológicos y sostenibles",
+    "search": {
+      "placeholder": "Buscar productos o categorías",
+      "label": "Buscar productos o categorías",
+      "submit": "Buscar"
+    },
+    "status": {
+      "open": "Abierto",
+      "open24h": "Abierto 24/7",
+      "closed": "Cerrado",
+      "closedManually": "Cerrado temporalmente",
+      "openingSoon": "ABRE PRONTO",
+      "closingSoon": "CIERRA PRONTO",
+      "opensIn": "Abre en",
+      "cancelled": "No disponible",
+      "closedOpensAt": "Cerrado. Abre el {date} a las {time}",
+      "closedMessage": "La tienda está cerrada. No puedes modificar tu carrito.",
+      "statusBanner": {
+        "closedTitle": "Tienda en mode consulta",
+        "closedDescription": "Los pedidos abren el día {date} a las {time}",
+        "openingSoonTitle": "¡Preparad las cestas!",
+        "openingSoonDescription": "Estamos a punto de abrir la ventana de pedidos.",
+        "closingSoonTitle": "¡La tienda cerrará pronto!",
+        "closingSoonDescription": "Haz tu pedido antes de las {time}.",
+        "closedManuallyTitle": "Cierre temporal",
+        "cancelledTitle": "Servicio no disponible",
+        "cancelledDescription": "Esta tienda está desactivada actualmente. Contacta con soporte para más información.",
+        "dismiss": "Cerrar aviso del estado de la tienda"
+      }
+    },
+    "menu": {
+      "home": "Inicio",
+      "store": "Tienda",
+      "about": "Quiénes Somos",
+      "contact": "Contacto",
+      "cart": "Carrito",
+      "favorites": "Favoritos",
+      "orders": "Pedidos",
+      "login": "Acceder",
+      "logout": "Cerrar sesión",
+      "profile": "Perfil de {name}",
+      "profilePage": "Ver perfil",
+      "hello": "Hola {name}",
+      "viewCart": "Ir al carrito de compra, {productCount} productos, precio total: {productPrice}",
+      "viewFavorites": "Ir a los favoritos"
+    }
+  },
+  "products": {
+    "all": "Todos los productos",
+    "total": "productos",
+    "origin": "Origen",
+    "provider": "Productor",
+    "technicalInfo": "Detalles y Especificaciones",
+    "opinions": {
+      "title": "Opinions",
+      "write": "Escribir una opinión",
+      "user": "Usuario eco-consciente",
+      "date": "Hace 2 días",
+      "placeholder": "Muy buen producto, se nota la calidad de los ingredientes. El envasado es impecable y el sabor realmente se nota que es ecológico.",
+      "count": "{count, plural, =0 {(sin valoraciones)} one {(1 valoración)} other {(# valoraciones)}}"
+    },
+    "goToDetail": "Ver detalle",
+    "favorite": "Agregar {value} a favoritos",
+    "favoriteAdd": "Añadir a favoritos",
+    "favoriteRemove": "Quitar de favoritos",
+    "related": "También te podría interesar",
+    "storeClosed": "Tienda Cerrada",
+    "stock": {
+      "out": "Agotado",
+      "low": "Pocas unidades ({stock} disponibles)",
+      "available": "Disponible (Entrega 24/48h)"
+    },
+    "tag": {
+      "eco": "ECO",
+      "new": "NOVEDAD",
+      "offer": "OFERTA"
+    },
+    "categories": {
+      "all": "Todas las categorías",
+      "error": "Ha ocurrido un error al cargar las categorías"
+    },
+    "filter": {
+      "sort": {
+        "label": "Ordenar",
+        "relevance": "Más valorados",
+        "priceWithIvaAsc": "Precio ascendente",
+        "priceWithIvaDesc": "Precio descendente",
+        "updatedAsc": "Más antiguos",
+        "updatedDesc": "Más recientes"
+      },
+      "ecologic": "Ecológico"
+    },
+    "quantity": {
+      "label": "Cant:",
+      "add": "Agregar",
+      "addLong": "Agregar al carrito",
+      "remove": "Eliminar",
+      "decrement": "Disminuir",
+      "increment": "Aumentar"
+    },
+    "modified": {
+      "title": "Cambios sin guardar",
+      "description": "Has cambiado la cantidad pero no la has actualizado en tu carrito. ¿Quieres quedarte y guardar los cambios?",
+      "cancel": "Quedarse y guardar",
+      "leave": "Salir sin guardar"
+    },
+    "unit": {
+      "price": {
+        "unit": "Precio por unidad",
+        "weight": "Precio por kg",
+        "volume": "Precio per L"
+      },
+      "measure": {
+        "unit": "Precio por unidad",
+        "weight": "Pesa {value} kg",
+        "volume": "Ocupa {value} L",
+        "unitWithFixedWeight": "Pesa {value} kg",
+        "unitWithFixedVolume": "Ocupa {value} L",
+        "unitWithVariableWeight": "Peso variable",
+        "unitWithVariableVolume": "Volumen variable"
+      },
+      "type": {
+        "unit": "Unidad",
+        "weight": "Peso",
+        "volume": "Volumen",
+        "unitWithFixedWeight": "Unidad",
+        "unitWithFixedVolume": "Unidad",
+        "unitWithVariableWeight": "Kg",
+        "unitWithVariableVolume": "L"
+      },
+      "count": {
+        "unit": "{count, plural, one {unidad} other {unidades}}",
+        "weight": "{count, plural, one {kg} other {kg}}",
+        "volume": "{count, plural, one {L} other {L}}",
+        "unitWithFixedWeight": "{count, plural, one {unidad} other {unidades}}",
+        "unitWithFixedVolume": "{count, plural, one {unidad} other {unidades}}",
+        "unitWithVariableWeight": "{count, plural, one {kg} other {kg}}",
+        "unitWithVariableVolume": "{count, plural, one {L} other {L}}"
+      },
+      "abbr": {
+        "unit": "ud.",
+        "weight": "kg",
+        "volume": "L",
+        "unitWithFixedWeight": "ud.",
+        "unitWithFixedVolume": "ud.",
+        "unitWithVariableWeight": "kg",
+        "unitWithVariableVolume": "L"
+      }
+    }
+  },
+  "cart": {
+    "productAdded": "{name} - agregado",
+    "productRemoved": "{name} - eliminado",
+    "steps": {
+      "title": "Pasos del pedido",
+      "summary": {
+        "title": "Carrito",
+        "subtitle": "Revisa los detalles de tu pedido."
+      },
+      "shipping": {
+        "title": "Entrega",
+        "subtitle": "Elige si quieres recibir o recoger tu pedido.",
+        "unavailable": {
+          "title": "¡Casi listo! Estamos preparando el envío",
+          "description": {
+            "part1": "Estamos terminando de configurar nuestras",
+            "part2": "rutas de entrega",
+            "part3": "y franjas horarias para ofrecerte el mejor servicio posible."
+          },
+          "info": {
+            "title": "Qué puedes hacer mientras tanto",
+            "item1": "Puedes seguir añadiendo productos a tu carrito.",
+            "item2": "Guardaremos tu selección hasta que el proceso de pago esté activo.",
+            "item3": "Puedes cerrar la sesión tranquilamente; tu cesta te esperará cuando vuelvas."
+          },
+          "actions": {
+            "goToShop": "Volver a la tienda"
+          }
+        }
+      },
+      "payment": {
+        "title": "Pago",
+        "subtitle": "Elige cómo quieres pagar tu pedido."
+      },
+      "confirmation": {
+        "title": "Confirmación",
+        "subtitle": "Elige cómo quieres recibir tu pedido."
+      }
+    },
+    "summary": {
+      "headTitle": "Pedido - carrito",
+      "title": "Resumen del pedido",
+      "resume": "Resumen",
+      "subtotal": "Subtotal",
+      "taxes": "Impuestos (IVA)",
+      "total": "Total",
+      "includingVat": "IVA incluido",
+      "itemsCount": "{value} productos",
+      "itemsCountSuffix": "artículos en la cesta",
+      "shipping": "Envío",
+      "pickup": "Recogida en la tienda",
+      "delivery": "Envío a domicilio",
+      "goToShipping": "Continuar a Envío",
+      "freeShippingPromo": "¡Añade {value} más para envío GRATIS!",
+      "priceIncrease": "¡Subida de precio!",
+      "priceDrop": "¡Bajada de precio!",
+      "oldPrice": "Precio anterior",
+      "checkoutDisabled": "Los pedidos están desactivados.",
+      "checkoutDisabledInDate": "Los pedidos están desactivados. La tienda abre el {date} a las {time}.",
+      "removeItem": "Eliminar artículo de la cesta",
+      "noResults": {
+        "title": "Tu cesta está vacía",
+        "description": "¡Empieza a llenarla con tus productos preferidos!"
+      }
+    },
+    "shipping": {
+      "headTitle": "Pedido - entrega",
+      "cost": "Envío",
+      "cartCost": "Carrito",
+      "free": "GRATIS",
+      "freeAlways": "GRATIS",
+      "freeFrom": "GRATIS desde {amount}",
+      "freeAchieved": "¡Has conseguido envío gratuito!",
+      "remainingForFree": "¡Faltan {amount} más para envío GRATIS!",
+      "goToConfirmation": "Continuar al resumen del pedido",
+      "method": {
+        "title": "Método de entrega",
+        "pickup": {
+          "title": "Recogida en la tienda.",
+          "description": "Pasa por la tienda y recoge tu pedido."
+        },
+        "delivery": {
+          "title": "Envío a domicilio.",
+          "description": "Te llevamos tu pedido a tu dirección."
+        },
+        "all": {
+          "title": "Elige si quieres recibir tu pedido en casa o recogerlo en la tienda.",
+          "description": "Elige si quieres recibir tu pedido en casa o recogerlo en la tienda."
+        }
+      },
+      "address": {
+        "title": "Elige dónde quieres recibir tu pedido.",
+        "pickup": {
+          "title": "Elige dónde quieres recoger tu pedido.",
+          "description": "Pasa por la tienda y recoge tu pedido."
+        },
+        "delivery": {
+          "title": "Elige dónde quieres recibir tu pedido.",
+          "description": "Te llevamos tu pedido a tu dirección."
+        }
+      },
+      "slot": {
+        "pickup": {
+          "title": "Elige cuándo quieres recoger tu pedido.",
+          "description": "Pasa por la tienda y recoge tu pedido."
+        },
+        "delivery": {
+          "title": "Elige cuándo quieres recibir tu pedido.",
+          "description": "Te llevamos tu pedido a tu dirección."
+        },
+        "date": "Seleccionar día",
+        "time": "Franja horaria"
+      },
+      "weekdaysLabels": {
+        "sunday": "Próximo Domingo",
+        "monday": "Próximo Lunes",
+        "tuesday": "Próximo Martes",
+        "wednesday": "Próximo Miércoles",
+        "thursday": "Próximo Jueves",
+        "friday": "Próximo Viernes",
+        "saturday": "Próximo Sábado"
+      }
+    },
+    "confirmation": {
+      "headTitle": "Pedido - confirmación",
+      "title": "Confirma tu pedido",
+      "productsInCart": "Productos en el carrito",
+      "deliverySummary": "Resumen de entrega",
+      "deliveryMethod": "Tipo",
+      "deliveryTimeSlot": "Horario previsto",
+      "deliveryAddress": "Dirección",
+      "modifyCart": "Modificar carrito",
+      "modifyDelivery": "Modificar entrega",
+      "notes": "Notas para la preparación o entrega (Opcional)",
+      "notesPlaceholder": "Ej: Si tengo algún problema te llamo antes.",
+      "paymentNotice": "Sobre su pago",
+      "paymentNoticeDescription": "Trabajamos con productos frescos y locales donde los pesos pueden variar. Pagará el precio exacto basado en el peso final en el momento de la entrega o recogida.",
+      "confirmOrder": "Confirmar Pedido"
+    },
+    "finish": {
+      "headTitle": "Pedido - finalizado",
+      "title": "¡Gracias por tu pedido!",
+      "creatingOrder": "Generando pedido... un momento por favor",
+      "orderNumber": "Pedido Número:",
+      "emailNotice": "Tu pedido se ha procesado correctamente. Te hemos enviado un resumen a tu correo electrónico:",
+      "orderReadyNotification": "En breve prepararemos tu cesta. Te notificaremos cuando esté lista con el peso exacto y el precio definitivo.",
+      "modifyReminder": "Si te has olvidado algo, no te preocupes: puedes hacer cambios desde tu perfil mientras el período de pedidos esté abierto.",
+      "ordersHistory": "Historial de pedidos",
+      "backToStore": "Volver a la tienda",
+      "ecoBadgeAlt": "Sello de producto local y de proximidad"
+    }
+  },
+  "orders": {
+    "list": {
+      "title": "Mis pedidos",
+      "description": "Gestiona y consulta el historial de tus compras sostenibles.",
+      "loading": "Cargando pedidos",
+      "loadedCount": "{count, plural, =0 {No se han encontrado pedidos} one {Mostrando 1 pedido} other {Mostrando # pedidos}}",
+      "filterTitle": "Filtrar pedidos",
+      "list": "Lista de pedidos",
+      "empty": "Aún no tienes ningún pedido.",
+      "emptyWithStatus": "No tienes ningún pedido con el estado {status}.",
+      "emptyImage": "Ilustración de estado vacío",
+      "emptyDescription": "Parece que aún no has realizado ninguna compra. ¡Descubre nuestros productos ecológicos y de proximidad!",
+      "emptyDescriptionWithStatus": "Prueba a cambiar los filtros.",
+      "goToStore": "Ir a la tienda",
+      "pagination": "Paginación de pedidos"
+    },
+    "card": {
+      "label": "Pedido",
+      "orderNumber": "Número de pedido",
+      "status": "Estado",
+      "date": "Fecha",
+      "pricingInfo": "Información de precio",
+      "total": "Total",
+      "itemsList": "Productos incluidos",
+      "items": "{count, plural, one {# producto} other {# productos}}",
+      "deliveryMethod": "Método de entrega",
+      "viewDetail": "Ver detalle",
+      "viewDetailOf": "Ver detalles del pedido #{orderNumber}"
+    },
+    "deliveryMethod": {
+      "delivery": "Envío a domicilio",
+      "pickup": "Recogida en la tienda"
+    },
+    "status": {
+      "delivered": "Entregado",
+      "pending": "Pendiente",
+      "confirmed": "Confirmado",
+      "preparing": "Preparando",
+      "ready": "Preparado",
+      "cancelled": "Cancelado"
+    },
+    "filter": {
+      "all": "TODAS",
+      "status": "Estado del pedido",
+      "sort": {
+        "label": "Ordenar",
+        "statusAsc": "Estado ascendente",
+        "statusDesc": "Estado descendente",
+        "updatedAsc": "Más antiguos",
+        "updatedDesc": "Más recientes"
+      }
+    }
+  },
+  "users": {
+    "role": {
+      "PARTNER": "Socio Cooperativa",
+      "GLOBAL_ADMIN": "Super Administrador",
+      "TENANT_ADMIN": "Administrador"
+    }
+  }
+}

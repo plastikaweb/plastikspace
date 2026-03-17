@@ -1,4 +1,3 @@
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -28,13 +27,7 @@ const LOADER_IMG_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-img-loader',
-  imports: [
-    MatIconModule,
-    MatButtonModule,
-    MatProgressSpinnerModule,
-    SharedImgContainerComponent,
-    NgClass,
-  ],
+  imports: [MatIconModule, MatButtonModule, MatProgressSpinnerModule, SharedImgContainerComponent],
   providers: [LOADER_IMG_ACCESSOR, BytesToSizePipe],
   templateUrl: './input-img-loader.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

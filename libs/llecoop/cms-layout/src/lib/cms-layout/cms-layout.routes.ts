@@ -7,23 +7,15 @@ import { ENVIRONMENT } from '@plastik/core/environments';
 import { LlecoopEnvironment } from '@plastik/llecoop/entities';
 import { imageKitLoader } from '@plastik/storage/data-access';
 
-import { loadProfileResolver } from './load-profile.resolver';
 import { LlecoopMatPaginatorIntl } from './mat-paginator-intl.service';
 
-/**
- * @returns {LlecoopEnvironment} The environment object.
- */
-function getEnvironment(): LlecoopEnvironment {
-  return inject(ENVIRONMENT) as LlecoopEnvironment;
-}
+const getEnvironment = (): LlecoopEnvironment => inject(ENVIRONMENT) as LlecoopEnvironment;
 
 const hasCustomClaim = (claim: string) => async (): Promise<boolean> => {
   const auth = inject(Auth);
   const idTokenResult = await auth.currentUser?.getIdTokenResult();
   return !!idTokenResult?.claims[claim];
 };
-
-const adminOnly = () => hasCustomClaim('isAdmin');
 
 const customAuthGuard: CanActivateFn = async route => {
   const auth = inject(Auth);
@@ -34,10 +26,16 @@ const customAuthGuard: CanActivateFn = async route => {
     return false;
   }
 
-  const authPipe = route.data['authGuardPipe']?.();
-  if (!authPipe) return true;
+  const authPipeType = route.data['authGuardPipe'];
+  if (!authPipeType) return true;
 
-  const isAuthorized = await authPipe();
+  let isAuthorized = false;
+
+  if (authPipeType === 'ADMIN_ONLY') {
+    const adminCheck = hasCustomClaim('isAdmin');
+    isAuthorized = await adminCheck();
+  }
+
   if (!isAuthorized) {
     await router.navigate(['/']);
   }
@@ -80,15 +78,13 @@ export const llecoopLayoutRoutes: Routes = [
         },
       },
     ],
-    resolve: {
-      resolveUser: loadProfileResolver,
-    },
     children: [
       {
         path: 'categories',
         canActivate: [customAuthGuard],
+
         data: {
-          authGuardPipe: adminOnly,
+          authGuardPipe: 'ADMIN_ONLY',
           mustBeStored: true,
         },
         children: [
@@ -119,7 +115,7 @@ export const llecoopLayoutRoutes: Routes = [
         path: 'productes',
         canActivate: [customAuthGuard],
         data: {
-          authGuardPipe: adminOnly,
+          authGuardPipe: 'ADMIN_ONLY',
           mustBeStored: true,
         },
         children: [
@@ -150,7 +146,7 @@ export const llecoopLayoutRoutes: Routes = [
         path: 'usuaris',
         canActivate: [customAuthGuard],
         data: {
-          authGuardPipe: adminOnly,
+          authGuardPipe: 'ADMIN_ONLY',
           mustBeStored: true,
         },
         children: [
@@ -182,7 +178,7 @@ export const llecoopLayoutRoutes: Routes = [
             path: 'totes',
             canActivate: [customAuthGuard],
             data: {
-              authGuardPipe: adminOnly,
+              authGuardPipe: 'ADMIN_ONLY',
               mustBeStored: true,
             },
             loadChildren: () =>
@@ -194,7 +190,7 @@ export const llecoopLayoutRoutes: Routes = [
             path: 'setmanals',
             canActivate: [customAuthGuard],
             data: {
-              authGuardPipe: adminOnly,
+              authGuardPipe: 'ADMIN_ONLY',
               mustBeStored: true,
             },
             loadChildren: () =>
@@ -234,18 +230,15 @@ export const llecoopLayoutRoutes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'comandes',
-        pathMatch: 'full',
+        loadChildren: () =>
+          import('@plastik/llecoop/user-order-product-list/feature').then(
+            routes => routes.llecoopUserOrderProductListFeatureRoutes
+          ),
       },
     ],
   },
   {
-    path: '',
-    redirectTo: 'comandes',
-    pathMatch: 'full',
-  },
-  {
     path: '**',
-    redirectTo: 'comandes',
+    redirectTo: '',
   },
 ];

@@ -1,0 +1,45 @@
+@use '@angular/material' as mat;
+@use 'core_tailwind_theme';
+
+:host {
+  @include mat.sidenav-overrides(
+    (
+      container-shape: 0,
+      container-width: 100dvw,
+      container-background-color: var(--tertiary-100),
+    )
+  );
+
+  @media (min-width: theme(--breakpoint-md)) {
+    @include mat.sidenav-overrides(
+      (
+        container-width: 20rem,
+        container-background-color: var(--transparent),
+      )
+    );
+  }
+
+  .mat-drawer-container {
+    background: var(--transparent);
+  }
+
+  .mat-drawer.mat-drawer-over {
+    transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    visibility: visible !important;
+  }
+
+  /* Disable transitions on desktop to prevent "jump" when content loads */
+  @media (min-width: theme(--breakpoint-md)) {
+    .mat-drawer {
+      transition: none !important;
+    }
+
+    .mat-drawer-transition .mat-drawer {
+      transition: none !important;
+    }
+
+    .mat-drawer-transition .mat-drawer-content {
+      transition: none !important;
+    }
+  }
+}

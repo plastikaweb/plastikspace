@@ -1,0 +1,117 @@
+@import 'tailwindcss/theme';
+
+@theme {
+  --font-family-poppins: 'Poppins', sans-serif;
+
+  --color-primary-light: var(--primary-light);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+
+  --color-secondary-light: var(--secondary-light);
+  --color-secondary: var(--secondary);
+  --color-secondary-dark: var(--secondary-dark);
+
+  --color-gray-5: #fafafa;
+  --color-gray-10: #e6e6e6;
+  --color-gray-20: #c9c9c9;
+  --color-gray-30: #adadad;
+  --color-gray-40: #919191;
+  --color-gray-50: #757575;
+  --color-gray-60: #5c5c5c;
+  --color-gray-70: #454545;
+  --color-gray-80: #2e2e2e;
+  --color-gray-90: #171717;
+
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+
+  --color-error: var(--plastik-error-notification-box-color);
+  --color-info: var(--plastik-info-notification-box-color);
+  --color-warning: var(--plastik-warning-notification-box-color);
+  --color-success: var(--plastik-success-notification-box-colors);
+
+  --spacing-0: 0;
+  --spacing-tiny: var(--spacing-tiny, 0.25rem);
+  --spacing-sub: var(--spacing-sub, 0.5rem);
+  --spacing-sm: var(--spacing-sm, 1rem);
+  --spacing-md: var(--spacing-md, 1.5rem);
+  --spacing-lg: var(--spacing-lg, 2rem);
+  --spacing-xl: var(--spacing-xl, 3rem);
+  --spacing-xxl: var(--spacing-xxl, 6rem);
+  --spacing-half: 50%;
+  --spacing-third: 33.33333%;
+  --spacing-quarter: 25%;
+  --spacing-full: 100%;
+
+  --flex-basis-0: 0;
+  --flex-basis-1: 1rem;
+  --flex-basis-2: 2rem;
+  --flex-basis-3: 3rem;
+  --flex-basis-4: 4rem;
+  --flex-basis-5: 5rem;
+
+  --font-size-tiny: var(--font-size-tiny, 0.7rem);
+  --font-size-sm: var(--font-size-sm, 0.85rem);
+  --font-size-base: var(--font-size-base, 1rem);
+  --font-size-md: var(--font-size-md, 1.4rem);
+  --font-size-lg: var(--font-size-lg, 1.8rem);
+  --font-size-xl: var(--font-size-xl, 2.2rem);
+  --font-size-xxl: var(--font-size-xxl, 2.6rem);
+
+  --font-weight-thin: 100;
+  --font-weight-extralight: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+  --font-weight-black: 900;
+
+  @keyframes radar {
+    0% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+
+    4.9% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 0;
+    }
+
+    5% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+
+    100% {
+      top: 0;
+      left: 0;
+      width: 72px;
+      height: 72px;
+      opacity: 0;
+    }
+  }
+
+  --animate-radar: radar 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  --animate-fast-radar: radar 0.9s cubic-bezier(0, 0.35, 0.55, 1) infinite;
+}
+
+@layer base {
+  input[type='search']::-webkit-search-decoration,
+  input[type='search']::-webkit-search-cancel-button,
+  input[type='search']::-webkit-search-results-button,
+  input[type='search']::-webkit-search-results-decoration {
+    display: none;
+  }
+}

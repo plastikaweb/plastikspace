@@ -1,5 +1,6 @@
 import { Location } from '@angular/common';
-import { inject, Injectable } from '@angular/core';
+import { DestroyRef, inject, Injectable } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router } from '@angular/router';
 
 import { NavigationProps } from '../navigation';
@@ -10,10 +11,11 @@ import { NavigationProps } from '../navigation';
 export class NavigationService {
   readonly #router = inject(Router);
   readonly #location = inject(Location);
+  readonly #destroyRef = inject(DestroyRef);
   #history: string[] = [];
 
   constructor() {
-    this.#router.events.subscribe(event => {
+    this.#router.events.pipe(takeUntilDestroyed(this.#destroyRef)).subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.#history = [event.urlAfterRedirects, ...this.#history];
       }
@@ -22,30 +24,33 @@ export class NavigationService {
   /**
    * @description Navigate to a concrete URL with params and extras if needed.
    * @param { NavigationProps } navigationProps The navigation configuration properties.
+   * @returns {Promise<boolean>} A promise that resolves to true if navigation succeeds.
    */
-  navigate({ path, extras }: NavigationProps): void {
-    this.#router.navigate(path, { queryParams: extras?.queryParams, fragment: extras?.fragment });
+  navigate({ path, extras }: NavigationProps): Promise<boolean> {
+    return this.#router.navigate(path, {
+      queryParams: extras?.queryParams,
+      fragment: extras?.fragment,
+    });
   }
 
   /**
    * @description Go back to previous URL.
    * @param {string} backBaseUrl The default back URL. Use it when we have no navigation history.
    * @param {RegExp} regex An instruction to accomplish when we want to redirect to an specific previous URL that must satisfy the regex pattern.
+   * @returns {Promise<void>} A promise that resolves when the navigation is complete.
    */
-  back(backBaseUrl?: string, regex?: RegExp): void {
+  async back(backBaseUrl?: string, regex?: RegExp): Promise<void> {
     if (this.#history.length && regex) {
       this.#history.shift();
-      for (const url of this.#history) {
-        if (regex.test(url)) {
-          this.#router.navigateByUrl(url);
-          return;
-        }
+      const url = this.#history.find(url => regex.test(url));
+      if (url !== undefined) {
+        await this.#router.navigateByUrl(url);
+        return;
       }
-      // If no match for previous URL is found, redirect to default one or previous one.
-      backBaseUrl ? this.#router.navigateByUrl(backBaseUrl || '/') : this.#location.back();
-      return;
-    } else if (backBaseUrl) {
-      this.#router.navigateByUrl(backBaseUrl || '/');
+    }
+
+    if (backBaseUrl) {
+      await this.#router.navigateByUrl(backBaseUrl || '/');
     } else {
       this.#location.back();
     }

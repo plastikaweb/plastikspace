@@ -1,45 +1,49 @@
-# core-ng-entry-html-util
+# @plastik/core/ng-entry-html
 
-- [core-ng-entry-html-util](#core-ng-entry-html-util)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/core/ng-entry-html](#plastikcoreng-entry-html)
   - [Description](#description)
-  - [Single index.html](#single-indexhtml)
+  - [Single Index HTML](#single-index-html)
+  - [Configuration Steps](#configuration-steps)
 
 ## Description
 
-A collection of configuration files to share and avoid DRY between angular applications.
+A collection of configuration files to share and avoid DRY between Angular applications, focusing on a robust **Single Entry HTML** strategy.
 
 ![loading html example page](loading.png)
 
-> initial loading example for project nasa-images
+> Initial loading example (e.g., nasa-images)
 
-## Single index.html
+## Single Index HTML
 
-We are using a single `index.html` file for root angular template bootstrapping.
+We use a shared `index.html` file for bootstrapping all Angular applications. This ensures consistent meta tags, loading states, and structure.
 
-Each time we add a new application, we should:
+## Configuration Steps
 
-- Remove the automatically created app `index.html` file inside `{new-app}/src` folder.
-- Update `project.json` application `architect/build/options/index` property value in order to point to the shared `index.html` file:
+When creating a new application:
 
-```json
- "index": "libs/core/ng-entry-html/util/src/index.html",
-```
+1. **Remove Default File**: Delete the automatically created `index.html` in `{new-app}/src`.
+2. **Update `project.json`**: Point the build `index` property to the shared file:
 
-- update the new app app.component.ts selector to `plastik-root`:
+   ```json
+   "index": "libs/core/ng-entry-html/util/src/index.html",
+   ```
 
-```typescript
-@Component({
-  selector: 'plastik-root',
-  templateUrl: './app.component.html',
-})
-export class AppComponent {}
-```
+3. **Update `app.component.ts`**: Set the selector to match the shared root (e.g., `plastik-root`):
 
-- The svg app file.
+   ```typescript
+   @Component({
+     selector: 'plastik-root',
+     templateUrl: './app.component.html',
+   })
+   export class AppComponent {}
+   ```
 
-You need to have a favicon.svg file in your app assets directory, in order to appear while preloading it. This favicon is the same that will be used as a html head favicon.
+4. **Add Favicon**: Ensure a `favicon.svg` exists in your app's assets directory. This is used by the preloader and as the browser favicon.
 
-```typescript
-// The path to your favicon svg file
-assets / img / favicon.svg;
-```
+   ```typescript
+   // Path expected by the shared index.html
+   assets / img / favicon.svg;
+   ```

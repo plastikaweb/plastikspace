@@ -12,6 +12,6 @@ describe('addSearchInput', () => {
     expect(config.props?.type).toBe('search');
     expect(config.props?.placeholder).toBe(label);
     expect(config.props?.['addonLeft']?.icon).toBe('search');
-    expect(config.props?.['addonRight']?.icon).toBe('cancel');
+    expect(config.props?.['addonRight']?.icon).toBe('close_small');
   });
 });

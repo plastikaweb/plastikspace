@@ -11,6 +11,13 @@
     },
     "codegen": {
       "command": "npx graphql-codegen --config {projectRoot}/codegen.yml"
+    },
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../coverage/libs/plastikaweb/graphql-models"
+      }
     }
   }
 }

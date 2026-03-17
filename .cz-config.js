@@ -4,6 +4,7 @@ const scopes =
     ? Object.keys(base.compilerOptions.paths)
         .map(path => path.split('@plastik/')[1])
         .filter(Boolean)
+        .sort()
     : [];
 
 module.exports = {
@@ -48,7 +49,7 @@ module.exports = {
     footer: 'List any ISSUES CLOSED by this change (optional). E.g.: #31, #34:\n',
     confirmCommit: 'Are you sure you want to proceed with the commit above?',
   },
-  scopes: ['nasa-images', 'experimental', 'llecoop', 'plastikaweb', ...scopes],
+  scopes: ['nasa-images', 'llecoop', 'plastikaweb', 'eco-store', ...scopes],
   allowCustomScopes: true,
   scopeOverrides: {
     test: [{ name: 'e2e' }, { name: 'unit' }],
@@ -56,7 +57,6 @@ module.exports = {
   allowTicketNumber: true,
   isTicketNumberRequired: false,
   ticketNumberPrefix: '#',
-  ticketNumberRegExp: '\\d{1,5}',
   appendIssueFromBranchName: true,
   allowBreakingChanges: ['feat', 'fix'],
   subjectLimit: 100,

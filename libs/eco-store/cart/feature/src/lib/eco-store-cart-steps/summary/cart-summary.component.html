@@ -1,0 +1,98 @@
+<header class="hero-header reveal-up" style="--delay: 50ms">
+  <div
+    class="hero-content flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
+    <div class="flex flex-col items-start gap-2">
+      <div class="category-subtitle flex items-center gap-2">
+        <mat-icon class="scale-90!" aria-hidden="true">shopping_cart</mat-icon>
+        <span>
+          {{ 'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() } }}
+        </span>
+      </div>
+      <h2 class="category-title font-bold">
+        {{ 'cart.steps.summary.title' | translate }}
+      </h2>
+    </div>
+  </div>
+</header>
+
+<div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
+  <div
+    class="col-span-1! space-y-10 md:col-span-2!"
+    [class.pointer-events-none]="cartStore.isSyncing()"
+    [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
+    <div
+      class="cart-summary-card @container mb-8 transition-all duration-100"
+      [class.pointer-events-none]="cartStore.isSyncing()"
+      [class.opacity-60]="cartStore.isSyncing()">
+      @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+        <!-- Initial Sync Skeletons (Matches item count from local storage) -->
+        <div class="space-y-8 px-4 py-2" aria-hidden="true">
+          <div>
+            <div class="mb-4 h-4 w-24 animate-pulse rounded bg-neutral-200"></div>
+            <div class="flex flex-col gap-4">
+              @for (item of skeletonItems(); track $index) {
+                <div class="flex h-[134px] w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+              }
+            </div>
+          </div>
+        </div>
+      } @else {
+        <!-- Stable Real UI (Visible during quantity updates) -->
+        @for (group of cartStore.itemsGroupedByCategory(); track group.category) {
+          <div animate.enter="fade-in" animate.leave="fade-out" class="px-4 py-2">
+            <span
+              class="text-tertiary-500 mb-2 text-sm leading-10 font-bold tracking-wider uppercase"
+              >{{ group.category }}</span
+            >
+            <div class="flex flex-col gap-2">
+              @for (item of group.items; track item.product.id; let i = $index) {
+                <eco-cart-product-card
+                  [item]="item"
+                  [isLcpImage]="i === 0"
+                  [editable]="tenantStore.isStoreOpen()"
+                  (pointerdown)="viewTransitionService.setActiveId(item.product.id)"
+                  (quantityChange)="onQuantityChange($event)">
+                </eco-cart-product-card>
+              }
+            </div>
+          </div>
+        } @empty {
+          <eco-store-shared-no-results
+            class="empty-state my-6"
+            [imgTitle]="'orders.list.emptyImage' | translate">
+            <div no-results-title>
+              {{ 'cart.summary.noResults.title' | translate }}
+            </div>
+            <div no-results-description>
+              {{ 'cart.summary.noResults.description' | translate }}
+            </div>
+            <button matButton="filled" no-results-action type="button" routerLink="/botiga">
+              <mat-icon aria-hidden="true">storefront</mat-icon>
+              <span>{{ 'orders.list.goToStore' | translate }}</span>
+            </button>
+          </eco-store-shared-no-results>
+        }
+      }
+    </div>
+  </div>
+
+  <div
+    class="sticky top-16 space-y-6 self-start md:col-span-1"
+    [class.pointer-events-none]="cartStore.isSyncing()"
+    [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
+    @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
+    } @else {
+      <eco-cart-order-summary
+        [subtotal]="cartStore.subtotal()"
+        [taxes]="cartStore.tax()"
+        [total]="cartStore.subtotal() + cartStore.tax()"
+        [submitAvailable]="tenantStore.isStoreOpen() && cartStore.itemsCount() > 0"
+        [isStoreOpen]="tenantStore.isStoreOpen()"
+        [nextOpenDate]="tenantStore.nextOpenDate()"
+        [actionButtonText]="'cart.summary.goToShipping'"
+        [actionRoute]="['./cistella/enviament']">
+      </eco-cart-order-summary>
+    }
+  </div>
+</div>

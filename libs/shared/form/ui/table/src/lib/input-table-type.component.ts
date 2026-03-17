@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
-import { FieldType } from '@ngx-formly/material';
+import { FieldType } from '@ngx-formly/material/form-field';
 import { BaseEntity } from '@plastik/core/entities';
 
 import { InputTableProps } from './input-table-props';

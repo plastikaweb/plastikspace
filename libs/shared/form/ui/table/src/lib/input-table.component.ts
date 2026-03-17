@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -30,7 +28,7 @@ const INPUT_TABLE_ACCESSOR = {
 
 @Component({
   selector: 'plastik-input-table',
-  imports: [SharedTableUiComponent, MatInputModule, NgClass],
+  imports: [SharedTableUiComponent, MatInputModule],
   templateUrl: './input-table.component.html',
   styleUrl: './input-table.component.scss',
   providers: [INPUT_TABLE_ACCESSOR],
@@ -84,11 +82,11 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
       this.value.set(value);
     }
   }
-  registerOnChange(fn: any): void {
-    this.onChange = fn;
+  registerOnChange(fn: (value: T[]) => void): void {
+    this.#onChange = fn;
   }
-  registerOnTouched(fn: any): void {
-    this.onTouch = fn;
+  registerOnTouched(fn: () => void): void {
+    this.#onTouch = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
     this.disabled.set(isDisabled);
@@ -110,13 +108,13 @@ export class InputTableComponent<T extends BaseEntity> implements ControlValueAc
       this.value.set(currentValue);
     }
 
-    this.onChange(this.value());
-    this.onTouch();
+    this.#onChange(this.value());
+    this.#onTouch();
     this.cdr.detectChanges();
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars
-  private onChange(_: unknown | null) {}
+  // eslint-disable-next-line @typescript-eslint/no-empty-function, @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  #onChange: (_: any) => void = () => {};
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  private onTouch() {}
+  #onTouch: () => void = () => {};
 }

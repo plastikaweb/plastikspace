@@ -1,0 +1,18 @@
+@use '@angular/material' as mat;
+
+// ----- DatePicker https://material.angular.io/components/datepicker ----- //
+.mat-datepicker-toggle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: var(--sub);
+}
+
+:root {
+  @include mat.datepicker-overrides(
+    (
+      calendar-date-selected-state-text-color: rgb(218, 192, 145),
+      calendar-date-selected-state-background-color: rgb(123, 149, 228),
+    )
+  );
+}

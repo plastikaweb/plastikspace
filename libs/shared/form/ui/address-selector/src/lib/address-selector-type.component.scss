@@ -1,0 +1,55 @@
+@use '@angular/material' as mat;
+
+:host {
+  .address-selector-radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+    gap: 1rem;
+  }
+
+  .address-card {
+    border: 1px solid var(--neutral-50) !important;
+    transition:
+      background-color 0.1s ease-in-out,
+      transform 0.1s ease-in-out;
+
+    &:hover {
+      border-color: var(--neutral-100) !important;
+      @include mat.card-overrides(
+        (
+          elevated-container-elevation: var(--mat-sys-level2),
+        )
+      );
+    }
+
+    &:active:not([disabled]) {
+      transform: scale(0.99);
+    }
+
+    &.selected {
+      border: 2px solid var(--primary-400) !important;
+      background-color: var(--primary-100) !important;
+
+      @include mat.icon-overrides(
+        (
+          color: var(--primary-400),
+        )
+      );
+
+      @include mat.radio-overrides(
+        (
+          checked-ripple-color: var(--primary-400),
+          selected-icon-color: var(--primary-400),
+        )
+      );
+    }
+  }
+
+  .address-default {
+    @include mat.icon-overrides(
+      (
+        color: var(--tertiary-400),
+      )
+    );
+  }
+}
