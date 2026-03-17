@@ -37,7 +37,7 @@ Built with **Angular 21+** (Signals, Standalone Components, Control Flow) and **
 ## Quick Start
 
 1. **Install Dependencies**: `yarn install`
-2. **Setup Environment**: `yarn install:local` (This downloads the PocketBase binary automatically)
+2. **Setup Environment**: `yarn install:local` (This downloads and populates the PocketBase instance automatically)
 3. **Start PocketBase**: `yarn eco-store:pocketbase:run`
 4. **Run Application**: `yarn eco-store:serve`
 

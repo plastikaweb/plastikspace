@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Implemented order sorting by status and update date in the user's order list ([#86c8r2ar3](https://app.clickup.com/t/86c8r2ar3))
 - Added localized sort labels for orders list across English, Spanish, and Catalan.
+- Automated local PocketBase initialization and schema synchronization via `populate-pocketbase.js` utility.
+- Integrated database population into `install:local` and `eco-store:local` workflows.
 
 ### Changed
 
@@ -18,6 +20,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `sortProducts` to `sort` in `EcoStoreProductsFeatureComponent` for better consistency across feature components.
 - Enhanced `EcoStoreOrdersStore` with dynamic sorting options for order status.
 - Updated README files for orders and products features to include sorting capabilities.
+- Refactored `download-pocketbase.js` to improve code quality, logging standards, and Linux compatibility.
+- Made `sort` methods explicitly `public` in feature components to ensure robust type resolution in tests.
 
 ### Fixed
 
