@@ -29,8 +29,22 @@ jobs:
       - name: Install
         run: yarn install --immutable --network-timeout 1000000
 
+      - name: Check Nx Cloud Availability
+        run: |
+          # Try a real nx command with record and capture output
+          npx nx-cloud record -- npx nx --version > nx_cloud_check.log 2>&1 || true
+          if grep -iE "disabled|authorized|exceeding|failed to record" nx_cloud_check.log; then
+            echo "NX_CLOUD_RECORD=" >> $GITHUB_ENV
+            echo "NX_CLOUD_FLAGS=--no-cloud" >> $GITHUB_ENV
+            echo "Nx Cloud is disabled or out of credits. Running locally."
+          else
+            echo "NX_CLOUD_RECORD=npx nx-cloud record --" >> $GITHUB_ENV
+            echo "NX_CLOUD_FLAGS=" >> $GITHUB_ENV
+            echo "Nx Cloud is active."
+          fi
+
       - name: Build
-        run: yarn eco-store:build
+        run: ${{ env.NX_CLOUD_RECORD }} yarn eco-store:build ${{ env.NX_CLOUD_FLAGS }}
 
       - name: Run pa11y-ci
         run: yarn eco-store:a11y
