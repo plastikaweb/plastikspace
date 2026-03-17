@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
 
@@ -51,4 +51,41 @@ export function loadEnvironment(envName = 'staging') {
 export function getPocketBaseUrl(envName) {
   const env = loadEnvironment(envName);
   return env.baseApiUrl;
+}
+
+/**
+ * Manually load environment variables from .env file
+ */
+export function loadDotEnv() {
+  const envPath = path.join(__dirname, '..', '.env');
+
+  if (existsSync(envPath)) {
+    try {
+      const content = readFileSync(envPath, 'utf-8');
+      content.split('\n').forEach(line => {
+        // Skip comments and empty lines
+        if (!line || line.startsWith('#')) return;
+
+        const [key, ...valueParts] = line.split('=');
+        if (key && valueParts.length > 0) {
+          const trimmedKey = key.trim();
+          let value = valueParts.join('=').trim();
+
+          // Remove quotes if present
+          if (
+            (value.startsWith('"') && value.endsWith('"')) ||
+            (value.startsWith("'") && value.endsWith("'"))
+          ) {
+            value = value.substring(1, value.length - 1);
+          }
+
+          if (trimmedKey && !process.env[trimmedKey]) {
+            process.env[trimmedKey] = value;
+          }
+        }
+      });
+    } catch (error) {
+      console.warn('⚠️ Could not load .env file:', error.message);
+    }
+  }
 }
