@@ -3,6 +3,7 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { platform } from 'node:os';
 import { existsSync } from 'node:fs';
+import { loadDotEnv } from './load-environment.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -82,4 +83,5 @@ async function waitForApi(attempts = 15) {
   throw new Error('PocketBase API timed out.');
 }
 
+loadDotEnv();
 populate();
