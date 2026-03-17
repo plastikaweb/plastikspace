@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 const os = require('os');
 
 const PB_VERSION = '0.36.1'; // Use latest stable version
@@ -90,23 +90,61 @@ async function download() {
         `powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${PB_DIR}' -Force"`
       );
     } else {
-      // Check if unzip is available, otherwise try python3 (often available)
+      let extracted = false;
+
+      // 1. Try unzip
       try {
         execFileSync('unzip', ['-o', zipPath, '-d', PB_DIR], { stdio: 'inherit' });
+        extracted = true;
       } catch (e) {
-        console.log('⚠️  "unzip" not found, trying "python3 -m zipfile"...');
+        console.log('⚠️  "unzip" not found or failed.');
+      }
+
+      // 2. Try python3
+      if (!extracted) {
         try {
+          console.log('🐍 Trying "python3 -m zipfile"...');
           execFileSync('python3', ['-m', 'zipfile', '-e', zipPath, PB_DIR], { stdio: 'inherit' });
-        } catch (pythonErr) {
-          throw new Error('Neither "unzip" nor "python3 -m zipfile" are available.');
+          extracted = true;
+        } catch (e) {
+          console.log('⚠️  "python3" not found or failed.');
         }
       }
+
+      // 3. Try python (legacy alias)
+      if (!extracted) {
+        try {
+          console.log('🐍 Trying "python -m zipfile"...');
+          execFileSync('python', ['-m', 'zipfile', '-e', zipPath, PB_DIR], { stdio: 'inherit' });
+          extracted = true;
+        } catch (e) {
+          console.log('⚠️  "python" not found or failed.');
+        }
+      }
+
+      // 4. Try tar (some modern versions support zip extraction)
+      if (!extracted) {
+        try {
+          console.log('📦 Trying "tar -xf"...');
+          execFileSync('tar', ['-xf', zipPath, '-C', PB_DIR], { stdio: 'inherit' });
+          extracted = true;
+        } catch (e) {
+          console.log('⚠️  "tar" not found or failed.');
+        }
+      }
+
+      if (!extracted) {
+        throw new Error(
+          'Could not find a way to extract the ZIP file. Please install "unzip" (e.g., sudo apt install unzip) or extract it manually.'
+        );
+      }
+
       execFileSync('chmod', ['+x', PB_BINARY], { stdio: 'inherit' });
     }
     fs.unlinkSync(zipPath);
     console.log('✅ PocketBase installed successfully!');
   } catch (err) {
-    console.error('❌ Extraction failed. Please install "unzip" or extract manually.');
+    console.error('❌ Extraction failed.');
     console.error('Error details:', err.message);
     process.exit(1);
   }
