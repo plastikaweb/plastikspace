@@ -15,8 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added a local `package.json` in `apps/eco-store/scripts/` with `"type": "module"` to resolve Node 22+ ESM deprecation warnings.
 - Improved `sync-pocketbase-schema.js` with a three-pass synchronization logic to resolve dependency issues when creating view collections that reference columns from base collections.
 - Refactored `download-pocketbase.js` to ES modules to align with project standards and resolve Node 22+ ReferenceErrors.
+- Enhanced GitHub Action workflows (`ci.yml`, `eco-store-pa11y.yml`, `nasa-images-pa11y.yml`, etc.) with dynamic Nx Cloud availability checks to automatically fall back to local execution when cloud limits are exceeded.
 - Enhanced `import-pocketbase-data.js` and `seed-local.js` with detailed error reporting and diagnostics to simplify troubleshooting across different environments.
-- Refactored `setup-local.js` to automatically synchronize the PocketBase schema during initialization and interactively prompt for optional data/files import from staging.
+- Refactored `setup-local.js` to intelligently orchestrate the PocketBase setup, ensuring schema synchronization and optional data/files import occur within a single server lifecycle to resolve connection errors.
 
 ### Changed
 

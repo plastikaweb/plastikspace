@@ -30,25 +30,25 @@ async function setup() {
     console.info('⬇️ Checking PocketBase binary...');
     execSync('yarn pb:download', { stdio: 'inherit' });
 
-    // 5. Initialize PocketBase Schema
+    // 5. Initialize PocketBase
     if (!existsSync(PB_DATA_DIR)) {
-      console.info('\n⚠️  PocketBase database (pb_data) not found. Initializing schema...');
-      // Run populate with --schema-only to ensure PB is ready but empty
-      execSync('node apps/eco-store/scripts/populate-pocketbase.js --schema-only', {
-        stdio: 'inherit',
-      });
+      console.info('\n⚠️  PocketBase database (pb_data) not found.');
 
-      console.info('\n🌱 Database initialized with current schema.');
       const answer = await askUser(
         '❓ Do you want to import collections data and files from staging? (y/N): '
       );
+      const shouldImport = answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes';
 
-      if (answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes') {
-        console.info('🚀 Pulling data from staging...');
-        execSync('yarn pb:seed', { stdio: 'inherit' });
-        console.info('📦 Importing local JSON fallback data...');
-        execSync('yarn pb:import', { stdio: 'inherit' });
+      if (shouldImport) {
+        console.info('🌱 Initializing database and pulling data from staging...');
+        // Run full populate (schema + seed from staging + local import)
+        execSync('node apps/eco-store/scripts/populate-pocketbase.js', { stdio: 'inherit' });
       } else {
+        console.info('🏗️  Initializing database schema only...');
+        // Run populate with --schema-only to ensure PB is ready but empty
+        execSync('node apps/eco-store/scripts/populate-pocketbase.js --schema-only', {
+          stdio: 'inherit',
+        });
         console.info(
           'ℹ️  Skipping data import. You can run it later using "yarn pb:populate" or "yarn pb:seed".'
         );
