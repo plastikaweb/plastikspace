@@ -44,6 +44,12 @@ async function pullCollection(collectionName) {
 
     // Get collection info to find file fields
     const collectionInfo = await pbStaging.collections.getOne(collectionName);
+
+    if (collectionInfo.type === 'view') {
+      console.log(`   ⏭️ Skipping ${collectionName} (view collection is read-only).`);
+      return;
+    }
+
     const fileFields = collectionInfo.fields.filter(f => f.type === 'file');
 
     for (const record of records) {
@@ -112,23 +118,44 @@ async function pullCollection(collectionName) {
 
         const payload = hasFiles ? formData : data;
 
+        // If it's an auth collection (like 'users'), we might need to provide a password
+        // because it's required in the schema but not returned by staging API.
+        if (collectionName === 'users' && !exists) {
+          if (!data.password) {
+            data.password = 'seed-password-123';
+            data.passwordConfirm = 'seed-password-123';
+          }
+        }
+
+        const options = {
+          headers: {
+            'x-bypass-hooks': 'true',
+          },
+        };
+
         if (exists) {
           console.log(`   Updating local record ${recordId}...`);
-          await pbLocal.collection(collectionName).update(recordId, payload);
+          await pbLocal.collection(collectionName).update(recordId, payload, options);
         } else {
           console.log(`   Creating local record ${recordId}...`);
-          await pbLocal.collection(collectionName).create(payload);
+          await pbLocal.collection(collectionName).create(payload, options);
         }
       } catch (err) {
         console.error(
           `   ❌ Error processing record ${recordId} in ${collectionName}:`,
           err.message
         );
+        if (err.response?.data) {
+          console.error('      Details:', JSON.stringify(err.response.data, null, 2));
+        }
       }
     }
     console.log(`   ✅ Finished pulling ${collectionName}.`);
   } catch (err) {
     console.error(`   ❌ Failed to fetch from staging collection ${collectionName}:`, err.message);
+    if (err.response?.data) {
+      console.error('      Details:', JSON.stringify(err.response.data, null, 2));
+    }
   }
 }
 
@@ -164,11 +191,11 @@ async function run() {
       'product_categories',
       'tags',
       'products',
+      'users',
       'user_addresses',
       'tenant_addresses',
       'product_categories_stats',
       'order_cycles',
-      'users',
       'carts',
       'orders',
     ];
