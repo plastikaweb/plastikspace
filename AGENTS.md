@@ -20,4 +20,11 @@
 - DON'T USE for: basic generator syntax (`nx g @nx/react:app`), standard commands, things you already know
 - The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
 
+## PocketBase Workflow (eco-store)
+
+- **Local Setup:** Use `yarn pb:populate` to download the binary, sync the schema, and seed local data from staging.
+- **Seeding:** Use `yarn pb:seed` to specifically pull data and images from the staging environment to local.
+- **Exporting:** Use `yarn pb:export` to export the current local schema and data (JSON) for manual backups. Note: the `data/` folder is git-ignored to keep the repo lean.
+- **Environment:** Scripts use `apps/eco-store/scripts/load-environment.js` to manage credentials and URLs without external dependencies.
+
 <!-- nx configuration end-->

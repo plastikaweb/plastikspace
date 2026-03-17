@@ -152,13 +152,21 @@ async function run() {
     console.log('🚀 Starting migration...');
 
     // Login
-    console.log('Logging into local PB...');
-    // Use pbLocal.admins for superuser authentication
-    await pbLocal.admins.authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
+    console.log('🔐 Logging into local PB...');
+    // Use _superusers collection for superuser authentication (available in v0.23+)
+    await pbLocal
+      .collection('_superusers')
+      .authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
 
-    console.log('Logging into staging PB...');
-    // Use pbStaging.admins for superuser authentication
-    await pbStaging.admins.authWithPassword(STAGING_ADMIN_EMAIL, STAGING_ADMIN_PASSWORD);
+    console.log('🔐 Logging into staging PB...');
+    // Use _superusers collection for superuser authentication (available in v0.23+)
+    await pbStaging
+      .collection('_superusers')
+      .authWithPassword(STAGING_ADMIN_EMAIL, STAGING_ADMIN_PASSWORD);
+
+    console.log('✅ Authenticated successfully!');
+    console.log('   Local Is Superuser:', !!pbLocal.authStore.isSuperuser);
+    console.log('   Staging Is Superuser:', !!pbStaging.authStore.isSuperuser);
 
     const collections = await pbLocal.collections.getFullList({
       sort: 'created',
