@@ -20,6 +20,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Resolved CI failure where `nx fix-ci` was called on successful builds.
 - Fixed script execution errors in Linux environments caused by Yarn not resolving the `dotenv` package.
+- Fixed PocketBase authorization errors by switching to `pb.admins.authWithPassword()` for superuser authentication across all scripts.
+- Updated PocketBase version to `0.36.7` in the download script.
+- Fixed typos and improved logging in PocketBase synchronization and migration scripts.
 
 ## [2026-03-17] - Order Sorting and UI Consistency
 

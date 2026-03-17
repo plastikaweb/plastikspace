@@ -21,6 +21,10 @@ const pbStaging = new PocketBase(STAGING_URL);
 pbLocal.autoCancellation(false);
 pbStaging.autoCancellation(false);
 
+/**
+ * Migrates a collection from local PocketBase to staging.
+ * @param {string} collectionName - The name of the collection to migrate.
+ */
 async function migrateCollection(collectionName) {
   console.log(`\n📦 Migrating collection: ${collectionName}...`);
 
@@ -140,25 +144,30 @@ async function migrateCollection(collectionName) {
   }
 }
 
+/**
+ * Runs the migration process.
+ */
 async function run() {
   try {
     console.log('🚀 Starting migration...');
 
     // Login
     console.log('Logging into local PB...');
-    await pb.collection('_superusers').authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
+    // Use pbLocal.admins for superuser authentication
+    await pbLocal.admins.authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
 
     console.log('Logging into staging PB...');
-    await pb
-      .collection('_superusers')
-      .authWithPassword(STAGING_ADMIN_EMAIL, STAGING_ADMIN_PASSWORD);
+    // Use pbStaging.admins for superuser authentication
+    await pbStaging.admins.authWithPassword(STAGING_ADMIN_EMAIL, STAGING_ADMIN_PASSWORD);
 
-    const collections = await pb.collections.getFullList({
+    const collections = await pbLocal.collections.getFullList({
       sort: 'created',
     });
 
     for (const collection of collections) {
-      await migrateCollection(collection);
+      if (!collection.system) {
+        await migrateCollection(collection.name);
+      }
     }
 
     console.log('\n✨ Migration completed successfully!');

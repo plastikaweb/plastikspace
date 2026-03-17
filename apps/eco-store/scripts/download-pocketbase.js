@@ -4,7 +4,7 @@ const https = require('https');
 const { execSync, execFileSync } = require('child_process');
 const os = require('os');
 
-const PB_VERSION = '0.36.1'; // Use latest stable version
+const PB_VERSION = '0.36.7'; // Use latest stable version
 const PB_DIR = path.join(__dirname, '../pocketbase');
 const PB_BINARY = path.join(PB_DIR, os.platform() === 'win32' ? 'pocketbase.exe' : 'pocketbase');
 
