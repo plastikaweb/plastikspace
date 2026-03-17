@@ -43,7 +43,7 @@ async function pullCollection(collectionName) {
     console.log(`   Found ${records.length} records in staging.`);
 
     // Get collection info to find file fields
-    const collectionInfo = await pbStaging.collections.getOne(collectionName);
+    const collectionInfo = await pbLocal.collections.getOne(collectionName);
 
     if (collectionInfo.type === 'view') {
       console.log(`   ⏭️ Skipping ${collectionName} (view collection is read-only).`);
@@ -72,15 +72,33 @@ async function pullCollection(collectionName) {
         delete data.collectionName;
         delete data.expand;
 
+        // If it's an auth collection (like 'users'), we might need to provide a password
+        // because it's required in the schema but not returned by staging API.
+        if (collectionName === 'users' && !exists) {
+          if (!data.password) {
+            data.password = 'seed-password-123';
+            data.passwordConfirm = 'seed-password-123';
+          }
+        }
+
         const formData = new FormData();
         let hasFiles = false;
 
         // Download files from staging and add to formData
         if (fileFields.length > 0) {
           for (const field of fileFields) {
-            const files = record[field.name];
+            let files = record[field.name];
             if (files) {
-              const fileList = Array.isArray(files) ? files : [files];
+              let fileList = Array.isArray(files) ? files : [files];
+
+              // ENFORCE FILE LIMITS: Staging might have more files than local schema allows
+              if (field.maxSelect && fileList.length > field.maxSelect) {
+                console.warn(
+                  `      ⚠️ Truncating files for field ${field.name} in ${collectionName} (${recordId}): ${fileList.length} -> ${field.maxSelect}`
+                );
+                fileList = fileList.slice(0, field.maxSelect);
+              }
+
               for (const filename of fileList) {
                 if (!filename) continue;
                 try {
@@ -103,10 +121,13 @@ async function pullCollection(collectionName) {
           }
         }
 
+        let payload;
         if (hasFiles) {
           // Add all other fields to formData
           for (const key in data) {
+            // Skip file fields as we handled them separately
             if (fileFields.find(f => f.name === key)) continue;
+
             const value = data[key];
             if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
               formData.append(key, JSON.stringify(value));
@@ -114,17 +135,9 @@ async function pullCollection(collectionName) {
               formData.append(key, value);
             }
           }
-        }
-
-        const payload = hasFiles ? formData : data;
-
-        // If it's an auth collection (like 'users'), we might need to provide a password
-        // because it's required in the schema but not returned by staging API.
-        if (collectionName === 'users' && !exists) {
-          if (!data.password) {
-            data.password = 'seed-password-123';
-            data.passwordConfirm = 'seed-password-123';
-          }
+          payload = formData;
+        } else {
+          payload = data;
         }
 
         const options = {
