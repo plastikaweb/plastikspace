@@ -11,14 +11,20 @@ const PB_DIR = resolve(__dirname, '../pocketbase');
 const PB_BINARY = join(PB_DIR, platform() === 'win32' ? 'pocketbase.exe' : 'pocketbase');
 const SYNC_SCRIPT = resolve(__dirname, 'sync-pocketbase-schema.js');
 
+// Parse arguments
+const args = process.argv.slice(2);
+const isSchemaOnly = args.includes('--schema-only');
+
 /**
  * Initializes and populates the local PocketBase instance with the tracked schema.
  *
  * This script ensures a superuser exists, starts the server temporarily,
- * executes the schema synchronization, and then shuts down the server.
+ * executes the schema synchronization, and then optionally seeds data.
  */
 async function populate() {
-  console.info('🚀 Starting local PocketBase population...');
+  console.info(
+    `🚀 Starting local PocketBase population (${isSchemaOnly ? 'SCHEMA ONLY' : 'FULL'})...`
+  );
 
   if (!existsSync(PB_BINARY)) {
     console.error('❌ PocketBase binary not found. Please run pb:download first.');
@@ -55,27 +61,31 @@ async function populate() {
       env: { ...process.env, POCKETBASE_ENV: 'development' },
     });
 
-    // 5. Run seeding script (staging to local)
-    console.info('🌱 Running data seeding from staging...');
-    const SEED_SCRIPT = resolve(__dirname, 'seed-local.js');
-    try {
-      execSync(`node "${SEED_SCRIPT}"`, {
+    if (!isSchemaOnly) {
+      // 5. Run seeding script (staging to local)
+      console.info('🌱 Running data seeding from staging...');
+      const SEED_SCRIPT = resolve(__dirname, 'seed-local.js');
+      try {
+        execSync(`node "${SEED_SCRIPT}"`, {
+          stdio: 'inherit',
+          env: { ...process.env },
+        });
+      } catch (e) {
+        console.warn('⚠️  Seeding from staging failed, continuing with local import...', e.message);
+      }
+
+      // 6. Run local data import (JSON files)
+      console.info('📦 Running local data import (JSON files)...');
+      const IMPORT_SCRIPT = resolve(__dirname, 'import-pocketbase-data.js');
+      execSync(`node "${IMPORT_SCRIPT}"`, {
         stdio: 'inherit',
         env: { ...process.env },
       });
-    } catch (e) {
-      console.warn('⚠️  Seeding from staging failed, continuing with local import...', e.message);
     }
 
-    // 6. Run local data import (JSON files)
-    console.info('📦 Running local data import (JSON files)...');
-    const IMPORT_SCRIPT = resolve(__dirname, 'import-pocketbase-data.js');
-    execSync(`node "${IMPORT_SCRIPT}"`, {
-      stdio: 'inherit',
-      env: { ...process.env },
-    });
-
-    console.info('✅ Local PocketBase populated and imported successfully!');
+    console.info(
+      `✅ Local PocketBase ${isSchemaOnly ? 'schema updated' : 'populated'} successfully!`
+    );
   } catch (error) {
     console.error('❌ Population failed:', error.message);
     process.exit(1);

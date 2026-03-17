@@ -13,7 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Created `seed-local.js` script to automate populating local PocketBase with data and images from staging environment.
 - Enhanced `import-pocketbase-data.js` with staging environment authentication to securely pull missing protected files.
 - Added a local `package.json` in `apps/eco-store/scripts/` with `"type": "module"` to resolve Node 22+ ESM deprecation warnings.
-- Created `setup-local.js` script in `tools/scripts/` to provide an intelligent, interactive installation workflow for new developers.
+- Improved `sync-pocketbase-schema.js` with a three-pass synchronization logic to resolve dependency issues when creating view collections that reference columns from base collections.
+- Refactored `download-pocketbase.js` to ES modules to align with project standards and resolve Node 22+ ReferenceErrors.
+- Enhanced `import-pocketbase-data.js` and `seed-local.js` with detailed error reporting and diagnostics to simplify troubleshooting across different environments.
+- Refactored `setup-local.js` to automatically synchronize the PocketBase schema during initialization and interactively prompt for optional data/files import from staging.
 
 ### Changed
 
