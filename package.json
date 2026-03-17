@@ -106,7 +106,7 @@
     "pb:import": "node apps/eco-store/scripts/import-pocketbase-data.js",
     "pb:sync": "node apps/eco-store/scripts/sync-pocketbase-schema.js",
     "pb:diff": "git diff apps/eco-store/pocketbase/pb_schema.json",
-    "eco-store:pocketbase:run": "yarn pb:download && cd apps/eco-store/pocketbase && ./pocketbase serve",
+    "eco-store:pocketbase:run": "cd apps/eco-store/pocketbase && ./pocketbase serve",
     "eco-store:pocketbase:stop": "pkill -f 'pocketbase serve' || true",
     "eco-store:watch-scss": "chokidar 'apps/eco-store/src/styles/_*.scss' -c 'touch apps/eco-store/src/styles/styles.scss'",
     "eco-store:serve": "nx run eco-store:serve",

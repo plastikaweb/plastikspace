@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import PocketBase from 'pocketbase';
 import { fileURLToPath } from 'url';
-import { getPocketBaseUrl, loadDotEnv } from './load-environment.js';
+import { loadDotEnv } from './load-environment.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,6 +17,8 @@ const STAGING_URL = process.env.POCKETBASE_STAGING_URL;
 console.log(`🔧 Target Environment: Local (${LOCAL_URL})`);
 if (STAGING_URL) {
   console.log(`🌐 Source for missing files: Staging (${STAGING_URL})`);
+} else {
+  console.log('ℹ️  POCKETBASE_STAGING_URL not defined. Staging file pull disabled.');
 }
 
 const LOCAL_ADMIN_EMAIL = process.env.POCKETBASE_DEV_ADMIN_EMAIL;
@@ -27,6 +29,7 @@ const STAGING_ADMIN_PASSWORD = process.env.POCKETBASE_STAGING_ADMIN_PASSWORD;
 
 if (!LOCAL_ADMIN_EMAIL || !LOCAL_ADMIN_PASSWORD) {
   console.error('❌ Error: Missing local PocketBase credentials in .env');
+  console.log('   Checked vars: POCKETBASE_DEV_ADMIN_EMAIL, POCKETBASE_DEV_ADMIN_PASSWORD');
   process.exit(1);
 }
 
@@ -42,10 +45,18 @@ if (pbStaging) pbStaging.autoCancellation(false);
 async function importAll() {
   try {
     console.log('🔐 Authenticating with local PocketBase...');
-    await pbLocal
-      .collection('_superusers')
-      .authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
-    console.log('✅ Local authentication successful!');
+    try {
+      await pbLocal
+        .collection('_superusers')
+        .authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
+      console.log('✅ Local authentication successful!');
+    } catch (authErr) {
+      console.error('❌ Local authentication failed:', authErr.message);
+      if (authErr.response?.data) {
+        console.error('   Details:', JSON.stringify(authErr.response.data, null, 2));
+      }
+      process.exit(1);
+    }
 
     if (pbStaging && STAGING_ADMIN_EMAIL && STAGING_ADMIN_PASSWORD) {
       console.log('🔐 Authenticating with staging PocketBase (for file pulls)...');
@@ -98,7 +109,13 @@ async function importAll() {
       const records = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
       // Get collection schema to identify file fields and type
-      const collection = await pbLocal.collections.getOne(colName);
+      let collection;
+      try {
+        collection = await pbLocal.collections.getOne(colName);
+      } catch (err) {
+        console.error(`   ❌ Failed to get collection info for ${colName}:`, err.message);
+        continue;
+      }
 
       if (collection.type === 'view') {
         console.log(`   ⏭️ Skipping ${colName} (view collection is read-only).`);
@@ -194,6 +211,9 @@ async function importAll() {
           }
         } catch (err) {
           console.error(`   ❌ Failed to import record ${record.id} in ${colName}:`, err.message);
+          if (err.response?.data) {
+            console.error('      Details:', JSON.stringify(err.response.data, null, 2));
+          }
         }
       }
       console.log(`   ✅ Finished ${colName}.`);
@@ -202,7 +222,10 @@ async function importAll() {
     console.log('\n✨ Data import completed successfully!');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error importing:', error.message);
+    console.error('❌ Critical Error during import:', error.message);
+    if (error.response?.data) {
+      console.error('   Details:', JSON.stringify(error.response.data, null, 2));
+    }
     process.exit(1);
   }
 }
