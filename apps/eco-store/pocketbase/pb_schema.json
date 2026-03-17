@@ -2586,7 +2586,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_KC92",
+        "id": "_clone_U2vY",
         "maxSize": 0,
         "name": "name",
         "presentable": false,
@@ -2597,7 +2597,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_idCi",
+        "id": "_clone_KSOJ",
         "max": 0,
         "min": 0,
         "name": "normalizedName",
@@ -2611,7 +2611,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_6Iw8",
+        "id": "_clone_I5ZK",
         "max": 0,
         "min": 0,
         "name": "color",
@@ -2624,7 +2624,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_XFY5",
+        "id": "_clone_l7N3",
         "maxSize": 0,
         "name": "groupName",
         "presentable": false,
@@ -2635,7 +2635,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_ftS3",
+        "id": "_clone_io1p",
         "max": 0,
         "min": 0,
         "name": "icon",
@@ -2650,7 +2650,7 @@
         "cascadeDelete": false,
         "collectionId": "pbc_2442875294",
         "hidden": false,
-        "id": "_clone_aVM0",
+        "id": "_clone_6Tze",
         "maxSelect": 1,
         "minSelect": 0,
         "name": "tenant",
@@ -2665,7 +2665,7 @@
         "max": null,
         "min": null,
         "name": "totalProducts",
-        "onlyInt": false,
+        "onlyInt": true,
         "presentable": false,
         "required": false,
         "system": false,

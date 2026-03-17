@@ -8,9 +8,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
- * load the Angular environment configuration
- * @param {string} envName - environment name ('development', 'staging', 'production')
- * @returns {object} - environment configuration
+ * Loads the Angular environment configuration.
+ * @param {string} envName - The environment name ('development', 'staging', 'production').
+ * @returns {object} - The environment configuration.
  */
 export function loadEnvironment(envName = 'staging') {
   const envPath = path.join(__dirname, '..', 'src', 'environments', `environment.${envName}.ts`);
@@ -44,9 +44,9 @@ export function loadEnvironment(envName = 'staging') {
 }
 
 /**
- * get PocketBase URL according to the environment
- * @param {string} envName - environment name
- * @returns {string} - PocketBase URL
+ * Gets the PocketBase URL according to the environment.
+ * @param {string} envName - The environment name.
+ * @returns {string} - The PocketBase URL.
  */
 export function getPocketBaseUrl(envName) {
   const env = loadEnvironment(envName);
@@ -54,7 +54,7 @@ export function getPocketBaseUrl(envName) {
 }
 
 /**
- * Manually load environment variables from .env file
+ * Manually loads environment variables from the .env file.
  */
 export function loadDotEnv() {
   const envPath = path.join(__dirname, '..', '.env');

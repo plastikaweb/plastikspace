@@ -41,10 +41,23 @@ if (ENV_NAME === 'development') {
 
 const pb = new PocketBase(POCKETBASE_URL);
 
+/**
+ * Synchronizes the local PocketBase schema with a remote instance.
+ */
 async function syncSchema() {
   try {
     console.log('🔐 Authenticating with PocketBase...');
-    await pb.collection('_superusers').authWithPassword(ADMIN_EMAIL, ADMIN_PASSWORD);
+    // Use pb.admins for superuser authentication to ensure the SDK correctly handles the admin context
+    await pb.admins.authWithPassword(ADMIN_EMAIL, ADMIN_PASSWORD);
+
+    console.log('✅ Authenticated successfully!');
+    console.log('   Token valid:', pb.authStore.isValid);
+    console.log(
+      '   Is Admin/Superuser:',
+      !!pb.authStore.isAdmin ||
+        !!pb.authStore.model?._collectionId ||
+        pb.authStore.model?.collectionName === '_superusers'
+    );
 
     console.log('📖 Reading schema from file...');
     const schemaPath = path.join(__dirname, '..', 'pocketbase', 'pb_schema.json');

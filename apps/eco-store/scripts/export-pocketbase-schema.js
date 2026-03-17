@@ -49,12 +49,24 @@ if (ENV_NAME === 'development') {
 
 const pb = new PocketBase(POCKETBASE_URL);
 
+/**
+ * Exports the PocketBase schema to a JSON file.
+ */
 async function exportSchema() {
   try {
     console.log('🔐 Authenticating with PocketBase...');
 
     // authenticate as admin
-    await pb.collection('_superusers').authWithPassword(ADMIN_EMAIL, ADMIN_PASSWORD);
+    await pb.admins.authWithPassword(ADMIN_EMAIL, ADMIN_PASSWORD);
+
+    console.log('✅ Authenticated successfully!');
+    console.log('   Token valid:', pb.authStore.isValid);
+    console.log(
+      '   Is Admin/Superuser:',
+      !!pb.authStore.isAdmin ||
+        !!pb.authStore.model?._collectionId ||
+        pb.authStore.model?.collectionName === '_superusers'
+    );
 
     console.log('🔍 Fetching collections...');
 
