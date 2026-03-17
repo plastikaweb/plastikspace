@@ -1,8 +1,12 @@
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-const { execSync, execFileSync } = require('child_process');
-const os = require('os');
+import fs from 'node:fs';
+import path from 'node:path';
+import https from 'node:https';
+import { execSync, execFileSync } from 'node:child_process';
+import os from 'node:os';
+import { fileURLToPath } from 'node:url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PB_VERSION = '0.36.7'; // Use latest stable version
 const PB_DIR = path.join(__dirname, '../pocketbase');
