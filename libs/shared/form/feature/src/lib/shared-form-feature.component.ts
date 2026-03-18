@@ -80,16 +80,21 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
 
   constructor() {
     effect(() => {
-      if (this.#formDisableToken() || this.disableForm()) {
+      const isDisabled = this.#formDisableToken() || this.disableForm();
+      const autoFocusEnabled = this.autoFocus();
+      const firstInput = this.#firstInput();
+
+      if (isDisabled) {
         this.form.disable({ emitEvent: false });
       } else {
         this.form.enable({ emitEvent: false });
-        setTimeout(() => {
-          if (this.autoFocus() && this.#firstInput()) {
-            this.#firstInput()?.focus();
+
+        if (autoFocusEnabled && firstInput) {
+          setTimeout(() => {
+            firstInput.focus();
             this.#resetFormStatus();
-          }
-        }, 0);
+          }, 0);
+        }
       }
     });
   }
@@ -126,7 +131,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
       this.#emitChange(model ?? (this.form.value as T));
     }
 
-    if (this.formSubmitConfig().emitOnChange) {
+    if (this.formSubmitConfig().emitOnChange && this.form.valid) {
       this.temporaryChangeEvent.emit(model);
     }
   }

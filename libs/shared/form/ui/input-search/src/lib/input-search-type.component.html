@@ -1,5 +1,5 @@
-<mat-form-field appearance="fill" class="w-full" subscriptSizing="dynamic" floatLabel="always">
-  <mat-label class="sr-only">{{ props.label }}</mat-label>
+<mat-form-field class="w-full" subscriptSizing="dynamic">
+  <mat-label [class.sr-only]="!props.showLabel">{{ props.label }}</mat-label>
   <mat-icon matPrefix class="mr-2" aria-hidden="true">search</mat-icon>
   <input
     matInput
@@ -8,7 +8,7 @@
     [formControl]="formControl"
     [formlyAttributes]="field"
     [maxLength]="props.maxLength || 256"
-    [minLength]="props.minLength || 1"
+    [minLength]="props.minLength || 2"
     [placeholder]="props.placeholder || ''"
     [required]="props.required || false"
     (input)="triggerPartialSearch($event)"

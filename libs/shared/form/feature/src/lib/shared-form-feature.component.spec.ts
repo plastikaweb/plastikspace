@@ -66,15 +66,29 @@ describe('SharedFormFeatureComponent', () => {
       expect(submitEvent).toBeTruthy();
     });
 
-    it('should update model but not emit changeEvent', () => {
-      let submitEvent = false;
-      const model = null;
-      componentRef.setInput('model', model);
-      componentRef.setInput('submitConfig', { submitAvailable: true });
-      component.changeEvent.subscribe(() => (submitEvent = true));
-      component.onModelChange(model as any);
+    it('should emit temporaryChangeEvent when emitOnChange is true and form is valid', () => {
+      let emittedModel = null;
+      const model = { name: 'test' };
+      componentRef.setInput('submitConfig', { emitOnChange: true });
+      component.temporaryChangeEvent.subscribe(m => (emittedModel = m));
 
-      expect(submitEvent).toBeFalsy();
+      // Form is valid by default in this test setup
+      component.onModelChange(model as any);
+      expect(emittedModel).toEqual(model);
+    });
+
+    it('should NOT emit temporaryChangeEvent when form is invalid', () => {
+      let emitted = false;
+      const model = { name: 't' };
+      componentRef.setInput('submitConfig', { emitOnChange: true });
+      component.temporaryChangeEvent.subscribe(() => (emitted = true));
+
+      // Make form invalid
+      (component as any).form.setErrors({ invalid: true });
+      fixture.detectChanges();
+
+      component.onModelChange(model as any);
+      expect(emitted).toBeFalsy();
     });
   });
 

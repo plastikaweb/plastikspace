@@ -15,6 +15,7 @@ import {
   ORDER_STATUS_TYPE_MAP,
 } from '@plastik/eco-store/entities';
 import { SharedChipComponent } from '@plastik/shared/chip/ui';
+import { HighlightPipe } from '@plastik/shared/util/highlight';
 
 @Component({
   selector: 'eco-order-card',
@@ -27,6 +28,7 @@ import { SharedChipComponent } from '@plastik/shared/chip/ui';
     MatIconModule,
     SharedChipComponent,
     TranslateModule,
+    HighlightPipe,
   ],
   templateUrl: './order-card.component.html',
   styleUrl: './order-card.component.scss',
@@ -34,6 +36,7 @@ import { SharedChipComponent } from '@plastik/shared/chip/ui';
 })
 export class OrderCardComponent {
   readonly order = input.required<EcoStoreOrder>();
+  readonly highlight = input<string | null>(null);
   protected readonly currentLanguage = inject(TranslateService).getCurrentLang();
 
   readonly viewDetail = output<void>();
@@ -52,8 +55,6 @@ export class OrderCardComponent {
   );
 
   protected readonly itemNames = computed(() =>
-    this.order()
-      .items.map(item => (item.name as LocalizedFields<string>)[this.currentLanguage])
-      .join(', ')
+    this.order().items.map(item => (item.name as LocalizedFields<string>)[this.currentLanguage])
   );
 }

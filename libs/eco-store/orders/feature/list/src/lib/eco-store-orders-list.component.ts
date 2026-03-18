@@ -10,7 +10,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { SortConfig } from '@plastik/core/entities';
 import { ORDER_STATUS_LABEL_MAP } from '@plastik/eco-store/entities';
 import { EcoStoreSharedNoResultsComponent } from '@plastik/eco-store/no-results';
-import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
+import { ecoStoreOrdersStore, OrdersPocketBaseFilter } from '@plastik/eco-store/orders/data-access';
 import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
@@ -55,6 +55,10 @@ export default class EcoStoreOrdersListComponent {
   readonly #router = inject(Router);
 
   protected readonly model = computed<EcoStoreOrdersFilterData>(() => this.ordersStore.filter());
+
+  protected readonly searchByItems = computed(
+    () => (this.ordersStore.filter() as OrdersPocketBaseFilter).items
+  );
 
   protected readonly skeletonItems = linkedSignal({
     source: () => ({

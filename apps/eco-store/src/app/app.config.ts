@@ -13,6 +13,7 @@ import {
   provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import {
   provideRouter,
   TitleStrategy,
@@ -73,6 +74,10 @@ export const appConfig: ApplicationConfig = {
     { provide: LOCALE_ID, useValue: 'ca' },
     { provide: ErrorHandler, useClass: ErrorHandlerService },
     { provide: TitleStrategy, useClass: EcoStorePrefixTitleService },
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' },
+    },
     {
       provide: NOTIFICATION_POSITION,
       useValue: {

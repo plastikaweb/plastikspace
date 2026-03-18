@@ -430,6 +430,8 @@
     "filter": {
       "all": "TOTES",
       "status": "Estat de la comanda",
+      "productSearch": "Producte",
+      "productSearchPlaceholder": "Escriu el nom del producte (mínim 2 caràcters)",
       "sort": {
         "label": "Ordenar",
         "statusAsc": "Estat ascendent",

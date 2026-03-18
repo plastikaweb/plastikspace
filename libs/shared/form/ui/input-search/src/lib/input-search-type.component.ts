@@ -22,6 +22,7 @@ export type InputSearchProps = FieldTypeConfig['props'] & {
   noButton?: boolean;
   resetSearch?: boolean;
   buttonEnabledIfValue?: boolean;
+  showLabel?: boolean;
 };
 
 @Component({
@@ -43,19 +44,20 @@ export type InputSearchProps = FieldTypeConfig['props'] & {
 })
 export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSearchProps>> {
   readonly #destroyRef = inject(DestroyRef);
-  readonly #formValue = signal<string>('');
-  readonly #formStatus = signal<string>('VALID');
+  protected readonly formValue = signal<string>('');
+  protected readonly formStatus = signal<string>('VALID');
 
+  /**
+   * The search button is disabled if the term length is 1,
+   * or if it's 0 (unless we want to allow search on empty, but usually that's for reset).
+   * It also respects the form control status unless overridden by buttonEnabledIfValue.
+   */
   protected readonly isDisabled = computed(() => {
-    const hasValue = !!this.#formValue();
-    const isInvalid = this.#formStatus() === 'INVALID';
-    const buttonEnabledIfValue = this.props['buttonEnabledIfValue'];
-
-    if (buttonEnabledIfValue) {
-      return !hasValue;
+    const term = this.formValue();
+    if (term.length > 0 && term.length < (this.props?.minLength || 2)) {
+      return true;
     }
-
-    return isInvalid || !hasValue;
+    return this.formStatus() === 'INVALID' && !this.props['buttonEnabledIfValue'];
   });
 
   constructor() {
@@ -63,48 +65,44 @@ export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSea
 
     afterNextRender(() => {
       if (this.formControl) {
-        this.#formValue.set(this.formControl.value);
-        this.#formStatus.set(this.formControl.status);
-
+        this.syncControl();
         this.formControl.valueChanges
           .pipe(takeUntilDestroyed(this.#destroyRef))
-          .subscribe(value => {
-            this.#formValue.set(value);
-          });
-
+          .subscribe(() => this.syncControl());
         this.formControl.statusChanges
           .pipe(takeUntilDestroyed(this.#destroyRef))
-          .subscribe(status => {
-            this.#formStatus.set(status);
-          });
+          .subscribe(() => this.syncControl());
       }
     });
   }
 
+  protected syncControl(): void {
+    this.formValue.set((this.formControl.value ?? '').toString());
+    this.formStatus.set(this.formControl.status);
+  }
+
   protected triggerSearch(event?: Event): void {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
     if (this.isDisabled()) {
       return;
     }
-    const term = (this.formControl?.value ?? '').toString();
-    const handler = this.props['onSearch'];
-    if (typeof handler === 'function') {
-      handler(term, this.field);
-    }
+    this.#handleSearch('onSearch', event);
   }
 
   protected triggerPartialSearch(event?: Event): void {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+    this.#handleSearch('onPartialSearch', event);
+  }
+
+  #handleSearch(propName: 'onSearch' | 'onPartialSearch', event?: Event): void {
+    event?.preventDefault();
+    event?.stopPropagation();
 
     const term = (this.formControl?.value ?? '').toString();
-    const handler = this.props['onPartialSearch'];
-    if (typeof handler === 'function') {
+    const handler = this.props[propName];
+
+    if (
+      typeof handler === 'function' &&
+      (term.length >= (this.props.minLength || 2) || term.length === 0)
+    ) {
       handler(term, this.field);
     }
   }

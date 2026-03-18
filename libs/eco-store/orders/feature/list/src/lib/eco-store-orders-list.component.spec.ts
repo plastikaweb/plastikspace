@@ -1,8 +1,11 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
+import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
+import { InputSearchTypeComponent } from '@plastik/shared/form/input-search';
+import { SharedFormUiSelectWithIconsComponent } from '@plastik/shared/form/select-with-icons';
 import { axe } from 'vitest-axe';
 import EcoStoreOrdersListComponent from './eco-store-orders-list.component';
 
@@ -14,7 +17,7 @@ describe('EcoStoreOrdersListComponent', () => {
     isLoading: signal(false),
     entities: signal([]),
     count: signal(0),
-    filter: signal({ status: null as string | null }),
+    filter: signal({ status: null as string | null, items: null as string | null }),
     sort: signal({ active: 'created', direction: 'desc' }),
     sortOptions: signal({}),
     getPagination: () => ({ page: 1, perPage: 10 }),
@@ -22,13 +25,22 @@ describe('EcoStoreOrdersListComponent', () => {
   };
 
   beforeEach(async () => {
-    mockOrdersStore.filter.set({ status: null });
+    mockOrdersStore.filter.set({ status: null, items: null });
     mockOrdersStore.isLoading.set(false);
     mockOrdersStore.entities.set([]);
     mockOrdersStore.count.set(0);
 
     await TestBed.configureTestingModule({
-      imports: [EcoStoreOrdersListComponent, TranslateModule.forRoot()],
+      imports: [
+        EcoStoreOrdersListComponent,
+        TranslateModule.forRoot(),
+        FormlyModule.forRoot({
+          types: [
+            { name: 'input-search', component: InputSearchTypeComponent },
+            { name: 'select-with-icons', component: SharedFormUiSelectWithIconsComponent },
+          ],
+        }),
+      ],
       providers: [provideRouter([]), { provide: ecoStoreOrdersStore, useValue: mockOrdersStore }],
     }).compileComponents();
 
@@ -66,7 +78,7 @@ describe('EcoStoreOrdersListComponent', () => {
 
   it('should display status-specific empty state when filter is applied', () => {
     // Mock the model with a status filter
-    mockOrdersStore.filter.set({ status: 'PENDING' });
+    mockOrdersStore.filter.set({ status: 'PENDING', items: null });
     fixture.detectChanges();
 
     const emptyTitle = fixture.nativeElement.querySelector('.empty-state [title], .empty-state h3');

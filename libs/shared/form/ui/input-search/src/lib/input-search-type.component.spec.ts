@@ -33,8 +33,8 @@ describe('InputSearchTypeComponent', () => {
         type: 'search',
         label: 'Search',
         placeholder: 'Search',
-        required: true,
-        minLength: 8,
+        required: false,
+        minLength: 2,
         maxLength: 25,
       },
     };
@@ -44,5 +44,59 @@ describe('InputSearchTypeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  describe('triggerSearch', () => {
+    it('should NOT call onSearch if term length is 1', () => {
+      const onSearchSpy = vi.fn();
+      component.field.props!.onSearch = onSearchSpy;
+      component.formControl.setValue('a');
+      component['syncControl']();
+
+      component['triggerSearch']();
+      expect(onSearchSpy).not.toHaveBeenCalled();
+    });
+
+    it('should call onSearch if term length is >= 2', () => {
+      const onSearchSpy = vi.fn();
+      component.field.props!.onSearch = onSearchSpy;
+      component.formControl.setValue('abc');
+      component['syncControl']();
+
+      component['triggerSearch']();
+      expect(onSearchSpy).toHaveBeenCalledWith('abc', component.field);
+    });
+
+    it('should call onSearch if term is empty (reset)', () => {
+      const onSearchSpy = vi.fn();
+      component.field.props!.onSearch = onSearchSpy;
+      component.formControl.setValue('');
+      component['syncControl']();
+
+      component['triggerSearch']();
+      expect(onSearchSpy).toHaveBeenCalledWith('', component.field);
+    });
+  });
+
+  describe('triggerPartialSearch', () => {
+    it('should NOT call onPartialSearch if term length is 1', () => {
+      const onPartialSearchSpy = vi.fn();
+      component.field.props!.onPartialSearch = onPartialSearchSpy;
+      component.formControl.setValue('a');
+      component['syncControl']();
+
+      component['triggerPartialSearch']();
+      expect(onPartialSearchSpy).not.toHaveBeenCalled();
+    });
+
+    it('should call onPartialSearch if term length is >= 2', () => {
+      const onPartialSearchSpy = vi.fn();
+      component.field.props!.onPartialSearch = onPartialSearchSpy;
+      component.formControl.setValue('abc');
+      component['syncControl']();
+
+      component['triggerPartialSearch']();
+      expect(onPartialSearchSpy).toHaveBeenCalledWith('abc', component.field);
+    });
   });
 });

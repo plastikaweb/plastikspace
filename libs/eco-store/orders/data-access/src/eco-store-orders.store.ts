@@ -15,10 +15,11 @@ export type OrdersPocketBaseCrudState = DataCrud<EcoStoreOrder, ListResult<EcoSt
 
 /**
  * Filter configuration for orders list.
- * Extends the base PocketBase entity filter with an optional status.
+ * Extends the base PocketBase entity filter with an optional status and product search (items).
  */
 export interface OrdersPocketBaseFilter extends BasePocketBaseEntityFilter {
   status: string | null;
+  items: string | null;
 }
 
 export const ecoStoreOrdersStore = signalStore(
@@ -34,6 +35,7 @@ export const ecoStoreOrdersStore = signalStore(
       },
       filter: {
         status: null,
+        items: null,
       } as OrdersPocketBaseFilter,
       sortOptions: {
         ...initialGetListState().sortOptions,

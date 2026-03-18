@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-18] - Order Search and Text Highlighting
+
+### Added
+
+- **Text Highlighting Utility**: Created a new `@plastik/shared/util/highlight` library with a standalone `HighlightPipe` for accent-insensitive text matching ([#86c8r2apa](https://app.clickup.com/t/86c8r2apa)).
+- **Search Result Highlighting**: Integrated word highlighting in `OrderCardComponent` to visually emphasize search terms within order item names ([#86c8r2apa](https://app.clickup.com/t/86c8r2apa)).
+- **Reactive Autofocus**: Implemented a robust autofocus strategy in `SharedFormFeatureComponent` that correctly tracks signal dependencies and handles re-focusing after data reloads or `inert` state transitions ([#86c8r2apa](https://app.clickup.com/t/86c8r2apa)).
+
+### Changed
+
+- **Refined Search Logic**: Refactored `InputSearchTypeComponent` to enforce a `minLength: 2` requirement for search triggers while maintaining filter reset capability on empty input ([#86c8r2apa](https://app.clickup.com/t/86c8r2apa)).
+- **Form Feature Validation**: Updated `SharedFormFeatureComponent` to only emit `temporaryChangeEvent` when the form is valid, preventing premature search reloads on partial inputs ([#86c8r2apa](https://app.clickup.com/t/86c8r2apa)).
+- **Order Filter Configuration**: Updated orders filter form config to include explicit `minLength` and `focus` properties for improved UX ([#86c8r2apa](https://app.clickup.com/t/86c8r2apa)).
+
+### Fixed
+
+- **Autofocus Reliability**: Resolved an issue where autofocus failed due to signal access inside asynchronous timers within Angular effects.
+- **Search Trigger Consistency**: Fixed cases where searches were firing with a single character, potentially causing unnecessary API calls.
+
 ## [2026-03-18] - PocketBase Automation and CI Stability
 
 ### Added
