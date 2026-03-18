@@ -22,7 +22,7 @@
 
 ## PocketBase Workflow (eco-store)
 
-- **Initial Repository Setup:** Use `yarn install:local` as the first command after cloning.
+- **Initial Repository Setup:** Use `node tools/scripts/setup-local.js` as the first command after cloning.
   It intelligently installs dependencies, downloads the PocketBase binary (if missing),
   and prompts to populate the database only if no local data is found.
 - **Manual Population:** Use `yarn eco-store:pb:populate` to download the binary, sync the schema,

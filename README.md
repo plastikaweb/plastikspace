@@ -95,7 +95,7 @@ For more details, see the [🏛️ NX Architecture Guide](documentation/nx-archi
 2. **Full Environment Setup**
 
    ```bash
-   yarn install:local
+   node tools/scripts/setup-local.js
    ```
 
    > 💡 **Intelligent Setup**: This command is the recommended way to start the repository. It performs a full workspace cleanup, installs dependencies, and checks for the PocketBase binary used in eco-store app.
@@ -217,6 +217,7 @@ Reusable features and UI components.
 - [**util**](libs/shared/util/objects/README.md)
 - [**countdown**](libs/shared/countdown/util/README.md)
 - [**view-transition**](libs/shared/util/view-transition/README.md)
+- [**highlight**](libs/shared/util/highlight/README.md)
 
 ---
 

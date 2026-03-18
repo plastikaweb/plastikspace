@@ -4,6 +4,7 @@ import {
   UserContact,
 } from '@plastik/core/entities';
 import { SharedChipType } from '@plastik/shared/entities';
+import { latinize } from '@plastik/shared/latinize';
 import { EcoStoreCartItem } from './cart';
 import { ProductUnitType } from './product';
 import { EcoStoreTenantLogisticsDeliveryType, SlotDays, TimeRange } from './tenant';
@@ -69,6 +70,11 @@ export type EcoStorePaymentStatus = 'UNPAID' | 'PAID' | 'REFUNDED' | 'FAILED';
 export interface EcoStoreOrderItemSnapshot {
   productId: string;
   name: string | LocalizedFields<string>;
+  /**
+   * Internal field for searching. Contains normalized names from all languages.
+   * Format: "normalizedNameCA normalizedNameES ..."
+   */
+  searchName: string;
   categoryName: string | LocalizedFields<string>;
   unitType: ProductUnitType;
   lockedPrice: number;
@@ -132,14 +138,25 @@ export const generateOrderNumber = (tenantNormalizedName: string): string => {
  * @param {EcoStoreCartItem} item - The cart item to convert.
  * @returns {EcoStoreOrderItemSnapshot} An order item snapshot with locked pricing data.
  */
-export const toOrderItemSnapshot = (item: EcoStoreCartItem): EcoStoreOrderItemSnapshot => ({
-  productId: item.product.id,
-  name: item.product.name,
-  categoryName: item.product.categoryName,
-  unitType: item.product.unitType,
-  lockedPrice: item.product.priceWithIva,
-  taxRate: item.product.iva,
-  requestedQuantity: item.quantity,
-  isAvailable: item.product.inStock,
-  lineTotal: item.quantity * item.product.priceWithIva,
-});
+export const toOrderItemSnapshot = (item: EcoStoreCartItem): EcoStoreOrderItemSnapshot => {
+  const name = item.product.name;
+  const searchName =
+    typeof name === 'object' && name !== null
+      ? Object.values(name as unknown as LocalizedFields<string>)
+          .map(val => latinize(val).toLowerCase())
+          .join(' ')
+      : latinize(name).toLowerCase();
+
+  return {
+    productId: item.product.id,
+    name: item.product.name,
+    searchName,
+    categoryName: item.product.categoryName,
+    unitType: item.product.unitType,
+    lockedPrice: item.product.priceWithIva,
+    taxRate: item.product.iva,
+    requestedQuantity: item.quantity,
+    isAvailable: item.product.inStock,
+    lineTotal: item.quantity * item.product.priceWithIva,
+  };
+};

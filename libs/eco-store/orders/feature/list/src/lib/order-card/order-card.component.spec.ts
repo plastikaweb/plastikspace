@@ -1,13 +1,18 @@
+import { registerLocaleData } from '@angular/common';
+import localeCa from '@angular/common/locales/ca';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
-import { EcoStoreOrder } from '@plastik/eco-store/entities';
-import { OrderCardComponent } from './order-card.component';
-import { axe } from 'vitest-axe';
+import { DomSanitizer } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { EcoStoreOrder } from '@plastik/eco-store/entities';
+import { axe } from 'vitest-axe';
+import { OrderCardComponent } from './order-card.component';
 
 describe('OrderCardComponent', () => {
   let component: OrderCardComponent;
   let fixture: ComponentFixture<OrderCardComponent>;
+
+  registerLocaleData(localeCa);
 
   const mockOrder: EcoStoreOrder = {
     id: 'order-1',
@@ -45,9 +50,20 @@ describe('OrderCardComponent', () => {
   };
 
   beforeEach(async () => {
+    vi.spyOn(TranslateService.prototype, 'getCurrentLang').mockReturnValue('ca');
+
     await TestBed.configureTestingModule({
       imports: [OrderCardComponent, TranslateModule.forRoot()],
-      providers: [provideRouter([])],
+      providers: [
+        provideRouter([]),
+        {
+          provide: DomSanitizer,
+          useValue: {
+            bypassSecurityTrustHtml: (val: string) => val,
+            sanitize: (ctx: any, val: string) => val,
+          },
+        },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(OrderCardComponent);
@@ -74,5 +90,22 @@ describe('OrderCardComponent', () => {
     const totalElements = fixture.nativeElement.querySelectorAll('.text-lg.font-bold');
     // The second .text-lg.font-bold should contain the total
     expect(totalElements[1].textContent).toContain('121');
+  });
+
+  it('should pass highlight input to item names display', () => {
+    const mockOrderWithItems: EcoStoreOrder = {
+      ...mockOrder,
+      items: [{ name: { ca: 'Pizza Margarita' }, quantity: 1, price: 10, total: 10 } as any],
+    };
+    fixture.componentRef.setInput('order', mockOrderWithItems);
+    fixture.componentRef.setInput('highlight', 'mar');
+    fixture.detectChanges();
+
+    const itemElements = fixture.nativeElement.querySelectorAll('.text-neutral-700 span');
+    // We expect the item name to contain the highlighted part (wrapped in <mark>)
+    // Since we mock the DomSanitizer in pipe tests, here we just check if it contains the text
+    expect(itemElements[0].innerHTML).toContain('Pizza <mark');
+    expect(itemElements[0].innerHTML).toContain('Mar');
+    expect(itemElements[0].innerHTML).toContain('garita');
   });
 });

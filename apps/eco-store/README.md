@@ -8,7 +8,9 @@
   - [Description](#description)
   - [Quick Start](#quick-start)
   - [Development Commands](#development-commands)
-  - [Architecture & Libraries](#architecture--libraries)
+  - [Architecture \& Libraries](#architecture--libraries)
+    - [📦 Products \& Orders](#-products--orders)
+    - [🚀 Core \& Shared](#-core--shared)
   - [📖 Documentation](#-documentation)
 
 ## Description
@@ -19,7 +21,7 @@ Built with **Angular 21** (Signals, Standalone, Control Flow) and **PocketBase**
 
 ## Quick Start
 
-1. **Intelligent Setup**: `yarn install:local`
+1. **Intelligent Setup**: `node tools/scripts/setup-local.js`
    - Configures workspace, dependencies, and PocketBase environment.
 2. **Start Backend**: `yarn eco-store:pocketbase:run`
 3. **Run App**: `yarn eco-store:serve`

@@ -235,6 +235,7 @@ interface SharedFormFeatureOutputs {
 
   /**
    * Emits on temporary form value changes when emitOnChange is true.
+   * NOTE: This event only emits if the form is in a VALID state.
    */
   temporaryChangeEvent: EventEmitter<T>;
 

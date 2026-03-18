@@ -25,6 +25,20 @@
       [translationPrefix]="'orders.filter.sort'"
       (sortChange)="sort($event)"></plastik-sort-selector>
   </div>
+
+  <div
+    class="mt-4 sm:mt-8"
+    [class.pointer-events-none]="ordersStore.isLoading()"
+    [class.bg-neutral-50]="ordersStore.isLoading()"
+    [class.opacity-60]="ordersStore.isLoading()">
+    <plastik-shared-form-feature
+      [fields]="formConfig.getConfig()"
+      [model]="model()"
+      [autoFocus]="!ordersStore.isLoading()"
+      [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
+      (temporaryChangeEvent)="onChange($event)">
+    </plastik-shared-form-feature>
+  </div>
 </header>
 
 @if (!ordersStore.isLoading()) {
@@ -43,22 +57,6 @@
 </div>
 
 @let orders = ordersStore.entities();
-
-<section [attr.aria-labelledby]="'filter-title'">
-  <h3 id="filter-title" class="sr-only">{{ 'orders.list.filterTitle' | translate }}</h3>
-  <mat-card
-    appearance="outlined"
-    class="mb-6 px-4 py-2"
-    [class.pointer-events-none]="ordersStore.isLoading()"
-    [class.opacity-60]="ordersStore.isLoading()">
-    <plastik-shared-form-feature
-      [fields]="formConfig.getConfig()"
-      [model]="model()"
-      [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
-      (temporaryChangeEvent)="onChange($event)">
-    </plastik-shared-form-feature>
-  </mat-card>
-</section>
 
 <section [attr.aria-label]="'orders.list.title' | translate">
   <ul class="orders-grid">
@@ -131,7 +129,7 @@
         <!-- Order list -->
         @for (order of orders; track order.id) {
           <li class="list-none">
-            <eco-order-card [order]="order" />
+            <eco-order-card [order]="order" [highlight]="searchByItems()" />
           </li>
         }
       }

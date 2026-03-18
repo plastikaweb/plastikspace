@@ -82,7 +82,12 @@
             >grocery</mat-icon
           >
           <p class="m-0 text-sm text-neutral-700">
-            {{ itemNames() }}
+            @for (name of itemNames(); track $index) {
+              <span [innerHTML]="name | highlight: highlight()"></span>
+              @if (!$last) {
+                <span>, </span>
+              }
+            }
           </p>
         </div>
       </div>

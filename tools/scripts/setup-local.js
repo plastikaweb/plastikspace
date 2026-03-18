@@ -13,17 +13,21 @@ async function setup() {
   console.info('🚀 Starting local installation and setup...');
 
   try {
-    // 1. Husky install
-    console.info('🐶 Installing git hooks (Husky)...');
-    execSync('yarn husky-install', { stdio: 'inherit' });
+    // 1. Clean workspace (skip if fresh clone)
+    if (existsSync(resolve(__dirname, '../../node_modules'))) {
+      console.info('🧹 Cleaning workspace...');
+      execSync('yarn clean:all', { stdio: 'inherit' });
+    }
 
-    // 2. Clean all
-    console.info('🧹 Cleaning workspace...');
-    execSync('yarn clean:all', { stdio: 'inherit' });
-
-    // 3. Install dependencies
+    // 2. Install dependencies
+    // This is the first step to initialize Yarn state files (.yarn/build-state.yml)
+    // and provide the necessary packages for other scripts.
     console.info('📦 Installing dependencies...');
     execSync('yarn install --immutable', { stdio: 'inherit' });
+
+    // 3. Husky install
+    console.info('🐶 Installing git hooks (Husky)...');
+    execSync('yarn husky-install', { stdio: 'inherit' });
 
     // 4. Download PocketBase (already skips if exists)
     console.info('⬇️ Checking PocketBase binary...');
