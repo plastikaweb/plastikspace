@@ -4,6 +4,11 @@
 // 1. BEFORE CREATE REQUEST (Assign Cycle and Prevent Duplicates)
 // =================================================================
 onRecordCreateRequest((e) => {
+    // Skip hooks if bypass header is present (used during seeding/import)
+    if (e.httpContext && e.httpContext.request().header.get("x-bypass-hooks") === "true") {
+        return e.next();
+    }
+
     const order = e.record;
     const tenantId = order.get("tenant");
     const userId = order.get("user");

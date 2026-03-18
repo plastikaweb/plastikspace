@@ -57,6 +57,7 @@
         ],
         "stylePreprocessorOptions": {
           "includePaths": [
+            "node_modules",
             "libs/core/styles/util/material/src",
             "libs/core/styles/util/tailwind4/src",
             "libs/shared/notification/ui/hot-toast/src",
@@ -132,14 +133,14 @@
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "commands": ["nx run eco-store:build:production", "node tools/scripts/add-cfasync.js"]
+        "commands": ["nx run eco-store:build:production", "node tools/scripts/add-cfasync.cjs"]
       },
       "configurations": {
         "staging": {
-          "commands": ["nx run eco-store:build:staging", "node tools/scripts/add-cfasync.js"]
+          "commands": ["nx run eco-store:build:staging", "node tools/scripts/add-cfasync.cjs"]
         },
         "production": {
-          "commands": ["nx run eco-store:build:production", "node tools/scripts/add-cfasync.js"]
+          "commands": ["nx run eco-store:build:production", "node tools/scripts/add-cfasync.cjs"]
         }
       },
       "defaultConfiguration": "production"

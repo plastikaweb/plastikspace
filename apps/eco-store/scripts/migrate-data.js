@@ -1,9 +1,8 @@
-import path from 'path';
 import PocketBase from 'pocketbase';
-import { fileURLToPath } from 'url';
+import { loadDotEnv } from './load-environment.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Load environment variables from .env if it exists
+loadDotEnv();
 
 // Constants
 const LOCAL_URL = process.env.POCKETBASE_LOCAL_URL;
@@ -22,6 +21,10 @@ const pbStaging = new PocketBase(STAGING_URL);
 pbLocal.autoCancellation(false);
 pbStaging.autoCancellation(false);
 
+/**
+ * Migrates a collection from local PocketBase to staging.
+ * @param {string} collectionName - The name of the collection to migrate.
+ */
 async function migrateCollection(collectionName) {
   console.log(`\n📦 Migrating collection: ${collectionName}...`);
 
@@ -141,25 +144,38 @@ async function migrateCollection(collectionName) {
   }
 }
 
+/**
+ * Runs the migration process.
+ */
 async function run() {
   try {
     console.log('🚀 Starting migration...');
 
     // Login
-    console.log('Logging into local PB...');
-    await pb.collection('_superusers').authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
+    console.log('🔐 Logging into local PB...');
+    // Use _superusers collection for superuser authentication (available in v0.23+)
+    await pbLocal
+      .collection('_superusers')
+      .authWithPassword(LOCAL_ADMIN_EMAIL, LOCAL_ADMIN_PASSWORD);
 
-    console.log('Logging into staging PB...');
-    await pb
+    console.log('🔐 Logging into staging PB...');
+    // Use _superusers collection for superuser authentication (available in v0.23+)
+    await pbStaging
       .collection('_superusers')
       .authWithPassword(STAGING_ADMIN_EMAIL, STAGING_ADMIN_PASSWORD);
 
-    const collections = await pb.collections.getFullList({
+    console.log('✅ Authenticated successfully!');
+    console.log('   Local Is Superuser:', !!pbLocal.authStore.isSuperuser);
+    console.log('   Staging Is Superuser:', !!pbStaging.authStore.isSuperuser);
+
+    const collections = await pbLocal.collections.getFullList({
       sort: 'created',
     });
 
     for (const collection of collections) {
-      await migrateCollection(collection);
+      if (!collection.system) {
+        await migrateCollection(collection.name);
+      }
     }
 
     console.log('\n✨ Migration completed successfully!');

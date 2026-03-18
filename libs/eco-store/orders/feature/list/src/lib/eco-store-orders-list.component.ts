@@ -83,7 +83,7 @@ export default class EcoStoreOrdersListComponent {
     });
   }
 
-  sort(sort: SortConfig) {
+  public sort(sort: SortConfig) {
     this.#router.navigate([], {
       queryParams: { ...sort, page: 0 },
       queryParamsHandling: 'merge',

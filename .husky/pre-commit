@@ -11,7 +11,7 @@ PB_PID=$!
 sleep 3
 
 # 3. Run the export
-yarn pb:export
+yarn eco-store:pb:export
 EXPORT_EXIT_CODE=$?
 
 # 4. Kill ONLY the background PocketBase instance we started (not the dev server!)
@@ -29,7 +29,7 @@ if yarn branch:lint \
   && yarn i18n:validate \
   && yarn nx affected --target=lint --parallel --max-parallel=3 --cache \
   && yarn markdownlint \
-  && yarn nx format:write --all; then
+  && yarn nx format:write --affected; then
 
   # 6. Add all changes to the commit (only if checks pass)
   git add -A

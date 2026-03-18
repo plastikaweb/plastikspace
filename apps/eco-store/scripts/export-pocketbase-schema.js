@@ -1,15 +1,14 @@
-import PocketBase from 'pocketbase';
 import fs from 'fs';
 import path from 'path';
+import PocketBase from 'pocketbase';
 import { fileURLToPath } from 'url';
-import { getPocketBaseUrl } from './load-environment.js';
-import dotenv from 'dotenv';
+import { getPocketBaseUrl, loadDotEnv } from './load-environment.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Load environment variables from .env if it exists
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+loadDotEnv();
 
 // Read environment from arguments or use 'staging' by default
 const ENV_NAME = process.env.POCKETBASE_ENV || 'development';
@@ -19,7 +18,6 @@ console.log(`🔧 Using environment: ${ENV_NAME}`);
 console.log(`🌐 PocketBase URL: ${POCKETBASE_URL}`);
 
 // Credentials depend on the environment
-// Development uses local credentials (_DEV_), staging/production use remote credentials
 let ADMIN_EMAIL, ADMIN_PASSWORD;
 
 if (ENV_NAME === 'development') {
@@ -50,12 +48,47 @@ if (ENV_NAME === 'development') {
 
 const pb = new PocketBase(POCKETBASE_URL);
 
-async function exportSchema() {
+// Disable auto-cancellation for export tasks
+pb.autoCancellation(false);
+
+/**
+ * Downloads a file from PocketBase and saves it locally.
+ */
+async function downloadFile(record, fileName, destinationFolder) {
+  try {
+    // For protected files, we need to pass the admin token
+    const url = pb.files.getURL(record, fileName, { token: pb.authStore.token });
+    const response = await fetch(url);
+    if (!response.ok) {
+      console.error(
+        `      ❌ Failed to fetch ${fileName}: ${response.status} ${response.statusText}`
+      );
+      return false;
+    }
+    const buffer = await response.arrayBuffer();
+    fs.mkdirSync(destinationFolder, { recursive: true });
+    fs.writeFileSync(path.join(destinationFolder, fileName), Buffer.from(buffer));
+    return true;
+  } catch (error) {
+    console.error(`      ⚠️ Error downloading file ${fileName}:`, error.message);
+    return false;
+  }
+}
+
+/**
+ * Exports the PocketBase schema, data, and files.
+ */
+async function exportAll() {
   try {
     console.log('🔐 Authenticating with PocketBase...');
 
-    // authenticate as admin
+    // authenticate as superuser
     await pb.collection('_superusers').authWithPassword(ADMIN_EMAIL, ADMIN_PASSWORD);
+
+    console.log('✅ Authenticated successfully!');
+    console.log('   Token valid:', pb.authStore.isValid);
+    // Use isSuperuser property from AuthStore (available in v0.23+)
+    console.log('   Is Superuser:', !!pb.authStore.isSuperuser);
 
     console.log('🔍 Fetching collections...');
 
@@ -66,7 +99,7 @@ async function exportSchema() {
 
     console.log(`📦 Found ${collections.length} collections`);
 
-    // schema structure similar to pb_schema.json
+    // 1. Export Schema
     const schema = collections.map(col => ({
       id: col.id,
       name: col.name,
@@ -80,7 +113,6 @@ async function exportSchema() {
       updateRule: col.updateRule,
       deleteRule: col.deleteRule,
       options: col.options,
-      // PB v0.23+ top-level fields
       viewQuery: col.viewQuery,
       authRule: col.authRule,
       manageRule: col.manageRule,
@@ -99,28 +131,82 @@ async function exportSchema() {
       confirmEmailChangeTemplate: col.confirmEmailChangeTemplate,
     }));
 
-    // save schema
     const schemaPath = path.join(__dirname, '..', 'pocketbase', 'pb_schema.json');
     fs.mkdirSync(path.dirname(schemaPath), { recursive: true });
     fs.writeFileSync(schemaPath, JSON.stringify(schema, null, 2));
-
     console.log(`✅ Schema exported to ${path.relative(process.cwd(), schemaPath)}`);
-    console.log('\nCollections exported:');
-    schema.forEach((col, index) => {
-      const systemLabel = col.system ? '(system)' : '';
-      console.log(`  ${index + 1}. ${col.name} ${systemLabel}`);
-    });
+
+    // 2. Export Data and Files
+    console.log('\n🚀 Starting Data and Files export...');
+    const dataDir = path.join(__dirname, '..', 'pocketbase', 'data');
+    const storageDir = path.join(dataDir, 'storage');
+
+    // Ensure data directory exists
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+
+    for (const col of collections) {
+      if (col.name.startsWith('_') && col.name !== '_superusers') {
+        console.log(`⏭️  Skipping system collection data: ${col.name}`);
+        continue;
+      }
+
+      console.log(`📦 Exporting records for: ${col.name}...`);
+      try {
+        const records = await pb.collection(col.name).getFullList();
+        console.log(`   Found ${records.length} records.`);
+
+        // Save records JSON
+        const colDataPath = path.join(dataDir, `${col.name}.json`);
+        fs.writeFileSync(colDataPath, JSON.stringify(records, null, 2));
+
+        // Handle files
+        const fileFields = col.fields.filter(f => f.type === 'file');
+        if (fileFields.length > 0 && records.length > 0) {
+          console.log(
+            `   🖼️  Detected file fields: ${fileFields.map(f => f.name).join(', ')}. Checking records...`
+          );
+          let fileCount = 0;
+          for (const record of records) {
+            for (const field of fileFields) {
+              const fieldValue = record[field.name];
+              if (!fieldValue || (Array.isArray(fieldValue) && fieldValue.length === 0)) {
+                continue;
+              }
+
+              const fileList = Array.isArray(fieldValue) ? fieldValue : [fieldValue];
+              const recordStorageDir = path.join(storageDir, col.id, record.id);
+
+              for (const fileName of fileList) {
+                if (!fileName) continue;
+                console.log(`      ⬇️ Downloading ${fileName} from ${col.name} (${record.id})...`);
+                const success = await downloadFile(record, fileName, recordStorageDir);
+                if (success) fileCount++;
+              }
+            }
+          }
+          console.log(`   ✅ Downloaded ${fileCount} files for ${col.name}.`);
+        }
+      } catch (err) {
+        console.error(`   ❌ Error exporting collection ${col.name}:`, err.message);
+      }
+    }
+
+    console.log(
+      `\n✨ Export completed successfully! Data saved in ${path.relative(process.cwd(), dataDir)}`
+    );
 
     pb.authStore.clear();
     process.exit(0);
   } catch (error) {
-    console.error('❌ Error exporting schema:', error.message);
+    console.error('❌ Error exporting:', error.message);
     if (error.response) {
-      console.error('   Response:', error.response);
+      console.error('   Response:', JSON.stringify(error.response, null, 2));
     }
     pb.authStore.clear();
     process.exit(1);
   }
 }
 
-exportSchema();
+exportAll();

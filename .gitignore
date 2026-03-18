@@ -72,12 +72,12 @@ firebase-export*
 # github utils
 issues.js
 
-# pocketbase files
+# eco-store pocketbase files
 apps/eco-store/pocketbase/*
 !apps/eco-store/pocketbase/pb_schema.json
 !apps/eco-store/pocketbase/pb_hooks
 apps/eco-store/.env
-
+apps/eco-store/pocketbase_back
 
 # local helpers
 /helpers

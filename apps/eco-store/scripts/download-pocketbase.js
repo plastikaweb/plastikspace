@@ -1,10 +1,14 @@
-const fs = require('fs');
-const path = require('path');
-const https = require('https');
-const { execSync, execFileSync } = require('child_process');
-const os = require('os');
+import fs from 'node:fs';
+import path from 'node:path';
+import https from 'node:https';
+import { execSync, execFileSync } from 'node:child_process';
+import os from 'node:os';
+import { fileURLToPath } from 'node:url';
 
-const PB_VERSION = '0.36.1'; // Use latest stable version
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const PB_VERSION = '0.36.7'; // Use latest stable version
 const PB_DIR = path.join(__dirname, '../pocketbase');
 const PB_BINARY = path.join(PB_DIR, os.platform() === 'win32' ? 'pocketbase.exe' : 'pocketbase');
 
@@ -46,7 +50,7 @@ function downloadFile(url, dest) {
 
 async function download() {
   if (fs.existsSync(PB_BINARY)) {
-    console.log('✅ PocketBase binary already exists.');
+    console.info('✅ PocketBase binary already exists.');
     return;
   }
 
@@ -73,8 +77,8 @@ async function download() {
   const url = `https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/${zipName}`;
   const zipPath = path.join(PB_DIR, zipName);
 
-  console.log(`🚀 Downloading PocketBase v${PB_VERSION} for ${osName}-${archName}...`);
-  console.log(`🔗 URL: ${url}`);
+  console.info(`🚀 Downloading PocketBase v${PB_VERSION} for ${osName}-${archName}...`);
+  console.info(`🔗 URL: ${url}`);
 
   try {
     await downloadFile(url, zipPath);
@@ -83,71 +87,70 @@ async function download() {
     process.exit(1);
   }
 
-  console.log('📦 Extracting PocketBase...');
+  console.info('📦 Extracting PocketBase...');
   try {
     if (platform === 'win32') {
       execSync(
         `powershell -Command "Expand-Archive -Path '${zipPath}' -DestinationPath '${PB_DIR}' -Force"`
       );
     } else {
-      let extracted = false;
-
-      // 1. Try unzip
-      try {
-        execFileSync('unzip', ['-o', zipPath, '-d', PB_DIR], { stdio: 'inherit' });
-        extracted = true;
-      } catch (e) {
-        console.log('⚠️  "unzip" not found or failed.');
-      }
-
-      // 2. Try python3
-      if (!extracted) {
-        try {
-          console.log('🐍 Trying "python3 -m zipfile"...');
-          execFileSync('python3', ['-m', 'zipfile', '-e', zipPath, PB_DIR], { stdio: 'inherit' });
-          extracted = true;
-        } catch (e) {
-          console.log('⚠️  "python3" not found or failed.');
-        }
-      }
-
-      // 3. Try python (legacy alias)
-      if (!extracted) {
-        try {
-          console.log('🐍 Trying "python -m zipfile"...');
-          execFileSync('python', ['-m', 'zipfile', '-e', zipPath, PB_DIR], { stdio: 'inherit' });
-          extracted = true;
-        } catch (e) {
-          console.log('⚠️  "python" not found or failed.');
-        }
-      }
-
-      // 4. Try tar (some modern versions support zip extraction)
-      if (!extracted) {
-        try {
-          console.log('📦 Trying "tar -xf"...');
-          execFileSync('tar', ['-xf', zipPath, '-C', PB_DIR], { stdio: 'inherit' });
-          extracted = true;
-        } catch (e) {
-          console.log('⚠️  "tar" not found or failed.');
-        }
-      }
-
-      if (!extracted) {
-        throw new Error(
-          'Could not find a way to extract the ZIP file. Please install "unzip" (e.g., sudo apt install unzip) or extract it manually.'
-        );
-      }
-
+      extractZipFallback(zipPath, PB_DIR);
       execFileSync('chmod', ['+x', PB_BINARY], { stdio: 'inherit' });
     }
     fs.unlinkSync(zipPath);
-    console.log('✅ PocketBase installed successfully!');
+    console.info('✅ PocketBase installed successfully!');
   } catch (err) {
     console.error('❌ Extraction failed.');
     console.error('Error details:', err.message);
     process.exit(1);
   }
+}
+
+/**
+ * Extracts a ZIP file using available system tools with a fallback sequence.
+ *
+ * This function attempts to extract the ZIP archive using unzip, python3, python, or tar in sequence.
+ * It ensures the extraction is performed reliably across different Unix-like environments.
+ */
+function extractZipFallback(zipPath, destinationDir) {
+  // 1. Try unzip
+  try {
+    execFileSync('unzip', ['-o', zipPath, '-d', destinationDir], { stdio: 'inherit' });
+    return;
+  } catch (e) {
+    console.warn('⚠️  "unzip" not found or failed.');
+  }
+
+  // 2. Try python3
+  try {
+    console.info('🐍 Trying "python3 -m zipfile"...');
+    execFileSync('python3', ['-m', 'zipfile', '-e', zipPath, destinationDir], { stdio: 'inherit' });
+    return;
+  } catch (e) {
+    console.warn('⚠️  "python3" not found or failed.');
+  }
+
+  // 3. Try python (legacy alias)
+  try {
+    console.info('🐍 Trying "python -m zipfile"...');
+    execFileSync('python', ['-m', 'zipfile', '-e', zipPath, destinationDir], { stdio: 'inherit' });
+    return;
+  } catch (e) {
+    console.warn('⚠️  "python" not found or failed.');
+  }
+
+  // 4. Try tar (some modern versions support zip extraction)
+  try {
+    console.info('📦 Trying "tar -xf"...');
+    execFileSync('tar', ['-xf', zipPath, '-C', destinationDir], { stdio: 'inherit' });
+    return;
+  } catch (e) {
+    console.warn('⚠️  "tar" not found or failed.');
+  }
+
+  throw new Error(
+    'Could not find a way to extract the ZIP file. Please install "unzip" (e.g., sudo apt install unzip) or extract it manually.'
+  );
 }
 
 download().catch(err => {

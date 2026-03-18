@@ -5,12 +5,36 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-18] - PocketBase Automation and CI Stability
+
+### Added
+
+- **PocketBase Automation**: Implemented a comprehensive automation suite including `eco-store:pb:seed`, `eco-store:pb:import`, and `eco-store:pb:populate` to streamline local environment setup with staging data and images.
+- **ESM Compatibility**: Added local `package.json` in `apps/eco-store/scripts/` with `"type": "module"` and refactored multiple scripts to ES modules, resolving Node 22+ deprecation warnings and ReferenceErrors.
+- **CI/CD Resilience**: Enhanced GitHub Action workflows (`ci.yml`, `eco-store-pa11y.yml`, `nasa-images-pa11y.yml`) with dynamic Nx Cloud availability checks to automatically fall back to local execution when cloud limits are exceeded.
+- **Schema Synchronization**: Improved `sync-pocketbase-schema.js` with a robust three-pass synchronization logic to handle complex view-to-collection dependencies.
+
+### Changed
+
+- **Intelligent Setup**: Refactored `install:local` to use the new `setup-local.js` orchestrator, consolidating PocketBase binary management, schema synchronization, and data seeding into a single, interactive SERVER lifecycle.
+- **Internal Environment Loader**: Updated all PocketBase utilities to use a custom `.env` loader in `load-environment.js`, eliminating external dependencies like `dotenv` in script environments and improving cross-platform compatibility (Linux/macOS).
+- **CI Task Visibility**: Improved CI workflow observability by splitting lint, test, and build into distinct steps while suppressing unnecessary Node 22 warnings.
+
+### Fixed
+
+- **PocketBase SDK Alignment**: Fixed authorization and deprecation errors by aligning all scripts with PocketBase SDK v0.23+ (`_superusers` collection, `isSuperuser` checks).
+- **Automation Diagnostics**: Enhanced error reporting across `eco-store:pb:import`, `eco-store:pb:seed`, and `eco-store:pb:export` to provide detailed diagnostics for file and record synchronization failures.
+- **CI Workflow Logic**: Resolved issues where `nx fix-ci` was incorrectly triggered and fixed workspace-wide Vitest configuration inconsistencies.
+- Updated PocketBase to version `0.36.7` in the automated download script.
+
 ## [2026-03-17] - Order Sorting and UI Consistency
 
 ### Added
 
 - Implemented order sorting by status and update date in the user's order list ([#86c8r2ar3](https://app.clickup.com/t/86c8r2ar3))
 - Added localized sort labels for orders list across English, Spanish, and Catalan.
+- Automated local PocketBase initialization and schema synchronization via `populate-pocketbase.js` utility.
+- Integrated database population into `install:local` and `eco-store:local` workflows.
 
 ### Changed
 
@@ -18,6 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `sortProducts` to `sort` in `EcoStoreProductsFeatureComponent` for better consistency across feature components.
 - Enhanced `EcoStoreOrdersStore` with dynamic sorting options for order status.
 - Updated README files for orders and products features to include sorting capabilities.
+- Refactored `download-pocketbase.js` to improve code quality, logging standards, and Linux compatibility.
+- Made `sort` methods explicitly `public` in feature components to ensure robust type resolution in tests.
 
 ### Fixed
 

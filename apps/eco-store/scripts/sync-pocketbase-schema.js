@@ -2,10 +2,13 @@ import fs from 'fs';
 import path from 'path';
 import PocketBase from 'pocketbase';
 import { fileURLToPath } from 'url';
-import { getPocketBaseUrl } from './load-environment.js';
+import { getPocketBaseUrl, loadDotEnv } from './load-environment.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Load environment variables from .env if it exists
+loadDotEnv();
 
 // Read environment from arguments or use 'staging' by default
 const ENV_NAME = process.env.POCKETBASE_ENV || 'staging';
@@ -38,14 +41,18 @@ if (ENV_NAME === 'development') {
 
 const pb = new PocketBase(POCKETBASE_URL);
 
+/**
+ * Synchronizes the local PocketBase schema with a remote instance.
+ */
 async function syncSchema() {
   try {
     console.log('🔐 Authenticating with PocketBase...');
     await pb.collection('_superusers').authWithPassword(ADMIN_EMAIL, ADMIN_PASSWORD);
 
-    console.log('📖 Reading schema from file...');
-    const schemaPath = path.join(__dirname, '..', 'pocketbase', 'pb_schema.json');
+    console.log('✅ Authenticated successfully!');
+    console.log('   Is Superuser:', !!pb.authStore.isSuperuser);
 
+    const schemaPath = path.join(__dirname, '..', 'pocketbase', 'pb_schema.json');
     if (!fs.existsSync(schemaPath)) {
       throw new Error(`Schema file not found: ${schemaPath}`);
     }
@@ -56,74 +63,32 @@ async function syncSchema() {
     // --- INITIAL FETCH ---
     let existingCollections = await pb.collections.getFullList();
     let existingMap = new Map(existingCollections.map(col => [col.name, col]));
+    let existingMapById = new Map(existingCollections.map(col => [col.id, col]));
 
     let updated = 0;
     let created = 0;
-    let skipped = 0;
     let errors = 0;
 
     const collectionsToSync = schema.filter(col => !col.system);
-    const systemCollections = schema.filter(col => col.system);
+    const baseCollections = collectionsToSync.filter(col => col.type !== 'view');
+    const viewCollections = collectionsToSync.filter(col => col.type === 'view');
 
-    console.log(`⏭️  Skipping ${systemCollections.length} system collections`);
-    skipped += systemCollections.length;
-
-    // Map by ID for rename detection
-    const existingMapById = new Map(existingCollections.map(col => [col.id, col]));
-
-    // --- FIRST PASS: CREATE OR RENAME ---
-    console.log('🔄 First pass: Creating missing collections (and handling renames)...');
-    for (const collection of collectionsToSync) {
+    // --- FIRST PASS: CREATE BASE COLLECTIONS (No Relations) ---
+    console.log('🔄 First pass: Creating missing base collections...');
+    for (const collection of baseCollections) {
       const existingByName = existingMap.get(collection.name);
+      const existingById = existingMapById.get(collection.id);
 
-      if (!existingByName) {
-        // Check if it exists by ID (Renamed collection)
-        const existingById = existingMapById.get(collection.id);
-
-        if (existingById) {
-          console.log(
-            `⚠️ Detected rename: ${existingById.name} -> ${collection.name} (ID: ${collection.id})`
-          );
-          try {
-            await pb.collections.update(existingById.id, { name: collection.name });
-            console.log(`✅ Renamed collection: ${existingById.name} -> ${collection.name}`);
-
-            // Update maps to reflect the change for the next pass
-            const updatedCol = await pb.collections.getOne(collection.id);
-            existingMap.set(collection.name, updatedCol);
-            existingMapById.set(collection.id, updatedCol);
-            // Remove old name from map if desired, though strictly not required for next pass lookup
-            existingMap.delete(existingById.name);
-
-            continue; // Skip creation, proceed to update in next pass
-          } catch (error) {
-            console.error(
-              `❌ Error renaming ${existingById.name} to ${collection.name}:`,
-              error.message
-            );
-            errors++;
-          }
-        }
-
-        // Create if not found by Name OR ID
+      if (!existingByName && !existingById) {
         try {
-          const minimalFields = collection.fields.filter(field => field.type !== 'relation');
-
           const createData = {
             id: collection.id,
             name: collection.name,
             type: collection.type,
+            // Only non-relation fields to avoid circular dependency errors on create
+            fields: collection.fields.filter(f => f.type !== 'relation'),
           };
 
-          // For views, we MUST include viewQuery and ALL fields in the first pass
-          if (collection.type === 'view') {
-            createData.viewQuery = collection.viewQuery;
-            createData.fields = collection.fields;
-          } else {
-            createData.fields = minimalFields;
-          }
-
-          // For auth collections, include auth-specific top-level fields
           if (collection.type === 'auth') {
             const authFields = [
               'authRule',
@@ -147,134 +112,141 @@ async function syncSchema() {
             });
           }
 
-          // Try to force ID, but server might generate a new one
           await pb.collections.create(createData);
-          console.log(`🆕 Created (minimal): ${collection.name}`);
+          console.log(`🆕 Created (base): ${collection.name}`);
           created++;
         } catch (error) {
-          console.error(`❌ Error creating ${collection.name} (first pass):`, error.message);
-          if (error.response?.data) {
-            console.error('   Details:', JSON.stringify(error.response.data, null, 2));
-          }
+          console.error(`❌ Error creating ${collection.name}:`, error.message);
           errors++;
         }
+      } else if (existingById && existingById.name !== collection.name) {
+        console.log(`⚠️ Detected rename: ${existingById.name} -> ${collection.name}`);
+        await pb.collections.update(existingById.id, { name: collection.name });
+        console.log(`✅ Renamed collection: ${existingById.name} -> ${collection.name}`);
       }
     }
 
-    // --- RE-FETCH (CRITICAL FIX) ---
-    // Refetch collections to get the REAL IDs assigned by the server.
-    // This handles cases where the server ignored our forced ID.
-    console.log('🔄 Re-fetching remote collections to ensure ID mapping is correct...');
+    // --- RE-FETCH MAPS ---
     existingCollections = await pb.collections.getFullList();
     existingMap = new Map(existingCollections.map(col => [col.name, col]));
 
-    // --- SECOND PASS: UPDATE ---
-    console.log('🔄 Second pass: Updating collections with full schema...');
-    for (const collection of collectionsToSync) {
+    // --- SECOND PASS: UPDATE BASE COLLECTIONS (Include Relations) ---
+    console.log('🔄 Second pass: Updating base collections with full schema...');
+    for (const collection of baseCollections) {
       const existing = existingMap.get(collection.name);
-
-      if (!existing) {
-        console.error(`❌ Error: Collection ${collection.name} missing after creation pass.`);
-        continue;
-      }
+      if (!existing) continue;
 
       try {
-        const collectionData = JSON.parse(JSON.stringify(collection));
-
-        // --- SMART SYNC FIX ---
-        if (collectionData.fields) {
-          collectionData.fields.forEach(field => {
-            // FIX: Check both top-level collectionId AND options.collectionId
-            const relationId = field.collectionId || field.options?.collectionId;
-
-            if (field.type === 'relation' && relationId) {
-              // 1. Find local definition to get the name
-              const targetLocalCollection = schema.find(c => c.id === relationId);
-
-              if (targetLocalCollection) {
-                const targetName = targetLocalCollection.name;
-
-                // 2. Find remote collection by NAME
-                const targetRemoteCollection = existingMap.get(targetName);
-
-                if (targetRemoteCollection) {
-                  // If IDs don't match, swap the Local ID for the Remote ID
-                  if (relationId !== targetRemoteCollection.id) {
-                    console.log(
-                      `   🔄 Smart Sync: Mapping ${collection.name}.${field.name} -> ${targetName} (${targetRemoteCollection.id})`
-                    );
-
-                    // Update wherever the ID is stored
-                    if (field.collectionId) field.collectionId = targetRemoteCollection.id;
-                    if (field.options) field.options.collectionId = targetRemoteCollection.id;
-                  }
-                } else {
-                  console.warn(`   ⚠️ Warning: Target '${targetName}' not found remotely.`);
-                }
-              }
-            }
-          });
-        }
-
-        const updateData = {
-          fields: collectionData.fields,
-          indexes: collectionData.indexes,
-          listRule: collectionData.listRule,
-          viewRule: collectionData.viewRule,
-          createRule: collectionData.createRule,
-          updateRule: collectionData.updateRule,
-          deleteRule: collectionData.deleteRule,
-          options: collectionData.options,
-          viewQuery: collectionData.viewQuery,
-        };
-
-        // Add auth-specific top-level fields
-        const authFields = [
-          'authRule',
-          'manageRule',
-          'authAlert',
-          'oauth2',
-          'passwordAuth',
-          'mfa',
-          'otp',
-          'authToken',
-          'passwordResetToken',
-          'emailChangeToken',
-          'verificationToken',
-          'fileToken',
-          'verificationTemplate',
-          'resetPasswordTemplate',
-          'confirmEmailChangeTemplate',
-        ];
-        authFields.forEach(key => {
-          if (collectionData[key] !== undefined) updateData[key] = collectionData[key];
-        });
-
-        await pb.collections.update(existing.id, updateData);
+        const collectionData = prepareCollectionData(collection, schema, existingMap);
+        await pb.collections.update(existing.id, collectionData);
         console.log(`✅ Updated (full): ${collection.name}`);
         updated++;
       } catch (error) {
         console.error(`❌ Error updating ${collection.name}:`, error.message);
-        if (error.response?.data) {
-          // Better error logging to see exactly which field fails
+        if (error.response?.data)
           console.error('   Details:', JSON.stringify(error.response.data, null, 2));
+        errors++;
+      }
+    }
+
+    // --- THIRD PASS: HANDLE VIEWS (Dependencies should now be met) ---
+    console.log('🔄 Third pass: Creating/Updating view collections...');
+    // Re-fetch maps again to ensure second pass changes are captured
+    existingCollections = await pb.collections.getFullList();
+    existingMap = new Map(existingCollections.map(col => [col.name, col]));
+
+    for (const collection of viewCollections) {
+      const existing = existingMap.get(collection.name) || existingMapById.get(collection.id);
+
+      try {
+        const viewData = {
+          id: collection.id,
+          name: collection.name,
+          type: 'view',
+          viewQuery: collection.viewQuery,
+          fields: collection.fields,
+          listRule: collection.listRule,
+          viewRule: collection.viewRule,
+        };
+
+        if (existing) {
+          await pb.collections.update(existing.id, viewData);
+          console.log(`✅ Updated (view): ${collection.name}`);
+          updated++;
+        } else {
+          await pb.collections.create(viewData);
+          console.log(`🆕 Created (view): ${collection.name}`);
+          created++;
         }
+      } catch (error) {
+        console.error(`❌ Error with view ${collection.name}:`, error.message);
+        if (error.response?.data)
+          console.error('   Details:', JSON.stringify(error.response.data, null, 2));
         errors++;
       }
     }
 
     console.log('\n✅ Schema sync completed!');
-    console.log(`   Created: ${created}`);
-    console.log(`   Updated: ${updated}`);
-    console.log(`   Errors: ${errors}`);
-
+    console.log(`   Created: ${created}, Updated: ${updated}, Errors: ${errors}`);
     pb.authStore.clear();
     process.exit(errors > 0 ? 1 : 0);
   } catch (error) {
     console.error('❌ Fatal Error:', error.message);
-    pb.authStore.clear();
     process.exit(1);
   }
+}
+
+/**
+ * Prepares collection data for update, resolving relation IDs.
+ */
+function prepareCollectionData(collection, schema, existingMap) {
+  const data = JSON.parse(JSON.stringify(collection));
+
+  if (data.fields) {
+    data.fields.forEach(field => {
+      const relationId = field.collectionId || field.options?.collectionId;
+      if (field.type === 'relation' && relationId) {
+        const targetLocal = schema.find(c => c.id === relationId);
+        if (targetLocal) {
+          const targetRemote = existingMap.get(targetLocal.name);
+          if (targetRemote && relationId !== targetRemote.id) {
+            if (field.collectionId) field.collectionId = targetRemote.id;
+            if (field.options) field.options.collectionId = targetRemote.id;
+          }
+        }
+      }
+    });
+  }
+
+  return {
+    fields: data.fields,
+    indexes: data.indexes,
+    listRule: data.listRule,
+    viewRule: data.viewRule,
+    createRule: data.createRule,
+    updateRule: data.updateRule,
+    deleteRule: data.deleteRule,
+    options: data.options,
+    ...(data.type === 'auth'
+      ? {
+          authRule: data.authRule,
+          manageRule: data.manageRule,
+          authAlert: data.authAlert,
+          oauth2: data.oauth2,
+          passwordAuth: data.passwordAuth,
+          mfa: data.mfa,
+          otp: data.otp,
+          authToken: data.authToken,
+          passwordResetToken: data.passwordResetToken,
+          emailChangeToken: data.emailChangeToken,
+          verificationToken: data.verificationToken,
+          fileToken: data.fileToken,
+          verificationTemplate: data.verificationTemplate,
+          resetPasswordTemplate: data.resetPasswordTemplate,
+          confirmEmailChangeTemplate: data.confirmEmailChangeTemplate,
+        }
+      : {}),
+  };
 }
 
 syncSchema();

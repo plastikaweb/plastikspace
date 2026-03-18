@@ -4,9 +4,10 @@
   "license": "MIT",
   "private": true,
   "packageManager": "yarn@4.6.0",
+  "type": "module",
   "scripts": {
     "ng": "nx",
-    "postinstall": "node ./decorate-angular-cli.js",
+    "postinstall": "node ./decorate-angular-cli.cjs",
     "start": "nx serve",
     "stop": "kill -9 $(lsof -t -i:4200)",
     "build": "nx run-many --target=build --all --parallel",
@@ -18,7 +19,7 @@
     "lint": "nx lint",
     "lint:all": "nx run-many --all --target=lint --parallel --max-parallel=3",
     "lint:ci": "nx affected --target=lint --base=remotes/origin/develop --head=HEAD --parallel",
-    "i18n:validate": "node tools/scripts/validate-i18n-keys.js",
+    "i18n:validate": "node tools/scripts/validate-i18n-keys.cjs",
     "i18n:test": "bash tools/scripts/test-i18n-validation.sh",
     "e2e:all": "nx run-many --all --target=e2e --headed=false --watch=false",
     "e2e:ci": "nx affected --target=e2e --base=remotes/origin/develop --parallel --headed=false --watch=false",
@@ -40,7 +41,7 @@
     "clean": "rimraf node_modules",
     "clean:all": "rm -rf node_modules dist && yarn cache clean",
     "clean:dist": "rimraf dist",
-    "install:local": "yarn husky-install && yarn clean:all && yarn install --immutable && yarn pb:download",
+    "install:local": "node tools/scripts/setup-local.js",
     "markdownlint": "markdownlint-cli2",
     "branch:lint": "branch-name-lint branchNameLint.json",
     "nasa-images:serve": "nx run nasa-images:serve",
@@ -98,16 +99,23 @@
     "plastikaweb:a11y:run": "pa11y-ci --config ./apps/plastikaweb/.pa11yci.json",
     "plastikaweb:build:github": "nx run plastikaweb:build:prod",
     "plastikaweb:codegen": "npx nx codegen plastikaweb-graphql-models",
-    "pb:download": "node apps/eco-store/scripts/download-pocketbase.js",
-    "eco-store:pocketbase:run": "yarn pb:download && cd apps/eco-store/pocketbase && ./pocketbase serve",
+    "eco-store:pb:download": "node apps/eco-store/scripts/download-pocketbase.js",
+    "eco-store:pb:populate": "node apps/eco-store/scripts/populate-pocketbase.js",
+    "eco-store:pb:seed": "node apps/eco-store/scripts/seed-local.js",
+    "eco-store:pb:pull": "node apps/eco-store/scripts/pull-staging-data.js",
+    "eco-store:pb:export": "node apps/eco-store/scripts/export-pocketbase-schema.js",
+    "eco-store:pb:import": "node apps/eco-store/scripts/import-pocketbase-data.js",
+    "eco-store:pb:sync": "node apps/eco-store/scripts/sync-pocketbase-schema.js",
+    "eco-store:pb:diff": "git diff apps/eco-store/pocketbase/pb_schema.json",
+    "eco-store:pocketbase:run": "cd apps/eco-store/pocketbase && ./pocketbase serve",
     "eco-store:pocketbase:stop": "pkill -f 'pocketbase serve' || true",
     "eco-store:watch-scss": "chokidar 'apps/eco-store/src/styles/_*.scss' -c 'touch apps/eco-store/src/styles/styles.scss'",
     "eco-store:serve": "nx run eco-store:serve",
     "eco-store:serve:staging": "nx run eco-store:serve:staging",
     "eco-store:serve:prod": "nx run eco-store:serve:production",
-    "eco-store:local": "yarn pb:download && yarn eco-store:pocketbase:stop && kill-port 4200 && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve eco-store:watch-scss",
-    "eco-store:local:staging": "yarn pb:download && yarn eco-store:pocketbase:stop && kill-port 4200 && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:staging eco-store:watch-scss",
-    "eco-store:local:prod": "yarn pb:download && yarn eco-store:pocketbase:stop && kill-port 4200 && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:prod eco-store:watch-scss",
+    "eco-store:local": "yarn eco-store:pocketbase:stop && kill-port 4200 && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve eco-store:watch-scss",
+    "eco-store:local:staging": "yarn eco-store:pocketbase:stop && kill-port 4200 && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:staging eco-store:watch-scss",
+    "eco-store:local:prod": "yarn eco-store:pocketbase:stop && kill-port 4200 && npm-run-all --parallel --race eco-store:pocketbase:run eco-store:serve:prod eco-store:watch-scss",
     "eco-store:lint": "nx run eco-store:lint",
     "eco-store:build": "nx run eco-store:build --parallel",
     "eco-store:build:staging": "nx run eco-store:build:staging",
@@ -122,10 +130,7 @@
     "preeco-store:a11y": "yarn eco-store:build",
     "eco-store:a11y": "npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run",
     "eco-store:a11y:run": "pa11y-ci --config ./apps/eco-store/.pa11yci.json",
-    "eco-store:build:github": "nx run eco-store:build:prod",
-    "pb:export": "node apps/eco-store/scripts/export-pocketbase-schema.js",
-    "pb:sync": "node apps/eco-store/scripts/sync-pocketbase-schema.js",
-    "pb:diff": "git diff apps/eco-store/pocketbase/pb_schema.json"
+    "eco-store:build:github": "nx run eco-store:build:prod"
   },
   "dependencies": {
     "@angular-architects/ngrx-toolkit": "21.0.1",
@@ -272,7 +277,7 @@
       "path": "node_modules/cz-customizable"
     },
     "cz-customizable": {
-      "config": ".cz-config.js"
+      "config": ".cz-config.cjs"
     }
   },
   "nx": {

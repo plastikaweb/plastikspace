@@ -19,6 +19,7 @@ ignores:
   - .git
   - .claude/CLAUDE.md
   - CLAUDE.md
+  - CHANGELOG.md
   - .agent/**
   - .agents/**
   - .angular/**
@@ -42,6 +43,7 @@ ignores:
   - .opencode/**
   - .codex/**
   - tmp/**
+  - apps/eco-store/pocketbase/**
 
 # Disable inline config comments
 noInlineConfig: true

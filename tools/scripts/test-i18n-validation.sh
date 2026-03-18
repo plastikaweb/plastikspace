@@ -177,7 +177,7 @@ print_test "Single app with valid keys in template"
     <p>{{ 'app.description' | translate }}</p>
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "All translation keys are valid"; then
@@ -201,7 +201,7 @@ print_test "TypeScript pattern detection with translateService"
     }
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "All translation keys are valid"; then
@@ -222,7 +222,7 @@ print_test "Missing keys detection"
     <p>{{ 'missing.key' | translate }}</p>
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "missing.key"; then
@@ -262,7 +262,7 @@ EOF
     {{ 'feature.name' | translate }}
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "multi-app-1" && echo "$OUTPUT" | grep -q "multi-app-2"; then
@@ -282,7 +282,7 @@ print_test "Alternative directory structure (src/assets/i18n)"
     {{ 'app.title' | translate }}
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "All translation keys are valid"; then
@@ -301,7 +301,7 @@ print_test "Minimal directory structure (i18n at root)"
     {{ 'app.title' | translate }}
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "All translation keys are valid"; then
@@ -315,7 +315,7 @@ print_test "Graceful handling when no apps with i18n found"
 {
   cd "$TEST_DIR"
   mkdir -p apps/no-i18n-app/src
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "No apps with translations found"; then
@@ -339,7 +339,7 @@ EOF
     {{ 'messages.greeting' | translate: { name: userName } }}
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "All translation keys are valid"; then
@@ -357,7 +357,7 @@ print_test "Keys in HTML attributes (directives)"
     <button [title]=\"'common.loading' | translate\">Click me</button>
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "All translation keys are valid"; then
@@ -390,7 +390,7 @@ EOF
     {{ 'app.title' | translate }}
   "
   cd "$TEST_DIR"
-  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.js" 2>&1 || true)
+  OUTPUT=$(node "$ORIGINAL_DIR/tools/scripts/validate-i18n-keys.cjs" 2>&1 || true)
   cd "$ORIGINAL_DIR"
 }
 if echo "$OUTPUT" | grep -q "All translation keys are valid"; then

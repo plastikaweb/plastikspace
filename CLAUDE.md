@@ -100,8 +100,8 @@ yarn llecoop:functions              # Functions emulator only
 ```bash
 yarn eco-store:local                 # Start app + PocketBase + SCSS watcher
 yarn eco-store:pocketbase:run       # PocketBase only
-yarn pb:export                       # Export PocketBase schema
-yarn pb:sync                         # Sync PocketBase schema
+yarn eco-store:pb:export             # Export PocketBase schema
+yarn eco-store:pb:sync               # Sync PocketBase schema
 ```
 
 **Plastikaweb** (Astro):
@@ -409,9 +409,9 @@ See `documentation/css-styles.md` for detailed styling conventions.
 **Schema Management Workflow**:
 
 1. Make changes in PocketBase Admin UI
-2. `yarn pb:export` - Export schema to `apps/eco-store/pocketbase/pb_schema.json`
-3. `yarn pb:diff` - Review schema changes in git
-4. `yarn pb:sync` - Sync schema across environments (if needed)
+2. `yarn eco-store:pb:export` - Export schema to `apps/eco-store/pocketbase/pb_schema.json`
+3. `yarn eco-store:pb:diff` - Review schema changes in git
+4. `yarn eco-store:pb:sync` - Sync schema across environments (if needed)
 5. Commit schema file with your changes
 
 Schema is version-controlled and should be committed with related code changes.
