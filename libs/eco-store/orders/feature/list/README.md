@@ -25,6 +25,7 @@ It allows users to view their past orders, their status, total price, and delive
 - **Pagination**: Support for navigating through order history.
 - **Dynamic Status & Icons**: Visual cues for order status (Pending, Confirmed, Ready, etc.) and delivery methods.
 - **Empty State**: User-friendly empty state with a call to action when no orders are found, including status-specific messages.
+- **Order Deletion**: Allows users to delete an order with a confirmation dialog.
 - **Modern Architecture**: Built with Angular 21 (Signals, Standalone Components, and logical control flow).
 
 ## Running unit tests

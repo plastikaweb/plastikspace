@@ -64,7 +64,7 @@
       <!-- Left: delivery method + item names -->
       <div class="flex flex-col gap-2">
         <div
-          class="flex items-center gap-3"
+          class="grid grid-cols-[32px_1fr] items-center"
           [attr.aria-label]="
             ('orders.card.deliveryMethod' | translate) + ': ' + (deliveryLabel() | translate)
           ">
@@ -74,13 +74,8 @@
 
           <span class="text-sm text-neutral-800">{{ deliveryLabel() | translate }}</span>
         </div>
-        <div class="flex flex-wrap items-center gap-1">
-          <mat-icon
-            aria-hidden="true"
-            class="text-neutral-800!"
-            style="font-size: 1.25rem; height: 1.25rem; width: 1.25rem"
-            >grocery</mat-icon
-          >
+        <div class="grid grid-cols-[32px_1fr] items-center">
+          <mat-icon aria-hidden="true" class="products-icon text-neutral-800">grocery</mat-icon>
           <p class="m-0 text-sm text-neutral-700">
             @for (name of itemNames(); track $index) {
               <span [innerHTML]="name | highlight: highlight()"></span>
@@ -92,16 +87,36 @@
         </div>
       </div>
 
-      <button
-        mat-stroked-button
-        class="detail-button shrink-0"
-        [attr.aria-label]="
-          'orders.card.viewDetailOf' | translate: { orderNumber: order().orderNumber }
-        "
-        (click)="viewDetail.emit()">
-        {{ 'orders.card.viewDetail' | translate }}
-        <mat-icon iconPositionEnd aria-hidden="true">arrow_forward</mat-icon>
-      </button>
+      <!-- Right: delete button + detail button -->
+      <div class="flex flex-1 items-center justify-end gap-2">
+        @if (order().status === 'PENDING') {
+          <button
+            matIconButton
+            type="button"
+            class="delete-button"
+            [attr.aria-label]="
+              'orders.card.deleteOrder' | translate: { orderNumber: '#' + order().orderNumber }
+            "
+            [matTooltip]="
+              'orders.card.deleteOrder' | translate: { orderNumber: '#' + order().orderNumber }
+            "
+            (click)="deleteOrder()">
+            <mat-icon>delete</mat-icon>
+          </button>
+        }
+
+        <button
+          mat-stroked-button
+          type="button"
+          class="detail-button shrink-0"
+          [attr.aria-label]="
+            'orders.card.viewDetailOf' | translate: { orderNumber: '#' + order().orderNumber }
+          "
+          (click)="viewDetail.emit()">
+          {{ 'orders.card.viewDetail' | translate }}
+          <mat-icon iconPositionEnd aria-hidden="true">arrow_forward</mat-icon>
+        </button>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>
