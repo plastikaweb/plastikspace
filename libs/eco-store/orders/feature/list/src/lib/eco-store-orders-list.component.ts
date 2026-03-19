@@ -8,19 +8,22 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SortConfig } from '@plastik/core/entities';
-import { ORDER_STATUS_LABEL_MAP } from '@plastik/eco-store/entities';
+import { EcoStoreOrder, ORDER_STATUS_LABEL_MAP } from '@plastik/eco-store/entities';
 import { EcoStoreSharedNoResultsComponent } from '@plastik/eco-store/no-results';
 import { ecoStoreOrdersStore, OrdersPocketBaseFilter } from '@plastik/eco-store/orders/data-access';
 import { PaginationComponent } from '@plastik/pagination/ui';
 import { PocketbasePaginationNavigationDirective } from '@plastik/pagination/util';
+import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { SelectWithIconsFormlyModule } from '@plastik/shared/form/select-with-icons';
 import { SortSelectorComponent } from '@plastik/sort-selector';
+import { filter, take } from 'rxjs';
 import {
   EcoStoreOrdersFilterData,
   ecoStoreOrdersFilterFormConfig,
 } from './eco-store-orders-filter-form.config';
 import { OrderCardComponent } from './order-card/order-card.component';
+
 @Component({
   selector: 'eco-store-orders-list',
   imports: [
@@ -52,6 +55,8 @@ export default class EcoStoreOrdersListComponent {
   protected readonly ordersStore = inject(ecoStoreOrdersStore);
   protected readonly formConfig = ecoStoreOrdersFilterFormConfig();
   protected readonly orderStatusLabelMap = ORDER_STATUS_LABEL_MAP;
+  readonly #confirmService = inject(SharedConfirmDialogService);
+
   readonly #router = inject(Router);
 
   protected readonly model = computed<EcoStoreOrdersFilterData>(() => this.ordersStore.filter());
@@ -92,5 +97,21 @@ export default class EcoStoreOrdersListComponent {
       queryParams: { ...sort, page: 0 },
       queryParamsHandling: 'merge',
     });
+  }
+
+  protected onDeleteOrder([orderId, orderNumber]: [
+    EcoStoreOrder['id'],
+    EcoStoreOrder['orderNumber'],
+  ]) {
+    this.#confirmService
+      .confirm(
+        'orders.list.deleteOrderTitle',
+        'orders.list.deleteOrderDescription',
+        'orders.list.deleteOrderCancel',
+        'orders.list.deleteOrderConfirm',
+        { orderNumber }
+      )
+      .pipe(take(1), filter(Boolean))
+      .subscribe(() => this.ordersStore.delete(orderId));
   }
 }

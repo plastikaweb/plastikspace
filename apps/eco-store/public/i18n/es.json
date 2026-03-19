@@ -400,7 +400,11 @@
       "emptyDescription": "Parece que aún no has realizado ninguna compra. ¡Descubre nuestros productos ecológicos y de proximidad!",
       "emptyDescriptionWithStatus": "Prueba a cambiar los filtros.",
       "goToStore": "Ir a la tienda",
-      "pagination": "Paginación de pedidos"
+      "pagination": "Paginación de pedidos",
+      "deleteOrderTitle": "Eliminar pedido",
+      "deleteOrderDescription": "¿Estás seguro de que quieres eliminar este pedido? Esta acción no se puede deshacer.",
+      "deleteOrderCancel": "Cancelar",
+      "deleteOrderConfirm": "Eliminar pedido"
     },
     "card": {
       "label": "Pedido",
@@ -413,7 +417,8 @@
       "items": "{count, plural, one {# producto} other {# productos}}",
       "deliveryMethod": "Método de entrega",
       "viewDetail": "Ver detalle",
-      "viewDetailOf": "Ver detalles del pedido #{orderNumber}"
+      "viewDetailOf": "Ver detalles del pedido #{orderNumber}",
+      "deleteOrder": "Eliminar el pedido {orderNumber}"
     },
     "deliveryMethod": {
       "delivery": "Envío a domicilio",

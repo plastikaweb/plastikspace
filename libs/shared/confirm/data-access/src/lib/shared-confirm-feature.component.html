@@ -1,9 +1,9 @@
 <div>
-  <p mat-dialog-title class="text-center md:text-left">{{ data.title | translate }}</p>
+  <p mat-dialog-title class="text-center md:text-left">{{ data.title | translate: data.params }}</p>
   <div
     mat-dialog-content
     class="text-center md:text-left"
-    [innerHTML]="data.message | translate"></div>
+    [innerHTML]="data.message | translate: data.params"></div>
   <mat-dialog-actions class="flex flex-nowrap justify-center md:justify-end">
     <button mat-button type="button" mat-dialog-close>
       {{ data.ko | translate }}

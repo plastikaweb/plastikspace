@@ -12,11 +12,28 @@
     );
   }
 
-  .delivery-icon {
+  .delivery-icon,
+  .products-icon {
     @include mat.icon-overrides(
       (
-        color: var(--neutral-600),
+        color: var(--neutral-800),
       )
     );
+  }
+
+  .delete-button {
+    &:hover {
+      @include mat.icon-overrides(
+        (
+          color: var(--error-500),
+        )
+      );
+      @include mat.icon-button-overrides(
+        (
+          icon-color: var(--error-500),
+          state-layer-color: var(--error-500),
+        )
+      );
+    }
   }
 }

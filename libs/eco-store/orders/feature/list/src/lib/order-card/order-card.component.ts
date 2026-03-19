@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
 import {
@@ -25,6 +26,7 @@ import { HighlightPipe } from '@plastik/shared/util/highlight';
     MatButtonModule,
     MatCardModule,
     MatDividerModule,
+    MatTooltipModule,
     MatIconModule,
     SharedChipComponent,
     TranslateModule,
@@ -40,6 +42,7 @@ export class OrderCardComponent {
   protected readonly currentLanguage = inject(TranslateService).getCurrentLang();
 
   readonly viewDetail = output<void>();
+  readonly delete = output<[EcoStoreOrder['id'], EcoStoreOrder['orderNumber']]>();
 
   protected readonly statusLabel = computed(() => ORDER_STATUS_LABEL_MAP[this.order().status]);
   protected readonly statusType = computed(() => ORDER_STATUS_TYPE_MAP[this.order().status]);
@@ -57,4 +60,8 @@ export class OrderCardComponent {
   protected readonly itemNames = computed(() =>
     this.order().items.map(item => (item.name as LocalizedFields<string>)[this.currentLanguage])
   );
+
+  protected deleteOrder(): void {
+    this.delete.emit([this.order().id, this.order().orderNumber]);
+  }
 }

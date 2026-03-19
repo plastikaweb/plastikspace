@@ -20,17 +20,16 @@ This method returns an observable that emits a boolean value. If the user clicks
 ```typescript
   private confirmService = inject(SharedConfirmDialogService);
 
-  this.confirmService.confirm({
-    title: 'confirm.delete.title',
-    message: 'confirm.delete.message',
-    ko: 'confirm.delete.cancel',
-    ok: 'confirm.delete.ok',
-  })
+  this.confirmService.confirm(
+    'confirm.delete.title',
+    'confirm.delete.message',
+    'confirm.delete.cancel',
+    'confirm.delete.ok',
+    { name: 'item name' } // optional params for translation
+  )
   .pipe(take(1), filter(Boolean))
-  .subscribe((result) => {
-    if (result) {
-      // do the delete action or whatever you want to do.
-    }
+  .subscribe(() => {
+    // do the delete action
   });
 ```
 

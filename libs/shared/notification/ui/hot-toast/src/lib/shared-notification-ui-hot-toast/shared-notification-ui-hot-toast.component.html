@@ -1,21 +1,21 @@
 <ng-template #toastTemplate let-toastRef>
   <div
-    class="flex items-center justify-center gap-2 text-sm leading-7"
+    class="grid grid-cols-[30px_1fr] items-center justify-center gap-2 text-sm leading-7"
     role="alert"
     aria-live="polite">
     @if (mergedNotification()?.icon) {
       <mat-icon class="icon-wrapper">{{ mergedNotification()?.icon }}</mat-icon>
     }
 
-    <div class="flex items-center gap-2">
+    <div class="flex flex-col items-start gap-2 px-4 py-2">
       @if (mergedNotification()?.message) {
-        <div class="truncate font-bold">
+        <div class="font-bold">
           {{ mergedNotification()?.message | translate: mergedNotification()?.parameters }}
         </div>
       }
 
       @if (mergedNotification()?.name) {
-        <div class="truncate text-sm opacity-90">
+        <div class="text-sm opacity-90">
           {{ mergedNotification()?.name }}
         </div>
       }

@@ -400,7 +400,15 @@
       "emptyDescription": "Sembla que encara no has fet cap compra. Descobreix els nostres productes ecològics i de proximitat!",
       "emptyDescriptionWithStatus": "Prova a canviar els filtres.",
       "goToStore": "Anar a la botiga",
-      "pagination": "Paginació de comandes"
+      "pagination": "Paginació de comandes",
+      "deleteOrderTitle": "Eliminar comanda",
+      "deleteOrderDescription": "Estàs segur que vols eliminar la comanda #{orderNumber}? Aquesta acció no es pot desfer.",
+      "deleteOrderCancel": "Cancel·lar",
+      "deleteOrderConfirm": "Eliminar comanda"
+    },
+    "delete": {
+      "success": "Comanda eliminada correctament. Pots tornar a fer una comanda quan vulguis.",
+      "error": "Error en eliminar la comanda. Si us plau, contacta amb nosaltres si el problema persisteix."
     },
     "card": {
       "label": "Comanda",
@@ -413,7 +421,8 @@
       "items": "{count, plural, one {# producte} other {# productes}}",
       "deliveryMethod": "Mètode d'entrega",
       "viewDetail": "Veure detall",
-      "viewDetailOf": "Veure detalls de la comanda #{orderNumber}"
+      "viewDetailOf": "Veure comanda #{orderNumber}",
+      "deleteOrder": "Eliminar comanda #{orderNumber}"
     },
     "deliveryMethod": {
       "delivery": "Enviament a domicili",

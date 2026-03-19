@@ -4,8 +4,10 @@ import { provideRouter, Router } from '@angular/router';
 import { FormlyModule } from '@ngx-formly/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
+import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { InputSearchTypeComponent } from '@plastik/shared/form/input-search';
 import { SharedFormUiSelectWithIconsComponent } from '@plastik/shared/form/select-with-icons';
+import { of } from 'rxjs';
 import { axe } from 'vitest-axe';
 import EcoStoreOrdersListComponent from './eco-store-orders-list.component';
 
@@ -22,6 +24,11 @@ describe('EcoStoreOrdersListComponent', () => {
     sortOptions: signal({}),
     getPagination: () => ({ page: 1, perPage: 10 }),
     paginationSizeOptions: signal([10, 20]),
+    delete: vi.fn(),
+  };
+
+  const mockConfirmService = {
+    confirm: vi.fn().mockReturnValue(of(true)),
   };
 
   beforeEach(async () => {
@@ -29,6 +36,7 @@ describe('EcoStoreOrdersListComponent', () => {
     mockOrdersStore.isLoading.set(false);
     mockOrdersStore.entities.set([]);
     mockOrdersStore.count.set(0);
+    vi.clearAllMocks();
 
     await TestBed.configureTestingModule({
       imports: [
@@ -41,7 +49,11 @@ describe('EcoStoreOrdersListComponent', () => {
           ],
         }),
       ],
-      providers: [provideRouter([]), { provide: ecoStoreOrdersStore, useValue: mockOrdersStore }],
+      providers: [
+        provideRouter([]),
+        { provide: ecoStoreOrdersStore, useValue: mockOrdersStore },
+        { provide: SharedConfirmDialogService, useValue: mockConfirmService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(EcoStoreOrdersListComponent);
@@ -101,5 +113,34 @@ describe('EcoStoreOrdersListComponent', () => {
       queryParams: { ...sortConfig, page: 0 },
       queryParamsHandling: 'merge',
     });
+  });
+
+  it('should call delete on ordersStore when onDeleteOrder is called and confirmed', () => {
+    const orderId = '1';
+    const orderNumber = 'ORD-1';
+
+    // @ts-expect-error - testing protected method
+    component.onDeleteOrder([orderId, orderNumber]);
+
+    expect(mockConfirmService.confirm).toHaveBeenCalledWith(
+      'orders.list.deleteOrderTitle',
+      'orders.list.deleteOrderDescription',
+      'orders.list.deleteOrderCancel',
+      'orders.list.deleteOrderConfirm',
+      { orderNumber }
+    );
+    expect(mockOrdersStore.delete).toHaveBeenCalledWith(orderId);
+  });
+
+  it('should NOT call delete on ordersStore when onDeleteOrder is called and NOT confirmed', () => {
+    mockConfirmService.confirm.mockReturnValue(of(false));
+    const orderId = '1';
+    const orderNumber = 'ORD-1';
+
+    // @ts-expect-error - testing protected method
+    component.onDeleteOrder([orderId, orderNumber]);
+
+    expect(mockConfirmService.confirm).toHaveBeenCalled();
+    expect(mockOrdersStore.delete).not.toHaveBeenCalled();
   });
 });
