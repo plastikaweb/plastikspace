@@ -10,7 +10,6 @@ type UnitIconName = 'balance' | 'water_drop' | 'package_2';
   selector: 'eco-store-unit-chip',
   imports: [SharedChipComponent, TranslateModule, HumanizeUnitPipe],
   templateUrl: './eco-store-unit-chip.component.html',
-  styleUrl: './eco-store-unit-chip.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreUnitChipComponent {

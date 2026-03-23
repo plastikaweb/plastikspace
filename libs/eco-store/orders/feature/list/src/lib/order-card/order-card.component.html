@@ -4,12 +4,12 @@
     <div class="mb-4 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
       <!-- Left: order number, status, date -->
       <div class="flex flex-col gap-1">
-        <span class="text-xs font-semibold tracking-wider text-neutral-600 uppercase">
+        <span class="text-sys-primary text-xs font-semibold tracking-wider uppercase">
           {{ 'orders.card.label' | translate }}
         </span>
         <div class="flex flex-wrap items-center gap-2">
           <span
-            class="text-lg font-bold text-neutral-900"
+            class="text-on-surface-variant text-lg font-bold"
             [attr.aria-label]="
               ('orders.card.orderNumber' | translate) + ': #' + order().orderNumber
             ">
@@ -26,7 +26,7 @@
         </div>
 
         <span
-          class="text-sm text-neutral-800"
+          class="text-on-surface text-sm"
           [attr.aria-label]="
             ('orders.card.date' | translate) +
             ': ' +
@@ -43,15 +43,15 @@
         [attr.aria-label]="'orders.card.pricingInfo' | translate">
         <span
           class="text-lg font-bold"
+          [class.text-outline-variant]="isCancelled()"
+          [class.text-on-surface]="!isCancelled()"
           [class.line-through]="isCancelled()"
-          [class.text-neutral-400]="isCancelled()"
-          [class.text-neutral-900]="!isCancelled()"
           [attr.aria-label]="
             ('orders.card.total' | translate) + ': ' + (order().total | currency: 'EUR')
           ">
           {{ order().total | currency: 'EUR' }}
         </span>
-        <span class="text-sm text-neutral-800">
+        <span class="text-on-surface text-sm">
           {{ 'orders.card.items' | translate: { count: order().items.length } }}
         </span>
       </div>
@@ -68,15 +68,15 @@
           [attr.aria-label]="
             ('orders.card.deliveryMethod' | translate) + ': ' + (deliveryLabel() | translate)
           ">
-          <mat-icon class="delivery-icon text-neutral-800" aria-hidden="true">
+          <mat-icon class="delivery-icon" aria-hidden="true">
             {{ deliveryIcon() }}
           </mat-icon>
 
-          <span class="text-sm text-neutral-800">{{ deliveryLabel() | translate }}</span>
+          <span class="text-on-surface text-sm">{{ deliveryLabel() | translate }}</span>
         </div>
         <div class="grid grid-cols-[32px_1fr] items-center">
-          <mat-icon aria-hidden="true" class="products-icon text-neutral-800">grocery</mat-icon>
-          <p class="m-0 text-sm text-neutral-700">
+          <mat-icon aria-hidden="true" class="products-icon">grocery</mat-icon>
+          <p class="text-on-surface-variant m-0 text-sm">
             @for (name of itemNames(); track $index) {
               <span [innerHTML]="name | highlight: highlight()"></span>
               @if (!$last) {
@@ -101,7 +101,7 @@
               'orders.card.deleteOrder' | translate: { orderNumber: '#' + order().orderNumber }
             "
             (click)="deleteOrder()">
-            <mat-icon>delete</mat-icon>
+            <mat-icon aria-hidden="true">delete</mat-icon>
           </button>
         }
 

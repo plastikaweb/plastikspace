@@ -8,19 +8,29 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
     gap: var(--product-gap);
+    padding: 1.5rem;
+    /* Increased padding for larger shadows */
+    margin: -1.5rem;
+    /* Offset padding */
 
-    /* Optimize rendering for off-screen items */
+    /* Ensure children can render shadows outside their bounds */
+    overflow: visible;
+
     li {
-      content-visibility: auto;
-      contain-intrinsic-size: 400px;
-      /* Approximate height of a product card */
+      overflow: visible;
+      transition: z-index 0.3s step-start;
+
+      &:hover {
+        z-index: 10;
+        transition: z-index 0.3s step-end;
+      }
     }
   }
 
   .eco-store-product-card-skeleton {
     background-color: var(--neutral-50);
     border: 1px solid var(--neutral-200);
-    height: 400px;
+    height: 450px;
     width: 100%;
     animation: pulse 1.5s infinite;
     border-radius: var(--app-main-border-radius);

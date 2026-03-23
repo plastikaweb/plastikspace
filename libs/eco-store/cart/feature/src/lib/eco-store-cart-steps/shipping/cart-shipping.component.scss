@@ -4,7 +4,7 @@
   .cart-shipping__free-shipping-promo {
     @include mat.icon-overrides(
       (
-        color: var(--primary-600),
+        color: light-dark(var(--primary-600), var(--primary-200)),
       )
     );
   }

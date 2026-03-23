@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { MatThemeToggleService } from './mat-theme-toggle.service';
 
@@ -8,6 +9,7 @@ describe('MatThemeToggleService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [MatThemeToggleService, provideZonelessChangeDetection()],
     });
     service = TestBed.inject(MatThemeToggleService);

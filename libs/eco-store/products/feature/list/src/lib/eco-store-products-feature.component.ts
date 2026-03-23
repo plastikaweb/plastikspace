@@ -35,7 +35,7 @@ import { distinctUntilChanged, map } from 'rxjs';
   host: {
     role: 'region',
     '[attr.aria-busy]': 'productsStore.isLoading()',
-    '[attr.inert]': 'productsStore.isLoading() ? "" : null',
+    '[attr.inert]': 'productsStore.isLoading() ?"" : null',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

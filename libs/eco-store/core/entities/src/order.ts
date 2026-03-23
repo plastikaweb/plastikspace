@@ -72,7 +72,7 @@ export interface EcoStoreOrderItemSnapshot {
   name: string | LocalizedFields<string>;
   /**
    * Internal field for searching. Contains normalized names from all languages.
-   * Format: "normalizedNameCA normalizedNameES ..."
+   * Format:"normalizedNameCA normalizedNameES ..."
    */
   searchName: string;
   categoryName: string | LocalizedFields<string>;

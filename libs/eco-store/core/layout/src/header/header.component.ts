@@ -7,6 +7,7 @@ import { FormConfig } from '@plastik/core/entities';
 import { EcoStoreTenant, EcoStoreTenantWindowStatus } from '@plastik/eco-store/entities';
 import { StoreWindowComponent } from '@plastik/eco-store/store-window';
 // import { SharedFormFeatureComponent } from '@plastik/shared/form';
+import { MatThemeToggleComponent } from '@plastik/shared/mat-theme-toggle';
 import { EcoTenantLinkComponent } from '../tenant-link/tenant-link.component';
 
 @Component({
@@ -19,6 +20,7 @@ import { EcoTenantLinkComponent } from '../tenant-link/tenant-link.component';
     // SharedFormFeatureComponent,
     StoreWindowComponent,
     EcoTenantLinkComponent,
+    MatThemeToggleComponent,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',

@@ -40,6 +40,8 @@ export interface SubmitFormConfig {
   resetOnSubmit?: boolean;
   /** Whether to emit on model change (not only on submit). */
   emitOnChange?: boolean;
+  /** Whether to emit even if the form is invalid. */
+  emitInvalid?: boolean;
   /** Whether to disable submit while submitting. */
   disableOnSubmit?: boolean;
   /** Whether the submit control is rendered. */

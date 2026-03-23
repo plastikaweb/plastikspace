@@ -20,9 +20,9 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
   styleUrl: './eco-store-product-quantity.component.scss',
   host: {
     class: 'block w-full',
-    '[class.quantity-sm]': 'size() === "sm"',
-    '[class.quantity-md]': 'size() === "md"',
-    '[class.quantity-lg]': 'size() === "lg"',
+    '[class.quantity-sm]': 'size() ==="sm"',
+    '[class.quantity-md]': 'size() ==="md"',
+    '[class.quantity-lg]': 'size() ==="lg"',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

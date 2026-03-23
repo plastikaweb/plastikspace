@@ -4,17 +4,25 @@
 :host {
   @include mat.toolbar-overrides(
     (
-      standard-height: 50px,
-      mobile-height: 40px,
+      standard-height: 60px,
+      mobile-height: 50px,
       container-background-color: var(--transparent),
-      container-text-color: var(--primary-500),
-      title-text-size: var(--text-body-medium),
+      container-text-color: light-dark(var(--primary-700), var(--primary-300)),
+      title-text-size: var(--text-label-large),
+      title-text-weight: var(--font-weight-medium),
     )
   );
 
   @include mat.icon-overrides(
     (
-      color: var(--primary-500),
+      color: light-dark(var(--primary-600), var(--primary-400)),
     )
   );
+
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+  }
 }

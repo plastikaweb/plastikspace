@@ -19,6 +19,15 @@
 
 A collection of components for displaying products in a grid or list view within the Eco Store application. It integrates several shared components for a consistent UI.
 
+### ⚡ Overdrive Interactions
+
+The product card features a premium interaction system designed for high-impact visual feedback:
+
+- **Organic Scale & Glow**: On hover, the card subtly scales (`1.01x`) and emits a primary-hue organic glow, ensuring the active item is clearly highlighted.
+- **Multi-layered Shadows**: Uses a sophisticated system of layered shadows to provide depth and "Earthy Elegance" without being visually heavy.
+- **Tactile Haptic Feedback**: Responds to clicks with a quick scale-down (`0.99x`), simulating a tactile button press.
+- **Optimized Rendering**: Designed to work seamlessly with `content-visibility` and grid-level Z-index choreography to prevent shadow clipping.
+
 ## Installation
 
 ```ts

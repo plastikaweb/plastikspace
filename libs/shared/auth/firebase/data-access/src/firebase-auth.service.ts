@@ -79,7 +79,7 @@ export class FirebaseAuthService implements AuthFacade {
    *
    * On successful login, it navigates to the home route and dispatches an activity action to indicate that the login attempt has ended.
    *
-   * If an error occurs during login, it logs the error to the console and checks if the error message contains "BLOCKING_FUNCTION_ERROR_RESPONSE".
+   * If an error occurs during login, it logs the error to the console and checks if the error message contains"BLOCKING_FUNCTION_ERROR_RESPONSE".
    * If such an error is found, it logs a specific message to the console.
    *
    * Regardless of the error type, it dispatches a notification action to show an error message to the user.

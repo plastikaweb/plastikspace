@@ -137,7 +137,7 @@ git commit -m "<type>(<scope>): #<task> <description>" -m "<body>" -m "CLOSED: #
 4. **Skipping Hooks (`--no-verify`):** \* If code changed: **NEVER** skip hooks.
    - If _only_ the commit message was amended (fixing a typo in the description) or branch-name lint failed in a weird state: You may suggest `--no-verify`, but **always warn the user first**.
 
-5. **Sandboxed Environments (Cursor, Antigravity, etc.):** Only if running the command fails repeatedly due to temp folder restrictions, provide the command in a copy-pasteable bash block so the user can run it manually.
+5. **Sandboxed Environments (Cursor, Antigravity, etc.):** Only if running the command fails repeatedly due to temp folder restrictions, provide the command in a copy-past bash block so the user can run it manually.
 
 ## ✅ Example Interaction
 

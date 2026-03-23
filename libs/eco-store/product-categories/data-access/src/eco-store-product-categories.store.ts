@@ -115,7 +115,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
           switchMap(() =>
             store._statsService
               .getFullList({
-                filter: `tenant = "${store._tenantStore.tenant()?.id}"`,
+                filter: `tenant ="${store._tenantStore.tenant()?.id}"`,
                 sort: 'normalizedName',
               })
               .pipe(

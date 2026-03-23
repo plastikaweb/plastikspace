@@ -40,4 +40,10 @@ export const NOTIFICATION_TYPES_CONFIG = new InjectionToken<NotificationTypesCon
 export const NOTIFICATION_POSITION = new InjectionToken<{
   verticalPosition: Notification['verticalPosition'];
   horizontalPosition: Notification['horizontalPosition'];
-}>('notificationPosition');
+}>('notificationPosition', {
+  providedIn: 'root',
+  factory: () => ({
+    verticalPosition: 'bottom',
+    horizontalPosition: 'center',
+  }),
+});

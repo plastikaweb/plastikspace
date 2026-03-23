@@ -12,6 +12,7 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/password';
 import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { MatThemeToggleComponent } from '@plastik/shared/mat-theme-toggle';
 
 @Component({
   selector: 'eco-eco-store-auth-login',
@@ -26,9 +27,9 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
     RouterLink,
     SharedImgContainerComponent,
     PocketBaseImageUrlPipe,
+    MatThemeToggleComponent,
   ],
   templateUrl: './eco-store-auth-login.component.html',
-  styleUrl: './eco-store-auth-login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreAuthLoginComponent {

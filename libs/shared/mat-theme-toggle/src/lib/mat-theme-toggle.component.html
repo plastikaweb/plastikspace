@@ -1,6 +1,6 @@
 <button
   mat-icon-button
-  aria-label="Canviar el tema de la interfície a clara, fosca o de sistema"
+  [attr.aria-label]="'common.theme.toggleAriaLabel' | translate"
   [matMenuTriggerFor]="themeToggle">
   <mat-icon>{{ matThemeToggleService.selectedTheme().icon }}</mat-icon>
 </button>
@@ -8,7 +8,7 @@
   @for (theme of matThemeToggleService.getThemes(); track $index) {
     <button mat-menu-item (click)="matThemeToggleService.setTheme(theme.id)">
       <mat-icon>{{ theme.icon }}</mat-icon>
-      <span>{{ theme.name }}</span>
+      <span>{{ theme.name | translate }}</span>
     </button>
   }
 </mat-menu>

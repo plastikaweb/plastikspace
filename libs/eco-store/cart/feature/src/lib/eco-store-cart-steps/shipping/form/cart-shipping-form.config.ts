@@ -37,7 +37,7 @@ function buildShippingMethodOptions(
         type: option.type,
         icon: option.type === 'pickup' ? 'store' : 'local_shipping',
         title: `cart.steps.shipping.method.${option.type}.title`,
-        theme: option.type === 'pickup' ? 'primary' : 'secondary',
+        theme: 'neutral',
         cost:
           option.tiers?.find((tier: { cost: number }) => tier.cost === 0)?.min ?? option.cost ?? 0,
       };
@@ -86,6 +86,7 @@ export function getCartShippingFormConfig(): FormConfig<EcoStoreCartState> {
       visible: false,
       submitAvailable: false,
       emitOnChange: true,
+      emitInvalid: true,
       buttonStyle: 'hidden!',
     }),
   };

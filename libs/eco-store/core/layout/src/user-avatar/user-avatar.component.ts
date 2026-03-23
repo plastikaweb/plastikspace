@@ -31,5 +31,5 @@ export class EcoUserAvatarComponent {
   readonly user = input.required<PocketBaseUser>();
   readonly initials = input<string | undefined>();
   readonly avatarClass = input<string>('size-6');
-  readonly initialsClass = input<string>('size-6 text-xs bg-white');
+  readonly initialsClass = input<string>('size-6 text-xs bg-surface');
 }

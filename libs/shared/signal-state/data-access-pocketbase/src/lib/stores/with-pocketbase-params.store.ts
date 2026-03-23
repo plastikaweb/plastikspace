@@ -28,7 +28,7 @@ const parseNumber = (value: unknown): number | undefined => {
 /**
  * Parses a direction from a value.
  * @param {unknown} value The value to parse.
- * @returns {"asc" | "desc" | undefined} The parsed direction, or undefined if the value is not a valid direction.
+ * @returns {"asc" |"desc" | undefined} The parsed direction, or undefined if the value is not a valid direction.
  */
 const parseDirection = (value: unknown): 'asc' | 'desc' | undefined =>
   value === 'asc' || value === 'desc' ? value : undefined;

@@ -14,8 +14,10 @@
       <mat-card
         tabindex="0"
         appearance="raised"
-        class="address-card make-it-focusable cursor-pointer transition-all"
+        class="address-card make-it-focusable group relative cursor-pointer transition-all"
         [class.selected]="isSelected"
+        [class.opacity-50]="formControl.disabled"
+        [class.pointer-events-none]="formControl.disabled"
         [attr.aria-label]="address.name"
         (click)="onChange(address)"
         (keydown.enter)="onChange(address)">
@@ -27,16 +29,21 @@
             [checked]="isSelected"
             [id]="`address-${address.id}`"></mat-radio-button>
 
-          <div>
-            <h3 class="mb-2 text-lg font-bold text-neutral-900 capitalize">
-              {{ address.name || address.fullName }}
-            </h3>
-            <div
-              class="grid grid-cols-1 gap-4 text-sm leading-relaxed text-neutral-600 md:grid-cols-2">
-              <div class="flex items-center gap-2">
-                <mat-icon class="scale-90 text-neutral-500!" aria-hidden="true"
-                  >location_on</mat-icon
-                >
+          <div class="w-full">
+            <div class="address-title mb-3 flex flex-wrap items-center justify-start gap-2">
+              @if (address.default) {
+                <span
+                  class="bg-sys-secondary-container text-sys-on-secondary flex items-center justify-center rounded-full">
+                  <mat-icon class="scale-70!">star</mat-icon>
+                </span>
+              }
+              <h3 class="text-2xl font-black tracking-tight capitalize">
+                {{ address.name || address.fullName }}
+              </h3>
+            </div>
+            <div class="text-on-surface-variant grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
+              <div class="grid grid-cols-[auto_1fr] items-center gap-2">
+                <mat-icon class="text-outline scale-90">location_on</mat-icon>
                 <div>
                   <p>{{ address.address }}</p>
                   <p>
@@ -49,26 +56,31 @@
               </div>
               @if (address.phone) {
                 <div class="flex items-center gap-2">
-                  <mat-icon class="scale-90 text-neutral-500!" aria-hidden="true">phone</mat-icon>
-                  <span class="mt-1 text-neutral-500">{{ address.phone }}</span>
+                  <mat-icon class="text-outline scale-90">phone</mat-icon>
+                  <span class="text-outline mt-1">{{ address.phone }}</span>
                 </div>
               }
             </div>
           </div>
 
-          @if (address.default) {
-            <plastik-shared-chip
-              icon="star"
-              class="absolute top-4 right-4"
-              type="tertiary"
-              [label]="'common.address.default' | translate"></plastik-shared-chip>
+          @if (isSelected) {
+            <div
+              class="address-check bg-sys-primary text-sys-on-primary animate-fade-in absolute flex items-center justify-center p-4 shadow-lg"
+              style="
+                top: -3px;
+                right: -3px;
+                border-radius: 0 var(--app-main-border-radius) 0 1.5rem;
+              ">
+              <mat-icon class="scale-125!">check</mat-icon>
+            </div>
           }
+
           @if (props.editable) {
             <button
               mat-button
               type="button"
               color="tertiary"
-              class="absolute top-4 right-4 underline"
+              class="absolute right-4 bottom-4 font-black tracking-widest uppercase"
               (click)="onEdit(address, $event)">
               {{ 'cart.shipping.address.edit' | translate }}
             </button>

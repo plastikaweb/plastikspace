@@ -189,7 +189,7 @@ describe('Object Util', () => {
   });
 
   describe('transformStringToBooleanProperties method', () => {
-    it('should return an object with properties with "true" of "false" values replaced with corresponding boolean values', () => {
+    it('should return an object with properties with "true" or "false" string values replaced with corresponding boolean values', () => {
       const result = transformStringToBooleanProperties({
         param1: 'false',
         param2: 'true',

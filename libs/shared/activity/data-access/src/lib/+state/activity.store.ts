@@ -15,7 +15,7 @@ export interface ActivityState {
 
 const initialState: ActivityState = {
   isActive: false,
-  message: 'loading-data',
+  message: 'common.loading',
 };
 
 export const activityStore = signalStore(

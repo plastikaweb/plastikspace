@@ -19,12 +19,6 @@
     opacity: 0;
   }
 
-  @include mat.icon-overrides(
-    (
-      color: var(--primary-700),
-    )
-  );
-
   @keyframes ping-slow {
     75%,
     100% {

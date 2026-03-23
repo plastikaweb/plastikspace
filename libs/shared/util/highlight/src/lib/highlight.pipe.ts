@@ -31,7 +31,7 @@ export class HighlightPipe implements PipeTransform {
     const highlighted = value.substring(startIdx, startIdx + normalizedSearch.length);
     const result =
       value.substring(0, startIdx) +
-      `<mark class="bg-warning-200 text-neutral-900 px-0.5 rounded-sm">${highlighted}</mark>` +
+      `<mark class="bg-warning-200 dark:bg-warning-800 text-on-surface px-0.5 rounded-sm">${highlighted}</mark>` +
       value.substring(startIdx + normalizedSearch.length);
 
     return this.#sanitizer.bypassSecurityTrustHtml(result);

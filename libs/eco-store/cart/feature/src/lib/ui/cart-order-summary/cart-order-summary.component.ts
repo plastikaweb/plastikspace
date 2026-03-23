@@ -11,24 +11,23 @@ import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities
   selector: 'eco-cart-order-summary',
   imports: [CurrencyPipe, DatePipe, MatCardModule, MatButtonModule, MatIconModule, TranslateModule],
   templateUrl: './cart-order-summary.component.html',
-  styleUrl: './cart-order-summary.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CartOrderSummaryComponent {
   readonly #router = inject(Router);
-  submitAvailable = input<boolean>(true);
-  subtotal = input.required<number>();
-  taxes = input.required<number>();
-  total = input.required<number>();
-  shipping = input<number>(0);
-  actionButtonText = input<string>('');
-  actionRoute = input<string[]>();
-  actionClick = output<void>();
-  deliveryType = input<EcoStoreTenantLogisticsDeliveryType>('pickup');
-  isStoreOpen = input<boolean>(true);
-  nextOpenDate = input<Date | null>(null);
+  readonly submitAvailable = input<boolean>(true);
+  readonly subtotal = input.required<number>();
+  readonly taxes = input.required<number>();
+  readonly total = input.required<number>();
+  readonly shipping = input<number>(0);
+  readonly actionButtonText = input<string>('');
+  readonly actionRoute = input<string[]>();
+  readonly actionClick = output<void>();
+  readonly deliveryType = input<EcoStoreTenantLogisticsDeliveryType>('pickup');
+  readonly isStoreOpen = input<boolean>(true);
+  readonly nextOpenDate = input<Date | null>(null);
 
-  handleAction() {
+  protected handleAction() {
     const route = this.actionRoute();
 
     if (route) {

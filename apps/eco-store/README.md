@@ -58,6 +58,23 @@ The application is structured into domain-specific libraries:
 
 ---
 
+## Theming & Design
+
+Eco-Store implements a robust, mode-aware design system based on the **"Organic and Kind"** aesthetic principle.
+
+### 🎨 Light & Dark Modes
+
+The application features a fully integrated Light and Dark mode experience, accessible via the theme toggle in the header.
+
+- **Organic Foundations**: Uses **OKLCH-derived color scales** for perceptually uniform palettes that maintain the "Kind" personality across both modes.
+- **Glassmorphism**: Headers and mobile navigation leverage advanced glassmorphism (`backdrop-blur-xl`) with mode-aware opacity and tinting to ensure high contrast and lightness.
+- **Earthy Neutrals**: Surfaces use tinted neutrals rather than pure grays, providing a warmer, more approachable feel that aligns with the cooperative's values.
+- **High-Impact Interactions**: Hover states and "Overdrive" animations (scale, blur reveals, organic glows) are optimized for both themes to provide delightful feedback.
+
+### 🖋️ Editorial Typography
+
+A strong typographic hierarchy is maintained using **Manrope**, with specialized tracking and weights for "Editorial" components like category headers and order totals, ensuring legibility and character in any environment.
+
 ## 📖 Documentation
 
 - [**Backend Management**](./POCKETBASE.md): PocketBase schema, hooks, and automation guides.

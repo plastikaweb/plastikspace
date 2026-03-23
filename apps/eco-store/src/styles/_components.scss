@@ -19,11 +19,11 @@
   );
 
   .mat-mdc-button-disabled {
-    background-color: var(--neutral-100);
-    color: var(--neutral-500);
+    background-color: light-dark(var(--neutral-100), var(--neutral-800));
+    color: light-dark(var(--neutral-500), var(--neutral-400));
     @include mat.icon-overrides(
       (
-        color: var(--neutral-500),
+        color: light-dark(var(--neutral-500), var(--neutral-400)),
       )
     );
   }
@@ -43,9 +43,18 @@
   .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(
       .mat-mdc-option-multiple
     ) {
-    --mat-option-selected-state-layer-color: var(--secondary-100) !important;
-    --mat-option-selected-state-label-text-color: var(--secondary-900) !important;
-    --mat-option-selected-state-icon-color: var(--secondary-900) !important;
+    --mat-option-selected-state-layer-color: light-dark(
+      var(--secondary-100),
+      var(--secondary-900)
+    ) !important;
+    --mat-option-selected-state-label-text-color: light-dark(
+      var(--secondary-900),
+      var(--secondary-100)
+    ) !important;
+    --mat-option-selected-state-icon-color: light-dark(
+      var(--secondary-900),
+      var(--secondary-100)
+    ) !important;
   }
 
   @include mat.menu-overrides(
@@ -57,12 +66,15 @@
   );
 
   .mat-mdc-list-item.active {
-    background-color: var(--secondary-100);
+    background-color: light-dark(var(--secondary-100), var(--secondary-800));
 
-    --mat-list-list-item-label-text-color: var(--secondary-900);
-    --mat-list-list-item-leading-icon-color: var(--secondary-900);
+    --mat-list-list-item-label-text-color: light-dark(var(--secondary-900), var(--secondary-100));
+    --mat-list-list-item-leading-icon-color: light-dark(var(--secondary-900), var(--secondary-100));
 
-    --mat-list-list-item-hover-state-layer-color: var(--secondary-900);
+    --mat-list-list-item-hover-state-layer-color: light-dark(
+      var(--secondary-900),
+      var(--secondary-200)
+    );
   }
 
   @include mat.progress-bar-overrides(
@@ -78,13 +90,12 @@
   }
 
   .hero-header {
-    background: linear-gradient(135deg, var(--primary-50) 0%, var(--success-50) 100%);
     border-radius: 2.5rem;
     padding: 2rem 1.5rem;
     margin-bottom: 1.5rem;
     position: relative;
     overflow: hidden;
-    border: 1px solid var(--primary-200);
+    border: 1px solid light-dark(var(--primary-500), var(--primary-200));
 
     /* Subtle organic pattern overlay */
     &::after {
@@ -94,6 +105,19 @@
       opacity: 0.05;
       background-image: radial-gradient(var(--primary-500) 0.5px, transparent 0.5px);
       background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.1;
+      background-image: url('/img/bg-wheat.png');
+      background-size: 35rem auto;
+      background-repeat: no-repeat;
+      background-position: -15rem 0rem;
+      filter: drop-shadow(0 0 6px color-mix(in srgb, var(--error-500), transparent 60%));
       pointer-events: none;
     }
 
@@ -110,13 +134,12 @@
       font-size: clamp(1.5rem, 8vw, 2.5rem);
       line-height: 1.1;
       letter-spacing: -0.03em;
-      color: var(--primary-900);
       font-weight: 700;
       margin-bottom: 0.5rem;
     }
 
     .category-subtitle {
-      color: var(--primary-600);
+      color: light-dark(var(--primary-600), var(--primary-200));
       font-weight: 500;
       font-size: 1.1rem;
     }

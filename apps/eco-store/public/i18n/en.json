@@ -1,6 +1,6 @@
 {
   "common": {
-    "loading": "Loading data...",
+    "loading": "Harvesting the freshest data...",
     "close": "Close",
     "edit": "Edit",
     "add": "Add",
@@ -25,12 +25,24 @@
     "address": {
       "default": "Default address"
     },
+    "theme": {
+      "light": "Light",
+      "dark": "Dark",
+      "system": "System",
+      "toggleAriaLabel": "Change interface theme to light, dark, or system",
+      "changedTo": "Interface theme changed to {theme}"
+    },
     "form": {
       "error": {
         "email": "The email format is incorrect",
         "required": "This field is required",
         "minLength": "This field must have at least {value} characters",
-        "maxLength": "This field must have more than {value} characters"
+        "maxLength": "This field must have more than {value} characters",
+        "min": "The value must be at least {value}",
+        "max": "The value must be at most {value}",
+        "url": "The URL format is incorrect",
+        "phone": "The phone format is incorrect",
+        "invalid-username": "Invalid username"
       },
       "charactersCount": "{count, plural, one {character} other {characters}}"
     },
@@ -74,7 +86,7 @@
       "rememberMe": "Remember me",
       "recoverAccess": "Forgot password?",
       "newUserQuestion": "Not a member yet?",
-      "createAccount": "If you are a member of the cooperative, register here",
+      "createAccount": "If you are a member, register here",
       "submit": "Login",
       "termsPrivacy": "By continuing, you agree to our Terms and Privacy Policy."
     },
@@ -425,12 +437,12 @@
       "pickup": "Store pickup"
     },
     "status": {
-      "delivered": "Delivered",
-      "pending": "Pending",
-      "confirmed": "Confirmed",
-      "preparing": "Preparing",
-      "ready": "Ready",
-      "cancelled": "Cancelled"
+      "delivered": "DELIVERED",
+      "pending": "PENDING",
+      "confirmed": "CONFIRMED",
+      "preparing": "PREPARING",
+      "ready": "READY",
+      "cancelled": "CANCELLED"
     },
     "filter": {
       "all": "ALL",

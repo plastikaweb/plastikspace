@@ -67,10 +67,11 @@ export const ecoStoreProductsStore = signalStore(
         const categories = categoriesStore.stats();
         const currentLang = translateService.getCurrentLang() || environment.defaultLanguage;
 
+        // Pre-calculate category map for O(1) lookup during map
+        const categoryMap = new Map(categories.map(cat => [cat.category, cat]));
+
         return products.map(product => {
-          const category = categories.find(
-            cat => cat.category === product.category
-          ) as ProductCategoryStats;
+          const category = categoryMap.get(product.category) as ProductCategoryStats;
 
           let categoryName = '';
           if (category && category.name && typeof category.name === 'object') {

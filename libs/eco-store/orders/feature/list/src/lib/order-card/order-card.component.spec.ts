@@ -101,7 +101,7 @@ describe('OrderCardComponent', () => {
     fixture.componentRef.setInput('highlight', 'mar');
     fixture.detectChanges();
 
-    const itemElements = fixture.nativeElement.querySelectorAll('.text-neutral-700 span');
+    const itemElements = fixture.nativeElement.querySelectorAll('.text-on-surface-variant span');
     // We expect the item name to contain the highlighted part (wrapped in <mark>)
     // Since we mock the DomSanitizer in pipe tests, here we just check if it contains the text
     expect(itemElements[0].innerHTML).toContain('Pizza <mark');

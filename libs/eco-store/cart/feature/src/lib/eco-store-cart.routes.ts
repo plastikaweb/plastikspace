@@ -1,5 +1,7 @@
+import { importProvidersFrom } from '@angular/core';
 import { Route } from '@angular/router';
 import { pocketBaseIsLoggedGuard } from '@plastik/auth/pocketbase/data-access';
+import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { cartShippingResolver } from './eco-store-cart-steps/shipping/cart-shipping.resolver';
 import { EcoStoreCartComponent } from './eco-store-cart/eco-store-cart.component';
 import { isStoreOpenGuard } from './guards/is-store-open.guard';
@@ -10,6 +12,7 @@ export const ecoStoreCartRoutes: Route[] = [
   {
     path: '',
     component: EcoStoreCartComponent,
+    providers: [importProvidersFrom(EcoStoreFormlyModule)],
     children: [
       {
         path: 'resum',

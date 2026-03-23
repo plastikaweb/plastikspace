@@ -7,7 +7,7 @@
       <mat-icon class="icon-wrapper">{{ mergedNotification()?.icon }}</mat-icon>
     }
 
-    <div class="flex flex-col items-start gap-2 px-4 py-2">
+    <div class="flex flex-row items-center justify-start gap-2 px-4 py-2">
       @if (mergedNotification()?.message) {
         <div class="font-bold">
           {{ mergedNotification()?.message | translate: mergedNotification()?.parameters }}
@@ -24,8 +24,7 @@
         <plastik-img-container
           class="h-14 w-14 overflow-hidden rounded-lg object-cover shadow-sm"
           [src]="notificationImage()"
-          [title]="notificationName()"
-          [dimensions]="{ width: 150, height: 150 }">
+          [title]="notificationName()">
         </plastik-img-container>
       }
     </div>

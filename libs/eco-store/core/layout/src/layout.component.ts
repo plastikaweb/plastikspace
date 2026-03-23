@@ -33,6 +33,7 @@ import { MatDivider } from '@angular/material/divider';
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import { appSearchFormConfig } from './app.search-form.config';
 
 @Component({
@@ -62,6 +63,7 @@ export default class EcoLayoutComponent {
   protected readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly searchFormConfig = appSearchFormConfig();
   protected readonly isBannerDismissed = signal(false);
+  readonly #activityStore = inject(activityStore);
   protected readonly isMobile = toSignal(
     inject(LayoutObserverService).getMatches([Breakpoints.XSmall, Breakpoints.Small])
   );
@@ -93,6 +95,7 @@ export default class EcoLayoutComponent {
         this.isSidenavOpen.set(false);
       }
     });
+    this.#activityStore.setActivity(false);
   }
 
   protected dismissBanner(): void {

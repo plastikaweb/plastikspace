@@ -47,7 +47,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
   host: {
     role: 'region',
     '[attr.aria-busy]': 'ordersStore.isLoading()',
-    '[attr.inert]': 'ordersStore.isLoading() ? "" : null',
+    '[attr.inert]': 'ordersStore.isLoading() ?"" : null',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

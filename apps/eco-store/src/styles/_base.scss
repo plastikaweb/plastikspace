@@ -43,14 +43,13 @@
   }
 
   body {
-    color: var(--color-on-background);
-    scrollbar-color: var(--primary-200) var(--tertiary-100);
+    color: light-dark(var(--neutral-900), var(--neutral-100));
+    scrollbar-color: light-dark(
+      var(--primary-200) var(--tertiary-100),
+      var(--primary-600) var(--neutral-800)
+    );
 
-    --bg-image-1: url('/img/bg-leaf.png');
-    --bg-pos-1: 1rem 90vh;
-
-    --bg-image-2: url('/img/bg-strawberries.png');
-    --bg-pos-2: 85vw 10vh;
+    --bg-grain: url('/img/grain-pattern.svg');
 
     &.bg-comandes {
       --bg-image-1: url('/img/bg-basket.png');
@@ -64,6 +63,13 @@
       --bg-image-2: url('/img/bg-wheat.png');
       --bg-pos-1: 90vw 7vh;
       --bg-pos-2: -5rem 90vh;
+    }
+
+    &.bg-botiga {
+      --bg-image-1: url('/img/bg-leaf.png');
+      --bg-image-2: url('/img/bg-strawberries.png');
+      --bg-pos-1: 1rem 90vh;
+      --bg-pos-2: 85vw 10vh;
     }
   }
 
@@ -80,11 +86,12 @@
       inset: 0;
       pointer-events: none;
       z-index: 0;
+      will-change: transform;
       background-repeat: no-repeat;
       background-size: 18rem;
       background-blend-mode: multiply;
-      opacity: 0.1;
-      filter: sepia(1) brightness(2);
+      opacity: 0.05;
+      filter: sepia(1);
       transition:
         background-image 0.3s ease-in-out,
         transform 0.3s ease-in-out;
@@ -100,6 +107,22 @@
     body::after {
       background-image: var(--bg-image-2);
       background-position: var(--bg-pos-2);
+    }
+
+    /* grain pattern */
+    html::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      will-change: transform;
+      background-size: 18rem;
+      background-blend-mode: multiply;
+      opacity: 0.1;
+      filter: sepia(1);
+      background-image: url('/img/grain-pattern.svg');
+      background-repeat: repeat;
     }
   }
 

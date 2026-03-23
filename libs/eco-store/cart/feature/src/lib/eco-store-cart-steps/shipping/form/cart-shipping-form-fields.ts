@@ -78,32 +78,39 @@ export function createAddressField(deps: FieldDependencies): FormlyFieldConfig[]
       },
       hooks: {
         onInit: (field: FormlyFieldConfig) => {
-          const tenantAddresses = tenantStore.tenantAddressesContacts();
-          const userAddresses = userProfileStore.getUserContacts();
           const getAddressesForMethod = (method: EcoStoreTenantLogisticsDeliveryType) => {
-            const addresses = method === 'pickup' ? tenantAddresses : userAddresses;
+            const addresses =
+              method === 'pickup'
+                ? tenantStore.tenantAddressesContacts()
+                : userProfileStore.getUserContacts();
             if (field.props) {
               field.props['addresses'] = addresses;
             }
+            return addresses;
           };
 
-          getAddressesForMethod(field.model.method);
+          getAddressesForMethod(field.model.method as EcoStoreTenantLogisticsDeliveryType);
 
           return field.options?.fieldChanges?.pipe(
             filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
-            tap(() => {
-              const method = field.model.method as EcoStoreTenantLogisticsDeliveryType;
-              const newAddresses = method === 'pickup' ? tenantAddresses : userAddresses;
-              getAddressesForMethod(method);
+            tap(({ value: method }) => {
+              const newAddresses = getAddressesForMethod(method);
 
               const defaultAddress = newAddresses.find(a => a.default) || newAddresses[0] || null;
 
               if (defaultAddress) {
-                field.model.address = defaultAddress;
-                field.model.day = null;
-                field.model.time = null;
+                field.formControl?.patchValue(defaultAddress);
+                const parentGroup = field.parent?.formControl;
+                if (parentGroup) {
+                  parentGroup.get('day')?.patchValue(null);
+                  parentGroup.get('time')?.patchValue(null);
+                }
               } else {
-                field.model.address = null;
+                field.formControl?.patchValue(null);
+              }
+
+              if (field.options?.detectChanges) {
+                field.options.detectChanges(field);
               }
             })
           );
@@ -145,9 +152,9 @@ export function createSlotLabelFields(deps: FieldDependencies): FormlyFieldConfi
     },
     {
       type: 'custom-label',
-      className: 'flex flew-row items-start text-primary-600 mt-4',
+      className: 'flex flew-row items-start mt-4',
       props: {
-        label: 'cart.shipping.comeToStore',
+        label: 'cart.shipping.slot.pickup.title',
         icon: 'counter_3',
         containerClasses: 'p-2',
         iconClasses: 'scale-125',
@@ -200,7 +207,7 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
             addonRight: {
               icon: 'calendar_month',
               type: 'icon',
-              classes: 'text-primary-600! fill-primary-600!',
+              classes: 'text-sys-primary! fill-sys-primary!',
             },
           },
           expressions: {
@@ -227,6 +234,11 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
                     method as EcoStoreTenantLogisticsDeliveryType,
                     address.id
                   );
+                } else if (field.props) {
+                  field.props['options'] = [];
+                }
+                if (field.options?.detectChanges) {
+                  field.options.detectChanges(field);
                 }
               };
 
@@ -251,7 +263,7 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
             addonRight: {
               icon: 'access_time',
               type: 'icon',
-              classes: 'text-primary-600! fill-primary-600!',
+              classes: 'text-primary-600! ! fill-primary-600! ',
             },
           },
           expressions: {
@@ -271,6 +283,11 @@ export function createSlotFields(deps: FieldDependencies): FormlyFieldConfig[] {
                     day,
                     address.id
                   );
+                } else if (field.props) {
+                  field.props['options'] = [];
+                }
+                if (field.options?.detectChanges) {
+                  field.options.detectChanges(field);
                 }
               };
 

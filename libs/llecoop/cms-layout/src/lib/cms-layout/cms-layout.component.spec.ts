@@ -18,6 +18,8 @@ import {
   MockedOrderListStore,
   MockedUserOrderStore,
 } from '@plastik/llecoop/order-list/data-access';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { MatThemeToggleService } from '@plastik/shared/mat-theme-toggle';
 import { llecoopProfileStore } from '@plastik/llecoop/profile/data-access';
 
 import { CmsLayoutComponent } from './cms-layout.component';
@@ -28,13 +30,31 @@ describe('CmsLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CmsLayoutComponent, AngularSvgIconModule.forRoot()],
+      imports: [CmsLayoutComponent, AngularSvgIconModule.forRoot(), TranslateModule.forRoot()],
       providers: [
         provideZonelessChangeDetection(),
         provideRouter([]),
         provideMockStore({}),
         provideHttpClient(),
         provideHttpClientTesting(),
+        TranslateService,
+        {
+          provide: MatThemeToggleService,
+          useValue: {
+            theme: signal('light'),
+            selectedTheme: signal({
+              id: 'light',
+              name: 'common.theme.light',
+              icon: 'light_mode',
+            }),
+            getThemes: () => [
+              { id: 'light', name: 'common.theme.light', icon: 'light_mode' },
+              { id: 'dark', name: 'common.theme.dark', icon: 'dark_mode' },
+              { id: 'system', name: 'common.theme.system', icon: 'desktop_mac' },
+            ],
+            setTheme: () => {},
+          },
+        },
         {
           provide: FirebaseAuthService,
           useValue: {

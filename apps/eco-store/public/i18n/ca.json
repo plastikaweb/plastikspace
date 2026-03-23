@@ -1,6 +1,6 @@
 {
   "common": {
-    "loading": "Carregant dades...",
+    "loading": "Collint les dades més fresques...",
     "close": "Tancar",
     "edit": "Editar",
     "add": "Afegir",
@@ -25,12 +25,24 @@
     "address": {
       "default": "Adreça per defecte"
     },
+    "theme": {
+      "light": "Clar",
+      "dark": "Fosc",
+      "system": "Sistema",
+      "toggleAriaLabel": "Canviar el tema de la interfície a clar, fosc o de sistema",
+      "changedTo": "Tema de la interfície canviat a {theme}"
+    },
     "form": {
       "error": {
         "email": "El format del correu electrònic no és correcte",
         "required": "El camp és obligatori",
         "minLength": "El camp ha de tenir almenys {value} caràcters",
-        "maxLength": "El camp ha de tenir més de {value} caràcters"
+        "maxLength": "El camp ha de tenir més de {value} caràcters",
+        "min": "El valor ha de ser com a mínim {value}",
+        "max": "El valor ha de ser com a màxim {value}",
+        "url": "El format de l'URL no és correcte",
+        "phone": "El format del telèfon no és correcte",
+        "invalid-username": "El nom d'usuari no és vàlid"
       },
       "charactersCount": "{count, plural, one {caràcter} other {caràcters}}"
     },
@@ -73,8 +85,8 @@
       "password": "Contrasenya",
       "rememberMe": "Recorda''m",
       "recoverAccess": "Has oblidat la contrasenya?",
-      "newUserQuestion": "Encara no ets soci?",
-      "createAccount": "Si ets soci de la cooperativa, registra''t aquí",
+      "newUserQuestion": "Encara no ets sòcia?",
+      "createAccount": "Si ets sòcia, registra't aquí",
       "submit": "Iniciar sessió",
       "termsPrivacy": "En continuar, acceptes els nostres Termes i Política de Privadesa."
     },
@@ -326,6 +338,7 @@
       },
       "address": {
         "title": "Tria on vols rebre o recollir la teva comanda.",
+        "edit": "Editar adreça",
         "pickup": {
           "title": "Tria on vols recollir la teva comanda.",
           "description": "Passa per la botiga i recull la teva comanda."
@@ -429,12 +442,12 @@
       "pickup": "Recollida a la botiga"
     },
     "status": {
-      "delivered": "REBUT",
+      "delivered": "REBUDA",
       "cancelled": "CANCEL·LADA",
       "pending": "PENDENT",
-      "confirmed": "CONFIRMAT",
-      "preparing": "PREPARANT",
-      "ready": "PREPARAT"
+      "confirmed": "CONFIRMADA",
+      "preparing": "EN PREPARACIÓ",
+      "ready": "PREPARADA"
     },
     "filter": {
       "all": "TOTES",

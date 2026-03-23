@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { FORMLY_CONFIG, provideFormlyCore } from '@ngx-formly/core';
-import { withFormlyFieldCheckbox } from '@ngx-formly/material/checkbox';
 import { withFormlyFormField } from '@ngx-formly/material/form-field';
 import { withFormlyFieldInput } from '@ngx-formly/material/input';
 import { withFormlyFieldRadio } from '@ngx-formly/material/radio';
@@ -11,12 +10,10 @@ import { InputSearchTypeComponent } from '@plastik/shared/form/input-search';
 import {
   addonsExtension,
   FormlyAddonsWrapperComponent,
-  phoneValidator,
   registerButtonTranslateExtension,
   registerFormFieldGroupTranslateExtension,
   registerFormFieldTranslateExtension,
   registerValidatorsTranslateExtension,
-  urlValidator,
 } from '@plastik/shared/form/util';
 
 import { TranslateService } from '@ngx-translate/core';
@@ -27,7 +24,6 @@ import { TranslateService } from '@ngx-translate/core';
       withFormlyFormField(),
       withFormlyFieldInput(),
       withFormlyFieldTextArea(),
-      withFormlyFieldCheckbox(),
       withFormlyFieldRadio(),
       withFormlyFieldSelect(),
       {
@@ -40,10 +36,6 @@ import { TranslateService } from '@ngx-translate/core';
           },
         ],
         extensions: [{ name: 'addons', extension: { onPopulate: addonsExtension } }],
-        validators: [
-          { name: 'url', validation: urlValidator },
-          { name: 'phone', validation: phoneValidator },
-        ],
       },
     ]),
     {

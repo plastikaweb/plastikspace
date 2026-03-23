@@ -286,10 +286,9 @@ export const ecoStoreCartStore = signalStore(
         // 1. Find remote cart (independent of the shop stream)
         const remoteCart = await firstValueFrom(
           store._cartsService
-            .getFirstListItem(`user = "${user.id}"`, {
+            .getFirstListItem(`user ="${user.id}"`, {
               sort: '-updated',
               requestKey: 'cart_sync_find',
-              headers: { 'require-global-loading': 'true' },
             })
             .pipe(
               take(1),
@@ -322,7 +321,7 @@ export const ecoStoreCartStore = signalStore(
         // 2. Price Verification
         // Force an isolated and ephemeral subscription with take(1) and firstValueFrom
         if (itemsToProcess.length > 0) {
-          const filter = itemsToProcess.map(i => `id = "${i.product.id}"`).join(' || ');
+          const filter = itemsToProcess.map(i => `id ="${i.product.id}"`).join(' || ');
 
           const latestProducts = (await firstValueFrom(
             store._productsService

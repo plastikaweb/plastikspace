@@ -212,7 +212,7 @@ export const ecoStoreTenantStore = signalStore(
 
         const addresses = await lastValueFrom(
           store._tenantAddressService.getFullList({
-            filter: `tenant = "${store.tenant()?.id}" && active = true`,
+            filter: `tenant ="${store.tenant()?.id}" && active = true`,
           })
         );
 

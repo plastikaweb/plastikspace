@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-23] - Eco-Store: Comprehensive Theming, UI/UX and Performance Overdrive
+
+### Added
+
+- **Light & Dark Mode Integration**: Full mode-aware design system implementation for the `eco-store` application using `light-dark()` CSS functions and OKLCH-derived color scales ([#86c8xhbvw](https://app.clickup.com/t/86c8xhbvw)).
+- **Organic and Kind Aesthetic**: Implemented "Earthy Elegance" principles across the workspace, utilizing glassmorphism (`backdrop-blur-xl`), primary-hue organic glows, and earthy tinted neutrals to evoke proximity and warmth.
+- **Cinematic Entrance Animations**: Enhanced `reveal-up` utility with organic scale (0.96 → 1) and temporary blur reveals for a premium, "Alive" feel in list item entrances.
+- **Fetch Priority Optimization**: Integrated `fetchpriority` attribute logic into `SharedImgContainerComponent` to prioritize critical above-the-fold images (LCP) automatically.
+
+### Changed
+
+- **Login View Redesign**: Completely overhauled the login experience with a modern glassmorphism aesthetic, high-impact editorial typography, and improved semantic hierarchy.
+- **Cart & Checkout Refinement**:
+  - Enhanced Order Summary card with warmer tinted backgrounds and high-contrast editorial totals.
+  - Improved Delivery Summary in the confirmation step to include address names and phone numbers with specialized icon branding.
+  - Refined Address and Shipping selectors to integrate selection "checks" perfectly with card borders, eliminating visual gaps.
+- **Mobile Menu Contrast Fix**: Re-engineered the floating mobile navigation with mode-aware semantic colors (`neutral-600` light / `neutral-300` dark) and high-impact active states (font-weight 800) for WCAG AA compliance.
+- **Sidenav Theming**: Fixed dark mode contrast issues for category buttons by implementing official M3 `secondary-container` tokens and editorial-style group headers.
+- **Product Card "Overdrive"**: Upgraded product interactions with multi-layered premium shadows, primary-hue hover glows, and tactile haptic feedback (active scale).
+- **State Efficiency**: Optimized `ecoStoreProductsStore` by pre-calculating category lookup Maps, reducing translation complexity from **O(N\*M)** to **O(N+M)** for product lists.
+- **Rendering Performance**: Refined `products-grid` with improved padding and Z-index choreography to ensure "overdrive" shadows render perfectly without clipping.
+- **Bundle Size Optimization**:
+  - **Formly Infrastructure Decoupling**: Moved `EcoStoreFormlyModule` from the initial application shell to specific lazy-loaded routes, significantly reducing the initial bootstrap bundle.
+  - **Lazy Store Injection**: Refactored `EcoStorePrefixTitleService` to use dynamic injection, resolving reactive page titles without pulling heavy domain stores into the main chunk.
+  - **Deferred Core UI**: Wrapped the global activity overlay in a `@defer` block to prioritize critical path rendering.
+
+### Fixed
+
+- **Shadow Clipping**: Resolved persistent "cut shadow" artifacts by removing restrictive `overflow-hidden` and `content-visibility` properties during active hover states.
+- **Corner Radius Synchronization**: Fixed a bug where upper corner radii appeared to disappear on hover by explicitly synchronizing image container and card border-radius variables.
+- **Dark Mode Visibility**: Corrected multiple instances of low-contrast elements in dark mode, particularly in sidenav category lists and mobile navigation backgrounds.
+
 ## [2026-03-19] - Order Deletion Functionality
 
 ### Added
@@ -2462,3 +2494,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Upgraded to NgRx 15 ([#39](https://github.com/plastikaweb/plastikspace/pull/39))
+- Upgraded to Nx 15 ([#38](https://github.com/plastikaweb/plastikspace/pull/38))
+
+---
+
+## [2022-11-20] - Core Components
+
+### Added
+
+- Added core components library ([#35](https://github.com/plastikaweb/plastikspace/pull/35))
+
+---
+
+## [2022-11-15] - Nx 15 Upgrade
+
+### Changed
+
+- Upgraded to Nx 15 ([#32](https://github.com/plastikaweb/plastikspace/pull/32))
+
+---
+
+## [2022-11-10] - Initial Setup
+
+### Added
+
+- Initial project setup ([#1](https://github.com/plastikaweb/plastikspace/pull/1))

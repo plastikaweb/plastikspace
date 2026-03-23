@@ -10,7 +10,8 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   imports: [MatIcon, SharedImgContainerComponent, PocketBaseImageUrlPipe, TranslatePipe],
   templateUrl: './tenant-logo.component.html',
   host: {
-    class: 'flex items-center gap-2 font-semibold tracking-wide',
+    class:
+      'flex items-center gap-2 font-semibold tracking-wide cursor-pointer transition-all duration-300 hover:scale-105 group',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

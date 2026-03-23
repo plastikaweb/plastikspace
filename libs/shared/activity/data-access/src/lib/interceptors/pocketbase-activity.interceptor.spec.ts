@@ -1,13 +1,14 @@
 import { TestBed } from '@angular/core/testing';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { afterEach, beforeEach, describe, it, vi, type Mock } from 'vitest';
 import { activityStore } from '../+state/activity.store';
 import { pocketBaseActivityInterceptor } from './pocketbase-activity.interceptor';
 
 describe('pocketBaseActivityInterceptor', () => {
-  let setActivityMock: vi.Mock;
-  let mockPbSend: vi.Mock;
-  let mockPb: { send: vi.Mock };
-  let mockActivityStore: { setActivity: vi.Mock };
+  let setActivityMock: Mock;
+  let mockPbSend: Mock;
+  let mockPb: { send: Mock };
+  let mockActivityStore: { setActivity: Mock };
 
   const setup = () => {
     setActivityMock = vi.fn();
@@ -47,7 +48,7 @@ describe('pocketBaseActivityInterceptor', () => {
     expect(setActivityMock).not.toHaveBeenCalled();
   });
 
-  it('should NOT set activity when require-global-loading header is not "true"', async () => {
+  it('should NOT set activity when require-global-loading header is not"true"', async () => {
     await mockPb.send('/test', { headers: { 'require-global-loading': 'false' } });
 
     vi.runAllTimers();

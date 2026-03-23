@@ -36,7 +36,7 @@ describe('SharedChipComponent', () => {
     fixture.componentRef.setInput('type', 'success');
     fixture.detectChanges();
     const element = fixture.nativeElement.querySelector('span');
-    expect(element.className).toContain('bg-success-100');
+    expect(element.className).toContain('bg-success-50');
   });
 
   it('should display an icon when provided', () => {

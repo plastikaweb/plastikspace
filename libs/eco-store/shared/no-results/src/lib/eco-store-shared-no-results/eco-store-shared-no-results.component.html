@@ -1,16 +1,29 @@
-<plastik-img-container
-  class="animate-float"
-  [imgClass]="'object-contain mix-blend-darken'"
-  [dimensions]="{ width: 300, height: 369 }"
-  [lcpImage]="true"
-  [src]="'local/img/no-results.png'"
-  [title]="imgTitle()" />
-<div class="flex flex-col items-center justify-center gap-1">
-  <h3 class="text-xl font-bold text-neutral-600">
-    <ng-content select="[no-results-title]" />
-  </h3>
-  <p class="max-w-3xl text-base text-neutral-600 md:max-w-3/5">
-    <ng-content select="[no-results-description]" />
-  </p>
+<div
+  class="reveal-up relative flex flex-col items-center justify-center gap-8"
+  style="--delay: 100ms">
+  <!-- Decorative background glow -->
+  <div
+    class="bg-primary-500/5 absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full blur-3xl"
+    aria-hidden="true"></div>
+
+  <plastik-img-container
+    [imgClass]="'object-contain sepia-50 group-hover:scale-105 transition-transform duration-500'"
+    [dimensions]="{ width: 320, height: 320 }"
+    [lcpImage]="true"
+    [src]="'local/img/no-results.png'"
+    [title]="imgTitle()" />
+
+  <div class="relative z-10 flex flex-col items-center justify-center gap-3">
+    <h3 class="text-on-surface text-2xl font-black tracking-tight sm:text-3xl">
+      <ng-content select="[no-results-title]" />
+    </h3>
+    <div
+      class="text-on-surface-variant max-w-md text-base leading-relaxed font-medium opacity-80 md:max-w-lg">
+      <ng-content select="[no-results-description]" />
+    </div>
+  </div>
+
+  <div class="reveal-up mt-2" style="--delay: 300ms">
+    <ng-content select="[no-results-action]" />
+  </div>
 </div>
-<ng-content select="[no-results-action]" />

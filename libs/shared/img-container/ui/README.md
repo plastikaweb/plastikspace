@@ -28,7 +28,7 @@ It simplifies the implementation of performant, accessible images across the app
 - **Automatic Signals**: Uses Angular Signals for reactive state management of loading and error states.
 - **Performance First**: Configured for `OnPush` change detection.
 - **Fade-In Animation**: Provides a polished user experience with smooth transitions.
-- **LCP Support**: Easy configuration for Largest Contentfull Paint (LCP) priority images.
+- **LCP & Fetch Priority**: Easy configuration for Largest Contentfull Paint (LCP) images, automatically applying `fetchpriority="high"` to prioritize critical assets.
 
 ## Installation
 
@@ -66,16 +66,16 @@ export class UserProfileComponent {
 
 **Selector:** `<plastik-img-container>`
 
-| Input        | Type                                | Default                           | Description                                                           |
-| :----------- | :---------------------------------- | :-------------------------------- | :-------------------------------------------------------------------- |
-| `src`        | `string \| null`                    | Required                          | The source URL of the image.                                          |
-| `title`      | `string`                            | Required                          | Alt text/Title for accessibility and SEO.                             |
-| `dimensions` | `{ width: number; height: number }` | `undefined`                       | Object to set width and height together for aspect-ratio.             |
-| `quality`    | `number`                            | `80`                              | Image compression quality (1-100).                                    |
-| `lcpImage`   | `boolean`                           | `false`                           | Set to `true` if this image is the Largest Contentfull Paint element. |
-| `imgClass`   | `string`                            | `'object-cover'`                  | CSS classes to apply to the internal image element.                   |
-| `sizes`      | `string`                            | `'(max-width: 639px) 100vw, ...'` | Native `sizes` attribute for responsive images.                       |
-| `thumbSizes` | `number[]`                          | `[100, 300, 500, 750, 1600]`      | Array of width sizes to generate `srcset`.                            |
+| Input        | Type                                | Default                           | Description                                                   |
+| :----------- | :---------------------------------- | :-------------------------------- | :------------------------------------------------------------ |
+| `src`        | `string \| null`                    | Required                          | The source URL of the image.                                  |
+| `title`      | `string`                            | Required                          | Alt text/Title for accessibility and SEO.                     |
+| `dimensions` | `{ width: number; height: number }` | `undefined`                       | Object to set width and height for aspect-ratio.              |
+| `quality`    | `number`                            | `80`                              | Image compression quality (1-100).                            |
+| `lcpImage`   | `boolean`                           | `false`                           | If `true`, sets `fetchpriority="high"` and `priority="true"`. |
+| `imgClass`   | `string`                            | `'object-cover'`                  | CSS classes for the internal image element.                   |
+| `sizes`      | `string`                            | `'(max-width: 639px) 100vw, ...'` | Native `sizes` attribute for responsive images.               |
+| `thumbSizes` | `number[]`                          | `[100, 300, 500, 750, 1600]`      | Array of width sizes to generate `srcset`.                    |
 
 ## View Transitions
 

@@ -137,13 +137,17 @@ export default class EcoStoreProductFeatureComponent {
   // Hardened mock data for missing backend fields.
   // TODO: Replace with real data once available in EcoStoreProduct entity.
   readonly productTags = [
-    { label: 'products.tag.eco', class: 'bg-green-100/60!', icon: 'eco' },
+    { label: 'products.tag.eco', class: 'bg-sys-primary-container/90!', icon: 'eco' },
     {
       label: 'products.tag.new',
-      class: 'bg-blue-100/60!',
+      class: 'bg-sys-error-container/90!',
       icon: 'auto_awesome',
     },
-    { label: 'products.tag.offer', class: 'bg-red-100/60!', icon: 'local_offer' },
+    {
+      label: 'products.tag.offer',
+      class: 'bg-sys-secondary-container/90!',
+      icon: 'local_offer',
+    },
   ];
 
   readonly isVariableWeight = computed(() => {

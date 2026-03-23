@@ -28,26 +28,22 @@ export class EcoStoreProductCategoryLabelComponent {
   size = input<ProductCategoryLabelSize>('sm');
 
   containerClass = computed(() => {
-    // Polish: Use standard spacing tokens
-    const sizeGap = this.size() === 'lg' ? 'gap-xs' : this.size() === 'md' ? 'gap-sub' : 'gap-tiny';
+    const sizeGap = this.size() === 'lg' ? 'gap-4' : this.size() === 'md' ? 'gap-3' : 'gap-2';
     return `flex items-center ${sizeGap}`;
   });
 
   dotClass = computed(() => {
-    // Polish: Use precise size tokens for optical balance
-    const size =
-      this.size() === 'lg' ? 'h-3 w-3' : this.size() === 'md' ? 'h-2 w-2' : 'h-1.5 w-1.5';
-    return `rounded-full shrink-0 ${size}`;
+    const size = this.size() === 'lg' ? 'size-5' : this.size() === 'md' ? 'size-4' : 'size-3';
+    return `rounded-full shrink-0 dark:border dark:border-outline-variant ${size}`;
   });
 
   textClass = computed(() => {
-    // Polish: Use system typography tokens and more brand-aware weight
     const sizeToken =
       this.size() === 'lg'
         ? 'text-label-large'
         : this.size() === 'md'
           ? 'text-label-medium'
           : 'text-label-small';
-    return `font-bold uppercase tracking-wider text-neutral-500! ${sizeToken}`;
+    return `font-bold uppercase tracking-wider text-on-surface-variant ${sizeToken}`;
   });
 }

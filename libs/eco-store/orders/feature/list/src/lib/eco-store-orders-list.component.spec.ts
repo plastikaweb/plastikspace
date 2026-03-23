@@ -71,11 +71,11 @@ describe('EcoStoreOrdersListComponent', () => {
   });
 
   it('should display empty state when no orders', () => {
-    const emptyTitle = fixture.nativeElement.querySelector('.empty-state [title], .empty-state h3');
+    const emptyTitle = fixture.nativeElement.querySelector('[no-results-title], h3');
     expect(emptyTitle.textContent).toContain('orders.list.empty');
 
     const emptyDesc = fixture.nativeElement.querySelector(
-      '.empty-state [description], .empty-state p.max-w-3xl'
+      '[no-results-description], .text-on-surface-variant'
     );
     expect(emptyDesc.textContent).toContain('orders.list.emptyDescription');
 
@@ -93,11 +93,11 @@ describe('EcoStoreOrdersListComponent', () => {
     mockOrdersStore.filter.set({ status: 'PENDING', items: null });
     fixture.detectChanges();
 
-    const emptyTitle = fixture.nativeElement.querySelector('.empty-state [title], .empty-state h3');
+    const emptyTitle = fixture.nativeElement.querySelector('[no-results-title], h3');
     expect(emptyTitle.textContent).toContain('orders.list.emptyWithStatus');
 
     const emptyDesc = fixture.nativeElement.querySelector(
-      '.empty-state [description], .empty-state p.max-w-3xl'
+      '[no-results-description], .text-on-surface-variant'
     );
     expect(emptyDesc.textContent).toContain('orders.list.emptyDescriptionWithStatus');
   });

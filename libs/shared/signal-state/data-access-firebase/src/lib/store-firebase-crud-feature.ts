@@ -322,7 +322,7 @@ export function withFirebaseCrud<
                     router.navigate([route]);
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
-                        item.name ? `S'ha creat "${item.name}"` : `S'ha creat el nou element`,
+                        item.name ? `S'ha creat" ${item.name}"` : `S'ha creat el nou element`,
                         'SUCCESS'
                       );
                     }
@@ -336,7 +336,7 @@ export function withFirebaseCrud<
                   error: () => {
                     store._storeNotificationService.create(
                       item.name
-                        ? `No s'ha pogut crear "${item.name}"`
+                        ? `No s'ha pogut crear" ${item.name}"`
                         : `No s'ha pogut crear el nou element`,
                       'ERROR'
                     );
@@ -378,7 +378,7 @@ export function withFirebaseCrud<
                   error: () => {
                     store._storeNotificationService.create(
                       item.name
-                        ? `No s'ha pogut actualitzar "${item.name}"`
+                        ? `No s'ha pogut actualitzar" ${item.name}"`
                         : `No s'ha pogut actualitzar el element`,
                       'ERROR'
                     );

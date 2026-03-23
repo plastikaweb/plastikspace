@@ -40,6 +40,7 @@ export class ShippingMethodSelectorTypeComponent extends FieldType<
   }
 
   protected onSelect(value: ShippingMethodOption['type']): void {
+    if (this.formControl.disabled) return;
     this.formControl.setValue(value);
     this.formControl.updateValueAndValidity();
   }

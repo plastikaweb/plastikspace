@@ -3,7 +3,7 @@
 @layer components {
   .hot-toast-bar-base {
     --hot-toast-bg: var(--mat-sys-surface-container);
-    --hot-toast-border-radius: 0.5rem;
+    --hot-toast-border-radius: var(--app-main-border-radius);
     --hot-toast-color: var(--mat-sys-on-surface);
     --hot-toast-close-btn-align-self: center;
     --hot-toast-close-btn-margin-top: 0;
@@ -14,70 +14,70 @@
 
     /* Specific types mapping to the className provided in the service */
     &.type-success {
-      --hot-toast-bg: var(--success-50);
-      --hot-toast-color: var(--success-700);
+      --hot-toast-bg: light-dark(var(--success-50), var(--success-900));
+      --hot-toast-color: light-dark(var(--success-700), var(--success-50));
 
       .icon-wrapper {
         @include mat.icon-overrides(
           (
-            color: var(--success-700),
+            color: light-dark(var(--success-700), var(--success-50)),
           )
         );
       }
 
       .shrink-line-animation {
-        background: var(--success-700);
+        background: light-dark(var(--success-700), var(--success-50));
       }
     }
 
     &.type-error {
-      --hot-toast-bg: var(--error-50);
-      --hot-toast-color: var(--error-700);
+      --hot-toast-bg: light-dark(var(--error-50), var(--error-900));
+      --hot-toast-color: light-dark(var(--error-700), var(--error-50));
 
       .icon-wrapper {
         @include mat.icon-overrides(
           (
-            color: var(--error-700),
+            color: light-dark(var(--error-700), var(--error-50)),
           )
         );
       }
 
       .shrink-line-animation {
-        background: var(--error-700);
+        background: light-dark(var(--error-700), var(--error-50));
       }
     }
 
     &.type-warning {
-      --hot-toast-bg: var(--warning-50);
-      --hot-toast-color: var(--warning-700);
+      --hot-toast-bg: light-dark(var(--warning-50), var(--warning-900));
+      --hot-toast-color: light-dark(var(--warning-700), var(--warning-50));
 
       .icon-wrapper {
         @include mat.icon-overrides(
           (
-            color: var(--warning-700),
+            color: light-dark(var(--warning-700), var(--warning-50)),
           )
         );
       }
 
       .shrink-line-animation {
-        background: var(--warning-700);
+        background: light-dark(var(--warning-700), var(--warning-50));
       }
     }
 
     &.type-info {
-      --hot-toast-bg: var(--info-50);
-      --hot-toast-color: var(--info-700);
+      --hot-toast-bg: light-dark(var(--info-50), var(--info-900));
+      --hot-toast-color: light-dark(var(--info-700), var(--info-50));
 
       .icon-wrapper {
         @include mat.icon-overrides(
           (
-            color: var(--info-700),
+            color: light-dark(var(--info-700), var(--info-50)),
           )
         );
       }
 
       .shrink-line-animation {
-        background: var(--info-700);
+        background: light-dark(var(--info-700), var(--info-50));
       }
     }
   }

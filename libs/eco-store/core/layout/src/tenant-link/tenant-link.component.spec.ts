@@ -24,7 +24,7 @@ describe('EcoTenantLinkComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have a button with routerLink to "/"', () => {
+  it('should have a button with routerLink to"/"', () => {
     fixture.detectChanges();
     const button = fixture.nativeElement.querySelector('button');
     expect(button.getAttribute('routerLink')).toBe('/');

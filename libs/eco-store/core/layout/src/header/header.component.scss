@@ -6,13 +6,21 @@
   mat-toolbar {
     @include mat.toolbar-overrides(
       (
-        standard-height: 64px,
+        standard-height: 72px,
         mobile-height: 64px,
         title-text-weight: var(--font-weight-bold),
         title-text-tracking: 0.01rem,
         container-background-color: var(--translucid-bg),
       )
     );
+
+    border-bottom: 1px solid
+      light-dark(
+        color-mix(in srgb, var(--mat-sys-primary), transparent 90%),
+        rgba(255, 255, 255, 0.05)
+      );
+    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.3s ease;
   }
 
   .header-icon {

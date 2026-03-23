@@ -2,13 +2,13 @@
   <div
     class="hero-content flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
     <div class="flex flex-col items-start gap-2">
-      <div class="category-subtitle flex items-center gap-2">
+      <div class="flex items-center gap-2">
         <mat-icon class="scale-90!" aria-hidden="true">box</mat-icon>
         <span>
           {{ 'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() } }}
         </span>
       </div>
-      <h2 class="category-title font-bold">
+      <h2 class="font-bold">
         {{ 'cart.steps.shipping.title' | translate }}
       </h2>
     </div>
@@ -19,8 +19,8 @@
   <div class="col-span-1! space-y-10 md:col-span-2!">
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
       <div class="space-y-6" aria-hidden="true">
-        <div class="h-32 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
-        <div class="h-48 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+        <div class="bg-surface-container-high h-32 w-full animate-pulse rounded-2xl"></div>
+        <div class="bg-surface-container-high h-48 w-full animate-pulse rounded-2xl"></div>
       </div>
     } @else {
       <div
@@ -41,7 +41,9 @@
   <!-- Right Column: Order Summary -->
   <div class="sticky top-16 space-y-6 self-start md:col-span-1!">
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
-      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
+      <div
+        aria-hidden="true"
+        class="bg-surface-container-high h-64 w-full animate-pulse rounded-3xl"></div>
     } @else {
       <div
         class="transition-all duration-100"
@@ -73,7 +75,7 @@
                   } @placeholder {
                     <div
                       aria-hidden="true"
-                      class="h-24 w-full animate-pulse bg-neutral-50 px-2"></div>
+                      class="bg-surface-container-high bg-surface-container h-24 w-full animate-pulse rounded-xl px-2"></div>
                   }
                 </div>
               </div>

@@ -82,7 +82,7 @@ export function createCustomLabel(
 
   return {
     type: 'custom-label',
-    className: 'flex flew-row items-start text-primary-600 mt-4',
+    className: 'flex flew-row items-start mt-4',
     props: {
       key,
       label: getShippingLabel(key, availableMethodTypes),

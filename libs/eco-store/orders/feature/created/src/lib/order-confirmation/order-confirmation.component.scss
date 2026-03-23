@@ -4,9 +4,9 @@
   .finish-card {
     @include mat.card-overrides(
       (
-        outlined-container-color: var(--primary-100),
+        outlined-container-color: light-dark(var(--primary-100), var(--primary-800)),
         outlined-outline-width: 1px,
-        outlined-outline-color: var(--secondary-200),
+        outlined-outline-color: light-dark(var(--secondary-200), var(--secondary-500)),
       )
     );
     box-shadow:
@@ -26,5 +26,45 @@
         color: var(--white),
       )
     );
+  }
+
+  .confetti-container {
+    perspective: 1000px;
+  }
+
+  .confetti-petal {
+    position: absolute;
+    top: -20px;
+    left: var(--left);
+    width: 12px;
+    height: 18px;
+    background-color: light-dark(var(--primary-400), var(--primary-200));
+    border-radius: 0 80% 0 80%;
+    opacity: 0;
+    animation: fall 3s ease-out forwards;
+    animation-delay: var(--delay);
+
+    &:nth-child(even) {
+      background-color: light-dark(var(--secondary-400), var(--secondary-200));
+      border-radius: 80% 0 80% 0;
+    }
+
+    &:nth-child(3n) {
+      background-color: light-dark(var(--tertiary-400), var(--tertiary-200));
+    }
+  }
+
+  @keyframes fall {
+    0% {
+      transform: translateY(0) rotateX(0) rotateY(0);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.8;
+    }
+    100% {
+      transform: translateY(400px) rotateX(360deg) rotateY(180deg);
+      opacity: 0;
+    }
   }
 }

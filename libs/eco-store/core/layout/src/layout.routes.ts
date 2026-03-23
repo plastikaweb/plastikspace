@@ -1,16 +1,11 @@
-import {
-  DEFAULT_CURRENCY_CODE,
-  importProvidersFrom,
-  inject,
-  provideEnvironmentInitializer,
-} from '@angular/core';
+import { DEFAULT_CURRENCY_CODE, inject, provideEnvironmentInitializer } from '@angular/core';
 import { ActivatedRouteSnapshot, Route } from '@angular/router';
 
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
 import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
-import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { BodyBackgroundService } from './body-background.service';
 import { EcoStoreLayoutService } from './eco-store-layout.service';
 import EcoLayoutComponent from './layout.component';
@@ -33,10 +28,13 @@ export const layoutRoutes: Route[] = [
         useClass: MatPaginatorIntlService,
       },
       {
+        provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+        useValue: { appearance: 'outline' },
+      },
+      {
         provide: MAT_ICON_DEFAULT_OPTIONS,
         useValue: { fontSet: 'material-symbols-outlined' },
       },
-      importProvidersFrom(EcoStoreFormlyModule),
     ],
     children: [
       {

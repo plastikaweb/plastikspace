@@ -148,7 +148,7 @@ export class CountdownService {
   }
 
   /**
-   * @description Format countdown to compact text (e.g., "2d 5h 30m 45s").
+   * @description Format countdown to compact text (e.g.,"2d 5h 30m 45s").
    * @param {CountdownData} countdown - Countdown data object.
    * @returns {string} Formatted string.
    */

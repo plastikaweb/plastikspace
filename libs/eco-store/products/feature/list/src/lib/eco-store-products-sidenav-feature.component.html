@@ -15,13 +15,13 @@
           }"
           [attr.aria-current]="this.currentUrl() === '/botiga' ? 'page' : null">
           <div class="flex w-full items-center gap-2">
-            <mat-icon aria-hidden="true" class="scale-90 text-neutral-700">{{
+            <mat-icon aria-hidden="true" class="text-on-surface-variant scale-90">{{
               defaultCategoryIcon
             }}</mat-icon>
-            <span matListItemTitle class="text-sm font-semibold text-neutral-700">{{
+            <span matListItemTitle class="text-on-surface-variant text-sm font-semibold">{{
               'products.all' | translate
             }}</span>
-            <span matListItemLine class="ml-2 text-xs text-neutral-700"
+            <span matListItemLine class="text-on-surface-variant ml-2 text-xs"
               >({{ totalProducts() }})</span
             >
           </div>
@@ -30,7 +30,7 @@
         <!-- Grouped Categories -->
         @for (group of groupedCategoriesWithNames(); track group.group.id) {
           <div
-            class="text-tertiary-600 mt-4 mb-1 px-4 text-[11px] font-bold tracking-widest uppercase">
+            class="text-sys-tertiary mt-4 mb-1 px-4 text-[11px] font-bold tracking-widest uppercase">
             {{ group.translatedGroupName }}
           </div>
 
@@ -44,9 +44,12 @@
                 this.currentUrl().startsWith(`/botiga/${category.normalizedName}`) ? 'page' : null
               ">
               <div class="flex w-full items-center gap-2">
-                <mat-icon aria-hidden="true" class="scale-90" [style.color]="category.color">{{
-                  category.icon
-                }}</mat-icon>
+                <mat-icon
+                  aria-hidden="true"
+                  class="scale-90 transition-all dark:brightness-150 dark:saturate-75"
+                  [style.color]="category.color"
+                  >{{ category.icon }}</mat-icon
+                >
                 <span matListItemTitle class="flex-1 truncate text-sm">{{
                   category.translatedName
                 }}</span>

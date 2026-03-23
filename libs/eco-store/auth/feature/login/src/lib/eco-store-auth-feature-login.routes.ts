@@ -1,18 +1,20 @@
-import { importProvidersFrom } from '@angular/core';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { Route } from '@angular/router';
-import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { EcoStoreAuthLoginComponent } from './eco-store-auth-login/eco-store-auth-login.component';
 
-import { IMAGE_LOADER } from '@angular/common';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { FORMLY_CONFIG, provideFormlyCore } from '@ngx-formly/core';
+import { withFormlyFormField } from '@ngx-formly/material/form-field';
+import { withFormlyFieldInput } from '@ngx-formly/material/input';
+import { TranslateService } from '@ngx-translate/core';
 import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
 import { loginFormConfig } from '@plastik/auth/login';
 import { pocketBaseIsNotLoggedGuard } from '@plastik/auth/pocketbase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
-import { getEnvironment } from '@plastik/core/environments';
-import { NOTIFICATION_POSITION } from '@plastik/shared/notification/entities';
-import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
+import {
+  registerFormFieldTranslateExtension,
+  registerValidatorsTranslateExtension,
+} from '@plastik/shared/form/util';
 import { EcoStoreAuthLoginFacadeService } from './eco-store-auth-login/eco-store-auth-login-facade.service';
 
 export const ecoStoreAuthLoginRoutes: Route[] = [
@@ -22,17 +24,6 @@ export const ecoStoreAuthLoginRoutes: Route[] = [
     component: EcoStoreAuthLoginComponent,
     canActivate: [pocketBaseIsNotLoggedGuard],
     providers: [
-      {
-        provide: NOTIFICATION_POSITION,
-        useValue: {
-          verticalPosition: 'top',
-          horizontalPosition: 'right',
-        },
-      },
-      {
-        provide: IMAGE_LOADER,
-        useFactory: () => pocketBaseStorageLoader(getEnvironment().baseApiUrl),
-      },
       {
         provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
         useValue: { appearance: 'outline' },
@@ -49,7 +40,19 @@ export const ecoStoreAuthLoginRoutes: Route[] = [
         provide: MAT_ICON_DEFAULT_OPTIONS,
         useValue: { fontSet: 'material-symbols-outlined' },
       },
-      importProvidersFrom(EcoStoreFormlyModule),
+      provideFormlyCore([withFormlyFormField(), withFormlyFieldInput()]),
+      {
+        provide: FORMLY_CONFIG,
+        multi: true,
+        useFactory: registerFormFieldTranslateExtension,
+        deps: [TranslateService],
+      },
+      {
+        provide: FORMLY_CONFIG,
+        multi: true,
+        useFactory: registerValidatorsTranslateExtension,
+        deps: [TranslateService],
+      },
     ],
   },
 ];

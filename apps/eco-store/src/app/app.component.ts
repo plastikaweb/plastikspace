@@ -72,7 +72,6 @@ export class AppComponent implements OnInit {
         this.#renderer.removeClass(this.#document.body, 'is-keyboard-active');
       }
     });
-    this.activityStore.setActivity(false);
   }
 
   #addPreconnectLink(): void {
