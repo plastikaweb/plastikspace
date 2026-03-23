@@ -2,36 +2,19 @@
 @use 'core_tailwind_theme';
 
 :host {
-  .cart-item-card {
-    @include mat.card-overrides(
-      (
-        outlined-container-color: var(--white),
-        outlined-outline-width: 1px,
-        outlined-outline-color: var(--primary-200),
-      )
-    );
-  }
+  display: block;
 
-  .cart-delete-button {
-    background-color: var(--white);
-    color: var(--error-500);
-
+  .cart-delete-button:hover {
     @include mat.icon-overrides(
       (
-        color: var(--error-500),
+        color: light-dark(var(--error-500), var(--error-300)),
       )
     );
-
-    &:hover {
-      @include mat.icon-button-overrides(
-        (
-          icon-color: var(--error-500),
-          state-layer-color: var(--error-500),
-        )
-      );
-
-      background-color: var(--error-100);
-      color: var(--error-500);
-    }
+    @include mat.icon-button-overrides(
+      (
+        icon-color: light-dark(var(--error-500), var(--error-300)),
+        state-layer-color: light-dark(var(--error-500), var(--error-300)),
+      )
+    );
   }
 }

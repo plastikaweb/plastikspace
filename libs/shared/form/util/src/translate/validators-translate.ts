@@ -12,61 +12,59 @@ export function registerValidatorsTranslateExtension(translate: TranslateService
       {
         name: 'required',
         message() {
-          return translate.stream('form.error.required');
+          return translate.stream('common.form.error.required');
         },
       },
       {
         name: 'email',
         message() {
-          return translate.stream('form.error.email');
+          return translate.stream('common.form.error.email');
         },
       },
       {
         name: 'minLength',
         message(_: string, config: FormlyFieldConfig) {
-          return translate.stream('form.error.minLength', { value: config.props?.minLength });
+          return translate.stream('common.form.error.minLength', {
+            value: config.props?.minLength,
+          });
         },
       },
       {
         name: 'maxLength',
         message(_: string, config: FormlyFieldConfig) {
-          return translate.stream('form.error.maxLength', { value: config.props?.maxLength });
+          return translate.stream('common.form.error.maxLength', {
+            value: config.props?.maxLength,
+          });
         },
       },
       {
         name: 'min',
         message(_: string, config: FormlyFieldConfig) {
-          return translate.stream('form.error.min', { value: config.props?.min });
+          return translate.stream('common.form.error.min', { value: config.props?.min });
         },
       },
       {
         name: 'max',
         message(_: string, config: FormlyFieldConfig) {
-          return translate.stream('form.error.max', { value: config.props?.max });
+          return translate.stream('common.form.error.max', { value: config.props?.max });
         },
       },
       {
         name: 'url',
         message() {
-          return translate.stream('form.error.url');
+          return translate.stream('common.form.error.url');
         },
       },
       {
         name: 'phone',
         message() {
-          return translate.stream('form.error.phone');
+          return translate.stream('common.form.error.phone');
         },
       },
       {
         name: 'username',
         message() {
-          return translate.stream('form.error.invalid-username');
-        },
-      },
-      {
-        name: 'vin',
-        message() {
-          return translate.stream('form.error.invalid-vin');
+          return translate.stream('common.form.error.invalid-username');
         },
       },
     ],

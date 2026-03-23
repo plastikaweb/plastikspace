@@ -4,8 +4,8 @@
   @include mat.button-overrides(
     (
       text-label-text-weight: 800,
-      text-label-text-color: var(--primary-600),
-      text-state-layer-color: var(--primary-100),
+      text-label-text-color: light-dark(var(--primary-600), var(--primary-300)),
+      text-state-layer-color: light-dark(var(--primary-100), var(--primary-900)),
     )
   );
 
@@ -13,11 +13,11 @@
   a::after {
     content: '';
     position: absolute;
-    bottom: 4px;
+    bottom: 5px;
     left: 12px;
     right: 12px;
     height: 2px;
-    background-color: var(--primary-400);
+    background-color: light-dark(var(--primary-400), var(--primary-100));
     border-radius: 99px;
     opacity: 0.6;
   }
@@ -26,42 +26,36 @@
 .user-pill {
   @include mat.button-overrides(
     (
-      text-state-layer-color: var(--primary-100),
-    )
-  );
-}
-
-.favorite-icon-button {
-  @include mat.icon-button-overrides(
-    (
-      icon-color: var(--tertiary-500),
-      state-layer-color: var(--tertiary-100),
+      text-state-layer-color: light-dark(var(--primary-100), var(--primary-900)),
     )
   );
 }
 
 .cart-button {
-  @include mat.button-overrides(
-    (
-      filled-container-color: var(--primary-600),
-      filled-label-text-color: var(--primary-50),
-      filled-state-layer-color: var(--white),
-    )
-  );
-
-  @include mat.icon-overrides(
-    (
-      color: var(--primary-50),
-    )
-  );
-
   @include mat.badge-overrides(
     (
       container-size: 1.5rem,
       text-size: 0.85rem,
       line-height: 1.5rem,
-      text-color: var(--white),
-      background-color: var(--tertiary-500),
+      background-color: light-dark(var(--tertiary-500), var(--tertiary-500)),
+      text-color: light-dark(var(--white), var(--white)),
     )
   );
+
+  @include mat.button-overrides(
+    (
+      filled-container-color: light-dark(var(--primary-600), var(--primary-300)),
+      filled-label-text-color: light-dark(var(--primary-50), var(--primary-950)),
+    )
+  );
+
+  mat-icon {
+    color: inherit !important;
+    font-variation-settings: 'FILL' 1;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover mat-icon {
+    transform: scale(1.1) rotate(-5deg);
+  }
 }

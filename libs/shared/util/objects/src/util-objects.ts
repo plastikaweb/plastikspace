@@ -160,7 +160,7 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
 }
 
 /**
- * @description Returns an object with replaced values for "false" and "true" as boolean values.
+ * @description Returns an object with replaced values for"false" and"true" as boolean values.
  * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
  * @returns {Record<string, string | number | boolean>}.
  */

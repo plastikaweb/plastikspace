@@ -8,7 +8,7 @@
   .rating-stars {
     @include mat.icon-overrides(
       (
-        color: var(--tertiary-600),
+        color: light-dark(var(--tertiary-600), var(--tertiary-200)),
       )
     );
   }
@@ -16,7 +16,7 @@
   .metadata-icon {
     @include mat.icon-overrides(
       (
-        color: var(--neutral-500),
+        color: light-dark(var(--neutral-500), var(--neutral-200)),
       )
     );
   }
@@ -25,14 +25,14 @@
   .tech-info-title {
     @include mat.icon-overrides(
       (
-        color: var(--tertiary-600),
+        color: light-dark(var(--tertiary-600), var(--tertiary-200)),
       )
     );
   }
 
   .prose {
     line-height: 1.75;
-    color: var(--neutral-600);
+    color: light-dark(var(--neutral-600), var(--neutral-200));
     font-size: 1.1rem;
     letter-spacing: -0.01em;
   }

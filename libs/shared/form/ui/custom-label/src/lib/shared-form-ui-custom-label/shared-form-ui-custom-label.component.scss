@@ -4,57 +4,57 @@
   display: block;
   width: 100%;
 
-  background-color: var(--neutral-100) / 60;
-  border: 1px solid var(--neutral-200);
-  color: var(--neutral-900);
+  background-color: light-dark(var(--neutral-200), var(--neutral-800));
+  border: 1px solid light-dark(var(--neutral-300), var(--neutral-700));
+  color: light-dark(var(--neutral-900), var(--neutral-100));
   border-radius: 1rem;
   overflow: hidden;
 
   .mat-icon {
     @include mat.icon-overrides(
       (
-        color: var(--neutral-900),
+        color: light-dark(var(--neutral-900), var(--neutral-100)),
       )
     );
   }
 
   .valid-message {
-    background-color: var(--primary-200);
-    border-color: var(--primary-300);
-    color: var(--primary-800);
+    background-color: light-dark(var(--success-200), var(--success-800));
+    border-color: light-dark(var(--success-300), var(--success-600));
+    color: light-dark(var(--success-800), var(--success-100));
 
     .mat-icon {
       @include mat.icon-overrides(
         (
-          color: var(--primary-800),
+          color: light-dark(var(--success-800), var(--success-100)),
         )
       );
     }
   }
 
   .error-message {
-    background-color: var(--error-100);
-    border-color: var(--error-700);
-    color: var(--error-900);
+    background-color: light-dark(var(--error-200), var(--error-800));
+    border-color: light-dark(var(--error-300), var(--error-600));
+    color: light-dark(var(--error-800), var(--error-100));
 
     .mat-icon {
       @include mat.icon-overrides(
         (
-          color: var(--error-900),
+          color: light-dark(var(--error-800), var(--error-100)),
         )
       );
     }
   }
 
   .pending-message {
-    background-color: var(--neutral-100);
-    border-color: var(--neutral-200);
-    color: var(--neutral-700);
+    background-color: light-dark(var(--neutral-200), var(--neutral-800));
+    border-color: light-dark(var(--neutral-300), var(--neutral-700));
+    color: light-dark(var(--neutral-800), var(--neutral-100));
 
     .mat-icon {
       @include mat.icon-overrides(
         (
-          color: var(--neutral-700),
+          color: light-dark(var(--neutral-800), var(--neutral-100)),
         )
       );
     }

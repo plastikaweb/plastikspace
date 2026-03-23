@@ -41,7 +41,7 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
   getOneBySlug(
     slug: EcoStoreProductWithCategoryName['categorySlug']
   ): Observable<EcoStoreProduct | null> {
-    const filter = `normalizedName = "${slug}" && ${this.filter}`;
+    const filter = `normalizedName ="${slug}" && ${this.filter}`;
 
     return super
       .getList({
@@ -54,6 +54,6 @@ export class EcoStoreProductsApiService extends EcoStoreGetService<EcoStoreProdu
   }
 
   get filter(): string {
-    return `tenant = "${this.tenantStore.tenant()?.id}"`;
+    return `tenant ="${this.tenantStore.tenant()?.id}"`;
   }
 }

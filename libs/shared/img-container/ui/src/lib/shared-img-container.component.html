@@ -2,21 +2,21 @@
 
 <div
   class="absolute inset-0 flex items-center justify-center transition-opacity duration-100"
-  [class.bg-neutral-100]="isLoading()"
+  [class.bg-surface-container-high]="isLoading()"
   [class.breathing]="isLoading()">
   @if (isLoading()) {
     <div class="border-tertiary-600 h-8 w-8 animate-spin rounded-full border-b-2"></div>
   }
 
   @if (hasError()) {
-    <div class="image-error flex h-full w-full items-center justify-center bg-neutral-50">
+    <div class="image-error bg-surface-container flex h-full w-full items-center justify-center">
       <mat-icon class="scale-200">image_not_supported</mat-icon>
     </div>
   }
 </div>
 
 @if (src) {
-  <!-- Polish: Use @for as a "key" to force re-render of NgOptimizedImage when dimensions change -->
+  <!-- Polish: Use @for as a"key" to force re-render of NgOptimizedImage when dimensions change -->
   @for (dim of [dimensions()]; track (dim?.width ?? 0) + '-' + (dim?.height ?? 0)) {
     @let width = dim?.width;
     @let height = dim?.height;
@@ -35,11 +35,11 @@
 
   <ng-template #fixedImage let-priority="priority" let-w="w" let-h="h">
     <img
-      class="object-cover transition-opacity duration-100"
+      [class]="`object-cover transition-opacity duration-100 ${imgClass()}`"
       [class.opacity-0]="isLoading() && !lcpImage()"
       [class.opacity-100]="(!isLoading() && !hasError()) || lcpImage()"
       [priority]="priority"
-      [attr.fetchpriority]="priority ? 'high' : null"
+      [attr.fetchpriority]="priority ? 'high' : 'low'"
       [ngSrc]="src"
       [width]="w"
       [height]="h"
@@ -56,7 +56,7 @@
       [class.opacity-0]="isLoading()"
       [class.opacity-100]="!isLoading() && !hasError()"
       [priority]="priority"
-      [attr.fetchpriority]="priority ? 'high' : null"
+      [attr.fetchpriority]="priority ? 'high' : 'low'"
       [ngSrc]="src"
       [alt]="title()"
       [sizes]="sizes()"

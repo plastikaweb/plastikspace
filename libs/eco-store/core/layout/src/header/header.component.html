@@ -19,19 +19,23 @@
         </button>
       }
 
-      <eco-tenant-link [tenant]="tenant()" />
+      @defer (on idle) {
+        <eco-tenant-link [tenant]="tenant()" />
+      } @placeholder {
+        <div class="bg-surface-variant h-8 animate-pulse rounded"></div>
+      }
 
-      @if (storeStatus() !== 'OPEN') {
-        @defer (when storeStatus() !== 'OPEN') {
+      @let isStoreOpen = storeStatus() === 'OPEN';
+      @if (!isStoreOpen) {
+        @defer (when !isStoreOpen) {
           <eco-store-store-window
-            class="w-74"
             [status]="storeStatus()"
             [nextOpenDate]="nextOpenDate()"
             [is24h]="is24h()"
             [isMobile]="isMobile()"
             [closedReason]="closedReason()" />
         } @placeholder {
-          <div aria-hidden="true" class="h-8 w-74 animate-pulse rounded bg-neutral-200"></div>
+          <div aria-hidden="true" class="bg-surface-variant h-8 animate-pulse rounded"></div>
         }
       }
 
@@ -51,8 +55,16 @@
         (changeEvent)="submitEvent.emit($event)"></plastik-shared-form-feature>
     } -->
 
-    <div class="hidden h-full items-center md:flex">
-      <ng-content select="[secondaryMenu]" />
+    <div class="flex items-center gap-4">
+      <div class="hidden h-full items-center md:flex">
+        <ng-content select="[secondaryMenu]" />
+      </div>
+
+      @defer (on idle) {
+        <plastik-mat-theme-toggle></plastik-mat-theme-toggle>
+      } @placeholder {
+        <div class="bg-surface-variant h-8 animate-pulse rounded"></div>
+      }
     </div>
   </div>
 </mat-toolbar>

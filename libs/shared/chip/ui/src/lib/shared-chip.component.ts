@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { SharedChipType } from '@plastik/shared/entities';
 
 @Component({
   selector: 'plastik-shared-chip',
-  imports: [CommonModule, MatIconModule],
+  imports: [MatIconModule],
   templateUrl: './shared-chip.component.html',
   styleUrl: './shared-chip.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,14 +43,20 @@ export class SharedChipComponent {
 
   protected readonly computedClass = computed(() => {
     const baseClass =
-      'flex justify-center items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide border transition-colors';
+      'flex justify-center items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide inset border transition-colors';
     const typeClasses: Record<SharedChipType, string> = {
-      primary: 'chip-primary bg-primary-100 text-primary-800 border-primary-200',
-      success: 'chip-success bg-success-100 text-success-800 border-success-200',
-      warning: 'chip-warning bg-warning-100 text-warning-800 border-warning-200',
-      error: 'chip-error bg-error-100 text-error-800 border-error-200',
-      neutral: 'chip-neutral bg-neutral-100 text-neutral-800 border-neutral-200',
-      tertiary: 'chip-tertiary bg-tertiary-100 text-tertiary-800 border-tertiary-200',
+      primary:
+        'chip-primary bg-primary-50 text-primary-800 border-primary-400 dark:bg-primary-700 dark:text-primary-50 dark:border-primary-600',
+      success:
+        'chip-success bg-success-50 text-success-800 border-success-400 dark:bg-success-700 dark:text-success-50 dark:border-success-600',
+      warning:
+        'chip-warning bg-warning-50 text-warning-800 border-warning-400 dark:bg-warning-700 dark:text-warning-50 dark:border-warning-600',
+      error:
+        'chip-error bg-error-50 text-error-800 border-error-400 dark:bg-error-700 dark:text-error-50 dark:border-error-600',
+      neutral:
+        'chip-neutral bg-surface-container text-on-surface border-outline bg-surface-variant dark:text-neutral-50 dark:border-neutral-600',
+      tertiary:
+        'chip-tertiary bg-tertiary-50 text-tertiary-800 border-tertiary-400 dark:bg-tertiary-700 dark:text-tertiary-50 dark:border-tertiary-600',
     };
 
     return `${baseClass} ${typeClasses[this.type()]} ${this.customClass()}`;

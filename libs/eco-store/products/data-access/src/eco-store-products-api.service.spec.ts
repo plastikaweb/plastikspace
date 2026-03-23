@@ -47,7 +47,7 @@ describe('EcoStoreProductsApiService', () => {
         expect.objectContaining({
           page: 1,
           perPage: 1,
-          filter: expect.stringContaining(`normalizedName = "${slug}"`),
+          filter: expect.stringContaining(`normalizedName ="${slug}"`),
           requestKey: 'product_by_slug',
         })
       );

@@ -3,13 +3,6 @@
 :host {
   display: block;
 
-  @include mat.progress-bar-overrides(
-    (
-      active-indicator-color: var(--primary-500),
-      track-color: var(--primary-200),
-    )
-  );
-
   // Tier Visualization Styles
   .tier-label {
     transform: translateX(-50%);
@@ -36,7 +29,7 @@
         padding: 0.125rem 0.25rem;
         width: 150%;
         height: 20px;
-        background-color: var(--neutral-100);
+        background-color: light-dark(var(--neutral-100), var(--neutral-700));
         z-index: -1;
       }
     }
@@ -46,7 +39,7 @@
   .shipping-cost-label {
     transform: translateX(-50%);
     transition: transform 0.3s ease;
-    color: var(--neutral-700);
+    color: light-dark(var(--neutral-700), var(--neutral-300));
 
     &:first-of-type {
       transform: translateX(0);
@@ -67,13 +60,17 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 
     &.free {
-      background: linear-gradient(135deg, var(--primary-50) 0%, var(--primary-100) 100%);
-      border-color: var(--primary-300);
-      color: var(--primary-700);
+      background: linear-gradient(
+        135deg,
+        light-dark(var(--primary-50), var(--primary-800)) 0%,
+        light-dark(var(--primary-100), var(--primary-700)) 100%
+      );
+      border-color: light-dark(var(--primary-300), var(--primary-500));
+      color: light-dark(var(--primary-700), var(--primary-200));
 
       @include mat.icon-overrides(
         (
-          color: var(--primary-500),
+          color: light-dark(var(--primary-500), var(--primary-200)),
         )
       );
 
@@ -83,13 +80,17 @@
     }
 
     &.not-free {
-      background: linear-gradient(135deg, var(--error-50) 0%, var(--error-100) 100%);
-      border-color: var(--error-300);
-      color: var(--error-700);
+      background: linear-gradient(
+        135deg,
+        light-dark(var(--error-50), var(--error-800)) 0%,
+        light-dark(var(--error-100), var(--error-700)) 100%
+      );
+      border-color: light-dark(var(--error-300), var(--error-500));
+      color: light-dark(var(--error-700), var(--error-200));
 
       @include mat.icon-overrides(
         (
-          color: var(--error-500),
+          color: light-dark(var(--error-500), var(--error-200)),
         )
       );
 

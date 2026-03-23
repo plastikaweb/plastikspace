@@ -7,7 +7,6 @@ import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progres
   templateUrl: './shared-activity-ui-linear.component.html',
   styles: [
     `
-      /* ----- ProgressBar https://material.angular.io/components/progress-bar ----- */
       .mat-mdc-progress-bar {
         --mat-progress-bar-track-color: var(
           --plastik-mdc-linear-progress-track-color,
@@ -20,10 +19,6 @@ import { MatProgressBarModule, ProgressBarMode } from '@angular/material/progres
         --mat-progress-bar-active-indicator-height: var(
           --plastik-mdc-linear-progress-active-indicator-height,
           4px
-        ) !important;
-        --mat-progress-bar-active-indicator-color: var(
-          --plastik-mdc-linear-progress-active-indicator-color,
-          rgb(11, 17, 62)
         ) !important;
       }
     `,

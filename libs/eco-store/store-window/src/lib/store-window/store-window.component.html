@@ -9,7 +9,7 @@
           @if (config.class === 'closing') {
             <span
               aria-hidden="true"
-              class="bg-warning-600 mr-2 inline-block h-[12px] w-[12px] animate-pulse rounded-full"></span>
+              class="bg-warning-600 dark:bg-warning-200 mr-2 inline-block h-[12px] w-[12px] animate-pulse rounded-full"></span>
           }
           {{ config.label | translate }}
         </span>
@@ -17,7 +17,7 @@
         @if (config.countdownSegments?.length) {
           <plastik-countdown
             [segments]="config.countdownSegments || []"
-            [prefix]="config.countdownPrefix || ''"
+            [prefix]="config?.countdownPrefix || ''"
             [class]="config.class || ''"></plastik-countdown>
         }
       </div>

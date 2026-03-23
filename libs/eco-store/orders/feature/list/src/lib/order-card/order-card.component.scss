@@ -3,37 +3,28 @@
 :host {
   display: block;
 
-  .detail-button {
-    @include mat.button-overrides(
-      (
-        outlined-label-text-color: var(--neutral-800),
-        outlined-outline-color: var(--neutral-300),
-      )
-    );
+  .delete-button {
+    &:hover {
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--error-500), var(--error-300)),
+        )
+      );
+      @include mat.icon-button-overrides(
+        (
+          icon-color: light-dark(var(--error-500), var(--error-300)),
+          state-layer-color: light-dark(var(--error-500), var(--error-300)),
+        )
+      );
+    }
   }
 
   .delivery-icon,
   .products-icon {
     @include mat.icon-overrides(
       (
-        color: var(--neutral-800),
+        color: light-dark(var(--neutral-800), var(--neutral-300)),
       )
     );
-  }
-
-  .delete-button {
-    &:hover {
-      @include mat.icon-overrides(
-        (
-          color: var(--error-500),
-        )
-      );
-      @include mat.icon-button-overrides(
-        (
-          icon-color: var(--error-500),
-          state-layer-color: var(--error-500),
-        )
-      );
-    }
   }
 }

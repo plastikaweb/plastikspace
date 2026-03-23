@@ -45,7 +45,7 @@ export class YourComponent {}
 ### 2. Use the component in your template
 
 ```html
-<shared-mat-theme-toggle></shared-mat-theme-toggle>
+<plastik-mat-theme-toggle></plastik-mat-theme-toggle>
 ```
 
 ## API

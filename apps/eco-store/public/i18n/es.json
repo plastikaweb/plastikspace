@@ -1,6 +1,6 @@
 {
   "common": {
-    "loading": "Cargando dades...",
+    "loading": "Cosechando los datos más frescos...",
     "close": "Cerrar",
     "edit": "Editar",
     "add": "Añadir",
@@ -25,12 +25,24 @@
     "address": {
       "default": "Dirección predeterminada"
     },
+    "theme": {
+      "light": "Claro",
+      "dark": "Oscuro",
+      "system": "Sistema",
+      "toggleAriaLabel": "Cambiar el tema de la interfaz a claro, oscuro o del sistema",
+      "changedTo": "Tema de la interfaz cambiado a {theme}"
+    },
     "form": {
       "error": {
         "email": "El formato del correo electrónico no es correcto",
         "required": "El campo es obligatorio",
         "minLength": "El campo debe tener al menos {value} caracteres",
-        "maxLength": "El campo debe tener más de {value} caracteres"
+        "maxLength": "El campo debe tener más de {value} caracteres",
+        "min": "El valor debe ser como mínimo {value}",
+        "max": "El valor debe ser como máximo {value}",
+        "url": "El formato de la URL no es correcto",
+        "phone": "El formato del teléfono no es correcto",
+        "invalid-username": "Nombre de usuario inválido"
       },
       "charactersCount": "{count, plural, one {carácter} other {caracteres}}"
     },
@@ -73,8 +85,8 @@
       "password": "Contraseña",
       "rememberMe": "Recordar sesión",
       "recoverAccess": "¿Has olvidado la contraseña?",
-      "newUserQuestion": "¿Aún no eres socio?",
-      "createAccount": "Si eres socio de la cooperativa, regístrate aquí",
+      "newUserQuestion": "¿Aún no eres socia?",
+      "createAccount": "Si eres socia, regístrate aquí",
       "submit": "Iniciar sesión",
       "termsPrivacy": "Al continuar, aceptas nuestros Términos y Política de Privacidad."
     },
@@ -326,6 +338,7 @@
       },
       "address": {
         "title": "Elige dónde quieres recibir tu pedido.",
+        "edit": "Editar dirección",
         "pickup": {
           "title": "Elige dónde quieres recoger tu pedido.",
           "description": "Pasa por la tienda y recoge tu pedido."
@@ -425,12 +438,12 @@
       "pickup": "Recogida en la tienda"
     },
     "status": {
-      "delivered": "Entregado",
-      "pending": "Pendiente",
-      "confirmed": "Confirmado",
-      "preparing": "Preparando",
-      "ready": "Preparado",
-      "cancelled": "Cancelado"
+      "delivered": "ENTREGADA",
+      "pending": "PENDIENTE",
+      "confirmed": "CONFIRMADA",
+      "preparing": "PREPARANDO",
+      "ready": "PREPARADO",
+      "cancelled": "CANCELADA"
     },
     "filter": {
       "all": "TODAS",

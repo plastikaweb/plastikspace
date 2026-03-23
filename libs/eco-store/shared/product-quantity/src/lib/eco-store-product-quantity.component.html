@@ -10,10 +10,8 @@
 } @else {
   <div class="flex w-full items-center" [class.gap-4]="mode() === 'detail'">
     <div
-      class="quantity-controls border-primary-200 flex items-center justify-between rounded-2xl border py-1 pr-1 pl-1 transition-all"
+      class="quantity-controls border-outline bg-surface-variant flex items-center justify-between rounded-2xl border-2 py-1 pr-1 pl-1 transition-all"
       role="group"
-      [class.bg-primary-50]="mode() !== 'detail'"
-      [class.bg-white]="mode() === 'detail'"
       [class.w-full]="mode() === 'card'"
       [class.w-auto]="mode() === 'detail'"
       [class.sm:w-48]="mode() === 'detail'"
@@ -56,7 +54,8 @@
           readonly
           tabindex="-1"
           type="number"
-          class="no-spinners w-fit cursor-default border-none text-end font-bold text-neutral-700 focus:outline-none"
+          inputmode="numeric"
+          class="no-spinners w-fit cursor-default border-none text-end font-bold focus:outline-none"
           [id]="'qty-' + product().id"
           [value]="quantity()"
           [step]="step()"
@@ -68,7 +67,7 @@
           "
           (change)="onManualInput($event)"
           (keydown.enter)="qtyInput.blur()" />
-        <span class="text-md text-neutral-600" aria-hidden="true">{{
+        <span class="text-md" aria-hidden="true">{{
           `products.unit.abbr.${product().unitType}` | translate
         }}</span>
       </div>

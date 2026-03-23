@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, Injector } from '@angular/core';
 import { PrefixTitleService } from '@plastik/core/router-state';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
@@ -8,9 +8,7 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
   providedIn: 'root',
 })
 export class EcoStorePrefixTitleService extends PrefixTitleService {
-  readonly #tenantStore = inject(ecoStoreTenantStore);
-  readonly #categoriesStore = inject(ecoStoreProductCategoriesStore);
-  readonly #productsStore = inject(ecoStoreProductsStore);
+  readonly #injector = inject(Injector);
 
   /**
    * @description Resolve the title using TranslateService or Signal-based lookup.
@@ -20,13 +18,15 @@ export class EcoStorePrefixTitleService extends PrefixTitleService {
   protected override getTranslatedTitle(title: string | undefined): string | undefined {
     if (title?.startsWith('CATEGORY_TITLE:')) {
       const slug = title.split(':')[1];
-      const category = this.#categoriesStore.findCategoryBySlug(slug);
-      return category ? this.#categoriesStore.getLocalizedCategoryName(category) : undefined;
+      const categoriesStore = this.#injector.get(ecoStoreProductCategoriesStore);
+      const category = categoriesStore.findCategoryBySlug(slug);
+      return category ? categoriesStore.getLocalizedCategoryName(category) : undefined;
     }
 
     if (title?.startsWith('PRODUCT_TITLE:')) {
       const slug = title.split(':')[1];
-      return this.#productsStore.findProductBySlug()(slug)?.name;
+      const productsStore = this.#injector.get(ecoStoreProductsStore);
+      return productsStore.findProductBySlug()(slug)?.name;
     }
 
     return super.getTranslatedTitle(title);
@@ -39,7 +39,8 @@ export class EcoStorePrefixTitleService extends PrefixTitleService {
    * @returns {string} The final title to set in the browser.
    */
   protected override getPrefixedTitle(title: string | undefined): string {
-    const prefix = this.#tenantStore.tenant()?.name || this.environment.name;
+    const tenantStore = this.#injector.get(ecoStoreTenantStore);
+    const prefix = tenantStore.tenant()?.name || this.environment.name;
 
     if (!title) {
       return `${prefix}`;

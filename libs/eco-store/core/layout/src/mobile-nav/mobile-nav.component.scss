@@ -2,8 +2,12 @@
 
 :host {
   .mobile-nav {
-    background-color: var(--translucid-bg);
+    background-color: light-dark(
+      var(--translucid-bg),
+      color-mix(in srgb, var(--mat-sys-surface-container-high), transparent 10%)
+    );
     border-radius: 100vw;
+    border: 1px solid light-dark(var(--primary-100), var(--neutral-800));
   }
 
   @include mat.badge-overrides(
@@ -16,7 +20,7 @@
   eco-mobile-nav-item {
     mat-icon {
       font-variation-settings: 'FILL' var(--mobile-nav-icon-fill, 0);
-      color: var(--mobile-nav-icon-color, var(--neutral-500));
+      color: var(--mobile-nav-icon-color, light-dark(var(--neutral-600), var(--neutral-300)));
       transition:
         font-variation-settings 0.2s ease,
         color 0.2s ease;

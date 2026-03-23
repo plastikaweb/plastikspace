@@ -10,10 +10,8 @@ import {
   inject,
   LOCALE_ID,
   provideAppInitializer,
-  provideBrowserGlobalErrorListeners,
   provideZonelessChangeDetection,
 } from '@angular/core';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import {
   provideRouter,
   TitleStrategy,
@@ -27,11 +25,11 @@ import { provideTranslateCompiler, provideTranslateService } from '@ngx-translat
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
-import { EcoStorePrefixTitleService } from '@plastik/eco-store/core/router-state';
+import { PrefixTitleService } from '@plastik/core/router-state';
 import { ecoStoreTenantStore, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
-import { activityStore, pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
+import { activityStore } from '@plastik/shared/activity/data-access';
+import { provideMatThemeColors } from '@plastik/shared/mat-theme-toggle';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
-import { NOTIFICATION_POSITION } from '@plastik/shared/notification/entities';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
 import { environment } from '../environments/environment';
@@ -43,7 +41,6 @@ registerLocaleData(localeEs);
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZonelessChangeDetection(),
-    provideBrowserGlobalErrorListeners(),
     provideRouter(
       appRoutes,
       withViewTransitions({
@@ -55,6 +52,7 @@ export const appConfig: ApplicationConfig = {
     ),
     providePocketBaseWithTranslationsEnv(environment),
     provideHttpClient(withFetch()),
+    provideMatThemeColors({ light: '#f8faf0', dark: '#11140f' }),
     { provide: POCKETBASE_INSTANCE, useFactory: pocketBaseFactory },
     provideTranslateService({
       loader: provideTranslateHttpLoader({
@@ -68,23 +66,11 @@ export const appConfig: ApplicationConfig = {
     provideEcoStoreTenant,
     provideAppInitializer(async () => {
       inject(activityStore).setActivity(true);
-      pocketBaseActivityInterceptor();
       await inject(ecoStoreTenantStore).getTenant();
     }),
     { provide: LOCALE_ID, useValue: 'ca' },
     { provide: ErrorHandler, useClass: ErrorHandlerService },
-    { provide: TitleStrategy, useClass: EcoStorePrefixTitleService },
-    {
-      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
-      useValue: { appearance: 'outline' },
-    },
-    {
-      provide: NOTIFICATION_POSITION,
-      useValue: {
-        verticalPosition: 'bottom',
-        horizontalPosition: 'center',
-      },
-    },
+    { provide: TitleStrategy, useClass: PrefixTitleService },
     provideServiceWorker('ngsw-worker.js', {
       enabled: environment.environment === 'production' || environment.environment === 'staging',
       registrationStrategy: 'registerImmediately',

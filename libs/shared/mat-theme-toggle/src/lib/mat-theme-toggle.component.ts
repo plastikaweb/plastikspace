@@ -2,13 +2,13 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { MatThemeToggleService } from './mat-theme-toggle.service';
 
 @Component({
   selector: 'plastik-mat-theme-toggle',
-  imports: [MatIconModule, MatButtonModule, MatMenuModule],
-  providers: [MatThemeToggleService],
+  imports: [MatIconModule, MatButtonModule, MatMenuModule, TranslateModule],
   templateUrl: './mat-theme-toggle.component.html',
   styleUrl: './mat-theme-toggle.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -38,11 +38,32 @@
 
     <link rel="manifest" href="/manifest.webmanifest" />
 
-    <meta name="theme-color" content="#FFFEFA" />
+    <script>
+      (function () {
+        const theme = localStorage.getItem('eco-theme');
+        let color = '#f8faf0';
+
+        if (theme === 'dark') {
+          document.documentElement.classList.add('dark');
+          color = '#11140f';
+        } else if (theme === 'light') {
+          document.documentElement.classList.add('light');
+          color = '#f8faf0';
+        } else if (!theme || theme === 'system') {
+          const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          color = isDark ? '#11140f' : '#f8faf0';
+        }
+
+        const meta = document.createElement('meta');
+        meta.name = 'theme-color';
+        meta.content = color;
+        document.head.appendChild(meta);
+      })();
+    </script>
 
     <link
       rel="preload"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_cancel,account_circle,add,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,balance,bento,box,calendar_month,check,check_circle,chevron_right,cleaning_services,clear,clock_loader_10,close,cookie,counter_1,counter_2,counter_3,delete,delete_outline,done,eco,eco_logo,edit,egg,error,expand_more,favorite,gps_fixed,grain,grocery,history,home,hourglass_top,how_to_reg,image,image_not_supported,info,keyboard_arrow_down,keyboard_arrow_up,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,manage_accounts,menu,nature,nutrition,order_approve,package_2,pause,payments,pending,person,phone,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,sentiment_very_dissatisfied,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,upload,verified,visibility,visibility_off,warning,water_drop"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_cancel,account_circle,add,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,balance,bento,box,calendar_month,check,check_circle,chevron_right,cleaning_services,clear,clock_loader_10,close,cookie,counter_1,counter_2,counter_3,dark_mode,delete,delete_outline,desktop_mac,done,eco,eco_logo,edit,egg,error,expand_more,favorite,gps_fixed,grain,grocery,history,home,hourglass_top,how_to_reg,image,image_not_supported,info,keyboard_arrow_down,keyboard_arrow_up,light_mode,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,manage_accounts,menu,nature,nutrition,order_approve,package_2,pause,payments,pending,person,phone,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,sentiment_very_dissatisfied,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,upload,verified,visibility,visibility_off,warning,water_drop"
       as="style"
       onload="
         this.onload = null;
@@ -51,10 +72,19 @@
     <noscript>
       <link
         rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_cancel,account_circle,add,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,balance,bento,box,calendar_month,check,check_circle,chevron_right,cleaning_services,clear,clock_loader_10,close,cookie,counter_1,counter_2,counter_3,delete,delete_outline,done,eco,eco_logo,edit,egg,error,expand_more,favorite,gps_fixed,grain,grocery,history,home,hourglass_top,how_to_reg,image,image_not_supported,info,keyboard_arrow_down,keyboard_arrow_up,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,manage_accounts,menu,nature,nutrition,order_approve,package_2,pause,payments,pending,person,phone,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,sentiment_very_dissatisfied,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,upload,verified,visibility,visibility_off,warning,water_drop" />
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=block&icon_names=access_time,account_cancel,account_circle,add,admin_panel_settings,arrow_back,arrow_downward,arrow_forward,arrow_upward,auto_awesome,balance,bento,box,calendar_month,check,check_circle,chevron_right,cleaning_services,clear,clock_loader_10,close,cookie,counter_1,counter_2,counter_3,dark_mode,delete,delete_outline,desktop_mac,done,eco,eco_logo,edit,egg,error,expand_more,favorite,gps_fixed,grain,grocery,history,home,hourglass_top,how_to_reg,image,image_not_supported,info,keyboard_arrow_down,keyboard_arrow_up,light_mode,lightbulb,liquor,list_alt,local_cafe,local_offer,local_shipping,location_on,lock,lock_clock,lock_reset,logout,manage_accounts,menu,nature,nutrition,order_approve,package_2,pause,payments,pending,person,phone,priority,public,receipt,receipt_long,remove,restaurant,rice_bowl,search,sentiment_very_dissatisfied,shopping_basket,shopping_cart,spa,star,store,storefront,takeout_dining,thumb_up,upload,verified,visibility,visibility_off,warning,water_drop" />
     </noscript>
 
     <style>
+      :root {
+        color-scheme: light dark;
+      }
+      html.dark {
+        color-scheme: dark;
+      }
+      html.light {
+        color-scheme: light;
+      }
       @keyframes ping-slow {
         75%,
         100% {
@@ -74,14 +104,16 @@
         animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
       }
       #loading-container {
-        background-color: oklch(0.985 0.001 106.423); /* bg-tertiary-50 approximate */
-        color: oklch(0.267 0.054 135.053); /* text-primary-900 approximate */
+        /* Automatic theme support using light-dark() */
+        background-color: light-dark(oklch(0.985 0.001 106.423), oklch(0.129 0.021 135.053));
+        color: light-dark(oklch(0.267 0.054 135.053), oklch(0.985 0.001 106.423));
       }
     </style>
+    <meta name="description" content="Botiga Eco - Productes ecològics i sostenibles" />
   </head>
 
   <body
-    class="mat-typography bg-tertiary-50 from-primary-50 to-tertiary-100 h-screen w-screen overflow-y-hidden md:bg-linear-to-b/oklch md:from-20%">
+    class="mat-typography bg-surface-container from-surface-container to-background h-screen w-screen overflow-y-hidden md:bg-linear-to-b/oklch md:from-20%">
     <eco-root class="z-1 block">
       <div
         class="pointer-events-none absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center"
@@ -94,15 +126,15 @@
           <div class="relative flex h-24 w-24 items-center justify-center">
             <!-- Ripples -->
             <div
-              class="bg-primary-900 ping-slow absolute inset-0 rounded-full opacity-20"
+              class="bg-primary-900 dark:bg-primary-100 ping-slow absolute inset-0 rounded-full opacity-20"
               aria-hidden="true"></div>
             <div
-              class="bg-primary-900 absolute inset-0 animate-pulse rounded-full opacity-30"
+              class="bg-primary-900 dark:bg-primary-100 absolute inset-0 animate-pulse rounded-full opacity-30"
               aria-hidden="true"></div>
 
             <!-- Icon container -->
             <div
-              class="bg-primary-100 rounded-full p-5 shadow-lg backdrop-blur-sm"
+              class="bg-primary-100 dark:bg-primary-900 rounded-full p-5 shadow-lg backdrop-blur-sm"
               aria-hidden="true">
               <svg
                 width="32"
@@ -125,7 +157,7 @@
           <!-- Loading text -->
           <span
             id="static-loading-text"
-            class="text-primary-900 animate-pulse text-xs font-bold tracking-[0.2em] uppercase"
+            class="text-primary-900 dark:text-primary-100 animate-pulse text-xs font-bold tracking-[0.2em] uppercase"
             aria-live="polite">
           </span>
         </div>
@@ -134,9 +166,9 @@
       <script>
         (function () {
           const translations = {
-            ca: 'CARREGANT DADES...',
-            es: 'CARGANDO DATOS...',
-            en: 'LOADING DATA...',
+            ca: 'Collint les dades més fresques...',
+            es: 'Cosechando los datos más frescos...',
+            en: 'Harvesting the freshest data...',
           };
 
           const browserLang = navigator.language.split('-')[0];

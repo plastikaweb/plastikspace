@@ -1,0 +1,49 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="roughPaper">
+      <feTurbulence type="fractalNoise" baseFrequency="0.08" numOctaves="4" result="noise" seed="2"/>
+      <feDiffuseLighting in="noise" lighting-color="white" surfaceScale="2">
+        <feDistantLight azimuth="45" elevation="60"/>
+      </feDiffuseLighting>
+    </filter>
+
+    <filter id="noiseFilter">
+      <feTurbulence type="turbulence" baseFrequency="0.9" numOctaves="1" result="turbulence" seed="5"/>
+      <feColorMatrix in="turbulence" type="saturate" values="0"/>
+    </filter>
+
+    <pattern id="grainPattern" x="0" y="0" width="200" height="200" patternUnits="userSpaceOnUse">
+      <rect width="200" height="200" fill="transparent"/>
+
+      <!-- Base noise layer -->
+      <rect width="200" height="200" fill="#444444" filter="url(#roughPaper)" opacity="0.6"/>
+      <rect width="200" height="200" fill="#000000" filter="url(#noiseFilter)" opacity="0.4"/>
+
+      <!-- Puntos grandes y contrastados -->
+      <circle cx="23" cy="45" r="2.5" fill="#000000" opacity="0.8"/>
+      <circle cx="67" cy="12" r="3.2" fill="#222222" opacity="0.7"/>
+      <circle cx="134" cy="78" r="1.8" fill="#000000" opacity="0.9"/>
+      <circle cx="189" cy="156" r="2.8" fill="#111111" opacity="0.6"/>
+      <circle cx="45" cy="123" r="2.2" fill="#000000" opacity="0.8"/>
+      <circle cx="112" cy="34" r="1.9" fill="#333333" opacity="0.7"/>
+      <circle cx="78" cy="189" r="3.5" fill="#000000" opacity="0.7"/>
+      <circle cx="156" cy="67" r="2.6" fill="#222222" opacity="0.8"/>
+      <circle cx="23" cy="178" r="1.5" fill="#000000" opacity="0.9"/>
+      <circle cx="145" cy="145" r="2.9" fill="#111111" opacity="0.6"/>
+
+      <!-- Puntos pequeños adicionales -->
+      <circle cx="89" cy="56" r="1.2" fill="#000000" opacity="0.6"/>
+      <circle cx="167" cy="23" r="1.4" fill="#333333" opacity="0.5"/>
+      <circle cx="34" cy="167" r="1.6" fill="#000000" opacity="0.7"/>
+      <circle cx="123" cy="89" r="1.1" fill="#222222" opacity="0.6"/>
+      <circle cx="200" cy="134" r="1.8" fill="#000000" opacity="0.8"/>
+      <circle cx="56" cy="200" r="1.3" fill="#444444" opacity="0.5"/>
+
+      <!-- Líneas y texturas -->
+      <line x1="12" y1="78" x2="34" y2="89" stroke="#000000" stroke-width="0.8" opacity="0.4"/>
+      <line x1="156" y1="123" x2="178" y2="134" stroke="#222222" stroke-width="1.0" opacity="0.3"/>
+      <line x1="89" y1="167" x2="112" y2="178" stroke="#000000" stroke-width="0.6" opacity="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="200" height="200" fill="url(#grainPattern)"/>
+</svg>

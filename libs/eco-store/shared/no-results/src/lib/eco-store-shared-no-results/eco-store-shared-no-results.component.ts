@@ -12,7 +12,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
   templateUrl: './eco-store-shared-no-results.component.html',
   styleUrl: './eco-store-shared-no-results.component.scss',
   host: {
-    class: 'flex flex-1 flex-col items-center justify-center gap-8 text-center',
+    class: 'flex flex-1 flex-col items-center justify-center gap-8 text-center mb-8',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

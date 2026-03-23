@@ -54,7 +54,7 @@ describe('TableCellTitleDirective', () => {
 
   it('should extract text from nested elements and ignore material icons', () => {
     const el = cells[1].nativeElement;
-    // "Nested Text" + ignored icon
+    //"Nested Text" + ignored icon
     expect(el.getAttribute('title')).toBe('Nested Text');
   });
 

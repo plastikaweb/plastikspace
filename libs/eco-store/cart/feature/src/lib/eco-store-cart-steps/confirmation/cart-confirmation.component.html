@@ -23,14 +23,12 @@
     <!-- Products in Cart -->
     <section aria-labelledby="confirmation-products-title">
       <div class="flex items-center justify-between">
-        <h3
-          id="confirmation-products-title"
-          class="text-base font-bold tracking-wider text-neutral-800 uppercase">
+        <h3 id="confirmation-products-title" class="text-base font-bold tracking-wider uppercase">
           {{ 'cart.confirmation.productsInCart' | translate }}
         </h3>
         <a
           matButton="text"
-          class="text-primary-600 inline-flex items-center text-sm font-medium"
+          class="inline-flex items-center text-sm font-medium"
           [routerLink]="['../resum']">
           <mat-icon class="scale-75!" aria-hidden="true">arrow_back</mat-icon>
           {{ 'cart.confirmation.modifyCart' | translate }}
@@ -42,7 +40,7 @@
           @for (item of skeletonItems(); track $index) {
             <div
               aria-hidden="true"
-              class="flex h-[134px] w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+              class="bg-surface-container-high flex h-[134px] w-full animate-pulse rounded-2xl"></div>
           }
         } @else {
           @for (item of cartStore.items(); track item.product.id; let i = $index) {
@@ -62,14 +60,12 @@
 
     <section aria-labelledby="confirmation-delivery-title">
       <div class="flex items-center justify-between">
-        <h3
-          id="confirmation-delivery-title"
-          class="text-base font-bold tracking-wider text-neutral-800 uppercase">
+        <h3 id="confirmation-delivery-title" class="text-base font-bold tracking-wider uppercase">
           {{ 'cart.confirmation.deliverySummary' | translate }}
         </h3>
         <a
           matButton="text"
-          class="text-primary-600 inline-flex items-center text-sm font-medium"
+          class="inline-flex items-center text-sm font-medium"
           [routerLink]="['../enviament']">
           <mat-icon class="scale-75!" aria-hidden="true">arrow_back</mat-icon>
           {{ 'cart.confirmation.modifyDelivery' | translate }}
@@ -79,25 +75,26 @@
       @if (cartStore.isSyncing() && !cartStore.isSynced()) {
         <div
           aria-hidden="true"
-          class="mt-4 h-32 w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+          class="bg-surface-container-high mt-4 h-32 w-full animate-pulse rounded-2xl"></div>
       } @else {
-        <div class="mt-4 rounded-2xl border border-neutral-100 bg-white p-6 shadow-sm">
+        <div
+          class="border-outline-variant bg-surface bg-surface-container mt-4 rounded-2xl border p-6 shadow-sm">
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
             <div>
-              <span class="text-xs font-bold tracking-wider text-neutral-500 uppercase">
+              <span class="text-xs font-bold tracking-wider uppercase">
                 {{ 'cart.confirmation.deliveryMethod' | translate }}
               </span>
-              <p class="mt-1 font-medium text-neutral-800">
+              <p class="mt-1 font-medium">
                 {{ 'cart.summary.' + cartStore.method() | translate }}
               </p>
             </div>
 
             @if (cartStore.day() || cartStore.time()) {
               <div>
-                <span class="text-xs font-bold tracking-wider text-neutral-500 uppercase">
+                <span class="text-xs font-bold tracking-wider uppercase">
                   {{ 'cart.confirmation.deliveryTimeSlot' | translate }}
                 </span>
-                <p class="mt-1 font-medium text-neutral-800">
+                <p class="mt-1 font-medium">
                   @if (cartStore.day()) {
                     {{ 'cart.shipping.weekdaysLabels.' + cartStore.day() | translate }}
                   }
@@ -110,15 +107,32 @@
           </div>
 
           @if (cartStore.address(); as address) {
-            <div class="mt-6 border-t border-neutral-100 pt-6">
-              <span class="text-xs font-bold tracking-wider text-neutral-500 uppercase">
+            <div class="border-outline-variant mt-6 border-t pt-6">
+              <span class="text-xs font-bold tracking-wider uppercase">
                 {{ 'cart.confirmation.deliveryAddress' | translate }}
               </span>
-              <div class="mt-2 flex items-start gap-2">
-                <mat-icon class="text-neutral-500" aria-hidden="true">place</mat-icon>
-                <div>
-                  <p class="font-medium text-neutral-800">{{ address.address }}</p>
-                  <p class="text-sm text-neutral-600">{{ address.zip }} {{ address.city }}</p>
+              <div class="mt-3 flex items-start gap-3">
+                <div
+                  class="bg-primary-50 dark:bg-primary-900 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                  <mat-icon class="text-primary-600 dark:text-primary-300" aria-hidden="true"
+                    >place</mat-icon
+                  >
+                </div>
+                <div class="space-y-0.5">
+                  <p class="text-lg font-black tracking-tight capitalize">
+                    {{ address.name || address.fullName }}
+                  </p>
+                  <p class="text-on-surface-variant font-medium">{{ address.address }}</p>
+                  <p class="text-on-surface-variant/70 text-sm font-medium">
+                    {{ address.zip }} {{ address.city }}
+                  </p>
+                  @if (address.phone) {
+                    <div
+                      class="text-primary-700 dark:text-primary-200 mt-3 flex items-center gap-2 text-sm font-bold">
+                      <mat-icon class="scale-75!" aria-hidden="true">phone</mat-icon>
+                      <span>{{ address.phone }}</span>
+                    </div>
+                  }
                 </div>
               </div>
             </div>
@@ -132,7 +146,7 @@
       <label
         id="confirmation-notes-title"
         for="confirmation-notes"
-        class="mb-2 block text-sm font-medium text-neutral-700">
+        class="mb-2 block text-sm font-medium">
         {{ 'cart.confirmation.notes' | translate }}
       </label>
       <plastik-shared-form-feature
@@ -145,14 +159,14 @@
 
     <!-- Payment Notice -->
     <section
-      class="border-info-200 bg-info-50 flex items-center gap-3 rounded-xl border p-4"
+      class="border-sys-tertiary bg-sys-tertiary-container flex items-center gap-3 rounded-xl border p-4"
       aria-labelledby="payment-notice-title">
-      <mat-icon class="text-primary-600 shrink-0" aria-hidden="true">info</mat-icon>
+      <mat-icon class="shrink-0" aria-hidden="true">info</mat-icon>
       <div>
-        <p id="payment-notice-title" class="text-sm font-bold text-neutral-800">
+        <p id="payment-notice-title" class="text-sm font-bold">
           {{ 'cart.confirmation.paymentNotice' | translate }}
         </p>
-        <p class="mt-1 text-sm text-neutral-800">
+        <p class="mt-1 text-sm">
           {{ 'cart.confirmation.paymentNoticeDescription' | translate }}
         </p>
       </div>

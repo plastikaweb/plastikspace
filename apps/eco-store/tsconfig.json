@@ -21,5 +21,13 @@
     "strictTemplates": true
   },
   "files": [],
-  "include": []
+  "include": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
 }

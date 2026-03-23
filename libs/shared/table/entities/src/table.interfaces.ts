@@ -393,8 +393,7 @@ export interface TablePaginationVisibility {
 }
 
 /**
- * @description The value to pass on dynamic table component.
-Output property "changeSwitchEvent" fired on any switchCheckBox controller
+ * @description The value to pass on dynamic table component. Output property"changeSwitchEvent" fired on any switchCheckBox controller
  * that applies when any table row is using tableFormatting.BOOLEAN_WITH_CONTROL.
  */
 export interface TableSwitchEvent {

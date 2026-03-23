@@ -111,7 +111,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
         const addresses = await lastValueFrom(
           store._userAddressService.getFullList({
-            filter: `user = "${store.user()?.id}"`,
+            filter: `user ="${store.user()?.id}"`,
           })
         );
 

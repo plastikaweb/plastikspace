@@ -6,7 +6,7 @@
     (
       container-shape: 0,
       container-width: 100dvw,
-      container-background-color: var(--tertiary-100),
+      container-background-color: light-dark(var(--tertiary-100), var(--mat-sys-surface-container)),
     )
   );
 
@@ -24,11 +24,24 @@
   }
 
   .mat-drawer.mat-drawer-over {
-    transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
     visibility: visible !important;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
   }
 
-  /* Disable transitions on desktop to prevent "jump" when content loads */
+  /* Mobile Sidenav Header */
+  .border-outline-variant {
+    background-color: light-dark(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.1));
+    backdrop-filter: blur(8px);
+
+    @include mat.icon-overrides(
+      (
+        color: light-dark(var(--primary-700), var(--primary-300)),
+      )
+    );
+  }
+
+  /* Disable transitions on desktop to prevent"jump" when content loads */
   @media (min-width: theme(--breakpoint-md)) {
     .mat-drawer {
       transition: none !important;

@@ -1,37 +1,38 @@
-<mat-card class="overflow-hidden" appearance="outlined">
-  <mat-card-header class="flex flex-row-reverse items-center justify-end gap-2 bg-white p-4!">
+<mat-card class="bg-surface-container/50 overflow-hidden" appearance="outlined">
+  <mat-card-header
+    class="bg-surface-variant/50 bg-surface-container/50 flex flex-row-reverse items-center justify-end gap-2 p-4!">
     <mat-card-title>{{ 'cart.summary.resume' | translate }}</mat-card-title>
     <mat-icon>receipt</mat-icon>
   </mat-card-header>
 
   <mat-card-content class="my-4 p-6">
-    <div class="mt-4 flex justify-between text-neutral-600">
+    <div class="text-on-surface-variant mt-4 flex justify-between">
       <span>{{ 'cart.summary.subtotal' | translate }}</span>
-      <span class="font-medium text-neutral-900">{{
+      <span class="text-on-surface font-medium">{{
         subtotal() | currency: 'EUR' : 'symbol' : '1.2-2'
       }}</span>
     </div>
-    <div class="mt-4 flex justify-between text-neutral-600">
+    <div class="text-on-surface-variant mt-4 flex justify-between">
       <span>{{ 'cart.summary.taxes' | translate }}</span>
-      <span class="font-medium text-neutral-900">{{
+      <span class="text-on-surface font-medium">{{
         taxes() | currency: 'EUR' : 'symbol' : '1.2-2'
       }}</span>
     </div>
 
-    <div class="mt-4 flex justify-between text-neutral-600">
+    <div class="text-on-surface-variant mt-4 flex justify-between">
       <span>{{ `cart.summary.${deliveryType()}` | translate }}</span>
-      <span class="font-medium text-neutral-900">{{
+      <span class="text-on-surface font-medium">{{
         shipping() | currency: 'EUR' : 'symbol' : '1.2-2'
       }}</span>
     </div>
 
     <ng-content select="[extra-shipping-content]"></ng-content>
 
-    <hr class="mt-4 border-neutral-200" />
+    <hr class="border-outline-variant mt-4" />
 
     <div class="mt-4 flex items-center justify-between">
-      <span class="text-lg font-bold text-neutral-900">{{ 'cart.summary.total' | translate }}</span>
-      <span class="text-primary-900 text-3xl font-bold">{{
+      <span class="text-on-surface text-lg font-bold">{{ 'cart.summary.total' | translate }}</span>
+      <span class="text-sys-on-primary-container text-3xl font-bold">{{
         total() | currency: 'EUR' : 'symbol' : '1.2-2'
       }}</span>
     </div>
@@ -55,7 +56,7 @@
 
     @if (!isStoreOpen()) {
       <div
-        class="cart-order-summary-checkout-disabled bg-tertiary-100 text-tertiary-800 ring-tertiary-200 mt-4 flex w-full items-center justify-center gap-3 rounded-xl p-4 ring-1">
+        class="bg-sys-tertiary-container text-sys-on-tertiary-container ring-sys-tertiary mt-4 grid w-full grid-cols-[auto_1fr] items-center justify-center gap-4 rounded-xl p-4 ring-1">
         <mat-icon>lock_clock</mat-icon>
         <p class="text-sm font-medium">
           @if (!nextOpenDate()) {

@@ -26,7 +26,7 @@
       &:not(:disabled) {
         @include mat.icon-overrides(
           (
-            color: var(--primary-50),
+            color: light-dark(var(--neutral-100), var(--neutral-500)),
           )
         );
       }
@@ -43,13 +43,13 @@
     &.increment-button,
     &.decrement-button,
     &.remove-button {
-      background-color: var(--primary-100);
-      color: var(--primary-500);
+      background-color: light-dark(var(--neutral-100), var(--neutral-500));
+      color: light-dark(var(--neutral-500), var(--neutral-100));
       transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
 
       @include mat.icon-overrides(
         (
-          color: var(--primary-500),
+          color: light-dark(var(--neutral-500), var(--neutral-100)),
         )
       );
     }
@@ -58,30 +58,30 @@
     &.decrement-button:hover {
       @include mat.icon-button-overrides(
         (
-          icon-color: var(--primary-600),
-          state-layer-color: var(--primary-200),
+          icon-color: light-dark(var(--primary-500), var(--primary-50)),
+          state-layer-color: light-dark(var(--neutral-200), var(--neutral-500)),
         )
       );
 
-      background-color: var(--primary-200);
-      color: var(--primary-600);
+      background-color: light-dark(var(--neutral-200), var(--neutral-600));
+      color: light-dark(var(--neutral-500), var(--neutral-100));
     }
 
     &.remove-button:hover {
       @include mat.icon-overrides(
         (
-          color: var(--error-600),
+          color: light-dark(var(--error-700), var(--error-100)),
         )
       );
       @include mat.icon-button-overrides(
         (
-          icon-color: var(--error-600),
-          state-layer-color: var(--error-200),
+          icon-color: light-dark(var(--error-700), var(--error-100)),
+          state-layer-color: light-dark(var(--error-200), var(--error-500)),
         )
       );
 
-      background-color: var(--error-200);
-      color: var(--error-600);
+      background-color: light-dark(var(--error-200), var(--error-500));
+      color: light-dark(var(--error-500), var(--error-100));
     }
 
     &:active:not([disabled]) {

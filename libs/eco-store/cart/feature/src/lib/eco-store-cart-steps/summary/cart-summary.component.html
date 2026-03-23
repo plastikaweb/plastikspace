@@ -2,36 +2,38 @@
   <div
     class="hero-content flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
     <div class="flex flex-col items-start gap-2">
-      <div class="category-subtitle flex items-center gap-2">
+      <div class="flex items-center gap-2">
         <mat-icon class="scale-90!" aria-hidden="true">shopping_cart</mat-icon>
         <span>
           {{ 'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() } }}
         </span>
       </div>
-      <h2 class="category-title font-bold">
+      <h2 class="font-bold">
         {{ 'cart.steps.summary.title' | translate }}
       </h2>
     </div>
   </div>
 </header>
 
-<div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3!">
+<div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3">
   <div
-    class="col-span-1! space-y-10 md:col-span-2!"
+    class="col-span-1 space-y-10 md:col-span-2"
     [class.pointer-events-none]="cartStore.isSyncing()"
     [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
     <div
-      class="cart-summary-card @container mb-8 transition-all duration-100"
+      class="@container mb-8 transition-all duration-100"
       [class.pointer-events-none]="cartStore.isSyncing()"
       [class.opacity-60]="cartStore.isSyncing()">
       @if (cartStore.isSyncing() && !cartStore.isSynced()) {
         <!-- Initial Sync Skeletons (Matches item count from local storage) -->
         <div class="space-y-8 px-4 py-2" aria-hidden="true">
           <div>
-            <div class="mb-4 h-4 w-24 animate-pulse rounded bg-neutral-200"></div>
+            <div
+              class="bg-surface-variant bg-surface-container mb-4 h-4 w-24 animate-pulse rounded"></div>
             <div class="flex flex-col gap-4">
               @for (item of skeletonItems(); track $index) {
-                <div class="flex h-[134px] w-full animate-pulse rounded-2xl bg-neutral-100"></div>
+                <div
+                  class="bg-surface-container-high flex h-[134px] w-full animate-pulse rounded-2xl"></div>
               }
             </div>
           </div>
@@ -41,7 +43,7 @@
         @for (group of cartStore.itemsGroupedByCategory(); track group.category) {
           <div animate.enter="fade-in" animate.leave="fade-out" class="px-4 py-2">
             <span
-              class="text-tertiary-500 mb-2 text-sm leading-10 font-bold tracking-wider uppercase"
+              class="text-tertiary-700 dark:text-tertiary-300 mb-2 block text-xs leading-10 font-black tracking-[0.2em] uppercase"
               >{{ group.category }}</span
             >
             <div class="flex flex-col gap-2">
@@ -58,7 +60,7 @@
           </div>
         } @empty {
           <eco-store-shared-no-results
-            class="empty-state my-6"
+            class="my-6"
             [imgTitle]="'orders.list.emptyImage' | translate">
             <div no-results-title>
               {{ 'cart.summary.noResults.title' | translate }}
@@ -81,7 +83,7 @@
     [class.pointer-events-none]="cartStore.isSyncing()"
     [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
-      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl bg-neutral-100"></div>
+      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl"></div>
     } @else {
       <eco-cart-order-summary
         [subtotal]="cartStore.subtotal()"

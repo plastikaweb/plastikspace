@@ -1,5 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
+import { vi, Mock } from 'vitest';
 import { HumanizeUnitPipe } from './humanize-unit.pipe';
 
 describe('HumanizeUnitPipe', () => {
@@ -42,13 +43,13 @@ describe('HumanizeUnitPipe', () => {
     expect(pipe.transform(0.001, 'weight')).toBe('1\u00A0g');
   });
 
-  it('should use default formatting for "unit" type', () => {
+  it('should use default formatting for"unit" type', () => {
     expect(pipe.transform(100, 'unit')).toBe('100');
     expect(pipe.transform(100.5, 'unit')).toBe('100.50');
   });
 
   it('should use locale formatting', () => {
-    (translateServiceMock.getCurrentLang as vi.Mock).mockReturnValue('de-DE');
+    (translateServiceMock.getCurrentLang as Mock).mockReturnValue('de-DE');
     // In German, decimal separator is comma
     // Assuming environment supports Intl.NumberFormat with 'de-DE' correctly
     // 1.5 -> 1,5

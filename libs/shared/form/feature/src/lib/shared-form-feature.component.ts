@@ -131,7 +131,10 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
       this.#emitChange(model ?? (this.form.value as T));
     }
 
-    if (this.formSubmitConfig().emitOnChange && this.form.valid) {
+    if (
+      this.formSubmitConfig().emitOnChange &&
+      (this.form.valid || this.formSubmitConfig().emitInvalid)
+    ) {
       this.temporaryChangeEvent.emit(model);
     }
   }
@@ -141,7 +144,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
   }
 
   #emitChange(model?: T): void {
-    if (this.form.valid) {
+    if (this.form.valid || this.formSubmitConfig().emitInvalid) {
       if (this.formSubmitConfig().disableOnSubmit) {
         this.form.disable({ emitEvent: false });
         this.#submitted.set(true);
