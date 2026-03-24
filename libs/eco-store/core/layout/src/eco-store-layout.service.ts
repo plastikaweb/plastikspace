@@ -1,3 +1,4 @@
+import { Platform } from '@angular/cdk/platform';
 import { DOCUMENT, isPlatformBrowser } from '@angular/common';
 import {
   afterNextRender,
@@ -22,6 +23,7 @@ export class EcoStoreLayoutService {
   readonly #router = inject(Router);
   readonly #document = inject(DOCUMENT);
   readonly #injector = inject(Injector);
+  readonly #platform = inject(Platform);
 
   /**
    * Signal that triggers whenever a navigation starts.
@@ -52,9 +54,16 @@ export class EcoStoreLayoutService {
             const content = this.#document.querySelector('.mat-sidenav-content');
 
             if (content) {
+              // On iOS/iPad, we specifically want smooth scrolling for better UX.
+              // On other platforms, we use an immediate scroll-to-top (scrollTop = 0)
+              // to guarantee restoration, as behavior: 'smooth' can sometimes be inconsistent.
               content.scrollTo({ top: 0, behavior: 'smooth' });
+
+              if (this.#platform.IOS) {
+                content.scrollTop = 0;
+              }
             }
-            // Also handle window scroll for routes that allow it
+            // Also handle window scroll for standalone pages
             this.#document.defaultView?.scrollTo({ top: 0, behavior: 'smooth' });
           },
           { injector: this.#injector }
