@@ -1,4 +1,4 @@
-<main class="relative flex min-h-screen items-center justify-center p-4 sm:p-8">
+<main class="relative flex min-h-screen items-center justify-center p-4">
   @let tenant = tenantStore.tenant;
   @let tenantName = tenant()?.name;
   @let tenantLogo = tenant()?.logo;
@@ -10,7 +10,7 @@
     [class.opacity-60]="profileStore.isLoading()">
     <!-- Hero Header with Organic Texture -->
     <mat-card-header
-      class="relative flex flex-col items-center justify-center gap-6 overflow-hidden pt-12 pb-8">
+      class="relative flex flex-col items-center justify-center gap-4 overflow-hidden pt-8 pb-4">
       <!-- Decorative Organic Shape -->
       <div
         class="bg-primary-500/10 absolute -top-12 -right-12 h-40 w-40 rounded-full blur-lg"
@@ -21,24 +21,24 @@
 
       @if (tenantLogo) {
         <div
-          class="bg-surface-container shadow-primary-100/50 relative z-10 flex h-24 w-24 items-center justify-center rounded-3xl p-5 shadow-2xl ring-4 ring-white dark:ring-neutral-800">
+          class="bg-surface-container shadow-primary-100/50 relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl p-4 shadow-2xl ring-4 ring-white dark:ring-neutral-800">
           <plastik-img-container
             [src]="tenant() | pocketBaseImageUrl: tenantLogo"
             [title]="tenantName || 'Botiga Eco'"
-            [dimensions]="{ width: 80, height: 80 }"></plastik-img-container>
+            [dimensions]="{ width: 64, height: 64 }"></plastik-img-container>
         </div>
       } @else {
         <div
-          class="text-primary-600 bg-primary-50 dark:bg-primary-900 dark:text-primary-200 relative z-10 flex h-24 w-24 items-center justify-center rounded-3xl shadow-xl ring-4 ring-white dark:ring-neutral-800">
-          <mat-icon class="scale-200" [attr.aria-label]="(tenantName || 'Botiga Eco') + ' logo'"
+          class="text-primary-600 bg-primary-50 dark:bg-primary-900 dark:text-primary-200 relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl shadow-xl ring-4 ring-white dark:ring-neutral-800">
+          <mat-icon class="scale-150" [attr.aria-label]="(tenantName || 'Botiga Eco') + ' logo'"
             >eco_logo</mat-icon
           >
         </div>
       }
 
-      <div class="relative z-10 flex flex-col items-center gap-2">
+      <div class="relative z-10 flex flex-col items-center gap-1">
         <h1
-          class="text-on-surface m-0 text-center text-3xl leading-none font-black tracking-tight sm:text-4xl">
+          class="text-on-surface m-0 text-center text-2xl leading-none font-black tracking-tight sm:text-3xl">
           @if (tenantName) {
             {{ tenantName }}
           } @else {
@@ -46,7 +46,7 @@
           }
         </h1>
         <p
-          class="text-on-surface-variant text-center text-sm font-bold tracking-[0.1em] uppercase opacity-80">
+          class="text-on-surface-variant text-center text-xs font-bold tracking-[0.1em] uppercase opacity-80">
           @if (tenant()?.slogan) {
             {{ tenant()?.slogan }}
           } @else {
@@ -56,12 +56,12 @@
       </div>
     </mat-card-header>
 
-    <mat-card-content class="px-8! py-6!">
+    <mat-card-content class="px-8! py-4!">
       <plastik-shared-form-feature
         [fields]="facade.formConfig.getConfig()"
         [submitConfig]="facade.formConfig.getSubmitFormConfig?.() ?? null"
         (changeEvent)="facade.onSubmit($event)">
-        <div class="extra-links mt-2 mb-6 flex items-center justify-center">
+        <div class="extra-links mt-1 mb-2 flex items-center justify-center">
           <a
             matButton
             class="text-primary-700 dark:text-primary-300 text-xs! font-black tracking-widest uppercase"
@@ -75,7 +75,7 @@
       </plastik-shared-form-feature>
 
       <div
-        class="border-outline-variant/30 mt-8 flex flex-col items-center justify-center gap-4 border-t pt-8">
+        class="border-outline-variant/30 mt-4 flex flex-col items-center justify-center gap-3 border-t pt-2">
         <p class="text-on-surface-variant text-xs font-bold tracking-wider uppercase opacity-60">
           {{ 'auth.login.newUserQuestion' | translate }}
         </p>
@@ -92,7 +92,7 @@
       </div>
     </mat-card-content>
 
-    <mat-card-footer class="bg-surface-container-high/30 px-8 py-6 text-center backdrop-blur-sm">
+    <mat-card-footer class="bg-surface-container-high/30 px-8 py-2 text-center backdrop-blur-sm">
       <p
         class="text-on-surface-variant text-[10px] leading-relaxed font-bold tracking-widest uppercase opacity-50">
         {{ 'auth.login.termsPrivacy' | translate }}
@@ -101,7 +101,13 @@
   </mat-card>
 
   @defer (on idle) {
-    <plastik-mat-theme-toggle class="absolute top-4 right-4"></plastik-mat-theme-toggle>
+    <div class="absolute top-6 right-6 z-50">
+      <div
+        class="bg-surface-container/30 hover:bg-surface-container/50 rounded-full shadow-sm backdrop-blur-md transition-colors">
+        <plastik-mat-theme-toggle
+          class="opacity-70 transition-opacity hover:opacity-100"></plastik-mat-theme-toggle>
+      </div>
+    </div>
   } @placeholder {
     <div class="hidden"></div>
   }

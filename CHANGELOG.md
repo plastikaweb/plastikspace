@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-24] - Eco-Store: Layout Refinement and Global UX Polish
+
+### Added
+
+- **Modern Scrollbar Styling**: Implemented a comprehensive, mode-aware global scrollbar design using both standard `scrollbar-color` and `::-webkit-scrollbar` pseudo-elements. Features primary-hue tinted thumbs, rounded tracks, and smooth hover transitions for a premium, integrated feel across all browsers ([#86c8zmfne](https://app.clickup.com/t/86c8zmfne)).
+
+### Changed
+
+- **Login View Optimization**:
+  - Significantly reduced the vertical footprint of the login card to ensure full visibility on smaller viewports (targeted at 725px window height).
+  - Refined the "Hero Header" with more compact typography and a scaled-down brand logo (h-24 → h-20).
+  - Tightened form field spacing and action button margins for improved informational density without sacrificing readability.
+- **Theme Selector Polish**: Re-engineered the floating theme toggle with a subtle glassmorphism backdrop (`backdrop-blur-md` + semi-transparent tint) and refined corner positioning. Added premium hover interactions (opacity and color shifts) to make the utility feel more intentional and integrated with the organic aesthetic.
+- **Layout Architecture Simplification**:
+  - Removed the redundant `bodyScrollable` route data logic and its associated side-effect in `EcoStoreLayoutService`.
+  - Shifted to a cleaner, browser-native overflow strategy that eliminates unnecessary DOM manipulation while maintaining layout stability.
+
+### Fixed
+
+- **Viewport Scroll Issues**: Resolved a layout constraint where the main application body could become unscrollable on standalone pages like Login by removing restrictive `overflow-y-hidden` enforcements.
+- **Mobile Bounce Behavior**: Standardized `h-screen` and `overflow-y-auto` combinations across the App Shell to provide a more predictable scrolling experience on touch devices.
+
 ## [2026-03-23] - Eco-Store: Comprehensive Theming, UI/UX and Performance Overdrive
 
 ### Added
