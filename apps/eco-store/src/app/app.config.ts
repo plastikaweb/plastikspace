@@ -17,6 +17,7 @@ import {
   TitleStrategy,
   withComponentInputBinding,
   withExperimentalAutoCleanupInjectors,
+  withInMemoryScrolling,
   withRouterConfig,
   withViewTransitions,
 } from '@angular/router';
@@ -48,7 +49,11 @@ export const appConfig: ApplicationConfig = {
       }),
       withComponentInputBinding(),
       withExperimentalAutoCleanupInjectors(),
-      withRouterConfig({ onSameUrlNavigation: 'reload' })
+      withRouterConfig({ onSameUrlNavigation: 'reload' }),
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'top',
+        anchorScrolling: 'enabled',
+      })
     ),
     providePocketBaseWithTranslationsEnv(environment),
     provideHttpClient(withFetch()),

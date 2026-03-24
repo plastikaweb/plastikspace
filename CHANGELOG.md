@@ -21,11 +21,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Layout Architecture Simplification**:
   - Removed the redundant `bodyScrollable` route data logic and its associated side-effect in `EcoStoreLayoutService`.
   - Shifted to a cleaner, browser-native overflow strategy that eliminates unnecessary DOM manipulation while maintaining layout stability.
+- **View Transitions Refinement**:
+  - Streamlined the view transition architecture by removing the manual `ViewTransitionService.setActiveId` dependency from Cart and Product features ([#86c8mf3k6](https://app.clickup.com/t/86c8mf3k6)).
+  - Shifted to a cleaner implementation that relies on the native Angular Router `withViewTransitions()` and pure CSS transition names, reducing reactive overhead in component templates.
+- **Template Optimization**: Improved `@for` loop efficiency in Product Detail by switching to `$index`-based tracking for images and features, ensuring more robust rendering for dynamic content lists.
 
 ### Fixed
 
-- **Viewport Scroll Issues**: Resolved a layout constraint where the main application body could become unscrollable on standalone pages like Login by removing restrictive `overflow-y-hidden` enforcements.
-- **Mobile Bounce Behavior**: Standardized `h-screen` and `overflow-y-auto` combinations across the App Shell to provide a more predictable scrolling experience on touch devices.
+- **Viewport Scroll Issues**: Resolved several scroll-related issues ([#86c8mf3k6](https://app.clickup.com/t/86c8mf3k6)):
+  - Enabled native `withInMemoryScrolling` in the router configuration for automatic top-scroll restoration and anchor link support.
+  - Optimized the global layout scroll logic in `EcoStoreLayoutService` to ensure reliable restoration on mobile (iOS/iPad) by using immediate `auto` behavior and manual `scrollTop` resets.
+  - Eliminated restrictive `overflow-y-hidden` enforcements on standalone pages like Login to ensure full viewport scroll.
+- **Mobile UX Polish**: Standardized `h-screen` and `overflow-y-auto` combinations across the App Shell to provide a predictable, native-feeling scrolling experience on touch devices.
 
 ## [2026-03-23] - Eco-Store: Comprehensive Theming, UI/UX and Performance Overdrive
 

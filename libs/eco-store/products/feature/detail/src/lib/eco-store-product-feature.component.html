@@ -77,12 +77,6 @@
 
           <plastik-img-container
             class="overflow-hidden rounded-3xl"
-            [style.view-transition-name]="
-              viewTransitionService.activeId() === product()?.id
-                ? 'product-image-' + product()?.id
-                : 'none'
-            "
-            [style.view-transition-class]="'product-image-transition'"
             [src]="
               product()
                 | pocketBaseImageUrl
@@ -101,7 +95,7 @@
       <!-- Thumbnail Gallery -->
       <div class="media-thumbnails scrollbar-hide overflow-x-auto p-2">
         @if (product()) {
-          @for (img of product()?.images; track img; let i = $index) {
+          @for (img of product()?.images; track $index; let i = $index) {
             <button
               type="button"
               class="hover:border-primary-300 border-primary-50 relative aspect-square h-[85px] w-[85px] shrink-0 cursor-pointer overflow-hidden rounded-full border-2 transition-all"
@@ -288,7 +282,7 @@
             </h3>
 
             <ul class="flex flex-col flex-wrap gap-4 lg:flex-row!">
-              @for (feature of product()?.features; track feature) {
+              @for (feature of product()?.features; track $index) {
                 <li
                   class="border-outline-variant bg-surface-variant flex items-center justify-start gap-2 rounded-lg border px-4 py-2 shadow-sm">
                   <div class="bg-primary-400 h-2 w-2 rounded-full"></div>
