@@ -7,7 +7,8 @@ import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { AUTH_FORM_FACADE } from '@plastik/auth/entities';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { NavigationService } from '@plastik/core/router-state';
+import { PocketBaseImageUrlPipe, PwaNavigationService } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { PasswordWithVisibilityFormlyModule } from '@plastik/shared/form/password';
@@ -36,4 +37,12 @@ export class EcoStoreAuthLoginComponent {
   protected readonly facade = inject(AUTH_FORM_FACADE);
   protected readonly profileStore = inject(pocketBaseUserProfileStore);
   protected readonly tenantStore = inject(ecoStoreTenantStore);
+  protected readonly navigationService = inject(NavigationService);
+  protected readonly pwaNavigationService = inject(PwaNavigationService);
+
+  readonly isStandalone = this.pwaNavigationService.isStandalone;
+
+  protected goBack(): void {
+    this.navigationService.back('/botiga');
+  }
 }

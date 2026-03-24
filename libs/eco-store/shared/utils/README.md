@@ -15,23 +15,49 @@
 
 ## Description
 
-Utility helpers shared across Eco-Store libraries. Currently includes a localized unit formatter pipe for product units.
+Utility helpers shared across Eco-Store libraries. Includes localized unit formatter pipes and PWA
+navigation utilities.
 
 ## Features
 
-- `HumanizeUnitPipe`: Formats numeric values with unit-aware suffixes (`kg`, `g`, `L`, `mL`) based on the `ProductUnitType`.
+- `HumanizeUnitPipe`: Formats numeric values with unit-aware suffixes (`kg`, `g`, `L`, `mL`) based
+  on the `ProductUnitType`.
+- `PocketBaseImageUrlPipe`: Transforms PocketBase image metadata into valid URL fragments.
+- `PwaNavigationService`: Provides reliable detection of PWA standalone mode with fallbacks for iOS devices.
 - Locale-aware number formatting using `Intl.NumberFormat` and the current language from `@ngx-translate/core`.
-- Standalone Angular pipe for easy import in components.
+- Standalone Angular pipes and services for easy import in components.
 
 ## Installation
 
 This library is part of the `@plastik/eco-store` scope and is available via workspace path alias:
 
 ```ts
-import { HumanizeUnitPipe } from '@plastik/eco-store/shared/utils';
+import { HumanizeUnitPipe, PwaNavigationService } from '@plastik/eco-store/shared/utils';
 ```
 
 ## Usage
+
+### PwaNavigationService
+
+Inject the service to detect if the application is running in standalone mode (PWA).
+
+```ts
+import { Component, inject } from '@angular/core';
+import { PwaNavigationService } from '@plastik/eco-store/shared/utils';
+
+@Component({
+  selector: 'demo-pwa-nav',
+  template: `
+    @if (isStandalone()) {
+      <button (click)="goBack()">Back</button>
+    }
+  `,
+})
+export class DemoPwaNavComponent {
+  private pwaNavigationService = inject(PwaNavigationService);
+  readonly isStandalone = this.pwaNavigationService.isStandalone;
+}
+```
 
 ### HumanizeUnitPipe
 
@@ -62,11 +88,13 @@ export class DemoHumanizeUnitComponent {}
 The pipe accepts:
 
 - `value: number | null | undefined`
-- `unitType: ProductUnitType` (`'weight' | 'volume' | 'unit' | 'unitWithFixedWeight' | 'unitWithVariableWeight' | 'unitWithFixedVolume' | 'unitWithVariableVolume'`)
+- `unitType: ProductUnitType` (`'weight' | 'volume' | 'unit' | 'unitWithFixedWeight' |
+'unitWithVariableWeight' | 'unitWithFixedVolume' | 'unitWithVariableVolume'`)
 
 ### PocketBaseImageUrlPipe
 
-Transforms a source object (containing `id` and `collectionId`) and an image filename into a PocketBase URL fragment.
+Transforms a source object (containing `id` and `collectionId`) and an image filename into a
+PocketBase URL fragment.
 
 ```ts
 import { Component, signal } from '@angular/core';

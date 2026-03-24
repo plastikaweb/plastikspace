@@ -23,8 +23,12 @@ It integrates with the shared authentication infrastructure and provides a user-
 - **Password Visibility**: Includes a toggle to show/hide password text.
 - **Authentication Guards**: Integrated with `pocketBaseIsNotLoggedGuard` to prevent access if already logged in.
 - **Material Design**: Built with Angular Material components (`MatCard`, `MatButton`, etc.).
-- **Internationalization**: Supports translation via `@ngx-translate/core`. The login route uses a `title: 'auth.login.title'` key resolved reactively by `EcoStorePrefixTitleService`.
+- **Internationalization**: Supports translation via `@ngx-translate/core`. The login route uses a
+  `title: 'auth.login.title'` key resolved reactively by `EcoStorePrefixTitleService`.
 - **Tenant Branding**: Dynamically displays the tenant's logo, name, and slogan.
+- **PWA Standalone Navigation**: Includes a conditional "Back" button for iOS users running the app in
+  standalone mode, ensuring they can navigate back to the store even when the browser's native navigation
+  bar is hidden.
 
 ## Installation
 
