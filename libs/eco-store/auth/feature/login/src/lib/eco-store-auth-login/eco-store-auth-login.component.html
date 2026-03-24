@@ -3,6 +3,19 @@
   @let tenantName = tenant()?.name;
   @let tenantLogo = tenant()?.logo;
 
+  <!-- PWA Standalone back button -->
+  @if (isStandalone()) {
+    <div class="absolute top-6 left-6 z-50">
+      <button
+        mat-icon-button
+        aria-label="Tornar enrere"
+        class="bg-surface-container/30 hover:bg-surface-container/50 text-on-surface-variant! backdrop-blur-md transition-colors"
+        (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  }
+
   <mat-card
     appearance="raised"
     class="bg-surface-container-low/80 w-full max-w-[450px] overflow-hidden border-none! shadow-2xl! backdrop-blur-xl"

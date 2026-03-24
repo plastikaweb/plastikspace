@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-24] - Eco-Store: SEO Optimization & PWA Navigation
+
+### Added
+
+- **PWA Standalone Navigation**: Implemented a conditional "Back" button for the login view in PWA standalone mode to ensure iOS users can navigate back to the store.
+- **Centralized PWA Detection**: Created `PwaNavigationService` to reliably detect standalone mode across the application with iOS fallbacks.
+- **Documentation & Testing**: Added README documentation and comprehensive unit tests for `PwaNavigationService` and updated tests for the login component navigation.
+
+### Fixed
+
+- **SEO Robots Configuration**: Added `robots.txt` to properly manage web crawler access and prevent indexing of private routes like cart and orders. Fixed Lighthouse error where `robots.txt` was returning HTML content.
+- **Theme Color Consistency**: Updated `manifest.webmanifest` theme and background colors to match the brand's primary organic aesthetic.
+
 ## [2026-03-24] - Eco-Store: Layout Refinement and Global UX Polish
 
 ### Added
