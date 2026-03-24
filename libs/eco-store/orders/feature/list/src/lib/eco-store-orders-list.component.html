@@ -1,4 +1,4 @@
-<header role="presentation" class="hero-header reveal-up" style="--delay: 50ms">
+<header role="presentation" class="hero-header reveal-up [--delay:50ms]">
   <div
     class="hero-content flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
     <div class="flex flex-col items-start gap-2">
@@ -103,7 +103,9 @@
               </div>
             </eco-store-shared-no-results>
           } @else {
-            <eco-store-shared-no-results [imgTitle]="'orders.list.emptyImage' | translate">
+            <eco-store-shared-no-results
+              class="empty-state my-6"
+              [imgTitle]="'orders.list.emptyImage' | translate">
               <div no-results-title>
                 {{ 'orders.list.empty' | translate }}
               </div>

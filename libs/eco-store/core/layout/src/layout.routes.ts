@@ -79,7 +79,7 @@ export const layoutRoutes: Route[] = [
       {
         path: 'botiga',
         title: 'products.all',
-        data: { hasSidenav: true, bodyScrollable: true },
+        data: { hasSidenav: true },
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },

@@ -6,7 +6,7 @@ import { FormConfig } from '@plastik/core/entities';
 export function loginFormConfig(): FormConfig<LoginData> {
   const formConfig = [
     {
-      fieldGroupClassName: 'flex flex-col gap-5',
+      fieldGroupClassName: 'flex flex-col gap-4',
       fieldGroup: [
         {
           key: 'email',

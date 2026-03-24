@@ -6,7 +6,6 @@
 - [@plastik/eco-store/core/layout](#plastikeco-storecorelayout)
   - [Description](#description)
   - [Features](#features)
-  - [Route Data Configuration](#route-data-configuration)
   - [Architecture](#architecture)
   - [Usage](#usage)
   - [View Transitions](#view-transitions)
@@ -23,25 +22,8 @@ This library provides the core layout shell for the Eco Store application. It or
   - **Lazy Search**: Advanced search configuration uses dynamic imports to reduce initial bundle size.
   - **Cart Animation**: The cart icon animates when the total amount changes.
   - **Isolated Providers**: Exposes `layoutRoutes` to bundle layout-specific dependencies (like `EcoStoreFormlyModule` configurations) separately from the main application entry point.
-- **Global Layout Management**: Uses `EcoStoreLayoutService` to dynamically manage global styles (like `body` overflow) and `BodyBackgroundService` to automatically manage decorative backgrounds.
+- **Global Layout Management**: Uses `EcoStoreLayoutService` to dynamically manage global styles and `BodyBackgroundService` to automatically manage decorative backgrounds.
 - **Smart Scrolling**: Automatically scrolls to the top of the content area or the window on navigation events using modern Angular `afterNextRender` hooks for optimal performance.
-
-## Route Data Configuration
-
-The `EcoStoreLayoutService` enables dynamic behavior based on route data. Currently supported flags:
-
-- **`bodyScrollable`**: Boolean. If set to `true`, removes the `overflow-y-hidden` class from the `body` tag. Defaults to `false`.
-  Useful for pages like the login form where content might exceed the viewport height on small screens.
-
-Example usage in route definition:
-
-```typescript
-{
-  path: 'accedir',
-  data: { bodyScrollable: true },
-  loadChildren: () => import('@plastik/eco-store/auth/login').then(m => m.ecoStoreAuthLoginRoutes),
-}
-```
 
 ## Architecture
 

@@ -1,5 +1,4 @@
 {
-  "editor.defaultFormatter": "vscode.html-language-features",
   "json.schemaDownload.enable": true,
   "diffEditor.wordWrap": "inherit",
   "workbench.editor.wrapTabs": false,
@@ -63,16 +62,25 @@
     "**/dist/**",
     "**/.angular/**"
   ],
-  "tailwindCSS.experimental.configFile": "libs/core/styles/util/tailwind4/src/_core_tailwind_theme.css",
   "tailwindCSS.includeLanguages": {
-    "scss": "tailwindcss",
-    "less": "tailwindcss",
+    "plaintext": "tailwindcss",
+    "html": "tailwindcss",
     "css": "tailwindcss",
-    "sass": "tailwindcss",
-    "html": "tailwindcss"
+    "scss": "tailwindcss"
+  },
+  "tailwindCSS.classAttributes": ["class", "className", "ngClass", ".*Class"],
+  "tailwindcss-intellisense.trace.server": "verbose",
+  "tailwindCSS.codeLens": true,
+  "tailwindCSS.validate": true,
+  "tailwindCSS.colorDecorators": true,
+  "tailwindCSS.experimental.configFile": {
+    "apps/eco-store/src/styles/styles.scss": "{apps/eco-store/src/**,libs/eco-store/**}",
+    "apps/nasa-images/src/styles/styles.scss": "{apps/nasa-images/src/**,libs/nasa-images/**}"
   },
   "files.associations": {
-    "*.webmanifest": "json"
+    "*.webmanifest": "json",
+    "*.css": "tailwindcss",
+    "*.scss": "tailwindcss"
   },
   "editor.codeActions.triggerOnFocusChange": false,
   "files.autoSave": "onFocusChange",
@@ -159,7 +167,6 @@
       "args": ["-l"]
     }
   },
-  "tailwindcss-intellisense.trace.server": "verbose",
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -168,5 +175,8 @@
   },
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint"
   }
 }
