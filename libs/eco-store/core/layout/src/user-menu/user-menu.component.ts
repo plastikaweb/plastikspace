@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,6 +24,7 @@ import { EcoUserAvatarComponent } from '../user-avatar/user-avatar.component';
     RouterLink,
     TranslateModule,
     EcoUserAvatarComponent,
+    DatePipe,
   ],
   templateUrl: './user-menu.component.html',
   styleUrl: './user-menu.component.scss',
@@ -34,9 +36,14 @@ export class EcoUserMenuComponent {
   logoutEvent = output<void>();
 
   readonly menu = viewChild.required<MatMenu>('userMenu');
+  protected readonly isTrial = this.profileStore.isTrial;
+  protected readonly isTrialExpired = this.profileStore.isTrialExpired;
+  protected readonly trialEndsAtDate = this.profileStore.trialEndsAtDate;
 
   protected readonly roleIcon = computed(() => {
     const role = this.profileStore.user()?.role;
+    if (this.isTrial()) return 'history_toggle_off';
+
     switch (role) {
       case 'PARTNER':
         return 'verified';

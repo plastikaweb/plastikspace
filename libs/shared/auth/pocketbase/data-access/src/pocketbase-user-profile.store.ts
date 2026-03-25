@@ -4,12 +4,13 @@ import {
   withDevToolsStub,
   withImmutableState,
 } from '@angular-architects/ngrx-toolkit';
-import { computed, inject, isDevMode } from '@angular/core';
+import { inject, isDevMode } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { LoginData } from '@plastik/auth/entities';
 import { PocketBaseUser, PocketBaseUserAddress, UserContact } from '@plastik/core/entities';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { PocketBaseUserAddressService } from '@plastik/shared/pocketbase-user-addresses';
+import { differenceInDays, isAfter } from 'date-fns';
 import { lastValueFrom } from 'rxjs';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
 
@@ -39,34 +40,45 @@ export const pocketBaseUserProfileStore = signalStore(
     _notificationService: inject(StoreNotificationService),
   })),
   withComputed(store => ({
-    userInitials: computed(() =>
+    userInitials: () =>
       store
         .user()
         ?.name?.split(' ')
         .map(name => name.charAt(0))
-        .join('')
-    ),
-    userFirstName: computed(() => store.user()?.name?.split(' ')[0] || ''),
+        .join(''),
+    userFirstName: () => store.user()?.name?.split(' ')[0] || '',
+    isTrial: () => store.user()?.memberShipStatus === 'TRIAL',
+    trialEndsAtDate: () => store.user()?.trialEndsAt,
   })),
   withComputed(store => ({
-    getUserContacts: computed(
-      () =>
-        store
-          .addresses()
-          .map(address => ({
-            id: address.id,
-            name: address.name,
-            fullName: address.fullName,
-            address: address.address,
-            zip: address.zip,
-            city: address.city,
-            province: address.province,
-            country: address.country,
-            phone: address.phone,
-            default: address.default,
-          }))
-          .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[]
-    ),
+    isTrialExpired: () => {
+      const endsAt = store.trialEndsAtDate();
+      return store.isTrial() && !!endsAt && isAfter(new Date(), endsAt);
+    },
+    trialDaysLeft: () => {
+      const endsAt = store.trialEndsAtDate();
+      if (!store.isTrial() || !endsAt) return 0;
+      const days = differenceInDays(endsAt, new Date());
+      return days > 0 ? days : 0;
+    },
+  })),
+  withComputed(store => ({
+    getUserContacts: () =>
+      store
+        .addresses()
+        .map(address => ({
+          id: address.id,
+          name: address.name,
+          fullName: address.fullName,
+          address: address.address,
+          zip: address.zip,
+          city: address.city,
+          province: address.province,
+          country: address.country,
+          phone: address.phone,
+          default: address.default,
+        }))
+        .sort((a, b) => (b.default ? 1 : 0) - (a.default ? 1 : 0)) as UserContact[],
   })),
   withMethods(store => ({
     async login(credentials: LoginData): Promise<void> {

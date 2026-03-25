@@ -1,7 +1,9 @@
-import { BasePocketBaseEntityWithTenantRef, BasePocketBaseEntity } from './base-pocketbase-entity';
+import { BasePocketBaseEntity, BasePocketBaseEntityWithTenantRef } from './base-pocketbase-entity';
 import { UserContact } from './user-contact';
 
 export type PocketBaseUserRoles = 'PARTNER' | 'GLOBAL_ADMIN' | 'TENANT_ADMIN';
+
+export type PocketBaseMembershipStatus = 'ACTIVE' | 'INACTIVE' | 'SUSPENDED' | 'TRIAL';
 
 export type PocketBaseUser = BasePocketBaseEntityWithTenantRef & {
   name: string;
@@ -11,6 +13,8 @@ export type PocketBaseUser = BasePocketBaseEntityWithTenantRef & {
   verified: boolean;
   avatar?: string;
   phone?: string;
+  memberShipStatus: PocketBaseMembershipStatus;
+  trialEndsAt: Date | null;
 };
 
 export type PocketBaseUserAddress = Pick<

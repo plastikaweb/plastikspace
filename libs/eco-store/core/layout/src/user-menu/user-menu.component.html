@@ -15,7 +15,17 @@
             @if (roleIcon()) {
               <mat-icon class="h-4 w-4 text-[16px] leading-none">{{ roleIcon() }}</mat-icon>
             }
-            <span class="text-xs">{{ `users.role.${user?.role}` | translate }}</span>
+            <span class="text-xs">
+              @if (isTrial() && !isTrialExpired()) {
+                {{ 'users.role.TRIAL' | translate: { day: trialEndsAtDate() | date: 'dd/MM' } }}
+              } @else if (isTrialExpired()) {
+                {{
+                  'users.role.EXPIRED_TRIAL' | translate: { day: trialEndsAtDate() | date: 'dd/MM' }
+                }}
+              } @else {
+                {{ `users.role.${user?.role}` | translate }}
+              }
+            </span>
           </div>
         </div>
       </div>

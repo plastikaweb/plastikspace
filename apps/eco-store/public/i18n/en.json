@@ -141,6 +141,16 @@
       "hello": "Hello {name}",
       "viewCart": "Go to shopping cart, {productCount} products, total price: {productPrice}",
       "viewFavorites": "Go to favorites"
+    },
+    "trial": {
+      "badge": {
+        "nearlyExpired": "Trial — {days} days left",
+        "expired": "Your trial period has expired"
+      },
+      "expiredTitle": "Your trial period has expired",
+      "expiredMessage": "To continue shopping and maintain your history, formalize your membership.",
+      "expiredCta": "Become a member",
+      "expiredSecondary": "Maybe later"
     }
   },
   "products": {
@@ -460,7 +470,9 @@
     "role": {
       "PARTNER": "Cooperative Partner",
       "GLOBAL_ADMIN": "Super Admin",
-      "TENANT_ADMIN": "Admin"
+      "TENANT_ADMIN": "Admin",
+      "TRIAL": "Trial until {day}",
+      "EXPIRED_TRIAL": "Trial ended on {day}"
     }
   }
 }

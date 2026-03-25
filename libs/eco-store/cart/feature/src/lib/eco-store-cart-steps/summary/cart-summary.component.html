@@ -52,7 +52,6 @@
                   [item]="item"
                   [isLcpImage]="i === 0"
                   [editable]="tenantStore.isStoreOpen()"
-                  (pointerdown)="viewTransitionService.setActiveId(item.product.id)"
                   (quantityChange)="onQuantityChange($event)">
                 </eco-cart-product-card>
               }
@@ -92,8 +91,10 @@
         [submitAvailable]="tenantStore.isStoreOpen() && cartStore.itemsCount() > 0"
         [isStoreOpen]="tenantStore.isStoreOpen()"
         [nextOpenDate]="tenantStore.nextOpenDate()"
+        [isTrialExpired]="profileStore.isTrialExpired()"
         [actionButtonText]="'cart.summary.goToShipping'"
-        [actionRoute]="['./cistella/enviament']">
+        [actionRoute]="['./cistella/enviament']"
+        (trialExpiredClick)="onTrialExpired()">
       </eco-cart-order-summary>
     }
   </div>
