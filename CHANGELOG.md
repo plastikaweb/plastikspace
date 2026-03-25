@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-25] - Eco-Store: Membership Status and Trial Periods
+
+### Added
+
+- **Membership & Trial Periods**: Implemented a comprehensive membership status system supporting `ACTIVE`, `INACTIVE`, `SUSPENDED`, and `TRIAL` states ([#86c90gdxn](https://app.clickup.com/t/86c90gdxn)).
+- **Trial Period UX**:
+  - Added visual trial status badges in the header and user menu with countdown timers (e.g., "Trial — 5 days left").
+  - Implemented an automated "Trial Expired" workflow that prevents checkout and redirects users to formalize their membership.
+  - Created a new trial-themed Material symbol (`history_toggle_off`) for the user profile menu.
+- **Product Requirements Document (PRD)**: Added `apps/eco-store/eco-store-req.md` containing the full project requirements, objectives, and roadmap for the Eco Store platform.
+- **Enhanced PocketBase Tooling**:
+  - Added `seed.ts` for automated generation of realistic test data (tenants, users, products, order cycles, and historical orders).
+  - Added `push-to-staging.ts` for streamlined deployment of local schema and data to the staging environment.
+  - Added new npm scripts for easy seeding and staging management (`eco-store:pb:seed-gen`, `eco-store:pb:push-gen`).
+
+### Changed
+
+- **User Profile Data Management**:
+  - Refactored `pocketBaseUserProfileStore` to include reactive trial logic using signals (`isTrial`, `isTrialExpired`, `trialDaysLeft`).
+  - Updated `PocketBaseUser` entity to support the new membership fields.
+- **Cart & Checkout Logic**: Updated the cart summary to intercept checkout attempts for expired trials, showing a clear call-to-action dialog.
+- **Internationalization**: Comprehensive updates to Catalan and Spanish translations for all trial and membership-related strings.
+- **Dependency & Build Config**: Updated `package.json` with new TypeScript-based scripts and `cspell.json` to ignore the new documentation.
+
 ## [2026-03-24] - Eco-Store: SEO Optimization & PWA Navigation
 
 ### Added

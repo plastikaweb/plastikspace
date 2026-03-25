@@ -26,8 +26,15 @@ export class CartOrderSummaryComponent {
   readonly deliveryType = input<EcoStoreTenantLogisticsDeliveryType>('pickup');
   readonly isStoreOpen = input<boolean>(true);
   readonly nextOpenDate = input<Date | null>(null);
+  readonly isTrialExpired = input<boolean>(false);
+  readonly trialExpiredClick = output<void>();
 
   protected handleAction() {
+    if (this.isTrialExpired()) {
+      this.trialExpiredClick.emit();
+      return;
+    }
+
     const route = this.actionRoute();
 
     if (route) {

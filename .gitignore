@@ -98,3 +98,4 @@ lint_output*.txt
 #nx graph
 graph.json
 vitest.config.*.timestamp*
+.claude/

@@ -131,7 +131,7 @@
       "store": "Tienda",
       "about": "Quiénes Somos",
       "contact": "Contacto",
-      "cart": "Carrito",
+      "cart": "Cesta",
       "favorites": "Favoritos",
       "orders": "Pedidos",
       "login": "Acceder",
@@ -139,8 +139,18 @@
       "profile": "Perfil de {name}",
       "profilePage": "Ver perfil",
       "hello": "Hola {name}",
-      "viewCart": "Ir al carrito de compra, {productCount} productos, precio total: {productPrice}",
+      "viewCart": "Ir a la cesta de compra, {productCount} productos, precio total: {productPrice}",
       "viewFavorites": "Ir a los favoritos"
+    },
+    "trial": {
+      "badge": {
+        "nearlyExpired": "Prueba — {days} días restantes",
+        "expired": "Tu período de prueba ha finalizado"
+      },
+      "expiredTitle": "Tu período de prueba ha finalizado",
+      "expiredMessage": "Para seguir comprando y mantener tu historial formaliza tu alta como socio.",
+      "expiredCta": "Hazte socio",
+      "expiredSecondary": "Quizás más tarde"
     }
   },
   "products": {
@@ -419,6 +429,10 @@
       "deleteOrderCancel": "Cancelar",
       "deleteOrderConfirm": "Eliminar pedido"
     },
+    "delete": {
+      "success": "Pedido eliminado correctamente. Puedes volver a hacer un pedido cuando quieras.",
+      "error": "Error al eliminar el pedido. Por favor, contacta con nosotros si el problema persiste."
+    },
     "card": {
       "label": "Pedido",
       "orderNumber": "Número de pedido",
@@ -448,6 +462,8 @@
     "filter": {
       "all": "TODAS",
       "status": "Estado del pedido",
+      "productSearch": "Producto",
+      "productSearchPlaceholder": "Escribe el nombre del producto (mínimo 2 caracteres)",
       "sort": {
         "label": "Ordenar",
         "statusAsc": "Estado ascendente",
@@ -461,7 +477,9 @@
     "role": {
       "PARTNER": "Socio Cooperativa",
       "GLOBAL_ADMIN": "Super Administrador",
-      "TENANT_ADMIN": "Administrador"
+      "TENANT_ADMIN": "Administrador",
+      "TRIAL": "Prueba hasta el {day}",
+      "EXPIRED_TRIAL": "Prueba finalizada el {day}"
     }
   }
 }

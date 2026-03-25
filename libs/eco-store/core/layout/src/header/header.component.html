@@ -25,6 +25,26 @@
         <div class="bg-surface-variant h-8 animate-pulse rounded"></div>
       }
 
+      @if (isTrial() && !isTrialExpired()) {
+        <div
+          class="bg-tertiary-container text-on-tertiary-container hidden items-center gap-1 rounded-full px-3 py-1 text-xs font-medium lg:flex"
+          [attr.aria-label]="
+            'store.trial.badge.nearlyExpired' | translate: { days: trialDaysLeft() }
+          ">
+          <mat-icon class="size-4! text-sm!">timer</mat-icon>
+          <span>{{
+            'store.trial.badge.nearlyExpired' | translate: { days: trialDaysLeft() }
+          }}</span>
+        </div>
+      } @else if (isTrial() && isTrialExpired()) {
+        <div
+          class="bg-tertiary-container text-on-tertiary-container hidden items-center gap-1 rounded-full px-3 py-1 text-xs font-medium lg:flex"
+          [attr.aria-label]="'store.trial.badge.expired' | translate">
+          <mat-icon class="size-4! text-sm!">timer</mat-icon>
+          <span>{{ 'store.trial.badge.expired' | translate }}</span>
+        </div>
+      }
+
       @let isStoreOpen = storeStatus() === 'OPEN';
       @if (!isStoreOpen) {
         @defer (when !isStoreOpen) {

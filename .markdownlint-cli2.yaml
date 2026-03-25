@@ -44,6 +44,6 @@ ignores:
   - .codex/**
   - tmp/**
   - apps/eco-store/pocketbase/**
-
+  - apps/eco-store/eco-store-req.md
 # Disable inline config comments
 noInlineConfig: true

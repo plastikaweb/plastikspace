@@ -740,6 +740,33 @@
       },
       {
         "hidden": false,
+        "id": "select3036982123",
+        "maxSelect": 1,
+        "name": "memberShipStatus",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "select",
+        "values": [
+          "TRIAL",
+          "ACTIVE",
+          "INACTIVE",
+          "SUSPENDED"
+        ]
+      },
+      {
+        "hidden": false,
+        "id": "date1379490748",
+        "max": "",
+        "min": "",
+        "name": "trialEndsAt",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "date"
+      },
+      {
+        "hidden": false,
         "id": "autodate2990389176",
         "name": "created",
         "onCreate": true,
@@ -2352,7 +2379,7 @@
     ],
     "listRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
     "viewRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant)",
-    "createRule": "@request.auth.id != \"\" && user = @request.auth.id",
+    "createRule": "@request.auth.id != \"\" && user = @request.auth.id && (@request.auth.membershipStatus = \"ACTIVE\" || (@request.auth.membershipStatus = \"TRIAL\" && @request.auth.trialEndsAt > @now))",
     "updateRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (user = @request.auth.id && status = \"PENDING\")",
     "deleteRule": "(@request.auth.role = \"GLOBAL_ADMIN\") || (@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || (user = @request.auth.id && status = \"PENDING\")"
   },
@@ -2586,7 +2613,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_FLtv",
+        "id": "_clone_RqBq",
         "maxSize": 0,
         "name": "name",
         "presentable": false,
@@ -2597,7 +2624,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_KI1C",
+        "id": "_clone_dDG4",
         "max": 0,
         "min": 0,
         "name": "normalizedName",
@@ -2611,7 +2638,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_DVzl",
+        "id": "_clone_UK9W",
         "max": 0,
         "min": 0,
         "name": "color",
@@ -2624,7 +2651,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_Bl71",
+        "id": "_clone_0hbn",
         "maxSize": 0,
         "name": "groupName",
         "presentable": false,
@@ -2635,7 +2662,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_RHJU",
+        "id": "_clone_Psc3",
         "max": 0,
         "min": 0,
         "name": "icon",
@@ -2650,7 +2677,7 @@
         "cascadeDelete": false,
         "collectionId": "pbc_2442875294",
         "hidden": false,
-        "id": "_clone_sY4g",
+        "id": "_clone_ojFw",
         "maxSelect": 1,
         "minSelect": 0,
         "name": "tenant",
@@ -2917,7 +2944,7 @@
     ],
     "listRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || \n(@request.auth.role = \"GLOBAL_ADMIN\")",
     "viewRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || \n(@request.auth.role = \"GLOBAL_ADMIN\")",
-    "createRule": "user = @request.auth.id && tenant = @request.auth.tenant",
+    "createRule": "user = @request.auth.id && tenant = @request.auth.tenant && (@request.auth.membershipStatus = \"ACTIVE\" || (@request.auth.membershipStatus = \"TRIAL\" && @request.auth.trialEndsAt > @now))",
     "updateRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || \n(@request.auth.role = \"GLOBAL_ADMIN\")",
     "deleteRule": "(user = @request.auth.id && tenant = @request.auth.tenant) || \n(@request.auth.role = \"TENANT_ADMIN\" && tenant = @request.auth.tenant) || \n(@request.auth.role = \"GLOBAL_ADMIN\")"
   },

@@ -40,6 +40,9 @@ export class EcoHeaderComponent {
   readonly sideNavOpen = input<boolean>();
   readonly isMobile = input<boolean>();
   readonly hasSidenav = input<boolean>();
+  readonly isTrial = input<boolean>(false);
+  readonly trialDaysLeft = input<number>(0);
+  readonly isTrialExpired = input<boolean>(false);
   readonly submitEvent = output<{ query: string }>();
   readonly toggleSidenav = output<void>();
 }

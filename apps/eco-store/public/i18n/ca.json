@@ -141,6 +141,16 @@
       "hello": "Hola {name}",
       "viewCart": "Anar a la cistella de compra, {productCount} productes, preu total: {productPrice}",
       "viewFavorites": "Anar als favorits"
+    },
+    "trial": {
+      "badge": {
+        "nearlyExpired": "Prova — {days} dies restants",
+        "expired": "El teu període de prova ha finalitzat"
+      },
+      "expiredTitle": "El teu període de prova ha finalitzat",
+      "expiredMessage": "Per continuar comprant i mantenir el teu historial formalitza la teva alta com a soci.",
+      "expiredCta": "Fes-te soci",
+      "expiredSecondary": "Potser més tard"
     }
   },
   "products": {
@@ -467,7 +477,9 @@
     "role": {
       "PARTNER": "Soci Cooperativa",
       "GLOBAL_ADMIN": "Súper Administrador",
-      "TENANT_ADMIN": "Administrador"
+      "TENANT_ADMIN": "Administrador",
+      "TRIAL": "Prova fins {day}",
+      "EXPIRED_TRIAL": "Prova finalitzada el {day}"
     }
   }
 }

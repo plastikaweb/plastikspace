@@ -104,6 +104,9 @@
     [sideNavOpen]="isSidenavOpen()"
     [isMobile]="isMobile()"
     [hasSidenav]="hasSidenav()"
+    [isTrial]="profileStore.isTrial()"
+    [trialDaysLeft]="profileStore.trialDaysLeft()"
+    [isTrialExpired]="profileStore.isTrialExpired()"
     (toggleSidenav)="isSidenavOpen.set(!isSidenavOpen())"
     (submitEvent)="onSearchSubmit()">
     <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />

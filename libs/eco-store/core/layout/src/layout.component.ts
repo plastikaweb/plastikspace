@@ -30,6 +30,7 @@ import { EcoMobileNavComponent } from './mobile-nav/mobile-nav.component';
 import { EcoTenantLogoComponent } from './tenant-logo/tenant-logo.component';
 
 import { MatDivider } from '@angular/material/divider';
+import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
@@ -61,6 +62,7 @@ import { appSearchFormConfig } from './app.search-form.config';
 export default class EcoLayoutComponent {
   protected readonly platformId = inject(PLATFORM_ID);
   protected readonly tenantStore = inject(ecoStoreTenantStore);
+  protected readonly profileStore = inject(pocketBaseUserProfileStore);
   protected readonly searchFormConfig = appSearchFormConfig();
   protected readonly isBannerDismissed = signal(false);
   readonly #activityStore = inject(activityStore);
