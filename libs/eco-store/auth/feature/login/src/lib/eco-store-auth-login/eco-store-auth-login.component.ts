@@ -37,12 +37,18 @@ export class EcoStoreAuthLoginComponent {
   protected readonly facade = inject(AUTH_FORM_FACADE);
   protected readonly profileStore = inject(pocketBaseUserProfileStore);
   protected readonly tenantStore = inject(ecoStoreTenantStore);
-  protected readonly navigationService = inject(NavigationService);
-  protected readonly pwaNavigationService = inject(PwaNavigationService);
+  readonly #navigationService = inject(NavigationService);
+  readonly #pwaNavigationService = inject(PwaNavigationService);
 
-  readonly isStandalone = this.pwaNavigationService.isStandalone;
+  /**
+   * @description Whether the application is running in standalone mode (PWA).
+   */
+  readonly isStandalone = this.#pwaNavigationService.isStandalone;
 
+  /**
+   * @description Navigates back to the store.
+   */
   protected goBack(): void {
-    this.navigationService.back('/botiga');
+    this.#navigationService.back('/botiga');
   }
 }
