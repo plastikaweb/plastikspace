@@ -1,8 +1,6 @@
 @use '@angular/material' as mat;
 
 :host {
-  display: block;
-
   .address-selector-radio-group {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
@@ -44,7 +42,7 @@
         var(--color-primary-50),
         var(--mat-sys-surface-container-high)
       ) !important;
-      transform: translateY(-4px) scale(1.01);
+      transform: scale(1.01);
       box-shadow: 0 8px 24px -8px
         light-dark(color-mix(in srgb, var(--mat-sys-primary), transparent 70%), rgba(0, 0, 0, 0.7)) !important;
 
