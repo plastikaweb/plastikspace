@@ -1,99 +1,29 @@
-@use '@angular/material' as mat;
-
 :host {
-  display: block;
-
-  .shipping-method-radio-group {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
-    gap: 1rem;
-  }
-
   .shipping-method-card {
-    border: 2px solid light-dark(var(--neutral-200), var(--neutral-800)) !important;
-    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    border-radius: 1.5rem !important;
+    border-color: light-dark(var(--neutral-200), var(--neutral-800)) !important;
+    border-radius: var(--app-main-border-radius) !important;
 
     &:hover {
       border-color: light-dark(var(--neutral-300), var(--neutral-600)) !important;
-      transform: translateY(-4px);
       box-shadow: 0 12px 30px -10px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6)) !important;
-
-      @include mat.card-overrides(
-        (
-          elevated-container-elevation: var(--mat-sys-level1),
-        )
-      );
-    }
-
-    &:active:not([disabled]) {
-      transform: scale(0.97);
+      --mdc-elevated-card-container-elevation: var(--mat-sys-level1);
     }
 
     @each $theme in primary, secondary, tertiary, neutral {
       &.theme-#{$theme} {
         color: light-dark(var(--#{$theme}-900), var(--#{$theme}-100));
 
-        .mat-mdc-chip {
-          background-color: light-dark(var(--#{$theme}-100), var(--#{$theme}-700));
-          @include mat.chips-overrides(
-            (
-              outline-color: light-dark(var(--#{$theme}-200), var(--#{$theme}-600)),
-              label-text-color: light-dark(var(--#{$theme}-900), var(--#{$theme}-100)),
-            )
-          );
-        }
-
-        .shipping-method-icon {
-          background-color: light-dark(var(--#{$theme}-400), var(--#{$theme}-600));
-          @include mat.icon-overrides(
-            (
-              color: light-dark(var(--#{$theme}-50), var(--#{$theme}-300)),
-            )
-          );
-        }
-
         &.selected {
-          border: 3px solid light-dark(var(--#{$theme}-600), var(--#{$theme}-400)) !important;
+          border-color: light-dark(var(--#{$theme}-600), var(--#{$theme}-400)) !important;
+          border-width: 3px !important;
           background-color: light-dark(var(--#{$theme}-50), var(--#{$theme}-900)) !important;
-          transform: translateY(-4px) scale(1.02);
-          @include mat.card-overrides(
-            (
-              elevated-container-elevation: var(--mat-sys-level1),
-            )
-          );
-
-          @include mat.icon-overrides(
-            (
-              color: light-dark(var(--#{$theme}-700), var(--#{$theme}-100)),
-            )
-          );
-
-          @include mat.radio-overrides(
-            (
-              checked-ripple-color: light-dark(var(--#{$theme}-600), var(--#{$theme}-400)),
-              selected-icon-color: var(--#{$theme}-600),
-            )
-          );
-
-          .shipping-method-icon {
-            background-color: light-dark(var(--#{$theme}-600), var(--#{$theme}-500));
-            @include mat.icon-overrides(
-              (
-                color: light-dark(var(--#{$theme}-50), var(--#{$theme}-50)),
-              )
-            );
-          }
-
-          .shipping-method-check {
-            @include mat.icon-overrides(
-              (
-                color: light-dark(var(--#{$theme}-50), var(--#{$theme}-50)),
-              )
-            );
-          }
+          --mdc-elevated-card-container-elevation: var(--mat-sys-level1);
         }
       }
     }
+  }
+
+  .shipping-method-check {
+    z-index: 20;
   }
 }

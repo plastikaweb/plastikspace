@@ -3,7 +3,7 @@
 }
 
 <mat-radio-group
-  class="shipping-method-radio-group"
+  class="grid grid-cols-[repeat(auto-fit,minmax(min(350px,100%),1fr))] gap-4"
   [attr.aria-label]="'cart.shipping.method.title' | translate"
   [formControl]="formControl"
   [formlyAttributes]="field">
@@ -11,13 +11,21 @@
     @let theme = shippingMethodOption.theme || 'neutral';
     @let isSelected = formControl.value === shippingMethodOption.type;
     @let cost = shippingMethodOption.cost ?? 0;
-
     <mat-card
       tabindex="0"
       appearance="raised"
-      [class]="getCardStyles(theme, isSelected) + ' group relative'"
+      [class]="
+        getCardStyles(theme, isSelected) +
+        ' group relative border-2 border-solid transition-all duration-250 ease-out hover:-translate-y-1 active:scale-95'
+      "
       [class.opacity-50]="formControl.disabled"
       [class.pointer-events-none]="formControl.disabled"
+      [style.--current-theme-100]="'var(--' + theme + '-100)'"
+      [style.--current-theme-400]="'var(--' + theme + '-400)'"
+      [style.--current-theme-500]="'var(--' + theme + '-500)'"
+      [style.--current-theme-600]="'var(--' + theme + '-600)'"
+      [style.--current-theme-700]="'var(--' + theme + '-700)'"
+      [style.--current-theme-900]="'var(--' + theme + '-900)'"
       [attr.aria-label]="`cart.shipping.method.${shippingMethodOption.type}.title` | translate"
       (click)="onSelect(shippingMethodOption.type)"
       (keydown.enter)="onSelect(shippingMethodOption.type)">
@@ -28,7 +36,7 @@
 
         <mat-card-subtitle>
           <span
-            class="inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium"
+            class="inline-flex items-center gap-1.5 rounded-full bg-[light-dark(var(--current-theme-100),var(--current-theme-700))] px-3 py-1 text-xs font-medium text-[light-dark(var(--current-theme-900),var(--current-theme-100))]"
             role="status">
             {{
               cost === 0
@@ -39,7 +47,11 @@
           </span>
         </mat-card-subtitle>
         <div
-          class="shipping-method-icon inline-flex h-16 w-16 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20">
+          class="shipping-method-icon inline-flex h-16 w-16 items-center justify-center rounded-full transition-transform duration-300 group-hover:scale-110 md:h-20 md:w-20"
+          [class.bg-[light-dark(var(--current-theme-100),var(--current-theme-700))]]="!isSelected"
+          [class.text-[light-dark(var(--current-theme-900),var(--current-theme-100))]]="!isSelected"
+          [class.bg-[light-dark(var(--current-theme-600),var(--current-theme-500))]]="isSelected"
+          [class.text-white]="isSelected">
           <mat-icon class="scale-150!">{{ shippingMethodOption.icon }}</mat-icon>
         </div>
       </mat-card-header>
@@ -50,8 +62,9 @@
 
       @if (isSelected) {
         <div
-          class="shipping-method-check animate-fade-in rounded-tr-0! absolute -top-[3px] -right-[3px] flex items-center justify-center [border-radius:0_var(--app-main-border-radius)_0_1.5rem] rounded-bl-3xl! p-4 shadow-lg">
-          <mat-icon class="scale-110!">check</mat-icon>
+          class="shipping-method-check animate-fade-in absolute flex items-center justify-center bg-[light-dark(var(--current-theme-600),var(--current-theme-400))] p-4 text-white shadow-lg transition-all duration-300"
+          style="top: -3px; right: -3px; border-radius: 0 var(--app-main-border-radius) 0 1.5rem">
+          <mat-icon class="scale-125!">check</mat-icon>
         </div>
       }
     </mat-card>
