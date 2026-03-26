@@ -742,13 +742,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/core@npm:21.2.2":
-  version: 21.2.2
-  resolution: "@angular/core@npm:21.2.2"
+"@angular/core@npm:21.2.4":
+  version: 21.2.4
+  resolution: "@angular/core@npm:21.2.4"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/compiler": 21.2.2
+    "@angular/compiler": 21.2.4
     rxjs: ^6.5.3 || ^7.4.0
     zone.js: ~0.15.0 || ~0.16.0
   peerDependenciesMeta:
@@ -756,7 +756,7 @@ __metadata:
       optional: true
     zone.js:
       optional: true
-  checksum: 10c0/179a90489c76dc76316887e3cbd029c015cd5ae6df7a0f08cd17a598d88fd95794e573d57ecd3cea66430d2eea4d2aa15edf8b75d92568e64ecac5c41743bc6e
+  checksum: 10c0/3c0fc1f9d6391b97765601a8006be90542cb53e85c5a83e6c3388c2e36dd9a1249942200a11ce6f2af5be4e9990852f3b0c0db802415bd80b28581c2abd0919d
   languageName: node
   linkType: hard
 
@@ -12697,7 +12697,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:8.17.1, ajv@npm:^8.0.0, ajv@npm:^8.11.0, ajv@npm:^8.12.0, ajv@npm:^8.17.1, ajv@npm:^8.3.0, ajv@npm:^8.9.0":
+"ajv@npm:8.17.1":
   version: 8.17.1
   resolution: "ajv@npm:8.17.1"
   dependencies:
@@ -12709,7 +12709,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:8.18.0":
+"ajv@npm:8.18.0, ajv@npm:^8.0.0, ajv@npm:^8.11.0, ajv@npm:^8.12.0, ajv@npm:^8.17.1, ajv@npm:^8.3.0, ajv@npm:^8.9.0":
   version: 8.18.0
   resolution: "ajv@npm:8.18.0"
   dependencies:
@@ -12734,14 +12734,14 @@ __metadata:
   linkType: hard
 
 "ajv@npm:^6.1.0, ajv@npm:^6.10.2, ajv@npm:^6.12.4, ajv@npm:^6.12.5":
-  version: 6.12.6
-  resolution: "ajv@npm:6.12.6"
+  version: 6.14.0
+  resolution: "ajv@npm:6.14.0"
   dependencies:
     fast-deep-equal: "npm:^3.1.1"
     fast-json-stable-stringify: "npm:^2.0.0"
     json-schema-traverse: "npm:^0.4.1"
     uri-js: "npm:^4.2.2"
-  checksum: 10c0/41e23642cbe545889245b9d2a45854ebba51cda6c778ebced9649420d9205f2efb39cb43dbc41e358409223b1ea43303ae4839db682c848b891e4811da1a5a71
+  checksum: 10c0/a2bc39b0555dc9802c899f86990eb8eed6e366cddbf65be43d5aa7e4f3c4e1a199d5460fd7ca4fb3d864000dbbc049253b72faa83b3b30e641ca52cb29a68c22
   languageName: node
   linkType: hard
 
@@ -23079,14 +23079,14 @@ __metadata:
   linkType: hard
 
 "js-yaml@npm:^3.10.0, js-yaml@npm:^3.13.1, js-yaml@npm:^3.14.1":
-  version: 3.14.1
-  resolution: "js-yaml@npm:3.14.1"
+  version: 3.14.2
+  resolution: "js-yaml@npm:3.14.2"
   dependencies:
     argparse: "npm:^1.0.7"
     esprima: "npm:^4.0.0"
   bin:
     js-yaml: bin/js-yaml.js
-  checksum: 10c0/6746baaaeac312c4db8e75fa22331d9a04cccb7792d126ed8ce6a0bbcfef0cedaddd0c5098fade53db067c09fe00aa1c957674b4765610a8b06a5a189e46433b
+  checksum: 10c0/3261f25912f5dd76605e5993d0a126c2b6c346311885d3c483706cd722efe34f697ea0331f654ce27c00a42b426e524518ec89d65ed02ea47df8ad26dcc8ce69
   languageName: node
   linkType: hard
 
@@ -23378,7 +23378,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jwa@npm:^1.4.1":
+"jwa@npm:^1.4.2":
   version: 1.4.2
   resolution: "jwa@npm:1.4.2"
   dependencies:
@@ -23415,12 +23415,12 @@ __metadata:
   linkType: hard
 
 "jws@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "jws@npm:3.2.2"
+  version: 3.2.3
+  resolution: "jws@npm:3.2.3"
   dependencies:
-    jwa: "npm:^1.4.1"
+    jwa: "npm:^1.4.2"
     safe-buffer: "npm:^5.0.1"
-  checksum: 10c0/e770704533d92df358adad7d1261fdecad4d7b66fa153ba80d047e03ca0f1f73007ce5ed3fbc04d2eba09ba6e7e6e645f351e08e5ab51614df1b0aa4f384dfff
+  checksum: 10c0/9fdf9d6783b1892ef413ef373cd351eacc847ba01deec6fbfea96830e93241863ccbee66f3b749fc2310c59b6db2209d3f4b52931c0c259b52b17de20715917f
   languageName: node
   linkType: hard
 
@@ -28233,7 +28233,7 @@ __metadata:
     "@angular/common": "npm:21.2.2"
     "@angular/compiler": "npm:21.2.2"
     "@angular/compiler-cli": "npm:21.2.2"
-    "@angular/core": "npm:21.2.2"
+    "@angular/core": "npm:21.2.4"
     "@angular/fire": "npm:^20.0.1"
     "@angular/forms": "npm:21.2.2"
     "@angular/language-service": "npm:21.2.2"
@@ -33636,9 +33636,9 @@ __metadata:
   linkType: hard
 
 "undici@npm:^6.19.5":
-  version: 6.22.0
-  resolution: "undici@npm:6.22.0"
-  checksum: 10c0/47903c489d73e26bd47960cf2f04d63282ed050818b672cb05f8dfb6403381b850cf1b1751832654fd3af22aacd9d780e5e61aff563cd97943f5c4f10d5b3e23
+  version: 6.24.1
+  resolution: "undici@npm:6.24.1"
+  checksum: 10c0/53fdbaa357139a2c12deed34f67d67fc6ad269630ba85a1507e7717f53ad2d3a02c95fbd17d3ab321e34c60b6f0a716cdc2f7e2eca1e07178702dc89cc3a73c4
   languageName: node
   linkType: hard
 
