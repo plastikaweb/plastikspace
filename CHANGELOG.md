@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Added `seed.ts` for automated generation of realistic test data (tenants, users, products, order cycles, and historical orders).
   - Added `push-to-staging.ts` for streamlined deployment of local schema and data to the staging environment.
   - Added new npm scripts for easy seeding and staging management (`eco-store:pb:seed-gen`, `eco-store:pb:push-gen`).
+- **Development Agent Skills**: Added a comprehensive set of agent skills and references for Angular development, documentation co-authoring, and frontend design to enhance AI pair programming efficiency.
 
 ### Changed
 
@@ -28,6 +29,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Cart & Checkout Logic**: Updated the cart summary to intercept checkout attempts for expired trials, showing a clear call-to-action dialog.
 - **Internationalization**: Comprehensive updates to Catalan and Spanish translations for all trial and membership-related strings.
 - **Dependency & Build Config**: Updated `package.json` with new TypeScript-based scripts and `cspell.json` to ignore the new documentation.
+- **Code Standardization**:
+  - Standardized `EcoStoreAuthLoginComponent` and `PwaNavigationService` to follow project standards by using ES6 private fields (`#`) for injected services.
+  - Added missing JSDoc documentation for `goBack` method in the login component.
 
 ## [2026-03-24] - Eco-Store: SEO Optimization & PWA Navigation
 

@@ -8,18 +8,18 @@ import { map } from 'rxjs';
   providedIn: 'root',
 })
 export class PwaNavigationService {
-  protected readonly breakpointObserver = inject(BreakpointObserver);
-  protected readonly platform = inject(Platform);
+  readonly #breakpointObserver = inject(BreakpointObserver);
+  readonly #platform = inject(Platform);
 
   /**
    * @description Detect if the application is running in standalone mode (PWA).
    * It also includes a fallback for older iOS versions.
    */
   readonly isStandalone = toSignal(
-    this.breakpointObserver.observe('(display-mode: standalone)').pipe(
+    this.#breakpointObserver.observe('(display-mode: standalone)').pipe(
       map(result => {
         const isIosStandalone =
-          this.platform.IOS &&
+          this.#platform.IOS &&
           typeof window !== 'undefined' &&
           'standalone' in window.navigator &&
           window.navigator['standalone'];
