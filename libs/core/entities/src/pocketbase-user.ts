@@ -13,7 +13,7 @@ export type PocketBaseUser = BasePocketBaseEntityWithTenantRef & {
   verified: boolean;
   avatar?: string;
   phone?: string;
-  memberShipStatus: PocketBaseMembershipStatus;
+  membershipStatus: PocketBaseMembershipStatus;
   trialEndsAt: Date | null;
 };
 

@@ -742,7 +742,7 @@
         "hidden": false,
         "id": "select3036982123",
         "maxSelect": 1,
-        "name": "memberShipStatus",
+        "name": "membershipStatus",
         "presentable": false,
         "required": false,
         "system": false,
