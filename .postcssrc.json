@@ -1,5 +1,13 @@
 {
   "plugins": {
-    "@tailwindcss/postcss": {}
+    "@tailwindcss/postcss": {},
+    "postcss-preset-env": {
+      "stage": false,
+      "features": {
+        "light-dark-function": true,
+        "color-mix": true
+      },
+      "preserve": true
+    }
   }
 }

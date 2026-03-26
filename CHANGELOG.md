@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-26] - CSS Compatibility: Fix Styles in Old Systems and Browsers
+
+### Fixed
+
+- **CSS Polyfills**: Added `postcss-preset-env` (`^11.2.0`) to polyfill `light-dark()` and `color-mix()` CSS functions, ensuring consistent visual rendering in older browsers and systems ([#86c909hzm](https://app.clickup.com/t/86c909hzm)).
+- **PostCSS Configuration**: Updated `.postcssrc.json` to enable `postcss-preset-env` with `stage: false` and explicit feature flags (`light-dark-function`, `color-mix`) alongside `preserve: true` to maintain modern syntax for supporting browsers.
+
 ## [2026-03-26] - Eco-Store: PocketBase Tooling & Asset Refinement
 
 ### Changed
