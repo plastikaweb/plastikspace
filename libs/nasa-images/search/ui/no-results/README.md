@@ -12,7 +12,7 @@
 
 This library provides a **UI component** to display a friendly message when **no search results** are found in the **NASA Images** application, ensuring a good user experience even when data is missing.
 
-![nasa-images-search-ui-no-results](no-results.png)
+![nasa-images-search-ui-no-results](empty.png)
 
 ## How to use
 

@@ -51,6 +51,7 @@ describe('ecoStoreOrdersStore', () => {
   const mockCartStoreValue = {
     toOrder: vi.fn().mockReturnValue({
       orderNumber: 'ECO-001',
+      tenant: 'tenant-1',
       user: 'user-1',
       items: [],
     }),

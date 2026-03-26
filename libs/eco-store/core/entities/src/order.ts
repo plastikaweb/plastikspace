@@ -118,7 +118,10 @@ export type NewEcoStoreOrder = Omit<
   | 'normalizedName'
   | 'description'
   | 'tenant'
->;
+> & {
+  /** Tenant ID (relation field required by the API). */
+  tenant: string;
+};
 
 /**
  * @description Generates a human-readable order number with tenant name, timestamp and random suffix.

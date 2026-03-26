@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-26] - Eco-Store: PocketBase Tooling & Asset Refinement
+
+### Changed
+
+- **PocketBase Script Execution**: Modernized `eco-store:pb:seed-gen` and `eco-store:pb:push-gen` scripts in `package.json` to use Node's native `--experimental-strip-types` flag, eliminating the dependency on the deprecated `ts-node/esm` loader.
+- **Resource Management**: Renamed the generic `no-results.png` asset to a more descriptive `empty.png` to better align with its use across different empty states and updated all component and documentation references.
+- **Documentation**: Updated `POCKETBASE.md` to reflect the latest script usage and environment requirements.
+
 ## [2026-03-26] - Eco-Store: Reactive Language Localization
 
 ### Added

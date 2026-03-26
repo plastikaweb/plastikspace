@@ -14,7 +14,6 @@
       role="group"
       [class.w-full]="mode() === 'card'"
       [class.w-auto]="mode() === 'detail'"
-      [class.sm:w-48]="mode() === 'detail'"
       [attr.aria-label]="
         'common.a11y.productQuantity' | translate: { product: product().name, quantity: quantity() }
       ">

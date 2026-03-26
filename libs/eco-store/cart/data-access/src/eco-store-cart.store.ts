@@ -510,12 +510,13 @@ export const ecoStoreCartStore = signalStore(
         const method = store.method();
         const items = store.items();
 
-        if (!user || !address || !method || !items.length) {
+        if (!user || !tenant || !address || !method || !items.length) {
           throw new Error('Cannot create order: missing required checkout data');
         }
 
         return {
-          orderNumber: generateOrderNumber(tenant?.normalizedName ?? ''),
+          orderNumber: generateOrderNumber(tenant.normalizedName ?? ''),
+          tenant: tenant.id,
           user: user.id,
           items: items.map(toOrderItemSnapshot),
           status: 'PENDING',

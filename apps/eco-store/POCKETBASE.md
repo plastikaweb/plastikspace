@@ -109,6 +109,11 @@ The automation logic is located in `apps/eco-store/scripts/`.
 | `seed.ts`            | `yarn eco-store:pb:seed-gen` | **Generate Dummy**: Generates fake history (cycles/orders) for local testing. |
 | `push-to-staging.ts` | `yarn eco-store:pb:push-gen` | Pushes local data and files to the Staging environment.                       |
 
+> [!NOTE]
+> Scripts using `.ts` extensions (like `seed-gen` and `push-gen`) are executed using the native
+> `node --experimental-strip-types` flag (available in Node 22+). This provides better
+> performance and compatibility than the previous `ts-node/esm` loader.
+
 ---
 
 ## PocketBase Hooks & Cron Jobs
@@ -167,5 +172,5 @@ Run `yarn eco-store:pb:seed` to pull records and images from the staging environ
 
 ---
 
-**Last Updated**: 2026-03-18
-**Maintainer**: Eco-Store Development Team
+**Last Updated**: 2026-03-26
+**Maintainer**: Carlos Matheu (Plastikaweb)

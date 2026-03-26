@@ -47,7 +47,7 @@ export const pocketBaseUserProfileStore = signalStore(
         .map(name => name.charAt(0))
         .join(''),
     userFirstName: () => store.user()?.name?.split(' ')[0] || '',
-    isTrial: () => store.user()?.memberShipStatus === 'TRIAL',
+    isTrial: () => store.user()?.membershipStatus === 'TRIAL',
     trialEndsAtDate: () => store.user()?.trialEndsAt,
   })),
   withComputed(store => ({
