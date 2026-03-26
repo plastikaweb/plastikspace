@@ -30,7 +30,8 @@
       "dark": "Fosc",
       "system": "Sistema",
       "toggleAriaLabel": "Canviar el tema de la interfície a clar, fosc o de sistema",
-      "changedTo": "Tema de la interfície canviat a {theme}"
+      "changedTo": "Tema de la interfície canviat a {theme}",
+      "toggleTooltip": "Canviar el tema de la interfície"
     },
     "form": {
       "error": {
@@ -78,6 +79,7 @@
   },
   "auth": {
     "login": {
+      "back": "Tornar a la botiga",
       "title": "Inici de sessió",
       "subtitle": "Comunitat Cooperativa",
       "loading": "Iniciant sessió...",
@@ -480,6 +482,16 @@
       "TENANT_ADMIN": "Administrador",
       "TRIAL": "Prova fins {day}",
       "EXPIRED_TRIAL": "Prova finalitzada el {day}"
+    }
+  },
+  "shared": {
+    "translation": {
+      "selectLanguage": "Seleccionar idioma"
+    },
+    "language": {
+      "ca": "Català",
+      "es": "Castellà",
+      "en": "Anglès"
     }
   }
 }

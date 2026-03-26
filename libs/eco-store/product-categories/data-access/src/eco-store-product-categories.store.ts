@@ -5,13 +5,14 @@ import {
   withImmutableState,
 } from '@angular-architects/ngrx-toolkit';
 import { computed, effect, inject, isDevMode, untracked } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { tapResponse } from '@ngrx/operators';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { setAllEntities, withEntities } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { LocalizedFields } from '@plastik/core/entities';
-import { pipe, switchMap, tap } from 'rxjs';
+import { map, pipe, switchMap, tap } from 'rxjs';
 
 import {
   ProductCategory,
@@ -46,39 +47,46 @@ export const ecoStoreProductCategoriesStore = signalStore(
     _translateService: inject(TranslateService),
     _tenantStore: inject(ecoStoreTenantStore),
   })),
-  withComputed(({ entities, _translateService }) => ({
-    stats: entities,
-    groupedCategories: computed(() => {
-      const lang = _translateService.getCurrentLang();
-      const groups = new Map<
-        string,
-        {
-          group: ProductCategoryGroup;
-          categories: (ProductCategoryStats & { productCount: number })[];
-        }
-      >();
+  withComputed(({ entities, _translateService }) => {
+    const currentLang = toSignal(_translateService.onLangChange.pipe(map(event => event.lang)), {
+      initialValue: _translateService.getCurrentLang() || _translateService.getFallbackLang() || '',
+    });
 
-      entities().forEach(stat => {
-        const groupName =
-          typeof stat.groupName === 'string' ? stat.groupName : stat.groupName[lang];
-        if (!groups.has(groupName)) {
-          groups.set(groupName, {
-            group: { id: groupName, name: stat.groupName } as ProductCategoryGroup,
-            categories: [],
+    return {
+      currentLang,
+      stats: entities,
+      groupedCategories: computed(() => {
+        const lang = currentLang();
+        const groups = new Map<
+          string,
+          {
+            group: ProductCategoryGroup;
+            categories: (ProductCategoryStats & { productCount: number })[];
+          }
+        >();
+
+        entities().forEach(stat => {
+          const groupName =
+            typeof stat.groupName === 'string' ? stat.groupName : stat.groupName[lang];
+          if (!groups.has(groupName)) {
+            groups.set(groupName, {
+              group: { id: groupName, name: stat.groupName } as ProductCategoryGroup,
+              categories: [],
+            });
+          }
+          groups.get(groupName)?.categories.push({
+            ...stat,
+            productCount: stat.totalProducts,
           });
-        }
-        groups.get(groupName)?.categories.push({
-          ...stat,
-          productCount: stat.totalProducts,
         });
-      });
 
-      return Array.from(groups.values());
-    }),
-    totalProducts: computed(() => {
-      return entities().reduce((acc, stat) => acc + stat.totalProducts, 0);
-    }),
-  })),
+        return Array.from(groups.values());
+      }),
+      totalProducts: computed(() => {
+        return entities().reduce((acc, stat) => acc + stat.totalProducts, 0);
+      }),
+    };
+  }),
   withMethods(store => {
     const showErrorNotification = (error: ClientResponseError): void => {
       store._notification.show({
@@ -97,9 +105,9 @@ export const ecoStoreProductCategoriesStore = signalStore(
       if (typeof name === 'string') {
         return name;
       }
-      const currentLang: string = store._translateService.getCurrentLang();
+      const currentLangCode = store.currentLang();
       const localizedName: string | undefined =
-        name[currentLang as keyof LocalizedFields<string>] ?? name['ca'];
+        name[currentLangCode as keyof LocalizedFields<string>];
       if (!localizedName) {
         return store._translateService.instant('products.all');
       }

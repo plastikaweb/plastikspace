@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-26] - Eco-Store: Reactive Language Localization
+
+### Added
+
+- **Shared Translation Library**: Created a new `@plastik/shared/translation` library to centralize language management and switching logic ([#86c8cjgh7](https://app.clickup.com/t/86c8cjgh7)).
+  - Features: `LanguageSwitcherComponent` for UI and `LanguageSwitcherService` for state management.
+  - Implemented persistent language selection using `localStorage`.
+- **Reactive i18n**: Integrated `ngx-translate` with Angular Signals for reactive UI updates upon language change ([#86c8cjgh7](https://app.clickup.com/t/86c8cjgh7)).
+
+### Changed
+
+- **State Management**: Refactored `EcoStoreTenantStore` to use reactive signals derived from `TranslateService`, ensuring consistent localization across the application ([#86c8cjgh7](https://app.clickup.com/t/86c8cjgh7)).
+- **UI & Accessibility**:
+  - Modernized `LanguageSwitcherComponent` with Signal-based inputs and outputs.
+  - Updated `index.html` and `AppConfig` to support improved translation initialization.
+  - Comprehensive updates to Catalan and Spanish translations with new shared translation keys.
+- **Project Configuration**:
+  - Added path mapping for `@plastik/shared/translation` in `tsconfig.base.json`.
+  - Updated root and app-specific READMEs with a reference to the new translation library.
+
+### Fixed
+
+- **Language Initialization**: Resolved issues where the default language was incorrectly applied on initial load by implementing a robust detection strategy in `LanguageSwitcherService` ([#86c8cjgh7](https://app.clickup.com/t/86c8cjgh7)).
+- **Translation Consistency**: Manually synchronized English translations with the new shared translation keys found in Catalan and Spanish versions.
+
 ## [2026-03-25] - Eco-Store: Membership Status and Trial Periods
 
 ### Added

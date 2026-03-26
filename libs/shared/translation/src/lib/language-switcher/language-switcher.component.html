@@ -1,0 +1,33 @@
+<button
+  matIconButton
+  aria-haspopup="menu"
+  [matMenuTriggerFor]="menu"
+  [matTooltip]="'shared.translation.selectLanguage' | translate"
+  [attr.aria-label]="'shared.translation.selectLanguage' | translate">
+  <mat-icon>language</mat-icon>
+</button>
+
+<mat-menu #menu="matMenu">
+  @for (lang of languages(); track lang) {
+    <button mat-menu-item (click)="onSelect(lang)">
+      @let selected = lang === current();
+      <mat-icon
+        matMenuItemIcon
+        [class.text-on-surface-variant]="selected"
+        [class.opacity-100]="selected"
+        [class.text-on-surface]="!selected"
+        [class.opacity-0]="!selected">
+        check
+      </mat-icon>
+      <span
+        class="uppercase"
+        [class.font-bold]="selected"
+        [class.text-on-surface-variant]="selected"
+        [class.opacity-100]="selected"
+        [class.text-on-surface]="!selected"
+        [class.opacity-70]="!selected">
+        {{ lang }}
+      </span>
+    </button>
+  }
+</mat-menu>
