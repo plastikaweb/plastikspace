@@ -60,8 +60,19 @@ export const ecoStoreTenantStore = signalStore(
       initialValue: new Date(),
     });
 
+    const currentLang = toSignal(
+      store._translateService.onLangChange.pipe(map(event => event.lang)),
+      {
+        initialValue:
+          store._translateService.getCurrentLang() ||
+          store._translateService.getFallbackLang() ||
+          '',
+      }
+    );
+
     return {
       _now: nowSignal,
+      _currentLang: currentLang,
       closedReasonTranslated: computed(() => {
         const currentTenant = store.tenant();
         if (!currentTenant) {
@@ -74,8 +85,8 @@ export const ecoStoreTenantStore = signalStore(
           return null;
         }
 
-        const currentLanguage = store._translateService.getCurrentLang();
-        return closedReason?.[currentLanguage] || null;
+        const lang = currentLang();
+        return closedReason?.[lang] || null;
       }),
 
       tenantLegalAddress: computed(() => {
@@ -106,8 +117,8 @@ export const ecoStoreTenantStore = signalStore(
           return null;
         }
 
-        const currentLanguage = store._translateService.getCurrentLang();
-        return currentTenant.description?.[currentLanguage] || null;
+        const lang = currentLang();
+        return currentTenant.description?.[lang] || null;
       }),
     };
   }),

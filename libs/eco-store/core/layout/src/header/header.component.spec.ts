@@ -6,6 +6,7 @@ import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { CountdownService } from '@plastik/shared/countdown/util';
+import { LanguageSwitcherService } from '@plastik/shared/translation';
 import { axe } from 'vitest-axe';
 import { EcoHeaderComponent } from './header.component';
 
@@ -40,6 +41,13 @@ describe('HeaderComponent', () => {
       providers: [
         provideRouter([]),
         provideTranslateService(),
+        {
+          provide: LanguageSwitcherService,
+          useValue: {
+            init: vi.fn().mockReturnValue('en'),
+            save: vi.fn(),
+          },
+        },
         {
           provide: ecoStoreTenantStore,
           useValue: mockEcoStoreTenantStore,

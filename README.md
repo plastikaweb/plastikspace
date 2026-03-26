@@ -209,6 +209,7 @@ Reusable features and UI components.
 - [**pagination-util**](libs/shared/pagination/util/README.md)
 - [**sort-selector**](libs/shared/sort-selector/README.md)
 - [**shared-chip**](libs/shared/chip/ui/README.md)
+- [**translation**](libs/shared/translation/README.md)
 
 #### Utilities
 

@@ -1,14 +1,31 @@
 <button
-  mat-icon-button
+  matIconButton
+  aria-haspopup="menu"
   [attr.aria-label]="'common.theme.toggleAriaLabel' | translate"
+  [matTooltip]="'common.theme.toggleTooltip' | translate"
   [matMenuTriggerFor]="themeToggle">
   <mat-icon>{{ matThemeToggleService.selectedTheme().icon }}</mat-icon>
 </button>
 <mat-menu #themeToggle="matMenu">
   @for (theme of matThemeToggleService.getThemes(); track $index) {
     <button mat-menu-item (click)="matThemeToggleService.setTheme(theme.id)">
-      <mat-icon>{{ theme.icon }}</mat-icon>
-      <span>{{ theme.name | translate }}</span>
+      @let selected = theme.id === matThemeToggleService.selectedTheme().id;
+      <mat-icon
+        matMenuItemIcon
+        [class.text-on-surface-variant]="selected"
+        [class.opacity-100]="selected"
+        [class.text-on-surface]="!selected"
+        [class.opacity-70]="!selected"
+        >{{ theme.icon }}</mat-icon
+      >
+      <span
+        [class.font-bold]="selected"
+        [class.text-on-surface-variant]="selected"
+        [class.opacity-100]="selected"
+        [class.text-on-surface]="!selected"
+        [class.opacity-70]="!selected">
+        {{ theme.name | translate }}
+      </span>
     </button>
   }
 </mat-menu>

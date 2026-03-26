@@ -80,6 +80,18 @@
         <ng-content select="[secondaryMenu]" />
       </div>
 
+      @let languages = tenant()?.languages ?? [];
+      @if (languages.length > 1) {
+        @defer (on idle) {
+          <plastik-language-switcher
+            [languages]="languages"
+            [current]="currentLang() || ''"
+            (languageChange)="onLanguageChange($event)" />
+        } @placeholder {
+          <div class="bg-surface-variant h-8 animate-pulse rounded"></div>
+        }
+      }
+
       @defer (on idle) {
         <plastik-mat-theme-toggle></plastik-mat-theme-toggle>
       } @placeholder {

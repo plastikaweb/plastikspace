@@ -78,6 +78,7 @@
   },
   "auth": {
     "login": {
+      "back": "Volver a la tienda",
       "title": "Iniciar sesión",
       "subtitle": "Comunidad Cooperativa",
       "loading": "Iniciando sesión...",
@@ -452,12 +453,13 @@
       "pickup": "Recogida en la tienda"
     },
     "status": {
-      "delivered": "ENTREGADA",
+      "delivered": "ENTREGADO",
       "pending": "PENDIENTE",
-      "confirmed": "CONFIRMADA",
+      "confirmed": "CONFIRMADO",
+      "processing": "PROCESANDO",
       "preparing": "PREPARANDO",
-      "ready": "PREPARADO",
-      "cancelled": "CANCELADA"
+      "ready": "LISTO",
+      "cancelled": "CANCELADO"
     },
     "filter": {
       "all": "TODAS",
@@ -480,6 +482,16 @@
       "TENANT_ADMIN": "Administrador",
       "TRIAL": "Prueba hasta el {day}",
       "EXPIRED_TRIAL": "Prueba finalizada el {day}"
+    }
+  },
+  "shared": {
+    "translation": {
+      "selectLanguage": "Seleccionar idioma"
+    },
+    "language": {
+      "ca": "Catalán",
+      "es": "Castellano",
+      "en": "Inglés"
     }
   }
 }

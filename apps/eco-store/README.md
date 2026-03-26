@@ -11,6 +11,9 @@
   - [Architecture \& Libraries](#architecture--libraries)
     - [📦 Products \& Orders](#-products--orders)
     - [🚀 Core \& Shared](#-core--shared)
+  - [Theming \& Design](#theming--design)
+    - [🎨 Light \& Dark Modes](#-light--dark-modes)
+    - [🖋️ Editorial Typography](#️-editorial-typography)
   - [📖 Documentation](#-documentation)
 
 ## Description
@@ -55,6 +58,7 @@ The application is structured into domain-specific libraries:
 - [**Tenant**](../../libs/eco-store/core/tenant/README.md): Multi-tenancy resolution.
 - [**Auth**](../../libs/eco-store/auth/feature/login/README.md): Login and member authentication.
 - [**Shared UI**](../../libs/eco-store/shared/product-card/README.md): Cards, chips, and banners.
+- [**Translation**](../../libs/shared/translation/README.md): Centralized language management.
 
 ---
 
@@ -73,7 +77,7 @@ The application features a fully integrated Light and Dark mode experience, acce
 
 ### 🖋️ Editorial Typography
 
-A strong typographic hierarchy is maintained using **Manrope**, with specialized tracking and weights for "Editorial" components like category headers and order totals, ensuring legibility and character in any environment.
+A strong typographic hierarchy is maintained using **Manrope**, with specialized tracking and weights for "Editorial" components, ensuring legibility and character in any environment.
 
 ## 📖 Documentation
 

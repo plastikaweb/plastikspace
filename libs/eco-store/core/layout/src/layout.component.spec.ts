@@ -10,6 +10,7 @@ import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { CountdownService } from '@plastik/shared/countdown/util';
+import { LanguageSwitcherService } from '@plastik/shared/translation';
 import { axe } from 'vitest-axe';
 import { EcoFooterComponent } from './footer/footer.component';
 import { EcoHeaderComponent } from './header/header.component';
@@ -33,6 +34,13 @@ describe('LayoutComponent', () => {
         provideRouter([]),
         provideTranslateService(),
         ...provideEnvironmentPocketBaseTranslationMock(),
+        {
+          provide: LanguageSwitcherService,
+          useValue: {
+            init: vi.fn().mockReturnValue('en'),
+            save: vi.fn(),
+          },
+        },
         {
           provide: POCKETBASE_INSTANCE,
           useValue: mockPocketBase,

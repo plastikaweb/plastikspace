@@ -78,6 +78,7 @@
   },
   "auth": {
     "login": {
+      "back": "Go back to store",
       "title": "Login",
       "subtitle": "Cooperative Community",
       "loading": "Logging in...",
@@ -473,6 +474,16 @@
       "TENANT_ADMIN": "Admin",
       "TRIAL": "Trial until {day}",
       "EXPIRED_TRIAL": "Trial ended on {day}"
+    }
+  },
+  "shared": {
+    "translation": {
+      "selectLanguage": "Select language"
+    },
+    "language": {
+      "ca": "Catalan",
+      "es": "Spanish",
+      "en": "English"
     }
   }
 }

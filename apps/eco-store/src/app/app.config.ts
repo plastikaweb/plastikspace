@@ -66,7 +66,10 @@ export const appConfig: ApplicationConfig = {
       }),
       compiler: provideTranslateCompiler(TranslateFormatJsCompiler),
       fallbackLang: environment.defaultLanguage,
-      lang: environment.defaultLanguage,
+      lang:
+        (typeof window !== 'undefined' && localStorage.getItem('eco-lang')) ||
+        (typeof window !== 'undefined' && navigator.language.split('-')[0]) ||
+        environment.defaultLanguage,
     }),
     provideEcoStoreTenant,
     provideAppInitializer(async () => {

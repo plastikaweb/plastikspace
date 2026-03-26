@@ -1,10 +1,9 @@
-import { updateState } from '@angular-architects/ngrx-toolkit';
 import { computed, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { signalStore, withComputed, withMethods } from '@ngrx/signals';
 import { setEntity } from '@ngrx/signals/entities';
 import { TranslateService } from '@ngx-translate/core';
 import { BasePocketBaseEntityFilter, IdType, LocalizedFields } from '@plastik/core/entities';
-import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import {
   EcoStoreProduct,
   EcoStoreProductWithCategoryName as EcoStoreProductWithTranslatedText,
@@ -17,8 +16,9 @@ import {
   PocketBaseGetListState,
   withPocketBaseGet,
 } from '@plastik/signal-state/pocketbase';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 
+import { updateState } from '@angular-architects/ngrx-toolkit';
 import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 
 export interface ProductsPocketBaseFilter extends BasePocketBaseEntityFilter {
@@ -58,14 +58,21 @@ export const ecoStoreProductsStore = signalStore(
   withComputed(({ entities }) => {
     const categoriesStore = inject(ecoStoreProductCategoriesStore);
     const translateService = inject(TranslateService);
-    const environment = inject(POCKETBASE_WITH_TRANSLATION_ENVIRONMENT);
+
+    const currentLangSignal = toSignal(
+      translateService.onLangChange.pipe(map(event => event.lang)),
+      {
+        initialValue: translateService.getCurrentLang() || translateService.getFallbackLang() || '',
+      }
+    );
 
     return {
+      _currentLang: currentLangSignal,
       /** List of products with their name, description and features translated into the current language. */
       productsWithTranslatedText: computed<EcoStoreProductWithTranslatedText[]>(() => {
         const products = entities();
         const categories = categoriesStore.stats();
-        const currentLang = translateService.getCurrentLang() || environment.defaultLanguage;
+        const currentLang = currentLangSignal();
 
         // Pre-calculate category map for O(1) lookup during map
         const categoryMap = new Map(categories.map(cat => [cat.category, cat]));
@@ -134,7 +141,7 @@ export const ecoStoreProductsStore = signalStore(
         }
 
         const categories = categoriesStore.stats();
-        const currentLang = translateService.getCurrentLang() || environment.defaultLanguage;
+        const currentLang = currentLangSignal();
         const category = categories.find(
           cat => cat.category === product.category
         ) as ProductCategoryStats;

@@ -25,7 +25,7 @@ export abstract class EcoStoreTenantBaseService {
       return;
     }
 
-    const cacheKey = `eco-store-tenant-${slug}`;
+    const cacheKey = `eco-tenant-${slug}`;
     let cachedData: string | null = null;
 
     if (isPlatformBrowser(this.platformId)) {

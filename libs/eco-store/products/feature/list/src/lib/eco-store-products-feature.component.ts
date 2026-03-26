@@ -84,6 +84,7 @@ export default class EcoStoreProductsFeatureComponent {
   /** The current category information including translated name and icon. */
   readonly category = computed<(Pick<ProductCategory, 'icon'> & { name: string }) | null>(() => {
     const slug = this.categorySlug() ?? null;
+    this.#categoriesStore.currentLang();
     return this.#categoriesStore.getCategoryBySlug(slug, 'products.all');
   });
 
