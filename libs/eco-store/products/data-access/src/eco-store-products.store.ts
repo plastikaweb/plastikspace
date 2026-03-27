@@ -1,6 +1,6 @@
 import { computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { signalStore, withComputed, withMethods } from '@ngrx/signals';
+import { signalStore, withComputed, withMethods, withProps } from '@ngrx/signals';
 import { setEntity } from '@ngrx/signals/entities';
 import { TranslateService } from '@ngx-translate/core';
 import { BasePocketBaseEntityFilter, IdType, LocalizedFields } from '@plastik/core/entities';
@@ -19,6 +19,7 @@ import {
 import { firstValueFrom, map } from 'rxjs';
 
 import { updateState } from '@angular-architects/ngrx-toolkit';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { EcoStoreProductsApiService } from './eco-store-products-api.service';
 
 export interface ProductsPocketBaseFilter extends BasePocketBaseEntityFilter {
@@ -29,31 +30,35 @@ export interface ProductsPocketBaseGetListState extends PocketBaseGetListState {
   filter: ProductsPocketBaseFilter;
 }
 
+const customInitialState: Partial<ProductsPocketBaseGetListState> = {
+  paginationSizeOptions: [10, 20, 40],
+  pagination: {
+    page: 1,
+    perPage: 10,
+  },
+  filter: {
+    category: null,
+  },
+  sortOptions: {
+    ...initialGetListState().sortOptions,
+    priceWithIva: [
+      { id: 3, direction: 'desc', icon: 'arrow_downward' },
+      { id: 4, direction: 'asc', icon: 'arrow_upward' },
+    ],
+  },
+  apiRequestDebounceTime: 0,
+};
+
 export const ecoStoreProductsStore = signalStore(
   { providedIn: 'root' },
-  withPocketBaseGet<EcoStoreProduct, EcoStoreProductsApiService, ProductsPocketBaseGetListState>({
+  withPocketBaseGet<EcoStoreProduct, EcoStoreProductsApiService>({
     featureName: 'products',
     dataServiceType: EcoStoreProductsApiService,
-    autoLoad: false,
-    customInitialState: {
-      paginationSizeOptions: [10, 20, 40],
-      pagination: {
-        page: 1,
-        perPage: 10,
-      },
-      filter: {
-        category: null,
-      },
-      sortOptions: {
-        ...initialGetListState().sortOptions,
-        priceWithIva: [
-          { id: 3, direction: 'desc', icon: 'arrow_downward' },
-          { id: 4, direction: 'asc', icon: 'arrow_upward' },
-        ],
-      },
-      apiRequestDebounceTime: 0,
-    },
+    customInitialState,
   }),
+  withProps(() => ({
+    _tenantStore: inject(ecoStoreTenantStore),
+  })),
 
   withComputed(({ entities }) => {
     const categoriesStore = inject(ecoStoreProductCategoriesStore);

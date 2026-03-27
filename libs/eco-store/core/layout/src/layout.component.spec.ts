@@ -6,11 +6,15 @@ import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-ac
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import { CountdownService } from '@plastik/shared/countdown/util';
 import { LanguageSwitcherService } from '@plastik/shared/translation';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { axe } from 'vitest-axe';
 import { EcoFooterComponent } from './footer/footer.component';
 import { EcoHeaderComponent } from './header/header.component';
@@ -50,9 +54,14 @@ describe('LayoutComponent', () => {
           useValue: mockEcoStoreTenantStore,
         },
         {
+          provide: ecoStoreCartStore,
+          useValue: mockEcoStoreCartStore,
+        },
+        {
           provide: pocketBaseUserProfileStore,
           useValue: mockPocketBaseUserProfileStore,
         },
+        activityStore,
         {
           provide: CountdownService,
           useValue: {

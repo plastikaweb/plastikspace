@@ -1,32 +1,40 @@
 import { inject } from '@angular/core';
 import { signalStore, withMethods, withProps } from '@ngrx/signals';
-import { initialGetListState, withPocketBaseCrud } from '@plastik/signal-state/pocketbase';
+import {
+  initialGetListState,
+  PocketBaseGetListState,
+  withPocketBaseCrud,
+} from '@plastik/signal-state/pocketbase';
 
 import { Router } from '@angular/router';
-import { DataCrud } from '@plastik/core/api-base';
+import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { BasePocketBaseEntityFilter } from '@plastik/core/entities';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreOrder } from '@plastik/eco-store/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
-import { ListResult } from 'pocketbase';
 import { EcoStoreOrdersApiService } from './eco-store-orders-api.service';
 
-export type OrdersPocketBaseCrudState = DataCrud<EcoStoreOrder, ListResult<EcoStoreOrder>>;
-
-/**
- * Filter configuration for orders list.
- * Extends the base PocketBase entity filter with an optional status and product search (items).
- */
 export interface OrdersPocketBaseFilter extends BasePocketBaseEntityFilter {
   status: string | null;
   items: string | null;
 }
 
+export interface OrdersPocketBaseCrudState extends PocketBaseGetListState {
+  filter: OrdersPocketBaseFilter;
+}
+
 export const ecoStoreOrdersStore = signalStore(
-  { providedIn: 'root' },
-  withPocketBaseCrud<EcoStoreOrder, OrdersPocketBaseCrudState>({
+  withProps(() => ({
+    _cartStore: inject(ecoStoreCartStore),
+    _router: inject(Router),
+    _activityStore: inject(activityStore),
+    _profileStore: inject(pocketBaseUserProfileStore),
+  })),
+
+  withPocketBaseCrud<EcoStoreOrder, EcoStoreOrdersApiService>({
     featureName: 'orders',
     dataServiceType: EcoStoreOrdersApiService,
+    autoLoad: () => inject(pocketBaseUserProfileStore).isAuthenticated,
     customInitialState: {
       paginationSizeOptions: [10, 20, 40],
       pagination: {
@@ -46,13 +54,9 @@ export const ecoStoreOrdersStore = signalStore(
       },
       apiRequestDebounceTime: 0,
       isLoading: false,
+      loaded: false,
     },
   }),
-  withProps(() => ({
-    _cartStore: inject(ecoStoreCartStore),
-    _router: inject(Router),
-    _activityStore: inject(activityStore),
-  })),
 
   withMethods(store => {
     return {
@@ -63,7 +67,7 @@ export const ecoStoreOrdersStore = signalStore(
           const newOrder = await store.create(data, {}, { success: false, error: true });
 
           if (newOrder) {
-            store._cartStore.resetCartAfterCheckout();
+            store._cartStore.reset();
             await store._router.navigate(['/comandes', 'nova', newOrder.id]);
           }
         } finally {

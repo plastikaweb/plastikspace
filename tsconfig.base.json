@@ -274,7 +274,8 @@
       ],
       "@plastik/eco-store/no-results": ["libs/eco-store/shared/no-results/src/index.ts"],
       "@plastik/shared/util/highlight": ["libs/shared/util/highlight/src/index.ts"],
-      "@plastik/shared/translation": ["libs/shared/translation/src/index.ts"]
+      "@plastik/shared/translation": ["libs/shared/translation/src/index.ts"],
+      "@plastik/signal-state/reset": ["libs/shared/signal-state/data-reset/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

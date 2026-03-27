@@ -36,6 +36,7 @@ import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-acc
 import { getPocketBaseImageUrl } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
+import { withResetEntities } from '@plastik/signal-state/reset';
 import { catchError, firstValueFrom, of, take } from 'rxjs';
 import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
 
@@ -84,10 +85,10 @@ const initialState: EcoStoreCartState = {
 };
 
 export const ecoStoreCartStore = signalStore(
-  { providedIn: 'root' },
   isDevMode() ? withDevtools('cart') : withDevToolsStub('cart'),
   withImmutableState<EcoStoreCartState>(initialState),
   withEntities<EcoStoreCartItem>(),
+  withResetEntities('cart', { isSynced: true }),
   withProps(() => ({
     _userProfileStore: inject(pocketBaseUserProfileStore),
     _cartsService: inject(EcoStoreCartsApiService),
@@ -533,15 +534,6 @@ export const ecoStoreCartStore = signalStore(
           tax: store.tax(),
           total: store.total(),
         };
-      },
-
-      resetCartAfterCheckout() {
-        updateState(
-          store,
-          '[cart] reset after checkout',
-          state => ({ ...state, ...initialState, isSynced: true }),
-          removeAllEntities()
-        );
       },
     };
   }),

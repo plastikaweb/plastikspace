@@ -26,7 +26,7 @@
     >
   </eco-mobile-nav-item>
 
-  <eco-mobile-nav-item routerLink="/favorits" [label]="'store.menu.viewFavorites' | translate">
+  <eco-mobile-nav-item routerLink="/favorits" [label]="'store.menu.favorites' | translate">
     <mat-icon>favorite</mat-icon>
   </eco-mobile-nav-item>
 
@@ -49,4 +49,4 @@
   }
 </nav>
 
-<eco-user-menu #userMenuComponent (logoutEvent)="userProfileStore.logout()" />
+<eco-user-menu #userMenuComponent (logoutEvent)="logout()" />

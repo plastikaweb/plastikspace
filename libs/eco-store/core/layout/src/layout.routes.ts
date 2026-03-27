@@ -6,6 +6,8 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
 import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { BodyBackgroundService } from './body-background.service';
 import { EcoStoreLayoutService } from './eco-store-layout.service';
 import EcoLayoutComponent from './layout.component';
@@ -15,6 +17,8 @@ export const layoutRoutes: Route[] = [
     path: '',
     component: EcoLayoutComponent,
     providers: [
+      ecoStoreCartStore,
+      ecoStoreOrdersStore,
       provideEnvironmentInitializer(() => {
         inject(BodyBackgroundService);
         inject(EcoStoreLayoutService);

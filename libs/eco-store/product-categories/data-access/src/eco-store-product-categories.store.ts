@@ -29,16 +29,18 @@ import { EcoStoreProductCategoriesStatsService } from './eco-store-product-categ
 export interface ProductCategoriesState {
   isLoading: boolean;
   error: string | null;
+  loaded: boolean;
 }
 
 const initialState: ProductCategoriesState = {
   isLoading: false,
   error: null,
+  loaded: false,
 };
 
 export const ecoStoreProductCategoriesStore = signalStore(
   { providedIn: 'root' },
-  isDevMode() ? withDevtools('productsCategories') : withDevToolsStub('productsCategories'),
+  isDevMode() ? withDevtools('product-categories') : withDevToolsStub('product-categories'),
   withImmutableState<ProductCategoriesState>(initialState),
   withEntities<ProductCategoryStats>(),
   withProps(() => ({
@@ -137,6 +139,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
                       }),
                       {
                         isLoading: false,
+                        loaded: true,
                       }
                     );
                   },
@@ -193,7 +196,7 @@ export const ecoStoreProductCategoriesStore = signalStore(
     onInit(store) {
       effect(() => {
         const tenantLoaded = store._tenantStore.loaded();
-        if (tenantLoaded) {
+        if (tenantLoaded && !store.loaded()) {
           untracked(() => store.getStats());
         }
       });

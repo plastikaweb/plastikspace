@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-27] - Eco-Store: Implement Reset Entities and PocketBase Signal State Improvements
+
+### Added
+
+- **Signal State Reset Library**: Created `@plastik/signal-state/reset` to centralize store state resetting logic ([#86c8z1v9g](https://app.clickup.com/t/86c8z1v9g)).
+  - Features: `withResetEntities` signal store feature for complete state and entity removal.
+
+### Changed
+
+- **PocketBase Store Features**: Updated `withPocketBaseListFeature`, `withPocketBaseCrud`, and `withPocketBaseGet` to support an `autoLoad` parameter (boolean or function) and a `loaded` state flag ([#86c8z1v9g](https://app.clickup.com/t/86c8z1v9g)).
+- **Store Refactoring**:
+  - `ecoStoreCartStore`: Replaced manual reset logic with `withResetEntities`.
+  - `ecoStoreOrdersStore`: Integrated `withPocketBaseCrud` with `autoLoad` based on authentication state.
+- **UI Components**:
+  - `EcoMenuComponent` & `EcoMobileNavComponent`: Improved signal usage for cart data and modernized logout navigation logic.
+  - `useCartBumpAnimation`: Refactored to accept individual signals for better reactivity and reduced dependency on the full store.
+
 ## [2026-03-26] - CSS Compatibility: Fix Styles in Old Systems and Browsers
 
 ### Fixed
