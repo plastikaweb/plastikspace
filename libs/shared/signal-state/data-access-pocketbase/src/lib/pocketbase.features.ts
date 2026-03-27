@@ -17,7 +17,7 @@ import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { areObjectEntriesEqual } from '@plastik/shared/objects';
 import { ClientResponseError, ListResult } from 'pocketbase';
-import { distinctUntilChanged, pipe, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, filter, pipe, switchMap, tap } from 'rxjs';
 import {
   initialGetListState,
   PocketBaseGetListState,
@@ -44,11 +44,12 @@ export function withPocketBaseListFeature<
   featureName,
   dataServiceType,
   customInitialState = {},
+  autoLoad = true,
 }: {
   featureName: string;
   dataServiceType: Type<S>;
   customInitialState?: Partial<PocketBaseGetListState>;
-  autoLoad?: boolean;
+  autoLoad?: boolean | ((store: unknown) => boolean | (() => boolean));
 }) {
   const defaultState = initialGetListState(customInitialState);
 
@@ -86,8 +87,11 @@ export function withPocketBaseListFeature<
     withMethods(store => {
       return {
         getItemById: (id: IdType<T>) => store.entityMap()[id],
-        getList: rxMethod<{ params: ReturnType<typeof store.formattedParams> }>(
+        getList: rxMethod<{ params: ReturnType<typeof store.formattedParams> } | null>(
           pipe(
+            filter(
+              (val): val is { params: ReturnType<typeof store.formattedParams> } => val !== null
+            ),
             distinctUntilChanged((prev, curr) => {
               return areObjectEntriesEqual(prev.params, curr.params);
             }),
@@ -128,10 +132,17 @@ export function withPocketBaseListFeature<
 
     withHooks({
       onInit: store => {
+        const evalAutoLoad = typeof autoLoad === 'function' ? autoLoad(store) : autoLoad;
+
         store.getList(
-          computed(() => ({
-            params: store.formattedParams(),
-          }))
+          computed(() => {
+            if (evalAutoLoad) {
+              return {
+                params: store.formattedParams(),
+              };
+            }
+            return null;
+          })
         );
       },
     })

@@ -44,6 +44,9 @@
     },
     {
       "path": "../../../core/util/environments"
+    },
+    {
+      "path": "../../../shared/signal-state/data-reset"
     }
   ],
   "include": [

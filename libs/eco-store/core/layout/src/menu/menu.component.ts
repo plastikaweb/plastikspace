@@ -45,20 +45,18 @@ import { useCartBumpAnimation } from '../utils/cart-bump-animation.util';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoMenuComponent {
-  readonly router = inject(Router);
-  readonly cartStore = inject(ecoStoreCartStore);
-  readonly profileStore = inject(pocketBaseUserProfileStore);
-  readonly primaryMenu = viewChild.required<TemplateRef<unknown>>('primaryMenu');
-  readonly secondaryMenu = viewChild.required<TemplateRef<unknown>>('secondaryMenu');
-  readonly userMenuComponent = viewChild<EcoUserMenuComponent>('userMenuComponent');
+  readonly #router = inject(Router);
+  protected readonly cartStore = inject(ecoStoreCartStore);
+  protected readonly profileStore = inject(pocketBaseUserProfileStore);
+  protected readonly userMenuComponent = viewChild<EcoUserMenuComponent>('userMenuComponent');
 
   protected readonly currentUrl = toSignal(
-    this.router.events.pipe(
+    this.#router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(event => (event as NavigationEnd).urlAfterRedirects),
-      startWith(this.router.url)
+      startWith(this.#router.url)
     ),
-    { initialValue: this.router.url }
+    { initialValue: this.#router.url }
   );
 
   protected readonly roleIcon = computed(() => {
@@ -75,18 +73,22 @@ export class EcoMenuComponent {
     }
   });
 
-  protected readonly bumpAnimation = useCartBumpAnimation(this.cartStore);
+  protected readonly bumpAnimation = useCartBumpAnimation(
+    this.cartStore.subtotal,
+    this.cartStore.tax
+  );
+
+  readonly primaryMenu = viewChild.required<TemplateRef<unknown>>('primaryMenu');
+  readonly secondaryMenu = viewChild.required<TemplateRef<unknown>>('secondaryMenu');
 
   login() {
     if (!this.profileStore.isAuthenticated()) {
-      this.router.navigate(['/accedir']);
+      this.#router.navigate(['/accedir']);
     }
   }
 
   logout() {
     this.profileStore.logout();
-    if (!this.profileStore.isAuthenticated()) {
-      this.router.navigate(['/accedir']);
-    }
+    this.#router.navigate(['/accedir']);
   }
 }

@@ -3,7 +3,7 @@ import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
@@ -36,6 +36,15 @@ import { MobileNavItemComponent } from './mobile-nav-item.component';
 export class EcoMobileNavComponent {
   protected readonly userProfileStore = inject(pocketBaseUserProfileStore);
   protected readonly cartStore = inject(ecoStoreCartStore);
+  readonly #router = inject(Router);
+  protected readonly bumpAnimation = useCartBumpAnimation(
+    this.cartStore.subtotal,
+    this.cartStore.tax
+  );
   readonly userMenuComponent = viewChild.required<EcoUserMenuComponent>('userMenuComponent');
-  protected readonly bumpAnimation = useCartBumpAnimation(this.cartStore);
+
+  logout() {
+    this.userProfileStore.logout();
+    this.#router.navigate(['/accedir']);
+  }
 }

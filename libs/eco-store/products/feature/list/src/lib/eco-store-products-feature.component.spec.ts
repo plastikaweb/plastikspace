@@ -4,6 +4,10 @@ import { provideTranslateService } from '@ngx-translate/core';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
+import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
+import { mockEcoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { axe } from 'vitest-axe';
@@ -27,6 +31,14 @@ describe('EcoStoreProductsFeature', () => {
         {
           provide: ecoStoreTenantStore,
           useValue: mockEcoStoreTenantStore,
+        },
+        {
+          provide: ecoStoreCartStore,
+          useValue: mockEcoStoreCartStore,
+        },
+        {
+          provide: ecoStoreProductCategoriesStore,
+          useValue: mockEcoStoreProductCategoriesStore,
         },
       ],
     }).compileComponents();

@@ -1,12 +1,16 @@
 import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
+import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
+import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
+import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreOrder } from '@plastik/eco-store/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { of } from 'rxjs';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { EcoStoreOrdersApiService } from './eco-store-orders-api.service';
 import { ecoStoreOrdersStore } from './eco-store-orders.store';
 
@@ -55,7 +59,7 @@ describe('ecoStoreOrdersStore', () => {
       user: 'user-1',
       items: [],
     }),
-    resetCartAfterCheckout: vi.fn(),
+    reset: vi.fn(),
     isSyncing: signal(false),
     isSynced: signal(false),
   };
@@ -94,6 +98,14 @@ describe('ecoStoreOrdersStore', () => {
         {
           provide: POCKETBASE_INSTANCE,
           useValue: { autoCancellation: vi.fn(), send: vi.fn() },
+        },
+        {
+          provide: pocketBaseUserProfileStore,
+          useValue: mockPocketBaseUserProfileStore,
+        },
+        {
+          provide: POCKETBASE_ENVIRONMENT,
+          useValue: { production: false, environment: 'test' },
         },
         { provide: ecoStoreCartStore, useValue: mockCartStoreValue },
         { provide: activityStore, useValue: mockActivityStoreValue },
@@ -158,7 +170,7 @@ describe('ecoStoreOrdersStore', () => {
 
     it('should reset the cart after a successful order creation', async () => {
       await store.createOrder();
-      expect(mockCartStoreValue.resetCartAfterCheckout).toHaveBeenCalled();
+      expect(mockCartStoreValue.reset).toHaveBeenCalled();
     });
 
     it('should navigate to the order confirmation page with the new order ID', async () => {
@@ -178,7 +190,7 @@ describe('ecoStoreOrdersStore', () => {
 
       await store.createOrder();
 
-      expect(mockCartStoreValue.resetCartAfterCheckout).not.toHaveBeenCalled();
+      expect(mockCartStoreValue.reset).not.toHaveBeenCalled();
       expect(navigateSpy).not.toHaveBeenCalled();
       expect(mockActivityStoreValue.setActivity).toHaveBeenLastCalledWith(false);
     });

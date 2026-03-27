@@ -45,6 +45,7 @@ export interface PocketBaseGetListState {
   paginationSizeOptions: number[];
   sortOptions: SortMenuOptions;
   apiRequestDebounceTime: number;
+  loaded: boolean;
 }
 
 export const initialGetListState = (
@@ -71,6 +72,7 @@ export const initialGetListState = (
     ],
   },
   apiRequestDebounceTime: 0,
+  loaded: false,
   ...customInitialState,
 });
 

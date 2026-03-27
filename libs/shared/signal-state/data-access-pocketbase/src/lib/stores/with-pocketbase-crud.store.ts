@@ -11,12 +11,13 @@ import { withPocketBaseGetOneFeature, withPocketBaseListFeature } from '../pocke
 
 /**
  * @description Store feature for full CRUD operations with PocketBase. Use this when you need complete create, read, update, delete functionality.
- * @template T - The entity type.
- * @template S - The service type.
+ * @template {BasePocketBaseEntity<IdType<T>>} T - The entity type.
+ * @template {DataCrud<T, ListResult<T>, PocketBaseListParams>} S - The service type.
  * @param {object} root0 - Configuration object.
  * @param {string} root0.featureName - The name of the feature for DevTools.
  * @param {Type<S>} root0.dataServiceType - The service type for data operations.
  * @param {Partial<PocketBaseGetListState>} root0.customInitialState - Custom initial state for the store.
+ * @param {boolean | ((store: unknown) => boolean | (() => boolean))} root0.autoLoad - Whether to auto load the data.
  * @returns {SignalStoreFeature} A signal store feature with CRUD operations.
  */
 export function withPocketBaseCrud<
@@ -26,10 +27,12 @@ export function withPocketBaseCrud<
   featureName,
   dataServiceType,
   customInitialState,
+  autoLoad = true,
 }: {
   featureName: string;
   dataServiceType: Type<S>;
   customInitialState?: Partial<PocketBaseGetListState>;
+  autoLoad?: boolean | ((store: unknown) => boolean | (() => boolean));
 }) {
   return signalStoreFeature(
     isDevMode() ? withDevtools(featureName) : withDevToolsStub(featureName),
@@ -37,6 +40,7 @@ export function withPocketBaseCrud<
       featureName,
       dataServiceType,
       customInitialState,
+      autoLoad,
     }),
     withPocketBaseGetOneFeature<T, S>({ featureName }),
 

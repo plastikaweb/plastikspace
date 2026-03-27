@@ -24,6 +24,9 @@
     },
     {
       "path": "../../core/api/data-access"
+    },
+    {
+      "path": "../../../shared/signal-state/data-reset"
     }
   ],
   "compilerOptions": {

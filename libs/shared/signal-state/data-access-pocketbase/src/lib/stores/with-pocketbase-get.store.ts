@@ -32,7 +32,7 @@ export function withPocketBaseGet<
   featureName: string;
   dataServiceType: Type<S>;
   customInitialState: Partial<STATE>;
-  autoLoad?: boolean;
+  autoLoad?: boolean | ((store: unknown) => boolean | (() => boolean));
 }) {
   return signalStoreFeature(
     isDevMode() ? withDevtools(featureName) : withDevToolsStub(featureName),
