@@ -109,22 +109,38 @@ export const ecoStoreCartStore = signalStore(
       autoSync: false,
     })
   ),
-  withComputed(({ entities, entityMap }) => ({
-    itemsCount: computed(() => entities().length),
-    isEmpty: computed(() => entities().length === 0),
-    itemsDictionary: computed(() => entityMap()),
-    items: computed(() => entities()),
-    itemsGroupedByCategory: computed((): { category: string; items: EcoStoreCartItem[] }[] => {
-      const grouped = Object.groupBy(
-        entities(),
-        (item: EcoStoreCartItem) => item.product.categoryName
-      );
-      return Object.entries(grouped).map(([category, items]) => ({
-        category,
-        items: items as EcoStoreCartItem[],
-      }));
-    }),
-  })),
+  withComputed(({ entities, entityMap, method, address, day, time, _tenantStore }) => {
+    return {
+      itemsCount: () => entities().length,
+      isEmpty: () => entities().length === 0,
+      isShippingOk: () => {
+        const currentMethod = method();
+        const currentAddress = address();
+        if (!currentMethod || !currentAddress) return false;
+
+        const slotDays = _tenantStore.getTenantDeliveryOptionSlotsDays(
+          currentMethod,
+          currentAddress.id
+        );
+
+        if (slotDays.length > 0 && (!day() || !time())) return false;
+
+        return true;
+      },
+      itemsDictionary: () => entityMap(),
+      items: () => entities(),
+      itemsGroupedByCategory: (): { category: string; items: EcoStoreCartItem[] }[] => {
+        const grouped = Object.groupBy(
+          entities(),
+          (item: EcoStoreCartItem) => item.product.categoryName
+        );
+        return Object.entries(grouped).map(([category, items]) => ({
+          category,
+          items: items as EcoStoreCartItem[],
+        }));
+      },
+    };
+  }),
 
   withMethods(store => {
     const checkStoreStatus = (): boolean => {
@@ -152,6 +168,10 @@ export const ecoStoreCartStore = signalStore(
     };
 
     const _recalculatePrices = () => {
+      if (store.entities().length === 0) {
+        return store.reset();
+      }
+
       const { subtotal, tax, total } = calculatePricesState(store.entities(), store.shipping());
 
       updateState(store, '[cart] recalculate prices', state => ({

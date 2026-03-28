@@ -89,6 +89,7 @@
           type="button"
           routerLink="/cistella"
           class="cart-button flex items-center gap-2"
+          [disabled]="cartStore.isEmpty()"
           [routerLinkActive]="'active'"
           [aria-label]="
             'store.menu.viewCart'

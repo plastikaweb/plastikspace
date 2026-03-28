@@ -1,8 +1,10 @@
 <a
   matButton
+  type="button"
   class="py-7!"
   routerLinkActive="active"
   [routerLinkActiveOptions]="routerLinkActiveOptions()"
+  [disabled]="disabled()"
   [routerLink]="routerLink()">
   <div class="flex flex-col items-center justify-center">
     <ng-content></ng-content>

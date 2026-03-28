@@ -409,6 +409,12 @@
       "ordersHistory": "Historial de comandes",
       "backToStore": "Tornar a la botiga",
       "ecoBadgeAlt": "Segell de producte local i de proximitat"
+    },
+    "notLogged": {
+      "title": "Necessites autenticar-te",
+      "description": "Per continuar amb la teva comanda has d'iniciar sessió.",
+      "login": "Iniciar sessió",
+      "continueAsGuest": "Continuar com a convidat"
     }
   },
   "orders": {

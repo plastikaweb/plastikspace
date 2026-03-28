@@ -209,4 +209,42 @@ describe('ecoStoreCartStore', () => {
     expect(grouped[1].category).toBe('Category 2');
     expect(grouped[1].items[0].product.id).toBe('2');
   });
+
+  it('should return isShippingOk as true if method and address are set and no slots required', () => {
+    const store = setup();
+    const mockAddress = { id: 'addr1', name: 'Address 1' } as any;
+    const mockMethod = 'pickup' as any;
+
+    mockEcoStoreTenantStore.getTenantDeliveryOptionSlotsDays.mockReturnValue([]);
+
+    store.updateLogistics({ address: mockAddress, method: mockMethod });
+
+    expect(store.isShippingOk()).toBe(true);
+  });
+
+  it('should return isShippingOk as false if slots required but not set', () => {
+    const store = setup();
+    const mockAddress = { id: 'addr1', name: 'Address 1' } as any;
+    const mockMethod = 'delivery' as any;
+
+    mockEcoStoreTenantStore.getTenantDeliveryOptionSlotsDays.mockReturnValue(['monday']);
+
+    store.updateLogistics({ address: mockAddress, method: mockMethod });
+
+    expect(store.isShippingOk()).toBe(false);
+
+    store.updateLogistics({ day: 'monday' as any, time: { start: '08:00', end: '10:00' } as any });
+    expect(store.isShippingOk()).toBe(true);
+  });
+
+  it('should reset state when last item is removed', () => {
+    const store = setup();
+    store.addToCart(mockProduct, 1);
+    store.updateLogistics({ method: 'pickup' as any });
+    expect(store.method()).toBe('pickup');
+
+    store.removeFromCart(mockProduct.id);
+    expect(store.itemsCount()).toBe(0);
+    expect(store.method()).toBeNull();
+  });
 });

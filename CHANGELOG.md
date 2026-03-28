@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-03-28] - Eco-Store: Cart Navigation and Shipping Guards
+
+### Added
+
+- **Cart Guards**: Implemented new guards to ensure a smooth cart checkout flow ([#86c8ghha8](https://app.clickup.com/t/86c8ghha8)).
+  - `emptyCartGuard`: Automatically redirects the user to the store if the cart is empty.
+  - `shippingInfoGuard`: Ensures all required shipping information (address, method, day, time) is selected before proceeding to confirmation.
+  - `ecoStoreNotLoggedShippingGuard`: Prompt users to log in or continue as guest when accessing the shipping step.
+- **Localization**: Added `notLogged` translation keys for guest checkout prompts.
+
+### Changed
+
+- **ecoStoreCartStore**:
+  - Added `isShippingOk` computed signal to centralize shipping validation logic.
+  - Automated state reset when all items are removed from the cart.
+  - Updated `_recalculatePrices` to handle empty cart states using `withResetEntities`.
+- **UI Components**:
+  - `EcoMenuComponent` & `EcoMobileNavComponent`: The cart link and buttons are now disabled when the cart is empty, providing immediate visual feedback.
+  - Refined translucent background transparency in `_base.scss` and mobile navigation for better readability.
+- **Cart Logic**:
+  - `cartShippingResolver`: Refactored to use `take(1)` for consistent stream completion.
+  - `shippingAvailableGuard`: Integrated `take(1)` for cleaner lifecycle management.
+
 ## [2026-03-27] - Eco-Store: Implement Reset Entities and PocketBase Signal State Improvements
 
 ### Added

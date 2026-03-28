@@ -15,13 +15,16 @@
     <mat-icon>storefront</mat-icon>
   </eco-mobile-nav-item>
 
-  <eco-mobile-nav-item routerLink="/cistella" [label]="'store.menu.cart' | translate">
+  <eco-mobile-nav-item
+    routerLink="/cistella"
+    [class.disabled]="cartStore.isEmpty()"
+    [label]="'store.menu.cart' | translate"
+    [disabled]="cartStore.isEmpty()">
     <mat-icon
       aria-hidden="false"
       [class.bump]="bumpAnimation()"
       [attr.aria-label]="'store.menu.cart' | translate"
       [matBadge]="cartStore.itemsCount()"
-      [matBadgeHidden]="cartStore.isEmpty()"
       >shopping_cart</mat-icon
     >
   </eco-mobile-nav-item>
