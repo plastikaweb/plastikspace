@@ -4,7 +4,7 @@ import { ResolveFn } from '@angular/router';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-import { combineLatest, filter, first, map } from 'rxjs';
+import { combineLatest, filter, map, take } from 'rxjs';
 
 export const cartShippingResolver: ResolveFn<boolean> = () => {
   const userProfileStore = inject(pocketBaseUserProfileStore);
@@ -18,7 +18,7 @@ export const cartShippingResolver: ResolveFn<boolean> = () => {
 
   return combineLatest([userAddressesLoaded, tenantAddressesLoaded]).pipe(
     filter(([userLoaded, tenantLoaded]) => userLoaded && tenantLoaded),
-    map(() => true),
-    first()
+    take(1),
+    map(() => true)
   );
 };

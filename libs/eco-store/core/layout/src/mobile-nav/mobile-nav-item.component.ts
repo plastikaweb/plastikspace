@@ -15,6 +15,7 @@ export class MobileNavItemComponent {
   label = input<string>();
   routerLink = input<string>();
   active = input<boolean>(false);
+  disabled = input<boolean>(false);
   routerLinkActiveOptions = input<
     | {
         exact: boolean;

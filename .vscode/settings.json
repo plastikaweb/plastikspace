@@ -22,12 +22,6 @@
   "nxConsole.enableCodeLens": true,
   "nxConsole.enableTaskExecutionDryRunOnChange": false,
   "nxConsole.projectViewingStyle": "automatic",
-  "angular-schematics.schematicsDefaultOptions": {
-    "angular-*": {
-      "style": "scss",
-      "skipStyle": true
-    }
-  },
   "editor.formatOnSaveMode": "file",
   "typescript.tsserver.maxTsServerMemory": 4096,
   "typescript.tsserver.experimental.enableProjectDiagnostics": false,
@@ -112,16 +106,6 @@
     "**/coverage/**": true,
     "**/pocketbase/pb_data/**": true
   },
-  "jest.disabledWorkspaceFolders": [
-    "node_modules",
-    "dist",
-    "tmp",
-    ".nx/cache",
-    "vendor",
-    "pocketbase",
-    "coverage"
-  ],
-  "jest.runMode": "on-demand",
   "githubIssues.alwaysPromptForNewIssueRepo": true,
   "githubPullRequests.remotes": ["origin", "upstream", ""],
   "githubPullRequests.showPullRequestNumberInTree": true,
@@ -135,7 +119,7 @@
   "astro.updateImportsOnFileMove.enabled": true,
   "javascript.updateImportsOnPaste.enabled": true,
   "typescript.updateImportsOnPaste.enabled": true,
-  "workbench.productIconTheme": "material-product-icons",
+  "workbench.productIconTheme": "Default",
   "workbench.preferredDarkColorTheme": "Atom One Dark",
   "workbench.preferredHighContrastLightColorTheme": "Monokai Dimmed",
   "[jsonc]": {

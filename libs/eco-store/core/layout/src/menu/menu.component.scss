@@ -37,8 +37,8 @@
       container-size: 1.5rem,
       text-size: 0.85rem,
       line-height: 1.5rem,
-      background-color: light-dark(var(--tertiary-500), var(--tertiary-500)),
-      text-color: light-dark(var(--white), var(--white)),
+      background-color: var(--tertiary-500),
+      text-color: var(--white),
     )
   );
 
@@ -57,5 +57,15 @@
 
   &:hover mat-icon {
     transform: scale(1.1) rotate(-5deg);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    @include mat.badge-overrides(
+      (
+        background-color: light-dark(var(--neutral-200), var(--neutral-500)),
+      )
+    );
   }
 }
