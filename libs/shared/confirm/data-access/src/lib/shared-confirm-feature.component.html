@@ -1,15 +1,50 @@
-<div>
-  <p mat-dialog-title class="text-center md:text-left">{{ data.title | translate: data.params }}</p>
-  <div
-    mat-dialog-content
-    class="text-center md:text-left"
-    [innerHTML]="data.message | translate: data.params"></div>
-  <mat-dialog-actions class="flex flex-nowrap justify-center md:justify-end">
-    <button mat-button type="button" mat-dialog-close>
-      {{ data.ko | translate }}
-    </button>
-    <button mat-button type="button" mat-dialog-close="true" cdkFocusInitial>
-      {{ data.ok | translate }}
-    </button>
-  </mat-dialog-actions>
+<div
+  class="confirm-dialog-container bg-surface border-sys-primary/50 relative overflow-hidden rounded-2xl border border-y-1 border-r-1 border-l-20 shadow-2xl dark:border-white/10">
+  <!-- Left Accent Border (Bolder) - Overlapping the parent border for a clean full-green edge -->
+
+  <!-- Content Wrapper to ensure padding doesn't clash with the absolute bar -->
+  <div class="relative z-0">
+    <!-- Header with Icon and Title -->
+    <header
+      class="bg-surface-container-low border-outline-variant grid grid-cols-[32px_1fr] items-center gap-4 border-b px-6 py-5 pl-8">
+      <mat-icon
+        class="text-sys-primary top-0! size-10! overflow-visible! text-[40px]"
+        aria-hidden="true">
+        {{ icon() }}
+      </mat-icon>
+
+      <h2
+        mat-dialog-title
+        class="text-headline-small text-on-surface m-0 p-0! leading-tight font-bold text-balance">
+        {{ data.title | translate: data.params }}
+      </h2>
+    </header>
+
+    <!-- Message Content -->
+    <div
+      mat-dialog-content
+      class="text-body-large text-on-surface-variant px-6 py-8! pl-8! leading-relaxed"
+      [innerHTML]="data.message | translate: data.params"></div>
+
+    <!-- Actions -->
+    <mat-dialog-actions
+      class="bg-surface-container-lowest border-outline-variant flex min-h-auto flex-col-reverse gap-3 border-t px-6 py-5 pl-8! sm:flex-row sm:justify-end sm:gap-4">
+      <button
+        mat-button
+        type="button"
+        mat-dialog-close
+        class="w-full font-bold tracking-wide uppercase sm:w-auto">
+        {{ data.ko | translate }}
+      </button>
+      <button
+        mat-flat-button
+        color="primary"
+        type="button"
+        mat-dialog-close="true"
+        cdkFocusInitial
+        class="confirm-button w-full font-bold tracking-wide uppercase shadow-md transition-all duration-300 hover:scale-102 active:scale-98 sm:w-auto">
+        {{ data.ok | translate }}
+      </button>
+    </mat-dialog-actions>
+  </div>
 </div>
