@@ -16,10 +16,11 @@ export class SharedConfirmDialogService {
     message: string | SafeHtml,
     ko = 'Cancel',
     ok = 'Delete',
-    params?: Record<string, unknown>
+    params?: Record<string, unknown>,
+    icon?: string
   ): Observable<boolean> {
     const dialogRef = this.#dialog.open(SharedConfirmFeatureComponent, {
-      data: { title, message, ko, ok, params },
+      data: { title, message, ko, ok, params, icon },
     });
 
     return dialogRef.afterClosed().pipe(map(result => result || false));

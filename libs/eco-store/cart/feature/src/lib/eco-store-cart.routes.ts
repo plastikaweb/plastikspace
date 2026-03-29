@@ -3,7 +3,7 @@ import { Route } from '@angular/router';
 import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { cartShippingResolver } from './eco-store-cart-steps/shipping/cart-shipping.resolver';
 import { EcoStoreCartComponent } from './eco-store-cart/eco-store-cart.component';
-import { emptyCartGuard } from './guards/empty-card.guard';
+import { emptyCartGuard } from './guards/empty-cart.guard';
 import { isStoreOpenGuard } from './guards/is-store-open.guard';
 import { ecoStoreNotLoggedShippingGuard } from './guards/not-logged-shipping.guard';
 import { shippingAvailableGuard } from './guards/shipping-available.guard';
