@@ -2,9 +2,11 @@ import { ConfigOption, FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 
 /**
- * @description Register validators translate extension for Formly.
- * @param { TranslateService } translate TranslateService instance.
- * @returns { ConfigOption } ConfigOption.
+ * @description Register common validator translation messages for Formly.
+ * Requires @ngx-translate (eco-store). For LOCALE_ID-based apps (llecoop), use `registerValidatorsMessageExtension` instead.
+ * For auth-specific validators (password, passwordMatch, username), use `registerAuthValidatorsTranslateExtension`.
+ * @param {TranslateService} translate TranslateService instance.
+ * @returns {ConfigOption} ConfigOption with common validation messages.
  */
 export function registerValidatorsTranslateExtension(translate: TranslateService): ConfigOption {
   return {
@@ -59,12 +61,6 @@ export function registerValidatorsTranslateExtension(translate: TranslateService
         name: 'phone',
         message() {
           return translate.stream('common.form.error.phone');
-        },
-      },
-      {
-        name: 'username',
-        message() {
-          return translate.stream('common.form.error.invalid-username');
         },
       },
     ],

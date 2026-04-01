@@ -77,19 +77,48 @@
     }
   },
   "auth": {
-    "login": {
+    "common": {
       "back": "Volver a la tienda",
+      "slogan": "Comunidad Cooperativa",
+      "termsPrivacy": "Al continuar, aceptas nuestros Términos y Política de Privacidad.",
+      "title": "Tienda Eco"
+    },
+    "login": {
       "title": "Iniciar sesión",
-      "subtitle": "Comunidad Cooperativa",
-      "loading": "Iniciando sesión...",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "rememberMe": "Recordar sesión",
       "recoverAccess": "¿Has olvidado la contraseña?",
       "newUserQuestion": "¿Aún no eres socia?",
       "createAccount": "Si eres socia, regístrate aquí",
-      "submit": "Iniciar sesión",
-      "termsPrivacy": "Al continuar, aceptas nuestros Términos y Política de Privacidad."
+      "submit": "Iniciar sesión"
+    },
+    "forgotPassword": {
+      "title": "¿Has olvidado la contraseña?",
+      "description": "Escribe tu correo electrónico y te enviaremos un enlace para restablecerla.",
+      "email": "Correo electrónico",
+      "backToLogin": "Volver al inicio de sesión",
+      "submit": "Enviar"
+    },
+    "forgotPasswordSent": {
+      "title": "¡Correo enviado!",
+      "description": "Te hemos enviado un correo electrónico con las instrucciones para restablecer tu contraseña. Revisa tu bandeja de entrada.",
+      "checkSpam": "Si no lo recibes en unos minutos, revisa tu carpeta de correo no deseado (spam).",
+      "backToLogin": "Volver al inicio de sesión"
+    },
+    "resetPassword": {
+      "title": "Restablecer contraseña",
+      "description": "Escribe la nueva contraseña para tu cuenta.",
+      "passwordLabel": "Contraseña",
+      "passwordPlaceholder": "Contraseña",
+      "passwordConfirmLabel": "Confirmar contraseña",
+      "passwordConfirmPlaceholder": "Confirmar contraseña",
+      "passwordsDoNotMatch": "Las contraseñas no coinciden",
+      "passwordMatchError": "Las contraseñas no coinciden",
+      "submitButton": "Restablecer contraseña",
+      "successMessage": "Contraseña restablecida correctamente",
+      "errorMessage": "Error al restablecer la contraseña",
+      "errorInvalidToken": "Token de restablecimiento de contraseña inválido"
     },
     "error": {
       "login": "Revisa tus credenciales"
@@ -185,7 +214,7 @@
       "offer": "OFERTA"
     },
     "categories": {
-      "all": "Todas las categorías",
+      "all": "Todos las categorías",
       "error": "Ha ocurrido un error al cargar las categorías"
     },
     "filter": {

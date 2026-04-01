@@ -1,0 +1,20 @@
+{
+  "name": "eco-store-auth-feature-reset-password",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/auth/feature/reset-password/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["type:feature", "scope:eco-store"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../../../coverage/libs/eco-store/auth/feature/reset-password"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

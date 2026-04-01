@@ -7,7 +7,7 @@
     "inlineSources": true,
     "types": []
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/lib/login/eco-store-auth-login-facade.service.ts"],
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/*.test.ts",

@@ -1,0 +1,20 @@
+{
+  "name": "eco-store-auth-feature-container",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/auth/feature/container/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["type:feature", "scope:eco-store"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test",
+      "outputs": ["{options.reportsDirectory}"],
+      "options": {
+        "reportsDirectory": "../../../../../coverage/libs/eco-store/auth/feature/container"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

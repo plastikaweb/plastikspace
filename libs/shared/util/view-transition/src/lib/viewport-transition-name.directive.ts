@@ -2,7 +2,6 @@ import { Directive, ElementRef, inject, OnDestroy, OnInit, Renderer2 } from '@an
 
 @Directive({
   selector: '[plastikViewportTransitionName]',
-  standalone: true,
 })
 export class ViewportTransitionNameDirective implements OnInit, OnDestroy {
   private readonly el = inject(ElementRef);

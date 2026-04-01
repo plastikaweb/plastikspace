@@ -196,7 +196,6 @@
       "@plastik/eco-store/product-categories/data-access/testing": [
         "libs/eco-store/product-categories/data-access/src/eco-store-product-categories.store.mock.ts"
       ],
-      "@plastik/eco-store/formly": ["libs/eco-store/feature/formly/src/index.ts"],
       "@plastik/eco-store/products/data-access": [
         "libs/eco-store/products/data-access/src/index.ts"
       ],
@@ -275,7 +274,18 @@
       "@plastik/eco-store/no-results": ["libs/eco-store/shared/no-results/src/index.ts"],
       "@plastik/shared/util/highlight": ["libs/shared/util/highlight/src/index.ts"],
       "@plastik/shared/translation": ["libs/shared/translation/src/index.ts"],
-      "@plastik/signal-state/reset": ["libs/shared/signal-state/data-reset/src/index.ts"]
+      "@plastik/signal-state/reset": ["libs/shared/signal-state/data-reset/src/index.ts"],
+      "@plastik/eco-store/auth/container": ["libs/eco-store/auth/feature/container/src/index.ts"],
+      "@plastik/eco-store/auth/forgot-password": [
+        "libs/eco-store/auth/feature/forgot-password/src/index.ts"
+      ],
+      "@plastik/eco-store/auth/reset-password": [
+        "libs/eco-store/auth/feature/reset-password/src/index.ts"
+      ],
+      "@plastik/eco-store/auth/forgot-password-sent": [
+        "libs/eco-store/auth/feature/forgot-password-sent/src/index.ts"
+      ],
+      "@plastik/auth/config/util": ["libs/shared/auth/util/config/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

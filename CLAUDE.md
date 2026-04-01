@@ -9,7 +9,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 - For navigating/exploring the workspace, invoke the `nx-workspace` skill first - it has patterns for querying projects, targets, and dependencies
 - When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
-- Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
+- Prefix nx commands with the workspace's package manager (e.g., `yarn nx build`, `yarn nx test`) - avoids using globally installed CLI
 - You have access to the Nx MCP server and its tools, use them to help the user
 - For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
 - NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
@@ -240,8 +240,7 @@ nx test <lib-name>
 # Example: nx test core-util-api-http
 ```
 
-- Preset: `@nx/jest/preset`
-- Transform: `ts-jest`
+- Runner: `@analogjs/vitest-angular` via `@nx/vite` preset
 - Setup: `src/test-setup.ts` in each project
 - Coverage reports in `/coverage`
 
@@ -317,6 +316,16 @@ yarn i18n:test                       # Run i18n validation tests
 - Implement lazy loading for feature routes
 - Dedicated `*.routes.ts` file for each feature/scope as entrypoint
 - Use `providedIn: 'root'` for global services; provide component-specific services in component decorator
+- Guards are functional (`CanActivateFn`), not class-based
+- Resolvers load data before route activation; guards validate state/conditions
+- Guards run before resolvers — do not rely on resolver-loaded data inside a guard on the same route
+
+### RxJS / Signal Interop
+
+- Use `toSignal()` to convert Observables into signals for use in component templates
+- Use `toObservable()` to convert signals back to Observables for RxJS pipelines
+- Prefer `toSignal(obs$, { initialValue: ... })` to avoid `undefined` in strict templates
+- Use `takeUntilDestroyed()` (from `@angular/core/rxjs-interop`) instead of manual `ngOnDestroy` unsubscription
 
 ## Code Organization
 

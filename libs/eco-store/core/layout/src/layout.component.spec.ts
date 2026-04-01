@@ -8,10 +8,10 @@ import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { mockEcoStoreCartStore } from '@plastik/eco-store/cart/data-access/testing';
-import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { activityStore } from '@plastik/shared/activity/data-access';
+import { providePlainInputFormly } from '@plastik/shared/form/util';
 import { CountdownService } from '@plastik/shared/countdown/util';
 import { LanguageSwitcherService } from '@plastik/shared/translation';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
@@ -27,16 +27,11 @@ describe('LayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        EcoLayoutComponent,
-        EcoHeaderComponent,
-        EcoFooterComponent,
-        EcoMenuComponent,
-        EcoStoreFormlyModule,
-      ],
+      imports: [EcoLayoutComponent, EcoHeaderComponent, EcoFooterComponent, EcoMenuComponent],
       providers: [
         provideRouter([]),
         provideTranslateService(),
+        providePlainInputFormly(),
         ...provideEnvironmentPocketBaseTranslationMock(),
         {
           provide: LanguageSwitcherService,

@@ -6,9 +6,20 @@ export interface LoginData {
   password: string;
 }
 
+export interface RequestPasswordData {
+  email: string;
+}
+
+export interface ResetPasswordData {
+  password: string;
+  confirmPassword: string;
+  token: string;
+}
+
 export interface AuthFormFacade<T = LoginData> {
   formConfig: FormConfig<T>;
   extraLinks?: Signal<{ label: string; route: string }[]>;
+  isLoading?: Signal<boolean>;
   onSubmit(search: object): void;
 }
 

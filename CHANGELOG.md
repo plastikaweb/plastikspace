@@ -5,6 +5,40 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-01] - Eco-Store: Authentication Refactoring and Modernization
+
+### Added
+
+- **Modular Auth Features**: Refactored authentication into dedicated standalone feature libraries ([#86c8cjgmy](https://app.clickup.com/t/86c8cjgmy)).
+  - `@plastik/eco-store/auth/container`: Shared branded container for auth views.
+  - `@plastik/eco-store/auth/feature/login`: Refactored login with modern patterns.
+  - `@plastik/eco-store/auth/feature/forgot-password`: New password recovery request feature.
+  - `@plastik/eco-store/auth/feature/forgot-password-sent`: New confirmation view for recovery emails.
+  - `@plastik/eco-store/auth/feature/reset-password`: New secure password reset feature.
+- **Shared Form Providers**: Introduced specialized providers to simplify Formly configuration ([#86c8cjgmy](https://app.clickup.com/t/86c8cjgmy)).
+  - `providePlainInputFormly`: Registers standard input types and validation messages.
+  - `registerAuthValidatorsTranslateExtension`: Centralized translation for auth-specific validators.
+- **Form Configuration Utility**: Created `@plastik/shared/auth/util/config` to centralize auth form structures with full translation support.
+
+### Changed
+
+- **Modern Angular Adoption**: Updated all authentication components to use `inject()`, `signals`, and `ChangeDetectionStrategy.OnPush`.
+- **PocketBase Integration**:
+  - Refactored `PocketBaseAuthService` and `pocketBaseUserProfileStore` to use modern reactive patterns.
+  - Improved password reset logic with better error handling and signal-based loading states.
+  - Added `on_password_reset.pb.js` PocketBase hook to send branded, localized HTML emails for password recovery.
+- **UI/UX Refinement**:
+  - Standardized all auth views to use the new `EcoStoreAuthContainerComponent`.
+  - Improved form validation feedback with immediate error visibility.
+  - Refined "Back to Store" navigation for PWA standalone mode.
+- **Documentation**: Comprehensive updates to README files and JSDoc documentation across authentication and form utility libraries.
+- **Localization**: Added missing translation keys for password validation and recovery flows in English, Spanish, and Catalan.
+
+### Fixed
+
+- **Validation Translations**: Resolved issues where password mismatch errors were displayed as untranslated keys by aligning validator return values with Formly's translation mechanism ([#86c8cjgmy](https://app.clickup.com/t/86c8cjgmy)).
+- **Type Safety**: Improved `ResetPasswordData` and `LoginData` interfaces for better consistency across the auth stack.
+
 ## [2026-03-28] - Eco-Store: Cart Navigation and Shipping Guards
 
 ### Added

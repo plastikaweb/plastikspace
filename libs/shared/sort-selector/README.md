@@ -25,7 +25,6 @@ import { SortMenuOptions, SortConfig } from '@plastik/core/entities';
 import { SortSelectorComponent } from '@plastik/shared/sort-selector';
 
 @Component({
-  standalone: true,
   imports: [SortSelectorComponent],
   template: `
     <plastik-sort-selector

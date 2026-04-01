@@ -79,7 +79,6 @@ describe('PwaNavigationService', () => {
     const navigatorSpy = vi.spyOn(window, 'navigator', 'get');
     navigatorSpy.mockReturnValue({
       ...originalNavigator,
-      standalone: true,
     } as any);
 
     service = TestBed.inject(PwaNavigationService);

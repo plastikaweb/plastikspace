@@ -23,5 +23,9 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts"
   ],
-  "include": ["src/**/*.ts", "../../../../../apps/llecoop/src/app/isLogged.guard.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../../../../../apps/llecoop/src/app/isLogged.guard.ts",
+    "../../util/login/src/login-form.config.ts"
+  ]
 }

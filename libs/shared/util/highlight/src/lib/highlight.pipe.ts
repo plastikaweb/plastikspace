@@ -4,7 +4,6 @@ import { latinize } from '@plastik/shared/latinize';
 
 @Pipe({
   name: 'highlight',
-  standalone: true,
 })
 export class HighlightPipe implements PipeTransform {
   readonly #sanitizer: DomSanitizer = inject(DomSanitizer);

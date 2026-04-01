@@ -54,11 +54,8 @@ export const llecoopProfileStore = signalStore(
             tapResponse({
               next: user => {
                 updateState(store, `[profile] get user`, { user });
-                store._activityStore.setActivity(false);
               },
               error: error => {
-                store._activityStore.setActivity(false);
-
                 if (store._activeConnection()) {
                   store._storeNotificationService.create(
                     `No s'ha pogut carregar el perfil: ${error}`,
@@ -66,6 +63,7 @@ export const llecoopProfileStore = signalStore(
                   );
                 }
               },
+              finalize: () => store._activityStore.setActivity(false),
             })
           );
         })

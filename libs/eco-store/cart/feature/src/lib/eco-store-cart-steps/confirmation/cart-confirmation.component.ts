@@ -9,7 +9,6 @@ import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { TextAreaWithCounterFormlyModule } from '@plastik/shared/form/textarea-with-counter';
-import { ViewTransitionService } from '@plastik/shared/util/view-transition';
 import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
 import { CartProductCardComponent } from '../../ui/cart-product-card/cart-product-card.component';
 import {
@@ -37,7 +36,6 @@ export class CartConfirmationComponent {
   protected readonly cartStore = inject(ecoStoreCartStore);
   protected readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly formConfig = getCartConfirmationFormConfig();
-  protected readonly viewTransitionService = inject(ViewTransitionService);
   readonly #ordersStore = inject(ecoStoreOrdersStore);
 
   /**

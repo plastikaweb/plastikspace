@@ -1,10 +1,11 @@
 import { Route } from '@angular/router';
-import { FORM_TOKEN } from '@plastik/core/entities';
+import { AUTH_FORM_FACADE, AUTH_SERVICE } from '@plastik/auth/entities';
 import { AuthFeatureComponent } from '@plastik/auth/feature';
-import { AUTH_SERVICE, AUTH_FORM_FACADE } from '@plastik/auth/entities';
-import { LoginFacadeService } from './login-facade.service';
-import { loginFormConfig } from './login-form.config';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
+import { loginFormConfig } from '@plastik/auth/config/util';
+import { FORM_TOKEN } from '@plastik/core/entities';
+import { providePasswordWithVisibilityFormly } from '@plastik/shared/form/password';
+import { LoginFacadeService } from './login-facade.service';
 
 export const firebaseAuthLoginFeatureRoutes: Route[] = [
   {
@@ -23,6 +24,7 @@ export const firebaseAuthLoginFeatureRoutes: Route[] = [
         provide: FORM_TOKEN,
         useFactory: loginFormConfig,
       },
+      providePasswordWithVisibilityFormly(),
     ],
   },
 ];
