@@ -5,7 +5,6 @@ import { ViewportTransitionNameDirective } from './viewport-transition-name.dire
 
 @Component({
   template: `<div plastikViewportTransitionName></div>`,
-  standalone: true,
   imports: [ViewportTransitionNameDirective],
 })
 class TestComponent {}

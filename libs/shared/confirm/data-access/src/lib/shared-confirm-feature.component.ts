@@ -9,7 +9,8 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { TranslateModule } from '@ngx-translate/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'plastik-shared-confirm-feature',
@@ -22,6 +23,14 @@ import { TranslateModule } from '@ngx-translate/core';
   },
 })
 export class SharedConfirmFeatureComponent {
-  data = inject(DIALOG_DATA);
-  icon = computed(() => this.data.icon || 'help_outline');
+  readonly #translate = inject(TranslateService);
+  readonly #sanitizer = inject(DomSanitizer);
+  protected readonly data = inject(DIALOG_DATA);
+
+  protected readonly icon = computed(() => this.data.icon || 'help_outline');
+
+  protected readonly message = computed(() => {
+    const translated = this.#translate.instant(this.data.message, this.data.params);
+    return this.#sanitizer.bypassSecurityTrustHtml(translated);
+  });
 }

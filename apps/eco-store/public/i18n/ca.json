@@ -78,10 +78,14 @@
     }
   },
   "auth": {
-    "login": {
+    "common": {
       "back": "Tornar a la botiga",
+      "slogan": "Comunitat Cooperativa",
+      "termsPrivacy": "En continuar, acceptes els nostres Termes i Política de Privadesa.",
+      "title": "Botiga Eco"
+    },
+    "login": {
       "title": "Inici de sessió",
-      "subtitle": "Comunitat Cooperativa",
       "loading": "Iniciant sessió...",
       "email": "Correu electrònic",
       "password": "Contrasenya",
@@ -89,8 +93,36 @@
       "recoverAccess": "Has oblidat la contrasenya?",
       "newUserQuestion": "Encara no ets sòcia?",
       "createAccount": "Si ets sòcia, registra't aquí",
-      "submit": "Iniciar sessió",
-      "termsPrivacy": "En continuar, acceptes els nostres Termes i Política de Privadesa."
+      "submit": "Iniciar sessió"
+    },
+    "forgotPassword": {
+      "title": "Has oblidat la contrasenya?",
+      "description": "Escriu el teu correu electrònic i t'enviarem un enllaç per restablir-la.",
+      "loading": "Enviant enllaç...",
+      "email": "Correu electrònic",
+      "backToLogin": "Tornar a l''inici de sessió",
+      "submit": "Enviar enllaç"
+    },
+    "forgotPasswordSent": {
+      "title": "Correu de recuperació enviat!",
+      "description": "T'hem enviat un correu electrònic amb les instruccions per restablir la teva contrasenya.",
+      "checkSpam": "Si no el reps en uns minuts, revisa la teva carpeta de correu brossa (spam).",
+      "backToLogin": "Tornar a l'inici de sessió"
+    },
+    "resetPassword": {
+      "title": "Restablir contrasenya",
+      "description": "Escriu la nova contrasenya per al teu compte.",
+      "passwordLabel": "Nova contrasenya",
+      "passwordPlaceholder": "Nova contrasenya",
+      "passwordConfirmLabel": "Confirmar contrasenya",
+      "passwordConfirmPlaceholder": "Confirmar contrasenya",
+      "passwordsDoNotMatch": "Les contrasenyes no coincideixen",
+      "submitButton": "Restablir contrasenya",
+      "success": "Contrasenya restablerta correctament. Pots tornar a iniciar sessió.",
+      "error": "Error en restablir la contrasenya. Torna a provar-ho.",
+      "passwordError": "La contrasenya ha de tenir almenys 8 caràcters",
+      "passwordMatchError": "Les contrasenyes no coincideixen",
+      "errorInvalidToken": "Token de restabliment de contrasenya invàlid"
     },
     "error": {
       "login": "Revisa les teves credencials"

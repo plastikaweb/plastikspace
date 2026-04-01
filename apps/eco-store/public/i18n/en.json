@@ -77,19 +77,48 @@
     }
   },
   "auth": {
-    "login": {
+    "common": {
       "back": "Go back to store",
+      "slogan": "Cooperative Community",
+      "termsPrivacy": "By continuing, you agree to our Terms and Privacy Policy.",
+      "title": "Eco Store"
+    },
+    "login": {
       "title": "Login",
-      "subtitle": "Cooperative Community",
-      "loading": "Logging in...",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember me",
       "recoverAccess": "Forgot password?",
       "newUserQuestion": "Not a member yet?",
       "createAccount": "If you are a member, register here",
-      "submit": "Login",
-      "termsPrivacy": "By continuing, you agree to our Terms and Privacy Policy."
+      "submit": "Login"
+    },
+    "forgotPassword": {
+      "title": "Forgot your password?",
+      "description": "Enter your email address and we'll send you a link to reset it.",
+      "email": "Email",
+      "backToLogin": "Back to login",
+      "submit": "Send"
+    },
+    "forgotPasswordSent": {
+      "title": "Email sent!",
+      "description": "We've sent you an email with instructions on how to reset your password. Check your inbox.",
+      "checkSpam": "If you don't receive it within a few minutes, check your spam folder.",
+      "backToLogin": "Back to login"
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "description": "Enter the new password for your account.",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "Password",
+      "passwordConfirmLabel": "Confirm password",
+      "passwordConfirmPlaceholder": "Confirm password",
+      "passwordsDoNotMatch": "Passwords do not match",
+      "passwordMatchError": "Passwords do not match",
+      "submitButton": "Reset password",
+      "successMessage": "Password reset successfully",
+      "errorMessage": "Error resetting password",
+      "errorInvalidToken": "Invalid password reset token"
     },
     "error": {
       "login": "Check your credentials"

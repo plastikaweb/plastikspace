@@ -6,7 +6,7 @@ import {
 } from '@angular-architects/ngrx-toolkit';
 import { inject, isDevMode } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
-import { LoginData } from '@plastik/auth/entities';
+import { LoginData, RequestPasswordData, ResetPasswordData } from '@plastik/auth/entities';
 import { PocketBaseUser, PocketBaseUserAddress, UserContact } from '@plastik/core/entities';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { PocketBaseUserAddressService } from '@plastik/shared/pocketbase-user-addresses';
@@ -95,6 +95,36 @@ export const pocketBaseUserProfileStore = signalStore(
       } catch (error) {
         updateState(store, `[profile] login failed ${error}`, { isLoading: false });
         store._notificationService.create('auth.error.login', 'ERROR');
+      }
+    },
+
+    async requestPassword(data: RequestPasswordData): Promise<void> {
+      updateState(store, `[profile] reset password in process`, { isLoading: true });
+
+      try {
+        await store._authService.requestPassword(data.email);
+        updateState(store, `[profile] reset password success`, { isLoading: false });
+      } catch (error) {
+        updateState(store, `[profile] reset password failed ${error}`, { isLoading: false });
+      }
+    },
+
+    async resetPassword(data: ResetPasswordData): Promise<boolean> {
+      updateState(store, `[profile] confirm password reset in process`, { isLoading: true });
+
+      try {
+        await store._authService.confirmPasswordReset(
+          data.token,
+          data.password,
+          data.confirmPassword
+        );
+        updateState(store, `[profile] confirm password reset success`, { isLoading: false });
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] confirm password reset failed ${error}`, {
+          isLoading: false,
+        });
+        return false;
       }
     },
 

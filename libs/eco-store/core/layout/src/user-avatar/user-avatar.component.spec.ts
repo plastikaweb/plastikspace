@@ -9,7 +9,6 @@ import { EcoUserAvatarComponent } from './user-avatar.component';
 @Component({
   selector: 'plastik-img-container',
   template: '',
-  standalone: true,
 })
 /* eslint-enable @angular-eslint/component-selector */
 class MockSharedImgContainerComponent {

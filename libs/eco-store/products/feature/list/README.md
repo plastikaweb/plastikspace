@@ -11,6 +11,7 @@
   - [Usage](#usage)
   - [API Reference](#api-reference)
     - [`EcoStoreProductsFeature`](#ecostoreproductsfeature)
+  - [View Transitions](#view-transitions)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
@@ -46,7 +47,6 @@ import { EcoStoreProductsFeature } from '@plastik/eco-store/products/feature';
 
 @Component({
   selector: 'app-shop-page',
-  standalone: true,
   imports: [EcoStoreProductsFeature],
   template: `
     <header>

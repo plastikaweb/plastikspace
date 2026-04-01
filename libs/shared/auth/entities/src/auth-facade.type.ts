@@ -10,6 +10,11 @@ export interface AuthFacade {
     name: string
   ) => Observable<unknown> | Promise<unknown>;
   requestPassword: (email: string) => Observable<unknown> | Promise<unknown>;
+  confirmPasswordReset?: (
+    token: string,
+    password: string,
+    passwordConfirm: string
+  ) => Observable<unknown> | Promise<unknown>;
   login: (email: string, password: string) => Observable<unknown> | Promise<unknown>;
   logout: () => Observable<void> | Promise<void> | void;
 }

@@ -1,6 +1,5 @@
-import { importProvidersFrom } from '@angular/core';
 import { Route } from '@angular/router';
-import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
+import { provideEcoStoreCartFormly } from './eco-store-cart-formly.providers';
 import { cartShippingResolver } from './eco-store-cart-steps/shipping/cart-shipping.resolver';
 import { EcoStoreCartComponent } from './eco-store-cart/eco-store-cart.component';
 import { emptyCartGuard } from './guards/empty-cart.guard';
@@ -15,7 +14,7 @@ export const ecoStoreCartRoutes: Route[] = [
     path: '',
     component: EcoStoreCartComponent,
     canActivateChild: [emptyCartGuard],
-    providers: [importProvidersFrom(EcoStoreFormlyModule)],
+    providers: [provideEcoStoreCartFormly()],
     resolve: { addresses: cartShippingResolver },
     children: [
       {

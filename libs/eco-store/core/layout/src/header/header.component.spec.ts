@@ -1,10 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
+import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
 import { FormConfig } from '@plastik/core/entities';
-import { EcoStoreFormlyModule } from '@plastik/eco-store/formly';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { providePlainInputFormly } from '@plastik/shared/form/util';
 import { CountdownService } from '@plastik/shared/countdown/util';
 import { LanguageSwitcherService } from '@plastik/shared/translation';
 import { axe } from 'vitest-axe';
@@ -37,10 +38,12 @@ describe('HeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [EcoHeaderComponent, EcoStoreFormlyModule],
+      imports: [EcoHeaderComponent],
       providers: [
         provideRouter([]),
         provideTranslateService(),
+        providePlainInputFormly(),
+        ...provideEnvironmentPocketBaseTranslationMock(),
         {
           provide: LanguageSwitcherService,
           useValue: {

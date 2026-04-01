@@ -1,1 +1,1 @@
-export * from './lib/password-with-visibility-formly.module';
+export * from './lib/provide-password-with-visibility-formly';

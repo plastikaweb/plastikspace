@@ -24,5 +24,8 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts"
   ],
-  "include": ["src/**/*.ts"]
+  "include": [
+    "src/**/*.ts",
+    "../ui/input-password-with-visibility/src/lib/provide-password-with-visibility-formly.ts"
+  ]
 }

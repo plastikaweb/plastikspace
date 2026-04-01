@@ -23,5 +23,5 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts"
   ],
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/lib/provide-password-with-visibility-formly.ts"]
 }
