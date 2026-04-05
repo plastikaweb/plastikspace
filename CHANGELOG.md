@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-05] - Eco-Store: Trial Period Expiration Guard
+
+### Added
+
+- **Trial Expired Guard**: Implemented a new guard to prevent checkout when the user's trial has expired, redirecting them to their profile to formalize membership ([#86c93cga0](https://app.clickup.com/t/86c93cga0)).
+- **Checkout Protection**: Integrated the trial expiration check into shipping and confirmation steps of the cart checkout flow ([#86c93cga0](https://app.clickup.com/t/86c93cga0)).
+
 ## [2026-04-01] - Eco-Store: Authentication Refactoring and Modernization
 
 ### Added
