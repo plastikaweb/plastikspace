@@ -8,6 +8,7 @@ import { ecoStoreNotLoggedShippingGuard } from './guards/not-logged-shipping.gua
 import { shippingAvailableGuard } from './guards/shipping-available.guard';
 import { shippingInfoGuard } from './guards/shipping-info.guard';
 import { shippingUnavailableGuard } from './guards/shipping-unavailable.guard';
+import { ecoStoreTrialExpiredGuard } from './guards/trial-expired.guard';
 
 export const ecoStoreCartRoutes: Route[] = [
   {
@@ -28,7 +29,12 @@ export const ecoStoreCartRoutes: Route[] = [
       {
         path: 'enviament',
         title: 'cart.shipping.headTitle',
-        canActivate: [ecoStoreNotLoggedShippingGuard, shippingAvailableGuard, isStoreOpenGuard],
+        canActivate: [
+          ecoStoreNotLoggedShippingGuard,
+          shippingAvailableGuard,
+          isStoreOpenGuard,
+          ecoStoreTrialExpiredGuard,
+        ],
         loadComponent: () =>
           import('./eco-store-cart-steps/shipping/cart-shipping.component').then(
             m => m.CartShippingComponent
@@ -42,6 +48,7 @@ export const ecoStoreCartRoutes: Route[] = [
           shippingAvailableGuard,
           isStoreOpenGuard,
           shippingInfoGuard,
+          ecoStoreTrialExpiredGuard,
         ],
         loadComponent: () =>
           import('./eco-store-cart-steps/confirmation/cart-confirmation.component').then(
