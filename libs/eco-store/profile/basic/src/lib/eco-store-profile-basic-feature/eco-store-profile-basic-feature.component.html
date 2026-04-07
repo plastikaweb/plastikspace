@@ -1,0 +1,6 @@
+<plastik-shared-form-feature
+  [fields]="formConfig.getConfig()"
+  [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
+  [model]="model()"
+  (changeEvent)="onSubmit($event)">
+</plastik-shared-form-feature>

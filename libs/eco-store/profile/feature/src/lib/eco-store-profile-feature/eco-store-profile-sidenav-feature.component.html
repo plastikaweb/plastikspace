@@ -1,0 +1,79 @@
+<mat-card appearance="filled" class="overflow-hidden pt-4 pb-4 md:pt-0!">
+  <mat-card-content class="overflow-y-auto">
+    <nav [attr.aria-label]="'profile.navigation' | translate">
+      <mat-nav-list role="list">
+        <div
+          class="text-sys-tertiary mt-4 mb-1 px-4 text-[11px] font-bold tracking-widest uppercase">
+          Perfil
+        </div>
+
+        <mat-list-item
+          class="my-1"
+          role="listitem"
+          routerLinkActive="active"
+          [routerLink]="['/', 'perfil', 'dades-personals']"
+          [attr.aria-current]="currentUrl().includes('/perfil/dades-personals') ? 'page' : null">
+          <div class="flex w-full items-center gap-2">
+            <mat-icon aria-hidden="true" class="scale-90">badge</mat-icon>
+            <span matListItemTitle class="flex-1 truncate text-sm">Dades personals</span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item
+          class="my-1"
+          role="listitem"
+          routerLinkActive="active"
+          [routerLink]="['/', 'perfil', 'avatar']"
+          [attr.aria-current]="currentUrl().includes('/perfil/avatar') ? 'page' : null">
+          <div class="flex w-full items-center gap-2">
+            <mat-icon aria-hidden="true" class="scale-90">account_circle</mat-icon>
+            <span matListItemTitle class="flex-1 truncate text-sm">Avatar</span>
+          </div>
+        </mat-list-item>
+
+        <div
+          class="text-sys-tertiary mt-4 mb-1 px-4 text-[11px] font-bold tracking-widest uppercase">
+          Configuració
+        </div>
+
+        <mat-list-item
+          class="my-1"
+          role="listitem"
+          routerLinkActive="active"
+          [routerLink]="['/', 'perfil', 'adreces']"
+          [attr.aria-current]="currentUrl().includes('/perfil/adreces') ? 'page' : null">
+          <div class="flex w-full items-center gap-2">
+            <mat-icon aria-hidden="true" class="scale-90">location_on</mat-icon>
+            <span matListItemTitle class="flex-1 truncate text-sm">Adreces</span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item
+          class="my-1"
+          role="listitem"
+          routerLinkActive="active"
+          [routerLink]="['/', 'perfil', 'seguretat']"
+          [attr.aria-current]="currentUrl().includes('/perfil/seguretat') ? 'page' : null">
+          <div class="flex w-full items-center gap-2">
+            <mat-icon aria-hidden="true" class="scale-90">security</mat-icon>
+            <span matListItemTitle class="flex-1 truncate text-sm">Accés i seguretat</span>
+          </div>
+        </mat-list-item>
+
+        <mat-divider class="my-4"></mat-divider>
+
+        <mat-list-item
+          class="text-error my-1"
+          role="listitem"
+          routerLinkActive="active"
+          [routerLink]="['/', 'perfil', 'compte']"
+          [attr.aria-current]="currentUrl().includes('/perfil/compte') ? 'page' : null">
+          <div class="text-error dark:text-error-200 flex w-full items-center gap-2">
+            <mat-icon aria-hidden="true" class="scale-90">warning</mat-icon>
+            <span matListItemTitle class="flex-1 truncate text-sm">Gestió del compte</span>
+          </div>
+        </mat-list-item>
+      </mat-nav-list>
+    </nav>
+  </mat-card-content>
+</mat-card>

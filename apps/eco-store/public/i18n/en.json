@@ -514,5 +514,21 @@
       "es": "Spanish",
       "en": "English"
     }
+  },
+  "profile": {
+    "name": "Name",
+    "phone": "Phone",
+    "submitButton": "Save changes",
+    "navigation": "Profile navigation",
+    "personalData": {
+      "title": "Personal details",
+      "description": "Manage your personal details."
+    },
+    "success": {
+      "update": "Profile successfully updated"
+    },
+    "error": {
+      "update": "An error occurred while updating the profile"
+    }
   }
 }

@@ -531,5 +531,21 @@
       "es": "Castellà",
       "en": "Anglès"
     }
+  },
+  "profile": {
+    "name": "Nom",
+    "phone": "Telèfon",
+    "submitButton": "Desar canvis",
+    "navigation": "Navegació del perfil",
+    "personalData": {
+      "title": "Dades personals",
+      "description": "Gestiona les teves dades personals."
+    },
+    "success": {
+      "update": "Perfil actualitzat correctament"
+    },
+    "error": {
+      "update": "S'ha produït un error al actualitzar el perfil"
+    }
   }
 }
