@@ -1,0 +1,24 @@
+<header class="reveal-up mb-8 w-full [--delay:50ms]">
+  <div
+    class="border-sys-outline/30 relative overflow-hidden rounded-[2rem] border px-6 py-6 shadow-sm md:px-8 md:py-8 lg:p-10">
+    <div
+      class="bg-primary/5 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full opacity-50 blur-3xl"></div>
+    <div class="relative z-10 flex flex-col items-start gap-2">
+      <div
+        class="text-sys-primary flex items-center gap-2 text-xs font-bold tracking-[0.1em] uppercase">
+        <mat-icon class="scale-[0.8]" aria-hidden="true">badge</mat-icon>
+        <span>Perfil</span>
+      </div>
+      <h2 class="text-sys-on-surface text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+        {{ 'profile.personalData.title' | translate }}
+      </h2>
+    </div>
+  </div>
+</header>
+
+<div
+  class="w-full xl:max-w-3xl"
+  [class.pointer-events-none]="profileStore.isLoading()"
+  [class.opacity-50]="profileStore.isLoading()">
+  <router-outlet></router-outlet>
+</div>

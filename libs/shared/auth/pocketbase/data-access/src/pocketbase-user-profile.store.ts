@@ -128,6 +128,31 @@ export const pocketBaseUserProfileStore = signalStore(
       }
     },
 
+    async updateProfile(data: { name: string; phone: string }): Promise<boolean> {
+      updateState(store, `[profile] update profile in process`, { isLoading: true });
+
+      try {
+        const id = store.user()?.id;
+        if (!id) throw new Error('User not found');
+
+        const updatedUser = await store._authService.updateProfile(id, data);
+
+        updateState(store, `[profile] update profile success`, {
+          user: updatedUser as PocketBaseUser,
+          isLoading: false,
+        });
+
+        store._notificationService.create('profile.success.update', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] update profile failed ${error}`, {
+          isLoading: false,
+        });
+        store._notificationService.create('profile.error.update', 'ERROR');
+        return false;
+      }
+    },
+
     logout(): void {
       store._authService.logout();
       updateState(store, `[profile] logout`, initialState);

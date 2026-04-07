@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-07] - Eco-Store: Profile UI Refinement and Documentation
+
+### Added
+
+- **Profile Form UI**: Applied bolder styling for the Eco-Store profile feature header using outlined components echoing product list views ([#86c92g5x5](https://app.clickup.com/t/86c92g5x5)).
+- **Form Layout**: Handled loading state visualization directly on the profile container mapping `profileStore.isLoading()`.
+- **Localization**: Added missing profile form translation strings for English and Spanish.
+- **Documentation**: Linked profile management feature in core `apps/eco-store/README.md` and initialized feature-specific README doc.
+
 ## [2026-04-05] - Eco-Store: Trial Period Expiration Guard
 
 ### Added

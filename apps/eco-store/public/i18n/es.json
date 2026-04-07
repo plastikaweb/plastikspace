@@ -522,5 +522,21 @@
       "es": "Castellano",
       "en": "Inglés"
     }
+  },
+  "profile": {
+    "name": "Nombre",
+    "phone": "Teléfono",
+    "submitButton": "Guardar cambios",
+    "navigation": "Navegación del perfil",
+    "personalData": {
+      "title": "Datos personales",
+      "description": "Gestiona tus datos personales."
+    },
+    "success": {
+      "update": "Perfil actualizado correctamente"
+    },
+    "error": {
+      "update": "Ha ocurrido un error al actualizar el perfil"
+    }
   }
 }

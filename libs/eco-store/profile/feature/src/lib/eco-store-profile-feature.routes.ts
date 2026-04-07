@@ -1,0 +1,42 @@
+import { Route } from '@angular/router';
+import { providePlainInputFormly } from '@plastik/shared/form/util';
+
+export const ecoStoreProfileFeatureRoutes: Route[] = [
+  {
+    path: '',
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./eco-store-profile-feature/eco-store-profile-feature.component').then(
+            m => m.EcoStoreProfileFeatureComponent
+          ),
+        children: [
+          {
+            path: 'dades-personals',
+            title: 'profile.personalData.title',
+            data: { hasSidenav: true },
+            providers: [providePlainInputFormly()],
+            loadChildren: () =>
+              import('@plastik/eco-store/profile/basic').then(
+                m => m.ecoStoreProfileBasicFeatureRoutes
+              ),
+          },
+          {
+            path: '**',
+            redirectTo: 'dades-personals',
+            pathMatch: 'full',
+          },
+        ],
+      },
+      {
+        path: '',
+        outlet: 'sidenav',
+        loadComponent: () =>
+          import('./eco-store-profile-feature/eco-store-profile-sidenav-feature.component').then(
+            m => m.EcoStoreProfileSidenavFeatureComponent
+          ),
+      },
+    ],
+  },
+];

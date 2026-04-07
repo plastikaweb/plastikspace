@@ -62,7 +62,7 @@ onRecordCreateRequest((e) => {
     try {
         const itemsRaw = order.getString("items");
         let items = JSON.parse(itemsRaw || "[]");
-        
+
         if (items.length === 0) {
             throw new BadRequestError("Order must contain at least one item.");
         }
@@ -80,7 +80,7 @@ onRecordCreateRequest((e) => {
 
             // Fetch the product from database to get verified data
             const product = e.app.findRecordById("products", productId);
-            
+
             // Basic stock check
             if (!product.getBool("inStock")) {
                 throw new BadRequestError(`Product "${product.getString("name")}" is out of stock.`);
@@ -89,7 +89,7 @@ onRecordCreateRequest((e) => {
             // Get product localized name (JSON object)
             const productNameRaw = product.getString("name");
             const productName = JSON.parse(productNameRaw || "{}");
-            
+
             // Fetch the category to get its localized name
             const categoryId = product.get("category");
             let categoryName = {};
@@ -104,7 +104,7 @@ onRecordCreateRequest((e) => {
             const dbPrice = product.getFloat("price");
             const dbIva = product.getFloat("iva");
             const dbPriceWithIva = product.getFloat("priceWithIva");
-            
+
             const quantity = Number(item.requestedQuantity || 0);
             if (quantity <= 0) {
                 throw new BadRequestError(`Invalid quantity for product "${product.getString("name")}".`);
@@ -133,7 +133,7 @@ onRecordCreateRequest((e) => {
         const tenant = e.app.findRecordById("tenants", tenantId);
         const logisticsConfig = tenant.get("logisticsConfig") || {};
         const shippingConfig = logisticsConfig.shipping || {};
-        
+
         let shipping = 0;
         if (order.get("deliveryMethod") === "delivery") {
             shipping = Number(shippingConfig.cost || 0);
@@ -321,7 +321,7 @@ onRecordAfterCreateSuccess((e) => {
                         name = item.name;
                     }
                 }
-                
+
                 const qty = item.requestedQuantity || 0;
                 const lineTotal = Number(item.lineTotal || 0).toFixed(2);
                 const unitType = (item.unitType || '').toLowerCase();
@@ -365,7 +365,7 @@ onRecordAfterCreateSuccess((e) => {
                 if (daysUntilTarget < 0) daysUntilTarget += 7;
 
                 date.setDate(date.getDate() + daysUntilTarget);
-                
+
                 const dName = t.days[date.getDay()];
                 const dNum = date.getDate();
                 const mName = t.months[date.getMonth()];
@@ -380,7 +380,7 @@ onRecordAfterCreateSuccess((e) => {
             const tenantTz = tenant.getString("timezone") || 'Europe/Madrid';
             const deliveryDate = deliveryDayRaw ? getFormattedDeliveryDate(deliveryDayRaw, tenantTz) : "-";
             const deliveryTime = order.get("time") || "-";
-            
+
             // 3. Destructure and format address nicely
             const addressRaw = order.getString("address");
             let deliveryAddress = "-";
@@ -418,7 +418,7 @@ onRecordAfterCreateSuccess((e) => {
                     <div style="padding: 40px 32px;">
                         <p style="font-size: 16px; margin-top: 0; font-weight: 500;">${t.greeting}</p>
                         <p style="font-size: 16px; color: #333;">${t.thankYou}</p>
-                        
+
                         <div style="font-size: 14px; color: #5c6144; background-color: #f1f4e4; padding: 16px; border-radius: 12px; border-left: 4px solid #457b2e; margin: 24px 0;">
                             ${t.modificationNotice}<br><strong style="color: #3d6b28;">${t.lockedNotice}</strong>
                         </div>
@@ -493,7 +493,7 @@ onRecordAfterCreateSuccess((e) => {
                             <p style="font-size: 14px; color: #757964; margin-bottom: 30px;">
                                 ${t.footer}
                             </p>
-                            
+
                             <p style="margin: 0; font-size: 16px; color: #333;">
                                 ${t.regards}<br>
                                 <strong style="color: #457b2e; font-size: 18px;">${t.team}</strong>

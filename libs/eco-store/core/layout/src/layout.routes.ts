@@ -5,8 +5,8 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
-import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { BodyBackgroundService } from './body-background.service';
 import { EcoStoreLayoutService } from './eco-store-layout.service';
@@ -87,7 +87,11 @@ export const layoutRoutes: Route[] = [
         loadChildren: () =>
           import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
       },
-
+      {
+        path: 'perfil',
+        loadChildren: () =>
+          import('@plastik/eco-store/profile').then(m => m.ecoStoreProfileFeatureRoutes),
+      },
       {
         path: '**',
         redirectTo: 'botiga',

@@ -57,6 +57,7 @@ The application is structured into domain-specific libraries:
 - [**Layout**](../../libs/eco-store/core/layout/README.md): Main shell and navigation.
 - [**Tenant**](../../libs/eco-store/core/tenant/README.md): Multi-tenancy resolution.
 - [**Auth**](../../libs/eco-store/auth/feature/login/README.md): Login and member authentication.
+- [**Profile**](../../libs/eco-store/profile/feature/README.md): User personal data, addresses, and account management.
 - [**Shared UI**](../../libs/eco-store/shared/product-card/README.md): Cards, chips, and banners.
 - [**Translation**](../../libs/shared/translation/README.md): Centralized language management.
 

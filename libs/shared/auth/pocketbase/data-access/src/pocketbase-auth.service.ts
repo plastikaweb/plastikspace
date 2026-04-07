@@ -40,6 +40,10 @@ export class PocketBaseAuthService implements AuthFacade {
       .confirmPasswordReset(token, password, passwordConfirm);
   }
 
+  async updateProfile(id: string, data: { name: string; phone: string }): Promise<AuthModel> {
+    return await this.#pb.collection('users').update(id, data);
+  }
+
   logout(): void {
     this.#pb.authStore.clear();
   }

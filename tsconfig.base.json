@@ -285,7 +285,9 @@
       "@plastik/eco-store/auth/forgot-password-sent": [
         "libs/eco-store/auth/feature/forgot-password-sent/src/index.ts"
       ],
-      "@plastik/auth/config/util": ["libs/shared/auth/util/config/src/index.ts"]
+      "@plastik/auth/config/util": ["libs/shared/auth/util/config/src/index.ts"],
+      "@plastik/eco-store/profile": ["libs/eco-store/profile/feature/src/index.ts"],
+      "@plastik/eco-store/profile/basic": ["libs/eco-store/profile/basic/src/index.ts"]
     }
   },
   "angularCompilerOptions": {
