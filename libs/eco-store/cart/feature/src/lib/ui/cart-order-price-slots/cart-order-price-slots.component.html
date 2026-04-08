@@ -49,10 +49,10 @@
     [class.free]="isFree()"
     [class.not-free]="!isFree()">
     @if (isFree()) {
-      <mat-icon>check_circle</mat-icon>
+      <mat-icon class="animate-pulse">check_circle</mat-icon>
       <span>{{ 'cart.shipping.freeAchieved' | translate }}</span>
     } @else {
-      <mat-icon class="flex-shrink-0">info</mat-icon>
+      <mat-icon class="flex-shrink-0 animate-bounce">info</mat-icon>
       <span
         >{{
           'cart.shipping.remainingForFree' | translate: { amount: remainingForFree() | currency }

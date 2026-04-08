@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-08] - Eco-Store: Profile Avatar and Image Cropper Integration
+
+### Added
+
+- **Profile Avatar Feature**: Implemented a new library `@plastik/eco-store/profile/avatar` for managing user profile images ([#86c92g5xk](https://app.clickup.com/t/86c92g5xk)).
+- **Shared Image Cropper**: Created a reusable `@plastik/shared/img-cropper/ui` component using `ngx-image-cropper` with support for drag and drop and validation ([#86c92g5xk](https://app.clickup.com/t/86c92g5xk)).
+- **Avatar Management**: Integrated avatar upload, cropping, and deletion into the profile settings ([#86c92g5xk](https://app.clickup.com/t/86c92g5xk)).
+- **Localization**: Added avatar-related translation strings for Catalan, English, and Spanish.
+- **Unit Testing**: Added comprehensive test suites for the new avatar and image cropper components.
+- **Documentation**: Initialized README files for the new libraries.
+
+### Changed
+
+- **User Profile Store**: Updated `pocketBaseUserProfileStore` and `PocketBaseAuthService` to support avatar updates and deletions ([#86c92g5xk](https://app.clickup.com/t/86c92g5xk)).
+- **Profile Navigation**: Integrated the avatar feature into the profile sidenav and routing.
+- **UI Consistency**: Refined the profile and product sidenav components for better multi-language support.
+
 ## [2026-04-07] - Eco-Store: Profile UI Refinement and Documentation
 
 ### Added

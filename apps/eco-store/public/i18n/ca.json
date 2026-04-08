@@ -7,7 +7,9 @@
     "remove": "Eliminar",
     "cancel": "Cancel·lar",
     "submit": "Enviar",
+    "update": "Actualitzar",
     "save": "Guardar",
+    "delete": "Eliminar",
     "navigation": {
       "previous": "Tornar a la pàgina anterior",
       "next": "Anar a la pàgina següent",
@@ -75,6 +77,28 @@
     },
     "error": {
       "image": "Hi ha hagut un error al carregar la imatge"
+    },
+    "image": {
+      "crop": {
+        "title": "Edita la teva imatge"
+      },
+      "upload": {
+        "title": "Puja una imatge",
+        "description": "Puja la teva imatge",
+        "instruccions": "Fes clic o arrossega una imatge aquí",
+        "size": "Mínim {minWidth}x{minHeight}px. Màx {maxSize}."
+      },
+      "delete": {
+        "title": "Eliminar imatge",
+        "message": "Estàs segur que vols eliminar la teva imatge?"
+      },
+      "error": {
+        "minSize": "La imatge ha de tenir una mida mínima de {minWidth}x{minHeight}px.",
+        "maxSize": "La imatge ha de pesar menys de {maxSize}.",
+        "loaded": "Hi ha hagut un error al carregar la imatge",
+        "notImage": "El fitxer seleccionat no és una imatge",
+        "read": "Hi ha hagut un error al llegir la imatge"
+      }
     }
   },
   "auth": {
@@ -540,6 +564,11 @@
     "personalData": {
       "title": "Dades personals",
       "description": "Gestiona les teves dades personals."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "description": "Personalitza el teu perfil amb una imatge d''avatar.",
+      "recommended": "Format quadrat, mínim 200x200px, màxim 2.5 MB, formats JPG, WEBP o PNG."
     },
     "success": {
       "update": "Perfil actualitzat correctament"

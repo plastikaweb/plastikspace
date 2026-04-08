@@ -15,11 +15,20 @@ export const ecoStoreProfileFeatureRoutes: Route[] = [
           {
             path: 'dades-personals',
             title: 'profile.personalData.title',
-            data: { hasSidenav: true },
+            data: { hasSidenav: true, title: 'profile.personalData.title', icon: 'badge' },
             providers: [providePlainInputFormly()],
             loadChildren: () =>
               import('@plastik/eco-store/profile/basic').then(
                 m => m.ecoStoreProfileBasicFeatureRoutes
+              ),
+          },
+          {
+            path: 'avatar',
+            title: 'profile.avatar.title',
+            data: { hasSidenav: true, title: 'profile.avatar.title', icon: 'account_circle' },
+            loadChildren: () =>
+              import('@plastik/eco-store/profile/avatar').then(
+                m => m.ecoStoreProfileAvatarFeatureRoutes
               ),
           },
           {

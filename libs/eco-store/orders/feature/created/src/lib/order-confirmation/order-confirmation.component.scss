@@ -1,4 +1,8 @@
 @use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.success-pop;
+@include animations.reveal-up;
 
 :host {
   .finish-card {

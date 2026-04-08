@@ -1,4 +1,4 @@
-import { A11yModule, FocusMonitor } from '@angular/cdk/a11y';
+import { FocusMonitor } from '@angular/cdk/a11y';
 import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
@@ -27,7 +27,6 @@ import { SkipLinkComponent } from '@plastik/shared/skip-link';
     SharedNotificationUiHotToastComponent,
     TranslateModule,
     SkipLinkComponent,
-    A11yModule,
   ],
   selector: 'eco-root',
   templateUrl: './app.component.html',

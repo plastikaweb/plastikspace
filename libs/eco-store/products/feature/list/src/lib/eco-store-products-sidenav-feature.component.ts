@@ -26,7 +26,7 @@ import { filter, map, startWith } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export default class EcoStoreProductsSidenavFeatureComponent {
-  readonly router = inject(Router);
+  readonly #router = inject(Router);
   readonly translateService = inject(TranslateService);
   readonly categoriesStore = inject(ecoStoreProductCategoriesStore);
   readonly defaultCategoryIcon = inject(ALL_PRODUCTS_ICON);
@@ -66,11 +66,11 @@ export default class EcoStoreProductsSidenavFeatureComponent {
   });
 
   protected readonly currentUrl = toSignal(
-    this.router.events.pipe(
+    this.#router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(event => (event as NavigationEnd).urlAfterRedirects),
-      startWith(this.router.url)
+      startWith(this.#router.url)
     ),
-    { initialValue: this.router.url }
+    { initialValue: this.#router.url }
   );
 }

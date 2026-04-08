@@ -74,6 +74,28 @@
     },
     "error": {
       "image": "This image could not be loaded"
+    },
+    "image": {
+      "crop": {
+        "title": "Edit your image"
+      },
+      "upload": {
+        "title": "Upload an image",
+        "description": "Upload your image",
+        "instruccions": "Click or drag an image here",
+        "size": "Minimum {minWidth}x{minHeight}px. Max {maxSize}."
+      },
+      "delete": {
+        "title": "Delete image",
+        "message": "Are you sure you want to delete your image?"
+      },
+      "error": {
+        "minSize": "The image must have a minimum size of {minWidth}x{minHeight}px.",
+        "maxSize": "The image must weigh less than {maxSize}.",
+        "loaded": "There was an error loading the image",
+        "notImage": "The selected file is not an image",
+        "read": "There was an error reading the image"
+      }
     }
   },
   "auth": {
@@ -523,6 +545,11 @@
     "personalData": {
       "title": "Personal details",
       "description": "Manage your personal details."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "description": "Personalize your profile with an avatar image.",
+      "recommended": "Square format, minimum 200x200px, maximum 2.5 MB, JPG, WEBP or PNG formats."
     },
     "success": {
       "update": "Profile successfully updated"

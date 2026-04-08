@@ -134,6 +134,9 @@
     "eco-store:a11y:run": "pa11y-ci --config ./apps/eco-store/.pa11yci.json",
     "eco-store:build:github": "nx run eco-store:build:prod"
   },
+  "resolutions": {
+    "sass-embedded": "npm:sass@1.99.0"
+  },
   "dependencies": {
     "@angular-architects/ngrx-toolkit": "21.0.1",
     "@angular/animations": "21.2.2",
@@ -166,7 +169,6 @@
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",
     "@ngxpert/hot-toast": "^6.1.0",
-    "@nx/angular": "22.5.4",
     "@tailwindcss/postcss": "^4.1.16",
     "angular-svg-icon": "^19.0.1",
     "apollo-angular": "^10.0.3",
@@ -178,6 +180,7 @@
     "intl-messageformat": "^11.1.2",
     "jsdom": "^28.1.0",
     "ngx-colors": "^3.6.0",
+    "ngx-image-cropper": "^9.1.6",
     "ngx-translate-formatjs-compiler": "^1.0.8",
     "pocketbase": "^0.26.3",
     "postcss": "^8.5.6",
@@ -211,6 +214,7 @@
     "@ngx-formly/schematics": "^7.1.0",
     "@nrwl/cli": "15.9.3",
     "@nrwl/nx-cloud": "19.1.0",
+    "@nx/angular": "^22.6.4",
     "@nx/cypress": "22.5.4",
     "@nx/esbuild": "22.5.4",
     "@nx/eslint": "22.5.4",
@@ -261,7 +265,7 @@
     "ng-mocks": "^14.15.1",
     "ng-packagr": "21.1.0",
     "npm-run-all": "^4.1.5",
-    "nx": "22.5.4",
+    "nx": "^22.6.4",
     "pa11y-ci": "^4.0.1",
     "postcss-preset-env": "^11.2.0",
     "prettier": "^3.8.1",

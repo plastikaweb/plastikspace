@@ -1,0 +1,48 @@
+@use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.slide-up;
+
+:host {
+  display: block;
+
+  :ng-deep image-cropper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    > div {
+      width: 100%;
+      height: 100%;
+    }
+    img.ngx-ic-source-image {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+    }
+  }
+
+  @include mat.slider-overrides(
+    (
+      active-track-color: var(--mat-sys-primary),
+      inactive-track-color: var(--mat-sys-surface-tint),
+      handle-color: var(--mat-sys-primary),
+      active-track-shape: 16px,
+    )
+  );
+
+  .upload-zone-bg {
+    background: linear-gradient(
+      165deg,
+      color-mix(in srgb, var(--mat-sys-surface) 96%, var(--mat-sys-primary)),
+      var(--mat-sys-surface)
+    );
+    box-shadow: 0 10px 40px -10px color-mix(in srgb, var(--mat-sys-shadow) 8%, transparent);
+  }
+
+  .crop-zone-bg {
+    background: color-mix(in srgb, var(--mat-sys-surface-container) 50%, transparent);
+    border: 1px solid color-mix(in srgb, var(--mat-sys-outline-variant) 40%, transparent);
+  }
+}
