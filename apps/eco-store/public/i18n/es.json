@@ -74,6 +74,28 @@
     },
     "error": {
       "image": "Ha habido un error al cargar la imagen"
+    },
+    "image": {
+      "crop": {
+        "title": "Edita tu imagen"
+      },
+      "upload": {
+        "title": "Sube una imagen",
+        "description": "Sube tu imagen",
+        "instruccions": "Haz clic o arrastra una imagen aquí",
+        "size": "Mínimo {minWidth}x{minHeight}px. Máx {maxSize}."
+      },
+      "delete": {
+        "title": "Eliminar imagen",
+        "message": "¿Estás seguro de que quieres eliminar tu imagen?"
+      },
+      "error": {
+        "minSize": "La imagen debe tener un tamaño mínimo de {minWidth}x{minHeight}px.",
+        "maxSize": "La imagen debe pesar menos de {maxSize}.",
+        "loaded": "Ha ocurrido un error al cargar la imagen",
+        "notImage": "El archivo seleccionado no es una imagen",
+        "read": "Ha ocurrido un error al leer la imagen"
+      }
     }
   },
   "auth": {
@@ -531,6 +553,11 @@
     "personalData": {
       "title": "Datos personales",
       "description": "Gestiona tus datos personales."
+    },
+    "avatar": {
+      "title": "Avatar",
+      "description": "Personaliza tu perfil con una imagen de avatar.",
+      "recommended": "Formato cuadrado, mínimo 200x200px, máximo 2.5 MB, formatos JPG, WEBP o PNG."
     },
     "success": {
       "update": "Perfil actualizado correctamente"

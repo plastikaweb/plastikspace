@@ -1,4 +1,7 @@
 @use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.reveal-up;
 
 :host {
   --min-col-width: 200px;
@@ -25,14 +28,5 @@
         transition: z-index 0.3s step-end;
       }
     }
-  }
-
-  .eco-store-product-card-skeleton {
-    background-color: var(--neutral-50);
-    border: 1px solid var(--neutral-200);
-    height: 450px;
-    width: 100%;
-    animation: pulse 1.5s infinite;
-    border-radius: var(--app-main-border-radius);
   }
 }

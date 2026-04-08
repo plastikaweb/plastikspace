@@ -44,6 +44,16 @@ export class PocketBaseAuthService implements AuthFacade {
     return await this.#pb.collection('users').update(id, data);
   }
 
+  async updateAvatar(id: string, file: File): Promise<AuthModel> {
+    const formData = new FormData();
+    formData.append('avatar', file, file.name);
+    return await this.#pb.collection('users').update(id, formData);
+  }
+
+  async deleteAvatar(id: string): Promise<AuthModel> {
+    return await this.#pb.collection('users').update(id, { avatar: null });
+  }
+
   logout(): void {
     this.#pb.authStore.clear();
   }

@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
-import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListItem, MatNavList } from '@angular/material/list';
-import { TranslateModule } from '@ngx-translate/core';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { TranslateModule } from '@ngx-translate/core';
 import { filter, map, startWith } from 'rxjs';
 
 @Component({
@@ -16,7 +15,6 @@ import { filter, map, startWith } from 'rxjs';
     MatNavList,
     MatListItem,
     MatIconModule,
-    MatDividerModule,
     RouterLink,
     RouterLinkActive,
   ],
@@ -25,14 +23,14 @@ import { filter, map, startWith } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreProfileSidenavFeatureComponent {
-  readonly router = inject(Router);
+  readonly #router = inject(Router);
 
   protected readonly currentUrl = toSignal(
-    this.router.events.pipe(
+    this.#router.events.pipe(
       filter(event => event instanceof NavigationEnd),
       map(event => (event as NavigationEnd).urlAfterRedirects),
-      startWith(this.router.url)
+      startWith(this.#router.url)
     ),
-    { initialValue: this.router.url }
+    { initialValue: this.#router.url }
   );
 }

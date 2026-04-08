@@ -73,10 +73,6 @@
           color: light-dark(var(--primary-500), var(--primary-200)),
         )
       );
-
-      mat-icon {
-        animation: pulse 2s ease-in-out infinite;
-      }
     }
 
     &.not-free {
@@ -93,10 +89,6 @@
           color: light-dark(var(--error-500), var(--error-200)),
         )
       );
-
-      mat-icon {
-        animation: slide 1.5s ease-in-out infinite;
-      }
     }
 
     mat-icon {

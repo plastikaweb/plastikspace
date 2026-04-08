@@ -20,7 +20,6 @@ import { EcoTenantLinkComponent } from '../tenant-link/tenant-link.component';
     MatIcon,
     MatButtonModule,
     TranslateModule,
-    // SharedFormFeatureComponent,
     StoreWindowComponent,
     EcoTenantLinkComponent,
     MatThemeToggleComponent,

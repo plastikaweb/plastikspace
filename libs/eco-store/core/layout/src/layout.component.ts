@@ -19,7 +19,7 @@ import {
   ActivationEnd,
   NavigationEnd,
   Router,
-  RouterModule,
+  RouterOutlet,
 } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { filter, map } from 'rxjs';
@@ -40,7 +40,7 @@ import { appSearchFormConfig } from './app.search-form.config';
 @Component({
   imports: [
     NgTemplateOutlet,
-    RouterModule,
+    RouterOutlet,
     MatSidenavContainer,
     MatSidenavContent,
     EcoHeaderComponent,

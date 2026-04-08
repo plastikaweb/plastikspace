@@ -1,4 +1,7 @@
 @use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.bump;
 
 :host {
   .mobile-nav {

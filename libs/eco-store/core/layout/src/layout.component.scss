@@ -1,5 +1,9 @@
 @use '@angular/material' as mat;
 @use 'core_tailwind_theme';
+@use 'animations';
+
+@include animations.slide-out;
+@include animations.banner-anim-leave;
 
 :host {
   @include mat.sidenav-overrides(

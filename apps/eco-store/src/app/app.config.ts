@@ -1,9 +1,6 @@
-import { registerLocaleData } from '@angular/common';
-import localeCa from '@angular/common/locales/ca';
-import localeEs from '@angular/common/locales/es';
-
-import { IMAGE_LOADER } from '@angular/common';
+import { IMAGE_LOADER, registerLocaleData } from '@angular/common';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import localeCa from '@angular/common/locales/ca';
 import {
   ApplicationConfig,
   ErrorHandler,
@@ -29,15 +26,16 @@ import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments
 import { PrefixTitleService } from '@plastik/core/router-state';
 import { ecoStoreTenantStore, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 import { activityStore } from '@plastik/shared/activity/data-access';
-import { provideMatThemeColors } from '@plastik/shared/mat-theme-toggle';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 
+// `LOCALE_ID` is fixed to 'ca', so Angular pipes (currency/date/number) only
+// ever need the Catalan locale data. The 'es' locale is intentionally not
+// registered to keep it out of the initial bundle.
 registerLocaleData(localeCa);
-registerLocaleData(localeEs);
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -57,7 +55,6 @@ export const appConfig: ApplicationConfig = {
     ),
     providePocketBaseWithTranslationsEnv(environment),
     provideHttpClient(withFetch()),
-    provideMatThemeColors({ light: '#f8faf0', dark: '#11140f' }),
     { provide: POCKETBASE_INSTANCE, useFactory: pocketBaseFactory },
     provideTranslateService({
       loader: provideTranslateHttpLoader({

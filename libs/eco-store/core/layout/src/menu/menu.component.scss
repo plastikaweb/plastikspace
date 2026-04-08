@@ -1,4 +1,7 @@
 @use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.bump;
 
 .active-menu-item {
   @include mat.button-overrides(

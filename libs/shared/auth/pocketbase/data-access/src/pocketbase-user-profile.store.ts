@@ -128,6 +128,52 @@ export const pocketBaseUserProfileStore = signalStore(
       }
     },
 
+    async updateAvatar(file: File): Promise<boolean> {
+      updateState(store, `[profile] update avatar in process`, { isLoading: true });
+
+      try {
+        const id = store.user()?.id;
+        if (!id) throw new Error('User not found');
+
+        const updatedUser = await store._authService.updateAvatar(id, file);
+
+        updateState(store, `[profile] update avatar success`, {
+          user: updatedUser as PocketBaseUser,
+          isLoading: false,
+        });
+
+        store._notificationService.create('profile.success.update', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] update avatar failed ${error}`, { isLoading: false });
+        store._notificationService.create('profile.error.update', 'ERROR');
+        return false;
+      }
+    },
+
+    async deleteAvatar(): Promise<boolean> {
+      updateState(store, `[profile] delete avatar in process`, { isLoading: true });
+
+      try {
+        const id = store.user()?.id;
+        if (!id) throw new Error('User not found');
+
+        const updatedUser = await store._authService.deleteAvatar(id);
+
+        updateState(store, `[profile] delete avatar success`, {
+          user: updatedUser as PocketBaseUser,
+          isLoading: false,
+        });
+
+        store._notificationService.create('profile.success.update', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] delete avatar failed ${error}`, { isLoading: false });
+        store._notificationService.create('profile.error.update', 'ERROR');
+        return false;
+      }
+    },
+
     async updateProfile(data: { name: string; phone: string }): Promise<boolean> {
       updateState(store, `[profile] update profile in process`, { isLoading: true });
 

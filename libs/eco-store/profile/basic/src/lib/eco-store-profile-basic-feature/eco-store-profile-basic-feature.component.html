@@ -1,6 +1,10 @@
-<plastik-shared-form-feature
-  [fields]="formConfig.getConfig()"
-  [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
-  [model]="model()"
-  (changeEvent)="onSubmit($event)">
-</plastik-shared-form-feature>
+<section class="flex flex-col gap-6">
+  <p class="text-on-surface/80 text-md">{{ 'profile.personalData.description' | translate }}</p>
+  <!-- Profile form -->
+  <plastik-shared-form-feature
+    [fields]="formConfig.getConfig()"
+    [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
+    [model]="model()"
+    (changeEvent)="onSubmit($event)">
+  </plastik-shared-form-feature>
+</section>
