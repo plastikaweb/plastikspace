@@ -45,6 +45,110 @@ const FILE_FIELDS: Record<string, string[]> = {
 };
 
 /**
+ * @description Helper function to process items in chunks with a maximum concurrency.
+ * @param {T[]} items - The items to process.
+ * @param {number} chunkSize - The number of concurrent items to process.
+ * @param {(item: T) => Promise<void>} processor - The function to process each item.
+ * @returns {Promise<void>}
+ */
+async function processInChunks<T>(
+  items: T[],
+  chunkSize: number,
+  processor: (item: T) => Promise<void>
+) {
+  for (let i = 0; i < items.length; i += chunkSize) {
+    const chunk = items.slice(i, i + chunkSize);
+    await Promise.all(chunk.map(item => processor(item)));
+  }
+}
+
+/**
+ * @description Sync a single record from local to staging.
+ * @param {string} collectionName - The collection name.
+ * @param {any} record - The local record.
+ * @returns {Promise<void>}
+ */
+async function syncRecord(collectionName: string, record: any) {
+  const id = record.id;
+  const fileFields = FILE_FIELDS[collectionName] || [];
+
+  try {
+    // Prepare payload using FormData for multipart upload
+    const formData = new FormData();
+
+    // Add all fields except file fields and system fields
+    for (const key in record) {
+      if (['collectionId', 'collectionName', 'created', 'updated', 'expand'].includes(key)) continue;
+      if (fileFields.includes(key)) continue;
+
+      const val = record[key];
+      if (val !== null && val !== undefined) {
+        if (Array.isArray(val) || typeof val === 'object') {
+          formData.append(key, JSON.stringify(val));
+        } else {
+          formData.append(key, val.toString());
+        }
+      }
+    }
+
+    // Handle Files: Download from local and append to FormData
+    for (const field of fileFields) {
+      const filenames = record[field];
+      if (!filenames) continue;
+
+      const fileList = Array.isArray(filenames) ? filenames : [filenames];
+      for (const filename of fileList) {
+        if (!filename) continue;
+        try {
+          const fileUrl = pbLocal.files.getURL(record, filename);
+          const response = await fetch(fileUrl);
+          if (response.ok) {
+            const blob = await response.blob();
+            formData.append(field, blob, filename);
+          } else {
+            console.warn(`      ⚠️ Error descarregant fitxer local ${filename}: ${response.status}`);
+          }
+        } catch (fErr) {
+          const msg = fErr instanceof Error ? fErr.message : String(fErr);
+          console.warn(`      ⚠️ Excepció descarregant fitxer ${filename}:`, msg);
+        }
+      }
+    }
+
+    // Check if exists in staging
+    let existsInStaging = false;
+    try {
+      await pbStaging.collection(collectionName).getOne(id);
+      existsInStaging = true;
+    } catch {
+      // No existeix a staging
+    }
+
+    const options = {
+      headers: { 'x-bypass-hooks': 'true' },
+    };
+
+    if (existsInStaging) {
+      console.log(`   🔄 Actualitzant ${id}...`);
+      await pbStaging.collection(collectionName).update(id, formData, options);
+    } else {
+      console.log(`   ➕ Creant ${id}...`);
+      if (collectionName === 'users') {
+        formData.append('password', 'seed-password-123');
+        formData.append('passwordConfirm', 'seed-password-123');
+      }
+      await pbStaging.collection(collectionName).create(formData, options);
+    }
+  } catch (err) {
+    const pbErr = err as { message: string; response?: { data: Record<string, unknown> } };
+    console.error(`   ❌ Error amb el registre ${id}:`, pbErr.message);
+    if (pbErr.response?.data) {
+      console.error('      Detalls:', JSON.stringify(pbErr.response.data));
+    }
+  }
+}
+
+/**
  * @description Push data from local PocketBase instance to staging.
  * @returns {Promise<void>}
  */
@@ -69,88 +173,8 @@ async function pushToStaging() {
 
       console.log(`   Trobats ${localRecords.length} registres locals.`);
 
-      for (const record of localRecords) {
-        const id = record.id;
-        const fileFields = FILE_FIELDS[collectionName] || [];
+      await processInChunks(localRecords, 10, record => syncRecord(collectionName, record));
 
-        try {
-          // Prepare payload using FormData for multipart upload
-          const formData = new FormData();
-
-          // Add all fields except file fields and system fields
-          for (const key in record) {
-            if (['collectionId', 'collectionName', 'created', 'updated', 'expand'].includes(key))
-              continue;
-            if (fileFields.includes(key)) continue;
-
-            const val = record[key];
-            if (val !== null && val !== undefined) {
-              if (Array.isArray(val) || typeof val === 'object') {
-                formData.append(key, JSON.stringify(val));
-              } else {
-                formData.append(key, val.toString());
-              }
-            }
-          }
-
-          // Handle Files: Download from local and append to FormData
-          for (const field of fileFields) {
-            const filenames = record[field];
-            if (!filenames) continue;
-
-            const fileList = Array.isArray(filenames) ? filenames : [filenames];
-            for (const filename of fileList) {
-              if (!filename) continue;
-              try {
-                const fileUrl = pbLocal.files.getURL(record, filename);
-                const response = await fetch(fileUrl);
-                if (response.ok) {
-                  const blob = await response.blob();
-                  formData.append(field, blob, filename);
-                } else {
-                  console.warn(
-                    `      ⚠️ Error descarregant fitxer local ${filename}: ${response.status}`
-                  );
-                }
-              } catch (fErr) {
-                const msg = fErr instanceof Error ? fErr.message : String(fErr);
-                console.warn(`      ⚠️ Excepció descarregant fitxer ${filename}:`, msg);
-              }
-            }
-          }
-
-          // Check if exists in staging
-          let existsInStaging = false;
-          try {
-            await pbStaging.collection(collectionName).getOne(id);
-            existsInStaging = true;
-          } catch {
-            // No existeix a staging
-          }
-
-          const options = {
-            headers: { 'x-bypass-hooks': 'true' },
-          };
-
-          if (existsInStaging) {
-            console.log(`   🔄 Actualitzant ${id}...`);
-            await pbStaging.collection(collectionName).update(id, formData, options);
-          } else {
-            console.log(`   ➕ Creant ${id}...`);
-            if (collectionName === 'users') {
-              formData.append('password', 'seed-password-123');
-              formData.append('passwordConfirm', 'seed-password-123');
-            }
-            await pbStaging.collection(collectionName).create(formData, options);
-          }
-        } catch (err) {
-          const pbErr = err as { message: string; response?: { data: Record<string, unknown> } };
-          console.error(`   ❌ Error amb el registre ${id}:`, pbErr.message);
-          if (pbErr.response?.data) {
-            console.error('      Detalls:', JSON.stringify(pbErr.response.data));
-          }
-        }
-      }
       console.log(`   ✅ Sincronització de ${collectionName} finalitzada.`);
     }
     console.log('\n✨ Push a STAGING completat! ✨');
