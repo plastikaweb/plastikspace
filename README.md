@@ -200,6 +200,8 @@ Reusable features and UI components.
 - [**button**](libs/shared/button/ui/README.md)
 - [**table**](libs/shared/table/ui/README.md)
 - [**form**](libs/shared/form/feature/README.md)
+- [**address-card**](libs/shared/address-card/ui/README.md)
+- [**img-cropper**](libs/shared/img-cropper/ui/README.md)
 - [**notification**](libs/shared/notification/data-access/README.md)
 - [**notification-ui-hot-toast**](libs/shared/notification/ui/hot-toast/README.md)
 - [**activity**](libs/shared/activity/ui/README.md)

@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "module": "esnext",
+    "types": ["vitest/globals", "vitest/importMeta", "node"]
+  },
+  "include": ["src/**/*.spec.ts", "src/**/*.d.ts", "test-setup.ts", "src/test-setup.ts"]
+}

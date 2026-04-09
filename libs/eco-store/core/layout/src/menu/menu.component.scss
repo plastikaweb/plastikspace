@@ -53,7 +53,7 @@
   );
 
   mat-icon {
-    color: inherit !important;
+    color: light-dark(var(--primary-50), var(--primary-950));
     font-variation-settings: 'FILL' 1;
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }

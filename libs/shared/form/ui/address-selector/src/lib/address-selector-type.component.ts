@@ -5,9 +5,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatRadioModule } from '@angular/material/radio';
 import { FieldType, FieldTypeConfig, FormlyModule } from '@ngx-formly/core';
 
-import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { TranslateModule } from '@ngx-translate/core';
+import { AddressCardComponent } from '@plastik/shared/address-card/ui';
 import { AddressSelectorProps } from './address-selector-props';
 
 @Component({
@@ -20,7 +20,7 @@ import { AddressSelectorProps } from './address-selector-props';
     ReactiveFormsModule,
     MatInputModule,
     TranslateModule,
-    MatCardModule,
+    AddressCardComponent,
   ],
   templateUrl: './address-selector-type.component.html',
   styleUrl: './address-selector-type.component.scss',

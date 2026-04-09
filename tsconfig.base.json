@@ -132,6 +132,7 @@
       ],
       "@plastik/shared/activity/data-access": ["libs/shared/activity/data-access/src/index.ts"],
       "@plastik/shared/activity/ui": ["libs/shared/activity/ui/src/index.ts"],
+      "@plastik/shared/address-card/ui": ["libs/shared/address-card/ui/src/index.ts"],
       "@plastik/shared/button": ["libs/shared/button/entities/src/index.ts"],
       "@plastik/shared/button/ui": ["libs/shared/button/ui/src/index.ts"],
       "@plastik/shared/bytes-to-size": ["libs/shared/util/bytes-to-size/src/index.ts"],

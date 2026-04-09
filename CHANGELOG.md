@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-09] - Shared: Address Card and Refactoring
+
+### Added
+
+- **Address Card Component**: Created a new reusable `@plastik/shared/address-card/ui` component for displaying user addresses with selection and action slots ([#86c92g5yn](https://app.clickup.com/t/86c92g5yn)).
+- **Unit Testing**: Implemented unit tests for `AddressCardComponent` and `SharedImgCropperComponent` to ensure reliability.
+
+### Changed
+
+- **Address Selector**: Refactored `AddressSelectorTypeComponent` to use the new `AddressCardComponent`, improving code reuse and visual consistency ([#86c92g5yn](https://app.clickup.com/t/86c92g5yn)).
+- **Documentation**: Registered new shared libraries in the root README for better visibility.
+
 ## [2026-04-08] - Eco-Store: Profile Avatar and Image Cropper Integration
 
 ### Added
