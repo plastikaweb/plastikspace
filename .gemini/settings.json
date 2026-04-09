@@ -13,7 +13,13 @@
       "args": ["-y", "@angular/cli", "mcp"]
     }
   },
-  "experimental": {
-    "plan": true
+  "experimental": {},
+  "general": {
+    "plan": {
+      "enabled": true
+    }
+  },
+  "agents": {
+    "overrides": {}
   }
 }

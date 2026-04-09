@@ -1,0 +1,61 @@
+<mat-card
+  #card
+  appearance="raised"
+  class="address-card group relative transition-all"
+  [attr.tabindex]="interactive() ? 0 : null"
+  [class.make-it-focusable]="interactive()"
+  [class.cursor-pointer]="interactive()"
+  [class.selected]="selected()"
+  [class.opacity-50]="disabled()"
+  [class.pointer-events-none]="disabled()"
+  [attr.aria-label]="address().name"
+  (click)="interactive() && selectionChange.emit()"
+  (keydown.enter)="interactive() && selectionChange.emit()">
+  <mat-card-content class="flex! flex-row items-center justify-start gap-4">
+    <ng-content select="[indicator]"></ng-content>
+
+    <div class="w-full">
+      <div class="address-title mb-3 flex flex-wrap items-center justify-start gap-2">
+        @if (address().default) {
+          <span
+            class="bg-sys-secondary-container text-sys-on-secondary flex items-center justify-center rounded-full">
+            <mat-icon class="scale-70!">star</mat-icon>
+          </span>
+        }
+        <h3 class="text-2xl font-black tracking-tight capitalize">
+          {{ address().name || address().fullName }}
+        </h3>
+      </div>
+      <div class="text-on-surface-variant grid grid-cols-1 gap-4 text-sm md:grid-cols-2">
+        <div class="grid grid-cols-[auto_1fr] items-center gap-2">
+          <mat-icon class="text-outline scale-90">location_on</mat-icon>
+          <div>
+            <p>{{ address().address }}</p>
+            <p>
+              {{ address().zip }} {{ address().city }}
+              @if (address().country) {
+                , {{ address().country }}
+              }
+            </p>
+          </div>
+        </div>
+        @if (address().phone) {
+          <div class="flex items-center gap-2">
+            <mat-icon class="text-outline scale-90">phone</mat-icon>
+            <span class="text-outline mt-1">{{ address().phone }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (selected()) {
+      <div
+        class="address-check bg-sys-primary text-sys-on-primary animate-fade-in absolute flex items-center justify-center p-4 shadow-lg"
+        style="top: -3px; right: -3px; border-radius: 0 var(--app-main-border-radius) 0 1.5rem">
+        <mat-icon class="scale-125!">check</mat-icon>
+      </div>
+    }
+
+    <ng-content select="[actions]"></ng-content>
+  </mat-card-content>
+</mat-card>

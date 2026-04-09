@@ -570,6 +570,31 @@
       "description": "Personalitza el teu perfil amb una imatge d''avatar.",
       "recommended": "Format quadrat, mínim 200x200px, màxim 2.5 MB, formats JPG, WEBP o PNG."
     },
+    "addresses": {
+      "title": "Les meves adreces",
+      "description": "Gestiona les teves adreces d'entrega.",
+      "empty": "Encara no tens cap adreça desada.",
+      "setDefault": {
+        "label": "Establir com a adreça predeterminada"
+      },
+      "edit": {
+        "label": "Editar adreça"
+      },
+      "delete": {
+        "label": "Eliminar adreça",
+        "message": "Estàs segur que vols eliminar \"{address}\"? Aquesta acció no es pot desfer.",
+        "cancel": "Cancel·lar",
+        "confirm": "Eliminar adreça"
+      },
+      "success": {
+        "setDefault": "Adreça establerta com a predeterminada",
+        "delete": "Adreça eliminada correctament"
+      },
+      "error": {
+        "setDefault": "S'ha produït un error al establir l'adreça com a predeterminada",
+        "delete": "S'ha produït un error al eliminar l'adreça"
+      }
+    },
     "success": {
       "update": "Perfil actualitzat correctament"
     },

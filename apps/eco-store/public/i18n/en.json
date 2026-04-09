@@ -551,6 +551,31 @@
       "description": "Personalize your profile with an avatar image.",
       "recommended": "Square format, minimum 200x200px, maximum 2.5 MB, JPG, WEBP or PNG formats."
     },
+    "addresses": {
+      "title": "My addresses",
+      "description": "Manage your delivery addresses.",
+      "empty": "You have no saved addresses yet.",
+      "setDefault": {
+        "label": "Set as default address"
+      },
+      "edit": {
+        "label": "Edit address"
+      },
+      "delete": {
+        "label": "Delete address",
+        "message": "Are you sure you want to delete \"{address}\"? This action cannot be undone.",
+        "cancel": "Cancel",
+        "confirm": "Delete address"
+      },
+      "success": {
+        "setDefault": "Address set as default",
+        "delete": "Address successfully deleted"
+      },
+      "error": {
+        "setDefault": "An error occurred while setting the address as default",
+        "delete": "An error occurred while deleting the address"
+      }
+    },
     "success": {
       "update": "Profile successfully updated"
     },

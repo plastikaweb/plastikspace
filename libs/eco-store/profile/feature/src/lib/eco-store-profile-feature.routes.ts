@@ -32,6 +32,15 @@ export const ecoStoreProfileFeatureRoutes: Route[] = [
               ),
           },
           {
+            path: 'adreces',
+            title: 'profile.addresses.title',
+            data: { hasSidenav: true, title: 'profile.addresses.title', icon: 'location_on' },
+            loadChildren: () =>
+              import('@plastik/eco-store/profile/addresses').then(
+                m => m.ecoStoreProfileAddressesFeatureRoutes
+              ),
+          },
+          {
             path: '**',
             redirectTo: 'dades-personals',
             pathMatch: 'full',

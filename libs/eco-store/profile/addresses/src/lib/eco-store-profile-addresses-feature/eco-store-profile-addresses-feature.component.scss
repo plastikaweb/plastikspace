@@ -1,0 +1,30 @@
+:host {
+  display: block;
+
+  .address-action-button {
+    color: var(--mat-sys-secondary);
+    background: light-dark(
+      var(--mat-sys-secondary-container),
+      var(--mat-sys-surface-container-high)
+    );
+
+    &:hover {
+      background: light-dark(
+        color-mix(in srgb, var(--mat-sys-secondary-container), var(--mat-sys-secondary) 15%),
+        color-mix(in srgb, var(--mat-sys-surface-container-high), var(--mat-sys-secondary) 15%)
+      );
+    }
+  }
+
+  .address-action-delete {
+    color: var(--mat-sys-error);
+    background: light-dark(var(--mat-sys-error-container), var(--mat-sys-surface-container-high));
+
+    &:hover {
+      background: light-dark(
+        color-mix(in srgb, var(--mat-sys-error-container), var(--mat-sys-error) 15%),
+        color-mix(in srgb, var(--mat-sys-surface-container-high), var(--mat-sys-error) 15%)
+      );
+    }
+  }
+}

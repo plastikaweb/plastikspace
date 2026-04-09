@@ -1,0 +1,50 @@
+<section class="@container flex flex-col gap-6">
+  <p class="text-on-surface text-md">{{ 'profile.addresses.description' | translate }}</p>
+
+  @if (profileStore.getUserContacts(); as addresses) {
+    @if (addresses.length) {
+      <div class="grid grid-cols-1 gap-4 @3xl:grid-cols-2">
+        @for (address of addresses; track address.id) {
+          <plastik-address-card [address]="address" [interactive]="false">
+            <div actions class="absolute top-4 right-4 flex shrink-0 flex-row gap-4">
+              @if (!address.default) {
+                <button
+                  matIconButton
+                  type="button"
+                  class="address-action-button"
+                  [matTooltip]="'profile.addresses.setDefault.label' | translate"
+                  [attr.aria-label]="'profile.addresses.setDefault.label' | translate"
+                  (click)="onSetDefault(address.id); $event.stopPropagation()">
+                  <mat-icon class="scale-90">star_outline</mat-icon>
+                </button>
+              }
+              <button
+                matIconButton
+                type="button"
+                class="address-action-button"
+                [matTooltip]="'profile.addresses.edit.label' | translate"
+                [attr.aria-label]="'profile.addresses.edit.label' | translate"
+                (click)="onEdit(address.id); $event.stopPropagation()">
+                <mat-icon class="scale-90">edit</mat-icon>
+              </button>
+              <button
+                matIconButton
+                type="button"
+                class="address-action-button address-action-delete"
+                [matTooltip]="'profile.addresses.delete.label' | translate"
+                [attr.aria-label]="'profile.addresses.delete.label' | translate"
+                (click)="onDelete(address.id, address.name); $event.stopPropagation()">
+                <mat-icon class="scale-90">delete_outline</mat-icon>
+              </button>
+            </div>
+          </plastik-address-card>
+        }
+      </div>
+    } @else {
+      <div class="text-on-surface/60 flex flex-col items-center gap-4 py-12 text-center">
+        <mat-icon class="text-on-surface/30 scale-200!">location_off</mat-icon>
+        <p class="text-lg font-medium">{{ 'profile.addresses.empty' | translate }}</p>
+      </div>
+    }
+  }
+</section>

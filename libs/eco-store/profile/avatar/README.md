@@ -1,5 +1,10 @@
 # eco-store-profile-avatar-feature
 
+- [eco-store-profile-avatar-feature](#eco-store-profile-avatar-feature)
+  - [Features](#features)
+  - [Usage](#usage)
+  - [Running unit tests](#running-unit-tests)
+
 This library provides the profile avatar management feature for the Eco Store application.
 It allows users to upload, crop, and delete their profile avatar using the Shared Image Cropper component.
 

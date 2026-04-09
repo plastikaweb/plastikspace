@@ -23,8 +23,8 @@
   .open-container,
   .opening_soon-container,
   .closing_soon-container {
-    background-color: light-dark(var(--warning-200), var(--warning-700));
-    color: light-dark(var(--warning-700), var(--warning-100));
+    background-color: light-dark(var(--warning-200), var(--warning-800));
+    color: light-dark(var(--warning-700), var(--warning-50));
     border-radius: 100vw;
     border: 1px solid light-dark(var(--warning-300), var(--warning-500));
     box-shadow:
@@ -32,7 +32,7 @@
       /* top glow */ 0 2px 4px rgba(0, 0, 0, 0.12);
     @include mat.icon-overrides(
       (
-        color: light-dark(var(--warning-700), var(--warning-100)),
+        color: light-dark(var(--warning-800), var(--warning-50)),
       )
     );
   }

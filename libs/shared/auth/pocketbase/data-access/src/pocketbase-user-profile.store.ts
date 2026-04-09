@@ -241,6 +241,51 @@ export const pocketBaseUserProfileStore = signalStore(
         store._notificationService.create('auth.error.userAddresses', 'ERROR');
       }
     },
+
+    async deleteAddress(id: string): Promise<boolean> {
+      updateState(store, `[profile] delete address in process`, { isLoading: true });
+
+      try {
+        await lastValueFrom(store._userAddressService.delete(id));
+
+        updateState(store, `[profile] delete address success`, {
+          addresses: store.addresses().filter(a => a.id !== id),
+          isLoading: false,
+        });
+
+        store._notificationService.create('profile.addresses.success.delete', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] delete address failed ${error}`, { isLoading: false });
+        store._notificationService.create('profile.addresses.error.delete', 'ERROR');
+        return false;
+      }
+    },
+
+    async setDefaultAddress(id: string): Promise<boolean> {
+      updateState(store, `[profile] set default address in process`, { isLoading: true });
+
+      try {
+        await lastValueFrom(
+          store._userAddressService.update(id, { default: true } as Partial<PocketBaseUserAddress>)
+        );
+
+        updateState(store, `[profile] set default address success`, {
+          addresses: store.addresses().map(a => ({
+            ...a,
+            default: a.id === id ? true : false,
+          })),
+          isLoading: false,
+        });
+
+        store._notificationService.create('profile.addresses.success.setDefault', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] set default address failed ${error}`, { isLoading: false });
+        store._notificationService.create('profile.addresses.error.setDefault', 'ERROR');
+        return false;
+      }
+    },
   })),
 
   withHooks({
