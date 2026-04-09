@@ -8,7 +8,9 @@
     "apps/llecoop-firebase/.emulators/**/*",
     "apps/eco-store/pocketbase/**",
     "apps/eco-store/scripts/**",
-    "apps/eco-store/eco-store-req.md"
+    "apps/eco-store/eco-store-req.md",
+    "*test*.txt",
+    "*lint*.txt"
   ],
   "dictionaryDefinitions": [],
   "ignoreRegExpList": ["86[a-z0-9]{7}"],

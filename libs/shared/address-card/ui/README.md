@@ -20,10 +20,11 @@ A presentational component for displaying a user address.
 - `address: UserContact` (required)
 - `selected: boolean` (default: `false`)
 - `disabled: boolean` (default: `false`)
+- `interactive: boolean` (default: `true`)
 
 #### Outputs
 
-- `select: EventEmitter<void>`
+- `selectionChange: EventEmitter<void>`
 
 #### Content Projection Slots
 

@@ -1,14 +1,16 @@
 <mat-card
   #card
-  tabindex="0"
   appearance="raised"
-  class="address-card make-it-focusable group relative cursor-pointer transition-all"
+  class="address-card group relative transition-all"
+  [attr.tabindex]="interactive() ? 0 : null"
+  [class.make-it-focusable]="interactive()"
+  [class.cursor-pointer]="interactive()"
   [class.selected]="selected()"
   [class.opacity-50]="disabled()"
   [class.pointer-events-none]="disabled()"
   [attr.aria-label]="address().name"
-  (click)="selectionChange.emit()"
-  (keydown.enter)="selectionChange.emit()">
+  (click)="interactive() && selectionChange.emit()"
+  (keydown.enter)="interactive() && selectionChange.emit()">
   <mat-card-content class="flex! flex-row items-center justify-start gap-4">
     <ng-content select="[indicator]"></ng-content>
 

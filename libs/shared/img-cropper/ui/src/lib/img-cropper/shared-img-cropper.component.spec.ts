@@ -1,7 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TranslateModule } from '@ngx-translate/core';
+import { provideTranslateService } from '@ngx-translate/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SharedImgCropperComponent } from './shared-img-cropper.component';
+import { axe } from 'vitest-axe';
+import { MockComponent } from 'ng-mocks';
+import { ImageCropperComponent } from 'ngx-image-cropper';
 
 describe('SharedImgCropperComponent', () => {
   let component: SharedImgCropperComponent;
@@ -9,8 +12,14 @@ describe('SharedImgCropperComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedImgCropperComponent, TranslateModule.forRoot()],
-    }).compileComponents();
+      imports: [SharedImgCropperComponent],
+      providers: [provideTranslateService()],
+    })
+      .overrideComponent(SharedImgCropperComponent, {
+        remove: { imports: [ImageCropperComponent] },
+        add: { imports: [MockComponent(ImageCropperComponent)] },
+      })
+      .compileComponents();
 
     fixture = TestBed.createComponent(SharedImgCropperComponent);
     component = fixture.componentInstance;
@@ -34,14 +43,20 @@ describe('SharedImgCropperComponent', () => {
 
     const mockReader = {
       readAsDataURL: vi.fn(),
-      onload: null as ((this: FileReader, ev: ProgressEvent<FileReader>) => any) | null,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
       result: 'data:image/png;base64,123',
     };
 
     // @ts-ignore
     vi.stubGlobal(
       'FileReader',
-      vi.fn(() => mockReader)
+      class {
+        readAsDataURL = mockReader.readAsDataURL;
+        addEventListener = mockReader.addEventListener;
+        removeEventListener = mockReader.removeEventListener;
+        onload: (() => void) | null = null;
+      }
     );
 
     component.onFileSelected(event);
@@ -59,5 +74,10 @@ describe('SharedImgCropperComponent', () => {
 
     component.onDragLeave(event);
     expect(component['isDragging']()).toBe(false);
+  });
+
+  it('should have no accessibility violations', async () => {
+    const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
   });
 });

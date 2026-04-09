@@ -290,7 +290,8 @@
       "@plastik/eco-store/profile": ["libs/eco-store/profile/feature/src/index.ts"],
       "@plastik/eco-store/profile/basic": ["libs/eco-store/profile/basic/src/index.ts"],
       "@plastik/shared/img-cropper": ["libs/shared/img-cropper/ui/src/index.ts"],
-      "@plastik/eco-store/profile/avatar": ["libs/eco-store/profile/avatar/src/index.ts"]
+      "@plastik/eco-store/profile/avatar": ["libs/eco-store/profile/avatar/src/index.ts"],
+      "@plastik/eco-store/profile/addresses": ["libs/eco-store/profile/addresses/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

@@ -11,7 +11,6 @@ import { UserContact } from '@plastik/core/entities';
  */
 @Component({
   selector: 'plastik-address-card',
-  standalone: true,
   imports: [MatCardModule, MatIconModule],
   templateUrl: './address-card.component.html',
   styleUrl: './address-card.component.scss',
@@ -32,6 +31,11 @@ export class AddressCardComponent {
    * Whether the card is disabled.
    */
   disabled = input<boolean>(false);
+
+  /**
+   * Whether the card acts as an interactive selector with hover effects.
+   */
+  interactive = input<boolean>(true);
 
   /**
    * Event emitted when the card is clicked or activated.

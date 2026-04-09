@@ -89,8 +89,10 @@ build_results.txt
 *.log
 
 # test and lint output files
-test_output*.txt
-lint_output*.txt
+*test_output*.txt
+*lint_output*.txt
+*test-output.txt
+*lint-output.txt
 
 # sketches and working images
 /sketches

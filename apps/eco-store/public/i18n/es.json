@@ -34,7 +34,7 @@
     },
     "form": {
       "error": {
-        "email": "El formato del correo electrónico no es correcto",
+        "email": "El format del correu electrònic no és correcte",
         "required": "El campo es obligatorio",
         "minLength": "El campo debe tener al menos {value} caracteres",
         "maxLength": "El campo debe tener más de {value} caracteres",
@@ -558,6 +558,31 @@
       "title": "Avatar",
       "description": "Personaliza tu perfil con una imagen de avatar.",
       "recommended": "Formato cuadrado, mínimo 200x200px, máximo 2.5 MB, formatos JPG, WEBP o PNG."
+    },
+    "addresses": {
+      "title": "Mis direcciones",
+      "description": "Gestiona tus direcciones de entrega.",
+      "empty": "Todavía no tienes ninguna dirección guardada.",
+      "setDefault": {
+        "label": "Establecer como dirección predeterminada"
+      },
+      "edit": {
+        "label": "Editar dirección"
+      },
+      "delete": {
+        "label": "Eliminar dirección",
+        "message": "¿Estás seguro de que quieres eliminar \"{address}\"? Esta acción no se puede deshacer.",
+        "cancel": "Cancelar",
+        "confirm": "Eliminar dirección"
+      },
+      "success": {
+        "setDefault": "Dirección establecida como predeterminada",
+        "delete": "Dirección eliminada correctamente"
+      },
+      "error": {
+        "setDefault": "Ha ocurrido un error al establecer la dirección como predeterminada",
+        "delete": "Ha ocurrido un error al eliminar la dirección"
+      }
     },
     "success": {
       "update": "Perfil actualizado correctamente"
