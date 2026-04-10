@@ -63,6 +63,12 @@ export function registerValidatorsTranslateExtension(translate: TranslateService
           return translate.stream('common.form.error.phone');
         },
       },
+      {
+        name: 'zip',
+        message() {
+          return translate.stream('common.form.error.zip');
+        },
+      },
     ],
   };
 }

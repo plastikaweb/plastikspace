@@ -1,7 +1,7 @@
 @use '@angular/material' as mat;
 
 :root {
-  // Remove the default search decoration and cancel button.
+  /* Remove the default search decoration and cancel button. */
   input[type='search']::-webkit-search-decoration,
   input[type='search']::-webkit-search-cancel-button,
   input[type='search']::-webkit-search-results-button,
@@ -16,7 +16,18 @@
   border-color: transparent;
 }
 
-// A mixin to create a rounded input field with a specified height and radius.
+.mat-mdc-form-field-type-checkbox {
+  .mdc-text-field--outlined .mat-mdc-notch-piece {
+    --mat-form-field-outlined-outline-width: 0;
+  }
+
+  .mdc-text-field--outlined .mat-mdc-form-field-infix,
+  .mdc-text-field--no-label .mat-mdc-form-field-infix {
+    --mat-form-field-container-vertical-padding: 8px;
+  }
+}
+
+/* A mixin to create a rounded input field with a specified height and radius. */
 @mixin material-input-rounded(
   $height: 40px,
   $radius: 22px,

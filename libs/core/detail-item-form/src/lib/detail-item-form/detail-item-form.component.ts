@@ -29,6 +29,6 @@ import { DETAIL_ITEM_VIEW_FACADE } from './detail-item-view-facade.type';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailItemFormComponent implements CanDeactivateComponent {
-  protected facade = inject(DETAIL_ITEM_VIEW_FACADE);
-  pendingChanges = signal(false);
+  protected readonly facade = inject(DETAIL_ITEM_VIEW_FACADE);
+  readonly pendingChanges = signal(false);
 }

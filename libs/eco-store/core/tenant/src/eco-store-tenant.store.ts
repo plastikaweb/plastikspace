@@ -95,15 +95,13 @@ export const ecoStoreTenantStore = signalStore(
           return {} as EcoStoreTenantAddress;
         }
 
-        const { id, name, address, city, zip, province, country, phone } = currentTenant;
+        const { id, name, address, city, zip, phone } = currentTenant;
         return {
           id,
           name,
           address,
           city,
           zip,
-          province,
-          country,
           phone,
         };
       }),
@@ -360,16 +358,10 @@ export const ecoStoreTenantStore = signalStore(
             );
 
       if (type === 'pickup') {
-        const address = store.addresses().find(address => address.id === addressId);
-        const addressInstructions = address?.instructions || '';
-        const tenantInstructions =
+        const instructions =
           tenant.logisticsConfig?.options?.find(option => option.type === type)?.instructions || '';
 
-        return addressInstructions
-          ? translateInstructions(addressInstructions)
-          : tenantInstructions
-            ? translateInstructions(tenantInstructions)
-            : '';
+        return translateInstructions(instructions);
       }
 
       if (type === 'delivery') {
@@ -377,7 +369,7 @@ export const ecoStoreTenantStore = signalStore(
           tenant.logisticsConfig?.options?.find(option => option.type === 'delivery')
             ?.instructions || '';
 
-        return instructions ? translateInstructions(instructions) : '';
+        return translateInstructions(instructions);
       }
     },
     getTiersOrInstructions(

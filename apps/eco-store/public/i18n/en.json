@@ -42,7 +42,8 @@
         "max": "The value must be at most {value}",
         "url": "The URL format is incorrect",
         "phone": "The phone format is incorrect",
-        "invalid-username": "Invalid username"
+        "invalid-username": "Invalid username",
+        "zip": "Invalid zip code format"
       },
       "charactersCount": "{count, plural, one {character} other {characters}}"
     },
@@ -400,6 +401,7 @@
       },
       "address": {
         "title": "Choose where you would like to receive your order.",
+        "edit": "Edit address",
         "pickup": {
           "title": "Choose where you would like to pick up your order.",
           "description": "Come to the store and pick up your order."
@@ -480,6 +482,10 @@
       "deleteOrderCancel": "Cancel",
       "deleteOrderConfirm": "Delete order"
     },
+    "delete": {
+      "success": "Order successfully deleted. You can place an order again whenever you want.",
+      "error": "Error deleting the order. Please contact us if the problem persists."
+    },
     "card": {
       "label": "Order",
       "orderNumber": "Order number",
@@ -502,6 +508,7 @@
       "delivered": "DELIVERED",
       "pending": "PENDING",
       "confirmed": "CONFIRMED",
+      "processing": "PROCESSING",
       "preparing": "PREPARING",
       "ready": "READY",
       "cancelled": "CANCELLED"
@@ -509,6 +516,8 @@
     "filter": {
       "all": "ALL",
       "status": "Order status",
+      "productSearch": "Product",
+      "productSearchPlaceholder": "Type product name (minimum 2 characters)",
       "sort": {
         "label": "Sort",
         "statusAsc": "Status ascending",
@@ -554,12 +563,53 @@
     "addresses": {
       "title": "My addresses",
       "description": "Manage your delivery addresses.",
-      "empty": "You have no saved addresses yet.",
+      "empty": {
+        "title": "You have no saved addresses yet.",
+        "description": "Add your first address to start receiving your orders."
+      },
+      "modified": {
+        "title": "You have unsaved changes",
+        "description": "If you leave now, you will lose the changes to the address.",
+        "cancel": "Stay here",
+        "leave": "Leave without saving"
+      },
       "setDefault": {
         "label": "Set as default address"
       },
       "edit": {
         "label": "Edit address"
+      },
+      "add": {
+        "label": "Add new address"
+      },
+      "form": {
+        "name": {
+          "label": "Name",
+          "placeholder": "Home, work, etc..."
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Your full address"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Your city"
+        },
+        "zip": {
+          "label": "Zip code",
+          "placeholder": "Your zip code"
+        },
+        "phone": {
+          "label": "Phone",
+          "placeholder": "In case we have questions about the order"
+        },
+        "default": {
+          "label": "Default address"
+        },
+        "submit": {
+          "add": "Add address",
+          "edit": "Save changes"
+        }
       },
       "delete": {
         "label": "Delete address",
@@ -569,11 +619,15 @@
       },
       "success": {
         "setDefault": "Address set as default",
-        "delete": "Address successfully deleted"
+        "delete": "Address successfully deleted",
+        "create": "Address created successfully",
+        "update": "Address updated successfully"
       },
       "error": {
         "setDefault": "An error occurred while setting the address as default",
-        "delete": "An error occurred while deleting the address"
+        "delete": "An error occurred while deleting the address",
+        "create": "An error occurred while creating the address",
+        "update": "An error occurred while updating the address"
       }
     },
     "success": {

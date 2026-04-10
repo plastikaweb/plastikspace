@@ -1,19 +1,57 @@
+@use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.reveal-up;
 :host {
   display: block;
 
+  /* New address form card — warm left accent */
+
+  .new-address-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .new-address-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  /* Staggered card entrance */
+  .address-card-entrance {
+    animation: reveal-up 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--entrance-delay, 0ms);
+  }
+
+  /* Default address visual emphasis */
+  .edit-address {
+    opacity: 0.7 !important;
+    pointer-events: none;
+    filter: grayscale(0.3);
+    ::ng-deep .address-card {
+      border-color: light-dark(
+        color-mix(in srgb, var(--mat-sys-primary), transparent 90%),
+        color-mix(in srgb, var(--mat-sys-primary), transparent 85%)
+      );
+      border-width: 8px;
+      background: light-dark(
+        color-mix(in srgb, var(--mat-sys-primary-container), transparent 60%),
+        color-mix(in srgb, var(--mat-sys-surface-container-high), var(--mat-sys-primary) 20%)
+      );
+    }
+  }
+
+  /* Action buttons — base */
   .address-action-button {
     color: var(--mat-sys-secondary);
     background: light-dark(
       var(--mat-sys-secondary-container),
       var(--mat-sys-surface-container-high)
     );
-
-    &:hover {
-      background: light-dark(
-        color-mix(in srgb, var(--mat-sys-secondary-container), var(--mat-sys-secondary) 15%),
-        color-mix(in srgb, var(--mat-sys-surface-container-high), var(--mat-sys-secondary) 15%)
-      );
-    }
   }
 
   .address-action-delete {

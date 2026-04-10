@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ActivatedRoute } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
@@ -35,6 +36,15 @@ describe('EcoStoreProfileAddressesFeatureComponent', () => {
     ]),
     deleteAddress: vi.fn().mockResolvedValue(true),
     setDefaultAddress: vi.fn().mockResolvedValue(true),
+    updateAddress: vi.fn().mockResolvedValue(true),
+    addressesLoaded: vi.fn().mockReturnValue(true),
+    isLoading: vi.fn().mockReturnValue(false),
+    createAddress: vi.fn().mockResolvedValue(true),
+  };
+
+  const mockActivatedRoute = {
+    url: of([]),
+    paramMap: of({ get: () => null }),
   };
 
   beforeEach(async () => {
@@ -44,6 +54,7 @@ describe('EcoStoreProfileAddressesFeatureComponent', () => {
         provideTranslateService(),
         { provide: SharedConfirmDialogService, useValue: mockConfirmService },
         { provide: pocketBaseUserProfileStore, useValue: mockProfileStore },
+        { provide: ActivatedRoute, useValue: mockActivatedRoute },
       ],
     }).compileComponents();
 

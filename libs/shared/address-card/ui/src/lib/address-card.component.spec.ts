@@ -54,4 +54,10 @@ describe('AddressCardComponent', () => {
     const cardElement = fixture.nativeElement.querySelector('.address-card');
     expect(cardElement.classList.contains('opacity-50')).toBe(true);
   });
+
+  it('should compute fullAriaLabel correctly', () => {
+    fixture.detectChanges();
+    const cardElement = fixture.nativeElement.querySelector('.address-card');
+    expect(cardElement.getAttribute('aria-label')).toBe('Home, Main Street 123, 08001 Barcelona');
+  });
 });

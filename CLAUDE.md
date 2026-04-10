@@ -514,7 +514,7 @@ Key documentation in `/documentation/`:
 
 - Apollo Client 3.13.6
 - Firebase Admin SDK 12.6.0
-- PocketBase 0.26.3
+- PocketBase 0.36.7
 - graphql-request 7.4.0
 
 **Forms**:
