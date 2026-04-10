@@ -40,6 +40,7 @@ Custom form validators including:
 
 - **URL validator**: Validates that a field contains a valid URL format.
 - **Phone validator**: Validates that a field contains a valid phone number format with 9 digits starting with 6, 7 or 9.
+- **Zip validator**: Validates that a field contains a valid Spanish postal code format (5 digits, valid province code).
 
 ### Providers
 

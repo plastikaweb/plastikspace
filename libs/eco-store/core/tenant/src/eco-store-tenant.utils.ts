@@ -66,8 +66,6 @@ export function formatTenantAddresses(addresses: EcoStoreTenantAddress[]): UserC
       address: address.address,
       zip: address.zip,
       city: address.city,
-      province: address.province,
-      country: address.country,
       phone: address.phone,
       default: address.default,
     }))

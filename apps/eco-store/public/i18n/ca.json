@@ -43,9 +43,10 @@
         "maxLength": "El camp ha de tenir més de {value} caràcters",
         "min": "El valor ha de ser com a mínim {value}",
         "max": "El valor ha de ser com a màxim {value}",
-        "url": "El format de l'URL no és correcte",
-        "phone": "El format del telèfon no és correcte",
-        "invalid-username": "El nom d'usuari no és vàlid"
+        "url": "Format d'URL no vàlid",
+        "phone": "Format de telèfon no vàlid",
+        "invalid-username": "Format de nom d'usuari no vàlid",
+        "zip": "Format de codi no vàlid"
       },
       "charactersCount": "{count, plural, one {caràcter} other {caràcters}}"
     },
@@ -573,12 +574,53 @@
     "addresses": {
       "title": "Les meves adreces",
       "description": "Gestiona les teves adreces d'entrega.",
-      "empty": "Encara no tens cap adreça desada.",
+      "empty": {
+        "title": "Encara no tens cap adreça desada.",
+        "description": "Afegeix la teva primera adreça per començar a rebre les teves comandes."
+      },
+      "modified": {
+        "title": "Tens canvis sense desar",
+        "description": "Si surts ara, perdràs els canvis de l'adreça.",
+        "cancel": "Quedar-me aquí",
+        "leave": "Surt-ne sense desar"
+      },
       "setDefault": {
         "label": "Establir com a adreça predeterminada"
       },
       "edit": {
         "label": "Editar adreça"
+      },
+      "add": {
+        "label": "Afegir nova adreça"
+      },
+      "form": {
+        "name": {
+          "label": "Nom",
+          "placeholder": "Casa, feina, etc..."
+        },
+        "address": {
+          "label": "Adreça",
+          "placeholder": "La teva adreça completa"
+        },
+        "city": {
+          "label": "Ciutat",
+          "placeholder": "La teva ciutat"
+        },
+        "zip": {
+          "label": "Codi postal",
+          "placeholder": "El teu codi postal"
+        },
+        "phone": {
+          "label": "Telèfon",
+          "placeholder": "Per si tenim dubtes amb la comanda"
+        },
+        "default": {
+          "label": "Adreça predeterminada"
+        },
+        "submit": {
+          "add": "Afegir adreça",
+          "edit": "Guardar canvis"
+        }
       },
       "delete": {
         "label": "Eliminar adreça",
@@ -588,11 +630,13 @@
       },
       "success": {
         "setDefault": "Adreça establerta com a predeterminada",
-        "delete": "Adreça eliminada correctament"
+        "delete": "Adreça eliminada correctament",
+        "create": "Adreça creada correctament"
       },
       "error": {
         "setDefault": "S'ha produït un error al establir l'adreça com a predeterminada",
-        "delete": "S'ha produït un error al eliminar l'adreça"
+        "delete": "S'ha produït un error al eliminar l'adreça",
+        "create": "S'ha produït un error al crear l'adreça"
       }
     },
     "success": {

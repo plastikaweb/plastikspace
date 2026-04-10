@@ -68,6 +68,7 @@ export type EcoStoreTenantAddress = Pick<
   UserContact & {
     tenant: EcoStoreTenant['id'];
     slots: Record<SlotDays, TimeRange[]>;
+    instructions?: string | LocalizedFields<string>;
   };
 
 /*

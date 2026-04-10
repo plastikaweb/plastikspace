@@ -167,3 +167,8 @@
 .cdk-overlay-pane > .mat-mdc-select-panel {
   border-radius: var(--app-main-border-radius) !important;
 }
+
+input,
+textarea {
+  caret-shape: underscore; /* Chrome only for now */
+}

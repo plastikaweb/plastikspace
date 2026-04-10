@@ -6,6 +6,7 @@
       - [Inputs](#inputs)
       - [Outputs](#outputs)
       - [Content Projection Slots](#content-projection-slots)
+      - [Accessibility](#accessibility)
 
 This library was generated to provide a presentational component for displaying user addresses.
 
@@ -30,3 +31,9 @@ A presentational component for displaying a user address.
 
 - `indicator`: Slot for selection indicators (e.g., radio buttons).
 - `actions`: Slot for action buttons (e.g., edit button).
+
+#### Accessibility
+
+The component includes a computed `fullAriaLabel` that provides a complete address description to
+screen readers. This label combines the address name, street, zip code, and city to ensure
+users with assistive technologies have full context when interacting with address cards.

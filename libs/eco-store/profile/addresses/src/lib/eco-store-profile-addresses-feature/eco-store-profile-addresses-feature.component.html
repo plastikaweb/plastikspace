@@ -1,12 +1,70 @@
-<section class="@container flex flex-col gap-6">
-  <p class="text-on-surface text-md">{{ 'profile.addresses.description' | translate }}</p>
+<section class="@container flex flex-col gap-8">
+  <p class="text-on-surface/80 text-md leading-relaxed">
+    {{ 'profile.addresses.description' | translate }}
+  </p>
 
-  @if (profileStore.getUserContacts(); as addresses) {
-    @if (addresses.length) {
-      <div class="grid grid-cols-1 gap-4 @3xl:grid-cols-2">
-        @for (address of addresses; track address.id) {
-          <plastik-address-card [address]="address" [interactive]="false">
-            <div actions class="absolute top-4 right-4 flex shrink-0 flex-row gap-4">
+  @if (isNewRoute()) {
+    <mat-card class="new-address-card">
+      <mat-card-header class="relative w-full">
+        <mat-card-title class="new-address-title">
+          <mat-icon>add_home</mat-icon>
+          <span>{{ 'profile.addresses.add.label' | translate }}</span>
+        </mat-card-title>
+        <button
+          matIconButton
+          type="button"
+          class="new-address-close"
+          routerLink="../"
+          [matTooltip]="'common.close' | translate"
+          [attr.aria-label]="'common.close' | translate">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <plastik-shared-form-feature
+          [fields]="formConfig.getConfig()"
+          [submitConfig]="formConfig.getSubmitFormConfig?.() || {}"
+          (pendingChangesEvent)="pendingChanges.set($event)"
+          (changeEvent)="onCreateAddress($event); pendingChanges.set(false)">
+        </plastik-shared-form-feature>
+      </mat-card-content>
+    </mat-card>
+  } @else if (!!profileStore.getUserContacts().length) {
+    <button
+      matButton="filled"
+      type="button"
+      class="add-address-button self-start"
+      (click)="onAddNew()">
+      <mat-icon>add_home</mat-icon>
+      {{ 'profile.addresses.add.label' | translate }}
+    </button>
+  }
+
+  @let addresses = profileStore.getUserContacts();
+  @if (!profileStore.addressesLoaded()) {
+    <div class="space-y-8 px-4 py-2" aria-hidden="true">
+      <div>
+        <div
+          class="bg-surface-variant bg-surface-container mb-4 h-4 w-24 animate-pulse rounded"></div>
+        <div class="flex flex-col gap-4">
+          @for (item of skeletonItems(); track $index) {
+            <div
+              class="bg-surface-container-high flex h-[134px] w-full animate-pulse rounded-2xl"></div>
+          }
+        </div>
+      </div>
+    </div>
+  } @else if (addresses.length) {
+    <div class="grid grid-cols-1 gap-5 @3xl:grid-cols-2">
+      @for (address of addresses; track address.id; let i = $index) {
+        <div class="address-card-entrance" [style.--entrance-delay]="i * 60 + 'ms'">
+          <plastik-address-card
+            [address]="address"
+            [interactive]="false"
+            [class.default-address]="address.default">
+            <div
+              actions
+              class="absolute top-4 right-4 flex shrink-0 flex-col gap-2 sm:flex-row sm:gap-4">
               @if (!address.default) {
                 <button
                   matIconButton
@@ -15,7 +73,7 @@
                   [matTooltip]="'profile.addresses.setDefault.label' | translate"
                   [attr.aria-label]="'profile.addresses.setDefault.label' | translate"
                   (click)="onSetDefault(address.id); $event.stopPropagation()">
-                  <mat-icon class="scale-90">star_outline</mat-icon>
+                  <mat-icon>star_outline</mat-icon>
                 </button>
               }
               <button
@@ -25,7 +83,7 @@
                 [matTooltip]="'profile.addresses.edit.label' | translate"
                 [attr.aria-label]="'profile.addresses.edit.label' | translate"
                 (click)="onEdit(address.id); $event.stopPropagation()">
-                <mat-icon class="scale-90">edit</mat-icon>
+                <mat-icon>edit</mat-icon>
               </button>
               <button
                 matIconButton
@@ -34,17 +92,33 @@
                 [matTooltip]="'profile.addresses.delete.label' | translate"
                 [attr.aria-label]="'profile.addresses.delete.label' | translate"
                 (click)="onDelete(address.id, address.name); $event.stopPropagation()">
-                <mat-icon class="scale-90">delete_outline</mat-icon>
+                <mat-icon>delete_outline</mat-icon>
               </button>
             </div>
           </plastik-address-card>
-        }
+        </div>
+      }
+    </div>
+  } @else if (!isNewRoute()) {
+    <eco-store-shared-no-results
+      class="my-6"
+      [imgTitle]="'profile.addresses.empty.title' | translate">
+      <div no-results-title>
+        {{ 'profile.addresses.empty.title' | translate }}
       </div>
-    } @else {
-      <div class="text-on-surface/60 flex flex-col items-center gap-4 py-12 text-center">
-        <mat-icon class="text-on-surface/30 scale-200!">location_off</mat-icon>
-        <p class="text-lg font-medium">{{ 'profile.addresses.empty' | translate }}</p>
+      <div no-results-description>
+        {{ 'profile.addresses.empty.description' | translate }}
       </div>
-    }
+
+      <button
+        matButton="filled"
+        no-results-action
+        type="button"
+        class="add-address-button"
+        (click)="onAddNew()">
+        <mat-icon aria-hidden="true">add_home</mat-icon>
+        <span>{{ 'profile.addresses.add.label' | translate }}</span>
+      </button>
+    </eco-store-shared-no-results>
   }
 </section>

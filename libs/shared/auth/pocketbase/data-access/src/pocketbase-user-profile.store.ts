@@ -7,7 +7,12 @@ import {
 import { inject, isDevMode } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import { LoginData, RequestPasswordData, ResetPasswordData } from '@plastik/auth/entities';
-import { PocketBaseUser, PocketBaseUserAddress, UserContact } from '@plastik/core/entities';
+import {
+  PocketBaseUser,
+  PocketBaseUserAddress,
+  UserContact,
+  UserContactForm,
+} from '@plastik/core/entities';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { PocketBaseUserAddressService } from '@plastik/shared/pocketbase-user-addresses';
 import { differenceInDays, isAfter } from 'date-fns';
@@ -69,12 +74,9 @@ export const pocketBaseUserProfileStore = signalStore(
         .map(address => ({
           id: address.id,
           name: address.name,
-          fullName: address.fullName,
           address: address.address,
           zip: address.zip,
           city: address.city,
-          province: address.province,
-          country: address.country,
           phone: address.phone,
           default: address.default,
         }))
@@ -242,6 +244,50 @@ export const pocketBaseUserProfileStore = signalStore(
       }
     },
 
+    async createAddress(data: UserContactForm): Promise<boolean> {
+      const userId = store.user()?.id;
+      if (!userId) {
+        store._notificationService.create('profile.addresses.error.create', 'ERROR');
+        return false;
+      }
+
+      const previousAddresses = store.addresses();
+      const optimisticAddress = { ...data, user: userId } as PocketBaseUserAddress;
+      const updatedAddresses = data.default
+        ? previousAddresses.map(a => ({ ...a, default: false }))
+        : previousAddresses;
+
+      updateState(store, `[profile] create address optimistic`, {
+        addresses: [...updatedAddresses, optimisticAddress],
+        isLoading: true,
+      });
+
+      try {
+        const created = await lastValueFrom(
+          store._userAddressService.create(optimisticAddress as Partial<PocketBaseUserAddress>)
+        );
+
+        const currentAddresses = store.addresses();
+        updateState(store, `[profile] create address success`, {
+          addresses: [
+            ...currentAddresses.slice(0, currentAddresses.length - 1),
+            created,
+          ],
+          isLoading: false,
+        });
+
+        store._notificationService.create('profile.addresses.success.create', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] create address failed ${error}`, {
+          addresses: previousAddresses,
+          isLoading: false,
+        });
+        store._notificationService.create('profile.addresses.error.create', 'ERROR');
+        return false;
+      }
+    },
+
     async deleteAddress(id: string): Promise<boolean> {
       updateState(store, `[profile] delete address in process`, { isLoading: true });
 
@@ -287,7 +333,6 @@ export const pocketBaseUserProfileStore = signalStore(
       }
     },
   })),
-
   withHooks({
     /**
      * On store initialization, automatically check for an existing valid session.

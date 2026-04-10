@@ -42,7 +42,8 @@
         "max": "El valor debe ser como máximo {value}",
         "url": "El formato de la URL no es correcto",
         "phone": "El formato del teléfono no es correcto",
-        "invalid-username": "Nombre de usuario inválido"
+        "invalid-username": "Nombre de usuario inválido",
+        "zip": "Formato de código postal no válido"
       },
       "charactersCount": "{count, plural, one {carácter} other {caracteres}}"
     },
