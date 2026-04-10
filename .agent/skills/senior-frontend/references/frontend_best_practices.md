@@ -78,12 +78,7 @@ function Modal({ isOpen, onClose, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div
-      ref={modalRef}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="modal-title"
-    >
+    <div ref={modalRef} role="dialog" aria-modal="true" aria-labelledby="modal-title">
       {children}
     </div>
   );
@@ -178,7 +173,7 @@ module.exports = {
 <span className="text-red-600">
   <ErrorIcon aria-hidden="true" />
   <span>Error: Invalid input</span>
-</span>
+</span>;
 ```
 
 ### Screen Reader Only Content
@@ -239,7 +234,11 @@ describe('Button', () => {
   });
 
   it('shows loading text when loading', () => {
-    render(<Button isLoading loadingText="Submitting...">Submit</Button>);
+    render(
+      <Button isLoading loadingText="Submitting...">
+        Submit
+      </Button>
+    );
     expect(screen.getByText('Submitting...')).toBeInTheDocument();
   });
 });
@@ -440,7 +439,10 @@ type AsyncState<T> =
   | { status: 'success'; data: T }
   | { status: 'error'; error: Error };
 
-function DataDisplay<T>({ state, render }: {
+function DataDisplay<T>({
+  state,
+  render,
+}: {
   state: AsyncState<T>;
   render: (data: T) => React.ReactNode;
 }) {
@@ -484,11 +486,7 @@ function List<T>({ items, renderItem, keyExtractor, emptyMessage }: ListProps<T>
 }
 
 // Usage
-<List
-  items={users}
-  keyExtractor={(user) => user.id}
-  renderItem={(user) => <UserCard user={user} />}
-/>
+<List items={users} keyExtractor={user => user.id} renderItem={user => <UserCard user={user} />} />;
 ```
 
 ### Type Guards
@@ -734,7 +732,7 @@ React escapes content by default, which prevents most XSS attacks. When you need
 
 ```tsx
 // React escapes by default - this is safe
-<div>{userInput}</div>
+<div>{userInput}</div>;
 
 // When you must render HTML, sanitize first
 import DOMPurify from 'dompurify';
@@ -756,22 +754,29 @@ import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const schema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string()
-    .min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain uppercase letter')
-    .regex(/[0-9]/, 'Password must contain number'),
-  confirmPassword: z.string(),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Passwords do not match',
-  path: ['confirmPassword'],
-});
+const schema = z
+  .object({
+    email: z.string().email('Invalid email address'),
+    password: z
+      .string()
+      .min(8, 'Password must be at least 8 characters')
+      .regex(/[A-Z]/, 'Password must contain uppercase letter')
+      .regex(/[0-9]/, 'Password must contain number'),
+    confirmPassword: z.string(),
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
 
 type FormData = z.infer<typeof schema>;
 
 function RegisterForm() {
-  const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
@@ -779,7 +784,11 @@ function RegisterForm() {
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input {...register('email')} error={errors.email?.message} />
       <Input type="password" {...register('password')} error={errors.password?.message} />
-      <Input type="password" {...register('confirmPassword')} error={errors.confirmPassword?.message} />
+      <Input
+        type="password"
+        {...register('confirmPassword')}
+        error={errors.confirmPassword?.message}
+      />
       <Button type="submit">Register</Button>
     </form>
   );
@@ -797,7 +806,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export async function GET() {
   const response = await fetch('https://api.example.com/data', {
     headers: {
-      'Authorization': `Bearer ${process.env.API_SECRET}`, // Server-side only
+      Authorization: `Bearer ${process.env.API_SECRET}`, // Server-side only
     },
   });
 

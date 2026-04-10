@@ -32,7 +32,7 @@ interface LoginData {
       @if (loginForm.email().touched() && loginForm.email().invalid()) {
         <p class="error">{{ loginForm.email().errors()[0].message }}</p>
       }
-      
+
       <label>
         Password
         <input type="password" [formField]="loginForm.password" />
@@ -40,7 +40,7 @@ interface LoginData {
       @if (loginForm.password().touched() && loginForm.password().invalid()) {
         <p class="error">{{ loginForm.password().errors()[0].message }}</p>
       }
-      
+
       <button type="submit" [disabled]="loginForm().invalid()">Login</button>
     </form>
   `,
@@ -51,14 +51,14 @@ export class Login {
     email: '',
     password: '',
   });
-  
+
   // Create form with validation schema
-  loginForm = form(this.loginModel, (schemaPath) => {
+  loginForm = form(this.loginModel, schemaPath => {
     required(schemaPath.email, { message: 'Email is required' });
     email(schemaPath.email, { message: 'Enter a valid email address' });
     required(schemaPath.password, { message: 'Password is required' });
   });
-  
+
   onSubmit(event: Event) {
     event.preventDefault();
     if (this.loginForm().valid()) {
@@ -100,8 +100,8 @@ const userModel = signal<UserProfile>({
 const userForm = form(userModel);
 
 // Access nested fields via dot notation
-userForm.name                    // FieldTree<string>
-userForm.preferences.theme       // FieldTree<'light' | 'dark'>
+userForm.name; // FieldTree<string>
+userForm.preferences.theme; // FieldTree<'light' | 'dark'>
 ```
 
 ### Reading Values
@@ -139,22 +139,22 @@ Each field provides reactive signals for validation, interaction, and availabili
 const emailField = this.form.email();
 
 // Validation state
-emailField.valid()      // true if passes all validation
-emailField.invalid()    // true if has validation errors
-emailField.errors()     // array of error objects
-emailField.pending()    // true if async validation in progress
+emailField.valid(); // true if passes all validation
+emailField.invalid(); // true if has validation errors
+emailField.errors(); // array of error objects
+emailField.pending(); // true if async validation in progress
 
 // Interaction state
-emailField.touched()    // true after focus + blur
-emailField.dirty()      // true after user modification
+emailField.touched(); // true after focus + blur
+emailField.dirty(); // true after user modification
 
 // Availability state
-emailField.disabled()   // true if field is disabled
-emailField.hidden()     // true if field should be hidden
-emailField.readonly()   // true if field is readonly
+emailField.disabled(); // true if field is disabled
+emailField.hidden(); // true if field should be hidden
+emailField.readonly(); // true if field is readonly
 
 // Value
-emailField.value()      // current field value (signal)
+emailField.value(); // current field value (signal)
 ```
 
 ### Form-Level State
@@ -163,13 +163,13 @@ The form itself is also a field with aggregated state:
 
 ```typescript
 // Form is valid when all interactive fields are valid
-this.form().valid()
+this.form().valid();
 
 // Form is touched when any field is touched
-this.form().touched()
+this.form().touched();
 
 // Form is dirty when any field is modified
-this.form().dirty()
+this.form().dirty();
 ```
 
 ## Validation
@@ -177,26 +177,32 @@ this.form().dirty()
 ### Built-in Validators
 
 ```typescript
-import { 
-  form, required, email, min, max, 
-  minLength, maxLength, pattern 
+import {
+  form,
+  required,
+  email,
+  min,
+  max,
+  minLength,
+  maxLength,
+  pattern,
 } from '@angular/forms/signals';
 
-const userForm = form(this.userModel, (schemaPath) => {
+const userForm = form(this.userModel, schemaPath => {
   // Required field
   required(schemaPath.name, { message: 'Name is required' });
-  
+
   // Email format
   email(schemaPath.email, { message: 'Invalid email' });
-  
+
   // Numeric range
   min(schemaPath.age, 18, { message: 'Must be 18+' });
   max(schemaPath.age, 120, { message: 'Invalid age' });
-  
+
   // String/array length
   minLength(schemaPath.password, 8, { message: 'Min 8 characters' });
   maxLength(schemaPath.bio, 500, { message: 'Max 500 characters' });
-  
+
   // Regex pattern
   pattern(schemaPath.phone, /^\d{3}-\d{3}-\d{4}$/, {
     message: 'Format: 555-123-4567',
@@ -207,7 +213,7 @@ const userForm = form(this.userModel, (schemaPath) => {
 ### Conditional Validation
 
 ```typescript
-const orderForm = form(this.orderModel, (schemaPath) => {
+const orderForm = form(this.orderModel, schemaPath => {
   required(schemaPath.promoCode, {
     message: 'Promo code required for discounts',
     when: ({ valueOf }) => valueOf(schemaPath.applyDiscount),
@@ -220,7 +226,7 @@ const orderForm = form(this.orderModel, (schemaPath) => {
 ```typescript
 import { validate } from '@angular/forms/signals';
 
-const signupForm = form(this.signupModel, (schemaPath) => {
+const signupForm = form(this.signupModel, schemaPath => {
   // Custom validation logic
   validate(schemaPath.username, ({ value }) => {
     if (value().includes(' ')) {
@@ -234,10 +240,10 @@ const signupForm = form(this.signupModel, (schemaPath) => {
 ### Cross-Field Validation
 
 ```typescript
-const passwordForm = form(this.passwordModel, (schemaPath) => {
+const passwordForm = form(this.passwordModel, schemaPath => {
   required(schemaPath.password);
   required(schemaPath.confirmPassword);
-  
+
   // Compare fields
   validate(schemaPath.confirmPassword, ({ value, valueOf }) => {
     if (value() !== valueOf(schemaPath.password)) {
@@ -253,7 +259,7 @@ const passwordForm = form(this.passwordModel, (schemaPath) => {
 ```typescript
 import { validateHttp } from '@angular/forms/signals';
 
-const signupForm = form(this.signupModel, (schemaPath) => {
+const signupForm = form(this.signupModel, schemaPath => {
   validateHttp(schemaPath.username, {
     request: ({ value }) => `/api/check-username?u=${value()}`,
     onSuccess: (response: { taken: boolean }) => {
@@ -277,14 +283,14 @@ const signupForm = form(this.signupModel, (schemaPath) => {
 ```typescript
 import { hidden } from '@angular/forms/signals';
 
-const profileForm = form(this.profileModel, (schemaPath) => {
+const profileForm = form(this.profileModel, schemaPath => {
   hidden(schemaPath.publicUrl, ({ valueOf }) => !valueOf(schemaPath.isPublic));
 });
 ```
 
 ```html
 @if (!profileForm.publicUrl().hidden()) {
-  <input [formField]="profileForm.publicUrl" />
+<input [formField]="profileForm.publicUrl" />
 }
 ```
 
@@ -293,7 +299,7 @@ const profileForm = form(this.profileModel, (schemaPath) => {
 ```typescript
 import { disabled } from '@angular/forms/signals';
 
-const orderForm = form(this.orderModel, (schemaPath) => {
+const orderForm = form(this.orderModel, schemaPath => {
   disabled(schemaPath.couponCode, ({ valueOf }) => valueOf(schemaPath.total) < 50);
 });
 ```
@@ -303,7 +309,7 @@ const orderForm = form(this.orderModel, (schemaPath) => {
 ```typescript
 import { readonly } from '@angular/forms/signals';
 
-const accountForm = form(this.accountModel, (schemaPath) => {
+const accountForm = form(this.accountModel, schemaPath => {
   readonly(schemaPath.username); // Always readonly
 });
 ```
@@ -324,14 +330,14 @@ import { submit } from '@angular/forms/signals';
 })
 export class Login {
   model = signal({ email: '', password: '' });
-  form = form(this.model, (schemaPath) => {
+  form = form(this.model, schemaPath => {
     required(schemaPath.email);
     required(schemaPath.password);
   });
-  
+
   onSubmit(event: Event) {
     event.preventDefault();
-    
+
     // submit() marks all fields touched and runs callback if valid
     submit(this.form, async () => {
       await this.authService.login(this.model());
@@ -363,21 +369,21 @@ export class Order {
   orderModel = signal<Order>({
     items: [{ product: '', quantity: 1 }],
   });
-  
-  orderForm = form(this.orderModel, (schemaPath) => {
-    applyEach(schemaPath.items, (item) => {
+
+  orderForm = form(this.orderModel, schemaPath => {
+    applyEach(schemaPath.items, item => {
       required(item.product, { message: 'Product required' });
       min(item.quantity, 1, { message: 'Min quantity is 1' });
     });
   });
-  
+
   addItem() {
     this.orderModel.update(m => ({
       ...m,
       items: [...m.items, { product: '', quantity: 1 }],
     }));
   }
-  
+
   removeItem(index: number) {
     this.orderModel.update(m => ({
       ...m,
@@ -393,15 +399,13 @@ export class Order {
 <input [formField]="form.email" />
 
 @if (form.email().touched() && form.email().invalid()) {
-  <ul class="errors">
-    @for (error of form.email().errors(); track error) {
-      <li>{{ error.message }}</li>
-    }
-  </ul>
-}
-
-@if (form.email().pending()) {
-  <span>Validating...</span>
+<ul class="errors">
+  @for (error of form.email().errors(); track error) {
+  <li>{{ error.message }}</li>
+  }
+</ul>
+} @if (form.email().pending()) {
+<span>Validating...</span>
 }
 ```
 
@@ -411,8 +415,7 @@ export class Order {
 <input
   [formField]="form.email"
   [class.is-invalid]="form.email().touched() && form.email().invalid()"
-  [class.is-valid]="form.email().touched() && form.email().valid()"
-/>
+  [class.is-valid]="form.email().touched() && form.email().valid()" />
 ```
 
 ## Reset Form
@@ -420,12 +423,12 @@ export class Order {
 ```typescript
 async onSubmit() {
   if (!this.form().valid()) return;
-  
+
   await this.api.submit(this.model());
-  
+
   // Clear interaction state
   this.form().reset();
-  
+
   // Clear values
   this.model.set({ email: '', password: '' });
 }

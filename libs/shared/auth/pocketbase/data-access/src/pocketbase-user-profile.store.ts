@@ -269,10 +269,7 @@ export const pocketBaseUserProfileStore = signalStore(
 
         const currentAddresses = store.addresses();
         updateState(store, `[profile] create address success`, {
-          addresses: [
-            ...currentAddresses.slice(0, currentAddresses.length - 1),
-            created,
-          ],
+          addresses: [...currentAddresses.slice(0, currentAddresses.length - 1), created],
           isLoading: false,
         });
 
@@ -304,6 +301,44 @@ export const pocketBaseUserProfileStore = signalStore(
       } catch (error) {
         updateState(store, `[profile] delete address failed ${error}`, { isLoading: false });
         store._notificationService.create('profile.addresses.error.delete', 'ERROR');
+        return false;
+      }
+    },
+
+    async updateAddress(id: string, data: UserContactForm): Promise<boolean> {
+      const previousAddresses = store.addresses();
+
+      const updatedAddresses = data.default
+        ? previousAddresses.map(a => ({
+            ...a,
+            default: a.id === id,
+            ...(a.id === id ? data : {}),
+          }))
+        : previousAddresses.map(a => (a.id === id ? { ...a, ...data } : a));
+
+      updateState(store, `[profile] update address optimistic`, {
+        addresses: updatedAddresses as PocketBaseUserAddress[],
+        isLoading: true,
+      });
+
+      try {
+        const updated = await lastValueFrom(
+          store._userAddressService.update(id, data as Partial<PocketBaseUserAddress>)
+        );
+
+        updateState(store, `[profile] update address success`, {
+          addresses: store.addresses().map(a => (a.id === id ? updated : a)),
+          isLoading: false,
+        });
+
+        store._notificationService.create('profile.addresses.success.update', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] update address failed ${error}`, {
+          addresses: previousAddresses,
+          isLoading: false,
+        });
+        store._notificationService.create('profile.addresses.error.update', 'ERROR');
         return false;
       }
     },

@@ -620,12 +620,14 @@
       "success": {
         "setDefault": "Address set as default",
         "delete": "Address successfully deleted",
-        "create": "Address created successfully"
+        "create": "Address created successfully",
+        "update": "Address updated successfully"
       },
       "error": {
         "setDefault": "An error occurred while setting the address as default",
         "delete": "An error occurred while deleting the address",
-        "create": "An error occurred while creating the address"
+        "create": "An error occurred while creating the address",
+        "update": "An error occurred while updating the address"
       }
     },
     "success": {

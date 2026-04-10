@@ -16,7 +16,7 @@ describe('UserListComponent', () => {
 
   const mockUsers = [
     { id: '1', name: 'John Doe', email: 'john@example.com' },
-    { id: '2', name: 'Jane Smith', email: 'jane@example.com' }
+    { id: '2', name: 'Jane Smith', email: 'jane@example.com' },
   ];
 
   beforeEach(async () => {
@@ -24,10 +24,8 @@ describe('UserListComponent', () => {
     const usersServiceSpy = jasmine.createSpyObj('UsersService', ['getAll', 'delete']);
 
     await TestBed.configureTestingModule({
-      imports: [UserListComponent],  // Standalone component
-      providers: [
-        { provide: UsersService, useValue: usersServiceSpy }
-      ]
+      imports: [UserListComponent], // Standalone component
+      providers: [{ provide: UsersService, useValue: usersServiceSpy }],
     }).compileComponents();
 
     usersService = TestBed.inject(UsersService) as jasmine.SpyObj<UsersService>;
@@ -42,7 +40,7 @@ describe('UserListComponent', () => {
   it('should load users on init', () => {
     usersService.getAll.and.returnValue(of(mockUsers));
 
-    fixture.detectChanges();  // Trigger ngOnInit
+    fixture.detectChanges(); // Trigger ngOnInit
 
     expect(usersService.getAll).toHaveBeenCalled();
     expect(component.users()).toEqual(mockUsers);
@@ -91,13 +89,13 @@ describe('UsersService', () => {
 
   const mockUsers: User[] = [
     { id: '1', name: 'John', email: 'john@example.com' },
-    { id: '2', name: 'Jane', email: 'jane@example.com' }
+    { id: '2', name: 'Jane', email: 'jane@example.com' },
   ];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [UsersService]
+      providers: [UsersService],
     });
 
     service = TestBed.inject(UsersService);
@@ -105,10 +103,10 @@ describe('UsersService', () => {
   });
 
   afterEach(() => {
-    httpMock.verify();  // Verify no outstanding requests
+    httpMock.verify(); // Verify no outstanding requests
   });
 
-  it('should fetch all users', (done) => {
+  it('should fetch all users', done => {
     service.getAll().subscribe(users => {
       expect(users).toEqual(mockUsers);
       done();
@@ -119,7 +117,7 @@ describe('UsersService', () => {
     req.flush(mockUsers);
   });
 
-  it('should create a user', (done) => {
+  it('should create a user', done => {
     const newUser: User = { id: '3', name: 'Bob', email: 'bob@example.com' };
 
     service.create(newUser).subscribe(user => {
@@ -133,13 +131,13 @@ describe('UsersService', () => {
     req.flush(newUser);
   });
 
-  it('should handle error', (done) => {
+  it('should handle error', done => {
     service.getAll().subscribe({
       next: () => fail('should have failed'),
-      error: (error) => {
+      error: error => {
         expect(error.status).toBe(500);
         done();
-      }
+      },
     });
 
     const req = httpMock.expectOne('/api/users');
@@ -233,18 +231,16 @@ describe('UsersComponent with NgRx', () => {
       ids: ['1', '2'],
       entities: {
         '1': { id: '1', name: 'John' },
-        '2': { id: '2', name: 'Jane' }
+        '2': { id: '2', name: 'Jane' },
       },
-      loading: false
-    }
+      loading: false,
+    },
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UsersComponent],
-      providers: [
-        provideMockStore({ initialState })
-      ]
+      providers: [provideMockStore({ initialState })],
     }).compileComponents();
 
     store = TestBed.inject(MockStore);
@@ -255,7 +251,7 @@ describe('UsersComponent with NgRx', () => {
   it('should select users from store', () => {
     store.overrideSelector(selectAllUsers, [
       { id: '1', name: 'John' },
-      { id: '2', name: 'Jane' }
+      { id: '2', name: 'Jane' },
     ]);
 
     fixture.detectChanges();
@@ -268,9 +264,7 @@ describe('UsersComponent with NgRx', () => {
 
     component.onDelete('1');
 
-    expect(dispatchSpy).toHaveBeenCalledWith(
-      UsersActions.deleteUser({ id: '1' })
-    );
+    expect(dispatchSpy).toHaveBeenCalledWith(UsersActions.deleteUser({ id: '1' }));
   });
 });
 ```
@@ -298,8 +292,8 @@ describe('UsersEffects', () => {
       providers: [
         UsersEffects,
         provideMockActions(() => actions$),
-        { provide: UsersService, useValue: usersServiceSpy }
-      ]
+        { provide: UsersService, useValue: usersServiceSpy },
+      ],
     });
 
     effects = TestBed.inject(UsersEffects);
@@ -355,8 +349,8 @@ describe('authGuard', () => {
     TestBed.configureTestingModule({
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
-        { provide: Router, useValue: routerSpy }
-      ]
+        { provide: Router, useValue: routerSpy },
+      ],
     });
 
     authService = TestBed.inject(AuthService) as jasmine.SpyObj<AuthService>;
@@ -366,9 +360,7 @@ describe('authGuard', () => {
   it('should allow access when authenticated', () => {
     authService.isAuthenticated.and.returnValue(true);
 
-    const result = TestBed.runInInjectionContext(() =>
-      authGuard({} as any, {} as any)
-    );
+    const result = TestBed.runInInjectionContext(() => authGuard({} as any, {} as any));
 
     expect(result).toBe(true);
   });
@@ -383,23 +375,22 @@ describe('authGuard', () => {
     );
 
     expect(result).toBe(urlTree);
-    expect(router.createUrlTree).toHaveBeenCalledWith(
-      ['/login'],
-      { queryParams: { returnUrl: '/protected' } }
-    );
+    expect(router.createUrlTree).toHaveBeenCalledWith(['/login'], {
+      queryParams: { returnUrl: '/protected' },
+    });
   });
 });
 ```
 
 ## Quick Reference
 
-| Test Type | Key Tools |
-|-----------|-----------|
-| Component | `TestBed`, `ComponentFixture`, `detectChanges()` |
-| Service | `HttpClientTestingModule`, `HttpTestingController` |
-| RxJS | `TestScheduler`, marble diagrams |
-| NgRx Store | `provideMockStore`, `MockStore` |
-| Effects | `provideMockActions`, jasmine-marbles |
-| Guards | `TestBed.runInInjectionContext()` |
-| Signals | Direct value checks with `()` |
-| Spies | `jasmine.createSpyObj()`, `spyOn()` |
+| Test Type  | Key Tools                                          |
+| ---------- | -------------------------------------------------- |
+| Component  | `TestBed`, `ComponentFixture`, `detectChanges()`   |
+| Service    | `HttpClientTestingModule`, `HttpTestingController` |
+| RxJS       | `TestScheduler`, marble diagrams                   |
+| NgRx Store | `provideMockStore`, `MockStore`                    |
+| Effects    | `provideMockActions`, jasmine-marbles              |
+| Guards     | `TestBed.runInInjectionContext()`                  |
+| Signals    | Direct value checks with `()`                      |
+| Spies      | `jasmine.createSpyObj()`, `spyOn()`                |

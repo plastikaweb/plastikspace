@@ -41,6 +41,7 @@ async function ProductsPage() {
 ### Client Components
 
 Use `'use client'` only when you need:
+
 - Event handlers (onClick, onChange)
 - State (useState, useReducer)
 - Effects (useEffect)
@@ -225,9 +226,7 @@ const MapComponent = dynamic(() => import('@/components/Map'), {
 });
 
 // Named exports
-const Modal = dynamic(() =>
-  import('@/components/ui').then(mod => mod.Modal)
-);
+const Modal = dynamic(() => import('@/components/ui').then(mod => mod.Modal));
 
 // With suspense
 const DashboardCharts = dynamic(() => import('@/components/DashboardCharts'), {
@@ -378,12 +377,12 @@ fetch('https://api.example.com/data', { cache: 'no-store' });
 
 // Revalidate after time
 fetch('https://api.example.com/data', {
-  next: { revalidate: 3600 } // 1 hour
+  next: { revalidate: 3600 }, // 1 hour
 });
 
 // Tag-based revalidation
 fetch('https://api.example.com/products', {
-  next: { tags: ['products'] }
+  next: { tags: ['products'] },
 });
 
 // Later, revalidate by tag
@@ -606,16 +605,10 @@ export default function Layout({ children }) {
         {children}
 
         {/* Load analytics after page is interactive */}
-        <Script
-          src="https://analytics.example.com/script.js"
-          strategy="afterInteractive"
-        />
+        <Script src="https://analytics.example.com/script.js" strategy="afterInteractive" />
 
         {/* Load chat widget when idle */}
-        <Script
-          src="https://chat.example.com/widget.js"
-          strategy="lazyOnload"
-        />
+        <Script src="https://chat.example.com/widget.js" strategy="lazyOnload" />
       </body>
     </html>
   );
@@ -623,7 +616,7 @@ export default function Layout({ children }) {
 
 // Use web workers for heavy computation
 // app/components/DataProcessor.tsx
-'use client';
+('use client');
 
 import { useEffect, useState } from 'react';
 
@@ -634,7 +627,7 @@ function DataProcessor({ data }: { data: number[] }) {
     const worker = new Worker(new URL('../workers/processor.js', import.meta.url));
 
     worker.postMessage(data);
-    worker.onmessage = (e) => setResult(e.data);
+    worker.onmessage = e => setResult(e.data);
 
     return () => worker.terminate();
   }, [data]);
@@ -652,7 +645,7 @@ function DataProcessor({ data }: { data: number[] }) {
 import { useReportWebVitals } from 'next/web-vitals';
 
 export function PerformanceMonitor() {
-  useReportWebVitals((metric) => {
+  useReportWebVitals(metric => {
     switch (metric.name) {
       case 'LCP':
         console.log('LCP:', metric.value);
@@ -686,15 +679,15 @@ export function PerformanceMonitor() {
 
 ### Performance Checklist
 
-| Area | Optimization | Impact |
-|------|-------------|--------|
-| Images | Use next/image with priority for LCP | High |
-| Fonts | Use next/font with display: swap | Medium |
-| Code | Dynamic imports for heavy components | High |
-| Data | Parallel fetching with Promise.all | High |
-| Render | Server Components by default | High |
-| Cache | Configure revalidate appropriately | Medium |
-| Bundle | Tree-shake imports, analyze size | Medium |
+| Area   | Optimization                         | Impact |
+| ------ | ------------------------------------ | ------ |
+| Images | Use next/image with priority for LCP | High   |
+| Fonts  | Use next/font with display: swap     | Medium |
+| Code   | Dynamic imports for heavy components | High   |
+| Data   | Parallel fetching with Promise.all   | High   |
+| Render | Server Components by default         | High   |
+| Cache  | Configure revalidate appropriately   | Medium |
+| Bundle | Tree-shake imports, analyze size     | Medium |
 
 ### Config Template
 

@@ -66,7 +66,27 @@ export const ecoStoreProfileAddressesFeatureRoutes: Route[] = [
   {
     path: ':id',
     component: EcoStoreProfileAddressesFeatureComponent,
-    providers: [provideFormlyCore([withFormlyFormField(), withFormlyFieldInput()])],
+    providers: [
+      provideFormlyCore([withFormlyFormField(), withFormlyFieldInput(), withFormlyFieldCheckbox()]),
+      {
+        provide: FORMLY_CONFIG,
+        multi: true,
+        useFactory: registerFormFieldTranslateExtension,
+        deps: [TranslateService],
+      },
+      {
+        provide: FORMLY_CONFIG,
+        multi: true,
+        useFactory: registerValidatorsTranslateExtension,
+        deps: [TranslateService],
+      },
+      {
+        provide: FORMLY_CONFIG,
+        multi: true,
+        useFactory: registerFormFieldGroupTranslateExtension,
+        deps: [TranslateService],
+      },
+    ],
     resolve: { addressesLoaded: profileAddressesResolver },
     canDeactivate: [ecoStoreProfileAddressesCanDeactivateGuard],
   },

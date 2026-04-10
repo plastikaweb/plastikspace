@@ -26,9 +26,7 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes),
-  ],
+  providers: [provideRouter(routes)],
 };
 
 // app.component.ts
@@ -58,13 +56,13 @@ Load feature modules on demand:
 export const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: Home },
-  
+
   // Lazy load entire feature
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.routes').then(m => m.adminRoutes),
   },
-  
+
   // Lazy load single component
   {
     path: 'settings',
@@ -100,7 +98,7 @@ import { Component, input, computed } from '@angular/core';
 export class UserDetail {
   // Route param as signal input
   id = input.required<string>();
-  
+
   // Computed based on route param
   userId = computed(() => parseInt(this.id(), 10));
 }
@@ -113,9 +111,7 @@ Enable with `withComponentInputBinding()`:
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideRouter(routes, withComponentInputBinding()),
-  ],
+  providers: [provideRouter(routes, withComponentInputBinding())],
 };
 ```
 
@@ -129,7 +125,7 @@ export class Search {
   // Query params as inputs
   q = input<string>('');
   page = input<string>('1');
-  
+
   currentPage = computed(() => parseInt(this.page(), 10));
 }
 ```
@@ -145,13 +141,13 @@ import { map } from 'rxjs';
 @Component({...})
 export class UserDetail {
   private route = inject(ActivatedRoute);
-  
+
   // Convert route params to signal
   id = toSignal(
     this.route.paramMap.pipe(map(params => params.get('id'))),
     { initialValue: null }
   );
-  
+
   // Query params
   query = toSignal(
     this.route.queryParamMap.pipe(map(params => params.get('q'))),
@@ -172,11 +168,11 @@ import { CanActivateFn, Router } from '@angular/router';
 export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(Auth);
   const router = inject(Router);
-  
+
   if (authService.isAuthenticated()) {
     return true;
   }
-  
+
   // Redirect to login with return URL
   return router.createUrlTree(['/login'], {
     queryParams: { returnUrl: state.url },
@@ -198,13 +194,13 @@ export const roleGuard = (allowedRoles: string[]): CanActivateFn => {
   return (route, state) => {
     const authService = inject(Auth);
     const router = inject(Router);
-    
+
     const userRole = authService.currentUser()?.role;
-    
+
     if (userRole && allowedRoles.includes(userRole)) {
       return true;
     }
-    
+
     return router.createUrlTree(['/unauthorized']);
   };
 };
@@ -228,7 +224,7 @@ export const unsavedChangesGuard: CanDeactivateFn<CanDeactivate> = (component) =
   if (component.canDeactivate()) {
     return true;
   }
-  
+
   return confirm('You have unsaved changes. Leave anyway?');
 };
 
@@ -236,7 +232,7 @@ export const unsavedChangesGuard: CanDeactivateFn<CanDeactivate> = (component) =
 @Component({...})
 export class Edit implements CanDeactivate {
   form = inject(FormBuilder).group({...});
-  
+
   canDeactivate(): boolean {
     return !this.form.dirty;
   }
@@ -300,7 +296,8 @@ export const routes: Routes = [
   imports: [RouterOutlet],
   template: `
     <h1>Products</h1>
-    <router-outlet /> <!-- Child routes render here -->
+    <router-outlet />
+    <!-- Child routes render here -->
   `,
 })
 export class ProductsLayout {}
@@ -315,29 +312,29 @@ import { Router } from '@angular/router';
 @Component({...})
 export class Product {
   private router = inject(Router);
-  
+
   // Navigate to route
   goToProducts() {
     this.router.navigate(['/products']);
   }
-  
+
   // Navigate with params
   goToProduct(id: string) {
     this.router.navigate(['/products', id]);
   }
-  
+
   // Navigate with query params
   search(query: string) {
     this.router.navigate(['/search'], {
       queryParams: { q: query, page: 1 },
     });
   }
-  
+
   // Navigate relative to current route
   goToEdit() {
     this.router.navigate(['edit'], { relativeTo: this.route });
   }
-  
+
   // Replace current history entry
   replaceUrl() {
     this.router.navigate(['/new-page'], { replaceUrl: true });
@@ -379,9 +376,9 @@ import { filter } from 'rxjs';
 @Component({...})
 export class AppMain {
   private router = inject(Router);
-  
+
   isNavigating = signal(false);
-  
+
   constructor() {
     this.router.events.pipe(
       filter(e => e instanceof NavigationStart || e instanceof NavigationEnd)

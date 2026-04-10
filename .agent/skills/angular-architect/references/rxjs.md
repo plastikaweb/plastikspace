@@ -5,15 +5,21 @@
 ```typescript
 import { Component, inject, signal } from '@angular/core';
 import {
-  map, filter, switchMap, catchError,
-  debounceTime, distinctUntilChanged,
-  tap, shareReplay, takeUntil
+  map,
+  filter,
+  switchMap,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+  tap,
+  shareReplay,
+  takeUntil,
 } from 'rxjs/operators';
 import { Subject, of, EMPTY } from 'rxjs';
 
 @Component({
   selector: 'app-search',
-  standalone: true
+  standalone: true,
 })
 export class SearchComponent {
   private searchService = inject(SearchService);
@@ -23,22 +29,27 @@ export class SearchComponent {
   results = signal<SearchResult[]>([]);
 
   ngOnInit() {
-    this.searchTerm$.pipe(
-      debounceTime(300),              // Wait 300ms after typing
-      distinctUntilChanged(),         // Only if value changed
-      filter(term => term.length > 2), // Minimum 3 characters
-      tap(() => this.loading.set(true)),
-      switchMap(term =>               // Cancel previous requests
-        this.searchService.search(term).pipe(
-          catchError(err => {
-            console.error(err);
-            return of([]);            // Return empty on error
-          })
-        )
-      ),
-      tap(() => this.loading.set(false)),
-      takeUntil(this.destroy$)        // Auto-unsubscribe
-    ).subscribe(results => this.results.set(results));
+    this.searchTerm$
+      .pipe(
+        debounceTime(300), // Wait 300ms after typing
+        distinctUntilChanged(), // Only if value changed
+        filter(term => term.length > 2), // Minimum 3 characters
+        tap(() => this.loading.set(true)),
+        switchMap(
+          (
+            term // Cancel previous requests
+          ) =>
+            this.searchService.search(term).pipe(
+              catchError(err => {
+                console.error(err);
+                return of([]); // Return empty on error
+              })
+            )
+        ),
+        tap(() => this.loading.set(false)),
+        takeUntil(this.destroy$) // Auto-unsubscribe
+      )
+      .subscribe(results => this.results.set(results));
   }
 
   ngOnDestroy() {
@@ -90,30 +101,22 @@ export class HigherOrderExamples {
 
   // switchMap: Cancel previous, use latest (search, typeahead)
   searchUsers(term$: Observable<string>) {
-    return term$.pipe(
-      switchMap(term => this.http.get<User[]>(`/api/users?q=${term}`))
-    );
+    return term$.pipe(switchMap(term => this.http.get<User[]>(`/api/users?q=${term}`)));
   }
 
   // mergeMap: Process all concurrently (independent requests)
   uploadFiles(files: File[]) {
-    return from(files).pipe(
-      mergeMap(file => this.http.post('/api/upload', file))
-    );
+    return from(files).pipe(mergeMap(file => this.http.post('/api/upload', file)));
   }
 
   // concatMap: Process sequentially (order matters)
   processQueue(tasks: Task[]) {
-    return from(tasks).pipe(
-      concatMap(task => this.http.post('/api/process', task))
-    );
+    return from(tasks).pipe(concatMap(task => this.http.post('/api/process', task)));
   }
 
   // exhaustMap: Ignore new until current completes (prevent double-click)
   saveForm(clicks$: Observable<void>, formData: any) {
-    return clicks$.pipe(
-      exhaustMap(() => this.http.post('/api/save', formData))
-    );
+    return clicks$.pipe(exhaustMap(() => this.http.post('/api/save', formData)));
   }
 }
 ```
@@ -172,7 +175,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-auto-cleanup',
-  standalone: true
+  standalone: true,
 })
 export class AutoCleanupComponent {
   private dataService = inject(DataService);
@@ -182,9 +185,12 @@ export class AutoCleanupComponent {
 
   constructor() {
     // Modern approach: takeUntilDestroyed
-    this.dataService.getData().pipe(
-      takeUntilDestroyed()  // Auto-cleanup on destroy
-    ).subscribe(data => this.data.set(data));
+    this.dataService
+      .getData()
+      .pipe(
+        takeUntilDestroyed() // Auto-cleanup on destroy
+      )
+      .subscribe(data => this.data.set(data));
 
     // Manual cleanup with DestroyRef
     const subscription = this.dataService.getUpdates().subscribe();
@@ -195,15 +201,13 @@ export class AutoCleanupComponent {
 // Legacy approach (still valid)
 @Component({
   selector: 'app-manual-cleanup',
-  standalone: true
+  standalone: true,
 })
 export class ManualCleanupComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   ngOnInit() {
-    this.dataService.getData().pipe(
-      takeUntil(this.destroy$)
-    ).subscribe();
+    this.dataService.getData().pipe(takeUntil(this.destroy$)).subscribe();
   }
 
   ngOnDestroy() {
@@ -226,12 +230,12 @@ export class CombiningExamples {
     return combineLatest({
       user: this.http.get<User>('/api/user'),
       stats: this.http.get<Stats>('/api/stats'),
-      notifications: this.http.get<Notification[]>('/api/notifications')
+      notifications: this.http.get<Notification[]>('/api/notifications'),
     }).pipe(
       map(({ user, stats, notifications }) => ({
         user,
         stats,
-        notifications
+        notifications,
       }))
     );
   }
@@ -241,7 +245,7 @@ export class CombiningExamples {
     return forkJoin({
       users: this.http.get<User[]>('/api/users'),
       products: this.http.get<Product[]>('/api/products'),
-      orders: this.http.get<Order[]>('/api/orders')
+      orders: this.http.get<Order[]>('/api/orders'),
     });
   }
 
@@ -268,16 +272,19 @@ export function debug<T>(tag: string): OperatorFunction<T, T> {
       tap({
         next: value => console.log(`[${tag}] Next:`, value),
         error: err => console.error(`[${tag}] Error:`, err),
-        complete: () => console.log(`[${tag}] Complete`)
+        complete: () => console.log(`[${tag}] Complete`),
       })
     );
 }
 
 // Usage
-this.http.get('/api/data').pipe(
-  debug('API Call'),
-  map(data => transform(data))
-).subscribe();
+this.http
+  .get('/api/data')
+  .pipe(
+    debug('API Call'),
+    map(data => transform(data))
+  )
+  .subscribe();
 ```
 
 ## ShareReplay for Caching
@@ -290,9 +297,9 @@ export class ConfigService {
   private http = inject(HttpClient);
 
   // Cache config, share with all subscribers
-  config$ = this.http.get<Config>('/api/config').pipe(
-    shareReplay({ bufferSize: 1, refCount: true })
-  );
+  config$ = this.http
+    .get<Config>('/api/config')
+    .pipe(shareReplay({ bufferSize: 1, refCount: true }));
 
   // All components get same config without extra HTTP calls
   getConfig() {
@@ -303,17 +310,17 @@ export class ConfigService {
 
 ## Quick Reference
 
-| Use Case | Operator |
-|----------|----------|
-| Transform values | `map`, `pluck` |
-| Filter values | `filter`, `distinctUntilChanged` |
-| Time-based | `debounceTime`, `throttleTime`, `delay` |
-| Cancel previous | `switchMap` |
-| Process all | `mergeMap` |
-| Sequential | `concatMap` |
-| Ignore new | `exhaustMap` |
-| Combine latest | `combineLatest` |
-| Wait for all | `forkJoin` |
-| Error handling | `catchError`, `retry` |
-| Cleanup | `takeUntilDestroyed`, `takeUntil` |
-| Share result | `shareReplay` |
+| Use Case         | Operator                                |
+| ---------------- | --------------------------------------- |
+| Transform values | `map`, `pluck`                          |
+| Filter values    | `filter`, `distinctUntilChanged`        |
+| Time-based       | `debounceTime`, `throttleTime`, `delay` |
+| Cancel previous  | `switchMap`                             |
+| Process all      | `mergeMap`                              |
+| Sequential       | `concatMap`                             |
+| Ignore new       | `exhaustMap`                            |
+| Combine latest   | `combineLatest`                         |
+| Wait for all     | `forkJoin`                              |
+| Error handling   | `catchError`, `retry`                   |
+| Cleanup          | `takeUntilDestroyed`, `takeUntil`       |
+| Share result     | `shareReplay`                           |

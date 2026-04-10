@@ -55,31 +55,31 @@ import { Counter } from './counter.component';
 describe('Counter', () => {
   let component: Counter;
   let fixture: ComponentFixture<Counter>;
-  
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Counter], // Standalone component
     }).compileComponents();
-    
+
     fixture = TestBed.createComponent(Counter);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
-  
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   it('should increment count', () => {
     expect(component.count()).toBe(0);
     component.increment();
     expect(component.count()).toBe(1);
   });
-  
+
   it('should display count in template', () => {
     component.count.set(5);
     fixture.detectChanges();
-    
+
     const element = fixture.nativeElement.querySelector('.count');
     expect(element.textContent).toContain('5');
   });
@@ -97,12 +97,12 @@ describe('Signal logic', () => {
   it('should update computed when signal changes', () => {
     const count = signal(0);
     const doubled = computed(() => count() * 2);
-    
+
     expect(doubled()).toBe(0);
-    
+
     count.set(5);
     expect(doubled()).toBe(10);
-    
+
     count.update(c => c + 1);
     expect(doubled()).toBe(12);
   });
@@ -126,41 +126,44 @@ describe('Signal logic', () => {
 export class TodoList {
   todos = signal<Todo[]>([]);
   filter = signal<'all' | 'active' | 'done'>('all');
-  
+
   filteredTodos = computed(() => {
     const todos = this.todos();
     switch (this.filter()) {
-      case 'active': return todos.filter(t => !t.done);
-      case 'done': return todos.filter(t => t.done);
-      default: return todos;
+      case 'active':
+        return todos.filter(t => !t.done);
+      case 'done':
+        return todos.filter(t => t.done);
+      default:
+        return todos;
     }
   });
-  
+
   remaining = computed(() => this.todos().filter(t => !t.done).length);
 }
 
 describe('TodoList', () => {
   let component: TodoList;
   let fixture: ComponentFixture<TodoList>;
-  
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TodoList],
     }).compileComponents();
-    
+
     fixture = TestBed.createComponent(TodoList);
     component = fixture.componentInstance;
   });
-  
+
   it('should filter active todos', () => {
     component.todos.set([
       { id: '1', text: 'Task 1', done: false },
       { id: '2', text: 'Task 2', done: true },
       { id: '3', text: 'Task 3', done: false },
     ]);
-    
+
     component.filter.set('active');
-    
+
     expect(component.filteredTodos().length).toBe(2);
     expect(component.remaining()).toBe(2);
   });
@@ -183,17 +186,17 @@ export class OnPushCmpt {
 describe('OnPushCmpt', () => {
   it('should update when input signal changes', () => {
     const fixture = TestBed.createComponent(OnPushCmpt);
-    
+
     // Set input using setInput (for signal inputs)
     fixture.componentRef.setInput('data', { name: 'Initial' });
     fixture.detectChanges();
-    
+
     expect(fixture.nativeElement.textContent).toContain('Initial');
-    
+
     // Update input
     fixture.componentRef.setInput('data', { name: 'Updated' });
     fixture.detectChanges();
-    
+
     expect(fixture.nativeElement.textContent).toContain('Updated');
   });
 });
@@ -208,19 +211,23 @@ describe('OnPushCmpt', () => {
 export class CounterService {
   private _count = signal(0);
   readonly count = this._count.asReadonly();
-  
-  increment() { this._count.update(c => c + 1); }
-  reset() { this._count.set(0); }
+
+  increment() {
+    this._count.update(c => c + 1);
+  }
+  reset() {
+    this._count.set(0);
+  }
 }
 
 describe('CounterService', () => {
   let service: CounterService;
-  
+
   beforeEach(() => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(CounterService);
   });
-  
+
   it('should increment count', () => {
     expect(service.count()).toBe(0);
     service.increment();
@@ -238,30 +245,27 @@ import { provideHttpClient } from '@angular/common/http';
 describe('UserService', () => {
   let service: UserService;
   let httpMock: HttpTestingController;
-  
+
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
-    
+
     service = TestBed.inject(UserService);
     httpMock = TestBed.inject(HttpTestingController);
   });
-  
+
   afterEach(() => {
     httpMock.verify(); // Verify no outstanding requests
   });
-  
+
   it('should fetch user by id', () => {
     const mockUser = { id: '1', name: 'Test User' };
-    
+
     service.getUser('1').subscribe(user => {
       expect(user).toEqual(mockUser);
     });
-    
+
     const req = httpMock.expectOne('/api/users/1');
     expect(req.request.method).toBe('GET');
     req.flush(mockUser);
@@ -282,23 +286,21 @@ describe('UserProfile', () => {
     updateUser: vi.fn(),
     user: signal<User | null>(null),
   };
-  
+
   beforeEach(async () => {
     vi.clearAllMocks();
     mockUserService.getUser.mockReturnValue(of({ id: '1', name: 'Test' }));
-    
+
     await TestBed.configureTestingModule({
       imports: [UserProfile],
-      providers: [
-        { provide: UserService, useValue: mockUserService },
-      ],
+      providers: [{ provide: UserService, useValue: mockUserService }],
     }).compileComponents();
   });
-  
+
   it('should call getUser on init', () => {
     const fixture = TestBed.createComponent(UserProfile);
     fixture.detectChanges();
-    
+
     expect(mockUserService.getUser).toHaveBeenCalledWith('1');
   });
 });
@@ -317,18 +319,16 @@ const mockAuth = {
 beforeEach(async () => {
   await TestBed.configureTestingModule({
     imports: [ProtectedPage],
-    providers: [
-      { provide: AuthService, useValue: mockAuth },
-    ],
+    providers: [{ provide: AuthService, useValue: mockAuth }],
   }).compileComponents();
 });
 
 it('should show content when authenticated', () => {
   mockAuth.user.set({ id: '1', name: 'Test User' });
-  
+
   const fixture = TestBed.createComponent(ProtectedPage);
   fixture.detectChanges();
-  
+
   expect(fixture.nativeElement.querySelector('.protected-content')).toBeTruthy();
 });
 ```
@@ -343,7 +343,7 @@ it('should show content when authenticated', () => {
 export class ItemCmpt {
   item = input.required<Item>();
   selected = output<Item>();
-  
+
   select() {
     this.selected.emit(this.item());
   }
@@ -353,15 +353,15 @@ describe('ItemCmpt', () => {
   it('should emit selected event on click', () => {
     const fixture = TestBed.createComponent(ItemCmpt);
     const item: Item = { id: '1', name: 'Test Item' };
-    
+
     fixture.componentRef.setInput('item', item);
     fixture.detectChanges();
-    
+
     let emittedItem: Item | undefined;
-    fixture.componentInstance.selected.subscribe(i => emittedItem = i);
-    
+    fixture.componentInstance.selected.subscribe(i => (emittedItem = i));
+
     fixture.nativeElement.querySelector('div').click();
-    
+
     expect(emittedItem).toEqual(item);
   });
 });
@@ -377,14 +377,14 @@ import { fakeAsync, tick, flush } from '@angular/core/testing';
 it('should debounce search', fakeAsync(() => {
   const fixture = TestBed.createComponent(SearchCmpt);
   fixture.detectChanges();
-  
+
   fixture.componentInstance.query.set('test');
-  
+
   tick(300); // Advance time for debounce
   fixture.detectChanges();
-  
+
   expect(fixture.componentInstance.results().length).toBeGreaterThan(0);
-  
+
   flush(); // Flush remaining timers
 }));
 ```
@@ -397,7 +397,7 @@ import { waitForAsync } from '@angular/core/testing';
 it('should load data', waitForAsync(() => {
   const fixture = TestBed.createComponent(DataCmpt);
   fixture.detectChanges();
-  
+
   fixture.whenStable().then(() => {
     fixture.detectChanges();
     expect(fixture.componentInstance.data()).toBeDefined();
@@ -424,29 +424,26 @@ export class UserCmpt {
 
 describe('UserCmpt', () => {
   let httpMock: HttpTestingController;
-  
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UserCmpt],
-      providers: [
-        provideHttpClient(),
-        provideHttpClientTesting(),
-      ],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     }).compileComponents();
-    
+
     httpMock = TestBed.inject(HttpTestingController);
   });
-  
+
   it('should display user name after loading', () => {
     const fixture = TestBed.createComponent(UserCmpt);
     fixture.detectChanges();
-    
+
     expect(fixture.nativeElement.textContent).toContain('Loading');
-    
+
     const req = httpMock.expectOne('/api/users/1');
     req.flush({ id: '1', name: 'John Doe' });
     fixture.detectChanges();
-    
+
     expect(fixture.nativeElement.textContent).toContain('John Doe');
   });
 });

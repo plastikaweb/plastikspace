@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- **Edit Address**: Implemented full edit address flow with route-based navigation (`:id`), form pre-population from the store, and optimistic update ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
 - **New Address Form**: Implemented a comprehensive form for adding new delivery addresses with full validation ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
 - **Spanish Zip Validator**: Added a new custom validator `zipValidator` for Spanish postal codes with associated unit tests ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
 - **CanDeactivate Guard**: Added `ecoStoreProfileAddressesCanDeactivateGuard` to prevent accidental data loss when navigating away from modified forms ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
@@ -16,9 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
+- **Edit Address UX**: The address card being edited is visually dimmed with reduced opacity and disabled interactions to avoid confusion ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
 - **Address Card Accessibility**: Enhanced `AddressCardComponent` with computed ARIA labels for better screen reader support ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
-- **Localization**: Synchronized Catalan, Spanish, and English translations for all new address management features ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
-- **Profile Store**: Extended `pocketBaseUserProfileStore` with optimistic updates for address creation ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
+- **Localization**: Synchronized Catalan, Spanish, and English translations for all address management features including update notifications ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
+- **Profile Store**: Extended `pocketBaseUserProfileStore` with optimistic updates for address creation and editing ([#86c92g5yz](https://app.clickup.com/t/86c92g5yz)).
 
 ## [2026-04-09] - Eco-Store: Address Card UI and Profile Addresses Feature
 

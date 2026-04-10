@@ -13,6 +13,7 @@ This skill guides the creation of components and features using Angular CDK (@an
 **Triggers**: "Angular CDK", "drag and drop", "overlay", "portal", "virtual scroll", "accessibility", "clipboard", "platform detection", "CDK utilities"
 
 Use this skill when:
+
 - Implementing drag-and-drop functionality
 - Creating overlays, tooltips, or popovers
 - Building virtual scrolling lists
@@ -39,10 +40,13 @@ import { CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
   imports: [CommonModule, CdkDropList, CdkDrag],
   template: `
     <div class="task-board">
-      <div class="column" cdkDropList #todoList="cdkDropList"
-           [cdkDropListData]="todo"
-           [cdkDropListConnectedTo]="[inProgressList, doneList]"
-           (cdkDropListDropped)="drop($event)">
+      <div
+        class="column"
+        cdkDropList
+        #todoList="cdkDropList"
+        [cdkDropListData]="todo"
+        [cdkDropListConnectedTo]="[inProgressList, doneList]"
+        (cdkDropListDropped)="drop($event)">
         <h3>To Do</h3>
         @for (task of todo; track task.id) {
           <div cdkDrag class="task-card">
@@ -51,21 +55,27 @@ import { CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
           </div>
         }
       </div>
-      
-      <div class="column" cdkDropList #inProgressList="cdkDropList"
-           [cdkDropListData]="inProgress"
-           [cdkDropListConnectedTo]="[todoList, doneList]"
-           (cdkDropListDropped)="drop($event)">
+
+      <div
+        class="column"
+        cdkDropList
+        #inProgressList="cdkDropList"
+        [cdkDropListData]="inProgress"
+        [cdkDropListConnectedTo]="[todoList, doneList]"
+        (cdkDropListDropped)="drop($event)">
         <h3>In Progress</h3>
         @for (task of inProgress; track task.id) {
           <div cdkDrag class="task-card">{{ task.title }}</div>
         }
       </div>
-      
-      <div class="column" cdkDropList #doneList="cdkDropList"
-           [cdkDropListData]="done"
-           [cdkDropListConnectedTo]="[todoList, inProgressList]"
-           (cdkDropListDropped)="drop($event)">
+
+      <div
+        class="column"
+        cdkDropList
+        #doneList="cdkDropList"
+        [cdkDropListData]="done"
+        [cdkDropListConnectedTo]="[todoList, inProgressList]"
+        (cdkDropListDropped)="drop($event)">
         <h3>Done</h3>
         @for (task of done; track task.id) {
           <div cdkDrag class="task-card">{{ task.title }}</div>
@@ -73,54 +83,52 @@ import { CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
       </div>
     </div>
   `,
-  styles: [`
-    .task-board {
-      display: flex;
-      gap: 20px;
-    }
-    
-    .column {
-      flex: 1;
-      min-height: 400px;
-      background: #f5f5f5;
-      padding: 16px;
-      border-radius: 4px;
-    }
-    
-    .task-card {
-      background: white;
-      padding: 12px;
-      margin-bottom: 8px;
-      border-radius: 4px;
-      cursor: move;
-    }
-    
-    .task-card:active {
-      box-shadow: 0 5px 5px -3px rgba(0,0,0,.2);
-    }
-    
-    .drag-placeholder {
-      background: #ccc;
-      border: dotted 2px #999;
-      height: 40px;
-      transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-    }
-  `]
+  styles: [
+    `
+      .task-board {
+        display: flex;
+        gap: 20px;
+      }
+
+      .column {
+        flex: 1;
+        min-height: 400px;
+        background: #f5f5f5;
+        padding: 16px;
+        border-radius: 4px;
+      }
+
+      .task-card {
+        background: white;
+        padding: 12px;
+        margin-bottom: 8px;
+        border-radius: 4px;
+        cursor: move;
+      }
+
+      .task-card:active {
+        box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+      }
+
+      .drag-placeholder {
+        background: #ccc;
+        border: dotted 2px #999;
+        height: 40px;
+        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+      }
+    `,
+  ],
 })
 export class TaskBoardComponent {
   todo = [
     { id: '1', title: 'Task 1' },
-    { id: '2', title: 'Task 2' }
+    { id: '2', title: 'Task 2' },
   ];
-  
-  inProgress = [
-    { id: '3', title: 'Task 3' }
-  ];
-  
-  done = [
-    { id: '4', title: 'Task 4' }
-  ];
-  
+
+  inProgress = [{ id: '3', title: 'Task 3' }];
+
+  done = [{ id: '4', title: 'Task 4' }];
+
   drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -148,21 +156,19 @@ import { ComponentPortal } from '@angular/cdk/portal';
 @Component({
   selector: 'app-menu-trigger',
   standalone: true,
-  template: `
-    <button (click)="openMenu()">Open Menu</button>
-  `
+  template: ` <button (click)="openMenu()">Open Menu</button> `,
 })
 export class MenuTriggerComponent {
   private overlay = inject(Overlay);
   private overlayRef: OverlayRef | null = null;
-  
+
   openMenu(): void {
     if (this.overlayRef) {
       this.overlayRef.dispose();
       this.overlayRef = null;
       return;
     }
-    
+
     const positionStrategy = this.overlay
       .position()
       .flexibleConnectedTo(this.elementRef)
@@ -171,20 +177,20 @@ export class MenuTriggerComponent {
           originX: 'start',
           originY: 'bottom',
           overlayX: 'start',
-          overlayY: 'top'
-        }
+          overlayY: 'top',
+        },
       ]);
-    
+
     this.overlayRef = this.overlay.create({
       positionStrategy,
       scrollStrategy: this.overlay.scrollStrategies.reposition(),
       hasBackdrop: true,
-      backdropClass: 'cdk-overlay-transparent-backdrop'
+      backdropClass: 'cdk-overlay-transparent-backdrop',
     });
-    
+
     const menuPortal = new ComponentPortal(MenuComponent);
     this.overlayRef.attach(menuPortal);
-    
+
     // Close on backdrop click
     this.overlayRef.backdropClick().subscribe(() => {
       this.overlayRef?.dispose();
@@ -215,26 +221,30 @@ import { CommonModule } from '@angular/common';
       </div>
     </cdk-virtual-scroll-viewport>
   `,
-  styles: [`
-    .viewport {
-      height: 400px;
-      width: 100%;
-      border: 1px solid #ccc;
-    }
-    
-    .task-item {
-      height: 50px;
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-    }
-  `]
+  styles: [
+    `
+      .viewport {
+        height: 400px;
+        width: 100%;
+        border: 1px solid #ccc;
+      }
+
+      .task-item {
+        height: 50px;
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+    `,
+  ],
 })
 export class TaskListVirtualComponent {
-  tasks = signal(Array.from({ length: 10000 }, (_, i) => ({
-    id: `task-${i}`,
-    title: `Task ${i}`,
-    description: `Description for task ${i}`
-  })));
+  tasks = signal(
+    Array.from({ length: 10000 }, (_, i) => ({
+      id: `task-${i}`,
+      title: `Task ${i}`,
+      description: `Description for task ${i}`,
+    }))
+  );
 }
 ```
 
@@ -253,26 +263,24 @@ import { Clipboard, ClipboardModule } from '@angular/cdk/clipboard';
   template: `
     <div class="share-container">
       <input [value]="shareLink" readonly #linkInput />
-      <button 
-        [cdkCopyToClipboard]="shareLink"
-        (cdkCopyToClipboardCopied)="onCopied($event)">
+      <button [cdkCopyToClipboard]="shareLink" (cdkCopyToClipboardCopied)="onCopied($event)">
         Copy Link
       </button>
       @if (copied) {
         <span class="success">Copied!</span>
       }
     </div>
-  `
+  `,
 })
 export class ShareLinkComponent {
   private clipboard = inject(Clipboard);
   shareLink = 'https://ng-events.com/blueprints/123';
   copied = false;
-  
+
   onCopied(success: boolean): void {
     if (success) {
       this.copied = true;
-      setTimeout(() => this.copied = false, 2000);
+      setTimeout(() => (this.copied = false), 2000);
     }
   }
 }
@@ -299,21 +307,21 @@ import { Platform } from '@angular/cdk/platform';
         <li>Android: {{ isAndroid }}</li>
       </ul>
     </div>
-  `
+  `,
 })
 export class PlatformAwareComponent implements OnInit {
   private platform = inject(Platform);
-  
+
   browser = '';
   isMobile = false;
   isIOS = false;
   isAndroid = false;
-  
+
   ngOnInit(): void {
     this.isMobile = this.platform.IOS || this.platform.ANDROID;
     this.isIOS = this.platform.IOS;
     this.isAndroid = this.platform.ANDROID;
-    
+
     if (this.platform.FIREFOX) this.browser = 'Firefox';
     else if (this.platform.EDGE) this.browser = 'Edge';
     else if (this.platform.SAFARI) this.browser = 'Safari';
@@ -326,6 +334,7 @@ export class PlatformAwareComponent implements OnInit {
 ## Integration Checklist
 
 When using Angular CDK:
+
 - [ ] Import specific CDK modules (not full @angular/cdk)
 - [ ] Use standalone components with CDK directives
 - [ ] Implement proper cleanup (subscriptions, overlays)
@@ -338,6 +347,7 @@ When using Angular CDK:
 ## Best Practices
 
 ### DO ✅
+
 - Use CDK for complex UI interactions
 - Leverage virtual scrolling for large datasets
 - Use overlay service for tooltips/menus
@@ -345,6 +355,7 @@ When using Angular CDK:
 - Clean up overlays and portals on destroy
 
 ### DON'T ❌
+
 - Use CDK in services or repositories (UI layer only)
 - Create overlays without disposal logic
 - Skip accessibility considerations

@@ -3,6 +3,17 @@
     {{ 'profile.addresses.description' | translate }}
   </p>
 
+  @if (!isNewRoute() && !editModel() && !!profileStore.getUserContacts().length) {
+    <button
+      matButton="filled"
+      type="button"
+      class="add-address-button self-start"
+      routerLink="nova">
+      <mat-icon>add_home</mat-icon>
+      {{ 'profile.addresses.add.label' | translate }}
+    </button>
+  }
+
   @if (isNewRoute()) {
     <mat-card class="new-address-card">
       <mat-card-header class="relative w-full">
@@ -29,15 +40,33 @@
         </plastik-shared-form-feature>
       </mat-card-content>
     </mat-card>
-  } @else if (!!profileStore.getUserContacts().length) {
-    <button
-      matButton="filled"
-      type="button"
-      class="add-address-button self-start"
-      (click)="onAddNew()">
-      <mat-icon>add_home</mat-icon>
-      {{ 'profile.addresses.add.label' | translate }}
-    </button>
+  } @else if (editModel(); as model) {
+    <mat-card class="new-address-card">
+      <mat-card-header class="relative w-full">
+        <mat-card-title class="new-address-title">
+          <mat-icon>edit</mat-icon>
+          <span>{{ 'profile.addresses.edit.label' | translate }}: "{{ model.name }}"</span>
+        </mat-card-title>
+        <button
+          matIconButton
+          type="button"
+          class="new-address-close"
+          routerLink="../"
+          [matTooltip]="'common.close' | translate"
+          [attr.aria-label]="'common.close' | translate">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-card-header>
+      <mat-card-content>
+        <plastik-shared-form-feature
+          [fields]="formConfig.getConfig()"
+          [model]="model"
+          [submitConfig]="formConfig.getSubmitFormConfig?.(true) || {}"
+          (pendingChangesEvent)="pendingChanges.set($event)"
+          (changeEvent)="onUpdateAddress($event); pendingChanges.set(false)">
+        </plastik-shared-form-feature>
+      </mat-card-content>
+    </mat-card>
   }
 
   @let addresses = profileStore.getUserContacts();
@@ -57,11 +86,11 @@
   } @else if (addresses.length) {
     <div class="grid grid-cols-1 gap-5 @3xl:grid-cols-2">
       @for (address of addresses; track address.id; let i = $index) {
-        <div class="address-card-entrance" [style.--entrance-delay]="i * 60 + 'ms'">
-          <plastik-address-card
-            [address]="address"
-            [interactive]="false"
-            [class.default-address]="address.default">
+        <div
+          class="address-card-entrance transition-all duration-200"
+          [class.edit-address]="address.id === editId()"
+          [style.--entrance-delay]="i * 60 + 'ms'">
+          <plastik-address-card [address]="address" [interactive]="false">
             <div
               actions
               class="absolute top-4 right-4 flex shrink-0 flex-col gap-2 sm:flex-row sm:gap-4">
@@ -70,6 +99,7 @@
                   matIconButton
                   type="button"
                   class="address-action-button"
+                  [disabled]="address.id === editId()"
                   [matTooltip]="'profile.addresses.setDefault.label' | translate"
                   [attr.aria-label]="'profile.addresses.setDefault.label' | translate"
                   (click)="onSetDefault(address.id); $event.stopPropagation()">
@@ -80,15 +110,17 @@
                 matIconButton
                 type="button"
                 class="address-action-button"
+                [disabled]="address.id === editId()"
                 [matTooltip]="'profile.addresses.edit.label' | translate"
                 [attr.aria-label]="'profile.addresses.edit.label' | translate"
-                (click)="onEdit(address.id); $event.stopPropagation()">
+                [routerLink]="['/perfil', 'adreces', address.id]">
                 <mat-icon>edit</mat-icon>
               </button>
               <button
                 matIconButton
                 type="button"
                 class="address-action-button address-action-delete"
+                [disabled]="address.id === editId()"
                 [matTooltip]="'profile.addresses.delete.label' | translate"
                 [attr.aria-label]="'profile.addresses.delete.label' | translate"
                 (click)="onDelete(address.id, address.name); $event.stopPropagation()">
@@ -115,7 +147,7 @@
         no-results-action
         type="button"
         class="add-address-button"
-        (click)="onAddNew()">
+        routerLink="nova">
         <mat-icon aria-hidden="true">add_home</mat-icon>
         <span>{{ 'profile.addresses.add.label' | translate }}</span>
       </button>

@@ -578,11 +578,15 @@
       },
       "success": {
         "setDefault": "Dirección establecida como predeterminada",
-        "delete": "Dirección eliminada correctamente"
+        "delete": "Dirección eliminada correctamente",
+        "create": "Dirección creada correctamente",
+        "update": "Dirección actualizada correctamente"
       },
       "error": {
         "setDefault": "Ha ocurrido un error al establecer la dirección como predeterminada",
-        "delete": "Ha ocurrido un error al eliminar la dirección"
+        "delete": "Ha ocurrido un error al eliminar la dirección",
+        "create": "Ha ocurrido un error al crear la dirección",
+        "update": "Ha ocurrido un error al actualizar la dirección"
       }
     },
     "success": {

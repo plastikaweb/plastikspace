@@ -11,7 +11,7 @@ This library provides the address management feature for the user profile in the
 
 - **List addresses**: View all saved delivery addresses.
 - **Add new address**: Form to add a new address with validation (zip, phone).
-- **Edit address**: Modify existing address details (WIP).
+- **Edit address**: Navigate to an address by ID, pre-populate the form, and update it.
 - **Set default**: Easily set an address as the default for future orders.
 - **Delete address**: Securely remove addresses with a confirmation dialog.
 - **Form validation**: Real-time validation for Spanish zip codes and phone numbers.
@@ -23,4 +23,5 @@ This library provides the address management feature for the user profile in the
 
 ### EcoStoreProfileAddressesFeatureComponent
 
-The main feature component for displaying and managing user addresses. It uses `AddressCardComponent` from `@plastik/shared/address-card/ui` for the visual representation of each address and `@plastik/shared/form` for the address management forms.
+The main feature component for displaying and managing user addresses.
+It uses `AddressCardComponent` from `@plastik/shared/address-card/ui` for the visual representation of each address and `@plastik/shared/form` for the address management forms.

@@ -1,6 +1,7 @@
 # Angular Routing Patterns
 
 ## Table of Contents
+
 - [Route Configuration Options](#route-configuration-options)
 - [Authentication Flow](#authentication-flow)
 - [Breadcrumbs](#breadcrumbs)
@@ -16,30 +17,30 @@
 {
   path: 'users/:id',
   component: UserCmpt,
-  
+
   // Lazy loading alternatives
   loadComponent: () => import('./user.component').then(m => m.UserCmpt),
   loadChildren: () => import('./user.routes').then(m => m.userRoutes),
-  
+
   // Guards
   canActivate: [authGuard],
   canActivateChild: [authGuard],
   canDeactivate: [unsavedChangesGuard],
   canMatch: [featureFlagGuard],
-  
+
   // Data
   resolve: { user: userResolver },
   data: { title: 'User Profile', animation: 'userPage' },
-  
+
   // Children
   children: [...],
-  
+
   // Outlet
   outlet: 'sidebar',
-  
+
   // Path matching
   pathMatch: 'full', // or 'prefix'
-  
+
   // Title
   title: 'User Profile',
   // Or dynamic title
@@ -50,12 +51,10 @@
 ### Dynamic Title Resolver
 
 ```typescript
-export const userTitleResolver: ResolveFn<string> = (route) => {
+export const userTitleResolver: ResolveFn<string> = route => {
   const userService = inject(User);
   const id = route.paramMap.get('id')!;
-  return userService.getById(id).pipe(
-    map(user => `${user.name} - Profile`)
-  );
+  return userService.getById(id).pipe(map(user => `${user.name} - Profile`));
 };
 ```
 
@@ -69,44 +68,42 @@ export const userTitleResolver: ResolveFn<string> = (route) => {
 export class Auth {
   private _user = signal<User | null>(null);
   private _token = signal<string | null>(null);
-  
+
   readonly user = this._user.asReadonly();
   readonly isAuthenticated = computed(() => this._user() !== null);
-  
+
   private router = inject(Router);
   private http = inject(HttpClient);
-  
+
   async login(credentials: Credentials): Promise<boolean> {
     try {
       const response = await firstValueFrom(
         this.http.post<AuthResponse>('/api/login', credentials)
       );
-      
+
       this._token.set(response.token);
       this._user.set(response.user);
       localStorage.setItem('token', response.token);
-      
+
       return true;
     } catch {
       return false;
     }
   }
-  
+
   logout(): void {
     this._user.set(null);
     this._token.set(null);
     localStorage.removeItem('token');
     this.router.navigate(['/login']);
   }
-  
+
   async checkAuth(): Promise<boolean> {
     const token = localStorage.getItem('token');
     if (!token) return false;
-    
+
     try {
-      const user = await firstValueFrom(
-        this.http.get<User>('/api/me')
-      );
+      const user = await firstValueFrom(this.http.get<User>('/api/me'));
       this._user.set(user);
       this._token.set(token);
       return true;
@@ -121,18 +118,18 @@ export class Auth {
 export const authGuard: CanActivateFn = async (route, state) => {
   const authService = inject(Auth);
   const router = inject(Router);
-  
+
   // Check if already authenticated
   if (authService.isAuthenticated()) {
     return true;
   }
-  
+
   // Try to restore session
   const isValid = await authService.checkAuth();
   if (isValid) {
     return true;
   }
-  
+
   // Redirect to login
   return router.createUrlTree(['/login'], {
     queryParams: { returnUrl: state.url },
@@ -153,16 +150,16 @@ export class Login {
   private authService = inject(Auth);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  
+
   email = '';
   password = '';
-  
+
   async login() {
     const success = await this.authService.login({
       email: this.email,
       password: this.password,
     });
-    
+
     if (success) {
       const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
       this.router.navigateByUrl(returnUrl);
@@ -179,7 +176,7 @@ export class Login {
 export class Breadcrumb {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  
+
   breadcrumbs = toSignal(
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
@@ -187,35 +184,33 @@ export class Breadcrumb {
     ),
     { initialValue: [] }
   );
-  
+
   private buildBreadcrumbs(
     route: ActivatedRoute,
     url: string = '',
     breadcrumbs: Breadcrumb[] = []
   ): Breadcrumb[] {
     const children = route.children;
-    
+
     if (children.length === 0) {
       return breadcrumbs;
     }
-    
+
     for (const child of children) {
-      const routeUrl = child.snapshot.url
-        .map(segment => segment.path)
-        .join('/');
-      
+      const routeUrl = child.snapshot.url.map(segment => segment.path).join('/');
+
       if (routeUrl) {
         url += `/${routeUrl}`;
       }
-      
+
       const label = child.snapshot.data['breadcrumb'];
       if (label) {
         breadcrumbs.push({ label, url });
       }
-      
+
       return this.buildBreadcrumbs(child, url, breadcrumbs);
     }
-    
+
     return breadcrumbs;
   }
 }
@@ -266,8 +261,8 @@ export class BreadcrumbCmpt {
   template: `
     <div class="tabs">
       @for (tab of tabs; track tab.path) {
-        <a 
-          [routerLink]="tab.path" 
+        <a
+          [routerLink]="tab.path"
           routerLinkActive="active"
           [routerLinkActiveOptions]="{ exact: tab.exact }"
         >
@@ -337,18 +332,13 @@ this.router.navigate([{ outlets: { modal: null } }]);
 ### Built-in Strategies
 
 ```typescript
-import { 
-  provideRouter, 
-  withPreloading,
-  PreloadAllModules,
-  NoPreloading 
-} from '@angular/router';
+import { provideRouter, withPreloading, PreloadAllModules, NoPreloading } from '@angular/router';
 
 // Preload all lazy modules
-provideRouter(routes, withPreloading(PreloadAllModules))
+provideRouter(routes, withPreloading(PreloadAllModules));
 
 // No preloading (default)
-provideRouter(routes, withPreloading(NoPreloading))
+provideRouter(routes, withPreloading(NoPreloading));
 ```
 
 ### Custom Preloading Strategy
@@ -385,19 +375,19 @@ export class NetworkAwarePreloadStrategy implements PreloadingStrategy {
   preload(route: Route, load: () => Observable<any>): Observable<any> {
     // Check network conditions
     const connection = (navigator as any).connection;
-    
+
     if (connection) {
       // Don't preload on slow connections
       if (connection.saveData || connection.effectiveType === '2g') {
         return of(null);
       }
     }
-    
+
     // Preload if marked
     if (route.data?.['preload']) {
       return load();
     }
-    
+
     return of(null);
   }
 }
@@ -453,11 +443,7 @@ export class AppMain {
 
 ```typescript
 // app.config.ts
-import { 
-  provideRouter, 
-  withInMemoryScrolling,
-  withRouterConfig 
-} from '@angular/router';
+import { provideRouter, withInMemoryScrolling, withRouterConfig } from '@angular/router';
 
 provideRouter(
   routes,
@@ -468,5 +454,5 @@ provideRouter(
   withRouterConfig({
     onSameUrlNavigation: 'reload',
   })
-)
+);
 ```

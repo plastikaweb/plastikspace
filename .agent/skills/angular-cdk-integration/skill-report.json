@@ -20,23 +20,9 @@
     "author": "7Spade",
     "license": "MIT",
     "category": "coding",
-    "tags": [
-      "Angular",
-      "CDK",
-      "drag-drop",
-      "frontend",
-      "UI components"
-    ],
-    "supported_tools": [
-      "claude",
-      "codex",
-      "claude-code"
-    ],
-    "risk_factors": [
-      "network",
-      "filesystem",
-      "external_commands"
-    ]
+    "tags": ["Angular", "CDK", "drag-drop", "frontend", "UI components"],
+    "supported_tools": ["claude", "codex", "claude-code"],
+    "risk_factors": ["network", "filesystem", "external_commands"]
   },
   "security_audit": {
     "risk_level": "safe",

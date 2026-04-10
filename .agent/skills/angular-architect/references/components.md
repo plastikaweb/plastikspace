@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserProfileComponent {
   // Signal-based state
@@ -42,11 +42,8 @@ import { Component, input, output, model } from '@angular/core';
   selector: 'app-search-box',
   standalone: true,
   template: `
-    <input
-      [value]="query()"
-      (input)="onQueryChange($event)"
-      [placeholder]="placeholder()" />
-  `
+    <input [value]="query()" (input)="onQueryChange($event)" [placeholder]="placeholder()" />
+  `,
 })
 export class SearchBoxComponent {
   // Signal inputs (Angular 17.1+)
@@ -73,7 +70,7 @@ export class SearchBoxComponent {
       [(query)]="searchQuery"
       [placeholder]="'Find users...'"
       (queryChange)="onSearch($event)" />
-  `
+  `,
 })
 export class ParentComponent {
   searchQuery = signal('');
@@ -97,7 +94,7 @@ export class ParentComponent {
       [users]="users()"
       [loading]="loading()"
       (userSelected)="onUserSelected($event)" />
-  `
+  `,
 })
 export class UsersContainerComponent {
   private usersService = inject(UsersService);
@@ -112,7 +109,7 @@ export class UsersContainerComponent {
           this.users.set(users);
           this.loading.set(false);
         },
-        error: err => console.error(err)
+        error: err => console.error(err),
       });
     });
   }
@@ -138,7 +135,7 @@ export class UsersContainerComponent {
       }
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserListComponent {
   users = input.required<User[]>();
@@ -166,7 +163,7 @@ export class UserListComponent {
         <ng-content select="[footer]"></ng-content>
       </div>
     </div>
-  `
+  `,
 })
 export class CardComponent {}
 
@@ -178,7 +175,7 @@ export class CardComponent {}
       <p>Card content goes here</p>
       <button footer>Action</button>
     </app-card>
-  `
+  `,
 })
 export class ParentComponent {}
 ```
@@ -191,7 +188,7 @@ import { UserService } from './user.service';
 
 @Component({
   selector: 'app-user-dashboard',
-  standalone: true
+  standalone: true,
 })
 export class UserDashboardComponent {
   // Modern inject() API
@@ -210,7 +207,7 @@ export class UserDashboardComponent {
   loadUsers() {
     this.userService.getUsers().subscribe({
       next: users => this.users.set(users),
-      error: err => this.logger?.error('Failed to load users', err)
+      error: err => this.logger?.error('Failed to load users', err),
     });
   }
 }
@@ -249,7 +246,7 @@ export class UserDashboardComponent {
         <span>Unknown</span>
       }
     }
-  `
+  `,
 })
 export class ModernControlFlowComponent {
   user = signal<User | null>(null);
@@ -271,7 +268,7 @@ export class ModernControlFlowComponent {
       <app-product-card [product]="product" />
     }
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductListComponent {
   products = input.required<Product[]>();
@@ -285,13 +282,13 @@ export class ProductListComponent {
 
 ## Quick Reference
 
-| Pattern | Angular 17+ Approach |
-|---------|---------------------|
-| Component | Standalone by default |
-| State | Signals (`signal()`, `computed()`) |
-| Input | `input()`, `input.required()` |
-| Output | `output<T>()` |
-| Two-way | `model<T>()` |
-| DI | `inject()` function |
-| Control Flow | `@if`, `@for`, `@switch` |
-| Change Detection | `ChangeDetectionStrategy.OnPush` |
+| Pattern          | Angular 17+ Approach               |
+| ---------------- | ---------------------------------- |
+| Component        | Standalone by default              |
+| State            | Signals (`signal()`, `computed()`) |
+| Input            | `input()`, `input.required()`      |
+| Output           | `output<T>()`                      |
+| Two-way          | `model<T>()`                       |
+| DI               | `inject()` function                |
+| Control Flow     | `@if`, `@for`, `@switch`           |
+| Change Detection | `ChangeDetectionStrategy.OnPush`   |

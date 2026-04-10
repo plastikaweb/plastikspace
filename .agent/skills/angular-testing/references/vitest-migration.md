@@ -2,14 +2,14 @@
 
 ## Vitest vs Jasmine Comparison
 
-| Feature | Vitest | Jasmine/Karma |
-|---------|--------|---------------|
-| Speed | Faster (native ESM) | Slower |
-| Watch mode | Instant feedback | Slower rebuilds |
-| Mocking | `vi.fn()`, `vi.mock()` | `jasmine.createSpy()` |
-| Assertions | `expect()` (Chai-style) | `expect()` (Jasmine) |
-| UI | Built-in UI mode | Karma browser |
-| Config | `angular.json` | `karma.conf.js` |
+| Feature    | Vitest                  | Jasmine/Karma         |
+| ---------- | ----------------------- | --------------------- |
+| Speed      | Faster (native ESM)     | Slower                |
+| Watch mode | Instant feedback        | Slower rebuilds       |
+| Mocking    | `vi.fn()`, `vi.mock()`  | `jasmine.createSpy()` |
+| Assertions | `expect()` (Chai-style) | `expect()` (Jasmine)  |
+| UI         | Built-in UI mode        | Karma browser         |
+| Config     | `angular.json`          | `karma.conf.js`       |
 
 ## Migration from Jasmine to Vitest
 
@@ -56,7 +56,7 @@ mockService.getUser.mockReturnValue(of({ id: '1', name: 'Test' }));
 
 ```typescript
 // Jasmine - using done callback
-it('should load data', (done) => {
+it('should load data', done => {
   service.loadData().subscribe(data => {
     expect(data).toBeDefined();
     done();
@@ -133,12 +133,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'html', 'lcov'],
-      exclude: [
-        'node_modules/',
-        'src/test-setup.ts',
-        '**/*.spec.ts',
-        '**/*.d.ts',
-      ],
+      exclude: ['node_modules/', 'src/test-setup.ts', '**/*.spec.ts', '**/*.d.ts'],
     },
   },
 });

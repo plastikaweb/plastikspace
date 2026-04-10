@@ -1,5 +1,5 @@
 ---
-name: "senior-frontend"
+name: 'senior-frontend'
 description: Frontend development skill for React, Next.js, TypeScript, and Tailwind CSS applications. Use when building React components, optimizing Next.js performance, analyzing bundle sizes, scaffolding frontend projects, implementing accessibility, or reviewing frontend code quality.
 ---
 
@@ -25,16 +25,19 @@ Generate a new Next.js or React project with TypeScript, Tailwind CSS, and best 
 ### Workflow: Create New Frontend Project
 
 1. Run the scaffolder with your project name and template:
+
    ```bash
    python scripts/frontend_scaffolder.py my-app --template nextjs
    ```
 
 2. Add optional features (auth, api, forms, testing, storybook):
+
    ```bash
    python scripts/frontend_scaffolder.py dashboard --template nextjs --features auth,api
    ```
 
 3. Navigate to the project and install dependencies:
+
    ```bash
    cd my-app && npm install
    ```
@@ -46,15 +49,15 @@ Generate a new Next.js or React project with TypeScript, Tailwind CSS, and best 
 
 ### Scaffolder Options
 
-| Option | Description |
-|--------|-------------|
-| `--template nextjs` | Next.js 14+ with App Router and Server Components |
-| `--template react` | React + Vite with TypeScript |
-| `--features auth` | Add NextAuth.js authentication |
-| `--features api` | Add React Query + API client |
-| `--features forms` | Add React Hook Form + Zod validation |
-| `--features testing` | Add Vitest + Testing Library |
-| `--dry-run` | Preview files without creating them |
+| Option               | Description                                       |
+| -------------------- | ------------------------------------------------- |
+| `--template nextjs`  | Next.js 14+ with App Router and Server Components |
+| `--template react`   | React + Vite with TypeScript                      |
+| `--features auth`    | Add NextAuth.js authentication                    |
+| `--features api`     | Add React Query + API client                      |
+| `--features forms`   | Add React Hook Form + Zod validation              |
+| `--features testing` | Add Vitest + Testing Library                      |
+| `--dry-run`          | Preview files without creating them               |
 
 ### Generated Structure (Next.js)
 
@@ -85,16 +88,19 @@ Generate React components with TypeScript, tests, and Storybook stories.
 ### Workflow: Create a New Component
 
 1. Generate a client component:
+
    ```bash
    python scripts/component_generator.py Button --dir src/components/ui
    ```
 
 2. Generate a server component:
+
    ```bash
    python scripts/component_generator.py ProductCard --type server
    ```
 
 3. Generate with test and story files:
+
    ```bash
    python scripts/component_generator.py UserProfile --with-test --with-story
    ```
@@ -106,15 +112,15 @@ Generate React components with TypeScript, tests, and Storybook stories.
 
 ### Generator Options
 
-| Option | Description |
-|--------|-------------|
+| Option          | Description                                  |
+| --------------- | -------------------------------------------- |
 | `--type client` | Client component with 'use client' (default) |
-| `--type server` | Async server component |
-| `--type hook` | Custom React hook |
-| `--with-test` | Include test file |
-| `--with-story` | Include Storybook story |
-| `--flat` | Create in output dir without subdirectory |
-| `--dry-run` | Preview without creating files |
+| `--type server` | Async server component                       |
+| `--type hook`   | Custom React hook                            |
+| `--with-test`   | Include test file                            |
+| `--with-story`  | Include Storybook story                      |
+| `--flat`        | Create in output dir without subdirectory    |
+| `--dry-run`     | Preview without creating files               |
 
 ### Generated Component Example
 
@@ -130,11 +136,7 @@ interface ButtonProps {
 }
 
 export function Button({ className, children }: ButtonProps) {
-  return (
-    <div className={cn('', className)}>
-      {children}
-    </div>
-  );
+  return <div className={cn('', className)}>{children}</div>;
 }
 ```
 
@@ -147,11 +149,13 @@ Analyze package.json and project structure for bundle optimization opportunities
 ### Workflow: Optimize Bundle Size
 
 1. Run the analyzer on your project:
+
    ```bash
    python scripts/bundle_analyzer.py /path/to/project
    ```
 
 2. Review the health score and issues:
+
    ```
    Bundle Health Score: 75/100 (C)
 
@@ -172,25 +176,25 @@ Analyze package.json and project structure for bundle optimization opportunities
 
 ### Bundle Score Interpretation
 
-| Score | Grade | Action |
-|-------|-------|--------|
-| 90-100 | A | Bundle is well-optimized |
-| 80-89 | B | Minor optimizations available |
-| 70-79 | C | Replace heavy dependencies |
-| 60-69 | D | Multiple issues need attention |
-| 0-59 | F | Critical bundle size problems |
+| Score  | Grade | Action                         |
+| ------ | ----- | ------------------------------ |
+| 90-100 | A     | Bundle is well-optimized       |
+| 80-89  | B     | Minor optimizations available  |
+| 70-79  | C     | Replace heavy dependencies     |
+| 60-69  | D     | Multiple issues need attention |
+| 0-59   | F     | Critical bundle size problems  |
 
 ### Heavy Dependencies Detected
 
 The analyzer identifies these common heavy packages:
 
-| Package | Size | Alternative |
-|---------|------|-------------|
-| moment | 290KB | date-fns (12KB) or dayjs (2KB) |
-| lodash | 71KB | lodash-es with tree-shaking |
-| axios | 14KB | Native fetch or ky (3KB) |
-| jquery | 87KB | Native DOM APIs |
-| @mui/material | Large | shadcn/ui or Radix UI |
+| Package       | Size  | Alternative                    |
+| ------------- | ----- | ------------------------------ |
+| moment        | 290KB | date-fns (12KB) or dayjs (2KB) |
+| lodash        | 71KB  | lodash-es with tree-shaking    |
+| axios         | 14KB  | Native fetch or ky (3KB)       |
+| jquery        | 87KB  | Native DOM APIs                |
+| @mui/material | Large | shadcn/ui or Radix UI          |
 
 ---
 
@@ -205,11 +209,7 @@ Share state between related components:
 ```tsx
 const Tabs = ({ children }) => {
   const [active, setActive] = useState(0);
-  return (
-    <TabsContext.Provider value={{ active, setActive }}>
-      {children}
-    </TabsContext.Provider>
-  );
+  return <TabsContext.Provider value={{ active, setActive }}>{children}</TabsContext.Provider>;
 };
 
 Tabs.List = TabList;
@@ -223,7 +223,7 @@ Tabs.Panel = TabPanel;
   </Tabs.List>
   <Tabs.Panel>Content 1</Tabs.Panel>
   <Tabs.Panel>Content 2</Tabs.Panel>
-</Tabs>
+</Tabs>;
 ```
 
 ### Custom Hooks
@@ -256,7 +256,10 @@ function DataFetcher({ url, render }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(url).then(r => r.json()).then(setData).finally(() => setLoading(false));
+    fetch(url)
+      .then(r => r.json())
+      .then(setData)
+      .finally(() => setLoading(false));
   }, [url]);
 
   return render({ data, loading });
@@ -265,10 +268,8 @@ function DataFetcher({ url, render }) {
 // Usage
 <DataFetcher
   url="/api/users"
-  render={({ data, loading }) =>
-    loading ? <Spinner /> : <UserList users={data} />
-  }
-/>
+  render={({ data, loading }) => (loading ? <Spinner /> : <UserList users={data} />)}
+/>;
 ```
 
 ---
@@ -280,6 +281,7 @@ Reference: `references/nextjs_optimization_guide.md`
 ### Server vs Client Components
 
 Use Server Components by default. Add 'use client' only when you need:
+
 - Event handlers (onClick, onChange)
 - State (useState, useReducer)
 - Effects (useEffect)
@@ -288,18 +290,18 @@ Use Server Components by default. Add 'use client' only when you need:
 ```tsx
 // Server Component (default) - no 'use client'
 async function ProductPage({ params }) {
-  const product = await getProduct(params.id);  // Server-side fetch
+  const product = await getProduct(params.id); // Server-side fetch
 
   return (
     <div>
       <h1>{product.name}</h1>
-      <AddToCartButton productId={product.id} />  {/* Client component */}
+      <AddToCartButton productId={product.id} /> {/* Client component */}
     </div>
   );
 }
 
 // Client Component
-'use client';
+('use client');
 function AddToCartButton({ productId }) {
   const [adding, setAdding] = useState(false);
   return <button onClick={() => addToCart(productId)}>Add</button>;
@@ -337,10 +339,7 @@ import Image from 'next/image';
 ```tsx
 // Parallel fetching
 async function Dashboard() {
-  const [user, stats] = await Promise.all([
-    getUser(),
-    getStats()
-  ]);
+  const [user, stats] = await Promise.all([getUser(), getStats()]);
   return <div>...</div>;
 }
 
@@ -422,7 +421,7 @@ test('dialog is accessible', async () => {
 // next.config.js
 const nextConfig = {
   images: {
-    remotePatterns: [{ hostname: "cdnexamplecom" }],
+    remotePatterns: [{ hostname: 'cdnexamplecom' }],
     formats: ['image/avif', 'image/webp'],
   },
   experimental: {
@@ -437,11 +436,13 @@ const nextConfig = {
 // Conditional classes with cn()
 import { cn } from '@/lib/utils';
 
-<button className={cn(
-  'px-4 py-2 rounded',
-  variant === 'primary' && 'bg-blue-500 text-white',
-  disabled && 'opacity-50 cursor-not-allowed'
-)} />
+<button
+  className={cn(
+    'rounded px-4 py-2',
+    variant === 'primary' && 'bg-blue-500 text-white',
+    disabled && 'cursor-not-allowed opacity-50'
+  )}
+/>;
 ```
 
 ### TypeScript Patterns

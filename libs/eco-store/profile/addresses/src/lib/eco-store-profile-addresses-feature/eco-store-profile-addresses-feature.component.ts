@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject, linkedSignal, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  linkedSignal,
+  signal,
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -44,6 +51,24 @@ export class EcoStoreProfileAddressesFeatureComponent implements CanDeactivateCo
     this.#route.url.pipe(map(segments => segments.some(s => s.path === 'nova'))),
     { initialValue: false }
   );
+  protected readonly editId = toSignal(this.#route.paramMap.pipe(map(params => params.get('id'))), {
+    initialValue: null,
+  });
+  protected readonly editModel = computed(() => {
+    const id = this.editId();
+    if (!id) return null;
+    const address = this.profileStore.getUserContacts().find(a => a.id === id);
+    return address
+      ? ({
+          name: address.name,
+          address: address.address,
+          city: address.city,
+          zip: address.zip,
+          phone: address.phone,
+          default: address.default,
+        } as UserContactForm)
+      : null;
+  });
   readonly pendingChanges = signal(false);
 
   protected readonly skeletonItems = linkedSignal({
@@ -61,18 +86,15 @@ export class EcoStoreProfileAddressesFeatureComponent implements CanDeactivateCo
     },
   });
 
-  onEdit(addressId: string): void {
-    // eslint-disable-next-line no-console
-    console.log(addressId);
-    // TODO: navigate to address edit form
-  }
-
-  onAddNew(): void {
-    this.#router.navigate(['nova'], { relativeTo: this.#route });
-  }
-
   onCreateAddress(address: UserContactForm): void {
     this.profileStore.createAddress(address);
+    this.#router.navigate(['..'], { relativeTo: this.#route });
+  }
+
+  onUpdateAddress(address: UserContactForm): void {
+    const id = this.editId();
+    if (!id) return;
+    this.profileStore.updateAddress(id, address);
     this.#router.navigate(['..'], { relativeTo: this.#route });
   }
 

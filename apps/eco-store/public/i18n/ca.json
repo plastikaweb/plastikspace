@@ -631,12 +631,14 @@
       "success": {
         "setDefault": "Adreça establerta com a predeterminada",
         "delete": "Adreça eliminada correctament",
-        "create": "Adreça creada correctament"
+        "create": "Adreça creada correctament",
+        "update": "Adreça actualitzada correctament"
       },
       "error": {
         "setDefault": "S'ha produït un error al establir l'adreça com a predeterminada",
         "delete": "S'ha produït un error al eliminar l'adreça",
-        "create": "S'ha produït un error al crear l'adreça"
+        "create": "S'ha produït un error al crear l'adreça",
+        "update": "S'ha produït un error al actualitzar l'adreça"
       }
     },
     "success": {

@@ -30,7 +30,11 @@ interface SelectContextType {
 
 const SelectContext = createContext<SelectContextType | null>(null);
 
-function Select({ children, value, onChange }: {
+function Select({
+  children,
+  value,
+  onChange,
+}: {
   children: React.ReactNode;
   value: string;
   onChange: (value: string) => void;
@@ -46,11 +50,7 @@ function SelectTrigger({ children }: { children: React.ReactNode }) {
   const context = useContext(SelectContext);
   if (!context) throw new Error('SelectTrigger must be used within Select');
 
-  return (
-    <button className="flex items-center gap-2 px-4 py-2 border rounded">
-      {children}
-    </button>
-  );
+  return <button className="flex items-center gap-2 rounded border px-4 py-2">{children}</button>;
 }
 
 function SelectOption({ value, children }: { value: string; children: React.ReactNode }) {
@@ -60,10 +60,9 @@ function SelectOption({ value, children }: { value: string; children: React.Reac
   return (
     <div
       onClick={() => context.onChange(value)}
-      className={`px-4 py-2 cursor-pointer hover:bg-gray-100 ${
+      className={`cursor-pointer px-4 py-2 hover:bg-gray-100 ${
         context.value === value ? 'bg-blue-50' : ''
-      }`}
-    >
+      }`}>
       {children}
     </div>
   );
@@ -78,7 +77,7 @@ Select.Option = SelectOption;
   <Select.Trigger>Choose option</Select.Trigger>
   <Select.Option value="a">Option A</Select.Option>
   <Select.Option value="b">Option B</Select.Option>
-</Select>
+</Select>;
 ```
 
 ### Render Props
@@ -108,9 +107,11 @@ function MouseTracker({ render }: { render: (pos: MousePosition) => React.ReactN
 // Usage
 <MouseTracker
   render={({ x, y }) => (
-    <div>Mouse position: {x}, {y}</div>
+    <div>
+      Mouse position: {x}, {y}
+    </div>
   )}
-/>
+/>;
 ```
 
 ### Higher-Order Components (HOC)
@@ -172,10 +173,7 @@ function useAsync<T>(asyncFn: () => Promise<T>, deps: any[] = []) {
 
 // Usage
 function UserProfile({ userId }: { userId: string }) {
-  const { data: user, status, error, refetch } = useAsync(
-    () => fetchUser(userId),
-    [userId]
-  );
+  const { data: user, status, error, refetch } = useAsync(() => fetchUser(userId), [userId]);
 
   if (status === 'loading') return <Spinner />;
   if (status === 'error') return <Error message={error?.message} />;
@@ -210,7 +208,7 @@ function SearchInput() {
     }
   }, [debouncedQuery]);
 
-  return <input value={query} onChange={(e) => setQuery(e.target.value)} />;
+  return <input value={query} onChange={e => setQuery(e.target.value)} />;
 }
 ```
 
@@ -228,17 +226,20 @@ function useLocalStorage<T>(key: string, initialValue: T) {
     }
   });
 
-  const setValue = useCallback((value: T | ((val: T) => T)) => {
-    try {
-      const valueToStore = value instanceof Function ? value(storedValue) : value;
-      setStoredValue(valueToStore);
-      if (typeof window !== 'undefined') {
-        window.localStorage.setItem(key, JSON.stringify(valueToStore));
+  const setValue = useCallback(
+    (value: T | ((val: T) => T)) => {
+      try {
+        const valueToStore = value instanceof Function ? value(storedValue) : value;
+        setStoredValue(valueToStore);
+        if (typeof window !== 'undefined') {
+          window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        }
+      } catch (error) {
+        console.error('Error saving to localStorage:', error);
       }
-    } catch (error) {
-      console.error('Error saving to localStorage:', error);
-    }
-  }, [key, storedValue]);
+    },
+    [key, storedValue]
+  );
 
   return [storedValue, setValue] as const;
 }
@@ -335,9 +336,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
         return {
           ...state,
           items: state.items.map(item =>
-            item.id === action.payload.id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
+            item.id === action.payload.id ? { ...item, quantity: item.quantity + 1 } : item
           ),
         };
       }
@@ -355,9 +354,7 @@ function cartReducer(state: CartState, action: CartAction): CartState {
       return {
         ...state,
         items: state.items.map(item =>
-          item.id === action.payload.id
-            ? { ...item, quantity: action.payload.quantity }
-            : item
+          item.id === action.payload.id ? { ...item, quantity: action.payload.quantity } : item
         ),
       };
     case 'CLEAR_CART':
@@ -377,10 +374,13 @@ function CartProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(cartReducer, { items: [], total: 0 });
 
   // Compute total whenever items change
-  const stateWithTotal = useMemo(() => ({
-    ...state,
-    total: state.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
-  }), [state.items]);
+  const stateWithTotal = useMemo(
+    () => ({
+      ...state,
+      total: state.items.reduce((sum, item) => sum + item.price * item.quantity, 0),
+    }),
+    [state.items]
+  );
 
   return (
     <CartContext.Provider value={{ state: stateWithTotal, dispatch }}>
@@ -411,7 +411,7 @@ interface AuthStore {
 
 const useAuthStore = create<AuthStore>()(
   persist(
-    (set) => ({
+    set => ({
       user: null,
       token: null,
       login: async (email, password) => {
@@ -427,7 +427,11 @@ const useAuthStore = create<AuthStore>()(
 // Usage
 function Profile() {
   const { user, logout } = useAuthStore();
-  return user ? <div>{user.name} <button onClick={logout}>Logout</button></div> : null;
+  return user ? (
+    <div>
+      {user.name} <button onClick={logout}>Logout</button>
+    </div>
+  ) : null;
 }
 ```
 
@@ -465,16 +469,18 @@ const ListItem = React.memo(
 ### useMemo for Expensive Calculations
 
 ```tsx
-function DataTable({ data, sortColumn, filterText }: {
+function DataTable({
+  data,
+  sortColumn,
+  filterText,
+}: {
   data: Item[];
   sortColumn: string;
   filterText: string;
 }) {
   const processedData = useMemo(() => {
     // Filter
-    let result = data.filter(item =>
-      item.name.toLowerCase().includes(filterText.toLowerCase())
-    );
+    let result = data.filter(item => item.name.toLowerCase().includes(filterText.toLowerCase()));
 
     // Sort
     result = [...result].sort((a, b) => {
@@ -504,9 +510,9 @@ function ParentComponent() {
 
   // Stable reference - won't cause child re-renders
   const handleItemClick = useCallback((id: string) => {
-    setItems(prev => prev.map(item =>
-      item.id === id ? { ...item, selected: !item.selected } : item
-    ));
+    setItems(prev =>
+      prev.map(item => (item.id === id ? { ...item, selected: !item.selected } : item))
+    );
   }, []);
 
   const handleAddItem = useCallback((newItem: Item) => {
@@ -539,9 +545,7 @@ function VirtualList({ items }: { items: Item[] }) {
 
   return (
     <div ref={parentRef} className="h-[400px] overflow-auto">
-      <div
-        style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}
-      >
+      <div style={{ height: `${virtualizer.getTotalSize()}px`, position: 'relative' }}>
         {virtualizer.getVirtualItems().map(virtualRow => (
           <div
             key={virtualRow.key}
@@ -552,8 +556,7 @@ function VirtualList({ items }: { items: Item[] }) {
               width: '100%',
               height: `${virtualRow.size}px`,
               transform: `translateY(${virtualRow.start}px)`,
-            }}
-          >
+            }}>
             {items[virtualRow.index].name}
           </div>
         ))}
@@ -596,17 +599,18 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback || (
-        <div className="p-4 bg-red-50 border border-red-200 rounded">
-          <h2 className="text-red-800 font-bold">Something went wrong</h2>
-          <p className="text-red-600">{this.state.error?.message}</p>
-          <button
-            onClick={() => this.setState({ hasError: false, error: null })}
-            className="mt-2 px-4 py-2 bg-red-600 text-white rounded"
-          >
-            Try Again
-          </button>
-        </div>
+      return (
+        this.props.fallback || (
+          <div className="rounded border border-red-200 bg-red-50 p-4">
+            <h2 className="font-bold text-red-800">Something went wrong</h2>
+            <p className="text-red-600">{this.state.error?.message}</p>
+            <button
+              onClick={() => this.setState({ hasError: false, error: null })}
+              className="mt-2 rounded bg-red-600 px-4 py-2 text-white">
+              Try Again
+            </button>
+          </div>
+        )
       );
     }
 
@@ -615,12 +619,9 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
 }
 
 // Usage
-<ErrorBoundary
-  fallback={<ErrorFallback />}
-  onError={(error) => trackError(error)}
->
+<ErrorBoundary fallback={<ErrorFallback />} onError={error => trackError(error)}>
   <MyComponent />
-</ErrorBoundary>
+</ErrorBoundary>;
 ```
 
 ### Suspense with Error Boundary
@@ -645,12 +646,12 @@ function DataComponent() {
 
 ```tsx
 // BAD - Creates new object every render, causes re-renders
-<Component style={{ color: 'red' }} items={[1, 2, 3]} />
+<Component style={{ color: 'red' }} items={[1, 2, 3]} />;
 
 // GOOD - Define outside or use useMemo
 const style = { color: 'red' };
 const items = [1, 2, 3];
-<Component style={style} items={items} />
+<Component style={style} items={items} />;
 
 // Or with useMemo for dynamic values
 const style = useMemo(() => ({ color: theme.primary }), [theme.primary]);
@@ -660,14 +661,14 @@ const style = useMemo(() => ({ color: theme.primary }), [theme.primary]);
 
 ```tsx
 // BAD - Index keys break with reordering/filtering
-{items.map((item, index) => (
-  <Item key={index} data={item} />
-))}
+{
+  items.map((item, index) => <Item key={index} data={item} />);
+}
 
 // GOOD - Use stable unique ID
-{items.map(item => (
-  <Item key={item.id} data={item} />
-))}
+{
+  items.map(item => <Item key={item.id} data={item} />);
+}
 ```
 
 ### Avoid: Prop Drilling
@@ -680,7 +681,7 @@ const style = useMemo(() => ({ color: theme.primary }), [theme.primary]);
       <UserInfo user={user} />
     </Sidebar>
   </Layout>
-</App>
+</App>;
 
 // GOOD - Use Context
 const UserContext = createContext<User | null>(null);
@@ -709,7 +710,7 @@ function UserInfo() {
 // BAD - Mutates state directly
 const addItem = (item: Item) => {
   items.push(item); // WRONG
-  setItems(items);  // Won't trigger re-render
+  setItems(items); // Won't trigger re-render
 };
 
 // GOOD - Create new array
@@ -739,8 +740,5 @@ const [items, setItems] = useState<Item[]>([]);
 const total = items.reduce((sum, item) => sum + item.price, 0);
 
 // Or useMemo for expensive calculations
-const total = useMemo(
-  () => items.reduce((sum, item) => sum + item.price, 0),
-  [items]
-);
+const total = useMemo(() => items.reduce((sum, item) => sum + item.price, 0), [items]);
 ```

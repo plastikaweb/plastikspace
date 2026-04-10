@@ -16,6 +16,7 @@ ng add @angular/ssr
 ```
 
 This adds:
+
 - `@angular/ssr` package
 - `server.ts` - Express server
 - `src/main.server.ts` - Server bootstrap
@@ -47,10 +48,7 @@ import { appConfig } from './app.config';
 import { serverRoutes } from './app.routes.server';
 
 const serverConfig: ApplicationConfig = {
-  providers: [
-    provideServerRendering(),
-    provideServerRoutesConfig(serverRoutes),
-  ],
+  providers: [provideServerRendering(), provideServerRoutesConfig(serverRoutes)],
 };
 
 export const config = mergeApplicationConfig(appConfig, serverConfig);
@@ -88,11 +86,11 @@ export const serverRoutes: ServerRoute[] = [
 
 ### Render Modes
 
-| Mode | Description | Use Case |
-|------|-------------|----------|
-| `RenderMode.Prerender` | Static HTML at build time | Marketing pages, blogs |
-| `RenderMode.Server` | Dynamic SSR per request | User-specific content |
-| `RenderMode.Client` | Client-side only (SPA) | Authenticated dashboards |
+| Mode                   | Description               | Use Case                 |
+| ---------------------- | ------------------------- | ------------------------ |
+| `RenderMode.Prerender` | Static HTML at build time | Marketing pages, blogs   |
+| `RenderMode.Server`    | Dynamic SSR per request   | User-specific content    |
+| `RenderMode.Client`    | Client-side only (SPA)    | Authenticated dashboards |
 
 ## Hydration
 
@@ -125,17 +123,17 @@ Defer hydration of specific components:
     } @placeholder {
       <div class="comments-placeholder">Loading comments...</div>
     }
-    
+
     <!-- Hydrate on interaction -->
     @defer (hydrate on interaction) {
       <app-interactive-chart [data]="chartData" />
     }
-    
+
     <!-- Hydrate on idle -->
     @defer (hydrate on idle) {
       <app-recommendations />
     }
-    
+
     <!-- Never hydrate (static only) -->
     @defer (hydrate never) {
       <app-static-footer />
@@ -150,15 +148,15 @@ export class Post {
 
 ### Hydration Triggers
 
-| Trigger | Description |
-|---------|-------------|
-| `hydrate on viewport` | When element enters viewport |
-| `hydrate on interaction` | On click, focus, or input |
-| `hydrate on idle` | When browser is idle |
-| `hydrate on immediate` | Immediately after load |
-| `hydrate on timer(ms)` | After specified delay |
-| `hydrate when condition` | When expression is true |
-| `hydrate never` | Never hydrate (static) |
+| Trigger                  | Description                  |
+| ------------------------ | ---------------------------- |
+| `hydrate on viewport`    | When element enters viewport |
+| `hydrate on interaction` | On click, focus, or input    |
+| `hydrate on idle`        | When browser is idle         |
+| `hydrate on immediate`   | Immediately after load       |
+| `hydrate on timer(ms)`   | After specified delay        |
+| `hydrate when condition` | When expression is true      |
+| `hydrate never`          | Never hydrate (static)       |
 
 ### Event Replay
 
@@ -168,9 +166,7 @@ Capture user events before hydration completes:
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideClientHydration(withEventReplay()),
-  ],
+  providers: [provideClientHydration(withEventReplay())],
 };
 ```
 
@@ -185,7 +181,7 @@ import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 @Component({...})
 export class My {
   private platformId = inject(PLATFORM_ID);
-  
+
   ngOnInit() {
     if (isPlatformBrowser(this.platformId)) {
       // Browser-only code
@@ -209,13 +205,13 @@ export class Chart {
     afterNextRender(() => {
       this.initChart();
     });
-    
+
     // Runs after every render (browser only)
     afterRender(() => {
       this.updateChart();
     });
   }
-  
+
   private initChart() {
     // Safe to use DOM APIs here
     const canvas = document.getElementById('chart');
@@ -251,11 +247,11 @@ export const LOCAL_STORAGE = new InjectionToken<Storage | null>('LocalStorage', 
 @Injectable({ providedIn: 'root' })
 export class Storage {
   private storage = inject(LOCAL_STORAGE);
-  
+
   get(key: string): string | null {
     return this.storage?.getItem(key) ?? null;
   }
-  
+
   set(key: string, value: string): void {
     this.storage?.setItem(key, value);
   }
@@ -308,11 +304,11 @@ export const serverRoutes: ServerRoute[] = [
 
 ### Prerender Fallback Options
 
-| Fallback | Description |
-|----------|-------------|
+| Fallback                   | Description                    |
+| -------------------------- | ------------------------------ |
 | `PrerenderFallback.Server` | SSR for non-prerendered routes |
-| `PrerenderFallback.Client` | Client-side rendering |
-| `PrerenderFallback.None` | 404 for non-prerendered routes |
+| `PrerenderFallback.Client` | Client-side rendering          |
+| `PrerenderFallback.None`   | 404 for non-prerendered routes |
 
 ## HTTP Caching
 
@@ -329,7 +325,7 @@ export const appConfig: ApplicationConfig = {
       withHttpTransferCacheOptions({
         includePostRequests: true,
         includeRequestsWithAuthHeaders: false,
-        filter: (req) => !req.url.includes('/api/realtime'),
+        filter: req => !req.url.includes('/api/realtime'),
       })
     ),
   ],
@@ -348,7 +344,7 @@ export class Product {
   private http = inject(HttpClient);
   private transferState = inject(TransferState);
   private platformId = inject(PLATFORM_ID);
-  
+
   getProducts(): Observable<Product[]> {
     // Check if data was transferred from server
     if (this.transferState.hasKey(PRODUCTS_KEY)) {
@@ -356,7 +352,7 @@ export class Product {
       this.transferState.remove(PRODUCTS_KEY);
       return of(products);
     }
-    
+
     return this.http.get<Product[]>('/api/products').pipe(
       tap(products => {
         // Store for transfer on server
@@ -423,8 +419,8 @@ app.get('*', (req, res, next) => {
       publicPath: browserDistFolder,
       providers: [{ provide: APP_BASE_HREF, useValue: req.baseUrl }],
     })
-    .then((html) => res.send(html))
-    .catch((err) => next(err));
+    .then(html => res.send(html))
+    .catch(err => next(err));
 });
 
 app.listen(4000, () => {

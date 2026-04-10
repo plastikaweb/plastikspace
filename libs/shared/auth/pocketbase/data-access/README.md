@@ -49,6 +49,16 @@ An NgRx Signal Store for reactive authentication state management.
 - `login(credentials)`: Authenticate with email/password.
 - `logout()`: Clear authentication and reset state.
 - `checkAuth()`: Check and restore session from localStorage (auto-called on init).
+- `getUserAddresses()`: Fetch all addresses for the current user.
+- `createAddress(data)`: Create a new address with optimistic update.
+- `updateAddress(id, data)`: Update an existing address with optimistic update.
+- `deleteAddress(id)`: Delete an address by ID.
+- `setDefaultAddress(id)`: Set an address as the default.
+- `updateProfile(data)`: Update the user's name and phone.
+- `updateAvatar(file)`: Upload a new profile avatar.
+- `deleteAvatar()`: Remove the profile avatar.
+- `requestPassword(data)`: Send a password reset email.
+- `resetPassword(data)`: Confirm a password reset with token.
 
 ## Guards
 

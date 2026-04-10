@@ -11,34 +11,34 @@ export const routes: Routes = [
   {
     path: '',
     redirectTo: '/home',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   {
     path: 'home',
     component: HomeComponent,
-    title: 'Home'
+    title: 'Home',
   },
   {
     path: 'users',
     loadComponent: () => import('./users/users.component').then(m => m.UsersComponent),
-    title: 'Users'
+    title: 'Users',
   },
   {
     path: 'users/:id',
     loadComponent: () => import('./users/user-detail.component').then(m => m.UserDetailComponent),
     canActivate: [authGuard],
-    resolve: { user: userResolver }
+    resolve: { user: userResolver },
   },
   {
     path: 'admin',
     loadChildren: () => import('./admin/admin.routes').then(m => m.ADMIN_ROUTES),
-    canActivate: [authGuard, adminGuard]
+    canActivate: [authGuard, adminGuard],
   },
   {
     path: '**',
     loadComponent: () => import('./not-found/not-found.component').then(m => m.NotFoundComponent),
-    title: '404 Not Found'
-  }
+    title: '404 Not Found',
+  },
 ];
 
 // app.config.ts
@@ -48,11 +48,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(
       routes,
-      withComponentInputBinding(),  // Bind route params to @Input()
-      withViewTransitions(),        // Enable view transitions
+      withComponentInputBinding(), // Bind route params to @Input()
+      withViewTransitions(), // Enable view transitions
       withPreloading(PreloadAllModules)
-    )
-  ]
+    ),
+  ],
 };
 ```
 
@@ -66,16 +66,16 @@ import { Routes } from '@angular/router';
 export const ADMIN_ROUTES: Routes = [
   {
     path: '',
-    loadComponent: () => import('./admin-dashboard.component').then(m => m.AdminDashboardComponent)
+    loadComponent: () => import('./admin-dashboard.component').then(m => m.AdminDashboardComponent),
   },
   {
     path: 'users',
-    loadComponent: () => import('./admin-users.component').then(m => m.AdminUsersComponent)
+    loadComponent: () => import('./admin-users.component').then(m => m.AdminUsersComponent),
   },
   {
     path: 'settings',
-    loadComponent: () => import('./admin-settings.component').then(m => m.AdminSettingsComponent)
-  }
+    loadComponent: () => import('./admin-settings.component').then(m => m.AdminSettingsComponent),
+  },
 ];
 ```
 
@@ -97,7 +97,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   // Redirect to login with return URL
   return router.createUrlTree(['/login'], {
-    queryParams: { returnUrl: state.url }
+    queryParams: { returnUrl: state.url },
   });
 };
 
@@ -114,7 +114,7 @@ export const adminGuard: CanActivateFn = () => {
 };
 
 // Can deactivate (unsaved changes)
-export const canDeactivateGuard: CanDeactivateFn<FormComponent> = (component) => {
+export const canDeactivateGuard: CanDeactivateFn<FormComponent> = component => {
   if (component.hasUnsavedChanges()) {
     return confirm('You have unsaved changes. Are you sure you want to leave?');
   }
@@ -136,9 +136,7 @@ export const userResolver: ResolveFn<User | null> = (route, state) => {
   const usersService = inject(UsersService);
   const id = route.paramMap.get('id')!;
 
-  return usersService.getById(id).pipe(
-    catchError(() => of(null))
-  );
+  return usersService.getById(id).pipe(catchError(() => of(null)));
 };
 
 // Component receives resolved data
@@ -151,10 +149,10 @@ export const userResolver: ResolveFn<User | null> = (route, state) => {
     } @else {
       <p>User not found</p>
     }
-  `
+  `,
 })
 export class UserDetailComponent {
-  user = input<User | null>(null);  // Resolved data bound as input
+  user = input<User | null>(null); // Resolved data bound as input
 }
 ```
 
@@ -166,7 +164,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-detail',
-  standalone: true
+  standalone: true,
 })
 export class ProductDetailComponent {
   private route = inject(ActivatedRoute);
@@ -199,7 +197,7 @@ export class ProductDetailComponent {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { filter },
-      queryParamsHandling: 'merge'  // Preserve other params
+      queryParamsHandling: 'merge', // Preserve other params
     });
   }
 }
@@ -214,7 +212,7 @@ import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
-  standalone: true
+  standalone: true,
 })
 export class AppComponent {
   private router = inject(Router);
@@ -222,26 +220,22 @@ export class AppComponent {
 
   constructor() {
     // Show loading on navigation start
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationStart)
-    ).subscribe(() => {
+    this.router.events.pipe(filter(event => event instanceof NavigationStart)).subscribe(() => {
       this.loading.set(true);
     });
 
     // Hide loading on navigation end
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       this.loading.set(false);
     });
 
     // Handle navigation errors
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationError)
-    ).subscribe((event: NavigationError) => {
-      console.error('Navigation error:', event.error);
-      this.loading.set(false);
-    });
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationError))
+      .subscribe((event: NavigationError) => {
+        console.error('Navigation error:', event.error);
+        this.loading.set(false);
+      });
   }
 }
 ```
@@ -258,15 +252,15 @@ const routes: Routes = [
       {
         path: 'stats',
         component: StatsComponent,
-        outlet: 'panel'  // Named outlet
+        outlet: 'panel', // Named outlet
       },
       {
         path: 'charts',
         component: ChartsComponent,
-        outlet: 'panel'
-      }
-    ]
-  }
+        outlet: 'panel',
+      },
+    ],
+  },
 ];
 
 // Dashboard component template
@@ -274,13 +268,15 @@ const routes: Routes = [
   template: `
     <div class="dashboard">
       <div class="main">
-        <router-outlet></router-outlet>  <!-- Primary outlet -->
+        <router-outlet></router-outlet>
+        <!-- Primary outlet -->
       </div>
       <div class="panel">
-        <router-outlet name="panel"></router-outlet>  <!-- Named outlet -->
+        <router-outlet name="panel"></router-outlet>
+        <!-- Named outlet -->
       </div>
     </div>
-  `
+  `,
 })
 export class DashboardComponent {}
 
@@ -303,9 +299,7 @@ export class CustomPreloadingStrategy implements PreloadingStrategy {
     // Only preload routes with data.preload = true
     if (route.data?.['preload']) {
       const delay = route.data?.['preloadDelay'] || 0;
-      return timer(delay).pipe(
-        mergeMap(() => load())
-      );
+      return timer(delay).pipe(mergeMap(() => load()));
     }
     return of(null);
   }
@@ -316,12 +310,12 @@ const routes: Routes = [
   {
     path: 'important',
     loadChildren: () => import('./important/important.routes'),
-    data: { preload: true, preloadDelay: 2000 }
-  }
+    data: { preload: true, preloadDelay: 2000 },
+  },
 ];
 
 // Register in app config
-provideRouter(routes, withPreloading(CustomPreloadingStrategy))
+provideRouter(routes, withPreloading(CustomPreloadingStrategy));
 ```
 
 ## Route Guards with Observables
@@ -347,15 +341,15 @@ export const dataGuard: CanActivateFn = (route, state) => {
 
 ## Quick Reference
 
-| Feature | Usage |
-|---------|-------|
-| Routes | `Routes` array in app.routes.ts |
+| Feature   | Usage                               |
+| --------- | ----------------------------------- |
+| Routes    | `Routes` array in app.routes.ts     |
 | Lazy load | `loadComponent()`, `loadChildren()` |
-| Guards | `CanActivateFn`, `CanDeactivateFn` |
-| Resolvers | `ResolveFn<T>` |
-| Params | `route.paramMap`, `input<T>()` |
-| Query | `route.queryParamMap` |
-| Navigate | `router.navigate()`, `routerLink` |
-| Events | `router.events` |
-| Outlets | `<router-outlet name="...">` |
-| Preload | `withPreloading()` |
+| Guards    | `CanActivateFn`, `CanDeactivateFn`  |
+| Resolvers | `ResolveFn<T>`                      |
+| Params    | `route.paramMap`, `input<T>()`      |
+| Query     | `route.queryParamMap`               |
+| Navigate  | `router.navigate()`, `routerLink`   |
+| Events    | `router.events`                     |
+| Outlets   | `<router-outlet name="...">`        |
+| Preload   | `withPreloading()`                  |
