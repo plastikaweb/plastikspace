@@ -72,14 +72,44 @@ onRecordCreateRequest((e) => {
         let totalWithIva = 0;
         const verifiedItems = [];
 
+        // --- PRE-FETCH PRODUCTS AND CATEGORIES (SOLVE N+1) ---
+        const productIds = items.map(item => item.productId).filter(Boolean);
+        if (productIds.length === 0) {
+            throw new BadRequestError("Missing product IDs in order items.");
+        }
+
+        // Fetch all products in one query
+        const allProducts = e.app.findRecordsByFilter("products", 
+            productIds.map(id => `id = '${id}'`).join(" || ")
+        );
+        const productsMap = {};
+        const categoryIds = [];
+        for (const p of allProducts) {
+            productsMap[p.id] = p;
+            const catId = p.get("category");
+            if (catId && !categoryIds.includes(catId)) {
+                categoryIds.push(catId);
+            }
+        }
+
+        // Fetch all categories in one query
+        const categoriesMap = {};
+        if (categoryIds.length > 0) {
+            const allCategories = e.app.findRecordsByFilter("product_categories",
+                categoryIds.map(id => `id = '${id}'`).join(" || ")
+            );
+            for (const c of allCategories) {
+                categoriesMap[c.id] = c;
+            }
+        }
+
         for (const item of items) {
             const productId = item.productId;
-            if (!productId) {
-                throw new BadRequestError("Missing product ID in order items.");
+            const product = productsMap[productId];
+            
+            if (!product) {
+                throw new BadRequestError(`Product with ID "${productId}" not found.`);
             }
-
-            // Fetch the product from database to get verified data
-            const product = e.app.findRecordById("products", productId);
 
             // Basic stock check
             if (!product.getBool("inStock")) {
@@ -90,15 +120,15 @@ onRecordCreateRequest((e) => {
             const productNameRaw = product.getString("name");
             const productName = JSON.parse(productNameRaw || "{}");
 
-            // Fetch the category to get its localized name
+            // Use pre-fetched category
             const categoryId = product.get("category");
             let categoryName = {};
-            try {
-                const category = e.app.findRecordById("product_categories", categoryId);
+            const category = categoriesMap[categoryId];
+            if (category) {
                 const categoryNameRaw = category.getString("name");
                 categoryName = JSON.parse(categoryNameRaw || "{}");
-            } catch (catErr) {
-                console.warn(`Could not fetch category ${categoryId} for product ${productId}`);
+            } else if (categoryId) {
+                console.warn(`Could not find pre-fetched category ${categoryId} for product ${productId}`);
             }
 
             const dbPrice = product.getFloat("price");
@@ -154,8 +184,12 @@ onRecordCreateRequest((e) => {
 
         console.log(`Order totals verified: subtotal=${subtotal}, tax=${totalTax}, shipping=${shipping}, total=${total}`);
     } catch (err) {
-        if (err instanceof BadRequestError) throw err;
-        console.error("Error verifying prices: ", err);
+        if (err instanceof BadRequestError) {
+            console.error("Verification error (BadRequest): ", err.message);
+            throw err;
+        }
+        console.error("Internal error verifying prices: ", err);
+        if (err.stack) console.error(err.stack);
         throw new BadRequestError("Failed to verify order prices. Please try again.");
     }
 
@@ -190,8 +224,14 @@ onRecordAfterCreateSuccess((e) => {
             })
         );
 
-        for (const cart of carts) {
-            e.app.delete(cart);
+        if (carts.length > 0) {
+            // Batch the deletes inside a single transaction so SQLite issues
+            // one commit/fsync for the whole set instead of one per row.
+            e.app.runInTransaction((txApp) => {
+                for (const cart of carts) {
+                    txApp.delete(cart);
+                }
+            });
         }
     } catch (err) {
         console.error("Error trying to delete the cart: ", err);

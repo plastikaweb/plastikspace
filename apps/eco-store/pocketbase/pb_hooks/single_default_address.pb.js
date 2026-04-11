@@ -2,26 +2,44 @@
 
 // Ensure only one address per user can be marked as default.
 
+// Collect sibling addresses still marked as default and flip them in a single
+// transaction so SQLite issues one commit/fsync for the whole batch instead
+// of one per row.
+function clearOtherDefaults(app, record) {
+    const others = app.findAllRecords(
+        "user_addresses",
+        $dbx.exp("user = {:user} AND id != {:id}", {
+            user: record.getString("user"),
+            id: record.id
+        })
+    );
+
+    const stale = [];
+    for (let i = 0; i < others.length; i++) {
+        if (others[i] && others[i].getBool("default")) {
+            stale.push(others[i]);
+        }
+    }
+
+    if (stale.length === 0) {
+        return;
+    }
+
+    app.runInTransaction((txApp) => {
+        for (const other of stale) {
+            other.set("default", false);
+            txApp.save(other);
+        }
+    });
+}
+
 onRecordAfterCreateSuccess(function(e) {
     if (!e.record.getBool("default")) {
         return;
     }
 
     try {
-        var others = e.app.findAllRecords(
-            "user_addresses",
-            $dbx.exp("user = {:user} AND id != {:id}", {
-                user: e.record.getString("user"),
-                id: e.record.id
-            })
-        );
-
-        for (var i = 0; i < others.length; i++) {
-            if (others[i] && others[i].getBool("default")) {
-                others[i].set("default", false);
-                e.app.save(others[i]);
-            }
-        }
+        clearOtherDefaults(e.app, e.record);
     } catch (err) {
         console.log("single_default_address create error:", err);
     }
@@ -33,20 +51,7 @@ onRecordAfterUpdateSuccess(function(e) {
     }
 
     try {
-        var others = e.app.findAllRecords(
-            "user_addresses",
-            $dbx.exp("user = {:user} AND id != {:id}", {
-                user: e.record.getString("user"),
-                id: e.record.id
-            })
-        );
-
-        for (var i = 0; i < others.length; i++) {
-            if (others[i] && others[i].getBool("default")) {
-                others[i].set("default", false);
-                e.app.save(others[i]);
-            }
-        }
+        clearOtherDefaults(e.app, e.record);
     } catch (err) {
         console.log("single_default_address update error:", err);
     }

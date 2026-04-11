@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 /* eslint-disable no-console */
 
-import PocketBase from 'pocketbase';
 import {
   addDays,
-  subWeeks,
-  startOfWeek,
+  format,
+  isAfter,
+  isBefore,
   setHours,
   setMinutes,
-  format,
-  isBefore,
-  isAfter,
+  startOfWeek,
+  subWeeks,
 } from 'date-fns';
+import PocketBase, { RecordModel } from 'pocketbase';
 import { loadDotEnv } from './load-environment.js';
 
 // Load environment variables
@@ -23,20 +23,6 @@ const PB_ADMIN_PASSWORD = process.env.POCKETBASE_DEV_ADMIN_PASSWORD || 'password
 
 const pb = new PocketBase(PB_URL);
 pb.autoCancellation(false);
-
-interface SeedUser {
-  id: string;
-  email: string;
-  name?: string;
-  tenant: string;
-}
-
-interface SeedProduct {
-  id: string;
-  name: string;
-  tenant: string;
-  price?: number;
-}
 
 interface SeedOrderCycle {
   id: string;
@@ -57,9 +43,11 @@ async function seed() {
     console.log('✅ Autenticat com a Superusuari.');
 
     // 2. Recuperació de dades inicials
-    const tenants = await pb.collection('tenants').getFullList();
-    const users = await pb.collection('users').getFullList();
-    const allProducts = await pb.collection('products').getFullList();
+    const [tenants, users, allProducts] = await Promise.all([
+      pb.collection('tenants').getFullList(),
+      pb.collection('users').getFullList(),
+      pb.collection('products').getFullList(),
+    ]);
 
     console.log(
       `📊 S'han trobat ${tenants.length} tenants, ${users.length} usuaris i ${allProducts.length} productes.`
@@ -78,11 +66,13 @@ async function seed() {
     }
 
     // 3. Generació de Cicles de Comanda (order_cycles) per "el-llevat"
-    const orderCyclesCreated = [];
+    const orderCyclesCreated: SeedOrderCycle[] = [];
     if (elLlevatTenant) {
       console.log('\n📅 Generant cicles de comanda per a "el-llevat" (20 setmanes)...');
 
       const now = new Date();
+      const cyclePromises = [];
+
       // Anem 20 setmanes enrere
       for (let i = 20; i >= 0; i--) {
         const deliveryWeek = subWeeks(now, i);
@@ -116,44 +106,56 @@ async function seed() {
           status = 'CLOSED';
         }
 
-        try {
-          // Check if exists
-          let existingCycle;
-          try {
-            existingCycle = await pb
-              .collection('order_cycles')
-              .getFirstListItem(`code="${code}" && tenant="${elLlevatTenant.id}"`);
-          } catch {
-            // Ignored
-          }
+        cyclePromises.push(
+          (async () => {
+            try {
+              // Check if exists
+              let existingCycle;
+              try {
+                existingCycle = await pb
+                  .collection('order_cycles')
+                  .getFirstListItem(`code="${code}" && tenant="${elLlevatTenant.id}"`);
+              } catch {
+                // Ignored
+              }
 
-          const data = {
-            tenant: elLlevatTenant.id,
-            name,
-            code,
-            startsAt: startsAt.toISOString(),
-            endsAt: endsAt.toISOString(),
-            approxDelivery: deliveryDate.toISOString(),
-            status,
-          };
+              const data = {
+                tenant: elLlevatTenant.id,
+                name,
+                code,
+                startsAt: startsAt.toISOString(),
+                endsAt: endsAt.toISOString(),
+                approxDelivery: deliveryDate.toISOString(),
+                status,
+              };
 
-          let cycle;
-          if (existingCycle) {
-            cycle = await pb.collection('order_cycles').update(existingCycle.id, data);
-          } else {
-            cycle = await pb.collection('order_cycles').create(data);
-          }
-          orderCyclesCreated.push(cycle);
-        } catch (err) {
-          console.error(`❌ Error creant cicle ${code}:`, (err as Error).message);
-        }
+              let cycle;
+              if (existingCycle) {
+                cycle = await pb.collection('order_cycles').update(existingCycle.id, data);
+              } else {
+                cycle = await pb.collection('order_cycles').create(data);
+              }
+              return cycle as unknown as SeedOrderCycle;
+            } catch (err) {
+              console.error(`❌ Error creant cicle ${code}:`, (err as Error).message);
+              return null;
+            }
+          })()
+        );
       }
+
+      const results = await Promise.all(cyclePromises);
+      for (const cycle of results) {
+        if (cycle) orderCyclesCreated.push(cycle);
+      }
+
       console.log(`✅ S'han creat/actualitzat ${orderCyclesCreated.length} cicles.`);
     }
 
     // 4. Generació de Comandes (orders)
     console.log('\n🛒 Generant comandes per als usuaris...');
     let totalOrders = 0;
+    const orderPromises: Promise<void>[] = [];
 
     for (const user of users) {
       const tenantId = user.tenant;
@@ -173,7 +175,7 @@ async function seed() {
         for (const cycle of orderCyclesCreated) {
           // Probabilitat 40-60%
           if (Math.random() > 0.5) {
-            await createRandomOrder(user, tenantId, userProducts, cycle);
+            orderPromises.push(createRandomOrder(user, tenantId, userProducts, cycle));
             totalOrders++;
           }
         }
@@ -181,11 +183,13 @@ async function seed() {
         // Altres tenants: 3-8 comandes aleatòries
         const numOrders = Math.floor(Math.random() * 6) + 3;
         for (let j = 0; j < numOrders; j++) {
-          await createRandomOrder(user, tenantId, userProducts);
+          orderPromises.push(createRandomOrder(user, tenantId, userProducts));
           totalOrders++;
         }
       }
     }
+
+    await Promise.all(orderPromises);
 
     console.log(`✅ S'han generat ${totalOrders} comandes en total.`);
     console.log('\n✨ Seeding completat amb èxit! ✨');
@@ -200,15 +204,15 @@ async function seed() {
 
 /**
  * @description Crea una comanda aleatòria per a un usuari.
- * @param {SeedUser} user The user.
+ * @param {RecordModel} user The user.
  * @param {string} tenantId The tenant ID.
- * @param {SeedProduct[]} availableProducts List of available products.
+ * @param {RecordModel[]} availableProducts List of available products.
  * @param {SeedOrderCycle} cycle The order cycle.
  */
 async function createRandomOrder(
-  user: SeedUser,
+  user: RecordModel,
   tenantId: string,
-  availableProducts: SeedProduct[],
+  availableProducts: RecordModel[],
   cycle: SeedOrderCycle | null = null
 ) {
   const numItems = Math.floor(Math.random() * 5) + 2; // 2 a 6 productes
