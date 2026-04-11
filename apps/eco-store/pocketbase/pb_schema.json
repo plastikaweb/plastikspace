@@ -2572,7 +2572,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_RqBq",
+        "id": "_clone_jI9J",
         "maxSize": 0,
         "name": "name",
         "presentable": false,
@@ -2583,7 +2583,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_dDG4",
+        "id": "_clone_JUOj",
         "max": 0,
         "min": 0,
         "name": "normalizedName",
@@ -2597,7 +2597,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_UK9W",
+        "id": "_clone_lAVL",
         "max": 0,
         "min": 0,
         "name": "color",
@@ -2610,7 +2610,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_0hbn",
+        "id": "_clone_CR9s",
         "maxSize": 0,
         "name": "groupName",
         "presentable": false,
@@ -2621,7 +2621,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_Psc3",
+        "id": "_clone_EuJ6",
         "max": 0,
         "min": 0,
         "name": "icon",
@@ -2636,7 +2636,7 @@
         "cascadeDelete": false,
         "collectionId": "pbc_2442875294",
         "hidden": false,
-        "id": "_clone_ojFw",
+        "id": "_clone_pkk8",
         "maxSelect": 1,
         "minSelect": 0,
         "name": "tenant",

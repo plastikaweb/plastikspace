@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-11] - Eco-Store: PocketBase Performance Improvements
+
+### Added
+
+- **Benchmark Script**: Added `apps/eco-store/scripts/benchmark-order.ts` to measure order creation performance end-to-end against a running PocketBase instance.
+
+### Performance
+
+- **Order Hook — N+1 Fix**: Refactored `on_create_order.pb.js` to pre-fetch all products and their categories in two bulk queries before processing items, eliminating per-item `findRecordById` calls and significantly reducing order validation time.
+- **Order Hook — Cart Cleanup Batching**: Wrapped the post-order cart deletion loop in `e.app.runInTransaction()` so SQLite issues a single commit/fsync for the whole batch instead of one per cart row.
+- **Cycle Cron — N+1 Fix**: Refactored `cycle_cron.pb.js` `order_cycle_init` into a three-pass algorithm (plan → pre-fetch existing cycles in one query → create), replacing the previous per-tenant `findFirstRecordByFilter` calls.
+- **Cycle Cron — Status Update Batching**: Batched all expired cycle status updates in `order_cycle_status_watcher` inside a single transaction, rolling back the whole batch on failure so the next cron tick retries cleanly.
+- **Default Address Hook**: Extracted shared logic from `single_default_address.pb.js` into a reusable `clearOtherDefaults` function and batched the sibling-address `default=false` updates inside a single transaction, reducing N commits to one.
+- **Seed Script**: Parallelized initial fixture fetching, order cycle creation, and order generation in `seed.ts` using `Promise.all`. Replaced custom `SeedUser`/`SeedProduct` interfaces with PocketBase's `RecordModel` type.
+
+### Fixed
+
+- **Markdownlint**: Added `**/CLAUDE.md` to the ignore list in `.markdownlint-cli2.yaml` to prevent false linting errors on AI context files.
+
 ## [2026-04-10] - Eco-Store: Address Management Enhancements
 
 ### Added

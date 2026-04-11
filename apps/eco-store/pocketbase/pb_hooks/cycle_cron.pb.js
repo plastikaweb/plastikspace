@@ -75,9 +75,11 @@ cronAdd("order_cycle_init", "59 23 * * 0", () => {
 
         console.log("Tenants found: ", tenants.length);
 
+        // --- PASS 1: Plan all cycles to create (compute dates, names, codes per tenant) ---
+        const plannedCycles = [];
         for (let tenant of tenants) {
             const tz = tenant.getString("timezone") || 'Europe/Madrid';
-            
+
             // Get the raw JSON string from the database to ensure we can parse it as a pure JS object
             let logisticsRaw = tenant.getString("logisticsConfig");
             let logistics = {};
@@ -92,69 +94,82 @@ cronAdd("order_cycle_init", "59 23 * * 0", () => {
             const orderWindow = logistics?.orderWindow;
             console.log(`Processing tenant: ${tenant.get("name")} (${tz}), Order window enabled: ${!!orderWindow?.enabled}`);
 
-            // 2. If orderWindow.enabled is true, calculate exact dates and create the cycle
-            if (orderWindow && orderWindow.enabled) {
-                const openDay = orderWindow.openDay || 'monday';
-                const openTime = orderWindow.openTime || '08:00';
-                const closeDay = orderWindow.closeDay || 'thursday';
-                const closeTime = orderWindow.closeTime || '23:59';
-
-                // Calculate exact dates starting from today in the tenant's timezone
-                const startsAt = getNextDayOfWeek(tz, openDay, openTime);
-                let endsAt = getNextDayOfWeek(tz, closeDay, closeTime);
-
-                // If the closing day is numerically before the opening day (e.g., opens Thursday, closes Monday),
-                // it means the closing jumps to the next natural week. So we add 7 days.
-                if (endsAt <= startsAt) {
-                    endsAt.setDate(endsAt.getDate() + 7);
-                }
-
-                const collection = $app.findCollectionByNameOrId("order_cycles");
-                const newCycle = new Record(collection);
-
-                // Check if the cycle spans across a natural week boundary to set clear names and codes
-                const startWeek = getWeekNumber(startsAt);
-                const endWeek = getWeekNumber(endsAt);
-
-                let cycleName = `Comandes Setmana ${startWeek}`;
-                let cycleCode = `WK${startWeek}-${startsAt.getFullYear()}`;
-
-                if (startWeek !== endWeek) {
-                    cycleName = `Comandes Setmanes ${startWeek}-${endWeek}`;
-                    cycleCode = `WK${startWeek}-${endWeek}-${startsAt.getFullYear()}`;
-                }
-
-                // Check if a cycle with this code already exists for this tenant to avoid duplicates
-                try {
-                    const existing = $app.findFirstRecordByFilter(
-                        "order_cycles",
-                        "tenant = {:tenant} && code = {:code}",
-                        { tenant: tenant.id, code: cycleCode }
-                    );
-
-                    if (existing) {
-                        console.log(`Cycle '${cycleCode}' already exists for tenant: ${tenant.get("name")}. Skipping.`);
-                        continue;
-                    }
-                } catch (e) {
-                    // findFirstRecordByFilter throws an error if no record is found, we can ignore this
-                }
-
-                newCycle.set("tenant", tenant.id);
-                newCycle.set("name", cycleName);
-                newCycle.set("code", cycleCode);
-                newCycle.set("startsAt", startsAt.toISOString());
-                newCycle.set("endsAt", endsAt.toISOString());
-
-                // Assign 'open' for now, Angular will process it accordingly
-                newCycle.set("status", "OPEN");
-
-                // 3. Save to DB
-                $app.save(newCycle);
-                console.log(`Cycle '${cycleName}' scheduled for tenant: ${tenant.get("name")}`);
-            } else {
+            if (!orderWindow || !orderWindow.enabled) {
                 console.log(`Skipping tenant: ${tenant.get("name")} (24/7 access configured)`);
+                continue;
             }
+
+            const openDay = orderWindow.openDay || 'monday';
+            const openTime = orderWindow.openTime || '08:00';
+            const closeDay = orderWindow.closeDay || 'thursday';
+            const closeTime = orderWindow.closeTime || '23:59';
+
+            // Calculate exact dates starting from today in the tenant's timezone
+            const startsAt = getNextDayOfWeek(tz, openDay, openTime);
+            let endsAt = getNextDayOfWeek(tz, closeDay, closeTime);
+
+            // If the closing day is numerically before the opening day (e.g., opens Thursday, closes Monday),
+            // it means the closing jumps to the next natural week. So we add 7 days.
+            if (endsAt <= startsAt) {
+                endsAt.setDate(endsAt.getDate() + 7);
+            }
+
+            // Check if the cycle spans across a natural week boundary to set clear names and codes
+            const startWeek = getWeekNumber(startsAt);
+            const endWeek = getWeekNumber(endsAt);
+
+            let cycleName = `Comandes Setmana ${startWeek}`;
+            let cycleCode = `WK${startWeek}-${startsAt.getFullYear()}`;
+
+            if (startWeek !== endWeek) {
+                cycleName = `Comandes Setmanes ${startWeek}-${endWeek}`;
+                cycleCode = `WK${startWeek}-${endWeek}-${startsAt.getFullYear()}`;
+            }
+
+            plannedCycles.push({ tenant, cycleName, cycleCode, startsAt, endsAt });
+        }
+
+        if (plannedCycles.length === 0) {
+            console.log("No cycles to create.");
+            return;
+        }
+
+        // --- PASS 2: Pre-fetch existing cycles for all planned (tenant, code) pairs in one query ---
+        // Avoids an N+1 query pattern where each tenant triggered its own findFirstRecordByFilter.
+        const existingKeys = new Set();
+        try {
+            const filter = plannedCycles
+                .map(p => `(tenant = '${p.tenant.id}' && code = '${p.cycleCode}')`)
+                .join(" || ");
+            const existingCycles = $app.findRecordsByFilter("order_cycles", filter);
+            for (const c of existingCycles) {
+                existingKeys.add(`${c.get("tenant")}|${c.get("code")}`);
+            }
+        } catch (e) {
+            console.warn("Could not pre-fetch existing cycles, falling back to per-tenant check:", e);
+        }
+
+        // --- PASS 3: Create cycles, skipping any that already exist ---
+        const collection = $app.findCollectionByNameOrId("order_cycles");
+
+        for (const { tenant, cycleName, cycleCode, startsAt, endsAt } of plannedCycles) {
+            if (existingKeys.has(`${tenant.id}|${cycleCode}`)) {
+                console.log(`Cycle '${cycleCode}' already exists for tenant: ${tenant.get("name")}. Skipping.`);
+                continue;
+            }
+
+            const newCycle = new Record(collection);
+            newCycle.set("tenant", tenant.id);
+            newCycle.set("name", cycleName);
+            newCycle.set("code", cycleCode);
+            newCycle.set("startsAt", startsAt.toISOString());
+            newCycle.set("endsAt", endsAt.toISOString());
+
+            // Assign 'open' for now, Angular will process it accordingly
+            newCycle.set("status", "OPEN");
+
+            $app.save(newCycle);
+            console.log(`Cycle '${cycleName}' scheduled for tenant: ${tenant.get("name")}`);
         }
 
     } catch (err) {
@@ -173,16 +188,23 @@ cronAdd("order_cycle_status_watcher", "*/15 * * * *", () => {
             $dbx.exp("status = 'OPEN' AND endsAt <= {:now}", { now: now })
         );
 
-        for (let cycle of expiredCycles) {
-            console.log(`Closing cycle '${cycle.get("name")}' (ID: ${cycle.id}) for tenant ${cycle.get("tenant")}`);
+        if (expiredCycles.length === 0) {
+            return;
+        }
 
-            cycle.set("status", "PROCESSING");
-
-            try {
-                $app.save(cycle);
-            } catch (saveErr) {
-                console.error(`Failed to update cycle ${cycle.id}:`, saveErr);
-            }
+        // Batch all status updates inside a single transaction so SQLite issues
+        // one commit/fsync for the whole run instead of N. Any failure rolls the
+        // entire batch back; the next cron tick (15 min later) will retry.
+        try {
+            $app.runInTransaction((txApp) => {
+                for (const cycle of expiredCycles) {
+                    console.log(`Closing cycle '${cycle.get("name")}' (ID: ${cycle.id}) for tenant ${cycle.get("tenant")}`);
+                    cycle.set("status", "PROCESSING");
+                    txApp.save(cycle);
+                }
+            });
+        } catch (txErr) {
+            console.error("Failed to close expired cycles:", txErr);
         }
     } catch (err) {
         console.error("Error in order_cycle_status_watcher:", err);

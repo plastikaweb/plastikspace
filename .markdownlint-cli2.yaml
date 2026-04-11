@@ -45,5 +45,6 @@ ignores:
   - tmp/**
   - apps/eco-store/pocketbase/**
   - apps/eco-store/eco-store-req.md
+  - '**/CLAUDE.md'
 # Disable inline config comments
 noInlineConfig: true
