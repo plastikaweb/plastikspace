@@ -3,7 +3,7 @@ import { TranslateService } from '@ngx-translate/core';
 
 /**
  * @description Register common validator translation messages for Formly.
- * Requires @ngx-translate (eco-store). For LOCALE_ID-based apps (llecoop), use `registerValidatorsMessageExtension` instead.
+ * Requires `@ngx-translate` (eco-store). For LOCALE_ID-based apps (llecoop), use `registerValidatorsMessageExtension` instead.
  * For auth-specific validators (password, passwordMatch, username), use `registerAuthValidatorsTranslateExtension`.
  * @param {TranslateService} translate TranslateService instance.
  * @returns {ConfigOption} ConfigOption with common validation messages.

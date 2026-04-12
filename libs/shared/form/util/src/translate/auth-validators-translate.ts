@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 /**
  * @description Register auth-specific validator translation messages for Formly.
  * Use alongside `registerValidatorsTranslateExtension` in routes that use password fields.
- * Requires @ngx-translate (eco-store). For LOCALE_ID-based apps (llecoop), use `registerValidatorsMessageExtension` instead.
+ * Requires `@ngx-translate` (eco-store). For LOCALE_ID-based apps (llecoop), use `registerValidatorsMessageExtension` instead.
  * @param {TranslateService} translate TranslateService instance.
  * @returns {ConfigOption} ConfigOption with auth validation messages.
  */
