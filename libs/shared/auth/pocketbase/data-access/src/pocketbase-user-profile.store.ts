@@ -66,6 +66,20 @@ export const pocketBaseUserProfileStore = signalStore(
       const days = differenceInDays(endsAt, new Date());
       return days > 0 ? days : 0;
     },
+    roleIcon: () => {
+      if (store.isTrial()) return 'history_toggle_off';
+      const role = store.user()?.role;
+      switch (role) {
+        case 'PARTNER':
+          return 'verified';
+        case 'GLOBAL_ADMIN':
+          return 'admin_panel_settings';
+        case 'TENANT_ADMIN':
+          return 'manage_accounts';
+        default:
+          return '';
+      }
+    },
   })),
   withComputed(store => ({
     getUserContacts: () =>
@@ -197,6 +211,31 @@ export const pocketBaseUserProfileStore = signalStore(
           isLoading: false,
         });
         store._notificationService.create('profile.error.update', 'ERROR');
+        return false;
+      }
+    },
+
+    async convertTrialToActive(): Promise<boolean> {
+      updateState(store, `[profile] convert trial to active in process`, { isLoading: true });
+
+      try {
+        const id = store.user()?.id;
+        if (!id) throw new Error('User not found');
+
+        const updatedUser = await store._authService.convertTrialToActive(id);
+
+        updateState(store, `[profile] convert trial to active success`, {
+          user: updatedUser as PocketBaseUser,
+          isLoading: false,
+        });
+
+        store._notificationService.create('store.trial.snackbar.success', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] convert trial to active failed ${error}`, {
+          isLoading: false,
+        });
+        store._notificationService.create('store.trial.snackbar.error', 'ERROR');
         return false;
       }
     },

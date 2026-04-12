@@ -2,8 +2,10 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { mockPocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access/testing';
+import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { providePlainInputFormly } from '@plastik/shared/form/util';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { of } from 'rxjs';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { axe } from 'vitest-axe';
 import { EcoStoreProfileBasicFeatureComponent } from './eco-store-profile-basic-feature.component';
 
@@ -12,6 +14,7 @@ describe('EcoStoreProfileBasicFeatureComponent', () => {
   let fixture: ComponentFixture<EcoStoreProfileBasicFeatureComponent>;
 
   beforeEach(async () => {
+    vi.clearAllMocks();
     await TestBed.configureTestingModule({
       imports: [EcoStoreProfileBasicFeatureComponent],
       providers: [
@@ -20,6 +23,10 @@ describe('EcoStoreProfileBasicFeatureComponent', () => {
         {
           provide: pocketBaseUserProfileStore,
           useValue: mockPocketBaseUserProfileStore,
+        },
+        {
+          provide: SharedConfirmDialogService,
+          useValue: { confirm: vi.fn(() => of(true)) },
         },
       ],
     }).compileComponents();

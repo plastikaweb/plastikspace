@@ -1,0 +1,24 @@
+<mat-icon class="plastik-alert__icon" aria-hidden="true">{{ resolvedIcon() }}</mat-icon>
+
+<div class="plastik-alert__body">
+  <div class="plastik-alert__title">
+    <ng-content select="[alertTitle]" />
+  </div>
+  <div class="plastik-alert__subtitle">
+    <ng-content select="[alertSubtitle]" />
+  </div>
+</div>
+
+<div class="plastik-alert__secondary">
+  <ng-content select="[alertSecondary]" />
+</div>
+
+@if (closable()) {
+  <button
+    matIconButton
+    class="plastik-alert__close"
+    [attr.aria-label]="'Close alert'"
+    (click)="closed.emit()">
+    <mat-icon>close</mat-icon>
+  </button>
+}

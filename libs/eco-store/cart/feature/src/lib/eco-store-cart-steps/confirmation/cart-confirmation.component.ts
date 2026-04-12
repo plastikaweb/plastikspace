@@ -7,6 +7,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { TextAreaWithCounterFormlyModule } from '@plastik/shared/form/textarea-with-counter';
 import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
@@ -27,6 +28,7 @@ import {
     TextAreaWithCounterFormlyModule,
     CartOrderSummaryComponent,
     CartProductCardComponent,
+    SharedAlertUiComponent,
   ],
   templateUrl: './cart-confirmation.component.html',
   styleUrl: './cart-confirmation.component.scss',

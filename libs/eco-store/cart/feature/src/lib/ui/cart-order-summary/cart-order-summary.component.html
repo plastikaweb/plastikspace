@@ -55,10 +55,8 @@
     }
 
     @if (!isStoreOpen()) {
-      <div
-        class="bg-sys-tertiary-container text-sys-on-tertiary-container ring-sys-tertiary mt-4 grid w-full grid-cols-[auto_1fr] items-center justify-center gap-4 rounded-xl p-4 ring-1">
-        <mat-icon>lock_clock</mat-icon>
-        <p class="text-sm font-medium">
+      <plastik-shared-alert class="mt-4 w-full" type="INFO" icon="lock_clock">
+        <span alertTitle>
           @if (!nextOpenDate()) {
             {{ 'cart.summary.checkoutDisabled' | translate }}
           } @else {
@@ -71,8 +69,8 @@
                     }
             }}
           }
-        </p>
-      </div>
+        </span>
+      </plastik-shared-alert>
     }
   </mat-card-footer>
 </mat-card>

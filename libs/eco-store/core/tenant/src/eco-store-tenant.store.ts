@@ -342,10 +342,7 @@ export const ecoStoreTenantStore = signalStore(
       return deliveryOption?.tiers || [];
     },
 
-    getTenantDeliveryInstructions(
-      type: EcoStoreTenantLogisticsDeliveryType = 'pickup',
-      addressId: string | null = null
-    ) {
+    getTenantDeliveryInstructions(type: EcoStoreTenantLogisticsDeliveryType = 'pickup') {
       const tenant = store.tenant();
       if (!tenant) return '';
 
@@ -372,6 +369,7 @@ export const ecoStoreTenantStore = signalStore(
         return translateInstructions(instructions);
       }
     },
+
     getTiersOrInstructions(
       type: EcoStoreTenantLogisticsDeliveryType = 'pickup',
       addressId: string | null = null
@@ -390,11 +388,11 @@ export const ecoStoreTenantStore = signalStore(
           if (address.slots && Object.keys(address.slots).length > 0) {
             return { type: 'slots', slots: address.slots };
           }
-          // Ara mirem les instruccions de l'adreça ABANS de mirar els slots globals
+          // Check address instructions
           if (address.instructions) {
             return {
               type: 'instructions',
-              instructions: this.getTenantDeliveryInstructions(type, addressId),
+              instructions: this.getTenantDeliveryInstructions(type),
             };
           }
         }
@@ -408,7 +406,7 @@ export const ecoStoreTenantStore = signalStore(
       if (deliveryOption.instructions) {
         return {
           type: 'instructions',
-          instructions: this.getTenantDeliveryInstructions(type, addressId),
+          instructions: this.getTenantDeliveryInstructions(type),
         };
       }
 

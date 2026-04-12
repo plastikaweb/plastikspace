@@ -1,12 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  TemplateRef,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, TemplateRef, viewChild } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatBadge } from '@angular/material/badge';
 import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
@@ -58,20 +51,6 @@ export class EcoMenuComponent {
     ),
     { initialValue: this.#router.url }
   );
-
-  protected readonly roleIcon = computed(() => {
-    const role = this.profileStore.user()?.role;
-    switch (role) {
-      case 'PARTNER':
-        return 'verified';
-      case 'GLOBAL_ADMIN':
-        return 'admin_panel_settings';
-      case 'TENANT_ADMIN':
-        return 'manage_accounts';
-      default:
-        return '';
-    }
-  });
 
   protected readonly bumpAnimation = useCartBumpAnimation(
     this.cartStore.subtotal,

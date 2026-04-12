@@ -206,6 +206,25 @@
         "nearlyExpired": "Prova — {days} dies restants",
         "expired": "El teu període de prova ha finalitzat"
       },
+      "banner": {
+        "active": "Estàs en mode prova · Et queden {days} dies",
+        "expired": "El teu període de prova ha finalitzat",
+        "expiredSubtitle": "Per continuar comprant i mantenir el teu historial, formalitza la teva alta."
+      },
+      "cta": {
+        "becomeMember": "Fes-te soci",
+        "becomeMemberAria": "Fes-te soci definitiu i tanca el període de prova"
+      },
+      "dialog": {
+        "title": "Vols fer-te soci definitiu?",
+        "body": "Mantindràs tot el teu historial, cistell i llista de desitjos. Podràs comprar sense restriccions.",
+        "confirm": "Confirmar alta",
+        "cancel": "Potser més tard"
+      },
+      "snackbar": {
+        "success": "Benvingut/da com a soci! 🎉",
+        "error": "No s'ha pogut completar l'alta. Torna-ho a provar."
+      },
       "expiredTitle": "El teu període de prova ha finalitzat",
       "expiredMessage": "Per continuar comprant i mantenir el teu historial formalitza la teva alta com a soci.",
       "expiredCta": "Fes-te soci",
@@ -562,6 +581,7 @@
     "phone": "Telèfon",
     "submitButton": "Desar canvis",
     "navigation": "Navegació del perfil",
+    "memberSince": "Membre des del {date}",
     "personalData": {
       "title": "Dades personals",
       "description": "Gestiona les teves dades personals."

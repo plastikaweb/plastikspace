@@ -155,19 +155,10 @@
     </section>
 
     <!-- Payment Notice -->
-    <section
-      class="border-sys-tertiary bg-sys-tertiary-container flex items-center gap-3 rounded-xl border p-4"
-      aria-labelledby="payment-notice-title">
-      <mat-icon class="shrink-0" aria-hidden="true">info</mat-icon>
-      <div>
-        <p id="payment-notice-title" class="text-sm font-bold">
-          {{ 'cart.confirmation.paymentNotice' | translate }}
-        </p>
-        <p class="mt-1 text-sm">
-          {{ 'cart.confirmation.paymentNoticeDescription' | translate }}
-        </p>
-      </div>
-    </section>
+    <plastik-shared-alert type="INFO">
+      <span alertTitle>{{ 'cart.confirmation.paymentNotice' | translate }}</span>
+      <span alertSubtitle>{{ 'cart.confirmation.paymentNoticeDescription' | translate }}</span>
+    </plastik-shared-alert>
   </div>
 
   <!-- Right Column: Order Summary (Sticky) -->

@@ -1,5 +1,6 @@
 import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { CountdownService } from '@plastik/shared/countdown/util';
 import { axe } from 'vitest-axe';
@@ -61,6 +62,25 @@ describe('StoreStatusBannerComponent', () => {
   it('should calculate segments from countdown service', () => {
     fixture.detectChanges();
     expect((component as any).segments()).toEqual(['00', ':', '00', ':', '00']);
+  });
+
+  it('should emit dismiss when alert closed event fires', () => {
+    fixture.componentRef.setInput('status', 'CLOSING_SOON');
+    fixture.detectChanges();
+    const dismissSpy = vi.spyOn(component.dismiss, 'emit');
+    const closeBtn = fixture.debugElement.query(By.css('.plastik-alert__close'));
+    closeBtn.nativeElement.click();
+    expect(dismissSpy).toHaveBeenCalledOnce();
+  });
+
+  it('should map status to correct alert type', () => {
+    fixture.componentRef.setInput('status', 'CANCELLED');
+    fixture.detectChanges();
+    expect((component as any).alertType()).toBe('ERROR');
+
+    fixture.componentRef.setInput('status', 'CLOSING_SOON');
+    fixture.detectChanges();
+    expect((component as any).alertType()).toBe('WARNING');
   });
 
   describe('Accessibility', () => {

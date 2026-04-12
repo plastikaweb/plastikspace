@@ -15,7 +15,12 @@ export const ecoStoreProfileFeatureRoutes: Route[] = [
           {
             path: 'dades-personals',
             title: 'profile.personalData.title',
-            data: { hasSidenav: true, title: 'profile.personalData.title', icon: 'badge' },
+            data: {
+              hasSidenav: true,
+              title: 'profile.personalData.title',
+              icon: 'badge',
+              preferUserName: true,
+            },
             providers: [providePlainInputFormly()],
             loadChildren: () =>
               import('@plastik/eco-store/profile/basic').then(
@@ -25,7 +30,12 @@ export const ecoStoreProfileFeatureRoutes: Route[] = [
           {
             path: 'avatar',
             title: 'profile.avatar.title',
-            data: { hasSidenav: true, title: 'profile.avatar.title', icon: 'account_circle' },
+            data: {
+              hasSidenav: true,
+              title: 'profile.avatar.title',
+              icon: 'account_circle',
+              preferUserName: true,
+            },
             loadChildren: () =>
               import('@plastik/eco-store/profile/avatar').then(
                 m => m.ecoStoreProfileAvatarFeatureRoutes
@@ -34,7 +44,12 @@ export const ecoStoreProfileFeatureRoutes: Route[] = [
           {
             path: 'adreces',
             title: 'profile.addresses.title',
-            data: { hasSidenav: true, title: 'profile.addresses.title', icon: 'location_on' },
+            data: {
+              hasSidenav: true,
+              title: 'profile.addresses.title',
+              icon: 'location_on',
+              preferUserName: true,
+            },
             loadChildren: () =>
               import('@plastik/eco-store/profile/addresses').then(
                 m => m.ecoStoreProfileAddressesFeatureRoutes

@@ -7,7 +7,9 @@
     "remove": "Remove",
     "cancel": "Cancel",
     "submit": "Submit",
+    "update": "[en] Actualitzar",
     "save": "Save",
+    "delete": "[en] Eliminar",
     "navigation": {
       "previous": "Go to previous page",
       "next": "Go to next page",
@@ -30,7 +32,8 @@
       "dark": "Dark",
       "system": "System",
       "toggleAriaLabel": "Change interface theme to light, dark, or system",
-      "changedTo": "Interface theme changed to {theme}"
+      "changedTo": "Interface theme changed to {theme}",
+      "toggleTooltip": "[en] Canviar el tema de la interfície"
     },
     "form": {
       "error": {
@@ -108,6 +111,7 @@
     },
     "login": {
       "title": "Login",
+      "loading": "[en] Iniciant sessió...",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember me",
@@ -119,6 +123,7 @@
     "forgotPassword": {
       "title": "Forgot your password?",
       "description": "Enter your email address and we'll send you a link to reset it.",
+      "loading": "[en] Enviant enllaç...",
       "email": "Email",
       "backToLogin": "Back to login",
       "submit": "Send"
@@ -137,10 +142,11 @@
       "passwordConfirmLabel": "Confirm password",
       "passwordConfirmPlaceholder": "Confirm password",
       "passwordsDoNotMatch": "Passwords do not match",
-      "passwordMatchError": "Passwords do not match",
       "submitButton": "Reset password",
-      "successMessage": "Password reset successfully",
-      "errorMessage": "Error resetting password",
+      "success": "Password reset successfully",
+      "error": "Error resetting password",
+      "passwordError": "[en] La contrasenya ha de tenir almenys 8 caràcters",
+      "passwordMatchError": "Passwords do not match",
       "errorInvalidToken": "Invalid password reset token"
     },
     "error": {
@@ -199,6 +205,25 @@
       "badge": {
         "nearlyExpired": "Trial — {days} days left",
         "expired": "Your trial period has expired"
+      },
+      "banner": {
+        "active": "You're in trial mode · {days} days left",
+        "expired": "Your trial period has expired",
+        "expiredSubtitle": "To continue shopping and keep your history, formalize your membership."
+      },
+      "cta": {
+        "becomeMember": "Become a member",
+        "becomeMemberAria": "Become a full member and end your trial period"
+      },
+      "dialog": {
+        "title": "Do you want to become a full member?",
+        "body": "You'll keep your full history, cart and wishlist. You'll be able to shop with no restrictions.",
+        "confirm": "Confirm membership",
+        "cancel": "Maybe later"
+      },
+      "snackbar": {
+        "success": "Welcome aboard as a member! 🎉",
+        "error": "Could not complete your membership. Please try again."
       },
       "expiredTitle": "Your trial period has expired",
       "expiredMessage": "To continue shopping and maintain your history, formalize your membership.",
@@ -460,6 +485,12 @@
       "ordersHistory": "Order history",
       "backToStore": "Back to store",
       "ecoBadgeAlt": "Local and proximity product seal"
+    },
+    "notLogged": {
+      "title": "[en] Necessites autenticar-te",
+      "description": "[en] Per continuar amb la teva comanda has d'iniciar sessió.",
+      "login": "[en] Iniciar sessió",
+      "continueAsGuest": "[en] Continuar com a convidat"
     }
   },
   "orders": {
@@ -506,12 +537,11 @@
     },
     "status": {
       "delivered": "DELIVERED",
+      "cancelled": "CANCELLED",
       "pending": "PENDING",
       "confirmed": "CONFIRMED",
-      "processing": "PROCESSING",
       "preparing": "PREPARING",
-      "ready": "READY",
-      "cancelled": "CANCELLED"
+      "ready": "READY"
     },
     "filter": {
       "all": "ALL",
@@ -551,6 +581,7 @@
     "phone": "Phone",
     "submitButton": "Save changes",
     "navigation": "Profile navigation",
+    "memberSince": "[en] Membre des del {date}",
     "personalData": {
       "title": "Personal details",
       "description": "Manage your personal details."
