@@ -4,7 +4,7 @@ import { ConfigOption, FormlyFieldConfig } from '@ngx-formly/core';
 /**
  * @description Register common validator messages using LOCALE_ID (hardcoded ca/es/en strings).
  * Use in apps that rely on LOCALE_ID for i18n (llecoop) via `provideFormlyConfig()`.
- * Mutually exclusive with `registerValidatorsTranslateExtension` which uses @ngx-translate instead.
+ * Mutually exclusive with `registerValidatorsTranslateExtension` which uses `@ngx-translate` instead.
  * @returns {ConfigOption} The configuration options for validation messages.
  */
 export function registerValidatorsMessageExtension(): ConfigOption {

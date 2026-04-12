@@ -7,9 +7,9 @@
     "remove": "Remove",
     "cancel": "Cancel",
     "submit": "Submit",
-    "update": "[en] Actualitzar",
+    "update": "Update",
     "save": "Save",
-    "delete": "[en] Eliminar",
+    "delete": "Delete",
     "navigation": {
       "previous": "Go to previous page",
       "next": "Go to next page",
@@ -33,7 +33,7 @@
       "system": "System",
       "toggleAriaLabel": "Change interface theme to light, dark, or system",
       "changedTo": "Interface theme changed to {theme}",
-      "toggleTooltip": "[en] Canviar el tema de la interfície"
+      "toggleTooltip": "Toggle interface theme"
     },
     "form": {
       "error": {
@@ -111,7 +111,7 @@
     },
     "login": {
       "title": "Login",
-      "loading": "[en] Iniciant sessió...",
+      "loading": "Logging in...",
       "email": "Email",
       "password": "Password",
       "rememberMe": "Remember me",
@@ -123,7 +123,7 @@
     "forgotPassword": {
       "title": "Forgot your password?",
       "description": "Enter your email address and we'll send you a link to reset it.",
-      "loading": "[en] Enviant enllaç...",
+      "loading": "Sending link...",
       "email": "Email",
       "backToLogin": "Back to login",
       "submit": "Send"
@@ -143,9 +143,9 @@
       "passwordConfirmPlaceholder": "Confirm password",
       "passwordsDoNotMatch": "Passwords do not match",
       "submitButton": "Reset password",
-      "success": "Password reset successfully",
-      "error": "Error resetting password",
-      "passwordError": "[en] La contrasenya ha de tenir almenys 8 caràcters",
+      "success": "Password reset successfully. You can log in again.",
+      "error": "Error resetting password. Please try again.",
+      "passwordError": "Password must be at least 8 characters",
       "passwordMatchError": "Passwords do not match",
       "errorInvalidToken": "Invalid password reset token"
     },
@@ -487,10 +487,10 @@
       "ecoBadgeAlt": "Local and proximity product seal"
     },
     "notLogged": {
-      "title": "[en] Necessites autenticar-te",
-      "description": "[en] Per continuar amb la teva comanda has d'iniciar sessió.",
-      "login": "[en] Iniciar sessió",
-      "continueAsGuest": "[en] Continuar com a convidat"
+      "title": "You need to authenticate",
+      "description": "To continue with your order you need to log in.",
+      "login": "Log in",
+      "continueAsGuest": "Continue as guest"
     }
   },
   "orders": {

@@ -7,9 +7,9 @@
     "remove": "Eliminar",
     "cancel": "Cancelar",
     "submit": "Enviar",
-    "update": "[es] Actualitzar",
+    "update": "Actualizar",
     "save": "Guardar",
-    "delete": "[es] Eliminar",
+    "delete": "Eliminar",
     "navigation": {
       "previous": "Volver a la página anterior",
       "next": "Ir a la página siguiente",
@@ -33,7 +33,7 @@
       "system": "Sistema",
       "toggleAriaLabel": "Cambiar el tema de la interfaz a claro, oscuro o del sistema",
       "changedTo": "Tema de la interfaz cambiado a {theme}",
-      "toggleTooltip": "[es] Canviar el tema de la interfície"
+      "toggleTooltip": "Cambiar el tema de la interfaz"
     },
     "form": {
       "error": {
@@ -111,7 +111,7 @@
     },
     "login": {
       "title": "Iniciar sesión",
-      "loading": "[es] Iniciant sessió...",
+      "loading": "Iniciando sesión...",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "rememberMe": "Recordar sesión",
@@ -123,7 +123,7 @@
     "forgotPassword": {
       "title": "¿Has olvidado la contraseña?",
       "description": "Escribe tu correo electrónico y te enviaremos un enlace para restablecerla.",
-      "loading": "[es] Enviant enllaç...",
+      "loading": "Enviando enlace...",
       "email": "Correo electrónico",
       "backToLogin": "Volver al inicio de sesión",
       "submit": "Enviar"
@@ -143,9 +143,9 @@
       "passwordConfirmPlaceholder": "Confirmar contraseña",
       "passwordsDoNotMatch": "Las contraseñas no coinciden",
       "submitButton": "Restablecer contraseña",
-      "success": "Contraseña restablecida correctamente",
-      "error": "Error al restablecer la contraseña",
-      "passwordError": "[es] La contrasenya ha de tenir almenys 8 caràcters",
+      "success": "Contraseña restablecida correctamente. Ya puedes iniciar sesión.",
+      "error": "Error al restablecer la contraseña. Inténtalo de nuevo.",
+      "passwordError": "La contraseña debe tener al menos 8 caracteres",
       "passwordMatchError": "Las contraseñas no coinciden",
       "errorInvalidToken": "Token de restablecimiento de contraseña inválido"
     },
@@ -487,10 +487,10 @@
       "ecoBadgeAlt": "Sello de producto local y de proximidad"
     },
     "notLogged": {
-      "title": "[es] Necessites autenticar-te",
-      "description": "[es] Per continuar amb la teva comanda has d'iniciar sessió.",
-      "login": "[es] Iniciar sessió",
-      "continueAsGuest": "[es] Continuar com a convidat"
+      "title": "Necesitas autenticarte",
+      "description": "Para continuar con tu pedido debes iniciar sesión.",
+      "login": "Iniciar sesión",
+      "continueAsGuest": "Continuar como invitado"
     }
   },
   "orders": {
@@ -595,14 +595,14 @@
       "title": "Mis direcciones",
       "description": "Gestiona tus direcciones de entrega.",
       "empty": {
-        "title": "[es] Encara no tens cap adreça desada.",
-        "description": "[es] Afegeix la teva primera adreça per començar a rebre les teves comandes."
+        "title": "Todavía no tienes ninguna dirección guardada.",
+        "description": "Añade tu primera dirección para empezar a recibir tus pedidos."
       },
       "modified": {
-        "title": "[es] Tens canvis sense desar",
-        "description": "[es] Si surts ara, perdràs els canvis de l'adreça.",
-        "cancel": "[es] Quedar-me aquí",
-        "leave": "[es] Surt-ne sense desar"
+        "title": "Tienes cambios sin guardar",
+        "description": "Si sales ahora, perderás los cambios de la dirección.",
+        "cancel": "Quedarme aquí",
+        "leave": "Salir sin guardar"
       },
       "setDefault": {
         "label": "Establecer como dirección predeterminada"
@@ -611,35 +611,35 @@
         "label": "Editar dirección"
       },
       "add": {
-        "label": "[es] Afegir nova adreça"
+        "label": "Añadir nueva dirección"
       },
       "form": {
         "name": {
-          "label": "[es] Nom",
-          "placeholder": "[es] Casa, feina, etc..."
+          "label": "Nombre",
+          "placeholder": "Casa, trabajo, etc..."
         },
         "address": {
-          "label": "[es] Adreça",
-          "placeholder": "[es] La teva adreça completa"
+          "label": "Dirección",
+          "placeholder": "Tu dirección completa"
         },
         "city": {
-          "label": "[es] Ciutat",
-          "placeholder": "[es] La teva ciutat"
+          "label": "Ciudad",
+          "placeholder": "Tu ciudad"
         },
         "zip": {
-          "label": "[es] Codi postal",
-          "placeholder": "[es] El teu codi postal"
+          "label": "Código postal",
+          "placeholder": "Tu código postal"
         },
         "phone": {
-          "label": "[es] Telèfon",
-          "placeholder": "[es] Per si tenim dubtes amb la comanda"
+          "label": "Teléfono",
+          "placeholder": "Por si tenemos dudas con el pedido"
         },
         "default": {
-          "label": "[es] Adreça predeterminada"
+          "label": "Dirección predeterminada"
         },
         "submit": {
-          "add": "[es] Afegir adreça",
-          "edit": "[es] Guardar canvis"
+          "add": "Añadir dirección",
+          "edit": "Guardar cambios"
         }
       },
       "delete": {
