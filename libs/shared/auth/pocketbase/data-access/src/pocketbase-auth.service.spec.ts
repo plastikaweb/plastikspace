@@ -1,8 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { PocketBaseAuthService } from './pocketbase-auth.service';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
-import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
 import { mockPocketBase } from '@plastik/core/api-pocketbase/testing';
+import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { PocketBaseAuthService } from './pocketbase-auth.service';
 
 describe('PocketBaseAuthService', () => {
   let service: PocketBaseAuthService;
@@ -33,9 +34,20 @@ describe('PocketBaseAuthService', () => {
     expect(mockPocketBase.authStore.clear).toHaveBeenCalled();
   });
 
+  it('should call update and authRefresh on convertTrialToActive', async () => {
+    const result = await service.convertTrialToActive('123');
+    expect(mockPocketBase.collection).toHaveBeenCalledWith('users');
+    expect(mockPocketBase.collection('users').update).toHaveBeenCalledWith('123', {
+      membershipStatus: 'ACTIVE',
+      trialEndsAt: null,
+    });
+    expect(mockPocketBase.collection('users').authRefresh).toHaveBeenCalled();
+    expect(result).toEqual({ id: '123', email: 'test@test.com' });
+  });
+
   it('should return authModel', () => {
     expect(service.authModel).toEqual({ id: '123', email: 'test@test.com' });
-    mockPocketBase.authStore.record = null;
+    mockPocketBase.authStore.record = {};
     expect(service.authModel).toBeNull();
   });
 });

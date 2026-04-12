@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-12] - Eco-Store: Trial to Active Membership Conversion
+
+### Added
+
+- **Trial Banner Component**: Added `TrialBannerComponent` to `libs/eco-store/profile/basic` to display trial status, days left, and a "Become a Member" call to action ([#86c99eu68](https://www.google.com/search?q=https://github.com/plastikaweb/plastikspace/issues/86c99eu68)).
+- **Membership Conversion Logic**: Implemented `convertTrialToActive` in `PocketBaseAuthService` and `pocketBaseUserProfileStore` to allow users to formalize their membership directly from the profile ([#86c99eu68](https://www.google.com/search?q=https://github.com/plastikaweb/plastikspace/issues/86c99eu68)).
+
+### Changed
+
+- **Profile Header Improvements**: Enhanced the profile feature header to display the user's name, role (with icon), and membership date ([#86c99eu68](https://www.google.com/search?q=https://github.com/plastikaweb/plastikspace/issues/86c99eu68)).
+- **Refactored Role Icons**: Moved role icon selection logic from individual components to the `pocketBaseUserProfileStore` for better reusability ([#86c99eu68](https://www.google.com/search?q=https://github.com/plastikaweb/plastikspace/issues/86c99eu68)).
+- **Translations**: Added multi-language support for trial messages, membership status, and address management empty states ([#86c99eu68](https://www.google.com/search?q=https://github.com/plastikaweb/plastikspace/issues/86c99eu68)).
+
 ## [2026-04-11] - Eco-Store: PocketBase Performance Improvements
 
 ### Added

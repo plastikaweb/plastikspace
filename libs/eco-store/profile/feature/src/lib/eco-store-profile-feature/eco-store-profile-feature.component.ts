@@ -1,14 +1,16 @@
+import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
+import { SharedChipComponent } from '@plastik/shared/chip/ui';
 import { filter, map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'eco-eco-store-profile-feature',
-  imports: [TranslateModule, RouterOutlet, MatIconModule],
+  imports: [TranslateModule, RouterOutlet, MatIconModule, SharedChipComponent, DatePipe],
   templateUrl: './eco-store-profile-feature.component.html',
   styleUrl: './eco-store-profile-feature.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,6 +22,8 @@ export class EcoStoreProfileFeatureComponent {
 
   readonly titleInput = input<string>('title');
   readonly iconInput = input<string>('icon');
+
+  protected readonly roleIcon = this.profileStore.roleIcon;
 
   readonly #routeData = toSignal(
     this.#router.events.pipe(

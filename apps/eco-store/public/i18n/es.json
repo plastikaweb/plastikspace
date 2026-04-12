@@ -7,7 +7,9 @@
     "remove": "Eliminar",
     "cancel": "Cancelar",
     "submit": "Enviar",
+    "update": "[es] Actualitzar",
     "save": "Guardar",
+    "delete": "[es] Eliminar",
     "navigation": {
       "previous": "Volver a la página anterior",
       "next": "Ir a la página siguiente",
@@ -30,7 +32,8 @@
       "dark": "Oscuro",
       "system": "Sistema",
       "toggleAriaLabel": "Cambiar el tema de la interfaz a claro, oscuro o del sistema",
-      "changedTo": "Tema de la interfaz cambiado a {theme}"
+      "changedTo": "Tema de la interfaz cambiado a {theme}",
+      "toggleTooltip": "[es] Canviar el tema de la interfície"
     },
     "form": {
       "error": {
@@ -108,6 +111,7 @@
     },
     "login": {
       "title": "Iniciar sesión",
+      "loading": "[es] Iniciant sessió...",
       "email": "Correo electrónico",
       "password": "Contraseña",
       "rememberMe": "Recordar sesión",
@@ -119,6 +123,7 @@
     "forgotPassword": {
       "title": "¿Has olvidado la contraseña?",
       "description": "Escribe tu correo electrónico y te enviaremos un enlace para restablecerla.",
+      "loading": "[es] Enviant enllaç...",
       "email": "Correo electrónico",
       "backToLogin": "Volver al inicio de sesión",
       "submit": "Enviar"
@@ -137,10 +142,11 @@
       "passwordConfirmLabel": "Confirmar contraseña",
       "passwordConfirmPlaceholder": "Confirmar contraseña",
       "passwordsDoNotMatch": "Las contraseñas no coinciden",
-      "passwordMatchError": "Las contraseñas no coinciden",
       "submitButton": "Restablecer contraseña",
-      "successMessage": "Contraseña restablecida correctamente",
-      "errorMessage": "Error al restablecer la contraseña",
+      "success": "Contraseña restablecida correctamente",
+      "error": "Error al restablecer la contraseña",
+      "passwordError": "[es] La contrasenya ha de tenir almenys 8 caràcters",
+      "passwordMatchError": "Las contraseñas no coinciden",
       "errorInvalidToken": "Token de restablecimiento de contraseña inválido"
     },
     "error": {
@@ -199,6 +205,25 @@
       "badge": {
         "nearlyExpired": "Prueba — {days} días restantes",
         "expired": "Tu período de prueba ha finalizado"
+      },
+      "banner": {
+        "active": "Estás en modo prueba · Te quedan {days} días",
+        "expired": "Tu período de prueba ha finalizado",
+        "expiredSubtitle": "Para seguir comprando y mantener tu historial, formaliza tu alta."
+      },
+      "cta": {
+        "becomeMember": "Hazte socio",
+        "becomeMemberAria": "Hazte socio definitivo y cierra el período de prueba"
+      },
+      "dialog": {
+        "title": "¿Quieres hacerte socio definitivo?",
+        "body": "Mantendrás todo tu historial, carrito y lista de deseos. Podrás comprar sin restricciones.",
+        "confirm": "Confirmar alta",
+        "cancel": "Quizás más tarde"
+      },
+      "snackbar": {
+        "success": "¡Bienvenido/a como socio! 🎉",
+        "error": "No se ha podido completar el alta. Inténtalo de nuevo."
       },
       "expiredTitle": "Tu período de prueba ha finalizado",
       "expiredMessage": "Para seguir comprando y mantener tu historial formaliza tu alta como socio.",
@@ -460,6 +485,12 @@
       "ordersHistory": "Historial de pedidos",
       "backToStore": "Volver a la tienda",
       "ecoBadgeAlt": "Sello de producto local y de proximidad"
+    },
+    "notLogged": {
+      "title": "[es] Necessites autenticar-te",
+      "description": "[es] Per continuar amb la teva comanda has d'iniciar sessió.",
+      "login": "[es] Iniciar sessió",
+      "continueAsGuest": "[es] Continuar com a convidat"
     }
   },
   "orders": {
@@ -506,12 +537,11 @@
     },
     "status": {
       "delivered": "ENTREGADO",
+      "cancelled": "CANCELADO",
       "pending": "PENDIENTE",
       "confirmed": "CONFIRMADO",
-      "processing": "PROCESANDO",
       "preparing": "PREPARANDO",
-      "ready": "LISTO",
-      "cancelled": "CANCELADO"
+      "ready": "LISTO"
     },
     "filter": {
       "all": "TODAS",
@@ -551,6 +581,7 @@
     "phone": "Teléfono",
     "submitButton": "Guardar cambios",
     "navigation": "Navegación del perfil",
+    "memberSince": "Socia desde el {date}",
     "personalData": {
       "title": "Datos personales",
       "description": "Gestiona tus datos personales."
@@ -563,12 +594,53 @@
     "addresses": {
       "title": "Mis direcciones",
       "description": "Gestiona tus direcciones de entrega.",
-      "empty": "Todavía no tienes ninguna dirección guardada.",
+      "empty": {
+        "title": "[es] Encara no tens cap adreça desada.",
+        "description": "[es] Afegeix la teva primera adreça per començar a rebre les teves comandes."
+      },
+      "modified": {
+        "title": "[es] Tens canvis sense desar",
+        "description": "[es] Si surts ara, perdràs els canvis de l'adreça.",
+        "cancel": "[es] Quedar-me aquí",
+        "leave": "[es] Surt-ne sense desar"
+      },
       "setDefault": {
         "label": "Establecer como dirección predeterminada"
       },
       "edit": {
         "label": "Editar dirección"
+      },
+      "add": {
+        "label": "[es] Afegir nova adreça"
+      },
+      "form": {
+        "name": {
+          "label": "[es] Nom",
+          "placeholder": "[es] Casa, feina, etc..."
+        },
+        "address": {
+          "label": "[es] Adreça",
+          "placeholder": "[es] La teva adreça completa"
+        },
+        "city": {
+          "label": "[es] Ciutat",
+          "placeholder": "[es] La teva ciutat"
+        },
+        "zip": {
+          "label": "[es] Codi postal",
+          "placeholder": "[es] El teu codi postal"
+        },
+        "phone": {
+          "label": "[es] Telèfon",
+          "placeholder": "[es] Per si tenim dubtes amb la comanda"
+        },
+        "default": {
+          "label": "[es] Adreça predeterminada"
+        },
+        "submit": {
+          "add": "[es] Afegir adreça",
+          "edit": "[es] Guardar canvis"
+        }
       },
       "delete": {
         "label": "Eliminar dirección",

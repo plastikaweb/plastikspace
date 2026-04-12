@@ -54,6 +54,15 @@ export class PocketBaseAuthService implements AuthFacade {
     return await this.#pb.collection('users').update(id, { avatar: null });
   }
 
+  async convertTrialToActive(id: string): Promise<AuthModel> {
+    const updated = await this.#pb.collection('users').update(id, {
+      membershipStatus: 'ACTIVE',
+      trialEndsAt: null,
+    });
+    await this.#pb.collection('users').authRefresh();
+    return updated;
+  }
+
   logout(): void {
     this.#pb.authStore.clear();
   }

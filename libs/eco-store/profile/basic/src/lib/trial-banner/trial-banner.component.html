@@ -1,0 +1,30 @@
+@if (isTrialExpired()) {
+  <div class="trial-banner__icon">
+    <mat-icon>warning</mat-icon>
+  </div>
+  <div class="trial-banner__text">
+    <strong>{{ 'store.trial.banner.expired' | translate }}</strong>
+    <span>{{ 'store.trial.banner.expiredSubtitle' | translate }}</span>
+  </div>
+  <button
+    matButton="filled"
+    class="trial-banner__cta"
+    [attr.aria-label]="'store.trial.cta.becomeMemberAria' | translate"
+    (click)="becomeMember.emit()">
+    {{ 'store.trial.cta.becomeMember' | translate }}
+  </button>
+} @else {
+  <div class="trial-banner__icon">
+    <mat-icon>hourglass_top</mat-icon>
+  </div>
+  <div class="trial-banner__text">
+    <strong>{{ 'store.trial.banner.active' | translate: { days: daysLeft() } }}</strong>
+  </div>
+  <button
+    matButton="filled"
+    class="trial-banner__cta"
+    [attr.aria-label]="'store.trial.cta.becomeMemberAria' | translate"
+    (click)="becomeMember.emit()">
+    {{ 'store.trial.cta.becomeMember' | translate }}
+  </button>
+}

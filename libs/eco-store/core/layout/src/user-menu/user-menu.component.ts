@@ -1,12 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  output,
-  viewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, output, viewChild } from '@angular/core';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
@@ -39,22 +32,7 @@ export class EcoUserMenuComponent {
   protected readonly isTrial = this.profileStore.isTrial;
   protected readonly isTrialExpired = this.profileStore.isTrialExpired;
   protected readonly trialEndsAtDate = this.profileStore.trialEndsAtDate;
-
-  protected readonly roleIcon = computed(() => {
-    const role = this.profileStore.user()?.role;
-    if (this.isTrial()) return 'history_toggle_off';
-
-    switch (role) {
-      case 'PARTNER':
-        return 'verified';
-      case 'GLOBAL_ADMIN':
-        return 'admin_panel_settings';
-      case 'TENANT_ADMIN':
-        return 'manage_accounts';
-      default:
-        return '';
-    }
-  });
+  protected readonly roleIcon = this.profileStore.roleIcon;
 
   logout(): void {
     this.logoutEvent.emit();

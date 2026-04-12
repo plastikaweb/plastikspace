@@ -12,9 +12,11 @@ export const mockPocketBaseUserProfileStore = {
   trialEndsAtDate: signal(null),
   isTrialExpired: signal(false),
   trialDaysLeft: signal(0),
+  roleIcon: signal(''),
   getUserContacts: signal([]),
   login: vi.fn(),
   logout: vi.fn(),
   checkAuth: vi.fn(),
   getUserAddresses: vi.fn(),
+  convertTrialToActive: vi.fn(),
 };
