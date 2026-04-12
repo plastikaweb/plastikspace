@@ -12,7 +12,6 @@ import { EcoStoreProfileBasicFeatureComponent } from './eco-store-profile-basic-
 describe('EcoStoreProfileBasicFeatureComponent', () => {
   let component: EcoStoreProfileBasicFeatureComponent;
   let fixture: ComponentFixture<EcoStoreProfileBasicFeatureComponent>;
-  let confirmDialog: SharedConfirmDialogService;
 
   beforeEach(async () => {
     vi.clearAllMocks();
@@ -34,25 +33,11 @@ describe('EcoStoreProfileBasicFeatureComponent', () => {
 
     fixture = TestBed.createComponent(EcoStoreProfileBasicFeatureComponent);
     component = fixture.componentInstance;
-    confirmDialog = TestBed.inject(SharedConfirmDialogService);
     await fixture.whenStable();
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should call convertTrialToActive when onBecomeMember is called and confirmed', () => {
-    component.onBecomeMember();
-    expect(confirmDialog.confirm).toHaveBeenCalled();
-    expect(mockPocketBaseUserProfileStore.convertTrialToActive).toHaveBeenCalled();
-  });
-
-  it('should not call convertTrialToActive when onBecomeMember is called and cancelled', () => {
-    vi.spyOn(confirmDialog, 'confirm').mockReturnValue(of(false));
-    component.onBecomeMember();
-    expect(confirmDialog.confirm).toHaveBeenCalled();
-    expect(mockPocketBaseUserProfileStore.convertTrialToActive).not.toHaveBeenCalled();
   });
 
   it('should have no accessibility violations', async () => {

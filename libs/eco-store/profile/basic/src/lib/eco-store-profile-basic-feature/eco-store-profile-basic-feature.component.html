@@ -1,14 +1,6 @@
 <section class="flex flex-col gap-6">
   <p class="text-on-surface/80 text-md">{{ 'profile.personalData.description' | translate }}</p>
 
-  @if (isTrial()) {
-    @defer (on viewport; prefetch on idle) {
-      <eco-trial-banner [trialEndsAt]="trialEndsAt()" (becomeMember)="onBecomeMember()" />
-    } @placeholder {
-      <div class="bg-surface-container-high h-12 w-full rounded-lg"></div>
-    }
-  }
-
   <!-- Profile form -->
   <plastik-shared-form-feature
     [fields]="formConfig.getConfig()"

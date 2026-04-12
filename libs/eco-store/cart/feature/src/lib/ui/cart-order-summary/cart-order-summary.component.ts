@@ -6,10 +6,19 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities';
+import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
 
 @Component({
   selector: 'eco-cart-order-summary',
-  imports: [CurrencyPipe, DatePipe, MatCardModule, MatButtonModule, MatIconModule, TranslateModule],
+  imports: [
+    CurrencyPipe,
+    DatePipe,
+    MatCardModule,
+    MatButtonModule,
+    MatIconModule,
+    SharedAlertUiComponent,
+    TranslateModule,
+  ],
   templateUrl: './cart-order-summary.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

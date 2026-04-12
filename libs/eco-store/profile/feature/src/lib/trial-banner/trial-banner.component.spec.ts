@@ -24,25 +24,29 @@ describe('TrialBannerComponent', () => {
   });
 
   it('should emit becomeMember when button is clicked', () => {
+    fixture.componentRef.setInput('trialEndsAt', new Date(Date.now() + 1000000));
+    fixture.detectChanges();
     const spy = vi.spyOn(component.becomeMember, 'emit');
     const button = fixture.nativeElement.querySelector('button');
     button.click();
     expect(spy).toHaveBeenCalled();
   });
 
-  it('should have is-expired class if trial has expired', () => {
+  it('should use ERROR alert type when trial has expired', () => {
     fixture.componentRef.setInput('trialEndsAt', new Date(Date.now() - 1000));
     fixture.detectChanges();
-    expect(fixture.nativeElement.classList.contains('is-expired')).toBe(true);
+    expect((component as any).alertType()).toBe('ERROR');
   });
 
-  it('should not have is-expired class if trial is active', () => {
+  it('should use WARNING alert type when trial is active', () => {
     fixture.componentRef.setInput('trialEndsAt', new Date(Date.now() + 1000000));
     fixture.detectChanges();
-    expect(fixture.nativeElement.classList.contains('is-expired')).toBe(false);
+    expect((component as any).alertType()).toBe('WARNING');
   });
 
   it('should have no accessibility violations', async () => {
+    fixture.componentRef.setInput('trialEndsAt', new Date(Date.now() + 1000000));
+    fixture.detectChanges();
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   }, 30000);

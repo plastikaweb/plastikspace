@@ -1,20 +1,15 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { TranslateModule } from '@ngx-translate/core';
+import { AlertType } from '@plastik/core/entities';
+import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
 import { differenceInDays } from 'date-fns';
 
 @Component({
   selector: 'eco-trial-banner',
-  imports: [MatButtonModule, MatIconModule, TranslateModule],
+  imports: [SharedAlertUiComponent, MatButtonModule, TranslateModule],
   templateUrl: './trial-banner.component.html',
   styleUrl: './trial-banner.component.scss',
-  host: {
-    role: 'status',
-    'aria-live': 'polite',
-    '[class.is-expired]': 'isTrialExpired()',
-    class: 'trial-banner',
-  },
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TrialBannerComponent {
@@ -36,4 +31,12 @@ export class TrialBannerComponent {
     const end = endsAt instanceof Date ? endsAt : new Date(endsAt);
     return end.getTime() <= Date.now();
   });
+
+  protected readonly alertType = computed<AlertType>(() =>
+    this.isTrialExpired() ? 'ERROR' : 'WARNING'
+  );
+
+  protected readonly alertIcon = computed(() =>
+    this.isTrialExpired() ? 'warning' : 'hourglass_top'
+  );
 }

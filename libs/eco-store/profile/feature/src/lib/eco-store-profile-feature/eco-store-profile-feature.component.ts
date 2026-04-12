@@ -6,17 +6,27 @@ import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/ro
 import { TranslateModule } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { SharedChipComponent } from '@plastik/shared/chip/ui';
-import { filter, map, startWith } from 'rxjs/operators';
+import { SharedConfirmDialogService } from '@plastik/shared/confirm';
+import { filter, map, startWith, take } from 'rxjs/operators';
+import { TrialBannerComponent } from '../trial-banner/trial-banner.component';
 
 @Component({
   selector: 'eco-eco-store-profile-feature',
-  imports: [TranslateModule, RouterOutlet, MatIconModule, SharedChipComponent, DatePipe],
+  imports: [
+    TranslateModule,
+    RouterOutlet,
+    MatIconModule,
+    SharedChipComponent,
+    TrialBannerComponent,
+    DatePipe,
+  ],
   templateUrl: './eco-store-profile-feature.component.html',
   styleUrl: './eco-store-profile-feature.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EcoStoreProfileFeatureComponent {
   readonly profileStore = inject(pocketBaseUserProfileStore);
+  readonly #confirmDialog = inject(SharedConfirmDialogService);
   readonly #router = inject(Router);
   readonly #route = inject(ActivatedRoute);
 
@@ -24,6 +34,9 @@ export class EcoStoreProfileFeatureComponent {
   readonly iconInput = input<string>('icon');
 
   protected readonly roleIcon = this.profileStore.roleIcon;
+
+  protected readonly isTrial = this.profileStore.isTrial;
+  protected readonly trialEndsAt = this.profileStore.trialEndsAtDate;
 
   readonly #routeData = toSignal(
     this.#router.events.pipe(
@@ -50,5 +63,17 @@ export class EcoStoreProfileFeatureComponent {
     let s = this.#route.snapshot;
     while (s.firstChild) s = s.firstChild;
     return s.data ?? {};
+  }
+
+  onBecomeMember(): void {
+    this.#confirmDialog
+      .confirm(
+        'store.trial.dialog.title',
+        'store.trial.dialog.body',
+        'store.trial.dialog.cancel',
+        'store.trial.dialog.confirm'
+      )
+      .pipe(filter(Boolean), take(1))
+      .subscribe(() => this.profileStore.convertTrialToActive());
   }
 }
