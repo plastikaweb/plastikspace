@@ -5,11 +5,3 @@
 @include animations.fade-in;
 @include animations.fade-out;
 @include animations.reveal-up;
-
-:host {
-  @include mat.card-overrides(
-    (
-      outlined-container-color: var(--transparent),
-    )
-  );
-}

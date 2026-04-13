@@ -39,50 +39,44 @@
   </div>
 
   <!-- Right Column: Order Summary -->
-  <div class="sticky top-16 space-y-6 self-start md:col-span-1!">
+  <div
+    class="sticky top-16 space-y-6 self-start md:col-span-1"
+    [class.pointer-events-none]="cartStore.isSyncing()"
+    [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
-      <div
-        aria-hidden="true"
-        class="bg-surface-container-high h-64 w-full animate-pulse rounded-3xl"></div>
+      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl"></div>
     } @else {
-      <div
-        class="transition-all duration-100"
-        [class.pointer-events-none]="cartStore.isSyncing()"
-        [class.opacity-60]="cartStore.isSyncing()">
-        <eco-cart-order-summary
-          [subtotal]="cartStore.subtotal()"
-          [taxes]="cartStore.tax()"
-          [shipping]="cartStore.shipping()"
-          [deliveryType]="cartStore.method() ?? 'pickup'"
-          [total]="cartStore.total()"
-          [nextOpenDate]="tenantStore.nextOpenDate()"
-          [actionButtonText]="'cart.shipping.goToConfirmation'"
-          [actionRoute]="['./cistella/confirmacio']"
-          [isStoreOpen]="tenantStore.isStoreOpen()"
-          [submitAvailable]="
-            formValid() && tenantStore.isStoreOpen() && cartStore.itemsCount() > 0
-          ">
-          @if (cartStore.method() === 'delivery') {
-            <div extra-shipping-content class="overflow-hidden">
-              <div class="min-h-0">
-                <div class="py-6">
-                  @defer (on viewport) {
-                    <eco-cart-order-price-slots
-                      class="block px-2"
-                      [cartTotal]="cartStore.subtotal() + cartStore.tax()"
-                      [tiers]="tenantStore.getTenantDeliveryPriceTiers()">
-                    </eco-cart-order-price-slots>
-                  } @placeholder {
-                    <div
-                      aria-hidden="true"
-                      class="bg-surface-container-high bg-surface-container h-24 w-full animate-pulse rounded-xl px-2"></div>
-                  }
-                </div>
+      <eco-cart-order-summary
+        [subtotal]="cartStore.subtotal()"
+        [taxes]="cartStore.tax()"
+        [total]="cartStore.total()"
+        [submitAvailable]="formValid() && tenantStore.isStoreOpen() && cartStore.itemsCount() > 0"
+        [isStoreOpen]="tenantStore.isStoreOpen()"
+        [actionButtonText]="'cart.shipping.goToConfirmation'"
+        [actionRoute]="['./cistella/confirmacio']"
+        [shipping]="cartStore.shipping()"
+        [deliveryType]="cartStore.method() ?? 'pickup'"
+        [nextOpenDate]="tenantStore.nextOpenDate()">
+        @if (cartStore.method() === 'delivery') {
+          <div extra-shipping-content class="overflow-hidden">
+            <div class="min-h-0">
+              <div class="py-6">
+                @defer (on viewport) {
+                  <eco-cart-order-price-slots
+                    class="block px-2"
+                    [cartTotal]="cartStore.subtotal() + cartStore.tax()"
+                    [tiers]="tenantStore.getTenantDeliveryPriceTiers()">
+                  </eco-cart-order-price-slots>
+                } @placeholder {
+                  <div
+                    aria-hidden="true"
+                    class="bg-surface-container-high bg-surface-container h-24 w-full animate-pulse rounded-xl px-2"></div>
+                }
               </div>
             </div>
-          }
-        </eco-cart-order-summary>
-      </div>
+          </div>
+        }
+      </eco-cart-order-summary>
     }
   </div>
 </div>
