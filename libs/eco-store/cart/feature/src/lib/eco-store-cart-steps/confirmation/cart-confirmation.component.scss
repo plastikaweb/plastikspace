@@ -2,11 +2,3 @@
 @use 'animations';
 
 @include animations.reveal-up;
-
-:host {
-  @include mat.card-overrides(
-    (
-      outlined-container-color: var(--transparent),
-    )
-  );
-}

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-13] - Eco-Store: Cart UI Refinement and Loading States
+
+### Changed
+
+- **Cart UI Polish**: Removed redundant Material card overrides and refined layout styling across checkout steps ([#86c99ryen](https://app.clickup.com/t/86c99ryen)).
+- **Loading States**: Implemented skeleton pulse loaders for cart confirmation and shipping steps to improve perceived performance ([#86c99ryen](https://app.clickup.com/t/86c99ryen)).
+- **Order Summary UI**: Refined background styling for the cart order summary card ([#86c99ryen](https://app.clickup.com/t/86c99ryen)).
+
 ## [2026-04-12] - Eco-Store: Trial to Active Membership Conversion
 
 ### Added
