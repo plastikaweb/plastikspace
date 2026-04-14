@@ -20,6 +20,7 @@ export const mockEcoStoreCartStore = {
   expiresAt: signal(null),
   orderCycle: signal(null),
   notes: signal(null),
+  priceHasChanged: signal(false),
   remoteCartId: signal(null),
   isSyncing: signal(false),
   addToCart: vi.fn(),

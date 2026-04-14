@@ -10,11 +10,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'plastik-shared-confirm-feature',
-  imports: [MatDialogModule, MatButtonModule, MatIconModule, TranslateModule],
+  imports: [MatDialogModule, MatButtonModule, MatIconModule, TranslateModule, RouterLink],
   templateUrl: './shared-confirm-feature.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,

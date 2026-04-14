@@ -2,15 +2,15 @@
 
 <div class="plastik-alert__body">
   <div class="plastik-alert__title">
-    <ng-content select="[alertTitle]" />
+    <ng-content select="[alert-title]" />
   </div>
   <div class="plastik-alert__subtitle">
-    <ng-content select="[alertSubtitle]" />
+    <ng-content select="[alert-subtitle]" />
   </div>
 </div>
 
 <div class="plastik-alert__secondary">
-  <ng-content select="[alertSecondary]" />
+  <ng-content select="[alert-extras]" />
 </div>
 
 @if (closable()) {

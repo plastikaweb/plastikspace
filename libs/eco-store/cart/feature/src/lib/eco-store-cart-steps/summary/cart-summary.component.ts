@@ -9,6 +9,7 @@ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedNoResultsComponent } from '@plastik/eco-store/no-results';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { take } from 'rxjs';
 import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
@@ -25,6 +26,7 @@ import { CartProductCardComponent } from '../../ui/cart-product-card/cart-produc
     CartOrderSummaryComponent,
     CartProductCardComponent,
     EcoStoreSharedNoResultsComponent,
+    SharedAlertUiComponent,
   ],
   templateUrl: './cart-summary.component.html',
   styleUrl: './cart-summary.component.scss',

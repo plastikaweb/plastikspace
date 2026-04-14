@@ -1,10 +1,10 @@
 <plastik-shared-alert
   [type]="isPriceDrop() ? 'SUCCESS' : 'WARNING'"
   [icon]="isPriceDrop() ? 'trending_down' : 'trending_up'">
-  <strong alertTitle>{{
+  <strong alert-title>{{
     (isPriceDrop() ? 'cart.summary.priceDrop' : 'cart.summary.priceIncrease') | translate
   }}</strong>
-  <span alertSubtitle>
+  <span alert-subtitle>
     {{ 'cart.summary.oldPrice' | translate }}
     <span class="line-through opacity-70">{{ oldPrice() | currency: 'EUR' }}</span>
   </span>

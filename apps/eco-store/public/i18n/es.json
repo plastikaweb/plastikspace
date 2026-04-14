@@ -337,6 +337,18 @@
   "cart": {
     "productAdded": "{name} - agregado",
     "productRemoved": "{name} - eliminado",
+    "mergeNotification": {
+      "title": "¡Hemos recuperado tu compra!",
+      "message": "Hemos añadido a tu cesta los productos que habías seleccionado antes de iniciar sesión para que no pierdas nada.",
+      "ko": "Seguir comprando",
+      "ok": "Revisar la cesta"
+    },
+    "priceUpdatedNotification": {
+      "title": "Aviso de cambio de precio",
+      "message": "Algunos productos que tenías guardados han actualizado su precio desde tu última visita. Te recomendamos revisarlos.",
+      "ko": "Más tarde",
+      "ok": "Revisar la cesta"
+    },
     "steps": {
       "title": "Pasos del pedido",
       "summary": {
@@ -390,6 +402,8 @@
       "freeShippingPromo": "¡Añade {value} más para envío GRATIS!",
       "priceIncrease": "¡Subida de precio!",
       "priceDrop": "¡Bajada de precio!",
+      "priceChanged": "¡Los precios han cambiado!",
+      "priceChangedDescription": "Algunos productos de tu cesta han actualizado su precio.",
       "oldPrice": "Precio anterior",
       "checkoutDisabled": "Los pedidos están desactivados.",
       "checkoutDisabledInDate": "Los pedidos están desactivados. La tienda abre el {date} a las {time}.",
@@ -487,7 +501,7 @@
       "ecoBadgeAlt": "Sello de producto local y de proximidad"
     },
     "notLogged": {
-      "title": "Necesitas autenticarte",
+      "title": "Necesitas empezar sesión",
       "description": "Para continuar con tu pedido debes iniciar sesión.",
       "login": "Iniciar sesión",
       "continueAsGuest": "Continuar como invitado"
@@ -507,7 +521,7 @@
       "emptyDescription": "Parece que aún no has realizado ninguna compra. ¡Descubre nuestros productos ecológicos y de proximidad!",
       "emptyDescriptionWithStatus": "Prueba a cambiar los filtros.",
       "goToStore": "Ir a la tienda",
-      "pagination": "Paginación de pedidos",
+      "pagination": "Paginado de pedidos",
       "deleteOrderTitle": "Eliminar pedido",
       "deleteOrderDescription": "¿Estás seguro de que quieres eliminar este pedido? Esta acción no se puede deshacer.",
       "deleteOrderCancel": "Cancelar",

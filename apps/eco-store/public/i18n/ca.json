@@ -337,6 +337,18 @@
   "cart": {
     "productAdded": "{name} - afegit",
     "productRemoved": "{name} - eliminat",
+    "mergeNotification": {
+      "title": "Hem recuperat la teva compra!",
+      "message": "Hem afegit a la teva cistella els productes que havies seleccionat abans d'iniciar sessió perquè no perdis res.",
+      "ko": "Seguir comprant",
+      "ok": "Revisar la cistella"
+    },
+    "priceUpdatedNotification": {
+      "title": "Avís de canvi de preu",
+      "message": "Alguns productes que tenies guardats han actualitzat el seu preu des de la teva darrera visita. Et recomanem revisar-los.",
+      "ko": "Més tard",
+      "ok": "Revisar la cistella"
+    },
     "steps": {
       "title": "Passos de la comanda",
       "summary": {
@@ -390,6 +402,8 @@
       "freeShippingPromo": "Afegeix {value} més per a enviament GRATUÏT!",
       "priceIncrease": "Pujada de preu!",
       "priceDrop": "Baixada de preu!",
+      "priceChanged": "Els preus han canviat!",
+      "priceChangedDescription": "Alguns productes del teu cistell han actualitzat el seu preu.",
       "oldPrice": "Preu anterior",
       "checkoutDisabled": "Les comandes estan desactivades.",
       "checkoutDisabledInDate": "Les comandes estan desactivades. La botiga obre el {date} a les {time}.",

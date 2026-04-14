@@ -39,6 +39,16 @@
           </div>
         </div>
       } @else {
+        @if (cartStore.priceHasChanged()) {
+          <plastik-shared-alert class="mb-4" [type]="'INFO'" [closable]="true">
+            <div alert-title>
+              {{ 'cart.summary.priceChanged' | translate }}
+            </div>
+            <div alert-subtitle>
+              {{ 'cart.summary.priceChangedDescription' | translate }}
+            </div>
+          </plastik-shared-alert>
+        }
         <!-- Stable Real UI (Visible during quantity updates) -->
         @for (group of cartStore.itemsGroupedByCategory(); track group.category) {
           <div animate.enter="fade-in" animate.leave="fade-out" class="px-4 py-2">

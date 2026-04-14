@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-14] - Eco-Store: Cart Merge, Price-Update Notifications & Confirm Dialog Router CTA
+
+### Added
+
+- **Cart merge on login**: Implemented `loadAndMergeUserCart` in `eco-store-cart.store` to automatically merge anonymous localStorage cart items with the authenticated user's remote PocketBase cart on login, summing quantities for duplicate products ([#86c99rw7v](https://app.clickup.com/t/86c99rw7v)).
+- **Price-update notification**: Added detection of stale prices when a returning cart is merged; shows an info dialog prompting the user to review updated prices ([#86c99rw7v](https://app.clickup.com/t/86c99rw7v)).
+- **Logout cart cleanup**: Added an effect that clears cart entities and localStorage on logout to prevent quantity duplication on the next login session ([#86c99rw7v](https://app.clickup.com/t/86c99rw7v)).
+- **Confirm dialog router CTA**: Extended `SharedConfirmDialogService.confirm()` `ok`/`ko` params to accept `{ label, route }` objects that navigate via `[routerLink]` instead of just closing the dialog ([#86c99rw7v](https://app.clickup.com/t/86c99rw7v)).
+
+### Changed
+
+- **i18n (CA/EN/ES)**: Added `cart.mergeNotification` and `cart.priceUpdatedNotification` structured keys (title, message, ko, ok) and `cart.summary.priceChanged` / `cart.summary.priceChangedDescription` keys across all 3 languages ([#86c99rw7v](https://app.clickup.com/t/86c99rw7v)).
+- **Alert UI README**: Updated content projection attribute names (`alert-title`, `alert-subtitle`, `alert-extras`) to match the component's current API ([#86c99rw7v](https://app.clickup.com/t/86c99rw7v)).
+- **Confirm data-access README**: Updated `confirm()` signature docs to reflect new union-type `ok`/`ko` params and router CTA usage example ([#86c99rw7v](https://app.clickup.com/t/86c99rw7v)).
+
+### Tests
+
+- **Cart store spec**: Expanded `eco-store-cart.store.spec.ts` with comprehensive tests for `loadAndMergeUserCart` (empty carts, merge with remote, quantity summing, price-change notification) and logout behaviour ([#86c99rw7v](https://app.clickup.com/t/86c99rw7v)).
+
 ## [2026-04-13] - Eco-Store: Cart UI Refinement and Loading States
 
 ### Changed

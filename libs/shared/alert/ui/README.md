@@ -52,9 +52,9 @@ Renders an accessible alert banner with a left-border colour scheme driven by th
 
 | Attribute        | Element     | Description                                         |
 | :--------------- | :---------- | :-------------------------------------------------- |
-| `alertTitle`     | Any element | Projected into the bold title area of the alert.    |
-| `alertSubtitle`  | Any element | Projected into the smaller subtitle area.           |
-| `alertSecondary` | Any element | Projected into the trailing action area (e.g. CTA). |
+| `alert-title`    | Any element | Projected into the bold title area of the alert.    |
+| `alert-subtitle` | Any element | Projected into the smaller subtitle area.           |
+| `alert-extras`   | Any element | Projected into the trailing action area (e.g. CTA). |
 
 > **Note**: When using content projection inside Angular `@if` blocks, ensure each projectable node is the sole root node of its block to avoid `controlFlowPreventingContentProjection` warnings.
 > Split multiple projected nodes across separate `@if` blocks if needed.
@@ -63,9 +63,9 @@ Renders an accessible alert banner with a left-border colour scheme driven by th
 
 ```html
 <plastik-shared-alert type="WARNING" [closable]="true" (closed)="onClose()">
-  <strong alertTitle>Your trial is ending soon</strong>
-  <span alertSubtitle>You have 3 days left in your trial period.</span>
-  <button alertSecondary mat-flat-button>Upgrade now</button>
+  <strong alert-title>Your trial is ending soon</strong>
+  <span alert-subtitle>You have 3 days left in your trial period.</span>
+  <button alert-extras mat-flat-button>Upgrade now</button>
 </plastik-shared-alert>
 ```
 

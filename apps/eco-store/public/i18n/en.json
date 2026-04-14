@@ -337,6 +337,18 @@
   "cart": {
     "productAdded": "{name} - added",
     "productRemoved": "{name} - removed",
+    "mergeNotification": {
+      "title": "We've recovered your basket!",
+      "message": "We've added the products from your previous session to your current cart so you don't lose anything.",
+      "ko": "Continue shopping",
+      "ok": "Review cart"
+    },
+    "priceUpdatedNotification": {
+      "title": "Price change notice",
+      "message": "Some products you had saved have updated their price since your last visit. We recommend reviewing them.",
+      "ko": "Later",
+      "ok": "Review cart"
+    },
     "steps": {
       "title": "Order steps",
       "summary": {
@@ -390,6 +402,8 @@
       "freeShippingPromo": "Add {value} more for FREE shipping!",
       "priceIncrease": "Price increase!",
       "priceDrop": "Price drop!",
+      "priceChanged": "Prices have changed!",
+      "priceChangedDescription": "Some products in your cart have updated their price.",
       "oldPrice": "Previous price",
       "checkoutDisabled": "Orders are disabled.",
       "checkoutDisabledInDate": "Orders are disabled. The store opens on {date} at {time}.",

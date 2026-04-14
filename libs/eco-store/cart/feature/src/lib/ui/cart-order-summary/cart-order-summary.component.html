@@ -56,7 +56,7 @@
 
     @if (!isStoreOpen()) {
       <plastik-shared-alert class="mt-4 w-full" type="INFO" icon="lock_clock">
-        <span alertTitle>
+        <span alert-title>
           @if (!nextOpenDate()) {
             {{ 'cart.summary.checkoutDisabled' | translate }}
           } @else {
