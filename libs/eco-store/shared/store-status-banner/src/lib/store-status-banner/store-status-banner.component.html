@@ -3,12 +3,12 @@
   [icon]="icon()"
   [closable]="true"
   (closed)="dismiss.emit()">
-  <strong alertTitle>{{ title() | translate }}</strong>
-  <span alertSubtitle>{{ description().key | translate: description().params }}</span>
+  <strong alert-title>{{ title() | translate }}</strong>
+  <span alert-subtitle>{{ description().key | translate: description().params }}</span>
 
   @if (hasCountdown()) {
     <plastik-countdown
-      alertSecondary
+      alert-extras
       class="text-sm font-bold"
       [segments]="segments()"
       [prefix]="status() === 'CLOSING_SOON' ? '' : 'store.status.opensIn'">

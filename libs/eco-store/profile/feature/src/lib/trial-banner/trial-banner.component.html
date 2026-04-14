@@ -1,15 +1,15 @@
 <plastik-shared-alert [type]="alertType()" [icon]="alertIcon()">
   @if (isTrialExpired()) {
-    <strong alertTitle>{{ 'store.trial.banner.expired' | translate }}</strong>
+    <strong alert-title>{{ 'store.trial.banner.expired' | translate }}</strong>
   } @else {
-    <strong alertTitle>{{ 'store.trial.banner.active' | translate: { days: daysLeft() } }}</strong>
+    <strong alert-title>{{ 'store.trial.banner.active' | translate: { days: daysLeft() } }}</strong>
   }
   @if (isTrialExpired()) {
-    <span alertSubtitle>{{ 'store.trial.banner.expiredSubtitle' | translate }}</span>
+    <span alert-subtitle>{{ 'store.trial.banner.expiredSubtitle' | translate }}</span>
   }
 
   <button
-    alertSecondary
+    alert-extras
     matButton="filled"
     [attr.aria-label]="'store.trial.cta.becomeMemberAria' | translate"
     (click)="becomeMember.emit()">

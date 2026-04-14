@@ -29,22 +29,47 @@
     <!-- Actions -->
     <mat-dialog-actions
       class="bg-surface-container-lowest border-outline-variant flex min-h-auto flex-col-reverse gap-3 border-t px-6 py-5 pl-8! sm:flex-row sm:justify-end sm:gap-4">
-      <button
-        mat-button
-        type="button"
-        mat-dialog-close
-        class="w-full font-bold tracking-wide uppercase sm:w-auto">
-        {{ data.ko | translate }}
-      </button>
-      <button
-        mat-flat-button
-        color="primary"
-        type="button"
-        mat-dialog-close="true"
-        cdkFocusInitial
-        class="confirm-button w-full font-bold tracking-wide uppercase shadow-md transition-all duration-300 hover:scale-102 active:scale-98 sm:w-auto">
-        {{ data.ok | translate }}
-      </button>
+      @if (data.ko.route) {
+        <button
+          matButton
+          type="button"
+          mat-dialog-close
+          class="w-full font-bold tracking-wide uppercase sm:w-auto"
+          [routerLink]="data.ko.route">
+          {{ data.ko.label | translate }}
+        </button>
+      } @else {
+        <button
+          matButton
+          type="button"
+          mat-dialog-close
+          class="w-full font-bold tracking-wide uppercase sm:w-auto">
+          {{ data.ko | translate }}
+        </button>
+      }
+
+      @if (data.ok.route) {
+        <button
+          matButton="filled"
+          color="primary"
+          type="button"
+          mat-dialog-close="true"
+          cdkFocusInitial
+          class="confirm-button w-full font-bold tracking-wide uppercase transition-all duration-300 hover:scale-102 active:scale-98 sm:w-auto"
+          [routerLink]="data.ok.route">
+          {{ data.ok.label | translate }}
+        </button>
+      } @else {
+        <button
+          matButton="filled"
+          color="primary"
+          type="button"
+          mat-dialog-close="true"
+          cdkFocusInitial
+          class="confirm-button w-full font-bold tracking-wide uppercase transition-all duration-300 hover:scale-102 active:scale-98 sm:w-auto">
+          {{ data.ok | translate }}
+        </button>
+      }
     </mat-dialog-actions>
   </div>
 </div>

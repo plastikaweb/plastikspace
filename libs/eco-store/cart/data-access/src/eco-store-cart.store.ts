@@ -1,10 +1,8 @@
 import {
   updateState,
-  withConditional,
   withDevtools,
   withDevToolsStub,
   withImmutableState,
-  withStorageSync,
 } from '@angular-architects/ngrx-toolkit';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { computed, effect, inject, isDevMode, untracked } from '@angular/core';
@@ -35,6 +33,7 @@ import {
 import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
 import { getPocketBaseImageUrl } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { withResetEntities } from '@plastik/signal-state/reset';
 import { catchError, firstValueFrom, of, take } from 'rxjs';
@@ -50,6 +49,7 @@ export interface EcoStoreCartState {
   expiresAt: Date | null;
   orderCycle: string | null;
   notes: string | null;
+  priceHasChanged: boolean;
 
   // Sync fields
   remoteCartId: string | null;
@@ -72,6 +72,7 @@ const initialState: EcoStoreCartState = {
   expiresAt: null,
   orderCycle: null,
   notes: null,
+  priceHasChanged: false,
 
   // Sync fields
   remoteCartId: null,
@@ -97,20 +98,12 @@ export const ecoStoreCartStore = signalStore(
     _notificationService: inject(StoreNotificationService),
     _translateService: inject(TranslateService),
     _liveAnnouncer: inject(LiveAnnouncer),
+    _confirmService: inject(SharedConfirmDialogService),
   })),
-  withConditional(
-    store => !store._userProfileStore.isAuthenticated(),
-    withStorageSync({
-      key: 'eco_cart_v1',
-      autoSync: true,
-    }),
-    withStorageSync({
-      key: 'eco_cart_v1',
-      autoSync: false,
-    })
-  ),
+
   withComputed(({ entities, entityMap, method, address, day, time, _tenantStore }) => {
     return {
+      storageKey: computed(() => `${_tenantStore.tenant()?.normalizedName ?? 'eco'}-cart-v1`),
       itemsCount: () => entities().length,
       isEmpty: () => entities().length === 0,
       isShippingOk: () => {
@@ -143,6 +136,15 @@ export const ecoStoreCartStore = signalStore(
   }),
 
   withMethods(store => {
+    const _confirmation = (
+      title: string,
+      message: string,
+      ko: string,
+      ok: { label: string; route: string[] },
+      params: null,
+      icon: string
+    ) => store._confirmService.confirm(title, message, ko, ok, params, icon);
+
     const checkStoreStatus = (): boolean => {
       const status = store._tenantStore.storeStatus();
       if (status === 'CLOSED' || status === 'CLOSED_MANUALLY') {
@@ -236,6 +238,26 @@ export const ecoStoreCartStore = signalStore(
       }));
     };
 
+    // Read localStorage directly to get the true local cart state.
+    // store.items() may be empty at merge time since entity state is not guaranteed to
+    // be populated at login. Reading directly from storage is the reliable source of truth.
+    const _readLocalStorageItems = (): EcoStoreCartItem[] => {
+      try {
+        const raw = localStorage.getItem(store.storageKey());
+        if (!raw) return [];
+        const parsed = JSON.parse(raw) as {
+          ids?: string[];
+          entityMap?: Record<string, EcoStoreCartItem>;
+        };
+        if (parsed?.ids?.length && parsed?.entityMap) {
+          return parsed.ids.map(id => parsed.entityMap?.[id]).filter(Boolean) as EcoStoreCartItem[];
+        }
+        return [];
+      } catch {
+        return [];
+      }
+    };
+
     const saveCartToRemote = async () => {
       if (store.isSyncing() || !store._tenantStore.loaded()) return;
 
@@ -289,6 +311,11 @@ export const ecoStoreCartStore = signalStore(
     const _loadAndMergeUserCart = async () => {
       if (store.isSyncing() || store.isSynced()) return;
 
+      // Read localStorage synchronously BEFORE any state changes or async operations.
+      // store.items() may be empty at this point (entity state not guaranteed to be in sync).
+      // Read directly from localStorage which still holds the anonymous cart.
+      const localItems = _readLocalStorageItems();
+
       updateState(store, '[cart] merge start', state => ({
         ...state,
         isSyncing: true,
@@ -317,8 +344,9 @@ export const ecoStoreCartStore = signalStore(
             )
         );
 
-        const localItems = store.items();
         let itemsToProcess: EcoStoreCartItem[] = [];
+        const hadLocalItems = !!localItems?.length;
+        const hadRemoteItems = !!remoteCart?.items?.length;
 
         if (remoteCart) {
           const mergedMap = new Map<string, EcoStoreCartItem>();
@@ -355,6 +383,11 @@ export const ecoStoreCartStore = signalStore(
           itemsToProcess = itemsToProcess.map(item => {
             const latest = productMap.get(item.product.id);
             if (latest && latest.priceWithIva !== item.product.priceWithIva) {
+              updateState(store, '[cart] price change', state => ({
+                ...state,
+                priceHasChanged: true,
+              }));
+
               return {
                 ...item,
                 product: {
@@ -432,7 +465,28 @@ export const ecoStoreCartStore = signalStore(
           setAllEntities(itemsToProcess, { selectId: i => i.product.id })
         );
 
-        store.clearStorage();
+        localStorage.removeItem(store.storageKey());
+
+        // Notify when a real merge happened (both sources had items)
+        if (store.priceHasChanged()) {
+          _confirmation(
+            'cart.priceUpdatedNotification.title',
+            'cart.priceUpdatedNotification.message',
+            'cart.priceUpdatedNotification.ko',
+            { label: 'cart.priceUpdatedNotification.ok', route: ['/cistella'] },
+            null,
+            'info'
+          );
+        } else if (hadLocalItems && hadRemoteItems) {
+          _confirmation(
+            'cart.mergeNotification.title',
+            'cart.mergeNotification.message',
+            'cart.mergeNotification.ko',
+            { label: 'cart.mergeNotification.ok', route: ['/cistella'] },
+            null,
+            'info'
+          );
+        }
       } catch {
         updateState(store, '[cart] merge error', state => ({ ...state, isSyncing: false }));
       }
@@ -521,7 +575,7 @@ export const ecoStoreCartStore = signalStore(
       },
 
       loadAndMergeUserCart() {
-        _loadAndMergeUserCart();
+        return _loadAndMergeUserCart();
       },
 
       toOrder(): NewEcoStoreOrder {
@@ -560,6 +614,7 @@ export const ecoStoreCartStore = signalStore(
 
   withHooks(store => ({
     onInit() {
+      // Trigger merge on login, reset sync state on logout
       effect(() => {
         const isAuthenticated = store._userProfileStore.isAuthenticated();
         const isSynced = store.isSynced();
@@ -570,11 +625,90 @@ export const ecoStoreCartStore = signalStore(
         if (isAuthenticated && isTenantLoaded && !isSynced && !isSyncing) {
           store.loadAndMergeUserCart();
         } else if (!isAuthenticated && isSynced) {
-          updateState(store, '[cart] reset sync state', s => ({
-            ...s,
-            isSynced: false,
-            remoteCartId: null,
-          }));
+          // Clear all cart state on logout.
+          // Calling removeAllEntities() here ensures the anonymous persistence effect
+          // below sees an empty cart (ids.length === 0) and removes the LS key instead
+          // of writing the authenticated cart into storage — which would cause quantity
+          // doubling on the next login when _loadAndMergeUserCart merges LS + PB carts.
+          updateState(
+            store,
+            '[cart] logout clear',
+            s => ({
+              ...s,
+              isSynced: false,
+              remoteCartId: null,
+              subtotal: 0,
+              tax: 0,
+              total: 0,
+              shipping: 0,
+              method: null,
+              address: null,
+              day: null,
+              time: null,
+            }),
+            removeAllEntities()
+          );
+          // Remove immediately — don't rely solely on the persistence effect ordering.
+          localStorage.removeItem(store.storageKey());
+        }
+      });
+
+      // Restore anonymous cart from localStorage once the tenant name is known.
+      // Runs once per session (or after logout) when the tenant loads and user is anonymous.
+      let anonymousCartRestored = false;
+      effect(
+        () => {
+          if (store._userProfileStore.isAuthenticated()) {
+            anonymousCartRestored = false;
+            return;
+          }
+          if (anonymousCartRestored || !store._tenantStore.loaded()) return;
+          anonymousCartRestored = true;
+
+          untracked(() => {
+            const key = store.storageKey();
+            try {
+              const raw = localStorage.getItem(key);
+              if (!raw) return;
+              const parsed = JSON.parse(raw) as {
+                ids?: string[];
+                entityMap?: Record<string, EcoStoreCartItem>;
+              };
+              if (parsed?.ids?.length && parsed?.entityMap) {
+                const entityMap = parsed.entityMap;
+                const items = parsed.ids
+                  .map(id => entityMap[id])
+                  .filter((item): item is EcoStoreCartItem => item != null);
+                if (items.length > 0) {
+                  updateState(
+                    store,
+                    '[cart] restore from storage',
+                    setAllEntities(items, { selectId: i => i.product.id })
+                  );
+                }
+              }
+            } catch {
+              // Ignore malformed storage
+            }
+          });
+        },
+        { allowSignalWrites: true }
+      );
+
+      // Auto-persist anonymous cart to localStorage using the tenant-specific key.
+      // Only writes when the user is anonymous and the tenant name is available.
+      effect(() => {
+        if (store._userProfileStore.isAuthenticated()) return;
+        const normalizedName = store._tenantStore.tenant()?.normalizedName;
+        if (!normalizedName) return;
+
+        const key = store.storageKey();
+        const ids = store.ids();
+
+        if (ids.length > 0) {
+          localStorage.setItem(key, JSON.stringify({ ids, entityMap: store.entityMap() }));
+        } else {
+          localStorage.removeItem(key);
         }
       });
     },

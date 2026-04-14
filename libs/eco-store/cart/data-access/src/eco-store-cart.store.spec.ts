@@ -1,5 +1,5 @@
-import '@angular/compiler';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import '@angular/compiler';
 import { TestBed } from '@angular/core/testing';
 import { TranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
@@ -11,17 +11,34 @@ import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreProductsApiService } from '@plastik/eco-store/products/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
+import { SharedConfirmDialogService } from '@plastik/shared/confirm';
+import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { of } from 'rxjs';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { ecoStoreCartStore } from './eco-store-cart.store';
 import { EcoStoreCartsApiService } from './eco-store-carts-api.service';
 
 describe('ecoStoreCartStore', () => {
-  const setup = () => {
-    const mockCartsService = {
-      create: vi.fn().mockReturnValue(of({})),
+  const mockNotificationService = {
+    create: vi.fn(),
+  };
+
+  type MockCartsService = {
+    create: ReturnType<typeof vi.fn>;
+    update: ReturnType<typeof vi.fn>;
+    getFirstListItem: ReturnType<typeof vi.fn>;
+  };
+
+  const mockConfirmService = {
+    confirm: vi.fn().mockReturnValue(of(false)),
+  };
+
+  const setup = (options?: { cartsServiceOverrides?: Partial<MockCartsService> }) => {
+    const mockCartsService: MockCartsService = {
+      create: vi.fn().mockReturnValue(of({ id: 'remote-cart-1' })),
       update: vi.fn().mockReturnValue(of({})),
       getFirstListItem: vi.fn().mockReturnValue(of(null)),
+      ...options?.cartsServiceOverrides,
     };
 
     const mockProductsService = {
@@ -60,10 +77,30 @@ describe('ecoStoreCartStore', () => {
           provide: LiveAnnouncer,
           useValue: { announce: vi.fn() },
         },
+        {
+          provide: StoreNotificationService,
+          useValue: mockNotificationService,
+        },
+        {
+          provide: SharedConfirmDialogService,
+          useValue: mockConfirmService,
+        },
       ],
     });
-    return TestBed.inject(ecoStoreCartStore);
+    return { store: TestBed.inject(ecoStoreCartStore), mockCartsService, mockProductsService };
   };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockConfirmService.confirm.mockReturnValue(of(false));
+    mockPocketBaseUserProfileStore.isAuthenticated.set(false);
+    mockPocketBaseUserProfileStore.user.set(null);
+    localStorage.clear();
+  });
+
+  afterEach(() => {
+    localStorage.clear();
+  });
 
   const mockProduct: EcoStoreProductWithCategoryName = {
     id: '1',
@@ -92,12 +129,12 @@ describe('ecoStoreCartStore', () => {
   };
 
   it('should be created', () => {
-    const store = setup();
+    const { store } = setup();
     expect(store).toBeTruthy();
   });
 
   it('should add item to cart', () => {
-    const store = setup();
+    const { store } = setup();
     store.addToCart(mockProduct, 2);
 
     const item = store.items()[0];
@@ -108,14 +145,9 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should update item quantity in cart', () => {
-    const store = setup();
+    const { store } = setup();
     store.addToCart(mockProduct, 1);
     store.addToCart(mockProduct, 3); // Updates to 3
-
-    // Wait, the logic is _setItem which uses setEntity.
-    // If I call addToCart(p, 3), does it ADD 3 or SET to 3?
-    // Code says: _setItem(product, quantity). setEntity({ ... quantity })
-    // So it SETS the quantity.
 
     expect(store.items()[0].quantity).toBe(3);
     expect(store.itemsCount()).toBe(1);
@@ -123,7 +155,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should remove item if quantity is <= 0', () => {
-    const store = setup();
+    const { store } = setup();
     store.addToCart(mockProduct, 1);
     store.addToCart(mockProduct, 0);
 
@@ -132,7 +164,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should clear cart', () => {
-    const store = setup();
+    const { store } = setup();
     store.addToCart(mockProduct, 1);
     store.clearCart();
 
@@ -140,7 +172,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should get item count via signal', () => {
-    const store = setup();
+    const { store } = setup();
     store.addToCart(mockProduct, 5);
 
     const countSignal = store.getItemCount('1');
@@ -151,7 +183,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should update logistics and reset day/time when address changes', () => {
-    const store = setup();
+    const { store } = setup();
     const mockAddress1 = { id: 'addr1', name: 'Address 1' } as any;
     const mockAddress2 = { id: 'addr2', name: 'Address 2' } as any;
 
@@ -175,7 +207,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should reset time when day changes', () => {
-    const store = setup();
+    const { store } = setup();
 
     store.updateLogistics({ day: 'monday' as any });
     store.updateLogistics({ time: '08:00' as any });
@@ -191,7 +223,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should group items by category', () => {
-    const store = setup();
+    const { store } = setup();
     const product2: EcoStoreProductWithCategoryName = {
       ...mockProduct,
       id: '2',
@@ -211,7 +243,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should return isShippingOk as true if method and address are set and no slots required', () => {
-    const store = setup();
+    const { store } = setup();
     const mockAddress = { id: 'addr1', name: 'Address 1' } as any;
     const mockMethod = 'pickup' as any;
 
@@ -223,7 +255,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should return isShippingOk as false if slots required but not set', () => {
-    const store = setup();
+    const { store } = setup();
     const mockAddress = { id: 'addr1', name: 'Address 1' } as any;
     const mockMethod = 'delivery' as any;
 
@@ -238,7 +270,7 @@ describe('ecoStoreCartStore', () => {
   });
 
   it('should reset state when last item is removed', () => {
-    const store = setup();
+    const { store } = setup();
     store.addToCart(mockProduct, 1);
     store.updateLogistics({ method: 'pickup' as any });
     expect(store.method()).toBe('pickup');
@@ -246,5 +278,222 @@ describe('ecoStoreCartStore', () => {
     store.removeFromCart(mockProduct.id);
     expect(store.itemsCount()).toBe(0);
     expect(store.method()).toBeNull();
+  });
+
+  describe('loadAndMergeUserCart', () => {
+    const localCartState = {
+      ids: [mockProduct.id],
+      entityMap: {
+        [mockProduct.id]: { product: mockProduct, quantity: 2 },
+      },
+    };
+
+    it('should save localStorage items to PocketBase when no remote cart exists', async () => {
+      localStorage.setItem('test-tenant_cart_v1', JSON.stringify(localCartState));
+
+      const { store, mockCartsService } = setup();
+
+      await store.loadAndMergeUserCart();
+
+      expect(mockCartsService.create).toHaveBeenCalledWith(
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({
+              product: expect.objectContaining({ id: mockProduct.id }),
+              quantity: 2,
+            }),
+          ]),
+        })
+      );
+      expect(localStorage.getItem('test-tenant_cart_v1')).toBeNull();
+    });
+
+    it('should merge localStorage items with existing remote cart', async () => {
+      const remoteProduct: EcoStoreProductWithCategoryName = {
+        ...mockProduct,
+        id: 'remote-product',
+        name: 'Remote Product',
+      };
+      const remoteCart = {
+        id: 'remote-cart-1',
+        items: [{ product: remoteProduct, quantity: 1 }],
+        shipping: 0,
+        status: 'ACTIVE',
+        deliveryMethod: 'pickup',
+        address: null,
+        day: null,
+        time: null,
+        notes: null,
+      };
+
+      localStorage.setItem('test-tenant_cart_v1', JSON.stringify(localCartState));
+
+      const { store, mockCartsService } = setup({
+        cartsServiceOverrides: {
+          getFirstListItem: vi.fn().mockReturnValue(of(remoteCart)),
+          update: vi.fn().mockReturnValue(of({})),
+        },
+      });
+
+      await store.loadAndMergeUserCart();
+
+      expect(mockCartsService.update).toHaveBeenCalledWith(
+        'remote-cart-1',
+        expect.objectContaining({
+          items: expect.arrayContaining([
+            expect.objectContaining({ product: expect.objectContaining({ id: mockProduct.id }) }),
+            expect.objectContaining({ product: expect.objectContaining({ id: 'remote-product' }) }),
+          ]),
+        })
+      );
+      expect(mockConfirmService.confirm).toHaveBeenCalledWith(
+        'cart.mergeNotification.title',
+        'cart.mergeNotification.message',
+        'cart.mergeNotification.ko',
+        { label: 'cart.mergeNotification.ok', route: ['/cistella'] },
+        null,
+        'info'
+      );
+      expect(localStorage.getItem('test-tenant_cart_v1')).toBeNull();
+    });
+
+    it('should sum quantities when the same product exists in both carts', async () => {
+      const remoteCart = {
+        id: 'remote-cart-1',
+        items: [{ product: mockProduct, quantity: 3 }],
+        shipping: 0,
+        status: 'ACTIVE',
+        deliveryMethod: 'pickup',
+        address: null,
+        day: null,
+        time: null,
+        notes: null,
+      };
+
+      localStorage.setItem('test-tenant_cart_v1', JSON.stringify(localCartState));
+
+      const { store, mockCartsService } = setup({
+        cartsServiceOverrides: {
+          getFirstListItem: vi.fn().mockReturnValue(of(remoteCart)),
+          update: vi.fn().mockReturnValue(of({})),
+        },
+      });
+
+      await store.loadAndMergeUserCart();
+
+      expect(mockCartsService.update).toHaveBeenCalledWith(
+        'remote-cart-1',
+        expect.objectContaining({
+          items: [expect.objectContaining({ quantity: 5 })], // 3 remote + 2 local
+        })
+      );
+    });
+
+    it('should not call PocketBase and not clear localStorage when both sources are empty', async () => {
+      const { store, mockCartsService } = setup();
+
+      await store.loadAndMergeUserCart();
+
+      expect(mockCartsService.create).not.toHaveBeenCalled();
+      expect(mockCartsService.update).not.toHaveBeenCalled();
+      expect(localStorage.getItem('test-tenant_cart_v1')).toBeNull();
+    });
+
+    it('should show price update notification when product price changed', async () => {
+      const updatedProduct = { ...mockProduct, priceWithIva: 15, price: 12 };
+      localStorage.setItem('test-tenant_cart_v1', JSON.stringify(localCartState));
+
+      const { store } = setup({
+        cartsServiceOverrides: {
+          getFirstListItem: vi.fn().mockReturnValue(of(null)),
+          create: vi.fn().mockReturnValue(of({ id: 'new-cart' })),
+        },
+      });
+
+      // Override products service to return updated prices
+      const productsService = TestBed.inject(EcoStoreProductsApiService) as any;
+      productsService.getFullList = vi.fn().mockReturnValue(of([updatedProduct]));
+
+      await store.loadAndMergeUserCart();
+
+      expect(mockConfirmService.confirm).toHaveBeenCalledWith(
+        'cart.priceUpdatedNotification.title',
+        'cart.priceUpdatedNotification.message',
+        'cart.priceUpdatedNotification.ko',
+        { label: 'cart.priceUpdatedNotification.ok', route: ['/cistella'] },
+        null,
+        'info'
+      );
+    });
+  });
+
+  describe('logout behavior', () => {
+    it('should clear cart entities and localStorage on logout to prevent quantity doubling on next login', async () => {
+      // Start logged in with a remote cart
+      mockPocketBaseUserProfileStore.isAuthenticated.set(true);
+      mockPocketBaseUserProfileStore.user.set({ id: 'user-1' } as any);
+
+      const { store } = setup({
+        cartsServiceOverrides: {
+          getFirstListItem: vi.fn().mockReturnValue(of(null)),
+          create: vi.fn().mockReturnValue(of({ id: 'remote-cart-1' })),
+        },
+      });
+
+      // Merge populates the store and sets isSynced = true
+      await store.loadAndMergeUserCart();
+      store.addToCart(mockProduct, 2);
+
+      expect(store.itemsCount()).toBe(1);
+      expect(store.isSynced()).toBe(true);
+
+      // Simulate logout — the effect must clear entities and LS
+      mockPocketBaseUserProfileStore.isAuthenticated.set(false);
+      mockPocketBaseUserProfileStore.user.set(null);
+      TestBed.flushEffects();
+
+      expect(store.itemsCount()).toBe(0);
+      expect(store.isEmpty()).toBe(true);
+      expect(store.isSynced()).toBe(false);
+      expect(store.remoteCartId()).toBeNull();
+      // LS must be empty — if items were written here they would be doubled on next login
+      expect(localStorage.getItem(store.storageKey())).toBeNull();
+    });
+
+    it('should not persist cart to localStorage after logout', async () => {
+      mockPocketBaseUserProfileStore.isAuthenticated.set(true);
+      mockPocketBaseUserProfileStore.user.set({ id: 'user-1' } as any);
+
+      const { store } = setup({
+        cartsServiceOverrides: {
+          getFirstListItem: vi.fn().mockReturnValue(
+            of({
+              id: 'remote-cart-1',
+              items: [{ product: mockProduct, quantity: 3 }],
+              shipping: 0,
+              status: 'ACTIVE',
+              deliveryMethod: 'pickup',
+              address: null,
+              day: null,
+              time: null,
+              notes: null,
+            })
+          ),
+          update: vi.fn().mockReturnValue(of({})),
+        },
+      });
+
+      await store.loadAndMergeUserCart();
+      expect(store.itemsCount()).toBe(1);
+      expect(store.items()[0].quantity).toBe(3);
+
+      // Logout
+      mockPocketBaseUserProfileStore.isAuthenticated.set(false);
+      mockPocketBaseUserProfileStore.user.set(null);
+      TestBed.flushEffects();
+
+      // LS must be null — not the 3-item cart that was loaded from PB
+      expect(localStorage.getItem(store.storageKey())).toBeNull();
+    });
   });
 });
