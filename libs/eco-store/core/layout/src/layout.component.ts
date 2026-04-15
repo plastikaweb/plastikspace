@@ -21,7 +21,7 @@ import {
   Router,
   RouterOutlet,
 } from '@angular/router';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, map } from 'rxjs';
 import { EcoFooterComponent } from './footer/footer.component';
 import { EcoHeaderComponent } from './header/header.component';
@@ -47,7 +47,7 @@ import { appSearchFormConfig } from './app.search-form.config';
     EcoFooterComponent,
     EcoMenuComponent,
     MatSidenav,
-    TranslateModule,
+    TranslatePipe,
     StoreStatusBannerComponent,
     MatIconModule,
     MatButtonModule,
@@ -65,10 +65,14 @@ export default class EcoLayoutComponent {
   protected readonly profileStore = inject(pocketBaseUserProfileStore);
   protected readonly searchFormConfig = appSearchFormConfig();
   protected readonly isBannerDismissed = signal(false);
+  readonly #translateService = inject(TranslateService);
   readonly #activityStore = inject(activityStore);
   protected readonly isMobile = toSignal(
     inject(LayoutObserverService).getMatches([Breakpoints.XSmall, Breakpoints.Small])
   );
+  protected readonly isTranslationReady = toSignal(this.#translateService.onLangChange, {
+    initialValue: null,
+  });
   readonly #activatedRoute = inject(ActivatedRoute);
 
   readonly #router = inject(Router);

@@ -1,0 +1,16 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  // Top-level configuration
+  "name": "eco-store",
+  "main": "../../dist/apps/eco-store/server/server.mjs",
+  "assets": {
+    "directory": "../../dist/apps/eco-store/browser",
+    "binding": "ASSETS",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "upload_source_maps": true,
+  "compatibility_date": "2026-04-14",
+  "compatibility_flags": ["nodejs_compat"],
+}

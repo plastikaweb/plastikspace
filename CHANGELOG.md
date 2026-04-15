@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-15] - Eco-Store: Angular SSR and Cloudflare Workers Deployment
+
+### Added
+
+- **Angular SSR Implementation**: Enabled Server-Side Rendering using `@angular/ssr` for Angular 21, improving SEO and initial load performance for the product catalog ([#86c8tzpdf](https://app.clickup.com/t/86c8tzpdf)).
+- **Hybrid Rendering Strategy**: Implemented a mixed strategy in `app.routes.server.ts` with prerendering for static auth/landing pages and on-demand SSR for dynamic product and user-specific routes ([#86c8tzpdf](https://app.clickup.com/t/86c8tzpdf)).
+- **Cloudflare Workers Assets Deployment**: Configured `wrangler.jsonc` and updated the staging deployment workflow to use `wrangler deploy` for unified server and asset delivery ([#86c8tzpdf](https://app.clickup.com/t/86c8tzpdf)).
+- **Server-Side Translation Loading**: Added `ServerTranslateLoader` in `app.config.server.ts` to load i18n JSON files directly from the filesystem during SSR, bypassing network overhead ([#86c8tzpdf](https://app.clickup.com/t/86c8tzpdf)).
+- **SSR Documentation**: Created `apps/eco-store/SSR.md` detailing the architecture, configuration, and deployment commands ([#86c8tzpdf](https://app.clickup.com/t/86c8tzpdf)).
+
+### Changed
+
+- **Deployment Workflow**: Migrated `.github/workflows/eco-store-deploy-staging.yml` from GitHub Pages to Cloudflare Workers, removing `_redirects` in favor of server-side routing ([#86c8tzpdf](https://app.clickup.com/t/86c8tzpdf)).
+- **CF-Async Script**: Updated `tools/scripts/add-cfasync.cjs` to apply `data-cfasync="false"` to both SSR and CSR index templates, preventing Rocket Loader interference with hydration ([#86c8tzpdf](https://app.clickup.com/t/86c8tzpdf)).
+- **App Shell SSR Compatibility**: Refactored `ErrorHandlerService` and `EcoLayoutComponent` with platform checks (`typeof ErrorEvent`, `isTranslationReady` signal) to ensure robust execution in server environments ([#86c8tzpdf](https://app.clickup.com/t/86c8tzpdf)).
+
 ## [2026-04-14] - Eco-Store: Cart Merge, Price-Update Notifications & Confirm Dialog Router CTA
 
 ### Added

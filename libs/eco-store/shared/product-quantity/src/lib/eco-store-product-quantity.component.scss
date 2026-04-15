@@ -36,7 +36,6 @@
       (
         icon-size: 24px,
         state-layer-size: 44px,
-        /* Polish: Enhanced touch target */
       )
     );
 
@@ -87,17 +86,5 @@
     &:active:not([disabled]) {
       transform: scale(0.92);
     }
-
-    mat-icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-
-  .quantity-controls {
-    /* Polish: More refined internal spacing */
-    padding: 0.25rem;
-    gap: 0.25rem;
   }
 }
