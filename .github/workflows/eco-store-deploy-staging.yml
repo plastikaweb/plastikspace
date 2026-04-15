@@ -72,7 +72,10 @@ jobs:
 
       - name: Build application
         if: steps.changes.outputs.has_changes == 'true'
-        run: yarn nx build-cf eco-store --configuration=staging --skip-nx-cache
+        run: |
+          yarn nx reset
+          yarn nx build-cf eco-store --configuration=staging --skip-nx-cache
+        timeout-minutes: 30
 
       - name: Generate Security Headers
         if: steps.changes.outputs.has_changes == 'true'
@@ -96,6 +99,14 @@ jobs:
           echo "${{ secrets.POCKETBASE_STAGING_URL }}" | yarn wrangler secret put POCKETBASE_STAGING_URL -c apps/eco-store/wrangler.jsonc --name eco-store-staging
           echo "${{ secrets.POCKETBASE_STAGING_ADMIN_EMAIL }}" | yarn wrangler secret put POCKETBASE_STAGING_ADMIN_EMAIL -c apps/eco-store/wrangler.jsonc --name eco-store-staging
           echo "${{ secrets.POCKETBASE_STAGING_ADMIN_PASSWORD }}" | yarn wrangler secret put POCKETBASE_STAGING_ADMIN_PASSWORD -c apps/eco-store/wrangler.jsonc --name eco-store-staging
+
+      - name: Validate Cloudflare credentials
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ] || [ -z "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" ]; then
+              echo "❌ Missing required Cloudflare credentials"
+              exit 1
+          fi
 
       - name: Deploy to Cloudflare
         if: steps.changes.outputs.has_changes == 'true'
