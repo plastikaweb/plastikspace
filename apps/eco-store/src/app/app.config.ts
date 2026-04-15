@@ -55,7 +55,8 @@ export const appConfig: ApplicationConfig = {
       withEventReplay(),
       withHttpTransferCacheOptions({
         includePostRequests: false,
-        filter: req => req.method === 'GET' && req.url.includes('/i18n/'),
+        filter: req =>
+          req.method === 'GET' && (req.url.includes('/i18n/') || req.url.includes('api/')),
       })
     ),
     provideZonelessChangeDetection(),

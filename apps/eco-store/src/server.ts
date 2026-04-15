@@ -2,21 +2,19 @@
 /* eslint-disable no-console */
 import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
 
-// Define your production domains here or pull from environment variables
-const productionHosts = [
-  'eco-store.pages.dev', // Cloudflare default
-  '9botiga.top', // Your custom domain
+// We only need to list the "base" domains.
+// Any subdomain will be converted to these before reaching Angular.
+const ALLOWED_BASE_HOSTS = [
+  '9botiga.top',
+  'localhost',
+  '127.0.0.1',
+  'el-llevat.test',
+  'plastikaweb.test',
+  'acme.test',
 ];
 
 const engine = new AngularAppEngine({
-  allowedHosts: [
-    'el-llevat.test',
-    'plastikaweb.test',
-    'acme.test',
-    'localhost',
-    '127.0.0.1',
-    ...productionHosts,
-  ],
+  allowedHosts: ALLOWED_BASE_HOSTS,
 });
 
 const SECURITY_HEADERS: Record<string, string> = {
@@ -31,20 +29,41 @@ const SECURITY_HEADERS: Record<string, string> = {
 
 export const reqHandler = createRequestHandler(async request => {
   const url = new URL(request.url);
+
+  /**
+   * STRATEGY FOR SUBDOMAINS (TENANTS)
+   * If the hostname ends with .9botiga.top, we clone the request and change the Host header
+   * so that Angular validates it correctly against the ALLOWED_BASE_HOSTS list.
+   */
+  let finalRequest = request;
+
+  if (url.hostname.endsWith('.9botiga.top') && url.hostname !== '9botiga.top') {
+    const headers = new Headers(request.headers);
+    headers.set('host', '9botiga.top'); // We trick the SSR engine
+
+    finalRequest = new Request(request, {
+      headers,
+    });
+  }
+
   const acceptLanguage = request.headers.get('accept-language');
   const lang = acceptLanguage?.split(',')[0].split('-')[0] || 'ca';
 
-  console.log(`[Server] Request: ${request.url}, Lang from header: ${lang}, Origin: ${url.origin}`);
+  console.log(`[Server] Request: ${url.href}, Target Host: ${url.hostname}, Lang: ${lang}`);
 
-  const response = await engine.handle(request);
+  // Pass the request (possibly modified) to the Angular engine
+  const response = await engine.handle(finalRequest);
+
   if (!response) {
     return new Response('Not Found', { status: 404 });
   }
 
+  // Add security headers to the response
   const secureResponse = new Response(response.body, response);
   for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
     secureResponse.headers.set(key, value);
   }
+
   return secureResponse;
 });
 

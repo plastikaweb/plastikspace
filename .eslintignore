@@ -7,3 +7,5 @@ helpers
 .opencode
 .codex
 .claude
+.wrangler/
+**/ .wrangler/
