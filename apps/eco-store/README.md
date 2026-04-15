@@ -84,6 +84,7 @@ A strong typographic hierarchy is maintained using **Manrope**, with specialized
 
 - [**Backend Management**](./POCKETBASE.md): PocketBase schema, hooks, and automation guides.
 - [**Loading Strategies**](./LOADING_STRATEGIES.md): UI activity patterns and loading states.
+- [**SSR Implementation**](./SSR.md): Server-Side Rendering configuration and deployment.
 
 ---
 

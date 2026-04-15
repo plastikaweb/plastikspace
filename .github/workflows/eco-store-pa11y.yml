@@ -26,6 +26,12 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: 'yarn'
+
       - name: Install
         run: yarn install --immutable --network-timeout 1000000
 

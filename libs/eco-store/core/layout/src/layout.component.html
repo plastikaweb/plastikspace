@@ -25,12 +25,14 @@
             }
 
             @defer (on viewport) {
-              <button
-                matIconButton
-                [attr.aria-label]="'common.a11y.closeSidenav' | translate"
-                (click)="isSidenavOpen.set(false)">
-                <mat-icon>close</mat-icon>
-              </button>
+              @if (isTranslationReady()) {
+                <button
+                  matIconButton
+                  [attr.aria-label]="'common.a11y.closeSidenav' | translate"
+                  (click)="isSidenavOpen.set(false)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
             } @placeholder {
               <div class="bg-surface-variant h-8 w-8 animate-pulse rounded"></div>
             }

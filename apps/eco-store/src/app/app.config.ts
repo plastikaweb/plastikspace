@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { IMAGE_LOADER, registerLocaleData } from '@angular/common';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import localeCa from '@angular/common/locales/ca';
@@ -10,16 +11,26 @@ import {
   provideZonelessChangeDetection,
 } from '@angular/core';
 import {
+  provideClientHydration,
+  withEventReplay,
+  withHttpTransferCacheOptions,
+} from '@angular/platform-browser';
+import {
   provideRouter,
   TitleStrategy,
   withComponentInputBinding,
+  withEnabledBlockingInitialNavigation,
   withExperimentalAutoCleanupInjectors,
   withInMemoryScrolling,
   withRouterConfig,
   withViewTransitions,
 } from '@angular/router';
 import { provideServiceWorker } from '@angular/service-worker';
-import { provideTranslateCompiler, provideTranslateService } from '@ngx-translate/core';
+import {
+  provideTranslateCompiler,
+  provideTranslateService,
+  TranslateService,
+} from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
@@ -29,6 +40,7 @@ import { activityStore } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
+import { firstValueFrom } from 'rxjs';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 
@@ -39,6 +51,13 @@ registerLocaleData(localeCa);
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideClientHydration(
+      withEventReplay(),
+      withHttpTransferCacheOptions({
+        includePostRequests: false,
+        filter: req => req.method === 'GET' && req.url.includes('/i18n/'),
+      })
+    ),
     provideZonelessChangeDetection(),
     provideRouter(
       appRoutes,
@@ -47,11 +66,14 @@ export const appConfig: ApplicationConfig = {
       }),
       withComponentInputBinding(),
       withExperimentalAutoCleanupInjectors(),
-      withRouterConfig({ onSameUrlNavigation: 'reload' }),
+      withRouterConfig({
+        onSameUrlNavigation: 'reload',
+      }),
       withInMemoryScrolling({
-        scrollPositionRestoration: 'top',
         anchorScrolling: 'enabled',
-      })
+        scrollPositionRestoration: 'top',
+      }),
+      withEnabledBlockingInitialNavigation()
     ),
     providePocketBaseWithTranslationsEnv(environment),
     provideHttpClient(withFetch()),
@@ -70,8 +92,29 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEcoStoreTenant,
     provideAppInitializer(async () => {
-      inject(activityStore).setActivity(true);
-      await inject(ecoStoreTenantStore).getTenant();
+      // Totes les injeccions han d'anar abans de qualsevol codi asíncron (await)
+      const translate = inject(TranslateService);
+      const activity = inject(activityStore);
+      const tenantStore = inject(ecoStoreTenantStore);
+
+      const defaultLang = environment.defaultLanguage || 'ca';
+      const browserLang =
+        typeof window !== 'undefined'
+          ? localStorage.getItem('eco-lang') || navigator.language.split('-')[0]
+          : defaultLang;
+      const langToUse = ['ca', 'es', 'en'].includes(browserLang) ? browserLang : defaultLang;
+
+      translate.setFallbackLang(defaultLang);
+
+      try {
+        // Esperem a carregar l'idioma abans de pintar l'aplicació
+        await firstValueFrom(translate.use(langToUse));
+      } catch (error) {
+        console.error("No s'han pogut carregar les traduccions", error);
+      }
+
+      activity.setActivity(true);
+      await tenantStore.getTenant();
     }),
     { provide: LOCALE_ID, useValue: 'ca' },
     { provide: ErrorHandler, useClass: ErrorHandlerService },

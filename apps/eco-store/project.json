@@ -64,7 +64,16 @@
             "libs/shared/form/ui/select-with-icons/src"
           ]
         },
-        "scripts": []
+        "scripts": [],
+        "server": "apps/eco-store/src/main.server.ts",
+        "security": {
+          "allowedHosts": []
+        },
+        "ssr": {
+          "entry": "apps/eco-store/src/server.ts",
+          "experimentalPlatform": "neutral"
+        },
+        "outputMode": "server"
       },
       "configurations": {
         "production": {
@@ -145,7 +154,6 @@
       },
       "defaultConfiguration": "production"
     },
-
     "serve": {
       "continuous": true,
       "executor": "@angular/build:dev-server",

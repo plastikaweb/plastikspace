@@ -80,6 +80,10 @@ apps/eco-store/pocketbase/*
 apps/eco-store/.env
 apps/eco-store/pocketbase_back
 
+# wrangler files
+**/.wrangler
+**/.dev.vars
+
 # local helpers
 /helpers
 

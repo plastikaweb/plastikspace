@@ -86,15 +86,21 @@ jobs:
             Permissions-Policy: camera=(), microphone=(), geolocation=()
             Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://eco-botiga.pockethost.io; connect-src 'self' https://eco-botiga.pockethost.io https://fonts.gstatic.com https://fonts.googleapis.com; frame-ancestors 'none'; upgrade-insecure-requests;
           EOF
-          echo "/* /index.html 200" > ./dist/apps/eco-store/browser/_redirects
 
-      - name: Deploy to Cloudflare Pages
+      - name: Set Worker secrets
         if: steps.changes.outputs.has_changes == 'true'
-        uses: cloudflare/pages-action@v1
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: eco-store-staging
-          directory: ./dist/apps/eco-store/browser
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          branch: develop
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "${{ secrets.POCKETBASE_STAGING_URL }}" | yarn wrangler secret put POCKETBASE_STAGING_URL -c apps/eco-store/wrangler.jsonc --name eco-store-staging
+          echo "${{ secrets.POCKETBASE_STAGING_ADMIN_EMAIL }}" | yarn wrangler secret put POCKETBASE_STAGING_ADMIN_EMAIL -c apps/eco-store/wrangler.jsonc --name eco-store-staging
+          echo "${{ secrets.POCKETBASE_STAGING_ADMIN_PASSWORD }}" | yarn wrangler secret put POCKETBASE_STAGING_ADMIN_PASSWORD -c apps/eco-store/wrangler.jsonc --name eco-store-staging
+
+      - name: Deploy to Cloudflare
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          yarn wrangler deploy -c apps/eco-store/wrangler.jsonc --name eco-store-staging

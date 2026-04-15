@@ -12,12 +12,15 @@ export class ErrorHandlerService implements ErrorHandler {
     const store = this.injector.get(notificationStore);
     let message = '';
 
-    if (error instanceof ErrorEvent || error instanceof Error) {
+    if (
+      (typeof ErrorEvent !== 'undefined' && error instanceof ErrorEvent) ||
+      error instanceof Error
+    ) {
       message = error?.message.includes('ChunkLoadError')
         ? error.message.split('.')[0]
         : error.message;
     } else {
-      message = error;
+      message = typeof error === 'string' ? error : String(error);
     }
 
     store.show(

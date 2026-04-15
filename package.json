@@ -128,11 +128,14 @@
     "eco-store:test": "nx run eco-store:test",
     "eco-store:e2e": "nx run eco-store-e2e:e2e",
     "eco-store:e2e:local": "yarn nx run eco-store-e2e:e2e --browser=chrome --port='cypress-auto' --watch=true",
-    "eco-store:http-server": "angular-http-server --path ./dist/apps/eco-store/browser --port 8080",
+    "eco-store:http-server": "angular-http-server --path ./dist/apps/eco-store/browser --port 8080 --rootFile index.csr.html",
     "preeco-store:a11y": "yarn eco-store:build",
     "eco-store:a11y": "npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run",
     "eco-store:a11y:run": "pa11y-ci --config ./apps/eco-store/.pa11yci.json",
-    "eco-store:build:github": "nx run eco-store:build:prod"
+    "eco-store:build:github": "nx run eco-store:build:prod",
+    "eco-store:cf:dev": "wrangler dev -c apps/eco-store/wrangler.jsonc",
+    "eco-store:cf:deploy": "wrangler deploy -c apps/eco-store/wrangler.jsonc",
+    "eco-store:cf:local": "cp apps/eco-store/.env apps/eco-store/.dev.vars && yarn eco-store:build-cf && npm-run-all --parallel --race eco-store:cf:dev eco-store:watch-scss"
   },
   "resolutions": {
     "sass-embedded": "npm:sass@1.99.0"
@@ -150,6 +153,7 @@
     "@angular/material-date-fns-adapter": "21.2.2",
     "@angular/platform-browser": "21.2.2",
     "@angular/platform-browser-dynamic": "21.2.2",
+    "@angular/platform-server": "~21.2.0",
     "@angular/router": "21.2.2",
     "@angular/service-worker": "21.2.2",
     "@angular/upgrade": "21.2.2",
@@ -174,6 +178,7 @@
     "apollo-angular": "^10.0.3",
     "babel-loader": "^9.2.1",
     "date-fns": "4.1.0",
+    "express": "^4.21.2",
     "firebase-admin": "^12.6.0",
     "firebase-functions": "^5.1.1",
     "graphql": "^16.10.0",
@@ -202,6 +207,8 @@
     "@angular/cli": "21.2.2",
     "@angular/compiler-cli": "21.2.2",
     "@angular/language-service": "21.2.2",
+    "@angular/ssr": "^21.2.7",
+    "@cloudflare/workers-types": "^4.20260415.1",
     "@commitlint/cli": "20.2.0",
     "@commitlint/config-conventional": "20.2.0",
     "@graphql-codegen/cli": "^5.0.5",
@@ -231,6 +238,7 @@
     "@swc-node/register": "1.11.1",
     "@swc/core": "1.15.8",
     "@swc/helpers": "0.5.19",
+    "@types/express": "^4.17.21",
     "@types/node": "20.19.9",
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
@@ -277,7 +285,8 @@
     "verdaccio": "^6.0.5",
     "vite": "^7.0.0",
     "vitest": "^4.0.18",
-    "vitest-axe": "^0.1.0"
+    "vitest-axe": "^0.1.0",
+    "wrangler": "^4.82.2"
   },
   "config": {
     "commitizen": {

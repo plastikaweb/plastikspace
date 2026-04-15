@@ -33,7 +33,7 @@
 
 ## 🚀 Tech Stack Highlights
 
-- **Framework:** [Angular 21](https://angular.io/) (Standalone Components, Signals, Hydration)
+- **Framework:** [Angular 21](https://angular.io/) (Standalone Components, Signals, SSR, Hydration)
 - **Monorepo Tooling:** [Nx](https://nx.dev/) (Project Graph, Distributed Task Execution)
 - **Styling:** [Tailwind CSS 4](https://tailwindcss.com/)
 - **State Management:** [NgRx Signal Store](https://ngrx.io/guide/signals/signal-store)
