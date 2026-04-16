@@ -5,6 +5,9 @@
       "path": "../../../shared/auth/pocketbase/data-access"
     },
     {
+      "path": "../../../shared/confirm/data-access"
+    },
+    {
       "path": "../../../core/entities"
     },
     {
@@ -15,6 +18,9 @@
     },
     {
       "path": "../../core/tenant"
+    },
+    {
+      "path": "../../../shared/confirm/data-access"
     },
     {
       "path": "../../../shared/notification/data-access"

@@ -19,7 +19,6 @@ import {
   provideRouter,
   TitleStrategy,
   withComponentInputBinding,
-  withEnabledBlockingInitialNavigation,
   withExperimentalAutoCleanupInjectors,
   withInMemoryScrolling,
   withRouterConfig,
@@ -34,7 +33,7 @@ import {
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
-import { PrefixTitleService } from '@plastik/core/router-state';
+import { EcoStorePrefixTitleService } from '@plastik/eco-store/core/router-state';
 import { ecoStoreTenantStore, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
@@ -73,8 +72,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'top',
-      }),
-      withEnabledBlockingInitialNavigation()
+      })
     ),
     providePocketBaseWithTranslationsEnv(environment),
     provideHttpClient(withFetch()),
@@ -119,7 +117,7 @@ export const appConfig: ApplicationConfig = {
     }),
     { provide: LOCALE_ID, useValue: 'ca' },
     { provide: ErrorHandler, useClass: ErrorHandlerService },
-    { provide: TitleStrategy, useClass: PrefixTitleService },
+    { provide: TitleStrategy, useClass: EcoStorePrefixTitleService },
     provideServiceWorker('ngsw-worker.js', {
       enabled: environment.environment === 'production' || environment.environment === 'staging',
       registrationStrategy: 'registerImmediately',

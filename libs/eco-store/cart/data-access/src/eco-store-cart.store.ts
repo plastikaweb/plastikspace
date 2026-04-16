@@ -656,44 +656,41 @@ export const ecoStoreCartStore = signalStore(
       // Restore anonymous cart from localStorage once the tenant name is known.
       // Runs once per session (or after logout) when the tenant loads and user is anonymous.
       let anonymousCartRestored = false;
-      effect(
-        () => {
-          if (store._userProfileStore.isAuthenticated()) {
-            anonymousCartRestored = false;
-            return;
-          }
-          if (anonymousCartRestored || !store._tenantStore.loaded()) return;
-          anonymousCartRestored = true;
+      effect(() => {
+        if (store._userProfileStore.isAuthenticated()) {
+          anonymousCartRestored = false;
+          return;
+        }
+        if (anonymousCartRestored || !store._tenantStore.loaded()) return;
+        anonymousCartRestored = true;
 
-          untracked(() => {
-            const key = store.storageKey();
-            try {
-              const raw = localStorage.getItem(key);
-              if (!raw) return;
-              const parsed = JSON.parse(raw) as {
-                ids?: string[];
-                entityMap?: Record<string, EcoStoreCartItem>;
-              };
-              if (parsed?.ids?.length && parsed?.entityMap) {
-                const entityMap = parsed.entityMap;
-                const items = parsed.ids
-                  .map(id => entityMap[id])
-                  .filter((item): item is EcoStoreCartItem => item != null);
-                if (items.length > 0) {
-                  updateState(
-                    store,
-                    '[cart] restore from storage',
-                    setAllEntities(items, { selectId: i => i.product.id })
-                  );
-                }
+        untracked(() => {
+          const key = store.storageKey();
+          try {
+            const raw = localStorage.getItem(key);
+            if (!raw) return;
+            const parsed = JSON.parse(raw) as {
+              ids?: string[];
+              entityMap?: Record<string, EcoStoreCartItem>;
+            };
+            if (parsed?.ids?.length && parsed?.entityMap) {
+              const entityMap = parsed.entityMap;
+              const items = parsed.ids
+                .map(id => entityMap[id])
+                .filter((item): item is EcoStoreCartItem => item != null);
+              if (items.length > 0) {
+                updateState(
+                  store,
+                  '[cart] restore from storage',
+                  setAllEntities(items, { selectId: i => i.product.id })
+                );
               }
-            } catch {
-              // Ignore malformed storage
             }
-          });
-        },
-        { allowSignalWrites: true }
-      );
+          } catch {
+            // Ignore malformed storage
+          }
+        });
+      });
 
       // Auto-persist anonymous cart to localStorage using the tenant-specific key.
       // Only writes when the user is anonymous and the tenant name is available.

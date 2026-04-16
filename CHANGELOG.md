@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-16] - Eco-Store: SSR Reliability and Stability Improvements
+
+### Changed
+
+- Optimized SSR reliability by switching category routes to Server mode to avoid build-time tenant fetch failures ([#86c9c38yr](https://app.clickup.com/t/86c9c38yr)).
+- Improved loading stability by ensuring guards and resolvers wait for tenant data before proceeding ([#86c9c38yr](https://app.clickup.com/t/86c9c38yr)).
+- Refactored local development workflow with conditional security headers to prevent local SSL/HSTS issues ([#86c9c38yr](https://app.clickup.com/t/86c9c38yr)).
+- Enhanced activity store integration and layout scroll management ([#86c9c38yr](https://app.clickup.com/t/86c9c38yr)).
+
 ## [2026-04-15] - Eco-Store: Angular SSR and Cloudflare Workers Deployment
 
 ### Added

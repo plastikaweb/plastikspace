@@ -4,21 +4,29 @@ import { ResolveFn } from '@angular/router';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-import { combineLatest, filter, map, take } from 'rxjs';
+import { combineLatest, filter, firstValueFrom, map, take } from 'rxjs';
 
-export const cartShippingResolver: ResolveFn<boolean> = () => {
+export const cartShippingResolver: ResolveFn<boolean> = async () => {
   const userProfileStore = inject(pocketBaseUserProfileStore);
   const tenantStore = inject(ecoStoreTenantStore);
   const cartStore = inject(ecoStoreCartStore);
+
   userProfileStore.getUserAddresses();
   tenantStore.getTenantAddresses();
   cartStore.loadAndMergeUserCart();
-  const userAddressesLoaded = toObservable(userProfileStore.addressesLoaded);
-  const tenantAddressesLoaded = toObservable(tenantStore.addressesLoaded);
 
-  return combineLatest([userAddressesLoaded, tenantAddressesLoaded]).pipe(
-    filter(([userLoaded, tenantLoaded]) => userLoaded && tenantLoaded),
-    take(1),
-    map(() => true)
+  const tenantLoaded$ = toObservable(tenantStore.loaded);
+  const userAddressesLoaded$ = toObservable(userProfileStore.addressesLoaded);
+  const tenantAddressesLoaded$ = toObservable(tenantStore.addressesLoaded);
+
+  return firstValueFrom(
+    combineLatest([tenantLoaded$, userAddressesLoaded$, tenantAddressesLoaded$]).pipe(
+      filter(
+        ([tenantLoaded, userLoaded, tenantAddressesLoaded]) =>
+          tenantLoaded && userLoaded && tenantAddressesLoaded
+      ),
+      take(1),
+      map(() => true)
+    )
   );
 };

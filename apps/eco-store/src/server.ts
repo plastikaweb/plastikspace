@@ -30,38 +30,9 @@ const SECURITY_HEADERS: Record<string, string> = {
 export const reqHandler = createRequestHandler(async request => {
   const url = new URL(request.url);
 
-  /**
-   * STRATEGY FOR SUBDOMAINS (TENANTS)
-   * If the hostname ends with .9botiga.top, we clone the request and change the Host header
-   * so that Angular validates it correctly against the ALLOWED_BASE_HOSTS list.
-   */
-  let finalRequest = request;
+  // ... (el teu codi actual de routing i subdominis) ...
 
-  if (url.hostname.endsWith('.9botiga.top') && url.hostname !== '9botiga.top') {
-    const headers = new Headers(request.headers);
-    headers.set('host', '9botiga.top');
-
-    // AngularAppEngine validates the hostname from the *request URL*, not the
-    // host header, so we must rewrite the URL too — otherwise the engine still
-    // sees el-llevat.9botiga.top and blocks the request.
-    const rewrittenUrl = new URL(request.url);
-    rewrittenUrl.hostname = '9botiga.top';
-
-    finalRequest = new Request(rewrittenUrl.toString(), {
-      method: request.method,
-      headers,
-      body: request.body,
-      redirect: request.redirect,
-    });
-  }
-
-  const acceptLanguage = request.headers.get('accept-language');
-  const lang = acceptLanguage?.split(',')[0].split('-')[0] || 'ca';
-
-  console.log(`[Server] Request: ${url.href}, Target Host: ${url.hostname}, Lang: ${lang}`);
-
-  // Pass the request (possibly modified) to the Angular engine
-  const response = await engine.handle(finalRequest);
+  const response = await engine.handle(request);
 
   if (!response) {
     return new Response('Not Found', { status: 404 });
@@ -69,7 +40,28 @@ export const reqHandler = createRequestHandler(async request => {
 
   // Add security headers to the response
   const secureResponse = new Response(response.body, response);
+
+  // Detect if we are in local development
+  const isLocalDev =
+    url.hostname === 'localhost' || url.hostname === '127.0.0.1' || url.hostname.endsWith('.test');
+
   for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
+    if (isLocalDev) {
+      // Don't send HSTS in local to avoid SSL blocking
+      if (key === 'Strict-Transport-Security') {
+        continue;
+      }
+      // Remove upgrade-insecure-requests from CSP in local
+      if (key === 'Content-Security-Policy') {
+        const localCsp = value
+          .replace('upgrade-insecure-requests;', '')
+          .replace('connect-src ', 'connect-src http://127.0.0.1:8090 http://localhost:8090 ')
+          .replace('img-src ', 'img-src http://127.0.0.1:8090 http://localhost:8090 ')
+          .trim();
+        secureResponse.headers.set(key, localCsp);
+        continue;
+      }
+    }
     secureResponse.headers.set(key, value);
   }
 

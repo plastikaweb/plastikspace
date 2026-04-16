@@ -66,7 +66,7 @@ export default class EcoLayoutComponent {
   protected readonly searchFormConfig = appSearchFormConfig();
   protected readonly isBannerDismissed = signal(false);
   readonly #translateService = inject(TranslateService);
-  readonly #activityStore = inject(activityStore);
+  readonly activityStore = inject(activityStore);
   protected readonly isMobile = toSignal(
     inject(LayoutObserverService).getMatches([Breakpoints.XSmall, Breakpoints.Small])
   );
@@ -95,13 +95,13 @@ export default class EcoLayoutComponent {
 
   constructor() {
     effect(() => {
-      this.#navigationTrigger(); // Register dependency
+      this.#navigationTrigger();
 
       if (this.isMobile()) {
         this.isSidenavOpen.set(false);
       }
     });
-    this.#activityStore.setActivity(false);
+    this.activityStore.setActivity(false);
   }
 
   protected dismissBanner(): void {

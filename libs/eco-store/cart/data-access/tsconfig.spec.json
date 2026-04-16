@@ -31,6 +31,9 @@
       "path": "../../core/tenant"
     },
     {
+      "path": "../../../shared/confirm/data-access"
+    },
+    {
       "path": "../../../shared/notification/data-access"
     },
     {
@@ -38,6 +41,9 @@
     },
     {
       "path": "../../core/api/data-access"
+    },
+    {
+      "path": "../../../shared/confirm/data-access"
     },
     {
       "path": "../../../core/util/api-pocketbase"

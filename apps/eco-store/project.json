@@ -162,6 +162,7 @@
         "host": "0.0.0.0",
         "allowedHosts": true,
         "liveReload": true,
+        "hmr": false,
         "buildTarget": "eco-store:build"
       },
       "configurations": {
