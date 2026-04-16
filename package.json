@@ -123,6 +123,7 @@
     "eco-store:build:staging": "nx run eco-store:build:staging",
     "eco-store:build:prod": "nx run eco-store:build:production",
     "eco-store:build-cf": "nx run eco-store:build-cf",
+    "eco-store:build-cf:local": "nx run eco-store:build-cf:local",
     "eco-store:build-cf:staging": "nx run eco-store:build-cf:staging",
     "eco-store:build-cf:prod": "nx run eco-store:build-cf:production",
     "eco-store:test": "nx run eco-store:test",
@@ -135,7 +136,7 @@
     "eco-store:build:github": "nx run eco-store:build:prod",
     "eco-store:cf:dev": "wrangler dev -c apps/eco-store/wrangler.jsonc",
     "eco-store:cf:deploy": "wrangler deploy -c apps/eco-store/wrangler.jsonc",
-    "eco-store:cf:local": "cp apps/eco-store/.env apps/eco-store/.dev.vars && yarn eco-store:build-cf && npm-run-all --parallel --race eco-store:cf:dev eco-store:watch-scss"
+    "eco-store:cf:local": "cp apps/eco-store/.env apps/eco-store/.dev.vars && yarn eco-store:build-cf:local && npm-run-all --parallel --race eco-store:cf:dev eco-store:watch-scss"
   },
   "resolutions": {
     "sass-embedded": "npm:sass@1.99.0"

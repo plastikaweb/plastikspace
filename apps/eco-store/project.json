@@ -149,6 +149,9 @@
         ]
       },
       "configurations": {
+        "local": {
+          "commands": ["nx run eco-store:build:development", "node tools/scripts/add-cfasync.cjs"]
+        },
         "staging": {
           "commands": [
             "nx run eco-store:build:staging",
