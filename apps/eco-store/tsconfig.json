@@ -11,6 +11,7 @@
     "noFallthroughCasesInSwitch": true,
     "module": "preserve",
     "moduleResolution": "bundler",
+    "resolveJsonModule": true,
     "lib": ["dom", "es2024"]
   },
   "angularCompilerOptions": {
