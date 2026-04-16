@@ -39,10 +39,19 @@ export const reqHandler = createRequestHandler(async request => {
 
   if (url.hostname.endsWith('.9botiga.top') && url.hostname !== '9botiga.top') {
     const headers = new Headers(request.headers);
-    headers.set('host', '9botiga.top'); // We trick the SSR engine
+    headers.set('host', '9botiga.top');
 
-    finalRequest = new Request(request, {
+    // AngularAppEngine validates the hostname from the *request URL*, not the
+    // host header, so we must rewrite the URL too — otherwise the engine still
+    // sees el-llevat.9botiga.top and blocks the request.
+    const rewrittenUrl = new URL(request.url);
+    rewrittenUrl.hostname = '9botiga.top';
+
+    finalRequest = new Request(rewrittenUrl.toString(), {
+      method: request.method,
       headers,
+      body: request.body,
+      redirect: request.redirect,
     });
   }
 
