@@ -2,19 +2,8 @@
 /* eslint-disable no-console */
 import { AngularAppEngine, createRequestHandler } from '@angular/ssr';
 
-// We only need to list the "base" domains.
-// Any subdomain will be converted to these before reaching Angular.
-const ALLOWED_BASE_HOSTS = [
-  '9botiga.top',
-  'localhost',
-  '127.0.0.1',
-  'el-llevat.test',
-  'plastikaweb.test',
-  'acme.test',
-];
-
 const engine = new AngularAppEngine({
-  allowedHosts: ALLOWED_BASE_HOSTS,
+  allowedHosts: ['9botiga.top', '*.9botiga.top', 'localhost', '127.0.0.1', '*.test'],
 });
 
 const SECURITY_HEADERS: Record<string, string> = {
@@ -29,9 +18,6 @@ const SECURITY_HEADERS: Record<string, string> = {
 
 export const reqHandler = createRequestHandler(async request => {
   const url = new URL(request.url);
-
-  // ... (el teu codi actual de routing i subdominis) ...
-
   const response = await engine.handle(request);
 
   if (!response) {
