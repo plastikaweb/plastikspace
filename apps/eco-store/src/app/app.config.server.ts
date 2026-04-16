@@ -5,8 +5,8 @@ import { Observable, of } from 'rxjs';
 import { appConfig } from './app.config';
 import { serverRoutes } from './app.routes.server';
 
-// Importem directament els fitxers JSON per saltar-nos les peticions HTTP en SSR.
-// Això evita errors de resolució de rutes relatives dins de Cloudflare Workers.
+// We import the JSON files directly to skip HTTP requests in SSR.
+// This avoids relative path resolution errors within Cloudflare Workers.
 import caLang from '../../public/i18n/ca.json';
 import enLang from '../../public/i18n/en.json';
 import esLang from '../../public/i18n/es.json';
@@ -28,7 +28,7 @@ const serverConfig: ApplicationConfig = {
     provideServerRendering(withRoutes(serverRoutes)),
     {
       provide: TranslateLoader,
-      useClass: ServerTranslateLoader, // Sobreescriu l'HttpLoader del client
+      useClass: ServerTranslateLoader, // Overrides the client's HttpLoader
     },
   ],
 };
