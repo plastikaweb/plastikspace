@@ -6,21 +6,51 @@ const engine = new AngularAppEngine({
   allowedHosts: ['9botiga.top', '*.9botiga.top', 'localhost', '127.0.0.1', '*.test'],
 });
 
+/**
+ * @description Returns a copy of `req` with a trailing slash appended to its pathname.
+ * @param {Request } req The request to append a trailing slash to.
+ * @returns {Request} The request with a trailing slash appended to its pathname.
+ */
+function withTrailingSlash(req: Request): Request {
+  const u = new URL(req.url);
+  u.pathname = u.pathname + '/';
+  return new Request(u.toString(), req);
+}
+
+/**
+ * @description True when the path has no file extension and does not already end with /.
+ * @param {string} pathname The path to check.
+ * @returns {boolean} True when the path has no file extension and does not already end with /.
+ */
+function needsTrailingSlash(pathname: string): boolean {
+  return !pathname.endsWith('/') && !/\.[^/]+$/.test(pathname);
+}
+
 export const reqHandler = createRequestHandler(async request => {
   const url = new URL(request.url);
 
-  // Normalize URL: add trailing slash before Angular SSR processes it to prevent
-  // a 301 redirect from /path to /path/ that affects Lighthouse and crawlers.
-  // Static assets (paths with a file extension) are excluded from normalization.
-  const normalizedRequest =
-    !url.pathname.endsWith('/') && !/\.[^/]+$/.test(url.pathname)
-      ? new Request(
-          Object.assign(new URL(request.url), { pathname: url.pathname + '/' }).toString(),
-          request
-        )
-      : request;
+  // Pre-normalize: add trailing slash so Angular SSR renders directly instead
+  // of issuing a 301 redirect (which hurts Lighthouse and crawlers).
+  const engineRequest = needsTrailingSlash(url.pathname) ? withTrailingSlash(request) : request;
 
-  const response = await engine.handle(normalizedRequest);
+  let response = await engine.handle(engineRequest);
+
+  // Belt-and-suspenders: if Angular SSR still emits a trailing-slash redirect,
+  // follow it internally so the client never sees a 301.
+  if (response?.status === 301 || response?.status === 302) {
+    const location = response.headers.get('Location');
+    if (location) {
+      const redirectUrl = new URL(location, request.url);
+      const isSameOriginTrailingSlash =
+        redirectUrl.origin === url.origin &&
+        redirectUrl.pathname === url.pathname + '/' &&
+        redirectUrl.search === url.search;
+
+      if (isSameOriginTrailingSlash) {
+        response = (await engine.handle(new Request(redirectUrl.toString(), request))) ?? response;
+      }
+    }
+  }
 
   if (!response) {
     return new Response('Not Found', { status: 404 });
