@@ -142,14 +142,26 @@
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "commands": ["nx run eco-store:build:production", "node tools/scripts/add-cfasync.cjs"]
+        "commands": [
+          "nx run eco-store:build:production",
+          "node tools/scripts/add-cfasync.cjs",
+          "node apps/eco-store/scripts/generate-cf-headers.cjs"
+        ]
       },
       "configurations": {
         "staging": {
-          "commands": ["nx run eco-store:build:staging", "node tools/scripts/add-cfasync.cjs"]
+          "commands": [
+            "nx run eco-store:build:staging",
+            "node tools/scripts/add-cfasync.cjs",
+            "node apps/eco-store/scripts/generate-cf-headers.cjs"
+          ]
         },
         "production": {
-          "commands": ["nx run eco-store:build:production", "node tools/scripts/add-cfasync.cjs"]
+          "commands": [
+            "nx run eco-store:build:production",
+            "node tools/scripts/add-cfasync.cjs",
+            "node apps/eco-store/scripts/generate-cf-headers.cjs"
+          ]
         }
       },
       "defaultConfiguration": "production"
