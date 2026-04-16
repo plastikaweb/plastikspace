@@ -2,19 +2,24 @@ import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { CanActivateFn, Router, UrlTree } from '@angular/router';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-import { Observable, filter, map } from 'rxjs';
+import { firstValueFrom, filter, take, map } from 'rxjs';
 
-export const shippingUnavailableGuard: CanActivateFn = (): Observable<boolean | UrlTree> => {
+export const shippingUnavailableGuard: CanActivateFn = async (): Promise<boolean | UrlTree> => {
   const tenantStore = inject(ecoStoreTenantStore);
   const router = inject(Router);
 
-  return toObservable(tenantStore.isShippingAvailable).pipe(
-    map(isShippingAvailable => {
-      if (isShippingAvailable) {
-        return router.createUrlTree(['/cart/resum']);
-      }
-      return true;
-    }),
-    filter(Boolean)
+  const tenantLoaded$ = toObservable(tenantStore.loaded);
+
+  return firstValueFrom(
+    tenantLoaded$.pipe(
+      filter(Boolean),
+      take(1),
+      map(() => {
+        if (tenantStore.isShippingAvailable()) {
+          return router.createUrlTree(['/cistella/resum']);
+        }
+        return true;
+      })
+    )
   );
 };

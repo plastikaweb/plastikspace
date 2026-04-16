@@ -45,7 +45,11 @@
       </mat-sidenav>
     }
 
-    <mat-sidenav-content #sidenavContent class="flex flex-col" tabindex="-1">
+    <mat-sidenav-content
+      #sidenavContent
+      class="flex flex-col overflow-hidden!"
+      tabindex="-1"
+      [class.overflow-y-auto!]="!activityStore.isActive()">
       @if (isMobile() && isSidenavOpen()) {
         <ng-container *ngTemplateOutlet="headerContent"></ng-container>
       }
@@ -80,7 +84,7 @@
           @defer (on viewport; prefetch on idle) {
             <eco-footer [tenant]="tenantStore.tenant()" />
           } @placeholder {
-            <div aria-hidden="true" class="bg-surface-container h-30 w-full animate-pulse"></div>
+            <div aria-hidden="true" class="hidden"></div>
           }
         </div>
       </main>
