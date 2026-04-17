@@ -126,6 +126,15 @@
       "type": "pipe"
     }
   },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx-cloud",
+      "options": {
+        "cacheableOperations": ["build", "test", "lint", "e2e"],
+        "accessToken": ""
+      }
+    }
+  },
   "defaultProject": "llecoop",
   "cacheDirectory": "./tmp/my-cache",
   "defaultBase": "develop",

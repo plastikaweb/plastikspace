@@ -225,6 +225,17 @@ Reusable features and UI components.
 
 ---
 
+## ☁️ Nx Cloud Configuration & CI Strategy
+
+This monorepo uses a dual caching and testing strategy to optimize performance and quality.
+
+- **Caching**: Leverages local disk cache for development and Nx Cloud for CI sharing.
+- **CI Strategy**: Fast feedback on Pull Requests (affected only) and full validation on `develop` to maintain global quality metrics.
+
+For detailed technical information, see the [Git Flow and CI/CD Guide](documentation/git-flow.md#cicd-strategy--caching).
+
+---
+
 ## 📬 Contact
 
 ### Carlos Matheu Armengol

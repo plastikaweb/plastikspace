@@ -126,6 +126,7 @@ yarn cz                              # Interactive commit with Commitizen
 - Automatically loads scopes from `tsconfig.base.json` path aliases
 - Commit format: `<type>(<scope>): <subject>` with optional issue number from branch name
 - Supports conventional commit types: feat, fix, docs, test, refactor, perf, style, build, ci, chore, revert
+- Use the SKILL `commitzen-git-flow` as the source of truth to create commits
 
 ## Applications
 

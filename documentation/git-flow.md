@@ -10,7 +10,13 @@
   - [Merge](#merge)
     - [Merge Github actions](#merge-github-actions)
     - [Staging deploy](#staging-deploy)
+  - [CI/CD Strategy \& Caching](#cicd-strategy--caching)
+    - [Caching Strategy](#caching-strategy)
+    - [CI Testing Logic](#ci-testing-logic)
   - [i18n Validation](#i18n-validation)
+    - [During Local Development](#during-local-development)
+    - [In CI/CD Pipeline](#in-cicd-pipeline)
+    - [Pre-commit Hook](#pre-commit-hook)
   - [Useful links](#useful-links)
 
 ## Description
@@ -89,8 +95,9 @@ The assigned developer creates a new PR based on the pushed branch and:
 
 On any PR creation:
 
-- **CI**:  this action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
-  - You can see the `CI` actions status in the [CI](./git-flow.md#ci) section.
+- **CI**: this action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
+  - **Strategy**: Uses `npx nx affected --target=test --coverage` for fast feedback by only testing what changed.
+  - **Self-Healing**: Integrates with Nx Cloud for AI-assisted failure analysis and automated PR comments.
 
 - **`a11y {app-name}`**: this action is fired to execute accessibility test using `pa11y-cy` runner.
   - You can see the `a11y nasa-images` actions status in the [a11y](./accessibility.md#pa11y-ci-accessibility-test-runner) section.
@@ -104,8 +111,9 @@ Once the PR is approved, it can be merged into `develop branch` by its author.  
 
 On any merge to `develop branch`:
 
-- **CI**:  this action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
-  - You can see the `CI` actions status in the [CI](./git-flow.md#ci) section.
+- **CI**: this action is fired to pass different steps for markdownlint, code lint, unit testing and build in this branch.
+  - **Strategy**: Uses `npx nx run-many --target=test --all --coverage` to ensure the entire monorepo is stable.
+  - **Metrics**: Updates the global **Coverage Badge** only on successful pushes to `develop` to maintain accurate quality metrics.
 
 - **`a11y {app-name}`**: this action is fired to execute accessibility test using `pa11y-cy` runner.
   - You can see the `a11y for nasa-images app` action status in the [a11y](./accessibility.md#pa11y-ci-accessibility-test-runner) section.
@@ -118,6 +126,25 @@ The deploy used by `github pages` will vary depending of each included app confi
 Please, take a look inside each app README for further information:
 
 - [nasa-images](../apps/nasa-images/README.md);
+
+## CI/CD Strategy & Caching
+
+This monorepo uses a dual caching and testing strategy to optimize performance and quality.
+
+### Caching Strategy
+
+- **Local Development**: Uses local disk cache (`node_modules/.cache/nx`). This is private and fast.
+- **Continuous Integration**: Uses Nx Cloud to share results across builds and enable features like AI-assisted failure analysis.
+- **Pro Tip**: Developers can achieve "Instant Builds" locally by adding a **Read-Only** `NX_CLOUD_ACCESS_TOKEN` to their `.env` file to pull results from CI.
+
+### CI Testing Logic
+
+| Event | Command | Goal |
+| :--- | :--- | :--- |
+| **Pull Requests** | `nx affected --target=test` | Fast feedback on changes. |
+| **Push to develop** | `nx run-many --target=test --all` | Maintain global quality & update badge. |
+
+The coverage badge is only updated upon successful pushes to the `develop` branch to maintain accurate global metrics.
 
 ## i18n Validation
 
