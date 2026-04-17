@@ -6,10 +6,8 @@ on:
       - develop
 
 env:
-  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   NODE_OPTIONS: '--no-deprecation'
-  NX_NO_CLOUD: true
 
 # Needed for nx-set-shas when run on the main branch
 permissions:
@@ -33,50 +31,48 @@ jobs:
           node-version: 22
           cache: 'yarn'
 
-      # Start Nx Cloud without distribution for simpler setup
-      # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js"
       - run: yarn install --immutable --network-timeout 1000000
 
       - uses: nrwl/nx-set-shas@v4
 
-      - name: Check Nx Cloud Availability
-        run: |
-          # Try a real nx command with record and capture output
-          npx nx-cloud record -- npx nx --version > nx_cloud_check.log 2>&1 || true
-          if grep -iE "disabled|authorized|exceeding|failed to record" nx_cloud_check.log; then
-            echo "NX_CLOUD_RECORD=" >> $GITHUB_ENV
-            echo "NX_CLOUD_FLAGS=--no-cloud" >> $GITHUB_ENV
-            echo "NX_CLOUD_ACCESS_TOKEN=" >> $GITHUB_ENV
-            echo "NX_CLOUD_DISABLED=true" >> $GITHUB_ENV
-            echo "Nx Cloud is disabled or out of credits. Running locally."
-          else
-            echo "NX_CLOUD_RECORD=npx nx-cloud record --" >> $GITHUB_ENV
-            echo "NX_CLOUD_FLAGS=" >> $GITHUB_ENV
-            echo "NX_CLOUD_DISABLED=false" >> $GITHUB_ENV
-            echo "Nx Cloud is active."
-          fi
-
       # Format check
-      - run: ${{ env.NX_CLOUD_RECORD }} npx nx format:check --all ${{ env.NX_CLOUD_FLAGS }}
+      - run: npx nx format:check --all
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Lint Affected
         if: always()
         run: |
           yarn i18n:validate
           yarn markdownlint
-          ${{ env.NX_CLOUD_RECORD }} npx nx affected --target=lint --exclude=llecoop-firebase --parallel=3 ${{ env.NX_CLOUD_FLAGS }}
+          npx nx affected --target=lint --exclude=llecoop-firebase --parallel=3
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
-      - name: Test Affected
+      - name: Test
         if: always()
-        run: ${{ env.NX_CLOUD_RECORD }} npx nx affected --target=test --exclude=llecoop-firebase --parallel=3 --coverage ${{ env.NX_CLOUD_FLAGS }}
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "Running affected tests for Pull Request"
+            npx nx affected --target=test --exclude=llecoop-firebase --parallel=3 --coverage
+          else
+            echo "Running all tests for push to develop"
+            npx nx run-many --target=test --all --exclude=llecoop-firebase --parallel=3 --coverage
+          fi
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Build Affected
         if: always()
-        run: ${{ env.NX_CLOUD_RECORD }} npx nx affected --target=build --exclude=llecoop-firebase --parallel=3 ${{ env.NX_CLOUD_FLAGS }}
+        run: npx nx affected --target=build --exclude=llecoop-firebase --parallel=3
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Attempt AI Fix on Failure
-        if: failure() && env.NX_CLOUD_DISABLED == 'false'
-        run: npx nx fix-ci
+        if: failure()
+        run: npx nx-cloud fix-ci
+        env:
+          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Report Coverage
         id: coverage
@@ -180,7 +176,7 @@ jobs:
             }
 
       - name: Update Coverage Badge
-        if: always()
+        if: always() && github.event_name == 'push' && github.ref == 'refs/heads/develop'
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_TOKEN }}
