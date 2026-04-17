@@ -6,6 +6,9 @@
   "assets": {
     "directory": "../../dist/apps/eco-store/browser",
     "binding": "ASSETS",
+    // Disable automatic trailing-slash redirects from the CF assets layer.
+    // All routing (including slash normalization) is handled by server.ts.
+    "html_handling": "none",
   },
   "observability": {
     "enabled": true,

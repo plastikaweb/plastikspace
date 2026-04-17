@@ -35,9 +35,14 @@ export const reqHandler = createRequestHandler(async request => {
 
   let response = await engine.handle(engineRequest);
 
-  // Belt-and-suspenders: if Angular SSR still emits a trailing-slash redirect,
-  // follow it internally so the client never sees a 301.
-  if (response?.status === 301 || response?.status === 302) {
+  // Belt-and-suspenders: if the engine or the CF ASSETS binding still emits a
+  // trailing-slash redirect, follow it internally so the client never sees one.
+  if (
+    response?.status === 301 ||
+    response?.status === 302 ||
+    response?.status === 307 ||
+    response?.status === 308
+  ) {
     const location = response.headers.get('Location');
     if (location) {
       const redirectUrl = new URL(location, request.url);
