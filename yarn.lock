@@ -10187,6 +10187,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@oxc-project/runtime@npm:^0.115.0":
+  version: 0.115.0
+  resolution: "@oxc-project/runtime@npm:0.115.0"
+  checksum: 10c0/88905181724fcad06d2852969e706a25a7b6c4fadac22dd6aece24b882a947eda7487451e0824781c9dc87b40b2c6ee582790e47fec5a9ba5d27c6e8c6c35bc1
+  languageName: node
+  linkType: hard
+
 "@oxc-project/types@npm:=0.113.0":
   version: 0.113.0
   resolution: "@oxc-project/types@npm:0.113.0"
@@ -29733,6 +29740,7 @@ __metadata:
     "@nx/vitest": "npm:^22.5.4"
     "@nx/web": "npm:22.5.4"
     "@nx/workspace": "npm:22.5.4"
+    "@oxc-project/runtime": "npm:^0.115.0"
     "@schematics/angular": "npm:21.1.2"
     "@simondotm/nx-firebase": "npm:^22.3.3"
     "@swc-node/register": "npm:1.11.1"

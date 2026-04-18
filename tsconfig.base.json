@@ -292,7 +292,8 @@
       "@plastik/shared/img-cropper": ["libs/shared/img-cropper/ui/src/index.ts"],
       "@plastik/eco-store/profile/avatar": ["libs/eco-store/profile/avatar/src/index.ts"],
       "@plastik/eco-store/profile/addresses": ["libs/eco-store/profile/addresses/src/index.ts"],
-      "@plastik/shared/alert/ui": ["libs/shared/alert/ui/src/index.ts"]
+      "@plastik/shared/alert/ui": ["libs/shared/alert/ui/src/index.ts"],
+      "@plastik/shared/pwa": ["libs/shared/pwa/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

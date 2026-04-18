@@ -144,6 +144,19 @@
       font-size: 1.1rem;
     }
   }
+
+  /* Bottom sheet — rounded top corners + blurred backdrop */
+  @include mat.bottom-sheet-overrides(
+    (
+      container-shape: var(--app-main-border-radius),
+    )
+  );
+
+  .pwa-backdrop.cdk-overlay-backdrop {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    background-color: color-mix(in srgb, var(--primary-900), transparent 80%);
+  }
 }
 
 .input--eco {

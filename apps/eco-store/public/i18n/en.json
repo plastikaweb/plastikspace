@@ -8,7 +8,21 @@
     "cancel": "Cancel",
     "submit": "Submit",
     "update": "Update",
-    "save": "Save",
+    "pwa": {
+      "title": "Bring Eco to your mobile",
+      "description": "Install our app for a faster, more secure experience with offline access to your orders.",
+      "howToInstall": "How to install",
+      "iosInstructionsStep1": "Tap the 'Share' icon in the bottom bar.",
+      "iosInstructionsStep1Old": "Tap the 'Share' menu.",
+      "iosInstructionsStep2": "Scroll down until you find the option.",
+      "iosInstructionsStep3": "Select 'Add to Home Screen'.",
+      "iosSafariRequired": "To install the app on iOS, you must open this page with the Safari browser.",
+      "androidInstructionsStep1": "Tap the browser menu icon",
+      "androidInstructionsStep2": "Select 'Install app' or 'Add to home screen'.",
+      "install": "Install",
+      "later": "Later",
+      "close": "Got it, close"
+    },
     "delete": "Delete",
     "navigation": {
       "previous": "Go to previous page",
@@ -553,7 +567,7 @@
       "delivered": "DELIVERED",
       "cancelled": "CANCELLED",
       "pending": "PENDING",
-      "confirmed": "CONFIRMED",
+      "confirmed": "CONFIRMADA",
       "preparing": "PREPARING",
       "ready": "READY"
     },
@@ -595,7 +609,7 @@
     "phone": "Phone",
     "submitButton": "Save changes",
     "navigation": "Profile navigation",
-    "memberSince": "[en] Membre des del {date}",
+    "memberSince": "Member since {date}",
     "personalData": {
       "title": "Personal details",
       "description": "Manage your personal details."
