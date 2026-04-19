@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["libs/shared/form/ui/year-picker/src/lib/year-picker.component.scss", "libs/shared/form/ui/year-picker/src/lib/year-picker.component.scss"],
+  "sourcesContent": ["plastik-shared-form-ui-year-picker {\n  display: flex;\n}\n\n.shared-year-picker {\n  .mat-calendar-period-button {\n    pointer-events: none;\n  }\n  .mat-calendar-arrow {\n    display: none;\n  }\n}\n", "plastik-shared-form-ui-year-picker {\n  display: flex;\n}\n\n.shared-year-picker .mat-calendar-period-button {\n  pointer-events: none;\n}\n.shared-year-picker .mat-calendar-arrow {\n  display: none;\n}\n/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyJmaWxlOi8vL2hvbWUvcnVubmVyL3dvcmsvcGxhc3Rpa3NwYWNlL3BsYXN0aWtzcGFjZS9saWJzL3NoYXJlZC9mb3JtL3VpL3llYXItcGlja2VyL3NyYy9saWIveWVhci1waWNrZXIuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRTs7O0FBSUE7RUFDRTs7QUFFRjtFQUNFIiwic291cmNlc0NvbnRlbnQiOlsicGxhc3Rpay1zaGFyZWQtZm9ybS11aS15ZWFyLXBpY2tlciB7XG4gIGRpc3BsYXk6IGZsZXg7XG59XG5cbi5zaGFyZWQteWVhci1waWNrZXIge1xuICAubWF0LWNhbGVuZGFyLXBlcmlvZC1idXR0b24ge1xuICAgIHBvaW50ZXItZXZlbnRzOiBub25lO1xuICB9XG4gIC5tYXQtY2FsZW5kYXItYXJyb3cge1xuICAgIGRpc3BsYXk6IG5vbmU7XG4gIH1cbn1cbiJdfQ== */"],
+  "mappings": ";AAAA;AACE,WAAA;ACCF;ADGE,CAAA,mBAAA,CAAA;AACE,kBAAA;ACAJ;ADEE,CAHA,mBAGA,CAAA;AACE,WAAA;ACAJ;",
+  "names": []
+}
