@@ -8,7 +8,21 @@
     "cancel": "Cancelar",
     "submit": "Enviar",
     "update": "Actualizar",
-    "save": "Guardar",
+    "pwa": {
+      "title": "Lleva lo Eco en tu móvil",
+      "description": "Instala nuestra app para una experiencia más rápida, segura y con acceso a tus pedidos sin conexión.",
+      "howToInstall": "Cómo instalarla",
+      "iosInstructionsStep1": "Pulsa el icono de 'Compartir' en la barra inferior.",
+      "iosInstructionsStep1Old": "Pulsa el menú de 'Compartir'.",
+      "iosInstructionsStep2": "Desplázate hacia abajo hasta encontrar la opción.",
+      "iosInstructionsStep3": "Selecciona 'Añadir a la pantalla de inicio'.",
+      "iosSafariRequired": "Para instalar la app en iOS, debes abrir esta página en el navegador Safari.",
+      "androidInstructionsStep1": "Pulsa el icono de menú del navegador",
+      "androidInstructionsStep2": "Selecciona 'Instalar aplicación' o 'Añadir a la pantalla de inicio'.",
+      "install": "Instalar",
+      "later": "Más tarde",
+      "close": "Entendido, cerrar"
+    },
     "delete": "Eliminar",
     "navigation": {
       "previous": "Volver a la página anterior",
@@ -37,7 +51,7 @@
     },
     "form": {
       "error": {
-        "email": "El format del correu electrònic no és correcte",
+        "email": "El formato del correo electrónico no es correcto",
         "required": "El campo es obligatorio",
         "minLength": "El campo debe tener al menos {value} caracteres",
         "maxLength": "El campo debe tener más de {value} caracteres",
@@ -381,7 +395,7 @@
         "subtitle": "Elige cómo quieres pagar tu pedido."
       },
       "confirmation": {
-        "title": "Confirmación",
+        "title": "Confirmation",
         "subtitle": "Elige cómo quieres recibir tu pedido."
       }
     },
@@ -561,7 +575,7 @@
       "all": "TODAS",
       "status": "Estado del pedido",
       "productSearch": "Producto",
-      "productSearchPlaceholder": "Escribe el nombre del producto (mínimo 2 caracteres)",
+      "productSearchPlaceholder": "Escribe el nombre del producto (mínim 2 caracteres)",
       "sort": {
         "label": "Ordenar",
         "statusAsc": "Estado ascendente",

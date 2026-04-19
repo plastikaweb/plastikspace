@@ -16,6 +16,7 @@ You write maintainable, performant, and accessible code following Angular and Ty
 - Use signals for state management
 - Implement lazy loading for feature routes
 - Do NOT use the `@HostBinding` and `@HostListener` decorators. Put host bindings inside the `host` object of the `@Component` or `@Directive` decorator instead
+- **Animations:** Do NOT use `provideAnimations()` or `provideAnimationsAsync()`; both are deprecated as of Angular v20+. Prefer native CSS animations/transitions and the new compiler-supported `animate.enter` and `animate.leave` APIs for element lifecycle animations.
 - Use `NgOptimizedImage` for all static images.
   - `NgOptimizedImage` does not work for inline base64 images.
 

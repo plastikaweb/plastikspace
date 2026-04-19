@@ -8,7 +8,21 @@
     "cancel": "Cancel·lar",
     "submit": "Enviar",
     "update": "Actualitzar",
-    "save": "Guardar",
+    "pwa": {
+      "title": "Porta l'Eco al teu mòbil",
+      "description": "Aquest lloc té funcionalitats d'aplicació. Instal·la'l al teu dispositiu per a una àmplia experiència i fàcil accés.",
+      "howToInstall": "Com instal·lar-la",
+      "iosInstructionsStep1": "Toca la icona de 'Compartir' a la barra inferior.",
+      "iosInstructionsStep1Old": "Toca el menú de 'Compartir'.",
+      "iosInstructionsStep2": "Desplaça't cap avall fins a trobar l'opció.",
+      "iosInstructionsStep3": "Selecciona 'Afegeix a la pantalla d'inici'.",
+      "iosSafariRequired": "Per instal·lar l'app a iOS, has d'obrir aquesta pàgina amb el navegador Safari.",
+      "androidInstructionsStep1": "Toca la icona de menú del navegador",
+      "androidInstructionsStep2": "Selecciona 'Instal·lar aplicació' o 'Afegeix a la pantalla d'inici'.",
+      "install": "Instal·lar",
+      "later": "Més tard",
+      "close": "Entès, tancar"
+    },
     "delete": "Eliminar",
     "navigation": {
       "previous": "Tornar a la pàgina anterior",

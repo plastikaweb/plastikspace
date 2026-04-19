@@ -198,6 +198,7 @@ Reusable features and UI components.
 #### UI Components
 
 - [**button**](libs/shared/button/ui/README.md)
+- [**pwa**](libs/shared/pwa/README.md)
 - [**table**](libs/shared/table/ui/README.md)
 - [**form**](libs/shared/form/feature/README.md)
 - [**address-card**](libs/shared/address-card/ui/README.md)

@@ -34,9 +34,11 @@ import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
 import { EcoStorePrefixTitleService } from '@plastik/eco-store/core/router-state';
+import { getPocketBaseImageUrl } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
+import { PWA_APP_DATA_FN, PwaInstallService, PwaManifestService } from '@plastik/shared/pwa';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
 import { firstValueFrom } from 'rxjs';
@@ -91,10 +93,13 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEcoStoreTenant,
     provideAppInitializer(async () => {
-      // Totes les injeccions han d'anar abans de qualsevol codi asíncron (await)
+      // All injections must be done before any async code
       const translate = inject(TranslateService);
       const activity = inject(activityStore);
       const tenantStore = inject(ecoStoreTenantStore);
+      inject(PwaInstallService);
+      const pwaManifest = inject(PwaManifestService);
+      const getAppData = inject(PWA_APP_DATA_FN);
 
       const defaultLang = environment.defaultLanguage || 'ca';
       const browserLang =
@@ -114,6 +119,7 @@ export const appConfig: ApplicationConfig = {
 
       activity.setActivity(true);
       await tenantStore.getTenant();
+      await pwaManifest.applyBranding(getAppData());
     }),
     { provide: LOCALE_ID, useValue: 'ca' },
     { provide: ErrorHandler, useClass: ErrorHandlerService },
@@ -125,6 +131,19 @@ export const appConfig: ApplicationConfig = {
     {
       provide: IMAGE_LOADER,
       useValue: pocketBaseStorageLoader(environment.baseApiUrl),
+    },
+    {
+      provide: PWA_APP_DATA_FN,
+      useFactory: () => {
+        const store = inject(ecoStoreTenantStore);
+
+        return () => {
+          const tenant = store.tenant();
+          const logoPath = getPocketBaseImageUrl(tenant, tenant?.logo);
+          const logo = logoPath ? `${environment.baseApiUrl}api/files/${logoPath}` : undefined;
+          return { name: tenant?.name, logo, defaultLogo: 'eco_logo' };
+        };
+      },
     },
   ],
 };

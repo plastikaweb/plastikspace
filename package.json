@@ -234,6 +234,7 @@
     "@nx/vitest": "^22.5.4",
     "@nx/web": "22.5.4",
     "@nx/workspace": "22.5.4",
+    "@oxc-project/runtime": "^0.115.0",
     "@schematics/angular": "21.1.2",
     "@simondotm/nx-firebase": "^22.3.3",
     "@swc-node/register": "1.11.1",
