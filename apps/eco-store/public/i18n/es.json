@@ -583,6 +583,56 @@
         "updatedAsc": "Más antiguos",
         "updatedDesc": "Más recientes"
       }
+    },
+    "getOne": {
+      "notFound": "Pedido no encontrado"
+    },
+    "detail": {
+      "back": "Volver a pedidos",
+      "title": "Mi pedido",
+      "downloadPdf": "Descargar PDF",
+      "loading": "Cargando pedido...",
+      "openOrder": "Pedido abierto: Puedes modificarlo completamente o cancelarlo hasta que se cierre el ciclo de preparación.",
+      "orderDate": "Pedido realizado el",
+      "noResults": {
+        "title": "Pedido no encontrado",
+        "description": "No hemos podido encontrar el pedido. Revisa el número o vuelve a la lista de pedidos.",
+        "goToOrders": "Volver a pedidos"
+      },
+      "days": {
+        "monday": "Lunes",
+        "tuesday": "Martes",
+        "wednesday": "Miércoles",
+        "thursday": "Jueves",
+        "friday": "Viernes",
+        "saturday": "Sábado",
+        "sunday": "Domingo"
+      },
+      "logistics": {
+        "deliveryType": "Método de entrega",
+        "scheduledDelivery": "Previsión de entrega",
+        "address": "Dirección de entrega",
+        "notes": "Notas para el repartidor"
+      },
+      "cart": {
+        "title": "Tu cesta",
+        "articles": "{count, plural, one {# artículo} other {# artículos}}",
+        "unitPrice": "Precio unitario"
+      },
+      "summary": {
+        "title": "Detalle del ticket",
+        "subtotal": "Subtotal productos",
+        "vat": "IVA ({{rate}}%)",
+        "shipping": "Gastos de envío",
+        "free": "GRATIS",
+        "total": "Total estimado",
+        "invoiceNote": "Puedes descargar la factura oficial una vez que el repartidor haya entregado tu pedido.",
+        "viewPdf": "Factura"
+      },
+      "actions": {
+        "modify": "Modificar pedido",
+        "delete": "Eliminar pedido"
+      }
     }
   },
   "users": {

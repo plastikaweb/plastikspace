@@ -5,7 +5,8 @@ import {
   withImmutableState,
 } from '@angular-architects/ngrx-toolkit';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { computed, effect, inject, isDevMode, untracked } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { computed, effect, inject, isDevMode, PLATFORM_ID, untracked } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import {
   removeAllEntities,
@@ -86,6 +87,7 @@ const initialState: EcoStoreCartState = {
 };
 
 export const ecoStoreCartStore = signalStore(
+  { providedIn: 'root' },
   isDevMode() ? withDevtools('cart') : withDevToolsStub('cart'),
   withImmutableState<EcoStoreCartState>(initialState),
   withEntities<EcoStoreCartItem>(),
@@ -99,6 +101,7 @@ export const ecoStoreCartStore = signalStore(
     _translateService: inject(TranslateService),
     _liveAnnouncer: inject(LiveAnnouncer),
     _confirmService: inject(SharedConfirmDialogService),
+    _platformId: inject(PLATFORM_ID),
   })),
 
   withComputed(({ entities, entityMap, method, address, day, time, _tenantStore }) => {
@@ -242,6 +245,7 @@ export const ecoStoreCartStore = signalStore(
     // store.items() may be empty at merge time since entity state is not guaranteed to
     // be populated at login. Reading directly from storage is the reliable source of truth.
     const _readLocalStorageItems = (): EcoStoreCartItem[] => {
+      if (!isPlatformBrowser(store._platformId)) return [];
       try {
         const raw = localStorage.getItem(store.storageKey());
         if (!raw) return [];
@@ -465,7 +469,9 @@ export const ecoStoreCartStore = signalStore(
           setAllEntities(itemsToProcess, { selectId: i => i.product.id })
         );
 
-        localStorage.removeItem(store.storageKey());
+        if (isPlatformBrowser(store._platformId)) {
+          localStorage.removeItem(store.storageKey());
+        }
 
         // Notify when a real merge happened (both sources had items)
         if (store.priceHasChanged()) {
@@ -649,7 +655,9 @@ export const ecoStoreCartStore = signalStore(
             removeAllEntities()
           );
           // Remove immediately — don't rely solely on the persistence effect ordering.
-          localStorage.removeItem(store.storageKey());
+          if (isPlatformBrowser(store._platformId)) {
+            localStorage.removeItem(store.storageKey());
+          }
         }
       });
 
@@ -665,6 +673,7 @@ export const ecoStoreCartStore = signalStore(
         anonymousCartRestored = true;
 
         untracked(() => {
+          if (!isPlatformBrowser(store._platformId)) return;
           const key = store.storageKey();
           try {
             const raw = localStorage.getItem(key);
@@ -695,7 +704,8 @@ export const ecoStoreCartStore = signalStore(
       // Auto-persist anonymous cart to localStorage using the tenant-specific key.
       // Only writes when the user is anonymous and the tenant name is available.
       effect(() => {
-        if (store._userProfileStore.isAuthenticated()) return;
+        if (store._userProfileStore.isAuthenticated() || !isPlatformBrowser(store._platformId))
+          return;
         const normalizedName = store._tenantStore.tenant()?.normalizedName;
         if (!normalizedName) return;
 

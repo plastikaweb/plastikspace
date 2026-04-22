@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { TranslateModule } from '@ngx-translate/core';
 import { axe } from 'vitest-axe';
 import { SharedAlertUiComponent } from './shared-alert-ui.component';
 
@@ -22,7 +23,7 @@ describe('SharedAlertUiComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedAlertUiComponent],
+      imports: [SharedAlertUiComponent, TranslateModule.forRoot()],
     }).compileComponents();
   });
 
@@ -57,20 +58,20 @@ describe('SharedAlertUiComponent', () => {
 
   it('should not render the close button when closable is false', () => {
     createComponent('INFO', false);
-    const closeBtn = fixture.debugElement.query(By.css('.plastik-alert__close'));
+    const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
     expect(closeBtn).toBeNull();
   });
 
   it('should render the close button when closable is true', () => {
     createComponent('INFO', true);
-    const closeBtn = fixture.debugElement.query(By.css('.plastik-alert__close'));
+    const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
     expect(closeBtn).not.toBeNull();
   });
 
   it('should emit closed event when close button is clicked', () => {
     createComponent('INFO', true);
     const closedSpy = vi.spyOn(fixture.componentInstance.closed, 'emit');
-    const closeBtn = fixture.debugElement.query(By.css('.plastik-alert__close'));
+    const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
     closeBtn.nativeElement.click();
     expect(closedSpy).toHaveBeenCalledOnce();
   });

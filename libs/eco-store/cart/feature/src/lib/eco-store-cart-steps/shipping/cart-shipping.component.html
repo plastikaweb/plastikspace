@@ -39,7 +39,7 @@
   </div>
 
   <!-- Right Column: Order Summary -->
-  <div
+  <aside
     class="sticky top-16 space-y-6 self-start md:col-span-1"
     [class.pointer-events-none]="cartStore.isSyncing()"
     [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
@@ -78,5 +78,5 @@
         }
       </eco-cart-order-summary>
     }
-  </div>
+  </aside>
 </div>

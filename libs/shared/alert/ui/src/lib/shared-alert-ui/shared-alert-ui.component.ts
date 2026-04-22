@@ -1,16 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { TranslateModule } from '@ngx-translate/core';
 import { ALERT_ICONS, AlertType } from '@plastik/core/entities';
 
 @Component({
   selector: 'plastik-shared-alert',
-  imports: [MatIconModule, MatButtonModule],
+  imports: [MatIconModule, MatButtonModule, TranslateModule],
   templateUrl: './shared-alert-ui.component.html',
   styleUrl: './shared-alert-ui.component.scss',
   host: {
     role: 'alert',
     'aria-live': 'polite',
+    class:
+      'plastik-alert relative flex flex-col md:flex-row gap-2 px-4 py-3 rounded-lg items-center',
     '[class]': 'hostClass()',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,6 +42,6 @@ export class SharedAlertUiComponent {
   protected readonly resolvedIcon = computed(() => this.icon() || ALERT_ICONS[this.type()]);
 
   protected readonly hostClass = computed(
-    () => `plastik-alert plastik-alert--${this.type().toLowerCase()}`
+    () => `plastik-alert--${this.type().toLowerCase()} ${this.closable() ? 'closable' : ''}`
   );
 }

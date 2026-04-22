@@ -1,4 +1,5 @@
 import { Route } from '@angular/router';
+import { ecoStoreNotLoggedOrdersGuard } from '@plastik/eco-store/orders/data-access';
 import { provideInputSearchFormly } from '@plastik/shared/form/input-search';
 import { provideEcoStoreOrdersFormly } from './eco-store-orders-formly.providers';
 import EcoStoreOrdersListComponent from './eco-store-orders-list.component';
@@ -10,6 +11,7 @@ export const ecoStoreOrdersListRoutes: Route[] = [
     title: 'orders.list.title',
     component: EcoStoreOrdersListComponent,
     providers: [provideEcoStoreOrdersFormly(), provideInputSearchFormly()],
+    canActivate: [ecoStoreNotLoggedOrdersGuard],
     resolve: { ready: ecoStoreOrdersListResolver },
     runGuardsAndResolvers: 'paramsOrQueryParamsChange',
   },

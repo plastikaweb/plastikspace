@@ -9,7 +9,9 @@
   - [Quick Start](#quick-start)
   - [Development Commands](#development-commands)
   - [Architecture \& Libraries](#architecture--libraries)
-    - [📦 Products \& Orders](#-products--orders)
+    - [📦 Products](#-products)
+    - [🛒 Cart](#-cart)
+    - [🧾 Orders](#-orders)
     - [🚀 Core \& Shared](#-core--shared)
   - [Theming \& Design](#theming--design)
     - [🎨 Light \& Dark Modes](#-light--dark-modes)
@@ -45,12 +47,22 @@ Built with **Angular 21** (Signals, Standalone, Control Flow) and **PocketBase**
 
 The application is structured into domain-specific libraries:
 
-### 📦 Products & Orders
+### 📦 Products
 
 - [**Feature List**](../../libs/eco-store/products/feature/list/README.md) / [**Detail**](../../libs/eco-store/products/feature/detail/README.md)
+- [**Data Access**](../../libs/eco-store/products/data-access/README.md)
+
+### 🛒 Cart
+
 - [**Cart Feature**](../../libs/eco-store/cart/feature/README.md)
-- [**Orders Management**](../../libs/eco-store/orders/feature/list/README.md) / [**Confirmation**](../../libs/eco-store/orders/feature/created/README.md)
-- [**Data Access**](../../libs/eco-store/products/data-access/README.md) (Products, Cart, Orders, Categories)
+- [**Data Access**](../../libs/eco-store/cart/data-access/README.md)
+
+### 🧾 Orders
+
+- [**Data Access**](../../libs/eco-store/orders/data-access/README.md)
+- [**Orders List**](../../libs/eco-store/orders/feature/list/README.md)
+- [**Order Detail**](../../libs/eco-store/orders/feature/detail/README.md)
+- [**Order Confirmation**](../../libs/eco-store/orders/feature/created/README.md)
 
 ### 🚀 Core & Shared
 

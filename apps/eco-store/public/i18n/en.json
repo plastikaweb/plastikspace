@@ -583,6 +583,56 @@
         "updatedAsc": "Oldest",
         "updatedDesc": "Most recent"
       }
+    },
+    "getOne": {
+      "notFound": "Order not found"
+    },
+    "detail": {
+      "back": "Back to orders",
+      "title": "Order #{orderNumber}",
+      "downloadPdf": "Download PDF",
+      "loading": "Loading order...",
+      "openOrder": "Open order: You can modify it completely or cancel it until the preparation cycle closes.",
+      "orderDate": "Order placed on",
+      "noResults": {
+        "title": "Order not found",
+        "description": "We couldn't find the order. Check the number or go back to the orders list.",
+        "goToOrders": "Back to orders"
+      },
+      "days": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      },
+      "logistics": {
+        "deliveryType": "Delivery method",
+        "scheduledDelivery": "Estimated delivery",
+        "address": "Delivery address",
+        "notes": "Notes for the courier"
+      },
+      "cart": {
+        "title": "Your basket",
+        "articles": "{count, plural, one {# item} other {# items}}",
+        "unitPrice": "Unit price"
+      },
+      "summary": {
+        "title": "Receipt details",
+        "subtotal": "Products subtotal",
+        "vat": "VAT ({{rate}}%)",
+        "shipping": "Shipping costs",
+        "free": "FREE",
+        "total": "Estimated total",
+        "invoiceNote": "You can download the official invoice once the courier has delivered your order.",
+        "viewPdf": "Invoice"
+      },
+      "actions": {
+        "modify": "Modify order",
+        "delete": "Delete order"
+      }
     }
   },
   "users": {

@@ -67,6 +67,10 @@ export class PocketBaseAuthService implements AuthFacade {
     this.#pb.authStore.clear();
   }
 
+  get token(): string {
+    return this.#pb.authStore.token;
+  }
+
   get authModel(): AuthModel | null {
     return this.#pb.authStore.record;
   }

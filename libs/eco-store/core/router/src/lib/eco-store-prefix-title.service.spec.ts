@@ -15,6 +15,7 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 
 import { EcoStorePrefixTitleService } from './eco-store-prefix-title.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('EcoStorePrefixTitleService', () => {
   let service: EcoStorePrefixTitleService;
@@ -23,6 +24,7 @@ describe('EcoStorePrefixTitleService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [TranslateModule.forRoot()],
       providers: [
         provideZonelessChangeDetection(),
         provideEnvironmentMock(),

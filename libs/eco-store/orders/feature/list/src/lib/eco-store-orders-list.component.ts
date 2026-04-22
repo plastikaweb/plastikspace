@@ -99,6 +99,10 @@ export default class EcoStoreOrdersListComponent {
     });
   }
 
+  protected onViewDetail(orderId: EcoStoreOrder['id']): void {
+    this.#router.navigate(['/comandes', orderId]);
+  }
+
   protected onDeleteOrder([orderId, orderNumber]: [
     EcoStoreOrder['id'],
     EcoStoreOrder['orderNumber'],
