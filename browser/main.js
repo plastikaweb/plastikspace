@@ -1,6 +1,6 @@
 import {
   notificationStore
-} from "./chunk-OGSAG2LY.js";
+} from "./chunk-GRK42D4S.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -18,7 +18,7 @@ import {
   provideWithApiEnv,
   routerReducers,
   selectLayoutFeature
-} from "./chunk-WAQ6NEZU.js";
+} from "./chunk-YDIMXKYF.js";
 import {
   SvgIconComponent,
   provideAngularSvgIcon
@@ -35,7 +35,7 @@ import {
   UPDATE,
   provideState,
   provideStore
-} from "./chunk-OPFSINPD.js";
+} from "./chunk-RCAEZDJO.js";
 import {
   RouterLink,
   RouterLinkActive,
@@ -6552,11 +6552,11 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-JMVDQHQT.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-XQ7NGU67.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
-    loadChildren: () => import("./src-N6LYUTGC.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
+    loadChildren: () => import("./src-U5HLCW2B.js").then((routes2) => routes2.nasaImagesFaqsFeatureRoutes)
   },
   { path: "**", redirectTo: "search", pathMatch: "full" }
 ];
@@ -6572,7 +6572,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-UGEN2LUX.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-IXI6ZG5K.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: "link",

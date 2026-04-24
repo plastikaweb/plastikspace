@@ -96,7 +96,13 @@ var _ZonelessTickScheduler = class _ZonelessTickScheduler extends TickScheduler 
     this.appRef = inject(ApplicationRef);
     this.platformId = inject(PLATFORM_ID);
     this.isServer = isPlatformServer(this.platformId);
-    this.scheduleFn = this.isServer ? setTimeout : requestAnimationFrame;
+    this.scheduleFn = (callback) => {
+      if (this.isServer) {
+        setTimeout(callback);
+      } else {
+        requestAnimationFrame(callback);
+      }
+    };
     this.isScheduled = false;
   }
   schedule() {
@@ -1677,4 +1683,4 @@ export {
   on,
   createReducer
 };
-//# sourceMappingURL=chunk-OPFSINPD.js.map
+//# sourceMappingURL=chunk-RCAEZDJO.js.map
