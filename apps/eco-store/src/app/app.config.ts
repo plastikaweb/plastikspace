@@ -111,7 +111,6 @@ export const appConfig: ApplicationConfig = {
       translate.setFallbackLang(defaultLang);
 
       try {
-        // Esperem a carregar l'idioma abans de pintar l'aplicació
         await firstValueFrom(translate.use(langToUse));
       } catch (error) {
         console.error("No s'han pogut carregar les traduccions", error);

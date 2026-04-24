@@ -43,11 +43,7 @@
       "dependsOn": ["build"]
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "../../coverage/apps/llecoop-triggers"
-      }
+      "executor": "@nx/vitest:test"
     }
   }
 }

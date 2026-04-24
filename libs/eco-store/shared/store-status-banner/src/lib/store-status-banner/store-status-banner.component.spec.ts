@@ -68,7 +68,7 @@ describe('StoreStatusBannerComponent', () => {
     fixture.componentRef.setInput('status', 'CLOSING_SOON');
     fixture.detectChanges();
     const dismissSpy = vi.spyOn(component.dismiss, 'emit');
-    const closeBtn = fixture.debugElement.query(By.css('.plastik-alert__close'));
+    const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
     closeBtn.nativeElement.click();
     expect(dismissSpy).toHaveBeenCalledOnce();
   });

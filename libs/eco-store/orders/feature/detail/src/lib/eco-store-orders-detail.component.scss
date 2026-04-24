@@ -1,0 +1,15 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  .button-delete {
+    background: var(--transparent);
+    color: var(--mat-sys-error);
+
+    &:hover {
+      background: var(--mat-sys-error-container);
+      color: var(--mat-sys-error);
+    }
+  }
+}

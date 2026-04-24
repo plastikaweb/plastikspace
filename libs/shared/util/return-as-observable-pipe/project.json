@@ -10,11 +10,7 @@
       "executor": "@nx/eslint:lint"
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "../../../../coverage/libs/shared/util/return-as-observable-pipe"
-      }
+      "executor": "@nx/vitest:test"
     }
   }
 }

@@ -166,14 +166,14 @@
   </div>
 
   <!-- Right Column: Order Summary (Sticky) -->
-  <div
+  <aside
     class="sticky top-16 space-y-6 self-start md:col-span-1"
     [class.pointer-events-none]="cartStore.isSyncing()"
     [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
       <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl"></div>
     } @else {
-      <eco-cart-order-summary
+      <eco-store-price-summary
         [subtotal]="cartStore.subtotal()"
         [taxes]="cartStore.tax()"
         [total]="cartStore.total()"
@@ -184,7 +184,7 @@
         [shipping]="cartStore.shipping()"
         [deliveryType]="cartStore.method() ?? 'pickup'"
         (actionClick)="onConfirmOrder()">
-      </eco-cart-order-summary>
+      </eco-store-price-summary>
     }
-  </div>
+  </aside>
 </div>

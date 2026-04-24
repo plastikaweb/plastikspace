@@ -248,7 +248,7 @@
     "@vitest/coverage-v8": "^4.0.0",
     "@vitest/ui": "^4.0.8",
     "angular-http-server": "^1.12.0",
-    "baseline-browser-mapping": "^2.9.11",
+    "baseline-browser-mapping": "^2.10.21",
     "branch-name-lint": "^3.0.1",
     "chokidar-cli": "^3.0.0",
     "commitizen": "^4.3.0",

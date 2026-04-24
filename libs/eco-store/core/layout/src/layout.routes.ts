@@ -4,10 +4,13 @@ import { ActivatedRouteSnapshot, Route } from '@angular/router';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { TranslateService } from '@ngx-translate/core';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
-import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
-import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
+import {
+  ecoStoreNotLoggedOrdersGuard,
+  ecoStoreOrdersStore,
+} from '@plastik/eco-store/orders/data-access';
 import { BodyBackgroundService } from './body-background.service';
 import { EcoStoreLayoutService } from './eco-store-layout.service';
 import EcoLayoutComponent from './layout.component';
@@ -17,8 +20,6 @@ export const layoutRoutes: Route[] = [
     path: '',
     component: EcoLayoutComponent,
     providers: [
-      ecoStoreCartStore,
-      ecoStoreOrdersStore,
       provideEnvironmentInitializer(() => {
         inject(BodyBackgroundService);
         inject(EcoStoreLayoutService);
@@ -44,6 +45,7 @@ export const layoutRoutes: Route[] = [
       {
         path: 'comandes',
         data: { hasSidenav: false },
+        canActivateChild: [ecoStoreNotLoggedOrdersGuard],
         children: [
           {
             path: 'nova',
@@ -51,6 +53,23 @@ export const layoutRoutes: Route[] = [
               import('@plastik/eco-store/orders/created').then(
                 m => m.ecoStoreOrderConfirmationRoutes
               ),
+          },
+          {
+            path: ':id',
+            title: (route: ActivatedRouteSnapshot): string => {
+              const id = route.paramMap.get('id');
+              const ordersStore = inject(ecoStoreOrdersStore);
+              const translate = inject(TranslateService);
+              if (id) {
+                const orderNumber = ordersStore.entityMap()[id]?.orderNumber;
+                if (orderNumber !== undefined) {
+                  return translate.instant('orders.detail.title', { orderNumber });
+                }
+              }
+              return '';
+            },
+            loadChildren: () =>
+              import('@plastik/eco-store/orders/detail').then(m => m.ecoStoreOrdersDetailRoutes),
           },
           {
             path: '',

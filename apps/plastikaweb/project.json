@@ -90,11 +90,7 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "../../coverage/apps/plastikaweb"
-      }
+      "executor": "@nx/vitest:test"
     }
   }
 }

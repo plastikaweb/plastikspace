@@ -3,7 +3,6 @@ import { PrefixTitleService } from '@plastik/core/router-state';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
-
 @Injectable({
   providedIn: 'root',
 })

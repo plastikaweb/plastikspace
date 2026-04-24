@@ -13,11 +13,7 @@
       }
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "../../../../coverage/libs/shared/countdown/util"
-      }
+      "executor": "@nx/vitest:test"
     }
   }
 }

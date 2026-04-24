@@ -71,7 +71,7 @@ describe('CartConfirmationComponent', () => {
 
   it('should render the order summary', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('eco-cart-order-summary')).toBeTruthy();
+    expect(compiled.querySelector('eco-store-price-summary')).toBeTruthy();
   });
 
   it('should render product cards for cart items', () => {

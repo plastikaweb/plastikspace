@@ -7,11 +7,7 @@
   "tags": ["type:feature", "scope:eco-store"],
   "targets": {
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "../../../../../coverage/libs/eco-store/auth/feature/forgot-password-sent"
-      }
+      "executor": "@nx/vitest:test"
     },
     "lint": {
       "executor": "@nx/eslint:lint"

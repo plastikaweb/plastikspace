@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-24] - Eco-Store: Bundle Size Fix & Price Summary Refactor
+
+### Added
+
+- **Price Summary Component**: Extracted `EcoStorePriceSummaryComponent` into a new shared library `@plastik/eco-store/price-summary`, replacing the former `CartOrderSummaryComponent` for reuse across cart steps and orders detail.
+
+### Changed
+
+- **Bundle optimization**: Moved `ecoStoreOrdersStore` and `ecoStoreCartStore` back to the lazy layout chunk by removing their static import from `EcoStorePrefixTitleService` and inlining the order title resolution into `layout.routes.ts`.
+- **Order detail title**: The dynamic browser tab title for order detail (e.g. "Order #1234") is now resolved inline in the lazy layout routes, preserving correctness for list-to-detail navigations.
+- **Router barrel cleanup**: Removed `EcoStoreOrdersDetailRouteTitleService` from the `@plastik/eco-store/core/router-state` barrel to prevent accidental tree-shaking bypass through the shared barrel import.
+- **Cart feature API**: Removed `CartOrderSummaryComponent` from the cart feature public API (`index.ts`) and deleted the component files; use `EcoStorePriceSummaryComponent` from `@plastik/eco-store/price-summary` instead.
+
+### Fixed
+
+- **Initial bundle error**: Resolved the production build failure caused by the initial bundle exceeding the 900 kB error budget (970 kB → 812 kB).
+
+## [2026-04-22] - Eco-Store: Orders Detail Feature & UI Improvements
+
+### Added
+
+- **Orders Detail Feature**: Implemented a new library `@plastik/eco-store/orders/feature/detail` providing a comprehensive view for individual orders with itemized lists, logistics summaries, and total breakdowns ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+- **Orders Detail Resolver**: Added `ecoStoreOrdersDetailResolver` to ensure order data is hydrated and state is synchronized before the detail view renders ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+- **Unauthenticated Orders Guard**: Implemented `ecoStoreNotLoggedOrdersGuard` to protect order-related routes and ensure proper authentication state management ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+- **Dynamic Detail Titles**: Created `EcoStoreOrdersDetailRouteTitleService` to provide reactive, context-aware page titles (e.g., "Order #1234") for the browser tab ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+
+### Changed
+
+- **i18n (CA/EN/ES)**: Integrated extensive new translation keys for order details, including pluralized item counts, status labels, and delivery forecast across all three languages ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+- **Shared Alert UI Refinement**: Refactored `SharedAlertUiComponent` with a more flexible flexbox-based layout, improved mobile responsiveness, and better icon/title alignment ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+- **PocketBase Signal State Modernization**: Refactored `withPocketBaseGetOneFeature` to use a modern `async/await` pattern with `firstValueFrom`, providing cleaner error handling and more robust state updates ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+- **Orders List Integration**: Updated the orders list to trigger navigation to the detailed view and enforced the new authentication guards ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+- **Cart UI Polish**: Refined templates for cart summary and shipping steps to ensure visual consistency with the new orders detail layout ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+
+### Fixed
+
+- **Shared Alert Tests**: Updated `shared-alert-ui.component.spec.ts` to align with the refactored HTML structure and generic button selectors ([#86c8cjgma](https://app.clickup.com/t/86c8cjgma)).
+
 ## [2026-04-17] - Workspace: CI/CD Strategy and Documentation Refactor
 
 ### Added

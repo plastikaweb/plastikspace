@@ -378,6 +378,14 @@ nx g @nx/angular:lib button --directory=shared/ui --tags=scope:shared,type:ui
 - **Components**: Automatically use `OnPush` change detection, standalone architecture, SCSS styles, and `displayBlock: true`
 - **Libraries**: Standalone by default with Vitest for unit testing
 - **Applications**: Vitest for unit tests, Cypress for E2E, ESLint for linting, SCSS for styling
+
+**After generating a new library**, remove the `outputs` and `reportsDirectory` lines that the generator adds to the `test` target in `project.json`. Coverage paths are managed globally via `nx.json` `targetDefaults` (`coverage/{projectRoot}`), and the generator-added paths are wrong (lib-relative instead of workspace-root-relative). The test target should look like:
+
+```json
+"test": {
+  "executor": "@nx/vitest:test"
+}
+```
 - These defaults are pre-configured, so you don't need to specify these flags when generating
 
 ## State Management

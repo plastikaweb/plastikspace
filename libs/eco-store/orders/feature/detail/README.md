@@ -8,6 +8,7 @@
   - [Description](#description)
   - [Features](#features)
   - [Running unit tests](#running-unit-tests)
+  - [UI-UX Features](#ui-ux-features)
 
 ## Description
 
@@ -27,3 +28,16 @@ Part of the [**Eco-Store**](../../../../../apps/eco-store/README.md) application
 ## Running unit tests
 
 Run `nx test eco-store-orders-detail` to execute the unit tests via [Vitest](https://vitest.dev/).
+
+## UI-UX Features
+
+- **Order Detail** page with an `hero-header` that adapts to mobile and desktop.
+- **Actions** always visible on the hero-header.
+- **Order Status** displayed in a `chip` with color and icon based on the status.
+- **Delivery Information**: Delivery method and address displayed in two separate columns.
+- **Payment Information**: Payment method and status displayed in two separate columns.
+- **Open Order**: When an order is open, `edit` and `delete` buttons are displayed in a `Chip`.
+- **Order Items** displayed in a `CartProductCard` component with `quantity`, `priceWithIva`, `iva`, `unitType`, `unitBase`, `images`, `categoryName`, `name`, `categorySlug`, `normalizedName`.
+- **Order Total** displayed in a `EcoStorePriceSummaryComponent` with `subtotal`, `shipping`, `taxes`, and `total`.
+- **No Results**: When no order is found, `EcoStoreSharedNoResults` is displayed with `title`, `description`, and `action`.
+- **Loading State**: When an order is loading, `EcoStoreSharedLoading` is displayed with `title`, `description`, and `action`.

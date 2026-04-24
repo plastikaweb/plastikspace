@@ -6,11 +6,7 @@
   "tags": ["type:data-access", "scope:shared"],
   "targets": {
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "../../../../coverage/libs/shared/signal-state/data-access-http"
-      }
+      "executor": "@nx/vitest:test"
     }
   }
 }

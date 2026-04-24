@@ -9,7 +9,9 @@
   - [Quick Start](#quick-start)
   - [Development Commands](#development-commands)
   - [Architecture \& Libraries](#architecture--libraries)
-    - [📦 Products \& Orders](#-products--orders)
+    - [📦 Products](#-products)
+    - [🛒 Cart](#-cart)
+    - [🧾 Orders](#-orders)
     - [🚀 Core \& Shared](#-core--shared)
   - [Theming \& Design](#theming--design)
     - [🎨 Light \& Dark Modes](#-light--dark-modes)
@@ -45,12 +47,22 @@ Built with **Angular 21** (Signals, Standalone, Control Flow) and **PocketBase**
 
 The application is structured into domain-specific libraries:
 
-### 📦 Products & Orders
+### 📦 Products
 
 - [**Feature List**](../../libs/eco-store/products/feature/list/README.md) / [**Detail**](../../libs/eco-store/products/feature/detail/README.md)
+- [**Data Access**](../../libs/eco-store/products/data-access/README.md)
+
+### 🛒 Cart
+
 - [**Cart Feature**](../../libs/eco-store/cart/feature/README.md)
-- [**Orders Management**](../../libs/eco-store/orders/feature/list/README.md) / [**Confirmation**](../../libs/eco-store/orders/feature/created/README.md)
-- [**Data Access**](../../libs/eco-store/products/data-access/README.md) (Products, Cart, Orders, Categories)
+- [**Data Access**](../../libs/eco-store/cart/data-access/README.md)
+
+### 🧾 Orders
+
+- [**Data Access**](../../libs/eco-store/orders/data-access/README.md)
+- [**Orders List**](../../libs/eco-store/orders/feature/list/README.md)
+- [**Order Detail**](../../libs/eco-store/orders /feature/detail/README.md)
+- [**Order Confirmation**](../../libs/eco-store/orders/feature/created/README.md)
 
 ### 🚀 Core & Shared
 
@@ -59,6 +71,7 @@ The application is structured into domain-specific libraries:
 - [**Auth**](../../libs/eco-store/auth/feature/login/README.md): Login and member authentication.
 - [**Profile**](../../libs/eco-store/profile/feature/README.md): User personal data, addresses, and account management.
 - [**Shared UI**](../../libs/eco-store/shared/product-card/README.md): Cards, chips, and banners.
+- [**Price Summary**](../../libs/eco-store/shared/price-summary/README.md): Reusable price summary card (subtotal, taxes, shipping, total) used across cart steps and orders detail.
 - [**Translation**](../../libs/shared/translation/README.md): Centralized language management.
 
 ---

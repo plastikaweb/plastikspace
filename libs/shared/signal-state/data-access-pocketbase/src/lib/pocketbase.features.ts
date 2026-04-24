@@ -17,7 +17,7 @@ import { BasePocketBaseEntity, IdType } from '@plastik/core/entities';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { areObjectEntriesEqual } from '@plastik/shared/objects';
 import { ClientResponseError, ListResult } from 'pocketbase';
-import { distinctUntilChanged, filter, pipe, switchMap, tap } from 'rxjs';
+import { distinctUntilChanged, filter, firstValueFrom, pipe, switchMap, tap } from 'rxjs';
 import {
   initialGetListState,
   PocketBaseGetListState,
@@ -173,35 +173,26 @@ export function withPocketBaseGetOneFeature<
     withImmutableState<PocketbaseGetOne<T>>({ selectedItemId: null as IdType<T> | null }),
     withMethods(store => {
       return {
-        getOne: rxMethod<IdType<T>>(
-          pipe(
-            tap(() => updateState(store, `[${featureName}] getOne`)),
-            switchMap(id => {
-              return store._apiService.getOne(id).pipe(
-                tapResponse<T, ClientResponseError>({
-                  next: item => {
-                    updateState(
-                      store,
-                      `[${featureName}] getOne success`,
-                      setEntity(item, {
-                        selectId: entity => entity.id || '',
-                      }),
-                      {
-                        selectedItemId: item.id as IdType<T>,
-                      }
-                    );
-                  },
-                  error: error => {
-                    store._notificationService.create(
-                      error.message ?? `${featureName}.getOne.error`,
-                      'ERROR'
-                    );
-                  },
-                })
-              );
-            })
-          )
-        ),
+        async getOne(id: IdType<T>): Promise<void> {
+          updateState(store, `[${featureName}] getOne`);
+          const item = await firstValueFrom(store._apiService.getOne(id)).catch(() => null);
+
+          if (!item) {
+            store._notificationService.create(`${featureName}.getOne.notFound`, 'ERROR');
+            return;
+          }
+
+          updateState(
+            store,
+            `[${featureName}] getOne success`,
+            setEntity(item, {
+              selectId: entity => entity.id || '',
+            }),
+            {
+              selectedItemId: item.id as IdType<T>,
+            }
+          );
+        },
       };
     })
   );

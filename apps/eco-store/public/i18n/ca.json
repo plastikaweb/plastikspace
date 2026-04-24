@@ -583,6 +583,56 @@
         "updatedAsc": "Més antigues",
         "updatedDesc": "Més recents"
       }
+    },
+    "getOne": {
+      "notFound": "Comanda no trobada"
+    },
+    "detail": {
+      "back": "Torna a comandes",
+      "title": "Comanda #{orderNumber}",
+      "downloadPdf": "Descarregar PDF",
+      "loading": "Carregant comanda...",
+      "openOrder": "Comanda oberta: Pots modificar-la completament o cancel·lar-la fins que es tanqui el cicle de preparació.",
+      "orderDate": "Comanda realitzada el",
+      "noResults": {
+        "title": "Comanda no trobada",
+        "description": "No hem pogut trobar la comanda. Revisa el número o torna a la llista de comandes.",
+        "goToOrders": "Tornar a comandes"
+      },
+      "days": {
+        "monday": "Dilluns",
+        "tuesday": "Dimarts",
+        "wednesday": "Dimecres",
+        "thursday": "Dijous",
+        "friday": "Divendres",
+        "saturday": "Dissabte",
+        "sunday": "Diumenge"
+      },
+      "logistics": {
+        "deliveryType": "Mètode d'entrega",
+        "scheduledDelivery": "Previsió de lliurament",
+        "address": "Adreça de lliurament",
+        "notes": "Notes per al repartidor"
+      },
+      "cart": {
+        "title": "La teva cistella",
+        "articles": "{count, plural, one {# article} other {# articles}}",
+        "unitPrice": "Preu unitari"
+      },
+      "summary": {
+        "title": "Detall del tiquet",
+        "subtotal": "Subtotal productes",
+        "vat": "IVA ({{rate}}%)",
+        "shipping": "Despeses d'enviament",
+        "free": "GRATIS",
+        "total": "Total estimat",
+        "invoiceNote": "Pots descarregar la factura oficial un cop el repartidor hagi lliurat la teva comanda.",
+        "viewPdf": "Factura"
+      },
+      "actions": {
+        "modify": "Modificar comanda",
+        "delete": "Eliminar comanda"
+      }
     }
   },
   "users": {

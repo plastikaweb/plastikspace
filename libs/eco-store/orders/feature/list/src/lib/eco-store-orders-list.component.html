@@ -125,6 +125,7 @@
             <eco-order-card
               [order]="order"
               [highlight]="searchByItems()"
+              (viewDetail)="onViewDetail(order.id)"
               (delete)="onDeleteOrder($event)" />
           </li>
         }

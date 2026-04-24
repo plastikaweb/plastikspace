@@ -6,11 +6,7 @@
   "tags": ["scope:core", "type:util"],
   "targets": {
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "../../../../coverage/libs/core/util/api-firebase"
-      }
+      "executor": "@nx/vitest:test"
     }
   }
 }

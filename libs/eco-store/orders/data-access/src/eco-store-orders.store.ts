@@ -1,3 +1,4 @@
+import { updateState } from '@angular-architects/ngrx-toolkit';
 import { inject } from '@angular/core';
 import { signalStore, withMethods, withProps } from '@ngrx/signals';
 import {
@@ -8,7 +9,7 @@ import {
 
 import { Router } from '@angular/router';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { BasePocketBaseEntityFilter } from '@plastik/core/entities';
+import { BasePocketBaseEntityFilter, IdType } from '@plastik/core/entities';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreOrder } from '@plastik/eco-store/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
@@ -24,6 +25,7 @@ export interface OrdersPocketBaseCrudState extends PocketBaseGetListState {
 }
 
 export const ecoStoreOrdersStore = signalStore(
+  { providedIn: 'root' },
   withProps(() => ({
     _cartStore: inject(ecoStoreCartStore),
     _router: inject(Router),
@@ -60,6 +62,15 @@ export const ecoStoreOrdersStore = signalStore(
 
   withMethods(store => {
     return {
+      setSelected(id: IdType<EcoStoreOrder>): boolean {
+        const order = store.entities().find(p => p.id === id);
+        if (order) {
+          updateState(store, '[orders] setSelected', { selectedItemId: order.id });
+          return true;
+        }
+        return false;
+      },
+
       async createOrder() {
         store._activityStore.setActivity(true, 'cart.finish.creatingOrder');
         try {

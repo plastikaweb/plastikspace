@@ -2135,7 +2135,9 @@
           "PREPARING",
           "READY",
           "DELIVERED",
-          "CANCELLED"
+          "CANCELLED",
+          "EXPIRED",
+          "PAID"
         ]
       },
       {
@@ -2874,6 +2876,29 @@
         "required": false,
         "system": false,
         "type": "json"
+      },
+      {
+        "hidden": false,
+        "id": "bool3479730582",
+        "name": "isEditingOrder",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "bool"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text1402237759",
+        "max": 0,
+        "min": 0,
+        "name": "activeOrderId",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
       },
       {
         "hidden": false,
