@@ -10,11 +10,7 @@
       "executor": "@nx/eslint:lint"
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "coverage/libs/llecoop/user-order/cart/ui/mini-cart"
-      }
+      "executor": "@nx/vitest:test"
     }
   }
 }

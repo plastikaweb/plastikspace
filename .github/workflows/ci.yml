@@ -6,6 +6,7 @@ on:
       - develop
 
 env:
+  NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   NODE_OPTIONS: '--no-deprecation'
 
@@ -35,10 +36,22 @@ jobs:
 
       - uses: nrwl/nx-set-shas@v4
 
+      - name: Check Nx Cloud Availability
+        id: nx-cloud-check
+        run: |
+          npx nx-cloud record -- npx nx --version > nx_cloud_check.log 2>&1 || true
+          cat nx_cloud_check.log
+          if grep -iE "disabled|unable to be authorized|exceeding|free plan|failed to record" nx_cloud_check.log; then
+            echo "NX_NO_CLOUD=true" >> $GITHUB_ENV
+            echo "available=false" >> $GITHUB_OUTPUT
+            echo "Nx Cloud is disabled or out of credits. Running with local cache only."
+          else
+            echo "available=true" >> $GITHUB_OUTPUT
+            echo "Nx Cloud is active and available."
+          fi
+
       # Format check
       - run: npx nx format:check --all
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Lint Affected
         if: always()
@@ -46,8 +59,6 @@ jobs:
           yarn i18n:validate
           yarn markdownlint
           npx nx affected --target=lint --exclude=llecoop-firebase --parallel=3
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Test
         if: always()
@@ -59,20 +70,14 @@ jobs:
             echo "Running all tests for push to develop"
             npx nx run-many --target=test --all --exclude=llecoop-firebase --parallel=3 --coverage
           fi
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Build Affected
         if: always()
         run: npx nx affected --target=build --exclude=llecoop-firebase --parallel=3
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Attempt AI Fix on Failure
-        if: failure()
+        if: failure() && steps.nx-cloud-check.outputs.available == 'true'
         run: npx nx-cloud fix-ci
-        env:
-          NX_CLOUD_ACCESS_TOKEN: ${{ secrets.NX_CLOUD_ACCESS_TOKEN }}
 
       - name: Report Coverage
         id: coverage

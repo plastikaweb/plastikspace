@@ -11,11 +11,7 @@
       "outputs": ["{options.outputFile}"]
     },
     "test": {
-      "executor": "@nx/vitest:test",
-      "outputs": ["{options.reportsDirectory}"],
-      "options": {
-        "reportsDirectory": "coverage/libs/llecoop/entities"
-      }
+      "executor": "@nx/vitest:test"
     }
   }
 }
