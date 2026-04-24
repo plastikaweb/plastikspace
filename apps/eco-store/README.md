@@ -61,7 +61,7 @@ The application is structured into domain-specific libraries:
 
 - [**Data Access**](../../libs/eco-store/orders/data-access/README.md)
 - [**Orders List**](../../libs/eco-store/orders/feature/list/README.md)
-- [**Order Detail**](../../libs/eco-store/orders/feature/detail/README.md)
+- [**Order Detail**](../../libs/eco-store/orders /feature/detail/README.md)
 - [**Order Confirmation**](../../libs/eco-store/orders/feature/created/README.md)
 
 ### 🚀 Core & Shared
@@ -71,6 +71,7 @@ The application is structured into domain-specific libraries:
 - [**Auth**](../../libs/eco-store/auth/feature/login/README.md): Login and member authentication.
 - [**Profile**](../../libs/eco-store/profile/feature/README.md): User personal data, addresses, and account management.
 - [**Shared UI**](../../libs/eco-store/shared/product-card/README.md): Cards, chips, and banners.
+- [**Price Summary**](../../libs/eco-store/shared/price-summary/README.md): Reusable price summary card (subtotal, taxes, shipping, total) used across cart steps and orders detail.
 - [**Translation**](../../libs/shared/translation/README.md): Centralized language management.
 
 ---

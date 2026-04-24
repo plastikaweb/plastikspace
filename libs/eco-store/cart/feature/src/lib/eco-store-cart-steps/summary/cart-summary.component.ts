@@ -8,11 +8,11 @@ import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedNoResultsComponent } from '@plastik/eco-store/no-results';
+import { EcoStorePriceSummaryComponent } from '@plastik/eco-store/price-summary';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { take } from 'rxjs';
-import { CartOrderSummaryComponent } from '../../ui/cart-order-summary/cart-order-summary.component';
 import { CartProductCardComponent } from '../../ui/cart-product-card/cart-product-card.component';
 
 @Component({
@@ -23,7 +23,7 @@ import { CartProductCardComponent } from '../../ui/cart-product-card/cart-produc
     MatCardModule,
     TranslatePipe,
     RouterLink,
-    CartOrderSummaryComponent,
+    EcoStorePriceSummaryComponent,
     CartProductCardComponent,
     EcoStoreSharedNoResultsComponent,
     SharedAlertUiComponent,

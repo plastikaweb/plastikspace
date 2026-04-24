@@ -260,14 +260,14 @@
 
     <!-- Right Column: Order Summary (Sticky) -->
     <aside class="sticky top-16 space-y-6 self-start md:col-span-1">
-      <eco-cart-order-summary
+      <eco-store-price-summary
         [subtotal]="currentOrder.subtotal"
         [taxes]="currentOrder.tax"
         [total]="currentOrder.total"
         [shipping]="currentOrder.shipping"
         [deliveryType]="currentOrder.deliveryMethod"
         [submitAvailable]="false">
-      </eco-cart-order-summary>
+      </eco-store-price-summary>
     </aside>
   </div>
 }

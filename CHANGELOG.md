@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-24] - Eco-Store: Bundle Size Fix & Price Summary Refactor
+
+### Added
+
+- **Price Summary Component**: Extracted `EcoStorePriceSummaryComponent` into a new shared library `@plastik/eco-store/price-summary`, replacing the former `CartOrderSummaryComponent` for reuse across cart steps and orders detail.
+
+### Changed
+
+- **Bundle optimization**: Moved `ecoStoreOrdersStore` and `ecoStoreCartStore` back to the lazy layout chunk by removing their static import from `EcoStorePrefixTitleService` and inlining the order title resolution into `layout.routes.ts`.
+- **Order detail title**: The dynamic browser tab title for order detail (e.g. "Order #1234") is now resolved inline in the lazy layout routes, preserving correctness for list-to-detail navigations.
+- **Router barrel cleanup**: Removed `EcoStoreOrdersDetailRouteTitleService` from the `@plastik/eco-store/core/router-state` barrel to prevent accidental tree-shaking bypass through the shared barrel import.
+- **Cart feature API**: Removed `CartOrderSummaryComponent` from the cart feature public API (`index.ts`) and deleted the component files; use `EcoStorePriceSummaryComponent` from `@plastik/eco-store/price-summary` instead.
+
+### Fixed
+
+- **Initial bundle error**: Resolved the production build failure caused by the initial bundle exceeding the 900 kB error budget (970 kB → 812 kB).
+
 ## [2026-04-22] - Eco-Store: Orders Detail Feature & UI Improvements
 
 ### Added

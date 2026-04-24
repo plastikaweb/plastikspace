@@ -10,7 +10,7 @@ export default defineConfig(() => ({
     name: 'eco-store-orders-detail',
     watch: false,
     testTimeout: 10000,
-    setupFiles: ['src/test-setup.ts', '../../../../vitest-setup.ts'],
+    setupFiles: ['src/test-setup.ts', '../../../../../vitest-setup.ts'],
     globals: true,
     environment: 'jsdom',
     include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

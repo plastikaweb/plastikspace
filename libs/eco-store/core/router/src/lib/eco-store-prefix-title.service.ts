@@ -1,7 +1,5 @@
 import { inject, Injectable, Injector } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { PrefixTitleService } from '@plastik/core/router-state';
-import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
@@ -10,7 +8,6 @@ import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 })
 export class EcoStorePrefixTitleService extends PrefixTitleService {
   readonly #injector = inject(Injector);
-  readonly #translateService = inject(TranslateService);
 
   /**
    * @description Resolve the title using TranslateService or Signal-based lookup.
@@ -29,13 +26,6 @@ export class EcoStorePrefixTitleService extends PrefixTitleService {
       const slug = title.split(':')[1];
       const productsStore = this.#injector.get(ecoStoreProductsStore);
       return productsStore.findProductBySlug()(slug)?.name;
-    }
-
-    if (title?.startsWith('ORDER_TITLE:')) {
-      const id = title.split(':')[1];
-      const ordersStore = this.#injector.get(ecoStoreOrdersStore);
-      const orderNumber = ordersStore.entityMap()[id]?.orderNumber;
-      return this.#translateService.instant('orders.detail.title', { orderNumber });
     }
 
     return super.getTranslatedTitle(title);

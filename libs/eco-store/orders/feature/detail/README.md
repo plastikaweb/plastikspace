@@ -38,6 +38,6 @@ Run `nx test eco-store-orders-detail` to execute the unit tests via [Vitest](htt
 - **Payment Information**: Payment method and status displayed in two separate columns.
 - **Open Order**: When an order is open, `edit` and `delete` buttons are displayed in a `Chip`.
 - **Order Items** displayed in a `CartProductCard` component with `quantity`, `priceWithIva`, `iva`, `unitType`, `unitBase`, `images`, `categoryName`, `name`, `categorySlug`, `normalizedName`.
-- **Order Total** displayed in a `CartOrderSummary` component with `subtotal`, `shipping`, `tax`, `total`, `refunded`, `discount`.
+- **Order Total** displayed in a `EcoStorePriceSummaryComponent` with `subtotal`, `shipping`, `taxes`, and `total`.
 - **No Results**: When no order is found, `EcoStoreSharedNoResults` is displayed with `title`, `description`, and `action`.
 - **Loading State**: When an order is loading, `EcoStoreSharedLoading` is displayed with `title`, `description`, and `action`.

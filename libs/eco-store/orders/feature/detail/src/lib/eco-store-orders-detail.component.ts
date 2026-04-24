@@ -5,7 +5,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { CartOrderSummaryComponent, CartProductCardComponent } from '@plastik/eco-store/cart';
+import { CartProductCardComponent } from '@plastik/eco-store/cart';
 import {
   EcoStoreProductWithCategoryName,
   ORDER_DELIVERY_ICON_MAP,
@@ -17,6 +17,7 @@ import {
 } from '@plastik/eco-store/entities';
 import { EcoStoreSharedNoResultsComponent } from '@plastik/eco-store/no-results';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
+import { EcoStorePriceSummaryComponent } from '@plastik/eco-store/price-summary';
 import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
 import { SharedChipComponent } from '@plastik/shared/chip/ui';
 
@@ -30,7 +31,7 @@ import { SharedChipComponent } from '@plastik/shared/chip/ui';
     MatDividerModule,
     SharedChipComponent,
     SharedAlertUiComponent,
-    CartOrderSummaryComponent,
+    EcoStorePriceSummaryComponent,
     CartProductCardComponent,
     RouterLink,
     EcoStoreSharedNoResultsComponent,

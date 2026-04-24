@@ -9,7 +9,7 @@ import { EcoStoreTenantLogisticsDeliveryType } from '@plastik/eco-store/entities
 import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
 
 @Component({
-  selector: 'eco-cart-order-summary',
+  selector: 'eco-store-price-summary',
   imports: [
     CurrencyPipe,
     DatePipe,
@@ -19,10 +19,11 @@ import { SharedAlertUiComponent } from '@plastik/shared/alert/ui';
     SharedAlertUiComponent,
     TranslateModule,
   ],
-  templateUrl: './cart-order-summary.component.html',
+  templateUrl: './eco-store-price-summary.component.html',
+  styleUrl: './eco-store-price-summary.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CartOrderSummaryComponent {
+export class EcoStorePriceSummaryComponent {
   readonly #router = inject(Router);
   readonly submitAvailable = input<boolean>(true);
   readonly subtotal = input.required<number>();

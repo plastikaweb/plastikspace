@@ -173,7 +173,7 @@
     @if (cartStore.isSyncing() && !cartStore.isSynced()) {
       <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl"></div>
     } @else {
-      <eco-cart-order-summary
+      <eco-store-price-summary
         [subtotal]="cartStore.subtotal()"
         [taxes]="cartStore.tax()"
         [total]="cartStore.total()"
@@ -184,7 +184,7 @@
         [shipping]="cartStore.shipping()"
         [deliveryType]="cartStore.method() ?? 'pickup'"
         (actionClick)="onConfirmOrder()">
-      </eco-cart-order-summary>
+      </eco-store-price-summary>
     }
   </aside>
 </div>
