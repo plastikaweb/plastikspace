@@ -38,7 +38,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     index?: number,
     extraConfig?: unknown
   ): SafeHtml | string | FormattingComponentOutput {
-    const value = this.getValueFromRow(pathToKey, item);
+    const value = this.#getValueFromRow(pathToKey, item);
     const { type, extras } = formatting;
 
     switch (type) {
@@ -86,7 +86,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     }
   }
 
-  private getValueFromRow(
+  #getValueFromRow(
     property: string,
     item: T extends BaseEntity ? T : never
   ): FormattingOutput {

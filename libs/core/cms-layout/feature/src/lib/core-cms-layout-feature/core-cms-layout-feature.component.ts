@@ -89,7 +89,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.#zone.runOutsideAngular(() => this.createWidgets());
+    this.#zone.runOutsideAngular(() => this.#createWidgets());
   }
 
   ngOnDestroy(): void {
@@ -113,7 +113,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
     this.#zone.runOutsideAngular(() => this.#layoutFacade.setIsMobile(isMobile));
   }
 
-  private createWidgets(): void {
+  async #createWidgets(): Promise<void> {
     if (!this.headerWidgetsConfig) return;
 
     const container = this.widgetsContainer();

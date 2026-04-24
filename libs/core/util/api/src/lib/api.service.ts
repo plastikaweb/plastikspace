@@ -49,17 +49,17 @@ export abstract class ApiService<T, P extends object> {
    * @returns { Observable<P | never> } The API data response after mapping or an error catch.
    */
   getList(params: P): Observable<T> {
-    return this.#httpClient.get(this.#apiUrl, { params: this.getHttpParams(params) }).pipe(
+    return this.#httpClient.get(this.#apiUrl, { params: this.#getHttpParams(params) }).pipe(
       map(this.mapListResponse),
       share({
         connector: () => new ReplaySubject(1),
         resetOnComplete: () => timer(this.cacheTime),
       }),
-      catchError(this.handleError)
+      catchError(this.#handleError)
     );
   }
 
-  private getHttpParams(params: P): HttpParams {
+  #getHttpParams(params: P): HttpParams {
     let httpClientParams: HttpParams = new HttpParams();
 
     Object.entries(params || {}).forEach(([key, value]) => {
@@ -69,7 +69,7 @@ export abstract class ApiService<T, P extends object> {
     return httpClientParams;
   }
 
-  private handleError({ error }: HttpErrorResponse): Observable<never> {
+  #handleError({ error }: HttpErrorResponse): Observable<never> {
     return throwError(() => error);
   }
 }

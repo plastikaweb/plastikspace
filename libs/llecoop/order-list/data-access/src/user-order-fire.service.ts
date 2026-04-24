@@ -38,7 +38,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
     return this.#ordersGroupCollection;
   }
 
-  private setCollection(item: LlecoopUserOrder): void {
+  #setCollection(item: LlecoopUserOrder): void {
     if (this.activeConnection()) {
       this.collection = collection(
         this.firestore,
@@ -111,17 +111,17 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
   }
 
   override create(item: LlecoopUserOrder) {
-    this.setCollection(item);
+    this.#setCollection(item);
     return super.create(item);
   }
 
   override update(item: LlecoopUserOrder) {
-    this.setCollection(item);
+    this.#setCollection(item);
     return super.update(item);
   }
 
   override delete(item: LlecoopUserOrder) {
-    this.setCollection(item);
+    this.#setCollection(item);
     return super.delete(item);
   }
 

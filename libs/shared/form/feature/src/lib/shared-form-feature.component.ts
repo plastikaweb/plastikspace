@@ -96,7 +96,7 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
   onSubmit(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    this.emitChange();
+    this.#emitChange();
   }
 
   onModelChange(model: T): void {
@@ -104,11 +104,11 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
 
     this.#newModel.set(model);
     this.pendingChangesEvent.emit(this.form.dirty);
-    if (!this.config().submitAvailable) this.emitChange();
+    if (!this.config().submitAvailable) this.#emitChange();
     if (this.config().emitOnChange) this.temporaryChangeEvent.emit(model);
   }
 
-  private emitChange(): void {
+  #emitChange(): void {
     if (this.form.valid) {
       if (this.config().disableOnSubmit) {
         this.form.disable({ emitEvent: false });
