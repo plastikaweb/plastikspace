@@ -3,7 +3,6 @@ import { CdkTableModule } from '@angular/cdk/table';
 import { CdkTextareaAutosize } from '@angular/cdk/text-field';
 import {
   KeyValuePipe,
-  NgClass,
   NgComponentOutlet,
   NgOptimizedImage,
   NgTemplateOutlet,
@@ -13,7 +12,6 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
   inject,
   input,
   OnInit,
@@ -21,7 +19,6 @@ import {
   signal,
   TemplateRef,
   viewChild,
-  ViewChildren,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
@@ -65,12 +62,15 @@ import {
 
 import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elements.pipe';
 
+/**
+ * Shared Table UI Component.
+ * Provides a highly configurable table with sorting, pagination, and editable cells.
+ */
 @Component({
   selector: 'plastik-shared-table',
   imports: [
     RouterLink,
     KeyValuePipe,
-    NgClass,
     NgComponentOutlet,
     NgTemplateOutlet,
     CdkTableModule,
@@ -99,7 +99,8 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
   implements OnInit
 {
-  protected dataFormatFactoryService = inject(DataFormatFactoryService);
+  readonly #liveAnnouncer = inject(LiveAnnouncer);
+
   /**
    * Data that will populate the table.
    */
@@ -149,20 +150,44 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    */
   actions = input<TableDefinition<T>['actions']>();
 
+  /**
+   * Filter criteria.
+   */
   filterCriteria = input<Record<string, string>>({});
 
+  /**
+   * Filter predicate function.
+   */
   filterPredicate = input<(data: T, criteria: Record<string, string>) => boolean>();
 
+  /**
+   * Extra row styles.
+   */
   extraRowStyles = input<TableDefinition<T>['extraRowStyles']>();
 
+  /**
+   * Actions column styles.
+   */
   actionsColStyles = input<TableDefinition<T>['actionsColStyles']>();
 
+  /**
+   * Row height.
+   */
   rowHeight = input<TableDefinition<T>['rowHeight']>('unset');
 
+  /**
+   * Expandable rows configuration.
+   */
   expandable = input<boolean>(false);
 
+  /**
+   * Expanded element ID.
+   */
   expandedElementId = input<EntityId | null>(null);
 
+  /**
+   * Expanded detail template.
+   */
   expandedDetailTpl = input<TemplateRef<unknown> | null>(null);
 
   /**
@@ -180,11 +205,13 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    */
   delete = output<T>();
 
+  /**
+   * An Output emitter to send changed data.
+   */
   getChangedData = output<T | undefined>();
 
   protected readonly matSort = viewChild<MatSort | null>(MatSort);
   protected readonly matPaginator = viewChild<MatPaginator | null>(MatPaginator);
-  @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef[];
 
   protected dataSource = new MatTableDataSource<T>();
   protected columnsToDisplay = computed(() => {
@@ -207,17 +234,32 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isDynamicComponent = isDynamicComponentTypeGuard;
 
   protected expandedElement = signal<T | null>(null);
-  readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   constructor() {
+    /**
+     * Synchronize the data source with the data input signal.
+     */
     effect(() => (this.dataSource.data = this.data()));
+
+    /**
+     * Synchronize the data source filter with the filter criteria and predicate signals.
+     */
     effect(() => {
-      if (this.filterCriteria() && this.filterPredicate()) {
-        this.dataSource.filter = `${this.filterCriteria()}`;
+      const criteria = this.filterCriteria();
+      const predicate = this.filterPredicate();
+
+      if (criteria && predicate) {
+        // We set a non-empty string to trigger the filterPredicate
+        this.dataSource.filter = JSON.stringify(criteria);
+      } else {
+        this.dataSource.filter = '';
       }
     });
   }
 
+  /**
+   * Initializes the component.
+   */
   ngOnInit(): void {
     this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
       const value = sortHeaderId.split('.').reduce((obj, key) => {
@@ -247,6 +289,10 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     }
   }
 
+  /**
+   * Handles pagination changes.
+   * @param config - The pagination configuration.
+   */
   onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
     if (pageSize !== this.pagination()?.pageSize) {
       pageIndex = 0;
@@ -258,19 +304,34 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     });
   }
 
+  /**
+   * Handles sorting changes.
+   * @param sorting - The sorting configuration.
+   */
   protected onChangeSorting({ active, direction }: TableSorting): void {
     this.changeSorting.emit({
       active,
       direction,
     });
-    this.announceSortChange({ active, direction });
+    this.#announceSortChange({ active, direction });
   }
 
+  /**
+   * Handles the delete action.
+   * @param event - The event object.
+   * @param element - The element to delete.
+   */
   protected onDelete(event: Event, element: T): void {
     event.stopPropagation();
     this.delete.emit(element as T);
   }
 
+  /**
+   * Handles input changes in editable cells.
+   * @param event - The event object.
+   * @param element - The element being edited.
+   * @param editableAttr - The editable attribute configuration.
+   */
   protected onInputChange(
     event: Event | MatSelectChange | MatCheckboxChange | MatRadioChange | MatSlideToggleChange,
     element: T,
@@ -288,23 +349,21 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     this.getChangedData.emit(result);
   }
 
-  protected setCellNgClass(column: TableColumnFormatting<T, FormattingTypes>): {
-    [className: string]: boolean;
-  } {
-    return {
-      ...(column.cssClasses?.[0] ? { [column.cssClasses[0]]: true } : {}),
-      ...(column.formatting.type === 'INPUT' ? { 'mat-cell-input': true } : {}),
-      ...(column.formatting.type === 'LINK' ? { 'mat-cell-link': true } : {}),
-    };
-  }
-
+  /**
+   * Updates the expanded element.
+   * @param element - The element to expand or null to collapse.
+   */
   protected updateExpandedElement(element: T | null): void {
     requestAnimationFrame(() => {
       this.expandedElement.set(this.expandedElement()?.id === element?.id ? null : element);
     });
   }
 
-  private announceSortChange(sortState: Sort) {
+  /**
+   * Announces the sort change for accessibility.
+   * @param sortState - The current sort state.
+   */
+  #announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this.#liveAnnouncer.announce(
         `Ordenant columna ${sortState.active} ${sortState.direction === 'asc' ? 'de forma ascendent' : 'de forma descendent'}`,
