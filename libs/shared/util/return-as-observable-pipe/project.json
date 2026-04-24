@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../coverage/libs/shared/util/return-as-observable-pipe"
+        "reportsDirectory": "coverage/libs/shared/util/return-as-observable-pipe"
       }
     }
   }

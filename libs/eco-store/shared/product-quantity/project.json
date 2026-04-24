@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../coverage/libs/eco-store/shared/product-quantity"
+        "reportsDirectory": "coverage/libs/eco-store/shared/product-quantity"
       }
     }
   }

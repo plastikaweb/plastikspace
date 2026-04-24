@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../coverage/libs/shared/util/view-transition"
+        "reportsDirectory": "coverage/libs/shared/util/view-transition"
       }
     }
   }

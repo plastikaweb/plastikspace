@@ -93,7 +93,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../coverage/apps/plastikaweb"
+        "reportsDirectory": "coverage/apps/plastikaweb"
       }
     }
   }

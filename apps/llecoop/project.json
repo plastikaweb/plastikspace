@@ -119,7 +119,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../coverage/apps/llecoop"
+        "reportsDirectory": "coverage/apps/llecoop"
       }
     }
   }

@@ -10,7 +10,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../coverage/libs/eco-store/profile/basic"
+        "reportsDirectory": "coverage/libs/eco-store/profile/basic"
       }
     },
     "lint": {

@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../coverage/libs/shared/util/dynamic-bg-color"
+        "reportsDirectory": "coverage/libs/shared/util/dynamic-bg-color"
       }
     }
   }

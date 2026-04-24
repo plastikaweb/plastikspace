@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../../coverage/libs/llecoop/product/util/product-unit-step"
+        "reportsDirectory": "coverage/libs/llecoop/product/util/product-unit-step"
       }
     }
   }

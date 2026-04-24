@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../../coverage/libs/llecoop/order-list/feature/llecoop-order-indicator"
+        "reportsDirectory": "coverage/libs/llecoop/order-list/feature/llecoop-order-indicator"
       }
     }
   }

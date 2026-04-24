@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../coverage/libs/core/can-deactivate-guard"
+        "reportsDirectory": "coverage/libs/core/can-deactivate-guard"
       }
     }
   }

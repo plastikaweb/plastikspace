@@ -20,7 +20,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../coverage/libs/eco-store/store-window"
+        "reportsDirectory": "coverage/libs/eco-store/store-window"
       }
     }
   }

@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../../coverage/orders/feature/created"
+        "reportsDirectory": "coverage/orders/feature/created"
       }
     }
   }

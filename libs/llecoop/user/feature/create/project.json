@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../../coverage/libs/llecoop/user/feature/create"
+        "reportsDirectory": "coverage/libs/llecoop/user/feature/create"
       }
     }
   }

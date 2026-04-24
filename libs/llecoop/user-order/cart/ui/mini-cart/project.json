@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../../../coverage/libs/llecoop/user-order/cart/ui/mini-cart"
+        "reportsDirectory": "coverage/libs/llecoop/user-order/cart/ui/mini-cart"
       }
     }
   }

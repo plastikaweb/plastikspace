@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../coverage/libs/llecoop/shared/data-access"
+        "reportsDirectory": "coverage/libs/llecoop/shared/data-access"
       }
     }
   }

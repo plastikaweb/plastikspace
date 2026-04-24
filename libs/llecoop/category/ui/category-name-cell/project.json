@@ -13,7 +13,7 @@
       "executor": "@nx/vitest:test",
       "outputs": ["{options.reportsDirectory}"],
       "options": {
-        "reportsDirectory": "../../../../../coverage/libs/llecoop/category/ui/category-name-cell"
+        "reportsDirectory": "coverage/libs/llecoop/category/ui/category-name-cell"
       }
     }
   }
