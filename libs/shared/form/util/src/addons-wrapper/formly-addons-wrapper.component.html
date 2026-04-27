@@ -2,7 +2,7 @@
   @if (addon.type === 'button' && addon.text) {
     <!-- Text button -->
     <button
-      mat-button
+      matButton
       type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
@@ -15,7 +15,7 @@
   @if (addon.type === 'button' && addon.icon) {
     <!-- Icon button -->
     <button
-      mat-icon-button
+      matIconButton
       type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"

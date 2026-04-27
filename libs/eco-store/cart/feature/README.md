@@ -325,7 +325,7 @@ All text content is internationalized under the `cart.steps.shipping.unavailable
 
 **Styling:**
 
-- Uses Angular Material components (`mat-expansion-panel`, `mat-icon`, `mat-button`)
+- Uses Angular Material components (`mat-expansion-panel`, `mat-icon`, `matButton`)
 - Tailwind utility classes for layout and spacing in the template
 - Material Design theming via SCSS mixins for consistent color application
 - Vertically centered in the available container space

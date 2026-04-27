@@ -1,6 +1,6 @@
 <!-- Breadcrumbs & Hero Header -->
 <nav
-  class="font-plain mb-4 flex w-full items-center overflow-x-auto text-xs [scrollbar-width:none] md:text-sm [&::-webkit-scrollbar]:hidden">
+  class="font-plain mb-2 flex w-full items-center overflow-x-auto text-xs [scrollbar-width:none] md:text-sm [&::-webkit-scrollbar]:hidden">
   <ol class="flex w-max items-center pe-4 whitespace-nowrap">
     <li class="flex items-center">
       <button
@@ -39,7 +39,8 @@
         @if (order()) {
           <div class="flex flex-col gap-2">
             <div class="flex flex-col gap-2 lg:flex-row">
-              <h2 class="text-on-surface text-2xl font-black tracking-tight sm:text-3xl">
+              <h2
+                class="text-on-surface max-w-[calc(100%-40px)] truncate text-base font-black tracking-tight break-all sm:text-2xl sm:break-normal">
                 {{ 'orders.detail.title' | translate: { orderNumber: order()?.orderNumber } }}
               </h2>
               @if (order()) {

@@ -6,7 +6,6 @@ import {
   inject,
   linkedSignal,
   PLATFORM_ID,
-  signal,
 } from '@angular/core';
 
 import { Breakpoints } from '@angular/cdk/layout';
@@ -32,7 +31,6 @@ import { EcoTenantLogoComponent } from './tenant-logo/tenant-logo.component';
 import { MatDivider } from '@angular/material/divider';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
-import { StoreStatusBannerComponent } from '@plastik/eco-store/status-banner';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { appSearchFormConfig } from './app.search-form.config';
@@ -48,7 +46,6 @@ import { appSearchFormConfig } from './app.search-form.config';
     EcoMenuComponent,
     MatSidenav,
     TranslatePipe,
-    StoreStatusBannerComponent,
     MatIconModule,
     MatButtonModule,
     EcoTenantLogoComponent,
@@ -64,7 +61,6 @@ export default class EcoLayoutComponent {
   protected readonly tenantStore = inject(ecoStoreTenantStore);
   protected readonly profileStore = inject(pocketBaseUserProfileStore);
   protected readonly searchFormConfig = appSearchFormConfig();
-  protected readonly isBannerDismissed = signal(false);
   readonly #translateService = inject(TranslateService);
   readonly activityStore = inject(activityStore);
   protected readonly isMobile = toSignal(
@@ -104,23 +100,12 @@ export default class EcoLayoutComponent {
     this.activityStore.setActivity(false);
   }
 
-  protected dismissBanner(): void {
-    this.isBannerDismissed.set(true);
-  }
-
   #getSidenavDataFromActiveRoute(): boolean {
     let route = this.#activatedRoute;
     while (route.firstChild) {
       route = route.firstChild;
     }
     return Boolean(route.snapshot?.data['hasSidenav']);
-  }
-
-  protected shouldShowBanner(): boolean {
-    const status = this.tenantStore.storeStatus();
-    return ['CLOSED', 'CANCELLED', 'OPENING_SOON', 'CLOSING_SOON', 'CLOSED_MANUALLY'].includes(
-      status as string
-    );
   }
 
   protected onSearchSubmit(): void {
