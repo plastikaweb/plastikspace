@@ -4689,7 +4689,7 @@ var CoreCmsLayoutUiUserMenuComponent = class _CoreCmsLayoutUiUserMenuComponent {
   static \u0275fac = function CoreCmsLayoutUiUserMenuComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _CoreCmsLayoutUiUserMenuComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CoreCmsLayoutUiUserMenuComponent, selectors: [["plastik-core-cms-layout-ui-user-menu"]], inputs: { userMenuConfig: [1, "userMenuConfig"] }, outputs: { sendAction: "sendAction" }, decls: 11, vars: 4, consts: [["menu", "matMenu"], ["mat-button", "", 1, "gap-tiny", "flex", 3, "matMenuTriggerFor"], [1, "hidden", "sm:block"], [1, "m-0", "size-[30px]", "p-0", "text-[30px]"], [1, "px-sub"], [1, "p-tiny", "border-b-gray-10", "block", "w-fit", "border-b-2", "text-balance", "sm:hidden"], ["type", "button", "mat-menu-item", "", 3, "routerLink"], ["type", "button", "mat-menu-item", ""], ["type", "button", "mat-menu-item", "", 3, "click"]], template: function CoreCmsLayoutUiUserMenuComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _CoreCmsLayoutUiUserMenuComponent, selectors: [["plastik-core-cms-layout-ui-user-menu"]], inputs: { userMenuConfig: [1, "userMenuConfig"] }, outputs: { sendAction: "sendAction" }, decls: 11, vars: 4, consts: [["menu", "matMenu"], ["matButton", "", 1, "gap-tiny", "flex", 3, "matMenuTriggerFor"], [1, "hidden", "sm:block"], [1, "m-0", "size-[30px]", "p-0", "text-[30px]"], [1, "px-sub"], [1, "p-tiny", "border-b-gray-10", "block", "w-fit", "border-b-2", "text-balance", "sm:hidden"], ["type", "button", "mat-menu-item", "", 3, "routerLink"], ["type", "button", "mat-menu-item", ""], ["type", "button", "mat-menu-item", "", 3, "click"]], template: function CoreCmsLayoutUiUserMenuComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275elementStart(0, "button", 1)(1, "span", 2);
       \u0275\u0275text(2);
@@ -4720,7 +4720,7 @@ var CoreCmsLayoutUiUserMenuComponent = class _CoreCmsLayoutUiUserMenuComponent {
 (() => {
   (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadata(CoreCmsLayoutUiUserMenuComponent, [{
     type: Component,
-    args: [{ selector: "plastik-core-cms-layout-ui-user-menu", imports: [MatButton, MatIconModule, MatMenuModule, RouterLink], changeDetection: ChangeDetectionStrategy.OnPush, template: '@let headerMenu = userMenuConfig();\n\n<button\n  mat-button\n  class="gap-tiny flex"\n  [attr.aria-label]="headerMenu?.label?.()"\n  [matMenuTriggerFor]="menu">\n  <span class="hidden sm:block">{{ headerMenu?.label?.() }}</span>\n  <mat-icon class="m-0 size-[30px] p-0 text-[30px]">account_circle</mat-icon>\n</button>\n\n<mat-menu #menu="matMenu" class="px-sub">\n  <span class="p-tiny border-b-gray-10 block w-fit border-b-2 text-balance sm:hidden">{{\n    headerMenu?.label?.()\n  }}</span>\n\n  @for (item of headerMenu?.config; track item.id) {\n    @if (item && item.route) {\n      <button type="button" mat-menu-item [routerLink]="item.route">\n        <mat-icon>{{ item.icon }}</mat-icon>\n        <span>{{ item.title }}</span>\n      </button>\n    } @else if (item && item.action) {\n      <button type="button" mat-menu-item (click)="onSendAction(item.action)">\n        <mat-icon>{{ item.icon }}</mat-icon>\n        <span>{{ item.title }}</span>\n      </button>\n    }\n  }\n</mat-menu>\n' }]
+    args: [{ selector: "plastik-core-cms-layout-ui-user-menu", imports: [MatButton, MatIconModule, MatMenuModule, RouterLink], changeDetection: ChangeDetectionStrategy.OnPush, template: '@let headerMenu = userMenuConfig();\n\n<button\n  matButton\n  class="gap-tiny flex"\n  [attr.aria-label]="headerMenu?.label?.()"\n  [matMenuTriggerFor]="menu">\n  <span class="hidden sm:block">{{ headerMenu?.label?.() }}</span>\n  <mat-icon class="m-0 size-[30px] p-0 text-[30px]">account_circle</mat-icon>\n</button>\n\n<mat-menu #menu="matMenu" class="px-sub">\n  <span class="p-tiny border-b-gray-10 block w-fit border-b-2 text-balance sm:hidden">{{\n    headerMenu?.label?.()\n  }}</span>\n\n  @for (item of headerMenu?.config; track item.id) {\n    @if (item && item.route) {\n      <button type="button" mat-menu-item [routerLink]="item.route">\n        <mat-icon>{{ item.icon }}</mat-icon>\n        <span>{{ item.title }}</span>\n      </button>\n    } @else if (item && item.action) {\n      <button type="button" mat-menu-item (click)="onSendAction(item.action)">\n        <mat-icon>{{ item.icon }}</mat-icon>\n        <span>{{ item.title }}</span>\n      </button>\n    }\n  }\n</mat-menu>\n' }]
   }], null, { userMenuConfig: [{ type: Input, args: [{ isSignal: true, alias: "userMenuConfig", required: true }] }], sendAction: [{ type: Output, args: ["sendAction"] }] });
 })();
 (() => {
@@ -5049,7 +5049,7 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-HNLWHXCE.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-5ZKHBPK4.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
 var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-7CDD5FJB.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
@@ -5321,7 +5321,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
     if (rf & 2) {
       \u0275\u0275queryAdvance();
     }
-  }, inputs: { hideFooter: [1, "hideFooter"] }, decls: 40, vars: 25, consts: [["h1Tpl", ""], ["toggleSidenavButtonTpl", ""], ["widgetsContainer", ""], [1, "core-cms-container"], ["data-test", "layout-header"], ["start", "", 1, "sm:gap-sm", "flex", "items-center", "gap-0"], ["data-test", "layout-title"], [1, "sr-only"], [1, "gap-sub", "flex", "content-center", "items-center", "justify-between", "hover:no-underline", 3, "routerLink"], [3, "ngTemplateOutlet"], ["end", "", 1, "gap-tiny", "lg:gap-sm", "flex", "items-center"], [3, "userMenuConfig"], [3, "toggleSidenav", "position", "mode", "fixedInViewport", "sidenavOpened"], ["header", "", 3, "ngTemplateOutlet"], ["menu-items", "", "data-test", "sidenav-list"], [1, "spinner-container"], [1, "lds-ripple"], [3, "sendDismiss", "plastikSnackbar"], [3, "sendAction", "userMenuConfig"], ["routerLinkActive", "bg-gray-10", "ariaCurrentWhenActive", "page", 1, "my-tiny", "h-xll", "hover:bg-gray-10", "focus:bg-gray-10", 3, "routerLink", "routerLinkActiveOptions"], ["matListItemIcon", ""], ["matListItemTitle", ""], ["data-test", "layout-footer"], ["content", "", 1, "gap-tiny", "flex", "flex-row", "items-center", "justify-center", "text-sm"], ["aria-label", "visit www.plastikaweb.com page", "href", "https://www.plastikaweb.com", "target", "_blank", 1, "underline", "underline-offset-2"], ["aria-label", "visitar www.llevat.org", "href", "https://www.llevat.org", "target", "_blank", 1, "underline", "underline-offset-2"], [1, "gap-sub", "flex", "items-center", "justify-center"], [3, "src", "svgClass", "svgAriaLabel"], [1, "hidden", "sm:block"], ["mat-icon-button", "", "aria-label", "men\xFA lateral", "data-test", "toggle-sidenav-button", 1, "flex", "justify-center", "align-middle", 3, "click"], [1, "mat-18"]], template: function CoreCmsLayoutFeatureComponent_Template(rf, ctx) {
+  }, inputs: { hideFooter: [1, "hideFooter"] }, decls: 40, vars: 25, consts: [["h1Tpl", ""], ["toggleSidenavButtonTpl", ""], ["widgetsContainer", ""], [1, "core-cms-container"], ["data-test", "layout-header"], ["start", "", 1, "sm:gap-sm", "flex", "items-center", "gap-0"], ["data-test", "layout-title"], [1, "sr-only"], [1, "gap-sub", "flex", "content-center", "items-center", "justify-between", "hover:no-underline", 3, "routerLink"], [3, "ngTemplateOutlet"], ["end", "", 1, "gap-tiny", "lg:gap-sm", "flex", "items-center"], [3, "userMenuConfig"], [3, "toggleSidenav", "position", "mode", "fixedInViewport", "sidenavOpened"], ["header", "", 3, "ngTemplateOutlet"], ["menu-items", "", "data-test", "sidenav-list"], [1, "spinner-container"], [1, "lds-ripple"], [3, "sendDismiss", "plastikSnackbar"], [3, "sendAction", "userMenuConfig"], ["routerLinkActive", "bg-gray-10", "ariaCurrentWhenActive", "page", 1, "my-tiny", "h-xll", "hover:bg-gray-10", "focus:bg-gray-10", 3, "routerLink", "routerLinkActiveOptions"], ["matListItemIcon", ""], ["matListItemTitle", ""], ["data-test", "layout-footer"], ["content", "", 1, "gap-tiny", "flex", "flex-row", "items-center", "justify-center", "text-sm"], ["aria-label", "visit www.plastikaweb.com page", "href", "https://www.plastikaweb.com", "target", "_blank", 1, "underline", "underline-offset-2"], ["aria-label", "visitar www.llevat.org", "href", "https://www.llevat.org", "target", "_blank", 1, "underline", "underline-offset-2"], [1, "gap-sub", "flex", "items-center", "justify-center"], [3, "src", "svgClass", "svgAriaLabel"], [1, "hidden", "sm:block"], ["matIconButton", "", "aria-label", "men\xFA lateral", "data-test", "toggle-sidenav-button", 1, "flex", "justify-center", "align-middle", 3, "click"], [1, "mat-18"]], template: function CoreCmsLayoutFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275declareLet(0);
       \u0275\u0275pipe(1, "ngrxPush");
@@ -5423,7 +5423,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-HNLWHXCE.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-7CDD5FJB.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-5ZKHBPK4.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-7CDD5FJB.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
@@ -5572,7 +5572,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
 
 <ng-template #toggleSidenavButtonTpl>
   <button
-    mat-icon-button
+    matIconButton
     aria-label="men\xFA lateral"
     class="flex justify-center align-middle"
     data-test="toggle-sidenav-button"
@@ -6552,7 +6552,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-XQ7NGU67.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-322TN2Q7.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
@@ -6572,7 +6572,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-IXI6ZG5K.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-MK54OHWB.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: "link",

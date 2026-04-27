@@ -5231,7 +5231,7 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
     if (rf & 2) {
       \u0275\u0275queryAdvance(2);
     }
-  }, features: [\u0275\u0275InheritDefinitionFeature], decls: 8, vars: 0, consts: [["addonTemplate", ""], ["matPrefix", ""], ["fieldComponent", ""], ["matSuffix", ""], ["mat-button", "", "type", "button", 3, "class", "ngStyle"], ["mat-icon-button", "", "type", "button", 3, "class", "ngStyle"], [3, "class"], ["mat-button", "", "type", "button", 3, "click", "ngStyle"], ["mat-icon-button", "", "type", "button", 3, "click", "ngStyle"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]], template: function FormlyAddonsWrapperComponent_Template(rf, ctx) {
+  }, features: [\u0275\u0275InheritDefinitionFeature], decls: 8, vars: 0, consts: [["addonTemplate", ""], ["matPrefix", ""], ["fieldComponent", ""], ["matSuffix", ""], ["matButton", "", "type", "button", 3, "class", "ngStyle"], ["matIconButton", "", "type", "button", 3, "class", "ngStyle"], [3, "class"], ["matButton", "", "type", "button", 3, "click", "ngStyle"], ["matIconButton", "", "type", "button", 3, "click", "ngStyle"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"]], template: function FormlyAddonsWrapperComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275template(0, FormlyAddonsWrapperComponent_ng_template_0_Template, 4, 4, "ng-template", null, 0, \u0275\u0275templateRefExtractor)(2, FormlyAddonsWrapperComponent_ng_template_2_Template, 1, 1, "ng-template", null, 1, \u0275\u0275templateRefExtractor);
       \u0275\u0275elementContainer(4, null, 2);
@@ -5246,7 +5246,7 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
   @if (addon.type === 'button' && addon.text) {
     <!-- Text button -->
     <button
-      mat-button
+      matButton
       type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
@@ -5259,7 +5259,7 @@ var FormlyAddonsWrapperComponent = class _FormlyAddonsWrapperComponent extends F
   @if (addon.type === 'button' && addon.icon) {
     <!-- Icon button -->
     <button
-      mat-icon-button
+      matIconButton
       type="button"
       [attr.aria-label]="addon['aria'] || ''"
       [attr.tabindex]="!addon['onClick'] ? '-1' : '0'"
@@ -17878,7 +17878,7 @@ var NasaImagesSearchFeatureTableConfig = class {
 
 // libs/nasa-images/search/feature/src/lib/nasa-images-search-feature/nasa-images-search-feature.component.ts
 var NasaImagesSearchFeatureComponent_Defer_4_DepsFn = () => [SharedFormFeatureComponent, PushPipe];
-var NasaImagesSearchFeatureComponent_Defer_7_DepsFn = () => [LetDirective, import("./src-QGNKMPUZ.js").then((m) => m.SharedTableUiComponent), import("./src-S6PQLJ5K.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)];
+var NasaImagesSearchFeatureComponent_Defer_7_DepsFn = () => [LetDirective, import("./src-HFVQFUY7.js").then((m) => m.SharedTableUiComponent), import("./src-S6PQLJ5K.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)];
 var NasaImagesSearchFeatureComponent_Conditional_0_Defer_1_DepsFn = () => [MatIcon];
 var _c08 = () => [];
 var _c17 = () => ({});
@@ -18037,7 +18037,7 @@ var NasaImagesSearchFeatureComponent = class _NasaImagesSearchFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(NasaImagesSearchFeatureComponent, () => [import("./src-QGNKMPUZ.js").then((m) => m.SharedTableUiComponent), import("./src-S6PQLJ5K.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)], (SharedTableUiComponent, NasaImagesSearchUiNoResultsComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(NasaImagesSearchFeatureComponent, () => [import("./src-HFVQFUY7.js").then((m) => m.SharedTableUiComponent), import("./src-S6PQLJ5K.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)], (SharedTableUiComponent, NasaImagesSearchUiNoResultsComponent) => {
     setClassMetadata(NasaImagesSearchFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-nasa-images-search", imports: [
@@ -18141,4 +18141,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-XQ7NGU67.js.map
+//# sourceMappingURL=src-322TN2Q7.js.map

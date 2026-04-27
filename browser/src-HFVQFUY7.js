@@ -5682,7 +5682,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.matFormField = _t);
     }
-  }, inputs: { data: [1, "data"], columnProperties: [1, "columnProperties"], resultsLength: [1, "resultsLength"], pagination: [1, "pagination"], noPagination: [1, "noPagination"], paginationVisibility: [1, "paginationVisibility"], caption: [1, "caption"], sort: [1, "sort"], actions: [1, "actions"], filterCriteria: [1, "filterCriteria"], filterPredicate: [1, "filterPredicate"], extraRowStyles: [1, "extraRowStyles"], actionsColStyles: [1, "actionsColStyles"], rowHeight: [1, "rowHeight"], expandable: [1, "expandable"], expandedElementId: [1, "expandedElementId"], expandedDetailTpl: [1, "expandedDetailTpl"] }, outputs: { changePagination: "changePagination", changeSorting: "changeSorting", delete: "delete", getChangedData: "getChangedData" }, ngContentSelectors: _c22, decls: 6, vars: 2, consts: [["noResults", ""], ["matFormField", ""], ["matPaginator", ""], [1, "mb-tiny", "border-outline-variant", "z-10", "mt-0", "grid", "w-full", "overflow-auto", "overflow-x-auto", "overflow-y-hidden", "border-t", "border-solid", "md:mt-4"], [1, "mt-md", "justify-end", 3, "pageIndex", "pageSize", "length"], ["matSort", "", "matSortDisableClear", "", "multiTemplateDataRows", "", 1, "table", "w-full", 3, "matSortChange", "dataSource", "matSortActive", "matSortDirection"], [3, "matColumnDef", "sticky"], ["matColumnDef", "actions"], [4, "matHeaderRowDef", "matHeaderRowDefSticky"], [3, "height", "class"], [3, "sortActionDescription", "mat-sort-header", "disabled", "class", 4, "matHeaderCellDef"], [3, "class", 4, "matCellDef"], [3, "sortActionDescription", "mat-sort-header", "disabled"], [3, "class", "routerLink", "queryParams", "innerHTML"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc", "class"], [3, "class", "innerHTML"], [3, "click", "routerLink", "queryParams", "innerHTML"], [3, "class"], [3, "value", "multiple"], [3, "value", "checked"], [3, "checked", "aria-label"], [3, "value"], ["matTextPrefix", ""], ["matInput", "", 3, "change", "value", "placeholder"], ["matTextSuffix", ""], ["matInput", "", "type", "number", 3, "change", "value", "placeholder"], [3, "selectionChange", "value", "multiple"], [3, "change", "value", "checked"], [3, "change", "checked", "aria-label"], [3, "change", "value"], ["matInput", "", "cdkTextareaAutosize", "", "cdkAutosizeMinRows", "1", "cdkAutosizeMaxRows", "4", "autocomplete", "off", 3, "change", "value", "placeholder", "rows"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc"], [4, "ngComponentOutlet", "ngComponentOutletInputs"], [3, "innerHTML"], [3, "class", 4, "matHeaderCellDef"], ["type", "button", "mat-icon-button", "", 3, "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "matTooltip", "disabled", "routerLink"], ["type", "button", "mat-icon-button", "", "aria-hidden", "true", 1, "invisible"], ["type", "button", "mat-icon-button", "", 3, "click", "routerLink", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled"], ["type", "button", "mat-icon-button", "", 3, "click", "matTooltip", "disabled", "routerLink"], ["matColumnDef", "expand", "sticky", "true"], ["aria-label", "row", "class", "max-w-[70px]", "aria-hidden", "true", 4, "matHeaderCellDef"], ["class", "max-w-[70px]", 4, "matCellDef"], ["matColumnDef", "expandedDetail"], ["class", "justify-evenly border-b-0", 4, "matCellDef"], ["aria-label", "row", "aria-hidden", "true", 1, "max-w-[70px]"], [1, "invisible"], [1, "max-w-[70px]"], ["mat-icon-button", "", "aria-label", "expand row", 1, "-left-sub", 3, "click"], [1, "justify-evenly", "border-b-0"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["sticky", "true", 3, "class", "expanded-row", "click", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", "class", "height-0 table-row", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", 3, "click"], ["sticky", "true", 1, "height-0", "table-row"], [3, "height", "class", 4, "matRowDef", "matRowDefColumns"], [1, "text-sm"], [1, "mt-md", "justify-end", 3, "page", "pageIndex", "pageSize", "length"]], template: function SharedTableUiComponent_Template(rf, ctx) {
+  }, inputs: { data: [1, "data"], columnProperties: [1, "columnProperties"], resultsLength: [1, "resultsLength"], pagination: [1, "pagination"], noPagination: [1, "noPagination"], paginationVisibility: [1, "paginationVisibility"], caption: [1, "caption"], sort: [1, "sort"], actions: [1, "actions"], filterCriteria: [1, "filterCriteria"], filterPredicate: [1, "filterPredicate"], extraRowStyles: [1, "extraRowStyles"], actionsColStyles: [1, "actionsColStyles"], rowHeight: [1, "rowHeight"], expandable: [1, "expandable"], expandedElementId: [1, "expandedElementId"], expandedDetailTpl: [1, "expandedDetailTpl"] }, outputs: { changePagination: "changePagination", changeSorting: "changeSorting", delete: "delete", getChangedData: "getChangedData" }, ngContentSelectors: _c22, decls: 6, vars: 2, consts: [["noResults", ""], ["matFormField", ""], ["matPaginator", ""], [1, "mb-tiny", "border-outline-variant", "z-10", "mt-0", "grid", "w-full", "overflow-auto", "overflow-x-auto", "overflow-y-hidden", "border-t", "border-solid", "md:mt-4"], [1, "mt-md", "justify-end", 3, "pageIndex", "pageSize", "length"], ["matSort", "", "matSortDisableClear", "", "multiTemplateDataRows", "", 1, "table", "w-full", 3, "matSortChange", "dataSource", "matSortActive", "matSortDirection"], [3, "matColumnDef", "sticky"], ["matColumnDef", "actions"], [4, "matHeaderRowDef", "matHeaderRowDefSticky"], [3, "height", "class"], [3, "sortActionDescription", "mat-sort-header", "disabled", "class", 4, "matHeaderCellDef"], [3, "class", 4, "matCellDef"], [3, "sortActionDescription", "mat-sort-header", "disabled"], [3, "class", "routerLink", "queryParams", "innerHTML"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc", "class"], [3, "class", "innerHTML"], [3, "click", "routerLink", "queryParams", "innerHTML"], [3, "class"], [3, "value", "multiple"], [3, "value", "checked"], [3, "checked", "aria-label"], [3, "value"], ["matTextPrefix", ""], ["matInput", "", 3, "change", "value", "placeholder"], ["matTextSuffix", ""], ["matInput", "", "type", "number", 3, "change", "value", "placeholder"], [3, "selectionChange", "value", "multiple"], [3, "change", "value", "checked"], [3, "change", "checked", "aria-label"], [3, "change", "value"], ["matInput", "", "cdkTextareaAutosize", "", "cdkAutosizeMinRows", "1", "cdkAutosizeMaxRows", "4", "autocomplete", "off", 3, "change", "value", "placeholder", "rows"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc"], [4, "ngComponentOutlet", "ngComponentOutletInputs"], [3, "innerHTML"], [3, "class", 4, "matHeaderCellDef"], ["type", "button", "matIconButton", "", 3, "routerLink", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "matTooltip", "disabled", "routerLink"], ["type", "button", "matIconButton", "", "aria-hidden", "true", 1, "invisible"], ["type", "button", "matIconButton", "", 3, "click", "routerLink", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "click", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "click", "matTooltip", "disabled", "routerLink"], ["matColumnDef", "expand", "sticky", "true"], ["aria-label", "row", "class", "max-w-[70px]", "aria-hidden", "true", 4, "matHeaderCellDef"], ["class", "max-w-[70px]", 4, "matCellDef"], ["matColumnDef", "expandedDetail"], ["class", "justify-evenly border-b-0", 4, "matCellDef"], ["aria-label", "row", "aria-hidden", "true", 1, "max-w-[70px]"], [1, "invisible"], [1, "max-w-[70px]"], ["matIconButton", "", "aria-label", "expand row", 1, "-left-sub", 3, "click"], [1, "justify-evenly", "border-b-0"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["sticky", "true", 3, "class", "expanded-row", "click", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", "class", "height-0 table-row", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", 3, "click"], ["sticky", "true", 1, "height-0", "table-row"], [3, "height", "class", 4, "matRowDef", "matRowDefColumns"], [1, "text-sm"], [1, "mt-md", "justify-end", 3, "page", "pageIndex", "pageSize", "length"]], template: function SharedTableUiComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c15);
       \u0275\u0275elementStart(0, "div", 3);
@@ -5956,7 +5956,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
               @if (action.key === 'EDIT' && action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
@@ -5967,7 +5967,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
               } @else if (action.value?.visible(element) && action.value?.type === 'input') {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -5979,7 +5979,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
               } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -5989,7 +5989,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
               } @else if (action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -5999,7 +5999,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
                 </button>
               } @else if (!action.value?.visible(element)) {
                 <!-- TODO: #447 find a better way to handle the height of the cell when it has no buttons --->
-                <button type="button" mat-icon-button class="invisible" aria-hidden="true">
+                <button type="button" matIconButton class="invisible" aria-hidden="true">
                   &nbsp;
                 </button>
               }
@@ -6019,7 +6019,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
           >
           <mat-cell *matCellDef="let element" class="max-w-[70px]">
             <button
-              mat-icon-button
+              matIconButton
               aria-label="expand row"
               class="-left-sub"
               (click)="$event.stopPropagation(); updateExpandedElement(element)">
@@ -6111,4 +6111,4 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
 export {
   SharedTableUiComponent
 };
-//# sourceMappingURL=src-QGNKMPUZ.js.map
+//# sourceMappingURL=src-HFVQFUY7.js.map
