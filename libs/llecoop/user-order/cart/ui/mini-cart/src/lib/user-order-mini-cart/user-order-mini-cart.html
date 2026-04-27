@@ -34,7 +34,7 @@
               {{ item.priceWithIva * item.quantity | number: '1.2-2' }} €
             </div>
           </div>
-          <button mat-icon-button aria-label="Eliminar producte" (click)="removeItemFromCart(item)">
+          <button matIconButton aria-label="Eliminar producte" (click)="removeItemFromCart(item)">
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -51,7 +51,7 @@
     <span>{{ total() }} €</span>
   </div>
 
-  <button class="w-full" mat-button>
+  <button class="w-full" matButton>
     <mat-icon>shopping_cart</mat-icon>
     Anar al Cistell
   </button>

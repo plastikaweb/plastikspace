@@ -1,44 +1,42 @@
 <header role="presentation" class="hero-header reveal-up [--delay:50ms]">
-  <div
-    class="hero-content flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-    <div class="flex flex-col items-start gap-2">
-      <div class="category-subtitle flex items-center gap-2">
-        <mat-icon class="scale-90!" aria-hidden="true">receipt_long</mat-icon>
-        <span>
-          @if (ordersStore.isLoading()) {
-            {{ 'orders.list.loading' | translate }}
-          } @else {
-            {{ 'orders.list.loadedCount' | translate: { count: ordersStore.count() } }}
-          }
-        </span>
-      </div>
+  <div class="hero-content flex flex-col gap-2">
+    <div class="category-subtitle flex items-center gap-2">
+      <mat-icon class="scale-90!" aria-hidden="true">receipt_long</mat-icon>
+      <span>
+        @if (ordersStore.isLoading()) {
+          {{ 'orders.list.loading' | translate }}
+        } @else {
+          {{ 'orders.list.loadedCount' | translate: { count: ordersStore.count() } }}
+        }
+      </span>
+    </div>
+    <div class="flex flex-row items-center justify-between gap-3">
       <h2 class="category-title font-bold">
         {{ 'orders.list.title' | translate }}
       </h2>
+      <plastik-sort-selector
+        [class.pointer-events-none]="ordersStore.isLoading()"
+        [class.opacity-60]="ordersStore.isLoading()"
+        [options]="ordersStore.sortOptions()"
+        [currentSort]="ordersStore.sort()"
+        [translationPrefix]="'orders.filter.sort'"
+        (sortChange)="sort($event)"></plastik-sort-selector>
     </div>
-
-    <plastik-sort-selector
-      [class.pointer-events-none]="ordersStore.isLoading()"
-      [class.opacity-60]="ordersStore.isLoading()"
-      [options]="ordersStore.sortOptions()"
-      [currentSort]="ordersStore.sort()"
-      [translationPrefix]="'orders.filter.sort'"
-      (sortChange)="sort($event)"></plastik-sort-selector>
-  </div>
-
-  <div
-    class="mt-4 sm:mt-8"
-    [class.pointer-events-none]="ordersStore.isLoading()"
-    [class.opacity-60]="ordersStore.isLoading()">
-    <plastik-shared-form-feature
-      [fields]="formConfig.getConfig()"
-      [model]="model()"
-      [autoFocus]="!ordersStore.isLoading()"
-      [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
-      (temporaryChangeEvent)="onChange($event)">
-    </plastik-shared-form-feature>
   </div>
 </header>
+
+<div
+  class="mb-4"
+  [class.pointer-events-none]="ordersStore.isLoading()"
+  [class.opacity-60]="ordersStore.isLoading()">
+  <plastik-shared-form-feature
+    [fields]="formConfig.getConfig()"
+    [model]="model()"
+    [autoFocus]="!ordersStore.isLoading()"
+    [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
+    (temporaryChangeEvent)="onChange($event)">
+  </plastik-shared-form-feature>
+</div>
 
 <!-- Live region for announcing loading and data updates -->
 <div class="sr-only" aria-live="polite">

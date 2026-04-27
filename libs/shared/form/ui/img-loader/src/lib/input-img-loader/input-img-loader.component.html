@@ -41,7 +41,7 @@
       <span class="text-center text-sm text-balance">o</span>
       <button
         type="button"
-        mat-button
+        matButton
         class="w-full sm:w-auto"
         [disabled]="disabled()"
         (click)="inputFile.click()"
@@ -70,7 +70,7 @@
         <button
           #firstActionBtn
           type="button"
-          mat-icon-button
+          matIconButton
           [attr.aria-label]="`Editar imatge ${title()}`"
           [disabled]="disabled()"
           (click)="inputFile.click()"
@@ -80,7 +80,7 @@
         <button
           #secondActionBtn
           type="button"
-          mat-icon-button
+          matIconButton
           [attr.aria-label]="`Eliminar imatge ${title()}`"
           [disabled]="disabled()"
           (click)="onDeleteFile($event)"

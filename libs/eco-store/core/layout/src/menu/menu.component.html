@@ -7,16 +7,13 @@
         class="flex items-center"
         routerLinkActive="active-menu-item"
         [routerLinkActiveOptions]="{ exact: true }">
-        <a
-          mat-button
-          routerLink="/"
-          [attr.aria-current]="this.currentUrl() === '/' ? 'page' : null">
+        <a matButton routerLink="/" [attr.aria-current]="this.currentUrl() === '/' ? 'page' : null">
           {{ 'store.menu.home' | translate }}
         </a>
       </li>
       <li class="flex items-center" routerLinkActive="active-menu-item">
         <a
-          mat-button
+          matButton
           routerLink="/botiga"
           [attr.aria-current]="this.currentUrl().startsWith('/botiga') ? 'page' : null">
           {{ 'store.menu.store' | translate }}
@@ -24,7 +21,7 @@
       </li>
       <!-- <li class="flex items-center" routerLinkActive="active-menu-item">
         <a
-          mat-button
+          matButton
           routerLink="/about-us"
           [attr.aria-current]="this.currentUrl().startsWith('/about-us') ? 'page' : null">
           {{ 'store.menu.about' | translate }}
@@ -53,7 +50,7 @@
         @if (user) {
           <button
             #profileButton
-            mat-button
+            matButton
             class="user-pill"
             type="button"
             [matMenuTriggerFor]="userMenuComponent()?.menu() ?? null"

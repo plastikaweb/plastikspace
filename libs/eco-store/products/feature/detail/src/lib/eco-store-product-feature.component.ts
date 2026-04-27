@@ -19,7 +19,6 @@ import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
-import { EcoStoreProductCategoryLabelComponent } from '@plastik/eco-store/product-category-label';
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
 import { EcoStoreProductQuantityComponent } from '@plastik/eco-store/product-quantity';
 import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
@@ -42,7 +41,6 @@ import { map } from 'rxjs';
     EcoStoreProductPriceComponent,
     SharedImgContainerComponent,
     PocketBaseImageUrlPipe,
-    EcoStoreProductCategoryLabelComponent,
     EcoStoreSharedFavoriteButtonComponent,
   ],
   templateUrl: './eco-store-product-feature.component.html',

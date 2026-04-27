@@ -58,24 +58,6 @@
         tabindex="-1"
         role="main"
         class="mt-28 mb-0 flex min-h-[calc(100dvh-76px)] flex-1 flex-col overflow-y-hidden px-4 sm:px-8">
-        @if (shouldShowBanner() && !isBannerDismissed()) {
-          <div animate.leave="banner-anim-leave" class="grid overflow-hidden">
-            <div class="min-h-0" animate.leave="slide-out">
-              @defer (when shouldShowBanner() && !isBannerDismissed()) {
-                <eco-store-status-banner
-                  class="relative mb-8"
-                  [status]="tenantStore.storeStatus()"
-                  [nextOpenDate]="tenantStore.nextOpenDate()"
-                  [closedReason]="tenantStore.closedReasonTranslated()"
-                  (dismiss)="dismissBanner()">
-                </eco-store-status-banner>
-              } @placeholder {
-                <div class="h-20 w-full"></div>
-              }
-            </div>
-          </div>
-        }
-
         <router-outlet></router-outlet>
 
         <div class="mt-auto mb-24 md:mb-0">

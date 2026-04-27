@@ -10,7 +10,7 @@
   <plastik-core-cms-layout-ui-header data-test="layout-header">
     <div start class="gap-sub sm:gap-sm flex items-center">
       <button
-        mat-icon-button
+        matIconButton
         aria-label="menú lateral"
         class="flex justify-center align-middle"
         data-test="toggle-sidenav-button"
@@ -48,7 +48,7 @@
       <plastik-cart-preview></plastik-cart-preview>
       @if (userMenuConfig) {
         <button
-          mat-button
+          matButton
           class="gap-tiny flex"
           [attr.aria-label]="userMenuConfig?.label()"
           [matMenuTriggerFor]="menu">
@@ -76,7 +76,7 @@
           }
         </mat-menu>
       } @else {
-        <button mat-button class="gap-tiny flex" routerLink="/login" [attr.aria-label]="'Login'">
+        <button matButton class="gap-tiny flex" routerLink="/login" [attr.aria-label]="'Login'">
           <span class="hidden sm:block">Login</span>
           <mat-icon class="m-0 size-[30px] p-0 text-[30px]">login</mat-icon>
         </button>

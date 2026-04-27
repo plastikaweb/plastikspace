@@ -43,7 +43,10 @@ describe('SortSelectorComponent', () => {
   });
 
   it('should render trigger text with current sort', () => {
-    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    // We target the desktop button specifically using its Tailwind class.
+    // Note: in JSDOM the classes are present as strings.
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button.md\\:flex\\!');
+
     expect(button).toBeTruthy();
     const text = button.textContent || '';
     expect(text).toContain('products.sort.label');

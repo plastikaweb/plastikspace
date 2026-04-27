@@ -1,8 +1,9 @@
 import { KeyValue, KeyValuePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { SortConfig, SortMenuItem, SortMenuOptions } from '@plastik/core/entities';
 
@@ -14,7 +15,14 @@ type SortSelectorKeyValueFn = (
 @Component({
   selector: 'plastik-sort-selector',
 
-  imports: [MatButtonModule, MatMenuModule, MatIconModule, TranslateModule, KeyValuePipe],
+  imports: [
+    MatButtonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatTooltipModule,
+    TranslateModule,
+    KeyValuePipe,
+  ],
   templateUrl: './sort-selector.component.html',
   styleUrls: ['./sort-selector.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -25,6 +33,11 @@ export class SortSelectorComponent {
   readonly translationPrefix = input.required<string>();
 
   readonly sortChange = output<SortConfig>();
+
+  readonly currentSortIcon = computed(() => {
+    const { active, direction } = this.currentSort();
+    return this.options()[active]?.find(item => item.direction === direction)?.icon ?? 'sort';
+  });
 
   /*
    * Optional function to customize the order of sort options.

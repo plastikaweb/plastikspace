@@ -211,7 +211,7 @@
               @if (action.key === 'EDIT' && action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
@@ -222,7 +222,7 @@
               } @else if (action.value?.visible(element) && action.value?.type === 'input') {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -234,7 +234,7 @@
               } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -244,7 +244,7 @@
               } @else if (action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -254,7 +254,7 @@
                 </button>
               } @else if (!action.value?.visible(element)) {
                 <!-- TODO: #447 find a better way to handle the height of the cell when it has no buttons --->
-                <button type="button" mat-icon-button class="invisible" aria-hidden="true">
+                <button type="button" matIconButton class="invisible" aria-hidden="true">
                   &nbsp;
                 </button>
               }
@@ -274,7 +274,7 @@
           >
           <mat-cell *matCellDef="let element" class="max-w-[70px]">
             <button
-              mat-icon-button
+              matIconButton
               aria-label="expand row"
               class="-left-sub"
               (click)="$event.stopPropagation(); updateExpandedElement(element)">

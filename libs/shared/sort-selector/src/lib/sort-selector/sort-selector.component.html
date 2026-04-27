@@ -1,12 +1,26 @@
-<button mat-button class="flex items-center gap-1" [matMenuTriggerFor]="sortMenu">
-  <span
-    >{{ translationPrefix() + '.label' | translate }}:
-    {{
-      `${translationPrefix()}.${currentSort().active}${currentSort().direction.charAt(0).toUpperCase() + currentSort().direction.slice(1)}`
-        | translate
-    }}</span
-  >
+<!-- Mobile/tablet: icon-only button -->
+<button
+  class="md:hidden!"
+  matIconButton
+  [matTooltip]="translationPrefix() + '.label' | translate"
+  [matMenuTriggerFor]="sortMenu"
+  [attr.aria-label]="translationPrefix() + '.label' | translate">
+  <mat-icon>{{ currentSortIcon() }}</mat-icon>
+</button>
+
+<!-- Desktop: label + chevron + current value + sort icon -->
+<button
+  class="hidden! items-center gap-1 md:flex!"
+  matButton
+  [matTooltip]="translationPrefix() + '.label' | translate"
+  [matMenuTriggerFor]="sortMenu">
+  <span>{{ translationPrefix() + '.label' | translate }}:</span>
   <mat-icon>expand_more</mat-icon>
+  <span>{{
+    `${translationPrefix()}.${currentSort().active}${currentSort().direction.charAt(0).toUpperCase() + currentSort().direction.slice(1)}`
+      | translate
+  }}</span>
+  <mat-icon class="scale-90!">{{ currentSortIcon() }}</mat-icon>
 </button>
 
 <mat-menu #sortMenu="matMenu" class="sort-selector">

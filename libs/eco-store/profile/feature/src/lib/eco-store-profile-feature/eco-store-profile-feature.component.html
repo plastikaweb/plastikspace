@@ -1,6 +1,5 @@
-<header class="reveal-up mb-8 w-full [--delay:50ms]">
-  <div
-    class="border-sys-outline/30 relative overflow-hidden rounded-[2rem] border px-6 py-6 shadow-sm md:px-8 md:py-8 lg:p-10">
+<header class="hero-header reveal-up [--delay:50ms]">
+  <div class="hero-content flex flex-col items-start gap-2">
     <div
       class="bg-primary/5 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full opacity-50 blur-3xl"></div>
     <div class="relative z-10 flex flex-col items-start gap-2">
@@ -31,17 +30,16 @@
 </header>
 
 <div
-  class="w-full"
   [class.pointer-events-none]="profileStore.isLoading()"
   [class.opacity-50]="profileStore.isLoading()">
   @if (isTrial()) {
     @defer (on viewport; prefetch on idle) {
       <eco-trial-banner
-        class="mb-8"
+        class="mb-6"
         [trialEndsAt]="trialEndsAt()"
         (becomeMember)="onBecomeMember()" />
     } @placeholder {
-      <div class="bg-surface-container-high mb-8 h-12 w-full rounded-lg"></div>
+      <div class="bg-surface-container-high mb-6 h-12 w-full rounded-lg"></div>
     }
   }
 

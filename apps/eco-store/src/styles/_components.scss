@@ -90,12 +90,10 @@
   }
 
   .hero-header {
-    border-radius: 2.5rem;
-    padding: 2rem 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 0.5rem 1.5rem var(--space-lg);
+    margin-bottom: 0.2rem;
     position: relative;
     overflow: hidden;
-    border: 1px solid light-dark(var(--primary-500), var(--primary-200));
 
     /* Subtle organic pattern overlay */
     &::after {
@@ -125,16 +123,26 @@
       padding: 0.5rem 0.75rem;
     }
 
+    @media (max-width: 480px) {
+      padding: 1rem 1rem var(--space-lg);
+      margin-bottom: 1rem;
+      border-radius: 1.5rem;
+
+      &::before {
+        background-size: 20rem auto;
+        background-position: -8rem 0;
+      }
+    }
+
     .hero-content {
       position: relative;
       z-index: 1;
     }
 
     .category-title {
-      font-size: clamp(1.5rem, 8vw, 2.5rem);
+      font-size: clamp(1.1rem, 5.5vw, 2.5rem);
       line-height: 1.1;
       letter-spacing: -0.03em;
-      font-weight: 700;
       margin-bottom: 0.5rem;
     }
 

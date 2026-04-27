@@ -1,7 +1,7 @@
 @if (currentOrderList() && currentUserOrder()) {
   <button
     test-id="view-user-order-btn"
-    mat-button
+    matButton
     [matBadgeDescription]="(currentUserOrder()?.cart?.length || 0) + ' productes seleccionats'"
     [routerLink]="['./comandes/' + currentUserOrder()?.id]"
     [matBadge]="currentUserOrder()?.cart?.length || 0">
@@ -18,7 +18,7 @@
     </div>
   </button>
 } @else if (currentOrderList()) {
-  <button test-id="create-user-order-btn" mat-button [routerLink]="['./comandes/crear']">
+  <button test-id="create-user-order-btn" matButton [routerLink]="['./comandes/crear']">
     <mat-icon matChipAvatar> shopping_cart </mat-icon>
     Fes comanda
   </button>

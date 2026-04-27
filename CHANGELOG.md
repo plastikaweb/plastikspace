@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-27] - Eco-Store: Hero Spacing Standardization & UI Modernization
+
+### Added
+
+- **Responsive Sort Selector**: Enhanced `SortSelectorComponent` with a dual-layout strategy: a compact icon-only view with tooltips for mobile devices and a full label+icon view for desktop, improving usability across viewports ([#86c9hddft](https://app.clickup.com/t/86c9hddft)).
+
+### Changed
+
+- **Hero Spacing Standardization**: Standardized bottom spacing for hero-header sections across all eight major pages (products, orders, profile, cart) using the `var(--space-lg)` (1.5rem) design token, ensuring visual rhythm and consistency ([#86c9hddft](https://app.clickup.com/t/86c9hddft)).
+- **Angular Material Modernization**:Workspace-wide refactoring of Angular Material button directives to use modern camelCase selectors (`matButton`, `matIconButton`, `matFabButton`) for improved consistency with Angular standards ([#86c9hddft](https://app.clickup.com/t/86c9hddft)).
+- **Product Detail Layout**: Refined the product detail feature by centralizing category metadata, favorite actions, and product tags within the hero header, eliminating redundant overlays and decluttering the media section ([#86c9hddft](https://app.clickup.com/t/86c9hddft)).
+- **Profile Page Refinement**: Aligned trial banner and loading skeleton spacing with global design tokens and simplified the template structure by removing unnecessary layout wrappers ([#86c9hddft](https://app.clickup.com/t/86c9hddft)).
+- **Breadcrumb Navigation**: Standardized breadcrumb layout in detail views with integrated "back" action and improved responsive behavior for long category names ([#86c9hddft](https://app.clickup.com/t/86c9hddft)).
+- **Shared UI Consistency**: Updated shared components including table actions, form selectors, snackbars, and image croppers to follow the new standardized Material button patterns.
+
+### Fixed
+
+- **Order Number Overflow**: Implemented dynamic width constraints and text truncation for order identifiers in `OrderCardComponent`, preventing layout breaks on narrow mobile viewports ([#86c9hddft](https://app.clickup.com/t/86c9hddft)).
+- **Hero Typography**: Fixed category title scaling on small screens using fluid typography (`clamp`) to prevent text clipping on mobile devices.
+
 ## [2026-04-24] - Eco-Store: Bundle Size Fix & Price Summary Refactor
 
 ### Added
