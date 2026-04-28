@@ -295,7 +295,8 @@
       "@plastik/eco-store/profile/addresses": ["libs/eco-store/profile/addresses/src/index.ts"],
       "@plastik/shared/alert/ui": ["libs/shared/alert/ui/src/index.ts"],
       "@plastik/shared/pwa": ["libs/shared/pwa/src/index.ts"],
-      "@plastik/eco-store/price-summary": ["libs/eco-store/shared/price-summary/src/index.ts"]
+      "@plastik/eco-store/price-summary": ["libs/eco-store/shared/price-summary/src/index.ts"],
+      "@plastik/eco-store/breadcrumbs": ["libs/eco-store/shared/breadcrumbs/src/index.ts"]
     }
   },
   "angularCompilerOptions": {

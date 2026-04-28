@@ -23,6 +23,7 @@ It handles loading individual products via route resolvers and offers a rich UI 
 
 - **Slug-based product loading**: Efficiently loads products using URL slugs.
 - **Smart caching**: Integrates with `ecoStoreProductsStore` to reuse already loaded data.
+- **Breadcrumb Navigation**: Uses [`EcoStoreBreadcrumbsComponent`](../../../shared/breadcrumbs/README.md) with a back button and a three-level trail, including skeleton states while data loads.
 - **Rich Product Information**: Displays product tags (ECO, Novetat, Oferta) using the standard `SharedChipComponent` for consistency and semantic coloring. It also shows rating and stock availability.
 - **Interactive Components**:
   - **Store Window Status Awareness**: Automatically disables quantity controls and hides availability badges when the store is closed, respecting the `ecoStoreTenantStore` status.

@@ -1,35 +1,8 @@
 <!-- Breadcrumbs & Hero Header -->
-<nav
-  class="font-plain mb-2 flex w-full items-center overflow-x-auto text-xs [scrollbar-width:none] md:text-sm [&::-webkit-scrollbar]:hidden">
-  <ol class="flex w-max items-center pe-4 whitespace-nowrap">
-    <li class="flex items-center">
-      <button
-        class="hover:text-sys-on-primary-container! hover:bg-sys-primary-container! text-on-surface! flex shrink-0 items-center gap-2 rounded-lg py-1.5 duration-100"
-        matIconButton
-        type="button"
-        [attr.aria-label]="'orders.detail.back' | translate"
-        (click)="goBack()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </li>
-    <li class="flex items-center">
-      <a
-        class="hover:text-sys-on-primary-container! hover:bg-sys-primary-container! text-on-surface! flex items-center gap-2 rounded-lg py-1.5 transition-all duration-100 outline-none"
-        [routerLink]="['/comandes']">
-        <mat-icon class="hidden! scale-75! sm:block!">receipt_long</mat-icon>
-        <span class="px-2">{{ 'orders.list.title' | translate }}</span>
-      </a>
-    </li>
-    @if (order()) {
-      <li class="flex items-center">
-        <mat-icon class="scale-75!">chevron_right</mat-icon>
-        <span class="text-sys-on-tertiary-container px-2 font-medium">{{
-          'orders.detail.title' | translate: { orderNumber: order()?.orderNumber }
-        }}</span>
-      </li>
-    }
-  </ol>
-</nav>
+<eco-store-breadcrumbs
+  [backAriaLabel]="'orders.detail.back' | translate"
+  [items]="breadcrumbItems()"
+  (goBack)="goBack()" />
 
 <header class="hero-header reveal-up [--delay:50ms]">
   <div class="hero-content flex flex-col items-start gap-2">

@@ -1,53 +1,7 @@
-<nav
-  class="font-plain mb-2 flex w-full items-center overflow-x-auto text-xs [scrollbar-width:none] md:text-sm [&::-webkit-scrollbar]:hidden">
-  <ol class="flex w-max items-center pe-4 whitespace-nowrap">
-    <li class="flex items-center">
-      <button
-        class="hover:text-sys-on-primary-container! hover:bg-sys-primary-container! text-on-surface! flex shrink-0 items-center gap-2 rounded-lg py-1.5 duration-100"
-        matIconButton
-        type="button"
-        [attr.aria-label]="'common.navigation.previous' | translate"
-        (click)="returnToPreviousPage()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </li>
-    <li class="flex items-center">
-      <a
-        class="hover:text-sys-on-primary-container! hover:bg-sys-primary-container! text-on-surface! flex items-center gap-2 rounded-lg py-1.5 transition-all duration-100 outline-none"
-        [routerLink]="['/botiga']"
-        [queryParams]="listQueryParams()">
-        <mat-icon class="hidden! scale-75! sm:block!">storefront</mat-icon>
-        <span class="px-2">{{ 'store.menu.store' | translate }}</span>
-      </a>
-    </li>
-    <li class="flex items-center">
-      <mat-icon class="scale-75!">chevron_right</mat-icon>
-      @if (product()) {
-        <a
-          class="hover:text-sys-on-primary-container! hover:bg-sys-primary-container! text-on-surface! flex items-center gap-2 rounded-lg py-1.5 transition-all duration-100 outline-none"
-          [routerLink]="['/botiga', product()?.categorySlug]"
-          [queryParams]="listQueryParams()">
-          <mat-icon class="hidden! scale-75! sm:block!">{{ product()?.categoryIcon }}</mat-icon>
-          <span class="px-2">{{ product()?.categoryName }}</span>
-        </a>
-      } @else {
-        <div
-          aria-hidden="true"
-          class="bg-surface-variant mx-2 h-4 w-24 animate-pulse rounded"></div>
-      }
-    </li>
-    <li class="flex items-center">
-      <mat-icon class="scale-75!">chevron_right</mat-icon>
-      @if (product()) {
-        <span class="text-sys-on-tertiary-container px-2 font-medium">{{ product()?.name }}</span>
-      } @else {
-        <div
-          aria-hidden="true"
-          class="bg-surface-variant mx-2 h-4 w-32 animate-pulse rounded"></div>
-      }
-    </li>
-  </ol>
-</nav>
+<eco-store-breadcrumbs
+  [backAriaLabel]="'common.navigation.previous' | translate"
+  [items]="breadcrumbItems()"
+  (goBack)="returnToPreviousPage()" />
 
 <header class="hero-header reveal-up" style="--delay: 50ms">
   <div class="hero-content flex flex-col gap-2">

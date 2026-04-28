@@ -24,6 +24,7 @@ Part of the [**Eco-Store**](../../../../../apps/eco-store/README.md) application
 - **Status Tracking**: Visual representation of the current order status.
 - **Delivery Information**: Displays the chosen delivery method and address.
 - **State Management**: Uses `EcoStoreOrdersStore` to fetch and display the specific order.
+- **Breadcrumb Navigation**: Uses [`EcoStoreBreadcrumbsComponent`](../../../shared/breadcrumbs/README.md) with a back button and a two-level trail (orders list → order detail).
 
 ## Running unit tests
 

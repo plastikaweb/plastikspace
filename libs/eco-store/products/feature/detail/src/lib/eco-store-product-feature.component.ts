@@ -11,9 +11,9 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
+import { BreadcrumbItem, EcoStoreBreadcrumbsComponent } from '@plastik/eco-store/breadcrumbs';
 import { NavigationService } from '@plastik/core/router-state';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
@@ -35,13 +35,13 @@ import { map } from 'rxjs';
     MatButtonModule,
     SharedChipComponent,
     MatTooltipModule,
-    RouterLink,
     EcoStoreProductQuantityComponent,
     EcoStoreProductCardComponent,
     EcoStoreProductPriceComponent,
     SharedImgContainerComponent,
     PocketBaseImageUrlPipe,
     EcoStoreSharedFavoriteButtonComponent,
+    EcoStoreBreadcrumbsComponent,
   ],
   templateUrl: './eco-store-product-feature.component.html',
   styleUrl: './eco-store-product-feature.component.scss',
@@ -208,6 +208,31 @@ export default class EcoStoreProductFeatureComponent {
 
     // Return first 6 unique products
     return combined.slice(0, 6);
+  });
+
+  protected readonly breadcrumbItems = computed((): BreadcrumbItem[] => {
+    const product = this.product();
+    return [
+      {
+        labelKey: 'store.menu.store',
+        icon: 'storefront',
+        routerLink: ['/botiga'],
+        queryParams: this.listQueryParams(),
+      },
+      {
+        label: product?.categoryName,
+        icon: product?.categoryIcon,
+        routerLink: product ? ['/botiga', product.categorySlug] : undefined,
+        queryParams: this.listQueryParams(),
+        loading: !product,
+        skeletonWidth: '6rem',
+      },
+      {
+        label: product?.name,
+        loading: !product,
+        skeletonWidth: '8rem',
+      },
+    ];
   });
 
   toggleFavorite(): void {
