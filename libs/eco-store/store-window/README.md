@@ -18,6 +18,8 @@ A feature library containing the `StoreWindowComponent`, which displays the curr
 ## Features
 
 - **Dynamic Status**: Visualizes store status with icons, colors, and labels.
+- **Responsive Accessibility**: Status labels are visually hidden on mobile and tablet using `hidden lg:flex` to
+  prioritize space for the countdown, while remaining fully accessible to screen readers via a dedicated `sr-only` span.
 - **Closing Soon Urgency**: High-visibility state with a pulsing indicator to encourage last-minute orders.
 - **Countdown Integration**: Displays a countdown timer when the store is closed, opening soon, or closing soon.
 - **Shared Chip Integration**: Uses `SharedChipComponent` (`<plastik-shared-chip>`) from `@plastik/shared/chip/ui` for a modern, accessible, and semantically colored UI.

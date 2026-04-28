@@ -21,11 +21,23 @@ describe('SharedCountdownUiComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should display prefix if provided', () => {
+  it('should display prefix with sr-only for screen readers and hidden for visual users', () => {
     fixture.componentRef.setInput('prefix', 'Starts in');
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.textContent).toContain('Starts in');
+    const srOnly = compiled.querySelector('.sr-only');
+    const visual = compiled.querySelector('[aria-hidden="true"]');
+
+    expect(srOnly?.textContent).toContain('Starts in');
+    expect(visual?.textContent).toContain('Starts in');
+    expect(visual?.classList).toContain('hidden');
+    expect(visual?.classList).toContain('lg:block');
+  });
+
+  it('should have timer role and aria-live attribute', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.getAttribute('role')).toBe('timer');
+    expect(compiled.getAttribute('aria-live')).toBe('polite');
   });
 
   it('should render segments correctly', () => {
