@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-04-28] - Eco-Store: Breadcrumb Navigation Library
+
+### Added
+
+- **Breadcrumbs Library**: Created `@plastik/eco-store/breadcrumbs` (`libs/eco-store/shared/breadcrumbs`) — a new shared UI library providing a responsive, accessible breadcrumb navigation bar with integrated back button, skeleton loading states, optional Material icons, and full i18n support via `ngx-translate` ([#86c9hdff3](https://app.clickup.com/t/86c9hdff3)).
+- **Order Detail Breadcrumbs**: Integrated `EcoStoreBreadcrumbsComponent` into `EcoStoreOrdersDetailComponent` with a two-level trail (orders list → order detail) and a reactive `breadcrumbItems` computed signal ([#86c9hdff3](https://app.clickup.com/t/86c9hdff3)).
+- **Product Detail Breadcrumbs**: Integrated `EcoStoreBreadcrumbsComponent` into `EcoStoreProductFeatureComponent` with a three-level trail (store → category → product) and skeleton placeholders while data loads ([#86c9hdff3](https://app.clickup.com/t/86c9hdff3)).
+
 ## [2026-04-27] - Eco-Store: Hero Spacing Standardization & UI Modernization
 
 ### Added

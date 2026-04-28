@@ -6,6 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CartProductCardComponent } from '@plastik/eco-store/cart';
+import { BreadcrumbItem, EcoStoreBreadcrumbsComponent } from '@plastik/eco-store/breadcrumbs';
 import {
   EcoStoreProductWithCategoryName,
   ORDER_DELIVERY_ICON_MAP,
@@ -35,6 +36,7 @@ import { SharedChipComponent } from '@plastik/shared/chip/ui';
     CartProductCardComponent,
     RouterLink,
     EcoStoreSharedNoResultsComponent,
+    EcoStoreBreadcrumbsComponent,
   ],
   templateUrl: './eco-store-orders-detail.component.html',
   styleUrl: './eco-store-orders-detail.component.scss',
@@ -120,6 +122,20 @@ export class EcoStoreOrdersDetailComponent {
       } as unknown as EcoStoreProductWithCategoryName,
       quantity: item.requestedQuantity,
     }));
+  });
+
+  protected readonly breadcrumbItems = computed((): BreadcrumbItem[] => {
+    const order = this.order();
+    const items: BreadcrumbItem[] = [
+      { labelKey: 'orders.list.title', icon: 'receipt_long', routerLink: ['/comandes'] },
+    ];
+    if (order) {
+      items.push({
+        labelKey: 'orders.detail.title',
+        labelParams: { orderNumber: order.orderNumber },
+      });
+    }
+    return items;
   });
 
   protected goBack(): void {
