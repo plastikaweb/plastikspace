@@ -733,22 +733,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/compiler@npm:21.2.2":
-  version: 21.2.2
-  resolution: "@angular/compiler@npm:21.2.2"
+"@angular/compiler@npm:21.2.10":
+  version: 21.2.10
+  resolution: "@angular/compiler@npm:21.2.10"
   dependencies:
     tslib: "npm:^2.3.0"
-  checksum: 10c0/aa411e0a5ddb18fc54b91d2c49f794f9ec6a4c2438044289c8c30c9d5b0eb875ebba93171ce2f25159f443907e636c511a8eff351ed2b689b8097ab78b15fb49
+  checksum: 10c0/ef3f3751bf495ac08e87b803e41165f773c9ed42b2f64773cf49f58b086a9ceaf04dd5f5f700290468ffc1196bf0ff9e28959a758d1c54e7c30739c4b7d6daa0
   languageName: node
   linkType: hard
 
-"@angular/core@npm:21.2.2":
-  version: 21.2.2
-  resolution: "@angular/core@npm:21.2.2"
+"@angular/core@npm:21.2.4":
+  version: 21.2.4
+  resolution: "@angular/core@npm:21.2.4"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/compiler": 21.2.2
+    "@angular/compiler": 21.2.4
     rxjs: ^6.5.3 || ^7.4.0
     zone.js: ~0.15.0 || ~0.16.0
   peerDependenciesMeta:
@@ -756,7 +756,7 @@ __metadata:
       optional: true
     zone.js:
       optional: true
-  checksum: 10c0/179a90489c76dc76316887e3cbd029c015cd5ae6df7a0f08cd17a598d88fd95794e573d57ecd3cea66430d2eea4d2aa15edf8b75d92568e64ecac5c41743bc6e
+  checksum: 10c0/3c0fc1f9d6391b97765601a8006be90542cb53e85c5a83e6c3388c2e36dd9a1249942200a11ce6f2af5be4e9990852f3b0c0db802415bd80b28581c2abd0919d
   languageName: node
   linkType: hard
 
@@ -28533,9 +28533,9 @@ __metadata:
     "@angular/cdk": "npm:21.2.2"
     "@angular/cli": "npm:21.2.2"
     "@angular/common": "npm:21.2.2"
-    "@angular/compiler": "npm:21.2.2"
+    "@angular/compiler": "npm:21.2.10"
     "@angular/compiler-cli": "npm:21.2.2"
-    "@angular/core": "npm:21.2.2"
+    "@angular/core": "npm:21.2.4"
     "@angular/fire": "npm:^20.0.1"
     "@angular/forms": "npm:21.2.2"
     "@angular/language-service": "npm:21.2.2"
@@ -28647,7 +28647,7 @@ __metadata:
     nx: "npm:^22.6.4"
     pa11y-ci: "npm:^4.0.1"
     pocketbase: "npm:^0.26.3"
-    postcss: "npm:^8.5.6"
+    postcss: "npm:^8.5.11"
     postcss-preset-env: "npm:^11.2.0"
     prettier: "npm:^3.8.1"
     prettier-plugin-tailwindcss: "npm:^0.7.2"
@@ -28659,7 +28659,7 @@ __metadata:
     tslib: "npm:^2.3.0"
     typescript: "npm:5.9.3"
     verdaccio: "npm:^6.0.5"
-    vite: "npm:^7.0.0"
+    vite: "npm:^8.0.5"
     vitest: "npm:^4.0.18"
     vitest-axe: "npm:^0.1.0"
     wrangler: "npm:^4.82.2"
@@ -29538,6 +29538,17 @@ __metadata:
     picocolors: "npm:^1.1.1"
     source-map-js: "npm:^1.2.1"
   checksum: 10c0/c592dffa0c4873b401f01955b265538d9942f425040df5e2b8f0ad34c83773a792ea0fa5859ccc99cfb5b955b4ebff118ab7056315388dc83b107b0fa8313576
+  languageName: node
+  linkType: hard
+
+"postcss@npm:^8.5.11":
+  version: 8.5.12
+  resolution: "postcss@npm:8.5.12"
+  dependencies:
+    nanoid: "npm:^3.3.11"
+    picocolors: "npm:^1.1.1"
+    source-map-js: "npm:^1.2.1"
+  checksum: 10c0/5baebaf574c567bc1b3d61197f38af4ce5920b8f611c887fb6bc3dcc14af00253c169dbf19897bc889cce0b0d9818ab5eb4ea0caedf02b0bab10da8a43ce8c12
   languageName: node
   linkType: hard
 
@@ -34726,7 +34737,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:^6.0.0 || ^7.0.0 || ^8.0.0":
+"vite@npm:^6.0.0 || ^7.0.0 || ^8.0.0, vite@npm:^8.0.5":
   version: 8.0.10
   resolution: "vite@npm:8.0.10"
   dependencies:
@@ -34780,61 +34791,6 @@ __metadata:
   bin:
     vite: bin/vite.js
   checksum: 10c0/92188b82654f856dbe562a1b679de695bb6ca18c0f43c4c276f84a869fb78e22dedb7c2df83b5617d6afdca979c059d654b5f61a0936a45f49917f352b9325ca
-  languageName: node
-  linkType: hard
-
-"vite@npm:^7.0.0":
-  version: 7.3.2
-  resolution: "vite@npm:7.3.2"
-  dependencies:
-    esbuild: "npm:^0.27.0"
-    fdir: "npm:^6.5.0"
-    fsevents: "npm:~2.3.3"
-    picomatch: "npm:^4.0.3"
-    postcss: "npm:^8.5.6"
-    rollup: "npm:^4.43.0"
-    tinyglobby: "npm:^0.2.15"
-  peerDependencies:
-    "@types/node": ^20.19.0 || >=22.12.0
-    jiti: ">=1.21.0"
-    less: ^4.0.0
-    lightningcss: ^1.21.0
-    sass: ^1.70.0
-    sass-embedded: ^1.70.0
-    stylus: ">=0.54.8"
-    sugarss: ^5.0.0
-    terser: ^5.16.0
-    tsx: ^4.8.1
-    yaml: ^2.4.2
-  dependenciesMeta:
-    fsevents:
-      optional: true
-  peerDependenciesMeta:
-    "@types/node":
-      optional: true
-    jiti:
-      optional: true
-    less:
-      optional: true
-    lightningcss:
-      optional: true
-    sass:
-      optional: true
-    sass-embedded:
-      optional: true
-    stylus:
-      optional: true
-    sugarss:
-      optional: true
-    terser:
-      optional: true
-    tsx:
-      optional: true
-    yaml:
-      optional: true
-  bin:
-    vite: bin/vite.js
-  checksum: 10c0/74be36907e208916f18bfec81c8eba18b869f0a170f1ece0a4dcb14874d0f0e7c022fb6c2ad896e3ee6c973fe88f53ac23b4078879ada340d8b263260868b8d4
   languageName: node
   linkType: hard
 
