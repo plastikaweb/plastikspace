@@ -38,7 +38,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     index?: number,
     extraConfig?: unknown
   ): SafeHtml | string | FormattingComponentOutput {
-    const value = this.getValueFromRow(pathToKey, item);
+    const value = this.#getValueFromRow(pathToKey, item);
     const { type, extras } = formatting;
 
     switch (type) {
@@ -86,10 +86,13 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     }
   }
 
-  private getValueFromRow(
-    property: string,
-    item: T extends BaseEntity ? T : never
-  ): FormattingOutput {
+  /**
+   * Retrieves a value from an object based on a dot-separated property path.
+   * @param {string} property - The dot-separated path to the property.
+   * @param {T} item - The object to extract the value from.
+   * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
+   */
+  #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
     return property.split('.').reduce((accObject: unknown, currentProp: string) => {
       const object = (accObject as T)[currentProp as keyof T];
       return isNil(object) ? '' : (object as FormattingOutput);
