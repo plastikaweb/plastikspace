@@ -20,8 +20,6 @@ export abstract class EcoStoreTenantBaseService {
     const slug = await this.resolveSlug();
 
     if (!slug) {
-      // eslint-disable-next-line no-console
-      console.log('No tenant found. Global navigation.');
       return;
     }
 

@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-01] - Code Quality Refinements: Jules Review & Convention Alignment
+
+### Added
+
+- **Concurrent PocketBase Schema Sync**: Added a `processInChunks` utility and `pb.autoCancellation(false)` to `apps/eco-store/scripts/sync-pocketbase-schema.js`, parallelising the three sync passes (create, update, views) in chunks of 10 to reduce wall-clock time on large schemas ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+
+### Changed
+
+- **SharedTableUiComponent Reactive Sync**: Replaced the `ngOnInit` signal-truthiness checks with proper `effect()`-based synchronisation for `data`, `filterCriteria`/`filterPredicate`, `sort`/`matSort` and `matPaginator`, so lazy `@defer` table controls hydrate correctly ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+- **Private Fields Migration**: Converted the `private` modifier to ES6 `#` private fields in `ViewportTransitionNameDirective`, `CountdownService`, `ErrorHandlerService`, `WithCartQuantityPipe`, `BytesToSizePipe`, `DataFormatFactoryService` and `SharedTableUiComponent` to comply with the project's ESLint `no-restricted-syntax` rule ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+- **Public API JSDoc Coverage**: Added or normalised JSDoc on `SkipLinkComponent`, `BytesToSizePipe`, `SharedUtilDynamicBgColorDirective`, `SafeFormattedPipe`, `FirebaseStorageService`, `DataFormatFactoryService` and `SharedUtilFormattersService`, removing legacy `@description` tags and standardising parameter formatting ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+- **Console Statement Cleanup**: Removed prohibited `console.*` calls and orphan commented-out console lines from `FirebaseAuthService`, `store-firebase-crud-feature`, `EcoStoreTenantBaseService`, `transformToString`, `eco-store/app.config` and the user-order facade stub, replacing each with a no-op or descriptive comment ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+- **FirebaseStorageService Error Handling**: Moved the missing-file guard outside the upload `try` block; the catch now re-throws the original error after resetting progress, instead of silently swallowing failures ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+- **SharedUtilFormattersService Whitespace**: Rewrote `quantityFormatter` to interpolate the prefix, formatted number and suffix without leaking whitespace/newlines from the original template literal ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+
+### Fixed
+
+- **BytesToSizePipe Zero-Byte Output**: The pipe now returns `"0 Bytes"` for a `0` input (previously returned `"n/a"`) and only returns `"n/a"` for `null`/`undefined`/`NaN` values; the spec was updated accordingly ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+- **DynamicBgColor Default Input**: Default value of the `color` input was the literal string `"color"` (which set `background-color: color` on hover); changed to `""` so the directive becomes a no-op until consumers pass a real colour ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+- **Shared Table Cell Class Binding**: Replaced the broken `[class]="\`py-sub ${setCellNgClass(column)}\`"`(template-literal-stringifying an object to`"[object Object]"`) with a concatenated `[class]`plus per-flag`[class.mat-cell-input]`/`[class.mat-cell-link]`bindings, and removed the now-unused`setCellNgClass` method ([#86c9kq61r](https://app.clickup.com/t/86c9kq61r)).
+
 ## [2026-05-01] - Eco-Store: Shared Hero Header Library & Responsive Polish
 
 ### Added

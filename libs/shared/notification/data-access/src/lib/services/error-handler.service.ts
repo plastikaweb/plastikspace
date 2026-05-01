@@ -5,11 +5,11 @@ import { NotificationConfigService } from './notification-config.service';
 
 @Injectable()
 export class ErrorHandlerService implements ErrorHandler {
-  private readonly notificationService = inject(NotificationConfigService);
-  private readonly injector = inject(Injector);
+  readonly #notificationService = inject(NotificationConfigService);
+  readonly #injector = inject(Injector);
 
   handleError(error: ErrorEvent | Error | string): void {
-    const store = this.injector.get(notificationStore);
+    const store = this.#injector.get(notificationStore);
     let message = '';
 
     if (
@@ -24,7 +24,7 @@ export class ErrorHandlerService implements ErrorHandler {
     }
 
     store.show(
-      this.notificationService.getInstance({
+      this.#notificationService.getInstance({
         type: 'ERROR',
         message,
         action: 'tancar',

@@ -11,14 +11,14 @@ import { llecoopUserOrderCartStore } from '@plastik/llecoop/user-order-cart/data
  * It is used in the product list feature component.
  */
 export class WithCartQuantityPipe implements PipeTransform {
-  private readonly cartStore = inject(llecoopUserOrderCartStore);
+  readonly #cartStore = inject(llecoopUserOrderCartStore);
 
   transform(products: LlecoopProduct[] = []): LlecoopProductWithQuantity[] {
     if (!products?.length) {
       return [];
     }
 
-    const cartItems = this.cartStore.cart();
+    const cartItems = this.#cartStore.cart();
 
     return products.map(product => {
       const cartItem = cartItems.find(item => item['id'] === product['id']);

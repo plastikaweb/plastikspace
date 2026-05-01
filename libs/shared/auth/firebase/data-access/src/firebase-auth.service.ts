@@ -97,8 +97,6 @@ export class FirebaseAuthService implements AuthFacade {
       await this.#router.navigate(['']);
       this.#liveAnnouncer.announce('Sessió iniciada', 'assertive', 100);
     } catch (error: unknown) {
-      // console.error(error);
-
       const firebaseError = error as FirebaseError;
 
       const message =
@@ -142,8 +140,6 @@ export class FirebaseAuthService implements AuthFacade {
       await this.logout();
       this.sendVerification(credentials.user);
     } catch (error: unknown) {
-      // console.error(error);
-
       const firebaseError = error as FirebaseError;
 
       const message =
@@ -183,8 +179,6 @@ export class FirebaseAuthService implements AuthFacade {
       await this.#router.navigate(['login']);
       this.#liveAnnouncer.announce('Sessió tancada', 'assertive', 100);
     } catch {
-      // console.error('Error during logout:', error);
-
       this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
@@ -223,8 +217,6 @@ export class FirebaseAuthService implements AuthFacade {
         })
       );
     } catch (error: unknown) {
-      // console.error('Error sending verification email:', error);
-
       this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
@@ -265,8 +257,6 @@ export class FirebaseAuthService implements AuthFacade {
         })
       );
     } catch (error: unknown) {
-      // console.error(error);
-
       this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
@@ -297,11 +287,9 @@ export class FirebaseAuthService implements AuthFacade {
         if (currentUser) {
           await currentUser.reload();
         }
-      } else {
-        // console.log('state after resetAuth: User not found');
       }
     } catch {
-      // console.warn('Error al limpiar el estado de autenticación:', error);
+      // Ignored: failure to refresh tokens during reset is non-blocking.
     }
   }
 }

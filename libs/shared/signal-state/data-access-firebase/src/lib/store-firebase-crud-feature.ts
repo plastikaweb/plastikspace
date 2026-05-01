@@ -439,7 +439,7 @@ export function withFirebaseCrud<
               initState
             );
           } catch {
-            // console.error(`${featureName} destroy error`, error);
+            // Ignored: store reset failures are non-blocking on destroy.
           }
         },
       };

@@ -33,7 +33,8 @@ export class LlecoopUserOrderProductListFeatureFacadeService {
   }
 
   viewDetails(productId: string) {
-    console.log(productId);
+    // TODO: implement product details navigation
+    void productId;
   }
 
   onChangeFilterCriteria(criteria: StoreUserOrderProductProductFilter): void {

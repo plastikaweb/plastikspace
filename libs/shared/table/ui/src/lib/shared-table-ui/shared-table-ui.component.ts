@@ -15,7 +15,6 @@ import {
   ElementRef,
   inject,
   input,
-  OnInit,
   output,
   signal,
   TemplateRef,
@@ -93,9 +92,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   styleUrl: './shared-table-ui.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedTableUiComponent<
-  T extends BaseEntity & { [key: string]: unknown },
-> implements OnInit {
+export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }> {
   protected dataFormatFactoryService = inject(DataFormatFactoryService);
   /**
    * Data that will populate the table.
@@ -207,15 +204,6 @@ export class SharedTableUiComponent<
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   constructor() {
-    effect(() => (this.dataSource.data = this.data()));
-    effect(() => {
-      if (this.filterCriteria() && this.filterPredicate()) {
-        this.dataSource.filter = `${this.filterCriteria()}`;
-      }
-    });
-  }
-
-  ngOnInit(): void {
     this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
       const value = sortHeaderId.split('.').reduce((obj, key) => {
         return obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key] : obj;
@@ -228,20 +216,50 @@ export class SharedTableUiComponent<
       return String(value).toLowerCase();
     };
 
-    if (this.filterPredicate && this.filterCriteria) {
-      this.dataSource.filterPredicate = (data: T) => {
-        return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
-      };
-    }
+    /**
+     * Synchronize the data source with the data input signal.
+     */
+    effect(() => (this.dataSource.data = this.data()));
 
-    if (this.sort()) {
+    /**
+     * Synchronize the data source filter with the filter criteria and predicate input signals.
+     */
+    effect(() => {
+      const criteria = this.filterCriteria();
+      const predicate = this.filterPredicate();
+
+      if (criteria && predicate) {
+        this.dataSource.filterPredicate = (data: T) => {
+          return predicate(data, criteria);
+        };
+        this.dataSource.filter = JSON.stringify(criteria);
+      } else {
+        this.dataSource.filter = '';
+      }
+    });
+
+    /**
+     * Synchronize the data source sort with the sort input and matSort viewChild signals.
+     */
+    effect(() => {
       const matSortInstance = this.matSort();
-      if (matSortInstance) {
-        matSortInstance.active = this.sort()?.[0] || '';
-        matSortInstance.direction = this.sort()?.[1] || 'asc';
+      const sortConfig = this.sort();
+      if (matSortInstance && sortConfig) {
+        matSortInstance.active = sortConfig[0] || '';
+        matSortInstance.direction = sortConfig[1] || 'asc';
         this.dataSource.sort = matSortInstance;
       }
-    }
+    });
+
+    /**
+     * Synchronize the data source paginator with the matPaginator viewChild signal.
+     */
+    effect(() => {
+      const paginator = this.matPaginator();
+      if (paginator) {
+        this.dataSource.paginator = paginator;
+      }
+    });
   }
 
   onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
@@ -260,7 +278,7 @@ export class SharedTableUiComponent<
       active,
       direction,
     });
-    this.announceSortChange({ active, direction });
+    this.#announceSortChange({ active, direction });
   }
 
   protected onDelete(event: Event, element: T): void {
@@ -285,23 +303,13 @@ export class SharedTableUiComponent<
     this.getChangedData.emit(result);
   }
 
-  protected setCellNgClass(column: TableColumnFormatting<T, FormattingTypes>): {
-    [className: string]: boolean;
-  } {
-    return {
-      ...(column.cssClasses?.[0] ? { [column.cssClasses[0]]: true } : {}),
-      ...(column.formatting.type === 'INPUT' ? { 'mat-cell-input': true } : {}),
-      ...(column.formatting.type === 'LINK' ? { 'mat-cell-link': true } : {}),
-    };
-  }
-
   protected updateExpandedElement(element: T | null): void {
     requestAnimationFrame(() => {
       this.expandedElement.set(this.expandedElement()?.id === element?.id ? null : element);
     });
   }
 
-  private announceSortChange(sortState: Sort) {
+  #announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       this.#liveAnnouncer.announce(
         `Ordenant columna ${sortState.active} ${sortState.direction === 'asc' ? 'de forma ascendent' : 'de forma descendent'}`,

@@ -40,6 +40,26 @@ if (ENV_NAME === 'development') {
 }
 
 const pb = new PocketBase(POCKETBASE_URL);
+// Disable auto-cancellation so concurrent requests within processInChunks aren't dropped.
+pb.autoCancellation(false);
+
+const SYNC_CHUNK_SIZE = 10;
+
+/**
+ * Runs `handler` over `items` in sequential chunks of `chunkSize`,
+ * with the items in each chunk processed concurrently via Promise.all.
+ * @param {T[]} items - Items to process.
+ * @param {number} chunkSize - Maximum concurrent operations per chunk.
+ * @param {(item: T) => Promise<unknown>} handler - Async callback per item.
+ * @returns {Promise<void>}
+ * @template T
+ */
+async function processInChunks(items, chunkSize, handler) {
+  for (let i = 0; i < items.length; i += chunkSize) {
+    const chunk = items.slice(i, i + chunkSize);
+    await Promise.all(chunk.map(handler));
+  }
+}
 
 /**
  * Synchronizes the local PocketBase schema with a remote instance.
@@ -75,7 +95,7 @@ async function syncSchema() {
 
     // --- FIRST PASS: CREATE BASE COLLECTIONS (No Relations) ---
     console.log('🔄 First pass: Creating missing base collections...');
-    for (const collection of baseCollections) {
+    await processInChunks(baseCollections, SYNC_CHUNK_SIZE, async collection => {
       const existingByName = existingMap.get(collection.name);
       const existingById = existingMapById.get(collection.id);
 
@@ -124,7 +144,7 @@ async function syncSchema() {
         await pb.collections.update(existingById.id, { name: collection.name });
         console.log(`✅ Renamed collection: ${existingById.name} -> ${collection.name}`);
       }
-    }
+    });
 
     // --- RE-FETCH MAPS ---
     existingCollections = await pb.collections.getFullList();
@@ -132,9 +152,9 @@ async function syncSchema() {
 
     // --- SECOND PASS: UPDATE BASE COLLECTIONS (Include Relations) ---
     console.log('🔄 Second pass: Updating base collections with full schema...');
-    for (const collection of baseCollections) {
+    await processInChunks(baseCollections, SYNC_CHUNK_SIZE, async collection => {
       const existing = existingMap.get(collection.name);
-      if (!existing) continue;
+      if (!existing) return;
 
       try {
         const collectionData = prepareCollectionData(collection, schema, existingMap);
@@ -147,7 +167,7 @@ async function syncSchema() {
           console.error('   Details:', JSON.stringify(error.response.data, null, 2));
         errors++;
       }
-    }
+    });
 
     // --- THIRD PASS: HANDLE VIEWS (Dependencies should now be met) ---
     console.log('🔄 Third pass: Creating/Updating view collections...');
@@ -155,7 +175,7 @@ async function syncSchema() {
     existingCollections = await pb.collections.getFullList();
     existingMap = new Map(existingCollections.map(col => [col.name, col]));
 
-    for (const collection of viewCollections) {
+    await processInChunks(viewCollections, SYNC_CHUNK_SIZE, async collection => {
       const existing = existingMap.get(collection.name) || existingMapById.get(collection.id);
 
       try {
@@ -184,7 +204,7 @@ async function syncSchema() {
           console.error('   Details:', JSON.stringify(error.response.data, null, 2));
         errors++;
       }
-    }
+    });
 
     console.log('\n✅ Schema sync completed!');
     console.log(`   Created: ${created}, Updated: ${updated}, Errors: ${errors}`);

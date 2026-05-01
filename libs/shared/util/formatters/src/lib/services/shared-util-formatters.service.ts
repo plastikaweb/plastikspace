@@ -31,9 +31,8 @@ export class SharedUtilFormattersService {
 
   /**
    * Formats a date value using the specified formatting options.
-   * @template T - The type of the attributes.
    * @param {FormattingDateInput} value The date value to format.
-   * @param {Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} extras An optional function that returns additional formatting options, such as locale and timezone.
+   * @param {() => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} [extras] An optional function that returns additional formatting options, such as locale and timezone.
    * @returns {string} The formatted date string.
    */
   dateFormatter(
@@ -197,6 +196,14 @@ export class SharedUtilFormattersService {
     return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
   }
 
+  /**
+   * Formats a given number as a quantity string with optional prefix and suffix.
+   * @template T - The type parameter for the base entity.
+   * @param {number} value - The numeric value to format.
+   * @param {T} item - The item containing the value.
+   * @param {(item: T) => Partial<Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>>} [extras] - Optional function that returns additional formatting options.
+   * @returns {string} The formatted quantity string.
+   */
   quantityFormatter<T extends BaseEntity>(
     value: number,
     item: T,
@@ -218,11 +225,8 @@ export class SharedUtilFormattersService {
         ...extras(item),
       };
     }
-    return `
-    ${format.prefix ? format.prefix : ''}
-    ${formatNumber(Number(value), format.locale, format.numberDigitsInfo)}
-    ${format.suffix ? format.suffix : ''}
-    `;
+    const formattedNumber = formatNumber(Number(value), format.locale, format.numberDigitsInfo);
+    return `${format.prefix || ''}${formattedNumber}${format.suffix || ''}`.trim();
   }
 
   /**
@@ -261,21 +265,20 @@ export class SharedUtilFormattersService {
   }
 
   /**
-   * @description Formats value passing a custom method to format it.
+   * Formats a value passing a custom method to format it.
    * @template T - The type of the attributes.
-   * @param { string } value The value to format.
-   * @param { PropertyFormattingConf } param The control configuration to format the object property value.
-   * @param { (value: string, element?: T, index?: number, extras?: unknown) => FormattingOutput } param.execute  The function to execute to format the value.
-   * @param { T } element The whole item object where the formatting property belongs.
-   * @param { number } index The index of the object i a list (f.e. a table).
-   * @param { T } extraConfig Extra configuration object to format values when defining `execute` method blueprint.
+   * @param {string} value - The value to format.
+   * @param {PropertyFormattingConf<T>} param - The control configuration to format the object property value.
+   * @param {T} element - The whole item object where the formatting property belongs.
+   * @param {number} [index] - The index of the object in a list (e.g. a table).
+   * @param {unknown} [extraConfig] - Extra configuration object to format values.
+   * @returns {SafeHtml} The formatted value passed through the execute formatting function.
    * @example
    * Returns a value for a row index number in a table.
    * execute: (_, __, index = 0, extraConfig) => {
-      const { pageIndex, pageSize } = extraConfig as PageEventConfig;
-      return String(index + pageIndex * pageSize);
-    },
-   * @returns { SafeHtml } The formatted value passed through the execute formatting function.
+   *   const { pageIndex, pageSize } = extraConfig as PageEventConfig;
+   *   return String(index + pageIndex * pageSize);
+   * },
    */
   customFormatter<T extends BaseEntity>(
     value: string,
@@ -288,13 +291,12 @@ export class SharedUtilFormattersService {
   }
 
   /**
-   * @description Formats a value using a component-based formatting configuration.
+   * Formats a value using a component-based formatting configuration.
    * @template T - The type of the object containing the value to format.
    * @param {string} value - The value to format.
-   * @param {PropertyComponentFormattingConf<T>} param - The formatting configuration.
-   * @param {PropertyComponentFormattingConf<T>['execute']} param.execute - The function to execute for component-based formatting.
+   * @param {PropertyComponentFormattingConf<T, unknown>} param - The formatting configuration.
    * @param {T} element - The complete object containing the value being formatted.
-   * @param {number} index - The index of the object in a list (f.e. a table).
+   * @param {number} [index] - The index of the object in a list (e.g. a table).
    * @returns {FormattingComponentOutput | string} The formatted component configuration or the original value if no execute function is provided.
    */
   componentFormatter<T>(
@@ -307,9 +309,9 @@ export class SharedUtilFormattersService {
   }
 
   /**
-   * @description Formats value as default passing sanitizer.
-   * @param { string } value The value to sanitize.
-   * @returns { SafeHtml } The value passed through the sanitizer.
+   * Formats value as default passing sanitizer.
+   * @param {string} value The value to sanitize.
+   * @returns {SafeHtml} The value passed through the sanitizer.
    */
   defaultFormatter(value: string): SafeHtml {
     return this.#sanitizer.bypassSecurityTrustHtml(value);
