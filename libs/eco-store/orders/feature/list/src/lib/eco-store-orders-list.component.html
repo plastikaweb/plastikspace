@@ -1,29 +1,21 @@
-<header role="presentation" class="hero-header reveal-up [--delay:50ms]">
-  <div class="hero-content flex flex-col gap-2">
-    <div class="category-subtitle flex items-center gap-2">
-      <mat-icon class="scale-90!" aria-hidden="true">receipt_long</mat-icon>
-      <span>
-        @if (ordersStore.isLoading()) {
-          {{ 'orders.list.loading' | translate }}
-        } @else {
-          {{ 'orders.list.loadedCount' | translate: { count: ordersStore.count() } }}
-        }
-      </span>
-    </div>
-    <div class="flex flex-row items-center justify-between gap-3">
-      <h2 class="category-title font-bold">
-        {{ 'orders.list.title' | translate }}
-      </h2>
-      <plastik-sort-selector
-        [class.pointer-events-none]="ordersStore.isLoading()"
-        [class.opacity-60]="ordersStore.isLoading()"
-        [options]="ordersStore.sortOptions()"
-        [currentSort]="ordersStore.sort()"
-        [translationPrefix]="'orders.filter.sort'"
-        (sortChange)="sort($event)"></plastik-sort-selector>
-    </div>
-  </div>
-</header>
+<eco-store-hero-header
+  headerRole="presentation"
+  icon="receipt_long"
+  [subtitle]="
+    ordersStore.isLoading()
+      ? ('orders.list.loading' | translate)
+      : ('orders.list.loadedCount' | translate: { count: ordersStore.count() })
+  "
+  [title]="'orders.list.title' | translate">
+  <plastik-sort-selector
+    heroAction
+    [class.pointer-events-none]="ordersStore.isLoading()"
+    [class.opacity-60]="ordersStore.isLoading()"
+    [options]="ordersStore.sortOptions()"
+    [currentSort]="ordersStore.sort()"
+    [translationPrefix]="'orders.filter.sort'"
+    (sortChange)="sort($event)"></plastik-sort-selector>
+</eco-store-hero-header>
 
 <div
   class="mb-4"

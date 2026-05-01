@@ -3,51 +3,49 @@
   [items]="breadcrumbItems()"
   (goBack)="returnToPreviousPage()" />
 
-<header class="hero-header reveal-up" style="--delay: 50ms">
-  <div class="hero-content flex flex-col gap-2">
-    @if (product()) {
-      <div class="category-subtitle flex items-center gap-2">
-        <mat-icon class="shrink-0 scale-75!" aria-hidden="true">{{
-          product()?.categoryIcon
-        }}</mat-icon>
-        <span class="truncate">{{ product()?.categoryName }}</span>
-      </div>
-      <div class="flex min-w-0 items-start justify-between gap-3">
-        <h2 class="category-title font-black">{{ product()?.name }}</h2>
-        <eco-store-shared-favorite-button
-          class="mt-1 shrink-0"
-          size="md"
-          [isFavorite]="isFavorite()"
-          [ariaLabel]="
-            isFavorite()
-              ? ('products.favoriteRemove' | translate)
-              : ('products.favoriteAdd' | translate)
-          "
-          (toggleFavorite)="toggleFavorite()" />
-      </div>
-      <div class="flex flex-wrap gap-2" role="list">
-        @for (tag of productTags; track tag.label) {
-          <plastik-shared-chip
-            role="listitem"
-            [customClass]="'shadow-sm ' + tag.class"
-            [icon]="tag.icon"
-            [label]="tag.label | translate" />
-        }
-      </div>
-    } @else {
-      <div aria-hidden="true" class="bg-surface-variant/60 h-4 w-36 animate-pulse rounded"></div>
-      <div class="flex items-center justify-between gap-3" aria-hidden="true">
-        <div class="bg-surface-variant/60 h-8 flex-1 animate-pulse rounded"></div>
-        <div class="bg-surface-variant/60 h-10 w-10 shrink-0 animate-pulse rounded-full"></div>
-      </div>
-      <div class="flex gap-2" aria-hidden="true">
-        @for (i of [1, 2, 3]; track i) {
-          <div class="bg-surface-variant/60 h-7 w-20 animate-pulse rounded-full"></div>
-        }
-      </div>
-    }
-  </div>
-</header>
+<eco-store-hero-header>
+  @if (product()) {
+    <div class="category-subtitle flex items-center gap-2">
+      <mat-icon class="shrink-0 scale-75!" aria-hidden="true">{{
+        product()?.categoryIcon
+      }}</mat-icon>
+      <span class="truncate">{{ product()?.categoryName }}</span>
+    </div>
+    <div class="flex min-w-0 items-start justify-between gap-3">
+      <h2 class="category-title font-black">{{ product()?.name }}</h2>
+      <eco-store-shared-favorite-button
+        class="mt-1 shrink-0"
+        size="md"
+        [isFavorite]="isFavorite()"
+        [ariaLabel]="
+          isFavorite()
+            ? ('products.favoriteRemove' | translate)
+            : ('products.favoriteAdd' | translate)
+        "
+        (toggleFavorite)="toggleFavorite()" />
+    </div>
+    <div class="flex flex-wrap gap-2" role="list">
+      @for (tag of productTags; track tag.label) {
+        <plastik-shared-chip
+          role="listitem"
+          [customClass]="'shadow-sm ' + tag.class"
+          [icon]="tag.icon"
+          [label]="tag.label | translate" />
+      }
+    </div>
+  } @else {
+    <div aria-hidden="true" class="bg-surface-variant/60 h-4 w-36 animate-pulse rounded"></div>
+    <div class="flex items-center justify-between gap-3" aria-hidden="true">
+      <div class="bg-surface-variant/60 h-8 flex-1 animate-pulse rounded"></div>
+      <div class="bg-surface-variant/60 h-10 w-10 shrink-0 animate-pulse rounded-full"></div>
+    </div>
+    <div class="flex gap-2" aria-hidden="true">
+      @for (i of [1, 2, 3]; track i) {
+        <div class="bg-surface-variant/60 h-7 w-20 animate-pulse rounded-full"></div>
+      }
+    </div>
+  }
+</eco-store-hero-header>
 
 <div class="detail-container px-4 py-8">
   <div class="grid grid-cols-1 items-start gap-12 md:grid-cols-2">

@@ -1,0 +1,28 @@
+<header
+  class="hero-header"
+  [class.hero-header--compact]="compact()"
+  [class.reveal-up]="!disableReveal()"
+  [style.--delay]="revealDelay()"
+  [attr.role]="headerRole()">
+  <div class="hero-content flex flex-col gap-3">
+    @if (icon() || subtitle()) {
+      <div [class]="subtitleClass()">
+        @if (icon()) {
+          <mat-icon class="shrink-0 scale-90!" aria-hidden="true">{{ icon() }}</mat-icon>
+        }
+        @if (subtitle()) {
+          <span class="truncate">{{ subtitle() }}</span>
+        }
+      </div>
+    }
+
+    @if (title()) {
+      <div class="flex flex-row items-end justify-between gap-4">
+        <h2 [class]="titleClass() + ' min-w-0'">{{ title() }}</h2>
+        <ng-content select="[heroAction]"></ng-content>
+      </div>
+    }
+
+    <ng-content></ng-content>
+  </div>
+</header>

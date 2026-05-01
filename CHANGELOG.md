@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-01] - Eco-Store: Shared Hero Header Library & Responsive Polish
+
+### Added
+
+- **Hero Header Library**: Created `@plastik/eco-store/hero-header` (`libs/eco-store/shared/hero-header`) — a new shared UI library owning the recurring hero-header pattern (organic background, responsive typography, subtitle/title/extras layout) with inputs (`title`, `icon`, `subtitle`, `compact`, `revealDelay`, `headerRole`, `titleClass`, `subtitleClass`) and a `[heroAction]` projection slot for trailing actions ([#86c9hdf9z](https://app.clickup.com/t/86c9hdf9z)).
+- **Hero Header Integration**: Refactored eight consumer views (products list/detail, orders list/detail, cart shipping/summary/confirmation, profile) to use the new shared component, removing inline `.hero-header` markup duplication ([#86c9hdf9z](https://app.clickup.com/t/86c9hdf9z)).
+
+### Changed
+
+- **Hero Header Styles Migration**: Moved the `.hero-header`, `.hero-content`, `.category-title` and `.category-subtitle` rules out of the global `apps/eco-store/src/styles/_components.scss` into the new component (using `ViewEncapsulation.None` so projected content remains styled) ([#86c9hdf9z](https://app.clickup.com/t/86c9hdf9z)).
+- **Responsive Spacing Polish**: Replaced magic spacing values with `--space-*` design tokens, normalized the mobile breakpoint to Tailwind's `sm` (640px), made vertical padding symmetric and breathable, and unified `margin-bottom` across viewports ([#86c9hdf9z](https://app.clickup.com/t/86c9hdf9z)).
+- **Title Row Alignment**: Switched the structured title row to `items-end` baseline alignment with a `gap-4` separator so trailing actions (sort selectors, buttons, chips) line up cleanly with the title baseline ([#86c9hdf9z](https://app.clickup.com/t/86c9hdf9z)).
+- **Orders Detail Header**: Stacked the subtitle block and "View PDF" button on mobile (`flex-col` → `sm:flex-row`), fixed an incorrect `flex-1` on the receipt icon, bumped the order title from `text-base` to `text-lg`, and added an `aria-label` and explicit `type="button"` on the action ([#86c9hdf9z](https://app.clickup.com/t/86c9hdf9z)).
+- **Cart Steps Spacing**: Replaced `py-8` with `pb-8` on the section directly below the hero in shipping, summary, and confirmation steps to remove ~32px of duplicated breathing room created by the hero's own bottom padding ([#86c9hdf9z](https://app.clickup.com/t/86c9hdf9z)).
+
 ## [2026-04-28] - Eco-Store: Breadcrumb Navigation Library & UI Accessibility
 
 ### Added

@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { SortConfig } from '@plastik/core/entities';
 import { EcoStoreOrder, ORDER_STATUS_LABEL_MAP } from '@plastik/eco-store/entities';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
 import { EcoStoreSharedNoResultsComponent } from '@plastik/eco-store/no-results';
 import { ecoStoreOrdersStore, OrdersPocketBaseFilter } from '@plastik/eco-store/orders/data-access';
 import { PaginationComponent } from '@plastik/pagination/ui';
@@ -39,6 +40,7 @@ import { OrderCardComponent } from './order-card/order-card.component';
     TranslatePipe,
     SharedFormFeatureModule,
     SelectWithIconsFormlyModule,
+    EcoStoreHeroHeaderComponent,
     EcoStoreSharedNoResultsComponent,
     SortSelectorComponent,
   ],

@@ -72,6 +72,7 @@ The application is structured into domain-specific libraries:
 - [**Profile**](../../libs/eco-store/profile/feature/README.md): User personal data, addresses, and account management.
 - [**Shared UI**](../../libs/eco-store/shared/product-card/README.md): Cards, chips, and banners.
 - [**Breadcrumbs**](../../libs/eco-store/shared/breadcrumbs/README.md): Responsive breadcrumb navigation bar with back button, skeleton states, and i18n support used across detail views.
+- [**Hero Header**](../../libs/eco-store/shared/hero-header/README.md): Shared page header with organic background, responsive typography, and content projection slots used across views.
 - [**Price Summary**](../../libs/eco-store/shared/price-summary/README.md): Reusable price summary card (subtotal, taxes, shipping, total) used across cart steps and orders detail.
 - [**Translation**](../../libs/shared/translation/README.md): Centralized language management.
 

@@ -1,21 +1,9 @@
-<header class="hero-header reveal-up" style="--delay: 50ms">
-  <div
-    class="hero-content flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end">
-    <div class="flex flex-col items-start gap-2">
-      <div class="flex items-center gap-2">
-        <mat-icon class="scale-90!" aria-hidden="true">shopping_cart</mat-icon>
-        <span>
-          {{ 'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() } }}
-        </span>
-      </div>
-      <h2 class="category-title font-bold">
-        {{ 'cart.steps.summary.title' | translate }}
-      </h2>
-    </div>
-  </div>
-</header>
+<eco-store-hero-header
+  icon="shopping_cart"
+  [subtitle]="'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() }"
+  [title]="'cart.steps.summary.title' | translate" />
 
-<div class="grid grid-cols-1 gap-8 py-8 md:grid-cols-3">
+<div class="grid grid-cols-1 gap-8 pb-8 md:grid-cols-3">
   <div
     class="col-span-1 space-y-10 md:col-span-2"
     [class.pointer-events-none]="cartStore.isSyncing()"
