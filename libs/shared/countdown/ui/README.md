@@ -18,6 +18,9 @@ A reusable Angular component for displaying countdowns with a customizable prefi
 
 - **Segmented Display**: Renders countdowns as a series of time segments (e.g., `12m`, `30s`).
 - **Animated Separators**: Supports custom separators with optional pulsing animations.
+- **Responsive Accessibility**: Prefix labels are visually hidden on mobile and tablet using `hidden lg:block` to
+  prioritize space for the countdown segments, while remaining fully accessible to screen readers via a dedicated
+  `sr-only` span.
 - **Translatable**: Integrated with `ngx-translate` for localized prefixes.
 - **Customizable**: Accepts custom CSS classes for flexible styling.
 

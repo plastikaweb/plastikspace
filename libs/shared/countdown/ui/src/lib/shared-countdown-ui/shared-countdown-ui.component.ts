@@ -5,8 +5,12 @@ import { TranslatePipe } from '@ngx-translate/core';
   selector: 'plastik-countdown',
   imports: [TranslatePipe],
   templateUrl: './shared-countdown-ui.component.html',
-  styleUrl: './shared-countdown-ui.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  host: {
+    role: 'timer',
+    'aria-live': 'polite',
+    class: 'inline-flex',
+  },
 })
 export class SharedCountdownUiComponent {
   readonly segments = input<string[]>([]);

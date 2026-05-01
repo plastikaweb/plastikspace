@@ -46,14 +46,22 @@ describe('StoreWindowComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should render OPEN status correctly', () => {
+  it('should render OPEN status correctly with sr-only for screen readers and hidden for visual users on mobile/tablet', () => {
     fixture.componentRef.setInput('status', 'OPEN');
     fixture.detectChanges();
 
     const chip = fixture.nativeElement.querySelector('.status-chip');
     expect(chip).toBeTruthy();
     expect(chip.classList).toContain('open');
-    expect(chip.textContent).toContain('store.status.open');
+
+    const srOnly = fixture.nativeElement.querySelector('.sr-only');
+    const visual = fixture.nativeElement.querySelector('span[aria-hidden="true"]');
+
+    expect(srOnly.textContent).toContain('store.status.open');
+    expect(visual.textContent).toContain('store.status.open');
+
+    expect(visual.classList).toContain('hidden');
+    expect(visual.classList).toContain('lg:flex');
   });
 
   it('should render CLOSED status correctly', () => {

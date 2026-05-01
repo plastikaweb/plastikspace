@@ -1,6 +1,7 @@
 <p [class]="`chip-countdown flex flex-row items-center ${class()}`">
   @if (prefix()) {
-    {{ prefix() | translate }}
+    <span class="sr-only">{{ prefix() | translate }}</span>
+    <span aria-hidden="true" class="hidden lg:block">{{ prefix() | translate }}</span>
   }
   @for (segment of segments(); track $index) {
     @if (segment === ':') {

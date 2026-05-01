@@ -4,11 +4,15 @@
     [matTooltip]="closedReason() || (config.label | translate)">
     <plastik-shared-chip [type]="config.type || 'neutral'" [icon]="config.icon">
       <div class="flex items-center gap-2">
+        <!-- Screen Reader Only Label -->
+        <span class="sr-only">{{ config.label | translate }}</span>
+
+        <!-- Visual Label (Hidden on mobile and tablet) -->
         <span
-          [class]="`flex items-center font-bold tracking-wide whitespace-nowrap uppercase ${config.countdownSegments?.length ? 'border-tertiary-200 border-r pr-2' : ''}`">
+          aria-hidden="true"
+          [class]="`hidden items-center font-bold tracking-wide whitespace-nowrap uppercase lg:flex ${config.countdownSegments?.length ? 'border-tertiary-200 border-r pr-2' : ''}`">
           @if (config.class === 'closing') {
             <span
-              aria-hidden="true"
               class="bg-warning-800 dark:bg-warning-200 mr-2 inline-block h-[12px] w-[12px] animate-pulse rounded-full"></span>
           }
           {{ config.label | translate }}
