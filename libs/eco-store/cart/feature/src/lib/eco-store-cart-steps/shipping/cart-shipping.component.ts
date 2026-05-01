@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { TranslatePipe } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { EcoStoreCartState, ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { SharedFormFeatureModule } from '@plastik/shared/form';
 
@@ -39,6 +40,7 @@ import { getCartShippingFormConfig } from './form/cart-shipping-form.config';
     CustomLabelFormlyModule,
     AddressSelectorFormlyModule,
     EcoStorePriceSummaryComponent,
+    EcoStoreHeroHeaderComponent,
     CartOrderPriceSlotsComponent,
     TranslatePipe,
   ],

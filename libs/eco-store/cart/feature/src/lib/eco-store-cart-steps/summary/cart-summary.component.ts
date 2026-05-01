@@ -7,6 +7,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
 import { EcoStoreSharedNoResultsComponent } from '@plastik/eco-store/no-results';
 import { EcoStorePriceSummaryComponent } from '@plastik/eco-store/price-summary';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
@@ -24,6 +25,7 @@ import { CartProductCardComponent } from '../../ui/cart-product-card/cart-produc
     TranslatePipe,
     RouterLink,
     EcoStorePriceSummaryComponent,
+    EcoStoreHeroHeaderComponent,
     CartProductCardComponent,
     EcoStoreSharedNoResultsComponent,
     SharedAlertUiComponent,

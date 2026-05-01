@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { ActivatedRoute, NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
 import { SharedChipComponent } from '@plastik/shared/chip/ui';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { filter, map, startWith, take } from 'rxjs/operators';
@@ -19,6 +20,7 @@ import { TrialBannerComponent } from '../trial-banner/trial-banner.component';
     SharedChipComponent,
     TrialBannerComponent,
     DatePipe,
+    EcoStoreHeroHeaderComponent,
   ],
   templateUrl: './eco-store-profile-feature.component.html',
   styleUrl: './eco-store-profile-feature.component.scss',

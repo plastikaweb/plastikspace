@@ -4,53 +4,54 @@
   [items]="breadcrumbItems()"
   (goBack)="goBack()" />
 
-<header class="hero-header reveal-up [--delay:50ms]">
-  <div class="hero-content flex flex-col items-start gap-2">
-    <div class="flex w-full flex-row items-center justify-between gap-2">
-      <div class="category-subtitle flex items-center gap-2">
-        <mat-icon class="flex-1 scale-90!" aria-hidden="true">receipt_long</mat-icon>
-        @if (order()) {
-          <div class="flex flex-col gap-2">
-            <div class="flex flex-col gap-2 lg:flex-row">
-              <h2
-                class="text-on-surface max-w-[calc(100%-40px)] truncate text-base font-black tracking-tight break-all sm:text-2xl sm:break-normal">
-                {{ 'orders.detail.title' | translate: { orderNumber: order()?.orderNumber } }}
-              </h2>
-              @if (order()) {
-                <plastik-shared-chip
-                  size="lg"
-                  [label]="statusLabel() | translate"
-                  [icon]="statusIcon()"
-                  [type]="statusType()" />
-              } @else {
-                <plastik-shared-chip
-                  size="lg"
-                  [label]="'orders.detail.loading' | translate"
-                  [icon]="'receipt_long'"
-                  [type]="'neutral'" />
-              }
-            </div>
-            <p class="text-on-surface-variant text-sm font-medium">
-              {{ 'orders.detail.orderDate' | translate }}:
-              {{ order()?.created | date: 'mediumDate' }}
-            </p>
-          </div>
-        } @else {
-          <div class="flex flex-col">
-            <h2 class="text-on-surface text-2xl font-black tracking-tight sm:text-3xl">
-              {{ 'orders.detail.loading' | translate }}
+<eco-store-hero-header>
+  <div
+    class="flex w-full flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
+    <div class="category-subtitle flex min-w-0 items-center gap-2">
+      <mat-icon class="shrink-0 scale-90!" aria-hidden="true">receipt_long</mat-icon>
+      @if (order()) {
+        <div class="flex min-w-0 flex-col gap-1">
+          <div class="flex flex-col gap-2 lg:flex-row lg:items-center">
+            <h2
+              class="text-on-surface min-w-0 truncate text-lg font-black tracking-tight break-all sm:text-2xl sm:break-normal">
+              {{ 'orders.detail.title' | translate: { orderNumber: order()?.orderNumber } }}
             </h2>
+            @if (order()) {
+              <plastik-shared-chip
+                size="lg"
+                [label]="statusLabel() | translate"
+                [icon]="statusIcon()"
+                [type]="statusType()" />
+            } @else {
+              <plastik-shared-chip
+                size="lg"
+                [label]="'orders.detail.loading' | translate"
+                [icon]="'receipt_long'"
+                [type]="'neutral'" />
+            }
           </div>
-        }
-      </div>
-
-      <button matButton="filled">
-        <mat-icon class="scale-90" aria-hidden="true">receipt</mat-icon>
-        {{ 'orders.detail.summary.viewPdf' | translate }}
-      </button>
+          <p class="text-on-surface-variant text-sm font-medium">
+            {{ 'orders.detail.orderDate' | translate }}:
+            {{ order()?.created | date: 'mediumDate' }}
+          </p>
+        </div>
+      } @else {
+        <h2 class="text-on-surface text-2xl font-black tracking-tight sm:text-3xl">
+          {{ 'orders.detail.loading' | translate }}
+        </h2>
+      }
     </div>
+
+    <button
+      matButton="filled"
+      type="button"
+      class="shrink-0 self-start sm:self-center"
+      [attr.aria-label]="'orders.detail.summary.viewPdf' | translate">
+      <mat-icon aria-hidden="true">receipt</mat-icon>
+      {{ 'orders.detail.summary.viewPdf' | translate }}
+    </button>
   </div>
-</header>
+</eco-store-hero-header>
 
 <!-- Loading skeleton -->
 @if (isLoading()) {

@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, linkedSignal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { SortConfig } from '@plastik/core/entities';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName, ProductCategory } from '@plastik/eco-store/entities';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { ecoStoreProductCategoriesStore } from '@plastik/eco-store/product-categories/data-access';
 import {
@@ -28,7 +28,7 @@ import { distinctUntilChanged, map } from 'rxjs';
     PaginationComponent,
     PocketbasePaginationNavigationDirective,
     SortSelectorComponent,
-    MatIcon,
+    EcoStoreHeroHeaderComponent,
   ],
   templateUrl: './eco-store-products-feature.component.html',
   styleUrl: './eco-store-products-feature.component.scss',

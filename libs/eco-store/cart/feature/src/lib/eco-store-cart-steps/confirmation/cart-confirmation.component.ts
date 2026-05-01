@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
 import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { EcoStorePriceSummaryComponent } from '@plastik/eco-store/price-summary';
@@ -27,6 +28,7 @@ import {
     SharedFormFeatureModule,
     TextAreaWithCounterFormlyModule,
     EcoStorePriceSummaryComponent,
+    EcoStoreHeroHeaderComponent,
     CartProductCardComponent,
     SharedAlertUiComponent,
   ],

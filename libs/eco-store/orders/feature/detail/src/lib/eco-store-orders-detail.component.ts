@@ -7,6 +7,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { CartProductCardComponent } from '@plastik/eco-store/cart';
 import { BreadcrumbItem, EcoStoreBreadcrumbsComponent } from '@plastik/eco-store/breadcrumbs';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
 import {
   EcoStoreProductWithCategoryName,
   ORDER_DELIVERY_ICON_MAP,
@@ -37,6 +38,7 @@ import { SharedChipComponent } from '@plastik/shared/chip/ui';
     RouterLink,
     EcoStoreSharedNoResultsComponent,
     EcoStoreBreadcrumbsComponent,
+    EcoStoreHeroHeaderComponent,
   ],
   templateUrl: './eco-store-orders-detail.component.html',
   styleUrl: './eco-store-orders-detail.component.scss',

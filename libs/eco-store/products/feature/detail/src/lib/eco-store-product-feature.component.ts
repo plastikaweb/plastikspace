@@ -18,6 +18,7 @@ import { NavigationService } from '@plastik/core/router-state';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
 import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
 import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
 import { EcoStoreProductQuantityComponent } from '@plastik/eco-store/product-quantity';
@@ -42,6 +43,7 @@ import { map } from 'rxjs';
     PocketBaseImageUrlPipe,
     EcoStoreSharedFavoriteButtonComponent,
     EcoStoreBreadcrumbsComponent,
+    EcoStoreHeroHeaderComponent,
   ],
   templateUrl: './eco-store-product-feature.component.html',
   styleUrl: './eco-store-product-feature.component.scss',
