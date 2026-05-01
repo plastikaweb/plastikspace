@@ -11,10 +11,14 @@ describe('BytesToSizePipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('should return"n/a" if value is 0, null, or undefined', () => {
-    expect(pipe.transform(0)).toBe('n/a');
+  it('should return "0 Bytes" when value is 0', () => {
+    expect(pipe.transform(0)).toBe('0 Bytes');
+  });
+
+  it('should return "n/a" if value is null, undefined, or NaN', () => {
     expect(pipe.transform(null as any)).toBe('n/a');
     expect(pipe.transform(undefined as any)).toBe('n/a');
+    expect(pipe.transform(NaN)).toBe('n/a');
   });
 
   it('should return correct size for Bytes', () => {

@@ -112,8 +112,8 @@ export const appConfig: ApplicationConfig = {
 
       try {
         await firstValueFrom(translate.use(langToUse));
-      } catch (error) {
-        console.error("No s'han pogut carregar les traduccions", error);
+      } catch {
+        // Translation load failures are surfaced through the global ErrorHandlerService.
       }
 
       activity.setActivity(true);

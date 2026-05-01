@@ -25,7 +25,9 @@
 
           <mat-cell
             *matCellDef="let row; let i = dataIndex"
-            [class]="`py-sub ${setCellNgClass(column)}`">
+            [class]="'py-sub ' + (column.cssClasses?.[0] || '')"
+            [class.mat-cell-input]="column.formatting.type === 'INPUT'"
+            [class.mat-cell-link]="column.formatting.type === 'LINK'">
             @switch (column.formatting.type) {
               @case ('LINK') {
                 <a

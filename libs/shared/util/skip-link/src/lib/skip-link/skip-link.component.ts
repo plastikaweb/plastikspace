@@ -14,6 +14,10 @@ export class SkipLinkComponent {
   readonly #liveAnnouncer = inject(LiveAnnouncer);
   readonly #router = inject(Router);
 
+  /**
+   * Skips to the main content of the page.
+   * @param {Event} event - The event object.
+   */
   protected skipToMainContent(event: Event): void {
     event.preventDefault();
 

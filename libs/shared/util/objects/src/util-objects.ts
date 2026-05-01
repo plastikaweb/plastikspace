@@ -202,9 +202,7 @@ export function transformToString(value: unknown): string {
 
   try {
     result = JSON.stringify(value) ?? '';
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
+  } catch {
     result = '';
   }
 

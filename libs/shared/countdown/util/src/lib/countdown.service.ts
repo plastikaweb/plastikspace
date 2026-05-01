@@ -20,13 +20,13 @@ import { Countdown, CountdownConfig, CountdownData } from './countdown.model';
  */
 @Injectable({ providedIn: 'root' })
 export class CountdownService {
-  private readonly destroyRef = inject(DestroyRef);
-  private readonly injector = inject(Injector);
+  readonly #destroyRef = inject(DestroyRef);
+  readonly #injector = inject(Injector);
 
   // Cache to store shared countdowns by target date
-  private readonly countdownCache = new Map<string, Countdown>();
+  readonly #countdownCache = new Map<string, Countdown>();
 
-  private readonly separator = signal<string>(':');
+  readonly #separator = signal<string>(':');
 
   /**
    * @description Creates a reactive countdown to a target date.
@@ -43,10 +43,10 @@ export class CountdownService {
     injector?: Injector
   ): Countdown {
     const intervalMs = config.intervalMs ?? 1000;
-    const targetInjector = injector ?? this.injector;
+    const targetInjector = injector ?? this.#injector;
     const targetDestroyRef = targetInjector.get(DestroyRef);
 
-    this.separator.set(separator);
+    this.#separator.set(separator);
 
     const targetDateSignal = computed(() => targetDateFn());
 
@@ -57,7 +57,7 @@ export class CountdownService {
     });
 
     // Check if we already have a countdown for this target date
-    let countdown = this.countdownCache.get(cacheKey());
+    let countdown = this.#countdownCache.get(cacheKey());
 
     if (!countdown) {
       // Create new countdown if not cached
@@ -67,7 +67,7 @@ export class CountdownService {
         targetInjector,
         targetDestroyRef
       );
-      this.countdownCache.set(cacheKey(), countdown);
+      this.#countdownCache.set(cacheKey(), countdown);
     }
 
     return countdown;
@@ -160,6 +160,6 @@ export class CountdownService {
     if (countdown.minutes > 0) parts.push(`${countdown.minutes}m`);
     parts.push(`${countdown.seconds}s`);
 
-    return parts.join(this.separator());
+    return parts.join(this.#separator());
   }
 }

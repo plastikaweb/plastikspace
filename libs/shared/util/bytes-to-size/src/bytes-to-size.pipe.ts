@@ -1,10 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * Pipe to convert a byte count into a human-readable size string.
+ */
 @Pipe({
   name: 'bytesToSize',
 })
 export class BytesToSizePipe implements PipeTransform {
-  sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  readonly #sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
 
   /**
    * Converts a number representing bytes to a human-readable size format.
@@ -13,13 +16,16 @@ export class BytesToSizePipe implements PipeTransform {
    * @returns {string} A string representing the converted size in a human-readable format.
    */
   transform(value: number, fixed = 0): string {
-    if (!value) {
+    if (value === null || value === undefined || isNaN(value)) {
       return 'n/a';
+    }
+    if (value === 0) {
+      return `0 ${this.#sizes[0]}`;
     }
     const size = parseInt(String(Math.floor(Math.log(value) / Math.log(1024))), 10);
     if (size === 0) {
-      return `${value} ${this.sizes[size]}`;
+      return `${value} ${this.#sizes[size]}`;
     }
-    return `${(value / 1024 ** size).toFixed(fixed)} ${this.sizes[size]}`;
+    return `${(value / 1024 ** size).toFixed(fixed)} ${this.#sizes[size]}`;
   }
 }
