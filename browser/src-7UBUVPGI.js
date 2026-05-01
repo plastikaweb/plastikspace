@@ -31,7 +31,7 @@ import {
   isTextTypeGuard,
   isTextareaTypeGuard,
   isToggleTypeGuard
-} from "./chunk-BFKEDEJA.js";
+} from "./chunk-THCPAIVR.js";
 import {
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR
@@ -4297,9 +4297,8 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
   #locale = inject(LOCALE_ID);
   /**
    * Formats a date value using the specified formatting options.
-   * @template T - The type of the attributes.
    * @param {FormattingDateInput} value The date value to format.
-   * @param {Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} extras An optional function that returns additional formatting options, such as locale and timezone.
+   * @param {() => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} [extras] An optional function that returns additional formatting options, such as locale and timezone.
    * @returns {string} The formatted date string.
    */
   dateFormatter(value, extras) {
@@ -4400,6 +4399,14 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
     }
     return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || "";
   }
+  /**
+   * Formats a given number as a quantity string with optional prefix and suffix.
+   * @template T - The type parameter for the base entity.
+   * @param {number} value - The numeric value to format.
+   * @param {T} item - The item containing the value.
+   * @param {(item: T) => Partial<Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>>} [extras] - Optional function that returns additional formatting options.
+   * @returns {string} The formatted quantity string.
+   */
   quantityFormatter(value, item, extras) {
     let format = {
       numberDigitsInfo: "1.2-2",
@@ -4410,11 +4417,8 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
     if (extras) {
       format = __spreadValues(__spreadValues({}, format), extras(item));
     }
-    return `
-    ${format.prefix ? format.prefix : ""}
-    ${formatNumber(Number(value), format.locale, format.numberDigitsInfo)}
-    ${format.suffix ? format.suffix : ""}
-    `;
+    const formattedNumber = formatNumber(Number(value), format.locale, format.numberDigitsInfo);
+    return `${format.prefix || ""}${formattedNumber}${format.suffix || ""}`.trim();
   }
   /**
    * @description Formats value as title case (value => `Value`).
@@ -4442,42 +4446,40 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
     return this.#sanitizer.bypassSecurityTrustHtml(`<span class="material-icons">${value ? format.iconTrue : format.iconFalse}</span>`);
   }
   /**
-   * @description Formats value passing a custom method to format it.
+   * Formats a value passing a custom method to format it.
    * @template T - The type of the attributes.
-   * @param { string } value The value to format.
-   * @param { PropertyFormattingConf } param The control configuration to format the object property value.
-   * @param { (value: string, element?: T, index?: number, extras?: unknown) => FormattingOutput } param.execute  The function to execute to format the value.
-   * @param { T } element The whole item object where the formatting property belongs.
-   * @param { number } index The index of the object i a list (f.e. a table).
-   * @param { T } extraConfig Extra configuration object to format values when defining `execute` method blueprint.
+   * @param {string} value - The value to format.
+   * @param {PropertyFormattingConf<T>} param - The control configuration to format the object property value.
+   * @param {T} element - The whole item object where the formatting property belongs.
+   * @param {number} [index] - The index of the object in a list (e.g. a table).
+   * @param {unknown} [extraConfig] - Extra configuration object to format values.
+   * @returns {SafeHtml} The formatted value passed through the execute formatting function.
    * @example
    * Returns a value for a row index number in a table.
    * execute: (_, __, index = 0, extraConfig) => {
-      const { pageIndex, pageSize } = extraConfig as PageEventConfig;
-      return String(index + pageIndex * pageSize);
-    },
-   * @returns { SafeHtml } The formatted value passed through the execute formatting function.
+   *   const { pageIndex, pageSize } = extraConfig as PageEventConfig;
+   *   return String(index + pageIndex * pageSize);
+   * },
    */
   customFormatter(value, { execute }, element, index, extraConfig) {
     return execute ? execute(value, element, index, extraConfig) : value ? value : "";
   }
   /**
-   * @description Formats a value using a component-based formatting configuration.
+   * Formats a value using a component-based formatting configuration.
    * @template T - The type of the object containing the value to format.
    * @param {string} value - The value to format.
-   * @param {PropertyComponentFormattingConf<T>} param - The formatting configuration.
-   * @param {PropertyComponentFormattingConf<T>['execute']} param.execute - The function to execute for component-based formatting.
+   * @param {PropertyComponentFormattingConf<T, unknown>} param - The formatting configuration.
    * @param {T} element - The complete object containing the value being formatted.
-   * @param {number} index - The index of the object in a list (f.e. a table).
+   * @param {number} [index] - The index of the object in a list (e.g. a table).
    * @returns {FormattingComponentOutput | string} The formatted component configuration or the original value if no execute function is provided.
    */
   componentFormatter(value, { execute }, element, index) {
     return execute ? execute(value, element, index) : value;
   }
   /**
-   * @description Formats value as default passing sanitizer.
-   * @param { string } value The value to sanitize.
-   * @returns { SafeHtml } The value passed through the sanitizer.
+   * Formats value as default passing sanitizer.
+   * @param {string} value The value to sanitize.
+   * @returns {SafeHtml} The value passed through the sanitizer.
    */
   defaultFormatter(value) {
     return this.#sanitizer.bypassSecurityTrustHtml(value);
@@ -4507,7 +4509,7 @@ var DataFormatFactoryService = class _DataFormatFactoryService {
    * @returns { PropertyFormatting } The valid types to be returned after formatting a value.
    */
   getFormattedValue(item, { pathToKey, formatting }, index, extraConfig) {
-    const value = this.getValueFromRow(pathToKey, item);
+    const value = this.#getValueFromRow(pathToKey, item);
     const { type, extras } = formatting;
     switch (type) {
       case "DATE":
@@ -4542,7 +4544,13 @@ var DataFormatFactoryService = class _DataFormatFactoryService {
         return this.#formatter.defaultFormatter(String(value));
     }
   }
-  getValueFromRow(property, item) {
+  /**
+   * Retrieves a value from an object based on a dot-separated property path.
+   * @param {string} property - The dot-separated path to the property.
+   * @param {T} item - The object to extract the value from.
+   * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
+   */
+  #getValueFromRow(property, item) {
     return property.split(".").reduce((accObject, currentProp) => {
       const object = accObject[currentProp];
       return isNil(object) ? "" : object;
@@ -4562,6 +4570,14 @@ var DataFormatFactoryService = class _DataFormatFactoryService {
 // libs/shared/util/formatters/src/lib/safe-formatted-cell.pipe.ts
 var SafeFormattedPipe = class _SafeFormattedPipe {
   #dataFormatService = inject(DataFormatFactoryService);
+  /**
+   * Formats a value based on the configuration.
+   * @param {T} row - The single object where the property to format resides.
+   * @param {PropertyFormatting<T, unknown>} column - The configuration for the object property.
+   * @param {number} [index] - The index number in a list of values.
+   * @param {unknown} [extraConfig] - A custom configuration object to add extra formatting options.
+   * @returns The formatted value.
+   */
   transform(row, column, index, extraConfig) {
     return this.#dataFormatService.getFormattedValue(row, column, index, extraConfig);
   }
@@ -5052,18 +5068,18 @@ function SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Template(rf, ctx) {
     \u0275\u0275elementEnd();
   }
   if (rf & 2) {
-    let tmp_16_0;
+    let tmp_18_0;
     const column_r3 = \u0275\u0275nextContext().$implicit;
-    const ctx_r1 = \u0275\u0275nextContext(2);
-    \u0275\u0275classMap(`py-sub ${ctx_r1.setCellNgClass(column_r3)}`);
+    \u0275\u0275classMap("py-sub " + ((column_r3.cssClasses == null ? null : column_r3.cssClasses[0]) || ""));
+    \u0275\u0275classProp("mat-cell-input", column_r3.formatting.type === "INPUT")("mat-cell-link", column_r3.formatting.type === "LINK");
     \u0275\u0275advance();
-    \u0275\u0275conditional((tmp_16_0 = column_r3.formatting.type) === "LINK" ? 1 : tmp_16_0 === "INPUT" ? 2 : tmp_16_0 === "IMAGE" ? 3 : tmp_16_0 === "COMPONENT" ? 4 : 5);
+    \u0275\u0275conditional((tmp_18_0 = column_r3.formatting.type) === "LINK" ? 1 : tmp_18_0 === "INPUT" ? 2 : tmp_18_0 === "IMAGE" ? 3 : tmp_18_0 === "COMPONENT" ? 4 : 5);
   }
 }
 function SharedTableUiComponent_Defer_1_For_2_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainerStart(0, 6);
-    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_For_2_mat_header_cell_1_Template, 2, 6, "mat-header-cell", 10)(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Template, 6, 3, "mat-cell", 11);
+    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_For_2_mat_header_cell_1_Template, 2, 6, "mat-header-cell", 10)(2, SharedTableUiComponent_Defer_1_For_2_mat_cell_2_Template, 6, 7, "mat-cell", 11);
     \u0275\u0275elementContainerEnd();
   }
   if (rf & 2) {
@@ -5091,7 +5107,7 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_header_cell_1_Template
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_0_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "button", 39);
+    \u0275\u0275elementStart(0, "button", 40);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_0_Template_button_click_0_listener($event) {
       return $event.stopPropagation();
     });
@@ -5109,7 +5125,7 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Condition
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
     const _r22 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 40);
+    \u0275\u0275elementStart(0, "button", 41);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_1_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r22);
       const action_r20 = \u0275\u0275nextContext().$implicit;
@@ -5132,7 +5148,7 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Condition
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r23 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 40);
+    \u0275\u0275elementStart(0, "button", 41);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_2_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r23);
       const element_r21 = \u0275\u0275nextContext(2).$implicit;
@@ -5154,7 +5170,7 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Condition
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_3_Template(rf, ctx) {
   if (rf & 1) {
     const _r24 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "button", 41);
+    \u0275\u0275elementStart(0, "button", 42);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_3_Template_button_click_0_listener($event) {
       \u0275\u0275restoreView(_r24);
       const action_r20 = \u0275\u0275nextContext().$implicit;
@@ -5177,14 +5193,14 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Condition
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "button", 38);
+    \u0275\u0275elementStart(0, "button", 39);
     \u0275\u0275text(1, " \xA0 ");
     \u0275\u0275elementEnd();
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275conditionalCreate(0, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_0_Template, 3, 6, "button", 35)(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_1_Template, 3, 3, "button", 36)(2, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_2_Template, 3, 3, "button", 36)(3, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_3_Template, 3, 5, "button", 37)(4, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_4_Template, 2, 0, "button", 38);
+    \u0275\u0275conditionalCreate(0, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_0_Template, 3, 6, "button", 36)(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_1_Template, 3, 3, "button", 37)(2, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_2_Template, 3, 3, "button", 37)(3, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_3_Template, 3, 5, "button", 38)(4, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_For_2_Conditional_4_Template, 2, 0, "button", 39);
   }
   if (rf & 2) {
     const action_r20 = ctx.$implicit;
@@ -5210,13 +5226,13 @@ function SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_Template(rf, ct
 function SharedTableUiComponent_Defer_1_Conditional_4_Template(rf, ctx) {
   if (rf & 1) {
     \u0275\u0275elementContainerStart(0, 7);
-    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_header_cell_1_Template, 2, 2, "mat-header-cell", 34)(2, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_Template, 5, 6, "mat-cell", 11);
+    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_Conditional_4_mat_header_cell_1_Template, 2, 2, "mat-header-cell", 34)(2, SharedTableUiComponent_Defer_1_Conditional_4_mat_cell_2_Template, 5, 6, "mat-cell", 35);
     \u0275\u0275elementContainerEnd();
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_5_mat_header_cell_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-header-cell", 47)(1, "span", 48);
+    \u0275\u0275elementStart(0, "mat-header-cell", 48)(1, "span", 49);
     \u0275\u0275text(2, "expand");
     \u0275\u0275elementEnd()();
   }
@@ -5238,7 +5254,7 @@ function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Conditional_3_T
 function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Template(rf, ctx) {
   if (rf & 1) {
     const _r25 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-cell", 49)(1, "button", 50);
+    \u0275\u0275elementStart(0, "mat-cell", 50)(1, "button", 51);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Template_button_click_1_listener($event) {
       const element_r26 = \u0275\u0275restoreView(_r25).$implicit;
       const ctx_r1 = \u0275\u0275nextContext(3);
@@ -5263,7 +5279,7 @@ function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_n
 }
 function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_ng_container_0_Template, 1, 0, "ng-container", 52);
+    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_ng_container_0_Template, 1, 0, "ng-container", 53);
   }
   if (rf & 2) {
     let tmp_7_0;
@@ -5274,7 +5290,7 @@ function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_T
 }
 function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "mat-cell", 51);
+    \u0275\u0275elementStart(0, "mat-cell", 52);
     \u0275\u0275conditionalCreate(1, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Conditional_1_Template, 1, 5, "ng-container");
     \u0275\u0275elementEnd();
   }
@@ -5289,11 +5305,11 @@ function SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Template(rf, ct
 }
 function SharedTableUiComponent_Defer_1_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementContainerStart(0, 42);
-    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_Conditional_5_mat_header_cell_1_Template, 3, 0, "mat-header-cell", 43)(2, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Template, 4, 1, "mat-cell", 44);
+    \u0275\u0275elementContainerStart(0, 43);
+    \u0275\u0275template(1, SharedTableUiComponent_Defer_1_Conditional_5_mat_header_cell_1_Template, 3, 0, "mat-header-cell", 44)(2, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_2_Template, 4, 1, "mat-cell", 45);
     \u0275\u0275elementContainerEnd();
-    \u0275\u0275elementContainerStart(3, 45);
-    \u0275\u0275template(4, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Template, 2, 2, "mat-cell", 46);
+    \u0275\u0275elementContainerStart(3, 46);
+    \u0275\u0275template(4, SharedTableUiComponent_Defer_1_Conditional_5_mat_cell_4_Template, 2, 2, "mat-cell", 47);
     \u0275\u0275elementContainerEnd();
   }
 }
@@ -5305,7 +5321,7 @@ function SharedTableUiComponent_Defer_1_mat_header_row_6_Template(rf, ctx) {
 function SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template(rf, ctx) {
   if (rf & 1) {
     const _r28 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-row", 55);
+    \u0275\u0275elementStart(0, "mat-row", 56);
     \u0275\u0275listener("click", function SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template_mat_row_click_0_listener($event) {
       const row_r29 = \u0275\u0275restoreView(_r28).$implicit;
       const ctx_r1 = \u0275\u0275nextContext(3);
@@ -5325,12 +5341,12 @@ function SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template(rf, ctx
 }
 function SharedTableUiComponent_Defer_1_Conditional_7_mat_row_1_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275element(0, "mat-row", 56);
+    \u0275\u0275element(0, "mat-row", 57);
   }
 }
 function SharedTableUiComponent_Defer_1_Conditional_7_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template, 1, 4, "mat-row", 53)(1, SharedTableUiComponent_Defer_1_Conditional_7_mat_row_1_Template, 1, 0, "mat-row", 54);
+    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_7_mat_row_0_Template, 1, 4, "mat-row", 54)(1, SharedTableUiComponent_Defer_1_Conditional_7_mat_row_1_Template, 1, 0, "mat-row", 55);
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
@@ -5353,7 +5369,7 @@ function SharedTableUiComponent_Defer_1_Conditional_8_mat_row_0_Template(rf, ctx
 }
 function SharedTableUiComponent_Defer_1_Conditional_8_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_8_mat_row_0_Template, 1, 4, "mat-row", 57);
+    \u0275\u0275template(0, SharedTableUiComponent_Defer_1_Conditional_8_mat_row_0_Template, 1, 4, "mat-row", 58);
   }
   if (rf & 2) {
     const ctx_r1 = \u0275\u0275nextContext(2);
@@ -5412,7 +5428,7 @@ function SharedTableUiComponent_Defer_1_Template(rf, ctx) {
 }
 function SharedTableUiComponent_DeferPlaceholder_2_Template(rf, ctx) {
   if (rf & 1) {
-    \u0275\u0275elementStart(0, "p", 58);
+    \u0275\u0275elementStart(0, "p", 59);
     \u0275\u0275text(1, "loading data...");
     \u0275\u0275elementEnd();
   }
@@ -5420,7 +5436,7 @@ function SharedTableUiComponent_DeferPlaceholder_2_Template(rf, ctx) {
 function SharedTableUiComponent_Conditional_5_Template(rf, ctx) {
   if (rf & 1) {
     const _r31 = \u0275\u0275getCurrentView();
-    \u0275\u0275elementStart(0, "mat-paginator", 59, 2);
+    \u0275\u0275elementStart(0, "mat-paginator", 60, 2);
     \u0275\u0275listener("page", function SharedTableUiComponent_Conditional_5_Template_mat_paginator_page_0_listener($event) {
       \u0275\u0275restoreView(_r31);
       const ctx_r1 = \u0275\u0275nextContext();
@@ -5585,14 +5601,6 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
   ));
   #liveAnnouncer = inject(LiveAnnouncer);
   constructor() {
-    effect(() => this.dataSource.data = this.data());
-    effect(() => {
-      if (this.filterCriteria() && this.filterPredicate()) {
-        this.dataSource.filter = `${this.filterCriteria()}`;
-      }
-    });
-  }
-  ngOnInit() {
     this.dataSource.sortingDataAccessor = (data, sortHeaderId) => {
       const value = sortHeaderId.split(".").reduce((obj, key) => {
         return obj && typeof obj === "object" ? obj[key] : obj;
@@ -5607,19 +5615,34 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
         return value.getTime();
       return String(value).toLowerCase();
     };
-    if (this.filterPredicate && this.filterCriteria) {
-      this.dataSource.filterPredicate = (data) => {
-        return this.filterPredicate()?.(data, this.filterCriteria()) || false;
-      };
-    }
-    if (this.sort()) {
+    effect(() => this.dataSource.data = this.data());
+    effect(() => {
+      const criteria = this.filterCriteria();
+      const predicate = this.filterPredicate();
+      if (criteria && predicate) {
+        this.dataSource.filterPredicate = (data) => {
+          return predicate(data, criteria);
+        };
+        this.dataSource.filter = JSON.stringify(criteria);
+      } else {
+        this.dataSource.filter = "";
+      }
+    });
+    effect(() => {
       const matSortInstance = this.matSort();
-      if (matSortInstance) {
-        matSortInstance.active = this.sort()?.[0] || "";
-        matSortInstance.direction = this.sort()?.[1] || "asc";
+      const sortConfig = this.sort();
+      if (matSortInstance && sortConfig) {
+        matSortInstance.active = sortConfig[0] || "";
+        matSortInstance.direction = sortConfig[1] || "asc";
         this.dataSource.sort = matSortInstance;
       }
-    }
+    });
+    effect(() => {
+      const paginator = this.matPaginator();
+      if (paginator) {
+        this.dataSource.paginator = paginator;
+      }
+    });
   }
   onChangePagination({ previousPageIndex, pageIndex, pageSize }) {
     if (pageSize !== this.pagination()?.pageSize) {
@@ -5636,7 +5659,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
       active,
       direction
     });
-    this.announceSortChange({ active, direction });
+    this.#announceSortChange({ active, direction });
   }
   onDelete(event, element) {
     event.stopPropagation();
@@ -5654,15 +5677,12 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
     const result = editableAttr.onChanges?.(value, element);
     this.getChangedData.emit(result);
   }
-  setCellNgClass(column) {
-    return __spreadValues(__spreadValues(__spreadValues({}, column.cssClasses?.[0] ? { [column.cssClasses[0]]: true } : {}), column.formatting.type === "INPUT" ? { "mat-cell-input": true } : {}), column.formatting.type === "LINK" ? { "mat-cell-link": true } : {});
-  }
   updateExpandedElement(element) {
     requestAnimationFrame(() => {
       this.expandedElement.set(this.expandedElement()?.id === element?.id ? null : element);
     });
   }
-  announceSortChange(sortState) {
+  #announceSortChange(sortState) {
     if (sortState.direction) {
       this.#liveAnnouncer.announce(`Ordenant columna ${sortState.active} ${sortState.direction === "asc" ? "de forma ascendent" : "de forma descendent"}`, "assertive", 1e3);
     } else {
@@ -5682,7 +5702,7 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
       let _t;
       \u0275\u0275queryRefresh(_t = \u0275\u0275loadQuery()) && (ctx.matFormField = _t);
     }
-  }, inputs: { data: [1, "data"], columnProperties: [1, "columnProperties"], resultsLength: [1, "resultsLength"], pagination: [1, "pagination"], noPagination: [1, "noPagination"], paginationVisibility: [1, "paginationVisibility"], caption: [1, "caption"], sort: [1, "sort"], actions: [1, "actions"], filterCriteria: [1, "filterCriteria"], filterPredicate: [1, "filterPredicate"], extraRowStyles: [1, "extraRowStyles"], actionsColStyles: [1, "actionsColStyles"], rowHeight: [1, "rowHeight"], expandable: [1, "expandable"], expandedElementId: [1, "expandedElementId"], expandedDetailTpl: [1, "expandedDetailTpl"] }, outputs: { changePagination: "changePagination", changeSorting: "changeSorting", delete: "delete", getChangedData: "getChangedData" }, ngContentSelectors: _c22, decls: 6, vars: 2, consts: [["noResults", ""], ["matFormField", ""], ["matPaginator", ""], [1, "mb-tiny", "border-outline-variant", "z-10", "mt-0", "grid", "w-full", "overflow-auto", "overflow-x-auto", "overflow-y-hidden", "border-t", "border-solid", "md:mt-4"], [1, "mt-md", "justify-end", 3, "pageIndex", "pageSize", "length"], ["matSort", "", "matSortDisableClear", "", "multiTemplateDataRows", "", 1, "table", "w-full", 3, "matSortChange", "dataSource", "matSortActive", "matSortDirection"], [3, "matColumnDef", "sticky"], ["matColumnDef", "actions"], [4, "matHeaderRowDef", "matHeaderRowDefSticky"], [3, "height", "class"], [3, "sortActionDescription", "mat-sort-header", "disabled", "class", 4, "matHeaderCellDef"], [3, "class", 4, "matCellDef"], [3, "sortActionDescription", "mat-sort-header", "disabled"], [3, "class", "routerLink", "queryParams", "innerHTML"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc", "class"], [3, "class", "innerHTML"], [3, "click", "routerLink", "queryParams", "innerHTML"], [3, "class"], [3, "value", "multiple"], [3, "value", "checked"], [3, "checked", "aria-label"], [3, "value"], ["matTextPrefix", ""], ["matInput", "", 3, "change", "value", "placeholder"], ["matTextSuffix", ""], ["matInput", "", "type", "number", 3, "change", "value", "placeholder"], [3, "selectionChange", "value", "multiple"], [3, "change", "value", "checked"], [3, "change", "checked", "aria-label"], [3, "change", "value"], ["matInput", "", "cdkTextareaAutosize", "", "cdkAutosizeMinRows", "1", "cdkAutosizeMaxRows", "4", "autocomplete", "off", 3, "change", "value", "placeholder", "rows"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc"], [4, "ngComponentOutlet", "ngComponentOutletInputs"], [3, "innerHTML"], [3, "class", 4, "matHeaderCellDef"], ["type", "button", "matIconButton", "", 3, "routerLink", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "matTooltip", "disabled", "routerLink"], ["type", "button", "matIconButton", "", "aria-hidden", "true", 1, "invisible"], ["type", "button", "matIconButton", "", 3, "click", "routerLink", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "click", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "click", "matTooltip", "disabled", "routerLink"], ["matColumnDef", "expand", "sticky", "true"], ["aria-label", "row", "class", "max-w-[70px]", "aria-hidden", "true", 4, "matHeaderCellDef"], ["class", "max-w-[70px]", 4, "matCellDef"], ["matColumnDef", "expandedDetail"], ["class", "justify-evenly border-b-0", 4, "matCellDef"], ["aria-label", "row", "aria-hidden", "true", 1, "max-w-[70px]"], [1, "invisible"], [1, "max-w-[70px]"], ["matIconButton", "", "aria-label", "expand row", 1, "-left-sub", 3, "click"], [1, "justify-evenly", "border-b-0"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["sticky", "true", 3, "class", "expanded-row", "click", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", "class", "height-0 table-row", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", 3, "click"], ["sticky", "true", 1, "height-0", "table-row"], [3, "height", "class", 4, "matRowDef", "matRowDefColumns"], [1, "text-sm"], [1, "mt-md", "justify-end", 3, "page", "pageIndex", "pageSize", "length"]], template: function SharedTableUiComponent_Template(rf, ctx) {
+  }, inputs: { data: [1, "data"], columnProperties: [1, "columnProperties"], resultsLength: [1, "resultsLength"], pagination: [1, "pagination"], noPagination: [1, "noPagination"], paginationVisibility: [1, "paginationVisibility"], caption: [1, "caption"], sort: [1, "sort"], actions: [1, "actions"], filterCriteria: [1, "filterCriteria"], filterPredicate: [1, "filterPredicate"], extraRowStyles: [1, "extraRowStyles"], actionsColStyles: [1, "actionsColStyles"], rowHeight: [1, "rowHeight"], expandable: [1, "expandable"], expandedElementId: [1, "expandedElementId"], expandedDetailTpl: [1, "expandedDetailTpl"] }, outputs: { changePagination: "changePagination", changeSorting: "changeSorting", delete: "delete", getChangedData: "getChangedData" }, ngContentSelectors: _c22, decls: 6, vars: 2, consts: [["noResults", ""], ["matFormField", ""], ["matPaginator", ""], [1, "mb-tiny", "border-outline-variant", "z-10", "mt-0", "grid", "w-full", "overflow-auto", "overflow-x-auto", "overflow-y-hidden", "border-t", "border-solid", "md:mt-4"], [1, "mt-md", "justify-end", 3, "pageIndex", "pageSize", "length"], ["matSort", "", "matSortDisableClear", "", "multiTemplateDataRows", "", 1, "table", "w-full", 3, "matSortChange", "dataSource", "matSortActive", "matSortDirection"], [3, "matColumnDef", "sticky"], ["matColumnDef", "actions"], [4, "matHeaderRowDef", "matHeaderRowDefSticky"], [3, "height", "class"], [3, "sortActionDescription", "mat-sort-header", "disabled", "class", 4, "matHeaderCellDef"], [3, "class", "mat-cell-input", "mat-cell-link", 4, "matCellDef"], [3, "sortActionDescription", "mat-sort-header", "disabled"], [3, "class", "routerLink", "queryParams", "innerHTML"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc", "class"], [3, "class", "innerHTML"], [3, "click", "routerLink", "queryParams", "innerHTML"], [3, "class"], [3, "value", "multiple"], [3, "value", "checked"], [3, "checked", "aria-label"], [3, "value"], ["matTextPrefix", ""], ["matInput", "", 3, "change", "value", "placeholder"], ["matTextSuffix", ""], ["matInput", "", "type", "number", 3, "change", "value", "placeholder"], [3, "selectionChange", "value", "multiple"], [3, "change", "value", "checked"], [3, "change", "checked", "aria-label"], [3, "change", "value"], ["matInput", "", "cdkTextareaAutosize", "", "cdkAutosizeMinRows", "1", "cdkAutosizeMaxRows", "4", "autocomplete", "off", 3, "change", "value", "placeholder", "rows"], ["loading", "lazy", "fill", "", "priority", "", "placeholder", "https://placehold.co/200", 3, "alt", "ngSrc"], [4, "ngComponentOutlet", "ngComponentOutletInputs"], [3, "innerHTML"], [3, "class", 4, "matHeaderCellDef"], [3, "class", 4, "matCellDef"], ["type", "button", "matIconButton", "", 3, "routerLink", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "matTooltip", "disabled", "routerLink"], ["type", "button", "matIconButton", "", "aria-hidden", "true", 1, "invisible"], ["type", "button", "matIconButton", "", 3, "click", "routerLink", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "click", "matTooltip", "disabled"], ["type", "button", "matIconButton", "", 3, "click", "matTooltip", "disabled", "routerLink"], ["matColumnDef", "expand", "sticky", "true"], ["aria-label", "row", "class", "max-w-[70px]", "aria-hidden", "true", 4, "matHeaderCellDef"], ["class", "max-w-[70px]", 4, "matCellDef"], ["matColumnDef", "expandedDetail"], ["class", "justify-evenly border-b-0", 4, "matCellDef"], ["aria-label", "row", "aria-hidden", "true", 1, "max-w-[70px]"], [1, "invisible"], [1, "max-w-[70px]"], ["matIconButton", "", "aria-label", "expand row", 1, "-left-sub", 3, "click"], [1, "justify-evenly", "border-b-0"], [4, "ngTemplateOutlet", "ngTemplateOutletContext"], ["sticky", "true", 3, "class", "expanded-row", "click", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", "class", "height-0 table-row", 4, "matRowDef", "matRowDefColumns"], ["sticky", "true", 3, "click"], ["sticky", "true", 1, "height-0", "table-row"], [3, "height", "class", 4, "matRowDef", "matRowDefColumns"], [1, "text-sm"], [1, "mt-md", "justify-end", 3, "page", "pageIndex", "pageSize", "length"]], template: function SharedTableUiComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c15);
       \u0275\u0275elementStart(0, "div", 3);
@@ -5770,7 +5790,9 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
 
           <mat-cell
             *matCellDef="let row; let i = dataIndex"
-            [class]="\`py-sub \${setCellNgClass(column)}\`">
+            [class]="'py-sub ' + (column.cssClasses?.[0] || '')"
+            [class.mat-cell-input]="column.formatting.type === 'INPUT'"
+            [class.mat-cell-link]="column.formatting.type === 'LINK'">
             @switch (column.formatting.type) {
               @case ('LINK') {
                 <a
@@ -6106,9 +6128,9 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
   });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedTableUiComponent, { className: "SharedTableUiComponent", filePath: "libs/shared/table/ui/src/lib/shared-table-ui/shared-table-ui.component.ts", lineNumber: 96 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedTableUiComponent, { className: "SharedTableUiComponent", filePath: "libs/shared/table/ui/src/lib/shared-table-ui/shared-table-ui.component.ts", lineNumber: 95 });
 })();
 export {
   SharedTableUiComponent
 };
-//# sourceMappingURL=src-HFVQFUY7.js.map
+//# sourceMappingURL=src-7UBUVPGI.js.map

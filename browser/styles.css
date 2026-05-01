@@ -1828,9 +1828,6 @@ html {
   .max-w-\[calc\(100\%-2rem\)\] {
     max-width: calc(100% - 2rem);
   }
-  .max-w-\[calc\(100\%-40px\)\] {
-    max-width: calc(100% - 40px);
-  }
   .max-w-\[calc\(100\%-140px\)\] {
     max-width: calc(100% - 140px);
   }
@@ -2967,6 +2964,9 @@ html {
   .pb-5 {
     padding-bottom: calc(var(--spacing) * 5);
   }
+  .pb-8 {
+    padding-bottom: calc(var(--spacing) * 8);
+  }
   .pb-12 {
     padding-bottom: calc(var(--spacing) * 12);
   }
@@ -3757,9 +3757,6 @@ html {
     --tw-outline-style: none;
     outline-style: none;
   }
-  .\[--delay\:50ms\] {
-    --delay: 50ms;
-  }
   .\[--delay\:100ms\] {
     --delay: 100ms;
   }
@@ -4325,11 +4322,6 @@ html {
     }
   }
   @media (min-width: 40rem) {
-    .sm\:items-end {
-      align-items: flex-end;
-    }
-  }
-  @media (min-width: 40rem) {
     .sm\:items-start {
       align-items: flex-start;
     }
@@ -4372,6 +4364,11 @@ html {
   @media (min-width: 40rem) {
     .sm\:gap-sm {
       gap: var(--spacing-sm);
+    }
+  }
+  @media (min-width: 40rem) {
+    .sm\:self-center {
+      align-self: center;
     }
   }
   @media (min-width: 40rem) {
@@ -4772,6 +4769,11 @@ html {
   @media (min-width: 64rem) {
     .lg\:flex-row\! {
       flex-direction: row !important;
+    }
+  }
+  @media (min-width: 64rem) {
+    .lg\:items-center {
+      align-items: center;
     }
   }
   @media (min-width: 64rem) {

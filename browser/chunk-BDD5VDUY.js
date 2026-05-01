@@ -115,17 +115,17 @@ var NotificationConfigService = class _NotificationConfigService {
 
 // libs/shared/notification/data-access/src/lib/services/error-handler.service.ts
 var ErrorHandlerService = class _ErrorHandlerService {
-  notificationService = inject(NotificationConfigService);
-  injector = inject(Injector);
+  #notificationService = inject(NotificationConfigService);
+  #injector = inject(Injector);
   handleError(error) {
-    const store = this.injector.get(notificationStore);
+    const store = this.#injector.get(notificationStore);
     let message = "";
     if (typeof ErrorEvent !== "undefined" && error instanceof ErrorEvent || error instanceof Error) {
       message = error?.message.includes("ChunkLoadError") ? error.message.split(".")[0] : error.message;
     } else {
       message = typeof error === "string" ? error : String(error);
     }
-    store.show(this.notificationService.getInstance({
+    store.show(this.#notificationService.getInstance({
       type: "ERROR",
       message,
       action: "tancar"
@@ -167,4 +167,4 @@ export {
   notificationStore,
   NotificationConfigService
 };
-//# sourceMappingURL=chunk-GRK42D4S.js.map
+//# sourceMappingURL=chunk-BDD5VDUY.js.map
