@@ -37,7 +37,6 @@ import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity, SortConfig } from '@plastik/core/entities';
 import {
-  DataFormatFactoryService,
   FormattingTypes,
   SafeFormattedPipe,
   SharedUtilFormattersModule,
@@ -93,7 +92,6 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }> {
-  protected dataFormatFactoryService = inject(DataFormatFactoryService);
   /**
    * Data that will populate the table.
    */
