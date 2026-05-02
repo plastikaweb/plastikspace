@@ -5452,7 +5452,6 @@ function SharedTableUiComponent_Conditional_5_Template(rf, ctx) {
   }
 }
 var SharedTableUiComponent = class _SharedTableUiComponent {
-  dataFormatFactoryService = inject(DataFormatFactoryService);
   /**
    * Data that will populate the table.
    */
@@ -6128,9 +6127,9 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
   });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedTableUiComponent, { className: "SharedTableUiComponent", filePath: "libs/shared/table/ui/src/lib/shared-table-ui/shared-table-ui.component.ts", lineNumber: 95 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedTableUiComponent, { className: "SharedTableUiComponent", filePath: "libs/shared/table/ui/src/lib/shared-table-ui/shared-table-ui.component.ts", lineNumber: 94 });
 })();
 export {
   SharedTableUiComponent
 };
-//# sourceMappingURL=src-7UBUVPGI.js.map
+//# sourceMappingURL=src-J52XG3QE.js.map
