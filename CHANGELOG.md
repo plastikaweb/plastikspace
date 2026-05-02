@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-02] - Shared: Jules Modernization Fixes (PR #1062)
+
+### Changed
+
+- **Firebase Storage Reset on Upload Failure**: Replaced the partial `this.progress.set(0)` in `FirebaseStorageService.upload`'s `catch` block with `this.reset()` so the `fileUrl` signal is also cleared when an upload throws, keeping signal state consistent on error ([#1062](https://github.com/plastikaweb/plastikspace/pull/1062)).
+- **Shared Table Lean Architecture**: Removed the unused `DataFormatFactoryService` import and its dead `protected dataFormatFactoryService` injection from `SharedTableUiComponent` ([#1062](https://github.com/plastikaweb/plastikspace/pull/1062)).
+
 ## [2026-05-02] - Eco-Store: Cart Shipping Progress & Status Strip
 
 ### Changed
