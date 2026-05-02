@@ -2654,6 +2654,9 @@ html {
   .bg-neutral-100 {
     background-color: var(--color-neutral-100);
   }
+  .bg-neutral-200 {
+    background-color: var(--color-neutral-200);
+  }
   .bg-neutral-400 {
     background-color: var(--color-neutral-400);
   }
@@ -5146,6 +5149,11 @@ html {
   @media (prefers-color-scheme: dark) {
     .dark\:bg-gray-900 {
       background-color: var(--color-gray-900);
+    }
+  }
+  @media (prefers-color-scheme: dark) {
+    .dark\:bg-neutral-700 {
+      background-color: var(--color-neutral-700);
     }
   }
   @media (prefers-color-scheme: dark) {
