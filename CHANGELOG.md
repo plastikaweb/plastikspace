@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-02] - Eco-Store: Orders Detail Typography & Missing Icon
+
+### Changed
+
+- **Orders Detail Eyebrow Labels**: Replaced the `text-xs font-bold tracking-wider uppercase` treatment on the four delivery-summary labels (Method, Time slot, Address, Notes) with `text-sm font-semibold`, fixing the all-caps body-text and tiny-body-text findings (12px → 14px) ([#86c9kwzf1](https://app.clickup.com/t/86c9kwzf1)).
+- **Orders Detail Section Headings**: Switched the Delivery Summary and Products section `<h3>` headings from `text-base font-bold tracking-wider uppercase` to `text-lg font-bold tracking-tight`, removing the all-caps body-text tell while keeping a clear typographic hierarchy ([#86c9kwzf1](https://app.clickup.com/t/86c9kwzf1)).
+- **Eco-Store Material Symbols Preload**: Added the `chat_bubble_outline` glyph to the Material Symbols Outlined preload/`<noscript>` URL in `apps/eco-store/src/index.html` so the icon used by the order-notes block renders without a fallback flash ([#86c9kwzf1](https://app.clickup.com/t/86c9kwzf1)).
+
 ## [2026-05-02] - Eco-Store: Profile Views Alert & Chip Audit Fixes
 
 ### Changed
