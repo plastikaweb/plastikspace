@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-02] - Eco-Store: Confirm Dialog & Header Trial Badge
+
+### Changed
+
+- **Shared Confirm Dialog Sectioning**: Removed the distinct `bg-surface-container-low` / `bg-surface-container-lowest` backgrounds from the dialog's `<header>` and `<mat-dialog-actions>`; kept the `border-b` / `border-t` separators so the dialog stops reading as a card-in-card while preserving visual hierarchy ([#86c9kwwjg](https://app.clickup.com/t/86c9kwwjg)).
+- **Header Trial Badge Typography**: Bumped the trial-status pill from `text-xs / py-1` to `text-sm / py-1.5` so the warning text clears the 12px body-text floor and the pill stays comfortably tappable ([#86c9kwwjg](https://app.clickup.com/t/86c9kwwjg)).
+
 ## [2026-05-02] - Eco-Store: Auth Container Footer Typography
 
 ### Changed
