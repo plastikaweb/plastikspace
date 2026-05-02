@@ -3,7 +3,7 @@
 :host {
   display: block;
 
-  // Tier Visualization Styles
+  /* Tier Visualization Styles */
   .tier-label {
     transform: translateX(-50%);
     transition: transform 0.3s ease;
@@ -35,7 +35,7 @@
     }
   }
 
-  // Shipping Cost Labels
+  /* Shipping Cost Labels */
   .shipping-cost-label {
     transform: translateX(-50%);
     transition: transform 0.3s ease;
@@ -50,56 +50,40 @@
     }
   }
 
-  // Shipping Status Box
+  /* Shipping Status Box — flat tinted strip (no card-in-card, no shadow, no hover lift). */
   .cart-order-price-slots__shipping {
     transition:
-      transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
-      border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      background-color 0.3s ease,
+      color 0.3s ease;
 
     &.free {
-      background: linear-gradient(
-        135deg,
-        light-dark(var(--primary-50), var(--primary-800)) 0%,
-        light-dark(var(--primary-100), var(--primary-700)) 100%
+      background-color: color-mix(
+        in srgb,
+        light-dark(var(--primary-700), var(--primary-300)) 12%,
+        transparent
       );
-      border-color: light-dark(var(--primary-300), var(--primary-500));
       color: light-dark(var(--primary-700), var(--primary-200));
 
       @include mat.icon-overrides(
         (
-          color: light-dark(var(--primary-500), var(--primary-200)),
+          color: light-dark(var(--primary-700), var(--primary-200)),
         )
       );
     }
 
     &.not-free {
-      background: linear-gradient(
-        135deg,
-        light-dark(var(--error-50), var(--error-800)) 0%,
-        light-dark(var(--error-100), var(--error-700)) 100%
+      background-color: color-mix(
+        in srgb,
+        light-dark(var(--error-700), var(--error-300)) 12%,
+        transparent
       );
-      border-color: light-dark(var(--error-300), var(--error-500));
       color: light-dark(var(--error-700), var(--error-200));
 
       @include mat.icon-overrides(
         (
-          color: light-dark(var(--error-500), var(--error-200)),
+          color: light-dark(var(--error-700), var(--error-200)),
         )
       );
-    }
-
-    mat-icon {
-      transition:
-        color 0.3s ease,
-        transform 0.3s ease;
-    }
-
-    &:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-      transform: translateY(-1px);
     }
   }
 }

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-02] - Eco-Store: Cart Shipping Progress & Status Strip
+
+### Changed
+
+- **Shipping Status Box Flattened**: Removed the gradient background, `1px` border, `box-shadow`, and `translateY(-1px)` hover lift on `.cart-order-price-slots__shipping`; replaced with a flat `color-mix(... 12%, transparent)` tinted strip so it no longer reads as a card-in-card inside the price-summary `mat-card` ([#86c9kxfya](https://app.clickup.com/t/86c9kxfya)).
+- **Shipping Status Icon Animations Removed**: Dropped the Tailwind `animate-bounce` from the "info" icon and `animate-pulse` from the "check_circle" icon, eliminating the bounce/elastic-easing AI-tell on the cart shipping summary ([#86c9kxfya](https://app.clickup.com/t/86c9kxfya)).
+- **Shipping Status Body Text**: Bumped the wrapper from `text-xs` (12px) to `text-sm` (14px) so the remaining-for-free / free-achieved message clears the body-text minimum-size floor ([#86c9kxfya](https://app.clickup.com/t/86c9kxfya)).
+
 ## [2026-05-02] - Eco-Store: Orders Detail Typography & Missing Icon
 
 ### Changed

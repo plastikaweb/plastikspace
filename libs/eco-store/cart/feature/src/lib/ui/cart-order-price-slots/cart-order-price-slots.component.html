@@ -45,14 +45,14 @@
   </div>
 
   <div
-    class="cart-order-price-slots__shipping flex items-center gap-2 rounded-xl border p-2 text-xs font-semibold"
+    class="cart-order-price-slots__shipping flex items-center gap-2 rounded-lg p-2 text-sm font-semibold"
     [class.free]="isFree()"
     [class.not-free]="!isFree()">
     @if (isFree()) {
-      <mat-icon class="animate-pulse">check_circle</mat-icon>
+      <mat-icon aria-hidden="true">check_circle</mat-icon>
       <span>{{ 'cart.shipping.freeAchieved' | translate }}</span>
     } @else {
-      <mat-icon class="flex-shrink-0 animate-bounce">info</mat-icon>
+      <mat-icon class="flex-shrink-0" aria-hidden="true">info</mat-icon>
       <span
         >{{
           'cart.shipping.remainingForFree' | translate: { amount: remainingForFree() | currency }
