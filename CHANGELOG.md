@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-02] - Eco-Store: Impeccable UI Audit Fixes on Products Page
+
+### Changed
+
+- **Sidenav Category Icons Toned Down**: Replaced raw `[style.color]` with a `color-mix(... in oklch ...)` blend on `.category-icon` so vivid hues (e.g. purple) render as soft, organic accents instead of the "AI palette" pattern flagged by the audit ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+- **Header Toolbar Visual Weight**: Removed the redundant `box-shadow` and `border-bottom` from `mat-toolbar`; the visual weight already lives on the `<eco-header>` wrapper, eliminating the "card-in-card" tell ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+- **Product Quantity Stepper Styling**: Removed the heavy `border-2 / bg-surface-variant / rounded-2xl` wrapper around the +/- controls and switched the add-button icon to the `--mat-sys-on-primary` token; the round icon buttons themselves provide the visual grouping in both light and dark mode ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+- **Favorite Button Animation & Color**: Replaced the elastic `cubic-bezier(0.175, 0.885, 0.32, 1.275)` heart-pop easing with the M3 standard `cubic-bezier(0.22, 1, 0.36, 1)`, softened the keyframes (1.4 → 1.25, 1.1 → 1.05) and wrapped `icon-color` with `light-dark()` so the icon stays legible on dark surfaces ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+- **Cart Button Disabled Icon Contrast**: Scoped the bright `--primary-50` icon color to `:not(:disabled)` and added a fallback to the M3 disabled on-surface token, fixing the 1.1:1 contrast when the cart is empty ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+- **Shared Chip Vertical Padding**: Bumped chip padding from `py-1` to `py-2.5` so it clears the 8px floor in the project's Tailwind spacing scale ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+- **Sidenav Nav-Line Letter Spacing**: Reset Material's wide list-line tracking (`--mat-list-list-item-label-text-tracking: normal`) so category names no longer trip the "wide letter spacing on body text" heuristic ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+- **Activity Overlay Loading Text**: Removed `uppercase` and oversized tracking, switched to `text-sm font-semibold tracking-wide` with `py-2.5`, fixing both the "all-caps body text" and "cramped padding" findings ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+- **Sidenav Layout Animation Hint**: Added `ng-animate-disabled` on `<mat-sidenav-container>` and a desktop `mat-drawer-content { transition: none }` reset so Material's layout-property transition (`margin-left, margin-right`) does not animate in our `over`/`side` configuration ([#86c9kwk3x](https://app.clickup.com/t/86c9kwk3x)).
+
 ## [2026-05-01] - Code Quality Refinements: Jules Review & Convention Alignment
 
 ### Added

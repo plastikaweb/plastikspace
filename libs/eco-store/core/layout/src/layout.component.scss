@@ -27,6 +27,13 @@
     background: var(--transparent);
   }
 
+  /* Avoid animating layout properties (margin-left/right) on the content
+     pane: in `over` mode (mobile) the content does not shift, and in `side`
+     mode (desktop) we suppress drawer transitions altogether below. */
+  .mat-drawer-content {
+    transition: none !important;
+  }
+
   .mat-drawer.mat-drawer-over {
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
     visibility: visible !important;

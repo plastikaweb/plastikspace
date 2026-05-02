@@ -43,7 +43,7 @@ export class SharedChipComponent {
 
   protected readonly computedClass = computed(() => {
     const baseClass =
-      'flex justify-center items-center gap-1.5 rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide inset border transition-colors';
+      'flex justify-center items-center gap-1.5 rounded-full px-3 py-2.5 text-xs font-bold uppercase tracking-wide inset border transition-colors';
     const typeClasses: Record<SharedChipType, string> = {
       primary:
         'chip-primary bg-primary-50 text-primary-800 border-primary-400 dark:bg-primary-700 dark:text-primary-50 dark:border-primary-600',

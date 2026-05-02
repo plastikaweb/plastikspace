@@ -24,9 +24,12 @@
       }
 
       &:not(:disabled) {
+        /* Use the M3 on-primary token so the icon reads as proper foreground
+           text on the green primary surface (was a low-contrast neutral grey
+           on coloured background). */
         @include mat.icon-overrides(
           (
-            color: light-dark(var(--neutral-100), var(--neutral-500)),
+            color: var(--mat-sys-on-primary),
           )
         );
       }

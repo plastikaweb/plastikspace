@@ -46,14 +46,16 @@
               <div class="flex w-full items-center gap-2">
                 <mat-icon
                   aria-hidden="true"
-                  class="scale-90 transition-all dark:brightness-150 dark:saturate-75"
-                  [style.color]="category.color"
+                  class="category-icon scale-90 transition-all dark:brightness-150 dark:saturate-75"
+                  [style.--category-color]="category.color"
                   >{{ category.icon }}</mat-icon
                 >
-                <span matListItemTitle class="flex-1 truncate text-sm">{{
+                <span matListItemTitle class="flex-1 truncate text-sm tracking-normal">{{
                   category.translatedName
                 }}</span>
-                <span matListItemLine class="ml-2 text-xs">({{ category.productCount }})</span>
+                <span matListItemLine class="ml-2 text-xs tracking-normal"
+                  >({{ category.productCount }})</span
+                >
               </div>
             </mat-list-item>
           }
