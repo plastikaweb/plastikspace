@@ -77,7 +77,7 @@ export class AppComponent implements OnInit {
 
     // Delay showing the PWA prompt to avoid interrupting first paint.
     // On iOS Safari, we trigger the prompt manually if it should be shown.
-    // On Android, the service auto-triggers on beforeinstallprompt event.
+    // On Android, the service auto-triggers on before install prompt event.
     setTimeout(() => {
       if (this.#pwaInstallService.isIos() && this.#pwaInstallService.shouldShowPrompt()) {
         this.#pwaInstallService.showPrompt();
