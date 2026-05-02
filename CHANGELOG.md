@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-02] - Eco-Store: Auth Container Footer Typography
+
+### Changed
+
+- **Auth Container Terms/Privacy Footnote**: Replaced the `text-[10px] font-bold tracking-widest uppercase opacity-50` treatment on the shared `eco-store-auth-container` footer fallback with `text-sm font-medium tracking-normal opacity-70`, fixing the all-caps body-text and tiny-body-text findings flagged on every auth screen (login, register, forgot/reset password) ([#86c9kwtb3](https://app.clickup.com/t/86c9kwtb3)).
+
 ## [2026-05-02] - Eco-Store: Impeccable UI Audit Fixes on Products Page
 
 ### Changed
