@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { axe } from 'vitest-axe';
 
 import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { buttonMock } from '@plastik/shared/button';
@@ -16,7 +17,11 @@ describe('SharedButtonUiComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedButtonUiComponent, AngularSvgIconModule.forRoot()],
-      providers: [provideZonelessChangeDetection(), provideHttpClient()],
+      providers: [
+        provideZonelessChangeDetection(),
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedButtonUiComponent);
