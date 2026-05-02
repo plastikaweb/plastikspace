@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-02] - Eco-Store: Profile Views Alert & Chip Audit Fixes
+
+### Changed
+
+- **Shared Alert Border**: Replaced the asymmetric `border-left: 4px` (the "side-tab accent" AI tell) on `plastik-shared-alert` with a soft full-perimeter `1px` border using `color-mix(... 35%, transparent)`. The variant signal still flows through the tinted background and coloured icon ([#86c9kwxm4](https://app.clickup.com/t/86c9kwxm4)).
+- **Profile Avatar Hint Text**: Replaced the `text-[11px] font-bold tracking-widest uppercase` "recommended" hint with `text-sm font-medium tracking-normal italic`, fixing both the all-caps body-text and tiny-text findings ([#86c9kwxm4](https://app.clickup.com/t/86c9kwxm4)).
+- **Shared Chip Optional Uppercase**: Added an `uppercase` input on `SharedChipComponent` (default `true` to preserve existing visuals across all consumers); set `[uppercase]="false"` on the profile-feature role chip whose label is long enough to read as body text ([#86c9kwxm4](https://app.clickup.com/t/86c9kwxm4)).
+
 ## [2026-05-02] - Eco-Store: Confirm Dialog & Header Trial Badge
 
 ### Changed

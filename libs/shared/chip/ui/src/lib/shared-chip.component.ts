@@ -41,9 +41,16 @@ export class SharedChipComponent {
    */
   ariaLabel = input<string>();
 
+  /**
+   * Whether to render the chip label in uppercase. Defaults to true to keep
+   * the historical chip look. Set to false on chips whose label is long
+   * enough to read as body text (avoids the "all-caps body text" audit).
+   */
+  uppercase = input<boolean>(true);
+
   protected readonly computedClass = computed(() => {
-    const baseClass =
-      'flex justify-center items-center gap-1.5 rounded-full px-3 py-2.5 text-xs font-bold uppercase tracking-wide inset border transition-colors';
+    const caseClass = this.uppercase() ? 'uppercase' : 'normal-case';
+    const baseClass = `flex justify-center items-center gap-1.5 rounded-full px-3 py-2.5 text-xs font-bold ${caseClass} tracking-wide inset border transition-colors`;
     const typeClasses: Record<SharedChipType, string> = {
       primary:
         'chip-primary bg-primary-50 text-primary-800 border-primary-400 dark:bg-primary-700 dark:text-primary-50 dark:border-primary-600',
