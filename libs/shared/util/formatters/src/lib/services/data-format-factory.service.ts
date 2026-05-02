@@ -32,13 +32,21 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
    * @param {unknown } extraConfig Extra configuration object to format values specially when using custom formatters.
    * @returns { PropertyFormatting } The valid types to be returned after formatting a value.
    */
+  /**
+   * @description Gets the formatted value from an item property.
+   * @param { T } item The object to extract value from.
+   * @param { PropertyFormatting } param The configuration to format the object property value.
+   * @param { number } [index] Optional index for the item.
+   * @param { unknown } [extraConfig] Optional extra configuration.
+   * @returns { SafeHtml | string | FormattingComponentOutput } The formatted value.
+   */
   getFormattedValue(
     item: T extends BaseEntity ? T : never,
     { pathToKey, formatting }: PropertyFormatting<T, FormattingTypes>,
     index?: number,
     extraConfig?: unknown
   ): SafeHtml | string | FormattingComponentOutput {
-    const value = this.getValueFromRow(pathToKey, item);
+    const value = this.#getValueFromRow(pathToKey, item);
     const { type, extras } = formatting;
 
     switch (type) {
@@ -86,10 +94,13 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     }
   }
 
-  private getValueFromRow(
-    property: string,
-    item: T extends BaseEntity ? T : never
-  ): FormattingOutput {
+  /**
+   * @description Extracts a value from a row using a dot-notated property path.
+   * @param { string } property The dot-notated property path.
+   * @param { T } item The item to extract the value from.
+   * @returns { FormattingOutput } The extracted value.
+   */
+  #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
     return property.split('.').reduce((accObject: unknown, currentProp: string) => {
       const object = (accObject as T)[currentProp as keyof T];
       return isNil(object) ? '' : (object as FormattingOutput);

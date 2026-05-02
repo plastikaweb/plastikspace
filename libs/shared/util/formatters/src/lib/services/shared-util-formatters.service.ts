@@ -196,6 +196,14 @@ export class SharedUtilFormattersService {
     return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
   }
 
+  /**
+   * Formats a quantity value with optional prefix and suffix.
+   * @template T - The type of the item.
+   * @param {number} value - The numeric value to format.
+   * @param {T} item - The item object.
+   * @param {(item: T) => Partial<Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>>} [extras] - Optional formatting extras.
+   * @returns {string} The formatted quantity string.
+   */
   quantityFormatter<T extends BaseEntity>(
     value: number,
     item: T,
@@ -217,11 +225,7 @@ export class SharedUtilFormattersService {
         ...extras(item),
       };
     }
-    return `
-    ${format.prefix ? format.prefix : ''}
-    ${formatNumber(Number(value), format.locale, format.numberDigitsInfo)}
-    ${format.suffix ? format.suffix : ''}
-    `;
+    return `${format.prefix}${formatNumber(Number(value), format.locale, format.numberDigitsInfo)}${format.suffix}`;
   }
 
   /**

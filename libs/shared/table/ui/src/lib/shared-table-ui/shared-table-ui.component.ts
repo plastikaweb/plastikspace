@@ -36,7 +36,6 @@ import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
 import {
-  DataFormatFactoryService,
   FormattingTypes,
   SafeFormattedPipe,
   SharedUtilFormattersModule,
@@ -279,14 +278,25 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       };
     }
 
-    if (this.sort()) {
+    effect(() => {
       const matSortInstance = this.matSort();
+      const sortConfig = this.sort();
+
       if (matSortInstance) {
-        matSortInstance.active = this.sort()?.[0] || '';
-        matSortInstance.direction = this.sort()?.[1] || 'asc';
+        if (sortConfig) {
+          matSortInstance.active = sortConfig[0] || '';
+          matSortInstance.direction = sortConfig[1] || 'asc';
+        }
         this.dataSource.sort = matSortInstance;
       }
-    }
+    });
+
+    effect(() => {
+      const matPaginatorInstance = this.matPaginator();
+      if (matPaginatorInstance) {
+        this.dataSource.paginator = matPaginatorInstance;
+      }
+    });
   }
 
   /**

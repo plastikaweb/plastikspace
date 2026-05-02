@@ -135,12 +135,13 @@ export function setEmptyStringPropertiesToNull(
 
 /**
  * Returns a boolean after comparing the object entries.
+ * It performs an order-independent shallow comparison of the object keys and values.
  * @param prev - First object.
  * @param curr - Current object.
  * @returns A boolean indicating if the object entries are equal.
  */
 export function areObjectEntriesEqual(prev: object, curr: object): boolean {
-  if (!prev && !curr) {
+  if (prev === curr) {
     return true;
   }
 
@@ -148,17 +149,17 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
     return false;
   }
 
-  const prevEntries = Object.entries(prev);
-  const currEntries = Object.entries(curr);
+  const prevKeys = Object.keys(prev);
+  const currKeys = Object.keys(curr);
 
-  if (prevEntries.length !== currEntries.length) {
+  if (prevKeys.length !== currKeys.length) {
     return false;
   }
 
-  return prevEntries.every(([key, value]) => {
+  return prevKeys.every(key => {
     return (
       Object.prototype.hasOwnProperty.call(curr, key) &&
-      (curr as Record<string, unknown>)[key] === value
+      (curr as Record<string, unknown>)[key] === (prev as Record<string, unknown>)[key]
     );
   });
 }
