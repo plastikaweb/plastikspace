@@ -10,3 +10,4 @@
 /.nx/cache
 /.nx/workspace-data
 apps/eco-store/pocketbase
+.nx/self-healing
