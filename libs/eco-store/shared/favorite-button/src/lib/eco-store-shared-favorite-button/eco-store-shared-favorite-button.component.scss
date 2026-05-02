@@ -4,7 +4,6 @@
   display: block;
 
   .favorite-button {
-    // Default (sm)
     --button-size: 38px;
     --icon-size: 20px;
 
@@ -39,7 +38,7 @@
       (
         icon-size: var(--icon-size),
         state-layer-size: var(--button-size),
-        icon-color: var(--neutral-800),
+        icon-color: light-dark(var(--neutral-800), var(--neutral-100)),
       )
     );
 
@@ -60,7 +59,7 @@
       );
 
       .mat-icon {
-        animation: heart-pop 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        animation: heart-pop 0.4s cubic-bezier(0.22, 1, 0.36, 1);
         filter: drop-shadow(0 0 6px color-mix(in srgb, var(--error-500), transparent 60%));
       }
 
@@ -74,10 +73,10 @@
         transform: scale(1);
       }
       50% {
-        transform: scale(1.4);
+        transform: scale(1.25);
       }
       100% {
-        transform: scale(1.1);
+        transform: scale(1.05);
       }
     }
 

@@ -17,13 +17,14 @@
       )
     );
 
-    border-bottom: 1px solid
-      light-dark(
-        color-mix(in srgb, var(--mat-sys-primary), transparent 90%),
-        rgba(255, 255, 255, 0.05)
-      );
-    box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05) !important;
-    transition: all 0.3s ease;
+    /* Visual weight (border + shadow) lives on the parent <eco-header>
+       wrapper. Keeping them here too made the toolbar read as a card
+       nested inside another card. */
+    border-bottom: none;
+    box-shadow: none !important;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
   }
 
   .header-icon {

@@ -24,7 +24,16 @@
   }
 
   mat-list-item {
-    --mat-list-list-item-label-text-tracking: 0.05rem;
+    --mat-list-list-item-label-text-tracking: normal;
+
+    /* Category color icons: tone down saturation/lightness so vivid hues
+       (e.g. purple) read as soft, organic accents instead of "AI palette". */
+    .category-icon {
+      color: light-dark(
+        color-mix(in oklch, var(--category-color, currentColor) 70%, var(--neutral-700)),
+        color-mix(in oklch, var(--category-color, currentColor) 80%, white)
+      );
+    }
 
     &.active {
       --mat-list-list-item-container-color: light-dark(var(--secondary-200), var(--secondary-800));

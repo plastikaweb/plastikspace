@@ -53,17 +53,27 @@
   );
 
   mat-icon {
-    color: light-dark(var(--primary-50), var(--primary-950));
     font-variation-settings: 'FILL' 1;
     transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  &:hover mat-icon {
+  &:not(:disabled) mat-icon {
+    color: light-dark(var(--primary-50), var(--primary-950));
+  }
+
+  &:hover:not(:disabled) mat-icon {
     transform: scale(1.1) rotate(-5deg);
   }
 
   &:disabled {
     cursor: not-allowed;
+
+    /* Don't keep the bright primary-50 icon when the button background
+       collapses to a disabled near-white surface. Use the M3 disabled
+       on-surface token so contrast stays legible. */
+    mat-icon {
+      color: color-mix(in srgb, var(--mat-sys-on-surface), transparent 62%);
+    }
 
     @include mat.badge-overrides(
       (
