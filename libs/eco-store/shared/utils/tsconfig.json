@@ -9,7 +9,6 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "module": "preserve",
-    "composite": true,
     "declaration": true,
     "lib": ["dom", "es2022"]
   },

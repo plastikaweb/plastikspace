@@ -8,7 +8,9 @@
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "composite": true
+    "module": "preserve",
+    "lib": ["dom", "es2022"],
+    "declaration": true
   },
   "files": [],
   "include": [],

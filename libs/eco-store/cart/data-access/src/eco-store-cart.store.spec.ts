@@ -187,6 +187,8 @@ describe('ecoStoreCartStore', () => {
     const mockAddress1 = { id: 'addr1', name: 'Address 1' } as any;
     const mockAddress2 = { id: 'addr2', name: 'Address 2' } as any;
 
+    // Cart must have items, otherwise _recalculatePrices() resets logistics state.
+    store.addToCart(mockProduct, 1);
     // Update address
     store.updateLogistics({ address: mockAddress1 });
     // Update day
@@ -209,6 +211,8 @@ describe('ecoStoreCartStore', () => {
   it('should reset time when day changes', () => {
     const { store } = setup();
 
+    // Cart must have items, otherwise _recalculatePrices() resets logistics state.
+    store.addToCart(mockProduct, 1);
     store.updateLogistics({ day: 'monday' as any });
     store.updateLogistics({ time: '08:00' as any });
 
@@ -249,6 +253,8 @@ describe('ecoStoreCartStore', () => {
 
     mockEcoStoreTenantStore.getTenantDeliveryOptionSlotsDays.mockReturnValue([]);
 
+    // Cart must have items, otherwise _recalculatePrices() resets logistics state.
+    store.addToCart(mockProduct, 1);
     store.updateLogistics({ address: mockAddress, method: mockMethod });
 
     expect(store.isShippingOk()).toBe(true);
@@ -261,11 +267,15 @@ describe('ecoStoreCartStore', () => {
 
     mockEcoStoreTenantStore.getTenantDeliveryOptionSlotsDays.mockReturnValue(['monday']);
 
+    // Cart must have items, otherwise _recalculatePrices() resets logistics state.
+    store.addToCart(mockProduct, 1);
     store.updateLogistics({ address: mockAddress, method: mockMethod });
 
     expect(store.isShippingOk()).toBe(false);
 
-    store.updateLogistics({ day: 'monday' as any, time: { start: '08:00', end: '10:00' } as any });
+    // updateLogistics resets time when day changes, so set them in separate calls.
+    store.updateLogistics({ day: 'monday' as any });
+    store.updateLogistics({ time: { start: '08:00', end: '10:00' } as any });
     expect(store.isShippingOk()).toBe(true);
   });
 
@@ -288,8 +298,14 @@ describe('ecoStoreCartStore', () => {
       },
     };
 
+    beforeEach(() => {
+      // _loadAndMergeUserCart short-circuits without an authenticated user.
+      mockPocketBaseUserProfileStore.isAuthenticated.set(true);
+      mockPocketBaseUserProfileStore.user.set({ id: 'user-1' } as any);
+    });
+
     it('should save localStorage items to PocketBase when no remote cart exists', async () => {
-      localStorage.setItem('test-tenant_cart_v1', JSON.stringify(localCartState));
+      localStorage.setItem('test-tenant-cart-v1', JSON.stringify(localCartState));
 
       const { store, mockCartsService } = setup();
 
@@ -305,7 +321,7 @@ describe('ecoStoreCartStore', () => {
           ]),
         })
       );
-      expect(localStorage.getItem('test-tenant_cart_v1')).toBeNull();
+      expect(localStorage.getItem('test-tenant-cart-v1')).toBeNull();
     });
 
     it('should merge localStorage items with existing remote cart', async () => {
@@ -326,7 +342,7 @@ describe('ecoStoreCartStore', () => {
         notes: null,
       };
 
-      localStorage.setItem('test-tenant_cart_v1', JSON.stringify(localCartState));
+      localStorage.setItem('test-tenant-cart-v1', JSON.stringify(localCartState));
 
       const { store, mockCartsService } = setup({
         cartsServiceOverrides: {
@@ -354,7 +370,7 @@ describe('ecoStoreCartStore', () => {
         null,
         'info'
       );
-      expect(localStorage.getItem('test-tenant_cart_v1')).toBeNull();
+      expect(localStorage.getItem('test-tenant-cart-v1')).toBeNull();
     });
 
     it('should sum quantities when the same product exists in both carts', async () => {
@@ -370,7 +386,7 @@ describe('ecoStoreCartStore', () => {
         notes: null,
       };
 
-      localStorage.setItem('test-tenant_cart_v1', JSON.stringify(localCartState));
+      localStorage.setItem('test-tenant-cart-v1', JSON.stringify(localCartState));
 
       const { store, mockCartsService } = setup({
         cartsServiceOverrides: {
@@ -396,12 +412,12 @@ describe('ecoStoreCartStore', () => {
 
       expect(mockCartsService.create).not.toHaveBeenCalled();
       expect(mockCartsService.update).not.toHaveBeenCalled();
-      expect(localStorage.getItem('test-tenant_cart_v1')).toBeNull();
+      expect(localStorage.getItem('test-tenant-cart-v1')).toBeNull();
     });
 
     it('should show price update notification when product price changed', async () => {
       const updatedProduct = { ...mockProduct, priceWithIva: 15, price: 12 };
-      localStorage.setItem('test-tenant_cart_v1', JSON.stringify(localCartState));
+      localStorage.setItem('test-tenant-cart-v1', JSON.stringify(localCartState));
 
       const { store } = setup({
         cartsServiceOverrides: {

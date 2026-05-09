@@ -1,3 +1,4 @@
+import { IMAGE_LOADER } from '@angular/common';
 import { provideHttpClient } from '@angular/common/http';
 import { ChangeDetectorRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
@@ -60,6 +61,10 @@ describe('PwaPromptComponent', () => {
         { provide: MatBottomSheetRef, useValue: mockBottomSheetRef },
         { provide: MAT_BOTTOM_SHEET_DATA, useValue: mockData },
         { provide: MatIconRegistry, useValue: mockMatIconRegistry },
+        {
+          provide: IMAGE_LOADER,
+          useFactory: () => (src: string) => `https://test.io/${src}`,
+        },
         provideHttpClient(),
       ],
     }).compileComponents();

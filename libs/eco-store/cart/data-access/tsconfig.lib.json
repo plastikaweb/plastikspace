@@ -1,40 +1,5 @@
 {
   "extends": "./tsconfig.json",
-  "references": [
-    {
-      "path": "../../../shared/auth/pocketbase/data-access"
-    },
-    {
-      "path": "../../../shared/confirm/data-access"
-    },
-    {
-      "path": "../../../core/entities"
-    },
-    {
-      "path": "../../core/entities"
-    },
-    {
-      "path": "../../products/data-access"
-    },
-    {
-      "path": "../../core/tenant"
-    },
-    {
-      "path": "../../../shared/confirm/data-access"
-    },
-    {
-      "path": "../../../shared/notification/data-access"
-    },
-    {
-      "path": "../../shared/utils"
-    },
-    {
-      "path": "../../core/api/data-access"
-    },
-    {
-      "path": "../../../shared/signal-state/data-reset"
-    }
-  ],
   "compilerOptions": {
     "outDir": "../../../../dist/out-tsc",
     "declaration": true,

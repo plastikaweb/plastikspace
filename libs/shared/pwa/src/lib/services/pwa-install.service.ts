@@ -58,9 +58,14 @@ export class PwaInstallService {
 
   #deferredPrompt: BeforeInstallPromptEvent | null = null;
   #promptShown = false;
+  #destroyed = false;
   readonly promptAvailable = signal(false);
 
   constructor() {
+    this.#destroyRef.onDestroy(() => {
+      this.#destroyed = true;
+    });
+
     if (!isPlatformBrowser(this.#platformId) || this.isStandalone()) return;
 
     const controller = new AbortController();
@@ -105,6 +110,7 @@ export class PwaInstallService {
       import('@angular/material/bottom-sheet'),
       import('../components/pwa-prompt/pwa-prompt.component'),
     ]).then(([{ MatBottomSheet }, { PwaPromptComponent }]) => {
+      if (this.#destroyed) return;
       runInInjectionContext(injector, () =>
         inject(MatBottomSheet).open(PwaPromptComponent, {
           data,

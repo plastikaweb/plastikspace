@@ -9,8 +9,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "module": "preserve",
-    "declaration": true,
-    "composite": true
+    "declaration": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
@@ -24,12 +23,6 @@
   "references": [
     {
       "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "../../../../libs/core/entities/tsconfig.json"
-    },
-    {
-      "path": "../../../../libs/shared/util/entities/tsconfig.json"
     },
     {
       "path": "./tsconfig.spec.json"

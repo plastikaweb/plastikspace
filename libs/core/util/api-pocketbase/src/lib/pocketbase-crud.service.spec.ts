@@ -59,9 +59,7 @@ describe('PocketBaseCrudService', () => {
       getOne: vi.fn().mockResolvedValue(baseEntity),
       getFirstListItem: vi.fn().mockResolvedValue(baseEntity),
       create: vi.fn().mockImplementation(data => Promise.resolve({ ...baseEntity, ...data })),
-      update: jest
-        .fn()
-        .mockImplementation((id, data) => Promise.resolve({ ...baseEntity, ...data })),
+      update: vi.fn().mockImplementation((id, data) => Promise.resolve({ ...baseEntity, ...data })),
       delete: vi.fn().mockResolvedValue(true),
     });
 
