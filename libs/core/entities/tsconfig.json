@@ -10,17 +10,13 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "lib": ["dom", "es2022"],
-    "declaration": true,
-    "composite": true
+    "declaration": true
   },
   "files": [],
   "include": [],
   "references": [
     {
       "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "../../shared/util/objects"
     },
     {
       "path": "./tsconfig.spec.json"

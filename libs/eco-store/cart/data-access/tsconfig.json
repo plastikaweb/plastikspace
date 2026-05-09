@@ -10,8 +10,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "lib": ["es2024", "dom"],
-    "declaration": true,
-    "composite": true
+    "declaration": true
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

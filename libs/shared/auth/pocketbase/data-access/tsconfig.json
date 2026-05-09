@@ -11,8 +11,7 @@
     "noFallthroughCasesInSwitch": true,
     "module": "preserve",
     "moduleResolution": "bundler",
-    "declaration": true,
-    "composite": true
+    "declaration": true
   },
   "files": [],
   "include": [],

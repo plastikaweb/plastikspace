@@ -183,7 +183,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@analogjs/vite-plugin-angular@npm:^2.5.0":
+"@analogjs/vite-plugin-angular@npm:2.5.0":
   version: 2.5.0
   resolution: "@analogjs/vite-plugin-angular@npm:2.5.0"
   dependencies:
@@ -207,7 +207,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@analogjs/vitest-angular@npm:^2.5.0":
+"@analogjs/vitest-angular@npm:2.5.0":
   version: 2.5.0
   resolution: "@analogjs/vitest-angular@npm:2.5.0"
   peerDependencies:
@@ -29133,8 +29133,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "plastikspace@workspace:."
   dependencies:
-    "@analogjs/vite-plugin-angular": "npm:^2.5.0"
-    "@analogjs/vitest-angular": "npm:^2.5.0"
+    "@analogjs/vite-plugin-angular": "npm:2.5.0"
+    "@analogjs/vitest-angular": "npm:2.5.0"
     "@angular-architects/ngrx-toolkit": "npm:21.0.1"
     "@angular-devkit/architect": "npm:0.2102.9"
     "@angular-devkit/build-angular": "npm:21.2.9"

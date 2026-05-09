@@ -123,6 +123,7 @@ async function importAll() {
       }
 
       const fileFields = collection.fields.filter(f => f.type === 'file');
+      const fileFieldNames = new Set(fileFields.map(f => f.name));
 
       for (const record of records) {
         try {
@@ -193,7 +194,7 @@ async function importAll() {
           if (hasFiles) {
             // Add all other fields to formData
             for (const key in data) {
-              if (fileFields.find(f => f.name === key)) continue;
+              if (fileFieldNames.has(key)) continue;
               const value = data[key];
               if (Array.isArray(value) || (typeof value === 'object' && value !== null)) {
                 formData.append(key, JSON.stringify(value));

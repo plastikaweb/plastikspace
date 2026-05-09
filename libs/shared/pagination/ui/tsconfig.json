@@ -17,7 +17,7 @@
     "module": "preserve",
     "moduleResolution": "bundler",
     "lib": ["dom", "es2022"],
-    "composite": true
+    "declaration": true
   },
   "files": [],
   "include": [],
