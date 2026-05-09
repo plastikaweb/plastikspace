@@ -35,6 +35,10 @@ describe('PocketBaseAuthService', () => {
   });
 
   it('should call update and authRefresh on convertTrialToActive', async () => {
+    mockPocketBase
+      .collection('users')
+      .update.mockResolvedValueOnce({ id: '123', email: 'test@test.com' });
+
     const result = await service.convertTrialToActive('123');
     expect(mockPocketBase.collection).toHaveBeenCalledWith('users');
     expect(mockPocketBase.collection('users').update).toHaveBeenCalledWith('123', {
@@ -47,7 +51,7 @@ describe('PocketBaseAuthService', () => {
 
   it('should return authModel', () => {
     expect(service.authModel).toEqual({ id: '123', email: 'test@test.com' });
-    mockPocketBase.authStore.record = {};
+    mockPocketBase.authStore.record = null as unknown as Record<string, unknown>;
     expect(service.authModel).toBeNull();
   });
 });

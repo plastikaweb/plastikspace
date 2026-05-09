@@ -18,7 +18,13 @@ describe('SharedConfirmFeatureComponent', () => {
         provideZonelessChangeDetection(),
         {
           provide: DIALOG_DATA,
-          useValue: { title: 'Title', message: 'test.message', params: { name: 'test' } },
+          useValue: {
+            title: 'Title',
+            message: 'test.message',
+            params: { name: 'test' },
+            ok: 'common.ok',
+            ko: 'common.cancel',
+          },
         },
       ],
     }).compileComponents();
@@ -36,6 +42,8 @@ describe('SharedConfirmFeatureComponent', () => {
   });
 
   it('should compute the message signal correctly', () => {
-    expect(component.message()?.toString()).toContain('Hello test');
+    expect((component as unknown as { message: () => string }).message()?.toString()).toContain(
+      'Hello test'
+    );
   });
 });

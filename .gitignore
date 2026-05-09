@@ -107,4 +107,4 @@ graph.json
 vitest.config.*.timestamp*
 .claude/settings.local.json
 .claude/worktrees/
-**/CLAUDE.md
+.claude/worktrees

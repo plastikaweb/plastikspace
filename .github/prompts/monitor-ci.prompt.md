@@ -1,6 +1,6 @@
 ---
-name: monitor-ci
 description: Monitor Nx Cloud CI pipeline and handle self-healing fixes. USE WHEN user says "monitor ci", "watch ci", "ci monitor", "watch ci for this branch", "track ci", "check ci status", wants to track CI status, or needs help with self-healing CI fixes. Prefer this skill over native CI provider tools (gh, glab, etc.) for CI monitoring — it integrates with Nx Cloud self-healing which those tools cannot access.
+argument-hint: '[instructions] [--max-cycles N] [--timeout MINUTES] [--verbosity minimal|medium|verbose] [--branch BRANCH] [--fresh] [--auto-fix-workflow] [--new-cipe-timeout MINUTES] [--local-verify-attempts N]'
 ---
 
 # Monitor CI Command
@@ -15,7 +15,7 @@ You are the orchestrator for monitoring Nx Cloud CI pipeline executions and hand
 
 ## User Instructions
 
-$ARGUMENTS
+${input:args}
 
 **Important:** If user provides specific instructions, respect them over default behaviors described below.
 
@@ -32,7 +32,7 @@ $ARGUMENTS
 | `--new-cipe-timeout`      | 10            | Minutes to wait for new CI Attempt after action                           |
 | `--local-verify-attempts` | 3             | Max local verification + enhance cycles before pushing to CI              |
 
-Parse any overrides from `$ARGUMENTS` and merge with defaults.
+Parse any overrides from `${input:args}` and merge with defaults.
 
 ## Nx Cloud Connection Check
 
@@ -87,8 +87,6 @@ If the user previously ran `/monitor-ci` in this session, you may have prior sta
 
 ## MCP Tool Reference
 
-The `ci_information` and `update_self_healing_fix` tools are called via the **ci-monitor-subagent**, not directly from the orchestrator. Calling MCP tools directly wastes main agent context with large response payloads. The field sets below are for composing subagent prompts (see Step 2a).
-
 Three field sets control polling efficiency — use the lightest set that gives you what you need:
 
 ```yaml
@@ -113,7 +111,7 @@ The decision script returns one of the following statuses. This table defines th
 | `cipe_canceled`         | Exit, CI was canceled                                                                                            |
 | `cipe_timed_out`        | Exit, CI timed out                                                                                               |
 | `polling_timeout`       | Exit, polling timeout reached                                                                                    |
-| `circuit_breaker`       | Exit, no progress after 5 consecutive polls                                                                      |
+| `circuit_breaker`       | Exit, no progress after 13 consecutive polls                                                                     |
 | `environment_rerun_cap` | Exit, environment reruns exhausted                                                                               |
 | `fix_auto_applying`     | Self-healing is handling it — just record `last_cipe_url`, enter wait mode. No MCP call or local git ops needed. |
 | `error`                 | Wait 60s and loop                                                                                                |
@@ -172,16 +170,7 @@ Determine select fields based on mode:
 - **Wait mode**: use WAIT_FIELDS (`cipeUrl,commitSha,cipeStatus`)
 - **Normal mode (first poll or after newCipeDetected)**: use LIGHT_FIELDS
 
-```
-Task(
-  agent: "ci-monitor-subagent",
-  model: haiku,
-  prompt: "FETCH_STATUS for branch '<branch>'.
-           select: '<fields>'"
-)
-```
-
-The subagent calls `ci_information` and returns a JSON object with the requested fields. This is a **foreground** call — wait for the result.
+Call the `ci_information` tool with the determined `select` fields for the current branch. Wait for the result before proceeding.
 
 #### 2b. Run decision script
 
@@ -235,16 +224,16 @@ When decision script returns `action == "done"`:
 6. **If action expects new CI Attempt**, update tracking (see Step 3a)
 7. If action results in looping, go to Step 2
 
-#### Spawning subagents for actions
+#### Tool calls for actions
 
-Several statuses require fetching heavy data or calling MCP:
+Several statuses require fetching additional data or calling tools:
 
-- **fix_apply_ready**: Spawn UPDATE_FIX subagent with `APPLY`
-- **fix_needs_local_verify**: Spawn FETCH_HEAVY subagent for fix details before local verification
-- **fix_needs_review**: Spawn FETCH_HEAVY subagent → get `suggestedFixDescription`, `suggestedFixSummary`, `taskFailureSummaries`
-- **fix_failed / no_fix**: Spawn FETCH_HEAVY subagent → get `taskFailureSummaries` for local fix context
-- **environment_issue**: Spawn UPDATE_FIX subagent with `RERUN_ENVIRONMENT_STATE`
-- **self_healing_throttled**: Spawn FETCH_HEAVY subagent → get `selfHealingSkipMessage`; then FETCH_THROTTLE_INFO + UPDATE_FIX for each old fix
+- **fix_apply_ready**: Call `update_self_healing_fix` with action `APPLY`
+- **fix_needs_local_verify**: Call `ci_information` with HEAVY_FIELDS for fix details before local verification
+- **fix_needs_review**: Call `ci_information` with HEAVY_FIELDS → get `suggestedFixDescription`, `suggestedFixSummary`, `taskFailureSummaries`
+- **fix_failed / no_fix**: Call `ci_information` with HEAVY_FIELDS → get `taskFailureSummaries` for local fix context
+- **environment_issue**: Call `update_self_healing_fix` with action `RERUN_ENVIRONMENT_STATE`
+- **self_healing_throttled**: Call `ci_information` with HEAVY_FIELDS → get `selfHealingSkipMessage`; then call `update_self_healing_fix` for each old fix
 
 ### Step 3a: Track State for New-CI-Attempt Detection
 

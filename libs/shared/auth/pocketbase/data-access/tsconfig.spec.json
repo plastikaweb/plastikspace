@@ -28,22 +28,5 @@
     "src/**/*.store.mock.ts",
     "src/**/*.d.ts"
   ],
-  "files": ["src/test-setup.ts"],
-  "references": [
-    {
-      "path": "../../../pocketbase-user-addresses/data-access"
-    },
-    {
-      "path": "../../entities"
-    },
-    {
-      "path": "../../../../core/util/api-pocketbase"
-    },
-    {
-      "path": "../../../../core/entities"
-    },
-    {
-      "path": "../../../notification/data-access"
-    }
-  ]
+  "files": ["src/test-setup.ts"]
 }

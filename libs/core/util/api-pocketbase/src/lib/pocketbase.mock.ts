@@ -14,6 +14,10 @@ export const mockPocketBase = {
       record: { id: '123', email: 'test@test.com' },
       token: 'test-token',
     }),
+    authRefresh: vi.fn().mockResolvedValue({
+      record: { id: '123', email: 'test@test.com' },
+      token: 'test-token',
+    }),
     requestPasswordReset: vi.fn().mockResolvedValue(true),
   }),
   authStore: {
