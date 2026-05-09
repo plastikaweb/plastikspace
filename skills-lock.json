@@ -9,7 +9,8 @@
     "accessibility": {
       "source": "addyosmani/web-quality-skills",
       "sourceType": "github",
-      "computedHash": "6462f04969f59f771150e6410e6a11fa397f2934be0b51e8650f495feed1e28d"
+      "skillPath": "skills/accessibility/SKILL.md",
+      "computedHash": "10e83284d3395ab5ec2f2db602b663480a37a4ff404d16510eefe86b034fcc1a"
     },
     "adapt": {
       "source": "pbakaus/impeccable",
@@ -20,6 +21,12 @@
       "source": "angular/angular",
       "sourceType": "github",
       "computedHash": "0da9315d3f7e86f7d80300a36b2a8c85ed64ed318f3512c24324a173d3a6a839"
+    },
+    "angular-best-practices-ngrx": {
+      "source": "alfredoperez/angular-best-practices",
+      "sourceType": "github",
+      "skillPath": "skills/angular-best-practices-ngrx/SKILL.md",
+      "computedHash": "3ced41dfe6d6738c27627675a4a8f48228badcd6470654173cc235d04d812a6f"
     },
     "angular-developer": {
       "source": "angular/skills",
@@ -81,6 +88,12 @@
       "sourceType": "github",
       "computedHash": "69cecc4f28fb2f140652669bd45cc492744ad5c3c45083f5e0be5b0a5ef8acd0"
     },
+    "i18n-localization": {
+      "source": "sickn33/antigravity-awesome-skills",
+      "sourceType": "github",
+      "skillPath": "skills/i18n-localization/SKILL.md",
+      "computedHash": "ea5d6d0faa9fabd6a8a3165dca69dac9ab7c622dc130bdce3f1dfa88e02ba948"
+    },
     "nodejs-backend-patterns": {
       "source": "wshobson/agents",
       "sourceType": "github",
@@ -95,6 +108,18 @@
       "source": "pbakaus/impeccable",
       "sourceType": "github",
       "computedHash": "a2d2c28085b46b1b0a97aa4133a4df5fec9cf77a7c3cef275b901065e11bc080"
+    },
+    "nx-generate": {
+      "source": "nrwl/nx-ai-agents-config",
+      "sourceType": "github",
+      "skillPath": "skills/nx-generate/SKILL.md",
+      "computedHash": "7f465f7c7b023762c4517227a5ac9823f54d49fb5b492c61693d841a1a0ee355"
+    },
+    "nx-workspace": {
+      "source": "nrwl/nx-ai-agents-config",
+      "sourceType": "github",
+      "skillPath": "skills/nx-workspace/SKILL.md",
+      "computedHash": "32b7b72c54c6644e97ac8c8491e3cfa936afa6f8a86798214258d631367b4add"
     },
     "onboard": {
       "source": "pbakaus/impeccable",
@@ -136,6 +161,18 @@
       "sourceType": "github",
       "computedHash": "c48a51a68ab96d93ce98a7a3b55995208c70436423523ea64ae983a1ffa23020"
     },
+    "rxjs": {
+      "source": "oguzhan18/angular-ecosystem-skills",
+      "sourceType": "github",
+      "skillPath": "skills/rxjs/SKILL.md",
+      "computedHash": "69687b5e390686d093b470016fe2200e6e0e4be750aaf219cae8722c49e04187"
+    },
+    "security-requirement-extraction": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/security-scanning/skills/security-requirement-extraction/SKILL.md",
+      "computedHash": "58355374dea00ec5a732711a0586adb06ca6d1ef148e6ca16950e4e0a0a9643e"
+    },
     "seo": {
       "source": "addyosmani/web-quality-skills",
       "sourceType": "github",
@@ -144,6 +181,7 @@
     "tailwind-css-patterns": {
       "source": "giuseppe-trisciuoglio/developer-kit",
       "sourceType": "github",
+      "skillPath": "plugins/developer-kit-typescript/skills/tailwind-css-patterns/SKILL.md",
       "computedHash": "6092620c3af955a46ea2b94ca8a40197ac8392e6bbdc8c7515659328b186c770"
     },
     "teach-impeccable": {

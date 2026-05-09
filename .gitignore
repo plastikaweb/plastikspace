@@ -105,5 +105,6 @@ build_results.txt
 #nx graph
 graph.json
 vitest.config.*.timestamp*
-.claude/
+.claude/settings.local.json
+.claude/worktrees/
 **/CLAUDE.md
