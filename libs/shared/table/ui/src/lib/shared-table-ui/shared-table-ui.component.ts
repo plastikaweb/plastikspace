@@ -36,7 +36,6 @@ import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
 import {
-  DataFormatFactoryService,
   FormattingTypes,
   SafeFormattedPipe,
   SharedUtilFormattersModule,
@@ -255,6 +254,26 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
         this.dataSource.filter = '';
       }
     });
+
+    /**
+     * Synchronize MatSort and MatPaginator with the data source after they are initialized.
+     */
+    effect(() => {
+      const sortInstance = this.matSort();
+      const paginatorInstance = this.matPaginator();
+
+      if (sortInstance) {
+        if (this.sort()) {
+          sortInstance.active = this.sort()?.[0] || '';
+          sortInstance.direction = this.sort()?.[1] || 'asc';
+        }
+        this.dataSource.sort = sortInstance;
+      }
+
+      if (paginatorInstance) {
+        this.dataSource.paginator = paginatorInstance;
+      }
+    });
   }
 
   /**
@@ -273,27 +292,16 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       return String(value).toLowerCase();
     };
 
-    if (this.filterPredicate && this.filterCriteria) {
-      this.dataSource.filterPredicate = (data: T) => {
-        return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
-      };
-    }
-
-    if (this.sort()) {
-      const matSortInstance = this.matSort();
-      if (matSortInstance) {
-        matSortInstance.active = this.sort()?.[0] || '';
-        matSortInstance.direction = this.sort()?.[1] || 'asc';
-        this.dataSource.sort = matSortInstance;
-      }
-    }
+    this.dataSource.filterPredicate = (data: T) => {
+      return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
+    };
   }
 
   /**
    * Handles pagination changes.
    * @param config - The pagination configuration.
    */
-  onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
+  protected onChangePagination({ previousPageIndex, pageIndex, pageSize }: PageEventConfig) {
     if (pageSize !== this.pagination()?.pageSize) {
       pageIndex = 0;
     }
@@ -306,7 +314,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   /**
    * Handles sorting changes.
-   * @param sorting - The sorting configuration.
+   * @param { TableSorting } param0 - The sorting configuration.
+   * @param { string } param0.active - The active column key.
+   * @param { SortDirection } param0.direction - The sorting direction.
    */
   protected onChangeSorting({ active, direction }: TableSorting): void {
     this.changeSorting.emit({
@@ -318,8 +328,8 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   /**
    * Handles the delete action.
-   * @param event - The event object.
-   * @param element - The element to delete.
+   * @param { Event } event - The event object.
+   * @param { T } element - The element to delete.
    */
   protected onDelete(event: Event, element: T): void {
     event.stopPropagation();
@@ -328,9 +338,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   /**
    * Handles input changes in editable cells.
-   * @param event - The event object.
-   * @param element - The element being edited.
-   * @param editableAttr - The editable attribute configuration.
+   * @param { Event | MatSelectChange | MatCheckboxChange | MatRadioChange | MatSlideToggleChange } event - The event object.
+   * @param { T } element - The element being edited.
+   * @param { EditableAttributeBase<T> } editableAttr - The editable attribute configuration.
    */
   protected onInputChange(
     event: Event | MatSelectChange | MatCheckboxChange | MatRadioChange | MatSlideToggleChange,
@@ -351,7 +361,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   /**
    * Updates the expanded element.
-   * @param element - The element to expand or null to collapse.
+   * @param { T | null } element - The element to expand or null to collapse.
    */
   protected updateExpandedElement(element: T | null): void {
     requestAnimationFrame(() => {
@@ -361,7 +371,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   /**
    * Announces the sort change for accessibility.
-   * @param sortState - The current sort state.
+   * @param { Sort } sortState - The current sort state.
    */
   #announceSortChange(sortState: Sort) {
     if (sortState.direction) {

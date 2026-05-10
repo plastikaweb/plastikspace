@@ -53,7 +53,7 @@ export class FirebaseStorageService extends StorageService implements StorageSer
       this.fileUrl.set(await getDownloadURL(snapshot.ref));
       this.progress.set(0);
     } catch (error) {
-      this.progress.set(0);
+      this.reset();
       throw error;
     }
   }

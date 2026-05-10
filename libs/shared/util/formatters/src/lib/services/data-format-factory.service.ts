@@ -15,10 +15,10 @@ import {
 } from '../formatting';
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
-@Injectable()
 /**
- * @description A service to format a value from an object applying a formatting configuration.
+ * A service to format a value from an object applying a formatting configuration.
  */
+@Injectable()
 export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
   readonly #formatter = inject(SharedUtilFormattersService);
 
@@ -38,7 +38,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     index?: number,
     extraConfig?: unknown
   ): SafeHtml | string | FormattingComponentOutput {
-    const value = this.getValueFromRow(pathToKey, item);
+    const value = this.#getValueFromRow(pathToKey, item);
     const { type, extras } = formatting;
 
     switch (type) {
@@ -86,7 +86,13 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     }
   }
 
-  private getValueFromRow(
+  /**
+   * Extracts the value from a row based on the property path.
+   * @param { string } property - The property path.
+   * @param { T } item - The item to extract the value from.
+   * @returns { FormattingOutput } The extracted value.
+   */
+  #getValueFromRow(
     property: string,
     item: T extends BaseEntity ? T : never
   ): FormattingOutput {
