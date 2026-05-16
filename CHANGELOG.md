@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-16] - Workspace: CLAUDE.md hierarchy refinement
+
+### Changed
+
+- **Root `CLAUDE.md`**: Removed duplicate Angular/TypeScript guidance (canonical source remains `.claude/CLAUDE.md`), added a "Per-app guidance" pointer, added a "Where things actually live" reference table consolidating Nx cache, path-alias, ESLint boundary, scripts, and documentation paths, and collapsed the eco-store-specific PocketBase backend subsection ([#86c9uq646](https://app.clickup.com/t/86c9uq646)).
+
+### Added
+
+- **`apps/eco-store/CLAUDE.md`**: New app-level Claude Code guide covering eco-store architecture, PocketBase schema/hooks workflow, multi-tenant routing, design system, state management patterns, and the `pocketbase-best-practices` skill invocation mandate ([#86c9uq646](https://app.clickup.com/t/86c9uq646)).
+- **`apps/eco-store/CLAUDE.md` → "Referencing task identifiers (MANDATORY)"**: Codified that all eco-store commits, CHANGELOG entries, and PRs must include the PRD/TASKS ID (e.g. `BOT-04`, `INI-01`) alongside the ClickUp ID, sourced from the external TASKS.md ([#86c9uq646](https://app.clickup.com/t/86c9uq646)).
+
 ## [2026-05-02] - Workspace: Angular 21.2.9, NgRx 21.1.0 & Toolchain Upgrade
 
 ### Changed

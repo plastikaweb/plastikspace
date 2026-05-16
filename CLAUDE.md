@@ -32,8 +32,28 @@ Plastikspace is a personal Nx monorepo containing **6 applications** and **137 l
 The repository enforces strict architectural boundaries through ESLint module constraints.
 
 **Repository**: <https://github.com/plastikaweb/plastikspace>
-**Main Branch**: `develop`
+**Main Branch**: `develop` (also Nx's `defaultBase` — many tools assume `main`, this workspace does not)
 **Package Manager**: Yarn
+
+### Per-app guidance
+
+When working inside an app directory, read its CLAUDE.md alongside this one:
+
+- `apps/eco-store/CLAUDE.md` — eco-store / PocketBase / multi-tenant specifics
+
+### Where things actually live
+
+| What                              | Path                                                                                                          |
+| --------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Nx cache (custom)                 | `tmp/my-cache`                                                                                                |
+| Path aliases (200+)               | `tsconfig.base.json`                                                                                          |
+| Architectural boundary rules      | `.eslintrc.json` (`@nx/enforce-module-boundaries`)                                                            |
+| Workspace scripts                 | `tools/scripts/` (i18n validation, PocketBase helpers, local setup)                                           |
+| Branch-name rules                 | `branchNameLint.json`                                                                                         |
+| Commitizen config                 | `.cz-config.js` (scopes auto-loaded from `tsconfig.base.json`)                                                |
+| Long-form docs                    | `documentation/` (nx-architecture, code-style, accessibility, css-styles, commit-conventions, git-flow, i18n) |
+| eco-store PocketBase schema/hooks | `apps/eco-store/pocketbase/`                                                                                  |
+| Firebase emulator data (llecoop)  | gitignored under `apps/llecoop-firebase/`                                                                     |
 
 ## Installation
 
@@ -275,42 +295,11 @@ yarn i18n:test                       # Run i18n validation tests
 - Ensures translation keys are consistent across all language files
 - Part of code quality checks
 
-## Angular & TypeScript Best Practices
+## Angular & TypeScript Conventions
 
-### TypeScript
+The canonical Angular / TypeScript rules for this workspace live in [`.claude/CLAUDE.md`](.claude/CLAUDE.md) (standalone components, signals, `inject()`, `host` object, native control flow, no `ngClass`/`ngStyle`, no `mutate` on signals, etc.). Don't duplicate them here — read that file first.
 
-- Use strict type checking
-- Prefer type inference when obvious
-- Avoid `any`; use `unknown` when type is uncertain
-
-### Angular Components
-
-- **Standalone components only** (default, don't set `standalone: true`)
-- Use `ChangeDetectionStrategy.OnPush`
-- Use `input()` and `output()` functions instead of decorators
-- Use signals for state: `signal()`, `computed()`, `effect()`
-- **DO NOT use `mutate` on signals**, use `update` or `set` instead
-- Keep components small and focused
-
-### Templates
-
-- Use native control flow: `@if`, `@for`, `@switch` (not `*ngIf`, `*ngFor`, `*ngSwitch`)
-- Use `async` pipe for observables
-- **DO NOT use `ngClass`**, use `[class]` bindings instead
-- **DO NOT use `ngStyle`**, use `[style]` bindings instead
-- Use `NgOptimizedImage` for static images (not for base64)
-
-### Services & DI
-
-- Use `inject()` function instead of constructor injection
-- Use `providedIn: 'root'` for singleton services
-- Design services around single responsibility
-
-### Prohibited Patterns
-
-- **NO NgModules** - standalone components only
-- **NO `@HostBinding` or `@HostListener`** - use `host` object in decorator instead
-- **NO `ngClass` or `ngStyle`** - use direct bindings
+The sections below capture only workspace-specific patterns that go beyond those baseline rules.
 
 ### Routing
 
@@ -420,20 +409,8 @@ See `documentation/css-styles.md` for detailed styling conventions.
 
 ### PocketBase (Eco-store)
 
-- Self-hosted backend with SQL-based storage
-- Local emulation: `yarn eco-store:local` (starts PocketBase + app + SCSS watcher)
-- PocketBase runs on default port (usually 8090)
-- Admin UI: `http://localhost:8090/_/` (when PocketBase is running)
-
-**Schema Management Workflow**:
-
-1. Make changes in PocketBase Admin UI
-2. `yarn eco-store:pb:export` - Export schema to `apps/eco-store/pocketbase/pb_schema.json`
-3. `yarn eco-store:pb:diff` - Review schema changes in git
-4. `yarn eco-store:pb:sync` - Sync schema across environments (if needed)
-5. Commit schema file with your changes
-
-Schema is version-controlled and should be committed with related code changes.
+- Self-hosted SQL backend; local emulation via `yarn eco-store:local`
+- Schema, hooks, and full workflow live in `apps/eco-store/CLAUDE.md` and `apps/eco-store/POCKETBASE.md`
 
 ### GraphQL (Plastikaweb)
 
