@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-17] - Workspace: Reactivate Claude Code GitHub workflows
+
+### Changed
+
+- **`.github/workflows/claude.yml` & `.github/workflows/claude-code-review.yml`**: Reactivated previously disabled (`.temp`) workflows and switched authentication from `ANTHROPIC_API_KEY` (pay-per-token API billing) to `CLAUDE_CODE_OAUTH_TOKEN` (counts against the Claude Code Max subscription quota, no extra billing). Added `paths-ignore` filter on the review workflow so PRs touching only Markdown, workflow YAML, or `documentation/` skip the automated review and preserve Max quota for substantive code changes.
+
 ## [2026-05-16] - Workspace: CLAUDE.md hierarchy refinement
 
 ### Changed
