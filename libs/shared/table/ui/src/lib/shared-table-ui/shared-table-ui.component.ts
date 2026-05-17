@@ -12,13 +12,14 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
   input,
-  OnInit,
   output,
   signal,
   TemplateRef,
   viewChild,
+  viewChildren,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
@@ -34,9 +35,8 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
-import { BaseEntity } from '@plastik/core/entities';
+import { BaseEntity, SortConfig } from '@plastik/core/entities';
 import {
-  DataFormatFactoryService,
   FormattingTypes,
   SafeFormattedPipe,
   SharedUtilFormattersModule,
@@ -56,7 +56,6 @@ import {
   TableColumnFormatting,
   TableDefinition,
   TablePaginationVisibility,
-  TableSorting,
   TableSortingConfig,
 } from '@plastik/shared/table/entities';
 
@@ -96,11 +95,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   styleUrl: './shared-table-ui.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
-  implements OnInit
-{
-  readonly #liveAnnouncer = inject(LiveAnnouncer);
-
+export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }> {
   /**
    * Data that will populate the table.
    */
@@ -198,7 +193,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   /**
    * An Output emitter to send table sorting changes.
    */
-  changeSorting = output<TableSorting>();
+  changeSorting = output<SortConfig>();
 
   /**
    * An Output emitter to send table delete action.
@@ -212,6 +207,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   protected readonly matSort = viewChild<MatSort | null>(MatSort);
   protected readonly matPaginator = viewChild<MatPaginator | null>(MatPaginator);
+  protected readonly matFormField = viewChildren<ElementRef>('matFormField');
 
   protected dataSource = new MatTableDataSource<T>();
   protected columnsToDisplay = computed(() => {
@@ -234,33 +230,9 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected isDynamicComponent = isDynamicComponentTypeGuard;
 
   protected expandedElement = signal<T | null>(null);
+  readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   constructor() {
-    /**
-     * Synchronize the data source with the data input signal.
-     */
-    effect(() => (this.dataSource.data = this.data()));
-
-    /**
-     * Synchronize the data source filter with the filter criteria and predicate signals.
-     */
-    effect(() => {
-      const criteria = this.filterCriteria();
-      const predicate = this.filterPredicate();
-
-      if (criteria && predicate) {
-        // We set a non-empty string to trigger the filterPredicate
-        this.dataSource.filter = JSON.stringify(criteria);
-      } else {
-        this.dataSource.filter = '';
-      }
-    });
-  }
-
-  /**
-   * Initializes the component.
-   */
-  ngOnInit(): void {
     this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
       const value = sortHeaderId.split('.').reduce((obj, key) => {
         return obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key] : obj;
@@ -273,20 +245,50 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       return String(value).toLowerCase();
     };
 
-    if (this.filterPredicate && this.filterCriteria) {
-      this.dataSource.filterPredicate = (data: T) => {
-        return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
-      };
-    }
+    /**
+     * Synchronize the data source with the data input signal.
+     */
+    effect(() => (this.dataSource.data = this.data()));
 
-    if (this.sort()) {
+    /**
+     * Synchronize the data source filter with the filter criteria and predicate input signals.
+     */
+    effect(() => {
+      const criteria = this.filterCriteria();
+      const predicate = this.filterPredicate();
+
+      if (criteria && predicate) {
+        this.dataSource.filterPredicate = (data: T) => {
+          return predicate(data, criteria);
+        };
+        this.dataSource.filter = JSON.stringify(criteria);
+      } else {
+        this.dataSource.filter = '';
+      }
+    });
+
+    /**
+     * Synchronize the data source sort with the sort input and matSort viewChild signals.
+     */
+    effect(() => {
       const matSortInstance = this.matSort();
-      if (matSortInstance) {
-        matSortInstance.active = this.sort()?.[0] || '';
-        matSortInstance.direction = this.sort()?.[1] || 'asc';
+      const sortConfig = this.sort();
+      if (matSortInstance && sortConfig) {
+        matSortInstance.active = sortConfig[0] || '';
+        matSortInstance.direction = sortConfig[1] || 'asc';
         this.dataSource.sort = matSortInstance;
       }
-    }
+    });
+
+    /**
+     * Synchronize the data source paginator with the matPaginator viewChild signal.
+     */
+    effect(() => {
+      const paginator = this.matPaginator();
+      if (paginator) {
+        this.dataSource.paginator = paginator;
+      }
+    });
   }
 
   /**
@@ -308,7 +310,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
    * Handles sorting changes.
    * @param sorting - The sorting configuration.
    */
-  protected onChangeSorting({ active, direction }: TableSorting): void {
+  protected onChangeSorting({ active, direction }: SortConfig): void {
     this.changeSorting.emit({
       active,
       direction,

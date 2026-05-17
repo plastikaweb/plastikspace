@@ -1,6 +1,6 @@
 <div
-  class="grid overflow-auto overflow-x-auto overflow-y-hidden z-10 mt-0 w-full border-t border-solid md:mt-4 border-gray-10 mb-tiny">
-  @defer (on viewport; prefetch when dataSource.data.length) {
+  class="mb-tiny border-outline-variant z-10 mt-0 grid w-full overflow-auto overflow-x-auto overflow-y-hidden border-t border-solid md:mt-4">
+  @defer (prefetch when dataSource.data.length) {
     <mat-table
       class="table w-full"
       matSort
@@ -25,8 +25,7 @@
 
           <mat-cell
             *matCellDef="let row; let i = dataIndex"
-            class="py-sub"
-            [class]="column.cssClasses?.[0] || ''"
+            [class]="'py-sub ' + (column.cssClasses?.[0] || '')"
             [class.mat-cell-input]="column.formatting.type === 'INPUT'"
             [class.mat-cell-link]="column.formatting.type === 'LINK'">
             @switch (column.formatting.type) {
@@ -42,12 +41,11 @@
               @case ('INPUT') {
                 @if (column.isEditableConfig?.(row); as editable) {
                   @let attributes = editable?.attributes;
-                  <div class="leading-6 my-sub" [class]="column.cssClasses?.[1] || ''">
+                  <div [class]="'my-sub leading-6 ' + (column.cssClasses?.[1] || '')">
                     @if (isText(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
-                        [class]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -68,8 +66,7 @@
                     @if (isNumber(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
-                        [class]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -142,8 +139,7 @@
                     @if (isTextarea(editable)) {
                       <mat-form-field
                         #matFormField
-                        class="inline editable"
-                        [class]="attributes?.styles || ''">
+                        [class]="'editable inline ' + (attributes?.styles || '')">
                         @if (attributes?.prefix) {
                           <span matTextPrefix>{{ attributes?.prefix }}</span>
                         }
@@ -205,19 +201,19 @@
         <ng-container matColumnDef="actions">
           <mat-header-cell
             *matHeaderCellDef
-            class="overflow-visible justify-center mat-cell-actions"
-            [class]="actionsColStyles() || ''">
+            [class]="
+              'mat-cell-actions justify-center overflow-visible ' + (actionsColStyles() || '')
+            ">
             Accions
           </mat-header-cell>
           <mat-cell
             *matCellDef="let element"
-            class="overflow-visible mat-cell-actions py-sub"
-            [class]="actionsColStyles() || ''">
+            [class]="'mat-cell-actions py-sub overflow-visible ' + (actionsColStyles() || '')">
             @for (action of actions() | keyvalue | orderTableActionsElements; track action.key) {
               @if (action.key === 'EDIT' && action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [routerLink]="action.value?.link ? action.value?.link(element) : [element.id]"
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
@@ -228,7 +224,7 @@
               } @else if (action.value?.visible(element) && action.value?.type === 'input') {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -240,7 +236,7 @@
               } @else if (action.key === 'DELETE' && action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -250,7 +246,7 @@
               } @else if (action.value?.visible(element)) {
                 <button
                   type="button"
-                  mat-icon-button
+                  matIconButton
                   [attr.aria-label]="action.value?.description(element) || ''"
                   [matTooltip]="action.value?.description(element) || ''"
                   [disabled]="action.value?.disabled ? action.value?.disabled(element) : false"
@@ -260,7 +256,9 @@
                 </button>
               } @else if (!action.value?.visible(element)) {
                 <!-- TODO: #447 find a better way to handle the height of the cell when it has no buttons --->
-                <button type="button" mat-icon-button class="invisible">&nbsp;</button>
+                <button type="button" matIconButton class="invisible" aria-hidden="true">
+                  &nbsp;
+                </button>
               }
             }
           </mat-cell>
@@ -278,7 +276,7 @@
           >
           <mat-cell *matCellDef="let element" class="max-w-[70px]">
             <button
-              mat-icon-button
+              matIconButton
               aria-label="expand row"
               class="-left-sub"
               (click)="$event.stopPropagation(); updateExpandedElement(element)">
@@ -315,16 +313,15 @@
         <mat-row
           *matRowDef="let row; columns: columnsToDisplay()"
           sticky="true"
-          class="expandable-row"
+          [class]="'expandable-row ' + (extraRowStyles()?.(row) || '')"
           [class.expanded-row]="expandedElement()?.id === row.id"
-          [class]="extraRowStyles()?.(row) || ''"
           (click)="
             $event.stopPropagation(); expandedElement.set(expandedElement() === row ? null : row)
           "></mat-row>
         <mat-row
           *matRowDef="let row; columns: ['expandedDetail']"
           sticky="true"
-          class="table-row height-0"></mat-row>
+          class="height-0 table-row"></mat-row>
       } @else {
         <!-- Row that will be used to display the regular data -->
         <mat-row
@@ -351,7 +348,7 @@
 @if (!noPagination()) {
   <mat-paginator
     #matPaginator
-    class="justify-end mt-md"
+    class="mt-md justify-end"
     [pageIndex]="pagination()?.pageIndex"
     [pageSize]="pagination()?.pageSize"
     [length]="resultsLength()"
