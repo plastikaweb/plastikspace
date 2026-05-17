@@ -17,6 +17,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Scaffolding & Generators
 
 - For scaffolding tasks (creating apps, libs, project structure, setup), ALWAYS invoke the `nx-generate` skill FIRST before exploring or calling MCP tools
+  [text](CLAUDE.md)
 
 ## When to use nx_docs
 
