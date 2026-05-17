@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-17] - Eco-store: META-05 Phase 1 — TASKS.md ↔ ClickUp sync command + in-repo backlog
+
+### Added
+
+- **`tools/scripts/sync-eco-store-tasks.cjs` + `.claude/commands/sync-eco-store-tasks.md`**: New read-only `/sync-eco-store-tasks` Claude Code slash command. Diffs `apps/eco-store/TASKS.md` against ClickUp list `901521018763`, prints three sections (only-in-TASKS, only-in-ClickUp, status mismatches) plus a bridge-coverage metric. Phase 1 of 4 in the ClickUp ↔ TASKS.md automation — read-only by design, validates the PRD-ID-as-bridge assumption before Phases 2–4 add writes (META-05, [#86c9uwmzf](https://app.clickup.com/t/86c9uwmzf)).
+
+### Changed
+
+- **`apps/eco-store/TASKS.md` + `apps/eco-store/BACKLOG.md`**: Moved into the repo from the external `/Volumes/Feina/Projects-modeling/eco/eco-store/` directory so devs cloning the repo see the backlog, lifecycle-align with code commits, and unlock straightforward CI/git-hook automation. PRD v1.8 PDF stays external (binary, slow-changing) (META-05, [#86c9uwmzf](https://app.clickup.com/t/86c9uwmzf)).
+- **`apps/eco-store/CLAUDE.md`**: Updated the source-of-truth table and the "Referencing task identifiers (MANDATORY)" section to point at the new in-repo TASKS.md location (META-05, [#86c9uwmzf](https://app.clickup.com/t/86c9uwmzf)).
+
 ## [2026-05-17] - Workspace: Reactivate Claude Code GitHub workflows
 
 ### Changed

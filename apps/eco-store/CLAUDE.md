@@ -21,21 +21,21 @@ This file **complements** — it does not duplicate — the root `/CLAUDE.md` (w
 
 When working here, these are authoritative — consult them before assuming:
 
-| Document                    | Path                                                                                        | Purpose                                                   |
-| --------------------------- | ------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
-| **PRD v1.8**                | `/Volumes/Feina/Projects-modeling/eco/eco-store/ecostoreprdv1_8ca.pdf` _(external to repo)_ | Functional requirements — the master                      |
-| **TASKS**                   | `/Volumes/Feina/Projects-modeling/eco/eco-store/TASKS.md`                                   | Live backlog with verified status per PRD ID              |
-| **BACKLOG**                 | `/Volumes/Feina/Projects-modeling/eco/eco-store/BACKLOG.md`                                 | Phased / dependency-aware sprint plan with time estimates |
-| **PocketBase workflow**     | `apps/eco-store/POCKETBASE.md`                                                              | Schema management, hooks, cron, scripts                   |
-| **Loading strategies**      | `apps/eco-store/LOADING_STRATEGIES.md`                                                      | Activity & loading patterns                               |
-| **SSR**                     | `apps/eco-store/SSR.md`                                                                     | Server-side rendering config                              |
-| **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA fully conformant                                       |
+| Document                    | Path                                                                                                                | Purpose                                                   |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------- |
+| **PRD v1.8**                | `/Volumes/Feina/Projects-modeling/eco/eco-store/ecostoreprdv1_8ca.pdf` _(external to repo — binary, slow-changing)_ | Functional requirements — the master                      |
+| **TASKS**                   | `apps/eco-store/TASKS.md`                                                                                           | Live backlog with verified status per PRD ID              |
+| **BACKLOG**                 | `apps/eco-store/BACKLOG.md`                                                                                         | Phased / dependency-aware sprint plan with time estimates |
+| **PocketBase workflow**     | `apps/eco-store/POCKETBASE.md`                                                                                      | Schema management, hooks, cron, scripts                   |
+| **Loading strategies**      | `apps/eco-store/LOADING_STRATEGIES.md`                                                                              | Activity & loading patterns                               |
+| **SSR**                     | `apps/eco-store/SSR.md`                                                                                             | Server-side rendering config                              |
+| **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA fully conformant                                                               |
 
 > ⚠️ Don't reference `apps/eco-store/eco-store-req.md` — that file is the obsolete v1.7 PRD slated for deletion (META-01 in TASKS.md). It's been superseded by the v1.8 PDF.
 
 ### Referencing task identifiers (MANDATORY)
 
-Every change in `apps/eco-store/` or `libs/eco-store/*` must reference its **PRD/TASKS ID** (`INI-01`, `BOT-05`, `TRL-03`, `BUG-NNN`, `META-NN`, `OPS-NN`, `TECH-NN`, `SEO-NN`, `MKT-research-NN`, etc.) — they map 1:1 to PRD sections and to entries in `TASKS.md` at `/Volumes/Feina/Projects-modeling/eco/eco-store/TASKS.md` (external to repo; see source-of-truth table above).
+Every change in `apps/eco-store/` or `libs/eco-store/*` must reference its **PRD/TASKS ID** (`INI-01`, `BOT-05`, `TRL-03`, `BUG-NNN`, `META-NN`, `OPS-NN`, `TECH-NN`, `SEO-NN`, `MKT-research-NN`, etc.) — they map 1:1 to PRD sections and to entries in `apps/eco-store/TASKS.md` (see source-of-truth table above).
 
 This is **in addition to** the ClickUp `#<task>` ID the `commitizen-git-flow` skill extracts from the branch name. Both must appear where applicable:
 
