@@ -28,7 +28,7 @@
 
 | #   | Task                                                                | Priority   | Est   | Depends on | Notes                                                                                                                        |
 | --- | ------------------------------------------------------------------- | ---------- | ----- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
-| 0.0 | **OPS-02** Claude review workflow `pull-requests: write`            | **Urgent** | 0.1d  | —          | One-line permission bump in `.github/workflows/claude-code-review.yml`. Unblocks automated PR review reports. CU `86c9y6xyb` |
+| 0.0 | **OPS-02** Claude review workflow `pull-requests: write` ✅         | **Urgent** | 0.1d  | —          | Done 2026-05-23 — `permissions.pull-requests` raised `read` → `write` (also `issues`). CU `86c9y6xyb`                        |
 | 0.1 | **BUG-005** Profile routes auth guard                               | **Urgent** | 0.5d  | —          | `canActivate` on `/perfil` subtree; redirect to `/accedir` when unauthenticated. CU `86c99rjxt`                              |
 | 0.2 | **META-01** Delete obsolete PRD ✅                                  | MUST       | 0.25d | —          | Done 2026-05-23 — `eco-store-req.md` removed; stale refs in cspell/markdownlint/CLAUDE.md/TASKS.md cleaned up                |
 | 0.3 | **META-02** Remove `NOT_REGISTERED` enum                            | MUST       | 0.25d | —          | Admin UI → export → commit `pb_schema.json`                                                                                  |

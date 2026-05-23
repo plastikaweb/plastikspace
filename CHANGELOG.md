@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-23] - Workspace: OPS-02 — Grant `pull-requests: write` to claude-code-review workflow
+
+### Fixed
+
+- **`.github/workflows/claude-code-review.yml`**: Raised `permissions.pull-requests` from `read` to `write` (and `issues` from `read` to `write` for summary-comment fallback). The Claude code-review plugin was running successfully end-to-end but its final step — calling `github.rest.pulls.createReview` / `createReviewComment` to attach the report to the PR — got denied by the GitHub permission gate, so every review run completed silently. PR #1080's run logged 2 `permission_denials_count` and `"No buffered inline comments"` after 9 min / $3.47 / 17 turns of analysis. From now on, every PR matching the existing `paths-ignore` filter will get Claude's review report posted as comments (OPS-02, [#86c9y6xyb](https://app.clickup.com/t/86c9y6xyb)).
+
 ## [2026-05-23] - Eco-store: META-01 — Remove obsolete v1.7 PRD + TECH-01/02 ClickUp ID corrections
 
 ### Removed
