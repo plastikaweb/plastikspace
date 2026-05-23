@@ -44,23 +44,22 @@
 
 ## 🎯 Current focus
 
-| Task        | Module | Priority   | Status | One-line summary                                                          |
-| ----------- | ------ | ---------- | ------ | ------------------------------------------------------------------------- |
-| **OPS-02**  | OPS    | **Urgent** | 📋     | Grant `pull-requests: write` to `claude-code-review.yml` (CU `86c9y6xyb`) |
-| **META-02** | META   | MUST       | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum                |
-| **BUG-001** | BOT-05 | MUST       | ❓     | Verify cart merge regression — code complete, needs manual test pass      |
-| **BUG-002** | BOT    | MUST       | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                     |
-| **BUG-003** | BOT    | MUST       | 📋     | PWA manifest doesn't use tenant name as default app name                  |
-| **PRV-02b** | PRV    | MUST       | 🔄     | Email change with async verification (CU `86c92g6ek`)                     |
-| **PRV-02c** | PRV    | MUST       | 🔄     | In-session password change (CU `86c92g60y`)                               |
-| **PRV-04d** | PRV    | MUST       | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)       |
-| **PRV-08**  | PRV    | MUST       | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`)    |
-| **PRV-09**  | PRV    | SHOULD     | 🔄     | Notification preferences panel (CU `86c92g7fb`)                           |
-| **TRL-03**  | TRL    | MUST       | 📋     | Trial → member conversion CTA                                             |
-| **BOT-02b** | BOT    | MUST       | 📋     | Text search input above product grid                                      |
-| **BOT-02c** | BOT    | MUST       | 📋     | Tag filter chips above product grid                                       |
-| **BOT-08**  | BOT    | MUST       | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                         |
-| **VAL-01**  | VAL    | SHOULD     | 🔄     | Publish review form on product detail                                     |
+| Task        | Module | Priority | Status | One-line summary                                                       |
+| ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
+| **META-02** | META   | MUST     | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum             |
+| **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
+| **BUG-002** | BOT    | MUST     | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                  |
+| **BUG-003** | BOT    | MUST     | 📋     | PWA manifest doesn't use tenant name as default app name               |
+| **PRV-02b** | PRV    | MUST     | 🔄     | Email change with async verification (CU `86c92g6ek`)                  |
+| **PRV-02c** | PRV    | MUST     | 🔄     | In-session password change (CU `86c92g60y`)                            |
+| **PRV-04d** | PRV    | MUST     | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)    |
+| **PRV-08**  | PRV    | MUST     | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`) |
+| **PRV-09**  | PRV    | SHOULD   | 🔄     | Notification preferences panel (CU `86c92g7fb`)                        |
+| **TRL-03**  | TRL    | MUST     | 📋     | Trial → member conversion CTA                                          |
+| **BOT-02b** | BOT    | MUST     | 📋     | Text search input above product grid                                   |
+| **BOT-02c** | BOT    | MUST     | 📋     | Tag filter chips above product grid                                    |
+| **BOT-08**  | BOT    | MUST     | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                      |
+| **VAL-01**  | VAL    | SHOULD   | 🔄     | Publish review form on product detail                                  |
 
 See **`BACKLOG.md`** for the phased plan.
 
@@ -407,7 +406,7 @@ All `COULD`, pending discovery.
 | ID                  | Description                                                                                        | Priority   | ClickUp     |
 | ------------------- | -------------------------------------------------------------------------------------------------- | ---------- | ----------- |
 | **OPS-01** _(new)_  | Setup production deploy pipeline                                                                   | MUST       | `86c8cjgm0` |
-| **OPS-02** _(new)_  | Grant `pull-requests: write` to `claude-code-review.yml` workflow                                  | **Urgent** | `86c9y6xyb` |
+| **OPS-02** ✅       | Grant `pull-requests: write` to `claude-code-review.yml` workflow                                  | **Urgent** | `86c9y6xyb` |
 | **META-03** _(new)_ | Fix repo coverage badge update                                                                     | Low        | `86c8tqjma` |
 | **META-04** _(new)_ | Add a SKILL to format readme files                                                                 | Low        | `86c8cjgh6` |
 | **META-05** ✅      | Phase 1: read-only `/sync-eco-store-tasks` diff command (ClickUp ↔ TASKS.md automation foundation) | Low        | `86c9uwmzf` |
