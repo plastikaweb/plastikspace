@@ -31,8 +31,6 @@ When working here, these are authoritative — consult them before assuming:
 | **SSR**                     | `apps/eco-store/SSR.md`                                                                                             | Server-side rendering config                              |
 | **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA fully conformant                                                               |
 
-> ⚠️ Don't reference `apps/eco-store/eco-store-req.md` — that file is the obsolete v1.7 PRD slated for deletion (META-01 in TASKS.md). It's been superseded by the v1.8 PDF.
-
 ### Referencing task identifiers (MANDATORY)
 
 Every change in `apps/eco-store/` or `libs/eco-store/*` must reference its **PRD/TASKS ID** (`INI-01`, `BOT-05`, `TRL-03`, `BUG-NNN`, `META-NN`, `OPS-NN`, `TECH-NN`, `SEO-NN`, `MKT-research-NN`, etc.) — they map 1:1 to PRD sections and to entries in `apps/eco-store/TASKS.md` (see source-of-truth table above).

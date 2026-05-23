@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-23] - Eco-store: META-01 — Remove obsolete v1.7 PRD
+
+### Removed
+
+- **`apps/eco-store/eco-store-req.md`**: Deleted the v1.7 PRD (86 KB). Superseded by the external v1.8 PDF (`/Volumes/Feina/Projects-modeling/eco/eco-store/ecostoreprdv1_8ca.pdf`), which has been the canonical spec since `apps/eco-store/CLAUDE.md` was introduced (2026-05-16). Keeping a stale spec in the repo invited drift — every doc still referencing it had to carry a "don't read this" disclaimer (META-01).
+
+### Changed
+
+- **`cspell.json`**: Removed the now-dead `apps/eco-store/eco-store-req.md` entry from `ignorePaths` (META-01).
+- **`apps/eco-store/CLAUDE.md`**: Removed the obsolete-file warning callout under the source-of-truth table — no longer needed once the file is gone (META-01).
+- **`apps/eco-store/TASKS.md` + `apps/eco-store/BACKLOG.md`**: Marked META-01 as ✅ Done (removed from current focus; detail block + Phase 0.2 row updated with completion note) (META-01).
+
 ## [2026-05-23] - Eco-store: BUG-005 — Auth guard on /perfil + shared returnUrl flow
 
 ### Added

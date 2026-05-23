@@ -29,7 +29,7 @@
 | #   | Task                                                                | Priority   | Est   | Depends on | Notes                                                                                                                        |
 | --- | ------------------------------------------------------------------- | ---------- | ----- | ---------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | 0.1 | **BUG-005** Profile routes auth guard                               | **Urgent** | 0.5d  | —          | `canActivate` on `/perfil` subtree; redirect to `/accedir` when unauthenticated. CU `86c99rjxt`                              |
-| 0.2 | **META-01** Delete obsolete PRD                                     | MUST       | 0.25d | —          | `git rm apps/eco-store/eco-store-req.md`                                                                                     |
+| 0.2 | **META-01** Delete obsolete PRD ✅                                  | MUST       | 0.25d | —          | Done 2026-05-23 — `eco-store-req.md` removed; stale refs in cspell/CLAUDE.md/TASKS.md cleaned up                             |
 | 0.3 | **META-02** Remove `NOT_REGISTERED` enum                            | MUST       | 0.25d | —          | Admin UI → export → commit `pb_schema.json`                                                                                  |
 | 0.4 | **BUG-001** Verify cart merge                                       | MUST       | 0.5d  | —          | 5 manual test cases from TASKS.md                                                                                            |
 | 0.5 | **BUG-002** Deep-link `/cistella/resum` redirect                    | MUST       | 0.5d  | —          | CU `86c9kmk0n`                                                                                                               |
@@ -172,7 +172,7 @@
 
 **Goal:** Ship-ready compliance + finally execute the a11y fixes from Phase 0 audit + production deploy.
 
-**Estimated effort:** ~7 dev-days
+**Estimated effort:** ~8 dev-days
 
 | #    | Task                                        | Priority | Est   | Depends on | Notes                                                |
 | ---- | ------------------------------------------- | -------- | ----- | ---------- | ---------------------------------------------------- |
@@ -183,9 +183,10 @@
 | 7.5  | **A11Y-001** + **A11Y-002** Fixes           | MUST     | 1d    | Phase 0.7  | Execute findings                                     |
 | 7.6  | **SEO-01** Dynamic SEO titles               | SHOULD   | 1d    | —          | CU `86c9autmu` — high priority                       |
 | 7.7  | **OPS-01** Production deploy pipeline       | MUST     | 1.5d  | —          | CU `86c8cjgm0` — needed before v1 launch             |
-| 7.8  | **TECH-01** `string \| LocalizedField` util | SHOULD   | 0.5d  | —          | CU `86c8cjghn`                                       |
-| 7.9  | **BOT-16** Cart sidenav menu                | SHOULD   | 1d    | —          | CU `86c8cjgj2`                                       |
-| 7.10 | **UI-03** Per-tenant color theme            | COULD    | 1d    | —          | If time                                              |
+| 7.8  | **TECH-01** `string \| LocalizedField` util | SHOULD   | 0.5d  | —          | CU `86c9uq9rf`                                       |
+| 7.9  | **TECH-02** Modernize `libs/shared/*` libs  | SHOULD   | 1d    | —          | Cherry-pick from Jules PRs #1078 + #1073             |
+| 7.10 | **BOT-16** Cart sidenav menu                | SHOULD   | 1d    | —          | CU `86c8cjgj2`                                       |
+| 7.11 | **UI-03** Per-tenant color theme            | COULD    | 1d    | —          | If time                                              |
 
 **Exit criteria:** Legally compliant (banner + pages), Pa11y CI passes, prod deploy works, footer present.
 
@@ -313,6 +314,7 @@
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                              |
 | ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 0.4     | 2026-05-23 | Added TECH-02 to Phase 7 as task 7.9 (`libs/shared/*` Angular 21 modernization derived from Jules PRs #1078 + #1073, 1d). Phase 7 grew 7 → 8 dev-days; subsequent rows renumbered. Fixed stale TECH-01 ClickUp ID (`86c8cjghn` → `86c9uq9rf`).                     |
 | 0.3     | 2026-05-17 | Added META-05 to Phase 0 as task 0.9 (`/sync-eco-store-tasks` read-only diff command, CU `86c9uwmzf`, 0.5d). Phase 0 grew 4 → 4.5 dev-days; cumulative totals updated.                                                                                             |
 | 0.2     | 2026-05-16 | Re-cut after ClickUp audit. Phase 1 expanded with PRV-02c/08/09/04d. New Phase 11 for EST-06. Added BUG-002..005 to Phase 0. SEO-01, OPS-01, UI-04, BOT-16, TECH-01 added to Phase 7. ClickUp IDs cross-referenced throughout. Total grew from ~55 → ~66 dev-days. |
 | 0.1     | 2026-05-16 | Initial phased plan derived from TASKS.md v0.3.                                                                                                                                                                                                                    |

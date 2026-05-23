@@ -46,7 +46,6 @@
 
 | Task        | Module | Priority | Status | One-line summary                                                       |
 | ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
-| **META-01** | META   | MUST     | 📋     | Delete obsolete `apps/eco-store/eco-store-req.md` (`git rm`)           |
 | **META-02** | META   | MUST     | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum             |
 | **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
 | **BUG-002** | BOT    | MUST     | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                  |
@@ -398,9 +397,10 @@ All `COULD`, pending discovery.
 
 ### Tech debt
 
-| ID                  | Description                                               | Priority | ClickUp     |
-| ------------------- | --------------------------------------------------------- | -------- | ----------- |
-| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField` | SHOULD   | `86c8cjghn` |
+| ID                  | Description                                                               | Priority | ClickUp     |
+| ------------------- | ------------------------------------------------------------------------- | -------- | ----------- |
+| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                 | SHOULD   | `86c9uq9rf` |
+| **TECH-02** _(new)_ | Modernize `libs/shared/*` to Angular 21 standards (cherry-pick Jules PRs) | SHOULD   | _pending_   |
 
 ### Ops / Release
 
@@ -444,13 +444,9 @@ All `COULD`, pending discovery.
 
 ## 🧭 META — Meta-tasks
 
-### META-01 — Delete obsolete PRD
+### META-01 — Delete obsolete PRD ✅ Done (2026-05-23)
 
-```bash
-cd /Volumes/Feina/Projects/plastikspace
-git rm apps/eco-store/eco-store-req.md
-git commit -m "chore(eco-store): remove obsolete v1.7 PRD (superseded by v1.8)"
-```
+`apps/eco-store/eco-store-req.md` (v1.7 PRD) removed via `git rm`. Authoritative spec is now the external v1.8 PDF only (see CLAUDE.md source-of-truth table). Stale references in `cspell.json`, `apps/eco-store/CLAUDE.md`, and `BACKLOG.md` cleaned up in the same commit.
 
 ### META-02 — Remove `NOT_REGISTERED` enum value
 
