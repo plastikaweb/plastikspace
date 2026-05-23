@@ -1,0 +1,62 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  width: 100%;
+
+  background-color: light-dark(var(--neutral-200), var(--neutral-800));
+  border: 1px solid light-dark(var(--neutral-300), var(--neutral-700));
+  color: light-dark(var(--neutral-900), var(--neutral-100));
+  border-radius: 1rem;
+  overflow: hidden;
+
+  .mat-icon {
+    @include mat.icon-overrides(
+      (
+        color: light-dark(var(--neutral-900), var(--neutral-100)),
+      )
+    );
+  }
+
+  .valid-message {
+    background-color: light-dark(var(--success-200), var(--success-800));
+    border-color: light-dark(var(--success-300), var(--success-600));
+    color: light-dark(var(--success-800), var(--success-100));
+
+    .mat-icon {
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--success-800), var(--success-100)),
+        )
+      );
+    }
+  }
+
+  .error-message {
+    background-color: light-dark(var(--error-200), var(--error-800));
+    border-color: light-dark(var(--error-300), var(--error-600));
+    color: light-dark(var(--error-800), var(--error-100));
+
+    .mat-icon {
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--error-800), var(--error-100)),
+        )
+      );
+    }
+  }
+
+  .pending-message {
+    background-color: light-dark(var(--neutral-200), var(--neutral-800));
+    border-color: light-dark(var(--neutral-300), var(--neutral-700));
+    color: light-dark(var(--neutral-800), var(--neutral-100));
+
+    .mat-icon {
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--neutral-800), var(--neutral-100)),
+        )
+      );
+    }
+  }
+}

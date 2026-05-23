@@ -1,0 +1,16 @@
+{
+  "name": "llecoop-user-order-product-list-feature",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/llecoop/user-order/product-list/feature/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["type:feature", "scope:llecoop"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

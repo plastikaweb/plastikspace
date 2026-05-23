@@ -1,0 +1,122 @@
+<mat-card appearance="outlined" class="order-card" role="article">
+  <mat-card-content>
+    <!-- Top section: order info + price -->
+    <div class="mb-4 flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+      <!-- Left: order number, status, date -->
+      <div class="flex flex-col gap-1">
+        <span class="text-sys-primary text-xs font-semibold tracking-wider uppercase">
+          {{ 'orders.card.label' | translate }}
+        </span>
+        <div class="flex flex-wrap items-center gap-2">
+          <span
+            class="text-on-surface-variant max-w-[calc(100%-140px)] truncate text-lg font-bold"
+            [attr.aria-label]="
+              ('orders.card.orderNumber' | translate) + ': #' + order().orderNumber
+            ">
+            #{{ order().orderNumber }}
+          </span>
+          <!-- Status with hidden descriptive label for screen readers -->
+          <plastik-shared-chip
+            [label]="statusLabel() | translate"
+            [type]="statusType()"
+            [icon]="statusIcon()"
+            [attr.aria-label]="
+              ('orders.card.status' | translate) + ': ' + (statusLabel() | translate)
+            " />
+        </div>
+
+        <span
+          class="text-on-surface text-sm"
+          [attr.aria-label]="
+            ('orders.card.date' | translate) +
+            ': ' +
+            (order().created | date: 'dd MMMM yyyy' : '' : currentLanguage)
+          ">
+          {{ order().created | date: "dd 'de' MMMM, yyyy" : '' : currentLanguage }}
+        </span>
+      </div>
+
+      <!-- Right: total + article count -->
+      <div
+        class="flex flex-col items-end gap-0.5"
+        role="group"
+        [attr.aria-label]="'orders.card.pricingInfo' | translate">
+        <span
+          class="text-lg font-bold"
+          [class.text-outline-variant]="isCancelled()"
+          [class.text-on-surface]="!isCancelled()"
+          [class.line-through]="isCancelled()"
+          [attr.aria-label]="
+            ('orders.card.total' | translate) + ': ' + (order().total | currency: 'EUR')
+          ">
+          {{ order().total | currency: 'EUR' }}
+        </span>
+        <span class="text-on-surface text-sm">
+          {{ 'orders.card.items' | translate: { count: order().items.length } }}
+        </span>
+      </div>
+    </div>
+
+    <mat-divider />
+
+    <!-- Bottom section: delivery + detail button -->
+    <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <!-- Left: delivery method + item names -->
+      <div class="flex flex-col gap-2">
+        <div
+          class="grid grid-cols-[32px_1fr] items-center"
+          [attr.aria-label]="
+            ('orders.card.deliveryMethod' | translate) + ': ' + (deliveryLabel() | translate)
+          ">
+          <mat-icon class="delivery-icon" aria-hidden="true">
+            {{ deliveryIcon() }}
+          </mat-icon>
+
+          <span class="text-on-surface text-sm">{{ deliveryLabel() | translate }}</span>
+        </div>
+        <div class="grid grid-cols-[32px_1fr] items-center">
+          <mat-icon aria-hidden="true" class="products-icon">grocery</mat-icon>
+          <p class="text-on-surface-variant m-0 text-sm">
+            @for (name of itemNames(); track $index) {
+              <span [innerHTML]="name | highlight: highlight()"></span>
+              @if (!$last) {
+                <span>, </span>
+              }
+            }
+          </p>
+        </div>
+      </div>
+
+      <!-- Right: delete button + detail button -->
+      <div class="flex flex-1 items-center justify-end gap-2">
+        @if (order().status === 'PENDING') {
+          <button
+            matIconButton
+            type="button"
+            class="delete-button"
+            [attr.aria-label]="
+              'orders.card.deleteOrder' | translate: { orderNumber: '#' + order().orderNumber }
+            "
+            [matTooltip]="
+              'orders.card.deleteOrder' | translate: { orderNumber: '#' + order().orderNumber }
+            "
+            (click)="deleteOrder()">
+            <mat-icon aria-hidden="true">delete</mat-icon>
+          </button>
+        }
+
+        <button
+          mat-stroked-button
+          type="button"
+          class="detail-button shrink-0"
+          [attr.aria-label]="
+            'orders.card.viewDetailOf' | translate: { orderNumber: '#' + order().orderNumber }
+          "
+          (click)="viewDetail.emit()">
+          {{ 'orders.card.viewDetail' | translate }}
+          <mat-icon iconPositionEnd aria-hidden="true">arrow_forward</mat-icon>
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

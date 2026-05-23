@@ -24,12 +24,18 @@
       rel="preload"
       as="style"
       href="/assets/fonts/material-icons/material-icons.css"
-      onload="this.onload=null;this.rel='stylesheet'" />
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      " />
     <link
       rel="preload"
       as="style"
       href="/styles.css"
-      onload="this.onload=null;this.rel='stylesheet'" />
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      " />
 
     <link rel="preconnect" href="https://ik.imagekit.io" />
 
@@ -73,11 +79,11 @@
   <body class="mat-typography mat-app-background">
     <plastik-root role="application">
       <div
-        class="flex absolute top-0 right-0 bottom-0 left-0 justify-center items-center pointer-events-none">
+        class="pointer-events-none absolute top-0 right-0 bottom-0 left-0 flex items-center justify-center">
         <img
           src="assets/img/favicon-64x64.png"
           alt="El Llevat"
-          class="bg-white rounded-full p-tiny m-tiny" />
+          class="p-tiny m-tiny rounded-full bg-white" />
         <p class="sr-only">Carregant dades...</p>
       </div>
     </plastik-root>

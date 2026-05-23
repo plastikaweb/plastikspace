@@ -1,33 +1,88 @@
-# shared-activity-data-access
+# @plastik/shared/activity/data-access
 
-- [shared-activity-data-access](#shared-activity-data-access)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+![NgRx Signals](https://img.shields.io/badge/ngrx%20signals-%23270341.svg?style=for-the-badge&logo=ngrx&logoColor=white)
+
+- [@plastik/shared/activity/data-access](#plastiksharedactivitydata-access)
   - [Description](#description)
   - [How to use](#how-to-use)
+    - [1. Provide and initialize the store](#1-provide-and-initialize-the-store)
+    - [2. Opt-in global loading via HTTP header](#2-opt-in-global-loading-via-http-header)
+    - [3. Manual activity control](#3-manual-activity-control)
+    - [4. Use in components](#4-use-in-components)
+    - [5. In tests](#5-in-tests)
   - [Running unit tests](#running-unit-tests)
 
 ## Description
 
-This library contains the data access layer for the activity feature. It uses NgRx Signals for efficient and straightforward state management.
+This library contains the **data access layer for the global activity (loading) feature**. It uses **NgRx Signals** for efficient state management and exposes:
+
+- **`activityStore`** – Signal Store exposing `isActive` and `message` state signals.
+- **`pocketBaseActivityInterceptor`** – A PocketBase `send`-level interceptor that tracks in-flight requests and automatically toggles global loading state.
+
+> [!TIP]
+> For a comprehensive overview of all loading strategies used in the Eco Store, see the
+> [Eco Store Loading Strategies](../../../../apps/eco-store/LOADING_STRATEGIES.md) document.
 
 ## How to use
 
-### 1. Provide the store in your application
+### 1. Provide and initialize the store
 
-Provide the `activityStore` in your application configuration:
+Call `pocketBaseActivityInterceptor()` and seed the initial loading state in your `appConfig` initializer:
 
 ```typescript
-import { activityStore } from '@plastik/shared/activity/data-access';
+import { activityStore, pocketBaseActivityInterceptor } from '@plastik/shared/activity/data-access';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // ...
-    activityStore,
-    // ...
+    provideAppInitializer(async () => {
+      inject(activityStore).setActivity(true); // show loader during bootstrap
+      pocketBaseActivityInterceptor(); // register PocketBase interceptor
+      await inject(ecoStoreTenantStore).getTenant();
+    }),
   ],
 };
 ```
 
-### 2. Use the store in components
+### 2. Opt-in global loading via HTTP header
+
+The PocketBase interceptor only activates for requests that explicitly opt in with the
+`require-global-loading: 'true'` HTTP header. All other requests run silently.
+
+```typescript
+// Silent background request (default — no loader shown)
+store._cartsService.getFirstListItem(`user = "${user.id}"`);
+
+// Opt-in: shows the global overlay loader
+store._cartsService.getFirstListItem(`user = "${user.id}"`, {
+  headers: { 'require-global-loading': 'true' },
+});
+```
+
+### 3. Manual activity control
+
+Use `setActivity()` for imperative, non-HTTP loading flows (e.g., complex async orchestration):
+
+```typescript
+import { activityStore } from '@plastik/shared/activity/data-access';
+
+@Injectable({ providedIn: 'root' })
+export class OrdersStore {
+  readonly #activityStore = inject(activityStore);
+
+  async createOrder(): Promise<void> {
+    this.#activityStore.setActivity(true, 'cart.finish.creatingOrder');
+    try {
+      // ... async work
+    } finally {
+      this.#activityStore.setActivity(false);
+    }
+  }
+}
+```
+
+### 4. Use in components
 
 ```typescript
 import { Component, inject } from '@angular/core';
@@ -35,47 +90,35 @@ import { activityStore } from '@plastik/shared/activity/data-access';
 
 @Component({
   selector: 'app-my-component',
-  template: ` <div *ngIf="isActive()">Loading...</div> `,
+  template: `
+    @if (store.isActive()) {
+      <div role="status" aria-live="polite">{{ store.message() | translate }}</div>
+    }
+  `,
 })
 export class MyComponent {
-  private readonly store = inject(activityStore);
-
-  // Access state as a signal
-  readonly isActive = this.store.isActive;
-
-  // Change the state
-  setLoading(loading: boolean): void {
-    this.store.setActivity(loading);
-  }
+  protected readonly store = inject(activityStore);
 }
 ```
 
-### 3. In tests
-
-For testing, you need to inject the store instance:
+### 5. In tests
 
 ```typescript
 import { TestBed } from '@angular/core/testing';
 import { activityStore } from '@plastik/shared/activity/data-access';
 
 describe('MyComponent', () => {
-  let activityStoreInstance: unknown;
+  const mockActivityStore = { setActivity: jest.fn(), isActive: signal(false) };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [activityStore],
+      providers: [{ provide: activityStore, useValue: mockActivityStore }],
     });
-
-    activityStoreInstance = TestBed.inject(activityStore);
   });
 
   it('should set activity state', () => {
-    // Mock the method for testing
-    jest.spyOn(activityStoreInstance as any, 'setActivity');
-
-    // Test it
     component.someMethod();
-    expect(activityStoreInstance.setActivity).toHaveBeenCalledWith(true);
+    expect(mockActivityStore.setActivity).toHaveBeenCalledWith(true);
   });
 });
 ```

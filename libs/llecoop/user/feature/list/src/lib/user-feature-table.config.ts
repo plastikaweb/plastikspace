@@ -1,8 +1,7 @@
 import { filter, take } from 'rxjs';
 
-import { inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, Signal, signal } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Signal } from '@ngrx/signals/src/deep-signal';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';

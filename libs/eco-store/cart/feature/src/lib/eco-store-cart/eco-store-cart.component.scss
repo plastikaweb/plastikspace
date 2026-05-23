@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+
+:host {
+  mat-stepper {
+    @include mat.stepper-overrides(
+      (
+        container-color: var(--transparent),
+      )
+    );
+  }
+}

@@ -1,0 +1,109 @@
+<main class="relative flex min-h-screen items-center justify-center p-4">
+  @let tenant = tenantStore.tenant;
+  @let tenantName = tenant()?.name;
+  @let tenantLogo = tenant()?.logo;
+
+  <!-- PWA Standalone back button -->
+  @if (isStandalone()) {
+    <div class="absolute top-6 left-6 z-50">
+      <div
+        class="bg-surface-container/30 hover:bg-surface-container/50 rounded-full shadow-sm backdrop-blur-md transition-colors">
+        <button
+          matIconButton
+          class="opacity-70 transition-opacity hover:opacity-100"
+          [attr.aria-label]="'auth.common.back' | translate"
+          (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </div>
+  }
+
+  <mat-card
+    appearance="raised"
+    class="bg-surface-container-low/80 w-full max-w-[450px] overflow-hidden border-none! shadow-2xl! backdrop-blur-xl"
+    [class.pointer-events-none]="isLoading()"
+    [class.opacity-60]="isLoading()">
+    <!-- Hero Header with Organic Texture -->
+    <mat-card-header
+      class="relative flex flex-col items-center justify-center gap-4 overflow-hidden pt-8 pb-4">
+      <!-- Decorative Organic Shape -->
+      <div
+        class="bg-primary-500/10 absolute -top-12 -right-12 h-40 w-40 rounded-full blur-lg"
+        aria-hidden="true"></div>
+      <div
+        class="bg-tertiary-500/10 absolute bottom-4 -left-12 h-40 w-40 rounded-full blur-lg"
+        aria-hidden="true"></div>
+
+      @if (tenantLogo) {
+        <div
+          class="bg-secondary-500/40 shadow-secondary-100/50 relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl p-4 shadow-2xl ring-4 ring-white dark:ring-neutral-800">
+          <plastik-img-container
+            [src]="tenant() | pocketBaseImageUrl: tenantLogo"
+            [title]="tenantName || ('auth.common.title' | translate)"
+            [dimensions]="{ width: 64, height: 64 }"></plastik-img-container>
+        </div>
+      } @else {
+        <div
+          class="text-primary-600 bg-primary-50 dark:bg-primary-900 dark:text-primary-200 relative z-10 flex h-20 w-20 items-center justify-center rounded-3xl shadow-xl ring-4 ring-white dark:ring-neutral-800">
+          <mat-icon
+            class="scale-150"
+            [attr.aria-label]="(tenantName || ('auth.common.title' | translate)) + ' logo'"
+            >eco_logo</mat-icon
+          >
+        </div>
+      }
+
+      <div class="relative z-10 flex flex-col items-center gap-1">
+        <h1
+          class="text-on-surface m-0 text-center text-2xl leading-none font-black tracking-tight sm:text-3xl">
+          @if (tenantName) {
+            {{ tenantName }}
+          } @else {
+            {{ 'auth.common.title' | translate }}
+          }
+        </h1>
+        <p
+          class="text-on-surface-variant text-center text-xs font-bold tracking-[0.1em] uppercase opacity-80">
+          @if (tenant()?.slogan) {
+            {{ tenant()?.slogan }}
+          } @else {
+            {{ 'auth.common.slogan' | translate }}
+          }
+        </p>
+      </div>
+    </mat-card-header>
+
+    <mat-card-content class="px-8! py-4!">
+      <h2 class="text-headline-small mb-2 text-center">
+        <ng-content select="[title]"></ng-content>
+      </h2>
+      <p class="text-body-medium mb-4 text-center">
+        <ng-content select="[description]"></ng-content>
+      </p>
+      <ng-content select="[content]"></ng-content>
+    </mat-card-content>
+
+    <mat-card-footer class="bg-surface-container-high/30 px-8 py-2 text-center backdrop-blur-sm">
+      <ng-content select="[footer]" #footer></ng-content>
+      @if (!hasFooterContent) {
+        <p
+          class="text-on-surface-variant text-sm leading-relaxed font-medium tracking-normal opacity-70">
+          {{ 'auth.common.termsPrivacy' | translate }}
+        </p>
+      }
+    </mat-card-footer>
+  </mat-card>
+
+  @defer (on idle) {
+    <div class="absolute top-6 right-6 z-50">
+      <div
+        class="bg-surface-container/30 hover:bg-surface-container/50 rounded-full shadow-sm backdrop-blur-md transition-colors">
+        <plastik-mat-theme-toggle
+          class="opacity-70 transition-opacity hover:opacity-100"></plastik-mat-theme-toggle>
+      </div>
+    </div>
+  } @placeholder {
+    <div class="hidden"></div>
+  }
+</main>

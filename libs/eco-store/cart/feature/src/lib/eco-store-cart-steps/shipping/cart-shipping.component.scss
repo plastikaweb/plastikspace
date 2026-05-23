@@ -1,0 +1,14 @@
+@use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.reveal-up;
+
+:host {
+  .cart-shipping__free-shipping-promo {
+    @include mat.icon-overrides(
+      (
+        color: light-dark(var(--primary-600), var(--primary-200)),
+      )
+    );
+  }
+}

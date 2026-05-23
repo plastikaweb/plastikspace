@@ -1,0 +1,17 @@
+<plastik-shared-alert
+  [type]="alertType()"
+  [icon]="icon()"
+  [closable]="true"
+  (closed)="dismiss.emit()">
+  <strong alert-title>{{ title() | translate }}</strong>
+  <span alert-subtitle>{{ description().key | translate: description().params }}</span>
+
+  @if (hasCountdown()) {
+    <plastik-countdown
+      alert-extras
+      class="text-sm font-bold"
+      [segments]="segments()"
+      [prefix]="status() === 'CLOSING_SOON' ? '' : 'store.status.opensIn'">
+    </plastik-countdown>
+  }
+</plastik-shared-alert>

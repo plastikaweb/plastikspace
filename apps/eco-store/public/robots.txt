@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /accedir
+Disallow: /comandes
+Disallow: /cistella
+Allow: /

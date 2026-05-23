@@ -1,15 +1,37 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  ViewEncapsulation,
+} from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
+import { RouterLink } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'plastik-shared-confirm-feature',
-  imports: [MatDialogModule, MatButtonModule],
+  imports: [MatDialogModule, MatButtonModule, MatIconModule, TranslateModule, RouterLink],
   templateUrl: './shared-confirm-feature.component.html',
-  styleUrl: './shared-confirm-feature.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  encapsulation: ViewEncapsulation.None,
+  host: {
+    class: 'block',
+  },
 })
 export class SharedConfirmFeatureComponent {
-  data = inject(DIALOG_DATA);
+  readonly #translate = inject(TranslateService);
+  readonly #sanitizer = inject(DomSanitizer);
+  protected readonly data = inject(DIALOG_DATA);
+
+  protected readonly icon = computed(() => this.data.icon || 'help_outline');
+
+  protected readonly message = computed(() => {
+    const translated = this.#translate.instant(this.data.message, this.data.params);
+    return this.#sanitizer.bypassSecurityTrustHtml(translated);
+  });
 }

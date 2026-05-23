@@ -1,0 +1,16 @@
+{
+  "name": "shared-address-card-ui",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/shared/address-card/ui/src",
+  "prefix": "plastik",
+  "tags": ["scope:shared", "type:ui"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

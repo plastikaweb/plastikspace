@@ -56,6 +56,14 @@ export interface Notification {
   horizontalPosition?: 'start' | 'center' | 'end' | 'left' | 'right';
 
   politeness?: AriaLivePoliteness;
+  /**
+   * The parameters to pass to the translation.
+   */
+  parameters?: Record<string, unknown>;
+  /**
+   * An image content.
+   */
+  image?: string;
 }
 
 /**

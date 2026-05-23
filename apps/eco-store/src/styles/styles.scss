@@ -1,0 +1,21 @@
+@use '@angular/material' as mat;
+@use 'core_tailwind_theme';
+@use 'tailwindcss';
+@use 'eco-store-theme';
+@use 'core_input_material';
+@use 'core_button_material';
+@use 'core_a11y';
+
+@use 'animations';
+@use 'base';
+@use 'components';
+@use 'utilities';
+
+@use '@ngxpert/hot-toast/src/styles/styles.scss';
+@use 'notification-ui-hot-toast';
+@use 'shared-form-ui-select-with-icons';
+
+/* View transition pseudo-elements (`::view-transition-*`) live at the document
+   root and cannot be scoped by Angular component encapsulation, so they must
+   be included from this global stylesheet. */
+@include animations.view-transition-product-image;

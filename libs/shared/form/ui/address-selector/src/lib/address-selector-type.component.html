@@ -1,0 +1,41 @@
+@if (props.label) {
+  <mat-label id="address-selector">{{ props.label }}</mat-label>
+}
+
+@if (props.addresses.length) {
+  <mat-radio-group
+    class="address-selector-radio-group"
+    [attr.aria-label]="'cart.shipping.address.title' | translate"
+    [formControl]="formControl"
+    [formlyAttributes]="field">
+    @for (address of props.addresses; track address.id) {
+      @let isSelected = formControl.value?.id === address.id;
+
+      <plastik-address-card
+        [address]="address"
+        [selected]="isSelected"
+        [disabled]="formControl.disabled"
+        (selectionChange)="onChange(address)">
+        <mat-radio-button
+          indicator
+          class="hidden"
+          [aria-label]="address.name"
+          [value]="address"
+          [checked]="isSelected"
+          [id]="`address-${address.id}`"></mat-radio-button>
+
+        @if (props.editable) {
+          <button
+            actions
+            matButton
+            type="button"
+            color="tertiary"
+            class="absolute right-4 bottom-4 font-black tracking-widest uppercase"
+            (click)="onEdit(address, $event)">
+            {{ 'cart.shipping.address.edit' | translate }}
+          </button>
+        }
+      </plastik-address-card>
+    }
+  </mat-radio-group>
+}

@@ -15,6 +15,5 @@ export function passwordMatchValidator(control: AbstractControl) {
     return null;
   }
 
-  // eslint-disable-next-line
   return { passwordMatch: true };
 }

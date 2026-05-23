@@ -1,7 +1,7 @@
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 
 import { KeyValue } from '@angular/common';
-import { ComponentRef, provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { LlecoopOrder, llecoopUserOrderStatus } from '@plastik/llecoop/entities';
@@ -25,7 +25,7 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [UiOrderListOrdersStatusResumeComponent],
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(UiOrderListOrdersStatusResumeComponent);
@@ -147,7 +147,6 @@ describe('UiOrderListOrdersStatusResumeComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

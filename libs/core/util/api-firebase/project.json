@@ -1,0 +1,12 @@
+{
+  "name": "api-firebase",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/core/util/api-firebase/src",
+  "projectType": "library",
+  "tags": ["scope:core", "type:util"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

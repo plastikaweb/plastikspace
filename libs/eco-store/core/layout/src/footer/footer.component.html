@@ -1,0 +1,31 @@
+<footer class="py-12!" role="contentinfo">
+  <div class="content-container mx-auto flex flex-col items-center justify-center gap-6">
+    <div class="flex items-center gap-2">
+      <span class="font-bold tracking-tight">{{
+        tenant()?.name || ('store.title' | translate)
+      }}</span>
+      @if (tenant()?.logo) {
+        <plastik-img-container
+          class="h-6 w-6 object-cover opacity-80"
+          [src]="tenant() | pocketBaseImageUrl: tenant()?.logo"
+          [title]="tenant()?.name || ('store.title' | translate)"
+          [dimensions]="{ width: 24, height: 24 }"></plastik-img-container>
+      } @else {
+        <mat-icon
+          role="img"
+          class="text-primary-500! scale-90"
+          [attr.aria-label]="'common.a11y.ecoIcon' | translate"
+          >eco_logo</mat-icon
+        >
+      }
+    </div>
+
+    <div class="flex flex-col items-center gap-2 text-sm md:flex-row md:gap-6">
+      <a href="https://www.plastikaweb.com" target="_blank" class="transition-colors"
+        >www.plastikaweb.com</a
+      >
+      <span class="hidden md:block">|</span>
+      <span>&copy; 2026</span>
+    </div>
+  </div>
+</footer>

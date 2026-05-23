@@ -16,7 +16,7 @@ export class SharedUtilDynamicBgColorDirective {
   /**
    * The background color to apply on hover.
    */
-  color = input('color');
+  color = input('');
 
   /**
    * Handles the mouseenter event to apply the background color.
@@ -34,7 +34,7 @@ export class SharedUtilDynamicBgColorDirective {
 
   /**
    * Sets the background color of the host element.
-   * @param color - The color string to apply.
+   * @param {string} color - The color string to apply.
    */
   #setBackgroundColor(color: string): void {
     this.#el.nativeElement.style.backgroundColor = color;

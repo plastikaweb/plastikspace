@@ -1,0 +1,73 @@
+@layer components {
+  .hero-header {
+    /* Symmetric, breathable padding using design tokens. */
+    padding-block: var(--space-md) var(--space-lg);
+    padding-inline: var(--space-lg);
+    margin-bottom: var(--space-md);
+    position: relative;
+    overflow: hidden;
+
+    /* Subtle organic dot pattern overlay */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      background-image: radial-gradient(var(--primary-500) 0.5px, transparent 0.5px);
+      background-size: 24px 24px;
+      pointer-events: none;
+    }
+
+    /* Wheat illustration overlay */
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.1;
+      background-image: url('/img/bg-wheat.png');
+      background-size: 35rem auto;
+      background-repeat: no-repeat;
+      background-position: -15rem 0;
+      filter: drop-shadow(0 0 6px color-mix(in srgb, var(--error-500), transparent 60%));
+      pointer-events: none;
+    }
+
+    &.hero-header--compact {
+      padding-block: var(--space-sm);
+      padding-inline: var(--space-md);
+      margin-bottom: var(--space-sm);
+    }
+
+    /* Tailwind sm breakpoint (640px) — keep mobile spacing in step with the
+       rest of the app instead of using a custom 480px cut-off. */
+    @media (max-width: 640px) {
+      padding-block: var(--space-sm) var(--space-md);
+      padding-inline: var(--space-md);
+      margin-bottom: var(--space-sm);
+
+      &::before {
+        background-size: 22rem auto;
+        background-position: -8rem 0;
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .category-title {
+      font-size: clamp(1.25rem, 5.5vw, 2.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      /* Spacing is owned by the parent flex gap; keep the heading flush. */
+      margin: 0;
+    }
+
+    .category-subtitle {
+      color: light-dark(var(--primary-600), var(--primary-200));
+      font-weight: 500;
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    }
+  }
+}

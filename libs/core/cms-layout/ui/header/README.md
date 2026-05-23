@@ -1,42 +1,46 @@
-# core-cms-layout-ui-header
+# @plastik/core/cms-layout/ui/header
+
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/core/cms-layout/ui/header](#plastikcorecms-layoutuiheader)
+  - [Description](#description)
+  - [Content Projection](#content-projection)
+  - [Usage](#usage)
+  - [Running Unit Tests](#running-unit-tests)
 
 ## Description
 
-A core basic header with content configuration options.
+A **Core Header Components** with flexible content zones.
 
-## Content projection
+## Content Projection
 
-| Selector  | Description                              |
-| --------- | ---------------------------------------- |
-| `[start]` | The contents at the left of the header.  |
-| `[end]`   | The contents at the right of the header. |
+| Selector  | Description                          |
+| :-------- | :----------------------------------- |
+| `[start]` | Content aligned to the left (start). |
+| `[end]`   | Content aligned to the right (end).  |
 
-## How to use
+## Usage
 
-- Import the `CoreCmsLayoutUiHeaderComponent` in your root component app.
-
-- Insert the component in your template and use content projection.
+Import `CoreCmsLayoutUiHeaderComponent` and project your content:
 
 ```html
-<!-- component template -->
-
 <plastik-core-cms-layout-ui-header>
+  <!-- Left Side -->
   <div start>
-    <a href="">
-      @if (headerConfig.mainIcon; as icon) {
-      <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
-      }
-      <span class="text-md">{{ headerConfig.mainTitle }}</span>
+    <a href="/">
+      <img src="logo.png" alt="Logo" />
+      <span>My App</span>
     </a>
   </div>
+
+  <!-- Right Side -->
   <div end>
-    @if (headerConfig.secondaryIcon; as icon) {
-    <svg-icon [src]="icon.iconPath" [svgClass]="icon.svgClass"></svg-icon>
-    }
+    <button>Profile</button>
   </div>
 </plastik-core-cms-layout-ui-header>
 ```
 
-## Running unit tests
+## Running Unit Tests
 
 Run `nx test core-cms-layout-ui-header` to execute the unit tests.

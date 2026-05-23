@@ -1,0 +1,24 @@
+@use '@angular/material' as mat;
+@use 'core_tailwind_theme';
+@use 'animations';
+
+@include animations.fade-in;
+@include animations.fade-out;
+
+:host {
+  display: block;
+
+  .cart-delete-button:hover {
+    @include mat.icon-overrides(
+      (
+        color: light-dark(var(--error-500), var(--error-300)),
+      )
+    );
+    @include mat.icon-button-overrides(
+      (
+        icon-color: light-dark(var(--error-500), var(--error-300)),
+        state-layer-color: light-dark(var(--error-500), var(--error-300)),
+      )
+    );
+  }
+}

@@ -17,10 +17,11 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { CORE_CMS_LAYOUT_HEADER_CONFIG } from '@plastik/core/cms-layout/entities';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
-import { LlecoopOrderIndicatorComponent } from '@plastik/llecoop/order-list/order-indicator';
 import { MatThemeToggleComponent } from '@plastik/shared/mat-theme-toggle';
 import { SkipLinkComponent } from '@plastik/shared/skip-link';
 
+import { CartPreviewComponent } from '@plastik/llecoop/user-order-cart-preview';
+import { llecoopUserOrderCartStore } from '@plastik/llecoop/user-order-cart/data-access';
 import { HeaderConfigService } from './cms-header-config';
 
 @Component({
@@ -40,7 +41,7 @@ import { HeaderConfigService } from './cms-header-config';
     DatePipe,
     SkipLinkComponent,
     MatThemeToggleComponent,
-    LlecoopOrderIndicatorComponent,
+    CartPreviewComponent,
   ],
   providers: [
     { provide: FocusTrapFactory, useClass: ConfigurableFocusTrapFactory },
@@ -63,4 +64,5 @@ export class CmsLayoutComponent {
       .observe([Breakpoints.Handset, Breakpoints.TabletPortrait])
       .pipe(map(handset => handset.matches))
   );
+  protected readonly userOrderCartStore = inject(llecoopUserOrderCartStore);
 }

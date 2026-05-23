@@ -10,7 +10,10 @@ export function getLlecoopUserOrderDetailListSearchFeatureFormConfig(): Signal<
     {
       fieldGroupClassName: 'flex flex-col md:flex-row flex-wrap gap-sm',
       fieldGroup: [
-        addSearchInput('Filtrar per nom, descripció, procedència o proveïdor', 'buidar valor'),
+        addSearchInput({
+          label: 'Filtrar per nom, descripció, procedència o proveïdor',
+          placeholder: 'Filtrar per nom, descripció, procedència o proveïdor',
+        }),
       ],
     },
   ]);

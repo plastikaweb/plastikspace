@@ -6,7 +6,8 @@ import {
   inject,
   LOCALE_ID,
   provideAppInitializer,
-  provideExperimentalZonelessChangeDetection,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
 } from '@angular/core';
 import { getApp, initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { connectAuthEmulator, getAuth, provideAuth } from '@angular/fire/auth';
@@ -18,17 +19,19 @@ import {
 } from '@angular/fire/firestore';
 import { connectFunctionsEmulator, getFunctions, provideFunctions } from '@angular/fire/functions';
 import { connectStorageEmulator, getStorage, provideStorage } from '@angular/fire/storage';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideRouter,
   TitleStrategy,
   withComponentInputBinding,
   withViewTransitions,
 } from '@angular/router';
+import { provideTranslateService } from '@ngx-translate/core';
+import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { ENVIRONMENT } from '@plastik/core/environments';
 import { PrefixTitleService } from '@plastik/core/router-state';
 import { activityStore } from '@plastik/shared/activity/data-access';
+import { provideFormlyConfig } from '@plastik/shared/form';
 import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 
@@ -38,8 +41,8 @@ import { viewConfig } from './cms-layout-config';
 
 export const appConfig = {
   providers: [
-    provideExperimentalZonelessChangeDetection(),
-    provideAnimationsAsync(),
+    provideZonelessChangeDetection(),
+    provideBrowserGlobalErrorListeners(),
     provideHttpClient(),
     provideFirebaseApp(() => initializeApp(environment.firebase, 'llecoop')),
     provideAuth(() => {
@@ -72,6 +75,15 @@ export const appConfig = {
       return functions;
     }),
     provideRouter(appRoutes, withViewTransitions(), withComponentInputBinding()),
+    provideTranslateService({
+      loader: provideTranslateHttpLoader({
+        prefix: '/i18n/',
+        suffix: '.json',
+      }),
+      fallbackLang: 'ca',
+      lang: 'ca',
+    }),
+    provideFormlyConfig(),
     provideAppInitializer(() => {
       const liveAnnouncer = inject(LiveAnnouncer);
       const isActive = inject(activityStore).isActive;

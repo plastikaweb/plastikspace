@@ -1,0 +1,261 @@
+import { Breakpoints } from '@angular/cdk/layout';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  linkedSignal,
+  signal,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule } from '@ngx-translate/core';
+import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
+import { BreadcrumbItem, EcoStoreBreadcrumbsComponent } from '@plastik/eco-store/breadcrumbs';
+import { NavigationService } from '@plastik/core/router-state';
+import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
+import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
+import { EcoStoreSharedFavoriteButtonComponent } from '@plastik/eco-store/favorite-button';
+import { EcoStoreHeroHeaderComponent } from '@plastik/eco-store/hero-header';
+import { EcoStoreProductCardComponent } from '@plastik/eco-store/product-card';
+import { EcoStoreProductPriceComponent } from '@plastik/eco-store/product-price';
+import { EcoStoreProductQuantityComponent } from '@plastik/eco-store/product-quantity';
+import { ecoStoreProductsStore } from '@plastik/eco-store/products/data-access';
+import { PocketBaseImageUrlPipe } from '@plastik/eco-store/shared/utils';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
+import { SharedChipComponent } from '@plastik/shared/chip/ui';
+import { SharedImgContainerComponent } from '@plastik/shared/img-container';
+import { map } from 'rxjs';
+@Component({
+  selector: 'eco-eco-store-product-feature',
+  imports: [
+    TranslateModule,
+    MatIconModule,
+    MatButtonModule,
+    SharedChipComponent,
+    MatTooltipModule,
+    EcoStoreProductQuantityComponent,
+    EcoStoreProductCardComponent,
+    EcoStoreProductPriceComponent,
+    SharedImgContainerComponent,
+    PocketBaseImageUrlPipe,
+    EcoStoreSharedFavoriteButtonComponent,
+    EcoStoreBreadcrumbsComponent,
+    EcoStoreHeroHeaderComponent,
+  ],
+  templateUrl: './eco-store-product-feature.component.html',
+  styleUrl: './eco-store-product-feature.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export default class EcoStoreProductFeatureComponent {
+  readonly #productsStore = inject(ecoStoreProductsStore);
+  readonly #cartStore = inject(ecoStoreCartStore);
+  readonly #tenantStore = inject(ecoStoreTenantStore);
+  protected readonly navigationService = inject(NavigationService);
+
+  protected readonly isStoreOpen = this.#tenantStore.isStoreOpen;
+  protected readonly cartEntityMap = this.#cartStore.entityMap;
+
+  readonly listQueryParams = computed(() => {
+    const sort = this.#productsStore.sort();
+    const pagination = this.#productsStore.pagination();
+
+    return {
+      active: sort.active,
+      direction: sort.direction,
+      page: pagination.page,
+      perPage: pagination.perPage,
+    };
+  });
+
+  protected readonly pendingChanges = computed(() => {
+    const product = this.product();
+    if (!product) return false;
+
+    const currentQty = this.quantity();
+    const storedQty = this.storeQuantity();
+
+    // If item is in cart, compare with stored quantity
+    if (storedQty > 0) {
+      return currentQty !== storedQty;
+    }
+
+    // If not in cart, compare with default initial quantity
+    const defaultQty =
+      product.minQuantity > 0
+        ? product.minQuantity
+        : product.unitType === 'unit' || product.unitType.startsWith('unitWithFixed')
+          ? 1
+          : 0.1;
+
+    return currentQty !== defaultQty;
+  });
+
+  readonly product = computed(() => {
+    const selectedId = this.#productsStore.selectedItemId();
+    if (!selectedId) return null;
+
+    return this.#productsStore.productsWithTranslatedText().find(p => p.id === selectedId) || null;
+  });
+
+  readonly storeQuantity = computed(() => {
+    const product = this.product();
+    return product ? this.#cartStore.entityMap()[product.id]?.quantity || 0 : 0;
+  });
+
+  readonly isInCart = computed(() => this.storeQuantity() > 0);
+
+  readonly quantity = linkedSignal(() => {
+    const product = this.product();
+    if (!product) return 0;
+
+    const cartCount = this.storeQuantity();
+    if (cartCount) return cartCount;
+
+    return product.minQuantity > 0
+      ? product.minQuantity
+      : product.unitType === 'unit' || product.unitType.startsWith('unitWithFixed')
+        ? 1
+        : 0.1;
+  });
+
+  readonly isFavorite = signal(false);
+  readonly activeThumbnailIndex = signal(0);
+
+  // Hardened mock data for missing backend fields.
+  // TODO: Replace with real data once available in EcoStoreProduct entity.
+  readonly productTags = [
+    { label: 'products.tag.eco', class: 'bg-sys-primary-container/90!', icon: 'eco' },
+    {
+      label: 'products.tag.new',
+      class: 'bg-sys-error-container/90!',
+      icon: 'auto_awesome',
+    },
+    {
+      label: 'products.tag.offer',
+      class: 'bg-sys-secondary-container/90!',
+      icon: 'local_offer',
+    },
+  ];
+
+  readonly isVariableWeight = computed(() => {
+    const product = this.product();
+    if (!product) return false;
+    const type = product.unitType;
+    return type !== 'unit' && !type.startsWith('unitWithFixed');
+  });
+
+  // Default rating for resilient UI display when data is missing
+  readonly rating = {
+    score: 4.8,
+    count: 124,
+  };
+
+  readonly #layoutObserver = inject(LayoutObserverService);
+
+  readonly thumbnailDimensions = toSignal(
+    this.#layoutObserver
+      .getMatches([Breakpoints.Small])
+      .pipe(
+        map(isTablet => (isTablet ? { width: 200, height: 200 } : { width: 100, height: 100 }))
+      ),
+    { initialValue: { width: 100, height: 100 } }
+  );
+
+  // Stock status with visual feedback (mocked for now)
+  readonly stockStatus = computed(() => {
+    const stock = this.product()?.stock || 0;
+
+    if (stock === 0) {
+      return {
+        status: 'out' as const,
+        key: 'products.stock.out',
+        icon: 'cancel',
+      };
+    } else if (stock < 10) {
+      return {
+        status: 'low' as const,
+        key: 'products.stock.low',
+        params: { stock },
+        icon: 'warning',
+      };
+    } else {
+      return {
+        status: 'available' as const,
+        key: 'products.stock.available',
+        icon: 'check_circle',
+      };
+    }
+  });
+
+  // Related products (mock with random products from store)
+  readonly relatedProducts = computed(() => {
+    const allProducts = this.#productsStore.productsWithTranslatedText();
+    const currentProduct = this.product();
+
+    if (!currentProduct || allProducts.length === 0) return [];
+
+    // Get products from same category, excluding current product
+    const sameCategory = allProducts.filter(
+      p => p.categorySlug === currentProduct.categorySlug && p.id !== currentProduct.id
+    );
+
+    // If not enough in same category, add other products
+    const otherProducts = allProducts.filter(
+      p => p.id !== currentProduct.id && p.categorySlug !== currentProduct.categorySlug
+    );
+    const combined = [...sameCategory, ...otherProducts];
+
+    // Return first 6 unique products
+    return combined.slice(0, 6);
+  });
+
+  protected readonly breadcrumbItems = computed((): BreadcrumbItem[] => {
+    const product = this.product();
+    return [
+      {
+        labelKey: 'store.menu.store',
+        icon: 'storefront',
+        routerLink: ['/botiga'],
+        queryParams: this.listQueryParams(),
+      },
+      {
+        label: product?.categoryName,
+        icon: product?.categoryIcon,
+        routerLink: product ? ['/botiga', product.categorySlug] : undefined,
+        queryParams: this.listQueryParams(),
+        loading: !product,
+        skeletonWidth: '6rem',
+      },
+      {
+        label: product?.name,
+        loading: !product,
+        skeletonWidth: '8rem',
+      },
+    ];
+  });
+
+  toggleFavorite(): void {
+    this.isFavorite.update(v => !v);
+  }
+
+  updateQuantity(quantity: number): void {
+    this.quantity.set(quantity);
+  }
+
+  addToCart({
+    quantity,
+    product,
+  }: {
+    quantity: number;
+    product: EcoStoreProductWithCategoryName;
+  }): void {
+    this.#cartStore.addToCart(product, quantity);
+  }
+
+  protected returnToPreviousPage() {
+    this.navigationService.back();
+  }
+}

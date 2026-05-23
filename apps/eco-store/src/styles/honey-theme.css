@@ -1,0 +1,397 @@
+/* Note: Color palettes are generated from primary: #eeff80, secondary: #8dff66, tertiary: #b4752d, neutral: #837b84, neutral variant: #828f70, error: #f10e33 */
+
+:root {
+  --primary-50: #f3fcf1;
+  --primary-100: #e1f9df;
+  --primary-200: #c5f2c0;
+  --primary-300: #95e78e;
+  --primary-400: #5fd256;
+  --primary-500: #3bbf31;
+  --primary-600: #299821;
+  --primary-700: #24771e;
+  --primary-800: #1f5f1c;
+  --primary-900: #1b4e19;
+  --primary-950: #082b08;
+}
+
+:root {
+  --secondary-50: #fbf4f8;
+  --secondary-100: #f9eaf3;
+  --secondary-200: #f4d6e7;
+  --secondary-300: #ecb5d3;
+  --secondary-400: #de88b5;
+  --secondary-500: #d16399;
+  --secondary-600: #bd457a;
+  --secondary-700: #a73564;
+  --secondary-800: #872d51;
+  --secondary-900: #712a46;
+  --secondary-950: #441326;
+}
+
+:root {
+  --tertiary-50: #f9f8fc;
+  --tertiary-100: #f1eef9;
+  --tertiary-200: #e7e0f4;
+  --tertiary-300: #d4c7eb;
+  --tertiary-400: #b7a3dd;
+  --tertiary-500: #9b7fcd;
+  --tertiary-600: #8462bb;
+  --tertiary-700: #7251a7;
+  --tertiary-800: #5e4485;
+  --tertiary-900: #4d386b;
+  --tertiary-950: #311f4c;
+}
+
+:root {
+  --neutral-50: #f9fbfb;
+  --neutral-100: #f4f4f5;
+  --neutral-200: #e6e8ea;
+  --neutral-300: #d3d7d9;
+  --neutral-400: #9fa8ac;
+  --neutral-500: #788287;
+  --neutral-600: #4f5b5f;
+  --neutral-700: #3b484d;
+  --neutral-800: #232f33;
+  --neutral-900: #151e23;
+  --neutral-950: #060b0f;
+
+  --success-50: #effef5;
+  --success-100: #d9ffea;
+  --success-200: #b5fdd6;
+  --success-300: #7bfab7;
+  --success-400: #3bed90;
+  --success-500: #13ec7b;
+  --success-600: #07b259;
+  --success-700: #0a8b48;
+  --success-800: #0e6d3d;
+  --success-900: #0e5934;
+  --success-950: #01321a;
+
+  --warning-50: #fff5ed;
+  --warning-100: #ffe9d5;
+  --warning-200: #fdcfab;
+  --warning-300: #fbae76;
+  --warning-400: #f9813e;
+  --warning-500: #f65e19;
+  --warning-600: #f0470f;
+  --warning-700: #c0310e;
+  --warning-800: #982914;
+  --warning-900: #7b2413;
+  --warning-950: #420f08;
+
+  --error-50: #fef2f2;
+  --error-100: #fde7e6;
+  --error-200: #fbd0d1;
+  --error-300: #f7aaab;
+  --error-400: #f17b7e;
+  --error-500: #e74c54;
+  --error-600: #d42b3c;
+  --error-700: #b21e30;
+  --error-800: #951c2f;
+  --error-900: #801b2e;
+  --error-950: #470a14;
+
+  --info-50: #f1f5fd;
+  --info-100: #dfe8fa;
+  --info-200: #c6d6f7;
+  --info-300: #9fbcf1;
+  --info-400: #7299e8;
+  --info-500: #5176e0;
+  --info-600: #4965d7;
+  --info-700: #3347c2;
+  --info-800: #2f3c9e;
+  --info-900: #2a367e;
+  --info-950: #1e244d;
+
+  --transparent: transparent;
+  --black: #000000;
+  --white: #ffffff;
+}
+
+/* Note: Color palettes are generated from primary: #3bbf31, secondary: #a73564, tertiary: #7251a7, neutral: #788287, error: #d42b3c */
+html {
+  /* COLOR SYSTEM VARIABLES */
+  color-scheme: light;
+
+  /* Primary palette variables */
+  --mat-sys-primary: light-dark(#006e04, #5fe14f);
+  --mat-sys-on-primary: light-dark(#ffffff, #003a01);
+  --mat-sys-primary-container: light-dark(#7cfe69, #005302);
+  --mat-sys-on-primary-container: light-dark(#002200, #7cfe69);
+  --mat-sys-inverse-primary: light-dark(#5fe14f, #006e04);
+  --mat-sys-primary-fixed: light-dark(#7cfe69, #7cfe69);
+  --mat-sys-primary-fixed-dim: light-dark(#5fe14f, #5fe14f);
+  --mat-sys-on-primary-fixed: light-dark(#002200, #002200);
+  --mat-sys-on-primary-fixed-variant: light-dark(#005302, #005302);
+
+  /* Secondary palette variables */
+  --mat-sys-secondary: light-dark(#a53362, #ffb0c8);
+  --mat-sys-on-secondary: light-dark(#ffffff, #650033);
+  --mat-sys-secondary-container: light-dark(#ffd9e2, #86194a);
+  --mat-sys-on-secondary-container: light-dark(#3e001e, #ffd9e2);
+  --mat-sys-secondary-fixed: light-dark(#ffd9e2, #ffd9e2);
+  --mat-sys-secondary-fixed-dim: light-dark(#ffb0c8, #ffb0c8);
+  --mat-sys-on-secondary-fixed: light-dark(#3e001e, #3e001e);
+  --mat-sys-on-secondary-fixed-variant: light-dark(#86194a, #86194a);
+
+  /* Tertiary palette variables */
+  --mat-sys-tertiary: light-dark(#6e4da3, #d6baff);
+  --mat-sys-on-tertiary: light-dark(#ffffff, #3e1b71);
+  --mat-sys-tertiary-container: light-dark(#ecdcff, #553489);
+  --mat-sys-on-tertiary-container: light-dark(#270057, #ecdcff);
+  --mat-sys-tertiary-fixed: light-dark(#ecdcff, #ecdcff);
+  --mat-sys-tertiary-fixed-dim: light-dark(#d6baff, #d6baff);
+  --mat-sys-on-tertiary-fixed: light-dark(#270057, #270057);
+  --mat-sys-on-tertiary-fixed-variant: light-dark(#553489, #553489);
+
+  /* Neutral palette variables */
+  --mat-sys-background: light-dark(#f3faff, #0b1519);
+  --mat-sys-on-background: light-dark(#131d21, #dae4ea);
+  --mat-sys-surface: light-dark(#f3faff, #0b1519);
+  --mat-sys-surface-dim: light-dark(#d1dce1, #0b1519);
+  --mat-sys-surface-bright: light-dark(#f3faff, #313b3f);
+  --mat-sys-surface-container-low: light-dark(#ebf5fb, #131d21);
+  --mat-sys-surface-container-lowest: light-dark(#ffffff, #060f13);
+  --mat-sys-surface-container: light-dark(#e5eff5, #172125);
+  --mat-sys-surface-container-high: light-dark(#e0eaef, #222b30);
+  --mat-sys-surface-container-highest: light-dark(#dae4ea, #2d363b);
+  --mat-sys-on-surface: light-dark(#131d21, #dae4ea);
+  --mat-sys-shadow: light-dark(#000000, #000000);
+  --mat-sys-scrim: light-dark(#000000, #000000);
+  --mat-sys-surface-tint: light-dark(#006e04, #5fe14f);
+  --mat-sys-inverse-surface: light-dark(#283236, #dae4ea);
+  --mat-sys-inverse-on-surface: light-dark(#e8f2f8, #283236);
+  --mat-sys-outline: light-dark(#6e7b68, #879580);
+  --mat-sys-outline-variant: light-dark(#bdcbb4, #3e4a39);
+  --mat-sys-neutral10: light-dark(#131d21, #131d21);
+  /* Variable used for the form field native select option text color */
+
+  /* Error palette variables */
+  --mat-sys-error: light-dark(#bb142d, #ffb3b1);
+  --mat-sys-on-error: light-dark(#ffffff, #680012);
+  --mat-sys-error-container: light-dark(#ffdad8, #92001d);
+  --mat-sys-on-error-container: light-dark(#410007, #ffdad8);
+
+  /* Neutral variant palette variables */
+  --mat-sys-surface-variant: light-dark(#d9e7d0, #3e4a39);
+  --mat-sys-on-surface-variant: light-dark(#3e4a39, #bdcbb4);
+  --mat-sys-neutral-variant20: light-dark(#283424, #283424);
+  /* Variable used for the sidenav scrim (container background shadow when opened) */
+
+  /* TYPOGRAPHY SYSTEM VARIABLES */
+
+  /* Typography variables. Only used in the different typescale system variables. */
+  --mat-sys-brand-font-family: 'Manrope';
+  /* The font-family to use for brand text. */
+  --mat-sys-plain-font-family: 'Manrope';
+  /* The font-family to use for plain text. */
+  --mat-sys-bold-font-weight: 700;
+  /* The font-weight to use for bold text. */
+  --mat-sys-medium-font-weight: 500;
+  /* The font-weight to use for medium text. */
+  --mat-sys-regular-font-weight: 400;
+  /* The font-weight to use for regular text. */
+
+  /* Typescale variables. */
+  /* Warning: Risk of reduced fidelity from using the composite typography tokens (ex. --mat-sys-body-large) since
+     tracking cannot be represented in the "font" property shorthand. Consider using the discrete properties instead. */
+  --mat-sys-body-large: var(--mat-sys-body-large-weight) var(--mat-sys-body-large-size) /
+    var(--mat-sys-body-large-line-height) var(--mat-sys-body-large-font);
+  --mat-sys-body-large-font: var(--mat-sys-plain-font-family);
+  --mat-sys-body-large-line-height: 1.5rem;
+  --mat-sys-body-large-size: 1rem;
+  --mat-sys-body-large-tracking: 0.031rem;
+  --mat-sys-body-large-weight: var(--mat-sys-regular-font-weight);
+
+  /* Body medium typescale */
+  --mat-sys-body-medium: var(--mat-sys-body-medium-weight) var(--mat-sys-body-medium-size) /
+    var(--mat-sys-body-medium-line-height) var(--mat-sys-body-medium-font);
+  --mat-sys-body-medium-font: var(--mat-sys-plain-font-family);
+  --mat-sys-body-medium-line-height: 1.25rem;
+  --mat-sys-body-medium-size: 0.875rem;
+  --mat-sys-body-medium-tracking: 0.016rem;
+  --mat-sys-body-medium-weight: var(--mat-sys-regular-font-weight);
+
+  /* Body small typescale */
+  --mat-sys-body-small: var(--mat-sys-body-small-weight) var(--mat-sys-body-small-size) /
+    var(--mat-sys-body-small-line-height) var(--mat-sys-body-small-font);
+  --mat-sys-body-small-font: var(--mat-sys-plain-font-family);
+  --mat-sys-body-small-line-height: 1rem;
+  --mat-sys-body-small-size: 0.75rem;
+  --mat-sys-body-small-tracking: 0.025rem;
+  --mat-sys-body-small-weight: var(--mat-sys-regular-font-weight);
+
+  /* Display large typescale */
+  --mat-sys-display-large: var(--mat-sys-display-large-weight) var(--mat-sys-display-large-size) /
+    var(--mat-sys-display-large-line-height) var(--mat-sys-display-large-font);
+  --mat-sys-display-large-font: var(--mat-sys-brand-font-family);
+  --mat-sys-display-large-line-height: 4rem;
+  --mat-sys-display-large-size: 3.562rem;
+  --mat-sys-display-large-tracking: -0.016rem;
+  --mat-sys-display-large-weight: var(--mat-sys-regular-font-weight);
+
+  /* Display medium typescale */
+  --mat-sys-display-medium: var(--mat-sys-display-medium-weight)
+    var(--mat-sys-display-medium-size) / var(--mat-sys-display-medium-line-height)
+    var(--mat-sys-display-medium-font);
+  --mat-sys-display-medium-font: var(--mat-sys-brand-font-family);
+  --mat-sys-display-medium-line-height: 3.25rem;
+  --mat-sys-display-medium-size: 2.812rem;
+  --mat-sys-display-medium-tracking: 0;
+  --mat-sys-display-medium-weight: var(--mat-sys-regular-font-weight);
+
+  /* Display small typescale */
+  --mat-sys-display-small: var(--mat-sys-display-small-weight) var(--mat-sys-display-small-size) /
+    var(--mat-sys-display-small-line-height) var(--mat-sys-display-small-font);
+  --mat-sys-display-small-font: var(--mat-sys-brand-font-family);
+  --mat-sys-display-small-line-height: 2.75rem;
+  --mat-sys-display-small-size: 2.25rem;
+  --mat-sys-display-small-tracking: 0;
+  --mat-sys-display-small-weight: var(--mat-sys-regular-font-weight);
+
+  /* Headline large typescale */
+  --mat-sys-headline-large: var(--mat-sys-headline-large-weight)
+    var(--mat-sys-headline-large-size) / var(--mat-sys-headline-large-line-height)
+    var(--mat-sys-headline-large-font);
+  --mat-sys-headline-large-font: var(--mat-sys-brand-font-family);
+  --mat-sys-headline-large-line-height: 2.5rem;
+  --mat-sys-headline-large-size: 2rem;
+  --mat-sys-headline-large-tracking: 0;
+  --mat-sys-headline-large-weight: var(--mat-sys-regular-font-weight);
+
+  /* Headline medium typescale */
+  --mat-sys-headline-medium: var(--mat-sys-headline-medium-weight)
+    var(--mat-sys-headline-medium-size) / var(--mat-sys-headline-medium-line-height)
+    var(--mat-sys-headline-medium-font);
+  --mat-sys-headline-medium-font: var(--mat-sys-brand-font-family);
+  --mat-sys-headline-medium-line-height: 2.25rem;
+  --mat-sys-headline-medium-size: 1.75rem;
+  --mat-sys-headline-medium-tracking: 0;
+  --mat-sys-headline-medium-weight: var(--mat-sys-regular-font-weight);
+
+  /* Headline small typescale */
+  --mat-sys-headline-small: var(--mat-sys-headline-small-weight)
+    var(--mat-sys-headline-small-size) / var(--mat-sys-headline-small-line-height)
+    var(--mat-sys-headline-small-font);
+  --mat-sys-headline-small-font: var(--mat-sys-brand-font-family);
+  --mat-sys-headline-small-line-height: 2rem;
+  --mat-sys-headline-small-size: 1.5rem;
+  --mat-sys-headline-small-tracking: 0;
+  --mat-sys-headline-small-weight: var(--mat-sys-regular-font-weight);
+
+  /* Label large typescale */
+  --mat-sys-label-large: var(--mat-sys-label-large-weight) var(--mat-sys-label-large-size) /
+    var(--mat-sys-label-large-line-height) var(--mat-sys-label-large-font);
+  --mat-sys-label-large-font: var(--mat-sys-plain-font-family);
+  --mat-sys-label-large-line-height: 1.25rem;
+  --mat-sys-label-large-size: 0.875rem;
+  --mat-sys-label-large-tracking: 0.006rem;
+  --mat-sys-label-large-weight: var(--mat-sys-medium-font-weight);
+  --mat-sys-label-large-weight-prominent: var(--mat-sys-bold-font-weight);
+
+  /* Label medium typescale */
+  --mat-sys-label-medium: var(--mat-sys-label-medium-weight) var(--mat-sys-label-medium-size) /
+    var(--mat-sys-label-medium-line-height) var(--mat-sys-label-medium-font);
+  --mat-sys-label-medium-font: var(--mat-sys-plain-font-family);
+  --mat-sys-label-medium-line-height: 1rem;
+  --mat-sys-label-medium-size: 0.75rem;
+  --mat-sys-label-medium-tracking: 0.031rem;
+  --mat-sys-label-medium-weight: var(--mat-sys-medium-font-weight);
+  --mat-sys-label-medium-weight-prominent: var(--mat-sys-bold-font-weight);
+
+  /* Label small typescale */
+  --mat-sys-label-small: var(--mat-sys-label-small-weight) var(--mat-sys-label-small-size) /
+    var(--mat-sys-label-small-line-height) var(--mat-sys-label-small-font);
+  --mat-sys-label-small-font: var(--mat-sys-plain-font-family);
+  --mat-sys-label-small-line-height: 1rem;
+  --mat-sys-label-small-size: 0.688rem;
+  --mat-sys-label-small-tracking: 0.031rem;
+  --mat-sys-label-small-weight: var(--mat-sys-medium-font-weight);
+
+  /* Title large typescale */
+  --mat-sys-title-large: var(--mat-sys-title-large-weight) var(--mat-sys-title-large-size) /
+    var(--mat-sys-title-large-line-height) var(--mat-sys-title-large-font);
+  --mat-sys-title-large-font: var(--mat-sys-brand-font-family);
+  --mat-sys-title-large-line-height: 1.75rem;
+  --mat-sys-title-large-size: 1.375rem;
+  --mat-sys-title-large-tracking: 0;
+  --mat-sys-title-large-weight: var(--mat-sys-regular-font-weight);
+
+  /* Title medium typescale */
+  --mat-sys-title-medium: var(--mat-sys-title-medium-weight) var(--mat-sys-title-medium-size) /
+    var(--mat-sys-title-medium-line-height) var(--mat-sys-title-medium-font);
+  --mat-sys-title-medium-font: var(--mat-sys-plain-font-family);
+  --mat-sys-title-medium-line-height: 1.5rem;
+  --mat-sys-title-medium-size: 1rem;
+  --mat-sys-title-medium-tracking: 0.009rem;
+  --mat-sys-title-medium-weight: var(--mat-sys-medium-font-weight);
+
+  /* Title small typescale */
+  --mat-sys-title-small: var(--mat-sys-title-small-weight) var(--mat-sys-title-small-size) /
+    var(--mat-sys-title-small-line-height) var(--mat-sys-title-small-font);
+  --mat-sys-title-small-font: var(--mat-sys-plain-font-family);
+  --mat-sys-title-small-line-height: 1.25rem;
+  --mat-sys-title-small-size: 0.875rem;
+  --mat-sys-title-small-tracking: 0.006rem;
+  --mat-sys-title-small-weight: var(--mat-sys-medium-font-weight);
+
+  /* ELEVATION SYSTEM VARIABLES */
+
+  /* Box shadow colors. Only used in the elevation level system variables. */
+  --mat-sys-umbra-color: color-mix(in srgb, var(--mat-sys-shadow), transparent 80%);
+  --mat-sys-penumbra-color: color-mix(in srgb, var(--mat-sys-shadow), transparent 86%);
+  --mat-sys-ambient-color: color-mix(in srgb, var(--mat-sys-shadow), transparent 88%);
+
+  /* Elevation level system variables. These are used as the value for box-shadow CSS property. */
+  --mat-sys-level0:
+    0px 0px 0px 0px var(--mat-sys-umbra-color), 0px 0px 0px 0px var(--mat-sys-penumbra-color),
+    0px 0px 0px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level1:
+    0px 2px 1px -1px var(--mat-sys-umbra-color), 0px 1px 1px 0px var(--mat-sys-penumbra-color),
+    0px 1px 3px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level2:
+    0px 3px 3px -2px var(--mat-sys-umbra-color), 0px 3px 4px 0px var(--mat-sys-penumbra-color),
+    0px 1px 8px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level3:
+    0px 3px 5px -1px var(--mat-sys-umbra-color), 0px 6px 10px 0px var(--mat-sys-penumbra-color),
+    0px 1px 18px 0px var(--mat-sys-ambient-color);
+  --mat-sys-level4:
+    0px 5px 5px -3px var(--mat-sys-umbra-color), 0px 8px 10px 1px var(--mat-sys-penumbra-color),
+    0px 3px 14px 2px var(--mat-sys-ambient-color);
+  --mat-sys-level5:
+    0px 7px 8px -4px var(--mat-sys-umbra-color), 0px 12px 17px 2px var(--mat-sys-penumbra-color),
+    0px 5px 22px 4px var(--mat-sys-ambient-color);
+
+  /* SHAPE SYSTEM VARIABLES */
+  --mat-sys-corner-extra-large: 28px;
+  --mat-sys-corner-extra-large-top: 28px 28px 0 0;
+  --mat-sys-corner-extra-small: 4px;
+  --mat-sys-corner-extra-small-top: 4px 4px 0 0;
+  --mat-sys-corner-full: 9999px;
+  --mat-sys-corner-large: 16px;
+  --mat-sys-corner-large-end: 0 16px 16px 0;
+  --mat-sys-corner-large-start: 16px 0 0 16px;
+  --mat-sys-corner-large-top: 16px 16px 0 0;
+  --mat-sys-corner-medium: 12px;
+  --mat-sys-corner-none: 0;
+  --mat-sys-corner-small: 8px;
+
+  /* STATE SYSTEM VARIABLES */
+  --mat-sys-dragged-state-layer-opacity: 0.16;
+  --mat-sys-focus-state-layer-opacity: 0.12;
+  --mat-sys-hover-state-layer-opacity: 0.08;
+  --mat-sys-pressed-state-layer-opacity: 0.12;
+}
+
+/* Spacing scale for organic layouts - used by tailwind-theme.css */
+html {
+  --space-tiny: 0.0625rem;
+  --space-sub: 0.125rem;
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-xxl: 4rem;
+}

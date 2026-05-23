@@ -1,11 +1,10 @@
-import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'plastik-ui-order-status-chip',
-  imports: [MatChipsModule, MatIconModule, NgClass],
+  imports: [MatChipsModule, MatIconModule],
   templateUrl: './ui-order-status-chip.component.html',
   styleUrl: './ui-order-status-chip.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

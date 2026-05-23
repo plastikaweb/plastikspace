@@ -1,1 +1,48 @@
-yarn branch:lint && yarn format:write --all && yarn affected:lint & yarn markdownlint
+#!/usr/bin/env sh
+set -e
+
+# --- SANDBOX BRIDGE ---
+# Redirect HOME to a temp directory to avoid EPERM on /Users/plastikaweb/.yarnrc
+export HOME=/tmp/husky-sandbox
+mkdir -p $HOME
+# Ensure we use the project-local Yarn (v4) via Corepack/NPX
+alias yarn="npx yarn"
+# ----------------------
+
+export NX_CLI_SET=classic
+export PAGER=cat
+
+# 1. Start PocketBase in the background
+(cd apps/eco-store/pocketbase && ./pocketbase serve > /dev/null 2>&1) &
+PB_PID=$!
+
+# 2. Wait for initialization
+sleep 3
+
+# 3. Run the export (Using npx to ensure Yarn 4 is used)
+npx yarn eco-store:pb:export
+EXPORT_EXIT_CODE=$?
+
+# 4. Kill the background PocketBase instance
+kill $PB_PID 2>/dev/null || true
+wait $PB_PID 2>/dev/null || true
+
+# 5. Check if export failed
+if [ $EXPORT_EXIT_CODE -ne 0 ]; then
+  echo "❌ PocketBase schema export failed!"
+  exit $EXPORT_EXIT_CODE
+fi
+
+# Run checks using npx yarn to ensure Yarn 4 Berry execution
+if npx yarn branch:lint \
+  && npx yarn i18n:validate \
+  && npx yarn nx affected --target=lint --parallel --max-parallel=2 --cache \
+  && npx yarn markdownlint \
+  && npx yarn nx format:write --affected; then
+
+  # 6. Add all changes to the commit
+  git add -A
+else
+  echo "❌ Checks failed! Commit aborted!"
+  exit 1
+fi

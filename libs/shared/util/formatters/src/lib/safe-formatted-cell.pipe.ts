@@ -5,7 +5,7 @@ import { PropertyFormatting } from './formatting';
 import { DataFormatFactoryService } from './services';
 
 /**
- * Format a value based on the given configuration.
+ * Pipe that formats a value based on the given configuration.
  */
 @Pipe({
   name: 'safeFormatted',
@@ -15,10 +15,10 @@ export class SafeFormattedPipe<T extends BaseEntity> implements PipeTransform {
 
   /**
    * Formats a value based on the configuration.
-   * @param row - The single object where resides the property that needs to be formatted.
-   * @param column - The configuration for the object property.
-   * @param index - The index number in a list of values.
-   * @param extraConfig - A custom configuration object to add extra formatting options.
+   * @param {T} row - The single object where the property to format resides.
+   * @param {PropertyFormatting<T, unknown>} column - The configuration for the object property.
+   * @param {number} [index] - The index number in a list of values.
+   * @param {unknown} [extraConfig] - A custom configuration object to add extra formatting options.
    * @returns The formatted value.
    */
   transform(

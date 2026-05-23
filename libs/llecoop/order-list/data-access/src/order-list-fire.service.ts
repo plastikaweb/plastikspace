@@ -16,13 +16,10 @@ import {
 } from '@angular/fire/firestore';
 import { LlecoopOrder, LlecoopProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
-import {
-  EntityFireService,
-  StoreFirebaseCrudPagination,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import { EntityFireService, FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
-import { OrderListStoreFirebaseCrudState, StoreOrderListFilter } from './order-list-store';
+import { StoreOrderListFilter } from './order-list-store';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +63,7 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
   }
 
   protected override getPaginationConditions(
-    pagination: StoreFirebaseCrudPagination<LlecoopOrder>,
+    pagination: FirebaseCrudPagination<LlecoopOrder>,
     activeField: string
   ): QueryConstraint[] {
     const { pageSize, pageIndex, pageLastElements } = pagination;
@@ -121,9 +118,9 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
 
   getAllByOrderListId(
     orderListId: LlecoopOrder['id'],
-    pagination: OrderListStoreFirebaseCrudState['selectedItemUserPagination'],
-    sorting: OrderListStoreFirebaseCrudState['selectedItemUserSorting'],
-    filter: OrderListStoreFirebaseCrudState['selectedItemUserFilter']
+    pagination: FirebaseCrudPagination<LlecoopUserOrder>,
+    sorting: TableSortingConfig,
+    filter: StoreOrderListFilter
   ) {
     return runInInjectionContext(this.injectionContext, () => {
       try {

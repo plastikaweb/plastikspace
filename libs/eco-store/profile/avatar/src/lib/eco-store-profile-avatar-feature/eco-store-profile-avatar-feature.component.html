@@ -1,0 +1,78 @@
+<section class="flex flex-col gap-10">
+  @if (profileStore.user(); as user) {
+    @if (!isEditing()) {
+      <!-- View mode: Earthy & Elegant -->
+      <div class="avatar-container flex flex-col items-center gap-10 sm:flex-row sm:items-start">
+        <button
+          type="button"
+          class="group ring-primary/0 focus-visible:ring-primary/40 relative block size-32 shrink-0 cursor-pointer overflow-hidden rounded-full border-0 bg-transparent p-0 shadow-xl ring-offset-4 transition-all duration-500 ease-out outline-none hover:scale-105 hover:shadow-2xl focus-visible:ring-4"
+          aria-label="Canviar foto de perfil"
+          (click)="onStartEdit()">
+          @if (user.avatar) {
+            <plastik-img-container
+              [class]="'block size-32 object-cover transition-transform duration-700 ease-out group-hover:scale-110'"
+              [src]="user | pocketBaseImageUrl: user.avatar"
+              [title]="user.name || 'profile.avatar.title' | translate"
+              [dimensions]="{ width: 200, height: 200 }"
+              [thumbSizes]="[100, 200, 400]"
+              [lcpImage]="true" />
+          } @else {
+            <span
+              class="bg-primary/10 text-primary flex size-32 items-center justify-center rounded-full text-4xl font-black tracking-tighter transition-transform duration-700 ease-out group-hover:scale-110">
+              {{ profileStore.userInitials() }}
+            </span>
+          }
+          <span
+            class="bg-primary/40 absolute inset-0 flex flex-col items-center justify-center gap-2 text-white opacity-0 backdrop-blur-md transition-all duration-300 ease-in-out group-hover:opacity-100">
+            <mat-icon class="scale-125 transition-transform duration-300 group-hover:scale-100"
+              >photo_camera</mat-icon
+            >
+            <span class="text-[9px] font-black tracking-[0.2em] uppercase">{{
+              'common.image.upload.title' | translate
+            }}</span>
+          </span>
+        </button>
+
+        <div class="flex flex-1 flex-col gap-4 text-center sm:text-left">
+          <div class="space-y-1">
+            <p class="text-on-surface/60 text-lg leading-relaxed font-medium">
+              {{ 'profile.avatar.description' | translate }}
+            </p>
+          </div>
+          <p class="text-on-surface/60 text-sm font-medium tracking-normal italic">
+            {{ 'profile.avatar.recommended' | translate }}
+          </p>
+
+          <div class="mt-4 flex flex-wrap items-center justify-center gap-4 sm:justify-start">
+            <button matButton="filled" type="button" (click)="onStartEdit()">
+              <mat-icon>add_a_photo</mat-icon>
+              {{ 'common.image.upload.title' | translate }}
+            </button>
+            @if (hasAvatar()) {
+              <button matButton type="button" class="avatar-button-delete" (click)="onDelete()">
+                <mat-icon>delete_outline</mat-icon>
+                {{ 'common.image.delete.title' | translate }}
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    } @else {
+      <!-- Edit mode: Impeccable Focus -->
+      <div class="cropper-container">
+        @defer (on timer(0)) {
+          <plastik-img-cropper
+            [config]="{
+              minWidth: 200,
+              minHeight: 200,
+              maxSizeBytes: 2621440,
+              roundCropper: true,
+              uploadTitle: 'common.image.upload.title',
+            }"
+            (cropConfirmed)="onCropConfirmed($event)"
+            (cropCancelled)="onCropCancelled()" />
+        }
+      </div>
+    }
+  }
+</section>

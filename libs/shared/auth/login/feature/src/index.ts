@@ -1,2 +1,2 @@
-export * from './lib/login-feature.routes';
+export * from './lib/firebase-auth-login.routes';
 export * from './lib/login-facade.service';

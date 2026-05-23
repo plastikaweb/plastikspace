@@ -1,0 +1,143 @@
+<eco-store-hero-header
+  headerRole="presentation"
+  icon="receipt_long"
+  [subtitle]="
+    ordersStore.isLoading()
+      ? ('orders.list.loading' | translate)
+      : ('orders.list.loadedCount' | translate: { count: ordersStore.count() })
+  "
+  [title]="'orders.list.title' | translate">
+  <plastik-sort-selector
+    heroAction
+    [class.pointer-events-none]="ordersStore.isLoading()"
+    [class.opacity-60]="ordersStore.isLoading()"
+    [options]="ordersStore.sortOptions()"
+    [currentSort]="ordersStore.sort()"
+    [translationPrefix]="'orders.filter.sort'"
+    (sortChange)="sort($event)"></plastik-sort-selector>
+</eco-store-hero-header>
+
+<div
+  class="mb-4"
+  [class.pointer-events-none]="ordersStore.isLoading()"
+  [class.opacity-60]="ordersStore.isLoading()">
+  <plastik-shared-form-feature
+    [fields]="formConfig.getConfig()"
+    [model]="model()"
+    [autoFocus]="!ordersStore.isLoading()"
+    [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
+    (temporaryChangeEvent)="onChange($event)">
+  </plastik-shared-form-feature>
+</div>
+
+<!-- Live region for announcing loading and data updates -->
+<div class="sr-only" aria-live="polite">
+  @if (ordersStore.isLoading()) {
+    {{ 'orders.list.loading' | translate }}
+  } @else {
+    {{ 'orders.list.loadedCount' | translate: { count: ordersStore.count() } }}
+  }
+</div>
+
+@let orders = ordersStore.entities();
+
+<section [attr.aria-label]="'orders.list.title' | translate">
+  <ul class="orders-grid">
+    @if (ordersStore.isLoading()) {
+      @for (i of skeletonItems(); track $index) {
+        <li
+          aria-hidden="true"
+          class="border-outline-variant bg-surface animate-pulse rounded-xl border p-6">
+          <div class="flex justify-between">
+            <div class="flex flex-col gap-3">
+              <div class="bg-surface-container-high h-3 w-16 rounded"></div>
+              <div class="bg-surface-variant h-6 w-48 rounded"></div>
+              <div class="bg-surface-container-high h-4 w-32 rounded"></div>
+            </div>
+            <div class="flex flex-col items-end gap-3">
+              <div class="bg-surface-variant h-6 w-20 rounded"></div>
+              <div class="bg-surface-container-high h-4 w-16 rounded"></div>
+            </div>
+          </div>
+          <div class="bg-surface-container-high my-4 h-px"></div>
+          <div class="flex justify-between">
+            <div class="flex items-center gap-3">
+              <div class="bg-surface-variant h-6 w-6 rounded"></div>
+              <div class="flex flex-col gap-1">
+                <div class="bg-surface-variant h-4 w-32 rounded"></div>
+                <div class="bg-surface-container-high h-3 w-40 rounded"></div>
+              </div>
+            </div>
+            <div class="bg-surface-variant h-10 w-28 rounded-full"></div>
+          </div>
+        </li>
+      }
+    } @else {
+      <!-- Empty state -->
+      @if (orders.length === 0) {
+        @let status = model().status;
+        <li class="list-none">
+          @if (status) {
+            <eco-store-shared-no-results
+              class="empty-state my-6"
+              [imgTitle]="'orders.list.emptyImage' | translate">
+              <div no-results-title>
+                {{
+                  'orders.list.emptyWithStatus'
+                    | translate: { status: (orderStatusLabelMap[status] | translate) }
+                }}
+              </div>
+
+              <div no-results-description>
+                {{ 'orders.list.emptyDescriptionWithStatus' | translate }}
+              </div>
+            </eco-store-shared-no-results>
+          } @else {
+            <eco-store-shared-no-results
+              class="empty-state my-6"
+              [imgTitle]="'orders.list.emptyImage' | translate">
+              <div no-results-title>
+                {{ 'orders.list.empty' | translate }}
+              </div>
+              <div no-results-description>
+                {{ 'orders.list.emptyDescription' | translate }}
+              </div>
+              <button no-results-action mat-stroked-button routerLink="/botiga">
+                {{ 'orders.list.goToStore' | translate }}
+              </button>
+            </eco-store-shared-no-results>
+          }
+        </li>
+      } @else {
+        <!-- Order list -->
+        @for (order of orders; track order.id) {
+          <li class="list-none">
+            <eco-order-card
+              [order]="order"
+              [highlight]="searchByItems()"
+              (viewDetail)="onViewDetail(order.id)"
+              (delete)="onDeleteOrder($event)" />
+          </li>
+        }
+      }
+    }
+  </ul>
+</section>
+
+@if (!ordersStore.isLoading() && orders.length > 0) {
+  <nav [attr.aria-label]="'orders.list.pagination' | translate">
+    @defer (on viewport; prefetch on idle) {
+      <plastik-pagination
+        class="mt-6"
+        plastikPocketbasePaginationNavigation
+        [pageSize]="ordersStore.getPagination().perPage"
+        [pageIndex]="ordersStore.getPagination().page"
+        [pageSizeOptions]="ordersStore.paginationSizeOptions()"
+        [count]="ordersStore.count()" />
+    } @placeholder {
+      <div
+        aria-hidden="true"
+        class="bg-surface-container mt-6 h-12 w-full animate-pulse rounded"></div>
+    }
+  </nav>
+}

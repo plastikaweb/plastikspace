@@ -1,0 +1,21 @@
+import { defineConfig } from 'vitest/config';
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
+import { nxCopyAssetsPlugin } from '@nx/vite/plugins/nx-copy-assets.plugin';
+
+export default defineConfig(() => ({
+  root: __dirname,
+  cacheDir: '../../node_modules/.vite/apps/llecoop-e2e',
+  plugins: [nxViteTsPaths(), nxCopyAssetsPlugin(['*.md'])],
+  test: {
+    name: 'llecoop-e2e',
+    watch: false,
+    globals: true,
+    environment: 'jsdom',
+    include: ['{src,tests}/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    reporters: ['default'],
+    coverage: {
+      reportsDirectory: '../../coverage/apps/llecoop-e2e',
+      provider: 'v8' as const,
+    },
+  },
+}));

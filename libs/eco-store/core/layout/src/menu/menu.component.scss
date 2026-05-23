@@ -1,0 +1,84 @@
+@use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.bump;
+
+.active-menu-item {
+  @include mat.button-overrides(
+    (
+      text-label-text-weight: 800,
+      text-label-text-color: light-dark(var(--primary-600), var(--primary-300)),
+      text-state-layer-color: light-dark(var(--primary-100), var(--primary-900)),
+    )
+  );
+
+  /* Polish: Add a subtle organic underline for the active link */
+  a::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 12px;
+    right: 12px;
+    height: 2px;
+    background-color: light-dark(var(--primary-400), var(--primary-100));
+    border-radius: 99px;
+    opacity: 0.6;
+  }
+}
+
+.user-pill {
+  @include mat.button-overrides(
+    (
+      text-state-layer-color: light-dark(var(--primary-100), var(--primary-900)),
+    )
+  );
+}
+
+.cart-button {
+  @include mat.badge-overrides(
+    (
+      container-size: 1.5rem,
+      text-size: 0.85rem,
+      line-height: 1.5rem,
+      background-color: var(--tertiary-500),
+      text-color: var(--white),
+    )
+  );
+
+  @include mat.button-overrides(
+    (
+      filled-container-color: light-dark(var(--primary-600), var(--primary-300)),
+      filled-label-text-color: light-dark(var(--primary-50), var(--primary-950)),
+    )
+  );
+
+  mat-icon {
+    font-variation-settings: 'FILL' 1;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:not(:disabled) mat-icon {
+    color: light-dark(var(--primary-50), var(--primary-950));
+  }
+
+  &:hover:not(:disabled) mat-icon {
+    transform: scale(1.1) rotate(-5deg);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+
+    /* Don't keep the bright primary-50 icon when the button background
+       collapses to a disabled near-white surface. Use the M3 disabled
+       on-surface token so contrast stays legible. */
+    mat-icon {
+      color: color-mix(in srgb, var(--mat-sys-on-surface), transparent 62%);
+    }
+
+    @include mat.badge-overrides(
+      (
+        background-color: light-dark(var(--neutral-200), var(--neutral-500)),
+      )
+    );
+  }
+}

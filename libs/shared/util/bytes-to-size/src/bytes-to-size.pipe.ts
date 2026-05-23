@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 /**
- * Pipe to convert bytes to a human-readable size format.
+ * Pipe to convert a byte count into a human-readable size string.
  */
 @Pipe({
   name: 'bytesToSize',
@@ -11,13 +11,16 @@ export class BytesToSizePipe implements PipeTransform {
 
   /**
    * Converts a number representing bytes to a human-readable size format.
-   * @param value - The number of bytes to be converted.
-   * @param fixed - The number of decimal places to round the converted size to (default: 0).
-   * @returns A string representing the converted size in a human-readable format.
+   * @param {number} value - The number of bytes to be converted.
+   * @param {number} fixed - The number of decimal places to round the converted size to (default: 0).
+   * @returns {string} A string representing the converted size in a human-readable format.
    */
   transform(value: number, fixed = 0): string {
-    if (!value) {
+    if (value === null || value === undefined || isNaN(value)) {
       return 'n/a';
+    }
+    if (value === 0) {
+      return `0 ${this.#sizes[0]}`;
     }
     const size = parseInt(String(Math.floor(Math.log(value) / Math.log(1024))), 10);
     if (size === 0) {

@@ -1,11 +1,12 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { CommonModule, DOCUMENT } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+
+import { ChangeDetectionStrategy, Component, inject, DOCUMENT } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'plastik-skip-link',
   templateUrl: './skip-link.component.html',
+  styleUrl: './skip-link.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SkipLinkComponent {
@@ -13,6 +14,10 @@ export class SkipLinkComponent {
   readonly #liveAnnouncer = inject(LiveAnnouncer);
   readonly #router = inject(Router);
 
+  /**
+   * Skips to the main content of the page.
+   * @param {Event} event - The event object.
+   */
   protected skipToMainContent(event: Event): void {
     event.preventDefault();
 

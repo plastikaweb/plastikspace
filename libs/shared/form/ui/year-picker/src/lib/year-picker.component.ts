@@ -4,7 +4,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   forwardRef,
-  Input,
+  input,
   ViewEncapsulation,
 } from '@angular/core';
 import {
@@ -60,25 +60,29 @@ export const YEAR_MODE_FORMATS = {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class YearPickerComponent implements ControlValueAccessor {
-  @Input() touchUi = false;
-  @Input() label?: string;
+  touchUi = input(false);
+  label = input<string>();
 
   formControl: FormControl = new FormControl();
 
   protected disabled = false;
-  private onChanged!: (value: number) => void;
-  private onTouched!: () => void;
+  #onChanged: (value: number) => void = () => {
+    /* noop */
+  };
+  #onTouched: () => void = () => {
+    /* noop */
+  };
 
   writeValue(year: number): void {
     if (year) this.formControl.setValue(year, { emitEvent: false });
   }
 
   registerOnChange(fn: (_: unknown) => void): void {
-    this.onChanged = fn;
+    this.#onChanged = fn;
   }
 
   registerOnTouched(fn: () => void): void {
-    this.onTouched = fn;
+    this.#onTouched = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -90,8 +94,8 @@ export class YearPickerComponent implements ControlValueAccessor {
 
     datepicker.close();
     this.formControl.setValue(date, { emitEvent: false });
-    this.onChanged(date.getFullYear());
-    this.onTouched();
+    this.#onChanged(date.getFullYear());
+    this.#onTouched();
   }
 
   protected onOpenPicker(picker: MatDatepicker<Date>) {

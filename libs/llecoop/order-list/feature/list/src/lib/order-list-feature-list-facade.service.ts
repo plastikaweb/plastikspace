@@ -12,8 +12,9 @@ import {
   StoreOrderListFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { SortConfig } from '@plastik/core/entities';
 import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
 import { LlecoopOrderListFeatureListTableConfig } from './order-list-feature-list-table/order-list-feature-list-table.config';
 import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
@@ -21,9 +22,10 @@ import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListFeatureListFacadeService
-  implements TableWithFilteringFacade<LlecoopOrder, StoreOrderListFilter>
-{
+export class LlecoopOrderListFeatureListFacadeService implements TableWithFilteringFacade<
+  LlecoopOrder,
+  StoreOrderListFilter
+> {
   orderListTotalDetailTableConfig = inject(LlecoopOrderListFeatureListTotalDetailTableConfig);
   totalTableDefinition = this.orderListTotalDetailTableConfig.getTableDefinition();
 
@@ -56,9 +58,9 @@ export class LlecoopOrderListFeatureListFacadeService
             'Iniciar nova comanda',
             this.#sanitizer.bypassSecurityTrustHtml(
               `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
-                <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.getNewOrderName()}</p>
-                <p class="font-extrabold">Oberta fins el ${format(this.getNewOrderDate(), 'dd/MM/yyyy')}
-                a les ${format(this.getNewOrderDate(), 'HH:mm')}</span> hores.</p>
+                <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.#getNewOrderName()}</p>
+                <p class="font-extrabold">Oberta fins el ${format(this.#getNewOrderDate(), 'dd/MM/yyyy')}
+                a les ${format(this.#getNewOrderDate(), 'HH:mm')}</span> hores.</p>
               </div>
               `
             ),
@@ -68,7 +70,7 @@ export class LlecoopOrderListFeatureListFacadeService
           .pipe(
             take(1),
             filter(Boolean),
-            tap(() => this.#store.create({ item: this.createOrderList() })),
+            tap(() => this.#store.create({ item: this.#createOrderList() })),
             tap(() => this.#store.clearAvailableProducts())
           )
           .subscribe();
@@ -87,7 +89,7 @@ export class LlecoopOrderListFeatureListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',
@@ -111,11 +113,11 @@ export class LlecoopOrderListFeatureListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#store.delete(item));
+        .subscribe(() => this.#store.delete(item.id));
     }
   }
 
-  private getNewOrderName(): YearWeek {
+  #getNewOrderName(): YearWeek {
     const now = new Date();
     const year = getYear(now);
     const week = getWeek(now, { weekStartsOn: 1 }); // La semana empieza en lunes
@@ -123,13 +125,13 @@ export class LlecoopOrderListFeatureListFacadeService
     return `${year.toString().padStart(4, '0')}-${week.toString().padStart(2, '0')}` as YearWeek;
   }
 
-  private getNewOrderDate(): Date {
+  #getNewOrderDate(): Date {
     const now = new Date();
     const nextMonday = addDays(now, (8 - now.getDay()) % 7 || 7);
     return setHours(setMinutes(nextMonday, 0), 12);
   }
 
-  private createOrderList(): LlecoopOrder {
+  #createOrderList(): Omit<LlecoopOrder, 'id'> {
     const availableProducts = this.#store
       .availableProducts()
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -142,9 +144,9 @@ export class LlecoopOrderListFeatureListFacadeService
       }));
 
     return {
-      name: this.getNewOrderName(),
-      normalizedName: this.getNewOrderName().toLowerCase(),
-      endTime: this.getNewOrderDate(),
+      name: this.#getNewOrderName(),
+      normalizedName: this.#getNewOrderName().toLowerCase(),
+      endTime: this.#getNewOrderDate(),
       status: 'progress',
       availableProducts,
       orderCount: 0,

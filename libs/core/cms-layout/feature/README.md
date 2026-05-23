@@ -1,143 +1,106 @@
-# core-cms-layout-feature
+# @plastik/core/cms-layout
 
-- [core-cms-layout-feature](#core-cms-layout-feature)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular Material](https://img.shields.io/badge/angular_material-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/core/cms-layout](#plastikcorecms-layout)
   - [Description](#description)
-    - [UI](#ui)
+  - [Architecture](#architecture)
+    - [UI Components](#ui-components)
     - [Data Access](#data-access)
   - [Inputs](#inputs)
-  - [How to use](#how-to-use)
-  - [Running unit tests](#running-unit-tests)
+  - [Usage](#usage)
+    - [1. Configuration](#1-configuration)
+    - [2. Setup (main.ts)](#2-setup-maints)
+    - [3. Implementation (AppComponent)](#3-implementation-appcomponent)
+  - [Running Unit Tests](#running-unit-tests)
 
 ## Description
 
-A customizable and shareable layout for CMS apps.
+A **Customizable and Shareable Layout** for CMS applications. It orchestrates the header, footer, sidenav, and content area, providing a consistent structure for dashboard-like interfaces.
 
-> An example applied to nasa-images app
-> ![core-cms-layout-feature-ui](core-cms-layout-ui.png)
+> **Example:** NASA Images App Layout
 >
-> graph
-> ![core-cms-layout-feature-graph](core-cms-layout-feature.png)
+> ![Nasa Images Layout Example](core-cms-layout-ui.png)
 
-### UI
+## Architecture
 
-It has three child components:
+![Architecture Graph](core-cms-layout-feature.png)
 
-- a header: [core-cms-layout-ui-header](../../cms-layout/ui/header/README.md).
-- a footer: [core-cms-layout-ui-footer](../../cms-layout/ui/footer/README.md).
-- a sidenav with main content: [core-cms-layout-ui-sidenav](../../cms-layout/ui/sidenav/README.md).
+### UI Components
 
-And a notification snackbar:
-
-```html
-@if(notificationConfig$ | async as config) {
-<div plastikSnackbar [config]="config" (sendDismiss)="onNotificationDismiss()"></div>
-}
-```
+- **Header**: [core-cms-layout-ui-header](../../cms-layout/ui/header/README.md)
+- **Footer**: [core-cms-layout-ui-footer](../../cms-layout/ui/footer/README.md)
+- **Sidenav**: [core-cms-layout-ui-sidenav](../../cms-layout/ui/sidenav/README.md)
+- **Snackbar**: Integrated notifications via `plastikSnackbar`.
 
 ### Data Access
 
-It uses a store segment for layout related state:
-
-- data-access: [core-cms-layout-data-access](../../cms-layout/data-access/README.md).
+Managed by [core-cms-layout-data-access](../../cms-layout/data-access/README.md) for layout state (mobile detection, sidenav toggle).
 
 ## Inputs
 
-| Name              | Type            | Description                                                 | Default |
-| ----------------- | --------------- | ----------------------------------------------------------- | ------- |
-| `sidenavPosition` | "start" / "end" | Position sidenav to the left or to the right in the layout. | "start" |
+| Name              | Type              | Description                              | Default   |
+| :---------------- | :---------------- | :--------------------------------------- | :-------- |
+| `sidenavPosition` | `"start" / "end"` | Position of the sidenav (left or right). | `"start"` |
 
-## How to use
+## Usage
 
-- Create the header and sidenav configuration objects.
+### 1. Configuration
+
+Define your header and view (sidenav) configuration:
 
 ```typescript
-// apps/my-app/src/app/cms-layout-config.ts
-
+// cms-layout-config.ts
 export const headerConfig: CoreCmsLayoutHeaderConfig = {
   showToggleMenuButton: true,
   mainTitle: 'Main Title',
   mainIcon: { iconPath: 'assets/img/logo.svg', svgClass: 'bg-white text-black w-[80px]' },
 };
 
-export const viewConfig: ViewsConfigRecord<NasaImagesViews> = {
+export const viewConfig: ViewsConfigRecord<AppViews> = {
   [AppViews.WELCOME]: {
     title: AppViews.WELCOME,
     icon: 'welcome',
     route: [`/${AppViews.WELCOME}`],
     includedInNavigation: true,
   },
-  [AppViews.FAQS]: {
-    title: AppViews.FAQS,
-    icon: 'faq',
-    route: [`/${AppViews.FAQS}`],
-    includedInNavigation: true,
-  },
+  // ... other views
 };
 ```
 
-- Import `CoreCmsLayoutDataAccessModule` into main.ts file.
+### 2. Setup (main.ts)
+
+Import the module and provide configurations:
 
 ```typescript
-// apps/my-app/src/main.ts
-
 import { CoreCmsLayoutDataAccessModule } from '@plastik/core/cms-layout/data-access';
 
 bootstrapApplication(AppComponent, {
-  providers: [importProvidersFrom(CoreCmsLayoutDataAccessModule)],
-});
-```
-
-- Set `CORE_CMS_LAYOUT_HEADER_CONFIG` provider to the headerConfig configuration object to set header contents.
-
-```typescript
-// apps/my-app/src/main.ts
-
-bootstrapApplication(AppComponent, {
-  providers: [{ provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig }],
-});
-```
-
-- Set `VIEW_CONFIG` provider to the viewConfig configuration object to set sidenav menu contents.
-
-```typescript
-// apps/my-app/src/main.ts
-
-bootstrapApplication(AppComponent, {
   providers: [
+    importProvidersFrom(CoreCmsLayoutDataAccessModule),
+    { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig },
     {
       provide: VIEW_CONFIG,
-      useValue:
-        // getVisibleNavigationList returns just the elements marked as `includedInNavigation = true` in viewConfig.
-        getVisibleNavigationList(viewConfig),
+      useValue: getVisibleNavigationList(viewConfig), // Filters only visible nav items
     },
   ],
 });
 ```
 
-- Import `CoreCmsLayoutFeatureComponent` into the app root standalone component.
+### 3. Implementation (AppComponent)
 
 ```typescript
-// apps/my-app/src/app/app.component.ts
-
-import { Component } from '@angular/core';
 import { CoreCmsLayoutFeatureComponent } from '@plastik/core/cms-layout';
 
 @Component({
   selector: 'ng-root',
   imports: [CoreCmsLayoutFeatureComponent],
-  templateUrl: './app.component.html',
+  template: `<plastik-core-cms-layout-feature></plastik-core-cms-layout-feature>`,
 })
 export class AppComponent {}
 ```
 
-- Add the template tag into `app.component.html`.
-
-```html
-<!-- apps/my-app/src/app/app.component.html -->
-
-<plastik-core-cms-layout-feature></plastik-core-cms-layout-feature> >
-```
-
-## Running unit tests
+## Running Unit Tests
 
 Run `nx test core-cms-layout-feature` to execute the unit tests.

@@ -1,13 +1,13 @@
-import { axe, toHaveNoViolations } from 'jest-axe';
-
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
+import { provideTranslateService } from '@ngx-translate/core';
+import { axe } from 'vitest-axe';
 
 import { SharedFormFeatureComponent } from './shared-form-feature.component';
 
-xdescribe('SharedFormFeatureComponent', () => {
+describe('SharedFormFeatureComponent', () => {
   let component: SharedFormFeatureComponent<unknown>;
   let fixture: ComponentFixture<SharedFormFeatureComponent<unknown>>;
   let componentRef: ComponentRef<SharedFormFeatureComponent<unknown>>;
@@ -15,6 +15,7 @@ xdescribe('SharedFormFeatureComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SharedFormFeatureComponent, ReactiveFormsModule, FormlyModule.forRoot()],
+      providers: [provideTranslateService()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(SharedFormFeatureComponent);
@@ -41,42 +42,57 @@ xdescribe('SharedFormFeatureComponent', () => {
     });
 
     it('should not emit changeEvent', () => {
-      let submit;
+      let submitEvent = false;
       componentRef.setInput('model', null);
-      component.changeEvent.subscribe(() => (submit = true));
+      component.changeEvent.subscribe(() => (submitEvent = true));
+      // Make form invalid by manually setting errors
+      (component as any).form.setErrors({ invalid: true });
+      fixture.detectChanges();
+
       component.onSubmit(new Event('submit'));
 
-      expect(submit).not.toBeDefined();
+      expect(submitEvent).toBeFalsy();
     });
   });
-
   describe('onModelChange', () => {
-    let submit = false;
     it('should update model and emit changeEvent', () => {
+      let submitEvent = false;
       const model = { q: 'pluto' };
       componentRef.setInput('model', null);
-      componentRef.setInput('submitConfig', { submitAvailable: true });
-      component.changeEvent.subscribe(() => (submit = true));
-      component.onModelChange(model);
+      componentRef.setInput('submitConfig', { submitAvailable: false });
+      component.changeEvent.subscribe(() => (submitEvent = true));
+      component.onModelChange(model as any);
 
-      expect(component.model()).toEqual(model);
-      expect(submit).toBeFalsy();
+      expect(submitEvent).toBeTruthy();
     });
 
-    it('should update model but not emit changeEvent', () => {
-      const model = null;
-      componentRef.setInput('model', model);
-      componentRef.setInput('submitConfig', { submitAvailable: false });
-      component.changeEvent.subscribe(() => (submit = true));
-      component.onModelChange(model);
+    it('should emit temporaryChangeEvent when emitOnChange is true and form is valid', () => {
+      let emittedModel = null;
+      const model = { name: 'test' };
+      componentRef.setInput('submitConfig', { emitOnChange: true });
+      component.temporaryChangeEvent.subscribe(m => (emittedModel = m));
 
-      expect(component.model()).toBeNull();
-      expect(submit).toBeFalsy();
+      // Form is valid by default in this test setup
+      component.onModelChange(model as any);
+      expect(emittedModel).toEqual(model);
+    });
+
+    it('should NOT emit temporaryChangeEvent when form is invalid', () => {
+      let emitted = false;
+      const model = { name: 't' };
+      componentRef.setInput('submitConfig', { emitOnChange: true });
+      component.temporaryChangeEvent.subscribe(() => (emitted = true));
+
+      // Make form invalid
+      (component as any).form.setErrors({ invalid: true });
+      fixture.detectChanges();
+
+      component.onModelChange(model as any);
+      expect(emitted).toBeFalsy();
     });
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

@@ -8,6 +8,7 @@ import { SharedFormFeatureModule } from '@plastik/shared/form';
 import { YearPickerFormlyModule } from '@plastik/shared/form/year-picker';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 import { SharedTableUiComponent } from '@plastik/shared/table/ui';
+import { map } from 'rxjs';
 
 import { getNasaImagesSearchFeatureFormConfig } from './nasa-images-search-feature-form.config';
 import { NasaImagesSearchFeatureTableConfig } from './nasa-images-search-feature-table.config';
@@ -33,7 +34,7 @@ export class NasaImagesSearchFeatureComponent {
   isActiveSearch$ = this.#facade.isActiveSearch$;
   tableDefinition = NasaImagesSearchFeatureTableConfig.getTableDefinition();
   formStructure$ = getNasaImagesSearchFeatureFormConfig();
-  formModel$ = this.#facade.routeQueryParams$;
+  formModel$ = this.#facade.routeQueryParams$.pipe(map(params => ({ ...params })));
   routeInfo$ = this.#facade.routeInfo$;
 
   onChange(model: Partial<NasaImagesSearchApiParams>): void {

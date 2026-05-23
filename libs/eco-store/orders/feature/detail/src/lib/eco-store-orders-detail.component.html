@@ -1,0 +1,244 @@
+<!-- Breadcrumbs & Hero Header -->
+<eco-store-breadcrumbs
+  [backAriaLabel]="'orders.detail.back' | translate"
+  [items]="breadcrumbItems()"
+  (goBack)="goBack()" />
+
+<eco-store-hero-header>
+  <div
+    class="flex w-full flex-col items-start justify-between gap-3 sm:flex-row sm:items-center sm:gap-4">
+    <div class="category-subtitle flex min-w-0 items-center gap-2">
+      <mat-icon class="shrink-0 scale-90!" aria-hidden="true">receipt_long</mat-icon>
+      @if (order()) {
+        <div class="flex min-w-0 flex-col gap-1">
+          <div class="flex flex-col gap-2 lg:flex-row lg:items-center">
+            <h2
+              class="text-on-surface min-w-0 truncate text-lg font-black tracking-tight break-all sm:text-2xl sm:break-normal">
+              {{ 'orders.detail.title' | translate: { orderNumber: order()?.orderNumber } }}
+            </h2>
+            @if (order()) {
+              <plastik-shared-chip
+                size="lg"
+                [label]="statusLabel() | translate"
+                [icon]="statusIcon()"
+                [type]="statusType()" />
+            } @else {
+              <plastik-shared-chip
+                size="lg"
+                [label]="'orders.detail.loading' | translate"
+                [icon]="'receipt_long'"
+                [type]="'neutral'" />
+            }
+          </div>
+          <p class="text-on-surface-variant text-sm font-medium">
+            {{ 'orders.detail.orderDate' | translate }}:
+            {{ order()?.created | date: 'mediumDate' }}
+          </p>
+        </div>
+      } @else {
+        <h2 class="text-on-surface text-2xl font-black tracking-tight sm:text-3xl">
+          {{ 'orders.detail.loading' | translate }}
+        </h2>
+      }
+    </div>
+
+    <button
+      matButton="filled"
+      type="button"
+      class="shrink-0 self-start sm:self-center"
+      [attr.aria-label]="'orders.detail.summary.viewPdf' | translate">
+      <mat-icon aria-hidden="true">receipt</mat-icon>
+      {{ 'orders.detail.summary.viewPdf' | translate }}
+    </button>
+  </div>
+</eco-store-hero-header>
+
+<!-- Loading skeleton -->
+@if (isLoading()) {
+  <div class="space-y-6" aria-busy="true" [attr.aria-label]="'orders.detail.loading' | translate">
+    <div class="bg-surface-container animate-pulse rounded-xl p-6">
+      <div class="flex flex-col gap-4 lg:flex-row lg:gap-6">
+        <div class="flex-1 space-y-3">
+          <div class="bg-surface-variant h-4 w-32 rounded"></div>
+          <div class="bg-surface-variant h-6 w-48 rounded"></div>
+        </div>
+        <div class="space-y-3">
+          <div class="bg-surface-variant h-4 w-24 rounded"></div>
+          <div class="bg-surface-variant h-6 w-36 rounded"></div>
+        </div>
+      </div>
+    </div>
+    <div class="bg-surface-container animate-pulse rounded-xl p-6">
+      <div class="space-y-4">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="flex items-center gap-4">
+            <div class="bg-surface-variant h-14 w-14 shrink-0 rounded-lg"></div>
+            <div class="flex-1 space-y-2">
+              <div class="bg-surface-variant h-4 w-40 rounded"></div>
+              <div class="bg-surface-container-high h-3 w-28 rounded"></div>
+            </div>
+            <div class="bg-surface-variant h-5 w-16 rounded"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+} @else if (!order()) {
+  <eco-store-shared-no-results
+    class="my-6"
+    [imgTitle]="'orders.detail.noResults.title' | translate">
+    <div no-results-title>
+      {{ 'orders.detail.noResults.title' | translate }}
+    </div>
+    <div no-results-description>
+      {{ 'orders.detail.noResults.description' | translate }}
+    </div>
+    <button matButton="filled" no-results-action type="button" routerLink="/comandes">
+      <mat-icon aria-hidden="true">storefront</mat-icon>
+      <span>{{ 'orders.detail.noResults.goToOrders' | translate }}</span>
+    </button>
+  </eco-store-shared-no-results>
+} @else {
+  @let currentOrder = order()!;
+
+  @if (isPending()) {
+    <div class="mb-8">
+      <plastik-shared-alert type="INFO">
+        <span alert-title>{{ 'orders.detail.openOrder' | translate }}</span>
+        <div alert-extras>
+          <button
+            matButton="outlined"
+            type="button"
+            [attr.aria-label]="'orders.detail.actions.modify' | translate">
+            <mat-icon aria-hidden="true">edit</mat-icon>
+            {{ 'orders.detail.actions.modify' | translate }}
+          </button>
+
+          <button
+            matButton="text"
+            type="button"
+            class="button-delete"
+            [attr.aria-label]="'orders.detail.actions.delete' | translate">
+            <mat-icon aria-hidden="true">delete</mat-icon>
+            {{ 'orders.detail.actions.delete' | translate }}
+          </button>
+        </div>
+      </plastik-shared-alert>
+    </div>
+  }
+
+  <div class="grid grid-cols-1 gap-8 lg:grid-cols-3!">
+    <!-- Left / main column -->
+    <div class="col-span-1! space-y-10 lg:col-span-2!">
+      <!-- Delivery Summary section -->
+      <section aria-labelledby="order-delivery-title">
+        <h3 id="order-delivery-title" class="text-on-surface mb-4 text-lg font-bold tracking-tight">
+          {{ 'cart.confirmation.deliverySummary' | translate }}
+        </h3>
+
+        <div class="border-outline-variant bg-surface-container rounded-2xl border p-6 shadow-sm">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <span class="text-on-surface-variant text-sm font-semibold">
+                {{ 'cart.confirmation.deliveryMethod' | translate }}
+              </span>
+              <p class="text-on-surface mt-1 font-medium">
+                {{ deliveryLabel() | translate }}
+              </p>
+            </div>
+
+            @if (currentOrder.day || currentOrder.time) {
+              <div>
+                <span class="text-on-surface-variant text-sm font-semibold">
+                  {{ 'cart.confirmation.deliveryTimeSlot' | translate }}
+                </span>
+                <p class="text-on-surface mt-1 font-medium">
+                  @if (currentOrder.day) {
+                    {{ 'orders.detail.days.' + currentOrder.day | translate }}
+                  }
+                  @if (currentOrder.time) {
+                    {{ currentOrder.time }} h
+                  }
+                </p>
+              </div>
+            }
+          </div>
+
+          @if (currentOrder.address) {
+            <div class="border-outline-variant mt-6 border-t pt-6">
+              <span class="text-on-surface-variant text-sm font-semibold">
+                {{ 'cart.confirmation.deliveryAddress' | translate }}
+              </span>
+              <div class="mt-3 flex items-start gap-3">
+                <div
+                  class="bg-primary-50 dark:bg-primary-900 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                  <mat-icon class="text-primary-600 dark:text-primary-300" aria-hidden="true"
+                    >place</mat-icon
+                  >
+                </div>
+                <div class="space-y-0.5">
+                  <p class="text-on-surface font-bold">
+                    {{ currentOrder.address.address }}
+                  </p>
+                  <p class="text-on-surface-variant/70 text-sm font-medium">
+                    {{ currentOrder.address.zip }} {{ currentOrder.address.city }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          }
+
+          @if (currentOrder.notes) {
+            <div class="border-outline-variant mt-6 border-t pt-6">
+              <span class="text-on-surface-variant text-sm font-semibold">
+                {{ 'cart.confirmation.notes' | translate }}
+              </span>
+              <div class="mt-3 flex items-start gap-3">
+                <div
+                  class="bg-primary-50 dark:bg-primary-900 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                  <mat-icon class="text-primary-600 dark:text-primary-300" aria-hidden="true"
+                    >chat_bubble_outline</mat-icon
+                  >
+                </div>
+                <p class="text-on-surface font-medium italic">"{{ currentOrder.notes }}"</p>
+              </div>
+            </div>
+          }
+        </div>
+      </section>
+
+      <!-- Products list section -->
+      <section aria-labelledby="order-products-title">
+        <h3 id="order-products-title" class="text-on-surface mb-4 text-lg font-bold tracking-tight">
+          {{ 'cart.confirmation.productsInCart' | translate }}
+          <span class="text-on-surface/60 font-normal">
+            ({{ 'orders.detail.cart.articles' | translate: { count: currentOrder.items.length } }})
+          </span>
+        </h3>
+
+        <div class="flex flex-col gap-2">
+          @for (item of cartItems(); track item.product.id) {
+            <eco-cart-product-card
+              [item]="item"
+              [editable]="false"
+              [showImage]="false"></eco-cart-product-card>
+          }
+        </div>
+      </section>
+    </div>
+
+    <!-- Right Column: Order Summary (Sticky) -->
+    <aside class="sticky top-16 space-y-6 self-start md:col-span-1">
+      <eco-store-price-summary
+        [subtotal]="currentOrder.subtotal"
+        [taxes]="currentOrder.tax"
+        [total]="currentOrder.total"
+        [shipping]="currentOrder.shipping"
+        [deliveryType]="currentOrder.deliveryMethod"
+        [submitAvailable]="false">
+      </eco-store-price-summary>
+    </aside>
+  </div>
+}

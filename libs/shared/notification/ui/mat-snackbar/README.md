@@ -1,8 +1,23 @@
-# shared-notification-ui-mat-snackbar
+# @plastik/shared/notification/ui/mat-snackbar
+
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular Material](https://img.shields.io/badge/angular_material-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/shared/notification/ui/mat-snackbar](#plastiksharednotificationuimat-snackbar)
+  - [Description](#description)
+  - [HTML elements](#html-elements)
+  - [Inputs](#inputs)
+  - [Outputs](#outputs)
+  - [How to use](#how-to-use)
+    - [1. Add it to your feature component](#1-add-it-to-your-feature-component)
+    - [2. Styling](#2-styling)
+    - [3. Snackbar configuration (optional)](#3-snackbar-configuration-optional)
+  - [Running unit tests](#running-unit-tests)
+  - [Resources](#resources)
 
 ## Description
 
-A visual notification using material snackbar to warn users about different important information in some state change.
+A visual notification using **Material Snackbar** to warn users about different important information in some state change.
 
 ![shared-notification-ui-mat-snackbar](shared-notification-ui-mat-snackbar.png)
 
@@ -22,14 +37,14 @@ It exposes the `NotificationUiMatSnackbarDirective` to use.
 ## Inputs
 
 | Name                         | Type                              | Description                                   | Default |
-| ---------------------------- | --------------------------------- | --------------------------------------------- | ------- |
+| :--------------------------- | :-------------------------------- | :-------------------------------------------- | :------ |
 | `plastikSnackbar` (`config`) | `MatSnackBarConfig<Notification>` | The configuration to styling the notification |         |
 
 ## Outputs
 
 | Name          | Type                 | Description                             |
-| ------------- | -------------------- | --------------------------------------- |
-| `sendDismiss` | `EventEmitter<void>` | emitted when the snackBar is dismissed. |
+| :------------ | :------------------- | :-------------------------------------- |
+| `sendDismiss` | `EventEmitter<void>` | Emitted when the snackBar is dismissed. |
 
 ## How to use
 
@@ -47,7 +62,6 @@ import { Notification } from '@plastik/shared/notification/entities';
 
 @Component({
   selector: 'plastik-feature',
-
   imports: [NotificationUiMatSnackbarDirective],
 })
 export class CoreCmsLayoutFeatureComponent {
@@ -100,6 +114,6 @@ bootstrapApplication(AppComponent, {
 
 Run `nx test shared-notification-ui-mat-snackbar` to execute the unit tests.
 
-## Useful links
+## Resources
 
 - [MatSnackBar](https://material.angular.io/components/snack-bar)

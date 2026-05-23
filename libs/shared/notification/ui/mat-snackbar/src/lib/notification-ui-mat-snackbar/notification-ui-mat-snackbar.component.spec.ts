@@ -1,9 +1,8 @@
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'vitest-axe';
 
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NotificationUiMatSnackbarComponent } from './notification-ui-mat-snackbar.component';
 import { NotificationUiMatSnackbarDirective } from './notification-ui-mat-snackbar.directive';
@@ -15,17 +14,13 @@ describe('NotificationUiMatSnackbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [
-        NoopAnimationsModule,
-        NotificationUiMatSnackbarComponent,
-        NotificationUiMatSnackbarDirective,
-      ],
+      imports: [NotificationUiMatSnackbarComponent, NotificationUiMatSnackbarDirective],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           provide: MatSnackBarRef,
           useValue: {
-            dismiss: jest.fn(),
+            dismiss: vi.fn(),
           },
         },
         {
@@ -51,7 +46,6 @@ describe('NotificationUiMatSnackbarComponent', () => {
   });
 
   it('should have no accessibility violations', async () => {
-    expect.extend(toHaveNoViolations);
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });

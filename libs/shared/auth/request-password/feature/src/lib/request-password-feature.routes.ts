@@ -1,9 +1,10 @@
 import { Route } from '@angular/router';
-import { AUTH_FORM_FACADE, AUTH_SERVICE, AuthFeatureComponent } from '@plastik/auth';
+import { requestPasswordFormConfig } from '@plastik/auth/config/util';
+import { AUTH_FORM_FACADE, AUTH_SERVICE } from '@plastik/auth/entities';
+import { AuthFeatureComponent } from '@plastik/auth/feature';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { FORM_TOKEN } from '@plastik/core/entities';
 import { RequestPasswordFacadeService } from './request-password-facade.service';
-import { requestPasswordFormConfig } from './request-password-form.config';
 
 export const authRequestPasswordRoutes: Route[] = [
   {

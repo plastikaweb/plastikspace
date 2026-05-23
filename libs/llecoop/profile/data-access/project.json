@@ -1,0 +1,16 @@
+{
+  "name": "llecoop-profile-data-access",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/llecoop/profile/data-access/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["type:data-access", "scope:llecoop"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

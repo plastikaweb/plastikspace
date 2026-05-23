@@ -1,0 +1,19 @@
+@if (tenant()?.logo) {
+  <plastik-img-container
+    class="dark:bg-surface-container relative block h-8 w-8 shrink-0 rounded-lg shadow-sm transition-all dark:p-0.5 dark:ring-1 dark:ring-white/10"
+    [src]="tenant() | pocketBaseImageUrl: tenant()?.logo"
+    [title]="''"
+    [dimensions]="{ height: 32, width: 32 }"
+    [thumbSizes]="[60, 200]"
+    [lcpImage]="true"></plastik-img-container>
+} @else {
+  <mat-icon
+    aria-hidden="true"
+    class="text-sys-primary scale-110 transition-transform duration-300 group-hover:rotate-12"
+    >eco_logo</mat-icon
+  >
+}
+
+<span class="text-on-surface hidden font-bold tracking-tight sm:block">
+  {{ tenant()?.name || ('store.title' | translate) }}
+</span>

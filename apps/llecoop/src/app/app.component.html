@@ -1,7 +1,6 @@
 @if (activityStore.isActive()) {
   <plastik-shared-activity-ui-overlay>
     <mat-progress-spinner
-      color="primary"
       diameter="75"
       strokeWidth="10"
       mode="indeterminate"></mat-progress-spinner>
@@ -11,7 +10,7 @@
 
 @defer (when !!notificationStore.configuration()) {
   <div
-    [plastikSnackbar]="notificationStore.configuration()"
+    [plastikSnackbar]="notificationStore.configuration()[0]"
     (sendDismiss)="notificationStore.dismiss()"></div>
 }
 

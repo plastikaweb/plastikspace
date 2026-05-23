@@ -1,0 +1,89 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  /* Tier Visualization Styles */
+  .tier-label {
+    transform: translateX(-50%);
+    transition: transform 0.3s ease;
+
+    &:first-of-type {
+      transform: translateX(0);
+    }
+
+    &:last-of-type {
+      transform: translateX(-105%);
+    }
+
+    &.active {
+      font-weight: bold;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 0.5rem;
+        padding: 0.125rem 0.25rem;
+        width: 150%;
+        height: 20px;
+        background-color: light-dark(var(--neutral-100), var(--neutral-700));
+        z-index: -1;
+      }
+    }
+  }
+
+  /* Shipping Cost Labels */
+  .shipping-cost-label {
+    transform: translateX(-50%);
+    transition: transform 0.3s ease;
+    color: light-dark(var(--neutral-700), var(--neutral-300));
+
+    &:first-of-type {
+      transform: translateX(0);
+    }
+
+    &:last-of-type {
+      transform: translateX(-100%);
+    }
+  }
+
+  /* Shipping Status Box — flat tinted strip (no card-in-card, no shadow, no hover lift). */
+  .cart-order-price-slots__shipping {
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+
+    &.free {
+      background-color: color-mix(
+        in srgb,
+        light-dark(var(--primary-700), var(--primary-300)) 12%,
+        transparent
+      );
+      color: light-dark(var(--primary-700), var(--primary-200));
+
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--primary-700), var(--primary-200)),
+        )
+      );
+    }
+
+    &.not-free {
+      background-color: color-mix(
+        in srgb,
+        light-dark(var(--error-700), var(--error-300)) 12%,
+        transparent
+      );
+      color: light-dark(var(--error-700), var(--error-200));
+
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--error-700), var(--error-200)),
+        )
+      );
+    }
+  }
+}

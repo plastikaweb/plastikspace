@@ -1,0 +1,219 @@
+{
+  "name": "eco-store",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "eco",
+  "sourceRoot": "apps/eco-store/src",
+  "tags": ["scope:eco-store", "type:app"],
+  "targets": {
+    "build": {
+      "executor": "@angular/build:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/eco-store",
+        "index": "apps/eco-store/src/index.html",
+        "browser": "apps/eco-store/src/main.ts",
+        "polyfills": [],
+        "optimization": {
+          "scripts": true,
+          "styles": {
+            "minify": true,
+            "inlineCritical": true
+          },
+          "fonts": true
+        },
+        "sourceMap": {
+          "scripts": true,
+          "styles": true,
+          "hidden": true,
+          "vendor": true
+        },
+        "namedChunks": true,
+        "aot": true,
+        "tsConfig": "apps/eco-store/tsconfig.app.json",
+        "inlineStyleLanguage": "css",
+        "crossOrigin": "anonymous",
+        "assets": [
+          {
+            "glob": "**/*",
+            "input": "apps/eco-store/public/img",
+            "output": "local/img"
+          },
+          {
+            "glob": "**/*",
+            "input": "apps/eco-store/public"
+          },
+          {
+            "glob": "**/*",
+            "input": "libs/core/util/assets/src"
+          }
+        ],
+        "styles": [
+          {
+            "input": "apps/eco-store/src/styles/styles.scss",
+            "inject": true,
+            "bundleName": "styles"
+          }
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "node_modules",
+            "libs/core/styles/util/material/src",
+            "libs/core/styles/util/tailwind4/src",
+            "libs/shared/notification/ui/hot-toast/src",
+            "libs/shared/form/ui/select-with-icons/src"
+          ]
+        },
+        "scripts": [],
+        "server": "apps/eco-store/src/main.server.ts",
+        "security": {
+          "allowedHosts": []
+        },
+        "ssr": {
+          "entry": "apps/eco-store/src/server.ts",
+          "experimentalPlatform": "neutral"
+        },
+        "outputMode": "server"
+      },
+      "configurations": {
+        "production": {
+          "serviceWorker": "apps/eco-store/ngsw-config.json",
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "700kb",
+              "maximumError": "900kb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "6kb",
+              "maximumError": "10kb"
+            }
+          ],
+          "outputHashing": "all",
+          "optimization": {
+            "scripts": true,
+            "styles": {
+              "minify": true,
+              "inlineCritical": true
+            },
+            "fonts": true
+          },
+          "extractLicenses": true,
+          "sourceMap": false
+        },
+        "staging": {
+          "serviceWorker": "apps/eco-store/ngsw-config.json",
+          "optimization": {
+            "scripts": true,
+            "styles": {
+              "minify": true,
+              "inlineCritical": true
+            },
+            "fonts": true
+          },
+          "outputHashing": "all",
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/eco-store/src/environments/environment.ts",
+              "with": "apps/eco-store/src/environments/environment.staging.ts"
+            }
+          ]
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/eco-store/src/environments/environment.ts",
+              "with": "apps/eco-store/src/environments/environment.development.ts"
+            }
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+
+    "build-cf": {
+      "executor": "nx:run-commands",
+      "options": {
+        "parallel": false,
+        "commands": [
+          "nx run eco-store:build:production",
+          "node tools/scripts/add-cfasync.cjs",
+          "node apps/eco-store/scripts/generate-cf-headers.cjs"
+        ]
+      },
+      "configurations": {
+        "local": {
+          "commands": ["nx run eco-store:build:development", "node tools/scripts/add-cfasync.cjs"]
+        },
+        "staging": {
+          "commands": [
+            "nx run eco-store:build:staging",
+            "node tools/scripts/add-cfasync.cjs",
+            "node apps/eco-store/scripts/generate-cf-headers.cjs"
+          ]
+        },
+        "production": {
+          "commands": [
+            "nx run eco-store:build:production",
+            "node tools/scripts/add-cfasync.cjs",
+            "node apps/eco-store/scripts/generate-cf-headers.cjs"
+          ]
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@angular/build:dev-server",
+      "options": {
+        "port": 4200,
+        "host": "0.0.0.0",
+        "allowedHosts": true,
+        "liveReload": true,
+        "hmr": false,
+        "buildTarget": "eco-store:build"
+      },
+      "configurations": {
+        "production": {
+          "buildTarget": "eco-store:build:production"
+        },
+        "staging": {
+          "buildTarget": "eco-store:build:staging"
+        },
+        "development": {
+          "buildTarget": "eco-store:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular/build:extract-i18n",
+      "options": {
+        "buildTarget": "eco-store:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "eco-store:build",
+        "port": 4200,
+        "staticFilePath": "dist/apps/eco-store/browser",
+        "spa": true
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

@@ -11,6 +11,9 @@
     },
     "codegen": {
       "command": "npx graphql-codegen --config {projectRoot}/codegen.yml"
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
     }
   }
 }

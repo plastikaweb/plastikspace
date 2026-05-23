@@ -3,12 +3,12 @@ import { filter, take } from 'rxjs';
 import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
+import { SortConfig } from '@plastik/core/entities';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { llecoopUserStore, StoreUserFilter } from '@plastik/llecoop/user/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { StoreFirebaseCrudPagination } from '@plastik/shared/signal-state-data-access';
-import { TableSorting } from '@plastik/shared/table/entities';
+import { FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
 import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config';
@@ -16,9 +16,10 @@ import { LlecoopUserSearchFeatureTableConfig } from './user-feature-table.config
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserListFacadeService
-  implements TableWithFilteringFacade<LlecoopUser, StoreUserFilter>
-{
+export class LlecoopUserListFacadeService implements TableWithFilteringFacade<
+  LlecoopUser,
+  StoreUserFilter
+> {
   readonly #store = inject(llecoopUserStore);
   readonly #table = inject(LlecoopUserSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
@@ -37,14 +38,14 @@ export class LlecoopUserListFacadeService
     });
   }
 
-  onChangePagination(pagination: StoreFirebaseCrudPagination<LlecoopUser>): void {
+  onChangePagination(pagination: FirebaseCrudPagination<LlecoopUser>): void {
     this.#router.navigate([], {
       queryParams: { ...pagination },
       queryParamsHandling: 'merge',
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',
@@ -61,7 +62,7 @@ export class LlecoopUserListFacadeService
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#store.delete(item));
+        .subscribe(() => this.#store.delete(item.id));
     }
   }
 }
