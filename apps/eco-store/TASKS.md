@@ -44,24 +44,23 @@
 
 ## 🎯 Current focus
 
-| Task        | Module | Priority   | Status | One-line summary                                                       |
-| ----------- | ------ | ---------- | ------ | ---------------------------------------------------------------------- |
-| **BUG-005** | PRV    | **Urgent** | 📋     | Profile routes accessible without login — add auth guard               |
-| **META-01** | META   | MUST       | 📋     | Delete obsolete `apps/eco-store/eco-store-req.md` (`git rm`)           |
-| **META-02** | META   | MUST       | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum             |
-| **BUG-001** | BOT-05 | MUST       | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
-| **BUG-002** | BOT    | MUST       | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                  |
-| **BUG-003** | BOT    | MUST       | 📋     | PWA manifest doesn't use tenant name as default app name               |
-| **PRV-02b** | PRV    | MUST       | 🔄     | Email change with async verification (CU `86c92g6ek`)                  |
-| **PRV-02c** | PRV    | MUST       | 🔄     | In-session password change (CU `86c92g60y`)                            |
-| **PRV-04d** | PRV    | MUST       | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)    |
-| **PRV-08**  | PRV    | MUST       | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`) |
-| **PRV-09**  | PRV    | SHOULD     | 🔄     | Notification preferences panel (CU `86c92g7fb`)                        |
-| **TRL-03**  | TRL    | MUST       | 📋     | Trial → member conversion CTA                                          |
-| **BOT-02b** | BOT    | MUST       | 📋     | Text search input above product grid                                   |
-| **BOT-02c** | BOT    | MUST       | 📋     | Tag filter chips above product grid                                    |
-| **BOT-08**  | BOT    | MUST       | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                      |
-| **VAL-01**  | VAL    | SHOULD     | 🔄     | Publish review form on product detail                                  |
+| Task        | Module | Priority | Status | One-line summary                                                       |
+| ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
+| **META-01** | META   | MUST     | 📋     | Delete obsolete `apps/eco-store/eco-store-req.md` (`git rm`)           |
+| **META-02** | META   | MUST     | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum             |
+| **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
+| **BUG-002** | BOT    | MUST     | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                  |
+| **BUG-003** | BOT    | MUST     | 📋     | PWA manifest doesn't use tenant name as default app name               |
+| **PRV-02b** | PRV    | MUST     | 🔄     | Email change with async verification (CU `86c92g6ek`)                  |
+| **PRV-02c** | PRV    | MUST     | 🔄     | In-session password change (CU `86c92g60y`)                            |
+| **PRV-04d** | PRV    | MUST     | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)    |
+| **PRV-08**  | PRV    | MUST     | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`) |
+| **PRV-09**  | PRV    | SHOULD   | 🔄     | Notification preferences panel (CU `86c92g7fb`)                        |
+| **TRL-03**  | TRL    | MUST     | 📋     | Trial → member conversion CTA                                          |
+| **BOT-02b** | BOT    | MUST     | 📋     | Text search input above product grid                                   |
+| **BOT-02c** | BOT    | MUST     | 📋     | Tag filter chips above product grid                                    |
+| **BOT-08**  | BOT    | MUST     | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                      |
+| **VAL-01**  | VAL    | SHOULD   | 🔄     | Publish review form on product detail                                  |
 
 See **`BACKLOG.md`** for the phased plan.
 
@@ -130,13 +129,13 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 
 ## 🐛 Bugs & regressions
 
-| ID          | Title                                              | Priority   | Status | ClickUp     | Notes                                             |
-| ----------- | -------------------------------------------------- | ---------- | ------ | ----------- | ------------------------------------------------- |
-| **BUG-001** | Cart merge on login (BOT-05) — verification        | MUST       | ❓     | —           | Code complete; run 5 manual tests                 |
-| **BUG-002** | Deep-link `/cistella/resum` redirects to `/botiga` | MUST       | 📋     | `86c9kmk0n` | Likely SSR/route-state issue                      |
-| **BUG-003** | PWA manifest doesn't use tenant name as default    | MUST       | 📋     | `86c9dn9m0` | `PwaManifestService.applyBranding()`              |
-| **BUG-004** | Rationalize cart toasts on add/change/remove qty   | SHOULD     | 📋     | `86c8ta2kt` | UX polish — debouncing + dedup                    |
-| **BUG-005** | Profile routes accessible without login            | **Urgent** | 📋     | `86c99rjxt` | Add `canActivate` auth guard on `/perfil` subtree |
+| ID          | Title                                              | Priority   | Status | ClickUp     | Notes                                                                                        |
+| ----------- | -------------------------------------------------- | ---------- | ------ | ----------- | -------------------------------------------------------------------------------------------- |
+| **BUG-001** | Cart merge on login (BOT-05) — verification        | MUST       | ❓     | —           | Code complete; run 5 manual tests                                                            |
+| **BUG-002** | Deep-link `/cistella/resum` redirects to `/botiga` | MUST       | 📋     | `86c9kmk0n` | Likely SSR/route-state issue                                                                 |
+| **BUG-003** | PWA manifest doesn't use tenant name as default    | MUST       | 📋     | `86c9dn9m0` | `PwaManifestService.applyBranding()`                                                         |
+| **BUG-004** | Rationalize cart toasts on add/change/remove qty   | SHOULD     | 📋     | `86c8ta2kt` | UX polish — debouncing + dedup                                                               |
+| **BUG-005** | Profile routes accessible without login            | **Urgent** | ✅     | `86c99rjxt` | Shared `ecoStoreAuthGuard` on `/perfil` (also reused for `/comandes`); preserves `returnUrl` |
 
 ### BUG-001 — Cart merge on login (BOT-05) [❓ Verify]
 

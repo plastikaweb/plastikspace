@@ -6,11 +6,11 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
 import { MatPaginatorIntlService } from '@plastik/core/paginator';
-import { EcoStoreCategoryRouteTitleService } from '@plastik/eco-store/core/router-state';
 import {
-  ecoStoreNotLoggedOrdersGuard,
-  ecoStoreOrdersStore,
-} from '@plastik/eco-store/orders/data-access';
+  ecoStoreAuthGuard,
+  EcoStoreCategoryRouteTitleService,
+} from '@plastik/eco-store/core/router-state';
+import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
 import { BodyBackgroundService } from './body-background.service';
 import { EcoStoreLayoutService } from './eco-store-layout.service';
 import EcoLayoutComponent from './layout.component';
@@ -45,7 +45,7 @@ export const layoutRoutes: Route[] = [
       {
         path: 'comandes',
         data: { hasSidenav: false },
-        canActivateChild: [ecoStoreNotLoggedOrdersGuard],
+        canActivateChild: [ecoStoreAuthGuard],
         children: [
           {
             path: 'nova',
@@ -108,6 +108,7 @@ export const layoutRoutes: Route[] = [
       },
       {
         path: 'perfil',
+        canActivateChild: [ecoStoreAuthGuard],
         loadChildren: () =>
           import('@plastik/eco-store/profile').then(m => m.ecoStoreProfileFeatureRoutes),
       },
