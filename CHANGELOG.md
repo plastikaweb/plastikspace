@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-23] - Eco-store: BUG-005 — Auth guard on /perfil + shared returnUrl flow
+
+### Added
+
+- **`libs/eco-store/core/router/src/lib/eco-store-auth.guard.ts`**: New shared `ecoStoreAuthGuard` (`CanActivateFn`). Redirects unauthenticated visitors to `/accedir` with the attempted URL preserved in a `returnUrl` query param. SSR-safe (bypassed on server). Wired as `canActivateChild` on `/perfil` (closes the BUG-005 leak) and as the replacement for the per-domain orders guard on `/comandes` (BUG-005, [#86c99rjxt](https://app.clickup.com/t/86c99rjxt)).
+
+### Changed
+
+- **`libs/eco-store/auth/feature/login/.../eco-store-auth-login-facade.service.ts`**: On successful login, navigate to a sanitized `returnUrl` query param (same-origin paths only — open-redirect guard rejects schemes and `//host` forms) instead of always landing on `/`. Lets deep-link → guard → login → original-target flow work end-to-end (BUG-005, [#86c99rjxt](https://app.clickup.com/t/86c99rjxt)).
+- **`libs/eco-store/cart/feature/.../guards/not-logged-shipping.guard.ts`**: The "Login" branch of the not-logged-shipping confirm dialog now passes `returnUrl: state.url` to `/accedir`, so a user who deep-links to `/cistella/enviament` or `/cistella/confirmacio` and chooses "Log in" returns to the same checkout step after authenticating. Same UX guarantee as the new shared guard (BUG-005, [#86c99rjxt](https://app.clickup.com/t/86c99rjxt)).
+- **`apps/eco-store/TASKS.md`**: Marked BUG-005 as ✅ Done (removed from current focus; status updated in bugs table with implementation note).
+
+### Removed
+
+- **`libs/eco-store/orders/data-access/src/not-logged-orders.guard.ts`** + barrel export: Superseded by `ecoStoreAuthGuard`. The orders-list redundant `canActivate` is also dropped (parent `/comandes` already covers it via `canActivateChild`). DRY: one auth guard for the app instead of one per domain (BUG-005, [#86c99rjxt](https://app.clickup.com/t/86c99rjxt)).
+
 ## [2026-05-17] - Eco-store: META-05 Phase 1 — TASKS.md ↔ ClickUp sync command + in-repo backlog
 
 ### Added

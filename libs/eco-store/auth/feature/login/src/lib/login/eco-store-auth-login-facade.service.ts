@@ -1,5 +1,5 @@
 import { effect, inject, Injectable, signal } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthFormFacade, LoginData } from '@plastik/auth/entities';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { FORM_TOKEN, FormConfig } from '@plastik/core/entities';
@@ -16,6 +16,7 @@ import { activityStore } from '@plastik/shared/activity/data-access';
 export class EcoStoreAuthLoginFacadeService implements AuthFormFacade<LoginData> {
   readonly #profileStore = inject(pocketBaseUserProfileStore);
   readonly #router = inject(Router);
+  readonly #route = inject(ActivatedRoute);
   readonly #tenantStore = inject(ecoStoreTenantStore);
   readonly #activityStore = inject(activityStore);
 
@@ -49,7 +50,13 @@ export class EcoStoreAuthLoginFacadeService implements AuthFormFacade<LoginData>
     }
 
     if (this.#profileStore.isAuthenticated()) {
-      await this.#router.navigate(['/']);
+      await this.#router.navigateByUrl(this.#getSafeReturnUrl());
     }
+  }
+
+  // Only accept same-origin paths to prevent open-redirect via returnUrl.
+  #getSafeReturnUrl(): string {
+    const raw = this.#route.snapshot.queryParamMap.get('returnUrl');
+    return raw && raw.startsWith('/') && !raw.startsWith('//') ? raw : '/';
   }
 }
