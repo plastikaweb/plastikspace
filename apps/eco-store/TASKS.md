@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.5 · **Last updated:** 2026-05-17
+**Document version:** 0.6 · **Last updated:** 2026-05-23
 
 ---
 
@@ -46,7 +46,6 @@
 
 | Task        | Module | Priority | Status | One-line summary                                                       |
 | ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
-| **META-01** | META   | MUST     | 📋     | Delete obsolete `apps/eco-store/eco-store-req.md` (`git rm`)           |
 | **META-02** | META   | MUST     | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum             |
 | **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
 | **BUG-002** | BOT    | MUST     | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                  |
@@ -398,9 +397,10 @@ All `COULD`, pending discovery.
 
 ### Tech debt
 
-| ID                  | Description                                               | Priority | ClickUp     |
-| ------------------- | --------------------------------------------------------- | -------- | ----------- |
-| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField` | SHOULD   | `86c8cjghn` |
+| ID                  | Description                                                               | Priority | ClickUp     |
+| ------------------- | ------------------------------------------------------------------------- | -------- | ----------- |
+| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                 | SHOULD   | `86c9uq9rf` |
+| **TECH-02** _(new)_ | Modernize `libs/shared/*` to Angular 21 standards (cherry-pick Jules PRs) | SHOULD   | `86c9y6upw` |
 
 ### Ops / Release
 
@@ -444,13 +444,9 @@ All `COULD`, pending discovery.
 
 ## 🧭 META — Meta-tasks
 
-### META-01 — Delete obsolete PRD
+### META-01 — Delete obsolete PRD ✅ Done (2026-05-23)
 
-```bash
-cd /Volumes/Feina/Projects/plastikspace
-git rm apps/eco-store/eco-store-req.md
-git commit -m "chore(eco-store): remove obsolete v1.7 PRD (superseded by v1.8)"
-```
+`apps/eco-store/eco-store-req.md` (v1.7 PRD) removed via `git rm`. Authoritative spec is now the external v1.8 PDF only (see CLAUDE.md source-of-truth table). Stale references in `cspell.json`, `.markdownlint-cli2.yaml`, `apps/eco-store/CLAUDE.md`, and `BACKLOG.md` cleaned up.
 
 ### META-02 — Remove `NOT_REGISTERED` enum value
 
@@ -478,6 +474,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                     |
 | ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.6     | 2026-05-23 | Added TECH-02 (modernize `libs/shared/*` to Angular 21 standards, derived from Jules PRs #1078 + #1073). Fixed stale TECH-01 ClickUp ID (`86c8cjghn` → `86c9uq9rf`).                                                                                                                                                                      |
 | 0.5     | 2026-05-17 | Added META-05 (Phase 1 of ClickUp ↔ TASKS.md automation: read-only `/sync-eco-store-tasks` diff command). CU `86c9uwmzf`.                                                                                                                                                                                                                 |
 | 0.4     | 2026-05-16 | ClickUp audit integrated. Re-added PRV-08/09/04d as in-scope (Carlos confirmed). Added PRV-02c, BUG-002..005, BOT-16, UI-04, SEO-01, PST-04, EST-06, TECH-01, OPS-01, META-03/04, A11Y-002, MKT-research-01. 10 ClickUp subtasks of #21 epic mapped: 6 closed (history) + 4 in-progress + billing. Q-15 added (tags store clarification). |
 | 0.3     | 2026-05-16 | Carlos's corrections: EST-02/03 → Done; BOT-07/08 → Pending; PRV-08/09 marked out of scope (later reversed); META-02 added.                                                                                                                                                                                                               |

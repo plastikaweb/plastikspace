@@ -44,7 +44,6 @@ ignores:
   - .codex/**
   - tmp/**
   - apps/eco-store/pocketbase/**
-  - apps/eco-store/eco-store-req.md
   - apps/eco-store/TASKS.md
   - apps/eco-store/BACKLOG.md
   - '**/CLAUDE.md'
