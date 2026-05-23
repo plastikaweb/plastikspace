@@ -46,6 +46,21 @@ This is **in addition to** the ClickUp `#<task>` ID the `commitizen-git-flow` sk
 
 If you can't find a matching ID in TASKS.md, **stop and ask** rather than inventing one. New cross-cutting work without a PRD section should be filed under the appropriate non-PRD family (`BUG-`, `META-`, `OPS-`, `TECH-`, `SEO-`, `MKT-research-`) — propose the ID before committing.
 
+### Adding new tasks to `TASKS.md` / `BACKLOG.md` (MANDATORY)
+
+When you add a brand-new task entry to `apps/eco-store/TASKS.md` or `apps/eco-store/BACKLOG.md`, you **must also create the corresponding ClickUp ticket** via the ClickUp MCP in the same change. The TASKS.md row should then carry the new ClickUp ID. Don't leave entries with `—` or `_pending_` in the ClickUp column — that's how drift starts (see META-05 sync command and the 17 drift items it surfaced on first run).
+
+Before creating the ClickUp task: inspect a same-family analog already in the board (e.g. another `BOT-` or `OPS-` task) to pick the right list, tags, and assignee defaults. The ClickUp ID is the bridge for status sync.
+
+### Committing changes to `TASKS.md` / `BACKLOG.md` only
+
+`TASKS.md` and `BACKLOG.md` are living planning docs, not release artifacts. Treat them differently from code:
+
+- **Don't open standalone PRs for backlog-only edits.** Bundle them into a feature branch as a separate commit (one commit for the code change, one for the TASKS.md status flip) when the related work ships.
+- **No CHANGELOG entry** for backlog-only changes. Keep a Changelog is for release-impacting changes a reader cares about; planning metadata isn't that. When a feature commit includes a TASKS.md flip alongside the work, the CHANGELOG bullet describes the _work_ (with the PRD/CU ID), not the TASKS edit.
+- **For pure-grooming passes** with no associated code change (audits, ID corrections, version bumps, adding queued tasks): commit with `docs(eco-store):` scope. No standalone PR — fold them into the next feature branch instead, or push directly if branch protection allows.
+- The exception is _deleting an obsolete document_ (e.g. META-01) or other one-off cleanups where the change itself is the deliverable — those still get a CHANGELOG bullet and a PR.
+
 ---
 
 ## Library structure (`libs/eco-store/*`)
