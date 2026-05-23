@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.6 · **Last updated:** 2026-05-23
+**Document version:** 0.7 · **Last updated:** 2026-05-23
 
 ---
 
@@ -44,22 +44,23 @@
 
 ## 🎯 Current focus
 
-| Task        | Module | Priority | Status | One-line summary                                                       |
-| ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
-| **META-02** | META   | MUST     | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum             |
-| **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
-| **BUG-002** | BOT    | MUST     | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                  |
-| **BUG-003** | BOT    | MUST     | 📋     | PWA manifest doesn't use tenant name as default app name               |
-| **PRV-02b** | PRV    | MUST     | 🔄     | Email change with async verification (CU `86c92g6ek`)                  |
-| **PRV-02c** | PRV    | MUST     | 🔄     | In-session password change (CU `86c92g60y`)                            |
-| **PRV-04d** | PRV    | MUST     | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)    |
-| **PRV-08**  | PRV    | MUST     | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`) |
-| **PRV-09**  | PRV    | SHOULD   | 🔄     | Notification preferences panel (CU `86c92g7fb`)                        |
-| **TRL-03**  | TRL    | MUST     | 📋     | Trial → member conversion CTA                                          |
-| **BOT-02b** | BOT    | MUST     | 📋     | Text search input above product grid                                   |
-| **BOT-02c** | BOT    | MUST     | 📋     | Tag filter chips above product grid                                    |
-| **BOT-08**  | BOT    | MUST     | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                      |
-| **VAL-01**  | VAL    | SHOULD   | 🔄     | Publish review form on product detail                                  |
+| Task        | Module | Priority   | Status | One-line summary                                                          |
+| ----------- | ------ | ---------- | ------ | ------------------------------------------------------------------------- |
+| **OPS-02**  | OPS    | **Urgent** | 📋     | Grant `pull-requests: write` to `claude-code-review.yml` (CU `86c9y6xyb`) |
+| **META-02** | META   | MUST       | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum                |
+| **BUG-001** | BOT-05 | MUST       | ❓     | Verify cart merge regression — code complete, needs manual test pass      |
+| **BUG-002** | BOT    | MUST       | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                     |
+| **BUG-003** | BOT    | MUST       | 📋     | PWA manifest doesn't use tenant name as default app name                  |
+| **PRV-02b** | PRV    | MUST       | 🔄     | Email change with async verification (CU `86c92g6ek`)                     |
+| **PRV-02c** | PRV    | MUST       | 🔄     | In-session password change (CU `86c92g60y`)                               |
+| **PRV-04d** | PRV    | MUST       | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)       |
+| **PRV-08**  | PRV    | MUST       | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`)    |
+| **PRV-09**  | PRV    | SHOULD     | 🔄     | Notification preferences panel (CU `86c92g7fb`)                           |
+| **TRL-03**  | TRL    | MUST       | 📋     | Trial → member conversion CTA                                             |
+| **BOT-02b** | BOT    | MUST       | 📋     | Text search input above product grid                                      |
+| **BOT-02c** | BOT    | MUST       | 📋     | Tag filter chips above product grid                                       |
+| **BOT-08**  | BOT    | MUST       | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                         |
+| **VAL-01**  | VAL    | SHOULD     | 🔄     | Publish review form on product detail                                     |
 
 See **`BACKLOG.md`** for the phased plan.
 
@@ -278,7 +279,7 @@ Hook update: `single_default_address.pb.js` → enforce single `defaultShipping=
 
 ### Done ✅
 
-TRL-01 (schema-ready), TRL-02 (header badge), TRL-05 (API rules backend).
+TRL-01 (schema-ready), TRL-02 (header badge), TRL-05 (API rules backend), TRL-06 (data preservation verified).
 
 ### Pending 📋
 
@@ -286,7 +287,6 @@ TRL-01 (schema-ready), TRL-02 (header badge), TRL-05 (API rules backend).
 | ---------- | --------------------------------------- | -------- | -------------------------------------------------- |
 | **TRL-03** | Conversion CTA in `/perfil`             | MUST     | Spec in earlier TASKS version; ClickUp `86c90qt5e` |
 | **TRL-04** | Frontend checkout block + upsell dialog | MUST     | UX mirror of TRL-05                                |
-| **TRL-06** | Data preservation verification          | MUST     | Mostly implicit; verify                            |
 | **TRL-07** | Admin-approved conversion (eco-admin)   | MUST     | Future                                             |
 | **TRL-08** | Trial expiry reminder email             | SHOULD   | New scheduled hook                                 |
 | **TRL-09** | Admin filter & transitions              | SHOULD   | Out of scope (eco-admin)                           |
@@ -404,12 +404,13 @@ All `COULD`, pending discovery.
 
 ### Ops / Release
 
-| ID                  | Description                                                                                        | Priority | ClickUp     |
-| ------------------- | -------------------------------------------------------------------------------------------------- | -------- | ----------- |
-| **OPS-01** _(new)_  | Setup production deploy pipeline                                                                   | MUST     | `86c8cjgm0` |
-| **META-03** _(new)_ | Fix repo coverage badge update                                                                     | Low      | `86c8tqjma` |
-| **META-04** _(new)_ | Add a SKILL to format readme files                                                                 | Low      | `86c8cjgh6` |
-| **META-05** _(new)_ | Phase 1: read-only `/sync-eco-store-tasks` diff command (ClickUp ↔ TASKS.md automation foundation) | Low      | `86c9uwmzf` |
+| ID                  | Description                                                                                        | Priority   | ClickUp     |
+| ------------------- | -------------------------------------------------------------------------------------------------- | ---------- | ----------- |
+| **OPS-01** _(new)_  | Setup production deploy pipeline                                                                   | MUST       | `86c8cjgm0` |
+| **OPS-02** _(new)_  | Grant `pull-requests: write` to `claude-code-review.yml` workflow                                  | **Urgent** | `86c9y6xyb` |
+| **META-03** _(new)_ | Fix repo coverage badge update                                                                     | Low        | `86c8tqjma` |
+| **META-04** _(new)_ | Add a SKILL to format readme files                                                                 | Low        | `86c8cjgh6` |
+| **META-05** ✅      | Phase 1: read-only `/sync-eco-store-tasks` diff command (ClickUp ↔ TASKS.md automation foundation) | Low        | `86c9uwmzf` |
 
 ### Research / Marketing (not dev)
 
@@ -462,7 +463,7 @@ ClickUp `86c8tqjma`. Workflow at `.github/workflows/ci.yml` writes to a Gist; ba
 
 ClickUp `86c8cjgh6`. Internal tooling — add a Claude Code skill at `.claude/skills/format-readme/` for consistent README formatting across libs.
 
-### META-05 — ClickUp ↔ TASKS.md automation (Phase 1 of 4)
+### META-05 — ClickUp ↔ TASKS.md automation (Phase 1 of 4) ✅ Done (2026-05-17)
 
 ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow that keeps `TASKS.md` and ClickUp in sync. Phase 1 is a **read-only** slash command `/sync-eco-store-tasks` that diffs both sides (TASKS.md vs ClickUp list `901521018763`) and outputs a three-section report (only-in-TASKS, only-in-ClickUp, status mismatches). No writes. Validates API token, IDs, and the PRD-ID-as-bridge matching assumption before later phases add hooks/Actions that write.
 
@@ -474,6 +475,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                     |
 | ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.7     | 2026-05-23 | Added **OPS-02** (Urgent, CU `86c9y6xyb`): grant `pull-requests: write` to `.github/workflows/claude-code-review.yml`. Backlog-grooming pass alongside: flipped **TRL-06** and **META-05** to ✅ (ClickUp was source of truth — `/sync-eco-store-tasks` flagged them as status mismatches).                                               |
 | 0.6     | 2026-05-23 | Added TECH-02 (modernize `libs/shared/*` to Angular 21 standards, derived from Jules PRs #1078 + #1073). Fixed stale TECH-01 ClickUp ID (`86c8cjghn` → `86c9uq9rf`).                                                                                                                                                                      |
 | 0.5     | 2026-05-17 | Added META-05 (Phase 1 of ClickUp ↔ TASKS.md automation: read-only `/sync-eco-store-tasks` diff command). CU `86c9uwmzf`.                                                                                                                                                                                                                 |
 | 0.4     | 2026-05-16 | ClickUp audit integrated. Re-added PRV-08/09/04d as in-scope (Carlos confirmed). Added PRV-02c, BUG-002..005, BOT-16, UI-04, SEO-01, PST-04, EST-06, TECH-01, OPS-01, META-03/04, A11Y-002, MKT-research-01. 10 ClickUp subtasks of #21 epic mapped: 6 closed (history) + 4 in-progress + billing. Q-15 added (tags store clarification). |
