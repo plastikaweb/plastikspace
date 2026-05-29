@@ -12,14 +12,12 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
   inject,
   input,
   output,
   signal,
   TemplateRef,
   viewChild,
-  ViewChildren,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxChange, MatCheckboxModule } from '@angular/material/checkbox';
@@ -176,7 +174,6 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   protected readonly matSort = viewChild<MatSort | null>(MatSort);
   protected readonly matPaginator = viewChild<MatPaginator | null>(MatPaginator);
-  @ViewChildren('matFormField', { emitDistinctChangesOnly: true }) matFormField?: ElementRef[];
 
   protected dataSource = new MatTableDataSource<T>();
   protected columnsToDisplay = computed(() => {

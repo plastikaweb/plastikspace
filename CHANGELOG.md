@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-29] - Shared: TECH-02 — libs/shared Angular-21 modernization residue
+
+### Changed
+
+- **`libs/shared/table/ui`**: Converted `TableCellTitleDirective`'s `private` methods to ES6 `#` private methods (and dropped a redundant `getTextContent` call); removed the dead `@ViewChildren('matFormField')` query from `SharedTableUiComponent` (never read) along with its now-unused `ElementRef` / `ViewChildren` imports. Residual cleanup of the `libs/shared/*` Angular-21 modernization — the bulk of which already landed on `develop`. The recurring Jules modernization PRs (#1073/#1078/#1087, all closed) targeted `main` (llecoop's prod branch, ~595 commits behind `develop`), which is why they kept re-proposing already-merged work (TECH-02, [#86c9y6upw](https://app.clickup.com/t/86c9y6upw)).
+
 ## [2026-05-29] - Eco-store: BUG-002 — Deep-link to /cistella/resum no longer redirects to /botiga during SSR
 
 ### Fixed
