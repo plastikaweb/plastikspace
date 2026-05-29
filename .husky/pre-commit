@@ -1,6 +1,38 @@
 #!/usr/bin/env sh
 set -e
 
+# --- BACKLOG / CODE SEPARATION GUARD (eco-store) ---
+# apps/eco-store/{TASKS,BACKLOG}.md are living planning docs and must be committed
+# on their own — mixing them with source code pollutes feature-commit history
+# (see apps/eco-store/CLAUDE.md, "Committing changes to TASKS.md / BACKLOG.md only").
+# NOTE: this hook ends with `git add -A`, so the commit = the whole working tree.
+# We therefore check every changed file (staged or not), not just the staged set.
+# Legitimate one-off cleanups (e.g. deleting an obsolete doc together with code)
+# can bypass:  ALLOW_BACKLOG_MIX=1 git commit ...
+if [ -z "$ALLOW_BACKLOG_MIX" ]; then
+  CHANGED=$(git status --porcelain | awk '{print $NF}')
+  BACKLOG=$(printf '%s\n' "$CHANGED" | grep -E '^apps/eco-store/(TASKS|BACKLOG)\.md$' || true)
+  if [ -n "$BACKLOG" ]; then
+    NON_DOC=$(printf '%s\n' "$CHANGED" | grep -vE '\.md$' || true)
+    if [ -n "$NON_DOC" ]; then
+      echo "❌ eco-store backlog docs would be committed together with non-doc files:"
+      printf '%s\n' "$BACKLOG" | sed 's/^/   backlog: /'
+      printf '%s\n' "$NON_DOC" | sed 's/^/   other:   /'
+      echo ""
+      echo "   TASKS.md / BACKLOG.md belong in their own commit. Split it:"
+      echo "     git stash push apps/eco-store/TASKS.md apps/eco-store/BACKLOG.md"
+      echo "     git commit                       # the code change"
+      echo "     git stash pop"
+      echo "     git add apps/eco-store/TASKS.md apps/eco-store/BACKLOG.md"
+      echo "     git commit -m 'docs(eco-store): #<task> <ID> flip status'"
+      echo ""
+      echo "   One-off cleanup that genuinely needs both? ALLOW_BACKLOG_MIX=1 git commit ..."
+      exit 1
+    fi
+  fi
+fi
+# ----------------------------------------------------
+
 # --- SANDBOX BRIDGE ---
 # Redirect HOME to a temp directory to avoid EPERM on /Users/plastikaweb/.yarnrc
 export HOME=/tmp/husky-sandbox
