@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-29] - Eco-store: BUG-002 — Deep-link to /cistella/resum no longer redirects to /botiga during SSR
+
+### Fixed
+
+- **`libs/eco-store/cart/feature/src/lib/guards/empty-cart.guard.ts`**: The empty-cart guard now no-ops during server-side rendering (`isPlatformBrowser` check → allows activation on the server). `/cistella` renders with `RenderMode.Server`, but the cart lives only in the browser (localStorage for anonymous visitors, auth token for members), so server-side the store always read empty and the guard bounced valid deep-links — e.g. `/cistella/resum` with items — to `/botiga`. The decision is deferred to the client, which re-runs the guard once the cart has hydrated; genuinely-empty carts still redirect in the browser. Added `empty-cart.guard.spec.ts` covering the server (no redirect) and browser (redirect-when-empty / allow-when-filled) paths (BUG-002, [#86c9uq8kb](https://app.clickup.com/t/86c9uq8kb)).
+
 ## [2026-05-23] - Workspace: OPS-02 — Grant `pull-requests: write` to claude-code-review workflow
 
 ### Fixed
