@@ -48,7 +48,6 @@
 | ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
 | **META-02** | META   | MUST     | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum             |
 | **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
-| **BUG-002** | BOT    | MUST     | 📋     | Deep-link to `/cistella/resum` redirects to `/botiga`                  |
 | **BUG-003** | BOT    | MUST     | 📋     | PWA manifest doesn't use tenant name as default app name               |
 | **PRV-02b** | PRV    | MUST     | 🔄     | Email change with async verification (CU `86c92g6ek`)                  |
 | **PRV-02c** | PRV    | MUST     | 🔄     | In-session password change (CU `86c92g60y`)                            |
@@ -131,10 +130,10 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 | ID          | Title                                              | Priority   | Status | ClickUp     | Notes                                                                                        |
 | ----------- | -------------------------------------------------- | ---------- | ------ | ----------- | -------------------------------------------------------------------------------------------- |
 | **BUG-001** | Cart merge on login (BOT-05) — verification        | MUST       | ❓     | —           | Code complete; run 5 manual tests                                                            |
-| **BUG-002** | Deep-link `/cistella/resum` redirects to `/botiga` | MUST       | 📋     | `86c9kmk0n` | Likely SSR/route-state issue                                                                 |
+| **BUG-002** | Deep-link `/cistella/resum` redirects to `/botiga` | MUST       | ✅     | `86c9uq8kb` | Fixed — empty-cart guard no-ops during SSR; deep-links keep cart items                       |
 | **BUG-003** | PWA manifest doesn't use tenant name as default    | MUST       | 📋     | `86c9dn9m0` | `PwaManifestService.applyBranding()`                                                         |
 | **BUG-004** | Rationalize cart toasts on add/change/remove qty   | SHOULD     | 📋     | `86c8ta2kt` | UX polish — debouncing + dedup                                                               |
-| **BUG-005** | Profile routes accessible without login            | **Urgent** | ✅     | `86c99rjxt` | Shared `ecoStoreAuthGuard` on `/perfil` (also reused for `/comandes`); preserves `returnUrl` |
+| **BUG-005** | Profile routes accessible without login            | **Urgent** | ✅     | `86c9uq8jq` | Shared `ecoStoreAuthGuard` on `/perfil` (also reused for `/comandes`); preserves `returnUrl` |
 
 ### BUG-001 — Cart merge on login (BOT-05) [❓ Verify]
 
