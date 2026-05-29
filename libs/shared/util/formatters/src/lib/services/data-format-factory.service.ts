@@ -26,7 +26,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
    * @description Factory to get the correct formatted value from item property with a custom formatting option.
    * @param { unknown } item  The object to extract value from.
    * @param { PropertyFormatting } param The control configuration to format the object property value.
-   * @param { string | Function } param.key The property of the object which value is going to be formatted.
+   * @param { string | ((item: T) => unknown) } param.key The property of the object which value is going to be formatted or a function to compute it.
    * @param { PropertyFormattingConf } param.formatting The formatting configuration for a concrete property object.
    * @param {number } index Index to custom formatters (f.e. a table indexing)
    * @param {unknown } extraConfig Extra configuration object to format values specially when using custom formatters.
@@ -38,7 +38,7 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     index?: number,
     extraConfig?: unknown
   ): SafeHtml | string | FormattingComponentOutput {
-    const value = this.getValueFromRow(pathToKey, item);
+    const value = this.#getValueFromRow(pathToKey, item);
     const { type, extras } = formatting;
 
     switch (type) {
@@ -86,10 +86,13 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
     }
   }
 
-  private getValueFromRow(
-    property: string,
-    item: T extends BaseEntity ? T : never
-  ): FormattingOutput {
+  /**
+   * Retrieves a value from an object based on a dot-separated property path.
+   * @param {string} property - The dot-separated path to the property.
+   * @param {T} item - The object to extract the value from.
+   * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
+   */
+  #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
     return property.split('.').reduce((accObject: unknown, currentProp: string) => {
       const object = (accObject as T)[currentProp as keyof T];
       return isNil(object) ? '' : (object as FormattingOutput);
