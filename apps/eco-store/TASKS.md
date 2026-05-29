@@ -395,10 +395,10 @@ All `COULD`, pending discovery.
 
 ### Tech debt
 
-| ID                  | Description                                                               | Priority | ClickUp     |
-| ------------------- | ------------------------------------------------------------------------- | -------- | ----------- |
-| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                 | SHOULD   | `86c9uq9rf` |
-| **TECH-02** _(new)_ | Modernize `libs/shared/*` to Angular 21 standards (cherry-pick Jules PRs) | SHOULD   | `86c9y6upw` |
+| ID                  | Description                                                                           | Priority | ClickUp     |
+| ------------------- | ------------------------------------------------------------------------------------- | -------- | ----------- |
+| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                             | SHOULD   | `86c9uq9rf` |
+| **TECH-02** ✅      | Modernize `libs/shared/*` to Angular 21 (already on develop; residual cleanup landed) | SHOULD   | `86c9y6upw` |
 
 ### Ops / Release
 

@@ -175,19 +175,19 @@
 
 **Estimated effort:** ~8 dev-days
 
-| #    | Task                                        | Priority | Est   | Depends on | Notes                                                    |
-| ---- | ------------------------------------------- | -------- | ----- | ---------- | -------------------------------------------------------- |
-| 7.1  | **UI-04** Footer view                       | MUST     | 1d    | —          | CU `86c8cjgg9`                                           |
-| 7.2  | **LGL-01** Legal pages                      | MUST     | 2d    | —          | Static content + footer links + i18n. CU `86c8cjgm2`     |
-| 7.3  | **Q-10** Resolve cookie consent strategy    | —        | 0.25d | —          | CMP vs in-house                                          |
-| 7.4  | **LGL-02** Cookie consent banner            | MUST     | 1.5d  | 7.3        | CU `86c8cjgm3`                                           |
-| 7.5  | **A11Y-001** + **A11Y-002** Fixes           | MUST     | 1d    | Phase 0.7  | Execute findings                                         |
-| 7.6  | **SEO-01** Dynamic SEO titles               | SHOULD   | 1d    | —          | CU `86c9autmu` — high priority                           |
-| 7.7  | **OPS-01** Production deploy pipeline       | MUST     | 1.5d  | —          | CU `86c8cjgm0` — needed before v1 launch                 |
-| 7.8  | **TECH-01** `string \| LocalizedField` util | SHOULD   | 0.5d  | —          | CU `86c9uq9rf`                                           |
-| 7.9  | **TECH-02** Modernize `libs/shared/*` libs  | SHOULD   | 1d    | —          | Cherry-pick from Jules PRs #1078 + #1073. CU `86c9y6upw` |
-| 7.10 | **BOT-16** Cart sidenav menu                | SHOULD   | 1d    | —          | CU `86c8cjgj2`                                           |
-| 7.11 | **UI-03** Per-tenant color theme            | COULD    | 1d    | —          | If time                                                  |
+| #    | Task                                          | Priority | Est   | Depends on | Notes                                                                                                                                                                                                   |
+| ---- | --------------------------------------------- | -------- | ----- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 7.1  | **UI-04** Footer view                         | MUST     | 1d    | —          | CU `86c8cjgg9`                                                                                                                                                                                          |
+| 7.2  | **LGL-01** Legal pages                        | MUST     | 2d    | —          | Static content + footer links + i18n. CU `86c8cjgm2`                                                                                                                                                    |
+| 7.3  | **Q-10** Resolve cookie consent strategy      | —        | 0.25d | —          | CMP vs in-house                                                                                                                                                                                         |
+| 7.4  | **LGL-02** Cookie consent banner              | MUST     | 1.5d  | 7.3        | CU `86c8cjgm3`                                                                                                                                                                                          |
+| 7.5  | **A11Y-001** + **A11Y-002** Fixes             | MUST     | 1d    | Phase 0.7  | Execute findings                                                                                                                                                                                        |
+| 7.6  | **SEO-01** Dynamic SEO titles                 | SHOULD   | 1d    | —          | CU `86c9autmu` — high priority                                                                                                                                                                          |
+| 7.7  | **OPS-01** Production deploy pipeline         | MUST     | 1.5d  | —          | CU `86c8cjgm0` — needed before v1 launch                                                                                                                                                                |
+| 7.8  | **TECH-01** `string \| LocalizedField` util   | SHOULD   | 0.5d  | —          | CU `86c9uq9rf`                                                                                                                                                                                          |
+| 7.9  | **TECH-02** Modernize `libs/shared/*` libs ✅ | SHOULD   | 1d    | —          | Done 2026-05-29 — develop already modernized (May-1); residual cleanup (`#` methods + dead `matFormField` query) landed. Jules PRs #1073/#1078/#1087 closed (all targeted stale `main`). CU `86c9y6upw` |
+| 7.10 | **BOT-16** Cart sidenav menu                  | SHOULD   | 1d    | —          | CU `86c8cjgj2`                                                                                                                                                                                          |
+| 7.11 | **UI-03** Per-tenant color theme              | COULD    | 1d    | —          | If time                                                                                                                                                                                                 |
 
 **Exit criteria:** Legally compliant (banner + pages), Pa11y CI passes, prod deploy works, footer present.
 
