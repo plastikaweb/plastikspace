@@ -1,0 +1,3 @@
+## 2025-05-14 - [Optimizing Object Utilities]
+**Learning:** Using `Object.entries(obj).length` for emptiness checks is an $O(N)$ operation that allocates a new array of entries. For large objects or frequent calls, this can be a bottleneck. Similarly, using the object spread operator `{...prev}` inside `Array.prototype.reduce` results in $O(N^2)$ time complexity due to repeated object cloning.
+**Action:** Use a `for...in` loop with an early return for object emptiness checks and mutate the accumulator in `reduce` (or use a different pattern) to maintain $O(N)$ performance for collection transformations. Always add safety guards when parsing strings like URLs that may not conform to expected formats.

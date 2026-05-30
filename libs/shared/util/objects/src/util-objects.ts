@@ -7,10 +7,22 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
  */
 export function isEmpty(obj: unknown): boolean {
   if (obj === null || obj === undefined) return true;
-  return (
-    ([Object, Array] as unknown[]).includes((obj as object).constructor) &&
-    !Object.entries(obj as object).length
-  );
+
+  const constructor = (obj as object).constructor;
+  if (constructor === Array) {
+    return (obj as unknown[]).length === 0;
+  }
+
+  if (constructor === Object) {
+    for (const key in obj as object) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -88,13 +100,18 @@ export function getQueryParams(
  * @returns {Record<string, unknown>}.
  */
 export function formatURLQueryParams(url: string): Record<string, unknown> {
-  const urlParams = url.split('?')[1].split('&');
-  return urlParams.reduce((prev, current) => {
+  const parts = url.split('?');
+  if (parts.length < 2 || !parts[1]) {
+    return {};
+  }
+
+  const urlParams = parts[1].split('&');
+  return urlParams.reduce((prev: Record<string, unknown>, current) => {
     const pair = current.split('=');
-    return {
-      ...prev,
-      [pair[0]]: decodeURIComponent(pair[1]),
-    };
+    if (pair.length === 2) {
+      prev[pair[0]] = decodeURIComponent(pair[1]);
+    }
+    return prev;
   }, {});
 }
 
