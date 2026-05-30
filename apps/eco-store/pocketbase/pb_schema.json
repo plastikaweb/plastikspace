@@ -751,8 +751,7 @@
           "TRIAL",
           "ACTIVE",
           "INACTIVE",
-          "SUSPENDED",
-          "NOT_REGISTERED"
+          "SUSPENDED"
         ]
       },
       {

@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.7 · **Last updated:** 2026-05-23
+**Document version:** 0.8 · **Last updated:** 2026-05-30
 
 ---
 
@@ -46,7 +46,6 @@
 
 | Task        | Module | Priority | Status | One-line summary                                                       |
 | ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
-| **META-02** | META   | MUST     | 📋     | Remove `NOT_REGISTERED` from `users.membershipStatus` enum             |
 | **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
 | **BUG-003** | BOT    | MUST     | 📋     | PWA manifest doesn't use tenant name as default app name               |
 | **PRV-02b** | PRV    | MUST     | 🔄     | Email change with async verification (CU `86c92g6ek`)                  |
@@ -70,25 +69,24 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 
 ### Required for queued work
 
-| Collection       | Field / Change          | Type                      | For task         | Notes                                                                                      |
-| ---------------- | ----------------------- | ------------------------- | ---------------- | ------------------------------------------------------------------------------------------ |
-| `users`          | `membershipStatus` enum | Modify                    | META-02          | **Remove** `NOT_REGISTERED` — leave 4 valid values                                         |
-| `users`          | `notificationPrefs`     | JSON                      | PRV-09           | 6 boolean toggles (offers, restock, order status, cycle open/close, announcements, social) |
-| `user_addresses` | `addressType`           | Select                    | PRV-04d          | `SHIPPING` \| `BILLING` \| `BOTH` (default `SHIPPING`)                                     |
-| `user_addresses` | `nif`                   | Text (nullable)           | PRV-04d          | Required server-side when `addressType` ∈ {`BILLING`, `BOTH`}                              |
-| `user_addresses` | `defaultShipping`       | Bool                      | PRV-04d          | Rename or alias from existing `default`                                                    |
-| `user_addresses` | `defaultBilling`        | Bool                      | PRV-04d          | New; at most one per user                                                                  |
-| `tenants`        | `heroTitle`             | String (i18n JSON)        | INI-01           |                                                                                            |
-| `tenants`        | `heroSubtitle`          | String (i18n JSON)        | INI-01           |                                                                                            |
-| `tenants`        | `heroImagePreset`       | Select                    | INI-01           | `hort` \| `cistella` \| `mercat` \| `default`                                              |
-| `tenants`        | `heroImageCustom`       | File (Image)              | INI-01           | Optional, overrides preset                                                                 |
-| `tenants`        | `aboutUsText`           | String (HTML, i18n JSON)  | INI-06           |                                                                                            |
-| `tenants`        | `howItWorksSteps`       | JSON (nullable)           | INI-03           | If null, derive from `logisticsConfig`                                                     |
-| `products`       | `isFeatured`            | Boolean (default `false`) | INI-04 / MKT-03  |                                                                                            |
-| _new collection_ | `wishlists`             | —                         | BOT-07 / BOT-13b | Per-user, per-tenant. Schema TBD (Q-14)                                                    |
-| _new collection_ | `stock_alerts`          | —                         | BOT-13a / NOT-03 | Email + product subscription                                                               |
-| _new collection_ | `reviews`               | —                         | VAL-01           | Q-13 pending (collection vs JSON-on-products)                                              |
-| _new collection_ | `promo_codes`           | —                         | MKT-02           | Tenant-scoped                                                                              |
+| Collection       | Field / Change      | Type                      | For task         | Notes                                                                                      |
+| ---------------- | ------------------- | ------------------------- | ---------------- | ------------------------------------------------------------------------------------------ |
+| `users`          | `notificationPrefs` | JSON                      | PRV-09           | 6 boolean toggles (offers, restock, order status, cycle open/close, announcements, social) |
+| `user_addresses` | `addressType`       | Select                    | PRV-04d          | `SHIPPING` \| `BILLING` \| `BOTH` (default `SHIPPING`)                                     |
+| `user_addresses` | `nif`               | Text (nullable)           | PRV-04d          | Required server-side when `addressType` ∈ {`BILLING`, `BOTH`}                              |
+| `user_addresses` | `defaultShipping`   | Bool                      | PRV-04d          | Rename or alias from existing `default`                                                    |
+| `user_addresses` | `defaultBilling`    | Bool                      | PRV-04d          | New; at most one per user                                                                  |
+| `tenants`        | `heroTitle`         | String (i18n JSON)        | INI-01           |                                                                                            |
+| `tenants`        | `heroSubtitle`      | String (i18n JSON)        | INI-01           |                                                                                            |
+| `tenants`        | `heroImagePreset`   | Select                    | INI-01           | `hort` \| `cistella` \| `mercat` \| `default`                                              |
+| `tenants`        | `heroImageCustom`   | File (Image)              | INI-01           | Optional, overrides preset                                                                 |
+| `tenants`        | `aboutUsText`       | String (HTML, i18n JSON)  | INI-06           |                                                                                            |
+| `tenants`        | `howItWorksSteps`   | JSON (nullable)           | INI-03           | If null, derive from `logisticsConfig`                                                     |
+| `products`       | `isFeatured`        | Boolean (default `false`) | INI-04 / MKT-03  |                                                                                            |
+| _new collection_ | `wishlists`         | —                         | BOT-07 / BOT-13b | Per-user, per-tenant. Schema TBD (Q-14)                                                    |
+| _new collection_ | `stock_alerts`      | —                         | BOT-13a / NOT-03 | Email + product subscription                                                               |
+| _new collection_ | `reviews`           | —                         | VAL-01           | Q-13 pending (collection vs JSON-on-products)                                              |
+| _new collection_ | `promo_codes`       | —                         | MKT-02           | Tenant-scoped                                                                              |
 
 ### Already in schema
 
@@ -447,11 +445,9 @@ All `COULD`, pending discovery.
 
 `apps/eco-store/eco-store-req.md` (v1.7 PRD) removed via `git rm`. Authoritative spec is now the external v1.8 PDF only (see CLAUDE.md source-of-truth table). Stale references in `cspell.json`, `.markdownlint-cli2.yaml`, `apps/eco-store/CLAUDE.md`, and `BACKLOG.md` cleaned up.
 
-### META-02 — Remove `NOT_REGISTERED` enum value
+### META-02 — Remove `NOT_REGISTERED` enum value ✅ Done (2026-05-30)
 
-1. Admin UI → edit `users.membershipStatus` → remove `NOT_REGISTERED`
-2. Verify no records have that value first (migrate to `TRIAL` if any)
-3. `yarn eco-store:pb:export` + commit
+`users.membershipStatus` now has 4 values (`TRIAL`, `ACTIVE`, `INACTIVE`, `SUSPENDED`), matching `PocketBaseMembershipStatus` and CLAUDE.md. Verified 0 staging users held `NOT_REGISTERED` before removal. Applied on the local PB instance; `pb_schema.json` syncs to staging via `pocketbase-schema.yml` on merge to `develop`. CU `86c9uq8k3`.
 
 ### META-03 — Coverage badge fix
 
@@ -473,6 +469,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                     |
 | ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.8     | 2026-05-30 | **META-02 done** — removed `NOT_REGISTERED` from `users.membershipStatus` (now 4 values). Verified 0 staging records held it; applied on local PB, `pb_schema.json` syncs to staging via `pocketbase-schema.yml` on merge. CU `86c9uq8k3`.                                                                                                |
 | 0.7     | 2026-05-23 | Added **OPS-02** (Urgent, CU `86c9y6xyb`): grant `pull-requests: write` to `.github/workflows/claude-code-review.yml`. Backlog-grooming pass alongside: flipped **TRL-06** and **META-05** to ✅ (ClickUp was source of truth — `/sync-eco-store-tasks` flagged them as status mismatches).                                               |
 | 0.6     | 2026-05-23 | Added TECH-02 (modernize `libs/shared/*` to Angular 21 standards, derived from Jules PRs #1078 + #1073). Fixed stale TECH-01 ClickUp ID (`86c8cjghn` → `86c9uq9rf`).                                                                                                                                                                      |
 | 0.5     | 2026-05-17 | Added META-05 (Phase 1 of ClickUp ↔ TASKS.md automation: read-only `/sync-eco-store-tasks` diff command). CU `86c9uwmzf`.                                                                                                                                                                                                                 |

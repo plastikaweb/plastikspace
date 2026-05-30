@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-30] - Eco-store: META-02 — Remove `NOT_REGISTERED` from `users.membershipStatus` enum
+
+### Changed
+
+- **`apps/eco-store/pocketbase/pb_schema.json`**: Removed the deprecated `NOT_REGISTERED` value from the `users.membershipStatus` select field, leaving the four canonical values (`TRIAL`, `ACTIVE`, `INACTIVE`, `SUSPENDED`) already declared by `PocketBaseMembershipStatus` (`libs/core/entities`) and documented in `apps/eco-store/CLAUDE.md`. Verified 0 staging users held the value before removal — PocketBase does not auto-clean orphaned select values, so a populated value would have failed validation on the next write. Applied on the local PocketBase instance and re-exported; staging picks up the schema on merge to `develop` via `.github/workflows/pocketbase-schema.yml` (META-02, [#86c9uq8k3](https://app.clickup.com/t/86c9uq8k3)).
+
 ## [2026-05-29] - Shared: TECH-02 — libs/shared Angular-21 modernization residue
 
 ### Changed
