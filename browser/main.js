@@ -6549,7 +6549,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-52RTM6E3.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-QDF7N74D.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
