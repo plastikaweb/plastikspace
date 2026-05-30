@@ -53,4 +53,16 @@ describe('HighlightPipe', () => {
   it('should return original value if no match found', () => {
     expect(pipe.transform('Hello World', 'NotFound')).toBe('Hello World');
   });
+
+  it('should escape HTML in value', () => {
+    const result = pipe.transform('<script>alert("xss")</script>', '') as string;
+    expect(result).toBe('&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;');
+  });
+
+  it('should escape HTML in search and still highlight', () => {
+    const result = pipe.transform('<b>Hello</b>', '<b>') as string;
+    expect(result).toContain('&lt;b&gt;');
+    expect(result).toContain('<mark');
+    expect(result).not.toContain('<b>');
+  });
 });
