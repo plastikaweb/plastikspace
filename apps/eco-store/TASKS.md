@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.8 · **Last updated:** 2026-05-30
+**Document version:** 0.9 · **Last updated:** 2026-05-31
 
 ---
 
@@ -393,10 +393,11 @@ All `COULD`, pending discovery.
 
 ### Tech debt
 
-| ID                  | Description                                                                           | Priority | ClickUp     |
-| ------------------- | ------------------------------------------------------------------------------------- | -------- | ----------- |
-| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                             | SHOULD   | `86c9uq9rf` |
-| **TECH-02** ✅      | Modernize `libs/shared/*` to Angular 21 (already on develop; residual cleanup landed) | SHOULD   | `86c9y6upw` |
+| ID                  | Description                                                                                                       | Priority | ClickUp     |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                                                         | SHOULD   | `86c9uq9rf` |
+| **TECH-02** ✅      | Modernize `libs/shared/*` to Angular 21 (already on develop; residual cleanup landed)                             | SHOULD   | `86c9y6upw` |
+| **TECH-03** ✅      | Optimize `libs/shared/util/objects` (O(N²)→O(N) `reduce`, drop O(N) alloc in `isEmpty`, native `Object.values()`) | SHOULD   | `86ca226tz` |
 
 ### Ops / Release
 
@@ -469,6 +470,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                     |
 | ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.9     | 2026-05-31 | **TECH-03 done** — optimized `libs/shared/util/objects` (`isEmpty`, `formatURLQueryParams`, `collectionToArray`) for O(N) perf. Cherry-picked from Jules PR #1095 (superset of #1091, closed as subset). On develop. CU `86ca226tz`.                                                                                                      |
 | 0.8     | 2026-05-30 | **META-02 done** — removed `NOT_REGISTERED` from `users.membershipStatus` (now 4 values). Verified 0 staging records held it; applied on local PB, `pb_schema.json` syncs to staging via `pocketbase-schema.yml` on merge. CU `86c9uq8k3`.                                                                                                |
 | 0.7     | 2026-05-23 | Added **OPS-02** (Urgent, CU `86c9y6xyb`): grant `pull-requests: write` to `.github/workflows/claude-code-review.yml`. Backlog-grooming pass alongside: flipped **TRL-06** and **META-05** to ✅ (ClickUp was source of truth — `/sync-eco-store-tasks` flagged them as status mismatches).                                               |
 | 0.6     | 2026-05-23 | Added TECH-02 (modernize `libs/shared/*` to Angular 21 standards, derived from Jules PRs #1078 + #1073). Fixed stale TECH-01 ClickUp ID (`86c8cjghn` → `86c9uq9rf`).                                                                                                                                                                      |
