@@ -6,6 +6,7 @@ interface ButtonBaseConfig {
   id: number;
   elements: ButtonElement[];
   ariaLabel: string;
+  tooltip?: string;
   classes?: string;
   dataTestId?: string;
   disabled?: boolean | Observable<boolean>;

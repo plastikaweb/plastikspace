@@ -5,6 +5,7 @@
   [class.is-favorite]="isFavorite()"
   [class.heart-beat]="isAnimating()"
   [attr.aria-label]="ariaLabel()"
+  [matTooltip]="ariaLabel()"
   (click)="onToggle($event)">
   <mat-icon>
     {{ isFavorite() ? 'favorite' : 'favorite_border' }}

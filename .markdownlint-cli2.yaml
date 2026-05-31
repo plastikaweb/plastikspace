@@ -27,6 +27,8 @@ ignores:
   - .firebase/**
   - .gemini/**
   - .gemini/antigravity/**
+  - .Jules/**
+  - .jules/**
   - .husky/**
   - .github/**/*.md
   - .idea/**

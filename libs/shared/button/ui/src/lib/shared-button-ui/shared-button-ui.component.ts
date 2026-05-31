@@ -1,6 +1,7 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { PushPipe } from '@ngrx/component';
 import { Action } from '@ngrx/store';
 import { ButtonConfig, ButtonConfigWithAction, buttonHasALinkGuard } from '@plastik/shared/button';
@@ -13,6 +14,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     NgTemplateOutlet,
     PushPipe,
     MatButtonModule,
+    MatTooltipModule,
     AngularSvgIconModule,
     ReturnAsObservablePipe,
   ],
