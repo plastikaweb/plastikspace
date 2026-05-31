@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-31] - Shared: Fix XSS vulnerability in `HighlightPipe`
+
+### Fixed
+
+- **`libs/shared/util/highlight`** & **`libs/shared/util/objects`**: `HighlightPipe` passed unescaped, user-controlled text straight to `DomSanitizer.bypassSecurityTrustHtml`, so a payload such as `<script>alert('xss')</script>` arriving via a search result rendered as live markup — a reflected XSS vector. Added an `escapeHtml` utility to `@plastik/shared/objects` (`libs/shared/util/objects`) that escapes HTML special characters, and updated the pipe to escape every dynamic segment — the no-match/no-search passthrough value, and the parts before, within, and after a match — before wrapping the matched text in trusted `<mark>` tags, so only the intended highlight markup reaches `innerHTML`. Added unit tests covering `escapeHtml` and the pipe's escaping behaviour ([#1097](https://github.com/plastikaweb/plastikspace/pull/1097)).
+
 ## [2026-05-30] - Eco-store: META-02 — Remove `NOT_REGISTERED` from `users.membershipStatus` enum
 
 ### Changed

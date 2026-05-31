@@ -255,3 +255,22 @@ export function deepClone<T>(obj: T): T {
 
   return obj;
 }
+
+/**
+ * @description Escapes HTML special characters to prevent XSS.
+ * @param {string} text The string to escape.
+ * @returns {string} The escaped string.
+ */
+export function escapeHtml(text: string): string {
+  const map: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;',
+  };
+  return text.replace(/[&<>"'/`=]/g, s => map[s]);
+}
