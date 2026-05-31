@@ -2,6 +2,7 @@ import {
   allAreFalsy,
   areObjectEntriesEqual,
   collectionToArray,
+  escapeHtml,
   getQueryParams,
   isEmpty,
   isNil,
@@ -276,5 +277,18 @@ describe('Object Util', () => {
         id: 3,
       },
     ]);
+  });
+
+  describe('escapeHtml method', () => {
+    it('should escape HTML special characters', () => {
+      const input = '& < > " \' / ` =';
+      const expected = '&amp; &lt; &gt; &quot; &#39; &#x2F; &#x60; &#x3D;';
+      expect(escapeHtml(input)).toBe(expected);
+    });
+
+    it('should return same string if no special characters', () => {
+      const input = 'Hello World 123';
+      expect(escapeHtml(input)).toBe(input);
+    });
   });
 });

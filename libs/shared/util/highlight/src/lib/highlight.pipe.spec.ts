@@ -27,9 +27,9 @@ describe('HighlightPipe', () => {
     expect(pipe).toBeTruthy();
   });
 
-  it('should return original value if search is empty', () => {
+  it('should return escaped value if search is empty', () => {
     expect(pipe.transform('Hello World', '')).toBe('Hello World');
-    expect(pipe.transform('Hello World', null)).toBe('Hello World');
+    expect(pipe.transform('<b>Hello</b>', null)).toBe('&lt;b&gt;Hello&lt;&#x2F;b&gt;');
   });
 
   it('should highlight matching text', () => {
@@ -50,7 +50,15 @@ describe('HighlightPipe', () => {
     expect(result).toContain('Héllò');
   });
 
-  it('should return original value if no match found', () => {
-    expect(pipe.transform('Hello World', 'NotFound')).toBe('Hello World');
+  it('should return escaped value if no match found', () => {
+    expect(pipe.transform('<b>Hello</b>', 'NotFound')).toBe('&lt;b&gt;Hello&lt;&#x2F;b&gt;');
+  });
+
+  it('should escape HTML to prevent XSS', () => {
+    const maliciousInput = '<script>alert("xss")</script> Hello';
+    const result = pipe.transform(maliciousInput, 'Hello') as string;
+    expect(result).toContain('&lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;');
+    expect(result).toContain('<mark');
+    expect(result).toContain('Hello');
   });
 });
