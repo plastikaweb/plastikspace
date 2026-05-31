@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-05-31] - Shared: TECH-03 — Optimize `libs/shared/util/objects` utility functions
+
+### Changed
+
+- **`libs/shared/util/objects`**: Optimized three hot utility functions without changing observable behaviour. `isEmpty` now uses an early-exit `for...in` loop instead of `Object.entries(obj).length`, avoiding an O(N) array allocation per call. `formatURLQueryParams` builds its result by mutating the `reduce` accumulator instead of spreading it on every iteration (O(N) instead of O(N²)), and now returns `{}` for a URL with no query string rather than throwing. `collectionToArray` uses native `Object.values()` in place of `Object.keys().map()`. Verified by the existing 39 unit tests (TECH-03, [#86ca226tz](https://app.clickup.com/t/86ca226tz), [#1095](https://github.com/plastikaweb/plastikspace/pull/1095)).
+
 ## [2026-05-31] - Shared: Fix XSS vulnerability in `HighlightPipe`
 
 ### Fixed
