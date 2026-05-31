@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export type FavoriteButtonSize = 'xs' | 'sm' | 'md' | 'lg';
 export type FavoriteButtonAppearance = 'glass' | 'none';
 
 @Component({
   selector: 'eco-store-shared-favorite-button',
-  imports: [MatButtonModule, MatIconModule],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './eco-store-shared-favorite-button.component.html',
   styleUrl: './eco-store-shared-favorite-button.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
