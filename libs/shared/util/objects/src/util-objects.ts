@@ -1,16 +1,25 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
- * @description Check if an array or object are empty.
+ * @description Check if an array or object are empty. Uses an early-exit `for...in`
+ * loop instead of `Object.entries(obj).length` to avoid the O(N) array allocation.
  * @param {unknown} obj Object parameter passed.
  * @returns {boolean}.
  */
 export function isEmpty(obj: unknown): boolean {
   if (obj === null || obj === undefined) return true;
-  return (
-    ([Object, Array] as unknown[]).includes((obj as object).constructor) &&
-    !Object.entries(obj as object).length
-  );
+
+  const constructor = (obj as object).constructor;
+  if (constructor === Array || constructor === Object) {
+    for (const key in obj as object) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  return false;
 }
 
 /**
@@ -83,18 +92,27 @@ export function getQueryParams(
 }
 
 /**
- * @description Returns an object from a url with query params.
+ * @description Returns an object from a url with query params. Builds the result by
+ * mutating the `reduce` accumulator instead of spreading it (O(N) instead of O(N²)),
+ * and returns an empty object for URLs without a query string instead of throwing.
  * @param  {string} url The URL with query params.
  * @returns {Record<string, unknown>}.
  */
 export function formatURLQueryParams(url: string): Record<string, unknown> {
-  const urlParams = url.split('?')[1].split('&');
-  return urlParams.reduce((prev, current) => {
+  const parts = url.split('?');
+  if (parts.length < 2) {
+    return {};
+  }
+  const queryString = parts[1];
+  const urlParams = queryString.split('&');
+  return urlParams.reduce((prev: Record<string, unknown>, current) => {
     const pair = current.split('=');
-    return {
-      ...prev,
-      [pair[0]]: decodeURIComponent(pair[1]),
-    };
+    const key = pair[0];
+    const value = pair[1];
+    if (key) {
+      prev[key] = decodeURIComponent(value);
+    }
+    return prev;
   }, {});
 }
 
@@ -210,13 +228,14 @@ export function transformToString(value: unknown): string {
 }
 
 /**
- * @description Returns an array based on passed collection.
+ * @description Returns an array based on passed collection, using native.
+ * `Object.values()` instead of `Object.keys().map()`.
  * @template T
  * @param {Record<string, T>} collection The passed collection as parameter.
  * @returns {T[]}.
  */
 export function collectionToArray<T>(collection: Record<string, T>): T[] {
-  return Object.keys(collection).map((key: string) => collection[key]);
+  return Object.values(collection);
 }
 
 /**
