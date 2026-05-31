@@ -4290,7 +4290,16 @@ var MatInputModule = class _MatInputModule {
 function isEmpty(obj) {
   if (obj === null || obj === void 0)
     return true;
-  return [Object, Array].includes(obj.constructor) && !Object.entries(obj).length;
+  const constructor = obj.constructor;
+  if (constructor === Array || constructor === Object) {
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        return false;
+      }
+    }
+    return true;
+  }
+  return false;
 }
 function isNil(value) {
   return value === void 0 || value === null;
@@ -5764,4 +5773,4 @@ export {
   isDynamicComponentTypeGuard,
   DEFAULT_TABLE_CONFIG
 };
-//# sourceMappingURL=chunk-7YAY6RNH.js.map
+//# sourceMappingURL=chunk-AKFALNRV.js.map

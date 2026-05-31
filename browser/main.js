@@ -6545,7 +6545,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-NMUEQDC3.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-INRGMXDS.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
