@@ -1,7 +1,7 @@
 import { inject, Pipe, PipeTransform } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { latinize } from '@plastik/shared/latinize';
-import { escapeHtml } from '@plastik/shared/util/objects';
+import { escapeHtml } from '@plastik/shared/objects';
 
 @Pipe({
   name: 'highlight',
