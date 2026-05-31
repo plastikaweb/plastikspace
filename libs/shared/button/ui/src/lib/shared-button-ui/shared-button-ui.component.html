@@ -4,6 +4,7 @@
     [class]="`button--rounded ${buttonConfig().classes || ''}`"
     [disabled]="buttonConfig().disabled"
     [attr.aria-label]="buttonConfig().ariaLabel"
+    [matTooltip]="buttonConfig().ariaLabel"
     [attr.data-test]="buttonConfig().dataTestId"
     (click)="onClick()">
     <ng-container *ngTemplateOutlet="content"></ng-container>
@@ -15,6 +16,7 @@
     class="block"
     target="_blank"
     [attr.aria-label]="buttonConfig().ariaLabel"
+    [matTooltip]="buttonConfig().ariaLabel"
     [href]="linkHref()"
     [attr.data-test]="buttonConfig().dataTestId">
     <ng-container *ngTemplateOutlet="content">button content</ng-container>
