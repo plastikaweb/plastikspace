@@ -9,6 +9,10 @@
 # dependencies
 node_modules
 
+# AI agent journals/scratch (not version-controlled)
+.Jules/
+.jules/
+
 # IDEs and editors
 .project
 .classpath
