@@ -19,7 +19,7 @@
       type="submit"
       class="w-full sm:w-auto"
       data-test="submit-button"
-      [ngClass]="config().buttonStyle || ''"
+      [class]="config().buttonStyle || ''"
       [disabled]="!form.valid">
       {{ config().label || 'Submit' }}
     </button>

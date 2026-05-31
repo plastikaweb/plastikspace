@@ -36,7 +36,6 @@ import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity } from '@plastik/core/entities';
 import {
-  DataFormatFactoryService,
   FormattingTypes,
   SafeFormattedPipe,
   SharedUtilFormattersModule,
@@ -96,9 +95,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
   styleUrl: './shared-table-ui.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }>
-  implements OnInit
-{
+export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unknown }> {
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
   /**
@@ -236,6 +233,18 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
   protected expandedElement = signal<T | null>(null);
 
   constructor() {
+    this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
+      const value = sortHeaderId.split('.').reduce((obj, key) => {
+        return obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key] : obj;
+      }, data as unknown) as unknown;
+
+      if (value === null || value === undefined) return '';
+      if (typeof value === 'number') return value;
+      if (typeof value === 'boolean') return value ? 1 : 0;
+      if (value instanceof Date) return value.getTime();
+      return String(value).toLowerCase();
+    };
+
     /**
      * Synchronize the data source with the data input signal.
      */
@@ -249,44 +258,38 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
       const predicate = this.filterPredicate();
 
       if (criteria && predicate) {
+        this.dataSource.filterPredicate = (data: T) => {
+          return predicate(data, criteria);
+        };
         // We set a non-empty string to trigger the filterPredicate
         this.dataSource.filter = JSON.stringify(criteria);
       } else {
         this.dataSource.filter = '';
       }
     });
-  }
 
-  /**
-   * Initializes the component.
-   */
-  ngOnInit(): void {
-    this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
-      const value = sortHeaderId.split('.').reduce((obj, key) => {
-        return obj && typeof obj === 'object' ? (obj as Record<string, unknown>)[key] : obj;
-      }, data as unknown) as unknown;
-
-      if (value === null || value === undefined) return '';
-      if (typeof value === 'number') return value;
-      if (typeof value === 'boolean') return value ? 1 : 0;
-      if (value instanceof Date) return value.getTime();
-      return String(value).toLowerCase();
-    };
-
-    if (this.filterPredicate && this.filterCriteria) {
-      this.dataSource.filterPredicate = (data: T) => {
-        return this.filterPredicate()?.(data as T, this.filterCriteria()) || false;
-      };
-    }
-
-    if (this.sort()) {
+    /**
+     * Synchronize the data source sort with the sort input and matSort viewChild signals.
+     */
+    effect(() => {
       const matSortInstance = this.matSort();
-      if (matSortInstance) {
-        matSortInstance.active = this.sort()?.[0] || '';
-        matSortInstance.direction = this.sort()?.[1] || 'asc';
+      const sortConfig = this.sort();
+      if (matSortInstance && sortConfig) {
+        matSortInstance.active = sortConfig[0] || '';
+        matSortInstance.direction = sortConfig[1] || 'asc';
         this.dataSource.sort = matSortInstance;
       }
-    }
+    });
+
+    /**
+     * Synchronize the data source paginator with the matPaginator viewChild signal.
+     */
+    effect(() => {
+      const paginator = this.matPaginator();
+      if (paginator) {
+        this.dataSource.paginator = paginator;
+      }
+    });
   }
 
   /**

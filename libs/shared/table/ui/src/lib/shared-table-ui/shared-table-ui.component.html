@@ -280,6 +280,7 @@
             <button
               mat-icon-button
               aria-label="expand row"
+              matTooltip="Expand row"
               class="-left-sub"
               (click)="$event.stopPropagation(); updateExpandedElement(element)">
               @if (expandedElement()?.id === element.id) {

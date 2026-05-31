@@ -10,6 +10,7 @@ import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { BaseEntity } from '@plastik/core/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 
 import {
   FormattingComponentOutput,
@@ -217,11 +218,7 @@ export class SharedUtilFormattersService {
         ...extras(item),
       };
     }
-    return `
-    ${format.prefix ? format.prefix : ''}
-    ${formatNumber(Number(value), format.locale, format.numberDigitsInfo)}
-    ${format.suffix ? format.suffix : ''}
-    `;
+    return `${format.prefix ? format.prefix : ''}${formatNumber(Number(value), format.locale, format.numberDigitsInfo)}${format.suffix ? format.suffix : ''}`;
   }
 
   /**
@@ -311,6 +308,6 @@ export class SharedUtilFormattersService {
    * @returns { SafeHtml } The value passed through the sanitizer.
    */
   defaultFormatter(value: string): SafeHtml {
-    return this.#sanitizer.bypassSecurityTrustHtml(value);
+    return this.#sanitizer.bypassSecurityTrustHtml(escapeHtml(value));
   }
 }

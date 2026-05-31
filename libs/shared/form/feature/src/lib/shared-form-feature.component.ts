@@ -93,22 +93,33 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit {
     );
   }
 
+  /**
+   * Handles the form submission.
+   * @param event - The form submission event.
+   */
   onSubmit(event: Event): void {
     event.preventDefault();
     event.stopPropagation();
-    this.emitChange();
+    this.#emitChange();
   }
 
+  /**
+   * Handles model changes from the formly form.
+   * @param model - The updated model.
+   */
   onModelChange(model: T): void {
     if (this.#submitted()) return;
 
     this.#newModel.set(model);
     this.pendingChangesEvent.emit(this.form.dirty);
-    if (!this.config().submitAvailable) this.emitChange();
+    if (!this.config().submitAvailable) this.#emitChange();
     if (this.config().emitOnChange) this.temporaryChangeEvent.emit(model);
   }
 
-  private emitChange(): void {
+  /**
+   * Emits the form changes if the form is valid.
+   */
+  #emitChange(): void {
     if (this.form.valid) {
       if (this.config().disableOnSubmit) {
         this.form.disable({ emitEvent: false });

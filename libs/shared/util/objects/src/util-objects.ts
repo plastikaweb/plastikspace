@@ -221,3 +221,22 @@ export function transformToString(value: unknown): string {
 export function collectionToArray<T>(collection: Record<string, T>): T[] {
   return Object.keys(collection).map((key: string) => collection[key]);
 }
+
+/**
+ * Escapes HTML special characters in a string.
+ * @param value - The string to escape.
+ * @returns The escaped string.
+ */
+export function escapeHtml(value: string): string {
+  const entityMap: Record<string, string> = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;',
+    '/': '&#x2F;',
+    '`': '&#x60;',
+    '=': '&#x3D;',
+  };
+  return value.replace(/[&<>"'\/`=]/g, s => entityMap[s]);
+}
