@@ -291,5 +291,5 @@ export function escapeHtml(text: string): string {
     '`': '&#x60;',
     '=': '&#x3D;',
   };
-  return text.replace(/[&<>"'/`=]/g, s => map[s]);
+  return text.replace(/[&<>"'\/`=]/g, s => map[s]);
 }
