@@ -906,8 +906,16 @@ const characters: Record<string, string> = {
  * @param {string} str - The input string.
  * @returns {string} The Latinized string.
  */
+/**
+ * Converts a string to its Latinized form.
+ * @description Optimizes character replacement by only targeting non-ASCII characters,
+ * avoiding unnecessary lookups and callbacks for common alphanumeric text.
+ * Maintains full compatibility with the legacy character map (Cyrillic, ligatures, etc.).
+ * @param {string} str - The input string.
+ * @returns {string} The Latinized string.
+ */
 export function latinize(str: string): string {
-  return str.replace(/[^A-Za-z0-9]/g, function (x) {
+  return str.replace(/[^\x00-\x7F]/g, function (x) {
     return characters[x] || x;
   });
 }
