@@ -25,4 +25,4 @@ console.log(latinizedText); // 'aeiou'
 
 ## Running unit tests
 
-Run `nx test shared-util-latinize` to execute the unit tests.
+Run `nx test latinize` to execute the unit tests.

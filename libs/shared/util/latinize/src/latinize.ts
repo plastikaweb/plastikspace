@@ -903,11 +903,14 @@ const characters: Record<string, string> = {
 };
 /**
  * Converts a string to its Latinized form.
+ * Optimizes performance by using a regex that only targets non-ASCII characters,
+ * avoiding unnecessary callback executions for standard ASCII characters.
  * @param {string} str - The input string.
  * @returns {string} The Latinized string.
  */
 export function latinize(str: string): string {
-  return str.replace(/[^A-Za-z0-9]/g, function (x) {
+  // eslint-disable-next-line no-control-regex
+  return str.replace(/[^\x00-\x7F]/g, function (x) {
     return characters[x] || x;
   });
 }
