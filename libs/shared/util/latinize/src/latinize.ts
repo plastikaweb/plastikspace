@@ -863,7 +863,7 @@ const characters: Record<string, string> = {
   Ф: 'F',
   Ы: 'I',
   В: 'V',
-  А: 'a',
+  А: 'A',
   П: 'P',
   Р: 'R',
   О: 'O',
@@ -882,7 +882,7 @@ const characters: Record<string, string> = {
   д: 'd',
   ж: 'zh',
   э: 'e',
-  Я: 'Ya',
+  Я: 'YA',
   Ч: 'CH',
   С: 'S',
   М: 'M',
@@ -907,7 +907,8 @@ const characters: Record<string, string> = {
  * @returns {string} The Latinized string.
  */
 export function latinize(str: string): string {
-  return str.replace(/[^A-Za-z0-9]/g, function (x) {
+  // eslint-disable-next-line no-control-regex
+  return str.replace(/[^\x00-\x7F]/g, function (x) {
     return characters[x] || x;
   });
 }
