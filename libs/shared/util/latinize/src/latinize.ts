@@ -907,7 +907,8 @@ const characters: Record<string, string> = {
  * @returns {string} The Latinized string.
  */
 export function latinize(str: string): string {
-  return str.replace(/[^A-Za-z0-9]/g, function (x) {
+  // eslint-disable-next-line no-control-regex
+  return str.replace(/[^\x00-\x7F]/g, function (x) {
     return characters[x] || x;
   });
 }
