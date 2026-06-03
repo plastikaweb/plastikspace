@@ -10,6 +10,9 @@
           [attr.aria-label]="
             (sideNavOpen() ? 'common.a11y.closeSidenav' : 'common.a11y.openSidenav') | translate
           "
+          [matTooltip]="
+            (sideNavOpen() ? 'common.a11y.closeSidenav' : 'common.a11y.openSidenav') | translate
+          "
           (click)="toggleSidenav.emit()">
           @if (!sideNavOpen()) {
             <mat-icon>menu</mat-icon>
