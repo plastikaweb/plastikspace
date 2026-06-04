@@ -27,6 +27,12 @@
             : 'products.quantity.decrement'
           ) | translate: { value: product().name }
         "
+        [matTooltip]="
+          (quantity() <= minLimit() && mode() === 'card'
+            ? 'products.quantity.remove'
+            : 'products.quantity.decrement'
+          ) | translate: { value: product().name }
+        "
         [class]="
           quantity() <= minLimit() && mode() === 'card' ? 'remove-button' : 'decrement-button'
         "
@@ -76,7 +82,8 @@
         type="button"
         class="increment-button"
         [disabled]="quantity() >= maxLimit()"
-        [attr.aria-label]="`${('products.quantity.increment' | translate)} ${product().name}`"
+        [attr.aria-label]="('products.quantity.increment' | translate) + ' ' + product().name"
+        [matTooltip]="('products.quantity.increment' | translate) + ' ' + product().name"
         [attr.aria-disabled]="quantity() >= maxLimit()"
         [class.opacity-50]="quantity() >= maxLimit()"
         (click)="onIncrementClick($event)">
