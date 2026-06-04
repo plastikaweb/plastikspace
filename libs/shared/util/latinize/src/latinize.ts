@@ -907,7 +907,12 @@ const characters: Record<string, string> = {
  * @returns {string} The Latinized string.
  */
 export function latinize(str: string): string {
-  return str.replace(/[^A-Za-z0-9]/g, function (x) {
-    return characters[x] || x;
-  });
+  /**
+   * PERFORMANCE OPTIMIZATION:
+   * Using /[^\x00-\x7F]/g instead of /[^A-Za-z0-9]/g to only target non-ASCII characters.
+   * This prevents the replacement callback from firing for common ASCII symbols (spaces, punctuation, etc.),
+   * reducing map lookups and significantly improving performance for ASCII-heavy strings.
+   */
+  // eslint-disable-next-line no-control-regex
+  return str.replace(/[^\x00-\x7F]/g, x => characters[x] || x);
 }

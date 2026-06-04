@@ -124,13 +124,20 @@ export function formatURLQueryParams(url: string): Record<string, unknown> {
 export function removeNullProperties(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean> {
-  return Object.entries(collection).reduce(
-    (currentCollection: Record<string, string | number | boolean | null>, [property, value]) =>
-      value === null
-        ? currentCollection
-        : ((currentCollection[property] = value), currentCollection),
-    {}
-  ) as Record<string, string | number | boolean>;
+  /**
+   * PERFORMANCE OPTIMIZATION:
+   * Replaced Object.entries().reduce() with a for...in loop to avoid intermediate array allocations.
+   */
+  const result: Record<string, string | number | boolean> = {};
+  for (const property in collection) {
+    if (Object.prototype.hasOwnProperty.call(collection, property)) {
+      const value = collection[property];
+      if (value !== null) {
+        result[property] = value;
+      }
+    }
+  }
+  return result;
 }
 
 /**
@@ -141,13 +148,18 @@ export function removeNullProperties(
 export function setEmptyStringPropertiesToNull(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean | null> {
-  return Object.entries(collection).reduce(
-    (currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
-      currentCollection[property] = isString(value) && !value.length ? null : value;
-      return currentCollection;
-    },
-    {}
-  ) as Record<string, string | number | boolean | null>;
+  /**
+   * PERFORMANCE OPTIMIZATION:
+   * Replaced Object.entries().reduce() with a for...in loop to avoid intermediate array allocations.
+   */
+  const result: Record<string, string | number | boolean | null> = {};
+  for (const property in collection) {
+    if (Object.prototype.hasOwnProperty.call(collection, property)) {
+      const value = collection[property];
+      result[property] = isString(value) && !value.length ? null : value;
+    }
+  }
+  return result;
 }
 
 /**
@@ -185,16 +197,21 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
 export function transformStringToBooleanProperties(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean> {
-  return Object.entries(collection).reduce(
-    (currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
-      currentCollection[property] =
+  /**
+   * PERFORMANCE OPTIMIZATION:
+   * Replaced Object.entries().reduce() with a for...in loop to avoid intermediate array allocations.
+   */
+  const result: Record<string, string | number | boolean> = {};
+  for (const property in collection) {
+    if (Object.prototype.hasOwnProperty.call(collection, property)) {
+      const value = collection[property];
+      result[property] =
         isString(value) && (value === 'false' || value === 'true')
-          ? coerceBooleanProperty(value)
-          : value;
-      return currentCollection;
-    },
-    {}
-  ) as Record<string, string | number | boolean>;
+          ? (coerceBooleanProperty(value) as unknown as string | number | boolean)
+          : (value as string | number | boolean);
+    }
+  }
+  return result;
 }
 
 /**
