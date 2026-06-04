@@ -10,6 +10,7 @@ import { inject, Injectable, LOCALE_ID } from '@angular/core';
 import { Timestamp } from '@angular/fire/firestore';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { BaseEntity } from '@plastik/core/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 
 import {
   FormattingComponentOutput,
@@ -259,8 +260,9 @@ export class SharedUtilFormattersService {
         ...extras(),
       };
     }
+    const icon = value ? format.iconTrue : format.iconFalse;
     return this.#sanitizer.bypassSecurityTrustHtml(
-      `<span class="material-icons">${value ? format.iconTrue : format.iconFalse}</span>`
+      `<span class="material-icons">${escapeHtml(icon)}</span>`
     );
   }
 
@@ -314,6 +316,6 @@ export class SharedUtilFormattersService {
    * @returns {SafeHtml} The value passed through the sanitizer.
    */
   defaultFormatter(value: string): SafeHtml {
-    return this.#sanitizer.bypassSecurityTrustHtml(value);
+    return this.#sanitizer.bypassSecurityTrustHtml(escapeHtml(value));
   }
 }
