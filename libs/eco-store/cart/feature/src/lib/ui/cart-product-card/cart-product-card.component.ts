@@ -3,6 +3,7 @@ import { ChangeDetectionStrategy, Component, input, output } from '@angular/core
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 import { EcoStoreCartItem, EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
@@ -18,6 +19,7 @@ import { NewPriceWarningComponent } from '../new-price-warning/new-price-warning
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule,
     RouterLink,
     PocketBaseImageUrlPipe,
     SharedImgContainerComponent,

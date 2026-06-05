@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltip } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { EcoStoreCartItem } from '@plastik/eco-store/entities';
@@ -94,5 +96,13 @@ describe('CartProductCardComponent', () => {
     deleteButton.click();
 
     expect(spy).toHaveBeenCalledWith({ quantity: 0, product: mockProduct });
+  });
+
+  it('should have a tooltip on the delete button', () => {
+    fixture.componentRef.setInput('editable', true);
+    fixture.detectChanges();
+
+    const deleteButton = fixture.debugElement.query(By.css('.cart-delete-button'));
+    expect(deleteButton.injector.get(MatTooltip)).toBeTruthy();
   });
 });
