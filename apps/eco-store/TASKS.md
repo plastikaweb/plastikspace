@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.10 · **Last updated:** 2026-06-06
+**Document version:** 0.11 · **Last updated:** 2026-06-06
 
 ---
 
@@ -385,7 +385,7 @@ All `COULD`, pending discovery.
 
 - **A11Y-001** — 200% zoom breakage [MUST · 📋]
 - **A11Y-002** _(new)_ — Tenant button on mobile a11y issue [MUST · 📋 · ClickUp `86c9uq8kt`]
-- **A11Y-003** _(new)_ — Password visibility toggle: tooltip + `aria-pressed` fix + label i18n [SHOULD · 📋 · ClickUp `86ca59u4d`]
+- **A11Y-003** ✅ — Password visibility toggle: tooltip + `aria-pressed` fix + label i18n [SHOULD · ✅ 2026-06-06 · ClickUp `86ca59u4d`]
 - **A11Y-004** _(new)_ — Tooltips on eco-store quantity/cart icon buttons [SHOULD · 📋 · ClickUp `86ca59u4x`]
 - **A11Y-005** _(new)_ — Header sidenav + tenant-link tooltips/aria-label [SHOULD · 📋 · ClickUp `86ca59u73`]
 - Pa11y CI: `yarn eco-store:a11y`
@@ -403,7 +403,7 @@ All `COULD`, pending discovery.
 | **TECH-02** ✅      | Modernize `libs/shared/*` to Angular 21 (already on develop; residual cleanup landed)                               | SHOULD   | `86c9y6upw` |
 | **TECH-03** ✅      | Optimize `libs/shared/util/objects` (O(N²)→O(N) `reduce`, drop O(N) alloc in `isEmpty`, native `Object.values()`)   | SHOULD   | `86ca226tz` |
 | **TECH-04** ✅      | Optimize `libs/shared/util/latinize`: ASCII-only regex (`/[^\x00-\x7F]/g`) + fix Cyrillic `А` casing bug + add spec | SHOULD   | `86ca59u10` |
-| **TECH-05** _(new)_ | TECH-03 follow-up: convert remaining `libs/shared/util/objects` `reduce` fns to `for…in`                            | COULD    | `86ca59u6d` |
+| **TECH-05** ✅      | TECH-03 follow-up: convert remaining `libs/shared/util/objects` `reduce` fns to `for…in`                            | COULD    | `86ca59u6d` |
 
 ### Security
 
@@ -483,6 +483,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.11    | 2026-06-06 | **SEC-01/02 + TECH-04/05 + A11Y-003 done** — XSS escape in formatters (PR #1120), tabnabbing `rel=noopener` workspace-wide (PR #1122), latinize ASCII regex + Cyrillic А/Я casing (PR #1123), util/objects `reduce`→`for…in` follow-up (PR #1125), password-toggle a11y (this branch). CU `86ca59u6g/43/10/6d/4d`.                                                                                                                                       |
 | 0.10    | 2026-06-06 | Triaged 18 redundant Jules draft PRs (#1099–#1117) → 7 atomic tasks (each maps to one cluster; valid unmerged work, verified against develop). Added **TECH-04** (latinize), **TECH-05** (object-utils follow-up), **SEC-01/02** (new Security family: XSS + tabnabbing), **A11Y-003/04/05** (password toggle, action tooltips, header). Best source PR per cluster kept open; the rest closed with a pointer comment. CU `86ca59u10/6d/6g/43/4d/4x/73`. |
 | 0.9     | 2026-05-31 | **TECH-03 done** — optimized `libs/shared/util/objects` (`isEmpty`, `formatURLQueryParams`, `collectionToArray`) for O(N) perf. Cherry-picked from Jules PR #1095 (superset of #1091, closed as subset). On develop. CU `86ca226tz`.                                                                                                                                                                                                                     |
 | 0.8     | 2026-05-30 | **META-02 done** — removed `NOT_REGISTERED` from `users.membershipStatus` (now 4 values). Verified 0 staging records held it; applied on local PB, `pb_schema.json` syncs to staging via `pocketbase-schema.yml` on merge. CU `86c9uq8k3`.                                                                                                                                                                                                               |
