@@ -63,6 +63,9 @@
         "invalid-username": "Invalid username",
         "zip": "Invalid zip code format"
       },
+      "password": "Password",
+      "showPassword": "Show password",
+      "hidePassword": "Hide password",
       "charactersCount": "{count, plural, one {character} other {characters}}"
     },
     "a11y": {

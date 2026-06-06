@@ -1,6 +1,8 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
+import { MatTooltip } from '@angular/material/tooltip';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { InputPasswordWithVisibilityTypeComponent } from './input-password-with-visibility-type.component';
@@ -57,5 +59,10 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
     component.hidePassword(event);
 
     expect(component.hiddenPass()).toBe(!initialVisibility);
+  });
+
+  it('should have a tooltip on the toggle button', () => {
+    const tooltip = fixture.debugElement.query(By.directive(MatTooltip));
+    expect(tooltip).toBeTruthy();
   });
 });

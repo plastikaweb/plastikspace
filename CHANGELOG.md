@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-06] - Shared: A11Y-01 — Enhance `InputPasswordWithVisibilityTypeComponent` accessibility
+
+### Added
+
+- **`libs/shared/form/ui/input-password-with-visibility`**: Added a `matTooltip` to the password visibility toggle button and verified it with a new unit test. Added missing `password`, `showPassword`, and `hidePassword` translation keys to the `eco-store` app in English, Spanish, and Catalan.
+
+### Changed
+
+- **`libs/shared/form/ui/input-password-with-visibility`**: Updated the component to use camelCase translation keys (`common.form.password`, `common.form.showPassword`, `common.form.hidePassword`). Corrected the `aria-pressed` attribute to reflect the visible state (active) instead of the hidden state.
+
 ## [2026-06-06] - Shared: SEC-01 — Fix XSS in `SharedUtilFormattersService` table-cell formatters
 
 ### Fixed

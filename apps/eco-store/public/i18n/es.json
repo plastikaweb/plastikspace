@@ -63,6 +63,9 @@
         "invalid-username": "Nombre de usuario inválido",
         "zip": "Formato de código postal no válido"
       },
+      "password": "Contraseña",
+      "showPassword": "Mostrar contraseña",
+      "hidePassword": "Ocultar contraseña",
       "charactersCount": "{count, plural, one {carácter} other {caracteres}}"
     },
     "a11y": {
