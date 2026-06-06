@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-06] - Workspace: SEC-02 — Reverse-tabnabbing: add `rel="noopener noreferrer"` to all `target="_blank"` links
+
+### Fixed
+
+- **Workspace-wide**: All 7 `target="_blank"` anchor elements across 5 files were missing `rel="noopener noreferrer"`, leaving them open to reverse-tabnabbing (opened page can navigate `window.opener` back to the originating tab). Fixed in `libs/core/cms-layout/feature` (2), `libs/llecoop/cms-layout` (2), `libs/shared/button/ui` (1), `libs/eco-store/core/layout` (1), and `apps/llecoop-firebase/public` (1). Closes [#86ca59u43](https://app.clickup.com/t/86ca59u43).
+
 ## [2026-06-06] - Shared: SEC-01 — Fix XSS in `SharedUtilFormattersService` table-cell formatters
 
 ### Fixed
