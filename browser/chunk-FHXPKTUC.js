@@ -4326,6 +4326,19 @@ function deepClone(obj) {
   }
   return obj;
 }
+function escapeHtml(text) {
+  const map2 = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+    "/": "&#x2F;",
+    "`": "&#x60;",
+    "=": "&#x3D;"
+  };
+  return text.replace(/[&<>"'/`=]/g, (s) => map2[s]);
+}
 
 // node_modules/@angular/material/fesm2022/_internal-form-field-chunk.mjs
 var _c04 = ["mat-internal-form-field", ""];
@@ -5755,6 +5768,7 @@ export {
   isEmpty,
   isNil,
   deepClone,
+  escapeHtml,
   _MatInternalFormField,
   MatRadioChange,
   MatRadioGroup,
@@ -5773,4 +5787,4 @@ export {
   isDynamicComponentTypeGuard,
   DEFAULT_TABLE_CONFIG
 };
-//# sourceMappingURL=chunk-AKFALNRV.js.map
+//# sourceMappingURL=chunk-FHXPKTUC.js.map

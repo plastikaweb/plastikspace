@@ -19,6 +19,7 @@ import {
   MatSelectModule,
   MatSuffix,
   _MatInternalFormField,
+  escapeHtml,
   isCheckboxTypeGuard,
   isDynamicComponentTypeGuard,
   isEmpty,
@@ -29,7 +30,7 @@ import {
   isTextTypeGuard,
   isTextareaTypeGuard,
   isToggleTypeGuard
-} from "./chunk-AKFALNRV.js";
+} from "./chunk-FHXPKTUC.js";
 import {
   MatTooltip,
   MatTooltipModule
@@ -4440,7 +4441,7 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
     if (extras) {
       format = __spreadValues(__spreadValues({}, format), extras());
     }
-    return this.#sanitizer.bypassSecurityTrustHtml(`<span class="material-icons">${value ? format.iconTrue : format.iconFalse}</span>`);
+    return this.#sanitizer.bypassSecurityTrustHtml(`<span class="material-icons">${escapeHtml(value ? format.iconTrue : format.iconFalse)}</span>`);
   }
   /**
    * Formats a value passing a custom method to format it.
@@ -4476,10 +4477,10 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
   /**
    * Formats value as default passing sanitizer.
    * @param {string} value The value to sanitize.
-   * @returns {SafeHtml} The value passed through the sanitizer.
+   * @returns {SafeHtml} The HTML-escaped value passed through the sanitizer.
    */
   defaultFormatter(value) {
-    return this.#sanitizer.bypassSecurityTrustHtml(value);
+    return this.#sanitizer.bypassSecurityTrustHtml(escapeHtml(value));
   }
   static \u0275fac = function SharedUtilFormattersService_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedUtilFormattersService)();
@@ -6121,4 +6122,4 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
 export {
   SharedTableUiComponent
 };
-//# sourceMappingURL=src-BIDNLPTH.js.map
+//# sourceMappingURL=src-3K7J6R4U.js.map

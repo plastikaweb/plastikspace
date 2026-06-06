@@ -1405,6 +1405,9 @@ html {
   .table {
     display: table;
   }
+  .table-cell {
+    display: table-cell;
+  }
   .table-row {
     display: table-row;
   }
