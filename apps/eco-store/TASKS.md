@@ -402,7 +402,7 @@ All `COULD`, pending discovery.
 | **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                                                           | SHOULD   | `86c9uq9rf` |
 | **TECH-02** ✅      | Modernize `libs/shared/*` to Angular 21 (already on develop; residual cleanup landed)                               | SHOULD   | `86c9y6upw` |
 | **TECH-03** ✅      | Optimize `libs/shared/util/objects` (O(N²)→O(N) `reduce`, drop O(N) alloc in `isEmpty`, native `Object.values()`)   | SHOULD   | `86ca226tz` |
-| **TECH-04** _(new)_ | Optimize `libs/shared/util/latinize`: ASCII-only regex (`/[^\x00-\x7F]/g`) + fix Cyrillic `А` casing bug + add spec | SHOULD   | `86ca59u10` |
+| **TECH-04** ✅      | Optimize `libs/shared/util/latinize`: ASCII-only regex (`/[^\x00-\x7F]/g`) + fix Cyrillic `А` casing bug + add spec | SHOULD   | `86ca59u10` |
 | **TECH-05** _(new)_ | TECH-03 follow-up: convert remaining `libs/shared/util/objects` `reduce` fns to `for…in`                            | COULD    | `86ca59u6d` |
 
 ### Security
