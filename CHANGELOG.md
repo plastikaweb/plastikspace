@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-06] - Shared: A11Y-003 — Password visibility toggle: correct `aria-label`/`aria-pressed` + tooltip + label i18n
+
+### Fixed
+
+- **`libs/shared/form/ui/input-password-with-visibility`**: The visibility-toggle button was mislabeled for assistive tech twice over — its `aria-label` ternary referenced non-existent kebab-case keys (`form.hide-password`/`form.show-password`) with the first branch not even piped through `translate`, and `aria-pressed` reported `true` while the password was _hidden_ (the inverse of the "show password" toggle semantics). Both fixed: `aria-label` now uses new `common.form.showPassword`/`hidePassword` keys (added to ca/es/en), `aria-pressed` is `true` only when the password is visible, and a `matTooltip` with the same translated text gives sighted users the affordance on hover/focus. The sr-only input label key was also corrected (`form.password` → `common.form.password`). Added a spec asserting label/pressed state sync across toggles. Supersedes Jules PR [#1102](https://github.com/plastikaweb/plastikspace/pull/1102) (A11Y-003, [#86ca59u4d](https://app.clickup.com/t/86ca59u4d)).
+
 ## [2026-06-06] - Eco-store: BUG-003 — iOS "Add to Home Screen" now shows the tenant name (server-rendered PWA identity)
 
 ### Fixed

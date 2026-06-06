@@ -63,7 +63,10 @@
         "invalid-username": "Format de nom d'usuari no vàlid",
         "zip": "Format de codi no vàlid"
       },
-      "charactersCount": "{count, plural, one {caràcter} other {caràcters}}"
+      "charactersCount": "{count, plural, one {caràcter} other {caràcters}}",
+      "password": "Contrasenya",
+      "showPassword": "Mostrar contrasenya",
+      "hidePassword": "Amagar contrasenya"
     },
     "a11y": {
       "skipToContent": "Saltar al contingut principal",
