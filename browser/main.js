@@ -5314,7 +5314,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
     if (rf & 2) {
       \u0275\u0275queryAdvance();
     }
-  }, inputs: { hideFooter: [1, "hideFooter"] }, decls: 40, vars: 25, consts: [["h1Tpl", ""], ["toggleSidenavButtonTpl", ""], ["widgetsContainer", ""], [1, "core-cms-container"], ["data-test", "layout-header"], ["start", "", 1, "sm:gap-sm", "flex", "items-center", "gap-0"], ["data-test", "layout-title"], [1, "sr-only"], [1, "gap-sub", "flex", "content-center", "items-center", "justify-between", "hover:no-underline", 3, "routerLink"], [3, "ngTemplateOutlet"], ["end", "", 1, "gap-tiny", "lg:gap-sm", "flex", "items-center"], [3, "userMenuConfig"], [3, "toggleSidenav", "position", "mode", "fixedInViewport", "sidenavOpened"], ["header", "", 3, "ngTemplateOutlet"], ["menu-items", "", "data-test", "sidenav-list"], [1, "spinner-container"], [1, "lds-ripple"], [3, "sendDismiss", "plastikSnackbar"], [3, "sendAction", "userMenuConfig"], ["routerLinkActive", "bg-gray-10", "ariaCurrentWhenActive", "page", 1, "my-tiny", "h-xll", "hover:bg-gray-10", "focus:bg-gray-10", 3, "routerLink", "routerLinkActiveOptions"], ["matListItemIcon", ""], ["matListItemTitle", ""], ["data-test", "layout-footer"], ["content", "", 1, "gap-tiny", "flex", "flex-row", "items-center", "justify-center", "text-sm"], ["aria-label", "visit www.plastikaweb.com page", "href", "https://www.plastikaweb.com", "target", "_blank", 1, "underline", "underline-offset-2"], ["aria-label", "visitar www.llevat.org", "href", "https://www.llevat.org", "target", "_blank", 1, "underline", "underline-offset-2"], [1, "gap-sub", "flex", "items-center", "justify-center"], [3, "src", "svgClass", "svgAriaLabel"], [1, "hidden", "sm:block"], ["matIconButton", "", "aria-label", "men\xFA lateral", "data-test", "toggle-sidenav-button", 1, "flex", "justify-center", "align-middle", 3, "click"], [1, "mat-18"]], template: function CoreCmsLayoutFeatureComponent_Template(rf, ctx) {
+  }, inputs: { hideFooter: [1, "hideFooter"] }, decls: 40, vars: 25, consts: [["h1Tpl", ""], ["toggleSidenavButtonTpl", ""], ["widgetsContainer", ""], [1, "core-cms-container"], ["data-test", "layout-header"], ["start", "", 1, "sm:gap-sm", "flex", "items-center", "gap-0"], ["data-test", "layout-title"], [1, "sr-only"], [1, "gap-sub", "flex", "content-center", "items-center", "justify-between", "hover:no-underline", 3, "routerLink"], [3, "ngTemplateOutlet"], ["end", "", 1, "gap-tiny", "lg:gap-sm", "flex", "items-center"], [3, "userMenuConfig"], [3, "toggleSidenav", "position", "mode", "fixedInViewport", "sidenavOpened"], ["header", "", 3, "ngTemplateOutlet"], ["menu-items", "", "data-test", "sidenav-list"], [1, "spinner-container"], [1, "lds-ripple"], [3, "sendDismiss", "plastikSnackbar"], [3, "sendAction", "userMenuConfig"], ["routerLinkActive", "bg-gray-10", "ariaCurrentWhenActive", "page", 1, "my-tiny", "h-xll", "hover:bg-gray-10", "focus:bg-gray-10", 3, "routerLink", "routerLinkActiveOptions"], ["matListItemIcon", ""], ["matListItemTitle", ""], ["data-test", "layout-footer"], ["content", "", 1, "gap-tiny", "flex", "flex-row", "items-center", "justify-center", "text-sm"], ["aria-label", "visit www.plastikaweb.com page", "href", "https://www.plastikaweb.com", "target", "_blank", "rel", "noopener noreferrer", 1, "underline", "underline-offset-2"], ["aria-label", "visitar www.llevat.org", "href", "https://www.llevat.org", "target", "_blank", "rel", "noopener noreferrer", 1, "underline", "underline-offset-2"], [1, "gap-sub", "flex", "items-center", "justify-center"], [3, "src", "svgClass", "svgAriaLabel"], [1, "hidden", "sm:block"], ["matIconButton", "", "aria-label", "men\xFA lateral", "data-test", "toggle-sidenav-button", 1, "flex", "justify-center", "align-middle", 3, "click"], [1, "mat-18"]], template: function CoreCmsLayoutFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275declareLet(0);
       \u0275\u0275pipe(1, "ngrxPush");
@@ -5536,6 +5536,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
           class="underline underline-offset-2"
           href="https://www.plastikaweb.com"
           target="_blank"
+          rel="noopener noreferrer"
           >Plastikaweb</a
         >
         |
@@ -5544,6 +5545,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
           class="underline underline-offset-2"
           href="https://www.llevat.org"
           target="_blank"
+          rel="noopener noreferrer"
           >El Llevat</a
         >
       </div>
@@ -6565,7 +6567,7 @@ var headerConfig = {
     widgets: [
       {
         id: 1,
-        component: () => import("./src-VONVYZN6.js").then((c) => c.SharedButtonUiComponent),
+        component: () => import("./src-7N6YNU56.js").then((c) => c.SharedButtonUiComponent),
         inputs: {
           buttonConfig: {
             type: "link",
