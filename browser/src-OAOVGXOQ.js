@@ -1852,7 +1852,7 @@ var characters = {
   \u0424: "F",
   \u042B: "I",
   \u0412: "V",
-  \u0410: "a",
+  \u0410: "A",
   \u041F: "P",
   \u0420: "R",
   \u041E: "O",
@@ -1871,7 +1871,7 @@ var characters = {
   \u0434: "d",
   \u0436: "zh",
   \u044D: "e",
-  \u042F: "Ya",
+  \u042F: "YA",
   \u0427: "CH",
   \u0421: "S",
   \u041C: "M",
@@ -1891,9 +1891,7 @@ var characters = {
   \u044E: "yu"
 };
 function latinize(str) {
-  return str.replace(/[^A-Za-z0-9]/g, function(x) {
-    return characters[x] || x;
-  });
+  return str.replace(/[^\x00-\x7F]/g, (x) => characters[x] || x);
 }
 
 // libs/nasa-images/search/data-access/src/lib/nasa-images-api.service.ts
@@ -18139,4 +18137,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-TCISWJTL.js.map
+//# sourceMappingURL=src-OAOVGXOQ.js.map
