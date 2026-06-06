@@ -117,37 +117,43 @@ export function formatURLQueryParams(url: string): Record<string, unknown> {
 }
 
 /**
- * @description Returns an object without properties with null value.
+ * @description Returns an object without properties with null value. Uses a `for...in`
+ * loop instead of `Object.entries().reduce()` to avoid the O(N) array allocation.
  * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
  * @returns {Record<string, string | number | boolean>}.
  */
 export function removeNullProperties(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean> {
-  return Object.entries(collection).reduce(
-    (currentCollection: Record<string, string | number | boolean | null>, [property, value]) =>
-      value === null
-        ? currentCollection
-        : ((currentCollection[property] = value), currentCollection),
-    {}
-  ) as Record<string, string | number | boolean>;
+  const result: Record<string, string | number | boolean> = {};
+  for (const property in collection) {
+    if (Object.prototype.hasOwnProperty.call(collection, property)) {
+      const value = collection[property];
+      if (value !== null) {
+        result[property] = value;
+      }
+    }
+  }
+  return result;
 }
 
 /**
  * @description Returns an object with properties with empty string value replaced by null.
+ * Uses a `for...in` loop instead of `Object.entries().reduce()` to avoid the O(N) array allocation.
  * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
  * @returns {Record<string, string | number | boolean | null>}.
  */
 export function setEmptyStringPropertiesToNull(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean | null> {
-  return Object.entries(collection).reduce(
-    (currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
-      currentCollection[property] = isString(value) && !value.length ? null : value;
-      return currentCollection;
-    },
-    {}
-  ) as Record<string, string | number | boolean | null>;
+  const result: Record<string, string | number | boolean | null> = {};
+  for (const property in collection) {
+    if (Object.prototype.hasOwnProperty.call(collection, property)) {
+      const value = collection[property];
+      result[property] = isString(value) && !value.length ? null : value;
+    }
+  }
+  return result;
 }
 
 /**
@@ -179,22 +185,24 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
 
 /**
  * @description Returns an object with replaced values for"false" and"true" as boolean values.
+ * Uses a `for...in` loop instead of `Object.entries().reduce()` to avoid the O(N) array allocation.
  * @param  {Record<string, string | number | boolean | null>} collection Object parameter passed.
  * @returns {Record<string, string | number | boolean>}.
  */
 export function transformStringToBooleanProperties(
   collection: Record<string, string | number | boolean | null>
 ): Record<string, string | number | boolean> {
-  return Object.entries(collection).reduce(
-    (currentCollection: Record<string, string | number | boolean | null>, [property, value]) => {
-      currentCollection[property] =
+  const result: Record<string, string | number | boolean> = {};
+  for (const property in collection) {
+    if (Object.prototype.hasOwnProperty.call(collection, property)) {
+      const value = collection[property];
+      result[property] =
         isString(value) && (value === 'false' || value === 'true')
           ? coerceBooleanProperty(value)
-          : value;
-      return currentCollection;
-    },
-    {}
-  ) as Record<string, string | number | boolean>;
+          : (value as string | number | boolean);
+    }
+  }
+  return result;
 }
 
 /**
