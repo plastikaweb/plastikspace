@@ -407,10 +407,10 @@ All `COULD`, pending discovery.
 
 ### Security
 
-| ID                 | Description                                                                                                 | Priority   | ClickUp     |
-| ------------------ | ----------------------------------------------------------------------------------------------------------- | ---------- | ----------- |
-| **SEC-01** ✅      | XSS: `escapeHtml` in `SharedUtilFormattersService` (`defaultFormatter` + `booleanWithIconFormatter`) — HIGH | **Urgent** | `86ca59u6g` |
-| **SEC-02** _(new)_ | Reverse-tabnabbing: `rel="noopener noreferrer"` on all `target="_blank"` links (workspace-wide) — MEDIUM    | SHOULD     | `86ca59u43` |
+| ID            | Description                                                                                                 | Priority   | ClickUp     |
+| ------------- | ----------------------------------------------------------------------------------------------------------- | ---------- | ----------- |
+| **SEC-01** ✅ | XSS: `escapeHtml` in `SharedUtilFormattersService` (`defaultFormatter` + `booleanWithIconFormatter`) — HIGH | **Urgent** | `86ca59u6g` |
+| **SEC-02** ✅ | Reverse-tabnabbing: `rel="noopener noreferrer"` on all `target="_blank"` links (workspace-wide) — MEDIUM    | SHOULD     | `86ca59u43` |
 
 ### Ops / Release
 
