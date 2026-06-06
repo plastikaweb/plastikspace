@@ -3,6 +3,19 @@ set -e
 export NX_CLI_SET=classic
 export PAGER=cat
 
+CHANGED_FILES=$(git diff --name-only @{upstream}...HEAD 2>/dev/null || git diff --name-only HEAD~1...HEAD)
+
+# --- MARKDOWN-ONLY FAST PATH ---
+# If every file changed across all commits being pushed is a .md, skip tests,
+# build and a11y entirely — none of them are relevant for doc-only pushes.
+NON_MD_CHANGED=$(printf '%s\n' "$CHANGED_FILES" | grep -v '\.md$' | grep -v '^$' || true)
+if [ -z "$NON_MD_CHANGED" ]; then
+  echo "📝 Markdown-only push — skipping tests, build and a11y checks"
+  echo "✅ All checks passed. Pushing..."
+  exit 0
+fi
+# --------------------------------
+
 echo "🏃 Running affected tests..."
 if ! yarn nx affected --target=test --parallel --max-parallel=2 --cache; then
   echo "❌ Tests failed! Push aborted."
@@ -17,7 +30,6 @@ if ! yarn nx run-many --target=build --configuration=production --parallel --max
   exit 1
 fi
 
-CHANGED_FILES=$(git diff --name-only @{upstream}...HEAD 2>/dev/null || git diff --name-only HEAD~1...HEAD)
 if echo "$CHANGED_FILES" | grep -Eq '^(apps/eco-store/|libs/eco-store/)'; then
   echo "🏁 Running eco-store:a11y (using existing build)..."
   if ! yarn npm-run-all --parallel --race eco-store:http-server eco-store:a11y:run; then
