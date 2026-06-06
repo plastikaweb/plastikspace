@@ -49,9 +49,46 @@ describe('PwaManifestService', () => {
   });
 
   describe('applyBranding()', () => {
-    it('does nothing when no logo is provided', async () => {
-      await service.applyBranding({ name: 'No Logo' });
+    it('does nothing when neither name nor logo is provided', async () => {
+      await service.applyBranding({});
       expect(createObjectURL).not.toHaveBeenCalled();
+    });
+
+    it('patches name and short_name when only a name is provided', async () => {
+      let manifest: Record<string, unknown> = {};
+      createObjectURL.mockImplementation((blob: Blob) => {
+        blob.text().then(t => (manifest = JSON.parse(t)));
+        return 'blob:mock-url';
+      });
+      await service.applyBranding({ name: 'No Logo Coop' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(manifest['name']).toBe('No Logo Coop');
+      expect(manifest['short_name']).toBe('No Logo Coop');
+    });
+
+    it('preserves the base manifest icons when no logo is provided', async () => {
+      const baseIcons = [{ src: '/icons/android-chrome-512x512.png', sizes: '512x512' }];
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockResolvedValue({
+          ok: true,
+          json: () => Promise.resolve({ icons: baseIcons }),
+        })
+      );
+      let manifest: Record<string, unknown> = {};
+      createObjectURL.mockImplementation((blob: Blob) => {
+        blob.text().then(t => (manifest = JSON.parse(t)));
+        return 'blob:mock-url';
+      });
+      await service.applyBranding({ name: 'No Logo Coop' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(manifest['icons']).toEqual(baseIcons);
+    });
+
+    it('does not touch the apple-touch-icon when no logo is provided', async () => {
+      appleIcon.setAttribute('href', '/icons/apple-touch-icon.png');
+      await service.applyBranding({ name: 'No Logo Coop' });
+      expect(appleIcon.getAttribute('href')).toBe('/icons/apple-touch-icon.png');
     });
 
     it('fetches the static manifest as the base', async () => {

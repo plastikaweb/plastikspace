@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-06] - Shared: BUG-003 — PWA manifest uses the tenant name even when the tenant has no logo
+
+### Fixed
+
+- **`libs/shared/pwa`**: `PwaManifestService.applyBranding()` gated the entire manifest patch — including the app `name`/`short_name` — on a logo being present, so tenants without a logo kept the generic static manifest name ("Botiga Eco") as the installed PWA app name. The name and icon patches are now independent: the tenant name is applied whenever provided, icons and the `apple-touch-icon` are only patched when a logo is provided (logo-less tenants keep the static fallback icons), and the method no-ops only when neither is available. SSR guard unchanged. Updated the lib README usage example, which reproduced the buggy logo-gated call pattern, and added unit tests for the name-only branding path (BUG-003, [#86c9uq8kj](https://app.clickup.com/t/86c9uq8kj)).
+
 ## [2026-05-31] - Shared: TECH-03 — Optimize `libs/shared/util/objects` utility functions
 
 ### Changed
