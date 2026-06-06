@@ -1,6 +1,6 @@
 <main class="relative flex min-h-screen items-center justify-center p-4">
   @let tenant = tenantStore.tenant;
-  @let tenantName = tenant()?.name;
+  @let tenantName = tenant()?.shortName || tenant()?.name;
   @let tenantLogo = tenant()?.logo;
 
   <!-- PWA Standalone back button -->

@@ -18,24 +18,24 @@ export class PwaManifestService {
   }
 
   /**
-   * @description Fetches the static manifest, patches name and icons with the provided data, and applies it as a Blob URL.
-   * @param {PwaAppData} data - App identity data; logo must be an absolute URL.
+   * @description Fetches the static manifest, patches the name when provided and the icons when a logo is provided, and applies it as a Blob URL.
+   * @param {PwaAppData} data - App identity data; logo, when present, must be an absolute URL.
    * @returns {Promise<void>}
    */
   async applyBranding(data: PwaAppData): Promise<void> {
-    if (!isPlatformBrowser(this.#platformId) || !data.logo) return;
+    if (!isPlatformBrowser(this.#platformId) || (!data.name && !data.logo)) return;
     await this.#updateManifest(data);
     this.#updateAppleTouchIcon(data);
   }
 
   /**
    * @description Fetches the current static manifest, merges dynamic branding, and replaces the manifest link with a Blob URL.
-   * @param {PwaAppData} data - App identity data with an absolute logo URL.
+   * @param {PwaAppData} data - App identity data; icons are only patched when a logo is provided.
    * @returns {Promise<void>}
    */
   async #updateManifest(data: PwaAppData): Promise<void> {
     const manifestLink = this.#document.getElementById('app-manifest') as HTMLLinkElement | null;
-    if (!manifestLink || !data.logo) return;
+    if (!manifestLink) return;
 
     let base: Record<string, unknown> = {};
     try {
@@ -51,16 +51,19 @@ export class PwaManifestService {
 
     const origin = this.#window()?.location.origin ?? '';
     const patch: Record<string, unknown> = {
-      icons: [
-        { src: data.logo, sizes: '512x512', purpose: 'any' },
-        { src: data.logo, sizes: '512x512', purpose: 'maskable' },
-      ],
       start_url: `${origin}/`,
     };
 
+    if (data.logo) {
+      patch['icons'] = [
+        { src: data.logo, sizes: '512x512', purpose: 'any' },
+        { src: data.logo, sizes: '512x512', purpose: 'maskable' },
+      ];
+    }
+
     if (data.name) {
       patch['name'] = data.name;
-      patch['short_name'] = data.name.substring(0, 12);
+      patch['short_name'] = data.shortName || data.name.substring(0, 12);
     }
 
     const manifest = { ...base, ...patch };

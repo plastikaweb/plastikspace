@@ -49,9 +49,46 @@ describe('PwaManifestService', () => {
   });
 
   describe('applyBranding()', () => {
-    it('does nothing when no logo is provided', async () => {
-      await service.applyBranding({ name: 'No Logo' });
+    it('does nothing when neither name nor logo is provided', async () => {
+      await service.applyBranding({});
       expect(createObjectURL).not.toHaveBeenCalled();
+    });
+
+    it('patches name and short_name when only a name is provided', async () => {
+      let manifest: Record<string, unknown> = {};
+      createObjectURL.mockImplementation((blob: Blob) => {
+        blob.text().then(t => (manifest = JSON.parse(t)));
+        return 'blob:mock-url';
+      });
+      await service.applyBranding({ name: 'No Logo Coop' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(manifest['name']).toBe('No Logo Coop');
+      expect(manifest['short_name']).toBe('No Logo Coop');
+    });
+
+    it('preserves the base manifest icons when no logo is provided', async () => {
+      const baseIcons = [{ src: '/icons/android-chrome-512x512.png', sizes: '512x512' }];
+      vi.stubGlobal(
+        'fetch',
+        vi.fn().mockResolvedValue({
+          ok: true,
+          json: () => Promise.resolve({ icons: baseIcons }),
+        })
+      );
+      let manifest: Record<string, unknown> = {};
+      createObjectURL.mockImplementation((blob: Blob) => {
+        blob.text().then(t => (manifest = JSON.parse(t)));
+        return 'blob:mock-url';
+      });
+      await service.applyBranding({ name: 'No Logo Coop' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(manifest['icons']).toEqual(baseIcons);
+    });
+
+    it('does not touch the apple-touch-icon when no logo is provided', async () => {
+      appleIcon.setAttribute('href', '/icons/apple-touch-icon.png');
+      await service.applyBranding({ name: 'No Logo Coop' });
+      expect(appleIcon.getAttribute('href')).toBe('/icons/apple-touch-icon.png');
     });
 
     it('fetches the static manifest as the base', async () => {
@@ -62,6 +99,29 @@ describe('PwaManifestService', () => {
     it('sets the manifest link href to the generated blob URL', async () => {
       await service.applyBranding(mockData);
       expect(manifestLink.getAttribute('href')).toBe('blob:mock-url');
+    });
+
+    it('uses the explicit shortName for short_name instead of truncating the name', async () => {
+      let manifest: Record<string, unknown> = {};
+      createObjectURL.mockImplementation((blob: Blob) => {
+        blob.text().then(t => (manifest = JSON.parse(t)));
+        return 'blob:mock-url';
+      });
+      await service.applyBranding({ name: 'Associació El Llevat', shortName: 'El Llevat' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(manifest['name']).toBe('Associació El Llevat');
+      expect(manifest['short_name']).toBe('El Llevat');
+    });
+
+    it('falls back to a 12-char truncation of the name when no shortName is provided', async () => {
+      let manifest: Record<string, unknown> = {};
+      createObjectURL.mockImplementation((blob: Blob) => {
+        blob.text().then(t => (manifest = JSON.parse(t)));
+        return 'blob:mock-url';
+      });
+      await service.applyBranding({ name: 'Associació El Llevat' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(manifest['short_name']).toBe('Associació E');
     });
 
     it('patches name and short_name when name is provided', async () => {

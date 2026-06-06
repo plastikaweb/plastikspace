@@ -33,6 +33,7 @@ interface BeforeInstallPromptEvent extends Event {
  */
 export interface PwaAppData {
   name?: string;
+  shortName?: string;
   logo?: string;
   defaultLogo?: string;
 }
