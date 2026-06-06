@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-06] - Shared: SEC-01 — Fix XSS in `SharedUtilFormattersService` table-cell formatters
+
+### Fixed
+
+- **`libs/shared/util/formatters`**: `defaultFormatter` (the `TEXT`/`INPUT`/default table-cell path) and `booleanWithIconFormatter` passed unescaped, potentially user-controlled strings straight to `DomSanitizer.bypassSecurityTrustHtml`, so a payload like `<img src=x onerror=alert(1)>` in a cell value (or a malicious icon name) rendered as live markup — a reflected XSS vector in every table built on the shared formatters. Both formatters now escape the dynamic value with the `escapeHtml` utility from `@plastik/shared/objects` (introduced for the `HighlightPipe` fix) before trusting the HTML; intentional HTML keeps flowing through the separate `CUSTOM`/`LINK`/`COMPONENT` paths, which never touch the sanitizer. Escaped characters render identically as text, so legit cell values are visually unchanged. Added XSS-prevention specs for both formatters plus visual-parity control tests. Supersedes Jules PR [#1116](https://github.com/plastikaweb/plastikspace/pull/1116) (SEC-01, [#86ca59u6g](https://app.clickup.com/t/86ca59u6g)).
+
 ## [2026-06-06] - Shared: BUG-003 — PWA manifest uses the tenant name even when the tenant has no logo
 
 ### Fixed
