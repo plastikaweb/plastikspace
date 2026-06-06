@@ -90,15 +90,16 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 
 ### Already in schema
 
-| Collection                               | Field                                                    | Notes                                          |
-| ---------------------------------------- | -------------------------------------------------------- | ---------------------------------------------- |
-| `users`                                  | `membershipStatus`                                       | ✅ Present (4 valid values after META-02)      |
-| `users`                                  | `trialEndsAt`                                            | ✅ Present (nullable date)                     |
-| `users`                                  | `role`                                                   | ✅ `PARTNER` / `GLOBAL_ADMIN` / `TENANT_ADMIN` |
-| `tenants`                                | `logisticsConfig`, `languages`, `closed`, `closedReason` | ✅                                             |
-| `products`                               | `unitType`, `rating`, `reviewsCount`                     | ✅                                             |
-| `carts.createRule` + `orders.createRule` | API rule                                                 | ✅ TRL-05 enforced                             |
-| `carts`                                  | `isEditingOrder`, `activeOrderId`                        | ✅ PST-02 ready                                |
+| Collection                               | Field                                                    | Notes                                                 |
+| ---------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------- |
+| `tenants`                                | `shortName`                                              | ✅ Present (text, max 12; PWA `short_name` — BUG-003) |
+| `users`                                  | `membershipStatus`                                       | ✅ Present (4 valid values after META-02)             |
+| `users`                                  | `trialEndsAt`                                            | ✅ Present (nullable date)                            |
+| `users`                                  | `role`                                                   | ✅ `PARTNER` / `GLOBAL_ADMIN` / `TENANT_ADMIN`        |
+| `tenants`                                | `logisticsConfig`, `languages`, `closed`, `closedReason` | ✅                                                    |
+| `products`                               | `unitType`, `rating`, `reviewsCount`                     | ✅                                                    |
+| `carts.createRule` + `orders.createRule` | API rule                                                 | ✅ TRL-05 enforced                                    |
+| `carts`                                  | `isEditingOrder`, `activeOrderId`                        | ✅ PST-02 ready                                       |
 
 ### Hooks in `pb_hooks/`
 
