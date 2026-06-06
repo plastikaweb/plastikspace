@@ -101,6 +101,29 @@ describe('PwaManifestService', () => {
       expect(manifestLink.getAttribute('href')).toBe('blob:mock-url');
     });
 
+    it('uses the explicit shortName for short_name instead of truncating the name', async () => {
+      let manifest: Record<string, unknown> = {};
+      createObjectURL.mockImplementation((blob: Blob) => {
+        blob.text().then(t => (manifest = JSON.parse(t)));
+        return 'blob:mock-url';
+      });
+      await service.applyBranding({ name: 'Associació El Llevat', shortName: 'El Llevat' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(manifest['name']).toBe('Associació El Llevat');
+      expect(manifest['short_name']).toBe('El Llevat');
+    });
+
+    it('falls back to a 12-char truncation of the name when no shortName is provided', async () => {
+      let manifest: Record<string, unknown> = {};
+      createObjectURL.mockImplementation((blob: Blob) => {
+        blob.text().then(t => (manifest = JSON.parse(t)));
+        return 'blob:mock-url';
+      });
+      await service.applyBranding({ name: 'Associació El Llevat' });
+      await new Promise(resolve => setTimeout(resolve, 0));
+      expect(manifest['short_name']).toBe('Associació E');
+    });
+
     it('patches name and short_name when name is provided', async () => {
       let manifest: Record<string, unknown> = {};
       createObjectURL.mockImplementation((blob: Blob) => {

@@ -63,7 +63,7 @@ export class PwaManifestService {
 
     if (data.name) {
       patch['name'] = data.name;
-      patch['short_name'] = data.name.substring(0, 12);
+      patch['short_name'] = data.shortName || data.name.substring(0, 12);
     }
 
     const manifest = { ...base, ...patch };

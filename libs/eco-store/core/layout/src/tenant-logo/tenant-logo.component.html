@@ -15,5 +15,5 @@
 }
 
 <span class="text-on-surface hidden font-bold tracking-tight sm:block">
-  {{ tenant()?.name || ('store.title' | translate) }}
+  {{ tenant()?.shortName || tenant()?.name || ('store.title' | translate) }}
 </span>

@@ -51,6 +51,7 @@ export interface EcoStoreTenantLogistics {
 
 export type EcoStoreTenant = BasePocketBaseEntity &
   UserContact & {
+    shortName?: string; // PWA manifest short_name (≤12 chars); falls back to a truncation of name.
     logo?: string;
     slogan?: string;
     languages: string[];

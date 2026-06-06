@@ -140,7 +140,12 @@ export const appConfig: ApplicationConfig = {
           const tenant = store.tenant();
           const logoPath = getPocketBaseImageUrl(tenant, tenant?.logo);
           const logo = logoPath ? `${environment.baseApiUrl}api/files/${logoPath}` : undefined;
-          return { name: tenant?.name, logo, defaultLogo: 'eco_logo' };
+          return {
+            name: tenant?.name,
+            shortName: tenant?.shortName,
+            logo,
+            defaultLogo: 'eco_logo',
+          };
         };
       },
     },

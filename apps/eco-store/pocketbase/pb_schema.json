@@ -1364,6 +1364,20 @@
         "type": "text"
       },
       {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text3292170333",
+        "max": 12,
+        "min": 0,
+        "name": "shortName",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": false,
+        "system": false,
+        "type": "text"
+      },
+      {
         "exceptDomains": [],
         "hidden": false,
         "id": "email3885137012",

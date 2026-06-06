@@ -88,6 +88,11 @@ a logo is provided (tenants without a logo keep the static fallback icons), and
 replaces the manifest `<link>` with a Blob URL. The Blob URL is revoked
 automatically on destroy.
 
+`short_name` uses the explicit `shortName` when provided (e.g. "El Llevat" for
+"Associació El Llevat") and otherwise falls back to a 12-character truncation
+of `name` — pass `shortName` whenever the full name exceeds 12 characters to
+avoid mid-word cuts on the home-screen label.
+
 ## Dismiss / install state
 
 | localStorage key    | Meaning                                   |
