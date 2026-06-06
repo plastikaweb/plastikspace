@@ -57,6 +57,25 @@ The `apps/eco-store/wrangler.jsonc` file configures the deployment:
 - **`tools/scripts/add-cfasync.cjs`**: This script post-processes the build to add `data-cfasync="false"` to all script tags in `index.html` and `index.csr.html`.
   This prevents Cloudflare Rocket Loader from deferring Angular scripts, which is critical for successful hydration.
 
+## Per-tenant PWA identity (BUG-003)
+
+iOS Safari "Add to Home Screen" reads the **server-rendered** document and
+ignores JS-injected/`blob:` manifests and JS-set titles. So tenant PWA identity
+must be emitted by the worker, the only layer that sees the request `Host`:
+
+- **`/manifest.webmanifest`** is routed to the worker via
+  `assets.run_worker_first` in `wrangler.jsonc` (the static asset would
+  otherwise bypass the worker). The worker resolves the tenant from the
+  subdomain through an edge-cached, time-bounded, unauthenticated PocketBase
+  lookup and returns a per-tenant manifest (`name`/`short_name`/logo icons),
+  falling back to the generic manifest for non-tenant hosts.
+- The served HTML `<head>` gets `apple-mobile-web-app-title` (the load-bearing
+  iOS tag) plus `apple-mobile-web-app-capable`/`mobile-web-app-capable`,
+  injected with `HTMLRewriter` for both SSR and prerendered routes.
+
+Pure helpers live in `src/tenant-branding.ts` (unit-tested); the Cloudflare glue
+lives in `src/server.ts`.
+
 ## Development Commands
 
 | Task               | Command                      | Description                                           |

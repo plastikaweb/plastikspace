@@ -67,8 +67,7 @@ The service automatically:
 ### 3. Apply dynamic branding (optional)
 
 Inject `PwaManifestService` and call `applyBranding()` once tenant data is
-available to patch the web app manifest and `apple-touch-icon` with the
-tenant's name and logo:
+available to point the `apple-touch-icon` at the tenant logo:
 
 ```typescript
 const manifest = inject(PwaManifestService);
@@ -76,22 +75,22 @@ const manifest = inject(PwaManifestService);
 effect(() => {
   const tenant = tenantStore.tenant();
   if (tenant) {
-    manifest.applyBranding({ name: tenant.name, logo: tenant.logo });
+    manifest.applyBranding({ logo: tenant.logo });
   }
 });
 ```
 
-`applyBranding` is a no-op on the server (SSR-safe) and when neither a name nor
-a logo is provided. It fetches the static `/manifest.webmanifest`, patches the
-name/short_name when a name is provided and the icons + `apple-touch-icon` when
-a logo is provided (tenants without a logo keep the static fallback icons), and
-replaces the manifest `<link>` with a Blob URL. The Blob URL is revoked
-automatically on destroy.
+`applyBranding` is a no-op on the server (SSR-safe) and when no logo is
+provided; when a logo is present it sets the `apple-touch-icon` `<link>` href.
 
-`short_name` uses the explicit `shortName` when provided (e.g. "El Llevat" for
-"Associació El Llevat") and otherwise falls back to a 12-character truncation
-of `name` — pass `shortName` whenever the full name exceeds 12 characters to
-avoid mid-word cuts on the home-screen label.
+> **Manifest identity is served by the SSR layer, not this service.** iOS Safari
+> "Add to Home Screen" reads the server-rendered document and ignores
+> JS-injected/`blob:` manifests and JS-set titles. So the manifest `name`,
+> `short_name` and icons — plus the iOS `apple-mobile-web-app-title` meta — must
+> be emitted per-tenant by the server. In eco-store this lives in the Cloudflare
+> SSR worker (`apps/eco-store/src/server.ts`), which serves a per-tenant
+> `/manifest.webmanifest` and injects the apple meta tags into the `<head>`. This
+> service therefore no longer patches the manifest `<link>`.
 
 ## Dismiss / install state
 

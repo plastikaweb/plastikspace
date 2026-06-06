@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-06] - Eco-store: BUG-003 — iOS "Add to Home Screen" now shows the tenant name (server-rendered PWA identity)
+
+### Fixed
+
+- **`apps/eco-store` (SSR worker) & `libs/shared/pwa`**: On iOS Safari, "Add to Home Screen" prefilled the generic name "Eco" instead of the tenant's name (e.g. "El Llevat"), even though Android/Chrome were correct. Tenant PWA identity was applied only client-side — `PwaManifestService` fetched the static `/manifest.webmanifest`, patched `name`/`short_name`, and swapped `<link rel="manifest">` to a `blob:` URL — but iOS reads the server-rendered document and ignores JS-injected/`blob:` manifests and JS-set titles, so it fell back to the static manifest's `short_name` ("Eco"). The Cloudflare SSR worker (`apps/eco-store/src/server.ts`) — the single entry point for every request and the only place that sees the request `Host` — now (1) serves a per-tenant `/manifest.webmanifest` (tenant `name`/`short_name`/logo icons) by resolving the tenant from the subdomain via an edge-cached, time-bounded, unauthenticated PocketBase lookup (`run_worker_first` on that path routes it past the static asset), and (2) injects `<meta name="apple-mobile-web-app-title">` (the load-bearing iOS tag) plus `apple-mobile-web-app-capable`/`mobile-web-app-capable` into the served HTML `<head>` for both SSR and prerendered routes. The now-redundant client-side manifest blob swap was removed from `PwaManifestService`, which retains only the `apple-touch-icon` update; the static `public/manifest.webmanifest` remains as the generic fallback (mirrored as the worker's base manifest). Pure worker logic (slug resolution, record→branding mapping, manifest building, attribute escaping) is unit-tested (BUG-003, [#86c9uq8kj](https://app.clickup.com/t/86c9uq8kj)).
+
 ## [2026-06-06] - Workspace: SEC-02 — Reverse-tabnabbing: add `rel="noopener noreferrer"` to all `target="_blank"` links
 
 ### Fixed

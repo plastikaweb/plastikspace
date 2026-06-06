@@ -118,7 +118,7 @@ export const appConfig: ApplicationConfig = {
 
       activity.setActivity(true);
       await tenantStore.getTenant();
-      await pwaManifest.applyBranding(getAppData());
+      pwaManifest.applyBranding(getAppData());
     }),
     { provide: LOCALE_ID, useValue: 'ca' },
     { provide: ErrorHandler, useClass: ErrorHandlerService },
