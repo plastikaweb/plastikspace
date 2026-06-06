@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.9 · **Last updated:** 2026-05-31
+**Document version:** 0.10 · **Last updated:** 2026-06-06
 
 ---
 
@@ -47,7 +47,7 @@
 | Task        | Module | Priority | Status | One-line summary                                                       |
 | ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
 | **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
-| **BUG-003** | BOT    | MUST     | 📋     | PWA manifest doesn't use tenant name as default app name               |
+| **BUG-003** | BOT    | MUST     | ✅     | PWA manifest doesn't use tenant name as default app name               |
 | **PRV-02b** | PRV    | MUST     | 🔄     | Email change with async verification (CU `86c92g6ek`)                  |
 | **PRV-02c** | PRV    | MUST     | 🔄     | In-session password change (CU `86c92g60y`)                            |
 | **PRV-04d** | PRV    | MUST     | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)    |
@@ -129,8 +129,8 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 | ----------- | -------------------------------------------------- | ---------- | ------ | ----------- | -------------------------------------------------------------------------------------------- |
 | **BUG-001** | Cart merge on login (BOT-05) — verification        | MUST       | ❓     | —           | Code complete; run 5 manual tests                                                            |
 | **BUG-002** | Deep-link `/cistella/resum` redirects to `/botiga` | MUST       | ✅     | `86c9uq8kb` | Fixed — empty-cart guard no-ops during SSR; deep-links keep cart items                       |
-| **BUG-003** | PWA manifest doesn't use tenant name as default    | MUST       | 📋     | `86c9dn9m0` | `PwaManifestService.applyBranding()`                                                         |
-| **BUG-004** | Rationalize cart toasts on add/change/remove qty   | SHOULD     | 📋     | `86c8ta2kt` | UX polish — debouncing + dedup                                                               |
+| **BUG-003** | PWA manifest doesn't use tenant name as default    | MUST       | ✅     | `86c9uq8kj` | Fixed — name patch decoupled from logo presence in `PwaManifestService.applyBranding()`      |
+| **BUG-004** | Rationalize cart toasts on add/change/remove qty   | SHOULD     | 📋     | `86c9uq92h` | UX polish — debouncing + dedup                                                               |
 | **BUG-005** | Profile routes accessible without login            | **Urgent** | ✅     | `86c9uq8jq` | Shared `ecoStoreAuthGuard` on `/perfil` (also reused for `/comandes`); preserves `returnUrl` |
 
 ### BUG-001 — Cart merge on login (BOT-05) [❓ Verify]
@@ -383,7 +383,10 @@ All `COULD`, pending discovery.
 ### Accessibility (WCAG 2.1 AA)
 
 - **A11Y-001** — 200% zoom breakage [MUST · 📋]
-- **A11Y-002** _(new)_ — Tenant button on mobile a11y issue [MUST · 📋 · ClickUp `86c9cddav`]
+- **A11Y-002** _(new)_ — Tenant button on mobile a11y issue [MUST · 📋 · ClickUp `86c9uq8kt`]
+- **A11Y-003** _(new)_ — Password visibility toggle: tooltip + `aria-pressed` fix + label i18n [SHOULD · 📋 · ClickUp `86ca59u4d`]
+- **A11Y-004** _(new)_ — Tooltips on eco-store quantity/cart icon buttons [SHOULD · 📋 · ClickUp `86ca59u4x`]
+- **A11Y-005** _(new)_ — Header sidenav + tenant-link tooltips/aria-label [SHOULD · 📋 · ClickUp `86ca59u73`]
 - Pa11y CI: `yarn eco-store:a11y`
 
 ### i18n
@@ -393,11 +396,20 @@ All `COULD`, pending discovery.
 
 ### Tech debt
 
-| ID                  | Description                                                                                                       | Priority | ClickUp     |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
-| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                                                         | SHOULD   | `86c9uq9rf` |
-| **TECH-02** ✅      | Modernize `libs/shared/*` to Angular 21 (already on develop; residual cleanup landed)                             | SHOULD   | `86c9y6upw` |
-| **TECH-03** ✅      | Optimize `libs/shared/util/objects` (O(N²)→O(N) `reduce`, drop O(N) alloc in `isEmpty`, native `Object.values()`) | SHOULD   | `86ca226tz` |
+| ID                  | Description                                                                                                         | Priority | ClickUp     |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------- | -------- | ----------- |
+| **TECH-01** _(new)_ | Shared util to get string from `string \| LocalizedField`                                                           | SHOULD   | `86c9uq9rf` |
+| **TECH-02** ✅      | Modernize `libs/shared/*` to Angular 21 (already on develop; residual cleanup landed)                               | SHOULD   | `86c9y6upw` |
+| **TECH-03** ✅      | Optimize `libs/shared/util/objects` (O(N²)→O(N) `reduce`, drop O(N) alloc in `isEmpty`, native `Object.values()`)   | SHOULD   | `86ca226tz` |
+| **TECH-04** _(new)_ | Optimize `libs/shared/util/latinize`: ASCII-only regex (`/[^\x00-\x7F]/g`) + fix Cyrillic `А` casing bug + add spec | SHOULD   | `86ca59u10` |
+| **TECH-05** _(new)_ | TECH-03 follow-up: convert remaining `libs/shared/util/objects` `reduce` fns to `for…in`                            | COULD    | `86ca59u6d` |
+
+### Security
+
+| ID                 | Description                                                                                                 | Priority   | ClickUp     |
+| ------------------ | ----------------------------------------------------------------------------------------------------------- | ---------- | ----------- |
+| **SEC-01** _(new)_ | XSS: `escapeHtml` in `SharedUtilFormattersService` (`defaultFormatter` + `booleanWithIconFormatter`) — HIGH | **Urgent** | `86ca59u6g` |
+| **SEC-02** _(new)_ | Reverse-tabnabbing: `rel="noopener noreferrer"` on all `target="_blank"` links (workspace-wide) — MEDIUM    | SHOULD     | `86ca59u43` |
 
 ### Ops / Release
 
@@ -468,17 +480,18 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 ## 📝 Changelog
 
-| Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                     |
-| ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 0.9     | 2026-05-31 | **TECH-03 done** — optimized `libs/shared/util/objects` (`isEmpty`, `formatURLQueryParams`, `collectionToArray`) for O(N) perf. Cherry-picked from Jules PR #1095 (superset of #1091, closed as subset). On develop. CU `86ca226tz`.                                                                                                      |
-| 0.8     | 2026-05-30 | **META-02 done** — removed `NOT_REGISTERED` from `users.membershipStatus` (now 4 values). Verified 0 staging records held it; applied on local PB, `pb_schema.json` syncs to staging via `pocketbase-schema.yml` on merge. CU `86c9uq8k3`.                                                                                                |
-| 0.7     | 2026-05-23 | Added **OPS-02** (Urgent, CU `86c9y6xyb`): grant `pull-requests: write` to `.github/workflows/claude-code-review.yml`. Backlog-grooming pass alongside: flipped **TRL-06** and **META-05** to ✅ (ClickUp was source of truth — `/sync-eco-store-tasks` flagged them as status mismatches).                                               |
-| 0.6     | 2026-05-23 | Added TECH-02 (modernize `libs/shared/*` to Angular 21 standards, derived from Jules PRs #1078 + #1073). Fixed stale TECH-01 ClickUp ID (`86c8cjghn` → `86c9uq9rf`).                                                                                                                                                                      |
-| 0.5     | 2026-05-17 | Added META-05 (Phase 1 of ClickUp ↔ TASKS.md automation: read-only `/sync-eco-store-tasks` diff command). CU `86c9uwmzf`.                                                                                                                                                                                                                 |
-| 0.4     | 2026-05-16 | ClickUp audit integrated. Re-added PRV-08/09/04d as in-scope (Carlos confirmed). Added PRV-02c, BUG-002..005, BOT-16, UI-04, SEO-01, PST-04, EST-06, TECH-01, OPS-01, META-03/04, A11Y-002, MKT-research-01. 10 ClickUp subtasks of #21 epic mapped: 6 closed (history) + 4 in-progress + billing. Q-15 added (tags store clarification). |
-| 0.3     | 2026-05-16 | Carlos's corrections: EST-02/03 → Done; BOT-07/08 → Pending; PRV-08/09 marked out of scope (later reversed); META-02 added.                                                                                                                                                                                                               |
-| 0.2     | 2026-05-16 | Status reconciled against actual codebase.                                                                                                                                                                                                                                                                                                |
-| 0.1     | 2026-05-16 | Initial draft from PRD v1.8 + memory.                                                                                                                                                                                                                                                                                                     |
+| Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| ------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.10    | 2026-06-06 | Triaged 18 redundant Jules draft PRs (#1099–#1117) → 7 atomic tasks (each maps to one cluster; valid unmerged work, verified against develop). Added **TECH-04** (latinize), **TECH-05** (object-utils follow-up), **SEC-01/02** (new Security family: XSS + tabnabbing), **A11Y-003/04/05** (password toggle, action tooltips, header). Best source PR per cluster kept open; the rest closed with a pointer comment. CU `86ca59u10/6d/6g/43/4d/4x/73`. |
+| 0.9     | 2026-05-31 | **TECH-03 done** — optimized `libs/shared/util/objects` (`isEmpty`, `formatURLQueryParams`, `collectionToArray`) for O(N) perf. Cherry-picked from Jules PR #1095 (superset of #1091, closed as subset). On develop. CU `86ca226tz`.                                                                                                                                                                                                                     |
+| 0.8     | 2026-05-30 | **META-02 done** — removed `NOT_REGISTERED` from `users.membershipStatus` (now 4 values). Verified 0 staging records held it; applied on local PB, `pb_schema.json` syncs to staging via `pocketbase-schema.yml` on merge. CU `86c9uq8k3`.                                                                                                                                                                                                               |
+| 0.7     | 2026-05-23 | Added **OPS-02** (Urgent, CU `86c9y6xyb`): grant `pull-requests: write` to `.github/workflows/claude-code-review.yml`. Backlog-grooming pass alongside: flipped **TRL-06** and **META-05** to ✅ (ClickUp was source of truth — `/sync-eco-store-tasks` flagged them as status mismatches).                                                                                                                                                              |
+| 0.6     | 2026-05-23 | Added TECH-02 (modernize `libs/shared/*` to Angular 21 standards, derived from Jules PRs #1078 + #1073). Fixed stale TECH-01 ClickUp ID (`86c8cjghn` → `86c9uq9rf`).                                                                                                                                                                                                                                                                                     |
+| 0.5     | 2026-05-17 | Added META-05 (Phase 1 of ClickUp ↔ TASKS.md automation: read-only `/sync-eco-store-tasks` diff command). CU `86c9uwmzf`.                                                                                                                                                                                                                                                                                                                                |
+| 0.4     | 2026-05-16 | ClickUp audit integrated. Re-added PRV-08/09/04d as in-scope (Carlos confirmed). Added PRV-02c, BUG-002..005, BOT-16, UI-04, SEO-01, PST-04, EST-06, TECH-01, OPS-01, META-03/04, A11Y-002, MKT-research-01. 10 ClickUp subtasks of #21 epic mapped: 6 closed (history) + 4 in-progress + billing. Q-15 added (tags store clarification).                                                                                                                |
+| 0.3     | 2026-05-16 | Carlos's corrections: EST-02/03 → Done; BOT-07/08 → Pending; PRV-08/09 marked out of scope (later reversed); META-02 added.                                                                                                                                                                                                                                                                                                                              |
+| 0.2     | 2026-05-16 | Status reconciled against actual codebase.                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 0.1     | 2026-05-16 | Initial draft from PRD v1.8 + memory.                                                                                                                                                                                                                                                                                                                                                                                                                    |
 
 ---
 
