@@ -46,4 +46,40 @@ describe('SharedConfirmFeatureComponent', () => {
       'Hello test'
     );
   });
+
+  it('should escape malicious parameters to prevent XSS', () => {
+    const maliciousName = '<img src=x onerror=alert(1)>';
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
+      providers: [
+        provideZonelessChangeDetection(),
+        {
+          provide: DIALOG_DATA,
+          useValue: {
+            title: 'Title',
+            message: 'test.message',
+            params: { name: maliciousName },
+            ok: 'common.ok',
+            ko: 'common.cancel',
+          },
+        },
+      ],
+    });
+
+    const fixtureXss = TestBed.createComponent(SharedConfirmFeatureComponent);
+    const componentXss = fixtureXss.componentInstance;
+    const translateXss = TestBed.inject(TranslateService);
+    translateXss.use('en');
+    translateXss.setTranslation('en', { 'test.message': 'Hello {{name}}' });
+    fixtureXss.detectChanges();
+
+    const message = (componentXss as any).message();
+    // We check the internal value of SafeHtml or its string representation
+    const renderedMessage = message.toString();
+
+    expect(renderedMessage).toContain('Hello &lt;img src&#x3D;x onerror&#x3D;alert(1)&gt;');
+    expect(renderedMessage).not.toContain(maliciousName);
+  });
 });
