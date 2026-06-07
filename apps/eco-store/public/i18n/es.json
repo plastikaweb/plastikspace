@@ -298,9 +298,9 @@
       "label": "Cant:",
       "add": "Agregar",
       "addLong": "Agregar al carrito",
-      "remove": "Eliminar",
-      "decrement": "Disminuir",
-      "increment": "Aumentar"
+      "remove": "Eliminar {value}",
+      "decrement": "Disminuir cantidad de {value}",
+      "increment": "Incrementar cantidad de {value}"
     },
     "modified": {
       "title": "Cambios sin guardar",

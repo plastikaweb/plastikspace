@@ -298,9 +298,9 @@
       "label": "Qt:",
       "add": "Afegir",
       "addLong": "Afegir al cabàs",
-      "remove": "Eliminar",
-      "decrement": "Disminuir",
-      "increment": "Augmentar"
+      "remove": "Eliminar {value}",
+      "decrement": "Disminuir quantitat de {value}",
+      "increment": "Incrementar quantitat de {value}"
     },
     "modified": {
       "title": "Canvis sense guardar",

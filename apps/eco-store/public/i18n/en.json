@@ -298,9 +298,9 @@
       "label": "Qt:",
       "add": "Add",
       "addLong": "Add to cart",
-      "remove": "Remove",
-      "decrement": "Decrease",
-      "increment": "Increase"
+      "remove": "Remove {value}",
+      "decrement": "Decrease quantity of {value}",
+      "increment": "Increase quantity of {value}"
     },
     "modified": {
       "title": "Unsaved changes",
