@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-07] - Eco-store: A11Y-004 — Tooltips + consistent labels on quantity/cart action buttons
+
+### Fixed
+
+- **`libs/eco-store/shared/product-quantity` & `libs/eco-store/cart/feature`**: Icon-only action buttons had no `matTooltip`, so sighted users got no hover/focus affordance, and their accessible names were inconsistent — only the increment button included the product name (built by string concatenation, yielding awkward labels like "Augmentar pastanagues"), while decrement/remove omitted it. Added a `matTooltip` mirroring each button's `aria-label` on the quantity increment / decrement-or-remove buttons and the cart item delete button, and reworded the three quantity labels (`products.quantity.increment`/`decrement`/`remove`) across ca/es/en to a consistent "verb + quantity + product name" form using `{value}` interpolation (e.g. "Incrementar quantitat de {value}", "Disminuir quantitat de {value}", "Eliminar {value}"). Added specs asserting each tooltip stays in sync with its `aria-label` and that the remove state shows at minimum quantity. Supersedes Jules PRs [#1113](https://github.com/plastikaweb/plastikspace/pull/1113) and [#1109](https://github.com/plastikaweb/plastikspace/pull/1109) (A11Y-004, [#86ca59u4x](https://app.clickup.com/t/86ca59u4x)).
+
 ## [2026-06-06] - Shared: A11Y-003 — Password visibility toggle: correct `aria-label`/`aria-pressed` + tooltip + label i18n
 
 ### Fixed

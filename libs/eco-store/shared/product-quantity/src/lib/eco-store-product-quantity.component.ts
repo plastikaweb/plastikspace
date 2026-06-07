@@ -10,12 +10,13 @@ import {
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatInput } from '@angular/material/input';
+import { MatTooltip } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { EcoStoreProductWithCategoryName } from '@plastik/eco-store/entities';
 
 @Component({
   selector: 'eco-store-product-quantity',
-  imports: [TranslateModule, MatIcon, MatButton, MatIconButton, MatInput],
+  imports: [TranslateModule, MatIcon, MatButton, MatIconButton, MatInput, MatTooltip],
   templateUrl: './eco-store-product-quantity.component.html',
   styleUrl: './eco-store-product-quantity.component.scss',
   host: {
