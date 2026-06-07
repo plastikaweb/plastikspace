@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-07] - Eco-store: A11Y-005 — Header sidenav + tenant-link tooltips/aria-label
+
+### Fixed
+
+- **`libs/eco-store/core/layout` (header, layout shell & tenant-link)**: Three header/sidenav controls lacked the hover/focus and/or screen-reader affordance. Added a `matTooltip` mirroring the existing dynamic `aria-label` on the header sidenav toggle button (_Obrir/Tancar menú lateral_) and on the in-sidenav mobile close button (which is the control actually visible once the sidenav is open on mobile — the header, and its toggle, is hidden then). The tenant logo link (returns to the store home at `/`) had **no accessible name at all** — on mobile its name `<span>` is hidden, leaving a logo-only button — so screen-reader and mouse users got nothing; added both `aria-label` and `matTooltip` using the existing `common.navigation.backToStore` key (_Tornar a la botiga_). Added a spec asserting the tenant link exposes an accessible name with a tooltip in sync. Supersedes Jules PR [#1106](https://github.com/plastikaweb/plastikspace/pull/1106) (A11Y-005, [#86ca59u73](https://app.clickup.com/t/86ca59u73)).
+
 ## [2026-06-07] - Eco-store: A11Y-004 — Tooltips + consistent labels on quantity/cart action buttons
 
 ### Fixed

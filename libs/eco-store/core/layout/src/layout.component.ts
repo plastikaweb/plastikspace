@@ -13,6 +13,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   ActivatedRoute,
   ActivationEnd,
@@ -48,6 +49,7 @@ import { appSearchFormConfig } from './app.search-form.config';
     TranslatePipe,
     MatIconModule,
     MatButtonModule,
+    MatTooltipModule,
     EcoTenantLogoComponent,
     EcoMobileNavComponent,
     MatDivider,

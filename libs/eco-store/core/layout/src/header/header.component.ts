@@ -3,6 +3,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatToolbar } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FormConfig } from '@plastik/core/entities';
 import { EcoStoreTenant, EcoStoreTenantWindowStatus } from '@plastik/eco-store/entities';
@@ -19,6 +20,7 @@ import { EcoTenantLinkComponent } from '../tenant-link/tenant-link.component';
     MatToolbar,
     MatIcon,
     MatButtonModule,
+    MatTooltipModule,
     TranslateModule,
     StoreWindowComponent,
     EcoTenantLinkComponent,
