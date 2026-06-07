@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.12 · **Last updated:** 2026-06-07
+**Document version:** 0.14 · **Last updated:** 2026-06-07
 
 ---
 
@@ -387,7 +387,8 @@ All `COULD`, pending discovery.
 - **A11Y-002** _(new)_ — Tenant button on mobile a11y issue [MUST · 📋 · ClickUp `86c9uq8kt`]
 - **A11Y-003** ✅ — Password visibility toggle: tooltip + `aria-pressed` fix + label i18n [SHOULD · ✅ 2026-06-06 · ClickUp `86ca59u4d`]
 - **A11Y-004** ✅ — Tooltips + consistent labels on eco-store quantity/cart icon buttons [SHOULD · ✅ 2026-06-07 · ClickUp `86ca59u4x`]
-- **A11Y-005** _(new)_ — Header sidenav + tenant-link tooltips/aria-label [SHOULD · 📋 · ClickUp `86ca59u73`]
+- **A11Y-005** ✅ — Header sidenav + tenant-link tooltips/aria-label [SHOULD · ✅ 2026-06-07 · ClickUp `86ca59u73`]
+- **A11Y-006** _(new)_ — Password visibility toggle not keyboard-focusable (`tabindex="-1"`); A11Y-003 left it unreachable via Tab — evaluate whether the attribute is intentional Material behavior or an oversight [SHOULD · 📋 · ClickUp `86ca5gpxj`]
 - Pa11y CI: `yarn eco-store:a11y`
 
 ### i18n
@@ -404,13 +405,15 @@ All `COULD`, pending discovery.
 | **TECH-03** ✅      | Optimize `libs/shared/util/objects` (O(N²)→O(N) `reduce`, drop O(N) alloc in `isEmpty`, native `Object.values()`)   | SHOULD   | `86ca226tz` |
 | **TECH-04** ✅      | Optimize `libs/shared/util/latinize`: ASCII-only regex (`/[^\x00-\x7F]/g`) + fix Cyrillic `А` casing bug + add spec | SHOULD   | `86ca59u10` |
 | **TECH-05** ✅      | TECH-03 follow-up: convert remaining `libs/shared/util/objects` `reduce` fns to `for…in`                            | COULD    | `86ca59u6d` |
+| **TECH-06** _(new)_ | TECH-03/05 follow-up: optimize `areObjectEntriesEqual` (`util-objects.ts:165`) — `Object.keys().every()` → `for…in` | COULD    | `86ca5gpy1` |
 
 ### Security
 
-| ID            | Description                                                                                                 | Priority   | ClickUp     |
-| ------------- | ----------------------------------------------------------------------------------------------------------- | ---------- | ----------- |
-| **SEC-01** ✅ | XSS: `escapeHtml` in `SharedUtilFormattersService` (`defaultFormatter` + `booleanWithIconFormatter`) — HIGH | **Urgent** | `86ca59u6g` |
-| **SEC-02** ✅ | Reverse-tabnabbing: `rel="noopener noreferrer"` on all `target="_blank"` links (workspace-wide) — MEDIUM    | SHOULD     | `86ca59u43` |
+| ID                 | Description                                                                                                                                         | Priority   | ClickUp     |
+| ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------- |
+| **SEC-01** ✅      | XSS: `escapeHtml` in `SharedUtilFormattersService` (`defaultFormatter` + `booleanWithIconFormatter`) — HIGH                                         | **Urgent** | `86ca59u6g` |
+| **SEC-02** ✅      | Reverse-tabnabbing: `rel="noopener noreferrer"` on all `target="_blank"` links (workspace-wide) — MEDIUM                                            | SHOULD     | `86ca59u43` |
+| **SEC-03** _(new)_ | XSS: `SharedConfirmFeatureComponent` (`shared-confirm-feature.component.ts:34-35`) `bypassSecurityTrustHtml` on unescaped `translate` params — HIGH | **Urgent** | `86ca5gpx8` |
 
 ### Ops / Release
 
@@ -483,6 +486,8 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
 | ------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.14    | 2026-06-07 | **A11Y-005 done** — `matTooltip` on the header sidenav toggle + in-sidenav mobile close button (mirroring their `aria-label`), and `aria-label` + tooltip on the tenant logo link (had no accessible name) via existing `common.navigation.backToStore`. Spec asserts tooltip↔aria-label sync. Supersedes Jules PR #1106. CU `86ca59u73`.                                                                                                                |
+| 0.13    | 2026-06-07 | Triaged remaining open Jules draft PRs → 3 new tasks for work not yet tracked (verified against develop): **SEC-03** (confirm-dialog XSS, PR #1130), **A11Y-006** (password toggle `tabindex="-1"`, PR #1128), **TECH-06** (`areObjectEntriesEqual` perf, PR #1129). #1106 already = A11Y-005; #1100 fully redundant with SEC-01/02 (both shipped on develop). CU `86ca5gpx8/xj/y1`.                                                                     |
 | 0.12    | 2026-06-07 | **A11Y-004 done** — tooltips on eco-store quantity/cart icon buttons + reworded `products.quantity.increment/decrement/remove` (ca/es/en) to a consistent "verb + quantity + product name" form via `{value}` interpolation; specs assert tooltip↔aria-label sync. Supersedes Jules PRs #1113 + #1109. CU `86ca59u4x`.                                                                                                                                   |
 | 0.11    | 2026-06-06 | **SEC-01/02 + TECH-04/05 + A11Y-003 done** — XSS escape in formatters (PR #1120), tabnabbing `rel=noopener` workspace-wide (PR #1122), latinize ASCII regex + Cyrillic А/Я casing (PR #1123), util/objects `reduce`→`for…in` follow-up (PR #1125), password-toggle a11y (this branch). CU `86ca59u6g/43/10/6d/4d`.                                                                                                                                       |
 | 0.10    | 2026-06-06 | Triaged 18 redundant Jules draft PRs (#1099–#1117) → 7 atomic tasks (each maps to one cluster; valid unmerged work, verified against develop). Added **TECH-04** (latinize), **TECH-05** (object-utils follow-up), **SEC-01/02** (new Security family: XSS + tabnabbing), **A11Y-003/04/05** (password toggle, action tooltips, header). Best source PR per cluster kept open; the rest closed with a pointer comment. CU `86ca59u10/6d/6g/43/4d/4x/73`. |
