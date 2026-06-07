@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-07] - Workspace: SEC-02 follow-up — Reverse-tabnabbing on `nasa-images` FAQ links
+
+### Fixed
+
+- **`apps/nasa-images` (`faqs.json`)**: The 7 `target="_blank"` anchors embedded in the FAQ answers — rendered as live DOM via `[innerHTML]` in `nasa-images-faqs-feature.component.html` — were missing `rel="noopener noreferrer"`, leaving them open to reverse-tabnabbing. SEC-02 fixed all template-level `target="_blank"` links workspace-wide but did not scan anchors embedded inside JSON data files, so these slipped through. Added `rel="noopener noreferrer"` to all 7. Completes SEC-02 ([#86ca59u43](https://app.clickup.com/t/86ca59u43)); supersedes the remaining unmerged portion of Jules PR [#1100](https://github.com/plastikaweb/plastikspace/pull/1100) (the rest was already on develop via SEC-01/SEC-02).
+
 ## [2026-06-07] - Eco-store: A11Y-005 — Header sidenav + tenant-link tooltips/aria-label
 
 ### Fixed
