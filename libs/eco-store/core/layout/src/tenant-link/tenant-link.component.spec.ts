@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltip } from '@angular/material/tooltip';
 import { provideRouter } from '@angular/router';
+import { By } from '@angular/platform-browser';
 import { provideTranslateService } from '@ngx-translate/core';
 import { mockEcoStoreTenantStore } from '@plastik/eco-store/tenant/testing';
 import { EcoTenantLinkComponent } from './tenant-link.component';
@@ -43,5 +45,14 @@ describe('EcoTenantLinkComponent', () => {
     fixture.detectChanges();
     const logo = fixture.nativeElement.querySelector('eco-tenant-logo');
     expect(logo).toBeTruthy();
+  });
+
+  it('should expose an accessible name with a tooltip in sync with the aria-label', () => {
+    fixture.detectChanges();
+    const button = fixture.debugElement.query(By.css('button'));
+    const ariaLabel = button.nativeElement.getAttribute('aria-label');
+
+    expect(ariaLabel).toBeTruthy();
+    expect(button.injector.get(MatTooltip).message).toBe(ariaLabel);
   });
 });
