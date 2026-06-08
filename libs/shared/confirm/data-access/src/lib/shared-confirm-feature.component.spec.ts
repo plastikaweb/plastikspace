@@ -82,6 +82,8 @@ describe('SharedConfirmFeatureComponent', () => {
     // Use value if it's SafeHtml, otherwise string
     const messageContent = message?.changingThisBreaksApplicationSecurity || message?.toString();
 
-    expect(messageContent).toContain('Hello &lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;');
+    expect(messageContent).toContain(
+      'Hello &lt;script&gt;alert(&quot;xss&quot;)&lt;&#x2F;script&gt;'
+    );
   });
 });
