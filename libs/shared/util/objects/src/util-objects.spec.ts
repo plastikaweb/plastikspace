@@ -2,6 +2,7 @@ import {
   allAreFalsy,
   areObjectEntriesEqual,
   collectionToArray,
+  deepClone,
   escapeHtml,
   getQueryParams,
   isEmpty,
@@ -186,6 +187,18 @@ describe('Object Util', () => {
     it('should handle different types that stringify the same but are not equal', () => {
       // My new implementation uses === so this should be false
       expect(areObjectEntriesEqual({ a: 1 }, { a: '1' } as any)).toBe(false);
+    });
+  });
+
+  describe('deepClone method', () => {
+    it('should handle sparse arrays correctly', () => {
+      // eslint-disable-next-line no-sparse-arrays
+      const sparse = [1, , 3];
+      const cloned = deepClone(sparse);
+      expect(cloned).toEqual(sparse);
+      expect(0 in cloned).toBe(true);
+      expect(1 in cloned).toBe(false);
+      expect(2 in cloned).toBe(true);
     });
   });
 
