@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-07] - Shared: SEC-03 — Fix XSS in `SharedConfirmFeatureComponent` translation parameters
+
+### Fixed
+
+- **`libs/shared/confirm/data-access`**: `SharedConfirmFeatureComponent` passed unescaped translation parameters to the `TranslateService` before marking the result as `SafeHtml` for `[innerHTML]` binding. This created a reflected XSS vector if a translation string (like "Hello {{name}}") received a malicious string in `params`. All string values in `data.params` are now escaped using the `escapeHtml` utility from `@plastik/shared/objects` before translation. Added a unit test to verify that XSS payloads in parameters are correctly escaped in the final rendered HTML. Closes SEC-03 ([#86ca5gpx8](https://app.clickup.com/t/86ca5gpx8)).
+
 ## [2026-06-07] - Workspace: SEC-02 follow-up — Reverse-tabnabbing on `nasa-images` FAQ links
 
 ### Fixed

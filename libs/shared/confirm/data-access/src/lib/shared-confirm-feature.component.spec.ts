@@ -46,4 +46,42 @@ describe('SharedConfirmFeatureComponent', () => {
       'Hello test'
     );
   });
+
+  it('should escape XSS in params', async () => {
+    const maliciousName = '<img src=x onerror=alert(1)>';
+    const escapedName = '&lt;img src&#x3D;x onerror&#x3D;alert(1)&gt;';
+
+    // We create a new fixture to ensure the injected data is fresh
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
+      providers: [
+        provideZonelessChangeDetection(),
+        {
+          provide: DIALOG_DATA,
+          useValue: {
+            title: 'Title',
+            message: 'test.message',
+            params: { name: maliciousName },
+            ok: 'common.ok',
+            ko: 'common.cancel',
+          },
+        },
+      ],
+    }).compileComponents();
+
+    const newFixture = TestBed.createComponent(SharedConfirmFeatureComponent);
+    const newComponent = newFixture.componentInstance;
+    const newTranslate = TestBed.inject(TranslateService);
+    newTranslate.use('en');
+    newTranslate.setTranslation('en', { 'test.message': 'Hello {{name}}' });
+    newFixture.detectChanges();
+
+    // To verify what the component's message() returns:
+    const messageValue = (newComponent as any).message();
+    // In Angular testing, SafeHtml has this internal property
+    const actualHtml = (messageValue as any).changingThisBreaksApplicationSecurity;
+    expect(actualHtml).not.toContain(maliciousName);
+    expect(actualHtml).toContain(escapedName);
+  });
 });
