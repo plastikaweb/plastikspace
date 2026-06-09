@@ -12,6 +12,7 @@ import {
   setEmptyStringPropertiesToNull,
   transformStringToBooleanProperties,
   transformToString,
+  deepClone,
 } from './util-objects';
 
 describe('Object Util', () => {
@@ -277,6 +278,49 @@ describe('Object Util', () => {
         id: 3,
       },
     ]);
+  });
+
+  describe('deepClone method', () => {
+    it('should clone an object', () => {
+      const obj = { a: 1, b: { c: 2 } };
+      const cloned = deepClone(obj);
+      expect(cloned).toEqual(obj);
+      expect(cloned).not.toBe(obj);
+      expect(cloned.b).not.toBe(obj.b);
+    });
+
+    it('should clone an array', () => {
+      const arr = [1, [2, 3]];
+      const cloned = deepClone(arr);
+      expect(cloned).toEqual(arr);
+      expect(cloned).not.toBe(arr);
+      expect(cloned[1]).not.toBe(arr[1]);
+    });
+
+    it('should handle sparse arrays', () => {
+      // eslint-disable-next-line no-sparse-arrays
+      const arr = [1, , 3];
+      const cloned = deepClone(arr);
+      expect(cloned).toEqual(arr);
+      expect(0 in cloned).toBe(true);
+      expect(1 in cloned).toBe(false);
+      expect(2 in cloned).toBe(true);
+      expect(cloned.length).toBe(3);
+    });
+
+    it('should clone Date objects', () => {
+      const date = new Date();
+      const cloned = deepClone(date);
+      expect(cloned).toEqual(date);
+      expect(cloned).not.toBe(date);
+    });
+
+    it('should clone RegExp objects', () => {
+      const regex = /abc/g;
+      const cloned = deepClone(regex);
+      expect(cloned).toEqual(regex);
+      expect(cloned).not.toBe(regex);
+    });
   });
 
   describe('escapeHtml method', () => {
