@@ -84,4 +84,67 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(actualHtml).not.toContain(maliciousName);
     expect(actualHtml).toContain(escapedName);
   });
+
+  it('should handle non-string params correctly', async () => {
+    // We create a new fixture to ensure the injected data is fresh
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
+      providers: [
+        provideZonelessChangeDetection(),
+        {
+          provide: DIALOG_DATA,
+          useValue: {
+            title: 'Title',
+            message: 'test.message',
+            params: { name: 'test', count: 123 },
+            ok: 'common.ok',
+            ko: 'common.cancel',
+          },
+        },
+      ],
+    }).compileComponents();
+
+    const newFixture = TestBed.createComponent(SharedConfirmFeatureComponent);
+    const newComponent = newFixture.componentInstance;
+    const newTranslate = TestBed.inject(TranslateService);
+    newTranslate.use('en');
+    newTranslate.setTranslation('en', { 'test.message': 'Hello {{name}} {{count}}' });
+    newFixture.detectChanges();
+
+    const messageValue = (newComponent as any).message();
+    const actualHtml = (messageValue as any).changingThisBreaksApplicationSecurity;
+    expect(actualHtml).toContain('Hello test 123');
+  });
+
+  it('should handle null params correctly', async () => {
+    await TestBed.resetTestingModule();
+    await TestBed.configureTestingModule({
+      imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
+      providers: [
+        provideZonelessChangeDetection(),
+        {
+          provide: DIALOG_DATA,
+          useValue: {
+            title: 'Title',
+            message: 'test.message',
+            params: null,
+            ok: 'common.ok',
+            ko: 'common.cancel',
+          },
+        },
+      ],
+    }).compileComponents();
+
+    const newFixture = TestBed.createComponent(SharedConfirmFeatureComponent);
+    const newComponent = newFixture.componentInstance;
+    const newTranslate = TestBed.inject(TranslateService);
+    newTranslate.use('en');
+    newTranslate.setTranslation('en', { 'test.message': 'Hello world' });
+    newFixture.detectChanges();
+
+    const messageValue = (newComponent as any).message();
+    const actualHtml = (messageValue as any).changingThisBreaksApplicationSecurity;
+    expect(actualHtml).toContain('Hello world');
+  });
 });
