@@ -11,6 +11,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
+import { escapeHtml, isString } from '@plastik/shared/objects';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -31,7 +32,17 @@ export class SharedConfirmFeatureComponent {
   protected readonly icon = computed(() => this.data.icon || 'help_outline');
 
   protected readonly message = computed(() => {
-    const translated = this.#translate.instant(this.data.message, this.data.params);
+    const params = { ...this.data.params };
+    for (const key in params) {
+      if (Object.prototype.hasOwnProperty.call(params, key)) {
+        const value = params[key];
+        if (isString(value)) {
+          params[key] = escapeHtml(value);
+        }
+      }
+    }
+
+    const translated = this.#translate.instant(this.data.message, params);
     return this.#sanitizer.bypassSecurityTrustHtml(translated);
   });
 }

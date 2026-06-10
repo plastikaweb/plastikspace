@@ -46,4 +46,36 @@ describe('SharedConfirmFeatureComponent', () => {
       'Hello test'
     );
   });
+
+  it('should escape HTML in params to prevent XSS', () => {
+    const maliciousName = '<img src=x onerror=alert(1)>';
+    const escapedMaliciousName = '&lt;img src&#x3D;x onerror&#x3D;alert(1)&gt;';
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
+      providers: [
+        provideZonelessChangeDetection(),
+        {
+          provide: DIALOG_DATA,
+          useValue: {
+            title: 'Title',
+            message: 'test.message',
+            params: { name: maliciousName },
+            ok: 'common.ok',
+            ko: 'common.cancel',
+          },
+        },
+      ],
+    });
+    const fixtureXss = TestBed.createComponent(SharedConfirmFeatureComponent);
+    const componentXss = fixtureXss.componentInstance;
+    const translateXss = TestBed.inject(TranslateService);
+    translateXss.use('en');
+    translateXss.setTranslation('en', { 'test.message': 'Hello {{name}}' });
+    fixtureXss.detectChanges();
+
+    const message = componentXss.message() as any;
+    expect(message.changingThisBreaksApplicationSecurity).toContain(escapedMaliciousName);
+    expect(message.changingThisBreaksApplicationSecurity).not.toContain(maliciousName);
+  });
 });
