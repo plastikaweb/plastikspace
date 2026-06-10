@@ -171,16 +171,24 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
     return false;
   }
 
-  const prevKeys = Object.keys(prev);
-  const currKeys = Object.keys(curr);
-
-  if (prevKeys.length !== currKeys.length) {
-    return false;
+  let prevCount = 0;
+  for (const key in prev) {
+    if (Object.prototype.hasOwnProperty.call(prev, key)) {
+      if ((prev as Record<string, unknown>)[key] !== (curr as Record<string, unknown>)[key]) {
+        return false;
+      }
+      prevCount++;
+    }
   }
 
-  return prevKeys.every(
-    key => (prev as Record<string, unknown>)[key] === (curr as Record<string, unknown>)[key]
-  );
+  let currCount = 0;
+  for (const key in curr) {
+    if (Object.prototype.hasOwnProperty.call(curr, key)) {
+      currCount++;
+    }
+  }
+
+  return prevCount === currCount;
 }
 
 /**
@@ -269,18 +277,23 @@ export function deepClone<T>(obj: T): T {
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(item => deepClone(item)) as T;
+    const length = obj.length;
+    const cloned = new Array(length);
+    for (let i = 0; i < length; i++) {
+      if (i in obj) {
+        cloned[i] = deepClone(obj[i]);
+      }
+    }
+    return cloned as T;
   }
 
-  if (typeof obj === 'object') {
-    const cloned = {} as T;
-    Object.keys(obj).forEach(key => {
+  const cloned = {} as T;
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       (cloned as Record<string, unknown>)[key] = deepClone((obj as Record<string, unknown>)[key]);
-    });
-    return cloned;
+    }
   }
-
-  return obj;
+  return cloned;
 }
 
 /**
