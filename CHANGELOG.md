@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-08] - Workspace: SEC-03 — XSS in confirm-dialog translation params + snackbar
+
+### Fixed
+
+- **`libs/shared/confirm/data-access`**: In `SharedConfirmFeatureComponent`, the `message()` signal processed dynamic parameters into a translation string that was سپس marked as "trusted" via `DomSanitizer.bypassSecurityTrustHtml`. Because `ngx-translate` does not automatically escape interpolation parameters, a malicious payload in a parameter (e.g., a product name containing `<img src=x onerror=alert(1)>`) was rendered as live markup — a reflected XSS vector. Now manually escapes each string value in `data.params` with the `escapeHtml` utility before passing them to the translation service, so while the translation file itself can safely contain HTML (like `<b>`), dynamic parameters cannot. Added a unit test verifying that malicious tags in parameters are escaped in the final signal output. Completes SEC-03 ([#86ca5gpx8](https://app.clickup.com/t/86ca5gpx8)).
+- **`libs/shared/notification/ui/mat-snackbar`**: Replaced `[innerHTML]="data.message"` with standard Angular interpolation `{{ data.message }}` in `NotificationUiMatSnackbarComponent`. This ensures notification messages are rendered as safe plain text by default, eliminating XSS risk from untrusted messages.
+
 ## [2026-06-07] - Workspace: SEC-02 follow-up — Reverse-tabnabbing on `nasa-images` FAQ links
 
 ### Fixed
