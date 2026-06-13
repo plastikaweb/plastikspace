@@ -46,4 +46,40 @@ describe('SharedConfirmFeatureComponent', () => {
       'Hello test'
     );
   });
+
+  it('should be vulnerable to XSS in params (baseline)', () => {
+    const xssPayload = '<img src=x onerror=alert(1)>';
+    const maliciousData = {
+      title: 'Title',
+      message: 'test.message',
+      params: { name: xssPayload },
+      ok: 'common.ok',
+      ko: 'common.cancel',
+    };
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
+      providers: [
+        provideZonelessChangeDetection(),
+        {
+          provide: DIALOG_DATA,
+          useValue: maliciousData,
+        },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(SharedConfirmFeatureComponent);
+    component = fixture.componentInstance;
+    translate = TestBed.inject(TranslateService);
+    translate.use('en');
+    translate.setTranslation('en', { 'test.message': 'Hello {{name}}' });
+    fixture.detectChanges();
+
+    const message = (component as unknown as { message: () => any }).message();
+    expect(message.changingThisBreaksApplicationSecurity).not.toContain(xssPayload);
+    expect(message.changingThisBreaksApplicationSecurity).toContain(
+      '&lt;img src&#x3D;x onerror&#x3D;alert(1)&gt;'
+    );
+  });
 });
