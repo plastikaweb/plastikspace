@@ -13,6 +13,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { RouterLink } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
+import { escapeHtml } from '@plastik/shared/objects';
+
 @Component({
   selector: 'plastik-shared-confirm-feature',
   imports: [MatDialogModule, MatButtonModule, MatIconModule, TranslateModule, RouterLink],
@@ -31,7 +33,16 @@ export class SharedConfirmFeatureComponent {
   protected readonly icon = computed(() => this.data.icon || 'help_outline');
 
   protected readonly message = computed(() => {
-    const translated = this.#translate.instant(this.data.message, this.data.params);
+    const params = this.data.params;
+    const escapedParams = params
+      ? Object.fromEntries(
+          Object.entries(params).map(([key, value]) => [
+            key,
+            typeof value === 'string' ? escapeHtml(value) : value,
+          ])
+        )
+      : params;
+    const translated = this.#translate.instant(this.data.message, escapedParams);
     return this.#sanitizer.bypassSecurityTrustHtml(translated);
   });
 }
