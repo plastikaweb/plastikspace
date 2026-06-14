@@ -413,7 +413,7 @@ All `COULD`, pending discovery.
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ----------- |
 | **SEC-01** ✅      | XSS: `escapeHtml` in `SharedUtilFormattersService` (`defaultFormatter` + `booleanWithIconFormatter`) — HIGH                                         | **Urgent** | `86ca59u6g` |
 | **SEC-02** ✅      | Reverse-tabnabbing: `rel="noopener noreferrer"` on all `target="_blank"` links (workspace-wide) — MEDIUM                                            | SHOULD     | `86ca59u43` |
-| **SEC-03** _(new)_ | XSS: `SharedConfirmFeatureComponent` (`shared-confirm-feature.component.ts:34-35`) `bypassSecurityTrustHtml` on unescaped `translate` params — HIGH | **Urgent** | `86ca5gpx8` |
+| **SEC-03** ✅      | XSS: `SharedConfirmFeatureComponent` (`shared-confirm-feature.component.ts:34-35`) `bypassSecurityTrustHtml` on unescaped `translate` params — HIGH | **Urgent** | `86ca5gpx8` |
 
 ### Ops / Release
 

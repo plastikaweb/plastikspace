@@ -46,4 +46,39 @@ describe('SharedConfirmFeatureComponent', () => {
       'Hello test'
     );
   });
+
+  it('should escape HTML in params to prevent XSS', () => {
+    const xssPayload = '<img src=x onerror=alert(1)>';
+    const escapedPayload = '&lt;img src&#x3D;x onerror&#x3D;alert(1)&gt;';
+    translate.setTranslation('en', { 'test.xss': 'Vulnerable {{payload}}' }, true);
+
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
+      providers: [
+        provideZonelessChangeDetection(),
+        {
+          provide: DIALOG_DATA,
+          useValue: {
+            title: 'Title',
+            message: 'test.xss',
+            params: { payload: xssPayload },
+            ok: 'common.ok',
+            ko: 'common.cancel',
+          },
+        },
+      ],
+    });
+
+    const xssFixture = TestBed.createComponent(SharedConfirmFeatureComponent);
+    const xssComponent = xssFixture.componentInstance;
+    const xssTranslate = TestBed.inject(TranslateService);
+    xssTranslate.use('en');
+    xssTranslate.setTranslation('en', { 'test.xss': 'Vulnerable {{payload}}' });
+    xssFixture.detectChanges();
+
+    const message = (xssComponent as any).message().changingThisBreaksApplicationSecurity;
+    expect(message).toContain(escapedPayload);
+    expect(message).not.toContain(xssPayload);
+  });
 });
