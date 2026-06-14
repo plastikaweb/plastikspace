@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-14] - Shared: SEC-03 — XSS in confirm dialog: escape user-controlled params before trusting as HTML
+
+### Fixed
+
+- **`libs/shared/confirm/data-access` (`SharedConfirmFeatureComponent`)**: The dialog `message` computed interpolated caller-supplied `data.params` into the translated string and passed the raw result straight to `DomSanitizer.bypassSecurityTrustHtml()`, rendered via `[innerHTML]`. Params carry runtime, user-influenced values — e.g. an address name (`{ address: addressName.toUpperCase() }` in the profile-addresses delete flow) or an order number — so any HTML/JS in that data executed in the dialog (HIGH). Now each string param value is HTML-escaped (reusing `escapeHtml` from `@plastik/shared/objects`, introduced in SEC-01) **before** `translate.instant()`, while the translation template itself stays trusted — preserving any intentional markup in message strings (the reason the component uses `bypassSecurityTrustHtml` + `[innerHTML]` rather than plain interpolation). Non-string params pass through untouched. Added specs asserting an injected `<img onerror>` param is escaped and that intentional `<strong>` template markup survives while the param is still escaped (SEC-03, [#86ca5gpx8](https://app.clickup.com/t/86ca5gpx8)).
+
 ## [2026-06-07] - Workspace: SEC-02 follow-up — Reverse-tabnabbing on `nasa-images` FAQ links
 
 ### Fixed
