@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Notification } from '@plastik/shared/notification/entities';
 
 @Component({
   selector: 'plastik-shared-notification-ui-mat-snackbar',
-  imports: [MatIconModule],
+  imports: [MatIconModule, TranslatePipe],
   templateUrl: './notification-ui-mat-snackbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

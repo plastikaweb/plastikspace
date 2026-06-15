@@ -75,19 +75,35 @@ export class NotificationUiMatSnackbarDirective implements OnDestroy {
     duration,
     verticalPosition,
     horizontalPosition,
-    ...data
+    message,
+    type,
+    icon,
+    action,
+    ariaLabel,
+    parameters,
   }: Notification): MatSnackBarConfig<Notification> {
     return {
       duration,
       verticalPosition,
       horizontalPosition,
-      data,
+      data: {
+        message,
+        type,
+        icon,
+        action,
+        ariaLabel,
+        parameters,
+      },
     };
   }
 
   private addTypeStyling({ containerClass, type }: Notification) {
+    const panelClass = ['message-box', `message-box-${type?.toLowerCase()}`];
+    if (containerClass) {
+      panelClass.push(containerClass);
+    }
     return {
-      panelClass: [...(containerClass || ''), 'message-box', `message-box-${type?.toLowerCase()}`],
+      panelClass,
     };
   }
 }

@@ -50,15 +50,28 @@ describe('NotificationUiMatSnackbarDirective', () => {
 
   describe('open', () => {
     it('should open the Snackbar with the given configuration and custom styling', () => {
-      const config: Notification = { message: 'Test message', type: 'SUCCESS', duration: 1000 };
+      const config: Notification = {
+        message: 'Test message',
+        type: 'SUCCESS',
+        duration: 1000,
+        containerClass: 'custom-class',
+        parameters: { name: 'Test' },
+      };
       const openFromComponentSpy = vi.spyOn(snackBar, 'openFromComponent');
 
       directive.open(config);
 
       expect(openFromComponentSpy).toHaveBeenCalledWith(NotificationUiMatSnackbarComponent, {
-        data: { message: config.message, type: 'SUCCESS' },
+        data: {
+          message: config.message,
+          type: 'SUCCESS',
+          parameters: { name: 'Test' },
+          icon: undefined,
+          action: undefined,
+          ariaLabel: undefined,
+        },
         duration: 1000,
-        panelClass: ['message-box', 'message-box-success'],
+        panelClass: ['message-box', 'message-box-success', 'custom-class'],
       });
     });
   });
