@@ -71,4 +71,9 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
     expect(button.getAttribute('aria-label')).toBe('common.form.hidePassword');
     expect(button.getAttribute('aria-pressed')).toBe('true');
   });
+
+  it('should be keyboard-focusable (no tabindex="-1")', () => {
+    const button = fixture.nativeElement.querySelector('button');
+    expect(button.getAttribute('tabindex')).not.toBe('-1');
+  });
 });
