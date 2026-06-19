@@ -99,4 +99,24 @@ describe('InputSearchTypeComponent', () => {
       expect(onPartialSearchSpy).toHaveBeenCalledWith('abc', component.field);
     });
   });
+
+  describe('isDisabled', () => {
+    it('should return true if term length is 1 and minLength is 2', () => {
+      component.formControl.setValue('a');
+      component['syncControl']();
+      expect(component['isDisabled']()).toBe(true);
+    });
+
+    it('should return false if term length is 0', () => {
+      component.formControl.setValue('');
+      component['syncControl']();
+      expect(component['isDisabled']()).toBe(false);
+    });
+
+    it('should return false if term length is >= minLength', () => {
+      component.formControl.setValue('ab');
+      component['syncControl']();
+      expect(component['isDisabled']()).toBe(false);
+    });
+  });
 });

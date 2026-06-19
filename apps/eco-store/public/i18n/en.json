@@ -66,7 +66,9 @@
       "charactersCount": "{count, plural, one {character} other {characters}}",
       "password": "Password",
       "showPassword": "Show password",
-      "hidePassword": "Hide password"
+      "hidePassword": "Hide password",
+      "search": "Search",
+      "clear": "Clear"
     },
     "a11y": {
       "skipToContent": "Skip to main content",

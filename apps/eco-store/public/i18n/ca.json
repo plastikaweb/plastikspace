@@ -66,7 +66,9 @@
       "charactersCount": "{count, plural, one {caràcter} other {caràcters}}",
       "password": "Contrasenya",
       "showPassword": "Mostrar contrasenya",
-      "hidePassword": "Amagar contrasenya"
+      "hidePassword": "Amagar contrasenya",
+      "search": "Cercar",
+      "clear": "Netejar"
     },
     "a11y": {
       "skipToContent": "Saltar al contingut principal",

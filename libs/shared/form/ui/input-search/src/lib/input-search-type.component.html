@@ -19,7 +19,8 @@
       matIconButton
       matSuffix
       type="button"
-      [attr.aria-label]="'form.search' | translate"
+      [attr.aria-label]="'common.form.search' | translate"
+      [matTooltip]="'common.form.search' | translate"
       [disabled]="isDisabled()"
       (click)="triggerSearch($event)">
       <mat-icon aria-hidden="true">search</mat-icon>
@@ -31,10 +32,11 @@
       matIconButton
       matSuffix
       type="button"
-      [attr.aria-label]="'form.clear' | translate"
-      [disabled]="isDisabled()"
+      [attr.aria-label]="'common.form.clear' | translate"
+      [matTooltip]="'common.form.clear' | translate"
+      [disabled]="formStatus() === 'INVALID' && !props.buttonEnabledIfValue"
       (click)="resetSearch()">
-      <mat-icon>clear</mat-icon>
+      <mat-icon aria-hidden="true">clear</mat-icon>
     </button>
   }
 </mat-form-field>
