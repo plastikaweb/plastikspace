@@ -286,7 +286,7 @@ export class SharedUtilFormattersService {
     element: T,
     index?: number,
     extraConfig?: unknown
-  ): SafeHtml {
+  ): SafeHtml | string {
     return execute ? execute(value, element, index, extraConfig) : value ? value : '';
   }
 
