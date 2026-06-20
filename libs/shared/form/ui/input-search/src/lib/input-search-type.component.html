@@ -20,19 +20,21 @@
       matSuffix
       type="button"
       [attr.aria-label]="'form.search' | translate"
+      [matTooltip]="'form.search' | translate"
       [disabled]="isDisabled()"
       (click)="triggerSearch($event)">
       <mat-icon aria-hidden="true">search</mat-icon>
     </button>
   }
-  @if (props.resetSearch && formControl.value) {
+  @if (props.resetSearch && formValue()) {
     <button
       class="reset-search-button -left-2"
       matIconButton
       matSuffix
       type="button"
       [attr.aria-label]="'form.clear' | translate"
-      [disabled]="isDisabled()"
+      [matTooltip]="'form.clear' | translate"
+      [disabled]="formControl.disabled"
       (click)="resetSearch()">
       <mat-icon>clear</mat-icon>
     </button>

@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
 import { FormlyModule } from '@ngx-formly/core';
 import { provideTranslateService } from '@ngx-translate/core';
 import { InputSearchTypeComponent } from './input-search-type.component';
@@ -44,6 +46,16 @@ describe('InputSearchTypeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have tooltips on buttons', () => {
+    component.field.props!.resetSearch = true;
+    component.formControl.setValue('abc');
+    component['syncControl']();
+    fixture.detectChanges();
+
+    const buttons = fixture.debugElement.queryAll(By.directive(MatTooltip));
+    expect(buttons.length).toBeGreaterThan(0);
   });
 
   describe('triggerSearch', () => {
@@ -97,6 +109,31 @@ describe('InputSearchTypeComponent', () => {
 
       component['triggerPartialSearch']();
       expect(onPartialSearchSpy).toHaveBeenCalledWith('abc', component.field);
+    });
+  });
+
+  describe('resetSearch', () => {
+    it('should enable clear button even if search term is invalid', () => {
+      component.field.props!.resetSearch = true;
+      component.formControl.setValue('a');
+      component['syncControl']();
+      fixture.detectChanges();
+
+      const clearBtn = fixture.nativeElement.querySelector('.reset-search-button');
+      expect(clearBtn).toBeTruthy();
+      expect(clearBtn.disabled).toBeFalsy();
+    });
+
+    it('should disable clear button if form control is disabled', () => {
+      component.field.props!.resetSearch = true;
+      component.formControl.setValue('abc');
+      component.formControl.disable();
+      component['syncControl']();
+      fixture.detectChanges();
+
+      const clearBtn = fixture.nativeElement.querySelector('.reset-search-button');
+      expect(clearBtn).toBeTruthy();
+      expect(clearBtn.disabled).toBeTruthy();
     });
   });
 });
