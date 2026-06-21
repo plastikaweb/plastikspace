@@ -38,6 +38,11 @@ describe('BytesToSizePipe', () => {
     expect(pipe.transform(1073741824)).toBe('1 GB');
   });
 
+  it('should return correct size for TB (top precomputed power)', () => {
+    expect(pipe.transform(1024 ** 4)).toBe('1 TB');
+    expect(pipe.transform(1.5 * 1024 ** 4, 1)).toBe('1.5 TB');
+  });
+
   it('should handle fixed precision correctly', () => {
     // 1500 bytes is approx 1.46 KB
     expect(pipe.transform(1500, 2)).toBe('1.46 KB');

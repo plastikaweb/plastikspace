@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-21] - Shared: TECH-08 — `BytesToSizePipe` micro-optimization
+
+### Changed
+
+- **`libs/shared/util/bytes-to-size` (`BytesToSizePipe`)**: Removed two per-call inefficiencies on a pipe that re-evaluates during change detection. The size exponent was computed as `parseInt(String(Math.floor(Math.log(value) / Math.log(1024))), 10)` — a redundant number→string→number round-trip — now just `Math.floor(Math.log(value) / LOG1024)`; `Math.log(1024)` is hoisted to a module constant `LOG1024` instead of being recomputed every call; and the divisor uses a precomputed `POWERS` table for the Bytes…TB tiers (`POWERS[size] ?? 1024 ** size`, the fallback preserving the original `1024 ** size` for larger inputs). Behaviour-identical — output strings are byte-for-byte unchanged (specs cover 0/Bytes/KB/MB/GB/TB + fixed precision). Sibling to TECH-03→07; supersedes Jules draft PR [#1155](https://github.com/plastikaweb/plastikspace/pull/1155) (TECH-08, [#86cac31nm](https://app.clickup.com/t/86cac31nm)).
+
 ## [2026-06-21] - Shared: SEC-04 — Snackbar message: remove `[innerHTML]` sink in favour of interpolation
 
 ### Fixed

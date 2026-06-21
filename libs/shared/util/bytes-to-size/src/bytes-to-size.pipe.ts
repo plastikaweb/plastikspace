@@ -1,5 +1,10 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/** Cached `Math.log(1024)` — avoids recomputing the divisor on every transform. */
+const LOG1024 = Math.log(1024);
+/** Precomputed powers of 1024 for the common Bytes…TB tiers (index = unit exponent). */
+const POWERS = [1, 1024, 1024 ** 2, 1024 ** 3, 1024 ** 4];
+
 /**
  * Pipe to convert a byte count into a human-readable size string.
  */
@@ -22,10 +27,11 @@ export class BytesToSizePipe implements PipeTransform {
     if (value === 0) {
       return `0 ${this.#sizes[0]}`;
     }
-    const size = parseInt(String(Math.floor(Math.log(value) / Math.log(1024))), 10);
+    const size = Math.floor(Math.log(value) / LOG1024);
     if (size === 0) {
       return `${value} ${this.#sizes[size]}`;
     }
-    return `${(value / 1024 ** size).toFixed(fixed)} ${this.#sizes[size]}`;
+    const power = POWERS[size] ?? 1024 ** size;
+    return `${(value / power).toFixed(fixed)} ${this.#sizes[size]}`;
   }
 }
