@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-21] - Shared: TECH-09 — `latinize()` ASCII fast-path
+
+### Changed
+
+- **`libs/shared/util/latinize` (`latinize()`)**: Added an early return for pure-ASCII input — `if (!/[^\x00-\x7F]/.test(str)) return str;` — so strings with nothing to transliterate skip the `String.prototype.replace()` call and its per-character map lookups entirely. Behaviour-identical: a pure-ASCII string already passed through `replace()` unchanged, and any string containing a non-ASCII char still falls through to the original transliteration path. This is a **distinct** optimization from TECH-04 (which narrowed the replace regex to ASCII-only); it targets the common case in this codebase where most slugs/keys are already ASCII. Added a spec asserting the fast-path covers the full `\x00-\x7F` range (control + punctuation). Supersedes Jules draft PR [#1163](https://github.com/plastikaweb/plastikspace/pull/1163) (TECH-09, [#86cac31p6](https://app.clickup.com/t/86cac31p6)).
+
 ## [2026-06-21] - Shared: TECH-08 — `BytesToSizePipe` micro-optimization
 
 ### Changed
