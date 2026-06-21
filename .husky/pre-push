@@ -24,9 +24,11 @@ fi
 
 echo "🏗️  Running affected build..."
 # Build the AFFECTED projects in production configuration to ensure they're valid.
-# `affected` (not `run-many`) so a small change doesn't rebuild every project;
-# `--cache` reuses prior valid build output. Reduced parallelization avoids disk I/O bottleneck.
-if ! yarn nx affected --target=build --configuration=production --parallel --max-parallel=2 --cache; then
+# `affected` (not `run-many`) so a small change doesn't rebuild every project. Nx caches
+# `build` automatically (cacheable target), so no `--cache` flag is needed — and the Angular
+# build executor rejects it ("'cache' is not found in schema"). Reduced parallelization
+# avoids a disk I/O bottleneck.
+if ! yarn nx affected --target=build --configuration=production --parallel --max-parallel=2; then
   echo "❌ Build failed! Push aborted."
   exit 1
 fi
