@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-21] - Shared: TECH-06 — Optimize `areObjectEntriesEqual` (`libs/shared/util/objects`)
+
+### Changed
+
+- **`libs/shared/util/objects` (`areObjectEntriesEqual`)**: Replaced the `Object.keys(prev)` + `Object.keys(curr)` + `.every()` comparison with two `for...in` loops guarded by `hasOwnProperty`, eliminating the two intermediate key-array allocations (and the predicate closure) per call while preserving exact own-enumerable-key semantics and `===` value equality. This is a hot path — it backs filter/pagination/sort change-detection in the shared PocketBase and Firebase signal stores. Behaviour is unchanged across all edge cases (reference equality, differing key counts in either direction, `undefined` values, inherited enumerable keys). Follow-up to TECH-03/05. Added specs for the first-object-has-extra-entries and inherited-enumerable-property cases; the existing tests stay green (39 → 41). Supersedes Jules draft #1129 (TECH-06, [#86ca5gpy1](https://app.clickup.com/t/86ca5gpy1)).
+
 ## [2026-06-21] - Shared: TECH-09 — `latinize()` ASCII fast-path
 
 ### Changed
