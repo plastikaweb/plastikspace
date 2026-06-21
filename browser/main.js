@@ -5042,7 +5042,7 @@ var SharedActivityUiOverlayComponent = class _SharedActivityUiOverlayComponent {
 
 // libs/core/cms-layout/feature/src/lib/core-cms-layout-feature/core-cms-layout-feature.component.ts
 var _c07 = ["widgetsContainer"];
-var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-WKU2IDBC.js").then((m) => m.NotificationUiMatSnackbarDirective)];
+var CoreCmsLayoutFeatureComponent_Defer_8_DepsFn = () => [import("./src-BZ5XIS3G.js").then((m) => m.NotificationUiMatSnackbarDirective)];
 var CoreCmsLayoutFeatureComponent_Defer_14_DepsFn = () => [NgTemplateOutlet];
 var CoreCmsLayoutFeatureComponent_Defer_34_DepsFn = () => [import("./src-7INKYE3E.js").then((m) => m.CoreCmsLayoutUiFooterComponent), DatePipe];
 var _c16 = () => ["/"];
@@ -5416,7 +5416,7 @@ var CoreCmsLayoutFeatureComponent = class _CoreCmsLayoutFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-WKU2IDBC.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-7INKYE3E.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(CoreCmsLayoutFeatureComponent, () => [import("./src-BZ5XIS3G.js").then((m) => m.NotificationUiMatSnackbarDirective), import("./src-7INKYE3E.js").then((m) => m.CoreCmsLayoutUiFooterComponent)], (NotificationUiMatSnackbarDirective, CoreCmsLayoutUiFooterComponent) => {
     setClassMetadata(CoreCmsLayoutFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-core-cms-layout-feature", imports: [
