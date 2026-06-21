@@ -388,7 +388,7 @@ All `COULD`, pending discovery.
 - **A11Y-003** ✅ — Password visibility toggle: tooltip + `aria-pressed` fix + label i18n [SHOULD · ✅ 2026-06-06 · ClickUp `86ca59u4d`]
 - **A11Y-004** ✅ — Tooltips + consistent labels on eco-store quantity/cart icon buttons [SHOULD · ✅ 2026-06-07 · ClickUp `86ca59u4x`]
 - **A11Y-005** ✅ — Header sidenav + tenant-link tooltips/aria-label [SHOULD · ✅ 2026-06-07 · ClickUp `86ca59u73`]
-- **A11Y-006** _(new)_ — Password visibility toggle not keyboard-focusable (`tabindex="-1"`); A11Y-003 left it unreachable via Tab — evaluate whether the attribute is intentional Material behavior or an oversight [SHOULD · 📋 · ClickUp `86ca5gpxj`]
+- **A11Y-006** ✅ — Password visibility toggle keyboard-focusable: removed `tabindex="-1"` from the show/hide `matIconButton` (A11Y-003 left it unreachable via Tab; WCAG 2.1.1). Native button now Tab-reachable + Enter/Space-activatable; Material focus indicator applies. Spec asserts `tabIndex === 0`. [SHOULD · ✅ 2026-06-21 · ClickUp `86ca5gpxj`]
 - **A11Y-007** ✅ — Search input (`libs/shared/form/ui/input-search`): `matTooltip` mirroring `aria-label` on the search/clear icon buttons (sibling to A11Y-004/005), repointed to new `common.form.search`/`clear` keys (ca/es/en), Clear button disabled state decoupled from the search `minLength` gate (1-char terms now clearable), `aria-hidden` on clear icon. Sole consumer is eco-store. [SHOULD · ✅ 2026-06-21 · ClickUp `86cac31mt`]
 - Pa11y CI: `yarn eco-store:a11y`
 

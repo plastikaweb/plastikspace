@@ -71,4 +71,12 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
     expect(button.getAttribute('aria-label')).toBe('common.form.hidePassword');
     expect(button.getAttribute('aria-pressed')).toBe('true');
   });
+
+  it('should keep the visibility toggle in the keyboard tab order (A11Y-006, WCAG 2.1.1)', () => {
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+
+    // No `tabindex="-1"`: the native button stays reachable by keyboard.
+    expect(button.getAttribute('tabindex')).toBeNull();
+    expect(button.tabIndex).toBe(0);
+  });
 });
