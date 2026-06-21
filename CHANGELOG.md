@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-21] - Shared: A11Y-007 — Search input: action-button tooltips + decoupled clear button
+
+### Fixed
+
+- **`libs/shared/form/ui/input-search` (`InputSearchTypeComponent`)**: The search and clear icon-only buttons had no `matTooltip` (sighted users got no hover/focus affordance) and referenced `form.search`/`form.clear` translation keys that exist in no locale, so their `aria-label`s rendered the raw key. Worse, the clear button shared the search button's `isDisabled()` gate, so a below-`minLength` term (e.g. a single character) left the clear button **disabled — the user could not clear what they had typed**. Fixed: added a `matTooltip` mirroring each button's `aria-label`, repointed both to the existing `common.form.search`/`common.form.clear` keys (added to ca/es/en, matching the A11Y-003 `common.form.*` convention), decoupled the clear button's disabled state from the search `minLength` gate (now disabled only when the field is genuinely `INVALID` and not `buttonEnabledIfValue`), and added `aria-hidden` to the clear icon. Added specs asserting tooltip↔`aria-label` sync on every icon button and that the clear button stays enabled for a 1-char term while the search button stays disabled. The sole consumer is eco-store (main site search + orders filter, both `noButton`+`resetSearch`); nasa-images/llecoop use the separate `type: 'input'` addon variant, so the visible tooltip never leaks the key elsewhere. Builds on a pre-existing uncommitted draft (verified + spec hardened). (A11Y-007, [#86cac31mt](https://app.clickup.com/t/86cac31mt)).
+
 ## [2026-06-14] - Shared: SEC-03 — XSS in confirm dialog: escape user-controlled params before trusting as HTML
 
 ### Fixed

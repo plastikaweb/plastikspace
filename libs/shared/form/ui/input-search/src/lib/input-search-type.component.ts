@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FieldTypeConfig, FormlyFieldConfig, FormlyModule } from '@ngx-formly/core';
 import { FieldType } from '@ngx-formly/material/form-field';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -31,6 +32,7 @@ export type InputSearchProps = FieldTypeConfig['props'] & {
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    MatTooltipModule,
     FormlyModule,
     ReactiveFormsModule,
     TranslatePipe,

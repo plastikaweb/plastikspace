@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatTooltip } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
 import { FormlyModule } from '@ngx-formly/core';
 import { provideTranslateService } from '@ngx-translate/core';
 import { InputSearchTypeComponent } from './input-search-type.component';
@@ -97,6 +99,54 @@ describe('InputSearchTypeComponent', () => {
 
       component['triggerPartialSearch']();
       expect(onPartialSearchSpy).toHaveBeenCalledWith('abc', component.field);
+    });
+  });
+
+  describe('isDisabled', () => {
+    it('should return true if term length is 1 and minLength is 2', () => {
+      component.formControl.setValue('a');
+      component['syncControl']();
+      expect(component['isDisabled']()).toBe(true);
+    });
+
+    it('should return false if term length is 0', () => {
+      component.formControl.setValue('');
+      component['syncControl']();
+      expect(component['isDisabled']()).toBe(false);
+    });
+
+    it('should return false if term length is >= minLength', () => {
+      component.formControl.setValue('ab');
+      component['syncControl']();
+      expect(component['isDisabled']()).toBe(false);
+    });
+  });
+
+  describe('A11Y-007: tooltips and clear-button decouple', () => {
+    it('should mirror each icon button aria-label with a matching matTooltip', () => {
+      // No translations loaded → `| translate` returns the key, so both bindings
+      // resolve to the same string; this asserts the tooltip↔aria-label sync.
+      const tooltipHosts = fixture.debugElement.queryAll(By.directive(MatTooltip));
+      expect(tooltipHosts.length).toBeGreaterThan(0);
+
+      for (const host of tooltipHosts) {
+        const ariaLabel = host.nativeElement.getAttribute('aria-label');
+        const tooltipMessage = host.injector.get(MatTooltip).message;
+        expect(tooltipMessage).toBe(ariaLabel);
+      }
+    });
+
+    it('should keep the clear button enabled for a below-minLength term so it can be cleared', () => {
+      component.field.props!.resetSearch = true;
+      component.formControl.setValue('a');
+      component['syncControl']();
+      fixture.detectChanges();
+
+      const clearButton = fixture.nativeElement.querySelector('.reset-search-button');
+      expect(clearButton).toBeTruthy();
+      expect(clearButton.disabled).toBe(false);
+      // The search button, by contrast, stays disabled for the same 1-char term.
+      expect(component['isDisabled']()).toBe(true);
     });
   });
 });
