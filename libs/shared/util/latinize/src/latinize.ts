@@ -901,12 +901,22 @@ const characters: Record<string, string> = {
   б: 'b',
   ю: 'yu',
 };
+/** Matches a single character outside the ASCII range (`\x00-\x7F`). Non-global: safe for `.test()`. */
+// eslint-disable-next-line no-control-regex
+const NON_ASCII = /[^\x00-\x7F]/;
+/** Global variant of {@link NON_ASCII} for `String.prototype.replace()`. */
+const NON_ASCII_GLOBAL = new RegExp(NON_ASCII, 'g');
+
 /**
  * Converts a string to its Latinized form.
  * @param {string} str - The input string.
  * @returns {string} The Latinized string.
  */
 export function latinize(str: string): string {
-  // eslint-disable-next-line no-control-regex
-  return str.replace(/[^\x00-\x7F]/g, x => characters[x] || x);
+  // Fast-path: pure-ASCII strings have nothing to transliterate, so skip the
+  // `replace()` + per-character map lookups entirely.
+  if (!NON_ASCII.test(str)) {
+    return str;
+  }
+  return str.replace(NON_ASCII_GLOBAL, x => characters[x] || x);
 }
