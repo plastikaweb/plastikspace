@@ -1890,8 +1890,13 @@ var characters = {
   \u0431: "b",
   \u044E: "yu"
 };
+var NON_ASCII = /[^\x00-\x7F]/;
+var NON_ASCII_GLOBAL = new RegExp(NON_ASCII, "g");
 function latinize(str) {
-  return str.replace(/[^\x00-\x7F]/g, (x) => characters[x] || x);
+  if (!NON_ASCII.test(str)) {
+    return str;
+  }
+  return str.replace(NON_ASCII_GLOBAL, (x) => characters[x] || x);
 }
 
 // libs/nasa-images/search/data-access/src/lib/nasa-images-api.service.ts
@@ -18137,4 +18142,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-2P37XRDM.js.map
+//# sourceMappingURL=src-H65K5I7B.js.map
