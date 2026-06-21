@@ -158,6 +158,8 @@ export function setEmptyStringPropertiesToNull(
 
 /**
  * @description Returns a boolean after comparing the object entries.
+ * Uses `for...in` with a `hasOwnProperty` guard instead of `Object.keys().every()` to avoid the
+ * O(N) array allocations (and the predicate closure), while preserving own-enumerable-key semantics.
  * @param {object} prev First object.
  * @param {object} curr Current object.
  * @returns {boolean}.
@@ -171,16 +173,24 @@ export function areObjectEntriesEqual(prev: object, curr: object): boolean {
     return false;
   }
 
-  const prevKeys = Object.keys(prev);
-  const currKeys = Object.keys(curr);
-
-  if (prevKeys.length !== currKeys.length) {
-    return false;
+  let prevCount = 0;
+  for (const key in prev) {
+    if (Object.prototype.hasOwnProperty.call(prev, key)) {
+      prevCount++;
+      if ((prev as Record<string, unknown>)[key] !== (curr as Record<string, unknown>)[key]) {
+        return false;
+      }
+    }
   }
 
-  return prevKeys.every(
-    key => (prev as Record<string, unknown>)[key] === (curr as Record<string, unknown>)[key]
-  );
+  let currCount = 0;
+  for (const key in curr) {
+    if (Object.prototype.hasOwnProperty.call(curr, key)) {
+      currCount++;
+    }
+  }
+
+  return prevCount === currCount;
 }
 
 /**

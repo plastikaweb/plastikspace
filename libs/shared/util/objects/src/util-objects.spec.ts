@@ -187,6 +187,19 @@ describe('Object Util', () => {
       // My new implementation uses === so this should be false
       expect(areObjectEntriesEqual({ a: 1 }, { a: '1' } as any)).toBe(false);
     });
+
+    it('should return false when the first object has extra entries', () => {
+      expect(areObjectEntriesEqual({ a: 1, b: 2 }, { a: 1 })).toBe(false);
+    });
+
+    it('should ignore inherited enumerable properties (own keys only)', () => {
+      const proto = { inherited: 'value' };
+      const withInherited = Object.create(proto) as Record<string, unknown>;
+      withInherited['a'] = 1;
+      // `for...in` walks inherited keys too; the `hasOwnProperty` guard must skip `inherited`
+      // so the comparison matches `Object.keys()` (own-enumerable) semantics.
+      expect(areObjectEntriesEqual(withInherited, { a: 1 })).toBe(true);
+    });
   });
 
   describe('transformStringToBooleanProperties method', () => {
