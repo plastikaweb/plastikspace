@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-21] - Shared: SEC-04 — Snackbar message: remove `[innerHTML]` sink in favour of interpolation
+
+### Fixed
+
+- **`libs/shared/notification/ui/mat-snackbar` (`NotificationUiMatSnackbarComponent`)**: The notification message was rendered with `[innerHTML]="data.message"`, parsing the string as live HTML. Swapped to `{{ data.message }}` interpolation, removing the HTML sink entirely. This is **defense-in-depth** (LOW, not the "HIGH" the originating Jules draft claimed): Angular already auto-sanitizes plain `[innerHTML]`, and no message source reaching this component carries markup, so the change is behaviour-neutral — the mat-snackbar render path applies **no** `translate` pipe (correcting the backlog note that `message` is "pre-translated by `StoreNotificationService`": it is not). Its consumers are `nasa-images` (plain-text errors) and `llecoop` (translation keys); `eco-store` uses the separate, already-interpolated `hot-toast` UI, so it never touched this sink. Added a spec feeding an `<img onerror>`/`<strong>` payload and asserting it renders as inert text with no `img`/`strong` nodes materialised. Completes the deferred "optional extra" of SEC-03; supersedes Jules draft PR [#1161](https://github.com/plastikaweb/plastikspace/pull/1161) (SEC-04, [#86cac31md](https://app.clickup.com/t/86cac31md)).
+
 ## [2026-06-21] - Shared: A11Y-007 — Search input: action-button tooltips + decoupled clear button
 
 ### Fixed
