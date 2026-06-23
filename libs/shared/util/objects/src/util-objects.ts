@@ -256,8 +256,26 @@ export function collectionToArray<T>(collection: Record<string, T>): T[] {
   return Object.values(collection);
 }
 
+/** Matches any HTML special character that needs escaping. Non-global for fast-path `.test()`. */
+const ESCAPE_HTML_CHARS = /[&<>"'/`=]/;
+/** Global variant of {@link ESCAPE_HTML_CHARS} for `String.prototype.replace()`. */
+const ESCAPE_HTML_CHARS_GLOBAL = /[&<>"'/`=]/g;
+/** Mapping of HTML special characters to their escaped entities. */
+const HTML_ESCAPE_MAP: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;',
+  '`': '&#x60;',
+  '=': '&#x3D;',
+};
+
 /**
  * @description Creates a deep clone of the provided value.
+ * Uses a manual `for` loop for arrays and `for...in` for objects instead of
+ * `map` or `forEach` to minimize array allocation and function call overhead.
  * @template T
  * @param {T} obj The value to clone.
  * @example
@@ -279,35 +297,33 @@ export function deepClone<T>(obj: T): T {
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(item => deepClone(item)) as T;
+    const length = obj.length;
+    const cloned = new Array(length);
+    for (let i = 0; i < length; i++) {
+      cloned[i] = deepClone(obj[i]);
+    }
+    return cloned as T;
   }
 
-  if (typeof obj === 'object') {
-    const cloned = {} as T;
-    Object.keys(obj).forEach(key => {
+  const cloned = {} as T;
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       (cloned as Record<string, unknown>)[key] = deepClone((obj as Record<string, unknown>)[key]);
-    });
-    return cloned;
+    }
   }
-
-  return obj;
+  return cloned;
 }
 
 /**
  * @description Escapes HTML special characters to prevent XSS.
+ * Includes a fast-path `RegExp.test()` check to skip `replace()` for plain strings.
  * @param {string} text The string to escape.
  * @returns {string} The escaped string.
  */
 export function escapeHtml(text: string): string {
-  const map: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-    '/': '&#x2F;',
-    '`': '&#x60;',
-    '=': '&#x3D;',
-  };
-  return text.replace(/[&<>"'/`=]/g, s => map[s]);
+  if (typeof text !== 'string') return '';
+  if (!ESCAPE_HTML_CHARS.test(text)) {
+    return text;
+  }
+  return text.replace(ESCAPE_HTML_CHARS_GLOBAL, s => HTML_ESCAPE_MAP[s]);
 }
