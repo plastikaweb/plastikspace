@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltip } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { axe } from 'vitest-axe';
@@ -79,6 +80,18 @@ describe('SharedAlertUiComponent', () => {
   it('should have role="alert" on the host', () => {
     createComponent('WARNING');
     expect(fixture.nativeElement.getAttribute('role')).toBe('alert');
+  });
+
+  it('should have a matTooltip on the close button that matches its aria-label', () => {
+    fixture = createComponent('INFO', true);
+    const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
+    expect(closeBtn).toBeTruthy();
+
+    const ariaLabel = closeBtn.nativeElement.getAttribute('aria-label');
+    const tooltipDirective = closeBtn.injector.get(MatTooltip, null);
+
+    expect(tooltipDirective).toBeTruthy();
+    expect(tooltipDirective?.message).toBe(ariaLabel);
   });
 
   it('should pass accessibility check for INFO type', async () => {
