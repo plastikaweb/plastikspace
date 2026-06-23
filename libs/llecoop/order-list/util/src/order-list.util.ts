@@ -3,6 +3,7 @@ import { UiOrderStatusChipComponent } from 'ui-order-status-chip';
 
 import { inject, Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   LlecoopOrder,
   llecoopOrderStatus,
@@ -39,7 +40,7 @@ export class UserOrderUtilsService {
     );
 
     return this.#sanitizer.bypassSecurityTrustHtml(
-      `<p>${findDeliveryDate?.label} ${findDeliveryTime?.label}</p>`
+      `<p>${escapeHtml(findDeliveryDate?.label || '')} ${escapeHtml(findDeliveryTime?.label || '')}</p>`
     );
   }
 

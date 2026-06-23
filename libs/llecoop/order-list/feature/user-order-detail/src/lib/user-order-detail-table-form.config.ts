@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LlecoopOrderProduct } from '@plastik/llecoop/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
@@ -37,8 +38,8 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
-        const name = `<p class="font-bold uppercase">${element?.['name']}</p>`;
-        const info = element?.['info'] ? `<p class="font-bold">${element['info']}</p>` : '';
+        const name = `<p class="font-bold uppercase">${escapeHtml((element?.['name'] as string) || '')}</p>`;
+        const info = element?.['info'] ? `<p class="font-bold">${escapeHtml(element['info'] as string)}</p>` : '';
         return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },
