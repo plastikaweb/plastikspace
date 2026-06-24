@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-24] - Shared: A11Y-009 — `textarea-with-counter` aria-live counter + pre-limit warning
+
+### Changed
+
+- **`libs/shared/form/ui/textarea-with-counter`**: the character-count `mat-hint` now carries `aria-live="polite"` so screen-reader users hear the count update as they type, and a `text-warning` state kicks in at ≥90% of `maxLength` to give early feedback before the existing `text-error` hard limit. Both class bindings were unified on `props.maxLength` (replacing the mixed `ta.maxLength`/`props.maxLength` sources, which also drops the `ta.maxLength === -1`-when-unset edge case where the error class stuck on). Behaviour is additive for the shared type's consumers (eco-store + llecoop). Spec asserts the aria-live attribute plus the 90% / 100% thresholds (5 tests). Harvested from Jules draft #1185. (A11Y-009, [#86cadtkvb](https://app.clickup.com/t/86cadtkvb))
+
 ## [2026-06-24] - Llecoop: SEC-05 — Escape dynamic content before `bypassSecurityTrustHtml` in order-list tables
 
 ### Fixed

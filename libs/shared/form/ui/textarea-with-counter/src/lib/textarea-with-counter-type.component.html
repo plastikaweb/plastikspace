@@ -15,8 +15,16 @@
     [maxLength]="props.maxLength"
     [minLength]="props.minLength"
     [cdkAutosizeMaxRows]="to['maxRows']"></textarea>
-  <mat-hint [class]="`text-sm ${ta.value.length >= ta.maxLength ? 'text-error' : ''}`"
-    >{{ ta.value.length }} / {{ props.maxLength }}
+  <mat-hint
+    class="text-sm"
+    aria-live="polite"
+    [class.text-warning]="
+      props.maxLength &&
+      ta.value.length >= props.maxLength * 0.9 &&
+      ta.value.length < props.maxLength
+    "
+    [class.text-error]="props.maxLength && ta.value.length >= props.maxLength"
+    >{{ ta.value.length }} / {{ props.maxLength || 0 }}
     {{ 'common.form.charactersCount' | translate: { count: props.maxLength } }}</mat-hint
   >
 </mat-form-field>
