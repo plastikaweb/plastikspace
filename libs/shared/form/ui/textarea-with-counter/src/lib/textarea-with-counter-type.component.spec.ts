@@ -50,4 +50,38 @@ describe('TextareaWithCounterTypeComponent', () => {
   test('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  test('should have aria-live="polite" on the character counter', () => {
+    const hint = fixture.nativeElement.querySelector('mat-hint');
+    expect(hint.getAttribute('aria-live')).toBe('polite');
+  });
+
+  test('should apply text-warning class when character count is >= 90% and < maxLength', () => {
+    const maxLength = 100;
+    component.formControl.setValue('a'.repeat(90));
+    fixture.detectChanges();
+
+    const hint = fixture.nativeElement.querySelector('mat-hint');
+    expect(hint.classList.contains('text-warning')).toBe(true);
+    expect(hint.classList.contains('text-error')).toBe(false);
+  });
+
+  test('should apply text-error class when character count is >= maxLength', () => {
+    const maxLength = 100;
+    component.formControl.setValue('a'.repeat(maxLength));
+    fixture.detectChanges();
+
+    const hint = fixture.nativeElement.querySelector('mat-hint');
+    expect(hint.classList.contains('text-error')).toBe(true);
+    expect(hint.classList.contains('text-warning')).toBe(false);
+  });
+
+  test('should not apply warning or error class when character count is < 90%', () => {
+    component.formControl.setValue('a'.repeat(89));
+    fixture.detectChanges();
+
+    const hint = fixture.nativeElement.querySelector('mat-hint');
+    expect(hint.classList.contains('text-warning')).toBe(false);
+    expect(hint.classList.contains('text-error')).toBe(false);
+  });
 });
