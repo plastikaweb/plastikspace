@@ -6,6 +6,7 @@ import {
 } from '@plastik/llecoop/order-list/data-access';
 import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -46,7 +47,7 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig implements TableStr
     formatting: {
       type: 'LINK',
       execute: (_, order) =>
-        `<p class="font-bold uppercase" aria-label="Veure els totals de la comanda de la setmana ${order?.name}">${order?.name}</p>`,
+        `<p class="font-bold uppercase" aria-label="Veure els totals de la comanda de la setmana ${escapeHtml(String(order?.name ?? ''))}">${escapeHtml(String(order?.name ?? ''))}</p>`,
     },
   };
 

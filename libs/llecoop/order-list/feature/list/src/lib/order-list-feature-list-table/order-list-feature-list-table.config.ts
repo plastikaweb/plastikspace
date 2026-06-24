@@ -10,6 +10,7 @@ import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, createFirebaseTimestampTableColumn } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { FormattingComponentOutput } from '@plastik/shared/formatters';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -39,7 +40,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
     formatting: {
       type: 'LINK',
       execute: (_, order) =>
-        `<p class="font-bold uppercase" aria-label="Veure totes les comandes de la setmana ${order?.name}">${order?.name}</p>`,
+        `<p class="font-bold uppercase" aria-label="Veure totes les comandes de la setmana ${escapeHtml(order?.name ?? '')}">${escapeHtml(order?.name ?? '')}</p>`,
     },
   };
 
@@ -138,14 +139,14 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
                 order.status === 'waiting'
                   ? this.#sanitizer.bypassSecurityTrustHtml(
                       `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
-                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-balance">Segur que vols activar <nobr>la comanda "${order.name}" ?</nobr></p>
+                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-balance">Segur que vols activar <nobr>la comanda "${escapeHtml(order.name)}" ?</nobr></p>
                     <p class="text-center">Un cop activada es podrà tornar a pausar fins la data de tancament.</p>
                   </div>
                 `
                     )
                   : this.#sanitizer.bypassSecurityTrustHtml(
                       `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
-                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-balance">Segur que vols ficar en pausa <nobr>la comanda "${order.name}" ?</nobr></p>
+                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-balance">Segur que vols ficar en pausa <nobr>la comanda "${escapeHtml(order.name)}" ?</nobr></p>
                     <p class="text-center">La podràs tornar a activar en qualsevol moment fins la data de tancament.</p>
                   </div>
                 `
@@ -186,7 +187,7 @@ export class LlecoopOrderListFeatureListTableConfig implements TableStructureCon
                 'Cancel·lació de comanda',
                 this.#sanitizer.bypassSecurityTrustHtml(
                   `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
-                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-balance">Segur que vols cancel·lar <nobr>la comanda "${order.name}" ?</nobr></p>
+                    <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md text-center leading-6 text-balance">Segur que vols cancel·lar <nobr>la comanda "${escapeHtml(order.name)}" ?</nobr></p>
                     <p class="text-center">Un cop fet ja no es podrà tornar a activar.</p>
                   </div>
                 `

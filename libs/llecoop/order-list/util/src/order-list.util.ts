@@ -12,6 +12,7 @@ import {
   llecoopUserOrderTimeOptions,
 } from '@plastik/llecoop/entities';
 import { FormattingComponentOutput } from '@plastik/shared/formatters';
+import { escapeHtml } from '@plastik/shared/objects';
 import { TableColumnFormatting } from '@plastik/shared/table/entities';
 
 /**
@@ -39,7 +40,7 @@ export class UserOrderUtilsService {
     );
 
     return this.#sanitizer.bypassSecurityTrustHtml(
-      `<p>${findDeliveryDate?.label} ${findDeliveryTime?.label}</p>`
+      `<p>${escapeHtml(findDeliveryDate?.label ?? '')} ${escapeHtml(findDeliveryTime?.label ?? '')}</p>`
     );
   }
 

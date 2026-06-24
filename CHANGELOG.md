@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-24] - Llecoop: SEC-05 — Escape dynamic content before `bypassSecurityTrustHtml` in order-list tables
+
+### Fixed
+
+- **`libs/llecoop/order-list` (table/dialog configs + `UserOrderUtilsService`)**: Several order-list table and confirmation-dialog configs interpolated dynamic record data (order/product `name`, product `info`/`provider`/`origin`, delivery labels) straight into HTML strings passed to `DomSanitizer.bypassSecurityTrustHtml(...)` — which **disables** Angular sanitization — then rendered them via `[innerHTML]` (directly, or through the table's `safeFormatted` pipe for `LINK` cells), so any markup in that data would execute. Each dynamic value is now HTML-escaped with `escapeHtml` (from `@plastik/shared/objects`, SEC-01) before concatenation, while the intended `<p>`/`<li>`/class markup stays trusted. Severity **MEDIUM**, not HIGH: the data is cooperative-admin-controlled (order/product names), not anonymous user input. Hardened sinks: `order-list.util.ts` delivery labels; the activate/pause/cancel `order.name` dialogs and the order-name `LINK` cell in `order-list-feature-list-table.config.ts`; the `${name}${info}…` cells in the user-order resume/detail/feature-resume configs; and — beyond the originally-enumerated set — the two sibling order-name `LINK` cells in `order-list-user-order-feature-list-table.config.ts` and `user-order-feature-table.config.ts` (same `[innerHTML]` render path). Every call is null-guarded (`?? ''`, plus `String(…)` where `name` is typed `string | LocalizedFields`) so escaping an absent/object value cannot throw — matching the prior crash-free template-literal coercion. Added a `llecoop-order-list-util` spec asserting an injected `<img onerror>` label is escaped (the leading `<` is encoded, so it cannot execute). Supersedes Jules draft PR [#1184](https://github.com/plastikaweb/plastikspace/pull/1184) (subset dupe #1181 folded in) (SEC-05, [#86cadtkav](https://app.clickup.com/t/86cadtkav)).
+
 ## [2026-06-24] - Eco Store: BUG-004 — Rationalize cart add/change/remove toasts
 
 ### Fixed
