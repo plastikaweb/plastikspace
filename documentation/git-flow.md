@@ -186,6 +186,19 @@ yarn i18n:validate
 
 For more details, see [i18n documentation](./i18n.md).
 
+### Pre-push Hook
+
+`.husky/pre-push` is the gate that runs on **every** push, regardless of how a commit
+was authored. This matters because `git rebase --continue` and `git commit --amend` do
+**not** fire the pre-commit hook, so Prettier/lint never run on commits created that way.
+The pre-push hook therefore enforces, scoped to the range being pushed:
+
+- `nx format:check` — runs for every push (including markdown-only ones, since Prettier also formats `.md`). On failure: run `yarn format:write`, amend/rebase the affected commit(s), then re-push.
+- `nx affected --target=lint` — on non-markdown pushes.
+- `nx affected` `test` and production `build` — on non-markdown pushes; plus `eco-store`/`nasa-images` Pa11y when those apps are affected.
+
+Markdown-only pushes skip the test/build/a11y steps (but still run `format:check`).
+
 ## Useful links
 
 - [Github actions](https://docs.github.com/en/actions)
