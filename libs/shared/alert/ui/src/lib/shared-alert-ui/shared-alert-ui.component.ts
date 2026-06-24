@@ -1,12 +1,13 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { ALERT_ICONS, AlertType } from '@plastik/core/entities';
 
 @Component({
   selector: 'plastik-shared-alert',
-  imports: [MatIconModule, MatButtonModule, TranslateModule],
+  imports: [MatIconModule, MatButtonModule, MatTooltipModule, TranslateModule],
   templateUrl: './shared-alert-ui.component.html',
   styleUrl: './shared-alert-ui.component.scss',
   host: {

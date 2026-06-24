@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltip } from '@angular/material/tooltip';
 import { By } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { axe } from 'vitest-axe';
@@ -66,6 +67,15 @@ describe('SharedAlertUiComponent', () => {
     createComponent('INFO', true);
     const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
     expect(closeBtn).not.toBeNull();
+  });
+
+  it('should mirror the close button aria-label in its matTooltip', () => {
+    createComponent('INFO', true);
+    const closeBtn = fixture.debugElement.query(By.css('button[matIconButton]'));
+    const tooltip = closeBtn.injector.get(MatTooltip);
+    const ariaLabel = closeBtn.nativeElement.getAttribute('aria-label');
+    expect(ariaLabel).toBe('common.close');
+    expect(tooltip.message).toBe(ariaLabel);
   });
 
   it('should emit closed event when close button is clicked', () => {

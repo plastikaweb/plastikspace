@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-24] - Shared: A11Y-008 — `SharedAlert` close button tooltip
+
+### Fixed
+
+- **`libs/shared/alert/ui` (`SharedAlertUiComponent`)**: The alert close icon button carried an `[attr.aria-label]="'common.close' | translate"` but no `matTooltip`, so sighted mouse/keyboard users got no hover/focus affordance — inconsistent with the icon-only buttons hardened in A11Y-004/005/007. Imported `MatTooltipModule` and added a `[matTooltip]` mirroring the existing `common.close` `aria-label`. Added a spec asserting the tooltip stays in sync with the `aria-label`. Harvest from Jules draft [#1182](https://github.com/plastikaweb/plastikspace/pull/1182) (A11Y-008, [#86cadtkh7](https://app.clickup.com/t/86cadtkh7)).
+
 ## [2026-06-24] - Shared: A11Y-009 — `textarea-with-counter` aria-live counter + pre-limit warning
 
 ### Changed
