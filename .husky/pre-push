@@ -3,11 +3,31 @@ set -e
 export NX_CLI_SET=classic
 export PAGER=cat
 
-CHANGED_FILES=$(git diff --name-only @{upstream}...HEAD 2>/dev/null || git diff --name-only HEAD~1...HEAD)
+# Resolve the base of the range being pushed. Prefer this branch's upstream (exactly
+# the commits not yet on the remote); for a brand-new branch with no upstream, fall
+# back to the merge-base with origin/develop so the WHOLE branch is covered — NOT just
+# the tip commit (the old `HEAD~1...HEAD` fallback silently scoped every check to the
+# last commit on new branches, e.g. letting a 2-commit push build/lint nothing).
+BASE=$(git rev-parse @{upstream} 2>/dev/null || git merge-base origin/develop HEAD 2>/dev/null || echo HEAD~1)
+CHANGED_FILES=$(git diff --name-only "$BASE"..HEAD)
+
+# --- FORMAT GATE (runs for EVERY push) ---
+# `git rebase --continue` and `git commit --amend` do NOT fire the pre-commit hook, so
+# Prettier (and lint) never ran on commits authored that way. pre-push is the only hook
+# that always runs regardless of how a commit was created, so this is where that drift
+# is caught — locally, before it reaches the remote and CI. Prettier formats .md too,
+# so this runs even for doc-only pushes (before the markdown fast-path below).
+echo "🎨 Checking formatting (Prettier)..."
+if ! yarn nx format:check --base="$BASE" --head=HEAD; then
+  echo "❌ Formatting drift detected — often from 'git rebase --continue' or 'git commit --amend', which skip the pre-commit hook."
+  echo "   Fix: run 'yarn format:write', then amend/rebase the affected commit(s) and re-push."
+  exit 1
+fi
 
 # --- MARKDOWN-ONLY FAST PATH ---
 # If every file changed across all commits being pushed is a .md, skip tests,
 # build and a11y entirely — none of them are relevant for doc-only pushes.
+# (Formatting was already verified above.)
 NON_MD_CHANGED=$(printf '%s\n' "$CHANGED_FILES" | grep -v '\.md$' | grep -v '^$' || true)
 if [ -z "$NON_MD_CHANGED" ]; then
   echo "📝 Markdown-only push — skipping tests, build and a11y checks"
@@ -15,6 +35,14 @@ if [ -z "$NON_MD_CHANGED" ]; then
   exit 0
 fi
 # --------------------------------
+
+echo "🔍 Running affected lint..."
+# Like the format gate above, this catches lint errors on rebase/amend commits that
+# bypassed the pre-commit lint. Scoped to the exact push range via $BASE..HEAD.
+if ! yarn nx affected --target=lint --base="$BASE" --head=HEAD --parallel --max-parallel=3 --cache; then
+  echo "❌ Lint failed! Push aborted."
+  exit 1
+fi
 
 echo "🏃 Running affected tests..."
 if ! yarn nx affected --target=test --parallel --max-parallel=2 --cache; then
