@@ -9,6 +9,7 @@ import { LlecoopProductBaseUnitTextPipe } from '@plastik/llecoop/product/product
 import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
 import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
 import { categoryNameCell } from '@plastik/llecoop/util';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -37,8 +38,8 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
-        const name = `<p class="font-bold uppercase">${element?.['name']}</p>`;
-        const info = element?.['info'] ? `<p class="font-bold">${element['info']}</p>` : '';
+        const name = `<p class="font-bold uppercase">${escapeHtml(element?.['name'])}</p>`;
+        const info = element?.['info'] ? `<p class="font-bold">${escapeHtml(element['info'])}</p>` : '';
         return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },

@@ -5,6 +5,7 @@ import { llecoopUserOrderStore } from '@plastik/llecoop/order-list/data-access';
 import { LlecoopProductBaseUnitTextPipe } from '@plastik/llecoop/product/product-base-unit-text';
 import { LlecoopProductUnitSuffixPipe } from '@plastik/llecoop/product/product-unit-suffix';
 import { FormattingTypes } from '@plastik/shared/formatters';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -30,13 +31,13 @@ export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<L
     formatting: {
       type: 'CUSTOM',
       execute: (_, product) => {
-        const name = `<p class="font-bold uppercase">${product?.name}</p>`;
+        const name = `<p class="font-bold uppercase">${escapeHtml(product?.name)}</p>`;
         const unit = product?.unit
           ? `<p class="font-bold text-sm">${Number(product?.price).toFixed(2)} € x ${this.#productBaseUnitTextPipe.transform(product.unit)}</p>`
           : '';
-        const info = product?.info ? `<p class="font-bold">${product?.info}</p>` : '';
-        const provider = product?.provider ? `<li>Proveïdor: ${product?.provider}</li>` : '';
-        const origin = product?.origin ? `<li>Procedència: ${product?.origin}</li>` : '';
+        const info = product?.info ? `<p class="font-bold">${escapeHtml(product?.info)}</p>` : '';
+        const provider = product?.provider ? `<li>Proveïdor: ${escapeHtml(product?.provider)}</li>` : '';
+        const origin = product?.origin ? `<li>Procedència: ${escapeHtml(product?.origin)}</li>` : '';
         const extra = `<ul class="hidden md:block">${provider}${origin}</ul>`;
         return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}${unit}${extra}`) as SafeHtml;
       },
