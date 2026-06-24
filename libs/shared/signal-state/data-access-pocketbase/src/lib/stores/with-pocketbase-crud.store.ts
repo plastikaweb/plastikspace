@@ -97,13 +97,17 @@ export function withPocketBaseCrud<
             );
 
             if (showNotification.success) {
-              store._notificationService.create(`${featureName}.create.success`, 'SUCCESS');
+              store._notificationService.create(`${featureName}.create.success`, 'SUCCESS', {
+                groupKey: `${featureName}:create`,
+              });
             }
             return createdItem;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.create.error`;
             if (showNotification.error) {
-              store._notificationService.create(message, 'ERROR');
+              store._notificationService.create(message, 'ERROR', {
+                groupKey: `${featureName}:create`,
+              });
             }
           }
         },
@@ -136,13 +140,17 @@ export function withPocketBaseCrud<
               );
             }
             if (showNotification.success) {
-              store._notificationService.create(`${featureName}.update.success`, 'SUCCESS');
+              store._notificationService.create(`${featureName}.update.success`, 'SUCCESS', {
+                groupKey: `${featureName}:update`,
+              });
             }
             return updatedItem as T;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.update.error`;
             if (showNotification.error) {
-              store._notificationService.create(message, 'ERROR');
+              store._notificationService.create(message, 'ERROR', {
+                groupKey: `${featureName}:update`,
+              });
             }
           }
         },
@@ -165,13 +173,17 @@ export function withPocketBaseCrud<
               selectedItemId: store.selectedItemId() === id ? null : store.selectedItemId(),
             });
             if (showNotification.success) {
-              store._notificationService.create(`${featureName}.delete.success`, 'SUCCESS');
+              store._notificationService.create(`${featureName}.delete.success`, 'SUCCESS', {
+                groupKey: `${featureName}:delete`,
+              });
             }
             return true;
           } catch (error) {
             const message = (error as ClientResponseError).message ?? `${featureName}.delete.error`;
             if (showNotification.error) {
-              store._notificationService.create(message, 'ERROR');
+              store._notificationService.create(message, 'ERROR', {
+                groupKey: `${featureName}:delete`,
+              });
             }
             return false;
           }

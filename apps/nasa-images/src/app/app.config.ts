@@ -24,6 +24,7 @@ import {
   routerReducers,
   RouterStateEffects,
 } from '@plastik/core/router-state';
+import { provideNotificationConfig } from '@plastik/shared/notification/entities';
 
 import { environment } from '../environments/environment';
 import { routes } from './app.routing';
@@ -63,6 +64,8 @@ export const appConfig: ApplicationConfig = {
     },
     { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig },
     { provide: VIEW_CONFIG, useValue: getVisibleNavigationList(viewConfig) },
+    // Single-snackbar UI: cap retained notifications at 1 so the latest always shows.
+    provideNotificationConfig({ maxConcurrent: 1 }),
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {

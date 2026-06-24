@@ -31,6 +31,7 @@ import {
   TranslateService,
 } from '@ngx-translate/core';
 import { provideTranslateHttpLoader } from '@ngx-translate/http-loader';
+import { provideHotToastConfig } from '@ngxpert/hot-toast';
 import { POCKETBASE_INSTANCE, pocketBaseFactory } from '@plastik/core/api-pocketbase';
 import { providePocketBaseWithTranslationsEnv } from '@plastik/core/environments';
 import { EcoStorePrefixTitleService } from '@plastik/eco-store/core/router-state';
@@ -38,6 +39,7 @@ import { getPocketBaseImageUrl } from '@plastik/eco-store/shared/utils';
 import { ecoStoreTenantStore, provideEcoStoreTenant } from '@plastik/eco-store/tenant';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
+import { provideNotificationConfig } from '@plastik/shared/notification/entities';
 import { PWA_APP_DATA_FN, PwaInstallService, PwaManifestService } from '@plastik/shared/pwa';
 import { pocketBaseStorageLoader } from '@plastik/storage/data-access';
 import { TranslateFormatJsCompiler } from 'ngx-translate-formatjs-compiler';
@@ -49,6 +51,10 @@ import { appRoutes } from './app.routes';
 // ever need the Catalan locale data. The 'es' locale is intentionally not
 // registered to keep it out of the initial bundle.
 registerLocaleData(localeCa);
+
+// Maximum number of notifications shown at once. One value drives both the notification store cap
+// and the hot-toast visible-toast cap, so every notification UI honours the same limit.
+const MAX_CONCURRENT_NOTIFICATIONS = 3;
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -78,6 +84,8 @@ export const appConfig: ApplicationConfig = {
     ),
     providePocketBaseWithTranslationsEnv(environment),
     provideHttpClient(withFetch()),
+    provideNotificationConfig({ maxConcurrent: MAX_CONCURRENT_NOTIFICATIONS }),
+    provideHotToastConfig({ visibleToasts: MAX_CONCURRENT_NOTIFICATIONS, stacking: 'vertical' }),
     { provide: POCKETBASE_INSTANCE, useFactory: pocketBaseFactory },
     provideTranslateService({
       loader: provideTranslateHttpLoader({

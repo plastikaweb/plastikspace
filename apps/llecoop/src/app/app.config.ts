@@ -35,6 +35,7 @@ import { provideFormlyConfig } from '@plastik/shared/form';
 import { FORM_DISABLE_TOKEN } from '@plastik/shared/form/util';
 import { ErrorHandlerService } from '@plastik/shared/notification/data-access';
 
+import { provideNotificationConfig } from '@plastik/shared/notification/entities';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { viewConfig } from './cms-layout-config';
@@ -93,6 +94,7 @@ export const appConfig = {
         }
       });
     }),
+    provideNotificationConfig({ maxConcurrent: 1 }),
     {
       provide: ENVIRONMENT,
       useValue: environment,

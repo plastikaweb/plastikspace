@@ -1,64 +1,83 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { describe, expect, it, vi } from 'vitest';
+
 import { notificationStore } from '../+state/notification.store';
-import { NotificationConfigService } from './notification-config.service';
 import { StoreNotificationService } from './store-notification.service';
 
 describe('StoreNotificationService', () => {
-  let service: StoreNotificationService;
-  let configService: NotificationConfigService;
-  let store: any;
-  let announcer: LiveAnnouncer;
-
-  beforeEach(() => {
-    const storeSpy = {
-      show: vi.fn(),
-    };
-
-    const announcerSpy = {
-      announce: vi.fn(),
-    };
-
+  const setup = () => {
+    const announce = vi.fn();
     TestBed.configureTestingModule({
       providers: [
+        provideZonelessChangeDetection(),
         StoreNotificationService,
-        { provide: NotificationConfigService, useValue: { getInstance: vi.fn(c => c) } },
-        { provide: notificationStore, useValue: storeSpy },
-        { provide: LiveAnnouncer, useValue: announcerSpy },
+        { provide: LiveAnnouncer, useValue: { announce } },
       ],
     });
 
-    service = TestBed.inject(StoreNotificationService);
-    configService = TestBed.inject(NotificationConfigService);
-    store = TestBed.inject(notificationStore);
-    announcer = TestBed.inject(LiveAnnouncer);
-  });
+    return {
+      service: TestBed.inject(StoreNotificationService),
+      store: TestBed.inject(notificationStore),
+      announce,
+    };
+  };
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(setup().service).toBeTruthy();
   });
 
-  describe('create', () => {
-    it('should call notificationStore.show and LiveAnnouncer.announce', () => {
-      const message = 'Test message';
-      const type = 'SUCCESS';
-      const parameters = { foo: 'bar' };
+  it('shows a basic notification and announces it to assistive technology', () => {
+    const { service, store, announce } = setup();
 
-      service.create(message, type, parameters);
+    service.create('hello', 'SUCCESS');
 
-      expect(configService.getInstance).toHaveBeenCalledWith({ message, type, parameters });
-      expect(store.show).toHaveBeenCalledWith({ message, type, parameters }, true);
-      expect(announcer.announce).toHaveBeenCalledWith(message, 'assertive', 1000);
-    });
+    const config = store.configuration();
+    expect(config).toHaveLength(1);
+    expect(config[0]).toMatchObject({ message: 'hello', type: 'SUCCESS' });
+    expect(announce).toHaveBeenCalledWith('hello', 'assertive', 1000);
+  });
 
-    it('should call notificationStore.show with preserve false when specified', () => {
-      const message = 'Test message';
-      const type = 'ERROR';
+  it('forwards the groupKey so the store can collapse duplicates', () => {
+    const { service, store } = setup();
 
-      service.create(message, type, {}, false);
+    service.create('msg', 'INFO', { groupKey: 'cart:1' });
 
-      expect(store.show).toHaveBeenCalledWith({ message, type, parameters: {} }, false);
-    });
+    expect(store.configuration()[0].groupKey).toBe('cart:1');
+  });
+
+  it('overrides the per-type duration when a duration option is provided', () => {
+    const { service, store } = setup();
+
+    service.create('msg', 'INFO', { duration: 12345 });
+
+    expect(store.configuration()[0].duration).toBe(12345);
+  });
+
+  it('keeps the per-type default duration when no duration option is given', () => {
+    const { service, store } = setup();
+
+    // INFO default duration is 3000 (see defaultNotification).
+    service.create('msg', 'INFO');
+
+    expect(store.configuration()[0].duration).toBe(3000);
+  });
+
+  it('forwards render parameters as the last argument', () => {
+    const { service, store } = setup();
+
+    service.create('msg', 'SUCCESS', { groupKey: 'k' }, { name: 'Tomata', image: 'x.png' });
+
+    expect(store.configuration()[0].parameters).toEqual({ name: 'Tomata', image: 'x.png' });
+  });
+
+  it('maps the preserve option onto preserveOnRouteRequest (defaulting to true)', () => {
+    const { service, store } = setup();
+
+    service.create('kept', 'INFO');
+    expect(store.preserveOnRouteRequest()).toBe(true);
+
+    service.create('not-kept', 'INFO', { preserve: false });
+    expect(store.preserveOnRouteRequest()).toBe(false);
   });
 });

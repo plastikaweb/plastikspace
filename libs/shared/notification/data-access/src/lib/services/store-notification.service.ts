@@ -10,15 +10,24 @@ export class StoreNotificationService {
   readonly #notificationStore = inject(notificationStore);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
 
+  // `options` precedes `parameters` because most callers set behaviour (e.g. groupKey) but only a
+  // few pass translation/render parameters, so this keeps the common call sites free of `undefined`.
   create(
     message: string,
     type: NotificationType,
-    parameters?: Record<string, unknown>,
-    preserve = true
+    options?: { preserve?: boolean; groupKey?: string; duration?: number },
+    parameters?: Record<string, unknown>
   ): void {
     this.#notificationStore.show(
-      this.#notificationService.getInstance({ message, type, parameters }),
-      preserve
+      this.#notificationService.getInstance({
+        message,
+        type,
+        parameters,
+        groupKey: options?.groupKey,
+        // Only forward duration when provided; passing undefined would clobber the per-type default.
+        ...(options?.duration != null ? { duration: options.duration } : {}),
+      }),
+      { preserveOnRouteRequest: options?.preserve ?? true }
     );
     this.#liveAnnouncer.announce(message, 'assertive', 1000);
   }

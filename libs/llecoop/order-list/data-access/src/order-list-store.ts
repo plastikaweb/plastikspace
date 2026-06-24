@@ -104,9 +104,13 @@ export const llecoopOrderListStore = signalStore(
       pipe(
         filter(() => !!store._activeConnection()),
         switchMap(order => {
+          // Share one groupKey across this order's status notifications so the optimistic +
+          // confirmation duplicates collapse to a single toast (and an error replaces the success).
+          const groupKey = `order-status:${order.id}`;
           store._storeNotificationService.create(
             `Estat de la comanda "${order['name']}" actualitzat correctament`,
-            'SUCCESS'
+            'SUCCESS',
+            { groupKey }
           );
 
           return store._dataService
@@ -119,19 +123,22 @@ export const llecoopOrderListStore = signalStore(
                 next: () => {
                   store._storeNotificationService.create(
                     `Estat de la comanda "${order['name']}" actualitzat correctament`,
-                    'SUCCESS'
+                    'SUCCESS',
+                    { groupKey }
                   );
                 },
                 error: error =>
                   store._storeNotificationService.create(
                     `No s'ha pogut actualitzar l'estat de la comanda "${order['name']}": ${error}`,
-                    'ERROR'
+                    'ERROR',
+                    { groupKey }
                   ),
               }),
               tap(() =>
                 store._storeNotificationService.create(
                   `Estat de la comanda "${order['name']}" actualitzat correctament`,
-                  'SUCCESS'
+                  'SUCCESS',
+                  { groupKey }
                 )
               )
             );
@@ -142,9 +149,13 @@ export const llecoopOrderListStore = signalStore(
       pipe(
         filter(() => !!store._activeConnection()),
         switchMap(order => {
+          // Share one groupKey across this order's cancellation notifications so the optimistic +
+          // confirmation duplicates collapse to a single toast (and an error replaces the success).
+          const groupKey = `order-status:${order.id}`;
           store._storeNotificationService.create(
             `Estat de la comanda "${order['name']}" cancel·lada correctament`,
-            'SUCCESS'
+            'SUCCESS',
+            { groupKey }
           );
 
           return store._dataService.update(order.id, { ...order, status: 'cancelled' }).pipe(
@@ -152,18 +163,21 @@ export const llecoopOrderListStore = signalStore(
               next: () =>
                 store._storeNotificationService.create(
                   `Comanda "${order['name']}" cancel·lada correctament`,
-                  'SUCCESS'
+                  'SUCCESS',
+                  { groupKey }
                 ),
               error: error =>
                 store._storeNotificationService.create(
                   `No s'ha pogut cancel·lar la comanda "${order['name']}": ${error}`,
-                  'ERROR'
+                  'ERROR',
+                  { groupKey }
                 ),
             }),
             tap(() =>
               store._storeNotificationService.create(
                 `Estat de la comanda "${order['name']}" cancel·lada correctament`,
-                'SUCCESS'
+                'SUCCESS',
+                { groupKey }
               )
             )
           );
