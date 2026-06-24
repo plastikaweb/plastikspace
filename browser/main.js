@@ -1,6 +1,7 @@
 import {
-  notificationStore
-} from "./chunk-5M6BG6E6.js";
+  notificationStore,
+  provideNotificationConfig
+} from "./chunk-RRG7GRJJ.js";
 import {
   CORE_CMS_LAYOUT_HEADER_CONFIG,
   CustomRouterSerializer,
@@ -6547,7 +6548,7 @@ var environment = {
 var routes = [
   {
     path: "search",
-    loadChildren: () => import("./src-QUSE7L7J.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
+    loadChildren: () => import("./src-CD6ZSXRK.js").then((routes2) => routes2.nasaImagesSearchFeatureRoutes)
   },
   {
     path: "faqs",
@@ -6641,6 +6642,8 @@ var appConfig = {
     },
     { provide: CORE_CMS_LAYOUT_HEADER_CONFIG, useValue: headerConfig },
     { provide: VIEW_CONFIG, useValue: getVisibleNavigationList(viewConfig) },
+    // Single-snackbar UI: cap retained notifications at 1 so the latest always shows.
+    provideNotificationConfig({ maxConcurrent: 1 }),
     {
       provide: MAT_SNACK_BAR_DEFAULT_OPTIONS,
       useValue: {

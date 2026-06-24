@@ -22,23 +22,6 @@ import {
   ɵɵdefineInjectable
 } from "./chunk-BYTVJWX3.js";
 
-// libs/shared/notification/data-access/src/lib/+state/notification.store.ts
-var initialState = {
-  configuration: [],
-  preserveOnRouteRequest: false
-};
-var notificationStore = signalStore({ providedIn: "root" }, isDevMode() ? withDevtools("notification") : withDevToolsStub("notification"), withImmutableState(initialState), withMethods((store) => ({
-  show: (configuration, preserveOnRouteRequest) => {
-    updateState(store, `[notification] show`, {
-      configuration: [...store.configuration(), configuration],
-      preserveOnRouteRequest: preserveOnRouteRequest ?? false
-    });
-  },
-  dismiss: () => {
-    updateState(store, `[notification] dismiss`, initialState);
-  }
-})));
-
 // libs/shared/notification/entities/src/notification-config.ts
 var defaultNotification = {
   ["ERROR"]: {
@@ -75,6 +58,66 @@ var NOTIFICATION_POSITION = new InjectionToken("notificationPosition", {
     horizontalPosition: "center"
   })
 });
+var DEFAULT_NOTIFICATION_MAX_CONCURRENT = 3;
+var NOTIFICATION_MAX_CONCURRENT = new InjectionToken("notificationMaxConcurrent", {
+  providedIn: "root",
+  factory: () => DEFAULT_NOTIFICATION_MAX_CONCURRENT
+});
+function provideNotificationConfig(config = {}) {
+  const providers = [];
+  if (config.types) {
+    providers.push({ provide: NOTIFICATION_TYPES_CONFIG, useValue: config.types });
+  }
+  if (config.position) {
+    providers.push({ provide: NOTIFICATION_POSITION, useValue: config.position });
+  }
+  if (config.maxConcurrent != null) {
+    providers.push({ provide: NOTIFICATION_MAX_CONCURRENT, useValue: config.maxConcurrent });
+  }
+  return providers;
+}
+
+// libs/shared/notification/data-access/src/lib/+state/notification.store.ts
+var initialState = {
+  configuration: [],
+  preserveOnRouteRequest: false
+};
+var notificationStore = signalStore({ providedIn: "root" }, isDevMode() ? withDevtools("notification") : withDevToolsStub("notification"), withImmutableState(initialState), withMethods((store) => {
+  const maxConcurrent = inject(NOTIFICATION_MAX_CONCURRENT);
+  let seq = 0;
+  return {
+    show: (notification, options) => {
+      const current = store.configuration();
+      const { groupKey } = notification;
+      const existingIndex = groupKey ? current.findIndex((item) => item.groupKey === groupKey) : -1;
+      let configuration;
+      if (existingIndex !== -1 && existingIndex === current.length - 1 && current[existingIndex].type === notification.type) {
+        const next = __spreadProps(__spreadValues({}, notification), { id: current[existingIndex].id });
+        configuration = current.map((item, i) => i === existingIndex ? next : item);
+      } else {
+        const next = __spreadProps(__spreadValues({}, notification), { id: `#${++seq}` });
+        const base = groupKey ? current.filter((item) => item.groupKey !== groupKey) : current;
+        configuration = [...base, next];
+        if (configuration.length > maxConcurrent) {
+          configuration = configuration.slice(-maxConcurrent);
+        }
+      }
+      updateState(store, `[notification] show`, {
+        configuration,
+        preserveOnRouteRequest: options?.preserveOnRouteRequest ?? false
+      });
+    },
+    dismiss: (id) => {
+      if (id == null) {
+        updateState(store, `[notification] dismiss`, initialState);
+        return;
+      }
+      updateState(store, `[notification] dismiss ${id}`, (state) => __spreadProps(__spreadValues({}, state), {
+        configuration: state.configuration.filter((item) => item.id !== id)
+      }));
+    }
+  };
+}));
 
 // libs/shared/notification/data-access/src/lib/services/notification-config.service.ts
 var NotificationConfigService = class _NotificationConfigService {
@@ -147,8 +190,15 @@ var StoreNotificationService = class _StoreNotificationService {
   #notificationService = inject(NotificationConfigService);
   #notificationStore = inject(notificationStore);
   #liveAnnouncer = inject(LiveAnnouncer);
-  create(message, type, parameters, preserve = true) {
-    this.#notificationStore.show(this.#notificationService.getInstance({ message, type, parameters }), preserve);
+  // `options` precedes `parameters` because most callers set behaviour (e.g. groupKey) but only a
+  // few pass translation/render parameters, so this keeps the common call sites free of `undefined`.
+  create(message, type, options, parameters) {
+    this.#notificationStore.show(this.#notificationService.getInstance(__spreadValues({
+      message,
+      type,
+      parameters,
+      groupKey: options?.groupKey
+    }, options?.duration != null ? { duration: options.duration } : {})), { preserveOnRouteRequest: options?.preserve ?? true });
     this.#liveAnnouncer.announce(message, "assertive", 1e3);
   }
   static \u0275fac = function StoreNotificationService_Factory(__ngFactoryType__) {
@@ -164,7 +214,8 @@ var StoreNotificationService = class _StoreNotificationService {
 })();
 
 export {
+  provideNotificationConfig,
   notificationStore,
   NotificationConfigService
 };
-//# sourceMappingURL=chunk-5M6BG6E6.js.map
+//# sourceMappingURL=chunk-RRG7GRJJ.js.map
