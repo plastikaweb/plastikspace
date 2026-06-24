@@ -4,6 +4,22 @@ import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 
 import { UserOrderUtilsService } from './order-list.util';
 
+vi.mock('@plastik/llecoop/entities', async importOriginal => {
+  const actual = await importOriginal<typeof import('@plastik/llecoop/entities')>();
+  return {
+    ...actual,
+    // Inject a malicious delivery-date label to exercise the escapeHtml path (SEC-05).
+    // The real `tuesday → dijous` entry is preserved so the formatting test below stays valid.
+    llecoopUserOrderDateOptions: {
+      ...actual.llecoopUserOrderDateOptions,
+      delivery: [
+        ...actual.llecoopUserOrderDateOptions.delivery,
+        { value: 'xss', label: '<img src=x onerror="alert(1)">' },
+      ],
+    },
+  };
+});
+
 describe('order-list-util', () => {
   let service: UserOrderUtilsService;
 
@@ -26,6 +42,23 @@ describe('order-list-util', () => {
       expect(result).toEqual({
         changingThisBreaksApplicationSecurity: '<p>dijous entre les 16h i les 17h</p>',
       });
+    });
+
+    it('should escape an injected XSS payload in the delivery label (SEC-05)', () => {
+      const order = {
+        deliveryType: 'delivery' as LlecoopUserOrder['deliveryType'],
+        deliveryTime: '16/17' as LlecoopUserOrder['deliveryTime'],
+        deliveryDate: 'xss' as LlecoopUserOrder['deliveryDate'],
+      };
+      const result = service.formatDeliveryDateAndTime(order) as {
+        changingThisBreaksApplicationSecurity: string;
+      };
+      const html = result.changingThisBreaksApplicationSecurity;
+
+      // The raw tag must not survive; the leading `<` is encoded, so it cannot execute.
+      expect(html).not.toContain('<img');
+      expect(html).not.toContain('onerror="');
+      expect(html).toContain('&lt;img');
     });
   });
 

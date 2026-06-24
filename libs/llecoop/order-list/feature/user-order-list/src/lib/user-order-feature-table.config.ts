@@ -6,6 +6,7 @@ import {
 } from '@plastik/llecoop/order-list/data-access';
 import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -36,7 +37,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig implements TableStructureC
     formatting: {
       type: 'LINK',
       execute: (_, userOrder) =>
-        `<p class="font-bold uppercase" aria-label="Comanda setmana ${userOrder?.name}">${userOrder?.name}</p>`,
+        `<p class="font-bold uppercase" aria-label="Comanda setmana ${escapeHtml(String(userOrder?.name ?? ''))}">${escapeHtml(String(userOrder?.name ?? ''))}</p>`,
     },
   };
 
