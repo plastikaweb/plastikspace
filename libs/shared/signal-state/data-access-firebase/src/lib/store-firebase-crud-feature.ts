@@ -207,7 +207,8 @@ export function withFirebaseCrud<
                   error: () => {
                     store._storeNotificationService.create(
                       `No s'ha pogut obtenir el total de elements de tipus '${featureName}'`,
-                      'ERROR'
+                      'ERROR',
+                      { groupKey: `${featureName}:count` }
                     );
                     store._activityStore.setActivity(false);
                   },
@@ -260,7 +261,8 @@ export function withFirebaseCrud<
                     error: () => {
                       store._storeNotificationService.create(
                         `No s'ha pogut carregar els elements de tipus '${featureName}'`,
-                        'ERROR'
+                        'ERROR',
+                        { groupKey: `${featureName}:list` }
                       );
                       store._activityStore.setActivity(false);
                     },
@@ -298,7 +300,8 @@ export function withFirebaseCrud<
                   error: () => {
                     store._storeNotificationService.create(
                       `No s'ha pogut carregar l'element de tipus '${featureName}' amb id ${id}`,
-                      'ERROR'
+                      'ERROR',
+                      { groupKey: `${featureName}:getOne` }
                     );
                   },
                 }),
@@ -323,7 +326,8 @@ export function withFirebaseCrud<
                     if (store.showNotification()) {
                       store._storeNotificationService.create(
                         item.name ? `S'ha creat" ${item.name}"` : `S'ha creat el nou element`,
-                        'SUCCESS'
+                        'SUCCESS',
+                        { groupKey: `${featureName}:create` }
                       );
                     }
 
@@ -338,7 +342,8 @@ export function withFirebaseCrud<
                       item.name
                         ? `No s'ha pogut crear" ${item.name}"`
                         : `No s'ha pogut crear el nou element`,
-                      'ERROR'
+                      'ERROR',
+                      { groupKey: `${featureName}:create` }
                     );
                   },
                 }),
@@ -365,7 +370,8 @@ export function withFirebaseCrud<
                         item.name
                           ? `S'ha actualitzat "${item.name}"`
                           : `S'ha actualitzat el element`,
-                        'SUCCESS'
+                        'SUCCESS',
+                        { groupKey: `${featureName}:update` }
                       );
                     }
 
@@ -380,7 +386,8 @@ export function withFirebaseCrud<
                       item.name
                         ? `No s'ha pogut actualitzar" ${item.name}"`
                         : `No s'ha pogut actualitzar el element`,
-                      'ERROR'
+                      'ERROR',
+                      { groupKey: `${featureName}:update` }
                     );
                   },
                 }),
@@ -398,7 +405,11 @@ export function withFirebaseCrud<
                 tapResponse({
                   next: () => {
                     if (store.showNotification()) {
-                      store._storeNotificationService.create(`S'ha eliminat el element`, 'SUCCESS');
+                      store._storeNotificationService.create(
+                        `S'ha eliminat el element`,
+                        'SUCCESS',
+                        { groupKey: `${featureName}:delete` }
+                      );
                     }
 
                     if (!store.showNotification()) {
@@ -410,7 +421,10 @@ export function withFirebaseCrud<
                   error: () => {
                     store._storeNotificationService.create(
                       `No s'ha pogut eliminar el element`,
-                      'ERROR'
+                      'ERROR',
+                      {
+                        groupKey: `${featureName}:delete`,
+                      }
                     );
                   },
                 }),

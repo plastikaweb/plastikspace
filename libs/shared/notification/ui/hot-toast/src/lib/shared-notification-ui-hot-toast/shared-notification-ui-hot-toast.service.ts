@@ -1,5 +1,10 @@
 import { inject, Injectable, TemplateRef } from '@angular/core';
-import { HotToastService, ToastOptions, ToastPosition } from '@ngxpert/hot-toast';
+import {
+  CreateHotToastRef,
+  HotToastService,
+  ToastOptions,
+  ToastPosition,
+} from '@ngxpert/hot-toast';
 import { Notification } from '@plastik/shared/notification/entities';
 
 @Injectable({
@@ -9,16 +14,16 @@ export class SharedNotificationUiHotToastService {
   readonly #toast = inject(HotToastService);
 
   /**
-   * @description Shows a notification using hot-toast.
+   * @description Shows a notification using hot-toast and returns its ref for in-place updates.
    * @param {Notification} notification The notification configuration.
-   * @param {TemplateRef<unknown>} template Optional custom template to render the notification.
+   * @param {TemplateRef<unknown>} template The custom template used to render the notification.
+   * @returns {CreateHotToastRef<unknown> | undefined} The created toast ref, or undefined when no template is given.
    */
   show(
     notification: Notification,
     template: TemplateRef<unknown>
-    // onClose?: (data: unknown) => void
-  ): void {
-    const { type, duration, verticalPosition, horizontalPosition, containerClass, action, name } =
+  ): CreateHotToastRef<unknown> | undefined {
+    const { type, duration, verticalPosition, horizontalPosition, containerClass, action, id } =
       notification;
 
     const vPos = verticalPosition || 'bottom';
@@ -51,8 +56,9 @@ export class SharedNotificationUiHotToastService {
       dismissible: !!action,
     };
 
-    if (name) {
-      configuration.id = name;
+    // The store-assigned stable id lets hot-toast track this toast and keep it under visibleToasts.
+    if (id) {
+      configuration.id = id;
     }
 
     if (containerClass) {
@@ -60,13 +66,10 @@ export class SharedNotificationUiHotToastService {
     }
 
     if (template) {
-      this.#toast.show(template, configuration);
-      // toast.afterClosed.subscribe(data => {
-      //   if (onClose) {
-      //     onClose(data);
-      //   }
-      // });
+      return this.#toast.show(template, configuration);
     }
+
+    return undefined;
   }
 
   close(): void {

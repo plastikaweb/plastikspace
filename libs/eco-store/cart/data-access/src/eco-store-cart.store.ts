@@ -215,10 +215,14 @@ export const ecoStoreCartStore = signalStore(
           }
         )
       );
-      store._notificationService.create('cart.productAdded', 'SUCCESS', {
-        name: product.name,
-        image: getPocketBaseImageUrl(product, product.images?.[0]),
-      });
+      // BUG-004: share one notification per product via groupKey so a burst of +/- collapses to a
+      // single toast reflecting the latest state instead of stacking duplicates.
+      store._notificationService.create(
+        isUpdate ? 'cart.productUpdated' : 'cart.productAdded',
+        'SUCCESS',
+        { groupKey: `cart:${product.id}` },
+        { name: product.name, image: getPocketBaseImageUrl(product, product.images?.[0]) }
+      );
     };
 
     const _removeItem = (productId: EcoStoreProductWithCategoryName['id']) => {
@@ -228,10 +232,14 @@ export const ecoStoreCartStore = signalStore(
         store.entityMap()[productId]?.product.images?.[0]
       );
       updateState(store, `[cart] remove item ${productId}`, removeEntity(productId));
-      store._notificationService.create('cart.productRemoved', 'SUCCESS', {
-        name,
-        image,
-      });
+      // Same groupKey as add/update: a pending add/update toast for this product is replaced by the
+      // removal toast (the old "cancel pending" behaviour falls out of the shared-key replacement).
+      store._notificationService.create(
+        'cart.productRemoved',
+        'SUCCESS',
+        { groupKey: `cart:${productId}` },
+        { name, image }
+      );
     };
 
     const _stripUIProps = (items: EcoStoreCartItem[]) => {

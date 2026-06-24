@@ -120,7 +120,9 @@ export function withPocketBaseListFeature<
                       isLoading: false,
                       error: message,
                     });
-                    store._notificationService.create(message, 'ERROR');
+                    store._notificationService.create(message, 'ERROR', {
+                      groupKey: `${featureName}:list`,
+                    });
                   },
                 })
               );
@@ -178,7 +180,9 @@ export function withPocketBaseGetOneFeature<
           const item = await firstValueFrom(store._apiService.getOne(id)).catch(() => null);
 
           if (!item) {
-            store._notificationService.create(`${featureName}.getOne.notFound`, 'ERROR');
+            store._notificationService.create(`${featureName}.getOne.notFound`, 'ERROR', {
+              groupKey: `${featureName}:getOne`,
+            });
             return;
           }
 

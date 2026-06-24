@@ -512,4 +512,65 @@ describe('ecoStoreCartStore', () => {
       expect(localStorage.getItem(store.storageKey())).toBeNull();
     });
   });
+
+  describe('BUG-004: cart toast notifications (TECH-10 groupKey deduplication)', () => {
+    it('announces "added" with a per-product groupKey on first add', () => {
+      const { store } = setup();
+
+      store.addToCart(mockProduct, 1);
+
+      expect(mockNotificationService.create).toHaveBeenCalledWith(
+        'cart.productAdded',
+        'SUCCESS',
+        { groupKey: `cart:${mockProduct.id}` },
+        expect.objectContaining({ name: mockProduct.name })
+      );
+    });
+
+    it('announces "updated" (not "added") with the same groupKey when changing an existing quantity', () => {
+      const { store } = setup();
+
+      store.addToCart(mockProduct, 1);
+      mockNotificationService.create.mockClear();
+      store.addToCart(mockProduct, 2);
+
+      expect(mockNotificationService.create).toHaveBeenCalledTimes(1);
+      expect(mockNotificationService.create).toHaveBeenCalledWith(
+        'cart.productUpdated',
+        'SUCCESS',
+        { groupKey: `cart:${mockProduct.id}` },
+        expect.objectContaining({ name: mockProduct.name })
+      );
+    });
+
+    it('announces "removed" with the same groupKey so it replaces a prior add/update toast', () => {
+      const { store } = setup();
+
+      store.addToCart(mockProduct, 1);
+      mockNotificationService.create.mockClear();
+      store.removeFromCart(mockProduct.id);
+
+      expect(mockNotificationService.create).toHaveBeenCalledWith(
+        'cart.productRemoved',
+        'SUCCESS',
+        { groupKey: `cart:${mockProduct.id}` },
+        expect.objectContaining({ name: mockProduct.name })
+      );
+    });
+
+    it('emits one create() per change, all sharing the product groupKey (store handles collapsing)', () => {
+      const { store } = setup();
+
+      store.addToCart(mockProduct, 1);
+      store.addToCart(mockProduct, 2);
+      store.addToCart(mockProduct, 3);
+
+      // The cart no longer debounces: every change emits a create() sharing the product's groupKey.
+      // Collapsing them into a single toast is the notification store's job (see its own spec).
+      expect(mockNotificationService.create).toHaveBeenCalledTimes(3);
+      for (const call of mockNotificationService.create.mock.calls) {
+        expect(call[2]).toEqual({ groupKey: `cart:${mockProduct.id}` });
+      }
+    });
+  });
 });

@@ -50,8 +50,10 @@
 
 @let notification = notificationStore.configuration;
 @defer (when !!notification()) {
-  @for (item of notification(); track item) {
-    <plastik-shared-notification-ui-hot-toast [notification]="item" />
+  @for (item of notification(); track item.id) {
+    <plastik-shared-notification-ui-hot-toast
+      [notification]="item"
+      (sendDismiss)="notificationStore.dismiss($event.id)" />
   }
 }
 

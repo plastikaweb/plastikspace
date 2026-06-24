@@ -356,6 +356,7 @@
   },
   "cart": {
     "productAdded": "{name} - agregado",
+    "productUpdated": "{name} - actualizado",
     "productRemoved": "{name} - eliminado",
     "mergeNotification": {
       "title": "¡Hemos recuperado tu compra!",

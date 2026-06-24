@@ -356,6 +356,7 @@
   },
   "cart": {
     "productAdded": "{name} - afegit",
+    "productUpdated": "{name} - actualitzat",
     "productRemoved": "{name} - eliminat",
     "mergeNotification": {
       "title": "Hem recuperat la teva compra!",

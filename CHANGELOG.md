@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-24] - Eco Store: BUG-004 — Rationalize cart add/change/remove toasts
+
+### Fixed
+
+- **`libs/eco-store/cart/data-access` (`ecoStoreCartStore`)**: cart quantity changes stacked duplicate toasts for the same product (e.g. two "… - actualitzat"). Replaced the per-store 600ms debounce with the centralized notification `groupKey` mechanism from TECH-10: add/update/remove for a product all share `cart:<id>`, so rapid +/- collapse to a single toast reflecting the latest state, a removal replaces a pending add/update, and a first add reads "added" while a later quantity change reads "updated". Added the `cart.productUpdated` i18n key (ca/es/en). Ships coupled with TECH-10 (the `create()` signature reorder the cart consumes). (BUG-004, [#86c9uq92h](https://app.clickup.com/t/86c9uq92h))
+
+## [2026-06-24] - Shared: TECH-10 — Centralize notification dedup, max-concurrent & per-app config
+
+### Added
+
+- **`libs/shared/notification/entities` (`provideNotificationConfig`, `NOTIFICATION_MAX_CONCURRENT`)**: A single, UI-agnostic place to configure notification behaviour — per-type duration (existing `NOTIFICATION_TYPES_CONFIG`), screen position, and the new max-concurrent cap — honoured by both the hot-toast and mat-snackbar UIs. Apps call `provideNotificationConfig({ maxConcurrent })` once; `eco-store` pairs it with `provideHotToastConfig({ visibleToasts: 3, stacking: 'vertical' })` (multi-toast), while `llecoop` + `nasa-images` use `{ maxConcurrent: 1 }` so their single mat-snackbar UI always shows the latest notification instead of being stuck on the oldest `[0]`.
+
+### Changed
+
+- **`libs/shared/notification` (store + service + hot-toast UI)**: `notificationStore.show()` now de-duplicates by a caller-supplied `groupKey`, caps the retained array at `maxConcurrent` (dropping the oldest), and moves an updated group's toast to the top of the stack — refreshing it in place only when it is already the newest **and** keeps the same type (so a SUCCESS → ERROR change for one `groupKey` restacks with correct styling rather than silently swapping text under stale colours). `StoreNotificationService.create()` gains an `options` argument (`{ groupKey, preserve, duration }`) placed **before** the rarely-used `parameters`, so the common call sites no longer pass `undefined`. The hot-toast component now owns its `HotToastRef`, refreshes it in place, and keys the library off the stable store `id` (the previous `name` keying was always empty, so the library's same-id replacement never fired). Generic PocketBase/Firebase CRUD (`${featureName}:<op>`) and the llecoop `order-list-store` (`order-status:<id>`) adopt `groupKey`s so repeated/optimistic notifications collapse to one. Removed the dead `Notification.name`/`code` fields. (TECH-10, [#86cadqxva](https://app.clickup.com/t/86cadqxva))
+
+### Fixed
+
+- **`libs/shared/notification` (array leak)**: the eco-store hot-toast host never removed notifications from the store on auto-dismiss, so the `configuration` array grew unbounded. The toast component now wires the library's close callback back through its `sendDismiss` output to `notificationStore.dismiss(id)`, keeping the array bounded. (TECH-10, [#86cadqxva](https://app.clickup.com/t/86cadqxva))
+
 ## [2026-06-21] - Shared: TECH-06 — Optimize `areObjectEntriesEqual` (`libs/shared/util/objects`)
 
 ### Changed

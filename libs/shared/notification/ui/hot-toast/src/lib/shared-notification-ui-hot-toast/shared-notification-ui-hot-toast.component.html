@@ -14,12 +14,6 @@
         </div>
       }
 
-      @if (mergedNotification()?.name) {
-        <div class="text-sm opacity-90">
-          {{ mergedNotification()?.name }}
-        </div>
-      }
-
       @if (notificationImage()) {
         <plastik-img-container
           class="h-14 w-14 overflow-hidden rounded-lg object-cover shadow-sm"
