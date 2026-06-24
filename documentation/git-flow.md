@@ -17,6 +17,7 @@
     - [During Local Development](#during-local-development)
     - [In CI/CD Pipeline](#in-cicd-pipeline)
     - [Pre-commit Hook](#pre-commit-hook)
+    - [Pre-push Hook](#pre-push-hook)
   - [Useful links](#useful-links)
 
 ## Description
