@@ -2,6 +2,7 @@ import {
   allAreFalsy,
   areObjectEntriesEqual,
   collectionToArray,
+  deepClone,
   escapeHtml,
   getQueryParams,
   isEmpty,
@@ -305,3 +306,16 @@ describe('Object Util', () => {
     });
   });
 });
+
+  describe('deepClone sparse array', () => {
+    it('should preserve sparse arrays', () => {
+      const sparse = new Array(3);
+      sparse[1] = 'a';
+      const cloned = deepClone(sparse);
+      expect(cloned.length).toBe(3);
+      expect(1 in cloned).toBe(true);
+      expect(0 in cloned).toBe(false);
+      expect(2 in cloned).toBe(false);
+      expect(cloned[1]).toBe('a');
+    });
+  });
