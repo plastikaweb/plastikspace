@@ -22,7 +22,7 @@ export default defineConfig(() => ({
     setupFiles: ['src/test-setup.ts', '../../../../vitest-setup.ts'],
     reporters: ['default'],
     coverage: {
-      reportsDirectory: '../../../../coverage/libs/eco-store/cart/feature',
+      reportsDirectory: '../../../../coverage/libs/eco-store/shared/price-summary',
       provider: 'v8' as const,
       reporter: ['text', 'json-summary'],
     },
