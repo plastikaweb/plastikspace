@@ -2,6 +2,7 @@
   <mat-label [class.sr-only]="!props.showLabel">{{ props.label }}</mat-label>
   <mat-icon matPrefix class="mr-2" aria-hidden="true">search</mat-icon>
   <input
+    #searchInput
     matInput
     type="text"
     [autocomplete]="props['autocomplete'] || 'off'"
@@ -12,7 +13,9 @@
     [placeholder]="props.placeholder || ''"
     [required]="props.required || false"
     (input)="triggerPartialSearch($event)"
-    (keyup)="!props.noButton ? triggerPartialSearch($event) : triggerSearch($event)" />
+    (keyup)="!props.noButton ? triggerPartialSearch($event) : triggerSearch($event)"
+    (keydown.enter)="triggerSearch($event)"
+    (keydown.escape)="$event.stopPropagation(); props.resetSearch && resetSearch()" />
 
   @if (!props.noButton) {
     <button

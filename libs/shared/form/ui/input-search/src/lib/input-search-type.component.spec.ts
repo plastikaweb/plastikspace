@@ -149,4 +149,35 @@ describe('InputSearchTypeComponent', () => {
       expect(component['isDisabled']()).toBe(true);
     });
   });
+
+  describe('Keyboard support and Focus management', () => {
+    it('should trigger search on Enter key', () => {
+      const onSearchSpy = vi.fn();
+      component.field.props!.onSearch = onSearchSpy;
+      component.formControl.setValue('abc');
+      component['syncControl']();
+
+      const input = fixture.debugElement.query(By.css('input')).nativeElement;
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+
+      expect(onSearchSpy).toHaveBeenCalledWith('abc', component.field);
+    });
+
+    it('should reset search and restore focus on Escape key', () => {
+      component.field.props!.resetSearch = true;
+      const onPartialSearchSpy = vi.fn();
+      component.field.props!.onPartialSearch = onPartialSearchSpy;
+      component.formControl.setValue('abc');
+      component['syncControl']();
+
+      const input = fixture.debugElement.query(By.css('input')).nativeElement;
+      const focusSpy = vi.spyOn(input, 'focus');
+
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape' }));
+
+      expect(component.formControl.value).toBe('');
+      expect(onPartialSearchSpy).toHaveBeenCalledWith('', component.field);
+      expect(focusSpy).toHaveBeenCalled();
+    });
+  });
 });
