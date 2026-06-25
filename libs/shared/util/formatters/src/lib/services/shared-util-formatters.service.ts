@@ -30,6 +30,12 @@ export class SharedUtilFormattersService {
   readonly #locale = inject(LOCALE_ID);
 
   /**
+   * @description Caches the system timezone to avoid expensive repeated calls to
+   * `Intl.DateTimeFormat().resolvedOptions().timeZone` (approx. 100ms per 1k calls).
+   */
+  readonly #timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+  /**
    * Formats a date value using the specified formatting options.
    * @param {FormattingDateInput} value The date value to format.
    * @param {() => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} [extras] An optional function that returns additional formatting options, such as locale and timezone.
@@ -42,7 +48,7 @@ export class SharedUtilFormattersService {
     let format = {
       dateDigitsInfo: 'shortDate',
       locale: this.#locale,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timezone: this.#timezone,
     };
 
     if (extras) {
@@ -69,7 +75,7 @@ export class SharedUtilFormattersService {
   ): string {
     let format = {
       locale: this.#locale,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timezone: this.#timezone,
     };
 
     if (extras) {
@@ -95,7 +101,7 @@ export class SharedUtilFormattersService {
     let format = {
       dateDigitsInfo: 'shortDate',
       locale: this.#locale,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timezone: this.#timezone,
     };
 
     if (extras) {
