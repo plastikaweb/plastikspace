@@ -258,6 +258,8 @@ export function collectionToArray<T>(collection: Record<string, T>): T[] {
 
 /**
  * @description Creates a deep clone of the provided value.
+ * Uses manual `for` loops instead of `Array.prototype.map()` and `for...in` instead of
+ * `Object.keys().forEach()` to minimize function call overhead and array allocations (TECH-11).
  * @template T
  * @param {T} obj The value to clone.
  * @example
@@ -279,35 +281,53 @@ export function deepClone<T>(obj: T): T {
   }
 
   if (Array.isArray(obj)) {
-    return obj.map(item => deepClone(item)) as T;
+    const len = obj.length;
+    const result = new Array(len);
+    for (let i = 0; i < len; i++) {
+      result[i] = deepClone(obj[i]);
+    }
+    return result as T;
   }
 
   if (typeof obj === 'object') {
-    const cloned = {} as T;
-    Object.keys(obj).forEach(key => {
-      (cloned as Record<string, unknown>)[key] = deepClone((obj as Record<string, unknown>)[key]);
-    });
-    return cloned;
+    const result = {} as T;
+    for (const key in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, key)) {
+        (result as Record<string, unknown>)[key] = deepClone((obj as Record<string, unknown>)[key]);
+      }
+    }
+    return result;
   }
 
   return obj;
 }
 
+/** Map of characters to their HTML entities for {@link escapeHtml}. */
+const HTML_ESCAPE_MAP: Record<string, string> = {
+  '&': '&amp;',
+  '<': '&lt;',
+  '>': '&gt;',
+  '"': '&quot;',
+  "'": '&#39;',
+  '/': '&#x2F;',
+  '`': '&#x60;',
+  '=': '&#x3D;',
+};
+/** Global variant of {@link HAS_ESCAPE} for `String.prototype.replace()`. */
+const ESCAPE_REGEX = /[&<>"'\/`=]/g;
+/** Matches any character that needs HTML escaping. Non-global: safe for `.test()`. */
+const HAS_ESCAPE = /[&<>"'\/`=]/;
+
 /**
  * @description Escapes HTML special characters to prevent XSS.
+ * Hoists the character map and regex to module scope and uses a `RegExp.test()` fast-path
+ * to skip the `replace()` engine for strings that don't need escaping (TECH-11).
  * @param {string} text The string to escape.
  * @returns {string} The escaped string.
  */
 export function escapeHtml(text: string): string {
-  const map: Record<string, string> = {
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;',
-    '/': '&#x2F;',
-    '`': '&#x60;',
-    '=': '&#x3D;',
-  };
-  return text.replace(/[&<>"'/`=]/g, s => map[s]);
+  if (!HAS_ESCAPE.test(text)) {
+    return text;
+  }
+  return text.replace(ESCAPE_REGEX, s => HTML_ESCAPE_MAP[s]);
 }
