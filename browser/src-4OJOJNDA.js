@@ -4293,6 +4293,7 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
   #titleCasePipe = inject(TitleCasePipe);
   #sanitizer = inject(DomSanitizer);
   #locale = inject(LOCALE_ID);
+  #timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
   /**
    * Formats a date value using the specified formatting options.
    * @param {FormattingDateInput} value The date value to format.
@@ -4303,7 +4304,7 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
     let format = {
       dateDigitsInfo: "shortDate",
       locale: this.#locale,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      timezone: this.#timezone
     };
     if (extras) {
       format = __spreadValues(__spreadValues({}, format), extras());
@@ -4321,7 +4322,7 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
   dateTimeFormatter(value, extras) {
     let format = {
       locale: this.#locale,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      timezone: this.#timezone
     };
     if (extras) {
       format = __spreadValues(__spreadValues({}, format), extras());
@@ -4339,7 +4340,7 @@ var SharedUtilFormattersService = class _SharedUtilFormattersService {
     let format = {
       dateDigitsInfo: "shortDate",
       locale: this.#locale,
-      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone
+      timezone: this.#timezone
     };
     if (extras) {
       format = __spreadValues(__spreadValues({}, format), extras());
@@ -6122,4 +6123,4 @@ var SharedTableUiComponent = class _SharedTableUiComponent {
 export {
   SharedTableUiComponent
 };
-//# sourceMappingURL=src-V6M6PHTW.js.map
+//# sourceMappingURL=src-4OJOJNDA.js.map

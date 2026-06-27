@@ -17879,7 +17879,7 @@ var NasaImagesSearchFeatureTableConfig = class {
 
 // libs/nasa-images/search/feature/src/lib/nasa-images-search-feature/nasa-images-search-feature.component.ts
 var NasaImagesSearchFeatureComponent_Defer_4_DepsFn = () => [SharedFormFeatureComponent, PushPipe];
-var NasaImagesSearchFeatureComponent_Defer_7_DepsFn = () => [LetDirective, import("./src-V6M6PHTW.js").then((m) => m.SharedTableUiComponent), import("./src-KXVL7RYC.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)];
+var NasaImagesSearchFeatureComponent_Defer_7_DepsFn = () => [LetDirective, import("./src-4OJOJNDA.js").then((m) => m.SharedTableUiComponent), import("./src-KXVL7RYC.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)];
 var NasaImagesSearchFeatureComponent_Conditional_0_Defer_1_DepsFn = () => [MatIcon];
 var _c08 = () => [];
 var _c17 = () => ({});
@@ -18038,7 +18038,7 @@ var NasaImagesSearchFeatureComponent = class _NasaImagesSearchFeatureComponent {
   ], encapsulation: 2, changeDetection: 0 });
 };
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(NasaImagesSearchFeatureComponent, () => [import("./src-V6M6PHTW.js").then((m) => m.SharedTableUiComponent), import("./src-KXVL7RYC.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)], (SharedTableUiComponent, NasaImagesSearchUiNoResultsComponent) => {
+  (typeof ngDevMode === "undefined" || ngDevMode) && setClassMetadataAsync(NasaImagesSearchFeatureComponent, () => [import("./src-4OJOJNDA.js").then((m) => m.SharedTableUiComponent), import("./src-KXVL7RYC.js").then((m) => m.NasaImagesSearchUiNoResultsComponent)], (SharedTableUiComponent, NasaImagesSearchUiNoResultsComponent) => {
     setClassMetadata(NasaImagesSearchFeatureComponent, [{
       type: Component,
       args: [{ selector: "plastik-nasa-images-search", imports: [
@@ -18142,4 +18142,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-CD6ZSXRK.js.map
+//# sourceMappingURL=src-HEIEKUGH.js.map
