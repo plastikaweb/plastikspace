@@ -4,8 +4,10 @@ import {
   Component,
   computed,
   DestroyRef,
+  ElementRef,
   inject,
   signal,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -48,6 +50,7 @@ export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSea
   readonly #destroyRef = inject(DestroyRef);
   protected readonly formValue = signal<string>('');
   protected readonly formStatus = signal<string>('VALID');
+  protected readonly searchInput = viewChild<ElementRef<HTMLInputElement>>('searchInput');
 
   /**
    * The search button is disabled if the term length is 1,
@@ -94,6 +97,17 @@ export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSea
     this.#handleSearch('onPartialSearch', event);
   }
 
+  protected onKeyup(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      return;
+    }
+    if (this.props.noButton) {
+      this.triggerSearch(event);
+    } else {
+      this.triggerPartialSearch(event);
+    }
+  }
+
   #handleSearch(propName: 'onSearch' | 'onPartialSearch', event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();
@@ -112,5 +126,6 @@ export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSea
   protected resetSearch(): void {
     this.formControl.patchValue('');
     this.triggerPartialSearch();
+    this.searchInput()?.nativeElement.focus();
   }
 }

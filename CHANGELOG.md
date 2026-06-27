@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-27] - Shared: A11Y-010 — search input keyboard support
+
+### Added
+
+- **`libs/shared/form/ui/input-search` (`InputSearchTypeComponent`)**: keyboard operability for the shared Formly search type (WCAG 2.1.1). **Enter** now triggers a full search via `(keydown.enter)`, and **Escape** clears the field (when `resetSearch` is enabled) and restores focus to the input via a `viewChild` ref so the user can re-type immediately. The existing `keyup` handler was moved into an `onKeyup()` method that **skips Enter** — Enter is owned solely by `(keydown.enter)` — so a single Enter keypress can no longer fire two searches (the live consumers, eco-store's main + orders-filter search, both run `noButton: true`, where `keyup` already triggered a search; the naive addition would have doubled every fetch). Typing behaviour for all other keys is unchanged. Specs assert Enter→search, Escape→reset+focus, and single-fire on Enter in `noButton` mode (14 tests). Harvest from Jules draft [#1193](https://github.com/plastikaweb/plastikspace/pull/1193) (A11Y-010, [#86caf5zxh](https://app.clickup.com/t/86caf5zxh)).
+
 ## [2026-06-27] - Shared: TECH-07 — cache system timezone in `SharedUtilFormattersService`
 
 ### Changed
