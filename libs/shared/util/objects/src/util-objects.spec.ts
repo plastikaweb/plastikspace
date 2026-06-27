@@ -2,6 +2,7 @@ import {
   allAreFalsy,
   areObjectEntriesEqual,
   collectionToArray,
+  deepClone,
   escapeHtml,
   getQueryParams,
   isEmpty,
@@ -302,6 +303,57 @@ describe('Object Util', () => {
     it('should return same string if no special characters', () => {
       const input = 'Hello World 123';
       expect(escapeHtml(input)).toBe(input);
+    });
+  });
+
+  describe('deepClone method', () => {
+    it('should return primitive values as-is', () => {
+      expect(deepClone(1)).toBe(1);
+      expect(deepClone('test')).toBe('test');
+      expect(deepClone(true)).toBe(true);
+      expect(deepClone(null)).toBe(null);
+      expect(deepClone(undefined)).toBe(undefined);
+    });
+
+    it('should clone arrays into a new, independent structure', () => {
+      const arr = [1, 2, [3, 4]];
+      const cloned = deepClone(arr);
+      expect(cloned).toEqual(arr);
+      expect(cloned).not.toBe(arr);
+      expect(cloned[2]).not.toBe(arr[2]);
+    });
+
+    it('should clone objects into a new, independent structure', () => {
+      const obj = { a: 1, b: { c: 2 } };
+      const cloned = deepClone(obj);
+      expect(cloned).toEqual(obj);
+      expect(cloned).not.toBe(obj);
+      expect(cloned.b).not.toBe(obj.b);
+    });
+
+    it('should clone Date objects', () => {
+      const date = new Date();
+      const cloned = deepClone(date);
+      expect(cloned).toEqual(date);
+      expect(cloned).not.toBe(date);
+      expect(cloned instanceof Date).toBe(true);
+    });
+
+    it('should clone RegExp objects', () => {
+      const regexp = /abc/g;
+      const cloned = deepClone(regexp);
+      expect(cloned).toEqual(regexp);
+      expect(cloned).not.toBe(regexp);
+      expect(cloned instanceof RegExp).toBe(true);
+    });
+
+    it('should copy only own-enumerable keys, not inherited ones', () => {
+      const proto = { inherited: 'nope' };
+      const source = Object.create(proto) as Record<string, unknown>;
+      source['own'] = 'yes';
+      const cloned = deepClone(source);
+      expect(cloned).toEqual({ own: 'yes' });
+      expect(Object.prototype.hasOwnProperty.call(cloned, 'inherited')).toBe(false);
     });
   });
 });

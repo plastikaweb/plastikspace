@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-27] - Shared: TECH-11 — optimize `deepClone` + `escapeHtml` in `util-objects`
+
+### Changed
+
+- **`libs/shared/util/objects` (`deepClone`, `escapeHtml`)**: two behaviour-preserving micro-optimizations (distinct from TECH-03/05/06). `deepClone` now clones arrays with a manual indexed `for` loop (`new Array(len)`) and objects with a `for…in` loop guarded by `hasOwnProperty`, instead of `obj.map()` / `Object.keys().forEach()` — dropping the intermediate key-array allocation and the per-item closure on a hot path; the redundant trailing `typeof === 'object'` guard was removed since the top `obj === null || typeof obj !== 'object'` guard already returns every non-object. `escapeHtml` hoists its character map and regex to module scope and adds a `RegExp.test()` fast-path that returns the input unchanged when there is nothing to escape (the common case), using a **non-global** regex for `.test()` (avoids the stateful-`lastIndex` pitfall) and the global one only for `.replace()`. Own-enumerable-key semantics and the escaped output are unchanged. _(Deviations from the Jules draft: kept `escapeHtml` strictly behaviour-identical by **not** adding a `typeof text !== 'string'` guard that would have swallowed non-string input as `''`; the array `for` loop densifies sparse-array holes, harmless for this app's JSON-shaped data.)_ Added `deepClone` specs incl. an own-vs-inherited-keys guard (41 → 47 tests). Supersedes Jules draft [#1183](https://github.com/plastikaweb/plastikspace/pull/1183) (TECH-11, [#86cadtm4h](https://app.clickup.com/t/86cadtm4h)).
+
 ## [2026-06-27] - Eco Store: A11Y-011 — tooltips on icon-only back buttons
 
 ### Added
