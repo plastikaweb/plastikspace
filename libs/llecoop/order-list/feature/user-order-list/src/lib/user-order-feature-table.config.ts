@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
@@ -36,7 +37,7 @@ export class LlecoopUserOrderSearchFeatureTableConfig implements TableStructureC
     formatting: {
       type: 'LINK',
       execute: (_, userOrder) =>
-        `<p class="font-bold uppercase" aria-label="Comanda setmana ${userOrder?.name}">${userOrder?.name}</p>`,
+        `<p class="font-bold uppercase" aria-label="Comanda setmana ${escapeHtml(userOrder?.name)}">${escapeHtml(userOrder?.name)}</p>`,
     },
   };
 

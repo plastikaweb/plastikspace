@@ -1,5 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   llecoopOrderListStore,
   llecoopUserOrderStore,
@@ -46,7 +47,7 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig implements TableStr
     formatting: {
       type: 'LINK',
       execute: (_, order) =>
-        `<p class="font-bold uppercase" aria-label="Veure els totals de la comanda de la setmana ${order?.name}">${order?.name}</p>`,
+        `<p class="font-bold uppercase" aria-label="Veure els totals de la comanda de la setmana ${escapeHtml(order?.name)}">${escapeHtml(order?.name)}</p>`,
     },
   };
 

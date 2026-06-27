@@ -15,6 +15,7 @@ import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
 import { SortConfig } from '@plastik/core/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
 import { LlecoopOrderListFeatureListTableConfig } from './order-list-feature-list-table/order-list-feature-list-table.config';
 import { LlecoopOrderListFeatureListTotalDetailTableConfig } from './order-list-feature-list-total-detail/order-list-feature-list-total-detail-table.config';
@@ -58,7 +59,7 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
             'Iniciar nova comanda',
             this.#sanitizer.bypassSecurityTrustHtml(
               `<div class="flex flex-col gap-sm justify-center items-center rounded-xl p-md">
-                <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${this.#getNewOrderName()}</p>
+                <p class="bg-secondary-dark text-white font-bold py-sub px-sm rounded-md h5">${escapeHtml(this.#getNewOrderName())}</p>
                 <p class="font-extrabold">Oberta fins el ${format(this.#getNewOrderDate(), 'dd/MM/yyyy')}
                 a les ${format(this.#getNewOrderDate(), 'HH:mm')}</span> hores.</p>
               </div>
