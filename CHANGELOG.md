@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-27] - Shared: TECH-07 — cache system timezone in `SharedUtilFormattersService`
+
+### Changed
+
+- **`libs/shared/util/formatters` (`SharedUtilFormattersService`)**: the three date formatters (`dateFormatter`, `dateTimeFormatter`, `firebaseTimestampFormatter`) each recomputed `Intl.DateTimeFormat().resolvedOptions().timeZone` inline on every call — an allocation-heavy `Intl.DateTimeFormat` construction repeated under table rendering and change detection. The resolved system timezone is now computed once into a `readonly #timezone` field and reused as the default in all three formatters. Behaviour-identical: per-call `extras()` overrides still take precedence over the cached default, and the resolved zone is stable for a session. Supersedes Jules drafts [#1192](https://github.com/plastikaweb/plastikspace/pull/1192) / [#1194](https://github.com/plastikaweb/plastikspace/pull/1194) / [#1197](https://github.com/plastikaweb/plastikspace/pull/1197) (TECH-07, [#86ca8m6aj](https://app.clickup.com/t/86ca8m6aj)).
+
 ## [2026-06-24] - Shared: A11Y-008 — `SharedAlert` close button tooltip
 
 ### Fixed
