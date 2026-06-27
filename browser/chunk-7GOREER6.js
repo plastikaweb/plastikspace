@@ -4315,29 +4315,38 @@ function deepClone(obj) {
     return new RegExp(obj);
   }
   if (Array.isArray(obj)) {
-    return obj.map((item) => deepClone(item));
+    const length = obj.length;
+    const cloned2 = new Array(length);
+    for (let i = 0; i < length; i++) {
+      cloned2[i] = deepClone(obj[i]);
+    }
+    return cloned2;
   }
-  if (typeof obj === "object") {
-    const cloned = {};
-    Object.keys(obj).forEach((key) => {
+  const cloned = {};
+  for (const key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
       cloned[key] = deepClone(obj[key]);
-    });
-    return cloned;
+    }
   }
-  return obj;
+  return cloned;
 }
+var ESCAPE_HTML_CHARS = /[&<>"'/`=]/;
+var ESCAPE_HTML_CHARS_GLOBAL = /[&<>"'/`=]/g;
+var HTML_ESCAPE_MAP = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': "&quot;",
+  "'": "&#39;",
+  "/": "&#x2F;",
+  "`": "&#x60;",
+  "=": "&#x3D;"
+};
 function escapeHtml(text) {
-  const map2 = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-    "/": "&#x2F;",
-    "`": "&#x60;",
-    "=": "&#x3D;"
-  };
-  return text.replace(/[&<>"'/`=]/g, (s) => map2[s]);
+  if (!ESCAPE_HTML_CHARS.test(text)) {
+    return text;
+  }
+  return text.replace(ESCAPE_HTML_CHARS_GLOBAL, (s) => HTML_ESCAPE_MAP[s]);
 }
 
 // node_modules/@angular/material/fesm2022/_internal-form-field-chunk.mjs
@@ -5787,4 +5796,4 @@ export {
   isDynamicComponentTypeGuard,
   DEFAULT_TABLE_CONFIG
 };
-//# sourceMappingURL=chunk-72BZMUOO.js.map
+//# sourceMappingURL=chunk-7GOREER6.js.map
