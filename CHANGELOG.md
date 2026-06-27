@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-06-27] - Eco Store: A11Y-011 — tooltips on icon-only back buttons
+
+### Added
+
+- **`libs/eco-store/shared/breadcrumbs` + `libs/eco-store/auth/feature/container`**: the two remaining icon-only "back" buttons carried an `aria-label` but no `matTooltip`, so sighted mouse/keyboard users got no hover/focus hint — inconsistent with the icon-only buttons hardened in A11Y-004/005/007/008. Imported `MatTooltipModule` in both components and added a `[matTooltip]` mirroring each button's existing `aria-label` (`backAriaLabel()` for breadcrumbs, `auth.common.back` for the auth container's PWA-standalone back button). Specs assert the tooltip stays in sync with the `aria-label` (the auth-container test drives the PWA-standalone branch via a signal-backed `isStandalone` mock). Consolidates Jules drafts [#1195](https://github.com/plastikaweb/plastikspace/pull/1195) (breadcrumbs + spec) and [#1196](https://github.com/plastikaweb/plastikspace/pull/1196) (breadcrumbs + auth container) (A11Y-011, [#86caf5zy4](https://app.clickup.com/t/86caf5zy4)).
+
 ## [2026-06-27] - Shared: A11Y-010 — search input keyboard support
 
 ### Added

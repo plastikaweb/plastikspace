@@ -1,4 +1,7 @@
+import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltip } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
 import { provideTranslateService } from '@ngx-translate/core';
 import { NavigationService } from '@plastik/core/router-state';
 import { PwaNavigationService } from '@plastik/eco-store/shared/utils';
@@ -8,8 +11,10 @@ import { EcoStoreAuthContainerComponent } from './eco-store-auth-container.compo
 describe('EcoStoreAuthContainerComponent', () => {
   let component: EcoStoreAuthContainerComponent;
   let fixture: ComponentFixture<EcoStoreAuthContainerComponent>;
+  const isStandalone = signal(false);
 
   beforeEach(async () => {
+    isStandalone.set(false);
     await TestBed.configureTestingModule({
       imports: [EcoStoreAuthContainerComponent],
       providers: [
@@ -26,7 +31,7 @@ describe('EcoStoreAuthContainerComponent', () => {
         },
         {
           provide: PwaNavigationService,
-          useValue: { isStandalone: vi.fn(() => false) },
+          useValue: { isStandalone },
         },
       ],
     }).compileComponents();
@@ -38,5 +43,17 @@ describe('EcoStoreAuthContainerComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should mirror the standalone back button aria-label with a matching matTooltip', () => {
+    // The back button only renders in PWA standalone mode.
+    isStandalone.set(true);
+    fixture.detectChanges();
+
+    const button = fixture.debugElement.query(By.css('button[matIconButton]'));
+    const ariaLabel = button.nativeElement.getAttribute('aria-label');
+    const tooltipMessage = button.injector.get(MatTooltip).message;
+
+    expect(tooltipMessage).toBe(ariaLabel);
   });
 });
