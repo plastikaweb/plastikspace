@@ -321,7 +321,6 @@ export function deepClone<T>(obj: T): T {
  * @returns {string} The escaped string.
  */
 export function escapeHtml(text: string): string {
-  if (typeof text !== 'string') return '';
   if (!ESCAPE_HTML_CHARS.test(text)) {
     return text;
   }

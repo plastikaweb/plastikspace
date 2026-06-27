@@ -346,5 +346,14 @@ describe('Object Util', () => {
       expect(cloned).not.toBe(regexp);
       expect(cloned instanceof RegExp).toBe(true);
     });
+
+    it('should only clone own properties', () => {
+      const proto = { inherited: 1 };
+      const obj = Object.create(proto);
+      obj.own = 2;
+      const cloned = deepClone(obj);
+      expect(cloned.own).toBe(2);
+      expect(cloned.inherited).toBeUndefined();
+    });
   });
 });
