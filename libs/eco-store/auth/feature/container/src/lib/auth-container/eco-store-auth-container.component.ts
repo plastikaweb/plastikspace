@@ -9,6 +9,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavigationService } from '@plastik/core/router-state';
 import { PocketBaseImageUrlPipe, PwaNavigationService } from '@plastik/eco-store/shared/utils';
@@ -26,6 +27,7 @@ import { MatThemeToggleComponent } from '@plastik/shared/mat-theme-toggle';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule,
     TranslateModule,
     SharedImgContainerComponent,
     PocketBaseImageUrlPipe,
