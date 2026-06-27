@@ -7,6 +7,7 @@
         matIconButton
         type="button"
         [attr.aria-label]="backAriaLabel()"
+        [matTooltip]="backAriaLabel()"
         (click)="goBack.emit()">
         <mat-icon>arrow_back</mat-icon>
       </button>

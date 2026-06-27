@@ -150,8 +150,8 @@ describe('InputSearchTypeComponent', () => {
     });
   });
 
-  describe('Keyboard support and Focus management', () => {
-    it('should trigger search on Enter key', () => {
+  describe('A11Y-010: keyboard support and focus management', () => {
+    it('should trigger a full search on Enter', () => {
       const onSearchSpy = vi.fn();
       component.field.props!.onSearch = onSearchSpy;
       component.formControl.setValue('abc');
@@ -163,12 +163,29 @@ describe('InputSearchTypeComponent', () => {
       expect(onSearchSpy).toHaveBeenCalledWith('abc', component.field);
     });
 
-    it('should reset search and restore focus on Escape key', () => {
+    it('should fire the search only once for a single Enter in noButton mode', () => {
+      // keyup also reacts to typing, so Enter must be owned by keydown alone —
+      // otherwise a noButton consumer fires two searches (and two fetches) per Enter.
+      const onSearchSpy = vi.fn();
+      component.field.props!.noButton = true;
+      component.field.props!.onSearch = onSearchSpy;
+      component.formControl.setValue('abc');
+      component['syncControl']();
+
+      const input = fixture.debugElement.query(By.css('input')).nativeElement;
+      input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+      input.dispatchEvent(new KeyboardEvent('keyup', { key: 'Enter' }));
+
+      expect(onSearchSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should reset the search and restore focus to the input on Escape', () => {
       component.field.props!.resetSearch = true;
       const onPartialSearchSpy = vi.fn();
       component.field.props!.onPartialSearch = onPartialSearchSpy;
       component.formControl.setValue('abc');
       component['syncControl']();
+      fixture.detectChanges();
 
       const input = fixture.debugElement.query(By.css('input')).nativeElement;
       const focusSpy = vi.spyOn(input, 'focus');

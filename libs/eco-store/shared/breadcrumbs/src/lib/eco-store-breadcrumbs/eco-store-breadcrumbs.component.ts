@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
@@ -34,7 +35,7 @@ export interface BreadcrumbItem {
 
 @Component({
   selector: 'eco-store-breadcrumbs',
-  imports: [MatButtonModule, MatIconModule, RouterLink, TranslatePipe],
+  imports: [MatButtonModule, MatIconModule, MatTooltipModule, RouterLink, TranslatePipe],
   templateUrl: './eco-store-breadcrumbs.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -97,6 +97,17 @@ export class InputSearchTypeComponent extends FieldType<FieldTypeConfig<InputSea
     this.#handleSearch('onPartialSearch', event);
   }
 
+  protected onKeyup(event: KeyboardEvent): void {
+    if (event.key === 'Enter') {
+      return;
+    }
+    if (this.props.noButton) {
+      this.triggerSearch(event);
+    } else {
+      this.triggerPartialSearch(event);
+    }
+  }
+
   #handleSearch(propName: 'onSearch' | 'onPartialSearch', event?: Event): void {
     event?.preventDefault();
     event?.stopPropagation();

@@ -13,7 +13,7 @@
     [placeholder]="props.placeholder || ''"
     [required]="props.required || false"
     (input)="triggerPartialSearch($event)"
-    (keyup)="!props.noButton ? triggerPartialSearch($event) : triggerSearch($event)"
+    (keyup)="onKeyup($event)"
     (keydown.enter)="triggerSearch($event)"
     (keydown.escape)="$event.stopPropagation(); props.resetSearch && resetSearch()" />
 

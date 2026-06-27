@@ -1,6 +1,7 @@
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { MatTooltip } from '@angular/material/tooltip';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
 import { expect, vi } from 'vitest';
@@ -90,6 +91,17 @@ describe('EcoStoreBreadcrumbsComponent', () => {
     button.nativeElement.click();
 
     expect(goBackSpy).toHaveBeenCalledOnce();
+  });
+
+  it('should have a tooltip on the back button that matches backAriaLabel', async () => {
+    const label = 'Go back to safety';
+    fixture.componentRef.setInput('backAriaLabel', label);
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const button = fixture.debugElement.query(By.css('button[matIconButton]'));
+    const tooltip = button.injector.get(MatTooltip);
+    expect(tooltip.message).toBe(label);
   });
 
   it('should have no accessibility violations', async () => {
