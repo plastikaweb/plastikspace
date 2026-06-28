@@ -19,7 +19,7 @@ export class SafeFormattedPipe<T extends BaseEntity> implements PipeTransform {
    * @param {PropertyFormatting<T, unknown>} column - The configuration for the object property.
    * @param {number} [index] - The index number in a list of values.
    * @param {unknown} [extraConfig] - A custom configuration object to add extra formatting options.
-   * @returns The formatted value.
+   * @returns {ReturnType<DataFormatFactoryService<T>['getFormattedValue']>} The formatted value.
    */
   transform(
     row: T extends BaseEntity ? T : never,
