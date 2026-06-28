@@ -169,6 +169,14 @@
       "passwordMatchError": "Passwords do not match",
       "errorInvalidToken": "Invalid password reset token"
     },
+    "confirmEmailChange": {
+      "title": "Confirm email change",
+      "description": "Enter your current password to confirm the email address change.",
+      "passwordLabel": "Current password",
+      "submitButton": "Confirm change",
+      "success": "Email address updated. Please log in again with your new email.",
+      "error": "Could not confirm the change. The link may have expired or the password is incorrect."
+    },
     "error": {
       "login": "Check your credentials"
     }

@@ -169,6 +169,14 @@
       "passwordMatchError": "Les contrasenyes no coincideixen",
       "errorInvalidToken": "Token de restabliment de contrasenya invàlid"
     },
+    "confirmEmailChange": {
+      "title": "Confirmar el canvi de correu",
+      "description": "Introdueix la teva contrasenya actual per confirmar el canvi de correu electrònic.",
+      "passwordLabel": "Contrasenya actual",
+      "submitButton": "Confirmar el canvi",
+      "success": "Correu electrònic actualitzat. Torna a iniciar sessió amb el nou correu.",
+      "error": "No s'ha pogut confirmar el canvi. L'enllaç pot haver caducat o la contrasenya és incorrecta."
+    },
     "error": {
       "login": "Revisa les teves credencials"
     }

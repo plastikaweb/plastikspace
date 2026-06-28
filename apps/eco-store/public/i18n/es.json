@@ -169,6 +169,14 @@
       "passwordMatchError": "Las contraseñas no coinciden",
       "errorInvalidToken": "Token de restablecimiento de contraseña inválido"
     },
+    "confirmEmailChange": {
+      "title": "Confirmar el cambio de correo",
+      "description": "Introduce tu contraseña actual para confirmar el cambio de correo electrónico.",
+      "passwordLabel": "Contraseña actual",
+      "submitButton": "Confirmar el cambio",
+      "success": "Correo electrónico actualizado. Vuelve a iniciar sesión con el nuevo correo.",
+      "error": "No se ha podido confirmar el cambio. El enlace puede haber caducado o la contraseña es incorrecta."
+    },
     "error": {
       "login": "Revisa tus credenciales"
     }

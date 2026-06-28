@@ -297,7 +297,10 @@
       "@plastik/shared/pwa": ["libs/shared/pwa/src/index.ts"],
       "@plastik/eco-store/price-summary": ["libs/eco-store/shared/price-summary/src/index.ts"],
       "@plastik/eco-store/breadcrumbs": ["libs/eco-store/shared/breadcrumbs/src/index.ts"],
-      "@plastik/eco-store/hero-header": ["libs/eco-store/shared/hero-header/src/index.ts"]
+      "@plastik/eco-store/hero-header": ["libs/eco-store/shared/hero-header/src/index.ts"],
+      "@plastik/eco-store/auth/confirm-email-change": [
+        "libs/eco-store/auth/feature/confirm-email-change/src/index.ts"
+      ]
     }
   },
   "angularCompilerOptions": {

@@ -27,6 +27,13 @@ export const appRoutes: Route[] = [
       ),
   },
   {
+    path: 'confirmar-correu',
+    loadChildren: () =>
+      import('@plastik/eco-store/auth/confirm-email-change').then(
+        m => m.ecoStoreAuthFeatureConfirmEmailChangeRoutes
+      ),
+  },
+  {
     path: '',
     loadChildren: () => import('@plastik/eco-store/layout').then(m => m.layoutRoutes),
   },
