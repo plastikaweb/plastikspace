@@ -16,11 +16,27 @@ export interface ResetPasswordData {
   token: string;
 }
 
+export interface ConfirmEmailChangeData {
+  token: string;
+  password: string;
+}
+
+export interface RegisterData {
+  email: string;
+  password: string;
+  name: string;
+}
+
+export interface AuthExtraLink {
+  label: string;
+  route: string;
+}
+
 export interface AuthFormFacade<T = LoginData> {
   formConfig: FormConfig<T>;
-  extraLinks?: Signal<{ label: string; route: string }[]>;
+  extraLinks?: Signal<AuthExtraLink[]>;
   isLoading?: Signal<boolean>;
-  onSubmit(search: object): void;
+  onSubmit(data: T): void | Promise<void>;
 }
 
 export const AUTH_FORM_FACADE = new InjectionToken<AuthFormFacade<LoginData>>('AUTH_FORM_FACADE');

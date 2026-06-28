@@ -40,6 +40,14 @@ export class PocketBaseAuthService implements AuthFacade {
       .confirmPasswordReset(token, password, passwordConfirm);
   }
 
+  async requestEmailChange(newEmail: string): Promise<boolean> {
+    return await this.#pb.collection('users').requestEmailChange(newEmail);
+  }
+
+  async confirmEmailChange(token: string, password: string): Promise<boolean> {
+    return await this.#pb.collection('users').confirmEmailChange(token, password);
+  }
+
   async updateProfile(id: string, data: { name: string; phone: string }): Promise<AuthModel> {
     return await this.#pb.collection('users').update(id, data);
   }

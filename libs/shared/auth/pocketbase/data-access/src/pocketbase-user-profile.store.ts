@@ -6,7 +6,12 @@ import {
 } from '@angular-architects/ngrx-toolkit';
 import { inject, isDevMode } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
-import { LoginData, RequestPasswordData, ResetPasswordData } from '@plastik/auth/entities';
+import {
+  ConfirmEmailChangeData,
+  LoginData,
+  RequestPasswordData,
+  ResetPasswordData,
+} from '@plastik/auth/entities';
 import {
   PocketBaseUser,
   PocketBaseUserAddress,
@@ -140,6 +145,32 @@ export const pocketBaseUserProfileStore = signalStore(
         updateState(store, `[profile] confirm password reset failed ${error}`, {
           isLoading: false,
         });
+        return false;
+      }
+    },
+
+    async requestEmailChange(newEmail: string): Promise<boolean> {
+      updateState(store, `[profile] request email change in process`, { isLoading: true });
+
+      try {
+        await store._authService.requestEmailChange(newEmail);
+        updateState(store, `[profile] request email change success`, { isLoading: false });
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] request email change failed ${error}`, { isLoading: false });
+        return false;
+      }
+    },
+
+    async confirmEmailChange(data: ConfirmEmailChangeData): Promise<boolean> {
+      updateState(store, `[profile] confirm email change in process`, { isLoading: true });
+
+      try {
+        await store._authService.confirmEmailChange(data.token, data.password);
+        updateState(store, `[profile] confirm email change success`, { isLoading: false });
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] confirm email change failed ${error}`, { isLoading: false });
         return false;
       }
     },

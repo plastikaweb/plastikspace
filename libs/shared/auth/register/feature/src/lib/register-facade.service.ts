@@ -1,13 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { AUTH_SERVICE, AuthFormFacade } from '@plastik/auth/entities';
+import { AUTH_SERVICE, AuthFormFacade, RegisterData } from '@plastik/auth/entities';
 
 import { registerFormConfig } from './register-form.config';
-
-export interface RegisterData {
-  email: string;
-  password: string;
-  name: string;
-}
 
 @Injectable({
   providedIn: 'root',

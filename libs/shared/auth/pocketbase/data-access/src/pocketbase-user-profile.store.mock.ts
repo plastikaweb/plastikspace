@@ -15,6 +15,8 @@ export const mockPocketBaseUserProfileStore = {
   roleIcon: signal(''),
   getUserContacts: signal([]),
   login: vi.fn(),
+  requestEmailChange: vi.fn(),
+  confirmEmailChange: vi.fn(),
   logout: vi.fn(),
   checkAuth: vi.fn(),
   getUserAddresses: vi.fn(),
