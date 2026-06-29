@@ -10,6 +10,7 @@ import {
   llecoopUserOrderStore,
   StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
+import { escapeHtml } from '@plastik/shared/objects';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
@@ -97,7 +98,7 @@ export class LlecoopUserOrderListFacadeService implements TableWithFilteringFaca
       this.#confirmService
         .confirm(
           'Eliminar comanda',
-          `Segur que vols eliminar la comanda "${item.name}"?`,
+          `Segur que vols eliminar la comanda "${escapeHtml(item.name)}"?`,
           'Cancel·lar',
           'Eliminar'
         )

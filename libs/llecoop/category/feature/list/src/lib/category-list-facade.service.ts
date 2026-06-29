@@ -6,6 +6,7 @@ import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { CategoryFilter, llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
@@ -57,7 +58,7 @@ export class LlecoopCategoryListFacadeService implements TableWithFilteringFacad
       this.#confirmService
         .confirm(
           'Eliminar categoria',
-          `Segur que vols eliminar "${item.name}"?`,
+          `Segur que vols eliminar "${escapeHtml(item.name)}"?`,
           'Cancel·lar',
           'Eliminar'
         )

@@ -13,6 +13,7 @@ import {
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { PageEventConfig } from '@plastik/shared/table/entities';
+import { escapeHtml } from '@plastik/shared/objects';
 
 import { SortConfig } from '@plastik/core/entities';
 import { getLlecoopOrderListFeatureListSearchFormConfig } from './order-list-feature-list-table/order-list-feature-list-search-form.config';
@@ -108,7 +109,7 @@ export class LlecoopOrderListFeatureListFacadeService implements TableWithFilter
       this.#confirmService
         .confirm(
           'Eliminar comanda setmanal',
-          `Segur que vols eliminar la comanda "${item.name}"?`,
+          `Segur que vols eliminar la comanda "${escapeHtml(item.name)}"?`,
           'Cancel·lar',
           'Eliminar'
         )
