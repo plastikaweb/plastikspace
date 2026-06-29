@@ -98,7 +98,7 @@ export class LlecoopUserOrderListFacadeService implements TableWithFilteringFaca
       this.#confirmService
         .confirm(
           'Eliminar comanda',
-          `Segur que vols eliminar la comanda "${escapeHtml(item.name)}"?`,
+          `Segur que vols eliminar la comanda "${escapeHtml(String(item.name ?? ''))}"?`,
           'Cancel·lar',
           'Eliminar'
         )

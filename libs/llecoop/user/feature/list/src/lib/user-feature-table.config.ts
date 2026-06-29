@@ -143,7 +143,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
               this.#confirmService
                 .confirm(
                   "Donar permisos d'administració",
-                  `Segur que vols donar permisos d'administració a "${escapeHtml(user.name || user.email)}"?`,
+                  `Segur que vols donar permisos d'administració a "${escapeHtml(String(user.name || user.email || ''))}"?`,
                   'Cancel·lar',
                   'Acceptar'
                 )

@@ -58,7 +58,7 @@ export class LlecoopCategoryListFacadeService implements TableWithFilteringFacad
       this.#confirmService
         .confirm(
           'Eliminar categoria',
-          `Segur que vols eliminar "${escapeHtml(item.name)}"?`,
+          `Segur que vols eliminar "${escapeHtml(String(item.name ?? ''))}"?`,
           'Cancel·lar',
           'Eliminar'
         )
