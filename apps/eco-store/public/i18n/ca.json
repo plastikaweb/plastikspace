@@ -72,6 +72,7 @@
     },
     "a11y": {
       "skipToContent": "Saltar al contingut principal",
+      "skipToContentAnnounce": "Has navegat al contingut principal",
       "loading": "Carregant dades",
       "mainNavigation": "Navegació principal",
       "userActions": "Accions de l''usuari",
