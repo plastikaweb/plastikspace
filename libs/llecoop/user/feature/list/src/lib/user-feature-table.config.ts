@@ -7,6 +7,7 @@ import { llecoopUserStore } from '@plastik/llecoop/user/data-access';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
 import { FormattingTypes } from '@plastik/shared/formatters';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -142,7 +143,7 @@ export class LlecoopUserSearchFeatureTableConfig implements TableStructureConfig
               this.#confirmService
                 .confirm(
                   "Donar permisos d'administració",
-                  `Segur que vols donar permisos d'administració a "${user.name || user.email}"?`,
+                  `Segur que vols donar permisos d'administració a "${escapeHtml(user.name || user.email)}"?`,
                   'Cancel·lar',
                   'Acceptar'
                 )
