@@ -84,7 +84,9 @@
       "categoryIcon": "{category} icono",
       "closeSidenav": "Cerrar menú lateral",
       "openSidenav": "Abrir menú lateral",
-      "ecoIcon": "Icono ecológico"
+      "ecoIcon": "Icono ecológico",
+      "expandRow": "Desplegar fila {name}",
+      "collapseRow": "Plegar fila {name}"
     },
     "paginator": {
       "firstPage": "Primera página",
