@@ -38,7 +38,7 @@ export class SharedConfirmFeatureComponent {
       ? Object.fromEntries(
           Object.entries(params).map(([key, value]) => [
             key,
-            typeof value === 'string' ? escapeHtml(value) : value,
+            escapeHtml(String(value ?? '')),
           ])
         )
       : params;

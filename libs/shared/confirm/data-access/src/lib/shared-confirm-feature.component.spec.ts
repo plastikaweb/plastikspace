@@ -85,4 +85,19 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should escape non-string parameters to prevent XSS', async () => {
+    const maliciousObject = {
+      toString: () => '<img src=x onerror=alert(1)>',
+    };
+
+    await setup({
+      ...defaultData,
+      params: { name: maliciousObject },
+    });
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
 });
