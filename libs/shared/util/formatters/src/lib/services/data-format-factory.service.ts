@@ -21,6 +21,7 @@ import { SharedUtilFormattersService } from './shared-util-formatters.service';
  */
 export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
   readonly #formatter = inject(SharedUtilFormattersService);
+  readonly #pathCache = new Map<string, string[]>();
 
   /**
    * @description Factory to get the correct formatted value from item property with a custom formatting option.
@@ -93,9 +94,26 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
    * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
    */
   #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
-    return property.split('.').reduce((accObject: unknown, currentProp: string) => {
-      const object = (accObject as T)[currentProp as keyof T];
-      return isNil(object) ? '' : (object as FormattingOutput);
-    }, item);
+    // Fast-path: simple keys don't need splitting or caching.
+    if (property.indexOf('.') === -1) {
+      const value = item[property as keyof T];
+      return isNil(value) ? '' : (value as unknown as FormattingOutput);
+    }
+
+    let path = this.#pathCache.get(property);
+    if (!path) {
+      path = property.split('.');
+      this.#pathCache.set(property, path);
+    }
+
+    let current: unknown = item;
+    for (let i = 0; i < path.length; i++) {
+      current = (current as T)[path[i] as keyof T];
+      if (isNil(current)) {
+        return '';
+      }
+    }
+
+    return current as FormattingOutput;
   }
 }
