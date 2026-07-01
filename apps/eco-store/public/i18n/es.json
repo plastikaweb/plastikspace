@@ -25,6 +25,7 @@
       "close": "Entendido, cerrar"
     },
     "delete": "Eliminar",
+    "actions": "Acciones",
     "navigation": {
       "previous": "Volver a la página anterior",
       "next": "Ir a la página siguiente",
@@ -84,7 +85,9 @@
       "categoryIcon": "{category} icono",
       "closeSidenav": "Cerrar menú lateral",
       "openSidenav": "Abrir menú lateral",
-      "ecoIcon": "Icono ecológico"
+      "ecoIcon": "Icono ecológico",
+      "expandRow": "Desplegar fila {name}",
+      "collapseRow": "Plegar fila {name}"
     },
     "paginator": {
       "firstPage": "Primera página",

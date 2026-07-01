@@ -25,6 +25,7 @@
       "close": "Entès, tancar"
     },
     "delete": "Eliminar",
+    "actions": "Accions",
     "navigation": {
       "previous": "Tornar a la pàgina anterior",
       "next": "Anar a la pàgina següent",
@@ -84,7 +85,9 @@
       "categoryIcon": "Icona de la categoria {category}",
       "closeSidenav": "Tancar menú lateral",
       "openSidenav": "Obrir menú lateral",
-      "ecoIcon": "Icona ecològica"
+      "ecoIcon": "Icona ecològica",
+      "expandRow": "Desplegar fila {name}",
+      "collapseRow": "Plegar fila {name}"
     },
     "paginator": {
       "firstPage": "Primera pàgina",
