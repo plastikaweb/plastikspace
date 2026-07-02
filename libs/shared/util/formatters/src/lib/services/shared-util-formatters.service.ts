@@ -40,20 +40,15 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-
-    return formatDate(value, format.dateDigitsInfo, format.locale, format.timezone) || '';
+    const config = extras?.();
+    return (
+      formatDate(
+        value,
+        config?.dateDigitsInfo ?? 'shortDate',
+        config?.locale ?? this.#locale,
+        config?.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
@@ -68,18 +63,15 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-    return formatDate(value, 'M/d/yy, HH:mm:ss', format.locale, format.timezone) || '';
+    const config = extras?.();
+    return (
+      formatDate(
+        value,
+        'M/d/yy, HH:mm:ss',
+        config?.locale ?? this.#locale,
+        config?.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
@@ -93,22 +85,18 @@ export class SharedUtilFormattersService {
     value: Timestamp,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!value) {
+      return '-';
     }
-
-    return value
-      ? formatDate(value?.toDate(), format.dateDigitsInfo, format.locale, format.timezone)
-      : '-';
+    const config = extras?.();
+    return (
+      formatDate(
+        value.toDate(),
+        config?.dateDigitsInfo ?? 'shortDate',
+        config?.locale ?? this.#locale,
+        config?.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
@@ -121,18 +109,14 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-
-    return formatPercent(Number(value) / 100, format.locale, format.numberDigitsInfo) || '';
+    const config = extras?.();
+    return (
+      formatPercent(
+        Number(value) / 100,
+        config?.locale ?? this.#locale,
+        config?.numberDigitsInfo ?? '1.2-2'
+      ) || ''
+    );
   }
 
   /**
@@ -150,25 +134,14 @@ export class SharedUtilFormattersService {
       >
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      currency: '€',
-      currencyCode: 'EUR',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
+    const config = extras?.();
     return (
       formatCurrency(
         value,
-        format.locale,
-        format.currency,
-        format.currencyCode,
-        format.numberDigitsInfo
+        config?.locale ?? this.#locale,
+        config?.currency ?? '€',
+        config?.currencyCode ?? 'EUR',
+        config?.numberDigitsInfo ?? '1.2-2'
       ) || ''
     );
   }
@@ -184,17 +157,14 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-    return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
+    const config = extras?.();
+    return (
+      formatNumber(
+        Number(value),
+        config?.locale ?? this.#locale,
+        config?.numberDigitsInfo ?? '1.2-2'
+      ) || ''
+    );
   }
 
   /**
@@ -214,20 +184,13 @@ export class SharedUtilFormattersService {
       Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      suffix: '',
-      prefix: '',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(item),
-      };
-    }
-    const formattedNumber = formatNumber(Number(value), format.locale, format.numberDigitsInfo);
-    return `${format.prefix || ''}${formattedNumber}${format.suffix || ''}`.trim();
+    const config = extras?.(item);
+    const formattedNumber = formatNumber(
+      Number(value),
+      config?.locale ?? this.#locale,
+      config?.numberDigitsInfo ?? '1.2-2'
+    );
+    return `${config?.prefix ?? ''}${formattedNumber}${config?.suffix ?? ''}`.trim();
   }
 
   /**
@@ -250,18 +213,11 @@ export class SharedUtilFormattersService {
     value: boolean,
     extras?: () => FormattingExtras<'BOOLEAN_WITH_ICON'>
   ): SafeHtml {
-    let format = {
-      iconTrue: 'check',
-      iconFalse: 'close',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
+    const config = extras?.();
     return this.#sanitizer.bypassSecurityTrustHtml(
-      `<span class="material-icons">${escapeHtml(value ? format.iconTrue : format.iconFalse)}</span>`
+      `<span class="material-icons">${escapeHtml(
+        value ? config?.iconTrue ?? 'check' : config?.iconFalse ?? 'close'
+      )}</span>`
     );
   }
 
