@@ -33,6 +33,7 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { EntityId } from '@ngrx/signals/entities';
 import { BaseEntity, LocalizedFields, SortConfig } from '@plastik/core/entities';
 import {
@@ -82,6 +83,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
     MatRadioModule,
     MatSlideToggleModule,
     NgOptimizedImage,
+    TranslateModule,
     SharedUtilFormattersModule,
     OrderTableActionsElementsPipe,
     SafeFormattedPipe,
