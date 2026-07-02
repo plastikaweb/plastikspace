@@ -9,6 +9,7 @@
     "submit": "Submit",
     "save": "Save",
     "update": "Update",
+    "actions": "Actions",
     "pwa": {
       "title": "Bring Eco to your mobile",
       "description": "Install our app for a faster, more secure experience with offline access to your orders.",
@@ -84,7 +85,10 @@
       "categoryIcon": "{category} icon",
       "closeSidenav": "Close side menu",
       "openSidenav": "Open side menu",
-      "ecoIcon": "Eco icon"
+      "ecoIcon": "Eco icon",
+      "expandRow": "Expand row {name}",
+      "collapseRow": "Collapse row {name}",
+      "expandColumn": "Expand"
     },
     "paginator": {
       "firstPage": "First page",

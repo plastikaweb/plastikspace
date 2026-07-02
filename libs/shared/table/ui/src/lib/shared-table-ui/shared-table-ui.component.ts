@@ -14,6 +14,7 @@ import {
   effect,
   inject,
   input,
+  LOCALE_ID,
   output,
   signal,
   TemplateRef,
@@ -33,7 +34,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
-import { BaseEntity, SortConfig } from '@plastik/core/entities';
+import { BaseEntity, LocalizedFields, SortConfig } from '@plastik/core/entities';
 import {
   FormattingTypes,
   SafeFormattedPipe,
@@ -197,6 +198,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   protected expandedElement = signal<T | null>(null);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
+  readonly #locale = inject(LOCALE_ID);
 
   constructor() {
     this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
@@ -302,6 +304,33 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     requestAnimationFrame(() => {
       this.expandedElement.set(this.expandedElement()?.id === element?.id ? null : element);
     });
+  }
+
+  protected getDisplayName(element: T): string {
+    if (!element) {
+      return '';
+    }
+
+    const { name, id } = element;
+
+    if (typeof name === 'string') {
+      return name;
+    }
+
+    if (name && typeof name === 'object') {
+      const locale = this.#locale.split('-')[0];
+      const localizedName = (name as LocalizedFields)[locale];
+      if (localizedName) {
+        return localizedName;
+      }
+
+      const values = Object.values(name);
+      if (values.length > 0) {
+        return values[0];
+      }
+    }
+
+    return String(id || '');
   }
 
   #announceSortChange(sortState: Sort) {

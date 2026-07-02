@@ -9,6 +9,7 @@
     "submit": "Enviar",
     "save": "Guardar",
     "update": "Actualizar",
+    "actions": "Acciones",
     "pwa": {
       "title": "Lleva lo Eco en tu móvil",
       "description": "Instala nuestra app para una experiencia más rápida, segura y con acceso a tus pedidos sin conexión.",
@@ -84,7 +85,10 @@
       "categoryIcon": "{category} icono",
       "closeSidenav": "Cerrar menú lateral",
       "openSidenav": "Abrir menú lateral",
-      "ecoIcon": "Icono ecológico"
+      "ecoIcon": "Icono ecológico",
+      "expandRow": "Expandir fila {name}",
+      "collapseRow": "Contraer fila {name}",
+      "expandColumn": "Expandir"
     },
     "paginator": {
       "firstPage": "Primera página",
