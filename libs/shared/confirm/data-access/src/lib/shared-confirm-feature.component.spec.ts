@@ -85,4 +85,17 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should escape HTML even if passed as non-string params (defense-in-depth)', async () => {
+    // ngx-translate stringifies non-string params. If we don't convert to string before
+    // escaping, we only escape string types.
+    await setup({
+      ...defaultData,
+      params: { name: ['<img src=x onerror=alert(1)>'] },
+    });
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
 });
