@@ -302,9 +302,9 @@ export function deepClone<T>(obj: T): T {
 }
 
 /** HTML special characters that need escaping. Non-global, for the fast-path `.test()`. */
-const ESCAPE_HTML_CHARS = /[&<>"'/`=]/;
+const ESCAPE_HTML_CHARS = /[&<>"'\/`=]/;
 /** Global variant of {@link ESCAPE_HTML_CHARS} for `String.prototype.replace()`. */
-const ESCAPE_HTML_CHARS_GLOBAL = /[&<>"'/`=]/g;
+const ESCAPE_HTML_CHARS_GLOBAL = /[&<>"'\/`=]/g;
 /** Mapping of HTML special characters to their escaped entities. */
 const HTML_ESCAPE_MAP: Record<string, string> = {
   '&': '&amp;',

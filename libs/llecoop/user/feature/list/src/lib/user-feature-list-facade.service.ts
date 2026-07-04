@@ -8,7 +8,6 @@ import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { llecoopUserStore, StoreUserFilter } from '@plastik/llecoop/user/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { escapeHtml } from '@plastik/shared/objects';
 import { FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
 import { getLlecoopUserSearchFeatureFormConfig } from './user-feature-search-form.config';
@@ -58,7 +57,7 @@ export class LlecoopUserListFacadeService implements TableWithFilteringFacade<
       this.#confirmService
         .confirm(
           'Eliminar usuari',
-          `Segur que vols eliminar l'usuari "${escapeHtml(item.email)}"?`,
+          `Segur que vols eliminar l'usuari "${item.email}"?`,
           'Cancel·lar',
           'Eliminar'
         )
