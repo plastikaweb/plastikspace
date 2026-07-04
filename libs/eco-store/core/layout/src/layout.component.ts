@@ -30,7 +30,6 @@ import { EcoMobileNavComponent } from './mobile-nav/mobile-nav.component';
 import { EcoTenantLogoComponent } from './tenant-logo/tenant-logo.component';
 
 import { MatDivider } from '@angular/material/divider';
-import { SkipLinkComponent } from '@plastik/shared/skip-link';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
@@ -54,7 +53,6 @@ import { appSearchFormConfig } from './app.search-form.config';
     EcoTenantLogoComponent,
     EcoMobileNavComponent,
     MatDivider,
-    SkipLinkComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
