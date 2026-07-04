@@ -64,7 +64,8 @@ export const ecoStoreProfileFeatureRoutes: Route[] = [
               icon: 'security',
               preferUserName: true,
             },
-            providers: [providePlainInputFormly()],
+            // Formly providers live in the lib's own routes (provideFormlyCore + the
+            // access-security validation messages must share one injector).
             loadChildren: () =>
               import('@plastik/eco-store/profile/access-security').then(
                 m => m.ecoStoreProfileAccessSecurityFeatureRoutes

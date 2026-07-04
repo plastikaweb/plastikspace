@@ -12,11 +12,13 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer, Meta } from '@angular/platform-browser';
 import { RouterOutlet } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { notificationStore } from '@plastik/shared/notification/data-access';
+import { LanguageSwitcherService } from '@plastik/shared/translation';
 import { SharedNotificationUiHotToastComponent } from '@plastik/shared/notification/ui/hot-toast';
 import { PwaInstallService } from '@plastik/shared/pwa';
 import { SkipLinkComponent } from '@plastik/shared/skip-link';
@@ -51,6 +53,8 @@ export class AppComponent implements OnInit {
   readonly #matIconRegistry = inject(MatIconRegistry);
   readonly #domSanitizer = inject(DomSanitizer);
   readonly #pwaInstallService = inject(PwaInstallService);
+  readonly #languageSwitcherService = inject(LanguageSwitcherService);
+  readonly #profileStore = inject(pocketBaseUserProfileStore);
 
   constructor() {
     this.#translate.addLangs(this.#environment.languages);
@@ -62,6 +66,17 @@ export class AppComponent implements OnInit {
       const description = this.#tenantStore.tenantDescriptionTranslated();
       if (description) {
         this.#meta.updateTag({ name: 'description', content: description });
+      }
+    });
+
+    // Keep users.language in sync with the eco-lang preference so PocketBase mail hooks
+    // (password reset, email change) can localize their emails. Reacting to both the
+    // language signal and the auth state covers the switcher AND the post-login reconcile;
+    // the client preference wins. updateLanguage no-ops when the values already match.
+    effect(() => {
+      const language = this.#languageSwitcherService.currentLanguage();
+      if (language && this.#profileStore.isAuthenticated()) {
+        this.#profileStore.updateLanguage(language);
       }
     });
   }

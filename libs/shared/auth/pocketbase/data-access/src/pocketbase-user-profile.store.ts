@@ -159,7 +159,17 @@ export const pocketBaseUserProfileStore = signalStore(
         return true;
       } catch (error) {
         updateState(store, `[profile] request email change failed ${error}`, { isLoading: false });
-        store._notificationService.create('profile.accessSecurity.error.requested', 'ERROR');
+        // PocketBase answers 400 validation_invalid_new_email both for malformed and
+        // already-registered addresses (it deliberately doesn't reveal which).
+        const isInvalidNewEmail =
+          (error as { status?: number; data?: { data?: { newEmail?: unknown } } }).status === 400 &&
+          !!(error as { data?: { data?: { newEmail?: unknown } } }).data?.data?.['newEmail'];
+        store._notificationService.create(
+          isInvalidNewEmail
+            ? 'profile.accessSecurity.error.invalidNewEmail'
+            : 'profile.accessSecurity.error.requested',
+          'ERROR'
+        );
         return false;
       }
     },
@@ -244,6 +254,23 @@ export const pocketBaseUserProfileStore = signalStore(
           isLoading: false,
         });
         store._notificationService.create('profile.error.update', 'ERROR');
+        return false;
+      }
+    },
+
+    async updateLanguage(language: string): Promise<boolean> {
+      const user = store.user();
+      if (!user?.id || user.language === language) return false;
+
+      try {
+        const updatedUser = await store._authService.updateLanguage(user.id, language);
+        // Silent sync: no toast and no isLoading — a language switch must not flash the UI.
+        updateState(store, `[profile] update language success`, {
+          user: updatedUser as PocketBaseUser,
+        });
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] update language failed ${error}`, {});
         return false;
       }
     },

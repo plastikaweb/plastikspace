@@ -1,21 +1,18 @@
 /// <reference path="../pb_data/types.d.ts" />
 
 // =================================================================
-// CUSTOM PASSWORD RESET EMAIL
-// Intercepts the default password reset email and replaces it with
-// a branded HTML email matching the order confirmation style.
+// CUSTOM EMAIL-CHANGE CONFIRMATION EMAIL (PRV-02b)
+// Intercepts the default confirm-email-change email and replaces it
+// with a branded, localized HTML email pointing at the app's public
+// /confirmar-correu page instead of the PocketBase Admin UI.
+// Structural twin of on_password_reset.pb.js.
 // =================================================================
-onMailerRecordPasswordResetSend((e) => {
+onMailerRecordEmailChangeSend((e) => {
     const record = e.record;
     const token = e.meta["token"];
+    const newEmail = e.meta["newEmail"];
 
     if (!record || !token) {
-        return e.next();
-    }
-
-    const userEmail = record.email();
-    if (!userEmail) {
-        console.warn("Password reset requested for record without email. Skipping custom email.");
         return e.next();
     }
 
@@ -37,7 +34,7 @@ onMailerRecordPasswordResetSend((e) => {
             }
         }
     } catch (err) {
-        console.warn("Could not fetch tenant for password reset email:", err);
+        console.warn("Could not fetch tenant for email-change email:", err);
     }
 
     // --- Resolve app URL ---
@@ -55,8 +52,6 @@ onMailerRecordPasswordResetSend((e) => {
     } else {
         // Generic fallback for other domains: try to replace the first subdomain
         try {
-            // Note: PocketBase JavaScript VM (Goja) has basic JS support.
-            // Using basic string manipulation to avoid missing URL class issues if any.
             if (appURL.startsWith("http")) {
                 const urlParts = appURL.split("://");
                 const protocol = urlParts[0];
@@ -75,8 +70,8 @@ onMailerRecordPasswordResetSend((e) => {
         }
     }
 
-    const resetPath = "restablir-contrasenya";
-    const resetLink = frontendURL + "/" + resetPath + "?token=" + encodeURIComponent(token);
+    const confirmPath = "confirmar-correu";
+    const confirmLink = frontendURL + "/" + confirmPath + "?token=" + encodeURIComponent(token);
 
     // --- Detect language from record (fallback to 'ca') ---
     let lang = "ca";
@@ -86,39 +81,42 @@ onMailerRecordPasswordResetSend((e) => {
         // language field may not exist on all auth collections
     }
 
+    // Surfacing the requested address lets the user spot requests that are not theirs.
+    const newEmailLabel = newEmail || "";
+
     const translations = {
         ca: {
-            subject: `Restablir contrasenya - ${tenantName}`,
+            subject: `Confirmar el canvi de correu - ${tenantName}`,
             greeting: "Hola!",
-            intro: `Has sol·licitat restablir la contrasenya del teu compte a <strong>${tenantName}</strong>.`,
-            instruction: "Fes clic al botó de sota per crear una nova contrasenya:",
-            buttonText: "Restablir contrasenya",
+            intro: `Has sol·licitat canviar el correu electrònic del teu compte a <strong>${tenantName}</strong> pel nou correu <strong>${newEmailLabel}</strong>.`,
+            instruction: "Fes clic al botó de sota per confirmar el nou correu. Et demanarem la contrasenya actual del compte:",
+            buttonText: "Confirmar el nou correu",
             expiry: "Aquest enllaç caducarà en <strong>30 minuts</strong>.",
-            ignoreNotice: "Si no has sol·licitat aquest canvi, pots ignorar aquest correu amb tota tranquil·litat.",
+            ignoreNotice: "Si no has sol·licitat aquest canvi, pots ignorar aquest correu amb tota tranquil·litat: el teu correu actual seguirà sent vàlid.",
             footer: "Aquest correu és un missatge automàtic. Si tens cap problema, posa't en contacte amb nosaltres.",
             regards: "Salut i bons aliments,",
             team: `L'equip de ${tenantName}`,
         },
         es: {
-            subject: `Restablecer contraseña - ${tenantName}`,
+            subject: `Confirmar el cambio de correo - ${tenantName}`,
             greeting: "¡Hola!",
-            intro: `Has solicitado restablecer la contraseña de tu cuenta en <strong>${tenantName}</strong>.`,
-            instruction: "Haz clic en el botón de abajo para crear una nueva contraseña:",
-            buttonText: "Restablecer contraseña",
+            intro: `Has solicitado cambiar el correo electrónico de tu cuenta en <strong>${tenantName}</strong> por el nuevo correo <strong>${newEmailLabel}</strong>.`,
+            instruction: "Haz clic en el botón de abajo para confirmar el nuevo correo. Te pediremos la contraseña actual de la cuenta:",
+            buttonText: "Confirmar el nuevo correo",
             expiry: "Este enlace caducará en <strong>30 minutos</strong>.",
-            ignoreNotice: "Si no has solicitado este cambio, puedes ignorar este correo con total tranquilidad.",
+            ignoreNotice: "Si no has solicitado este cambio, puedes ignorar este correo con total tranquilidad: tu correo actual seguirá siendo válido.",
             footer: "Este correo es un mensaje automático. Si tienes algún problema, ponte en contacto con nosotros.",
             regards: "Saludos y buenos alimentos,",
             team: `El equipo de ${tenantName}`,
         },
         en: {
-            subject: `Reset password - ${tenantName}`,
+            subject: `Confirm your email change - ${tenantName}`,
             greeting: "Hello!",
-            intro: `You have requested to reset your password for your account at <strong>${tenantName}</strong>.`,
-            instruction: "Click the button below to create a new password:",
-            buttonText: "Reset password",
+            intro: `You have requested to change the email address of your account at <strong>${tenantName}</strong> to the new address <strong>${newEmailLabel}</strong>.`,
+            instruction: "Click the button below to confirm the new email. You will be asked for your current account password:",
+            buttonText: "Confirm new email",
             expiry: "This link will expire in <strong>30 minutes</strong>.",
-            ignoreNotice: "If you did not request this change, you can safely ignore this email.",
+            ignoreNotice: "If you did not request this change, you can safely ignore this email: your current address will remain valid.",
             footer: "This email is an automated message. If you have any issues, please contact us.",
             regards: "Kind regards,",
             team: `The ${tenantName} team`,
@@ -142,7 +140,7 @@ onMailerRecordPasswordResetSend((e) => {
 
                 <!-- CTA Button -->
                 <div style="text-align: center; margin: 40px 0;">
-                    <a href="${resetLink}" style="display: inline-block; background-color: #457b2e; color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 12px; font-size: 16px; font-weight: 700; letter-spacing: 0.5px;">${t.buttonText}</a>
+                    <a href="${confirmLink}" style="display: inline-block; background-color: #457b2e; color: #ffffff; text-decoration: none; padding: 16px 40px; border-radius: 12px; font-size: 16px; font-weight: 700; letter-spacing: 0.5px;">${t.buttonText}</a>
                 </div>
 
                 <!-- Expiry notice -->

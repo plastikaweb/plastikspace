@@ -768,7 +768,7 @@
       "error": {
         "requested": "No s'ha pogut sol·licitar el canvi de correu. Torna a provar-ho.",
         "sameEmail": "El nou correu ha de ser diferent de l'actual.",
-        "invalidEmail": "Introdueix un correu electrònic vàlid."
+        "invalidNewEmail": "El correu no és vàlid o ja està en ús."
       }
     },
     "success": {

@@ -21,16 +21,17 @@ export function accessSecurityEmailFormConfig(currentEmail: string): FormConfig<
             type: 'email',
             attributes: { autocomplete: 'off' },
           },
+          // Messages come from the registered Formly validationMessages ('email' from
+          // registerValidatorsTranslateExtension, 'notCurrent' from this lib's extension) —
+          // inline `message` fns would render the raw i18n key instead of translating it.
           validators: {
             notCurrent: {
               expression: (control: { value: string }) =>
                 !control.value || control.value.trim().toLowerCase() !== currentEmail.toLowerCase(),
-              message: () => 'profile.accessSecurity.error.sameEmail',
             },
             email: {
               expression: (control: { value: string }) =>
                 !control.value || /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(control.value),
-              message: () => 'profile.accessSecurity.error.invalidEmail',
             },
           },
         },

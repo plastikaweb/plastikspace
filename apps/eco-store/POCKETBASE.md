@@ -124,7 +124,10 @@ Server-side logic is implemented as standard PocketBase JavaScript hooks.
 
 - **[on_create_order.pb.js](./pocketbase/pb_hooks/on_create_order.pb.js)**: Handles order cycle linking, duplicate prevention, cart cleanup, and confirmation emails.
 - **[on_password_reset.pb.js](./pocketbase/pb_hooks/on_password_reset.pb.js)**: Localized password-reset email (overrides the native mailer).
+- **[on_email_change.pb.js](./pocketbase/pb_hooks/on_email_change.pb.js)**: Localized email-change confirmation email pointing at the app's `/confirmar-correu` page (overrides the native mailer).
 - **[single_default_address.js](./pocketbase/pb_hooks/single_default_address.js)**: Ensures unique default user addresses.
+
+Both mail hooks localize via the optional `users.language` field (`ca|es|en`, fallback `ca`), which the eco-store app keeps in sync with the `eco-lang` preference on login and on language switch.
 
 > [!NOTE]
 > Hooks build email **content**; the SMTP **transport** is configured separately in `Settings → Mail`.

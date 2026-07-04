@@ -768,7 +768,7 @@
       "error": {
         "requested": "Could not request the email change. Please try again.",
         "sameEmail": "The new email must be different from the current one.",
-        "invalidEmail": "Enter a valid email address."
+        "invalidNewEmail": "The email is invalid or already in use."
       }
     },
     "success": {

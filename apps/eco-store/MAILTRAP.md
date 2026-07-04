@@ -95,7 +95,7 @@ All live email originates from PocketBase. Three flows exist today (see [`POCKET
 | Email                                   | Trigger                               | Where it's built                                                                    | SMTP transport  |
 | --------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------- | --------------- |
 | **Password reset** (PRV-03)             | User requests password recovery       | [`on_password_reset.pb.js`](./pocketbase/pb_hooks/on_password_reset.pb.js) override | Settings → Mail |
-| **Email-change confirmation** (PRV-02b) | User changes their email in `/perfil` | Native mailer; page in `libs/eco-store/auth/feature/confirm-email-change`           | Settings → Mail |
+| **Email-change confirmation** (PRV-02b) | User changes their email in `/perfil` | [`on_email_change.pb.js`](./pocketbase/pb_hooks/on_email_change.pb.js) override     | Settings → Mail |
 | **Order confirmation** (NOT-01)         | New order created                     | [`on_create_order.pb.js`](./pocketbase/pb_hooks/on_create_order.pb.js) hook         | Settings → Mail |
 
 > [!NOTE]
@@ -159,10 +159,11 @@ A correct local config looks like this:
 
 #### 3. Configure the sender + app URL (Settings → Application)
 
-The custom hooks (`on_password_reset`, `on_create_order`) read these. In **Settings → Application**:
+The custom hooks (`on_password_reset`, `on_email_change`, `on_create_order`) read these. In **Settings → Application**:
 
+- **Application name** (`meta.appName`) — set to `Botiga Eco`. Any residual default email (before a hook covers it) says "Acme" otherwise.
 - **Application URL** (`meta.appURL`) — the public app origin (e.g. `http://localhost:4200` locally). Used to build links inside emails.
-- **Sender name** (`meta.senderName`) — e.g. `Botiga Eco`; falls back to the tenant name if empty.
+- **Sender name** (`meta.senderName`) — e.g. `Botiga Eco`. The auth mail hooks override the `from:` name with the **tenant name** when they can resolve it.
 - **Sender address** (`meta.senderAddress`) — the `from:` address on hook-built emails (e.g. `no-reply@plastikaweb.com`). With Sandbox this can be any address since nothing is actually delivered.
 
 #### 4. Run it
@@ -199,7 +200,7 @@ In Mailtrap → **Email Sending** → **Sending Domains** → `plastikaweb.com` 
    - **TLS encryption**: `Auto (StartTLS)` for `587`/`2525` (or implicit TLS for `465`)
    - **AUTH method**: `PLAIN (default)`
 3. **Sender address** (Settings → Mail / Application) **must be on the verified domain** → `no-reply@plastikaweb.com`. A `from` outside `plastikaweb.com` is rejected by Email Sending.
-4. **Sender name**: `Botiga Eco`. **Application URL** (`meta.appURL`): the staging domain.
+4. **Sender name**: `Botiga Eco`. **Application name**: `Botiga Eco`. **Application URL** (`meta.appURL`): the staging domain.
 5. **Send test email** to a **test address you control** → it should arrive in that real inbox. **Save**.
 
 #### Quota
@@ -253,19 +254,19 @@ and a dedicated IP / stricter DMARC may be warranted. Update this section (and t
 
 ## Quick reference
 
-| What                           | Where                                                                                                 |
-| ------------------------------ | ----------------------------------------------------------------------------------------------------- |
-| **Dev** SMTP host              | `sandbox.smtp.mailtrap.io` (port `2525`, Sandbox inbox creds) — captured                              |
-| **Staging** SMTP host          | `live.smtp.mailtrap.io` (port `587`, `plastikaweb.com` Sending creds) — real delivery                 |
-| Sender (`from`)                | `no-reply@plastikaweb.com` — **required** on the verified domain for staging                          |
-| SMTP transport config          | PocketBase **Settings → Mail** (per environment, in `pb_data`, gitignored)                            |
-| Sender + app URL (`meta.*`)    | PocketBase **Settings → Application**                                                                 |
-| Mailtrap Sandbox inbox         | [mailtrap.io](https://mailtrap.io) → Email Testing → Inboxes                                          |
-| Mailtrap Sending domain        | [mailtrap.io](https://mailtrap.io) → Email Sending → Sending Domains                                  |
-| Local Admin UI                 | `http://localhost:8090/_/`                                                                            |
-| Email-building hooks           | [`pocketbase/pb_hooks/`](./pocketbase/pb_hooks/) (`on_password_reset.pb.js`, `on_create_order.pb.js`) |
-| Email-change confirmation page | `libs/eco-store/auth/feature/confirm-email-change`                                                    |
-| Backend / schema workflow      | [`POCKETBASE.md`](./POCKETBASE.md)                                                                    |
+| What                           | Where                                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| **Dev** SMTP host              | `sandbox.smtp.mailtrap.io` (port `2525`, Sandbox inbox creds) — captured                                     |
+| **Staging** SMTP host          | `live.smtp.mailtrap.io` (port `587`, `plastikaweb.com` Sending creds) — real delivery                        |
+| Sender (`from`)                | `no-reply@plastikaweb.com` — **required** on the verified domain for staging                                 |
+| SMTP transport config          | PocketBase **Settings → Mail** (per environment, in `pb_data`, gitignored)                                   |
+| Sender + app URL (`meta.*`)    | PocketBase **Settings → Application**                                                                        |
+| Mailtrap Sandbox inbox         | [mailtrap.io](https://mailtrap.io) → Email Testing → Inboxes                                                 |
+| Mailtrap Sending domain        | [mailtrap.io](https://mailtrap.io) → Email Sending → Sending Domains                                         |
+| Local Admin UI                 | `http://localhost:8090/_/`                                                                                   |
+| Email-building hooks           | [`pocketbase/pb_hooks/`](./pocketbase/pb_hooks/) (`on_password_reset`, `on_email_change`, `on_create_order`) |
+| Email-change confirmation page | `libs/eco-store/auth/feature/confirm-email-change`                                                           |
+| Backend / schema workflow      | [`POCKETBASE.md`](./POCKETBASE.md)                                                                           |
 
 ---
 

@@ -768,7 +768,7 @@
       "error": {
         "requested": "No se ha podido solicitar el cambio de correo. Inténtalo de nuevo.",
         "sameEmail": "El nuevo correo debe ser diferente del actual.",
-        "invalidEmail": "Introduce un correo electrónico válido."
+        "invalidNewEmail": "El correo no es válido o ya está en uso."
       }
     },
     "success": {
