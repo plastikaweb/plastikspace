@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-07-04] - Llecoop: SEC-06 — Escape dynamic values in list-facade `.confirm()` messages
+
+### Fixed
+
+- **`libs/llecoop` list facades (category / product / user / order-list ×3 + `user-feature-table.config`)**: the delete/SET*ADMIN confirmation dialogs interpolated record data straight into the **message** string passed to `SharedConfirmDialogService.confirm(...)`; `SharedConfirmFeatureComponent` runs that message through `translate.instant()` and then `bypassSecurityTrustHtml(...)` into `[innerHTML]`, so any markup in the data would execute. SEC-03 escaped only the translate \_params*, never the message itself. Severity **HIGH**: the user-delete dialog interpolates `item.email` and the SET_ADMIN dialog `user.name || user.email` — a registered user controls their own email/name, so a crafted value would execute in the **admin's session**. Each interpolated value is now HTML-escaped with `escapeHtml` (from `@plastik/shared/objects`, SEC-01) at all 7 call sites — category/product/order-list `item.name`, user `item.email`, SET_ADMIN `user.name || user.email` — with `String(...)` coercion where `name` is typed `string | LocalizedFields` (matching the prior template-literal coercion). Escaping is at the call sites, not centrally in the dialog component, because the message parameter intentionally accepts trusted HTML (e.g. the "Iniciar nova comanda" dialog). Added 7 facade/config specs asserting an injected `<img onerror>` payload arrives escaped (`&lt;img`), that a declined dialog triggers no store call, and that the store `delete`/`setAdmin` fires only after confirmation. An adversarial review sweep confirmed no other unescaped `.confirm()` message remains; residual `unit.base` pipe sinks are tracked as SEC-08 and a pre-existing `translate.instant()` TypeError on `SafeHtml` messages is folded into SEC-07. Harvest from Jules draft [#1207](https://github.com/plastikaweb/plastikspace/pull/1207) (dupes #1204/#1209 closed) (SEC-06, [#86cajqprd](https://app.clickup.com/t/86cajqprd)).
+
 ## [2026-06-28] - Eco Store: PRV-02b — email change with async verification
 
 ### Fixed
