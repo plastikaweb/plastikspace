@@ -166,9 +166,10 @@ onMailerRecordPasswordResetSend((e) => {
         </div>
     `;
 
-    // Override the default email
+    // Override the default email. The tenant name wins over the instance-wide sender name
+    // so members see their cooperative as the sender, not the platform.
     const senderAddress = e.app.settings().meta.senderAddress;
-    const senderName = e.app.settings().meta.senderName || tenantName;
+    const senderName = tenantName || e.app.settings().meta.senderName;
 
     e.message.subject = t.subject;
     e.message.html = htmlBody;

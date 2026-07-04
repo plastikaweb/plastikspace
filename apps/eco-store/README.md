@@ -98,6 +98,7 @@ A strong typographic hierarchy is maintained using **Manrope**, with specialized
 ## 📖 Documentation
 
 - [**Backend Management**](./POCKETBASE.md): PocketBase schema, hooks, and automation guides.
+- [**Email / SMTP (Mailtrap)**](./MAILTRAP.md): Transactional email and Mailtrap SMTP configuration for dev/staging.
 - [**Loading Strategies**](./LOADING_STRATEGIES.md): UI activity patterns and loading states.
 - [**SSR Implementation**](./SSR.md): Server-Side Rendering configuration and deployment.
 

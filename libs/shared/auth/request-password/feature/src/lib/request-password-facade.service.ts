@@ -1,10 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { requestPasswordFormConfig } from '@plastik/auth/config/util';
-import { AUTH_SERVICE, AuthFormFacade } from '@plastik/auth/entities';
-
-export interface RequestPasswordData {
-  email: string;
-}
+import { AUTH_SERVICE, AuthFormFacade, RequestPasswordData } from '@plastik/auth/entities';
 
 @Injectable({
   providedIn: 'root',

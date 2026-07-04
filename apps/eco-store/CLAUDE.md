@@ -27,6 +27,7 @@ When working here, these are authoritative — consult them before assuming:
 | **TASKS**                   | `apps/eco-store/TASKS.md`                                                                                           | Live backlog with verified status per PRD ID              |
 | **BACKLOG**                 | `apps/eco-store/BACKLOG.md`                                                                                         | Phased / dependency-aware sprint plan with time estimates |
 | **PocketBase workflow**     | `apps/eco-store/POCKETBASE.md`                                                                                      | Schema management, hooks, cron, scripts                   |
+| **Email / SMTP (Mailtrap)** | `apps/eco-store/MAILTRAP.md`                                                                                        | Transactional email + Mailtrap SMTP config (dev/staging)  |
 | **Loading strategies**      | `apps/eco-store/LOADING_STRATEGIES.md`                                                                              | Activity & loading patterns                               |
 | **SSR**                     | `apps/eco-store/SSR.md`                                                                                             | Server-side rendering config                              |
 | **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA fully conformant                                                               |
@@ -153,6 +154,7 @@ This version **supports separate `.pb.js` files** — no need to bundle into a s
 | ------------------------------ | ---------------------------------------------------------------------------- |
 | `on_create_order.pb.js`        | Cycle linking, duplicate prevention, cart cleanup, NOT-01 confirmation email |
 | `on_password_reset.pb.js`      | PRV-03 password reset support                                                |
+| `on_email_change.pb.js`        | PRV-02b localized email-change confirmation → `/confirmar-correu`            |
 | `single_default_address.pb.js` | Enforces single default on `user_addresses` for PRV-04c                      |
 | `normalize_user_name.pb.js`    | Auto-normalizes user names for search                                        |
 | `cycle_cron.pb.js`             | Scheduled job: initialize weekly cycles and run status transitions           |

@@ -1,8 +1,7 @@
 /* eslint-disable jsdoc/require-jsdoc */
 import { Validators } from '@angular/forms';
+import { RegisterData } from '@plastik/auth/entities';
 import { FormConfig } from '@plastik/core/entities';
-
-import { RegisterData } from './register-facade.service';
 
 export function registerFormConfig(): FormConfig<RegisterData> {
   const formConfig = [

@@ -56,6 +56,22 @@ export const ecoStoreProfileFeatureRoutes: Route[] = [
               ),
           },
           {
+            path: 'access-i-seguretat',
+            title: 'profile.accessSecurity.title',
+            data: {
+              hasSidenav: true,
+              title: 'profile.accessSecurity.title',
+              icon: 'security',
+              preferUserName: true,
+            },
+            // Formly providers live in the lib's own routes (provideFormlyCore + the
+            // access-security validation messages must share one injector).
+            loadChildren: () =>
+              import('@plastik/eco-store/profile/access-security').then(
+                m => m.ecoStoreProfileAccessSecurityFeatureRoutes
+              ),
+          },
+          {
             path: '**',
             redirectTo: 'dades-personals',
             pathMatch: 'full',

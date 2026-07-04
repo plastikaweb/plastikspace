@@ -169,6 +169,14 @@
       "passwordMatchError": "Les contrasenyes no coincideixen",
       "errorInvalidToken": "Token de restabliment de contrasenya invàlid"
     },
+    "confirmEmailChange": {
+      "title": "Confirmar el canvi de correu",
+      "description": "Introdueix la teva contrasenya actual per confirmar el canvi de correu electrònic.",
+      "passwordLabel": "Contrasenya actual",
+      "submitButton": "Confirmar el canvi",
+      "success": "Correu electrònic actualitzat. Torna a iniciar sessió amb el nou correu.",
+      "error": "No s'ha pogut confirmar el canvi. L'enllaç pot haver caducat o la contrasenya és incorrecta."
+    },
     "error": {
       "login": "Revisa les teves credencials"
     }
@@ -744,6 +752,23 @@
         "delete": "S'ha produït un error al eliminar l'adreça",
         "create": "S'ha produït un error al crear l'adreça",
         "update": "S'ha produït un error al actualitzar l'adreça"
+      }
+    },
+    "accessSecurity": {
+      "title": "Accés i seguretat",
+      "description": "Gestiona el correu electrònic d'accés al teu compte.",
+      "email": {
+        "label": "Nou correu electrònic",
+        "currentLabel": "Correu actual"
+      },
+      "submitButton": "Canviar el correu",
+      "success": {
+        "requested": "T'hem enviat un enllaç de verificació al nou correu electrònic."
+      },
+      "error": {
+        "requested": "No s'ha pogut sol·licitar el canvi de correu. Torna a provar-ho.",
+        "sameEmail": "El nou correu ha de ser diferent de l'actual.",
+        "invalidNewEmail": "El correu no és vàlid o ja està en ús."
       }
     },
     "success": {

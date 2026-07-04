@@ -169,6 +169,14 @@
       "passwordMatchError": "Las contraseñas no coinciden",
       "errorInvalidToken": "Token de restablecimiento de contraseña inválido"
     },
+    "confirmEmailChange": {
+      "title": "Confirmar el cambio de correo",
+      "description": "Introduce tu contraseña actual para confirmar el cambio de correo electrónico.",
+      "passwordLabel": "Contraseña actual",
+      "submitButton": "Confirmar el cambio",
+      "success": "Correo electrónico actualizado. Vuelve a iniciar sesión con el nuevo correo.",
+      "error": "No se ha podido confirmar el cambio. El enlace puede haber caducado o la contraseña es incorrecta."
+    },
     "error": {
       "login": "Revisa tus credenciales"
     }
@@ -744,6 +752,23 @@
         "delete": "Ha ocurrido un error al eliminar la dirección",
         "create": "Ha ocurrido un error al crear la dirección",
         "update": "Ha ocurrido un error al actualizar la dirección"
+      }
+    },
+    "accessSecurity": {
+      "title": "Acceso y seguridad",
+      "description": "Gestiona el correo electrónico de acceso a tu cuenta.",
+      "email": {
+        "label": "Nuevo correo electrónico",
+        "currentLabel": "Correo actual"
+      },
+      "submitButton": "Cambiar el correo",
+      "success": {
+        "requested": "Te hemos enviado un enlace de verificación al nuevo correo electrónico."
+      },
+      "error": {
+        "requested": "No se ha podido solicitar el cambio de correo. Inténtalo de nuevo.",
+        "sameEmail": "El nuevo correo debe ser diferente del actual.",
+        "invalidNewEmail": "El correo no es válido o ya está en uso."
       }
     },
     "success": {

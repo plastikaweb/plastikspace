@@ -24,5 +24,10 @@
     "src/**/*.spec.jsx",
     "src/test-setup.ts",
     "src/test-setup.ts"
+  ],
+  "references": [
+    {
+      "path": "../../../core/entities/tsconfig.lib.json"
+    }
   ]
 }

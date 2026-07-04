@@ -1,0 +1,13 @@
+<eco-store-auth-container [isLoading]="facade.isLoading?.() ?? false">
+  <span title>{{ 'auth.confirmEmailChange.title' | translate }}</span>
+  <div content>
+    <p class="text-on-surface/80 text-md mb-4">
+      {{ 'auth.confirmEmailChange.description' | translate }}
+    </p>
+    <plastik-shared-form-feature
+      [fields]="facade.formConfig.getConfig()"
+      [submitConfig]="facade.formConfig.getSubmitFormConfig?.() ?? null"
+      (changeEvent)="facade.onSubmit($event)">
+    </plastik-shared-form-feature>
+  </div>
+</eco-store-auth-container>

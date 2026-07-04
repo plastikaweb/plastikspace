@@ -6,7 +6,12 @@ import {
 } from '@angular-architects/ngrx-toolkit';
 import { inject, isDevMode } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
-import { LoginData, RequestPasswordData, ResetPasswordData } from '@plastik/auth/entities';
+import {
+  ConfirmEmailChangeData,
+  LoginData,
+  RequestPasswordData,
+  ResetPasswordData,
+} from '@plastik/auth/entities';
 import {
   PocketBaseUser,
   PocketBaseUserAddress,
@@ -144,6 +149,44 @@ export const pocketBaseUserProfileStore = signalStore(
       }
     },
 
+    async requestEmailChange(newEmail: string): Promise<boolean> {
+      updateState(store, `[profile] request email change in process`, { isLoading: true });
+
+      try {
+        await store._authService.requestEmailChange(newEmail);
+        updateState(store, `[profile] request email change success`, { isLoading: false });
+        store._notificationService.create('profile.accessSecurity.success.requested', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] request email change failed ${error}`, { isLoading: false });
+        // PocketBase answers 400 validation_invalid_new_email both for malformed and
+        // already-registered addresses (it deliberately doesn't reveal which).
+        const isInvalidNewEmail =
+          (error as { status?: number; data?: { data?: { newEmail?: unknown } } }).status === 400 &&
+          !!(error as { data?: { data?: { newEmail?: unknown } } }).data?.data?.['newEmail'];
+        store._notificationService.create(
+          isInvalidNewEmail
+            ? 'profile.accessSecurity.error.invalidNewEmail'
+            : 'profile.accessSecurity.error.requested',
+          'ERROR'
+        );
+        return false;
+      }
+    },
+
+    async confirmEmailChange(data: ConfirmEmailChangeData): Promise<boolean> {
+      updateState(store, `[profile] confirm email change in process`, { isLoading: true });
+
+      try {
+        await store._authService.confirmEmailChange(data.token, data.password);
+        updateState(store, `[profile] confirm email change success`, { isLoading: false });
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] confirm email change failed ${error}`, { isLoading: false });
+        return false;
+      }
+    },
+
     async updateAvatar(file: File): Promise<boolean> {
       updateState(store, `[profile] update avatar in process`, { isLoading: true });
 
@@ -211,6 +254,23 @@ export const pocketBaseUserProfileStore = signalStore(
           isLoading: false,
         });
         store._notificationService.create('profile.error.update', 'ERROR');
+        return false;
+      }
+    },
+
+    async updateLanguage(language: string): Promise<boolean> {
+      const user = store.user();
+      if (!user?.id || user.language === language) return false;
+
+      try {
+        const updatedUser = await store._authService.updateLanguage(user.id, language);
+        // Silent sync: no toast and no isLoading — a language switch must not flash the UI.
+        updateState(store, `[profile] update language success`, {
+          user: updatedUser as PocketBaseUser,
+        });
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] update language failed ${error}`, {});
         return false;
       }
     },

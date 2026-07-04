@@ -15,6 +15,7 @@ export type PocketBaseUser = BasePocketBaseEntityWithTenantRef & {
   phone?: string;
   membershipStatus: PocketBaseMembershipStatus;
   trialEndsAt: Date | null;
+  language?: string;
 };
 
 export type PocketBaseUserAddress = Pick<

@@ -112,3 +112,6 @@ vitest.config.*.timestamp*
 .claude/settings.local.json
 .claude/worktrees/
 .claude/worktrees
+
+# macOS screenshots dropped in the repo root (pre-commit runs git add -A)
+Captura de pantalla*.png

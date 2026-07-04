@@ -784,6 +784,21 @@
         "presentable": false,
         "system": false,
         "type": "autodate"
+      },
+      {
+        "hidden": false,
+        "id": "select3571151285",
+        "maxSelect": 1,
+        "name": "language",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "select",
+        "values": [
+          "ca",
+          "es",
+          "en"
+        ]
       }
     ],
     "indexes": [

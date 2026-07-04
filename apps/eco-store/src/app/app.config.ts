@@ -85,7 +85,15 @@ export const appConfig: ApplicationConfig = {
     providePocketBaseWithTranslationsEnv(environment),
     provideHttpClient(withFetch()),
     provideNotificationConfig({ maxConcurrent: MAX_CONCURRENT_NOTIFICATIONS }),
-    provideHotToastConfig({ visibleToasts: MAX_CONCURRENT_NOTIFICATIONS, stacking: 'vertical' }),
+    // usePopover: false — the v6 native-popover container relies on a single showPopover()
+    // call in afterNextRender; when it doesn't land (zoneless + dynamic attach) the container
+    // stays display:none forever and every toast is invisible. The classic fixed overlay
+    // (z-index 9999) has no such dependency.
+    provideHotToastConfig({
+      visibleToasts: MAX_CONCURRENT_NOTIFICATIONS,
+      stacking: 'vertical',
+      usePopover: false,
+    }),
     { provide: POCKETBASE_INSTANCE, useFactory: pocketBaseFactory },
     provideTranslateService({
       loader: provideTranslateHttpLoader({
