@@ -40,20 +40,12 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
+    const config = extras?.();
+    const dateDigitsInfo = config?.dateDigitsInfo ?? 'shortDate';
+    const locale = config?.locale ?? this.#locale;
+    const timezone = config?.timezone ?? this.#timezone;
 
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-
-    return formatDate(value, format.dateDigitsInfo, format.locale, format.timezone) || '';
+    return formatDate(value, dateDigitsInfo, locale, timezone) || '';
   }
 
   /**
@@ -68,18 +60,11 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
+    const config = extras?.();
+    const locale = config?.locale ?? this.#locale;
+    const timezone = config?.timezone ?? this.#timezone;
 
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-    return formatDate(value, 'M/d/yy, HH:mm:ss', format.locale, format.timezone) || '';
+    return formatDate(value, 'M/d/yy, HH:mm:ss', locale, timezone) || '';
   }
 
   /**
@@ -93,22 +78,16 @@ export class SharedUtilFormattersService {
     value: Timestamp,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!value) {
+      return '-';
     }
 
-    return value
-      ? formatDate(value?.toDate(), format.dateDigitsInfo, format.locale, format.timezone)
-      : '-';
+    const config = extras?.();
+    const dateDigitsInfo = config?.dateDigitsInfo ?? 'shortDate';
+    const locale = config?.locale ?? this.#locale;
+    const timezone = config?.timezone ?? this.#timezone;
+
+    return formatDate(value.toDate(), dateDigitsInfo, locale, timezone);
   }
 
   /**
@@ -121,18 +100,11 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
+    const config = extras?.();
+    const numberDigitsInfo = config?.numberDigitsInfo ?? '1.2-2';
+    const locale = config?.locale ?? this.#locale;
 
-    return formatPercent(Number(value) / 100, format.locale, format.numberDigitsInfo) || '';
+    return formatPercent(Number(value) / 100, locale, numberDigitsInfo) || '';
   }
 
   /**
@@ -150,27 +122,13 @@ export class SharedUtilFormattersService {
       >
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      currency: '€',
-      currencyCode: 'EUR',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-    return (
-      formatCurrency(
-        value,
-        format.locale,
-        format.currency,
-        format.currencyCode,
-        format.numberDigitsInfo
-      ) || ''
-    );
+    const config = extras?.();
+    const numberDigitsInfo = config?.numberDigitsInfo ?? '1.2-2';
+    const locale = config?.locale ?? this.#locale;
+    const currency = config?.currency ?? '€';
+    const currencyCode = config?.currencyCode ?? 'EUR';
+
+    return formatCurrency(value, locale, currency, currencyCode, numberDigitsInfo) || '';
   }
 
   /**
@@ -184,17 +142,11 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
-    return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
+    const config = extras?.();
+    const numberDigitsInfo = config?.numberDigitsInfo ?? '1.2-2';
+    const locale = config?.locale ?? this.#locale;
+
+    return formatNumber(Number(value), locale, numberDigitsInfo) || '';
   }
 
   /**
@@ -214,20 +166,14 @@ export class SharedUtilFormattersService {
       Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      suffix: '',
-      prefix: '',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(item),
-      };
-    }
-    const formattedNumber = formatNumber(Number(value), format.locale, format.numberDigitsInfo);
-    return `${format.prefix || ''}${formattedNumber}${format.suffix || ''}`.trim();
+    const config = extras?.(item);
+    const numberDigitsInfo = config?.numberDigitsInfo ?? '1.2-2';
+    const locale = config?.locale ?? this.#locale;
+    const prefix = config?.prefix ?? '';
+    const suffix = config?.suffix ?? '';
+
+    const formattedNumber = formatNumber(Number(value), locale, numberDigitsInfo);
+    return `${prefix}${formattedNumber}${suffix}`.trim();
   }
 
   /**
@@ -250,18 +196,12 @@ export class SharedUtilFormattersService {
     value: boolean,
     extras?: () => FormattingExtras<'BOOLEAN_WITH_ICON'>
   ): SafeHtml {
-    let format = {
-      iconTrue: 'check',
-      iconFalse: 'close',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
-    }
+    const config = extras?.();
+    const iconTrue = config?.iconTrue ?? 'check';
+    const iconFalse = config?.iconFalse ?? 'close';
+
     return this.#sanitizer.bypassSecurityTrustHtml(
-      `<span class="material-icons">${escapeHtml(value ? format.iconTrue : format.iconFalse)}</span>`
+      `<span class="material-icons">${escapeHtml(value ? iconTrue : iconFalse)}</span>`
     );
   }
 

@@ -21,6 +21,7 @@ import { SharedUtilFormattersService } from './shared-util-formatters.service';
  */
 export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
   readonly #formatter = inject(SharedUtilFormattersService);
+  readonly #pathCache = new Map<string, string[]>();
 
   /**
    * @description Factory to get the correct formatted value from item property with a custom formatting option.
@@ -88,14 +89,32 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
 
   /**
    * Retrieves a value from an object based on a dot-separated property path.
+   * Optimized with a fast-path for non-nested properties and a `Map`-based cache
+   * for split path parts to avoid repeated array allocations and `reduce` calls.
    * @param {string} property - The dot-separated path to the property.
    * @param {T} item - The object to extract the value from.
    * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
    */
   #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
-    return property.split('.').reduce((accObject: unknown, currentProp: string) => {
-      const object = (accObject as T)[currentProp as keyof T];
-      return isNil(object) ? '' : (object as FormattingOutput);
-    }, item);
+    if (property.indexOf('.') === -1) {
+      const value = item[property as keyof T];
+      return isNil(value) ? '' : (value as unknown as FormattingOutput);
+    }
+
+    let path = this.#pathCache.get(property);
+    if (!path) {
+      path = property.split('.');
+      this.#pathCache.set(property, path);
+    }
+
+    let result: unknown = item;
+    for (let i = 0; i < path.length; i++) {
+      if (isNil(result)) {
+        return '';
+      }
+      result = (result as Record<string, unknown>)[path[i]];
+    }
+
+    return isNil(result) ? '' : (result as FormattingOutput);
   }
 }
