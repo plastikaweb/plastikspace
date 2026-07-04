@@ -10,6 +10,7 @@ import { confirmEmailChangeFormConfig } from './confirm-email-change-form.config
 
 describe('EcoStoreAuthConfirmEmailChangeFacadeService', () => {
   const confirmEmailChange = vi.fn();
+  const logout = vi.fn();
   const navigate = vi.fn();
   const create = vi.fn();
 
@@ -36,7 +37,7 @@ describe('EcoStoreAuthConfirmEmailChangeFacadeService', () => {
         { provide: StoreNotificationService, useValue: { create } },
         {
           provide: pocketBaseUserProfileStore,
-          useValue: { isLoading: signal(false), confirmEmailChange },
+          useValue: { isLoading: signal(false), confirmEmailChange, logout },
         },
       ],
     });
@@ -48,6 +49,7 @@ describe('EcoStoreAuthConfirmEmailChangeFacadeService', () => {
     const facade = setup('abc');
     await facade.onSubmit({ password: 'pw' });
     expect(confirmEmailChange).toHaveBeenCalledWith({ token: 'abc', password: 'pw' });
+    expect(logout).toHaveBeenCalled();
     expect(create).toHaveBeenCalledWith('auth.confirmEmailChange.success', 'SUCCESS');
     expect(navigate).toHaveBeenCalledWith(['/accedir']);
   });
@@ -56,6 +58,7 @@ describe('EcoStoreAuthConfirmEmailChangeFacadeService', () => {
     confirmEmailChange.mockResolvedValueOnce(false);
     const facade = setup('abc');
     await facade.onSubmit({ password: 'pw' });
+    expect(logout).not.toHaveBeenCalled();
     expect(create).toHaveBeenCalledWith('auth.confirmEmailChange.error', 'ERROR');
     expect(navigate).not.toHaveBeenCalledWith(['/accedir']);
   });

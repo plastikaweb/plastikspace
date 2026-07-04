@@ -33,6 +33,9 @@ export class EcoStoreAuthConfirmEmailChangeFacadeService implements AuthFormFaca
         password: data.password,
       });
       if (success) {
+        // The email change invalidates the current session token — clear it before
+        // sending the user to log in again with the new address.
+        this.#profileStore.logout();
         this.#notificationService.create('auth.confirmEmailChange.success', 'SUCCESS');
         this.#router.navigate(['/accedir']);
       } else {
