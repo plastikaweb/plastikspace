@@ -123,7 +123,13 @@ Server-side logic is implemented as standard PocketBase JavaScript hooks.
 ### Hooks
 
 - **[on_create_order.pb.js](./pocketbase/pb_hooks/on_create_order.pb.js)**: Handles order cycle linking, duplicate prevention, cart cleanup, and confirmation emails.
+- **[on_password_reset.pb.js](./pocketbase/pb_hooks/on_password_reset.pb.js)**: Localized password-reset email (overrides the native mailer).
 - **[single_default_address.js](./pocketbase/pb_hooks/single_default_address.js)**: Ensures unique default user addresses.
+
+> [!NOTE]
+> Hooks build email **content**; the SMTP **transport** is configured separately in `Settings → Mail`.
+> That transport is Mailtrap — **Email Sandbox** in local dev (captured), **Email Sending** in staging (real delivery via verified `plastikaweb.com`).
+> See **[MAILTRAP.md](./MAILTRAP.md)** for the full email + SMTP setup.
 
 ### Cron Jobs
 

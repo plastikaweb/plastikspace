@@ -27,6 +27,7 @@ When working here, these are authoritative — consult them before assuming:
 | **TASKS**                   | `apps/eco-store/TASKS.md`                                                                                           | Live backlog with verified status per PRD ID              |
 | **BACKLOG**                 | `apps/eco-store/BACKLOG.md`                                                                                         | Phased / dependency-aware sprint plan with time estimates |
 | **PocketBase workflow**     | `apps/eco-store/POCKETBASE.md`                                                                                      | Schema management, hooks, cron, scripts                   |
+| **Email / SMTP (Mailtrap)** | `apps/eco-store/MAILTRAP.md`                                                                                        | Transactional email + Mailtrap SMTP config (dev/staging)  |
 | **Loading strategies**      | `apps/eco-store/LOADING_STRATEGIES.md`                                                                              | Activity & loading patterns                               |
 | **SSR**                     | `apps/eco-store/SSR.md`                                                                                             | Server-side rendering config                              |
 | **Accessibility statement** | Published Feb 22, 2025 — WCAG 2.1 AA fully conformant                                                               |
