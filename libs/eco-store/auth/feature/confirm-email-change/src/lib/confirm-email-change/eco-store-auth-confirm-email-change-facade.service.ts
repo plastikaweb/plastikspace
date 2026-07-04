@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthFormFacade, ConfirmEmailChangeData } from '@plastik/auth/entities';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { FORM_TOKEN, FormConfig } from '@plastik/core/entities';
+import { activityStore } from '@plastik/shared/activity/data-access';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 
 /**
@@ -16,10 +17,16 @@ export class EcoStoreAuthConfirmEmailChangeFacadeService implements AuthFormFaca
   readonly #router = inject(Router);
   readonly #profileStore = inject(pocketBaseUserProfileStore);
   readonly #notificationService = inject(StoreNotificationService);
+  readonly #activityStore = inject(activityStore);
 
   readonly token = computed(() => new URL(window.location.href).searchParams.get('token') || '');
   readonly isLoading = this.#profileStore.isLoading;
   readonly formConfig = inject(FORM_TOKEN) as FormConfig<Pick<ConfirmEmailChangeData, 'password'>>;
+
+  constructor() {
+    // Clears the app-initializer activity overlay, mirroring the reset-password facade.
+    this.#activityStore.setActivity(this.isLoading(), 'auth.confirmEmailChange.loading');
+  }
 
   /**
    * @description Submits the confirmation: confirm email change, then re-login on success.
