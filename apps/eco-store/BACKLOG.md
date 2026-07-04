@@ -5,7 +5,7 @@
 >
 > Companion to `TASKS.md` and PRD v1.8.
 
-**Document version:** 0.32 · **Last updated:** 2026-07-04
+**Document version:** 0.33 · **Last updated:** 2026-07-04
 
 ---
 
@@ -32,7 +32,7 @@
 | 0.1 | **BUG-005** Profile routes auth guard ✅                            | **Urgent** | 0.5d  | —          | Done 2026-05-23 (PR #1080) — shared `ecoStoreAuthGuard` on `/perfil` (also `/comandes`); redirect to `/accedir`, preserves `returnUrl`. CU `86c9uq8jq`                                                                                                       |
 | 0.2 | **META-01** Delete obsolete PRD ✅                                  | MUST       | 0.25d | —          | Done 2026-05-23 — `eco-store-req.md` removed; stale refs in cspell/markdownlint/CLAUDE.md/TASKS.md cleaned up                                                                                                                                                |
 | 0.3 | **META-02** Remove `NOT_REGISTERED` enum ✅                         | MUST       | 0.25d | —          | Done 2026-05-30 — removed on local PB; `pb_schema.json` now 4 values; verified 0 staging records held it; staging syncs on merge. CU `86c9uq8k3`                                                                                                             |
-| 0.4 | **BUG-001** Verify cart merge                                       | MUST       | 0.5d  | —          | 5 manual test cases from TASKS.md                                                                                                                                                                                                                            |
+| 0.4 | **BUG-001** Verify cart merge ✅                                    | MUST       | 0.5d  | —          | Done 2026-07-04 — 5/5 manual test cases from TASKS.md pass on local (anonymous merge, qty sum, stale-price dialog, logout/login clean, tenant-scoped storage key)                                                                                            |
 | 0.5 | **BUG-002** Deep-link `/cistella/resum` redirect ✅                 | MUST       | 0.5d  | —          | Done 2026-05-29 — empty-cart guard no-ops during SSR (`isPlatformBrowser`); deep-links keep items. CU `86c9uq8kb`                                                                                                                                            |
 | 0.6 | **BUG-003** PWA manifest tenant name ✅                             | MUST       | 0.5d  | —          | Done 2026-06-06 — Android via decoupled name patch; iOS follow-up: per-tenant manifest + `apple-mobile-web-app-title` served by the SSR worker (`run_worker_first` + `HTMLRewriter`), client blob swap retired. CU `86c9uq8kj` (doc'd `86c9dn9m0` was stale) |
 | 0.7 | **A11Y-001** + **A11Y-002** Audit phase                             | MUST       | 1d    | —          | Catalog 200% zoom breakdowns + mobile tenant button; fixes go to Phase 7                                                                                                                                                                                     |

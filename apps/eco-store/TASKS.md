@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.32 · **Last updated:** 2026-07-04
+**Document version:** 0.33 · **Last updated:** 2026-07-04
 
 ---
 
@@ -46,7 +46,7 @@
 
 | Task        | Module | Priority | Status | One-line summary                                                             |
 | ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------------- |
-| **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass         |
+| **BUG-001** | BOT-05 | MUST     | ✅     | Cart merge on login verified — 5/5 manual tests pass (2026-07-04)            |
 | **BUG-003** | BOT    | MUST     | ✅     | PWA manifest doesn't use tenant name as default app name                     |
 | **BUG-006** | NOT    | MUST     | ✅     | All hot-toasts invisible — v6 popover container never shown (CU `86cajqnp1`) |
 | **PRV-02b** | PRV    | MUST     | ✅     | Email change with async verification (CU `86c9uq8mt`)                        |
@@ -129,22 +129,22 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 
 | ID          | Title                                              | Priority   | Status | ClickUp     | Notes                                                                                                                                                                                         |
 | ----------- | -------------------------------------------------- | ---------- | ------ | ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **BUG-001** | Cart merge on login (BOT-05) — verification        | MUST       | ❓     | —           | Code complete; run 5 manual tests                                                                                                                                                             |
+| **BUG-001** | Cart merge on login (BOT-05) — verification        | MUST       | ✅     | —           | Verified 2026-07-04 — 5/5 manual tests pass on local (anonymous merge, qty sum 2+1→3, stale-price dialog + badge, logout/login clean, `el-llevat-cart-v1` storage key)                        |
 | **BUG-002** | Deep-link `/cistella/resum` redirects to `/botiga` | MUST       | ✅     | `86c9uq8kb` | Fixed — empty-cart guard no-ops during SSR; deep-links keep cart items                                                                                                                        |
 | **BUG-003** | PWA manifest doesn't use tenant name as default    | MUST       | ✅     | `86c9uq8kj` | Fixed — Android via decoupled name patch; iOS via per-tenant manifest + `apple-mobile-web-app-title` served by the SSR worker (`run_worker_first` + `HTMLRewriter`), client blob swap retired |
 | **BUG-004** | Rationalize cart toasts on add/change/remove qty   | SHOULD     | ✅     | `86c9uq92h` | Done 2026-06-24 — debounce removed; cart shares `cart:<id>` groupKey via TECH-10 (add/update/remove collapse to one toast). i18n `cart.productUpdated` added                                  |
 | **BUG-005** | Profile routes accessible without login            | **Urgent** | ✅     | `86c9uq8jq` | Shared `ecoStoreAuthGuard` on `/perfil` (also reused for `/comandes`); preserves `returnUrl`                                                                                                  |
 | **BUG-006** | All hot-toasts invisible (popover container)       | MUST       | ✅     | `86cajqnp1` | Fixed 2026-07-04 — hot-toast v6 mounts as native `popover="manual"` and its single `showPopover()` (afterNextRender) never lands under zoneless CD; `usePopover: false` in eco-store config   |
 
-### BUG-001 — Cart merge on login (BOT-05) [❓ Verify]
+### BUG-001 — Cart merge on login (BOT-05) [✅ Verified 2026-07-04]
 
-Manual test checklist:
+Manual test checklist (run on local, `el-llevat.test` tenant, throwaway user):
 
-- [ ] Anonymous adds 2 products → login → both appear in `/cistella` and PocketBase
-- [ ] Anonymous A x2 → login (user has A x1) → final quantity is 3
-- [ ] Stale price → login → dialog appears + price updated
-- [ ] Add → logout → login → clean state, no doubling
-- [ ] Storage key uses `${tenant.normalizedName}-cart-v1` format
+- [x] Anonymous adds 2 products → login → both appear in `/cistella` and PocketBase
+- [x] Anonymous A x2 → login (user has A x1) → final quantity is 3 (single line, no dup)
+- [x] Stale price → login → "Avís de canvi de preu" dialog + cart banner + "Pujada de preu" badge with previous price; totals recomputed
+- [x] Add → logout → login → clean state, no doubling
+- [x] Storage key uses `${tenant.normalizedName}-cart-v1` format (`el-llevat-cart-v1`); cleared after merge and on logout
 
 ---
 
@@ -172,7 +172,7 @@ ClickUp: `86c8cjgkp` is the parent epic.
 
 ### Done ✅
 
-BOT-01, BOT-02a, BOT-02d, BOT-03, BOT-04, BOT-05 (pending BUG-001 verify), BOT-06a/b/c, BOT-09, BOT-10, BOT-11, BOT-12, BOT-14, BOT-15.
+BOT-01, BOT-02a, BOT-02d, BOT-03, BOT-04, BOT-05, BOT-06a/b/c, BOT-09, BOT-10, BOT-11, BOT-12, BOT-14, BOT-15.
 
 ### Pending 📋
 
@@ -550,4 +550,3 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 4. Resolve Q-08 (PDF export approach) before EST-04
 5. Resolve Q-10 (cookie consent) before LGL-02
 6. Decide post-META-01 location for v1.8 PRD (in-repo vs external)
-7. Verify BUG-001 cart merge with the 5 manual test cases
