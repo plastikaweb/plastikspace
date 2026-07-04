@@ -1,0 +1,14 @@
+<section class="flex flex-col gap-6">
+  <p class="text-on-surface/80 text-md">{{ 'profile.accessSecurity.description' | translate }}</p>
+
+  <p class="text-on-surface text-sm">
+    {{ 'profile.accessSecurity.email.currentLabel' | translate }}:
+    <strong>{{ currentEmail() }}</strong>
+  </p>
+
+  <plastik-shared-form-feature
+    [fields]="formConfig().getConfig()"
+    [submitConfig]="formConfig().getSubmitFormConfig?.() || {}"
+    (changeEvent)="onSubmit($event)">
+  </plastik-shared-form-feature>
+</section>

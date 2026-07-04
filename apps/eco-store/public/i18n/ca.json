@@ -754,6 +754,23 @@
         "update": "S'ha produït un error al actualitzar l'adreça"
       }
     },
+    "accessSecurity": {
+      "title": "Accés i seguretat",
+      "description": "Gestiona el correu electrònic d'accés al teu compte.",
+      "email": {
+        "label": "Nou correu electrònic",
+        "currentLabel": "Correu actual"
+      },
+      "submitButton": "Canviar el correu",
+      "success": {
+        "requested": "T'hem enviat un enllaç de verificació al nou correu electrònic."
+      },
+      "error": {
+        "requested": "No s'ha pogut sol·licitar el canvi de correu. Torna a provar-ho.",
+        "sameEmail": "El nou correu ha de ser diferent de l'actual.",
+        "invalidEmail": "Introdueix un correu electrònic vàlid."
+      }
+    },
     "success": {
       "update": "Perfil actualitzat correctament"
     },

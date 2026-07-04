@@ -1,7 +1,7 @@
 @let isActive = activityStore.isActive();
 
-@if (isActive) {
-  @defer (prefetch on idle) {
+@defer (when isActive; prefetch on idle) {
+  @if (isActive) {
     <plastik-shared-activity-ui-overlay
       class="bg-surface-container/20 fixed z-9999 shadow-sm/50 backdrop-blur-[2px]"
       animate.enter="fade-in"

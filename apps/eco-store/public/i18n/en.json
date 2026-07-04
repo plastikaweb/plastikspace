@@ -754,6 +754,23 @@
         "update": "An error occurred while updating the address"
       }
     },
+    "accessSecurity": {
+      "title": "Access and security",
+      "description": "Manage the email address used to access your account.",
+      "email": {
+        "label": "New email address",
+        "currentLabel": "Current email"
+      },
+      "submitButton": "Change email",
+      "success": {
+        "requested": "We've sent a verification link to the new email address."
+      },
+      "error": {
+        "requested": "Could not request the email change. Please try again.",
+        "sameEmail": "The new email must be different from the current one.",
+        "invalidEmail": "Enter a valid email address."
+      }
+    },
     "success": {
       "update": "Profile successfully updated"
     },

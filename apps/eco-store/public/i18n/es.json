@@ -754,6 +754,23 @@
         "update": "Ha ocurrido un error al actualizar la dirección"
       }
     },
+    "accessSecurity": {
+      "title": "Acceso y seguridad",
+      "description": "Gestiona el correo electrónico de acceso a tu cuenta.",
+      "email": {
+        "label": "Nuevo correo electrónico",
+        "currentLabel": "Correo actual"
+      },
+      "submitButton": "Cambiar el correo",
+      "success": {
+        "requested": "Te hemos enviado un enlace de verificación al nuevo correo electrónico."
+      },
+      "error": {
+        "requested": "No se ha podido solicitar el cambio de correo. Inténtalo de nuevo.",
+        "sameEmail": "El nuevo correo debe ser diferente del actual.",
+        "invalidEmail": "Introduce un correo electrónico válido."
+      }
+    },
     "success": {
       "update": "Perfil actualizado correctamente"
     },

@@ -155,9 +155,11 @@ export const pocketBaseUserProfileStore = signalStore(
       try {
         await store._authService.requestEmailChange(newEmail);
         updateState(store, `[profile] request email change success`, { isLoading: false });
+        store._notificationService.create('profile.accessSecurity.success.requested', 'SUCCESS');
         return true;
       } catch (error) {
         updateState(store, `[profile] request email change failed ${error}`, { isLoading: false });
+        store._notificationService.create('profile.accessSecurity.error.requested', 'ERROR');
         return false;
       }
     },
