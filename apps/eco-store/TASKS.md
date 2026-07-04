@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.30 · **Last updated:** 2026-07-04
+**Document version:** 0.31 · **Last updated:** 2026-07-04
 
 ---
 
@@ -44,20 +44,21 @@
 
 ## 🎯 Current focus
 
-| Task        | Module | Priority | Status | One-line summary                                                       |
-| ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------- |
-| **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass   |
-| **BUG-003** | BOT    | MUST     | ✅     | PWA manifest doesn't use tenant name as default app name               |
-| **PRV-02b** | PRV    | MUST     | ✅     | Email change with async verification (CU `86c9uq8mt`)                  |
-| **PRV-02c** | PRV    | MUST     | 🔄     | In-session password change (CU `86c92g60y`)                            |
-| **PRV-04d** | PRV    | MUST     | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)    |
-| **PRV-08**  | PRV    | MUST     | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`) |
-| **PRV-09**  | PRV    | SHOULD   | 🔄     | Notification preferences panel (CU `86c92g7fb`)                        |
-| **TRL-03**  | TRL    | MUST     | 📋     | Trial → member conversion CTA                                          |
-| **BOT-02b** | BOT    | MUST     | 📋     | Text search input above product grid                                   |
-| **BOT-02c** | BOT    | MUST     | 📋     | Tag filter chips above product grid                                    |
-| **BOT-08**  | BOT    | MUST     | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                      |
-| **VAL-01**  | VAL    | SHOULD   | 🔄     | Publish review form on product detail                                  |
+| Task        | Module | Priority | Status | One-line summary                                                             |
+| ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------------- |
+| **BUG-001** | BOT-05 | MUST     | ❓     | Verify cart merge regression — code complete, needs manual test pass         |
+| **BUG-003** | BOT    | MUST     | ✅     | PWA manifest doesn't use tenant name as default app name                     |
+| **BUG-006** | NOT    | MUST     | ✅     | All hot-toasts invisible — v6 popover container never shown (CU `86cajqnp1`) |
+| **PRV-02b** | PRV    | MUST     | ✅     | Email change with async verification (CU `86c9uq8mt`)                        |
+| **PRV-02c** | PRV    | MUST     | 🔄     | In-session password change (CU `86c92g60y`)                                  |
+| **PRV-04d** | PRV    | MUST     | 📋     | Billing address typology + NIF on `user_addresses` (CU `86c99dev0`)          |
+| **PRV-08**  | PRV    | MUST     | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`)       |
+| **PRV-09**  | PRV    | SHOULD   | 🔄     | Notification preferences panel (CU `86c92g7fb`)                              |
+| **TRL-03**  | TRL    | MUST     | 📋     | Trial → member conversion CTA                                                |
+| **BOT-02b** | BOT    | MUST     | 📋     | Text search input above product grid                                         |
+| **BOT-02c** | BOT    | MUST     | 📋     | Tag filter chips above product grid                                          |
+| **BOT-08**  | BOT    | MUST     | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                            |
+| **VAL-01**  | VAL    | SHOULD   | 🔄     | Publish review form on product detail                                        |
 
 See **`BACKLOG.md`** for the phased plan.
 
@@ -133,6 +134,7 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 | **BUG-003** | PWA manifest doesn't use tenant name as default    | MUST       | ✅     | `86c9uq8kj` | Fixed — Android via decoupled name patch; iOS via per-tenant manifest + `apple-mobile-web-app-title` served by the SSR worker (`run_worker_first` + `HTMLRewriter`), client blob swap retired |
 | **BUG-004** | Rationalize cart toasts on add/change/remove qty   | SHOULD     | ✅     | `86c9uq92h` | Done 2026-06-24 — debounce removed; cart shares `cart:<id>` groupKey via TECH-10 (add/update/remove collapse to one toast). i18n `cart.productUpdated` added                                  |
 | **BUG-005** | Profile routes accessible without login            | **Urgent** | ✅     | `86c9uq8jq` | Shared `ecoStoreAuthGuard` on `/perfil` (also reused for `/comandes`); preserves `returnUrl`                                                                                                  |
+| **BUG-006** | All hot-toasts invisible (popover container)       | MUST       | ✅     | `86cajqnp1` | Fixed 2026-07-04 — hot-toast v6 mounts as native `popover="manual"` and its single `showPopover()` (afterNextRender) never lands under zoneless CD; `usePopover: false` in eco-store config   |
 
 ### BUG-001 — Cart merge on login (BOT-05) [❓ Verify]
 
@@ -499,6 +501,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | ------- | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.31    | 2026-07-04 | **BUG-006 filed + fixed** — every eco-store hot-toast had been invisible since the hot-toast migration (BUG-004/TECH-10): `@ngxpert/hot-toast@6` mounts its container as a native `popover="manual"` (browser-hidden until `showPopover()`) and its single `afterNextRender` show call never lands under zoneless CD. Fixed with `usePopover: false` in `app.config.ts` (classic fixed overlay path). Surfaced verifying PRV-02b; jsdom tests never caught it because the Popover API doesn't exist there. Shipped in the PRV-02b branch. CU `86cajqnp1`.                                                                                                                                                                                                                                                                                                                                                                                                                                             |
 | 0.30    | 2026-07-04 | **PRV-02b done** — email change with async verification. New `/perfil/access-i-seguretat` section (`libs/eco-store/profile/access-security`) with inline request form (same-as-current blocked, translated Formly validation messages), public `/confirmar-correu` confirmation page (`libs/eco-store/auth/feature/confirm-email-change`), `requestEmailChange`/`confirmEmailChange` on `PocketBaseAuthService` + `pocketBaseUserProfileStore` with success/error toasts (PocketBase 400 invalid-new-email gets its own message). Confirmation email via new `on_email_change.pb.js` hook: branded, per-tenant link, localized through new optional `users.language` field synced from `eco-lang` on login + language switch (also localizes password-reset); both auth mail hooks now sign with the tenant name. Mailtrap SMTP documented in `MAILTRAP.md`. Corrected ClickUp id drift `86c92g6ek` → `86c9uq8mt` (wider `PRV-02*` id drift left for a `/sync-eco-store-tasks` pass). CU `86c9uq8mt`. |
 | 0.29    | 2026-06-27 | **TECH-11 done** (task 7.32) — `libs/shared/util/objects`: `deepClone` swaps `obj.map()`/`Object.keys().forEach()` for an indexed `for` loop + `for…in` guarded by `hasOwnProperty`, dropping the key-array alloc + per-item closure (and the redundant trailing `typeof === 'object'` guard, unreachable behind the top non-object guard); `escapeHtml` hoists its map+regex to module scope and adds a non-global `RegExp.test()` fast-path returning input unchanged when nothing to escape. Behaviour-identical — deviated from the Jules draft by **not** adding its `typeof text !== 'string'` guard (would swallow non-string as `''`, a behaviour change). Added `deepClone` specs incl. own-vs-inherited keys (41 → 47). PR #1202 supersedes Jules #1183. Closes the round-6 cleanup. CU `86cadtm4h`.                                                                                                                                                                                        |
 | 0.28    | 2026-06-27 | **TECH-12 filed** (task 7.35) — pre-commit hook latency. New tracked task to (1) lint only directly-changed project(s) at pre-commit instead of the full `nx affected` (~40 projects on a `shared/util/formatters` one-liner) and (2) gate the unconditional PocketBase boot + `pb:export` behind a real eco-store change. Surfaced while shipping TECH-07/A11Y-010/A11Y-011 (a 1-field shared-util change took minutes). Spec adversarially verified: pre-push already runs the full affected lint+test+build gate (so scoping pre-commit loses no coverage), CI excludes `llecoop-firebase` (don't trim pre-push), and the `pb:export` gate needs a `pb_schema.json`-dirty escape hatch since nothing else re-exports. CU `86caf7c8y`.                                                                                                                                                                                                                                                              |
