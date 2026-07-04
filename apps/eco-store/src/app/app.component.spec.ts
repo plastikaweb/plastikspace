@@ -1,10 +1,8 @@
 import { DOCUMENT } from '@angular/common';
-import { signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatIconRegistry } from '@angular/material/icon';
 import { provideRouter } from '@angular/router';
 import { provideTranslateService } from '@ngx-translate/core';
-import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
 import { POCKETBASE_WITH_TRANSLATION_ENVIRONMENT } from '@plastik/core/environments';
 import { provideEnvironmentPocketBaseTranslationMock } from '@plastik/core/environments/testing';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
@@ -25,14 +23,6 @@ describe('AppComponent', () => {
         provideRouter([]),
         provideTranslateService(),
         { provide: ecoStoreTenantStore, useValue: mockEcoStoreTenantStore },
-        {
-          provide: pocketBaseUserProfileStore,
-          useValue: {
-            isAuthenticated: signal(false),
-            user: signal(null),
-            updateLanguage: vi.fn(),
-          },
-        },
       ],
     }).compileComponents();
   });

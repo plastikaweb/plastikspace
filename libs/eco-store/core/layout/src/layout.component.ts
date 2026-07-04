@@ -34,6 +34,7 @@ import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access
 import { LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { activityStore } from '@plastik/shared/activity/data-access';
+import { LanguageSwitcherService } from '@plastik/shared/translation';
 import { appSearchFormConfig } from './app.search-form.config';
 
 @Component({
@@ -72,6 +73,7 @@ export default class EcoLayoutComponent {
     initialValue: null,
   });
   readonly #activatedRoute = inject(ActivatedRoute);
+  readonly #languageSwitcherService = inject(LanguageSwitcherService);
 
   readonly #router = inject(Router);
 
@@ -100,6 +102,19 @@ export default class EcoLayoutComponent {
       }
     });
     this.activityStore.setActivity(false);
+
+    // Keep users.language in sync with the eco-lang preference so PocketBase mail hooks
+    // (password reset, email change) can localize their emails. Reacting to both the
+    // language signal and the auth state covers the switcher AND the post-login reconcile;
+    // updateLanguage no-ops when values already match. Lives here (not AppComponent) so
+    // the PocketBase auth store stays out of the initial bundle — this lazy chunk already
+    // carries it through the header.
+    effect(() => {
+      const language = this.#languageSwitcherService.currentLanguage();
+      if (language && this.profileStore.isAuthenticated()) {
+        this.profileStore.updateLanguage(language);
+      }
+    });
   }
 
   #getSidenavDataFromActiveRoute(): boolean {
