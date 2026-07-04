@@ -21,7 +21,6 @@ import { SharedUtilFormattersService } from './shared-util-formatters.service';
  */
 export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseEntity> {
   readonly #formatter = inject(SharedUtilFormattersService);
-  readonly #pathCache = new Map<string, string[]>();
 
   /**
    * @description Factory to get the correct formatted value from item property with a custom formatting option.
@@ -94,36 +93,9 @@ export class DataFormatFactoryService<T extends FormattingInput<keyof T> & BaseE
    * @returns {FormattingOutput} The value at the specified path, or an empty string if not found.
    */
   #getValueFromRow(property: string, item: T extends BaseEntity ? T : never): FormattingOutput {
-    /**
-     * PERFORMANCE OPTIMIZATION: Shallow key fast-path.
-     * Direct property access avoids .split('.') and .reduce() overhead.
-     * Measured improvement: ~4x faster for shallow keys.
-     */
-    if (property.indexOf('.') === -1) {
-      const value = (item as Record<string, unknown>)[property];
-      return isNil(value) ? '' : (value as FormattingOutput);
-    }
-
-    /**
-     * PERFORMANCE OPTIMIZATION: Path caching and iterative resolution.
-     * Caches the split path to avoid repeated string splitting.
-     * Uses a manual for-loop instead of .reduce() to avoid closure overhead.
-     * Measured improvement: ~2x faster for deep keys (3+ levels).
-     */
-    let path = this.#pathCache.get(property);
-    if (!path) {
-      path = property.split('.');
-      this.#pathCache.set(property, path);
-    }
-
-    let current: unknown = item;
-    for (let i = 0; i < path.length; i++) {
-      current = (current as Record<string, unknown>)[path[i]];
-      if (isNil(current)) {
-        return '';
-      }
-    }
-
-    return current as FormattingOutput;
+    return property.split('.').reduce((accObject: unknown, currentProp: string) => {
+      const object = (accObject as T)[currentProp as keyof T];
+      return isNil(object) ? '' : (object as FormattingOutput);
+    }, item);
   }
 }
