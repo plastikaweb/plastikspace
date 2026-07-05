@@ -5,7 +5,7 @@
     [disabled]="buttonConfig().disabled || isLoading()"
     [attr.aria-label]="
       isLoading()
-        ? (('common.loading' | translate) + ' ' + buttonConfig().ariaLabel)
+        ? ('common.loading' | translate) + ' ' + buttonConfig().ariaLabel
         : buttonConfig().ariaLabel
     "
     [matTooltip]="buttonConfig().tooltip || buttonConfig().ariaLabel"
@@ -29,7 +29,7 @@
     [attr.aria-disabled]="isLoading()"
     [attr.aria-label]="
       isLoading()
-        ? (('common.loading' | translate) + ' ' + buttonConfig().ariaLabel)
+        ? ('common.loading' | translate) + ' ' + buttonConfig().ariaLabel
         : buttonConfig().ariaLabel
     "
     [matTooltip]="buttonConfig().tooltip || buttonConfig().ariaLabel"

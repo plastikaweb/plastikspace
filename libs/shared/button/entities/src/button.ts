@@ -12,8 +12,8 @@ interface ButtonBaseConfig {
   dataTestId?: string;
   disabled?: boolean | Observable<boolean>;
   link?: string;
-  doAction?(): Action;
   loading?: boolean | Signal<boolean>;
+  doAction?(): Action;
 }
 
 export type ButtonConfigWithAction = Omit<ButtonBaseConfig, 'link'> & {
