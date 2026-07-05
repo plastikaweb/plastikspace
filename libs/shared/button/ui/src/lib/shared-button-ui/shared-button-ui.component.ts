@@ -1,21 +1,11 @@
 import { NgTemplateOutlet } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  input,
-  isSignal,
-  output,
-  Signal,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { PushPipe } from '@ngrx/component';
 import { Action } from '@ngrx/store';
 import { ButtonConfig, ButtonConfigWithAction, buttonHasALinkGuard } from '@plastik/shared/button';
 import { ReturnAsObservablePipe } from '@plastik/shared/return-as-observable';
-import { TranslatePipe } from '@ngx-translate/core';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 @Component({
@@ -24,11 +14,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     NgTemplateOutlet,
     PushPipe,
     MatButtonModule,
-    MatProgressSpinnerModule,
     MatTooltipModule,
     AngularSvgIconModule,
     ReturnAsObservablePipe,
-    TranslatePipe,
   ],
   templateUrl: './shared-button-ui.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -46,14 +34,6 @@ export class SharedButtonUiComponent {
   linkHref = computed(() => {
     const cfg = this.buttonConfig();
     return buttonHasALinkGuard(cfg) ? cfg.link : undefined;
-  });
-
-  /**
-   * @description Computed signal that returns true if the button is in loading state
-   */
-  isLoading = computed(() => {
-    const loading = this.buttonConfig().loading;
-    return isSignal(loading) ? (loading as Signal<boolean>)() : !!loading;
   });
 
   /**

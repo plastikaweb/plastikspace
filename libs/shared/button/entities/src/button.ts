@@ -1,4 +1,3 @@
-import { Signal } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { SvgIconConfig } from '@plastik/shared/entities';
 import { Observable } from 'rxjs';
@@ -12,7 +11,6 @@ interface ButtonBaseConfig {
   dataTestId?: string;
   disabled?: boolean | Observable<boolean>;
   link?: string;
-  loading?: boolean | Signal<boolean>;
   doAction?(): Action;
 }
 
