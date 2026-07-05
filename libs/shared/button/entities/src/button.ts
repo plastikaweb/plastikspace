@@ -1,3 +1,4 @@
+import { Signal } from '@angular/core';
 import { Action } from '@ngrx/store';
 import { SvgIconConfig } from '@plastik/shared/entities';
 import { Observable } from 'rxjs';
@@ -12,6 +13,7 @@ interface ButtonBaseConfig {
   disabled?: boolean | Observable<boolean>;
   link?: string;
   doAction?(): Action;
+  loading?: boolean | Signal<boolean>;
 }
 
 export type ButtonConfigWithAction = Omit<ButtonBaseConfig, 'link'> & {

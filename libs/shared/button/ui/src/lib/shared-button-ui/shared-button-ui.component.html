@@ -2,12 +2,20 @@
   <button
     matButton
     [class]="`button--rounded ${buttonConfig().classes || ''}`"
-    [disabled]="buttonConfig().disabled"
-    [attr.aria-label]="buttonConfig().ariaLabel"
+    [disabled]="buttonConfig().disabled || isLoading()"
+    [attr.aria-label]="
+      isLoading()
+        ? (('common.loading' | translate) + ' ' + buttonConfig().ariaLabel)
+        : buttonConfig().ariaLabel
+    "
     [matTooltip]="buttonConfig().tooltip || buttonConfig().ariaLabel"
     [attr.data-test]="buttonConfig().dataTestId"
     (click)="onClick()">
-    <ng-container *ngTemplateOutlet="content"></ng-container>
+    @if (!isLoading()) {
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    } @else {
+      <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+    }
   </button>
 }
 
@@ -16,11 +24,22 @@
     class="block"
     target="_blank"
     rel="noopener noreferrer"
-    [attr.aria-label]="buttonConfig().ariaLabel"
+    [tabindex]="isLoading() ? -1 : 0"
+    [class.pointer-events-none]="isLoading()"
+    [attr.aria-disabled]="isLoading()"
+    [attr.aria-label]="
+      isLoading()
+        ? (('common.loading' | translate) + ' ' + buttonConfig().ariaLabel)
+        : buttonConfig().ariaLabel
+    "
     [matTooltip]="buttonConfig().tooltip || buttonConfig().ariaLabel"
     [href]="linkHref()"
     [attr.data-test]="buttonConfig().dataTestId">
-    <ng-container *ngTemplateOutlet="content">button content</ng-container>
+    @if (!isLoading()) {
+      <ng-container *ngTemplateOutlet="content">button content</ng-container>
+    } @else {
+      <mat-progress-spinner mode="indeterminate" diameter="24"></mat-progress-spinner>
+    }
   </a>
 }
 
