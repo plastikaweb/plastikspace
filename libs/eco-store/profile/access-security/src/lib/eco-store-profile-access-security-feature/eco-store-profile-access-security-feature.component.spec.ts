@@ -55,14 +55,14 @@ describe('EcoStoreProfileAccessSecurityFeatureComponent', () => {
 
   it('submitting the password form maps the model to ChangePasswordData', () => {
     component['onPasswordSubmit']({
-      oldPassword: 'old-pw',
-      newPassword: 'New-pw-1',
-      confirmPassword: 'New-pw-1',
+      oldPassword: 'test-current-pw',
+      newPassword: 'test-new-pw-1',
+      confirmPassword: 'test-new-pw-1',
     });
     expect(changePassword).toHaveBeenCalledWith({
-      oldPassword: 'old-pw',
-      password: 'New-pw-1',
-      passwordConfirm: 'New-pw-1',
+      oldPassword: 'test-current-pw',
+      password: 'test-new-pw-1',
+      passwordConfirm: 'test-new-pw-1',
     });
   });
 
@@ -74,9 +74,9 @@ describe('EcoStoreProfileAccessSecurityFeatureComponent', () => {
   it('bumps the reset counter after a successful password change', async () => {
     changePassword.mockResolvedValueOnce(true);
     await component['onPasswordSubmit']({
-      oldPassword: 'old-pw',
-      newPassword: 'New-pw-1',
-      confirmPassword: 'New-pw-1',
+      oldPassword: 'test-current-pw',
+      newPassword: 'test-new-pw-1',
+      confirmPassword: 'test-new-pw-1',
     });
     expect(component['passwordFormReset']()).toBe(1);
   });
@@ -91,9 +91,9 @@ describe('EcoStoreProfileAccessSecurityFeatureComponent', () => {
     const selectSpy = vi.spyOn(currentPasswordInput, 'select');
 
     await component['onPasswordSubmit']({
-      oldPassword: 'wrong-pw',
-      newPassword: 'New-pw-1',
-      confirmPassword: 'New-pw-1',
+      oldPassword: 'test-wrong-pw',
+      newPassword: 'test-new-pw-1',
+      confirmPassword: 'test-new-pw-1',
     });
     currentPasswordInput.dispatchEvent(new FocusEvent('focus'));
 

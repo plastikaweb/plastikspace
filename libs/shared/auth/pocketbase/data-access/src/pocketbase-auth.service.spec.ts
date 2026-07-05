@@ -54,17 +54,17 @@ describe('PocketBaseAuthService', () => {
     usersCollection.update.mockResolvedValueOnce({ id: '123' });
 
     const result = await service.changePassword('123', 'test@test.com', {
-      oldPassword: 'old-pw',
-      password: 'new-pw',
-      passwordConfirm: 'new-pw',
+      oldPassword: 'test-current-pw',
+      password: 'test-new-pw',
+      passwordConfirm: 'test-new-pw',
     });
 
     expect(usersCollection.update).toHaveBeenCalledWith('123', {
-      oldPassword: 'old-pw',
-      password: 'new-pw',
-      passwordConfirm: 'new-pw',
+      oldPassword: 'test-current-pw',
+      password: 'test-new-pw',
+      passwordConfirm: 'test-new-pw',
     });
-    expect(usersCollection.authWithPassword).toHaveBeenCalledWith('test@test.com', 'new-pw');
+    expect(usersCollection.authWithPassword).toHaveBeenCalledWith('test@test.com', 'test-new-pw');
     expect(result.record).toEqual({ id: '123', email: 'test@test.com' });
   });
 

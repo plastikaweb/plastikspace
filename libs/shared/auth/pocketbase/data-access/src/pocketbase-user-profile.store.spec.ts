@@ -112,7 +112,11 @@ describe('pocketBaseUserProfileStore — password change', () => {
   const createNotification = vi.fn();
   const usersCollection = { update, authWithPassword };
   const record = { id: 'u1', email: 'user@mail.com' };
-  const changeData = { oldPassword: 'old-pw', password: 'new-pw', passwordConfirm: 'new-pw' };
+  const changeData = {
+    oldPassword: 'test-current-pw',
+    password: 'test-new-pw',
+    passwordConfirm: 'test-new-pw',
+  };
 
   /**
    * Configure the testing module with mocked dependencies and return the store instance.
@@ -148,7 +152,7 @@ describe('pocketBaseUserProfileStore — password change', () => {
 
     expect(await store.changePassword(changeData)).toBe(true);
     expect(update).toHaveBeenCalledWith('u1', changeData);
-    expect(authWithPassword).toHaveBeenCalledWith('user@mail.com', 'new-pw');
+    expect(authWithPassword).toHaveBeenCalledWith('user@mail.com', 'test-new-pw');
     expect(store.isAuthenticated()).toBe(true);
     expect(store.user()?.id).toBe('u1');
     expect(createNotification).toHaveBeenCalledWith(
