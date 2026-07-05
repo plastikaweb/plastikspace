@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-07-05] - Eco Store: PRV-02c — in-session password change
+
+### Added
+
+- **`libs/eco-store/profile/access-security` + `libs/shared/auth/pocketbase/data-access`**: members can change their password from the "Accés i seguretat" profile section without leaving the session. A new "Contrasenya" subsection hosts a 3-field form (current / new / confirm) using the shared `password-with-visibility` Formly type; the new-password field enforces the shared strength validator (min 8, lower/upper/digit) and the group reuses the shared `passwordMatch` validator — the form keys are deliberately `newPassword`/`confirmPassword` because that validator destructures exactly those keys. Submitting PATCHes the user with `oldPassword`/`password`/`passwordConfirm` (PocketBase validates the current password server-side) and then **re-authenticates silently with the new password**, since the password change rotates the user's `tokenKey` and would otherwise kill the session; per spec the session stays alive and a success toast confirms. A wrong current password (PocketBase 400 with a `data.oldPassword` entry) surfaces its own error toast. Adds `changePassword` to `PocketBaseAuthService` and `pocketBaseUserProfileStore` plus the `ChangePasswordData` type, and ca/es/en i18n. UX per review feedback: both access-security forms are constrained to `max-w-[650px]`; on success each form resets to its pristine initial state (values cleared, no validation errors — `SharedFormFeatureComponent`'s `resetForm` input now takes a counter and forces a full reset through `FormGroupDirective.resetForm()`, which also clears the Material error-state `submitted` flag), and a failed password change re-focuses the current-password field (stable `#password-change-current` id). Found and filed separately: the shared `passwordMatch` validator is inert on the PRV-03 reset-password form (key mismatch `password` vs `newPassword`) — tracked as BUG-007 ([#86cajvh93](https://app.clickup.com/t/86cajvh93)) (PRV-02c, [#86c9uq8n9](https://app.clickup.com/t/86c9uq8n9)).
+
 ## [2026-07-04] - Llecoop: SEC-06 — Escape dynamic values in list-facade `.confirm()` messages
 
 ### Fixed

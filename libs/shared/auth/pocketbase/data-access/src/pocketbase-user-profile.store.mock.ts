@@ -17,6 +17,7 @@ export const mockPocketBaseUserProfileStore = {
   login: vi.fn(),
   requestEmailChange: vi.fn(),
   confirmEmailChange: vi.fn(),
+  changePassword: vi.fn(),
   logout: vi.fn(),
   checkAuth: vi.fn(),
   getUserAddresses: vi.fn(),

@@ -7,6 +7,7 @@ import {
 import { inject, isDevMode } from '@angular/core';
 import { signalStore, withComputed, withHooks, withMethods, withProps } from '@ngrx/signals';
 import {
+  ChangePasswordData,
   ConfirmEmailChangeData,
   LoginData,
   RequestPasswordData,
@@ -183,6 +184,44 @@ export const pocketBaseUserProfileStore = signalStore(
         return true;
       } catch (error) {
         updateState(store, `[profile] confirm email change failed ${error}`, { isLoading: false });
+        return false;
+      }
+    },
+
+    async changePassword(data: ChangePasswordData): Promise<boolean> {
+      updateState(store, `[profile] change password in process`, { isLoading: true });
+
+      try {
+        const user = store.user();
+        if (!user?.id || !user?.email) throw new Error('User not found');
+
+        const authData = await store._authService.changePassword(user.id, user.email, data);
+
+        updateState(store, `[profile] change password success`, {
+          user: authData.record as PocketBaseUser,
+          isAuthenticated: true,
+          isLoading: false,
+        });
+
+        store._notificationService.create(
+          'profile.accessSecurity.password.success.changed',
+          'SUCCESS'
+        );
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] change password failed ${error}`, { isLoading: false });
+        // PocketBase answers 400 with a data.oldPassword entry when the current
+        // password doesn't match; anything else gets the generic toast.
+        const isInvalidOldPassword =
+          (error as { status?: number; data?: { data?: { oldPassword?: unknown } } }).status ===
+            400 &&
+          !!(error as { data?: { data?: { oldPassword?: unknown } } }).data?.data?.['oldPassword'];
+        store._notificationService.create(
+          isInvalidOldPassword
+            ? 'profile.accessSecurity.password.error.invalidOldPassword'
+            : 'profile.accessSecurity.password.error.changed',
+          'ERROR'
+        );
         return false;
       }
     },

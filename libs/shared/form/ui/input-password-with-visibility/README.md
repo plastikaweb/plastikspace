@@ -71,6 +71,14 @@ interface PasswordWithVisibilityProps extends FormlyFieldProps {
    * @default 12
    */
   maxLength: number;
+
+  /**
+   * Select the (masked) input content whenever the field receives focus,
+   * so the user can retype it straight away — useful when re-focusing the
+   * field after a server-side rejection (e.g. wrong current password).
+   * @default false
+   */
+  selectOnFocus?: boolean;
 }
 ```
 

@@ -14,6 +14,8 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
   /**
    * Configure the testing module with mocked dependencies and return the store instance.
    * @param {object} [authStore] The mocked PocketBase authStore state.
+   * @param {boolean} authStore.isValid Whether the mocked session is valid.
+   * @param {unknown} [authStore.record] The mocked authenticated user record.
    * @returns {object} The injected user profile store instance.
    */
   function setup(authStore: { isValid: boolean; record?: unknown } = { isValid: false }) {
@@ -101,5 +103,83 @@ describe('pocketBaseUserProfileStore \u2014 email change', () => {
 
     expect(await store.updateLanguage('ca')).toBe(false);
     expect(update).not.toHaveBeenCalled();
+  });
+});
+
+describe('pocketBaseUserProfileStore — password change', () => {
+  const update = vi.fn();
+  const authWithPassword = vi.fn();
+  const createNotification = vi.fn();
+  const usersCollection = { update, authWithPassword };
+  const record = { id: 'u1', email: 'user@mail.com' };
+  const changeData = { oldPassword: 'old-pw', password: 'new-pw', passwordConfirm: 'new-pw' };
+
+  /**
+   * Configure the testing module with mocked dependencies and return the store instance.
+   * @param {object} [authStore] The mocked PocketBase authStore state.
+   * @param {boolean} authStore.isValid Whether the mocked session is valid.
+   * @param {unknown} [authStore.record] The mocked authenticated user record.
+   * @returns {object} The injected user profile store instance.
+   */
+  function setup(authStore: { isValid: boolean; record?: unknown } = { isValid: true, record }) {
+    TestBed.configureTestingModule({
+      providers: [
+        {
+          provide: POCKETBASE_INSTANCE,
+          useValue: { collection: () => usersCollection, authStore },
+        },
+        { provide: StoreNotificationService, useValue: { create: createNotification } },
+        { provide: PocketBaseUserAddressService, useValue: {} },
+      ],
+    });
+    return TestBed.inject(pocketBaseUserProfileStore);
+  }
+
+  beforeEach(() => {
+    update.mockReset();
+    authWithPassword.mockReset();
+    createNotification.mockClear();
+  });
+
+  it('changePassword PATCHes the password fields, re-authenticates and keeps the session', async () => {
+    update.mockResolvedValueOnce({ ...record });
+    authWithPassword.mockResolvedValueOnce({ record: { ...record }, token: 'fresh-token' });
+    const store = setup();
+
+    expect(await store.changePassword(changeData)).toBe(true);
+    expect(update).toHaveBeenCalledWith('u1', changeData);
+    expect(authWithPassword).toHaveBeenCalledWith('user@mail.com', 'new-pw');
+    expect(store.isAuthenticated()).toBe(true);
+    expect(store.user()?.id).toBe('u1');
+    expect(createNotification).toHaveBeenCalledWith(
+      'profile.accessSecurity.password.success.changed',
+      'SUCCESS'
+    );
+  });
+
+  it('changePassword maps the 400 invalid-old-password response to its own toast', async () => {
+    update.mockRejectedValueOnce({
+      status: 400,
+      data: { data: { oldPassword: { code: 'validation_invalid_old_password' } } },
+    });
+    const store = setup();
+
+    expect(await store.changePassword(changeData)).toBe(false);
+    expect(authWithPassword).not.toHaveBeenCalled();
+    expect(createNotification).toHaveBeenCalledWith(
+      'profile.accessSecurity.password.error.invalidOldPassword',
+      'ERROR'
+    );
+  });
+
+  it('changePassword returns false on generic error and shows the generic toast', async () => {
+    update.mockRejectedValueOnce(new Error('boom'));
+    const store = setup();
+
+    expect(await store.changePassword(changeData)).toBe(false);
+    expect(createNotification).toHaveBeenCalledWith(
+      'profile.accessSecurity.password.error.changed',
+      'ERROR'
+    );
   });
 });

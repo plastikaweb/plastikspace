@@ -49,6 +49,25 @@ describe('PocketBaseAuthService', () => {
     expect(result).toEqual({ id: '123', email: 'test@test.com' });
   });
 
+  it('should update password fields and re-authenticate on changePassword', async () => {
+    const usersCollection = mockPocketBase.collection('users');
+    usersCollection.update.mockResolvedValueOnce({ id: '123' });
+
+    const result = await service.changePassword('123', 'test@test.com', {
+      oldPassword: 'old-pw',
+      password: 'new-pw',
+      passwordConfirm: 'new-pw',
+    });
+
+    expect(usersCollection.update).toHaveBeenCalledWith('123', {
+      oldPassword: 'old-pw',
+      password: 'new-pw',
+      passwordConfirm: 'new-pw',
+    });
+    expect(usersCollection.authWithPassword).toHaveBeenCalledWith('test@test.com', 'new-pw');
+    expect(result.record).toEqual({ id: '123', email: 'test@test.com' });
+  });
+
   it('should return authModel', () => {
     expect(service.authModel).toEqual({ id: '123', email: 'test@test.com' });
     mockPocketBase.authStore.record = null as unknown as Record<string, unknown>;

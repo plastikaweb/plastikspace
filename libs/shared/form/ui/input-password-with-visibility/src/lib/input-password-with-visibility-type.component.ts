@@ -34,4 +34,10 @@ export class InputPasswordWithVisibilityTypeComponent extends FieldType<FieldTyp
     event.stopPropagation();
     this.hiddenPass.update(value => !value);
   }
+
+  onInputFocus(event: FocusEvent): void {
+    if (this.props['selectOnFocus']) {
+      (event.target as HTMLInputElement).select();
+    }
+  }
 }

@@ -756,12 +756,27 @@
     },
     "accessSecurity": {
       "title": "Acceso y seguridad",
-      "description": "Gestiona el correo electrónico de acceso a tu cuenta.",
+      "description": "Gestiona el correo electrónico y la contraseña de acceso a tu cuenta.",
       "email": {
+        "title": "Correo electrónico",
         "label": "Nuevo correo electrónico",
         "currentLabel": "Correo actual"
       },
       "submitButton": "Cambiar el correo",
+      "password": {
+        "title": "Contraseña",
+        "currentLabel": "Contraseña actual",
+        "newLabel": "Nueva contraseña",
+        "confirmLabel": "Confirma la nueva contraseña",
+        "submitButton": "Cambiar la contraseña",
+        "success": {
+          "changed": "Contraseña actualizada correctamente."
+        },
+        "error": {
+          "changed": "No se ha podido cambiar la contraseña. Inténtalo de nuevo.",
+          "invalidOldPassword": "La contraseña actual no es correcta."
+        }
+      },
       "success": {
         "requested": "Te hemos enviado un enlace de verificación al nuevo correo electrónico."
       },

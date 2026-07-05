@@ -1,5 +1,5 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { AuthFacade } from '@plastik/auth/entities';
+import { AuthFacade, ChangePasswordData } from '@plastik/auth/entities';
 import { POCKETBASE_INSTANCE } from '@plastik/core/api-pocketbase';
 import { RecordAuthResponse, type AuthModel } from 'pocketbase';
 
@@ -46,6 +46,21 @@ export class PocketBaseAuthService implements AuthFacade {
 
   async confirmEmailChange(token: string, password: string): Promise<boolean> {
     return await this.#pb.collection('users').confirmEmailChange(token, password);
+  }
+
+  async changePassword(
+    id: string,
+    email: string,
+    data: ChangePasswordData
+  ): Promise<RecordAuthResponse<AuthModel>> {
+    await this.#pb.collection('users').update(id, {
+      oldPassword: data.oldPassword,
+      password: data.password,
+      passwordConfirm: data.passwordConfirm,
+    });
+    // Changing the password rotates the user's tokenKey, invalidating the current
+    // JWT — re-authenticate with the new password to keep the session alive.
+    return await this.#pb.collection('users').authWithPassword(email, data.password);
   }
 
   async updateProfile(id: string, data: { name: string; phone: string }): Promise<AuthModel> {

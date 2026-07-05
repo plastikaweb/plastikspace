@@ -79,4 +79,23 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
     expect(button.getAttribute('tabindex')).toBeNull();
     expect(button.tabIndex).toBe(0);
   });
+
+  it('should select the input content on focus when props.selectOnFocus is set', () => {
+    component.field.props = { ...component.field.props, selectOnFocus: true };
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    const selectSpy = vi.spyOn(input, 'select');
+
+    input.dispatchEvent(new FocusEvent('focus'));
+
+    expect(selectSpy).toHaveBeenCalled();
+  });
+
+  it('should NOT select the input content on focus by default', () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    const selectSpy = vi.spyOn(input, 'select');
+
+    input.dispatchEvent(new FocusEvent('focus'));
+
+    expect(selectSpy).not.toHaveBeenCalled();
+  });
 });

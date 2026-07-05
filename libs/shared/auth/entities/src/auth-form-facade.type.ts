@@ -21,6 +21,12 @@ export interface ConfirmEmailChangeData {
   password: string;
 }
 
+export interface ChangePasswordData {
+  oldPassword: string;
+  password: string;
+  passwordConfirm: string;
+}
+
 export interface RegisterData {
   email: string;
   password: string;

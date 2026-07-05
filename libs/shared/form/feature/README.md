@@ -152,6 +152,15 @@ interface SharedFormFeatureInputs {
    * @default false
    */
   disableForm: boolean;
+
+  /**
+   * Truthy value forces a full form reset (model + values + pristine/untouched +
+   * the NgForm `submitted` flag Material's error-state matcher relies on).
+   * Bind a counter and increment it to re-trigger the reset on demand,
+   * e.g. after each successful server-side submit.
+   * @default false
+   */
+  resetForm: boolean | number;
 }
 
 interface SubmitFormConfig {
