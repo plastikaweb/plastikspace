@@ -6137,6 +6137,7 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     /* istanbul ignore next */
     []
   ));
+  // Truthy value forces a full form + model reset; bind a counter to re-trigger on demand.
   resetForm = input(false, ...ngDevMode ? [{ debugName: "resetForm" }] : (
     /* istanbul ignore next */
     []
@@ -6178,10 +6179,14 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
     /* istanbul ignore next */
     []
   ));
+  formGroupDirective = viewChild(FormGroupDirective, ...ngDevMode ? [{ debugName: "formGroupDirective" }] : (
+    /* istanbul ignore next */
+    []
+  ));
   #statusChangesSubscription;
   resetFormEffect = effect(() => {
     if (this.resetForm()) {
-      this.#resetFormStatus();
+      this.#resetFormStatus(true);
     }
   }, ...ngDevMode ? [{ debugName: "resetFormEffect" }] : (
     /* istanbul ignore next */
@@ -6249,21 +6254,33 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
       this.#resetFormStatus();
     }
   }
-  #resetFormStatus() {
+  #resetFormStatus(forceReset = false) {
     this.form.markAsUntouched();
     this.form.markAsPristine();
     if (this.form.disabled) {
       this.form.enable();
     }
-    if (this.formSubmitConfig().resetOnSubmit) {
+    if (forceReset || this.formSubmitConfig().resetOnSubmit) {
       this.mutableModel.set(null);
-      this.form.reset({});
+      const formGroupDirective = this.formGroupDirective();
+      if (formGroupDirective) {
+        formGroupDirective.resetForm({});
+      } else {
+        this.form.reset({});
+      }
     }
   }
   static \u0275fac = function SharedFormFeatureComponent_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SharedFormFeatureComponent)();
   };
-  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedFormFeatureComponent, selectors: [["plastik-shared-form-feature"]], hostAttrs: [1, "w-full"], inputs: { fields: [1, "fields"], model: [1, "model"], submitConfig: [1, "submitConfig"], autoFocus: [1, "autoFocus"], disableForm: [1, "disableForm"], resetForm: [1, "resetForm"] }, outputs: { changeEvent: "changeEvent", temporaryChangeEvent: "temporaryChangeEvent", pendingChangesEvent: "pendingChangesEvent", validChange: "validChange" }, ngContentSelectors: _c14, decls: 7, vars: 16, consts: [["novalidate", "", 1, "mt-4", "flex", "w-full", "flex-col", "gap-1", 3, "ngSubmit", "formGroup"], [1, "form-container", 3, "modelChange", "fields", "form", "model", "options"], ["mat-flat-button", "", "type", "submit", "data-test", "submit-button", "title", "Submit", 3, "disabled"]], template: function SharedFormFeatureComponent_Template(rf, ctx) {
+  static \u0275cmp = /* @__PURE__ */ \u0275\u0275defineComponent({ type: _SharedFormFeatureComponent, selectors: [["plastik-shared-form-feature"]], viewQuery: function SharedFormFeatureComponent_Query(rf, ctx) {
+    if (rf & 1) {
+      \u0275\u0275viewQuerySignal(ctx.formGroupDirective, FormGroupDirective, 5);
+    }
+    if (rf & 2) {
+      \u0275\u0275queryAdvance();
+    }
+  }, hostAttrs: [1, "w-full"], inputs: { fields: [1, "fields"], model: [1, "model"], submitConfig: [1, "submitConfig"], autoFocus: [1, "autoFocus"], disableForm: [1, "disableForm"], resetForm: [1, "resetForm"] }, outputs: { changeEvent: "changeEvent", temporaryChangeEvent: "temporaryChangeEvent", pendingChangesEvent: "pendingChangesEvent", validChange: "validChange" }, ngContentSelectors: _c14, decls: 7, vars: 16, consts: [["novalidate", "", 1, "mt-4", "flex", "w-full", "flex-col", "gap-1", 3, "ngSubmit", "formGroup"], [1, "form-container", 3, "modelChange", "fields", "form", "model", "options"], ["mat-flat-button", "", "type", "submit", "data-test", "submit-button", "title", "Submit", 3, "disabled"]], template: function SharedFormFeatureComponent_Template(rf, ctx) {
     if (rf & 1) {
       \u0275\u0275projectionDef(_c04);
       \u0275\u0275elementStart(0, "form", 0);
@@ -6330,10 +6347,10 @@ var SharedFormFeatureComponent = class _SharedFormFeatureComponent {
   </button>
 </form>
 `, styles: ["/* libs/shared/form/feature/src/lib/shared-form-feature.component.scss */\n.shared-form--extraLinks-container ::ng-deep > .extraLinks {\n  font-size: 13px;\n  gap: var(--sub);\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  flex-direction: column;\n}\n/*# sourceMappingURL=shared-form-feature.component.css.map */\n"] }]
-  }], () => [], { fields: [{ type: Input, args: [{ isSignal: true, alias: "fields", required: true }] }], model: [{ type: Input, args: [{ isSignal: true, alias: "model", required: false }] }], submitConfig: [{ type: Input, args: [{ isSignal: true, alias: "submitConfig", required: false }] }], autoFocus: [{ type: Input, args: [{ isSignal: true, alias: "autoFocus", required: false }] }], disableForm: [{ type: Input, args: [{ isSignal: true, alias: "disableForm", required: false }] }], resetForm: [{ type: Input, args: [{ isSignal: true, alias: "resetForm", required: false }] }], changeEvent: [{ type: Output, args: ["changeEvent"] }], temporaryChangeEvent: [{ type: Output, args: ["temporaryChangeEvent"] }], pendingChangesEvent: [{ type: Output, args: ["pendingChangesEvent"] }], validChange: [{ type: Output, args: ["validChange"] }] });
+  }], () => [], { fields: [{ type: Input, args: [{ isSignal: true, alias: "fields", required: true }] }], model: [{ type: Input, args: [{ isSignal: true, alias: "model", required: false }] }], submitConfig: [{ type: Input, args: [{ isSignal: true, alias: "submitConfig", required: false }] }], autoFocus: [{ type: Input, args: [{ isSignal: true, alias: "autoFocus", required: false }] }], disableForm: [{ type: Input, args: [{ isSignal: true, alias: "disableForm", required: false }] }], resetForm: [{ type: Input, args: [{ isSignal: true, alias: "resetForm", required: false }] }], changeEvent: [{ type: Output, args: ["changeEvent"] }], temporaryChangeEvent: [{ type: Output, args: ["temporaryChangeEvent"] }], pendingChangesEvent: [{ type: Output, args: ["pendingChangesEvent"] }], validChange: [{ type: Output, args: ["validChange"] }], formGroupDirective: [{ type: ViewChild, args: [forwardRef(() => FormGroupDirective), { isSignal: true }] }] });
 })();
 (() => {
-  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedFormFeatureComponent, { className: "SharedFormFeatureComponent", filePath: "libs/shared/form/feature/src/lib/shared-form-feature.component.ts", lineNumber: 35 });
+  (typeof ngDevMode === "undefined" || ngDevMode) && \u0275setClassDebugInfo(SharedFormFeatureComponent, { className: "SharedFormFeatureComponent", filePath: "libs/shared/form/feature/src/lib/shared-form-feature.component.ts", lineNumber: 36 });
 })();
 
 // libs/shared/form/feature/src/lib/shared-form-feature.module.ts
@@ -18142,4 +18159,4 @@ export {
   NasaImagesSearchFeatureComponent,
   nasaImagesSearchFeatureRoutes
 };
-//# sourceMappingURL=src-MHP4BVVM.js.map
+//# sourceMappingURL=src-ZE4U4NV3.js.map
