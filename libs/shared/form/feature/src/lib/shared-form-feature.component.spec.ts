@@ -1,6 +1,7 @@
 import { ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { FormlyModule } from '@ngx-formly/core';
 import { provideTranslateService } from '@ngx-translate/core';
 import { axe } from 'vitest-axe';
@@ -89,6 +90,45 @@ describe('SharedFormFeatureComponent', () => {
 
       component.onModelChange(model as any);
       expect(emitted).toBeFalsy();
+    });
+  });
+
+  describe('resetForm', () => {
+    it('forces a full form reset when resetForm changes to a truthy value', () => {
+      const resetSpy = vi.spyOn((component as any).form, 'reset');
+      componentRef.setInput('resetForm', 1);
+      fixture.detectChanges();
+
+      expect(resetSpy).toHaveBeenCalledWith({}, expect.anything());
+    });
+
+    it('resets again on each counter increment', () => {
+      const resetSpy = vi.spyOn((component as any).form, 'reset');
+      componentRef.setInput('resetForm', 1);
+      fixture.detectChanges();
+      componentRef.setInput('resetForm', 2);
+      fixture.detectChanges();
+
+      expect(resetSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it('clears the NgForm submitted state so untouched errors stay hidden after reset', () => {
+      const formDebugEl = fixture.debugElement.query(By.directive(FormGroupDirective));
+      const directive = formDebugEl.injector.get(FormGroupDirective);
+      formDebugEl.triggerEventHandler('submit', new Event('submit'));
+      expect(directive.submitted).toBe(true);
+
+      componentRef.setInput('resetForm', 1);
+      fixture.detectChanges();
+
+      expect(directive.submitted).toBe(false);
+    });
+
+    it('does not reset form values while resetForm stays falsy', () => {
+      const resetSpy = vi.spyOn((component as any).form, 'reset');
+      fixture.detectChanges();
+
+      expect(resetSpy).not.toHaveBeenCalled();
     });
   });
 

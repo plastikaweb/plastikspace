@@ -3,6 +3,7 @@ import { FORMLY_CONFIG, provideFormlyCore } from '@ngx-formly/core';
 import { withFormlyFormField } from '@ngx-formly/material/form-field';
 import { withFormlyFieldInput } from '@ngx-formly/material/input';
 import { TranslateService } from '@ngx-translate/core';
+import { providePasswordWithVisibilityFormly } from '@plastik/shared/form/password';
 import {
   registerFormFieldTranslateExtension,
   registerValidatorsTranslateExtension,
@@ -19,6 +20,7 @@ export const ecoStoreProfileAccessSecurityFeatureRoutes: Route[] = [
     // ("missing forRoot()" at runtime). Mirrors profile/addresses' `nova` route.
     providers: [
       provideFormlyCore([withFormlyFormField(), withFormlyFieldInput()]),
+      providePasswordWithVisibilityFormly(),
       {
         provide: FORMLY_CONFIG,
         multi: true,

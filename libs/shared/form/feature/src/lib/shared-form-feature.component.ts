@@ -11,8 +11,9 @@ import {
   output,
   Signal,
   signal,
+  viewChild,
 } from '@angular/core';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormGroup, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormlyFieldConfig, FormlyFormOptions, FormlyModule } from '@ngx-formly/core';
@@ -38,7 +39,8 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
   readonly submitConfig = input<SubmitFormConfig | null>(null);
   readonly autoFocus = input(false);
   readonly disableForm = input<boolean>(false);
-  readonly resetForm = input<boolean>(false);
+  // Truthy value forces a full form + model reset; bind a counter to re-trigger on demand.
+  readonly resetForm = input<boolean | number>(false);
 
   readonly changeEvent = output<T>();
   readonly temporaryChangeEvent = output<T>();
@@ -70,11 +72,12 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
   readonly #elementRef = inject(ElementRef);
   readonly #formDisableToken = inject(FORM_DISABLE_TOKEN) as Signal<boolean>;
   readonly #firstInput = signal<HTMLInputElement | null>(null);
+  protected readonly formGroupDirective = viewChild(FormGroupDirective);
   #statusChangesSubscription?: Subscription;
 
   protected resetFormEffect = effect(() => {
     if (this.resetForm()) {
-      this.#resetFormStatus();
+      this.#resetFormStatus(true);
     }
   });
 
@@ -157,16 +160,23 @@ export class SharedFormFeatureComponent<T> implements AfterViewInit, OnDestroy {
     }
   }
 
-  #resetFormStatus(): void {
+  #resetFormStatus(forceReset = false): void {
     this.form.markAsUntouched();
     this.form.markAsPristine();
 
     if (this.form.disabled) {
       this.form.enable();
     }
-    if (this.formSubmitConfig().resetOnSubmit) {
+    if (forceReset || this.formSubmitConfig().resetOnSubmit) {
       this.mutableModel.set(null);
-      this.form.reset({});
+      // Reset through the directive when available — it also clears the `submitted`
+      // flag Material's error-state matcher uses, so pristine fields show no errors.
+      const formGroupDirective = this.formGroupDirective();
+      if (formGroupDirective) {
+        formGroupDirective.resetForm({});
+      } else {
+        this.form.reset({});
+      }
     }
   }
 }

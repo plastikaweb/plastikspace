@@ -756,12 +756,27 @@
     },
     "accessSecurity": {
       "title": "Access and security",
-      "description": "Manage the email address used to access your account.",
+      "description": "Manage the email address and password used to access your account.",
       "email": {
+        "title": "Email address",
         "label": "New email address",
         "currentLabel": "Current email"
       },
       "submitButton": "Change email",
+      "password": {
+        "title": "Password",
+        "currentLabel": "Current password",
+        "newLabel": "New password",
+        "confirmLabel": "Confirm the new password",
+        "submitButton": "Change password",
+        "success": {
+          "changed": "Password updated successfully."
+        },
+        "error": {
+          "changed": "Could not change the password. Please try again.",
+          "invalidOldPassword": "The current password is not correct."
+        }
+      },
       "success": {
         "requested": "We've sent a verification link to the new email address."
       },

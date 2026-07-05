@@ -28,6 +28,9 @@ This library provides the **PocketBase implementation** of the authentication lo
   - `logout`: Clears the authentication state.
   - `register`: Registers a new user.
   - `requestPassword`: Sends a password reset email.
+  - `requestEmailChange` / `confirmEmailChange`: PocketBase's verified email-change flow (PRV-02b).
+  - `changePassword`: PATCHes `oldPassword`/`password`/`passwordConfirm` and silently re-authenticates
+    with the new password — the change rotates the user's `tokenKey`, so without the re-auth the session would die (PRV-02c).
   - `authModel`: (getter) Gets the currently authenticated user.
 
 ## Store
@@ -59,6 +62,9 @@ An NgRx Signal Store for reactive authentication state management.
 - `deleteAvatar()`: Remove the profile avatar.
 - `requestPassword(data)`: Send a password reset email.
 - `resetPassword(data)`: Confirm a password reset with token.
+- `requestEmailChange(newEmail)`: Request PocketBase's verified email change; maps the 400 invalid-new-email response to its own toast.
+- `confirmEmailChange(data)`: Confirm the email change with token + current password.
+- `changePassword(data)`: In-session password change (`ChangePasswordData`); keeps the session alive via silent re-auth and maps the 400 wrong-old-password response to its own toast.
 
 ## Guards
 

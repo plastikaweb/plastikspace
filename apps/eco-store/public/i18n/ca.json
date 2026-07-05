@@ -756,12 +756,27 @@
     },
     "accessSecurity": {
       "title": "Accés i seguretat",
-      "description": "Gestiona el correu electrònic d'accés al teu compte.",
+      "description": "Gestiona el correu electrònic i la contrasenya d'accés al teu compte.",
       "email": {
+        "title": "Correu electrònic",
         "label": "Nou correu electrònic",
         "currentLabel": "Correu actual"
       },
       "submitButton": "Canviar el correu",
+      "password": {
+        "title": "Contrasenya",
+        "currentLabel": "Contrasenya actual",
+        "newLabel": "Nova contrasenya",
+        "confirmLabel": "Confirma la nova contrasenya",
+        "submitButton": "Canviar la contrasenya",
+        "success": {
+          "changed": "Contrasenya actualitzada correctament."
+        },
+        "error": {
+          "changed": "No s'ha pogut canviar la contrasenya. Torna a provar-ho.",
+          "invalidOldPassword": "La contrasenya actual no és correcta."
+        }
+      },
       "success": {
         "requested": "T'hem enviat un enllaç de verificació al nou correu electrònic."
       },
