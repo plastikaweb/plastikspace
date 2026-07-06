@@ -48,8 +48,10 @@ describe('SharedConfirmFeatureComponent', () => {
     fixture.detectChanges();
   }
 
-  const messageOf = (): string | undefined =>
-    (component as unknown as { message: () => string }).message()?.toString();
+  const messageOf = (): string | undefined => {
+    const msg = (component as unknown as { message: () => any }).message();
+    return msg?.changingThisBreaksApplicationSecurity || msg?.toString();
+  };
 
   it('should create', async () => {
     await setup();
@@ -84,5 +86,29 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('<strong>');
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
+  });
+
+  it('should escape non-string params after stringification', async () => {
+    await setup({
+      ...defaultData,
+      params: { name: ['<img src=x onerror=alert(1)>'] },
+    });
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should not call translate.instant if message is already SafeHtml (non-string)', async () => {
+    const safeHtml = {
+      changingThisBreaksApplicationSecurity: '<strong>Safe Message</strong>',
+    };
+    await setup({
+      ...defaultData,
+      message: safeHtml,
+    });
+
+    const rendered = messageOf();
+    expect(rendered).toContain('<strong>Safe Message</strong>');
   });
 });
