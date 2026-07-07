@@ -48,8 +48,12 @@ describe('SharedConfirmFeatureComponent', () => {
     fixture.detectChanges();
   }
 
-  const messageOf = (): string | undefined =>
-    (component as unknown as { message: () => string }).message()?.toString();
+  const messageOf = (): any => {
+    const msg = (component as unknown as { message: () => any }).message();
+    return msg && typeof msg === 'object' && 'changingThisBreaksApplicationSecurity' in msg
+      ? msg.toString()
+      : msg;
+  };
 
   it('should create', async () => {
     await setup();
@@ -84,5 +88,42 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('<strong>');
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
+  });
+
+  it('should escape non-string translation parameters', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: {
+          items: ['<img src=x onerror=alert(1)>'],
+          details: { info: '<script>alert(1)</script>' },
+        },
+      },
+      {
+        'test.message': 'Items: {{items}}, Details: {{details}}',
+      }
+    );
+
+    const rendered = messageOf().toString();
+    expect(rendered).not.toContain('<img');
+    expect(rendered).not.toContain('<script');
+    expect(rendered).toContain('&lt;img');
+    expect(rendered).toContain('&lt;script');
+  });
+
+  it('should not crash and skip translation when message is already SafeHtml', async () => {
+    // Mocking SafeHtml by using an object that is not a string
+    const safeHtmlMessage = {
+      changingThisBreaksApplicationSecurity: '<strong>Trusted HTML</strong>',
+      toString: () => '<strong>Trusted HTML</strong>',
+    };
+
+    await setup({
+      ...defaultData,
+      message: safeHtmlMessage,
+    });
+
+    const rendered = (component as any).message();
+    expect(rendered).toBe(safeHtmlMessage);
   });
 });

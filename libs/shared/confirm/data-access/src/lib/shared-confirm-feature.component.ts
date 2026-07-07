@@ -4,6 +4,7 @@ import {
   Component,
   computed,
   inject,
+  Signal,
   ViewEncapsulation,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
@@ -32,16 +33,23 @@ export class SharedConfirmFeatureComponent {
 
   protected readonly icon = computed(() => this.data.icon || 'help_outline');
 
-  protected readonly message = computed(() => {
+  protected readonly message: Signal<SafeHtml | string> = computed(() => {
     const params = this.data.params;
     const escapedParams = params
       ? Object.fromEntries(
           Object.entries(params).map(([key, value]) => [
             key,
-            typeof value === 'string' ? escapeHtml(value) : value,
+            typeof value === 'object' && value !== null
+              ? escapeHtml(JSON.stringify(value))
+              : escapeHtml(String(value ?? '')),
           ])
         )
       : params;
+
+    if (typeof this.data.message !== 'string') {
+      return this.data.message;
+    }
+
     const translated = this.#translate.instant(this.data.message, escapedParams);
     return this.#sanitizer.bypassSecurityTrustHtml(translated);
   });
