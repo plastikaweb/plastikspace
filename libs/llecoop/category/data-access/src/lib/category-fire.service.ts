@@ -4,6 +4,7 @@ import { Injectable, runInInjectionContext } from '@angular/core';
 import { collectionData, query, QueryConstraint, where } from '@angular/fire/firestore';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
+import { isEmpty } from '@plastik/shared/objects';
 import { EntityFireService } from '@plastik/signal-state/firebase';
 
 import { CategoryFilter } from './category-store';
@@ -17,7 +18,7 @@ export class LlecoopCategoryFireService extends EntityFireService<LlecoopProduct
   override getFilterConditions(filter: CategoryFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
 
-    if (Object.entries(filter).length > 0) {
+    if (!isEmpty(filter)) {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'text' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
