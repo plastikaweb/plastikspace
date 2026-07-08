@@ -9,6 +9,7 @@
     "submit": "Enviar",
     "save": "Guardar",
     "update": "Actualitzar",
+    "actions": "Accions",
     "pwa": {
       "title": "Porta l'Eco al teu mòbil",
       "description": "Aquest lloc té funcionalitats d'aplicació. Instal·la'l al teu dispositiu per a una àmplia experiència i fàcil accés.",
@@ -84,7 +85,8 @@
       "categoryIcon": "Icona de la categoria {category}",
       "closeSidenav": "Tancar menú lateral",
       "openSidenav": "Obrir menú lateral",
-      "ecoIcon": "Icona ecològica"
+      "ecoIcon": "Icona ecològica",
+      "expandRow": "Expandir la fila: {name}"
     },
     "paginator": {
       "firstPage": "Primera pàgina",

@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideTranslateService } from '@ngx-translate/core';
+import { TranslateModule, provideTranslateService } from '@ngx-translate/core';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
 import { ComponentRef, provideZonelessChangeDetection } from '@angular/core';
@@ -14,7 +14,7 @@ describe('SharedTableUiComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedTableUiComponent],
+      imports: [SharedTableUiComponent, TranslateModule.forRoot()],
       providers: [provideZonelessChangeDetection(), provideTranslateService()],
     }).compileComponents();
 
