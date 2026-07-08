@@ -5,7 +5,7 @@ import {
   BasePocketBaseEntityPagination,
   SortConfig,
 } from '@plastik/core/entities';
-import { areObjectEntriesEqual } from '@plastik/shared/objects';
+import { areObjectEntriesEqual, isEmpty } from '@plastik/shared/objects';
 import { initialGetListState, PocketBaseGetListState } from '../pocketbase-store.types';
 
 interface NormalizedPocketBaseParams {
@@ -99,7 +99,7 @@ const normalizePocketBaseParams = (
   return {
     pagination,
     sort: sorting,
-    filter: Object.keys(filterEntries).length > 0 ? filterEntries : defaultState.filter,
+    filter: !isEmpty(filterEntries) ? filterEntries : defaultState.filter,
   };
 };
 
