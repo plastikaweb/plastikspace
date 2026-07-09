@@ -9,8 +9,11 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 export function isEmpty(obj: unknown): boolean {
   if (obj === null || obj === undefined) return true;
 
-  const constructor = (obj as object).constructor;
-  if (constructor === Array || constructor === Object) {
+  if (Array.isArray(obj)) {
+    return obj.length === 0;
+  }
+
+  if (typeof obj === 'object') {
     for (const key in obj as object) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         return false;
