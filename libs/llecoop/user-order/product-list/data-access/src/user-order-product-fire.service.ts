@@ -10,6 +10,7 @@ import {
   where,
 } from '@angular/fire/firestore';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
+import { isEmpty } from '@plastik/shared/objects';
 import { latinize } from '@plastik/shared/latinize';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 import { EntityFireService, FirebaseCrudPagination } from '@plastik/signal-state/firebase';
@@ -102,7 +103,7 @@ export class LlecoopUserOrderProductFireService extends EntityFireService<Llecoo
 
   override getFilterConditions(filter: StoreUserOrderProductProductFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
-    if (Object.entries(filter).length > 0) {
+    if (!isEmpty(filter)) {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'text' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
