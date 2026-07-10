@@ -277,7 +277,9 @@
               [attr.aria-label]="
                 'common.a11y.expandRow' | translate: { name: resolveName(element.name) }
               "
-              [matTooltip]="'common.a11y.expandRow' | translate: { name: resolveName(element.name) }"
+              [matTooltip]="
+                'common.a11y.expandRow' | translate: { name: resolveName(element.name) }
+              "
               (click)="$event.stopPropagation(); updateExpandedElement(element)">
               @if (expandedElement()?.id === element.id) {
                 <mat-icon>keyboard_arrow_up</mat-icon>
