@@ -14,6 +14,7 @@ import {
   effect,
   inject,
   input,
+  LOCALE_ID,
   output,
   signal,
   TemplateRef,
@@ -32,8 +33,9 @@ import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
+import { TranslateModule } from '@ngx-translate/core';
 import { EntityId } from '@ngrx/signals/entities';
-import { BaseEntity, SortConfig } from '@plastik/core/entities';
+import { BaseEntity, LocalizedFields, SortConfig } from '@plastik/core/entities';
 import {
   FormattingTypes,
   SafeFormattedPipe,
@@ -84,6 +86,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
     SharedUtilFormattersModule,
     OrderTableActionsElementsPipe,
     SafeFormattedPipe,
+    TranslateModule,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrl: './shared-table-ui.component.scss',
@@ -197,6 +200,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   protected expandedElement = signal<T | null>(null);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
+  readonly #locale = inject(LOCALE_ID);
 
   constructor() {
     this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
@@ -302,6 +306,23 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     requestAnimationFrame(() => {
       this.expandedElement.set(this.expandedElement()?.id === element?.id ? null : element);
     });
+  }
+
+  /**
+   * Resolves the name of an entity based on the current locale.
+   * @param {BaseEntity['name']} name The name to resolve.
+   * @returns {string} The resolved name.
+   */
+  protected resolveName(name: BaseEntity['name']): string {
+    if (!name) {
+      return '';
+    }
+    if (typeof name === 'string') {
+      return name;
+    }
+    const lang = this.#locale.split('-')[0];
+    const localized = name as LocalizedFields;
+    return localized[lang] || Object.values(localized)[0] || '';
   }
 
   #announceSortChange(sortState: Sort) {

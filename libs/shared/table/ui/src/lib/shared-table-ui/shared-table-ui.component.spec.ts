@@ -62,4 +62,24 @@ describe('SharedTableUiComponent', () => {
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
   });
+
+  describe('resolveName', () => {
+    it('should return empty string if name is null', () => {
+      expect(component['resolveName'](null as any)).toBe('');
+    });
+
+    it('should return name if it is a string', () => {
+      expect(component['resolveName']('Test Name')).toBe('Test Name');
+    });
+
+    it('should resolve localized name based on locale', () => {
+      const localizedName = { ca: 'Nom', en: 'Name', es: 'Nombre' };
+      expect(component['resolveName'](localizedName)).toBe('Name');
+    });
+
+    it('should return first localized name if current locale is not found', () => {
+      const localizedName = { ca: 'Nom' };
+      expect(component['resolveName'](localizedName)).toBe('Nom');
+    });
+  });
 });

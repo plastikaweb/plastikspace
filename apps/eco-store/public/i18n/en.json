@@ -24,6 +24,7 @@
       "later": "Later",
       "close": "Got it, close"
     },
+    "actions": "Actions",
     "delete": "Delete",
     "navigation": {
       "previous": "Go to previous page",
@@ -84,7 +85,8 @@
       "categoryIcon": "{category} icon",
       "closeSidenav": "Close side menu",
       "openSidenav": "Open side menu",
-      "ecoIcon": "Eco icon"
+      "ecoIcon": "Eco icon",
+      "expandRow": "Expand row: {name}"
     },
     "paginator": {
       "firstPage": "First page",
