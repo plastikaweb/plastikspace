@@ -277,7 +277,7 @@ export const ecoStoreTenantStore = signalStore(
           ? this._getDeliverySlotsRecord()
           : this._getPickupSlotsRecord(addressId);
 
-      if (isEmpty(slots)) {
+      if (!slots || isEmpty(slots)) {
         return [];
       }
 
