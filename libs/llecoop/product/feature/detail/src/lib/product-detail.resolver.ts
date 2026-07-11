@@ -4,7 +4,7 @@ import { inject } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { ActivatedRouteSnapshot, RedirectCommand, ResolveFn, Router } from '@angular/router';
 import { llecoopProductStore } from '@plastik/llecoop/product/data-access';
-import { FirebaseStorageService } from '@plastik/storage/data-access';
+import { FirebaseStorageService } from '@plastik/storage/data-access/firebase';
 
 export const productDetailResolver: ResolveFn<Observable<boolean>> = (
   route: ActivatedRouteSnapshot

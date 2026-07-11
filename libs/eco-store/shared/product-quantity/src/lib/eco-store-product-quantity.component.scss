@@ -1,0 +1,94 @@
+@use '@angular/material' as mat;
+
+:host {
+  button {
+    &.add-button {
+      @include mat.button-overrides(
+        (
+          filled-label-text-size: 1rem,
+          filled-label-text-weight: bold,
+          filled-pressed-state-layer-opacity: 0.15,
+          filled-container-height: calc(var(--spacing) * 14),
+          filled-container-shape: 16px,
+        )
+      );
+
+      /* Polish: Subtle scale on hover for direct feedback */
+      transition:
+        transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+        box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+
+      &:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      }
+
+      &:not(:disabled) {
+        /* Use the M3 on-primary token so the icon reads as proper foreground
+           text on the green primary surface (was a low-contrast neutral grey
+           on colored background). */
+        @include mat.icon-overrides(
+          (
+            color: var(--mat-sys-on-primary),
+          )
+        );
+      }
+    }
+
+    @include mat.icon-button-overrides(
+      (
+        icon-size: 24px,
+        state-layer-size: 44px,
+      )
+    );
+
+    &.increment-button,
+    &.decrement-button,
+    &.remove-button {
+      background-color: light-dark(var(--neutral-100), var(--neutral-500));
+      color: light-dark(var(--neutral-500), var(--neutral-100));
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      border: 1px solid var(--mat-sys-surface-variant);
+
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--neutral-500), var(--neutral-100)),
+        )
+      );
+    }
+
+    &.increment-button:hover,
+    &.decrement-button:hover {
+      @include mat.icon-button-overrides(
+        (
+          icon-color: light-dark(var(--primary-500), var(--primary-50)),
+          state-layer-color: light-dark(var(--neutral-200), var(--neutral-500)),
+        )
+      );
+
+      background-color: light-dark(var(--neutral-200), var(--neutral-600));
+      color: light-dark(var(--neutral-500), var(--neutral-100));
+    }
+
+    &.remove-button:hover {
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--error-700), var(--error-100)),
+        )
+      );
+      @include mat.icon-button-overrides(
+        (
+          icon-color: light-dark(var(--error-700), var(--error-100)),
+          state-layer-color: light-dark(var(--error-200), var(--error-500)),
+        )
+      );
+
+      background-color: light-dark(var(--error-200), var(--error-500));
+      color: light-dark(var(--error-500), var(--error-100));
+    }
+
+    &:active:not([disabled]) {
+      transform: scale(0.92);
+    }
+  }
+}

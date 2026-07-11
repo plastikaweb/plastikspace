@@ -1,0 +1,7 @@
+@use '@angular/material' as mat;
+@use 'core_tailwind_theme';
+@use 'animations';
+
+@include animations.fade-in;
+@include animations.fade-out;
+@include animations.reveal-up;

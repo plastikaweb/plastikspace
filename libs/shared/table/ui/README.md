@@ -1,59 +1,57 @@
-# shared-table-ui
+# @plastik/shared/table/ui
 
-- [shared-table-ui](#shared-table-ui)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular Material](https://img.shields.io/badge/angular_material-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/shared/table/ui](#plastiksharedtableui)
   - [Description](#description)
   - [HTML element](#html-element)
-  - [Material Table](#material-table)
   - [Inputs](#inputs)
   - [Outputs](#outputs)
   - [Example](#example)
     - [How to style](#how-to-style)
     - [Set global values for paginator](#set-global-values-for-paginator)
   - [Running unit tests](#running-unit-tests)
-  - [Useful links](#useful-links)
+  - [Resources](#resources)
 
 ## Description
 
-A container component to inject a configuration object and a data object to create a table automatically.
+A container component to inject a configuration object and a data object to create a table automatically. It uses internally **Material Table**.
 
 ## HTML element
 
 `<plastik-shared-table>`
 
-## Material Table
-
-It uses internally [Material Table](https://material.angular.io/components/table/overview).
-
 ## Inputs
 
-| Name                      | Type                                                     | Description                                                            | Default                                    |
-| ------------------------- | -------------------------------------------------------- | ---------------------------------------------------------------------- | ------------------------------------------ |
-| `data`                    | `<T[]>`                                                  | The data to fill the table with a generic type annotation.             | []                                         |
-| `columnProperties`        | `TableColumnFormatting<T, FormattingTypes>[]`            | Table structure skeleton.                                              | Required                                   |
-| `resultsLength`           | `number`                                                 | The total number of items available for the current table data fields. | Required                                   |
-| `sort`                    | `TableSorting`                                           | The sorting configuration based on column and direction.               |                                            |
-| `pagination`              | `PageEventConfig`                                        | The table pagination configuration.                                    |                                            |
-| `noPagination`            | `boolean`                                                | Remove pagination component to the table.                              | false                                      |
-| `paginationVisibility`    | `Partial<TablePaginationVisibility>`                     | Pagination visibility configuration.                                   | All properties are set to false by default |
-| `caption`                 | `string`                                                 | Main title of the table.                                               |                                            |
-| `actions`                 | `TableControlAction<T>`                                  | Table actions. configuration.                                          |                                            |
-| `filterCriteria`          | `Record<string, string>`                                 | Table filter criteria configuration.                                   |                                            |
-| `filterCriteriaPredicate` | `(data: T, criteria: Record<string, string>) => boolean` | Table filter criteria predicate.                                       |                                            |
-| `extraRowStyles`          | `(element: T) => string`                                 | Table extra row styles configuration.                                  |                                            |
-| `actionsColStyles`        | `string`                                                 | Table actions column styles configuration.                             | ''                                         |
-| `rowHeight`               | `string`                                                 | Table row height configuration.                                        | 'unset'                                    |
-| `expandable`              | `boolean`                                                | Table has expandable row behavior.                                     | false                                      |
-| `expandableElementId`     | `EntityId\string\null`                                   | Table expandable element id.                                           | null                                       |
-| `expandedDetailTpl`       | `TemplateRef<unknown>\null`                              | Table expandable element reference.                                    | null                                       |
+| Name                      | Type                                                     | Description                                                            | Default                                      |
+| :------------------------ | :------------------------------------------------------- | :--------------------------------------------------------------------- | :------------------------------------------- |
+| `data`                    | `<T[]>`                                                  | The data to fill the table with a generic type annotation.             | `[]`                                         |
+| `columnProperties`        | `TableColumnFormatting<T, FormattingTypes>[]`            | Table structure skeleton.                                              | Required                                     |
+| `resultsLength`           | `number`                                                 | The total number of items available for the current table data fields. | Required                                     |
+| `sort`                    | `SortConfig`                                             | The sorting configuration based on column and direction.               |                                              |
+| `pagination`              | `PageEventConfig`                                        | The table pagination configuration.                                    |                                              |
+| `noPagination`            | `boolean`                                                | Remove pagination component to the table.                              | `false`                                      |
+| `paginationVisibility`    | `Partial<TablePaginationVisibility>`                     | Pagination visibility configuration.                                   | All properties are set to `false` by default |
+| `caption`                 | `string`                                                 | Main title of the table.                                               |                                              |
+| `actions`                 | `TableControlAction<T>`                                  | Table actions. configuration.                                          |                                              |
+| `filterCriteria`          | `Record<string, string>`                                 | Table filter criteria configuration.                                   |                                              |
+| `filterCriteriaPredicate` | `(data: T, criteria: Record<string, string>) => boolean` | Table filter criteria predicate.                                       |                                              |
+| `extraRowStyles`          | `(element: T) => string`                                 | Table extra row styles configuration.                                  |                                              |
+| `actionsColStyles`        | `string`                                                 | Table actions column styles configuration.                             | `''`                                         |
+| `rowHeight`               | `string`                                                 | Table row height configuration.                                        | `'unset'`                                    |
+| `expandable`              | `boolean`                                                | Table has expandable row behavior.                                     | `false`                                      |
+| `expandableElementId`     | `EntityId\string\null`                                   | Table expandable element id.                                           | `null`                                       |
+| `expandedDetailTpl`       | `TemplateRef<unknown>\null`                              | Table expandable element reference.                                    | `null`                                       |
 
 ## Outputs
 
 | Name               | Type                            | Description                               |
-| ------------------ | ------------------------------- | ----------------------------------------- |
-| `changePagination` | `EventEmitter<PageEventConfig>` | emits the pagination table configuration. |
-| `changeSorting`    | `EventEmitter<TableSorting>`    | emits the sorting configuration.          |
-| `delete`           | `EventEmitter<T>`               | emits the delete action for a row.        |
-| `getChangedData`   | `T/undefined`                   | emits the changed data for a row.         |
+| :----------------- | :------------------------------ | :---------------------------------------- |
+| `changePagination` | `EventEmitter<PageEventConfig>` | Emits the pagination table configuration. |
+| `changeSorting`    | `EventEmitter<SortConfig>`      | Emits the sorting configuration.          |
+| `delete`           | `EventEmitter<T>`               | Emits the delete action for a row.        |
+| `getChangedData`   | `T/undefined`                   | Emits the changed data for a row.         |
 
 ## Example
 
@@ -202,7 +200,7 @@ Provide [MAT_PAGINATOR_DEFAULT_OPTIONS](https://material.angular.io/components/p
 
 Run `nx test shared-table-ui` to execute the unit tests.
 
-## Useful links
+## Resources
 
 - [Material Table](https://material.angular.io/components/table/overview)
 - [Material Paginator](https://material.angular.io/components/paginator/overview)

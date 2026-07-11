@@ -1,7 +1,6 @@
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { map, Subject, takeUntil } from 'rxjs';
+import { SvgIconComponent } from 'angular-svg-icon';
+import { Subject, takeUntil } from 'rxjs';
 
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { DatePipe, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
@@ -15,17 +14,16 @@ import {
   viewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { MatButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
-import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
-import { LayoutFacade } from '@plastik/core/cms-layout/data-access';
+import { LayoutFacade, LayoutObserverService } from '@plastik/core/cms-layout/data-access';
 import { CoreCmsLayoutUiFooterComponent } from '@plastik/core/cms-layout/footer';
 import { CoreCmsLayoutUiHeaderComponent } from '@plastik/core/cms-layout/header';
 import { CoreCmsLayoutUiSidenavComponent } from '@plastik/core/cms-layout/sidenav';
+import { CoreCmsLayoutUiUserMenuComponent } from '@plastik/core/cms-layout/user-menu';
 import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 import { notificationStore } from '@plastik/shared/notification/data-access';
 import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification/ui/mat-snackbar';
@@ -42,12 +40,11 @@ import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification
     MatListModule,
     MatIconModule,
     MatListModule,
-    MatButton,
-    MatMenuModule,
-    AngularSvgIconModule,
+    SvgIconComponent,
     CoreCmsLayoutUiFooterComponent,
     CoreCmsLayoutUiHeaderComponent,
     CoreCmsLayoutUiSidenavComponent,
+    CoreCmsLayoutUiUserMenuComponent,
     SharedActivityUiOverlayComponent,
     NotificationUiMatSnackbarDirective,
   ],
@@ -57,7 +54,7 @@ import { NotificationUiMatSnackbarDirective } from '@plastik/shared/notification
 export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly #layoutFacade = inject(LayoutFacade);
   readonly #destroyed$ = new Subject<void>();
-  readonly #breakpointObserver = inject(BreakpointObserver);
+  readonly #layoutObserverService = inject(LayoutObserverService);
   readonly #zone = inject(NgZone);
 
   protected readonly notificationStore = inject(notificationStore);
@@ -74,14 +71,9 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   protected readonly headerWidgetsConfig = this.headerConfig?.widgetsConfig;
 
   ngOnInit(): void {
-    // TODO: Isolate breakpoint observer into its own service https://github.com/plastikaweb/plastikspace/issues/68
-    this.#breakpointObserver
-      .observe([Breakpoints.Handset, Breakpoints.Tablet, Breakpoints.Medium])
-      .pipe(
-        takeUntil(this.#destroyed$),
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        map((handset: any) => handset.matches)
-      )
+    this.#layoutObserverService
+      .getMatches()
+      .pipe(takeUntil(this.#destroyed$))
       .subscribe((matches: boolean) => {
         if (matches) this.onToggleSidenav(!matches);
         this.onSetIsMobile(matches);
@@ -89,7 +81,7 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
   }
 
   ngAfterViewInit(): void {
-    this.#zone.runOutsideAngular(() => this.createWidgets());
+    this.#zone.runOutsideAngular(() => this.#createWidgets());
   }
 
   ngOnDestroy(): void {
@@ -113,23 +105,23 @@ export class CoreCmsLayoutFeatureComponent implements OnInit, OnDestroy, AfterVi
     this.#zone.runOutsideAngular(() => this.#layoutFacade.setIsMobile(isMobile));
   }
 
-  private createWidgets(): void {
+  async #createWidgets(): Promise<void> {
     if (!this.headerWidgetsConfig) return;
 
     const container = this.widgetsContainer();
     if (container) {
       container.clear();
 
-      this.headerWidgetsConfig?.widgets?.forEach(async widget => {
+      for (const widget of this.headerWidgetsConfig.widgets || []) {
         const component = await widget.component();
         const componentRef = container.createComponent(component);
 
         if (widget.inputs) {
-          Object.keys(widget.inputs ?? {}).map(key => {
-            componentRef?.setInput(key, widget.inputs?.[key]);
+          Object.entries(widget.inputs).forEach(([key, value]) => {
+            componentRef?.setInput(key, value);
           });
         }
-      });
+      }
     }
   }
 }

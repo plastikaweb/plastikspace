@@ -1,0 +1,52 @@
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.list-overrides(
+    (
+      list-item-one-line-container-height: 2.5rem,
+      list-item-two-line-container-height: 3rem,
+      list-item-three-line-container-height: 4rem,
+      list-item-hover-state-layer-opacity: 0.1,
+    )
+  );
+
+  @include mat.card-overrides(
+    (
+      filled-container-color: var(--transparent),
+    )
+  );
+
+  .text-sys-tertiary {
+    color: light-dark(var(--tertiary-700), var(--tertiary-300)) !important;
+    letter-spacing: 0.15em;
+    font-weight: 800;
+    opacity: 0.9;
+  }
+
+  mat-list-item {
+    --mat-list-list-item-label-text-tracking: normal;
+
+    /* Category color icons: tone down saturation/lightness so vivid hues
+       (e.g. purple) read as soft, organic accents instead of "AI palette". */
+    .category-icon {
+      color: light-dark(
+        color-mix(in oklch, var(--category-color, currentColor) 70%, var(--neutral-700)),
+        color-mix(in oklch, var(--category-color, currentColor) 80%, white)
+      );
+    }
+
+    &.active {
+      --mat-list-list-item-container-color: light-dark(var(--secondary-200), var(--secondary-800));
+      --mat-list-list-item-label-text-color: light-dark(var(--secondary-900), var(--neutral-100));
+      --mat-list-list-item-hover-label-text-color: light-dark(
+        var(--secondary-900),
+        var(--neutral-100)
+      );
+      --mat-list-list-item-focus-label-text-color: light-dark(
+        var(--secondary-900),
+        var(--neutral-100)
+      );
+      --mat-list-list-item-label-text-weight: 600;
+    }
+  }
+}

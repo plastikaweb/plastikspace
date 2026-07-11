@@ -1,0 +1,122 @@
+import { DEFAULT_CURRENCY_CODE, inject, provideEnvironmentInitializer } from '@angular/core';
+import { ActivatedRouteSnapshot, Route } from '@angular/router';
+
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { TranslateService } from '@ngx-translate/core';
+import { MatPaginatorIntlService } from '@plastik/core/paginator';
+import {
+  ecoStoreAuthGuard,
+  EcoStoreCategoryRouteTitleService,
+} from '@plastik/eco-store/core/router-state';
+import { ecoStoreOrdersStore } from '@plastik/eco-store/orders/data-access';
+import { BodyBackgroundService } from './body-background.service';
+import { EcoStoreLayoutService } from './eco-store-layout.service';
+import EcoLayoutComponent from './layout.component';
+
+export const layoutRoutes: Route[] = [
+  {
+    path: '',
+    component: EcoLayoutComponent,
+    providers: [
+      provideEnvironmentInitializer(() => {
+        inject(BodyBackgroundService);
+        inject(EcoStoreLayoutService);
+      }),
+      {
+        provide: DEFAULT_CURRENCY_CODE,
+        useValue: 'EUR',
+      },
+      {
+        provide: MatPaginatorIntl,
+        useClass: MatPaginatorIntlService,
+      },
+      {
+        provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+        useValue: { appearance: 'outline' },
+      },
+      {
+        provide: MAT_ICON_DEFAULT_OPTIONS,
+        useValue: { fontSet: 'material-symbols-outlined' },
+      },
+    ],
+    children: [
+      {
+        path: 'comandes',
+        data: { hasSidenav: false },
+        canActivateChild: [ecoStoreAuthGuard],
+        children: [
+          {
+            path: 'nova',
+            loadChildren: () =>
+              import('@plastik/eco-store/orders/created').then(
+                m => m.ecoStoreOrderConfirmationRoutes
+              ),
+          },
+          {
+            path: ':id',
+            title: (route: ActivatedRouteSnapshot): string => {
+              const id = route.paramMap.get('id');
+              const ordersStore = inject(ecoStoreOrdersStore);
+              const translate = inject(TranslateService);
+              if (id) {
+                const orderNumber = ordersStore.entityMap()[id]?.orderNumber;
+                if (orderNumber !== undefined) {
+                  return translate.instant('orders.detail.title', { orderNumber });
+                }
+              }
+              return '';
+            },
+            loadChildren: () =>
+              import('@plastik/eco-store/orders/detail').then(m => m.ecoStoreOrdersDetailRoutes),
+          },
+          {
+            path: '',
+            loadChildren: () =>
+              import('@plastik/eco-store/orders/list').then(m => m.ecoStoreOrdersListRoutes),
+          },
+        ],
+      },
+      {
+        path: 'cistella',
+        data: { hasSidenav: false },
+        loadChildren: () => import('@plastik/eco-store/cart').then(m => m.ecoStoreCartRoutes),
+      },
+      {
+        path: 'botiga/:category/:slug',
+        title: (route: ActivatedRouteSnapshot) =>
+          inject(EcoStoreCategoryRouteTitleService).resolve(route),
+        data: { hasSidenav: false },
+        loadChildren: () =>
+          import('@plastik/eco-store/product').then(m => m.ecoStoreProductFeatureRoutes),
+      },
+      {
+        path: 'botiga/:category',
+        title: (route: ActivatedRouteSnapshot) =>
+          inject(EcoStoreCategoryRouteTitleService).resolve(route),
+        data: { hasSidenav: true },
+        loadChildren: () =>
+          import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
+      },
+      {
+        path: 'botiga',
+        title: 'products.all',
+        data: { hasSidenav: true },
+        loadChildren: () =>
+          import('@plastik/eco-store/products').then(m => m.ecoStoreProductsFeatureRoutes),
+      },
+      {
+        path: 'perfil',
+        canActivateChild: [ecoStoreAuthGuard],
+        loadChildren: () =>
+          import('@plastik/eco-store/profile').then(m => m.ecoStoreProfileFeatureRoutes),
+      },
+      {
+        path: '**',
+        redirectTo: 'botiga',
+        pathMatch: 'full',
+      },
+    ],
+  },
+];

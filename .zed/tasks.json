@@ -1,0 +1,35 @@
+[
+  {
+    "label": "NG: Serve (Default Project)",
+    "command": "npx nx serve",
+    "use_new_terminal": true
+  },
+  {
+    "label": "NG: Serve Specific App...",
+    "command": "npx nx serve",
+    "args": [],
+    "use_new_terminal": true
+  },
+  {
+    "label": "NG: Generate Component",
+    "command": "npx nx g @nx/angular:component",
+    "args": ["--dry-run"],
+    "use_new_terminal": true
+  },
+  {
+    "label": "NG: Generate Service",
+    "command": "npx nx g @nx/angular:service",
+    "args": ["--dry-run"],
+    "use_new_terminal": true
+  },
+  {
+    "label": "NG: Test Affected",
+    "command": "npx nx affected:test",
+    "use_new_terminal": true
+  },
+  {
+    "label": "NG: Lint Workspace",
+    "command": "npx nx run-many --target=lint --all",
+    "use_new_terminal": true
+  }
+]

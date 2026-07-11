@@ -1,0 +1,9 @@
+@use '@angular/material' as mat;
+
+:host {
+  .address-selector-radio-group {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(350px, 100%), 1fr));
+    gap: 1rem;
+  }
+}

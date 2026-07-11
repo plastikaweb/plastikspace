@@ -1,6 +1,9 @@
-# llecoop-profile-feature
+# @plastik/llecoop/profile/feature
 
-- [llecoop-profile-feature](#llecoop-profile-feature)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/llecoop/profile/feature](#plastikllecoopprofilefeature)
   - [Description](#description)
   - [Features](#features)
   - [User profile state](#user-profile-state)
@@ -9,7 +12,7 @@
 
 ## Description
 
-The `llecoop-profile-feature` library is a feature module that handles user profile functionality within the LLeCoop application.
+The **`llecoop-profile-feature`** library is a feature module that handles **user profile functionality** within the **Llecoop** application.
 It provides components and services for managing user profile information, settings, and related features.
 
 ## Features
@@ -20,11 +23,11 @@ It provides components and services for managing user profile information, setti
 
 ## User profile state
 
-The user profile state is managed by the `llecoopUserStore`.
+The **user profile state** is managed by the `llecoopProfileStore`.
 
 ## Firebase functions
 
-On updating de user profile, besides updating the user firestore collection, it runs a firebase function to update the related Auth user data.
+On updating the user profile, besides updating the user Firestore collection, it runs a **Firebase function** to update the related Auth user data.
 
 See more in the llecoop-triggers app [README](../../../../apps/llecoop-triggers/README.md).
 

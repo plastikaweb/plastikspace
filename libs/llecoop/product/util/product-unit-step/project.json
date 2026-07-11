@@ -1,0 +1,16 @@
+{
+  "name": "product-unit-step",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/llecoop/product/util/product-unit-step/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["type:util", "scope:llecoop"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

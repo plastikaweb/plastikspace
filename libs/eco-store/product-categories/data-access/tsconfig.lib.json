@@ -1,0 +1,68 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../../../../dist/out-tsc",
+    "declaration": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "composite": true,
+    "types": []
+  },
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/test-setup.ts",
+    "jest.config.ts",
+    "src/**/*.test.ts",
+    "src/**/*.mock.ts",
+    "vite.config.ts",
+    "vite.config.mts",
+    "vitest.config.ts",
+    "vitest.config.mts",
+    "src/**/*.test.tsx",
+    "src/**/*.spec.tsx",
+    "src/**/*.test.js",
+    "src/**/*.spec.js",
+    "src/**/*.test.jsx",
+    "src/**/*.spec.jsx",
+    "src/test-setup.ts"
+  ],
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../../../core/entities/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core/entities/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../../libs/shared/notification/data-access/tsconfig.lib.json"
+    },
+    {
+      "path": "../../shared/tokens/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core/tenant/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../core/util/api-pocketbase/tsconfig.lib.json"
+    },
+    {
+      "path": "../../core/api/data-access/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../core/util/environments/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../../libs/shared/util/objects/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../../libs/shared/countdown/util/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../../libs/shared/notification/entities/tsconfig.lib.json"
+    },
+    {
+      "path": "../../../core/util/api-base/tsconfig.lib.json"
+    }
+  ]
+}

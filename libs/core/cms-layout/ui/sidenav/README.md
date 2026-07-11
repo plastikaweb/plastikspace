@@ -1,68 +1,62 @@
-# core-cms-layout-ui-sidenav
+# @plastik/core/cms-layout/ui/sidenav
 
-- [core-cms-layout-ui-sidenav](#core-cms-layout-ui-sidenav)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular Material](https://img.shields.io/badge/angular_material-%233f51b5?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/core/cms-layout/ui/sidenav](#plastikcorecms-layoutuisidenav)
   - [Description](#description)
   - [Inputs](#inputs)
   - [Outputs](#outputs)
-  - [Content projection](#content-projection)
-  - [How to use](#how-to-use)
-  - [Running unit tests](#running-unit-tests)
+  - [Content Projection](#content-projection)
+  - [Usage](#usage)
+  - [Running Unit Tests](#running-unit-tests)
 
 ## Description
 
-A core basic sidenav with content configuration options.
+A **Core Sidenav Component** wrapper around `mat-sidenav` with built-in layout logic and content zones.
 
 ## Inputs
 
-| Name              | Type            | Description                                                 | Default |
-| ----------------- | --------------- | ----------------------------------------------------------- | ------- |
-| `position`        | "start" / "end" | Position sidenav to the left or to the right in the layout. | "start" |
-| `mode`            | MatDrawerMode   | Mode of the drawer; one of 'over', 'push' or 'side'.        | "over"  |
-| `fixedInViewport` | boolean         | Whether the sidenav is fixed in the viewport.               | false   |
-| `sidenavOpened`   | boolean         | Whether the drawer is opened.                               | false   |
+| Name              | Type              | Description                            | Default   |
+| :---------------- | :---------------- | :------------------------------------- | :-------- |
+| `position`        | `"start" / "end"` | Position of the sidenav (left/right).  | `"start"` |
+| `mode`            | `MatDrawerMode`   | Mode: `'over'`, `'push'`, or `'side'`. | `"over"`  |
+| `fixedInViewport` | `boolean`         | Whether the sidenav is fixed.          | `false`   |
+| `sidenavOpened`   | `boolean`         | Control the open/close state.          | `false`   |
 
 ## Outputs
 
-| Name            | Type                    | Description                     |
-| --------------- | ----------------------- | ------------------------------- |
-| `toggleSidenav` | `EventEmitter<boolean>` | Emits the toggle sidenav event. |
+| Name            | Type                    | Description                      |
+| :-------------- | :---------------------- | :------------------------------- |
+| `toggleSidenav` | `EventEmitter<boolean>` | Emitted when visibility toggles. |
 
-## Content projection
+## Content Projection
 
-| Selector       | Description                                |
-| -------------- | ------------------------------------------ |
-| `[header]`     | The contents at the top of the sidenav.    |
-| `[menu-items]` | The sidenav main content.                  |
-| `[footer]`     | The contents at the bottom of the sidenav. |
+| Selector       | Description                           |
+| :------------- | :------------------------------------ |
+| `[header]`     | Content at the top of the sidenav.    |
+| `[menu-items]` | Main navigation list or content.      |
+| `[footer]`     | Content at the bottom of the sidenav. |
 
-## How to use
-
-- Import the `CoreCmsLayoutUiSidenavComponent` in your parent component.
-
-- Insert the component in your template and use content projection and data flow to change state.
+## Usage
 
 ```html
-<!-- component template -->
-
 <plastik-core-cms-layout-ui-sidenav
-  [position]="end"
+  [position]="'start'"
   [mode]="'side'"
-  [fixedInViewport]="false"
-  [sidenavOpened]="(sidenavOpened$ | ngrxPush) || false"
-  (toggleSidenav)="onToggleSidenav()">
-  <h1 header>Menu</h1>
+  [sidenavOpened]="isOpen"
+  (toggleSidenav)="onToggle($event)">
+  <h1 header>Menu Header</h1>
+
   <mat-list menu-items>
-    @ngFor (let item of sidenavConfig) {
-    <mat-list-item [routerLink]="item?.route">
-      <mat-icon> {{ item.icon }} </mat-icon>
-      <span>{{ item.title }}</span>
-    </mat-list-item>
-    }
+    <mat-list-item>Home</mat-list-item>
+    <mat-list-item>Profile</mat-list-item>
   </mat-list>
-  <p footer>&copy; 2023</p>
+
+  <p footer>Footer Content</p>
 </plastik-core-cms-layout-ui-sidenav>
 ```
 
-## Running unit tests
+## Running Unit Tests
 
 Run `nx test core-cms-layout-ui-sidenav` to execute the unit tests.

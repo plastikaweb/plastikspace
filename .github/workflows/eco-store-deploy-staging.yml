@@ -1,0 +1,104 @@
+name: Eco Store deploy staging
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches:
+      - develop
+
+permissions:
+  contents: read
+  deployments: write
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    if: github.event.workflow_run.conclusion == 'success'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Detect changes
+        id: changes
+        env:
+          TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          PREV_SHA=$(git rev-parse "${TARGET_SHA}^" 2>/dev/null || echo "")
+          if [ -z "$PREV_SHA" ]; then
+            echo "::warning::Unable to resolve previous commit; defaulting to deploy."
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git diff --name-only "$PREV_SHA" "$TARGET_SHA" > changed_files.txt
+          echo "Changed files between $PREV_SHA and $TARGET_SHA:" || true
+          cat changed_files.txt || true
+
+          if grep -E '^(.github/workflows/eco-store-deploy-staging.yml|apps/eco-store/|libs/eco-store/|libs/shared/|libs/core/)' changed_files.txt > /dev/null; then
+            echo "Changes detected in app related paths."
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No app related changes detected."
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Skip deploy (no changes)
+        if: steps.changes.outputs.has_changes != 'true'
+        run: echo 'Skipping deploy because no related files changed.'
+
+      - name: Enable Corepack
+        if: steps.changes.outputs.has_changes == 'true'
+        run: corepack enable
+
+      - name: Setup Node.js
+        if: steps.changes.outputs.has_changes == 'true'
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: 'yarn'
+
+      - name: Install dependencies
+        if: steps.changes.outputs.has_changes == 'true'
+        run: yarn install --immutable --network-timeout 1000000
+
+      - name: Build application
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          yarn nx reset
+          yarn nx build-cf eco-store --configuration=staging --skip-nx-cache
+        timeout-minutes: 30
+
+      - name: Set Worker secrets
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "${{ secrets.POCKETBASE_STAGING_URL }}" | yarn wrangler secret put POCKETBASE_STAGING_URL -c apps/eco-store/wrangler.jsonc --name eco-store-staging
+          echo "${{ secrets.POCKETBASE_STAGING_ADMIN_EMAIL }}" | yarn wrangler secret put POCKETBASE_STAGING_ADMIN_EMAIL -c apps/eco-store/wrangler.jsonc --name eco-store-staging
+          echo "${{ secrets.POCKETBASE_STAGING_ADMIN_PASSWORD }}" | yarn wrangler secret put POCKETBASE_STAGING_ADMIN_PASSWORD -c apps/eco-store/wrangler.jsonc --name eco-store-staging
+
+      - name: Validate Cloudflare credentials
+        if: steps.changes.outputs.has_changes == 'true'
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}" ] || [ -z "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}" ]; then
+              echo "❌ Missing required Cloudflare credentials"
+              exit 1
+          fi
+
+      - name: Deploy to Cloudflare
+        if: steps.changes.outputs.has_changes == 'true'
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          yarn wrangler deploy -c apps/eco-store/wrangler.jsonc --name eco-store-staging

@@ -1,0 +1,32 @@
+@use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.reveal-up;
+
+:host {
+  --min-col-width: 200px;
+  --product-gap: 1.5rem;
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(var(--min-col-width), 100%), 1fr));
+    gap: var(--product-gap);
+    padding: 1.5rem;
+    /* Increased padding for larger shadows */
+    margin: -1.5rem;
+    /* Offset padding */
+
+    /* Ensure children can render shadows outside their bounds */
+    overflow: visible;
+
+    li {
+      overflow: visible;
+      transition: z-index 0.3s step-start;
+
+      &:hover {
+        z-index: 10;
+        transition: z-index 0.3s step-end;
+      }
+    }
+  }
+}

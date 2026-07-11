@@ -1,0 +1,45 @@
+<mat-form-field class="w-full" subscriptSizing="dynamic">
+  <mat-label [class.sr-only]="!props.showLabel">{{ props.label }}</mat-label>
+  <mat-icon matPrefix class="mr-2" aria-hidden="true">search</mat-icon>
+  <input
+    #searchInput
+    matInput
+    type="text"
+    [autocomplete]="props['autocomplete'] || 'off'"
+    [formControl]="formControl"
+    [formlyAttributes]="field"
+    [maxLength]="props.maxLength || 256"
+    [minLength]="props.minLength || 2"
+    [placeholder]="props.placeholder || ''"
+    [required]="props.required || false"
+    (input)="triggerPartialSearch($event)"
+    (keyup)="onKeyup($event)"
+    (keydown.enter)="triggerSearch($event)"
+    (keydown.escape)="$event.stopPropagation(); props.resetSearch && resetSearch()" />
+
+  @if (!props.noButton) {
+    <button
+      matIconButton
+      matSuffix
+      type="button"
+      [attr.aria-label]="'common.form.search' | translate"
+      [matTooltip]="'common.form.search' | translate"
+      [disabled]="isDisabled()"
+      (click)="triggerSearch($event)">
+      <mat-icon aria-hidden="true">search</mat-icon>
+    </button>
+  }
+  @if (props.resetSearch && formControl.value) {
+    <button
+      class="reset-search-button -left-2"
+      matIconButton
+      matSuffix
+      type="button"
+      [attr.aria-label]="'common.form.clear' | translate"
+      [matTooltip]="'common.form.clear' | translate"
+      [disabled]="formStatus() === 'INVALID' && !props.buttonEnabledIfValue"
+      (click)="resetSearch()">
+      <mat-icon aria-hidden="true">clear</mat-icon>
+    </button>
+  }
+</mat-form-field>

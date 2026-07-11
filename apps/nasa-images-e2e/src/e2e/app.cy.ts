@@ -2,7 +2,6 @@ const titleHeader = () => cy.getEl('layout-title');
 const toggleSidenavButton = () => cy.getEl('toggle-sidenav-button');
 // const toggleSidenavButtonIcon = () => toggleSidenavButton().children('mat-icon');
 const githubButton = () => cy.getEl('github-button');
-const githubButtonIcon = () => githubButton().children('svg-icon');
 
 const sidenav = () => cy.getEl('sidenav');
 // const sidenavList = () => cy.getEl('sidenav-list');
@@ -36,7 +35,6 @@ describe('nasa-images layout', () => {
         'href',
         'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md'
       );
-      githubButtonIcon().should('have.attr', 'ng-reflect-src', 'assets/svg/github.svg');
     });
   });
 

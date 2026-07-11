@@ -1,0 +1,12 @@
+{
+  "name": "data-access-pocketbase",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/signal-state/data-access-pocketbase/src",
+  "projectType": "library",
+  "tags": ["type:data-access", "scope:shared"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

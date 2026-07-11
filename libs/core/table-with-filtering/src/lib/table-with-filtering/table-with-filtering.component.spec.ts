@@ -1,4 +1,4 @@
-import { provideExperimentalZonelessChangeDetection, signal } from '@angular/core';
+import { provideZonelessChangeDetection, signal } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 
@@ -13,7 +13,7 @@ describe('TableWithFilteringComponent', () => {
     await TestBed.configureTestingModule({
       imports: [TableWithFilteringComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         provideRouter([]),
         {
           provide: TABLE_WITH_FILTERING_FACADE,

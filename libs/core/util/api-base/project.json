@@ -1,0 +1,16 @@
+{
+  "name": "core-util-api-base",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/core/util/api-base/src",
+  "prefix": "plastik",
+  "tags": ["scope:core", "type:util"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

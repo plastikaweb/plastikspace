@@ -1,0 +1,22 @@
+{
+  "plugins": {
+    "@tailwindcss/postcss": {},
+    "postcss-preset-env": {
+      "stage": false,
+      "features": {
+        "light-dark-function": true,
+        "color-mix": true
+      },
+      "preserve": true,
+      "browsers": [
+        "> 0.5%",
+        "last 2 major versions",
+        "not dead",
+        "ios_saf >= 15.8",
+        "safari >= 15",
+        "chrome >= 100",
+        "android >= 100"
+      ]
+    }
+  }
+}

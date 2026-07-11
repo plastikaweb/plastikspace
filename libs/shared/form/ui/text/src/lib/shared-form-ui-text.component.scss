@@ -1,0 +1,11 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  @include mat.icon-overrides(
+    (
+      color: var(--neutral-500),
+    )
+  );
+}

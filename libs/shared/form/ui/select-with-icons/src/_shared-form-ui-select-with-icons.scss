@@ -1,0 +1,65 @@
+@use '@angular/material' as mat;
+
+.select-with-icons-panel {
+  --mat-option-label-text-weight: 800;
+}
+
+.select-type-warning {
+  --mat-option-focus-state-layer-color: light-dark(var(--warning-50), var(--warning-800));
+  --mat-option-label-text-color: light-dark(var(--warning-800), var(--warning-300));
+  --mat-select-enabled-trigger-text-color: light-dark(var(--warning-800), var(--warning-800));
+  color: light-dark(var(--warning-800), var(--warning-300)) !important;
+
+  .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+    --mat-pseudo-checkbox-minimal-selected-checkmark-color: light-dark(
+      var(--warning-800),
+      var(--warning-300)
+    ) !important;
+  }
+
+  @include mat.icon-overrides(
+    (
+      color: light-dark(var(--warning-800), var(--warning-300)),
+    )
+  );
+}
+
+.select-type-success {
+  --mat-option-focus-state-layer-color: light-dark(var(--success-50), var(--success-800));
+  --mat-option-label-text-color: light-dark(var(--success-800), var(--success-300));
+  --mat-select-enabled-trigger-text-color: light-dark(var(--success-800), var(--success-800));
+  color: light-dark(var(--success-800), var(--success-300)) !important;
+
+  .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+    --mat-pseudo-checkbox-minimal-selected-checkmark-color: light-dark(
+      var(--success-800),
+      var(--success-300)
+    ) !important;
+  }
+
+  @include mat.icon-overrides(
+    (
+      color: light-dark(var(--success-800), var(--success-300)),
+    )
+  );
+}
+
+.select-type-error {
+  --mat-option-focus-state-layer-color: light-dark(var(--error-50), var(--error-800));
+  --mat-option-label-text-color: light-dark(var(--error-800), var(--error-300));
+  --mat-select-enabled-trigger-text-color: light-dark(var(--error-800), var(--error-800));
+  color: light-dark(var(--error-800), var(--error-300)) !important;
+
+  .mat-pseudo-checkbox-minimal.mat-pseudo-checkbox-checked::after {
+    --mat-pseudo-checkbox-minimal-selected-checkmark-color: light-dark(
+      var(--error-800),
+      var(--error-300)
+    ) !important;
+  }
+
+  @include mat.icon-overrides(
+    (
+      color: light-dark(var(--error-800), var(--error-300)),
+    )
+  );
+}

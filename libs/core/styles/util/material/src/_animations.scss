@@ -1,0 +1,214 @@
+/* ============================================================================= */
+/* Shared animation mixins */
+/* ----------------------------------------------------------------------------- */
+/* Each mixin emits its own utility class plus the keyframes it depends on. */
+/* Consumers `@use 'animations';` from a component-level .scss and `@include` */
+/* only the animations they actually use, so animations are tree-shaken into */
+/* the lazy chunks that need them instead of the global bootstrap bundle. */
+/* ============================================================================= */
+
+/* ----------------------------------------------------------------------------- */
+/* Premium utility animations (fade, bump, slide, reveal) */
+/* ----------------------------------------------------------------------------- */
+
+@mixin bump {
+  .bump {
+    animation: bump 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @at-root {
+    @keyframes bump {
+      0% {
+        transform: scale(1);
+      }
+      20% {
+        transform: scale(0.92);
+      }
+      50% {
+        transform: scale(1.08);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+  }
+}
+
+@mixin success-pop {
+  .success-pop {
+    animation: success-pop 600ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    transform-origin: center;
+  }
+
+  @at-root {
+    @keyframes success-pop {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@mixin fade-in($duration: 250ms) {
+  .fade-in {
+    animation: fade-in $duration cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @at-root {
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+@mixin fade-out($duration: 200ms) {
+  .fade-out {
+    animation: fade-out $duration cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @at-root {
+    @keyframes fade-out {
+      from {
+        opacity: 1;
+      }
+      to {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+@mixin slide-in {
+  .slide-in {
+    animation: slide-in 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @at-root {
+    @keyframes slide-in {
+      from {
+        transform: translateY(-100%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+@mixin slide-up {
+  .slide-up {
+    animation: slide-up 400ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @at-root {
+    @keyframes slide-up {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+  }
+}
+
+@mixin slide-out {
+  .slide-out {
+    animation: slide-out 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  @at-root {
+    @keyframes slide-out {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-100%);
+      }
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------------- */
+/* Structural / layout animations */
+/* ----------------------------------------------------------------------------- */
+
+@mixin banner-anim-leave {
+  .banner-anim-leave {
+    animation: grid-collapse 300ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+
+  @at-root {
+    @keyframes grid-collapse {
+      from {
+        grid-template-rows: 1fr;
+      }
+      to {
+        grid-template-rows: 0fr;
+      }
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------------- */
+/* Reveal entrance (used by hero headers and lists) */
+/* ----------------------------------------------------------------------------- */
+/* Generates the `.reveal-up` utility class. The per-element delay is read from
+/* a `--delay` CSS custom property so consumers can stagger via inline style or
+/* utility classes (`[--delay:50ms]`).
+/* ----------------------------------------------------------------------------- */
+
+@mixin reveal-up {
+  .reveal-up {
+    animation: reveal-up 400ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--delay, 0ms);
+  }
+
+  @at-root {
+    @keyframes reveal-up {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+/* ----------------------------------------------------------------------------- */
+/* View transitions */
+/* ----------------------------------------------------------------------------- */
+/* `::view-transition-*` pseudo-elements are document-level and cannot be
+/* scoped by Angular's view encapsulation, so this mixin must be included from
+/* a global stylesheet (e.g. the app's main `styles.scss`).
+/* ----------------------------------------------------------------------------- */
+
+@mixin view-transition-product-image {
+  ::view-transition-group(.product-image-transition) {
+    overflow: hidden;
+    border-radius: var(--app-main-border-radius);
+  }
+
+  ::view-transition-old(.product-image-transition),
+  ::view-transition-new(.product-image-transition) {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    border-radius: inherit;
+  }
+}

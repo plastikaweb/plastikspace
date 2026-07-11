@@ -1,0 +1,28 @@
+@use '@angular/material' as mat;
+@use 'core_tailwind_theme';
+
+:host {
+  @include mat.toolbar-overrides(
+    (
+      standard-height: 60px,
+      mobile-height: 50px,
+      container-background-color: var(--transparent),
+      container-text-color: light-dark(var(--primary-700), var(--primary-300)),
+      title-text-size: var(--text-label-large),
+      title-text-weight: var(--font-weight-medium),
+    )
+  );
+
+  @include mat.icon-overrides(
+    (
+      color: light-dark(var(--primary-600), var(--primary-400)),
+    )
+  );
+
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}

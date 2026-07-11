@@ -1,0 +1,12 @@
+{
+  "name": "data-access-http",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/signal-state/data-access-http/src",
+  "projectType": "library",
+  "tags": ["type:data-access", "scope:shared"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

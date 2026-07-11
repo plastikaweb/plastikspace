@@ -1,0 +1,35 @@
+@use '@angular/material' as mat;
+@use 'animations';
+
+@include animations.slide-in;
+
+:host {
+  display: block;
+
+  mat-toolbar {
+    @include mat.toolbar-overrides(
+      (
+        standard-height: 72px,
+        mobile-height: 64px,
+        title-text-weight: var(--font-weight-bold),
+        title-text-tracking: 0.01rem,
+        container-background-color: var(--translucid-bg),
+      )
+    );
+
+    /* Visual weight (border + shadow) lives on the parent <eco-header>
+       wrapper. Keeping them here too made the toolbar read as a card
+       nested inside another card. */
+    border-bottom: none;
+    box-shadow: none !important;
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease;
+  }
+
+  .header-icon {
+    height: 36px;
+    width: 36px;
+    font-size: 36px;
+  }
+}

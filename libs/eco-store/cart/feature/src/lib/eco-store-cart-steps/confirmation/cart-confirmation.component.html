@@ -1,0 +1,178 @@
+<eco-store-hero-header
+  icon="order_approve"
+  [subtitle]="'cart.summary.itemsCount' | translate: { value: cartStore.itemsCount() }"
+  [title]="'cart.confirmation.title' | translate" />
+
+<div class="grid grid-cols-1 gap-8 pb-8 md:grid-cols-3!">
+  <div
+    class="col-span-1! space-y-10 transition-all duration-100 md:col-span-2!"
+    [class.pointer-events-none]="cartStore.isSyncing()"
+    [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
+    <!-- Products in Cart -->
+    <section aria-labelledby="confirmation-products-title">
+      <div class="flex items-center justify-between">
+        <h3 id="confirmation-products-title" class="text-base font-bold tracking-wider uppercase">
+          {{ 'cart.confirmation.productsInCart' | translate }}
+        </h3>
+        <a
+          matButton="text"
+          class="inline-flex items-center text-sm font-medium"
+          [routerLink]="['../resum']">
+          <mat-icon class="scale-75!" aria-hidden="true">arrow_back</mat-icon>
+          {{ 'cart.confirmation.modifyCart' | translate }}
+        </a>
+      </div>
+
+      <div class="mt-2 flex flex-col gap-2">
+        @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+          @for (item of skeletonItems(); track $index) {
+            <div
+              aria-hidden="true"
+              class="bg-surface-container-high flex h-[134px] w-full animate-pulse rounded-2xl"></div>
+          }
+        } @else {
+          @for (item of cartStore.items(); track item.product.id; let i = $index) {
+            <eco-cart-product-card
+              [item]="item"
+              [isLcpImage]="i === 0"
+              [editable]="false"></eco-cart-product-card>
+          }
+        }
+      </div>
+    </section>
+
+    <!-- Delivery Summary -->
+
+    <section aria-labelledby="confirmation-delivery-title">
+      <div class="flex items-center justify-between">
+        <h3 id="confirmation-delivery-title" class="text-base font-bold tracking-wider uppercase">
+          {{ 'cart.confirmation.deliverySummary' | translate }}
+        </h3>
+        <a
+          matButton="text"
+          class="inline-flex items-center text-sm font-medium"
+          [routerLink]="['../enviament']">
+          <mat-icon class="scale-75!" aria-hidden="true">arrow_back</mat-icon>
+          {{ 'cart.confirmation.modifyDelivery' | translate }}
+        </a>
+      </div>
+
+      @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+        <div
+          aria-hidden="true"
+          class="bg-surface-container-high mt-4 h-32 w-full animate-pulse rounded-2xl"></div>
+      } @else {
+        <div
+          class="border-outline-variant bg-surface bg-surface-container mt-4 rounded-2xl border p-6 shadow-sm">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+            <div>
+              <span class="text-xs font-bold tracking-wider uppercase">
+                {{ 'cart.confirmation.deliveryMethod' | translate }}
+              </span>
+              <p class="mt-1 font-medium">
+                {{ 'cart.summary.' + cartStore.method() | translate }}
+              </p>
+            </div>
+
+            @if (cartStore.day() || cartStore.time()) {
+              <div>
+                <span class="text-xs font-bold tracking-wider uppercase">
+                  {{ 'cart.confirmation.deliveryTimeSlot' | translate }}
+                </span>
+                <p class="mt-1 font-medium">
+                  @if (cartStore.day()) {
+                    {{ 'cart.shipping.weekdaysLabels.' + cartStore.day() | translate }}
+                  }
+                  @if (cartStore.time(); as time) {
+                    {{ time }}
+                  }
+                </p>
+              </div>
+            }
+          </div>
+
+          @if (cartStore.address(); as address) {
+            <div class="border-outline-variant mt-6 border-t pt-6">
+              <span class="text-xs font-bold tracking-wider uppercase">
+                {{ 'cart.confirmation.deliveryAddress' | translate }}
+              </span>
+              <div class="mt-3 flex items-start gap-3">
+                <div
+                  class="bg-primary-50 dark:bg-primary-900 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
+                  <mat-icon class="text-primary-600 dark:text-primary-300" aria-hidden="true"
+                    >place</mat-icon
+                  >
+                </div>
+                <div class="space-y-0.5">
+                  <p class="text-lg font-black tracking-tight capitalize">
+                    {{ address.name }}
+                  </p>
+                  <p class="text-on-surface-variant font-medium">{{ address.address }}</p>
+                  <p class="text-on-surface-variant/70 text-sm font-medium">
+                    {{ address.zip }} {{ address.city }}
+                  </p>
+                  @if (address.phone) {
+                    <div
+                      class="text-primary-700 dark:text-primary-200 mt-3 flex items-center gap-2 text-sm font-bold">
+                      <mat-icon class="scale-75!" aria-hidden="true">phone</mat-icon>
+                      <span>{{ address.phone }}</span>
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    </section>
+
+    <!-- Notes -->
+    <section aria-labelledby="confirmation-notes-title">
+      <label
+        id="confirmation-notes-title"
+        for="confirmation-notes"
+        class="mb-2 block text-sm font-medium">
+        {{ 'cart.confirmation.notes' | translate }}
+      </label>
+      <plastik-shared-form-feature
+        [fields]="formConfig.getConfig()"
+        [model]="model()"
+        [submitConfig]="formConfig.getSubmitFormConfig?.() ?? null"
+        (temporaryChangeEvent)="onChange($event)">
+      </plastik-shared-form-feature>
+    </section>
+
+    <!-- Payment Notice -->
+    <section aria-labelledby="confirmation-payment-notice">
+      <plastik-shared-alert type="INFO">
+        <span id="confirmation-payment-notice" alert-title>{{
+          'cart.confirmation.paymentNotice' | translate
+        }}</span>
+        <span alert-subtitle>{{ 'cart.confirmation.paymentNoticeDescription' | translate }}</span>
+      </plastik-shared-alert>
+    </section>
+  </div>
+
+  <!-- Right Column: Order Summary (Sticky) -->
+  <aside
+    class="sticky top-16 space-y-6 self-start md:col-span-1"
+    [class.pointer-events-none]="cartStore.isSyncing()"
+    [class.opacity-60]="cartStore.isSyncing() && cartStore.isSynced()">
+    @if (cartStore.isSyncing() && !cartStore.isSynced()) {
+      <div aria-hidden="true" class="h-64 w-full animate-pulse rounded-3xl"></div>
+    } @else {
+      <eco-store-price-summary
+        [subtotal]="cartStore.subtotal()"
+        [taxes]="cartStore.tax()"
+        [total]="cartStore.total()"
+        [submitAvailable]="tenantStore.isStoreOpen() && cartStore.itemsCount() > 0"
+        [isStoreOpen]="tenantStore.isStoreOpen()"
+        [nextOpenDate]="tenantStore.nextOpenDate()"
+        [actionButtonText]="'cart.confirmation.confirmOrder'"
+        [shipping]="cartStore.shipping()"
+        [deliveryType]="cartStore.method() ?? 'pickup'"
+        (actionClick)="onConfirmOrder()">
+      </eco-store-price-summary>
+    }
+  </aside>
+</div>

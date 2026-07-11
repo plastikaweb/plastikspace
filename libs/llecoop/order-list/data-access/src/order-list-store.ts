@@ -8,23 +8,23 @@ import { signalStore, withComputed, withHooks, withMethods, withState } from '@n
 import { EntityId, SelectEntityId, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
 import { LlecoopOrder, LlecoopProduct, LlecoopUserOrder } from '@plastik/llecoop/entities';
-import {
-  initStoreFirebaseCrudState,
-  StoreFirebaseCrudFilter,
-  StoreFirebaseCrudPagination,
-  StoreFirebaseCrudState,
-  withFirebaseCrud,
-} from '@plastik/shared/signal-state-data-access';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
+import {
+  FirebaseCrudFilter,
+  FirebaseCrudPagination,
+  FirebaseCrudState,
+  initStoreFirebaseCrudState,
+  withFirebaseCrud,
+} from '@plastik/signal-state/firebase';
 
 import { LlecoopOrderListFireService } from './order-list-fire.service';
 
-export type StoreOrderListFilter = StoreFirebaseCrudFilter & {
+export type StoreOrderListFilter = FirebaseCrudFilter & {
   text: string;
   status: LlecoopOrder['status'] | '';
 };
 
-export type OrderListStoreFirebaseCrudState = StoreFirebaseCrudState<
+export type OrderListStoreFirebaseCrudState = FirebaseCrudState<
   LlecoopOrder,
   StoreOrderListFilter
 > & {
@@ -34,16 +34,16 @@ export type OrderListStoreFirebaseCrudState = StoreFirebaseCrudState<
   selectedItemCartLoaded: boolean;
   selectedItemUserFilter: StoreOrderListFilter;
   selectedItemUserSorting: TableSortingConfig;
-  selectedItemUserPagination: StoreFirebaseCrudPagination<LlecoopUserOrder>;
+  selectedItemUserPagination: FirebaseCrudPagination<LlecoopUserOrder>;
   availableProducts: LlecoopProduct[];
 };
 
 type SpecificOrderListStoreFirebaseCrudState = Omit<
   OrderListStoreFirebaseCrudState,
-  keyof StoreFirebaseCrudState<LlecoopOrder, StoreOrderListFilter>
+  keyof FirebaseCrudState<LlecoopOrder, StoreOrderListFilter>
 >;
 
-export const orderListMainInitState: StoreFirebaseCrudState<LlecoopOrder, StoreOrderListFilter> = {
+export const orderListMainInitState: FirebaseCrudState<LlecoopOrder, StoreOrderListFilter> = {
   ...initStoreFirebaseCrudState(),
   filter: {
     text: '',
@@ -81,7 +81,7 @@ export const llecoopOrderListStore = signalStore(
     LlecoopOrder,
     LlecoopOrderListFireService,
     StoreOrderListFilter,
-    StoreFirebaseCrudState<LlecoopOrder, StoreOrderListFilter>
+    FirebaseCrudState<LlecoopOrder, StoreOrderListFilter>
   >({
     featureName: 'order-list',
     dataServiceType: LlecoopOrderListFireService,
@@ -104,31 +104,41 @@ export const llecoopOrderListStore = signalStore(
       pipe(
         filter(() => !!store._activeConnection()),
         switchMap(order => {
+          // Share one groupKey across this order's status notifications so the optimistic +
+          // confirmation duplicates collapse to a single toast (and an error replaces the success).
+          const groupKey = `order-status:${order.id}`;
           store._storeNotificationService.create(
             `Estat de la comanda "${order['name']}" actualitzat correctament`,
-            'SUCCESS'
+            'SUCCESS',
+            { groupKey }
           );
 
           return store._dataService
-            .update({ ...order, status: order.status === 'progress' ? 'waiting' : 'progress' })
+            .update(order.id, {
+              ...order,
+              status: order.status === 'progress' ? 'waiting' : 'progress',
+            })
             .pipe(
               tapResponse({
                 next: () => {
                   store._storeNotificationService.create(
                     `Estat de la comanda "${order['name']}" actualitzat correctament`,
-                    'SUCCESS'
+                    'SUCCESS',
+                    { groupKey }
                   );
                 },
                 error: error =>
                   store._storeNotificationService.create(
                     `No s'ha pogut actualitzar l'estat de la comanda "${order['name']}": ${error}`,
-                    'ERROR'
+                    'ERROR',
+                    { groupKey }
                   ),
               }),
               tap(() =>
                 store._storeNotificationService.create(
                   `Estat de la comanda "${order['name']}" actualitzat correctament`,
-                  'SUCCESS'
+                  'SUCCESS',
+                  { groupKey }
                 )
               )
             );
@@ -139,28 +149,35 @@ export const llecoopOrderListStore = signalStore(
       pipe(
         filter(() => !!store._activeConnection()),
         switchMap(order => {
+          // Share one groupKey across this order's cancellation notifications so the optimistic +
+          // confirmation duplicates collapse to a single toast (and an error replaces the success).
+          const groupKey = `order-status:${order.id}`;
           store._storeNotificationService.create(
             `Estat de la comanda "${order['name']}" cancel·lada correctament`,
-            'SUCCESS'
+            'SUCCESS',
+            { groupKey }
           );
 
-          return store._dataService.update({ ...order, status: 'cancelled' }).pipe(
+          return store._dataService.update(order.id, { ...order, status: 'cancelled' }).pipe(
             tapResponse({
               next: () =>
                 store._storeNotificationService.create(
                   `Comanda "${order['name']}" cancel·lada correctament`,
-                  'SUCCESS'
+                  'SUCCESS',
+                  { groupKey }
                 ),
               error: error =>
                 store._storeNotificationService.create(
                   `No s'ha pogut cancel·lar la comanda "${order['name']}": ${error}`,
-                  'ERROR'
+                  'ERROR',
+                  { groupKey }
                 ),
             }),
             tap(() =>
               store._storeNotificationService.create(
                 `Estat de la comanda "${order['name']}" cancel·lada correctament`,
-                'SUCCESS'
+                'SUCCESS',
+                { groupKey }
               )
             )
           );
@@ -287,7 +304,7 @@ export const llecoopOrderListStore = signalStore(
         selectedItemUserSorting: sorting,
       }),
     setSelectedItemUserPagination: (
-      pagination: Pick<StoreFirebaseCrudPagination<LlecoopOrder>, 'pageIndex' | 'pageSize'>
+      pagination: Pick<FirebaseCrudPagination<LlecoopOrder>, 'pageIndex' | 'pageSize'>
     ) => {
       const newPagination = {
         pageSize: pagination.pageSize ?? store.selectedItemUserPagination().pageSize,
@@ -305,6 +322,7 @@ export const llecoopOrderListStore = signalStore(
   })),
   withHooks({
     onInit(store) {
+      store.getAvailableProducts();
       // let previousSelectedItemUserFilter = store.selectedItemUserFilter();
       // let previousSelectedItemUserSorting = store.selectedItemUserSorting();
       // let previousSelectedItemUserPagination = store.selectedItemUserPagination();

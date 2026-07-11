@@ -1,0 +1,16 @@
+{
+  "name": "eco-store-auth-feature-confirm-email-change",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/auth/feature/confirm-email-change/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["scope:eco-store", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

@@ -1,0 +1,56 @@
+<!-- Mobile/tablet: icon-only button -->
+<button
+  class="md:hidden!"
+  matIconButton
+  [matTooltip]="translationPrefix() + '.label' | translate"
+  [matMenuTriggerFor]="sortMenu"
+  [attr.aria-label]="translationPrefix() + '.label' | translate">
+  <mat-icon>{{ currentSortIcon() }}</mat-icon>
+</button>
+
+<!-- Desktop: label + chevron + current value + sort icon -->
+<button
+  class="hidden! items-center gap-1 md:flex!"
+  matButton
+  [matTooltip]="translationPrefix() + '.label' | translate"
+  [matMenuTriggerFor]="sortMenu">
+  <span>{{ translationPrefix() + '.label' | translate }}:</span>
+  <mat-icon>expand_more</mat-icon>
+  <span>{{
+    `${translationPrefix()}.${currentSort().active}${currentSort().direction.charAt(0).toUpperCase() + currentSort().direction.slice(1)}`
+      | translate
+  }}</span>
+  <mat-icon class="scale-90!">{{ currentSortIcon() }}</mat-icon>
+</button>
+
+<mat-menu #sortMenu="matMenu" class="sort-selector">
+  @for (option of options() | keyvalue: orderBy(); track option.key) {
+    @for (value of option.value; track value) {
+      <button
+        mat-menu-item
+        (click)="onSortChange({ active: option.key, direction: value.direction })">
+        @let selected =
+          currentSort().active === option.key && currentSort().direction === value.direction;
+        <mat-icon
+          matMenuItemIcon
+          [class.text-on-surface-variant]="selected"
+          [class.opacity-100]="selected"
+          [class.text-on-surface]="!selected"
+          [class.opacity-70]="!selected"
+          >{{ value.icon }}</mat-icon
+        >
+        <span
+          [class.font-bold]="selected"
+          [class.text-on-surface-variant]="selected"
+          [class.opacity-100]="selected"
+          [class.text-on-surface]="!selected"
+          [class.opacity-70]="!selected">
+          {{
+            `${translationPrefix()}.${option.key}${value.direction.charAt(0).toUpperCase() + value.direction.slice(1)}`
+              | translate
+          }}
+        </span>
+      </button>
+    }
+  }
+</mat-menu>

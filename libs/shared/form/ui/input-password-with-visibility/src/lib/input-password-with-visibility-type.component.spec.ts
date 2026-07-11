@@ -1,9 +1,10 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { FormlyModule } from '@ngx-formly/core';
 
 import { InputPasswordWithVisibilityTypeComponent } from './input-password-with-visibility-type.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 describe('InputPasswordWithVisibilityTypeComponent', () => {
   let component: InputPasswordWithVisibilityTypeComponent;
@@ -11,9 +12,10 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      providers: [provideExperimentalZonelessChangeDetection()],
+      providers: [provideZonelessChangeDetection()],
       imports: [
         ReactiveFormsModule,
+        TranslateModule.forRoot(),
         FormlyModule.forRoot({
           types: [
             {
@@ -55,5 +57,45 @@ describe('InputPasswordWithVisibilityTypeComponent', () => {
     component.hidePassword(event);
 
     expect(component.hiddenPass()).toBe(!initialVisibility);
+  });
+
+  it('should sync aria-label, tooltip and aria-pressed with visibility state', () => {
+    const button = fixture.nativeElement.querySelector('button');
+
+    expect(button.getAttribute('aria-label')).toBe('common.form.showPassword');
+    expect(button.getAttribute('aria-pressed')).toBe('false');
+
+    component.hidePassword(new Event('click'));
+    fixture.detectChanges();
+
+    expect(button.getAttribute('aria-label')).toBe('common.form.hidePassword');
+    expect(button.getAttribute('aria-pressed')).toBe('true');
+  });
+
+  it('should keep the visibility toggle in the keyboard tab order (A11Y-006, WCAG 2.1.1)', () => {
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+
+    // No `tabindex="-1"`: the native button stays reachable by keyboard.
+    expect(button.getAttribute('tabindex')).toBeNull();
+    expect(button.tabIndex).toBe(0);
+  });
+
+  it('should select the input content on focus when props.selectOnFocus is set', () => {
+    component.field.props = { ...component.field.props, selectOnFocus: true };
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    const selectSpy = vi.spyOn(input, 'select');
+
+    input.dispatchEvent(new FocusEvent('focus'));
+
+    expect(selectSpy).toHaveBeenCalled();
+  });
+
+  it('should NOT select the input content on focus by default', () => {
+    const input: HTMLInputElement = fixture.nativeElement.querySelector('input');
+    const selectSpy = vi.spyOn(input, 'select');
+
+    input.dispatchEvent(new FocusEvent('focus'));
+
+    expect(selectSpy).not.toHaveBeenCalled();
   });
 });

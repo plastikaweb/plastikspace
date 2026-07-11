@@ -6,6 +6,7 @@ interface ButtonBaseConfig {
   id: number;
   elements: ButtonElement[];
   ariaLabel: string;
+  tooltip?: string;
   classes?: string;
   dataTestId?: string;
   disabled?: boolean | Observable<boolean>;
@@ -13,7 +14,7 @@ interface ButtonBaseConfig {
   doAction?(): Action;
 }
 
-type ButtonConfigWithAction = Omit<ButtonBaseConfig, 'link'> & {
+export type ButtonConfigWithAction = Omit<ButtonBaseConfig, 'link'> & {
   type: 'button';
 };
 type ButtonConfigAsLink = Omit<ButtonBaseConfig, 'doAction'> & {

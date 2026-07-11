@@ -1,0 +1,69 @@
+@use '@angular/material' as mat;
+@use 'core_tailwind_theme';
+@use 'animations';
+
+@include animations.slide-out;
+@include animations.banner-anim-leave;
+
+:host {
+  @include mat.sidenav-overrides(
+    (
+      container-shape: 0,
+      container-width: 100dvw,
+      container-background-color: light-dark(var(--tertiary-100), var(--mat-sys-surface-container)),
+    )
+  );
+
+  @media (min-width: theme(--breakpoint-md)) {
+    @include mat.sidenav-overrides(
+      (
+        container-width: 20rem,
+        container-background-color: var(--transparent),
+      )
+    );
+  }
+
+  .mat-drawer-container {
+    background: var(--transparent);
+  }
+
+  /* Avoid animating layout properties (margin-left/right) on the content
+     pane: in `over` mode (mobile) the content does not shift, and in `side`
+     mode (desktop) we suppress drawer transitions altogether below. */
+  .mat-drawer-content {
+    transition: none !important;
+  }
+
+  .mat-drawer.mat-drawer-over {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) !important;
+    visibility: visible !important;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+  }
+
+  /* Mobile Sidenav Header */
+  .border-outline-variant {
+    background-color: light-dark(rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.1));
+    backdrop-filter: blur(8px);
+
+    @include mat.icon-overrides(
+      (
+        color: light-dark(var(--primary-700), var(--primary-300)),
+      )
+    );
+  }
+
+  /* Disable transitions on desktop to prevent"jump" when content loads */
+  @media (min-width: theme(--breakpoint-md)) {
+    .mat-drawer {
+      transition: none !important;
+    }
+
+    .mat-drawer-transition .mat-drawer {
+      transition: none !important;
+    }
+
+    .mat-drawer-transition .mat-drawer-content {
+      transition: none !important;
+    }
+  }
+}

@@ -1,0 +1,29 @@
+@use '@angular/material' as mat;
+
+:host {
+  --mobile-nav-icon-color: light-dark(var(--neutral-600), var(--neutral-300));
+  --mobile-nav-icon-fill: 0;
+
+  @include mat.button-overrides(
+    (
+      text-label-text-color: light-dark(var(--neutral-600), var(--neutral-300)),
+      text-with-icon-horizontal-padding: 0.25rem,
+      filled-hover-state-layer-opacity: 0.2,
+      filled-pressed-state-layer-opacity: 0.4,
+    )
+  );
+
+  .active {
+    --mobile-nav-icon-fill: 1;
+    --mobile-nav-icon-color: light-dark(var(--primary-700), var(--primary-300));
+
+    @include mat.button-overrides(
+      (
+        text-label-text-color: light-dark(var(--primary-700), var(--primary-300)),
+        text-label-text-weight: 800,
+      )
+    );
+
+    background-color: light-dark(var(--primary-100), var(--primary-900));
+  }
+}

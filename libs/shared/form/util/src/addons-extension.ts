@@ -33,6 +33,11 @@ export interface AddonConfig {
   type?: 'icon' | 'button' | 'text';
 
   /**
+   * Custom CSS classes for the addon
+   */
+  classes?: string | string[] | Set<string> | { [klass: string]: boolean | number | string };
+
+  /**
    * Whether the icon should be hidden from screen readers
    */
   ariaHidden?: boolean;

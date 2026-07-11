@@ -1,0 +1,119 @@
+<div
+  role="dialog"
+  class="flex flex-col gap-5 p-6 pb-12"
+  [attr.aria-label]="'common.pwa.title' | translate">
+  <!-- Drag handle -->
+  <div class="mx-auto h-1 w-10 rounded-full bg-[var(--mat-sys-outline-variant)] opacity-60"></div>
+
+  <!-- Identity: icon · name · tagline -->
+  <div class="flex items-center gap-4">
+    @if (data.logo) {
+      <plastik-img-container
+        class="h-12 w-12 shrink-0 object-cover"
+        [src]="data.logo"
+        [title]="data.name"
+        [lcpImage]="true"
+        [dimensions]="{ height: 50, width: 50 }" />
+    } @else if (data.defaultLogo) {
+      <span
+        class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--mat-sys-primary-container)] text-[var(--mat-sys-on-primary-container)] shadow-md">
+        <mat-icon class="scale-125" [svgIcon]="data.defaultLogo"></mat-icon>
+      </span>
+    }
+    <div class="min-w-0 flex-1">
+      <h2 class="text-xl leading-tight font-bold tracking-tight text-[var(--mat-sys-on-surface)]">
+        {{ data.name || ('common.pwa.title' | translate) }}
+      </h2>
+      <p class="mt-1 text-sm leading-snug text-[var(--mat-sys-on-surface-variant)]">
+        {{ 'common.pwa.description' | translate }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Content card -->
+  <div class="flex flex-col gap-4 bg-[var(--mat-sys-surface-container-low)] p-5">
+    @if (pwa.isIosAndNotSafari()) {
+      <!-- iOS not Safari: nudge to open in Safari -->
+      <div class="flex flex-col items-center gap-4 py-2 text-center">
+        <div
+          class="flex h-12 w-12 items-center justify-center rounded-full bg-[var(--mat-sys-primary-container)] text-[var(--mat-sys-on-primary-container)]">
+          <mat-icon svgIcon="safari" class="!h-6 !w-6"></mat-icon>
+        </div>
+        <p class="text-sm font-medium text-[var(--mat-sys-on-surface)]">
+          {{ 'common.pwa.iosSafariRequired' | translate }}
+        </p>
+        <button mat-flat-button class="w-full" (click)="close()">
+          {{ 'common.pwa.close' | translate }}
+        </button>
+      </div>
+    } @else {
+      @if (pwa.isIos()) {
+        <!-- iOS Safari: eyebrow + 3 connected steps -->
+        <p
+          class="text-[0.625rem] font-semibold tracking-[0.12em] text-[var(--mat-sys-primary)] uppercase">
+          {{ 'common.pwa.howToInstall' | translate }}
+        </p>
+        <ol class="flex flex-col">
+          <li class="relative flex items-center justify-start gap-3 pb-5">
+            <div
+              class="connector absolute top-6 bottom-0 left-3 w-px bg-[var(--mat-sys-outline-variant)]"></div>
+            <span
+              class="pwa-step-badge relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--mat-sys-primary)] text-xs font-bold text-[var(--mat-sys-on-primary)]"
+              >1</span
+            >
+            <p
+              class="grid grid-cols-[auto_1fr] items-center gap-1.5 pt-0.5 text-sm leading-none text-[var(--mat-sys-on-surface-variant)]">
+              @if (pwa.isOldIos()) {
+                {{ 'common.pwa.iosInstructionsStep1Old' | translate }}
+              } @else {
+                {{ 'common.pwa.iosInstructionsStep1' | translate }}
+              }
+              <mat-icon class="text-[var(--mat-sys-primary)]">ios_share</mat-icon>
+            </p>
+          </li>
+          <li class="relative flex items-center justify-start gap-3 pb-5">
+            <div
+              class="connector absolute top-6 bottom-0 left-3 w-px bg-[var(--mat-sys-outline-variant)]"></div>
+            <span
+              class="pwa-step-badge relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--mat-sys-primary)] text-xs font-bold text-[var(--mat-sys-on-primary)]"
+              >2</span
+            >
+            <p class="pt-0.5 text-sm text-[var(--mat-sys-on-surface-variant)]">
+              {{ 'common.pwa.iosInstructionsStep2' | translate }}
+            </p>
+          </li>
+          <li class="relative flex items-center justify-start gap-3">
+            <span
+              class="pwa-step-badge relative z-10 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[var(--mat-sys-primary)] text-xs font-bold text-[var(--mat-sys-on-primary)]"
+              >3</span
+            >
+            <p class="pt-0.5 text-sm text-[var(--mat-sys-on-surface-variant)]">
+              {{ 'common.pwa.iosInstructionsStep3' | translate }}
+            </p>
+          </li>
+        </ol>
+        <button matButton="filled" class="w-full" (click)="close()">
+          {{ 'common.pwa.close' | translate }}
+        </button>
+      } @else {
+        <!-- Android / Chrome: native prompt available — one tap to install -->
+        <div class="flex flex-row justify-end gap-4">
+          <button
+            matButton="filled"
+            class="w-full lg:w-auto"
+            [attr.aria-label]="'common.pwa.install' | translate"
+            (click)="install()">
+            {{ 'common.pwa.install' | translate }}
+          </button>
+          <button
+            matButton="outlined"
+            class="w-full lg:w-auto"
+            [attr.aria-label]="'common.pwa.later' | translate"
+            (click)="later()">
+            {{ 'common.pwa.later' | translate }}
+          </button>
+        </div>
+      }
+    }
+  </div>
+</div>

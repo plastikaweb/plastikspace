@@ -1,0 +1,115 @@
+@use '@angular/material' as mat;
+
+:host {
+  /* Subtle full border instead of an asymmetric chunky left border.
+     The variant colour still flows through `border-color` + the tinted
+     background + icon colour, so the alert reads as colour-coded without
+     the "side-tab accent" pattern flagged by AI-tell audits. */
+  border: 1px solid;
+
+  &.plastik-alert--info {
+    background-color: color-mix(
+      in srgb,
+      light-dark(var(--info-700), var(--info-100)) 12%,
+      transparent
+    );
+    border-color: color-mix(in srgb, light-dark(var(--info-700), var(--info-300)) 35%, transparent);
+    color: var(--mat-sys-on-surface);
+
+    .plastik-alert__icon {
+      color: light-dark(var(--info-700), var(--info-300));
+    }
+  }
+
+  &.closable {
+    padding-right: 4rem;
+  }
+
+  &.plastik-alert--warning {
+    background-color: color-mix(
+      in srgb,
+      light-dark(var(--warning-700), var(--warning-300)) 14%,
+      transparent
+    );
+    border-color: color-mix(
+      in srgb,
+      light-dark(var(--warning-700), var(--warning-300)) 35%,
+      transparent
+    );
+    color: var(--mat-sys-on-surface);
+
+    .plastik-alert__icon {
+      color: light-dark(var(--warning-700), var(--warning-300));
+    }
+  }
+
+  &.plastik-alert--success {
+    background-color: color-mix(
+      in srgb,
+      light-dark(var(--success-700), var(--success-300)) 12%,
+      transparent
+    );
+    border-color: color-mix(
+      in srgb,
+      light-dark(var(--success-700), var(--success-300)) 35%,
+      transparent
+    );
+    color: var(--mat-sys-on-surface);
+
+    .plastik-alert__icon {
+      color: light-dark(var(--success-700), var(--success-300));
+    }
+  }
+
+  &.plastik-alert--error {
+    background: color-mix(in srgb, light-dark(var(--error-700), var(--error-300)) 12%, transparent);
+    border-color: color-mix(
+      in srgb,
+      light-dark(var(--error-700), var(--error-300)) 35%,
+      transparent
+    );
+    color: var(--mat-sys-on-error-container);
+
+    .plastik-alert__icon {
+      color: light-dark(var(--error-700), var(--error-300));
+    }
+  }
+}
+
+.plastik-alert__icon {
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.plastik-alert__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.plastik-alert__title {
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.plastik-alert__subtitle {
+  font-size: 0.875rem;
+  opacity: 0.85;
+  line-height: 1.4;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.plastik-alert__secondary {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+
+  &:empty {
+    display: none;
+  }
+}

@@ -2,6 +2,8 @@ import {
   allAreFalsy,
   areObjectEntriesEqual,
   collectionToArray,
+  deepClone,
+  escapeHtml,
   getQueryParams,
   isEmpty,
   isNil,
@@ -152,10 +154,57 @@ describe('Object Util', () => {
       const result = areObjectEntriesEqual({ key: 'test' }, { key: 'test' });
       expect(result).toEqual(true);
     });
+
+    it('should return true for same object reference', () => {
+      const obj = { a: 1 };
+      expect(areObjectEntriesEqual(obj, obj)).toBe(true);
+    });
+
+    it('should return true for objects with same entries in different order', () => {
+      expect(areObjectEntriesEqual({ a: 1, b: 2 }, { b: 2, a: 1 })).toBe(true);
+    });
+
+    it('should return false for objects with different entry values', () => {
+      expect(areObjectEntriesEqual({ a: 1 }, { a: 2 })).toBe(false);
+    });
+
+    it('should return false for objects with different number of entries', () => {
+      expect(areObjectEntriesEqual({ a: 1 }, { a: 1, b: 2 })).toBe(false);
+    });
+
+    it('should return false for objects with different keys', () => {
+      expect(areObjectEntriesEqual({ a: 1 }, { b: 1 })).toBe(false);
+    });
+
+    it('should return false if one is null', () => {
+      expect(areObjectEntriesEqual({ a: 1 }, null as any)).toBe(false);
+    });
+
+    it('should return true if both are null', () => {
+      expect(areObjectEntriesEqual(null as any, null as any)).toBe(true);
+    });
+
+    it('should handle different types that stringify the same but are not equal', () => {
+      // My new implementation uses === so this should be false
+      expect(areObjectEntriesEqual({ a: 1 }, { a: '1' } as any)).toBe(false);
+    });
+
+    it('should return false when the first object has extra entries', () => {
+      expect(areObjectEntriesEqual({ a: 1, b: 2 }, { a: 1 })).toBe(false);
+    });
+
+    it('should ignore inherited enumerable properties (own keys only)', () => {
+      const proto = { inherited: 'value' };
+      const withInherited = Object.create(proto) as Record<string, unknown>;
+      withInherited['a'] = 1;
+      // `for...in` walks inherited keys too; the `hasOwnProperty` guard must skip `inherited`
+      // so the comparison matches `Object.keys()` (own-enumerable) semantics.
+      expect(areObjectEntriesEqual(withInherited, { a: 1 })).toBe(true);
+    });
   });
 
   describe('transformStringToBooleanProperties method', () => {
-    it('should return an object with properties with "true" of "false" values replaced with corresponding boolean values', () => {
+    it('should return an object with properties with "true" or "false" string values replaced with corresponding boolean values', () => {
       const result = transformStringToBooleanProperties({
         param1: 'false',
         param2: 'true',
@@ -242,5 +291,69 @@ describe('Object Util', () => {
         id: 3,
       },
     ]);
+  });
+
+  describe('escapeHtml method', () => {
+    it('should escape HTML special characters', () => {
+      const input = '& < > " \' / ` =';
+      const expected = '&amp; &lt; &gt; &quot; &#39; &#x2F; &#x60; &#x3D;';
+      expect(escapeHtml(input)).toBe(expected);
+    });
+
+    it('should return same string if no special characters', () => {
+      const input = 'Hello World 123';
+      expect(escapeHtml(input)).toBe(input);
+    });
+  });
+
+  describe('deepClone method', () => {
+    it('should return primitive values as-is', () => {
+      expect(deepClone(1)).toBe(1);
+      expect(deepClone('test')).toBe('test');
+      expect(deepClone(true)).toBe(true);
+      expect(deepClone(null)).toBe(null);
+      expect(deepClone(undefined)).toBe(undefined);
+    });
+
+    it('should clone arrays into a new, independent structure', () => {
+      const arr = [1, 2, [3, 4]];
+      const cloned = deepClone(arr);
+      expect(cloned).toEqual(arr);
+      expect(cloned).not.toBe(arr);
+      expect(cloned[2]).not.toBe(arr[2]);
+    });
+
+    it('should clone objects into a new, independent structure', () => {
+      const obj = { a: 1, b: { c: 2 } };
+      const cloned = deepClone(obj);
+      expect(cloned).toEqual(obj);
+      expect(cloned).not.toBe(obj);
+      expect(cloned.b).not.toBe(obj.b);
+    });
+
+    it('should clone Date objects', () => {
+      const date = new Date();
+      const cloned = deepClone(date);
+      expect(cloned).toEqual(date);
+      expect(cloned).not.toBe(date);
+      expect(cloned instanceof Date).toBe(true);
+    });
+
+    it('should clone RegExp objects', () => {
+      const regexp = /abc/g;
+      const cloned = deepClone(regexp);
+      expect(cloned).toEqual(regexp);
+      expect(cloned).not.toBe(regexp);
+      expect(cloned instanceof RegExp).toBe(true);
+    });
+
+    it('should copy only own-enumerable keys, not inherited ones', () => {
+      const proto = { inherited: 'nope' };
+      const source = Object.create(proto) as Record<string, unknown>;
+      source['own'] = 'yes';
+      const cloned = deepClone(source);
+      expect(cloned).toEqual({ own: 'yes' });
+      expect(Object.prototype.hasOwnProperty.call(cloned, 'inherited')).toBe(false);
+    });
   });
 });

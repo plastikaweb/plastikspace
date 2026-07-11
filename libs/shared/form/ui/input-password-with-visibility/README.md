@@ -7,7 +7,7 @@
   - [Description](#description)
   - [Usage](#usage)
     - [HTML Element](#html-element)
-    - [Module Setup](#module-setup)
+    - [Provider Setup](#provider-setup)
     - [Formly Configuration](#formly-configuration)
     - [Basic Example](#basic-example)
   - [API Reference](#api-reference)
@@ -27,12 +27,13 @@ A formly controller to pick up a password with a visibility toggle. It provides 
 
 `<plastik-input-password-with-visibility-type>`
 
-### Module Setup
+### Provider Setup
 
-To use the `input-password-with-visibility` type, you need to import the following modules in your component:
+To use the `input-password-with-visibility` type, you need to add the following to your component or route providers:
 
-- `PasswordWithVisibilityFormlyModule`
-- [SharedFormFeatureModule](../../feature/README.md)
+- `providePasswordWithVisibilityFormly()`
+
+This provider handles the registration of the Formly field type and its associated validators (`password` and `passwordMatch`).
 
 ### Formly Configuration
 
@@ -70,6 +71,14 @@ interface PasswordWithVisibilityProps extends FormlyFieldProps {
    * @default 12
    */
   maxLength: number;
+
+  /**
+   * Select the (masked) input content whenever the field receives focus,
+   * so the user can retype it straight away — useful when re-focusing the
+   * field after a server-side rejection (e.g. wrong current password).
+   * @default false
+   */
+  selectOnFocus?: boolean;
 }
 ```
 
@@ -81,10 +90,10 @@ Returns a string containing the password value.
 
 ### Common Issues
 
-1. Password visibility toggle not working: Ensure the required modules are properly imported
-2. Validation not working: Check if minLength and maxLength are properly set
-3. Form submission issues: Verify the form is properly initialized
+1. **Password visibility toggle not working**: Ensure `providePasswordWithVisibilityFormly()` is properly included in the providers.
+2. **Validation not working**: Check if `minLength` and `maxLength` are properly set.
+3. **Translation missing**: The validators use `registerAuthValidatorsTranslateExtension` internally via the provider. Ensure your i18n files have the required keys.
 
 ## Running unit tests
 
-Run `nx test input-password-with-visibility` to execute the unit tests.
+Run `nx test input-password-with-visibility` to execute the unit tests via Vitest.

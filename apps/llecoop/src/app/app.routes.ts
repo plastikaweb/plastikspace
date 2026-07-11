@@ -1,15 +1,5 @@
 import { Routes } from '@angular/router';
-import { isLoggedGuard, isNotLoggedGuard } from '@plastik/auth/firebase/data-access';
-
-// const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
-
-// const redirectLoggedInAndVerifiedToHome = () => map((user: User) => {
-//   return !user.uid || !user.emailVerified ? ['login'] : ['']
-// });
-// const redirectLoggedOutOrNoVerifiedToLogin = () => map((user: User) => {
-//   console.log('user', user);
-//   return user?.uid && user?.emailVerified ? [''] : ['login']
-// });
+import { isNotLoggedGuard } from '@plastik/auth/firebase/data-access';
 
 export const appRoutes: Routes = [
   {
@@ -22,7 +12,8 @@ export const appRoutes: Routes = [
       nameLink: 'https://www.llevat.org',
     },
     canActivate: [isNotLoggedGuard],
-    loadChildren: () => import('@plastik/auth/login').then(routes => routes.authLoginFeatureRoutes),
+    loadChildren: () =>
+      import('@plastik/auth/login/firebase').then(routes => routes.firebaseAuthLoginFeatureRoutes),
   },
   {
     path: 'registre',
@@ -56,7 +47,6 @@ export const appRoutes: Routes = [
   },
   {
     path: '',
-    canActivate: [isLoggedGuard],
     loadChildren: () =>
       import('@plastik/llecoop/cms-layout').then(routes => routes.llecoopLayoutRoutes),
   },

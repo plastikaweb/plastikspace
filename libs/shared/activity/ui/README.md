@@ -1,6 +1,9 @@
-# shared-activity-ui
+# @plastik/shared/activity/ui
 
-- [shared-activity-ui](#shared-activity-ui)
+![Nx](https://img.shields.io/badge/nx-143055?style=for-the-badge&logo=nx&logoColor=white)
+![Angular](https://img.shields.io/badge/angular-%23DD0031.svg?style=for-the-badge&logo=angular&logoColor=white)
+
+- [@plastik/shared/activity/ui](#plastiksharedactivityui)
   - [Description](#description)
   - [Linear](#linear)
     - [HTML element](#html-element)
@@ -12,11 +15,11 @@
     - [Content projection](#content-projection)
     - [Examples](#examples-1)
   - [Running unit tests](#running-unit-tests)
-  - [Useful links](#useful-links)
+  - [Resources](#resources)
 
 ## Description
 
-Shared activity indicators to indicate some activity.
+Shared **activity indicators** to indicate some activity (loading states).
 
 ## Linear
 
@@ -26,34 +29,34 @@ Shared activity indicators to indicate some activity.
 
 ### Inputs
 
-| Name     | Type              | Description                                                                                     | Default         |
-| -------- | ----------------- | ----------------------------------------------------------------------------------------------- | --------------- |
-| `active` | `boolean`         | Adds active class to indicator, that should be styled to show some kind of activity.            | false           |
-| `mode`   | `ProgressBarMode` | Sets the type of material progress bar ('determinate' \| indeterminate' \| 'buffer' \| 'query') | 'indeterminate' |
+| Name     | Type              | Description                                                                                     | Default           |
+| :------- | :---------------- | :---------------------------------------------------------------------------------------------- | :---------------- |
+| `active` | `boolean`         | Adds active class to indicator, that should be styled to show some kind of activity.            | `false`           |
+| `mode`   | `ProgressBarMode` | Sets the type of material progress bar ('determinate' \| indeterminate' \| 'buffer' \| 'query') | `'indeterminate'` |
 
 ### Examples
 
 Use the shared component into a parent component.
 
-- Import it into your app or feature module.
+1. Import it into your app or feature module.
 
-```typescript
-import { SharedActivityUiLinearComponent } from '@plastik/shared/activity/ui';
+   ```typescript
+   import { SharedActivityUiLinearComponent } from '@plastik/shared/activity/ui';
 
-@Component({
-  selector: 'parent',
+   @Component({
+     selector: 'parent',
+     imports: [SharedActivityUiLinearComponent],
+     templateUrl: './parent.component.html',
+   })
+   export class ParentComponent {}
+   ```
 
-  imports: [SharedActivityUiLinearComponent],
-  templateUrl: './parent.component.html',
-})
-export class ParentComponent {}
-```
+2. Add the shared component into your component template.
 
-- Add the shared component into your component template.
-
-```html
-<plastik-shared-activity-ui-linear [active]="active$ | async"></plastik-shared-activity-ui-linear>
-```
+   ```html
+   <plastik-shared-activity-ui-linear
+     [active]="active$ | async"></plastik-shared-activity-ui-linear>
+   ```
 
 ### How to style
 
@@ -75,40 +78,39 @@ You can overwrite the styles from your main application declaring these CSS vari
 ### Content projection
 
 | Selector | Description                                                               |
-| -------- | ------------------------------------------------------------------------- |
+| :------- | :------------------------------------------------------------------------ |
 | ``       | Add any html inside the element, like text or any loading style animation |
 
 ### Examples
 
 Use the shared component into a parent component.
 
-- Import it into your app or feature module.
+1. Import it into your app or feature module.
 
-```typescript
-import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
+   ```typescript
+   import { SharedActivityUiOverlayComponent } from '@plastik/shared/activity/ui';
 
-@Component({
-  selector: 'parent',
+   @Component({
+     selector: 'parent',
+     imports: [SharedActivityUiOverlayComponent],
+     templateUrl: './parent.component.html',
+   })
+   export class ParentComponent {}
+   ```
 
-  imports: [SharedActivityUiOverlayComponent],
-  templateUrl: './parent.component.html',
-})
-export class ParentComponent {}
-```
+2. Add the shared component into your component template.
 
-- Add the shared component into your component template.
-
-```html
-<plastik-shared-activity-ui-overlay *ngrxLet="active$">
-  Loading...
-</plastik-shared-activity-ui-overlay>
-```
+   ```html
+   <plastik-shared-activity-ui-overlay *ngrxLet="active$">
+     Loading...
+   </plastik-shared-activity-ui-overlay>
+   ```
 
 ## Running unit tests
 
 Run `nx test shared-activity-ui` to execute the unit tests.
 
-## Useful links
+## Resources
 
 - [Material Progress Bar](https://material.angular.io/components/progress-bar/overview)
 - [The Four Ways To Create Loading Spinners In An Angular App](https://christianlydemann.com/four-ways-to-create-loading-spinners-in-an-angular-app/)

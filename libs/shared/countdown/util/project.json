@@ -1,0 +1,19 @@
+{
+  "name": "shared-countdown-util",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/countdown/util/src",
+  "prefix": "plastik",
+  "projectType": "library",
+  "tags": ["scope:shared", "type:util"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "options": {
+        "lintFilePatterns": ["libs/shared/countdown/util/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/vitest:test"
+    }
+  }
+}

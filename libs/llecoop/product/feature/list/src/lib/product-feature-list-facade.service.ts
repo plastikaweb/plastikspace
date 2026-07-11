@@ -7,17 +7,20 @@ import { TableWithFilteringFacade } from '@plastik/core/list-view';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { llecoopProductStore, StoreProductFilter } from '@plastik/llecoop/product/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+import { escapeHtml } from '@plastik/shared/objects';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { SortConfig } from '@plastik/core/entities';
 import { LlecoopProductSearchFeatureFormConfig } from './product-feature-search-form.config';
 import { LlecoopProductSearchFeatureTableConfig } from './product-feature-table.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopProductListFacadeService
-  implements TableWithFilteringFacade<LlecoopProduct, StoreProductFilter>
-{
+export class LlecoopProductListFacadeService implements TableWithFilteringFacade<
+  LlecoopProduct,
+  StoreProductFilter
+> {
   readonly #productStore = inject(llecoopProductStore);
   readonly #table = inject(LlecoopProductSearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
@@ -43,7 +46,7 @@ export class LlecoopProductListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',
@@ -55,12 +58,12 @@ export class LlecoopProductListFacadeService
       this.#confirmService
         .confirm(
           'Eliminar producte',
-          `Segur que vols eliminar "${item.name}"?`,
+          `Segur que vols eliminar "${escapeHtml(item.name)}"?`,
           'Cancel·lar',
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#productStore.delete(item));
+        .subscribe(() => this.#productStore.delete(item.id));
     }
   }
 }

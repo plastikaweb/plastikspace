@@ -1,0 +1,106 @@
+<div class="mx-auto flex h-screen w-screen flex-col">
+  @if (!isMobile() || !isSidenavOpen()) {
+    <ng-container *ngTemplateOutlet="headerContent"></ng-container>
+  }
+
+  <mat-sidenav-container
+    class="content-container ng-animate-disabled flex-1"
+    [class.z-10]="isMobile()">
+    @if (hasSidenav()) {
+      <mat-sidenav
+        #sidenav
+        position="start"
+        fixedInViewport="true"
+        [autoFocus]="false"
+        [mode]="isMobile() ? 'over' : 'side'"
+        [fixedTopGap]="isMobile() ? 0 : 85"
+        [fixedBottomGap]="isMobile() ? 0 : 100"
+        [opened]="isSidenavOpen()"
+        (keydown.escape)="isSidenavOpen.set(false)"
+        (closedStart)="isSidenavOpen.set(false)">
+        @if (isMobile()) {
+          <div class="border-outline-variant flex items-center justify-between border-b px-4 py-3">
+            @defer (on viewport) {
+              <eco-tenant-logo showName="always" [tenant]="tenantStore.tenant()" />
+            } @placeholder {
+              <div class="bg-surface-variant h-8 animate-pulse rounded"></div>
+            }
+
+            @defer (on viewport) {
+              @if (isTranslationReady()) {
+                <button
+                  matIconButton
+                  [attr.aria-label]="'common.a11y.closeSidenav' | translate"
+                  [matTooltip]="'common.a11y.closeSidenav' | translate"
+                  (click)="isSidenavOpen.set(false)">
+                  <mat-icon>close</mat-icon>
+                </button>
+              }
+            } @placeholder {
+              <div class="bg-surface-variant h-8 w-8 animate-pulse rounded"></div>
+            }
+          </div>
+        }
+
+        <div class="h-full overflow-y-auto">
+          <router-outlet name="sidenav"></router-outlet>
+        </div>
+      </mat-sidenav>
+    }
+
+    <mat-sidenav-content
+      #sidenavContent
+      class="flex flex-col overflow-hidden!"
+      tabindex="-1"
+      [class.overflow-y-auto!]="!activityStore.isActive()">
+      @if (isMobile() && isSidenavOpen()) {
+        <ng-container *ngTemplateOutlet="headerContent"></ng-container>
+      }
+      <main
+        id="mainContent"
+        tabindex="-1"
+        role="main"
+        class="mt-28 mb-0 flex min-h-[calc(100dvh-76px)] flex-1 flex-col overflow-y-hidden px-4 sm:px-8">
+        <router-outlet></router-outlet>
+
+        <div class="mt-auto mb-24 md:mb-0">
+          <mat-divider></mat-divider>
+
+          @defer (on viewport; prefetch on idle) {
+            <eco-footer [tenant]="tenantStore.tenant()" />
+          } @placeholder {
+            <div aria-hidden="true" class="hidden"></div>
+          }
+        </div>
+      </main>
+
+      @defer (when isMobile()) {
+        <eco-mobile-nav />
+      }
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>
+
+<eco-menu #menu />
+
+<ng-template #headerContent>
+  <eco-header
+    class="border-outline-variant fixed z-10 block w-full border-b shadow-md backdrop-blur-md backdrop-saturate-150"
+    [formConfig]="searchFormConfig"
+    [tenant]="tenantStore.tenant()"
+    [storeStatus]="tenantStore.storeStatus()"
+    [nextOpenDate]="tenantStore.nextOpenDate()"
+    [is24h]="tenantStore.is24h()"
+    [closedReason]="tenantStore.closedReasonTranslated()"
+    [sideNavOpen]="isSidenavOpen()"
+    [isMobile]="isMobile()"
+    [hasSidenav]="hasSidenav()"
+    [isTrial]="profileStore.isTrial()"
+    [trialDaysLeft]="profileStore.trialDaysLeft()"
+    [isTrialExpired]="profileStore.isTrialExpired()"
+    (toggleSidenav)="isSidenavOpen.set(!isSidenavOpen())"
+    (submitEvent)="onSearchSubmit()">
+    <ng-container primaryMenu [ngTemplateOutlet]="menu.primaryMenu()" />
+    <ng-container secondaryMenu [ngTemplateOutlet]="menu.secondaryMenu()" />
+  </eco-header>
+</ng-template>

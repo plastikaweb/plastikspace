@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { QueryConstraint, where } from '@angular/fire/firestore';
 import { LlecoopProduct } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
-import { EntityFireService } from '@plastik/shared/signal-state-data-access';
+import { EntityFireService } from '@plastik/signal-state/firebase';
 
 import { StoreProductFilter } from './product-store';
 

@@ -1,0 +1,34 @@
+<section class="flex max-w-[650px] flex-col gap-6">
+  <p class="text-on-surface/80 text-md">{{ 'profile.accessSecurity.description' | translate }}</p>
+
+  <h3 class="text-on-surface flex items-center gap-2 text-lg font-bold">
+    <mat-icon aria-hidden="true" class="text-primary">mail</mat-icon>
+    {{ 'profile.accessSecurity.email.title' | translate }}
+  </h3>
+
+  <p class="text-on-surface text-sm">
+    {{ 'profile.accessSecurity.email.currentLabel' | translate }}:
+    <strong>{{ currentEmail() }}</strong>
+  </p>
+
+  <plastik-shared-form-feature
+    [fields]="emailFormConfig().getConfig()"
+    [submitConfig]="emailFormConfig().getSubmitFormConfig?.() || {}"
+    [resetForm]="emailFormReset()"
+    (changeEvent)="onEmailSubmit($event)">
+  </plastik-shared-form-feature>
+
+  <hr class="border-outline-variant" />
+
+  <h3 class="text-on-surface flex items-center gap-2 text-lg font-bold">
+    <mat-icon aria-hidden="true" class="text-primary">lock</mat-icon>
+    {{ 'profile.accessSecurity.password.title' | translate }}
+  </h3>
+
+  <plastik-shared-form-feature
+    [fields]="passwordFormConfig.getConfig()"
+    [submitConfig]="passwordFormConfig.getSubmitFormConfig?.() || {}"
+    [resetForm]="passwordFormReset()"
+    (changeEvent)="onPasswordSubmit($event)">
+  </plastik-shared-form-feature>
+</section>

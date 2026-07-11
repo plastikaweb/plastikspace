@@ -4,20 +4,23 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { VIEW_CONFIG } from '@plastik/core/cms-layout/data-access';
 import { TableWithFilteringFacade } from '@plastik/core/list-view';
-import { llecoopCategoryStore, StoreCategoryFilter } from '@plastik/llecoop/category/data-access';
+import { CategoryFilter, llecoopCategoryStore } from '@plastik/llecoop/category/data-access';
 import { LlecoopProductCategory } from '@plastik/llecoop/entities';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+import { escapeHtml } from '@plastik/shared/objects';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { SortConfig } from '@plastik/core/entities';
 import { getLlecoopCategorySearchFeatureFormConfig } from './category-feature-search-form.config';
 import { LlecoopCategorySearchFeatureTableConfig } from './category-feature-table.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopCategoryListFacadeService
-  implements TableWithFilteringFacade<LlecoopProductCategory, StoreCategoryFilter>
-{
+export class LlecoopCategoryListFacadeService implements TableWithFilteringFacade<
+  LlecoopProductCategory,
+  CategoryFilter
+> {
   readonly #categoryStore = inject(llecoopCategoryStore);
   readonly #table = inject(LlecoopCategorySearchFeatureTableConfig);
   readonly #confirmService = inject(SharedConfirmDialogService);
@@ -29,7 +32,7 @@ export class LlecoopCategoryListFacadeService
   filterFormConfig = getLlecoopCategorySearchFeatureFormConfig();
   filterCriteria = this.#categoryStore.filter;
 
-  onChangeFilterCriteria(criteria: StoreCategoryFilter): void {
+  onChangeFilterCriteria(criteria: CategoryFilter): void {
     this.#router.navigate([], {
       queryParams: { ...criteria, pageIndex: 0 },
       queryParamsHandling: 'merge',
@@ -43,7 +46,7 @@ export class LlecoopCategoryListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',
@@ -55,12 +58,12 @@ export class LlecoopCategoryListFacadeService
       this.#confirmService
         .confirm(
           'Eliminar categoria',
-          `Segur que vols eliminar "${item.name}"?`,
+          `Segur que vols eliminar "${escapeHtml(item.name)}"?`,
           'Cancel·lar',
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#categoryStore.delete(item));
+        .subscribe(() => this.#categoryStore.delete(item.id));
     }
   }
 }

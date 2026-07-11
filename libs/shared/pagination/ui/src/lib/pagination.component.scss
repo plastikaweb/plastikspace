@@ -1,0 +1,38 @@
+@use '@angular/material' as mat;
+
+:host {
+  @include mat.paginator-overrides(
+    (
+      container-background-color: var(--transparent),
+    )
+  );
+
+  @include mat.form-field-overrides(
+    (
+      outlined-container-shape: var(--app-main-border-radius),
+    )
+  );
+
+  ::ng-deep {
+    .mat-mdc-paginator-container {
+      justify-content: center;
+    }
+
+    @media (max-width: 640px) {
+      .mat-mdc-paginator-container {
+        flex-wrap: nowrap !important;
+        padding: 0 !important;
+      }
+
+      .mat-mdc-paginator-page-size-label {
+        display: none !important;
+      }
+
+      .mat-mdc-paginator-page-size,
+      .mat-mdc-paginator-page-size-select {
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,105 @@
+<div class="flex items-center justify-center px-4 py-8 md:py-16">
+  @if (isLoading()) {
+    <div
+      aria-hidden="true"
+      class="finish-card w-full max-w-3xl animate-pulse space-y-8 px-6 py-4 md:px-12 md:py-8">
+      <div class="bg-surface-container-high mx-auto h-24 w-24 rounded-full"></div>
+      <div class="bg-surface-container-high mx-auto h-10 w-3/4 rounded"></div>
+      <div class="bg-surface-container-high mx-auto h-6 w-1/2 rounded"></div>
+      <div
+        class="border-outline-variant bg-surface-container bg-surface mx-auto h-48 w-48 rounded-full border-4"></div>
+      <div class="space-y-4">
+        @for (i of [1, 2, 3]; track i) {
+          <div class="bg-surface-container-high h-6 w-full rounded"></div>
+        }
+      </div>
+      <div class="flex flex-col gap-4 sm:flex-row sm:justify-center">
+        <div class="bg-surface-variant bg-surface-container h-12 w-full rounded-xl sm:w-40"></div>
+        <div class="bg-surface-variant bg-surface-container h-12 w-full rounded-xl sm:w-40"></div>
+      </div>
+    </div>
+  } @else {
+    <mat-card
+      appearance="outlined"
+      class="finish-card reveal-up relative max-w-3xl px-6 py-4 md:px-12 md:py-8">
+      <!-- Eco Confetti -->
+      <div
+        class="confetti-container pointer-events-none absolute inset-0 overflow-hidden"
+        aria-hidden="true">
+        @for (i of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]; track i) {
+          <div
+            class="confetti-petal"
+            [style.--delay]="i * 150 + 'ms'"
+            [style.--left]="i * 8 + '%'"></div>
+        }
+      </div>
+
+      <mat-card-content>
+        <div class="flex justify-center">
+          <div
+            class="bg-sys-primary-container success-pop flex items-center justify-center rounded-full p-4">
+            <mat-icon class="scale-200" aria-hidden="true">check</mat-icon>
+          </div>
+        </div>
+
+        <!-- Thank You Title -->
+        <h2 class="mt-6 text-center text-2xl font-bold tracking-tight md:text-3xl lg:mt-10">
+          {{ 'cart.finish.title' | translate }}
+        </h2>
+
+        <!-- Order Number -->
+        @if (orderNumber(); as orderNum) {
+          <p class="mt-2 text-center text-base">
+            {{ 'cart.finish.orderNumber' | translate }}
+            <strong class="text-on-surface">{{ orderNum }}</strong>
+          </p>
+        }
+
+        <!-- Eco Badge -->
+        <div
+          class="order-confirmation-eco-badge animate-float border-sys-secondary mx-auto my-6 flex h-32 w-32 justify-center overflow-hidden rounded-full border-2 bg-transparent">
+          <plastik-img-container
+            src="local/img/producte-local.png"
+            class="relative h-32 w-32 rounded-full bg-transparent object-cover"
+            [dimensions]="{ width: 120, height: 120 }"
+            [title]="'cart.finish.ecoBadgeAlt' | translate" />
+        </div>
+
+        <ul class="mx-auto mt-8 flex list-none flex-col gap-5 p-0">
+          <li class="flex items-start gap-3 text-left">
+            <mat-icon class="mt-0.5 shrink-0" aria-hidden="true">check_circle</mat-icon>
+            <span class="text-body-large text-on-surface">
+              {{ 'cart.finish.emailNotice' | translate }} <strong>{{ userEmail() }}</strong>
+            </span>
+          </li>
+
+          <li class="flex items-start gap-3 text-left">
+            <mat-icon class="mt-0.5 shrink-0" aria-hidden="true">schedule</mat-icon>
+            <span class="text-body-medium text-on-surface">
+              {{ 'cart.finish.orderReadyNotification' | translate }}
+            </span>
+          </li>
+
+          <li class="flex items-start gap-3 text-left">
+            <mat-icon class="mt-0.5 shrink-0" aria-hidden="true">info</mat-icon>
+            <span class="text-body-medium text-on-surface font-bold">
+              {{ 'cart.finish.modifyReminder' | translate }}
+            </span>
+          </li>
+        </ul>
+
+        <!-- Action Buttons -->
+        <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+          <a matButton="outlined" routerLink="/comandes">
+            <mat-icon aria-hidden="true">list_alt</mat-icon>
+            {{ 'cart.finish.ordersHistory' | translate }}
+          </a>
+          <a matButton="filled" routerLink="/botiga">
+            <mat-icon aria-hidden="true">storefront</mat-icon>
+            {{ 'cart.finish.backToStore' | translate }}
+          </a>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

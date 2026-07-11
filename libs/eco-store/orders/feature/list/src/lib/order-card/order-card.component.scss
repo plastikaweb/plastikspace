@@ -1,0 +1,30 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+
+  .delete-button {
+    &:hover {
+      @include mat.icon-overrides(
+        (
+          color: light-dark(var(--error-500), var(--error-300)),
+        )
+      );
+      @include mat.icon-button-overrides(
+        (
+          icon-color: light-dark(var(--error-500), var(--error-300)),
+          state-layer-color: light-dark(var(--error-500), var(--error-300)),
+        )
+      );
+    }
+  }
+
+  .delivery-icon,
+  .products-icon {
+    @include mat.icon-overrides(
+      (
+        color: light-dark(var(--neutral-800), var(--neutral-300)),
+      )
+    );
+  }
+}

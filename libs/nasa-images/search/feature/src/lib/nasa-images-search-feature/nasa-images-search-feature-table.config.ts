@@ -34,10 +34,7 @@ const id: TableColumnFormatting<NasaImage, 'TEXT'> = {
   key: 'id',
   title: 'ID',
   pathToKey: 'id',
-  cssClasses: [
-    'min-w-[12rem] hidden md:flex lg:min-w-[14rem]',
-    'text-sm text-white bg-secondary-dark rounded-md p-tiny',
-  ],
+  cssClasses: ['min-w-[12rem] hidden md:flex lg:min-w-[14rem]', 'text-sm rounded-md p-tiny'],
   formatting: {
     type: 'TEXT',
   },
@@ -78,7 +75,7 @@ const thumbnail: TableColumnFormatting<NasaImage, 'COMPONENT', SharedImgContaine
   key: 'thumbnail',
   title: 'Image',
   pathToKey: 'thumbnail',
-  cssClasses: ['relative', 'object-cover'],
+  cssClasses: ['relative h-24 w-40', 'object-cover'],
   formatting: {
     type: 'COMPONENT',
     execute: (src, image, index) =>
@@ -89,6 +86,7 @@ const thumbnail: TableColumnFormatting<NasaImage, 'COMPONENT', SharedImgContaine
           title: image?.name,
           lcpImage: index === 0,
           quality: 70,
+          dimensions: { width: 200, height: 200 },
         },
       }) as FormattingComponentOutput<SharedImgContainerComponent>,
   },

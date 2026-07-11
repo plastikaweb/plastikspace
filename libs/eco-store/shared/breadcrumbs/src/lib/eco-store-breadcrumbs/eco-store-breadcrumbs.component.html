@@ -1,0 +1,53 @@
+<nav
+  class="font-plain mb-2 flex w-full items-center overflow-x-auto text-xs [scrollbar-width:none] md:text-sm [&::-webkit-scrollbar]:hidden">
+  <ol class="flex w-max items-center pe-4 whitespace-nowrap">
+    <li class="flex items-center">
+      <button
+        class="hover:text-sys-on-primary-container! hover:bg-sys-primary-container! text-on-surface! flex shrink-0 items-center gap-2 rounded-lg py-1.5 duration-100"
+        matIconButton
+        type="button"
+        [attr.aria-label]="backAriaLabel()"
+        [matTooltip]="backAriaLabel()"
+        (click)="goBack.emit()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </li>
+    @for (item of items(); track $index) {
+      <li class="flex items-center">
+        @if ($index > 0) {
+          <mat-icon class="scale-75!">chevron_right</mat-icon>
+        }
+        @if (item.loading) {
+          <div
+            aria-hidden="true"
+            class="bg-surface-variant mx-2 h-4 animate-pulse rounded"
+            [style.width]="item.skeletonWidth ?? '6rem'"></div>
+        } @else if (item.routerLink) {
+          <a
+            class="hover:text-sys-on-primary-container! hover:bg-sys-primary-container! text-on-surface! flex items-center gap-2 rounded-lg py-1.5 transition-all duration-100 outline-none"
+            [routerLink]="item.routerLink"
+            [queryParams]="item.queryParams ?? null">
+            @if (item.icon) {
+              <mat-icon class="hidden! scale-75! sm:block!">{{ item.icon }}</mat-icon>
+            }
+            <span class="px-2">
+              @if (item.labelKey) {
+                {{ item.labelKey | translate: item.labelParams }}
+              } @else {
+                {{ item.label }}
+              }
+            </span>
+          </a>
+        } @else {
+          <span class="text-sys-on-tertiary-container px-2 font-medium">
+            @if (item.labelKey) {
+              {{ item.labelKey | translate: item.labelParams }}
+            } @else {
+              {{ item.label }}
+            }
+          </span>
+        }
+      </li>
+    }
+  </ol>
+</nav>

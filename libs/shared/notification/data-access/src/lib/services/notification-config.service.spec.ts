@@ -1,9 +1,6 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import {
-  defaultNotification,
-  NOTIFICATION_TYPES_CONFIG,
-} from '@plastik/shared/notification/entities';
+import { NOTIFICATION_TYPES_CONFIG } from '@plastik/shared/notification/entities';
 
 import { NotificationConfigService } from './notification-config.service';
 
@@ -13,9 +10,24 @@ describe('NotificationConfigService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         NotificationConfigService,
-        { provide: NOTIFICATION_TYPES_CONFIG, useValue: defaultNotification },
+        {
+          provide: NOTIFICATION_TYPES_CONFIG,
+          useValue: {
+            ['ERROR']: {
+              type: 'ERROR',
+              icon: 'error',
+              action: 'close',
+              duration: 5000,
+            },
+            ['WARNING']: {
+              type: 'WARNING',
+              icon: 'warning',
+              duration: 5000,
+            },
+          },
+        },
       ],
     });
     service = TestBed.inject(NotificationConfigService);

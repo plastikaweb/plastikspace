@@ -1,0 +1,29 @@
+:host {
+  .shipping-method-card {
+    border-color: light-dark(var(--neutral-200), var(--neutral-800)) !important;
+    border-radius: var(--app-main-border-radius) !important;
+
+    &:hover {
+      border-color: light-dark(var(--neutral-300), var(--neutral-600)) !important;
+      box-shadow: 0 12px 30px -10px light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6)) !important;
+      --mdc-elevated-card-container-elevation: var(--mat-sys-level1);
+    }
+
+    @each $theme in primary, secondary, tertiary, neutral {
+      &.theme-#{$theme} {
+        color: light-dark(var(--#{$theme}-900), var(--#{$theme}-100));
+
+        &.selected {
+          border-color: light-dark(var(--#{$theme}-600), var(--#{$theme}-400)) !important;
+          border-width: 3px !important;
+          background-color: light-dark(var(--#{$theme}-50), var(--#{$theme}-900)) !important;
+          --mdc-elevated-card-container-elevation: var(--mat-sys-level1);
+        }
+      }
+    }
+  }
+
+  .shipping-method-check {
+    z-index: 20;
+  }
+}

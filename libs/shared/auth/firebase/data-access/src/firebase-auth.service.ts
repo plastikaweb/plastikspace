@@ -1,5 +1,5 @@
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-/* eslint-disable no-console */
+
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { FirebaseError } from '@angular/fire/app';
 import {
@@ -13,6 +13,7 @@ import {
   User,
 } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { AuthFacade } from '@plastik/auth/entities';
 import { activityStore } from '@plastik/shared/activity/data-access';
 import {
   NotificationConfigService,
@@ -22,7 +23,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class FirebaseAuthService {
+export class FirebaseAuthService implements AuthFacade {
   readonly #auth = inject(Auth);
   readonly #router = inject(Router);
   readonly #notificationService = inject(NotificationConfigService);
@@ -47,17 +48,11 @@ export class FirebaseAuthService {
    * @returns {Promise<void>} A promise that resolves when the email has been updated.
    */
   async updateEmail(): Promise<void> {
-    try {
-      const user = this.currentUser();
-      if (!user) {
-        throw new Error('No hi ha usuari autenticat');
-      }
-      await this.handleAuthStateChanged(user);
-    } catch (error) {
-      console.error('Error al actualitzar el email:', error);
-
-      throw error;
+    const user = this.currentUser();
+    if (!user) {
+      throw new Error('No hi ha usuari autenticat');
     }
+    await this.handleAuthStateChanged(user);
   }
 
   /**
@@ -69,6 +64,7 @@ export class FirebaseAuthService {
     this.currentUser.set(user);
     if (user) {
       const tokenResult = await user.getIdTokenResult();
+
       this.isAdmin.set(!!tokenResult.claims['isAdmin']);
     } else {
       this.isAdmin.set(false);
@@ -83,7 +79,7 @@ export class FirebaseAuthService {
    *
    * On successful login, it navigates to the home route and dispatches an activity action to indicate that the login attempt has ended.
    *
-   * If an error occurs during login, it logs the error to the console and checks if the error message contains "BLOCKING_FUNCTION_ERROR_RESPONSE".
+   * If an error occurs during login, it logs the error to the console and checks if the error message contains"BLOCKING_FUNCTION_ERROR_RESPONSE".
    * If such an error is found, it logs a specific message to the console.
    *
    * Regardless of the error type, it dispatches a notification action to show an error message to the user.
@@ -101,11 +97,6 @@ export class FirebaseAuthService {
       await this.#router.navigate(['']);
       this.#liveAnnouncer.announce('Sessió iniciada', 'assertive', 100);
     } catch (error: unknown) {
-      console.error(error);
-      if ((error as Error).message?.includes('BLOCKING_FUNCTION_ERROR_RESPONSE')) {
-        console.error('BLOCKING_FUNCTION_ERROR_RESPONSE');
-      }
-
       const firebaseError = error as FirebaseError;
 
       const message =
@@ -149,8 +140,6 @@ export class FirebaseAuthService {
       await this.logout();
       this.sendVerification(credentials.user);
     } catch (error: unknown) {
-      console.error(error);
-
       const firebaseError = error as FirebaseError;
 
       const message =
@@ -189,9 +178,7 @@ export class FirebaseAuthService {
       await this.resetAuth();
       await this.#router.navigate(['login']);
       this.#liveAnnouncer.announce('Sessió tancada', 'assertive', 100);
-    } catch (error: unknown) {
-      console.error('Error during logout:', error);
-
+    } catch {
       this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
@@ -230,8 +217,6 @@ export class FirebaseAuthService {
         })
       );
     } catch (error: unknown) {
-      console.error('Error sending verification email:', error);
-
       this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
@@ -272,8 +257,6 @@ export class FirebaseAuthService {
         })
       );
     } catch (error: unknown) {
-      console.error(error);
-
       this.#notificationStore.show(
         this.#notificationService.getInstance({
           type: 'ERROR',
@@ -304,11 +287,9 @@ export class FirebaseAuthService {
         if (currentUser) {
           await currentUser.reload();
         }
-      } else {
-        console.log('state after resetAuth: User not found');
       }
-    } catch (error) {
-      console.warn('Error al limpiar el estado de autenticación:', error);
+    } catch {
+      // Ignored: failure to refresh tokens during reset is non-blocking.
     }
   }
 }

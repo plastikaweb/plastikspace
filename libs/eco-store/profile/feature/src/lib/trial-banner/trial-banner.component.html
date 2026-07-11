@@ -1,0 +1,18 @@
+<plastik-shared-alert [type]="alertType()" [icon]="alertIcon()">
+  @if (isTrialExpired()) {
+    <strong alert-title>{{ 'store.trial.banner.expired' | translate }}</strong>
+  } @else {
+    <strong alert-title>{{ 'store.trial.banner.active' | translate: { days: daysLeft() } }}</strong>
+  }
+  @if (isTrialExpired()) {
+    <span alert-subtitle>{{ 'store.trial.banner.expiredSubtitle' | translate }}</span>
+  }
+
+  <button
+    alert-extras
+    matButton="filled"
+    [attr.aria-label]="'store.trial.cta.becomeMemberAria' | translate"
+    (click)="becomeMember.emit()">
+    {{ 'store.trial.cta.becomeMember' | translate }}
+  </button>
+</plastik-shared-alert>

@@ -44,7 +44,7 @@
     }
 
     &.mat-cell-link a {
-      @apply cursor-pointer;
+      cursor: pointer;
     }
 
     li {
@@ -77,10 +77,10 @@
 }
 ::ng-deep .mat-mdc-paginator {
   &.paginator--hide .mat-paginator-range-label {
-    @apply hidden;
+    display: none;
   }
 
   &.paginator--hide-range-buttons .mat-mdc-paginator-range-actions > button {
-    @apply hidden;
+    display: none;
   }
 }

@@ -1,15 +1,10 @@
 @use '@angular/material' as mat;
-@use 'styles_theme-colors' as palette;
+@use 'themes/yellow-theme';
 @use 'theme';
-@use 'core_styles_util_material';
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@use 'tailwindcss';
 
 @layer base {
   html {
-    color-scheme: light dark;
     font-size: 15px;
     font-optical-sizing: auto;
     font-style: normal;
@@ -18,28 +13,12 @@
     font-weight: 400;
     font-variation-settings: 'wdth' 100;
     font-variant-numeric: tabular-nums;
-
-    @include mat.theme(
-      (
-        color: (
-          primary: palette.$primary-palette,
-          tertiary: palette.$tertiary-palette,
-        ),
-        typography: (
-          plain-family: var(--serif),
-          bold-weight: 800,
-          medium-weight: 600,
-          regular-weight: 400,
-        ),
-        density: 0,
-      )
-    );
   }
 
   *,
   *:before,
   *:after {
-    @apply box-border;
+    box-sizing: border-box;
   }
 
   body {
@@ -79,15 +58,20 @@
   }
 
   ul {
-    @apply list-disc list-inside;
+    list-style: disc;
+    list-style-position: inside;
   }
 
   li {
-    @apply ml-sub mb-sub;
+    margin-left: var(--sub);
+    margin-bottom: var(--sub);
   }
 
   a {
-    @apply underline underline-offset-2 transition-colors duration-300;
+    text-decoration: underline;
+    text-underline-offset: 0.5rem;
+    transition-property: color;
+    transition-duration: 300ms;
 
     &:hover {
       color: var(--mat-sys-secondary);
@@ -96,18 +80,20 @@
   }
 
   p {
-    @apply text-balance;
+    text-wrap: balance;
   }
 
   *::-webkit-scrollbar {
     width: 0.8rem;
 
     &-track {
-      @apply bg-gray-20 rounded-md;
+      background-color: var(--color-gray-20);
+      border-radius: 0.375rem;
     }
 
     &-thumb {
-      @apply bg-primary-light rounded-md;
+      background-color: var(--color-primary-light);
+      border-radius: 0.375rem;
     }
   }
 }

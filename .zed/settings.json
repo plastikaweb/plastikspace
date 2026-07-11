@@ -1,0 +1,119 @@
+// Folder-specific settings
+//
+// For a full list of overridable settings, and general information on folder-specific settings,
+// see the documentation: https://zed.dev/docs/configuring-zed#settings-files
+{
+  "indent_guides": {
+    "background_coloring": "indent_aware"
+  },
+  "sticky_scroll": {
+    "enabled": true
+  },
+  "text_rendering_mode": "platform_default",
+  "colorize_brackets": true,
+  "buffer_font_family": "JetBrains Mono",
+  "ui_font_family": ".SystemUIFont",
+  "icon_theme": "Material Icon Theme",
+  "ui_font_size": 14.0,
+  "buffer_font_size": 14.0,
+  "buffer_line_height": { "custom": 1.5 },
+  "buffer_font_features": { "calt": true },
+  "buffer_font_weight": 250,
+  "toolbar": {
+    "code_actions": true,
+    "breadcrumbs": true,
+    "quick_actions": true
+  },
+  "code_actions_on_format": {
+    "source.organizeImports": true,
+    "source.fixAll.ts": true
+  },
+  "zoomed_padding": true,
+  "lsp": {
+    "tailwindcss-language-server": {
+      "settings": {
+        "includeLanguages": {
+          "html": "html",
+          "javascript": "javascript",
+          "typescript": "typescript",
+          "css": "css"
+        },
+        "emmetCompletions": true,
+        "suggestions": true
+      }
+    },
+    "angular-language-server": {
+      "initialization_options": {
+        "typescript": {
+          "tsdk": "./node_modules/typescript/lib"
+        }
+      }
+    },
+    "vtsls": {
+      "settings": {
+        "typescript": {
+          "tsdk": "./node_modules/typescript/lib",
+          "preferences": {
+            "includePackageJsonAutoImports": "on",
+            "importModuleSpecifier": "project-relative"
+          }
+        }
+      }
+    }
+  },
+  "languages": {
+    "CSS": {
+      "language_servers": ["tailwindcss-intellisense-css", "!vscode-css-language-server", "..."]
+    },
+    "TypeScript": {
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.ts": true
+      },
+      "language_servers": ["typescript-language-server", "vtsls", "angular-language-server", "..."]
+    },
+    "HTML": {
+      "formatter": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      },
+      "language_servers": ["angular-language-server", "vscode-html-language-server", "..."]
+    }
+  },
+  "load_direnv": "shell_hook",
+  "title_bar": {
+    "show_branch_icon": true,
+    "show_menus": true
+  },
+  "tabs": {
+    "file_icons": true,
+    "git_status": true
+  },
+  "prettier": {
+    "allowed": true
+  },
+  "theme": "One Dark Pro",
+  "base_keymap": "VSCode",
+  "project_panel": { "entry_spacing": "standard" },
+  "git": { "inline_blame": { "enabled": false } },
+  "current_line_highlight": "all",
+  "tab_size": 2,
+  "hard_tabs": true,
+  "linters": {
+    "eslint": {
+      "bin": {
+        "path": "eslint"
+      },
+      "settings": {}
+    }
+  },
+  "enable_language_server": true
+}

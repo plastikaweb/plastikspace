@@ -1,0 +1,47 @@
+<eco-store-hero-header>
+  <div
+    class="bg-primary/5 pointer-events-none absolute -top-20 -right-20 h-64 w-64 rounded-full opacity-50 blur-3xl"></div>
+  <div class="relative z-10 flex flex-col items-start gap-2">
+    <div
+      class="text-sys-primary flex items-center gap-2 text-xs font-bold tracking-[0.1em] uppercase">
+      <mat-icon class="scale-[0.8]" aria-hidden="true">
+        {{ icon() || 'badge' }}
+      </mat-icon>
+      <span>{{ title() | translate }}</span>
+    </div>
+    @if (profileStore.user(); as user) {
+      <h2
+        class="text-sys-on-surface items-cener flex flex-col flex-wrap gap-3 text-3xl font-black tracking-tight sm:text-4xl lg:text-5xl">
+        <span>{{ user.name }}</span>
+        <div class="flex flex-row items-center gap-2">
+          <plastik-shared-chip
+            class="text-sys-primary flex items-center gap-2 text-sm font-bold"
+            [uppercase]="false">
+            <mat-icon class="scale-[0.8]" aria-hidden="true">{{ roleIcon() }}</mat-icon>
+            {{ `users.role.${user?.role}` | translate }}
+          </plastik-shared-chip>
+          <p class="text-sys-on-surface/60 text-sm font-medium tracking-wide">
+            {{ 'profile.memberSince' | translate: { date: user.created | date: 'dd MMM yyyy' } }}
+          </p>
+        </div>
+      </h2>
+    }
+  </div>
+</eco-store-hero-header>
+
+<div
+  [class.pointer-events-none]="profileStore.isLoading()"
+  [class.opacity-50]="profileStore.isLoading()">
+  @if (isTrial()) {
+    @defer (on viewport; prefetch on idle) {
+      <eco-trial-banner
+        class="mb-6"
+        [trialEndsAt]="trialEndsAt()"
+        (becomeMember)="onBecomeMember()" />
+    } @placeholder {
+      <div class="bg-surface-container-high mb-6 h-12 w-full rounded-lg"></div>
+    }
+  }
+
+  <router-outlet></router-outlet>
+</div>

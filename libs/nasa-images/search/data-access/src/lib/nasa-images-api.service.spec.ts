@@ -1,8 +1,8 @@
 import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideEnvironmentMock } from '@plastik/core/environments';
+import { provideEnvironmentWithApiMock } from '@plastik/core/environments/testing';
 
 import { NasaImagesApiService } from './nasa-images-api.service';
 import {
@@ -17,8 +17,8 @@ describe('NasaImagesApiService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
-        provideExperimentalZonelessChangeDetection(),
-        provideEnvironmentMock(),
+        provideZonelessChangeDetection(),
+        provideEnvironmentWithApiMock(),
         provideHttpClient(),
         provideHttpClientTesting(),
         NasaImagesApiService,
@@ -32,15 +32,14 @@ describe('NasaImagesApiService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should have a method `getList` that handles the API call that returns NASA images', done => {
-    service.getList({ q: 'pluto' }).subscribe(response => {
-      expect(response).toStrictEqual(createDummyNasaImagesSearch());
-      done();
-    });
+  it('should have a method `getList` that handles the API call that returns NASA images', () => {
+    let response;
+    service.getList({ q: 'pluto' }).subscribe(res => (response = res));
 
     const req = httpMock.expectOne({ method: 'GET', url: 'https://api/search?q=pluto' });
 
     req.flush(createDummyNasaImagesSearchApiResponse());
+    expect(response).toStrictEqual(createDummyNasaImagesSearch());
     httpMock.verify();
   });
 });

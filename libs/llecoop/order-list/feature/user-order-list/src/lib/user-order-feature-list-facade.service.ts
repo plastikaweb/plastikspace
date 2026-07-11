@@ -11,17 +11,20 @@ import {
   StoreUserOrderFilter,
 } from '@plastik/llecoop/order-list/data-access';
 import { SharedConfirmDialogService } from '@plastik/shared/confirm';
-import { PageEventConfig, TableSorting } from '@plastik/shared/table/entities';
+import { escapeHtml } from '@plastik/shared/objects';
+import { PageEventConfig } from '@plastik/shared/table/entities';
 
+import { SortConfig } from '@plastik/core/entities';
 import { getLlecoopUserOrderSearchFeatureFormConfig } from './user-order-feature-search-form.config';
 import { LlecoopUserOrderSearchFeatureTableConfig } from './user-order-feature-table.config';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopUserOrderListFacadeService
-  implements TableWithFilteringFacade<LlecoopUserOrder, StoreUserOrderFilter>
-{
+export class LlecoopUserOrderListFacadeService implements TableWithFilteringFacade<
+  LlecoopUserOrder,
+  StoreUserOrderFilter
+> {
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #table = inject(LlecoopUserOrderSearchFeatureTableConfig);
@@ -83,7 +86,7 @@ export class LlecoopUserOrderListFacadeService
     });
   }
 
-  onTableSorting({ active, direction }: TableSorting): void {
+  onTableSorting({ active, direction }: SortConfig): void {
     this.#router.navigate([], {
       queryParams: { active, direction, pageIndex: 0 },
       queryParamsHandling: 'merge',
@@ -95,12 +98,12 @@ export class LlecoopUserOrderListFacadeService
       this.#confirmService
         .confirm(
           'Eliminar comanda',
-          `Segur que vols eliminar la comanda "${item.name}"?`,
+          `Segur que vols eliminar la comanda "${escapeHtml(String(item.name))}"?`,
           'Cancel·lar',
           'Eliminar'
         )
         .pipe(take(1), filter(Boolean))
-        .subscribe(() => this.#userOrderStore.delete(item));
+        .subscribe(() => this.#userOrderStore.delete(item.id));
     }
   }
 }

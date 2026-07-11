@@ -1,0 +1,30 @@
+@if (statusConfig(); as config) {
+  <div
+    [class]="'status-chip inline-flex w-fit cursor-pointer items-center ' + (config.class || '')"
+    [matTooltip]="closedReason() || (config.label | translate)">
+    <plastik-shared-chip [type]="config.type || 'neutral'" [icon]="config.icon">
+      <div class="flex items-center gap-2">
+        <!-- Screen Reader Only Label -->
+        <span class="sr-only">{{ config.label | translate }}</span>
+
+        <!-- Visual Label (Hidden on mobile and tablet) -->
+        <span
+          aria-hidden="true"
+          [class]="`hidden items-center font-bold tracking-wide whitespace-nowrap uppercase lg:flex ${config.countdownSegments?.length ? 'border-tertiary-200 border-r pr-2' : ''}`">
+          @if (config.class === 'closing') {
+            <span
+              class="bg-warning-800 dark:bg-warning-200 mr-2 inline-block h-[12px] w-[12px] animate-pulse rounded-full"></span>
+          }
+          {{ config.label | translate }}
+        </span>
+
+        @if (config.countdownSegments?.length) {
+          <plastik-countdown
+            [segments]="config.countdownSegments || []"
+            [prefix]="config?.countdownPrefix || ''"
+            [class]="config.class || ''"></plastik-countdown>
+        }
+      </div>
+    </plastik-shared-chip>
+  </div>
+}

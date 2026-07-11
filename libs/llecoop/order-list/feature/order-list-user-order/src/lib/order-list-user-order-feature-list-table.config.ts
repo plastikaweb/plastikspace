@@ -1,5 +1,4 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { LlecoopUserOrder } from '@plastik/llecoop/entities';
 import {
   llecoopOrderListStore,
@@ -7,6 +6,7 @@ import {
 } from '@plastik/llecoop/order-list/data-access';
 import { UserOrderUtilsService } from '@plastik/llecoop/order-list/util';
 import { createdAt, updatedAt } from '@plastik/llecoop/util';
+import { escapeHtml } from '@plastik/shared/objects';
 import {
   DEFAULT_TABLE_CONFIG,
   TableColumnFormatting,
@@ -17,10 +17,7 @@ import {
 @Injectable({
   providedIn: 'root',
 })
-export class LlecoopOrderListUserOrderFeatureListTableConfig
-  implements TableStructureConfig<LlecoopUserOrder>
-{
-  readonly #sanitizer = inject(DomSanitizer);
+export class LlecoopOrderListUserOrderFeatureListTableConfig implements TableStructureConfig<LlecoopUserOrder> {
   readonly #userOrderStore = inject(llecoopUserOrderStore);
   readonly #orderListStore = inject(llecoopOrderListStore);
   readonly #userOrderUtilsService = inject(UserOrderUtilsService);
@@ -45,12 +42,12 @@ export class LlecoopOrderListUserOrderFeatureListTableConfig
     cssClasses: ['min-w-[80px] @lg:min-w-[105px]'],
     link: () => ['/comandes', 'setmanals'],
     queryParams: (order?: LlecoopUserOrder) => ({
-      text: order?.name || '',
+      text: (order?.name as string) || '',
     }),
     formatting: {
       type: 'LINK',
       execute: (_, order) =>
-        `<p class="font-bold uppercase" aria-label="Veure els totals de la comanda de la setmana ${order?.name}">${order?.name}</p>`,
+        `<p class="font-bold uppercase" aria-label="Veure els totals de la comanda de la setmana ${escapeHtml(String(order?.name ?? ''))}">${escapeHtml(String(order?.name ?? ''))}</p>`,
     },
   };
 

@@ -1,6 +1,6 @@
 {
   "extends": ["../../.eslintrc.json"],
-  "ignorePatterns": ["!**/*"],
+  "ignorePatterns": ["!**/*", "**/vitest.config.*.timestamp*"],
   "overrides": [
     {
       "files": ["*.ts"],
@@ -27,6 +27,11 @@
     {
       "files": ["*.html"],
       "extends": ["plugin:@nx/angular-template"],
+      "rules": {}
+    },
+    {
+      "files": ["*.js", "*.jsx", "cypress/**/*.js"],
+      "parser": "espree",
       "rules": {}
     }
   ]

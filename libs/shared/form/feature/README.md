@@ -152,6 +152,15 @@ interface SharedFormFeatureInputs {
    * @default false
    */
   disableForm: boolean;
+
+  /**
+   * Truthy value forces a full form reset (model + values + pristine/untouched +
+   * the NgForm `submitted` flag Material's error-state matcher relies on).
+   * Bind a counter and increment it to re-trigger the reset on demand,
+   * e.g. after each successful server-side submit.
+   * @default false
+   */
+  resetForm: boolean | number;
 }
 
 interface SubmitFormConfig {
@@ -160,6 +169,15 @@ interface SubmitFormConfig {
    * @default "Submit"
    */
   label?: string;
+  /**
+   * Button type.
+   * @default "normal"
+   */
+  type?: 'icon' | 'normal';
+  /**
+   * Icon name for the button (if type is 'icon').
+   */
+  icon?: string;
 
   /**
    * Whether the button is disabled.
@@ -226,6 +244,7 @@ interface SharedFormFeatureOutputs {
 
   /**
    * Emits on temporary form value changes when emitOnChange is true.
+   * NOTE: This event only emits if the form is in a VALID state.
    */
   temporaryChangeEvent: EventEmitter<T>;
 
@@ -266,6 +285,10 @@ The module includes several custom form types located in `libs/shared/form/ui`:
 - [`textarea-with-counter`](../ui/textarea-with-counter/README.md) - Textarea with character counter.
 - [`year-picker`](../ui/year-picker/README.md) - Year selection input.
 - [`input-img-loader`](../ui/img-loader/README.md) - Image loader with upload and preview.
+- [`shipping-method-selector`](../ui/shipping-method-selector/README.md) - Card-based shipping method selector.
+- [`address-selector`](../ui/address-selector/README.md) - Addresses selector with checkbox.
+- ['custom-label'](../ui/custom-label/README.md) - A custom section label with text, icon and description.
+- [`text`](../ui/text/README.md) - Static text input.
 
 ## Troubleshooting
 

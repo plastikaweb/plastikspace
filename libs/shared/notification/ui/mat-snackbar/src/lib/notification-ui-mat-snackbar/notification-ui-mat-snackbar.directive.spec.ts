@@ -1,7 +1,6 @@
-import { provideExperimentalZonelessChangeDetection } from '@angular/core';
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixtureAutoDetect, TestBed } from '@angular/core/testing';
 import { MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBar } from '@angular/material/snack-bar';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { Notification } from '@plastik/shared/notification/entities';
 
 import { NotificationUiMatSnackbarComponent } from './notification-ui-mat-snackbar.component';
@@ -9,26 +8,22 @@ import { NotificationUiMatSnackbarDirective } from './notification-ui-mat-snackb
 
 describe('NotificationUiMatSnackbarDirective', () => {
   let directive: NotificationUiMatSnackbarDirective;
-  let snackBar: jest.Mocked<MatSnackBar>;
+  let snackBar: vi.Mocked<MatSnackBar>;
 
   beforeEach(() => {
     const mockSnackBar = {
-      openFromComponent: jest.fn().mockReturnValue({
-        afterDismissed: () => ({ subscribe: jest.fn() }),
-        onAction: () => ({ subscribe: jest.fn() }),
-        dismiss: jest.fn(),
+      openFromComponent: vi.fn().mockReturnValue({
+        afterDismissed: () => ({ subscribe: vi.fn() }),
+        onAction: () => ({ subscribe: vi.fn() }),
+        dismiss: vi.fn(),
       }),
-      dismiss: jest.fn(),
+      dismiss: vi.fn(),
     };
 
     TestBed.configureTestingModule({
-      imports: [
-        NotificationUiMatSnackbarDirective,
-        NotificationUiMatSnackbarComponent,
-        NoopAnimationsModule,
-      ],
+      imports: [NotificationUiMatSnackbarDirective, NotificationUiMatSnackbarComponent],
       providers: [
-        provideExperimentalZonelessChangeDetection(),
+        provideZonelessChangeDetection(),
         {
           provide: MatSnackBar,
           useValue: mockSnackBar,
@@ -45,7 +40,7 @@ describe('NotificationUiMatSnackbarDirective', () => {
 
     TestBed.runInInjectionContext(() => {
       directive = new NotificationUiMatSnackbarDirective();
-      snackBar = TestBed.inject(MatSnackBar) as jest.Mocked<MatSnackBar>;
+      snackBar = TestBed.inject(MatSnackBar) as vi.Mocked<MatSnackBar>;
     });
   });
 
@@ -56,7 +51,7 @@ describe('NotificationUiMatSnackbarDirective', () => {
   describe('open', () => {
     it('should open the Snackbar with the given configuration and custom styling', () => {
       const config: Notification = { message: 'Test message', type: 'SUCCESS', duration: 1000 };
-      const openFromComponentSpy = jest.spyOn(snackBar, 'openFromComponent');
+      const openFromComponentSpy = vi.spyOn(snackBar, 'openFromComponent');
 
       directive.open(config);
 

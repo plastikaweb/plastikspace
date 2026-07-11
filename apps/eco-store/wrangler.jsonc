@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  // Top-level configuration
+  "name": "eco-store",
+  "main": "../../dist/apps/eco-store/server/server.mjs",
+  "assets": {
+    "directory": "../../dist/apps/eco-store/browser",
+    "binding": "ASSETS",
+    // Disable automatic trailing-slash redirects from the CF assets layer.
+    // All routing (including slash normalization) is handled by server.ts.
+    "html_handling": "none",
+    // Route the PWA manifest to the worker so it can serve a per-tenant
+    // manifest (BUG-003). Without this the static asset wins and bypasses the
+    // worker. All other asset paths keep their default asset-first routing.
+    "run_worker_first": ["/manifest.webmanifest"],
+  },
+  "observability": {
+    "enabled": true,
+  },
+  "upload_source_maps": true,
+  "compatibility_date": "2026-04-14",
+  "compatibility_flags": ["nodejs_compat"],
+}

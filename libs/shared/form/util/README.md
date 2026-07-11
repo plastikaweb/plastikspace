@@ -9,9 +9,11 @@
     - [Addons Extension](#addons-extension)
     - [Addons Wrapper](#addons-wrapper)
     - [Validators](#validators)
+    - [Providers](#providers)
   - [Usage](#usage)
     - [Addons Example](#addons-example)
     - [URL Validator Example](#url-validator-example)
+    - [Plain Input Provider](#plain-input-provider)
   - [API Reference](#api-reference)
     - [Addons Extension](#addons-extension-1)
     - [URL Validator](#url-validator)
@@ -19,7 +21,8 @@
 
 ## Description
 
-A utility library that provides extensions, wrappers, and validators for Formly forms. It includes functionality for adding input addons (left/right icons or content) and custom form validators.
+A utility library that provides extensions, wrappers, and validators for Formly forms.
+It includes functionality for adding input addons (left/right icons or content), custom form validators, and specialized providers for Formly integration.
 
 ## Features
 
@@ -35,15 +38,23 @@ A Formly wrapper component that handles the rendering of left and right addons f
 
 Custom form validators including:
 
-- URL validator: Validates that a field contains a valid URL format.
-- Phone validator: Validates that a field contains a valid phone number format with 9 digits starting with 6, 7 or 9.
+- **URL validator**: Validates that a field contains a valid URL format.
+- **Phone validator**: Validates that a field contains a valid phone number format with 9 digits starting with 6, 7 or 9.
+- **Zip validator**: Validates that a field contains a valid Spanish postal code format (5 digits, valid province code).
+
+### Providers
+
+Specialized providers to simplify Formly configuration in standalone components and routes:
+
+- **providePlainInputFormly**: Registers standard `input` and `textarea` types with their associated validation message extensions.
+- **registerAuthValidatorsTranslateExtension**: Registers translation-based validation messages for authentication-specific fields like `password`, `passwordMatch`, and `username`.
 
 ## Usage
 
 ### Addons Example
 
 ```typescript
-import { addonsExtension } from '@plastikspace/shared/form/util';
+import { addonsExtension } from '@plastik/shared/form/util';
 
 const fields: FormlyFieldConfig[] = [
   {
@@ -69,7 +80,7 @@ const fields: FormlyFieldConfig[] = [
 ### URL Validator Example
 
 ```typescript
-import { urlValidator } from '@plastikspace/shared/form/util';
+import { urlValidator } from '@plastik/shared/form/util';
 
 const fields: FormlyFieldConfig[] = [
   {
@@ -83,6 +94,13 @@ const fields: FormlyFieldConfig[] = [
     },
   },
 ];
+```
+
+### Plain Input Provider
+
+```typescript
+// In your route providers or component providers
+providers: [providePlainInputFormly()];
 ```
 
 ## API Reference
@@ -145,4 +163,4 @@ Validates that a form control value matches a URL pattern. Returns:
 
 ## Running unit tests
 
-Run `nx test shared-form-util` to execute the unit tests.
+Run `nx test shared-form-util` to execute the unit tests via Vitest.

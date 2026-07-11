@@ -1,0 +1,150 @@
+<div class="flex flex-col gap-8">
+  @if (!hasImage()) {
+    <!-- Upload zone: Organic & Welcoming -->
+    <div class="zone-animation flex flex-col gap-6">
+      <h3 class="text-on-surface text-2xl font-black tracking-tight">
+        {{ uploadTitle() | translate }}
+      </h3>
+
+      <label
+        for="img-cropper-input"
+        class="upload-zone-bg group border-primary/20 hover:border-primary/50 hover:bg-primary/[0.04] relative flex cursor-pointer flex-col items-center justify-center gap-6 overflow-hidden rounded-[2.5rem] border-2 border-dashed px-8 py-20 text-center transition-all duration-500 ease-out hover:shadow-2xl"
+        [class.border-primary]="isDragging()"
+        [class.bg-primary/5]="isDragging()"
+        [class.scale-[0.98]]="isDragging()"
+        (dragover)="onDragOver($event)"
+        (dragleave)="onDragLeave($event)"
+        (drop)="onDrop($event)">
+        <span
+          class="bg-primary group-hover:shadow-primary/30 flex size-20 items-center justify-center rounded-3xl text-white shadow-lg transition-all duration-500 ease-out group-hover:-translate-y-2 group-hover:scale-110">
+          <mat-icon class="scale-[1.5]">upload</mat-icon>
+        </span>
+        <div class="space-y-2">
+          <span class="text-on-surface block text-xl font-bold tracking-tight">
+            {{ 'common.image.upload.instruccions' | translate }}
+          </span>
+          <span class="text-on-surface/30 block text-xs font-black tracking-[0.15em] uppercase">
+            {{
+              'common.image.upload.size'
+                | translate: { minWidth: minWidth(), minHeight: minHeight(), maxSize: maxSizeMb() }
+            }}
+          </span>
+        </div>
+        <input
+          id="img-cropper-input"
+          type="file"
+          accept="image/*"
+          class="sr-only"
+          (change)="onFileSelected($event)" />
+      </label>
+
+      @if (errorMessage(); as error) {
+        <ng-container
+          [ngTemplateOutlet]="errorTemplate"
+          [ngTemplateOutletContext]="{ error }"></ng-container>
+      }
+
+      <div class="flex justify-end pt-2">
+        <button
+          mat-stroked-button
+          type="button"
+          class="!h-12 !rounded-full !px-10 !font-bold !tracking-wide"
+          (click)="onCancel()">
+          {{ 'common.cancel' | translate }}
+        </button>
+      </div>
+    </div>
+  } @else {
+    <!-- Crop zone: Refined Precision -->
+    <div class="slide-up flex flex-col gap-8">
+      <h3 class="text-on-surface text-2xl font-black tracking-tight">
+        {{ cropTitle() | translate }}
+      </h3>
+
+      <div
+        class="crop-zone-bg relative flex flex-col items-center gap-10 overflow-hidden rounded-[3rem] p-10 backdrop-blur-2xl transition-all duration-700">
+        <div
+          class="relative aspect-square w-full max-w-[340px] overflow-hidden rounded-3xl bg-white p-1.5 shadow-2xl ring-1 ring-black/5">
+          <image-cropper
+            format="png"
+            output="blob"
+            [imageBase64]="imageBase64()"
+            [maintainAspectRatio]="true"
+            [aspectRatio]="1"
+            [resizeToWidth]="400"
+            [resizeToHeight]="400"
+            [onlyScaleDown]="false"
+            [roundCropper]="roundCropper()"
+            [allowMoveImage]="true"
+            [transform]="transform()"
+            [cropperMinWidth]="minWidth()"
+            [cropperMinHeight]="minHeight()"
+            [imageQuality]="outputQuality()"
+            (imageCropped)="onImageCropped($event)"
+            (imageLoaded)="onImageLoaded($event)"
+            (loadImageFailed)="onLoadImageError()" />
+        </div>
+
+        <div class="flex w-full max-w-[340px] items-center gap-6 px-6">
+          <button
+            matIconButton
+            type="button"
+            class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+            (click)="onZoomChange(zoom() - 0.1)">
+            <mat-icon>remove</mat-icon>
+          </button>
+          <mat-slider class="flex-1" min="1" max="4" step="0.1">
+            <input matSliderThumb [value]="zoom()" (valueChange)="onZoomChange($event)" />
+          </mat-slider>
+          <button
+            matIconButton
+            type="button"
+            class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+            (click)="onZoomChange(zoom() + 0.1)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+
+      @if (errorMessage(); as error) {
+        <ng-container
+          [ngTemplateOutlet]="errorTemplate"
+          [ngTemplateOutletContext]="{ error }"></ng-container>
+      }
+
+      <div class="flex justify-end gap-4 pt-2">
+        <button
+          matButton
+          type="button"
+          class="!h-12 !rounded-full !px-8 !font-bold !tracking-wide"
+          (click)="onBackToUpload()">
+          <mat-icon>arrow_back</mat-icon>
+          {{ 'common.cancel' | translate }}
+        </button>
+        <button
+          mat-flat-button
+          type="button"
+          class="!h-12 !rounded-full !px-12 !text-base !font-bold !tracking-wide"
+          [disabled]="!hasCrop()"
+          (click)="onConfirm()">
+          <mat-icon>check</mat-icon>
+          {{ 'common.save' | translate }}
+        </button>
+      </div>
+    </div>
+  }
+</div>
+
+<ng-template #errorTemplate let-error="error">
+  <div
+    role="alert"
+    class="bg-error/10 text-error flex items-center justify-between gap-4 rounded-3xl p-5 text-sm font-bold shadow-sm">
+    <div class="flex items-center gap-4">
+      <mat-icon class="scale-110">error_outline</mat-icon>
+      <p>{{ error.key | translate: error.params }}</p>
+    </div>
+    <button matIconButton type="button" (click)="onClearError()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+</ng-template>
