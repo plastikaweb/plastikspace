@@ -277,12 +277,14 @@ export const ecoStoreTenantStore = signalStore(
           ? this._getDeliverySlotsRecord()
           : this._getPickupSlotsRecord(addressId);
 
-      return slots
-        ? Object.keys(slots).map(day => ({
-            label: day,
-            value: day,
-          }))
-        : [];
+      if (isEmpty(slots)) {
+        return [];
+      }
+
+      return Object.keys(slots).map(day => ({
+        label: day,
+        value: day,
+      }));
     },
 
     getTenantDeliveryOptionSlotsTimes(
@@ -385,7 +387,7 @@ export const ecoStoreTenantStore = signalStore(
         const address = store.addresses().find(a => a.id === addressId);
 
         if (address) {
-          if (address.slots && Object.keys(address.slots).length > 0) {
+          if (!isEmpty(address.slots)) {
             return { type: 'slots', slots: address.slots };
           }
           // Check address instructions
@@ -399,7 +401,7 @@ export const ecoStoreTenantStore = signalStore(
       }
 
       // 2. Fallback: Global configuration (applicable to Delivery and Pickup without own configuration)
-      if (deliveryOption.slots && Object.keys(deliveryOption.slots).length > 0) {
+      if (!isEmpty(deliveryOption.slots)) {
         return { type: 'slots', slots: deliveryOption.slots };
       }
 
