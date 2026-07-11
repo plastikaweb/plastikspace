@@ -1,6 +1,7 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -29,6 +30,7 @@ describe('SharedConfirmFeatureComponent', () => {
     data: Record<string, unknown> = defaultData,
     translations: Record<string, string> = { 'test.message': 'Hello {{name}}' }
   ): Promise<void> {
+    TestBed.resetTestingModule();
     await TestBed.configureTestingModule({
       imports: [SharedConfirmFeatureComponent, TranslateModule.forRoot()],
       providers: [
@@ -84,5 +86,33 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('<strong>');
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
+  });
+
+  it('should escape non-string params (arrays/objects) to prevent XSS', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { list: ['<img src=x onerror=alert(1)>'] },
+      },
+      { 'test.message': 'Items: {{list}}' }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should not throw if the message is already SafeHtml (bypass translate.instant)', async () => {
+    await setup();
+    const sanitizer = TestBed.inject(DomSanitizer);
+    const safeMessage = sanitizer.bypassSecurityTrustHtml('<b>Safe</b>');
+
+    await setup({
+      ...defaultData,
+      message: safeMessage,
+    });
+
+    expect(() => messageOf()).not.toThrow();
+    expect(messageOf()?.toString()).toContain('<b>Safe</b>');
   });
 });
