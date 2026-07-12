@@ -6,7 +6,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { buttonMock } from '@plastik/shared/button';
+import { buttonAsLinkMock, buttonMock } from '@plastik/shared/button';
 
 import { SharedButtonUiComponent } from './shared-button-ui.component';
 
@@ -44,5 +44,31 @@ describe('SharedButtonUiComponent', () => {
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
+  });
+
+  it('should be disabled when buttonConfig.disabled is true', () => {
+    fixture.componentRef.setInput('buttonConfig', { ...buttonMock, disabled: true });
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('button');
+    expect(button.disabled).toBe(true);
+  });
+
+  it('should handle link disabled state correctly', () => {
+    fixture.componentRef.setInput('buttonConfig', {
+      ...buttonAsLinkMock,
+      disabled: true,
+      link: 'http://example.com',
+    });
+    fixture.detectChanges();
+    const link = fixture.nativeElement.querySelector('a');
+    expect(link.getAttribute('href')).toBeNull();
+    expect(link.getAttribute('tabindex')).toBe('-1');
+    expect(link.getAttribute('aria-disabled')).toBe('true');
+    expect(link.classList.contains('opacity-50')).toBe(true);
+  });
+
+  it('should have aria-hidden="true" on svg-icon', () => {
+    const svgIcon = fixture.nativeElement.querySelector('svg-icon');
+    expect(svgIcon.getAttribute('aria-hidden')).toBe('true');
   });
 });
