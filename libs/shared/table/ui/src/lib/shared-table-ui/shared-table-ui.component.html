@@ -204,7 +204,7 @@
             [class]="
               'mat-cell-actions justify-center overflow-visible ' + (actionsColStyles() || '')
             ">
-            Accions
+            {{ 'common.actions' | translate }}
           </mat-header-cell>
           <mat-cell
             *matCellDef="let element"
@@ -275,12 +275,21 @@
             ><span class="invisible">expand</span></mat-header-cell
           >
           <mat-cell *matCellDef="let element" class="max-w-[70px]">
+            @let rowName = resolveName(element.name);
+            @let isExpanded = expandedElement()?.id === element.id;
             <button
               matIconButton
-              aria-label="expand row"
               class="-left-sub"
+              [attr.aria-label]="
+                (isExpanded ? 'common.a11y.collapseRow' : 'common.a11y.expandRow')
+                  | translate: { name: rowName }
+              "
+              [matTooltip]="
+                (isExpanded ? 'common.a11y.collapseRow' : 'common.a11y.expandRow')
+                  | translate: { name: rowName }
+              "
               (click)="$event.stopPropagation(); updateExpandedElement(element)">
-              @if (expandedElement()?.id === element.id) {
+              @if (isExpanded) {
                 <mat-icon>keyboard_arrow_up</mat-icon>
               } @else {
                 <mat-icon>keyboard_arrow_down</mat-icon>

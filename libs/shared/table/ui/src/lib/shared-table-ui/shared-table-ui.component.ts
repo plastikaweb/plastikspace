@@ -14,6 +14,7 @@ import {
   effect,
   inject,
   input,
+  LOCALE_ID,
   output,
   signal,
   TemplateRef,
@@ -33,6 +34,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { EntityId } from '@ngrx/signals/entities';
+import { TranslatePipe } from '@ngx-translate/core';
 import { BaseEntity, SortConfig } from '@plastik/core/entities';
 import {
   FormattingTypes,
@@ -84,6 +86,7 @@ import { OrderTableActionsElementsPipe } from '../utils/order-table-actions-elem
     SharedUtilFormattersModule,
     OrderTableActionsElementsPipe,
     SafeFormattedPipe,
+    TranslatePipe,
   ],
   templateUrl: './shared-table-ui.component.html',
   styleUrl: './shared-table-ui.component.scss',
@@ -197,6 +200,7 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
 
   protected expandedElement = signal<T | null>(null);
   readonly #liveAnnouncer = inject(LiveAnnouncer);
+  readonly #locale = inject(LOCALE_ID);
 
   constructor() {
     this.dataSource.sortingDataAccessor = (data: T, sortHeaderId: string): string | number => {
@@ -296,6 +300,17 @@ export class SharedTableUiComponent<T extends BaseEntity & { [key: string]: unkn
     }
     const result = editableAttr.onChanges?.(value, element);
     this.getChangedData.emit(result);
+  }
+
+  protected resolveName(name: BaseEntity['name']): string {
+    if (!name) {
+      return '';
+    }
+    if (typeof name === 'string') {
+      return name;
+    }
+    const lang = this.#locale.split('-')[0] as keyof LocalizedFields;
+    return name[lang] || '';
   }
 
   protected updateExpandedElement(element: T | null): void {
