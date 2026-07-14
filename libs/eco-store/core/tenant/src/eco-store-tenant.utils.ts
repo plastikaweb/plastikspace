@@ -7,6 +7,7 @@ import {
   EcoStoreTenantWindowStatus,
   SlotDays,
 } from '@plastik/eco-store/entities';
+import { isEmpty } from '@plastik/shared/objects';
 import { addDays, addWeeks, differenceInMilliseconds, getDay, isBefore, set } from 'date-fns';
 
 /**
@@ -152,18 +153,17 @@ export function isShippingMethodConfigured(
   if (!option?.enabled) return false;
 
   if (type === 'pickup') {
-    const hasGlobalPickupConfig =
-      (option.slots && Object.keys(option.slots).length > 0) || !!option.instructions;
+    const hasGlobalPickupConfig = !isEmpty(option.slots) || !!option.instructions;
 
     const hasAddressConfig = addresses.some(
-      address => (address.slots && Object.keys(address.slots).length > 0) || !!address.instructions
+      address => !isEmpty(address.slots) || !!address.instructions
     );
 
     return hasGlobalPickupConfig || hasAddressConfig;
   }
 
   if (type === 'delivery') {
-    return !!(option.slots && Object.keys(option.slots).length > 0);
+    return !isEmpty(option.slots);
   }
 
   return false;

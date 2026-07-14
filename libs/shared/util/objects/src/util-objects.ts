@@ -1,17 +1,25 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
- * @description Check if an array or object are empty. Uses an early-exit `for...in`
- * loop instead of `Object.entries(obj).length` to avoid the O(N) array allocation.
- * @param {unknown} obj Object parameter passed.
- * @returns {boolean}.
+ * @description Check if an array or object are empty.
+ * Performance:
+ * - Arrays: O(1) using length check.
+ * - Objects: Early-exit for...in loop instead of `Object.keys(obj).length` to avoid O(N) array allocation.
+ * Supports objects with null prototypes.
+ * @param {unknown} obj Object or array to check.
+ * @returns {boolean} True if empty, false otherwise.
  */
 export function isEmpty(obj: unknown): boolean {
-  if (obj === null || obj === undefined) return true;
+  if (obj === null || obj === undefined) {
+    return true;
+  }
 
-  const constructor = (obj as object).constructor;
-  if (constructor === Array || constructor === Object) {
-    for (const key in obj as object) {
+  if (Array.isArray(obj)) {
+    return obj.length === 0;
+  }
+
+  if (typeof obj === 'object') {
+    for (const key in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         return false;
       }
@@ -46,7 +54,11 @@ export function isNil(value: unknown): boolean {
  * @returns {boolean}.
  */
 export function isObject(obj: unknown): boolean {
-  return obj instanceof Object && obj.constructor === Object;
+  return (
+    obj !== null &&
+    typeof obj === 'object' &&
+    (Object.getPrototypeOf(obj) === Object.prototype || Object.getPrototypeOf(obj) === null)
+  );
 }
 
 /**
