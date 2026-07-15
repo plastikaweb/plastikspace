@@ -15,6 +15,7 @@ import { EntityId } from '@ngrx/signals/entities';
 import { FirebaseAuthService } from '@plastik/auth/firebase/data-access';
 import { LlecoopUser } from '@plastik/llecoop/entities';
 import { latinize } from '@plastik/shared/latinize';
+import { isEmpty } from '@plastik/shared/objects';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 import { EntityFireService, FirebaseCrudPagination } from '@plastik/signal-state/firebase';
 
@@ -32,7 +33,7 @@ export class LlecoopUserFireService extends EntityFireService<LlecoopUser> {
   protected override getFilterConditions(filter: StoreUserFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
 
-    if (Object.entries(filter).length > 0) {
+    if (!isEmpty(filter)) {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'name' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
