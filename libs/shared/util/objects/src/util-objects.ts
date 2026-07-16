@@ -9,8 +9,13 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 export function isEmpty(obj: unknown): boolean {
   if (obj === null || obj === undefined) return true;
 
-  const constructor = (obj as object).constructor;
-  if (constructor === Array || constructor === Object) {
+  // O(1) fast-path for strings and arrays.
+  if (typeof obj === 'string' || Array.isArray(obj)) {
+    return (obj as string | unknown[]).length === 0;
+  }
+
+  if (isObject(obj)) {
+    // Early-exit for-in loop for objects to avoid O(N) array allocation from Object.keys/entries.
     for (const key in obj as object) {
       if (Object.prototype.hasOwnProperty.call(obj, key)) {
         return false;
@@ -46,7 +51,11 @@ export function isNil(value: unknown): boolean {
  * @returns {boolean}.
  */
 export function isObject(obj: unknown): boolean {
-  return obj instanceof Object && obj.constructor === Object;
+  if (typeof obj !== 'object' || obj === null) {
+    return false;
+  }
+  const proto = Object.getPrototypeOf(obj);
+  return proto === Object.prototype || proto === null;
 }
 
 /**
