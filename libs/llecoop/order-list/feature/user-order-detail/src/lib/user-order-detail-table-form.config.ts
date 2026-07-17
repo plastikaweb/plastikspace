@@ -79,7 +79,10 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
       type: 'CUSTOM',
       execute: (value, element) => {
         const price = `<p>${Number(value).toFixed(2)} €</p>`;
-        const unit = element?.unit ? this.#productBaseUnitTextPipe.transform(element.unit) : '';
+        // SECURITY (XSS): escape pipe output as it interpolates unit.base which can be user-controlled
+        const unit = element?.unit
+          ? escapeHtml(this.#productBaseUnitTextPipe.transform(element.unit))
+          : '';
 
         return this.#sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
       },
