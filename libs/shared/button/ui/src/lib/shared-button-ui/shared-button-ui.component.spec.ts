@@ -1,4 +1,5 @@
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { of } from 'rxjs';
 import { describe, expect, it } from 'vitest';
 import { axe } from 'vitest-axe';
 
@@ -39,6 +40,18 @@ describe('SharedButtonUiComponent', () => {
     component.sendAction.subscribe(action => (result = action));
     component.onClick();
     expect(result).toEqual(result);
+  });
+
+  it('should handle disabled as an Observable', async () => {
+    fixture.componentRef.setInput('buttonConfig', {
+      ...buttonMock,
+      disabled: of(true),
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const buttonElement: HTMLButtonElement = fixture.nativeElement.querySelector('button');
+    expect(buttonElement.disabled).toBe(true);
   });
 
   it('should have no accessibility violations', async () => {

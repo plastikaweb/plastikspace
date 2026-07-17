@@ -1,0 +1,3 @@
+## 2026-07-06 - Accessible Link Disabling
+**Learning:** Standard anchor links (`<a>`) in Angular do not support a native `disabled` state like buttons. Simply adding a class like `opacity-50` or `pointer-events-none` is insufficient because it fails screen-reader requirements and keyboard navigation (users can still tab into and activate it). To properly disable a link, one must nullify its `href` attribute, set `tabindex` to `-1`, add `aria-disabled="true"`, and apply visual cues.
+**Action:** When creating or refactoring custom components that act as links, ensure the `href` attribute is conditionally bound (`[attr.href]="isDisabled ? null : linkHref"`) and always pair it with `[attr.aria-disabled]="isDisabled"` and `[tabindex]="isDisabled ? -1 : 0"`.
