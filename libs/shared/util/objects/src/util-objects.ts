@@ -9,14 +9,22 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 export function isEmpty(obj: unknown): boolean {
   if (obj === null || obj === undefined) return true;
 
-  const constructor = (obj as object).constructor;
-  if (constructor === Array || constructor === Object) {
-    for (const key in obj as object) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        return false;
+  // BOLT OPTIMIZATION: High-performance O(1) fast paths for strings and arrays
+  if (typeof obj === 'string' || Array.isArray(obj)) {
+    return obj.length === 0;
+  }
+
+  if (typeof obj === 'object') {
+    // BOLT OPTIMIZATION: Use getPrototypeOf to safely support prototype-less objects (e.g. Object.create(null))
+    const proto = Object.getPrototypeOf(obj);
+    if (proto === Object.prototype || proto === null) {
+      for (const key in obj as object) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          return false;
+        }
       }
+      return true;
     }
-    return true;
   }
 
   return false;
@@ -46,7 +54,12 @@ export function isNil(value: unknown): boolean {
  * @returns {boolean}.
  */
 export function isObject(obj: unknown): boolean {
-  return obj instanceof Object && obj.constructor === Object;
+  if (obj === null || typeof obj !== 'object') {
+    return false;
+  }
+  // BOLT OPTIMIZATION: Safely identify plain objects including prototype-less objects using getPrototypeOf
+  const proto = Object.getPrototypeOf(obj);
+  return proto === Object.prototype || proto === null;
 }
 
 /**
