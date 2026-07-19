@@ -61,7 +61,8 @@
         "url": "The URL format is incorrect",
         "phone": "The phone format is incorrect",
         "invalid-username": "Invalid username",
-        "zip": "Invalid zip code format"
+        "zip": "Invalid zip code format",
+        "nif": "Invalid tax ID format"
       },
       "charactersCount": "{count, plural, one {character} other {characters}}",
       "password": "Password",

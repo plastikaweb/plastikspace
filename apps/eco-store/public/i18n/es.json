@@ -61,7 +61,8 @@
         "url": "El formato de la URL no es correcto",
         "phone": "El formato del teléfono no es correcto",
         "invalid-username": "Nombre de usuario inválido",
-        "zip": "Formato de código postal no válido"
+        "zip": "Formato de código postal no válido",
+        "nif": "NIF no válido"
       },
       "charactersCount": "{count, plural, one {carácter} other {caracteres}}",
       "password": "Contraseña",

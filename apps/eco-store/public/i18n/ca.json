@@ -61,7 +61,8 @@
         "url": "Format d'URL no vàlid",
         "phone": "Format de telèfon no vàlid",
         "invalid-username": "Format de nom d'usuari no vàlid",
-        "zip": "Format de codi no vàlid"
+        "zip": "Format de codi no vàlid",
+        "nif": "NIF no vàlid"
       },
       "charactersCount": "{count, plural, one {caràcter} other {caràcters}}",
       "password": "Contrasenya",
