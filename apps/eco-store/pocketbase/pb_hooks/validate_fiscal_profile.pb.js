@@ -13,10 +13,25 @@
  * rejecting even checksum-valid NIFs). Sibling hooks in this directory avoid
  * the issue by only ever using inline arrow-function handlers.
  *
+ * NOTE: uses `e.requestEvent.request` (not `e.httpContext.request()` and not
+ * `e.request`) to read the bypass header. Neither `httpContext` nor a
+ * top-level `request` exist on `RecordRequestEvent` in this PocketBase
+ * build (0.36.7) — confirmed by dumping `Object.keys(e)` at runtime, which
+ * has neither key. The actual HTTP request lives one level down, on the
+ * embedded `requestEvent` (`e.requestEvent.request.header.get(...)`),
+ * confirmed empirically (see PRV-04d Task 2 report). The `e.httpContext...`
+ * pattern used by sibling hooks in this directory always evaluates falsy, so
+ * `x-bypass-hooks` is silently a no-op for them — fixed here; sibling hooks
+ * left untouched as out of scope for this task.
+ *
  * @param {core.RecordRequestEvent} e
  */
 function validateFiscalProfile(e) {
-  if (e.httpContext && e.httpContext.request().header.get('x-bypass-hooks') === 'true') {
+  if (
+    e.requestEvent &&
+    e.requestEvent.request &&
+    e.requestEvent.request.header.get('x-bypass-hooks') === 'true'
+  ) {
     return e.next();
   }
 
