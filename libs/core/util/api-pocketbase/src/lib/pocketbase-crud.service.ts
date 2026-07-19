@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { BaseDataService, DataCrud } from '@plastik/core/api-base';
-import { BasePocketBaseEntity } from '@plastik/core/entities';
+import { BasePocketBaseEntity, BasePocketBaseEntityNameless } from '@plastik/core/entities';
 import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
 import {
   ClientResponseError,
@@ -20,7 +20,7 @@ import { POCKETBASE_INSTANCE } from './pocketbase.token';
  * @template PARAMS - The type of parameters for list operations (RecordListOptions or RecordFullListOptions)
  */
 export abstract class PocketBaseCrudService<
-  T extends BasePocketBaseEntity = BasePocketBaseEntity,
+  T extends BasePocketBaseEntityNameless = BasePocketBaseEntity,
   PARAMS extends RecordListOptions | RecordFullListOptions = RecordListOptions,
 >
   extends BaseDataService

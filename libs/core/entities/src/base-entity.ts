@@ -8,3 +8,11 @@ export type BaseEntity<T extends string = string> = {
   createdAt?: Date | Timestamp | string;
   updatedAt?: Date | Timestamp | string;
 } & Record<string, unknown>;
+
+/**
+ * Structural base for entities whose backing record has no name field.
+ */
+export type BaseEntityNameless<T extends string = string> = Omit<
+  BaseEntity<T>,
+  'name' | 'normalizedName'
+>;
