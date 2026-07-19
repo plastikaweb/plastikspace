@@ -1,22 +1,30 @@
 import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
- * @description Check if an array or object are empty. Uses an early-exit `for...in`
- * loop instead of `Object.entries(obj).length` to avoid the O(N) array allocation.
- * @param {unknown} obj Object parameter passed.
- * @returns {boolean}.
+ * Checks if an array, string, or object is empty.
+ * Provides high-performance O(1) checks for arrays and strings,
+ * and uses an early-exit `for...in` loop for objects to avoid O(N) allocations.
+ * Explicitly supports objects created via `Object.create(null)`.
+ * @param {unknown} obj The object, array, or string to check.
+ * @returns {boolean} True if empty, false otherwise.
  */
 export function isEmpty(obj: unknown): boolean {
   if (obj === null || obj === undefined) return true;
 
-  const constructor = (obj as object).constructor;
-  if (constructor === Array || constructor === Object) {
-    for (const key in obj as object) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        return false;
+  if (Array.isArray(obj) || typeof obj === 'string') {
+    return obj.length === 0;
+  }
+
+  if (typeof obj === 'object') {
+    const proto = Object.getPrototypeOf(obj);
+    if (proto === null || proto === Object.prototype) {
+      for (const key in obj as object) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          return false;
+        }
       }
+      return true;
     }
-    return true;
   }
 
   return false;
