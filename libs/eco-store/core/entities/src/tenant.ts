@@ -60,6 +60,7 @@ export type EcoStoreTenant = BasePocketBaseEntity &
     active?: boolean; // closing at superuser level.
     closed?: boolean; // closing at tenant level.
     closedReason?: LocalizedFields<string> | null; // closed by tenant reason.
+    fiscalDataEnabled?: boolean;
   };
 
 export type EcoStoreTenantAddress = Pick<
