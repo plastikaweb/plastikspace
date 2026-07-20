@@ -36,7 +36,11 @@ export function ecoStoreProfileAddressesFeatureFormConfig(): FormConfig<UserCont
             required: true,
             translate: true,
             minLength: 5,
-            maxLength: 50,
+            // A full Catalan address with floor, door and stairwell runs past 50
+            // ("Carrer de la Mare de Déu del Coll, 74, 3r 2a, escala B" is 54).
+            // Formly binds maxLength to the native attribute, so a tighter cap
+            // truncates as the member types, with no error shown.
+            maxLength: 100,
             attributes: {
               autocomplete: 'street-address',
             },
@@ -56,8 +60,10 @@ export function ecoStoreProfileAddressesFeatureFormConfig(): FormConfig<UserCont
             placeholder: 'profile.addresses.form.city.placeholder',
             required: true,
             translate: true,
+            // Spain's shortest municipality is Ea (2); its longest run past 25
+            // characters (Santa Margarida i els Monjos). Mirrors the schema.
             minLength: 2,
-            maxLength: 25,
+            maxLength: 50,
             attributes: {
               autocomplete: 'address-level2',
             },

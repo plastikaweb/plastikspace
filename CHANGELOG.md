@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-07-21] - Eco Store: PRV-04b/04d — address form constraints vs. schema
+
+### Fixed
+
+- **`apps/eco-store/pocketbase` (`user_addresses` + `user_fiscal_profiles`), `libs/eco-store/profile/{addresses,fiscal-data}`**: the `city` field rejected real Catalan municipalities. Both collections required a minimum of 5 characters, which excludes Vic, Olot, Reus, Salt, Sort, Alp and Bot — and Ea (Bizkaia, 2 characters) is Spain's shortest. The minimum is now 2 on both the schema and both forms, verified against the running API (Vic accepted, a single character still rejected). The address book's form was additionally **out of sync with its own schema in both directions**: it declared `minLength: 2, maxLength: 25` against a schema of `min: 5, max: 50`, so a member in Vic passed client validation and then hit a raw API error, while a real municipality name longer than 25 characters (Santa Margarida i els Monjos, 28) could not be typed at all. Client and schema now agree at 2/50. Separately, `user_addresses.address` capped input at 50 characters against an unbounded schema; because Formly binds `maxLength` to the native attribute, a full address with floor, door and stairwell ("Carrer de la Mare de Déu del Coll, 74, 3r 2a, escala B", 54 characters) was **silently truncated as the member typed**, with no error shown, and the courier received the shortened value. Raised to 100. Surfaced by a form-vs-schema constraint audit across all nine PocketBase-backed eco-store forms; two further confirmed findings (the `phone` validator rejecting `+34600123456` and spaced formats, and password inputs silently truncating pastes past 25 characters) are recorded in `apps/eco-store/TASKS.md` and still need their own tickets (PRV-04b/PRV-04d, [#86c99dev0](https://app.clickup.com/t/86c99dev0)).
+
 ## [2026-07-20] - Eco Store: PRV-04d — fiscal profile (Dades fiscals)
 
 ### Added

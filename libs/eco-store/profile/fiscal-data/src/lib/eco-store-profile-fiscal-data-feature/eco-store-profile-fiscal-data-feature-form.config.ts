@@ -54,7 +54,9 @@ export function ecoStoreProfileFiscalDataFeatureFormConfig(): FormConfig<UserFis
             placeholder: 'profile.fiscalData.form.city.placeholder',
             required: true,
             translate: true,
-            minLength: 5,
+            // Spain's shortest municipality is Ea (2); its longest run past 25
+            // characters (Santa Margarida i els Monjos). Mirrors the schema.
+            minLength: 2,
             maxLength: 50,
             attributes: { autocomplete: 'address-level2' },
           },
