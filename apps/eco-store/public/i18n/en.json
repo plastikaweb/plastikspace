@@ -787,6 +787,39 @@
         "invalidNewEmail": "The email is invalid or already in use."
       }
     },
+    "fiscalData": {
+      "title": "Tax details",
+      "description": "Billing details: only needed if you require an invoice.",
+      "form": {
+        "fiscalName": {
+          "label": "Legal name or business name",
+          "placeholder": "Full name or business name"
+        },
+        "nif": {
+          "label": "Tax ID (NIF / NIE / CIF)",
+          "placeholder": "12345678Z"
+        },
+        "address": {
+          "label": "Billing address",
+          "placeholder": "Street and number"
+        },
+        "city": {
+          "label": "City",
+          "placeholder": "Your city"
+        },
+        "zip": {
+          "label": "Zip code",
+          "placeholder": "08000"
+        },
+        "submit": "Save tax details"
+      },
+      "success": {
+        "save": "Tax details saved successfully."
+      },
+      "error": {
+        "save": "Could not save the tax details."
+      }
+    },
     "success": {
       "update": "Profile successfully updated"
     },

@@ -4,7 +4,7 @@
   "sourceRoot": "libs/eco-store/profile/fiscal-data/src",
   "prefix": "eco",
   "projectType": "library",
-  "tags": ["type:feature", "scope:eco-store"],
+  "tags": ["scope:eco-store", "type:feature"],
   "targets": {
     "test": {
       "executor": "@nx/vitest:test"

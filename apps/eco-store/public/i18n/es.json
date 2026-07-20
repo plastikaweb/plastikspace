@@ -787,6 +787,39 @@
         "invalidNewEmail": "El correo no es válido o ya está en uso."
       }
     },
+    "fiscalData": {
+      "title": "Datos fiscales",
+      "description": "Datos para la facturación: solo hace falta si necesitas factura.",
+      "form": {
+        "fiscalName": {
+          "label": "Nombre fiscal o razón social",
+          "placeholder": "Nombre completo o razón social"
+        },
+        "nif": {
+          "label": "NIF / NIE / CIF",
+          "placeholder": "12345678Z"
+        },
+        "address": {
+          "label": "Domicilio fiscal",
+          "placeholder": "Calle y número"
+        },
+        "city": {
+          "label": "Población",
+          "placeholder": "Tu población"
+        },
+        "zip": {
+          "label": "Código postal",
+          "placeholder": "08000"
+        },
+        "submit": "Guardar datos fiscales"
+      },
+      "success": {
+        "save": "Datos fiscales guardados correctamente."
+      },
+      "error": {
+        "save": "No se han podido guardar los datos fiscales."
+      }
+    },
     "success": {
       "update": "Perfil actualizado correctamente"
     },

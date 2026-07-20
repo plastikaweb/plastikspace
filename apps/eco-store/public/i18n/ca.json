@@ -787,6 +787,39 @@
         "invalidNewEmail": "El correu no és vàlid o ja està en ús."
       }
     },
+    "fiscalData": {
+      "title": "Dades fiscals",
+      "description": "Dades per a la facturació: només cal si necessites factura.",
+      "form": {
+        "fiscalName": {
+          "label": "Nom fiscal o raó social",
+          "placeholder": "Nom complet o raó social"
+        },
+        "nif": {
+          "label": "NIF / NIE / CIF",
+          "placeholder": "12345678Z"
+        },
+        "address": {
+          "label": "Domicili fiscal",
+          "placeholder": "Carrer i número"
+        },
+        "city": {
+          "label": "Població",
+          "placeholder": "La teva població"
+        },
+        "zip": {
+          "label": "Codi postal",
+          "placeholder": "08000"
+        },
+        "submit": "Guardar dades fiscals"
+      },
+      "success": {
+        "save": "Dades fiscals guardades correctament."
+      },
+      "error": {
+        "save": "No s'han pogut guardar les dades fiscals."
+      }
+    },
     "success": {
       "update": "Perfil actualitzat correctament"
     },

@@ -98,7 +98,8 @@ libs/eco-store/
 │   ├── addresses/             # PRV-04 full CRUD
 │   ├── avatar/                # PRV-02a avatar upload/crop/delete
 │   ├── basic/                 # PRV-02a/02b name, phone, email
-│   └── feature/               # Routes + shell
+│   ├── feature/               # Routes + shell
+│   └── fiscal-data/           # PRV-04d fiscal/billing profile (tenant-gated)
 ├── shared/                    # Eco-store-only shared UI (product-card, breadcrumbs, hero-header, price-summary, etc.)
 └── store-window/              # BOT-09 cycle banner + BOT-14 Qui Som
 ```
