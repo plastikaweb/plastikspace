@@ -540,8 +540,14 @@ export const pocketBaseUserProfileStore = signalStore(
       const user = store.user();
       if (!user) return false;
 
+      // Built explicitly (not spread from `data`) because UserFiscalProfileForm
+      // carries an optional `id`, which must never be forwarded in a create/update
+      // payload — PocketBase treats the record id as immutable.
       const payload: Partial<PocketBaseUserFiscalProfile> = {
-        ...data,
+        fiscalName: data.fiscalName,
+        address: data.address,
+        city: data.city,
+        zip: data.zip,
         nif: data.nif.trim().toUpperCase(),
         user: user.id,
       };

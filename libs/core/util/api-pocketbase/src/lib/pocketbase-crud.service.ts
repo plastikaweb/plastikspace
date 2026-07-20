@@ -16,7 +16,7 @@ import { POCKETBASE_INSTANCE } from './pocketbase.token';
 /**
  * @description Abstract base class for PocketBase services with common functionality.
  * Provides shared methods and configuration for all PocketBase operations.
- * @template T - The entity type that extends BasePocketBaseEntity
+ * @template T - The entity type that extends BasePocketBaseEntityNameless (defaults to BasePocketBaseEntity)
  * @template PARAMS - The type of parameters for list operations (RecordListOptions or RecordFullListOptions)
  */
 export abstract class PocketBaseCrudService<

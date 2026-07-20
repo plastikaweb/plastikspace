@@ -1,8 +1,8 @@
-import { BasePocketBaseEntity } from './base-pocketbase-entity';
+import { BasePocketBaseEntityNameless } from './base-pocketbase-entity';
 
 export type UserFiscalProfile = Omit<
-  BasePocketBaseEntity,
-  'name' | 'normalizedName' | 'created' | 'updated' | 'collectionId' | 'collectionName'
+  BasePocketBaseEntityNameless,
+  'created' | 'updated' | 'collectionId' | 'collectionName' | 'description'
 > & {
   fiscalName: string;
   nif: string;

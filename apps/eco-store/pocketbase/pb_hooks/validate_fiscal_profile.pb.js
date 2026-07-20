@@ -24,20 +24,37 @@
  * `x-bypass-hooks` is silently a no-op for them — fixed here; sibling hooks
  * left untouched as out of scope for this task.
  *
+ * NOTE: the `x-bypass-hooks` escape hatch is gated on
+ * `e.requestEvent.hasSuperuserAuth()`, not on the header alone. A header-only
+ * check would let any authenticated member skip the checksum and store an
+ * invalid NIF/NIE/CIF, since the schema pattern only checks shape, not the
+ * checksum digit/letter. Confirmed empirically on this PocketBase build:
+ * `e.requestEvent.hasSuperuserAuth()` (equivalently
+ * `e.requestEvent.auth.isSuperuser()`) returns `false` for a member token and
+ * `true` for a superuser token. The seed/staging scripts that send the header
+ * (`seed-local.js`, `seed.ts`, `push-to-staging.ts`) already authenticate as
+ * superuser first, so this gate does not break them.
+ *
  * @param {core.RecordRequestEvent} e
  */
 function validateFiscalProfile(e) {
   if (
     e.requestEvent &&
     e.requestEvent.request &&
-    e.requestEvent.request.header.get('x-bypass-hooks') === 'true'
+    e.requestEvent.request.header.get('x-bypass-hooks') === 'true' &&
+    e.requestEvent.hasSuperuserAuth()
   ) {
     return e.next();
   }
 
   /**
    * Validates the NIF/NIE/CIF checksum. Port of the frontend nifValidator
-   * (libs/shared/form/util) — keep both in sync.
+   * (libs/shared/form/util) — keep both in sync, with one intentional
+   * divergence: an empty value is INVALID here (`if (!raw) return false`)
+   * but VALID client-side (`nifValidator` returns `null` for an empty
+   * control), because the client pairs `nifValidator` with a separate
+   * `required` validator — the server has no such pairing, so it must
+   * reject emptiness itself rather than rely on a second control.
    * @param {string} raw
    * @returns {boolean}
    */

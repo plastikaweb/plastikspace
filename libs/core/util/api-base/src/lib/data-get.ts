@@ -44,7 +44,7 @@ export interface DataGetList<
   TList,
   PARAMS = Record<string, unknown>,
 > {
-  readonly _entityType?: T; // Type safety that forces T to be a BaseEntity and to be declared explicitly.
+  readonly _entityType?: T; // Type safety that forces T to be a BaseEntityNameless (at minimum an id-bearing entity) and to be declared explicitly.
   getList(params?: PARAMS): Observable<TList>;
 }
 
