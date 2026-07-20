@@ -10,7 +10,7 @@
 > - **`apps/eco-store/POCKETBASE.md`** — backend workflow & scripts
 > - **`apps/eco-store/CLAUDE.md`** — app-specific guidance for AI agents
 
-**Document version:** 0.37 · **Last updated:** 2026-07-18
+**Document version:** 0.38 · **Last updated:** 2026-07-20
 
 ---
 
@@ -44,21 +44,21 @@
 
 ## 🎯 Current focus
 
-| Task        | Module | Priority | Status | One-line summary                                                                                 |
-| ----------- | ------ | -------- | ------ | ------------------------------------------------------------------------------------------------ |
-| **BUG-001** | BOT-05 | MUST     | ✅     | Cart merge on login verified — 5/5 manual tests pass (2026-07-04)                                |
-| **BUG-003** | BOT    | MUST     | ✅     | PWA manifest doesn't use tenant name as default app name                                         |
-| **BUG-006** | NOT    | MUST     | ✅     | All hot-toasts invisible — v6 popover container never shown (CU `86cajqnp1`)                     |
-| **PRV-02b** | PRV    | MUST     | ✅     | Email change with async verification (CU `86c9uq8mt`)                                            |
-| **PRV-02c** | PRV    | MUST     | ✅     | In-session password change (CU `86c9uq8n9`)                                                      |
-| **PRV-04d** | PRV    | MUST     | 🔄     | Fiscal identity — address book cleaned up; fiscal profile deferred to invoicing (CU `86c99dev0`) |
-| **PRV-08**  | PRV    | MUST     | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`)                           |
-| **PRV-09**  | PRV    | SHOULD   | 🔄     | Notification preferences panel (CU `86c92g7fb`)                                                  |
-| **TRL-03**  | TRL    | MUST     | 📋     | Trial → member conversion CTA                                                                    |
-| **BOT-02b** | BOT    | MUST     | 📋     | Text search input above product grid                                                             |
-| **BOT-02c** | BOT    | MUST     | 📋     | Tag filter chips above product grid                                                              |
-| **BOT-08**  | BOT    | MUST     | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                                                |
-| **VAL-01**  | VAL    | SHOULD   | 🔄     | Publish review form on product detail                                                            |
+| Task        | Module | Priority | Status | One-line summary                                                                                                                                                                               |
+| ----------- | ------ | -------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **BUG-001** | BOT-05 | MUST     | ✅     | Cart merge on login verified — 5/5 manual tests pass (2026-07-04)                                                                                                                              |
+| **BUG-003** | BOT    | MUST     | ✅     | PWA manifest doesn't use tenant name as default app name                                                                                                                                       |
+| **BUG-006** | NOT    | MUST     | ✅     | All hot-toasts invisible — v6 popover container never shown (CU `86cajqnp1`)                                                                                                                   |
+| **PRV-02b** | PRV    | MUST     | ✅     | Email change with async verification (CU `86c9uq8mt`)                                                                                                                                          |
+| **PRV-02c** | PRV    | MUST     | ✅     | In-session password change (CU `86c9uq8n9`)                                                                                                                                                    |
+| **PRV-04d** | PRV    | MUST     | ✅     | Fiscal profile capture shipped — `user_fiscal_profiles` + server-side NIF checksum + opt-in "Dades fiscals" section; `orders.billing` + checkout toggle deferred to invoicing (CU `86c99dev0`) |
+| **PRV-08**  | PRV    | MUST     | 🔄     | Self-service account deletion (RGPD right to erasure) (CU `86c92g6hd`)                                                                                                                         |
+| **PRV-09**  | PRV    | SHOULD   | 🔄     | Notification preferences panel (CU `86c92g7fb`)                                                                                                                                                |
+| **TRL-03**  | TRL    | MUST     | 📋     | Trial → member conversion CTA                                                                                                                                                                  |
+| **BOT-02b** | BOT    | MUST     | 📋     | Text search input above product grid                                                                                                                                                           |
+| **BOT-02c** | BOT    | MUST     | 📋     | Tag filter chips above product grid                                                                                                                                                            |
+| **BOT-08**  | BOT    | MUST     | 📋     | Stock badge + out-of-stock overlay with "Avisa'm"                                                                                                                                              |
+| **VAL-01**  | VAL    | SHOULD   | 🔄     | Publish review form on product detail                                                                                                                                                          |
 
 See **`BACKLOG.md`** for the phased plan.
 
@@ -70,45 +70,47 @@ Workflow: edit in Admin UI → `yarn eco-store:pb:export` → `yarn eco-store:pb
 
 ### Required for queued work
 
-| Collection       | Field / Change         | Type                      | For task         | Notes                                                                                          |
-| ---------------- | ---------------------- | ------------------------- | ---------------- | ---------------------------------------------------------------------------------------------- |
-| `users`          | `notificationPrefs`    | JSON                      | PRV-09           | 6 boolean toggles (offers, restock, order status, cycle open/close, announcements, social)     |
-| _new collection_ | `user_fiscal_profiles` | —                         | invoicing (TBD)  | `user` (relation, **unique**), `fiscalName`, `nif`, `address`, `city`, `zip`. See PRV-04d spec |
-| `orders`         | `billing`              | JSON (nullable)           | invoicing (TBD)  | Fiscal tuple snapshot, written at invoice issuance. See PRV-04d spec                           |
-| `tenants`        | `heroTitle`            | String (i18n JSON)        | INI-01           |                                                                                                |
-| `tenants`        | `heroSubtitle`         | String (i18n JSON)        | INI-01           |                                                                                                |
-| `tenants`        | `heroImagePreset`      | Select                    | INI-01           | `hort` \| `cistella` \| `mercat` \| `default`                                                  |
-| `tenants`        | `heroImageCustom`      | File (Image)              | INI-01           | Optional, overrides preset                                                                     |
-| `tenants`        | `aboutUsText`          | String (HTML, i18n JSON)  | INI-06           |                                                                                                |
-| `tenants`        | `howItWorksSteps`      | JSON (nullable)           | INI-03           | If null, derive from `logisticsConfig`                                                         |
-| `products`       | `isFeatured`           | Boolean (default `false`) | INI-04 / MKT-03  |                                                                                                |
-| _new collection_ | `wishlists`            | —                         | BOT-07 / BOT-13b | Per-user, per-tenant. Schema TBD (Q-14)                                                        |
-| _new collection_ | `stock_alerts`         | —                         | BOT-13a / NOT-03 | Email + product subscription                                                                   |
-| _new collection_ | `reviews`              | —                         | VAL-01           | Q-13 pending (collection vs JSON-on-products)                                                  |
-| _new collection_ | `promo_codes`          | —                         | MKT-02           | Tenant-scoped                                                                                  |
+| Collection       | Field / Change      | Type                      | For task         | Notes                                                                                      |
+| ---------------- | ------------------- | ------------------------- | ---------------- | ------------------------------------------------------------------------------------------ |
+| `users`          | `notificationPrefs` | JSON                      | PRV-09           | 6 boolean toggles (offers, restock, order status, cycle open/close, announcements, social) |
+| `orders`         | `billing`           | JSON (nullable)           | invoicing (TBD)  | Fiscal tuple snapshot, written at invoice issuance. See PRV-04d spec                       |
+| `tenants`        | `heroTitle`         | String (i18n JSON)        | INI-01           |                                                                                            |
+| `tenants`        | `heroSubtitle`      | String (i18n JSON)        | INI-01           |                                                                                            |
+| `tenants`        | `heroImagePreset`   | Select                    | INI-01           | `hort` \| `cistella` \| `mercat` \| `default`                                              |
+| `tenants`        | `heroImageCustom`   | File (Image)              | INI-01           | Optional, overrides preset                                                                 |
+| `tenants`        | `aboutUsText`       | String (HTML, i18n JSON)  | INI-06           |                                                                                            |
+| `tenants`        | `howItWorksSteps`   | JSON (nullable)           | INI-03           | If null, derive from `logisticsConfig`                                                     |
+| `products`       | `isFeatured`        | Boolean (default `false`) | INI-04 / MKT-03  |                                                                                            |
+| _new collection_ | `wishlists`         | —                         | BOT-07 / BOT-13b | Per-user, per-tenant. Schema TBD (Q-14)                                                    |
+| _new collection_ | `stock_alerts`      | —                         | BOT-13a / NOT-03 | Email + product subscription                                                               |
+| _new collection_ | `reviews`           | —                         | VAL-01           | Q-13 pending (collection vs JSON-on-products)                                              |
+| _new collection_ | `promo_codes`       | —                         | MKT-02           | Tenant-scoped                                                                              |
 
 ### Already in schema
 
-| Collection                               | Field                                                    | Notes                                                 |
-| ---------------------------------------- | -------------------------------------------------------- | ----------------------------------------------------- |
-| `tenants`                                | `shortName`                                              | ✅ Present (text, max 12; PWA `short_name` — BUG-003) |
-| `users`                                  | `membershipStatus`                                       | ✅ Present (4 valid values after META-02)             |
-| `users`                                  | `trialEndsAt`                                            | ✅ Present (nullable date)                            |
-| `users`                                  | `role`                                                   | ✅ `PARTNER` / `GLOBAL_ADMIN` / `TENANT_ADMIN`        |
-| `tenants`                                | `logisticsConfig`, `languages`, `closed`, `closedReason` | ✅                                                    |
-| `products`                               | `unitType`, `rating`, `reviewsCount`                     | ✅                                                    |
-| `carts.createRule` + `orders.createRule` | API rule                                                 | ✅ TRL-05 enforced                                    |
-| `carts`                                  | `isEditingOrder`, `activeOrderId`                        | ✅ PST-02 ready                                       |
+| Collection                               | Field                                                    | Notes                                                                                                                                                         |
+| ---------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tenants`                                | `shortName`                                              | ✅ Present (text, max 12; PWA `short_name` — BUG-003)                                                                                                         |
+| `users`                                  | `membershipStatus`                                       | ✅ Present (4 valid values after META-02)                                                                                                                     |
+| `users`                                  | `trialEndsAt`                                            | ✅ Present (nullable date)                                                                                                                                    |
+| `users`                                  | `role`                                                   | ✅ `PARTNER` / `GLOBAL_ADMIN` / `TENANT_ADMIN`                                                                                                                |
+| `tenants`                                | `logisticsConfig`, `languages`, `closed`, `closedReason` | ✅                                                                                                                                                            |
+| `products`                               | `unitType`, `rating`, `reviewsCount`                     | ✅                                                                                                                                                            |
+| `carts.createRule` + `orders.createRule` | API rule                                                 | ✅ TRL-05 enforced                                                                                                                                            |
+| `carts`                                  | `isEditingOrder`, `activeOrderId`                        | ✅ PST-02 ready                                                                                                                                               |
+| `tenants`                                | `fiscalDataEnabled`                                      | ✅ Boolean; gates the PRV-04d fiscal profile section + `canMatch` guard                                                                                       |
+| _new collection_                         | `user_fiscal_profiles`                                   | ✅ `user` (relation, **unique**), `fiscalName`, `nif`, `address`, `city`, `zip`; NIF/NIE/CIF checksum enforced server-side by `validate_fiscal_profile.pb.js` |
 
 ### Hooks in `pb_hooks/`
 
-| File                           | Purpose                                          | Status                                                                             |
-| ------------------------------ | ------------------------------------------------ | ---------------------------------------------------------------------------------- |
-| `cycle_cron.pb.js`             | Weekly cycle init & status transitions           | ✅                                                                                 |
-| `normalize_user_name.pb.js`    | Auto-normalize user names                        | ✅                                                                                 |
-| `on_create_order.pb.js`        | Cycle linking, dedup, cart cleanup, NOT-01 email | ✅                                                                                 |
-| `on_password_reset.pb.js`      | PRV-03 support                                   | ✅                                                                                 |
-| `single_default_address.pb.js` | Enforces single default on `user_addresses`      | ✅ — single `default` constraint; NIF checksum to be added with the invoicing work |
+| File                            | Purpose                                                                | Status                           |
+| ------------------------------- | ---------------------------------------------------------------------- | -------------------------------- |
+| `cycle_cron.pb.js`              | Weekly cycle init & status transitions                                 | ✅                               |
+| `normalize_user_name.pb.js`     | Auto-normalize user names                                              | ✅                               |
+| `on_create_order.pb.js`         | Cycle linking, dedup, cart cleanup, NOT-01 email                       | ✅                               |
+| `on_password_reset.pb.js`       | PRV-03 support                                                         | ✅                               |
+| `single_default_address.pb.js`  | Enforces single default on `user_addresses`                            | ✅ — single `default` constraint |
+| `validate_fiscal_profile.pb.js` | PRV-04d — NIF/NIE/CIF checksum on `user_fiscal_profiles` create/update | ✅                               |
 
 ### Hooks still needed
 
@@ -201,16 +203,17 @@ All pending. ClickUp parent: `86c8cjgke`.
 
 ### Done ✅
 
-| ID          | Description                             | Where                                                                                            |
-| ----------- | --------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| **PRV-01**  | Login/logout (JWT, 7-day)               | `libs/eco-store/auth/login`                                                                      |
-| **PRV-02a** | Personal data (name, phone, **avatar**) | `libs/eco-store/profile/{basic,avatar}` · CU `86c92g5x5` + `86c92g5xk`                           |
-| **PRV-03**  | Forgot-password flow                    | `libs/eco-store/auth/{forgot-password,*-sent,reset-password}`                                    |
-| **PRV-04a** | Address list                            | `libs/eco-store/profile/addresses` · CU `86c92g5yn`                                              |
-| **PRV-04b** | Address CRUD                            | CU `86c92g5yz`                                                                                   |
-| **PRV-04c** | Default address                         | CU `86c92g5z8`                                                                                   |
-| **PRV-02b** | Email change with async verification    | `libs/eco-store/profile/access-security` + `auth/feature/confirm-email-change` · CU `86c9uq8mt`  |
-| **PRV-02c** | In-session password change              | `libs/eco-store/profile/access-security` + `shared/auth/pocketbase/data-access` · CU `86c9uq8n9` |
+| ID          | Description                                                                         | Where                                                                                                                      |
+| ----------- | ----------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **PRV-01**  | Login/logout (JWT, 7-day)                                                           | `libs/eco-store/auth/login`                                                                                                |
+| **PRV-02a** | Personal data (name, phone, **avatar**)                                             | `libs/eco-store/profile/{basic,avatar}` · CU `86c92g5x5` + `86c92g5xk`                                                     |
+| **PRV-03**  | Forgot-password flow                                                                | `libs/eco-store/auth/{forgot-password,*-sent,reset-password}`                                                              |
+| **PRV-04a** | Address list                                                                        | `libs/eco-store/profile/addresses` · CU `86c92g5yn`                                                                        |
+| **PRV-04b** | Address CRUD                                                                        | CU `86c92g5yz`                                                                                                             |
+| **PRV-04c** | Default address                                                                     | CU `86c92g5z8`                                                                                                             |
+| **PRV-02b** | Email change with async verification                                                | `libs/eco-store/profile/access-security` + `auth/feature/confirm-email-change` · CU `86c9uq8mt`                            |
+| **PRV-02c** | In-session password change                                                          | `libs/eco-store/profile/access-security` + `shared/auth/pocketbase/data-access` · CU `86c9uq8n9`                           |
+| **PRV-04d** | Fiscal profile capture (NIF/NIE/CIF, server-checksummed; opt-in behind tenant flag) | `libs/eco-store/profile/fiscal-data` + `apps/eco-store/pocketbase/pb_hooks/validate_fiscal_profile.pb.js` · CU `86c99dev0` |
 
 ### In progress 🔄
 
@@ -221,13 +224,12 @@ All pending. ClickUp parent: `86c8cjgke`.
 
 ### Pending 📋
 
-| ID          | Description                         | Priority | ClickUp     | Notes                                                                                               |
-| ----------- | ----------------------------------- | -------- | ----------- | --------------------------------------------------------------------------------------------------- |
-| **PRV-04d** | Fiscal identity                     | MUST     | `86c99dev0` | Typology design rejected on review. `user_fiscal_profiles` + `orders.billing` deferred to invoicing |
-| **PRV-05a** | Pre-authorization (admin)           | MUST     | —           | Out of scope (eco-admin)                                                                            |
-| **PRV-05b** | Registration with pre-auth email    | MUST     | `86c8cjgha` | Gated by tenant admin allow-list                                                                    |
-| **PRV-06**  | Membership request form (anonymous) | SHOULD   | —           | Public form                                                                                         |
-| **PRV-07**  | Contact form (anonymous)            | SHOULD   | —           | Public form                                                                                         |
+| ID          | Description                         | Priority | ClickUp     | Notes                            |
+| ----------- | ----------------------------------- | -------- | ----------- | -------------------------------- |
+| **PRV-05a** | Pre-authorization (admin)           | MUST     | —           | Out of scope (eco-admin)         |
+| **PRV-05b** | Registration with pre-auth email    | MUST     | `86c8cjgha` | Gated by tenant admin allow-list |
+| **PRV-06**  | Membership request form (anonymous) | SHOULD   | —           | Public form                      |
+| **PRV-07**  | Contact form (anonymous)            | SHOULD   | —           | Public form                      |
 
 ### PRV-08 — Account deletion (RGPD) spec
 
@@ -269,14 +271,14 @@ Why it was rejected:
 **Target design.** Three separate concerns:
 
 - `user_addresses` — plain delivery locations. Single `default`. No type, no NIF. Every address is shippable.
-- `user_fiscal_profiles` _(new collection, deferred until invoicing exists)_ — the fiscal identity as one unit: `user` (relation, **unique**), `fiscalName`, `nif`, `address`, `city`, `zip`. Cardinality is **0..1**; if a tenant ever serves legal entities, opening it to 0..N is dropping the unique index, not a data migration. A separate collection rather than fields on `users` because `users` is an auth collection and widening its update rules is security-critical.
-- `orders.billing` _(JSON, nullable, deferred)_ — snapshot of the fiscal tuple, written **at invoice issuance**, not at order creation, so a NIF corrected in between still yields a correct invoice and an issued document is never retroactively mutated.
+- `user_fiscal_profiles` _(new collection)_ ✅ shipped 2026-07-20 — the fiscal identity as one unit: `user` (relation, **unique**), `fiscalName`, `nif`, `address`, `city`, `zip`. Cardinality is **0..1**; if a tenant ever serves legal entities, opening it to 0..N is dropping the unique index, not a data migration. A separate collection rather than fields on `users` because `users` is an auth collection and widening its update rules is security-critical.
+- `orders.billing` _(JSON, nullable, deferred to invoicing)_ — snapshot of the fiscal tuple, written **at invoice issuance**, not at order creation, so a NIF corrected in between still yields a correct invoice and an issued document is never retroactively mutated.
 
-**UI (deferred with the invoicing work).** Fiscal capture is opt-in and gated behind a tenant flag: profile gets a separate "Dades fiscals" section, and checkout gets a "necessito factura" toggle. A member who does not request an invoice sees zero added fields.
+**UI.** ✅ Fiscal capture is opt-in and gated behind the `tenants.fiscalDataEnabled` flag: profile gets a separate "Dades fiscals" section (`libs/eco-store/profile/fiscal-data`, `canMatch`-guarded), form fields `fiscalName`/`nif`/`address`/`city`/`zip`. A member who does not request an invoice sees zero added fields. **Deferred to invoicing:** checkout's "necessito factura" toggle and `orders.billing`.
 
-**Shipped in this branch:** the address book reverted to its plain shape, the checkout picker fixed (no type filter; resolves on initial load without clobbering an existing selection), and `nifValidator` (DNI/NIE/CIF with checksum, 13 tests) retained ready for the fiscal profile form. `single_default_address.pb.js` stays on the single-`default` constraint.
+**Shipped 2026-07-20 (this branch, capture scope):** `user_fiscal_profiles` collection (0..1 via unique FK) + `tenants.fiscalDataEnabled`; server-side NIF/NIE/CIF checksum hook `validate_fiscal_profile.pb.js` (client-side `nifValidator`, DNI/NIE/CIF with checksum, 18 tests, is UX only — the hook is the actual control, rejecting invalid checksums with a 400 on create/update); the opt-in "Dades fiscals" profile section behind the `canMatch` tenant guard, with sidenav entry + ca/es/en i18n. Also from the earlier redesign on this branch: the address book reverted to its plain shape, and the checkout picker fixed (no type filter; resolves on initial load without clobbering an existing selection). `single_default_address.pb.js` stays on the single-`default` constraint.
 
-**Open before the invoicing work:** port the NIF checksum into the PocketBase hook — client-side validation is UX, not a control, and the field currently has no server-side format constraint.
+**Known follow-up (needs a BUG ticket — ClickUp unavailable this session):** the `x-bypass-hooks` header escape hatch is inert in `normalize_user_name.pb.js` and `on_create_order.pb.js` — both read `e.httpContext.request()`, which does not exist on `RecordRequestEvent` in PocketBase 0.36.7 (confirmed empirically: `Object.keys(e)` has no `httpContext` key). The actual request lives at `e.requestEvent.request`, which is the path `validate_fiscal_profile.pb.js` uses (see its inline comment for the reproduction). The two sibling hooks were left untouched as out of scope for PRV-04d.
 
 ---
 
@@ -514,6 +516,7 @@ ClickUp `86c9uwmzf`. Internal tooling — first slice of a multi-phase workflow 
 
 | Version | Date       | Notes                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
 | ------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0.38    | 2026-07-20 | **PRV-04d fiscal profile capture shipped** — `user_fiscal_profiles` collection (0..1 via unique FK) + `tenants.fiscalDataEnabled`, server-side NIF/NIE/CIF checksum hook `validate_fiscal_profile.pb.js` (client-side `nifValidator` from 0.37 is UX only), and the opt-in "Dades fiscals" profile section (`libs/eco-store/profile/fiscal-data`) behind a `canMatch` tenant guard with sidenav entry + ca/es/en i18n. `orders.billing` and checkout's "necessito factura" toggle remain deferred to the invoicing work. Found and logged as a follow-up (no BUG ticket filed — ClickUp unauthorized this session): the `x-bypass-hooks` header check is inert in `normalize_user_name.pb.js` and `on_create_order.pb.js` (both read the non-existent `e.httpContext`; the correct path is `e.requestEvent.request`, used by the new hook). CU `86c99dev0`.                                                                                                                                                                 |
 | 0.37    | 2026-07-18 | **PRV-04d typology rejected & redesigned** — the implemented `addressType: SHIPPING\|BILLING\|BOTH` + per-address `nif` + `defaultBilling` design was rejected on review and reverted (a per-transaction role conflated with a property of the address; tax ID bound to the address instead of the person — BCNF/3NF violation; no razón social, so a CIF could never yield a valid invoice; `BOTH` an unsound discriminator). Address book restored to a plain single-`default` shape; checkout picker fixed (no type filter; resolves on initial load without clobbering an existing selection), which also fixed the tenant pickup-point regression (`address.card.type.undefined` at checkout + inert default sort). `nifValidator` (DNI/NIE/CIF checksum, 13 tests) retained; `chip-selector` lib dropped as dead code. Target design (`user_fiscal_profiles` 0..1 unique FK + `orders.billing` snapshot at issuance) documented in the PRV-04d spec and deferred until invoicing exists.                              |
 | 0.36    | 2026-07-05 | **Jules draft-PR triage (round 8)** — 10 open drafts reviewed. 6 are still-valid round-7 canonical harvest refs, kept open: #1206→A11Y-013, #1216→A11Y-012, #1217→TECH-13, #1218→SEC-07, #1219→TECH-14, #1220→SEC-08. Closed 4: **#1207** (SEC-06 harvest ref — work merged via PR #1222, residuals already live in SEC-07/08), **#1224** (strict subset of #1220 → SEC-08, no new content), **#1223** (dupe of #1217 → TECH-13, cluster now 6 PRs), **#1225 rejected** (loading state for `SharedButtonUiComponent`: sole workspace consumer is the static nasa-images cms-layout header link → dead code with no call site; `aria-label` depends on a `common.loading` key no app defines — nasa-images loads no translation files, so screen readers would hear the raw key; spinner content-swap adds a width/layout shift; no task filed — re-evaluate if a real async-action consumer appears). No new tasks; no scope changes to existing ones.                                                                      |
 | 0.35    | 2026-07-05 | **PRV-02c done** — in-session password change in "Accés i seguretat" (3 fields; form keys `newPassword`/`confirmPassword` deliberately match the shared `passwordMatch` group validator; PocketBase PATCH with `oldPassword` + silent re-auth with the new password keeps the session alive per spec). `changePassword` added to `PocketBaseAuthService` + `pocketBaseUserProfileStore` (+ `ChangePasswordData` type); 400 `oldPassword` response mapped to its own toast. UX: both access-security forms capped at 650px, full pristine reset on success (shared `resetForm` input hardened via `FormGroupDirective.resetForm()`), failed change re-focuses the current-password field. CU id corrected `86c92g60y` → `86c9uq8n9` (replacement ticket). Filed **BUG-007** `86cajvh93`: shared `passwordMatch` validator is inert on PRV-03 reset-password (destructures `newPassword` but the form uses `password`) — found while wiring PRV-02c.                                                                          |

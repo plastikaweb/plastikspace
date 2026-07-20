@@ -151,14 +151,15 @@ apps/eco-store/pocketbase/
 
 This version **supports separate `.pb.js` files** — no need to bundle into a single `main.pb.js`. Current live hooks:
 
-| File                           | Purpose                                                                      |
-| ------------------------------ | ---------------------------------------------------------------------------- |
-| `on_create_order.pb.js`        | Cycle linking, duplicate prevention, cart cleanup, NOT-01 confirmation email |
-| `on_password_reset.pb.js`      | PRV-03 password reset support                                                |
-| `on_email_change.pb.js`        | PRV-02b localized email-change confirmation → `/confirmar-correu`            |
-| `single_default_address.pb.js` | Enforces single default on `user_addresses` (PRV-04c)                        |
-| `normalize_user_name.pb.js`    | Auto-normalizes user names for search                                        |
-| `cycle_cron.pb.js`             | Scheduled job: initialize weekly cycles and run status transitions           |
+| File                            | Purpose                                                                      |
+| ------------------------------- | ---------------------------------------------------------------------------- |
+| `on_create_order.pb.js`         | Cycle linking, duplicate prevention, cart cleanup, NOT-01 confirmation email |
+| `on_password_reset.pb.js`       | PRV-03 password reset support                                                |
+| `on_email_change.pb.js`         | PRV-02b localized email-change confirmation → `/confirmar-correu`            |
+| `single_default_address.pb.js`  | Enforces single default on `user_addresses` (PRV-04c)                        |
+| `normalize_user_name.pb.js`     | Auto-normalizes user names for search                                        |
+| `cycle_cron.pb.js`              | Scheduled job: initialize weekly cycles and run status transitions           |
+| `validate_fiscal_profile.pb.js` | PRV-04d — NIF/NIE/CIF checksum on `user_fiscal_profiles` create/update       |
 
 ### Schema workflow
 
