@@ -32,6 +32,8 @@ export class SharedUtilFormattersService {
 
   /**
    * Formats a date value using the specified formatting options.
+   * PERFORMANCE: Implements a zero-allocation fast-path when custom extras are not provided.
+   * Avoids destructured object spreading when extras are present.
    * @param {FormattingDateInput} value The date value to format.
    * @param {() => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} [extras] An optional function that returns additional formatting options, such as locale and timezone.
    * @returns {string} The formatted date string.
@@ -40,24 +42,25 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!extras) {
+      return formatDate(value, 'shortDate', this.#locale, this.#timezone) || '';
     }
 
-    return formatDate(value, format.dateDigitsInfo, format.locale, format.timezone) || '';
+    const custom = extras();
+    return (
+      formatDate(
+        value,
+        custom.dateDigitsInfo ?? 'shortDate',
+        custom.locale ?? this.#locale,
+        custom.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
    * Formats a given date/time value according to the specified locale and timezone.
+   * PERFORMANCE: Implements a zero-allocation fast-path when custom extras are not provided.
+   * Avoids destructured object spreading when extras are present.
    * @template T - The type parameter for the formatting extras.
    * @param {FormattingDateInput} value - The date/time value to be formatted.
    * @param {() => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>} [extras] -
@@ -68,22 +71,25 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!extras) {
+      return formatDate(value, 'M/d/yy, HH:mm:ss', this.#locale, this.#timezone) || '';
     }
-    return formatDate(value, 'M/d/yy, HH:mm:ss', format.locale, format.timezone) || '';
+
+    const custom = extras();
+    return (
+      formatDate(
+        value,
+        'M/d/yy, HH:mm:ss',
+        custom.locale ?? this.#locale,
+        custom.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
    * Formats a Firebase `Timestamp` into a string based on the provided formatting options.
+   * PERFORMANCE: Implements a zero-allocation fast-path when custom extras are not provided.
+   * Avoids destructured object spreading when extras are present.
    * @param {Timestamp} value - The Firebase `Timestamp` to format.
    * @param {() => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>} [extras] -
    *        An optional function that returns additional formatting options such as `dateDigitsInfo`, `locale`, and `timezone`.
@@ -93,26 +99,29 @@ export class SharedUtilFormattersService {
     value: Timestamp,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!value) {
+      return '-';
     }
 
-    return value
-      ? formatDate(value?.toDate(), format.dateDigitsInfo, format.locale, format.timezone)
-      : '-';
+    if (!extras) {
+      return formatDate(value.toDate(), 'shortDate', this.#locale, this.#timezone) || '';
+    }
+
+    const custom = extras();
+    return (
+      formatDate(
+        value.toDate(),
+        custom.dateDigitsInfo ?? 'shortDate',
+        custom.locale ?? this.#locale,
+        custom.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
    * Formats a given number as a percentage string.
+   * PERFORMANCE: Implements a zero-allocation fast-path when custom extras are not provided.
+   * Avoids destructured object spreading when extras are present.
    * @param {number} value - The number to be formatted as a percentage.
    * @param {() => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
    * @returns {string} The formatted percentage string.
@@ -121,22 +130,24 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!extras) {
+      return formatPercent(Number(value) / 100, this.#locale, '1.2-2') || '';
     }
 
-    return formatPercent(Number(value) / 100, format.locale, format.numberDigitsInfo) || '';
+    const custom = extras();
+    return (
+      formatPercent(
+        Number(value) / 100,
+        custom.locale ?? this.#locale,
+        custom.numberDigitsInfo ?? '1.2-2'
+      ) || ''
+    );
   }
 
   /**
    * Formats a given number as a currency string.
+   * PERFORMANCE: Implements a zero-allocation fast-path when custom extras are not provided.
+   * Avoids destructured object spreading when extras are present.
    * @param {number} value - The numeric value to format as currency.
    * @param {() => Partial<Pick<FormattingExtras<'CURRENCY'>, 'numberDigitsInfo' | 'locale' | 'currency' | 'currencyCode'>>} [extras] - Optional function that returns an object with additional formatting options.
    * @returns {string} - The formatted currency string.
@@ -150,31 +161,26 @@ export class SharedUtilFormattersService {
       >
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      currency: '€',
-      currencyCode: 'EUR',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!extras) {
+      return formatCurrency(value, this.#locale, '€', 'EUR', '1.2-2') || '';
     }
+
+    const custom = extras();
     return (
       formatCurrency(
         value,
-        format.locale,
-        format.currency,
-        format.currencyCode,
-        format.numberDigitsInfo
+        custom.locale ?? this.#locale,
+        custom.currency ?? '€',
+        custom.currencyCode ?? 'EUR',
+        custom.numberDigitsInfo ?? '1.2-2'
       ) || ''
     );
   }
 
   /**
    * Formats a given number according to specified formatting options.
+   * PERFORMANCE: Implements a zero-allocation fast-path when custom extras are not provided.
+   * Avoids destructured object spreading when extras are present.
    * @template T - The type parameter for formatting extras.
    * @param {number} value - The number to format.
    * @param {() => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>} [extras] - Optional function that returns additional formatting options.
@@ -184,21 +190,24 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!extras) {
+      return formatNumber(Number(value), this.#locale, '1.2-2') || '';
     }
-    return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
+
+    const custom = extras();
+    return (
+      formatNumber(
+        Number(value),
+        custom.locale ?? this.#locale,
+        custom.numberDigitsInfo ?? '1.2-2'
+      ) || ''
+    );
   }
 
   /**
    * Formats a given number as a quantity string with optional prefix and suffix.
+   * PERFORMANCE: Implements a zero-allocation fast-path when custom extras are not provided.
+   * Avoids destructured object spreading when extras are present.
    * @template T - The type parameter for the base entity.
    * @param {number} value - The numeric value to format.
    * @param {T} item - The item containing the value.
@@ -214,20 +223,18 @@ export class SharedUtilFormattersService {
       Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      suffix: '',
-      prefix: '',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(item),
-      };
+    if (!extras) {
+      const formattedNumber = formatNumber(Number(value), this.#locale, '1.2-2');
+      return formattedNumber.trim();
     }
-    const formattedNumber = formatNumber(Number(value), format.locale, format.numberDigitsInfo);
-    return `${format.prefix || ''}${formattedNumber}${format.suffix || ''}`.trim();
+
+    const custom = extras(item);
+    const formattedNumber = formatNumber(
+      Number(value),
+      custom.locale ?? this.#locale,
+      custom.numberDigitsInfo ?? '1.2-2'
+    );
+    return `${custom.prefix || ''}${formattedNumber}${custom.suffix || ''}`.trim();
   }
 
   /**
@@ -241,6 +248,8 @@ export class SharedUtilFormattersService {
 
   /**
    * Formats a boolean value into an HTML string with an icon.
+   * PERFORMANCE: Implements a zero-allocation fast-path when custom extras are not provided.
+   * Avoids destructured object spreading when extras are present.
    * @template T - The type parameter for the formatting extras.
    * @param {boolean} value - The boolean value to format.
    * @param {() => FormattingExtras<'BOOLEAN_WITH_ICON'>} [extras] - Optional function to provide additional formatting options.
@@ -250,18 +259,17 @@ export class SharedUtilFormattersService {
     value: boolean,
     extras?: () => FormattingExtras<'BOOLEAN_WITH_ICON'>
   ): SafeHtml {
-    let format = {
-      iconTrue: 'check',
-      iconFalse: 'close',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!extras) {
+      return this.#sanitizer.bypassSecurityTrustHtml(
+        `<span class="material-icons">${value ? 'check' : 'close'}</span>`
+      );
     }
+
+    const custom = extras();
     return this.#sanitizer.bypassSecurityTrustHtml(
-      `<span class="material-icons">${escapeHtml(value ? format.iconTrue : format.iconFalse)}</span>`
+      `<span class="material-icons">${escapeHtml(
+        value ? custom.iconTrue ?? 'check' : custom.iconFalse ?? 'close'
+      )}</span>`
     );
   }
 
