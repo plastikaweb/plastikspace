@@ -85,4 +85,42 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should not escape numeric translation parameters to preserve ICU pluralization', async () => {
+    await setup(
+      { ...defaultData, params: { count: 123 } },
+      {
+        'test.message': 'You have {{count}} items',
+      }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).toContain('You have 123 items');
+  });
+
+  it('should safely stringify and escape array or object translation parameters', async () => {
+    await setup(
+      { ...defaultData, params: { name: ['<script>alert(1)</script>', 'clean'] } },
+      {
+        'test.message': 'Items: {{name}}',
+      }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<script>');
+    expect(rendered).toContain('&lt;script&gt;alert(1)&lt;&#x2F;script&gt;,clean');
+  });
+
+  it('should bypass translation and return non-string messages directly (like SafeHtml)', async () => {
+    const fakeSafeHtml = {
+      changingThisBreaksApplicationSecurity: '<strong>Trusted SafeHtml</strong>',
+    };
+    await setup({
+      ...defaultData,
+      message: fakeSafeHtml,
+    });
+
+    const rendered = (component as unknown as { message: () => unknown }).message();
+    expect(rendered).toBe(fakeSafeHtml);
+  });
 });
