@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2026-07-06] - Shared: TECH-14 — Optimize Shared Grid Cell Formatters and Property Resolution Hot-paths
+
+### Changed
+
+- **`libs/shared/util/formatters` (`SharedUtilFormattersService`, `DataFormatFactoryService`)**: optimized grid cell formatters to use a zero-allocation fast-path when optional `extras` are omitted, and completely eliminated object-spread/destructuring overhead when `extras` are provided. Also optimized property resolution hot-path `#getValueFromRow` in `DataFormatFactoryService` by implementing a flat-property fast-path (bypassing split and reduce entirely) and caching pre-split nested path strings in a private `#pathCache` Map to reduce garbage collection pressure.
+
 ## [2026-07-05] - Eco Store: PRV-02c — in-session password change
 
 ### Added
