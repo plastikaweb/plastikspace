@@ -196,4 +196,43 @@ describe('DataFormatFactoryService', () => {
       expect(result).toBe(`This is the TITLE`);
     });
   });
+
+  describe('property resolution optimizations', () => {
+    it('should correctly resolve flat properties bypassing nested path split', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'name',
+        formatting: { type: 'TEXT' },
+      });
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: 'TITLE' });
+    });
+
+    it('should correctly resolve nested properties with caching', () => {
+      const col = {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'text.child.value',
+        formatting: { type: 'TEXT' },
+      } as const;
+
+      // First resolution (populates cache)
+      const firstResult = service.getFormattedValue(objectMocked, col);
+      expect(firstResult).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
+
+      // Second resolution (hits cache)
+      const secondResult = service.getFormattedValue(objectMocked, col);
+      expect(secondResult).toEqual({ changingThisBreaksApplicationSecurity: 'value' });
+    });
+
+    it('should handle undefined nested structures safely', () => {
+      const result = service.getFormattedValue(objectMocked, {
+        key: 'a',
+        title: 'Title',
+        pathToKey: 'text.missing.child.value',
+        formatting: { type: 'TEXT' },
+      });
+      expect(result).toEqual({ changingThisBreaksApplicationSecurity: '' });
+    });
+  });
 });
