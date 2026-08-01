@@ -27,6 +27,7 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
   readonly #productBaseUnitTextPipe = inject(LlecoopProductBaseUnitTextPipe);
   readonly #productUnitSuffixPipe = inject(LlecoopProductUnitSuffixPipe);
   readonly #productUnitStepPipe = inject(LlecoopProductUnitStepPipe);
+  readonly #defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
 
   readonly #name: TableColumnFormatting<LlecoopOrderProduct, 'CUSTOM'> = {
     key: 'name',
@@ -79,7 +80,9 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
       type: 'CUSTOM',
       execute: (value, element) => {
         const price = `<p>${Number(value).toFixed(2)} €</p>`;
-        const unit = element?.unit ? this.#productBaseUnitTextPipe.transform(element.unit) : '';
+        const unit = element?.unit
+          ? escapeHtml(this.#productBaseUnitTextPipe.transform(element.unit))
+          : '';
 
         return this.#sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
       },
@@ -150,10 +153,8 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
   ]);
 
   getTableDefinition() {
-    const defaultTableConfig = inject(DEFAULT_TABLE_CONFIG);
-
     return {
-      ...defaultTableConfig,
+      ...this.#defaultTableConfig,
       columnProperties: this.#columnProperties,
       sort: this.#userOrderStore.orderProductsSorting,
       pagination: this.#userOrderStore.orderProductsPagination,
