@@ -1,5 +1,5 @@
 import { InjectionToken } from '@angular/core';
-import { BaseEntity, IdType } from '@plastik/core/entities';
+import { BaseEntity, BaseEntityNameless, IdType } from '@plastik/core/entities';
 import { Observable } from 'rxjs';
 
 // DATA GET LIST //
@@ -39,8 +39,12 @@ import { Observable } from 'rxjs';
  * }
  * ```
  */
-export interface DataGetList<T extends BaseEntity, TList, PARAMS = Record<string, unknown>> {
-  readonly _entityType?: T; // Type safety that forces T to be a BaseEntity and to be declared explicitly.
+export interface DataGetList<
+  T extends BaseEntityNameless,
+  TList,
+  PARAMS = Record<string, unknown>,
+> {
+  readonly _entityType?: T; // Type safety that forces T to be a BaseEntityNameless (at minimum an id-bearing entity) and to be declared explicitly.
   getList(params?: PARAMS): Observable<TList>;
 }
 
@@ -87,7 +91,7 @@ export function createDataGetListServiceToken<
  * }
  * ```
  */
-export interface DataGetOne<T extends BaseEntity> {
+export interface DataGetOne<T extends BaseEntityNameless> {
   getOne(id: IdType<T>): Observable<T>;
 }
 
@@ -136,7 +140,7 @@ export function createDataGetOneServiceToken<T extends BaseEntity>(
  * }
  * ```
  */
-export interface DataGet<T extends BaseEntity, TList, PARAMS = Record<string, unknown>>
+export interface DataGet<T extends BaseEntityNameless, TList, PARAMS = Record<string, unknown>>
   extends DataGetList<T, TList, PARAMS>, DataGetOne<T> {}
 
 /**

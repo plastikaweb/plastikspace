@@ -1,4 +1,4 @@
-import { BaseEntity, IdType } from '@plastik/core/entities';
+import { BaseEntity, BaseEntityNameless, IdType } from '@plastik/core/entities';
 import { Observable } from 'rxjs';
 import { InjectionToken } from '@angular/core';
 
@@ -75,7 +75,7 @@ import { DataGet } from './data-get';
  * ```
  */
 export interface DataCrud<
-  T extends BaseEntity,
+  T extends BaseEntityNameless,
   TList,
   PARAMS = Record<string, unknown>,
   DATA = Partial<Omit<T, 'id'>>,

@@ -1,5 +1,6 @@
 import { BasePocketBaseEntity, BasePocketBaseEntityWithTenantRef } from './base-pocketbase-entity';
 import { UserContact } from './user-contact';
+import { UserFiscalProfile } from './user-fiscal-profile';
 
 export type PocketBaseUserRoles = 'PARTNER' | 'GLOBAL_ADMIN' | 'TENANT_ADMIN';
 
@@ -23,5 +24,13 @@ export type PocketBaseUserAddress = Pick<
   'id' | 'collectionId' | 'collectionName' | 'created' | 'updated'
 > &
   UserContact & {
+    user: PocketBaseUser['id'];
+  };
+
+export type PocketBaseUserFiscalProfile = Pick<
+  BasePocketBaseEntity,
+  'id' | 'collectionId' | 'collectionName' | 'created' | 'updated'
+> &
+  UserFiscalProfile & {
     user: PocketBaseUser['id'];
   };

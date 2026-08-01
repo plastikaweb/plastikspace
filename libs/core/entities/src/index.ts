@@ -7,3 +7,4 @@ export * from './view-config';
 export * from './sort';
 export * from './pocketbase-user';
 export * from './user-contact';
+export * from './user-fiscal-profile';

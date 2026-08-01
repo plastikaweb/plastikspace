@@ -1,7 +1,7 @@
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { TranslateService } from '@ngx-translate/core';
 import { pocketBaseUserProfileStore } from '@plastik/auth/pocketbase/data-access';
-import { FormSelectOption } from '@plastik/core/entities';
+import { FormSelectOption, UserContact } from '@plastik/core/entities';
 import { ecoStoreCartStore } from '@plastik/eco-store/cart/data-access';
 import { EcoStoreTenantLogisticsDeliveryType, SlotDays } from '@plastik/eco-store/entities';
 import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
@@ -51,6 +51,15 @@ export function createMethodField(
 }
 
 /**
+ * Picks the address to auto-fill, preferring the default one.
+ * @param { UserContact[] } addresses - Candidate addresses for the delivery method.
+ * @returns { UserContact | null } The address to auto-fill, or null when there are none.
+ */
+export function pickDefaultShippingAddress(addresses: UserContact[]): UserContact | null {
+  return addresses.find(a => a.default) ?? addresses[0] ?? null;
+}
+
+/**
  * Creates address selector field with dynamic address list based on method.
  * @param { FieldDependencies } deps - Field dependencies object
  * @returns { FormlyFieldConfig[] } Array of Formly field configurations for address selection
@@ -89,14 +98,25 @@ export function createAddressField(deps: FieldDependencies): FormlyFieldConfig[]
             return addresses;
           };
 
-          getAddressesForMethod(field.model.method as EcoStoreTenantLogisticsDeliveryType);
+          const initialAddresses = getAddressesForMethod(
+            field.model.method as EcoStoreTenantLogisticsDeliveryType
+          );
+
+          // The cart may already carry a chosen address; only resolve a default
+          // when nothing is selected yet, so we never clobber the user's pick.
+          if (!field.formControl?.value) {
+            const initialAddress = pickDefaultShippingAddress(initialAddresses);
+            if (initialAddress) {
+              field.formControl?.patchValue(initialAddress);
+            }
+          }
 
           return field.options?.fieldChanges?.pipe(
             filter(e => e.type === 'valueChanges' && e.field?.key === 'method'),
             tap(({ value: method }) => {
               const newAddresses = getAddressesForMethod(method);
 
-              const defaultAddress = newAddresses.find(a => a.default) || newAddresses[0] || null;
+              const defaultAddress = pickDefaultShippingAddress(newAddresses);
 
               if (defaultAddress) {
                 field.formControl?.patchValue(defaultAddress);

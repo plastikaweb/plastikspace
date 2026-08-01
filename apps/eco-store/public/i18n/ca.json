@@ -61,7 +61,8 @@
         "url": "Format d'URL no vàlid",
         "phone": "Format de telèfon no vàlid",
         "invalid-username": "Format de nom d'usuari no vàlid",
-        "zip": "Format de codi no vàlid"
+        "zip": "Format de codi no vàlid",
+        "nif": "NIF no vàlid"
       },
       "charactersCount": "{count, plural, one {caràcter} other {caràcters}}",
       "password": "Contrasenya",
@@ -784,6 +785,39 @@
         "requested": "No s'ha pogut sol·licitar el canvi de correu. Torna a provar-ho.",
         "sameEmail": "El nou correu ha de ser diferent de l'actual.",
         "invalidNewEmail": "El correu no és vàlid o ja està en ús."
+      }
+    },
+    "fiscalData": {
+      "title": "Dades fiscals",
+      "description": "Dades per a la facturació: només cal si necessites factura.",
+      "form": {
+        "fiscalName": {
+          "label": "Nom fiscal o raó social",
+          "placeholder": "Nom complet o raó social"
+        },
+        "nif": {
+          "label": "NIF / NIE / CIF",
+          "placeholder": "12345678Z"
+        },
+        "address": {
+          "label": "Domicili fiscal",
+          "placeholder": "Carrer i número"
+        },
+        "city": {
+          "label": "Població",
+          "placeholder": "La teva població"
+        },
+        "zip": {
+          "label": "Codi postal",
+          "placeholder": "08000"
+        },
+        "submit": "Guardar dades fiscals"
+      },
+      "success": {
+        "save": "Dades fiscals guardades correctament."
+      },
+      "error": {
+        "save": "No s'han pogut guardar les dades fiscals."
       }
     },
     "success": {

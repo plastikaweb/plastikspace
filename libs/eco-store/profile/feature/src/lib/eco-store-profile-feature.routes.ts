@@ -1,5 +1,6 @@
 import { Route } from '@angular/router';
 import { providePlainInputFormly } from '@plastik/shared/form/util';
+import { ecoStoreFiscalDataCanMatchGuard } from './eco-store-fiscal-data-can-match.guard';
 
 export const ecoStoreProfileFeatureRoutes: Route[] = [
   {
@@ -69,6 +70,22 @@ export const ecoStoreProfileFeatureRoutes: Route[] = [
             loadChildren: () =>
               import('@plastik/eco-store/profile/access-security').then(
                 m => m.ecoStoreProfileAccessSecurityFeatureRoutes
+              ),
+          },
+          {
+            path: 'dades-fiscals',
+            title: 'profile.fiscalData.title',
+            data: {
+              hasSidenav: true,
+              title: 'profile.fiscalData.title',
+              icon: 'receipt_long',
+              preferUserName: true,
+            },
+            canMatch: [ecoStoreFiscalDataCanMatchGuard],
+            providers: [providePlainInputFormly()],
+            loadChildren: () =>
+              import('@plastik/eco-store/profile/fiscal-data').then(
+                m => m.ecoStoreProfileFiscalDataFeatureRoutes
               ),
           },
           {

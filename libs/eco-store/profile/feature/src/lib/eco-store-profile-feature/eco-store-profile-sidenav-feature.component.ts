@@ -1,10 +1,11 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListItem, MatNavList } from '@angular/material/list';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
+import { ecoStoreTenantStore } from '@plastik/eco-store/tenant';
 import { filter, map, startWith } from 'rxjs';
 
 @Component({
@@ -24,6 +25,7 @@ import { filter, map, startWith } from 'rxjs';
 })
 export class EcoStoreProfileSidenavFeatureComponent {
   readonly #router = inject(Router);
+  readonly #tenantStore = inject(ecoStoreTenantStore);
 
   protected readonly currentUrl = toSignal(
     this.#router.events.pipe(
@@ -32,5 +34,9 @@ export class EcoStoreProfileSidenavFeatureComponent {
       startWith(this.#router.url)
     ),
     { initialValue: this.#router.url }
+  );
+
+  protected readonly fiscalDataEnabled = computed(
+    () => !!this.#tenantStore.tenant()?.fiscalDataEnabled
   );
 }

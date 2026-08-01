@@ -48,6 +48,20 @@
           </div>
         </mat-list-item>
 
+        @if (fiscalDataEnabled()) {
+          <mat-list-item
+            class="my-1"
+            role="listitem"
+            routerLinkActive="active"
+            [routerLink]="['/', 'perfil', 'dades-fiscals']"
+            [attr.aria-current]="currentUrl().includes('/perfil/dades-fiscals') ? 'page' : null">
+            <div class="flex w-full items-center gap-2">
+              <mat-icon aria-hidden="true" class="scale-90">receipt_long</mat-icon>
+              <span matListItemTitle class="flex-1 truncate text-sm">Dades fiscals</span>
+            </div>
+          </mat-list-item>
+        }
+
         <mat-list-item
           class="my-1"
           role="listitem"

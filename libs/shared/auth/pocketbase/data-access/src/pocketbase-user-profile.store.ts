@@ -16,11 +16,14 @@ import {
 import {
   PocketBaseUser,
   PocketBaseUserAddress,
+  PocketBaseUserFiscalProfile,
   UserContact,
   UserContactForm,
+  UserFiscalProfileForm,
 } from '@plastik/core/entities';
 import { StoreNotificationService } from '@plastik/shared/notification/data-access';
 import { PocketBaseUserAddressService } from '@plastik/shared/pocketbase-user-addresses';
+import { PocketBaseUserFiscalProfileService } from '@plastik/shared/pocketbase-user-fiscal-profiles';
 import { differenceInDays, isAfter } from 'date-fns';
 import { lastValueFrom } from 'rxjs';
 import { PocketBaseAuthService } from './pocketbase-auth.service';
@@ -31,6 +34,8 @@ export interface UserProfileState {
   isLoading: boolean;
   addresses: PocketBaseUserAddress[];
   addressesLoaded: boolean;
+  fiscalProfile: PocketBaseUserFiscalProfile | null;
+  fiscalProfileLoaded: boolean;
 }
 
 const initialState: UserProfileState = {
@@ -39,6 +44,8 @@ const initialState: UserProfileState = {
   isLoading: false,
   addresses: [],
   addressesLoaded: false,
+  fiscalProfile: null,
+  fiscalProfileLoaded: false,
 };
 
 export const pocketBaseUserProfileStore = signalStore(
@@ -47,6 +54,7 @@ export const pocketBaseUserProfileStore = signalStore(
   withImmutableState<UserProfileState>(initialState),
   withProps(() => ({
     _userAddressService: inject(PocketBaseUserAddressService),
+    _userFiscalProfileService: inject(PocketBaseUserFiscalProfileService),
     _authService: inject(PocketBaseAuthService),
     _notificationService: inject(StoreNotificationService),
   })),
@@ -502,6 +510,60 @@ export const pocketBaseUserProfileStore = signalStore(
       } catch (error) {
         updateState(store, `[profile] set default address failed ${error}`, { isLoading: false });
         store._notificationService.create('profile.addresses.error.setDefault', 'ERROR');
+        return false;
+      }
+    },
+
+    async getFiscalProfile(): Promise<void> {
+      const user = store.user();
+      if (!user || store.fiscalProfileLoaded()) return;
+
+      try {
+        const fiscalProfile = await lastValueFrom(
+          store._userFiscalProfileService.getFirstListItem(`user="${user.id}"`)
+        );
+
+        updateState(store, `[profile] load fiscal profile success`, {
+          fiscalProfile,
+          fiscalProfileLoaded: true,
+        });
+      } catch {
+        // A missing fiscal profile (404) is a valid empty state, not an error to surface.
+        updateState(store, `[profile] load fiscal profile empty`, {
+          fiscalProfile: null,
+          fiscalProfileLoaded: true,
+        });
+      }
+    },
+
+    async saveFiscalProfile(data: UserFiscalProfileForm): Promise<boolean> {
+      const user = store.user();
+      if (!user) return false;
+
+      // Built explicitly (not spread from `data`) because UserFiscalProfileForm
+      // carries an optional `id`, which must never be forwarded in a create/update
+      // payload — PocketBase treats the record id as immutable.
+      const payload: Partial<PocketBaseUserFiscalProfile> = {
+        fiscalName: data.fiscalName,
+        address: data.address,
+        city: data.city,
+        zip: data.zip,
+        nif: data.nif.trim().toUpperCase(),
+        user: user.id,
+      };
+      const current = store.fiscalProfile();
+
+      try {
+        const saved = current
+          ? await lastValueFrom(store._userFiscalProfileService.update(current.id, payload))
+          : await lastValueFrom(store._userFiscalProfileService.create(payload));
+
+        updateState(store, `[profile] save fiscal profile success`, { fiscalProfile: saved });
+        store._notificationService.create('profile.fiscalData.success.save', 'SUCCESS');
+        return true;
+      } catch (error) {
+        updateState(store, `[profile] save fiscal profile failed ${error}`, {});
+        store._notificationService.create('profile.fiscalData.error.save', 'ERROR');
         return false;
       }
     },

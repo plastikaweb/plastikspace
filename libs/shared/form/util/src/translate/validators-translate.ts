@@ -69,6 +69,12 @@ export function registerValidatorsTranslateExtension(translate: TranslateService
           return translate.stream('common.form.error.zip');
         },
       },
+      {
+        name: 'nif',
+        message() {
+          return translate.stream('common.form.error.nif');
+        },
+      },
     ],
   };
 }

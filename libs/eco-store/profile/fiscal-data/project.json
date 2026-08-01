@@ -1,0 +1,16 @@
+{
+  "name": "eco-store-profile-fiscal-data-feature",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/eco-store/profile/fiscal-data/src",
+  "prefix": "eco",
+  "projectType": "library",
+  "tags": ["scope:eco-store", "type:feature"],
+  "targets": {
+    "test": {
+      "executor": "@nx/vitest:test"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

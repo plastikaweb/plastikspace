@@ -1649,6 +1649,15 @@
         "presentable": false,
         "system": false,
         "type": "autodate"
+      },
+      {
+        "hidden": false,
+        "id": "bool188137518",
+        "name": "fiscalDataEnabled",
+        "presentable": false,
+        "required": false,
+        "system": false,
+        "type": "bool"
       }
     ],
     "indexes": [
@@ -2002,7 +2011,7 @@
         "hidden": false,
         "id": "text760939060",
         "max": 50,
-        "min": 5,
+        "min": 2,
         "name": "city",
         "pattern": "",
         "presentable": false,
@@ -3009,7 +3018,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_Sx8J",
+        "id": "_clone_hq1I",
         "maxSize": 0,
         "name": "name",
         "presentable": false,
@@ -3020,7 +3029,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_5Iwe",
+        "id": "_clone_Z6gt",
         "max": 0,
         "min": 0,
         "name": "normalizedName",
@@ -3034,7 +3043,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_wm20",
+        "id": "_clone_d21z",
         "max": 0,
         "min": 0,
         "name": "color",
@@ -3047,7 +3056,7 @@
       },
       {
         "hidden": false,
-        "id": "_clone_KJUY",
+        "id": "_clone_DbHB",
         "maxSize": 0,
         "name": "groupName",
         "presentable": false,
@@ -3058,7 +3067,7 @@
       {
         "autogeneratePattern": "",
         "hidden": false,
-        "id": "_clone_nsRS",
+        "id": "_clone_99Yo",
         "max": 0,
         "min": 0,
         "name": "icon",
@@ -3073,7 +3082,7 @@
         "cascadeDelete": false,
         "collectionId": "pbc_2442875294",
         "hidden": false,
-        "id": "_clone_E68f",
+        "id": "_clone_bEo2",
         "maxSelect": 1,
         "minSelect": 0,
         "name": "tenant",
@@ -3102,5 +3111,138 @@
     "updateRule": null,
     "deleteRule": null,
     "viewQuery": "SELECT \n    (ROW_NUMBER() OVER()) as id, \n    c.id as category,\n    c.name as name,\n    c.normalizedName as normalizedName,\n    c.color as color,\n    cg.name as groupName,\n  c.icon as icon,\n    p.tenant as tenant,\n    COUNT(p.id) as totalProducts\nFROM product_categories c\nLEFT JOIN category_groups cg ON cg.id = c.`group`\nLEFT JOIN products p ON p.category = c.id AND p.`inStock` = TRUE\nGROUP BY \n    c.id, \n    p.tenant, \n    cg.name, \n    c.name, \n    c.normalizedName, \n    c.color;"
+  },
+  {
+    "id": "pbc_3420948034",
+    "name": "user_fiscal_profiles",
+    "type": "base",
+    "system": false,
+    "fields": [
+      {
+        "autogeneratePattern": "[a-z0-9]{15}",
+        "hidden": false,
+        "id": "text3208210256",
+        "max": 15,
+        "min": 15,
+        "name": "id",
+        "pattern": "^[a-z0-9]+$",
+        "presentable": false,
+        "primaryKey": true,
+        "required": true,
+        "system": true,
+        "type": "text"
+      },
+      {
+        "cascadeDelete": true,
+        "collectionId": "_pb_users_auth_",
+        "hidden": false,
+        "id": "relation2375276105",
+        "maxSelect": 1,
+        "minSelect": 0,
+        "name": "user",
+        "presentable": false,
+        "required": true,
+        "system": false,
+        "type": "relation"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text386769698",
+        "max": 120,
+        "min": 0,
+        "name": "fiscalName",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text2917542843",
+        "max": 9,
+        "min": 9,
+        "name": "nif",
+        "pattern": "^[0-9A-Z]{9}$",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text223244161",
+        "max": 0,
+        "min": 0,
+        "name": "address",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text760939060",
+        "max": 50,
+        "min": 2,
+        "name": "city",
+        "pattern": "",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "autogeneratePattern": "",
+        "hidden": false,
+        "id": "text1109235014",
+        "max": 5,
+        "min": 5,
+        "name": "zip",
+        "pattern": "^(0[1-9]|[1-4]\\d|5[0-2])\\d{3}$",
+        "presentable": false,
+        "primaryKey": false,
+        "required": true,
+        "system": false,
+        "type": "text"
+      },
+      {
+        "hidden": false,
+        "id": "autodate2990389176",
+        "name": "created",
+        "onCreate": true,
+        "onUpdate": false,
+        "presentable": false,
+        "system": false,
+        "type": "autodate"
+      },
+      {
+        "hidden": false,
+        "id": "autodate3332085495",
+        "name": "updated",
+        "onCreate": true,
+        "onUpdate": true,
+        "presentable": false,
+        "system": false,
+        "type": "autodate"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX idx_user_fiscal_profiles_user ON user_fiscal_profiles (user)"
+    ],
+    "listRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && user.tenant = @request.auth.tenant)",
+    "viewRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && user.tenant = @request.auth.tenant)",
+    "createRule": "user = @request.auth.id",
+    "updateRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && user.tenant = @request.auth.tenant)",
+    "deleteRule": "(user = @request.auth.id) || \n(@request.auth.role = \"GLOBAL_ADMIN\") || \n(@request.auth.role = \"TENANT_ADMIN\" && user.tenant = @request.auth.tenant)"
   }
 ]

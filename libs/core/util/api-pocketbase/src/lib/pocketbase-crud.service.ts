@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { BaseDataService, DataCrud } from '@plastik/core/api-base';
-import { BasePocketBaseEntity } from '@plastik/core/entities';
+import { BasePocketBaseEntity, BasePocketBaseEntityNameless } from '@plastik/core/entities';
 import { POCKETBASE_ENVIRONMENT } from '@plastik/core/environments';
 import {
   ClientResponseError,
@@ -16,11 +16,11 @@ import { POCKETBASE_INSTANCE } from './pocketbase.token';
 /**
  * @description Abstract base class for PocketBase services with common functionality.
  * Provides shared methods and configuration for all PocketBase operations.
- * @template T - The entity type that extends BasePocketBaseEntity
+ * @template T - The entity type that extends BasePocketBaseEntityNameless (defaults to BasePocketBaseEntity)
  * @template PARAMS - The type of parameters for list operations (RecordListOptions or RecordFullListOptions)
  */
 export abstract class PocketBaseCrudService<
-  T extends BasePocketBaseEntity = BasePocketBaseEntity,
+  T extends BasePocketBaseEntityNameless = BasePocketBaseEntity,
   PARAMS extends RecordListOptions | RecordFullListOptions = RecordListOptions,
 >
   extends BaseDataService
