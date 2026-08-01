@@ -32,6 +32,37 @@ describe('Object Util', () => {
     it('should return false if array is not empty', () => {
       expect(isEmpty([1, 2])).toBeFalsy();
     });
+
+    it('should return true if string is empty', () => {
+      expect(isEmpty('')).toBeTruthy();
+    });
+
+    it('should return false if string is not empty', () => {
+      expect(isEmpty('hello')).toBeFalsy();
+    });
+
+    it('should return true if value is null or undefined', () => {
+      expect(isEmpty(null)).toBeTruthy();
+      expect(isEmpty(undefined)).toBeTruthy();
+    });
+
+    it('should return true if prototype-less object is empty', () => {
+      const obj = Object.create(null);
+      expect(isEmpty(obj)).toBeTruthy();
+    });
+
+    it('should return false if prototype-less object is not empty', () => {
+      const obj = Object.create(null);
+      obj.key = 'value';
+      expect(isEmpty(obj)).toBeFalsy();
+    });
+
+    it('should return false for other non-enumerable object types or primitives', () => {
+      expect(isEmpty(5)).toBeFalsy();
+      expect(isEmpty(true)).toBeFalsy();
+      expect(isEmpty(new Date())).toBeFalsy();
+      expect(isEmpty(/abc/)).toBeFalsy();
+    });
   });
 
   describe('isString method', () => {
