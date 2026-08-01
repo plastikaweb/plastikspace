@@ -42,7 +42,13 @@ export class SharedConfirmFeatureComponent {
           ])
         )
       : params;
-    const translated = this.#translate.instant(this.data.message, escapedParams);
+
+    const message = this.data.message;
+    const translated =
+      typeof message === 'string'
+        ? this.#translate.instant(message, escapedParams)
+        : message;
+
     return this.#sanitizer.bypassSecurityTrustHtml(translated);
   });
 }
