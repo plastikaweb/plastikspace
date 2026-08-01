@@ -2,6 +2,7 @@ import { DatePipe, PercentPipe, TitleCasePipe } from '@angular/common';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Timestamp } from '@angular/fire/firestore';
 
 import { SharedUtilFormattersService } from './shared-util-formatters.service';
 
@@ -60,6 +61,77 @@ describe('SharedUtilFormattersService', () => {
         iconFalse: 'close',
       })) as string;
       expect(result).toBe('<span class="material-icons">close</span>');
+    });
+  });
+
+  describe('Formatter methods behavior', () => {
+    it('dateFormatter should format dates correctly', () => {
+      const dateVal = '2021-09-01T02:10:06Z';
+      const formatted = service.dateFormatter(dateVal, () => ({ locale: 'en-US', timezone: 'UTC' }));
+      expect(formatted).toBe('9/1/21');
+    });
+
+    it('dateTimeFormatter should format timestamps with time', () => {
+      const dateVal = '2021-09-01T02:10:06Z';
+      const formatted = service.dateTimeFormatter(dateVal, () => ({ locale: 'en-US', timezone: 'UTC' }));
+      expect(formatted).toBe('9/1/21, 02:10:06');
+    });
+
+    it('firebaseTimestampFormatter should return "-" when value is missing', () => {
+      const formatted = service.firebaseTimestampFormatter(null as any);
+      expect(formatted).toBe('-');
+    });
+
+    it('firebaseTimestampFormatter should format Timestamp correctly', () => {
+      const ts = Timestamp.fromDate(new Date('2021-09-01T02:10:06Z'));
+      const formatted = service.firebaseTimestampFormatter(ts, () => ({ locale: 'en-US', timezone: 'UTC' }));
+      expect(formatted).toBe('9/1/21');
+    });
+
+    it('percentageFormatter should format percentage values', () => {
+      const formatted = service.percentageFormatter(80, () => ({ locale: 'en-US' }));
+      expect(formatted).toBe('80.00%');
+    });
+
+    it('currencyFormatter should format currency values correctly', () => {
+      const formatted = service.currencyFormatter(3.08, () => ({ locale: 'en-US', currency: '$', currencyCode: 'USD' }));
+      expect(formatted).toBe('$3.08');
+    });
+
+    it('numberFormatter should format numbers correctly', () => {
+      const formatted = service.numberFormatter(1234.56, () => ({ locale: 'en-US' }));
+      expect(formatted).toBe('1,234.56');
+    });
+
+    it('quantityFormatter should format quantity with suffix and prefix', () => {
+      const item = { id: 'test' };
+      const formatted = service.quantityFormatter(10, item, () => ({ prefix: '[', suffix: ' kg]', locale: 'en-US' }));
+      expect(formatted).toBe('[10.00 kg]');
+    });
+
+    it('titleCaseFormatter should capitalize words', () => {
+      const formatted = service.titleCaseFormatter('hello world');
+      expect(formatted).toBe('Hello World');
+    });
+
+    it('customFormatter should invoke execute if present, else fallback', () => {
+      const item = { id: 'test' };
+      const config = { execute: (val: string) => `pre-${val}` };
+      const formatted = service.customFormatter('value', config, item);
+      expect(formatted).toBe('pre-value');
+
+      const fallback = service.customFormatter('value', {}, item);
+      expect(fallback).toBe('value');
+    });
+
+    it('componentFormatter should invoke execute if present, else fallback', () => {
+      const item = { id: 'test' };
+      const config = { execute: (val: string) => `cmp-${val}` };
+      const formatted = service.componentFormatter('value', config, item);
+      expect(formatted).toBe('cmp-value');
+
+      const fallback = service.componentFormatter('value', {}, item);
+      expect(fallback).toBe('value');
     });
   });
 });
