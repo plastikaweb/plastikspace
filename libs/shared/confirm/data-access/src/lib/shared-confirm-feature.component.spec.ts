@@ -85,4 +85,35 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should escape non-string params after stringifying them', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { list: ['<img src=x>', 'safe'] },
+      },
+      { 'test.message': 'List: {{list}}' }
+    );
+
+    const rendered = messageOf();
+    // ngx-translate stringifies arrays as comma-separated values
+    // We want to ensure the <img part is escaped
+    expect(rendered).toContain('&lt;img');
+    expect(rendered).not.toContain('<img');
+  });
+
+  it('should not throw TypeError if message is SafeHtml (non-string)', async () => {
+    const safeMessage = {
+      changingThisBreaksApplicationSecurity: '<strong>Safe</strong>',
+    };
+
+    await setup({
+      ...defaultData,
+      message: safeMessage,
+    });
+
+    // If it didn't throw, we're good.
+    // The current implementation calls instant() on it, which might throw.
+    expect(messageOf()).toBeDefined();
+  });
 });

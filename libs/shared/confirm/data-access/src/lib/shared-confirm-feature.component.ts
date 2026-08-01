@@ -38,11 +38,20 @@ export class SharedConfirmFeatureComponent {
       ? Object.fromEntries(
           Object.entries(params).map(([key, value]) => [
             key,
-            typeof value === 'string' ? escapeHtml(value) : value,
+            // SECURITY (XSS): Stringify and escape all parameters before they are
+            // interpolated into the translation string and marked as SafeHtml.
+            escapeHtml(String(value ?? '')),
           ])
         )
       : params;
-    const translated = this.#translate.instant(this.data.message, escapedParams);
+
+    const message = this.data.message;
+    // SECURITY (XSS): Only translate if the message is a string key.
+    // If it's already SafeHtml, we bypass the translation to avoid TypeErrors
+    // and keep the trusted content intact.
+    const translated =
+      typeof message === 'string' ? this.#translate.instant(message, escapedParams) : message;
+
     return this.#sanitizer.bypassSecurityTrustHtml(translated);
   });
 }
