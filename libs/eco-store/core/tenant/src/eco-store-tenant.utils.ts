@@ -153,8 +153,7 @@ export function isShippingMethodConfigured(
   if (!option?.enabled) return false;
 
   if (type === 'pickup') {
-    const hasGlobalPickupConfig =
-      (option.slots && !isEmpty(option.slots)) || !!option.instructions;
+    const hasGlobalPickupConfig = (option.slots && !isEmpty(option.slots)) || !!option.instructions;
 
     const hasAddressConfig = addresses.some(
       address => (address.slots && !isEmpty(address.slots)) || !!address.instructions
