@@ -69,7 +69,10 @@ describe('LlecoopUserOrderDetailFormTableConfig', () => {
       },
     };
 
-    const formattedOutput = priceWithIvaColumn?.formatting.execute?.('10.00', maliciousProduct) as string;
+    const formattedOutput = priceWithIvaColumn?.formatting.execute?.(
+      '10.00',
+      maliciousProduct
+    ) as string;
     expect(formattedOutput).not.toContain('<script>');
     expect(formattedOutput).toContain('&lt;script&gt;alert(&quot;XSS&quot;)&lt;&#x2F;script&gt;');
   });
