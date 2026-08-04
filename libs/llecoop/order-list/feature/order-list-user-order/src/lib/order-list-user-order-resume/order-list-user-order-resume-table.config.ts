@@ -35,6 +35,7 @@ export class OrderListUserOrderResumeTableConfig implements TableStructureConfig
     formatting: {
       type: 'CUSTOM',
       execute: (_, element) => {
+        // SECURITY (XSS): Ensure element name and info properties are sanitized using escapeHtml before being wrapped in bypassSecurityTrustHtml.
         const name = `<p class="font-bold uppercase">${escapeHtml(element?.['name'] ?? '')}</p>`;
         const info = element?.['info']
           ? `<p class="font-bold">${escapeHtml(element['info'] ?? '')}</p>`
