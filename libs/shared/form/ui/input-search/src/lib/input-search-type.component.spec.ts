@@ -148,6 +148,19 @@ describe('InputSearchTypeComponent', () => {
       // The search button, by contrast, stays disabled for the same 1-char term.
       expect(component['isDisabled']()).toBe(true);
     });
+
+    it('should keep the clear button enabled when the form status is INVALID', () => {
+      component.field.props!.resetSearch = true;
+      component.formControl.setValue('invalid-val');
+      component.formControl.setErrors({ invalid: true });
+      component['syncControl']();
+      fixture.detectChanges();
+
+      const clearButton = fixture.nativeElement.querySelector('.reset-search-button');
+      expect(clearButton).toBeTruthy();
+      expect(clearButton.disabled).toBe(false);
+      expect(component.formControl.status).toBe('INVALID');
+    });
   });
 
   describe('A11Y-010: keyboard support and focus management', () => {
