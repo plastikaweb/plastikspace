@@ -1,0 +1,3 @@
+## 2026-08-01 - Optimizing DataFormatFactoryService Path Resolution
+**Learning:** String parsing/splitting operations (like `.split('.')`) in highly recurrent rendering or data-formatting hot-paths (e.g., `#getValueFromRow`) are a major source of garbage collection pressure and CPU overhead in grids/tables. Implementing a Map-based path cache for nested properties and an O(1) fast-path for flat properties drastically reduces object allocations and improves rendering performance.
+**Action:** Always check if property/path resolution methods in list, table, or grid components utilize string parsing on every item/row. If so, implement an O(1) non-nested fast-path and cache parsed paths using a private/class-level Map or Cache object.
