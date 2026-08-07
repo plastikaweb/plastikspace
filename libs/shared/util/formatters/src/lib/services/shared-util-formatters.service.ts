@@ -40,20 +40,20 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    // Fast-path: O(0) allocation when optional extras are omitted.
+    if (!extras) {
+      return formatDate(value, 'shortDate', this.#locale, this.#timezone) || '';
     }
-
-    return formatDate(value, format.dateDigitsInfo, format.locale, format.timezone) || '';
+    // Avoid expensive destructuring/object-spread by directly retrieving properties.
+    const ext = extras();
+    return (
+      formatDate(
+        value,
+        ext.dateDigitsInfo ?? 'shortDate',
+        ext.locale ?? this.#locale,
+        ext.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
@@ -68,18 +68,20 @@ export class SharedUtilFormattersService {
     value: FormattingDateInput,
     extras?: () => Partial<Pick<FormattingExtras<'DATE_TIME'>, 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    // Fast-path: O(0) allocation when optional extras are omitted.
+    if (!extras) {
+      return formatDate(value, 'M/d/yy, HH:mm:ss', this.#locale, this.#timezone) || '';
     }
-    return formatDate(value, 'M/d/yy, HH:mm:ss', format.locale, format.timezone) || '';
+    // Avoid expensive destructuring/object-spread by directly retrieving properties.
+    const ext = extras();
+    return (
+      formatDate(
+        value,
+        'M/d/yy, HH:mm:ss',
+        ext.locale ?? this.#locale,
+        ext.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
@@ -93,22 +95,23 @@ export class SharedUtilFormattersService {
     value: Timestamp,
     extras?: () => Partial<Pick<FormattingExtras<'DATE'>, 'dateDigitsInfo' | 'locale' | 'timezone'>>
   ): string {
-    let format = {
-      dateDigitsInfo: 'shortDate',
-      locale: this.#locale,
-      timezone: this.#timezone,
-    };
-
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    if (!value) {
+      return '-';
     }
-
-    return value
-      ? formatDate(value?.toDate(), format.dateDigitsInfo, format.locale, format.timezone)
-      : '-';
+    // Fast-path: O(0) allocation when optional extras are omitted.
+    if (!extras) {
+      return formatDate(value.toDate(), 'shortDate', this.#locale, this.#timezone) || '';
+    }
+    // Avoid expensive destructuring/object-spread by directly retrieving properties.
+    const ext = extras();
+    return (
+      formatDate(
+        value.toDate(),
+        ext.dateDigitsInfo ?? 'shortDate',
+        ext.locale ?? this.#locale,
+        ext.timezone ?? this.#timezone
+      ) || ''
+    );
   }
 
   /**
@@ -121,18 +124,19 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'PERCENTAGE'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    // Fast-path: O(0) allocation when optional extras are omitted.
+    if (!extras) {
+      return formatPercent(Number(value) / 100, this.#locale, '1.2-2') || '';
     }
-
-    return formatPercent(Number(value) / 100, format.locale, format.numberDigitsInfo) || '';
+    // Avoid expensive destructuring/object-spread by directly retrieving properties.
+    const ext = extras();
+    return (
+      formatPercent(
+        Number(value) / 100,
+        ext.locale ?? this.#locale,
+        ext.numberDigitsInfo ?? '1.2-2'
+      ) || ''
+    );
   }
 
   /**
@@ -150,25 +154,19 @@ export class SharedUtilFormattersService {
       >
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      currency: '€',
-      currencyCode: 'EUR',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    // Fast-path: O(0) allocation when optional extras are omitted.
+    if (!extras) {
+      return formatCurrency(value, this.#locale, '€', 'EUR', '1.2-2') || '';
     }
+    // Avoid expensive destructuring/object-spread by directly retrieving properties.
+    const ext = extras();
     return (
       formatCurrency(
         value,
-        format.locale,
-        format.currency,
-        format.currencyCode,
-        format.numberDigitsInfo
+        ext.locale ?? this.#locale,
+        ext.currency ?? '€',
+        ext.currencyCode ?? 'EUR',
+        ext.numberDigitsInfo ?? '1.2-2'
       ) || ''
     );
   }
@@ -184,17 +182,15 @@ export class SharedUtilFormattersService {
     value: number,
     extras?: () => Partial<Pick<FormattingExtras<'NUMBER'>, 'numberDigitsInfo' | 'locale'>>
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    // Fast-path: O(0) allocation when optional extras are omitted.
+    if (!extras) {
+      return formatNumber(Number(value), this.#locale, '1.2-2') || '';
     }
-    return formatNumber(Number(value), format.locale, format.numberDigitsInfo) || '';
+    // Avoid expensive destructuring/object-spread by directly retrieving properties.
+    const ext = extras();
+    return (
+      formatNumber(Number(value), ext.locale ?? this.#locale, ext.numberDigitsInfo ?? '1.2-2') || ''
+    );
   }
 
   /**
@@ -214,20 +210,18 @@ export class SharedUtilFormattersService {
       Pick<FormattingExtras<'QUANTITY'>, 'numberDigitsInfo' | 'locale' | 'suffix' | 'prefix'>
     >
   ): string {
-    let format = {
-      numberDigitsInfo: '1.2-2',
-      locale: this.#locale,
-      suffix: '',
-      prefix: '',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(item),
-      };
+    // Fast-path: O(0) allocation when optional extras are omitted.
+    if (!extras) {
+      return formatNumber(Number(value), this.#locale, '1.2-2') || '';
     }
-    const formattedNumber = formatNumber(Number(value), format.locale, format.numberDigitsInfo);
-    return `${format.prefix || ''}${formattedNumber}${format.suffix || ''}`.trim();
+    // Avoid expensive destructuring/object-spread by directly retrieving properties.
+    const ext = extras(item);
+    const formattedNumber = formatNumber(
+      Number(value),
+      ext.locale ?? this.#locale,
+      ext.numberDigitsInfo ?? '1.2-2'
+    );
+    return `${ext.prefix || ''}${formattedNumber}${ext.suffix || ''}`.trim();
   }
 
   /**
@@ -250,18 +244,18 @@ export class SharedUtilFormattersService {
     value: boolean,
     extras?: () => FormattingExtras<'BOOLEAN_WITH_ICON'>
   ): SafeHtml {
-    let format = {
-      iconTrue: 'check',
-      iconFalse: 'close',
-    };
-    if (extras) {
-      format = {
-        ...format,
-        ...extras(),
-      };
+    // Fast-path: O(0) allocation when optional extras are omitted.
+    if (!extras) {
+      return this.#sanitizer.bypassSecurityTrustHtml(
+        `<span class="material-icons">${value ? 'check' : 'close'}</span>`
+      );
     }
+    // Avoid expensive destructuring/object-spread by directly retrieving properties.
+    const ext = extras();
     return this.#sanitizer.bypassSecurityTrustHtml(
-      `<span class="material-icons">${escapeHtml(value ? format.iconTrue : format.iconFalse)}</span>`
+      `<span class="material-icons">${escapeHtml(
+        value ? ext.iconTrue ?? 'check' : ext.iconFalse ?? 'close'
+      )}</span>`
     );
   }
 
