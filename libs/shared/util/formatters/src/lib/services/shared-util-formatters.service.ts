@@ -254,7 +254,7 @@ export class SharedUtilFormattersService {
     const ext = extras();
     return this.#sanitizer.bypassSecurityTrustHtml(
       `<span class="material-icons">${escapeHtml(
-        value ? ext.iconTrue ?? 'check' : ext.iconFalse ?? 'close'
+        value ? (ext.iconTrue ?? 'check') : (ext.iconFalse ?? 'close')
       )}</span>`
     );
   }
