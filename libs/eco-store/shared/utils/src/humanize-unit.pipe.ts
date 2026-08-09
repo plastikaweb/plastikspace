@@ -8,18 +8,31 @@ import { ProductUnitType } from '@plastik/eco-store/entities';
 export class HumanizeUnitPipe implements PipeTransform {
   translate = inject(TranslateService);
 
+  // Private Map to cache Intl.NumberFormat instances to avoid redundant instantiations in hot rendering paths.
+  readonly #formatters = new Map<string, Intl.NumberFormat>();
+
   transform(value: number | null | undefined, unitType: ProductUnitType): string {
     if (value === null || value === undefined || Number.isNaN(value)) return '';
 
-    const lang = this.translate.getCurrentLang?.();
+    const lang = this.translate.getCurrentLang?.() || 'en-US';
     // avoid unwanted line break
     const spacer = '\u00A0';
 
-    const format = (n: number) =>
-      new Intl.NumberFormat(lang, {
-        maximumFractionDigits: 2,
-        minimumFractionDigits: n % 1 === 0 ? 0 : 2,
-      }).format(n);
+    const format = (n: number) => {
+      const isInteger = n % 1 === 0;
+      const cacheKey = `${lang}_${isInteger ? 'int' : 'dec'}`;
+      let formatter = this.#formatters.get(cacheKey);
+
+      if (!formatter) {
+        formatter = new Intl.NumberFormat(lang, {
+          maximumFractionDigits: 2,
+          minimumFractionDigits: isInteger ? 0 : 2,
+        });
+        this.#formatters.set(cacheKey, formatter);
+      }
+
+      return formatter.format(n);
+    };
 
     switch (unitType) {
       case 'volume':
