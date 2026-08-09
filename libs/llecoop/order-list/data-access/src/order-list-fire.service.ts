@@ -18,6 +18,7 @@ import { LlecoopOrder, LlecoopProduct, LlecoopUserOrder } from '@plastik/llecoop
 import { latinize } from '@plastik/shared/latinize';
 import { TableSortingConfig } from '@plastik/shared/table/entities';
 import { EntityFireService, FirebaseCrudPagination } from '@plastik/signal-state/firebase';
+import { isEmpty } from '@plastik/shared/objects';
 
 import { StoreOrderListFilter } from './order-list-store';
 
@@ -33,7 +34,7 @@ export class LlecoopOrderListFireService extends EntityFireService<LlecoopOrder>
   override getFilterConditions(filter: StoreOrderListFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
 
-    if (Object.entries(filter).length > 0) {
+    if (!isEmpty(filter)) {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'text' && value) {
           const normalizedText = latinize(value as string).toLowerCase();

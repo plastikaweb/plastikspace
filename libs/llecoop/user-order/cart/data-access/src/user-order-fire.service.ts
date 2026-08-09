@@ -1,3 +1,4 @@
+import { isEmpty } from '@plastik/shared/objects';
 import { catchError, distinctUntilChanged, map, Observable, of, takeUntil, throwError } from 'rxjs';
 
 import { Injectable, runInInjectionContext } from '@angular/core';
@@ -56,7 +57,7 @@ export class LlecoopUserOrderFireService extends EntityFireService<LlecoopUserOr
 
   override getFilterConditions(filter: StoreUserOrderFilter): QueryConstraint[] {
     const conditions: QueryConstraint[] = [];
-    if (Object.entries(filter).length > 0) {
+    if (!isEmpty(filter)) {
       Object.entries(filter).forEach(([key, value]) => {
         if (key === 'text' && value) {
           const normalizedText = latinize(value as string).toLowerCase();
