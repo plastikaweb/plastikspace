@@ -32,6 +32,30 @@ describe('Object Util', () => {
     it('should return false if array is not empty', () => {
       expect(isEmpty([1, 2])).toBeFalsy();
     });
+
+    it('should return true if string is empty', () => {
+      expect(isEmpty('')).toBeTruthy();
+    });
+
+    it('should return false if string is not empty', () => {
+      expect(isEmpty('hello')).toBeFalsy();
+    });
+
+    it('should return true if Object.create(null) is empty', () => {
+      const nullProtoObj = Object.create(null);
+      expect(isEmpty(nullProtoObj)).toBeTruthy();
+    });
+
+    it('should return false if Object.create(null) is not empty', () => {
+      const nullProtoObj = Object.create(null);
+      nullProtoObj.a = 1;
+      expect(isEmpty(nullProtoObj)).toBeFalsy();
+    });
+
+    it('should return true if null or undefined', () => {
+      expect(isEmpty(null)).toBeTruthy();
+      expect(isEmpty(undefined)).toBeTruthy();
+    });
   });
 
   describe('isString method', () => {
@@ -50,6 +74,10 @@ describe('Object Util', () => {
   describe('isObject method', () => {
     it('should return true if parameter is an object', () => {
       expect(isObject({})).toBeTruthy();
+    });
+
+    it('should return true if parameter is Object.create(null)', () => {
+      expect(isObject(Object.create(null))).toBeTruthy();
     });
 
     it('should return false if parameter is not an object', () => {

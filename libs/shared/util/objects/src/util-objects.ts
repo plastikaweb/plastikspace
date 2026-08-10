@@ -9,14 +9,22 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 export function isEmpty(obj: unknown): boolean {
   if (obj === null || obj === undefined) return true;
 
-  const constructor = (obj as object).constructor;
-  if (constructor === Array || constructor === Object) {
-    for (const key in obj as object) {
-      if (Object.prototype.hasOwnProperty.call(obj, key)) {
-        return false;
+  // High-performance O(1) paths for arrays and strings.
+  if (Array.isArray(obj) || typeof obj === 'string') {
+    return obj.length === 0;
+  }
+
+  // Fast-path early-exit for plain objects (including null-prototype objects).
+  if (typeof obj === 'object') {
+    const proto = Object.getPrototypeOf(obj);
+    if (proto === Object.prototype || proto === null) {
+      for (const key in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, key)) {
+          return false;
+        }
       }
+      return true;
     }
-    return true;
   }
 
   return false;
@@ -46,7 +54,11 @@ export function isNil(value: unknown): boolean {
  * @returns {boolean}.
  */
 export function isObject(obj: unknown): boolean {
-  return obj instanceof Object && obj.constructor === Object;
+  if (obj === null || typeof obj !== 'object') {
+    return false;
+  }
+  const proto = Object.getPrototypeOf(obj);
+  return proto === Object.prototype || proto === null;
 }
 
 /**
