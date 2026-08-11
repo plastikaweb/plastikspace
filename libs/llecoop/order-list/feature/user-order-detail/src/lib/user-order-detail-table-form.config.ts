@@ -42,6 +42,7 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
         const info = element?.['info']
           ? `<p class="font-bold">${escapeHtml(element['info'] ?? '')}</p>`
           : '';
+        // SECURITY (XSS): bypassSecurityTrustHtml is safe because name and info are sanitized via escapeHtml first.
         return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },
@@ -79,7 +80,8 @@ export class LlecoopUserOrderDetailFormTableConfig implements TableStructureConf
       type: 'CUSTOM',
       execute: (value, element) => {
         const price = `<p>${Number(value).toFixed(2)} €</p>`;
-        const unit = element?.unit ? this.#productBaseUnitTextPipe.transform(element.unit) : '';
+        // SECURITY (XSS): Always escape the dynamic result of pipe/transform inside bypassSecurityTrustHtml.
+        const unit = element?.unit ? escapeHtml(this.#productBaseUnitTextPipe.transform(element.unit)) : '';
 
         return this.#sanitizer.bypassSecurityTrustHtml(`${price} ${unit}`) as SafeHtml;
       },

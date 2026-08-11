@@ -39,6 +39,7 @@ export class OrderListUserOrderResumeTableConfig implements TableStructureConfig
         const info = element?.['info']
           ? `<p class="font-bold">${escapeHtml(element['info'] ?? '')}</p>`
           : '';
+        // SECURITY (XSS): bypassSecurityTrustHtml is safe because name and info are sanitized via escapeHtml first.
         return this.#sanitizer.bypassSecurityTrustHtml(`${name}${info}`) as SafeHtml;
       },
     },
