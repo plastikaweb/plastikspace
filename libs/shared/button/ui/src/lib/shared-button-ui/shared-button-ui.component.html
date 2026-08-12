@@ -2,7 +2,7 @@
   <button
     matButton
     [class]="`button--rounded ${buttonConfig().classes || ''}`"
-    [disabled]="buttonConfig().disabled"
+    [disabled]="(buttonConfig().disabled | returnAsObservable | ngrxPush) || false"
     [attr.aria-label]="buttonConfig().ariaLabel"
     [matTooltip]="buttonConfig().tooltip || buttonConfig().ariaLabel"
     [attr.data-test]="buttonConfig().dataTestId"
@@ -16,9 +16,12 @@
     class="block"
     target="_blank"
     rel="noopener noreferrer"
+    [class.opacity-50]="buttonConfig().disabled | returnAsObservable | ngrxPush"
+    [tabindex]="(buttonConfig().disabled | returnAsObservable | ngrxPush) ? -1 : 0"
+    [attr.aria-disabled]="(buttonConfig().disabled | returnAsObservable | ngrxPush) ? true : null"
     [attr.aria-label]="buttonConfig().ariaLabel"
     [matTooltip]="buttonConfig().tooltip || buttonConfig().ariaLabel"
-    [href]="linkHref()"
+    [attr.href]="(buttonConfig().disabled | returnAsObservable | ngrxPush) ? null : linkHref()"
     [attr.data-test]="buttonConfig().dataTestId">
     <ng-container *ngTemplateOutlet="content">button content</ng-container>
   </a>
@@ -31,6 +34,7 @@
     }
     @if (element.type === 'icon') {
       <svg-icon
+        aria-hidden="true"
         [src]="(element.content | returnAsObservable | ngrxPush)?.iconPath || ''"
         [svgClass]="(element.content | returnAsObservable | ngrxPush)?.svgClass || ''"></svg-icon>
     }
