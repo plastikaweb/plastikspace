@@ -50,12 +50,42 @@ describe('HumanizeUnitPipe', () => {
 
   it('should use locale formatting', () => {
     (translateServiceMock.getCurrentLang as Mock).mockReturnValue('de-DE');
-    // In German, decimal separator is comma
-    // Assuming environment supports Intl.NumberFormat with 'de-DE' correctly
-    // 1.5 -> 1,5
-    // But Intl behavior depends on node/browser environment.
-    // If it fails, we might need to mock Intl or accept environment limitation.
-    // Let's try basic.
     expect(pipe.transform(1.5, 'unit').replace(/\s/g, ' ')).toMatch(/1,5|1.5/);
+  });
+
+  it('should reuse cached Intl.NumberFormat instances for the same language and pattern', () => {
+    const getSpy = vi.spyOn(Map.prototype, 'get');
+    const setSpy = vi.spyOn(Map.prototype, 'set');
+
+    // First transform: cache miss, instantiates and sets
+    pipe.transform(1.5, 'unit');
+    expect(setSpy).toHaveBeenCalled();
+
+    // Reset spies
+    getSpy.mockClear();
+    setSpy.mockClear();
+
+    // Second transform with same logic: cache hit, should NOT call set
+    pipe.transform(1.5, 'unit');
+    expect(getSpy).toHaveBeenCalled();
+    expect(setSpy).not.toHaveBeenCalled();
+
+    getSpy.mockRestore();
+    setSpy.mockRestore();
+  });
+
+  it('should create a new Intl.NumberFormat instance if the language changes', () => {
+    const setSpy = vi.spyOn(Map.prototype, 'set');
+
+    pipe.transform(1.5, 'unit');
+    expect(setSpy).toHaveBeenCalled();
+    setSpy.mockClear();
+
+    // Change lang
+    (translateServiceMock.getCurrentLang as Mock).mockReturnValue('de-DE');
+    pipe.transform(1.5, 'unit');
+    expect(setSpy).toHaveBeenCalled(); // Cache miss due to different language
+
+    setSpy.mockRestore();
   });
 });
