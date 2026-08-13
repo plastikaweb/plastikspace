@@ -1,8 +1,10 @@
+@let isDisabled = (buttonConfig().disabled | returnAsObservable | ngrxPush) || false;
+
 @if (buttonConfig().type === 'button') {
   <button
     matButton
     [class]="`button--rounded ${buttonConfig().classes || ''}`"
-    [disabled]="buttonConfig().disabled"
+    [disabled]="isDisabled"
     [attr.aria-label]="buttonConfig().ariaLabel"
     [matTooltip]="buttonConfig().tooltip || buttonConfig().ariaLabel"
     [attr.data-test]="buttonConfig().dataTestId"
@@ -16,9 +18,12 @@
     class="block"
     target="_blank"
     rel="noopener noreferrer"
+    [class.opacity-50]="isDisabled"
+    [attr.tabindex]="isDisabled ? -1 : null"
+    [attr.aria-disabled]="isDisabled ? 'true' : null"
     [attr.aria-label]="buttonConfig().ariaLabel"
     [matTooltip]="buttonConfig().tooltip || buttonConfig().ariaLabel"
-    [href]="linkHref()"
+    [attr.href]="isDisabled ? null : linkHref()"
     [attr.data-test]="buttonConfig().dataTestId">
     <ng-container *ngTemplateOutlet="content">button content</ng-container>
   </a>
@@ -31,6 +36,7 @@
     }
     @if (element.type === 'icon') {
       <svg-icon
+        aria-hidden="true"
         [src]="(element.content | returnAsObservable | ngrxPush)?.iconPath || ''"
         [svgClass]="(element.content | returnAsObservable | ngrxPush)?.svgClass || ''"></svg-icon>
     }
