@@ -1,4 +1,9 @@
-import { ComponentFixture, DeferBlockBehavior, DeferBlockState, TestBed } from '@angular/core/testing';
+import {
+  ComponentFixture,
+  DeferBlockBehavior,
+  DeferBlockState,
+  TestBed,
+} from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
@@ -80,7 +85,9 @@ describe('SharedTableUiComponent', () => {
     const deferBlocks = await expFixture.getDeferBlocks();
     await deferBlocks[0].render(DeferBlockState.Complete);
 
-    const expandBtn = expFixture.nativeElement.querySelector('mat-cell button') as HTMLButtonElement;
+    const expandBtn = expFixture.nativeElement.querySelector(
+      'mat-cell button'
+    ) as HTMLButtonElement;
     expect(expandBtn).toBeTruthy();
     expect(expandBtn.getAttribute('aria-expanded')).toBe('false');
     expect(expandBtn.getAttribute('aria-label')).toBe('common.a11y.expandRow');
