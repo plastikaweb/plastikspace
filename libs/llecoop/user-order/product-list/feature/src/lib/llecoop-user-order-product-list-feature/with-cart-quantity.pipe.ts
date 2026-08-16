@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, inject } from '@angular/core';
+import { inject, Pipe, PipeTransform } from '@angular/core';
 import { LlecoopProduct, LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import { llecoopUserOrderCartStore } from '@plastik/llecoop/user-order-cart/data-access';
 
@@ -19,13 +19,17 @@ export class WithCartQuantityPipe implements PipeTransform {
     }
 
     const cartItems = this.#cartStore.cart();
+    // Build an O(1) lookup Map for cart items to avoid O(N * M) nested loops
+    const cartMap = new Map<string, number>();
+    for (const item of cartItems) {
+      if (item.id) {
+        cartMap.set(item.id, item.quantity);
+      }
+    }
 
-    return products.map(product => {
-      const cartItem = cartItems.find(item => item['id'] === product['id']);
-      return {
-        ...product,
-        quantity: cartItem?.quantity ?? 0,
-      };
-    });
+    return products.map(product => ({
+      ...product,
+      quantity: cartMap.get(product.id) ?? 0,
+    }));
   }
 }
