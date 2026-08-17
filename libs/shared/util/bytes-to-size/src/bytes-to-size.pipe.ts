@@ -1,9 +1,15 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-/** Cached `Math.log(1024)` — avoids recomputing the divisor on every transform. */
+/** Fast-path Byte unit thresholds (powers of 1024). */
+const KB = 1024;
+const MB = 1024 ** 2;
+const GB = 1024 ** 3;
+const TB = 1024 ** 4;
+
+/** Cached `Math.log(1024)` — fallback divisor for sizes >= PB. */
 const LOG1024 = Math.log(1024);
-/** Precomputed powers of 1024 for the common Bytes…TB tiers (index = unit exponent). */
-const POWERS = [1, 1024, 1024 ** 2, 1024 ** 3, 1024 ** 4];
+/** Precomputed powers of 1024 for index-based logarithmic fallback. */
+const POWERS = [1, KB, MB, GB, TB];
 
 /**
  * Pipe to convert a byte count into a human-readable size string.
@@ -24,14 +30,25 @@ export class BytesToSizePipe implements PipeTransform {
     if (value === null || value === undefined || isNaN(value)) {
       return 'n/a';
     }
-    if (value === 0) {
-      return `0 ${this.#sizes[0]}`;
+
+    // Fast-path: Direct numeric comparisons bypass expensive Math.log calls for standard file sizes.
+    if (value < KB) {
+      return `${value} ${this.#sizes[0]}`;
     }
+    if (value < MB) {
+      return `${(value / KB).toFixed(fixed)} ${this.#sizes[1]}`;
+    }
+    if (value < GB) {
+      return `${(value / MB).toFixed(fixed)} ${this.#sizes[2]}`;
+    }
+    if (value < TB) {
+      return `${(value / GB).toFixed(fixed)} ${this.#sizes[3]}`;
+    }
+
+    // Logarithmic fallback for extreme file sizes (>= 1 TB).
     const size = Math.floor(Math.log(value) / LOG1024);
-    if (size === 0) {
-      return `${value} ${this.#sizes[size]}`;
-    }
     const power = POWERS[size] ?? 1024 ** size;
-    return `${(value / power).toFixed(fixed)} ${this.#sizes[size]}`;
+    const unit = this.#sizes[size] ?? 'TB';
+    return `${(value / power).toFixed(fixed)} ${unit}`;
   }
 }
