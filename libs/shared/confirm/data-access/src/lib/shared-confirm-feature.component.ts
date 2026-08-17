@@ -33,16 +33,21 @@ export class SharedConfirmFeatureComponent {
   protected readonly icon = computed(() => this.data.icon || 'help_outline');
 
   protected readonly message = computed(() => {
+    const message = this.data.message;
+    if (typeof message !== 'string') {
+      return message;
+    }
+
     const params = this.data.params;
     const escapedParams = params
       ? Object.fromEntries(
           Object.entries(params).map(([key, value]) => [
             key,
-            typeof value === 'string' ? escapeHtml(value) : value,
+            typeof value === 'number' ? value : escapeHtml(String(value ?? '')),
           ])
         )
       : params;
-    const translated = this.#translate.instant(this.data.message, escapedParams);
+    const translated = this.#translate.instant(message, escapedParams);
     return this.#sanitizer.bypassSecurityTrustHtml(translated);
   });
 }

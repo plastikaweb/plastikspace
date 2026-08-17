@@ -1,6 +1,7 @@
 import { DIALOG_DATA } from '@angular/cdk/dialog';
 import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { DomSanitizer } from '@angular/platform-browser';
 
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
@@ -84,5 +85,54 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('<strong>');
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
+  });
+
+  it('should bypass translation and return SafeHtml directly when message is not a string', async () => {
+    const safeHtmlMessage = { changingThisBreaksApplicationSecurity: '<b>Pre-sanitized HTML</b>' };
+    await setup({
+      ...defaultData,
+      message: safeHtmlMessage,
+    });
+
+    const messageSignal = (
+      component as unknown as { message: () => unknown }
+    ).message();
+    expect(messageSignal).toBe(safeHtmlMessage);
+  });
+
+  it('should escape non-string array and object parameters to prevent XSS', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: {
+          items: ['<script>alert(1)</script>'],
+          image: ['<img src=x onerror=alert(2)>'],
+        },
+      },
+      {
+        'test.message': 'Items: {{items}}, Image: {{image}}',
+      }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<script>');
+    expect(rendered).toContain('&lt;script&gt;');
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should pass numeric parameters unescaped to support ICU pluralization', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { count: 5 },
+      },
+      {
+        'test.message': 'You have {{count}} items',
+      }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).toContain('You have 5 items');
   });
 });
