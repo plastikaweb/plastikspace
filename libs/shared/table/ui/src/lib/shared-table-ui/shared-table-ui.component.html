@@ -276,9 +276,15 @@
           >
           <mat-cell *matCellDef="let element" class="max-w-[70px]">
             <button
+              type="button"
               matIconButton
-              aria-label="expand row"
               class="-left-sub"
+              [attr.aria-expanded]="expandedElement()?.id === element.id"
+              [attr.aria-label]="
+                (expandedElement()?.id === element.id ? 'Collapse row ' : 'Expand row ') +
+                (element.name || element.id || '')
+              "
+              [matTooltip]="expandedElement()?.id === element.id ? 'Collapse row' : 'Expand row'"
               (click)="$event.stopPropagation(); updateExpandedElement(element)">
               @if (expandedElement()?.id === element.id) {
                 <mat-icon>keyboard_arrow_up</mat-icon>

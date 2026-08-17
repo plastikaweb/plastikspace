@@ -1,4 +1,4 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, DeferBlockState, TestBed } from '@angular/core/testing';
 import { provideTranslateService } from '@ngx-translate/core';
 import { PageEventConfig } from '@plastik/shared/table/entities';
 
@@ -23,7 +23,7 @@ describe('SharedTableUiComponent', () => {
     componentRef = fixture.componentRef;
     componentRef.setInput('data', [{ id: 1, name: 'test' }]);
     componentRef.setInput('columnProperties', [
-      { key: 'name', title: 'Name', formatting: { type: 'TEXT' } },
+      { key: 'name', pathToKey: 'name', title: 'Name', formatting: { type: 'TEXT' } },
     ]);
     componentRef.setInput('resultsLength', 1);
     componentRef.setInput('pagination', { pageSize: 5 });
@@ -60,6 +60,37 @@ describe('SharedTableUiComponent', () => {
 
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
+    expect(results).toHaveNoViolations();
+  });
+
+  it('should correctly configure aria and tooltip attributes when expandable is true', async () => {
+    const localFixture = TestBed.createComponent(SharedTableUiComponent);
+    const ref = localFixture.componentRef;
+    ref.setInput('data', [{ id: 1, name: 'test' }]);
+    ref.setInput('columnProperties', [
+      { key: 'name', pathToKey: 'name', title: 'Name', formatting: { type: 'TEXT' } },
+    ]);
+    ref.setInput('resultsLength', 1);
+    ref.setInput('expandable', true);
+    localFixture.detectChanges();
+
+    const deferBlock = (await localFixture.getDeferBlocks())[0];
+    await deferBlock.render(DeferBlockState.Complete);
+
+    const expandBtn = localFixture.nativeElement.querySelector('button.-left-sub');
+    expect(expandBtn).toBeTruthy();
+    expect(expandBtn.getAttribute('type')).toBe('button');
+    expect(expandBtn.getAttribute('aria-expanded')).toBe('false');
+    expect(expandBtn.getAttribute('aria-label')).toBe('Expand row test');
+
+    expandBtn.click();
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    localFixture.detectChanges();
+
+    expect(expandBtn.getAttribute('aria-expanded')).toBe('true');
+    expect(expandBtn.getAttribute('aria-label')).toBe('Collapse row test');
+
+    const results = await axe(localFixture.nativeElement);
     expect(results).toHaveNoViolations();
   });
 });
