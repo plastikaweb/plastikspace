@@ -85,4 +85,47 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should escape non-string (array/object) params to prevent reflected XSS', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { name: ['<img src=x onerror=alert(1)>'] },
+      },
+      {
+        'test.message': 'Hello {{name}}',
+      }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<img');
+    expect(rendered).toContain('&lt;img');
+  });
+
+  it('should preserve unescaped numeric params for ICU pluralization', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { count: 5 },
+      },
+      {
+        'test.message': 'Items: {{count}}',
+      }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).toContain('Items: 5');
+  });
+
+  it('should skip translation when message is not a string (e.g. SafeHtml or pre-formatted)', async () => {
+    const safeHtmlMsg = {
+      changingThisBreaksApplicationSecurity: '<span>Safe</span>',
+    };
+    await setup({
+      ...defaultData,
+      message: safeHtmlMsg as unknown as string,
+    });
+
+    expect(() => messageOf()).not.toThrow();
+  });
 });
