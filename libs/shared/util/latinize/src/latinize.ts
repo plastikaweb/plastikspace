@@ -904,19 +904,55 @@ const characters: Record<string, string> = {
 /** Matches a single character outside the ASCII range (`\x00-\x7F`). Non-global: safe for `.test()`. */
 // eslint-disable-next-line no-control-regex
 const NON_ASCII = /[^\x00-\x7F]/;
-/** Global variant of {@link NON_ASCII} for `String.prototype.replace()`. */
-const NON_ASCII_GLOBAL = new RegExp(NON_ASCII, 'g');
 
 /**
  * Converts a string to its Latinized form.
+ * Optimizations applied:
+ * 1. O(1) single-character fast-path to avoid regex testing overhead.
+ * 2. Pure ASCII test to skip transliteration on standard ASCII inputs.
+ * 3. Single-pass index loop avoiding regex replacement & closure allocation overhead on multi-character non-ASCII strings.
  * @param {string} str - The input string.
  * @returns {string} The Latinized string.
  */
 export function latinize(str: string): string {
-  // Fast-path: pure-ASCII strings have nothing to transliterate, so skip the
-  // `replace()` + per-character map lookups entirely.
+  const len = str.length;
+  if (len === 0) {
+    return '';
+  }
+
+  // O(1) single-character fast-path
+  if (len === 1) {
+    if (str.charCodeAt(0) <= 127) {
+      return str;
+    }
+    return characters[str] || str;
+  }
+
+  // Fast-path: pure-ASCII strings have nothing to transliterate
   if (!NON_ASCII.test(str)) {
     return str;
   }
-  return str.replace(NON_ASCII_GLOBAL, x => characters[x] || x);
+
+  // Optimized single-pass index search without regex replacement overhead
+  let res = '';
+  let lastIdx = 0;
+  for (let i = 0; i < len; i++) {
+    if (str.charCodeAt(i) > 127) {
+      const char = str[i];
+      const replacement = characters[char];
+      if (replacement !== undefined) {
+        res += str.slice(lastIdx, i) + replacement;
+        lastIdx = i + 1;
+      }
+    }
+  }
+
+  if (lastIdx === 0) {
+    return str;
+  }
+  if (lastIdx < len) {
+    res += str.slice(lastIdx);
+  }
+
+  return res;
 }
