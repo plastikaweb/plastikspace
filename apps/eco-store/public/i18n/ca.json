@@ -102,7 +102,9 @@
     },
     "image": {
       "crop": {
-        "title": "Edita la teva imatge"
+        "title": "Edita la teva imatge",
+        "zoomIn": "Apropar",
+        "zoomOut": "Allunyar"
       },
       "upload": {
         "title": "Puja una imatge",

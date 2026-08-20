@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatTooltip } from '@angular/material/tooltip';
+import { By } from '@angular/platform-browser';
 import { provideTranslateService } from '@ngx-translate/core';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { SharedImgCropperComponent } from './shared-img-cropper.component';
@@ -79,5 +81,21 @@ describe('SharedImgCropperComponent', () => {
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
+  });
+
+  it('should mirror each icon button aria-label with a matching matTooltip', () => {
+    component['imageBase64'].set('data:image/png;base64,123');
+    component['errorMessage'].set({ key: 'common.image.error.loaded' });
+    fixture.detectChanges();
+
+    const tooltipHosts = fixture.debugElement.queryAll(By.directive(MatTooltip));
+    expect(tooltipHosts.length).toBeGreaterThan(0);
+
+    for (const host of tooltipHosts) {
+      const ariaLabel = host.nativeElement.getAttribute('aria-label');
+      const tooltipMessage = host.injector.get(MatTooltip).message;
+      expect(ariaLabel).toBeTruthy();
+      expect(tooltipMessage).toBe(ariaLabel);
+    }
   });
 });

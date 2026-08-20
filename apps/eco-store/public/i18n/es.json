@@ -102,7 +102,9 @@
     },
     "image": {
       "crop": {
-        "title": "Edita tu imagen"
+        "title": "Edita tu imagen",
+        "zoomIn": "Acercar",
+        "zoomOut": "Alejar"
       },
       "upload": {
         "title": "Sube una imagen",

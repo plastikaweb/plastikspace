@@ -35,6 +35,7 @@
           type="file"
           accept="image/*"
           class="sr-only"
+          [attr.aria-label]="uploadTitle() | translate"
           (change)="onFileSelected($event)" />
       </label>
 
@@ -90,16 +91,24 @@
             matIconButton
             type="button"
             class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+            [attr.aria-label]="'common.image.crop.zoomOut' | translate"
+            [matTooltip]="'common.image.crop.zoomOut' | translate"
             (click)="onZoomChange(zoom() - 0.1)">
             <mat-icon>remove</mat-icon>
           </button>
           <mat-slider class="flex-1" min="1" max="4" step="0.1">
-            <input matSliderThumb [value]="zoom()" (valueChange)="onZoomChange($event)" />
+            <input
+              matSliderThumb
+              [attr.aria-label]="cropTitle() | translate"
+              [value]="zoom()"
+              (valueChange)="onZoomChange($event)" />
           </mat-slider>
           <button
             matIconButton
             type="button"
             class="hover:bg-primary-50/10! shadow-sm transition-transform hover:scale-105!"
+            [attr.aria-label]="'common.image.crop.zoomIn' | translate"
+            [matTooltip]="'common.image.crop.zoomIn' | translate"
             (click)="onZoomChange(zoom() + 0.1)">
             <mat-icon>add</mat-icon>
           </button>
@@ -143,7 +152,12 @@
       <mat-icon class="scale-110">error_outline</mat-icon>
       <p>{{ error.key | translate: error.params }}</p>
     </div>
-    <button matIconButton type="button" (click)="onClearError()">
+    <button
+      matIconButton
+      type="button"
+      [attr.aria-label]="'common.close' | translate"
+      [matTooltip]="'common.close' | translate"
+      (click)="onClearError()">
       <mat-icon>close</mat-icon>
     </button>
   </div>
