@@ -57,4 +57,25 @@ describe('OrderTableActionsElementsPipe', () => {
     expect(result[0].value.order).toBe(1);
     expect(result[1].value.order).toBe(1);
   });
+
+  it('should return empty or single-element arrays directly without sorting', () => {
+    const emptyList: any[] = [];
+    const singleList = [{ key: 'ACTION1', value: { order: 1 } }] as any;
+
+    expect(pipe.transform(emptyList)).toBe(emptyList);
+    expect(pipe.transform(singleList)).toBe(singleList);
+  });
+
+  it('should not mutate original input array in place when sorting', () => {
+    const actions = [
+      { key: 'ACTION2', value: { order: 2 } },
+      { key: 'ACTION1', value: { order: 1 } },
+    ] as any;
+
+    const result = pipe.transform(actions);
+
+    expect(result).not.toBe(actions);
+    expect(actions[0].key).toBe('ACTION2');
+    expect(result[0].key).toBe('ACTION1');
+  });
 });
