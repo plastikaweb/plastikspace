@@ -45,7 +45,9 @@ describe('LlecoopUserOrderResumeTableConfig', () => {
       },
     } as unknown as LlecoopOrderProduct;
 
-    const formatted = column?.formatting?.execute?.(null, product) as { changingThisBreaksApplicationSecurity?: string };
+    const formatted = column?.formatting?.execute?.(null, product) as {
+      changingThisBreaksApplicationSecurity?: string;
+    };
     const html = formatted?.changingThisBreaksApplicationSecurity || String(formatted);
 
     expect(html).not.toContain('<img');

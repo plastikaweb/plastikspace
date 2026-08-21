@@ -57,7 +57,9 @@ describe('LlecoopUserOrderDetailFormTableConfig', () => {
       },
     } as unknown as LlecoopOrderProduct;
 
-    const formatted = column?.formatting?.execute?.(10, product) as { changingThisBreaksApplicationSecurity?: string };
+    const formatted = column?.formatting?.execute?.(10, product) as {
+      changingThisBreaksApplicationSecurity?: string;
+    };
     const html = formatted?.changingThisBreaksApplicationSecurity || String(formatted);
 
     expect(html).not.toContain('<img');
