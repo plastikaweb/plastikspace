@@ -11,6 +11,7 @@ import {
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { TranslateModule } from '@ngx-translate/core';
 import { BytesToSizePipe } from '@plastik/shared/bytes-to-size';
@@ -44,6 +45,7 @@ export interface ImgCropperConfig {
     MatButtonModule,
     MatIconModule,
     MatSliderModule,
+    MatTooltipModule,
     ImageCropperComponent,
     TranslateModule,
     NgTemplateOutlet,
