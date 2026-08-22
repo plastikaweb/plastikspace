@@ -6,6 +6,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
 import { LlecoopProductWithQuantity } from '@plastik/llecoop/entities';
 import { LlecoopProductUnitStepPipe } from '@plastik/llecoop/product/product-unit-step';
@@ -24,6 +25,7 @@ import { SharedImgContainerComponent } from '@plastik/shared/img-container';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
+    MatTooltipModule,
     MatDividerModule,
     LlecoopProductUnitSuffixPipe,
     LlecoopProductUnitStepPipe,
