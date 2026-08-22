@@ -48,7 +48,9 @@ describe('LlecoopUserOrderDetailFormTableConfig', () => {
 
     const result = priceColumn?.formatting?.execute?.(10.5, {
       unit: { type: 'unitWithFixedWeight', base: '<img src=x onerror=alert(1)>' },
-    } as unknown as LlecoopOrderProduct) as unknown as { changingThisBreaksApplicationSecurity?: string };
+    } as unknown as LlecoopOrderProduct) as unknown as {
+      changingThisBreaksApplicationSecurity?: string;
+    };
 
     const html = result?.changingThisBreaksApplicationSecurity ?? String(result);
     expect(html).not.toContain('<img');
