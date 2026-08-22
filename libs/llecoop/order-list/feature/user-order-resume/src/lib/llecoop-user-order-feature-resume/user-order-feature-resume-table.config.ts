@@ -32,8 +32,9 @@ export class LlecoopUserOrderResumeTableConfig implements TableStructureConfig<L
       type: 'CUSTOM',
       execute: (_, product) => {
         const name = `<p class="font-bold uppercase">${escapeHtml(product?.name ?? '')}</p>`;
+        // SECURITY (XSS): Escape unit base text transformation output before passing to bypassSecurityTrustHtml.
         const unit = product?.unit
-          ? `<p class="font-bold text-sm">${Number(product?.price).toFixed(2)} € x ${this.#productBaseUnitTextPipe.transform(product.unit)}</p>`
+          ? `<p class="font-bold text-sm">${Number(product?.price).toFixed(2)} € x ${escapeHtml(this.#productBaseUnitTextPipe.transform(product.unit))}</p>`
           : '';
         const info = product?.info
           ? `<p class="font-bold">${escapeHtml(product?.info ?? '')}</p>`
