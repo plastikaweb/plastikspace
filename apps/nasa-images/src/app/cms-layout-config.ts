@@ -25,10 +25,12 @@ export const headerConfig: CoreCmsLayoutHeaderConfig = {
                 content: { iconPath: 'assets/svg/github.svg', svgClass: 'w-[40px] fill-primary' },
               },
             ],
+            // SECURITY: Prevent reverse-tabnabbing when opening external link in a new tab
             doAction: () =>
               window.open(
                 'https://github.com/plastikaweb/plastikspace/tree/develop/apps/nasa-images/README.md',
-                '_blank'
+                '_blank',
+                'noopener,noreferrer'
               ),
           },
         },
