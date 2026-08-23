@@ -7,17 +7,28 @@
   <mat-icon>{{ matThemeToggleService.selectedTheme().icon }}</mat-icon>
 </button>
 <mat-menu #themeToggle="matMenu">
-  @for (theme of matThemeToggleService.getThemes(); track $index) {
-    <button mat-menu-item (click)="matThemeToggleService.setTheme(theme.id)">
-      @let selected = theme.id === matThemeToggleService.selectedTheme().id;
+  @for (theme of matThemeToggleService.getThemes(); track theme.id) {
+    @let selected = theme.id === matThemeToggleService.selectedTheme().id;
+    <button
+      mat-menu-item
+      [attr.aria-current]="selected ? 'true' : undefined"
+      (click)="matThemeToggleService.setTheme(theme.id)">
       <mat-icon
         matMenuItemIcon
         [class.text-on-surface-variant]="selected"
         [class.opacity-100]="selected"
         [class.text-on-surface]="!selected"
-        [class.opacity-70]="!selected"
-        >{{ theme.icon }}</mat-icon
-      >
+        [class.opacity-0]="!selected">
+        check
+      </mat-icon>
+      <mat-icon
+        class="mr-2"
+        [class.text-on-surface-variant]="selected"
+        [class.opacity-100]="selected"
+        [class.text-on-surface]="!selected"
+        [class.opacity-70]="!selected">
+        {{ theme.icon }}
+      </mat-icon>
       <span
         [class.font-bold]="selected"
         [class.text-on-surface-variant]="selected"
