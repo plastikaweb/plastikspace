@@ -26,14 +26,15 @@
 
 <ng-template #content>
   @for (element of buttonConfig().elements; track $index) {
-    @let content = element.content | returnAsObservable | ngrxPush;
     @if (element.type === 'text') {
-      <span>{{ content }}</span>
+      @let textContent = element.content | returnAsObservable | ngrxPush;
+      <span>{{ textContent }}</span>
     }
     @if (element.type === 'icon') {
+      @let iconConfig = element.content | returnAsObservable | ngrxPush;
       <svg-icon
-        [src]="content?.iconPath || ''"
-        [svgClass]="content?.svgClass || ''"></svg-icon>
+        [src]="iconConfig?.iconPath || ''"
+        [svgClass]="iconConfig?.svgClass || ''"></svg-icon>
     }
   }
 </ng-template>
