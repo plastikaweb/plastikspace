@@ -62,4 +62,19 @@ describe('SortSelectorComponent', () => {
 
     sub.unsubscribe();
   });
+
+  it('should set aria-current="true" on the active sort option in the menu', async () => {
+    const button: HTMLButtonElement = fixture.nativeElement.querySelector('button.md\\:flex\\!');
+    button.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const menuItems = document.querySelectorAll('button[mat-menu-item]');
+    expect(menuItems.length).toBe(4);
+    // The currentSort input is { active: 'name', direction: 'asc' }, which corresponds to item 0
+    expect(menuItems[0].getAttribute('aria-current')).toBe('true');
+    expect(menuItems[1].getAttribute('aria-current')).toBeNull();
+    expect(menuItems[2].getAttribute('aria-current')).toBeNull();
+    expect(menuItems[3].getAttribute('aria-current')).toBeNull();
+  });
 });
