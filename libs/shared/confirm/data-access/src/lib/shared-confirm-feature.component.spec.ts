@@ -85,4 +85,41 @@ describe('SharedConfirmFeatureComponent', () => {
     expect(rendered).toContain('&lt;b&gt;');
     expect(rendered).not.toContain('<b>x</b>');
   });
+
+  it('should bypass translation when message is a SafeHtml non-string object to prevent TypeError', async () => {
+    const safeHtmlMessage = {
+      changingThisBreaksApplicationSecurity: '<span>Safe HTML</span>',
+    };
+    await setup({
+      ...defaultData,
+      message: safeHtmlMessage,
+    });
+
+    const rendered = component['message']();
+    expect(rendered).toBe(safeHtmlMessage);
+  });
+
+  it('should escape non-string array and object parameters', async () => {
+    await setup({
+      ...defaultData,
+      params: { name: ['<script>alert(1)</script>'] },
+    });
+
+    const rendered = messageOf();
+    expect(rendered).not.toContain('<script>');
+    expect(rendered).toContain('&lt;script&gt;');
+  });
+
+  it('should preserve numeric parameters as numbers without escaping', async () => {
+    await setup(
+      {
+        ...defaultData,
+        params: { count: 42 },
+      },
+      { 'test.message': 'Count: {{count}}' }
+    );
+
+    const rendered = messageOf();
+    expect(rendered).toContain('Count: 42');
+  });
 });
