@@ -2,15 +2,17 @@
   #card
   appearance="raised"
   class="address-card group relative transition-all"
-  [attr.tabindex]="interactive() ? 0 : null"
+  [attr.aria-disabled]="interactive() && disabled() ? true : null"
+  [attr.tabindex]="interactive() && !disabled() ? 0 : null"
   [class.make-it-focusable]="interactive()"
   [class.cursor-pointer]="interactive()"
   [class.selected]="selected()"
   [class.opacity-50]="disabled()"
   [class.pointer-events-none]="disabled()"
   [attr.aria-label]="fullAriaLabel()"
-  (click)="interactive() && selectionChange.emit()"
-  (keydown.enter)="interactive() && selectionChange.emit()">
+  (click)="interactive() && !disabled() && selectionChange.emit()"
+  (keydown.enter)="interactive() && !disabled() && selectionChange.emit()"
+  (keydown.space)="$event.preventDefault(); interactive() && !disabled() && selectionChange.emit()">
   <mat-card-content class="flex! flex-row items-center justify-start gap-4">
     <ng-content select="[indicator]"></ng-content>
 

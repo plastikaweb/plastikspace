@@ -60,4 +60,67 @@ describe('AddressCardComponent', () => {
     const cardElement = fixture.nativeElement.querySelector('.address-card');
     expect(cardElement.getAttribute('aria-label')).toBe('Home, Main Street 123, 08001 Barcelona');
   });
+
+  describe('accessibility and keyboard support', () => {
+    it('should set tabindex="0" when interactive and not disabled', () => {
+      fixture.componentRef.setInput('interactive', true);
+      fixture.componentRef.setInput('disabled', false);
+      fixture.detectChanges();
+
+      const cardElement = fixture.nativeElement.querySelector('.address-card');
+      expect(cardElement.getAttribute('tabindex')).toBe('0');
+    });
+
+    it('should omit tabindex when not interactive', () => {
+      fixture.componentRef.setInput('interactive', false);
+      fixture.detectChanges();
+
+      const cardElement = fixture.nativeElement.querySelector('.address-card');
+      expect(cardElement.getAttribute('tabindex')).toBeNull();
+    });
+
+    it('should set aria-disabled="true" and remove tabindex when disabled', () => {
+      fixture.componentRef.setInput('interactive', true);
+      fixture.componentRef.setInput('disabled', true);
+      fixture.detectChanges();
+
+      const cardElement = fixture.nativeElement.querySelector('.address-card');
+      expect(cardElement.getAttribute('aria-disabled')).toBe('true');
+      expect(cardElement.getAttribute('tabindex')).toBeNull();
+    });
+
+    it('should emit selectionChange event on Enter key press', () => {
+      const emitSpy = vi.spyOn(component.selectionChange, 'emit');
+      const cardElement = fixture.nativeElement.querySelector('.address-card');
+      cardElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+
+      expect(emitSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should emit selectionChange event and prevent default on Space key press', () => {
+      const emitSpy = vi.spyOn(component.selectionChange, 'emit');
+      const cardElement = fixture.nativeElement.querySelector('.address-card');
+      const event = new KeyboardEvent('keydown', { key: ' ', cancelable: true });
+      const preventDefaultSpy = vi.spyOn(event, 'preventDefault');
+
+      cardElement.dispatchEvent(event);
+
+      expect(preventDefaultSpy).toHaveBeenCalled();
+      expect(emitSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not emit selectionChange when disabled', () => {
+      fixture.componentRef.setInput('disabled', true);
+      fixture.detectChanges();
+
+      const emitSpy = vi.spyOn(component.selectionChange, 'emit');
+      const cardElement = fixture.nativeElement.querySelector('.address-card');
+
+      cardElement.click();
+      cardElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter' }));
+      cardElement.dispatchEvent(new KeyboardEvent('keydown', { key: ' ', cancelable: true }));
+
+      expect(emitSpy).not.toHaveBeenCalled();
+    });
+  });
 });
