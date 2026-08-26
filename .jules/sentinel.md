@@ -1,0 +1,4 @@
+## 2026-08-08 - Escape Product Unit Base Text Before Html Sanitization Bypass (SEC-08)
+**Vulnerability:** Unescaped pipe output in custom table cell formatters passed directly to `DomSanitizer.bypassSecurityTrustHtml()`.
+**Learning:** `LlecoopProductBaseUnitTextPipe.transform()` returns unit string representations incorporating dynamic fields like `unit.base` (e.g., `<img src=x onerror=alert(1)>`). When this pipe output is interpolated into raw HTML rendered via `bypassSecurityTrustHtml` in `LlecoopUserOrderDetailFormTableConfig` and `LlecoopUserOrderResumeTableConfig`, Angular's built-in HTML sanitizer is bypassed, causing Stored XSS in the user or admin order view.
+**Prevention:** Always wrap non-static / pipe-generated text with `escapeHtml(...)` before interpolating it into HTML strings that bypass sanitizer checks via `bypassSecurityTrustHtml(...)`.
