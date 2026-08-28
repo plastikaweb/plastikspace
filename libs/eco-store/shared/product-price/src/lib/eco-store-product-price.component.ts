@@ -51,11 +51,14 @@ export class EcoStoreProductPriceComponent {
   size = input<ProductPriceSize>('md');
   unitChipVisible = input<boolean>(true);
 
+  // Cached Intl.NumberFormat instance to avoid expensive re-instantiations during change detection calls
+  static readonly #formatter = new Intl.NumberFormat('ca-ES', {
+    style: 'currency',
+    currency: 'EUR',
+  });
+
   protected getPriceParts() {
-    const formatted = new Intl.NumberFormat('ca-ES', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(this.price());
+    const formatted = EcoStoreProductPriceComponent.#formatter.format(this.price());
 
     const symbol = '€';
     const numericPart = formatted.replace(symbol, '').trim();
