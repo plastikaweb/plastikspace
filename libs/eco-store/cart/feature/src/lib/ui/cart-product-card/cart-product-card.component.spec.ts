@@ -64,12 +64,14 @@ describe('CartProductCardComponent', () => {
     expect(compiled.querySelector('eco-store-product-quantity')).toBeFalsy();
   });
 
-  it('should display quantity controls and delete button when editable', () => {
+  it('should display quantity controls and delete button with aria-label when editable', () => {
     fixture.componentRef.setInput('editable', true);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
     expect(compiled.querySelector('eco-store-product-quantity')).toBeTruthy();
-    expect(compiled.querySelector('.cart-delete-button')).toBeTruthy();
+    const deleteBtn = compiled.querySelector('.cart-delete-button');
+    expect(deleteBtn).toBeTruthy();
+    expect(deleteBtn?.getAttribute('aria-label')).toBe('cart.summary.removeItem');
   });
 
   it('should emit quantityChange when quantity is updated', () => {

@@ -74,7 +74,7 @@
         matIconButton
         type="button"
         class="cart-delete-button col-start-3! row-start-1! @xl:col-start-2! @xl:row-start-2!"
-        [aria-label]="'cart.summary.removeItem' | translate"
+        [attr.aria-label]="'cart.summary.removeItem' | translate"
         [matTooltip]="'cart.summary.removeItem' | translate"
         (click)="quantityChange.emit({ quantity: 0, product })">
         <mat-icon aria-hidden="true">delete_outline</mat-icon>
