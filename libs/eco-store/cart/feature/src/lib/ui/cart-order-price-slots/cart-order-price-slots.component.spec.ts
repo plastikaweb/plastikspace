@@ -24,6 +24,11 @@ describe('CartOrderPriceSlotsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should render aria-label on mat-progress-bar', () => {
+    const progressBar = fixture.nativeElement.querySelector('mat-progress-bar');
+    expect(progressBar?.getAttribute('aria-label')).toBe('Shipping tier progress for 0%');
+  });
+
   it('should have no accessibility violations', async () => {
     const results = await axe(fixture.nativeElement);
     expect(results).toHaveNoViolations();
